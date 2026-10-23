@@ -1,0 +1,7224 @@
+{
+  "kind": "real-provider synthetic canonical acknowledgement harness; no actual browser interaction",
+  "model": "zai/glm-5.3-flash",
+  "elapsedMs": 157296,
+  "initialNodes": 226,
+  "finalNodes": 233,
+  "events": [
+    {
+      "type": "started",
+      "runId": "69ab7672-e17f-496e-bb0c-c93c5329f178",
+      "model": "zai/glm-5.3-flash",
+      "engine": "VICT / Mastra"
+    },
+    {
+      "type": "progress",
+      "message": "Connecting to the VICT / Mastra agent…"
+    },
+    {
+      "type": "progress",
+      "message": "Agent is working on your request…"
+    },
+    {
+      "type": "text",
+      "delta": "I"
+    },
+    {
+      "type": "text",
+      "delta": "'ll"
+    },
+    {
+      "type": "text",
+      "delta": " start"
+    },
+    {
+      "type": "text",
+      "delta": " with"
+    },
+    {
+      "type": "text",
+      "delta": " the"
+    },
+    {
+      "type": "text",
+      "delta": " required"
+    },
+    {
+      "type": "text",
+      "delta": " reads"
+    },
+    {
+      "type": "text",
+      "delta": ":"
+    },
+    {
+      "type": "text",
+      "delta": " fresh"
+    },
+    {
+      "type": "text",
+      "delta": " overview"
+    },
+    {
+      "type": "text",
+      "delta": ","
+    },
+    {
+      "type": "text",
+      "delta": " the"
+    },
+    {
+      "type": "text",
+      "delta": " targeted"
+    },
+    {
+      "type": "text",
+      "delta": " source"
+    },
+    {
+      "type": "text",
+      "delta": " page"
+    },
+    {
+      "type": "text",
+      "delta": " for"
+    },
+    {
+      "type": "text",
+      "delta": " retained"
+    },
+    {
+      "type": "text",
+      "delta": "-"
+    },
+    {
+      "type": "text",
+      "delta": "199"
+    },
+    {
+      "type": "text",
+      "delta": ","
+    },
+    {
+      "type": "text",
+      "delta": " and"
+    },
+    {
+      "type": "text",
+      "delta": " the"
+    },
+    {
+      "type": "text",
+      "delta": " component"
+    },
+    {
+      "type": "text",
+      "delta": " descriptors"
+    },
+    {
+      "type": "text",
+      "delta": " I"
+    },
+    {
+      "type": "text",
+      "delta": "'ll"
+    },
+    {
+      "type": "text",
+      "delta": " need"
+    },
+    {
+      "type": "text",
+      "delta": " later"
+    },
+    {
+      "type": "text",
+      "delta": " ("
+    },
+    {
+      "type": "text",
+      "delta": "input"
+    },
+    {
+      "type": "text",
+      "delta": ","
+    },
+    {
+      "type": "text",
+      "delta": " checkbox"
+    },
+    {
+      "type": "text",
+      "delta": ")."
+    },
+    {
+      "type": "tool-event",
+      "id": "69ab7672-e17f-496e-bb0c-c93c5329f178:tool:1",
+      "sequence": 1,
+      "kind": "tool-start",
+      "tool": "studio_screen_read",
+      "summary": "Tool started",
+      "callId": "call_2ff679dc75a148759088f4fb"
+    },
+    {
+      "type": "progress",
+      "message": "Reading the screen and selection…"
+    },
+    {
+      "type": "tool-event",
+      "id": "69ab7672-e17f-496e-bb0c-c93c5329f178:tool:2",
+      "sequence": 2,
+      "kind": "tool-start",
+      "tool": "studio_screen_read",
+      "summary": "Tool started",
+      "callId": "call_ae47faa48e56451f9c09911a"
+    },
+    {
+      "type": "progress",
+      "message": "Reading the screen and selection…"
+    },
+    {
+      "type": "tool-event",
+      "id": "69ab7672-e17f-496e-bb0c-c93c5329f178:tool:3",
+      "sequence": 3,
+      "kind": "tool-start",
+      "tool": "studio_screen_read",
+      "summary": "Tool started",
+      "callId": "call_a2ca88ab4d6f48df8b9d8d1c"
+    },
+    {
+      "type": "progress",
+      "message": "Reading the screen and selection…"
+    },
+    {
+      "type": "tool-event",
+      "id": "69ab7672-e17f-496e-bb0c-c93c5329f178:tool:4",
+      "sequence": 4,
+      "kind": "tool-start",
+      "tool": "studio_screen_read",
+      "summary": "Tool started",
+      "callId": "call_74258a73ce744b8881696820"
+    },
+    {
+      "type": "progress",
+      "message": "Reading the screen and selection…"
+    },
+    {
+      "type": "tool-event",
+      "id": "69ab7672-e17f-496e-bb0c-c93c5329f178:tool:5",
+      "sequence": 5,
+      "kind": "observation",
+      "tool": "studio_screen_read",
+      "summary": "Read current source facts",
+      "details": "{\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"live-completion\",\"revision\":\"r1#0\",\"digest\":\"12f500e125ae0f9b1176df1f6b65849a954b05cbc74338285aec4484c33e9f04\",\"epoch\":\"aaa12a21-196a-493b-8df7-0e2fab568e4e\"},\"section\":\"overview\",\"document\":{\"id\":\"live-completion\",\"revision\":\"r1\",\"root\":\"screen\",\"nodeCount\":226,\"stateCount\":9},\"selection\":null,\"roots\":[{\"id\":\"screen\",\"kind\":\"element\",\"tag\":\"main\",\"children\":[\"existing-0\",\"existing-1\",\"existing-2\",\"existing-3\",\"existing-4\",\"existing-5\",\"existing-6\",\"existing-7\",\"existing-8\",\"existing-9\",\"existing-10\",\"existing-11\",\"retained-0\",\"retained-1\",\"retained-2\",\"retained-3\",\"retained-4\",\"retained-5\",\"retained-6\",\"retained-7\"],\"childCount\":212,\"sourcePreview\":\"{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"screen\\\",\\\"tag\\\":\\\"main\\\",\\\"attributes\\\":{\\\"aria-label\\\":\\\"Synthetic mixed recovery fixture\\\"},\\\"children\\\":[\\\"existing-0\\\",\\\"existing-1\\\",\\\"existing-2\\\",\\\"existing-3\\\",\\\"existing-4\\\",\\\"existing-5\\\",\\\"existing-6\\\",\\\"existing-7\\\",\\\"existing-8\\\",\\\"existing-9\\\",\\\"existing-10\\\",\\\"existing-11\\\",\\\"retained-0\\\",\\\"retained-1\\\",\\\"retained-2\\\",\\\"retained-3\\\",\\\"retained-4\\\",\\\"retained-5\\\",\\\"retained-6\\\",\\\"retained-7\\\",\\\"retained-8\\\",\\\"retained-9\\\",\\\"retained-10\\\",\\\"retained-11\\\",\\\"retained-12\\\",\\\"retained-13\\\",\\\"retained-14\\\",\\\"retained-15\\\",\\\"retained-16\\\",\\\"retained-17\\\",\\\"retained-18\\\",\\\"retained-19\\\",\\\"retained-20\\\",\\\"retained-21\\\",\\\"retained-22\\\",\\\"retained-… [truncated; use source pages]\"}],\"discovery\":\"Read nodes/palette/state with offset and limit <=20. Read component with recipe for exact props/outputs/slots. Read source with nodeId for lossless JSON text pages (nextOffset is character offset). Read coverage with requested recipe IDs for source presence only.\",\"editing\":\"Use fresh node IDs, exact expectedRevision and registered recipes. add/modify/move/remove/bind/connect; declareState(key,type,initial) creates independent scalar state. wireInput(nodeId,key,initial?) wires native input through existing attribute/change contracts. bind(nodeId,prop,expression?:{type:\\\"ref\\\",path:\\\"state.key\\\"}|{type:\\\"literal\\\",value:scalar}). connect(nodeId,output,binding?:{setState:{key,value?:expression}}|{invokeAction:{actionId,input?:{field:expression}}}). Same-batch add then bind/connect is supported; canonical payload type equality remains mandatory. New text inputs have independent state. add into an unchanged seeded slot replaces its placeholder subtree; set replacePlaceholder:false to append intentionally. Each acknowledged batch is one Undo. Source facts, appearance and interaction evidence are distinct; compilation is not completion.\",\"limits\":{\"nodes\":500,\"documentCharacters\":200000,\"readPage\":20}}"
+    },
+    {
+      "type": "tool-event",
+      "id": "69ab7672-e17f-496e-bb0c-c93c5329f178:tool:6",
+      "sequence": 6,
+      "kind": "observation",
+      "tool": "studio_screen_read",
+      "summary": "Read current source facts",
+      "details": "{\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"live-completion\",\"revision\":\"r1#0\",\"digest\":\"12f500e125ae0f9b1176df1f6b65849a954b05cbc74338285aec4484c33e9f04\",\"epoch\":\"aaa12a21-196a-493b-8df7-0e2fab568e4e\"},\"section\":\"source\",\"nodeId\":\"retained-199\",\"sourceJson\":\"{\\\"kind\\\":\\\"text\\\",\\\"id\\\":\\\"retained-199\\\",\\\"content\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"Retained synthetic content 199\\\"}}\",\"totalCharacters\":105,\"offset\":0,\"nextOffset\":null}"
+    },
+    {
+      "type": "tool-event",
+      "id": "69ab7672-e17f-496e-bb0c-c93c5329f178:tool:7",
+      "sequence": 7,
+      "kind": "validation-refused",
+      "tool": "studio_screen_read",
+      "summary": "Read query refused safely",
+      "details": "{\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"live-completion\",\"revision\":\"r1#0\",\"digest\":\"12f500e125ae0f9b1176df1f6b65849a954b05cbc74338285aec4484c33e9f04\",\"epoch\":\"aaa12a21-196a-493b-8df7-0e2fab568e4e\"},\"section\":\"component\",\"ok\":false,\"code\":\"STUDIO_AGENT_COMPONENT_NOT_FOUND\",\"message\":\"Use recipe from palette. Native input uses wireInput; text uses text.\"}"
+    },
+    {
+      "type": "tool-event",
+      "id": "69ab7672-e17f-496e-bb0c-c93c5329f178:tool:8",
+      "sequence": 8,
+      "kind": "observation",
+      "tool": "studio_screen_read",
+      "summary": "Read current source facts",
+      "details": "{\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"live-completion\",\"revision\":\"r1#0\",\"digest\":\"12f500e125ae0f9b1176df1f6b65849a954b05cbc74338285aec4484c33e9f04\",\"epoch\":\"aaa12a21-196a-493b-8df7-0e2fab568e4e\"},\"section\":\"component\",\"descriptorJson\":\"{\\\"id\\\":\\\"vict.catalog.checkbox\\\",\\\"revision\\\":\\\"1\\\",\\\"abi\\\":\\\"vict.ui-component-abi@1\\\",\\\"events\\\":[\\\"vict.ui-component-abi@1\\\"],\\\"props\\\":[{\\\"name\\\":\\\"disabled\\\",\\\"type\\\":\\\"boolean\\\",\\\"default\\\":false},{\\\"name\\\":\\\"label\\\",\\\"type\\\":\\\"string\\\",\\\"default\\\":\\\"\\\"},{\\\"name\\\":\\\"checked\\\",\\\"type\\\":\\\"boolean\\\",\\\"default\\\":false},{\\\"name\\\":\\\"indeterminate\\\",\\\"type\\\":\\\"boolean\\\",\\\"default\\\":false}],\\\"outputs\\\":[{\\\"name\\\":\\\"checkedChange\\\",\\\"payload\\\":\\\"boolean\\\",\\\"description\\\":\\\"Fires when the user toggles the checkbox.\\\"}],\\\"rendererImplementationId\\\":\\\"vict.svelte.catalog\\\",\\\"styleTargets\\\":[\\\"root\\\"],\\\"inspectionLimits\\\":[\\\"internal focus ring styling\\\"]}\",\"totalCharacters\":572,\"offset\":0,\"nextOffset\":null}"
+    },
+    {
+      "type": "text",
+      "delta": "Target"
+    },
+    {
+      "type": "text",
+      "delta": "ed"
+    },
+    {
+      "type": "text",
+      "delta": " source"
+    },
+    {
+      "type": "text",
+      "delta": " read"
+    },
+    {
+      "type": "text",
+      "delta": " of"
+    },
+    {
+      "type": "text",
+      "delta": " retained"
+    },
+    {
+      "type": "text",
+      "delta": "-"
+    },
+    {
+      "type": "text",
+      "delta": "199"
+    },
+    {
+      "type": "text",
+      "delta": " succeeded"
+    },
+    {
+      "type": "text",
+      "delta": " beyond"
+    },
+    {
+      "type": "text",
+      "delta": " the"
+    },
+    {
+      "type": "text",
+      "delta": " old"
+    },
+    {
+      "type": "text",
+      "delta": " large"
+    },
+    {
+      "type": "text",
+      "delta": "-screen"
+    },
+    {
+      "type": "text",
+      "delta": " limit"
+    },
+    {
+      "type": "text",
+      "delta": " ("
+    },
+    {
+      "type": "text",
+      "delta": "loss"
+    },
+    {
+      "type": "text",
+      "delta": "less"
+    },
+    {
+      "type": "text",
+      "delta": " single"
+    },
+    {
+      "type": "text",
+      "delta": "-node"
+    },
+    {
+      "type": "text",
+      "delta": " JSON"
+    },
+    {
+      "type": "text",
+      "delta": " page"
+    },
+    {
+      "type": "text",
+      "delta": ")."
+    },
+    {
+      "type": "text",
+      "delta": " Native"
+    },
+    {
+      "type": "text",
+      "delta": " `"
+    },
+    {
+      "type": "text",
+      "delta": "input"
+    },
+    {
+      "type": "text",
+      "delta": "`"
+    },
+    {
+      "type": "text",
+      "delta": " has"
+    },
+    {
+      "type": "text",
+      "delta": " no"
+    },
+    {
+      "type": "text",
+      "delta": " catalog"
+    },
+    {
+      "type": "text",
+      "delta": " descriptor"
+    },
+    {
+      "type": "text",
+      "delta": " ("
+    },
+    {
+      "type": "text",
+      "delta": "wire"
+    },
+    {
+      "type": "text",
+      "delta": "Input"
+    },
+    {
+      "type": "text",
+      "delta": " path"
+    },
+    {
+      "type": "text",
+      "delta": ");"
+    },
+    {
+      "type": "text",
+      "delta": " `"
+    },
+    {
+      "type": "text",
+      "delta": "checkbox"
+    },
+    {
+      "type": "text",
+      "delta": "`"
+    },
+    {
+      "type": "text",
+      "delta": " is"
+    },
+    {
+      "type": "text",
+      "delta": " a"
+    },
+    {
+      "type": "text",
+      "delta": " catalog"
+    },
+    {
+      "type": "text",
+      "delta": " component"
+    },
+    {
+      "type": "text",
+      "delta": " with"
+    },
+    {
+      "type": "text",
+      "delta": " `"
+    },
+    {
+      "type": "text",
+      "delta": "checked"
+    },
+    {
+      "type": "text",
+      "delta": "`"
+    },
+    {
+      "type": "text",
+      "delta": " prop"
+    },
+    {
+      "type": "text",
+      "delta": " and"
+    },
+    {
+      "type": "text",
+      "delta": " `"
+    },
+    {
+      "type": "text",
+      "delta": "checked"
+    },
+    {
+      "type": "text",
+      "delta": "Change"
+    },
+    {
+      "type": "text",
+      "delta": "`"
+    },
+    {
+      "type": "text",
+      "delta": " output"
+    },
+    {
+      "type": "text",
+      "delta": " ("
+    },
+    {
+      "type": "text",
+      "delta": "payload"
+    },
+    {
+      "type": "text",
+      "delta": " boolean"
+    },
+    {
+      "type": "text",
+      "delta": ")."
+    },
+    {
+      "type": "text",
+      "delta": " Now"
+    },
+    {
+      "type": "text",
+      "delta": " the"
+    },
+    {
+      "type": "text",
+      "delta": " authorized"
+    },
+    {
+      "type": "text",
+      "delta": " intentional"
+    },
+    {
+      "type": "text",
+      "delta": " invalid"
+    },
+    {
+      "type": "text",
+      "delta": " bind"
+    },
+    {
+      "type": "text",
+      "delta": ","
+    },
+    {
+      "type": "text",
+      "delta": " plus"
+    },
+    {
+      "type": "text",
+      "delta": " a"
+    },
+    {
+      "type": "text",
+      "delta": " label"
+    },
+    {
+      "type": "text",
+      "delta": " descriptor"
+    },
+    {
+      "type": "text",
+      "delta": " read"
+    },
+    {
+      "type": "text",
+      "delta": " ("
+    },
+    {
+      "type": "text",
+      "delta": "in"
+    },
+    {
+      "type": "text",
+      "delta": "dependent"
+    },
+    {
+      "type": "text",
+      "delta": "):"
+    },
+    {
+      "type": "tool-event",
+      "id": "69ab7672-e17f-496e-bb0c-c93c5329f178:tool:9",
+      "sequence": 9,
+      "kind": "tool-start",
+      "tool": "studio_screen_edit",
+      "summary": "Tool started",
+      "callId": "call_d1b8d87d5f5747d3b7c1de01"
+    },
+    {
+      "type": "progress",
+      "message": "Preparing and validating an edit…"
+    },
+    {
+      "type": "tool-event",
+      "id": "69ab7672-e17f-496e-bb0c-c93c5329f178:tool:10",
+      "sequence": 10,
+      "kind": "tool-start",
+      "tool": "studio_screen_read",
+      "summary": "Tool started",
+      "callId": "call_6009c20756a64304bb37b565"
+    },
+    {
+      "type": "progress",
+      "message": "Reading the screen and selection…"
+    },
+    {
+      "type": "tool-event",
+      "id": "69ab7672-e17f-496e-bb0c-c93c5329f178:tool:11",
+      "sequence": 11,
+      "kind": "validation-refused",
+      "tool": "studio_screen_edit",
+      "summary": "Edit refused before browser proposal",
+      "details": "{\"ok\":false,\"code\":\"STUDIO_AGENT_PROPERTY\",\"message\":\"Operation 0: unsupported prop recoveryProbe. Supported: label, disabled, loading. Native fields use wireInput.\",\"diagnostics\":[{\"operation\":0,\"path\":\"operations.0.prop\",\"message\":\"Expected one of: label, disabled, loading\"}]}"
+    },
+    {
+      "type": "edit-result",
+      "result": {
+        "ok": false,
+        "code": "STUDIO_AGENT_PROPERTY",
+        "message": "Operation 0: unsupported prop recoveryProbe. Supported: label, disabled, loading. Native fields use wireInput.",
+        "diagnostics": [
+          {
+            "operation": 0,
+            "path": "operations.0.prop",
+            "message": "Expected one of: label, disabled, loading"
+          }
+        ]
+      },
+      "reason": "Validation refused an edit"
+    },
+    {
+      "type": "tool-event",
+      "id": "69ab7672-e17f-496e-bb0c-c93c5329f178:tool:12",
+      "sequence": 12,
+      "kind": "observation",
+      "tool": "studio_screen_read",
+      "summary": "Read current source facts",
+      "details": "{\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"live-completion\",\"revision\":\"r1#0\",\"digest\":\"12f500e125ae0f9b1176df1f6b65849a954b05cbc74338285aec4484c33e9f04\",\"epoch\":\"aaa12a21-196a-493b-8df7-0e2fab568e4e\"},\"section\":\"component\",\"descriptorJson\":\"{\\\"revision\\\":\\\"1\\\",\\\"abi\\\":\\\"vict.ui-component-abi@1\\\",\\\"events\\\":[\\\"vict.ui-component-abi@1\\\"],\\\"rendererImplementationId\\\":\\\"vict.svelte.catalog\\\",\\\"id\\\":\\\"vict.catalog.label\\\",\\\"props\\\":[{\\\"name\\\":\\\"for\\\",\\\"type\\\":\\\"string\\\",\\\"default\\\":\\\"\\\"},{\\\"name\\\":\\\"label\\\",\\\"type\\\":\\\"string\\\",\\\"default\\\":\\\"\\\"}],\\\"outputs\\\":[],\\\"slots\\\":[\\\"content\\\"],\\\"styleTargets\\\":[\\\"root\\\"]}\",\"totalCharacters\":317,\"offset\":0,\"nextOffset\":null}"
+    },
+    {
+      "type": "text",
+      "delta": "The"
+    },
+    {
+      "type": "text",
+      "delta": " canonical"
+    },
+    {
+      "type": "text",
+      "delta": " validator"
+    },
+    {
+      "type": "text",
+      "delta": " refused"
+    },
+    {
+      "type": "text",
+      "delta": " exactly"
+    },
+    {
+      "type": "text",
+      "delta": " as"
+    },
+    {
+      "type": "text",
+      "delta": " intended"
+    },
+    {
+      "type": "text",
+      "delta": ":"
+    },
+    {
+      "type": "text",
+      "delta": " `"
+    },
+    {
+      "type": "text",
+      "delta": "ST"
+    },
+    {
+      "type": "text",
+      "delta": "UDIO"
+    },
+    {
+      "type": "text",
+      "delta": "_AGENT"
+    },
+    {
+      "type": "text",
+      "delta": "_PROPERTY"
+    },
+    {
+      "type": "text",
+      "delta": "`"
+    },
+    {
+      "type": "text",
+      "delta": " —"
+    },
+    {
+      "type": "text",
+      "delta": " prop"
+    },
+    {
+      "type": "text",
+      "delta": " `"
+    },
+    {
+      "type": "text",
+      "delta": "re"
+    },
+    {
+      "type": "text",
+      "delta": "covery"
+    },
+    {
+      "type": "text",
+      "delta": "Probe"
+    },
+    {
+      "type": "text",
+      "delta": "`"
+    },
+    {
+      "type": "text",
+      "delta": " unsupported"
+    },
+    {
+      "type": "text",
+      "delta": " on"
+    },
+    {
+      "type": "text",
+      "delta": " existing"
+    },
+    {
+      "type": "text",
+      "delta": "-"
+    },
+    {
+      "type": "text",
+      "delta": "0"
+    },
+    {
+      "type": "text",
+      "delta": " ("
+    },
+    {
+      "type": "text",
+      "delta": "supported"
+    },
+    {
+      "type": "text",
+      "delta": ":"
+    },
+    {
+      "type": "text",
+      "delta": " label"
+    },
+    {
+      "type": "text",
+      "delta": ","
+    },
+    {
+      "type": "text",
+      "delta": " disabled"
+    },
+    {
+      "type": "text",
+      "delta": ","
+    },
+    {
+      "type": "text",
+      "delta": " loading"
+    },
+    {
+      "type": "text",
+      "delta": ")."
+    },
+    {
+      "type": "text",
+      "delta": " Nothing"
+    },
+    {
+      "type": "text",
+      "delta": " was"
+    },
+    {
+      "type": "text",
+      "delta": " modified"
+    },
+    {
+      "type": "text",
+      "delta": " by"
+    },
+    {
+      "type": "text",
+      "delta": " that"
+    },
+    {
+      "type": "text",
+      "delta": " refusal"
+    },
+    {
+      "type": "text",
+      "delta": ";"
+    },
+    {
+      "type": "text",
+      "delta": " no"
+    },
+    {
+      "type": "text",
+      "delta": " revert"
+    },
+    {
+      "type": "text",
+      "delta": " is"
+    },
+    {
+      "type": "text",
+      "delta": " needed"
+    },
+    {
+      "type": "text",
+      "delta": "."
+    },
+    {
+      "type": "text",
+      "delta": " Continuing"
+    },
+    {
+      "type": "text",
+      "delta": " with"
+    },
+    {
+      "type": "text",
+      "delta": " the"
+    },
+    {
+      "type": "text",
+      "delta": " requested"
+    },
+    {
+      "type": "text",
+      "delta": " build"
+    },
+    {
+      "type": "text",
+      "delta": ","
+    },
+    {
+      "type": "text",
+      "delta": " batch"
+    },
+    {
+      "type": "text",
+      "delta": " "
+    },
+    {
+      "type": "text",
+      "delta": "1"
+    },
+    {
+      "type": "text",
+      "delta": " of"
+    },
+    {
+      "type": "text",
+      "delta": " "
+    },
+    {
+      "type": "text",
+      "delta": "2"
+    },
+    {
+      "type": "text",
+      "delta": " ("
+    },
+    {
+      "type": "text",
+      "delta": "8"
+    },
+    {
+      "type": "text",
+      "delta": " ops"
+    },
+    {
+      "type": "text",
+      "delta": ":"
+    },
+    {
+      "type": "text",
+      "delta": " section"
+    },
+    {
+      "type": "text",
+      "delta": ","
+    },
+    {
+      "type": "text",
+      "delta": " Email"
+    },
+    {
+      "type": "text",
+      "delta": "/"
+    },
+    {
+      "type": "text",
+      "delta": "Name"
+    },
+    {
+      "type": "text",
+      "delta": " labels"
+    },
+    {
+      "type": "text",
+      "delta": "+"
+    },
+    {
+      "type": "text",
+      "delta": "inputs"
+    },
+    {
+      "type": "text",
+      "delta": ","
+    },
+    {
+      "type": "text",
+      "delta": " independent"
+    },
+    {
+      "type": "text",
+      "delta": " wired"
+    },
+    {
+      "type": "text",
+      "delta": " states"
+    },
+    {
+      "type": "text",
+      "delta": ","
+    },
+    {
+      "type": "text",
+      "delta": " checkbox"
+    },
+    {
+      "type": "text",
+      "delta": " boolean"
+    },
+    {
+      "type": "text",
+      "delta": " state"
+    },
+    {
+      "type": "text",
+      "delta": "):"
+    },
+    {
+      "type": "tool-event",
+      "id": "69ab7672-e17f-496e-bb0c-c93c5329f178:tool:13",
+      "sequence": 13,
+      "kind": "tool-start",
+      "tool": "studio_screen_edit",
+      "summary": "Tool started",
+      "callId": "call_0fb3c33dc29d4921b48dcfb3"
+    },
+    {
+      "type": "progress",
+      "message": "Preparing and validating an edit…"
+    },
+    {
+      "type": "tool-event",
+      "id": "69ab7672-e17f-496e-bb0c-c93c5329f178:tool:14",
+      "sequence": 14,
+      "kind": "proposed",
+      "tool": "studio_screen_edit",
+      "summary": "Proposed validated transaction; awaiting browser commit",
+      "details": "{\"proposalId\":\"ad71b5cd-801d-42b6-8d0a-fc2e35d0f4f3\",\"reason\":\"Add recovery section with labeled Email/Name inputs, each independently wired to its own state key, and declare independent boolean state for the consent checkbox. Existing nodes untouched.\",\"revision\":\"r1#0\"}"
+    },
+    {
+      "type": "proposal",
+      "proposal": {
+        "proposalId": "ad71b5cd-801d-42b6-8d0a-fc2e35d0f4f3",
+        "cursor": {
+          "documentId": "live-completion",
+          "revision": "r1#0",
+          "digest": "12f500e125ae0f9b1176df1f6b65849a954b05cbc74338285aec4484c33e9f04",
+          "epoch": "aaa12a21-196a-493b-8df7-0e2fab568e4e"
+        },
+        "edit": {
+          "expectedRevision": "r1#0",
+          "reason": "Add recovery section with labeled Email/Name inputs, each independently wired to its own state key, and declare independent boolean state for the consent checkbox. Existing nodes untouched.",
+          "operations": [
+            {
+              "op": "add",
+              "recipe": "section",
+              "nodeId": "live-recovery-section",
+              "parentId": "screen",
+              "replacePlaceholder": false,
+              "attributes": {
+                "aria-label": "Live recovery form"
+              }
+            },
+            {
+              "op": "add",
+              "recipe": "label",
+              "nodeId": "live-label-email",
+              "parentId": "live-recovery-section",
+              "props": {
+                "for": "live-email",
+                "label": "Email"
+              }
+            },
+            {
+              "op": "add",
+              "recipe": "input",
+              "nodeId": "live-email",
+              "parentId": "live-recovery-section",
+              "attributes": {
+                "aria-label": "Email",
+                "id": "live-email",
+                "placeholder": "you@example.com",
+                "type": "email"
+              }
+            },
+            {
+              "op": "wireInput",
+              "nodeId": "live-email",
+              "key": "recovery-email"
+            },
+            {
+              "op": "add",
+              "recipe": "label",
+              "nodeId": "live-label-name",
+              "parentId": "live-recovery-section",
+              "props": {
+                "for": "live-name",
+                "label": "Name"
+              }
+            },
+            {
+              "op": "add",
+              "recipe": "input",
+              "nodeId": "live-name",
+              "parentId": "live-recovery-section",
+              "attributes": {
+                "aria-label": "Name",
+                "id": "live-name",
+                "placeholder": "Full name",
+                "type": "text"
+              }
+            },
+            {
+              "op": "wireInput",
+              "nodeId": "live-name",
+              "key": "recovery-name"
+            },
+            {
+              "op": "declareState",
+              "key": "recovery-consent",
+              "type": "boolean",
+              "initial": false
+            }
+          ]
+        },
+        "resultDigest": "9e81dd6f926a40d4c138fa3716c6a5a972f2c843b2789b2e73029907773ad365"
+      }
+    },
+    {
+      "type": "tool-event",
+      "id": "69ab7672-e17f-496e-bb0c-c93c5329f178:tool:15",
+      "sequence": 15,
+      "kind": "committed",
+      "tool": "studio_screen_edit",
+      "summary": "Browser acknowledged committed transaction",
+      "details": "{\"proposalId\":\"ad71b5cd-801d-42b6-8d0a-fc2e35d0f4f3\",\"ok\":true,\"revision\":\"r1#1\",\"digest\":\"9e81dd6f926a40d4c138fa3716c6a5a972f2c843b2789b2e73029907773ad365\",\"applied\":1}"
+    },
+    {
+      "type": "edit-result",
+      "result": {
+        "ok": true,
+        "revision": "r1#1",
+        "digest": "9e81dd6f926a40d4c138fa3716c6a5a972f2c843b2789b2e73029907773ad365"
+      },
+      "reason": "Add recovery section with labeled Email/Name inputs, each independently wired to its own state key, and declare independent boolean state for the consent checkbox. Existing nodes untouched."
+    },
+    {
+      "type": "text",
+      "delta": "Batch"
+    },
+    {
+      "type": "text",
+      "delta": " "
+    },
+    {
+      "type": "text",
+      "delta": "1"
+    },
+    {
+      "type": "text",
+      "delta": " acknowledged"
+    },
+    {
+      "type": "text",
+      "delta": " ("
+    },
+    {
+      "type": "text",
+      "delta": "one"
+    },
+    {
+      "type": "text",
+      "delta": " undo"
+    },
+    {
+      "type": "text",
+      "delta": "able"
+    },
+    {
+      "type": "text",
+      "delta": " change"
+    },
+    {
+      "type": "text",
+      "delta": "),"
+    },
+    {
+      "type": "text",
+      "delta": " revision"
+    },
+    {
+      "type": "text",
+      "delta": " now"
+    },
+    {
+      "type": "text",
+      "delta": " `"
+    },
+    {
+      "type": "text",
+      "delta": "r"
+    },
+    {
+      "type": "text",
+      "delta": "1"
+    },
+    {
+      "type": "text",
+      "delta": "#"
+    },
+    {
+      "type": "text",
+      "delta": "1"
+    },
+    {
+      "type": "text",
+      "delta": "`."
+    },
+    {
+      "type": "text",
+      "delta": " Batch"
+    },
+    {
+      "type": "text",
+      "delta": " "
+    },
+    {
+      "type": "text",
+      "delta": "2"
+    },
+    {
+      "type": "text",
+      "delta": ":"
+    },
+    {
+      "type": "text",
+      "delta": " consent"
+    },
+    {
+      "type": "text",
+      "delta": " label"
+    },
+    {
+      "type": "text",
+      "delta": " +"
+    },
+    {
+      "type": "text",
+      "delta": " checkbox"
+    },
+    {
+      "type": "text",
+      "delta": " with"
+    },
+    {
+      "type": "text",
+      "delta": " bound"
+    },
+    {
+      "type": "text",
+      "delta": " prop"
+    },
+    {
+      "type": "text",
+      "delta": " and"
+    },
+    {
+      "type": "text",
+      "delta": " output"
+    },
+    {
+      "type": "text",
+      "delta": " connection"
+    },
+    {
+      "type": "text",
+      "delta": ":"
+    },
+    {
+      "type": "tool-event",
+      "id": "69ab7672-e17f-496e-bb0c-c93c5329f178:tool:16",
+      "sequence": 16,
+      "kind": "tool-start",
+      "tool": "studio_screen_edit",
+      "summary": "Tool started",
+      "callId": "call_60a3c75c15744a63b817be41"
+    },
+    {
+      "type": "progress",
+      "message": "Preparing and validating an edit…"
+    },
+    {
+      "type": "tool-event",
+      "id": "69ab7672-e17f-496e-bb0c-c93c5329f178:tool:17",
+      "sequence": 17,
+      "kind": "validation-refused",
+      "tool": "studio_screen_edit",
+      "summary": "Edit refused before browser proposal",
+      "details": "{\"ok\":false,\"code\":\"STUDIO_AGENT_VALIDATION\",\"message\":\"Operation 1 (add) rejected by canonical authoring: UI_EDIT_VALIDATION_FAILED: setAttribute requires an element node.\"}"
+    },
+    {
+      "type": "edit-result",
+      "result": {
+        "ok": false,
+        "code": "STUDIO_AGENT_VALIDATION",
+        "message": "Operation 1 (add) rejected by canonical authoring: UI_EDIT_VALIDATION_FAILED: setAttribute requires an element node."
+      },
+      "reason": "Validation refused an edit"
+    },
+    {
+      "type": "text",
+      "delta": "Ref"
+    },
+    {
+      "type": "text",
+      "delta": "usal"
+    },
+    {
+      "type": "text",
+      "delta": " acknowledged"
+    },
+    {
+      "type": "text",
+      "delta": ":"
+    },
+    {
+      "type": "text",
+      "delta": " catalog"
+    },
+    {
+      "type": "text",
+      "delta": " components"
+    },
+    {
+      "type": "text",
+      "delta": " reject"
+    },
+    {
+      "type": "text",
+      "delta": " `"
+    },
+    {
+      "type": "text",
+      "delta": "attributes"
+    },
+    {
+      "type": "text",
+      "delta": "`"
+    },
+    {
+      "type": "text",
+      "delta": " ("
+    },
+    {
+      "type": "text",
+      "delta": "element"
+    },
+    {
+      "type": "text",
+      "delta": "-node"
+    },
+    {
+      "type": "text",
+      "delta": " only"
+    },
+    {
+      "type": "text",
+      "delta": ")"
+    },
+    {
+      "type": "text",
+      "delta": " —"
+    },
+    {
+      "type": "text",
+      "delta": " the"
+    },
+    {
+      "type": "text",
+      "delta": " checkbox"
+    },
+    {
+      "type": "text",
+      "delta": "'s"
+    },
+    {
+      "type": "text",
+      "delta": " label"
+    },
+    {
+      "type": "text",
+      "delta": " comes"
+    },
+    {
+      "type": "text",
+      "delta": " via"
+    },
+    {
+      "type": "text",
+      "delta": " its"
+    },
+    {
+      "type": "text",
+      "delta": " `"
+    },
+    {
+      "type": "text",
+      "delta": "label"
+    },
+    {
+      "type": "text",
+      "delta": "`"
+    },
+    {
+      "type": "text",
+      "delta": " prop"
+    },
+    {
+      "type": "text",
+      "delta": ","
+    },
+    {
+      "type": "text",
+      "delta": " and"
+    },
+    {
+      "type": "text",
+      "delta": " the"
+    },
+    {
+      "type": "text",
+      "delta": " paired"
+    },
+    {
+      "type": "text",
+      "delta": " label"
+    },
+    {
+      "type": "text",
+      "delta": " element"
+    },
+    {
+      "type": "text",
+      "delta": " supplies"
+    },
+    {
+      "type": "text",
+      "delta": " the"
+    },
+    {
+      "type": "text",
+      "delta": " accessible"
+    },
+    {
+      "type": "text",
+      "delta": " label"
+    },
+    {
+      "type": "text",
+      "delta": "."
+    },
+    {
+      "type": "text",
+      "delta": " Batch"
+    },
+    {
+      "type": "text",
+      "delta": " was"
+    },
+    {
+      "type": "text",
+      "delta": " rejected"
+    },
+    {
+      "type": "text",
+      "delta": " atom"
+    },
+    {
+      "type": "text",
+      "delta": "ically"
+    },
+    {
+      "type": "text",
+      "delta": ","
+    },
+    {
+      "type": "text",
+      "delta": " nothing"
+    },
+    {
+      "type": "text",
+      "delta": " applied"
+    },
+    {
+      "type": "text",
+      "delta": "."
+    },
+    {
+      "type": "text",
+      "delta": " Ret"
+    },
+    {
+      "type": "text",
+      "delta": "rying"
+    },
+    {
+      "type": "text",
+      "delta": " without"
+    },
+    {
+      "type": "text",
+      "delta": " `"
+    },
+    {
+      "type": "text",
+      "delta": "attributes"
+    },
+    {
+      "type": "text",
+      "delta": "`"
+    },
+    {
+      "type": "text",
+      "delta": " on"
+    },
+    {
+      "type": "text",
+      "delta": " the"
+    },
+    {
+      "type": "text",
+      "delta": " checkbox"
+    },
+    {
+      "type": "text",
+      "delta": ":"
+    },
+    {
+      "type": "tool-event",
+      "id": "69ab7672-e17f-496e-bb0c-c93c5329f178:tool:18",
+      "sequence": 18,
+      "kind": "tool-start",
+      "tool": "studio_screen_edit",
+      "summary": "Tool started",
+      "callId": "call_3a8eb12f91a34385bbe4e24f"
+    },
+    {
+      "type": "progress",
+      "message": "Preparing and validating an edit…"
+    },
+    {
+      "type": "tool-event",
+      "id": "69ab7672-e17f-496e-bb0c-c93c5329f178:tool:19",
+      "sequence": 19,
+      "kind": "proposed",
+      "tool": "studio_screen_edit",
+      "summary": "Proposed validated transaction; awaiting browser commit",
+      "details": "{\"proposalId\":\"20444eb3-532e-4775-a3e4-091dc88cc7ab\",\"reason\":\"Corrected batch: checkbox add without attributes (catalog components take props only); label, bind and connect unchanged.\",\"revision\":\"r1#1\"}"
+    },
+    {
+      "type": "proposal",
+      "proposal": {
+        "proposalId": "20444eb3-532e-4775-a3e4-091dc88cc7ab",
+        "cursor": {
+          "documentId": "live-completion",
+          "revision": "r1#1",
+          "digest": "9e81dd6f926a40d4c138fa3716c6a5a972f2c843b2789b2e73029907773ad365",
+          "epoch": "aaa12a21-196a-493b-8df7-0e2fab568e4e"
+        },
+        "edit": {
+          "expectedRevision": "r1#1",
+          "reason": "Corrected batch: checkbox add without attributes (catalog components take props only); label, bind and connect unchanged.",
+          "operations": [
+            {
+              "op": "add",
+              "recipe": "label",
+              "nodeId": "live-label-consent",
+              "parentId": "live-recovery-section",
+              "props": {
+                "for": "live-consent",
+                "label": "Consent"
+              }
+            },
+            {
+              "op": "add",
+              "recipe": "checkbox",
+              "nodeId": "live-consent",
+              "parentId": "live-recovery-section",
+              "props": {
+                "label": "Consent"
+              }
+            },
+            {
+              "op": "bind",
+              "nodeId": "live-consent",
+              "prop": "checked",
+              "expression": {
+                "type": "ref",
+                "path": "state.recovery-consent"
+              }
+            },
+            {
+              "op": "connect",
+              "nodeId": "live-consent",
+              "output": "checkedChange",
+              "binding": {
+                "setState": {
+                  "key": "recovery-consent"
+                }
+              }
+            }
+          ]
+        },
+        "resultDigest": "539e619fc4f4eab159bd7faeaaf08c9b83f715822ed3eac73c00f5ec34a48a62"
+      }
+    },
+    {
+      "type": "tool-event",
+      "id": "69ab7672-e17f-496e-bb0c-c93c5329f178:tool:20",
+      "sequence": 20,
+      "kind": "committed",
+      "tool": "studio_screen_edit",
+      "summary": "Browser acknowledged committed transaction",
+      "details": "{\"proposalId\":\"20444eb3-532e-4775-a3e4-091dc88cc7ab\",\"ok\":true,\"revision\":\"r1#2\",\"digest\":\"539e619fc4f4eab159bd7faeaaf08c9b83f715822ed3eac73c00f5ec34a48a62\",\"applied\":2}"
+    },
+    {
+      "type": "edit-result",
+      "result": {
+        "ok": true,
+        "revision": "r1#2",
+        "digest": "539e619fc4f4eab159bd7faeaaf08c9b83f715822ed3eac73c00f5ec34a48a62"
+      },
+      "reason": "Corrected batch: checkbox add without attributes (catalog components take props only); label, bind and connect unchanged."
+    },
+    {
+      "type": "text",
+      "delta": "Batch"
+    },
+    {
+      "type": "text",
+      "delta": " "
+    },
+    {
+      "type": "text",
+      "delta": "2"
+    },
+    {
+      "type": "text",
+      "delta": " acknowledged"
+    },
+    {
+      "type": "text",
+      "delta": ","
+    },
+    {
+      "type": "text",
+      "delta": " revision"
+    },
+    {
+      "type": "text",
+      "delta": " `"
+    },
+    {
+      "type": "text",
+      "delta": "r"
+    },
+    {
+      "type": "text",
+      "delta": "1"
+    },
+    {
+      "type": "text",
+      "delta": "#"
+    },
+    {
+      "type": "text",
+      "delta": "2"
+    },
+    {
+      "type": "text",
+      "delta": "`."
+    },
+    {
+      "type": "text",
+      "delta": " Final"
+    },
+    {
+      "type": "text",
+      "delta": " verification"
+    },
+    {
+      "type": "text",
+      "delta": " reads"
+    },
+    {
+      "type": "text",
+      "delta": " ("
+    },
+    {
+      "type": "text",
+      "delta": "in"
+    },
+    {
+      "type": "text",
+      "delta": "dependent"
+    },
+    {
+      "type": "text",
+      "delta": "):"
+    },
+    {
+      "type": "text",
+      "delta": " fresh"
+    },
+    {
+      "type": "text",
+      "delta": " overview"
+    },
+    {
+      "type": "text",
+      "delta": ","
+    },
+    {
+      "type": "text",
+      "delta": " state"
+    },
+    {
+      "type": "text",
+      "delta": " page"
+    },
+    {
+      "type": "text",
+      "delta": ","
+    },
+    {
+      "type": "text",
+      "delta": " coverage"
+    },
+    {
+      "type": "text",
+      "delta": " for"
+    },
+    {
+      "type": "text",
+      "delta": " input"
+    },
+    {
+      "type": "text",
+      "delta": "/"
+    },
+    {
+      "type": "text",
+      "delta": "checkbox"
+    },
+    {
+      "type": "text",
+      "delta": ","
+    },
+    {
+      "type": "text",
+      "delta": " and"
+    },
+    {
+      "type": "text",
+      "delta": " targeted"
+    },
+    {
+      "type": "text",
+      "delta": " source"
+    },
+    {
+      "type": "text",
+      "delta": " of"
+    },
+    {
+      "type": "text",
+      "delta": " the"
+    },
+    {
+      "type": "text",
+      "delta": " new"
+    },
+    {
+      "type": "text",
+      "delta": " section"
+    },
+    {
+      "type": "text",
+      "delta": ":"
+    },
+    {
+      "type": "tool-event",
+      "id": "69ab7672-e17f-496e-bb0c-c93c5329f178:tool:21",
+      "sequence": 21,
+      "kind": "tool-start",
+      "tool": "studio_screen_read",
+      "summary": "Tool started",
+      "callId": "call_02da40d5baa54bd08054c80d"
+    },
+    {
+      "type": "progress",
+      "message": "Reading the screen and selection…"
+    },
+    {
+      "type": "tool-event",
+      "id": "69ab7672-e17f-496e-bb0c-c93c5329f178:tool:22",
+      "sequence": 22,
+      "kind": "tool-start",
+      "tool": "studio_screen_read",
+      "summary": "Tool started",
+      "callId": "call_15ff4f525f8a40b5ad6f37b2"
+    },
+    {
+      "type": "progress",
+      "message": "Reading the screen and selection…"
+    },
+    {
+      "type": "tool-event",
+      "id": "69ab7672-e17f-496e-bb0c-c93c5329f178:tool:23",
+      "sequence": 23,
+      "kind": "tool-start",
+      "tool": "studio_screen_read",
+      "summary": "Tool started",
+      "callId": "call_7698fd6e013c4449bc376e8b"
+    },
+    {
+      "type": "progress",
+      "message": "Reading the screen and selection…"
+    },
+    {
+      "type": "tool-event",
+      "id": "69ab7672-e17f-496e-bb0c-c93c5329f178:tool:24",
+      "sequence": 24,
+      "kind": "tool-start",
+      "tool": "studio_screen_read",
+      "summary": "Tool started",
+      "callId": "call_ad8f6ce9116f4e4ea43e6b48"
+    },
+    {
+      "type": "progress",
+      "message": "Reading the screen and selection…"
+    },
+    {
+      "type": "tool-event",
+      "id": "69ab7672-e17f-496e-bb0c-c93c5329f178:tool:25",
+      "sequence": 25,
+      "kind": "observation",
+      "tool": "studio_screen_read",
+      "summary": "Read current source facts",
+      "details": "{\"expectedRevision\":\"r1#2\",\"cursor\":{\"documentId\":\"live-completion\",\"revision\":\"r1#2\",\"digest\":\"539e619fc4f4eab159bd7faeaaf08c9b83f715822ed3eac73c00f5ec34a48a62\",\"epoch\":\"aaa12a21-196a-493b-8df7-0e2fab568e4e\"},\"section\":\"overview\",\"document\":{\"id\":\"live-completion\",\"revision\":\"r1\",\"root\":\"screen\",\"nodeCount\":233,\"stateCount\":15},\"selection\":null,\"roots\":[{\"id\":\"screen\",\"kind\":\"element\",\"tag\":\"main\",\"children\":[\"existing-0\",\"existing-1\",\"existing-2\",\"existing-3\",\"existing-4\",\"existing-5\",\"existing-6\",\"existing-7\",\"existing-8\",\"existing-9\",\"existing-10\",\"existing-11\",\"retained-0\",\"retained-1\",\"retained-2\",\"retained-3\",\"retained-4\",\"retained-5\",\"retained-6\",\"retained-7\"],\"childCount\":213,\"sourcePreview\":\"{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"screen\\\",\\\"tag\\\":\\\"main\\\",\\\"attributes\\\":{\\\"aria-label\\\":\\\"Synthetic mixed recovery fixture\\\"},\\\"children\\\":[\\\"existing-0\\\",\\\"existing-1\\\",\\\"existing-2\\\",\\\"existing-3\\\",\\\"existing-4\\\",\\\"existing-5\\\",\\\"existing-6\\\",\\\"existing-7\\\",\\\"existing-8\\\",\\\"existing-9\\\",\\\"existing-10\\\",\\\"existing-11\\\",\\\"retained-0\\\",\\\"retained-1\\\",\\\"retained-2\\\",\\\"retained-3\\\",\\\"retained-4\\\",\\\"retained-5\\\",\\\"retained-6\\\",\\\"retained-7\\\",\\\"retained-8\\\",\\\"retained-9\\\",\\\"retained-10\\\",\\\"retained-11\\\",\\\"retained-12\\\",\\\"retained-13\\\",\\\"retained-14\\\",\\\"retained-15\\\",\\\"retained-16\\\",\\\"retained-17\\\",\\\"retained-18\\\",\\\"retained-19\\\",\\\"retained-20\\\",\\\"retained-21\\\",\\\"retained-22\\\",\\\"retained-… [truncated; use source pages]\"}],\"discovery\":\"Read nodes/palette/state with offset and limit <=20. Read component with recipe for exact props/outputs/slots. Read source with nodeId for lossless JSON text pages (nextOffset is character offset). Read coverage with requested recipe IDs for source presence only.\",\"editing\":\"Use fresh node IDs, exact expectedRevision and registered recipes. add/modify/move/remove/bind/connect; declareState(key,type,initial) creates independent scalar state. wireInput(nodeId,key,initial?) wires native input through existing attribute/change contracts. bind(nodeId,prop,expression?:{type:\\\"ref\\\",path:\\\"state.key\\\"}|{type:\\\"literal\\\",value:scalar}). connect(nodeId,output,binding?:{setState:{key,value?:expression}}|{invokeAction:{actionId,input?:{field:expression}}}). Same-batch add then bind/connect is supported; canonical payload type equality remains mandatory. New text inputs have independent state. add into an unchanged seeded slot replaces its placeholder subtree; set replacePlaceholder:false to append intentionally. Each acknowledged batch is one Undo. Source facts, appearance and interaction evidence are distinct; compilation is not completion.\",\"limits\":{\"nodes\":500,\"documentCharacters\":200000,\"readPage\":20}}"
+    },
+    {
+      "type": "tool-event",
+      "id": "69ab7672-e17f-496e-bb0c-c93c5329f178:tool:26",
+      "sequence": 26,
+      "kind": "observation",
+      "tool": "studio_screen_read",
+      "summary": "Read current source facts",
+      "details": "{\"expectedRevision\":\"r1#2\",\"cursor\":{\"documentId\":\"live-completion\",\"revision\":\"r1#2\",\"digest\":\"539e619fc4f4eab159bd7faeaaf08c9b83f715822ed3eac73c00f5ec34a48a62\",\"epoch\":\"aaa12a21-196a-493b-8df7-0e2fab568e4e\"},\"section\":\"state\",\"items\":[{\"key\":\"message\",\"type\":\"string\",\"initialJson\":\"\\\"Hello from my screen\\\"\"},{\"key\":\"accepted\",\"type\":\"boolean\",\"initialJson\":\"false\"},{\"key\":\"dialogOpen\",\"type\":\"boolean\",\"initialJson\":\"false\"},{\"key\":\"busy\",\"type\":\"boolean\",\"initialJson\":\"false\"},{\"key\":\"actionError\",\"type\":\"string\",\"initialJson\":\"\\\"\\\"\"},{\"key\":\"actionResult\",\"type\":\"string\",\"initialJson\":\"\\\"\\\"\"},{\"key\":\"field_existing-1\",\"type\":\"boolean\",\"initialJson\":\"false\"},{\"key\":\"field_existing-2\",\"type\":\"boolean\",\"initialJson\":\"false\"},{\"key\":\"catalog_existing-5_value\",\"type\":\"numberList\",\"initialJson\":\"[25]\"},{\"key\":\"input_live-email\",\"type\":\"string\",\"initialJson\":\"\\\"\\\"\"},{\"key\":\"recovery-email\",\"type\":\"string\",\"initialJson\":\"\\\"\\\"\"},{\"key\":\"input_live-name\",\"type\":\"string\",\"initialJson\":\"\\\"\\\"\"}],\"total\":15,\"offset\":0,\"nextOffset\":12}"
+    },
+    {
+      "type": "tool-event",
+      "id": "69ab7672-e17f-496e-bb0c-c93c5329f178:tool:27",
+      "sequence": 27,
+      "kind": "observation",
+      "tool": "studio_screen_read",
+      "summary": "Read current source facts",
+      "details": "{\"expectedRevision\":\"r1#2\",\"cursor\":{\"documentId\":\"live-completion\",\"revision\":\"r1#2\",\"digest\":\"539e619fc4f4eab159bd7faeaaf08c9b83f715822ed3eac73c00f5ec34a48a62\",\"epoch\":\"aaa12a21-196a-493b-8df7-0e2fab568e4e\"},\"section\":\"coverage\",\"available\":78,\"authored\":2,\"catalogAuthored\":17,\"requested\":2,\"scope\":\"declared-request\",\"evidence\":\"Declared source presence only. Does not prove appearance, interaction, requested intent, or completion.\",\"items\":[],\"total\":0,\"offset\":0,\"nextOffset\":null}"
+    },
+    {
+      "type": "tool-event",
+      "id": "69ab7672-e17f-496e-bb0c-c93c5329f178:tool:28",
+      "sequence": 28,
+      "kind": "observation",
+      "tool": "studio_screen_read",
+      "summary": "Read current source facts",
+      "details": "{\"expectedRevision\":\"r1#2\",\"cursor\":{\"documentId\":\"live-completion\",\"revision\":\"r1#2\",\"digest\":\"539e619fc4f4eab159bd7faeaaf08c9b83f715822ed3eac73c00f5ec34a48a62\",\"epoch\":\"aaa12a21-196a-493b-8df7-0e2fab568e4e\"},\"section\":\"source\",\"nodeId\":\"live-recovery-section\",\"sourceJson\":\"{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"live-recovery-section\\\",\\\"tag\\\":\\\"section\\\",\\\"attributes\\\":{\\\"aria-label\\\":\\\"Live recovery form\\\"},\\\"children\\\":[\\\"live-label-email\\\",\\\"live-email\\\",\\\"live-label-name\\\",\\\"live-name\\\",\\\"live-label-consent\\\",\\\"live-consent\\\"],\\\"localStyle\\\":[{\\\"property\\\":\\\"display\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"flex\\\"}},{\\\"property\\\":\\\"flex-direction\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"column\\\"}},{\\\"property\\\":\\\"gap\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"16px\\\"}},{\\\"property\\\":\\\"padding\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"24px\\\"}},{\\\"property\\\":\\\"min-height\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"100px\\\"}},{\\\"property\\\":\\\"background-color\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"#f5f7fb\\\"}},{\\\"property\\\":\\\"border-radius\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"12px\\\"}}]}\",\"totalCharacters\":699,\"offset\":0,\"nextOffset\":null}"
+    },
+    {
+      "type": "text",
+      "delta": "Overview"
+    },
+    {
+      "type": "text",
+      "delta": " confirms"
+    },
+    {
+      "type": "text",
+      "delta": " preservation"
+    },
+    {
+      "type": "text",
+      "delta": " ("
+    },
+    {
+      "type": "text",
+      "delta": "child"
+    },
+    {
+      "type": "text",
+      "delta": "Count"
+    },
+    {
+      "type": "text",
+      "delta": " "
+    },
+    {
+      "type": "text",
+      "delta": "212"
+    },
+    {
+      "type": "text",
+      "delta": "→"
+    },
+    {
+      "type": "text",
+      "delta": "213"
+    },
+    {
+      "type": "text",
+      "delta": ","
+    },
+    {
+      "type": "text",
+      "delta": " node"
+    },
+    {
+      "type": "text",
+      "delta": "Count"
+    },
+    {
+      "type": "text",
+      "delta": " "
+    },
+    {
+      "type": "text",
+      "delta": "22"
+    },
+    {
+      "type": "text",
+      "delta": "6"
+    },
+    {
+      "type": "text",
+      "delta": "→"
+    },
+    {
+      "type": "text",
+      "delta": "23"
+    },
+    {
+      "type": "text",
+      "delta": "3"
+    },
+    {
+      "type": "text",
+      "delta": ","
+    },
+    {
+      "type": "text",
+      "delta": " original"
+    },
+    {
+      "type": "text",
+      "delta": " children"
+    },
+    {
+      "type": "text",
+      "delta": " intact"
+    },
+    {
+      "type": "text",
+      "delta": ")."
+    },
+    {
+      "type": "text",
+      "delta": " Two"
+    },
+    {
+      "type": "text",
+      "delta": " things"
+    },
+    {
+      "type": "text",
+      "delta": " need"
+    },
+    {
+      "type": "text",
+      "delta": " one"
+    },
+    {
+      "type": "text",
+      "delta": " more"
+    },
+    {
+      "type": "text",
+      "delta": " page"
+    },
+    {
+      "type": "text",
+      "delta": " of"
+    },
+    {
+      "type": "text",
+      "delta": " verification"
+    },
+    {
+      "type": "text",
+      "delta": ":"
+    },
+    {
+      "type": "text",
+      "delta": " state"
+    },
+    {
+      "type": "text",
+      "delta": " page"
+    },
+    {
+      "type": "text",
+      "delta": " "
+    },
+    {
+      "type": "text",
+      "delta": "1"
+    },
+    {
+      "type": "text",
+      "delta": " truncated"
+    },
+    {
+      "type": "text",
+      "delta": " at"
+    },
+    {
+      "type": "text",
+      "delta": " "
+    },
+    {
+      "type": "text",
+      "delta": "12"
+    },
+    {
+      "type": "text",
+      "delta": " items"
+    },
+    {
+      "type": "text",
+      "delta": " ("
+    },
+    {
+      "type": "text",
+      "delta": "re"
+    },
+    {
+      "type": "text",
+      "delta": "covery"
+    },
+    {
+      "type": "text",
+      "delta": "-name"
+    },
+    {
+      "type": "text",
+      "delta": " /"
+    },
+    {
+      "type": "text",
+      "delta": " recovery"
+    },
+    {
+      "type": "text",
+      "delta": "-cons"
+    },
+    {
+      "type": "text",
+      "delta": "ent"
+    },
+    {
+      "type": "text",
+      "delta": " not"
+    },
+    {
+      "type": "text",
+      "delta": " yet"
+    },
+    {
+      "type": "text",
+      "delta": " visible"
+    },
+    {
+      "type": "text",
+      "delta": ","
+    },
+    {
+      "type": "text",
+      "delta": " and"
+    },
+    {
+      "type": "text",
+      "delta": " a"
+    },
+    {
+      "type": "text",
+      "delta": " possibly"
+    },
+    {
+      "type": "text",
+      "delta": " auto"
+    },
+    {
+      "type": "text",
+      "delta": "-created"
+    },
+    {
+      "type": "text",
+      "delta": " `"
+    },
+    {
+      "type": "text",
+      "delta": "input"
+    },
+    {
+      "type": "text",
+      "delta": "_live"
+    },
+    {
+      "type": "text",
+      "delta": "-email"
+    },
+    {
+      "type": "text",
+      "delta": "`"
+    },
+    {
+      "type": "text",
+      "delta": "/"
+    },
+    {
+      "type": "text",
+      "delta": "`"
+    },
+    {
+      "type": "text",
+      "delta": "input"
+    },
+    {
+      "type": "text",
+      "delta": "_live"
+    },
+    {
+      "type": "text",
+      "delta": "-name"
+    },
+    {
+      "type": "text",
+      "delta": "`"
+    },
+    {
+      "type": "text",
+      "delta": " pair"
+    },
+    {
+      "type": "text",
+      "delta": "),"
+    },
+    {
+      "type": "text",
+      "delta": " and"
+    },
+    {
+      "type": "text",
+      "delta": " the"
+    },
+    {
+      "type": "text",
+      "delta": " coverage"
+    },
+    {
+      "type": "text",
+      "delta": " items"
+    },
+    {
+      "type": "text",
+      "delta": " array"
+    },
+    {
+      "type": "text",
+      "delta": " came"
+    },
+    {
+      "type": "text",
+      "delta": " back"
+    },
+    {
+      "type": "text",
+      "delta": " empty"
+    },
+    {
+      "type": "text",
+      "delta": "."
+    },
+    {
+      "type": "text",
+      "delta": " Reading"
+    },
+    {
+      "type": "text",
+      "delta": " the"
+    },
+    {
+      "type": "text",
+      "delta": " remaining"
+    },
+    {
+      "type": "text",
+      "delta": " state"
+    },
+    {
+      "type": "text",
+      "delta": " page"
+    },
+    {
+      "type": "text",
+      "delta": ","
+    },
+    {
+      "type": "text",
+      "delta": " the"
+    },
+    {
+      "type": "text",
+      "delta": " new"
+    },
+    {
+      "type": "text",
+      "delta": " input"
+    },
+    {
+      "type": "text",
+      "delta": "/"
+    },
+    {
+      "type": "text",
+      "delta": "checkbox"
+    },
+    {
+      "type": "text",
+      "delta": " source"
+    },
+    {
+      "type": "text",
+      "delta": " nodes"
+    },
+    {
+      "type": "text",
+      "delta": ","
+    },
+    {
+      "type": "text",
+      "delta": " and"
+    },
+    {
+      "type": "text",
+      "delta": " re"
+    },
+    {
+      "type": "text",
+      "delta": "-request"
+    },
+    {
+      "type": "text",
+      "delta": "ing"
+    },
+    {
+      "type": "text",
+      "delta": " coverage"
+    },
+    {
+      "type": "text",
+      "delta": ":"
+    },
+    {
+      "type": "tool-event",
+      "id": "69ab7672-e17f-496e-bb0c-c93c5329f178:tool:29",
+      "sequence": 29,
+      "kind": "tool-start",
+      "tool": "studio_screen_read",
+      "summary": "Tool started",
+      "callId": "call_7f30f3f61eab40649b2a37a0"
+    },
+    {
+      "type": "progress",
+      "message": "Reading the screen and selection…"
+    },
+    {
+      "type": "tool-event",
+      "id": "69ab7672-e17f-496e-bb0c-c93c5329f178:tool:30",
+      "sequence": 30,
+      "kind": "tool-start",
+      "tool": "studio_screen_read",
+      "summary": "Tool started",
+      "callId": "call_560b9bb7b8f841f9bab0b266"
+    },
+    {
+      "type": "progress",
+      "message": "Reading the screen and selection…"
+    },
+    {
+      "type": "tool-event",
+      "id": "69ab7672-e17f-496e-bb0c-c93c5329f178:tool:31",
+      "sequence": 31,
+      "kind": "tool-start",
+      "tool": "studio_screen_read",
+      "summary": "Tool started",
+      "callId": "call_9fc7325a242340d98151d427"
+    },
+    {
+      "type": "progress",
+      "message": "Reading the screen and selection…"
+    },
+    {
+      "type": "tool-event",
+      "id": "69ab7672-e17f-496e-bb0c-c93c5329f178:tool:32",
+      "sequence": 32,
+      "kind": "tool-start",
+      "tool": "studio_screen_read",
+      "summary": "Tool started",
+      "callId": "call_17f8e82b1b4441e3ac555447"
+    },
+    {
+      "type": "progress",
+      "message": "Reading the screen and selection…"
+    },
+    {
+      "type": "tool-event",
+      "id": "69ab7672-e17f-496e-bb0c-c93c5329f178:tool:33",
+      "sequence": 33,
+      "kind": "observation",
+      "tool": "studio_screen_read",
+      "summary": "Read current source facts",
+      "details": "{\"expectedRevision\":\"r1#2\",\"cursor\":{\"documentId\":\"live-completion\",\"revision\":\"r1#2\",\"digest\":\"539e619fc4f4eab159bd7faeaaf08c9b83f715822ed3eac73c00f5ec34a48a62\",\"epoch\":\"aaa12a21-196a-493b-8df7-0e2fab568e4e\"},\"section\":\"state\",\"items\":[{\"key\":\"recovery-name\",\"type\":\"string\",\"initialJson\":\"\\\"\\\"\"},{\"key\":\"recovery-consent\",\"type\":\"boolean\",\"initialJson\":\"false\"},{\"key\":\"field_live-consent\",\"type\":\"boolean\",\"initialJson\":\"false\"}],\"total\":15,\"offset\":12,\"nextOffset\":null}"
+    },
+    {
+      "type": "tool-event",
+      "id": "69ab7672-e17f-496e-bb0c-c93c5329f178:tool:34",
+      "sequence": 34,
+      "kind": "observation",
+      "tool": "studio_screen_read",
+      "summary": "Read current source facts",
+      "details": "{\"expectedRevision\":\"r1#2\",\"cursor\":{\"documentId\":\"live-completion\",\"revision\":\"r1#2\",\"digest\":\"539e619fc4f4eab159bd7faeaaf08c9b83f715822ed3eac73c00f5ec34a48a62\",\"epoch\":\"aaa12a21-196a-493b-8df7-0e2fab568e4e\"},\"section\":\"source\",\"nodeId\":\"live-email\",\"sourceJson\":\"{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"live-email\\\",\\\"tag\\\":\\\"input\\\",\\\"children\\\":[],\\\"attributes\\\":{\\\"type\\\":\\\"email\\\",\\\"aria-label\\\":\\\"Email\\\",\\\"placeholder\\\":\\\"you@example.com\\\",\\\"value\\\":{\\\"type\\\":\\\"ref\\\",\\\"path\\\":\\\"state.recovery-email\\\"},\\\"id\\\":\\\"live-email\\\"},\\\"interactions\\\":[{\\\"on\\\":\\\"change\\\",\\\"action\\\":\\\"setState\\\",\\\"key\\\":\\\"recovery-email\\\",\\\"value\\\":{\\\"type\\\":\\\"ref\\\",\\\"path\\\":\\\"state.recovery-email\\\"}}],\\\"localStyle\\\":[{\\\"property\\\":\\\"padding\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"12px\\\"}},{\\\"property\\\":\\\"border-radius\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"8px\\\"}},{\\\"property\\\":\\\"border\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"1px solid #cbd3e1\\\"}},{\\\"property\\\":\\\"font-size\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"16px\\\"}},{\\\"property\\\":\\\"width\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"100%\\\"}},{\\\"property\\\":\\\"box-sizing\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"border-box\\\"}}]}\",\"totalCharacters\":760,\"offset\":0,\"nextOffset\":null}"
+    },
+    {
+      "type": "tool-event",
+      "id": "69ab7672-e17f-496e-bb0c-c93c5329f178:tool:35",
+      "sequence": 35,
+      "kind": "observation",
+      "tool": "studio_screen_read",
+      "summary": "Read current source facts",
+      "details": "{\"expectedRevision\":\"r1#2\",\"cursor\":{\"documentId\":\"live-completion\",\"revision\":\"r1#2\",\"digest\":\"539e619fc4f4eab159bd7faeaaf08c9b83f715822ed3eac73c00f5ec34a48a62\",\"epoch\":\"aaa12a21-196a-493b-8df7-0e2fab568e4e\"},\"section\":\"source\",\"nodeId\":\"live-consent\",\"sourceJson\":\"{\\\"kind\\\":\\\"component\\\",\\\"id\\\":\\\"live-consent\\\",\\\"definitionId\\\":\\\"vict.catalog.checkbox\\\",\\\"props\\\":{\\\"label\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"Consent\\\"},\\\"checked\\\":{\\\"type\\\":\\\"ref\\\",\\\"path\\\":\\\"state.recovery-consent\\\"}},\\\"outputs\\\":{\\\"checkedChange\\\":{\\\"setState\\\":{\\\"key\\\":\\\"recovery-consent\\\"}}},\\\"slots\\\":{}}\",\"totalCharacters\":270,\"offset\":0,\"nextOffset\":null}"
+    },
+    {
+      "type": "tool-event",
+      "id": "69ab7672-e17f-496e-bb0c-c93c5329f178:tool:36",
+      "sequence": 36,
+      "kind": "observation",
+      "tool": "studio_screen_read",
+      "summary": "Read current source facts",
+      "details": "{\"expectedRevision\":\"r1#2\",\"cursor\":{\"documentId\":\"live-completion\",\"revision\":\"r1#2\",\"digest\":\"539e619fc4f4eab159bd7faeaaf08c9b83f715822ed3eac73c00f5ec34a48a62\",\"epoch\":\"aaa12a21-196a-493b-8df7-0e2fab568e4e\"},\"section\":\"coverage\",\"available\":78,\"authored\":2,\"catalogAuthored\":17,\"requested\":2,\"scope\":\"declared-request\",\"evidence\":\"Declared source presence only. Does not prove appearance, interaction, requested intent, or completion.\",\"items\":[],\"total\":0,\"offset\":0,\"nextOffset\":null}"
+    },
+    {
+      "type": "text",
+      "delta": "All"
+    },
+    {
+      "type": "text",
+      "delta": " requested"
+    },
+    {
+      "type": "text",
+      "delta": " work"
+    },
+    {
+      "type": "text",
+      "delta": " is"
+    },
+    {
+      "type": "text",
+      "delta": " applied"
+    },
+    {
+      "type": "text",
+      "delta": " and"
+    },
+    {
+      "type": "text",
+      "delta": " verified"
+    },
+    {
+      "type": "text",
+      "delta": " at"
+    },
+    {
+      "type": "text",
+      "delta": " source"
+    },
+    {
+      "type": "text",
+      "delta": " level"
+    },
+    {
+      "type": "text",
+      "delta": "."
+    },
+    {
+      "type": "text",
+      "delta": " Report"
+    },
+    {
+      "type": "text",
+      "delta": ":\n\n"
+    },
+    {
+      "type": "text",
+      "delta": "**"
+    },
+    {
+      "type": "text",
+      "delta": "Re"
+    },
+    {
+      "type": "text",
+      "delta": "covery"
+    },
+    {
+      "type": "text",
+      "delta": "-test"
+    },
+    {
+      "type": "text",
+      "delta": " steps"
+    },
+    {
+      "type": "text",
+      "delta": " ("
+    },
+    {
+      "type": "text",
+      "delta": "confirmed"
+    },
+    {
+      "type": "text",
+      "delta": ")"
+    },
+    {
+      "type": "text",
+      "delta": "**\n"
+    },
+    {
+      "type": "text",
+      "delta": "-"
+    },
+    {
+      "type": "text",
+      "delta": " Fresh"
+    },
+    {
+      "type": "text",
+      "delta": " overview"
+    },
+    {
+      "type": "text",
+      "delta": " read"
+    },
+    {
+      "type": "text",
+      "delta": " at"
+    },
+    {
+      "type": "text",
+      "delta": " `"
+    },
+    {
+      "type": "text",
+      "delta": "r"
+    },
+    {
+      "type": "text",
+      "delta": "1"
+    },
+    {
+      "type": "text",
+      "delta": "#"
+    },
+    {
+      "type": "text",
+      "delta": "0"
+    },
+    {
+      "type": "text",
+      "delta": "`;"
+    },
+    {
+      "type": "text",
+      "delta": " targeted"
+    },
+    {
+      "type": "text",
+      "delta": " source"
+    },
+    {
+      "type": "text",
+      "delta": " read"
+    },
+    {
+      "type": "text",
+      "delta": " of"
+    },
+    {
+      "type": "text",
+      "delta": " `"
+    },
+    {
+      "type": "text",
+      "delta": "ret"
+    },
+    {
+      "type": "text",
+      "delta": "ained"
+    },
+    {
+      "type": "text",
+      "delta": "-"
+    },
+    {
+      "type": "text",
+      "delta": "199"
+    },
+    {
+      "type": "text",
+      "delta": "`"
+    },
+    {
+      "type": "text",
+      "delta": " succeeded"
+    },
+    {
+      "type": "text",
+      "delta": " as"
+    },
+    {
+      "type": "text",
+      "delta": " a"
+    },
+    {
+      "type": "text",
+      "delta": " single"
+    },
+    {
+      "type": "text",
+      "delta": "-node"
+    },
+    {
+      "type": "text",
+      "delta": " loss"
+    },
+    {
+      "type": "text",
+      "delta": "less"
+    },
+    {
+      "type": "text",
+      "delta": " JSON"
+    },
+    {
+      "type": "text",
+      "delta": " page"
+    },
+    {
+      "type": "text",
+      "delta": " ("
+    },
+    {
+      "type": "text",
+      "delta": "text"
+    },
+    {
+      "type": "text",
+      "delta": " node"
+    },
+    {
+      "type": "text",
+      "delta": ","
+    },
+    {
+      "type": "text",
+      "delta": " \""
+    },
+    {
+      "type": "text",
+      "delta": "Ret"
+    },
+    {
+      "type": "text",
+      "delta": "ained"
+    },
+    {
+      "type": "text",
+      "delta": " synthetic"
+    },
+    {
+      "type": "text",
+      "delta": " content"
+    },
+    {
+      "type": "text",
+      "delta": " "
+    },
+    {
+      "type": "text",
+      "delta": "199"
+    },
+    {
+      "type": "text",
+      "delta": "\")"
+    },
+    {
+      "type": "text",
+      "delta": " —"
+    },
+    {
+      "type": "text",
+      "delta": " targeted"
+    },
+    {
+      "type": "text",
+      "delta": " reads"
+    },
+    {
+      "type": "text",
+      "delta": " beyond"
+    },
+    {
+      "type": "text",
+      "delta": " the"
+    },
+    {
+      "type": "text",
+      "delta": " old"
+    },
+    {
+      "type": "text",
+      "delta": " large"
+    },
+    {
+      "type": "text",
+      "delta": "-screen"
+    },
+    {
+      "type": "text",
+      "delta": " limit"
+    },
+    {
+      "type": "text",
+      "delta": " work"
+    },
+    {
+      "type": "text",
+      "delta": ".\n"
+    },
+    {
+      "type": "text",
+      "delta": "-"
+    },
+    {
+      "type": "text",
+      "delta": " Int"
+    },
+    {
+      "type": "text",
+      "delta": "ention"
+    },
+    {
+      "type": "text",
+      "delta": "al"
+    },
+    {
+      "type": "text",
+      "delta": " invalid"
+    },
+    {
+      "type": "text",
+      "delta": " bind"
+    },
+    {
+      "type": "text",
+      "delta": " (`"
+    },
+    {
+      "type": "text",
+      "delta": "bind"
+    },
+    {
+      "type": "text",
+      "delta": " existing"
+    },
+    {
+      "type": "text",
+      "delta": "-"
+    },
+    {
+      "type": "text",
+      "delta": "0"
+    },
+    {
+      "type": "text",
+      "delta": " prop"
+    },
+    {
+      "type": "text",
+      "delta": " recovery"
+    },
+    {
+      "type": "text",
+      "delta": "Probe"
+    },
+    {
+      "type": "text",
+      "delta": " ←"
+    },
+    {
+      "type": "text",
+      "delta": " literal"
+    },
+    {
+      "type": "text",
+      "delta": " true"
+    },
+    {
+      "type": "text",
+      "delta": "`)"
+    },
+    {
+      "type": "text",
+      "delta": " was"
+    },
+    {
+      "type": "text",
+      "delta": " refused"
+    },
+    {
+      "type": "text",
+      "delta": " by"
+    },
+    {
+      "type": "text",
+      "delta": " the"
+    },
+    {
+      "type": "text",
+      "delta": " canonical"
+    },
+    {
+      "type": "text",
+      "delta": " validator"
+    },
+    {
+      "type": "text",
+      "delta": ":"
+    },
+    {
+      "type": "text",
+      "delta": " `"
+    },
+    {
+      "type": "text",
+      "delta": "ST"
+    },
+    {
+      "type": "text",
+      "delta": "UDIO"
+    },
+    {
+      "type": "text",
+      "delta": "_AGENT"
+    },
+    {
+      "type": "text",
+      "delta": "_PROPERTY"
+    },
+    {
+      "type": "text",
+      "delta": "`,"
+    },
+    {
+      "type": "text",
+      "delta": " \""
+    },
+    {
+      "type": "text",
+      "delta": "unsupported"
+    },
+    {
+      "type": "text",
+      "delta": " prop"
+    },
+    {
+      "type": "text",
+      "delta": " recovery"
+    },
+    {
+      "type": "text",
+      "delta": "Probe"
+    },
+    {
+      "type": "text",
+      "delta": "."
+    },
+    {
+      "type": "text",
+      "delta": " Supported"
+    },
+    {
+      "type": "text",
+      "delta": ":"
+    },
+    {
+      "type": "text",
+      "delta": " label"
+    },
+    {
+      "type": "text",
+      "delta": ","
+    },
+    {
+      "type": "text",
+      "delta": " disabled"
+    },
+    {
+      "type": "text",
+      "delta": ","
+    },
+    {
+      "type": "text",
+      "delta": " loading"
+    },
+    {
+      "type": "text",
+      "delta": ".\""
+    },
+    {
+      "type": "text",
+      "delta": " Nothing"
+    },
+    {
+      "type": "text",
+      "delta": " was"
+    },
+    {
+      "type": "text",
+      "delta": " applied"
+    },
+    {
+      "type": "text",
+      "delta": ";"
+    },
+    {
+      "type": "text",
+      "delta": " no"
+    },
+    {
+      "type": "text",
+      "delta": " revert"
+    },
+    {
+      "type": "text",
+      "delta": " needed"
+    },
+    {
+      "type": "text",
+      "delta": ";"
+    },
+    {
+      "type": "text",
+      "delta": " continued"
+    },
+    {
+      "type": "text",
+      "delta": " without"
+    },
+    {
+      "type": "text",
+      "delta": " re"
+    },
+    {
+      "type": "text",
+      "delta": "-at"
+    },
+    {
+      "type": "text",
+      "delta": "tempt"
+    },
+    {
+      "type": "text",
+      "delta": "ing"
+    },
+    {
+      "type": "text",
+      "delta": " it"
+    },
+    {
+      "type": "text",
+      "delta": ".\n"
+    },
+    {
+      "type": "text",
+      "delta": "-"
+    },
+    {
+      "type": "text",
+      "delta": " One"
+    },
+    {
+      "type": "text",
+      "delta": " validation"
+    },
+    {
+      "type": "text",
+      "delta": " refusal"
+    },
+    {
+      "type": "text",
+      "delta": " on"
+    },
+    {
+      "type": "text",
+      "delta": " batch"
+    },
+    {
+      "type": "text",
+      "delta": " "
+    },
+    {
+      "type": "text",
+      "delta": "2"
+    },
+    {
+      "type": "text",
+      "delta": " ("
+    },
+    {
+      "type": "text",
+      "delta": "catalog"
+    },
+    {
+      "type": "text",
+      "delta": " components"
+    },
+    {
+      "type": "text",
+      "delta": " reject"
+    },
+    {
+      "type": "text",
+      "delta": " `"
+    },
+    {
+      "type": "text",
+      "delta": "attributes"
+    },
+    {
+      "type": "text",
+      "delta": "`"
+    },
+    {
+      "type": "text",
+      "delta": "):"
+    },
+    {
+      "type": "text",
+      "delta": " corrected"
+    },
+    {
+      "type": "text",
+      "delta": " by"
+    },
+    {
+      "type": "text",
+      "delta": " dropping"
+    },
+    {
+      "type": "text",
+      "delta": " attributes"
+    },
+    {
+      "type": "text",
+      "delta": " from"
+    },
+    {
+      "type": "text",
+      "delta": " the"
+    },
+    {
+      "type": "text",
+      "delta": " checkbox"
+    },
+    {
+      "type": "text",
+      "delta": " add"
+    },
+    {
+      "type": "text",
+      "delta": ";"
+    },
+    {
+      "type": "text",
+      "delta": " retry"
+    },
+    {
+      "type": "text",
+      "delta": " acknowledged"
+    },
+    {
+      "type": "text",
+      "delta": ".\n\n"
+    },
+    {
+      "type": "text",
+      "delta": "**"
+    },
+    {
+      "type": "text",
+      "delta": "Applied"
+    },
+    {
+      "type": "text",
+      "delta": " edits"
+    },
+    {
+      "type": "text",
+      "delta": " ("
+    },
+    {
+      "type": "text",
+      "delta": "ack"
+    },
+    {
+      "type": "text",
+      "delta": "nowled"
+    },
+    {
+      "type": "text",
+      "delta": "ged"
+    },
+    {
+      "type": "text",
+      "delta": " by"
+    },
+    {
+      "type": "text",
+      "delta": " browser"
+    },
+    {
+      "type": "text",
+      "delta": " Editor"
+    },
+    {
+      "type": "text",
+      "delta": "Bridge"
+    },
+    {
+      "type": "text",
+      "delta": ","
+    },
+    {
+      "type": "text",
+      "delta": " "
+    },
+    {
+      "type": "text",
+      "delta": "2"
+    },
+    {
+      "type": "text",
+      "delta": " undo"
+    },
+    {
+      "type": "text",
+      "delta": "able"
+    },
+    {
+      "type": "text",
+      "delta": " batches"
+    },
+    {
+      "type": "text",
+      "delta": ","
+    },
+    {
+      "type": "text",
+      "delta": " now"
+    },
+    {
+      "type": "text",
+      "delta": " `"
+    },
+    {
+      "type": "text",
+      "delta": "r"
+    },
+    {
+      "type": "text",
+      "delta": "1"
+    },
+    {
+      "type": "text",
+      "delta": "#"
+    },
+    {
+      "type": "text",
+      "delta": "2"
+    },
+    {
+      "type": "text",
+      "delta": "`)"
+    },
+    {
+      "type": "text",
+      "delta": "**\n"
+    },
+    {
+      "type": "text",
+      "delta": "-"
+    },
+    {
+      "type": "text",
+      "delta": " New"
+    },
+    {
+      "type": "text",
+      "delta": " section"
+    },
+    {
+      "type": "text",
+      "delta": " `"
+    },
+    {
+      "type": "text",
+      "delta": "live"
+    },
+    {
+      "type": "text",
+      "delta": "-re"
+    },
+    {
+      "type": "text",
+      "delta": "covery"
+    },
+    {
+      "type": "text",
+      "delta": "-section"
+    },
+    {
+      "type": "text",
+      "delta": "`"
+    },
+    {
+      "type": "text",
+      "delta": " appended"
+    },
+    {
+      "type": "text",
+      "delta": " to"
+    },
+    {
+      "type": "text",
+      "delta": " `"
+    },
+    {
+      "type": "text",
+      "delta": "screen"
+    },
+    {
+      "type": "text",
+      "delta": "`"
+    },
+    {
+      "type": "text",
+      "delta": " ("
+    },
+    {
+      "type": "text",
+      "delta": "replace"
+    },
+    {
+      "type": "text",
+      "delta": "Placeholder"
+    },
+    {
+      "type": "text",
+      "delta": ":false"
+    },
+    {
+      "type": "text",
+      "delta": ";"
+    },
+    {
+      "type": "text",
+      "delta": " screen"
+    },
+    {
+      "type": "text",
+      "delta": " child"
+    },
+    {
+      "type": "text",
+      "delta": "Count"
+    },
+    {
+      "type": "text",
+      "delta": " "
+    },
+    {
+      "type": "text",
+      "delta": "212"
+    },
+    {
+      "type": "text",
+      "delta": "→"
+    },
+    {
+      "type": "text",
+      "delta": "213"
+    },
+    {
+      "type": "text",
+      "delta": ";"
+    },
+    {
+      "type": "text",
+      "delta": " all"
+    },
+    {
+      "type": "text",
+      "delta": " `"
+    },
+    {
+      "type": "text",
+      "delta": "existing"
+    },
+    {
+      "type": "text",
+      "delta": "-*"
+    },
+    {
+      "type": "text",
+      "delta": "`"
+    },
+    {
+      "type": "text",
+      "delta": " and"
+    },
+    {
+      "type": "text",
+      "delta": " `"
+    },
+    {
+      "type": "text",
+      "delta": "ret"
+    },
+    {
+      "type": "text",
+      "delta": "ained"
+    },
+    {
+      "type": "text",
+      "delta": "-*"
+    },
+    {
+      "type": "text",
+      "delta": "`"
+    },
+    {
+      "type": "text",
+      "delta": " children"
+    },
+    {
+      "type": "text",
+      "delta": " intact"
+    },
+    {
+      "type": "text",
+      "delta": ","
+    },
+    {
+      "type": "text",
+      "delta": " node"
+    },
+    {
+      "type": "text",
+      "delta": "Count"
+    },
+    {
+      "type": "text",
+      "delta": " "
+    },
+    {
+      "type": "text",
+      "delta": "22"
+    },
+    {
+      "type": "text",
+      "delta": "6"
+    },
+    {
+      "type": "text",
+      "delta": "→"
+    },
+    {
+      "type": "text",
+      "delta": "23"
+    },
+    {
+      "type": "text",
+      "delta": "3"
+    },
+    {
+      "type": "text",
+      "delta": ").\n"
+    },
+    {
+      "type": "text",
+      "delta": "-"
+    },
+    {
+      "type": "text",
+      "delta": " L"
+    },
+    {
+      "type": "text",
+      "delta": "abeled"
+    },
+    {
+      "type": "text",
+      "delta": " input"
+    },
+    {
+      "type": "text",
+      "delta": " `"
+    },
+    {
+      "type": "text",
+      "delta": "live"
+    },
+    {
+      "type": "text",
+      "delta": "-email"
+    },
+    {
+      "type": "text",
+      "delta": "`"
+    },
+    {
+      "type": "text",
+      "delta": " ("
+    },
+    {
+      "type": "text",
+      "delta": "label"
+    },
+    {
+      "type": "text",
+      "delta": " \""
+    },
+    {
+      "type": "text",
+      "delta": "Email"
+    },
+    {
+      "type": "text",
+      "delta": "\","
+    },
+    {
+      "type": "text",
+      "delta": " type"
+    },
+    {
+      "type": "text",
+      "delta": "=email"
+    },
+    {
+      "type": "text",
+      "delta": ","
+    },
+    {
+      "type": "text",
+      "delta": " aria"
+    },
+    {
+      "type": "text",
+      "delta": "-label"
+    },
+    {
+      "type": "text",
+      "delta": ","
+    },
+    {
+      "type": "text",
+      "delta": " placeholder"
+    },
+    {
+      "type": "text",
+      "delta": ")"
+    },
+    {
+      "type": "text",
+      "delta": " wired"
+    },
+    {
+      "type": "text",
+      "delta": " to"
+    },
+    {
+      "type": "text",
+      "delta": " independent"
+    },
+    {
+      "type": "text",
+      "delta": " state"
+    },
+    {
+      "type": "text",
+      "delta": " `"
+    },
+    {
+      "type": "text",
+      "delta": "re"
+    },
+    {
+      "type": "text",
+      "delta": "covery"
+    },
+    {
+      "type": "text",
+      "delta": "-email"
+    },
+    {
+      "type": "text",
+      "delta": "`"
+    },
+    {
+      "type": "text",
+      "delta": " ("
+    },
+    {
+      "type": "text",
+      "delta": "value"
+    },
+    {
+      "type": "text",
+      "delta": " ref"
+    },
+    {
+      "type": "text",
+      "delta": " +"
+    },
+    {
+      "type": "text",
+      "delta": " change"
+    },
+    {
+      "type": "text",
+      "delta": "→"
+    },
+    {
+      "type": "text",
+      "delta": "setState"
+    },
+    {
+      "type": "text",
+      "delta": " confirmed"
+    },
+    {
+      "type": "text",
+      "delta": " in"
+    },
+    {
+      "type": "text",
+      "delta": " source"
+    },
+    {
+      "type": "text",
+      "delta": ").\n"
+    },
+    {
+      "type": "text",
+      "delta": "-"
+    },
+    {
+      "type": "text",
+      "delta": " L"
+    },
+    {
+      "type": "text",
+      "delta": "abeled"
+    },
+    {
+      "type": "text",
+      "delta": " input"
+    },
+    {
+      "type": "text",
+      "delta": " `"
+    },
+    {
+      "type": "text",
+      "delta": "live"
+    },
+    {
+      "type": "text",
+      "delta": "-name"
+    },
+    {
+      "type": "text",
+      "delta": "`"
+    },
+    {
+      "type": "text",
+      "delta": " ("
+    },
+    {
+      "type": "text",
+      "delta": "label"
+    },
+    {
+      "type": "text",
+      "delta": " \""
+    },
+    {
+      "type": "text",
+      "delta": "Name"
+    },
+    {
+      "type": "text",
+      "delta": "\","
+    },
+    {
+      "type": "text",
+      "delta": " type"
+    },
+    {
+      "type": "text",
+      "delta": "=text"
+    },
+    {
+      "type": "text",
+      "delta": ","
+    },
+    {
+      "type": "text",
+      "delta": " aria"
+    },
+    {
+      "type": "text",
+      "delta": "-label"
+    },
+    {
+      "type": "text",
+      "delta": ","
+    },
+    {
+      "type": "text",
+      "delta": " placeholder"
+    },
+    {
+      "type": "text",
+      "delta": ")"
+    },
+    {
+      "type": "text",
+      "delta": " wired"
+    },
+    {
+      "type": "text",
+      "delta": " to"
+    },
+    {
+      "type": "text",
+      "delta": " independent"
+    },
+    {
+      "type": "text",
+      "delta": " state"
+    },
+    {
+      "type": "text",
+      "delta": " `"
+    },
+    {
+      "type": "text",
+      "delta": "re"
+    },
+    {
+      "type": "text",
+      "delta": "covery"
+    },
+    {
+      "type": "text",
+      "delta": "-name"
+    },
+    {
+      "type": "text",
+      "delta": "`"
+    },
+    {
+      "type": "text",
+      "delta": " ("
+    },
+    {
+      "type": "text",
+      "delta": "confirmed"
+    },
+    {
+      "type": "text",
+      "delta": " in"
+    },
+    {
+      "type": "text",
+      "delta": " state"
+    },
+    {
+      "type": "text",
+      "delta": " page"
+    },
+    {
+      "type": "text",
+      "delta": " "
+    },
+    {
+      "type": "text",
+      "delta": "2"
+    },
+    {
+      "type": "text",
+      "delta": ").\n"
+    },
+    {
+      "type": "text",
+      "delta": "-"
+    },
+    {
+      "type": "text",
+      "delta": " L"
+    },
+    {
+      "type": "text",
+      "delta": "abeled"
+    },
+    {
+      "type": "text",
+      "delta": " checkbox"
+    },
+    {
+      "type": "text",
+      "delta": " `"
+    },
+    {
+      "type": "text",
+      "delta": "live"
+    },
+    {
+      "type": "text",
+      "delta": "-cons"
+    },
+    {
+      "type": "text",
+      "delta": "ent"
+    },
+    {
+      "type": "text",
+      "delta": "`"
+    },
+    {
+      "type": "text",
+      "delta": " ("
+    },
+    {
+      "type": "text",
+      "delta": "v"
+    },
+    {
+      "type": "text",
+      "delta": "ict"
+    },
+    {
+      "type": "text",
+      "delta": ".catalog"
+    },
+    {
+      "type": "text",
+      "delta": ".checkbox"
+    },
+    {
+      "type": "text",
+      "delta": ","
+    },
+    {
+      "type": "text",
+      "delta": " prop"
+    },
+    {
+      "type": "text",
+      "delta": " label"
+    },
+    {
+      "type": "text",
+      "delta": " \""
+    },
+    {
+      "type": "text",
+      "delta": "Cons"
+    },
+    {
+      "type": "text",
+      "delta": "ent"
+    },
+    {
+      "type": "text",
+      "delta": "\")"
+    },
+    {
+      "type": "text",
+      "delta": " with"
+    },
+    {
+      "type": "text",
+      "delta": " `"
+    },
+    {
+      "type": "text",
+      "delta": "checked"
+    },
+    {
+      "type": "text",
+      "delta": "`"
+    },
+    {
+      "type": "text",
+      "delta": " bound"
+    },
+    {
+      "type": "text",
+      "delta": " to"
+    },
+    {
+      "type": "text",
+      "delta": " declared"
+    },
+    {
+      "type": "text",
+      "delta": " boolean"
+    },
+    {
+      "type": "text",
+      "delta": " `"
+    },
+    {
+      "type": "text",
+      "delta": "re"
+    },
+    {
+      "type": "text",
+      "delta": "covery"
+    },
+    {
+      "type": "text",
+      "delta": "-cons"
+    },
+    {
+      "type": "text",
+      "delta": "ent"
+    },
+    {
+      "type": "text",
+      "delta": "`"
+    },
+    {
+      "type": "text",
+      "delta": " and"
+    },
+    {
+      "type": "text",
+      "delta": " `"
+    },
+    {
+      "type": "text",
+      "delta": "checked"
+    },
+    {
+      "type": "text",
+      "delta": "Change"
+    },
+    {
+      "type": "text",
+      "delta": "`"
+    },
+    {
+      "type": "text",
+      "delta": " connected"
+    },
+    {
+      "type": "text",
+      "delta": " back"
+    },
+    {
+      "type": "text",
+      "delta": " to"
+    },
+    {
+      "type": "text",
+      "delta": " `"
+    },
+    {
+      "type": "text",
+      "delta": "re"
+    },
+    {
+      "type": "text",
+      "delta": "covery"
+    },
+    {
+      "type": "text",
+      "delta": "-cons"
+    },
+    {
+      "type": "text",
+      "delta": "ent"
+    },
+    {
+      "type": "text",
+      "delta": "`"
+    },
+    {
+      "type": "text",
+      "delta": " ("
+    },
+    {
+      "type": "text",
+      "delta": "confirmed"
+    },
+    {
+      "type": "text",
+      "delta": " in"
+    },
+    {
+      "type": "text",
+      "delta": " source"
+    },
+    {
+      "type": "text",
+      "delta": ").\n\n"
+    },
+    {
+      "type": "text",
+      "delta": "**"
+    },
+    {
+      "type": "text",
+      "delta": "Coverage"
+    },
+    {
+      "type": "text",
+      "delta": " read"
+    },
+    {
+      "type": "text",
+      "delta": " ("
+    },
+    {
+      "type": "text",
+      "delta": "input"
+    },
+    {
+      "type": "text",
+      "delta": ","
+    },
+    {
+      "type": "text",
+      "delta": " checkbox"
+    },
+    {
+      "type": "text",
+      "delta": ")**"
+    },
+    {
+      "type": "text",
+      "delta": " —"
+    },
+    {
+      "type": "text",
+      "delta": " requested"
+    },
+    {
+      "type": "text",
+      "delta": " "
+    },
+    {
+      "type": "text",
+      "delta": "2"
+    },
+    {
+      "type": "text",
+      "delta": ","
+    },
+    {
+      "type": "text",
+      "delta": " response"
+    },
+    {
+      "type": "text",
+      "delta": " reports"
+    },
+    {
+      "type": "text",
+      "delta": " `"
+    },
+    {
+      "type": "text",
+      "delta": "auth"
+    },
+    {
+      "type": "text",
+      "delta": "ored"
+    },
+    {
+      "type": "text",
+      "delta": ":"
+    },
+    {
+      "type": "text",
+      "delta": " "
+    },
+    {
+      "type": "text",
+      "delta": "2"
+    },
+    {
+      "type": "text",
+      "delta": "`,"
+    },
+    {
+      "type": "text",
+      "delta": " `"
+    },
+    {
+      "type": "text",
+      "delta": "available"
+    },
+    {
+      "type": "text",
+      "delta": ":"
+    },
+    {
+      "type": "text",
+      "delta": " "
+    },
+    {
+      "type": "text",
+      "delta": "78"
+    },
+    {
+      "type": "text",
+      "delta": "`,"
+    },
+    {
+      "type": "text",
+      "delta": " items"
+    },
+    {
+      "type": "text",
+      "delta": " array"
+    },
+    {
+      "type": "text",
+      "delta": " empty"
+    },
+    {
+      "type": "text",
+      "delta": " on"
+    },
+    {
+      "type": "text",
+      "delta": " two"
+    },
+    {
+      "type": "text",
+      "delta": " identical"
+    },
+    {
+      "type": "text",
+      "delta": " requests"
+    },
+    {
+      "type": "text",
+      "delta": " ("
+    },
+    {
+      "type": "text",
+      "delta": "presence"
+    },
+    {
+      "type": "text",
+      "delta": " summary"
+    },
+    {
+      "type": "text",
+      "delta": " only"
+    },
+    {
+      "type": "text",
+      "delta": ")."
+    },
+    {
+      "type": "text",
+      "delta": " Source"
+    },
+    {
+      "type": "text",
+      "delta": "-level"
+    },
+    {
+      "type": "text",
+      "delta": " cor"
+    },
+    {
+      "type": "text",
+      "delta": "rob"
+    },
+    {
+      "type": "text",
+      "delta": "oration"
+    },
+    {
+      "type": "text",
+      "delta": ":"
+    },
+    {
+      "type": "text",
+      "delta": " `"
+    },
+    {
+      "type": "text",
+      "delta": "live"
+    },
+    {
+      "type": "text",
+      "delta": "-email"
+    },
+    {
+      "type": "text",
+      "delta": "`"
+    },
+    {
+      "type": "text",
+      "delta": " is"
+    },
+    {
+      "type": "text",
+      "delta": " tag"
+    },
+    {
+      "type": "text",
+      "delta": " `"
+    },
+    {
+      "type": "text",
+      "delta": "input"
+    },
+    {
+      "type": "text",
+      "delta": "`,"
+    },
+    {
+      "type": "text",
+      "delta": " `"
+    },
+    {
+      "type": "text",
+      "delta": "live"
+    },
+    {
+      "type": "text",
+      "delta": "-cons"
+    },
+    {
+      "type": "text",
+      "delta": "ent"
+    },
+    {
+      "type": "text",
+      "delta": "`"
+    },
+    {
+      "type": "text",
+      "delta": " is"
+    },
+    {
+      "type": "text",
+      "delta": " `"
+    },
+    {
+      "type": "text",
+      "delta": "definition"
+    },
+    {
+      "type": "text",
+      "delta": "Id"
+    },
+    {
+      "type": "text",
+      "delta": ":"
+    },
+    {
+      "type": "text",
+      "delta": " vict"
+    },
+    {
+      "type": "text",
+      "delta": ".catalog"
+    },
+    {
+      "type": "text",
+      "delta": ".checkbox"
+    },
+    {
+      "type": "text",
+      "delta": "`.\n\n"
+    },
+    {
+      "type": "text",
+      "delta": "**"
+    },
+    {
+      "type": "text",
+      "delta": "Notes"
+    },
+    {
+      "type": "text",
+      "delta": " /"
+    },
+    {
+      "type": "text",
+      "delta": " un"
+    },
+    {
+      "type": "text",
+      "delta": "verified"
+    },
+    {
+      "type": "text",
+      "delta": " behavior"
+    },
+    {
+      "type": "text",
+      "delta": "**\n"
+    },
+    {
+      "type": "text",
+      "delta": "-"
+    },
+    {
+      "type": "text",
+      "delta": " The"
+    },
+    {
+      "type": "text",
+      "delta": " editor"
+    },
+    {
+      "type": "text",
+      "delta": "'s"
+    },
+    {
+      "type": "text",
+      "delta": " add"
+    },
+    {
+      "type": "text",
+      "delta": " path"
+    },
+    {
+      "type": "text",
+      "delta": " auto"
+    },
+    {
+      "type": "text",
+      "delta": "-se"
+    },
+    {
+      "type": "text",
+      "delta": "eded"
+    },
+    {
+      "type": "text",
+      "delta": " three"
+    },
+    {
+      "type": "text",
+      "delta": " extra"
+    },
+    {
+      "type": "text",
+      "delta": " unre"
+    },
+    {
+      "type": "text",
+      "delta": "fer"
+    },
+    {
+      "type": "text",
+      "delta": "enced"
+    },
+    {
+      "type": "text",
+      "delta": " independent"
+    },
+    {
+      "type": "text",
+      "delta": " state"
+    },
+    {
+      "type": "text",
+      "delta": " keys"
+    },
+    {
+      "type": "text",
+      "delta": " (`"
+    },
+    {
+      "type": "text",
+      "delta": "input"
+    },
+    {
+      "type": "text",
+      "delta": "_live"
+    },
+    {
+      "type": "text",
+      "delta": "-email"
+    },
+    {
+      "type": "text",
+      "delta": "`,"
+    },
+    {
+      "type": "text",
+      "delta": " `"
+    },
+    {
+      "type": "text",
+      "delta": "input"
+    },
+    {
+      "type": "text",
+      "delta": "_live"
+    },
+    {
+      "type": "text",
+      "delta": "-name"
+    },
+    {
+      "type": "text",
+      "delta": "`,"
+    },
+    {
+      "type": "text",
+      "delta": " `"
+    },
+    {
+      "type": "text",
+      "delta": "field"
+    },
+    {
+      "type": "text",
+      "delta": "_live"
+    },
+    {
+      "type": "text",
+      "delta": "-cons"
+    },
+    {
+      "type": "text",
+      "delta": "ent"
+    },
+    {
+      "type": "text",
+      "delta": "`"
+    },
+    {
+      "type": "text",
+      "delta": ");"
+    },
+    {
+      "type": "text",
+      "delta": " my"
+    },
+    {
+      "type": "text",
+      "delta": " fields"
+    },
+    {
+      "type": "text",
+      "delta": " do"
+    },
+    {
+      "type": "text",
+      "delta": " not"
+    },
+    {
+      "type": "text",
+      "delta": " reference"
+    },
+    {
+      "type": "text",
+      "delta": " them"
+    },
+    {
+      "type": "text",
+      "delta": " and"
+    },
+    {
+      "type": "text",
+      "delta": " no"
+    },
+    {
+      "type": "text",
+      "delta": " unrelated"
+    },
+    {
+      "type": "text",
+      "delta": " fields"
+    },
+    {
+      "type": "text",
+      "delta": " are"
+    },
+    {
+      "type": "text",
+      "delta": " coupled"
+    },
+    {
+      "type": "text",
+      "delta": "."
+    },
+    {
+      "type": "text",
+      "delta": " No"
+    },
+    {
+      "type": "text",
+      "delta": " state"
+    },
+    {
+      "type": "text",
+      "delta": "-"
+    },
+    {
+      "type": "text",
+      "delta": "rem"
+    },
+    {
+      "type": "text",
+      "delta": "oval"
+    },
+    {
+      "type": "text",
+      "delta": " operation"
+    },
+    {
+      "type": "text",
+      "delta": " exists"
+    },
+    {
+      "type": "text",
+      "delta": ","
+    },
+    {
+      "type": "text",
+      "delta": " so"
+    },
+    {
+      "type": "text",
+      "delta": " they"
+    },
+    {
+      "type": "text",
+      "delta": " remain"
+    },
+    {
+      "type": "text",
+      "delta": ".\n"
+    },
+    {
+      "type": "text",
+      "delta": "-"
+    },
+    {
+      "type": "text",
+      "delta": " No"
+    },
+    {
+      "type": "text",
+      "delta": " seed"
+    },
+    {
+      "type": "text",
+      "delta": " placeholders"
+    },
+    {
+      "type": "text",
+      "delta": " were"
+    },
+    {
+      "type": "text",
+      "delta": " consumed"
+    },
+    {
+      "type": "text",
+      "delta": " or"
+    },
+    {
+      "type": "text",
+      "delta": " replaced"
+    },
+    {
+      "type": "text",
+      "delta": " by"
+    },
+    {
+      "type": "text",
+      "delta": " my"
+    },
+    {
+      "type": "text",
+      "delta": " edits"
+    },
+    {
+      "type": "text",
+      "delta": ";"
+    },
+    {
+      "type": "text",
+      "delta": " nothing"
+    },
+    {
+      "type": "text",
+      "delta": " removed"
+    },
+    {
+      "type": "text",
+      "delta": ".\n"
+    },
+    {
+      "type": "text",
+      "delta": "-"
+    },
+    {
+      "type": "text",
+      "delta": " **"
+    },
+    {
+      "type": "text",
+      "delta": "Not"
+    },
+    {
+      "type": "text",
+      "delta": " verified"
+    },
+    {
+      "type": "text",
+      "delta": ":**"
+    },
+    {
+      "type": "text",
+      "delta": " rendered"
+    },
+    {
+      "type": "text",
+      "delta": " appearance"
+    },
+    {
+      "type": "text",
+      "delta": " ("
+    },
+    {
+      "type": "text",
+      "delta": "fixture"
+    },
+    {
+      "type": "text",
+      "delta": " has"
+    },
+    {
+      "type": "text",
+      "delta": " no"
+    },
+    {
+      "type": "text",
+      "delta": " browser"
+    },
+    {
+      "type": "text",
+      "delta": " image"
+    },
+    {
+      "type": "text",
+      "delta": "),"
+    },
+    {
+      "type": "text",
+      "delta": " runtime"
+    },
+    {
+      "type": "text",
+      "delta": " interaction"
+    },
+    {
+      "type": "text",
+      "delta": " of"
+    },
+    {
+      "type": "text",
+      "delta": " the"
+    },
+    {
+      "type": "text",
+      "delta": " wiring"
+    },
+    {
+      "type": "text",
+      "delta": ","
+    },
+    {
+      "type": "text",
+      "delta": " and"
+    },
+    {
+      "type": "text",
+      "delta": " document"
+    },
+    {
+      "type": "text",
+      "delta": " save"
+    },
+    {
+      "type": "text",
+      "delta": " ("
+    },
+    {
+      "type": "text",
+      "delta": "you"
+    },
+    {
+      "type": "text",
+      "delta": " save"
+    },
+    {
+      "type": "text",
+      "delta": ")."
+    },
+    {
+      "type": "text",
+      "delta": " Source"
+    },
+    {
+      "type": "text",
+      "delta": " JSON"
+    },
+    {
+      "type": "text",
+      "delta": " confirms"
+    },
+    {
+      "type": "text",
+      "delta": " structure"
+    },
+    {
+      "type": "text",
+      "delta": " and"
+    },
+    {
+      "type": "text",
+      "delta": " declared"
+    },
+    {
+      "type": "text",
+      "delta": " bindings"
+    },
+    {
+      "type": "text",
+      "delta": " only"
+    },
+    {
+      "type": "text",
+      "delta": ";"
+    },
+    {
+      "type": "text",
+      "delta": " compilation"
+    },
+    {
+      "type": "text",
+      "delta": " is not completion."
+    },
+    {
+      "type": "done",
+      "status": "completed",
+      "applied": 2,
+      "turnId": "turn-76a83666-213d-45e3-9015-1b7dff09702c",
+      "profileVersion": "v1_44b0efc033a305e436089d492696951ae9fda22054a9ae7ebe524393efff6671",
+      "termination": {
+        "status": "completed"
+      },
+      "confirmedRevision": "r1#2",
+      "coverage": {
+        "available": 78,
+        "authored": 2,
+        "catalogAuthored": 17,
+        "requested": 2,
+        "scope": "agent-declared-manifest",
+        "missing": [],
+        "evidence": "Declared source presence only. Does not prove appearance, interaction, requested intent, or completion."
+      },
+      "verification": "source-only",
+      "unresolvedTools": []
+    }
+  ],
+  "coverage": {
+    "available": 78,
+    "authored": 2,
+    "catalogAuthored": 17,
+    "requested": 2,
+    "scope": "declared-request",
+    "missing": [],
+    "evidence": "Declared source presence only. Does not prove appearance, interaction, requested intent, or completion."
+  },
+  "finalStateKeys": [
+    "message",
+    "accepted",
+    "dialogOpen",
+    "busy",
+    "actionError",
+    "actionResult",
+    "field_existing-1",
+    "field_existing-2",
+    "catalog_existing-5_value",
+    "input_live-email",
+    "recovery-email",
+    "input_live-name",
+    "recovery-name",
+    "recovery-consent",
+    "field_live-consent"
+  ],
+  "finalDocument": {
+    "schema": "vict.ui-document@1",
+    "id": "live-completion",
+    "revision": "r1",
+    "root": "screen",
+    "nodes": {
+      "screen": {
+        "kind": "element",
+        "id": "screen",
+        "tag": "main",
+        "attributes": {
+          "aria-label": "Synthetic mixed recovery fixture"
+        },
+        "children": [
+          "existing-0",
+          "existing-1",
+          "existing-2",
+          "existing-3",
+          "existing-4",
+          "existing-5",
+          "existing-6",
+          "existing-7",
+          "existing-8",
+          "existing-9",
+          "existing-10",
+          "existing-11",
+          "retained-0",
+          "retained-1",
+          "retained-2",
+          "retained-3",
+          "retained-4",
+          "retained-5",
+          "retained-6",
+          "retained-7",
+          "retained-8",
+          "retained-9",
+          "retained-10",
+          "retained-11",
+          "retained-12",
+          "retained-13",
+          "retained-14",
+          "retained-15",
+          "retained-16",
+          "retained-17",
+          "retained-18",
+          "retained-19",
+          "retained-20",
+          "retained-21",
+          "retained-22",
+          "retained-23",
+          "retained-24",
+          "retained-25",
+          "retained-26",
+          "retained-27",
+          "retained-28",
+          "retained-29",
+          "retained-30",
+          "retained-31",
+          "retained-32",
+          "retained-33",
+          "retained-34",
+          "retained-35",
+          "retained-36",
+          "retained-37",
+          "retained-38",
+          "retained-39",
+          "retained-40",
+          "retained-41",
+          "retained-42",
+          "retained-43",
+          "retained-44",
+          "retained-45",
+          "retained-46",
+          "retained-47",
+          "retained-48",
+          "retained-49",
+          "retained-50",
+          "retained-51",
+          "retained-52",
+          "retained-53",
+          "retained-54",
+          "retained-55",
+          "retained-56",
+          "retained-57",
+          "retained-58",
+          "retained-59",
+          "retained-60",
+          "retained-61",
+          "retained-62",
+          "retained-63",
+          "retained-64",
+          "retained-65",
+          "retained-66",
+          "retained-67",
+          "retained-68",
+          "retained-69",
+          "retained-70",
+          "retained-71",
+          "retained-72",
+          "retained-73",
+          "retained-74",
+          "retained-75",
+          "retained-76",
+          "retained-77",
+          "retained-78",
+          "retained-79",
+          "retained-80",
+          "retained-81",
+          "retained-82",
+          "retained-83",
+          "retained-84",
+          "retained-85",
+          "retained-86",
+          "retained-87",
+          "retained-88",
+          "retained-89",
+          "retained-90",
+          "retained-91",
+          "retained-92",
+          "retained-93",
+          "retained-94",
+          "retained-95",
+          "retained-96",
+          "retained-97",
+          "retained-98",
+          "retained-99",
+          "retained-100",
+          "retained-101",
+          "retained-102",
+          "retained-103",
+          "retained-104",
+          "retained-105",
+          "retained-106",
+          "retained-107",
+          "retained-108",
+          "retained-109",
+          "retained-110",
+          "retained-111",
+          "retained-112",
+          "retained-113",
+          "retained-114",
+          "retained-115",
+          "retained-116",
+          "retained-117",
+          "retained-118",
+          "retained-119",
+          "retained-120",
+          "retained-121",
+          "retained-122",
+          "retained-123",
+          "retained-124",
+          "retained-125",
+          "retained-126",
+          "retained-127",
+          "retained-128",
+          "retained-129",
+          "retained-130",
+          "retained-131",
+          "retained-132",
+          "retained-133",
+          "retained-134",
+          "retained-135",
+          "retained-136",
+          "retained-137",
+          "retained-138",
+          "retained-139",
+          "retained-140",
+          "retained-141",
+          "retained-142",
+          "retained-143",
+          "retained-144",
+          "retained-145",
+          "retained-146",
+          "retained-147",
+          "retained-148",
+          "retained-149",
+          "retained-150",
+          "retained-151",
+          "retained-152",
+          "retained-153",
+          "retained-154",
+          "retained-155",
+          "retained-156",
+          "retained-157",
+          "retained-158",
+          "retained-159",
+          "retained-160",
+          "retained-161",
+          "retained-162",
+          "retained-163",
+          "retained-164",
+          "retained-165",
+          "retained-166",
+          "retained-167",
+          "retained-168",
+          "retained-169",
+          "retained-170",
+          "retained-171",
+          "retained-172",
+          "retained-173",
+          "retained-174",
+          "retained-175",
+          "retained-176",
+          "retained-177",
+          "retained-178",
+          "retained-179",
+          "retained-180",
+          "retained-181",
+          "retained-182",
+          "retained-183",
+          "retained-184",
+          "retained-185",
+          "retained-186",
+          "retained-187",
+          "retained-188",
+          "retained-189",
+          "retained-190",
+          "retained-191",
+          "retained-192",
+          "retained-193",
+          "retained-194",
+          "retained-195",
+          "retained-196",
+          "retained-197",
+          "retained-198",
+          "retained-199",
+          "live-recovery-section"
+        ],
+        "localStyle": [
+          {
+            "property": "display",
+            "value": {
+              "type": "text",
+              "value": "flex"
+            }
+          },
+          {
+            "property": "flex-direction",
+            "value": {
+              "type": "text",
+              "value": "column"
+            }
+          },
+          {
+            "property": "gap",
+            "value": {
+              "type": "text",
+              "value": "20px"
+            }
+          },
+          {
+            "property": "padding",
+            "value": {
+              "type": "text",
+              "value": "40px"
+            }
+          },
+          {
+            "property": "min-height",
+            "value": {
+              "type": "text",
+              "value": "560px"
+            }
+          },
+          {
+            "property": "background-color",
+            "value": {
+              "type": "text",
+              "value": "#ffffff"
+            }
+          },
+          {
+            "property": "color",
+            "value": {
+              "type": "text",
+              "value": "#243047"
+            }
+          },
+          {
+            "property": "font-family",
+            "value": {
+              "type": "text",
+              "value": "system-ui, sans-serif"
+            }
+          }
+        ]
+      },
+      "existing-0": {
+        "kind": "component",
+        "id": "existing-0",
+        "definitionId": "vict.catalog.button",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Continue"
+          },
+          "loading": {
+            "type": "ref",
+            "path": "state.busy"
+          }
+        },
+        "slots": {}
+      },
+      "existing-1": {
+        "kind": "component",
+        "id": "existing-1",
+        "definitionId": "vict.catalog.checkbox",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "I agree to continue"
+          },
+          "checked": {
+            "type": "ref",
+            "path": "state.field_existing-1"
+          }
+        },
+        "outputs": {
+          "checkedChange": {
+            "setState": {
+              "key": "field_existing-1"
+            }
+          }
+        },
+        "slots": {}
+      },
+      "existing-2": {
+        "kind": "component",
+        "id": "existing-2",
+        "definitionId": "vict.catalog.switch",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Enable notifications"
+          },
+          "checked": {
+            "type": "ref",
+            "path": "state.field_existing-2"
+          }
+        },
+        "outputs": {
+          "checkedChange": {
+            "setState": {
+              "key": "field_existing-2"
+            }
+          }
+        },
+        "slots": {}
+      },
+      "existing-3": {
+        "kind": "component",
+        "id": "existing-3",
+        "definitionId": "vict.catalog.dialog",
+        "props": {
+          "title": {
+            "type": "literal",
+            "value": "More details"
+          },
+          "open": {
+            "type": "literal",
+            "value": false
+          }
+        },
+        "slots": {
+          "body": {
+            "name": "body",
+            "children": [
+              "existing-3-body-1"
+            ]
+          }
+        }
+      },
+      "existing-3-body-1": {
+        "kind": "element",
+        "id": "existing-3-body-1",
+        "tag": "p",
+        "children": [
+          "existing-3-body-1-text"
+        ],
+        "localStyle": []
+      },
+      "existing-3-body-1-text": {
+        "kind": "text",
+        "id": "existing-3-body-1-text",
+        "content": {
+          "type": "literal",
+          "value": "Add your details here."
+        }
+      },
+      "existing-4": {
+        "kind": "component",
+        "id": "existing-4",
+        "definitionId": "vict.catalog.select",
+        "props": {},
+        "slots": {
+          "items": {
+            "name": "items",
+            "children": [
+              "existing-4-items-1",
+              "existing-4-items-2"
+            ]
+          }
+        }
+      },
+      "existing-4-items-1": {
+        "kind": "component",
+        "id": "existing-4-items-1",
+        "definitionId": "vict.catalog.select-item",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "First option"
+          },
+          "value": {
+            "type": "literal",
+            "value": "first"
+          }
+        },
+        "slots": {}
+      },
+      "existing-4-items-2": {
+        "kind": "component",
+        "id": "existing-4-items-2",
+        "definitionId": "vict.catalog.select-item",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Second option"
+          },
+          "value": {
+            "type": "literal",
+            "value": "second"
+          }
+        },
+        "slots": {}
+      },
+      "existing-5": {
+        "kind": "component",
+        "id": "existing-5",
+        "definitionId": "vict.catalog.slider",
+        "props": {
+          "value": {
+            "type": "ref",
+            "path": "state.catalog_existing-5_value"
+          },
+          "label": {
+            "type": "literal",
+            "value": "Slider"
+          }
+        },
+        "outputs": {
+          "valueChange": {
+            "setState": {
+              "key": "catalog_existing-5_value"
+            }
+          }
+        },
+        "slots": {}
+      },
+      "existing-6": {
+        "kind": "component",
+        "id": "existing-6",
+        "definitionId": "vict.catalog.toggle",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Toggle"
+          }
+        },
+        "slots": {}
+      },
+      "existing-7": {
+        "kind": "component",
+        "id": "existing-7",
+        "definitionId": "vict.catalog.accordion",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Accordion"
+          }
+        },
+        "slots": {
+          "items": {
+            "name": "items",
+            "children": [
+              "existing-7-items-1"
+            ]
+          }
+        }
+      },
+      "existing-7-items-1": {
+        "kind": "component",
+        "id": "existing-7-items-1",
+        "definitionId": "vict.catalog.accordion-item",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Details"
+          },
+          "value": {
+            "type": "literal",
+            "value": "first"
+          }
+        },
+        "slots": {
+          "content": {
+            "name": "content",
+            "children": [
+              "existing-7-items-1-content-1"
+            ]
+          }
+        }
+      },
+      "existing-7-items-1-content-1": {
+        "kind": "element",
+        "id": "existing-7-items-1-content-1",
+        "tag": "p",
+        "children": [
+          "existing-7-items-1-content-1-text"
+        ],
+        "localStyle": []
+      },
+      "existing-7-items-1-content-1-text": {
+        "kind": "text",
+        "id": "existing-7-items-1-content-1-text",
+        "content": {
+          "type": "literal",
+          "value": "Expandable content"
+        }
+      },
+      "existing-8": {
+        "kind": "component",
+        "id": "existing-8",
+        "definitionId": "vict.catalog.tabs",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Tabs"
+          },
+          "value": {
+            "type": "literal",
+            "value": "first"
+          }
+        },
+        "slots": {
+          "tabs": {
+            "name": "tabs",
+            "children": [
+              "existing-8-tabs-1"
+            ]
+          },
+          "panels": {
+            "name": "panels",
+            "children": [
+              "existing-8-panels-1"
+            ]
+          }
+        }
+      },
+      "existing-8-tabs-1": {
+        "kind": "component",
+        "id": "existing-8-tabs-1",
+        "definitionId": "vict.catalog.tabs-trigger",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "First tab"
+          },
+          "value": {
+            "type": "literal",
+            "value": "first"
+          }
+        },
+        "slots": {}
+      },
+      "existing-8-panels-1": {
+        "kind": "component",
+        "id": "existing-8-panels-1",
+        "definitionId": "vict.catalog.tabs-panel",
+        "props": {
+          "value": {
+            "type": "literal",
+            "value": "first"
+          }
+        },
+        "slots": {
+          "content": {
+            "name": "content",
+            "children": [
+              "existing-8-panels-1-content-1"
+            ]
+          }
+        }
+      },
+      "existing-8-panels-1-content-1": {
+        "kind": "element",
+        "id": "existing-8-panels-1-content-1",
+        "tag": "p",
+        "children": [
+          "existing-8-panels-1-content-1-text"
+        ],
+        "localStyle": []
+      },
+      "existing-8-panels-1-content-1-text": {
+        "kind": "text",
+        "id": "existing-8-panels-1-content-1-text",
+        "content": {
+          "type": "literal",
+          "value": "Tab content"
+        }
+      },
+      "existing-9": {
+        "kind": "component",
+        "id": "existing-9",
+        "definitionId": "vict.catalog.progress",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Progress"
+          },
+          "value": {
+            "type": "literal",
+            "value": 40
+          }
+        },
+        "slots": {}
+      },
+      "existing-10": {
+        "kind": "component",
+        "id": "existing-10",
+        "definitionId": "vict.catalog.popover",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Popover"
+          },
+          "title": {
+            "type": "literal",
+            "value": "Popover"
+          },
+          "description": {
+            "type": "literal",
+            "value": "Add your own content."
+          }
+        },
+        "slots": {
+          "content": {
+            "name": "content",
+            "children": [
+              "existing-10-content-1"
+            ]
+          }
+        }
+      },
+      "existing-10-content-1": {
+        "kind": "element",
+        "id": "existing-10-content-1",
+        "tag": "p",
+        "children": [
+          "existing-10-content-1-text"
+        ],
+        "localStyle": []
+      },
+      "existing-10-content-1-text": {
+        "kind": "text",
+        "id": "existing-10-content-1-text",
+        "content": {
+          "type": "literal",
+          "value": "Your content"
+        }
+      },
+      "existing-11": {
+        "kind": "component",
+        "id": "existing-11",
+        "definitionId": "vict.catalog.separator",
+        "props": {
+          "orientation": {
+            "type": "literal",
+            "value": "horizontal"
+          },
+          "decorative": {
+            "type": "literal",
+            "value": true
+          }
+        },
+        "slots": {}
+      },
+      "retained-0": {
+        "kind": "text",
+        "id": "retained-0",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 0"
+        }
+      },
+      "retained-1": {
+        "kind": "text",
+        "id": "retained-1",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 1"
+        }
+      },
+      "retained-2": {
+        "kind": "text",
+        "id": "retained-2",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 2"
+        }
+      },
+      "retained-3": {
+        "kind": "text",
+        "id": "retained-3",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 3"
+        }
+      },
+      "retained-4": {
+        "kind": "text",
+        "id": "retained-4",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 4"
+        }
+      },
+      "retained-5": {
+        "kind": "text",
+        "id": "retained-5",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 5"
+        }
+      },
+      "retained-6": {
+        "kind": "text",
+        "id": "retained-6",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 6"
+        }
+      },
+      "retained-7": {
+        "kind": "text",
+        "id": "retained-7",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 7"
+        }
+      },
+      "retained-8": {
+        "kind": "text",
+        "id": "retained-8",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 8"
+        }
+      },
+      "retained-9": {
+        "kind": "text",
+        "id": "retained-9",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 9"
+        }
+      },
+      "retained-10": {
+        "kind": "text",
+        "id": "retained-10",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 10"
+        }
+      },
+      "retained-11": {
+        "kind": "text",
+        "id": "retained-11",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 11"
+        }
+      },
+      "retained-12": {
+        "kind": "text",
+        "id": "retained-12",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 12"
+        }
+      },
+      "retained-13": {
+        "kind": "text",
+        "id": "retained-13",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 13"
+        }
+      },
+      "retained-14": {
+        "kind": "text",
+        "id": "retained-14",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 14"
+        }
+      },
+      "retained-15": {
+        "kind": "text",
+        "id": "retained-15",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 15"
+        }
+      },
+      "retained-16": {
+        "kind": "text",
+        "id": "retained-16",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 16"
+        }
+      },
+      "retained-17": {
+        "kind": "text",
+        "id": "retained-17",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 17"
+        }
+      },
+      "retained-18": {
+        "kind": "text",
+        "id": "retained-18",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 18"
+        }
+      },
+      "retained-19": {
+        "kind": "text",
+        "id": "retained-19",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 19"
+        }
+      },
+      "retained-20": {
+        "kind": "text",
+        "id": "retained-20",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 20"
+        }
+      },
+      "retained-21": {
+        "kind": "text",
+        "id": "retained-21",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 21"
+        }
+      },
+      "retained-22": {
+        "kind": "text",
+        "id": "retained-22",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 22"
+        }
+      },
+      "retained-23": {
+        "kind": "text",
+        "id": "retained-23",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 23"
+        }
+      },
+      "retained-24": {
+        "kind": "text",
+        "id": "retained-24",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 24"
+        }
+      },
+      "retained-25": {
+        "kind": "text",
+        "id": "retained-25",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 25"
+        }
+      },
+      "retained-26": {
+        "kind": "text",
+        "id": "retained-26",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 26"
+        }
+      },
+      "retained-27": {
+        "kind": "text",
+        "id": "retained-27",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 27"
+        }
+      },
+      "retained-28": {
+        "kind": "text",
+        "id": "retained-28",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 28"
+        }
+      },
+      "retained-29": {
+        "kind": "text",
+        "id": "retained-29",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 29"
+        }
+      },
+      "retained-30": {
+        "kind": "text",
+        "id": "retained-30",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 30"
+        }
+      },
+      "retained-31": {
+        "kind": "text",
+        "id": "retained-31",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 31"
+        }
+      },
+      "retained-32": {
+        "kind": "text",
+        "id": "retained-32",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 32"
+        }
+      },
+      "retained-33": {
+        "kind": "text",
+        "id": "retained-33",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 33"
+        }
+      },
+      "retained-34": {
+        "kind": "text",
+        "id": "retained-34",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 34"
+        }
+      },
+      "retained-35": {
+        "kind": "text",
+        "id": "retained-35",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 35"
+        }
+      },
+      "retained-36": {
+        "kind": "text",
+        "id": "retained-36",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 36"
+        }
+      },
+      "retained-37": {
+        "kind": "text",
+        "id": "retained-37",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 37"
+        }
+      },
+      "retained-38": {
+        "kind": "text",
+        "id": "retained-38",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 38"
+        }
+      },
+      "retained-39": {
+        "kind": "text",
+        "id": "retained-39",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 39"
+        }
+      },
+      "retained-40": {
+        "kind": "text",
+        "id": "retained-40",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 40"
+        }
+      },
+      "retained-41": {
+        "kind": "text",
+        "id": "retained-41",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 41"
+        }
+      },
+      "retained-42": {
+        "kind": "text",
+        "id": "retained-42",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 42"
+        }
+      },
+      "retained-43": {
+        "kind": "text",
+        "id": "retained-43",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 43"
+        }
+      },
+      "retained-44": {
+        "kind": "text",
+        "id": "retained-44",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 44"
+        }
+      },
+      "retained-45": {
+        "kind": "text",
+        "id": "retained-45",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 45"
+        }
+      },
+      "retained-46": {
+        "kind": "text",
+        "id": "retained-46",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 46"
+        }
+      },
+      "retained-47": {
+        "kind": "text",
+        "id": "retained-47",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 47"
+        }
+      },
+      "retained-48": {
+        "kind": "text",
+        "id": "retained-48",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 48"
+        }
+      },
+      "retained-49": {
+        "kind": "text",
+        "id": "retained-49",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 49"
+        }
+      },
+      "retained-50": {
+        "kind": "text",
+        "id": "retained-50",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 50"
+        }
+      },
+      "retained-51": {
+        "kind": "text",
+        "id": "retained-51",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 51"
+        }
+      },
+      "retained-52": {
+        "kind": "text",
+        "id": "retained-52",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 52"
+        }
+      },
+      "retained-53": {
+        "kind": "text",
+        "id": "retained-53",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 53"
+        }
+      },
+      "retained-54": {
+        "kind": "text",
+        "id": "retained-54",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 54"
+        }
+      },
+      "retained-55": {
+        "kind": "text",
+        "id": "retained-55",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 55"
+        }
+      },
+      "retained-56": {
+        "kind": "text",
+        "id": "retained-56",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 56"
+        }
+      },
+      "retained-57": {
+        "kind": "text",
+        "id": "retained-57",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 57"
+        }
+      },
+      "retained-58": {
+        "kind": "text",
+        "id": "retained-58",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 58"
+        }
+      },
+      "retained-59": {
+        "kind": "text",
+        "id": "retained-59",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 59"
+        }
+      },
+      "retained-60": {
+        "kind": "text",
+        "id": "retained-60",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 60"
+        }
+      },
+      "retained-61": {
+        "kind": "text",
+        "id": "retained-61",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 61"
+        }
+      },
+      "retained-62": {
+        "kind": "text",
+        "id": "retained-62",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 62"
+        }
+      },
+      "retained-63": {
+        "kind": "text",
+        "id": "retained-63",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 63"
+        }
+      },
+      "retained-64": {
+        "kind": "text",
+        "id": "retained-64",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 64"
+        }
+      },
+      "retained-65": {
+        "kind": "text",
+        "id": "retained-65",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 65"
+        }
+      },
+      "retained-66": {
+        "kind": "text",
+        "id": "retained-66",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 66"
+        }
+      },
+      "retained-67": {
+        "kind": "text",
+        "id": "retained-67",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 67"
+        }
+      },
+      "retained-68": {
+        "kind": "text",
+        "id": "retained-68",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 68"
+        }
+      },
+      "retained-69": {
+        "kind": "text",
+        "id": "retained-69",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 69"
+        }
+      },
+      "retained-70": {
+        "kind": "text",
+        "id": "retained-70",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 70"
+        }
+      },
+      "retained-71": {
+        "kind": "text",
+        "id": "retained-71",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 71"
+        }
+      },
+      "retained-72": {
+        "kind": "text",
+        "id": "retained-72",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 72"
+        }
+      },
+      "retained-73": {
+        "kind": "text",
+        "id": "retained-73",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 73"
+        }
+      },
+      "retained-74": {
+        "kind": "text",
+        "id": "retained-74",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 74"
+        }
+      },
+      "retained-75": {
+        "kind": "text",
+        "id": "retained-75",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 75"
+        }
+      },
+      "retained-76": {
+        "kind": "text",
+        "id": "retained-76",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 76"
+        }
+      },
+      "retained-77": {
+        "kind": "text",
+        "id": "retained-77",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 77"
+        }
+      },
+      "retained-78": {
+        "kind": "text",
+        "id": "retained-78",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 78"
+        }
+      },
+      "retained-79": {
+        "kind": "text",
+        "id": "retained-79",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 79"
+        }
+      },
+      "retained-80": {
+        "kind": "text",
+        "id": "retained-80",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 80"
+        }
+      },
+      "retained-81": {
+        "kind": "text",
+        "id": "retained-81",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 81"
+        }
+      },
+      "retained-82": {
+        "kind": "text",
+        "id": "retained-82",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 82"
+        }
+      },
+      "retained-83": {
+        "kind": "text",
+        "id": "retained-83",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 83"
+        }
+      },
+      "retained-84": {
+        "kind": "text",
+        "id": "retained-84",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 84"
+        }
+      },
+      "retained-85": {
+        "kind": "text",
+        "id": "retained-85",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 85"
+        }
+      },
+      "retained-86": {
+        "kind": "text",
+        "id": "retained-86",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 86"
+        }
+      },
+      "retained-87": {
+        "kind": "text",
+        "id": "retained-87",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 87"
+        }
+      },
+      "retained-88": {
+        "kind": "text",
+        "id": "retained-88",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 88"
+        }
+      },
+      "retained-89": {
+        "kind": "text",
+        "id": "retained-89",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 89"
+        }
+      },
+      "retained-90": {
+        "kind": "text",
+        "id": "retained-90",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 90"
+        }
+      },
+      "retained-91": {
+        "kind": "text",
+        "id": "retained-91",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 91"
+        }
+      },
+      "retained-92": {
+        "kind": "text",
+        "id": "retained-92",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 92"
+        }
+      },
+      "retained-93": {
+        "kind": "text",
+        "id": "retained-93",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 93"
+        }
+      },
+      "retained-94": {
+        "kind": "text",
+        "id": "retained-94",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 94"
+        }
+      },
+      "retained-95": {
+        "kind": "text",
+        "id": "retained-95",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 95"
+        }
+      },
+      "retained-96": {
+        "kind": "text",
+        "id": "retained-96",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 96"
+        }
+      },
+      "retained-97": {
+        "kind": "text",
+        "id": "retained-97",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 97"
+        }
+      },
+      "retained-98": {
+        "kind": "text",
+        "id": "retained-98",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 98"
+        }
+      },
+      "retained-99": {
+        "kind": "text",
+        "id": "retained-99",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 99"
+        }
+      },
+      "retained-100": {
+        "kind": "text",
+        "id": "retained-100",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 100"
+        }
+      },
+      "retained-101": {
+        "kind": "text",
+        "id": "retained-101",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 101"
+        }
+      },
+      "retained-102": {
+        "kind": "text",
+        "id": "retained-102",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 102"
+        }
+      },
+      "retained-103": {
+        "kind": "text",
+        "id": "retained-103",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 103"
+        }
+      },
+      "retained-104": {
+        "kind": "text",
+        "id": "retained-104",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 104"
+        }
+      },
+      "retained-105": {
+        "kind": "text",
+        "id": "retained-105",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 105"
+        }
+      },
+      "retained-106": {
+        "kind": "text",
+        "id": "retained-106",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 106"
+        }
+      },
+      "retained-107": {
+        "kind": "text",
+        "id": "retained-107",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 107"
+        }
+      },
+      "retained-108": {
+        "kind": "text",
+        "id": "retained-108",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 108"
+        }
+      },
+      "retained-109": {
+        "kind": "text",
+        "id": "retained-109",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 109"
+        }
+      },
+      "retained-110": {
+        "kind": "text",
+        "id": "retained-110",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 110"
+        }
+      },
+      "retained-111": {
+        "kind": "text",
+        "id": "retained-111",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 111"
+        }
+      },
+      "retained-112": {
+        "kind": "text",
+        "id": "retained-112",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 112"
+        }
+      },
+      "retained-113": {
+        "kind": "text",
+        "id": "retained-113",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 113"
+        }
+      },
+      "retained-114": {
+        "kind": "text",
+        "id": "retained-114",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 114"
+        }
+      },
+      "retained-115": {
+        "kind": "text",
+        "id": "retained-115",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 115"
+        }
+      },
+      "retained-116": {
+        "kind": "text",
+        "id": "retained-116",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 116"
+        }
+      },
+      "retained-117": {
+        "kind": "text",
+        "id": "retained-117",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 117"
+        }
+      },
+      "retained-118": {
+        "kind": "text",
+        "id": "retained-118",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 118"
+        }
+      },
+      "retained-119": {
+        "kind": "text",
+        "id": "retained-119",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 119"
+        }
+      },
+      "retained-120": {
+        "kind": "text",
+        "id": "retained-120",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 120"
+        }
+      },
+      "retained-121": {
+        "kind": "text",
+        "id": "retained-121",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 121"
+        }
+      },
+      "retained-122": {
+        "kind": "text",
+        "id": "retained-122",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 122"
+        }
+      },
+      "retained-123": {
+        "kind": "text",
+        "id": "retained-123",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 123"
+        }
+      },
+      "retained-124": {
+        "kind": "text",
+        "id": "retained-124",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 124"
+        }
+      },
+      "retained-125": {
+        "kind": "text",
+        "id": "retained-125",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 125"
+        }
+      },
+      "retained-126": {
+        "kind": "text",
+        "id": "retained-126",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 126"
+        }
+      },
+      "retained-127": {
+        "kind": "text",
+        "id": "retained-127",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 127"
+        }
+      },
+      "retained-128": {
+        "kind": "text",
+        "id": "retained-128",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 128"
+        }
+      },
+      "retained-129": {
+        "kind": "text",
+        "id": "retained-129",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 129"
+        }
+      },
+      "retained-130": {
+        "kind": "text",
+        "id": "retained-130",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 130"
+        }
+      },
+      "retained-131": {
+        "kind": "text",
+        "id": "retained-131",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 131"
+        }
+      },
+      "retained-132": {
+        "kind": "text",
+        "id": "retained-132",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 132"
+        }
+      },
+      "retained-133": {
+        "kind": "text",
+        "id": "retained-133",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 133"
+        }
+      },
+      "retained-134": {
+        "kind": "text",
+        "id": "retained-134",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 134"
+        }
+      },
+      "retained-135": {
+        "kind": "text",
+        "id": "retained-135",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 135"
+        }
+      },
+      "retained-136": {
+        "kind": "text",
+        "id": "retained-136",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 136"
+        }
+      },
+      "retained-137": {
+        "kind": "text",
+        "id": "retained-137",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 137"
+        }
+      },
+      "retained-138": {
+        "kind": "text",
+        "id": "retained-138",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 138"
+        }
+      },
+      "retained-139": {
+        "kind": "text",
+        "id": "retained-139",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 139"
+        }
+      },
+      "retained-140": {
+        "kind": "text",
+        "id": "retained-140",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 140"
+        }
+      },
+      "retained-141": {
+        "kind": "text",
+        "id": "retained-141",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 141"
+        }
+      },
+      "retained-142": {
+        "kind": "text",
+        "id": "retained-142",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 142"
+        }
+      },
+      "retained-143": {
+        "kind": "text",
+        "id": "retained-143",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 143"
+        }
+      },
+      "retained-144": {
+        "kind": "text",
+        "id": "retained-144",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 144"
+        }
+      },
+      "retained-145": {
+        "kind": "text",
+        "id": "retained-145",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 145"
+        }
+      },
+      "retained-146": {
+        "kind": "text",
+        "id": "retained-146",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 146"
+        }
+      },
+      "retained-147": {
+        "kind": "text",
+        "id": "retained-147",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 147"
+        }
+      },
+      "retained-148": {
+        "kind": "text",
+        "id": "retained-148",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 148"
+        }
+      },
+      "retained-149": {
+        "kind": "text",
+        "id": "retained-149",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 149"
+        }
+      },
+      "retained-150": {
+        "kind": "text",
+        "id": "retained-150",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 150"
+        }
+      },
+      "retained-151": {
+        "kind": "text",
+        "id": "retained-151",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 151"
+        }
+      },
+      "retained-152": {
+        "kind": "text",
+        "id": "retained-152",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 152"
+        }
+      },
+      "retained-153": {
+        "kind": "text",
+        "id": "retained-153",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 153"
+        }
+      },
+      "retained-154": {
+        "kind": "text",
+        "id": "retained-154",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 154"
+        }
+      },
+      "retained-155": {
+        "kind": "text",
+        "id": "retained-155",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 155"
+        }
+      },
+      "retained-156": {
+        "kind": "text",
+        "id": "retained-156",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 156"
+        }
+      },
+      "retained-157": {
+        "kind": "text",
+        "id": "retained-157",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 157"
+        }
+      },
+      "retained-158": {
+        "kind": "text",
+        "id": "retained-158",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 158"
+        }
+      },
+      "retained-159": {
+        "kind": "text",
+        "id": "retained-159",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 159"
+        }
+      },
+      "retained-160": {
+        "kind": "text",
+        "id": "retained-160",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 160"
+        }
+      },
+      "retained-161": {
+        "kind": "text",
+        "id": "retained-161",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 161"
+        }
+      },
+      "retained-162": {
+        "kind": "text",
+        "id": "retained-162",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 162"
+        }
+      },
+      "retained-163": {
+        "kind": "text",
+        "id": "retained-163",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 163"
+        }
+      },
+      "retained-164": {
+        "kind": "text",
+        "id": "retained-164",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 164"
+        }
+      },
+      "retained-165": {
+        "kind": "text",
+        "id": "retained-165",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 165"
+        }
+      },
+      "retained-166": {
+        "kind": "text",
+        "id": "retained-166",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 166"
+        }
+      },
+      "retained-167": {
+        "kind": "text",
+        "id": "retained-167",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 167"
+        }
+      },
+      "retained-168": {
+        "kind": "text",
+        "id": "retained-168",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 168"
+        }
+      },
+      "retained-169": {
+        "kind": "text",
+        "id": "retained-169",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 169"
+        }
+      },
+      "retained-170": {
+        "kind": "text",
+        "id": "retained-170",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 170"
+        }
+      },
+      "retained-171": {
+        "kind": "text",
+        "id": "retained-171",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 171"
+        }
+      },
+      "retained-172": {
+        "kind": "text",
+        "id": "retained-172",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 172"
+        }
+      },
+      "retained-173": {
+        "kind": "text",
+        "id": "retained-173",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 173"
+        }
+      },
+      "retained-174": {
+        "kind": "text",
+        "id": "retained-174",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 174"
+        }
+      },
+      "retained-175": {
+        "kind": "text",
+        "id": "retained-175",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 175"
+        }
+      },
+      "retained-176": {
+        "kind": "text",
+        "id": "retained-176",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 176"
+        }
+      },
+      "retained-177": {
+        "kind": "text",
+        "id": "retained-177",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 177"
+        }
+      },
+      "retained-178": {
+        "kind": "text",
+        "id": "retained-178",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 178"
+        }
+      },
+      "retained-179": {
+        "kind": "text",
+        "id": "retained-179",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 179"
+        }
+      },
+      "retained-180": {
+        "kind": "text",
+        "id": "retained-180",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 180"
+        }
+      },
+      "retained-181": {
+        "kind": "text",
+        "id": "retained-181",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 181"
+        }
+      },
+      "retained-182": {
+        "kind": "text",
+        "id": "retained-182",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 182"
+        }
+      },
+      "retained-183": {
+        "kind": "text",
+        "id": "retained-183",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 183"
+        }
+      },
+      "retained-184": {
+        "kind": "text",
+        "id": "retained-184",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 184"
+        }
+      },
+      "retained-185": {
+        "kind": "text",
+        "id": "retained-185",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 185"
+        }
+      },
+      "retained-186": {
+        "kind": "text",
+        "id": "retained-186",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 186"
+        }
+      },
+      "retained-187": {
+        "kind": "text",
+        "id": "retained-187",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 187"
+        }
+      },
+      "retained-188": {
+        "kind": "text",
+        "id": "retained-188",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 188"
+        }
+      },
+      "retained-189": {
+        "kind": "text",
+        "id": "retained-189",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 189"
+        }
+      },
+      "retained-190": {
+        "kind": "text",
+        "id": "retained-190",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 190"
+        }
+      },
+      "retained-191": {
+        "kind": "text",
+        "id": "retained-191",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 191"
+        }
+      },
+      "retained-192": {
+        "kind": "text",
+        "id": "retained-192",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 192"
+        }
+      },
+      "retained-193": {
+        "kind": "text",
+        "id": "retained-193",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 193"
+        }
+      },
+      "retained-194": {
+        "kind": "text",
+        "id": "retained-194",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 194"
+        }
+      },
+      "retained-195": {
+        "kind": "text",
+        "id": "retained-195",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 195"
+        }
+      },
+      "retained-196": {
+        "kind": "text",
+        "id": "retained-196",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 196"
+        }
+      },
+      "retained-197": {
+        "kind": "text",
+        "id": "retained-197",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 197"
+        }
+      },
+      "retained-198": {
+        "kind": "text",
+        "id": "retained-198",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 198"
+        }
+      },
+      "retained-199": {
+        "kind": "text",
+        "id": "retained-199",
+        "content": {
+          "type": "literal",
+          "value": "Retained synthetic content 199"
+        }
+      },
+      "live-recovery-section": {
+        "kind": "element",
+        "id": "live-recovery-section",
+        "tag": "section",
+        "attributes": {
+          "aria-label": "Live recovery form"
+        },
+        "children": [
+          "live-label-email",
+          "live-email",
+          "live-label-name",
+          "live-name",
+          "live-label-consent",
+          "live-consent"
+        ],
+        "localStyle": [
+          {
+            "property": "display",
+            "value": {
+              "type": "text",
+              "value": "flex"
+            }
+          },
+          {
+            "property": "flex-direction",
+            "value": {
+              "type": "text",
+              "value": "column"
+            }
+          },
+          {
+            "property": "gap",
+            "value": {
+              "type": "text",
+              "value": "16px"
+            }
+          },
+          {
+            "property": "padding",
+            "value": {
+              "type": "text",
+              "value": "24px"
+            }
+          },
+          {
+            "property": "min-height",
+            "value": {
+              "type": "text",
+              "value": "100px"
+            }
+          },
+          {
+            "property": "background-color",
+            "value": {
+              "type": "text",
+              "value": "#f5f7fb"
+            }
+          },
+          {
+            "property": "border-radius",
+            "value": {
+              "type": "text",
+              "value": "12px"
+            }
+          }
+        ]
+      },
+      "live-label-email": {
+        "kind": "component",
+        "id": "live-label-email",
+        "definitionId": "vict.catalog.label",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Email"
+          },
+          "for": {
+            "type": "literal",
+            "value": "live-email"
+          }
+        },
+        "slots": {}
+      },
+      "live-email": {
+        "kind": "element",
+        "id": "live-email",
+        "tag": "input",
+        "children": [],
+        "attributes": {
+          "type": "email",
+          "aria-label": "Email",
+          "placeholder": "you@example.com",
+          "value": {
+            "type": "ref",
+            "path": "state.recovery-email"
+          },
+          "id": "live-email"
+        },
+        "interactions": [
+          {
+            "on": "change",
+            "action": "setState",
+            "key": "recovery-email",
+            "value": {
+              "type": "ref",
+              "path": "state.recovery-email"
+            }
+          }
+        ],
+        "localStyle": [
+          {
+            "property": "padding",
+            "value": {
+              "type": "text",
+              "value": "12px"
+            }
+          },
+          {
+            "property": "border-radius",
+            "value": {
+              "type": "text",
+              "value": "8px"
+            }
+          },
+          {
+            "property": "border",
+            "value": {
+              "type": "text",
+              "value": "1px solid #cbd3e1"
+            }
+          },
+          {
+            "property": "font-size",
+            "value": {
+              "type": "text",
+              "value": "16px"
+            }
+          },
+          {
+            "property": "width",
+            "value": {
+              "type": "text",
+              "value": "100%"
+            }
+          },
+          {
+            "property": "box-sizing",
+            "value": {
+              "type": "text",
+              "value": "border-box"
+            }
+          }
+        ]
+      },
+      "live-label-name": {
+        "kind": "component",
+        "id": "live-label-name",
+        "definitionId": "vict.catalog.label",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Name"
+          },
+          "for": {
+            "type": "literal",
+            "value": "live-name"
+          }
+        },
+        "slots": {}
+      },
+      "live-name": {
+        "kind": "element",
+        "id": "live-name",
+        "tag": "input",
+        "children": [],
+        "attributes": {
+          "type": "text",
+          "aria-label": "Name",
+          "placeholder": "Full name",
+          "value": {
+            "type": "ref",
+            "path": "state.recovery-name"
+          },
+          "id": "live-name"
+        },
+        "interactions": [
+          {
+            "on": "change",
+            "action": "setState",
+            "key": "recovery-name",
+            "value": {
+              "type": "ref",
+              "path": "state.recovery-name"
+            }
+          }
+        ],
+        "localStyle": [
+          {
+            "property": "padding",
+            "value": {
+              "type": "text",
+              "value": "12px"
+            }
+          },
+          {
+            "property": "border-radius",
+            "value": {
+              "type": "text",
+              "value": "8px"
+            }
+          },
+          {
+            "property": "border",
+            "value": {
+              "type": "text",
+              "value": "1px solid #cbd3e1"
+            }
+          },
+          {
+            "property": "font-size",
+            "value": {
+              "type": "text",
+              "value": "16px"
+            }
+          },
+          {
+            "property": "width",
+            "value": {
+              "type": "text",
+              "value": "100%"
+            }
+          },
+          {
+            "property": "box-sizing",
+            "value": {
+              "type": "text",
+              "value": "border-box"
+            }
+          }
+        ]
+      },
+      "live-label-consent": {
+        "kind": "component",
+        "id": "live-label-consent",
+        "definitionId": "vict.catalog.label",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Consent"
+          },
+          "for": {
+            "type": "literal",
+            "value": "live-consent"
+          }
+        },
+        "slots": {}
+      },
+      "live-consent": {
+        "kind": "component",
+        "id": "live-consent",
+        "definitionId": "vict.catalog.checkbox",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Consent"
+          },
+          "checked": {
+            "type": "ref",
+            "path": "state.recovery-consent"
+          }
+        },
+        "outputs": {
+          "checkedChange": {
+            "setState": {
+              "key": "recovery-consent"
+            }
+          }
+        },
+        "slots": {}
+      }
+    },
+    "componentDefinitions": {},
+    "styleSources": {},
+    "assets": {},
+    "tokens": {},
+    "conditions": {
+      "compact": {
+        "id": "compact",
+        "kind": "container",
+        "name": "studio-screen",
+        "query": "(max-width: 600px)"
+      }
+    },
+    "localState": {
+      "message": {
+        "key": "message",
+        "type": "string",
+        "initial": "Hello from my screen"
+      },
+      "accepted": {
+        "key": "accepted",
+        "type": "boolean",
+        "initial": false
+      },
+      "dialogOpen": {
+        "key": "dialogOpen",
+        "type": "boolean",
+        "initial": false
+      },
+      "busy": {
+        "key": "busy",
+        "type": "boolean",
+        "initial": false
+      },
+      "actionError": {
+        "key": "actionError",
+        "type": "string",
+        "initial": ""
+      },
+      "actionResult": {
+        "key": "actionResult",
+        "type": "string",
+        "initial": ""
+      },
+      "field_existing-1": {
+        "key": "field_existing-1",
+        "type": "boolean",
+        "initial": false
+      },
+      "field_existing-2": {
+        "key": "field_existing-2",
+        "type": "boolean",
+        "initial": false
+      },
+      "catalog_existing-5_value": {
+        "key": "catalog_existing-5_value",
+        "type": "numberList",
+        "initial": [
+          25
+        ]
+      },
+      "input_live-email": {
+        "key": "input_live-email",
+        "type": "string",
+        "initial": ""
+      },
+      "recovery-email": {
+        "key": "recovery-email",
+        "type": "string",
+        "initial": ""
+      },
+      "input_live-name": {
+        "key": "input_live-name",
+        "type": "string",
+        "initial": ""
+      },
+      "recovery-name": {
+        "key": "recovery-name",
+        "type": "string",
+        "initial": ""
+      },
+      "recovery-consent": {
+        "key": "recovery-consent",
+        "type": "boolean",
+        "initial": false
+      },
+      "field_live-consent": {
+        "key": "field_live-consent",
+        "type": "boolean",
+        "initial": false
+      }
+    }
+  }
+}

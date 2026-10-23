@@ -1,0 +1,5280 @@
+{
+  "schema": "vict.ui-document@1",
+  "id": "live-completion",
+  "revision": "r1",
+  "root": "screen",
+  "nodes": {
+    "screen": {
+      "kind": "element",
+      "id": "screen",
+      "tag": "main",
+      "attributes": {
+        "aria-label": "Synthetic mixed recovery fixture"
+      },
+      "children": [
+        "hero-section",
+        "nav-section",
+        "forms-section",
+        "data-section",
+        "dates-section",
+        "overlays-section",
+        "retained-20",
+        "retained-21",
+        "retained-22",
+        "retained-23",
+        "retained-24",
+        "retained-25",
+        "retained-26",
+        "retained-27",
+        "retained-28",
+        "retained-29",
+        "retained-30",
+        "retained-31",
+        "retained-32",
+        "retained-33",
+        "retained-34",
+        "retained-35",
+        "retained-36",
+        "retained-37",
+        "retained-38",
+        "retained-39",
+        "retained-40",
+        "retained-41",
+        "retained-42",
+        "retained-43",
+        "retained-44",
+        "retained-45",
+        "retained-46",
+        "retained-47",
+        "retained-48",
+        "retained-49",
+        "retained-50",
+        "retained-51",
+        "retained-52",
+        "retained-53",
+        "retained-54",
+        "retained-55",
+        "retained-56",
+        "retained-57",
+        "retained-58",
+        "retained-59",
+        "retained-60",
+        "retained-61",
+        "retained-62",
+        "retained-63",
+        "retained-64",
+        "retained-65",
+        "retained-66",
+        "retained-67",
+        "retained-68",
+        "retained-69",
+        "retained-70",
+        "retained-71",
+        "retained-72",
+        "retained-73",
+        "retained-74",
+        "retained-75",
+        "retained-76",
+        "retained-77",
+        "retained-78",
+        "retained-79",
+        "retained-80",
+        "retained-81",
+        "retained-82",
+        "retained-83",
+        "retained-84",
+        "retained-85",
+        "retained-86",
+        "retained-87",
+        "retained-88",
+        "retained-89",
+        "retained-90",
+        "retained-91",
+        "retained-92",
+        "retained-93",
+        "retained-94",
+        "retained-95",
+        "retained-96",
+        "retained-97",
+        "retained-98",
+        "retained-99",
+        "retained-100",
+        "retained-101",
+        "retained-102",
+        "retained-103",
+        "retained-104",
+        "retained-105",
+        "retained-106",
+        "retained-107",
+        "retained-108",
+        "retained-109",
+        "retained-110",
+        "retained-111",
+        "retained-112",
+        "retained-113",
+        "retained-114",
+        "retained-115",
+        "retained-116",
+        "retained-117",
+        "retained-118",
+        "retained-119",
+        "retained-120",
+        "retained-121",
+        "retained-122",
+        "retained-123",
+        "retained-124",
+        "retained-125",
+        "retained-126",
+        "retained-127",
+        "retained-128",
+        "retained-129",
+        "retained-130",
+        "retained-131",
+        "retained-132",
+        "retained-133",
+        "retained-134",
+        "retained-135",
+        "retained-136",
+        "retained-137",
+        "retained-138",
+        "retained-139",
+        "retained-140",
+        "retained-141",
+        "retained-142",
+        "retained-143",
+        "retained-144",
+        "retained-145",
+        "retained-146",
+        "retained-147",
+        "retained-148",
+        "retained-149",
+        "retained-150",
+        "retained-151",
+        "retained-152",
+        "retained-153",
+        "retained-154",
+        "retained-155",
+        "retained-156",
+        "retained-157",
+        "retained-158",
+        "retained-159",
+        "retained-160",
+        "retained-161",
+        "retained-162",
+        "retained-163",
+        "retained-164",
+        "retained-165",
+        "retained-166",
+        "retained-167",
+        "retained-168",
+        "retained-169",
+        "retained-170",
+        "retained-171",
+        "retained-172",
+        "retained-173",
+        "retained-174",
+        "retained-175",
+        "retained-176",
+        "retained-177",
+        "retained-178",
+        "retained-179",
+        "retained-180",
+        "retained-181",
+        "retained-182",
+        "retained-183",
+        "retained-184",
+        "retained-185",
+        "retained-186",
+        "retained-187",
+        "retained-188",
+        "retained-189",
+        "retained-190",
+        "retained-191",
+        "retained-192",
+        "retained-193",
+        "retained-194",
+        "retained-195",
+        "retained-196",
+        "retained-197",
+        "retained-198",
+        "retained-199",
+        "live-recovery-section"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "20px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "40px"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "560px"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#ffffff"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#243047"
+          }
+        },
+        {
+          "property": "font-family",
+          "value": {
+            "type": "text",
+            "value": "system-ui, sans-serif"
+          }
+        }
+      ]
+    },
+    "existing-0": {
+      "kind": "component",
+      "id": "existing-0",
+      "definitionId": "vict.catalog.button",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Continue"
+        },
+        "loading": {
+          "type": "ref",
+          "path": "state.busy"
+        }
+      },
+      "slots": {}
+    },
+    "existing-1": {
+      "kind": "component",
+      "id": "existing-1",
+      "definitionId": "vict.catalog.checkbox",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "I agree to continue"
+        },
+        "checked": {
+          "type": "ref",
+          "path": "state.field_existing-1"
+        }
+      },
+      "outputs": {
+        "checkedChange": {
+          "setState": {
+            "key": "field_existing-1"
+          }
+        }
+      },
+      "slots": {}
+    },
+    "existing-2": {
+      "kind": "component",
+      "id": "existing-2",
+      "definitionId": "vict.catalog.switch",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Enable notifications"
+        },
+        "checked": {
+          "type": "ref",
+          "path": "state.field_existing-2"
+        }
+      },
+      "outputs": {
+        "checkedChange": {
+          "setState": {
+            "key": "field_existing-2"
+          }
+        }
+      },
+      "slots": {}
+    },
+    "existing-3": {
+      "kind": "component",
+      "id": "existing-3",
+      "definitionId": "vict.catalog.dialog",
+      "props": {
+        "title": {
+          "type": "literal",
+          "value": "More details"
+        },
+        "open": {
+          "type": "literal",
+          "value": false
+        }
+      },
+      "slots": {
+        "body": {
+          "name": "body",
+          "children": [
+            "existing-3-body-1"
+          ]
+        }
+      }
+    },
+    "existing-3-body-1": {
+      "kind": "element",
+      "id": "existing-3-body-1",
+      "tag": "p",
+      "children": [
+        "existing-3-body-1-text"
+      ],
+      "localStyle": []
+    },
+    "existing-3-body-1-text": {
+      "kind": "text",
+      "id": "existing-3-body-1-text",
+      "content": {
+        "type": "literal",
+        "value": "Add your details here."
+      }
+    },
+    "existing-4": {
+      "kind": "component",
+      "id": "existing-4",
+      "definitionId": "vict.catalog.select",
+      "props": {},
+      "slots": {
+        "items": {
+          "name": "items",
+          "children": [
+            "existing-4-items-1",
+            "existing-4-items-2"
+          ]
+        }
+      }
+    },
+    "existing-4-items-1": {
+      "kind": "component",
+      "id": "existing-4-items-1",
+      "definitionId": "vict.catalog.select-item",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "First option"
+        },
+        "value": {
+          "type": "literal",
+          "value": "first"
+        }
+      },
+      "slots": {}
+    },
+    "existing-4-items-2": {
+      "kind": "component",
+      "id": "existing-4-items-2",
+      "definitionId": "vict.catalog.select-item",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Second option"
+        },
+        "value": {
+          "type": "literal",
+          "value": "second"
+        }
+      },
+      "slots": {}
+    },
+    "existing-5": {
+      "kind": "component",
+      "id": "existing-5",
+      "definitionId": "vict.catalog.slider",
+      "props": {
+        "value": {
+          "type": "ref",
+          "path": "state.catalog_existing-5_value"
+        },
+        "label": {
+          "type": "literal",
+          "value": "Slider"
+        }
+      },
+      "outputs": {
+        "valueChange": {
+          "setState": {
+            "key": "catalog_existing-5_value"
+          }
+        }
+      },
+      "slots": {}
+    },
+    "existing-6": {
+      "kind": "component",
+      "id": "existing-6",
+      "definitionId": "vict.catalog.toggle",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Toggle"
+        }
+      },
+      "slots": {}
+    },
+    "existing-7": {
+      "kind": "component",
+      "id": "existing-7",
+      "definitionId": "vict.catalog.accordion",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Accordion"
+        }
+      },
+      "slots": {
+        "items": {
+          "name": "items",
+          "children": [
+            "existing-7-items-1"
+          ]
+        }
+      }
+    },
+    "existing-7-items-1": {
+      "kind": "component",
+      "id": "existing-7-items-1",
+      "definitionId": "vict.catalog.accordion-item",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Details"
+        },
+        "value": {
+          "type": "literal",
+          "value": "first"
+        }
+      },
+      "slots": {
+        "content": {
+          "name": "content",
+          "children": [
+            "existing-7-items-1-content-1"
+          ]
+        }
+      }
+    },
+    "existing-7-items-1-content-1": {
+      "kind": "element",
+      "id": "existing-7-items-1-content-1",
+      "tag": "p",
+      "children": [
+        "existing-7-items-1-content-1-text"
+      ],
+      "localStyle": []
+    },
+    "existing-7-items-1-content-1-text": {
+      "kind": "text",
+      "id": "existing-7-items-1-content-1-text",
+      "content": {
+        "type": "literal",
+        "value": "Expandable content"
+      }
+    },
+    "existing-8": {
+      "kind": "component",
+      "id": "existing-8",
+      "definitionId": "vict.catalog.tabs",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Tabs"
+        },
+        "value": {
+          "type": "literal",
+          "value": "first"
+        }
+      },
+      "slots": {
+        "tabs": {
+          "name": "tabs",
+          "children": [
+            "existing-8-tabs-1"
+          ]
+        },
+        "panels": {
+          "name": "panels",
+          "children": [
+            "existing-8-panels-1"
+          ]
+        }
+      }
+    },
+    "existing-8-tabs-1": {
+      "kind": "component",
+      "id": "existing-8-tabs-1",
+      "definitionId": "vict.catalog.tabs-trigger",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "First tab"
+        },
+        "value": {
+          "type": "literal",
+          "value": "first"
+        }
+      },
+      "slots": {}
+    },
+    "existing-8-panels-1": {
+      "kind": "component",
+      "id": "existing-8-panels-1",
+      "definitionId": "vict.catalog.tabs-panel",
+      "props": {
+        "value": {
+          "type": "literal",
+          "value": "first"
+        }
+      },
+      "slots": {
+        "content": {
+          "name": "content",
+          "children": [
+            "existing-8-panels-1-content-1"
+          ]
+        }
+      }
+    },
+    "existing-8-panels-1-content-1": {
+      "kind": "element",
+      "id": "existing-8-panels-1-content-1",
+      "tag": "p",
+      "children": [
+        "existing-8-panels-1-content-1-text"
+      ],
+      "localStyle": []
+    },
+    "existing-8-panels-1-content-1-text": {
+      "kind": "text",
+      "id": "existing-8-panels-1-content-1-text",
+      "content": {
+        "type": "literal",
+        "value": "Tab content"
+      }
+    },
+    "existing-9": {
+      "kind": "component",
+      "id": "existing-9",
+      "definitionId": "vict.catalog.progress",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Progress"
+        },
+        "value": {
+          "type": "literal",
+          "value": 40
+        }
+      },
+      "slots": {}
+    },
+    "existing-10": {
+      "kind": "component",
+      "id": "existing-10",
+      "definitionId": "vict.catalog.popover",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Popover"
+        },
+        "title": {
+          "type": "literal",
+          "value": "Popover"
+        },
+        "description": {
+          "type": "literal",
+          "value": "Add your own content."
+        }
+      },
+      "slots": {
+        "content": {
+          "name": "content",
+          "children": [
+            "existing-10-content-1"
+          ]
+        }
+      }
+    },
+    "existing-10-content-1": {
+      "kind": "element",
+      "id": "existing-10-content-1",
+      "tag": "p",
+      "children": [
+        "existing-10-content-1-text"
+      ],
+      "localStyle": []
+    },
+    "existing-10-content-1-text": {
+      "kind": "text",
+      "id": "existing-10-content-1-text",
+      "content": {
+        "type": "literal",
+        "value": "Your content"
+      }
+    },
+    "existing-11": {
+      "kind": "component",
+      "id": "existing-11",
+      "definitionId": "vict.catalog.separator",
+      "props": {
+        "orientation": {
+          "type": "literal",
+          "value": "horizontal"
+        },
+        "decorative": {
+          "type": "literal",
+          "value": true
+        }
+      },
+      "slots": {}
+    },
+    "retained-20": {
+      "kind": "text",
+      "id": "retained-20",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 20"
+      }
+    },
+    "retained-21": {
+      "kind": "text",
+      "id": "retained-21",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 21"
+      }
+    },
+    "retained-22": {
+      "kind": "text",
+      "id": "retained-22",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 22"
+      }
+    },
+    "retained-23": {
+      "kind": "text",
+      "id": "retained-23",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 23"
+      }
+    },
+    "retained-24": {
+      "kind": "text",
+      "id": "retained-24",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 24"
+      }
+    },
+    "retained-25": {
+      "kind": "text",
+      "id": "retained-25",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 25"
+      }
+    },
+    "retained-26": {
+      "kind": "text",
+      "id": "retained-26",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 26"
+      }
+    },
+    "retained-27": {
+      "kind": "text",
+      "id": "retained-27",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 27"
+      }
+    },
+    "retained-28": {
+      "kind": "text",
+      "id": "retained-28",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 28"
+      }
+    },
+    "retained-29": {
+      "kind": "text",
+      "id": "retained-29",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 29"
+      }
+    },
+    "retained-30": {
+      "kind": "text",
+      "id": "retained-30",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 30"
+      }
+    },
+    "retained-31": {
+      "kind": "text",
+      "id": "retained-31",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 31"
+      }
+    },
+    "retained-32": {
+      "kind": "text",
+      "id": "retained-32",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 32"
+      }
+    },
+    "retained-33": {
+      "kind": "text",
+      "id": "retained-33",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 33"
+      }
+    },
+    "retained-34": {
+      "kind": "text",
+      "id": "retained-34",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 34"
+      }
+    },
+    "retained-35": {
+      "kind": "text",
+      "id": "retained-35",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 35"
+      }
+    },
+    "retained-36": {
+      "kind": "text",
+      "id": "retained-36",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 36"
+      }
+    },
+    "retained-37": {
+      "kind": "text",
+      "id": "retained-37",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 37"
+      }
+    },
+    "retained-38": {
+      "kind": "text",
+      "id": "retained-38",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 38"
+      }
+    },
+    "retained-39": {
+      "kind": "text",
+      "id": "retained-39",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 39"
+      }
+    },
+    "retained-40": {
+      "kind": "text",
+      "id": "retained-40",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 40"
+      }
+    },
+    "retained-41": {
+      "kind": "text",
+      "id": "retained-41",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 41"
+      }
+    },
+    "retained-42": {
+      "kind": "text",
+      "id": "retained-42",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 42"
+      }
+    },
+    "retained-43": {
+      "kind": "text",
+      "id": "retained-43",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 43"
+      }
+    },
+    "retained-44": {
+      "kind": "text",
+      "id": "retained-44",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 44"
+      }
+    },
+    "retained-45": {
+      "kind": "text",
+      "id": "retained-45",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 45"
+      }
+    },
+    "retained-46": {
+      "kind": "text",
+      "id": "retained-46",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 46"
+      }
+    },
+    "retained-47": {
+      "kind": "text",
+      "id": "retained-47",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 47"
+      }
+    },
+    "retained-48": {
+      "kind": "text",
+      "id": "retained-48",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 48"
+      }
+    },
+    "retained-49": {
+      "kind": "text",
+      "id": "retained-49",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 49"
+      }
+    },
+    "retained-50": {
+      "kind": "text",
+      "id": "retained-50",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 50"
+      }
+    },
+    "retained-51": {
+      "kind": "text",
+      "id": "retained-51",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 51"
+      }
+    },
+    "retained-52": {
+      "kind": "text",
+      "id": "retained-52",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 52"
+      }
+    },
+    "retained-53": {
+      "kind": "text",
+      "id": "retained-53",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 53"
+      }
+    },
+    "retained-54": {
+      "kind": "text",
+      "id": "retained-54",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 54"
+      }
+    },
+    "retained-55": {
+      "kind": "text",
+      "id": "retained-55",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 55"
+      }
+    },
+    "retained-56": {
+      "kind": "text",
+      "id": "retained-56",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 56"
+      }
+    },
+    "retained-57": {
+      "kind": "text",
+      "id": "retained-57",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 57"
+      }
+    },
+    "retained-58": {
+      "kind": "text",
+      "id": "retained-58",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 58"
+      }
+    },
+    "retained-59": {
+      "kind": "text",
+      "id": "retained-59",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 59"
+      }
+    },
+    "retained-60": {
+      "kind": "text",
+      "id": "retained-60",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 60"
+      }
+    },
+    "retained-61": {
+      "kind": "text",
+      "id": "retained-61",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 61"
+      }
+    },
+    "retained-62": {
+      "kind": "text",
+      "id": "retained-62",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 62"
+      }
+    },
+    "retained-63": {
+      "kind": "text",
+      "id": "retained-63",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 63"
+      }
+    },
+    "retained-64": {
+      "kind": "text",
+      "id": "retained-64",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 64"
+      }
+    },
+    "retained-65": {
+      "kind": "text",
+      "id": "retained-65",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 65"
+      }
+    },
+    "retained-66": {
+      "kind": "text",
+      "id": "retained-66",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 66"
+      }
+    },
+    "retained-67": {
+      "kind": "text",
+      "id": "retained-67",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 67"
+      }
+    },
+    "retained-68": {
+      "kind": "text",
+      "id": "retained-68",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 68"
+      }
+    },
+    "retained-69": {
+      "kind": "text",
+      "id": "retained-69",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 69"
+      }
+    },
+    "retained-70": {
+      "kind": "text",
+      "id": "retained-70",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 70"
+      }
+    },
+    "retained-71": {
+      "kind": "text",
+      "id": "retained-71",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 71"
+      }
+    },
+    "retained-72": {
+      "kind": "text",
+      "id": "retained-72",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 72"
+      }
+    },
+    "retained-73": {
+      "kind": "text",
+      "id": "retained-73",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 73"
+      }
+    },
+    "retained-74": {
+      "kind": "text",
+      "id": "retained-74",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 74"
+      }
+    },
+    "retained-75": {
+      "kind": "text",
+      "id": "retained-75",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 75"
+      }
+    },
+    "retained-76": {
+      "kind": "text",
+      "id": "retained-76",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 76"
+      }
+    },
+    "retained-77": {
+      "kind": "text",
+      "id": "retained-77",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 77"
+      }
+    },
+    "retained-78": {
+      "kind": "text",
+      "id": "retained-78",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 78"
+      }
+    },
+    "retained-79": {
+      "kind": "text",
+      "id": "retained-79",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 79"
+      }
+    },
+    "retained-80": {
+      "kind": "text",
+      "id": "retained-80",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 80"
+      }
+    },
+    "retained-81": {
+      "kind": "text",
+      "id": "retained-81",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 81"
+      }
+    },
+    "retained-82": {
+      "kind": "text",
+      "id": "retained-82",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 82"
+      }
+    },
+    "retained-83": {
+      "kind": "text",
+      "id": "retained-83",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 83"
+      }
+    },
+    "retained-84": {
+      "kind": "text",
+      "id": "retained-84",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 84"
+      }
+    },
+    "retained-85": {
+      "kind": "text",
+      "id": "retained-85",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 85"
+      }
+    },
+    "retained-86": {
+      "kind": "text",
+      "id": "retained-86",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 86"
+      }
+    },
+    "retained-87": {
+      "kind": "text",
+      "id": "retained-87",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 87"
+      }
+    },
+    "retained-88": {
+      "kind": "text",
+      "id": "retained-88",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 88"
+      }
+    },
+    "retained-89": {
+      "kind": "text",
+      "id": "retained-89",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 89"
+      }
+    },
+    "retained-90": {
+      "kind": "text",
+      "id": "retained-90",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 90"
+      }
+    },
+    "retained-91": {
+      "kind": "text",
+      "id": "retained-91",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 91"
+      }
+    },
+    "retained-92": {
+      "kind": "text",
+      "id": "retained-92",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 92"
+      }
+    },
+    "retained-93": {
+      "kind": "text",
+      "id": "retained-93",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 93"
+      }
+    },
+    "retained-94": {
+      "kind": "text",
+      "id": "retained-94",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 94"
+      }
+    },
+    "retained-95": {
+      "kind": "text",
+      "id": "retained-95",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 95"
+      }
+    },
+    "retained-96": {
+      "kind": "text",
+      "id": "retained-96",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 96"
+      }
+    },
+    "retained-97": {
+      "kind": "text",
+      "id": "retained-97",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 97"
+      }
+    },
+    "retained-98": {
+      "kind": "text",
+      "id": "retained-98",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 98"
+      }
+    },
+    "retained-99": {
+      "kind": "text",
+      "id": "retained-99",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 99"
+      }
+    },
+    "retained-100": {
+      "kind": "text",
+      "id": "retained-100",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 100"
+      }
+    },
+    "retained-101": {
+      "kind": "text",
+      "id": "retained-101",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 101"
+      }
+    },
+    "retained-102": {
+      "kind": "text",
+      "id": "retained-102",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 102"
+      }
+    },
+    "retained-103": {
+      "kind": "text",
+      "id": "retained-103",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 103"
+      }
+    },
+    "retained-104": {
+      "kind": "text",
+      "id": "retained-104",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 104"
+      }
+    },
+    "retained-105": {
+      "kind": "text",
+      "id": "retained-105",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 105"
+      }
+    },
+    "retained-106": {
+      "kind": "text",
+      "id": "retained-106",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 106"
+      }
+    },
+    "retained-107": {
+      "kind": "text",
+      "id": "retained-107",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 107"
+      }
+    },
+    "retained-108": {
+      "kind": "text",
+      "id": "retained-108",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 108"
+      }
+    },
+    "retained-109": {
+      "kind": "text",
+      "id": "retained-109",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 109"
+      }
+    },
+    "retained-110": {
+      "kind": "text",
+      "id": "retained-110",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 110"
+      }
+    },
+    "retained-111": {
+      "kind": "text",
+      "id": "retained-111",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 111"
+      }
+    },
+    "retained-112": {
+      "kind": "text",
+      "id": "retained-112",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 112"
+      }
+    },
+    "retained-113": {
+      "kind": "text",
+      "id": "retained-113",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 113"
+      }
+    },
+    "retained-114": {
+      "kind": "text",
+      "id": "retained-114",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 114"
+      }
+    },
+    "retained-115": {
+      "kind": "text",
+      "id": "retained-115",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 115"
+      }
+    },
+    "retained-116": {
+      "kind": "text",
+      "id": "retained-116",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 116"
+      }
+    },
+    "retained-117": {
+      "kind": "text",
+      "id": "retained-117",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 117"
+      }
+    },
+    "retained-118": {
+      "kind": "text",
+      "id": "retained-118",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 118"
+      }
+    },
+    "retained-119": {
+      "kind": "text",
+      "id": "retained-119",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 119"
+      }
+    },
+    "retained-120": {
+      "kind": "text",
+      "id": "retained-120",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 120"
+      }
+    },
+    "retained-121": {
+      "kind": "text",
+      "id": "retained-121",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 121"
+      }
+    },
+    "retained-122": {
+      "kind": "text",
+      "id": "retained-122",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 122"
+      }
+    },
+    "retained-123": {
+      "kind": "text",
+      "id": "retained-123",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 123"
+      }
+    },
+    "retained-124": {
+      "kind": "text",
+      "id": "retained-124",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 124"
+      }
+    },
+    "retained-125": {
+      "kind": "text",
+      "id": "retained-125",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 125"
+      }
+    },
+    "retained-126": {
+      "kind": "text",
+      "id": "retained-126",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 126"
+      }
+    },
+    "retained-127": {
+      "kind": "text",
+      "id": "retained-127",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 127"
+      }
+    },
+    "retained-128": {
+      "kind": "text",
+      "id": "retained-128",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 128"
+      }
+    },
+    "retained-129": {
+      "kind": "text",
+      "id": "retained-129",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 129"
+      }
+    },
+    "retained-130": {
+      "kind": "text",
+      "id": "retained-130",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 130"
+      }
+    },
+    "retained-131": {
+      "kind": "text",
+      "id": "retained-131",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 131"
+      }
+    },
+    "retained-132": {
+      "kind": "text",
+      "id": "retained-132",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 132"
+      }
+    },
+    "retained-133": {
+      "kind": "text",
+      "id": "retained-133",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 133"
+      }
+    },
+    "retained-134": {
+      "kind": "text",
+      "id": "retained-134",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 134"
+      }
+    },
+    "retained-135": {
+      "kind": "text",
+      "id": "retained-135",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 135"
+      }
+    },
+    "retained-136": {
+      "kind": "text",
+      "id": "retained-136",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 136"
+      }
+    },
+    "retained-137": {
+      "kind": "text",
+      "id": "retained-137",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 137"
+      }
+    },
+    "retained-138": {
+      "kind": "text",
+      "id": "retained-138",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 138"
+      }
+    },
+    "retained-139": {
+      "kind": "text",
+      "id": "retained-139",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 139"
+      }
+    },
+    "retained-140": {
+      "kind": "text",
+      "id": "retained-140",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 140"
+      }
+    },
+    "retained-141": {
+      "kind": "text",
+      "id": "retained-141",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 141"
+      }
+    },
+    "retained-142": {
+      "kind": "text",
+      "id": "retained-142",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 142"
+      }
+    },
+    "retained-143": {
+      "kind": "text",
+      "id": "retained-143",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 143"
+      }
+    },
+    "retained-144": {
+      "kind": "text",
+      "id": "retained-144",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 144"
+      }
+    },
+    "retained-145": {
+      "kind": "text",
+      "id": "retained-145",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 145"
+      }
+    },
+    "retained-146": {
+      "kind": "text",
+      "id": "retained-146",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 146"
+      }
+    },
+    "retained-147": {
+      "kind": "text",
+      "id": "retained-147",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 147"
+      }
+    },
+    "retained-148": {
+      "kind": "text",
+      "id": "retained-148",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 148"
+      }
+    },
+    "retained-149": {
+      "kind": "text",
+      "id": "retained-149",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 149"
+      }
+    },
+    "retained-150": {
+      "kind": "text",
+      "id": "retained-150",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 150"
+      }
+    },
+    "retained-151": {
+      "kind": "text",
+      "id": "retained-151",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 151"
+      }
+    },
+    "retained-152": {
+      "kind": "text",
+      "id": "retained-152",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 152"
+      }
+    },
+    "retained-153": {
+      "kind": "text",
+      "id": "retained-153",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 153"
+      }
+    },
+    "retained-154": {
+      "kind": "text",
+      "id": "retained-154",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 154"
+      }
+    },
+    "retained-155": {
+      "kind": "text",
+      "id": "retained-155",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 155"
+      }
+    },
+    "retained-156": {
+      "kind": "text",
+      "id": "retained-156",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 156"
+      }
+    },
+    "retained-157": {
+      "kind": "text",
+      "id": "retained-157",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 157"
+      }
+    },
+    "retained-158": {
+      "kind": "text",
+      "id": "retained-158",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 158"
+      }
+    },
+    "retained-159": {
+      "kind": "text",
+      "id": "retained-159",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 159"
+      }
+    },
+    "retained-160": {
+      "kind": "text",
+      "id": "retained-160",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 160"
+      }
+    },
+    "retained-161": {
+      "kind": "text",
+      "id": "retained-161",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 161"
+      }
+    },
+    "retained-162": {
+      "kind": "text",
+      "id": "retained-162",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 162"
+      }
+    },
+    "retained-163": {
+      "kind": "text",
+      "id": "retained-163",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 163"
+      }
+    },
+    "retained-164": {
+      "kind": "text",
+      "id": "retained-164",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 164"
+      }
+    },
+    "retained-165": {
+      "kind": "text",
+      "id": "retained-165",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 165"
+      }
+    },
+    "retained-166": {
+      "kind": "text",
+      "id": "retained-166",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 166"
+      }
+    },
+    "retained-167": {
+      "kind": "text",
+      "id": "retained-167",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 167"
+      }
+    },
+    "retained-168": {
+      "kind": "text",
+      "id": "retained-168",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 168"
+      }
+    },
+    "retained-169": {
+      "kind": "text",
+      "id": "retained-169",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 169"
+      }
+    },
+    "retained-170": {
+      "kind": "text",
+      "id": "retained-170",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 170"
+      }
+    },
+    "retained-171": {
+      "kind": "text",
+      "id": "retained-171",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 171"
+      }
+    },
+    "retained-172": {
+      "kind": "text",
+      "id": "retained-172",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 172"
+      }
+    },
+    "retained-173": {
+      "kind": "text",
+      "id": "retained-173",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 173"
+      }
+    },
+    "retained-174": {
+      "kind": "text",
+      "id": "retained-174",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 174"
+      }
+    },
+    "retained-175": {
+      "kind": "text",
+      "id": "retained-175",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 175"
+      }
+    },
+    "retained-176": {
+      "kind": "text",
+      "id": "retained-176",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 176"
+      }
+    },
+    "retained-177": {
+      "kind": "text",
+      "id": "retained-177",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 177"
+      }
+    },
+    "retained-178": {
+      "kind": "text",
+      "id": "retained-178",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 178"
+      }
+    },
+    "retained-179": {
+      "kind": "text",
+      "id": "retained-179",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 179"
+      }
+    },
+    "retained-180": {
+      "kind": "text",
+      "id": "retained-180",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 180"
+      }
+    },
+    "retained-181": {
+      "kind": "text",
+      "id": "retained-181",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 181"
+      }
+    },
+    "retained-182": {
+      "kind": "text",
+      "id": "retained-182",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 182"
+      }
+    },
+    "retained-183": {
+      "kind": "text",
+      "id": "retained-183",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 183"
+      }
+    },
+    "retained-184": {
+      "kind": "text",
+      "id": "retained-184",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 184"
+      }
+    },
+    "retained-185": {
+      "kind": "text",
+      "id": "retained-185",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 185"
+      }
+    },
+    "retained-186": {
+      "kind": "text",
+      "id": "retained-186",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 186"
+      }
+    },
+    "retained-187": {
+      "kind": "text",
+      "id": "retained-187",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 187"
+      }
+    },
+    "retained-188": {
+      "kind": "text",
+      "id": "retained-188",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 188"
+      }
+    },
+    "retained-189": {
+      "kind": "text",
+      "id": "retained-189",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 189"
+      }
+    },
+    "retained-190": {
+      "kind": "text",
+      "id": "retained-190",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 190"
+      }
+    },
+    "retained-191": {
+      "kind": "text",
+      "id": "retained-191",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 191"
+      }
+    },
+    "retained-192": {
+      "kind": "text",
+      "id": "retained-192",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 192"
+      }
+    },
+    "retained-193": {
+      "kind": "text",
+      "id": "retained-193",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 193"
+      }
+    },
+    "retained-194": {
+      "kind": "text",
+      "id": "retained-194",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 194"
+      }
+    },
+    "retained-195": {
+      "kind": "text",
+      "id": "retained-195",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 195"
+      }
+    },
+    "retained-196": {
+      "kind": "text",
+      "id": "retained-196",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 196"
+      }
+    },
+    "retained-197": {
+      "kind": "text",
+      "id": "retained-197",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 197"
+      }
+    },
+    "retained-198": {
+      "kind": "text",
+      "id": "retained-198",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 198"
+      }
+    },
+    "retained-199": {
+      "kind": "text",
+      "id": "retained-199",
+      "content": {
+        "type": "literal",
+        "value": "Retained synthetic content 199"
+      }
+    },
+    "live-recovery-section": {
+      "kind": "element",
+      "id": "live-recovery-section",
+      "tag": "section",
+      "attributes": {
+        "aria-label": "Live recovery form"
+      },
+      "children": [
+        "live-label-email",
+        "live-email",
+        "live-label-name",
+        "live-name",
+        "live-label-consent",
+        "live-consent"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "16px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "24px"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "100px"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#f5f7fb"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        }
+      ]
+    },
+    "live-label-email": {
+      "kind": "component",
+      "id": "live-label-email",
+      "definitionId": "vict.catalog.label",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Email"
+        },
+        "for": {
+          "type": "literal",
+          "value": "live-email"
+        }
+      },
+      "slots": {}
+    },
+    "live-email": {
+      "kind": "element",
+      "id": "live-email",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "type": "email",
+        "aria-label": "Email",
+        "placeholder": "you@example.com",
+        "value": {
+          "type": "ref",
+          "path": "state.recovery-email"
+        },
+        "id": "live-email"
+      },
+      "interactions": [
+        {
+          "on": "change",
+          "action": "setState",
+          "key": "recovery-email",
+          "value": {
+            "type": "ref",
+            "path": "state.recovery-email"
+          }
+        }
+      ],
+      "localStyle": [
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "8px"
+          }
+        },
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "1px solid #cbd3e1"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "16px"
+          }
+        },
+        {
+          "property": "width",
+          "value": {
+            "type": "text",
+            "value": "100%"
+          }
+        },
+        {
+          "property": "box-sizing",
+          "value": {
+            "type": "text",
+            "value": "border-box"
+          }
+        }
+      ]
+    },
+    "live-label-name": {
+      "kind": "component",
+      "id": "live-label-name",
+      "definitionId": "vict.catalog.label",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Name"
+        },
+        "for": {
+          "type": "literal",
+          "value": "live-name"
+        }
+      },
+      "slots": {}
+    },
+    "live-name": {
+      "kind": "element",
+      "id": "live-name",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "type": "text",
+        "aria-label": "Name",
+        "placeholder": "Full name",
+        "value": {
+          "type": "ref",
+          "path": "state.recovery-name"
+        },
+        "id": "live-name"
+      },
+      "interactions": [
+        {
+          "on": "change",
+          "action": "setState",
+          "key": "recovery-name",
+          "value": {
+            "type": "ref",
+            "path": "state.recovery-name"
+          }
+        }
+      ],
+      "localStyle": [
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "8px"
+          }
+        },
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "1px solid #cbd3e1"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "16px"
+          }
+        },
+        {
+          "property": "width",
+          "value": {
+            "type": "text",
+            "value": "100%"
+          }
+        },
+        {
+          "property": "box-sizing",
+          "value": {
+            "type": "text",
+            "value": "border-box"
+          }
+        }
+      ]
+    },
+    "live-label-consent": {
+      "kind": "component",
+      "id": "live-label-consent",
+      "definitionId": "vict.catalog.label",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Consent"
+        },
+        "for": {
+          "type": "literal",
+          "value": "live-consent"
+        }
+      },
+      "slots": {}
+    },
+    "live-consent": {
+      "kind": "component",
+      "id": "live-consent",
+      "definitionId": "vict.catalog.checkbox",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Consent"
+        },
+        "checked": {
+          "type": "ref",
+          "path": "state.recovery-consent"
+        }
+      },
+      "outputs": {
+        "checkedChange": {
+          "setState": {
+            "key": "recovery-consent"
+          }
+        }
+      },
+      "slots": {}
+    },
+    "hero-section": {
+      "kind": "element",
+      "id": "hero-section",
+      "tag": "section",
+      "attributes": {
+        "aria-label": "Hero"
+      },
+      "children": [
+        "hero-heading",
+        "hero-subtitle",
+        "hero-row"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "16px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "24px"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "100px"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#f5f7fb"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        }
+      ]
+    },
+    "hero-heading": {
+      "kind": "element",
+      "id": "hero-heading",
+      "tag": "h1",
+      "children": [
+        "hero-heading-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "32px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.2"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        }
+      ]
+    },
+    "hero-heading-text": {
+      "kind": "text",
+      "id": "hero-heading-text",
+      "content": {
+        "type": "literal",
+        "value": "Component Gallery"
+      }
+    },
+    "hero-subtitle": {
+      "kind": "element",
+      "id": "hero-subtitle",
+      "tag": "p",
+      "children": [
+        "hero-subtitle-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "16px"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.6"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#647187"
+          }
+        }
+      ]
+    },
+    "hero-subtitle-text": {
+      "kind": "text",
+      "id": "hero-subtitle-text",
+      "content": {
+        "type": "literal",
+        "value": "Every catalog component, composed into one intentional landing page."
+      }
+    },
+    "hero-row": {
+      "kind": "element",
+      "id": "hero-row",
+      "tag": "div",
+      "children": [
+        "existing-0"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-wrap",
+          "value": {
+            "type": "text",
+            "value": "wrap"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "16px"
+          }
+        },
+        {
+          "property": "align-items",
+          "value": {
+            "type": "text",
+            "value": "center"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "60px"
+          }
+        }
+      ],
+      "attributes": {
+        "aria-label": "Hero actions"
+      }
+    },
+    "nav-section": {
+      "kind": "element",
+      "id": "nav-section",
+      "tag": "section",
+      "attributes": {
+        "aria-label": "Navigation and menus"
+      },
+      "children": [
+        "nav-heading",
+        "nav-menubar",
+        "nav-ddm",
+        "nav-cm",
+        "nav-nm",
+        "nav-command",
+        "nav-toolbar",
+        "nav-tooltip",
+        "nav-link-preview"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "16px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "24px"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "100px"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#f5f7fb"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        }
+      ]
+    },
+    "nav-heading": {
+      "kind": "element",
+      "id": "nav-heading",
+      "tag": "h2",
+      "children": [
+        "nav-heading-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "32px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.2"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        }
+      ]
+    },
+    "nav-heading-text": {
+      "kind": "text",
+      "id": "nav-heading-text",
+      "content": {
+        "type": "literal",
+        "value": "Navigation & Menus"
+      }
+    },
+    "nav-menubar": {
+      "kind": "component",
+      "id": "nav-menubar",
+      "definitionId": "vict.catalog.menubar",
+      "props": {},
+      "slots": {
+        "menus": {
+          "name": "menus",
+          "children": [
+            "nav-menubar-menu-file",
+            "nav-menubar-menu-view"
+          ]
+        }
+      }
+    },
+    "nav-menubar-menu-file": {
+      "kind": "component",
+      "id": "nav-menubar-menu-file",
+      "definitionId": "vict.catalog.menubar.menu",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "File"
+        },
+        "value": {
+          "type": "literal",
+          "value": "file"
+        }
+      },
+      "slots": {
+        "items": {
+          "name": "items",
+          "children": [
+            "nav-menubar-item-new",
+            "nav-menubar-sub-export",
+            "nav-menubar-cbg",
+            "nav-menubar-rg",
+            "nav-menubar-group",
+            "nav-menubar-sep"
+          ]
+        }
+      }
+    },
+    "nav-menubar-item-new": {
+      "kind": "component",
+      "id": "nav-menubar-item-new",
+      "definitionId": "vict.catalog.menubar.item",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "New file"
+        },
+        "value": {
+          "type": "literal",
+          "value": "new-file"
+        }
+      },
+      "slots": {}
+    },
+    "nav-menubar-sub-export": {
+      "kind": "component",
+      "id": "nav-menubar-sub-export",
+      "definitionId": "vict.catalog.menubar.sub",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Export as"
+        }
+      },
+      "slots": {
+        "items": {
+          "name": "items",
+          "children": [
+            "nav-menubar-item-pdf"
+          ]
+        }
+      }
+    },
+    "nav-menubar-item-pdf": {
+      "kind": "component",
+      "id": "nav-menubar-item-pdf",
+      "definitionId": "vict.catalog.menubar.item",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "PDF"
+        },
+        "value": {
+          "type": "literal",
+          "value": "pdf"
+        }
+      },
+      "slots": {}
+    },
+    "nav-menubar-cbg": {
+      "kind": "component",
+      "id": "nav-menubar-cbg",
+      "definitionId": "vict.catalog.menubar.checkbox-group",
+      "props": {
+        "values": {
+          "type": "ref",
+          "path": "state.catalog_nav-menubar-cbg_values"
+        }
+      },
+      "outputs": {
+        "valuesChange": {
+          "setState": {
+            "key": "catalog_nav-menubar-cbg_values"
+          }
+        }
+      },
+      "slots": {
+        "items": {
+          "name": "items",
+          "children": [
+            "nav-menubar-cbi"
+          ]
+        }
+      }
+    },
+    "nav-menubar-cbi": {
+      "kind": "component",
+      "id": "nav-menubar-cbi",
+      "definitionId": "vict.catalog.menubar.checkbox-item",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Line numbers"
+        },
+        "checked": {
+          "type": "literal",
+          "value": true
+        },
+        "value": {
+          "type": "literal",
+          "value": "line-numbers"
+        }
+      },
+      "slots": {}
+    },
+    "nav-menubar-rg": {
+      "kind": "component",
+      "id": "nav-menubar-rg",
+      "definitionId": "vict.catalog.menubar.radio-group",
+      "props": {
+        "value": {
+          "type": "literal",
+          "value": "density"
+        }
+      },
+      "slots": {
+        "items": {
+          "name": "items",
+          "children": [
+            "nav-menubar-ri"
+          ]
+        }
+      }
+    },
+    "nav-menubar-ri": {
+      "kind": "component",
+      "id": "nav-menubar-ri",
+      "definitionId": "vict.catalog.menubar.radio-item",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Compact"
+        },
+        "value": {
+          "type": "literal",
+          "value": "compact"
+        }
+      },
+      "slots": {}
+    },
+    "nav-menubar-group": {
+      "kind": "component",
+      "id": "nav-menubar-group",
+      "definitionId": "vict.catalog.menubar.group",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Menubar Group"
+        }
+      },
+      "slots": {
+        "items": {
+          "name": "items",
+          "children": [
+            "nav-menubar-item-about"
+          ]
+        }
+      }
+    },
+    "nav-menubar-item-about": {
+      "kind": "component",
+      "id": "nav-menubar-item-about",
+      "definitionId": "vict.catalog.menubar.item",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "About this app"
+        },
+        "value": {
+          "type": "literal",
+          "value": "about"
+        }
+      },
+      "slots": {}
+    },
+    "nav-menubar-sep": {
+      "kind": "component",
+      "id": "nav-menubar-sep",
+      "definitionId": "vict.catalog.menubar.separator",
+      "props": {},
+      "slots": {}
+    },
+    "nav-menubar-menu-view": {
+      "kind": "component",
+      "id": "nav-menubar-menu-view",
+      "definitionId": "vict.catalog.menubar.menu",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Row actions"
+        },
+        "value": {
+          "type": "literal",
+          "value": "file"
+        }
+      },
+      "slots": {
+        "items": {
+          "name": "items",
+          "children": [
+            "nav-menubar-menu-view-items-1"
+          ]
+        }
+      }
+    },
+    "nav-menubar-menu-view-items-1": {
+      "kind": "component",
+      "id": "nav-menubar-menu-view-items-1",
+      "definitionId": "vict.catalog.menubar.item",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "New item"
+        },
+        "value": {
+          "type": "literal",
+          "value": "first"
+        }
+      },
+      "slots": {}
+    },
+    "nav-ddm": {
+      "kind": "component",
+      "id": "nav-ddm",
+      "definitionId": "vict.catalog.dropdown-menu",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Row actions"
+        }
+      },
+      "slots": {
+        "items": {
+          "name": "items",
+          "children": [
+            "nav-ddm-item-dup",
+            "nav-ddm-sub",
+            "nav-ddm-cbg",
+            "nav-ddm-rg",
+            "nav-ddm-group",
+            "nav-ddm-sep"
+          ]
+        }
+      }
+    },
+    "nav-ddm-item-dup": {
+      "kind": "component",
+      "id": "nav-ddm-item-dup",
+      "definitionId": "vict.catalog.dropdown-menu.item",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Duplicate row"
+        },
+        "value": {
+          "type": "literal",
+          "value": "duplicate"
+        }
+      },
+      "slots": {}
+    },
+    "nav-ddm-sub": {
+      "kind": "component",
+      "id": "nav-ddm-sub",
+      "definitionId": "vict.catalog.dropdown-menu.sub",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Move to"
+        }
+      },
+      "slots": {
+        "items": {
+          "name": "items",
+          "children": [
+            "nav-ddm-item-archive"
+          ]
+        }
+      }
+    },
+    "nav-ddm-item-archive": {
+      "kind": "component",
+      "id": "nav-ddm-item-archive",
+      "definitionId": "vict.catalog.dropdown-menu.item",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Archive"
+        },
+        "value": {
+          "type": "literal",
+          "value": "archive"
+        }
+      },
+      "slots": {}
+    },
+    "nav-ddm-cbg": {
+      "kind": "component",
+      "id": "nav-ddm-cbg",
+      "definitionId": "vict.catalog.dropdown-menu.checkbox-group",
+      "props": {
+        "values": {
+          "type": "ref",
+          "path": "state.catalog_nav-ddm-cbg_values"
+        }
+      },
+      "outputs": {
+        "valuesChange": {
+          "setState": {
+            "key": "catalog_nav-ddm-cbg_values"
+          }
+        }
+      },
+      "slots": {
+        "items": {
+          "name": "items",
+          "children": [
+            "nav-ddm-cbi"
+          ]
+        }
+      }
+    },
+    "nav-ddm-cbi": {
+      "kind": "component",
+      "id": "nav-ddm-cbi",
+      "definitionId": "vict.catalog.dropdown-menu.checkbox-item",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Show pinned"
+        },
+        "checked": {
+          "type": "literal",
+          "value": true
+        },
+        "value": {
+          "type": "literal",
+          "value": "pinned"
+        }
+      },
+      "slots": {}
+    },
+    "nav-ddm-rg": {
+      "kind": "component",
+      "id": "nav-ddm-rg",
+      "definitionId": "vict.catalog.dropdown-menu.radio-group",
+      "props": {
+        "value": {
+          "type": "literal",
+          "value": "sort"
+        }
+      },
+      "slots": {
+        "items": {
+          "name": "items",
+          "children": [
+            "nav-ddm-ri"
+          ]
+        }
+      }
+    },
+    "nav-ddm-ri": {
+      "kind": "component",
+      "id": "nav-ddm-ri",
+      "definitionId": "vict.catalog.dropdown-menu.radio-item",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Sort ascending"
+        },
+        "value": {
+          "type": "literal",
+          "value": "asc"
+        }
+      },
+      "slots": {}
+    },
+    "nav-ddm-group": {
+      "kind": "component",
+      "id": "nav-ddm-group",
+      "definitionId": "vict.catalog.dropdown-menu.group",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Dropdown Menu Group"
+        }
+      },
+      "slots": {
+        "items": {
+          "name": "items",
+          "children": [
+            "nav-ddm-item-link"
+          ]
+        }
+      }
+    },
+    "nav-ddm-item-link": {
+      "kind": "component",
+      "id": "nav-ddm-item-link",
+      "definitionId": "vict.catalog.dropdown-menu.item",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Copy link"
+        },
+        "value": {
+          "type": "literal",
+          "value": "copy-link"
+        }
+      },
+      "slots": {}
+    },
+    "nav-ddm-sep": {
+      "kind": "component",
+      "id": "nav-ddm-sep",
+      "definitionId": "vict.catalog.dropdown-menu.separator",
+      "props": {},
+      "slots": {}
+    },
+    "nav-cm": {
+      "kind": "component",
+      "id": "nav-cm",
+      "definitionId": "vict.catalog.context-menu",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Card options"
+        }
+      },
+      "slots": {
+        "items": {
+          "name": "items",
+          "children": [
+            "nav-cm-item-open",
+            "nav-cm-sub",
+            "nav-cm-cbg",
+            "nav-cm-rg",
+            "nav-cm-group",
+            "nav-cm-sep"
+          ]
+        }
+      }
+    },
+    "nav-cm-item-open": {
+      "kind": "component",
+      "id": "nav-cm-item-open",
+      "definitionId": "vict.catalog.context-menu.item",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Open card"
+        },
+        "value": {
+          "type": "literal",
+          "value": "open"
+        }
+      },
+      "slots": {}
+    },
+    "nav-cm-sub": {
+      "kind": "component",
+      "id": "nav-cm-sub",
+      "definitionId": "vict.catalog.context-menu.sub",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Share"
+        }
+      },
+      "slots": {
+        "items": {
+          "name": "items",
+          "children": [
+            "nav-cm-item-copy"
+          ]
+        }
+      }
+    },
+    "nav-cm-item-copy": {
+      "kind": "component",
+      "id": "nav-cm-item-copy",
+      "definitionId": "vict.catalog.context-menu.item",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Copy link"
+        },
+        "value": {
+          "type": "literal",
+          "value": "copy"
+        }
+      },
+      "slots": {}
+    },
+    "nav-cm-cbg": {
+      "kind": "component",
+      "id": "nav-cm-cbg",
+      "definitionId": "vict.catalog.context-menu.checkbox-group",
+      "props": {
+        "values": {
+          "type": "ref",
+          "path": "state.catalog_nav-cm-cbg_values"
+        }
+      },
+      "outputs": {
+        "valuesChange": {
+          "setState": {
+            "key": "catalog_nav-cm-cbg_values"
+          }
+        }
+      },
+      "slots": {
+        "items": {
+          "name": "items",
+          "children": [
+            "nav-cm-cbi"
+          ]
+        }
+      }
+    },
+    "nav-cm-cbi": {
+      "kind": "component",
+      "id": "nav-cm-cbi",
+      "definitionId": "vict.catalog.context-menu.checkbox-item",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Compact mode"
+        },
+        "checked": {
+          "type": "literal",
+          "value": true
+        },
+        "value": {
+          "type": "literal",
+          "value": "compact"
+        }
+      },
+      "slots": {}
+    },
+    "nav-cm-rg": {
+      "kind": "component",
+      "id": "nav-cm-rg",
+      "definitionId": "vict.catalog.context-menu.radio-group",
+      "props": {
+        "value": {
+          "type": "literal",
+          "value": "priority"
+        }
+      },
+      "slots": {
+        "items": {
+          "name": "items",
+          "children": [
+            "nav-cm-ri"
+          ]
+        }
+      }
+    },
+    "nav-cm-ri": {
+      "kind": "component",
+      "id": "nav-cm-ri",
+      "definitionId": "vict.catalog.context-menu.radio-item",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "High priority"
+        },
+        "value": {
+          "type": "literal",
+          "value": "high"
+        }
+      },
+      "slots": {}
+    },
+    "nav-cm-group": {
+      "kind": "component",
+      "id": "nav-cm-group",
+      "definitionId": "vict.catalog.context-menu.group",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Context Menu Group"
+        }
+      },
+      "slots": {
+        "items": {
+          "name": "items",
+          "children": [
+            "nav-cm-item-remove"
+          ]
+        }
+      }
+    },
+    "nav-cm-item-remove": {
+      "kind": "component",
+      "id": "nav-cm-item-remove",
+      "definitionId": "vict.catalog.context-menu.item",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Remove card"
+        },
+        "value": {
+          "type": "literal",
+          "value": "remove"
+        }
+      },
+      "slots": {}
+    },
+    "nav-cm-sep": {
+      "kind": "component",
+      "id": "nav-cm-sep",
+      "definitionId": "vict.catalog.context-menu.separator",
+      "props": {},
+      "slots": {}
+    },
+    "nav-nm": {
+      "kind": "component",
+      "id": "nav-nm",
+      "definitionId": "vict.catalog.navigation-menu",
+      "props": {
+        "value": {
+          "type": "literal",
+          "value": "home"
+        },
+        "orientation": {
+          "type": "literal",
+          "value": "horizontal"
+        }
+      },
+      "slots": {
+        "items": {
+          "name": "items",
+          "children": [
+            "nav-nm-item-product",
+            "nav-nm-sub"
+          ]
+        }
+      }
+    },
+    "nav-nm-item-product": {
+      "kind": "component",
+      "id": "nav-nm-item-product",
+      "definitionId": "vict.catalog.navigation-menu.item",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Product"
+        },
+        "value": {
+          "type": "literal",
+          "value": "product"
+        }
+      },
+      "slots": {
+        "content": {
+          "name": "content",
+          "children": [
+            "nav-nm-link"
+          ]
+        }
+      }
+    },
+    "nav-nm-link": {
+      "kind": "component",
+      "id": "nav-nm-link",
+      "definitionId": "vict.catalog.navigation-menu.link",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Product overview"
+        },
+        "href": {
+          "type": "literal",
+          "value": "#product-overview"
+        }
+      },
+      "slots": {}
+    },
+    "nav-nm-sub": {
+      "kind": "component",
+      "id": "nav-nm-sub",
+      "definitionId": "vict.catalog.navigation-menu.sub",
+      "props": {
+        "orientation": {
+          "type": "literal",
+          "value": "horizontal"
+        },
+        "value": {
+          "type": "literal",
+          "value": "resources"
+        }
+      },
+      "slots": {
+        "items": {
+          "name": "items",
+          "children": [
+            "nav-nm-sub-item-changelog"
+          ]
+        }
+      }
+    },
+    "nav-nm-sub-item-changelog": {
+      "kind": "component",
+      "id": "nav-nm-sub-item-changelog",
+      "definitionId": "vict.catalog.navigation-menu.item",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Changelog"
+        },
+        "value": {
+          "type": "literal",
+          "value": "changelog"
+        }
+      },
+      "slots": {
+        "content": {
+          "name": "content",
+          "children": [
+            "nav-nm-sub-item-changelog-content-1"
+          ]
+        }
+      }
+    },
+    "nav-nm-sub-item-changelog-content-1": {
+      "kind": "component",
+      "id": "nav-nm-sub-item-changelog-content-1",
+      "definitionId": "vict.catalog.navigation-menu.link",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Navigation Menu Link"
+        },
+        "href": {
+          "type": "literal",
+          "value": "#"
+        }
+      },
+      "slots": {}
+    },
+    "nav-command": {
+      "kind": "component",
+      "id": "nav-command",
+      "definitionId": "vict.catalog.command",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Command palette"
+        },
+        "placeholder": {
+          "type": "literal",
+          "value": "Type a command\u2026"
+        }
+      },
+      "slots": {
+        "items": {
+          "name": "items",
+          "children": [
+            "nav-command-group",
+            "nav-command-item-theme"
+          ]
+        }
+      }
+    },
+    "nav-command-group": {
+      "kind": "component",
+      "id": "nav-command-group",
+      "definitionId": "vict.catalog.command.group",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Suggestions"
+        },
+        "value": {
+          "type": "literal",
+          "value": "suggestions"
+        }
+      },
+      "slots": {
+        "items": {
+          "name": "items",
+          "children": [
+            "nav-command-group-items-1",
+            "nav-command-item-settings"
+          ]
+        }
+      }
+    },
+    "nav-command-group-items-1": {
+      "kind": "component",
+      "id": "nav-command-group-items-1",
+      "definitionId": "vict.catalog.command.item",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Choose an action"
+        },
+        "value": {
+          "type": "literal",
+          "value": "first"
+        }
+      },
+      "slots": {}
+    },
+    "nav-command-item-settings": {
+      "kind": "component",
+      "id": "nav-command-item-settings",
+      "definitionId": "vict.catalog.command.item",
+      "props": {
+        "keywords": {
+          "type": "ref",
+          "path": "state.catalog_nav-command-item-settings_keywords"
+        },
+        "label": {
+          "type": "literal",
+          "value": "Open settings"
+        },
+        "value": {
+          "type": "literal",
+          "value": "settings"
+        }
+      },
+      "slots": {}
+    },
+    "nav-command-item-theme": {
+      "kind": "component",
+      "id": "nav-command-item-theme",
+      "definitionId": "vict.catalog.command.item",
+      "props": {
+        "keywords": {
+          "type": "ref",
+          "path": "state.catalog_nav-command-item-theme_keywords"
+        },
+        "label": {
+          "type": "literal",
+          "value": "Toggle theme"
+        },
+        "value": {
+          "type": "literal",
+          "value": "theme"
+        }
+      },
+      "slots": {}
+    },
+    "nav-toolbar": {
+      "kind": "component",
+      "id": "nav-toolbar",
+      "definitionId": "vict.catalog.toolbar",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Editor tools"
+        },
+        "orientation": {
+          "type": "literal",
+          "value": "horizontal"
+        }
+      },
+      "slots": {
+        "tools": {
+          "name": "tools",
+          "children": [
+            "nav-toolbar-btn-bold",
+            "nav-toolbar-btn-italic"
+          ]
+        }
+      }
+    },
+    "nav-toolbar-btn-bold": {
+      "kind": "component",
+      "id": "nav-toolbar-btn-bold",
+      "definitionId": "vict.catalog.toolbar-button",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Bold"
+        }
+      },
+      "slots": {}
+    },
+    "nav-toolbar-btn-italic": {
+      "kind": "component",
+      "id": "nav-toolbar-btn-italic",
+      "definitionId": "vict.catalog.toolbar-button",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Italic"
+        }
+      },
+      "slots": {}
+    },
+    "nav-tooltip": {
+      "kind": "component",
+      "id": "nav-tooltip",
+      "definitionId": "vict.catalog.tooltip",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Tips"
+        },
+        "title": {
+          "type": "literal",
+          "value": "Editor tips"
+        },
+        "description": {
+          "type": "literal",
+          "value": "Hints for faster editing"
+        }
+      },
+      "slots": {}
+    },
+    "nav-link-preview": {
+      "kind": "component",
+      "id": "nav-link-preview",
+      "definitionId": "vict.catalog.link-preview",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Design system docs"
+        },
+        "title": {
+          "type": "literal",
+          "value": "Design system docs"
+        },
+        "description": {
+          "type": "literal",
+          "value": "Docs, guides and API reference."
+        },
+        "href": {
+          "type": "literal",
+          "value": "https://example.com/docs"
+        }
+      },
+      "slots": {
+        "content": {
+          "name": "content",
+          "children": [
+            "nav-link-preview-content-1"
+          ]
+        }
+      }
+    },
+    "nav-link-preview-content-1": {
+      "kind": "element",
+      "id": "nav-link-preview-content-1",
+      "tag": "p",
+      "children": [
+        "nav-link-preview-content-1-text"
+      ],
+      "localStyle": []
+    },
+    "nav-link-preview-content-1-text": {
+      "kind": "text",
+      "id": "nav-link-preview-content-1-text",
+      "content": {
+        "type": "literal",
+        "value": "Your content"
+      }
+    },
+    "forms-section": {
+      "kind": "element",
+      "id": "forms-section",
+      "tag": "section",
+      "attributes": {
+        "aria-label": "Forms and inputs"
+      },
+      "children": [
+        "forms-heading",
+        "forms-label-email",
+        "showcase-email-input",
+        "showcase-name-input",
+        "existing-4",
+        "existing-1",
+        "existing-2",
+        "existing-6",
+        "existing-5",
+        "forms-select-multi",
+        "forms-combobox",
+        "forms-combobox-multi",
+        "forms-toggle-group",
+        "forms-tg-multi"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "16px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "24px"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "100px"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#f5f7fb"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        }
+      ]
+    },
+    "forms-heading": {
+      "kind": "element",
+      "id": "forms-heading",
+      "tag": "h2",
+      "children": [
+        "forms-heading-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "32px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.2"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        }
+      ]
+    },
+    "forms-heading-text": {
+      "kind": "text",
+      "id": "forms-heading-text",
+      "content": {
+        "type": "literal",
+        "value": "Forms & Inputs"
+      }
+    },
+    "forms-label-email": {
+      "kind": "component",
+      "id": "forms-label-email",
+      "definitionId": "vict.catalog.label",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Work email"
+        },
+        "for": {
+          "type": "literal",
+          "value": "showcase-email-input"
+        }
+      },
+      "slots": {}
+    },
+    "showcase-email-input": {
+      "kind": "element",
+      "id": "showcase-email-input",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "type": "email",
+        "aria-label": "Work email",
+        "placeholder": "you@example.com",
+        "value": {
+          "type": "ref",
+          "path": "state.showcase-email"
+        }
+      },
+      "interactions": [
+        {
+          "on": "change",
+          "action": "setState",
+          "key": "showcase-email",
+          "value": {
+            "type": "ref",
+            "path": "state.showcase-email"
+          }
+        }
+      ],
+      "localStyle": [
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "8px"
+          }
+        },
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "1px solid #cbd3e1"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "16px"
+          }
+        },
+        {
+          "property": "width",
+          "value": {
+            "type": "text",
+            "value": "100%"
+          }
+        },
+        {
+          "property": "box-sizing",
+          "value": {
+            "type": "text",
+            "value": "border-box"
+          }
+        }
+      ]
+    },
+    "showcase-name-input": {
+      "kind": "element",
+      "id": "showcase-name-input",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "type": "text",
+        "aria-label": "Full name",
+        "placeholder": "Ada Lovelace",
+        "value": {
+          "type": "ref",
+          "path": "state.showcase-name"
+        }
+      },
+      "interactions": [
+        {
+          "on": "change",
+          "action": "setState",
+          "key": "showcase-name",
+          "value": {
+            "type": "ref",
+            "path": "state.showcase-name"
+          }
+        }
+      ],
+      "localStyle": [
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "8px"
+          }
+        },
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "1px solid #cbd3e1"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "16px"
+          }
+        },
+        {
+          "property": "width",
+          "value": {
+            "type": "text",
+            "value": "100%"
+          }
+        },
+        {
+          "property": "box-sizing",
+          "value": {
+            "type": "text",
+            "value": "border-box"
+          }
+        }
+      ]
+    },
+    "forms-select-multi": {
+      "kind": "component",
+      "id": "forms-select-multi",
+      "definitionId": "vict.catalog.select-multiple",
+      "props": {
+        "values": {
+          "type": "ref",
+          "path": "state.catalog_forms-select-multi_values"
+        },
+        "label": {
+          "type": "literal",
+          "value": "Assign reviewers"
+        }
+      },
+      "outputs": {
+        "valuesChange": {
+          "setState": {
+            "key": "catalog_forms-select-multi_values"
+          }
+        }
+      },
+      "slots": {
+        "items": {
+          "name": "items",
+          "children": [
+            "forms-select-multi-item-ada",
+            "forms-select-multi-item-grace"
+          ]
+        }
+      }
+    },
+    "forms-select-multi-item-ada": {
+      "kind": "component",
+      "id": "forms-select-multi-item-ada",
+      "definitionId": "vict.catalog.select-item",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Ada Lovelace"
+        },
+        "value": {
+          "type": "literal",
+          "value": "ada"
+        }
+      },
+      "slots": {}
+    },
+    "forms-select-multi-item-grace": {
+      "kind": "component",
+      "id": "forms-select-multi-item-grace",
+      "definitionId": "vict.catalog.select-item",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Grace Hopper"
+        },
+        "value": {
+          "type": "literal",
+          "value": "grace"
+        }
+      },
+      "slots": {}
+    },
+    "forms-combobox": {
+      "kind": "component",
+      "id": "forms-combobox",
+      "definitionId": "vict.catalog.combobox",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Choose workspace"
+        }
+      },
+      "slots": {
+        "items": {
+          "name": "items",
+          "children": [
+            "forms-combobox-item-design"
+          ]
+        }
+      }
+    },
+    "forms-combobox-item-design": {
+      "kind": "component",
+      "id": "forms-combobox-item-design",
+      "definitionId": "vict.catalog.combobox-item",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Design"
+        },
+        "value": {
+          "type": "literal",
+          "value": "design"
+        }
+      },
+      "slots": {}
+    },
+    "forms-combobox-multi": {
+      "kind": "component",
+      "id": "forms-combobox-multi",
+      "definitionId": "vict.catalog.combobox-multiple",
+      "props": {
+        "values": {
+          "type": "ref",
+          "path": "state.catalog_forms-combobox-multi_values"
+        },
+        "label": {
+          "type": "literal",
+          "value": "Pick tags"
+        }
+      },
+      "outputs": {
+        "valuesChange": {
+          "setState": {
+            "key": "catalog_forms-combobox-multi_values"
+          }
+        }
+      },
+      "slots": {
+        "items": {
+          "name": "items",
+          "children": [
+            "forms-combobox-multi-item-research"
+          ]
+        }
+      }
+    },
+    "forms-combobox-multi-item-research": {
+      "kind": "component",
+      "id": "forms-combobox-multi-item-research",
+      "definitionId": "vict.catalog.combobox-item",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Research"
+        },
+        "value": {
+          "type": "literal",
+          "value": "research"
+        }
+      },
+      "slots": {}
+    },
+    "forms-toggle-group": {
+      "kind": "component",
+      "id": "forms-toggle-group",
+      "definitionId": "vict.catalog.toggle-group",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "View mode"
+        }
+      },
+      "slots": {
+        "items": {
+          "name": "items",
+          "children": [
+            "forms-tg-item-grid",
+            "forms-tg-item-list"
+          ]
+        }
+      }
+    },
+    "data-section": {
+      "kind": "element",
+      "id": "data-section",
+      "tag": "section",
+      "attributes": {
+        "aria-label": "Data and progress"
+      },
+      "children": [
+        "data-heading",
+        "data-accordion-multi",
+        "data-meter",
+        "data-avatar",
+        "data-aspect",
+        "data-scroll",
+        "existing-9",
+        "existing-11",
+        "existing-7",
+        "data-pagination",
+        "existing-8",
+        "data-collapsible"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "16px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "24px"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "100px"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#f5f7fb"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        }
+      ]
+    },
+    "data-heading": {
+      "kind": "element",
+      "id": "data-heading",
+      "tag": "h2",
+      "children": [
+        "data-heading-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "32px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.2"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        }
+      ]
+    },
+    "data-heading-text": {
+      "kind": "text",
+      "id": "data-heading-text",
+      "content": {
+        "type": "literal",
+        "value": "Data & Progress"
+      }
+    },
+    "forms-tg-item-grid": {
+      "kind": "component",
+      "id": "forms-tg-item-grid",
+      "definitionId": "vict.catalog.toggle-group-item",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Grid"
+        },
+        "value": {
+          "type": "literal",
+          "value": "grid"
+        }
+      },
+      "slots": {}
+    },
+    "forms-tg-item-list": {
+      "kind": "component",
+      "id": "forms-tg-item-list",
+      "definitionId": "vict.catalog.toggle-group-item",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "List"
+        },
+        "value": {
+          "type": "literal",
+          "value": "list"
+        }
+      },
+      "slots": {}
+    },
+    "forms-tg-multi": {
+      "kind": "component",
+      "id": "forms-tg-multi",
+      "definitionId": "vict.catalog.toggle-group-multiple",
+      "props": {
+        "values": {
+          "type": "ref",
+          "path": "state.catalog_forms-tg-multi_values"
+        },
+        "label": {
+          "type": "literal",
+          "value": "Filters"
+        }
+      },
+      "outputs": {
+        "valuesChange": {
+          "setState": {
+            "key": "catalog_forms-tg-multi_values"
+          }
+        }
+      },
+      "slots": {
+        "items": {
+          "name": "items",
+          "children": [
+            "forms-tgm-item-active"
+          ]
+        }
+      }
+    },
+    "forms-tgm-item-active": {
+      "kind": "component",
+      "id": "forms-tgm-item-active",
+      "definitionId": "vict.catalog.toggle-group-item",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Active"
+        },
+        "value": {
+          "type": "literal",
+          "value": "active"
+        }
+      },
+      "slots": {}
+    },
+    "data-accordion-multi": {
+      "kind": "component",
+      "id": "data-accordion-multi",
+      "definitionId": "vict.catalog.accordion-multiple",
+      "props": {
+        "values": {
+          "type": "ref",
+          "path": "state.catalog_data-accordion-multi_values"
+        },
+        "label": {
+          "type": "literal",
+          "value": "FAQ"
+        }
+      },
+      "outputs": {
+        "valuesChange": {
+          "setState": {
+            "key": "catalog_data-accordion-multi_values"
+          }
+        }
+      },
+      "slots": {
+        "items": {
+          "name": "items",
+          "children": [
+            "data-accordion-multi-item"
+          ]
+        }
+      }
+    },
+    "data-accordion-multi-item": {
+      "kind": "component",
+      "id": "data-accordion-multi-item",
+      "definitionId": "vict.catalog.accordion-item",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Getting started"
+        },
+        "value": {
+          "type": "literal",
+          "value": "getting-started"
+        }
+      },
+      "slots": {
+        "content": {
+          "name": "content",
+          "children": [
+            "data-accordion-multi-item-text"
+          ]
+        }
+      }
+    },
+    "data-accordion-multi-item-text": {
+      "kind": "element",
+      "id": "data-accordion-multi-item-text",
+      "tag": "p",
+      "children": [
+        "data-accordion-multi-item-text-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "16px"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.6"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#647187"
+          }
+        }
+      ]
+    },
+    "data-accordion-multi-item-text-text": {
+      "kind": "text",
+      "id": "data-accordion-multi-item-text-text",
+      "content": {
+        "type": "literal",
+        "value": "Multiple panels can stay open at once."
+      }
+    },
+    "data-meter": {
+      "kind": "component",
+      "id": "data-meter",
+      "definitionId": "vict.catalog.meter",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Disk usage"
+        },
+        "value": {
+          "type": "literal",
+          "value": 72
+        },
+        "max": {
+          "type": "literal",
+          "value": 100
+        },
+        "min": {
+          "type": "literal",
+          "value": 0
+        }
+      },
+      "slots": {}
+    },
+    "data-avatar": {
+      "kind": "component",
+      "id": "data-avatar",
+      "definitionId": "vict.catalog.avatar",
+      "props": {
+        "fallback": {
+          "type": "literal",
+          "value": "V"
+        },
+        "alt": {
+          "type": "literal",
+          "value": "Team avatar"
+        }
+      },
+      "slots": {}
+    },
+    "data-aspect": {
+      "kind": "component",
+      "id": "data-aspect",
+      "definitionId": "vict.catalog.aspect-ratio",
+      "props": {
+        "ratio": {
+          "type": "literal",
+          "value": 1.7778
+        }
+      },
+      "slots": {
+        "content": {
+          "name": "content",
+          "children": [
+            "data-aspect-text"
+          ]
+        }
+      }
+    },
+    "data-scroll": {
+      "kind": "component",
+      "id": "data-scroll",
+      "definitionId": "vict.catalog.scroll-area",
+      "props": {
+        "type": {
+          "type": "literal",
+          "value": "hover"
+        }
+      },
+      "slots": {
+        "content": {
+          "name": "content",
+          "children": [
+            "data-scroll-text"
+          ]
+        }
+      }
+    },
+    "data-pagination": {
+      "kind": "component",
+      "id": "data-pagination",
+      "definitionId": "vict.catalog.pagination",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Results"
+        },
+        "count": {
+          "type": "literal",
+          "value": 120
+        },
+        "page": {
+          "type": "literal",
+          "value": 2
+        },
+        "perPage": {
+          "type": "literal",
+          "value": 10
+        }
+      },
+      "slots": {}
+    },
+    "data-collapsible": {
+      "kind": "component",
+      "id": "data-collapsible",
+      "definitionId": "vict.catalog.collapsible",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Release notes"
+        }
+      },
+      "slots": {
+        "content": {
+          "name": "content",
+          "children": [
+            "data-collapsible-text"
+          ]
+        }
+      }
+    },
+    "dates-section": {
+      "kind": "element",
+      "id": "dates-section",
+      "tag": "section",
+      "attributes": {
+        "aria-label": "Date and time"
+      },
+      "children": [
+        "dates-heading",
+        "dates-date-field",
+        "dates-date-picker",
+        "dates-calendar",
+        "dates-time-field",
+        "dates-range-field",
+        "dates-range-picker",
+        "dates-range-calendar"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "16px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "24px"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "100px"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#f5f7fb"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        }
+      ]
+    },
+    "dates-heading": {
+      "kind": "element",
+      "id": "dates-heading",
+      "tag": "h2",
+      "children": [
+        "dates-heading-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "32px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.2"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        }
+      ]
+    },
+    "dates-heading-text": {
+      "kind": "text",
+      "id": "dates-heading-text",
+      "content": {
+        "type": "literal",
+        "value": "Date & Time"
+      }
+    },
+    "dates-date-field": {
+      "kind": "component",
+      "id": "dates-date-field",
+      "definitionId": "vict.catalog.date-field",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Start date"
+        },
+        "value": {
+          "type": "literal",
+          "value": "2026-10-23"
+        },
+        "placeholder": {
+          "type": "literal",
+          "value": "2025-01-01"
+        }
+      },
+      "slots": {}
+    },
+    "dates-date-picker": {
+      "kind": "component",
+      "id": "dates-date-picker",
+      "definitionId": "vict.catalog.date-picker",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Launch date"
+        },
+        "value": {
+          "type": "literal",
+          "value": "2026-10-23"
+        },
+        "numberOfMonths": {
+          "type": "literal",
+          "value": 1
+        },
+        "placeholder": {
+          "type": "literal",
+          "value": "2025-03-01"
+        }
+      },
+      "slots": {}
+    },
+    "dates-calendar": {
+      "kind": "component",
+      "id": "dates-calendar",
+      "definitionId": "vict.catalog.calendar",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Editorial calendar"
+        },
+        "value": {
+          "type": "literal",
+          "value": "2026-10-23"
+        }
+      },
+      "slots": {}
+    },
+    "dates-time-field": {
+      "kind": "component",
+      "id": "dates-time-field",
+      "definitionId": "vict.catalog.time-field",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Reminder time"
+        },
+        "value": {
+          "type": "literal",
+          "value": "09:00"
+        },
+        "granularity": {
+          "type": "literal",
+          "value": "minute"
+        },
+        "hourCycle": {
+          "type": "literal",
+          "value": 24
+        }
+      },
+      "slots": {}
+    },
+    "dates-range-field": {
+      "kind": "component",
+      "id": "dates-range-field",
+      "definitionId": "vict.catalog.date-range-field",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Billing period"
+        },
+        "start": {
+          "type": "literal",
+          "value": "2025-04-01"
+        },
+        "end": {
+          "type": "literal",
+          "value": "2025-04-10"
+        }
+      },
+      "slots": {}
+    },
+    "dates-range-picker": {
+      "kind": "component",
+      "id": "dates-range-picker",
+      "definitionId": "vict.catalog.date-range-picker",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Booking window"
+        },
+        "start": {
+          "type": "literal",
+          "value": "2025-04-01"
+        },
+        "end": {
+          "type": "literal",
+          "value": "2025-04-10"
+        }
+      },
+      "slots": {}
+    },
+    "dates-range-calendar": {
+      "kind": "component",
+      "id": "dates-range-calendar",
+      "definitionId": "vict.catalog.range-calendar",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Conference days"
+        },
+        "start": {
+          "type": "literal",
+          "value": "2025-04-01"
+        },
+        "end": {
+          "type": "literal",
+          "value": "2025-04-10"
+        }
+      },
+      "slots": {}
+    },
+    "overlays-section": {
+      "kind": "element",
+      "id": "overlays-section",
+      "tag": "section",
+      "attributes": {
+        "aria-label": "Overlays and feedback"
+      },
+      "children": [
+        "overlays-heading",
+        "existing-3",
+        "existing-10",
+        "overlays-alert-dialog"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "16px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "24px"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "100px"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#f5f7fb"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        }
+      ]
+    },
+    "overlays-heading": {
+      "kind": "element",
+      "id": "overlays-heading",
+      "tag": "h2",
+      "children": [
+        "overlays-heading-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "32px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.2"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        }
+      ]
+    },
+    "overlays-heading-text": {
+      "kind": "text",
+      "id": "overlays-heading-text",
+      "content": {
+        "type": "literal",
+        "value": "Overlays & Feedback"
+      }
+    },
+    "overlays-alert-dialog": {
+      "kind": "component",
+      "id": "overlays-alert-dialog",
+      "definitionId": "vict.catalog.alert-dialog",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Discard draft"
+        },
+        "title": {
+          "type": "literal",
+          "value": "Discard this draft?"
+        },
+        "description": {
+          "type": "literal",
+          "value": "This will permanently remove the current draft."
+        },
+        "cancelLabel": {
+          "type": "literal",
+          "value": "Keep draft"
+        },
+        "confirmLabel": {
+          "type": "literal",
+          "value": "Discard"
+        }
+      },
+      "slots": {
+        "body": {
+          "name": "body",
+          "children": [
+            "overlays-alert-dialog-body-1"
+          ]
+        }
+      }
+    },
+    "overlays-alert-dialog-body-1": {
+      "kind": "element",
+      "id": "overlays-alert-dialog-body-1",
+      "tag": "p",
+      "children": [
+        "overlays-alert-dialog-body-1-text"
+      ],
+      "localStyle": []
+    },
+    "overlays-alert-dialog-body-1-text": {
+      "kind": "text",
+      "id": "overlays-alert-dialog-body-1-text",
+      "content": {
+        "type": "literal",
+        "value": "Review this local preview action before continuing."
+      }
+    },
+    "data-collapsible-text": {
+      "kind": "element",
+      "id": "data-collapsible-text",
+      "tag": "p",
+      "children": [
+        "data-collapsible-text-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "16px"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.6"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#647187"
+          }
+        }
+      ]
+    },
+    "data-collapsible-text-text": {
+      "kind": "text",
+      "id": "data-collapsible-text-text",
+      "content": {
+        "type": "literal",
+        "value": "Highlights from the latest release notes."
+      }
+    },
+    "data-scroll-text": {
+      "kind": "element",
+      "id": "data-scroll-text",
+      "tag": "p",
+      "children": [
+        "data-scroll-text-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "16px"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.6"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#647187"
+          }
+        }
+      ]
+    },
+    "data-scroll-text-text": {
+      "kind": "text",
+      "id": "data-scroll-text-text",
+      "content": {
+        "type": "literal",
+        "value": "Scrollable changelog entries appear here."
+      }
+    },
+    "data-aspect-text": {
+      "kind": "element",
+      "id": "data-aspect-text",
+      "tag": "p",
+      "children": [
+        "data-aspect-text-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "16px"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.6"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#647187"
+          }
+        }
+      ]
+    },
+    "data-aspect-text-text": {
+      "kind": "text",
+      "id": "data-aspect-text-text",
+      "content": {
+        "type": "literal",
+        "value": "16:9 media frame"
+      }
+    }
+  },
+  "componentDefinitions": {},
+  "styleSources": {},
+  "assets": {},
+  "tokens": {},
+  "conditions": {
+    "compact": {
+      "id": "compact",
+      "kind": "container",
+      "name": "studio-screen",
+      "query": "(max-width: 600px)"
+    }
+  },
+  "localState": {
+    "message": {
+      "key": "message",
+      "type": "string",
+      "initial": "Hello from my screen"
+    },
+    "accepted": {
+      "key": "accepted",
+      "type": "boolean",
+      "initial": false
+    },
+    "dialogOpen": {
+      "key": "dialogOpen",
+      "type": "boolean",
+      "initial": false
+    },
+    "busy": {
+      "key": "busy",
+      "type": "boolean",
+      "initial": false
+    },
+    "actionError": {
+      "key": "actionError",
+      "type": "string",
+      "initial": ""
+    },
+    "actionResult": {
+      "key": "actionResult",
+      "type": "string",
+      "initial": ""
+    },
+    "field_existing-1": {
+      "key": "field_existing-1",
+      "type": "boolean",
+      "initial": false
+    },
+    "field_existing-2": {
+      "key": "field_existing-2",
+      "type": "boolean",
+      "initial": false
+    },
+    "catalog_existing-5_value": {
+      "key": "catalog_existing-5_value",
+      "type": "numberList",
+      "initial": [
+        25
+      ]
+    },
+    "input_live-email": {
+      "key": "input_live-email",
+      "type": "string",
+      "initial": ""
+    },
+    "recovery-email": {
+      "key": "recovery-email",
+      "type": "string",
+      "initial": ""
+    },
+    "input_live-name": {
+      "key": "input_live-name",
+      "type": "string",
+      "initial": ""
+    },
+    "recovery-name": {
+      "key": "recovery-name",
+      "type": "string",
+      "initial": ""
+    },
+    "recovery-consent": {
+      "key": "recovery-consent",
+      "type": "boolean",
+      "initial": false
+    },
+    "field_live-consent": {
+      "key": "field_live-consent",
+      "type": "boolean",
+      "initial": false
+    },
+    "catalog_nav-menubar-cbg_values": {
+      "key": "catalog_nav-menubar-cbg_values",
+      "type": "stringList",
+      "initial": []
+    },
+    "catalog_nav-ddm-cbg_values": {
+      "key": "catalog_nav-ddm-cbg_values",
+      "type": "stringList",
+      "initial": []
+    },
+    "catalog_nav-cm-cbg_values": {
+      "key": "catalog_nav-cm-cbg_values",
+      "type": "stringList",
+      "initial": []
+    },
+    "catalog_nav-command-item-settings_keywords": {
+      "key": "catalog_nav-command-item-settings_keywords",
+      "type": "stringList",
+      "initial": []
+    },
+    "catalog_nav-command-item-theme_keywords": {
+      "key": "catalog_nav-command-item-theme_keywords",
+      "type": "stringList",
+      "initial": []
+    },
+    "input_showcase-email-input": {
+      "key": "input_showcase-email-input",
+      "type": "string",
+      "initial": ""
+    },
+    "showcase-email": {
+      "key": "showcase-email",
+      "type": "string",
+      "initial": ""
+    },
+    "input_showcase-name-input": {
+      "key": "input_showcase-name-input",
+      "type": "string",
+      "initial": ""
+    },
+    "showcase-name": {
+      "key": "showcase-name",
+      "type": "string",
+      "initial": ""
+    },
+    "catalog_forms-select-multi_values": {
+      "key": "catalog_forms-select-multi_values",
+      "type": "stringList",
+      "initial": [
+        "ada"
+      ]
+    },
+    "catalog_forms-combobox-multi_values": {
+      "key": "catalog_forms-combobox-multi_values",
+      "type": "stringList",
+      "initial": []
+    },
+    "catalog_forms-tg-multi_values": {
+      "key": "catalog_forms-tg-multi_values",
+      "type": "stringList",
+      "initial": [
+        "active"
+      ]
+    },
+    "catalog_data-accordion-multi_values": {
+      "key": "catalog_data-accordion-multi_values",
+      "type": "stringList",
+      "initial": [
+        "getting-started"
+      ]
+    }
+  }
+}

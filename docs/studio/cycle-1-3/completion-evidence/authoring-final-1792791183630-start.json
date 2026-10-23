@@ -1,0 +1,29 @@
+{
+  "head": "3794c4a4dc75012c436df982f0532b6bbf68ee12",
+  "beforeHashes": {
+    "apps/studio/src/lib/server/designer-agent.ts": "a7392c9f28e73be500718c546631b5c5284066bb6de51290e66e43586d344205",
+    "apps/studio/src/lib/server/designer-model.ts": "079a851d1d5e3a471ae33447dfa50fe0d3f83fcf4accdd1812fc01ec58890c23",
+    "apps/studio/src/lib/server/designer-visual.ts": "bc91d8a2a886031b991452b7820e7aad8733468590b1dbb844f23a7c47f435af",
+    "apps/studio/src/lib/designer/agent-edits.ts": "b268f1e6ab022dadec69aa3e0c3cd5814b5644c4e78997b502da569c0eca75c3",
+    "apps/studio/src/lib/designer/agent-reads.ts": "1761a446685ac875a7d0f39bc73a50c8a3effc61dd9dfd0a0513199632af5269",
+    "apps/studio/src/lib/designer/recipes.ts": "16e37797b8900e0c5b8d3b153c5ae7025b359bcc8e2493eac9aec6a2ffb7f80a",
+    "packages/ui-editor/src/commands.ts": "23d9dfc83e01f624393a07ff3268316dd7ad1a51f39433fc45edd921bd69f05a",
+    "packages/ui-editor/src/bridge.ts": "0e0434ba2630022f85ef62e1a5e66a37379b406a6f6d3f577c0530d1cbb1020b",
+    "packages/ui-editor/src/interactive-slots.ts": "0a969d8b441b8f845235a3951bb5b7588e9210130c40a0722e5305188c16e896",
+    "packages/ui-svelte/src/document/RenderNode.svelte": "e2e14c6469783faf05d50951d9a099c3714e6ba74a905b85d01bf23d597c46c9"
+  },
+  "sourcePath": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-3-completion\\260831-VCT-02\\docs\\studio\\cycle-1-3\\completion-evidence\\all83-source-before-final-audit.json",
+  "initialNodes": 329,
+  "initialCoverage": {
+    "available": 78,
+    "authored": 83,
+    "catalogAuthored": 78,
+    "requested": 83,
+    "scope": "declared-request",
+    "missing": [],
+    "evidence": "Declared source presence only. Does not prove appearance, interaction, requested intent, or completion."
+  },
+  "retained": 180,
+  "prompt": "Continue the existing all-83-recipe synthetic showcase, do not restart or replay its committed work. All required source recipes already exist. First perform this explicitly authorized malformed-input recovery test: call studio_screen_edit with bind on node existing-1, prop checked, expression true (a deliberately invalid boolean instead of an expression object). Exactly one negative attempt is requested. After the refusal, read overview and inspect lastValidation's operation, field, expected shape and example. Correct it with expression {\"type\":\"ref\",\"path\":\"state.field_existing-1\"} and in that same corrected edit modify button existing-0 label to \"Preview action\" so a real nonempty transaction is acknowledged. Then finish intentional cleanup: remove every unrelated retained-* synthetic filler node (remaining count 180; IDs may be discovered by query retained-). Preserve all 83 required recipes, meaningful components, independent fields and declared bindings. Use one h1 and h2-h6 section headings. Replace obvious unfinished seed copy such as \"Add your details here\", \"Your content\", \"Add your own content\", \"First option\"/\"Second option\" only where still generic: use deliberate labeled demo choices; do not delete component examples. Work in canonical batches, report actual acknowledged progress, and read coverage for the complete requested manifest in batches of at most30 IDs. Required manifest: section, row, heading, text, input, button, checkbox, switch, dialog, separator, select, toggle, select-multiple, select-item, combobox, combobox-multiple, combobox-item, toggle-group, toggle-group-multiple, toggle-group-item, accordion, accordion-multiple, accordion-item, slider, meter, progress, pagination, date-field, date-picker, calendar, time-field, date-range-field, date-range-picker, range-calendar, dropdown-menu, context-menu, menubar, menubar.menu, dropdown-menu.item, dropdown-menu.sub, dropdown-menu.checkbox-item, dropdown-menu.checkbox-group, dropdown-menu.radio-group, dropdown-menu.radio-item, dropdown-menu.group, dropdown-menu.separator, context-menu.item, context-menu.sub, context-menu.checkbox-item, context-menu.checkbox-group, context-menu.radio-group, context-menu.radio-item, context-menu.group, context-menu.separator, menubar.item, menubar.sub, menubar.checkbox-item, menubar.checkbox-group, menubar.radio-group, menubar.radio-item, menubar.group, menubar.separator, command, command.item, command.group, navigation-menu, navigation-menu.item, navigation-menu.link, navigation-menu.sub, avatar, aspect-ratio, label, scroll-area, toolbar, toolbar-button, link-preview, tooltip, popover, alert-dialog, tabs, tabs-trigger, tabs-panel, collapsible. This harness cannot supply a browser image or physical interactions, so explicitly state those remain unverified. Finish with an honest concise source completion and remaining verification report; do not equate source presence with appearance or behavior.",
+  "kind": "Pinned production source; real provider; synthetic canonical acknowledgement harness. No browser image or interaction proof."
+}

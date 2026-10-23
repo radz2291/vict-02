@@ -1,0 +1,82 @@
+{
+  "kind": "Builder source-authoring evidence assessment; not a gate verdict or browser verification",
+  "importedProductSha": "3794c4a4dc75012c436df982f0532b6bbf68ee12",
+  "headAtEnd": "990742db1dd143775c83997f52a69c8a749284b9",
+  "sourceHashScope": {
+    "changedModules": [
+      "apps/studio/src/lib/server/designer-visual.ts"
+    ],
+    "unchangedModuleCount": 9,
+    "allAuthoringModulesUnchanged": true,
+    "explanation": "The expected independent visual gate repair was committed during the run. The strict all-module hash assertion failed and is retained in completion-authoring-sealed-live.log. This is evidence for the imported 3794 authoring modules carried forward unchanged, not an exact 9907 end-to-end provider run."
+  },
+  "realProvider": {
+    "selectedModel": "zai/glm-5.3-flash",
+    "elapsedMs": 501572,
+    "canonicalAcknowledgedBatches": 26,
+    "confirmedRevision": "r1#26",
+    "underlyingTermination": {
+      "status": "completed"
+    },
+    "reportedStatus": "failed",
+    "reportedCode": "STUDIO_AGENT_TOOL_FAILED",
+    "unresolvedTools": [
+      "studio_screen_observe"
+    ],
+    "classification": "Engine completed; source cleanup committed. Visual observation remained unperformed because the in-memory synthetic harness has no browser and explicitly refused its one capture request with STUDIO_CAPTURE_UNAVAILABLE. This was not tool-budget exhaustion, read refusal, provider connectivity, or unrecovered edit schema failure."
+  },
+  "recovery": {
+    "negativeAttempt": "bind.expression=true",
+    "field": "operations.0.expression",
+    "actionableOverviewRead": true,
+    "correctedAcknowledgedEdit": true,
+    "evidence": "Retained events show invalid literal/ref expression diagnostics, overview lastValidation, then a successful corrected binding and button label edit. Canonical acknowledgements were synthetic EditorBridge receipts; they were not browser receipts."
+  },
+  "sourceAudit": {
+    "nodes": 151,
+    "retainedFillerNodes": [],
+    "coverage": {
+      "available": 78,
+      "authored": 83,
+      "catalogAuthored": 78,
+      "requested": 83,
+      "scope": "declared-request",
+      "missing": [],
+      "evidence": "Declared source presence only. Does not prove appearance, interaction, requested intent, or completion."
+    },
+    "headings": {
+      "h1": 1,
+      "h2": 6
+    },
+    "unfinishedSeedPhrases": {
+      "Add your details here": 0,
+      "Your content": 0,
+      "Add your own content": 0,
+      "First option": 0,
+      "Second option": 0
+    },
+    "finalSourceFile": "authoring-final-1792791183630-document.json",
+    "finalSourceSha256": "2431bf6a3993ad75684bb39ba3ad21e4dd302ab90420b05376963474ab016b4e"
+  },
+  "remainingVerification": [
+    "Load this serialized source into the actual final product browser.",
+    "Perform a successful actual screenshot-to-model observation and keep that result separate from interaction proof.",
+    "Exercise independent fields, controls, overlays, and actual Save/reopen; pure EditorBridge source tests are labeled separately."
+  ],
+  "modelFinalReportCaveat": "The model correctly disclosed absent appearance/interaction testing and unsaved source. Its phrase browser-acknowledged edits overstates this harness: the receipts came from synthetic canonical EditorBridge acknowledgements, not a rendered browser.",
+  "modelPublicReport": "I'll run the authorized malformed-input recovery test first, exactly one negative attempt: a `bind` on `existing-1`/`checked` with the raw boolean `true` instead of an expression object.Refused as expected (vict-contract-rejected). Now reading the overview for `lastValidation` diagnostics, plus targeted facts for the corrected edit and the first retained-node discovery page — all independent reads:Diagnostics confirmed: `lastValidation` operation 0, field `operations.0.expression`, expected shape exactly `{type:\"literal\",value}` OR `{type:\"ref\",path:\"state.key\"}` with example `{\"type\":\"ref\",\"path\":\"state.accepted\"}`. Verified facts: `existing-1` is a checkbox with `checked` ↔ boolean state `field_existing-1` (declared, initial `false`), and `existing-0` is a button whose `label` prop is currently \"Continue\". Applying the corrected canonical edit, and in parallel paging the remaining retained-* discovery (total 181 matches = screen itself + 180 retained nodes):Corrected edit acknowledged (`ok:true`, applied, revision now `r1#1`) — the recovery transaction is committed. Discovery confirms all 180 filler nodes are simple leaf texts `retained-20`…`retained-199` (query total 181 includes `screen`). Starting the removal batches of 8; also re-reading `existing-0` to confirm the label change landed, in parallel with batch 2:`existing-0` label confirmed as \"Preview action\". Batch 2 acknowledged → `r1#2`. Continuing removal batches sequentially:All 23 removal batches acknowledged (`r1#23`). Now verifying the cleanup and discovering remaining seed copy and heading facts — independent reads in one block:Cleanup is 172/180 done — the overview shows `retained-20`…`retained-27` are still present (my first removal batch correctly started at 28; these 8 were never removed), plus a pre-existing committed `live-recovery-section` child which stays. Seed copy found in 6 non-retained nodes. Removing the final 8 fillers now, and checking headings in parallel:All 180 fillers removed (revision `r1#24`). Headings verified: single `h1` (hero) + `h2` for the five main sections — within the h2–h6 requirement. Applying the seed-copy replacements (6 modifies) and inspecting `live-recovery-section` for any additional heading in parallel:Seed-copy replacements acknowledged (`r1#25`). `live-recovery-section` is a label+input form with **no heading at all** — every other section has one, so I'll add a single `h2` to complete the one-h1 / h2–h6 structure:Heading added (`r1#26`). Running final verification: full 83-recipe coverage manifest (3 batches ≤30), overview, residual filler/seed-copy queries, and one appearance capture attempt:Coverage returned no missing items for all 83 requested recipe IDs (requested=authored per batch: 30/30/23; catalogAuthored 78 as reported by the tool), the root now holds exactly the seven meaningful sections, and `retained-`/seed-copy queries return zero. The observe capture failed (`STUDIO_CAPTURE_UNAVAILABLE` — no visual observation was made). One last check for leftover seed placeholders before the final report:All checks are clean — the remaining `placeholder` matches are intentional input hints (`you@example.com`, `Full name`, `Type a command…`, date hints), not unfinished copy. Final report:\n\n## Source completion report (document `live-completion`, revision `r1#26`)\n\n**Authorized recovery test — done as specified**\n- Exactly one negative attempt: `bind` on `existing-1`/`checked` with raw boolean `true` → refused before invocation (`vict-contract-rejected`). `lastValidation` showed operation `0`, field `operations.0.expression`, expected shape exactly `{type:\"literal\",value}` OR `{type:\"ref\",path:\"state.key\"}`, example `{\"type\":\"ref\",\"path\":\"state.accepted\"}`.\n- Corrected, acknowledged transaction: `existing-1.checked` bound to ref `state.field_existing-1` (declared boolean, initial `false`; `checkedChange` output already setState-wired to the same key) **and** button `existing-0` label `Continue` → `Preview action` (verified in source; its `loading`→`state.busy` binding untouched).\n\n**Cleanup — acknowledged**\n- All **180** `retained-*` filler nodes (`retained-20`…`retained-199`, simple leaf texts) removed in 23 acknowledged batches of ≤8 ops. Post-check: `retained-` query → 0 matches; `screen` now has exactly 7 children (six showcase sections + pre-existing `live-recovery-section`, preserved). Meaningful components, independent fields, and declared bindings were not touched.\n\n**Seed copy — acknowledged (1 batch, 6 modifies)**\n- Dialog body, popover body text + description, link-preview text, and the two generic select items → deliberate labels `Express delivery` / `Standard delivery` (option `value`s kept). No component examples deleted. Seed-string queries now return 0.\n\n**Headings — verified in source**\n- One `h1` (`hero-heading` \"Component Gallery\") + `h2` for nav/forms/data/dates/overlays; added acknowledged `h2` \"Live Recovery Form\" to the previously heading-less `live-recovery-section`.\n\n**Coverage manifest — recorded**\n- 3 reads covering all 83 requested recipe IDs in ≤30-ID batches: every call returned `requested == authored` (30/30/23) with empty missing-items lists; the tool reported `catalogAuthored: 78` and `scope: declared-request`. Coverage is declared source presence only.\n\n**Remaining verification — explicitly unverified**\n- **Appearance:** `studio_screen_observe` failed with `STUDIO_CAPTURE_UNAVAILABLE` (\"No visual observation was made\") — no screenshot/image evidence exists.\n- **Interactions/behavior:** no physical interaction testing occurred; bindings/outputs are source facts (e.g., checkbox↔state confirmed in source JSON, never exercised).\n- **Completion ≠ compilation:** browser-acknowledged edits prove application, not rendering or behavior. The recovery form is a local visual preview — no submission, backend actions, or network calls exist.\n- The document is **not saved**; saving is yours.",
+  "retainedFailureLog": "../completion-authoring-sealed-live.log",
+  "pureCanonicalSourceVerification": {
+    "result": "PASS 2/2",
+    "test": "apps/studio/tests/designer-final-source-evidence.test.ts",
+    "log": "docs/studio/cycle-1-3/completion-authoring-final-source-audit.log",
+    "covers": [
+      "83/83 recipe source coverage and 78/78 catalog definitions",
+      "Zero unrelated retained-* fillers and five known unfinished copy phrases",
+      "One h1",
+      "Canonical edit Undo/Redo restores source digest",
+      "Save twice then reopen preserves complete document body and saved digest"
+    ],
+    "limitation": "In-memory EditorBridge/storage adapter only. No browser rendering, physical interaction, or image observation proof. Save legitimately advances document.revision; the initial test incorrectly expected the pre-save revision-bearing digest and its failure log is retained."
+  }
+}
