@@ -113,24 +113,23 @@
   <Conversation surfaceId="studio-agent" {messages}
     emptyMessage="Describe a screen, or select an element to edit it."
     inputLabel="Message" inputPlaceholder="Ask for a change…"
-    multiline followUpdates onSend={send}>
+    multiline followUpdates onSend={send} onStop={busy ? ()=>void stop() : undefined}>
     {#snippet messageBody(message)}
       {#if message.participant==='assistant'}<ChatMessage text={message.text}/>
       {:else}<span class="agent-user-message">{message.text}</span>{/if}
     {/snippet}
   </Conversation>
   <div class="agent-footer">
-    <div class="agent-context">
-      <span title={screenLabel}>{screenLabel}</span>
-      {#if selectionLabel && selectionLabel!=='None' && selectionLabel!=='Screen' && selectionLabel!==screenLabel}<span class="agent-selection" title={`Selected: ${selectionLabel}`}>{selectionLabel}</span>{/if}
+    <div class="agent-status" class:agent-status--failed={failed} role="status" aria-live="polite" title={blocked?'Apply or cancel the current draft before asking the agent to edit.':status}>
+      <span class="status-dot" class:status-dot--busy={busy} aria-hidden="true"></span>
+      <span>{blocked?'Apply or cancel the current draft first.':busy?'Working…':status}</span>
     </div>
-    <div class="agent-actions">
-      {#if busy}<button type="button" class="agent-stop" onclick={()=>void stop()}>Stop</button>{/if}
       <Popover.Root>
         <Popover.Trigger class="agent-details-trigger" aria-label="Chat details" title="Chat details">···</Popover.Trigger>
         <Popover.Content class="studio-chat-details" customAnchor={detailsAnchor ?? null} side="top" align="end" sideOffset={4} collisionPadding={8} collisionBoundary={detailsBoundary ?? panel ?? null} aria-label="Chat details">
           <div class="details-heading"><h3>Chat details</h3><Popover.Close aria-label="Close chat details">×</Popover.Close></div>
           <p class="details-model">{model || 'VICT / Mastra'}</p>
+          {#if selectionLabel && selectionLabel!=='None' && selectionLabel!=='Screen' && selectionLabel!==screenLabel}<p>Selected: {selectionLabel}</p>{/if}
           <p>{status}</p>
           {#if !ready}<p>Set the server’s model and provider key, then restart Studio. Credentials stay on the server.</p>{/if}
           <button type="button" class="details-reconnect" disabled={busy} onclick={()=>void configure()}>Reconnect agent</button>
@@ -138,23 +137,14 @@
           {#if evidence}<h4>Connection record</h4><p class="details-record">{evidence}</p>{/if}
         </Popover.Content>
       </Popover.Root>
-    </div>
-  </div>
-  <div class="agent-status" class:agent-status--failed={failed} role="status" aria-live="polite" title={blocked?'Apply or cancel the current draft before asking the agent to edit.':status}>
-    <span class="status-dot" class:status-dot--busy={busy} aria-hidden="true"></span>
-    <span>{blocked?'Apply or cancel the current draft first.':status}</span>
   </div>
 </aside>
 
 <style>
   .agent-chat{display:flex;flex-direction:column;min-height:0;min-width:0;width:320px;border-right:1px solid #e0e5ee;background:#fff;color:#263246;overflow:hidden;font-size:12px}
-  .agent-footer{display:flex;flex:none;align-items:center;justify-content:space-between;padding:5px 12px 0;gap:8px}
-  .agent-actions{display:flex;flex:none;gap:6px;align-items:center}
-  .agent-stop,:global(.agent-details-trigger){height:28px;border:1px solid transparent;border-radius:5px;background:transparent;color:#63718a;cursor:pointer;padding:3px 8px;font-size:12px}
-  .agent-stop{border-color:#dce2eb;color:#35445d}:global(.agent-details-trigger){width:28px;font-size:20px;line-height:1}
+  .agent-footer{display:flex;flex:none;align-items:center;justify-content:space-between;padding:3px 12px 6px;gap:8px}
+  :global(.agent-details-trigger){flex:none;height:28px;border:1px solid transparent;border-radius:5px;background:transparent;color:#63718a;cursor:pointer;padding:3px 8px;width:28px;font-size:20px;line-height:1}
   :global(.agent-details-trigger:hover),:global(.agent-details-trigger[data-state="open"]){background:#f0f3f8}
-  .agent-context{display:flex;flex:1;gap:8px;align-items:center;color:#788398;font-size:11px;min-width:0}
-  .agent-context span{overflow:hidden;white-space:nowrap;text-overflow:ellipsis}.agent-selection{border-left:1px solid #dce2eb;padding-left:8px;color:#5269a2}
   .agent-chat :global(.vict-conversation-panel){flex:1;display:flex;flex-direction:column;min-height:0;min-width:0;padding:0 12px;border:0;border-radius:0;gap:0;background:transparent}
   .agent-chat :global(.vict-conversation){flex:1;max-height:none;min-height:0;padding:8px 2px 12px;gap:18px;overscroll-behavior:contain}
   .agent-chat :global(.vict-conversation-message){max-width:100%;padding:0;margin:0;min-width:0;width:100%}
@@ -173,7 +163,7 @@
   .agent-chat :global(.vict-state){font-size:12px;line-height:1.7;color:#788398;background:transparent;padding:7px 0}
   .agent-chat :global(.vict-send-error){font-size:11px;line-height:1.5;margin:6px 0 0;max-height:66px;overflow:auto}
   .agent-chat :global(.vict-send-error:empty){display:none}
-  .agent-status{flex:none;display:flex;align-items:flex-start;gap:6px;margin:2px 14px 8px;color:#748098;font-size:10px;line-height:1.5;min-height:15px;overflow-wrap:anywhere}
+  .agent-status{flex:1;min-width:0;display:flex;align-items:flex-start;gap:6px;margin:0;color:#748098;font-size:10px;line-height:1.5;min-height:15px;overflow-wrap:anywhere}
   .agent-status>span:last-child{display:-webkit-box;line-clamp:2;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
   .status-dot{flex:none;width:5px;height:5px;border-radius:50%;background:#a2b0c0;margin-top:5px}.status-dot--busy{background:#5874bb}.agent-status--failed{color:#9a5547}.agent-status--failed .status-dot{background:#b87865}
   /* Own this surface over the catalog's generic ControlScope popover recipe. */
@@ -188,5 +178,5 @@
   .agent-chat :global(.details-reconnect:disabled){opacity:.5;cursor:default}
   .agent-chat :global(.studio-chat-details ol){padding-left:17px;margin:0}.agent-chat :global(.studio-chat-details li){margin:5px 0}
   .agent-chat :global(.studio-chat-details .details-record){font:10px/1.6 ui-monospace,monospace;color:#788398}
-  @media(max-width:760px){.agent-chat{width:100%;height:320px;max-height:46vh;border-right:0;border-bottom:1px solid #e0e5ee;flex-shrink:0}.agent-chat :global(.vict-conversation-textarea){min-height:52px;max-height:76px}.agent-status{margin-bottom:6px}}
+  @media(max-width:760px){.agent-chat{width:100%;height:320px;max-height:46vh;border-right:0;border-bottom:1px solid #e0e5ee;flex-shrink:0}.agent-chat :global(.vict-conversation-textarea){min-height:52px;max-height:76px}}
 </style>

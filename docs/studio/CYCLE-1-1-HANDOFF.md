@@ -1,5 +1,12 @@
 # Stage 9 reopened — Studio Cycle 1.1
 
+Current owner amendment (2026-10-23): [compact composer](CYCLE-1-1-CHAT-COMPOSER.md).
+Single Send/Stop composer action; status/details one row; remove repeated screen
+name. Minimal optional shared Conversation onStop callback/test is included in
+this presentation amendment. Existing cancellation/edit/history/save/provider
+mechanisms remain. Verify exact candidate independently before activation.
+Earlier verified delivery follows as retained history; no Cycle 1.2.
+
 Current verified delivery (2026-10-23): chat-controls product
 `402dec75c7593fe23e41f3d3c0659ca61a8edc27`, independent **PASS**, remote-verified
 evidence `ed75a0f7927e066c5994d5784fe67bc40f540b22`. Branch

@@ -1,0 +1,9 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02
+
+
+ Test Files  1 passed (1)
+      Tests  6 passed (6)
+   Start at  11:24:44
+   Duration  8.21s (transform 2.81s, setup 0ms, import 3.64s, tests 505ms, environment 2.79s)
+

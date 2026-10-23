@@ -22,7 +22,7 @@ async function visibility(label: string) {
   item!.click();
   await tick();
 }
-it('keeps draft, feed and an active turn mounted through top-menu hiding; bottom Stop still cancels', async () => {
+it('keeps draft, feed and an active turn mounted through hiding; the single composer action stops', async () => {
   const fetcher = vi.fn(async (_url: unknown, init?: RequestInit) => {
     if (init?.method === 'DELETE') return new Response('{}');
     if (init?.method === 'POST')
@@ -68,10 +68,14 @@ it('keeps draft, feed and an active turn mounted through top-menu hiding; bottom
   expect(chat.querySelector('h2')).toBeNull();
   expect(chat.getAttribute('aria-label')).toBe('Chat');
   expect(document.body.textContent).not.toContain('Studio agent');
-  expect(chat.querySelector('.agent-footer .agent-context')).not.toBeNull();
+  expect(chat.querySelector('.agent-context')).toBeNull();
+  expect(chat.querySelector('.agent-footer .agent-status')).not.toBeNull();
   expect(chat.querySelector('.agent-footer [aria-label="Chat details"]')).not.toBeNull();
   input.closest('form')!.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
   await vi.waitFor(() => expect(chat.textContent).toContain('Working on your screen.'));
+  expect(chat.querySelector('[data-testid="conversation-send"]')).toBeNull();
+  expect(chat.querySelectorAll('.vict-conversation-input-row button')).toHaveLength(1);
+  expect(chat.querySelector('.agent-status')?.textContent).toContain('Working…');
   const feed = chat.querySelector('.vict-conversation')!;
   await visibility('Hide chat');
   expect(panel.hasAttribute('hidden')).toBe(true);
@@ -79,10 +83,11 @@ it('keeps draft, feed and an active turn mounted through top-menu hiding; bottom
   expect(chat.textContent).toContain('Working on your screen.');
   expect(fetcher.mock.calls.filter(([, init]) => init?.method === 'DELETE')).toHaveLength(0);
   await visibility('Show chat');
-  const stop = chat.querySelector<HTMLButtonElement>('.agent-footer .agent-stop')!;
+  const stop = chat.querySelector<HTMLButtonElement>('.vict-conversation-input-row [data-testid="conversation-stop"]')!;
   expect(stop).not.toBeNull();
   stop.click();
-  await vi.waitFor(() => expect(chat.querySelector('.agent-stop')).toBeNull());
+  await vi.waitFor(() => expect(chat.querySelector('[data-testid="conversation-stop"]')).toBeNull());
+  expect(chat.querySelector('[data-testid="conversation-send"]')).not.toBeNull();
   expect(chat.querySelector('.agent-status')?.textContent).toContain('Stopped');
   expect(fetcher.mock.calls.filter(([, init]) => init?.method === 'DELETE')).toHaveLength(1);
   expect(document.querySelector('.design-frame')!.innerHTML).toBe(beforeCanvas);

@@ -46,6 +46,38 @@ function render(multiline = false, followUpdates = false, customBody = false) {
 }
 
 describe('Conversation optional composer and streamed content', () => {
+  it.each([true, false])('keeps one action during a pending send (cancellable: %s)', async (cancellable) => {
+    let finish!: (ok: boolean) => void;
+    const pending = new Promise<boolean>((resolve) => { finish = resolve; });
+    const send = vi.fn(() => pending);
+    const stop = vi.fn(() => finish(true));
+    instance = mount(Conversation, { target: document.body, props: {
+      surfaceId: 'stop-test', messages: [], emptyMessage: 'Empty', inputLabel: 'Message',
+      multiline: true, onSend: send, ...(cancellable ? { onStop: stop } : {}),
+    }});
+    const input = document.querySelector<HTMLTextAreaElement>('[name="message"]')!;
+    input.value = 'Build a form';
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    flushSync();
+    document.querySelector<HTMLButtonElement>('[data-testid="conversation-send"]')!.click();
+    await tick();
+    const actions = document.querySelectorAll<HTMLButtonElement>('.vict-conversation-input-row button');
+    expect(actions).toHaveLength(1);
+    expect(actions[0].textContent?.trim()).toBe(cancellable ? 'Stop' : 'Sending…');
+    expect(actions[0].disabled).toBe(!cancellable);
+    input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true }));
+    expect(send).toHaveBeenCalledTimes(1);
+    // Editing the next draft during a turn must survive cancellation/completion.
+    input.value = 'Then change the heading';
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    if (cancellable) actions[0].click(); else finish(true);
+    await vi.waitFor(() => expect(document.querySelector('[data-testid="conversation-stop"]')).toBeNull());
+    await vi.waitFor(() => expect(document.querySelector<HTMLButtonElement>('[data-testid="conversation-send"]')?.disabled).toBe(false));
+    expect(stop).toHaveBeenCalledTimes(cancellable ? 1 : 0);
+    expect(send).toHaveBeenCalledTimes(1);
+    expect(input.value).toBe('Then change the heading');
+  });
+
   it('keeps the default single-line, escaped message contract', () => {
     const app = render();
     app.state.set('messages', [

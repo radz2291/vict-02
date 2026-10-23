@@ -10,9 +10,10 @@
     multiline?: boolean;
     followUpdates?: boolean;
     messageBody?: Snippet<[UiConversationMessage]>;
+    onStop?: () => void;
     onSend: (text: string) => Promise<boolean | { ok: boolean; message?: string; dataStale?: boolean }>;
   }
-  let { surfaceId, messages, emptyMessage, inputLabel, inputPlaceholder = '', multiline = false, followUpdates = false, messageBody, onSend }: Props = $props();
+  let { surfaceId, messages, emptyMessage, inputLabel, inputPlaceholder = '', multiline = false, followUpdates = false, messageBody, onSend, onStop }: Props = $props();
   let draft = $state('');
   let sending = $state(false);
   let sendError = $state('');
@@ -105,9 +106,13 @@
         <input class="vict-input" id="vict-conversation-input-{surfaceId}" data-testid="conversation-input"
           name="message" autocomplete="off" placeholder={inputPlaceholder} bind:value={draft} bind:this={inputElement} />
       {/if}
-      <button class="vict-btn" type="submit" data-testid="conversation-send" disabled={sending || draft.trim() === ''}>
-        {sending ? 'Sending…' : 'Send'}
-      </button>
+      {#if sending && onStop}
+        <button class="vict-btn vict-conversation-stop" type="button" data-testid="conversation-stop" onclick={onStop}>Stop</button>
+      {:else}
+        <button class="vict-btn" type="submit" data-testid="conversation-send" disabled={sending || draft.trim() === ''}>
+          {sending ? 'Sending…' : 'Send'}
+        </button>
+      {/if}
     </div>
     <p class="vict-send-error" role="alert" aria-atomic="true">{sendError}</p>
     {#if sendStale}

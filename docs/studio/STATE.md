@@ -1,5 +1,14 @@
 # Studio Designer — current delivery state
 
+## 2026-10-23 — Compact composer owner amendment in progress
+
+Owner requests one Send/Stop action and one status/details row, with repeated
+screen name removed. [Scope and gate](CYCLE-1-1-CHAT-COMPOSER.md). Isolated
+branch `codex/studio-cycle-1-1-chat-composer` from remote-equal `a56ca3aa…`.
+Minimal optional Conversation cancellation callback plus Studio presentation;
+no agent/provider/edit/history/save changes. Prior evidence remains intact.
+No owner acceptance or Cycle 1.2.
+
 ## 2026-10-23 — Owner chat controls refinement verified and locally active
 
 Independent **PASS** on exact product `402dec75c7593fe23e41f3d3c0659ca61a8edc27`,
