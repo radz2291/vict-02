@@ -1,0 +1,23 @@
+{
+  "candidate": "17081fde966741a8ba60faf0661e588f96a5dda8",
+  "fixture": "accepted Cycle1.2 verification-cycle-1-2/continuous-real-provider.json saved snapshot",
+  "records": [
+    {
+      "name": "accepted Cycle1.2 saved document load",
+      "pass": true,
+      "sourceDigest": "69a6eda9f3a681bc05674e7c3ffc34591e36db89b6dddc1a4b4eab1ef650070b",
+      "loadedDigest": "69a6eda9f3a681bc05674e7c3ffc34591e36db89b6dddc1a4b4eab1ef650070b",
+      "nodes": 17
+    },
+    {
+      "name": "Structure selection does not change legacy canonical source",
+      "pass": true,
+      "selection": "[\"screen-dda17d5c-3f9a-4df2-b907-2c088cc5df26\",\"node\",\"heading-register\"]"
+    },
+    {
+      "name": "page reopen preserves exact legacy bytes",
+      "pass": true
+    }
+  ],
+  "errors": []
+}

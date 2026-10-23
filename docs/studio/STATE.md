@@ -1,5 +1,7 @@
 # Studio Designer — current delivery state
 
+> 2026-10-23 current checkpoint: Cycle 1.3 is paused at the owner's request after product e6fa5f976b71150d8c334d4a2bd973fd4a653012. Implementation and builder checks are complete; final independent verification is HELD / INCOMPLETE. Read the [resume checkpoint](CYCLE-1-3-CHECKPOINT.md) before continuing. Cycle 1.2 remains owner accepted/closed; Stage 9 remains REOPENED / IN PROGRESS. No Cycle 1.3 owner acceptance or next-cycle authority is implied.
+
 > 2026-10-23 current owner amendment: [Cycle 1.2 is owner accepted and closed](CYCLE-1-2-OWNER-CLOSURE.md), with findings retained. [Cycle 1.3](CYCLE-1-3-HANDOFF.md) is authorized: shadcn-svelte AI presentation, designer coverage and Svelte Flow structure. Stage 9 remains REOPENED / IN PROGRESS; no main merge, publication, deployment, Cycle 1.4 or owner acceptance of 1.3. Earlier status below is historical.
 
 ## 2026-10-23 — Cycle 1.2 independently verified; owner review ready

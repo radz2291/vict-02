@@ -1,0 +1,62 @@
+
+> vict-studio@0.1.0 check
+> svelte-kit sync && tsc --noEmit
+
+src/lib/designer/agent-edits.ts(162,117): error TS2322: Type '{ value: string | number | boolean | string[] | number[]; type: "literal"; } | { path: string; type: "ref"; } | undefined' is not assignable to type 'UiExpression | undefined'.
+  Type '{ value: string | number | boolean | string[] | number[]; type: "literal"; }' is not assignable to type 'UiExpression | undefined'.
+    Type '{ value: string | number | boolean | string[] | number[]; type: "literal"; }' is not assignable to type '{ readonly type: "literal"; readonly value: string | number | boolean | null; }'.
+      Types of property 'value' are incompatible.
+        Type 'string | number | boolean | string[] | number[]' is not assignable to type 'string | number | boolean | null'.
+          Type 'string[]' is not assignable to type 'string | number | boolean | null'.
+src/lib/designer/agent-edits.ts(164,97): error TS2322: Type '{ setState: { key: string; value?: { value: string | number | boolean | string[] | number[]; type: "literal"; } | { path: string; type: "ref"; } | undefined; }; } | { invokeAction: { actionId: string; input?: Record<...> | undefined; }; } | undefined' is not assignable to type 'UiOutputBinding | undefined'.
+  Type '{ setState: { key: string; value?: { value: string | number | boolean | string[] | number[]; type: "literal"; } | { path: string; type: "ref"; } | undefined; }; }' is not assignable to type 'UiOutputBinding | undefined'.
+    Type '{ setState: { key: string; value?: { value: string | number | boolean | string[] | number[]; type: "literal"; } | { path: string; type: "ref"; } | undefined; }; }' is not assignable to type '{ readonly setState: { readonly key: string; readonly value?: UiExpression | undefined; }; }'.
+      The types of 'setState.value' are incompatible between these types.
+        Type '{ value: string | number | boolean | string[] | number[]; type: "literal"; } | { path: string; type: "ref"; } | undefined' is not assignable to type 'UiExpression | undefined'.
+          Type '{ value: string | number | boolean | string[] | number[]; type: "literal"; }' is not assignable to type 'UiExpression | undefined'.
+            Type '{ value: string | number | boolean | string[] | number[]; type: "literal"; }' is not assignable to type '{ readonly type: "literal"; readonly value: string | number | boolean | null; }'.
+              Types of property 'value' are incompatible.
+                Type 'string | number | boolean | string[] | number[]' is not assignable to type 'string | number | boolean | null'.
+                  Type 'string[]' is not assignable to type 'string | number | boolean | null'.
+src/lib/designer/agent-edits.ts(209,44): error TS2322: Type 'string | number | boolean | string[] | number[]' is not assignable to type 'string | number | boolean | null'.
+  Type 'string[]' is not assignable to type 'string | number | boolean | null'.
+src/lib/designer/recipes.ts(235,5): error TS2322: Type '{ [k: string]: { type: "literal"; value: UiValue; }; }' is not assignable to type 'Readonly<Record<string, UiExpression>>'.
+  'string' index signatures are incompatible.
+    Type '{ type: "literal"; value: UiValue; }' is not assignable to type 'UiExpression'.
+      Type '{ type: "literal"; value: UiValue; }' is not assignable to type '{ readonly type: "literal"; readonly value: string | number | boolean | null; }'.
+        Types of property 'value' are incompatible.
+          Type 'UiValue' is not assignable to type 'string | number | boolean | null'.
+            Type 'readonly string[]' is not assignable to type 'string | number | boolean | null'.
+src/lib/designer/structure.ts(50,23): error TS2353: Object literal may only specify known properties, and 'reconnectable' does not exist in type 'Edge'.
+tests/structure.test.ts(38,59): error TS2741: Property 'key' is missing in type '{ type: "string"; initial: string; }' but required in type 'UiLocalStateDecl'.
+../../packages/ui-ai-svelte/src/upstream/ui/attachment/index.ts(10,2): error TS2614: Module '"*.svelte"' has no exported member 'attachmentVariants'. Did you mean to use 'import attachmentVariants from "*.svelte"' instead?
+../../packages/ui-ai-svelte/src/upstream/ui/attachment/index.ts(11,7): error TS2614: Module '"*.svelte"' has no exported member 'AttachmentOrientation'. Did you mean to use 'import AttachmentOrientation from "*.svelte"' instead?
+../../packages/ui-ai-svelte/src/upstream/ui/attachment/index.ts(12,7): error TS2614: Module '"*.svelte"' has no exported member 'AttachmentSize'. Did you mean to use 'import AttachmentSize from "*.svelte"' instead?
+../../packages/ui-ai-svelte/src/upstream/ui/attachment/index.ts(13,7): error TS2614: Module '"*.svelte"' has no exported member 'AttachmentState'. Did you mean to use 'import AttachmentState from "*.svelte"' instead?
+../../packages/ui-ai-svelte/src/upstream/ui/badge/index.ts(2,10): error TS2614: Module '"*.svelte"' has no exported member 'badgeVariants'. Did you mean to use 'import badgeVariants from "*.svelte"' instead?
+../../packages/ui-ai-svelte/src/upstream/ui/badge/index.ts(2,30): error TS2614: Module '"*.svelte"' has no exported member 'BadgeVariant'. Did you mean to use 'import BadgeVariant from "*.svelte"' instead?
+../../packages/ui-ai-svelte/src/upstream/ui/bubble/index.ts(4,2): error TS2614: Module '"*.svelte"' has no exported member 'bubbleReactionsVariants'. Did you mean to use 'import bubbleReactionsVariants from "*.svelte"' instead?
+../../packages/ui-ai-svelte/src/upstream/ui/bubble/index.ts(5,7): error TS2614: Module '"*.svelte"' has no exported member 'BubbleReactionsAlign'. Did you mean to use 'import BubbleReactionsAlign from "*.svelte"' instead?
+../../packages/ui-ai-svelte/src/upstream/ui/bubble/index.ts(6,7): error TS2614: Module '"*.svelte"' has no exported member 'BubbleReactionsSide'. Did you mean to use 'import BubbleReactionsSide from "*.svelte"' instead?
+../../packages/ui-ai-svelte/src/upstream/ui/bubble/index.ts(8,16): error TS2614: Module '"*.svelte"' has no exported member 'bubbleVariants'. Did you mean to use 'import bubbleVariants from "*.svelte"' instead?
+../../packages/ui-ai-svelte/src/upstream/ui/bubble/index.ts(8,37): error TS2614: Module '"*.svelte"' has no exported member 'BubbleVariant'. Did you mean to use 'import BubbleVariant from "*.svelte"' instead?
+../../packages/ui-ai-svelte/src/upstream/ui/button/index.ts(2,7): error TS2614: Module '"*.svelte"' has no exported member 'ButtonProps'. Did you mean to use 'import ButtonProps from "*.svelte"' instead?
+../../packages/ui-ai-svelte/src/upstream/ui/button/index.ts(3,7): error TS2614: Module '"*.svelte"' has no exported member 'ButtonSize'. Did you mean to use 'import ButtonSize from "*.svelte"' instead?
+../../packages/ui-ai-svelte/src/upstream/ui/button/index.ts(4,7): error TS2614: Module '"*.svelte"' has no exported member 'ButtonVariant'. Did you mean to use 'import ButtonVariant from "*.svelte"' instead?
+../../packages/ui-ai-svelte/src/upstream/ui/button/index.ts(5,2): error TS2614: Module '"*.svelte"' has no exported member 'buttonVariants'. Did you mean to use 'import buttonVariants from "*.svelte"' instead?
+../../packages/ui-ai-svelte/src/upstream/ui/code-block/index.ts(8,2): error TS2614: Module '"*.svelte"' has no exported member 'codeBlockLineVariants'. Did you mean to use 'import codeBlockLineVariants from "*.svelte"' instead?
+../../packages/ui-ai-svelte/src/upstream/ui/code-block/index.ts(9,7): error TS2614: Module '"*.svelte"' has no exported member 'CodeBlockLineToken'. Did you mean to use 'import CodeBlockLineToken from "*.svelte"' instead?
+../../packages/ui-ai-svelte/src/upstream/ui/code-block/index.ts(10,7): error TS2614: Module '"*.svelte"' has no exported member 'CodeBlockLineVariant'. Did you mean to use 'import CodeBlockLineVariant from "*.svelte"' instead?
+../../packages/ui-ai-svelte/src/upstream/ui/code-block/index.ts(13,2): error TS2614: Module '"*.svelte"' has no exported member 'codeBlockVariants'. Did you mean to use 'import codeBlockVariants from "*.svelte"' instead?
+../../packages/ui-ai-svelte/src/upstream/ui/code-block/index.ts(14,7): error TS2614: Module '"*.svelte"' has no exported member 'CodeBlockSize'. Did you mean to use 'import CodeBlockSize from "*.svelte"' instead?
+../../packages/ui-ai-svelte/src/upstream/ui/code-block/index.ts(15,7): error TS2614: Module '"*.svelte"' has no exported member 'CodeBlockVariant'. Did you mean to use 'import CodeBlockVariant from "*.svelte"' instead?
+../../packages/ui-ai-svelte/src/upstream/ui/marker/index.ts(3,16): error TS2614: Module '"*.svelte"' has no exported member 'markerVariants'. Did you mean to use 'import markerVariants from "*.svelte"' instead?
+../../packages/ui-ai-svelte/src/upstream/ui/marker/index.ts(3,37): error TS2614: Module '"*.svelte"' has no exported member 'MarkerVariant'. Did you mean to use 'import MarkerVariant from "*.svelte"' instead?
+../../packages/ui-ai-svelte/src/upstream/ui/trace/index.ts(8,21): error TS2614: Module '"*.svelte"' has no exported member 'TraceLineStatus'. Did you mean to use 'import TraceLineStatus from "*.svelte"' instead?
+npm error Lifecycle script `check` failed with error:
+npm error code 2
+npm error path C:\Users\RZ1\.codex\worktrees\studio-cycle-1-3\260831-VCT-02\apps\studio
+npm error workspace vict-studio@0.1.0
+npm error location C:\Users\RZ1\.codex\worktrees\studio-cycle-1-3\260831-VCT-02\apps\studio
+npm error command failed
+npm error command C:\WINDOWS\system32\cmd.exe /d /s /c svelte-kit sync && tsc --noEmit

@@ -1,0 +1,17 @@
+npm warn Unknown cli config "--maxWorkers". This will stop working in the next major version of npm.
+
+> vict-studio@0.1.0 test
+> vitest run
+
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3/260831-VCT-02/apps/studio
+
+ ✓ tests/confirmation-contract.test.ts (11 tests) 26ms
+ ✓ tests/changeset-contract.test.ts (12 tests) 34ms
+ ✓ tests/quellight-transport.test.ts (10 tests) 145ms
+ ✓ tests/run-detail.test.ts (12 tests) 220ms
+ ✓ tests/boundary.test.ts (13 tests) 349ms
+ ✓ tests/adapter.test.ts (9 tests) 190ms
+ ✓ tests/designer-model.test.ts (7 tests) 96ms
+ ✓ tests/app-definition.test.ts (8 tests) 178ms
+ ✓ tests/target-selection.test.ts (6 tests) 27ms

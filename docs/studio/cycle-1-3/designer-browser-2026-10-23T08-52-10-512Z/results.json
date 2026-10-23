@@ -1,0 +1,907 @@
+{
+  "base": "http://127.0.0.2:5594",
+  "candidate": "67a024f21f1b2b423955c44e7e5a762beaf6af1a",
+  "run": "2026-10-23T08-52-10-512Z",
+  "records": [
+    {
+      "at": "2026-10-23T08:52:11.809Z",
+      "name": "Local test login response",
+      "data": {
+        "status": 200,
+        "type": "basic"
+      }
+    },
+    {
+      "at": "2026-10-23T08:52:13.639Z",
+      "name": "Fresh isolated screen with existing boolean declaration",
+      "data": {
+        "ok": true,
+        "document": {
+          "schema": "vict.ui-document@1",
+          "id": "screen-af6f1a67-f9a9-4c39-9d56-5cb6c0db52d4",
+          "revision": "r1",
+          "root": "screen",
+          "nodes": {
+            "screen": {
+              "kind": "element",
+              "id": "screen",
+              "tag": "main",
+              "attributes": {
+                "aria-label": "Cycle 1.3 Designer QA 2026-10-23T08-52-10-512Z"
+              },
+              "children": [],
+              "localStyle": [
+                {
+                  "property": "display",
+                  "value": {
+                    "type": "text",
+                    "value": "flex"
+                  }
+                },
+                {
+                  "property": "flex-direction",
+                  "value": {
+                    "type": "text",
+                    "value": "column"
+                  }
+                },
+                {
+                  "property": "gap",
+                  "value": {
+                    "type": "text",
+                    "value": "20px"
+                  }
+                },
+                {
+                  "property": "padding",
+                  "value": {
+                    "type": "text",
+                    "value": "40px"
+                  }
+                },
+                {
+                  "property": "min-height",
+                  "value": {
+                    "type": "text",
+                    "value": "560px"
+                  }
+                },
+                {
+                  "property": "background-color",
+                  "value": {
+                    "type": "text",
+                    "value": "#ffffff"
+                  }
+                },
+                {
+                  "property": "color",
+                  "value": {
+                    "type": "text",
+                    "value": "#243047"
+                  }
+                },
+                {
+                  "property": "font-family",
+                  "value": {
+                    "type": "text",
+                    "value": "system-ui, sans-serif"
+                  }
+                }
+              ]
+            }
+          },
+          "componentDefinitions": {},
+          "styleSources": {},
+          "assets": {},
+          "tokens": {},
+          "conditions": {
+            "compact": {
+              "id": "compact",
+              "kind": "container",
+              "name": "studio-screen",
+              "query": "(max-width: 600px)"
+            }
+          },
+          "localState": {
+            "message": {
+              "key": "message",
+              "type": "string",
+              "initial": "Hello from my screen"
+            },
+            "accepted": {
+              "key": "accepted",
+              "type": "boolean",
+              "initial": false
+            },
+            "dialogOpen": {
+              "key": "dialogOpen",
+              "type": "boolean",
+              "initial": false
+            },
+            "busy": {
+              "key": "busy",
+              "type": "boolean",
+              "initial": false
+            },
+            "actionError": {
+              "key": "actionError",
+              "type": "string",
+              "initial": ""
+            },
+            "actionResult": {
+              "key": "actionResult",
+              "type": "string",
+              "initial": ""
+            }
+          }
+        }
+      }
+    },
+    {
+      "at": "2026-10-23T08:52:14.853Z",
+      "name": "Palette inserts Section",
+      "data": {
+        "ok": true,
+        "target": {
+          "nodeId": "screen"
+        },
+        "document": {
+          "schema": "vict.ui-document@1",
+          "id": "screen-af6f1a67-f9a9-4c39-9d56-5cb6c0db52d4",
+          "revision": "r1",
+          "root": "screen",
+          "nodes": {
+            "screen": {
+              "kind": "element",
+              "id": "screen",
+              "tag": "main",
+              "attributes": {
+                "aria-label": "Cycle 1.3 Designer QA 2026-10-23T08-52-10-512Z"
+              },
+              "children": [
+                "section-d67a11c8"
+              ],
+              "localStyle": [
+                {
+                  "property": "display",
+                  "value": {
+                    "type": "text",
+                    "value": "flex"
+                  }
+                },
+                {
+                  "property": "flex-direction",
+                  "value": {
+                    "type": "text",
+                    "value": "column"
+                  }
+                },
+                {
+                  "property": "gap",
+                  "value": {
+                    "type": "text",
+                    "value": "20px"
+                  }
+                },
+                {
+                  "property": "padding",
+                  "value": {
+                    "type": "text",
+                    "value": "40px"
+                  }
+                },
+                {
+                  "property": "min-height",
+                  "value": {
+                    "type": "text",
+                    "value": "560px"
+                  }
+                },
+                {
+                  "property": "background-color",
+                  "value": {
+                    "type": "text",
+                    "value": "#ffffff"
+                  }
+                },
+                {
+                  "property": "color",
+                  "value": {
+                    "type": "text",
+                    "value": "#243047"
+                  }
+                },
+                {
+                  "property": "font-family",
+                  "value": {
+                    "type": "text",
+                    "value": "system-ui, sans-serif"
+                  }
+                }
+              ]
+            },
+            "section-d67a11c8": {
+              "kind": "element",
+              "id": "section-d67a11c8",
+              "tag": "section",
+              "attributes": {
+                "aria-label": "Section"
+              },
+              "children": [],
+              "localStyle": [
+                {
+                  "property": "display",
+                  "value": {
+                    "type": "text",
+                    "value": "flex"
+                  }
+                },
+                {
+                  "property": "flex-direction",
+                  "value": {
+                    "type": "text",
+                    "value": "column"
+                  }
+                },
+                {
+                  "property": "gap",
+                  "value": {
+                    "type": "text",
+                    "value": "16px"
+                  }
+                },
+                {
+                  "property": "padding",
+                  "value": {
+                    "type": "text",
+                    "value": "24px"
+                  }
+                },
+                {
+                  "property": "min-height",
+                  "value": {
+                    "type": "text",
+                    "value": "100px"
+                  }
+                },
+                {
+                  "property": "background-color",
+                  "value": {
+                    "type": "text",
+                    "value": "#f5f7fb"
+                  }
+                },
+                {
+                  "property": "border-radius",
+                  "value": {
+                    "type": "text",
+                    "value": "12px"
+                  }
+                }
+              ]
+            }
+          },
+          "componentDefinitions": {},
+          "styleSources": {},
+          "assets": {},
+          "tokens": {},
+          "conditions": {
+            "compact": {
+              "id": "compact",
+              "kind": "container",
+              "name": "studio-screen",
+              "query": "(max-width: 600px)"
+            }
+          },
+          "localState": {
+            "message": {
+              "key": "message",
+              "type": "string",
+              "initial": "Hello from my screen"
+            },
+            "accepted": {
+              "key": "accepted",
+              "type": "boolean",
+              "initial": false
+            },
+            "dialogOpen": {
+              "key": "dialogOpen",
+              "type": "boolean",
+              "initial": false
+            },
+            "busy": {
+              "key": "busy",
+              "type": "boolean",
+              "initial": false
+            },
+            "actionError": {
+              "key": "actionError",
+              "type": "string",
+              "initial": ""
+            },
+            "actionResult": {
+              "key": "actionResult",
+              "type": "string",
+              "initial": ""
+            }
+          }
+        }
+      }
+    },
+    {
+      "at": "2026-10-23T08:52:15.823Z",
+      "name": "Palette inserts Heading",
+      "data": {
+        "ok": true,
+        "target": {
+          "nodeId": "screen"
+        },
+        "document": {
+          "schema": "vict.ui-document@1",
+          "id": "screen-af6f1a67-f9a9-4c39-9d56-5cb6c0db52d4",
+          "revision": "r1",
+          "root": "screen",
+          "nodes": {
+            "screen": {
+              "kind": "element",
+              "id": "screen",
+              "tag": "main",
+              "attributes": {
+                "aria-label": "Cycle 1.3 Designer QA 2026-10-23T08-52-10-512Z"
+              },
+              "children": [
+                "section-d67a11c8",
+                "heading-6c4662c7"
+              ],
+              "localStyle": [
+                {
+                  "property": "display",
+                  "value": {
+                    "type": "text",
+                    "value": "flex"
+                  }
+                },
+                {
+                  "property": "flex-direction",
+                  "value": {
+                    "type": "text",
+                    "value": "column"
+                  }
+                },
+                {
+                  "property": "gap",
+                  "value": {
+                    "type": "text",
+                    "value": "20px"
+                  }
+                },
+                {
+                  "property": "padding",
+                  "value": {
+                    "type": "text",
+                    "value": "40px"
+                  }
+                },
+                {
+                  "property": "min-height",
+                  "value": {
+                    "type": "text",
+                    "value": "560px"
+                  }
+                },
+                {
+                  "property": "background-color",
+                  "value": {
+                    "type": "text",
+                    "value": "#ffffff"
+                  }
+                },
+                {
+                  "property": "color",
+                  "value": {
+                    "type": "text",
+                    "value": "#243047"
+                  }
+                },
+                {
+                  "property": "font-family",
+                  "value": {
+                    "type": "text",
+                    "value": "system-ui, sans-serif"
+                  }
+                }
+              ]
+            },
+            "section-d67a11c8": {
+              "kind": "element",
+              "id": "section-d67a11c8",
+              "tag": "section",
+              "attributes": {
+                "aria-label": "Section"
+              },
+              "children": [],
+              "localStyle": [
+                {
+                  "property": "display",
+                  "value": {
+                    "type": "text",
+                    "value": "flex"
+                  }
+                },
+                {
+                  "property": "flex-direction",
+                  "value": {
+                    "type": "text",
+                    "value": "column"
+                  }
+                },
+                {
+                  "property": "gap",
+                  "value": {
+                    "type": "text",
+                    "value": "16px"
+                  }
+                },
+                {
+                  "property": "padding",
+                  "value": {
+                    "type": "text",
+                    "value": "24px"
+                  }
+                },
+                {
+                  "property": "min-height",
+                  "value": {
+                    "type": "text",
+                    "value": "100px"
+                  }
+                },
+                {
+                  "property": "background-color",
+                  "value": {
+                    "type": "text",
+                    "value": "#f5f7fb"
+                  }
+                },
+                {
+                  "property": "border-radius",
+                  "value": {
+                    "type": "text",
+                    "value": "12px"
+                  }
+                }
+              ]
+            },
+            "heading-6c4662c7": {
+              "kind": "element",
+              "id": "heading-6c4662c7",
+              "tag": "h1",
+              "children": [
+                "heading-6c4662c7-text"
+              ],
+              "localStyle": [
+                {
+                  "property": "font-size",
+                  "value": {
+                    "type": "text",
+                    "value": "32px"
+                  }
+                },
+                {
+                  "property": "font-weight",
+                  "value": {
+                    "type": "text",
+                    "value": "600"
+                  }
+                },
+                {
+                  "property": "line-height",
+                  "value": {
+                    "type": "text",
+                    "value": "1.2"
+                  }
+                },
+                {
+                  "property": "margin",
+                  "value": {
+                    "type": "text",
+                    "value": "0"
+                  }
+                }
+              ]
+            },
+            "heading-6c4662c7-text": {
+              "kind": "text",
+              "id": "heading-6c4662c7-text",
+              "content": {
+                "type": "literal",
+                "value": "Make something useful."
+              }
+            }
+          },
+          "componentDefinitions": {},
+          "styleSources": {},
+          "assets": {},
+          "tokens": {},
+          "conditions": {
+            "compact": {
+              "id": "compact",
+              "kind": "container",
+              "name": "studio-screen",
+              "query": "(max-width: 600px)"
+            }
+          },
+          "localState": {
+            "message": {
+              "key": "message",
+              "type": "string",
+              "initial": "Hello from my screen"
+            },
+            "accepted": {
+              "key": "accepted",
+              "type": "boolean",
+              "initial": false
+            },
+            "dialogOpen": {
+              "key": "dialogOpen",
+              "type": "boolean",
+              "initial": false
+            },
+            "busy": {
+              "key": "busy",
+              "type": "boolean",
+              "initial": false
+            },
+            "actionError": {
+              "key": "actionError",
+              "type": "string",
+              "initial": ""
+            },
+            "actionResult": {
+              "key": "actionResult",
+              "type": "string",
+              "initial": ""
+            }
+          }
+        }
+      }
+    },
+    {
+      "at": "2026-10-23T08:52:16.023Z",
+      "name": "Structure source selection identifies authored content",
+      "data": {
+        "ok": true
+      }
+    },
+    {
+      "at": "2026-10-23T08:52:16.116Z",
+      "name": "Structure selection is shared with the Design canvas",
+      "data": {
+        "ok": true,
+        "occurrence": "screen-af6f1a67-f9a9-4c39-9d56-5cb6c0db52d4|heading-6c4662c7"
+      }
+    },
+    {
+      "at": "2026-10-23T08:52:16.301Z",
+      "name": "Structure handle hit test",
+      "data": [
+        {
+          "tag": "DIV",
+          "class": "svelte-flow__handle svelte-flow__handle-bottom nodrag nopan bottom source connectablestart connectableend connectable connectionindicator",
+          "html": "<div data-nodeid=\"[&quot;screen-af6f1a67-f9a9-4c39-9d56-5cb6c0db52d4&quot;,&quot;node&quot;,&quot;heading-6c4662c7&quot;]\" data-handlepos=\"bottom\" data-id=\"1-[&quot;screen-af6f1a67-f9a9-4c39-9d56-5cb6c0db52d4&quot;,&quot;node&quot;,&quot;heading-6c4662c7&quot;]-null-source\" class=\"svelte-flow__handle svelte-flow__handle-bottom nodrag nopan bottom source connectablestart connectableend connectable connectionindicator\" role=\"button\" aria-label=\"Handle\" tabindex=\"-1\"><!----></div>"
+        },
+        {
+          "tag": "DIV",
+          "class": "svelte-flow__handle svelte-flow__handle-top nodrag nopan top target connectablestart connectableend connectable connectionindicator",
+          "html": "<div data-nodeid=\"[&quot;screen-af6f1a67-f9a9-4c39-9d56-5cb6c0db52d4&quot;,&quot;node&quot;,&quot;section-d67a11c8&quot;]\" data-handlepos=\"top\" data-id=\"1-[&quot;screen-af6f1a67-f9a9-4c39-9d56-5cb6c0db52d4&quot;,&quot;node&quot;,&quot;section-d67a11c8&quot;]-null-target\" class=\"svelte-flow__handle svelte-flow__handle-top nodrag nopan top target connectablestart connectableend connectable connectionindicator\" role=\"button\" aria-label=\"Handle\" tabindex=\"-1\"><!----></div>"
+        }
+      ]
+    },
+    {
+      "at": "2026-10-23T08:52:16.302Z",
+      "name": "Real Structure connection gesture",
+      "data": {
+        "sourceId": "heading-6c4662c7",
+        "targetId": "section-d67a11c8",
+        "from": {
+          "x": 491.7956237792969,
+          "y": 440.0830993652344,
+          "width": 6.37664794921875,
+          "height": 6.37664794921875
+        },
+        "to": {
+          "x": 491.7956237792969,
+          "y": 249.0163116455078,
+          "width": 6.37664794921875,
+          "height": 6.37664794921875
+        }
+      }
+    },
+    {
+      "at": "2026-10-23T08:52:16.713Z",
+      "name": "Structure drag in progress",
+      "data": {
+        "connections": 1,
+        "classes": [],
+        "notice": "Design mode · select and edit without running behavior.@3 · v1_989e877c515f…"
+      }
+    },
+    {
+      "at": "2026-10-23T08:52:16.750Z",
+      "name": "Structure drag complete",
+      "data": {
+        "notice": "Design mode · select and edit without running behavior.@3 · v1_989e877c515f…"
+      }
+    },
+    {
+      "at": "2026-10-23T08:52:16.966Z",
+      "name": "Structure supported move writes canonical containment",
+      "data": {
+        "ok": false,
+        "document": {
+          "schema": "vict.ui-document@1",
+          "id": "screen-af6f1a67-f9a9-4c39-9d56-5cb6c0db52d4",
+          "revision": "r1",
+          "root": "screen",
+          "nodes": {
+            "screen": {
+              "kind": "element",
+              "id": "screen",
+              "tag": "main",
+              "attributes": {
+                "aria-label": "Cycle 1.3 Designer QA 2026-10-23T08-52-10-512Z"
+              },
+              "children": [
+                "section-d67a11c8",
+                "heading-6c4662c7"
+              ],
+              "localStyle": [
+                {
+                  "property": "display",
+                  "value": {
+                    "type": "text",
+                    "value": "flex"
+                  }
+                },
+                {
+                  "property": "flex-direction",
+                  "value": {
+                    "type": "text",
+                    "value": "column"
+                  }
+                },
+                {
+                  "property": "gap",
+                  "value": {
+                    "type": "text",
+                    "value": "20px"
+                  }
+                },
+                {
+                  "property": "padding",
+                  "value": {
+                    "type": "text",
+                    "value": "40px"
+                  }
+                },
+                {
+                  "property": "min-height",
+                  "value": {
+                    "type": "text",
+                    "value": "560px"
+                  }
+                },
+                {
+                  "property": "background-color",
+                  "value": {
+                    "type": "text",
+                    "value": "#ffffff"
+                  }
+                },
+                {
+                  "property": "color",
+                  "value": {
+                    "type": "text",
+                    "value": "#243047"
+                  }
+                },
+                {
+                  "property": "font-family",
+                  "value": {
+                    "type": "text",
+                    "value": "system-ui, sans-serif"
+                  }
+                }
+              ]
+            },
+            "section-d67a11c8": {
+              "kind": "element",
+              "id": "section-d67a11c8",
+              "tag": "section",
+              "attributes": {
+                "aria-label": "Section"
+              },
+              "children": [],
+              "localStyle": [
+                {
+                  "property": "display",
+                  "value": {
+                    "type": "text",
+                    "value": "flex"
+                  }
+                },
+                {
+                  "property": "flex-direction",
+                  "value": {
+                    "type": "text",
+                    "value": "column"
+                  }
+                },
+                {
+                  "property": "gap",
+                  "value": {
+                    "type": "text",
+                    "value": "16px"
+                  }
+                },
+                {
+                  "property": "padding",
+                  "value": {
+                    "type": "text",
+                    "value": "24px"
+                  }
+                },
+                {
+                  "property": "min-height",
+                  "value": {
+                    "type": "text",
+                    "value": "100px"
+                  }
+                },
+                {
+                  "property": "background-color",
+                  "value": {
+                    "type": "text",
+                    "value": "#f5f7fb"
+                  }
+                },
+                {
+                  "property": "border-radius",
+                  "value": {
+                    "type": "text",
+                    "value": "12px"
+                  }
+                }
+              ]
+            },
+            "heading-6c4662c7": {
+              "kind": "element",
+              "id": "heading-6c4662c7",
+              "tag": "h1",
+              "children": [
+                "heading-6c4662c7-text"
+              ],
+              "localStyle": [
+                {
+                  "property": "font-size",
+                  "value": {
+                    "type": "text",
+                    "value": "32px"
+                  }
+                },
+                {
+                  "property": "font-weight",
+                  "value": {
+                    "type": "text",
+                    "value": "600"
+                  }
+                },
+                {
+                  "property": "line-height",
+                  "value": {
+                    "type": "text",
+                    "value": "1.2"
+                  }
+                },
+                {
+                  "property": "margin",
+                  "value": {
+                    "type": "text",
+                    "value": "0"
+                  }
+                }
+              ]
+            },
+            "heading-6c4662c7-text": {
+              "kind": "text",
+              "id": "heading-6c4662c7-text",
+              "content": {
+                "type": "literal",
+                "value": "Make something useful."
+              }
+            }
+          },
+          "componentDefinitions": {},
+          "styleSources": {},
+          "assets": {},
+          "tokens": {},
+          "conditions": {
+            "compact": {
+              "id": "compact",
+              "kind": "container",
+              "name": "studio-screen",
+              "query": "(max-width: 600px)"
+            }
+          },
+          "localState": {
+            "message": {
+              "key": "message",
+              "type": "string",
+              "initial": "Hello from my screen"
+            },
+            "accepted": {
+              "key": "accepted",
+              "type": "boolean",
+              "initial": false
+            },
+            "dialogOpen": {
+              "key": "dialogOpen",
+              "type": "boolean",
+              "initial": false
+            },
+            "busy": {
+              "key": "busy",
+              "type": "boolean",
+              "initial": false
+            },
+            "actionError": {
+              "key": "actionError",
+              "type": "string",
+              "initial": ""
+            },
+            "actionResult": {
+              "key": "actionResult",
+              "type": "string",
+              "initial": ""
+            }
+          }
+        }
+      }
+    },
+    {
+      "at": "2026-10-23T08:52:16.983Z",
+      "name": "FAILED OBSERVATION",
+      "data": {
+        "error": "Error: Structure supported move writes canonical containment",
+        "stack": "Error: Structure supported move writes canonical containment\n    at check (file:///C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3/260831-VCT-02/docs/studio/cycle-1-3/designer-browser.mjs:26:18)\n    at async mutation (file:///C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3/260831-VCT-02/docs/studio/cycle-1-3/designer-browser.mjs:101:3)\n    at async file:///C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3/260831-VCT-02/docs/studio/cycle-1-3/designer-browser.mjs:204:14",
+        "body": "V\nFile\nEdit\nView\nPreview\nCycle 1.3 Designer QA 2026-10-23T08-52-10-512Z\n● Unsaved changes\n↗\nDesign\nInteract\nStructure\nDocument\nSource structure\n\nContainment and declared bindings. Drag nodes to arrange this view. Select a source node to share the canvas selection.\n\nMove by connection\nReset layout\n\nConnect the bottom handle of content to the top handle of its new container. Only unambiguous authored containment moves are allowed. Use Design tools for explicit slot choices and bindings.\n\ncontains\ncontains\ncontains\n screen\n<main> \n section-d67a11c8\n<section> \n heading-6c4662c7\n<h1> \n heading-6c4662c7-text\nMake something useful. \n state.message\nstring \n state.accepted\nboolean \n state.dialogOpen\nboolean \n state.busy\nboolean \n state.actionError\nstring \n state.actionResult\nstring \nSvelte Flow\nInspect source or reference\nSelect a source item\nscreen · <main>\nsection-d67a11c8 · <section>\nheading-6c4662c7 · <h1>\nheading-6c4662c7-text · Make something useful.\nstate.message · string\nstate.accepted · boolean\nstate.dialogOpen · boolean\nstate.busy · boolean\nstate.actionError · string\nstate.actionResult · string\nSimulated execution\nLocal preview · no live effects\nDesign mode · select and edit without running behavior.\n@3 · v1_989e877c515f…"
+      }
+    }
+  ],
+  "errors": [
+    "DOMException: SyntaxError: Failed to execute 'querySelector' on 'Document': '.svelte-flow__handle[data-id=\"1-[\"screen-af6f1a67-f9a9-4c39-9d56-5cb6c0db52d4\",\"node\",\"heading-6c4662c7\"]-null-target\"]' is not a valid selector.",
+    "DOMException: SyntaxError: Failed to execute 'querySelector' on 'Document': '.svelte-flow__handle[data-id=\"1-[\"screen-af6f1a67-f9a9-4c39-9d56-5cb6c0db52d4\",\"node\",\"heading-6c4662c7\"]-null-target\"]' is not a valid selector.",
+    "DOMException: SyntaxError: Failed to execute 'querySelector' on 'Document': '.svelte-flow__handle[data-id=\"1-[\"screen-af6f1a67-f9a9-4c39-9d56-5cb6c0db52d4\",\"node\",\"heading-6c4662c7\"]-null-target\"]' is not a valid selector.",
+    "DOMException: SyntaxError: Failed to execute 'querySelector' on 'Document': '.svelte-flow__handle[data-id=\"1-[\"screen-af6f1a67-f9a9-4c39-9d56-5cb6c0db52d4\",\"node\",\"heading-6c4662c7\"]-null-target\"]' is not a valid selector.",
+    "DOMException: SyntaxError: Failed to execute 'querySelector' on 'Document': '.svelte-flow__handle[data-id=\"1-[\"screen-af6f1a67-f9a9-4c39-9d56-5cb6c0db52d4\",\"node\",\"heading-6c4662c7\"]-null-target\"]' is not a valid selector.",
+    "DOMException: SyntaxError: Failed to execute 'querySelector' on 'Document': '.svelte-flow__handle[data-id=\"1-[\"screen-af6f1a67-f9a9-4c39-9d56-5cb6c0db52d4\",\"node\",\"section-d67a11c8\"]-null-source\"]' is not a valid selector.",
+    "DOMException: SyntaxError: Failed to execute 'querySelector' on 'Document': '.svelte-flow__handle[data-id=\"1-[\"screen-af6f1a67-f9a9-4c39-9d56-5cb6c0db52d4\",\"node\",\"section-d67a11c8\"]-null-source\"]' is not a valid selector.",
+    "DOMException: SyntaxError: Failed to execute 'querySelector' on 'Document': '.svelte-flow__handle[data-id=\"1-[\"screen-af6f1a67-f9a9-4c39-9d56-5cb6c0db52d4\",\"node\",\"section-d67a11c8\"]-null-source\"]' is not a valid selector.",
+    "DOMException: SyntaxError: Failed to execute 'querySelector' on 'Document': '.svelte-flow__handle[data-id=\"1-[\"screen-af6f1a67-f9a9-4c39-9d56-5cb6c0db52d4\",\"node\",\"section-d67a11c8\"]-null-source\"]' is not a valid selector.",
+    "DOMException: SyntaxError: Failed to execute 'querySelector' on 'Document': '.svelte-flow__handle[data-id=\"1-[\"screen-af6f1a67-f9a9-4c39-9d56-5cb6c0db52d4\",\"node\",\"section-d67a11c8\"]-null-source\"]' is not a valid selector.",
+    "DOMException: SyntaxError: Failed to execute 'querySelector' on 'Document': '.svelte-flow__handle[data-id=\"1-[\"screen-af6f1a67-f9a9-4c39-9d56-5cb6c0db52d4\",\"node\",\"section-d67a11c8\"]-null-source\"]' is not a valid selector.",
+    "DOMException: SyntaxError: Failed to execute 'querySelector' on 'Document': '.svelte-flow__handle[data-id=\"1-[\"screen-af6f1a67-f9a9-4c39-9d56-5cb6c0db52d4\",\"node\",\"section-d67a11c8\"]-null-target\"]' is not a valid selector.",
+    "DOMException: SyntaxError: Failed to execute 'querySelector' on 'Document': '.svelte-flow__handle[data-id=\"1-[\"screen-af6f1a67-f9a9-4c39-9d56-5cb6c0db52d4\",\"node\",\"section-d67a11c8\"]-null-target\"]' is not a valid selector.",
+    "DOMException: SyntaxError: Failed to execute 'querySelector' on 'Document': '.svelte-flow__handle[data-id=\"1-[\"screen-af6f1a67-f9a9-4c39-9d56-5cb6c0db52d4\",\"node\",\"section-d67a11c8\"]-null-target\"]' is not a valid selector."
+  ],
+  "responses": [
+    {
+      "url": "http://127.0.0.2:5594/favicon.svg",
+      "status": 401
+    },
+    {
+      "url": "http://127.0.0.2:5594/favicon.svg",
+      "status": 404
+    }
+  ]
+}

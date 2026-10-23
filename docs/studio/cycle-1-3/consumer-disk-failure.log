@@ -1,0 +1,15 @@
+npm error code ENOSPC
+npm error syscall write
+npm error errno -4055
+npm error nospc ENOSPC: no space left on device, write
+npm error nospc There appears to be insufficient space on your system to finish.
+npm error nospc Clear up some disk space and try again.
+npm error A complete log of this run can be found in: C:\Users\RZ1\AppData\Local\npm-cache\_logs\2026-10-23T08_22_57_585Z-debug-0.log
+node:internal/errors:983
+  const err = new Error(message);
+              ^
+
+Error: Command failed: npm.cmd pack --json --pack-destination C:\Users\RZ1\AppData\Local\Temp\vict-cycle13-consumer-KSXVd7\artifacts
+npm error code ENOSPC
+npm error syscall write
+npm error errno -4055

@@ -1,0 +1,38 @@
+
+> vict-studio@0.1.0 check
+> svelte-kit sync && tsc --noEmit
+
+src/lib/designer/agent-edits.ts(162,117): error TS2322: Type '{ value: string | number | boolean | string[] | number[]; type: "literal"; } | { path: string; type: "ref"; } | undefined' is not assignable to type 'UiExpression | undefined'.
+  Type '{ value: string | number | boolean | string[] | number[]; type: "literal"; }' is not assignable to type 'UiExpression | undefined'.
+    Type '{ value: string | number | boolean | string[] | number[]; type: "literal"; }' is not assignable to type '{ readonly type: "literal"; readonly value: string | number | boolean | null; }'.
+      Types of property 'value' are incompatible.
+        Type 'string | number | boolean | string[] | number[]' is not assignable to type 'string | number | boolean | null'.
+          Type 'string[]' is not assignable to type 'string | number | boolean | null'.
+src/lib/designer/agent-edits.ts(164,97): error TS2322: Type '{ setState: { key: string; value?: { value: string | number | boolean | string[] | number[]; type: "literal"; } | { path: string; type: "ref"; } | undefined; }; } | { invokeAction: { actionId: string; input?: Record<...> | undefined; }; } | undefined' is not assignable to type 'UiOutputBinding | undefined'.
+  Type '{ setState: { key: string; value?: { value: string | number | boolean | string[] | number[]; type: "literal"; } | { path: string; type: "ref"; } | undefined; }; }' is not assignable to type 'UiOutputBinding | undefined'.
+    Type '{ setState: { key: string; value?: { value: string | number | boolean | string[] | number[]; type: "literal"; } | { path: string; type: "ref"; } | undefined; }; }' is not assignable to type '{ readonly setState: { readonly key: string; readonly value?: UiExpression | undefined; }; }'.
+      The types of 'setState.value' are incompatible between these types.
+        Type '{ value: string | number | boolean | string[] | number[]; type: "literal"; } | { path: string; type: "ref"; } | undefined' is not assignable to type 'UiExpression | undefined'.
+          Type '{ value: string | number | boolean | string[] | number[]; type: "literal"; }' is not assignable to type 'UiExpression | undefined'.
+            Type '{ value: string | number | boolean | string[] | number[]; type: "literal"; }' is not assignable to type '{ readonly type: "literal"; readonly value: string | number | boolean | null; }'.
+              Types of property 'value' are incompatible.
+                Type 'string | number | boolean | string[] | number[]' is not assignable to type 'string | number | boolean | null'.
+                  Type 'string[]' is not assignable to type 'string | number | boolean | null'.
+src/lib/designer/agent-edits.ts(209,44): error TS2322: Type 'string | number | boolean | string[] | number[]' is not assignable to type 'string | number | boolean | null'.
+  Type 'string[]' is not assignable to type 'string | number | boolean | null'.
+src/lib/designer/recipes.ts(235,5): error TS2322: Type '{ [k: string]: { type: "literal"; value: UiValue; }; }' is not assignable to type 'Readonly<Record<string, UiExpression>>'.
+  'string' index signatures are incompatible.
+    Type '{ type: "literal"; value: UiValue; }' is not assignable to type 'UiExpression'.
+      Type '{ type: "literal"; value: UiValue; }' is not assignable to type '{ readonly type: "literal"; readonly value: string | number | boolean | null; }'.
+        Types of property 'value' are incompatible.
+          Type 'UiValue' is not assignable to type 'string | number | boolean | null'.
+            Type 'readonly string[]' is not assignable to type 'string | number | boolean | null'.
+src/lib/designer/structure.ts(50,23): error TS2353: Object literal may only specify known properties, and 'reconnectable' does not exist in type 'Edge'.
+tests/structure.test.ts(38,59): error TS2741: Property 'key' is missing in type '{ type: "string"; initial: string; }' but required in type 'UiLocalStateDecl'.
+npm error Lifecycle script `check` failed with error:
+npm error code 2
+npm error path C:\Users\RZ1\.codex\worktrees\studio-cycle-1-3\260831-VCT-02\apps\studio
+npm error workspace vict-studio@0.1.0
+npm error location C:\Users\RZ1\.codex\worktrees\studio-cycle-1-3\260831-VCT-02\apps\studio
+npm error command failed
+npm error command C:\WINDOWS\system32\cmd.exe /d /s /c svelte-kit sync && tsc --noEmit

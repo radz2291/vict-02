@@ -1,0 +1,556 @@
+{
+  "origin": "http://127.0.0.1:5595",
+  "isolatedProfile": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-cycle13-package-browser-NO1QIS",
+  "completed": true,
+  "records": [
+    {
+      "name": "clipboard permissions",
+      "at": "2026-10-23T09:01:15.489Z",
+      "status": "INFO",
+      "granted": true
+    },
+    {
+      "name": "initial public package conversation and Flow present",
+      "at": "2026-10-23T09:01:18.520Z",
+      "status": "PASS",
+      "evidence": {
+        "title": "VICT reusable UI showcase",
+        "fixtureNotice": true,
+        "conversations": 2,
+        "nodes": 3,
+        "edges": 1,
+        "inputLabels": [
+          "Message",
+          "Message",
+          "Message"
+        ]
+      }
+    },
+    {
+      "name": "Shift Enter inserts newline without sending",
+      "at": "2026-10-23T09:01:19.119Z",
+      "status": "PASS",
+      "evidence": {
+        "multiline": "Keyboard first line\nSecond line",
+        "before": 0
+      }
+    },
+    {
+      "name": "streaming grows before completion",
+      "at": "2026-10-23T09:01:19.664Z",
+      "status": "PASS",
+      "evidence": {
+        "first": "This reply streams from a local fix",
+        "second": "This reply streams from a local fixture. No backend action was performed."
+      }
+    },
+    {
+      "name": "keyboard-stream-stop-draft: exception",
+      "at": "2026-10-23T09:01:20.538Z",
+      "status": "FAIL",
+      "error": "Error: No element found for selector: [aria-label=\"Conversation showcase\"] [data-testid=\"conversation-stop\"]"
+    },
+    {
+      "name": "completed streamed Markdown uses code block and actions",
+      "at": "2026-10-23T09:01:22.334Z",
+      "status": "PASS",
+      "evidence": {
+        "text": "Assistant Fixture finishedcompleted  Fixture finished This reply streams from a local fixture. No backend action was performed.ts   import { Conversation } from \"@victframework/ui-ai-svelte\";Your host supplies messages, lifecycle state and callbacks. Copy",
+        "bold": "No backend action was performed.",
+        "code": "import { Conversation } from \"@victframework/ui-ai-svelte\";",
+        "copies": 1
+      }
+    },
+    {
+      "name": "message copy acknowledges successful write",
+      "at": "2026-10-23T09:01:22.533Z",
+      "status": "PASS",
+      "evidence": {
+        "clipboard": "This reply streams from a local fixture. **No backend action was performed.**\r\n\r\n```ts\r\nimport { Conversation } from \"@victframework/ui-ai-svelte\";\r\n```\r\n\r\nYour host supplies messages, lifecycle state and callbacks."
+      }
+    },
+    {
+      "name": "clipboard contains full Markdown reply",
+      "at": "2026-10-23T09:01:22.535Z",
+      "status": "PASS",
+      "evidence": {
+        "clipboard": "This reply streams from a local fixture. **No backend action was performed.**\r\n\r\n```ts\r\nimport { Conversation } from \"@victframework/ui-ai-svelte\";\r\n```\r\n\r\nYour host supplies messages, lifecycle state and callbacks."
+      }
+    },
+    {
+      "name": "upstream code copy reports copied state",
+      "at": "2026-10-23T09:01:22.704Z",
+      "status": "PASS",
+      "evidence": {}
+    },
+    {
+      "name": "long transcript has a bounded scroll region",
+      "at": "2026-10-23T09:02:22.714Z",
+      "status": "PASS",
+      "evidence": {
+        "clientHeight": 502,
+        "scrollHeight": 3846,
+        "clientWidth": 388,
+        "scrollWidth": 388
+      }
+    },
+    {
+      "name": "upstream scroll-to-latest navigates transcript",
+      "at": "2026-10-23T09:02:23.062Z",
+      "status": "PASS",
+      "evidence": {
+        "top": 2,
+        "height": 502,
+        "scrollHeight": 3846
+      }
+    },
+    {
+      "name": "all 21 distinct patterns render with content",
+      "at": "2026-10-23T09:02:23.103Z",
+      "status": "PASS",
+      "evidence": {
+        "expected": [
+          "chain-of-thought",
+          "chat",
+          "checkpoint",
+          "confirmation",
+          "context",
+          "file-tree",
+          "inline-citation",
+          "message",
+          "model-selector",
+          "plan",
+          "prompt-input",
+          "queue",
+          "reasoning",
+          "sources",
+          "stack-trace",
+          "subagent",
+          "suggestion",
+          "task",
+          "terminal",
+          "test-results",
+          "tool"
+        ],
+        "actual": [
+          {
+            "id": "chain-of-thought",
+            "width": 680,
+            "height": 391,
+            "text": "chain-of-thought Public activity summary1 of 3 done   Inspect source  Fixture only: stable screen identity found.Validate requested editCommit canonical command"
+          },
+          {
+            "id": "chat",
+            "width": 680,
+            "height": 391,
+            "text": "chat  You Describe the selected screen.Assistant  This is a presentation fixture with a screen-1 identity. Copy   Scroll to end    Send"
+          },
+          {
+            "id": "checkpoint",
+            "width": 680,
+            "height": 160.25,
+            "text": "checkpoint Before the layout changeRestore checkpoint"
+          },
+          {
+            "id": "confirmation",
+            "width": 680,
+            "height": 160.25,
+            "text": "confirmation Apply the prepared change?Fixture request only; production requires a host-owned approval identity and authorization.DenyApprove"
+          },
+          {
+            "id": "context",
+            "width": 680,
+            "height": 155,
+            "text": "context 13% context"
+          },
+          {
+            "id": "file-tree",
+            "width": 680,
+            "height": 155,
+            "text": "file-tree screensHome screenSettings screen"
+          },
+          {
+            "id": "inline-citation",
+            "width": 680,
+            "height": 299.75,
+            "text": "inline-citation This design uses a canonical source. VICT framework"
+          },
+          {
+            "id": "message",
+            "width": 680,
+            "height": 299.75,
+            "text": "message Streamed Markdown, a list, and code: Source identity Validated commandsts   const screen = 'screen-1';Copy message"
+          },
+          {
+            "id": "model-selector",
+            "width": 680,
+            "height": 183,
+            "text": "model-selector Example model Medium"
+          },
+          {
+            "id": "plan",
+            "width": 680,
+            "height": 183,
+            "text": "plan Proposed steps1 of 3 done   Inspect source  Fixture only: stable screen identity found.Validate requested editCommit canonical command"
+          },
+          {
+            "id": "prompt-input",
+            "width": 680,
+            "height": 255,
+            "text": "prompt-input example.txt (fixture) ×   Send"
+          },
+          {
+            "id": "queue",
+            "width": 680,
+            "height": 255,
+            "text": "queue To do0 of 2 done   Validate requested editCommit canonical command Completed1 of 1 done   Inspect source  Fixture only: stable screen identity found."
+          },
+          {
+            "id": "reasoning",
+            "width": 680,
+            "height": 93,
+            "text": "reasoning Reasoning summary The host may expose a safe summary of observed activity. Private model reasoning is not required or inferred."
+          },
+          {
+            "id": "sources",
+            "width": 680,
+            "height": 93,
+            "text": "sources 1 sources VICT framework"
+          },
+          {
+            "id": "stack-trace",
+            "width": 680,
+            "height": 225,
+            "text": "stack-trace Tool failed   Output ValidationError: fixture only\n  at validate (example.ts:12)\n  at apply (example.ts:24)"
+          },
+          {
+            "id": "subagent",
+            "width": 680,
+            "height": 225,
+            "text": "subagent completedLayout reviewer (fixture)1 of 3 done   Inspect source  Fixture only: stable screen identity found.Validate requested editCommit canonical commandExample finding: preserve stable source IDs."
+          },
+          {
+            "id": "suggestion",
+            "width": 680,
+            "height": 183,
+            "text": "suggestion Explain this screen"
+          },
+          {
+            "id": "task",
+            "width": 680,
+            "height": 183,
+            "text": "task Observed tasks1 of 3 done   Inspect source  Fixture only: stable screen identity found.Validate requested editCommit canonical command"
+          },
+          {
+            "id": "terminal",
+            "width": 680,
+            "height": 236,
+            "text": "terminal npm run check (fixture)  Input npm run check (fixture) Output Fixture: type check completed. This command was not executed."
+          },
+          {
+            "id": "test-results",
+            "width": 680,
+            "height": 236,
+            "text": "test-results Test results2 of 2 done   Accepted sourceMalformed source refused2 simulated results; not verification evidence."
+          },
+          {
+            "id": "tool",
+            "width": 680,
+            "height": 236,
+            "text": "tool Apply source edit (fixture)  Input {\"screenId\":\"screen-1\"} Output Fixture: committed revision 3"
+          }
+        ]
+      }
+    },
+    {
+      "name": "optional actions disclose simulation and route to host callbacks",
+      "at": "2026-10-23T09:02:23.849Z",
+      "status": "PASS",
+      "evidence": {}
+    },
+    {
+      "name": "model selector keyboard navigation changes fixture only",
+      "at": "2026-10-23T09:02:24.031Z",
+      "status": "PASS",
+      "evidence": {}
+    },
+    {
+      "name": "portaled context uses isolated upstream styling",
+      "at": "2026-10-23T09:02:24.346Z",
+      "status": "PASS",
+      "evidence": {
+        "insideScope": true,
+        "background": "rgb(255, 255, 255)",
+        "text": "4200 / 32000 tokens"
+      }
+    },
+    {
+      "name": "source links have explicit safe external navigation",
+      "at": "2026-10-23T09:02:24.482Z",
+      "status": "PASS",
+      "evidence": {
+        "links": [
+          {
+            "href": "https://github.com/radz2291/vict-02",
+            "rel": "noopener noreferrer",
+            "target": "_blank"
+          }
+        ]
+      }
+    },
+    {
+      "name": "unrelated host button retains native styles outside AI scope",
+      "at": "2026-10-23T09:02:24.505Z",
+      "status": "PASS",
+      "evidence": {
+        "host": {
+          "fontFamily": "Arial",
+          "fontSize": "13.3333px",
+          "fontWeight": "400",
+          "paddingTop": "1px",
+          "paddingRight": "6px",
+          "paddingBottom": "1px",
+          "paddingLeft": "6px",
+          "borderTopWidth": "2px",
+          "borderTopStyle": "outset",
+          "borderRadius": "0px",
+          "backgroundColor": "rgb(240, 240, 240)",
+          "color": "rgb(0, 0, 0)",
+          "boxShadow": "none"
+        },
+        "native": {
+          "fontFamily": "Arial",
+          "fontSize": "13.3333px",
+          "fontWeight": "400",
+          "paddingTop": "1px",
+          "paddingRight": "6px",
+          "paddingBottom": "1px",
+          "paddingLeft": "6px",
+          "borderTopWidth": "2px",
+          "borderTopStyle": "outset",
+          "borderRadius": "0px",
+          "backgroundColor": "rgb(240, 240, 240)",
+          "color": "rgb(0, 0, 0)",
+          "boxShadow": "none"
+        },
+        "differences": []
+      }
+    },
+    {
+      "name": "Flow node keyboard selection and navigation",
+      "at": "2026-10-23T09:02:25.135Z",
+      "status": "PASS",
+      "evidence": {
+        "beforeMove": "translate(290px, 170px)",
+        "afterMove": "translate(295px, 170px)"
+      }
+    },
+    {
+      "name": "public addEdge callback connects view to output",
+      "at": "2026-10-23T09:02:25.549Z",
+      "status": "PASS",
+      "evidence": {
+        "edgeCountBefore": 1,
+        "feedback": "Node canvasConnected view to output.      Source  View Output     Svelte Flow Press enter or space to select a node. You can then use the arrow keys to move the node around. Press delete to remove it and escape to cancel. Press enter or space to select an edge. You can then press delete to remove it or escape to cancel. Moved selected node right. New position, x: 290, y: 170         Mini Map "
+      }
+    },
+    {
+      "name": "Flow controls alter viewport and minimap renders",
+      "at": "2026-10-23T09:02:26.076Z",
+      "status": "PASS",
+      "evidence": {
+        "beforeZoom": "translate(4.92537px, 66.9851px) scale(1.23582)",
+        "afterZoom": "translate(-85.0896px, 32.3821px) scale(1.48299)",
+        "minimapNodes": 3
+      }
+    },
+    {
+      "name": "responsive containment 1440x1000",
+      "at": "2026-10-23T09:02:26.411Z",
+      "status": "PASS",
+      "evidence": {
+        "viewport": 1440,
+        "document": 1440,
+        "panel": {
+          "x": 32,
+          "y": 0,
+          "width": 400,
+          "height": 622,
+          "right": 432,
+          "bottom": 622
+        },
+        "input": {
+          "x": 44,
+          "y": 512,
+          "width": 376,
+          "height": 64,
+          "right": 420,
+          "bottom": 576
+        },
+        "feed": {
+          "x": 33,
+          "y": 1,
+          "width": 398,
+          "height": 502,
+          "right": 431,
+          "bottom": 503
+        },
+        "form": {
+          "x": 33,
+          "y": 503,
+          "width": 398,
+          "height": 118,
+          "right": 431,
+          "bottom": 621
+        }
+      }
+    },
+    {
+      "name": "responsive containment 820x800",
+      "at": "2026-10-23T09:02:26.857Z",
+      "status": "PASS",
+      "evidence": {
+        "viewport": 820,
+        "document": 820,
+        "panel": {
+          "x": 32,
+          "y": 0,
+          "width": 400,
+          "height": 622,
+          "right": 432,
+          "bottom": 622
+        },
+        "input": {
+          "x": 44,
+          "y": 512,
+          "width": 376,
+          "height": 64,
+          "right": 420,
+          "bottom": 576
+        },
+        "feed": {
+          "x": 33,
+          "y": 1,
+          "width": 398,
+          "height": 502,
+          "right": 431,
+          "bottom": 503
+        },
+        "form": {
+          "x": 33,
+          "y": 503,
+          "width": 398,
+          "height": 118,
+          "right": 431,
+          "bottom": 621
+        }
+      }
+    },
+    {
+      "name": "responsive containment 390x844",
+      "at": "2026-10-23T09:02:27.459Z",
+      "status": "PASS",
+      "evidence": {
+        "viewport": 390,
+        "document": 390,
+        "panel": {
+          "x": 16,
+          "y": -0.5,
+          "width": 358,
+          "height": 522,
+          "right": 374,
+          "bottom": 521.5
+        },
+        "input": {
+          "x": 28,
+          "y": 411.5,
+          "width": 334,
+          "height": 64,
+          "right": 362,
+          "bottom": 475.5
+        },
+        "feed": {
+          "x": 17,
+          "y": 0.5,
+          "width": 356,
+          "height": 402,
+          "right": 373,
+          "bottom": 402.5
+        },
+        "form": {
+          "x": 17,
+          "y": 402.5,
+          "width": 356,
+          "height": 118,
+          "right": 373,
+          "bottom": 520.5
+        }
+      }
+    },
+    {
+      "name": "presentation fixture makes no backend API calls",
+      "at": "2026-10-23T09:02:27.580Z",
+      "status": "PASS",
+      "evidence": {
+        "apiCalls": []
+      }
+    },
+    {
+      "name": "no uncaught browser errors",
+      "at": "2026-10-23T09:02:27.582Z",
+      "status": "PASS",
+      "evidence": {
+        "errors": [],
+        "failedRequests": []
+      }
+    }
+  ],
+  "errors": [],
+  "failedRequests": [],
+  "requests": [
+    {
+      "url": "http://127.0.0.1:5595/",
+      "method": "GET",
+      "type": "document"
+    },
+    {
+      "url": "http://127.0.0.1:5595/assets/index-dfZ5FZPZ.js",
+      "method": "GET",
+      "type": "script"
+    },
+    {
+      "url": "http://127.0.0.1:5595/assets/index-MJctI_oy.css",
+      "method": "GET",
+      "type": "stylesheet"
+    },
+    {
+      "url": "http://127.0.0.1:5595/assets/github-light-DAi9KRSo.js",
+      "method": "GET",
+      "type": "script"
+    },
+    {
+      "url": "http://127.0.0.1:5595/assets/github-dark-DHJKELXO.js",
+      "method": "GET",
+      "type": "script"
+    },
+    {
+      "url": "http://127.0.0.1:5595/assets/typescript-BPQ3VLAy.js",
+      "method": "GET",
+      "type": "script"
+    },
+    {
+      "url": "http://127.0.0.1:5595/favicon.ico",
+      "method": "GET",
+      "type": "other"
+    }
+  ],
+  "limitations": [
+    "This is the packed consumer presentation fixture, not real-provider or canonical-edit evidence.",
+    "Backend approvals, checkpoint restoration, attachments, model selection, terminal execution, subagents and test execution are not implemented by this fixture.",
+    "Flow edges have presentation meaning only; this script does not prove application/workflow semantics.",
+    "No production failure injector or refusal callback exists in this consumer; failure/refusal semantics require the separate Studio/package regression checks.",
+    "Chromium keyboard/geometry checks do not substitute for screen-reader, cross-browser or human visual acceptance.",
+    "Package installation integrity and absence of repository aliases are supplied by the separate pack/install evidence, not inferred from screenshots."
+  ],
+  "createdAt": "2026-10-23T09:02:27.585Z"
+}

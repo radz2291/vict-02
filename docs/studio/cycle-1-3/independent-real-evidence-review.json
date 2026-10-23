@@ -1,0 +1,199 @@
+{
+  "source": "docs/studio/cycle-1-3/real-provider-final/continuous-real-provider.json",
+  "sourceCandidate": "67a024f21f1b2b423955c44e7e5a762beaf6af1a",
+  "scope": "Independently inspected coordinator real-provider records; stale/draft frames intentionally held at labelled timing seam, provider data and proposals real",
+  "assertionCount": 16,
+  "failedAssertions": [],
+  "errors": [],
+  "turns": [
+    {
+      "name": "real initial build",
+      "status": " 2 edits applied",
+      "model": "zai/glm-5.3-flash",
+      "proposals": [
+        {
+          "id": "c64173f6-1cd5-40d2-8398-84507be79569",
+          "resultDigest": "7392e05e4812cbab427038992a1832b4fc76e938175ffc08de2f3aa89d6b87a8"
+        },
+        {
+          "id": "f78d8266-e71f-4194-b91b-f8c309d47151",
+          "resultDigest": "c6cbfb02df2fdfe7afa886f52cafa66b213e7ce219ba8019d1cf5f6f4bbba80f"
+        }
+      ],
+      "acks": [
+        {
+          "proposalId": "c64173f6-1cd5-40d2-8398-84507be79569",
+          "receipt": {
+            "ok": true,
+            "revision": "r1#1",
+            "digest": "7392e05e4812cbab427038992a1832b4fc76e938175ffc08de2f3aa89d6b87a8"
+          },
+          "digestMatches": true
+        },
+        {
+          "proposalId": "f78d8266-e71f-4194-b91b-f8c309d47151",
+          "receipt": {
+            "ok": true,
+            "revision": "r1#2",
+            "digest": "c6cbfb02df2fdfe7afa886f52cafa66b213e7ce219ba8019d1cf5f6f4bbba80f"
+          },
+          "digestMatches": true
+        }
+      ],
+      "done": {
+        "type": "done",
+        "status": "completed",
+        "applied": 2,
+        "turnId": "turn-9fad2e0b-bb48-4758-88ab-55786af4250b",
+        "profileVersion": "v1_d676998f18e52c1e75961acc181bb47a8dcfa44e271c12c0cb86016e6782170d",
+        "observedAt": 1792745549891
+      },
+      "deletes": [],
+      "complete": true
+    },
+    {
+      "name": "real continuation after manual source edit and Layers selection",
+      "status": " 1 edit applied",
+      "model": "zai/glm-5.3-flash",
+      "proposals": [
+        {
+          "id": "2ed03b76-de25-44ed-b925-642610ce1238",
+          "resultDigest": "3b41f22545c583aa7400b498d98df0afc25170e47f79500586986599954b8737"
+        }
+      ],
+      "acks": [
+        {
+          "proposalId": "2ed03b76-de25-44ed-b925-642610ce1238",
+          "receipt": {
+            "ok": true,
+            "revision": "r1#4",
+            "digest": "3b41f22545c583aa7400b498d98df0afc25170e47f79500586986599954b8737"
+          },
+          "digestMatches": true
+        }
+      ],
+      "done": {
+        "type": "done",
+        "status": "completed",
+        "applied": 1,
+        "turnId": "turn-543f3118-dc97-40d8-af67-138a346cf406",
+        "profileVersion": "v1_d676998f18e52c1e75961acc181bb47a8dcfa44e271c12c0cb86016e6782170d",
+        "observedAt": 1792745584586
+      },
+      "deletes": [],
+      "complete": true
+    },
+    {
+      "name": "real Stop after first validated applied batch",
+      "status": " Stopped. 1 applied edit remains undoable.",
+      "model": "zai/glm-5.3-flash",
+      "proposals": [
+        {
+          "id": "8bb0d67a-7305-44b1-ab01-fbc78d9fb35b",
+          "resultDigest": "d7e6fd0dc7c27afa7f5b9446c2f51db8d34ab65b7d22995768813f3c578d373d"
+        }
+      ],
+      "acks": [
+        {
+          "proposalId": "8bb0d67a-7305-44b1-ab01-fbc78d9fb35b",
+          "receipt": {
+            "ok": true,
+            "revision": "r1#5",
+            "digest": "d7e6fd0dc7c27afa7f5b9446c2f51db8d34ab65b7d22995768813f3c578d373d"
+          },
+          "digestMatches": true
+        }
+      ],
+      "deletes": [
+        {
+          "at": 1792745634988,
+          "status": 200
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "real post-reopen continuation",
+      "status": " 1 edit applied",
+      "model": "zai/glm-5.3-flash",
+      "proposals": [
+        {
+          "id": "c4ef5690-20cf-4d51-90f5-7ba4d89f0877",
+          "resultDigest": "557233e525bb0ba3ba167669bcf71e5d047ed70b1c2173b88eaadeb984fd0f0a"
+        }
+      ],
+      "acks": [
+        {
+          "proposalId": "c4ef5690-20cf-4d51-90f5-7ba4d89f0877",
+          "receipt": {
+            "ok": true,
+            "revision": "r1.r1#1",
+            "digest": "557233e525bb0ba3ba167669bcf71e5d047ed70b1c2173b88eaadeb984fd0f0a"
+          },
+          "digestMatches": true
+        }
+      ],
+      "done": {
+        "type": "done",
+        "status": "completed",
+        "applied": 1,
+        "turnId": "turn-d15e98a2-d8c3-4c62-bb85-40fdd30e6992",
+        "profileVersion": "v1_d676998f18e52c1e75961acc181bb47a8dcfa44e271c12c0cb86016e6782170d",
+        "observedAt": 1792745683678
+      },
+      "deletes": [],
+      "complete": true
+    },
+    {
+      "name": "real stale proposal refused at labelled timing seam",
+      "status": " The screen changed while the agent was working. No edit was applied; send a new request using the current screen.",
+      "model": "zai/glm-5.3-flash",
+      "proposals": [
+        {
+          "id": "b6b50e78-cf02-49e6-a8fa-290718ae841b",
+          "resultDigest": "4f31ddec659df54576a26b2e528314b528b59c29ab5cc34bcd057038d0e94b66"
+        }
+      ],
+      "acks": [
+        {
+          "proposalId": "b6b50e78-cf02-49e6-a8fa-290718ae841b",
+          "receipt": {
+            "ok": false,
+            "code": "UI_DOC_STALE_REVISION",
+            "message": "The screen changed while the agent was working. No edit was applied; send a new request using the current screen."
+          }
+        }
+      ],
+      "deletes": [
+        {
+          "at": 1792745737221,
+          "status": 200
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "real draft proposal refused at labelled timing seam",
+      "status": " Apply or cancel the current draft first.",
+      "model": "zai/glm-5.3-flash",
+      "proposals": [
+        {
+          "id": "07b2081b-8eaa-45e8-bfc3-cb9530e5fa79",
+          "resultDigest": "14223713c41b7207a9e05817ed9327dd0b8e1bb9e486f3880da153712dfd7e0a"
+        }
+      ],
+      "acks": [
+        {
+          "proposalId": "07b2081b-8eaa-45e8-bfc3-cb9530e5fa79",
+          "receipt": {
+            "ok": false,
+            "code": "STUDIO_AGENT_DRAFT",
+            "message": "Apply or cancel the pending property, data, rename or source draft, then send a new request."
+          }
+        }
+      ],
+      "deletes": [],
+      "complete": true
+    }
+  ]
+}

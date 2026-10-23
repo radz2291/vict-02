@@ -1,0 +1,68 @@
+{
+  "candidate": "67a024f21f1b2b423955c44e7e5a762beaf6af1a",
+  "records": [
+    {
+      "name": "valid contextual initial source",
+      "pass": true
+    },
+    {
+      "name": "shared move command refused before source/history",
+      "pass": true,
+      "issues": [
+        {
+          "code": "UI_EDIT_VALIDATION_FAILED",
+          "message": "vict.catalog.select-item (item) requires its declared component context and slot. Keep this part aside or place it inside a compatible composition.",
+          "severity": "error",
+          "hostCode": "STUDIO_COMPONENT_CONTEXT",
+          "documentId": "independent",
+          "nodeId": "item",
+          "path": "screen/2:item"
+        }
+      ]
+    },
+    {
+      "name": "keep aside remains legal",
+      "pass": true
+    },
+    {
+      "name": "reuse into wrong parent refused",
+      "pass": true
+    },
+    {
+      "name": "reuse into compatible slot allowed",
+      "pass": true
+    },
+    {
+      "name": "valid Undo and Redo remain usable",
+      "pass": true
+    },
+    {
+      "name": "valid save/reopen preserved",
+      "pass": true
+    },
+    {
+      "name": "invalid source replace refused",
+      "pass": true
+    },
+    {
+      "name": "invalid external saved source reopen refused",
+      "pass": true
+    },
+    {
+      "name": "neutral wrapper retains provider",
+      "pass": true
+    },
+    {
+      "name": "neutral wrapper cannot conceal invalid parent",
+      "pass": true
+    },
+    {
+      "name": "local definition inherits valid caller context",
+      "pass": true
+    },
+    {
+      "name": "same local definition refuses invalid caller context",
+      "pass": true
+    }
+  ]
+}

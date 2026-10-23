@@ -1,0 +1,47 @@
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3/260831-VCT-02/apps/studio
+
+4:40:06 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3/260831-VCT-02/packages/ui-svelte/src/document/DocumentHost.svelte:105:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+4:40:07 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:303:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+4:40:07 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:303:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+4:40:07 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:370:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+4:40:07 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:370:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+4:40:16 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3/260831-VCT-02/packages/ui-editor/src/StateValuesPanel.svelte:106:6 A form label must be associated with a control
+https://svelte.dev/e/a11y_label_has_associated_control
+ ❯ tests/ui/designer-context-surfaces.test.ts (2 tests | 1 failed) 334ms
+   ✓ actual Composer reuse control refuses root placement and allows the original item slot 217ms
+   × actual Layers refuses contextual part dragging and commits a supported whole-provider move 113ms
+     → expected undefined to be false // Object.is equality
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/ui/designer-context-surfaces.test.ts > actual Layers refuses contextual part dragging and commits a supported whole-provider move
+AssertionError: expected undefined to be false // Object.is equality
+
+- Expected: 
+false
+
++ Received: 
+undefined
+
+ ❯ tests/ui/designer-context-surfaces.test.ts:70:28
+     68|     // The compiled occurrence carries its catalog ancestor. Layers al…
+     69|     // refuses dragging that non-direct occurrence, even with onApply …
+     70|     expect(part.draggable).toBe(false);
+       |                            ^
+     71|     // happy-dom has no layout. Supply only the row rectangle; canonic…
+     72|     // event handlers are real, and the actual browser probe remains s…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 1 passed (2)
+   Start at  16:39:43
+   Duration  34.54s (transform 23.11s, setup 0ms, collect 32.09s, tests 334ms, environment 1.01s, prepare 208ms)
+

@@ -1,0 +1,22 @@
+{
+  "candidate": "17081fde966741a8ba60faf0661e588f96a5dda8",
+  "mode": "Transcribed exact initial independent-source-probe.mjs execution output; neutral canonical acceptance plus inspection of initial host callers",
+  "layerMove": {
+    "op": "move",
+    "nodeId": "item",
+    "newParentId": "screen"
+  },
+  "layerAccepted": true,
+  "detachAccepted": true,
+  "reuseAccepted": true,
+  "screen": {
+    "id": "screen",
+    "kind": "element",
+    "tag": "main",
+    "children": [
+      "select",
+      "item"
+    ]
+  },
+  "scope": "Neutral shared move helper accepts the command. This is not a Layers gesture bypass: Studio omits Layers.onApply and context-derived rows are nondraggable. Studio escape is Composer reuse plus canonical source intake."
+}

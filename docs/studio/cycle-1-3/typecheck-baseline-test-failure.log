@@ -1,0 +1,7 @@
+
+> vict-monorepo@0.1.0 typecheck
+> tsc -p tsconfig.json --noEmit
+
+packages/ui-svelte/test/conversation-composer.test.ts(66,12): error TS2532: Object is possibly 'undefined'.
+packages/ui-svelte/test/conversation-composer.test.ts(67,12): error TS2532: Object is possibly 'undefined'.
+packages/ui-svelte/test/conversation-composer.test.ts(73,22): error TS2532: Object is possibly 'undefined'.

@@ -1,0 +1,17 @@
+{
+  "base": "http://127.0.0.1:5594",
+  "run": "2026-10-23T08-26-21-411Z",
+  "records": [
+    {
+      "at": "2026-10-23T08:26:22.673Z",
+      "name": "FAILED OBSERVATION",
+      "data": {
+        "error": "Error: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5594/login",
+        "stack": "Error: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5594/login\n    at navigate (file:///C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3/260831-VCT-02/node_modules/puppeteer-core/lib/esm/puppeteer/cdp/Frame.js:185:27)\n    at async Deferred.race (file:///C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3/260831-VCT-02/node_modules/puppeteer-core/lib/esm/puppeteer/util/Deferred.js:33:20)\n    at async CdpFrame.goto (file:///C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3/260831-VCT-02/node_modules/puppeteer-core/lib/esm/puppeteer/cdp/Frame.js:151:25)\n    at async CdpPage.goto (file:///C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3/260831-VCT-02/node_modules/puppeteer-core/lib/esm/puppeteer/api/Page.js:576:20)\n    at async file:///C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3/260831-VCT-02/docs/studio/cycle-1-3/designer-browser.mjs:167:3",
+        "body": "This site can’t be reached\n\n127.0.0.1 refused to connect.\n\nTry:\n\nChecking the connection\nChecking the proxy and the firewall\nERR_CONNECTION_REFUSED\nReload\nDetails"
+      }
+    }
+  ],
+  "errors": [],
+  "responses": []
+}

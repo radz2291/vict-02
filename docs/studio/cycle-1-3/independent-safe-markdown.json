@@ -1,0 +1,30 @@
+{
+  "candidate": "17081fde966741a8ba60faf0661e588f96a5dda8",
+  "mode": "Production Studio renderer, simulated malicious transport text; zero provider call",
+  "results": [
+    {
+      "name": "safe rendered Markdown and narrow layout",
+      "pass": true,
+      "observed": {
+        "xss": null,
+        "hits": 1,
+        "images": 0,
+        "anchors": [
+          {
+            "href": "https://example.com/",
+            "rel": "noopener noreferrer",
+            "target": "_blank"
+          }
+        ],
+        "text": " You Fixture safety testAssistant  Safety probe<img src=\"https://invalid.example/canary\" onerror=\"window.__xss=1\">__<script>window.__xss=2</script>__[Image blocked: remote image]bad [blocked] relative credential goodhtml   \n<img onerror=alert(1)>longlonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglong",
+        "viewport": 390,
+        "documentWidth": 390,
+        "feedWidth": 390,
+        "draft": "",
+        "send": false
+      }
+    }
+  ],
+  "external": [],
+  "errors": []
+}

@@ -1,0 +1,14 @@
+import { build } from 'esbuild';
+import { writeFile } from 'node:fs/promises';
+const path = 'docs/studio/cycle-1-3/independent-source-probe.generated.mjs';
+await build({stdin:{contents:`import { applyUiEdit, compileUiDocument, defaultSemanticElementCatalog } from '@victframework/ui';
+import { b2CatalogDescriptors } from './packages/ui-svelte/src/catalog/components/b2-descriptors.ts';
+import { detachSlotContent, moveRelative } from './packages/ui-editor/src/composition.ts';
+const document={schema:'vict.ui-document@1',id:'independent',revision:'r1',root:'screen',nodes:{screen:{id:'screen',kind:'element',tag:'main',children:['select']},select:{id:'select',kind:'component',definitionId:'vict.catalog.select-multiple',props:{},slots:{items:{name:'items',children:['item']}}},item:{id:'item',kind:'component',definitionId:'vict.catalog.select-item',props:{value:{type:'literal',value:'one'}}}},componentDefinitions:{},styleSources:{},assets:{},tokens:{},conditions:{},localState:{}};
+const catalogs={elements:defaultSemanticElementCatalog(),extensions:b2CatalogDescriptors};
+const move=moveRelative(document,'item','screen','inside',b2CatalogDescriptors);
+const result=applyUiEdit({document,revision:'r1'},{requestId:'probe',expectedDocumentRevision:'r1',commands:[move]},catalogs);
+const detached=applyUiEdit({document,revision:'r1'},{...detachSlotContent('detach',document,'item'),expectedDocumentRevision:'r1'},catalogs);
+const reuse=detached.ok&&applyUiEdit({document:detached.document,revision:'r1'},{requestId:'reuse',expectedDocumentRevision:'r1',commands:[{op:'move',nodeId:'item',newParentId:'screen'}]},catalogs);
+console.log(JSON.stringify({candidate:'17081fde966741a8ba60faf0661e588f96a5dda8',layerMove:move,layerAccepted:result.ok,layerIssues:result.issues,detachAccepted:detached.ok,reuseAccepted:reuse?.ok,reuseIssues:reuse?.issues,screen:result.ok&&result.document.nodes.screen},null,2));`,resolveDir:process.cwd(),sourcefile:'independent-source-probe.ts',loader:'ts'},bundle:true,platform:'node',format:'esm',packages:'external',outfile:path});
+await import('../../../'+path);

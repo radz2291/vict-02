@@ -1,0 +1,156 @@
+{
+  "base": "http://127.0.0.1:5594",
+  "run": "2026-10-23T08-21-56-992Z",
+  "records": [
+    {
+      "at": "2026-10-23T08:21:58.439Z",
+      "name": "Local test login response",
+      "data": {
+        "status": 200,
+        "type": "basic"
+      }
+    },
+    {
+      "at": "2026-10-23T08:22:02.139Z",
+      "name": "Fresh isolated screen with existing boolean declaration",
+      "data": {
+        "ok": true,
+        "document": {
+          "schema": "vict.ui-document@1",
+          "id": "screen-9bab644c-da27-4ba7-97ef-87d046d300e1",
+          "revision": "r1",
+          "root": "screen",
+          "nodes": {
+            "screen": {
+              "kind": "element",
+              "id": "screen",
+              "tag": "main",
+              "attributes": {
+                "aria-label": "Cycle 1.3 Designer QA 2026-10-23T08-21-56-992Z"
+              },
+              "children": [],
+              "localStyle": [
+                {
+                  "property": "display",
+                  "value": {
+                    "type": "text",
+                    "value": "flex"
+                  }
+                },
+                {
+                  "property": "flex-direction",
+                  "value": {
+                    "type": "text",
+                    "value": "column"
+                  }
+                },
+                {
+                  "property": "gap",
+                  "value": {
+                    "type": "text",
+                    "value": "20px"
+                  }
+                },
+                {
+                  "property": "padding",
+                  "value": {
+                    "type": "text",
+                    "value": "40px"
+                  }
+                },
+                {
+                  "property": "min-height",
+                  "value": {
+                    "type": "text",
+                    "value": "560px"
+                  }
+                },
+                {
+                  "property": "background-color",
+                  "value": {
+                    "type": "text",
+                    "value": "#ffffff"
+                  }
+                },
+                {
+                  "property": "color",
+                  "value": {
+                    "type": "text",
+                    "value": "#243047"
+                  }
+                },
+                {
+                  "property": "font-family",
+                  "value": {
+                    "type": "text",
+                    "value": "system-ui, sans-serif"
+                  }
+                }
+              ]
+            }
+          },
+          "componentDefinitions": {},
+          "styleSources": {},
+          "assets": {},
+          "tokens": {},
+          "conditions": {
+            "compact": {
+              "id": "compact",
+              "kind": "container",
+              "name": "studio-screen",
+              "query": "(max-width: 600px)"
+            }
+          },
+          "localState": {
+            "message": {
+              "key": "message",
+              "type": "string",
+              "initial": "Hello from my screen"
+            },
+            "accepted": {
+              "key": "accepted",
+              "type": "boolean",
+              "initial": false
+            },
+            "dialogOpen": {
+              "key": "dialogOpen",
+              "type": "boolean",
+              "initial": false
+            },
+            "busy": {
+              "key": "busy",
+              "type": "boolean",
+              "initial": false
+            },
+            "actionError": {
+              "key": "actionError",
+              "type": "string",
+              "initial": ""
+            },
+            "actionResult": {
+              "key": "actionResult",
+              "type": "string",
+              "initial": ""
+            }
+          }
+        }
+      }
+    },
+    {
+      "at": "2026-10-23T08:22:19.035Z",
+      "name": "FAILED OBSERVATION",
+      "data": {
+        "error": "TimeoutError: Waiting for selector `.palette` failed",
+        "stack": "TimeoutError: Waiting for selector `.palette` failed\n    at CSSQueryHandler.waitFor (file:///C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3/260831-VCT-02/node_modules/puppeteer-core/lib/esm/puppeteer/common/QueryHandler.js:211:46)\n    at async CdpFrame.waitForSelector (file:///C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3/260831-VCT-02/node_modules/puppeteer-core/lib/esm/puppeteer/api/Frame.js:541:21)\n    at async CdpPage.waitForSelector (file:///C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3/260831-VCT-02/node_modules/puppeteer-core/lib/esm/puppeteer/api/Page.js:1387:20)\n    at async selectNode (file:///C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3/260831-VCT-02/docs/studio/cycle-1-3/designer-browser.mjs:85:3)\n    at async insert (file:///C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3/260831-VCT-02/docs/studio/cycle-1-3/designer-browser.mjs:96:3)\n    at async file:///C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3/260831-VCT-02/docs/studio/cycle-1-3/designer-browser.mjs:172:19",
+        "body": "V\nFile\nEdit\nView\nPreview\nCycle 1.3 Designer QA 2026-10-23T08-21-56-992Z\n○ New screen\n↗\nDesign\nInteract\nStructure\nDocument\n＋\nWhat will you make?\n\nSelect this screen to open its tools, then choose Insert.\n\nSimulated execution\nLocal preview · no live effects\nDesign mode · select and edit without running behavior.\n@3 · v1_dbc6243f0071…"
+      }
+    }
+  ],
+  "errors": [],
+  "responses": [
+    {
+      "url": "http://127.0.0.1:5594/favicon.svg",
+      "status": 404
+    }
+  ]
+}

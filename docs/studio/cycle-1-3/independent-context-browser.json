@@ -1,0 +1,14 @@
+{
+  "candidate": "17081fde966741a8ba60faf0661e588f96a5dda8",
+  "mode": "Canonical-source injection of exact accepted move result; not UI drag reproduction",
+  "before": {
+    "errors": [],
+    "text": "V\nFile\nEdit\nView\nPreview\nUntitled screen\n● Unsaved changes\n↗\n\nDescribe a screen, or select an element to edit it.\n\nScroll to end\nSend\nReady\n···\nDesign\nInteract\nStructure\nDocument\nOptions\nOptions\nSimulated execution\nLocal preview · no live effects\nLayers\nData\nActions\nSource\n×\nCanonical UI document\nApply source\nDiscard draft\nExport\nApplication attachment\nApply canonical source · unsaved\n@3 · v1_5e1a02a62814…"
+  },
+  "after": {
+    "errors": [
+      "Error: Context \"Select.Root | Combobox.Root\" not found"
+    ],
+    "text": "V\nFile\nEdit\nView\nPreview\nUntitled screen\n● Unapplied JSON draft\n↗\n\nDescribe a screen, or select an element to edit it.\n\nScroll to end\nSend\nReady\n···\nDesign\nInteract\nStructure\nDocument\nOptions\nOptions\nSimulated execution\nLocal preview · no live effects\nLayers\nData\nActions\nSource\n×\nCanonical UI document\nApply source\nDiscard draft\nExport\nApplication attachment\nApply canonical source · unsaved\n@3 · v1_5e1a02a62814…"
+  }
+}

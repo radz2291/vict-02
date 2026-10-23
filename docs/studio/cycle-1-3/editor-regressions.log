@@ -1,0 +1,38 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3/260831-VCT-02
+
+4:46:19 pm [vite-plugin-svelte] packages/ui-svelte/src/document/DocumentHost.svelte:105:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+4:46:19 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:303:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+4:46:19 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:303:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+4:46:19 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:370:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+4:46:19 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:370:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+4:46:34 pm [vite-plugin-svelte] packages/ui-editor/src/StateValuesPanel.svelte:106:6 A form label must be associated with a control
+https://svelte.dev/e/a11y_label_has_associated_control
+ ❯ |renderer| packages/ui-editor/test/palette-composition.svelte.test.ts (4 tests | 1 failed) 133ms
+   × requires a choice for multi-slot owners and preserves declared slot ownership 14ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |renderer| packages/ui-editor/test/palette-composition.svelte.test.ts > requires a choice for multi-slot owners and preserves declared slot ownership
+TypeError: Cannot read properties of null (reading 'disabled')
+ ❯ packages/ui-editor/test/palette-composition.svelte.test.ts:163:19
+    161|     flushSync();
+    162|     const button = target.querySelector<HTMLButtonElement>('button.rec…
+    163|     expect(button.disabled).toBe(true);
+       |                   ^
+    164|     const select = target.querySelector('select')!;
+    165|     select.value = JSON.stringify(['card', 'body']);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 16 passed (17)
+      Tests  1 failed | 80 passed (81)
+   Start at  16:45:47
+   Duration  77.90s (transform 20.81s, setup 0ms, import 43.85s, tests 7.46s, environment 17.07s)
+

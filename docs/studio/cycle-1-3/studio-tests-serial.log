@@ -1,0 +1,312 @@
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3/260831-VCT-02/apps/studio
+
+4:03:47 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3/260831-VCT-02/packages/ui-svelte/src/document/DocumentHost.svelte:105:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+4:03:48 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:303:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+4:03:48 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:303:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+4:03:48 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:370:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+4:03:48 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:370:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+4:03:53 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3/260831-VCT-02/packages/ui-editor/src/StateValuesPanel.svelte:106:6 A form label must be associated with a control
+https://svelte.dev/e/a11y_label_has_associated_control
+ ✓ tests/designer-agent-mastra.test.ts (14 tests) 23807ms
+   ✓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > does not mistake a successfully invoked but refused edit for recovery  1203ms
+   ✓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > gives GLM its full published output allowance without a thinking override (offline seam)  1742ms
+   ✓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > reports an unrecovered tool failure truthfully, with prior effects=false  1897ms
+   ✓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > reports an unrecovered tool failure truthfully, with prior effects=true  1856ms
+   ✓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > contains length provider output with zero proposals and truthful terminal code  1460ms
+   ✓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > contains partial provider output with zero proposals and truthful terminal code  1432ms
+   ✓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > allows a successful ordinary answer without edits  1735ms
+   ✓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > recovers a wrong source-version argument on an existing saved screen in the same governed turn  2101ms
+   ✓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > keeps a genuine browser revision refusal fenced even after a model re-read and retry  2632ms
+   ✓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > runs governed read and edit tools; acknowledges only after EditorBridge commit; streams completion  2059ms
+   ✓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > sanitizes a genuine Mastra model failure after an acknowledged edit and preserves Undo  1531ms
+   ✓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > cancels a proposal before acknowledgement with zero edits and no cross-session cancellation  1935ms
+   ✓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > admits the next turn at terminal delivery while private cleanup is still pending  2199ms
+ ✓ tests/quellight-transport.test.ts (10 tests) 37ms
+ ✓ tests/changeset-contract.test.ts (12 tests) 34ms
+ ✓ tests/run-detail.test.ts (12 tests) 130ms
+ ✓ tests/designer-agent.test.ts (6 tests) 803ms
+ ✓ tests/boundary.test.ts (13 tests) 142ms
+ ✓ tests/confirmation-contract.test.ts (11 tests) 16ms
+ ✓ tests/designer-coverage.test.ts (4 tests) 1502ms
+   ✓ Cycle 1.3 actual Designer coverage > compiles every standalone recipe through canonical edits and finished application validation  640ms
+   ✓ Cycle 1.3 actual Designer coverage > compiles every context-owned part in its declared parent slot and refuses standalone placement  713ms
+ ✓ tests/structure.test.ts (6 tests) 234ms
+ ✓ tests/adapter.test.ts (9 tests) 103ms
+ ✓ tests/app-definition.test.ts (8 tests) 117ms
+ ✓ tests/designer-model.test.ts (7 tests) 59ms
+ ✓ tests/designer-required-slots.test.ts (5 tests) 235ms
+ ✓ tests/target-selection.test.ts (6 tests) 15ms
+ ✓ tests/designer.test.ts (4 tests) 1017ms
+   ✓ Studio canonical screen integration > fails closed on undeclared actions, missing inputs, denied permission and reset during execution  921ms
+ ✓ tests/designer-independent-verification.test.ts (4 tests) 1482ms
+   ✓ clears fail-next exactly once and fences two pending actions across reset  1376ms
+ ✓ tests/targets.test.ts (5 tests) 76ms
+ ✓ tests/designer-agent-cleanup.test.ts (1 test) 2128ms
+   ✓ releases a completed host turn when filesystem removal never settles  2126ms
+ ✓ tests/designer-preflight-independent.test.ts (2 tests) 85ms
+ ✓ tests/designer-agent-stream.test.ts (1 test) 94ms
+ ✓ tests/designer-required-slot-verification.test.ts (2 tests) 56ms
+4:05:34 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3/260831-VCT-02/packages/ui-svelte/src/document/DocumentHost.svelte:105:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+4:05:34 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:303:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+4:05:34 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:303:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+4:05:34 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:370:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+4:05:34 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:370:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+4:05:41 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3/260831-VCT-02/packages/ui-editor/src/StateValuesPanel.svelte:106:6 A form label must be associated with a control
+https://svelte.dev/e/a11y_label_has_associated_control
+stderr | tests/ui/composition.test.ts
+AggregateError: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1712:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 3000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 3000
+    }
+  ]
+}
+
+stderr | tests/ui/composition.test.ts
+AggregateError: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1712:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 3000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 3000
+    }
+  ]
+}
+
+stderr | tests/ui/composition.test.ts
+AggregateError: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1712:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 3000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 3000
+    }
+  ]
+}
+
+ ✓ tests/ui/composition.test.ts (3 tests) 2081ms
+   ✓ opens another saved screen through File and guards the cascading menu during a source draft  830ms
+   ✓ opens a closed composition without authored or runtime changes, guards drafts, and saves the same edited source for replay  717ms
+   ✓ keeps data drafts safe across document navigation and saves applied starting values  530ms
+ ✓ tests/ui/agent-handoff.test.ts (5 tests) 1173ms
+   ✓ does not let delayed Stop cleanup replace the feedback for a newer turn  392ms
+ ✓ tests/ui/render.test.ts (7 tests) 314ms
+ ❯ tests/ui/agent-chat.test.ts (5 tests | 5 failed) 5667ms
+   × rejected Studio chat admission > shows an admitted failed turn as a failure (STUDIO_AGENT_OUTPUT_LIMIT) 1270ms
+     → expected '' to contain 'The agent\'s response was cut off'
+   × rejected Studio chat admission > shows an admitted failed turn as a failure (STUDIO_AGENT_INCOMPLETE_TOOL) 1093ms
+     → expected '' to contain 'The agent returned an invalid or inco…'
+   × rejected Studio chat admission > shows an admitted failed turn as a failure (STUDIO_AGENT_TOOL_FAILED) 1100ms
+     → expected '' to contain 'The agent could not complete an edit'
+   × rejected Studio chat admission > explains STUDIO_AGENT_BUSY without blaming the provider and retains the unsent draft 1100ms
+     → expected '' to contain 'Another agent turn is still running'
+   × rejected Studio chat admission > explains STUDIO_AGENT_CAPACITY without blaming the provider and retains the unsent draft 1101ms
+     → expected '' to contain 'The agent server is finishing other t…'
+stderr | tests/ui/designer-runtime.test.ts > keeps runtime input and checkbox state across pointer selection and leaves authored history clean
+[svelte] dynamic_void_element_content
+`<svelte:element this="input">` is a void element — it cannot have content
+https://svelte.dev/e/dynamic_void_element_content
+[svelte] dynamic_void_element_content
+`<svelte:element this="input">` is a void element — it cannot have content
+https://svelte.dev/e/dynamic_void_element_content
+
+stderr | tests/ui/designer-runtime.test.ts > keeps runtime input and checkbox state across pointer selection and leaves authored history clean
+[svelte] dynamic_void_element_content
+`<svelte:element this="input">` is a void element — it cannot have content
+https://svelte.dev/e/dynamic_void_element_content
+
+stderr | tests/ui/designer-runtime.test.ts > keeps runtime input and checkbox state across pointer selection and leaves authored history clean
+AggregateError: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1712:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 3000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 3000
+    }
+  ]
+}
+
+ ✓ tests/ui/designer-runtime.test.ts (1 test) 1475ms
+   ✓ keeps runtime input and checkbox state across pointer selection and leaves authored history clean  1471ms
+ ✓ tests/ui/chat-controls.test.ts (1 test) 911ms
+   ✓ keeps draft, feed and an active turn mounted through hiding; the single composer action stops  909ms
+ ✓ tests/ui/confirmation.test.ts (5 tests) 67ms
+ ✓ tests/ui/structure.test.ts (2 tests) 285ms
+ ✓ tests/ui/chat-message.test.ts (4 tests) 196ms
+ ✓ tests/ui/saved-run.test.ts (3 tests) 463ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/ui/agent-chat.test.ts > rejected Studio chat admission > shows an admitted failed turn as a failure (STUDIO_AGENT_OUTPUT_LIMIT)
+AssertionError: expected '' to contain 'The agent\'s response was cut off'
+
+- Expected
++ Received
+
+- The agent's response was cut off
+
+ ❯ tests/ui/agent-chat.test.ts:77:72
+     75|         .dispatchEvent(new Event('submit', { bubbles: true, cancelable…
+     76|       await vi.waitFor(() =>
+     77|         expect(document.querySelector('.agent-status')?.textContent).t…
+       |                                                                        ^
+     78|       );
+     79|       expect(document.querySelector('.agent-status')?.textContent).toC…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  tests/ui/agent-chat.test.ts > rejected Studio chat admission > shows an admitted failed turn as a failure (STUDIO_AGENT_INCOMPLETE_TOOL)
+AssertionError: expected '' to contain 'The agent returned an invalid or inco…'
+
+- Expected
++ Received
+
+- The agent returned an invalid or incomplete edit
+
+ ❯ tests/ui/agent-chat.test.ts:77:72
+     75|         .dispatchEvent(new Event('submit', { bubbles: true, cancelable…
+     76|       await vi.waitFor(() =>
+     77|         expect(document.querySelector('.agent-status')?.textContent).t…
+       |                                                                        ^
+     78|       );
+     79|       expect(document.querySelector('.agent-status')?.textContent).toC…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  tests/ui/agent-chat.test.ts > rejected Studio chat admission > shows an admitted failed turn as a failure (STUDIO_AGENT_TOOL_FAILED)
+AssertionError: expected '' to contain 'The agent could not complete an edit'
+
+- Expected
++ Received
+
+- The agent could not complete an edit
+
+ ❯ tests/ui/agent-chat.test.ts:77:72
+     75|         .dispatchEvent(new Event('submit', { bubbles: true, cancelable…
+     76|       await vi.waitFor(() =>
+     77|         expect(document.querySelector('.agent-status')?.textContent).t…
+       |                                                                        ^
+     78|       );
+     79|       expect(document.querySelector('.agent-status')?.textContent).toC…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+ FAIL  tests/ui/agent-chat.test.ts > rejected Studio chat admission > explains STUDIO_AGENT_BUSY without blaming the provider and retains the unsent draft
+AssertionError: expected '' to contain 'Another agent turn is still running'
+
+- Expected
++ Received
+
+- Another agent turn is still running
+
+ ❯ tests/ui/agent-chat.test.ts:126:72
+    124|         .dispatchEvent(new Event('submit', { bubbles: true, cancelable…
+    125|       await vi.waitFor(() =>
+    126|         expect(document.querySelector('.agent-status')?.textContent).t…
+       |                                                                        ^
+    127|       );
+    128|       await vi.waitFor(() =>
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯
+
+ FAIL  tests/ui/agent-chat.test.ts > rejected Studio chat admission > explains STUDIO_AGENT_CAPACITY without blaming the provider and retains the unsent draft
+AssertionError: expected '' to contain 'The agent server is finishing other t…'
+
+- Expected
++ Received
+
+- The agent server is finishing other turns
+
+ ❯ tests/ui/agent-chat.test.ts:126:72
+    124|         .dispatchEvent(new Event('submit', { bubbles: true, cancelable…
+    125|       await vi.waitFor(() =>
+    126|         expect(document.querySelector('.agent-status')?.textContent).t…
+       |                                                                        ^
+    127|       );
+    128|       await vi.waitFor(() =>
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/5]⎯
+
+
+ Test Files  1 failed | 30 passed (31)
+      Tests  5 failed | 173 passed (178)
+   Start at  16:03:24
+   Duration  308.78s (transform 73.74s, setup 0ms, collect 229.96s, tests 44.80s, environment 14.45s, prepare 7.44s)
+

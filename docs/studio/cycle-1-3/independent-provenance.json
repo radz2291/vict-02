@@ -1,0 +1,782 @@
+{
+  "candidate": "17081fde966741a8ba60faf0661e588f96a5dda8",
+  "upstream": "b10f153250b18abfccf49a06e1c4c68945edffa5",
+  "results": [
+    {
+      "path": "src/upstream/ui/trace/index.ts",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/trace/trace-collapsible-content.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/trace/trace-collapsible-trigger.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/trace/trace-collapsible.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/trace/trace-description.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/trace/trace-icon.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/trace/trace-line.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/trace/trace-title.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/trace/trace.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/code-block/code-block-actions.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/code-block/code-block-content.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/code-block/code-block-copy-button.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/code-block/code-block-footer.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/code-block/code-block-header.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/code-block/code-block-line.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/code-block/code-block-title.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/code-block/code-block.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/code-block/index.ts",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/badge/badge.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/badge/index.ts",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/message-scroller/index.ts",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/message-scroller/message-scroller-button.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/message-scroller/message-scroller-content.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/message-scroller/message-scroller-item.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/message-scroller/message-scroller-provider.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/message-scroller/message-scroller-viewport.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/message-scroller/message-scroller.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/message/index.ts",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/message/message-avatar.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/message/message-content.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/message/message-footer.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/message/message-group.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/message/message-header.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/message/message.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/bubble/bubble-content.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/bubble/bubble-group.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/bubble/bubble-reactions.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/bubble/bubble.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/bubble/index.ts",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/input-group/index.ts",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/input-group/input-group-addon.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/input-group/input-group-button.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/input-group/input-group-input.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/input-group/input-group-text.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/input-group/input-group-textarea.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/input-group/input-group.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/marker/index.ts",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/marker/marker-content.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/marker/marker-icon.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/marker/marker.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/button/button.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/button/index.ts",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/item/index.ts",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/item/item-actions.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/item/item-content.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/item/item-description.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/item/item-footer.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/item/item-group.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/item/item-header.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/item/item-media.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/item/item-separator.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/item/item-title.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/item/item.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/hover-card/hover-card-content.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/hover-card/hover-card-portal.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/hover-card/hover-card-trigger.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/hover-card/hover-card.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/hover-card/index.ts",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/progress/index.ts",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/progress/progress.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/collapsible/collapsible-content.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/collapsible/collapsible-trigger.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/collapsible/collapsible.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/collapsible/index.ts",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/tooltip/index.ts",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/tooltip/tooltip-content.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/tooltip/tooltip-portal.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/tooltip/tooltip-provider.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/tooltip/tooltip-trigger.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/tooltip/tooltip.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/dropdown-menu/dropdown-menu-checkbox-group.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/dropdown-menu/dropdown-menu-checkbox-item.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/dropdown-menu/dropdown-menu-content.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/dropdown-menu/dropdown-menu-group-heading.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/dropdown-menu/dropdown-menu-group.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/dropdown-menu/dropdown-menu-item.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/dropdown-menu/dropdown-menu-label.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/dropdown-menu/dropdown-menu-portal.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/dropdown-menu/dropdown-menu-radio-group.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/dropdown-menu/dropdown-menu-radio-item.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/dropdown-menu/dropdown-menu-separator.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/dropdown-menu/dropdown-menu-shortcut.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/dropdown-menu/dropdown-menu-sub-content.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/dropdown-menu/dropdown-menu-sub-trigger.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/dropdown-menu/dropdown-menu-sub.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/dropdown-menu/dropdown-menu-trigger.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/dropdown-menu/dropdown-menu.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/dropdown-menu/index.ts",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/attachment/attachment-action.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/attachment/attachment-actions.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/attachment/attachment-content.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/attachment/attachment-description.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/attachment/attachment-group.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/attachment/attachment-media.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/attachment/attachment-title.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/attachment/attachment-trigger.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/attachment/attachment.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/attachment/index.ts",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/hooks/use-highlighted-code.svelte.ts",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/input/index.ts",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/input/input.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/textarea/index.ts",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/textarea/textarea.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/separator/index.ts",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/ui/separator/separator.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/lib/highlighter.ts",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/markdown/markdown.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/markdown/markdown-code-block.svelte",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/utils.ts",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/tailwind.css",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "path": "LICENSE.upstream",
+      "local": true,
+      "upstream": true
+    },
+    {
+      "pattern": "chain-of-thought",
+      "upstream": true
+    },
+    {
+      "pattern": "chat",
+      "upstream": true
+    },
+    {
+      "pattern": "checkpoint",
+      "upstream": true
+    },
+    {
+      "pattern": "confirmation",
+      "upstream": true
+    },
+    {
+      "pattern": "context",
+      "upstream": true
+    },
+    {
+      "pattern": "file-tree",
+      "upstream": true
+    },
+    {
+      "pattern": "inline-citation",
+      "upstream": true
+    },
+    {
+      "pattern": "message",
+      "upstream": true
+    },
+    {
+      "pattern": "model-selector",
+      "upstream": true
+    },
+    {
+      "pattern": "plan",
+      "upstream": true
+    },
+    {
+      "pattern": "prompt-input",
+      "upstream": true
+    },
+    {
+      "pattern": "queue",
+      "upstream": true
+    },
+    {
+      "pattern": "reasoning",
+      "upstream": true
+    },
+    {
+      "pattern": "sources",
+      "upstream": true
+    },
+    {
+      "pattern": "stack-trace",
+      "upstream": true
+    },
+    {
+      "pattern": "subagent",
+      "upstream": true
+    },
+    {
+      "pattern": "suggestion",
+      "upstream": true
+    },
+    {
+      "pattern": "task",
+      "upstream": true
+    },
+    {
+      "pattern": "terminal",
+      "upstream": true
+    },
+    {
+      "pattern": "test-results",
+      "upstream": true
+    },
+    {
+      "pattern": "tool",
+      "upstream": true
+    },
+    {
+      "path": "src/upstream/markdown/safe-url.ts",
+      "local": true
+    }
+  ],
+  "family": [
+    "chain-of-thought.md",
+    "chat.md",
+    "checkpoint.md",
+    "confirmation.md",
+    "context.md",
+    "file-tree.md",
+    "inline-citation.md",
+    "message.md",
+    "model-selector.md",
+    "plan.md",
+    "prompt-input.md",
+    "queue.md",
+    "reasoning.md",
+    "sources.md",
+    "stack-trace.md",
+    "subagent.md",
+    "suggestion.md",
+    "task.md",
+    "terminal.md",
+    "test-results.md",
+    "tool.md"
+  ],
+  "requests": 47,
+  "failures": [],
+  "derivedModules": [
+    {
+      "path": "src/upstream/ui/attachment/attachment-media.variants.ts",
+      "pass": true
+    },
+    {
+      "path": "src/upstream/ui/attachment/attachment.variants.ts",
+      "pass": true
+    },
+    {
+      "path": "src/upstream/ui/badge/badge.variants.ts",
+      "pass": true
+    },
+    {
+      "path": "src/upstream/ui/bubble/bubble-reactions.variants.ts",
+      "pass": true
+    },
+    {
+      "path": "src/upstream/ui/bubble/bubble.variants.ts",
+      "pass": true
+    },
+    {
+      "path": "src/upstream/ui/button/button.variants.ts",
+      "pass": true
+    },
+    {
+      "path": "src/upstream/ui/code-block/code-block-line.variants.ts",
+      "pass": true
+    },
+    {
+      "path": "src/upstream/ui/code-block/code-block.variants.ts",
+      "pass": true
+    },
+    {
+      "path": "src/upstream/ui/input-group/input-group-addon.variants.ts",
+      "pass": true
+    },
+    {
+      "path": "src/upstream/ui/input-group/input-group-button.variants.ts",
+      "pass": true
+    },
+    {
+      "path": "src/upstream/ui/item/item-media.variants.ts",
+      "pass": true
+    },
+    {
+      "path": "src/upstream/ui/item/item.variants.ts",
+      "pass": true
+    },
+    {
+      "path": "src/upstream/ui/marker/marker.variants.ts",
+      "pass": true
+    },
+    {
+      "path": "src/upstream/ui/trace/trace-line.variants.ts",
+      "pass": true
+    }
+  ]
+}

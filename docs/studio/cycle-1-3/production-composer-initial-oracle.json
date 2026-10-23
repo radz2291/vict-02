@@ -1,0 +1,147 @@
+{
+  "mode": "Actual exact production shell; deterministic transport fixtures only. No provider call or edit proposal.",
+  "results": [
+    {
+      "name": "single composer Send",
+      "pass": true,
+      "actions": [
+        {
+          "text": "Send",
+          "type": "submit",
+          "disabled": true
+        }
+      ],
+      "oldStops": 0
+    },
+    {
+      "name": "hide preserves mounted draft and expands canvas",
+      "pass": true,
+      "hidden": {
+        "hidden": true,
+        "draft": "Draft preserved through hiding",
+        "width": 1280,
+        "posts": 0
+      },
+      "beforeWidth": 960
+    },
+    {
+      "name": "single composer Stop",
+      "pass": true,
+      "actions": [
+        {
+          "text": "Stop",
+          "type": "button",
+          "disabled": false
+        }
+      ],
+      "oldStops": 0
+    },
+    {
+      "name": "Enter while busy does not submit",
+      "pass": true
+    },
+    {
+      "name": "active hide/show preserves stream draft canvas and transport",
+      "pass": true
+    },
+    {
+      "name": "single composer Stop",
+      "pass": true,
+      "actions": [
+        {
+          "text": "Stop",
+          "type": "button",
+          "disabled": false
+        }
+      ],
+      "oldStops": 0
+    },
+    {
+      "name": "busy-1280x720",
+      "pass": false,
+      "rects": {
+        "panel": {
+          "x": 0,
+          "y": 44.1875,
+          "right": 320,
+          "bottom": 696,
+          "width": 320,
+          "height": 651.8125
+        },
+        "popup": {
+          "x": 21,
+          "y": 203,
+          "right": 301,
+          "bottom": 523,
+          "width": 280,
+          "height": 320
+        },
+        "feed": {
+          "x": 0,
+          "y": 44.1875,
+          "right": 319,
+          "bottom": 527,
+          "width": 319,
+          "height": 482.8125
+        },
+        "composer": {
+          "x": 0,
+          "y": 527,
+          "right": 319,
+          "bottom": 647,
+          "width": 319,
+          "height": 120
+        },
+        "input": {
+          "x": 11,
+          "y": 536,
+          "right": 308,
+          "bottom": 600,
+          "width": 297,
+          "height": 64
+        },
+        "footer": {
+          "x": 0,
+          "y": 647,
+          "right": 319,
+          "bottom": 696,
+          "width": 319,
+          "height": 49
+        },
+        "status": {
+          "x": 12,
+          "y": 662.5,
+          "right": 271,
+          "bottom": 677.5,
+          "width": 259,
+          "height": 15
+        },
+        "trigger": {
+          "x": 279,
+          "y": 650,
+          "right": 307,
+          "bottom": 690,
+          "width": 28,
+          "height": 40
+        },
+        "action": {
+          "x": 21,
+          "y": 606,
+          "right": 64,
+          "bottom": 630,
+          "width": 43,
+          "height": 24
+        },
+        "repeatedContext": false,
+        "heading": true,
+        "statusText": "Working…",
+        "activity": 8
+      },
+      "popupContained": true,
+      "footerAligned": true
+    },
+    {
+      "failure": "Error: busy-1280x720"
+    }
+  ]
+}
