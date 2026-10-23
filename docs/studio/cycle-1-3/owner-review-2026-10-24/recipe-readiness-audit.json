@@ -1,0 +1,154 @@
+{
+  "date": "2026-10-24",
+  "kind": "Source audit of complete recipe factory and current agent operations, with a pure public-validator heading probe; not a visual/interaction audit of every component state",
+  "product": "be893f29d44f595a8d9982575c2199636df69597",
+  "baselineDelivery": "2d8041e015b713cfa2fcfba741537ddf2a83a730",
+  "recipeInventory": {
+    "total": 83,
+    "catalogDefinitions": 78,
+    "nativeRecipes": [
+      "section",
+      "row",
+      "heading",
+      "text",
+      "input"
+    ],
+    "semanticCatalogAlsoRegisters": [
+      "header",
+      "footer",
+      "main",
+      "nav",
+      "article",
+      "aside",
+      "ul",
+      "ol",
+      "li",
+      "img",
+      "form",
+      "label",
+      "select",
+      "textarea",
+      "fieldset",
+      "legend",
+      "a",
+      "table"
+    ]
+  },
+  "headingProbe": [
+    {
+      "tag": "h1",
+      "known": true,
+      "issues": []
+    },
+    {
+      "tag": "h2",
+      "known": true,
+      "issues": []
+    },
+    {
+      "tag": "h3",
+      "known": true,
+      "issues": []
+    },
+    {
+      "tag": "h4",
+      "known": true,
+      "issues": []
+    },
+    {
+      "tag": "h5",
+      "known": false,
+      "issues": [
+        {
+          "code": "UI_DOC_UNKNOWN_ELEMENT",
+          "message": "Element tag 'h5' is not registered."
+        }
+      ]
+    },
+    {
+      "tag": "h6",
+      "known": false,
+      "issues": [
+        {
+          "code": "UI_DOC_UNKNOWN_ELEMENT",
+          "message": "Element tag 'h6' is not registered."
+        }
+      ]
+    }
+  ],
+  "sourceFindings": [
+    {
+      "id": "OR-11",
+      "finding": "Agent headingLevel admits 1..6 while the Studio default semantic catalogue registers h1..h4 only. Pure validator rejects h5/h6 with UI_DOC_UNKNOWN_ELEMENT."
+    },
+    {
+      "id": "OR-12",
+      "finding": "Text recipe description mentions a state-bound value, but agent text editing is literal-only and bind is component-prop-only. Canonical UiTextNode.content is a UiExpression; no direct native text-expression binding operation is exposed."
+    },
+    {
+      "id": "PA-03",
+      "finding": "Agent style edits emit base text declarations only. Canonical tokens, reusable styles, media/container conditions and pseudo-state rules are broader; the manual inspector exposes conditional/pseudo controls subject to target guards."
+    },
+    {
+      "id": "PA-04",
+      "finding": "Recipe safe-sibling semantics are incomplete: menubar file identity collision is proven; other first-valued item/tab/accordion/navigation seeds require family-specific repeated-insertion checks rather than assuming they all fail."
+    },
+    {
+      "id": "PA-05",
+      "finding": "Basic Button recipe references ambient state.busy and declares no own initialState; Studio newScreen supplies busy. This is a host dependency, not a newly demonstrated runtime failure."
+    },
+    {
+      "id": "PA-06",
+      "finding": "Generic native labels/section names and literal style seeds do not establish final hierarchy, label association, keyboard/focus behavior, contrast or responsive usability."
+    }
+  ],
+  "strengths": [
+    "Shared manual/agent canonical insertion, validation, history and persistence",
+    "Typed descriptors and compatible slot placement",
+    "Independent native/boolean and typed-list recipe wiring",
+    "Public upstream-backed controls and extensible canonical style/element data"
+  ],
+  "limitations": [
+    "No recipe or product fixes",
+    "No new provider turn, owner document change, browser state change, build or server restart",
+    "No assertion that all 83 recipes are visually broken, every seeded first value is defective, or every date is required to write external state",
+    "No WCAG conformance, professional-design certification, performance budget or all-state browser test result claimed",
+    "Example content, imagery choice and sales-design judgement excluded"
+  ],
+  "professionalReadiness": "Capable primitive/component foundation; reliable autonomous professional end-to-end output is not established by current recipes and authoring surface alone",
+  "accessibilityReference": "https://www.w3.org/TR/WCAG22/",
+  "sources": [
+    {
+      "path": "apps/studio/src/lib/designer/recipes.ts",
+      "sha256": "16e37797b8900e0c5b8d3b153c5ae7025b359bcc8e2493eac9aec6a2ffb7f80a"
+    },
+    {
+      "path": "apps/studio/src/lib/designer/agent-edits.ts",
+      "sha256": "b268f1e6ab022dadec69aa3e0c3cd5814b5644c4e78997b502da569c0eca75c3"
+    },
+    {
+      "path": "apps/studio/src/lib/designer/application.ts",
+      "sha256": "788710a9ce6c83e4dbbd2f0fd843e052567f63129cde51bc596905bfb88e0305"
+    },
+    {
+      "path": "packages/ui/src/semantic.ts",
+      "sha256": "f70cfaa15f98663241e2f643d975f24410e122e593368bcdb03b0c76c24218af"
+    },
+    {
+      "path": "packages/ui/src/document.ts",
+      "sha256": "88d7503a7ba0f49cb7fedad29c0383d2dd0e8e9edf95201d04ebe71377ddc8f8"
+    },
+    {
+      "path": "packages/ui-editor/src/composition.ts",
+      "sha256": "2e4b572379f75ff02f6949b59f1e4ac153b462b53114d2fd9f648aa3a96dad55"
+    },
+    {
+      "path": "packages/ui-editor/src/Inspector.svelte",
+      "sha256": "30581f05d1509516e903ccdd1c4c4aa9c73187d074bffedd14c56e4fc76d4301"
+    },
+    {
+      "path": "apps/studio/tests/designer-coverage.test.ts",
+      "sha256": "ebf737e6663642fe98ec6028c342a51dfa3ff052b37ba32dcb8c205e2a74bc69"
+    }
+  ]
+}
