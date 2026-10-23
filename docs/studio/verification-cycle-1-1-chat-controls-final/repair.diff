@@ -1,0 +1,29 @@
+diff --git a/apps/studio/src/lib/designer/AgentChat.svelte b/apps/studio/src/lib/designer/AgentChat.svelte
+index 7ae596a..f46708c 100644
+--- a/apps/studio/src/lib/designer/AgentChat.svelte
++++ b/apps/studio/src/lib/designer/AgentChat.svelte
+@@ -22,6 +22,7 @@
+   let disposed=false;
+   let panel=$state<HTMLElement>();
+   let detailsBoundary=$state<HTMLElement>();
++  let detailsAnchor=$state<HTMLFormElement>();
+   let failed=$state(false);
+   function note(message:string){progress=[...progress.slice(-7),message];status=message;}
+   async function configure(){
+@@ -30,6 +31,7 @@
+   }
+   onMount(()=>{
+     detailsBoundary=panel?.querySelector<HTMLElement>('.vict-conversation') ?? undefined;
++    detailsAnchor=panel?.querySelector<HTMLFormElement>('.vict-conversation-input') ?? undefined;
+     void configure();
+   });
+   const headers=()=>({'content-type':'application/json','x-vict-csrf':csrf});
+@@ -126,7 +128,7 @@
+       {#if busy}<button type="button" class="agent-stop" onclick={()=>void stop()}>Stop</button>{/if}
+       <Popover.Root>
+         <Popover.Trigger class="agent-details-trigger" aria-label="Chat details" title="Chat details">···</Popover.Trigger>
+-        <Popover.Content class="studio-chat-details" side="top" align="end" sideOffset={4} collisionPadding={8} collisionBoundary={detailsBoundary ?? panel ?? null} aria-label="Chat details">
++        <Popover.Content class="studio-chat-details" customAnchor={detailsAnchor ?? null} side="top" align="end" sideOffset={4} collisionPadding={8} collisionBoundary={detailsBoundary ?? panel ?? null} aria-label="Chat details">
+           <div class="details-heading"><h3>Chat details</h3><Popover.Close aria-label="Close chat details">×</Popover.Close></div>
+           <p class="details-model">{model || 'VICT / Mastra'}</p>
+           <p>{status}</p>
