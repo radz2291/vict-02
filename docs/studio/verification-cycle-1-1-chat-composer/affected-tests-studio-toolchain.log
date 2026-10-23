@@ -1,0 +1,37 @@
+npm warn "../../docs/studio/verification-cycle-1-1-chat-controls-final/studio-suite.config.ts" is being parsed as a normal command line argument.
+npm warn Unknown cli config "--config". This will stop working in the next major version of npm.
+
+> vict-studio@0.1.0 test
+> vitest run ../../docs/studio/verification-cycle-1-1-chat-controls-final/studio-suite.config.ts tests/ui/chat-controls.test.ts tests/ui/agent-chat.test.ts tests/ui/chat-message.test.ts
+
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1-chat-ui-verification/260831-VCT-02/apps/studio
+
+11:29:32 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1-chat-ui-verification/260831-VCT-02/packages/ui-svelte/src/document/DocumentHost.svelte:105:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+11:29:33 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1-chat-ui-verification/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:303:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+11:29:33 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1-chat-ui-verification/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:303:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+11:29:33 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1-chat-ui-verification/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:370:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+11:29:33 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1-chat-ui-verification/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:370:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+11:29:37 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/DocumentHost.svelte:105:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+11:29:37 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:303:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+11:29:37 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:303:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+11:29:37 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:370:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+11:29:37 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:370:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+11:29:41 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-editor/src/StateValuesPanel.svelte:106:6 A form label must be associated with a control
+https://svelte.dev/e/a11y_label_has_associated_control
+
+ Test Files  3 passed (3)
+      Tests  10 passed (10)
+   Start at  11:29:12
+   Duration  30.19s (transform 43.48s, setup 0ms, import 57.73s, tests 1.59s, environment 5.38s)
+

@@ -1,0 +1,29 @@
+npm warn "docs/studio/verification-cycle-1-1-chat-controls-final/studio-suite.config.ts" is being parsed as a normal command line argument.
+npm warn Unknown cli config "--config". This will stop working in the next major version of npm.
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1-chat-ui-verification/260831-VCT-02
+
+No test files found, exiting with code 1
+
+filter: docs/studio/verification-cycle-1-1-chat-controls-final/studio-suite.config.ts, apps/studio/tests/ui/chat-controls.test.ts, apps/studio/tests/ui/agent-chat.test.ts, apps/studio/tests/ui/chat-message.test.ts
+
+|unit| 
+
+include: packages/*/test/**/*.test.ts, packs/*/test/**/*.test.ts, scripts/test/**/*.test.mjs
+exclude:  packages/ui-svelte/**, packages/mastra/**, packages/ui-editor/**/*.svelte.test.ts
+
+|mastra| 
+
+include: packages/mastra/test/**/*.test.ts
+exclude:  **/node_modules/**, **/.git/**
+
+|renderer| 
+
+include: packages/ui-svelte/test/**/*.test.ts, packages/ui-editor/test/**/*.svelte.test.ts
+exclude:  **/node_modules/**, **/.git/**
+
+|integration| 
+
+include: examples/**/*.test.ts
+exclude:  examples/application-proof/**, examples/reference-app/**, examples/ui-showcase/**, examples/ui-authoring-proof/**, examples/ui-design-proof/**, examples/u4-consumer/**
+

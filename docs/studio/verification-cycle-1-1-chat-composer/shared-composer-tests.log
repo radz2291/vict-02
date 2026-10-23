@@ -1,0 +1,9 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1-chat-ui-verification/260831-VCT-02
+
+
+ Test Files  1 passed (1)
+      Tests  6 passed (6)
+   Start at  11:28:03
+   Duration  3.14s (transform 1.32s, setup 0ms, import 1.71s, tests 275ms, environment 799ms)
+

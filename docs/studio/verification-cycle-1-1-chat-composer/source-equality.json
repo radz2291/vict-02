@@ -1,0 +1,29 @@
+{
+  "producingCommit": "9ae689b487d610e3df0581885660fe096f645a88",
+  "destination": "C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02",
+  "observation": "Checkouts differ in CRLF/LF. Both sources independently match exact candidate Git blob after line-ending normalization; no semantic source difference.",
+  "rows": [
+    {
+      "path": "packages/ui-svelte/src/Conversation.svelte",
+      "sha256": "6f40c93d2c62979d1ace9ae8ba89104836d4d14eb2122dcf5182759f0cbeb870",
+      "builderSha256": "cf721e9aa0a811cc2f91172d255c870b7257bfb5cf0fcaf337a92a6cc9a837ef",
+      "sameRawBytes": false,
+      "bothMatchExactCommitAfterGitLineEndingNormalization": true
+    },
+    {
+      "path": "apps/studio/src/lib/designer/AgentChat.svelte",
+      "sha256": "6405942981cb119ab347b839d4f24cc0a9383c07d70e92f1db3705e3ecf885a1",
+      "builderSha256": "f0655f07cb63b7217425eb151c9832f287fd55a6db0ee0b43f8fe3a106bf2025",
+      "sameRawBytes": false,
+      "bothMatchExactCommitAfterGitLineEndingNormalization": true
+    },
+    {
+      "path": "apps/studio/src/lib/designer/Designer.svelte",
+      "sha256": "8c71a1bb1699e0c9688d0b6efbfcd40ca7d98f8eb5df6ae069d96d54c470203b",
+      "builderSha256": "150e47f692f6ce3092c18e737985b8cadad876dbdfb5a2c94cafd5260d9669d0",
+      "sameRawBytes": false,
+      "bothMatchExactCommitAfterGitLineEndingNormalization": true
+    }
+  ],
+  "pass": true
+}
