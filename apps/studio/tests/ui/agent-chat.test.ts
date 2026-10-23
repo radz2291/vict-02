@@ -13,6 +13,75 @@ afterEach(async () => {
 });
 describe('rejected Studio chat admission', () => {
   it.each([
+    ['STUDIO_AGENT_OUTPUT_LIMIT', 0, "The agent's response was cut off", 'No edits were applied.'],
+    [
+      'STUDIO_AGENT_INCOMPLETE_TOOL',
+      1,
+      'The agent returned an invalid or incomplete edit',
+      '1 applied edit remains undoable.',
+    ],
+    [
+      'STUDIO_AGENT_TOOL_FAILED',
+      0,
+      'The agent could not complete an edit',
+      'No edits were applied.',
+    ],
+  ])(
+    'shows an admitted failed turn as a failure (%s)',
+    async (code, applied, expected, effects) => {
+      vi.stubGlobal(
+        'fetch',
+        vi.fn(async (_url: unknown, init?: RequestInit) =>
+          init?.method === 'POST'
+            ? new Response(
+                [
+                  { type: 'started', runId: 'run', model: 'zai/glm-5.3-flash' },
+                  { type: 'text', delta: 'Building the page…' },
+                  { type: 'done', status: 'failed', code, applied },
+                ]
+                  .map((event) => JSON.stringify(event))
+                  .join('\n') + '\n',
+              )
+            : new Response(
+                JSON.stringify({ csrf: 'nonce', ready: true, model: 'zai/glm-5.3-flash' }),
+              ),
+        ),
+      );
+      const source = newScreen('Failure', 'failure');
+      instance = mount(AgentChat, {
+        target: document.body,
+        props: {
+          screenLabel: 'Failure',
+          selectionLabel: 'Screen',
+          blocked: false,
+          getContext: () => ({
+            document: source,
+            cursor: documentCursor(source, 'r1#0', crypto.randomUUID()),
+          }),
+          applyProposal: () => {
+            throw new Error('No proposal');
+          },
+        },
+      });
+      await vi.waitFor(() => expect(document.body.textContent).toContain('Ready'));
+      const input = document.querySelector<HTMLTextAreaElement>(
+        '[data-testid="conversation-input"]',
+      )!;
+      input.value = 'Create Quellight';
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+      flushSync();
+      document
+        .querySelector('form')!
+        .dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+      await vi.waitFor(() =>
+        expect(document.querySelector('[role="status"]')?.textContent).toContain(expected),
+      );
+      expect(document.querySelector('[role="status"]')?.textContent).toContain(effects);
+      expect(document.querySelector('.agent-status--failed')).not.toBeNull();
+      expect(document.body.textContent).toContain('Building the page…');
+    },
+  );
+  it.each([
     ['STUDIO_AGENT_BUSY', 'Another agent turn is still running'],
     ['STUDIO_AGENT_CAPACITY', 'The agent server is finishing other turns'],
   ])(

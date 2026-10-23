@@ -1,5 +1,15 @@
 # Studio Designer — current delivery state
 
+## 2026-10-23 — Plain-request tool completion repair IN PROGRESS
+
+Owner's uncoached Quellight landing-page request failed twice on a blank
+screen. The latest turn reported `VICT_TOOL_FAILED` with incomplete tool JSON,
+then misleadingly displayed `0 edits applied` as a completed turn. Current
+Cycle 1.1 readiness is HELD pending repair and independent plain-prompt proof.
+[Bounded scope and retained observations](CYCLE-1-1-TOOL-COMPLETION-REPAIR.md).
+Prior independent gates remain historical evidence within their tested scope.
+No owner acceptance, main merge or Cycle 1.2.
+
 ## 2026-10-23 — Existing-screen revision repair verified and locally active
 
 Independent **PASS WITH NON-BLOCKING FINDINGS** on exact product

@@ -4,6 +4,8 @@ interface StreamPart {
   readonly type: string;
   readonly error?: unknown;
   readonly warnings?: readonly unknown[];
+  readonly input?: string;
+  readonly finishReason?: string | { readonly unified?: string; readonly raw?: string };
 }
 interface StreamResult {
   readonly stream: ReadableStream<StreamPart>;
@@ -15,7 +17,7 @@ export function boundedProviderModel<T extends object>(
   model: T,
   signal: AbortSignal,
   deadlineAt: number,
-  onFailure?: () => void,
+  onFailure?: (code: string) => void,
 ): T {
   const source = model as T & { doStream: (options: unknown) => Promise<StreamResult> };
   const original = source.doStream.bind(model);
@@ -30,11 +32,10 @@ export function boundedProviderModel<T extends object>(
         ...(callerSignal ? [callerSignal] : []),
       ]),
     };
-    const safeError = () =>
-      new Error(signal.aborted ? 'STUDIO_AGENT_CANCELLED' : 'STUDIO_AGENT_PROVIDER_FAILED');
     let reader: ReadableStreamDefaultReader<StreamPart> | undefined;
     let closed = false;
     let streamStarted = false;
+    let finished = false;
     let timer: ReturnType<typeof setTimeout> | undefined;
     let abort: () => void = () => {};
     // Return a real SDK stream immediately, so even a provider promise which
@@ -45,25 +46,26 @@ export function boundedProviderModel<T extends object>(
           if (timer) clearTimeout(timer);
           signal.removeEventListener('abort', abort);
         };
-        const fail = () => {
+        const fail = (code = 'STUDIO_AGENT_PROVIDER_FAILED') => {
           if (closed) return;
           closed = true;
           cleanup();
-          onFailure?.();
+          const safeCode = signal.aborted ? 'STUDIO_AGENT_CANCELLED' : code;
+          onFailure?.(safeCode);
           upstreamAbort.abort();
           try {
             if (!streamStarted) {
               controller.enqueue({ type: 'stream-start', warnings: [] });
               streamStarted = true;
             }
-            controller.enqueue({ type: 'error', error: safeError() });
+            controller.enqueue({ type: 'error', error: new Error(safeCode) });
             controller.close();
           } catch {
             /* consumer already detached */
           }
           void reader?.cancel().catch(() => undefined);
         };
-        abort = fail;
+        abort = () => fail();
         signal.addEventListener('abort', abort, { once: true });
         timer = setTimeout(fail, Math.max(0, deadlineAt - Date.now()));
         if (signal.aborted || Date.now() >= deadlineAt) {
@@ -82,6 +84,10 @@ export function boundedProviderModel<T extends object>(
               const next = await reader.read();
               if (closed) break;
               if (next.done) {
+                if (!finished) {
+                  fail();
+                  break;
+                }
                 closed = true;
                 cleanup();
                 controller.close();
@@ -92,6 +98,26 @@ export function boundedProviderModel<T extends object>(
                 fail();
                 break;
               }
+              // Never let the framework repair/execute a partial JSON edit.
+              // Streaming deltas are advisory; only a complete tool-call is executable.
+              if (next.value.type === 'tool-call') {
+                try {
+                  JSON.parse(next.value.input!);
+                } catch {
+                  fail('STUDIO_AGENT_INCOMPLETE_TOOL');
+                  break;
+                }
+              }
+              const finishReason = next.value.finishReason;
+              if (
+                next.value.type === 'finish' &&
+                (finishReason === 'length' ||
+                  (typeof finishReason === 'object' && finishReason?.unified === 'length'))
+              ) {
+                fail('STUDIO_AGENT_OUTPUT_LIMIT');
+                break;
+              }
+              if (next.value.type === 'finish') finished = true;
               if (next.value.type === 'stream-start') streamStarted = true;
               controller.enqueue(next.value);
             }

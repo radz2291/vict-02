@@ -58,6 +58,201 @@ function context(existing = false) {
   return { bridge, epoch, start: parsed.value, input };
 }
 describe('Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance)', () => {
+  it('does not mistake a successfully invoked but refused edit for recovery', async () => {
+    const { bridge, start, input } = context();
+    const events: StudioAgentEvent[] = [];
+    const model = createDeterministicOfflineModel({
+      script: {
+        [input]: {
+          kind: 'tool-chain',
+          calls: [
+            { toolName: 'studio_screen_edit', args: { operations: [] } },
+            {
+              toolName: 'studio_screen_edit',
+              args: {
+                expectedRevision: 'wrong-token',
+                reason: 'Wrong argument',
+                operations: [{ op: 'remove', nodeId: 'missing' }],
+              },
+            },
+            { toolName: 'studio_screen_read', args: {} },
+          ],
+          thenText: 'Done.',
+        },
+      },
+    });
+    const opened = openAgentRun('false-recovery', start, (event) => events.push(event), {
+      modelFactory: () => model,
+      model: OFFLINE_MODEL_IDENTITY,
+    });
+    if (!opened.ok) throw new Error(opened.code);
+    await opened.finished;
+    expect(events.at(-1)).toMatchObject({
+      type: 'done',
+      status: 'failed',
+      code: 'STUDIO_AGENT_REVISION_MISMATCH',
+      applied: 0,
+    });
+    expect(bridge.getSnapshot().canUndo).toBe(false);
+  }, 120_000);
+  it('gives GLM its full published output allowance without a thinking override (offline seam)', async () => {
+    const { start, input } = context();
+    const events: StudioAgentEvent[] = [];
+    let settings: unknown;
+    const model = createDeterministicOfflineModel({
+      script: { [input]: { kind: 'text', text: 'Ready.' } },
+    });
+    const original = model.doStream.bind(model);
+    model.doStream = async (options) => {
+      settings = options;
+      return original(options);
+    };
+    const opened = openAgentRun('glm-budget-policy', start, (event) => events.push(event), {
+      modelFactory: () => model,
+      model: 'zai/glm-5.3-flash',
+    });
+    if (!opened.ok) throw new Error(opened.code);
+    await opened.finished;
+    expect(settings).toMatchObject({ maxOutputTokens: 131_072 });
+    expect(
+      JSON.stringify((settings as { providerOptions?: unknown }).providerOptions ?? {}),
+    ).not.toMatch(/reasoningEffort|reasoning_effort|thinking/);
+    expect(events.at(-1)).toMatchObject({ type: 'done', status: 'completed', applied: 0 });
+  }, 120_000);
+  it.each([false, true])(
+    'reports an unrecovered tool failure truthfully, with prior effects=%s',
+    async (applyFirst) => {
+      const { bridge, epoch, start, input } = context();
+      const events: StudioAgentEvent[] = [];
+      let runId = '';
+      const model = createDeterministicOfflineModel({
+        script: {
+          [input]: {
+            kind: 'tool-chain',
+            calls: [
+              ...(applyFirst
+                ? [
+                    {
+                      toolName: 'studio_screen_edit',
+                      args: {
+                        expectedRevision: start.cursor.revision,
+                        reason: 'Add title',
+                        operations: [
+                          {
+                            op: 'add',
+                            recipe: 'heading',
+                            nodeId: 'title',
+                            parentId: 'screen',
+                            text: 'Quellight',
+                          },
+                        ],
+                      },
+                    },
+                  ]
+                : []),
+              { toolName: 'studio_screen_edit', args: { operations: [] } },
+              { toolName: 'studio_screen_read', args: {} },
+            ],
+            thenText: 'Finished.',
+          },
+        },
+      });
+      const opened = openAgentRun(
+        `tool-failure-${applyFirst}`,
+        start,
+        (event) => {
+          events.push(event);
+          if (event.type === 'started') runId = event.runId;
+          if (event.type === 'proposal')
+            acknowledgeAgentEdit(
+              `tool-failure-${applyFirst}`,
+              runId,
+              event.proposal.proposalId,
+              applyAgentProposal(bridge, event.proposal, epoch, false),
+            );
+        },
+        { modelFactory: () => model, model: OFFLINE_MODEL_IDENTITY },
+      );
+      if (!opened.ok) throw new Error(opened.code);
+      await opened.finished;
+      expect(events.at(-1)).toMatchObject({
+        type: 'done',
+        status: 'failed',
+        code: 'STUDIO_AGENT_TOOL_FAILED',
+        applied: applyFirst ? 1 : 0,
+      });
+      expect(bridge.getSnapshot().canUndo).toBe(applyFirst);
+      if (applyFirst) {
+        expect(bridge.undo().ok).toBe(true);
+        expect(bridge.document.nodes.title).toBeUndefined();
+      }
+    },
+    120_000,
+  );
+
+  it.each(['length', 'partial'])(
+    'contains %s provider output with zero proposals and truthful terminal code',
+    async (kind) => {
+      const { bridge, start, input } = context();
+      const events: StudioAgentEvent[] = [];
+      const model = createDeterministicOfflineModel({
+        script: { [input]: { kind: 'text', text: 'Working.' } },
+      });
+      const original = model.doStream.bind(model);
+      model.doStream = async (options) => {
+        const result = await original(options);
+        return {
+          ...result,
+          stream: result.stream.pipeThrough(
+            new TransformStream({
+              transform(part, controller) {
+                if (part.type === 'finish') {
+                  if (kind === 'partial')
+                    controller.enqueue({
+                      type: 'tool-call',
+                      toolCallId: 'cut-off',
+                      toolName: 'studio_screen_edit',
+                      input: '{"operations":[',
+                    });
+                  controller.enqueue({ ...part, finishReason: 'length' } as never);
+                } else controller.enqueue(part);
+              },
+            }),
+          ),
+        };
+      };
+      const opened = openAgentRun(`incomplete-${kind}`, start, (event) => events.push(event), {
+        modelFactory: () => model,
+        model: OFFLINE_MODEL_IDENTITY,
+      });
+      if (!opened.ok) throw new Error(opened.code);
+      await opened.finished;
+      expect(events.at(-1)).toMatchObject({
+        type: 'done',
+        status: 'failed',
+        code: kind === 'length' ? 'STUDIO_AGENT_OUTPUT_LIMIT' : 'STUDIO_AGENT_INCOMPLETE_TOOL',
+        applied: 0,
+      });
+      expect(events.some((event) => event.type === 'proposal')).toBe(false);
+      expect(bridge.getSnapshot().canUndo).toBe(false);
+    },
+    120_000,
+  );
+
+  it('allows a successful ordinary answer without edits', async () => {
+    const { start, input } = context();
+    const events: StudioAgentEvent[] = [];
+    const opened = openAgentRun('ordinary-answer', start, (event) => events.push(event), {
+      modelFactory: () =>
+        createDeterministicOfflineModel({
+          script: { [input]: { kind: 'text', text: 'Select a field to edit it.' } },
+        }),
+      model: OFFLINE_MODEL_IDENTITY,
+    });
+    if (!opened.ok) throw new Error(opened.code);
+    await opened.finished;
+    expect(events.at(-1)).toMatchObject({ type: 'done', status: 'completed', applied: 0 });
+  }, 120_000);
   it('recovers a wrong source-version argument on an existing saved screen in the same governed turn', async () => {
     const { bridge, epoch, start, input } = context(true);
     const before = bridge.document;

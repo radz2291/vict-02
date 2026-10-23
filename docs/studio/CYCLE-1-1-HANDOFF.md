@@ -1,5 +1,12 @@
 # Stage 9 reopened — Studio Cycle 1.1
 
+Current continuation (2026-10-23): owner reports another failed ordinary
+Quellight request. Read [tool completion repair](CYCLE-1-1-TOOL-COMPLETION-REPAIR.md)
+before the historical delivery below. Only bounded Studio provider generation,
+complete tool-input admission and truthful completion feedback repairs are
+issued; all canonical edit/history/save/stale fences remain. Current readiness
+is HELD until independent exact-commit, uncoached real-provider verification.
+
 Current verified delivery (2026-10-23): existing-screen revision repair product
 `4700689bf985c83cd3f944ad4cd324f2bfe8d724`; independent PASS WITH NON-BLOCKING
 FINDINGS, evidence `192d6380490ab87880e206a27dceffacd51e18c3`.

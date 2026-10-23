@@ -40,10 +40,15 @@
   }
   onDestroy(()=>{disposed=true;void stop();});
   function failedStatus(code:string|undefined,applied:number){
-    const effects=applied?`${applied} applied edits remain undoable.`:'No edits were applied.';
+    const effects=applied?`${applied} applied edit${applied===1?' remains':'s remain'} undoable.`:'No edits were applied.';
     if(code==='STUDIO_AGENT_BUSY')return `Another agent turn is still running in this session. Wait for it to finish, or stop it in its Designer tab, then retry. ${effects}`;
     if(code==='STUDIO_AGENT_CAPACITY')return `The agent server is finishing other turns. Wait a moment and retry. ${effects}`;
     if(code==='STUDIO_AGENT_UNCONFIGURED')return `The agent needs a server-side provider configuration. Reconnect after configuring it. ${effects}`;
+    if(code==='STUDIO_AGENT_OUTPUT_LIMIT')return `The agent's response was cut off. Retry with a smaller change. ${effects}`;
+    if(code==='STUDIO_AGENT_INCOMPLETE_TOOL')return `The agent returned an invalid or incomplete edit. Retry the change. ${effects}`;
+    if(code==='STUDIO_AGENT_TOOL_FAILED')return `The agent could not complete an edit. Check Chat details and retry. ${effects}`;
+    if(code==='UI_DOC_STALE_REVISION')return `The screen changed during this turn. Send a new request. ${effects}`;
+    if(code==='STUDIO_AGENT_DRAFT')return `Apply or cancel the current draft, then send a new request. ${effects}`;
     return `${code==='STUDIO_AGENT_PROVIDER_FAILED'?'The provider could not complete this turn. Check the connection and retry.':'The agent stopped before finishing. Check Chat details and retry.'} ${effects}`;
   }
   async function send(text:string){

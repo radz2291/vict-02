@@ -1,6 +1,83 @@
 import { describe, it, expect } from 'vitest';
 import { boundedProviderModel } from '../src/lib/server/designer-model.js';
 describe('Studio provider stream boundary', () => {
+  it.each([
+    [
+      {
+        type: 'tool-call',
+        toolCallId: 'partial',
+        toolName: 'studio_screen_edit',
+        input: '{"operations":[',
+      },
+      'STUDIO_AGENT_INCOMPLETE_TOOL',
+    ],
+    [{ type: 'finish', finishReason: 'length', usage: {} }, 'STUDIO_AGENT_OUTPUT_LIMIT'],
+    [
+      { type: 'finish', finishReason: { unified: 'length', raw: 'length' }, usage: {} },
+      'STUDIO_AGENT_OUTPUT_LIMIT',
+    ],
+  ])('fails closed before forwarding an incomplete output (%j)', async (part, code) => {
+    const failures: string[] = [];
+    const model = {
+      doStream: async () => ({
+        stream: new ReadableStream({
+          start(controller) {
+            controller.enqueue({ type: 'stream-start', warnings: [] });
+            controller.enqueue(part);
+            controller.close();
+          },
+        }),
+      }),
+    };
+    boundedProviderModel(model, new AbortController().signal, Date.now() + 1000, (code) =>
+      failures.push(code),
+    );
+    const received: unknown[] = [];
+    const reader = (await model.doStream()).stream.getReader();
+    while (true) {
+      const item = await reader.read();
+      if (item.done) break;
+      received.push(item.value);
+    }
+    expect(received).toEqual([
+      { type: 'stream-start', warnings: [] },
+      { type: 'error', error: expect.objectContaining({ message: code }) },
+    ]);
+    expect(failures).toEqual([code]);
+  });
+  it('preserves complete tool calls and normal finish, but rejects an unfinished EOF', async () => {
+    for (const finish of [true, false]) {
+      const tool = {
+        type: 'tool-call',
+        toolName: 'studio_screen_read',
+        toolCallId: 'read',
+        input: '{}',
+      };
+      const model = {
+        doStream: async () => ({
+          stream: new ReadableStream({
+            start(controller) {
+              controller.enqueue({ type: 'stream-start', warnings: [] });
+              controller.enqueue(tool);
+              if (finish)
+                controller.enqueue({ type: 'finish', finishReason: 'tool-calls', usage: {} });
+              controller.close();
+            },
+          }),
+        }),
+      };
+      boundedProviderModel(model, new AbortController().signal, Date.now() + 1000);
+      const reader = (await model.doStream()).stream.getReader();
+      const parts: { type: string }[] = [];
+      while (true) {
+        const item = await reader.read();
+        if (item.done) break;
+        parts.push(item.value);
+      }
+      expect(parts[1]).toEqual(tool);
+      expect(parts.at(-1)?.type).toBe(finish ? 'finish' : 'error');
+    }
+  });
   it('contains rejected provider calls and raw errored streams with one safe error chunk', async () => {
     for (const doStream of [
       async () => {
