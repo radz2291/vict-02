@@ -1,0 +1,7 @@
+saved landing fixture imported manually in isolated context {"ok":true,"id":"screen-72aba4de-041f-46a5-b6fb-77af93a1fc81","footer":"footer","nodes":65}
+real provider removes selected footer {"ok":true,"turn":{"request":{"document":{"schema":"vict.ui-document@1","id":"screen-72aba4de-041f-46a5-b6fb-77af93a1fc81","revision":"r1.r2","root":"screen","nodes":{"screen":{"kind":"element","id":"screen","tag":"main","attributes":{"aria-label":"Untitled screen"},"children":["nav-bar","hero","features","how","cta","divider","footer"],"localStyle":[{"property":"display","value":{"type":"text","value":"flex"}},{"property":"flex-direction","value":{"type":"text","value":"column"}},{"property":"gap","value":{"type":"text","value":"20px"}},{"property":"padding","value":{"type":"text","value":"40px"}},{"property":"min-height","value":{"type":"te
+removal changes only selected subtree and its parent edge {"ok":true,"removedNodeIds":["footer","footer-brand","footer-brand-text","footer-tag","footer-tag-text","footer-links","footer-links-text"]}
+removed footer Undo restores exact prior canonical page {"ok":true}
+removed footer Redo restores exact result {"ok":true}
+removed footer Save and reopen preserve exact result {"ok":true}
+no browser errors {"ok":true,"errors":[]}

@@ -1,0 +1,32 @@
+{
+  "testOnlyTransportFixture": true,
+  "records": [
+    {
+      "name": "STUDIO_AGENT_OUTPUT_LIMIT",
+      "data": {
+        "status": " The agent's response was cut off. Retry with a smaller change. No edits were applied.",
+        "busy": "false",
+        "unchanged": true,
+        "pass": true
+      }
+    },
+    {
+      "name": "STUDIO_AGENT_INCOMPLETE_TOOL",
+      "data": {
+        "status": " The agent returned an invalid or incomplete edit. Retry the change. No edits were applied.",
+        "busy": "false",
+        "unchanged": true,
+        "pass": true
+      }
+    },
+    {
+      "name": "STUDIO_AGENT_PROVIDER_FAILED",
+      "data": {
+        "status": " The provider could not complete this turn. Check the connection and retry. No edits were applied.",
+        "busy": "false",
+        "unchanged": true,
+        "pass": true
+      }
+    }
+  ]
+}
