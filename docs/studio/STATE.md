@@ -1,5 +1,15 @@
 # Studio Designer — current delivery state
 
+## 2026-10-23 — Owner chat controls refinement IN PROGRESS
+
+Owner gave positive functional feedback and requested removing “Studio agent,”
+top-menu chat visibility and remaining chat controls at the bottom. Bounded
+presentation-only Cycle 1.1 continuation from clean remote-equal delivery
+`14961bebb8e5a2f8cca1eca87b73c9a5b379f60d`, isolated branch
+`codex/studio-cycle-1-1-chat-controls`. Main remains `d7401bef…`.
+[Scope and gate](CYCLE-1-1-CHAT-CONTROLS.md). Model/credentials/editing/history
+are unchanged. No formal owner acceptance or Cycle 1.2 is inferred.
+
 ## 2026-10-23 — Full-thinking plain-request repair verified and locally active
 
 Independent **PASS WITH NON-BLOCKING FINDINGS** on exact product

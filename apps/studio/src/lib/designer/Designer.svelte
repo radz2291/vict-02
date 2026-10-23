@@ -363,7 +363,7 @@
         <Menubar.Item aria-label="Redo" disabled={!snapshot?.canRedo} onSelect={redo}>Redo <kbd>Ctrl+Shift+Z</kbd></Menubar.Item>
       </WorkspaceMenu>
       <WorkspaceMenu label="View" value="view" {activeMenu}>
-        <Menubar.Item onSelect={() => chatOpen = !chatOpen}>{chatOpen ? "Hide agent chat" : "Show agent chat"}</Menubar.Item>
+        <Menubar.Item onSelect={() => chatOpen = !chatOpen}>{chatOpen ? "Hide chat" : "Show chat"}</Menubar.Item>
         <Menubar.RadioGroup bind:value={width} aria-label="Canvas size">
           {#each [{value:'fluid',label:'Fit canvas'},{value:'768',label:'Tablet · 768'},{value:'390',label:'Phone · 390'}] as option}<Menubar.RadioItem value={option.value} closeOnSelect>{option.label}<span aria-hidden="true">{width===option.value?'\u2713':''}</span></Menubar.RadioItem>{/each}
         </Menubar.RadioGroup>

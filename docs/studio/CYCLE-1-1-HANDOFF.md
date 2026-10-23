@@ -1,5 +1,12 @@
 # Stage 9 reopened — Studio Cycle 1.1
 
+Current owner request (2026-10-23): [chat controls refinement](CYCLE-1-1-CHAT-CONTROLS.md).
+Presentation only: remove redundant agent branding; View menu controls chat
+visibility; context/Stop/details at the panel bottom. Preserve mounted chat
+state and canonical editing, saved screens, full-thinking provider settings.
+Independent exact-candidate UI verification is required before this refinement
+is delivered. Earlier functional verification remains valid within its scope.
+
 Current verified delivery (2026-10-23): full-thinking plain-request repair
 product `3c54f5e525827b66abcee9ac03acc68642b9e8c3`, independent PASS WITH
 NON-BLOCKING FINDINGS, remote-equal evidence
