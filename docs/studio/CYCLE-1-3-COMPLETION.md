@@ -1,6 +1,6 @@
 # Cycle 1.3 completion round — 2026-10-24
 
-Status: **IMPLEMENTATION AUTHORIZED; verification pending; owner acceptance pending.** Stage 9 remains REOPENED / IN PROGRESS. This record supersedes the previous report-only restriction for this completion round. Historical findings and exact-scope PASS records remain intact.
+Status: **INDEPENDENT PASS — READY FOR OWNER REVIEW; owner acceptance pending.** Stage 9 remains REOPENED / IN PROGRESS. This record supersedes the previous report-only restriction for this completion round. Historical findings and exact-scope PASS records remain intact.
 
 Authority: owner's attached “You own the VICT Studio Cycle 1.3 completion round, end to end” assignment, supplied 2026-10-24. Scope includes implementation, independent challenge, repairs and delivery, with delegation permitted. Stop at independently verified readiness for owner review; no merge, publication, deployment, Cycle 1.4 or Milestone 2.
 
@@ -19,25 +19,29 @@ Allowed paths remain those in CYCLE-1-3-HANDOFF.md, extended only as necessary f
 
 | Finding / owner requirement | Required repair and evidence | Disposition |
 | --- | --- | --- |
-| Read context exceeds snapshot bounds; full nodes record exceeds property bound | Bounded initial/read context, paged source/catalog discovery; tests beyond old threshold and at 500 nodes, recoverable admission | Implemented candidate; independent proof pending |
-| Aggregate UTF-8 admission / stream bounds misreported as connectivity | Byte-aware request admission and explicit response/transport diagnostics | Implemented candidate; independent proof pending |
-| Misleading native input recipe / inaccessible native bindings | Accurate descriptions; canonical scalar state and native value/change authoring; independent fields and manual parity | Implemented candidate; independent proof pending |
-| Loose nested tool schemas / unhelpful refusals | Precise schemas/examples with operation index, field path, expected shape/properties; real provider recovery | Implemented candidate; independent proof pending |
-| Same-batch confusion / void-to-boolean restriction | Preserve compatible same-batch operations and canonical no-coercion; precise supported/unsupported evidence | Implemented candidate; independent proof pending |
-| Seeded content leftovers / nested interactive triggers / headings | Intentional replacement and safe trigger composition, actual DOM/keyboard/focus checks | Implemented candidate; independent proof pending |
-| Incomplete requested coverage (26 of 78 IDs in retained run) | Explicit requested/authored inventory and interaction evidence; equivalent isolated large mixed fixture | Implemented candidate; independent proof pending |
-| Failed reads/validation absent from transcript | Ordered stable event model, expandable safe detail, chronology of refusals/corrections/proposals/acknowledgements | Implemented candidate; independent proof pending |
-| Eight-event retention / history truncation / unknown termination | Visible bounded compaction and confirmed boundary, independent terminal reason, useful partial completion and source-aware continuation | Implemented candidate; independent proof pending |
-| Stop/stale/draft/manual/history/persistence regressions | Long-turn, duplicate prevention, cancellation/late-event fencing, mixed manual edits, Undo/Redo, Save/reopen | Implemented candidate; independent proof pending |
-| Actual rendered observation requested | Actual bounded image tied to identity/revision/viewport/preview; stale rejection, truthful image capability and actual model inspection proof | Implemented candidate; independent proof pending |
-| Structure unreadable / technical flat graph / minimap obstruction | Containment-first, friendly distinct nodes, search/focus, grouping/collapse/layers and responsive/keyboard journey | Implemented candidate; independent proof pending |
-| Structure selection/detail/editor navigation incoherent | Exact prop/output/state relationships and Design/Layers/Inspector/Data/Actions handoffs; source/runtime distinction | Implemented candidate; independent proof pending |
-| Basic layout / generic handles / lost viewport / Interact reset | Measured Dagre/ELK comparison, selected layout, coherent orientation, guarded edits, stale async layout fencing, retained session state | Implemented candidate; independent proof pending |
-| Warnings / disk and environment | Isolated diagnostics, adequate headroom, preserved owner environment; no speculative attribution | Implemented candidate; independent proof pending |
-| Reusable package / showcase integration | All newly changed UI represented in showcase; builds/types/regressions and independent installed consumer | Implemented candidate; independent proof pending |
+| Read context exceeds snapshot bounds; full nodes record exceeds property bound | Bounded initial/read context, paged source/catalog discovery; tests beyond old threshold and at 500 nodes, recoverable admission | PASS at explicit scope in the final matrix and independent report |
+| Aggregate UTF-8 admission / stream bounds misreported as connectivity | Byte-aware request admission and explicit response/transport diagnostics | PASS at explicit scope in the final matrix and independent report |
+| Misleading native input recipe / inaccessible native bindings | Accurate descriptions; canonical scalar state and native value/change authoring; independent fields and manual parity | PASS at explicit scope in the final matrix and independent report |
+| Loose nested tool schemas / unhelpful refusals | Precise schemas/examples with operation index, field path, expected shape/properties; real provider recovery | PASS at explicit scope in the final matrix and independent report |
+| Same-batch confusion / void-to-boolean restriction | Preserve compatible same-batch operations and canonical no-coercion; precise supported/unsupported evidence | PASS at explicit scope in the final matrix and independent report |
+| Seeded content leftovers / nested interactive triggers / headings | Intentional replacement and safe trigger composition, actual DOM/keyboard/focus checks | PASS at explicit scope in the final matrix and independent report |
+| Incomplete requested coverage (26 of 78 IDs in retained run) | Explicit requested/authored inventory and interaction evidence; equivalent isolated large mixed fixture | PASS at explicit scope in the final matrix and independent report |
+| Failed reads/validation absent from transcript | Ordered stable event model, expandable safe detail, chronology of refusals/corrections/proposals/acknowledgements | PASS at explicit scope in the final matrix and independent report |
+| Eight-event retention / history truncation / unknown termination | Visible bounded compaction and confirmed boundary, independent terminal reason, useful partial completion and source-aware continuation | PASS at explicit scope in the final matrix and independent report |
+| Stop/stale/draft/manual/history/persistence regressions | Long-turn, duplicate prevention, cancellation/late-event fencing, mixed manual edits, Undo/Redo, Save/reopen | PASS at explicit scope in the final matrix and independent report |
+| Actual rendered observation requested | Actual bounded image tied to identity/revision/viewport/preview; stale rejection, truthful image capability and actual model inspection proof | PASS at explicit scope in the final matrix and independent report |
+| Structure unreadable / technical flat graph / minimap obstruction | Containment-first, friendly distinct nodes, search/focus, grouping/collapse/layers and responsive/keyboard journey | PASS at explicit scope in the final matrix and independent report |
+| Structure selection/detail/editor navigation incoherent | Exact prop/output/state relationships and Design/Layers/Inspector/Data/Actions handoffs; source/runtime distinction | PASS at explicit scope in the final matrix and independent report |
+| Basic layout / generic handles / lost viewport / Interact reset | Measured Dagre/ELK comparison, selected layout, coherent orientation, guarded edits, stale async layout fencing, retained session state | PASS at explicit scope in the final matrix and independent report |
+| Warnings / disk and environment | Isolated diagnostics, adequate headroom, preserved owner environment; no speculative attribution | PASS at explicit scope in the final matrix and independent report |
+| Reusable package / showcase integration | All newly changed UI represented in showcase; builds/types/regressions and independent installed consumer | PASS at explicit scope in the final matrix and independent report |
 
 Each row must end with repair paths, direct evidence and PASS / HELD / NOT DEMONSTRATED / precise blocker. Simulations and carried-forward evidence must be labelled. A gallery or successful compile alone cannot pass behavior or provider criteria.
 
 ## Verification gate
 
 Integrate and commit a scoped candidate, push and verify remote equality. A fresh-context verifier challenges that exact SHA without silently fixing it. Preserve failures, repair a new candidate and reverify affected journeys plus regressions. Missing required evidence remains HELD. Final report includes product, verifier and delivery SHAs, configured provider/model and visual capability proof, finding dispositions, launch commands and an integrated walkthrough.
+
+## Completion result
+
+Final product `be893f29d44f595a8d9982575c2199636df69597`, branch `codex/studio-cycle-1-3-completion`, has independent scoped PASS for owner review. [Final finding-to-repair-to-evidence matrix](CYCLE-1-3-COMPLETION-REPORT.md) and [independent verdict](CYCLE-1-3-COMPLETION-INDEPENDENT.md) define exact candidate/check provenance, simulations, carried-forward results and retained limits. The original baseline/criteria above remain historical scope records; no acceptance or Stage9 closure is claimed.

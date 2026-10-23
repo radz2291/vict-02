@@ -1,5 +1,7 @@
 # Cycle 1.3 complete UI showcase
 
+> Current review links, 2026-10-24: the authorized completion round has independent scoped PASS for owner review on product `be893f29d44f595a8d9982575c2199636df69597`. [Final report, finding matrix and walkthrough](CYCLE-1-3-COMPLETION-REPORT.md); [independent verdict](CYCLE-1-3-COMPLETION-INDEPENDENT.md). Live [Studio](http://127.0.0.3:5596/design), [complete showcase](http://127.0.0.3:5596/showcase#completion), [installed consumer](http://127.0.0.4:5597/). Earlier records/failed observations below are preserved historical evidence. Owner acceptance pending; Stage9 remains reopened.
+
 ## Additional owner request
 
 On 2026-10-23 the owner requested: “Make sure all UI you newly created/modified in cycle1.3 are in the showcase so I can see them after.” This adds a review surface, not execution authority or a Stage 9 gate verdict. The existing authenticated Studio request boundary remains unchanged.
