@@ -89,3 +89,34 @@ one regression (expected independent full count 159); the 158 run is not
 relabeled as a final full run. Logs and original owner screenshot/DOM snapshot
 are retained in `cycle-1-1-tool-completion-repair-2026-10-23/`. Exact candidate
 is committed/pushed for the independent production and natural-request gate.
+
+## Launch and hands-on review
+
+Use the builder checkout on `codex/studio-cycle-1-1-tool-completion-repair`.
+The local review server uses the independent manifest-checked artifact after
+the final gate below. To launch it later, stop its existing launcher first:
+
+```powershell
+$env:ORIGIN='http://127.0.0.1:5591'
+$env:HOST='127.0.0.1'
+$env:PORT='5591'
+$env:STUDIO_AGENT_MODEL='zai/glm-5.3-flash'
+$env:STUDIO_AGENT_AUTH_FILE=Join-Path $env:USERPROFILE '.pi/agent/auth.json'
+$env:STUDIO_AGENT_MODELS_FILE=Join-Path $env:USERPROFILE '.pi/agent/models.json'
+node apps/studio/scripts/launch-agent.mjs
+```
+
+The launcher reads the existing credential into child environment only; it
+does not print/copy it or modify either temporary configuration file. Open
+`http://127.0.0.1:5591/design` and use the existing local operator sign-in.
+No new screen is required. Retry the unchanged Quellight prompt on the current
+screen, watch acknowledged batches appear, select a field/heading and ask for
+a targeted change. Edit → Undo/Redo and File → Save / Reload saved version
+use the same canonical mechanisms as manual editing. Add/move/remove retain
+their existing palette contracts. First visible changes can take a couple
+of minutes with full default reasoning; Stop remains available throughout.
+The preview is visual UI only; application/backend authoring remains excluded.
+
+Do not reload the owner's unsaved screen to get new frontend failure wording.
+The backend fix is compatible with its loaded client. A fresh review tab can
+load the updated UI while preserving the existing canvas, draft and transcript.
