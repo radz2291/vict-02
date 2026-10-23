@@ -1,0 +1,884 @@
+{
+  "mode": "Actual exact production shell; deterministic transport fixtures only. No provider call or edit proposal.",
+  "results": [
+    {
+      "name": "single composer Send",
+      "pass": true,
+      "actions": [
+        {
+          "text": "Send",
+          "type": "submit",
+          "disabled": true
+        }
+      ],
+      "oldStops": 0
+    },
+    {
+      "name": "hide preserves mounted draft and expands canvas",
+      "pass": true,
+      "hidden": {
+        "hidden": true,
+        "draft": "Draft preserved through hiding",
+        "width": 1280,
+        "posts": 0
+      },
+      "beforeWidth": 960
+    },
+    {
+      "name": "single composer Stop",
+      "pass": true,
+      "actions": [
+        {
+          "text": "Stop",
+          "type": "button",
+          "disabled": false
+        }
+      ],
+      "oldStops": 0
+    },
+    {
+      "name": "Enter while busy does not submit",
+      "pass": true
+    },
+    {
+      "name": "active hide/show preserves stream draft canvas and transport",
+      "pass": true
+    },
+    {
+      "name": "single composer Stop",
+      "pass": true,
+      "actions": [
+        {
+          "text": "Stop",
+          "type": "button",
+          "disabled": false
+        }
+      ],
+      "oldStops": 0
+    },
+    {
+      "name": "busy-1280x720",
+      "pass": true,
+      "rects": {
+        "panel": {
+          "x": 0,
+          "y": 44.1875,
+          "right": 320,
+          "bottom": 696,
+          "width": 320,
+          "height": 651.8125
+        },
+        "popup": {
+          "x": 20,
+          "y": 248,
+          "right": 284,
+          "bottom": 568,
+          "width": 264,
+          "height": 320
+        },
+        "feed": {
+          "x": 12,
+          "y": 44.1875,
+          "right": 307,
+          "bottom": 572,
+          "width": 295,
+          "height": 527.8125
+        },
+        "composer": {
+          "x": 12,
+          "y": 572,
+          "right": 307,
+          "bottom": 647,
+          "width": 295,
+          "height": 75
+        },
+        "input": {
+          "x": 12,
+          "y": 583,
+          "right": 256.859375,
+          "bottom": 647,
+          "width": 244.859375,
+          "height": 64
+        },
+        "footer": {
+          "x": 0,
+          "y": 647,
+          "right": 319,
+          "bottom": 696,
+          "width": 319,
+          "height": 49
+        },
+        "status": {
+          "x": 12,
+          "y": 662.5,
+          "right": 271,
+          "bottom": 677.5,
+          "width": 259,
+          "height": 15
+        },
+        "trigger": {
+          "x": 279,
+          "y": 650,
+          "right": 307,
+          "bottom": 690,
+          "width": 28,
+          "height": 40
+        },
+        "action": {
+          "x": 262.859375,
+          "y": 614,
+          "right": 307,
+          "bottom": 646,
+          "width": 44.140625,
+          "height": 32
+        },
+        "repeatedContext": false,
+        "heading": false,
+        "statusText": "Working…",
+        "activity": 8
+      },
+      "popupContained": true,
+      "footerAligned": true
+    },
+    {
+      "name": "busy reconnect disabled 1280x720",
+      "pass": true
+    },
+    {
+      "name": "busy-1280x500",
+      "pass": true,
+      "rects": {
+        "panel": {
+          "x": 0,
+          "y": 44.1875,
+          "right": 320,
+          "bottom": 476,
+          "width": 320,
+          "height": 431.8125
+        },
+        "popup": {
+          "x": 20,
+          "y": 56,
+          "right": 284,
+          "bottom": 348,
+          "width": 264,
+          "height": 292
+        },
+        "feed": {
+          "x": 12,
+          "y": 44.1875,
+          "right": 307,
+          "bottom": 352,
+          "width": 295,
+          "height": 307.8125
+        },
+        "composer": {
+          "x": 12,
+          "y": 352,
+          "right": 307,
+          "bottom": 427,
+          "width": 295,
+          "height": 75
+        },
+        "input": {
+          "x": 12,
+          "y": 363,
+          "right": 256.859375,
+          "bottom": 427,
+          "width": 244.859375,
+          "height": 64
+        },
+        "footer": {
+          "x": 0,
+          "y": 427,
+          "right": 319,
+          "bottom": 476,
+          "width": 319,
+          "height": 49
+        },
+        "status": {
+          "x": 12,
+          "y": 442.5,
+          "right": 271,
+          "bottom": 457.5,
+          "width": 259,
+          "height": 15
+        },
+        "trigger": {
+          "x": 279,
+          "y": 430,
+          "right": 307,
+          "bottom": 470,
+          "width": 28,
+          "height": 40
+        },
+        "action": {
+          "x": 262.859375,
+          "y": 394,
+          "right": 307,
+          "bottom": 426,
+          "width": 44.140625,
+          "height": 32
+        },
+        "repeatedContext": false,
+        "heading": false,
+        "statusText": "Working…",
+        "activity": 8
+      },
+      "popupContained": true,
+      "footerAligned": true
+    },
+    {
+      "name": "busy reconnect disabled 1280x500",
+      "pass": true
+    },
+    {
+      "name": "busy-390x700",
+      "pass": true,
+      "rects": {
+        "panel": {
+          "x": 0,
+          "y": 44,
+          "right": 390,
+          "bottom": 364,
+          "width": 390,
+          "height": 320
+        },
+        "popup": {
+          "x": 75,
+          "y": 56,
+          "right": 355,
+          "bottom": 243,
+          "width": 280,
+          "height": 187
+        },
+        "feed": {
+          "x": 12,
+          "y": 44,
+          "right": 378,
+          "bottom": 247,
+          "width": 366,
+          "height": 203
+        },
+        "composer": {
+          "x": 12,
+          "y": 247,
+          "right": 378,
+          "bottom": 310,
+          "width": 366,
+          "height": 63
+        },
+        "input": {
+          "x": 12,
+          "y": 258,
+          "right": 327.859375,
+          "bottom": 310,
+          "width": 315.859375,
+          "height": 52
+        },
+        "footer": {
+          "x": 0,
+          "y": 310,
+          "right": 390,
+          "bottom": 363,
+          "width": 390,
+          "height": 53
+        },
+        "status": {
+          "x": 12,
+          "y": 327.5,
+          "right": 342,
+          "bottom": 342.5,
+          "width": 330,
+          "height": 15
+        },
+        "trigger": {
+          "x": 350,
+          "y": 313,
+          "right": 378,
+          "bottom": 357,
+          "width": 28,
+          "height": 44
+        },
+        "action": {
+          "x": 333.859375,
+          "y": 277,
+          "right": 378,
+          "bottom": 309,
+          "width": 44.140625,
+          "height": 32
+        },
+        "repeatedContext": false,
+        "heading": false,
+        "statusText": "Working…",
+        "activity": 8
+      },
+      "popupContained": true,
+      "footerAligned": true
+    },
+    {
+      "name": "busy reconnect disabled 390x700",
+      "pass": true
+    },
+    {
+      "name": "single composer Send",
+      "pass": true,
+      "actions": [
+        {
+          "text": "Send",
+          "type": "submit",
+          "disabled": false
+        }
+      ],
+      "oldStops": 0
+    },
+    {
+      "name": "racing repeated Stop events send exactly one DELETE and preserve next draft",
+      "pass": true
+    },
+    {
+      "name": "single composer Send",
+      "pass": true,
+      "actions": [
+        {
+          "text": "Send",
+          "type": "submit",
+          "disabled": false
+        }
+      ],
+      "oldStops": 0
+    },
+    {
+      "name": "provider failure returns Send and preserves next draft",
+      "pass": true
+    },
+    {
+      "name": "failure-with-open-details",
+      "pass": true,
+      "rects": {
+        "panel": {
+          "x": 0,
+          "y": 44,
+          "right": 390,
+          "bottom": 364,
+          "width": 390,
+          "height": 320
+        },
+        "popup": {
+          "x": 75,
+          "y": 56,
+          "right": 355,
+          "bottom": 243,
+          "width": 280,
+          "height": 187
+        },
+        "feed": {
+          "x": 12,
+          "y": 44,
+          "right": 378,
+          "bottom": 247,
+          "width": 366,
+          "height": 203
+        },
+        "composer": {
+          "x": 12,
+          "y": 247,
+          "right": 378,
+          "bottom": 310,
+          "width": 366,
+          "height": 63
+        },
+        "input": {
+          "x": 12,
+          "y": 258,
+          "right": 325.6875,
+          "bottom": 310,
+          "width": 313.6875,
+          "height": 52
+        },
+        "footer": {
+          "x": 0,
+          "y": 310,
+          "right": 390,
+          "bottom": 363,
+          "width": 390,
+          "height": 53
+        },
+        "status": {
+          "x": 12,
+          "y": 320,
+          "right": 342,
+          "bottom": 350,
+          "width": 330,
+          "height": 30
+        },
+        "trigger": {
+          "x": 350,
+          "y": 313,
+          "right": 378,
+          "bottom": 357,
+          "width": 28,
+          "height": 44
+        },
+        "action": {
+          "x": 331.6875,
+          "y": 277,
+          "right": 378,
+          "bottom": 309,
+          "width": 46.3125,
+          "height": 32
+        },
+        "repeatedContext": false,
+        "heading": false,
+        "statusText": "The provider could not complete this turn. Check the connection and retry. No edits were applied.",
+        "activity": 8
+      },
+      "popupContained": true,
+      "footerAligned": true
+    },
+    {
+      "name": "single composer Send",
+      "pass": true,
+      "actions": [
+        {
+          "text": "Send",
+          "type": "submit",
+          "disabled": false
+        }
+      ],
+      "oldStops": 0
+    },
+    {
+      "name": "completion returns Send and preserves next draft",
+      "pass": true
+    },
+    {
+      "name": "long-composer-1280x720",
+      "pass": true,
+      "rects": {
+        "panel": {
+          "x": 0,
+          "y": 44.1875,
+          "right": 320,
+          "bottom": 696,
+          "width": 320,
+          "height": 651.8125
+        },
+        "popup": {
+          "x": 20,
+          "y": 200,
+          "right": 284,
+          "bottom": 520,
+          "width": 264,
+          "height": 320
+        },
+        "feed": {
+          "x": 12,
+          "y": 44.1875,
+          "right": 307,
+          "bottom": 524,
+          "width": 295,
+          "height": 479.8125
+        },
+        "composer": {
+          "x": 12,
+          "y": 524,
+          "right": 307,
+          "bottom": 647,
+          "width": 295,
+          "height": 123
+        },
+        "input": {
+          "x": 12,
+          "y": 535,
+          "right": 254.6875,
+          "bottom": 647,
+          "width": 242.6875,
+          "height": 112
+        },
+        "footer": {
+          "x": 0,
+          "y": 647,
+          "right": 319,
+          "bottom": 696,
+          "width": 319,
+          "height": 49
+        },
+        "status": {
+          "x": 12,
+          "y": 662.5,
+          "right": 271,
+          "bottom": 677.5,
+          "width": 259,
+          "height": 15
+        },
+        "trigger": {
+          "x": 279,
+          "y": 650,
+          "right": 307,
+          "bottom": 690,
+          "width": 28,
+          "height": 40
+        },
+        "action": {
+          "x": 260.6875,
+          "y": 614,
+          "right": 307,
+          "bottom": 646,
+          "width": 46.3125,
+          "height": 32
+        },
+        "repeatedContext": false,
+        "heading": false,
+        "statusText": "0 edits applied",
+        "activity": 8
+      },
+      "popupContained": true,
+      "footerAligned": true
+    },
+    {
+      "name": "long-composer-1280x500",
+      "pass": true,
+      "rects": {
+        "panel": {
+          "x": 0,
+          "y": 44.1875,
+          "right": 320,
+          "bottom": 476,
+          "width": 320,
+          "height": 431.8125
+        },
+        "popup": {
+          "x": 20,
+          "y": 56,
+          "right": 284,
+          "bottom": 300,
+          "width": 264,
+          "height": 244
+        },
+        "feed": {
+          "x": 12,
+          "y": 44.1875,
+          "right": 307,
+          "bottom": 304,
+          "width": 295,
+          "height": 259.8125
+        },
+        "composer": {
+          "x": 12,
+          "y": 304,
+          "right": 307,
+          "bottom": 427,
+          "width": 295,
+          "height": 123
+        },
+        "input": {
+          "x": 12,
+          "y": 315,
+          "right": 254.6875,
+          "bottom": 427,
+          "width": 242.6875,
+          "height": 112
+        },
+        "footer": {
+          "x": 0,
+          "y": 427,
+          "right": 319,
+          "bottom": 476,
+          "width": 319,
+          "height": 49
+        },
+        "status": {
+          "x": 12,
+          "y": 442.5,
+          "right": 271,
+          "bottom": 457.5,
+          "width": 259,
+          "height": 15
+        },
+        "trigger": {
+          "x": 279,
+          "y": 430,
+          "right": 307,
+          "bottom": 470,
+          "width": 28,
+          "height": 40
+        },
+        "action": {
+          "x": 260.6875,
+          "y": 394,
+          "right": 307,
+          "bottom": 426,
+          "width": 46.3125,
+          "height": 32
+        },
+        "repeatedContext": false,
+        "heading": false,
+        "statusText": "0 edits applied",
+        "activity": 8
+      },
+      "popupContained": true,
+      "footerAligned": true
+    },
+    {
+      "name": "long-composer-390x700",
+      "pass": true,
+      "rects": {
+        "panel": {
+          "x": 0,
+          "y": 44,
+          "right": 390,
+          "bottom": 364,
+          "width": 390,
+          "height": 320
+        },
+        "popup": {
+          "x": 75,
+          "y": 56,
+          "right": 355,
+          "bottom": 219,
+          "width": 280,
+          "height": 163
+        },
+        "feed": {
+          "x": 12,
+          "y": 44,
+          "right": 378,
+          "bottom": 223,
+          "width": 366,
+          "height": 179
+        },
+        "composer": {
+          "x": 12,
+          "y": 223,
+          "right": 378,
+          "bottom": 310,
+          "width": 366,
+          "height": 87
+        },
+        "input": {
+          "x": 12,
+          "y": 234,
+          "right": 325.6875,
+          "bottom": 310,
+          "width": 313.6875,
+          "height": 76
+        },
+        "footer": {
+          "x": 0,
+          "y": 310,
+          "right": 390,
+          "bottom": 363,
+          "width": 390,
+          "height": 53
+        },
+        "status": {
+          "x": 12,
+          "y": 327.5,
+          "right": 342,
+          "bottom": 342.5,
+          "width": 330,
+          "height": 15
+        },
+        "trigger": {
+          "x": 350,
+          "y": 313,
+          "right": 378,
+          "bottom": 357,
+          "width": 28,
+          "height": 44
+        },
+        "action": {
+          "x": 331.6875,
+          "y": 277,
+          "right": 378,
+          "bottom": 309,
+          "width": 46.3125,
+          "height": 32
+        },
+        "repeatedContext": false,
+        "heading": false,
+        "statusText": "0 edits applied",
+        "activity": 8
+      },
+      "popupContained": true,
+      "footerAligned": true
+    },
+    {
+      "name": "open-popup-dynamic-growth",
+      "pass": true,
+      "rects": {
+        "panel": {
+          "x": 0,
+          "y": 44,
+          "right": 390,
+          "bottom": 364,
+          "width": 390,
+          "height": 320
+        },
+        "popup": {
+          "x": 75,
+          "y": 56,
+          "right": 355,
+          "bottom": 219,
+          "width": 280,
+          "height": 163
+        },
+        "feed": {
+          "x": 12,
+          "y": 44,
+          "right": 378,
+          "bottom": 223,
+          "width": 366,
+          "height": 179
+        },
+        "composer": {
+          "x": 12,
+          "y": 223,
+          "right": 378,
+          "bottom": 310,
+          "width": 366,
+          "height": 87
+        },
+        "input": {
+          "x": 12,
+          "y": 234,
+          "right": 325.6875,
+          "bottom": 310,
+          "width": 313.6875,
+          "height": 76
+        },
+        "footer": {
+          "x": 0,
+          "y": 310,
+          "right": 390,
+          "bottom": 363,
+          "width": 390,
+          "height": 53
+        },
+        "status": {
+          "x": 12,
+          "y": 327.5,
+          "right": 342,
+          "bottom": 342.5,
+          "width": 330,
+          "height": 15
+        },
+        "trigger": {
+          "x": 350,
+          "y": 313,
+          "right": 378,
+          "bottom": 357,
+          "width": 28,
+          "height": 44
+        },
+        "action": {
+          "x": 331.6875,
+          "y": 277,
+          "right": 378,
+          "bottom": 309,
+          "width": 46.3125,
+          "height": 32
+        },
+        "repeatedContext": false,
+        "heading": false,
+        "statusText": "0 edits applied",
+        "activity": 8
+      },
+      "popupContained": true,
+      "footerAligned": true
+    },
+    {
+      "name": "open-popup-viewport-resize",
+      "pass": true,
+      "rects": {
+        "panel": {
+          "x": 0,
+          "y": 44.1875,
+          "right": 320,
+          "bottom": 476,
+          "width": 320,
+          "height": 431.8125
+        },
+        "popup": {
+          "x": 20,
+          "y": 56,
+          "right": 284,
+          "bottom": 300,
+          "width": 264,
+          "height": 244
+        },
+        "feed": {
+          "x": 12,
+          "y": 44.1875,
+          "right": 307,
+          "bottom": 304,
+          "width": 295,
+          "height": 259.8125
+        },
+        "composer": {
+          "x": 12,
+          "y": 304,
+          "right": 307,
+          "bottom": 427,
+          "width": 295,
+          "height": 123
+        },
+        "input": {
+          "x": 12,
+          "y": 315,
+          "right": 254.6875,
+          "bottom": 427,
+          "width": 242.6875,
+          "height": 112
+        },
+        "footer": {
+          "x": 0,
+          "y": 427,
+          "right": 319,
+          "bottom": 476,
+          "width": 319,
+          "height": 49
+        },
+        "status": {
+          "x": 12,
+          "y": 442.5,
+          "right": 271,
+          "bottom": 457.5,
+          "width": 259,
+          "height": 15
+        },
+        "trigger": {
+          "x": 279,
+          "y": 430,
+          "right": 307,
+          "bottom": 470,
+          "width": 28,
+          "height": 40
+        },
+        "action": {
+          "x": 260.6875,
+          "y": 394,
+          "right": 307,
+          "bottom": 426,
+          "width": 46.3125,
+          "height": 32
+        },
+        "repeatedContext": false,
+        "heading": false,
+        "statusText": "0 edits applied",
+        "activity": 8
+      },
+      "popupContained": true,
+      "footerAligned": true
+    },
+    {
+      "name": "connection record reachable within scroll bounds",
+      "pass": true
+    },
+    {
+      "name": "no extra sends or cancels during popup/resizing",
+      "pass": true
+    }
+  ]
+}

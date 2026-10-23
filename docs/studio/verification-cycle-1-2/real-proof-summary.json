@@ -1,0 +1,139 @@
+{
+  "producingCommit": "7874c64158b877c574ceff04e1917773bc03afe6",
+  "rows": [
+    {
+      "turn": 1,
+      "prompt": "Create a compact registration form with a heading, name and email fields, a consent checkbox and a Register button.",
+      "historyMessages": 0,
+      "revision": "r1#0",
+      "elapsedMs": 43734,
+      "firstProposalMs": 35721,
+      "successfulAcknowledgements": 1,
+      "refusedAcknowledgements": [],
+      "terminal": {
+        "type": "done",
+        "status": "completed",
+        "applied": 1,
+        "turnId": "turn-292b706a-f9ce-4dc4-bc9f-123a7abc1155",
+        "profileVersion": "v1_d676998f18e52c1e75961acc181bb47a8dcfa44e271c12c0cb86016e6782170d",
+        "observedAt": 1792734421166
+      },
+      "deletes": [],
+      "complete": true
+    },
+    {
+      "turn": 2,
+      "prompt": "Keep my manual title and improve the selected heading with a calm blue text color.",
+      "historyMessages": 2,
+      "revision": "r1#2",
+      "elapsedMs": 27504,
+      "firstProposalMs": 21920,
+      "successfulAcknowledgements": 1,
+      "refusedAcknowledgements": [],
+      "terminal": {
+        "type": "done",
+        "status": "completed",
+        "applied": 1,
+        "turnId": "turn-3e76c3d2-d944-4bff-bbed-e42c52962e46",
+        "profileVersion": "v1_d676998f18e52c1e75961acc181bb47a8dcfa44e271c12c0cb86016e6782170d",
+        "observedAt": 1792734450874
+      },
+      "deletes": [],
+      "complete": true
+    },
+    {
+      "turn": 3,
+      "prompt": "Below the existing registration form, add three separate sections: a benefits section, a short FAQ and a contact section. Keep the existing form and title.",
+      "historyMessages": 4,
+      "revision": "r1#3",
+      "elapsedMs": 58613,
+      "firstProposalMs": 58540,
+      "successfulAcknowledgements": 1,
+      "refusedAcknowledgements": [],
+      "deletes": [
+        {
+          "at": 1792734511152,
+          "status": 200
+        }
+      ],
+      "complete": true
+    },
+    {
+      "turn": 4,
+      "prompt": "Keep all existing content and my manual title. Add one short note below the form saying \"Your registration details stay private\".",
+      "historyMessages": 6,
+      "revision": "r1.r1#0",
+      "elapsedMs": 29522,
+      "firstProposalMs": 22919,
+      "successfulAcknowledgements": 1,
+      "refusedAcknowledgements": [],
+      "terminal": {
+        "type": "done",
+        "status": "completed",
+        "applied": 1,
+        "turnId": "turn-6985a4b9-243a-433c-90e0-cca144f7107d",
+        "profileVersion": "v1_d676998f18e52c1e75961acc181bb47a8dcfa44e271c12c0cb86016e6782170d",
+        "observedAt": 1792734544728
+      },
+      "deletes": [],
+      "complete": true
+    },
+    {
+      "turn": 5,
+      "prompt": "Add a small heading reading \"stale probe must remain absent\".",
+      "historyMessages": 8,
+      "revision": "r1.r1#1",
+      "elapsedMs": 32722,
+      "firstProposalMs": 32375,
+      "successfulAcknowledgements": 0,
+      "refusedAcknowledgements": [
+        "UI_DOC_STALE_REVISION"
+      ],
+      "deletes": [
+        {
+          "at": 1792734578420,
+          "status": 200
+        }
+      ],
+      "complete": true
+    },
+    {
+      "turn": 6,
+      "prompt": "Add a small heading reading \"draft probe must remain absent\".",
+      "historyMessages": 10,
+      "revision": "r1.r1#2",
+      "elapsedMs": 40868,
+      "firstProposalMs": 40668,
+      "successfulAcknowledgements": 0,
+      "refusedAcknowledgements": [
+        "STUDIO_AGENT_DRAFT"
+      ],
+      "deletes": [
+        {
+          "at": 1792734620036,
+          "status": 200
+        }
+      ],
+      "complete": true
+    }
+  ],
+  "stop": {
+    "successfulAcknowledgements": 1,
+    "firstAcknowledgementAt": 1792734511103,
+    "cancellationResponseAt": 1792734511152,
+    "firstAckToCancellationResponseMs": 49,
+    "deleteStatus": 200,
+    "note": "Operator Stop occurs between the first successful acknowledgement and this cancellation response; no synthetic provider or proposal was used."
+  },
+  "staleSettlementMs": 236,
+  "draftSettlementMs": 138,
+  "assertions": {
+    "exactlySixExplicitRequestsNoAutomaticReplay": true,
+    "freshRequestAfterStaleUsesActualManualDocument": true,
+    "freshRequestAfterStaleHasNewDigest": true,
+    "sourceDraftNeverSentAsCanonicalContext": true,
+    "freshContextStillRetainsManualTitle": true,
+    "allRecordedChecksPass": true,
+    "browserExceptions": 0
+  }
+}
