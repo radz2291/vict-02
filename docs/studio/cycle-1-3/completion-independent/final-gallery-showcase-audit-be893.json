@@ -1,0 +1,81 @@
+{
+  "checkedAt": "2026-10-23T22:29:44.695Z",
+  "productSha": "be893f29d44f595a8d9982575c2199636df69597",
+  "evidenceHead": "040de336344f1b370bde202d62a5b674d0cf859a",
+  "kind": "Independent read/hash audit of builder actual CUA record; not a second provider execution",
+  "sourceExactPriorSaved": true,
+  "sourceNodes": 151,
+  "sourceUnchangedRecorded": true,
+  "engineCompleted": true,
+  "zeroEdits": true,
+  "recordSha256": "99c70b899af6b03cf71f5fdda969cfbe195309aae33e95bd40f3cabb2dbb685d",
+  "receipt": {
+    "ok": true,
+    "evidence": "observed-appearance",
+    "observation": "Visible in the viewport: a light page with a hero card showing bold navy \"Component Gallery,\" gray subtitle \"Every catalog component, composed into one intentional landing page,\" and a teal rounded \"Preview action\" button. Below, a bordered section titled \"Navigation & Menus\" contains small white pill buttons (\"File,\" \"Row actions,\" then \"Product,\" \"Changelog\") and two full-width outlined bars with centered labels \"Row actions\" and \"Card options.\" Spacing between pills and bars is even; content is left-aligned within consistent margins.\n\nObservation: the viewport crops the source image top and bottom — the hero's top edge is trimmed, and the final component's label is cut mid-glyph at the bottom edge. No overlap or misalignment is visible; whether more sections exist below is inference from the crop, not observation.",
+    "metadata": {
+      "cursor": {
+        "documentId": "screen-add47b46-acee-42e9-a45d-83e1c9fb58f9",
+        "revision": "r1.r1#0",
+        "digest": "1de5e4c50f917d28191569079fc64b3a777c478c774a6761662654258aaa9a6a",
+        "epoch": "176fad00-2d89-407a-869e-c51a058753d0"
+      },
+      "capturedAt": "2026-10-23T22:26:35.600Z",
+      "viewport": {
+        "width": 960,
+        "height": 585,
+        "scrollLeft": 0,
+        "scrollTop": 76,
+        "devicePixelRatio": 1.25
+      },
+      "image": {
+        "width": 909,
+        "height": 585,
+        "sourceWidth": 909,
+        "sourceHeight": 4928,
+        "offsetLeft": 0,
+        "offsetTop": 60,
+        "cropped": true
+      },
+      "preview": {
+        "mode": "interact",
+        "fingerprint": "e29de880d1224aec8af95cb124e4abf1439672cac9cb78ac9a7da176fd6246be",
+        "selection": "screen-add47b46-acee-42e9-a45d-83e1c9fb58f9|screen"
+      }
+    },
+    "revalidatedAt": "2026-10-23T22:26:48.565Z",
+    "validation": "same-source-preview-viewport-and-image-bytes-after-inference",
+    "imageDigest": "0ba4e6674ab0699403510cf4382e723b78fe266fb87f464c6d02e0ef4d8dfd6c",
+    "confirmedImageDigest": "0ba4e6674ab0699403510cf4382e723b78fe266fb87f464c6d02e0ef4d8dfd6c",
+    "imageComparison": "sha256-identical",
+    "bytes": 28557,
+    "model": "zai/glm-5.3-flash",
+    "interactionVerified": false,
+    "limitation": "Only the captured preview frame region and stated preview state were inspected. Open preview-owned external portals refuse capture; unrelated Studio chrome is outside this image. Source relationships and interaction outcomes require separate checks."
+  },
+  "showcase": {
+    "orderedEvents": [
+      "fixture-intent",
+      "fixture-read",
+      "fixture-text",
+      "fixture-refused",
+      "fixture-retry",
+      "fixture-ack",
+      "fixture-observe",
+      "fixture-cancelled",
+      "fixture-partial"
+    ],
+    "recipeOptions": 83,
+    "images": [
+      {
+        "alt": "Actual raster capture of the rendered local two-person fixture",
+        "height": 349,
+        "width": 564
+      }
+    ],
+    "errors": [],
+    "recordSha256": "f78589b1741c9cb3183538df62b3a08ddecedadc41cb34b1199d968e5d940103"
+  },
+  "sourceExactPriorSavedRaw": false,
+  "sourceComparisonNote": "Prior browser record stores source as an object; final record stores pretty JSON text. Raw value comparison is false by representation; parsed JSON.stringify comparison is exact, including property order."
+}

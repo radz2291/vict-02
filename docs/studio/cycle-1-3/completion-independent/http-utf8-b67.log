@@ -1,0 +1,10 @@
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion-verify/260831-VCT-02/apps/studio
+
+ ✓ tests/designer-transport-independent.test.ts (2 tests) 117ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  05:16:11
+   Duration  932ms (transform 149ms, setup 0ms, collect 180ms, tests 117ms, environment 0ms, prepare 236ms)
+

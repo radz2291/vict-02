@@ -1,0 +1,22 @@
+{
+  "checkedAt": "2026-10-23T22:22:17.325Z",
+  "productSha": "be893f29d44f595a8d9982575c2199636df69597",
+  "files": 173,
+  "mismatches": [],
+  "packs": [
+    {
+      "name": "ui-ai-svelte",
+      "sha256": "5a79a2d1c1b84c66a044c39380f56a85a75e0580026133ad28c80dd3a0280896",
+      "match": true
+    },
+    {
+      "name": "ui-flow-svelte",
+      "sha256": "feacec984e5cdcf809e58d68c3b5df3121604b5fb7df52249fab44ce0501be7f",
+      "match": true
+    }
+  ],
+  "browserEvidenceSha256": "4770e34204f88bde88d272dad8371a58602f3592b48d4a158a386bc5a79d614d",
+  "browserScope": "Final packed consumer reload, actual Copy and Arrange. Earlier115f stream Stop/CSS checks carried forward; only capture.ts production delta.",
+  "browserErrors": [],
+  "earlierBrowserScope": "Actual browser of independently installed packed packages; deterministic streaming fixture, no provider"
+}

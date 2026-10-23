@@ -1,0 +1,84 @@
+
+> vict-monorepo@0.1.0 build
+> npm run build -w @victframework/contracts && npm run build -w @victframework/ui && npm run build -w @victframework/sdk && npm run build -w @victframework/kernel && npm run build -w @victframework/runtime && npm run build -w @victframework/store-sqlite && npm run build -w @victframework/control && npm run build -w @victframework/application && npm run build -w @victframework/appdata-sqlite && npm run build -w @victframework/ui-svelte && npm run build -w @victframework/scaffolder && npm run build -w @victframework/mastra && npm run build -w @victframework/server && npm run build -w @victframework/cli && npm run build -w @victframework/ui-editor && npm run build -w @victframework/ui-preview && npm run build -w @victframework/ui-ai-svelte && npm run build -w @victframework/ui-flow-svelte
+
+
+> @victframework/contracts@0.4.0-rc.1 build
+> tsc -p tsconfig.json
+
+
+> @victframework/ui@0.4.0-rc.1 build
+> tsc -p tsconfig.json
+
+
+> @victframework/sdk@0.4.0-rc.1 build
+> tsc -p tsconfig.json
+
+
+> @victframework/kernel@0.4.0-rc.1 build
+> tsc -p tsconfig.json
+
+
+> @victframework/runtime@0.4.0-rc.1 build
+> tsc -p tsconfig.json
+
+
+> @victframework/store-sqlite@0.4.0-rc.1 build
+> tsc -p tsconfig.json
+
+
+> @victframework/control@0.4.0-rc.1 build
+> tsc -p tsconfig.json
+
+
+> @victframework/application@0.4.0-rc.1 build
+> tsc -p tsconfig.json
+
+
+> @victframework/appdata-sqlite@0.4.0-rc.1 build
+> tsc -p tsconfig.json
+
+
+> @victframework/ui-svelte@0.4.0-rc.1 build
+> tsc -p tsconfig.json --emitDeclarationOnly --outDir dist
+
+
+> @victframework/scaffolder@0.4.0-rc.1 build
+> tsc -p tsconfig.json
+
+
+> @victframework/mastra@0.4.0-rc.1 build
+> tsc -p tsconfig.json
+
+
+> @victframework/server@0.4.0-rc.1 build
+> tsc -p tsconfig.json
+
+
+> @victframework/cli@0.4.0-rc.1 build
+> tsc -p tsconfig.json
+
+
+> @victframework/ui-editor@0.4.0-rc.1 build
+> tsc -p tsconfig.json
+
+
+> @victframework/ui-preview@0.4.0-rc.1 build
+> tsc -p tsconfig.json
+
+
+> @victframework/ui-ai-svelte@0.4.0-rc.1 build
+> node scripts/build-css.mjs
+
+≈ tailwindcss v4.3.3
+
+Done in 1s
+Built isolated ui-ai-svelte/dist/styles.css
+
+> @victframework/ui-flow-svelte@0.4.0-rc.1 build
+> svelte-check --tsconfig ./tsconfig.json
+
+Loading svelte-check in workspace: c:\Users\RZ1\.codex\worktrees\studio-cycle-1-3-completion-verify\260831-VCT-02\packages\ui-flow-svelte
+Getting Svelte diagnostics...
+
+svelte-check found 0 errors and 0 warnings

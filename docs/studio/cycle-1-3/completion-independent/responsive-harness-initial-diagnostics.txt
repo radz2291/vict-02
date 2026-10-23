@@ -1,0 +1,10 @@
+[
+  {
+    "label": "Explicit test-only layout error from actual DOM-measured geometry",
+    "error": {
+      "name": "TypeError",
+      "message": "Constructor is not a constructor",
+      "stack": "TypeError: Constructor is not a constructor\n    at layoutGraph (http://127.0.0.5:5599/@fs/C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion/260831-VCT-02/packages/ui-flow-svelte/src/layout.ts:31:15)"
+    }
+  }
+]

@@ -1,0 +1,70 @@
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion-verify/260831-VCT-02/apps/studio
+
+5:14:09 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion-verify/260831-VCT-02/packages/ui-svelte/src/document/DocumentHost.svelte:105:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+5:14:10 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion-verify/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:304:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+5:14:10 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion-verify/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:304:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+5:14:10 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion-verify/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:371:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+5:14:10 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion-verify/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:371:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+5:14:16 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion-verify/260831-VCT-02/packages/ui-editor/src/StateValuesPanel.svelte:106:6 A form label must be associated with a control
+https://svelte.dev/e/a11y_label_has_associated_control
+ ❯ tests/designer-completion-independent.test.ts (4 tests | 2 failed) 164ms
+   ✓ independent challenge: agent can create a typed native number field in one batch 83ms
+   ✓ independent challenge: agent can create a typed native checkbox in one batch 29ms
+   × independent challenge: refuses nested interactive wrapper in a native trigger slot 45ms
+     → expected { ok: true, draft: { …(3) }, …(2) } to match object { ok: false, …(1) }
+(17 matching properties omitted from actual)
+   × independent challenge: reconstructs a long declared state through bounded targeted pages 5ms
+     → expected { ok: false, …(3) } to not match object { ok: false }
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/designer-completion-independent.test.ts > independent challenge: refuses nested interactive wrapper in a native trigger slot
+AssertionError: expected { ok: true, draft: { …(3) }, …(2) } to match object { ok: false, …(1) }
+(17 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "code": "STUDIO_AGENT_INTERACTIVE_SLOT",
+-   "ok": false,
++   "ok": true,
+  }
+
+ ❯ tests/designer-completion-independent.test.ts:40:18
+     38|     ],
+     39|   }, 'independent-nested-wrapper');
+     40|   expect(result).toMatchObject({ ok: false, code: 'STUDIO_AGENT_INTERA…
+       |                  ^
+     41| });
+     42| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/designer-completion-independent.test.ts > independent challenge: reconstructs a long declared state through bounded targeted pages
+AssertionError: expected { ok: false, …(3) } to not match object { ok: false }
+
+Compared values have no visual difference.
+
+ ❯ tests/designer-completion-independent.test.ts:53:24
+     51|   let pages = 0;
+     52|   while (offset !== null && pages++ < 20) {
+     53|     const result = agentContext(document, cursor, undefined, { section…
+       |                        ^
+     54|     expect(result).not.toMatchObject({ ok: false });
+     55|     expect(typeof result.stateJson).toBe('string');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 2 passed (4)
+   Start at  05:13:50
+   Duration  25.86s (transform 17.34s, setup 0ms, collect 24.87s, tests 164ms, environment 1ms, prepare 304ms)
+

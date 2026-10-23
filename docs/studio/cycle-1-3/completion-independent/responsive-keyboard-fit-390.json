@@ -1,0 +1,264 @@
+{
+  "label": "Actual browser DOM measurements — synthetic component width simulation",
+  "measuredAt": "2026-10-23T22:16:05.547Z",
+  "innerWidth": 390,
+  "innerHeight": 1100,
+  "documentClientWidth": 390,
+  "documentScrollWidth": 390,
+  "bodyScrollWidth": 390,
+  "horizontalDocumentOverflow": false,
+  "component": {
+    "x": 0,
+    "y": 75.2,
+    "width": 390.4,
+    "height": 1024.8,
+    "right": 390.4,
+    "bottom": 1100
+  },
+  "canvas": {
+    "x": 0,
+    "y": 299.4,
+    "width": 390.4,
+    "height": 606.2,
+    "right": 390.4,
+    "bottom": 905.6
+  },
+  "layoutStatus": "3 visible items · routed ELK layout",
+  "viewportTransform": "translate(27.3693px, 281.39px) scale(0.38589)",
+  "renderedCards": 3,
+  "overlapCount": 0,
+  "cards": [
+    {
+      "label": "Container: Screen, source screen",
+      "x": 32,
+      "y": 585.42,
+      "width": 86.44,
+      "height": 33.96,
+      "right": 118.44,
+      "bottom": 619.38
+    },
+    {
+      "label": "Container: Customer settings 1, source customer",
+      "x": 151.78,
+      "y": 585.42,
+      "width": 86.44,
+      "height": 33.96,
+      "right": 238.22,
+      "bottom": 619.38
+    },
+    {
+      "label": "Element: Structure name, source name-field",
+      "x": 271.56,
+      "y": 585.42,
+      "width": 86.44,
+      "height": 33.96,
+      "right": 358,
+      "bottom": 619.38
+    }
+  ],
+  "controls": [
+    {
+      "label": "Search structure",
+      "tag": "input",
+      "x": 10,
+      "y": 143.2,
+      "width": 193.69,
+      "height": 30.4,
+      "right": 203.69,
+      "bottom": 173.6
+    },
+    {
+      "label": "Fit visible",
+      "tag": "button",
+      "x": 209.69,
+      "y": 143.2,
+      "width": 66.61,
+      "height": 30.4,
+      "right": 276.3,
+      "bottom": 173.6
+    },
+    {
+      "label": "Focus selection",
+      "tag": "button",
+      "x": 282.3,
+      "y": 143.2,
+      "width": 98.1,
+      "height": 30.4,
+      "right": 380.4,
+      "bottom": 173.6
+    },
+    {
+      "label": "Expand all",
+      "tag": "button",
+      "x": 10,
+      "y": 180,
+      "width": 71.41,
+      "height": 30.4,
+      "right": 81.41,
+      "bottom": 210.4
+    },
+    {
+      "label": "Arrange",
+      "tag": "button",
+      "x": 87.41,
+      "y": 180,
+      "width": 59.92,
+      "height": 30.4,
+      "right": 147.34,
+      "bottom": 210.4
+    },
+    {
+      "label": "Structure layout direction",
+      "tag": "select",
+      "x": 206.45,
+      "y": 179.6,
+      "width": 114.4,
+      "height": 31.2,
+      "right": 320.85,
+      "bottom": 210.8
+    },
+    {
+      "label": "",
+      "tag": "input",
+      "x": 14,
+      "y": 227.8,
+      "width": 13,
+      "height": 13,
+      "right": 27,
+      "bottom": 240.8
+    },
+    {
+      "label": "",
+      "tag": "input",
+      "x": 144.82,
+      "y": 227.8,
+      "width": 13,
+      "height": 13,
+      "right": 157.82,
+      "bottom": 240.8
+    },
+    {
+      "label": "",
+      "tag": "input",
+      "x": 14,
+      "y": 252.8,
+      "width": 13,
+      "height": 13,
+      "right": 27,
+      "bottom": 265.8
+    },
+    {
+      "label": "Zoom In",
+      "tag": "button",
+      "x": 15,
+      "y": 786.6,
+      "width": 26,
+      "height": 26,
+      "right": 41,
+      "bottom": 812.6
+    },
+    {
+      "label": "Zoom Out",
+      "tag": "button",
+      "x": 15,
+      "y": 812.6,
+      "width": 26,
+      "height": 26,
+      "right": 41,
+      "bottom": 838.6
+    },
+    {
+      "label": "Fit View",
+      "tag": "button",
+      "x": 15,
+      "y": 838.6,
+      "width": 26,
+      "height": 26,
+      "right": 41,
+      "bottom": 864.6
+    },
+    {
+      "label": "Toggle Interactivity",
+      "tag": "button",
+      "x": 15,
+      "y": 864.6,
+      "width": 26,
+      "height": 26,
+      "right": 41,
+      "bottom": 890.6
+    },
+    {
+      "label": "Structure source selection",
+      "tag": "select",
+      "x": 57.03,
+      "y": 916.4,
+      "width": 319.38,
+      "height": 31.2,
+      "right": 376.4,
+      "bottom": 947.6
+    },
+    {
+      "label": "Collapse group",
+      "tag": "button",
+      "x": 258.18,
+      "y": 955.6,
+      "width": 97.81,
+      "height": 30.4,
+      "right": 355.99,
+      "bottom": 986
+    },
+    {
+      "label": "Open Design",
+      "tag": "button",
+      "x": 14,
+      "y": 994,
+      "width": 86.6,
+      "height": 30.4,
+      "right": 100.6,
+      "bottom": 1024.4
+    },
+    {
+      "label": "Reveal in Layers",
+      "tag": "button",
+      "x": 108.6,
+      "y": 994,
+      "width": 101.11,
+      "height": 30.4,
+      "right": 209.71,
+      "bottom": 1024.4
+    },
+    {
+      "label": "Edit properties / bindings",
+      "tag": "button",
+      "x": 217.71,
+      "y": 994,
+      "width": 152.03,
+      "height": 30.4,
+      "right": 369.74,
+      "bottom": 1024.4
+    },
+    {
+      "label": "Declared properties and bindings (30)",
+      "tag": "summary",
+      "x": 14,
+      "y": 1032.4,
+      "width": 362.4,
+      "height": 28.8,
+      "right": 376.4,
+      "bottom": 1061.2
+    },
+    {
+      "label": "Related source (0)",
+      "tag": "summary",
+      "x": 14,
+      "y": 1061.2,
+      "width": 362.4,
+      "height": 28.8,
+      "right": 376.4,
+      "bottom": 1090
+    }
+  ],
+  "buttonsOutsideViewport": [],
+  "controlsOutsideViewport": [],
+  "limits": "DOM geometry only. This does not prove narrow keyboard input, a mobile device, real Studio handoffs or authored edits."
+}

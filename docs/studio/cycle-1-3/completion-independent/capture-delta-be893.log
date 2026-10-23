@@ -1,0 +1,31 @@
+
+> vict-studio@0.1.0 test
+> vitest run tests/ui/capture-filter-independent.test.ts tests/ui/designer-capture-images.test.ts tests/ui/designer-capture-portals.test.ts tests/designer-visual-independent.test.ts tests/designer-visual.test.ts
+
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion-verify/260831-VCT-02/apps/studio
+
+ ✓ tests/designer-visual-independent.test.ts (1 test) 141ms
+ ✓ tests/designer-visual.test.ts (11 tests) 286ms
+ ✓ tests/ui/designer-capture-images.test.ts (1 test) 75ms
+6:19:20 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion-verify/260831-VCT-02/packages/ui-svelte/src/document/DocumentHost.svelte:105:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+6:19:22 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion-verify/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:301:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+6:19:22 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion-verify/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:301:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+6:19:22 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion-verify/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:368:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+6:19:22 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion-verify/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:368:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+ ✓ tests/ui/capture-filter-independent.test.ts (1 test) 79ms
+6:19:38 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion-verify/260831-VCT-02/packages/ui-editor/src/StateValuesPanel.svelte:106:6 A form label must be associated with a control
+https://svelte.dev/e/a11y_label_has_associated_control
+ ✓ tests/ui/designer-capture-portals.test.ts (7 tests) 517ms
+   ✓ detects the real CatalogPortal created by an unbound catalog Popover under document.body  401ms
+
+ Test Files  5 passed (5)
+      Tests  21 passed (21)
+   Start at  06:18:32
+   Duration  66.41s (transform 57.77s, setup 0ms, collect 120.42s, tests 1.10s, environment 16.57s, prepare 8.45s)
+
