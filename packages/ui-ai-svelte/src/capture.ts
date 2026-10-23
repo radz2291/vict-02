@@ -41,6 +41,15 @@ export async function captureRenderedElement(element: HTMLElement, viewport?: HT
     // content/border-box dimensions so padded elements do not expand/reflow.
     style: { width: renderedStyle.width, height: renderedStyle.height, margin: '0' },
     cacheBust: false,
+    // Avatar fallbacks may retain a display:none img with src="". Embedding
+    // that non-rendered image fetches the page HTML and fails image decoding.
+    // Omit only images outside layout; visible images and SVG defs stay intact.
+    filter: node => {
+      if (!(node instanceof HTMLImageElement)) return true;
+      for (let current: Element | null = node; current; current = current.parentElement)
+        if (getComputedStyle(current).display === 'none') return false;
+      return true;
+    },
   });
   // Keep source layout dimensions unchanged, then crop the raster viewport.
   // Changing the element's width/height before capture would reflow its layout.

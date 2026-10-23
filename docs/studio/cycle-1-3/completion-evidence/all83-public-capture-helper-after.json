@@ -1,0 +1,29 @@
+[
+  {
+    "stage": "source",
+    "sourceId": "live-completion",
+    "nodes": 151,
+    "sourceWidth": 909,
+    "sourceHeight": 4927.5,
+    "viewportWidth": 960,
+    "viewportHeight": 585,
+    "elements": 434,
+    "svgElements": 0,
+    "svgNamespaceSamples": []
+  },
+  {
+    "stage": "actual-captureRenderedElement",
+    "ok": true,
+    "blob": {
+      "bytes": 28570,
+      "type": "image/jpeg"
+    },
+    "width": 909,
+    "height": 585,
+    "sourceWidth": 909,
+    "sourceHeight": 4928,
+    "offsetLeft": 0,
+    "offsetTop": 60,
+    "cropped": true
+  }
+]

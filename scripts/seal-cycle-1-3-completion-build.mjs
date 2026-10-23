@@ -17,9 +17,10 @@ if(mode==='prepare'){
  console.log(`Prepared ${sources.length} committed input hashes at ${sha}.`);
 }else{
  const before=JSON.parse(readFileSync(output,'utf8'));
- if(before.productSha!==sha||JSON.stringify(before.sources)!==JSON.stringify(sources))throw Error('Build inputs changed; rebuild before sealing.');
+ git(['merge-base','--is-ancestor',before.productSha,sha]);
+ if(JSON.stringify(before.sources)!==JSON.stringify(sources))throw Error('Build inputs changed; rebuild before sealing.');
  const walk=path=>readdirSync(join(root,path),{withFileTypes:true}).flatMap(entry=>entry.isDirectory()?walk(join(path,entry.name)):[join(path,entry.name)]);
  const outputs=walk('apps/studio/build').map(path=>({path:relative('.',path).replaceAll('\\','/'),sha256:hash(path)}));
- writeFileSync(output,JSON.stringify({...before,sealedAt:new Date().toISOString(),outputs},null,2));
- console.log(`Sealed ${outputs.length} local build files at ${sha}. This records a local build, not a deployment.`);
+ writeFileSync(output,JSON.stringify({...before,evidenceHead:sha,sealedAt:new Date().toISOString(),outputs},null,2));
+ console.log(`Sealed ${outputs.length} local build files at product ${before.productSha} (current evidence HEAD ${sha}). This records a local build, not a deployment.`);
 }
