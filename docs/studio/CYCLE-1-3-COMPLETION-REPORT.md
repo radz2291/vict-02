@@ -8,6 +8,8 @@ Branch `codex/studio-cycle-1-3-completion`; first pushed product candidate `b67b
 
 Final product **`be893f29d44f595a8d9982575c2199636df69597`**, branch `codex/studio-cycle-1-3-completion`, is pushed and remote-equal. Main remains pinned as above. [Independent verdict](CYCLE-1-3-COMPLETION-INDEPENDENT.md) is supplied by a fresh-context verifier using a separate checkout and its own dependencies. The final local build seal records 934 committed inputs and 289 output hashes; all independently audited. Final AI static check has 0 errors/0 warnings; final Studio TypeScript passes. This is not a deployment.
 
+Independent verifier branch `codex/studio-cycle-1-3-completion-independent`, remote-equal verdict/evidence commit **`0dc7ada6ea677ed40b76b0c340001b4370c57ba1`**, is integrated as **`94870377edf7adfe4aefe68bbc80b0a7984c2efc`**. Its final audit covers product source and evidence delivery `040de336344f1b370bde202d62a5b674d0cf859a`; subsequent authority/report commits change no production inputs. The full final delivery SHA is supplied in the closing chat and is the completion branch head containing this report.
+
 | Finding / owner requirement | Current disposition and direct evidence |
 | --- | --- |
 | Growing reads, framework snapshot/property bounds, incomplete state/registry access | PASS: bounded overview/discovery and lossless source/state/registry paging; original snapshot limits unchanged. Independent challenges cover 500 reachable nodes, 200000 source characters, Unicode, prototype keys and recoverable admission. Full suite scope recorded below. |
