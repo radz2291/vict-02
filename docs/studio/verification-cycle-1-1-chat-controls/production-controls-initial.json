@@ -1,0 +1,8 @@
+{
+  "mode": "Actual exact-commit production shell; explicitly simulated transport. No provider call or edit proposal.",
+  "results": [
+    {
+      "failure": "TimeoutError: Timed out after waiting 30000ms"
+    }
+  ]
+}

@@ -1,0 +1,113 @@
+{
+  "producingCommit": "d23d73144770e7181c9b46febdfdec76f0c554e5",
+  "destination": "C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02",
+  "source": {
+    "resolvedPackageEntry": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-1-chat-ui-verification\\260831-VCT-02\\packages\\ui-svelte\\src\\index.ts",
+    "physicalPackageEntry": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-1-chat-ui-verification\\260831-VCT-02\\packages\\ui-svelte\\src\\index.ts",
+    "conversation": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-1-chat-ui-verification\\260831-VCT-02\\packages\\ui-svelte\\src\\Conversation.svelte",
+    "conversationSha256": "cc79e8188d0f4a180abd094bb6dd27a5d0a42094640a4bad5979bbb7d0adb211"
+  },
+  "dependencies": [
+    {
+      "specifier": "zod",
+      "resolved": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-1\\260831-VCT-02\\node_modules\\zod\\index.js",
+      "physical": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-1\\260831-VCT-02\\node_modules\\zod\\index.js",
+      "destinationResolved": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-1\\260831-VCT-02\\node_modules\\zod\\index.js",
+      "destinationPhysical": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-1\\260831-VCT-02\\node_modules\\zod\\index.js",
+      "samePhysicalFile": true,
+      "bytes": 105,
+      "sha256": "6419c4ac0e637ff08463083e31886d10354f74cbcc4e584400b2b837e39ac881"
+    },
+    {
+      "specifier": "@mastra/memory",
+      "resolved": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-1\\260831-VCT-02\\node_modules\\@mastra\\memory\\dist\\index.js",
+      "physical": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-1\\260831-VCT-02\\node_modules\\@mastra\\memory\\dist\\index.js",
+      "destinationResolved": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-1\\260831-VCT-02\\node_modules\\@mastra\\memory\\dist\\index.js",
+      "destinationPhysical": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-1\\260831-VCT-02\\node_modules\\@mastra\\memory\\dist\\index.js",
+      "samePhysicalFile": true,
+      "bytes": 1061,
+      "sha256": "f81edaf03b0d22b7da0ec69235284c5b7af8ec8f94f5c54d0fdb93fe696851fe"
+    },
+    {
+      "specifier": "@mastra/observability",
+      "resolved": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-1\\260831-VCT-02\\node_modules\\@mastra\\observability\\dist\\index.js",
+      "physical": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-1\\260831-VCT-02\\node_modules\\@mastra\\observability\\dist\\index.js",
+      "destinationResolved": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-1\\260831-VCT-02\\node_modules\\@mastra\\observability\\dist\\index.js",
+      "destinationPhysical": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-1\\260831-VCT-02\\node_modules\\@mastra\\observability\\dist\\index.js",
+      "samePhysicalFile": true,
+      "bytes": 345421,
+      "sha256": "1237678844239e577ab8cd235d5a03cbc7691c82d7e361cc23c3657380eb76fe"
+    },
+    {
+      "specifier": "@mastra/core/tools",
+      "resolved": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-1\\260831-VCT-02\\node_modules\\@mastra\\core\\dist\\tools\\index.js",
+      "physical": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-1\\260831-VCT-02\\node_modules\\@mastra\\core\\dist\\tools\\index.js",
+      "destinationResolved": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-1\\260831-VCT-02\\node_modules\\@mastra\\core\\dist\\tools\\index.js",
+      "destinationPhysical": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-1\\260831-VCT-02\\node_modules\\@mastra\\core\\dist\\tools\\index.js",
+      "samePhysicalFile": true,
+      "bytes": 2499,
+      "sha256": "a5b3e5de465ecb71ecec1d9fdee2ec0c8273a6997f23d3419ac6d0538aa034a1"
+    },
+    {
+      "specifier": "@mastra/libsql",
+      "resolved": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-1\\260831-VCT-02\\node_modules\\@mastra\\libsql\\dist\\index.js",
+      "physical": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-1\\260831-VCT-02\\node_modules\\@mastra\\libsql\\dist\\index.js",
+      "destinationResolved": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-1\\260831-VCT-02\\node_modules\\@mastra\\libsql\\dist\\index.js",
+      "destinationPhysical": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-1\\260831-VCT-02\\node_modules\\@mastra\\libsql\\dist\\index.js",
+      "samePhysicalFile": true,
+      "bytes": 514496,
+      "sha256": "cb000c8e074f250ad65682a26e48e559ae0cb2141abb92ae65dc31e7ef8b727a"
+    },
+    {
+      "specifier": "@mastra/core/agent",
+      "resolved": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-1\\260831-VCT-02\\node_modules\\@mastra\\core\\dist\\agent\\index.js",
+      "physical": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-1\\260831-VCT-02\\node_modules\\@mastra\\core\\dist\\agent\\index.js",
+      "destinationResolved": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-1\\260831-VCT-02\\node_modules\\@mastra\\core\\dist\\agent\\index.js",
+      "destinationPhysical": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-1\\260831-VCT-02\\node_modules\\@mastra\\core\\dist\\agent\\index.js",
+      "samePhysicalFile": true,
+      "bytes": 2493,
+      "sha256": "9b7e737018e1693668fbf7b75e19d9429b185cea45d08f7f21169ff0b599d16e"
+    },
+    {
+      "specifier": "@mastra/core",
+      "resolved": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-1\\260831-VCT-02\\node_modules\\@mastra\\core\\dist\\index.js",
+      "physical": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-1\\260831-VCT-02\\node_modules\\@mastra\\core\\dist\\index.js",
+      "destinationResolved": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-1\\260831-VCT-02\\node_modules\\@mastra\\core\\dist\\index.js",
+      "destinationPhysical": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-1\\260831-VCT-02\\node_modules\\@mastra\\core\\dist\\index.js",
+      "samePhysicalFile": true,
+      "bytes": 71,
+      "sha256": "78266d0ec58dbf2120b7cb37328a6dd46766b65a02e8999f1bfb9e514228df43"
+    },
+    {
+      "specifier": "@mastra/core/llm",
+      "resolved": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-1\\260831-VCT-02\\node_modules\\@mastra\\core\\dist\\llm\\index.js",
+      "physical": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-1\\260831-VCT-02\\node_modules\\@mastra\\core\\dist\\llm\\index.js",
+      "destinationResolved": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-1\\260831-VCT-02\\node_modules\\@mastra\\core\\dist\\llm\\index.js",
+      "destinationPhysical": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-1\\260831-VCT-02\\node_modules\\@mastra\\core\\dist\\llm\\index.js",
+      "samePhysicalFile": true,
+      "bytes": 1101,
+      "sha256": "482c3fb1876aaad1b097deb6551b87f70b066b6e6b16d6984af135e9a04a2d88"
+    }
+  ],
+  "selected": [
+    {
+      "specifier": "mdast-util-from-markdown",
+      "physical": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-1\\260831-VCT-02\\node_modules\\mdast-util-from-markdown\\index.js",
+      "destinationPhysical": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-1\\260831-VCT-02\\node_modules\\mdast-util-from-markdown\\index.js",
+      "samePhysicalFile": true,
+      "bytes": 89,
+      "sha256": "b5ac1d75a898f7e28ae90ce26ab937b5f574bd5b4e8c17745bd15ba78a4a33f5",
+      "version": "2.0.3",
+      "bundledInArtifact": true
+    },
+    {
+      "specifier": "@libsql/win32-x64-msvc",
+      "physical": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-1\\260831-VCT-02\\node_modules\\@libsql\\win32-x64-msvc\\index.node",
+      "destinationPhysical": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-1\\260831-VCT-02\\node_modules\\@libsql\\win32-x64-msvc\\index.node",
+      "samePhysicalFile": true,
+      "bytes": 8875520,
+      "sha256": "5d1de6b0e9b3f2b71d79f4c0f833cd345f7dbb0aa921a89a8ebf0a07571ddc9d"
+    }
+  ],
+  "allSamePhysicalFiles": true
+}
