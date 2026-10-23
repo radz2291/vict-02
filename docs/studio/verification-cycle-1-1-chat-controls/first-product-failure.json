@@ -1,0 +1,112 @@
+{
+  "mode": "Actual exact-commit production shell; explicitly simulated transport. No provider call or edit proposal.",
+  "results": [
+    {
+      "name": "hide/show preserves draft/feed/active turn and expands canvas",
+      "pass": true,
+      "beforeWidth": 960,
+      "hiddenWidth": 1280
+    },
+    {
+      "name": "busy-1280x720",
+      "pass": false,
+      "rects": {
+        "panel": {
+          "x": 0,
+          "y": 44.1875,
+          "right": 320,
+          "bottom": 696,
+          "width": 320,
+          "height": 651.8125
+        },
+        "details": {
+          "x": 20,
+          "y": 292,
+          "right": 284,
+          "bottom": 612,
+          "width": 264,
+          "height": 320
+        },
+        "feed": {
+          "x": 12,
+          "y": 44.1875,
+          "right": 307,
+          "bottom": 536,
+          "width": 295,
+          "height": 491.8125
+        },
+        "composer": {
+          "x": 12,
+          "y": 536,
+          "right": 307,
+          "bottom": 611,
+          "width": 295,
+          "height": 75
+        },
+        "input": {
+          "x": 12,
+          "y": 547,
+          "right": 231.265625,
+          "bottom": 611,
+          "width": 219.265625,
+          "height": 64
+        },
+        "footer": {
+          "x": 0,
+          "y": 611,
+          "right": 319,
+          "bottom": 656,
+          "width": 319,
+          "height": 45
+        },
+        "context": {
+          "x": 12,
+          "y": 628.03125,
+          "right": 222.859375,
+          "bottom": 643.96875,
+          "width": 210.859375,
+          "height": 15.9375
+        },
+        "stop": {
+          "x": 230.859375,
+          "y": 622,
+          "right": 273,
+          "bottom": 650,
+          "width": 42.140625,
+          "height": 28
+        },
+        "trigger": {
+          "x": 279,
+          "y": 616,
+          "right": 307,
+          "bottom": 656,
+          "width": 28,
+          "height": 40
+        },
+        "status": {
+          "x": 14,
+          "y": 658,
+          "right": 305,
+          "bottom": 688,
+          "width": 291,
+          "height": 30
+        },
+        "canvas": {
+          "x": 320,
+          "y": 82.1875,
+          "right": 1280,
+          "bottom": 666.5,
+          "width": 960,
+          "height": 584.3125
+        },
+        "visibleHeading": false,
+        "visibleAssistant": false,
+        "draft": "Draft preserved through hiding",
+        "activity": 8
+      }
+    },
+    {
+      "failure": "Error: Geometry failed: busy-1280x720"
+    }
+  ]
+}
