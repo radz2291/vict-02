@@ -1,0 +1,4441 @@
+{
+  "wire": [
+    {
+      "model": "glm-5.3-flash",
+      "max_tokens": 131072,
+      "hasReasoningEffort": false,
+      "stream": true
+    },
+    {
+      "model": "glm-5.3-flash",
+      "max_tokens": 131072,
+      "hasReasoningEffort": false,
+      "stream": true
+    },
+    {
+      "model": "glm-5.3-flash",
+      "max_tokens": 131072,
+      "hasReasoningEffort": false,
+      "stream": true
+    },
+    {
+      "model": "glm-5.3-flash",
+      "max_tokens": 131072,
+      "hasReasoningEffort": false,
+      "stream": true
+    },
+    {
+      "model": "glm-5.3-flash",
+      "max_tokens": 131072,
+      "hasReasoningEffort": false,
+      "stream": true
+    },
+    {
+      "model": "glm-5.3-flash",
+      "max_tokens": 131072,
+      "hasReasoningEffort": false,
+      "stream": true
+    }
+  ],
+  "candidate": "3c54f5e525827b66abcee9ac03acc68642b9e8c3",
+  "product": "3c54f5e525827b66abcee9ac03acc68642b9e8c3",
+  "prompt": "Pls create a landing page for an Ai platform like chatgpt, called Quellight.",
+  "startedAt": "2026-10-23T00:45:31.691Z",
+  "calls": [
+    {
+      "at": "2026-10-23T00:45:32.154Z",
+      "maxOutputTokens": 131072,
+      "parts": [
+        {
+          "type": "stream-start"
+        },
+        {
+          "type": "response-metadata"
+        },
+        {
+          "type": "text-start"
+        },
+        {
+          "type": "tool-input-start",
+          "toolCallId": "call_089683db29f1419ab4b62c05",
+          "toolName": "studio_screen_edit"
+        },
+        {
+          "type": "text-end"
+        },
+        {
+          "type": "tool-input-end",
+          "toolCallId": "call_089683db29f1419ab4b62c05"
+        },
+        {
+          "type": "tool-call",
+          "toolCallId": "call_089683db29f1419ab4b62c05",
+          "toolName": "studio_screen_edit",
+          "inputLength": 1600,
+          "validJSON": true
+        },
+        {
+          "type": "finish",
+          "finishReason": {
+            "unified": "tool-calls",
+            "raw": "tool_calls"
+          },
+          "usage": {
+            "inputTokens": {
+              "total": 2377,
+              "noCache": 2377,
+              "cacheRead": 0
+            },
+            "outputTokens": {
+              "total": 5053,
+              "text": 589,
+              "reasoning": 4464
+            },
+            "raw": {
+              "prompt_tokens": 2377,
+              "completion_tokens": 5053,
+              "total_tokens": 7430,
+              "prompt_tokens_details": {
+                "cached_tokens": 0
+              },
+              "completion_tokens_details": {
+                "reasoning_tokens": 4464
+              }
+            }
+          }
+        }
+      ],
+      "reasoningCharacters": 16287,
+      "textCharacters": 154,
+      "toolInputs": {
+        "call_089683db29f1419ab4b62c05": {
+          "length": 1600,
+          "validJSON": true
+        }
+      }
+    },
+    {
+      "at": "2026-10-23T00:47:07.811Z",
+      "maxOutputTokens": 131072,
+      "parts": [
+        {
+          "type": "stream-start"
+        },
+        {
+          "type": "response-metadata"
+        },
+        {
+          "type": "text-start"
+        },
+        {
+          "type": "tool-input-start",
+          "toolCallId": "call_f9186953ff284b93bf150017",
+          "toolName": "studio_screen_edit"
+        },
+        {
+          "type": "text-end"
+        },
+        {
+          "type": "tool-input-end",
+          "toolCallId": "call_f9186953ff284b93bf150017"
+        },
+        {
+          "type": "tool-call",
+          "toolCallId": "call_f9186953ff284b93bf150017",
+          "toolName": "studio_screen_edit",
+          "inputLength": 1998,
+          "validJSON": true
+        },
+        {
+          "type": "finish",
+          "finishReason": {
+            "unified": "tool-calls",
+            "raw": "tool_calls"
+          },
+          "usage": {
+            "inputTokens": {
+              "total": 7503,
+              "noCache": 5135,
+              "cacheRead": 2368
+            },
+            "outputTokens": {
+              "total": 760,
+              "text": 688,
+              "reasoning": 72
+            },
+            "raw": {
+              "prompt_tokens": 7503,
+              "completion_tokens": 760,
+              "total_tokens": 8263,
+              "prompt_tokens_details": {
+                "cached_tokens": 2368
+              },
+              "completion_tokens_details": {
+                "reasoning_tokens": 72
+              }
+            }
+          }
+        }
+      ],
+      "reasoningCharacters": 262,
+      "textCharacters": 34,
+      "toolInputs": {
+        "call_f9186953ff284b93bf150017": {
+          "length": 1998,
+          "validJSON": true
+        }
+      }
+    },
+    {
+      "at": "2026-10-23T00:47:20.034Z",
+      "maxOutputTokens": 131072,
+      "parts": [
+        {
+          "type": "stream-start"
+        },
+        {
+          "type": "response-metadata"
+        },
+        {
+          "type": "text-start"
+        },
+        {
+          "type": "tool-input-start",
+          "toolCallId": "call_f1c23ed61e3f47e2a0433d63",
+          "toolName": "studio_screen_edit"
+        },
+        {
+          "type": "text-end"
+        },
+        {
+          "type": "tool-input-end",
+          "toolCallId": "call_f1c23ed61e3f47e2a0433d63"
+        },
+        {
+          "type": "tool-call",
+          "toolCallId": "call_f1c23ed61e3f47e2a0433d63",
+          "toolName": "studio_screen_edit",
+          "inputLength": 2141,
+          "validJSON": true
+        },
+        {
+          "type": "finish",
+          "finishReason": {
+            "unified": "tool-calls",
+            "raw": "tool_calls"
+          },
+          "usage": {
+            "inputTokens": {
+              "total": 8341,
+              "noCache": 853,
+              "cacheRead": 7488
+            },
+            "outputTokens": {
+              "total": 756,
+              "text": 721,
+              "reasoning": 35
+            },
+            "raw": {
+              "prompt_tokens": 8341,
+              "completion_tokens": 756,
+              "total_tokens": 9097,
+              "prompt_tokens_details": {
+                "cached_tokens": 7488
+              },
+              "completion_tokens_details": {
+                "reasoning_tokens": 35
+              }
+            }
+          }
+        }
+      ],
+      "reasoningCharacters": 143,
+      "textCharacters": 52,
+      "toolInputs": {
+        "call_f1c23ed61e3f47e2a0433d63": {
+          "length": 2141,
+          "validJSON": true
+        }
+      }
+    },
+    {
+      "at": "2026-10-23T00:47:31.841Z",
+      "maxOutputTokens": 131072,
+      "parts": [
+        {
+          "type": "stream-start"
+        },
+        {
+          "type": "response-metadata"
+        },
+        {
+          "type": "text-start"
+        },
+        {
+          "type": "tool-input-start",
+          "toolCallId": "call_1553d1072a12459e92fa6f1d",
+          "toolName": "studio_screen_edit"
+        },
+        {
+          "type": "text-end"
+        },
+        {
+          "type": "tool-input-end",
+          "toolCallId": "call_1553d1072a12459e92fa6f1d"
+        },
+        {
+          "type": "tool-call",
+          "toolCallId": "call_1553d1072a12459e92fa6f1d",
+          "toolName": "studio_screen_edit",
+          "inputLength": 2135,
+          "validJSON": true
+        },
+        {
+          "type": "finish",
+          "finishReason": {
+            "unified": "tool-calls",
+            "raw": "tool_calls"
+          },
+          "usage": {
+            "inputTokens": {
+              "total": 9170,
+              "noCache": 850,
+              "cacheRead": 8320
+            },
+            "outputTokens": {
+              "total": 758,
+              "text": 723,
+              "reasoning": 35
+            },
+            "raw": {
+              "prompt_tokens": 9170,
+              "completion_tokens": 758,
+              "total_tokens": 9928,
+              "prompt_tokens_details": {
+                "cached_tokens": 8320
+              },
+              "completion_tokens_details": {
+                "reasoning_tokens": 35
+              }
+            }
+          }
+        }
+      ],
+      "reasoningCharacters": 117,
+      "textCharacters": 89,
+      "toolInputs": {
+        "call_1553d1072a12459e92fa6f1d": {
+          "length": 2135,
+          "validJSON": true
+        }
+      }
+    },
+    {
+      "at": "2026-10-23T00:47:43.324Z",
+      "maxOutputTokens": 131072,
+      "parts": [
+        {
+          "type": "stream-start"
+        },
+        {
+          "type": "response-metadata"
+        },
+        {
+          "type": "text-start"
+        },
+        {
+          "type": "tool-input-start",
+          "toolCallId": "call_6b27de14301441c0b4f55119",
+          "toolName": "studio_screen_edit"
+        },
+        {
+          "type": "text-end"
+        },
+        {
+          "type": "tool-input-end",
+          "toolCallId": "call_6b27de14301441c0b4f55119"
+        },
+        {
+          "type": "tool-call",
+          "toolCallId": "call_6b27de14301441c0b4f55119",
+          "toolName": "studio_screen_edit",
+          "inputLength": 1165,
+          "validJSON": true
+        },
+        {
+          "type": "finish",
+          "finishReason": {
+            "unified": "tool-calls",
+            "raw": "tool_calls"
+          },
+          "usage": {
+            "inputTokens": {
+              "total": 10006,
+              "noCache": 854,
+              "cacheRead": 9152
+            },
+            "outputTokens": {
+              "total": 414,
+              "text": 397,
+              "reasoning": 17
+            },
+            "raw": {
+              "prompt_tokens": 10006,
+              "completion_tokens": 414,
+              "total_tokens": 10420,
+              "prompt_tokens_details": {
+                "cached_tokens": 9152
+              },
+              "completion_tokens_details": {
+                "reasoning_tokens": 17
+              }
+            }
+          }
+        }
+      ],
+      "reasoningCharacters": 63,
+      "textCharacters": 49,
+      "toolInputs": {
+        "call_6b27de14301441c0b4f55119": {
+          "length": 1165,
+          "validJSON": true
+        }
+      }
+    },
+    {
+      "at": "2026-10-23T00:47:51.576Z",
+      "maxOutputTokens": 131072,
+      "parts": [
+        {
+          "type": "stream-start"
+        },
+        {
+          "type": "response-metadata"
+        },
+        {
+          "type": "text-start"
+        },
+        {
+          "type": "text-end"
+        },
+        {
+          "type": "finish",
+          "finishReason": {
+            "unified": "stop",
+            "raw": "stop"
+          },
+          "usage": {
+            "inputTokens": {
+              "total": 10499,
+              "noCache": 515,
+              "cacheRead": 9984
+            },
+            "outputTokens": {
+              "total": 213,
+              "text": 199,
+              "reasoning": 14
+            },
+            "raw": {
+              "prompt_tokens": 10499,
+              "completion_tokens": 213,
+              "total_tokens": 10712,
+              "prompt_tokens_details": {
+                "cached_tokens": 9984
+              },
+              "completion_tokens_details": {
+                "reasoning_tokens": 14
+              }
+            }
+          }
+        }
+      ],
+      "reasoningCharacters": 56,
+      "textCharacters": 773,
+      "toolInputs": {}
+    }
+  ],
+  "events": [
+    {
+      "type": "started",
+      "runId": "ea4ea3cf-407a-4fc2-bb6f-02ad682dbc6e",
+      "model": "zai/glm-5.3-flash",
+      "engine": "VICT / Mastra"
+    },
+    {
+      "type": "progress",
+      "message": "Connecting to the VICT / Mastra agent…"
+    },
+    {
+      "type": "progress",
+      "message": "Agent is working on your request…"
+    },
+    {
+      "type": "text",
+      "delta": "I"
+    },
+    {
+      "type": "text",
+      "delta": "'ll"
+    },
+    {
+      "type": "text",
+      "delta": " build"
+    },
+    {
+      "type": "text",
+      "delta": " the"
+    },
+    {
+      "type": "text",
+      "delta": " Qu"
+    },
+    {
+      "type": "text",
+      "delta": "ell"
+    },
+    {
+      "type": "text",
+      "delta": "ight"
+    },
+    {
+      "type": "text",
+      "delta": " landing"
+    },
+    {
+      "type": "text",
+      "delta": " page"
+    },
+    {
+      "type": "text",
+      "delta": " step"
+    },
+    {
+      "type": "text",
+      "delta": " by"
+    },
+    {
+      "type": "text",
+      "delta": " step"
+    },
+    {
+      "type": "text",
+      "delta": ":"
+    },
+    {
+      "type": "text",
+      "delta": " first"
+    },
+    {
+      "type": "text",
+      "delta": " a"
+    },
+    {
+      "type": "text",
+      "delta": " top"
+    },
+    {
+      "type": "text",
+      "delta": " nav"
+    },
+    {
+      "type": "text",
+      "delta": " bar"
+    },
+    {
+      "type": "text",
+      "delta": ","
+    },
+    {
+      "type": "text",
+      "delta": " then"
+    },
+    {
+      "type": "text",
+      "delta": " hero"
+    },
+    {
+      "type": "text",
+      "delta": ","
+    },
+    {
+      "type": "text",
+      "delta": " features"
+    },
+    {
+      "type": "text",
+      "delta": ","
+    },
+    {
+      "type": "text",
+      "delta": " a"
+    },
+    {
+      "type": "text",
+      "delta": " prompt"
+    },
+    {
+      "type": "text",
+      "delta": "-preview"
+    },
+    {
+      "type": "text",
+      "delta": " section"
+    },
+    {
+      "type": "text",
+      "delta": ","
+    },
+    {
+      "type": "text",
+      "delta": " and"
+    },
+    {
+      "type": "text",
+      "delta": " footer"
+    },
+    {
+      "type": "text",
+      "delta": "."
+    },
+    {
+      "type": "text",
+      "delta": " Starting"
+    },
+    {
+      "type": "text",
+      "delta": " with"
+    },
+    {
+      "type": "text",
+      "delta": " the"
+    },
+    {
+      "type": "text",
+      "delta": " nav"
+    },
+    {
+      "type": "text",
+      "delta": ":"
+    },
+    {
+      "type": "progress",
+      "message": "Preparing and validating an edit…"
+    },
+    {
+      "type": "proposal",
+      "proposal": {
+        "proposalId": "b99a5c3c-7daa-41cc-b359-3f0ee8104f5d",
+        "cursor": {
+          "documentId": "independent-plain-quellight",
+          "revision": "r1#0",
+          "digest": "8ff86806328f89227dc17664a73a11e9f4685e1e2b234745e5877a728223f48f",
+          "epoch": "c19c61e4-0f68-4694-be1b-3e91dc2e3f30"
+        },
+        "edit": {
+          "expectedRevision": "r1#0",
+          "reason": "Add top navigation bar with brand, links and CTA for the Quellight landing page",
+          "operations": [
+            {
+              "op": "modify",
+              "nodeId": "screen",
+              "styles": {
+                "padding": "0",
+                "gap": "0"
+              }
+            },
+            {
+              "op": "add",
+              "recipe": "row",
+              "nodeId": "nav",
+              "parentId": "screen",
+              "styles": {
+                "display": "flex",
+                "align-items": "center",
+                "justify-content": "space-between",
+                "padding": "18px 40px",
+                "background-color": "#ffffff",
+                "border-bottom": "1px solid #eceef5"
+              }
+            },
+            {
+              "op": "add",
+              "recipe": "text",
+              "nodeId": "nav-brand",
+              "parentId": "nav",
+              "text": "Quellight",
+              "styles": {
+                "font-size": "20px",
+                "font-weight": "800",
+                "color": "#4f46e5",
+                "letter-spacing": "-0.3px"
+              }
+            },
+            {
+              "op": "add",
+              "recipe": "row",
+              "nodeId": "nav-links",
+              "parentId": "nav",
+              "styles": {
+                "display": "flex",
+                "align-items": "center",
+                "gap": "28px"
+              }
+            },
+            {
+              "op": "add",
+              "recipe": "text",
+              "nodeId": "nav-link-product",
+              "parentId": "nav-links",
+              "text": "Product",
+              "styles": {
+                "font-size": "15px",
+                "font-weight": "500",
+                "color": "#64748b"
+              }
+            },
+            {
+              "op": "add",
+              "recipe": "text",
+              "nodeId": "nav-link-pricing",
+              "parentId": "nav-links",
+              "text": "Pricing",
+              "styles": {
+                "font-size": "15px",
+                "font-weight": "500",
+                "color": "#64748b"
+              }
+            },
+            {
+              "op": "add",
+              "recipe": "text",
+              "nodeId": "nav-link-docs",
+              "parentId": "nav-links",
+              "text": "Docs",
+              "styles": {
+                "font-size": "15px",
+                "font-weight": "500",
+                "color": "#64748b"
+              }
+            },
+            {
+              "op": "add",
+              "recipe": "button",
+              "nodeId": "nav-cta",
+              "parentId": "nav-links",
+              "props": {
+                "label": "Get started"
+              },
+              "styles": {
+                "background-color": "#4f46e5",
+                "color": "#ffffff",
+                "border-radius": "10px",
+                "padding": "10px 20px",
+                "font-weight": "600"
+              }
+            }
+          ]
+        },
+        "resultDigest": "3f6fecfa7721fa15f94e20307918e8c1d669a675520b5db008f11bce24ab2801"
+      }
+    },
+    {
+      "type": "edit-result",
+      "result": {
+        "ok": true,
+        "revision": "r1#1",
+        "digest": "3f6fecfa7721fa15f94e20307918e8c1d669a675520b5db008f11bce24ab2801"
+      },
+      "reason": "Add top navigation bar with brand, links and CTA for the Quellight landing page"
+    },
+    {
+      "type": "text",
+      "delta": "Nav"
+    },
+    {
+      "type": "text",
+      "delta": " applied"
+    },
+    {
+      "type": "text",
+      "delta": "."
+    },
+    {
+      "type": "text",
+      "delta": " Now"
+    },
+    {
+      "type": "text",
+      "delta": " the"
+    },
+    {
+      "type": "text",
+      "delta": " hero"
+    },
+    {
+      "type": "text",
+      "delta": " section"
+    },
+    {
+      "type": "text",
+      "delta": ":"
+    },
+    {
+      "type": "progress",
+      "message": "Preparing and validating an edit…"
+    },
+    {
+      "type": "proposal",
+      "proposal": {
+        "proposalId": "7ab2155d-9e78-416d-9aec-d7e8d295cfcf",
+        "cursor": {
+          "documentId": "independent-plain-quellight",
+          "revision": "r1#1",
+          "digest": "3f6fecfa7721fa15f94e20307918e8c1d669a675520b5db008f11bce24ab2801",
+          "epoch": "c19c61e4-0f68-4694-be1b-3e91dc2e3f30"
+        },
+        "edit": {
+          "expectedRevision": "r1#1",
+          "reason": "Add hero section with badge, headline, supporting copy and two CTA buttons",
+          "operations": [
+            {
+              "op": "add",
+              "recipe": "section",
+              "nodeId": "hero",
+              "parentId": "screen",
+              "styles": {
+                "display": "flex",
+                "flex-direction": "column",
+                "align-items": "center",
+                "text-align": "center",
+                "gap": "18px",
+                "padding": "96px 40px",
+                "background": "linear-gradient(180deg, #f4f5ff 0%, #ffffff 100%)"
+              }
+            },
+            {
+              "op": "add",
+              "recipe": "text",
+              "nodeId": "hero-badge",
+              "parentId": "hero",
+              "text": "New · Quellight 2.0 is here",
+              "styles": {
+                "background-color": "#eef0ff",
+                "color": "#4f46e5",
+                "padding": "6px 14px",
+                "border-radius": "999px",
+                "font-size": "13px",
+                "font-weight": "600"
+              }
+            },
+            {
+              "op": "add",
+              "recipe": "heading",
+              "nodeId": "hero-title",
+              "parentId": "hero",
+              "text": "AI that turns questions into clarity",
+              "styles": {
+                "font-size": "56px",
+                "font-weight": "800",
+                "color": "#171d33",
+                "line-height": "1.08",
+                "letter-spacing": "-1px",
+                "max-width": "760px",
+                "margin": "0"
+              }
+            },
+            {
+              "op": "add",
+              "recipe": "text",
+              "nodeId": "hero-sub",
+              "parentId": "hero",
+              "text": "Quellight is the AI copilot for work and curiosity — draft, code, research and solve with answers you can trust, in seconds.",
+              "styles": {
+                "font-size": "18px",
+                "color": "#5b6478",
+                "line-height": "1.6",
+                "max-width": "620px"
+              }
+            },
+            {
+              "op": "add",
+              "recipe": "row",
+              "nodeId": "hero-cta",
+              "parentId": "hero",
+              "styles": {
+                "display": "flex",
+                "gap": "14px",
+                "justify-content": "center",
+                "margin-top": "10px"
+              }
+            },
+            {
+              "op": "add",
+              "recipe": "button",
+              "nodeId": "btn-start",
+              "parentId": "hero-cta",
+              "props": {
+                "label": "Start free — it's fast"
+              },
+              "styles": {
+                "background-color": "#4f46e5",
+                "color": "#ffffff",
+                "border-radius": "10px",
+                "padding": "14px 28px",
+                "font-weight": "600"
+              }
+            },
+            {
+              "op": "add",
+              "recipe": "button",
+              "nodeId": "btn-demo",
+              "parentId": "hero-cta",
+              "props": {
+                "label": "See a demo"
+              },
+              "styles": {
+                "background-color": "#ffffff",
+                "color": "#1e2440",
+                "border": "1px solid #d9dded",
+                "border-radius": "10px",
+                "padding": "14px 28px",
+                "font-weight": "600"
+              }
+            }
+          ]
+        },
+        "resultDigest": "2e66e9a0584e323e1f5c71156192a5bdec422a9cf7c12f98575dd4c1aac6e13a"
+      }
+    },
+    {
+      "type": "edit-result",
+      "result": {
+        "ok": true,
+        "revision": "r1#2",
+        "digest": "2e66e9a0584e323e1f5c71156192a5bdec422a9cf7c12f98575dd4c1aac6e13a"
+      },
+      "reason": "Add hero section with badge, headline, supporting copy and two CTA buttons"
+    },
+    {
+      "type": "text",
+      "delta": "Hero"
+    },
+    {
+      "type": "text",
+      "delta": " applied"
+    },
+    {
+      "type": "text",
+      "delta": "."
+    },
+    {
+      "type": "text",
+      "delta": " Now"
+    },
+    {
+      "type": "text",
+      "delta": " the"
+    },
+    {
+      "type": "text",
+      "delta": " features"
+    },
+    {
+      "type": "text",
+      "delta": " section"
+    },
+    {
+      "type": "text",
+      "delta": " ("
+    },
+    {
+      "type": "text",
+      "delta": "first"
+    },
+    {
+      "type": "text",
+      "delta": " part"
+    },
+    {
+      "type": "text",
+      "delta": "):"
+    },
+    {
+      "type": "progress",
+      "message": "Preparing and validating an edit…"
+    },
+    {
+      "type": "proposal",
+      "proposal": {
+        "proposalId": "c062fcb0-cb3d-4450-be35-0f14edd40074",
+        "cursor": {
+          "documentId": "independent-plain-quellight",
+          "revision": "r1#2",
+          "digest": "2e66e9a0584e323e1f5c71156192a5bdec422a9cf7c12f98575dd4c1aac6e13a",
+          "epoch": "c19c61e4-0f68-4694-be1b-3e91dc2e3f30"
+        },
+        "edit": {
+          "expectedRevision": "r1#2",
+          "reason": "Add features section with title, wrapping card row and the first two feature cards",
+          "operations": [
+            {
+              "op": "add",
+              "recipe": "section",
+              "nodeId": "features",
+              "parentId": "screen",
+              "styles": {
+                "display": "flex",
+                "flex-direction": "column",
+                "align-items": "center",
+                "gap": "12px",
+                "padding": "80px 40px",
+                "background-color": "#ffffff"
+              }
+            },
+            {
+              "op": "add",
+              "recipe": "heading",
+              "nodeId": "features-title",
+              "parentId": "features",
+              "text": "Everything you need, in one AI",
+              "styles": {
+                "font-size": "38px",
+                "font-weight": "800",
+                "color": "#171d33",
+                "margin": "0",
+                "text-align": "center"
+              }
+            },
+            {
+              "op": "add",
+              "recipe": "row",
+              "nodeId": "features-row",
+              "parentId": "features",
+              "styles": {
+                "display": "flex",
+                "flex-wrap": "wrap",
+                "gap": "24px",
+                "justify-content": "center",
+                "max-width": "1060px",
+                "width": "100%",
+                "margin-top": "20px"
+              }
+            },
+            {
+              "op": "add",
+              "recipe": "section",
+              "nodeId": "card-answers",
+              "parentId": "features-row",
+              "styles": {
+                "display": "flex",
+                "flex-direction": "column",
+                "gap": "8px",
+                "background-color": "#f7f8fc",
+                "border": "1px solid #eef0f7",
+                "border-radius": "16px",
+                "padding": "26px",
+                "flex": "1 1 260px"
+              }
+            },
+            {
+              "op": "add",
+              "recipe": "heading",
+              "nodeId": "card-answers-title",
+              "parentId": "card-answers",
+              "text": "⚡ Instant answers",
+              "styles": {
+                "font-size": "19px",
+                "font-weight": "700",
+                "color": "#1e2440",
+                "margin": "0"
+              }
+            },
+            {
+              "op": "add",
+              "recipe": "text",
+              "nodeId": "card-answers-text",
+              "parentId": "card-answers",
+              "text": "Ask in plain language and get clear, sourced responses across hundreds of topics — no setup required.",
+              "styles": {
+                "font-size": "15px",
+                "color": "#5b6478",
+                "line-height": "1.6"
+              }
+            },
+            {
+              "op": "add",
+              "recipe": "section",
+              "nodeId": "card-code",
+              "parentId": "features-row",
+              "styles": {
+                "display": "flex",
+                "flex-direction": "column",
+                "gap": "8px",
+                "background-color": "#f7f8fc",
+                "border": "1px solid #eef0f7",
+                "border-radius": "16px",
+                "padding": "26px",
+                "flex": "1 1 260px"
+              }
+            },
+            {
+              "op": "add",
+              "recipe": "heading",
+              "nodeId": "card-code-title",
+              "parentId": "card-code",
+              "text": "💻 Built-in code copilot",
+              "styles": {
+                "font-size": "19px",
+                "font-weight": "700",
+                "color": "#1e2440",
+                "margin": "0"
+              }
+            }
+          ]
+        },
+        "resultDigest": "b69a83c2c50fd17ea8846ee50cd36b6cc4a212b15fe329a23ccd032c2f06e848"
+      }
+    },
+    {
+      "type": "edit-result",
+      "result": {
+        "ok": true,
+        "revision": "r1#3",
+        "digest": "b69a83c2c50fd17ea8846ee50cd36b6cc4a212b15fe329a23ccd032c2f06e848"
+      },
+      "reason": "Add features section with title, wrapping card row and the first two feature cards"
+    },
+    {
+      "type": "text",
+      "delta": "Features"
+    },
+    {
+      "type": "text",
+      "delta": " part"
+    },
+    {
+      "type": "text",
+      "delta": " "
+    },
+    {
+      "type": "text",
+      "delta": "1"
+    },
+    {
+      "type": "text",
+      "delta": " applied"
+    },
+    {
+      "type": "text",
+      "delta": "."
+    },
+    {
+      "type": "text",
+      "delta": " Comple"
+    },
+    {
+      "type": "text",
+      "delta": "ting"
+    },
+    {
+      "type": "text",
+      "delta": " the"
+    },
+    {
+      "type": "text",
+      "delta": " cards"
+    },
+    {
+      "type": "text",
+      "delta": " and"
+    },
+    {
+      "type": "text",
+      "delta": " adding"
+    },
+    {
+      "type": "text",
+      "delta": " the"
+    },
+    {
+      "type": "text",
+      "delta": " dark"
+    },
+    {
+      "type": "text",
+      "delta": " prompt"
+    },
+    {
+      "type": "text",
+      "delta": "-preview"
+    },
+    {
+      "type": "text",
+      "delta": " section"
+    },
+    {
+      "type": "text",
+      "delta": ":"
+    },
+    {
+      "type": "progress",
+      "message": "Preparing and validating an edit…"
+    },
+    {
+      "type": "proposal",
+      "proposal": {
+        "proposalId": "e81732e1-3eac-462b-a549-a3315edc76bc",
+        "cursor": {
+          "documentId": "independent-plain-quellight",
+          "revision": "r1#3",
+          "digest": "b69a83c2c50fd17ea8846ee50cd36b6cc4a212b15fe329a23ccd032c2f06e848",
+          "epoch": "c19c61e4-0f68-4694-be1b-3e91dc2e3f30"
+        },
+        "edit": {
+          "expectedRevision": "r1#3",
+          "reason": "Finish the third feature card and add the dark playground section with title and input row",
+          "operations": [
+            {
+              "op": "add",
+              "recipe": "text",
+              "nodeId": "card-code-text",
+              "parentId": "card-code",
+              "text": "Generate, explain and refactor code in 40+ languages, right inside the conversation.",
+              "styles": {
+                "font-size": "15px",
+                "color": "#5b6478",
+                "line-height": "1.6"
+              }
+            },
+            {
+              "op": "add",
+              "recipe": "section",
+              "nodeId": "card-privacy",
+              "parentId": "features-row",
+              "styles": {
+                "display": "flex",
+                "flex-direction": "column",
+                "gap": "8px",
+                "background-color": "#f7f8fc",
+                "border": "1px solid #eef0f7",
+                "border-radius": "16px",
+                "padding": "26px",
+                "flex": "1 1 260px"
+              }
+            },
+            {
+              "op": "add",
+              "recipe": "heading",
+              "nodeId": "card-privacy-title",
+              "parentId": "card-privacy",
+              "text": "🔒 Private by default",
+              "styles": {
+                "font-size": "19px",
+                "font-weight": "700",
+                "color": "#1e2440",
+                "margin": "0"
+              }
+            },
+            {
+              "op": "add",
+              "recipe": "text",
+              "nodeId": "card-privacy-text",
+              "parentId": "card-privacy",
+              "text": "Your chats are encrypted and never used to train models. You stay in control of your data.",
+              "styles": {
+                "font-size": "15px",
+                "color": "#5b6478",
+                "line-height": "1.6"
+              }
+            },
+            {
+              "op": "add",
+              "recipe": "section",
+              "nodeId": "demo",
+              "parentId": "screen",
+              "styles": {
+                "display": "flex",
+                "flex-direction": "column",
+                "align-items": "center",
+                "gap": "14px",
+                "background-color": "#151a2e",
+                "border-radius": "24px",
+                "margin": "0 40px 72px",
+                "padding": "56px 40px",
+                "text-align": "center"
+              }
+            },
+            {
+              "op": "add",
+              "recipe": "heading",
+              "nodeId": "demo-title",
+              "parentId": "demo",
+              "text": "Ask your first question",
+              "styles": {
+                "font-size": "32px",
+                "font-weight": "800",
+                "color": "#ffffff",
+                "margin": "0"
+              }
+            },
+            {
+              "op": "add",
+              "recipe": "text",
+              "nodeId": "demo-sub",
+              "parentId": "demo",
+              "text": "Type anything below and see the Quellight playground in action — no account needed.",
+              "styles": {
+                "font-size": "16px",
+                "color": "#aab1c9",
+                "max-width": "520px",
+                "line-height": "1.6"
+              }
+            },
+            {
+              "op": "add",
+              "recipe": "row",
+              "nodeId": "demo-form",
+              "parentId": "demo",
+              "styles": {
+                "display": "flex",
+                "gap": "12px",
+                "width": "100%",
+                "max-width": "620px",
+                "margin-top": "8px"
+              }
+            }
+          ]
+        },
+        "resultDigest": "0fcafc2bb45d7013d649f5e2a45e356e0dbb1f8cbe5bdfd79914ead7dbc7e2e1"
+      }
+    },
+    {
+      "type": "edit-result",
+      "result": {
+        "ok": true,
+        "revision": "r1#4",
+        "digest": "0fcafc2bb45d7013d649f5e2a45e356e0dbb1f8cbe5bdfd79914ead7dbc7e2e1"
+      },
+      "reason": "Finish the third feature card and add the dark playground section with title and input row"
+    },
+    {
+      "type": "text",
+      "delta": "Final"
+    },
+    {
+      "type": "text",
+      "delta": " batch"
+    },
+    {
+      "type": "text",
+      "delta": " —"
+    },
+    {
+      "type": "text",
+      "delta": " the"
+    },
+    {
+      "type": "text",
+      "delta": " input"
+    },
+    {
+      "type": "text",
+      "delta": ","
+    },
+    {
+      "type": "text",
+      "delta": " send"
+    },
+    {
+      "type": "text",
+      "delta": " button"
+    },
+    {
+      "type": "text",
+      "delta": ","
+    },
+    {
+      "type": "text",
+      "delta": " and"
+    },
+    {
+      "type": "text",
+      "delta": " footer"
+    },
+    {
+      "type": "text",
+      "delta": ":"
+    },
+    {
+      "type": "progress",
+      "message": "Preparing and validating an edit…"
+    },
+    {
+      "type": "proposal",
+      "proposal": {
+        "proposalId": "a60c3480-7e0c-4df5-bc48-53a84b261b4a",
+        "cursor": {
+          "documentId": "independent-plain-quellight",
+          "revision": "r1#4",
+          "digest": "0fcafc2bb45d7013d649f5e2a45e356e0dbb1f8cbe5bdfd79914ead7dbc7e2e1",
+          "epoch": "c19c61e4-0f68-4694-be1b-3e91dc2e3f30"
+        },
+        "edit": {
+          "expectedRevision": "r1#4",
+          "reason": "Add playground input with send button, plus footer divider and copyright text",
+          "operations": [
+            {
+              "op": "add",
+              "recipe": "input",
+              "nodeId": "demo-input",
+              "parentId": "demo-form",
+              "attributes": {
+                "type": "text",
+                "aria-label": "Ask Quellight anything",
+                "placeholder": "Ask Quellight anything…"
+              },
+              "styles": {
+                "flex": "1",
+                "padding": "14px 18px",
+                "border-radius": "12px",
+                "border": "1px solid #2b3150",
+                "background-color": "#1d2340",
+                "color": "#ffffff",
+                "font-size": "15px"
+              }
+            },
+            {
+              "op": "add",
+              "recipe": "button",
+              "nodeId": "demo-btn",
+              "parentId": "demo-form",
+              "props": {
+                "label": "Send"
+              },
+              "styles": {
+                "background-color": "#4f46e5",
+                "color": "#ffffff",
+                "border-radius": "12px",
+                "padding": "14px 24px",
+                "font-weight": "600"
+              }
+            },
+            {
+              "op": "add",
+              "recipe": "separator",
+              "nodeId": "footer-sep",
+              "parentId": "screen",
+              "props": {
+                "decorative": true,
+                "orientation": "horizontal"
+              },
+              "styles": {
+                "margin": "0 40px 24px"
+              }
+            },
+            {
+              "op": "add",
+              "recipe": "text",
+              "nodeId": "footer-text",
+              "parentId": "screen",
+              "text": "© 2025 Quellight — AI for every question.",
+              "styles": {
+                "text-align": "center",
+                "color": "#8a93a6",
+                "font-size": "14px",
+                "padding-bottom": "28px"
+              }
+            }
+          ]
+        },
+        "resultDigest": "660434ac263006e6d371d45a63eab3f50a0635573abf6bf4b7f763fa8c3220e0"
+      }
+    },
+    {
+      "type": "edit-result",
+      "result": {
+        "ok": true,
+        "revision": "r1#5",
+        "digest": "660434ac263006e6d371d45a63eab3f50a0635573abf6bf4b7f763fa8c3220e0"
+      },
+      "reason": "Add playground input with send button, plus footer divider and copyright text"
+    },
+    {
+      "type": "text",
+      "delta": "The"
+    },
+    {
+      "type": "text",
+      "delta": " Qu"
+    },
+    {
+      "type": "text",
+      "delta": "ell"
+    },
+    {
+      "type": "text",
+      "delta": "ight"
+    },
+    {
+      "type": "text",
+      "delta": " landing"
+    },
+    {
+      "type": "text",
+      "delta": " page"
+    },
+    {
+      "type": "text",
+      "delta": " is"
+    },
+    {
+      "type": "text",
+      "delta": " complete"
+    },
+    {
+      "type": "text",
+      "delta": " —"
+    },
+    {
+      "type": "text",
+      "delta": " all"
+    },
+    {
+      "type": "text",
+      "delta": " "
+    },
+    {
+      "type": "text",
+      "delta": "5"
+    },
+    {
+      "type": "text",
+      "delta": " batches"
+    },
+    {
+      "type": "text",
+      "delta": " applied"
+    },
+    {
+      "type": "text",
+      "delta": " and"
+    },
+    {
+      "type": "text",
+      "delta": " confirmed"
+    },
+    {
+      "type": "text",
+      "delta": " by"
+    },
+    {
+      "type": "text",
+      "delta": " the"
+    },
+    {
+      "type": "text",
+      "delta": " editor"
+    },
+    {
+      "type": "text",
+      "delta": ":\n\n"
+    },
+    {
+      "type": "text",
+      "delta": "-"
+    },
+    {
+      "type": "text",
+      "delta": " **"
+    },
+    {
+      "type": "text",
+      "delta": "Nav"
+    },
+    {
+      "type": "text",
+      "delta": " bar"
+    },
+    {
+      "type": "text",
+      "delta": "**"
+    },
+    {
+      "type": "text",
+      "delta": " —"
+    },
+    {
+      "type": "text",
+      "delta": " \""
+    },
+    {
+      "type": "text",
+      "delta": "Qu"
+    },
+    {
+      "type": "text",
+      "delta": "ell"
+    },
+    {
+      "type": "text",
+      "delta": "ight"
+    },
+    {
+      "type": "text",
+      "delta": "\""
+    },
+    {
+      "type": "text",
+      "delta": " brand"
+    },
+    {
+      "type": "text",
+      "delta": ","
+    },
+    {
+      "type": "text",
+      "delta": " Product"
+    },
+    {
+      "type": "text",
+      "delta": "/P"
+    },
+    {
+      "type": "text",
+      "delta": "ricing"
+    },
+    {
+      "type": "text",
+      "delta": "/"
+    },
+    {
+      "type": "text",
+      "delta": "Docs"
+    },
+    {
+      "type": "text",
+      "delta": " links"
+    },
+    {
+      "type": "text",
+      "delta": ","
+    },
+    {
+      "type": "text",
+      "delta": " and"
+    },
+    {
+      "type": "text",
+      "delta": " a"
+    },
+    {
+      "type": "text",
+      "delta": " \""
+    },
+    {
+      "type": "text",
+      "delta": "Get"
+    },
+    {
+      "type": "text",
+      "delta": " started"
+    },
+    {
+      "type": "text",
+      "delta": "\""
+    },
+    {
+      "type": "text",
+      "delta": " button"
+    },
+    {
+      "type": "text",
+      "delta": "\n"
+    },
+    {
+      "type": "text",
+      "delta": "-"
+    },
+    {
+      "type": "text",
+      "delta": " **"
+    },
+    {
+      "type": "text",
+      "delta": "Hero"
+    },
+    {
+      "type": "text",
+      "delta": "**"
+    },
+    {
+      "type": "text",
+      "delta": " —"
+    },
+    {
+      "type": "text",
+      "delta": " badge"
+    },
+    {
+      "type": "text",
+      "delta": " (\""
+    },
+    {
+      "type": "text",
+      "delta": "Qu"
+    },
+    {
+      "type": "text",
+      "delta": "ell"
+    },
+    {
+      "type": "text",
+      "delta": "ight"
+    },
+    {
+      "type": "text",
+      "delta": " "
+    },
+    {
+      "type": "text",
+      "delta": "2"
+    },
+    {
+      "type": "text",
+      "delta": "."
+    },
+    {
+      "type": "text",
+      "delta": "0"
+    },
+    {
+      "type": "text",
+      "delta": " is"
+    },
+    {
+      "type": "text",
+      "delta": " here"
+    },
+    {
+      "type": "text",
+      "delta": "\"),"
+    },
+    {
+      "type": "text",
+      "delta": " large"
+    },
+    {
+      "type": "text",
+      "delta": " headline"
+    },
+    {
+      "type": "text",
+      "delta": ","
+    },
+    {
+      "type": "text",
+      "delta": " sub"
+    },
+    {
+      "type": "text",
+      "delta": "copy"
+    },
+    {
+      "type": "text",
+      "delta": ","
+    },
+    {
+      "type": "text",
+      "delta": " and"
+    },
+    {
+      "type": "text",
+      "delta": " \""
+    },
+    {
+      "type": "text",
+      "delta": "Start"
+    },
+    {
+      "type": "text",
+      "delta": " free"
+    },
+    {
+      "type": "text",
+      "delta": "\""
+    },
+    {
+      "type": "text",
+      "delta": " /"
+    },
+    {
+      "type": "text",
+      "delta": " \""
+    },
+    {
+      "type": "text",
+      "delta": "See"
+    },
+    {
+      "type": "text",
+      "delta": " a"
+    },
+    {
+      "type": "text",
+      "delta": " demo"
+    },
+    {
+      "type": "text",
+      "delta": "\""
+    },
+    {
+      "type": "text",
+      "delta": " CT"
+    },
+    {
+      "type": "text",
+      "delta": "As"
+    },
+    {
+      "type": "text",
+      "delta": " on"
+    },
+    {
+      "type": "text",
+      "delta": " a"
+    },
+    {
+      "type": "text",
+      "delta": " soft"
+    },
+    {
+      "type": "text",
+      "delta": " violet"
+    },
+    {
+      "type": "text",
+      "delta": " gradient"
+    },
+    {
+      "type": "text",
+      "delta": "\n"
+    },
+    {
+      "type": "text",
+      "delta": "-"
+    },
+    {
+      "type": "text",
+      "delta": " **"
+    },
+    {
+      "type": "text",
+      "delta": "Features"
+    },
+    {
+      "type": "text",
+      "delta": "**"
+    },
+    {
+      "type": "text",
+      "delta": " —"
+    },
+    {
+      "type": "text",
+      "delta": " three"
+    },
+    {
+      "type": "text",
+      "delta": " cards"
+    },
+    {
+      "type": "text",
+      "delta": ":"
+    },
+    {
+      "type": "text",
+      "delta": " "
+    },
+    {
+      "type": "text",
+      "delta": "⚡"
+    },
+    {
+      "type": "text",
+      "delta": " Instant"
+    },
+    {
+      "type": "text",
+      "delta": " answers"
+    },
+    {
+      "type": "text",
+      "delta": ","
+    },
+    {
+      "type": "text",
+      "delta": " "
+    },
+    {
+      "type": "text",
+      "delta": "💻"
+    },
+    {
+      "type": "text",
+      "delta": " Built"
+    },
+    {
+      "type": "text",
+      "delta": "-in"
+    },
+    {
+      "type": "text",
+      "delta": " code"
+    },
+    {
+      "type": "text",
+      "delta": " cop"
+    },
+    {
+      "type": "text",
+      "delta": "ilot"
+    },
+    {
+      "type": "text",
+      "delta": ","
+    },
+    {
+      "type": "text",
+      "delta": " "
+    },
+    {
+      "type": "text",
+      "delta": "🔒"
+    },
+    {
+      "type": "text",
+      "delta": " Private"
+    },
+    {
+      "type": "text",
+      "delta": " by"
+    },
+    {
+      "type": "text",
+      "delta": " default"
+    },
+    {
+      "type": "text",
+      "delta": "\n"
+    },
+    {
+      "type": "text",
+      "delta": "-"
+    },
+    {
+      "type": "text",
+      "delta": " **"
+    },
+    {
+      "type": "text",
+      "delta": "Play"
+    },
+    {
+      "type": "text",
+      "delta": "ground"
+    },
+    {
+      "type": "text",
+      "delta": " section"
+    },
+    {
+      "type": "text",
+      "delta": "**"
+    },
+    {
+      "type": "text",
+      "delta": " —"
+    },
+    {
+      "type": "text",
+      "delta": " dark"
+    },
+    {
+      "type": "text",
+      "delta": " panel"
+    },
+    {
+      "type": "text",
+      "delta": " with"
+    },
+    {
+      "type": "text",
+      "delta": " \""
+    },
+    {
+      "type": "text",
+      "delta": "Ask"
+    },
+    {
+      "type": "text",
+      "delta": " your"
+    },
+    {
+      "type": "text",
+      "delta": " first"
+    },
+    {
+      "type": "text",
+      "delta": " question"
+    },
+    {
+      "type": "text",
+      "delta": "\","
+    },
+    {
+      "type": "text",
+      "delta": " a"
+    },
+    {
+      "type": "text",
+      "delta": " labeled"
+    },
+    {
+      "type": "text",
+      "delta": " text"
+    },
+    {
+      "type": "text",
+      "delta": " input"
+    },
+    {
+      "type": "text",
+      "delta": ","
+    },
+    {
+      "type": "text",
+      "delta": " and"
+    },
+    {
+      "type": "text",
+      "delta": " a"
+    },
+    {
+      "type": "text",
+      "delta": " Send"
+    },
+    {
+      "type": "text",
+      "delta": " button"
+    },
+    {
+      "type": "text",
+      "delta": " ("
+    },
+    {
+      "type": "text",
+      "delta": "visual"
+    },
+    {
+      "type": "text",
+      "delta": " preview"
+    },
+    {
+      "type": "text",
+      "delta": " only"
+    },
+    {
+      "type": "text",
+      "delta": " —"
+    },
+    {
+      "type": "text",
+      "delta": " no"
+    },
+    {
+      "type": "text",
+      "delta": " submission"
+    },
+    {
+      "type": "text",
+      "delta": "/backend"
+    },
+    {
+      "type": "text",
+      "delta": " is"
+    },
+    {
+      "type": "text",
+      "delta": " wired"
+    },
+    {
+      "type": "text",
+      "delta": ")\n"
+    },
+    {
+      "type": "text",
+      "delta": "-"
+    },
+    {
+      "type": "text",
+      "delta": " **"
+    },
+    {
+      "type": "text",
+      "delta": "Footer"
+    },
+    {
+      "type": "text",
+      "delta": "**"
+    },
+    {
+      "type": "text",
+      "delta": " —"
+    },
+    {
+      "type": "text",
+      "delta": " divider"
+    },
+    {
+      "type": "text",
+      "delta": " and"
+    },
+    {
+      "type": "text",
+      "delta": " copyright"
+    },
+    {
+      "type": "text",
+      "delta": " line"
+    },
+    {
+      "type": "text",
+      "delta": "\n\n"
+    },
+    {
+      "type": "text",
+      "delta": "Remember"
+    },
+    {
+      "type": "text",
+      "delta": " to"
+    },
+    {
+      "type": "text",
+      "delta": " Save"
+    },
+    {
+      "type": "text",
+      "delta": " from"
+    },
+    {
+      "type": "text",
+      "delta": " the"
+    },
+    {
+      "type": "text",
+      "delta": " editor"
+    },
+    {
+      "type": "text",
+      "delta": " when"
+    },
+    {
+      "type": "text",
+      "delta": " you"
+    },
+    {
+      "type": "text",
+      "delta": "'re"
+    },
+    {
+      "type": "text",
+      "delta": " happy"
+    },
+    {
+      "type": "text",
+      "delta": " with"
+    },
+    {
+      "type": "text",
+      "delta": " it"
+    },
+    {
+      "type": "text",
+      "delta": "."
+    },
+    {
+      "type": "text",
+      "delta": " Want"
+    },
+    {
+      "type": "text",
+      "delta": " any"
+    },
+    {
+      "type": "text",
+      "delta": " tweaks"
+    },
+    {
+      "type": "text",
+      "delta": " —"
+    },
+    {
+      "type": "text",
+      "delta": " e"
+    },
+    {
+      "type": "text",
+      "delta": ".g"
+    },
+    {
+      "type": "text",
+      "delta": ".,"
+    },
+    {
+      "type": "text",
+      "delta": " a"
+    },
+    {
+      "type": "text",
+      "delta": " pricing"
+    },
+    {
+      "type": "text",
+      "delta": " section"
+    },
+    {
+      "type": "text",
+      "delta": ","
+    },
+    {
+      "type": "text",
+      "delta": " different"
+    },
+    {
+      "type": "text",
+      "delta": " accent"
+    },
+    {
+      "type": "text",
+      "delta": " color"
+    },
+    {
+      "type": "text",
+      "delta": ","
+    },
+    {
+      "type": "text",
+      "delta": " or"
+    },
+    {
+      "type": "text",
+      "delta": " a"
+    },
+    {
+      "type": "text",
+      "delta": " testimonials"
+    },
+    {
+      "type": "text",
+      "delta": " block"
+    },
+    {
+      "type": "text",
+      "delta": "?"
+    },
+    {
+      "type": "done",
+      "status": "completed",
+      "applied": 5,
+      "turnId": "turn-e5b26600-d7c5-4044-9499-94817ced2ef6",
+      "profileVersion": "v1_486e29554ea921f426356204d5ef80231b542a2e6450ab0c3918511e89616cc7"
+    }
+  ],
+  "finishedAt": "2026-10-23T00:48:00.684Z",
+  "document": {
+    "schema": "vict.ui-document@1",
+    "id": "independent-plain-quellight",
+    "revision": "r1",
+    "root": "screen",
+    "nodes": {
+      "screen": {
+        "kind": "element",
+        "id": "screen",
+        "tag": "main",
+        "attributes": {
+          "aria-label": "Quellight"
+        },
+        "children": [
+          "nav",
+          "hero",
+          "features",
+          "demo",
+          "footer-sep",
+          "footer-text"
+        ],
+        "localStyle": [
+          {
+            "property": "display",
+            "value": {
+              "type": "text",
+              "value": "flex"
+            }
+          },
+          {
+            "property": "flex-direction",
+            "value": {
+              "type": "text",
+              "value": "column"
+            }
+          },
+          {
+            "property": "gap",
+            "value": {
+              "type": "text",
+              "value": "0"
+            }
+          },
+          {
+            "property": "padding",
+            "value": {
+              "type": "text",
+              "value": "0"
+            }
+          },
+          {
+            "property": "min-height",
+            "value": {
+              "type": "text",
+              "value": "560px"
+            }
+          },
+          {
+            "property": "background-color",
+            "value": {
+              "type": "text",
+              "value": "#ffffff"
+            }
+          },
+          {
+            "property": "color",
+            "value": {
+              "type": "text",
+              "value": "#243047"
+            }
+          },
+          {
+            "property": "font-family",
+            "value": {
+              "type": "text",
+              "value": "system-ui, sans-serif"
+            }
+          }
+        ]
+      },
+      "nav": {
+        "kind": "element",
+        "id": "nav",
+        "tag": "div",
+        "children": [
+          "nav-brand",
+          "nav-links"
+        ],
+        "localStyle": [
+          {
+            "property": "display",
+            "value": {
+              "type": "text",
+              "value": "flex"
+            }
+          },
+          {
+            "property": "flex-wrap",
+            "value": {
+              "type": "text",
+              "value": "wrap"
+            }
+          },
+          {
+            "property": "gap",
+            "value": {
+              "type": "text",
+              "value": "16px"
+            }
+          },
+          {
+            "property": "align-items",
+            "value": {
+              "type": "text",
+              "value": "center"
+            }
+          },
+          {
+            "property": "min-height",
+            "value": {
+              "type": "text",
+              "value": "60px"
+            }
+          },
+          {
+            "property": "justify-content",
+            "value": {
+              "type": "text",
+              "value": "space-between"
+            }
+          },
+          {
+            "property": "padding",
+            "value": {
+              "type": "text",
+              "value": "18px 40px"
+            }
+          },
+          {
+            "property": "background-color",
+            "value": {
+              "type": "text",
+              "value": "#ffffff"
+            }
+          },
+          {
+            "property": "border-bottom",
+            "value": {
+              "type": "text",
+              "value": "1px solid #eceef5"
+            }
+          }
+        ]
+      },
+      "nav-brand": {
+        "kind": "element",
+        "id": "nav-brand",
+        "tag": "p",
+        "children": [
+          "nav-brand-text"
+        ],
+        "localStyle": [
+          {
+            "property": "font-size",
+            "value": {
+              "type": "text",
+              "value": "20px"
+            }
+          },
+          {
+            "property": "line-height",
+            "value": {
+              "type": "text",
+              "value": "1.6"
+            }
+          },
+          {
+            "property": "margin",
+            "value": {
+              "type": "text",
+              "value": "0"
+            }
+          },
+          {
+            "property": "color",
+            "value": {
+              "type": "text",
+              "value": "#4f46e5"
+            }
+          },
+          {
+            "property": "font-weight",
+            "value": {
+              "type": "text",
+              "value": "800"
+            }
+          },
+          {
+            "property": "letter-spacing",
+            "value": {
+              "type": "text",
+              "value": "-0.3px"
+            }
+          }
+        ]
+      },
+      "nav-brand-text": {
+        "kind": "text",
+        "id": "nav-brand-text",
+        "content": {
+          "type": "literal",
+          "value": "Quellight"
+        }
+      },
+      "nav-links": {
+        "kind": "element",
+        "id": "nav-links",
+        "tag": "div",
+        "children": [
+          "nav-link-product",
+          "nav-link-pricing",
+          "nav-link-docs",
+          "nav-cta"
+        ],
+        "localStyle": [
+          {
+            "property": "display",
+            "value": {
+              "type": "text",
+              "value": "flex"
+            }
+          },
+          {
+            "property": "flex-wrap",
+            "value": {
+              "type": "text",
+              "value": "wrap"
+            }
+          },
+          {
+            "property": "gap",
+            "value": {
+              "type": "text",
+              "value": "28px"
+            }
+          },
+          {
+            "property": "align-items",
+            "value": {
+              "type": "text",
+              "value": "center"
+            }
+          },
+          {
+            "property": "min-height",
+            "value": {
+              "type": "text",
+              "value": "60px"
+            }
+          }
+        ]
+      },
+      "nav-link-product": {
+        "kind": "element",
+        "id": "nav-link-product",
+        "tag": "p",
+        "children": [
+          "nav-link-product-text"
+        ],
+        "localStyle": [
+          {
+            "property": "font-size",
+            "value": {
+              "type": "text",
+              "value": "15px"
+            }
+          },
+          {
+            "property": "line-height",
+            "value": {
+              "type": "text",
+              "value": "1.6"
+            }
+          },
+          {
+            "property": "margin",
+            "value": {
+              "type": "text",
+              "value": "0"
+            }
+          },
+          {
+            "property": "color",
+            "value": {
+              "type": "text",
+              "value": "#64748b"
+            }
+          },
+          {
+            "property": "font-weight",
+            "value": {
+              "type": "text",
+              "value": "500"
+            }
+          }
+        ]
+      },
+      "nav-link-product-text": {
+        "kind": "text",
+        "id": "nav-link-product-text",
+        "content": {
+          "type": "literal",
+          "value": "Product"
+        }
+      },
+      "nav-link-pricing": {
+        "kind": "element",
+        "id": "nav-link-pricing",
+        "tag": "p",
+        "children": [
+          "nav-link-pricing-text"
+        ],
+        "localStyle": [
+          {
+            "property": "font-size",
+            "value": {
+              "type": "text",
+              "value": "15px"
+            }
+          },
+          {
+            "property": "line-height",
+            "value": {
+              "type": "text",
+              "value": "1.6"
+            }
+          },
+          {
+            "property": "margin",
+            "value": {
+              "type": "text",
+              "value": "0"
+            }
+          },
+          {
+            "property": "color",
+            "value": {
+              "type": "text",
+              "value": "#64748b"
+            }
+          },
+          {
+            "property": "font-weight",
+            "value": {
+              "type": "text",
+              "value": "500"
+            }
+          }
+        ]
+      },
+      "nav-link-pricing-text": {
+        "kind": "text",
+        "id": "nav-link-pricing-text",
+        "content": {
+          "type": "literal",
+          "value": "Pricing"
+        }
+      },
+      "nav-link-docs": {
+        "kind": "element",
+        "id": "nav-link-docs",
+        "tag": "p",
+        "children": [
+          "nav-link-docs-text"
+        ],
+        "localStyle": [
+          {
+            "property": "font-size",
+            "value": {
+              "type": "text",
+              "value": "15px"
+            }
+          },
+          {
+            "property": "line-height",
+            "value": {
+              "type": "text",
+              "value": "1.6"
+            }
+          },
+          {
+            "property": "margin",
+            "value": {
+              "type": "text",
+              "value": "0"
+            }
+          },
+          {
+            "property": "color",
+            "value": {
+              "type": "text",
+              "value": "#64748b"
+            }
+          },
+          {
+            "property": "font-weight",
+            "value": {
+              "type": "text",
+              "value": "500"
+            }
+          }
+        ]
+      },
+      "nav-link-docs-text": {
+        "kind": "text",
+        "id": "nav-link-docs-text",
+        "content": {
+          "type": "literal",
+          "value": "Docs"
+        }
+      },
+      "nav-cta": {
+        "kind": "component",
+        "id": "nav-cta",
+        "definitionId": "vict.catalog.button",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Get started"
+          },
+          "loading": {
+            "type": "ref",
+            "path": "state.busy"
+          }
+        },
+        "slots": {},
+        "localStyle": [
+          {
+            "property": "background-color",
+            "value": {
+              "type": "text",
+              "value": "#4f46e5"
+            }
+          },
+          {
+            "property": "color",
+            "value": {
+              "type": "text",
+              "value": "#ffffff"
+            }
+          },
+          {
+            "property": "border-radius",
+            "value": {
+              "type": "text",
+              "value": "10px"
+            }
+          },
+          {
+            "property": "padding",
+            "value": {
+              "type": "text",
+              "value": "10px 20px"
+            }
+          },
+          {
+            "property": "font-weight",
+            "value": {
+              "type": "text",
+              "value": "600"
+            }
+          }
+        ]
+      },
+      "hero": {
+        "kind": "element",
+        "id": "hero",
+        "tag": "section",
+        "attributes": {
+          "aria-label": "Section"
+        },
+        "children": [
+          "hero-badge",
+          "hero-title",
+          "hero-sub",
+          "hero-cta"
+        ],
+        "localStyle": [
+          {
+            "property": "display",
+            "value": {
+              "type": "text",
+              "value": "flex"
+            }
+          },
+          {
+            "property": "flex-direction",
+            "value": {
+              "type": "text",
+              "value": "column"
+            }
+          },
+          {
+            "property": "gap",
+            "value": {
+              "type": "text",
+              "value": "18px"
+            }
+          },
+          {
+            "property": "padding",
+            "value": {
+              "type": "text",
+              "value": "96px 40px"
+            }
+          },
+          {
+            "property": "min-height",
+            "value": {
+              "type": "text",
+              "value": "100px"
+            }
+          },
+          {
+            "property": "background-color",
+            "value": {
+              "type": "text",
+              "value": "#f5f7fb"
+            }
+          },
+          {
+            "property": "border-radius",
+            "value": {
+              "type": "text",
+              "value": "12px"
+            }
+          },
+          {
+            "property": "align-items",
+            "value": {
+              "type": "text",
+              "value": "center"
+            }
+          },
+          {
+            "property": "text-align",
+            "value": {
+              "type": "text",
+              "value": "center"
+            }
+          },
+          {
+            "property": "background",
+            "value": {
+              "type": "text",
+              "value": "linear-gradient(180deg, #f4f5ff 0%, #ffffff 100%)"
+            }
+          }
+        ]
+      },
+      "hero-badge": {
+        "kind": "element",
+        "id": "hero-badge",
+        "tag": "p",
+        "children": [
+          "hero-badge-text"
+        ],
+        "localStyle": [
+          {
+            "property": "font-size",
+            "value": {
+              "type": "text",
+              "value": "13px"
+            }
+          },
+          {
+            "property": "line-height",
+            "value": {
+              "type": "text",
+              "value": "1.6"
+            }
+          },
+          {
+            "property": "margin",
+            "value": {
+              "type": "text",
+              "value": "0"
+            }
+          },
+          {
+            "property": "color",
+            "value": {
+              "type": "text",
+              "value": "#4f46e5"
+            }
+          },
+          {
+            "property": "background-color",
+            "value": {
+              "type": "text",
+              "value": "#eef0ff"
+            }
+          },
+          {
+            "property": "padding",
+            "value": {
+              "type": "text",
+              "value": "6px 14px"
+            }
+          },
+          {
+            "property": "border-radius",
+            "value": {
+              "type": "text",
+              "value": "999px"
+            }
+          },
+          {
+            "property": "font-weight",
+            "value": {
+              "type": "text",
+              "value": "600"
+            }
+          }
+        ]
+      },
+      "hero-badge-text": {
+        "kind": "text",
+        "id": "hero-badge-text",
+        "content": {
+          "type": "literal",
+          "value": "New · Quellight 2.0 is here"
+        }
+      },
+      "hero-title": {
+        "kind": "element",
+        "id": "hero-title",
+        "tag": "h1",
+        "children": [
+          "hero-title-text"
+        ],
+        "localStyle": [
+          {
+            "property": "font-size",
+            "value": {
+              "type": "text",
+              "value": "56px"
+            }
+          },
+          {
+            "property": "font-weight",
+            "value": {
+              "type": "text",
+              "value": "800"
+            }
+          },
+          {
+            "property": "line-height",
+            "value": {
+              "type": "text",
+              "value": "1.08"
+            }
+          },
+          {
+            "property": "margin",
+            "value": {
+              "type": "text",
+              "value": "0"
+            }
+          },
+          {
+            "property": "color",
+            "value": {
+              "type": "text",
+              "value": "#171d33"
+            }
+          },
+          {
+            "property": "letter-spacing",
+            "value": {
+              "type": "text",
+              "value": "-1px"
+            }
+          },
+          {
+            "property": "max-width",
+            "value": {
+              "type": "text",
+              "value": "760px"
+            }
+          }
+        ]
+      },
+      "hero-title-text": {
+        "kind": "text",
+        "id": "hero-title-text",
+        "content": {
+          "type": "literal",
+          "value": "AI that turns questions into clarity"
+        }
+      },
+      "hero-sub": {
+        "kind": "element",
+        "id": "hero-sub",
+        "tag": "p",
+        "children": [
+          "hero-sub-text"
+        ],
+        "localStyle": [
+          {
+            "property": "font-size",
+            "value": {
+              "type": "text",
+              "value": "18px"
+            }
+          },
+          {
+            "property": "line-height",
+            "value": {
+              "type": "text",
+              "value": "1.6"
+            }
+          },
+          {
+            "property": "margin",
+            "value": {
+              "type": "text",
+              "value": "0"
+            }
+          },
+          {
+            "property": "color",
+            "value": {
+              "type": "text",
+              "value": "#5b6478"
+            }
+          },
+          {
+            "property": "max-width",
+            "value": {
+              "type": "text",
+              "value": "620px"
+            }
+          }
+        ]
+      },
+      "hero-sub-text": {
+        "kind": "text",
+        "id": "hero-sub-text",
+        "content": {
+          "type": "literal",
+          "value": "Quellight is the AI copilot for work and curiosity — draft, code, research and solve with answers you can trust, in seconds."
+        }
+      },
+      "hero-cta": {
+        "kind": "element",
+        "id": "hero-cta",
+        "tag": "div",
+        "children": [
+          "btn-start",
+          "btn-demo"
+        ],
+        "localStyle": [
+          {
+            "property": "display",
+            "value": {
+              "type": "text",
+              "value": "flex"
+            }
+          },
+          {
+            "property": "flex-wrap",
+            "value": {
+              "type": "text",
+              "value": "wrap"
+            }
+          },
+          {
+            "property": "gap",
+            "value": {
+              "type": "text",
+              "value": "14px"
+            }
+          },
+          {
+            "property": "align-items",
+            "value": {
+              "type": "text",
+              "value": "center"
+            }
+          },
+          {
+            "property": "min-height",
+            "value": {
+              "type": "text",
+              "value": "60px"
+            }
+          },
+          {
+            "property": "justify-content",
+            "value": {
+              "type": "text",
+              "value": "center"
+            }
+          },
+          {
+            "property": "margin-top",
+            "value": {
+              "type": "text",
+              "value": "10px"
+            }
+          }
+        ]
+      },
+      "btn-start": {
+        "kind": "component",
+        "id": "btn-start",
+        "definitionId": "vict.catalog.button",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Start free — it's fast"
+          },
+          "loading": {
+            "type": "ref",
+            "path": "state.busy"
+          }
+        },
+        "slots": {},
+        "localStyle": [
+          {
+            "property": "background-color",
+            "value": {
+              "type": "text",
+              "value": "#4f46e5"
+            }
+          },
+          {
+            "property": "color",
+            "value": {
+              "type": "text",
+              "value": "#ffffff"
+            }
+          },
+          {
+            "property": "border-radius",
+            "value": {
+              "type": "text",
+              "value": "10px"
+            }
+          },
+          {
+            "property": "padding",
+            "value": {
+              "type": "text",
+              "value": "14px 28px"
+            }
+          },
+          {
+            "property": "font-weight",
+            "value": {
+              "type": "text",
+              "value": "600"
+            }
+          }
+        ]
+      },
+      "btn-demo": {
+        "kind": "component",
+        "id": "btn-demo",
+        "definitionId": "vict.catalog.button",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "See a demo"
+          },
+          "loading": {
+            "type": "ref",
+            "path": "state.busy"
+          }
+        },
+        "slots": {},
+        "localStyle": [
+          {
+            "property": "background-color",
+            "value": {
+              "type": "text",
+              "value": "#ffffff"
+            }
+          },
+          {
+            "property": "color",
+            "value": {
+              "type": "text",
+              "value": "#1e2440"
+            }
+          },
+          {
+            "property": "border",
+            "value": {
+              "type": "text",
+              "value": "1px solid #d9dded"
+            }
+          },
+          {
+            "property": "border-radius",
+            "value": {
+              "type": "text",
+              "value": "10px"
+            }
+          },
+          {
+            "property": "padding",
+            "value": {
+              "type": "text",
+              "value": "14px 28px"
+            }
+          },
+          {
+            "property": "font-weight",
+            "value": {
+              "type": "text",
+              "value": "600"
+            }
+          }
+        ]
+      },
+      "features": {
+        "kind": "element",
+        "id": "features",
+        "tag": "section",
+        "attributes": {
+          "aria-label": "Section"
+        },
+        "children": [
+          "features-title",
+          "features-row"
+        ],
+        "localStyle": [
+          {
+            "property": "display",
+            "value": {
+              "type": "text",
+              "value": "flex"
+            }
+          },
+          {
+            "property": "flex-direction",
+            "value": {
+              "type": "text",
+              "value": "column"
+            }
+          },
+          {
+            "property": "gap",
+            "value": {
+              "type": "text",
+              "value": "12px"
+            }
+          },
+          {
+            "property": "padding",
+            "value": {
+              "type": "text",
+              "value": "80px 40px"
+            }
+          },
+          {
+            "property": "min-height",
+            "value": {
+              "type": "text",
+              "value": "100px"
+            }
+          },
+          {
+            "property": "background-color",
+            "value": {
+              "type": "text",
+              "value": "#ffffff"
+            }
+          },
+          {
+            "property": "border-radius",
+            "value": {
+              "type": "text",
+              "value": "12px"
+            }
+          },
+          {
+            "property": "align-items",
+            "value": {
+              "type": "text",
+              "value": "center"
+            }
+          }
+        ]
+      },
+      "features-title": {
+        "kind": "element",
+        "id": "features-title",
+        "tag": "h1",
+        "children": [
+          "features-title-text"
+        ],
+        "localStyle": [
+          {
+            "property": "font-size",
+            "value": {
+              "type": "text",
+              "value": "38px"
+            }
+          },
+          {
+            "property": "font-weight",
+            "value": {
+              "type": "text",
+              "value": "800"
+            }
+          },
+          {
+            "property": "line-height",
+            "value": {
+              "type": "text",
+              "value": "1.2"
+            }
+          },
+          {
+            "property": "margin",
+            "value": {
+              "type": "text",
+              "value": "0"
+            }
+          },
+          {
+            "property": "color",
+            "value": {
+              "type": "text",
+              "value": "#171d33"
+            }
+          },
+          {
+            "property": "text-align",
+            "value": {
+              "type": "text",
+              "value": "center"
+            }
+          }
+        ]
+      },
+      "features-title-text": {
+        "kind": "text",
+        "id": "features-title-text",
+        "content": {
+          "type": "literal",
+          "value": "Everything you need, in one AI"
+        }
+      },
+      "features-row": {
+        "kind": "element",
+        "id": "features-row",
+        "tag": "div",
+        "children": [
+          "card-answers",
+          "card-code",
+          "card-privacy"
+        ],
+        "localStyle": [
+          {
+            "property": "display",
+            "value": {
+              "type": "text",
+              "value": "flex"
+            }
+          },
+          {
+            "property": "flex-wrap",
+            "value": {
+              "type": "text",
+              "value": "wrap"
+            }
+          },
+          {
+            "property": "gap",
+            "value": {
+              "type": "text",
+              "value": "24px"
+            }
+          },
+          {
+            "property": "align-items",
+            "value": {
+              "type": "text",
+              "value": "center"
+            }
+          },
+          {
+            "property": "min-height",
+            "value": {
+              "type": "text",
+              "value": "60px"
+            }
+          },
+          {
+            "property": "justify-content",
+            "value": {
+              "type": "text",
+              "value": "center"
+            }
+          },
+          {
+            "property": "max-width",
+            "value": {
+              "type": "text",
+              "value": "1060px"
+            }
+          },
+          {
+            "property": "width",
+            "value": {
+              "type": "text",
+              "value": "100%"
+            }
+          },
+          {
+            "property": "margin-top",
+            "value": {
+              "type": "text",
+              "value": "20px"
+            }
+          }
+        ]
+      },
+      "card-answers": {
+        "kind": "element",
+        "id": "card-answers",
+        "tag": "section",
+        "attributes": {
+          "aria-label": "Section"
+        },
+        "children": [
+          "card-answers-title",
+          "card-answers-text"
+        ],
+        "localStyle": [
+          {
+            "property": "display",
+            "value": {
+              "type": "text",
+              "value": "flex"
+            }
+          },
+          {
+            "property": "flex-direction",
+            "value": {
+              "type": "text",
+              "value": "column"
+            }
+          },
+          {
+            "property": "gap",
+            "value": {
+              "type": "text",
+              "value": "8px"
+            }
+          },
+          {
+            "property": "padding",
+            "value": {
+              "type": "text",
+              "value": "26px"
+            }
+          },
+          {
+            "property": "min-height",
+            "value": {
+              "type": "text",
+              "value": "100px"
+            }
+          },
+          {
+            "property": "background-color",
+            "value": {
+              "type": "text",
+              "value": "#f7f8fc"
+            }
+          },
+          {
+            "property": "border-radius",
+            "value": {
+              "type": "text",
+              "value": "16px"
+            }
+          },
+          {
+            "property": "border",
+            "value": {
+              "type": "text",
+              "value": "1px solid #eef0f7"
+            }
+          },
+          {
+            "property": "flex",
+            "value": {
+              "type": "text",
+              "value": "1 1 260px"
+            }
+          }
+        ]
+      },
+      "card-answers-title": {
+        "kind": "element",
+        "id": "card-answers-title",
+        "tag": "h1",
+        "children": [
+          "card-answers-title-text"
+        ],
+        "localStyle": [
+          {
+            "property": "font-size",
+            "value": {
+              "type": "text",
+              "value": "19px"
+            }
+          },
+          {
+            "property": "font-weight",
+            "value": {
+              "type": "text",
+              "value": "700"
+            }
+          },
+          {
+            "property": "line-height",
+            "value": {
+              "type": "text",
+              "value": "1.2"
+            }
+          },
+          {
+            "property": "margin",
+            "value": {
+              "type": "text",
+              "value": "0"
+            }
+          },
+          {
+            "property": "color",
+            "value": {
+              "type": "text",
+              "value": "#1e2440"
+            }
+          }
+        ]
+      },
+      "card-answers-title-text": {
+        "kind": "text",
+        "id": "card-answers-title-text",
+        "content": {
+          "type": "literal",
+          "value": "⚡ Instant answers"
+        }
+      },
+      "card-answers-text": {
+        "kind": "element",
+        "id": "card-answers-text",
+        "tag": "p",
+        "children": [
+          "card-answers-text-text"
+        ],
+        "localStyle": [
+          {
+            "property": "font-size",
+            "value": {
+              "type": "text",
+              "value": "15px"
+            }
+          },
+          {
+            "property": "line-height",
+            "value": {
+              "type": "text",
+              "value": "1.6"
+            }
+          },
+          {
+            "property": "margin",
+            "value": {
+              "type": "text",
+              "value": "0"
+            }
+          },
+          {
+            "property": "color",
+            "value": {
+              "type": "text",
+              "value": "#5b6478"
+            }
+          }
+        ]
+      },
+      "card-answers-text-text": {
+        "kind": "text",
+        "id": "card-answers-text-text",
+        "content": {
+          "type": "literal",
+          "value": "Ask in plain language and get clear, sourced responses across hundreds of topics — no setup required."
+        }
+      },
+      "card-code": {
+        "kind": "element",
+        "id": "card-code",
+        "tag": "section",
+        "attributes": {
+          "aria-label": "Section"
+        },
+        "children": [
+          "card-code-title",
+          "card-code-text"
+        ],
+        "localStyle": [
+          {
+            "property": "display",
+            "value": {
+              "type": "text",
+              "value": "flex"
+            }
+          },
+          {
+            "property": "flex-direction",
+            "value": {
+              "type": "text",
+              "value": "column"
+            }
+          },
+          {
+            "property": "gap",
+            "value": {
+              "type": "text",
+              "value": "8px"
+            }
+          },
+          {
+            "property": "padding",
+            "value": {
+              "type": "text",
+              "value": "26px"
+            }
+          },
+          {
+            "property": "min-height",
+            "value": {
+              "type": "text",
+              "value": "100px"
+            }
+          },
+          {
+            "property": "background-color",
+            "value": {
+              "type": "text",
+              "value": "#f7f8fc"
+            }
+          },
+          {
+            "property": "border-radius",
+            "value": {
+              "type": "text",
+              "value": "16px"
+            }
+          },
+          {
+            "property": "border",
+            "value": {
+              "type": "text",
+              "value": "1px solid #eef0f7"
+            }
+          },
+          {
+            "property": "flex",
+            "value": {
+              "type": "text",
+              "value": "1 1 260px"
+            }
+          }
+        ]
+      },
+      "card-code-title": {
+        "kind": "element",
+        "id": "card-code-title",
+        "tag": "h1",
+        "children": [
+          "card-code-title-text"
+        ],
+        "localStyle": [
+          {
+            "property": "font-size",
+            "value": {
+              "type": "text",
+              "value": "19px"
+            }
+          },
+          {
+            "property": "font-weight",
+            "value": {
+              "type": "text",
+              "value": "700"
+            }
+          },
+          {
+            "property": "line-height",
+            "value": {
+              "type": "text",
+              "value": "1.2"
+            }
+          },
+          {
+            "property": "margin",
+            "value": {
+              "type": "text",
+              "value": "0"
+            }
+          },
+          {
+            "property": "color",
+            "value": {
+              "type": "text",
+              "value": "#1e2440"
+            }
+          }
+        ]
+      },
+      "card-code-title-text": {
+        "kind": "text",
+        "id": "card-code-title-text",
+        "content": {
+          "type": "literal",
+          "value": "💻 Built-in code copilot"
+        }
+      },
+      "card-code-text": {
+        "kind": "element",
+        "id": "card-code-text",
+        "tag": "p",
+        "children": [
+          "card-code-text-text"
+        ],
+        "localStyle": [
+          {
+            "property": "font-size",
+            "value": {
+              "type": "text",
+              "value": "15px"
+            }
+          },
+          {
+            "property": "line-height",
+            "value": {
+              "type": "text",
+              "value": "1.6"
+            }
+          },
+          {
+            "property": "margin",
+            "value": {
+              "type": "text",
+              "value": "0"
+            }
+          },
+          {
+            "property": "color",
+            "value": {
+              "type": "text",
+              "value": "#5b6478"
+            }
+          }
+        ]
+      },
+      "card-code-text-text": {
+        "kind": "text",
+        "id": "card-code-text-text",
+        "content": {
+          "type": "literal",
+          "value": "Generate, explain and refactor code in 40+ languages, right inside the conversation."
+        }
+      },
+      "card-privacy": {
+        "kind": "element",
+        "id": "card-privacy",
+        "tag": "section",
+        "attributes": {
+          "aria-label": "Section"
+        },
+        "children": [
+          "card-privacy-title",
+          "card-privacy-text"
+        ],
+        "localStyle": [
+          {
+            "property": "display",
+            "value": {
+              "type": "text",
+              "value": "flex"
+            }
+          },
+          {
+            "property": "flex-direction",
+            "value": {
+              "type": "text",
+              "value": "column"
+            }
+          },
+          {
+            "property": "gap",
+            "value": {
+              "type": "text",
+              "value": "8px"
+            }
+          },
+          {
+            "property": "padding",
+            "value": {
+              "type": "text",
+              "value": "26px"
+            }
+          },
+          {
+            "property": "min-height",
+            "value": {
+              "type": "text",
+              "value": "100px"
+            }
+          },
+          {
+            "property": "background-color",
+            "value": {
+              "type": "text",
+              "value": "#f7f8fc"
+            }
+          },
+          {
+            "property": "border-radius",
+            "value": {
+              "type": "text",
+              "value": "16px"
+            }
+          },
+          {
+            "property": "border",
+            "value": {
+              "type": "text",
+              "value": "1px solid #eef0f7"
+            }
+          },
+          {
+            "property": "flex",
+            "value": {
+              "type": "text",
+              "value": "1 1 260px"
+            }
+          }
+        ]
+      },
+      "card-privacy-title": {
+        "kind": "element",
+        "id": "card-privacy-title",
+        "tag": "h1",
+        "children": [
+          "card-privacy-title-text"
+        ],
+        "localStyle": [
+          {
+            "property": "font-size",
+            "value": {
+              "type": "text",
+              "value": "19px"
+            }
+          },
+          {
+            "property": "font-weight",
+            "value": {
+              "type": "text",
+              "value": "700"
+            }
+          },
+          {
+            "property": "line-height",
+            "value": {
+              "type": "text",
+              "value": "1.2"
+            }
+          },
+          {
+            "property": "margin",
+            "value": {
+              "type": "text",
+              "value": "0"
+            }
+          },
+          {
+            "property": "color",
+            "value": {
+              "type": "text",
+              "value": "#1e2440"
+            }
+          }
+        ]
+      },
+      "card-privacy-title-text": {
+        "kind": "text",
+        "id": "card-privacy-title-text",
+        "content": {
+          "type": "literal",
+          "value": "🔒 Private by default"
+        }
+      },
+      "card-privacy-text": {
+        "kind": "element",
+        "id": "card-privacy-text",
+        "tag": "p",
+        "children": [
+          "card-privacy-text-text"
+        ],
+        "localStyle": [
+          {
+            "property": "font-size",
+            "value": {
+              "type": "text",
+              "value": "15px"
+            }
+          },
+          {
+            "property": "line-height",
+            "value": {
+              "type": "text",
+              "value": "1.6"
+            }
+          },
+          {
+            "property": "margin",
+            "value": {
+              "type": "text",
+              "value": "0"
+            }
+          },
+          {
+            "property": "color",
+            "value": {
+              "type": "text",
+              "value": "#5b6478"
+            }
+          }
+        ]
+      },
+      "card-privacy-text-text": {
+        "kind": "text",
+        "id": "card-privacy-text-text",
+        "content": {
+          "type": "literal",
+          "value": "Your chats are encrypted and never used to train models. You stay in control of your data."
+        }
+      },
+      "demo": {
+        "kind": "element",
+        "id": "demo",
+        "tag": "section",
+        "attributes": {
+          "aria-label": "Section"
+        },
+        "children": [
+          "demo-title",
+          "demo-sub",
+          "demo-form"
+        ],
+        "localStyle": [
+          {
+            "property": "display",
+            "value": {
+              "type": "text",
+              "value": "flex"
+            }
+          },
+          {
+            "property": "flex-direction",
+            "value": {
+              "type": "text",
+              "value": "column"
+            }
+          },
+          {
+            "property": "gap",
+            "value": {
+              "type": "text",
+              "value": "14px"
+            }
+          },
+          {
+            "property": "padding",
+            "value": {
+              "type": "text",
+              "value": "56px 40px"
+            }
+          },
+          {
+            "property": "min-height",
+            "value": {
+              "type": "text",
+              "value": "100px"
+            }
+          },
+          {
+            "property": "background-color",
+            "value": {
+              "type": "text",
+              "value": "#151a2e"
+            }
+          },
+          {
+            "property": "border-radius",
+            "value": {
+              "type": "text",
+              "value": "24px"
+            }
+          },
+          {
+            "property": "align-items",
+            "value": {
+              "type": "text",
+              "value": "center"
+            }
+          },
+          {
+            "property": "margin",
+            "value": {
+              "type": "text",
+              "value": "0 40px 72px"
+            }
+          },
+          {
+            "property": "text-align",
+            "value": {
+              "type": "text",
+              "value": "center"
+            }
+          }
+        ]
+      },
+      "demo-title": {
+        "kind": "element",
+        "id": "demo-title",
+        "tag": "h1",
+        "children": [
+          "demo-title-text"
+        ],
+        "localStyle": [
+          {
+            "property": "font-size",
+            "value": {
+              "type": "text",
+              "value": "32px"
+            }
+          },
+          {
+            "property": "font-weight",
+            "value": {
+              "type": "text",
+              "value": "800"
+            }
+          },
+          {
+            "property": "line-height",
+            "value": {
+              "type": "text",
+              "value": "1.2"
+            }
+          },
+          {
+            "property": "margin",
+            "value": {
+              "type": "text",
+              "value": "0"
+            }
+          },
+          {
+            "property": "color",
+            "value": {
+              "type": "text",
+              "value": "#ffffff"
+            }
+          }
+        ]
+      },
+      "demo-title-text": {
+        "kind": "text",
+        "id": "demo-title-text",
+        "content": {
+          "type": "literal",
+          "value": "Ask your first question"
+        }
+      },
+      "demo-sub": {
+        "kind": "element",
+        "id": "demo-sub",
+        "tag": "p",
+        "children": [
+          "demo-sub-text"
+        ],
+        "localStyle": [
+          {
+            "property": "font-size",
+            "value": {
+              "type": "text",
+              "value": "16px"
+            }
+          },
+          {
+            "property": "line-height",
+            "value": {
+              "type": "text",
+              "value": "1.6"
+            }
+          },
+          {
+            "property": "margin",
+            "value": {
+              "type": "text",
+              "value": "0"
+            }
+          },
+          {
+            "property": "color",
+            "value": {
+              "type": "text",
+              "value": "#aab1c9"
+            }
+          },
+          {
+            "property": "max-width",
+            "value": {
+              "type": "text",
+              "value": "520px"
+            }
+          }
+        ]
+      },
+      "demo-sub-text": {
+        "kind": "text",
+        "id": "demo-sub-text",
+        "content": {
+          "type": "literal",
+          "value": "Type anything below and see the Quellight playground in action — no account needed."
+        }
+      },
+      "demo-form": {
+        "kind": "element",
+        "id": "demo-form",
+        "tag": "div",
+        "children": [
+          "demo-input",
+          "demo-btn"
+        ],
+        "localStyle": [
+          {
+            "property": "display",
+            "value": {
+              "type": "text",
+              "value": "flex"
+            }
+          },
+          {
+            "property": "flex-wrap",
+            "value": {
+              "type": "text",
+              "value": "wrap"
+            }
+          },
+          {
+            "property": "gap",
+            "value": {
+              "type": "text",
+              "value": "12px"
+            }
+          },
+          {
+            "property": "align-items",
+            "value": {
+              "type": "text",
+              "value": "center"
+            }
+          },
+          {
+            "property": "min-height",
+            "value": {
+              "type": "text",
+              "value": "60px"
+            }
+          },
+          {
+            "property": "width",
+            "value": {
+              "type": "text",
+              "value": "100%"
+            }
+          },
+          {
+            "property": "max-width",
+            "value": {
+              "type": "text",
+              "value": "620px"
+            }
+          },
+          {
+            "property": "margin-top",
+            "value": {
+              "type": "text",
+              "value": "8px"
+            }
+          }
+        ]
+      },
+      "demo-input": {
+        "kind": "element",
+        "id": "demo-input",
+        "tag": "input",
+        "children": [],
+        "attributes": {
+          "type": "text",
+          "aria-label": "Ask Quellight anything",
+          "placeholder": "Ask Quellight anything…"
+        },
+        "interactions": [],
+        "localStyle": [
+          {
+            "property": "padding",
+            "value": {
+              "type": "text",
+              "value": "14px 18px"
+            }
+          },
+          {
+            "property": "border-radius",
+            "value": {
+              "type": "text",
+              "value": "12px"
+            }
+          },
+          {
+            "property": "border",
+            "value": {
+              "type": "text",
+              "value": "1px solid #2b3150"
+            }
+          },
+          {
+            "property": "font-size",
+            "value": {
+              "type": "text",
+              "value": "15px"
+            }
+          },
+          {
+            "property": "width",
+            "value": {
+              "type": "text",
+              "value": "100%"
+            }
+          },
+          {
+            "property": "box-sizing",
+            "value": {
+              "type": "text",
+              "value": "border-box"
+            }
+          },
+          {
+            "property": "flex",
+            "value": {
+              "type": "text",
+              "value": "1"
+            }
+          },
+          {
+            "property": "background-color",
+            "value": {
+              "type": "text",
+              "value": "#1d2340"
+            }
+          },
+          {
+            "property": "color",
+            "value": {
+              "type": "text",
+              "value": "#ffffff"
+            }
+          }
+        ]
+      },
+      "demo-btn": {
+        "kind": "component",
+        "id": "demo-btn",
+        "definitionId": "vict.catalog.button",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Send"
+          },
+          "loading": {
+            "type": "ref",
+            "path": "state.busy"
+          }
+        },
+        "slots": {},
+        "localStyle": [
+          {
+            "property": "background-color",
+            "value": {
+              "type": "text",
+              "value": "#4f46e5"
+            }
+          },
+          {
+            "property": "color",
+            "value": {
+              "type": "text",
+              "value": "#ffffff"
+            }
+          },
+          {
+            "property": "border-radius",
+            "value": {
+              "type": "text",
+              "value": "12px"
+            }
+          },
+          {
+            "property": "padding",
+            "value": {
+              "type": "text",
+              "value": "14px 24px"
+            }
+          },
+          {
+            "property": "font-weight",
+            "value": {
+              "type": "text",
+              "value": "600"
+            }
+          }
+        ]
+      },
+      "footer-sep": {
+        "kind": "component",
+        "id": "footer-sep",
+        "definitionId": "vict.catalog.separator",
+        "props": {
+          "orientation": {
+            "type": "literal",
+            "value": "horizontal"
+          },
+          "decorative": {
+            "type": "literal",
+            "value": true
+          }
+        },
+        "slots": {},
+        "localStyle": [
+          {
+            "property": "margin",
+            "value": {
+              "type": "text",
+              "value": "0 40px 24px"
+            }
+          }
+        ]
+      },
+      "footer-text": {
+        "kind": "element",
+        "id": "footer-text",
+        "tag": "p",
+        "children": [
+          "footer-text-text"
+        ],
+        "localStyle": [
+          {
+            "property": "font-size",
+            "value": {
+              "type": "text",
+              "value": "14px"
+            }
+          },
+          {
+            "property": "line-height",
+            "value": {
+              "type": "text",
+              "value": "1.6"
+            }
+          },
+          {
+            "property": "margin",
+            "value": {
+              "type": "text",
+              "value": "0"
+            }
+          },
+          {
+            "property": "color",
+            "value": {
+              "type": "text",
+              "value": "#8a93a6"
+            }
+          },
+          {
+            "property": "text-align",
+            "value": {
+              "type": "text",
+              "value": "center"
+            }
+          },
+          {
+            "property": "padding-bottom",
+            "value": {
+              "type": "text",
+              "value": "28px"
+            }
+          }
+        ]
+      },
+      "footer-text-text": {
+        "kind": "text",
+        "id": "footer-text-text",
+        "content": {
+          "type": "literal",
+          "value": "© 2025 Quellight — AI for every question."
+        }
+      }
+    },
+    "componentDefinitions": {},
+    "styleSources": {},
+    "assets": {},
+    "tokens": {},
+    "conditions": {
+      "compact": {
+        "id": "compact",
+        "kind": "container",
+        "name": "studio-screen",
+        "query": "(max-width: 600px)"
+      }
+    },
+    "localState": {
+      "message": {
+        "key": "message",
+        "type": "string",
+        "initial": "Hello from my screen"
+      },
+      "accepted": {
+        "key": "accepted",
+        "type": "boolean",
+        "initial": false
+      },
+      "dialogOpen": {
+        "key": "dialogOpen",
+        "type": "boolean",
+        "initial": false
+      },
+      "busy": {
+        "key": "busy",
+        "type": "boolean",
+        "initial": false
+      },
+      "actionError": {
+        "key": "actionError",
+        "type": "string",
+        "initial": ""
+      },
+      "actionResult": {
+        "key": "actionResult",
+        "type": "string",
+        "initial": ""
+      }
+    }
+  },
+  "final": {
+    "type": "done",
+    "status": "completed",
+    "applied": 5,
+    "turnId": "turn-e5b26600-d7c5-4044-9499-94817ced2ef6",
+    "profileVersion": "v1_486e29554ea921f426356204d5ef80231b542a2e6450ab0c3918511e89616cc7"
+  }
+}
