@@ -6,6 +6,8 @@ export default defineConfig({
   optimizeDeps: {
     exclude: [
       '@victframework/ui',
+      '@victframework/ui-ai-svelte',
+      '@victframework/ui-flow-svelte',
       '@victframework/ui-svelte',
       '@victframework/ui-editor',
       '@victframework/ui-preview',

@@ -7,6 +7,7 @@
   "files": [
     "src",
     "dist",
+    "README.md",
     "UPSTREAM.md",
     "COVERAGE.md",
     "upstream-manifest.json",

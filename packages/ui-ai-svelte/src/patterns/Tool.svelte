@@ -1,7 +1,7 @@
 <script lang="ts">
   import * as Trace from '../upstream/ui/trace/index.js';
   import * as CodeBlock from '../upstream/ui/code-block/index.js';
-  import { TerminalIcon as Terminal } from "@lucide/svelte";
+  import Terminal from '@lucide/svelte/icons/terminal';
   let {title, input, output, status, open=false}: {title:string;input?:string;output?:string;status?:'running'|'pending'|'error';open?:boolean}=$props();
 </script>
 <Trace.Root><Trace.Collapsible {open}>

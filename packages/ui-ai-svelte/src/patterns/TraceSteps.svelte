@@ -1,8 +1,8 @@
 <script lang="ts">
   import * as Trace from '../upstream/ui/trace/index.js';
-  import { CircleIcon as Circle } from "@lucide/svelte";
-  import { CircleCheckIcon as CircleCheck } from "@lucide/svelte";
-  import { CircleDotIcon as CircleDot } from "@lucide/svelte";
+  import Circle from '@lucide/svelte/icons/circle';
+  import CircleCheck from '@lucide/svelte/icons/circle-check';
+  import CircleDot from '@lucide/svelte/icons/circle-dot';
   import type { Step } from './types.js';
   let {title, description, steps, open = true}: {title:string;description?:string;steps:readonly Step[];open?:boolean} = $props();
 </script>

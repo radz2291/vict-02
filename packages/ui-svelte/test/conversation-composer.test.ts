@@ -63,14 +63,15 @@ describe('Conversation optional composer and streamed content', () => {
     await tick();
     const actions = document.querySelectorAll<HTMLButtonElement>('.vict-conversation-input-row button');
     expect(actions).toHaveLength(1);
-    expect(actions[0].textContent?.trim()).toBe(cancellable ? 'Stop' : 'Sending…');
-    expect(actions[0].disabled).toBe(!cancellable);
+    const action = actions[0]!; // Length is asserted above; preserve strict indexed access.
+    expect(action.textContent?.trim()).toBe(cancellable ? 'Stop' : 'Sending…');
+    expect(action.disabled).toBe(!cancellable);
     input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true }));
     expect(send).toHaveBeenCalledTimes(1);
     // Editing the next draft during a turn must survive cancellation/completion.
     input.value = 'Then change the heading';
     input.dispatchEvent(new Event('input', { bubbles: true }));
-    if (cancellable) actions[0].click(); else finish(true);
+    if (cancellable) action.click(); else finish(true);
     await vi.waitFor(() => expect(document.querySelector('[data-testid="conversation-stop"]')).toBeNull());
     await vi.waitFor(() => expect(document.querySelector<HTMLButtonElement>('[data-testid="conversation-send"]')?.disabled).toBe(false));
     expect(stop).toHaveBeenCalledTimes(cancellable ? 1 : 0);

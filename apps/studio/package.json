@@ -29,7 +29,9 @@
     "@mastra/core": "1.64.0",
     "@mastra/libsql": "1.22.3",
     "@mastra/memory": "1.28.2",
-    "@mastra/observability": "1.17.5"
+    "@mastra/observability": "1.17.5",
+    "@victframework/ui-ai-svelte": "0.4.0-rc.1",
+    "@victframework/ui-flow-svelte": "0.4.0-rc.1"
   },
   "devDependencies": {
     "@sveltejs/adapter-node": "^5.2.12",

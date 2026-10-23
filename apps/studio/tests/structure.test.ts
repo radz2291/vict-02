@@ -35,7 +35,7 @@ describe('source structure projection and canonical edits', () => {
 
   it('projects actual definitions, slots, templates, conditions and bindings without invented workflow edges', () => {
     const base = fixture();
-    const document: UiDocument = { ...base, localState: { value: { type: 'string', initial: '' } }, componentDefinitions: {
+    const document: UiDocument = { ...base, localState: { value: { key: 'value', type: 'string', initial: '' } }, componentDefinitions: {
       Custom: { id: 'Custom', revision: '1', root: 'definition-text', props: [], slots: {} },
     }, nodes: { ...base.nodes,
       widget: { kind: 'component', id: 'widget', definitionId: 'Custom', slots: { body: { name: 'body', children: ['slot-text'] } }, props: { value: { type: 'ref', path: 'state.value' } }, outputs: { change: { setState: { key: 'value' } }, submit: { invokeAction: { actionId: 'demo.submit' } } } },

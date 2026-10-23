@@ -1,7 +1,7 @@
 <script lang="ts">
   import * as DropdownMenu from '../upstream/ui/dropdown-menu/index.js';
   import * as InputGroup from '../upstream/ui/input-group/index.js';
-  import { ChevronDownIcon as ChevronDown } from "@lucide/svelte";
+  import ChevronDown from '@lucide/svelte/icons/chevron-down';
   import type {ModelOption} from './types.js';
   let {models, model, efforts=[], effort='', onModelChange,onEffortChange}:{models:readonly ModelOption[];model:string;efforts?:readonly ModelOption[];effort?:string;onModelChange?:(id:string)=>void;onEffortChange?:(id:string)=>void}=$props();
 </script>

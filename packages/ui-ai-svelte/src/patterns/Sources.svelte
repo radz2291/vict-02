@@ -1,6 +1,6 @@
 <script lang="ts">
   import * as Trace from '../upstream/ui/trace/index.js';
-  import { GlobeIcon as Globe } from "@lucide/svelte";
+  import Globe from '@lucide/svelte/icons/globe';
   import {safeExternalUrl} from '../upstream/markdown/safe-url.js';
   import type {Citation} from './types.js';
   let {sources}:{sources:readonly Citation[]}=$props();

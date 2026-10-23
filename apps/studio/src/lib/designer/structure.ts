@@ -47,7 +47,7 @@ export function projectStructure(document: UiDocument): { nodes: Node<StructureN
   };
   const link = (source: string, target: string, label: string, path: string) => edges.push({
     id: JSON.stringify([source, target, label, path]), source, target, label,
-    deletable: false, reconnectable: false, type: 'smoothstep',
+    deletable: false, type: 'smoothstep',
     style: label === 'contains' || label.startsWith('slot:') ? 'stroke: #64748b' : 'stroke: #a78bfa; stroke-dasharray: 5 3',
   });
   for (const node of Object.values(document.nodes)) {

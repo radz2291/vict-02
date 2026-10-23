@@ -65,10 +65,7 @@ consumer checks are separately required by Cycle 1.3.
 
 1. Resolve registry `$UI$`, `$UTILS$`, `$LIB$` placeholders and docs aliases to
    relative package imports; no repository or `$lib` alias reaches consumers.
-2. Resolve registry icon placeholders to Lucide. Use its typed named exports:
-   several legacy per-icon aliases (for example `flag`, `square`, `terminal`)
-   point at a missing `*.svelte.d.ts` in Lucide 1.27.0. This avoids inventing an
-   `any` declaration to silence the package defect. Bundlers tree-shake icons.
+2. Resolve registry icon placeholders to explicit Lucide per-icon default exports. The completed 1.27.0 install contains their declarations. An earlier check during dependency installation reported missing declarations; the temporary barrel workaround was replaced with verified per-icon paths to avoid loading the entire icon catalog during development/testing. No ambient any declaration is added.
 3. Extract module-script variant functions/types into adjacent `.variants.ts`
    files. The upstream `.svelte`-named exports work in Svelte checking but ordinary
    Studio `tsc` sees its ambient Svelte declaration and cannot resolve those

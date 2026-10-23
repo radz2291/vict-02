@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { MessageScroller as MessageScrollerPrimitive } from "@shadcn-svelte/primitives/message-scroller";
-	import { ArrowDownIcon as ArrowDownIcon } from "@lucide/svelte";
+	import ArrowDownIcon from '@lucide/svelte/icons/arrow-down';
 	import { Button } from "../button/index.js";
 	import type { ButtonSize, ButtonVariant } from "../button/index.js";
 	import { cn } from "../../utils.js";

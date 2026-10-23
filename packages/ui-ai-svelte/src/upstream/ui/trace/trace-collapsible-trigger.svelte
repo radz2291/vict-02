@@ -1,6 +1,6 @@
 <script lang="ts">
 	import * as Collapsible from "../collapsible/index.js";
-	import { ChevronRightIcon as ChevronRightIcon } from "@lucide/svelte";
+	import ChevronRightIcon from '@lucide/svelte/icons/chevron-right';
 	import { cn, type WithoutChild } from "../../utils.js";
 	import TraceIcon from "./trace-icon.svelte";
 	import type { Collapsible as CollapsiblePrimitive } from "bits-ui";

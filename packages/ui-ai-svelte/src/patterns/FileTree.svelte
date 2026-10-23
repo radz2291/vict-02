@@ -1,9 +1,9 @@
 <script lang="ts">
   import * as Collapsible from '../upstream/ui/collapsible/index.js';
   import {Button} from '../upstream/ui/button/index.js';
-  import { FolderIcon as Folder } from "@lucide/svelte";
-  import { FileIcon as File } from "@lucide/svelte";
-  import { ChevronRightIcon as ChevronRight } from "@lucide/svelte";
+  import Folder from '@lucide/svelte/icons/folder';
+  import File from '@lucide/svelte/icons/file';
+  import ChevronRight from '@lucide/svelte/icons/chevron-right';
   import type {FileNode} from './types.js';
   let {nodes, onSelect}:{nodes:readonly FileNode[];onSelect?:(path:string)=>void}=$props();
 </script>

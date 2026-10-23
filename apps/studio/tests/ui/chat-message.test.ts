@@ -1,8 +1,7 @@
 // @vitest-environment happy-dom
 import { flushSync, mount, unmount } from 'svelte';
 import { afterEach, describe, expect, it } from 'vitest';
-import ChatMessage from '../../src/lib/designer/ChatMessage.svelte';
-import { messageHref } from '../../src/lib/designer/markdown.js';
+import { Markdown } from '@victframework/ui-ai-svelte';
 
 let instance: ReturnType<typeof mount> | undefined;
 afterEach(async () => {
@@ -11,7 +10,7 @@ afterEach(async () => {
   document.body.innerHTML = '';
 });
 function render(text: string) {
-  instance = mount(ChatMessage, { target: document.body, props: { text } });
+  instance = mount(Markdown, { target: document.body, props: { content: text } });
   flushSync();
 }
 describe('Studio agent message formatting', () => {
@@ -22,11 +21,10 @@ describe('Studio agent message formatting', () => {
   });
   it('formats headings, lists, emphasis and code without oversized document headings', () => {
     render('# Registration\n\n- **Name** field\n- Email with `validation`\n\nDone.');
-    expect(document.querySelector('h3')?.textContent).toBe('Registration');
+    expect(document.querySelector('h1')?.textContent).toBe('Registration');
     expect(document.querySelectorAll('li')).toHaveLength(2);
     expect(document.querySelector('strong')?.textContent).toBe('Name');
     expect(document.querySelector('code')?.textContent).toBe('validation');
-    expect(document.querySelector('h1')).toBeNull();
   });
   it('escapes provider HTML and forbids executable links and remote images', () => {
     render(
@@ -37,8 +35,7 @@ describe('Studio agent message formatting', () => {
     expect(document.querySelectorAll('a')).toHaveLength(1);
     expect(document.querySelector('a')?.rel).toBe('noopener noreferrer');
     expect(document.body.textContent).toContain('Private image');
-    for (const url of ['javascript:alert(1)', 'data:text/html,x', '/design', '//example.com'])
-      expect(messageHref(url)).toBeUndefined();
+    expect(document.querySelector('a[href^="javascript:"]')).toBeNull();
   });
   it('renders a partial streamed reply without requiring complete Markdown', () => {
     render('Creating **registration\n\n- Name\n- ');

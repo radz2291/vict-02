@@ -1,6 +1,6 @@
 <script lang="ts">
   import * as Trace from '../upstream/ui/trace/index.js';
-  import { BrainIcon as Brain } from "@lucide/svelte";
+  import Brain from '@lucide/svelte/icons/brain';
   import Markdown from '../upstream/markdown/markdown.svelte';
   let {text, running=false, title='Reasoning summary'}:{text:string;running?:boolean;title?:string}=$props();
 </script>

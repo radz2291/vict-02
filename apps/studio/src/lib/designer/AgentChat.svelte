@@ -1,8 +1,8 @@
 <script lang="ts">
   import { onDestroy, onMount } from 'svelte';
-  import { Conversation } from '@victframework/ui-svelte';
+  import { Conversation, conversationMessages, type ConversationActivity } from '@victframework/ui-ai-svelte';
+  import '@victframework/ui-ai-svelte/styles.css';
   import { Popover } from '@victframework/ui-svelte/primitives';
-  import ChatMessage from './ChatMessage.svelte';
   import type { UiConversationMessage, UiDocument } from '@victframework/ui';
   import type { AgentCursor, AgentProposal, EditFailure, EditReceipt } from './agent-edits.js';
   interface Props {
@@ -15,6 +15,8 @@
   let {screenLabel,selectionLabel,getContext,applyProposal,blocked}:Props=$props();
   let messages=$state<UiConversationMessage[]>([]);
   let progress=$state<string[]>([]);
+  let activities=$state<Record<string, ConversationActivity[]>>({});
+  const presentedMessages=$derived(conversationMessages(messages).map(message=>({...message,activity:activities[message.id]})));
   let status=$state('Checking agent configuration…');
   let model=$state('');let ready=$state(false);let busy=$state(false);let csrf='';
   interface LocalTurn {controller:AbortController;runId:string;applied:number;cancelled:boolean;refusal?:EditFailure;}
@@ -94,6 +96,8 @@
             }
             if(event.type==='proposal'){
               const receipt=applyProposal(event.proposal);
+              const messageId=`message-${responseIndex}`;
+              activities={...activities,[messageId]:[...(activities[messageId]??[]),{id:event.proposal.proposalId,title:event.proposal.edit.reason,state:receipt.ok?'completed':'failed',detail:receipt.ok?'Committed to the screen. Undo is available.':receipt.message}]};
               lastRefusal=receipt.ok?'':receipt.message;
               if(receipt.ok){turn.applied++;status='Applying edit…';}else {turn.refusal=receipt;failed=true;note(receipt.message);}
               separateReply=true;
@@ -130,15 +134,10 @@
 </script>
 
 <aside class="agent-chat" aria-label="Chat" bind:this={panel}>
-  <Conversation surfaceId="studio-agent" {messages}
+  <Conversation messages={presentedMessages} {busy}
     emptyMessage="Describe a screen, or select an element to edit it."
     inputLabel="Message" inputPlaceholder="Ask for a change…"
-    multiline followUpdates onSend={send} onStop={busy ? ()=>void stop() : undefined}>
-    {#snippet messageBody(message)}
-      {#if message.participant==='assistant'}<ChatMessage text={message.text}/>
-      {:else}<span class="agent-user-message">{message.text}</span>{/if}
-    {/snippet}
-  </Conversation>
+    onSend={send} onStop={busy ? ()=>void stop() : undefined}/>
   <div class="agent-footer">
     <div class="agent-status" class:agent-status--failed={failed} role="status" aria-live="polite" title={blocked?'Apply or cancel the current draft before asking the agent to edit.':status}>
       <span class="status-dot" class:status-dot--busy={busy} aria-hidden="true"></span>
@@ -165,24 +164,7 @@
   .agent-footer{display:flex;flex:none;align-items:center;justify-content:space-between;padding:3px 12px 6px;gap:8px}
   :global(.agent-details-trigger){flex:none;height:28px;border:1px solid transparent;border-radius:5px;background:transparent;color:#63718a;cursor:pointer;padding:3px 8px;width:28px;font-size:20px;line-height:1}
   :global(.agent-details-trigger:hover),:global(.agent-details-trigger[data-state="open"]){background:#f0f3f8}
-  .agent-chat :global(.vict-conversation-panel){flex:1;display:flex;flex-direction:column;min-height:0;min-width:0;padding:0 12px;border:0;border-radius:0;gap:0;background:transparent}
-  .agent-chat :global(.vict-conversation){flex:1;max-height:none;min-height:0;padding:8px 2px 12px;gap:18px;overscroll-behavior:contain}
-  .agent-chat :global(.vict-conversation-message){max-width:100%;padding:0;margin:0;min-width:0;width:100%}
-  .agent-chat :global(.vict-conversation-message--user){width:auto;max-width:94%;padding:9px 11px;background:#f3f5f9;border:0;border-radius:8px}
-  .agent-chat :global(.vict-conversation-body){white-space:normal;font-size:12px;line-height:1.6}
-  .agent-user-message{white-space:pre-wrap}
-  .agent-chat :global(.vict-conversation-meta){font-size:10px;color:#778297;margin:0 0 5px;gap:0;font-weight:500}
-  .agent-chat :global(.vict-conversation-message--assistant .vict-conversation-meta){display:none}
-  .agent-chat :global(.vict-avatar),.agent-chat :global(.vict-message-role){display:none}
-  .agent-chat :global(.vict-conversation-input){flex:none;margin:0;padding:10px 0 0;border-top:1px solid #e5e9f0;gap:0}
-  .agent-chat :global(.vict-conversation-input-row){display:flex;flex-wrap:nowrap;align-items:flex-end;gap:6px}
-  .agent-chat :global(.vict-input){min-width:0;width:100%;flex:1 1 auto}
-  .agent-chat :global(.vict-conversation-textarea){font-size:12px;line-height:1.5;font-family:inherit;min-height:64px;max-height:112px;field-sizing:content;resize:none;padding:9px 10px;box-sizing:border-box;border-radius:7px}
-  .agent-chat :global(.vict-btn){flex:none;font-size:11px;padding:7px 10px;min-height:32px;margin:0 0 1px}
-  .agent-chat :global(.vict-field-label){position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-  .agent-chat :global(.vict-state){font-size:12px;line-height:1.7;color:#788398;background:transparent;padding:7px 0}
-  .agent-chat :global(.vict-send-error){font-size:11px;line-height:1.5;margin:6px 0 0;max-height:66px;overflow:auto}
-  .agent-chat :global(.vict-send-error:empty){display:none}
+  .agent-chat :global(.vict-ai-conversation){flex:1;min-height:0;height:auto}
   .agent-status{flex:1;min-width:0;display:flex;align-items:flex-start;gap:6px;margin:0;color:#748098;font-size:10px;line-height:1.5;min-height:15px;overflow-wrap:anywhere}
   .agent-status>span:last-child{display:-webkit-box;line-clamp:2;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
   .status-dot{flex:none;width:5px;height:5px;border-radius:50%;background:#a2b0c0;margin-top:5px}.status-dot--busy{background:#5874bb}.agent-status--failed{color:#9a5547}.agent-status--failed .status-dot{background:#b87865}

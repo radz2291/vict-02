@@ -74,9 +74,9 @@ describe('rejected Studio chat admission', () => {
         .querySelector('form')!
         .dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
       await vi.waitFor(() =>
-        expect(document.querySelector('[role="status"]')?.textContent).toContain(expected),
+        expect(document.querySelector('.agent-status')?.textContent).toContain(expected),
       );
-      expect(document.querySelector('[role="status"]')?.textContent).toContain(effects);
+      expect(document.querySelector('.agent-status')?.textContent).toContain(effects);
       expect(document.querySelector('.agent-status--failed')).not.toBeNull();
       expect(document.body.textContent).toContain('Building the page…');
     },
@@ -123,7 +123,7 @@ describe('rejected Studio chat admission', () => {
         .querySelector('form')!
         .dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
       await vi.waitFor(() =>
-        expect(document.querySelector('[role="status"]')?.textContent).toContain(expected),
+        expect(document.querySelector('.agent-status')?.textContent).toContain(expected),
       );
       await vi.waitFor(() =>
         expect(document.querySelector('[role="alert"]')?.textContent).toContain(expected),
