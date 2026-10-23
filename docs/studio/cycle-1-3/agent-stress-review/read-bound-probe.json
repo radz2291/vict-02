@@ -1,0 +1,32 @@
+{
+  "product": "8eb96dd8bcf7cfadd973e1f4fae7d11706a32797",
+  "mode": "Exact compiled read-context overhead plus synthetic delivery-size reproduction; no owner source copied, no provider calls",
+  "bounds": {
+    "maxDepth": 16,
+    "maxNodes": 4096,
+    "maxCollectionLength": 1024,
+    "maxPropertyCount": 128,
+    "maxStringLength": 8192
+  },
+  "baseline": {
+    "documentValues": 89,
+    "contextValues": 3261,
+    "snapshotOk": true
+  },
+  "contextOverhead": 3172,
+  "domObservedOwnerDocument": {
+    "nodeCount": 89,
+    "jsonLength": 25616,
+    "recursiveValues": 1610,
+    "maxDepth": 8
+  },
+  "ownerContextLowerBound": 4782,
+  "synthetic": {
+    "documentValues": 1610,
+    "contextValues": 4782,
+    "snapshot": {
+      "ok": false,
+      "reason": "node-limit-exceeded"
+    }
+  }
+}
