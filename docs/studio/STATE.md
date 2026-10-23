@@ -1,5 +1,24 @@
 # Studio Designer — current delivery state
 
+## 2026-10-23 — Cycle 1.2 independently verified; owner review ready
+
+**PASS WITH RETAINED NON-BLOCKING FINDINGS** on exact product
+`7874c64158b877c574ceff04e1917773bc03afe6`, branch `codex/studio-cycle-1-2`.
+Independent remote-verified evidence `567d6bc2e6028221b4e457e55e6e2521a4fcb3ed`
+is incorporated. Full165, independent3, production UI26, TypeScript/lint/build
+and202 artifact hashes pass. Continuous real-provider mixed editing/Stop/history/
+Save/reopen/continuation and real stale/draft refusals pass; simulated negatives
+are labelled. No new product finding. [Final report and walkthrough](CYCLE-1-2-REPORT.md).
+
+Separate verified preview at http://localhost:5593/design holds a disposable
+unsaved form copy. Owner127.0.0.1:5591 server/build/session and all three tabs'
+work/conversations/drafts remain untouched and byte-identical. Cookie hosts are
+separate; no owner reload, login renewal or request replay. Provider configuration
+unchanged. Cycle 1.1 is owner accepted/closed with retained findings. Cycle 1.2
+is ready for review only; Stage 9 remains reopened. No merge/publication/1.3.
+
+### Retained candidate handoff
+
 ## 2026-10-23 — Cycle 1.2 bounded handoff candidate
 
 [Audit](CYCLE-1-2-AUDIT.md) maps all five owner requirements to existing
@@ -7,7 +26,7 @@ capabilities and proof. [Candidate report](CYCLE-1-2-REPORT.md): only Studio
 chat turn settlement changes, fixing delayed Stop status races and promptly
 ending browser-refused turns. Full Studio165, TypeScript/lint pass. Fresh exact
 candidate independent/live-provider verification pending. Owner5591 build,
-sessions and tabs remain untouched. Cycle1.1 is accepted/closed below; Stage9
+sessions and tabs remain untouched. Cycle 1.1 is accepted/closed below; Stage 9
 remains reopened. No1.2 acceptance, main merge, publication or1.3.
 
 ## 2026-10-23 — Cycle 1.1 owner accepted and closed; Cycle 1.2 authorized
@@ -37,7 +56,7 @@ status and details occupy one row. Both earlier tabs retain canvas, chat, draft
 and history without reload; new visible tab contains an exact unsaved copy of
 the current purple Solehaus source. Saved records unchanged. Provider, full
 thinking/output, server, edit/history/save semantics remain unchanged. Ready for
-owner review only; no owner acceptance, main merge, Stage 9 closure or Cycle1.2.
+owner review only; no owner acceptance, main merge, Stage 9 closure or Cycle 1.2.
 
 ### Retained start-of-amendment scope
 

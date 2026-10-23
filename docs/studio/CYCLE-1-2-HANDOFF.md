@@ -1,5 +1,12 @@
 # Studio Cycle 1.2 — dependable manual and agent editing
 
+> Final gate2026-10-23: independently **PASS WITH RETAINED NON-BLOCKING FINDINGS**
+> at product `7874c64158b877c574ceff04e1917773bc03afe6`. Remote-verified evidence
+> `567d6bc2e6028221b4e457e55e6e2521a4fcb3ed`; branch `codex/studio-cycle-1-2`.
+> [Final delivery, launch and review](CYCLE-1-2-REPORT.md). Separate review at
+> localhost:5593; owner5591 and tabs remain intact. Next action is owner review;
+> no1.2 acceptance, main merge, publication or1.3. Issued scope below is retained.
+
 Owner authorized 2026-10-23 after explicitly accepting Cycle 1.1. This is the
 executable current handoff. Read [Cycle 1.1 closure](CYCLE-1-1-OWNER-CLOSURE.md)
 and STATE first. Earlier Cycle 1.1 handoffs remain historical evidence.

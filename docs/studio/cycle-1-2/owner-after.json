@@ -1,0 +1,40 @@
+{
+  "ownerTabsReloaded": false,
+  "ownerLoginRenewed": false,
+  "ownerSaveRequested": false,
+  "requestReplayed": false,
+  "ownerTabs": [
+    {
+      "tab": "2",
+      "canvasUnchanged": true,
+      "transcriptUnchanged": true,
+      "draftUnchanged": true,
+      "sourceDraftUnchanged": true,
+      "propertyDraftsUnchanged": true
+    },
+    {
+      "tab": "6",
+      "canvasUnchanged": true,
+      "transcriptUnchanged": true,
+      "draftUnchanged": true,
+      "sourceDraftUnchanged": true,
+      "propertyDraftsUnchanged": true
+    },
+    {
+      "tab": "11",
+      "canvasUnchanged": true,
+      "transcriptUnchanged": true,
+      "draftUnchanged": true,
+      "sourceDraftUnchanged": true,
+      "propertyDraftsUnchanged": true
+    }
+  ],
+  "reviewHost": "localhost:5593",
+  "ownerHost": "127.0.0.1:5591",
+  "cookieHostsDistinct": true,
+  "previewTab": "12",
+  "visibleTab": "12",
+  "previewSample": "copy of real-provider post-reopen sample, adapted only to fresh document id/revision",
+  "previewSampleSaved": false,
+  "previewInitialIdentityMismatch": "canonical revision guard refused first import; adopted current id and revision through Source editor; no accepted effect before correction"
+}

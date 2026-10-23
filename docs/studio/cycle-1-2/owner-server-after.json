@@ -1,0 +1,14 @@
+{
+  "ownerListenerPid": 71088,
+  "ownerPidUnchanged": true,
+  "ownerArtifactFilesChecked": 202,
+  "ownerArtifactMismatches": [],
+  "providerFilesUnchanged": true,
+  "previewListeners": [
+    {
+      "LocalAddress": "::1",
+      "LocalPort": 5593,
+      "OwningProcess": 83192
+    }
+  ]
+}

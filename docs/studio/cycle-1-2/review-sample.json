@@ -1,0 +1,815 @@
+{
+  "schema": "vict.ui-document@1",
+  "id": "screen-dda17d5c-3f9a-4df2-b907-2c088cc5df26",
+  "revision": "r1.r1",
+  "root": "screen",
+  "nodes": {
+    "screen": {
+      "kind": "element",
+      "id": "screen",
+      "tag": "main",
+      "attributes": {
+        "aria-label": "Registration form"
+      },
+      "children": [
+        "heading-register",
+        "form-register",
+        "note-privacy",
+        "sec-benefits"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "20px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "40px"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "560px"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#ffffff"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#243047"
+          }
+        },
+        {
+          "property": "font-family",
+          "value": {
+            "type": "text",
+            "value": "system-ui, sans-serif"
+          }
+        }
+      ]
+    },
+    "heading-register": {
+      "kind": "element",
+      "id": "heading-register",
+      "tag": "h1",
+      "children": [
+        "heading-register-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "28px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.2"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#3d5a80"
+          }
+        }
+      ]
+    },
+    "heading-register-text": {
+      "kind": "text",
+      "id": "heading-register-text",
+      "content": {
+        "type": "literal",
+        "value": "Manual registration title retained"
+      }
+    },
+    "form-register": {
+      "kind": "element",
+      "id": "form-register",
+      "tag": "section",
+      "attributes": {
+        "aria-label": "Section"
+      },
+      "children": [
+        "field-name",
+        "field-email",
+        "check-consent",
+        "btn-register"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "20px"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "100px"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#f6f8fc"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "1px solid #e4e9f2"
+          }
+        },
+        {
+          "property": "max-width",
+          "value": {
+            "type": "text",
+            "value": "440px"
+          }
+        },
+        {
+          "property": "width",
+          "value": {
+            "type": "text",
+            "value": "100%"
+          }
+        }
+      ]
+    },
+    "field-name": {
+      "kind": "element",
+      "id": "field-name",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "type": "text",
+        "aria-label": "Full name",
+        "placeholder": "Full name"
+      },
+      "interactions": [],
+      "localStyle": [
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "10px 12px"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "8px"
+          }
+        },
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "1px solid #ccd3e0"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        },
+        {
+          "property": "width",
+          "value": {
+            "type": "text",
+            "value": "100%"
+          }
+        },
+        {
+          "property": "box-sizing",
+          "value": {
+            "type": "text",
+            "value": "border-box"
+          }
+        }
+      ]
+    },
+    "field-email": {
+      "kind": "element",
+      "id": "field-email",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "type": "email",
+        "aria-label": "Email address",
+        "placeholder": "you@example.com"
+      },
+      "interactions": [],
+      "localStyle": [
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "10px 12px"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "8px"
+          }
+        },
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "1px solid #ccd3e0"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        },
+        {
+          "property": "width",
+          "value": {
+            "type": "text",
+            "value": "100%"
+          }
+        },
+        {
+          "property": "box-sizing",
+          "value": {
+            "type": "text",
+            "value": "border-box"
+          }
+        }
+      ]
+    },
+    "check-consent": {
+      "kind": "component",
+      "id": "check-consent",
+      "definitionId": "vict.catalog.checkbox",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "I agree to the terms and privacy policy"
+        },
+        "checked": {
+          "type": "literal",
+          "value": false
+        }
+      },
+      "slots": {}
+    },
+    "btn-register": {
+      "kind": "component",
+      "id": "btn-register",
+      "definitionId": "vict.catalog.button",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Register"
+        },
+        "loading": {
+          "type": "ref",
+          "path": "state.busy"
+        }
+      },
+      "slots": {},
+      "localStyle": [
+        {
+          "property": "align-self",
+          "value": {
+            "type": "text",
+            "value": "flex-start"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#2f6fed"
+          }
+        },
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "none"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "8px"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#ffffff"
+          }
+        },
+        {
+          "property": "cursor",
+          "value": {
+            "type": "text",
+            "value": "pointer"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "15px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "10px 18px"
+          }
+        }
+      ]
+    },
+    "sec-benefits": {
+      "kind": "element",
+      "id": "sec-benefits",
+      "tag": "section",
+      "attributes": {
+        "aria-label": "Benefits"
+      },
+      "children": [
+        "sec-benefits-heading",
+        "sec-benefits-t1",
+        "sec-benefits-t2",
+        "sec-benefits-t3"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "10px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "20px"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "100px"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#f6f8fc"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "1px solid #e4e9f2"
+          }
+        },
+        {
+          "property": "box-sizing",
+          "value": {
+            "type": "text",
+            "value": "border-box"
+          }
+        },
+        {
+          "property": "max-width",
+          "value": {
+            "type": "text",
+            "value": "440px"
+          }
+        },
+        {
+          "property": "width",
+          "value": {
+            "type": "text",
+            "value": "100%"
+          }
+        }
+      ]
+    },
+    "sec-benefits-heading": {
+      "kind": "element",
+      "id": "sec-benefits-heading",
+      "tag": "h1",
+      "children": [
+        "sec-benefits-heading-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "18px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.2"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#3d5a80"
+          }
+        }
+      ],
+      "attributes": {
+        "aria-label": "Benefits heading"
+      }
+    },
+    "sec-benefits-heading-text": {
+      "kind": "text",
+      "id": "sec-benefits-heading-text",
+      "content": {
+        "type": "literal",
+        "value": "Why register"
+      }
+    },
+    "sec-benefits-t1": {
+      "kind": "element",
+      "id": "sec-benefits-t1",
+      "tag": "p",
+      "children": [
+        "sec-benefits-t1-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.5"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#647187"
+          }
+        }
+      ]
+    },
+    "sec-benefits-t1-text": {
+      "kind": "text",
+      "id": "sec-benefits-t1-text",
+      "content": {
+        "type": "literal",
+        "value": "• Save your progress on any device"
+      }
+    },
+    "sec-benefits-t2": {
+      "kind": "element",
+      "id": "sec-benefits-t2",
+      "tag": "p",
+      "children": [
+        "sec-benefits-t2-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.5"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#647187"
+          }
+        }
+      ]
+    },
+    "sec-benefits-t2-text": {
+      "kind": "text",
+      "id": "sec-benefits-t2-text",
+      "content": {
+        "type": "literal",
+        "value": "• Get early access to new features"
+      }
+    },
+    "sec-benefits-t3": {
+      "kind": "element",
+      "id": "sec-benefits-t3",
+      "tag": "p",
+      "children": [
+        "sec-benefits-t3-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.5"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#647187"
+          }
+        }
+      ]
+    },
+    "sec-benefits-t3-text": {
+      "kind": "text",
+      "id": "sec-benefits-t3-text",
+      "content": {
+        "type": "literal",
+        "value": "• Manage your email preferences anytime"
+      }
+    },
+    "note-privacy": {
+      "kind": "element",
+      "id": "note-privacy",
+      "tag": "p",
+      "children": [
+        "note-privacy-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "13px"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.5"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#647187"
+          }
+        },
+        {
+          "property": "max-width",
+          "value": {
+            "type": "text",
+            "value": "440px"
+          }
+        },
+        {
+          "property": "width",
+          "value": {
+            "type": "text",
+            "value": "100%"
+          }
+        }
+      ],
+      "attributes": {
+        "aria-label": "Privacy note"
+      }
+    },
+    "note-privacy-text": {
+      "kind": "text",
+      "id": "note-privacy-text",
+      "content": {
+        "type": "literal",
+        "value": "Your registration details stay private."
+      }
+    }
+  },
+  "componentDefinitions": {},
+  "styleSources": {},
+  "assets": {},
+  "tokens": {},
+  "conditions": {
+    "compact": {
+      "id": "compact",
+      "kind": "container",
+      "name": "studio-screen",
+      "query": "(max-width: 600px)"
+    }
+  },
+  "localState": {
+    "message": {
+      "key": "message",
+      "type": "string",
+      "initial": "Hello from my screen"
+    },
+    "accepted": {
+      "key": "accepted",
+      "type": "boolean",
+      "initial": false
+    },
+    "dialogOpen": {
+      "key": "dialogOpen",
+      "type": "boolean",
+      "initial": false
+    },
+    "busy": {
+      "key": "busy",
+      "type": "boolean",
+      "initial": false
+    },
+    "actionError": {
+      "key": "actionError",
+      "type": "string",
+      "initial": ""
+    },
+    "actionResult": {
+      "key": "actionResult",
+      "type": "string",
+      "initial": ""
+    }
+  }
+}

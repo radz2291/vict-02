@@ -1,5 +1,16 @@
 # VICT Stage 09 — Current State
 
+## 2026-10-23 — Studio Cycle 1.2 independently verified for owner review
+
+Exact product `7874c64158b877c574ceff04e1917773bc03afe6`, independent
+**PASS WITH RETAINED NON-BLOCKING FINDINGS**, evidence
+`567d6bc2e6028221b4e457e55e6e2521a4fcb3ed` remote verified and incorporated.
+[Report and evidence](../studio/CYCLE-1-2-REPORT.md). Real-provider continuous
+mixed editing, interruption, history/save/reopen/continuation and stale/draft
+fences pass. Separate localhost:5593 preview preserves owner5591 sessions/build/
+tabs. Cycle 1.1 remains OWNER ACCEPTED/CLOSED;1.2 is ready for review, not accepted.
+Stage 9 remains **REOPENED / IN PROGRESS**. No main merge/publication/1.3.
+
 ## 2026-10-23 — Studio Cycle 1.1 owner accepted; Cycle 1.2 issued
 
 The owner explicitly accepts and closes Cycle 1.1, including hands-on repairs
