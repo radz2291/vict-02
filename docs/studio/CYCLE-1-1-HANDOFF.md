@@ -1,5 +1,17 @@
 # Stage 9 reopened — Studio Cycle 1.1
 
+Current verified delivery (2026-10-23): chat-controls product
+`402dec75c7593fe23e41f3d3c0659ca61a8edc27`, independent **PASS**, remote-verified
+evidence `ed75a0f7927e066c5994d5784fe67bc40f540b22`. Branch
+`codex/studio-cycle-1-1-chat-controls`; 10 affected tests, TypeScript/build and
+13 production browser assertions pass. Exact 202-file artifact is active at
+5591. Original owner work/chat/draft preserved without reload; separate updated
+review tab holds an unsaved exact canvas copy. [Final report and launch](CYCLE-1-1-CHAT-CONTROLS.md).
+Next allowed action is owner review only. No new findings, acceptance, main
+merge or Cycle 1.2. Earlier initial failed popup observations are retained.
+
+Historical start-of-refinement entry follows:
+
 Current owner request (2026-10-23): [chat controls refinement](CYCLE-1-1-CHAT-CONTROLS.md).
 Presentation only: remove redundant agent branding; View menu controls chat
 visibility; context/Stop/details at the panel bottom. Preserve mounted chat

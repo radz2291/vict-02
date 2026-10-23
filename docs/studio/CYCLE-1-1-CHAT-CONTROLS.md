@@ -1,4 +1,4 @@
-# Cycle 1.1 chat controls refinement — IN PROGRESS
+# Cycle 1.1 chat controls refinement — verified, ready for owner review
 
 2026-10-23, Asia/Kuala_Lumpur. Owner says functionality appears well, then
 requests removing “Studio agent,” chat hiding in the top menu, and remaining
@@ -53,3 +53,65 @@ require a safe fresh page load; do not silently discard unsaved or ephemeral
 owner work. Independent artifact identity and current tab state determine the
 activation approach. Commit/push candidate and evidence, compare remote SHA,
 stop ready for owner review; no main merge or later cycle.
+
+## Final independent verdict and local activation
+
+Independent **PASS** on exact product `402dec75c7593fe23e41f3d3c0659ca61a8edc27`.
+Evidence `ed75a0f7927e066c5994d5784fe67bc40f540b22` was pushed and remote-verified
+on `codex/studio-cycle-1-1-chat-controls-verification-final`, then incorporated
+here with the initial failed evidence intact. [Independent report](verification-cycle-1-1-chat-controls-final/FINAL-VERIFICATION.md).
+Builder and verifier affected tests pass 10/10; TypeScript passes. Independent
+exact production build and 13 production browser assertions pass, including
+desktop, short desktop, mobile, pending hide/show, Stop, provider-failure UI,
+reconnect, multiline input, dynamic popup growth and viewport resizing.
+No new findings. Prior real-provider latency/copy findings remain historical;
+no new paid provider call was needed for these presentation-only changes.
+Server/provider/edit/history/save sources are unchanged from preceding delivery.
+
+All 202 independently built artifact files were SHA256-verified before and
+after copying into the existing ignored build directory. Old hashed assets
+were preserved. [Activation record](cycle-1-1-chat-controls-2026-10-23/activation.json).
+Only the idle 5591 listener was restarted; unrelated servers were untouched.
+The existing secure launcher continues using the owner-selected temporary
+z.ai GLM-5.3-flash configuration, full output window and default thinking.
+Credentials remain server-side and were not copied into the repository.
+
+The original tab was never reloaded or saved. Its canvas, transcript and draft
+are byte-identical; its connection was renewed to Ready without replaying a
+request. It retains its original frontend until the owner safely reloads it.
+The existing empty review tab was safely reloaded and now shows the new UI
+with an exact canonical-source copy of the owner's current Solehaus screen,
+applied through the ordinary Source editor and left **unsaved**. No saved
+screen was changed. Original conversation/history remain in the original tab;
+this presentation patch adds no cross-tab conversation persistence.
+[Preservation evidence](cycle-1-1-chat-controls-2026-10-23/owner-preservation.json).
+
+Root also visually inspected the actual 5591 review tab and checked View
+Hide/Show: canvas width 908.8→1228.8 px. [Chat visible](cycle-1-1-chat-controls-2026-10-23/review-chat-visible.jpg),
+[chat hidden](cycle-1-1-chat-controls-2026-10-23/review-chat-hidden.jpg).
+
+## Launch and hands-on review
+
+Running at http://127.0.0.1:5591/design from the isolated builder worktree.
+For restart, use PowerShell in this branch's worktree with its verified build:
+
+```powershell
+$env:ORIGIN='http://127.0.0.1:5591'
+$env:HOST='127.0.0.1'
+$env:PORT='5591'
+$env:STUDIO_AGENT_MODEL='zai/glm-5.3-flash'
+$env:STUDIO_AGENT_AUTH_FILE=Join-Path $env:USERPROFILE '.pi/agent/auth.json'
+$env:STUDIO_AGENT_MODELS_FILE=Join-Path $env:USERPROFILE '.pi/agent/models.json'
+node apps/studio/scripts/launch-agent.mjs
+```
+
+Use the updated separate review tab. View → Hide chat expands the canvas;
+View → Show chat restores it. Type a draft and toggle visibility to check
+retention. Context and the details menu sit below the composer; details contains
+connection/reconnect and turn activity. Stop appears there during a turn.
+Ordinary edits still share manual Undo/Save behavior. Keep using the original
+tab for its existing unsaved work/history; do not overwrite its saved source
+with the review copy unintentionally.
+
+Next allowed action: owner review. No owner acceptance, whole-Stage-9 closure,
+main merge or Cycle 1.2 work is recorded or authorized by this delivery.

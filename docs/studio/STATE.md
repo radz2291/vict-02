@@ -1,6 +1,23 @@
 # Studio Designer — current delivery state
 
-## 2026-10-23 — Owner chat controls refinement IN PROGRESS
+## 2026-10-23 — Owner chat controls refinement verified and locally active
+
+Independent **PASS** on exact product `402dec75c7593fe23e41f3d3c0659ca61a8edc27`,
+branch `codex/studio-cycle-1-1-chat-controls`. Remote-verified independent evidence
+`ed75a0f7927e066c5994d5784fe67bc40f540b22` is incorporated with initial failed
+popup geometry retained. Affected tests 10/10, TypeScript, exact production
+build and 13 browser assertions pass. All 202 active artifact hashes match.
+No new findings. [Final report, launch and review](CYCLE-1-1-CHAT-CONTROLS.md).
+
+View → Hide chat / Show chat preserves mounted draft/feed/active turns and
+expands canvas. Redundant branding is removed; context/Stop/details are below
+the composer, with details anchored above it. Original unsaved Solehaus canvas,
+conversation and draft remain byte-identical in the original tab (no reload).
+A separate updated review tab contains an exact unsaved canvas copy. No saved
+screen changed. Ready for owner review only; broader Stage 9 remains reopened.
+No owner acceptance, main merge or Cycle 1.2.
+
+### Retained scope at start of refinement
 
 Owner gave positive functional feedback and requested removing “Studio agent,”
 top-menu chat visibility and remaining chat controls at the bottom. Bounded
