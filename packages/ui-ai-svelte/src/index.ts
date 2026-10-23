@@ -1,6 +1,8 @@
 export { default as Conversation } from './Conversation.svelte';
-export { conversationMessages } from './adapters.js';
-export type { ConversationMessage, ConversationActivity, SendResult } from './adapters.js';
+export { captureRenderedElement, RENDER_CAPTURE_LIMITS } from './capture.js';
+export type { RenderedCapture } from './capture.js';
+export { conversationMessages, appendConversationEvent } from './adapters.js';
+export type { ConversationMessage, ConversationActivity, ConversationEvent, SendResult } from './adapters.js';
 export { default as Markdown } from './upstream/markdown/markdown.svelte';
 export * as Patterns from './patterns/index.js';
 export { PatternShowcase } from './patterns/index.js';

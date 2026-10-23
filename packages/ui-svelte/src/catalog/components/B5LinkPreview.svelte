@@ -9,7 +9,7 @@
 
 <LinkPreview.Root bind:open onOpenChange={(next) => io?.emit('openChange', next)} disabled={props.disabled === true} openDelay={typeof props.openDelay === 'number' ? Math.max(0, props.openDelay) : 700} closeDelay={typeof props.closeDelay === 'number' ? Math.max(0, props.closeDelay) : 300}>
   <LinkPreview.Trigger {...presentation?.target('trigger')} href={typeof props.href === 'string' ? props.href : '#'}>
-    {#if io?.slots?.trigger}{@render io.slots.trigger()}{:else}{typeof props.label === 'string' ? props.label : 'LinkPreview'}{/if}
+    {#if io?.slotLabels?.trigger !== undefined}{io.slotLabels.trigger}{:else if io?.slots?.trigger}{@render io.slots.trigger()}{:else}{typeof props.label === 'string' ? props.label : 'LinkPreview'}{/if}
   </LinkPreview.Trigger>
   <CatalogPortal {open} {presentation}>
 

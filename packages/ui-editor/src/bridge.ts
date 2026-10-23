@@ -20,6 +20,7 @@ import {
   type UiDiagnostic,
   type UiSaveOutcome,
 } from '@victframework/ui';
+import { interactiveSlotConflicts } from './interactive-slots.js';
 import type { TransactionDraft } from './commands.js';
 
 import type { DocumentStorePort } from '@victframework/ui';
@@ -124,6 +125,16 @@ export class EditorBridge {
       ...(draft.reason !== undefined ? { reason: draft.reason } : {}),
       commands: draft.commands,
     };
+    // Preserve old source compatibility while refusing newly introduced invalid HTML.
+    if (!this.#validatedRequests.has(draft.requestId)) {
+      const staged = applyUiEdit(this.#session.state().working, transaction, this.#catalogs);
+      if (staged.ok) {
+        const existing = new Set(interactiveSlotConflicts(this.document).map(issue => issue.id));
+        const added = interactiveSlotConflicts(staged.document).filter(issue => !existing.has(issue.id));
+        if (added.length) return { ok:false,issues:added.map(issue => uiDiagnostic('UI_EDIT_VALIDATION_FAILED',
+          `Slot '${issue.slot}' already supplies a button. Use text or noninteractive content instead of '${issue.nodeId}'.`,{nodeId:issue.nodeId,parentId:issue.parentId,slot:issue.slot})) };
+      }
+    }
     // Replays go to the session's idempotency/conflict authority. Re-running an
     // already-applied insert against the current document would wrongly reject it.
     if (this.#validateDocument && !this.#validatedRequests.has(draft.requestId)) {

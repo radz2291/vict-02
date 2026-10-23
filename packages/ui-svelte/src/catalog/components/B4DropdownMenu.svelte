@@ -16,7 +16,7 @@
 
 <DropdownMenu.Root bind:open onOpenChange={(next) => io?.emit('openChange', next)}>
   <DropdownMenu.Trigger {...presentation?.target('root')} disabled={props.disabled === true} bind:ref={triggerRef}>
-    {#if io?.slots?.trigger}{@render io.slots.trigger()}{:else}{String(props.label ?? '')}{/if}
+    {#if io?.slotLabels?.trigger !== undefined}{io.slotLabels.trigger}{:else if io?.slots?.trigger}{@render io.slots.trigger()}{:else}{String(props.label ?? '')}{/if}
   </DropdownMenu.Trigger>
   <CatalogPortal {open} {presentation}>
     <DropdownMenu.Content {...presentation?.target('content')} bind:ref={contentRef} sideOffset={6} collisionPadding={16}>

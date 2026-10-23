@@ -10,6 +10,7 @@ import {
   type AgentEdit,
   type AgentProposal,
 } from '../src/lib/designer/agent-edits.js';
+import { AGENT_REQUEST_BYTES } from '../src/lib/designer/agent-transport.js';
 import { agentJson } from '../src/lib/server/designer-agent-http.js';
 
 function setup() {
@@ -169,8 +170,8 @@ describe('agent canonical editing boundary', () => {
       attributes: { type: 'email', 'aria-label': 'Email' },
     });
     if (input?.kind === 'element') {
-      expect(input.attributes?.value).toBeUndefined();
-      expect(input.interactions).toEqual([]);
+      expect(input.attributes?.value).toEqual({type:'ref',path:'state.input_email'});
+      expect(input.interactions).toEqual([{on:'change',action:'setState',key:'input_email',value:{type:'ref',path:'state.input_email'}}]);
     }
     bridge.select('screen-test|email');
     expect(
@@ -315,7 +316,7 @@ describe('agent HTTP request guard', () => {
         new Request('http://localhost', {
           method: 'POST',
           headers: { 'content-type': 'application/json', 'x-vict-csrf': 'csrf' },
-          body: 'x'.repeat(256001),
+          body: 'x'.repeat(AGENT_REQUEST_BYTES+1),
         }),
         session,
         413,

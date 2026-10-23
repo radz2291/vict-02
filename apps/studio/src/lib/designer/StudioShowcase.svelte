@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
+  import { onMount, tick } from 'svelte';
   import {
     Composer, CompositionNavigator, EditorBridge, EditorCanvas, Inspector, Layers,
     SelectionPalette, StateInitialEditor, StateValuesPanel, authoredOccurrence,
@@ -14,7 +14,7 @@
   import { screenStore } from './storage.js';
   import { createScreenSimulation, screenDispatcher } from './execution.js';
   import { createShowcaseFixture, showcaseCatalog } from './showcase.js';
-  import { structureMove, type StructureEditRequest } from './structure.js';
+  import { structureMove, type StructureEditRequest, type StructureHandoff } from './structure.js';
   import StructureView from './StructureView.svelte';
   import '@victframework/ui-svelte/styles.css';
   import '@victframework/ui-svelte/catalog.css';
@@ -139,7 +139,20 @@
   }
   function changeMode(next: 'design' | 'interact') {
     if (blocked) return;
-    mode = next; compositionFocus = undefined; resetPreview();
+    if (mode !== next) { mode = next; compositionFocus = undefined; resetPreview(); }
+  }
+  async function structureNavigate(request: StructureHandoff) {
+    if (blocked) return;
+    if (request.occurrence) selectStructure(request.occurrence);
+    if (request.destination === 'design' || request.destination === 'inspector') { view = 'canvas'; changeMode('design'); }
+    if (request.destination === 'inspector') tools = 'inspector';
+    if (request.destination === 'data') selectedData = request.key ?? '';
+    await tick();
+    const selector = request.destination === 'layers' ? '.layers' : request.destination === 'data' ? '[data-structure-data]' : request.destination === 'actions' ? '[data-structure-actions]' : request.destination === 'inspector' ? '.inspector' : '.canvas';
+    const element = canvasRoot?.closest('.studio-showcase')?.querySelector<HTMLElement>(selector);
+    if (element instanceof HTMLDetailsElement) element.open = true;
+    element?.scrollIntoView({ block: 'nearest' }); element?.focus({ preventScroll: true });
+    notice = `Opened ${request.destination} for ${request.sourceId ?? request.key ?? 'selected source'} in this disposable example.`;
   }
   async function dispatch(actionId: string, input?: unknown) {
     if (!compilation?.ok || mode !== 'interact') return { ok: false, code: 'SHOWCASE_DESIGN_MODE' };
@@ -185,7 +198,7 @@
     <p role="status" class="notice">{notice}</p>
     {#if issues.length}<ul class="issues" role="alert">{#each issues as issue}<li>{issue.code}: {issue.message}</li>{/each}</ul>{/if}
     <div class="editor-grid">
-      <aside class="layers"><h3>Layers</h3>{#if plan}<Layers {plan} document={source} selectedOccurrence={selected} onSelect={select} onApply={apply} componentDescriptors={catalogDescriptors} onOpenComposition={navigateComposition} />{/if}</aside>
+      <aside class="layers" tabindex="-1"><h3>Layers</h3>{#if plan}<Layers {plan} document={source} selectedOccurrence={selected} onSelect={select} onApply={apply} componentDescriptors={catalogDescriptors} onOpenComposition={navigateComposition} />{/if}</aside>
       <div class="preview-column">
         <div class="composition-tools">
           <button type="button" disabled={blocked} onclick={() => { if (!blocked) { compositionFocus = exampleFocus; selectNode(targetNodeId); } }}>Select example part</button>
@@ -205,15 +218,16 @@
                 onRenderDiagnostic={(diagnostic: { code: string; message: string }) => issues = [...issues.slice(-4), diagnostic]} ariaLabel="Showcase canvas" />
           {/key}
         </div>
-        {#if view === 'structure'}<div class="structure"><StructureView document={source} revision={snapshot.revision} {selectedNodeId} {blocked} onSelect={selectStructure} onMove={move} onNotice={message => notice = message} /></div>{/if}
+        <div class="structure" style:display={view === 'structure' ? undefined : 'none'}><StructureView active={view === 'structure'} document={source} revision={snapshot.revision} {selectedNodeId} {blocked} descriptors={catalogDescriptors} recipes={screenRecipes} onSelect={selectStructure} onMove={move} onNotice={message => notice = message} onNavigate={structureNavigate} /></div>
         <details><summary>Insert and arrange (Composer)</summary><Composer document={source} {selectedNodeId} recipes={screenRecipes} descriptors={catalogDescriptors} {compositionFocus} onApply={apply} onInserted={selectNode} onDetached={selectNode} /></details>
-        <details><summary>Data: authored starting values</summary>
+        <details data-structure-data tabindex="-1"><summary>Data: authored starting values</summary>
           <label>State declaration <select aria-label="Authored state declaration" value={selectedData} disabled={blocked} onchange={event => selectedData = event.currentTarget.value}><option value="">Choose a value</option>{#each Object.values(source.localState) as declaration}<option value={declaration.key}>{declaration.key} · {declaration.type}</option>{/each}</select></label>
           {#if selectedData}{#key `${recipeId}:${selectedData}`}<StateInitialEditor document={source} expression={{ type: 'ref', path: `state.${selectedData}` }} onApply={apply} onDirtyChange={(dirty: boolean) => dataDraft = dirty} />{/key}{/if}
         </details>
+        <details data-structure-actions tabindex="-1"><summary>Actions: declared simulation</summary><p>This screen declares demo.submit. Its input is message and accepted; execution is simulated in Interact. Source relationships do not prove an action ran.</p><code>demo.submit → local screen simulation</code></details>
         <details><summary>Preview values (temporary runtime data)</summary><p>Interact changes these values. Action calls use the local screen simulation with no live effects.</p>{#key recipeId}<StateValuesPanel localState={source.localState} stateValues={runtimeValues} onChange={(key: string, value: UiValue | undefined) => { const next = { ...runtimeValues }; if (value === undefined) delete next[key]; else next[key] = value; runtimeValues = next; }} />{/key}</details>
       </div>
-      <aside class="inspector"><h3>Selected source</h3>
+      <aside class="inspector" tabindex="-1"><h3>Selected source</h3>
         <div class="toolbar"><button type="button" disabled={blocked} aria-pressed={tools === 'inspector'} onclick={() => tools = 'inspector'}>Docked Inspector</button><button type="button" disabled={blocked} aria-pressed={tools === 'palette'} onclick={() => tools = 'palette'}>Selection palette</button></div>
         {#if tools === 'inspector'}<Inspector document={source} selectedOccurrence={selected} onApply={apply} lastIssues={issues} componentDescriptors={catalogDescriptors} knownActionIds={designerCatalogs.actionIds} knownRouteIds={designerCatalogs.routeIds} {actionInputs} readEffective={effective} onTextDraftChange={(dirty: boolean) => propertyDraft = dirty} />{:else}<p>Select source on the design canvas to use its floating Format, Insert, Arrange and Connect tools. F10 focuses the palette.</p>{/if}
       </aside>

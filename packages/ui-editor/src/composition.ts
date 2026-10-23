@@ -107,6 +107,17 @@ export function compositionName(
   );
   return peers.length > 1 ? `${name} ${peers.indexOf(id) + 1}` : name;
 }
+/** Batched presentation labels with the same duplicate-name ordinals as compositionName. */
+export function compositionNames(document: UiDocument, labels: EditorLabels = {}): ReadonlyMap<string, string> {
+  const names = new Map(Object.keys(document.nodes).map(id => [id, nodeLabel(document, id, labels)]));
+  const totals = new Map<string, number>();
+  for (const name of names.values()) totals.set(name, (totals.get(name) ?? 0) + 1);
+  const ordinals = new Map<string, number>();
+  return new Map([...names].map(([id, name]) => {
+    const ordinal = (ordinals.get(name) ?? 0) + 1; ordinals.set(name, ordinal);
+    return [id, (totals.get(name) ?? 0) > 1 ? `${name} ${ordinal}` : name];
+  }));
+}
 export type CompositionPlacement = 'before' | 'inside' | 'after';
 /** Source-addressed tree moves; the edit engine still owns final cycle/closure validation. */
 export function moveRelative(

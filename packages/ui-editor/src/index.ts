@@ -23,6 +23,7 @@ export {
   compositionParent,
   compositionChildren,
   compositionName,
+  compositionNames,
   moveRelative,
 } from './composition.js';
 export { conditionalStyleConflicts, allowConditionalStyles } from './responsive-style.js';
@@ -57,8 +58,11 @@ export {
   setStyle,
   setBaseStyle,
   setStateInitial,
+  wireNativeInput,
   setTextLiteral,
 } from './commands.js';
 export type { TransactionDraft } from './commands.js';
 export { isSelected, resolveOccurrence } from './occurrence.js';
 export type { OccurrenceReport } from './occurrence.js';
+
+export { interactiveSlotConflicts } from './interactive-slots.js';

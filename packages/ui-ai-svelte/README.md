@@ -50,3 +50,20 @@ disposition, and [UPSTREAM.md](UPSTREAM.md) for exact pins, source provenance,
 CSS isolation, license and upgrade instructions. The example workspace
 `examples/studio-ui-consumer` uses only public AI and Flow package exports;
 `scripts/verify-cycle-1-3-consumer.mjs` packs them into an isolated consumer.
+# Completion-round additions (2026-10-24)
+
+`ConversationMessage.events` accepts an ordered sequence of text, concise host
+summaries and expandable activity records. Stable event IDs support updating a
+record in place. `appendConversationEvent` visibly compacts earlier entries at
+the configured bound. Hosts retain their confirmed commit boundary separately.
+Legacy `activity` consumers remain supported. Events take precedence when supplied.
+The package presents supplied evidence; it does not produce private reasoning,
+tool results, execution receipts or provider observations.
+
+`captureRenderedElement(element, viewport?)` rasterizes the actual existing DOM
+through pinned `html-to-image@1.11.13` (MIT). It returns a bounded JPEG and image
+dimensions/crop offsets. It does not upload anything or call a model. The host
+must associate document/revision/preview state, enforce stale-image guards and
+select an explicitly compatible vision provider. Nested scrolled descendants
+are refused because this DOM rasterizer cannot preserve them faithfully. Browser
+capture is appearance evidence only, not proof of actions or state wiring.

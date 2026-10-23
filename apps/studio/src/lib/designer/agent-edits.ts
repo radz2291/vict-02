@@ -9,6 +9,9 @@ import {
 } from '@victframework/ui';
 import {
   insertRecipe,
+  wireNativeInput,
+  interactiveSlotConflicts,
+  compositionChildren,
   canInsertRecipe,
   literalTextTarget,
   resolveOccurrence,
@@ -45,9 +48,12 @@ export const agentOperationSchema = z.discriminatedUnion('op', [
       nodeId: id,
       parentId: id,
       ...position,
+      replacePlaceholder: z.boolean().optional(),
       ...content,
     })
     .strict(),
+  z.object({ op: z.literal('declareState'), key: id.refine(value => /^[a-zA-Z0-9_-]+$/.test(value), 'Use a simple local state key.'), type: z.enum(['string','number','boolean']), initial: scalar }).strict(),
+  z.object({ op: z.literal('wireInput'), nodeId: id, key: id.refine(value => /^[a-zA-Z0-9_-]+$/.test(value), 'Use a simple local state key.'), initial: scalar.optional() }).strict(),
   z.object({ op: z.literal('modify'), nodeId: id, ...content }).strict(),
   z.object({ op: z.literal('move'), nodeId: id, newParentId: id, ...position }).strict(),
   z.object({ op: z.literal('remove'), nodeId: id }).strict(),
@@ -77,7 +83,7 @@ export interface AgentProposal {
   edit: AgentEdit;
   resultDigest: string;
 }
-export type EditFailure = { ok: false; code: string; message: string };
+export type EditFailure = { ok: false; code: string; message: string; diagnostics?: readonly { operation?: number; path: string; message: string }[] };
 export type EditReceipt = EditFailure | { ok: true; revision: string; digest: string };
 export const failure = (code: string, message: string): EditFailure => ({
   ok: false,
@@ -101,11 +107,7 @@ export function prepareAgentEdit(
   requestId: string,
 ): EditFailure | { ok: true; draft: TransactionDraft; document: UiDocument; digest: string } {
   const parsed = agentEditSchema.safeParse(input);
-  if (!parsed.success)
-    return failure(
-      'STUDIO_AGENT_INVALID_EDIT',
-      'Use the declared add, modify, move, remove, bind or connect contract.',
-    );
+  if (!parsed.success) return { ...failure('STUDIO_AGENT_INVALID_EDIT', 'Use the exact operation fields. No edits applied.'), diagnostics: parsed.error.issues.slice(0, 8).map(issue => ({ ...(typeof issue.path[1] === 'number' ? {operation:issue.path[1]} : {}), path: issue.path.join('.'), message: issue.message })) };
   if (
     document.id !== cursor.documentId ||
     canonicalUiDocument(document).contentDigest !== cursor.digest
@@ -122,7 +124,7 @@ export function prepareAgentEdit(
   let working = document;
   const commands: UiEditCommand[] = [];
   try {
-    for (const operation of parsed.data.operations) {
+    for (const [operationIndex, operation] of parsed.data.operations.entries()) {
       const next: UiEditCommand[] = [];
       if (operation.op === 'add') {
         const recipe = screenRecipes.find((recipe) => recipe.id === operation.recipe)!;
@@ -135,15 +137,29 @@ export function prepareAgentEdit(
             index: operation.index,
           }).commands,
         );
-        // A generated form field is independent by default. Do not bind every new field
-        // to the palette demo's shared message value or manufacture backend behavior.
-        if (operation.recipe === 'input') {
-          next.push(
-            { op: 'setAttribute', nodeId: operation.nodeId, name: 'value' },
-            { op: 'connectInteraction', nodeId: operation.nodeId, remove: { on: 'change' } },
-          );
+        if (operation.replacePlaceholder !== false && operation.slotName) {
+          const parent = working.nodes[operation.parentId];
+          if (parent?.kind === 'component') {
+            const parentRecipe = screenRecipes.find(recipe => recipe.id === parent.definitionId.replace('vict.catalog.', ''));
+            const seeded = parentRecipe?.create(parent.id) ?? [];
+            const root = seeded[0];
+            const children = root?.kind === 'component' ? root.slots?.[operation.slotName]?.children ?? [] : [];
+            const current = parent.slots?.[operation.slotName]?.children ?? [];
+            const seedMap = new Map(seeded.map(node => [node.id,node]));
+            const normalized = (value: unknown): unknown => Array.isArray(value) ? value.map(normalized) : value && typeof value === 'object' ? Object.fromEntries(Object.entries(value).filter(([,child]) => !(child && typeof child === 'object' && Object.keys(child).length === 0)).sort(([a],[b]) => a.localeCompare(b)).map(([key,child]) => [key,normalized(child)])) : value;
+            const unchanged = (nodeId: string): boolean => !!working.nodes[nodeId] && JSON.stringify(normalized(working.nodes[nodeId])) === JSON.stringify(normalized(seedMap.get(nodeId))) && compositionChildren(working.nodes[nodeId]!).every(unchanged);
+            if (children.length && JSON.stringify(current) === JSON.stringify(children) && children.every(unchanged)) {
+              next.unshift(...children.map(nodeId => ({ op: 'remove' as const, nodeId, detachFromParent: true })));
+            }
+          }
         }
       }
+      if (operation.op === 'declareState') {
+        if (Object.hasOwn(working.localState, operation.key)) return failure('STUDIO_AGENT_STATE_EXISTS', 'State already exists. Read state and bind its exact key; use a fresh key for an independent field.');
+        if (typeof operation.initial !== operation.type) return failure('STUDIO_AGENT_STATE_TYPE', 'The starting value must match the declared scalar type.');
+        next.push({ op: 'replaceDocument', document: { ...working, localState: { ...working.localState, [operation.key]: { key: operation.key, type: operation.type, initial: operation.initial } } } });
+      }
+      if (operation.op === 'wireInput') next.push(...wireNativeInput({ requestId, document: working, nodeId: operation.nodeId, key: operation.key, initial: operation.initial }).commands);
       if (operation.op === 'move') {
         const node = working.nodes[operation.nodeId];
         const recipe = node?.kind === 'component' ? screenRecipes.find(recipe => recipe.id === node.definitionId.replace('vict.catalog.', '')) : undefined;
@@ -159,6 +175,13 @@ export function prepareAgentEdit(
       }
       if (operation.op === 'remove')
         next.push({ op: 'remove', nodeId: operation.nodeId, detachFromParent: true });
+      if (operation.op === 'bind' || operation.op === 'connect') {
+        const node = working.nodes[operation.nodeId];
+        const descriptor = node?.kind === 'component' ? catalogDescriptors.find(item => item.id === node.definitionId) : undefined;
+        const supported = operation.op === 'bind' ? descriptor?.props.map(prop => prop.name) : descriptor?.outputs?.map(output => output.name);
+        const field = operation.op === 'bind' ? operation.prop : operation.output;
+        if (!supported?.includes(field)) return { ...failure('STUDIO_AGENT_PROPERTY', `Operation ${operationIndex}: unsupported ${operation.op === 'bind' ? 'prop' : 'output'} ${field}. Supported: ${supported?.join(', ') || '(none)'}. Native fields use wireInput.`), diagnostics: [{ operation: operationIndex, path: `operations.${operationIndex}.${operation.op === 'bind' ? 'prop' : 'output'}`, message: `Expected one of: ${supported?.join(', ') || '(none)'}` }] };
+      }
       if (operation.op === 'bind')
         next.push({ op: 'bindExpression', nodeId: operation.nodeId, target: { kind: 'prop', name: operation.prop }, expression: operation.expression });
       if (operation.op === 'connect')
@@ -250,17 +273,16 @@ export function prepareAgentEdit(
       if (!result.ok)
         return failure(
           'STUDIO_AGENT_VALIDATION',
-          'Edit rejected: ' +
-            result.issues
-              .map((issue) => issue.code)
-              .slice(0, 5)
-              .join(', '),
+          `Operation ${operationIndex} (${operation.op}) rejected by canonical authoring: ` + result.issues.slice(0,5).map(issue => `${issue.code}: ${issue.message}`).join('; '),
         );
       working = result.document;
       commands.push(...next);
     }
     // Neutral authoring deliberately returns partial plans with component diagnostics.
     // An agent completion must not promote those error diagnostics to a valid edit.
+    const existingConflicts = new Set(interactiveSlotConflicts(document).map(issue => issue.id));
+    const addedConflicts = interactiveSlotConflicts(working).filter(issue => !existingConflicts.has(issue.id));
+    if (addedConflicts.length) return { ...failure('STUDIO_AGENT_INTERACTIVE_SLOT','A trigger/action/cancel slot already supplies a button. Use text or noninteractive content.'), diagnostics:addedConflicts.map(issue => ({path:`nodes.${issue.nodeId}`,message:`${issue.parentId}.${issue.slot} already owns the interactive trigger.`})) };
     const compiled = compileScreen(working);
     const issues = [
       ...screenIssues(working),
@@ -327,33 +349,4 @@ export function applyAgentProposal(
   return { ok: true, revision: snapshot.revision, digest: snapshot.contentDigest };
 }
 
-export function agentContext(document: UiDocument, cursor: AgentCursor, selection?: string) {
-  const occurrence = selection ? resolveOccurrence(selection, document) : undefined;
-  return {
-    // Match the edit argument's name so the model need not infer a token from
-    // saved source metadata. This remains an opaque compare-and-apply guard.
-    expectedRevision: cursor.revision,
-    cursor,
-    document,
-    selection: occurrence
-      ? {
-          occurrence: selection,
-          nodeId: occurrence.sourceNodeId,
-          repeated: !!occurrence.repeatKeys.length,
-          instancePath: occurrence.instancePath,
-        }
-      : null,
-    palette: screenRecipes.map(({ id, label, description, placements }) => ({ id, label, description, ...(placements ? { placements } : {}) })),
-    components: catalogDescriptors.filter((descriptor) =>
-      screenRecipes.some((recipe) =>
-        recipe
-          .create('example')
-          .some((node) => node.kind === 'component' && node.definitionId === descriptor.id),
-      ),
-    ),
-    actionInputs,
-    actions: designerCatalogs.actionIds,
-    editing:
-      'Copy top-level expectedRevision exactly into each edit; document.revision is saved source metadata and MUST NOT be used as expectedRevision. add(recipe,nodeId,parentId,slotName?,index?,text?,attributes?,props?,styles?), modify(nodeId,text?,attributes?,props?,styles?), move(nodeId,newParentId,slotName?,index?), remove(nodeId), bind(nodeId,prop,expression?), connect(nodeId,output,binding?). A bind expression is literal or ref; omit it to reset. A connection is {setState:{key,value?}} or {invokeAction:{actionId,input?}}; omit binding to disconnect. Use only existing compatible state keys and declared actions; $output is available in output mappings. Typed string/number prop lists become typed local-state initial values and reference bindings; edit them manually through Data starting values. Literal expressions remain scalar. Object arrays require existing view data. Context-owned recipes list required placements. Use exact existing node IDs. Each batch is atomic and one Undo. Never claim save or backend implementation. Form fields are independent local preview inputs; backend authoring is outside Cycle 1.3.',
-  };
-}
+export { agentContext, agentReadSchema, agentReadPresentation, agentCoverage } from './agent-reads.js';

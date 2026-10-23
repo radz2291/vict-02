@@ -1,22 +1,25 @@
 <script lang="ts">
   import { onDestroy, onMount } from 'svelte';
-  import { Conversation, conversationMessages, type ConversationActivity } from '@victframework/ui-ai-svelte';
+  import { Conversation, conversationMessages, appendConversationEvent, type ConversationEvent } from '@victframework/ui-ai-svelte';
   import '@victframework/ui-ai-svelte/styles.css';
   import { Popover } from '@victframework/ui-svelte/primitives';
   import type { UiConversationMessage, UiDocument } from '@victframework/ui';
   import type { AgentCursor, AgentProposal, EditFailure, EditReceipt } from './agent-edits.js';
+  import { AGENT_REQUEST_BYTES, AGENT_STREAM_BYTES, AGENT_FRAME_CHARACTERS, boundedHistoryText, agentFailureMessage } from './agent-transport.js';
+  import { uploadVisualCapture, type CaptureResult } from './visual-observation.js';
   interface Props {
     screenLabel:string;
     selectionLabel:string;
     getContext:()=>{document:UiDocument;cursor:AgentCursor;selection?:string}|undefined;
     applyProposal:(proposal:AgentProposal)=>EditReceipt;
     blocked:boolean;
+    getCapture?:(cursor:AgentCursor)=>Promise<CaptureResult>;
   }
-  let {screenLabel,selectionLabel,getContext,applyProposal,blocked}:Props=$props();
+  let {screenLabel,selectionLabel,getContext,applyProposal,blocked,getCapture}:Props=$props();
   let messages=$state<UiConversationMessage[]>([]);
   let progress=$state<string[]>([]);
-  let activities=$state<Record<string, ConversationActivity[]>>({});
-  const presentedMessages=$derived(conversationMessages(messages).map(message=>({...message,activity:activities[message.id]})));
+  let timelines=$state<Record<string, ConversationEvent[]>>({});
+  const presentedMessages=$derived(conversationMessages(messages).map(message=>({...message,...(timelines[message.id] ? {events:timelines[message.id]} : {})})));
   let status=$state('Checking agent configuration…');
   let model=$state('');let ready=$state(false);let busy=$state(false);let csrf='';
   interface LocalTurn {controller:AbortController;runId:string;applied:number;cancelled:boolean;refusal?:EditFailure;}
@@ -27,7 +30,7 @@
   let detailsBoundary=$state<HTMLElement>();
   let detailsAnchor=$state<HTMLFormElement>();
   let failed=$state(false);
-  function note(message:string){progress=[...progress.slice(-7),message];status=message;}
+  function note(message:string){progress=[...progress.slice(-99),message];status=message;}
   async function configure(){
     try{const response=await fetch('/api/designer-agent',{cache:'no-store'});const data=await response.json();if(!response.ok)throw new Error();csrf=data.csrf;model=data.model;ready=data.ready;failed=!ready;status=ready?'Ready':'Configure a server-side model and provider key to connect.';}
     catch{ready=false;failed=true;status='Agent connection unavailable. Sign in again or reconnect in Chat details.';}
@@ -52,6 +55,7 @@
   onDestroy(()=>{disposed=true;void stop();});
   function failedStatus(code:string|undefined,applied:number){
     const effects=appliedEffects(applied);
+    const boundedFailure=agentFailureMessage(code);if(boundedFailure)return `${boundedFailure} ${effects}`;
     if(code==='STUDIO_AGENT_BUSY')return `Another agent turn is still running in this session. Wait for it to finish, or stop it in its Designer tab, then retry. ${effects}`;
     if(code==='STUDIO_AGENT_CAPACITY')return `The agent server is finishing other turns. Wait a moment and retry. ${effects}`;
     if(code==='STUDIO_AGENT_UNCONFIGURED')return `The agent needs a server-side provider configuration. Reconnect after configuring it. ${effects}`;
@@ -67,37 +71,70 @@
     if(blocked)return {ok:false,message:'Apply or cancel your property, data, rename or source draft first.'};
     if(!ready){await configure();if(!ready)return {ok:false,message:'The agent needs a server-side provider configuration. Your request is still here.'};}
     const context=getContext();if(!context)return {ok:false,message:'Open a valid screen before sending.'};
-    const history=messages.slice(-12).map(({participant,text})=>({participant:participant==='user'?'user':'assistant',text:text.slice(0,6000)}));
+    const history=messages.slice(-12).map(({participant,text})=>({participant:participant==='user'?'user':'assistant',text:boundedHistoryText(text)}));
+    const requestBody=JSON.stringify({...context,prompt:text,history});
+    if(new TextEncoder().encode(requestBody).byteLength>AGENT_REQUEST_BYTES)return {ok:false,message:agentFailureMessage('STUDIO_AGENT_REQUEST_LIMIT')};
     messages=[...messages,{author:'You',participant:'user',text},{author:'Assistant',participant:'assistant',text:''}];
     const responseIndex=messages.length-1;
+    const messageId=`message-${responseIndex}`;let serial=0;
+    const append=(event:ConversationEvent)=>{timelines={...timelines,[messageId]:appendConversationEvent(timelines[messageId]??[],event)};};
+    const summary=(message:string)=>append({id:`local-${++serial}`,kind:'summary',text:message});
+    const attempts=new Map<string,string[]>();
+    function settle(ids:readonly string[],state:'completed'|'failed',detail?:string){
+      const selected=new Set(ids);
+      timelines={...timelines,[messageId]:(timelines[messageId]??[]).map(item=>selected.has(item.id)&&item.kind==='activity'?{...item,activity:{...item.activity,state,...(detail?{detail:`${item.activity.detail??''}\n${detail}`}:{})}}:item)};
+    }
+    function finishPending(detail:string){settle((timelines[messageId]??[]).filter(item=>item.kind==='activity'&&(item.activity.state==='running'||item.activity.state==='pending')).map(item=>item.id),'failed',detail);}
+    timelines={...timelines,[messageId]:[]};
     const turn:LocalTurn={controller:new AbortController(),runId:'',applied:0,cancelled:false};activeTurn=turn;
     busy=true;failed=false;progress=[];evidence='';let done=false;let sent=false;let lastRefusal='';let separateReply=false;
     note('Connecting…');
     try{
-      const response=await fetch('/api/designer-agent',{method:'POST',headers:headers(),signal:turn.controller.signal,body:JSON.stringify({...context,prompt:text,history})});
-      if(!response.ok || !response.body)throw new Error('connection');
-      const reader=response.body.getReader();const decoder=new TextDecoder();let buffer='';
+      const response=await fetch('/api/designer-agent',{method:'POST',headers:headers(),signal:turn.controller.signal,body:requestBody});
+      if(!response.ok){const rejection=await response.json().catch(()=>({}));throw new Error(rejection.code??'connection');}
+      if(!response.body)throw new Error('connection');
+      const reader=response.body.getReader();const decoder=new TextDecoder();let buffer='';let receivedBytes=0;
       try{
         while(true){
           const chunk=await reader.read();
           if(turn.controller.signal.aborted)throw new Error('stopped');
           if(chunk.done)break;
-          buffer+=decoder.decode(chunk.value,{stream:true});if(buffer.length>256_000)throw new Error('stream');
+          receivedBytes+=chunk.value.byteLength;if(receivedBytes>AGENT_STREAM_BYTES)throw new Error('STUDIO_AGENT_STREAM_LIMIT');
+          buffer+=decoder.decode(chunk.value,{stream:true});if(buffer.length>AGENT_FRAME_CHARACTERS)throw new Error('STUDIO_AGENT_STREAM_LIMIT');
           let newline:number;
           while((newline=buffer.indexOf('\n'))>=0){
             if(turn.controller.signal.aborted)throw new Error('stopped');
             const line=buffer.slice(0,newline);buffer=buffer.slice(newline+1);if(!line.trim())continue;
             const event=JSON.parse(line);
             if(event.type==='started'){sent=true;turn.runId=event.runId;model=event.model;note('Reading screen…');}
-            if(event.type==='progress'){note(event.message);separateReply=true;}
+            if(event.type==='progress'){note(event.message);summary(`Progress summary · ${event.message}`);separateReply=true;}
+            if(event.type==='tool-event'){
+              const attemptKey=`${event.tool}:${event.callId??'current'}`;
+              const refused=event.kind==='validation-refused'||event.kind==='tool-failed';
+              if(event.kind!=='tool-start'&&event.kind!=='proposed'){
+                const keys=event.callId?[attemptKey]:[...attempts.keys()].filter(key=>key.startsWith(`${event.tool}:`));
+                for(const key of keys){settle(attempts.get(key)??[],refused?'failed':'completed');attempts.delete(key);}
+              }
+              const toolLabel=event.tool==='studio_screen_read'?'Read source':event.tool==='studio_screen_edit'?'Edit screen':event.tool==='studio_screen_observe'?'Observe preview':event.tool;
+              append({id:event.id,kind:'activity',activity:{id:event.id,title:event.kind==='tool-start'?`${toolLabel} started`:event.summary,state:event.kind==='tool-start'?'running':event.kind==='validation-refused'||event.kind==='tool-failed'?'failed':event.kind==='proposed'?'pending':'completed',detail:[event.kind,event.tool,event.details].filter(Boolean).join('\n')}});separateReply=true;
+              if(event.kind==='tool-start'||event.kind==='proposed')attempts.set(attemptKey,[...(attempts.get(attemptKey)??[]),event.id]);
+            }
+            if(event.type==='capture-request'){
+              let captured:CaptureResult;
+              try{captured=getCapture?await getCapture(event.cursor):{ok:false,code:'STUDIO_CAPTURE_UNAVAILABLE',message:'The rendered preview is unavailable.'};}
+              catch{captured={ok:false,code:'STUDIO_CAPTURE_FAILED',message:'The browser could not capture the preview. No visual observation was made.'};}
+              await uploadVisualCapture(event.captureId,csrf,captured,turn.controller.signal);separateReply=true;
+            }
             if(event.type==='text'){
-              messages=messages.map((message,index)=>index===responseIndex?{...message,text:(message.text+(separateReply&&message.text?'\n\n':'')+event.delta).slice(0,100_000)}:message);
+              const previous=timelines[messageId]?.at(-1);
+              const textEvent=previous?.kind==='text'&&!separateReply?{...previous,text:previous.text+event.delta}:{id:`text-${++serial}`,kind:'text' as const,text:event.delta};
+              append(textEvent);
+              messages=messages.map((message,index)=>index===responseIndex?{...message,text:message.text+(separateReply&&message.text?'\n\n':'')+event.delta}:message);
               separateReply=false;
             }
             if(event.type==='proposal'){
               const receipt=applyProposal(event.proposal);
-              const messageId=`message-${responseIndex}`;
-              activities={...activities,[messageId]:[...(activities[messageId]??[]),{id:event.proposal.proposalId,title:event.proposal.edit.reason,state:receipt.ok?'completed':'failed',detail:receipt.ok?'Committed to the screen. Undo is available.':receipt.message}]};
+              append({id:`browser-${event.proposal.proposalId}`,kind:'activity',activity:{id:event.proposal.proposalId,title:receipt.ok?'Browser committed edit':`Browser refused edit · ${receipt.code}`,state:receipt.ok?'completed':'failed',detail:receipt.ok?`${event.proposal.edit.reason}\nCommitted to the screen. Undo is available.`:receipt.message}});
               lastRefusal=receipt.ok?'':receipt.message;
               if(receipt.ok){turn.applied++;status='Applying edit…';}else {turn.refusal=receipt;failed=true;note(receipt.message);}
               separateReply=true;
@@ -106,14 +143,22 @@
               // this turn so only a new user request can capture refreshed context.
               if(!receipt.ok){cancelTransport(turn);throw new Error('canvas-refused');}
               if(!ack.ok)throw new Error('ack');
+              append({id:`ack-${event.proposal.proposalId}`,kind:'activity',activity:{id:`ack-${event.proposal.proposalId}`,title:'Commit receipt acknowledged',state:'completed',detail:event.proposal.edit.reason}});
             }
             if(event.type==='edit-result'){lastRefusal=event.result.ok?'':event.result.message;note(event.result.ok?`${event.reason} · applied`:event.result.message);separateReply=true;}
             if(event.type==='done'){
+              finishPending('This turn ended without a result for this attempt. Only acknowledged receipts establish applied edits.');
               done=true;turn.applied=Math.max(turn.applied,event.applied??0);
               const applied=turn.applied;
               failed=event.status==='failed'||Boolean(lastRefusal);
               status=event.status==='completed'?(lastRefusal?`${lastRefusal} ${applied?`${applied} earlier edits remain undoable.`:''}`:`${applied} edit${applied===1?'':'s'} applied`):event.status==='cancelled'?`Stopped · ${applied} applied edits remain undoable.`:failedStatus(event.code,applied);
               evidence=[event.turnId?`VICT turn ${event.turnId} · profile ${event.profileVersion}`:'',event.code??''].filter(Boolean).join(' · ');
+              const boundary=`${appliedEffects(applied)}${event.confirmedRevision?` Confirmed revision ${event.confirmedRevision}.`:''}`;
+              const terminal=event.termination?` Engine termination: ${event.termination.status}${event.termination.code?` (${event.termination.code})`:''}.`:'';
+              const unresolved=event.unresolvedTools?.length?` Unresolved tools: ${event.unresolvedTools.join(', ')}.`:'';
+              const coverage=event.coverage?` Source coverage: ${event.coverage.authored}/${event.coverage.available} catalog definitions. ${event.coverage.missing.length} absent. Interaction and visual completion require separate observation.`:'';
+              summary(`${status}. ${boundary}${terminal}${unresolved}${coverage}`);
+              messages=messages.map((message,index)=>index===responseIndex?{...message,text:message.text+`\n\nConfirmed progress: ${boundary}${terminal}${unresolved}${coverage}`} :message);
               if(!messages[responseIndex]?.text)messages=messages.map((message,index)=>index===responseIndex?{...message,text:status}:message);
             }
           }
@@ -121,14 +166,18 @@
       }finally{reader.releaseLock();}
       if(!done)throw new Error('incomplete');
       return sent?true:{ok:false,message:status};
-    }catch{
+    }catch(error){
       if(!disposed && activeTurn===turn){
         failed=!turn.cancelled;
         const refusal=turn.refusal;
-        note(turn.cancelled?`Stopped. ${appliedEffects(turn.applied)}`:refusal?`${refusal.message}${refusal.message.includes('new request')?'':' Send a new request using the current screen.'}${turn.applied?` ${appliedEffects(turn.applied)}`:''}`:`Connection interrupted · ${turn.applied} edits applied locally. Inspect the canvas before retrying; Undo is available.`);
+        const code=error instanceof Error?error.message:undefined;
+        const diagnosed=agentFailureMessage(code);
+        note(turn.cancelled?`Stopped. ${appliedEffects(turn.applied)}`:refusal?`${refusal.message}${refusal.message.includes('new request')?'':' Send a new request using the current screen.'}${turn.applied?` ${appliedEffects(turn.applied)}`:''}`:diagnosed?`${diagnosed} ${appliedEffects(turn.applied)}`:`Connection interrupted · ${turn.applied} edits applied locally. Inspect the canvas before retrying; Undo is available.`);
+        summary(status);
+        finishPending(turn.cancelled?'Stopped before this attempt was confirmed.':'The connection ended before this attempt was confirmed.');
         if(!messages[responseIndex]?.text)messages=messages.map((message,index)=>index===responseIndex?{...message,text:status}:message);
       }
-      return sent?true:{ok:false,message:turn.cancelled?'Stopped before the request was admitted. Your draft is still here.':'The request could not reach the agent. Your draft is still here.'};
+      return sent?true:{ok:false,message:turn.cancelled?'Stopped before the request was admitted. Your draft is still here.':agentFailureMessage(error instanceof Error?error.message:undefined)??status};
     }finally{if(!done)cancelTransport(turn);if(activeTurn===turn){activeTurn=undefined;busy=false;}}
   }
 </script>
@@ -152,7 +201,7 @@
           <p>{status}</p>
           {#if !ready}<p>Set the server’s model and provider key, then restart Studio. Credentials stay on the server.</p>{/if}
           <button type="button" class="details-reconnect" disabled={busy} onclick={()=>void configure()}>Reconnect agent</button>
-          {#if progress.length}<h4>Recent activity</h4><ol>{#each progress as message}<li>{message}</li>{/each}</ol>{/if}
+          {#if progress.length}<h4>Progress summaries</h4><p>The chronological transcript includes tool attempts and receipts. Summaries are user-facing progress, not private reasoning.</p><ol>{#each progress as message}<li>{message}</li>{/each}</ol>{/if}
           {#if evidence}<h4>Connection record</h4><p class="details-record">{evidence}</p>{/if}
         </Popover.Content>
       </Popover.Root>

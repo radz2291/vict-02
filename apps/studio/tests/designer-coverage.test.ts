@@ -57,8 +57,11 @@ describe('Cycle 1.3 actual Designer coverage', () => {
     const bridge = new EditorBridge({ catalogs: designerCatalogs, initial: { document, storedRevision: 'r1' }, store: screenStore({ getItem: key => data.get(key) ?? null, setItem: (key, value) => data.set(key, value) }, document.id) });
     const cursor = documentCursor(document, bridge.getSnapshot().revision, 'epoch');
     const context = agentContext(document, cursor);
-    expect(context.palette.map(entry => entry.id)).toEqual(screenRecipes.map(entry => entry.id));
-    expect(context.components).toHaveLength(catalogDescriptors.length - 2);
+    expect(context).not.toHaveProperty('palette');
+    expect(context).not.toHaveProperty('components');
+    const entries: string[] = [];
+    for (let offset=0;offset<screenRecipes.length;offset+=20) { const page = agentContext(document,cursor,undefined,{section:'palette',offset,limit:20}) as {items:{id:string}[]}; entries.push(...page.items.map(entry=>entry.id)); }
+    expect(entries).toEqual(screenRecipes.map(entry => entry.id));
     const edit: AgentEdit = { expectedRevision: cursor.revision, reason: 'Reusable catalog', operations: [
       { op: 'add', recipe: 'slider', nodeId: 'slider', parentId: 'screen', props: { value: [20, 40] } },
       { op: 'add', recipe: 'toggle', nodeId: 'toggle', parentId: 'screen' },

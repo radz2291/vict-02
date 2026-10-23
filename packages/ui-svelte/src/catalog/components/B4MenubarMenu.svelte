@@ -21,7 +21,7 @@
 
 <Menubar.Menu {value} onOpenChange={(next) => io?.emit('openChange', next)}>
   <Menubar.Trigger {...presentation?.target('root')} disabled={props.disabled === true} bind:ref={triggerRef}>
-    {#if io?.slots?.trigger}{@render io.slots.trigger()}{:else}{String(props.label ?? '')}{/if}
+    {#if io?.slotLabels?.trigger !== undefined}{io.slotLabels.trigger}{:else if io?.slots?.trigger}{@render io.slots.trigger()}{:else}{String(props.label ?? '')}{/if}
   </Menubar.Trigger>
   <CatalogPortal {open} {presentation}><Menubar.Content {...presentation?.target('content')} bind:ref={contentRef} strategy="fixed" sideOffset={6} collisionPadding={16} onOpenAutoFocus={focusContent} onCloseAutoFocus={restoreTrigger}>
   {@render io?.slots?.items?.()}

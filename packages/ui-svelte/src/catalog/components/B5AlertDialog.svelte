@@ -12,7 +12,7 @@
 
 <AlertDialog.Root bind:open onOpenChange={(next) => io?.emit('openChange', next)}>
   <AlertDialog.Trigger {...presentation?.target('trigger')} disabled={props.disabled === true} bind:ref={triggerRef}>
-    {#if io?.slots?.trigger}{@render io.slots.trigger()}{:else}{typeof props.label === 'string' ? props.label : 'AlertDialog'}{/if}
+    {#if io?.slotLabels?.trigger !== undefined}{io.slotLabels.trigger}{:else if io?.slots?.trigger}{@render io.slots.trigger()}{:else}{typeof props.label === 'string' ? props.label : 'AlertDialog'}{/if}
   </AlertDialog.Trigger>
   <CatalogPortal {open} {presentation}>
     <AlertDialog.Overlay />
@@ -22,10 +22,10 @@
       {@render io?.slots?.body?.()}
       <div class="vict-actions">
         <AlertDialog.Cancel {...presentation?.target('cancel')}>
-          {#if io?.slots?.cancel}{@render io.slots.cancel()}{:else}{typeof props.cancelLabel === 'string' ? props.cancelLabel : 'Cancel'}{/if}
+          {#if io?.slotLabels?.cancel !== undefined}{io.slotLabels.cancel}{:else if io?.slots?.cancel}{@render io.slots.cancel()}{:else}{typeof props.cancelLabel === 'string' ? props.cancelLabel : 'Cancel'}{/if}
         </AlertDialog.Cancel>
         <AlertDialog.Action {...presentation?.target('action')} disabled={props.disabled === true} aria-disabled={io?.action?.pending || undefined} aria-busy={io?.action?.pending || undefined} onclick={(event) => { if (io?.action?.pending) { event.preventDefault(); return; } io?.emit('confirm'); }}>
-          {#if io?.slots?.action}{@render io.slots.action()}{:else}{typeof props.confirmLabel === 'string' ? props.confirmLabel : 'Confirm'}{/if}
+          {#if io?.slotLabels?.action !== undefined}{io.slotLabels.action}{:else if io?.slots?.action}{@render io.slots.action()}{:else}{typeof props.confirmLabel === 'string' ? props.confirmLabel : 'Confirm'}{/if}
         </AlertDialog.Action>
       </div>
       <ActionFeedback feedback={io?.action?.feedback} />

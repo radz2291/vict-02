@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Conversation, PatternShowcase, PrimitiveShowcase, type ConversationMessage } from '@victframework/ui-ai-svelte';
   import catalog from './cycle13-catalog.json';
-  import { FlowCanvas, addEdge, type Node, type Edge, type Connection } from '@victframework/ui-flow-svelte';
+  import { FlowCanvas, layoutGraph, addEdge, type Node, type Edge, type Connection } from '@victframework/ui-flow-svelte';
   import '@victframework/ui-ai-svelte/styles.css';
   import '@victframework/ui-flow-svelte/styles.css';
   let messages=$state<ConversationMessage[]>([{id:'welcome',role:'assistant',text:'This is a **packed-package consumer**.\n\nSend a message to test streaming and Stop. This showcase uses a deterministic presentation fixture, with no provider or application effects.'}]);
@@ -16,6 +16,13 @@
   let recipeSearch=$state('');
   const filteredRecipes=$derived(catalog.filter(recipe=>`${recipe.label} ${recipe.description} ${recipe.category}`.toLowerCase().includes(recipeSearch.toLowerCase())));
   function connect(connection:Connection){edges=addEdge(connection,edges);feedback=`Connected ${connection.source} to ${connection.target}.`;}
+  async function arrange(){const result=await layoutGraph(nodes,edges,{engine:'elk',direction:'RIGHT'});nodes=result.nodes;edges=result.edges;feedback='Measured layout from the installed public package. Presentation only.';}
+  const orderedFixture:ConversationMessage[]=[{id:'ordered-fixture',role:'assistant',text:'Simulated ordered attempt fixture.',events:[
+    {id:'before',kind:'text',text:'Simulated attempt: inspect the source.'},
+    {id:'refused',kind:'activity',activity:{id:'refused',title:'Validation refused',state:'failed',detail:'Fixture only: operations.0.prop needs a declared property.'}},
+    {id:'correction',kind:'text',text:'Simulated correction follows the refusal.'},
+    {id:'receipt',kind:'activity',activity:{id:'receipt',title:'Simulated receipt acknowledged',state:'completed',detail:'No real source was edited by this package example.'}},
+  ]}];
   function stop(){generation++;busy=false;}
   async function send(text:string){
     const run=++generation;busy=true;
@@ -31,7 +38,8 @@
   <header><p>VICT UI / Cycle 1.3</p><h1>Conversation and structure</h1><p>Public packages in a small standalone consumer. Demonstrations are simulated; they do not call an agent or execute workflows.</p></header>
   <nav class="showcase-nav" aria-label="Cycle 1.3 showcase sections"><a href="#ai-patterns">21 AI patterns</a><a href="#building-blocks">UI building blocks</a><a href="#flow">Node canvas</a><a href="#studio-recipes">83 Studio recipes</a><a href="http://127.0.0.2:5594/showcase" target="_blank" rel="noopener noreferrer">Complete Studio UI showcase ↗</a></nav>
   <div class="surfaces"><section aria-label="Conversation showcase" class="chat"><Conversation {messages} {busy} title="New Thread" description="Local streaming presentation fixture" onReset={()=>{generation++;busy=false;messages=[];}} onSend={send} onStop={busy?stop:undefined}/></section>
-  <section id="flow" aria-label="Node showcase"><h2>Node canvas</h2><p>{feedback}</p><div class="flow"><FlowCanvas bind:nodes bind:edges onconnect={connect} fitView aria-label="Reusable node canvas"/></div></section></div>
+  <section id="flow" aria-label="Node showcase"><h2>Node canvas</h2><p>{feedback}</p><button onclick={arrange}>Arrange with public layout</button><div class="flow"><FlowCanvas bind:nodes bind:edges onconnect={connect} fitView aria-label="Reusable node canvas"/></div></section></div>
+  <section class="chat" style="height:500px;margin-top:24px" aria-label="Ordered timeline fixture"><Conversation messages={orderedFixture} onSend={async()=>({ok:false,message:'Simulated presentation fixture only.'})}/></section>
   <section id="ai-patterns" class="patterns"><h2>All 21 AI Elements patterns</h2><PatternShowcase/></section>
   <section id="building-blocks" class="patterns"><h2>Shared UI building blocks</h2><PrimitiveShowcase/></section>
   <section id="studio-recipes" class="recipe-index" aria-label="All Cycle 1.3 Studio recipes">

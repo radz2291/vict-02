@@ -96,7 +96,8 @@ const basicRecipes: readonly InsertRecipe[] = [
   {
     id: 'input',
     label: 'Text input',
-    description: 'Accessible input connected to message state',
+    description: 'Accessible text input with independent local state and change binding',
+    initialState: id => { const key = `input_${id.replace(/[^a-zA-Z0-9_-]/g, '_')}`; return { [key]: { key, type: 'string', initial: '' } }; },
     create: (id) => [
       {
         kind: 'element',
@@ -107,14 +108,14 @@ const basicRecipes: readonly InsertRecipe[] = [
           type: 'text',
           'aria-label': 'Message',
           placeholder: 'Your message',
-          value: { type: 'ref', path: 'state.message' },
+          value: { type: 'ref', path: `state.input_${id.replace(/[^a-zA-Z0-9_-]/g, '_')}` },
         },
         interactions: [
           {
             on: 'change',
             action: 'setState',
-            key: 'message',
-            value: { type: 'ref', path: 'state.message' },
+            key: `input_${id.replace(/[^a-zA-Z0-9_-]/g, '_')}`,
+            value: { type: 'ref', path: `state.input_${id.replace(/[^a-zA-Z0-9_-]/g, '_')}` },
           },
         ],
         localStyle: styles({
@@ -141,16 +142,16 @@ const basicRecipes: readonly InsertRecipe[] = [
   {
     id: 'checkbox',
     label: 'Checkbox',
-    description: 'Catalog · boolean value and output',
-    create: (id) =>
-      component(id, 'checkbox', { label: literal('I agree to continue'), checked: literal(false) }),
+    description: 'Independently wired boolean value and matching output',
+    initialState: id => {const key=`field_${id.replace(/[^a-zA-Z0-9_-]/g, '_')}`;return {[key]:{key,type:'boolean',initial:false}};},
+    create: id => {const key=`field_${id.replace(/[^a-zA-Z0-9_-]/g, '_')}`;return [{kind:'component',id,definitionId:'vict.catalog.checkbox',props:{label:literal('I agree to continue'),checked:{type:'ref',path:`state.${key}`}},outputs:{checkedChange:{setState:{key}}}}];},
   },
   {
     id: 'switch',
     label: 'Switch',
-    description: 'Catalog · a labeled on/off control',
-    create: (id) =>
-      component(id, 'switch', { label: literal('Enable notifications'), checked: literal(false) }),
+    description: 'Independently wired boolean value and matching output',
+    initialState: id => {const key=`field_${id.replace(/[^a-zA-Z0-9_-]/g, '_')}`;return {[key]:{key,type:'boolean',initial:false}};},
+    create: id => {const key=`field_${id.replace(/[^a-zA-Z0-9_-]/g, '_')}`;return [{kind:'component',id,definitionId:'vict.catalog.switch',props:{label:literal('Enable notifications'),checked:{type:'ref',path:`state.${key}`}},outputs:{checkedChange:{setState:{key}}}}];},
   },
   {
     id: 'dialog',

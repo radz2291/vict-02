@@ -13,7 +13,7 @@
 <Tooltip.Provider>
 <Tooltip.Root bind:open onOpenChange={(next) => io?.emit('openChange', next)} disabled={props.disabled === true} delayDuration={typeof props.delay === 'number' ? Math.max(0, props.delay) : 700}>
   <Tooltip.Trigger {...presentation?.target('trigger')} bind:ref={triggerRef} disabled={props.disabled === true} aria-describedby={open ? contentId : undefined}>
-    {#if io?.slots?.trigger}{@render io.slots.trigger()}{:else}{typeof props.label === 'string' ? props.label : 'Tooltip'}{/if}
+    {#if io?.slotLabels?.trigger !== undefined}{io.slotLabels.trigger}{:else if io?.slots?.trigger}{@render io.slots.trigger()}{:else}{typeof props.label === 'string' ? props.label : 'Tooltip'}{/if}
   </Tooltip.Trigger>
   <CatalogPortal {open} {presentation}>
 

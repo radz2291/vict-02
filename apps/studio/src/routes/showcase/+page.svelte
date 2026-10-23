@@ -3,6 +3,7 @@
   import { PatternShowcase, PrimitiveShowcase } from '@victframework/ui-ai-svelte';
   import { FlowCanvas, addEdge, type Node, type Edge, type Connection } from '@victframework/ui-flow-svelte';
   import StudioShowcase from '$lib/designer/StudioShowcase.svelte';
+  import CompletionShowcase from '$lib/designer/CompletionShowcase.svelte';
   import '@victframework/ui-ai-svelte/styles.css';
   import '@victframework/ui-flow-svelte/styles.css';
   let mounted = $state(false);
@@ -26,8 +27,9 @@
     <p class="eyebrow">VICT Studio / Cycle 1.3</p>
     <h1>Complete UI showcase</h1>
     <p>Explore the actual reusable UI and Studio authoring surfaces. Examples use local presentation state and disposable in-memory documents. No provider calls or saved owner screens are used.</p>
-    <nav aria-label="Showcase sections"><a href="#ai-patterns">21 AI patterns</a><a href="#building-blocks">Shared building blocks</a><a href="#flow">Node canvas</a><a href="#designer">83 Designer recipes</a><a href="#scope">Scope and limits</a></nav>
+    <nav aria-label="Showcase sections"><a href="#completion">Completion round</a><a href="#ai-patterns">21 AI patterns</a><a href="#building-blocks">Shared building blocks</a><a href="#flow">Node canvas</a><a href="#designer">83 Designer recipes</a><a href="#scope">Scope and limits</a></nav>
   </header>
+  <section id="completion" aria-label="Completion round additions">{#if mounted}<CompletionShowcase />{/if}</section>
   <section id="ai-patterns" aria-label="AI patterns"><h2>All 21 AI Elements patterns</h2>{#if mounted}<PatternShowcase />{:else}<p>Interactive examples load after hydration.</p>{/if}</section>
   <section id="building-blocks" aria-label="Shared building blocks"><h2>Shared AI building blocks</h2>{#if mounted}<PrimitiveShowcase />{/if}</section>
   <section id="flow" aria-label="Reusable node canvas"><h2>Reusable node canvas</h2><p role="status">{flowNotice}</p><div class="flow">{#if mounted}<FlowCanvas bind:nodes bind:edges onconnect={connect} fitView aria-label="Showcase reusable node canvas" />{/if}</div></section>

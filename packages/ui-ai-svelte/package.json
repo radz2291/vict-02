@@ -49,6 +49,7 @@
     "@shadcn-svelte/primitives": "0.0.1",
     "bits-ui": "2.19.3",
     "cn": "0.5.0",
+    "html-to-image": "1.11.13",
     "runed": "0.37.1",
     "shiki": "3.20.0",
     "svelte-streamdown": "4.2.1",

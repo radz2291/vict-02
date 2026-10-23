@@ -9,13 +9,13 @@
     showBackground?: boolean;
   };
   let {
-    nodes = $bindable<Node[]>([]), edges = $bindable<Edge[]>([]),
+    nodes = $bindable<Node[]>([]), edges = $bindable<Edge[]>([]), viewport = $bindable({ x: 0, y: 0, zoom: 1 }),
     showControls = true, showMiniMap = true, showBackground = true,
     children, ...props
   }: Props = $props();
 </script>
 
-<SvelteFlow bind:nodes bind:edges {...props}>
+<SvelteFlow bind:nodes bind:edges bind:viewport {...props}>
   {#if showBackground}<Background />{/if}
   {#if showControls}<Controls />{/if}
   {#if showMiniMap}<MiniMap pannable zoomable />{/if}

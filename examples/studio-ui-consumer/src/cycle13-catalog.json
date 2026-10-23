@@ -30,7 +30,7 @@
   {
     "id": "input",
     "label": "Text input",
-    "description": "Accessible input connected to message state",
+    "description": "Accessible text input with independent local state and change binding",
     "category": "Standalone",
     "placements": []
   },
@@ -44,14 +44,14 @@
   {
     "id": "checkbox",
     "label": "Checkbox",
-    "description": "Catalog · boolean value and output",
+    "description": "Independently wired boolean value and matching output",
     "category": "Standalone",
     "placements": []
   },
   {
     "id": "switch",
     "label": "Switch",
-    "description": "Catalog · a labeled on/off control",
+    "description": "Independently wired boolean value and matching output",
     "category": "Standalone",
     "placements": []
   },

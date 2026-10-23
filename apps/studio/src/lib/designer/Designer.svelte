@@ -15,8 +15,9 @@
   import WorkspaceMenu from './WorkspaceMenu.svelte';
   import WorkspaceBrand from './WorkspaceBrand.svelte';
   import AgentChat from './AgentChat.svelte';
+  import { captureDesignerPreview } from './visual-observation.js';
   import StructureView from './StructureView.svelte';
-  import { structureMove, type StructureEditRequest } from './structure.js';
+  import { structureMove, type StructureEditRequest, type StructureHandoff } from './structure.js';
   let structureOpen = $state(false);
   function moveFromStructure(request: StructureEditRequest): boolean {
     if (!bridge) return false;
@@ -27,6 +28,23 @@
   function toggleStructure(open: boolean) {
     if (textDraftDirty || sourceDraftDirty) { notice = 'Apply or cancel your draft first.'; return; }
     structureOpen = open; paletteRequested = false;
+  }
+  async function structureNavigate(request: StructureHandoff) {
+    if (textDraftDirty || sourceDraftDirty || renamingScreen) { notice = 'Apply or cancel your draft first.'; return; }
+    if (request.occurrence) selectFromStructure(request.occurrence);
+    if (request.destination === 'data' || request.destination === 'actions') {
+      drawerTab = request.destination === 'data' ? 'Data' : 'Actions'; drawerOpen = true;
+      selectedData = request.destination === 'data' ? request.key : undefined;
+    } else if (request.destination === 'layers') {
+      drawerTab = 'Layers'; drawerOpen = true;
+    } else {
+      structureOpen = false; changeMode('design');
+      if (request.destination === 'inspector' && request.occurrence) selectOccurrence(request.occurrence, true);
+    }
+    notice = request.destination === 'actions' ? `Declared action ${request.key ?? ''} · simulated execution is available in Interact.` : `Opened ${request.destination} for the selected source.`;
+    await tick();
+    const target = request.destination === 'layers' || request.destination === 'data' || request.destination === 'actions' ? '#document-drawer' : request.destination === 'inspector' ? '.selection-palette' : '.design-frame .uv-canvas';
+    globalThis.document.querySelector<HTMLElement>(target)?.focus({ preventScroll: true });
   }
   import { documentCursor, applyAgentProposal, type AgentProposal } from './agent-edits.js';
   let agentEpoch = $state(crypto.randomUUID());
@@ -164,7 +182,7 @@
     const node = source && resolveOccurrence(occurrence, source).node;
     return node?.kind === 'component' || (node?.kind === 'element' && ['input', 'textarea'].includes(node.tag)) ? 'Content' : 'Style';
   }
-  function changeMode(next: 'design' | 'interact') { if (textDraftDirty) { notice = 'Apply or cancel your property edit first.'; return; } compositionFocus=undefined;mode = next; resetRuntime(); notice = next === 'design' ? 'Design mode · select and edit without running behavior.' : 'Interact mode · simulated behavior, no live effects.'; }
+  function changeMode(next: 'design' | 'interact') { if (textDraftDirty) { notice = 'Apply or cancel your property edit first.'; return; } if (mode !== next) { compositionFocus=undefined; mode = next; resetRuntime(); } notice = next === 'design' ? 'Design mode · select and edit without running behavior.' : 'Interact mode · simulated behavior, no live effects.'; }
   let createDialog: HTMLDialogElement;
   let nameInput: HTMLInputElement;
   let screenTitle = $state('My first screen');
@@ -404,12 +422,12 @@
     </SelectionPalette>
   {/snippet}
   <div class="agent-workspace" class:chat-open={chatOpen}>
-  <div class="agent-panel" hidden={!chatOpen}><AgentChat screenLabel={screenName(source)} selectionLabel={selectedNode ? compositionName(source, selectedNode.id) : "None"} blocked={textDraftDirty || sourceDraftDirty || renamingScreen} getContext={() => bridge ? {document:bridge.document, cursor:documentCursor(bridge.document,bridge.getSnapshot().revision,agentEpoch), ...(selected ? {selection:selected} : {})} : undefined} applyProposal={receiveAgentProposal} /></div>
+  <div class="agent-panel" hidden={!chatOpen}><AgentChat screenLabel={screenName(source)} selectionLabel={selectedNode ? compositionName(source, selectedNode.id) : "None"} blocked={textDraftDirty || sourceDraftDirty || renamingScreen} getContext={() => bridge ? {document:bridge.document, cursor:documentCursor(bridge.document,bridge.getSnapshot().revision,agentEpoch), ...(selected ? {selection:selected} : {})} : undefined} getCapture={cursor => captureDesignerPreview(canvasScroll?.querySelector<HTMLElement>('.design-frame') ?? undefined,cursor,()=>bridge ? {cursor:documentCursor(bridge.document,bridge.getSnapshot().revision,agentEpoch),mode,state:{runtimeValues,simulation:{denied:simulation.denied,failNext:simulation.failNext}},selection:selected,composition:compositionFocus ? `${compositionFocus.nodeId}/${compositionFocus.slotName}` : undefined,structureOpen} : undefined,canvasScroll)} applyProposal={receiveAgentProposal} /></div>
   <div class="design-workspace" class:drawer-open={drawerOpen} class:has-object-tools={mode === 'design' && !!selectedNode && paletteRequested} style:--drawer-width={`${drawerWidth}px`}>
     <main class="design-stage">
-      <div class="canvas-toolbar workspace-tools"><div class="canvas-modes" aria-label="Canvas mode"><button type="button" aria-pressed={mode === 'design' && !structureOpen} onclick={() => { toggleStructure(false); changeMode('design'); }}>Design</button><button type="button" aria-pressed={mode === 'interact' && !structureOpen} onclick={() => { toggleStructure(false); changeMode('interact'); }}>Interact</button><button type="button" aria-pressed={structureOpen} onclick={() => toggleStructure(true)}>Structure</button></div>{#if compositionFocus}<div class="composition-back"><CompositionNavigator compact document={source} focus={compositionFocus} descriptors={catalogDescriptors} disabled={textDraftDirty || sourceDraftDirty} onNavigate={navigateComposition} /></div>{/if}<button type="button" bind:this={documentButton} class="panel-toggle" aria-expanded={drawerOpen} aria-controls="document-drawer" onclick={toggleDocument}>Document</button></div>
+      <div class="canvas-toolbar workspace-tools"><div class="canvas-modes" aria-label="Preview mode"><button type="button" aria-pressed={mode === 'design' && !structureOpen} onclick={() => { toggleStructure(false); changeMode('design'); }}>Design</button><button type="button" aria-pressed={mode === 'interact' && !structureOpen} onclick={() => { toggleStructure(false); changeMode('interact'); }}>Interact</button></div><button type="button" aria-pressed={structureOpen} onclick={() => toggleStructure(!structureOpen)}>{structureOpen ? `Return to ${mode === 'interact' ? 'Interact' : 'Design'}` : 'Structure'}</button>{#if compositionFocus}<div class="composition-back"><CompositionNavigator compact document={source} focus={compositionFocus} descriptors={catalogDescriptors} disabled={textDraftDirty || sourceDraftDirty} onNavigate={navigateComposition} /></div>{/if}<button type="button" bind:this={documentButton} class="panel-toggle" aria-expanded={drawerOpen} aria-controls="document-drawer" onclick={toggleDocument}>Document</button></div>
 
-      {#if structureOpen}<StructureView document={source} revision={snapshot?.revision ?? ''} selectedNodeId={selectedNode?.id} blocked={textDraftDirty || sourceDraftDirty || renamingScreen} onSelect={occurrence => { selectFromStructure(occurrence); if (!textDraftDirty && !sourceDraftDirty) bridge?.select(occurrence); }} onMove={moveFromStructure} onNotice={message => notice = message} />{/if}
+      <div class="structure-host" hidden={!structureOpen} style:display={structureOpen ? 'flex' : 'none'} style:flex="1" style:min-height="0" style:flex-direction="column"><StructureView active={structureOpen} document={source} revision={snapshot?.revision ?? ''} selectedNodeId={selectedNode?.id} descriptors={catalogDescriptors} recipes={screenRecipes} blocked={textDraftDirty || sourceDraftDirty || renamingScreen} onSelect={occurrence => { selectFromStructure(occurrence); if (!textDraftDirty && !sourceDraftDirty) bridge?.select(occurrence); }} onMove={moveFromStructure} onNotice={message => notice = message} onNavigate={structureNavigate} /></div>
       <div class="canvas-scroll workspace-scroll" style:display={structureOpen ? 'none' : undefined} bind:this={canvasScroll}>
         <div class="design-frame workspace-screen" bind:clientWidth={canvasWidth} style:max-width={width === 'fluid' ? 'none' : `${width}px`}>
           <EditorCanvas document={source} catalogs={designerCatalogs} extensions={catalogDescriptors} extensionImplementations={catalogImplementations}

@@ -98,6 +98,27 @@
                   {#if message.role === 'user'}
                     <Bubble.Root align="end" variant="muted"><Bubble.Content><span class="vict-ai-user-text">{message.text}</span></Bubble.Content></Bubble.Root>
                   {:else}
+                    {#if message.events}
+                      <div class="vict-ai-timeline" aria-label="Conversation timeline">
+                        {#each message.events as event (event.id)}
+                          <div data-event-kind={event.kind} data-event-id={event.id}>
+                            {#if event.kind === 'text'}
+                              <div class="vict-ai-markdown"><Markdown content={event.text}/></div>
+                            {:else if event.kind === 'activity'}
+                              <Trace.Root><Trace.Collapsible>
+                                <Trace.CollapsibleTrigger><Trace.Line status={event.activity.state === 'failed' ? 'error' : event.activity.state === 'completed' ? undefined : event.activity.state}>
+                                  <Trace.Icon>{#if event.activity.state === 'running'}<LoaderCircleIcon class="animate-spin"/>{:else if event.activity.state === 'completed'}<CircleCheckIcon/>{:else if event.activity.state === 'failed'}<CircleXIcon/>{:else}<CircleDashedIcon/>{/if}</Trace.Icon>
+                                  <Trace.Title>{event.activity.title}</Trace.Title><span class="vict-ai-sr">{event.activity.state}</span>
+                                </Trace.Line></Trace.CollapsibleTrigger>
+                                <Trace.CollapsibleContent><pre class="vict-ai-event-detail">{event.activity.detail ?? event.activity.title}</pre></Trace.CollapsibleContent>
+                              </Trace.Collapsible></Trace.Root>
+                            {:else}
+                              <p class="vict-ai-event-summary">{event.text}</p>
+                            {/if}
+                          </div>
+                        {/each}
+                      </div>
+                    {:else}
                     {#if message.activity?.length}
                       <Trace.Root aria-label="Tool activity">
                         {#each message.activity as activity (activity.id)}
@@ -117,6 +138,7 @@
                       </Trace.Root>
                     {/if}
                     <div class="vict-ai-markdown"><Markdown content={message.text}/></div>
+                    {/if}
                   {/if}
                   {#if message.text && !(busy && message === messages.at(-1))}
                     <Message.Footer class={message.role === 'user' ? undefined : 'px-0'}>
@@ -151,6 +173,9 @@
   .vict-ai-conversation.vict-ai :global(.vict-conversation-input-row){justify-content:flex-end;padding:4px 8px 8px}
   .vict-ai-user-text{white-space:pre-wrap;overflow-wrap:anywhere}
   .vict-ai-markdown{min-width:0;overflow-wrap:anywhere}
+  .vict-ai-timeline{display:flex;flex-direction:column;gap:10px;min-width:0;width:100%}
+  .vict-ai-event-summary{font-size:12px;color:var(--muted-foreground,#64748b);margin:0;overflow-wrap:anywhere}
+  .vict-ai-event-detail{white-space:pre-wrap;font:12px/1.5 system-ui,sans-serif;overflow-wrap:anywhere;margin:0;max-height:240px;overflow:auto}
   .vict-ai-markdown :global(pre){max-width:100%;overflow:auto}
   .vict-ai-empty{color:var(--muted-foreground,#64748b);margin:auto;text-align:center;padding:20px}
   .vict-ai-error{color:var(--destructive,#b42318);font-size:12px;margin:6px 0}

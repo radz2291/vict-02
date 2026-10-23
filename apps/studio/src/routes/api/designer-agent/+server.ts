@@ -7,6 +7,7 @@ import {
   validateAgentStart,
 } from '$lib/server/designer-agent.js';
 import { agentJson } from '$lib/server/designer-agent-http.js';
+import { AGENT_STREAM_BYTES } from '$lib/designer/agent-transport.js';
 
 export const GET: RequestHandler = ({ locals }) => {
   if (!locals.session)
@@ -36,10 +37,11 @@ export const POST: RequestHandler = async ({ request, locals }) => {
           if (closed) return;
           const chunk = encoder.encode(JSON.stringify(event) + '\n');
           bytes += chunk.byteLength;
-          if (bytes > 1_000_000 || (controller.desiredSize ?? 0) < -256_000) {
+          if (bytes > AGENT_STREAM_BYTES - 1000 || (controller.desiredSize ?? 0) < -256_000) {
             closed = true;
             if (runId) cancelAgentRun(owner, runId);
-            controller.error(new Error('STUDIO_AGENT_STREAM_LIMIT'));
+            controller.enqueue(encoder.encode(JSON.stringify({type:'done',status:'failed',code:'STUDIO_AGENT_STREAM_LIMIT',applied:0,termination:{status:'transport-limit',code:'STUDIO_AGENT_STREAM_LIMIT'}})+'\n'));
+            controller.close();
             return;
           }
           try {

@@ -41,6 +41,8 @@ export interface UiSvelteComponentIO {
   /** Emit a declared output. Only declared names are delivered. */
   readonly emit: (output: string, payload?: UiValue) => void;
   readonly slots?: Readonly<Record<string, Snippet>>;
+  /** Safe label fallback for legacy interactive content nested inside a native trigger. */
+  readonly slotLabels?: Readonly<Record<string, string>>;
   readonly action?: UiComponentActionStatus;
 }
 

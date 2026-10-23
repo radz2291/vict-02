@@ -6,6 +6,9 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const studioRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
+// The app applies a stricter aggregate UTF-8 bound and returns structured errors.
+// Keep adapter-node's preliminary body cap above that contract (including JPEG upload).
+process.env.BODY_SIZE_LIMIT ??= '2M';
 const provider = process.env.STUDIO_AGENT_MODEL?.split('/')[0] ?? 'zai';
 const credentialName = provider === 'zai' ? 'ZAI_API_KEY' : 'OLLAMA_API_KEY';
 const authProvider = provider === 'zai' ? 'zai' : 'ollama';

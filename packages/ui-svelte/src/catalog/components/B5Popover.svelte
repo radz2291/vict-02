@@ -12,7 +12,7 @@
 
 <Popover.Root bind:open onOpenChange={(next) => io?.emit('openChange', next)}>
   <Popover.Trigger {...presentation?.target('trigger')} disabled={props.disabled === true} bind:ref={triggerRef}>
-    {#if io?.slots?.trigger}{@render io.slots.trigger()}{:else}{typeof props.label === 'string' ? props.label : 'Popover'}{/if}
+    {#if io?.slotLabels?.trigger !== undefined}{io.slotLabels.trigger}{:else if io?.slots?.trigger}{@render io.slots.trigger()}{:else}{typeof props.label === 'string' ? props.label : 'Popover'}{/if}
   </Popover.Trigger>
   <CatalogPortal {open} {presentation}>
 

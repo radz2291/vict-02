@@ -33,6 +33,7 @@
   import { onDestroy, untrack } from 'svelte';
   import SlotSnippets from './SlotSnippets.svelte';
   import Self from './RenderNode.svelte';
+  import { interactiveSlotLabels } from './slot-labels.js';
 
   interface Props {
     readonly instruction: UiRenderInstruction;
@@ -362,7 +363,7 @@
     {/snippet}
     <SlotSnippets fills={instruction.slots ?? {}} names={Object.keys(instruction.slots ?? {})} {renderFill}>
       {#snippet children(slots)}
-        <Implementation props={extensionProps} occurrenceKey={occ} nodeId={instruction.nodeId} {presentation} io={{ ...io, slots }} />
+        <Implementation props={extensionProps} occurrenceKey={occ} nodeId={instruction.nodeId} {presentation} io={{ ...io, slots, slotLabels: interactiveSlotLabels(instruction.slots??{},scope) }} />
       {/snippet}
     </SlotSnippets>
   {:else if extension?.ok}

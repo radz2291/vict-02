@@ -298,3 +298,31 @@ export function setTextLiteral(input: {
 export function rootIdOf(document: UiDocument): string {
   return String(document.root);
 }
+
+/** Connect a native field through the canonical attribute/change contracts.
+ * A new key is independent; existing keys must already have the requested type.
+ * Manual and agent authoring use this same transaction builder. */
+export function wireNativeInput(input: {
+  requestId: string; document: UiDocument; nodeId: string; key: string;
+  type?: 'string' | 'number' | 'boolean'; initial?: string | number | boolean;
+}): TransactionDraft {
+  const node = input.document.nodes[input.nodeId];
+  if (node?.kind !== 'element' || !['input', 'textarea', 'select'].includes(node.tag))
+    throw new Error('Native wiring requires input, textarea or select.');
+  const nativeType = node.attributes?.type;
+  const type = input.type ?? (nativeType === 'checkbox' ? 'boolean' : nativeType === 'number' ? 'number' : 'string');
+  const expected = nativeType === 'checkbox' ? 'boolean' : nativeType === 'number' ? 'number' : 'string';
+  if (type !== expected) throw new Error(`This native field emits ${expected}; state must match.`);
+  const initial = input.initial ?? (type === 'string' ? '' : type === 'number' ? 0 : false);
+  if (typeof initial !== type) throw new Error('Starting value must match the field type.');
+  if (!/^[a-zA-Z0-9_-]+$/.test(input.key) || ['__proto__','prototype','constructor'].includes(input.key))
+    throw new Error('Use a simple safe local state key.');
+  const existing = input.document.localState[input.key];
+  if (existing && existing.type !== type) throw new Error('Existing state has a different type.');
+  return { requestId: input.requestId, reason: 'Connect independent input state', commands: [
+    ...(!existing ? [{ op: 'replaceDocument' as const, document: { ...input.document,
+      localState: { ...input.document.localState, [input.key]: { key: input.key, type, initial } } } }] : []),
+    { op: 'setAttribute', nodeId: node.id, name: type === 'boolean' ? 'checked' : 'value', value: { type: 'ref', path: `state.${input.key}` } },
+    { op: 'connectInteraction', nodeId: node.id, interaction: { on: 'change', action: 'setState', key: input.key, value: { type: 'ref', path: `state.${input.key}` } } },
+  ] };
+}

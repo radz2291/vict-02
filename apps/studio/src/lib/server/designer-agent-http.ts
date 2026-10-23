@@ -1,5 +1,6 @@
 import { json } from '@sveltejs/kit';
 import type { StudioSession } from './session.js';
+import { AGENT_REQUEST_BYTES } from '../designer/agent-transport.js';
 /** Every mutation also checks its boundary locally (including non-JSON probes). */
 export async function agentJson(
   request: Request,
@@ -32,11 +33,11 @@ export async function agentJson(
       const next = await reader.read();
       if (next.done) break;
       length += next.value.byteLength;
-      if (length > 256_000) {
+      if (length > AGENT_REQUEST_BYTES) {
         await reader.cancel();
         return {
           ok: false,
-          response: json({ ok: false, code: 'STUDIO_AGENT_REQUEST_LIMIT' }, { status: 413 }),
+          response: json({ ok: false, code: 'STUDIO_AGENT_REQUEST_LIMIT', message: 'Aggregate UTF-8 request exceeds admission.', limitBytes: AGENT_REQUEST_BYTES }, { status: 413 }),
         };
       }
       chunks.push(next.value);
@@ -48,7 +49,9 @@ export async function agentJson(
       offset += chunk.byteLength;
     }
     return { ok: true, value: JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(bytes)) };
-  } catch {
+  } catch (error) {
+    if (error && typeof error === 'object' && 'status' in error && error.status === 413)
+      return { ok: false, response: json({ ok: false, code: 'STUDIO_AGENT_REQUEST_LIMIT', message: 'The HTTP host rejected this body. Use BODY_SIZE_LIMIT=2M for advertised source limits.' }, { status: 413 }) };
     return {
       ok: false,
       response: json({ ok: false, code: 'STUDIO_AGENT_REQUEST' }, { status: 400 }),
