@@ -1,0 +1,29 @@
+[
+  {
+    "tab": "2",
+    "canvasSha256": "8ce3f534d19a95452d18c9d34747cd318ff54e15e9f2d19b7a940d49db71cde3",
+    "feedSha256": "813daeb15f281e18cf34775a806e58bd311d4e7f327a381f500c98345eea4a19",
+    "draftSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "sourceDraftSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "propertyDraftsSha256": "0a8061e701f3c6e5e5014de2ddacea27c8ca6253101dd05074b9431c40f14bc9",
+    "busy": false
+  },
+  {
+    "tab": "6",
+    "canvasSha256": "546040db5a13dcecfa002c8de33b52ece82db235c068673d9d09880330b37249",
+    "feedSha256": "75628b00b402c7d4d303fa930f8184b2ea318eec77d006e45bf18de09018d1d5",
+    "draftSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "sourceDraftSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "propertyDraftsSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "busy": false
+  },
+  {
+    "tab": "11",
+    "canvasSha256": "5bedda38eba27294d47221462da0c9b5f5493b96a856cfc08877436a73133084",
+    "feedSha256": "69aad8cff6d90d29d18efaab2a0789fb36798ad52ce2f04da0cec5812a13ede0",
+    "draftSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "sourceDraftSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "propertyDraftsSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "busy": false
+  }
+]

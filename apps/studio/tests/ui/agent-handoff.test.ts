@@ -95,19 +95,20 @@ it('does not let delayed Stop cleanup replace the feedback for a newer turn', as
   expect(document.querySelector('[data-testid="conversation-stop"]')).not.toBeNull();
 });
 
-it.each(['stale', 'draft'])('settles a genuine %s refusal without waiting for the model and admits fresh context only in a new request', async (kind) => {
+it.each(['stale', 'draft', 'invalid'])('settles a genuine %s refusal without waiting for the model and admits fresh context only in a new request', async (kind) => {
   const app = await setup();
   await app.send('Build a heading');
   const proposed = app.proposal(0, 'agent-heading');
   if (kind === 'stale') expect(app.bridge.apply({ requestId: 'manual', commands: [{ op: 'setAttribute', nodeId: 'screen', name: 'aria-label', value: 'My manual work' }] }).ok).toBe(true);
-  else app.blockDraft();
+  else if (kind === 'draft') app.blockDraft();
+  else proposed.resultDigest = 'invalid-result-digest';
   const manual = app.bridge.document;
   app.emit(0, { type: 'proposal', proposal: proposed });
   await vi.waitFor(() => expect(app.apply).toHaveBeenCalledOnce());
   await vi.waitFor(() => expect(document.querySelector('[data-testid="conversation-send"]')).not.toBeNull());
   expect(app.bridge.document).toBe(manual);
   expect(app.bridge.document.nodes['agent-heading']).toBeUndefined();
-  expect(document.querySelector('.agent-status')?.textContent).toContain(kind === 'stale' ? 'screen changed' : 'pending');
+  expect(document.querySelector('.agent-status')?.textContent).toContain(kind === 'stale' ? 'screen changed' : kind === 'draft' ? 'pending' : 'did not match validation');
   expect(app.fetcher.mock.calls.filter(([, init]) => init?.method === 'DELETE')).toHaveLength(1);
   if (kind === 'stale') {
     app.select(`${manual.id}|screen`);

@@ -4,7 +4,7 @@
   import { Popover } from '@victframework/ui-svelte/primitives';
   import ChatMessage from './ChatMessage.svelte';
   import type { UiConversationMessage, UiDocument } from '@victframework/ui';
-  import type { AgentCursor, AgentProposal, EditReceipt } from './agent-edits.js';
+  import type { AgentCursor, AgentProposal, EditFailure, EditReceipt } from './agent-edits.js';
   interface Props {
     screenLabel:string;
     selectionLabel:string;
@@ -16,8 +16,9 @@
   let messages=$state<UiConversationMessage[]>([]);
   let progress=$state<string[]>([]);
   let status=$state('Checking agent configuration…');
-  let model=$state('');let ready=$state(false);let busy=$state(false);let csrf='';let runId='';
-  let controller:AbortController|undefined;
+  let model=$state('');let ready=$state(false);let busy=$state(false);let csrf='';
+  interface LocalTurn {controller:AbortController;runId:string;applied:number;cancelled:boolean;refusal?:EditFailure;}
+  let activeTurn:LocalTurn|undefined;
   let evidence=$state('');
   let disposed=false;
   let panel=$state<HTMLElement>();
@@ -35,14 +36,20 @@
     void configure();
   });
   const headers=()=>({'content-type':'application/json','x-vict-csrf':csrf});
-  async function stop(){
-    const id=runId;runId='';controller?.abort();
-    if(id)await fetch('/api/designer-agent',{method:'DELETE',headers:headers(),body:JSON.stringify({runId:id})}).catch(()=>undefined);
-    if(!disposed)note('Stopped. Applied edits remain on the canvas and in Undo.');
+  function appliedEffects(applied:number){return applied?`${applied} applied edit${applied===1?' remains':'s remain'} undoable.`:'No edits were applied.';}
+  function cancelTransport(turn:LocalTurn){
+    const id=turn.runId;turn.runId='';turn.controller.abort();
+    // Server cleanup has no authority to change feedback for a subsequent turn.
+    if(id)void fetch('/api/designer-agent',{method:'DELETE',headers:headers(),body:JSON.stringify({runId:id})}).catch(()=>undefined);
+  }
+  function stop(){
+    const turn=activeTurn;if(!turn || turn.cancelled)return;
+    turn.cancelled=true;cancelTransport(turn);
+    if(!disposed){failed=false;note(`Stopped. ${appliedEffects(turn.applied)}`);}
   }
   onDestroy(()=>{disposed=true;void stop();});
   function failedStatus(code:string|undefined,applied:number){
-    const effects=applied?`${applied} applied edit${applied===1?' remains':'s remain'} undoable.`:'No edits were applied.';
+    const effects=appliedEffects(applied);
     if(code==='STUDIO_AGENT_BUSY')return `Another agent turn is still running in this session. Wait for it to finish, or stop it in its Designer tab, then retry. ${effects}`;
     if(code==='STUDIO_AGENT_CAPACITY')return `The agent server is finishing other turns. Wait a moment and retry. ${effects}`;
     if(code==='STUDIO_AGENT_UNCONFIGURED')return `The agent needs a server-side provider configuration. Reconnect after configuring it. ${effects}`;
@@ -61,37 +68,45 @@
     const history=messages.slice(-12).map(({participant,text})=>({participant:participant==='user'?'user':'assistant',text:text.slice(0,6000)}));
     messages=[...messages,{author:'You',participant:'user',text},{author:'Assistant',participant:'assistant',text:''}];
     const responseIndex=messages.length-1;
-    busy=true;failed=false;progress=[];evidence='';runId='';controller=new AbortController();let done=false;let sent=false;let applied=0;let lastRefusal='';let separateReply=false;
+    const turn:LocalTurn={controller:new AbortController(),runId:'',applied:0,cancelled:false};activeTurn=turn;
+    busy=true;failed=false;progress=[];evidence='';let done=false;let sent=false;let lastRefusal='';let separateReply=false;
     note('Connecting…');
     try{
-      const response=await fetch('/api/designer-agent',{method:'POST',headers:headers(),signal:controller.signal,body:JSON.stringify({...context,prompt:text,history})});
+      const response=await fetch('/api/designer-agent',{method:'POST',headers:headers(),signal:turn.controller.signal,body:JSON.stringify({...context,prompt:text,history})});
       if(!response.ok || !response.body)throw new Error('connection');
       const reader=response.body.getReader();const decoder=new TextDecoder();let buffer='';
       try{
         while(true){
-          const chunk=await reader.read();if(chunk.done)break;
+          const chunk=await reader.read();
+          if(turn.controller.signal.aborted)throw new Error('stopped');
+          if(chunk.done)break;
           buffer+=decoder.decode(chunk.value,{stream:true});if(buffer.length>256_000)throw new Error('stream');
           let newline:number;
           while((newline=buffer.indexOf('\n'))>=0){
+            if(turn.controller.signal.aborted)throw new Error('stopped');
             const line=buffer.slice(0,newline);buffer=buffer.slice(newline+1);if(!line.trim())continue;
             const event=JSON.parse(line);
-            if(event.type==='started'){sent=true;runId=event.runId;model=event.model;note('Reading screen…');}
+            if(event.type==='started'){sent=true;turn.runId=event.runId;model=event.model;note('Reading screen…');}
             if(event.type==='progress'){note(event.message);separateReply=true;}
             if(event.type==='text'){
               messages=messages.map((message,index)=>index===responseIndex?{...message,text:(message.text+(separateReply&&message.text?'\n\n':'')+event.delta).slice(0,100_000)}:message);
               separateReply=false;
             }
             if(event.type==='proposal'){
-              const receipt=controller.signal.aborted?{ok:false as const,code:'STUDIO_AGENT_CANCELLED',message:'The agent was stopped.'}:applyProposal(event.proposal);
+              const receipt=applyProposal(event.proposal);
               lastRefusal=receipt.ok?'':receipt.message;
-              if(receipt.ok){applied++;status='Applying edit…';}else note(receipt.message);
+              if(receipt.ok){turn.applied++;status='Applying edit…';}else {turn.refusal=receipt;failed=true;note(receipt.message);}
               separateReply=true;
-              const ack=await fetch('/api/designer-agent/ack',{method:'POST',headers:headers(),signal:controller.signal,body:JSON.stringify({runId,proposalId:event.proposal.proposalId,receipt})});
+              const ack=await fetch('/api/designer-agent/ack',{method:'POST',headers:headers(),signal:turn.controller.signal,body:JSON.stringify({runId:turn.runId,proposalId:event.proposal.proposalId,receipt})});
+              // The host fences every browser refusal. Acknowledge it, then end
+              // this turn so only a new user request can capture refreshed context.
+              if(!receipt.ok){cancelTransport(turn);throw new Error('canvas-refused');}
               if(!ack.ok)throw new Error('ack');
             }
             if(event.type==='edit-result'){lastRefusal=event.result.ok?'':event.result.message;note(event.result.ok?`${event.reason} · applied`:event.result.message);separateReply=true;}
             if(event.type==='done'){
-              done=true;applied=Math.max(applied,event.applied??0);
+              done=true;turn.applied=Math.max(turn.applied,event.applied??0);
+              const applied=turn.applied;
               failed=event.status==='failed'||Boolean(lastRefusal);
               status=event.status==='completed'?(lastRefusal?`${lastRefusal} ${applied?`${applied} earlier edits remain undoable.`:''}`:`${applied} edit${applied===1?'':'s'} applied`):event.status==='cancelled'?`Stopped · ${applied} applied edits remain undoable.`:failedStatus(event.code,applied);
               evidence=[event.turnId?`VICT turn ${event.turnId} · profile ${event.profileVersion}`:'',event.code??''].filter(Boolean).join(' · ');
@@ -103,9 +118,14 @@
       if(!done)throw new Error('incomplete');
       return sent?true:{ok:false,message:status};
     }catch{
-      if(!disposed){failed=!controller.signal.aborted;note(controller.signal.aborted?`Stopped · ${applied} applied edits remain undoable.`:`Connection interrupted · ${applied} edits applied locally. Inspect the canvas before retrying; Undo is available.`);if(!messages[responseIndex]?.text)messages=messages.map((message,index)=>index===responseIndex?{...message,text:status}:message);}
-      return sent?true:{ok:false,message:'The request could not reach the agent. Your draft is still here.'};
-    }finally{const unfinished=runId;runId='';busy=false;if(unfinished&&!done)void fetch('/api/designer-agent',{method:'DELETE',headers:headers(),body:JSON.stringify({runId:unfinished})}).catch(()=>undefined);}
+      if(!disposed && activeTurn===turn){
+        failed=!turn.cancelled;
+        const refusal=turn.refusal;
+        note(turn.cancelled?`Stopped. ${appliedEffects(turn.applied)}`:refusal?`${refusal.message}${refusal.message.includes('new request')?'':' Send a new request using the current screen.'}${turn.applied?` ${appliedEffects(turn.applied)}`:''}`:`Connection interrupted · ${turn.applied} edits applied locally. Inspect the canvas before retrying; Undo is available.`);
+        if(!messages[responseIndex]?.text)messages=messages.map((message,index)=>index===responseIndex?{...message,text:status}:message);
+      }
+      return sent?true:{ok:false,message:turn.cancelled?'Stopped before the request was admitted. Your draft is still here.':'The request could not reach the agent. Your draft is still here.'};
+    }finally{if(!done)cancelTransport(turn);if(activeTurn===turn){activeTurn=undefined;busy=false;}}
   }
 </script>
 
@@ -122,7 +142,7 @@
   <div class="agent-footer">
     <div class="agent-status" class:agent-status--failed={failed} role="status" aria-live="polite" title={blocked?'Apply or cancel the current draft before asking the agent to edit.':status}>
       <span class="status-dot" class:status-dot--busy={busy} aria-hidden="true"></span>
-      <span>{blocked?'Apply or cancel the current draft first.':busy?'Working…':status}</span>
+      <span>{blocked?'Apply or cancel the current draft first.':busy&&!failed?'Working…':status}</span>
     </div>
       <Popover.Root>
         <Popover.Trigger class="agent-details-trigger" aria-label="Chat details" title="Chat details">···</Popover.Trigger>

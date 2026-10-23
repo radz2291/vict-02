@@ -1,0 +1,19 @@
+{
+  "port": 5591,
+  "listenerPid": 71088,
+  "servingProduct": "9ae689b487d610e3df0581885660fe096f645a88",
+  "filesChecked": 202,
+  "artifactMismatches": [],
+  "configurationFiles": [
+    {
+      "Name": "auth.json",
+      "Length": 2290,
+      "LastWriteTimeUtc": "2026-08-26T08:53:37.9091197Z"
+    },
+    {
+      "Name": "models.json",
+      "Length": 2748,
+      "LastWriteTimeUtc": "2026-08-30T10:40:52.4610989Z"
+    }
+  ]
+}

@@ -1,5 +1,15 @@
 # Studio Designer — current delivery state
 
+## 2026-10-23 — Cycle 1.2 bounded handoff candidate
+
+[Audit](CYCLE-1-2-AUDIT.md) maps all five owner requirements to existing
+capabilities and proof. [Candidate report](CYCLE-1-2-REPORT.md): only Studio
+chat turn settlement changes, fixing delayed Stop status races and promptly
+ending browser-refused turns. Full Studio165, TypeScript/lint pass. Fresh exact
+candidate independent/live-provider verification pending. Owner5591 build,
+sessions and tabs remain untouched. Cycle1.1 is accepted/closed below; Stage9
+remains reopened. No1.2 acceptance, main merge, publication or1.3.
+
 ## 2026-10-23 — Cycle 1.1 owner accepted and closed; Cycle 1.2 authorized
 
 The owner explicitly accepts Cycle 1.1, all hands-on repairs/refinements through
