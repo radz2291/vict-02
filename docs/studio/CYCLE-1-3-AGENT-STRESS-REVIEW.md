@@ -83,3 +83,13 @@ The owner's report-only direction remains controlling. These findings are docume
 | Screen read reports unknown outcome | Observed document/context count exceeds frozen delivery node bound; synthetic same-size snapshot probe reproduces refusal. No evidence that reconnect or provider retry fixes it. |
 | Later writes succeed, turn ends failed | Twelve edits remain applied. Unresolved read failure persists and takes priority in final status. Exact underlying engine completion/limit event remains unavailable. |
 | Request asks for all available components | Source inventory contains26 of78 available catalog definition IDs;52 are absent. No complete requested-versus-created check was performed by the agent. |
+
+## Owner comment - visual feedback for the agent
+
+2026-10-23. The owner adds: "agent should able to capture the screen and see the actual result ... so it can judge better."
+
+Record this as a proposed product requirement: the agent should be able to capture the actual rendered Studio canvas/preview and inspect the image, compare the visible result with the user's request, and use that evidence to judge layout, clipping, spacing, content, visual completeness and relevant UI states before declaring completion. Source/compiler success and edit acknowledgement alone do not show what the user actually sees. This addresses a missing visual feedback loop in the current read/edit-only agent capabilities.
+
+Any future design should associate the capture with the relevant document revision, viewport and preview state so an old image is not mistaken for the current result. Visual inspection should complement canonical validation, coverage checks and interaction/state tests: a screenshot cannot prove that a control's bindings or actions work. A screenshot also must not be routed through the same oversized ordinary JSON read response that already fails; its delivery and image-model support need an explicit design.
+
+This is the owner's requested direction for follow-up, not evidence that screenshot capture or visual judgement currently exists, and not authority to implement it now. The report-only instruction remains in force. No code, canvas, provider configuration or running server was changed.
