@@ -1,0 +1,230 @@
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1-chat-ui-verification/260831-VCT-02/apps/studio
+
+ ✓ tests/app-definition.test.ts (8 tests) 125ms
+1:47:05 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/DocumentHost.svelte:105:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+1:47:05 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1-chat-ui-verification/260831-VCT-02/packages/ui-svelte/src/document/DocumentHost.svelte:105:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+1:47:05 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1-chat-ui-verification/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:303:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+1:47:05 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1-chat-ui-verification/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:303:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+1:47:05 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1-chat-ui-verification/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:370:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+1:47:05 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1-chat-ui-verification/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:370:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+1:47:05 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:303:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+1:47:05 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:303:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+1:47:05 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:370:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+1:47:05 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:370:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+ ✓ tests/designer-preflight-independent.test.ts (2 tests) 151ms
+ ✓ tests/designer-required-slot-verification.test.ts (2 tests) 103ms
+ ✓ tests/designer-required-slots.test.ts (5 tests) 344ms
+ ✓ tests/boundary.test.ts (13 tests) 151ms
+ ✓ tests/run-detail.test.ts (12 tests) 143ms
+1:47:13 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-editor/src/StateValuesPanel.svelte:106:6 A form label must be associated with a control
+https://svelte.dev/e/a11y_label_has_associated_control
+ ✓ tests/designer-agent.test.ts (6 tests) 832ms
+   ✓ agent canonical editing boundary > builds a palette registration screen; modifies selection; moves/removes; undo/redo/save/reopen share history  304ms
+ ✓ tests/designer-agent-stream.test.ts (1 test) 93ms
+ ✓ tests/adapter.test.ts (9 tests) 174ms
+ ✓ tests/designer-independent-verification.test.ts (4 tests) 1691ms
+   ✓ clears fail-next exactly once and fences two pending actions across reset  1400ms
+ ✓ tests/targets.test.ts (5 tests) 183ms
+ ✓ tests/quellight-transport.test.ts (10 tests) 47ms
+ ✓ tests/designer-agent-cleanup.test.ts (1 test) 2895ms
+   ✓ releases a completed host turn when filesystem removal never settles  2892ms
+ ✓ tests/changeset-contract.test.ts (12 tests) 34ms
+ ✓ tests/confirmation-contract.test.ts (11 tests) 24ms
+ ✓ tests/designer.test.ts (4 tests) 1124ms
+   ✓ Studio canonical screen integration > fails closed on undeclared actions, missing inputs, denied permission and reset during execution  952ms
+ ✓ tests/designer-model.test.ts (7 tests) 87ms
+ ✓ tests/target-selection.test.ts (6 tests) 23ms
+1:47:36 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/DocumentHost.svelte:105:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+1:47:36 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1-chat-ui-verification/260831-VCT-02/packages/ui-svelte/src/document/DocumentHost.svelte:105:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+1:47:37 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1-chat-ui-verification/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:303:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+1:47:37 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1-chat-ui-verification/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:303:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+1:47:37 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1-chat-ui-verification/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:370:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+1:47:37 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1-chat-ui-verification/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:370:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+1:47:37 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:303:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+1:47:37 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:303:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+1:47:37 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:370:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+1:47:37 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:370:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+ ✓ tests/designer-agent-mastra.test.ts (13 tests) 25542ms
+   ✓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > does not mistake a successfully invoked but refused edit for recovery  2869ms
+   ✓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > gives GLM its full published output allowance without a thinking override (offline seam)  2077ms
+   ✓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > reports an unrecovered tool failure truthfully, with prior effects=false  2059ms
+   ✓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > reports an unrecovered tool failure truthfully, with prior effects=true  2393ms
+   ✓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > contains length provider output with zero proposals and truthful terminal code  1481ms
+   ✓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > contains partial provider output with zero proposals and truthful terminal code  1460ms
+   ✓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > allows a successful ordinary answer without edits  1753ms
+   ✓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > recovers a wrong source-version argument on an existing saved screen in the same governed turn  1908ms
+   ✓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > keeps a genuine browser revision refusal fenced even after a model re-read and retry  2074ms
+   ✓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > runs governed read and edit tools; acknowledges only after EditorBridge commit; streams completion  1816ms
+   ✓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > sanitizes a genuine Mastra model failure after an acknowledged edit and preserves Undo  1471ms
+   ✓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > cancels a proposal before acknowledgement with zero edits and no cross-session cancellation  1977ms
+   ✓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > admits the next turn at terminal delivery while private cleanup is still pending  2194ms
+1:47:45 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-editor/src/StateValuesPanel.svelte:106:6 A form label must be associated with a control
+https://svelte.dev/e/a11y_label_has_associated_control
+ ✓ tests/ui/saved-run.test.ts (3 tests) 1366ms
+   ✓ keeps saved source unchanged when running with width='390'  932ms
+ ✓ tests/ui/agent-chat.test.ts (5 tests) 1060ms
+   ✓ rejected Studio chat admission > shows an admitted failed turn as a failure (STUDIO_AGENT_OUTPUT_LIMIT)  438ms
+stderr | tests/ui/designer-runtime.test.ts > keeps runtime input and checkbox state across pointer selection and leaves authored history clean
+[svelte] dynamic_void_element_content
+`<svelte:element this="input">` is a void element — it cannot have content
+https://svelte.dev/e/dynamic_void_element_content
+[svelte] dynamic_void_element_content
+`<svelte:element this="input">` is a void element — it cannot have content
+https://svelte.dev/e/dynamic_void_element_content
+
+ ✓ tests/ui/chat-controls.test.ts (1 test) 1425ms
+   ✓ keeps draft, feed and an active turn mounted through hiding; the single composer action stops  1422ms
+stderr | tests/ui/designer-runtime.test.ts > keeps runtime input and checkbox state across pointer selection and leaves authored history clean
+[svelte] dynamic_void_element_content
+`<svelte:element this="input">` is a void element — it cannot have content
+https://svelte.dev/e/dynamic_void_element_content
+
+stderr | tests/ui/designer-runtime.test.ts > keeps runtime input and checkbox state across pointer selection and leaves authored history clean
+AggregateError: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1712:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 3000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 3000
+    }
+  ]
+}
+
+ ✓ tests/ui/agent-handoff.test.ts (5 tests) 1821ms
+   ✓ does not let delayed Stop cleanup replace the feedback for a newer turn  634ms
+   ✓ settles a genuine stale refusal without waiting for the model and admits fresh context only in a new request  327ms
+   ✓ keeps an applied batch undoable and ignores late proposals/completion after Stop  410ms
+ ✓ tests/ui/designer-runtime.test.ts (1 test) 2499ms
+   ✓ keeps runtime input and checkbox state across pointer selection and leaves authored history clean  2495ms
+ ✓ tests/ui/render.test.ts (7 tests) 964ms
+   ✓ studio UI rendering (G1 read-only) > renders all four truthful target connection states distinctly on the dashboard  349ms
+stderr | tests/ui/composition.test.ts
+AggregateError: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1712:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 3000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 3000
+    }
+  ]
+}
+
+stderr | tests/ui/composition.test.ts
+AggregateError: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1712:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 3000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 3000
+    }
+  ]
+}
+
+stderr | tests/ui/composition.test.ts
+AggregateError: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1712:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 3000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 3000
+    }
+  ]
+}
+
+ ✓ tests/ui/composition.test.ts (3 tests) 4747ms
+   ✓ opens another saved screen through File and guards the cascading menu during a source draft  2101ms
+   ✓ opens a closed composition without authored or runtime changes, guards drafts, and saves the same edited source for replay  1831ms
+   ✓ keeps data drafts safe across document navigation and saves applied starting values  806ms
+ ✓ tests/ui/confirmation.test.ts (5 tests) 115ms
+ ✓ tests/ui/chat-message.test.ts (4 tests) 206ms
+
+ Test Files  28 passed (28)
+      Tests  165 passed (165)
+   Start at  13:46:44
+   Duration  69.41s (transform 52.78s, setup 0ms, collect 354.68s, tests 47.97s, environment 24.09s, prepare 14.87s)
+

@@ -1,0 +1,14 @@
+import {readFile,writeFile} from 'node:fs/promises';
+import {dirname,resolve} from 'node:path';
+import {fileURLToPath} from 'node:url';
+const out=dirname(fileURLToPath(import.meta.url));
+const proof=JSON.parse(await readFile(resolve(out,'continuous-real-provider.json'),'utf8'));
+const turns=proof.records.find(r=>r.name==='all turn receipts and timings').data;
+const stale=proof.records.find(r=>r.name==='stale refusal settles promptly and preserves actual state').data;
+const draft=proof.records.find(r=>r.name==='draft refusal settles promptly and preserves actual state').data;
+const same=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
+const rows=turns.map((t,index)=>({turn:index+1,prompt:t.request.prompt,historyMessages:t.request.history.length,revision:t.request.cursor.revision,elapsedMs:t.endedAt-t.startedAt,firstProposalMs:t.events.find(e=>e.type==='proposal')?.observedAt-t.startedAt,successfulAcknowledgements:t.acks.filter(a=>a.receipt.ok).length,refusedAcknowledgements:t.acks.filter(a=>!a.receipt.ok).map(a=>a.receipt.code),terminal:t.events.findLast(e=>e.type==='done'),deletes:t.deletes,complete:t.complete}));
+const assertions={exactlySixExplicitRequestsNoAutomaticReplay:turns.length===6,freshRequestAfterStaleUsesActualManualDocument:same(turns[5].request.document,stale.documentOrDraft),freshRequestAfterStaleHasNewDigest:turns[5].request.cursor.digest!==turns[4].request.cursor.digest,sourceDraftNeverSentAsCanonicalContext:!same(turns[5].request.document,draft.documentOrDraft),freshContextStillRetainsManualTitle:JSON.stringify(turns[5].request.document).includes('Manual registration title retained'),allRecordedChecksPass:proof.records.filter(r=>'ok'in r.data).every(r=>r.data.ok),browserExceptions:proof.errors.length};
+const stop=turns[2],firstAck=stop.acks.find(a=>a.receipt.ok),cancel=stop.deletes[0];
+const result={producingCommit:'7874c64158b877c574ceff04e1917773bc03afe6',rows,stop:{successfulAcknowledgements:stop.acks.filter(a=>a.receipt.ok).length,firstAcknowledgementAt:firstAck.observedAt,cancellationResponseAt:cancel?.at,firstAckToCancellationResponseMs:cancel?.at-firstAck.observedAt,deleteStatus:cancel?.status,note:'Operator Stop occurs between the first successful acknowledgement and this cancellation response; no synthetic provider or proposal was used.'},staleSettlementMs:stale.settleMilliseconds,draftSettlementMs:draft.settleMilliseconds,assertions};
+await writeFile(resolve(out,'real-proof-summary.json'),JSON.stringify(result,null,2));console.log(JSON.stringify(result,null,2));if(Object.values(assertions).some(v=>v===false)||assertions.browserExceptions)process.exitCode=1;
