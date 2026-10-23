@@ -186,7 +186,7 @@
     }
     else { closed = new Set([...closed].filter(k => k !== entry.key)); expanded = new Set([...expanded, entry.key]); }
   }
-  async function focus(key: string) { focusKey = key; await tick(); Array.from(root.querySelectorAll<HTMLElement>('[role=treeitem]')).find(e => e.dataset.key === key)?.focus(); }
+  async function focus(key: string) { focusKey = key; await tick(); Array.from(root?.querySelectorAll<HTMLElement>('[role=treeitem]') ?? []).find(e => e.dataset.key === key)?.focus(); }
   function select(entry: Entry) { focusKey = entry.key; if(entry.composition)onOpenComposition?.(entry.composition); else if (entry.selectable) onSelect?.(entry.key); else if (entry.children && !query) toggle(entry); }
   function keyboard(event: KeyboardEvent, entry: Entry) {
     const index = entries.findIndex(e => e.key === entry.key);

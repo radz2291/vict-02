@@ -33,7 +33,9 @@
   const insertionTarget = $derived(placement !== 'inside' && parent && selectedNodeId
     ? { ...parent, index: parent.children.indexOf(selectedNodeId) + (placement === 'after' ? 1 : 0) }
     : targets.find(t => key(t) === destination));
-  const availableRecipes = $derived(recipes.filter(recipe => insertionTarget && canInsertRecipe(recipe, document, insertionTarget)));
+  const availableRecipes = $derived(recipes.filter(recipe => insertionTarget
+    ? canInsertRecipe(recipe, document, insertionTarget)
+    : !recipe.placements?.length));
   $effect(() => {
     const selectedTargets = targets.filter(t => t.nodeId === selectedNodeId);
     const selectedTarget = selectedTargets[0];

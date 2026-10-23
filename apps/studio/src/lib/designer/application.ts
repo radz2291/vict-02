@@ -8,6 +8,7 @@ import {
   validateSvelteComponentPlan,
 } from '@victframework/ui-svelte';
 import { defineContract } from '@victframework/contracts';
+import { screenPlacementIssues } from './placement.js';
 
 export const submitInput = defineContract<{ message: string; accepted: boolean }>({
   id: 'studio.demo-input',
@@ -123,6 +124,8 @@ export function screenApplication(document: UiDocument): ApplicationDefinitionV3
   };
 }
 export function compileScreen(document: UiDocument) {
+  const contextIssues = screenPlacementIssues(document);
+  if (contextIssues.length) return { ok: false as const, issues: contextIssues, uiIssues: [] };
   const compiled = compileApplication({
     application: screenApplication(document),
     resources: [demoResource],

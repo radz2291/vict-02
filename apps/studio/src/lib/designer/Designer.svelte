@@ -7,6 +7,7 @@
   import { CompositionNavigator, authoredOccurrence, compositionSlots, compositionMembers, compositionTrail, firstCompositionSlot, type CompositionFocus } from '@victframework/ui-editor';
   import type { UiDocument, UiRenderPlan, UiValue } from '@victframework/ui';
   import { newScreen, compileScreen, screenIssues, screenApplication, screenName, screenActionState, designerCatalogs, actionInputs, catalogDescriptors, catalogImplementations } from './application.js';
+  import { screenPlacementIssues } from './placement.js';
   import { screenStore, savedScreens } from './storage.js';
   import { screenRecipes } from './recipes.js';
   import { createScreenSimulation, screenDispatcher } from './execution.js';
@@ -207,7 +208,7 @@
   }
   function createScreen(title: string) {
     const document = newScreen(title);
-    const next = new EditorBridge({ catalogs: designerCatalogs, store: screenStore(localStorage, document.id), initial: { document, storedRevision: 'r1' } });
+    const next = new EditorBridge({ catalogs: designerCatalogs, validateDocument: screenPlacementIssues, store: screenStore(localStorage, document.id), initial: { document, storedRevision: 'r1' } });
     sessions.set(document.id, next);
     library = [...library, { id: document.id, name: title }];
     openSession(next); drawerTab = 'Layers'; drawerOpen = false;
@@ -221,7 +222,7 @@
     const store = screenStore(localStorage, id);
     const loaded = store.rawLoad();
     if (loaded.status !== 'loaded') { notice = loaded.status === 'invalid' ? loaded.message : 'This screen has not been saved.'; issues = [{ code: 'STUDIO_OPEN_REFUSED', message: notice }]; return; }
-    const next = new EditorBridge({ catalogs: designerCatalogs, store, initial: loaded });
+    const next = new EditorBridge({ catalogs: designerCatalogs, validateDocument: screenPlacementIssues, store, initial: loaded });
     sessions.set(id, next); openSession(next); notice = 'Loaded the saved screen.';
   }
   onMount(() => {

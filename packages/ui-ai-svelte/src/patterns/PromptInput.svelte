@@ -25,7 +25,7 @@
         {/each}
       </Attachment.Group></InputGroup.Addon>
     {/if}
-    <InputGroup.Textarea bind:value bind:ref={input} aria-label={label} {placeholder} name="message"
+    <InputGroup.Textarea bind:value bind:ref={input} aria-label={label} {placeholder} name="message" class="vict-conversation-textarea"
       data-testid="conversation-input" rows={2} maxlength={6000} title="Enter to send. Shift+Enter for a new line."
       onkeydown={(event) => { if (event.key === 'Enter' && !event.shiftKey && !event.isComposing) { event.preventDefault(); if (!busy) form?.requestSubmit(); } }}/>
     <InputGroup.Addon align="block-end" class="vict-conversation-input-row">

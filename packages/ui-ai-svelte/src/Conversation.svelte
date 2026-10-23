@@ -106,7 +106,7 @@
   .vict-ai-conversation :global(.vict-conversation){overflow:auto;min-height:0;height:100%;max-height:none;display:block;gap:0;padding:0;outline-offset:-3px}
   .vict-ai-conversation :global(.vict-ai-composer){border:1px solid var(--border,#d6dce5);border-radius:12px;background:var(--background,#fff)}
   .vict-ai-conversation :global(textarea){width:100%;min-height:64px;max-height:160px;overflow:auto;padding:10px 12px;field-sizing:content;font:inherit}
-  .vict-ai-conversation :global(.vict-conversation-input-row){justify-content:flex-end;padding:4px 8px 8px}
+  .vict-ai-conversation.vict-ai :global(.vict-conversation-input-row){justify-content:flex-end;padding:4px 8px 8px}
   .vict-ai-author{display:block;font-size:11px;font-weight:600;color:var(--muted-foreground,#64748b);margin-bottom:5px}
   .vict-ai-user-text{white-space:pre-wrap;overflow-wrap:anywhere}
   .vict-ai-markdown{min-width:0;overflow-wrap:anywhere}
