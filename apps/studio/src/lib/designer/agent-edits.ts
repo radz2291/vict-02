@@ -35,6 +35,7 @@ const expression = z.union([
 ]);
 const content = {
   text: z.string().max(4000).optional(),
+  headingLevel:z.number().int().min(1).max(6).optional(),
   attributes: z.record(id, scalar).optional(),
   props: z.record(id, value).optional(),
   styles: z.record(z.string().min(1).max(80), z.string().max(500)).optional(),
@@ -70,6 +71,21 @@ export const agentEditSchema = z
     operations: z.array(agentOperationSchema).min(1).max(40),
   })
   .strict();
+/** Shared safe refusal guidance for browser preparation and provider contract validation. */
+export function agentEditDiagnostics(error:z.ZodError,input?:unknown) {
+ const operations=input && typeof input==='object' && Array.isArray((input as {operations?:unknown}).operations) ? (input as {operations:unknown[]}).operations : [];
+ const shape:Record<string,string>={add:'add(recipe,nodeId,parentId,slotName?,index?,text?,headingLevel?,attributes?,props?,styles?)',modify:'modify(nodeId,text?,headingLevel?,attributes?,props?,styles?)',move:'move(nodeId,newParentId,slotName?,index?)',remove:'remove(nodeId)',bind:'bind(nodeId,prop,expression?)',connect:'connect(nodeId,output,binding?)',declareState:'declareState(key,type:string|number|boolean,initial:matchingScalar)',wireInput:'wireInput(nodeId,key,initial?)'};
+ return error.issues.slice(0,8).map(issue=>{
+  const operation=typeof issue.path[1]==='number' ? issue.path[1] : undefined;
+  const path=issue.path.join('.');let expected='';
+  if(path.includes('.expression'))expected='Expected exactly {type:"literal",value:scalar} OR {type:"ref",path:"state.key"}; no extra fields. Example: {"type":"ref","path":"state.accepted"}.';
+  else if(path.includes('.binding'))expected='Expected {setState:{key,value?:literalOrRef}} OR {invokeAction:{actionId,input?:{field:literalOrRef}}}; no extra fields. Example: {"setState":{"key":"accepted"}}.';
+  else if(path.includes('.props'))expected='Expected a property record of scalar values or homogeneous string[]/number[] (max100). Example: {"options":["one","two"]}; mixed lists and object arrays are unsupported.';
+  else if(path.endsWith('.initial')||path.includes('.attributes'))expected='Expected string (max4000), finite number, or boolean. Expressions use bind/wireInput instead of attributes.';
+  else if(operation!==undefined){const value=operations[operation];const op=value && typeof value==='object' ? (value as {op?:unknown}).op : undefined;expected=typeof op==='string' && shape[op] ? 'Expected '+shape[op]+'.' : 'Expected a declared add/modify/move/remove/bind/connect/declareState/wireInput operation.';}
+  return {...(operation===undefined ? {} : {operation}),path,message:(expected+' '+issue.message).trim().slice(0,700)};
+ });
+}
 export type AgentEdit = z.infer<typeof agentEditSchema>;
 export interface AgentCursor {
   documentId: string;
@@ -107,7 +123,7 @@ export function prepareAgentEdit(
   requestId: string,
 ): EditFailure | { ok: true; draft: TransactionDraft; document: UiDocument; digest: string } {
   const parsed = agentEditSchema.safeParse(input);
-  if (!parsed.success) return { ...failure('STUDIO_AGENT_INVALID_EDIT', 'Use the exact operation fields. No edits applied.'), diagnostics: parsed.error.issues.slice(0, 8).map(issue => ({ ...(typeof issue.path[1] === 'number' ? {operation:issue.path[1]} : {}), path: issue.path.join('.'), message: issue.message })) };
+  if (!parsed.success) return { ...failure('STUDIO_AGENT_INVALID_EDIT', 'Use the exact operation fields. No edits applied.'), diagnostics:agentEditDiagnostics(parsed.error,input) };
   if (
     document.id !== cursor.documentId ||
     canonicalUiDocument(document).contentDigest !== cursor.digest
@@ -217,6 +233,11 @@ export function prepareAgentEdit(
               property: 'textLiteral',
               value: operation.text,
             });
+        }
+        if(operation.headingLevel !== undefined) {
+          const node=operation.op === 'add' ? fresh[0] : working.nodes[operation.nodeId];
+          if(node?.kind !== 'element' || !/^h[1-6]$/.test(node.tag)) return failure('STUDIO_AGENT_HEADING_TARGET','headingLevel requires an h1–h6 element. Use the heading recipe or modify an existing heading.');
+          next.push({op:'setProperty',nodeId:operation.nodeId,property:'tag',value:`h${operation.headingLevel}`});
         }
         for (const [name, value] of Object.entries(operation.attributes ?? {}))
           next.push({

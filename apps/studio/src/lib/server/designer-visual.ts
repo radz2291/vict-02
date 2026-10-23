@@ -69,7 +69,10 @@ export function refuseVisualCapture(owner: string, id: string, code: string): bo
   const waiting = pending.get(id);
   if (!waiting || waiting.owner !== owner) return false;
   pending.delete(id);
-  waiting.settle(fail(/^STUDIO_CAPTURE_[A-Z_]+$/.test(code) ? code : 'STUDIO_CAPTURE_FAILED', 'The browser could not provide a current rendered image. No visual observation was made.'));
+  const safeCode = /^STUDIO_CAPTURE_[A-Z_]+$/.test(code) ? code : 'STUDIO_CAPTURE_FAILED';
+  waiting.settle(fail(safeCode, safeCode === 'STUDIO_CAPTURE_PORTAL_UNSUPPORTED'
+    ? 'An open preview dialog, menu or popup is outside the capture frame. No image or overlay observation was made. Close it before capturing the frame; open portalled overlays are unsupported by this image path.'
+    : 'The browser could not provide a current rendered image. No visual observation was made.'));
   return true;
 }
 
@@ -94,6 +97,18 @@ export function createVisualObserver(options: VisualObserverOptions) {
     }
     ids.clear();
   };
+  const requestCapture = (cursor: AgentCursor): Promise<Capture | Failure> => {
+    if (signal.aborted) return Promise.resolve(fail('STUDIO_CAPTURE_CANCELLED', 'Observation stopped.'));
+    const id = randomUUID(); ids.add(id);
+    return new Promise<Capture | Failure>(resolve => {
+      const finish = (value: Capture | Failure) => { clearTimeout(timer); signal.removeEventListener('abort', stop); pending.delete(id); ids.delete(id); resolve(value); };
+      const stop = () => finish(fail('STUDIO_CAPTURE_CANCELLED', 'Observation stopped.'));
+      const timer = setTimeout(() => finish(fail('STUDIO_CAPTURE_TIMEOUT', 'The browser did not provide a rendered image. Open Design or Interact and retry.')), VISUAL_LIMITS.pendingMs);
+      pending.set(id, { owner: options.owner, cursor, settle: finish });
+      signal.addEventListener('abort', stop, { once: true });
+      options.emit({ type: 'capture-request', captureId: id, cursor });
+    });
+  };
   const schema = z.object({ focus: z.string().trim().min(1).max(500) }).strict();
   const input = defineContract({ id: 'studio.agent.observe-input', revision: '1',
     descriptiveJsonSchema: { type: 'object', properties: { focus: { type: 'string', minLength: 1, maxLength: 500, description: 'What visible appearance should be inspected, e.g. clipping, spacing, headings. This does not exercise interactions.' } }, required: ['focus'], additionalProperties: false },
@@ -107,15 +122,7 @@ export function createVisualObserver(options: VisualObserverOptions) {
       const supported = visualModelSupport(options.model);
       if (!supported.supported && !options.modelFactory) return fail('STUDIO_CAPTURE_MODEL_UNSUPPORTED', supported.message);
       const cursor = { ...options.getCursor() };
-      const id = randomUUID(); ids.add(id);
-      const capture = await new Promise<Capture | Failure>(resolve => {
-        const finish = (value: Capture | Failure) => { clearTimeout(timer); signal.removeEventListener('abort', stop); pending.delete(id); ids.delete(id); resolve(value); };
-        const stop = () => finish(fail('STUDIO_CAPTURE_CANCELLED', 'Observation stopped.'));
-        const timer = setTimeout(() => finish(fail('STUDIO_CAPTURE_TIMEOUT', 'The browser did not provide a rendered image. Open Design or Interact and retry.')), VISUAL_LIMITS.pendingMs);
-        pending.set(id, { owner: options.owner, cursor, settle: finish });
-        signal.addEventListener('abort', stop, { once: true });
-        options.emit({ type: 'capture-request', captureId: id, cursor });
-      });
+      const capture = await requestCapture(cursor);
       if (!capture.ok) return capture;
       if (signal.aborted || !sameCursor(cursor, options.getCursor())) return fail('STUDIO_CAPTURE_STALE', 'Source changed after capture; request another observation.');
       try {
@@ -134,7 +141,15 @@ export function createVisualObserver(options: VisualObserverOptions) {
         } } finally { reader.releaseLock(); }
         if (signal.aborted || !sameCursor(cursor, options.getCursor())) return fail('STUDIO_CAPTURE_STALE', 'Source changed while inspecting the image. This observation cannot verify the current screen.');
         if (!finished || !text.trim()) return fail('STUDIO_CAPTURE_MODEL_FAILED', 'The configured model returned no completed appearance observation.');
-        return { ok: true, evidence: 'observed-appearance', observation: text.trim(), metadata: capture.metadata, imageDigest: createHash('sha256').update(capture.bytes).digest('hex'), bytes: capture.bytes.byteLength, model: options.model, interactionVerified: false, ...(options.modelFactory ? { simulatedModel: true } : {}), limitation: 'Only this captured viewport and preview state were inspected. Source relationships and interaction outcomes require separate checks.' };
+        // The model call can take time while the user interacts. Reuse the
+        // bounded browser channel to verify current runtime/portal/viewport
+        // state, without sending a second image to the provider.
+        const confirmed = await requestCapture(cursor);
+        if (signal.aborted) return fail('STUDIO_CAPTURE_CANCELLED', 'Observation stopped.');
+        if (!confirmed.ok) return fail('STUDIO_CAPTURE_STALE', `The preview could not be revalidated after image inference (${confirmed.code}). Request a fresh observation; the previous image cannot verify the current preview.`);
+        if (!sameCursor(cursor, options.getCursor()) || capture.metadata.preview.fingerprint !== confirmed.metadata.preview.fingerprint || JSON.stringify(capture.metadata.preview) !== JSON.stringify(confirmed.metadata.preview) || JSON.stringify(capture.metadata.viewport) !== JSON.stringify(confirmed.metadata.viewport) || JSON.stringify(capture.metadata.image) !== JSON.stringify(confirmed.metadata.image))
+          return fail('STUDIO_CAPTURE_STALE', 'The source, runtime preview, overlay or viewport changed during image inference. Request a fresh observation.');
+        return { ok: true, evidence: 'observed-appearance', observation: text.trim(), metadata: capture.metadata, revalidatedAt: confirmed.metadata.capturedAt, validation: 'same-source-preview-and-viewport-after-inference', imageDigest: createHash('sha256').update(capture.bytes).digest('hex'), bytes: capture.bytes.byteLength, model: options.model, interactionVerified: false, ...(options.modelFactory ? { simulatedModel: true } : {}), limitation: 'Only the captured preview frame region and stated preview state were inspected. Open preview-owned external portals refuse capture; unrelated Studio chrome is outside this image. Source relationships and interaction outcomes require separate checks.' };
       } catch { return fail('STUDIO_CAPTURE_MODEL_FAILED', 'The configured model could not inspect this image. No visual-completion claim is justified.'); }
     },
   };

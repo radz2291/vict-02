@@ -1,0 +1,383 @@
+{
+  "schema": "vict.ui-document@1",
+  "id": "REPLACE_WITH_FRESH_UI_DOCUMENT_ID",
+  "revision": "r1",
+  "root": "screen",
+  "nodes": {
+    "screen": {
+      "kind": "element",
+      "id": "screen",
+      "tag": "main",
+      "children": [
+        "customer",
+        "destination"
+      ],
+      "attributes": {
+        "aria-label": "Completion Structure independent"
+      },
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "20px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "24px"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "560px"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#ffffff"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#243047"
+          }
+        },
+        {
+          "property": "font-family",
+          "value": {
+            "type": "text",
+            "value": "system-ui, sans-serif"
+          }
+        }
+      ]
+    },
+    "customer": {
+      "kind": "element",
+      "id": "customer",
+      "tag": "section",
+      "children": [
+        "customer-heading",
+        "name-field",
+        "preference-field",
+        "submit",
+        "move-paragraph",
+        "customer-note"
+      ],
+      "attributes": {
+        "aria-label": "Customer settings"
+      },
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "16px"
+          }
+        },
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "1px solid #cbd5e1"
+          }
+        }
+      ]
+    },
+    "customer-heading": {
+      "kind": "element",
+      "id": "customer-heading",
+      "tag": "h2",
+      "children": [
+        "customer-title"
+      ],
+      "attributes": {}
+    },
+    "customer-title": {
+      "kind": "text",
+      "id": "customer-title",
+      "content": {
+        "type": "literal",
+        "value": "Customer settings"
+      }
+    },
+    "name-field": {
+      "kind": "element",
+      "id": "name-field",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Structure name",
+        "type": "text",
+        "value": {
+          "type": "ref",
+          "path": "state.nameField"
+        }
+      },
+      "interactions": [
+        {
+          "on": "change",
+          "action": "setState",
+          "key": "nameField",
+          "value": {
+            "type": "ref",
+            "path": "state.nameField"
+          }
+        }
+      ]
+    },
+    "preference-field": {
+      "kind": "element",
+      "id": "preference-field",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Structure preference",
+        "type": "checkbox",
+        "checked": {
+          "type": "ref",
+          "path": "state.preferenceField"
+        }
+      },
+      "interactions": [
+        {
+          "on": "change",
+          "action": "setState",
+          "key": "preferenceField",
+          "value": {
+            "type": "ref",
+            "path": "state.preferenceField"
+          }
+        }
+      ]
+    },
+    "submit": {
+      "kind": "element",
+      "id": "submit",
+      "tag": "button",
+      "children": [
+        "submit-text"
+      ],
+      "attributes": {
+        "aria-label": "Submit fixture",
+        "type": "button"
+      },
+      "interactions": [
+        {
+          "on": "click",
+          "action": "invokeAction",
+          "actionId": "demo.submit",
+          "input": {
+            "message": {
+              "type": "ref",
+              "path": "state.nameField"
+            },
+            "accepted": {
+              "type": "ref",
+              "path": "state.preferenceField"
+            }
+          }
+        }
+      ]
+    },
+    "submit-text": {
+      "kind": "text",
+      "id": "submit-text",
+      "content": {
+        "type": "literal",
+        "value": "Submit fixture"
+      }
+    },
+    "move-paragraph": {
+      "kind": "element",
+      "id": "move-paragraph",
+      "tag": "p",
+      "children": [
+        "move-text"
+      ],
+      "attributes": {
+        "aria-label": "Movable paragraph"
+      }
+    },
+    "move-text": {
+      "kind": "text",
+      "id": "move-text",
+      "content": {
+        "type": "literal",
+        "value": "Move this paragraph to Review destination."
+      }
+    },
+    "customer-note": {
+      "kind": "text",
+      "id": "customer-note",
+      "content": {
+        "type": "literal",
+        "value": "Customer source group has six children, so it can collapse."
+      }
+    },
+    "destination": {
+      "kind": "element",
+      "id": "destination",
+      "tag": "section",
+      "children": [
+        "destination-heading",
+        "destination-note"
+      ],
+      "attributes": {
+        "aria-label": "Review destination"
+      },
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "16px"
+          }
+        },
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "1px solid #cbd5e1"
+          }
+        }
+      ]
+    },
+    "destination-heading": {
+      "kind": "element",
+      "id": "destination-heading",
+      "tag": "h2",
+      "children": [
+        "destination-title"
+      ],
+      "attributes": {}
+    },
+    "destination-title": {
+      "kind": "text",
+      "id": "destination-title",
+      "content": {
+        "type": "literal",
+        "value": "Review destination"
+      }
+    },
+    "destination-note": {
+      "kind": "text",
+      "id": "destination-note",
+      "content": {
+        "type": "literal",
+        "value": "The keyboard move should place the paragraph here."
+      }
+    }
+  },
+  "componentDefinitions": {},
+  "styleSources": {},
+  "assets": {},
+  "tokens": {},
+  "conditions": {},
+  "localState": {
+    "message": {
+      "key": "message",
+      "type": "string",
+      "initial": "Hello from my screen"
+    },
+    "accepted": {
+      "key": "accepted",
+      "type": "boolean",
+      "initial": false
+    },
+    "dialogOpen": {
+      "key": "dialogOpen",
+      "type": "boolean",
+      "initial": false
+    },
+    "busy": {
+      "key": "busy",
+      "type": "boolean",
+      "initial": false
+    },
+    "actionError": {
+      "key": "actionError",
+      "type": "string",
+      "initial": ""
+    },
+    "actionResult": {
+      "key": "actionResult",
+      "type": "string",
+      "initial": ""
+    },
+    "nameField": {
+      "key": "nameField",
+      "type": "string",
+      "initial": "Initial fixture name"
+    },
+    "preferenceField": {
+      "key": "preferenceField",
+      "type": "boolean",
+      "initial": false
+    }
+  }
+}

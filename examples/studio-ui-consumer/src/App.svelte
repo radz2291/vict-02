@@ -22,6 +22,7 @@
     {id:'refused',kind:'activity',activity:{id:'refused',title:'Validation refused',state:'failed',detail:'Fixture only: operations.0.prop needs a declared property.'}},
     {id:'correction',kind:'text',text:'Simulated correction follows the refusal.'},
     {id:'receipt',kind:'activity',activity:{id:'receipt',title:'Simulated receipt acknowledged',state:'completed',detail:'No real source was edited by this package example.'}},
+    {id:'cancelled',kind:'activity',activity:{id:'cancelled',title:'Simulated observation stopped',state:'cancelled',detail:'A stopped attempt has no confirmed observation. This is a presentation fixture.'}},
   ]}];
   function stop(){generation++;busy=false;}
   async function send(text:string){
@@ -29,14 +30,14 @@
     const id=crypto.randomUUID();messages=[...messages,{id:crypto.randomUUID(),role:'user',text},{id,role:'assistant',text:'',activity:[{id:'fixture',title:'Presentation fixture',state:'running'}]}];
     const reply='This reply streams from a local fixture. **No backend action was performed.**\n\n```ts\nimport { Conversation } from "@victframework/ui-ai-svelte";\n```\n\nYour host supplies messages, lifecycle state and callbacks.';
     for(const chunk of reply.match(/.{1,5}|\n/g)??[]){if(run!==generation)break;messages=messages.map(m=>m.id===id?{...m,text:m.text+chunk}:m);await new Promise(r=>setTimeout(r,20));}
-    messages=messages.map(m=>m.id===id?{...m,activity:[{id:'fixture',title:run===generation?'Fixture finished':'Fixture stopped',state:run===generation?'completed':'failed'}]}:m);
+    messages=messages.map(m=>m.id===id?{...m,activity:[{id:'fixture',title:run===generation?'Fixture finished':'Fixture stopped',state:run===generation?'completed':'cancelled'}]}:m);
     if(run===generation)busy=false;return true;
   }
 </script>
 <svelte:head><title>VICT reusable UI showcase</title></svelte:head>
 <main>
   <header><p>VICT UI / Cycle 1.3</p><h1>Conversation and structure</h1><p>Public packages in a small standalone consumer. Demonstrations are simulated; they do not call an agent or execute workflows.</p></header>
-  <nav class="showcase-nav" aria-label="Cycle 1.3 showcase sections"><a href="#ai-patterns">21 AI patterns</a><a href="#building-blocks">UI building blocks</a><a href="#flow">Node canvas</a><a href="#studio-recipes">83 Studio recipes</a><a href="http://127.0.0.2:5594/showcase" target="_blank" rel="noopener noreferrer">Complete Studio UI showcase ↗</a></nav>
+  <nav class="showcase-nav" aria-label="Cycle 1.3 showcase sections"><a href="#ai-patterns">21 AI patterns</a><a href="#building-blocks">UI building blocks</a><a href="#flow">Node canvas</a><a href="#studio-recipes">83 Studio recipes</a><a href="http://127.0.0.3:5596/showcase" target="_blank" rel="noopener noreferrer">Complete Studio UI showcase ↗</a></nav>
   <div class="surfaces"><section aria-label="Conversation showcase" class="chat"><Conversation {messages} {busy} title="New Thread" description="Local streaming presentation fixture" onReset={()=>{generation++;busy=false;messages=[];}} onSend={send} onStop={busy?stop:undefined}/></section>
   <section id="flow" aria-label="Node showcase"><h2>Node canvas</h2><p>{feedback}</p><button onclick={arrange}>Arrange with public layout</button><div class="flow"><FlowCanvas bind:nodes bind:edges onconnect={connect} fitView aria-label="Reusable node canvas"/></div></section></div>
   <section class="chat" style="height:500px;margin-top:24px" aria-label="Ordered timeline fixture"><Conversation messages={orderedFixture} onSend={async()=>({ok:false,message:'Simulated presentation fixture only.'})}/></section>
@@ -45,10 +46,10 @@
   <section id="studio-recipes" class="recipe-index" aria-label="All Cycle 1.3 Studio recipes">
     <h2>All 83 Studio recipes and editing controls</h2>
     <p>Open any recipe in the isolated Studio showcase to try its actual preview, properties, connections, source structure and history. Studio examples require your Studio login and use separate in-memory demo documents.</p>
-    <p><a href="http://127.0.0.2:5594/showcase#designer" target="_blank" rel="noopener noreferrer">Open the complete Studio editing showcase ↗</a></p>
+    <p><a href="http://127.0.0.3:5596/showcase#designer" target="_blank" rel="noopener noreferrer">Open the complete Studio editing showcase ↗</a></p>
     <label>Find a component <input type="search" bind:value={recipeSearch} placeholder="Slider, Tabs, Select…"/></label>
     <p>{filteredRecipes.length} of {catalog.length} recipes</p>
-    <ul>{#each filteredRecipes as recipe (recipe.id)}<li data-showcase-recipe={recipe.id}><a href={`http://127.0.0.2:5594/showcase?recipe=${encodeURIComponent(recipe.id)}#designer`} target="_blank" rel="noopener noreferrer"><strong>{recipe.label}</strong><span>{recipe.description}</span><small>{recipe.category}</small></a></li>{/each}</ul>
+    <ul>{#each filteredRecipes as recipe (recipe.id)}<li data-showcase-recipe={recipe.id}><a href={`http://127.0.0.3:5596/showcase?recipe=${encodeURIComponent(recipe.id)}#designer`} target="_blank" rel="noopener noreferrer"><strong>{recipe.label}</strong><span>{recipe.description}</span><small>{recipe.category}</small></a></li>{/each}</ul>
   </section>
   <section class="isolation"><h2>Unrelated host content</h2><button id="unrelated-button">Native host button</button><p>This area is outside the AI CSS scope.</p></section>
 </main>

@@ -1,4 +1,4 @@
-import type { Node, Edge, XYPosition } from '@xyflow/svelte';
+import type { Node, Edge, XYPosition, Position } from '@xyflow/svelte';
 import type { ELK, ElkNode } from 'elkjs/lib/elk-api.js';
 
 export type LayoutEngine = 'elk' | 'dagre';
@@ -17,6 +17,8 @@ export function nodeSize(node: Node): { width: number; height: number } {
 /** Layout never mutates caller nodes, edges or source documents. */
 export async function layoutGraph<N extends Node, E extends Edge>(nodes: N[], edges: E[], options: LayoutOptions = {}): Promise<{ nodes: N[]; edges: E[]; engine: LayoutEngine; reason?: string }> {
   const direction = options.direction ?? 'RIGHT';
+  const handles = { sourcePosition: (direction === 'RIGHT' ? 'right' : 'bottom') as Position,
+    targetPosition: (direction === 'RIGHT' ? 'left' : 'top') as Position };
   const spacing = options.spacing ?? 48;
   const selection = chooseLayoutEngine(nodes.length, options.engine);
   if (!nodes.length) return { nodes: [], edges: [], ...selection };
@@ -27,7 +29,7 @@ export async function layoutGraph<N extends Node, E extends Edge>(nodes: N[], ed
     for (const node of nodes) graph.setNode(node.id, nodeSize(node));
     for (const edge of edges) graph.setEdge(edge.source, edge.target);
     dagre.layout(graph);
-    return { nodes: nodes.map(node => { const point = graph.node(node.id); const size = nodeSize(node); return { ...node, position: { x: point.x - size.width / 2, y: point.y - size.height / 2 } }; }), edges: edges.map(edge => ({ ...edge, data: { ...edge.data, route: undefined } })), ...selection };
+    return { nodes: nodes.map(node => { const point = graph.node(node.id); const size = nodeSize(node); return { ...node, ...handles, position: { x: point.x - size.width / 2, y: point.y - size.height / 2 } }; }), edges: edges.map(edge => ({ ...edge, data: { ...edge.data, route: undefined } })), ...selection };
   }
   const module = await import('elkjs/lib/elk.bundled.js');
   // elkjs is CommonJS; NodeNext types its interop default as the module namespace.
@@ -51,7 +53,7 @@ export async function layoutGraph<N extends Node, E extends Edge>(nodes: N[], ed
     const section = edge.sections?.[0];
     return [edge.id, section ? [section.startPoint, ...(section.bendPoints ?? []), section.endPoint] : undefined];
   }));
-  return { nodes: nodes.map(node => ({ ...node, position: positions.get(node.id) ?? node.position })),
+  return { nodes: nodes.map(node => ({ ...node, ...handles, position: positions.get(node.id) ?? node.position })),
     edges: edges.map(edge => ({ ...edge, data: { ...edge.data, route: routes.get(edge.id) } })), ...selection };
 }
 

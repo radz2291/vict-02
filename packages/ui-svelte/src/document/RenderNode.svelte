@@ -243,39 +243,36 @@
 
   /** Void elements must not render a children slot (Svelte warning + invalid HTML). */
   const VOID_TAGS = new Set(['input', 'br', 'hr', 'img', 'meta', 'link', 'source', 'wbr', 'col']);
+  function handleElementClick(event: MouseEvent): void {
+    if (instruction.kind !== 'element') return;
+    event.stopPropagation();
+    if (instruction.interactions.some(interaction => interaction.on === 'click')) void runInteractions(event);
+    else if ((event.target as Element | null)?.closest('[data-ui-occ]') === event.currentTarget) selectOccurrence?.(occ);
+  }
+  function handleElementSubmit(event: SubmitEvent): void {
+    if (instruction.kind !== 'element') return;
+    event.stopPropagation();
+    if (instruction.interactions.some(interaction => interaction.on === 'submit')) void runInteractions(event);
+  }
+  const elementProps = $derived(instruction.kind === 'element' ? {
+    ...evaluatedAttributes,
+    class: [...instruction.classes, ...(extraClass !== undefined ? [extraClass] : [])].join(' '),
+    'data-ui-owner': ownerId, 'data-ui-node': instruction.nodeId, 'data-ui-occ': occ,
+    style: [bindingStyleVariables(instruction.styleRuleIds, plan, scope), extraStyle ?? ''].join(' '),
+    onclick: handleElementClick, onsubmit: handleElementSubmit, onchange: handleChange, oninput: handleChange,
+  } : {});
 
 </script>
 
 {#if instruction.kind === 'element'}
   {@const children = instruction.children}
+  {#if VOID_TAGS.has(instruction.tag)}
+  <svelte:element this={instruction.tag} {...elementProps} />
+  {:else}
   <svelte:element
     this={instruction.tag}
-    {...evaluatedAttributes}
-    class={[...instruction.classes, ...(extraClass !== undefined ? [extraClass] : [])].join(' ')}
-    data-ui-owner={ownerId}
-    data-ui-node={instruction.nodeId}
-    data-ui-occ={occ}
-    style={[bindingStyleVariables(instruction.styleRuleIds, plan, scope), extraStyle ?? ''].join(' ')}
-    onclick={(event) => {
-      // Selection and interactions address the INNERMOST declared element;
-      // bubbling to ancestor handlers would overwrite the selection.
-      event.stopPropagation();
-      if (instruction.interactions.some((interaction) => interaction.on === 'click')) {
-        void runInteractions(event);
-      } else if ((event.target as Element | null)?.closest('[data-ui-occ]') === event.currentTarget) {
-        selectOccurrence?.(occ);
-      }
-    }}
-    onsubmit={(event) => {
-      event.stopPropagation();
-      if (instruction.interactions.some((interaction) => interaction.on === 'submit')) {
-        void runInteractions(event);
-      }
-    }}
-    onchange={handleChange}
-    oninput={handleChange}
+    {...elementProps}
   >
-    {#if !VOID_TAGS.has(instruction.tag)}
     {#each children as child (child.occurrenceKey)}
       <Self
         instruction={child}
@@ -298,8 +295,8 @@
         extraClass={undefined}
       />
     {/each}
-    {/if}
   </svelte:element>
+  {/if}
 {:else if instruction.kind === 'text'}
   <span
     class="uv-text"

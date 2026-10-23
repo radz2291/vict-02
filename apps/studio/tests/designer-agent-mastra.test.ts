@@ -608,3 +608,30 @@ describe('Studio composes existing real pinned Mastra executor (offline model; n
     if (replacement?.ok) await replacement.finished;
   }, 120_000);
 });
+
+it('reports a host deadline separately from explicit Stop without waiting for production wall time (offline deadline seam)',async()=>{
+ const {start,input}=context();const events:StudioAgentEvent[]=[];
+ const model=createDeterministicOfflineModel({script:{[input]:{kind:'text',text:'Would complete if not expired.'}}});
+ const opened=openAgentRun('deadline-fixture',start,event=>events.push(event),{modelFactory:()=>model,model:OFFLINE_MODEL_IDENTITY,deadlineMs:1});
+ if(!opened.ok)throw Error(opened.code);await opened.finished;
+ expect(events.at(-1)).toMatchObject({type:'done',status:'failed',code:'STUDIO_AGENT_TIME_LIMIT',termination:{status:'timeout',code:'STUDIO_AGENT_TIME_LIMIT'},applied:0,confirmedRevision:start.cursor.revision});
+},120000);
+
+it('labels agent-declared subset coverage separately from the complete catalog inventory (offline fixture)',async()=>{
+ const {bridge,epoch,start,input}=context();const events:StudioAgentEvent[]=[];let runId='';
+ const model=createDeterministicOfflineModel({script:{[input]:{kind:'tool-chain',calls:[{toolName:'studio_screen_edit',args:{expectedRevision:start.cursor.revision,reason:'Native input',operations:[{op:'add',recipe:'input',nodeId:'field',parentId:'screen'}]}},{toolName:'studio_screen_read',args:{section:'coverage',requested:['input']}}],thenText:'One input exists; complete inventory is not demonstrated.'}}});
+ const opened=openAgentRun('subset-manifest',start,event=>{events.push(event);if(event.type==='started')runId=event.runId;if(event.type==='proposal')acknowledgeAgentEdit('subset-manifest',runId,event.proposal.proposalId,applyAgentProposal(bridge,event.proposal,epoch,false));},{modelFactory:()=>model,model:OFFLINE_MODEL_IDENTITY});
+ if(!opened.ok)throw Error(opened.code);await opened.finished;
+ expect(events.at(-1)).toMatchObject({type:'done',status:'completed',coverage:{scope:'agent-declared-manifest',requested:1,authored:1,missing:[]}});
+ const done=events.at(-1);expect(done?.type==='done'&&done.coverage!.authored<done.coverage!.available).toBe(true);
+},120000);
+
+it('makes bounded precise pre-invocation refusal guidance available to the model on the next overview read',async()=>{
+ const {start,input}=context();const events:StudioAgentEvent[]=[];
+ const model=createDeterministicOfflineModel({script:{[input]:{kind:'tool-chain',calls:[{toolName:'studio_screen_edit',args:{expectedRevision:start.cursor.revision,reason:'Malformed expression probe',operations:[{op:'bind',nodeId:'control',prop:'checked',expression:true}]}},{toolName:'studio_screen_read',args:{}}],thenText:'The malformed expression was refused; no edit was applied.'}}});
+ const opened=openAgentRun('precise-refusal-read',start,event=>events.push(event),{modelFactory:()=>model,model:OFFLINE_MODEL_IDENTITY});if(!opened.ok)throw Error(opened.code);await opened.finished;
+ const observation=events.find(event=>event.type==='tool-event'&&event.kind==='observation'&&event.tool==='studio_screen_read');expect(observation?.type).toBe('tool-event');if(observation?.type!=='tool-event')throw Error('No read');expect(observation.callId).toBeTruthy();
+ // The model receives the full bounded overview; the owner trace explicitly marks any display clipping.
+ const all=JSON.stringify(events);expect(all).toContain('literal');expect(all).toContain('ref');expect(all).toContain('operations.0.expression');
+ const refused=events.find(event=>event.type==='tool-event'&&event.kind==='validation-refused');expect(refused?.type==='tool-event'&&refused.details).toContain('Expected exactly');
+},120000);

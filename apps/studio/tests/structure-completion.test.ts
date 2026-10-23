@@ -81,6 +81,7 @@ it('compares real Dagre and ELK layouts at small, owner-sized and advertised-siz
       results.push({ fixtureNodes: count, requestedEngine: engine, actualEngine: result.engine, fallbackReason: result.reason, direction, projectionMs: +projectionMs.toFixed(2), elapsedMs: +elapsedMs.toFixed(2), overlapCount, width: maxX, height: maxY, routedEdges, edges: result.edges.length });
       expect(result.nodes.length).toBe(nodes.length); expect(overlapCount).toBe(0);
       expect(result.nodes.every(node => Number.isFinite(node.position.x) && Number.isFinite(node.position.y))).toBe(true);
+      expect(result.nodes.every(node => node.sourcePosition === (direction === 'RIGHT' ? 'right' : 'bottom') && node.targetPosition === (direction === 'RIGHT' ? 'left' : 'top'))).toBe(true);
       if (result.engine === 'elk') expect(routedEdges).toBe(result.edges.length);
       if (count > 120) expect(result.engine).toBe('dagre');
       if (count === 12) {

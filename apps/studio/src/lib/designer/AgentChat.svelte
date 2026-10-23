@@ -5,7 +5,7 @@
   import { Popover } from '@victframework/ui-svelte/primitives';
   import type { UiConversationMessage, UiDocument } from '@victframework/ui';
   import type { AgentCursor, AgentProposal, EditFailure, EditReceipt } from './agent-edits.js';
-  import { AGENT_REQUEST_BYTES, AGENT_STREAM_BYTES, AGENT_FRAME_CHARACTERS, boundedHistoryText, agentFailureMessage } from './agent-transport.js';
+  import { AGENT_REQUEST_BYTES, AGENT_STREAM_BYTES, AGENT_FRAME_CHARACTERS, boundedHistoryText, agentFailureMessage, withTurnAbort } from './agent-transport.js';
   import { uploadVisualCapture, type CaptureResult } from './visual-observation.js';
   interface Props {
     screenLabel:string;
@@ -68,6 +68,7 @@
   }
   async function send(text:string){
     if(busy)return {ok:false,message:'Wait for this turn or stop it first.'};
+    if(text.length>6000)return {ok:false,message:'Keep requests within 6,000 characters. Your draft is still here.'};
     if(blocked)return {ok:false,message:'Apply or cancel your property, data, rename or source draft first.'};
     if(!ready){await configure();if(!ready)return {ok:false,message:'The agent needs a server-side provider configuration. Your request is still here.'};}
     const context=getContext();if(!context)return {ok:false,message:'Open a valid screen before sending.'};
@@ -80,11 +81,11 @@
     const append=(event:ConversationEvent)=>{timelines={...timelines,[messageId]:appendConversationEvent(timelines[messageId]??[],event)};};
     const summary=(message:string)=>append({id:`local-${++serial}`,kind:'summary',text:message});
     const attempts=new Map<string,string[]>();
-    function settle(ids:readonly string[],state:'completed'|'failed',detail?:string){
+    function settle(ids:readonly string[],state:'completed'|'failed'|'cancelled',detail?:string){
       const selected=new Set(ids);
       timelines={...timelines,[messageId]:(timelines[messageId]??[]).map(item=>selected.has(item.id)&&item.kind==='activity'?{...item,activity:{...item.activity,state,...(detail?{detail:`${item.activity.detail??''}\n${detail}`}:{})}}:item)};
     }
-    function finishPending(detail:string){settle((timelines[messageId]??[]).filter(item=>item.kind==='activity'&&(item.activity.state==='running'||item.activity.state==='pending')).map(item=>item.id),'failed',detail);}
+    function finishPending(detail:string,cancelled=false){settle((timelines[messageId]??[]).filter(item=>item.kind==='activity'&&(item.activity.state==='running'||item.activity.state==='pending')).map(item=>item.id),cancelled?'cancelled':'failed',detail);}
     timelines={...timelines,[messageId]:[]};
     const turn:LocalTurn={controller:new AbortController(),runId:'',applied:0,cancelled:false};activeTurn=turn;
     busy=true;failed=false;progress=[];evidence='';let done=false;let sent=false;let lastRefusal='';let separateReply=false;
@@ -111,9 +112,8 @@
             if(event.type==='tool-event'){
               const attemptKey=`${event.tool}:${event.callId??'current'}`;
               const refused=event.kind==='validation-refused'||event.kind==='tool-failed';
-              if(event.kind!=='tool-start'&&event.kind!=='proposed'){
-                const keys=event.callId?[attemptKey]:[...attempts.keys()].filter(key=>key.startsWith(`${event.tool}:`));
-                for(const key of keys){settle(attempts.get(key)??[],refused?'failed':'completed');attempts.delete(key);}
+              if(event.callId&&event.kind!=='tool-start'&&event.kind!=='proposed'){
+                settle(attempts.get(attemptKey)??[],refused?'failed':'completed');attempts.delete(attemptKey);
               }
               const toolLabel=event.tool==='studio_screen_read'?'Read source':event.tool==='studio_screen_edit'?'Edit screen':event.tool==='studio_screen_observe'?'Observe preview':event.tool;
               append({id:event.id,kind:'activity',activity:{id:event.id,title:event.kind==='tool-start'?`${toolLabel} started`:event.summary,state:event.kind==='tool-start'?'running':event.kind==='validation-refused'||event.kind==='tool-failed'?'failed':event.kind==='proposed'?'pending':'completed',detail:[event.kind,event.tool,event.details].filter(Boolean).join('\n')}});separateReply=true;
@@ -121,8 +121,9 @@
             }
             if(event.type==='capture-request'){
               let captured:CaptureResult;
-              try{captured=getCapture?await getCapture(event.cursor):{ok:false,code:'STUDIO_CAPTURE_UNAVAILABLE',message:'The rendered preview is unavailable.'};}
-              catch{captured={ok:false,code:'STUDIO_CAPTURE_FAILED',message:'The browser could not capture the preview. No visual observation was made.'};}
+              try{captured=getCapture?await withTurnAbort(()=>getCapture!(event.cursor),turn.controller.signal):{ok:false,code:'STUDIO_CAPTURE_UNAVAILABLE',message:'The rendered preview is unavailable.'};}
+              catch(error){if(turn.controller.signal.aborted)throw error;captured={ok:false,code:error instanceof Error&&error.message==='STUDIO_CAPTURE_TIMEOUT'?'STUDIO_CAPTURE_TIMEOUT':'STUDIO_CAPTURE_FAILED',message:'The browser could not complete capture. No visual observation was made.'};}
+              if(turn.controller.signal.aborted)throw new Error('stopped');
               await uploadVisualCapture(event.captureId,csrf,captured,turn.controller.signal);separateReply=true;
             }
             if(event.type==='text'){
@@ -147,7 +148,7 @@
             }
             if(event.type==='edit-result'){lastRefusal=event.result.ok?'':event.result.message;note(event.result.ok?`${event.reason} · applied`:event.result.message);separateReply=true;}
             if(event.type==='done'){
-              finishPending('This turn ended without a result for this attempt. Only acknowledged receipts establish applied edits.');
+              finishPending('This turn ended without a result for this attempt. Only acknowledged receipts establish applied edits.',event.status==='cancelled');
               done=true;turn.applied=Math.max(turn.applied,event.applied??0);
               const applied=turn.applied;
               failed=event.status==='failed'||Boolean(lastRefusal);
@@ -156,7 +157,7 @@
               const boundary=`${appliedEffects(applied)}${event.confirmedRevision?` Confirmed revision ${event.confirmedRevision}.`:''}`;
               const terminal=event.termination?` Engine termination: ${event.termination.status}${event.termination.code?` (${event.termination.code})`:''}.`:'';
               const unresolved=event.unresolvedTools?.length?` Unresolved tools: ${event.unresolvedTools.join(', ')}.`:'';
-              const coverage=event.coverage?` Source coverage: ${event.coverage.authored}/${event.coverage.available} catalog definitions. ${event.coverage.missing.length} absent. Interaction and visual completion require separate observation.`:'';
+              const coverage=event.coverage?` Source coverage: ${event.coverage.catalogAuthored??event.coverage.authored}/${event.coverage.available} catalog definitions present. ${event.coverage.missing.length} missing from the ${event.coverage.requested??event.coverage.available}-item ${event.coverage.scope==='agent-declared-manifest'?'agent-declared manifest':'coverage scope'}. This inventory does not establish the full requested intent, interactions or visual completion.`:'';
               summary(`${status}. ${boundary}${terminal}${unresolved}${coverage}`);
               messages=messages.map((message,index)=>index===responseIndex?{...message,text:message.text+`\n\nConfirmed progress: ${boundary}${terminal}${unresolved}${coverage}`} :message);
               if(!messages[responseIndex]?.text)messages=messages.map((message,index)=>index===responseIndex?{...message,text:status}:message);
@@ -174,7 +175,7 @@
         const diagnosed=agentFailureMessage(code);
         note(turn.cancelled?`Stopped. ${appliedEffects(turn.applied)}`:refusal?`${refusal.message}${refusal.message.includes('new request')?'':' Send a new request using the current screen.'}${turn.applied?` ${appliedEffects(turn.applied)}`:''}`:diagnosed?`${diagnosed} ${appliedEffects(turn.applied)}`:`Connection interrupted · ${turn.applied} edits applied locally. Inspect the canvas before retrying; Undo is available.`);
         summary(status);
-        finishPending(turn.cancelled?'Stopped before this attempt was confirmed.':'The connection ended before this attempt was confirmed.');
+        finishPending(turn.cancelled?'Stopped before this attempt was confirmed.':'The connection ended before this attempt was confirmed.',turn.cancelled);
         if(!messages[responseIndex]?.text)messages=messages.map((message,index)=>index===responseIndex?{...message,text:status}:message);
       }
       return sent?true:{ok:false,message:turn.cancelled?'Stopped before the request was admitted. Your draft is still here.':agentFailureMessage(error instanceof Error?error.message:undefined)??status};

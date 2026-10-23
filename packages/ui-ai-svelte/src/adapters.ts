@@ -11,7 +11,7 @@ export interface ConversationMessage {
 export interface ConversationActivity {
   id: string;
   title: string;
-  state: 'pending' | 'running' | 'completed' | 'failed';
+  state: 'pending' | 'running' | 'completed' | 'failed' | 'cancelled';
   detail?: string;
 }
 export type ConversationEvent =

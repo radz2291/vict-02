@@ -1,0 +1,18 @@
+{
+  "synthetic": true,
+  "nodes": 15,
+  "compileUiDocument": "passed with default semantic catalog and declared demo.submit input types",
+  "canonicalDigest": "ea1fc5170224841179d0b74459328535d3ab5d1da00041c500daebb9eca51405",
+  "documentIdMustBeReplaced": true,
+  "revisionMustBePreserved": true,
+  "sourceAssertions": {
+    "initialParent": "customer",
+    "movedNode": "move-paragraph",
+    "destination": "destination",
+    "nameState": "nameField",
+    "preferenceState": "preferenceField",
+    "readPath": "name-field.attributes.value",
+    "writePath": "name-field.interactions.0",
+    "actionPath": "submit.interactions.0"
+  }
+}

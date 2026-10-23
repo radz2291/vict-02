@@ -24,6 +24,21 @@ Branch `codex/studio-cycle-1-3-completion`; first pushed product candidate `b67b
 
 ## Retained failed observations
 
+The first independent challenge found six additional repair groups. All remain subject to exact-candidate re-verification:
+
+| Independent finding | Candidate repair / evidence |
+| --- | --- |
+| IV-C1: external preview portals omitted from the image | Refuse visible preview-owned external portals with `STUDIO_CAPTURE_PORTAL_UNSUPPORTED`; unrelated host portals do not block. Actual mounted portal tests pass. Open-overlay image inspection remains unsupported. |
+| Preview state could change during model inference | A second capture validates cursor, geometry and preview fingerprint after inference, with no second model call. Changed state withholds the old observation as `STUDIO_CAPTURE_STALE`. |
+| IV-C3: a nested interactive wrapper could pass insertion then disappear on rendering | Shared guard includes interactive wrapper families and descendants; legacy source remains readable. New nested-trigger refusal tests pass. |
+| IV-C4: never-settling rasterization prevented Stop from restoring the composer | Abort/timeout race releases pending capture and fences late upload; the corrected DOM test verifies the next nonempty draft is sendable. The initial empty-draft test oracle failure is retained. |
+| IV-C5: long state values and non-node registries lacked lossless inspection | Targeted state-key and registry-key JSON paging, including prototype-name guards and reconstruction tests. |
+| IV-C6: advertised schema admitted values Zod refused; malformed union errors lacked recovery guidance | Closed expression/binding definitions, homogeneous property lists, matching bounds and shared operation/path/expected-shape diagnostics; 34 focused authoring/schema/Mastra checks pass. |
+
+Parallel tool observations now carry the governed call identity. Chat settles only the matching attempt; an unassociated pre-invocation refusal cannot complete other reads. The six-case timeline suite passes. New cancelled activity appears in both showcases. Native void rendering and Studio test callback typing were also repaired following the independent challenge.
+
+Genuine provider evidence is retained in `completion-evidence/authoring-real-provider-1792790104441.json` (157296ms, 226→233 nodes, deliberate invalid property refused then corrected, two acknowledged batches). The broad source task in `completion-evidence/authoring-all83-round-0-1792790585787.json` reached all 83 requested recipes and all 78 catalog definitions, with 17 acknowledged batches and 329 nodes. It ended **FAILED / STUDIO_AGENT_TIME_LIMIT** at the harness's 8-minute bound, confirmed revision `r1#19`, with no unresolved tools. These are working-tree source-harness records, not final-SHA browser interaction or visual-completion proof. Continuation and runtime inspection remain required; 180 retained synthetic filler nodes still need intentional disposition.
+
 Initial builder runs are retained under `cycle-1-3/completion-*.log`. They include the initial Zod-effects regex error, schema presentation-depth refusal, stale static consumer metadata, an attempted Studio tool budget of 128 rejected by the existing 64-call kernel maximum, layout typing errors, navigation reactive feedback and a stale native-select test/control issue. Repairs are exercised separately; old red runs remain red.
 
 The initial full suite ran while the profile was still being corrected and includes 12 Mastra failures, stale metadata and a cleanup timeout. A later root suite was interrupted to stop overlapping package builds/tests. The verifier's first dependency-reuse run encountered a shared dist build race; it is environment evidence, not a product verdict, and the verifier is installing independent dependencies. Final frozen-candidate suites are required.

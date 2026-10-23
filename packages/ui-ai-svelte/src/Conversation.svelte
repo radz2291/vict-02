@@ -106,7 +106,7 @@
                               <div class="vict-ai-markdown"><Markdown content={event.text}/></div>
                             {:else if event.kind === 'activity'}
                               <Trace.Root><Trace.Collapsible>
-                                <Trace.CollapsibleTrigger><Trace.Line status={event.activity.state === 'failed' ? 'error' : event.activity.state === 'completed' ? undefined : event.activity.state}>
+                                <Trace.CollapsibleTrigger><Trace.Line status={event.activity.state === 'failed' ? 'error' : event.activity.state === 'completed' || event.activity.state === 'cancelled' ? undefined : event.activity.state}>
                                   <Trace.Icon>{#if event.activity.state === 'running'}<LoaderCircleIcon class="animate-spin"/>{:else if event.activity.state === 'completed'}<CircleCheckIcon/>{:else if event.activity.state === 'failed'}<CircleXIcon/>{:else}<CircleDashedIcon/>{/if}</Trace.Icon>
                                   <Trace.Title>{event.activity.title}</Trace.Title><span class="vict-ai-sr">{event.activity.state}</span>
                                 </Trace.Line></Trace.CollapsibleTrigger>
@@ -123,7 +123,7 @@
                       <Trace.Root aria-label="Tool activity">
                         {#each message.activity as activity (activity.id)}
                           <Trace.Collapsible>
-                            <Trace.CollapsibleTrigger><Trace.Line status={activity.state === 'completed' ? undefined : activity.state === 'failed' ? 'error' : activity.state}>
+                            <Trace.CollapsibleTrigger><Trace.Line status={activity.state === 'completed' || activity.state === 'cancelled' ? undefined : activity.state === 'failed' ? 'error' : activity.state}>
                               <Trace.Icon>
                                 {#if activity.state === 'running'}<LoaderCircleIcon class="animate-spin"/>
                                 {:else if activity.state === 'completed'}<CircleCheckIcon/>

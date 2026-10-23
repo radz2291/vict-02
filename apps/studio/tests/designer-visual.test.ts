@@ -26,19 +26,51 @@ describe('bounded visual observation boundary', () => {
     expect(emitted).toBe(false);
     observer.dispose();
   });
+  it('returns a preview-portal refusal with no appearance observation or image inference', async () => {
+    let request!: CaptureRequestEvent;
+    const observer = createVisualObserver({ owner: 'session-a', runId: 'run', model: 'zai/glm-5.3-flash', getCursor: () => cursor, signal: new AbortController().signal, emit: event => { request = event; } });
+    const result = observer.capability.invoke({ focus: 'Inspect open popup' }, context);
+    expect(refuseVisualCapture('session-a', request.captureId, 'STUDIO_CAPTURE_PORTAL_UNSUPPORTED')).toBe(true);
+    expect(await result).toMatchObject({ ok: false, code: 'STUDIO_CAPTURE_PORTAL_UNSUPPORTED', message: expect.stringContaining('No image or overlay observation was made') });
+    expect(await result).not.toHaveProperty('observation');
+    observer.dispose();
+  });
   it('passes image bytes to the selected model while returning only bounded observation/provenance', async () => {
-    let request!: CaptureRequestEvent; let modelPrompt: unknown;
-    const observer = createVisualObserver({ owner: 'session-a', runId: 'run', model: 'zai/glm-5.3-flash', getCursor: () => cursor, signal: new AbortController().signal, emit: event => { request = event; }, modelFactory: () => ({ doStream: async (options: unknown) => { modelPrompt = options; return { stream: new ReadableStream({ start(controller) { controller.enqueue({ type: 'text-delta', delta: 'Observed a white square. Interactions are untested.' }); controller.enqueue({ type: 'finish' }); controller.close(); } }) }; } }) });
+    let request!: CaptureRequestEvent; let modelPrompt: unknown; let captures = 0; let confirm!: (event: CaptureRequestEvent) => void;
+    const confirmation = new Promise<CaptureRequestEvent>(resolve => { confirm = resolve; });
+    const observer = createVisualObserver({ owner: 'session-a', runId: 'run', model: 'zai/glm-5.3-flash', getCursor: () => cursor, signal: new AbortController().signal, emit: event => { request = event; if (++captures === 2) confirm(event); }, modelFactory: () => ({ doStream: async (options: unknown) => { modelPrompt = options; return { stream: new ReadableStream({ start(controller) { controller.enqueue({ type: 'text-delta', delta: 'Observed a white square. Interactions are untested.' }); controller.enqueue({ type: 'finish' }); controller.close(); } }) }; } }) });
     const result = Promise.resolve(observer.capability.invoke({ focus: 'Appearance' }, context));
+    const firstCaptureId = request.captureId;
     expect(acceptVisualCapture('other-session', request.captureId, metadata(), bytes)).toMatchObject({ ok: false, code: 'STUDIO_CAPTURE_UNAVAILABLE' });
     const response = await POST({ request: new Request(`http://localhost/api/designer-agent/capture/${request.captureId}`, { method: 'POST', headers: { 'content-type': 'image/jpeg', 'x-vict-csrf': 'nonce', 'x-vict-capture': encodeURIComponent(JSON.stringify(metadata())) }, body: bytes }), params: { captureId: request.captureId }, locals: { session: { sessionId: 'session-a', csrfToken: 'nonce', actorLabel: 'operator' } } } as never);
     expect(response.status).toBe(200);
     expect(await response.json()).toEqual({ ok: true });
-    expect(acceptVisualCapture('session-a', request.captureId, metadata(), bytes)).toMatchObject({ ok: false, code: 'STUDIO_CAPTURE_UNAVAILABLE' });
-    expect(await result).toMatchObject({ ok: true, evidence: 'observed-appearance', interactionVerified: false, simulatedModel: true, model: 'zai/glm-5.3-flash' });
+    expect(acceptVisualCapture('session-a', firstCaptureId, metadata(), bytes)).toMatchObject({ ok: false, code: 'STUDIO_CAPTURE_UNAVAILABLE' });
+    const current = await confirmation;
+    expect(acceptVisualCapture('session-a', current.captureId, metadata(), bytes)).toEqual({ ok: true });
+    expect(await result).toMatchObject({ ok: true, evidence: 'observed-appearance', interactionVerified: false, simulatedModel: true, model: 'zai/glm-5.3-flash', validation: 'same-source-preview-and-viewport-after-inference' });
+    expect(captures).toBe(2);
     expect((modelPrompt as { prompt: { content: unknown }[] }).prompt[1]!.content).toEqual(expect.arrayContaining([expect.objectContaining({ type: 'file', mediaType: 'image/jpeg', data: bytes })]));
     expect(JSON.stringify(await result)).not.toContain('base64');
     observer.dispose();
+  });
+  it.each(['runtime', 'viewport', 'portal'] as const)('refuses %s changes during inference with a second capture and only one model call', async change => {
+    let captures = 0; let modelCalls = 0;
+    const observer = createVisualObserver({ owner: 'session-a', runId: 'run', model: 'zai/glm-5.3-flash', getCursor: () => cursor, signal: new AbortController().signal,
+      emit: event => {
+        captures++;
+        if (captures === 2 && change === 'portal') { refuseVisualCapture('session-a', event.captureId, 'STUDIO_CAPTURE_PORTAL_UNSUPPORTED'); return; }
+        const capture = metadata();
+        if (captures === 2 && change === 'runtime') capture.preview.fingerprint = 'b'.repeat(64);
+        if (captures === 2 && change === 'viewport') capture.viewport.scrollTop = 20;
+        acceptVisualCapture('session-a', event.captureId, capture, bytes);
+      },
+      modelFactory: () => ({ doStream: async () => { modelCalls++; return { stream: new ReadableStream({ start(controller) { controller.enqueue({ type: 'text-delta', delta: 'Appearance from the first image.' }); controller.enqueue({ type: 'finish' }); controller.close(); } }) }; } }),
+    });
+    const result = await observer.capability.invoke({ focus: 'Appearance' }, context);
+    expect(result).toMatchObject({ ok: false, code: 'STUDIO_CAPTURE_STALE' });
+    expect(result).not.toHaveProperty('observation');
+    expect(captures).toBe(2); expect(modelCalls).toBe(1); observer.dispose();
   });
   it('rejects stale cursor and oversized images, then receives a truthful browser refusal', async () => {
     let request!: CaptureRequestEvent;

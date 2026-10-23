@@ -13,6 +13,7 @@
       { id: 'fixture-retry', kind: 'text', text: 'The input shape was invalid. I will correct it and keep canonical typing.' },
       { id: 'fixture-ack', kind: 'activity', activity: { id: 'fixture-ack', title: 'Corrected edit acknowledged', state: 'completed', detail: 'Simulated receipt: revision r2, one undoable transaction. Both independent fields authored; interaction outcomes have not been exercised.' } },
       { id: 'fixture-observe', kind: 'activity', activity: { id: 'fixture-observe', title: 'Rendered observation still pending', state: 'pending', detail: 'This timeline is a fixture. The real local capture demo beside it produces actual pixels, without calling a model.' } },
+      { id: 'fixture-cancelled', kind: 'activity', activity: { id: 'fixture-cancelled', title: 'Earlier observation stopped', state: 'cancelled', detail: 'Simulated Stop: the attempt ended without an observation. Late results cannot establish a current visual finding.' } },
       { id: 'fixture-partial', kind: 'summary', text: 'Partial completion · one simulated edit confirmed. Remaining work: exercise both fields and inspect a current rendered image. Compilation and acknowledgement do not establish those results.' },
     ] },
   ];
