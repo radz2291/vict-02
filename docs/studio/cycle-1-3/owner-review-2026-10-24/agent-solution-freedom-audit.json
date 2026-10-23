@@ -1,0 +1,99 @@
+{
+  "date": "2026-10-24",
+  "kind": "Read-only source review of agent guidance, capability exposure and whole-spectrum application expectations; no model experiment or browser mutation",
+  "baselineDelivery": "22e8c0da3eb62203f5f8db3d982468764a729652",
+  "product": "be893f29d44f595a8d9982575c2199636df69597",
+  "originMain": "d7401bef6e48330796c74ec00c86db9622d48cdf",
+  "finding": "OR-13",
+  "capabilities": [
+    "studio_screen_read",
+    "studio_screen_edit",
+    "studio_screen_observe"
+  ],
+  "operationKinds": [
+    "add",
+    "declareState",
+    "wireInput",
+    "modify",
+    "move",
+    "remove",
+    "bind",
+    "connect"
+  ],
+  "authoringScope": {
+    "addRecipeIsEnforcedEnum": true,
+    "nativeRecipes": [
+      "section",
+      "row",
+      "heading",
+      "text",
+      "input"
+    ],
+    "localStateDeclarationTypes": [
+      "string",
+      "number",
+      "boolean"
+    ],
+    "styleWrites": "Base text declarations",
+    "productContractAuthoringOperations": [],
+    "hostRouteIds": [
+      "screen"
+    ],
+    "hostActionIds": [
+      "demo.submit"
+    ],
+    "promptOperationsPerBatch": 8,
+    "schemaOperationsPerBatch": 40,
+    "turnPolicyMaxSteps": 64,
+    "turnPolicyMaxToolCalls": 64
+  },
+  "conclusions": [
+    "Keep revision, digest, canonical validation, typed binding, placement, declared-effect and observation-freshness boundaries.",
+    "Creative composition is possible within the palette; no experiment proves the registration-form example caused poor output.",
+    "The agent authoring vocabulary is narrower than the registered semantic catalogue and canonical UI document model.",
+    "The active profile and demo host do not provide general product-contract or multi-screen application authoring.",
+    "Metadata should expose semantic relationships and truthful supported capabilities; optional recipes should accelerate general supported composition.",
+    "Whole-spectrum autonomous application quality is not demonstrated."
+  ],
+  "evidenceLimits": [
+    "No new model run, prompt ablation, model comparison, runtime interaction test or visual review.",
+    "Canonical model declarations are not a claim that every renderer/editor path is fully supported.",
+    "No latency, token, cost, context-loss or saved-call claim.",
+    "No product or provider configuration changes; owner screen and servers untouched.",
+    "Proposal only; no independent acceptance or implementation authority."
+  ],
+  "sources": [
+    {
+      "path": "apps/studio/src/lib/server/designer-agent.ts",
+      "sha256": "a7392c9f28e73be500718c546631b5c5284066bb6de51290e66e43586d344205"
+    },
+    {
+      "path": "apps/studio/src/lib/designer/agent-edits.ts",
+      "sha256": "b268f1e6ab022dadec69aa3e0c3cd5814b5644c4e78997b502da569c0eca75c3"
+    },
+    {
+      "path": "apps/studio/src/lib/designer/agent-reads.ts",
+      "sha256": "1761a446685ac875a7d0f39bc73a50c8a3effc61dd9dfd0a0513199632af5269"
+    },
+    {
+      "path": "apps/studio/src/lib/designer/recipes.ts",
+      "sha256": "16e37797b8900e0c5b8d3b153c5ae7025b359bcc8e2493eac9aec6a2ffb7f80a"
+    },
+    {
+      "path": "apps/studio/src/lib/designer/application.ts",
+      "sha256": "788710a9ce6c83e4dbbd2f0fd843e052567f63129cde51bc596905bfb88e0305"
+    },
+    {
+      "path": "packages/ui/src/document.ts",
+      "sha256": "88d7503a7ba0f49cb7fedad29c0383d2dd0e8e9edf95201d04ebe71377ddc8f8"
+    },
+    {
+      "path": "packages/ui/src/semantic.ts",
+      "sha256": "f70cfaa15f98663241e2f643d975f24410e122e593368bcdb03b0c76c24218af"
+    },
+    {
+      "path": "docs/ui-foundation/PRODUCT-ARCHITECTURE.md",
+      "sha256": "7e5d1d774f786284511a2cc5fd457d419f214fe8d75391e862b0c16d5df44f72"
+    }
+  ]
+}
