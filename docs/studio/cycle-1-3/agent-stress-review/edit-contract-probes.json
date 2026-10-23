@@ -1,0 +1,178 @@
+{
+  "product": "8eb96dd8bcf7cfadd973e1f4fae7d11706a32797",
+  "mode": "Exact built prepareAgentEdit, synthetic private documents, no actual rejected payload replay",
+  "records": [
+    {
+      "name": "Same-batch add button and connect void press to explicit boolean expression",
+      "ok": false,
+      "code": "STUDIO_AGENT_VALIDATION",
+      "message": "Edit rejected: UI_COMPONENT_BINDING_INCOMPATIBLE"
+    },
+    {
+      "name": "Raw boolean instead of expression is refused",
+      "ok": false,
+      "code": "STUDIO_AGENT_INVALID_EDIT",
+      "message": "Use the declared add, modify, move, remove, bind or connect contract."
+    },
+    {
+      "name": "Void press without explicit value to boolean is refused",
+      "ok": false,
+      "code": "STUDIO_AGENT_VALIDATION",
+      "message": "Edit rejected: UI_COMPONENT_BINDING_INCOMPATIBLE"
+    },
+    {
+      "name": "Agent intentionally strips native input demo binding",
+      "ok": true,
+      "observed": {
+        "value": null,
+        "interactions": []
+      }
+    },
+    {
+      "name": "Native input cannot use component bind contract",
+      "ok": false,
+      "code": "STUDIO_AGENT_VALIDATION",
+      "message": "Edit rejected: UI_EDIT_VALIDATION_FAILED"
+    },
+    {
+      "name": "Native input cannot use component output contract",
+      "ok": false,
+      "code": "STUDIO_AGENT_VALIDATION",
+      "message": "Edit rejected: UI_EDIT_VALIDATION_FAILED"
+    },
+    {
+      "name": "Native input attributes only accept scalar; expression cannot pass schema",
+      "ok": false,
+      "code": "STUDIO_AGENT_INVALID_EDIT",
+      "message": "Use the declared add, modify, move, remove, bind or connect contract."
+    },
+    {
+      "name": "Valid generated input can claim no component error while unbound",
+      "ok": true,
+      "observed": {
+        "compiles": true,
+        "issues": [],
+        "input": {
+          "kind": "element",
+          "id": "probe-input",
+          "tag": "input",
+          "children": [],
+          "attributes": {
+            "type": "text",
+            "aria-label": "Email",
+            "placeholder": "Your message"
+          },
+          "interactions": [],
+          "localStyle": [
+            {
+              "property": "padding",
+              "value": {
+                "type": "text",
+                "value": "12px"
+              }
+            },
+            {
+              "property": "border-radius",
+              "value": {
+                "type": "text",
+                "value": "8px"
+              }
+            },
+            {
+              "property": "border",
+              "value": {
+                "type": "text",
+                "value": "1px solid #cbd3e1"
+              }
+            },
+            {
+              "property": "font-size",
+              "value": {
+                "type": "text",
+                "value": "16px"
+              }
+            },
+            {
+              "property": "width",
+              "value": {
+                "type": "text",
+                "value": "100%"
+              }
+            },
+            {
+              "property": "box-sizing",
+              "value": {
+                "type": "text",
+                "value": "border-box"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Custom select items append to seeded placeholders",
+      "ok": true,
+      "observed": [
+        "probe-select-items-1",
+        "probe-select-items-2",
+        "probe-item"
+      ]
+    },
+    {
+      "name": "Assigning a callback connection alone does not make a switch two-way",
+      "ok": true,
+      "observed": {
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Enable notifications"
+          },
+          "checked": {
+            "type": "literal",
+            "value": false
+          }
+        },
+        "outputs": {
+          "checkedChange": {
+            "setState": {
+              "key": "accepted"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Same-batch add checkbox and compatible boolean output works",
+      "ok": true,
+      "observed": {
+        "checkedChange": {
+          "setState": {
+            "key": "accepted"
+          }
+        }
+      }
+    },
+    {
+      "name": "Same-batch add button and declared action works",
+      "ok": true,
+      "observed": {
+        "press": {
+          "invokeAction": {
+            "actionId": "demo.submit",
+            "input": {
+              "message": {
+                "type": "ref",
+                "path": "state.message"
+              },
+              "accepted": {
+                "type": "ref",
+                "path": "state.accepted"
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

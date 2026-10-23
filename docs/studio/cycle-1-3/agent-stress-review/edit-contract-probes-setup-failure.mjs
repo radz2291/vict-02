@@ -1,0 +1,29 @@
+// Pure probes of the existing built edit adapter. No provider, browser or server mutations.
+import {readFileSync,writeFileSync} from 'node:fs';
+import {resolve} from 'node:path';
+import {pathToFileURL} from 'node:url';
+import {z} from 'zod';
+const app=await import(pathToFileURL(resolve('apps/studio/build/server/chunks/application-l9MwEml9.js')));
+const vocab=await import(pathToFileURL(resolve('apps/studio/build/server/chunks/vocabulary-CD8XK3af.js')));
+const built=readFileSync('apps/studio/build/server/chunks/designer-agent-http-LABKg_XW.js','utf8');
+const block=built.slice(built.indexOf('function literalTextTarget('),built.indexOf('function agentContext('));
+const names=['z','canonicalUiDocument','isUiValueOfType','screenRecipes','canInsertRecipe','insertRecipe','catalogDescriptors','applyUiEdit','compileScreen','screenIssues'];
+const api=new Function(...names,block+'\nreturn {prepareAgentEdit,documentCursor,agentEditSchema};')(z,vocab.a,vocab.b,app.s,app.b,app.i,app.c,app.e,app.f,app.g);
+const records=[];
+function run(name,operations,inspect){const doc=app.B('Pure edit probe','diagnostic'),cursor=api.documentCursor(doc,'r1','diagnostic');const result=api.prepareAgentEdit(doc,cursor,{expectedRevision:'r1',reason:'Pure diagnostic',operations},'diagnostic-request');const entry={name,ok:result.ok,...(!result.ok?{code:result.code,message:result.message}:inspect?{observed:inspect(result.document)}:{})};records.push(entry);return result;}
+const addButton={op:'add',recipe:'button',nodeId:'probe-button',parentId:'screen'};
+const constant={op:'connect',nodeId:'probe-button',output:'press',binding:{setState:{key:'dialogOpen',value:{type:'literal',value:true}}}};
+run('Same-batch add button and connect void press to explicit boolean expression',[addButton,constant],d=>d.nodes['probe-button'].outputs);
+run('Raw boolean instead of expression is refused',[addButton,{...constant,binding:{setState:{key:'dialogOpen',value:true}}}]);
+run('Void press without explicit value to boolean is refused',[addButton,{...constant,binding:{setState:{key:'dialogOpen'}}}]);
+const addInput={op:'add',recipe:'input',nodeId:'probe-input',parentId:'screen'};
+run('Agent intentionally strips native input demo binding',[addInput],d=>({value:d.nodes['probe-input'].attributes.value??null,interactions:d.nodes['probe-input'].interactions}));
+run('Native input cannot use component bind contract',[addInput,{op:'bind',nodeId:'probe-input',prop:'value',expression:{type:'ref',path:'state.message'}}]);
+run('Native input cannot use component output contract',[addInput,{op:'connect',nodeId:'probe-input',output:'change',binding:{setState:{key:'message'}}}]);
+run('Native input attributes only accept scalar; expression cannot pass schema',[{...addInput,attributes:{value:{type:'ref',path:'state.message'}}}]);
+run('Valid generated input can claim no component error while unbound',[{...addInput,attributes:{'aria-label':'Email'}}],d=>({compiles:app.f(d).ok,issues:app.g(d),input:d.nodes['probe-input']}));
+run('Custom select items append to seeded placeholders',[{op:'add',recipe:'select',nodeId:'probe-select',parentId:'screen'},{op:'add',recipe:'select-item',nodeId:'probe-item',parentId:'probe-select',slotName:'items',props:{label:'Custom',value:'custom'}}],d=>d.nodes['probe-select'].slots.items.children);
+run('Assigning a callback connection alone does not make a switch two-way',[{op:'add',recipe:'switch',nodeId:'probe-switch',parentId:'screen'},{op:'connect',nodeId:'probe-switch',output:'checkedChange',binding:{setState:{key:'accepted'}}}],d=>({props:d.nodes['probe-switch'].props,outputs:d.nodes['probe-switch'].outputs}));
+const output={product:'8eb96dd8bcf7cfadd973e1f4fae7d11706a32797',mode:'Exact built prepareAgentEdit, synthetic private documents, no actual rejected payload replay',records};
+writeFileSync('docs/studio/cycle-1-3/agent-stress-review/edit-contract-probes.json',JSON.stringify(output,null,2)+'\n');console.log(JSON.stringify(output,null,2));
+if(!records[0].ok||records[1].ok||records[2].ok||!records[3].ok||records[4].ok||records[5].ok||records[6].ok||!records[7].ok||!records[8].ok||!records[9].ok)process.exitCode=1;

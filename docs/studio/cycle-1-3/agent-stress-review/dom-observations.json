@@ -1,0 +1,13 @@
+{
+  "mode": "Read-only DOM and canonical-source inspection; no input or action activation",
+  "product": "8eb96dd8bcf7cfadd973e1f4fae7d11706a32797",
+  "observedRequest": "Showcase all available components in one intentional landing page",
+  "nodeCount": 89,
+  "definitionIds": ["vict.catalog.alert-dialog","vict.catalog.avatar","vict.catalog.button","vict.catalog.checkbox","vict.catalog.combobox","vict.catalog.combobox-item","vict.catalog.date-field","vict.catalog.dialog","vict.catalog.label","vict.catalog.link-preview","vict.catalog.menubar","vict.catalog.menubar.item","vict.catalog.menubar.menu","vict.catalog.pagination","vict.catalog.popover","vict.catalog.select","vict.catalog.select-item","vict.catalog.select-multiple","vict.catalog.slider","vict.catalog.switch","vict.catalog.time-field","vict.catalog.toggle","vict.catalog.toggle-group","vict.catalog.toggle-group-item","vict.catalog.toggle-group-multiple","vict.catalog.tooltip"],
+  "nestedButtons": [{"inner":"Delete workspace...","outer":"Delete workspace..."},{"inner":"Filters","outer":"Filters"},{"inner":"Share page","outer":"Share page"}],
+  "headingLevels": {"h1":4},
+  "visibleFailedActivityCards": 0,
+  "terminalCode": "STUDIO_AGENT_TOOL_FAILED",
+  "appliedBatches": 12,
+  "restored": "Document drawer closed with Layers selected; source, canvas, chat, preview data and server unchanged"
+}
