@@ -22,6 +22,21 @@ assistant branding, use Chat/Message accessibility labels, and place document/
 selection context, Stop, details/reconnect/activity/record at the bottom.
 Details opens upward within the transcript boundary.
 
+## Retained initial geometry failure and repair
+
+Independent actual-shell challenge of pushed `d23d73144770e7181c9b46febdfdec76f0c554e5`
+found the bottom trigger's popup overlapping the composer: at 1280×720 its
+y292..612 rectangle covered the y536..611 composer. Transcript collision bounds
+alone did not move a floating popup anchored below the composer. Candidate
+was not activated; all initial observations are retained by the verifier.
+
+Repair keeps the trigger at the footer but uses the existing Conversation form
+as the supported Bits custom anchor. Its top edge is the live transcript /
+composer boundary. The popup opens above that edge, with no hardcoded height
+offset or duplicate composer. Resize updates remain with the existing floating
+primitive. No shared component or server edit. Exact repaired-commit production
+geometry, dynamic resize, keyboard and hide/show re-verification is required.
+
 ## Verification and activation gate
 
 Affected UI tests and TypeScript/build. Fresh independent exact pushed candidate
