@@ -244,6 +244,25 @@ The reviewed document has 254 reachable nodes, 47 state declarations and 78 dist
 
 **Conclusion:** useful source throughput with a turn-heavy completion/recovery path. The strongest observed overhead is four refused edit attempts, late coverage catch-up and two unsuccessful visual attempts. The framework's typed-state support is broader than the agent's exposed declaration surface, and code-only compiler errors make correction harder. Increasing the tool budget alone would not resolve these issues and is not proposed as a workaround. Better capability fidelity, actionable canonical diagnostics, intermediate coverage and phase-aware observation recovery should be evaluated before claiming efficient end-to-end completion.
 
+### Proposal — compact catalogue index and selected descriptor bundles
+
+2026-10-24. **PROPOSAL ONLY — not implemented or approved for implementation.** The owner asks to record this discovery-efficiency option. It addresses initial reading overhead; it does not resolve the separate capture, typed-state, compiler-diagnostic or interaction-verification findings.
+
+Current behavior: the initial overview does not contain the complete catalogue. `studio_screen_read` exposes paged `palette` summaries and one detailed `component` descriptor per request. An 83-recipe inventory requires at least 5 palette reads at the maximum 20 entries per page, or 7 at the default 12, before additional descriptor reads. Those are arithmetic examples, not a reconstruction of this run's compacted early calls. Full detailed contracts for a selected bundle are not currently available in one request.
+
+Proposed discovery flow:
+
+1. **Compact catalogue index:** expose all currently authorable recipe IDs, human names, categories and standalone/context-owned-part indicators, together with a catalogue version or digest. Link each entry to its exact descriptor and placement rules; avoid embedding the full contracts. Return the index in one read only when it fits the existing aggregate delivery bounds; otherwise preserve explicit bounded paging.
+2. **Selected detailed reads:** retain single-component lookup and add a bounded request for a chosen set of recipe/descriptor IDs. Return exact supported properties, types/defaults, outputs, slots and placement constraints for those items. Explicitly identify native recipes that use editor commands instead of catalog-component descriptors. Keep one canonical metadata source through the existing governed read capability rather than adding a parallel catalogue implementation.
+3. **Bound the bundle:** enforce item and aggregate response limits, including UTF-8 size and the existing snapshot depth/value/property limits. If the selection is too large, return actionable admission guidance or explicit continuation information. Do not raise framework safety limits or silently truncate contracts to make a bundle appear complete.
+4. **Reuse unchanged metadata:** associate index and descriptor results with the catalogue version/digest so the agent can reuse known metadata and refresh it when registration/contracts change. Catalogue reuse must not cache away current document reads, revision/digest checks, selection, validation or browser acknowledgement. Static capability metadata and mutable source facts have different freshness requirements.
+
+Expected benefit is fewer discovery tool calls and potentially fewer provider round trips, especially for small tasks selecting only a few components. An all-components task still needs most detailed contracts; bundling may reduce request overhead without reducing total information. Larger bundles can also increase context use, so faster execution or lower token/cost consumption is a hypothesis, not a claimed result. No saved-call or latency figure is established by the reviewed run.
+
+Before adoption, compare the current interface and proposed flow on a small selected-component task and the same all-component fixture, with the same configured model and controlled starting source. Record read/tool-call counts, actual model-step counts, time to first confirmed edit, total/per-phase latency, payload/context size, token usage where available, refusal/retry counts and final source/behavior/visual evidence. Exercise stale catalogue versions, contextual parts and oversized bundles. Success requires fewer unnecessary discovery operations without weaker contracts, stale metadata, unsupported capability claims or weakened VICT boundaries.
+
+This proposal changes no tools, schemas, catalogue, prompt, package, running application or provider configuration. The next allowed action is review of the proposal; implementation would require a separate explicit instruction.
+
 ### Follow-up order and stop boundary
 
 1. Diagnose the actual stale-capture phase and provide actionable, bounded recovery evidence while retaining all freshness fences.
