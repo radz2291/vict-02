@@ -1,7 +1,19 @@
 <script lang="ts">
-  import { Handle, Position, type NodeProps } from '@xyflow/svelte';
-  let { data, selected }: NodeProps = $props();
+  import { tick, untrack } from 'svelte';
+  import { Handle, Position, useUpdateNodeInternals, type NodeProps } from '@xyflow/svelte';
+  let { id, data, selected }: NodeProps = $props();
   const horizontal = $derived(data.direction !== 'DOWN');
+  const updateNodeInternals = useUpdateNodeInternals();
+  $effect(() => {
+    const nodeId = id;
+    void horizontal;
+    let cancelled = false;
+    // Moving a custom Handle does not resize the card. ResizeObserver therefore
+    // cannot invalidate Flow's cached handle bounds. Refresh after Svelte has
+    // committed the new side so edges use the actual, current handle geometry.
+    void tick().then(() => { if (!cancelled) untrack(() => updateNodeInternals(nodeId)); });
+    return () => { cancelled = true; };
+  });
 </script>
 
 <div class="vict-source-node" class:selected data-kind={data.kind}>
