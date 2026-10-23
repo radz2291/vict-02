@@ -1,0 +1,254 @@
+<script lang="ts">
+  import { onMount } from 'svelte';
+  import {
+    Composer, CompositionNavigator, EditorBridge, EditorCanvas, Inspector, Layers,
+    SelectionPalette, StateInitialEditor, StateValuesPanel, authoredOccurrence,
+    compositionName, compositionSlots, compositionTrail, firstCompositionSlot, resolveOccurrence,
+    type CompositionFocus, type TransactionDraft,
+  } from '@victframework/ui-editor';
+  import { ControlScope } from '@victframework/ui-svelte';
+  import type { UiRenderPlan, UiValue } from '@victframework/ui';
+  import { actionInputs, catalogDescriptors, catalogImplementations, compileScreen, designerCatalogs, screenActionState } from './application.js';
+  import { screenPlacementIssues } from './placement.js';
+  import { screenRecipes } from './recipes.js';
+  import { screenStore } from './storage.js';
+  import { createScreenSimulation, screenDispatcher } from './execution.js';
+  import { createShowcaseFixture, showcaseCatalog } from './showcase.js';
+  import { structureMove, type StructureEditRequest } from './structure.js';
+  import StructureView from './StructureView.svelte';
+  import '@victframework/ui-svelte/styles.css';
+  import '@victframework/ui-svelte/catalog.css';
+
+  let bridge = $state<EditorBridge>();
+  let version = $state(0);
+  let recipeId = $state('slider');
+  let search = $state('');
+  let mode = $state<'design' | 'interact'>('design');
+  let view = $state<'canvas' | 'structure'>('canvas');
+  let tools = $state<'inspector' | 'palette'>('inspector');
+  let compositionFocus = $state<CompositionFocus>();
+  let exampleFocus = $state<CompositionFocus>();
+  let targetNodeId = $state('');
+  let plan = $state<UiRenderPlan>();
+  let propertyDraft = $state(false);
+  let canvasDraft = $state(false);
+  let dataDraft = $state(false);
+  let selectedData = $state('');
+  let runtimeValues = $state<Record<string, UiValue>>({});
+  let resetSignal = $state(Symbol('showcase'));
+  let notice = $state('Loading the disposable example…');
+  let issues = $state<readonly { code: string; message: string }[]>([]);
+  let saved = $state(false);
+  let unsubscribe: (() => void) | undefined;
+  let canvasRoot = $state<HTMLDivElement>();
+  const simulation = createScreenSimulation({ denied: false, failNext: false });
+  const snapshot = $derived.by(() => { void version; return bridge?.getSnapshot(); });
+  const source = $derived.by(() => { void version; return bridge?.document; });
+  const selected = $derived(snapshot?.selectedOccurrence);
+  const selectedNodeId = $derived(source && selected ? resolveOccurrence(selected, source).sourceNodeId : undefined);
+  const blocked = $derived(propertyDraft || canvasDraft || dataDraft);
+  const compilation = $derived(source ? compileScreen(source) : undefined);
+  const visibleRecipes = $derived(showcaseCatalog.filter(entry => `${entry.label} ${entry.id} ${entry.description} ${entry.category}`.toLowerCase().includes(search.toLowerCase())));
+  const recipe = $derived(showcaseCatalog.find(entry => entry.id === recipeId));
+
+  function resetPreview() {
+    simulation.reset(); runtimeValues = {}; resetSignal = Symbol('showcase-reset');
+  }
+  function openExample(id: string) {
+    if (blocked) { notice = 'Apply or cancel your draft before changing examples.'; return; }
+    const fixture = createShowcaseFixture(id);
+    const memory = new Map<string, string>();
+    const next = new EditorBridge({
+      catalogs: designerCatalogs,
+      validateDocument: screenPlacementIssues,
+      initial: { document: fixture.document, storedRevision: 'r1' },
+      store: screenStore({ getItem: key => memory.get(key) ?? null, setItem: (key, value) => { memory.set(key, value); } }, fixture.document.id),
+    });
+    unsubscribe?.(); bridge = next; version++;
+    unsubscribe = next.subscribe(() => version++);
+    recipeId = id; targetNodeId = fixture.targetNodeId; exampleFocus = fixture.parentFocus;
+    compositionFocus = fixture.parentFocus; mode = 'design'; view = 'canvas';
+    selectedData = ''; plan = undefined; saved = false; issues = [];
+    resetPreview();
+    next.select(authoredOccurrence(next.document, fixture.targetNodeId) ?? `${next.document.id}|${fixture.targetNodeId}`);
+    notice = `${showcaseCatalog.find(entry => entry.id === id)?.label} · fresh in-memory example. Switching examples or refreshing discards it.`;
+  }
+  onMount(() => {
+    const requested = new URL(window.location.href).searchParams.get('recipe');
+    openExample(showcaseCatalog.some(entry => entry.id === requested) ? requested! : 'slider');
+    return () => { unsubscribe?.(); simulation.reset(); };
+  });
+  function select(occurrence: string) {
+    if (blocked) { notice = 'Apply or cancel your draft before changing selection.'; return; }
+    bridge?.select(occurrence);
+  }
+  function selectNode(id: string) {
+    if (source) select(authoredOccurrence(source, id) ?? `${source.id}|${id}`);
+  }
+  function selectStructure(occurrence: string) {
+    if (blocked || !source) return;
+    const id = resolveOccurrence(occurrence, source).sourceNodeId;
+    const nearest = compositionTrail(source, { nodeId: id, slotName: '' }).at(-2);
+    compositionFocus = nearest && compositionSlots(source, nearest.nodeId, catalogDescriptors).includes(nearest.slotName) ? nearest : undefined;
+    select(occurrence);
+  }
+  function apply(draft: TransactionDraft): boolean {
+    if (blocked || !bridge) { notice = 'Apply or cancel your draft first.'; return false; }
+    const result = bridge.apply(draft);
+    issues = result.ok ? [] : result.issues;
+    if (result.ok) {
+      notice = `${draft.reason ?? 'Change applied'} · in-memory working copy`;
+      if (selected && !resolveOccurrence(selected, bridge.document).node) selectNode(bridge.document.root);
+    }
+    return result.ok;
+  }
+  function history(action: 'undo' | 'redo') {
+    if (blocked || !bridge) return;
+    const result = bridge[action](); issues = result.ok ? [] : result.issues;
+    notice = result.ok ? `${action === 'undo' ? 'Undid' : 'Redid'} the authored change.` : 'History action refused.';
+  }
+  function save() {
+    if (blocked || !bridge || !compilation?.ok) return;
+    const result = bridge.save(); issues = result.ok ? [] : result.issues;
+    if (result.ok) saved = true;
+    notice = result.ok ? `Saved revision ${result.storedRevision} in this example’s memory store.` : 'Save refused.';
+  }
+  function reopen() {
+    if (blocked || !bridge || !saved) return;
+    const result = bridge.reopen();
+    issues = result.ok ? [] : [{ code: result.code, message: result.message ?? 'Reopen failed.' }];
+    if (result.ok) { resetPreview(); compositionFocus = undefined; selectNode(bridge.document.root); }
+    notice = result.ok ? 'Reopened the saved in-memory revision; history and preview state reset.' : 'Reopen refused.';
+  }
+  function navigateComposition(focus?: CompositionFocus) {
+    if (blocked || !source) return;
+    if (focus && !compositionSlots(source, focus.nodeId, catalogDescriptors).includes(focus.slotName)) return;
+    compositionFocus = focus; selectNode(focus?.nodeId ?? source.root);
+  }
+  function openComposition(occurrence = selected) {
+    if (!source || !occurrence || blocked) return;
+    const id = resolveOccurrence(occurrence, source).sourceNodeId;
+    const slotName = firstCompositionSlot(compositionSlots(source, id, catalogDescriptors));
+    if (slotName) navigateComposition({ nodeId: id, slotName });
+  }
+  function move(request: StructureEditRequest): boolean {
+    if (!bridge) return false;
+    const result = structureMove(bridge.document, bridge.getSnapshot().revision, request, blocked, catalogDescriptors, screenRecipes);
+    if (!result.ok) { notice = result.message; return false; }
+    return apply(result.draft);
+  }
+  function changeMode(next: 'design' | 'interact') {
+    if (blocked) return;
+    mode = next; compositionFocus = undefined; resetPreview();
+  }
+  async function dispatch(actionId: string, input?: unknown) {
+    if (!compilation?.ok || mode !== 'interact') return { ok: false, code: 'SHOWCASE_DESIGN_MODE' };
+    const result = await screenDispatcher(compilation.plan, simulation).execute(actionId, input);
+    notice = `Local simulation: ${result.message ?? (result.ok ? 'succeeded' : result.code)}`;
+    return result;
+  }
+  function effective(occurrence: string, property: string) {
+    const element = [...(canvasRoot?.querySelectorAll<HTMLElement>('[data-ui-occ]') ?? [])].find(entry => entry.dataset.uiOcc === occurrence && entry.getBoundingClientRect().width > 0);
+    return element ? getComputedStyle(element).getPropertyValue(property) : undefined;
+  }
+</script>
+
+<ControlScope>
+<section class="studio-showcase" aria-label="Studio authoring showcase" data-showcase-recipe={recipeId}>
+  <header>
+    <h2>Designer: all {showcaseCatalog.length} recipes</h2>
+    <p>Real editor components, canonical edits, and valid parent compositions. Each example is disposable. Save and reopen use a private memory store; refreshing or changing recipes starts over.</p>
+  </header>
+  <div class="catalog-picker">
+    <label>Search recipes <input type="search" bind:value={search} placeholder="Slider, menu, list…" /></label>
+    <label>Recipe ({visibleRecipes.length} of {showcaseCatalog.length})
+      <select aria-label="Showcase recipe" value={recipeId} disabled={blocked} onchange={event => openExample(event.currentTarget.value)}>
+        {#if !visibleRecipes.some(entry => entry.id === recipeId)}<option value={recipeId}>{recipe?.label} (selected)</option>{/if}
+        {#each visibleRecipes as entry}<option value={entry.id}>{entry.label} · {entry.category}</option>{/each}
+      </select>
+    </label>
+    <button type="button" disabled={blocked} onclick={() => openExample(recipeId)}>Reset example</button>
+  </div>
+  {#if bridge && source && snapshot}
+    <p><strong>{recipe?.label}</strong> — {recipe?.description} {#if recipe?.placements.length}This part is composed within {recipe.placements[0]?.definitionId} / {recipe.placements[0]?.slotName}.{/if}</p>
+    <div class="toolbar" aria-label="Example controls">
+      <button type="button" disabled={blocked} aria-pressed={view === 'canvas'} onclick={() => view = 'canvas'}>Canvas</button>
+      <button type="button" disabled={blocked} aria-pressed={view === 'structure'} onclick={() => view = 'structure'}>Structure</button>
+      <button type="button" disabled={blocked} aria-pressed={mode === 'design'} onclick={() => changeMode('design')}>Design</button>
+      <button type="button" disabled={blocked} aria-pressed={mode === 'interact'} onclick={() => changeMode('interact')}>Interact</button>
+      <button type="button" disabled={blocked || !snapshot.canUndo} onclick={() => history('undo')}>Undo</button>
+      <button type="button" disabled={blocked || !snapshot.canRedo} onclick={() => history('redo')}>Redo</button>
+      <button type="button" disabled={blocked || !compilation?.ok} onclick={save}>Save in memory</button>
+      <button type="button" disabled={blocked || !saved} title="Discard working edits and reload this example’s saved memory revision" onclick={reopen}>Reopen saved</button>
+      <button type="button" onclick={resetPreview}>Reset preview</button>
+    </div>
+    <p role="status" class="notice">{notice}</p>
+    {#if issues.length}<ul class="issues" role="alert">{#each issues as issue}<li>{issue.code}: {issue.message}</li>{/each}</ul>{/if}
+    <div class="editor-grid">
+      <aside class="layers"><h3>Layers</h3>{#if plan}<Layers {plan} document={source} selectedOccurrence={selected} onSelect={select} onApply={apply} componentDescriptors={catalogDescriptors} onOpenComposition={navigateComposition} />{/if}</aside>
+      <div class="preview-column">
+        <div class="composition-tools">
+          <button type="button" disabled={blocked} onclick={() => { if (!blocked) { compositionFocus = exampleFocus; selectNode(targetNodeId); } }}>Select example part</button>
+          <button type="button" disabled={blocked} onclick={() => openComposition()}>Open selected composition</button>
+          {#if compositionFocus}<CompositionNavigator document={source} focus={compositionFocus} descriptors={catalogDescriptors} disabled={blocked} onNavigate={navigateComposition} />{/if}
+        </div>
+        <div class="canvas" bind:this={canvasRoot} class:hidden={view !== 'canvas'}>
+          {#key recipeId}
+              <EditorCanvas document={source} catalogs={designerCatalogs} extensions={catalogDescriptors} extensionImplementations={catalogImplementations}
+                {compositionFocus} onOpenComposition={openComposition} interactionMode={mode}
+                selectedOccurrence={mode === 'design' ? selected : undefined} onSelect={select} onApply={apply}
+                selectionTools={tools === 'palette' && mode === 'design' ? palette : undefined} selectionToolsPinned={blocked}
+                {dispatch} navigate={() => notice = 'This example has one screen.'}
+                stateValues={runtimeValues} onStateChange={(key, value) => runtimeValues = { ...runtimeValues, [key]: value }}
+                {resetSignal} actionState={screenActionState} onPlan={next => plan = next}
+                onTextEditingChange={dirty => canvasDraft = dirty}
+                onRenderDiagnostic={diagnostic => issues = [...issues.slice(-4), diagnostic]} ariaLabel="Showcase canvas" />
+          {/key}
+        </div>
+        {#if view === 'structure'}<div class="structure"><StructureView document={source} revision={snapshot.revision} {selectedNodeId} {blocked} onSelect={selectStructure} onMove={move} onNotice={message => notice = message} /></div>{/if}
+        <details><summary>Insert and arrange (Composer)</summary><Composer document={source} {selectedNodeId} recipes={screenRecipes} descriptors={catalogDescriptors} {compositionFocus} onApply={apply} onInserted={selectNode} onDetached={selectNode} /></details>
+        <details><summary>Data: authored starting values</summary>
+          <label>State declaration <select aria-label="Authored state declaration" value={selectedData} disabled={blocked} onchange={event => selectedData = event.currentTarget.value}><option value="">Choose a value</option>{#each Object.values(source.localState) as declaration}<option value={declaration.key}>{declaration.key} · {declaration.type}</option>{/each}</select></label>
+          {#if selectedData}{#key `${recipeId}:${selectedData}`}<StateInitialEditor document={source} expression={{ type: 'ref', path: `state.${selectedData}` }} onApply={apply} onDirtyChange={dirty => dataDraft = dirty} />{/key}{/if}
+        </details>
+        <details><summary>Preview values (temporary runtime data)</summary><p>Interact changes these values. Action calls use the local screen simulation with no live effects.</p>{#key recipeId}<StateValuesPanel localState={source.localState} stateValues={runtimeValues} onChange={(key, value) => { const next = { ...runtimeValues }; if (value === undefined) delete next[key]; else next[key] = value; runtimeValues = next; }} />{/key}</details>
+      </div>
+      <aside class="inspector"><h3>Selected source</h3>
+        <div class="toolbar"><button type="button" disabled={blocked} aria-pressed={tools === 'inspector'} onclick={() => tools = 'inspector'}>Docked Inspector</button><button type="button" disabled={blocked} aria-pressed={tools === 'palette'} onclick={() => tools = 'palette'}>Selection palette</button></div>
+        {#if tools === 'inspector'}<Inspector document={source} selectedOccurrence={selected} onApply={apply} lastIssues={issues} componentDescriptors={catalogDescriptors} knownActionIds={designerCatalogs.actionIds} knownRouteIds={designerCatalogs.routeIds} {actionInputs} readEffective={effective} onTextDraftChange={dirty => propertyDraft = dirty} />{:else}<p>Select source on the design canvas to use its floating Format, Insert, Arrange and Connect tools. F10 focuses the palette.</p>{/if}
+      </aside>
+    </div>
+    <details><summary>Canonical source (read only)</summary><pre>{JSON.stringify(source, null, 2)}</pre></details>
+  {/if}
+</section>
+</ControlScope>
+
+{#snippet palette()}
+  {#if source && selectedNodeId}
+    <SelectionPalette name={compositionName(source, selectedNodeId)} format={formatTools} insert={insertTools} arrange={arrangeTools} connect={connectTools} locked={blocked} onOpenComposition={() => openComposition()} />
+  {/if}
+{/snippet}
+{#snippet formatTools()}{#if source}<Inspector contextual document={source} selectedOccurrence={selected} onApply={apply} componentDescriptors={catalogDescriptors} readEffective={effective} onTextDraftChange={dirty => propertyDraft = dirty} />{/if}{/snippet}
+{#snippet insertTools()}{#if source}<Composer compact document={source} {selectedNodeId} recipes={screenRecipes} descriptors={catalogDescriptors} {compositionFocus} showArrange={false} onApply={apply} onInserted={selectNode} />{/if}{/snippet}
+{#snippet arrangeTools()}{#if source}<Composer compact document={source} {selectedNodeId} recipes={screenRecipes} descriptors={catalogDescriptors} {compositionFocus} showInsert={false} onApply={apply} onDetached={selectNode} />{/if}{/snippet}
+{#snippet connectTools()}{#if source}<Inspector contextual section="Behavior" document={source} selectedOccurrence={selected} onApply={apply} componentDescriptors={catalogDescriptors} knownActionIds={designerCatalogs.actionIds} knownRouteIds={designerCatalogs.routeIds} {actionInputs} />{/if}{/snippet}
+
+<style>
+  .studio-showcase { color: #243047; font: 14px/1.5 system-ui, sans-serif; }
+  h2 { font-size: 24px; margin: 0 0 12px; } h3 { font-size: 15px; margin: 0 0 12px; }
+  header p { max-width: 900px; color: #59677b; }
+  .catalog-picker, .toolbar, .composition-tools { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .catalog-picker { align-items: end; padding: 16px; background: #edf1f7; border-radius: 10px; }
+  label { display: grid; gap: 4px; } button, input, select { font: inherit; color: inherit; padding: 7px 10px; border: 1px solid #bdc8d8; border-radius: 6px; background: white; }
+  button { cursor: pointer; } button[aria-pressed=true] { background: #e3eaff; border-color: #627ccc; } :disabled { opacity: .5; cursor: default; }
+  .notice { padding: 10px 12px; background: #eef3ff; border-radius: 6px; } .issues { color: #9d2828; }
+  .editor-grid { display: grid; grid-template-columns: 210px minmax(350px, 1fr) 330px; gap: 12px; align-items: start; }
+  aside { padding: 12px; background: white; border: 1px solid #d7dfe9; border-radius: 8px; max-height: 850px; overflow: auto; min-width: 0; }
+  .preview-column { min-width: 0; } .composition-tools { margin-bottom: 10px; }
+  .canvas { height: 560px; overflow: auto; border: 1px solid #d7dfe9; background: white; border-radius: 8px; container: studio-screen / inline-size; }
+  .canvas.hidden { display: none; } .structure { height: 600px; }
+  details { border: 1px solid #d7dfe9; border-radius: 8px; background: white; padding: 12px; margin-top: 12px; }
+  summary { cursor: pointer; font-weight: 600; } details[open] > summary { margin-bottom: 14px; } pre { overflow: auto; max-height: 400px; font-size: 12px; }
+  @media(max-width: 1200px) { .editor-grid { grid-template-columns: 180px minmax(0, 1fr); } .inspector { grid-column: 1 / -1; max-height: none; } }
+  @media(max-width: 700px) { .editor-grid { display: block; } aside { margin-bottom: 12px; max-height: 300px; } .catalog-picker label { width: 100%; } .canvas { height: 460px; } }
+</style>

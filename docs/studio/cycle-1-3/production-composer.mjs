@@ -3,7 +3,7 @@ import puppeteer from 'puppeteer-core';
 import {writeFile,mkdir} from 'node:fs/promises';
 import {dirname,resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
-const out=resolve(dirname(fileURLToPath(import.meta.url)),'production-composer-final'),results=[]; await mkdir(out,{recursive:true});
+const out=process.env.VICT_COMPOSER_OUT ? resolve(process.env.VICT_COMPOSER_OUT) : resolve(dirname(fileURLToPath(import.meta.url)),'production-composer-final'),results=[]; await mkdir(out,{recursive:true});
 const browser=await puppeteer.launch({executablePath:'C:/Program Files/Google/Chrome/Application/chrome.exe',headless:true,args:['--no-sandbox']});
 const page=await browser.newPage();
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));

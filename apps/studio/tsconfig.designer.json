@@ -9,6 +9,8 @@
     "src/lib/designer/**/*.svelte",
     "src/routes/design/**/*.ts",
     "src/routes/design/**/*.svelte",
+    "src/routes/showcase/**/*.ts",
+    "src/routes/showcase/**/*.svelte",
     "src/routes/run-screen/**/*.ts",
     "src/routes/run-screen/**/*.svelte",
     "../../packages/ui-editor/src/**/*.svelte"

@@ -22,4 +22,12 @@ Owner 5591/5593 listeners, tabs, unsaved work, saved screens and provider files 
 
 ## Pattern comparison register
 
+### Subsequent runtime findings and complete-showcase request
+
+The first corrected candidate `efbafcc41317d18ea6609c490f149452de8a98b0` passed strict AI checking, Studio/packed-consumer builds, a fresh26-assertion Studio composer replay, independently checked immutable reference hashes and core21-pattern browser/state checks. The independent browser found two remaining presentation issues before a new readiness verdict: Studio's surrounding ControlScope imposed40px minimum height/padding on the28px message action, and the grouped model footer introduced unnecessary wrapping. Diagnostic-only CSS injection established the ControlScope cause; that is not a production pass. Scoped button reset and footer layout corrections require the subsequent build/replay. Initial dropdown animation timing failures and all captures are retained.
+
+The owner then requested that **all UI newly created/modified in Cycle1.3 be visible in the showcase**. This authorizes the complete authenticated `/showcase` hub and a public building-block gallery. The hub contains the21 AI patterns,19 shared visual primitive families (95 unique contextual parts, with aliases/types/utilities inventoried separately), public Flow, and all83 actual Designer recipes plus real Inspector/Composer/Layers/Data/Structure controls in a disposable memory-only sandbox. The standalone packed consumer retains no Studio source imports: its generated83-entry metadata index links to the authenticated live examples. No owner localStorage, saved screens or current canvas is read or written by the sandbox. Existing live-provider integration remains explicitly available in the ordinary Studio workspace rather than faked inside a presentation example.
+
+The three builder source audits, exact reference manifests, primitive inventory, source warnings/repairs, before/after captures and final independent matrix are under `cycle-1-3/upstream-fidelity/`. Final status remains HELD until the combined correction and complete showcase have passed their affected checks and independent gate.
+
 Pending: Chat, Message, Prompt Input; Chain of Thought, Plan, Task, Queue, Reasoning, Subagent, Tool, Terminal, Test Results, Stack Trace; Checkpoint, Confirmation, Context, File Tree, Inline Citation, Model Selector, Sources, Suggestion. Builder audit records and final independent evidence will replace this pending register with explicit dispositions, never inferred from pattern counts.

@@ -59,7 +59,7 @@ const base = `/* VICT-owned scope for pinned shadcn-svelte Rhea; no global prefl
 }
 .vict-ai.vict-ai *, .vict-ai.vict-ai *::before, .vict-ai.vict-ai *::after {box-sizing:border-box;border:0 solid var(--border);}
 .vict-ai.vict-ai :where(button,input,textarea,select) {font:inherit;color:inherit;letter-spacing:inherit;border-radius:0;background:transparent;box-shadow:none;}
-.vict-ai.vict-ai :where(button) {cursor:pointer;}
+.vict-ai.vict-ai :where(button) {cursor:pointer;box-sizing:border-box;min-height:0;min-width:0;padding:0;}
 .vict-ai.vict-ai :where(button:disabled) {cursor:default;}
 .vict-ai.vict-ai :where(p,h1,h2,h3,h4,h5,h6,pre,blockquote,figure,ul,ol) {margin:0;}
 .vict-ai.vict-ai :where(h1,h2,h3,h4,h5,h6) {font-size:inherit;font-weight:inherit;}

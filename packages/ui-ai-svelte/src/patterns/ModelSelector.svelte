@@ -4,13 +4,15 @@
   import ChevronDown from '@lucide/svelte/icons/chevron-down';
   import type { ModelOption } from './types.js';
 
-  let { models, model, efforts = [], effort = '', onModelChange, onEffortChange }: {
+  let { models, model, efforts = [], effort = '', onModelChange, onEffortChange, inline = false }: {
     models: readonly ModelOption[];
     model: string;
     efforts?: readonly ModelOption[];
     effort?: string;
     onModelChange?: (id: string) => void;
     onEffortChange?: (id: string) => void;
+    /** Flatten layout into an InputGroup footer so individual controls can wrap. */
+    inline?: boolean;
   } = $props();
   const modelLabel = $derived(models.find(item => item.id === model)?.label ?? model);
   const effortLabel = $derived(efforts.find(item => item.id === effort)?.label ?? effort);
@@ -26,7 +28,7 @@
   });
 </script>
 
-<div class="flex items-center gap-2">
+<div class={inline ? 'contents' : 'flex flex-wrap items-center gap-2'}>
   <DropdownMenu.Root>
     <DropdownMenu.Trigger disabled={!onModelChange}>
       {#snippet child({ props })}

@@ -63,7 +63,7 @@
     <article class="min-w-0 rounded-2xl border border-border bg-background p-4" data-ai-pattern={pattern}>
       <h3 class="mb-4 font-medium">{pattern}</h3>
       <a class="mb-4 inline-flex text-xs text-muted-foreground underline" href={`https://www.shadcn-svelte.com/docs/ai-elements/${pattern}`} target="_blank" rel="noopener noreferrer">Official example<span class="sr-only"> (opens in a new tab)</span></a>
-      <div class="pattern-preview mx-auto w-full max-w-sm" data-pattern-preview={pattern}>
+      <div class={`pattern-preview mx-auto w-full ${pattern==='prompt-input'||pattern==='model-selector'?'max-w-lg':'max-w-sm'}`} data-pattern-preview={pattern} data-example-width={pattern==='prompt-input'||pattern==='model-selector'?512:384}>
       {#if pattern==='chat'}<div style="height:440px"><Conversation messages={chatMessages} title="New Thread" description="Local presentation fixture" onReset={resetChat} onSend={async(text)=>{chatMessages=[...chatMessages,{id:crypto.randomUUID(),role:'user',text},{id:crypto.randomUUID(),role:'assistant',text:'Local fixture reply; no provider or source edit.'}];lastAction='Simulated chat submit; no provider contacted.';return true;}}/></div>
       {:else if pattern==='chain-of-thought'}<ChainOfThought title="Public activity summary" steps={chainSteps} description="Observed public activity only; no private model reasoning."/>
       {:else if pattern==='plan'}<Plan title="Update the settings screen" {steps} description="A proposed plan; these fixture steps do not execute."/>
@@ -85,10 +85,10 @@
           <Message role="assistant" text={reply} copied={copiedDemo==='reply'} onCopy={()=>void copyDemo(reply,'reply')} {feedback} onFeedback={(value)=>{feedback=value;lastAction='Simulated feedback stored locally only.';}} onRetry={()=>lastAction='Simulated retry request; no provider contacted.'}/>
         </div>
       {:else if pattern==='model-selector'}<PromptInput bind:value={modelPrompt} label="Model selection prompt" onSend={(text)=>{lastAction=`Simulated model prompt: ${text}`;modelPrompt='';}}>
-        {#snippet footer()}<ModelSelector {models} {model} onModelChange={(value)=>{model=value;lastAction='Example model changed locally; server configuration unchanged.';}} efforts={[{id:'low',label:'Low'},{id:'medium',label:'Medium'},{id:'high',label:'High'}]} {effort} onEffortChange={(value)=>effort=value}/>{/snippet}
+        {#snippet footer()}<ModelSelector inline {models} {model} onModelChange={(value)=>{model=value;lastAction='Example model changed locally; server configuration unchanged.';}} efforts={[{id:'low',label:'Low'},{id:'medium',label:'Medium'},{id:'high',label:'High'}]} {effort} onEffortChange={(value)=>effort=value}/>{/snippet}
       </PromptInput>
       {:else if pattern==='prompt-input'}<PromptInput bind:value={prompt} attachments={files} onAttach={()=>{files=[...files,{id:crypto.randomUUID(),name:'attached-example.txt (fixture)'}];lastAction='Simulated attachment added locally; no file uploaded.';}} onRemoveAttachment={(id)=>{files=files.filter(file=>file.id!==id);lastAction='Simulated attachment removed locally; no upload exists.';}} onSend={(text)=>{lastAction=`Simulated prompt: ${text}`;prompt='';}}>
-        {#snippet footer()}<ModelSelector {models} {model} onModelChange={(value)=>model=value} efforts={[{id:'low',label:'Low'},{id:'medium',label:'Medium'},{id:'high',label:'High'}]} {effort} onEffortChange={(value)=>effort=value}/>{/snippet}
+        {#snippet footer()}<ModelSelector inline {models} {model} onModelChange={(value)=>model=value} efforts={[{id:'low',label:'Low'},{id:'medium',label:'Medium'},{id:'high',label:'High'}]} {effort} onEffortChange={(value)=>effort=value}/>{/snippet}
       </PromptInput>
       {:else if pattern==='queue'}<Queue {steps}/>
       {:else if pattern==='reasoning'}<Reasoning running={reasoningRunning} duration={4} text="The host may expose a safe summary of observed activity. Private model reasoning is not required or inferred."/>

@@ -4,6 +4,7 @@ export type { ConversationMessage, ConversationActivity, SendResult } from './ad
 export { default as Markdown } from './upstream/markdown/markdown.svelte';
 export * as Patterns from './patterns/index.js';
 export { PatternShowcase } from './patterns/index.js';
+export { default as PrimitiveShowcase } from './PrimitiveShowcase.svelte';
 export * as Message from './upstream/ui/message/index.js';
 export * as Bubble from './upstream/ui/bubble/index.js';
 export * as MessageScroller from './upstream/ui/message-scroller/index.js';
