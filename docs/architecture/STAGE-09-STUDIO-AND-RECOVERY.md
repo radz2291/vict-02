@@ -1,5 +1,7 @@
 # VICT Stage 09 — Studio, Diagnosis, and Controlled Recovery
 
+> 2026-10-23 current owner amendment: [Cycle 1.2 is owner accepted and closed](../studio/CYCLE-1-2-OWNER-CLOSURE.md), with findings retained. [Cycle 1.3](../studio/CYCLE-1-3-HANDOFF.md) is authorized: shadcn-svelte AI presentation, designer coverage and Svelte Flow structure. Stage 9 remains REOPENED / IN PROGRESS; no main merge, publication, deployment, Cycle 1.4 or owner acceptance of 1.3. Earlier status below is historical.
+
 > 2026-10-23 owner amendment: Studio [Cycle 1.1 is accepted and closed](../studio/CYCLE-1-1-OWNER-CLOSURE.md)
 > with retained findings; [Cycle 1.2](../studio/CYCLE-1-2-HANDOFF.md) is issued
 > for dependable mixed manual/agent editing. Stage 9 remains reopened. Reuse
