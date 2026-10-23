@@ -41,7 +41,7 @@
       {:else if pattern==='context'}<Context used={4200} limit={32000}/>
       {:else if pattern==='file-tree'}<FileTree nodes={[{path:'screens',name:'screens',children:[{path:'screens/home',name:'Home screen'},{path:'screens/settings',name:'Settings screen'}]}]} onSelect={(path)=>lastAction=`Simulated source selection: ${path}`}/>
       {:else if pattern==='inline-citation'}<p>This design uses a canonical source. <InlineCitation {source}/></p>
-      {:else if pattern==='message'}<Message role="assistant" text="Streamed **Markdown**, a list, and code:\n\n- Source identity\n- Validated commands\n\n```ts\nconst screen = 'screen-1';\n```" onCopy={()=>lastAction='Simulated message action; fixture only.'}/>
+      {:else if pattern==='message'}<Message role="assistant" text={"Streamed **Markdown**, a list, and code:\n\n- Source identity\n- Validated commands\n\n```ts\nconst screen = 'screen-1';\n```"} onCopy={()=>lastAction='Simulated message action; fixture only.'}/>
       {:else if pattern==='model-selector'}<ModelSelector models={[{id:'example-model',label:'Example model'},{id:'other-example',label:'Other example'}]} {model} onModelChange={(value)=>{model=value;lastAction='Example model changed locally; server configuration unchanged.';}} efforts={[{id:'low',label:'Low'},{id:'medium',label:'Medium'}]} {effort} onEffortChange={(value)=>effort=value}/>
       {:else if pattern==='prompt-input'}<PromptInput bind:value={prompt} attachments={[{id:'fixture',name:'example.txt (fixture)'}]} onRemoveAttachment={()=>lastAction='Simulated attachment removal; no upload exists.'} onSend={(text)=>lastAction=`Simulated prompt: ${text}`}/>
       {:else if pattern==='queue'}<Queue {steps}/>
