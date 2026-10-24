@@ -183,7 +183,14 @@
   $effect(() => { if (inlineEdit && (inlineEdit.revision !== JSON.stringify(document) || interactionMode !== 'design')) inlineEdit = undefined; });
   $effect(() => {
     if (interactionMode !== 'design' || !canvasEl) return;
+    let selectedByPointer = false;
     const intercept = (event: Event) => {
+      // Selecting can reveal tools and scroll the canvas before the browser's
+      // click. Keep that gesture's pointerdown occurrence instead of selecting
+      // a different ancestor at the click's retargeted coordinates.
+      const completedPointerSelection = event.type === 'click' && event instanceof MouseEvent && event.detail > 0 && selectedByPointer;
+      if (event.type === 'pointerdown' || event.type === 'pointercancel' || event.type === 'click') selectedByPointer = false;
+      if (event.type === 'pointercancel') return;
       if (event.target instanceof Element && event.target.closest('[data-ui-inline-editor]')) return;
       const target = event.target instanceof Element ? event.target.closest<HTMLElement>('[data-ui-occ]') : null;
       const owner = canvasEl?.querySelector<HTMLElement>('[data-ui-owner-root]')?.dataset.uiOwnerRoot;
@@ -200,11 +207,12 @@
       if (event instanceof KeyboardEvent && (['Tab', 'Escape'].includes(event.key) || event.ctrlKey || event.metaKey)) return;
       if (event.cancelable) event.preventDefault();
       event.stopImmediatePropagation();
-      if (event.type === 'pointerdown' || event.type === 'click' || (event instanceof KeyboardEvent && ['Enter', ' '].includes(event.key))) {
+      if (event.type === 'pointerdown' || (event.type === 'click' && !completedPointerSelection) || (event instanceof KeyboardEvent && ['Enter', ' '].includes(event.key))) {
+        if (event.type === 'pointerdown') selectedByPointer = true;
         if (target.dataset.uiOcc) onSelect(target.dataset.uiOcc);
       }
     };
-    const events = ['pointerdown', 'click', 'dblclick', 'keydown', 'keyup', 'beforeinput', 'input', 'change', 'submit'] as const;
+    const events = ['pointerdown', 'pointercancel', 'click', 'dblclick', 'keydown', 'keyup', 'beforeinput', 'input', 'change', 'submit'] as const;
     for (const event of events) globalThis.document.addEventListener(event, intercept, true);
     return () => { for (const event of events) globalThis.document.removeEventListener(event, intercept, true); };
   });
