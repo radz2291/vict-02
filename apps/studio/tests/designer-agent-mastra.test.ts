@@ -640,3 +640,18 @@ it('makes bounded precise pre-invocation refusal guidance available to the model
  const all=JSON.stringify(events);expect(all).toContain('literal');expect(all).toContain('ref');expect(all).toContain('operations.0.expression');
  const refused=events.find(event=>event.type==='tool-event'&&event.kind==='validation-refused');expect(refused?.type==='tool-event'&&refused.details).toContain('Expected exactly');
 },120000);
+
+it('delivers capture-comparison scope and complete-body digest reuse rules to the actual pinned executor model prompt (offline)',async()=>{
+ const {start,input}=context();const events:StudioAgentEvent[]=[];const prompts:unknown[]=[];
+ const offline=createDeterministicOfflineModel({script:{[input]:{kind:'text',text:'No edit or visual completion claimed.'}}});
+ const opened=openAgentRun('observation-scope-contract',start,event=>events.push(event),{model:OFFLINE_MODEL_IDENTITY,modelFactory:()=>({...offline,doStream:async(options:Parameters<typeof offline.doStream>[0])=>{prompts.push(options.prompt);return offline.doStream(options);}})});
+ if(!opened.ok)throw Error(opened.code);await opened.finished;
+ expect(events.at(-1)).toMatchObject({type:'done',status:'completed',applied:0});
+ const delivered=JSON.stringify(prompts);
+ expect(delivered).toContain('WITHIN ONE observation, before and after inference');
+ expect(delivered).toContain('identical image bytes with a different source revision or preview fingerprint do NOT prove a stale raster');
+ expect(delivered).toContain('Only an actual STUDIO_CAPTURE_STALE tool refusal invokes');
+ expect(delivered).toContain('complete contract body was previously received (all body pages) and remains available in your context');
+ expect(delivered).toContain('A catalog/index digest alone is not cached contract knowledge');
+ expect(delivered).toContain('never replay committed edits to retry verification');
+});
