@@ -1,0 +1,5 @@
+{
+  "candidate": "7228ee3ccae4364da63a346c46010dde19b1992d",
+  "startedAt": "2026-10-24T12:02:40.834Z",
+  "request": "Actual independent runtime recheck: the filter now opens by pointer, name/date/list bindings work, the manual Brief verified label is preserved, and the Phone 390 preset at browser1280 correctly stacks the cards. However, the root still computes padding40px, not your stated20px, because its local plain padding declaration outranks the attached narrow style source. Please correct only this responsive padding precedence so the existing wide40px and narrow20px intent actually renders. Preserve all existing content, controls, source identity, and shared summary styling. Read current source/cursor (explicitly saved r1.r3 after Undo/Redo testing), make one bounded correction, inspect at the current Phone preview and state honest limits. Do not recreate the screen."
+}

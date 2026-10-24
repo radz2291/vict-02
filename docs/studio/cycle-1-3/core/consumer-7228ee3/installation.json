@@ -1,0 +1,105 @@
+{
+  "sourceCandidate": "7228ee3ccae4364da63a346c46010dde19b1992d",
+  "createdAt": "2026-10-24T12:01:56.819Z",
+  "directory": "C:\\Users\\RZ1\\.codex\\tmp\\studio-core-consumer-7228ee3",
+  "npmVersion": "10.9.2",
+  "nodeVersion": "v22.13.1",
+  "packages": [
+    {
+      "name": "@victframework/contracts",
+      "version": "0.4.0-rc.1",
+      "tarball": "C:\\Users\\RZ1\\.codex\\tmp\\studio-core-consumer-7228ee3\\artifacts\\victframework-contracts-0.4.0-rc.1.tgz",
+      "integrity": "sha512-3IIitqyuG38bYE4D4ByLxTiwGeUbKncjkAyfKLmv0dPzR1W2/RVEAjLsuCqdJgv9tvuB1vWslidUA0+FB/ClrQ==",
+      "shasum": "d2b8ede2150383b492dbcff514542bcf49fd03f4",
+      "sha256": "017c0587843869653f6bd723566dcaf39f2e89b2fb55bc923f35667be9d618de",
+      "files": 31,
+      "unpackedSize": 92135,
+      "installedPath": "C:\\Users\\RZ1\\.codex\\tmp\\studio-core-consumer-7228ee3\\node_modules\\@victframework\\contracts"
+    },
+    {
+      "name": "@victframework/ui",
+      "version": "0.4.0-rc.1",
+      "tarball": "C:\\Users\\RZ1\\.codex\\tmp\\studio-core-consumer-7228ee3\\artifacts\\victframework-ui-0.4.0-rc.1.tgz",
+      "integrity": "sha512-/U52GKqtPA99siRv1EeIumYQy6GYTHVFJSP532952Lnn0PKy8OfESDUEQLFYs3lEV6+ZdeVPY3nW7/BeWlwbbQ==",
+      "shasum": "0a4d3189e28a845203b83ae84939a1946589c9df",
+      "sha256": "50b136187d3881df593e5113dabf09ebf2c42293d5ff768a5a2e817a5e2b838a",
+      "files": 64,
+      "unpackedSize": 484843,
+      "installedPath": "C:\\Users\\RZ1\\.codex\\tmp\\studio-core-consumer-7228ee3\\node_modules\\@victframework\\ui"
+    },
+    {
+      "name": "@victframework/sdk",
+      "version": "0.4.0-rc.1",
+      "tarball": "C:\\Users\\RZ1\\.codex\\tmp\\studio-core-consumer-7228ee3\\artifacts\\victframework-sdk-0.4.0-rc.1.tgz",
+      "integrity": "sha512-EDJQJrTsEh/yp3IqFSYruaW2HMdnJVHKDBMyRrBMkC1MXb/4c0lbRfGdHAQBsuY2vN8tIfERdluSjnqxpvlVtA==",
+      "shasum": "5c3c4134d55d135a78f064179e5820d90b01cbdb",
+      "sha256": "26ba8993f73f70071e57cec97471bf9c4bc4abde3137084be4fd4ee064f338f4",
+      "files": 28,
+      "unpackedSize": 158129,
+      "installedPath": "C:\\Users\\RZ1\\.codex\\tmp\\studio-core-consumer-7228ee3\\node_modules\\@victframework\\sdk"
+    },
+    {
+      "name": "@victframework/application",
+      "version": "0.4.0-rc.1",
+      "tarball": "C:\\Users\\RZ1\\.codex\\tmp\\studio-core-consumer-7228ee3\\artifacts\\victframework-application-0.4.0-rc.1.tgz",
+      "integrity": "sha512-In1UqfocrTrjBQ/9B6QzPGxadtJQERbW9r+CX9FWB3LWbI6ADXuJB4OHEYoKJ43uokupx5PHRydCp2KPlTCkDg==",
+      "shasum": "bcc42211fcabdf5502fae8230864eb08d67ee2a4",
+      "sha256": "ea0fdde59f165379154517f4be4ca99e3c8790033862e4a56f6df5fdb09b5db7",
+      "files": 34,
+      "unpackedSize": 534951,
+      "installedPath": "C:\\Users\\RZ1\\.codex\\tmp\\studio-core-consumer-7228ee3\\node_modules\\@victframework\\application"
+    },
+    {
+      "name": "@victframework/ui-svelte",
+      "version": "0.4.0-rc.1",
+      "tarball": "C:\\Users\\RZ1\\.codex\\tmp\\studio-core-consumer-7228ee3\\artifacts\\victframework-ui-svelte-0.4.0-rc.1.tgz",
+      "integrity": "sha512-CPnIeUBvq66NJuE+t9hOa21M5nmNK4Dnvjg5tKADaXtwI99IuNPU++5+SHFF9F14kEMFsoPxOjMntwtWz7evrQ==",
+      "shasum": "b02fac2897b207898501e2c0b370623857634971",
+      "sha256": "9500ac93a4e38f47707853bb594f57c72e97b69c97765886fb3ae17b80b418aa",
+      "files": 255,
+      "unpackedSize": 563842,
+      "installedPath": "C:\\Users\\RZ1\\.codex\\tmp\\studio-core-consumer-7228ee3\\node_modules\\@victframework\\ui-svelte"
+    },
+    {
+      "name": "@victframework/ui-editor",
+      "version": "0.4.0-rc.1",
+      "tarball": "C:\\Users\\RZ1\\.codex\\tmp\\studio-core-consumer-7228ee3\\artifacts\\victframework-ui-editor-0.4.0-rc.1.tgz",
+      "integrity": "sha512-ML1J02xJaNgc7gSpFIdciWNeJdHr6CyUt/FIESbP3xCE91NYw75suGeZYMNcBs+qAssMUKmkWbbXuzMARz3IXA==",
+      "shasum": "2a3f31ca8e26821c51faeb0606ba94b1a63ae572",
+      "sha256": "51e2ae7568325dccc7e0febd7981496a3ead88d4098ddea15ea5c6d9508a3709",
+      "files": 86,
+      "unpackedSize": 451537,
+      "installedPath": "C:\\Users\\RZ1\\.codex\\tmp\\studio-core-consumer-7228ee3\\node_modules\\@victframework\\ui-editor"
+    },
+    {
+      "name": "@victframework/ui-ai-svelte",
+      "version": "0.4.0-rc.1",
+      "tarball": "C:\\Users\\RZ1\\.codex\\tmp\\studio-core-consumer-7228ee3\\artifacts\\victframework-ui-ai-svelte-0.4.0-rc.1.tgz",
+      "integrity": "sha512-QYqkdjOtR+uLmJx02Yean/e65Ds8IGC1CRScefzlQiQ9TjCwU/41iEefINPFyG8SOmfgF98g0nb7/VoHXg0cSA==",
+      "shasum": "8c5575a582442bb85406172bcccca01a746a3e0b",
+      "sha256": "d0595d8a01d588a68518b7f087c3d2fd38944348eed9c6a317d3c7e71b19f565",
+      "files": 183,
+      "unpackedSize": 467962,
+      "installedPath": "C:\\Users\\RZ1\\.codex\\tmp\\studio-core-consumer-7228ee3\\node_modules\\@victframework\\ui-ai-svelte"
+    },
+    {
+      "name": "@victframework/ui-flow-svelte",
+      "version": "0.4.0-rc.1",
+      "tarball": "C:\\Users\\RZ1\\.codex\\tmp\\studio-core-consumer-7228ee3\\artifacts\\victframework-ui-flow-svelte-0.4.0-rc.1.tgz",
+      "integrity": "sha512-IlgLrKJB8qcIkaPZMSgxJ22DOlaSfhyI6UW8emwNgGHt0ZV+pxFHGxhvO4ZUGb7UHvdy55W/Esmt7eFTiCBnyQ==",
+      "shasum": "e6051ea2a6655ef864c57f7b66e8f4eb2ee0035f",
+      "sha256": "b9853f89951e4d12af7bb8e680cd02d7ee1c11bca4b5c939db9baa825b215e56",
+      "files": 22,
+      "unpackedSize": 42525,
+      "installedPath": "C:\\Users\\RZ1\\.codex\\tmp\\studio-core-consumer-7228ee3\\node_modules\\@victframework\\ui-flow-svelte"
+    }
+  ],
+  "packageCount": 8,
+  "lockSha256": "5b0ed573fe8d5d791393df55346d2e53296750a96edc40516646034b3915ed62",
+  "lockPackageCount": 286,
+  "installedPackageCount": 236,
+  "aliases": [],
+  "workspaceLinks": false,
+  "fixture": "examples/studio-core-consumer",
+  "limitation": "Builder installation evidence. Browser outcomes and independent gate verdict are recorded separately."
+}

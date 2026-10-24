@@ -1,0 +1,131 @@
+{
+  "checkedAt": "2026-10-24T12:14:17.434Z",
+  "candidate": "7228ee3ccae4364da63a346c46010dde19b1992d",
+  "installationCandidate": "7228ee3ccae4364da63a346c46010dde19b1992d",
+  "packages": [
+    {
+      "name": "@victframework/contracts",
+      "installedPath": "C:\\Users\\RZ1\\.codex\\tmp\\studio-core-consumer-7228ee3\\node_modules\\@victframework\\contracts",
+      "isLink": false,
+      "tarballHashMatches": true,
+      "filesCompared": 30,
+      "allEqual": true,
+      "mismatches": []
+    },
+    {
+      "name": "@victframework/ui",
+      "installedPath": "C:\\Users\\RZ1\\.codex\\tmp\\studio-core-consumer-7228ee3\\node_modules\\@victframework\\ui",
+      "isLink": false,
+      "tarballHashMatches": true,
+      "filesCompared": 63,
+      "allEqual": true,
+      "mismatches": []
+    },
+    {
+      "name": "@victframework/sdk",
+      "installedPath": "C:\\Users\\RZ1\\.codex\\tmp\\studio-core-consumer-7228ee3\\node_modules\\@victframework\\sdk",
+      "isLink": false,
+      "tarballHashMatches": true,
+      "filesCompared": 27,
+      "allEqual": true,
+      "mismatches": []
+    },
+    {
+      "name": "@victframework/application",
+      "installedPath": "C:\\Users\\RZ1\\.codex\\tmp\\studio-core-consumer-7228ee3\\node_modules\\@victframework\\application",
+      "isLink": false,
+      "tarballHashMatches": true,
+      "filesCompared": 33,
+      "allEqual": true,
+      "mismatches": []
+    },
+    {
+      "name": "@victframework/ui-svelte",
+      "installedPath": "C:\\Users\\RZ1\\.codex\\tmp\\studio-core-consumer-7228ee3\\node_modules\\@victframework\\ui-svelte",
+      "isLink": false,
+      "tarballHashMatches": true,
+      "filesCompared": 251,
+      "allEqual": true,
+      "mismatches": []
+    },
+    {
+      "name": "@victframework/ui-editor",
+      "installedPath": "C:\\Users\\RZ1\\.codex\\tmp\\studio-core-consumer-7228ee3\\node_modules\\@victframework\\ui-editor",
+      "isLink": false,
+      "tarballHashMatches": true,
+      "filesCompared": 85,
+      "allEqual": true,
+      "mismatches": []
+    },
+    {
+      "name": "@victframework/ui-ai-svelte",
+      "installedPath": "C:\\Users\\RZ1\\.codex\\tmp\\studio-core-consumer-7228ee3\\node_modules\\@victframework\\ui-ai-svelte",
+      "isLink": false,
+      "tarballHashMatches": true,
+      "filesCompared": 176,
+      "allEqual": true,
+      "mismatches": []
+    },
+    {
+      "name": "@victframework/ui-flow-svelte",
+      "installedPath": "C:\\Users\\RZ1\\.codex\\tmp\\studio-core-consumer-7228ee3\\node_modules\\@victframework\\ui-flow-svelte",
+      "isLink": false,
+      "tarballHashMatches": true,
+      "filesCompared": 19,
+      "allEqual": true,
+      "mismatches": []
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "index.html",
+      "equal": true,
+      "sha256": "0cd11d87261374967bec3da39f951eea53eb0d4e95d06cd6706796e6dba86818"
+    },
+    {
+      "path": "main.ts",
+      "equal": true,
+      "sha256": "b0e954119ae4b25b686aed47c859d235c533fa426cc1e257645a8e131b18b8be"
+    },
+    {
+      "path": "vite.config.ts",
+      "equal": true,
+      "sha256": "f2892dab8082a9b94d7b49ddc6385238b763a1ad64bce9a8510ab7334e604c49"
+    },
+    {
+      "path": "App.svelte",
+      "equal": true,
+      "sha256": "4504c1f24373742f0b3851cfd1358c3018ebf7384e790c0031e4543a335d0325"
+    },
+    {
+      "path": "proof.ts",
+      "equal": true,
+      "sha256": "e65769adcc63c6fb8412d32d867d2c9f4f865174abefaa8180e15cf7e623e54c"
+    },
+    {
+      "path": "capture.html",
+      "equal": true,
+      "sha256": "e59f68071b75e07ae457b79abc77bcec6468a89e868329f814219caf073d0212"
+    },
+    {
+      "path": "capture-main.ts",
+      "equal": true,
+      "sha256": "05e66ccb5b2347326e0ec540b6117c3bb8b6559133cf4ac02a2060f7c2d314b0"
+    },
+    {
+      "path": "CaptureProbe.svelte",
+      "equal": true,
+      "sha256": "be28cf153123aa89632f0bbda070ec04ef320a55f20b4b7bce217751624ccc47"
+    },
+    {
+      "path": "capture-source.json",
+      "equal": true,
+      "sha256": "a9122b0af8a674519d7a2c796c13b37008aed5eb8d5ce236db31187111d62c08"
+    }
+  ],
+  "filesCompared": 684,
+  "tarballDependencies": true,
+  "noViteAliases": true,
+  "passed": true,
+  "boundary": "Independent read-only hashes and link checks of fresh installed packages against verifier exact-candidate source/built outputs. Fixture-only capture additions are separately hashed and are not relabeled product changes. No install/build or Studio aliases used by this verifier."
+}

@@ -1,0 +1,1326 @@
+{
+  "schema": "vict.ui-document@1",
+  "id": "screen-9b401f6b-a187-404b-8bda-4cce0692df2c",
+  "revision": "r1.r2",
+  "root": "screen",
+  "nodes": {
+    "screen": {
+      "kind": "element",
+      "id": "screen",
+      "tag": "main",
+      "attributes": {
+        "aria-label": "Core verification · Writing desk"
+      },
+      "children": [
+        "deskHeader",
+        "editorRow"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "28px"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "560px"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#f6f3ec"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#243047"
+          }
+        },
+        {
+          "property": "font-family",
+          "value": {
+            "type": "text",
+            "value": "system-ui, sans-serif"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0 auto"
+          }
+        },
+        {
+          "property": "max-width",
+          "value": {
+            "type": "text",
+            "value": "920px"
+          }
+        },
+        {
+          "property": "width",
+          "value": {
+            "type": "text",
+            "value": "100%"
+          }
+        }
+      ],
+      "styleSources": [
+        "src.screen.compact.plain",
+        "src.screen.always.plain"
+      ]
+    },
+    "deskHeader": {
+      "kind": "element",
+      "id": "deskHeader",
+      "tag": "header",
+      "children": [
+        "deskTitle",
+        "deskTagline"
+      ],
+      "localStyle": [
+        {
+          "property": "border-bottom",
+          "value": {
+            "type": "text",
+            "value": "1px solid #e4ddcf"
+          }
+        },
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "6px"
+          }
+        },
+        {
+          "property": "padding-bottom",
+          "value": {
+            "type": "text",
+            "value": "10px"
+          }
+        }
+      ]
+    },
+    "deskTitle": {
+      "kind": "element",
+      "id": "deskTitle",
+      "tag": "h1",
+      "children": [
+        "deskTitle-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "30px"
+          }
+        },
+        {
+          "property": "letter-spacing",
+          "value": {
+            "type": "text",
+            "value": "-0.5px"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        }
+      ]
+    },
+    "deskTitle-text": {
+      "kind": "text",
+      "id": "deskTitle-text",
+      "content": {
+        "type": "literal",
+        "value": "Founder's writing desk"
+      }
+    },
+    "deskTagline": {
+      "kind": "element",
+      "id": "deskTagline",
+      "tag": "p",
+      "children": [
+        "deskTagline-text"
+      ],
+      "localStyle": [
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#6f675a"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "15px"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        }
+      ]
+    },
+    "deskTagline-text": {
+      "kind": "text",
+      "id": "deskTagline-text",
+      "content": {
+        "type": "literal",
+        "value": "Draft, read, and talk it through — manual checkpoint preserved."
+      }
+    },
+    "editorRow": {
+      "kind": "element",
+      "id": "editorRow",
+      "tag": "section",
+      "children": [
+        "draftCard",
+        "readingCard",
+        "assistantCard"
+      ],
+      "localStyle": [
+        {
+          "property": "align-items",
+          "value": {
+            "type": "text",
+            "value": "flex-start"
+          }
+        },
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-wrap",
+          "value": {
+            "type": "text",
+            "value": "wrap"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "24px"
+          }
+        }
+      ],
+      "styleSources": [
+        "src.editorRow.compact.plain"
+      ]
+    },
+    "draftCard": {
+      "kind": "element",
+      "id": "draftCard",
+      "tag": "article",
+      "children": [
+        "draftHeading",
+        "titleLabel",
+        "titleInput",
+        "draftLabel",
+        "draftArea"
+      ],
+      "localStyle": [
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#ffffff"
+          }
+        },
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "1px solid #e4ddcf"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        },
+        {
+          "property": "box-shadow",
+          "value": {
+            "type": "text",
+            "value": "0 8px 24px rgba(64,54,38,0.06)"
+          }
+        },
+        {
+          "property": "box-sizing",
+          "value": {
+            "type": "text",
+            "value": "border-box"
+          }
+        },
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex",
+          "value": {
+            "type": "text",
+            "value": "1 1 360px"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "min-width",
+          "value": {
+            "type": "text",
+            "value": "300px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "24px"
+          }
+        }
+      ],
+      "styleSources": [
+        "src.draftCard.compact.plain"
+      ]
+    },
+    "draftHeading": {
+      "kind": "element",
+      "id": "draftHeading",
+      "tag": "h2",
+      "children": [
+        "draftHeading-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "13px"
+          }
+        },
+        {
+          "property": "letter-spacing",
+          "value": {
+            "type": "text",
+            "value": "1.5px"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "text-transform",
+          "value": {
+            "type": "text",
+            "value": "uppercase"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#8a7f6d"
+          }
+        }
+      ]
+    },
+    "draftHeading-text": {
+      "kind": "text",
+      "id": "draftHeading-text",
+      "content": {
+        "type": "literal",
+        "value": "Draft"
+      }
+    },
+    "titleLabel": {
+      "kind": "element",
+      "id": "titleLabel",
+      "tag": "label",
+      "children": [
+        "titleLabel-text"
+      ],
+      "attributes": {
+        "for": "articleTitleInput"
+      },
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        }
+      ]
+    },
+    "titleLabel-text": {
+      "kind": "text",
+      "id": "titleLabel-text",
+      "content": {
+        "type": "literal",
+        "value": "Article title"
+      }
+    },
+    "titleInput": {
+      "kind": "element",
+      "id": "titleInput",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "id": "articleTitleInput",
+        "placeholder": "Your headline",
+        "type": "text",
+        "value": {
+          "type": "ref",
+          "path": "state.articleTitle"
+        }
+      },
+      "localStyle": [
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#fbf9f5"
+          }
+        },
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "1px solid #d9d1c0"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "8px"
+          }
+        },
+        {
+          "property": "box-sizing",
+          "value": {
+            "type": "text",
+            "value": "border-box"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "16px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "10px 12px"
+          }
+        },
+        {
+          "property": "width",
+          "value": {
+            "type": "text",
+            "value": "100%"
+          }
+        }
+      ],
+      "interactions": [
+        {
+          "on": "change",
+          "action": "setState",
+          "key": "articleTitle",
+          "value": {
+            "type": "ref",
+            "path": "state.articleTitle"
+          }
+        }
+      ]
+    },
+    "draftLabel": {
+      "kind": "element",
+      "id": "draftLabel",
+      "tag": "label",
+      "children": [
+        "draftLabel-text"
+      ],
+      "attributes": {
+        "for": "draftTextArea"
+      },
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        }
+      ]
+    },
+    "draftLabel-text": {
+      "kind": "text",
+      "id": "draftLabel-text",
+      "content": {
+        "type": "literal",
+        "value": "Draft text"
+      }
+    },
+    "draftArea": {
+      "kind": "element",
+      "id": "draftArea",
+      "tag": "textarea",
+      "children": [],
+      "attributes": {
+        "id": "draftTextArea",
+        "placeholder": "Write freely — the preview follows along…",
+        "rows": "10",
+        "value": {
+          "type": "ref",
+          "path": "state.draftText"
+        }
+      },
+      "localStyle": [
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#fbf9f5"
+          }
+        },
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "1px solid #d9d1c0"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "8px"
+          }
+        },
+        {
+          "property": "box-sizing",
+          "value": {
+            "type": "text",
+            "value": "border-box"
+          }
+        },
+        {
+          "property": "font-family",
+          "value": {
+            "type": "text",
+            "value": "Georgia, serif"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "15px"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.6"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "220px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "resize",
+          "value": {
+            "type": "text",
+            "value": "vertical"
+          }
+        },
+        {
+          "property": "width",
+          "value": {
+            "type": "text",
+            "value": "100%"
+          }
+        }
+      ],
+      "interactions": [
+        {
+          "on": "change",
+          "action": "setState",
+          "key": "draftText",
+          "value": {
+            "type": "ref",
+            "path": "state.draftText"
+          }
+        }
+      ]
+    },
+    "readingCard": {
+      "kind": "element",
+      "id": "readingCard",
+      "tag": "section",
+      "children": [
+        "readingHeading",
+        "readingTitle",
+        "readingBody"
+      ],
+      "localStyle": [
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#ffffff"
+          }
+        },
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "1px solid #e4ddcf"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        },
+        {
+          "property": "box-shadow",
+          "value": {
+            "type": "text",
+            "value": "0 8px 24px rgba(64,54,38,0.06)"
+          }
+        },
+        {
+          "property": "box-sizing",
+          "value": {
+            "type": "text",
+            "value": "border-box"
+          }
+        },
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex",
+          "value": {
+            "type": "text",
+            "value": "1 1 360px"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "min-width",
+          "value": {
+            "type": "text",
+            "value": "300px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "24px"
+          }
+        }
+      ],
+      "styleSources": [
+        "src.readingCard.compact.plain"
+      ]
+    },
+    "readingHeading": {
+      "kind": "element",
+      "id": "readingHeading",
+      "tag": "h2",
+      "children": [
+        "readingHeading-text"
+      ],
+      "localStyle": [
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#8a7f6d"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "13px"
+          }
+        },
+        {
+          "property": "letter-spacing",
+          "value": {
+            "type": "text",
+            "value": "1.5px"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "text-transform",
+          "value": {
+            "type": "text",
+            "value": "uppercase"
+          }
+        }
+      ]
+    },
+    "readingHeading-text": {
+      "kind": "text",
+      "id": "readingHeading-text",
+      "content": {
+        "type": "literal",
+        "value": "Reading preview"
+      }
+    },
+    "readingTitle": {
+      "kind": "element",
+      "id": "readingTitle",
+      "tag": "h3",
+      "children": [
+        "readingTitle-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "22px"
+          }
+        },
+        {
+          "property": "letter-spacing",
+          "value": {
+            "type": "text",
+            "value": "-0.3px"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.3"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        }
+      ]
+    },
+    "readingTitle-text": {
+      "kind": "text",
+      "id": "readingTitle-text",
+      "content": {
+        "type": "expression",
+        "expression": {
+          "type": "ref",
+          "path": "state.articleTitle"
+        }
+      }
+    },
+    "readingBody": {
+      "kind": "element",
+      "id": "readingBody",
+      "tag": "p",
+      "children": [
+        "readingBody-text"
+      ],
+      "localStyle": [
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#3d3730"
+          }
+        },
+        {
+          "property": "font-family",
+          "value": {
+            "type": "text",
+            "value": "Georgia, serif"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "15px"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.7"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "white-space",
+          "value": {
+            "type": "text",
+            "value": "pre-wrap"
+          }
+        }
+      ]
+    },
+    "assistantCard": {
+      "kind": "element",
+      "id": "assistantCard",
+      "tag": "article",
+      "children": [
+        "assistantHeading",
+        "deskConversation"
+      ],
+      "localStyle": [
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#ffffff"
+          }
+        },
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "1px solid #e4ddcf"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        },
+        {
+          "property": "box-shadow",
+          "value": {
+            "type": "text",
+            "value": "0 8px 24px rgba(64,54,38,0.06)"
+          }
+        },
+        {
+          "property": "box-sizing",
+          "value": {
+            "type": "text",
+            "value": "border-box"
+          }
+        },
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex",
+          "value": {
+            "type": "text",
+            "value": "1 1 360px"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "min-width",
+          "value": {
+            "type": "text",
+            "value": "300px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "24px"
+          }
+        }
+      ],
+      "styleSources": [
+        "src.assistantCard.compact.plain"
+      ]
+    },
+    "assistantHeading": {
+      "kind": "element",
+      "id": "assistantHeading",
+      "tag": "h2",
+      "children": [
+        "assistantHeading-text"
+      ],
+      "localStyle": [
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#8a7f6d"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "13px"
+          }
+        },
+        {
+          "property": "letter-spacing",
+          "value": {
+            "type": "text",
+            "value": "1.5px"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "text-transform",
+          "value": {
+            "type": "text",
+            "value": "uppercase"
+          }
+        }
+      ]
+    },
+    "assistantHeading-text": {
+      "kind": "text",
+      "id": "assistantHeading-text",
+      "content": {
+        "type": "literal",
+        "value": "Desk assistant"
+      }
+    },
+    "deskConversation": {
+      "kind": "component",
+      "id": "deskConversation",
+      "definitionId": "vict.ai.conversation",
+      "revision": "1",
+      "slots": {
+        "messages": {
+          "name": "messages",
+          "children": [
+            "assistantHello",
+            "sentEcho"
+          ]
+        },
+        "composer": {
+          "name": "composer",
+          "children": [
+            "deskPrompt"
+          ]
+        }
+      },
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Draft chat"
+        }
+      },
+      "localStyle": [
+        {
+          "property": "width",
+          "value": {
+            "type": "text",
+            "value": "100%"
+          }
+        }
+      ]
+    },
+    "assistantHello": {
+      "kind": "component",
+      "id": "assistantHello",
+      "definitionId": "vict.ai.message",
+      "revision": "1",
+      "slots": {},
+      "props": {
+        "role": {
+          "type": "literal",
+          "value": "assistant"
+        },
+        "text": {
+          "type": "literal",
+          "value": "This desk is a local presentation — nothing leaves the page. Type below and send; your note is echoed back here."
+        }
+      }
+    },
+    "sentEcho": {
+      "kind": "component",
+      "id": "sentEcho",
+      "definitionId": "vict.ai.message",
+      "revision": "1",
+      "slots": {},
+      "props": {
+        "role": {
+          "type": "literal",
+          "value": "user"
+        },
+        "text": {
+          "type": "ref",
+          "path": "state.lastSent"
+        }
+      }
+    },
+    "deskPrompt": {
+      "kind": "component",
+      "id": "deskPrompt",
+      "definitionId": "vict.ai.prompt-input",
+      "revision": "1",
+      "slots": {},
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Message"
+        },
+        "placeholder": {
+          "type": "literal",
+          "value": "Ask about the draft — stays on this page"
+        },
+        "value": {
+          "type": "ref",
+          "path": "state.promptDraft"
+        }
+      },
+      "outputs": {
+        "valueChange": {
+          "setState": {
+            "key": "promptDraft"
+          }
+        },
+        "send": {
+          "setState": {
+            "key": "lastSent"
+          }
+        }
+      }
+    },
+    "readingBody-text": {
+      "kind": "text",
+      "id": "readingBody-text",
+      "content": {
+        "type": "expression",
+        "expression": {
+          "type": "ref",
+          "path": "state.draftText"
+        }
+      }
+    }
+  },
+  "componentDefinitions": {},
+  "styleSources": {
+    "src.screen.compact.plain": {
+      "id": "src.screen.compact.plain",
+      "declarations": [
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "22px 16px"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "20px"
+          }
+        }
+      ],
+      "conditionId": "compact"
+    },
+    "src.screen.always.plain": {
+      "id": "src.screen.always.plain",
+      "declarations": [
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "40px 32px"
+          }
+        }
+      ]
+    },
+    "src.editorRow.compact.plain": {
+      "id": "src.editorRow.compact.plain",
+      "declarations": [
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "16px"
+          }
+        }
+      ],
+      "conditionId": "compact"
+    },
+    "src.draftCard.compact.plain": {
+      "id": "src.draftCard.compact.plain",
+      "declarations": [
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "18px"
+          }
+        }
+      ],
+      "conditionId": "compact"
+    },
+    "src.readingCard.compact.plain": {
+      "id": "src.readingCard.compact.plain",
+      "declarations": [
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "18px"
+          }
+        }
+      ],
+      "conditionId": "compact"
+    },
+    "src.assistantCard.compact.plain": {
+      "id": "src.assistantCard.compact.plain",
+      "declarations": [
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "18px"
+          }
+        }
+      ],
+      "conditionId": "compact"
+    }
+  },
+  "assets": {},
+  "tokens": {},
+  "conditions": {
+    "compact": {
+      "id": "compact",
+      "kind": "container",
+      "name": "studio-screen",
+      "query": "(max-width: 600px)"
+    },
+    "cond-narrow": {
+      "id": "cond-narrow",
+      "kind": "container",
+      "query": "(max-width: 760px)",
+      "name": "narrow"
+    }
+  },
+  "localState": {
+    "message": {
+      "key": "message",
+      "type": "string",
+      "initial": "Hello from my screen"
+    },
+    "accepted": {
+      "key": "accepted",
+      "type": "boolean",
+      "initial": false
+    },
+    "dialogOpen": {
+      "key": "dialogOpen",
+      "type": "boolean",
+      "initial": false
+    },
+    "busy": {
+      "key": "busy",
+      "type": "boolean",
+      "initial": false
+    },
+    "actionError": {
+      "key": "actionError",
+      "type": "string",
+      "initial": ""
+    },
+    "actionResult": {
+      "key": "actionResult",
+      "type": "string",
+      "initial": ""
+    },
+    "articleTitle": {
+      "key": "articleTitle",
+      "type": "string",
+      "initial": "Shipping at Founder Speed"
+    },
+    "draftText": {
+      "key": "draftText",
+      "type": "string",
+      "initial": "We almost shipped the beta twice in one week. Both times, the pause felt expensive — until it paid for itself.\n\nThis is the draft where I explain why slowing down for one sprint saved us the whole quarter."
+    },
+    "promptDraft": {
+      "key": "promptDraft",
+      "type": "string",
+      "initial": ""
+    },
+    "lastSent": {
+      "key": "lastSent",
+      "type": "string",
+      "initial": ""
+    },
+    "catalog_deskConversation_message": {
+      "key": "catalog_deskConversation_message",
+      "type": "string",
+      "initial": ""
+    }
+  }
+}

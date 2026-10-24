@@ -1,0 +1,5 @@
+{
+  "candidate": "7228ee3ccae4364da63a346c46010dde19b1992d",
+  "startedAt": "2026-10-24T11:56:28.922Z",
+  "request": "Continue this saved dashboard from its current source. Preserve the existing three summary cards, controls, menus, typed bindings, and Flow; the first Flow label was manually changed to \"Brief verified\" and must remain. Actual browser testing found that Settings and Workflow are each only 160px high because their attached shared cardStyle includes flex:1 1 160px. Their children overflow and the graph covers the Status filter pointer target. Correct the layout so each section contains its content and the filter can be clicked. Make narrow Studio preview widths work using the actual host semantics. Read current source first, make only the necessary bounded corrections, inspect appearance, and report what remains unverified. Do not recreate the screen or claim click/type testing."
+}

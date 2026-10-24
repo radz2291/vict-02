@@ -1,10 +1,12 @@
 import { defineConfig } from 'vite';
 import { svelte } from '@sveltejs/vite-plugin-svelte';
 import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 const installation = JSON.parse(readFileSync(new URL('./installation.json', import.meta.url), 'utf8'));
 // Public package exports only. No aliases, workspace links or Studio imports.
 export default defineConfig({
   plugins: [svelte()],
+  build: { rollupOptions: { input: { main: fileURLToPath(new URL('./index.html', import.meta.url)), capture: fileURLToPath(new URL('./capture.html', import.meta.url)) } } },
   define: { __CONSUMER_SOURCE__: JSON.stringify(installation.sourceCandidate) },
   // elkjs/main targets Node and references an optional web-worker package.
   // The Flow package's optional layout API explicitly loads elk.bundled.js;

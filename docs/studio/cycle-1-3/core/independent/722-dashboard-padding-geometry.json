@@ -1,0 +1,21 @@
+{
+  "phone": {
+    "width": 390,
+    "padding": "20px",
+    "cards": "column",
+    "outer": [
+      1280,
+      720
+    ]
+  },
+  "widePadding": {
+    "cards": "row",
+    "hostWidth": 908.7999877929688,
+    "outer": [
+      1280,
+      720
+    ],
+    "padding": "40px",
+    "width": 908.7999877929688
+  }
+}
