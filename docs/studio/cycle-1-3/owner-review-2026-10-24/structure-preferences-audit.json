@@ -1,0 +1,86 @@
+{
+  "date": "2026-10-24",
+  "kind": "Structure UI review against owner-supplied design preferences; source audit and read-only observation of two existing tabs",
+  "baselineDelivery": "b33b9eb6b74b4981683b9e80bcb210fe81deca8e",
+  "product": "be893f29d44f595a8d9982575c2199636df69597",
+  "originMain": "d7401bef6e48330796c74ec00c86db9622d48cdf",
+  "preferenceSource": {
+    "filename": "UI design preferences.txt",
+    "sha256": "7d9ef14e63528e2a29a3777aef603c0559c6e3699a6fea0bef2d7f429aa27715",
+    "readInFull": true,
+    "principleCount": 13,
+    "fullPrivateFileCopiedToRepository": false
+  },
+  "observations": [
+    {
+      "fixture": "Small independent fixture",
+      "visibleNodes": 6,
+      "surface": "Existing Structure tab",
+      "observation": "Multiple permanent control rows and bottom inspection area; duplicate fit command"
+    },
+    {
+      "fixture": "Larger owner document",
+      "visibleNodes": 48,
+      "surface": "Existing Structure tab",
+      "observation": "Graph shows a panned fragment with dense scaled labels; bottom inspection area cramped and clipped"
+    }
+  ],
+  "findings": [
+    "SU-01 Work area loses priority",
+    "SU-02 Capabilities have overlapping homes",
+    "SU-03 Selection also changes the view",
+    "SU-04 Disclosure and dismissal are incomplete",
+    "SU-05 Direct manipulation is separated from its object",
+    "SU-06 Nodes repeat information and overexpose implementation",
+    "SU-07 Structure uses a different control language",
+    "SU-08 Density needs accessible bounds"
+  ],
+  "preserve": [
+    "Canonical document and component ABI",
+    "Revision/draft/slot validation and authored-move Undo",
+    "Layout versus containment distinction",
+    "Current ELK layout and relationship projection",
+    "Keyboard alternatives and visible focus",
+    "Selection, drafts and per-document view context"
+  ],
+  "limits": [
+    "No browser clicks, camera changes, selection changes, document edits, provider calls or server restarts",
+    "Source-confirmed select/fit behavior was not newly replayed",
+    "No new small-window, zoom, keyboard or accessibility compliance test",
+    "This commit records review and correction direction only; no UI implementation or acceptance claim"
+  ],
+  "sources": [
+    {
+      "path": "apps/studio/src/lib/designer/StructureView.svelte",
+      "sha256": "eede913e43fc3605727f6001ef427b6fc5a5364d471c0cd813bb76073eb98779"
+    },
+    {
+      "path": "apps/studio/src/lib/designer/structure.ts",
+      "sha256": "edca050df25ac209b1f8623b12a496afe4d20852623cbe8bd81c80f2a856a4f6"
+    },
+    {
+      "path": "apps/studio/src/lib/designer/Designer.svelte",
+      "sha256": "2bda55db4f60bc336cff09060cb096f6ef71413c6ce3d2d906ea17f90156407e"
+    },
+    {
+      "path": "apps/studio/src/lib/designer/WorkspaceMenu.svelte",
+      "sha256": "23d709d4713a5050c667612b5a68aac7f437f04d1026b374eda9da01e068a529"
+    },
+    {
+      "path": "apps/studio/src/lib/designer/workspace.css",
+      "sha256": "660a1661deedbac71238e9debb6d6653c7f07b214451fdbeffee90f2510d3a6d"
+    },
+    {
+      "path": "packages/ui-flow-svelte/src/SourceNode.svelte",
+      "sha256": "3abf9b9486fbae3a8229956f4ba846abdd893ba9b26b73e6071f2853f10f2844"
+    },
+    {
+      "path": "packages/ui-flow-svelte/src/FlowCanvas.svelte",
+      "sha256": "4d53a40775f29958eba6f2d48a9b3b6c1b58bab12d3fe66cc352fa45eeb4795e"
+    },
+    {
+      "path": "packages/ui-flow-svelte/src/FlowNavigation.svelte",
+      "sha256": "880b6567e5bcf92677c123451c598e95dee5b1f232122af250deebfb3f6cc729"
+    }
+  ]
+}
