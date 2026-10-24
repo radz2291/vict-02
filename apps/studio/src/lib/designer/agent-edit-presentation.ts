@@ -25,6 +25,10 @@ const operationDefinitions = {
  bindAttribute:opSchema('bindAttribute',['nodeId','name'],{nodeId:identifier,name:identifier,expression:{$ref:'#/$defs/expression'}}),
  declareToken:opSchema('declareToken',['id','value'],{id:identifier,value:{type:'string',minLength:1,maxLength:500}}),
  declareCondition:opSchema('declareCondition',['id','kind','query'],{id:identifier,kind:{enum:['media','container']},query:{type:'string',minLength:1,maxLength:500},name:identifier}),
+ defineStyleSource:opSchema('defineStyleSource',['id','declarations'],{id:identifier,declarations:{$ref:'#/$defs/styleDeclarations'},conditionId:identifier,pseudo:{enum:['hover','focus','active','disabled']},replace:{type:'boolean'}}),
+ attachStyleSource:opSchema('attachStyleSource',['nodeId','sourceId'],{nodeId:identifier,sourceId:identifier,index:{type:'integer',minimum:0,maximum:1000}}),
+ detachStyleSource:opSchema('detachStyleSource',['nodeId','sourceId'],{nodeId:identifier,sourceId:identifier}),
+ removeStyleSource:opSchema('removeStyleSource',['id'],{id:identifier}),
  style:opSchema('style',['nodeId','property'],{nodeId:identifier,property:{type:'string',minLength:1,maxLength:80},value:{$ref:'#/$defs/styleValue'},conditionId:identifier,pseudo:{enum:['hover','focus','active','disabled']}}),
  wireInput:opSchema('wireInput',['nodeId','key'],{nodeId:identifier,key:{$ref:'#/$defs/stateKey'},initial:scalar}),
 };
@@ -45,6 +49,8 @@ export const editPresentation = {
     styles:{type:'object',propertyNames:{type:'string',minLength:1,maxLength:80},additionalProperties:{type:'string',maxLength:500}},
     expression:{oneOf:[{$ref:'#/$defs/literalExpression'},{$ref:'#/$defs/refExpression'}]},
     styleValue:{oneOf:[{$ref:'#/$defs/styleText'},{$ref:'#/$defs/styleToken'},{$ref:'#/$defs/styleBinding'}]},
+    styleDeclarations:{type:'array',minItems:0,maxItems:20,items:{$ref:'#/$defs/styleDeclaration'}},
+    styleDeclaration:{type:'object',additionalProperties:false,required:['property','value'],properties:{property:{type:'string',minLength:1,maxLength:80},value:{$ref:'#/$defs/styleValue'}}},
     styleText:{type:'object',additionalProperties:false,required:['type','value'],properties:{type:{const:'text'},value:{type:'string',maxLength:500}}},
     styleToken:{type:'object',additionalProperties:false,required:['type','id'],properties:{type:{const:'token'},id:identifier}},
     styleBinding:{type:'object',additionalProperties:false,required:['type','expression'],properties:{type:{const:'binding'},expression:{$ref:'#/$defs/expression'}}},
@@ -81,6 +87,7 @@ export const editPresentation = {
           type: { enum: ['string','number','boolean','isoDate','isoTime','stringList','numberList'] }, initial: {$ref:'#/$defs/propValue'},
           kind:{enum:['element','text','component','media','container']},tag:string,componentId:identifier,revision:identifier,
           id:identifier,name:identifier,query:string,property:string,value:{anyOf:[{$ref:'#/$defs/styleValue'},{type:'string',minLength:1,maxLength:500}]},conditionId:identifier,pseudo:{enum:['hover','focus','active','disabled']},
+          declarations:{$ref:'#/$defs/styleDeclarations'},replace:{type:'boolean'},sourceId:identifier,
           replacePlaceholder: { type: 'boolean', description: 'add only: false explicitly preserves seeded slot children; default replaces an unchanged seed.' },
           recipe: {
             type: 'string',

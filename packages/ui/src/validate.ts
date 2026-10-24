@@ -607,6 +607,9 @@ function validateNode(
       break;
     }
     case 'component': {
+      // Instance presentation is evaluated in the caller's lexical scope,
+      // including extension instances whose descriptors resolve later.
+      validatePresentation(ctx, node, scope);
       // Authored output connections (amendment §3.1): document-level checks
       // (binding shape, target-key existence, expression validity with the
       // `$output` scope, declared action ids). Descriptor-dependent checks
@@ -915,6 +918,18 @@ function validatePresentation(ctx: ValidateContext, node: UiNode, scope: UiScope
   const docRecord = document as unknown as Record<string, unknown>;
   const documentId = String(document.id);
   const styleSources = registryOf(docRecord, 'styleSources');
+  const validateSourceBindings = (sourceId: string): void => {
+    const source = styleSources[sourceId];
+    if (isPlainObject(source) && Array.isArray(source.declarations)) {
+      for (const declaration of source.declarations) {
+        if (!isPlainObject(declaration) || !isPlainObject(declaration.value) || declaration.value.type !== 'binding') continue;
+        // A shared source acquires its lexical scope where it is consumed,
+        // exactly like localStyle. Unattached definitions remain forward data.
+        issues.push(...checkExpression(declaration.value.expression as UiExpression, catalogs, scope, documentId, node.id)
+          .map(issue => ({ ...issue, styleSourceId: sourceId })));
+      }
+    }
+  };
   for (const sourceId of node.styleSources ?? []) {
     if (styleSources[sourceId] === undefined) {
       issues.push(
@@ -928,6 +943,16 @@ function validatePresentation(ctx: ValidateContext, node: UiNode, scope: UiScope
           },
         ),
       );
+    }
+    validateSourceBindings(sourceId);
+  }
+  if (node.kind === 'component') {
+    const definition = registryOf(docRecord, 'componentDefinitions')[node.definitionId];
+    if (isPlainObject(definition) && typeof definition.baseStyle === 'string' && !node.styleSources?.includes(definition.baseStyle)) {
+      // The existing renderer evaluates baseStyle on the component instance in
+      // its caller scope. Do not reinterpret it as the definition's own props.
+      // Missing baseStyle identities retain validateDefinition's diagnostic.
+      validateSourceBindings(definition.baseStyle);
     }
   }
   for (const declaration of node.localStyle ?? []) {

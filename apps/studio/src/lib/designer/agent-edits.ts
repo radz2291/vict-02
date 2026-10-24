@@ -16,6 +16,11 @@ import {
   setBaseStyle,
   setConditionalStyle,
   allowConditionalStyles,
+  defineStyleSource,
+  attachStyleSource,
+  detachStyleSource,
+  removeStyleSource,
+  StyleSourceEditError,
   wireNativeInput,
   interactiveSlotConflicts,
   compositionChildren,
@@ -50,6 +55,8 @@ const content = {
   styles: z.record(z.string().min(1).max(80), z.string().max(500)).optional(),
 };
 const position = { slotName: id.optional(), index: z.number().int().min(0).max(1000).optional() };
+const styleValue=z.union([z.object({type:z.literal('text'),value:z.string().max(500)}).strict(),z.object({type:z.literal('token'),id}).strict(),z.object({type:z.literal('binding'),expression}).strict()]);
+const styleDeclarations=z.array(z.object({property:z.string().min(1).max(80),value:styleValue}).strict()).max(20);
 export const agentOperationSchema = z.discriminatedUnion('op', [
   z.object({op:z.literal('insert'),kind:z.enum(['element','text','component']),nodeId:id,parentId:id,
     tag:z.string().min(1).max(60).optional(),componentId:id.optional(),revision:id.optional(),
@@ -70,6 +77,10 @@ export const agentOperationSchema = z.discriminatedUnion('op', [
   z.object({op:z.literal('bindAttribute'),nodeId:id,name:id,expression:expression.optional()}).strict(),
   z.object({op:z.literal('declareToken'),id,value:z.string().min(1).max(500)}).strict(),
   z.object({op:z.literal('declareCondition'),id,kind:z.enum(['media','container']),query:z.string().min(1).max(500),name:id.optional()}).strict(),
+  z.object({op:z.literal('defineStyleSource'),id,declarations:styleDeclarations,conditionId:id.optional(),pseudo:z.enum(['hover','focus','active','disabled']).optional(),replace:z.boolean().optional()}).strict(),
+  z.object({op:z.literal('attachStyleSource'),nodeId:id,sourceId:id,index:z.number().int().min(0).max(1000).optional()}).strict(),
+  z.object({op:z.literal('detachStyleSource'),nodeId:id,sourceId:id}).strict(),
+  z.object({op:z.literal('removeStyleSource'),id}).strict(),
   z.object({op:z.literal('style'),nodeId:id,property:z.string().min(1).max(80),
     value:z.union([z.object({type:z.literal('text'),value:z.string().max(500)}).strict(),z.object({type:z.literal('token'),id}).strict(),z.object({type:z.literal('binding'),expression}).strict()]).optional(),
     conditionId:id.optional(),pseudo:z.enum(['hover','focus','active','disabled']).optional()}).strict(),
@@ -94,6 +105,7 @@ export const agentEditSchema = z
 export function agentEditDiagnostics(error:z.ZodError,input?:unknown) {
  const operations=input && typeof input==='object' && Array.isArray((input as {operations?:unknown}).operations) ? (input as {operations:unknown[]}).operations : [];
  const shape:Record<string,string>={insert:'insert(kind:element|text|component,nodeId,parentId,tag?|componentId+revision|text/expression?,slotName?,index?)',bindText:'bindText(nodeId,expression?)',bindAttribute:'bindAttribute(nodeId,name,expression?)',style:'style(nodeId,property,value?:text|token|binding,conditionId?,pseudo?)',declareToken:'declareToken(id,value)',declareCondition:'declareCondition(id,kind:media|container,query,name?)',add:'add(recipe,nodeId,parentId,slotName?,index?,text?,headingLevel?,attributes?,props?,styles?)',modify:'modify(nodeId,text?,headingLevel?,attributes?,props?,styles?)',move:'move(nodeId,newParentId,slotName?,index?)',remove:'remove(nodeId)',bind:'bind(nodeId,prop,expression?)',connect:'connect(nodeId,output,binding?)',declareState:'declareState(key,type:string|number|boolean|isoDate|isoTime|stringList|numberList,initial:matchingValue)',wireInput:'wireInput(nodeId,key,initial?)'};
+ Object.assign(shape,{defineStyleSource:'defineStyleSource(id,declarations:[{property,value:text|token|binding}],conditionId?,pseudo?,replace?:boolean)',attachStyleSource:'attachStyleSource(nodeId,sourceId,index?)',detachStyleSource:'detachStyleSource(nodeId,sourceId)',removeStyleSource:'removeStyleSource(id)'});
  return error.issues.slice(0,8).map(issue=>{
   const operation=typeof issue.path[1]==='number' ? issue.path[1] : undefined;
   const rawPath=issue.path.join('.');const path=rawPath.length>500 ? rawPath.slice(0,470)+'[path truncated]' : rawPath;let expected='';
@@ -102,6 +114,7 @@ export function agentEditDiagnostics(error:z.ZodError,input?:unknown) {
   else if(path.includes('.props'))expected='Expected a property record of scalar values or homogeneous string[]/number[] (max100). Example: {"options":["one","two"]}; mixed lists and object arrays are unsupported.';
   else if(path.endsWith('.initial'))expected='Expected a matching canonical scalar or homogeneous string[]/number[]; date/time strings must be valid ISO values.';
   else if(path.includes('.attributes'))expected='Expected string (max4000), finite number, or boolean. Native expressions use bindAttribute or wireInput.';
+  else if(path.includes('.declarations'))expected='Expected 1–20 ordered {property,value:{type:"text",value:string}|{type:"token",id}|{type:"binding",expression:literalOrRef}} declarations.';
   else if(operation!==undefined){const value=operations[operation];const op=value && typeof value==='object' ? (value as {op?:unknown}).op : undefined;expected=typeof op==='string' && shape[op] ? 'Expected '+shape[op]+'.' : 'Expected a declared registered insertion, source edit, typed-state, binding or presentation operation.';}
   return {...(operation===undefined ? {} : {operation}),path,message:(expected+' '+issue.message).trim().slice(0,700)};
  });
@@ -131,7 +144,7 @@ export const failure = (code: string, message: string): EditFailure => ({
 export function canonicalEditFailure(issues:readonly {code:string;message:string;[key:string]:unknown}[],operation?:number):EditFailure {
   const diagnostics=issues.slice(0,6).map(issue=>{
     const details:Record<string,unknown>={};
-    for(const key of ['nodeId','parentId','definitionId','extensionId','prop','property','output','stateKey','expected','actual','target','slot','slotName','hostCode']) {
+    for(const key of ['nodeId','parentId','definitionId','extensionId','prop','property','output','stateKey','expected','actual','target','slot','slotName','hostCode','styleSourceId','reference']) {
       const item=issue[key];if(typeof item==='string')details[key]=item.slice(0,300);else if(typeof item==='number'||typeof item==='boolean')details[key]=item;
     }
     return {...details,...(operation===undefined?{}:{operation}),code:issue.code,
@@ -173,8 +186,10 @@ export function prepareAgentEdit(
     );
   let working = document;
   const commands: UiEditCommand[] = [];
+  let activeOperation:number|undefined;
   try {
     for (const [operationIndex, operation] of parsed.data.operations.entries()) {
+      activeOperation=operationIndex;
       const next: UiEditCommand[] = [];
       let inserted:readonly UiNode[]=[];
       if(operation.op==='insert') {
@@ -254,6 +269,10 @@ export function prepareAgentEdit(
           next.push(...setConditionalStyle({requestId,nodeId:operation.nodeId,property:operation.property,value:operation.value,conditionId:operation.conditionId,pseudo:operation.pseudo}).commands);
         } else next.push(...setBaseStyle(working,{requestId,nodeId:operation.nodeId,property:operation.property,value:operation.value}).commands);
       }
+      if(operation.op==='defineStyleSource')next.push(...defineStyleSource({requestId,document:working,source:{id:operation.id,declarations:operation.declarations,...(operation.conditionId?{conditionId:operation.conditionId}:{}),...(operation.pseudo?{pseudo:operation.pseudo}:{})},replace:operation.replace}).commands);
+      if(operation.op==='attachStyleSource')next.push(...attachStyleSource({requestId,document:working,nodeId:operation.nodeId,sourceId:operation.sourceId,index:operation.index}).commands);
+      if(operation.op==='detachStyleSource')next.push(...detachStyleSource({requestId,document:working,nodeId:operation.nodeId,sourceId:operation.sourceId}).commands);
+      if(operation.op==='removeStyleSource')next.push(...removeStyleSource({requestId,document:working,sourceId:operation.id}).commands);
       if (operation.op === 'move') {
         const node = working.nodes[operation.nodeId];
         const recipe = node?.kind === 'component' ? screenRecipes.find(recipe => recipe.id === node.definitionId.replace('vict.catalog.', '')) : undefined;
@@ -389,7 +408,12 @@ export function prepareAgentEdit(
       document: working,
       digest: canonicalUiDocument(working).contentDigest,
     };
-  } catch {
+  } catch(error) {
+    if(error instanceof StyleSourceEditError){
+      const op=activeOperation===undefined?undefined:parsed.data.operations[activeOperation]?.op;
+      const field=error.field==='sourceId'&&(op==='defineStyleSource'||op==='removeStyleSource')?'id':error.field;
+      return {...failure(error.code,error.message.slice(0,700)),diagnostics:[{operation:activeOperation,path:`operations.${activeOperation}.${field}`,message:error.message.slice(0,700),...(error.nodeId?{nodeId:error.nodeId}:{}),...(error.sourceId?{styleSourceId:error.sourceId}:{})}]};
+    }
     return failure(
       'STUDIO_AGENT_INVALID_EDIT',
       'The edit could not be validated. The screen was preserved.',

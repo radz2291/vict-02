@@ -1,12 +1,12 @@
 import {
   createUiAuthoringRegistry, materializeAuthoringFragment, authoringSemanticIssues,
   compileUiDocument, defaultSemanticElementCatalog, canonicalUiDocument,
-  type UiDocument, type UiNode, type DocumentStorePort,
+  type UiDocument, type UiNode, type UiStyleSource, type DocumentStorePort,
 } from '@victframework/ui';
 import { catalogAuthoringPackage, catalogImplementations, validateSvelteComponentPlan } from '@victframework/ui-svelte';
 import { aiAuthoringPackage, aiAuthoringImplementations } from '@victframework/ui-ai-svelte/authoring';
 import { flowAuthoringPackage, flowAuthoringImplementations } from '@victframework/ui-flow-svelte/authoring';
-import { EditorBridge, insertRegisteredComponent, wireNativeInput } from '@victframework/ui-editor';
+import { EditorBridge, insertRegisteredComponent, wireNativeInput, defineStyleSource, attachStyleSource, detachStyleSource, removeStyleSource, StyleSourceEditError } from '@victframework/ui-editor';
 declare const __CONSUMER_SOURCE__: string;
 
 export const implementations = [...catalogImplementations, ...aiAuthoringImplementations, ...flowAuthoringImplementations];
@@ -61,6 +61,25 @@ export function runSourceProof() {
   check('Redo restores insertion', bridge.redo().ok && !!bridge.document.nodes['inserted-button']);
   check('canonical remove', bridge.apply({ requestId: 'consumer-remove', commands: [{ op: 'remove', nodeId: 'inserted-button', detachFromParent: true }] }).ok && !bridge.document.nodes['inserted-button']);
   check('Undo restores removed node', bridge.undo().ok && !!bridge.document.nodes['inserted-button']);
+  const sharedId = 'consumer-shared-style';
+  const shared = (color: string): UiStyleSource => ({ id: sharedId, declarations: [{ property: 'color', value: { type: 'text', value: color } }] });
+  const targets = ['recipient-label', 'chat'];
+  check('public shared style-source definition', bridge.apply(defineStyleSource({ requestId: 'consumer-style-define', document: bridge.document, source: shared('#355cc9') })).ok);
+  for (const nodeId of targets) check(`reuse shared style source on ${nodeId}`, bridge.apply(attachStyleSource({ requestId: `consumer-style-attach-${nodeId}`, document: bridge.document, nodeId, sourceId: sharedId })).ok && bridge.document.nodes[nodeId]?.styleSources?.includes(sharedId) === true);
+  const beforeStyleReplace = canonicalUiDocument(bridge.document).contentDigest;
+  check('explicit shared style-source replacement', bridge.apply(defineStyleSource({ requestId: 'consumer-style-replace', document: bridge.document, source: shared('#146a53'), replace: true })).ok && targets.every(nodeId => bridge.document.nodes[nodeId]?.styleSources?.includes(sharedId)));
+  check('Undo restores exact shared style source', bridge.undo().ok && canonicalUiDocument(bridge.document).contentDigest === beforeStyleReplace);
+  const redoneStyle = bridge.redo(), redoneColor = bridge.document.styleSources[sharedId]?.declarations[0]?.value;
+  check('Redo restores shared style replacement', redoneStyle.ok && redoneColor?.type === 'text' && redoneColor.value === '#146a53');
+  const beforeReferencedRemoval = canonicalUiDocument(bridge.document).contentDigest;
+  let referencedRemovalRefused = false;
+  try { bridge.apply(removeStyleSource({ requestId: 'consumer-style-remove-referenced', document: bridge.document, sourceId: sharedId })); }
+  catch (error) { referencedRemovalRefused = error instanceof StyleSourceEditError && error.code === 'UI_STYLE_SOURCE_EDIT' && error.field === 'sourceId'; }
+  check('referenced shared style deletion refused without source mutation', referencedRemovalRefused && canonicalUiDocument(bridge.document).contentDigest === beforeReferencedRemoval);
+  for (const nodeId of targets) check(`detach shared style source from ${nodeId}`, bridge.apply(detachStyleSource({ requestId: `consumer-style-detach-${nodeId}`, document: bridge.document, nodeId, sourceId: sharedId })).ok && !bridge.document.nodes[nodeId]?.styleSources?.includes(sharedId));
+  check('remove unused shared style source', bridge.apply(removeStyleSource({ requestId: 'consumer-style-remove-unused', document: bridge.document, sourceId: sharedId })).ok && !bridge.document.styleSources[sharedId]);
+  check('recreate shared style source', bridge.apply(defineStyleSource({ requestId: 'consumer-style-recreate', document: bridge.document, source: shared('#146a53') })).ok);
+  for (const nodeId of targets) check(`reattach recreated shared source to ${nodeId}`, bridge.apply(attachStyleSource({ requestId: `consumer-style-reattach-${nodeId}`, document: bridge.document, nodeId, sourceId: sharedId })).ok);
   const finish = Object.values(bridge.document.nodes).find(node => node.kind === 'component' && node.definitionId === 'vict.flow.node' && node.props?.id?.type === 'literal' && node.props.id.value === 'finish');
   if (finish?.kind === 'component') {
     const current = bridge.document, digest = canonicalUiDocument(current).contentDigest;
@@ -71,7 +90,9 @@ export function runSourceProof() {
   const saved = bridge.save(); check('explicit memory Save', saved.ok);
   const savedDigest = canonicalUiDocument(bridge.document).contentDigest;
   check('explicit memory reopen preserves canonical source', bridge.reopen().ok && canonicalUiDocument(bridge.document).contentDigest === savedDigest);
+  check('shared source and both attachments survive explicit Save/reopen', !!bridge.document.styleSources[sharedId] && targets.every(nodeId => bridge.document.nodes[nodeId]?.styleSources?.includes(sharedId)));
   check('typed date/time/list initials retained', bridge.document.localState.date?.type === 'isoDate' && bridge.document.localState.time?.type === 'isoTime' && bridge.document.localState.labels?.type === 'stringList' && bridge.document.localState.points?.type === 'numberList');
   return { sourceCandidate: __CONSUMER_SOURCE__, checks, passed: checks.every(item => item.passed), sourceDigest: savedDigest, nodeCount: Object.keys(bridge.document.nodes).length, stateCount: Object.keys(bridge.document.localState).length, registryContracts: registry.contracts.length, frameworkPackagesInstalled: 8,
+    sharedStyleEvidence: 'Canonical source/helper checks only; no computed CSS or visual assertion.',
     boundary: 'Public installed packages only. Source helper checks are local; browser interactions are verified separately. Save/reopen uses a disposable in-memory revision-checked store. Provider/shell/workflow execution is absent.' };
 }

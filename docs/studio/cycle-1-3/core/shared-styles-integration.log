@@ -1,0 +1,65 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-core-authoring/260831-VCT-02/apps/studio
+
+6:24:14 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-core-authoring/260831-VCT-02/packages/ui-svelte/src/document/DocumentHost.svelte:105:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+6:24:14 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-core-authoring/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:309:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+6:24:14 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-core-authoring/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:309:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+6:24:14 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-core-authoring/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:379:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+6:24:14 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-core-authoring/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:379:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+6:24:18 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-core-authoring/260831-VCT-02/packages/ui-editor/src/StateValuesPanel.svelte:106:6 A form label must be associated with a control
+https://svelte.dev/e/a11y_label_has_associated_control
+ ❯ tests/designer-core-authoring.test.ts (5 tests | 2 failed) 289ms
+     × reuses and replaces ordered shared styles through the agent, canonical history and persistence 112ms
+     × refuses invalid shared style operations atomically with bounded target diagnostics 51ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/designer-core-authoring.test.ts > shared registered authoring integration > reuses and replaces ordered shared styles through the agent, canonical history and persistence
+AssertionError: expected [] to have a length of 2 but got +0
+
+- Expected
++ Received
+
+- 2
++ 0
+
+ ❯ tests/designer-core-authoring.test.ts:50:67
+     48|     const rules=Object.values(compiled.plan.documentPlans??{}).flatMap…
+     49|     expect(rules.filter(rule=>rule.pseudo==='hover')).toHaveLength(2);
+     50|     expect(rules.filter(rule=>rule.conditionId==='shared-small')).toHa…
+       |                                                                   ^
+     51|     expect(bridge.document.nodes['card-a'].localStyle).toEqual([{prope…
+     52|     const before=canonicalUiDocument(bridge.document).contentDigest;
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/designer-core-authoring.test.ts > shared registered authoring integration > refuses invalid shared style operations atomically with bounded target diagnostics
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/designer-core-authoring.test.ts:79:25
+     77|     ]){
+     78|       const result=prepareAgentEdit(bridge.document,cursor,{expectedRe…
+     79|       expect(result.ok).toBe(false);if(result.ok)throw Error('invalid …
+       |                         ^
+     80|       expect(result.diagnostics?.length).toBeGreaterThan(0);
+     81|       expect(result.diagnostics![0].path).toBeTruthy();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  2 failed | 4 passed | 16 skipped (22)
+   Start at  18:23:59
+   Duration  28.85s (transform 18.18s, setup 0ms, import 27.86s, tests 304ms, environment 1ms)
+

@@ -22,6 +22,71 @@ function edit(bridge:EditorBridge,operations:AgentEdit['operations']){
   expect(applyAgentProposal(bridge,{proposalId,cursor,edit:request,resultDigest:prepared.digest},'epoch',false).ok).toBe(true);
 }
 describe('shared registered authoring integration',()=>{
+  it('reuses and replaces ordered shared styles through the agent, canonical history and persistence',()=>{
+    const bridge=setup();
+    edit(bridge,[
+      {op:'insert',kind:'element',tag:'article',nodeId:'card-a',parentId:'screen'},
+      {op:'insert',kind:'element',tag:'article',nodeId:'card-b',parentId:'screen'},
+      {op:'declareToken',id:'shared-accent',value:'#334155'},
+      {op:'declareState',key:'sharedSpace',type:'string',initial:'12px'},
+      {op:'declareCondition',id:'shared-small',kind:'media',query:'(max-width: 600px)'},
+      {op:'defineStyleSource',id:'card-base',declarations:[{property:'color',value:{type:'token',id:'shared-accent'}},{property:'padding',value:{type:'binding',expression:{type:'ref',path:'state.sharedSpace'}}}]},
+      {op:'attachStyleSource',nodeId:'card-a',sourceId:'card-base'},
+      {op:'attachStyleSource',nodeId:'card-b',sourceId:'card-base'},
+      {op:'defineStyleSource',id:'card-hover',pseudo:'hover',declarations:[{property:'color',value:{type:'text',value:'#115e59'}}]},
+      {op:'defineStyleSource',id:'card-compact',conditionId:'shared-small',declarations:[{property:'padding',value:{type:'text',value:'8px'}}]},
+      {op:'attachStyleSource',nodeId:'card-a',sourceId:'card-hover'},
+      {op:'attachStyleSource',nodeId:'card-a',sourceId:'card-compact'},
+      {op:'attachStyleSource',nodeId:'card-b',sourceId:'card-compact'},
+      {op:'attachStyleSource',nodeId:'card-b',sourceId:'card-hover',index:1},
+      {op:'style',nodeId:'card-a',property:'color',value:{type:'text',value:'red'}},
+    ]);
+    expect(bridge.document.nodes['card-a'].styleSources).toEqual(['card-base','card-hover','card-compact']);
+    expect(bridge.document.nodes['card-b'].styleSources).toEqual(['card-base','card-hover','card-compact']);
+    const compiled=compileScreen(bridge.document);expect(compiled.ok).toBe(true);
+    if(!compiled.ok)throw Error('shared source compilation');
+    const rules=Object.values(compiled.plan.documentPlans??{}).flatMap(plan=>plan.style.rules);
+    expect(rules.filter(rule=>rule.pseudo==='hover')).toHaveLength(2);
+    expect(rules.filter(rule=>rule.mediaConditionId==='shared-small')).toHaveLength(2);
+    expect(bridge.document.nodes['card-a'].localStyle).toEqual([{property:'color',value:{type:'text',value:'red'}}]);
+    const before=canonicalUiDocument(bridge.document).contentDigest;
+    edit(bridge,[{op:'defineStyleSource',id:'card-base',replace:true,declarations:[{property:'color',value:{type:'text',value:'#1d4ed8'}}]}]);
+    const after=canonicalUiDocument(bridge.document).contentDigest;
+    expect(after).not.toBe(before);
+    expect(bridge.document.nodes['card-b'].styleSources).toContain('card-base');
+    expect(bridge.undo().ok).toBe(true);expect(canonicalUiDocument(bridge.document).contentDigest).toBe(before);
+    expect(bridge.redo().ok).toBe(true);expect(canonicalUiDocument(bridge.document).contentDigest).toBe(after);
+    expect(bridge.save().ok).toBe(true);expect(bridge.reopen().ok).toBe(true);
+    expect(bridge.document.styleSources['card-base'].declarations[0].value).toEqual({type:'text',value:'#1d4ed8'});
+    edit(bridge,[{op:'defineStyleSource',id:'card-base',replace:true,declarations:[]}]);
+    expect(bridge.document.styleSources['card-base'].declarations).toEqual([]);
+    expect(bridge.document.nodes['card-b'].styleSources).toContain('card-base');
+    expect(bridge.undo().ok).toBe(true);
+    edit(bridge,[{op:'detachStyleSource',nodeId:'card-a',sourceId:'card-base'},{op:'detachStyleSource',nodeId:'card-b',sourceId:'card-base'},{op:'removeStyleSource',id:'card-base'}]);
+    expect(bridge.document.styleSources['card-base']).toBeUndefined();
+    expect(bridge.document.nodes['card-a'].styleSources).toEqual(['card-hover','card-compact']);
+  });
+  it('refuses invalid shared style operations atomically with bounded target diagnostics',()=>{
+    const bridge=setup();
+    edit(bridge,[{op:'defineStyleSource',id:'guarded',declarations:[{property:'color',value:{type:'text',value:'blue'}}]},{op:'attachStyleSource',nodeId:'screen',sourceId:'guarded'}]);
+    const cursor=documentCursor(bridge.document,bridge.getSnapshot().revision,'epoch');
+    const before=canonicalUiDocument(bridge.document).contentDigest;
+    for(const operations of [
+      [{op:'removeStyleSource',id:'guarded'}],
+      [{op:'attachStyleSource',nodeId:'screen',sourceId:'guarded'}],
+      [{op:'defineStyleSource',id:'guarded',declarations:[{property:'color',value:{type:'text',value:'red'}}]}],
+      [{op:'attachStyleSource',nodeId:'screen',sourceId:'missing'}],
+      [{op:'defineStyleSource',id:'invalid',declarations:[{property:'color',value:{type:'token',id:'missing-token'}}]}],
+      [{op:'defineStyleSource',id:'invalid',conditionId:'unknown-condition',declarations:[{property:'color',value:{type:'text',value:'red'}}]},{op:'attachStyleSource',nodeId:'screen',sourceId:'invalid'}],
+      [{op:'defineStyleSource',id:'invalid',declarations:[{property:'color',value:{type:'binding',expression:{type:'ref',path:'state.missing'}}}]},{op:'attachStyleSource',nodeId:'screen',sourceId:'invalid'}],
+    ]){
+      const result=prepareAgentEdit(bridge.document,cursor,{expectedRevision:cursor.revision,reason:'Shared source refusal',operations},crypto.randomUUID());
+      expect(result.ok,JSON.stringify(operations)).toBe(false);if(result.ok)throw Error('invalid shared edit admitted');
+      expect(result.diagnostics?.length).toBeGreaterThan(0);
+      expect(result.diagnostics![0].path).toBeTruthy();
+      expect(canonicalUiDocument(bridge.document).contentDigest).toBe(before);
+    }
+  });
   it('installs exact package registrations, selective contracts and uniform native discovery',()=>{
     expect(installedAuthoringRegistry.issues).toEqual([]);
     const bridge=setup(),cursor=documentCursor(bridge.document,bridge.getSnapshot().revision,'epoch');

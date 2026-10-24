@@ -1,6 +1,6 @@
 # Cycle 1.3 — reliable component authoring foundation
 
-2026-10-24. **AUTHORIZED; amended architecture independently PASS at3f6a918; first product e7d2b51 independently FAIL, bounded repairs in progress.**
+2026-10-24. **AUTHORIZED; amended architecture independently PASS at3f6a918. First product e7d2b51 FAIL; second9df22fa passes Studio checks but remains independently HELD for PV-05 and browser proof. Shared-source repair is ready for a new candidate.**
 The owner's new stage-manager brief supersedes report-only restrictions for core reliability, scalable component knowledge and supported authoring access. It does not authorize the reverted interaction work or Milestone 2. This document records scope before implementation; it is not a gate verdict or owner acceptance.
 
 ## Recovered baseline and preservation

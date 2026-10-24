@@ -6,6 +6,7 @@
   import { createTurnMetrics, phaseFailureStatus } from './agent-progress.js';
   import { createShowcaseFixture } from './showcase.js';
   import AuthoringGuidance from './AuthoringGuidance.svelte';
+  import SharedStyleShowcase from './SharedStyleShowcase.svelte';
 
   const guidanceFixture=createShowcaseFixture('vict.ai.prompt-input');
   const guidanceNode=guidanceFixture.document.nodes[guidanceFixture.targetNodeId];
@@ -131,6 +132,7 @@
     </section>
   </div>
   <section aria-label="Non-blocking source guidance example"><h3>Source guidance</h3><p class="muted">Actual guidance for a disposable read-only composer. The same collapsed details appear in Document → Source and saved Run when notes exist.</p><AuthoringGuidance document={guidanceSource} /></section>
+  <SharedStyleShowcase />
   <footer><strong>Try the actual authored compositions</strong><p><a href="/showcase?recipe=vict.ai.conversation#designer">Conversation</a><a href="/showcase?recipe=vict.ai.message#designer">Message</a><a href="/showcase?recipe=vict.ai.prompt-input#designer">Prompt input</a><a href="/showcase?recipe=vict.flow.canvas#designer">Read-only Flow canvas</a></p><span class="muted">Open the disposable Designer example to configure source, interact and review history. Chat presentation does not attach a provider; Flow presentation does not execute a workflow.</span></footer>
 </div>
 
