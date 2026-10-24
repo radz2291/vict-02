@@ -281,7 +281,7 @@
   .showcase-resizer { display: grid; grid-column: 2; grid-row: 1; height: 600px; }
   .showcase-document[hidden], .showcase-resizer[hidden], .showcase-document > [hidden] { display: none; }
   .inspector { grid-column: 1 / -1; }
-  .editor-grid.structure-expanded > .showcase-document { position: absolute; inset: 0; width: auto; height: min(800px, 80dvh); max-height: none; z-index: 20; }
+  .editor-grid.structure-expanded > .showcase-document { position: absolute; grid-column: 1 / -1; grid-row: 1; inset: 0; width: auto; height: min(900px, calc(100dvh - 32px)); max-height: none; z-index: 20; }
   aside { padding: 12px; background: white; border: 1px solid #d7dfe9; border-radius: 8px; max-height: 850px; overflow: auto; min-width: 0; }
   .preview-column { min-width: 0; } .composition-tools { margin-bottom: 10px; }
   .canvas { height: 560px; overflow: auto; border: 1px solid #d7dfe9; background: white; border-radius: 8px; container: studio-screen / inline-size; }
