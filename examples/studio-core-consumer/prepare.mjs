@@ -32,7 +32,7 @@ run('git', ['diff', '--exit-code', source, '--', ...packageDirs.map(item => `pac
 fs.writeFileSync(path.join(target, 'package.json'), JSON.stringify(manifest, null, 2) + '\n');
 const installLog = run(process.execPath, [npm, 'install', '--ignore-scripts', '--no-audit', '--no-fund', '--prefer-offline'], target);
 fs.writeFileSync(path.join(evidence, 'install.log'), installLog);
-for (const name of ['index.html', 'main.ts', 'vite.config.ts', 'App.svelte', 'proof.ts']) fs.copyFileSync(path.join(fixture, name), path.join(target, name));
+for (const name of ['index.html', 'main.ts', 'vite.config.ts', 'App.svelte', 'proof.ts', 'capture.html', 'capture-main.ts', 'CaptureProbe.svelte', 'capture-source.json']) fs.copyFileSync(path.join(fixture, name), path.join(target, name));
 for (const pkg of packages) {
   const installed = path.join(target, 'node_modules', ...pkg.name.split('/'));
   if (fs.lstatSync(installed).isSymbolicLink()) throw Error(`Workspace/symlink is not permitted: ${pkg.name}`);
@@ -47,4 +47,6 @@ const lockPaths = Object.keys(JSON.parse(lock).packages).filter(Boolean);
 const report = { sourceCandidate: source, createdAt: new Date().toISOString(), directory: target, npmVersion: run(process.execPath, [npm, '--version'], target).trim(), nodeVersion: process.version, packages, packageCount: packages.length, lockSha256: createHash('sha256').update(lock).digest('hex'), lockPackageCount: lockPaths.length, installedPackageCount: lockPaths.filter(item => fs.existsSync(path.join(target, item, 'package.json'))).length, aliases: [], workspaceLinks: false, fixture: 'examples/studio-core-consumer', limitation: 'Builder installation evidence. Browser outcomes and independent gate verdict are recorded separately.' };
 fs.writeFileSync(path.join(evidence, 'installation.json'), JSON.stringify(report, null, 2) + '\n');
 fs.writeFileSync(path.join(target, 'installation.json'), JSON.stringify(report, null, 2) + '\n');
+fs.mkdirSync(path.join(target, 'public'), { recursive: true });
+fs.copyFileSync(path.join(target, 'installation.json'), path.join(target, 'public', 'installation.json'));
 process.stdout.write(JSON.stringify(report, null, 2) + '\n');

@@ -1,0 +1,43 @@
+{
+  "sourceCandidate": "7228ee3ccae4364da63a346c46010dde19b1992d",
+  "createdAt": "2026-10-24T12:13:54.619Z",
+  "scope": "Disposable consumer fixture only; all8 framework packages unchanged and all684installedsrc/dist bytes reverified.",
+  "fixtureRevision": {
+    "name": "crop-and-original-blob-data-uri",
+    "captureProbeSha256": "be28cf153123aa89632f0bbda070ec04ef320a55f20b4b7bce217751624ccc47"
+  },
+  "captureApi": "captureRenderedElement(frame, actualViewport) for crop; captureRenderedElement(frame) for full.",
+  "crop": {
+    "viewportWidth": 420,
+    "viewportHeight": 460,
+    "sourceOffsetLeft": 30,
+    "sourceOffsetTop": 220,
+    "fixedSourceWidth": 640,
+    "implementation": "Real overflow-hidden DOM viewport, source frame relative left/top offsets; no source reflow, CSS date fix or substitute image."
+  },
+  "rawExport": "FileReader.readAsDataURL on exact returned JPEG Blob; visible readonly DOM textarea. No decoding/re-encoding/canvas alteration.",
+  "build": {
+    "status": "passed",
+    "seconds": 21.84,
+    "modules": 1832,
+    "memoryLimitMiB": 2048,
+    "outputFiles": 26,
+    "outputBytes": 2920933,
+    "log": "production-crop-build.log",
+    "logSha256": "d34ca8965d08185da0b1d239884de7f5351456abf0a7a22c7892bbf9ff496c2e",
+    "hashes": "production-output-hashes.json"
+  },
+  "priorStage": {
+    "evidence": "prior-initial/",
+    "productionDirectory": "C:\\Users\\RZ1\\.codex\\tmp\\studio-core-consumer-7228ee3\\dist-initial",
+    "preservation": "Original installed packages, tarballs, locks, source proof and first production hashes retained. Nothing deleted."
+  },
+  "server": {
+    "url": "http://127.0.0.11:5605/capture.html?fixture=crop2",
+    "pid": 89836,
+    "http": 200
+  },
+  "browser": {
+    "status": "Independent full+crop raw raster verification pending; verifier notified."
+  }
+}
