@@ -1,5 +1,7 @@
 # Cycle 1.3 — Structure presentation corrections
 
+> Placement update, 2026-10-24: the owner's accepted [Structure-in-Document change](CYCLE-1-3-STRUCTURE-DRAWER.md) now has independent scoped PASS at product `a36793df0f62c002332d66db181310554aaabb05`. The canvas remains visible in the normal drawer presentation. The older mode-placement record below is retained exact-product history; other agent/platform findings remain open.
+
 2026-10-24. **Owner-authorized Structure corrections independently PASS — READY FOR OWNER REVIEW.** The owner's instruction “Can you fix those now?” authorizes the eight Structure findings SU-01–SU-08 in the [UI preference review](CYCLE-1-3-AGENT-STRESS-REVIEW.md#structure-review-against-the-owners-current-ui-preferences). The supplied UI preferences are the design standard. This supersedes the report-only restriction for these presentation/interaction findings only. Agent authoring, menu identity, capture reliability, multi-page delivery and other OR findings remain report-only/open.
 
 ## Baseline and scope

@@ -1,0 +1,554 @@
+{
+  "schema": "vict.ui-document@1",
+  "id": "screen-a36cdd7b-8cd8-42ed-94e1-58cbbf5b3471",
+  "revision": "r1.r1",
+  "root": "screen",
+  "nodes": {
+    "screen": {
+      "kind": "element",
+      "id": "screen",
+      "tag": "main",
+      "attributes": {
+        "aria-label": "Canvas and Structure"
+      },
+      "children": [
+        "intro",
+        "details",
+        "contact",
+        "note"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "24px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "28px"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "900px"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#ffffff"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#243047"
+          }
+        }
+      ]
+    },
+    "intro": {
+      "id": "intro",
+      "kind": "element",
+      "tag": "section",
+      "attributes": {
+        "aria-label": "Overview"
+      },
+      "children": [
+        "intro-title",
+        "intro-copy"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "22px"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#edf1ff"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        }
+      ]
+    },
+    "details": {
+      "id": "details",
+      "kind": "element",
+      "tag": "section",
+      "attributes": {
+        "aria-label": "Project details"
+      },
+      "children": [
+        "details-title",
+        "details-copy"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "22px"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#f7f8fa"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        }
+      ]
+    },
+    "contact": {
+      "id": "contact",
+      "kind": "element",
+      "tag": "section",
+      "attributes": {
+        "aria-label": "Contact"
+      },
+      "children": [
+        "contact-title",
+        "contact-input"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "22px"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#f7f8fa"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        }
+      ]
+    },
+    "intro-title": {
+      "id": "intro-title",
+      "kind": "element",
+      "tag": "h1",
+      "children": [
+        "intro-title-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "30px"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.2"
+          }
+        }
+      ]
+    },
+    "intro-title-text": {
+      "id": "intro-title-text",
+      "kind": "text",
+      "content": {
+        "type": "literal",
+        "value": "Your next project"
+      }
+    },
+    "intro-copy": {
+      "id": "intro-copy",
+      "kind": "element",
+      "tag": "p",
+      "children": [
+        "intro-copy-text"
+      ],
+      "localStyle": [
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.6"
+          }
+        }
+      ]
+    },
+    "intro-copy-text": {
+      "id": "intro-copy-text",
+      "kind": "text",
+      "content": {
+        "type": "literal",
+        "value": "Build your workspace. Keep the design in view while exploring its structure."
+      }
+    },
+    "details-title": {
+      "id": "details-title",
+      "kind": "element",
+      "tag": "h2",
+      "children": [
+        "details-title-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "20px"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        }
+      ]
+    },
+    "details-title-text": {
+      "id": "details-title-text",
+      "kind": "text",
+      "content": {
+        "type": "literal",
+        "value": "Make room for ideas"
+      }
+    },
+    "details-copy": {
+      "id": "details-copy",
+      "kind": "element",
+      "tag": "p",
+      "children": [
+        "details-copy-text"
+      ],
+      "localStyle": [
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.6"
+          }
+        }
+      ]
+    },
+    "details-copy-text": {
+      "id": "details-copy-text",
+      "kind": "text",
+      "content": {
+        "type": "literal",
+        "value": "A clear canvas, a focused document panel, and room to explore."
+      }
+    },
+    "contact-title": {
+      "id": "contact-title",
+      "kind": "element",
+      "tag": "h2",
+      "children": [
+        "contact-title-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "20px"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        }
+      ]
+    },
+    "contact-title-text": {
+      "id": "contact-title-text",
+      "kind": "text",
+      "content": {
+        "type": "literal",
+        "value": "Stay in touch"
+      }
+    },
+    "contact-input": {
+      "id": "contact-input",
+      "kind": "element",
+      "tag": "input",
+      "attributes": {
+        "type": "text",
+        "aria-label": "Your name",
+        "placeholder": "Your name",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      },
+      "children": [],
+      "interactions": [
+        {
+          "on": "change",
+          "action": "setState",
+          "key": "message",
+          "value": {
+            "type": "ref",
+            "path": "state.message"
+          }
+        }
+      ],
+      "localStyle": [
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "1px solid #ccd4e3"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "6px"
+          }
+        },
+        {
+          "property": "width",
+          "value": {
+            "type": "text",
+            "value": "100%"
+          }
+        },
+        {
+          "property": "box-sizing",
+          "value": {
+            "type": "text",
+            "value": "border-box"
+          }
+        }
+      ]
+    },
+    "note": {
+      "id": "note",
+      "kind": "element",
+      "tag": "p",
+      "children": [
+        "note-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#78869c"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        }
+      ]
+    },
+    "note-text": {
+      "id": "note-text",
+      "kind": "text",
+      "content": {
+        "type": "literal",
+        "value": "A disposable example for reviewing the document drawer."
+      }
+    }
+  },
+  "componentDefinitions": {},
+  "styleSources": {},
+  "assets": {},
+  "tokens": {},
+  "conditions": {
+    "compact": {
+      "id": "compact",
+      "kind": "container",
+      "name": "studio-screen",
+      "query": "(max-width: 600px)"
+    }
+  },
+  "localState": {
+    "message": {
+      "key": "message",
+      "type": "string",
+      "initial": ""
+    },
+    "accepted": {
+      "key": "accepted",
+      "type": "boolean",
+      "initial": false
+    },
+    "dialogOpen": {
+      "key": "dialogOpen",
+      "type": "boolean",
+      "initial": false
+    },
+    "busy": {
+      "key": "busy",
+      "type": "boolean",
+      "initial": false
+    },
+    "actionError": {
+      "key": "actionError",
+      "type": "string",
+      "initial": ""
+    },
+    "actionResult": {
+      "key": "actionResult",
+      "type": "string",
+      "initial": ""
+    }
+  }
+}

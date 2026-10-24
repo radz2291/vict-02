@@ -1,5 +1,7 @@
 # Cycle 1.3 complete UI showcase
 
+> Structure drawer update, 2026-10-24: [updated Studio](http://127.0.0.6:5600/design) and [shared designer showcase](http://127.0.0.6:5600/showcase#designer) include Document → Structure beside the maintained canvas, focused inspection, sizing and Expand/Restore. Exact product `a36793df0f62c002332d66db181310554aaabb05` has [independent scoped PASS](CYCLE-1-3-STRUCTURE-DRAWER-INDEPENDENT.md). Read the [walkthrough and evidence](CYCLE-1-3-STRUCTURE-DRAWER.md). Existing server-side GLM is configured. Owner acceptance remains pending; other platform findings remain open and Stage 9 remains reopened. Earlier links/results below retain their historical scope.
+
 > Current review links, 2026-10-24: the authorized completion round has independent scoped PASS for owner review on product `be893f29d44f595a8d9982575c2199636df69597`. [Final report, finding matrix and walkthrough](CYCLE-1-3-COMPLETION-REPORT.md); [independent verdict](CYCLE-1-3-COMPLETION-INDEPENDENT.md). Live [Studio](http://127.0.0.3:5596/design), [complete showcase](http://127.0.0.3:5596/showcase#completion), [installed consumer](http://127.0.0.4:5597/). Earlier records/failed observations below are preserved historical evidence. Owner acceptance pending; Stage9 remains reopened.
 
 ## Additional owner request

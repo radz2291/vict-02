@@ -1,0 +1,226 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-24",
+  "timezone": "Asia/Kuala_Lumpur",
+  "product": "a36793df0f62c002332d66db181310554aaabb05",
+  "branch": "codex/studio-cycle-1-3-completion",
+  "entryDelivery": "84d0e95b06598709acc9e13493834fca04846a78",
+  "authorityCommit": "9a94dc5",
+  "main": "d7401bef6e48330796c74ec00c86db9622d48cdf",
+  "scope": "Owner-authorized Structure tab in Document beside the maintained Design/Interact canvas",
+  "independent": {
+    "verdict": "PASS — READY FOR OWNER REVIEW",
+    "report": "../../CYCLE-1-3-STRUCTURE-DRAWER-INDEPENDENT.md",
+    "sha256": "4f323c5e0f899a4ab7d9ef84831c409450a03ca2a02ced8362d67ccdcebebabc",
+    "closedFindings": [
+      "SD-01",
+      "SD-02",
+      "SD-03",
+      "SD-04"
+    ],
+    "finalChecks": [
+      "7/7 shared Structure tests PASS on final product",
+      "Svelte check 0 errors / 6 retained warnings in unchanged renderer/editor files on final product",
+      "14/14 full affected tests PASS independently at497549f; final affected browser/Structure rechecks on a367",
+      "diff check and exact remote/main identity matched"
+    ]
+  },
+  "builder": {
+    "finalProductionBuild": "PASS full client/server and Node adapter from stable exact a367 source",
+    "typeScript": "PASS at497549f; no later non-Svelte source changes; final independent Svelte check covers final UI TypeScript",
+    "affectedTests": "14/14 PASS at89 and497, including 5 composition and7Structure and2projection tests",
+    "launcher": "Syntax and occupied-port refusal PASS; no server changed by refusal",
+    "remainingWarnings": "6 retained renderer/editor Svelte warnings; existing shortcut/AgentChat localhost3000 caught network diagnostics in tests; existing chunk/circular dependency build warnings"
+  },
+  "presentation": {
+    "home": "Document → Structure",
+    "canvasModes": [
+      "Design",
+      "Interact"
+    ],
+    "initialWidth": 560,
+    "minWidth": 440,
+    "workspaceStackThreshold": 860,
+    "minCanvasWidth": 320,
+    "memory": "Session graph/selection/search/disclosure/camera and independently sized Structure width",
+    "inspection": "Single focused page; covered mounted graph inert; existing Inspector owns edits",
+    "capture": "Normal dock does not suppress visible canvas capture; explicit covering workbench retains capture refusal; no new model observation run"
+  },
+  "preview": {
+    "studio": "http://127.0.0.6:5600/design",
+    "showcase": "http://127.0.0.6:5600/showcase#designer",
+    "model": "zai/glm-5.3-flash",
+    "configuration": "Existing server-only credentials and endpoint reused; UI Ready; no model request by reviewers",
+    "original": "Owner5599 tab/source/chat not reloaded or edited; only agent-owned5600 preview restarted"
+  },
+  "fixture": {
+    "path": "fixture.json",
+    "id": "screen-a36cdd7b-8cd8-42ed-94e1-58cbbf5b3471",
+    "revision": "r1.r1",
+    "nodes": 17,
+    "applicationIdentity": "v1_9ded12002f2a1e2cc09eed481118db0ae03e6f49dd1a4531a4dfa3c32ca941f2",
+    "scope": "Synthetic disposable builder content, not the owner painting document"
+  },
+  "observations": {
+    "rootDesktop": {
+      "viewport": "1280x720",
+      "canvasWidth": 394,
+      "drawerWidth": 560,
+      "visibleGraphItems": 5,
+      "selection": "Overview graph group and matching canvas section visibly outlined",
+      "beforeAfterCamera": "translate(35.5135px,70.4631px) scale(0.873877)",
+      "beforeAfterCanvasScroll": "left0 top0",
+      "identity": "unchanged"
+    },
+    "independentViewports": [
+      "1500x900",
+      "1000x700",
+      "800x600",
+      "640x480 with default Chat"
+    ],
+    "journeys": [
+      "ordinary pointer/keyboard source selection with camera/scroll continuity",
+      "separate width memory through tabs/hide/reopen",
+      "runtime input continuity",
+      "Source/Data draft refusal and exact preservation",
+      "explicit hidden-source Design Locate and Interact refusal without half-transition",
+      "existing Inspector and state handoffs",
+      "canonical Move followed by Undo restores exact Source JSON",
+      "expanded Studio visible in stacked mode",
+      "expanded showcase spans full grid, reveals focused Restore, restores exact prior page scroll",
+      "inspection Tab excludes covered graph; Close returns graph keyboard operation"
+    ]
+  },
+  "retainedFailures": [
+    "Initial derived declaration order4Svelte errors, repaired",
+    "Initial Layers hidden-mount lifecycle regression, repaired",
+    "Wrong test-append path made no edit, corrected; wrong root test filters matched no tests, corrected; no passes claimed for those attempts",
+    "SD01 stackedExpand82.6px row on89, repaired",
+    "SD02 hiddenInteract Locate half-transition on89, repaired by clear pre-transition refusal",
+    "SD03 showcase constrained width on89, partial width repair497 then offscreen small-window expansion, repaired with explicit reveal/scroll restoration",
+    "SD04 coveredFlow nodes accepted Tab on497, repaired with inert",
+    "7db build was already transforming during final source change; never served or claimed as final; fresh full finala367 build completed"
+  ],
+  "sourcePins": [
+    {
+      "path": "apps/studio/src/lib/designer/Designer.svelte",
+      "gitBlob": "a6b8d5be059c12a031a5c0db371c48f9e9a9003c",
+      "sha256": "64ade0b6490d92c42922406040f8d343c4b6d865b5a1ec39e983a7c4b7f93e15"
+    },
+    {
+      "path": "apps/studio/src/lib/designer/StructureView.svelte",
+      "gitBlob": "64c491daacb39d24972b2474f9a4e78bfec10af6",
+      "sha256": "57c73ae2a741fcc77dc02621dca3ccb55672f8626b984e62e9bcd009871e9fc8"
+    },
+    {
+      "path": "apps/studio/src/lib/designer/StudioShowcase.svelte",
+      "gitBlob": "2ec67b4c69d611d14c97d3888893d96c60d6cd44",
+      "sha256": "4488c446486c5b7022062218d87ed9f82b4597814f93d89ecf5b2cd23933e601"
+    },
+    {
+      "path": "apps/studio/src/lib/designer/designer.css",
+      "gitBlob": "0d052b751487652c8d5adf57eb95986b5e6ffd83",
+      "sha256": "47caec12fcb4f0346c7d6980725441ae5d9cd4e0d346778168186e94e00790e5"
+    },
+    {
+      "path": "apps/studio/tests/ui/composition.test.ts",
+      "gitBlob": "005ea11c5895695af34d1b8ac210a41b536cbabf",
+      "sha256": "52aae8948579ef8d940b4f2d735512d7c78b254f405316521dacc9377989cdb1"
+    },
+    {
+      "path": "apps/studio/tests/ui/structure.test.ts",
+      "gitBlob": "b367a7eef7f99ada53996fd631504de5ee781b1f",
+      "sha256": "5ab72b491c9897ede2ec47ace7b81b7214b7c6d00265892e84348c003b78f010"
+    }
+  ],
+  "assets": [
+    {
+      "path": "canvas-and-structure.png",
+      "bytes": 67354,
+      "sha256": "c2e7ccc398cc14679125c230cb0c83e788e411bf2e1f1550fe6aa75d144ae439"
+    },
+    {
+      "path": "fixture.json",
+      "bytes": 11398,
+      "sha256": "0fe1b1d247e670e74d1db8f68b9373f3068056c7548adaecdb0d5387c026c28d"
+    },
+    {
+      "path": "focused-inspection.png",
+      "bytes": 69697,
+      "sha256": "185f6d8a04b72a2a8bbdd59cb40cefcb05ce91c4a099d41aa1f50ec96091ac0d"
+    }
+  ],
+  "localLogs": [
+    {
+      "name": "vict-structure-drawer-tests.log",
+      "localPath": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-structure-drawer-tests.log",
+      "sha256": "e39f3dc2cb2cac8d88b391d20fc767775f12178a643e4f9d35d5ad4ba2333868"
+    },
+    {
+      "name": "vict-structure-drawer-tests-14.log",
+      "localPath": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-structure-drawer-tests-14.log",
+      "sha256": "416008e5f9260471d8985a9210a151faa10fa3d935578fa5525223661ace8e89"
+    },
+    {
+      "name": "vict-structure-drawer-types.log",
+      "localPath": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-structure-drawer-types.log",
+      "sha256": "3b60fb077fa856d3551b84840f7c025e869ecdb01add9d0e01d3d7cc22953619"
+    },
+    {
+      "name": "vict-structure-drawer-svelte-final.log",
+      "localPath": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-structure-drawer-svelte-final.log",
+      "sha256": "d6642ce4d20db98f0d080e097a0a93e3420a1a9f9f17e39397fa367cc1f6176d"
+    },
+    {
+      "name": "vict-structure-drawer-build.log",
+      "localPath": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-structure-drawer-build.log",
+      "sha256": "5f0005d61038d931a4db6bfe38a3e9c829694a256495f8d3e72110e1084ddcd7"
+    },
+    {
+      "name": "vict-structure-drawer-repair-tests.log",
+      "localPath": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-structure-drawer-repair-tests.log",
+      "sha256": "e3c31c26a230215187349fc999dae3e3e39732d56407dc2d017a3ce110e86c65"
+    },
+    {
+      "name": "vict-structure-drawer-repair-tests-corrected.log",
+      "localPath": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-structure-drawer-repair-tests-corrected.log",
+      "sha256": "a6120769b8e5e75a03a27babfaf2fec1c6a9c231067418c5e15ba21b37100671"
+    },
+    {
+      "name": "vict-structure-drawer-repair-types.log",
+      "localPath": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-structure-drawer-repair-types.log",
+      "sha256": "3b60fb077fa856d3551b84840f7c025e869ecdb01add9d0e01d3d7cc22953619"
+    },
+    {
+      "name": "vict-structure-drawer-repair-svelte.log",
+      "localPath": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-structure-drawer-repair-svelte.log",
+      "sha256": "d6642ce4d20db98f0d080e097a0a93e3420a1a9f9f17e39397fa367cc1f6176d"
+    },
+    {
+      "name": "vict-structure-drawer-repair-build.log",
+      "localPath": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-structure-drawer-repair-build.log",
+      "sha256": "dcb271c15d1e80789d03d4507dd3928544b6904fd26183773156e5d2eaee510a"
+    },
+    {
+      "name": "vict-structure-drawer-inert-svelte.log",
+      "localPath": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-structure-drawer-inert-svelte.log",
+      "sha256": "d6642ce4d20db98f0d080e097a0a93e3420a1a9f9f17e39397fa367cc1f6176d"
+    },
+    {
+      "name": "vict-structure-drawer-inert-build.log",
+      "localPath": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-structure-drawer-inert-build.log",
+      "sha256": "254d5529475ed8dbbe8451c4c02292b2cbbbb96a0639d44f7475f5a6518d6cfc"
+    },
+    {
+      "name": "vict-structure-drawer-final-build.log",
+      "localPath": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-structure-drawer-final-build.log",
+      "sha256": "9b74ab15bdd90767bd8e0aa7fb4303e82b1a78bcd93283e756e8089d8c264330"
+    }
+  ],
+  "limits": [
+    "Focused UI verification; no general accessibility or all viewport certification",
+    "Other agent/platform findings remain open/report-only",
+    "No actual model/provider response or broad agent reliability acceptance",
+    "Owner acceptance pending; Stage9 REOPENED / IN PROGRESS; next allowed action owner hands-on review"
+  ]
+}

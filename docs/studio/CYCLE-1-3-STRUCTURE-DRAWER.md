@@ -1,6 +1,6 @@
 # Cycle 1.3 — Structure beside the canvas
 
-2026-10-24. **Owner-authorized implementation; candidate pending.** The owner accepted the proposal to put Structure in Document and said “make sure its not too tight… is my preference… do it now.” This supersedes the Structure-as-canvas-mode placement only. The thirteen supplied UI preferences remain the review standard.
+2026-10-24. **Independently PASS — READY FOR OWNER REVIEW.** The owner accepted the proposal to put Structure in Document and said “make sure its not too tight… is my preference… do it now.” This supersedes the Structure-as-canvas-mode placement only. The thirteen supplied UI preferences remain the review standard.
 
 ## Baseline and boundaries
 
@@ -36,3 +36,30 @@ SD-03 was additionally demonstrated in the showcase: its absolute expanded drawe
 Repaired candidate `497549f73dce8d869bdb0385ae93d843b629e250` passed all 14 affected tests, TypeScript, Svelte (0 errors / 6 retained warnings) and full production build. Independent actual rechecks closed SD-01 and SD-02 at this candidate. A further SD-04 keyboard failure was observed by builder and independently reproduced: Tab from Inspect entered a covered Flow node while the focused inspection page was open. Flow explicitly marks its children visible, overriding inherited hidden visibility. The covered drawer graph now becomes inert until inspection closes, keeping its layout/viewport mounted while excluding hidden controls from focus and accessibility. Earlier observations remain evidence; exact final candidate/build and affected independent challenge follow.
 
 The SD-03 width repair passed desktop measurement, but independent 800×600 testing found the expanded showcase jumped from its lower stacked row above the page viewport after clicking Expand. Explicit expansion now reveals the enlarged pane and focuses Restore; restoration returns to the preceding page scroll position. This scroll is tied only to the explicit workbench command. Ordinary selection and Document changes retain their camera/scroll behavior. The failed offscreen measurement is retained, not promoted to PASS.
+
+## Final verified result
+
+Exact product `a36793df0f62c002332d66db181310554aaabb05`, branch `codex/studio-cycle-1-3-completion`; main remains `d7401bef6e48330796c74ec00c86db9622d48cdf`. [Fresh independent verification](CYCLE-1-3-STRUCTURE-DRAWER-INDEPENDENT.md) is **PASS — READY FOR OWNER REVIEW**. SD-01–SD-04 are closed by their recorded repairs and affected production challenges. Historical pending/failure statements above retain their candidate scope.
+
+The final production client/server and Node adapter built successfully from unchanged exact final source. A preceding build was already transforming when the last showcase remedy was committed; it was never served or counted as final proof, and a complete final build was performed. Root's first repair-test wrapper ran from the wrong directory and matched no tests; the corrected Studio-directory run passed all 14. Final independent Structure tests passed 7/7; final independent Svelte checking passed with 0 errors / 6 retained warnings in unchanged renderer/editor files. The full 14 affected tests and Studio TypeScript passed at `497549f`; the only later product changes are the inert covered graph and explicit showcase workbench scrolling, covered by final tests, Svelte and actual browser challenge. No dependency or validation workaround was introduced.
+
+| Accepted behavior | Demonstrated result |
+| --- | --- |
+| Canvas priority and comfortable sizing | Canvas remains mounted/visible in the normal dock; Structure starts at 560px, independently resizable with a 440px minimum and remembered session width. 1500px review had 614px canvas plus 560px drawer; root 1280px screenshot has 394px canvas plus 560px drawer. |
+| Smaller windows | Stack below canvas when the available workspace is below 860px. Default Chat remains visible. At 640×480 the drawer and focused inspection stay bounded; explicit Expand provides more room. |
+| Deliberate selection/navigation | Pointer/keyboard graph selection preserves source identity, graph camera, canvas scroll and composition. Actual canvas outline matches the selected graph group. Locate is explicit; hidden Interact source refuses without changing mode/runtime, with a Design instruction. |
+| Stable context | Source/Structure, Data/Structure and drawer close/reopen retain graph search/camera and runtime input. Source and Data drafts refuse unsafe transitions and remain exact. |
+| Editing and recovery | Existing Inspector and Data/Actions handoffs; canonical Move and Undo restore exact source. No source transaction is created by opening/resizing/expanding the pane. |
+| Focus and expanded workbench | Covered graph controls excluded during focused inspection; closing restores graph keyboard access. Studio expansion stays visible; showcase expansion spans its editor, reveals Restore, then restores exact prior page scroll. |
+
+The existing owner `127.0.0.5:5599` tab, unsaved painting work and chat were not reloaded or edited. Review used a new `127.0.0.6:5600` production origin and disposable saved fixtures. Only the new agent-owned review server was restarted for builds. Existing server-side `zai/glm-5.3-flash` credentials/configuration are reused; the new UI shows Ready. No model request or repair of the reported agent-process failures was performed. Other agent/platform findings remain open/report-only. The source model, effects, component ABI, canonical validation, transaction history and provider semantics remain authoritative.
+
+Saved [evidence manifest](cycle-1-3/structure-drawer/evidence.json), [side-by-side screenshot](cycle-1-3/structure-drawer/canvas-and-structure.png), [focused inspection](cycle-1-3/structure-drawer/focused-inspection.png) and [disposable fixture](cycle-1-3/structure-drawer/fixture.json). The [review launcher](cycle-1-3/launch-structure-drawer-review.ps1) checks product-source parity and refuses an occupied port; syntax and occupied-port refusal passed. This is focused verification, not a universal viewport/accessibility certification or broad agent reliability verdict.
+
+## Owner walkthrough and next action
+
+Open [updated Studio](http://127.0.0.6:5600/design), then **Document → Structure**. The saved **Canvas and Structure** example is disposable review content. Select a group to see its canvas highlight, use its chevron to expand, resize the dividing edge, then try **Inspect**, **Object → Locate on canvas**, and **Expand / Restore**. Closing Document retains graph context. Normal canvas modes are now Design and Interact.
+
+The [showcase](http://127.0.0.6:5600/showcase#designer) has **Document → Structure** beside the recipe canvas and demonstrates the shared focused pages and workbench. Local sign-in remains `operator` / `studio-local-pass`; GLM is configured on the server.
+
+Next allowed action: owner hands-on review of this scoped candidate. Owner acceptance remains pending; Stage 9 stays REOPENED / IN PROGRESS. No main merge, package publication, deployment or Stage 9 closure follows.
