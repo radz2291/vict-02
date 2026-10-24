@@ -1,0 +1,207 @@
+INSTALLED TARBALLS / STANDALONE PUBLIC CONSUMER
+
+Canonical chat and Flow, outside Studio
+
+Eight framework packages installed from npm-packed local artifacts. No source aliases or workspace links. Source candidate 7228ee3ccae4364da63a346c46010dde19b1992d.
+
+Source helper checks
+
+PASS · 29/29 local checks · 86 strict pinned contracts
+
+Source check evidence and boundaries
+{
+  "sourceCandidate": "7228ee3ccae4364da63a346c46010dde19b1992d",
+  "checks": [
+    {
+      "name": "strict installed registry",
+      "passed": true,
+      "detail": "86 pinned contracts across 3 packages"
+    },
+    {
+      "name": "initial canonical compilation without error diagnostics",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "name": "exact renderer ABI and slot preflight",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "public native input wiring",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "public native textarea wiring",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "public native select wiring with nonfirst initial option",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "generic registered insertion",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "Undo restores exact source digest",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "Redo restores insertion",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "canonical remove",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "Undo restores removed node",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "public shared style-source definition",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "reuse shared style source on recipient-label",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "reuse shared style source on chat",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "explicit shared style-source replacement",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "Undo restores exact shared style source",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "Redo restores shared style replacement",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "referenced shared style deletion refused without source mutation",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "detach shared style source from recipient-label",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "detach shared style source from chat",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "remove unused shared style source",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "recreate shared style source",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "reattach recreated shared source to recipient-label",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "reattach recreated shared source to chat",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "new duplicate Flow identity is refused atomically",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "explicit memory Save",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "explicit memory reopen preserves canonical source",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "shared source and both attachments survive explicit Save/reopen",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "typed date/time/list initials retained",
+      "passed": true,
+      "detail": ""
+    }
+  ],
+  "passed": true,
+  "sourceDigest": "2dd96d606cefad1a01d8b03a4c9503ba38ba45564fe87d53e9a4c1841b574f2f",
+  "nodeCount": 25,
+  "stateCount": 9,
+  "registryContracts": 86,
+  "frameworkPackagesInstalled": 8,
+  "sharedStyleEvidence": "Canonical source/helper checks only; no computed CSS or visual assertion.",
+  "boundary": "Public installed packages only. Source helper checks are local; browser interactions are verified separately. Save/reopen uses a disposable in-memory revision-checked store. Provider/shell/workflow execution is absent."
+}
+
+Installed package paths and artifact hashes · Actual public capture fixture
+
+Authoring and history
+Insert button
+Remove button
+Undo
+Redo
+Save source
+Reopen source
+
+Reopen source: accepted
+
+Revision 3#0 · saved source · selection: public-consumer|flow. Runtime input values are ephemeral; Save stores canonical source and initials.
+
+Actual DocumentHost rendering
+
+The native input, textarea and select start from canonical state. Edit each field and leave it to commit its change; the bound text and observed local state follow. Type a chat message and send: its typed output updates local state only. The Flow diagram supports pan, zoom and keyboard selection; its topology and positions remain authored source.
+
+Recipient (native input and text reference)
+Avery
+Notes (native textarea and text reference)
+Native textarea initial
+Choice (native select and text reference)
+Alpha option
+Beta option
+beta
+
+How can I help?
+
+Send
+Next
+Start
+Finish
+Svelte Flow
+Observed local state
+{}
+Canonical source and current renderer diagnostics

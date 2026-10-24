@@ -1,0 +1,12 @@
+{
+  "method": "Read-only Pillow RGB mean absolute difference of first 400x200 crop pixels against matching windows of the independently produced full JPEG; no raster edit or re-encode",
+  "fullSize": [642,732],
+  "cropSize": [420,460],
+  "advertisedOffset": [30,221],
+  "comparisons": [
+    {"fullOffset":[30,221],"meanAbsoluteRgbDifference":13.6482},
+    {"fullOffset":[60,441],"meanAbsoluteRgbDifference":1.5529166666666665},
+    {"fullOffset":[60,442],"meanAbsoluteRgbDifference":7.990941666666667}
+  ],
+  "finding":"Actual pixels align with advertised crop plus the cloned root's additional relative left:-30px/top:-220px offset, rather than the advertised crop alone. JPEG differences are expected; the visual content and much closer double-offset match establish the defect."
+}

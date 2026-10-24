@@ -1,0 +1,21 @@
+import { readFileSync, writeFileSync, lstatSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+import { resolve } from 'node:path';
+const root=process.cwd(), candidate='7228ee3ccae4364da63a346c46010dde19b1992d';
+const evidence='C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-core-authoring/260831-VCT-02/docs/studio/cycle-1-3/core/consumer-7228ee3';
+const installation=JSON.parse(readFileSync(resolve(evidence,'installation.json'),'utf8'));
+const manifest=JSON.parse(readFileSync(resolve(evidence,'installed-byte-comparison.json'),'utf8'));
+const hash=path=>createHash('sha256').update(readFileSync(path)).digest('hex');
+const packages=manifest.packages.map(pkg=>{
+  const record=installation.packages.find(item=>item.name===pkg.name), name=pkg.name.split('/')[1];
+  const files=pkg.files.map(file=>({path:file.path,equal:hash(resolve(record.installedPath,file.path))===hash(resolve(root,'packages',name,file.path))}));
+  return {name:pkg.name,installedPath:record.installedPath,isLink:lstatSync(record.installedPath).isSymbolicLink(),tarballHashMatches:hash(record.tarball)===record.sha256,filesCompared:files.length,allEqual:files.every(file=>file.equal),mismatches:files.filter(file=>!file.equal)};
+});
+const fixtures=manifest.fixtureFiles.map(file=>({path:file.path,equal:hash(resolve(installation.directory,file.path))===file.sha256,sha256:file.sha256}));
+const packageJson=JSON.parse(readFileSync(resolve(installation.directory,'package.json'),'utf8'));
+const vite=readFileSync(resolve(installation.directory,'vite.config.ts'),'utf8');
+const tarballDependencies=Object.entries(packageJson.dependencies).every(([name,value])=>!name.startsWith('@victframework/')||value.startsWith('file:artifacts/')&&value.endsWith('.tgz'));
+const report={checkedAt:new Date().toISOString(),candidate,installationCandidate:installation.sourceCandidate,packages,fixtures,filesCompared:packages.reduce((n,p)=>n+p.filesCompared,0),tarballDependencies,noViteAliases:!(/alias\s*:/.test(vite)),passed:installation.sourceCandidate===candidate&&tarballDependencies&&!(/alias\s*:/.test(vite))&&packages.every(p=>!p.isLink&&p.tarballHashMatches&&p.allEqual)&&fixtures.every(f=>f.equal),boundary:'Independent read-only hashes and link checks of fresh installed packages against verifier exact-candidate source/built outputs. Fixture-only capture additions are separately hashed and are not relabeled product changes. No install/build or Studio aliases used by this verifier.'};
+writeFileSync(resolve(root,'docs/studio/cycle-1-3/core/independent/consumer-provenance-7228ee3.json'),JSON.stringify(report,null,2)+'\n');
+console.log(JSON.stringify({passed:report.passed,packages:packages.length,files:report.filesCompared,fixtures:fixtures.length}));
+if(!report.passed)process.exitCode=1;
