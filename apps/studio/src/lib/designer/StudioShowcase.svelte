@@ -10,6 +10,7 @@
   import type { UiRenderPlan, UiValue } from '@victframework/ui';
   import { actionInputs, catalogDescriptors, catalogImplementations, compileScreen, designerCatalogs, screenActionState } from './application.js';
   import { screenPlacementIssues } from './placement.js';
+  import AuthoringGuidance from './AuthoringGuidance.svelte';
   import { screenRecipes } from './recipes.js';
   import { screenStore } from './storage.js';
   import { createScreenSimulation, screenDispatcher } from './execution.js';
@@ -259,6 +260,7 @@
         {#if tools === 'inspector'}<Inspector document={source} selectedOccurrence={selected} onApply={apply} lastIssues={issues} componentDescriptors={catalogDescriptors} knownActionIds={designerCatalogs.actionIds} knownRouteIds={designerCatalogs.routeIds} {actionInputs} readEffective={effective} onTextDraftChange={(dirty: boolean) => propertyDraft = dirty} />{:else}<p>Select source on the design canvas to use its floating Format, Insert, Arrange and Connect tools. F10 focuses the palette.</p>{/if}
       </aside>
     </div>
+    <AuthoringGuidance document={source} />
     <details><summary>Canonical source (read only)</summary><pre>{JSON.stringify(source, null, 2)}</pre></details>
   {/if}
 </section>

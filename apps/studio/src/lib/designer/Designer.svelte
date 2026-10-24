@@ -7,7 +7,8 @@
   import { CompositionNavigator, authoredOccurrence, compositionSlots, compositionMembers, compositionTrail, firstCompositionSlot, type CompositionFocus } from '@victframework/ui-editor';
   import type { UiDocument, UiRenderPlan, UiValue } from '@victframework/ui';
   import { newScreen, compileScreen, screenIssues, screenApplication, screenName, screenActionState, designerCatalogs, actionInputs, catalogDescriptors, catalogImplementations } from './application.js';
-  import { screenPlacementIssues } from './placement.js';
+  import { screenPlacementIssues, screenAuthoringGuidance } from './placement.js';
+  import AuthoringGuidance from './AuthoringGuidance.svelte';
   import { screenStore, savedScreens } from './storage.js';
   import { screenRecipes } from './recipes.js';
   import { createScreenSimulation, screenDispatcher } from './execution.js';
@@ -302,7 +303,8 @@
     if (!bridge || !compilation?.ok) { notice = 'Resolve source diagnostics before saving.'; return false; }
     const result = bridge.save(); issues = result.ok ? [] : result.issues;
     if (!result.ok) { notice = 'Save refused. Your edits are still in this session.'; return false; }
-    notice = `Saved ${screenName(result.document)} · revision ${result.storedRevision}`;
+    const guidance=screenAuthoringGuidance(result.document);
+    notice = `Saved ${screenName(result.document)} · revision ${result.storedRevision}${guidance.count?` · ${guidance.count} source guidance notes in Document → Source`:''}`;
     library = library.map(item => item.id === result.document.id ? { id: item.id, name: screenName(result.document) } : item);
     return true;
   }
@@ -494,6 +496,7 @@
           <div class="section-heading"><h2>Available actions</h2><span>Connect them from an object's tools</span></div>
           {#each designerCatalogs.actionIds as id}<section class="action-card"><div><h3>{(editorLabels.actions[id as keyof typeof editorLabels.actions] ?? id).replace(' (simulated)','')}</h3><span class="simulation-badge" title="Local preview only; no live effects">Simulated</span></div><p>Uses</p><div class="action-inputs">{#each Object.keys(actionInputs[id] ?? {}) as key}<span>{editorLabels.actionInputs[key as keyof typeof editorLabels.actionInputs] ?? key}</span>{:else}<span>No inputs</span>{/each}</div></section>{/each}
         {:else if drawerTab === 'Source'}
+          <AuthoringGuidance document={source} />
           <label class="sr-only" for="canonical-source">Canonical UI document</label><textarea id="canonical-source" class="source-editor" wrap="off" spellcheck="false" bind:value={sourceDraft} oninput={() => sourceDraftDirty = true}></textarea>
           <div class="source-actions"><button type="button" disabled={!sourceDraftDirty} onclick={applySource}>Apply source</button><button type="button" disabled={!sourceDraftDirty} onclick={() => { sourceDraftDirty = false; sourceDraft = JSON.stringify(source, null, 2); sourceDraftRevision = snapshot?.revision ?? ''; issues = []; }}>Discard draft</button><button type="button" onclick={exportSource}>Export</button></div>
           <details class="application-attachment"><summary>Application attachment</summary><pre class="source-preview">{JSON.stringify(screenApplication(source), null, 2)}</pre></details>

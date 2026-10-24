@@ -77,11 +77,22 @@ export function authoringSemanticIssues(document:UiDocument,registry:UiAuthoring
     return expression.type==='literal'&&expression.value!==null?expression.value:undefined;
   };
   const unique=new Map<string,{occurrence:Occurrence;value:unknown}[]>();
+  const ownedPart=(child:Occurrence,owner:Occurrence,slot:string)=>{
+    const nearest=[...child.contexts].reverse().find(context=>context.node.definitionId===owner.node.definitionId);
+    return nearest?.path===owner.path&&nearest.slot===slot;
+  };
   for(const occurrence of occurrences){
     const descriptor=effectiveUiDescriptor(occurrence.node,registry.descriptors);
     const contract=descriptor&&registry.contracts.find(item=>item.descriptor.id===descriptor.id&&item.descriptor.revision===descriptor.revision);
     if(!contract)continue;
-    for(const slot of contract.capabilities.required??[])if(!(occurrence.node.slots?.[slot]?.children.length))emit('UI_AUTHORING_REQUIRED_SLOT',`Required slot '${slot}' is empty.`,occurrence,{slot});
+    // Required slot content is validated by the authoritative expanded renderer
+    // plan, including local fills, repeats and fallbacks. Raw source length is
+    // neither an equivalent check nor a replacement diagnostic contract.
+    const matchesChild=(child:Occurrence,ids:readonly string[])=>{
+      if(!ids.includes(child.node.definitionId))return false;
+      const expected=child.node.definitionId===contract.descriptor.id?contract.descriptor.revision:contract.dependencies?.find(dependency=>dependency.id===child.node.definitionId)?.revision;
+      return expected!==undefined&&effectiveUiDescriptor(child.node,registry.descriptors)?.revision===expected;
+    };
     for(const rule of contract.rules??[]){
       if(rule.kind==='ancestorSlot'){
         const provider=[...occurrence.contexts].reverse().find(context=>rule.placements.some(placement=>placement.definitionId===context.node.definitionId));
@@ -98,11 +109,11 @@ export function authoringSemanticIssues(document:UiDocument,registry:UiAuthoring
         const key=JSON.stringify([provider.path,rule.namespace??contract.descriptor.id,rule.property]);
         const values=unique.get(key)??[];values.push({occurrence,value:actual});unique.set(key,values);
       }else if(rule.kind==='requiredParts'){
-        const parts=occurrences.filter(child=>child.contexts.some(context=>context.path===occurrence.path&&context.slot===rule.slot)&&rule.definitionIds.includes(child.node.definitionId));
+        const parts=occurrences.filter(child=>ownedPart(child,occurrence,rule.slot)&&matchesChild(child,rule.definitionIds));
         if(parts.length<(rule.minimum??1))emit('UI_AUTHORING_REQUIRED_PART',`Slot '${rule.slot}' needs a supported part.`,occurrence,{slot:rule.slot,expected:rule.definitionIds,minimum:rule.minimum??1,actual:parts.length});
         else if(parts.some(part=>part.uncertain))emit('UI_AUTHORING_UNRESOLVED',`Required parts in '${rule.slot}' are conditional or repeated.`,occurrence,{slot:rule.slot},'warning');
       }else if(rule.kind==='pairedValues'){
-        const collect=(side:typeof rule.left)=>occurrences.filter(child=>side.definitionIds.includes(child.node.definitionId)&&child.contexts.some(context=>context.path===occurrence.path&&context.slot===side.slot)).map(child=>({child,value:value(child,side.property)}));
+        const collect=(side:typeof rule.left)=>occurrences.filter(child=>matchesChild(child,side.definitionIds)&&ownedPart(child,occurrence,side.slot)).map(child=>({child,value:value(child,side.property)}));
         const left=collect(rule.left),right=collect(rule.right);
         if([...left,...right].some(part=>part.value===undefined||part.child.uncertain))emit('UI_AUTHORING_UNRESOLVED','Paired identities contain dynamic/repeated values.',occurrence,{left:rule.left,right:rule.right},'warning');
         else{const l=left.map(item=>item.value),r=right.map(item=>item.value);if(l.some(item=>!r.includes(item))||r.some(item=>!l.includes(item)))emit('UI_AUTHORING_PAIRED_VALUES','Paired part identities must match.',occurrence,{leftValues:l,rightValues:r,left:rule.left,right:rule.right});}

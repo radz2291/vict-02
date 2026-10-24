@@ -1,0 +1,4 @@
+tests/ui/core-authoring-guidance.test.ts(14,10): error TS2704: The operand of a 'delete' operator cannot be a read-only property.
+tests/ui/core-authoring-guidance.test.ts(38,10): error TS2704: The operand of a 'delete' operator cannot be a read-only property.
+tests/ui/core-authoring-guidance.test.ts(41,5): error TS2542: Index signature in type 'Readonly<Record<string, UiNode>>' only permits reading.
+tests/ui/core-authoring-guidance.test.ts(42,81): error TS2339: Property 'push' does not exist on type 'readonly string[]'.

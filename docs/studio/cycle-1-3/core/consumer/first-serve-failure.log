@@ -1,0 +1,23 @@
+2026-10-24 17:52 MYT — retained first standalone consumer dev-start failure.
+Source packages: e7d2b51d3f22b549a0d4772ceaf8da623131da2c.
+Command: node node_modules/vite/bin/vite.js --host 127.0.0.11 --port 5605 --strictPort
+Vite 6.4.3 announced ready, then dependency pre-optimization terminated it:
+
+X [ERROR] Could not resolve "web-worker"
+    node_modules/elkjs/lib/main.js:39:29:
+      39 │         var Worker = require('web-worker');
+
+Error: Build failed with 1 error:
+node_modules/elkjs/lib/main.js:39:29: ERROR: Could not resolve "web-worker"
+Node.js v22.13.1; exit code 1.
+
+The fixture imports Flow /authoring, not the optional layout API. The pinned
+Flow layout API itself explicitly loads elkjs/lib/elk.bundled.js. The Svelte
+dependency crawl eagerly optimized elkjs's unused Node main entry. The bounded
+fixture repair excludes elkjs from eager dependency optimization; it introduces
+no source alias and does not change installed packages or source candidate.
+
+A second start repeated this same error because an incorrect relative copy
+path left the old consumer config in place. Correcting the copy to an absolute
+fixture path applied the intended optimizer exclusion. No package source was
+changed and no retry was reported as a successful browser observation.

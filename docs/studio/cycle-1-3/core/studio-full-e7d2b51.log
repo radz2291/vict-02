@@ -1,0 +1,1315 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-core-authoring/260831-VCT-02/apps/studio
+
+5:42:54 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-core-authoring/260831-VCT-02/packages/ui-svelte/src/document/DocumentHost.svelte:105:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+5:42:54 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-core-authoring/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:304:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+5:42:54 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-core-authoring/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:304:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+5:42:54 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-core-authoring/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:373:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+5:42:54 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-core-authoring/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:373:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+5:42:58 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-core-authoring/260831-VCT-02/packages/ui-editor/src/StateValuesPanel.svelte:106:6 A form label must be associated with a control
+https://svelte.dev/e/a11y_label_has_associated_control
+5:43:44 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-core-authoring/260831-VCT-02/packages/ui-svelte/src/document/DocumentHost.svelte:105:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+5:43:45 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-core-authoring/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:304:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+5:43:45 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-core-authoring/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:304:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+5:43:45 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-core-authoring/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:373:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+5:43:45 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-core-authoring/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:373:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+5:43:50 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-core-authoring/260831-VCT-02/packages/ui-editor/src/StateValuesPanel.svelte:106:6 A form label must be associated with a control
+https://svelte.dev/e/a11y_label_has_associated_control
+AggregateError: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1712:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 3000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 3000
+    }
+  ]
+}
+AggregateError: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1712:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 3000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 3000
+    }
+  ]
+}
+AggregateError: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1712:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 3000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 3000
+    }
+  ]
+}
+AggregateError: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1712:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 3000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 3000
+    }
+  ]
+}
+AggregateError: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1712:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 3000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 3000
+    }
+  ]
+}
+AggregateError: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1712:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 3000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 3000
+    }
+  ]
+}
+ ❯ tests/showcase.test.ts (4 tests | 3 failed) 244ms
+     × indexes and compiles all 83 examples in valid ancestor contexts 30ms
+     × keeps standalone catalog metadata identical to the actual recipe index 93ms
+     × edits typed lists with real undo/redo and save/reopen in a private memory store 47ms
+ ❯ tests/designer-required-slots.test.ts (5 tests | 5 failed) 70ms
+     × refuses missing bodies in source compilation and direct persistence 21ms
+     × refuses empty bodies in source compilation and direct persistence 3ms
+     × refuses nested bodies in source compilation and direct persistence 3ms
+     × refuses previously saved invalid source without erasing its bytes 6ms
+     × retains repairable authoring and rejects final-child removal until refilled 34ms
+ ❯ tests/designer-final-source-evidence.test.ts (2 tests | 1 failed) 47ms
+   × retains a complete, intentional all-83 source and preserves it through canonical save/reopen and undo/redo 32ms
+ ❯ tests/ui/completion-independent-fields.test.ts (1 test | 1 failed) 170ms
+   × changes two native fields and two boolean controls independently through real renderer events (DOM simulation) 168ms
+ ❯ tests/designer-preflight-independent.test.ts (2 tests | 2 failed) 70ms
+   × preflights required content in empty-repeat and accepts its filled positive control 29ms
+   × preflights required content in local-fallback and accepts its filled positive control 37ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 12 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/designer-final-source-evidence.test.ts > retains a complete, intentional all-83 source and preserves it through canonical save/reopen and undo/redo
+AssertionError: expected { available: 84, authored: 83, …(7) } to match object { authored: 83, …(2) }
+(6 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+    "authored": 83,
+    "catalogAuthored": 78,
+-   "missing": [],
++   "missing": [
++     "vict.ai.conversation",
++     "vict.ai.message",
++     "vict.ai.prompt-input",
++     "vict.flow.canvas",
++   ],
+  }
+
+ ❯ tests/designer-final-source-evidence.test.ts:15:44
+     13| it('retains a complete, intentional all-83 source and preserves it thr…
+     14|  const requested=screenRecipes.map(recipe=>recipe.id);
+     15|  expect(agentCoverage(document,requested)).toMatchObject({authored:83,…
+       |                                            ^
+     16|  expect(Object.keys(document.nodes).filter(id=>id.startsWith('retained…
+     17|  const headings=Object.values(document.nodes).filter(node=>node.kind==…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/12]⎯
+
+ FAIL  tests/designer-preflight-independent.test.ts > preflights required content in empty-repeat and accepts its filled positive control
+ FAIL  tests/designer-preflight-independent.test.ts > preflights required content in local-fallback and accepts its filled positive control
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/designer-preflight-independent.test.ts:69:90
+     67|     expect(rejected.ok).toBe(false);
+     68|     if (rejected.ok) return;
+     69|     expect(rejected.issues.some((issue) => issue.code === 'UI_COMPONEN…
+       |                                                                                          ^
+     70|     expect(compileScreen(fixture(mode, true)).ok).toBe(true);
+     71|   },
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/12]⎯
+
+ FAIL  tests/designer-required-slots.test.ts > required catalog slots at the saved application boundary > refuses missing bodies in source compilation and direct persistence
+ FAIL  tests/designer-required-slots.test.ts > required catalog slots at the saved application boundary > refuses empty bodies in source compilation and direct persistence
+AssertionError: expected [ { …(10) } ] to deeply equal ArrayContaining{…}
+
+- Expected
++ Received
+
+- ArrayContaining [
+-   ObjectContaining {
+-     "code": "UI_COMPONENT_SLOT_REQUIRED",
++ [
++   {
++     "code": "UI_COMPONENT_BINDING_INCOMPATIBLE",
++     "documentId": "required-slots",
++     "hostCode": "UI_AUTHORING_REQUIRED_SLOT",
++     "legacyEligible": true,
++     "message": "Required slot 'body' is empty.",
++     "nodeId": "dialog",
++     "path": "screen/dialog",
++     "semanticFingerprint": "7cfb77ea4ada161f3024f2f95096fac1bb49d954995978cc950fdc09367190e0",
++     "severity": "error",
++     "slot": "body",
+    },
+  ]
+
+ ❯ tests/designer-required-slots.test.ts:82:36
+     80|     (fill) => {
+     81|       const source = dialogSource(fill);
+     82|       expect(screenIssues(source)).toEqual(
+       |                                    ^
+     83|         expect.arrayContaining([expect.objectContaining({ code: 'UI_CO…
+     84|       );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/12]⎯
+
+ FAIL  tests/designer-required-slots.test.ts > required catalog slots at the saved application boundary > refuses nested bodies in source compilation and direct persistence
+AssertionError: expected [ { …(10) } ] to deeply equal ArrayContaining{…}
+
+- Expected
++ Received
+
+- ArrayContaining [
+-   ObjectContaining {
+-     "code": "UI_COMPONENT_SLOT_REQUIRED",
++ [
++   {
++     "code": "UI_COMPONENT_BINDING_INCOMPATIBLE",
++     "documentId": "required-slots",
++     "hostCode": "UI_AUTHORING_REQUIRED_SLOT",
++     "legacyEligible": true,
++     "message": "Required slot 'body' is empty.",
++     "nodeId": "nested",
++     "path": "screen/dialog/nested",
++     "semanticFingerprint": "ec30208a50dfa72c8092ccee5b17dacd44b0beb2c053cccd0d6ebeb3c1642ad8",
++     "severity": "error",
++     "slot": "body",
+    },
+  ]
+
+ ❯ tests/designer-required-slots.test.ts:82:36
+     80|     (fill) => {
+     81|       const source = dialogSource(fill);
+     82|       expect(screenIssues(source)).toEqual(
+       |                                    ^
+     83|         expect.arrayContaining([expect.objectContaining({ code: 'UI_CO…
+     84|       );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/12]⎯
+
+ FAIL  tests/designer-required-slots.test.ts > required catalog slots at the saved application boundary > refuses previously saved invalid source without erasing its bytes
+AssertionError: expected { status: 'invalid', …(3) } to match object { status: 'invalid', …(1) }
+(2 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "message": StringContaining "UI_COMPONENT_SLOT_REQUIRED",
++   "message": "stored document invalid: UI_COMPONENT_BINDING_INCOMPATIBLE — Required slot 'body' is empty.",
+    "status": "invalid",
+  }
+
+ ❯ tests/designer-required-slots.test.ts:106:55
+    104|     });
+    105|     bytes.set(SCREEN_PREFIX + source.id, raw);
+    106|     expect(screenStore(storage, source.id).rawLoad()).toMatchObject({
+       |                                                       ^
+    107|       status: 'invalid',
+    108|       message: expect.stringContaining('UI_COMPONENT_SLOT_REQUIRED'),
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/12]⎯
+
+ FAIL  tests/designer-required-slots.test.ts > required catalog slots at the saved application boundary > retains repairable authoring and rejects final-child removal until refilled
+AssertionError: expected [ { …(10) } ] to deeply equal ArrayContaining{…}
+
+- Expected
++ Received
+
+- ArrayContaining [
+-   ObjectContaining {
+-     "code": "UI_COMPONENT_SLOT_REQUIRED",
++ [
++   {
++     "code": "UI_COMPONENT_BINDING_INCOMPATIBLE",
++     "documentId": "required-slots",
++     "hostCode": "UI_AUTHORING_REQUIRED_SLOT",
++     "legacyEligible": true,
++     "message": "Required slot 'body' is empty.",
++     "nodeId": "dialog",
++     "path": "screen/dialog",
++     "semanticFingerprint": "7cfb77ea4ada161f3024f2f95096fac1bb49d954995978cc950fdc09367190e0",
++     "severity": "error",
++     "slot": "body",
+    },
+  ]
+
+ ❯ tests/designer-required-slots.test.ts:126:43
+    124|     expect(edited.ok).toBe(true);
+    125|     if (!edited.ok) return;
+    126|     expect(screenIssues(edited.document)).toEqual(
+       |                                           ^
+    127|       expect.arrayContaining([expect.objectContaining({ code: 'UI_COMP…
+    128|     );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/12]⎯
+
+ FAIL  tests/showcase.test.ts > Cycle 1.3 complete showcase fixtures > indexes and compiles all 83 examples in valid ancestor contexts
+AssertionError: expected [ { id: 'section', …(4) }, …(86) ] to have a length of 83 but got 87
+
+- Expected
++ Received
+
+- 83
++ 87
+
+ ❯ tests/showcase.test.ts:26:29
+     24| describe('Cycle 1.3 complete showcase fixtures', () => {
+     25|   it('indexes and compiles all 83 examples in valid ancestor contexts'…
+     26|     expect(showcaseCatalog).toHaveLength(83);
+       |                             ^
+     27|     expect(new Set(showcaseCatalog.map(entry => entry.id)).size).toBe(…
+     28|     for (const entry of showcaseCatalog) {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/12]⎯
+
+ FAIL  tests/showcase.test.ts > Cycle 1.3 complete showcase fixtures > keeps standalone catalog metadata identical to the actual recipe index
+AssertionError: expected [ { id: 'section', …(4) }, …(82) ] to deeply equal [ { id: 'section', …(4) }, …(86) ]
+
+- Expected
++ Received
+
+@@ -34,60 +34,67 @@
+      "label": "Text input",
+      "placements": [],
+    },
+    {
+      "category": "Standalone",
+-     "description": "Button · editable properties, declared slots and outputs",
++     "description": "Catalog · declared press action",
+      "id": "button",
+      "label": "Button",
+      "placements": [],
+    },
+    {
+      "category": "Standalone",
+-     "description": "Checkbox · editable properties, declared slots and outputs",
++     "description": "Independently wired boolean value and matching output",
+      "id": "checkbox",
+      "label": "Checkbox",
+      "placements": [],
+    },
+    {
+      "category": "Standalone",
+-     "description": "Select · editable properties, declared slots and outputs",
+-     "id": "select",
+-     "label": "Select",
++     "description": "Independently wired boolean value and matching output",
++     "id": "switch",
++     "label": "Switch",
+      "placements": [],
+    },
+    {
+      "category": "Standalone",
+-     "description": "Dialog · editable properties, declared slots and outputs",
++     "description": "Catalog · compose the body slot",
+      "id": "dialog",
+      "label": "Dialog",
+      "placements": [],
+    },
+    {
+      "category": "Standalone",
+-     "description": "Switch · editable properties, declared slots and outputs",
+-     "id": "switch",
+-     "label": "Switch",
++     "description": "Catalog · a quiet visual divider",
++     "id": "separator",
++     "label": "Separator",
++     "placements": [],
++   },
++   {
++     "category": "Standalone",
++     "description": "Catalog · editable properties, declared slots and events",
++     "id": "select",
++     "label": "Select",
+      "placements": [],
+    },
+    {
+      "category": "Standalone",
+-     "description": "Toggle · editable properties, declared slots and outputs",
++     "description": "Catalog · editable properties, declared slots and events",
+      "id": "toggle",
+      "label": "Toggle",
+      "placements": [],
+    },
+    {
+      "category": "Standalone",
+-     "description": "Select Multiple · editable properties, declared slots and outputs",
++     "description": "Catalog · editable properties, declared slots and events",
+      "id": "select-multiple",
+      "label": "Select Multiple",
+      "placements": [],
+    },
+    {
+      "category": "Context-owned part",
+-     "description": "Select Item · part for its compatible provider slot",
++     "description": "Catalog · part for a compatible component slot",
+      "id": "select-item",
+      "label": "Select Item",
+      "placements": [
+        {
+          "definitionId": "vict.catalog.select",
+@@ -99,25 +106,25 @@
+        },
+      ],
+    },
+    {
+      "category": "Standalone",
+-     "description": "Combobox · editable properties, declared slots and outputs",
++     "description": "Catalog · editable properties, declared slots and events",
+      "id": "combobox",
+      "label": "Combobox",
+      "placements": [],
+    },
+    {
+      "category": "Standalone",
+-     "description": "Combobox Multiple · editable properties, declared slots and outputs",
++     "description": "Catalog · editable properties, declared slots and events",
+      "id": "combobox-multiple",
+      "label": "Combobox Multiple",
+      "placements": [],
+    },
+    {
+      "category": "Context-owned part",
+-     "description": "Combobox Item · part for its compatible provider slot",
++     "description": "Catalog · part for a compatible component slot",
+      "id": "combobox-item",
+      "label": "Combobox Item",
+      "placements": [
+        {
+          "definitionId": "vict.catalog.combobox",
+@@ -129,25 +136,25 @@
+        },
+      ],
+    },
+    {
+      "category": "Standalone",
+-     "description": "Toggle Group · editable properties, declared slots and outputs",
++     "description": "Catalog · editable properties, declared slots and events",
+      "id": "toggle-group",
+      "label": "Toggle Group",
+      "placements": [],
+    },
+    {
+      "category": "Standalone",
+-     "description": "Toggle Group Multiple · editable properties, declared slots and outputs",
++     "description": "Catalog · editable properties, declared slots and events",
+      "id": "toggle-group-multiple",
+      "label": "Toggle Group Multiple",
+      "placements": [],
+    },
+    {
+      "category": "Context-owned part",
+-     "description": "Toggle Group Item · part for its compatible provider slot",
++     "description": "Catalog · part for a compatible component slot",
+      "id": "toggle-group-item",
+      "label": "Toggle Group Item",
+      "placements": [
+        {
+          "definitionId": "vict.catalog.toggle-group",
+@@ -159,25 +166,25 @@
+        },
+      ],
+    },
+    {
+      "category": "Standalone",
+-     "description": "Accordion · editable properties, declared slots and outputs",
++     "description": "Catalog · editable properties, declared slots and events",
+      "id": "accordion",
+      "label": "Accordion",
+      "placements": [],
+    },
+    {
+      "category": "Standalone",
+-     "description": "Accordion Multiple · editable properties, declared slots and outputs",
++     "description": "Catalog · editable properties, declared slots and events",
+      "id": "accordion-multiple",
+      "label": "Accordion Multiple",
+      "placements": [],
+    },
+    {
+      "category": "Context-owned part",
+-     "description": "Accordion Item · part for its compatible provider slot",
++     "description": "Catalog · part for a compatible component slot",
+      "id": "accordion-item",
+      "label": "Accordion Item",
+      "placements": [
+        {
+          "definitionId": "vict.catalog.accordion",
+@@ -189,109 +196,109 @@
+        },
+      ],
+    },
+    {
+      "category": "Standalone",
+-     "description": "Slider · editable properties, declared slots and outputs",
++     "description": "Catalog · editable properties, declared slots and events",
+      "id": "slider",
+      "label": "Slider",
+      "placements": [],
+    },
+    {
+      "category": "Standalone",
+-     "description": "Meter · editable properties, declared slots and outputs",
++     "description": "Catalog · editable properties, declared slots and events",
+      "id": "meter",
+      "label": "Meter",
+      "placements": [],
+    },
+    {
+      "category": "Standalone",
+-     "description": "Progress · editable properties, declared slots and outputs",
++     "description": "Catalog · editable properties, declared slots and events",
+      "id": "progress",
+      "label": "Progress",
+      "placements": [],
+    },
+    {
+      "category": "Standalone",
+-     "description": "Pagination · editable properties, declared slots and outputs",
++     "description": "Catalog · editable properties, declared slots and events",
+      "id": "pagination",
+      "label": "Pagination",
+      "placements": [],
+    },
+    {
+      "category": "Standalone",
+-     "description": "Date Field · editable properties, declared slots and outputs",
++     "description": "Catalog · editable properties, declared slots and events",
+      "id": "date-field",
+      "label": "Date Field",
+      "placements": [],
+    },
+    {
+      "category": "Standalone",
+-     "description": "Date Picker · editable properties, declared slots and outputs",
++     "description": "Catalog · editable properties, declared slots and events",
+      "id": "date-picker",
+      "label": "Date Picker",
+      "placements": [],
+    },
+    {
+      "category": "Standalone",
+-     "description": "Calendar · editable properties, declared slots and outputs",
++     "description": "Catalog · editable properties, declared slots and events",
+      "id": "calendar",
+      "label": "Calendar",
+      "placements": [],
+    },
+    {
+      "category": "Standalone",
+-     "description": "Time Field · editable properties, declared slots and outputs",
++     "description": "Catalog · editable properties, declared slots and events",
+      "id": "time-field",
+      "label": "Time Field",
+      "placements": [],
+    },
+    {
+      "category": "Standalone",
+-     "description": "Date Range Field · editable properties, declared slots and outputs",
++     "description": "Catalog · editable properties, declared slots and events",
+      "id": "date-range-field",
+      "label": "Date Range Field",
+      "placements": [],
+    },
+    {
+      "category": "Standalone",
+-     "description": "Date Range Picker · editable properties, declared slots and outputs",
++     "description": "Catalog · editable properties, declared slots and events",
+      "id": "date-range-picker",
+      "label": "Date Range Picker",
+      "placements": [],
+    },
+    {
+      "category": "Standalone",
+-     "description": "Range Calendar · editable properties, declared slots and outputs",
++     "description": "Catalog · editable properties, declared slots and events",
+      "id": "range-calendar",
+      "label": "Range Calendar",
+      "placements": [],
+    },
+    {
+      "category": "Standalone",
+-     "description": "Dropdown Menu · editable properties, declared slots and outputs",
++     "description": "Catalog · editable properties, declared slots and events",
+      "id": "dropdown-menu",
+      "label": "Dropdown Menu",
+      "placements": [],
+    },
+    {
+      "category": "Standalone",
+-     "description": "Context Menu · editable properties, declared slots and outputs",
++     "description": "Catalog · editable properties, declared slots and events",
+      "id": "context-menu",
+      "label": "Context Menu",
+      "placements": [],
+    },
+    {
+      "category": "Standalone",
+-     "description": "Menubar · editable properties, declared slots and outputs",
++     "description": "Catalog · editable properties, declared slots and events",
+      "id": "menubar",
+      "label": "Menubar",
+      "placements": [],
+    },
+    {
+      "category": "Context-owned part",
+-     "description": "Menubar Menu · part for its compatible provider slot",
++     "description": "Catalog · part for a compatible component slot",
+      "id": "menubar.menu",
+      "label": "Menubar Menu",
+      "placements": [
+        {
+          "definitionId": "vict.catalog.menubar",
+@@ -299,11 +306,11 @@
+        },
+      ],
+    },
+    {
+      "category": "Context-owned part",
+-     "description": "Dropdown Menu Item · part for its compatible provider slot",
++     "description": "Catalog · part for a compatible component slot",
+      "id": "dropdown-menu.item",
+      "label": "Dropdown Menu Item",
+      "placements": [
+        {
+          "definitionId": "vict.catalog.dropdown-menu",
+@@ -319,11 +326,11 @@
+        },
+      ],
+    },
+    {
+      "category": "Context-owned part",
+-     "description": "Dropdown Menu Sub · part for its compatible provider slot",
++     "description": "Catalog · part for a compatible component slot",
+      "id": "dropdown-menu.sub",
+      "label": "Dropdown Menu Sub",
+      "placements": [
+        {
+          "definitionId": "vict.catalog.dropdown-menu",
+@@ -339,11 +346,11 @@
+        },
+      ],
+    },
+    {
+      "category": "Context-owned part",
+-     "description": "Dropdown Menu Checkbox Item · part for its compatible provider slot",
++     "description": "Catalog · part for a compatible component slot",
+      "id": "dropdown-menu.checkbox-item",
+      "label": "Dropdown Menu Checkbox Item",
+      "placements": [
+        {
+          "definitionId": "vict.catalog.dropdown-menu",
+@@ -363,11 +370,11 @@
+        },
+      ],
+    },
+    {
+      "category": "Context-owned part",
+-     "description": "Dropdown Menu Checkbox Group · part for its compatible provider slot",
++     "description": "Catalog · part for a compatible component slot",
+      "id": "dropdown-menu.checkbox-group",
+      "label": "Dropdown Menu Checkbox Group",
+      "placements": [
+        {
+          "definitionId": "vict.catalog.dropdown-menu",
+@@ -383,11 +390,11 @@
+        },
+      ],
+    },
+    {
+      "category": "Context-owned part",
+-     "description": "Dropdown Menu Radio Group · part for its compatible provider slot",
++     "description": "Catalog · part for a compatible component slot",
+      "id": "dropdown-menu.radio-group",
+      "label": "Dropdown Menu Radio Group",
+      "placements": [
+        {
+          "definitionId": "vict.catalog.dropdown-menu",
+@@ -403,11 +410,11 @@
+        },
+      ],
+    },
+    {
+      "category": "Context-owned part",
+-     "description": "Dropdown Menu Radio Item · part for its compatible provider slot",
++     "description": "Catalog · part for a compatible component slot",
+      "id": "dropdown-menu.radio-item",
+      "label": "Dropdown Menu Radio Item",
+      "placements": [
+        {
+          "definitionId": "vict.catalog.dropdown-menu.radio-group",
+@@ -415,11 +422,11 @@
+        },
+      ],
+    },
+    {
+      "category": "Context-owned part",
+-     "description": "Dropdown Menu Group · part for its compatible provider slot",
++     "description": "Catalog · part for a compatible component slot",
+      "id": "dropdown-menu.group",
+      "label": "Dropdown Menu Group",
+      "placements": [
+        {
+          "definitionId": "vict.catalog.dropdown-menu",
+@@ -435,11 +442,11 @@
+        },
+      ],
+    },
+    {
+      "category": "Context-owned part",
+-     "description": "Dropdown Menu Separator · part for its compatible provider slot",
++     "description": "Catalog · part for a compatible component slot",
+      "id": "dropdown-menu.separator",
+      "label": "Dropdown Menu Separator",
+      "placements": [
+        {
+          "definitionId": "vict.catalog.dropdown-menu",
+@@ -455,11 +462,11 @@
+        },
+      ],
+    },
+    {
+      "category": "Context-owned part",
+-     "description": "Context Menu Item · part for its compatible provider slot",
++     "description": "Catalog · part for a compatible component slot",
+      "id": "context-menu.item",
+      "label": "Context Menu Item",
+      "placements": [
+        {
+          "definitionId": "vict.catalog.context-menu",
+@@ -475,11 +482,11 @@
+        },
+      ],
+    },
+    {
+      "category": "Context-owned part",
+-     "description": "Context Menu Sub · part for its compatible provider slot",
++     "description": "Catalog · part for a compatible component slot",
+      "id": "context-menu.sub",
+      "label": "Context Menu Sub",
+      "placements": [
+        {
+          "definitionId": "vict.catalog.context-menu",
+@@ -495,11 +502,11 @@
+        },
+      ],
+    },
+    {
+      "category": "Context-owned part",
+-     "description": "Context Menu Checkbox Item · part for its compatible provider slot",
++     "description": "Catalog · part for a compatible component slot",
+      "id": "context-menu.checkbox-item",
+      "label": "Context Menu Checkbox Item",
+      "placements": [
+        {
+          "definitionId": "vict.catalog.context-menu",
+@@ -519,11 +526,11 @@
+        },
+      ],
+    },
+    {
+      "category": "Context-owned part",
+-     "description": "Context Menu Checkbox Group · part for its compatible provider slot",
++     "description": "Catalog · part for a compatible component slot",
+      "id": "context-menu.checkbox-group",
+      "label": "Context Menu Checkbox Group",
+      "placements": [
+        {
+          "definitionId": "vict.catalog.context-menu",
+@@ -539,11 +546,11 @@
+        },
+      ],
+    },
+    {
+      "category": "Context-owned part",
+-     "description": "Context Menu Radio Group · part for its compatible provider slot",
++     "description": "Catalog · part for a compatible component slot",
+      "id": "context-menu.radio-group",
+      "label": "Context Menu Radio Group",
+      "placements": [
+        {
+          "definitionId": "vict.catalog.context-menu",
+@@ -559,11 +566,11 @@
+        },
+      ],
+    },
+    {
+      "category": "Context-owned part",
+-     "description": "Context Menu Radio Item · part for its compatible provider slot",
++     "description": "Catalog · part for a compatible component slot",
+      "id": "context-menu.radio-item",
+      "label": "Context Menu Radio Item",
+      "placements": [
+        {
+          "definitionId": "vict.catalog.context-menu.radio-group",
+@@ -571,11 +578,11 @@
+        },
+      ],
+    },
+    {
+      "category": "Context-owned part",
+-     "description": "Context Menu Group · part for its compatible provider slot",
++     "description": "Catalog · part for a compatible component slot",
+      "id": "context-menu.group",
+      "label": "Context Menu Group",
+      "placements": [
+        {
+          "definitionId": "vict.catalog.context-menu",
+@@ -591,11 +598,11 @@
+        },
+      ],
+    },
+    {
+      "category": "Context-owned part",
+-     "description": "Context Menu Separator · part for its compatible provider slot",
++     "description": "Catalog · part for a compatible component slot",
+      "id": "context-menu.separator",
+      "label": "Context Menu Separator",
+      "placements": [
+        {
+          "definitionId": "vict.catalog.context-menu",
+@@ -611,11 +618,11 @@
+        },
+      ],
+    },
+    {
+      "category": "Context-owned part",
+-     "description": "Menubar Item · part for its compatible provider slot",
++     "description": "Catalog · part for a compatible component slot",
+      "id": "menubar.item",
+      "label": "Menubar Item",
+      "placements": [
+        {
+          "definitionId": "vict.catalog.menubar.menu",
+@@ -631,11 +638,11 @@
+        },
+      ],
+    },
+    {
+      "category": "Context-owned part",
+-     "description": "Menubar Sub · part for its compatible provider slot",
++     "description": "Catalog · part for a compatible component slot",
+      "id": "menubar.sub",
+      "label": "Menubar Sub",
+      "placements": [
+        {
+          "definitionId": "vict.catalog.menubar.menu",
+@@ -651,11 +658,11 @@
+        },
+      ],
+    },
+    {
+      "category": "Context-owned part",
+-     "description": "Menubar Checkbox Item · part for its compatible provider slot",
++     "description": "Catalog · part for a compatible component slot",
+      "id": "menubar.checkbox-item",
+      "label": "Menubar Checkbox Item",
+      "placements": [
+        {
+          "definitionId": "vict.catalog.menubar.menu",
+@@ -675,11 +682,11 @@
+        },
+      ],
+    },
+    {
+      "category": "Context-owned part",
+-     "description": "Menubar Checkbox Group · part for its compatible provider slot",
++     "description": "Catalog · part for a compatible component slot",
+      "id": "menubar.checkbox-group",
+      "label": "Menubar Checkbox Group",
+      "placements": [
+        {
+          "definitionId": "vict.catalog.menubar.menu",
+@@ -695,11 +702,11 @@
+        },
+      ],
+    },
+    {
+      "category": "Context-owned part",
+-     "description": "Menubar Radio Group · part for its compatible provider slot",
++     "description": "Catalog · part for a compatible component slot",
+      "id": "menubar.radio-group",
+      "label": "Menubar Radio Group",
+      "placements": [
+        {
+          "definitionId": "vict.catalog.menubar.menu",
+@@ -715,11 +722,11 @@
+        },
+      ],
+    },
+    {
+      "category": "Context-owned part",
+-     "description": "Menubar Radio Item · part for its compatible provider slot",
++     "description": "Catalog · part for a compatible component slot",
+      "id": "menubar.radio-item",
+      "label": "Menubar Radio Item",
+      "placements": [
+        {
+          "definitionId": "vict.catalog.menubar.radio-group",
+@@ -727,11 +734,11 @@
+        },
+      ],
+    },
+    {
+      "category": "Context-owned part",
+-     "description": "Menubar Group · part for its compatible provider slot",
++     "description": "Catalog · part for a compatible component slot",
+      "id": "menubar.group",
+      "label": "Menubar Group",
+      "placements": [
+        {
+          "definitionId": "vict.catalog.menubar.menu",
+@@ -747,11 +754,11 @@
+        },
+      ],
+    },
+    {
+      "category": "Context-owned part",
+-     "description": "Menubar Separator · part for its compatible provider slot",
++     "description": "Catalog · part for a compatible component slot",
+      "id": "menubar.separator",
+      "label": "Menubar Separator",
+      "placements": [
+        {
+          "definitionId": "vict.catalog.menubar.menu",
+@@ -767,18 +774,18 @@
+        },
+      ],
+    },
+    {
+      "category": "Standalone",
+-     "description": "Command · editable properties, declared slots and outputs",
++     "description": "Catalog · editable properties, declared slots and events",
+      "id": "command",
+      "label": "Command",
+      "placements": [],
+    },
+    {
+      "category": "Context-owned part",
+-     "description": "Command Item · part for its compatible provider slot",
++     "description": "Catalog · part for a compatible component slot",
+      "id": "command.item",
+      "label": "Command Item",
+      "placements": [
+        {
+          "definitionId": "vict.catalog.command",
+@@ -790,11 +797,11 @@
+        },
+      ],
+    },
+    {
+      "category": "Context-owned part",
+-     "description": "Command Group · part for its compatible provider slot",
++     "description": "Catalog · part for a compatible component slot",
+      "id": "command.group",
+      "label": "Command Group",
+      "placements": [
+        {
+          "definitionId": "vict.catalog.command",
+@@ -806,18 +813,18 @@
+        },
+      ],
+    },
+    {
+      "category": "Standalone",
+-     "description": "Navigation Menu · editable properties, declared slots and outputs",
++     "description": "Catalog · editable properties, declared slots and events",
+      "id": "navigation-menu",
+      "label": "Navigation Menu",
+      "placements": [],
+    },
+    {
+      "category": "Context-owned part",
+-     "description": "Navigation Menu Item · part for its compatible provider slot",
++     "description": "Catalog · part for a compatible component slot",
+      "id": "navigation-menu.item",
+      "label": "Navigation Menu Item",
+      "placements": [
+        {
+          "definitionId": "vict.catalog.navigation-menu",
+@@ -829,11 +836,11 @@
+        },
+      ],
+    },
+    {
+      "category": "Context-owned part",
+-     "description": "Navigation Menu Link · part for its compatible provider slot",
++     "description": "Catalog · part for a compatible component slot",
+      "id": "navigation-menu.link",
+      "label": "Navigation Menu Link",
+      "placements": [
+        {
+          "definitionId": "vict.catalog.navigation-menu.item",
+@@ -841,11 +848,11 @@
+        },
+      ],
+    },
+    {
+      "category": "Context-owned part",
+-     "description": "Navigation Menu Sub · part for its compatible provider slot",
++     "description": "Catalog · part for a compatible component slot",
+      "id": "navigation-menu.sub",
+      "label": "Navigation Menu Sub",
+      "placements": [
+        {
+          "definitionId": "vict.catalog.navigation-menu",
+@@ -857,53 +864,46 @@
+        },
+      ],
+    },
+    {
+      "category": "Standalone",
+-     "description": "Avatar · editable properties, declared slots and outputs",
++     "description": "Catalog · editable properties, declared slots and events",
+      "id": "avatar",
+      "label": "Avatar",
+      "placements": [],
+    },
+    {
+      "category": "Standalone",
+-     "description": "Aspect Ratio · editable properties, declared slots and outputs",
++     "description": "Catalog · editable properties, declared slots and events",
+      "id": "aspect-ratio",
+      "label": "Aspect Ratio",
+      "placements": [],
+    },
+    {
+      "category": "Standalone",
+-     "description": "Separator · editable properties, declared slots and outputs",
+-     "id": "separator",
+-     "label": "Separator",
+-     "placements": [],
+-   },
+-   {
+-     "category": "Standalone",
+-     "description": "Label · editable properties, declared slots and outputs",
++     "description": "Catalog · editable properties, declared slots and events",
+      "id": "label",
+      "label": "Label",
+      "placements": [],
+    },
+    {
+      "category": "Standalone",
+-     "description": "Scroll Area · editable properties, declared slots and outputs",
++     "description": "Catalog · editable properties, declared slots and events",
+      "id": "scroll-area",
+      "label": "Scroll Area",
+      "placements": [],
+    },
+    {
+      "category": "Standalone",
+-     "description": "Toolbar · editable properties, declared slots and outputs",
++     "description": "Catalog · editable properties, declared slots and events",
+      "id": "toolbar",
+      "label": "Toolbar",
+      "placements": [],
+    },
+    {
+      "category": "Context-owned part",
+-     "description": "Toolbar Button · part for its compatible provider slot",
++     "description": "Catalog · part for a compatible component slot",
+      "id": "toolbar-button",
+      "label": "Toolbar Button",
+      "placements": [
+        {
+          "definitionId": "vict.catalog.toolbar",
+@@ -911,46 +911,46 @@
+        },
+      ],
+    },
+    {
+      "category": "Standalone",
+-     "description": "Link Preview · editable properties, declared slots and outputs",
++     "description": "Catalog · editable properties, declared slots and events",
+      "id": "link-preview",
+      "label": "Link Preview",
+      "placements": [],
+    },
+    {
+      "category": "Standalone",
+-     "description": "Tooltip · editable properties, declared slots and outputs",
++     "description": "Catalog · editable properties, declared slots and events",
+      "id": "tooltip",
+      "label": "Tooltip",
+      "placements": [],
+    },
+    {
+      "category": "Standalone",
+-     "description": "Popover · editable properties, declared slots and outputs",
++     "description": "Catalog · editable properties, declared slots and events",
+      "id": "popover",
+      "label": "Popover",
+      "placements": [],
+    },
+    {
+      "category": "Standalone",
+-     "description": "Alert Dialog · editable properties, declared slots and outputs",
++     "description": "Catalog · editable properties, declared slots and events",
+      "id": "alert-dialog",
+      "label": "Alert Dialog",
+      "placements": [],
+    },
+    {
+      "category": "Standalone",
+-     "description": "Tabs · editable properties, declared slots and outputs",
++     "description": "Catalog · editable properties, declared slots and events",
+      "id": "tabs",
+      "label": "Tabs",
+      "placements": [],
+    },
+    {
+      "category": "Context-owned part",
+-     "description": "Tabs Trigger · part for its compatible provider slot",
++     "description": "Catalog · part for a compatible component slot",
+      "id": "tabs-trigger",
+      "label": "Tabs Trigger",
+      "placements": [
+        {
+          "definitionId": "vict.catalog.tabs",
+@@ -958,11 +958,11 @@
+        },
+      ],
+    },
+    {
+      "category": "Context-owned part",
+-     "description": "Tabs Panel · part for its compatible provider slot",
++     "description": "Catalog · part for a compatible component slot",
+      "id": "tabs-panel",
+      "label": "Tabs Panel",
+      "placements": [
+        {
+          "definitionId": "vict.catalog.tabs",
+@@ -970,39 +970,11 @@
+        },
+      ],
+    },
+    {
+      "category": "Standalone",
+-     "description": "Collapsible · editable properties, declared slots and outputs",
++     "description": "Catalog · editable properties, declared slots and events",
+      "id": "collapsible",
+      "label": "Collapsible",
+-     "placements": [],
+-   },
+-   {
+-     "category": "Standalone",
+-     "description": "Compose authored messages and a prompt input in a conversation presentation.",
+-     "id": "vict.ai.conversation",
+-     "label": "Conversation",
+-     "placements": [],
+-   },
+-   {
+-     "category": "Standalone",
+-     "description": "Render a user or assistant message using the pinned public Message presentation.",
+-     "id": "vict.ai.message",
+-     "label": "Chat message",
+-     "placements": [],
+-   },
+-   {
+-     "category": "Standalone",
+-     "description": "Controlled text composer with typed change, send and stop intents.",
+-     "id": "vict.ai.prompt-input",
+-     "label": "Prompt input",
+-     "placements": [],
+-   },
+-   {
+-     "category": "Standalone",
+-     "description": "Read-only authored topology and positions with ephemeral pan, zoom and selection.",
+-     "id": "vict.flow.canvas",
+-     "label": "Flow canvas",
+      "placements": [],
+    },
+  ]
+
+ ❯ tests/showcase.test.ts:50:52
+     48|     // Explicit regeneration mode is used by the maintainer after chan…
+     49|     if (process.env.VICT_REGENERATE_SHOWCASE_CATALOG === '1') writeFil…
+     50|     expect(JSON.parse(readFileSync(path, 'utf8'))).toEqual(showcaseCat…
+       |                                                    ^
+     51|   });
+     52|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/12]⎯
+
+ FAIL  tests/showcase.test.ts > Cycle 1.3 complete showcase fixtures > edits typed lists with real undo/redo and save/reopen in a private memory store
+AssertionError: expected undefined to be 'numberList' // Object.is equality
+
+- Expected:
+"numberList"
+
++ Received:
+undefined
+
+ ❯ tests/showcase.test.ts:58:51
+     56|     expect(control).toMatchObject({ kind: 'component' });
+     57|     const key = `catalog_${targetNodeId}_value`;
+     58|     expect(bridge.document.localState[key]?.type).toBe('numberList');
+       |                                                   ^
+     59|     expect(bridge.apply(setStateInitial({ requestId: 'list-edit', docu…
+     60|     const changed = canonicalUiDocument(bridge.document).contentDigest;
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/12]⎯
+
+ FAIL  tests/ui/completion-independent-fields.test.ts > changes two native fields and two boolean controls independently through real renderer events (DOM simulation)
+AssertionError: expected [ { key: 'input_email', …(1) }, …(2) ] to deep equally contain { key: 'field_terms', value: true }
+
+- Expected:
+{
+  "key": "field_terms",
+  "value": true,
+}
+
++ Received:
+[
+  {
+    "key": "input_email",
+    "value": "test@example.com",
+  },
+  {
+    "key": "input_name",
+    "value": "Alice",
+  },
+  {
+    "key": "catalog_terms_root_checked",
+    "value": true,
+  },
+]
+
+ ❯ tests/ui/completion-independent-fields.test.ts:25:157
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/12]⎯
+
+
+ Test Files  5 failed | 52 passed | 2 skipped (59)
+      Tests  12 failed | 273 passed | 2 skipped (287)
+   Start at  17:42:36
+   Duration  392.61s (transform 50.11s, setup 0ms, import 256.47s, tests 65.57s, environment 36.64s)
+

@@ -9,8 +9,11 @@
   import { Menubar } from '@victframework/ui-svelte/catalog/menubar';
   import WorkspaceMenu from '$lib/designer/WorkspaceMenu.svelte';
   import WorkspaceBrand from '$lib/designer/WorkspaceBrand.svelte';
+  import AuthoringGuidance from '$lib/designer/AuthoringGuidance.svelte';
   import '@victframework/ui-svelte/styles.css';
   import '@victframework/ui-svelte/catalog.css';
+  import '@victframework/ui-ai-svelte/styles.css';
+  import '@victframework/ui-flow-svelte/styles.css';
   import '$lib/designer/workspace.css';
   let activeMenu=$state('');
   let source = $state<UiDocument>();
@@ -70,6 +73,7 @@
     <span class="run-screen-name">{source?screenName(source):'Saved screen'}</span>
   </header>
   <div class="workspace-scroll">
+    {#if source}<AuthoringGuidance document={source} />{/if}
     {#if failure}<p class="failure" role="alert">{failure}</p>
     {:else if source && plan}<main class="finished-frame workspace-screen" style:max-width={width==='fluid'?'none':`${width==='match'?matchedWidth:width}px`}><DocumentHost {plan} extensionDescriptors={catalogDescriptors} extensionImplementations={catalogImplementations} localState={source.localState} actionState={screenActionState} {resetSignal} {dispatch} navigate={() => {}} ariaLabel={screenName(source)} /></main>
     {:else if compiled && !compiled.ok}<p class="failure" role="alert">Saved application compilation failed.</p>{/if}
