@@ -114,7 +114,7 @@ export function agentEditDiagnostics(error:z.ZodError,input?:unknown) {
   else if(path.includes('.props'))expected='Expected a property record of scalar values or homogeneous string[]/number[] (max100). Example: {"options":["one","two"]}; mixed lists and object arrays are unsupported.';
   else if(path.endsWith('.initial'))expected='Expected a matching canonical scalar or homogeneous string[]/number[]; date/time strings must be valid ISO values.';
   else if(path.includes('.attributes'))expected='Expected string (max4000), finite number, or boolean. Native expressions use bindAttribute or wireInput.';
-  else if(path.includes('.declarations'))expected='Expected 1–20 ordered {property,value:{type:"text",value:string}|{type:"token",id}|{type:"binding",expression:literalOrRef}} declarations.';
+  else if(path.includes('.declarations'))expected='Expected 0 to 20 ordered {property,value:{type:"text",value:string}|{type:"token",id}|{type:"binding",expression:literalOrRef}} declarations.';
   else if(operation!==undefined){const value=operations[operation];const op=value && typeof value==='object' ? (value as {op?:unknown}).op : undefined;expected=typeof op==='string' && shape[op] ? 'Expected '+shape[op]+'.' : 'Expected a declared registered insertion, source edit, typed-state, binding or presentation operation.';}
   return {...(operation===undefined ? {} : {operation}),path,message:(expected+' '+issue.message).trim().slice(0,700)};
  });
