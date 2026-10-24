@@ -82,13 +82,14 @@ const ELEMENTS: readonly SemanticElementDef[] = [
   },
   {
     tag: 'select',
-    attributes: ['name', 'required', 'disabled'],
+    attributes: ['name', 'value', 'required', 'disabled'],
   },
   { tag: 'option', attributes: ['value', 'selected', 'disabled'] },
   {
     tag: 'textarea',
     attributes: [
       'name',
+      'value',
       'placeholder',
       'rows',
       'required',
