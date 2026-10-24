@@ -1,5 +1,9 @@
 # Cycle 1.3 — Context menus and shared Document Inspector
 
+> **REVERTED / NOT ACCEPTED — owner request, 2026-10-24.** The owner clarified that the shared bottom panel meant existing Structure inspection details usable from Layers as well; the floating editing tools were already correctly placed on the canvas. The attempted product incorrectly moved the editing controls into the shared panel. The owner then explicitly requested `git revert`. Product commits `ac8b696e048658f163b909eb292827c160d20a79` and `9421543071d604c4c9d5df27ea8150e96c7a76dc` were reverted with history-preserving commits `e727fdb` and `828e3ea5e35ea89a0a499ded686511e4a134b845`. Exact product source/tests/packages match prior independently verified product `a36793df0f62c002332d66db181310554aaabb05`. This reverts both the context menus and attempted shared Inspector. No corrected implementation follows without a further owner request. Earlier authority and failed observations below remain historical.
+
+The [independent report](CYCLE-1-3-CONTEXT-INSPECTOR-INDEPENDENT.md) retains CI-01 (the context trigger's catalog button styling collapsed the graph) and CI-02 (a first secondary pointer selection could open floating tools instead of the menu). The partial repair was pushed but not finally verified or accepted. Earlier builder integration tests and checks did not establish browser geometry or the intended product placement. The owner's correction supersedes the attempted interpretation below. Stage 9 remains REOPENED / IN PROGRESS; no new gate PASS, owner acceptance, merge or publication is claimed.
+
 2026-10-24. Owner authorized implementation: “OK pls do those update”, accepting the preceding contextual right-click and shared Inspector proposals. This amends the prior focused inspection placement; previous evidence remains historical within its scope.
 
 ## Entry and scope
