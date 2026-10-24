@@ -12,8 +12,9 @@ afterEach(() => {
   vi.restoreAllMocks(); vi.unstubAllGlobals(); toSvg.mockReset();
 });
 
-function fixture(rect: DOMRect, clipping?: DOMRect) {
+function fixture(rect: DOMRect, clipping?: DOMRect, rootStyle = 'width:640px;height:731.2px') {
   const frame = document.createElement('div');
+  frame.setAttribute('style', rootStyle);
   frame.innerHTML = '<div style="display:inline-flex;flex-wrap:wrap;width:112.912px;border:.8px solid;padding:8px 10px"><span>15</span><span>/</span><span>04</span><span>/</span><span>2026</span></div>';
   document.body.append(frame);
   vi.spyOn(frame, 'getBoundingClientRect').mockReturnValue(rect);
@@ -21,7 +22,14 @@ function fixture(rect: DOMRect, clipping?: DOMRect) {
   Object.defineProperty(document, 'fonts', { configurable: true, value: { ready: Promise.resolve() } });
   const viewport = clipping ? document.createElement('div') : undefined;
   if (viewport) vi.spyOn(viewport, 'getBoundingClientRect').mockReturnValue(clipping!);
-  toSvg.mockResolvedValue(`data:image/svg+xml;charset=utf-8,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg"><foreignObject width="${Math.ceil(rect.width)}" height="${Math.ceil(rect.height)}"><div xmlns="http://www.w3.org/1999/xhtml" style="width:640px;height:731.2px">${frame.innerHTML}</div></foreignObject></svg>`)}`);
+  toSvg.mockImplementation(async (_element, options) => {
+    const clone = frame.cloneNode(true) as HTMLElement;
+    // html-to-image applies options.style only to the cloned root, after
+    // copying the source computed styles. Exercise that real boundary here.
+    Object.assign(clone.style, options.style);
+    clone.setAttribute('xmlns', 'http://www.w3.org/1999/xhtml');
+    return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg"><foreignObject width="${Math.ceil(rect.width)}" height="${Math.ceil(rect.height)}">${clone.outerHTML}</foreignObject></svg>`)}`;
+  });
   let rasterSvg = '';
   vi.stubGlobal('Image', class {
     onload?: () => void;
@@ -48,6 +56,25 @@ it('scales only serialized clone layout and crop coordinates, preserving fractio
   expect(test.context.fillRect).toHaveBeenCalledWith(0, 0, 301, 201);
   expect(test.context.drawImage).toHaveBeenCalledWith(expect.anything(), 0, 0);
   expect(test.encode).toHaveBeenCalledWith(expect.any(Function), 'image/jpeg', 0.85);
+});
+
+it.each(['relative', 'absolute'])('normalizes only a %s captured root position before applying the measured viewport crop', async position => {
+  const test = fixture(new DOMRect(-10, 127.1, 641.6, 732), new DOMRect(20, 347.10001, 420, 460), `position:${position};left:-30px;top:-220px;right:4px;bottom:8px;width:640px;height:730.4px;margin:0`);
+  const child = test.frame.firstElementChild as HTMLElement;
+  child.style.position = 'relative'; child.style.left = '7px'; child.style.top = '11px';
+  const before = test.frame.outerHTML;
+  const capture = await captureRenderedElement(test.frame, test.viewport);
+  expect(capture).toMatchObject({ width: 420, height: 460, sourceWidth: 642, sourceHeight: 732, offsetLeft: 30, offsetTop: 221, cropped: true });
+  const xml = test.raster();
+  expect(xml.documentElement.getAttribute('viewBox')).toBe('60 442 840 920');
+  const cloneRoot = xml.querySelector('foreignObject')!.firstElementChild!.firstElementChild as HTMLElement;
+  expect(cloneRoot.style.position).toBe(position);
+  expect(cloneRoot.style.left).toBe('0px'); expect(cloneRoot.style.top).toBe('0px');
+  expect(cloneRoot.style.right).toBe('auto'); expect(cloneRoot.style.bottom).toBe('auto');
+  const cloneChild = cloneRoot.firstElementChild as HTMLElement;
+  expect(cloneChild.style.left).toBe('7px'); expect(cloneChild.style.top).toBe('11px');
+  expect(test.frame.outerHTML).toBe(before);
+  expect(test.context.fillRect).toHaveBeenCalledWith(0, 0, 420, 460);
 });
 
 it('keeps output pixel and JPEG byte budgets unchanged by internal layout scaling', async () => {

@@ -1,0 +1,110 @@
+[
+  {
+    "cls": "uv-f9d4318f-screen",
+    "left": "auto",
+    "position": "static",
+    "rect": {
+      "bottom": 858.3000259399414,
+      "height": 730.4000244140625,
+      "left": -9.199999809265137,
+      "right": 630.8000001907349,
+      "top": 127.9000015258789,
+      "width": 640,
+      "x": -9.199999809265137,
+      "y": 127.9000015258789
+    },
+    "tag": "MAIN",
+    "top": "auto",
+    "transform": "none"
+  },
+  {
+    "cls": "uv-root-screen-cfdc4e76-a075-466f-8cc0-e5a8ca60cd72-r1_r1",
+    "left": "auto",
+    "position": "static",
+    "rect": {
+      "bottom": 858.3000259399414,
+      "height": 730.4000244140625,
+      "left": -9.199999809265137,
+      "right": 630.8000001907349,
+      "top": 127.9000015258789,
+      "width": 640,
+      "x": -9.199999809265137,
+      "y": 127.9000015258789
+    },
+    "tag": "DIV",
+    "top": "auto",
+    "transform": "none"
+  },
+  {
+    "cls": "vict-controls ",
+    "left": "auto",
+    "position": "static",
+    "rect": {
+      "bottom": 858.3000259399414,
+      "height": 730.4000244140625,
+      "left": -9.199999809265137,
+      "right": 630.8000001907349,
+      "top": 127.9000015258789,
+      "width": 640,
+      "x": -9.199999809265137,
+      "y": 127.9000015258789
+    },
+    "tag": "DIV",
+    "top": "auto",
+    "transform": "none"
+  },
+  {
+    "cls": "frame svelte-gdrnd4",
+    "left": "-30px",
+    "position": "relative",
+    "rect": {
+      "bottom": 859.0999984741211,
+      "height": 732,
+      "left": -10,
+      "right": 631.6000366210938,
+      "top": 127.0999984741211,
+      "width": 641.6000366210938,
+      "x": -10,
+      "y": 127.0999984741211
+    },
+    "tag": "DIV",
+    "top": "-220px",
+    "transform": "none"
+  },
+  {
+    "cls": "capture-viewport svelte-gdrnd4 cropped",
+    "left": "auto",
+    "position": "static",
+    "rect": {
+      "bottom": 807.1000061035156,
+      "height": 460,
+      "left": 20,
+      "right": 440,
+      "top": 347.1000061035156,
+      "width": 420,
+      "x": 20,
+      "y": 347.1000061035156
+    },
+    "tag": "DIV",
+    "top": "auto",
+    "transform": "none"
+  },
+  {
+    "cls": "",
+    "left": "auto",
+    "position": "static",
+    "rect": {
+      "bottom": 807.1000061035156,
+      "height": 513.7000122070312,
+      "left": 20,
+      "right": 660,
+      "top": 293.3999938964844,
+      "width": 640,
+      "x": 20,
+      "y": 293.3999938964844
+    },
+    "tag": "SECTION",
+    "top": "auto",
+    "transform": "none"
+  }
+]
