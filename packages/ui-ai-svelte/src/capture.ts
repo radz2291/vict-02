@@ -43,7 +43,12 @@ export async function captureRenderedElement(element: HTMLElement, viewport?: HT
     width: sourceWidth, height: sourceHeight, pixelRatio: 1,
     // Options width/height also affect clone CSS. Restore the source's exact
     // content/border-box dimensions so padded elements do not expand/reflow.
-    style: { width: renderedStyle.width, height: renderedStyle.height, margin: '0' },
+    // The capture root becomes the image origin. Its external positioning is
+    // already represented by rect and the viewport crop; copying those offsets
+    // into the clone would apply them a second time. Keep its position mode
+    // (and therefore descendant containing-block behavior) and normalize only
+    // the root insets. Descendant positions and the source DOM stay untouched.
+    style: { width: renderedStyle.width, height: renderedStyle.height, margin: '0', left: '0px', top: '0px', right: 'auto', bottom: 'auto' },
     cacheBust: false,
     // Avatar fallbacks may retain a display:none img with src="". Embedding
     // that non-rendered image fetches the page HTML and fails image decoding.
