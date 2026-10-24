@@ -164,7 +164,7 @@ body:has(.finished-screen) {
 .design-workspace.structure-drawer.drawer-stacked { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 2fr) minmax(0, 3fr); }
 .design-workspace.structure-drawer.drawer-stacked > .document-drawer { position: static; width: auto; border-left: 0; border-top: 1px solid #dce2eb; }
 .design-workspace.structure-drawer.structure-expanded { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr); }
-.design-workspace.structure-expanded > .document-drawer { position: absolute; inset: 38px 0 0; width: auto; z-index: 30; }
+.design-workspace.structure-drawer.structure-expanded > .document-drawer { position: absolute; inset: 38px 0 0; width: auto; z-index: 30; }
 .drawer-resizer {display:grid;}
 .sidebar-tabs {
   display: flex;

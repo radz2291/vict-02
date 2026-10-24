@@ -65,7 +65,7 @@
     layoutDocument = id;
     const saved = presentations.get(id);
     viewport = saved?.viewport ?? { x: 24, y: 24, zoom: .85 };
-    collapsed = saved?.collapsed ?? new Set(graph.nodes.filter(node => node.data.occurrence && (node.data.childCount ?? 0) > 3 && node.data.sourceId !== document.root).map(node => node.id));
+    collapsed = saved?.collapsed ?? new Set(graph.nodes.filter(node => node.data.occurrence && (node.data.childCount ?? 0) > (presentation === 'drawer' ? 1 : 3) && node.data.sourceId !== document.root).map(node => node.id));
     inspectedId = saved?.inspectedId ?? (selectedNodeId ? structureId(id, 'node', selectedNodeId) : structureId(id, 'node', document.root));
     direction = saved?.direction ?? 'RIGHT'; search = saved?.search ?? ''; focusedId = saved?.focusedId;
     showBindings = saved?.bindings ?? false; showDefinitions = saved?.definitions ?? false; allowMoves = false;

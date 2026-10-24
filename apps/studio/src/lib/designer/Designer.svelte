@@ -32,6 +32,7 @@
     if (!source || textDraftDirty || sourceDraftDirty || renamingScreen) return;
     const find = () => [...(canvasScroll?.querySelectorAll<HTMLElement>('[data-ui-occ]') ?? [])].find(element => element.dataset.uiOcc === occurrence && element.getClientRects().length);
     if (!find()) {
+      if (mode === 'interact') { notice = 'This source is hidden in Interact. Switch to Design, then Locate on canvas to inspect its composition.'; return; }
       const report = resolveOccurrence(occurrence, source);
       const nearest = compositionTrail(source, { nodeId: report.sourceNodeId, slotName: '' }).at(-2);
       compositionFocus = nearest && compositionSlots(source, nearest.nodeId, catalogDescriptors).includes(nearest.slotName) ? nearest : undefined;

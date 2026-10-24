@@ -146,9 +146,16 @@
     if (request.occurrence) selectStructure(request.occurrence);
     if (request.destination === 'layers') { view = 'canvas'; documentOpen = true; }
     if (request.destination === 'design' && request.occurrence && source) {
-      const id = resolveOccurrence(request.occurrence, source).sourceNodeId;
-      const nearest = compositionTrail(source, { nodeId: id, slotName: '' }).at(-2);
-      compositionFocus = nearest && compositionSlots(source, nearest.nodeId, catalogDescriptors).includes(nearest.slotName) ? nearest : undefined;
+      const find = () => [...(canvasRoot?.querySelectorAll<HTMLElement>('[data-ui-occ]') ?? [])].find(element => element.dataset.uiOcc === request.occurrence && element.getClientRects().length);
+      if (!find()) {
+        if (mode === 'interact') { notice = 'Switch to Design to locate source inside a closed composition.'; return; }
+        const id = resolveOccurrence(request.occurrence, source).sourceNodeId;
+        const nearest = compositionTrail(source, { nodeId: id, slotName: '' }).at(-2);
+        compositionFocus = nearest && compositionSlots(source, nearest.nodeId, catalogDescriptors).includes(nearest.slotName) ? nearest : undefined;
+        await tick();
+      }
+      const target = find(); target?.scrollIntoView({ block: 'nearest', inline: 'nearest' }); target?.focus({ preventScroll: true });
+      notice = target ? 'Located on canvas.' : 'This source has no visible canvas element.'; return;
     }
     if (request.destination === 'inspector') tools = 'inspector';
     if (request.destination === 'data') selectedData = request.key ?? '';
