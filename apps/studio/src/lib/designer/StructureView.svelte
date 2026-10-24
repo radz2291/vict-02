@@ -199,18 +199,12 @@
   const moveSources = $derived(graph.nodes.filter(node => node.data.occurrence && node.data.sourceId !== document.root));
   const targetOptions = $derived(graph.nodes.filter(node => !!moveSource && valid({ source: moveSource, target: node.id, sourceHandle: 'content', targetHandle: 'container' })));
   let contextNode = $state(false);
-  let contextCursor: { documentId: string; revision: string; item?: string } | undefined;
   function prepareContext(target: Element): boolean {
     if (blocked) { onNotice('Apply or cancel your draft first.'); return false; }
     const wrapper = target.closest<HTMLElement>('.svelte-flow__node');
     const node = wrapper && nodes.find(node => node.id === wrapper.dataset.id);
     contextNode = !!node;
     if (node) select(node);
-    contextCursor = { documentId: document.id, revision, item: inspectedId };
-    return true;
-  }
-  function validateContext() {
-    if (blocked || !contextCursor || contextCursor.documentId !== document.id || contextCursor.revision !== revision || contextCursor.item !== inspectedId) { onNotice('The selection or document changed. Open the context menu again.'); return false; }
     return true;
   }
   const contextCommands = $derived<ContextCommand[]>(contextNode && inspected ? [
@@ -278,7 +272,7 @@
     <button type="button" class="inspection-toggle" aria-label="Inspect structure" aria-expanded={inspectionOpen || externalInspectionOpen} aria-controls={onInspect ? undefined : 'structure-inspection'} bind:this={inspectionButton} onclick={() => { if (inspectionOpen) closeInspection(); else openInspection(inspected ? 'properties' : 'find'); }}>Inspect</button>
   </div>
   <div class="structure-body">
-    <EditorContextMenu class="structure-context" label="Structure context commands" prepare={prepareContext} validate={validateContext} commands={contextCommands}>
+    <EditorContextMenu class="structure-context" label="Structure context commands" prepare={prepareContext} commands={contextCommands}>
     <div class="structure-canvas" inert={presentation === 'drawer' && inspectionOpen}>
       <FlowCanvas bind:nodes bind:edges bind:viewport {nodeTypes} {edgeTypes} minZoom={.35} maxZoom={2} colorMode="light" showControls={false} showMiniMap={nodes.length > 12}
         nodesConnectable={allowMoves && !blocked} elementsSelectable={!blocked} deleteKey={null} multiSelectionKey={null} selectionKey={null} autoPanOnNodeFocus={false} isValidConnection={valid}

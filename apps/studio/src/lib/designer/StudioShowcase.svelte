@@ -211,18 +211,11 @@
     return element ? getComputedStyle(element).getPropertyValue(property) : undefined;
   }
   let contextObject = $state(false);
-  let contextCursor: { id: string; revision: string; selection?: string } | undefined;
   function prepareContext(target: Element): boolean {
     if (blocked) { notice = 'Apply or cancel your draft first.'; return false; }
     const occurrence = target.closest<HTMLElement>('[data-ui-occ]')?.dataset.uiOcc;
     contextObject = !!occurrence;
     if (occurrence) select(occurrence);
-    const current = bridge?.getSnapshot(); contextCursor = source && current ? { id: source.id, revision: current.revision, selection: current.selectedOccurrence } : undefined;
-    return true;
-  }
-  function validateContext() {
-    const current = bridge?.getSnapshot();
-    if (blocked || !contextCursor || source?.id !== contextCursor.id || current?.revision !== contextCursor.revision || current?.selectedOccurrence !== contextCursor.selection) { notice = 'The selection or document changed. Open the context menu again.'; return false; }
     return true;
   }
   function contextTools(page: 'insert' | 'arrange') {
@@ -293,7 +286,7 @@
           <button type="button" disabled={blocked} onclick={() => openComposition()}>Open selected composition</button>
           {#if compositionFocus}<CompositionNavigator document={source} focus={compositionFocus} descriptors={catalogDescriptors} disabled={blocked} onNavigate={navigateComposition} />{/if}
         </div>
-        <div class="canvas" bind:this={canvasRoot}><EditorContextMenu class="showcase-canvas-context" label="Showcase canvas context commands" disabled={mode === 'interact'} prepare={prepareContext} validate={validateContext} commands={contextCommands}>
+        <div class="canvas" bind:this={canvasRoot}><EditorContextMenu class="showcase-canvas-context" label="Showcase canvas context commands" disabled={mode === 'interact'} prepare={prepareContext} commands={contextCommands}>
           {#key recipeId}
               <EditorCanvas document={source} catalogs={designerCatalogs} extensions={catalogDescriptors} extensionImplementations={catalogImplementations}
                 {compositionFocus} onOpenComposition={openComposition} interactionMode={mode}

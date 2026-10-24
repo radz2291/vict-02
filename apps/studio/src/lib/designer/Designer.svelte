@@ -168,7 +168,7 @@
   let structureWidth = $state(560);
   let workspaceWidth = $state(0);
   let structureExpanded = $state(false);
-  const structureStacked = $derived(structureOpen && workspaceWidth < 780);
+  const structureStacked = $derived(structureOpen && workspaceWidth < 860);
   const effectiveDrawerWidth = $derived(structureOpen ? Math.min(structureWidth, Math.max(440, workspaceWidth - 326)) : inspectorVisible ? Math.max(360, drawerWidth) : drawerWidth);
   function dismissStructure() { if (structureExpanded) structureExpanded = false; else closeDrawer(); }
   let renamingScreen=$state(false);
@@ -197,7 +197,6 @@
     state: { message: 'Message', accepted: 'Agreement', dialogOpen: 'Dialog open', busy: 'Submitting', actionError: 'Action error', actionResult: 'Action result' },
     actionInputs: { message: 'Message', accepted: 'Agreement' } };
   function selectOccurrence(occurrence: string, revealTools = true) {
-    revealTools = revealTools && !secondarySelecting;
     if (textDraftDirty || (drawerOpen && sourceDraftDirty)) { notice = 'Apply or cancel your edit first.'; return; }
     if(drawerTab!=='Layers' && drawerTab!=='Structure') drawerOpen=false;
     editTextSignal = undefined;
@@ -404,13 +403,6 @@
     apply({ requestId: crypto.randomUUID(), reason: 'Reorder selection', commands: [{ op: 'move', nodeId: selectedNode.id, newParentId: parent.nodeId, slotName: parent.slotName, index }] });
   }
   let contextObject = $state(false);
-  let secondarySelecting = false;
-  function contextPointer(event: PointerEvent) {
-    secondarySelecting = mode === 'design' && event.button === 2 && event.target instanceof Element && !!event.target.closest('.design-frame');
-    // EditorCanvas's document capture selects during this same pointer event.
-    // Secondary selection must not reveal a competing floating palette.
-    queueMicrotask(() => secondarySelecting = false);
-  }
   let contextCursor: { id: string; revision: string; selection?: string } | undefined;
   function prepareCanvasContext(target: Element): boolean {
     if (textDraftDirty || sourceDraftDirty || renamingScreen) { notice = 'Apply or cancel your draft first.'; return false; }
@@ -481,7 +473,7 @@
   $effect.pre(() => { if (authoredRevision) untrack(resetRuntime); });
 </script>
 
-<svelte:window onpointerdowncapture={contextPointer} onkeydown={shortcuts} onbeforeunload={event => { if (textDraftDirty || sourceDraftDirty || [...sessions.values()].some(session => session.getSnapshot().dirty)) { event.preventDefault(); event.returnValue = ''; } }} />
+<svelte:window onkeydown={shortcuts} onbeforeunload={event => { if (textDraftDirty || sourceDraftDirty || [...sessions.values()].some(session => session.getSnapshot().dirty)) { event.preventDefault(); event.returnValue = ''; } }} />
 <ControlScope>
 <div class="vict-app studio-designer studio-workspace">
   <header class="design-toolbar workspace-header">

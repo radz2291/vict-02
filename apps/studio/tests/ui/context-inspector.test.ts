@@ -69,15 +69,6 @@ it('duplicates the actual context target through canonical history and Undo rest
   expect(JSON.parse(document.querySelector<HTMLTextAreaElement>('#canonical-source')!.value)).toEqual(source);
 });
 
-it('keeps secondary pointer selection from opening competing floating tools before the context event', async () => {
-  await setup();
-  canvas('second').dispatchEvent(new PointerEvent('pointerdown', { button: 2, bubbles: true, cancelable: true })); await settle();
-  expect(document.querySelector('[aria-label="Floating selection tools"]')).toBeNull();
-  await context(canvas('second'));
-  expect(document.querySelector('[role=menu][data-state=open]')).not.toBeNull();
-  expect(canvas('second').hasAttribute('data-ui-selected')).toBe(true);
-});
-
 it('supports keyboard context invocation and leaves Interact and native text editing menus alone', async () => {
   await setup();
   const target = document.querySelector<HTMLElement>('[aria-label="Canvas context commands"]')!;

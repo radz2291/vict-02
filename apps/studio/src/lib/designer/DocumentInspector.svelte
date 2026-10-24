@@ -91,7 +91,7 @@
   {/if}
 </section>
 <style>
-  .document-inspector { display: flex; flex-direction: column; flex: 0 0 auto; height: min(var(--inspector-height), 55%); max-height: calc(100% - 240px); min-height: 100px; min-width: 0; background: white; color: #34425a; border-top: 1px solid #dce2eb; font: 12px/1.45 'Segoe UI', system-ui, sans-serif; overflow: hidden; }
+  .document-inspector { display: flex; flex-direction: column; flex: 0 0 auto; height: min(var(--inspector-height), 55%); max-height: calc(100% - 140px); min-height: 120px; min-width: 0; background: white; color: #34425a; border-top: 1px solid #dce2eb; font: 12px/1.45 'Segoe UI', system-ui, sans-serif; overflow: hidden; }
   .document-inspector[hidden], [hidden] { display: none; }
   .document-inspector.expanded { position: absolute; inset: 38px 0 0; height: auto; max-height: none; z-index: 5; }
   .document-inspector.collapsed { height: 36px; min-height: 36px; max-height: 36px; }
