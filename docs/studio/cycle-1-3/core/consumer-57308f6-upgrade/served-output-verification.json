@@ -1,0 +1,30 @@
+{
+  "sourceCandidate": "57308f6ffcd5c85415b38d9d68a6f696199ebfa7",
+  "checkedAt": "2026-10-24T12:38:44.897Z",
+  "files": [
+    {
+      "path": "index.html",
+      "status": 200,
+      "sha256": "84a5e0c27897d37135ac2142b00d96d6fce346230eadb922088abd8f44a071b3",
+      "matchesProductionFile": true
+    },
+    {
+      "path": "capture.html",
+      "status": 200,
+      "sha256": "2c6cd0c542a728452dfe724ab5fc4c5df40b2863006400a706a61f074154c215",
+      "matchesProductionFile": true
+    },
+    {
+      "path": "/assets/capture-CEWdtIM3.js",
+      "status": 200,
+      "sha256": "10bf6ec4e58092ef3c782d816306e37a2a23053a6bec9b527076bafa8a7ce12e",
+      "matchesProductionFile": true
+    },
+    {
+      "path": "installation.json",
+      "status": 200,
+      "sha256": "689eab4b7331a847d5bf57abae4f51d65f209b80a2c5f07bf5a0173d5cfd656e",
+      "matchesProductionFile": true
+    }
+  ]
+}
