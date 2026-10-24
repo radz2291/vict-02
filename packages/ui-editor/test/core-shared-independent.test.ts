@@ -1,0 +1,23 @@
+import {it,expect} from 'vitest';
+import {canonicalUiDocument,defaultSemanticElementCatalog,type UiDocument,type DocumentStorePort} from '@victframework/ui';
+import {EditorBridge} from '../src/bridge.js';
+import {defineStyleSource,attachStyleSource,removeStyleSource} from '../src/style-sources.js';
+it('admits forward shared binding data but refuses its invalid consumer and invalid replacement atomically',()=>{
+ const document:UiDocument={schema:'vict.ui-document@1',id:'independent-shared',revision:'1',root:'root',nodes:{root:{kind:'element',id:'root',tag:'main',children:['a','b']},a:{kind:'element',id:'a',tag:'article',children:[]},b:{kind:'element',id:'b',tag:'article',children:[]}},componentDefinitions:{},localState:{alpha:{key:'alpha',type:'number',initial:0.7}},styleSources:{},conditions:{},tokens:{},assets:{}};
+ let stored=document,revision='1';const store:DocumentStorePort={load:()=>({status:'loaded',document:stored,storedRevision:revision}),save:input=>{stored=input.document;revision=input.newStoredRevision;return {ok:true,storedRevision:revision};}};
+ const bridge=new EditorBridge({initial:{document,storedRevision:revision},store,catalogs:{elements:defaultSemanticElementCatalog()}});
+ const forward={id:'forward',declarations:[{property:'opacity',value:{type:'binding' as const,expression:{type:'ref' as const,path:'state.missing'}}}]};
+ expect(bridge.apply(defineStyleSource({requestId:'forward',document:bridge.document,source:forward})).ok).toBe(true);
+ const digest=canonicalUiDocument(bridge.document).contentDigest,snapshot=bridge.getSnapshot();
+ expect(bridge.apply(attachStyleSource({requestId:'invalid-consumer',document:bridge.document,sourceId:'forward',nodeId:'a'})).ok).toBe(false);
+ expect(canonicalUiDocument(bridge.document).contentDigest).toBe(digest);expect(bridge.getSnapshot()).toEqual(snapshot);
+ const valid={...forward,id:'shared',declarations:[{property:'opacity',value:{type:'binding' as const,expression:{type:'ref' as const,path:'state.alpha'}}}]};
+ expect(bridge.apply(defineStyleSource({requestId:'valid',document:bridge.document,source:valid})).ok).toBe(true);
+ for(const nodeId of ['a','b'])expect(bridge.apply(attachStyleSource({requestId:`attach-${nodeId}`,document:bridge.document,sourceId:'shared',nodeId})).ok).toBe(true);
+ const validDigest=canonicalUiDocument(bridge.document).contentDigest,validSnapshot=bridge.getSnapshot();
+ expect(bridge.apply(defineStyleSource({requestId:'invalid-update',document:bridge.document,replace:true,source:{...forward,id:'shared'}})).ok).toBe(false);
+ expect(canonicalUiDocument(bridge.document).contentDigest).toBe(validDigest);expect(bridge.getSnapshot()).toEqual(validSnapshot);
+ expect(()=>removeStyleSource({requestId:'referenced',document:bridge.document,sourceId:'shared'})).toThrow('still referenced');
+ expect(bridge.save().ok).toBe(true);const savedDigest=canonicalUiDocument(bridge.document).contentDigest;
+ expect(bridge.reopen().ok).toBe(true);expect(canonicalUiDocument(bridge.document).contentDigest).toBe(savedDigest);expect(bridge.document.styleSources.shared).toEqual(valid);
+});
