@@ -1,0 +1,21 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-core-authoring/260831-VCT-02/apps/studio
+
+6:45:43 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-core-authoring/260831-VCT-02/packages/ui-svelte/src/document/DocumentHost.svelte:105:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+6:45:44 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-core-authoring/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:309:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+6:45:44 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-core-authoring/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:309:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+6:45:44 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-core-authoring/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:379:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+6:45:44 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-core-authoring/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:379:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+6:45:48 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-core-authoring/260831-VCT-02/packages/ui-editor/src/StateValuesPanel.svelte:106:6 A form label must be associated with a control
+https://svelte.dev/e/a11y_label_has_associated_control
+
+ Test Files  2 passed (2)
+      Tests  7 passed | 15 skipped (22)
+   Start at  18:45:29
+   Duration  30.22s (transform 17.77s, setup 0ms, import 27.18s, tests 2.35s, environment 1ms)
+
