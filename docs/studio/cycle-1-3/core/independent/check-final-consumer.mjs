@@ -1,0 +1,22 @@
+import { readFileSync, writeFileSync, lstatSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+import { resolve } from 'node:path';
+const args=Object.fromEntries(process.argv.slice(2).map(arg=>{const at=arg.indexOf('=');return[arg.slice(0,at),arg.slice(at+1)];}));
+const root=process.cwd(), candidate=args['--source'], evidence=args['--evidence'];
+if(!candidate||!evidence)throw Error('Provide exact --source and --evidence');
+const installation=JSON.parse(readFileSync(resolve(evidence,'installation.json'),'utf8'));
+const comparison=JSON.parse(readFileSync(resolve(evidence,'installed-byte-comparison.json'),'utf8'));
+const packageJson=JSON.parse(readFileSync(resolve(installation.directory,'package.json'),'utf8'));
+const hash=path=>createHash('sha256').update(readFileSync(path)).digest('hex');
+const packages=comparison.packages.map(pkg=>{
+ const record=installation.packages.find(item=>item.name===pkg.name),name=pkg.name.split('/')[1];
+ const files=pkg.files.map(file=>({path:file.path,equal:hash(resolve(record.installedPath,file.path))===hash(resolve(root,'packages',name,file.path))}));
+ const spec=packageJson.dependencies[pkg.name];
+ return{name:pkg.name,isLink:lstatSync(record.installedPath).isSymbolicLink(),manifestEqual:hash(resolve(record.installedPath,'package.json'))===hash(resolve(root,'packages',name,'package.json')),tarballHashMatches:hash(record.tarball)===record.sha256,installedSpecification:spec,installedSpecificationHashMatches:/^file:artifacts(?:-[a-f0-9]+)?\/.+\.tgz$/.test(spec)&&hash(resolve(installation.directory,spec.slice(5)))===record.sha256,filesCompared:files.length,allEqual:files.every(file=>file.equal),mismatches:files.filter(file=>!file.equal)};
+});
+const fixtures=comparison.fixtureFiles.map(file=>({path:file.path,receiptHashMatches:hash(resolve(installation.directory,file.path))===file.sha256,exactCandidateFixtureMatches:hash(resolve(installation.directory,file.path))===hash(resolve(root,'examples/studio-core-consumer',file.path))}));
+const vite=readFileSync(resolve(installation.directory,'vite.config.ts'),'utf8');
+const report={checkedAt:new Date().toISOString(),candidate,installationCandidate:installation.sourceCandidate,installationKind:installation.installationKind,previousCandidate:installation.previousCandidate,preservedPrevious:installation.preservedPrevious,packages,fixtures,filesCompared:packages.reduce((n,p)=>n+p.filesCompared,0),noViteAliases:!(/alias\s*:/.test(vite)),passed:installation.sourceCandidate===candidate&&comparison.sourceCandidate===candidate&&!(/alias\s*:/.test(vite))&&packages.every(p=>!p.isLink&&p.manifestEqual&&p.tarballHashMatches&&p.installedSpecificationHashMatches&&p.allEqual)&&fixtures.every(f=>f.receiptHashMatches&&f.exactCandidateFixtureMatches),boundary:'Independent read-only package/manifest/tarball/fixture hash and link check. Normal npm upgrade provenance and preserved original fresh installation remain explicit; no reinstall/build or Studio source aliases used by this verifier.'};
+writeFileSync(resolve(root,`docs/studio/cycle-1-3/core/independent/consumer-provenance-${candidate.slice(0,7)}.json`),JSON.stringify(report,null,2)+'\n');
+console.log(JSON.stringify({passed:report.passed,packages:packages.length,files:report.filesCompared,fixtures:fixtures.length}));
+if(!report.passed)process.exitCode=1;

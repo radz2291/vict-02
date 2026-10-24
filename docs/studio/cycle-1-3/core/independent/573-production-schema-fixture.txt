@@ -1,0 +1,30 @@
+One tool attempt, expandable stages
+
+Simulation · scripted receipts and timings · no provider execution
+
+You
+Add a controlled chat composer, then inspect the current screen.
+Assistant
+
+Presentation fixture · inspect the source, make one edit, then observe without replaying it.
+
+studio_screen_edit · attempt 1
+completed
+studio_screen_observe · attempt 1
+failed
+
+The edit is already confirmed in this fixture. Restore preview visibility and retry only the observation.
+
+studio_screen_observe · attempt 2
+completed
+Input schema diagnostics · Edit screen (not a tool attempt)
+failed
+Simulation · 2 parser evaluations of one identical diagnostic payload; these are not tool calls. No call identity is inferred or joined to an attempt.
+operations.0.expression · Expected a literal or ref expression; a bare boolean is invalid.
+This standalone diagnostic does not change the three simulated tool attempts or their measurements.
+
+Fixture summary · one edit, two observation attempts, failed evidence retained. Standalone schema diagnostics do not add tool calls. This gallery makes no live completion claim.
+
+Scroll to end
+Send
+Failure status and bounded metrics fixture

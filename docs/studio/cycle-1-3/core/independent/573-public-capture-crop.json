@@ -1,0 +1,231 @@
+{
+  "mode": "crop",
+  "width": 420,
+  "height": 460,
+  "sourceWidth": 642,
+  "sourceHeight": 732,
+  "offsetLeft": 30,
+  "offsetTop": 221,
+  "cropped": true,
+  "bytes": 23948,
+  "mime": "image/jpeg",
+  "capturedAt": "2026-10-24T12:43:35.885Z",
+  "before": {
+    "frame": {
+      "x": -10,
+      "y": 127.0999984741211,
+      "width": 641.6000366210938,
+      "height": 732,
+      "top": 127.0999984741211,
+      "right": 631.6000366210938,
+      "bottom": 859.0999984741211
+    },
+    "viewport": {
+      "x": 20,
+      "y": 347.1000061035156,
+      "width": 420,
+      "height": 460,
+      "top": 347.1000061035156,
+      "right": 440,
+      "bottom": 807.1000061035156
+    },
+    "cropView": true,
+    "group": {
+      "x": 30.80000114440918,
+      "y": 419.8999938964844,
+      "width": 112.9124984741211,
+      "height": 42,
+      "top": 419.8999938964844,
+      "right": 143.71249961853027,
+      "bottom": 461.8999938964844,
+      "computedWidth": "112.912px",
+      "display": "inline-flex",
+      "flexWrap": "wrap",
+      "font": "14px / 22.4px system-ui, sans-serif"
+    },
+    "segments": [
+      {
+        "text": "15",
+        "part": "day",
+        "x": 41.60000228881836,
+        "y": 428.70001220703125,
+        "width": 19.100000381469727,
+        "height": 24.399999618530273,
+        "top": 428.70001220703125,
+        "right": 60.700002670288086,
+        "bottom": 453.1000118255615,
+        "computedWidth": "19.1px",
+        "display": "block",
+        "font": "14px / 22.4px system-ui, sans-serif"
+      },
+      {
+        "text": "/",
+        "part": "literal",
+        "x": 60.70000076293945,
+        "y": 428.70001220703125,
+        "width": 9.46250057220459,
+        "height": 24.399999618530273,
+        "top": 428.70001220703125,
+        "right": 70.16250133514404,
+        "bottom": 453.1000118255615,
+        "computedWidth": "9.4625px",
+        "display": "block",
+        "font": "14px / 22.4px system-ui, sans-serif"
+      },
+      {
+        "text": "04",
+        "part": "month",
+        "x": 70.1624984741211,
+        "y": 428.70001220703125,
+        "width": 19.100000381469727,
+        "height": 24.399999618530273,
+        "top": 428.70001220703125,
+        "right": 89.26249885559082,
+        "bottom": 453.1000118255615,
+        "computedWidth": "19.1px",
+        "display": "block",
+        "font": "14px / 22.4px system-ui, sans-serif"
+      },
+      {
+        "text": "/",
+        "part": "literal",
+        "x": 89.26250457763672,
+        "y": 428.70001220703125,
+        "width": 9.46250057220459,
+        "height": 24.399999618530273,
+        "top": 428.70001220703125,
+        "right": 98.72500514984131,
+        "bottom": 453.1000118255615,
+        "computedWidth": "9.4625px",
+        "display": "block",
+        "font": "14px / 22.4px system-ui, sans-serif"
+      },
+      {
+        "text": "2026",
+        "part": "year",
+        "x": 98.7249984741211,
+        "y": 428.70001220703125,
+        "width": 34.1875,
+        "height": 24.399999618530273,
+        "top": 428.70001220703125,
+        "right": 132.9124984741211,
+        "bottom": 453.1000118255615,
+        "computedWidth": "34.1875px",
+        "display": "block",
+        "font": "14px / 22.4px system-ui, sans-serif"
+      }
+    ],
+    "runtimeState": {
+      "intakeName": "Final corrected crop"
+    }
+  },
+  "after": {
+    "frame": {
+      "x": -10,
+      "y": 127.0999984741211,
+      "width": 641.6000366210938,
+      "height": 732,
+      "top": 127.0999984741211,
+      "right": 631.6000366210938,
+      "bottom": 859.0999984741211
+    },
+    "viewport": {
+      "x": 20,
+      "y": 347.1000061035156,
+      "width": 420,
+      "height": 460,
+      "top": 347.1000061035156,
+      "right": 440,
+      "bottom": 807.1000061035156
+    },
+    "cropView": true,
+    "group": {
+      "x": 30.80000114440918,
+      "y": 419.8999938964844,
+      "width": 112.9124984741211,
+      "height": 42,
+      "top": 419.8999938964844,
+      "right": 143.71249961853027,
+      "bottom": 461.8999938964844,
+      "computedWidth": "112.912px",
+      "display": "inline-flex",
+      "flexWrap": "wrap",
+      "font": "14px / 22.4px system-ui, sans-serif"
+    },
+    "segments": [
+      {
+        "text": "15",
+        "part": "day",
+        "x": 41.60000228881836,
+        "y": 428.70001220703125,
+        "width": 19.100000381469727,
+        "height": 24.399999618530273,
+        "top": 428.70001220703125,
+        "right": 60.700002670288086,
+        "bottom": 453.1000118255615,
+        "computedWidth": "19.1px",
+        "display": "block",
+        "font": "14px / 22.4px system-ui, sans-serif"
+      },
+      {
+        "text": "/",
+        "part": "literal",
+        "x": 60.70000076293945,
+        "y": 428.70001220703125,
+        "width": 9.46250057220459,
+        "height": 24.399999618530273,
+        "top": 428.70001220703125,
+        "right": 70.16250133514404,
+        "bottom": 453.1000118255615,
+        "computedWidth": "9.4625px",
+        "display": "block",
+        "font": "14px / 22.4px system-ui, sans-serif"
+      },
+      {
+        "text": "04",
+        "part": "month",
+        "x": 70.1624984741211,
+        "y": 428.70001220703125,
+        "width": 19.100000381469727,
+        "height": 24.399999618530273,
+        "top": 428.70001220703125,
+        "right": 89.26249885559082,
+        "bottom": 453.1000118255615,
+        "computedWidth": "19.1px",
+        "display": "block",
+        "font": "14px / 22.4px system-ui, sans-serif"
+      },
+      {
+        "text": "/",
+        "part": "literal",
+        "x": 89.26250457763672,
+        "y": 428.70001220703125,
+        "width": 9.46250057220459,
+        "height": 24.399999618530273,
+        "top": 428.70001220703125,
+        "right": 98.72500514984131,
+        "bottom": 453.1000118255615,
+        "computedWidth": "9.4625px",
+        "display": "block",
+        "font": "14px / 22.4px system-ui, sans-serif"
+      },
+      {
+        "text": "2026",
+        "part": "year",
+        "x": 98.7249984741211,
+        "y": 428.70001220703125,
+        "width": 34.1875,
+        "height": 24.399999618530273,
+        "top": 428.70001220703125,
+        "right": 132.9124984741211,
+        "bottom": 453.1000118255615,
+        "computedWidth": "34.1875px",
+        "display": "block",
+        "font": "14px / 22.4px system-ui, sans-serif"
+      }
+    ],
+    "runtimeState": {
+      "intakeName": "Final corrected crop"
+    }
+  }
+}
