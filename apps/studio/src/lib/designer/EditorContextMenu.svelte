@@ -45,6 +45,11 @@
   </ContextMenu.Portal>
 </ContextMenu.Root>
 <style>
-  :global(.editor-context-target) { min-width: 0; min-height: 0; }
+  /* These triggers are editor surfaces, not the catalog's button-shaped trigger. */
+  :global(.vict-controls .editor-context-target) { min-width: 0; min-height: 0; align-items: stretch; justify-content: initial; gap: 0; border: 0; border-radius: 0; background-color: transparent; color: inherit; cursor: default; }
+  :global(.vict-controls .editor-context-target.structure-context), :global(.vict-controls .editor-context-target.layers-context) { display: flex; padding: 0; }
+  :global(.vict-controls .editor-context-target.canvas-scroll) { display: block; padding: 16px 18px 30px; }
+  :global(.vict-controls .editor-context-target.showcase-canvas-context) { display: block; padding: 0; }
   :global(.editor-context-target:focus-visible) { outline: 2px solid #5269bd; outline-offset: -2px; }
+  @media (max-width: 760px) { :global(.vict-controls .editor-context-target.canvas-scroll) { padding: 12px 10px 24px; } }
 </style>
