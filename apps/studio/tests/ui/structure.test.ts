@@ -64,8 +64,8 @@ it('synchronizes keyboard graph selection with shared selection and inspection w
     screen: { id: 'screen', kind: 'element' as const, tag: 'main', children: ['right'] },
     right: { id: 'right', kind: 'element' as const, tag: 'section', attributes: { 'aria-label': 'Right group' }, children: [] },
   } };
-  const onSelect = vi.fn();
-  mounted = mount(StructureView, { target: document.body, props: { document: source, revision: 'working', onSelect, onMove: vi.fn(() => false), onNotice: vi.fn() } });
+  const onSelect = vi.fn(); const onDeselect = vi.fn();
+  mounted = mount(StructureView, { target: document.body, props: { document: source, revision: 'working', onSelect, onDeselect, onMove: vi.fn(() => false), onNotice: vi.fn() } });
   await tick(); await tick();
   const viewport = document.querySelector<HTMLElement>('.svelte-flow__viewport')!;
   const before = viewport.style.transform;
@@ -78,6 +78,16 @@ it('synchronizes keyboard graph selection with shared selection and inspection w
   button('Inspect structure').click(); await tick();
   expect(document.querySelector('.inspection-heading strong')?.textContent).toBe('Right group');
   expect(document.querySelector('.inspection-identity code')?.textContent).toBe('right');
+  node.focus(); node.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', code: 'Escape', bubbles: true, cancelable: true }));
+  await tick(); await tick();
+  expect(document.querySelector('.structure-details')).toBeNull();
+  expect(document.querySelector<HTMLElement>('.svelte-flow__node.selected')?.dataset.id).toBe(structureId(source.id, 'node', 'right'));
+  expect(onDeselect).not.toHaveBeenCalled();
+  expect(document.activeElement).toBe(button('Inspect structure'));
+  node.focus(); node.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', code: 'Escape', bubbles: true, cancelable: true }));
+  await tick(); await tick();
+  expect(onDeselect).toHaveBeenCalledOnce();
+  expect(document.querySelector('.svelte-flow__node.selected')).toBeNull();
 });
 
 it('refuses source navigation and contextual moves while the host has an unapplied draft', async () => {

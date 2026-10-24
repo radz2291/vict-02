@@ -150,6 +150,13 @@
     const node = nodes.find(entry => entry.id === target.dataset.id);
     if (node && (event.key === 'Enter' || event.key === ' ')) select(node);
   }
+  function graphEscape(event: KeyboardEvent) {
+    if (!active || activeMenu || event.key !== 'Escape' || !(event.target instanceof HTMLElement) || !event.target.matches('.svelte-flow__node')) return;
+    // Run before Flow's wrapper, which otherwise clears its own selection even
+    // when Escape is only closing our dock. Keep the two selection owners equal.
+    event.preventDefault(); event.stopPropagation();
+    if (inspectionOpen) closeInspection(); else deselect();
+  }
   function beginMove() {
     moveSource = inspected?.data.occurrence && inspected.data.sourceId !== document.root ? inspected.id : '';
     moveTarget = ''; openInspection('move');
@@ -178,7 +185,7 @@
   const moveSources = $derived(graph.nodes.filter(node => node.data.occurrence && node.data.sourceId !== document.root));
   const targetOptions = $derived(graph.nodes.filter(node => !!moveSource && valid({ source: moveSource, target: node.id, sourceHandle: 'content', targetHandle: 'container' })));
 </script>
-<svelte:window onkeydown={escape} />
+<svelte:window onkeydown={escape} onkeydowncapture={graphEscape} />
 <section class="structure-view" aria-label="Source structure">
   <div class="structure-tools">
     <input type="search" aria-label="Search structure" placeholder="Search structure" bind:value={search} />

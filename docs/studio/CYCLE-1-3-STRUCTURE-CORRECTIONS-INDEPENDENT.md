@@ -1,6 +1,6 @@
 # Structure corrections — independent verification
 
-2026-10-24. Independent verifier, fresh context, no participation in implementation. **Initial candidate FAIL; final disposition pending bounded repair and re-verification.**
+2026-10-24. Independent verifier, fresh context, no participation in implementation. **Initial and first repaired candidates FAIL; final disposition pending bounded repair and re-verification.**
 
 ## Identity and scope
 
@@ -43,3 +43,15 @@ Actual production interactions, distinct from the source audit:
 The candidate stays within presentation/interaction scope. Compact projection filters redundant literal leaves without mutating canonical source; dynamic text and binding edges remain represented. Node presentation retains source IDs/occurrences and full facts. Contextual moves still pass through `structureMove`, compatible parent/slot checks, document/revision and draft checks, then the existing EditorBridge transaction/history path. Graph dragging remains presentation position, not reparenting. Existing effect/data/application semantics are unchanged.
 
 This is focused Structure verification, not a general accessibility certification, broad agent-reliability verdict or acceptance of other report findings. Initial verdict remains FAIL pending a new exact candidate and affected challenge.
+
+## First repair challenge
+
+Independently matched clean local and remote branch to `a8cddea20ca15b3ae05f8140b4c5e65fe258b421`; main remained pinned. Audited the narrow repair diff. The builder rebuilt the isolated production preview at this exact SHA; reloaded only the verifier's disposable tab, signed in again and used the same saved fixture. **SV-01 and SV-02 remedied; this candidate still FAIL on SV-03 below.**
+
+- Enter on Right group and Space on Left group now synchronized a single visual selection and exact inspection source (`right` / `left`). Camera remained exactly `translate(24px, 24px) scale(0.85)`. Inspection opened only deliberately.
+- Enter on nested Expand Left group disclosed 3 → 8 nodes without changing inspected source; the wrapper-only handler did not treat the disclosure button as a new source selection.
+- Find → Agreement displayed state `accepted`; Find → Customer settings text displayed exact `title-text`. No delayed selection overwrite occurred. The builder reports an intermediate generic `onselectionchange` attempt was rejected because delayed programmatic callbacks overwrote Find/state selection; it is **retained as a builder-observed rejected attempt**, not an independently executed verifier failure, and is absent from this repaired candidate.
+- At 640 × 480 with Chat visible, Chat occupied 192px width and the workspace 448px. The graph measured 168.5px high; the dock 132.4px, wholly within the viewport; facts had 52.8px bounded scrolling. Design, Interact and Structure each retained identical workspace bounds `{x:192,y:44,width:448,height:412}`. No automatic Chat hiding occurred. SV-02 PASS.
+- Rechecked Source draft retention and refused Design transition; draft remained exact. Explicitly discarded the disposable draft. Temporary viewport override reset.
+
+**SV-03 / P1 — graph-focused Escape desynchronizes dismissal and selection.** With Left group selected and inspection open, focused its graph node wrapper and pressed Escape. The dock closed and focus returned to Inspect, but upstream also cleared visual graph selection (`.svelte-flow__node.selected` count 0). Reopening Inspect still showed Left group / `left`; shared inspection retained the source while the graph indicated none. This differs from the passing Escape-from-inspection case. The builder was notified promptly and is preparing a bounded wrapper-Escape repair plus regression. No source/document corruption was observed.
