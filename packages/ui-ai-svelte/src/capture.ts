@@ -59,8 +59,23 @@ export async function captureRenderedElement(element: HTMLElement, viewport?: HT
   // Changing the element's width/height before capture would reflow its layout.
   const xml = new DOMParser().parseFromString(decodeURIComponent(svgUrl.slice(svgUrl.indexOf(',') + 1)), 'image/svg+xml');
   const svg = xml.documentElement;
+  // A standalone SVG lays out its foreignObject at its own pixel scale. At
+  // fractional browser zoom, copied subpixel borders can round differently and
+  // reflow an exactly fitting flex row (for example, segmented date inputs).
+  // Lay out the clone at twice the internal scale, then map it back to the
+  // original CSS-pixel viewport. This changes neither the source DOM nor the
+  // requested canvas size, crop, or byte budget.
+  const layoutScale = 2;
+  const foreignObject = svg.querySelector('foreignObject');
+  if (!foreignObject) throw new Error('STUDIO_CAPTURE_FAILED');
+  const layout = xml.createElementNS('http://www.w3.org/1999/xhtml', 'div');
+  layout.setAttribute('style', `zoom:${layoutScale};width:${sourceWidth}px;height:${sourceHeight}px`);
+  while (foreignObject.firstChild) layout.appendChild(foreignObject.firstChild);
+  foreignObject.appendChild(layout);
+  foreignObject.setAttribute('width', String(sourceWidth * layoutScale));
+  foreignObject.setAttribute('height', String(sourceHeight * layoutScale));
   svg.setAttribute('width', String(width)); svg.setAttribute('height', String(height));
-  svg.setAttribute('viewBox', `${offsetLeft} ${offsetTop} ${width} ${height}`);
+  svg.setAttribute('viewBox', `${offsetLeft * layoutScale} ${offsetTop * layoutScale} ${width * layoutScale} ${height * layoutScale}`);
   const image = new Image();
   await new Promise<void>((resolve, reject) => { image.onload = () => resolve(); image.onerror = reject; image.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(new XMLSerializer().serializeToString(svg))}`; });
   const canvas = document.createElement('canvas'); canvas.width = width; canvas.height = height;
