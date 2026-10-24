@@ -24,8 +24,13 @@ if(process.argv.includes('--verify')){
   const outputs=[];
   function walk(directory){for(const entry of readdirSync(directory,{withFileTypes:true})){const path=resolve(directory,entry.name);if(entry.isDirectory())walk(path);else if(entry.isFile()){const name=relative(root,path).replaceAll('\\','/');outputs.push({path:name,sha256:digest(name)});}}}
   walk(resolve(root,'apps/studio/build'));
-  for(const name of ['contracts','sdk','application','ui','ui-editor','ui-svelte','ui-ai-svelte','ui-flow-svelte'])walk(resolve(root,`packages/${name}/dist`));
+  const sourceExportPackages=[];
+  for(const name of ['contracts','sdk','application','ui','ui-editor','ui-svelte','ui-ai-svelte','ui-flow-svelte']){
+    const pkg=JSON.parse(readFileSync(resolve(root,`packages/${name}/package.json`),'utf8'));
+    if(JSON.stringify({exports:pkg.exports,main:pkg.main,types:pkg.types}).includes('./dist/'))walk(resolve(root,`packages/${name}/dist`));
+    else sourceExportPackages.push(name); // Source-exported packages are already covered by tracked input hashes.
+  }
   outputs.sort((a,b)=>a.path.localeCompare(b.path));
-  writeFileSync(manifestPath,JSON.stringify({candidate,createdAt:new Date().toISOString(),node:process.version,inputs,outputs},null,2)+'\n');
+  writeFileSync(manifestPath,JSON.stringify({candidate,createdAt:new Date().toISOString(),node:process.version,sourceExportPackages,inputs,outputs},null,2)+'\n');
   console.log(JSON.stringify({candidate,inputs:inputs.length,outputs:outputs.length}));
 }

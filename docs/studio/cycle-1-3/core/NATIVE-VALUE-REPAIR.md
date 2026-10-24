@@ -1,0 +1,15 @@
+# Native textarea/select value admission repair
+
+2026-10-24. Isolated builder follow-up after `289de8ae20693463a2566401644049cf7e36911d`, branch `codex/studio-cycle-1-3-pv06-selection`. This is candidate evidence, not an independent verdict. The stage manager's running Studio build, provider task, partial saved writing-desk screen and owner data remain unchanged by this work.
+
+The actual writing-desk request repeatedly failed to connect a native textarea through the advertised `wireNativeInput` path. Source inspection found that the public helper explicitly accepts input, textarea and select, then writes the canonical `value` binding and change/setState interaction. The default native catalog admitted `value` only on input and option. The existing renderer already reads textarea/select `.value` for state writes and uses the Svelte dynamic-element property path for value rendering.
+
+Before repair, two new tests applying the actual helper through UiEditSession failed. Both returned `UI_EDIT_VALIDATION_FAILED`, containing `UI_DOC_UNKNOWN_ATTRIBUTE` for `value`, once for textarea and once for select. That refusal was correct for the incomplete catalog; the helper's advertised full path was incomplete.
+
+The bounded repair adds optional `value` to the two existing native catalog entries. It changes no document schema, expression syntax, helper type policy, edit command, renderer implementation or host authority. Unknown attributes remain refused. The helper still requires string state for textarea/select, refuses mismatched numeric state and uses ordinary transactions/history. Canonical unknown-reference diagnostics remain active for value expressions.
+
+The new unit cases cover actual helper admission for both native fields, canonical compilation, independent string state, Undo/Redo, saved bytes reopened in a new session, wrong helper type refusal, unknown-attribute refusal and unknown binding refusal. The DOM test mounts the actual helper-generated source through DocumentHost. It verifies multiline textarea initial/input values, select's initial **second** option after recursive option mounting, select change propagation and state-bound text echo. The existing renderer satisfies these cases without changes.
+
+Full neutral/editor unit group: **157 tests passed across 21 files**. The new native DOM case, final root TypeScript check and diff check passed. Root TypeScript initially found missing union narrowing in the new unit assertions; the fixture accesses were narrowed explicitly. Independent integrated browser results belong to the stage-manager/verifier evidence after the follow-up candidate is sealed. No package or Studio production build ran during this repair.
+
+Next allowed action: integrate the isolated delta, rebuild the neutral package and next Studio candidate, then retry the preserved writing-desk continuation and verify native textarea/select behavior through the actual agent/browser path. The earlier failed request remains evidence; these package checks do not imply that the provider task finished.

@@ -1,4 +1,5 @@
 import { describe,it,expect } from 'vitest';
+import { readFileSync } from 'node:fs';
 import { EditorBridge } from '@victframework/ui-editor';
 import { canonicalUiDocument } from '@victframework/ui';
 import { agentContext,agentCoverage } from '../src/lib/designer/agent-reads.js';
@@ -7,6 +8,7 @@ import { newScreen,designerCatalogs,compileScreen } from '../src/lib/designer/ap
 import { installedAuthoringRegistry } from '../src/lib/designer/authoring.js';
 import { screenPlacementIssues } from '../src/lib/designer/placement.js';
 import { screenStore } from '../src/lib/designer/storage.js';
+import { studioPreviewHost } from '../src/lib/designer/preview-host.js';
 
 function setup(){
   const records=new Map<string,string>();const storage={getItem:(key:string)=>records.get(key)??null,setItem:(key:string,value:string)=>{records.set(key,value);}};
@@ -22,6 +24,26 @@ function edit(bridge:EditorBridge,operations:AgentEdit['operations']){
   expect(applyAgentProposal(bridge,{proposalId,cursor,edit:request,resultDigest:prepared.digest},'epoch',false).ok).toBe(true);
 }
 describe('shared registered authoring integration',()=>{
+  it('exposes Studio responsive host facts consistent with the actual Design and Run wrappers',()=>{
+    const bridge=setup();
+    const overview=agentContext(bridge.document,documentCursor(bridge.document,bridge.getSnapshot().revision,'host-facts'));
+    expect(overview.previewHost).toEqual(studioPreviewHost);
+    const css=readFileSync(new URL('../src/lib/designer/workspace.css',import.meta.url),'utf8');
+    const hostRule=css.match(/\.workspace-screen\s*\{([^}]+)\}/)?.[1];
+    expect(hostRule).toBeDefined();
+    expect(hostRule).toMatch(new RegExp(`container:\\s*${studioPreviewHost.container.name}\\s*/\\s*${studioPreviewHost.container.type}\\s*;`));
+    for(const [path,cssImport] of [
+      ['../src/lib/designer/Designer.svelte',"import './workspace.css'"],
+      ['../src/routes/run-screen/+page.svelte',"import '$lib/designer/workspace.css'"],
+    ]){
+      const source=readFileSync(new URL(path,import.meta.url),'utf8');
+      expect(source).toContain(cssImport);
+      expect(source).toMatch(/class="[^\"]*workspace-screen"[^>]*style:max-width=\{width/);
+    }
+    expect(bridge.document.conditions.compact).toMatchObject({kind:'container',name:studioPreviewHost.container.name});
+    expect(studioPreviewHost.mediaQueries).toContain('outer browser viewport');
+    expect(studioPreviewHost.portability).toContain('not a portable document guarantee');
+  });
   it('reuses and replaces ordered shared styles through the agent, canonical history and persistence',()=>{
     const bridge=setup();
     edit(bridge,[
@@ -138,5 +160,19 @@ describe('shared registered authoring integration',()=>{
     expect(JSON.stringify(refusal)).toContain('check');expect(JSON.stringify(refusal)).toContain('boolean');expect(JSON.stringify(refusal)).toContain('string');
     const orphan={...bridge.document,nodes:{...bridge.document.nodes,orphan:{kind:'component' as const,id:'orphan',definitionId:'vict.ai.message',revision:'1'}}};
     expect(agentCoverage(orphan,['vict.ai.message']).missing).toEqual(['vict.ai.message']);
+  });
+  it('unwraps actual canonical validation causes for missing style references without applying any source or history',()=>{
+    const bridge=setup();edit(bridge,[{op:'insert',kind:'element',tag:'h1',nodeId:'title',parentId:'screen',text:'Probe title'}]);
+    const cursor=documentCursor(bridge.document,bridge.getSnapshot().revision,'epoch');
+    const before=canonicalUiDocument(bridge.document).contentDigest;const history=bridge.getSnapshot();
+    const refused=prepareAgentEdit(bridge.document,cursor,{expectedRevision:cursor.revision,reason:'Actual invalid style reference',operations:[{op:'style',nodeId:'title',property:'color',value:{type:'binding',expression:{type:'ref',path:'state.__probeMissing'}}}]},'missing-style-state');
+    expect(refused).toMatchObject({ok:false,code:'STUDIO_AGENT_VALIDATION',diagnostics:[{operation:0,commandIndex:0,envelopeCode:'UI_EDIT_VALIDATION_FAILED',code:'UI_EXPR_UNKNOWN_REFERENCE',nodeId:'title',property:'color',sourcePath:'nodes.title',path:'state.__probeMissing',message:expect.stringContaining('does not resolve')}]});
+    if(refused.ok)throw Error('Invalid style reference admitted');
+    // Unknown-reference diagnostics do not supply a type pair; do not invent it.
+    expect(refused.diagnostics![0]).not.toHaveProperty('expected');expect(refused.diagnostics![0]).not.toHaveProperty('actual');
+    expect(canonicalUiDocument(bridge.document).contentDigest).toBe(before);expect(bridge.getSnapshot()).toEqual(history);
+    edit(bridge,[{op:'declareState',key:'knownColor',type:'string',initial:'#334155'},{op:'style',nodeId:'title',property:'color',value:{type:'binding',expression:{type:'ref',path:'state.knownColor'}}}]);
+    expect(compileScreen(bridge.document).ok).toBe(true);
+    expect(bridge.undo().ok).toBe(true);expect(canonicalUiDocument(bridge.document).contentDigest).toBe(before);
   });
 });

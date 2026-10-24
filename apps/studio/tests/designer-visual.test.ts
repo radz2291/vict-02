@@ -71,6 +71,23 @@ describe('bounded visual observation boundary', () => {
     expect(result).not.toHaveProperty('observation');
     expect(captures).toBe(2); expect(modelCalls).toBe(1); observer.dispose();
   });
+  it('accepts identical pixels across separate source revisions while labeling equality as within each observation only', async () => {
+    let current = { ...cursor }; let fingerprint = 'a'.repeat(64); let captures = 0; let modelCalls = 0;
+    const observer = createVisualObserver({ owner: 'separate-observations', runId: 'run', model: 'zai/glm-5.3-flash', getCursor: () => current, signal: new AbortController().signal,
+      emit: event => { captures++; const image = { ...metadata(), cursor: { ...current }, preview: { mode: 'design', fingerprint } }; expect(acceptVisualCapture('separate-observations', event.captureId, image, bytes)).toEqual({ ok: true }); },
+      modelFactory: () => ({ doStream: async () => { modelCalls++; return { stream: new ReadableStream({ start(controller) { controller.enqueue({ type: 'text-delta', delta: 'The visible fixture has no pixel change. Interactions are untested.' }); controller.enqueue({ type: 'finish' }); controller.close(); } }) }; } }),
+    });
+    const first = await observer.capability.invoke({ focus: 'Initial appearance' }, context) as { ok: boolean; imageDigest: string; metadata: { cursor: { revision: string }; preview: { fingerprint: string } } };
+    // A wrapper style or offscreen edit can change source/fingerprint without
+    // changing the imaged pixels. Each observation still has its own fences.
+    current = { ...current, revision: 'r2', digest: 'v1_nonvisual-change' }; fingerprint = 'b'.repeat(64);
+    const second = await observer.capability.invoke({ focus: 'Appearance after source edit' }, context) as typeof first;
+    expect(first).toMatchObject({ ok: true, imageComparison: 'sha256-identical', imageComparisonScope: 'within-this-observation-before-and-after-inference', metadata: { cursor: { revision: 'r1' } } });
+    expect(second).toMatchObject({ ok: true, imageComparison: 'sha256-identical', imageComparisonScope: 'within-this-observation-before-and-after-inference', metadata: { cursor: { revision: 'r2' } }, fingerprintMeaning: expect.stringContaining('not a pixel digest'), limitation: expect.stringContaining('do not prove stale capture') });
+    expect(second.imageDigest).toBe(first.imageDigest);
+    expect(second.metadata.preview.fingerprint).not.toBe(first.metadata.preview.fingerprint);
+    expect(captures).toBe(4); expect(modelCalls).toBe(2); observer.dispose();
+  });
   it.each(['runtime', 'viewport', 'portal'] as const)('refuses %s changes during inference with a second capture and only one model call', async change => {
     let captures = 0; let modelCalls = 0;
     const observer = createVisualObserver({ owner: 'session-a', runId: 'run', model: 'zai/glm-5.3-flash', getCursor: () => cursor, signal: new AbortController().signal,

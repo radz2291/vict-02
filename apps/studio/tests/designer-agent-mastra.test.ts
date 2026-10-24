@@ -640,3 +640,49 @@ it('makes bounded precise pre-invocation refusal guidance available to the model
  const all=JSON.stringify(events);expect(all).toContain('literal');expect(all).toContain('ref');expect(all).toContain('operations.0.expression');
  const refused=events.find(event=>event.type==='tool-event'&&event.kind==='validation-refused');expect(refused?.type==='tool-event'&&refused.details).toContain('Expected exactly');
 },120000);
+
+it('delivers an actual canonical style-reference cause to the model and subsequent overview without proposing an edit (offline)',async()=>{
+ const {bridge,start,input}=context();const before=bridge.getSnapshot();const events:StudioAgentEvent[]=[];const prompts:unknown[]=[];
+ const offline=createDeterministicOfflineModel({script:{[input]:{kind:'tool-chain',calls:[
+  {toolName:'studio_screen_edit',args:{expectedRevision:start.cursor.revision,reason:'Missing state reference probe',operations:[{op:'style',nodeId:'screen',property:'color',value:{type:'binding',expression:{type:'ref',path:'state.__probeMissing'}}}]}},
+  {toolName:'studio_screen_read',args:{}},
+ ],thenText:'The source was refused; no edit was applied.'}}});
+ const opened=openAgentRun('canonical-style-cause',start,event=>events.push(event),{model:OFFLINE_MODEL_IDENTITY,modelFactory:()=>({...offline,doStream:async(options:Parameters<typeof offline.doStream>[0])=>{prompts.push(options.prompt);return offline.doStream(options);}})});
+ if(!opened.ok)throw Error(opened.code);await opened.finished;
+ expect(events.some(event=>event.type==='proposal')).toBe(false);expect(bridge.getSnapshot()).toEqual(before);
+ const refusal=events.find(event=>event.type==='edit-result');
+ expect(refusal).toMatchObject({type:'edit-result',result:{ok:false,code:'STUDIO_AGENT_VALIDATION',diagnostics:[{code:'UI_EXPR_UNKNOWN_REFERENCE',envelopeCode:'UI_EDIT_VALIDATION_FAILED',operation:0,commandIndex:0,nodeId:'screen',sourcePath:'nodes.screen',property:'color',path:'state.__probeMissing'}]}});
+ const overview=events.find(event=>event.type==='tool-event'&&event.kind==='observation'&&event.tool==='studio_screen_read');
+ expect(overview?.type).toBe('tool-event');
+ // Owner trace is intentionally clipped. Inspect the real model result rather
+ // than requiring a larger trace budget for the later lastValidation field.
+ const deliveredValidations:unknown[]=[];
+ function visit(value:unknown,depth=0):void{
+  if(depth>14)return;
+  if(typeof value==='string'&&/^(?:\{|\[)/.test(value)){try{visit(JSON.parse(value),depth+1);}catch{}return;}
+  if(Array.isArray(value)){value.forEach(item=>visit(item,depth+1));return;}
+  if(value&&typeof value==='object'){if('lastValidation' in value)deliveredValidations.push(value.lastValidation);Object.values(value).forEach(item=>visit(item,depth+1));}
+ }
+ visit(prompts);
+ expect(deliveredValidations).toContainEqual(expect.objectContaining({ok:false,code:'STUDIO_AGENT_VALIDATION',diagnostics:[expect.objectContaining({code:'UI_EXPR_UNKNOWN_REFERENCE',nodeId:'screen',sourcePath:'nodes.screen',property:'color',path:'state.__probeMissing'})]}));
+ expect(events.at(-1)).toMatchObject({type:'done',status:'failed',code:'STUDIO_AGENT_VALIDATION',applied:0});
+});
+
+it('delivers capture-comparison scope, complete-body digest reuse and Studio host rules to the actual pinned executor model prompt (offline)',async()=>{
+ const {start,input}=context();const events:StudioAgentEvent[]=[];const prompts:unknown[]=[];
+ const offline=createDeterministicOfflineModel({script:{[input]:{kind:'text',text:'No edit or visual completion claimed.'}}});
+ const opened=openAgentRun('observation-scope-contract',start,event=>events.push(event),{model:OFFLINE_MODEL_IDENTITY,modelFactory:()=>({...offline,doStream:async(options:Parameters<typeof offline.doStream>[0])=>{prompts.push(options.prompt);return offline.doStream(options);}})});
+ if(!opened.ok)throw Error(opened.code);await opened.finished;
+ expect(events.at(-1)).toMatchObject({type:'done',status:'completed',applied:0});
+ const delivered=JSON.stringify(prompts);
+ expect(delivered).toContain('WITHIN ONE observation, before and after inference');
+ expect(delivered).toContain('identical image bytes with a different source revision or preview fingerprint do NOT prove a stale raster');
+ expect(delivered).toContain('Only an actual STUDIO_CAPTURE_STALE tool refusal invokes');
+ expect(delivered).toContain('complete contract body was previously received (all body pages) and remains available in your context');
+ expect(delivered).toContain('A catalog/index digest alone is not cached contract knowledge');
+ expect(delivered).toContain('ancestor inline-size container named studio-screen');
+ expect(delivered).toContain('canonical root has no container declaration');
+ expect(delivered).toContain('Media conditions use the outer browser viewport and do not follow preview presets');
+ expect(delivered).toContain('other consumers must explicitly establish a compatible host');
+ expect(delivered).toContain('never replay committed edits to retry verification');
+});
