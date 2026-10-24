@@ -4,6 +4,8 @@
 
 The [independent report](CYCLE-1-3-CONTEXT-INSPECTOR-INDEPENDENT.md) retains CI-01 (the context trigger's catalog button styling collapsed the graph) and CI-02 (a first secondary pointer selection could open floating tools instead of the menu). The partial repair was pushed but not finally verified or accepted. Earlier builder integration tests and checks did not establish browser geometry or the intended product placement. The owner's correction supersedes the attempted interpretation below. Stage 9 remains REOPENED / IN PROGRESS; no new gate PASS, owner acceptance, merge or publication is claimed.
 
+Rollback delivery: `git diff --exit-code a36793df0f62c002332d66db181310554aaabb05 HEAD -- apps/studio packages` passes. The owner-facing `http://127.0.0.7:5601/design` now serves the prior unchanged production build used by the retained5600 preview. Only the failed attempt's5601/5602 processes were stopped; original5600/5599 tabs were untouched. Before reloading5601, its source was confirmed Saved and conversation empty. The same saved disposable screen reloaded successfully; selecting its heading demonstrates the original floating Format/Insert/Arrange/Connect tools with no bottom Inspector. [Rollback screenshot](cycle-1-3/context-inspector/rollback.png). Verification of the rejected candidate stopped at the owner's request. No further implementation is in progress.
+
 2026-10-24. Owner authorized implementation: “OK pls do those update”, accepting the preceding contextual right-click and shared Inspector proposals. This amends the prior focused inspection placement; previous evidence remains historical within its scope.
 
 ## Entry and scope
