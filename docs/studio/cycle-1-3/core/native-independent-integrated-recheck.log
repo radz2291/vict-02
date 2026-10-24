@@ -1,0 +1,9 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-core-authoring/260831-VCT-02
+
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  19:40:25
+   Duration  997ms (transform 505ms, setup 0ms, import 630ms, tests 32ms, environment 0ms)
+
