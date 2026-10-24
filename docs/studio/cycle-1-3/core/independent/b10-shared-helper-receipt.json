@@ -1,0 +1,198 @@
+{
+  "canonicalSource": {
+    "schema": "vict.ui-document@1",
+    "id": "core-shared-style-fixture",
+    "revision": "r1.r1",
+    "root": "screen",
+    "nodes": {
+      "screen": {
+        "kind": "element",
+        "id": "screen",
+        "tag": "main",
+        "attributes": {
+          "aria-label": "Two cards sharing one style source"
+        },
+        "children": [
+          "card-a",
+          "card-b"
+        ],
+        "localStyle": [
+          {
+            "property": "display",
+            "value": {
+              "type": "text",
+              "value": "flex"
+            }
+          },
+          {
+            "property": "flex-wrap",
+            "value": {
+              "type": "text",
+              "value": "wrap"
+            }
+          },
+          {
+            "property": "gap",
+            "value": {
+              "type": "text",
+              "value": "12px"
+            }
+          },
+          {
+            "property": "padding",
+            "value": {
+              "type": "text",
+              "value": "8px"
+            }
+          },
+          {
+            "property": "font-family",
+            "value": {
+              "type": "text",
+              "value": "system-ui, sans-serif"
+            }
+          }
+        ]
+      },
+      "card-a": {
+        "kind": "element",
+        "id": "card-a",
+        "tag": "article",
+        "attributes": {
+          "aria-label": "Launch brief card"
+        },
+        "children": [
+          "copy-a"
+        ],
+        "styleSources": [
+          "shared-card"
+        ]
+      },
+      "card-b": {
+        "kind": "element",
+        "id": "card-b",
+        "tag": "article",
+        "attributes": {
+          "aria-label": "Project status card"
+        },
+        "children": [
+          "copy-b"
+        ],
+        "styleSources": [
+          "shared-card"
+        ]
+      },
+      "copy-a": {
+        "kind": "text",
+        "id": "copy-a",
+        "content": {
+          "type": "literal",
+          "value": "Launch brief"
+        }
+      },
+      "copy-b": {
+        "kind": "text",
+        "id": "copy-b",
+        "content": {
+          "type": "literal",
+          "value": "Project status"
+        }
+      }
+    },
+    "componentDefinitions": {},
+    "styleSources": {
+      "shared-card": {
+        "id": "shared-card",
+        "declarations": [
+          {
+            "property": "flex",
+            "value": {
+              "type": "text",
+              "value": "1 1 140px"
+            }
+          },
+          {
+            "property": "min-width",
+            "value": {
+              "type": "text",
+              "value": "0"
+            }
+          },
+          {
+            "property": "padding",
+            "value": {
+              "type": "text",
+              "value": "16px"
+            }
+          },
+          {
+            "property": "border-radius",
+            "value": {
+              "type": "text",
+              "value": "10px"
+            }
+          },
+          {
+            "property": "border",
+            "value": {
+              "type": "text",
+              "value": "1px solid #d9c9e6"
+            }
+          },
+          {
+            "property": "background-color",
+            "value": {
+              "type": "text",
+              "value": "#f4edf8"
+            }
+          },
+          {
+            "property": "color",
+            "value": {
+              "type": "text",
+              "value": "#59366d"
+            }
+          },
+          {
+            "property": "font-size",
+            "value": {
+              "type": "text",
+              "value": "14px"
+            }
+          },
+          {
+            "property": "line-height",
+            "value": {
+              "type": "text",
+              "value": "1.5"
+            }
+          },
+          {
+            "property": "font-weight",
+            "value": {
+              "type": "text",
+              "value": "600"
+            }
+          }
+        ]
+      }
+    },
+    "assets": {},
+    "tokens": {},
+    "conditions": {},
+    "localState": {}
+  },
+  "receipt": {
+    "action": "Reopen saved source",
+    "ok": true,
+    "revision": "r1.r1#0",
+    "contentDigest": "c19b5cd8524a0bb39e323d3cdc9d7602ff2f554f97ba8edcdb18b0fe893eb0f0",
+    "dirty": false,
+    "storedRevision": "r1.r1",
+    "savedInMemory": true,
+    "result": {
+      "ok": true,
+      "storedRevision": "r1.r1"
+    }
+  }
+}
