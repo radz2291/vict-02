@@ -31,6 +31,12 @@ export interface DocumentScope {
   /** The emitted payload while resolving an output-binding template. */
   readonly output?: unknown;
 }
+/** Lexical caller frame for local-definition slots, preserved through extension slots. */
+export interface DocumentSlotFrame {
+  readonly fills: Readonly<Record<string, readonly UiRenderInstruction[]>>;
+  readonly scope: DocumentScope;
+  readonly parent?: DocumentSlotFrame;
+}
 
 export function toScopeValues(scope: DocumentScope): UiScopeValues {
   return {

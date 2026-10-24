@@ -26,6 +26,7 @@ export interface UiSvelteExtensionProps {
 /** Code registration is outside serialized source and requires exact identity. */
 export interface UiSvelteExtensionImplementation {
   readonly authoringRules?: readonly UiAuthoringRule[];
+  readonly authoringDependencies?: readonly {readonly id:string;readonly revision:string}[];
   readonly extensionId: string;
   readonly revision: string;
   readonly rendererImplementationId: string;
@@ -60,6 +61,7 @@ export interface UiSvelteComponentProps extends UiSvelteExtensionProps {
  */
 export interface UiSvelteComponentImplementation {
   readonly authoringRules?: readonly UiAuthoringRule[];
+  readonly authoringDependencies?: readonly {readonly id:string;readonly revision:string}[];
   readonly extensionId: string;
   readonly revision: string;
   readonly rendererImplementationId: string;

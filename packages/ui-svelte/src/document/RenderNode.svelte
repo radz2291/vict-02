@@ -29,6 +29,7 @@
     resolveValue,
     uniqueRepeatKeys,
     type DocumentScope,
+    type DocumentSlotFrame,
   } from './logic.js';
   import { onDestroy, untrack } from 'svelte';
   import SlotSnippets from './SlotSnippets.svelte';
@@ -46,6 +47,7 @@
     readonly planHolder?: { readonly plan: UiRenderPlan };
     readonly ownerId?: string;
     readonly slotScope?: DocumentScope;
+    readonly slotFrame?: DocumentSlotFrame;
     readonly actionStatuses?: Readonly<Record<string, import('./extensions.js').UiComponentActionStatus>>;
     readonly extensionDescriptors?: readonly UiExtensionDescriptor[];
     readonly extensionImplementations?: readonly (
@@ -75,6 +77,7 @@
     generation,
     ownerId,
     slotScope,
+    slotFrame,
     actionStatuses = {},
     extensionDescriptors = [],
     extensionImplementations = [],
@@ -98,6 +101,7 @@
   }
 
   const conditions = $derived(conditionsOf(plan));
+  const effectiveSlotFrame = $derived(slotFrame ?? { fills: slotFills, scope: slotScope ?? scope });
   const occ = $derived(occurrenceKey(instruction.occurrenceKey, repeatKeys));
   const extension = $derived(instruction.kind === 'extension'
     ? resolveSvelteComponent(instruction, extensionDescriptors, extensionImplementations)
@@ -124,7 +128,7 @@
   });
   const componentValues = $derived(instruction.kind === 'component' || instruction.kind === 'extension'
     ? evaluateComponentPropValues(instruction, scope) : { values: {}, invalidNames: [] });
-  const semanticIssues = $derived(instruction.kind === 'extension' ? runtimeAuthoringIssues(instruction,scope,plan,extensionImplementations) : []);
+  const semanticIssues = $derived(instruction.kind === 'extension' ? runtimeAuthoringIssues(instruction,scope,plan,extensionImplementations,effectiveSlotFrame) : []);
   $effect(() => { for(const issue of semanticIssues) diagnose(issue); });
   $effect(() => {
     if (componentValues.invalidNames.length) diagnose({ code: 'UI_EXPR_TYPE_MISMATCH',
@@ -290,6 +294,7 @@
         {instancePath}
         {repeatKeys}
         {slotFills}
+        slotFrame={effectiveSlotFrame}
         {dispatch}
         {navigate}
         {setState}
@@ -338,6 +343,7 @@
     {repeatKeys}
     slotFills={instruction.slots}
     slotScope={scope}
+    slotFrame={{fills:instruction.slots,scope,parent:effectiveSlotFrame}}
     {dispatch}
     {navigate}
     {setState}
@@ -360,7 +366,7 @@
         {slotScope}
         {actionStatuses} {extensionDescriptors} {extensionImplementations}
           {scope} instancePath={[...instancePath, `${extensionInstruction.nodeId}@${extensionInstruction.extensionId}`]}
-          {repeatKeys} slotFills={{}} {dispatch} {navigate} {setState} {selectOccurrence} {reportDiagnostic} />
+          {repeatKeys} {slotFills} slotFrame={effectiveSlotFrame} {dispatch} {navigate} {setState} {selectOccurrence} {reportDiagnostic} />
       {/each}
     {/snippet}
     <SlotSnippets fills={instruction.slots ?? {}} names={Object.keys(instruction.slots ?? {})} {renderFill}>
@@ -398,6 +404,7 @@
         {instancePath}
         repeatKeys={[...repeatKeys, uniqueRowKeys[index] ?? String(index)]}
         {slotFills}
+        slotFrame={effectiveSlotFrame}
         {dispatch}
         {navigate}
         {setState}
@@ -423,6 +430,7 @@
       {instancePath}
       {repeatKeys}
       {slotFills}
+      slotFrame={effectiveSlotFrame}
       {dispatch}
       {navigate}
       {setState}
@@ -431,7 +439,7 @@
     />
   {/each}
 {:else if instruction.kind === 'slot'}
-  {@const fill = slotFills[instruction.name]}
+  {@const fill = effectiveSlotFrame.fills[instruction.name]}
   {#if fill !== undefined && fill.length > 0}
     {#each fill as child (child.occurrenceKey)}
       <Self
@@ -440,10 +448,11 @@
     {generation} {componentSurface}
         {ownerId}
         slotScope={undefined}
+        slotFrame={effectiveSlotFrame.parent ?? {fills:{},scope:effectiveSlotFrame.scope}}
         {actionStatuses}
         {extensionDescriptors}
         {extensionImplementations}
-        scope={slotScope ?? scope}
+        scope={effectiveSlotFrame.scope}
         {instancePath}
         {repeatKeys}
         slotFills={{}}
@@ -469,6 +478,7 @@
         {instancePath}
         {repeatKeys}
         {slotFills}
+        slotFrame={effectiveSlotFrame}
         {dispatch}
         {navigate}
         {setState}
@@ -494,6 +504,7 @@
         {instancePath}
         {repeatKeys}
         {slotFills}
+        slotFrame={effectiveSlotFrame}
         {dispatch}
         {navigate}
         {setState}

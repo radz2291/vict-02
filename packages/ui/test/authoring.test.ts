@@ -51,6 +51,23 @@ describe('package authoring contracts',()=>{
     expect(registry([a,b]).issues.some(item=>item.hostCode==='UI_AUTHORING_DEPENDENCY_CYCLE')).toBe(true);
     expect(createUiAuthoringRegistry([pkg([])],[capabilities(a)]).issues[0]?.hostCode).toBe('UI_AUTHORING_MISSING');
   });
+  it('rejects undeclared paired owner slots and child identity properties (PV-02)',()=>{
+    const child=registration('child');
+    const malformed=registration('owner',{dependencies:[{id:'child',revision:'1'}],rules:[{kind:'pairedValues',left:{slot:'missing',definitionIds:['child'],property:'absent'},right:{slot:'also-missing',definitionIds:['child'],property:'absent'}}]});
+    const result=registry([malformed,child]);expect(result.ok).toBe(false);
+    expect(result.issues.filter(issue=>issue.hostCode==='UI_AUTHORING_RULE').length).toBeGreaterThanOrEqual(4);
+  });
+  it('rejects required-part references without an exact installed child dependency (PV-02)',()=>{
+    const noDependency=registration('owner',{rules:[{kind:'requiredParts',slot:'items',definitionIds:['child']}]});
+    expect(registry([noDependency,registration('child')]).ok).toBe(false);
+    const missingChild={...noDependency,dependencies:[{id:'child',revision:'2'}]};
+    expect(registry([missingChild,registration('child')]).ok).toBe(false);
+  });
+  it('rejects incompatible paired identity types and impossible part cardinalities',()=>{
+    const left=registration('left'),right=registration('right',{descriptor:{...registration('right').descriptor,props:[{name:'value',type:'number',default:0}]}});
+    const malformed=registration('owner',{dependencies:[{id:'left',revision:'1'},{id:'right',revision:'1'}],rules:[{kind:'pairedValues',left:{slot:'items',definitionIds:['left'],property:'value'},right:{slot:'items',definitionIds:['right'],property:'value'}},{kind:'requiredParts',slot:'items',definitionIds:['left'],minimum:0.5}]});
+    expect(registry([malformed,left,right]).issues.filter(issue=>issue.hostCode==='UI_AUTHORING_RULE')).toHaveLength(2);
+  });
   it('matches existing effective-revision semantics, including ambiguity',()=>{
     const old=registration('field').descriptor,newer={...old,revision:'2',slots:['new']};
     expect(effectiveUiDescriptor({definitionId:'field'},[old,newer])).toBe(newer);expect(effectiveUiDescriptor({definitionId:'field',revision:'1'},[old,newer])).toBe(old);expect(effectiveUiDescriptor({definitionId:'field'},[newer,newer])).toBeUndefined();
@@ -77,10 +94,26 @@ describe('source semantic admission',()=>{
     expect(authoringSemanticIssues(wrong,installed).some(item=>item.hostCode==='UI_AUTHORING_ANCESTOR_SLOT')).toBe(true);
   });
   it('rejects mismatched paired parts but allows an atomic matching composition',()=>{
-    const tabs=registration('tabs',{rules:[{kind:'pairedValues',left:{slot:'items',definitionIds:['left'],property:'value'},right:{slot:'panels',definitionIds:['right'],property:'value'}}],descriptor:{...registration('tabs').descriptor,slots:['items','panels']}}),left=registration('left'),right=registration('right');
+    const tabs=registration('tabs',{dependencies:[{id:'left',revision:'1'},{id:'right',revision:'1'}],rules:[{kind:'pairedValues',left:{slot:'items',definitionIds:['left'],property:'value'},right:{slot:'panels',definitionIds:['right'],property:'value'}}],descriptor:{...registration('tabs').descriptor,slots:['items','panels']}}),left=registration('left'),right=registration('right');
     const documentWithPair=document([{kind:'component',id:'host',definitionId:'tabs',slots:{items:{name:'items',children:['a']},panels:{name:'panels',children:['b']}}},{kind:'component',id:'a',definitionId:'left',props:{value:{type:'literal',value:'a'}}},{kind:'component',id:'b',definitionId:'right',props:{value:{type:'literal',value:'b'}}}]);
     const all=registry([tabs,left,right]);expect(authoringSemanticIssues(documentWithPair,all).some(item=>item.hostCode==='UI_AUTHORING_PAIRED_VALUES')).toBe(true);
     const fixed={...documentWithPair,nodes:{...documentWithPair.nodes,b:{...documentWithPair.nodes.b,props:{value:{type:'literal',value:'a'}}} as UiNode}};expect(authoringSemanticIssues(fixed,all)).toEqual([]);
+  });
+  it('does not borrow required or paired parts from a nested provider of the same family (PV-01)',()=>{
+    const tabs=registration('tabs',{descriptor:{...registration('tabs').descriptor,slots:['items','panels']},dependencies:[{id:'left',revision:'1'},{id:'right',revision:'1'}],rules:[{kind:'requiredParts',slot:'items',definitionIds:['left']},{kind:'pairedValues',left:{slot:'items',definitionIds:['left'],property:'value'},right:{slot:'panels',definitionIds:['right'],property:'value'}}]});
+    const all=registry([tabs,registration('left'),registration('right')]);expect(all.ok).toBe(true);
+    const source=document([{kind:'component',id:'host',definitionId:'tabs',slots:{items:{name:'items',children:['nested']},panels:{name:'panels',children:['outer-panel']}}},{kind:'component',id:'nested',definitionId:'tabs',slots:{items:{name:'items',children:['inner-trigger']},panels:{name:'panels',children:['inner-panel']}}},{kind:'component',id:'outer-panel',definitionId:'right',props:{value:{type:'literal',value:'outer'}}},{kind:'component',id:'inner-trigger',definitionId:'left',props:{value:{type:'literal',value:'outer'}}},{kind:'component',id:'inner-panel',definitionId:'right',props:{value:{type:'literal',value:'outer'}}}]);
+    const issues=authoringSemanticIssues(source,all);
+    expect(issues.some(issue=>issue.nodeId==='host'&&issue.hostCode==='UI_AUTHORING_REQUIRED_PART')).toBe(true);
+    expect(issues.some(issue=>issue.nodeId==='host'&&issue.hostCode==='UI_AUTHORING_PAIRED_VALUES')).toBe(true);
+    expect(issues.filter(issue=>issue.nodeId==='nested')).toEqual([]);
+  });
+  it('requires exact referenced part revisions rather than accepting an older child with the same id',()=>{
+    const old=registration('child'),newer={...old,descriptor:{...old.descriptor,revision:'2'}};
+    const owner=registration('owner',{dependencies:[{id:'child',revision:'2'}],rules:[{kind:'requiredParts',slot:'items',definitionIds:['child']}]});
+    const all=registry([owner,old,newer]);expect(all.ok).toBe(true);
+    const source=document([{kind:'component',id:'host',definitionId:'owner',slots:{items:{name:'items',children:['part']}}},{kind:'component',id:'part',definitionId:'child',revision:'1'}]);
+    expect(authoringSemanticIssues(source,all).some(issue=>issue.hostCode==='UI_AUTHORING_REQUIRED_PART')).toBe(true);
   });
   it('compiles all six native heading levels through the shared semantic catalog',()=>{
     const doc=document([]);const nodes:Record<string,UiNode>={root:{kind:'element',id:'root',tag:'main',children:[]}};

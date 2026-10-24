@@ -22,9 +22,11 @@ function session(id: string) {
 }
 
 describe('Cycle 1.3 complete showcase fixtures', () => {
-  it('indexes and compiles all 83 examples in valid ancestor contexts', () => {
-    expect(showcaseCatalog).toHaveLength(83);
-    expect(new Set(showcaseCatalog.map(entry => entry.id)).size).toBe(83);
+  it('indexes and compiles every current package-backed example in valid ancestor contexts', () => {
+    expect(showcaseCatalog).toHaveLength(screenRecipes.length);
+    expect(showcaseCatalog.map(entry => entry.id)).toEqual(screenRecipes.map(recipe => recipe.id));
+    expect(new Set(showcaseCatalog.map(entry => entry.id)).size).toBe(screenRecipes.length);
+    expect(showcaseCatalog.map(entry => entry.id)).toEqual(expect.arrayContaining(['vict.ai.conversation','vict.ai.message','vict.ai.prompt-input','vict.flow.canvas']));
     for (const entry of showcaseCatalog) {
       const fixture = createShowcaseFixture(entry.id);
       const compiled = compileScreen(fixture.document);
@@ -54,7 +56,12 @@ describe('Cycle 1.3 complete showcase fixtures', () => {
     const { bridge, data, targetNodeId } = session('slider');
     const control = bridge.document.nodes[targetNodeId];
     expect(control).toMatchObject({ kind: 'component' });
-    const key = `catalog_${targetNodeId}_value`;
+    if(control.kind !== 'component')throw Error('Slider is not a component');
+    const reference=control.props?.value;
+    expect(reference).toMatchObject({type:'ref',path:expect.stringMatching(/^state\./)});
+    if(reference?.type!=='ref'||!reference.path.startsWith('state.'))throw Error('Slider value is not state-bound');
+    const key = reference.path.slice('state.'.length);
+    expect(control.outputs?.valueChange).toMatchObject({setState:{key}});
     expect(bridge.document.localState[key]?.type).toBe('numberList');
     expect(bridge.apply(setStateInitial({ requestId: 'list-edit', document: bridge.document, key, value: [20, 40] })).ok).toBe(true);
     const changed = canonicalUiDocument(bridge.document).contentDigest;

@@ -119,9 +119,55 @@ export function createUiAuthoringRegistry(packages: readonly UiAuthoringPackage[
   if(options.requireCompatibility)for(const pkg of packages)for(const pin of pkg.compatibility??[]){const count=pkg.registrations.filter(item=>item.descriptor.id===pin.id&&item.descriptor.revision===pin.revision).length;if(count!==1)issues.push(issue('UI_AUTHORING_COMPATIBILITY_ORPHAN',`Retained compatibility contract ${authoringKey(pin.id,pin.revision)} must still have one installed registration.`,{packageName:pkg.packageName,id:pin.id,revision:pin.revision}));}
   for(const implementation of implementations)if(!keys.has(authoringKey(implementation.extensionId,implementation.revision)))
     issues.push(issue('UI_AUTHORING_MISSING',`Renderer component ${authoringKey(implementation.extensionId,implementation.revision)} has no authoring disposition.`,{id:implementation.extensionId,revision:implementation.revision}));
-  for(const {registration:r} of raw)for(const rule of r.rules??[]){
-    if(rule.kind==='uniqueValue'&&!r.descriptor.props.some(prop=>prop.name===rule.property))issues.push(issue('UI_AUTHORING_RULE',`Identity property '${rule.property}' is not declared.`,{id:r.descriptor.id}));
-    if(rule.kind==='ancestorSlot')for(const placement of rule.placements){const providers=raw.filter(({registration:provider})=>provider.descriptor.id===placement.definitionId&&(!placement.revision||provider.descriptor.revision===placement.revision));if(!providers.length||providers.some(({registration:provider})=>!provider.descriptor.slots?.includes(placement.slotName)))issues.push(issue('UI_AUTHORING_PLACEMENT',`Provider/slot is unavailable for ${r.descriptor.id}.`,{placement}));}
+  const scalarIdentityTypes=new Set(['string','number','boolean']);
+  for(const {registration:r} of raw){
+    const key=authoringKey(r.descriptor.id,r.descriptor.revision);
+    const failRule=(message:string,detail:Record<string,unknown>={})=>issues.push(issue('UI_AUTHORING_RULE',message,{key,...detail}));
+    const childDescriptor=(id:string):UiExtensionDescriptor|undefined=>{
+      const references=id===r.descriptor.id?[{id,revision:r.descriptor.revision}]:(r.dependencies??[]).filter(dependency=>dependency.id===id);
+      if(references.length!==1){failRule(`Part '${id}' needs exactly one explicit revision dependency.`,{childId:id});return undefined;}
+      const matches=raw.filter(({registration})=>registration.descriptor.id===id&&registration.descriptor.revision===references[0]!.revision);
+      if(matches.length!==1||matches[0]!.registration.eligibility.kind==='excluded'){failRule(`Referenced part '${authoringKey(id,references[0]!.revision)}' is not installed and eligible.`,{childId:id});return undefined;}
+      return matches[0]!.registration.descriptor;
+    };
+    const childSet=(slot:string,ids:readonly string[])=>{
+      if(!r.descriptor.slots?.includes(slot))failRule(`Part owner slot '${slot}' is not declared.`,{slot});
+      if(!ids.length||new Set(ids).size!==ids.length)failRule('Part references must be nonempty and unique.',{slot});
+      return ids.map(childDescriptor).filter((descriptor):descriptor is UiExtensionDescriptor=>descriptor!==undefined);
+    };
+    const dependencyIds=(r.dependencies??[]).map(dependency=>dependency.id);
+    if(new Set(dependencyIds).size!==dependencyIds.length)failRule('A dependency id must select exactly one revision.');
+    for(const rule of r.rules??[]){
+      if(rule.kind==='uniqueValue'){
+        const property=r.descriptor.props.find(prop=>prop.name===rule.property);
+        if(!property||!scalarIdentityTypes.has(property.type))failRule(`Identity property '${rule.property}' must declare a scalar identity type.`);
+        if(!rule.providerIds.length||new Set(rule.providerIds).size!==rule.providerIds.length)failRule('Identity providers must be nonempty and unique.');
+        for(const id of rule.providerIds){
+          const placements=(r.rules??[]).flatMap(candidate=>candidate.kind==='ancestorSlot'?candidate.placements.filter(placement=>placement.definitionId===id):[]);
+          const revisions=[...new Set(placements.flatMap(placement=>placement.revision?[placement.revision]:[]))];
+          const providers=raw.filter(({registration})=>registration.descriptor.id===id&&(!revisions.length||revisions.includes(registration.descriptor.revision)));
+          if(!providers.length||(!revisions.length&&providers.length!==1)||providers.some(({registration})=>(rule.slots??[]).some(slot=>!registration.descriptor.slots?.includes(slot))))failRule(`Identity provider '${id}' has no unambiguous installed slot contract.`,{providerId:id});
+        }
+      }else if(rule.kind==='ancestorSlot'){
+        if(!rule.placements.length)failRule('An ancestor-slot rule needs explicit placements.');
+        for(const placement of rule.placements){const providers=raw.filter(({registration:provider})=>provider.descriptor.id===placement.definitionId&&(!placement.revision||provider.descriptor.revision===placement.revision));if(providers.length!==1||!providers[0]!.registration.descriptor.slots?.includes(placement.slotName))issues.push(issue('UI_AUTHORING_PLACEMENT',`An exact provider/slot contract is unavailable for ${r.descriptor.id}.`,{placement}));}
+      }else if(rule.kind==='requiredParts'){
+        childSet(rule.slot,rule.definitionIds);
+        if(rule.minimum!==undefined&&(!Number.isInteger(rule.minimum)||rule.minimum<1||rule.minimum>500))failRule('Required part minimum must be an integer from 1 to 500.');
+      }else if(rule.kind==='pairedValues'){
+        const types:string[]=[];
+        for(const side of [rule.left,rule.right])for(const child of childSet(side.slot,side.definitionIds)){
+          const prop=child.props.find(prop=>prop.name===side.property);
+          if(!prop||!scalarIdentityTypes.has(prop.type))failRule(`Paired identity '${child.id}.${side.property}' is not a declared scalar identity.`,{childId:child.id,property:side.property});
+          else types.push(prop.type);
+        }
+        if(new Set(types).size>1)failRule('Both paired part identity sets must have the same declared type.');
+      }else if(rule.kind==='labelOwnership'){
+        if(!r.descriptor.props.some(prop=>prop.name===rule.property&&prop.type==='string'))failRule(`Label property '${rule.property}' must be a declared string.`);
+      }else if(rule.kind==='hostRequirement'){
+        if(!rule.capability||!rule.reason)failRule('A host requirement needs a named capability and reason.');
+      }else if(rule.kind!=='controlledPair')failRule('Unknown authoring semantic rule.');
+    }
   }
   const ownDigests = new Map(raw.map(({pkg,registration}) => [authoringKey(registration.descriptor.id,registration.descriptor.revision), authoringDigest({schema:pkg.schema,packageName:pkg.packageName,packageVersion:pkg.packageVersion,registration,capabilities:implementations.filter(item => item.extensionId === registration.descriptor.id && item.revision === registration.descriptor.revision && item.rendererImplementationId === registration.descriptor.rendererImplementationId).map(authoringImplementationCapabilities)})]));
   const digests = new Map<string,string>();

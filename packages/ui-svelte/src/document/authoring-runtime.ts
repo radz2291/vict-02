@@ -1,17 +1,19 @@
 /** Evaluated identity checks are presentation admission, never a second authoring model. */
 import type {UiAuthoringRegistration,UiAuthoringRule,UiRenderInstruction,UiRenderPlan} from '@victframework/ui';
 import type {UiSvelteComponentImplementation,UiSvelteExtensionImplementation,UiExtensionRenderDiagnostic} from './extensions.js';
-import {asRecord,conditionsOf,evaluateComponentPropValues,evaluateCondition,resolveValue,type DocumentScope} from './logic.js';
+import {asRecord,conditionsOf,evaluateComponentPropValues,evaluateCondition,resolveValue,type DocumentScope,type DocumentSlotFrame} from './logic.js';
 
-export function withAuthoringRules<T extends UiSvelteComponentImplementation|UiSvelteExtensionImplementation>(implementations:readonly T[],registrations:readonly UiAuthoringRegistration[]):readonly (T&{readonly authoringRules:readonly UiAuthoringRule[]})[]{
-  return implementations.map(implementation=>({...implementation,authoringRules:registrations.find(item=>item.descriptor.id===implementation.extensionId&&item.descriptor.revision===implementation.revision)?.rules??[]}));
+export function withAuthoringRules<T extends UiSvelteComponentImplementation|UiSvelteExtensionImplementation>(implementations:readonly T[],registrations:readonly UiAuthoringRegistration[]):readonly (T&{readonly authoringRules:readonly UiAuthoringRule[];readonly authoringDependencies:readonly {readonly id:string;readonly revision:string}[]})[]{
+  return implementations.map(implementation=>{const registration=registrations.find(item=>item.descriptor.id===implementation.extensionId&&item.descriptor.revision===implementation.revision);return {...implementation,authoringRules:registration?.rules??[],authoringDependencies:registration?.dependencies??[]};});
 }
 type Entry={instruction:Extract<UiRenderInstruction,{kind:'extension'}>;values:Readonly<Record<string,unknown>>;slot:string;path:string;providers:readonly string[]};
 type Fills=Readonly<Record<string,{children:readonly UiRenderInstruction[];scope:DocumentScope;fills:Fills}>>;
 /** Refuse ambiguous evaluated provider composition. The renderer evaluates the same existing finite expressions/scopes. */
-export function runtimeAuthoringIssues(owner:Extract<UiRenderInstruction,{kind:'extension'}>,scope:DocumentScope,plan:UiRenderPlan,implementations:readonly (UiSvelteComponentImplementation|UiSvelteExtensionImplementation)[]):readonly UiExtensionRenderDiagnostic[]{
+export function runtimeAuthoringIssues(owner:Extract<UiRenderInstruction,{kind:'extension'}>,scope:DocumentScope,plan:UiRenderPlan,implementations:readonly (UiSvelteComponentImplementation|UiSvelteExtensionImplementation)[],slotFrame?:DocumentSlotFrame):readonly UiExtensionRenderDiagnostic[]{
   const rulesFor=(id:string,revision:string)=>implementations.find(item=>item.extensionId===id&&item.revision===revision)?.authoringRules??[];
   const ownerRules=rulesFor(owner.extensionId,owner.revision);
+  const ownerDependencies=implementations.find(item=>item.extensionId===owner.extensionId&&item.revision===owner.revision)?.authoringDependencies??[];
+  const childMatches=(entry:Entry,ids:readonly string[])=>ids.includes(entry.instruction.extensionId)&&entry.instruction.revision===(entry.instruction.extensionId===owner.extensionId?owner.revision:ownerDependencies.find(dependency=>dependency.id===entry.instruction.extensionId)?.revision);
   const relevant=implementations.some(item=>item.authoringRules?.some(rule=>rule.kind==='uniqueValue'&&rule.providerIds.includes(owner.extensionId)))||ownerRules.some(rule=>rule.kind==='pairedValues'||rule.kind==='requiredParts');
   if(!relevant)return [];
   const entries:Entry[]=[],problems:UiExtensionRenderDiagnostic[]=[],conditions=conditionsOf(plan);
@@ -22,7 +24,7 @@ export function runtimeAuthoringIssues(owner:Extract<UiRenderInstruction,{kind:'
     const children=(items:readonly UiRenderInstruction[],nextValues=values,nextProviders=providers,nextFills=fills)=>items.forEach((item,index)=>visit(item,nextValues,slot,`${path}/${index}:${item.nodeId}`,nextProviders,nextFills));
     if(instruction.kind==='extension'){
       entries.push({instruction,values:evaluateComponentPropValues(instruction,values).values,slot,path,providers});
-      for(const [childSlot,items]of Object.entries(instruction.slots??{}))items.forEach((item,index)=>visit(item,values,slot,`${path}/${childSlot}/${index}:${item.nodeId}`,[...providers,instruction.extensionId],{}));
+      for(const [childSlot,items]of Object.entries(instruction.slots??{}))items.forEach((item,index)=>visit(item,values,slot,`${path}/${childSlot}/${index}:${item.nodeId}`,[...providers,instruction.extensionId],fills));
     }else if(instruction.kind==='element'||instruction.kind==='unsupported')children(instruction.children);
     else if(instruction.kind==='component'){
       const localFills=Object.fromEntries(Object.entries(instruction.slots).map(([name,items])=>[name,{children:items,scope:values,fills}]));
@@ -37,7 +39,12 @@ export function runtimeAuthoringIssues(owner:Extract<UiRenderInstruction,{kind:'
       const branch=instruction.branches.find(branch=>branch.when===undefined||evaluateCondition(branch.when,conditions,values));if(branch)children(branch.children);
     }
   }
-  for(const [slot,items]of Object.entries(owner.slots??{}))items.forEach((item,index)=>visit(item,scope,slot,`${slot}/${index}:${item.nodeId}`,[owner.extensionId],{}));
+  const frameFills=(frame:DocumentSlotFrame|undefined):Fills=>{
+    if(!frame)return {};const parent=frameFills(frame.parent);
+    return Object.fromEntries(Object.entries(frame.fills).map(([name,children])=>[name,{children,scope:frame.scope,fills:parent}]));
+  };
+  const initialFills=frameFills(slotFrame);
+  for(const [slot,items]of Object.entries(owner.slots??{}))items.forEach((item,index)=>visit(item,scope,slot,`${slot}/${index}:${item.nodeId}`,[owner.extensionId],initialFills));
   const groups=new Map<string,{value:unknown;entry:Entry}[]>();
   for(const entry of entries)for(const rule of rulesFor(entry.instruction.extensionId,entry.instruction.revision))if(rule.kind==='uniqueValue'){
     const nearest=[...entry.providers].reverse().find(id=>rule.providerIds.includes(id));
@@ -49,11 +56,11 @@ export function runtimeAuthoringIssues(owner:Extract<UiRenderInstruction,{kind:'
   }
   for(const group of groups.values())for(const item of group)if(group.filter(other=>other.value===item.value).length>1){fail('Rendered sibling component identities are ambiguous.',{childNodeId:item.entry.instruction.nodeId,path:item.entry.path});break;}
   for(const rule of ownerRules)if(rule.kind==='pairedValues'){
-    const collect=(side:typeof rule.left)=>entries.filter(entry=>side.definitionIds.includes(entry.instruction.extensionId)&&entry.slot===side.slot&&entry.providers.filter(id=>id===owner.extensionId).length===1).map(entry=>entry.values[side.property]);
+    const collect=(side:typeof rule.left)=>entries.filter(entry=>childMatches(entry,side.definitionIds)&&entry.slot===side.slot&&entry.providers.filter(id=>id===owner.extensionId).length===1).map(entry=>entry.values[side.property]);
     const left=collect(rule.left),right=collect(rule.right);
     if([...left,...right].some(value=>value===undefined)||left.some(value=>!right.includes(value))||right.some(value=>!left.includes(value)))fail('Rendered paired part identities do not match.',{leftSlot:rule.left.slot,rightSlot:rule.right.slot});
   }else if(rule.kind==='requiredParts'){
-    const count=entries.filter(entry=>entry.slot===rule.slot&&rule.definitionIds.includes(entry.instruction.extensionId)&&entry.providers.filter(id=>id===owner.extensionId).length===1).length;
+    const count=entries.filter(entry=>entry.slot===rule.slot&&childMatches(entry,rule.definitionIds)&&entry.providers.filter(id=>id===owner.extensionId).length===1).length;
     if(count<(rule.minimum??1))fail('A required rendered composition part is missing.',{slot:rule.slot,expected:rule.definitionIds,actual:count});
   }
   return problems.slice(0,8);

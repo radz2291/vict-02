@@ -1,6 +1,6 @@
 # Cycle 1.3 — reliable component authoring foundation
 
-2026-10-24. **AUTHORIZED; architecture amended after initial independent HELD, affected recheck pending.**
+2026-10-24. **AUTHORIZED; amended architecture independently PASS at3f6a918; first product e7d2b51 independently FAIL, bounded repairs in progress.**
 The owner's new stage-manager brief supersedes report-only restrictions for core reliability, scalable component knowledge and supported authoring access. It does not authorize the reverted interaction work or Milestone 2. This document records scope before implementation; it is not a gate verdict or owner acceptance.
 
 ## Recovered baseline and preservation
@@ -53,7 +53,7 @@ Chronological tool attempts group their own lifecycle phases, expandable receipt
 
 ## Concrete architecture amendments after independent challenge
 
-The [initial review](CYCLE-1-3-CORE-ARCHITECTURE-INDEPENDENT.md) returned HELD on AC-01–AC-03. Preserve that verdict. The following specification is the proposed remedy; it requires an affected independent recheck before substantial implementation.
+The [initial review and affected recheck](CYCLE-1-3-CORE-ARCHITECTURE-INDEPENDENT.md) returned HELD on AC-01–AC-03, then PASS on amended architecture3f6a918 before substantial implementation. Both decisions remain retained. The following specification was the independently challenged remedy; its design PASS does not establish product acceptance.
 
 ### AC-01: registration data, projections and compatibility
 
