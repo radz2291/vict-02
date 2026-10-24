@@ -157,6 +157,14 @@ body:has(.finished-screen) {
   border-left: 1px solid #e1e6ee;
   overflow: hidden;
 }
+.document-drawer[hidden], .document-structure[hidden], .sidebar-body[hidden], .drawer-resizer[hidden] { display: none !important; }
+.document-structure { display: flex; flex: 1; min-height: 0; min-width: 0; overflow: hidden; }
+.sidebar-tabs .expand-structure { flex: 0 0 32px; font-size: 17px; padding: 0; border-bottom: 0; }
+.sidebar-tabs .expand-structure[hidden] { display: none; }
+.design-workspace.structure-drawer.drawer-stacked { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 2fr) minmax(0, 3fr); }
+.design-workspace.structure-drawer.drawer-stacked > .document-drawer { position: static; width: auto; border-left: 0; border-top: 1px solid #dce2eb; }
+.design-workspace.structure-drawer.structure-expanded { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr); }
+.design-workspace.structure-expanded > .document-drawer { position: absolute; inset: 38px 0 0; width: auto; z-index: 30; }
 .drawer-resizer {display:grid;}
 .sidebar-tabs {
   display: flex;

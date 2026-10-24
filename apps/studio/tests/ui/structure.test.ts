@@ -113,6 +113,25 @@ it('hands declared state to Data and shows source facts without inventing runtim
   expect(document.querySelector('.structure-facts')?.textContent).toContain('initial');
 });
 
+it('scopes drawer Escape to its own page and dismisses the host only after inspection is closed', async () => {
+  const source=newScreen('Drawer escape','drawer-escape');
+  const onDismiss=vi.fn();
+  mounted=mount(StructureView,{target:document.body,props:{document:source,revision:'working',presentation:'drawer',onSelect:vi.fn(),onMove:vi.fn(()=>false),onNotice:vi.fn(),onDismiss}});
+  await tick();await tick();
+  button('Inspect structure').click();await tick();
+  const outside=document.createElement('input');document.body.append(outside);outside.focus();
+  outside.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true,cancelable:true}));await tick();
+  expect(document.querySelector('[aria-label="Structure inspection"]')).not.toBeNull();
+  expect(onDismiss).not.toHaveBeenCalled();
+  const properties=button('Properties');properties.focus();
+  properties.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true,cancelable:true}));await tick();
+  expect(document.querySelector('[aria-label="Structure inspection"]')).toBeNull();
+  expect(onDismiss).not.toHaveBeenCalled();
+  expect(document.activeElement).toBe(button('Inspect structure'));
+  button('Inspect structure').dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true,cancelable:true}));await tick();
+  expect(onDismiss).toHaveBeenCalledTimes(1);
+});
+
 it('offers guarded contextual moves through named keyboard controls and exits move mode on acknowledgement', async () => {
   const base = newScreen('Keyboard move', 'keyboard-move');
   const source = { ...base, nodes: {

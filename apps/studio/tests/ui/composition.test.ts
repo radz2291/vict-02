@@ -7,6 +7,7 @@ import { newScreen, compileScreen } from '../../src/lib/designer/application.js'
 import { screenStore } from '../../src/lib/designer/storage.js';
 import type { UiDocument } from '@victframework/ui';
 import { openStudioMenu } from './studio-menu.js';
+import { structureId } from '../../src/lib/designer/structure.js';
 let editor: ReturnType<typeof mount> | undefined;
 afterEach(async () => {
   if (editor) await unmount(editor);
@@ -22,6 +23,66 @@ const button = (name: string) => {
   flushSync();
   return item!;
 };
+
+it('preserves the canvas, runtime input, scroll and graph context through Structure drawer transitions', async () => {
+  const seed = newScreen('Drawer continuity', 'drawer-continuity');
+  const source: UiDocument = { ...seed, revision: 'r1.r1', nodes: {
+    screen: { id:'screen', kind:'element', tag:'main', children:['group'] },
+    group: { id:'group', kind:'element', tag:'section', attributes:{'aria-label':'Customer'}, children:['field'] },
+    field: { id:'field', kind:'element', tag:'input', attributes:{type:'text','aria-label':'Customer name',value:{type:'ref',path:'state.message'}}, children:[], interactions:[{on:'change',action:'setState',key:'message',value:{type:'ref',path:'state.message'}}] },
+  } };
+  const store = screenStore(localStorage, source.id);
+  expect(store.save({document:source,expectedStoredRevision:'r1',newStoredRevision:'r1.r1'}).ok).toBe(true);
+  editor = mount(Designer, {target:document.body}); await tick(); await tick();
+  const frame = document.querySelector('.design-frame')!;
+  const scroll = document.querySelector<HTMLElement>('.canvas-scroll')!;
+  const identity = document.querySelector('.design-status > span:last-child')!.getAttribute('title');
+  expect([...document.querySelectorAll('.canvas-modes button')].map(node=>node.textContent)).toEqual(['Design','Interact']);
+  button('Interact'); await tick();
+  const input = document.querySelector<HTMLInputElement>('.design-frame [aria-label="Customer name"]')!;
+  input.value='Runtime stays here'; input.dispatchEvent(new Event('change',{bubbles:true})); await tick(); await tick();
+  scroll.scrollTop=70; scroll.scrollLeft=15;
+  button('Document'); await tick(); button('Structure'); await tick(); await tick();
+  const graph = document.querySelector('.structure-view')!;
+  expect(document.querySelector('.design-frame')).toBe(frame);
+  expect(scroll.style.display).not.toBe('none'); expect(input.value).toBe('Runtime stays here');
+  const search = document.querySelector<HTMLInputElement>('[aria-label="Search structure"]')!;
+  search.value='Customer'; search.dispatchEvent(new Event('input',{bubbles:true})); await tick(); await tick();
+  const node = [...document.querySelectorAll<HTMLElement>('.svelte-flow__node')].find(node=>node.dataset.id===structureId(source.id,'node','group'))!;
+  expect(node).toBeDefined(); node.focus(); node.dispatchEvent(new KeyboardEvent('keydown',{key:'Enter',bubbles:true,cancelable:true})); await tick(); await tick();
+  expect(document.querySelector('[aria-label="Composition navigation"]')).toBeNull();
+  expect(scroll.scrollTop).toBe(70); expect(scroll.scrollLeft).toBe(15);
+  expect(document.querySelector('[aria-label="Floating selection tools"]')).toBeNull();
+  button('Expand Structure'); await tick(); button('Restore Structure'); await tick();
+  button('Data'); await tick(); button('Structure'); await tick();
+  expect(document.querySelector('.structure-view')).toBe(graph); expect(search.value).toBe('Customer');
+  button('Close document'); await tick();
+  expect(document.querySelector<HTMLElement>('#document-drawer')!.hidden).toBe(true);
+  button('Document'); await tick();
+  expect(document.querySelector('.structure-view')).toBe(graph); expect(search.value).toBe('Customer');
+  expect(document.querySelector('.design-frame')).toBe(frame); expect(input.value).toBe('Runtime stays here');
+  expect(document.querySelector('.design-status > span:last-child')!.getAttribute('title')).toBe(identity);
+  expect(store.rawLoad()).toMatchObject({document:source});
+});
+
+it('retains Source drafts and refuses drawer/mode transitions until the draft is discarded', async () => {
+  const source={...newScreen('Drawer draft','drawer-draft'),revision:'r1.r1'};
+  expect(screenStore(localStorage,source.id).save({document:source,expectedStoredRevision:'r1',newStoredRevision:'r1.r1'}).ok).toBe(true);
+  editor=mount(Designer,{target:document.body}); await tick(); await tick();
+  button('Document'); await tick(); button('Source'); await tick();
+  const draft=document.querySelector<HTMLTextAreaElement>('#canonical-source')!;
+  draft.value+=' '; draft.dispatchEvent(new Event('input',{bubbles:true})); await tick();
+  const structureTab=[...document.querySelectorAll<HTMLButtonElement>('.sidebar-tabs button')].find(node=>node.textContent==='Structure')!;
+  expect(structureTab.disabled).toBe(true); button('Interact'); await tick();
+  expect(document.querySelector('.canvas-modes button')!.getAttribute('aria-pressed')).toBe('true');
+  button('Close document'); await tick();
+  expect(document.querySelector<HTMLElement>('#document-drawer')!.hidden).toBe(false); expect(draft.value.endsWith(' ')).toBe(true);
+  button('Discard draft'); await tick(); button('Structure'); await tick();
+  const search=document.querySelector<HTMLInputElement>('[aria-label="Search structure"]')!;
+  search.focus(); search.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true,cancelable:true})); await tick();
+  expect(document.querySelector<HTMLElement>('#document-drawer')!.hidden).toBe(true);
+  expect(document.activeElement).toBe(document.querySelector('[aria-controls="document-drawer"]'));
+});
 
 it('opens another saved screen through File and guards the cascading menu during a source draft', async () => {
   const first = { ...newScreen('First screen', 'first-screen'), revision: 'r1.r1' };

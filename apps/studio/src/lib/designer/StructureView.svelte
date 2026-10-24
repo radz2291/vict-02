@@ -8,11 +8,12 @@
   import { Menubar } from '@victframework/ui-svelte/catalog/menubar';
   import WorkspaceMenu from './WorkspaceMenu.svelte';
 
-  let { document, revision, selectedNodeId, blocked = false, active = true, descriptors = [], recipes = [], onSelect, onDeselect, onMove, onNotice, onNavigate }: {
+  let { document, revision, selectedNodeId, blocked = false, active = true, presentation = 'workspace', descriptors = [], recipes = [], onSelect, onDeselect, onMove, onNotice, onNavigate, onDismiss }: {
     document: UiDocument; revision: string; selectedNodeId?: string; blocked?: boolean; active?: boolean;
     descriptors?: readonly UiExtensionDescriptor[]; recipes?: readonly InsertRecipe[];
     onSelect: (occurrence: string) => void; onMove: (request: StructureEditRequest) => boolean;
     onDeselect?: () => void;
+    presentation?: 'workspace' | 'drawer'; onDismiss?: () => void;
     onNotice: (message: string) => void; onNavigate?: (request: StructureHandoff) => void;
   } = $props();
   let nodes = $state<Node<StructureNodeData>[]>([]);
@@ -37,6 +38,8 @@
   let inspectionPage = $state<'properties' | 'relationships' | 'find' | 'move'>('properties');
   let showTextNodes = $state(false);
   let inspectionButton: HTMLButtonElement;
+  let structureElement: HTMLElement;
+  const fittedDocuments = new Set<string>();
   const graph = $derived(projectStructure(document));
   const compactGraph = $derived(compactStructure(graph, document));
   const groupGraph = $derived(showTextNodes || search ? graph : compactGraph);
@@ -117,6 +120,10 @@
     return () => fence.cancel();
   });
   onDestroy(() => { remember(); fence.cancel(); });
+  $effect(() => {
+    if (presentation !== 'drawer' || !active || layoutStatus || !nodes.length || nodes.some(node => !node.measured?.width) || fittedDocuments.has(document.id)) return;
+    fittedDocuments.add(document.id); locate();
+  });
   function locate(ids: string[] = []) { navigationIds = ids; navigationRequest = {}; }
   function select(node: Node<StructureNodeData>) {
     if (blocked) { onNotice('Apply or cancel your draft before changing selection.'); return; }
@@ -155,7 +162,7 @@
     // Run before Flow's wrapper, which otherwise clears its own selection even
     // when Escape is only closing our dock. Keep the two selection owners equal.
     event.preventDefault(); event.stopPropagation();
-    if (inspectionOpen) closeInspection(); else deselect();
+    if (inspectionOpen) closeInspection(); else if (inspectedId || !onDismiss) deselect(); else onDismiss();
   }
   function beginMove() {
     moveSource = inspected?.data.occurrence && inspected.data.sourceId !== document.root ? inspected.id : '';
@@ -166,8 +173,10 @@
   }
   function escape(event: KeyboardEvent) {
     if (!active || event.defaultPrevented || event.key !== 'Escape' || activeMenu) return;
+    if (presentation === 'drawer' && (!(event.target instanceof Element) || !structureElement?.contains(event.target))) return;
     if (inspectionOpen) { event.preventDefault(); closeInspection(); }
-    else if (focusedId || search) { search = ''; focusedId = undefined; }
+    else if (focusedId || search) { event.preventDefault(); search = ''; focusedId = undefined; }
+    else if (onDismiss) { event.preventDefault(); onDismiss(); }
   }
   function connect(connection: Connection) {
     const start = connectionStart; connectionStart = undefined;
@@ -186,7 +195,7 @@
   const targetOptions = $derived(graph.nodes.filter(node => !!moveSource && valid({ source: moveSource, target: node.id, sourceHandle: 'content', targetHandle: 'container' })));
 </script>
 <svelte:window onkeydown={escape} onkeydowncapture={graphEscape} />
-<section class="structure-view" aria-label="Source structure">
+<section class="structure-view" class:drawer-presentation={presentation === 'drawer'} class:inspection-open={inspectionOpen} aria-label="Source structure" bind:this={structureElement}>
   <div class="structure-tools">
     <input type="search" aria-label="Search structure" placeholder="Search structure" bind:value={search} />
     <Menubar.Root class="workspace-menus" aria-label="Structure menus" bind:value={activeMenu} loop>
@@ -216,7 +225,7 @@
           {#if inspected.data.occurrence}
             <Menubar.Item disabled={blocked} onSelect={() => navigate('inspector')}>Edit properties</Menubar.Item>
             <Menubar.Item disabled={blocked} onSelect={() => navigate('layers')}>Reveal in Layers</Menubar.Item>
-            <Menubar.Item disabled={blocked} onSelect={() => navigate('design')}>Show in Design</Menubar.Item>
+            <Menubar.Item disabled={blocked} onSelect={() => navigate('design')}>{presentation === 'drawer' ? 'Locate on canvas' : 'Show in Design'}</Menubar.Item>
             <Menubar.Separator />
             <Menubar.Item disabled={blocked || inspected.data.sourceId === document.root} onSelect={beginMove}>Move inside…</Menubar.Item>
           {/if}
@@ -288,6 +297,14 @@
 
 <style>
   .structure-view { display: flex; flex-direction: column; flex: 1; min-height: 0; height: 100%; min-width: 0; color: #26334b; background: #f8fafc; font: 12px/1.45 'Segoe UI', system-ui, sans-serif; }
+  .drawer-presentation { container: structure-panel / inline-size; }
+  .drawer-presentation .structure-body { position: relative; }
+  .drawer-presentation.inspection-open .structure-canvas { visibility: hidden; }
+  .drawer-presentation .structure-details { position: absolute; inset: 0; width: 100%; min-width: 0; max-height: none; flex-basis: auto; border: 0; }
+  @container structure-panel (max-width: 540px) {
+    .structure-tools { flex-wrap: wrap; }
+    .structure-tools input { flex-basis: 100%; max-width: none; }
+  }
   .structure-tools { display: flex; align-items: center; gap: 6px; padding: 6px 10px; min-height: 40px; flex-shrink: 0; border-bottom: 1px solid #e1e6ee; }
   button, select, input[type=search] { box-sizing: border-box; max-width: 100%; border: 1px solid #dce2eb; border-radius: 5px; background: white; color: inherit; padding: 6px 8px; font: inherit; }
   button { cursor: pointer; } button:hover { background: #edf1ff; } button:disabled { opacity: .5; cursor: default; }
