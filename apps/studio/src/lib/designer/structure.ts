@@ -41,6 +41,7 @@ export function structureNodePresentation(document: UiDocument, data: StructureN
   let summary = data.summary;
   if (source?.kind === 'text') summary = undefined;
   if (source?.kind === 'element') {
+    if (source.id !== document.root && typeof source.attributes?.['aria-label'] === 'string' && source.attributes['aria-label'].trim()) label = source.attributes['aria-label'];
     if (/^h[1-6]$/.test(source.tag)) kind = 'Heading';
     else if (source.tag === 'p') kind = 'Paragraph';
     const text = source.children.length === 1 ? document.nodes[source.children[0]!] : undefined;

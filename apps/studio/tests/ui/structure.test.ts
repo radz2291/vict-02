@@ -58,6 +58,28 @@ it('opens inspection deliberately and Escape closes it with focus restored, pres
   expect(onSelect).not.toHaveBeenCalled();
 });
 
+it('synchronizes keyboard graph selection with shared selection and inspection without opening tools or moving the camera', async () => {
+  const base = newScreen('Keyboard selection', 'keyboard-selection');
+  const source = { ...base, nodes: { ...base.nodes,
+    screen: { id: 'screen', kind: 'element' as const, tag: 'main', children: ['right'] },
+    right: { id: 'right', kind: 'element' as const, tag: 'section', attributes: { 'aria-label': 'Right group' }, children: [] },
+  } };
+  const onSelect = vi.fn();
+  mounted = mount(StructureView, { target: document.body, props: { document: source, revision: 'working', onSelect, onMove: vi.fn(() => false), onNotice: vi.fn() } });
+  await tick(); await tick();
+  const viewport = document.querySelector<HTMLElement>('.svelte-flow__viewport')!;
+  const before = viewport.style.transform;
+  const node = [...document.querySelectorAll<HTMLElement>('.svelte-flow__node')].find(item => item.dataset.id === structureId(source.id, 'node', 'right'))!;
+  node.focus(); node.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', code: 'Enter', bubbles: true, cancelable: true }));
+  await tick(); await tick();
+  expect(onSelect).toHaveBeenCalledWith(`${source.id}|right`);
+  expect(viewport.style.transform).toBe(before);
+  expect(document.querySelector('.structure-details')).toBeNull();
+  button('Inspect structure').click(); await tick();
+  expect(document.querySelector('.inspection-heading strong')?.textContent).toBe('Right group');
+  expect(document.querySelector('.inspection-identity code')?.textContent).toBe('right');
+});
+
 it('refuses source navigation and contextual moves while the host has an unapplied draft', async () => {
   const source = newScreen('Draft refusal', 'draft-refusal');
   const onSelect = vi.fn(); const onMove = vi.fn(() => false); const onNotice = vi.fn();

@@ -142,6 +142,14 @@
     if (blocked) return;
     inspectedId = undefined; onDeselect?.();
   }
+  function keyboardSelection(event: KeyboardEvent) {
+    // Flow's Enter/Space selection does not emit onnodeclick. Only handle a
+    // focused node wrapper, never an input or its nested disclosure button.
+    const target = event.target;
+    if (!(target instanceof HTMLElement) || !target.matches('.svelte-flow__node')) return;
+    const node = nodes.find(entry => entry.id === target.dataset.id);
+    if (node && (event.key === 'Enter' || event.key === ' ')) select(node);
+  }
   function beginMove() {
     moveSource = inspected?.data.occurrence && inspected.data.sourceId !== document.root ? inspected.id : '';
     moveTarget = ''; openInspection('move');
@@ -218,8 +226,9 @@
   <div class="structure-body">
     <div class="structure-canvas">
       <FlowCanvas bind:nodes bind:edges bind:viewport {nodeTypes} {edgeTypes} minZoom={.35} maxZoom={2} colorMode="light" showControls={false} showMiniMap={nodes.length > 12}
-        nodesConnectable={allowMoves && !blocked} elementsSelectable={!blocked} deleteKey={null} isValidConnection={valid}
+        nodesConnectable={allowMoves && !blocked} elementsSelectable={!blocked} deleteKey={null} multiSelectionKey={null} selectionKey={null} autoPanOnNodeFocus={false} isValidConnection={valid}
         onnodeclick={({ node }) => select(node as Node<StructureNodeData>)}
+        onkeydown={keyboardSelection}
         onpaneclick={deselect}
         onnodedragstart={() => fence.cancel()}
         onconnectstart={() => { connectionStart = { documentId: document.id, revision }; }}
@@ -311,7 +320,7 @@
     .structure-tools input { max-width: none; }
     .structure-count { font-size: 11px; }
     .structure-body { flex-direction: column; }
-    .structure-canvas { min-height: 140px; }
+    .structure-canvas { min-height: 0; }
     .structure-details { width: 100%; min-width: 0; flex-basis: 44%; max-height: 50%; border-left: 0; border-top: 1px solid #e1e6ee; }
   }
 </style>

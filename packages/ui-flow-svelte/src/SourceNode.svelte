@@ -20,7 +20,7 @@
 <div class="vict-source-node" class:selected data-kind={data.kind}>
   <Handle type="target" id="container" position={horizontal ? Position.Left : Position.Top} isConnectable={!!data.moveTarget} class={data.moveTarget ? 'edit-handle' : 'read-handle'} aria-hidden={!data.moveTarget} aria-label={`Move content inside ${data.label}`} />
   <div class="vict-source-heading"><span class="vict-source-kind">{data.kindLabel ?? data.kind}</span>
-    {#if toggleGroup}<button type="button" class="nodrag nopan" aria-label={`${data.collapsed ? 'Expand' : 'Collapse'} ${data.label}`} aria-expanded={!data.collapsed} onclick={event => { event.stopPropagation(); toggleGroup(); }}>{data.collapsed ? '›' : '⌄'}</button>{/if}
+    {#if toggleGroup}<button type="button" class="nodrag nopan" aria-label={`${data.collapsed ? 'Expand' : 'Collapse'} ${data.label}`} aria-expanded={!data.collapsed} onkeydown={event => { if (event.key === 'Enter' || event.key === ' ') event.stopPropagation(); }} onclick={event => { event.stopPropagation(); toggleGroup(); }}>{data.collapsed ? '›' : '⌄'}</button>{/if}
   </div>
   <strong>{data.label}</strong>
   {#if data.summary}<span class="vict-source-summary">{data.summary}</span>{/if}
