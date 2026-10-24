@@ -70,7 +70,8 @@
         { id: 'core-fixture-retry-visibility', title: 'Recheck current preview', state: 'completed', detail: 'Fixture revision remains r2; no edit replay.' },
         { id: 'core-fixture-retry-observe', title: 'Observation receipt', state: 'completed', detail: 'Synthetic receipt only. Real visual and interaction verification belong in the Designer.' },
       ] } },
-      { id: 'core-fixture-finish', kind: 'summary', text: 'Fixture summary · one edit, two observation attempts, failed evidence retained. This gallery makes no live completion claim.' },
+      { id: 'core-fixture-schema', kind: 'activity', activity: { id: 'core-fixture-schema', title: 'Input schema diagnostics · Edit screen (not a tool attempt)', state: 'failed', detail: 'Simulation · 2 parser evaluations of one identical diagnostic payload; these are not tool calls. No call identity is inferred or joined to an attempt.\noperations.0.expression · Expected a literal or ref expression; a bare boolean is invalid.\nThis standalone diagnostic does not change the three simulated tool attempts or their measurements.' } },
+      { id: 'core-fixture-finish', kind: 'summary', text: 'Fixture summary · one edit, two observation attempts, failed evidence retained. Standalone schema diagnostics do not add tool calls. This gallery makes no live completion claim.' },
     ] },
   ];
   const failureStatus = phaseFailureStatus([{ tool: 'studio_screen_observe', code: 'STUDIO_CAPTURE_NOT_VISIBLE', phase: 'visibility', reason: 'preview-covered' }]);
