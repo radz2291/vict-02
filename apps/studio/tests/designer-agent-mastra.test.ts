@@ -638,7 +638,20 @@ it('makes bounded precise pre-invocation refusal guidance available to the model
  const observation=events.find(event=>event.type==='tool-event'&&event.kind==='observation'&&event.tool==='studio_screen_read');expect(observation?.type).toBe('tool-event');if(observation?.type!=='tool-event')throw Error('No read');expect(observation.callId).toBeTruthy();
  // The model receives the full bounded overview; the owner trace explicitly marks any display clipping.
  const all=JSON.stringify(events);expect(all).toContain('literal');expect(all).toContain('ref');expect(all).toContain('operations.0.expression');
- const refused=events.find(event=>event.type==='tool-event'&&event.kind==='validation-refused');expect(refused?.type==='tool-event'&&refused.details).toContain('Expected exactly');
+ const diagnostic=events.find(event=>event.type==='schema-diagnostic');expect(diagnostic?.type==='schema-diagnostic'&&diagnostic.details).toContain('Expected exactly');
+ expect(events.some(event=>event.type==='tool-event'&&event.kind==='validation-refused'&&!event.callId)).toBe(false);
+},120000);
+
+it('keeps actual malformed read parsing outside tool attempts and lets the corrected read recover its own boundary (offline)',async()=>{
+ const {bridge,start,input}=context();const before=bridge.getSnapshot();const events:StudioAgentEvent[]=[];
+ const model=createDeterministicOfflineModel({script:{[input]:{kind:'tool-chain',calls:[{toolName:'studio_screen_read',args:{section:'nodes',offset:-1}},{toolName:'studio_screen_read',args:{}}],thenText:'The invalid query was corrected; source is unchanged.'}}});
+ const opened=openAgentRun('read-schema-diagnostics',start,event=>events.push(event),{modelFactory:()=>model,model:OFFLINE_MODEL_IDENTITY});if(!opened.ok)throw Error(opened.code);await opened.finished;
+ const diagnostics=events.filter((event):event is Extract<StudioAgentEvent,{type:'schema-diagnostic'}>=>event.type==='schema-diagnostic');
+ expect(diagnostics.length).toBeGreaterThan(1);expect(new Set(diagnostics.map(event=>event.id)).size).toBe(1);expect(diagnostics.at(-1)?.evaluations).toBe(diagnostics.length);
+ expect(diagnostics[0]).toMatchObject({scope:'contract-validation',tool:'studio_screen_read'});expect(diagnostics[0]!.details).toContain('offset');expect(diagnostics[0]!.details).toContain('STUDIO_AGENT_READ_QUERY');
+ const failed=events.filter(event=>event.type==='tool-event'&&event.kind==='tool-failed');expect(failed).toHaveLength(1);expect(failed[0]?.type==='tool-event'&&failed[0].callId).toBeTruthy();
+ expect(events.some(event=>event.type==='tool-event'&&event.kind==='validation-refused'&&!event.callId)).toBe(false);
+ expect(events.at(-1)).toMatchObject({type:'done',status:'completed',applied:0,unresolvedTools:[],metrics:{toolCalls:2,refusedCalls:1,completedCalls:1}});expect(bridge.getSnapshot()).toEqual(before);
 },120000);
 
 it('delivers an actual canonical style-reference cause to the model and subsequent overview without proposing an edit (offline)',async()=>{
