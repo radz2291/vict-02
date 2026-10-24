@@ -1,0 +1,969 @@
+{
+  "schema": "vict.ui-document@1",
+  "id": "screen-cfdc4e76-a075-466f-8cc0-e5a8ca60cd72",
+  "revision": "r1.r1",
+  "root": "screen",
+  "nodes": {
+    "screen": {
+      "kind": "element",
+      "id": "screen",
+      "tag": "main",
+      "attributes": {
+        "aria-label": "Core verification · Intake form"
+      },
+      "children": [
+        "intakeForm"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "560px"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#ffffff"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#243047"
+          }
+        },
+        {
+          "property": "font-family",
+          "value": {
+            "type": "text",
+            "value": "system-ui, sans-serif"
+          }
+        }
+      ],
+      "styleSources": [
+        "baseSpacing",
+        "compactSpacing"
+      ]
+    },
+    "intakeForm": {
+      "kind": "element",
+      "id": "intakeForm",
+      "tag": "form",
+      "children": [
+        "intakeTitle",
+        "nameRow",
+        "emailRow",
+        "launchDateField",
+        "interestsSelect",
+        "previewLine",
+        "privacyHeading",
+        "privacyText",
+        "cardsRow"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        },
+        {
+          "property": "max-width",
+          "value": {
+            "type": "text",
+            "value": "560px"
+          }
+        }
+      ]
+    },
+    "intakeTitle": {
+      "kind": "element",
+      "id": "intakeTitle",
+      "tag": "h1",
+      "children": [
+        "intakeTitle-text"
+      ],
+      "attributes": {
+        "aria-label": "Studio launch intake"
+      },
+      "localStyle": [
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0px"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "token",
+            "id": "accent"
+          }
+        }
+      ]
+    },
+    "intakeTitle-text": {
+      "kind": "text",
+      "id": "intakeTitle-text",
+      "content": {
+        "type": "literal",
+        "value": "Studio launch intake"
+      }
+    },
+    "nameRow": {
+      "kind": "element",
+      "id": "nameRow",
+      "tag": "div",
+      "children": [
+        "nameLabel",
+        "nameInput"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "6px"
+          }
+        }
+      ]
+    },
+    "nameLabel": {
+      "kind": "element",
+      "id": "nameLabel",
+      "tag": "label",
+      "children": [
+        "nameLabel-text"
+      ],
+      "attributes": {
+        "for": "intakeName"
+      }
+    },
+    "nameLabel-text": {
+      "kind": "text",
+      "id": "nameLabel-text",
+      "content": {
+        "type": "literal",
+        "value": "Full name"
+      }
+    },
+    "nameInput": {
+      "kind": "element",
+      "id": "nameInput",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "autocomplete": "name",
+        "id": "intakeName",
+        "name": "name",
+        "placeholder": "Ada Lovelace",
+        "type": "text",
+        "value": {
+          "type": "ref",
+          "path": "state.intakeName"
+        }
+      },
+      "localStyle": [
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "1px solid #cdd5e4"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "8px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "8px 10px"
+          }
+        }
+      ],
+      "interactions": [
+        {
+          "on": "change",
+          "action": "setState",
+          "key": "intakeName",
+          "value": {
+            "type": "ref",
+            "path": "state.intakeName"
+          }
+        }
+      ]
+    },
+    "emailRow": {
+      "kind": "element",
+      "id": "emailRow",
+      "tag": "div",
+      "children": [
+        "emailLabel",
+        "emailInput"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "6px"
+          }
+        }
+      ]
+    },
+    "emailLabel": {
+      "kind": "element",
+      "id": "emailLabel",
+      "tag": "label",
+      "children": [
+        "emailLabel-text"
+      ],
+      "attributes": {
+        "for": "intakeEmail"
+      }
+    },
+    "emailLabel-text": {
+      "kind": "text",
+      "id": "emailLabel-text",
+      "content": {
+        "type": "literal",
+        "value": "Email"
+      }
+    },
+    "emailInput": {
+      "kind": "element",
+      "id": "emailInput",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "autocomplete": "email",
+        "id": "intakeEmail",
+        "name": "email",
+        "placeholder": "you@studio.example",
+        "type": "email",
+        "value": {
+          "type": "ref",
+          "path": "state.intakeEmail"
+        }
+      },
+      "localStyle": [
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "1px solid #cdd5e4"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "8px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "8px 10px"
+          }
+        }
+      ],
+      "interactions": [
+        {
+          "on": "change",
+          "action": "setState",
+          "key": "intakeEmail",
+          "value": {
+            "type": "ref",
+            "path": "state.intakeEmail"
+          }
+        }
+      ]
+    },
+    "launchDateField": {
+      "kind": "component",
+      "id": "launchDateField",
+      "definitionId": "vict.catalog.date-field",
+      "revision": "1",
+      "slots": {},
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Target launch date"
+        },
+        "value": {
+          "type": "ref",
+          "path": "state.launchDate"
+        }
+      },
+      "outputs": {
+        "valueChange": {
+          "setState": {
+            "key": "launchDate"
+          }
+        }
+      },
+      "localStyle": [
+        {
+          "property": "width",
+          "value": {
+            "type": "text",
+            "value": "100%"
+          }
+        }
+      ]
+    },
+    "interestsSelect": {
+      "kind": "component",
+      "id": "interestsSelect",
+      "definitionId": "vict.catalog.select-multiple",
+      "revision": "1",
+      "slots": {
+        "items": {
+          "name": "items",
+          "children": [
+            "optBrand",
+            "optWeb",
+            "optMotion",
+            "optPackaging"
+          ]
+        }
+      },
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Interests"
+        },
+        "values": {
+          "type": "ref",
+          "path": "state.interests"
+        }
+      },
+      "outputs": {
+        "valuesChange": {
+          "setState": {
+            "key": "interests"
+          }
+        }
+      },
+      "localStyle": [
+        {
+          "property": "width",
+          "value": {
+            "type": "text",
+            "value": "100%"
+          }
+        }
+      ]
+    },
+    "optBrand": {
+      "kind": "component",
+      "id": "optBrand",
+      "definitionId": "vict.catalog.select-item",
+      "revision": "1",
+      "slots": {},
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Brand identity"
+        },
+        "value": {
+          "type": "literal",
+          "value": "brand"
+        }
+      }
+    },
+    "optWeb": {
+      "kind": "component",
+      "id": "optWeb",
+      "definitionId": "vict.catalog.select-item",
+      "revision": "1",
+      "slots": {},
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Web design"
+        },
+        "value": {
+          "type": "literal",
+          "value": "web"
+        }
+      }
+    },
+    "optMotion": {
+      "kind": "component",
+      "id": "optMotion",
+      "definitionId": "vict.catalog.select-item",
+      "revision": "1",
+      "slots": {},
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Motion & video"
+        },
+        "value": {
+          "type": "literal",
+          "value": "motion"
+        }
+      }
+    },
+    "optPackaging": {
+      "kind": "component",
+      "id": "optPackaging",
+      "definitionId": "vict.catalog.select-item",
+      "revision": "1",
+      "slots": {},
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Packaging"
+        },
+        "value": {
+          "type": "literal",
+          "value": "packaging"
+        }
+      }
+    },
+    "previewLine": {
+      "kind": "element",
+      "id": "previewLine",
+      "tag": "p",
+      "children": [
+        "previewLine-text",
+        "previewName"
+      ],
+      "localStyle": [
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0px"
+          }
+        }
+      ]
+    },
+    "previewLine-text": {
+      "kind": "text",
+      "id": "previewLine-text",
+      "content": {
+        "type": "literal",
+        "value": "Live preview — "
+      }
+    },
+    "previewName": {
+      "kind": "element",
+      "id": "previewName",
+      "tag": "span",
+      "children": [
+        "previewNameText"
+      ],
+      "localStyle": [
+        {
+          "property": "color",
+          "value": {
+            "type": "token",
+            "id": "accent"
+          }
+        }
+      ]
+    },
+    "previewNameText": {
+      "kind": "text",
+      "id": "previewNameText",
+      "content": {
+        "type": "expression",
+        "expression": {
+          "type": "ref",
+          "path": "state.intakeName"
+        }
+      }
+    },
+    "privacyHeading": {
+      "kind": "element",
+      "id": "privacyHeading",
+      "tag": "h6",
+      "children": [
+        "privacyHeading-text"
+      ],
+      "attributes": {
+        "aria-label": "Privacy note"
+      },
+      "localStyle": [
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0px"
+          }
+        }
+      ]
+    },
+    "privacyHeading-text": {
+      "kind": "text",
+      "id": "privacyHeading-text",
+      "content": {
+        "type": "literal",
+        "value": "Privacy note"
+      }
+    },
+    "privacyText": {
+      "kind": "element",
+      "id": "privacyText",
+      "tag": "p",
+      "children": [
+        "privacyText-text"
+      ],
+      "localStyle": [
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0px"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#5a6478"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "13px"
+          }
+        }
+      ]
+    },
+    "privacyText-text": {
+      "kind": "text",
+      "id": "privacyText-text",
+      "content": {
+        "type": "literal",
+        "value": "Local preview only. No submission."
+      }
+    },
+    "cardsRow": {
+      "kind": "element",
+      "id": "cardsRow",
+      "tag": "div",
+      "children": [
+        "cardPilot",
+        "cardDemo"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-wrap",
+          "value": {
+            "type": "text",
+            "value": "wrap"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        }
+      ]
+    },
+    "cardPilot": {
+      "kind": "element",
+      "id": "cardPilot",
+      "tag": "article",
+      "children": [
+        "cardPilotTitle",
+        "cardPilotBody"
+      ],
+      "styleSources": [
+        "infoCard"
+      ]
+    },
+    "cardPilotTitle": {
+      "kind": "element",
+      "id": "cardPilotTitle",
+      "tag": "strong",
+      "children": [
+        "cardPilotTitle-text"
+      ],
+      "localStyle": [
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0px"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "13px"
+          }
+        }
+      ]
+    },
+    "cardPilotTitle-text": {
+      "kind": "text",
+      "id": "cardPilotTitle-text",
+      "content": {
+        "type": "literal",
+        "value": "Pilot window"
+      }
+    },
+    "cardPilotBody": {
+      "kind": "element",
+      "id": "cardPilotBody",
+      "tag": "p",
+      "children": [
+        "cardPilotBody-text"
+      ],
+      "localStyle": [
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0px"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "13px"
+          }
+        }
+      ]
+    },
+    "cardPilotBody-text": {
+      "kind": "text",
+      "id": "cardPilotBody-text",
+      "content": {
+        "type": "literal",
+        "value": "Pick a target launch date and we will confirm the next studio cohort opening."
+      }
+    },
+    "cardDemo": {
+      "kind": "element",
+      "id": "cardDemo",
+      "tag": "article",
+      "children": [
+        "cardDemoTitle",
+        "cardDemoBody"
+      ],
+      "styleSources": [
+        "infoCard"
+      ]
+    },
+    "cardDemoTitle": {
+      "kind": "element",
+      "id": "cardDemoTitle",
+      "tag": "strong",
+      "children": [
+        "cardDemoTitle-text"
+      ],
+      "localStyle": [
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0px"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "13px"
+          }
+        }
+      ]
+    },
+    "cardDemoTitle-text": {
+      "kind": "text",
+      "id": "cardDemoTitle-text",
+      "content": {
+        "type": "literal",
+        "value": "Local demo"
+      }
+    },
+    "cardDemoBody": {
+      "kind": "element",
+      "id": "cardDemoBody",
+      "tag": "p",
+      "children": [
+        "cardDemoBody-text"
+      ],
+      "localStyle": [
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0px"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "13px"
+          }
+        }
+      ]
+    },
+    "cardDemoBody-text": {
+      "kind": "text",
+      "id": "cardDemoBody-text",
+      "content": {
+        "type": "literal",
+        "value": "Runs entirely in this document — no network calls and no backend submission."
+      }
+    }
+  },
+  "componentDefinitions": {},
+  "styleSources": {
+    "baseSpacing": {
+      "id": "baseSpacing",
+      "declarations": [
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "40px"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "20px"
+          }
+        }
+      ]
+    },
+    "compactSpacing": {
+      "id": "compactSpacing",
+      "declarations": [
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "20px"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        }
+      ],
+      "conditionId": "compactScreen"
+    },
+    "infoCard": {
+      "id": "infoCard",
+      "declarations": [
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "1px solid #e2e6f0"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "10px"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#f6f7fb"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "12px 14px"
+          }
+        },
+        {
+          "property": "border-top-width",
+          "value": {
+            "type": "text",
+            "value": "3px"
+          }
+        },
+        {
+          "property": "border-top-style",
+          "value": {
+            "type": "text",
+            "value": "solid"
+          }
+        },
+        {
+          "property": "border-top-color",
+          "value": {
+            "type": "token",
+            "id": "accent"
+          }
+        }
+      ]
+    }
+  },
+  "assets": {},
+  "tokens": {
+    "accent": {
+      "id": "accent",
+      "value": "#6d28d9"
+    }
+  },
+  "conditions": {
+    "compact": {
+      "id": "compact",
+      "kind": "container",
+      "name": "studio-screen",
+      "query": "(max-width: 600px)"
+    },
+    "compactScreen": {
+      "id": "compactScreen",
+      "kind": "media",
+      "query": "(max-width: 600px)"
+    }
+  },
+  "localState": {
+    "message": {
+      "key": "message",
+      "type": "string",
+      "initial": "Hello from my screen"
+    },
+    "accepted": {
+      "key": "accepted",
+      "type": "boolean",
+      "initial": false
+    },
+    "dialogOpen": {
+      "key": "dialogOpen",
+      "type": "boolean",
+      "initial": false
+    },
+    "busy": {
+      "key": "busy",
+      "type": "boolean",
+      "initial": false
+    },
+    "actionError": {
+      "key": "actionError",
+      "type": "string",
+      "initial": ""
+    },
+    "actionResult": {
+      "key": "actionResult",
+      "type": "string",
+      "initial": ""
+    },
+    "launchDate": {
+      "key": "launchDate",
+      "type": "isoDate",
+      "initial": "2026-04-15"
+    },
+    "interests": {
+      "key": "interests",
+      "type": "stringList",
+      "initial": []
+    },
+    "intakeName": {
+      "key": "intakeName",
+      "type": "string",
+      "initial": ""
+    },
+    "intakeEmail": {
+      "key": "intakeEmail",
+      "type": "string",
+      "initial": ""
+    }
+  }
+}

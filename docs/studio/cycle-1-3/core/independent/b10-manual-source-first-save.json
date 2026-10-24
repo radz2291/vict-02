@@ -1,0 +1,679 @@
+{
+  "schema": "vict.ui-document@1",
+  "id": "screen-478c502f-5e30-4c61-baf4-6ac07571a11c",
+  "revision": "r1.r1",
+  "root": "screen",
+  "nodes": {
+    "screen": {
+      "kind": "element",
+      "id": "screen",
+      "tag": "main",
+      "attributes": {
+        "aria-label": "Independent core journey"
+      },
+      "children": [
+        "journey-heading",
+        "menus",
+        "cards",
+        "conversation",
+        "unbound",
+        "flow-one",
+        "flow-two"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "20px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "16px"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "560px"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#ffffff"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#243047"
+          }
+        },
+        {
+          "property": "font-family",
+          "value": {
+            "type": "text",
+            "value": "system-ui, sans-serif"
+          }
+        }
+      ]
+    },
+    "journey-heading": {
+      "kind": "element",
+      "id": "journey-heading",
+      "tag": "h6",
+      "children": [
+        "heading-copy"
+      ]
+    },
+    "heading-copy": {
+      "kind": "text",
+      "id": "heading-copy",
+      "content": {
+        "type": "literal",
+        "value": "Independent authored AI and Flow"
+      }
+    },
+    "menus": {
+      "kind": "component",
+      "id": "menus",
+      "definitionId": "vict.catalog.menubar",
+      "revision": "1",
+      "props": {
+        "value": {
+          "type": "ref",
+          "path": "state.menu"
+        }
+      },
+      "slots": {
+        "menus": {
+          "name": "menus",
+          "children": [
+            "file-menu",
+            "edit-menu"
+          ]
+        }
+      },
+      "outputs": {
+        "valueChange": {
+          "setState": {
+            "key": "menu"
+          }
+        }
+      }
+    },
+    "file-menu": {
+      "kind": "component",
+      "id": "file-menu",
+      "definitionId": "vict.catalog.menubar.menu",
+      "revision": "1",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "File independent"
+        },
+        "value": {
+          "type": "literal",
+          "value": "file"
+        }
+      },
+      "slots": {
+        "items": {
+          "name": "items",
+          "children": [
+            "file-item"
+          ]
+        }
+      },
+      "outputs": {}
+    },
+    "edit-menu": {
+      "kind": "component",
+      "id": "edit-menu",
+      "definitionId": "vict.catalog.menubar.menu",
+      "revision": "1",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Edit independent"
+        },
+        "value": {
+          "type": "literal",
+          "value": "edit"
+        }
+      },
+      "slots": {
+        "items": {
+          "name": "items",
+          "children": [
+            "edit-item"
+          ]
+        }
+      },
+      "outputs": {}
+    },
+    "file-item": {
+      "kind": "component",
+      "id": "file-item",
+      "definitionId": "vict.catalog.menubar.item",
+      "revision": "1",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "New local"
+        },
+        "value": {
+          "type": "literal",
+          "value": "new"
+        }
+      },
+      "slots": {},
+      "outputs": {}
+    },
+    "edit-item": {
+      "kind": "component",
+      "id": "edit-item",
+      "definitionId": "vict.catalog.menubar.item",
+      "revision": "1",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Copy local"
+        },
+        "value": {
+          "type": "literal",
+          "value": "copy"
+        }
+      },
+      "slots": {},
+      "outputs": {}
+    },
+    "cards": {
+      "kind": "element",
+      "id": "cards",
+      "tag": "section",
+      "children": [
+        "card-a",
+        "card-b"
+      ]
+    },
+    "card-a": {
+      "kind": "element",
+      "id": "card-a",
+      "tag": "article",
+      "styleSources": [
+        "shared"
+      ],
+      "children": [
+        "card-a-copy"
+      ]
+    },
+    "card-a-copy": {
+      "kind": "text",
+      "id": "card-a-copy",
+      "content": {
+        "type": "literal",
+        "value": "Shared first card"
+      }
+    },
+    "card-b": {
+      "kind": "element",
+      "id": "card-b",
+      "tag": "article",
+      "styleSources": [
+        "shared"
+      ],
+      "children": [
+        "card-b-copy"
+      ]
+    },
+    "card-b-copy": {
+      "kind": "text",
+      "id": "card-b-copy",
+      "content": {
+        "type": "literal",
+        "value": "Shared second card"
+      }
+    },
+    "conversation": {
+      "kind": "component",
+      "id": "conversation",
+      "definitionId": "vict.ai.conversation",
+      "revision": "1",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Independent authored conversation"
+        }
+      },
+      "slots": {
+        "messages": {
+          "name": "messages",
+          "children": [
+            "ai-message",
+            "sent-copy"
+          ]
+        },
+        "composer": {
+          "name": "composer",
+          "children": [
+            "composer"
+          ]
+        }
+      },
+      "outputs": {}
+    },
+    "ai-message": {
+      "kind": "component",
+      "id": "ai-message",
+      "definitionId": "vict.ai.message",
+      "revision": "1",
+      "props": {
+        "role": {
+          "type": "literal",
+          "value": "assistant"
+        },
+        "text": {
+          "type": "literal",
+          "value": "Hello from authored source. No provider attached."
+        }
+      },
+      "slots": {},
+      "outputs": {}
+    },
+    "sent-copy": {
+      "kind": "text",
+      "id": "sent-copy",
+      "content": {
+        "type": "expression",
+        "expression": {
+          "type": "ref",
+          "path": "state.sent"
+        }
+      }
+    },
+    "composer": {
+      "kind": "component",
+      "id": "composer",
+      "definitionId": "vict.ai.prompt-input",
+      "revision": "1",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Authored message"
+        },
+        "placeholder": {
+          "type": "literal",
+          "value": "Type local text"
+        },
+        "value": {
+          "type": "ref",
+          "path": "state.text"
+        }
+      },
+      "slots": {},
+      "outputs": {
+        "valueChange": {
+          "setState": {
+            "key": "text"
+          }
+        },
+        "send": {
+          "setState": {
+            "key": "sent"
+          }
+        }
+      }
+    },
+    "unbound": {
+      "kind": "component",
+      "id": "unbound",
+      "definitionId": "vict.ai.prompt-input",
+      "revision": "1",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Read-only guidance example"
+        },
+        "value": {
+          "type": "literal",
+          "value": "Read-only source"
+        },
+        "placeholder": {
+          "type": "literal",
+          "value": "Read only"
+        }
+      },
+      "slots": {},
+      "outputs": {}
+    },
+    "flow-one": {
+      "kind": "component",
+      "id": "flow-one",
+      "definitionId": "vict.flow.canvas",
+      "revision": "1",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "flow-one"
+        },
+        "height": {
+          "type": "literal",
+          "value": 220
+        }
+      },
+      "slots": {
+        "nodes": {
+          "name": "nodes",
+          "children": [
+            "flow-one-start",
+            "flow-one-finish"
+          ]
+        },
+        "edges": {
+          "name": "edges",
+          "children": [
+            "flow-one-edge"
+          ]
+        }
+      },
+      "outputs": {}
+    },
+    "flow-one-start": {
+      "kind": "component",
+      "id": "flow-one-start",
+      "definitionId": "vict.flow.node",
+      "revision": "1",
+      "props": {
+        "id": {
+          "type": "literal",
+          "value": "start"
+        },
+        "label": {
+          "type": "literal",
+          "value": "Configured first node"
+        },
+        "x": {
+          "type": "literal",
+          "value": 0
+        },
+        "y": {
+          "type": "literal",
+          "value": 0
+        }
+      },
+      "slots": {},
+      "outputs": {}
+    },
+    "flow-one-finish": {
+      "kind": "component",
+      "id": "flow-one-finish",
+      "definitionId": "vict.flow.node",
+      "revision": "1",
+      "props": {
+        "id": {
+          "type": "literal",
+          "value": "finish"
+        },
+        "label": {
+          "type": "literal",
+          "value": "flow-one finish"
+        },
+        "x": {
+          "type": "literal",
+          "value": 260
+        },
+        "y": {
+          "type": "literal",
+          "value": 0
+        }
+      },
+      "slots": {},
+      "outputs": {}
+    },
+    "flow-one-edge": {
+      "kind": "component",
+      "id": "flow-one-edge",
+      "definitionId": "vict.flow.edge",
+      "revision": "1",
+      "props": {
+        "id": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "source": {
+          "type": "literal",
+          "value": "start"
+        },
+        "target": {
+          "type": "literal",
+          "value": "finish"
+        },
+        "label": {
+          "type": "literal",
+          "value": "Next"
+        }
+      },
+      "slots": {},
+      "outputs": {}
+    },
+    "flow-two": {
+      "kind": "component",
+      "id": "flow-two",
+      "definitionId": "vict.flow.canvas",
+      "revision": "1",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "flow-two"
+        },
+        "height": {
+          "type": "literal",
+          "value": 220
+        }
+      },
+      "slots": {
+        "nodes": {
+          "name": "nodes",
+          "children": [
+            "flow-two-start",
+            "flow-two-finish"
+          ]
+        },
+        "edges": {
+          "name": "edges",
+          "children": [
+            "flow-two-edge"
+          ]
+        }
+      },
+      "outputs": {}
+    },
+    "flow-two-start": {
+      "kind": "component",
+      "id": "flow-two-start",
+      "definitionId": "vict.flow.node",
+      "revision": "1",
+      "props": {
+        "id": {
+          "type": "literal",
+          "value": "start"
+        },
+        "label": {
+          "type": "literal",
+          "value": "flow-two start"
+        },
+        "x": {
+          "type": "literal",
+          "value": 0
+        },
+        "y": {
+          "type": "literal",
+          "value": 0
+        }
+      },
+      "slots": {},
+      "outputs": {}
+    },
+    "flow-two-finish": {
+      "kind": "component",
+      "id": "flow-two-finish",
+      "definitionId": "vict.flow.node",
+      "revision": "1",
+      "props": {
+        "id": {
+          "type": "literal",
+          "value": "finish"
+        },
+        "label": {
+          "type": "literal",
+          "value": "flow-two finish"
+        },
+        "x": {
+          "type": "literal",
+          "value": 260
+        },
+        "y": {
+          "type": "literal",
+          "value": 0
+        }
+      },
+      "slots": {},
+      "outputs": {}
+    },
+    "flow-two-edge": {
+      "kind": "component",
+      "id": "flow-two-edge",
+      "definitionId": "vict.flow.edge",
+      "revision": "1",
+      "props": {
+        "id": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "source": {
+          "type": "literal",
+          "value": "start"
+        },
+        "target": {
+          "type": "literal",
+          "value": "finish"
+        },
+        "label": {
+          "type": "literal",
+          "value": "Next"
+        }
+      },
+      "slots": {},
+      "outputs": {}
+    }
+  },
+  "componentDefinitions": {},
+  "styleSources": {
+    "shared": {
+      "id": "shared",
+      "declarations": [
+        {
+          "property": "color",
+          "value": {
+            "type": "token",
+            "id": "accent"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#eef5ff"
+          }
+        }
+      ]
+    }
+  },
+  "assets": {},
+  "tokens": {
+    "accent": {
+      "id": "accent",
+      "value": "#123456"
+    }
+  },
+  "conditions": {
+    "compact": {
+      "id": "compact",
+      "kind": "container",
+      "name": "studio-screen",
+      "query": "(max-width: 600px)"
+    }
+  },
+  "localState": {
+    "text": {
+      "key": "text",
+      "type": "string",
+      "initial": ""
+    },
+    "sent": {
+      "key": "sent",
+      "type": "string",
+      "initial": "Nothing sent"
+    },
+    "menu": {
+      "key": "menu",
+      "type": "string",
+      "initial": ""
+    },
+    "date": {
+      "key": "date",
+      "type": "isoDate",
+      "initial": "2026-10-24"
+    },
+    "time": {
+      "key": "time",
+      "type": "isoTime",
+      "initial": "09:30"
+    },
+    "tags": {
+      "key": "tags",
+      "type": "stringList",
+      "initial": [
+        "a",
+        "b"
+      ]
+    },
+    "points": {
+      "key": "points",
+      "type": "numberList",
+      "initial": [
+        1,
+        2
+      ]
+    }
+  }
+}

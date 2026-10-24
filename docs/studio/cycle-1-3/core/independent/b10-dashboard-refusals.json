@@ -1,0 +1,10 @@
+[
+  {
+    "id": "attempt-studio_screen_edit:call_0515b1ddb951494592b199a5",
+    "text": " Edit refused before browser proposalfailed  Edit screen started · runningtool-start\nstudio_screen_edit\n412272 ms since turn startEdit refused before browser proposal · failedvalidation-refused\nstudio_screen_edit\n412294 ms since turn start\n{\"ok\":false,\"code\":\"STUDIO_AGENT_VALIDATION\",\"message\":\"Operation 2 rejected: UI_EDIT_VALIDATION_FAILED: text binding requires a text node.\",\"diagnostics\":[{\"operation\":2,\"code\":\"UI_EDIT_VALIDATION_FAILED\",\"path\":\"operations.2\",\"message\":\"text binding requires a text node.\"}]}"
+  },
+  {
+    "id": "attempt-studio_screen_edit:call_cf421f30596941919f233337",
+    "text": " Edit refused before browser proposalfailed  Edit screen started · runningtool-start\nstudio_screen_edit\n442084 ms since turn startEdit refused before browser proposal · failedvalidation-refused\nstudio_screen_edit\n442158 ms since turn start\n{\"ok\":false,\"code\":\"STUDIO_AGENT_VALIDATION\",\"message\":\"Edit rejected: UI_COMPONENT_BINDING_INCOMPATIBLE: 'values' and 'valuesChange' address different state keys.\",\"diagnostics\":[{\"nodeId\":\"statusFilter\",\"prop\":\"values\",\"output\":\"valuesChange\",\"expected\":\"statusFilter\",\"actual\":\"catalog_statusFilter_root_values\",\"hostCode\":\"UI_AUTHORING_CONTROLLED_PAIR\",\"code\":\"UI_COMPONENT_BINDING_INCOMPATIBLE\",\"path\":\"screen/settings/statusFilter\",\"message\":\"'values' and 'valuesChange' address different state keys.\"}]}"
+  }
+]

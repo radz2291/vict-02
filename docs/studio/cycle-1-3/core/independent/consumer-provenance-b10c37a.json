@@ -1,0 +1,105 @@
+{
+  "checkedAt": "2026-10-24T11:04:08.710Z",
+  "candidate": "b10c37a538a16f52e6430dfb9fc1eb317fc03745",
+  "installationCandidate": "a9b9fab45c042b3e1ef23c61cdc8bb0e4d55917c",
+  "packages": [
+    {
+      "name": "@victframework/contracts",
+      "installedPath": "C:\\Users\\RZ1\\.codex\\tmp\\studio-core-consumer-a9b9fab\\node_modules\\@victframework\\contracts",
+      "isLink": false,
+      "tarballHashMatches": true,
+      "filesCompared": 30,
+      "allEqual": true,
+      "mismatches": []
+    },
+    {
+      "name": "@victframework/ui",
+      "installedPath": "C:\\Users\\RZ1\\.codex\\tmp\\studio-core-consumer-a9b9fab\\node_modules\\@victframework\\ui",
+      "isLink": false,
+      "tarballHashMatches": true,
+      "filesCompared": 63,
+      "allEqual": true,
+      "mismatches": []
+    },
+    {
+      "name": "@victframework/sdk",
+      "installedPath": "C:\\Users\\RZ1\\.codex\\tmp\\studio-core-consumer-a9b9fab\\node_modules\\@victframework\\sdk",
+      "isLink": false,
+      "tarballHashMatches": true,
+      "filesCompared": 27,
+      "allEqual": true,
+      "mismatches": []
+    },
+    {
+      "name": "@victframework/application",
+      "installedPath": "C:\\Users\\RZ1\\.codex\\tmp\\studio-core-consumer-a9b9fab\\node_modules\\@victframework\\application",
+      "isLink": false,
+      "tarballHashMatches": true,
+      "filesCompared": 33,
+      "allEqual": true,
+      "mismatches": []
+    },
+    {
+      "name": "@victframework/ui-svelte",
+      "installedPath": "C:\\Users\\RZ1\\.codex\\tmp\\studio-core-consumer-a9b9fab\\node_modules\\@victframework\\ui-svelte",
+      "isLink": false,
+      "tarballHashMatches": true,
+      "filesCompared": 251,
+      "allEqual": true,
+      "mismatches": []
+    },
+    {
+      "name": "@victframework/ui-editor",
+      "installedPath": "C:\\Users\\RZ1\\.codex\\tmp\\studio-core-consumer-a9b9fab\\node_modules\\@victframework\\ui-editor",
+      "isLink": false,
+      "tarballHashMatches": true,
+      "filesCompared": 85,
+      "allEqual": true,
+      "mismatches": []
+    },
+    {
+      "name": "@victframework/ui-ai-svelte",
+      "installedPath": "C:\\Users\\RZ1\\.codex\\tmp\\studio-core-consumer-a9b9fab\\node_modules\\@victframework\\ui-ai-svelte",
+      "isLink": false,
+      "tarballHashMatches": true,
+      "filesCompared": 176,
+      "allEqual": true,
+      "mismatches": []
+    },
+    {
+      "name": "@victframework/ui-flow-svelte",
+      "installedPath": "C:\\Users\\RZ1\\.codex\\tmp\\studio-core-consumer-a9b9fab\\node_modules\\@victframework\\ui-flow-svelte",
+      "isLink": false,
+      "tarballHashMatches": true,
+      "filesCompared": 19,
+      "allEqual": true,
+      "mismatches": []
+    }
+  ],
+  "filesCompared": 684,
+  "fixtures": [
+    {
+      "path": "App.svelte",
+      "equal": true
+    },
+    {
+      "path": "proof.ts",
+      "equal": true
+    },
+    {
+      "path": "main.ts",
+      "equal": true
+    },
+    {
+      "path": "vite.config.ts",
+      "equal": true
+    },
+    {
+      "path": "index.html",
+      "equal": true
+    }
+  ],
+  "tarballDependencies": true,
+  "passed": true,
+  "boundary": "Read-only independent hash/link/fixture verification of existing separately installed tarballs; no install/build or Studio alias was used."
+}

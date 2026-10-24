@@ -1,0 +1,62 @@
+{
+  "candidate": "b10c37a538a16f52e6430dfb9fc1eb317fc03745",
+  "documentId": "screen-e976e547-676b-4055-8aad-1df4eba8212c",
+  "savedRevision": "r1.r1",
+  "nameEcho": {
+    "typed": "Independent live project",
+    "rendered": "Independent live project",
+    "passed": true
+  },
+  "date": {
+    "initial": "2026-08-14",
+    "dayAfterArrowUp": "15",
+    "passed": true
+  },
+  "status": {
+    "pointerOpened": false,
+    "centerHit": "fn-design",
+    "keyboardOpened": true,
+    "selectedOption": "In review",
+    "renderedValue": "in-review"
+  },
+  "menus": {
+    "fileItems": [
+      "New project…",
+      "Export summary…"
+    ],
+    "arrowRightItems": [
+      "Compact density",
+      "Zoom to fit"
+    ],
+    "escapeFocus": "View",
+    "openMenusAfterEscape": 0
+  },
+  "sourcePreserved": {
+    "nodes": 55,
+    "localStates": 14,
+    "flowNodes": [
+      "fn-brief",
+      "fn-design",
+      "fn-review"
+    ],
+    "edgeOccurrences": [
+      "fe-1|flowCanvas@vict.flow.canvas",
+      "fe-2|flowCanvas@vict.flow.canvas"
+    ],
+    "finiteSVGPaths": true
+  },
+  "layout": {
+    "settingsComputedHeight": 160,
+    "workflowComputedHeight": 160,
+    "sharedFlex": "1 1 160px",
+    "pointerObstruction": true,
+    "classification": "authored shared-style scope misuse; framework defect not established"
+  },
+  "saveAndRun": {
+    "explicitSave": true,
+    "runSaved": true,
+    "sourceRevision": "r1.r1",
+    "defaultsReset": true
+  },
+  "providerContinuation": "Held until repaired product candidate; no fixture repair by verifier"
+}
