@@ -1,0 +1,53 @@
+{
+  "sourceCandidate": "57308f6ffcd5c85415b38d9d68a6f696199ebfa7",
+  "checkedAt": "2026-10-24T12:36:38.316Z",
+  "stage": "Installed byte verification before consumer production rebuild; existing serveddist remainsprior722",
+  "frameworkPackages": 8,
+  "matchedFiles": 684,
+  "matchedManifests": 8,
+  "matchedTarballs": 8,
+  "dependencyLinks": 0,
+  "scannedDependencyFiles": 24704,
+  "packages": [
+    {
+      "name": "@victframework/contracts",
+      "files": 30,
+      "tarballSha256": "017c0587843869653f6bd723566dcaf39f2e89b2fb55bc923f35667be9d618de"
+    },
+    {
+      "name": "@victframework/ui",
+      "files": 63,
+      "tarballSha256": "50b136187d3881df593e5113dabf09ebf2c42293d5ff768a5a2e817a5e2b838a"
+    },
+    {
+      "name": "@victframework/sdk",
+      "files": 27,
+      "tarballSha256": "26ba8993f73f70071e57cec97471bf9c4bc4abde3137084be4fd4ee064f338f4"
+    },
+    {
+      "name": "@victframework/application",
+      "files": 33,
+      "tarballSha256": "ea0fdde59f165379154517f4be4ca99e3c8790033862e4a56f6df5fdb09b5db7"
+    },
+    {
+      "name": "@victframework/ui-svelte",
+      "files": 251,
+      "tarballSha256": "9500ac93a4e38f47707853bb594f57c72e97b69c97765886fb3ae17b80b418aa"
+    },
+    {
+      "name": "@victframework/ui-editor",
+      "files": 85,
+      "tarballSha256": "51e2ae7568325dccc7e0febd7981496a3ead88d4098ddea15ea5c6d9508a3709"
+    },
+    {
+      "name": "@victframework/ui-ai-svelte",
+      "files": 176,
+      "tarballSha256": "5b7e32386f8da65db7dc6e7c612528bcade2d9042860274d34fe83bc0c40716f"
+    },
+    {
+      "name": "@victframework/ui-flow-svelte",
+      "files": 19,
+      "tarballSha256": "b9853f89951e4d12af7bb8e680cd02d7ee1c11bca4b5c939db9baa825b215e56"
+    }
+  ]
+}

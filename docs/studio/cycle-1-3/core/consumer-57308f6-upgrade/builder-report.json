@@ -1,0 +1,43 @@
+{
+  "sourceCandidate": "57308f6ffcd5c85415b38d9d68a6f696199ebfa7",
+  "installationKind": "normal npm upgrade of changed tarballs in an existing independent install",
+  "previousCandidate": "7228ee3ccae4364da63a346c46010dde19b1992d",
+  "changedPackages": [
+    "@victframework/ui-ai-svelte"
+  ],
+  "frameworkPackages": 8,
+  "installedPackages": 236,
+  "lockPackages": 286,
+  "matchedInstalledSrcDistFiles": 684,
+  "matchedPackageManifests": 8,
+  "matchedCandidateTarballs": 8,
+  "dependencyLinks": 0,
+  "aliases": [],
+  "preservation": {
+    "previousInstallation": "C:\\Users\\RZ1\\.codex\\tmp\\studio-core-consumer-7228ee3\\proof-history\\7228ee3c-before-57308f6f",
+    "priorFrameworkFilesVerifiedAgainst722HashReport": 684,
+    "oldArtifacts": "Original artifacts/ and evidence consumer-7228ee3 remain intact; no deletion."
+  },
+  "build": {
+    "passed": true,
+    "modules": 1832,
+    "seconds": 33.05,
+    "memoryLimitMiB": 2048,
+    "files": 26,
+    "bytes": 2922357,
+    "logSha256": "b3246fd192597deb3b6e94cd37e7ced1b607db24abe2189f176f4068bb5d0394",
+    "advisory": "Chunks over500kB warning; no build error."
+  },
+  "server": {
+    "url": "http://127.0.0.11:5605/",
+    "captureUrl": "http://127.0.0.11:5605/capture.html?candidate=57308f6",
+    "pid": 89836,
+    "sourceCandidateConfirmedByActualServedManifest": "57308f6ffcd5c85415b38d9d68a6f696199ebfa7",
+    "servedArtifactHashes": "served-output-verification.json"
+  },
+  "browser": {
+    "status": "Independent rawfull+positionedcrop and source/native/AI/Flow checks pending; verifier notified.",
+    "fixture": "Canonical savedform and same positioned420x460crop, rawexactBlobdataURI; no fixture masking."
+  },
+  "boundary": "Explicit normalnpmupgrade in an independently installed consumer, not a freshfullinstall. Builder install/hash/build/HTTP proof does not supply an independent gate verdict."
+}

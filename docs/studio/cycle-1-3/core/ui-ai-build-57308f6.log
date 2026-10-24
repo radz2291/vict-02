@@ -1,0 +1,8 @@
+
+> @victframework/ui-ai-svelte@0.4.0-rc.1 build
+> node scripts/build-css.mjs
+
+≈ tailwindcss v4.3.3
+
+Done in 643ms
+Built isolated ui-ai-svelte/dist/styles.css
