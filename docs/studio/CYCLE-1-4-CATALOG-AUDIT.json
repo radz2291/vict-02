@@ -1,0 +1,644 @@
+{
+  "schema": "vict.studio.ui-standardization-audit@1",
+  "date": "2026-10-24",
+  "upstreamCommit": "b10f153250b18abfccf49a06e1c4c68945edffa5",
+  "source": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/static/registry/styles/rhea/index.json",
+  "totals": {
+    "all": 268,
+    "ui": 63,
+    "blocks": 148,
+    "fonts": 52,
+    "hooks": 2,
+    "libraries": 3
+  },
+  "families": [
+    {
+      "name": "accordion",
+      "upstreamType": "registry:ui",
+      "registryDependencies": [],
+      "generalCounterpart": "packages/ui-svelte/src/catalog/accordion.ts",
+      "specialistAiSource": false,
+      "disposition": "existing-general-counterpart; presentation migration and contract compatibility audit required",
+      "verification": "inventory only; no new visual or interaction pass"
+    },
+    {
+      "name": "alert",
+      "upstreamType": "registry:ui",
+      "registryDependencies": [],
+      "generalCounterpart": null,
+      "specialistAiSource": false,
+      "disposition": "missing dedicated family; evaluate demand, adapter and host prerequisites in 1.4",
+      "verification": "inventory only; no new visual or interaction pass"
+    },
+    {
+      "name": "alert-dialog",
+      "upstreamType": "registry:ui",
+      "registryDependencies": [
+        "button"
+      ],
+      "generalCounterpart": "packages/ui-svelte/src/catalog/alert-dialog.ts",
+      "specialistAiSource": false,
+      "disposition": "existing-general-counterpart; presentation migration and contract compatibility audit required",
+      "verification": "inventory only; no new visual or interaction pass"
+    },
+    {
+      "name": "aspect-ratio",
+      "upstreamType": "registry:ui",
+      "registryDependencies": [],
+      "generalCounterpart": "packages/ui-svelte/src/catalog/aspect-ratio.ts",
+      "specialistAiSource": false,
+      "disposition": "existing-general-counterpart; presentation migration and contract compatibility audit required",
+      "verification": "inventory only; no new visual or interaction pass"
+    },
+    {
+      "name": "attachment",
+      "upstreamType": "registry:ui",
+      "registryDependencies": [
+        "button"
+      ],
+      "generalCounterpart": null,
+      "specialistAiSource": true,
+      "disposition": "AI presentation dependency only; general-family adoption not established",
+      "verification": "inventory only; no new visual or interaction pass"
+    },
+    {
+      "name": "avatar",
+      "upstreamType": "registry:ui",
+      "registryDependencies": [],
+      "generalCounterpart": "packages/ui-svelte/src/catalog/avatar.ts",
+      "specialistAiSource": false,
+      "disposition": "existing-general-counterpart; presentation migration and contract compatibility audit required",
+      "verification": "inventory only; no new visual or interaction pass"
+    },
+    {
+      "name": "badge",
+      "upstreamType": "registry:ui",
+      "registryDependencies": [],
+      "generalCounterpart": null,
+      "specialistAiSource": true,
+      "disposition": "AI presentation dependency only; general-family adoption not established",
+      "verification": "inventory only; no new visual or interaction pass"
+    },
+    {
+      "name": "breadcrumb",
+      "upstreamType": "registry:ui",
+      "registryDependencies": [],
+      "generalCounterpart": null,
+      "specialistAiSource": false,
+      "disposition": "missing dedicated family; evaluate demand, adapter and host prerequisites in 1.4",
+      "verification": "inventory only; no new visual or interaction pass"
+    },
+    {
+      "name": "bubble",
+      "upstreamType": "registry:ui",
+      "registryDependencies": [],
+      "generalCounterpart": null,
+      "specialistAiSource": true,
+      "disposition": "AI presentation dependency only; general-family adoption not established",
+      "verification": "inventory only; no new visual or interaction pass"
+    },
+    {
+      "name": "button",
+      "upstreamType": "registry:ui",
+      "registryDependencies": [],
+      "generalCounterpart": "packages/ui-svelte/src/catalog/button.ts",
+      "specialistAiSource": true,
+      "disposition": "existing-general-counterpart; presentation migration and contract compatibility audit required",
+      "verification": "inventory only; no new visual or interaction pass"
+    },
+    {
+      "name": "button-group",
+      "upstreamType": "registry:ui",
+      "registryDependencies": [
+        "separator"
+      ],
+      "generalCounterpart": null,
+      "specialistAiSource": false,
+      "disposition": "missing dedicated family; evaluate demand, adapter and host prerequisites in 1.4",
+      "verification": "inventory only; no new visual or interaction pass"
+    },
+    {
+      "name": "calendar",
+      "upstreamType": "registry:ui",
+      "registryDependencies": [
+        "button"
+      ],
+      "generalCounterpart": "packages/ui-svelte/src/catalog/calendar.ts",
+      "specialistAiSource": false,
+      "disposition": "existing-general-counterpart; presentation migration and contract compatibility audit required",
+      "verification": "inventory only; no new visual or interaction pass"
+    },
+    {
+      "name": "card",
+      "upstreamType": "registry:ui",
+      "registryDependencies": [],
+      "generalCounterpart": null,
+      "specialistAiSource": false,
+      "disposition": "missing dedicated family; evaluate demand, adapter and host prerequisites in 1.4",
+      "verification": "inventory only; no new visual or interaction pass"
+    },
+    {
+      "name": "carousel",
+      "upstreamType": "registry:ui",
+      "registryDependencies": [
+        "button"
+      ],
+      "generalCounterpart": null,
+      "specialistAiSource": false,
+      "disposition": "missing dedicated family; evaluate demand, adapter and host prerequisites in 1.4",
+      "verification": "inventory only; no new visual or interaction pass"
+    },
+    {
+      "name": "chart",
+      "upstreamType": "registry:ui",
+      "registryDependencies": [],
+      "generalCounterpart": null,
+      "specialistAiSource": false,
+      "disposition": "missing dedicated family; evaluate demand, adapter and host prerequisites in 1.4",
+      "verification": "inventory only; no new visual or interaction pass"
+    },
+    {
+      "name": "checkbox",
+      "upstreamType": "registry:ui",
+      "registryDependencies": [],
+      "generalCounterpart": "packages/ui-svelte/src/catalog/checkbox.ts",
+      "specialistAiSource": false,
+      "disposition": "existing-general-counterpart; presentation migration and contract compatibility audit required",
+      "verification": "inventory only; no new visual or interaction pass"
+    },
+    {
+      "name": "code-block",
+      "upstreamType": "registry:ui",
+      "registryDependencies": [
+        "use-highlighted-code",
+        "button"
+      ],
+      "generalCounterpart": null,
+      "specialistAiSource": true,
+      "disposition": "AI presentation dependency only; general-family adoption not established",
+      "verification": "inventory only; no new visual or interaction pass"
+    },
+    {
+      "name": "collapsible",
+      "upstreamType": "registry:ui",
+      "registryDependencies": [],
+      "generalCounterpart": "packages/ui-svelte/src/catalog/collapsible.ts",
+      "specialistAiSource": true,
+      "disposition": "existing-general-counterpart; presentation migration and contract compatibility audit required",
+      "verification": "inventory only; no new visual or interaction pass"
+    },
+    {
+      "name": "command",
+      "upstreamType": "registry:ui",
+      "registryDependencies": [
+        "dialog",
+        "input-group"
+      ],
+      "generalCounterpart": "packages/ui-svelte/src/catalog/command.ts",
+      "specialistAiSource": false,
+      "disposition": "existing-general-counterpart; presentation migration and contract compatibility audit required",
+      "verification": "inventory only; no new visual or interaction pass"
+    },
+    {
+      "name": "context-menu",
+      "upstreamType": "registry:ui",
+      "registryDependencies": [],
+      "generalCounterpart": "packages/ui-svelte/src/catalog/context-menu.ts",
+      "specialistAiSource": false,
+      "disposition": "existing-general-counterpart; presentation migration and contract compatibility audit required",
+      "verification": "inventory only; no new visual or interaction pass"
+    },
+    {
+      "name": "dialog",
+      "upstreamType": "registry:ui",
+      "registryDependencies": [
+        "button"
+      ],
+      "generalCounterpart": "packages/ui-svelte/src/catalog/dialog.ts",
+      "specialistAiSource": false,
+      "disposition": "existing-general-counterpart; presentation migration and contract compatibility audit required",
+      "verification": "inventory only; no new visual or interaction pass"
+    },
+    {
+      "name": "drawer",
+      "upstreamType": "registry:ui",
+      "registryDependencies": [],
+      "generalCounterpart": null,
+      "specialistAiSource": false,
+      "disposition": "missing dedicated family; evaluate demand, adapter and host prerequisites in 1.4",
+      "verification": "inventory only; no new visual or interaction pass"
+    },
+    {
+      "name": "dropdown-menu",
+      "upstreamType": "registry:ui",
+      "registryDependencies": [],
+      "generalCounterpart": "packages/ui-svelte/src/catalog/dropdown-menu.ts",
+      "specialistAiSource": true,
+      "disposition": "existing-general-counterpart; presentation migration and contract compatibility audit required",
+      "verification": "inventory only; no new visual or interaction pass"
+    },
+    {
+      "name": "empty",
+      "upstreamType": "registry:ui",
+      "registryDependencies": [],
+      "generalCounterpart": null,
+      "specialistAiSource": false,
+      "disposition": "missing dedicated family; evaluate demand, adapter and host prerequisites in 1.4",
+      "verification": "inventory only; no new visual or interaction pass"
+    },
+    {
+      "name": "field",
+      "upstreamType": "registry:ui",
+      "registryDependencies": [
+        "label",
+        "separator"
+      ],
+      "generalCounterpart": null,
+      "specialistAiSource": false,
+      "disposition": "missing dedicated family; evaluate demand, adapter and host prerequisites in 1.4",
+      "verification": "inventory only; no new visual or interaction pass"
+    },
+    {
+      "name": "form",
+      "upstreamType": "registry:ui",
+      "registryDependencies": [
+        "button",
+        "label"
+      ],
+      "generalCounterpart": null,
+      "specialistAiSource": false,
+      "disposition": "missing dedicated family; evaluate demand, adapter and host prerequisites in 1.4",
+      "verification": "inventory only; no new visual or interaction pass"
+    },
+    {
+      "name": "hover-card",
+      "upstreamType": "registry:ui",
+      "registryDependencies": [],
+      "generalCounterpart": "packages/ui-svelte/src/catalog/link-preview.ts",
+      "specialistAiSource": true,
+      "disposition": "existing-general-counterpart; presentation migration and contract compatibility audit required",
+      "verification": "inventory only; no new visual or interaction pass"
+    },
+    {
+      "name": "input",
+      "upstreamType": "registry:ui",
+      "registryDependencies": [],
+      "generalCounterpart": null,
+      "specialistAiSource": true,
+      "disposition": "AI presentation dependency only; general-family adoption not established",
+      "verification": "inventory only; no new visual or interaction pass"
+    },
+    {
+      "name": "input-group",
+      "upstreamType": "registry:ui",
+      "registryDependencies": [
+        "button",
+        "input",
+        "textarea"
+      ],
+      "generalCounterpart": null,
+      "specialistAiSource": true,
+      "disposition": "AI presentation dependency only; general-family adoption not established",
+      "verification": "inventory only; no new visual or interaction pass"
+    },
+    {
+      "name": "input-otp",
+      "upstreamType": "registry:ui",
+      "registryDependencies": [],
+      "generalCounterpart": null,
+      "specialistAiSource": false,
+      "disposition": "missing dedicated family; evaluate demand, adapter and host prerequisites in 1.4",
+      "verification": "inventory only; no new visual or interaction pass"
+    },
+    {
+      "name": "item",
+      "upstreamType": "registry:ui",
+      "registryDependencies": [
+        "separator"
+      ],
+      "generalCounterpart": null,
+      "specialistAiSource": true,
+      "disposition": "AI presentation dependency only; general-family adoption not established",
+      "verification": "inventory only; no new visual or interaction pass"
+    },
+    {
+      "name": "kbd",
+      "upstreamType": "registry:ui",
+      "registryDependencies": [],
+      "generalCounterpart": null,
+      "specialistAiSource": false,
+      "disposition": "missing dedicated family; evaluate demand, adapter and host prerequisites in 1.4",
+      "verification": "inventory only; no new visual or interaction pass"
+    },
+    {
+      "name": "label",
+      "upstreamType": "registry:ui",
+      "registryDependencies": [],
+      "generalCounterpart": "packages/ui-svelte/src/catalog/label.ts",
+      "specialistAiSource": false,
+      "disposition": "existing-general-counterpart; presentation migration and contract compatibility audit required",
+      "verification": "inventory only; no new visual or interaction pass"
+    },
+    {
+      "name": "marker",
+      "upstreamType": "registry:ui",
+      "registryDependencies": [],
+      "generalCounterpart": null,
+      "specialistAiSource": true,
+      "disposition": "AI presentation dependency only; general-family adoption not established",
+      "verification": "inventory only; no new visual or interaction pass"
+    },
+    {
+      "name": "menubar",
+      "upstreamType": "registry:ui",
+      "registryDependencies": [],
+      "generalCounterpart": "packages/ui-svelte/src/catalog/menubar.ts",
+      "specialistAiSource": false,
+      "disposition": "existing-general-counterpart; presentation migration and contract compatibility audit required",
+      "verification": "inventory only; no new visual or interaction pass"
+    },
+    {
+      "name": "message",
+      "upstreamType": "registry:ui",
+      "registryDependencies": [],
+      "generalCounterpart": null,
+      "specialistAiSource": true,
+      "disposition": "AI presentation dependency only; general-family adoption not established",
+      "verification": "inventory only; no new visual or interaction pass"
+    },
+    {
+      "name": "message-scroller",
+      "upstreamType": "registry:ui",
+      "registryDependencies": [
+        "button"
+      ],
+      "generalCounterpart": null,
+      "specialistAiSource": true,
+      "disposition": "AI presentation dependency only; general-family adoption not established",
+      "verification": "inventory only; no new visual or interaction pass"
+    },
+    {
+      "name": "native-select",
+      "upstreamType": "registry:ui",
+      "registryDependencies": [],
+      "generalCounterpart": null,
+      "specialistAiSource": false,
+      "disposition": "missing dedicated family; evaluate demand, adapter and host prerequisites in 1.4",
+      "verification": "inventory only; no new visual or interaction pass"
+    },
+    {
+      "name": "navigation-menu",
+      "upstreamType": "registry:ui",
+      "registryDependencies": [],
+      "generalCounterpart": "packages/ui-svelte/src/catalog/navigation-menu.ts",
+      "specialistAiSource": false,
+      "disposition": "existing-general-counterpart; presentation migration and contract compatibility audit required",
+      "verification": "inventory only; no new visual or interaction pass"
+    },
+    {
+      "name": "pagination",
+      "upstreamType": "registry:ui",
+      "registryDependencies": [
+        "button"
+      ],
+      "generalCounterpart": "packages/ui-svelte/src/catalog/pagination.ts",
+      "specialistAiSource": false,
+      "disposition": "existing-general-counterpart; presentation migration and contract compatibility audit required",
+      "verification": "inventory only; no new visual or interaction pass"
+    },
+    {
+      "name": "popover",
+      "upstreamType": "registry:ui",
+      "registryDependencies": [],
+      "generalCounterpart": "packages/ui-svelte/src/catalog/popover.ts",
+      "specialistAiSource": false,
+      "disposition": "existing-general-counterpart; presentation migration and contract compatibility audit required",
+      "verification": "inventory only; no new visual or interaction pass"
+    },
+    {
+      "name": "progress",
+      "upstreamType": "registry:ui",
+      "registryDependencies": [],
+      "generalCounterpart": "packages/ui-svelte/src/catalog/progress.ts",
+      "specialistAiSource": true,
+      "disposition": "existing-general-counterpart; presentation migration and contract compatibility audit required",
+      "verification": "inventory only; no new visual or interaction pass"
+    },
+    {
+      "name": "questionnaire",
+      "upstreamType": "registry:ui",
+      "registryDependencies": [
+        "button"
+      ],
+      "generalCounterpart": null,
+      "specialistAiSource": false,
+      "disposition": "missing dedicated family; evaluate demand, adapter and host prerequisites in 1.4",
+      "verification": "inventory only; no new visual or interaction pass"
+    },
+    {
+      "name": "radio-group",
+      "upstreamType": "registry:ui",
+      "registryDependencies": [],
+      "generalCounterpart": "packages/ui-svelte/src/catalog/radio-group.ts",
+      "specialistAiSource": false,
+      "disposition": "existing-general-counterpart; presentation migration and contract compatibility audit required",
+      "verification": "inventory only; no new visual or interaction pass"
+    },
+    {
+      "name": "range-calendar",
+      "upstreamType": "registry:ui",
+      "registryDependencies": [
+        "button"
+      ],
+      "generalCounterpart": "packages/ui-svelte/src/catalog/range-calendar.ts",
+      "specialistAiSource": false,
+      "disposition": "existing-general-counterpart; presentation migration and contract compatibility audit required",
+      "verification": "inventory only; no new visual or interaction pass"
+    },
+    {
+      "name": "resizable",
+      "upstreamType": "registry:ui",
+      "registryDependencies": [],
+      "generalCounterpart": null,
+      "specialistAiSource": false,
+      "disposition": "missing dedicated family; evaluate demand, adapter and host prerequisites in 1.4",
+      "verification": "inventory only; no new visual or interaction pass"
+    },
+    {
+      "name": "scroll-area",
+      "upstreamType": "registry:ui",
+      "registryDependencies": [],
+      "generalCounterpart": "packages/ui-svelte/src/catalog/scroll-area.ts",
+      "specialistAiSource": false,
+      "disposition": "existing-general-counterpart; presentation migration and contract compatibility audit required",
+      "verification": "inventory only; no new visual or interaction pass"
+    },
+    {
+      "name": "select",
+      "upstreamType": "registry:ui",
+      "registryDependencies": [
+        "separator"
+      ],
+      "generalCounterpart": "packages/ui-svelte/src/catalog/select.ts",
+      "specialistAiSource": false,
+      "disposition": "existing-general-counterpart; presentation migration and contract compatibility audit required",
+      "verification": "inventory only; no new visual or interaction pass"
+    },
+    {
+      "name": "separator",
+      "upstreamType": "registry:ui",
+      "registryDependencies": [],
+      "generalCounterpart": "packages/ui-svelte/src/catalog/separator.ts",
+      "specialistAiSource": true,
+      "disposition": "existing-general-counterpart; presentation migration and contract compatibility audit required",
+      "verification": "inventory only; no new visual or interaction pass"
+    },
+    {
+      "name": "sheet",
+      "upstreamType": "registry:ui",
+      "registryDependencies": [
+        "button"
+      ],
+      "generalCounterpart": null,
+      "specialistAiSource": false,
+      "disposition": "missing dedicated family; evaluate demand, adapter and host prerequisites in 1.4",
+      "verification": "inventory only; no new visual or interaction pass"
+    },
+    {
+      "name": "sidebar",
+      "upstreamType": "registry:ui",
+      "registryDependencies": [
+        "is-mobile",
+        "input",
+        "tooltip",
+        "skeleton",
+        "separator",
+        "button",
+        "sheet"
+      ],
+      "generalCounterpart": null,
+      "specialistAiSource": false,
+      "disposition": "missing dedicated family; evaluate demand, adapter and host prerequisites in 1.4",
+      "verification": "inventory only; no new visual or interaction pass"
+    },
+    {
+      "name": "skeleton",
+      "upstreamType": "registry:ui",
+      "registryDependencies": [],
+      "generalCounterpart": null,
+      "specialistAiSource": false,
+      "disposition": "missing dedicated family; evaluate demand, adapter and host prerequisites in 1.4",
+      "verification": "inventory only; no new visual or interaction pass"
+    },
+    {
+      "name": "slider",
+      "upstreamType": "registry:ui",
+      "registryDependencies": [],
+      "generalCounterpart": "packages/ui-svelte/src/catalog/slider.ts",
+      "specialistAiSource": false,
+      "disposition": "existing-general-counterpart; presentation migration and contract compatibility audit required",
+      "verification": "inventory only; no new visual or interaction pass"
+    },
+    {
+      "name": "sonner",
+      "upstreamType": "registry:ui",
+      "registryDependencies": [],
+      "generalCounterpart": null,
+      "specialistAiSource": false,
+      "disposition": "missing dedicated family; evaluate demand, adapter and host prerequisites in 1.4",
+      "verification": "inventory only; no new visual or interaction pass"
+    },
+    {
+      "name": "spinner",
+      "upstreamType": "registry:ui",
+      "registryDependencies": [],
+      "generalCounterpart": null,
+      "specialistAiSource": false,
+      "disposition": "missing dedicated family; evaluate demand, adapter and host prerequisites in 1.4",
+      "verification": "inventory only; no new visual or interaction pass"
+    },
+    {
+      "name": "switch",
+      "upstreamType": "registry:ui",
+      "registryDependencies": [],
+      "generalCounterpart": "packages/ui-svelte/src/catalog/switch.ts",
+      "specialistAiSource": false,
+      "disposition": "existing-general-counterpart; presentation migration and contract compatibility audit required",
+      "verification": "inventory only; no new visual or interaction pass"
+    },
+    {
+      "name": "table",
+      "upstreamType": "registry:ui",
+      "registryDependencies": [],
+      "generalCounterpart": null,
+      "specialistAiSource": false,
+      "disposition": "missing dedicated family; evaluate demand, adapter and host prerequisites in 1.4",
+      "verification": "inventory only; no new visual or interaction pass"
+    },
+    {
+      "name": "tabs",
+      "upstreamType": "registry:ui",
+      "registryDependencies": [],
+      "generalCounterpart": "packages/ui-svelte/src/catalog/tabs.ts",
+      "specialistAiSource": false,
+      "disposition": "existing-general-counterpart; presentation migration and contract compatibility audit required",
+      "verification": "inventory only; no new visual or interaction pass"
+    },
+    {
+      "name": "textarea",
+      "upstreamType": "registry:ui",
+      "registryDependencies": [],
+      "generalCounterpart": null,
+      "specialistAiSource": true,
+      "disposition": "AI presentation dependency only; general-family adoption not established",
+      "verification": "inventory only; no new visual or interaction pass"
+    },
+    {
+      "name": "toggle",
+      "upstreamType": "registry:ui",
+      "registryDependencies": [],
+      "generalCounterpart": "packages/ui-svelte/src/catalog/toggle.ts",
+      "specialistAiSource": false,
+      "disposition": "existing-general-counterpart; presentation migration and contract compatibility audit required",
+      "verification": "inventory only; no new visual or interaction pass"
+    },
+    {
+      "name": "toggle-group",
+      "upstreamType": "registry:ui",
+      "registryDependencies": [
+        "toggle"
+      ],
+      "generalCounterpart": "packages/ui-svelte/src/catalog/toggle-group.ts",
+      "specialistAiSource": false,
+      "disposition": "existing-general-counterpart; presentation migration and contract compatibility audit required",
+      "verification": "inventory only; no new visual or interaction pass"
+    },
+    {
+      "name": "tooltip",
+      "upstreamType": "registry:ui",
+      "registryDependencies": [],
+      "generalCounterpart": "packages/ui-svelte/src/catalog/tooltip.ts",
+      "specialistAiSource": true,
+      "disposition": "existing-general-counterpart; presentation migration and contract compatibility audit required",
+      "verification": "inventory only; no new visual or interaction pass"
+    },
+    {
+      "name": "trace",
+      "upstreamType": "registry:ui",
+      "registryDependencies": [
+        "collapsible"
+      ],
+      "generalCounterpart": null,
+      "specialistAiSource": true,
+      "disposition": "AI presentation dependency only; general-family adoption not established",
+      "verification": "inventory only; no new visual or interaction pass"
+    }
+  ],
+  "exceptions": [
+    "Flow specialist presentation remains separately pinned; no claim of shadcn Flow implementation",
+    "VICT date/time/control and operator history/receipt semantics remain VICT-owned",
+    "Input/textarea/table and semantic HTML availability does not establish a styled registered family",
+    "Blocks, fonts, hooks and libraries are not all authorable component contracts",
+    "Existing source counterpart is not visual equivalence or full authoring/interaction support"
+  ]
+}

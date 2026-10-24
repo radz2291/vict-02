@@ -1,0 +1,76 @@
+# Cycle 1.3 core authoring — independent architecture challenge
+
+2026-10-24. **HELD — three bounded design remedies required before substantial implementation.** The overall direction fits the existing canonical model. The held items below are specification gaps, not evidence of a failed implementation. This reviewer did not repair the candidate, run builds, install dependencies, create a checkout, operate a browser, or change product source.
+
+## Exact subject and authority
+
+- Architecture candidate: `bd9b75368f74697f40cf4616a3bc4d52e0387a7f`, branch `codex/studio-cycle-1-3-core-authoring`; reviewed [CYCLE-1-3-CORE-AUTHORING](CYCLE-1-3-CORE-AUTHORING.md).
+- Worktree: `C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-core-authoring/260831-VCT-02`.
+- Entry delivery: `f95e2cbe80f7afd421f8224634ebc0cecd61c827`. Restored product: `a36793df0f62c002332d66db181310554aaabb05`.
+- `origin` is `https://github.com/radz2291/vict-02.git`. Live `git ls-remote` returned the exact candidate for the named branch and `d7401bef6e48330796c74ec00c86db9622d48cdf` for main. Local `origin/main` matches that main SHA. No baseline drift observed.
+- Before this report, working/index diffs and `git status --short` were empty. `git diff --exit-code a36793df0f62c002332d66db181310554aaabb05 HEAD -- apps/studio packages` passed. Candidate commit contains only the architecture document.
+- Authority: owner's stage-manager assignment in the supplied `Pasted text.txt`, including independent architecture challenge before substantial implementation. Root AGENTS/canonical Stage 9 references, current Studio handoff and completion evidence, full stress findings and later owner additions, Structure drawer scope and independent evidence, rejected Context Inspector scope/evidence, and UI-foundation contracts/ABI/coverage inform this review. Current owner authority supersedes historical report-only language; it does not revive the reverted interaction work.
+
+## Findings and minimal remedies
+
+### AC-01 — registration ownership and compatibility are not yet deterministic (HELD)
+
+Candidate lines 28–36 correctly reuse `UiExtensionDescriptor`, assign package ownership, and distinguish knowledge freshness from source identity. However, they do not define the companion record/projection closely enough to settle two existing sources of metadata and multi-revision behavior.
+
+Actual contracts:
+
+- `packages/ui/src/compile.ts:41` owns descriptor props/outputs/slots and declared renderer identity. Svelte implementation capabilities additionally own `required`, `requiresParentContext`, `compositionSlots` and actual target forwarding in `packages/ui-svelte/src/document/extensions.ts:53`. These are meaningful authoring facts, but are not all descriptor-derived as the candidate's summary could imply.
+- General descriptors and implementations are separately aggregated in `packages/ui-svelte/src/catalog/components/catalog.ts`. Studio separately maintains recipe/placement policy. A new companion must not become another independently edited copy of these facts.
+- `compile.ts:294,491–496` explicitly implements **last registration for an ID** as current for unpinned instances; pinned instances resolve exact revision. Existing `ui-editor/src/composition.ts:89` uses the first descriptor by ID for slots. A sorted knowledge registry or naïve multi-revision insertion could make discovery/editor/compiler disagree, or change the meaning of a saved unpinned document.
+- A freshly computed digest alone cannot detect an incompatible same-revision change: both descriptor and derived digest would simply change together.
+
+Minimal remedy, in the architecture document before implementation:
+
+1. Specify one package registration record referencing the existing descriptor and exact Svelte implementation, with a pure-data companion. Derive props/outputs/slots from the descriptor and capability facts from the implementation; any intentionally repeated capability field must be equality-checked. Put semantic seeds/examples in serializable data interpreted by reusable helpers, avoiding a renderer-package dependency on `ui-editor` or executable companion recipes. Neutral helpers must not import Svelte.
+2. Name the companion schema/version, package provenance fields, exact dependency identity/revision representation and eligibility/exclusion disposition. Separate package version, descriptor revision, renderer identity, companion version and knowledge digest. State cycle/maximum closure behavior and fail-closed missing/incompatible dependencies. Define bounded continuation/refusal rather than incomplete dependency bundles appearing complete.
+3. Preserve the existing ordered descriptor/implementation projection and legacy current selection. Pin new authored nodes. Make all newly affected editor/tool reads resolve the effective revision consistently, without changing historical unpinned semantics. Do not sort canonical registration projection merely to produce a sorted search index. A new incompatible adapter may use a new ID; preserving support for old revisions must not silently choose a different current revision for old unpinned documents.
+4. Record a checked compatibility baseline keyed by `(id, revision)` for the pre-existing descriptor contract (or equivalent historical fixture), independently of the live digest. Same-revision meaning/default/interface drift must fail against that baseline; intended incompatible changes require a new identity/revision. Guidance-only changes may update knowledge digests without altering canonical application identity. Include installed package/renderer capability changes in relevant knowledge freshness, without inventing an automatic renderer-code identity scheme.
+
+Required later evidence: descriptor/implementation mismatch, missing registration/dependency, dependency cycle/oversize, same-revision drift and historical unpinned/pinned reopen negatives; adding one registration and changing a fixture must update derived knowledge without parallel prompt edits.
+
+### AC-02 — generic insertion needs one shared semantic admission boundary (HELD)
+
+Candidate lines 30–40 identify the right semantic subjects but leave their representation and enforcement unspecified. Guidance alone would not repair the recorded repeated menu-identity defect, and generic insertion must not bypass the recipe-only placement policy.
+
+Actual contracts: `ui-editor/src/composition.ts:10–31` has immediate recipe placement guards, while Studio's `designer/placement.ts` traverses rendered composition context through wrappers, local-definition slot substitution, repeats and conditionals. `designer/agent-edits.ts:149–196` is recipe/catalog-specific. Canonical validation does not itself encode the new package semantic rules. Moving only discovery prose would leave generic insertion, move, Source replacement, Save and Run able to disagree.
+
+Minimal remedy: define a small declarative semantic-rule vocabulary and the shared admission/diagnostic owner. It must express allowed ancestor/slot context, required companion parts/dependency closure, sibling identity scope, paired keys, label ownership and controlled prop/output expectations, while retaining each fact's one authority. Reuse the occurrence/context traversal rather than reducing it to the immediate parent. Specify which checks block invalid transactions or Save/Run and which are guidance; run applicable checks through manual, generic agent, recipe, move and source-admission paths. Preserve draft editing/refusal and current canonical transaction semantics.
+
+Specify static versus runtime certainty. Literal duplicate sibling values and known pair mismatches can be checked statically; arbitrary expressions, repeats and conditional availability must not be declared proven by inspecting templates alone. Give unresolved cases a truthful diagnostic/limitation and enforce any required evaluated uniqueness at the renderer-owned host context. Inference from a generated node ID is insufficient because component semantic IDs can be separate props.
+
+Generic insertion must carry exact registered identity/revision, typed props and explicit slots, use the same canonical transaction helpers, and fail clearly when mandatory composition cannot be supplied. Native elements/text should use existing semantic catalogs and command contracts, not fake component descriptors. Recipes may seed valid compositions but must not remain the eligibility authority.
+
+Required later evidence: generic composition beyond recipes; invalid placement through wrapper/definition/slot substitution; literal duplicate IDs/pair mismatch; repeated instances; correctly disclosed unresolved runtime identity; manual/agent parity; mixed edits, Undo/Redo and legacy reopen.
+
+### AC-03 — Flow declarations need a concrete visible identity/lifecycle and interaction policy (HELD)
+
+Candidate line 44 deliberately proposes a context-based declaration approach and asks for challenge. It is plausible within the current ABI, but the missing details are essential, not a later visual polish concern.
+
+Actual contracts: `ui-flow-svelte/src/FlowCanvas.svelte:12–22` consumes bound upstream node/edge arrays plus a rendered children snippet. ABI slots in `ui-svelte/src/document/RenderNode.svelte:346–365` are snippets, not an inspectable source graph. Each declaration implementation receives its own evaluated props, exact runtime `occurrenceKey`, `nodeId` and `presentation`. `presentation.target()` supplies source ownership/selection/style attributes on a real declared visible target (`RenderNode.svelte:168–181`; `extensions.ts:273–298`). Existing `SourceNode.svelte` does not forward a declaration's presentation target. Therefore a hidden declaration element or canvas-root annotation cannot establish correct selection of a visible Flow card/edge.
+
+Minimal remedy:
+
+1. Name canvas/node/edge descriptor IDs, scalar props and slots, host-context requirements, style targets and supported outputs. Mount declaration snippets under the correct per-canvas context even when they render no visible DOM. Missing host context must refuse truthfully, including standalone composition preview.
+2. Context entries must retain the declaration's exact evaluated occurrence identity and presentation target attributes. A package-owned custom visible graph node/edge forwards the **child** `presentation.target('root')` to the real selectable target; the canvas owns only its own target. Do not reconstruct occurrence provenance from authored graph IDs, labels, array positions or DOM order. An internal code-owned node renderer is permissible; authored executable `nodeTypes` remain excluded.
+3. Define host-local graph IDs, endpoint resolution and uniqueness independently of canonical source-node identity. Distinct canvas instances and repeated declaration occurrences must not overwrite each other. Reject duplicate evaluated graph IDs and unresolved/ambiguous endpoints with bounded source-linked diagnostics; do not silently pick a sibling or claim arbitrary repeat IDs statically valid.
+4. Define registration/update/unregister ownership tokens and cleanup for conditional removal, repeat replacement, remount, Undo/Redo and plan generation changes. A removed declaration's cleanup must not delete a newer replacement with the same logical ID; pending edge resolution during one mount cycle must settle deterministically. Upstream arrays are disposable render projection, never additional saved graph truth.
+5. Choose the initial interaction contract explicitly: scalar authored node positions/edges, pan/zoom and selection; graph dragging, deletion and connection creation disabled until declared typed output/update semantics exist. Otherwise upstream bindable arrays can mutate independently of canonical props/history. Design selects the correct canonical occurrence; Interact may manipulate only the declared ephemeral viewport/selection. Do not persist upstream arrays, implicitly write source on drag, or advertise workflow execution.
+
+Required later evidence: actual node/edge slots mount in context; visible card/edge resolves the correct child occurrence in two canvases and repeated definitions; controlled prop changes refresh projection; conditional removal/remount and rapid Undo/Redo do not leave stale entries; read-only edge/position behavior, keyboard and responsive checks, Save/reopen in the normal authored runtime. A narrow disposable proof can establish feasibility before broader adapter implementation; if it cannot, return the exact ABI gap.
+
+## Accepted directions and retained limits
+
+**PASS as architectural direction:** one canonical document and ABI; descriptor-derived knowledge with authored semantic guidance; package ownership and explicit exclusions; bounded selected reads and freshness separate from current source revisions; new insertion pins; no automatic source migration; preserved floating editing tools/Structure placement; capture/edit phase separation and no replay of confirmed writes; truthful diagnostics, metrics and verification tiers.
+
+**AI/chat: compatible direction, implementation proof pending.** Existing `Conversation.svelte` takes structured messages and executable host callbacks, while `patterns/PromptInput.svelte` binds a string value. New presentation adapters must explicitly translate only supported scalar props/slots/typed intent outputs; directly registering `Conversation` as an ABI component would not satisfy its existing signature. Keep controlled value/clear-on-send behavior truthful: a void typed emit is not a promise that a provider accepted a message. No provider transport, shell/subagent capability, tool execution or workflow authority follows from discoverability, message roles, send/stop labels or Flow edges. Installation of an export does not make every upstream pattern eligible.
+
+Reliability and roadmap acceptance criteria remain required for the later implementation gate. This design review does not demonstrate real provider recovery, capture recovery, interactions, package installation, performance, or integrated owner journeys. Historical independent PASS statements retain their original scope; owner acceptance and Stage 9 closure remain pending.
+
+## Next allowed action
+
+The stage manager may revise the architecture for AC-01–AC-03, commit/push the amended document, verify its exact remote SHA and request an affected independent recheck. These are routine in-scope design decisions; no owner relay or new product semantics are required for the read-only Flow option described above. Substantial implementation remains held until that recheck clears the design. No main merge, publication, deployment, rejected interaction implementation, Milestone 2 or self-acceptance is authorized by this review.
