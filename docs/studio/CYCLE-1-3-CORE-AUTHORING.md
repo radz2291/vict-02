@@ -1,6 +1,6 @@
 # Cycle 1.3 — reliable component authoring foundation
 
-2026-10-24. **AUTHORIZED; amended architecture independently PASS at3f6a918. Current repaired runtime source is c78f9f7; full Studio296 PASS/2 intentional skips and independent source rechecks pass. Product readiness remains HELD pending rebuilt exact-product browser/provider/consumer verification. Earlier e7/9df/a9/b10 failures and decisions remain retained.**
+2026-10-24. **Core readiness independently PASS at exact product 57308f6ffcd5c85415b38d9d68a6f696199ebfa7; verdict/evidence c5ae1e9f718a31930f98a5ef300463f2c1b8db54. Owner acceptance remains pending.** [Final matrix](CYCLE-1-3-CORE-INDEPENDENT.md#final-independent-verdict--57308f6-bounded-pass) and [walkthrough/checks](CYCLE-1-3-CORE-REPORT.md#final-product-57308f6--owner-review-walkthrough-and-exact-evidence) bind the declared scopes. Earlier failures remain; required Cycle1.4 and integrated Milestone1 owner acceptance precede Milestone2. Stage9 stays REOPENED / IN PROGRESS.
 The owner's new stage-manager brief supersedes report-only restrictions for core reliability, scalable component knowledge and supported authoring access. It does not authorize the reverted interaction work or Milestone 2. This document records scope before implementation; it is not a gate verdict or owner acceptance.
 
 ## Recovered baseline and preservation

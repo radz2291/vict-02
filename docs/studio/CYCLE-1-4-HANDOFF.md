@@ -4,7 +4,7 @@
 
 ## Entry gate and preservation
 
-Start only from the exact independently verified core delivery recorded in [the core round](CYCLE-1-3-CORE-AUTHORING.md), after reconciling live remote, concurrent work, allowed paths and owner authority. Do not substitute stale `be893f` for the restored Structure product `a36793df` or erase failed attempts. Current core entry is delivery `f95e2cbe80f7afd421f8224634ebc0cecd61c827`; no later product PASS exists yet.
+Start only from the exact independently verified core delivery recorded in [the core round](CYCLE-1-3-CORE-AUTHORING.md), after reconciling live remote, concurrent work, allowed paths and owner authority. Do not substitute stale `be893f` for the restored Structure product `a36793df` or erase failed attempts. Current independently reviewed core is product `57308f6ffcd5c85415b38d9d68a6f696199ebfa7`, review delivery `be4f5ba287e76eddf12b4d76d48a9fa703bacd9c`, verdict/evidence `c5ae1e9f718a31930f98a5ef300463f2c1b8db54`. The final session closure supplies the documentation-only delivery SHA; reconcile branch HEAD as its descendant and verify the apps/packages/consumer-fixture tree remains identical to product573. The original core entry f95e2cbe80f7afd421f8224634ebc0cecd61c827 remains historical. This prepared handoff is not implementation authority for1.4 or owner acceptance.
 
 Keep Structure inside Document, the canvas mounted and floating Format/Insert/Arrange/Connect controls on canvas. Preserve old documents, canonical identity, exact component revisions, history, drafts, runtime values, explicit Save/reopen and existing provider/effect boundaries. Preserve owner tabs and data; use isolated previews after listener/headroom inspection.
 
