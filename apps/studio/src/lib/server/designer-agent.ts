@@ -44,6 +44,7 @@ import { createTurnMetrics, type ToolFailure, type TurnMetrics } from '$lib/desi
 
 export type StudioAgentEvent =
   | { type: 'tool-event'; id: string; sequence: number; elapsedMs?: number; kind: 'tool-start' | 'observation' | 'validation-refused' | 'proposed' | 'committed' | 'tool-failed'; tool: string; callId?: string; summary: string; details?: string }
+  | { type: 'schema-diagnostic'; id: string; scope: 'contract-validation'; tool: string; evaluations: number; firstElapsedMs: number; lastElapsedMs: number; details: string }
   | { type: 'capture-request'; captureId: string; cursor: AgentCursor }
   | { type: 'started'; runId: string; model: string; engine: 'VICT / Mastra' }
   | { type: 'progress'; message: string }
@@ -277,6 +278,21 @@ async function execute(
   let lastEditFailure: string | undefined;
   let lastValidation: {ok:false;code:string;message:string;diagnostics?:unknown} | undefined;
   let toolSequence = 0;
+  const schemaDiagnostics=new Map<string,{id:string;evaluations:number;firstElapsedMs:number}>();
+  const schemaDiagnostic=(tool:string,details:unknown)=>{
+    if(run.aborted||run.fenced)return;
+    const serialized=JSON.stringify(details)??'null';
+    // Contract parsers may run repeatedly and have no authoritative call ID.
+    // Keep their observations separate from attempts, settlement and metrics.
+    const key=createHash('sha256').update(tool+'\n'+serialized).digest('hex');
+    const elapsedMs=metrics.snapshot().elapsedMs;
+    const existing=schemaDiagnostics.get(key);
+    if(!existing&&schemaDiagnostics.size>=128)return;
+    const record=existing??{id:`${run.runId}:schema:${schemaDiagnostics.size+1}`,evaluations:0,firstElapsedMs:elapsedMs};
+    record.evaluations++;schemaDiagnostics.set(key,record);
+    const boundedDetails=serialized.length>4000?serialized.slice(0,3900)+'\n[Schema details truncated; read overview for current validation facts.]':serialized;
+    emit({type:'schema-diagnostic',scope:'contract-validation',...record,tool,lastElapsedMs:elapsedMs,details:boundedDetails});
+  };
   const requestedRecipes = new Set<string>();
   const invocationCallId=(context:unknown)=>{const id=(context as {victToolCallId?:unknown}|undefined)?.victToolCallId;return typeof id==='string' ? id : undefined;};
   const trace = (kind: Extract<StudioAgentEvent,{type:'tool-event'}>['kind'], tool: string, summary: string, details?: unknown, callId?: string) => {
@@ -317,7 +333,7 @@ async function execute(
     });
     const readInput = defineContract({
       id: 'studio.agent.read-input', revision: '2', descriptiveJsonSchema: agentReadPresentation,
-      parse: value => { const parsed = agentReadSchema.safeParse(value); if (!parsed.success) trace('validation-refused','studio_screen_read','Read query validation refused',parsed.error.issues.slice(0,5).map(issue => ({path:issue.path.join('.'),message:issue.message}))); return parsed.success ? {ok:true,value:parsed.data} : {ok:false,issues:parsed.error.issues.slice(0,5).map(issue => ({code:'invalid',message:issue.message,path:issue.path.join('.')}))}; },
+      parse: value => { const parsed = agentReadSchema.safeParse(value); if (!parsed.success) schemaDiagnostic('studio_screen_read',{code:'STUDIO_AGENT_READ_QUERY',diagnostics:parsed.error.issues.slice(0,5).map(issue => ({path:issue.path.join('.'),message:issue.message}))}); return parsed.success ? {ok:true,value:parsed.data} : {ok:false,issues:parsed.error.issues.slice(0,5).map(issue => ({code:'invalid',message:issue.message,path:issue.path.join('.')}))}; },
     });
     const editInput = defineContract({
       id: 'studio.agent.edit-input',
@@ -325,7 +341,7 @@ async function execute(
       descriptiveJsonSchema: editPresentation,
       parse: (value) => {
         const parsed = agentEditSchema.safeParse(value);
-        if (!parsed.success) {lastValidation={ok:false,code:'STUDIO_AGENT_INVALID_EDIT',message:'The previous tool arguments were refused before invocation. Correct the fields below; no edits applied.',diagnostics:agentEditDiagnostics(parsed.error,value)};trace('validation-refused','studio_screen_edit','Operation schema refused before invocation',lastValidation);}
+        if (!parsed.success) {lastValidation={ok:false,code:'STUDIO_AGENT_INVALID_EDIT',message:'Input contract validation reported invalid fields. These parser diagnostics are not assigned to a tool call. Correct the fields below; no edits applied.',diagnostics:agentEditDiagnostics(parsed.error,value)};schemaDiagnostic('studio_screen_edit',lastValidation);}
         return parsed.success
           ? { ok: true, value: parsed.data }
           : {

@@ -120,6 +120,14 @@
             const event=JSON.parse(line);
             if(event.type==='started'){sent=true;turn.runId=event.runId;model=event.model;note('Reading screen…');}
             if(event.type==='progress'){note(event.message);if(!/^(Reading current source|Preparing and validating|Capturing and observing|Tool refused)/.test(event.message))summary(`Progress summary · ${event.message}`);separateReply=true;}
+            if(event.type==='schema-diagnostic'){
+              const id=`schema-diagnostic-${event.id}`;
+              const toolLabel=event.tool==='studio_screen_read'?'Read source':event.tool==='studio_screen_edit'?'Edit screen':event.tool;
+              // Generic expandable diagnostic activity, deliberately without
+              // attempt stages, call correlation or metric settlement.
+              append({id,kind:'activity',activity:{id,title:`Input schema diagnostics · ${toolLabel} (not a tool attempt)`,state:'failed',detail:`${event.evaluations} parser evaluations; these are not tool calls. Identical diagnostic payloads are combined; actual failed attempts remain separate. No call identity is inferred.\nFirst observed ${event.firstElapsedMs} ms; last observed ${event.lastElapsedMs} ms since turn start.\n${event.details}`}});
+              separateReply=true;
+            }
             if(event.type==='tool-event'){
               const attemptKey=`${event.tool}:${event.callId??event.id}`;
               const refused=event.kind==='validation-refused'||event.kind==='tool-failed';

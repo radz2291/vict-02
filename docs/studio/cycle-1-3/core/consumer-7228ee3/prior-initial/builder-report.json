@@ -1,0 +1,70 @@
+{
+  "sourceCandidate": "7228ee3ccae4364da63a346c46010dde19b1992d",
+  "createdAt": "2026-10-24T12:05:20.178Z",
+  "kind": "fresh separate tarball installation",
+  "directory": "C:\\Users\\RZ1\\.codex\\tmp\\studio-core-consumer-7228ee3",
+  "frameworkPackages": 8,
+  "installedPackages": 236,
+  "lockPackages": 286,
+  "matchedInstalledSrcDistFiles": 684,
+  "matchedPackageManifests": 8,
+  "matchedTarballs": 8,
+  "dependencyLinks": 0,
+  "sourceAliases": [],
+  "productionBuild": {
+    "status": "passed",
+    "modules": 1832,
+    "durationSeconds": 29.82,
+    "memoryLimitMiB": 2048,
+    "outputFiles": 26,
+    "outputBytes": 2919131,
+    "logSha256": "c4b1e0155b0b024d053ec3e723d32188d95df5383737a3749ad684eae623e3be",
+    "advisory": "Some chunks exceed500kB; no build error."
+  },
+  "server": {
+    "url": "http://127.0.0.11:5605/",
+    "captureUrl": "http://127.0.0.11:5605/capture.html",
+    "pid": 89836,
+    "http": {
+      "main": 200,
+      "capture": 200,
+      "installation": 200
+    },
+    "listener": "127.0.0.11:5605",
+    "pidReuse": "89836 is the new consumer preview process, not the stopped earlier5606 process."
+  },
+  "browser": {
+    "status": "pending independent exercise",
+    "expectedSourceHelperChecks": 29,
+    "rendering": "Actual DocumentHost with canonical AI/Flow, native input/textarea/select, source history and ephemeral runtime values.",
+    "capture": "Installed public captureRenderedElement of retained37node canonical form; actual result and geometry downloadable. No model or substitute image."
+  },
+  "preservation": {
+    "deleted": [],
+    "oldConsumers": [
+      "studio-core-consumer-e7d2b51d",
+      "studio-core-consumer-9df22fa",
+      "studio-core-consumer-a9b9fab"
+    ],
+    "readOnlyDependencyInventory": [
+      {
+        "path": "C:/Users/RZ1/.codex/tmp/studio-core-consumer-e7d2b51d/node_modules",
+        "bytes": 225096874,
+        "files": 24701,
+        "reparsePoints": 0
+      },
+      {
+        "path": "C:/Users/RZ1/.codex/tmp/studio-core-consumer-9df22fa/node_modules",
+        "bytes": 225110477,
+        "files": 24700,
+        "reparsePoints": 0
+      }
+    ],
+    "cleanup": "No cleanup performed; owner freed sufficient disk space."
+  },
+  "fixtureBoundary": "Fixture-only additions after product seal; exact722framework source/manifests/dist installed and hashed. No Studio imports, borrowed dependency junctions, execution adapter or provider invocation.",
+  "observations": [
+    "Initial verification helper iterated repository src and encountered intentionally unpackaged contracts/src/agent-stream.ts. Corrected to compare every actually installed src/dist file (684); installed artifact mismatch was not established.",
+    "Preparation process had loaded before public installation.json copy was added to the script. Applied that identical copy manually before this build; reproducible script now includes it."
+  ]
+}

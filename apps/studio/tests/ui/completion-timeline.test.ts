@@ -132,11 +132,20 @@ it('settles parallel reads only by their matching call identity',async()=>{
     {type:'tool-event',id:'read-a',kind:'tool-start',tool:'studio_screen_read',callId:'a',summary:'Read A'},
     {type:'tool-event',id:'read-b',kind:'tool-start',tool:'studio_screen_read',callId:'b',summary:'Read B'},
     {type:'tool-event',id:'unassociated',kind:'validation-refused',tool:'studio_screen_read',summary:'Schema refused before invocation'},
+    {type:'schema-diagnostic',id:'parse-note',scope:'contract-validation',tool:'studio_screen_read',evaluations:1,firstElapsedMs:10,lastElapsedMs:10,details:'{"path":"offset","message":"Expected a nonnegative number"}'},
+    {type:'schema-diagnostic',id:'parse-note',scope:'contract-validation',tool:'studio_screen_read',evaluations:2,firstElapsedMs:10,lastElapsedMs:11,details:'{"path":"offset","message":"Expected a nonnegative number"}'},
   ]);}})):new Response(JSON.stringify({ready:true,csrf:'n',model:'fixture/model'}))));
   mounted=mount(AgentChat,{target:document.body,props:{screenLabel:'Parallel reads',selectionLabel:'Screen',blocked:false,getContext:()=>({document:source,cursor}),applyProposal:()=>{throw Error('No proposal');}}});
   await vi.waitFor(()=>expect(document.body.textContent).toContain('Ready'));
   const input=document.querySelector<HTMLTextAreaElement>('textarea')!;input.value='Inspect two pages';input.dispatchEvent(new Event('input',{bubbles:true}));flushSync();document.querySelector('form')!.dispatchEvent(new Event('submit',{bubbles:true,cancelable:true}));
   await vi.waitFor(()=>expect(document.querySelector('[data-event-id="attempt-studio_screen_read:unassociated"]')).not.toBeNull());
+  expect(document.querySelector('[data-event-id="attempt-studio_screen_read:a"]')?.textContent).toContain('running');
+  expect(document.querySelector('[data-event-id="attempt-studio_screen_read:b"]')?.textContent).toContain('running');
+  expect(document.querySelectorAll('[data-event-id="schema-diagnostic-parse-note"]')).toHaveLength(1);
+  const diagnostic=document.querySelector('[data-event-id="schema-diagnostic-parse-note"]')!;
+  diagnostic.querySelector<HTMLButtonElement>('button')!.click();flushSync();
+  await vi.waitFor(()=>expect(diagnostic.textContent).toContain('2 parser evaluations'));
+  expect(diagnostic.textContent).toContain('not tool calls');expect(diagnostic.querySelector('[aria-label="Attempt receipts"]')).toBeNull();
   expect(document.querySelector('[data-event-id="attempt-studio_screen_read:a"]')?.textContent).toContain('running');
   expect(document.querySelector('[data-event-id="attempt-studio_screen_read:b"]')?.textContent).toContain('running');
   emit([{type:'tool-event',id:'failed-a',kind:'tool-failed',tool:'studio_screen_read',callId:'a',summary:'Read A failed'}]);

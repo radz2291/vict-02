@@ -19,15 +19,28 @@ const prompt = chat.nodes.find(node => node.kind === 'component' && node.definit
 const initial: UiDocument = {
   schema: 'vict.ui-document@1', id: 'public-consumer', revision: '1', root: 'root',
   nodes: Object.fromEntries([
-    { kind: 'element', id: 'root', tag: 'div', children: ['recipient-label', 'recipient-input', 'recipient-text', chat.root, flow.root] },
+    { kind: 'element', id: 'root', tag: 'div', children: ['recipient-label', 'recipient-input', 'recipient-text', 'notes-label', 'notes-input', 'notes-text', 'choice-label', 'choice-input', 'choice-text', chat.root, flow.root] },
     { kind: 'element', id: 'recipient-label', tag: 'label', attributes: { for: 'consumer-recipient' }, children: ['recipient-caption'] },
     { kind: 'text', id: 'recipient-caption', content: { type: 'literal', value: 'Recipient (native input and text reference)' } },
     { kind: 'element', id: 'recipient-input', tag: 'input', attributes: { id: 'consumer-recipient', type: 'text' }, children: [] },
     { kind: 'text', id: 'recipient-text', content: { type: 'expression', expression: { type: 'ref', path: 'state.recipient' } } },
+    { kind: 'element', id: 'notes-label', tag: 'label', attributes: { for: 'consumer-notes' }, children: ['notes-caption'] },
+    { kind: 'text', id: 'notes-caption', content: { type: 'literal', value: 'Notes (native textarea and text reference)' } },
+    { kind: 'element', id: 'notes-input', tag: 'textarea', attributes: { id: 'consumer-notes', rows: '3' }, children: [] },
+    { kind: 'text', id: 'notes-text', content: { type: 'expression', expression: { type: 'ref', path: 'state.notes' } } },
+    { kind: 'element', id: 'choice-label', tag: 'label', attributes: { for: 'consumer-choice' }, children: ['choice-caption'] },
+    { kind: 'text', id: 'choice-caption', content: { type: 'literal', value: 'Choice (native select and text reference)' } },
+    { kind: 'element', id: 'choice-input', tag: 'select', attributes: { id: 'consumer-choice' }, children: ['choice-alpha', 'choice-beta'] },
+    { kind: 'element', id: 'choice-alpha', tag: 'option', attributes: { value: 'alpha' }, children: ['choice-alpha-text'] },
+    { kind: 'text', id: 'choice-alpha-text', content: { type: 'literal', value: 'Alpha option' } },
+    { kind: 'element', id: 'choice-beta', tag: 'option', attributes: { value: 'beta' }, children: ['choice-beta-text'] },
+    { kind: 'text', id: 'choice-beta-text', content: { type: 'literal', value: 'Beta option' } },
+    { kind: 'text', id: 'choice-text', content: { type: 'expression', expression: { type: 'ref', path: 'state.choice' } } },
     ...chat.nodes.map(node => node.id === prompt.id && node.kind === 'component' ? { ...node, outputs: { ...node.outputs, send: { setState: { key: 'lastSent' } } } } : node), ...flow.nodes,
   ].map(node => [node.id, node as UiNode])),
   componentDefinitions: {}, styleSources: {}, tokens: {}, conditions: {}, assets: {},
   localState: { ...chat.localState, recipient: { key: 'recipient', type: 'string', initial: 'Avery' }, lastSent: { key: 'lastSent', type: 'string', initial: '' },
+    notes: { key: 'notes', type: 'string', initial: 'Native textarea initial' }, choice: { key: 'choice', type: 'string', initial: 'beta' },
     date: { key: 'date', type: 'isoDate', initial: '2026-10-24' }, time: { key: 'time', type: 'isoTime', initial: '09:30' },
     labels: { key: 'labels', type: 'stringList', initial: ['Alpha', 'Beta'] }, points: { key: 'points', type: 'numberList', initial: [10, 20] } },
 };
@@ -55,6 +68,8 @@ export function runSourceProof() {
   check('exact renderer ABI and slot preflight', compiled.ok && validateSvelteComponentPlan(compiled.plan, registry.descriptors, implementations).length === 0);
   const wired = bridge.apply(wireNativeInput({ requestId: 'consumer-native-wire', document: bridge.document, nodeId: 'recipient-input', key: 'recipient', initial: 'Avery' }));
   check('public native input wiring', wired.ok);
+  check('public native textarea wiring', bridge.apply(wireNativeInput({ requestId: 'consumer-notes-wire', document: bridge.document, nodeId: 'notes-input', key: 'notes', initial: 'Native textarea initial' })).ok);
+  check('public native select wiring with nonfirst initial option', bridge.apply(wireNativeInput({ requestId: 'consumer-choice-wire', document: bridge.document, nodeId: 'choice-input', key: 'choice', initial: 'beta' })).ok);
   const before = canonicalUiDocument(bridge.document).contentDigest;
   check('generic registered insertion', insertButton().ok && !!bridge.document.nodes['inserted-button']);
   check('Undo restores exact source digest', bridge.undo().ok && canonicalUiDocument(bridge.document).contentDigest === before);

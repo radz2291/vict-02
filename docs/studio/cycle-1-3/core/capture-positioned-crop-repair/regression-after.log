@@ -1,0 +1,9 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/studio-public-capture-fidelity/260831-VCT-02
+
+
+ Test Files  1 passed (1)
+      Tests  4 passed (4)
+   Start at  20:19:21
+   Duration  1.40s (transform 116ms, setup 0ms, import 161ms, tests 81ms, environment 807ms)
+

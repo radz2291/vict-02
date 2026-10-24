@@ -1,0 +1,32 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/studio-public-capture-fidelity/260831-VCT-02
+
+ ❯ |unit| packages/ui-ai-svelte/test/capture.test.ts (4 tests | 2 failed) 95ms
+   × normalizes only a relative captured root position before applying the measured viewport crop 23ms
+   × normalizes only a absolute captured root position before applying the measured viewport crop 9ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| packages/ui-ai-svelte/test/capture.test.ts > normalizes only a relative captured root position before applying the measured viewport crop
+ FAIL  |unit| packages/ui-ai-svelte/test/capture.test.ts > normalizes only a absolute captured root position before applying the measured viewport crop
+AssertionError: expected '-30px' to be '0px' // Object.is equality
+
+Expected: "0px"
+Received: "-30px"
+
+ ❯ packages/ui-ai-svelte/test/capture.test.ts:72:32
+     70|   const cloneRoot = xml.querySelector('foreignObject')!.firstElementCh…
+     71|   expect(cloneRoot.style.position).toBe(position);
+     72|   expect(cloneRoot.style.left).toBe('0px'); expect(cloneRoot.style.top…
+       |                                ^
+     73|   expect(cloneRoot.style.right).toBe('auto'); expect(cloneRoot.style.b…
+     74|   const cloneChild = cloneRoot.firstElementChild as HTMLElement;
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 2 passed (4)
+   Start at  20:18:20
+   Duration  1.51s (transform 134ms, setup 0ms, import 179ms, tests 95ms, environment 878ms)
+
