@@ -1,6 +1,6 @@
 # Structure corrections — independent verification
 
-2026-10-24. Independent verifier, fresh context, no participation in implementation. **Initial and first repaired candidates FAIL; final disposition pending bounded repair and re-verification.**
+2026-10-24. Independent verifier, fresh context, no participation in implementation. **Final scoped verdict: PASS — READY FOR OWNER REVIEW**, exact product candidate `dabbe9027e335bab1a405f4a808711d93623b3c5`. Earlier FAIL observations and repair lineage are preserved below. This verdict covers the authorized Structure presentation corrections only.
 
 ## Identity and scope
 
@@ -55,3 +55,40 @@ Independently matched clean local and remote branch to `a8cddea20ca15b3ae05f8140
 - Rechecked Source draft retention and refused Design transition; draft remained exact. Explicitly discarded the disposable draft. Temporary viewport override reset.
 
 **SV-03 / P1 — graph-focused Escape desynchronizes dismissal and selection.** With Left group selected and inspection open, focused its graph node wrapper and pressed Escape. The dock closed and focus returned to Inspect, but upstream also cleared visual graph selection (`.svelte-flow__node.selected` count 0). Reopening Inspect still showed Left group / `left`; shared inspection retained the source while the graph indicated none. This differs from the passing Escape-from-inspection case. The builder was notified promptly and is preparing a bounded wrapper-Escape repair plus regression. No source/document corruption was observed.
+
+## Escape repair and larger-source challenge
+
+Independently matched clean local and remote branch to `254b9092ac92662239b7b4eaadb5ef9ac8121b95`; main remained pinned. Audited capture-phase wrapper-Escape handling and the regression. Reloaded only the disposable preview tab after the builder's exact production rebuild. **SV-03 remedied at this SHA.**
+
+The preview-origin builder fixture `Structure workspace` (56 source nodes, five groups; expressly authorized for read-only verification) was active after reload. Enter selected its Review group, exact source `group-4`. With inspection open, graph-focused Escape closed the dock and focused Inspect while retaining the visual selection and exact `group-4` inspection identity. After explicitly closing the dock, another graph-focused Escape cleared the visual selection and canonical inspection together: Inspect reopened Find with no selected source and no Object menu. The two dismissal intents are coherent.
+
+Explicit visual navigation was additionally challenged against the final Review group's last literal text `group-4-paragraph-4-text`. After layout status settled, Find displayed the selected `Next steps 5` node inside the graph: node rectangle `{x:516.8,y:354.5,width:246.4,height:83.6}` intersected graph rectangle `{x:320,y:125.8,width:640,height:540.9}`. A settled screenshot visibly showed the selected node. Show whole screen → View → Frame selection independently returned it to that visible rectangle. Initial intermediate screenshot showed `Arranging source…`; only the settled observation is counted as the visibility pass. No async framing failure was demonstrated in these cases.
+
+The builder fixture remained Saved with unchanged application identity `v1_41c340101ac2…`; no source mutation was performed. Returned to the verifier's own saved fixture. A subsequent showcase-host deselection parity amendment is awaiting a new exact candidate; final combined disposition follows that bounded check.
+
+## Final exact-candidate verdict
+
+**PASS — READY FOR OWNER REVIEW** at `dabbe9027e335bab1a405f4a808711d93623b3c5`, branch `codex/studio-cycle-1-3-completion`; main remains `d7401bef6e48330796c74ec00c86db9622d48cdf`. Independently verified local and remote full identities. The final change from `254b9092ac92662239b7b4eaadb5ef9ac8121b95` is a guarded `onDeselect` handoff in `StudioShowcase.svelte` plus its guide; core Structure/Designer/Flow implementation bytes are unchanged from the challenged candidate. The only verifier edit is this report. The builder's separate evidence-directory work was left untouched.
+
+Reopened the final production preview in a new showcase tab and reloaded only the existing disposable Designer tab. In showcase's disposable Slider example, Enter → Inspect → graph-focused Escape preserved one selected graph node and the selected Slider layer. With the dock closed, Escape cleared graph and Layers together and the host Inspector displayed `Make a selection`. Selecting again then clicking actual empty graph background repeated graph selection 0, selected Layers 0 and `Make a selection`. This exercises the new host callback, rather than merely checking its presence. A final Designer smoke again retained selected Review / `group-4` when graph Escape closed inspection; reopening inspection showed exact `group-4`. Verifier browser tabs were closed and temporary viewport settings reset.
+
+Final independently executed commands, sequentially at the exact final SHA:
+
+- `npm exec -- vitest run tests/structure-presentation.test.ts tests/ui/structure.test.ts`: **8/8 PASS**, including the repaired keyboard selection and both Escape intents; 2 files passed, exit 0. Existing compiler and shortcut-trigger warnings retained. A previous pending tool handle became unavailable after a tool refresh; no outcome is claimed from that handle. This completed rerun is the final evidence.
+- `npm run check` in `apps/studio` (`svelte-kit sync && tsc --noEmit`): **PASS**, exit 0.
+- `git diff --check`: **PASS** for the final report.
+
+| Authorized correction | Final scoped result |
+| --- | --- |
+| SU-01 / work area | PASS: compact toolbar and deliberate dock; low-height repair independently measured with default Chat visible. |
+| SU-02 / command ownership | PASS: one primary Fit View; shared View/Object menus and deliberate editor handoffs. |
+| SU-03 / selection and camera | PASS: ordinary pointer and repaired keyboard selection retain camera/filter; explicit Find/Frame visibly reveal the exact far-down source after layout settles. |
+| SU-04 / disclosure and dismissal | PASS: deliberate Properties/Relationships/Find pages; close-only Escape preserves selection, closed-dock Escape/background clears host and graph coherently; drafts retained/refused where required. |
+| SU-05 / node manipulation | PASS: local group disclosure; compatible contextual Move through canonical transaction; exact source restored by shared Undo. |
+| SU-06 / information hierarchy | PASS: concise presentation and optional exact text view preserve canonical identity, dynamic text and bindings. |
+| SU-07 / consistent modes | PASS: stable Design/Interact/Structure controls; same compact-window workspace bounds across modes; showcase shares the implementation and dismissal semantics. |
+| SU-08 / accessible bounds | PASS within demonstrated scope: named keyboard controls, visible focus restoration, bounded scrolling, 800 × 600 and repaired 640 × 480 default-Chat layout. Not a universal viewport/zoom or accessibility certification. |
+
+SV-01, SV-02 and SV-03 are **closed by the recorded repairs and affected re-verification**. No blocking finding remains in this authorized scope. The initial composition-transform V8 resource failure remains disclosed; that full composition suite was not independently rerun or promoted to PASS. Builder checks/build evidence and this independent focused browser/test verdict are distinct evidence tiers.
+
+Next allowed action: commit/push this independent report with the builder's final delivery evidence, verify the resulting remote SHA, then owner hands-on review of the corrected isolated preview. No owner acceptance, main merge, package publication, deployment, whole-Stage 9 closure, broad agent-reliability acceptance or correction of other OR findings follows. Stage 9 remains REOPENED / IN PROGRESS.

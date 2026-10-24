@@ -1,0 +1,166 @@
+{
+  "schemaVersion": 1,
+  "recordedDate": "2026-10-24",
+  "timezone": "Asia/Kuala_Lumpur",
+  "product": "dabbe9027e335bab1a405f4a808711d93623b3c5",
+  "branch": "codex/studio-cycle-1-3-completion",
+  "main": "d7401bef6e48330796c74ec00c86db9622d48cdf",
+  "scope": "Owner-authorized SU-01 through SU-08 Structure presentation and interaction only",
+  "authority": "../../CYCLE-1-3-STRUCTURE-CORRECTIONS.md",
+  "preferences": {
+    "path": "C:/Users/RZ1/Documents/UI design preferences.txt",
+    "sha256": "7d9ef14e63528e2a29a3777aef603c0559c6e3699a6fea0bef2d7f429aa27715"
+  },
+  "verdict": {
+    "status": "PASS — READY FOR OWNER REVIEW",
+    "independentReport": "../../CYCLE-1-3-STRUCTURE-CORRECTIONS-INDEPENDENT.md",
+    "independentReportSha256": "54eed8ab01e43720774a9b4bfc13ff5e4085e2bf2f408bd4c7a223abd1c65f7b",
+    "closedFindings": [
+      "SV-01",
+      "SV-02",
+      "SV-03"
+    ],
+    "ownerAcceptance": "pending",
+    "stage9": "REOPENED / IN PROGRESS",
+    "nextAllowedAction": "owner hands-on review"
+  },
+  "checks": {
+    "finalIndependentAffectedTests": "8/8 PASS; two files: presentation 2, real Structure 6",
+    "finalIndependentTypeScript": "PASS",
+    "finalSvelte": "0 errors / 6 retained warnings in 3 unchanged renderer/editor files",
+    "finalProductionBuild": "PASS client/server + Node adapter in isolated detached checkout at exact product",
+    "earlierBuilderTests": "focused canonical/projection/orientation/real Structure plus existing composition 3 and chat 1 PASS; see candidate history",
+    "flowCheck": "0 errors / 0 warnings before final narrow event guard; final Studio Svelte checks include SourceNode",
+    "independentFullComposition": "NOT DEMONSTRATED: earlier V8 Zone out-of-memory, not independently rerun"
+  },
+  "browser": {
+    "preview": "http://127.0.0.5:5599/design",
+    "showcase": "http://127.0.0.5:5599/showcase#designer",
+    "fixture": "Structure workspace; 56 canonical source nodes; disposable preview-origin content",
+    "journeys": [
+      "ordinary pointer/keyboard selection preserves camera and filters",
+      "local disclosure via pointer and Enter",
+      "explicit Find exact text/state and distant source framing",
+      "compatible canonical Move and exact Undo",
+      "unapplied draft refusal and preservation",
+      "open-dock Escape closes without deselection",
+      "closed-dock Escape and background synchronize host and graph",
+      "showcase selection/dismissal callback parity"
+    ],
+    "measuredViewports": [
+      "800x600",
+      "640x480 with default Chat visible"
+    ],
+    "limits": "Focused observations; not general accessibility, all zoom levels, broad agent reliability or other OR findings"
+  },
+  "preservation": {
+    "ownerServerActions": "No owner server or tab restarted/modified",
+    "continuation": "No listeners at 5596/5597/5599; restarted only agent-owned exact-production preview at 5599; disposable saved screen reloaded",
+    "model": "New UI preview has no configured model; no model call; original provider configuration not changed",
+    "canonical": "No source identity/component ABI/effect/data/history-authority change"
+  },
+  "retainedFailures": [
+    "invalid unwrapped expression test fixture caught by TypeScript and corrected to canonical expression wrapper",
+    "optional ELK dev web-worker optimizer/import failed; no workaround committed; production used",
+    "initial build adapter exited 1 without diagnostic while independent composition hit V8 out-of-memory; serial full builds passed",
+    "generic onselectionchange attempt rejected for delayed Find/state/Move selection regressions",
+    "initial SV-01 keyboard mismatch, SV-02 clipped dock, repaired candidate SV-03 Escape mismatch; independently reverified and closed",
+    "prior independent test tool handle unavailable after refresh; no outcome claimed; final rerun 8/8 PASS"
+  ],
+  "files": [
+    {
+      "path": "apps/studio/src/lib/designer/StructureView.svelte",
+      "gitBlob": "f538c05022699c2b8d78ce1c2de7c610046d30f7",
+      "sha256": "f9a7c8f309cec4ba7e74e12673251ba76b1dbf046b2fe6adbc730452eaa04c0a"
+    },
+    {
+      "path": "apps/studio/src/lib/designer/Designer.svelte",
+      "gitBlob": "293d76362f233d01eadd634d4761464b0689ff0b",
+      "sha256": "32e64f234c90a993df9b27a39c9c770ca3c4e9039dadfb1899023cdec3b249a2"
+    },
+    {
+      "path": "apps/studio/src/lib/designer/designer.css",
+      "gitBlob": "fe9bf9f5bc6e772da8804035a829df44a7c7909b",
+      "sha256": "d9ac2ce539657c3ccab31c6dc9be964bbb73c8cce3896678bc08bfcf2ba37ae3"
+    },
+    {
+      "path": "apps/studio/src/lib/designer/structure.ts",
+      "gitBlob": "07cb6fa0e2f5c216859a5f39783ce2182bdc4226",
+      "sha256": "2cc9a5cbd3606d2b8f6a15423a449f900e085058712b3e0b32a4bba008fdaf64"
+    },
+    {
+      "path": "apps/studio/src/lib/designer/StudioShowcase.svelte",
+      "gitBlob": "5620831790a50c2f25bb370342e77ebcda6a2bc2",
+      "sha256": "91b44a0faceea4a4290ebb5e4fff365035b5cb622fc01143c56f52bdddddfb19"
+    },
+    {
+      "path": "packages/ui-flow-svelte/src/SourceNode.svelte",
+      "gitBlob": "fa0377711c1641e6d6f283bc2d704d2536a8dbbc",
+      "sha256": "71e74789bbbce1a98d5466f5d5ac7c1166dc18c681941f442873171a32001b94"
+    },
+    {
+      "path": "apps/studio/tests/ui/structure.test.ts",
+      "gitBlob": "c020384823e2ef5714dbd772b2a54433de243f4e",
+      "sha256": "c5bc535a01061d41e941a34b23940e1fa96e7d2a26d11f2eb79682b284c0f748"
+    },
+    {
+      "path": "apps/studio/tests/structure-presentation.test.ts",
+      "gitBlob": "2434f476e1e10497ea46fe32f3b756eb8f4125b8",
+      "sha256": "f205aa1cb3096ee4c9aae742dbc2158c7835b007b2ea26f1f7af31f56d48fc5c"
+    }
+  ],
+  "screenshots": [
+    {
+      "path": "structure-current-preview.png",
+      "bytes": 27222,
+      "sha256": "bad3c0f50916b861bbe74a7cb7e4cd939023d4651b4ac600a2742ca9397a63d5"
+    },
+    {
+      "path": "structure-inspection.png",
+      "bytes": 65861,
+      "sha256": "af668a4deb030e54479dab0b823a2b19fac0ff25dc76d3bdd77cd85965c825ec"
+    },
+    {
+      "path": "structure-overview.png",
+      "bytes": 51316,
+      "sha256": "57a45ffa7df9b4c53f51013db623b305e5e9ce0d1caa20dde2a1c918c0734d43"
+    }
+  ],
+  "localBuildLogs": [
+    {
+      "name": "build.log",
+      "localPath": "C:/Users/RZ1/AppData/Local/Temp/vict-structure-preferences-preview/build.log",
+      "sha256": "d221a354dabb89201a0f65b327b69f79fe3e8951127c15229bb0ce7779d8e888"
+    },
+    {
+      "name": "build-serial.log",
+      "localPath": "C:/Users/RZ1/AppData/Local/Temp/vict-structure-preferences-preview/build-serial.log",
+      "sha256": "13656362a7ab1ca45bf3601de6827fddfe6b7cd0c8ebbb140737a2f108ef9ac0"
+    },
+    {
+      "name": "build-repair.log",
+      "localPath": "C:/Users/RZ1/AppData/Local/Temp/vict-structure-preferences-preview/build-repair.log",
+      "sha256": "978ddd3950494a83e81523f3b7d98f2010389a2d4a8e4026320baff113d1b806"
+    },
+    {
+      "name": "build-final.log",
+      "localPath": "C:/Users/RZ1/AppData/Local/Temp/vict-structure-preferences-preview/build-final.log",
+      "sha256": "7e99dba2c27a7753ec018536531b48ce06ce26d04ffd43bc11518270af5dd99d"
+    },
+    {
+      "name": "build-showcase-final.log",
+      "localPath": "C:/Users/RZ1/AppData/Local/Temp/vict-structure-preferences-preview/build-showcase-final.log",
+      "sha256": "5b6ef17ab425b7e6ad655458979bfc5845a01e9a6a89bd8c65484b0aa38a83ca"
+    },
+    {
+      "name": "check-final.log",
+      "localPath": "C:/Users/RZ1/AppData/Local/Temp/vict-structure-preferences-preview/check-final.log",
+      "sha256": "3b60fb077fa856d3551b84840f7c025e869ecdb01add9d0e01d3d7cc22953619"
+    },
+    {
+      "name": "svelte-showcase.log",
+      "localPath": "C:/Users/RZ1/AppData/Local/Temp/vict-structure-preferences-preview/svelte-showcase.log",
+      "sha256": "d6642ce4d20db98f0d080e097a0a93e3420a1a9f9f17e39397fa367cc1f6176d"
+    }
+  ]
+}

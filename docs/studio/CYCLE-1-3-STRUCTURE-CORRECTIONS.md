@@ -1,6 +1,6 @@
 # Cycle 1.3 — Structure presentation corrections
 
-2026-10-24. **Owner-authorized implementation; candidate pending.** The owner's instruction “Can you fix those now?” authorizes the eight Structure findings SU-01–SU-08 in the [UI preference review](CYCLE-1-3-AGENT-STRESS-REVIEW.md#structure-review-against-the-owners-current-ui-preferences). The supplied UI preferences are the design standard. This supersedes the report-only restriction for these presentation/interaction findings only. Agent authoring, menu identity, capture reliability, multi-page delivery and other OR findings remain report-only/open.
+2026-10-24. **Owner-authorized Structure corrections independently PASS — READY FOR OWNER REVIEW.** The owner's instruction “Can you fix those now?” authorizes the eight Structure findings SU-01–SU-08 in the [UI preference review](CYCLE-1-3-AGENT-STRESS-REVIEW.md#structure-review-against-the-owners-current-ui-preferences). The supplied UI preferences are the design standard. This supersedes the report-only restriction for these presentation/interaction findings only. Agent authoring, menu identity, capture reliability, multi-page delivery and other OR findings remain report-only/open.
 
 ## Baseline and scope
 
@@ -42,7 +42,30 @@ Second pushed candidate `a8cddea20ca15b3ae05f8140b4c5e65fe258b421` built success
 
 Third candidate `254b9092ac92662239b7b4eaadb5ef9ac8121b95` passed full production build and affected independent browser recheck: graph-focused Escape preserved both selection owners while closing the dock, then deliberately cleared both when the dock was closed. Explicit Find and Frame were additionally challenged on a distant text node in the 56-source-node builder fixture; the settled selected node was visible within the graph viewport. The builder fixture remained saved with unchanged application identity. A final one-line integration repair supplies the same guarded deselection callback to StudioShowcase's embedded Structure view; all corrected controls use the shared component there. Final showcase candidate/build and verdict follow below.
 
-## Owner walkthrough
+## Final verified result — 2026-10-24
+
+Exact final product: `dabbe9027e335bab1a405f4a808711d93623b3c5`, branch `codex/studio-cycle-1-3-completion`; main remains `d7401bef6e48330796c74ec00c86db9622d48cdf`. The [fresh independent verdict](CYCLE-1-3-STRUCTURE-CORRECTIONS-INDEPENDENT.md#final-exact-candidate-verdict) is **PASS — READY FOR OWNER REVIEW** for SU-01–SU-08. SV-01, SV-02 and SV-03 are closed by their recorded repairs and production challenges. Historical pending/failure statements above describe earlier candidates and are retained evidence.
+
+The final production client/server and Node adapter build completed successfully in the isolated preview checkout. Final Studio TypeScript passed independently; Svelte check reports 0 errors and 6 retained warnings in unchanged renderer/editor files. The final affected suite passed independently: 8 tests across presentation and real Structure interaction. Earlier focused canonical/orientation checks and 4 existing composition/chat tests passed as builder evidence. The verifier's earlier full composition transform terminated with V8 out-of-memory and was not independently rerun; it remains NOT DEMONSTRATED by that verifier. No dependency/config workaround or reduced validation was committed.
+
+| Finding | Delivered behavior |
+| --- | --- |
+| SU-01 / workspace | Compact toolbar, deliberate bounded inspection dock, graph fills available space. |
+| SU-02 / command homes | Shared View/Object menus, one primary Fit control, editing handed to existing editors. |
+| SU-03 / selection | Ordinary pointer/keyboard selection preserves camera and filters; explicit Find/Frame reveals distant exact sources. |
+| SU-04 / disclosure | Properties/Relationships/Find pages; close/Escape restore focus; background and closed-dock Escape synchronize graph and host selection. |
+| SU-05 / manipulation | Node-local disclosure and contextual compatible Move; canonical draft/stale/slot guards and Undo retained. |
+| SU-06 / hierarchy | Concise labels and compact literal-text projection, exact source navigation and dynamic bindings retained. |
+| SU-07 / coherence | Stable Design/Interact/Structure controls and shared implementation in the showcase. |
+| SU-08 / bounds | Independently exercised keyboard/focus, 800×600 and 640×480 with Chat visible; bounded dock scrolling. This is not a universal accessibility/zoom certification. |
+
+Canonical source, component ABI/catalog, effects, provider behavior, document identity and transaction/history authority are unchanged. No model run was needed. Other OR-01–OR-14 findings remain open/report-only. Owner acceptance and Stage 9 closure are not claimed. Next allowed action: owner hands-on review of this corrected preview.
+
+Saved [evidence manifest](cycle-1-3/structure-corrections/evidence.json), [overview screenshot](cycle-1-3/structure-corrections/structure-overview.png) and [inspection screenshot](cycle-1-3/structure-corrections/structure-inspection.png) pin the final product and aggregate checks. These screenshots contain only disposable review content.
+
+On continuation, ports 5596/5597/5599 were no longer listening and temporary review tabs had closed. Only the agent-owned final production preview on `127.0.0.5:5599` was relaunched; the old owner services and tabs were not restarted or changed. The saved disposable Structure fixture loaded successfully. The preview is UI-only, with no configured model. Historical preservation statements above mean those owner processes/documents were not modified during this work, not that the old services are currently available.
+
+## Try the corrected UI
 
 Use the isolated [updated Studio UI preview](http://127.0.0.5:5599/design), local sign-in `operator` / `studio-local-pass`. It contains disposable review fixtures; the original `127.0.0.3:5596` server and owner source were not restarted or migrated. This UI-only preview does not configure or call a model; the original configured provider remains unchanged.
 
