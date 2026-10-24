@@ -18,6 +18,41 @@ export type StructureEdgeData = Record<string, unknown> & { kind: 'containment' 
 export type StructureGraph = { nodes: Node<StructureNodeData>[]; edges: Edge<StructureEdgeData>[] };
 export type StructureHandoff = { destination: 'design' | 'layers' | 'inspector' | 'data' | 'actions'; sourceId?: string; occurrence?: string; key?: string };
 
+/** Hide only redundant literal text leaves. Source, ids and binding edges stay exact. */
+export function compactStructure(graph: StructureGraph, document: UiDocument): StructureGraph {
+  const hidden = new Set<string>();
+  for (const node of graph.nodes) {
+    const source = node.data.sourceId ? document.nodes[node.data.sourceId] : undefined;
+    if (source?.kind !== 'text' || source.content.type !== 'literal') continue;
+    const incident = graph.edges.filter(edge => edge.source === node.id || edge.target === node.id);
+    if (incident.length !== 1 || incident[0]?.data?.kind !== 'containment') continue;
+    const owner = graph.nodes.find(entry => entry.id === incident[0]?.source);
+    const parent = owner?.data.sourceId ? document.nodes[owner.data.sourceId] : undefined;
+    if (parent?.kind === 'element' && /^(p|h[1-6])$/.test(parent.tag) && parent.children.length === 1) hidden.add(node.id);
+  }
+  return { nodes: graph.nodes.filter(node => !hidden.has(node.id)), edges: graph.edges.filter(edge => !hidden.has(edge.source) && !hidden.has(edge.target)) };
+}
+
+/** Concise presentation only; the full canonical facts remain in inspection. */
+export function structureNodePresentation(document: UiDocument, data: StructureNodeData): StructureNodeData {
+  const source = data.sourceId ? document.nodes[data.sourceId] : undefined;
+  let label = data.label;
+  let kind = data.kindLabel;
+  let summary = data.summary;
+  if (source?.kind === 'text') summary = undefined;
+  if (source?.kind === 'element') {
+    if (/^h[1-6]$/.test(source.tag)) kind = 'Heading';
+    else if (source.tag === 'p') kind = 'Paragraph';
+    const text = source.children.length === 1 ? document.nodes[source.children[0]!] : undefined;
+    if (/^(p|h[1-6])$/.test(source.tag) && !source.attributes?.['aria-label'] && text?.kind === 'text' && text.content.type === 'literal') label = text.content.value;
+    summary = undefined;
+  }
+  const normalize = (value: string) => value.trim().replace(/\s+/g, ' ');
+  label = normalize(label);
+  if (summary && normalize(summary).toLowerCase() === label.toLowerCase()) summary = undefined;
+  return { ...data, label: label.length > 76 ? `${label.slice(0, 75).trimEnd()}…` : label, kindLabel: kind, summary };
+}
+
 export function structureChildren(node: UiNode): { id: string; label: string }[] {
   if (node.kind === 'element' || node.kind === 'portal') return node.children.map(id => ({ id, label: 'contains' }));
   if (node.kind === 'component') return Object.entries(node.slots ?? {}).flatMap(([slot, fill]) => fill.children.map(id => ({ id, label: `slot: ${slot}` })));

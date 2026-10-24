@@ -1,15 +1,18 @@
 <script lang="ts">
   import { onDestroy, tick, untrack } from 'svelte';
-  import { FlowCanvas, SourceNode, RoutedEdge, FlowNavigation, layoutGraph, LayoutFence, type Node, type Edge, type Connection, type Viewport, type LayoutDirection } from '@victframework/ui-flow-svelte';
+  import { FlowCanvas, SourceNode, RoutedEdge, FlowNavigation, Controls, layoutGraph, LayoutFence, type Node, type Edge, type Connection, type Viewport, type LayoutDirection } from '@victframework/ui-flow-svelte';
   import '@victframework/ui-flow-svelte/styles.css';
   import type { UiDocument, UiExtensionDescriptor } from '@victframework/ui';
   import { type InsertRecipe } from '@victframework/ui-editor';
-  import { projectStructure, filterStructure, structureFacts, structureId, parseStructureId, structureMove, type StructureNodeData, type StructureEditRequest, type StructureHandoff } from './structure.js';
+  import { projectStructure, filterStructure, compactStructure, structureNodePresentation, structureFacts, structureId, parseStructureId, structureMove, type StructureNodeData, type StructureEditRequest, type StructureHandoff } from './structure.js';
+  import { Menubar } from '@victframework/ui-svelte/catalog/menubar';
+  import WorkspaceMenu from './WorkspaceMenu.svelte';
 
-  let { document, revision, selectedNodeId, blocked = false, active = true, descriptors = [], recipes = [], onSelect, onMove, onNotice, onNavigate }: {
+  let { document, revision, selectedNodeId, blocked = false, active = true, descriptors = [], recipes = [], onSelect, onDeselect, onMove, onNotice, onNavigate }: {
     document: UiDocument; revision: string; selectedNodeId?: string; blocked?: boolean; active?: boolean;
     descriptors?: readonly UiExtensionDescriptor[]; recipes?: readonly InsertRecipe[];
     onSelect: (occurrence: string) => void; onMove: (request: StructureEditRequest) => boolean;
+    onDeselect?: () => void;
     onNotice: (message: string) => void; onNavigate?: (request: StructureHandoff) => void;
   } = $props();
   let nodes = $state<Node<StructureNodeData>[]>([]);
@@ -29,20 +32,28 @@
   let navigationIds = $state<string[]>([]);
   let moveSource = $state('');
   let moveTarget = $state('');
+  let activeMenu = $state('');
+  let inspectionOpen = $state(false);
+  let inspectionPage = $state<'properties' | 'relationships' | 'find' | 'move'>('properties');
+  let showTextNodes = $state(false);
+  let inspectionButton: HTMLButtonElement;
   const graph = $derived(projectStructure(document));
+  const compactGraph = $derived(compactStructure(graph, document));
+  const groupGraph = $derived(showTextNodes || search ? graph : compactGraph);
   const inspected = $derived(graph.nodes.find(node => node.id === inspectedId));
   const related = $derived(graph.edges.filter(edge => (edge.source === inspectedId || edge.target === inspectedId) && edge.data?.kind !== 'containment'));
   const facts = $derived(inspected ? structureFacts(document, inspected) : []);
-  const projected = $derived(filterStructure(graph, { search, focusId: focusedId, collapsed, bindings: showBindings, definitions: showDefinitions }));
+  const filtered = $derived(filterStructure(graph, { search, focusId: focusedId, collapsed, bindings: showBindings, definitions: showDefinitions }));
+  const projected = $derived(showTextNodes || search ? filtered : compactStructure(filtered, document));
   const nodeTypes = { source: SourceNode };
   const edgeTypes = { routed: RoutedEdge };
   const fence = new LayoutFence();
   let connectionStart: { documentId: string; revision: string } | undefined;
   let layoutDocument = '';
-  const presentations = new Map<string, { viewport: Viewport; positions: Map<string, { x: number; y: number }>; collapsed: Set<string>; inspectedId?: string; direction: LayoutDirection; search: string; focusedId?: string; bindings: boolean; definitions: boolean }>();
+  const presentations = new Map<string, { viewport: Viewport; positions: Map<string, { x: number; y: number }>; collapsed: Set<string>; inspectedId?: string; direction: LayoutDirection; search: string; focusedId?: string; bindings: boolean; definitions: boolean; text: boolean; inspection: boolean; page: typeof inspectionPage }>();
   function remember() {
     if (!layoutDocument) return;
-    presentations.set(layoutDocument, { viewport: { ...viewport }, positions: new Map(nodes.map(node => [node.id, { ...node.position }])), collapsed: new Set(collapsed), inspectedId, direction, search, focusedId, bindings: showBindings, definitions: showDefinitions });
+    presentations.set(layoutDocument, { viewport: { ...viewport }, positions: new Map(nodes.map(node => [node.id, { ...node.position }])), collapsed: new Set(collapsed), inspectedId, direction, search, focusedId, bindings: showBindings, definitions: showDefinitions, text: showTextNodes, inspection: inspectionOpen, page: inspectionPage === 'move' ? 'properties' : inspectionPage });
   }
   $effect(() => {
     const id = document.id;
@@ -55,6 +66,7 @@
     inspectedId = saved?.inspectedId ?? (selectedNodeId ? structureId(id, 'node', selectedNodeId) : structureId(id, 'node', document.root));
     direction = saved?.direction ?? 'RIGHT'; search = saved?.search ?? ''; focusedId = saved?.focusedId;
     showBindings = saved?.bindings ?? false; showDefinitions = saved?.definitions ?? false; allowMoves = false;
+    showTextNodes = saved?.text ?? false; inspectionOpen = saved?.inspection ?? false; inspectionPage = saved?.page ?? 'properties';
   });
   $effect(() => {
     if (!selectedNodeId) return;
@@ -82,7 +94,8 @@
       const source = node.data.sourceId && document.nodes[node.data.sourceId];
       const target = !!node.data.occurrence && !!source && ((source.kind === 'element' && ['main', 'section', 'div', 'article', 'aside', 'header', 'footer', 'nav', 'form', 'fieldset', 'ul', 'ol', 'li'].includes(source.tag)) || (source.kind === 'component' && (descriptors.find(entry => entry.id === source.definitionId)?.slots?.length ?? 0) === 1));
       return { ...node, position: old?.position ?? remembered?.get(node.id) ?? node.position, measured: old?.measured, selected: node.id === inspectedId,
-        data: { ...node.data, direction: orientation, moveSource: editable && !!node.data.occurrence && node.data.sourceId !== document.root, moveTarget: editable && target } };
+        data: { ...structureNodePresentation(document, node.data), direction: orientation, moveSource: editable && !!node.data.occurrence && node.data.sourceId !== document.root, moveTarget: editable && target,
+          collapsed: collapsed.has(node.id), onToggleGroup: groupGraph.edges.some(edge => edge.source === node.id && edge.data?.kind === 'containment') ? () => collapse(node.id) : undefined } };
     });
     edges = currentGraph.edges;
   });
@@ -99,24 +112,52 @@
       const positions = new Map(result.nodes.map(node => [node.id, node.position]));
       nodes = nodes.map(node => ({ ...node, position: positions.get(node.id) ?? node.position }));
       edges = result.edges;
-      layoutStatus = `${nodes.length} visible items · ${result.engine === 'elk' ? 'routed ELK layout' : 'Dagre hierarchy'}${result.reason ? ' · focus or collapse for routed layout' : ''}`;
+      layoutStatus = '';
     }).catch(() => { if (fence.current(ticket)) layoutStatus = 'Layout unavailable. Existing positions retained; retry Arrange.'; });
     return () => fence.cancel();
   });
   onDestroy(() => { remember(); fence.cancel(); });
   function locate(ids: string[] = []) { navigationIds = ids; navigationRequest = {}; }
-  async function select(node: Node<StructureNodeData>) {
+  function select(node: Node<StructureNodeData>) {
     if (blocked) { onNotice('Apply or cancel your draft before changing selection.'); return; }
     inspectedId = node.id;
-    if (node.data.kind !== 'node') { search = ''; focusedId = node.id; showBindings = true; showDefinitions = true; }
     if (node.data.occurrence) onSelect(node.data.occurrence);
-    onNotice(`${node.data.label} selected · ${node.data.occurrence ? 'shared screen selection' : 'declared source reference'}.`);
-    await tick(); locate([node.id]);
+  }
+  async function reveal(node: Node<StructureNodeData>) {
+    if (blocked) { onNotice('Apply or cancel your draft before changing selection.'); return; }
+    search = ''; focusedId = node.id;
+    if (node.data.kind !== 'node') { showBindings = true; showDefinitions = true; }
+    else if (document.nodes[node.data.sourceId ?? '']?.kind === 'text') showTextNodes = true;
+    select(node); await tick(); locate([node.id]);
+  }
+  function closeInspection(restoreFocus = true) {
+    inspectionOpen = false; allowMoves = false; moveSource = ''; moveTarget = '';
+    if (restoreFocus) inspectionButton?.focus({ preventScroll: true });
+  }
+  function openInspection(page: typeof inspectionPage = 'properties') {
+    allowMoves = page === 'move'; inspectionPage = page; inspectionOpen = true;
+  }
+  function deselect() {
+    closeInspection(false);
+    if (blocked) return;
+    inspectedId = undefined; onDeselect?.();
+  }
+  function beginMove() {
+    moveSource = inspected?.data.occurrence && inspected.data.sourceId !== document.root ? inspected.id : '';
+    moveTarget = ''; openInspection('move');
+  }
+  function commitMove(request: StructureEditRequest) {
+    if (onMove(request)) { allowMoves = false; inspectionPage = 'properties'; moveSource = ''; moveTarget = ''; }
+  }
+  function escape(event: KeyboardEvent) {
+    if (!active || event.defaultPrevented || event.key !== 'Escape' || activeMenu) return;
+    if (inspectionOpen) { event.preventDefault(); closeInspection(); }
+    else if (focusedId || search) { search = ''; focusedId = undefined; }
   }
   function connect(connection: Connection) {
     const start = connectionStart; connectionStart = undefined;
     if (!allowMoves || !start) return;
-    onMove({ ...start, source: connection.source, target: connection.target });
+    commitMove({ ...start, source: connection.source, target: connection.target });
   }
   function valid(connection: Connection | Edge): boolean {
     return allowMoves && !blocked && structureMove(document, revision, { documentId: document.id, revision, source: connection.source, target: connection.target }, false, descriptors, recipes).ok;
@@ -126,79 +167,151 @@
     if (!inspected || blocked) return;
     onNavigate?.({ destination, sourceId: inspected.data.sourceId, occurrence: inspected.data.occurrence, key: parseStructureId(inspected.id)?.[2] });
   }
-  const targetOptions = $derived(nodes.filter(node => node.data.moveTarget && (!moveSource || valid({ source: moveSource, target: node.id, sourceHandle: 'content', targetHandle: 'container' }))));
+  const moveSources = $derived(graph.nodes.filter(node => node.data.occurrence && node.data.sourceId !== document.root));
+  const targetOptions = $derived(graph.nodes.filter(node => !!moveSource && valid({ source: moveSource, target: node.id, sourceHandle: 'content', targetHandle: 'container' })));
 </script>
-
+<svelte:window onkeydown={escape} />
 <section class="structure-view" aria-label="Source structure">
-  <div class="structure-heading"><strong>Structure</strong><span>Declared source relationships · runtime behavior is inspected in Interact</span></div>
   <div class="structure-tools">
-    <input type="search" aria-label="Search structure" placeholder="Find a name or source ID" bind:value={search} />
-    <button type="button" onclick={() => locate()}>Fit visible</button>
-    <button type="button" disabled={!inspected} onclick={() => { if (inspected) { search = ''; focusedId = inspected.id; locate([inspected.id]); } }}>Focus selection</button>
-    {#if focusedId}<button type="button" onclick={() => { focusedId = undefined; }}>Show screen</button>{/if}
-    <button type="button" onclick={() => { collapsed = new Set(); }}>Expand all</button>
-    <button type="button" onclick={() => layoutVersion++}>Arrange</button>
-    <label>Direction<select aria-label="Structure layout direction" bind:value={direction}><option value="RIGHT">Left to right</option><option value="DOWN">Top to bottom</option></select></label>
+    <input type="search" aria-label="Search structure" placeholder="Search structure" bind:value={search} />
+    <Menubar.Root class="workspace-menus" aria-label="Structure menus" bind:value={activeMenu} loop>
+      <WorkspaceMenu label="View" value="structure-view" {activeMenu}>
+        <Menubar.Item disabled={!inspected} onSelect={() => { if (inspected) void reveal(inspected); }}>Frame selection</Menubar.Item>
+        <Menubar.Item disabled={!focusedId && !search} onSelect={() => { focusedId = undefined; search = ''; }}>Show whole screen</Menubar.Item>
+        <Menubar.Item onSelect={() => openInspection('find')}>Find source item</Menubar.Item>
+        <Menubar.Separator />
+        <Menubar.Item onSelect={() => layoutVersion++}>Arrange nodes</Menubar.Item>
+        <Menubar.Item onSelect={() => { collapsed = new Set(); }}>Expand all groups</Menubar.Item>
+        <Menubar.Group><Menubar.GroupHeading class="menu-caption">Layout</Menubar.GroupHeading>
+          <Menubar.RadioGroup bind:value={direction} aria-label="Structure layout direction">
+            <Menubar.RadioItem value="RIGHT" closeOnSelect>Left to right</Menubar.RadioItem>
+            <Menubar.RadioItem value="DOWN" closeOnSelect>Top to bottom</Menubar.RadioItem>
+          </Menubar.RadioGroup>
+        </Menubar.Group>
+        <Menubar.Separator />
+        <Menubar.Group><Menubar.GroupHeading class="menu-caption">Relationships</Menubar.GroupHeading>
+          <Menubar.CheckboxItem bind:checked={showBindings} closeOnSelect={false}>State and actions<span aria-hidden="true">{showBindings ? '✓' : ''}</span></Menubar.CheckboxItem>
+          <Menubar.CheckboxItem bind:checked={showDefinitions} closeOnSelect={false}>Definitions and templates<span aria-hidden="true">{showDefinitions ? '✓' : ''}</span></Menubar.CheckboxItem>
+          <Menubar.CheckboxItem bind:checked={showTextNodes} closeOnSelect={false}>Show text nodes<span aria-hidden="true">{showTextNodes ? '✓' : ''}</span></Menubar.CheckboxItem>
+        </Menubar.Group>
+      </WorkspaceMenu>
+      {#if inspected}
+        <WorkspaceMenu label="Object" value="structure-object" {activeMenu}>
+          {#if inspected.data.childCount}<Menubar.Item onSelect={() => collapse(inspected.id)}>{collapsed.has(inspected.id) ? 'Expand group' : 'Collapse group'}</Menubar.Item>{/if}
+          {#if inspected.data.occurrence}
+            <Menubar.Item disabled={blocked} onSelect={() => navigate('inspector')}>Edit properties</Menubar.Item>
+            <Menubar.Item disabled={blocked} onSelect={() => navigate('layers')}>Reveal in Layers</Menubar.Item>
+            <Menubar.Item disabled={blocked} onSelect={() => navigate('design')}>Show in Design</Menubar.Item>
+            <Menubar.Separator />
+            <Menubar.Item disabled={blocked || inspected.data.sourceId === document.root} onSelect={beginMove}>Move inside…</Menubar.Item>
+          {/if}
+          {#if inspected.data.kind === 'state'}<Menubar.Item disabled={blocked} onSelect={() => navigate('data')}>Edit in Data</Menubar.Item>{/if}
+          {#if inspected.data.kind === 'action'}<Menubar.Item disabled={blocked} onSelect={() => navigate('actions')}>Open Actions</Menubar.Item>{/if}
+          <Menubar.Item onSelect={() => openInspection('relationships')}>Inspect relationships</Menubar.Item>
+        </WorkspaceMenu>
+      {/if}
+    </Menubar.Root>
+    {#if focusedId}<button class="scope-control" type="button" onclick={() => { focusedId = undefined; search = ''; }}>Show whole screen</button>{/if}
+    <span class="structure-count" aria-live="polite">{nodes.length} items</span>
+    <button type="button" class="inspection-toggle" aria-label="Inspect structure" aria-expanded={inspectionOpen} aria-controls="structure-inspection" bind:this={inspectionButton} onclick={() => { if (inspectionOpen) closeInspection(); else openInspection(inspected ? 'properties' : 'find'); }}>Inspect</button>
   </div>
-  <div class="structure-layers">
-    <label><input type="checkbox" bind:checked={allowMoves} disabled={blocked} /> Move containment</label>
-    <label><input type="checkbox" bind:checked={showBindings} /> State / actions</label>
-    <label><input type="checkbox" bind:checked={showDefinitions} /> Definitions / templates</label>
-    <span role="status">{layoutStatus}</span>
-  </div>
-  {#if allowMoves}
-    <div class="structure-moves"><p>Move content into a compatible container. Purple handles edit containment only; dashed relationships are inspectable. The source history records each accepted move.</p>
-      <label>Content<select aria-label="Content to move" value={moveSource} onchange={event => { moveSource = event.currentTarget.value; moveTarget = ''; }}><option value="">Choose content</option>{#each nodes.filter(node => node.data.moveSource) as node (node.id)}<option value={node.id}>{node.data.label} · {node.data.sourceId}</option>{/each}</select></label>
-      <label>Valid container<select aria-label="Move destination" value={moveTarget} onchange={event => moveTarget = event.currentTarget.value}><option value="">Choose container</option>{#each targetOptions as node (node.id)}<option value={node.id}>{node.data.label} · {node.data.sourceId}</option>{/each}</select></label>
-      <button type="button" disabled={!moveSource || !targetOptions.some(node => node.id === moveTarget)} onclick={() => onMove({ documentId: document.id, revision, source: moveSource, target: moveTarget })}>Move inside</button>
+  <div class="structure-body">
+    <div class="structure-canvas">
+      <FlowCanvas bind:nodes bind:edges bind:viewport {nodeTypes} {edgeTypes} minZoom={.35} maxZoom={2} colorMode="light" showControls={false} showMiniMap={nodes.length > 12}
+        nodesConnectable={allowMoves && !blocked} elementsSelectable={!blocked} deleteKey={null} isValidConnection={valid}
+        onnodeclick={({ node }) => select(node as Node<StructureNodeData>)}
+        onpaneclick={deselect}
+        onnodedragstart={() => fence.cancel()}
+        onconnectstart={() => { connectionStart = { documentId: document.id, revision }; }}
+        onclickconnectstart={() => { connectionStart = { documentId: document.id, revision }; }} onconnect={connect}>
+        <Controls showLock={false} />
+        <FlowNavigation request={navigationRequest} ids={navigationIds} />
+      </FlowCanvas>
+      {#if layoutStatus}<p class="structure-status" role="status">{layoutStatus}</p>{/if}
+      {#if !nodes.length}<div class="structure-empty"><p>No matching items</p><button type="button" onclick={() => { search = ''; focusedId = undefined; }}>Clear search</button></div>{/if}
     </div>
-  {/if}
-  <div class="structure-canvas">
-    <FlowCanvas bind:nodes bind:edges bind:viewport {nodeTypes} {edgeTypes} minZoom={.35} maxZoom={2} colorMode="light" showMiniMap={nodes.length > 12}
-      nodesConnectable={allowMoves && !blocked} elementsSelectable={!blocked} deleteKey={null} isValidConnection={valid}
-      onnodeclick={({ node }) => select(node as Node<StructureNodeData>)}
-      onnodedragstart={() => fence.cancel()}
-      onconnectstart={() => { connectionStart = { documentId: document.id, revision }; }}
-      onclickconnectstart={() => { connectionStart = { documentId: document.id, revision }; }} onconnect={connect}>
-      <FlowNavigation request={navigationRequest} ids={navigationIds} />
-    </FlowCanvas>
-    {#if !nodes.length}<p class="structure-empty">No source matches. Clear the search or change relationship layers.</p>{/if}
-  </div>
-  <div class="structure-details">
-    <label>Inspect<select aria-label="Structure source selection" value={inspectedId ?? ''} onchange={event => { const node = graph.nodes.find(entry => entry.id === event.currentTarget.value); if (node) { if (!nodes.some(entry => entry.id === node.id)) { search = node.data.sourceId ?? node.data.label; focusedId = undefined; } void select(node); } }}><option value="">Select a source item</option>{#each graph.nodes as node (node.id)}<option value={node.id}>{node.data.label} · {node.data.kindLabel ?? node.data.kind} · {node.data.sourceId ?? parseStructureId(node.id)?.[2]}</option>{/each}</select></label>
-    {#if inspected}
-      <div class="structure-selection"><strong>{inspected.data.label}</strong><code>{inspected.data.sourceId ?? parseStructureId(inspected.id)?.[2]}</code><span>{inspected.data.kindLabel ?? inspected.data.kind}{inspected.data.occurrence ? ' · shared selection' : ' · inspect only'}</span>
-        {#if inspected.data.childCount}<button type="button" onclick={() => collapse(inspected.id)}>{collapsed.has(inspected.id) ? 'Expand group' : 'Collapse group'}</button>{/if}
-        {#if inspected.data.occurrence}<button type="button" disabled={blocked} onclick={() => navigate('design')}>Open Design</button><button type="button" disabled={blocked} onclick={() => navigate('layers')}>Reveal in Layers</button><button type="button" disabled={blocked} onclick={() => navigate('inspector')}>Edit properties / bindings</button>{/if}
-        {#if inspected.data.kind === 'state'}<button type="button" disabled={blocked} onclick={() => navigate('data')}>Open Data</button>{/if}
-        {#if inspected.data.kind === 'action'}<button type="button" disabled={blocked} onclick={() => navigate('actions')}>Open Actions</button>{/if}
-      </div>
-      <details><summary>Declared properties and bindings ({facts.length})</summary><div class="structure-facts">{#each facts as fact}<div><code>{fact.path}</code><span>{fact.value}</span></div>{/each}</div></details>
-      <details open={related.length > 0}><summary>Related source ({related.length})</summary><div class="structure-relations">{#each related as edge (edge.id)}{@const other = graph.nodes.find(node => node.id === (edge.source === inspectedId ? edge.target : edge.source))}<button type="button" onclick={() => { if (other) { showBindings = true; showDefinitions = true; search = ''; void select(other); } }}><strong>{edge.label}</strong><code>{edge.data?.path}</code><span>{other?.data.label}</span></button>{/each}</div></details>
+    {#if inspectionOpen}
+      <aside class="structure-details" id="structure-inspection" aria-label="Structure inspection">
+        <div class="inspection-heading"><strong title={inspected?.data.label}>{inspected ? structureNodePresentation(document, inspected.data).label : 'Find source item'}</strong><button type="button" aria-label="Close inspection" onclick={() => closeInspection()}>×</button></div>
+        {#if inspectionPage === 'move'}
+          <div class="structure-moves">
+            <h3>Move inside</h3>
+            <label>Content<select aria-label="Content to move" value={moveSource} onchange={event => { moveSource = event.currentTarget.value; moveTarget = ''; }}><option value="">Choose content</option>{#each moveSources as node (node.id)}<option value={node.id}>{structureNodePresentation(document, node.data).label} · {node.data.sourceId}</option>{/each}</select></label>
+            <label>Container<select aria-label="Move destination" value={moveTarget} onchange={event => moveTarget = event.currentTarget.value}><option value="">Choose container</option>{#each targetOptions as node (node.id)}<option value={node.id}>{structureNodePresentation(document, node.data).label} · {node.data.sourceId}</option>{/each}</select></label>
+            <div class="move-actions"><button type="button" disabled={blocked || !moveSource || !targetOptions.some(node => node.id === moveTarget)} onclick={() => commitMove({ documentId: document.id, revision, source: moveSource, target: moveTarget })}>Move</button><button type="button" onclick={() => { allowMoves = false; inspectionPage = 'properties'; }}>Cancel</button></div>
+            <p class="inspection-hint">Moves content in the document. Undo restores its previous place.</p>
+          </div>
+        {:else}
+          <div class="inspection-pages" aria-label="Inspection view">
+            <button type="button" aria-pressed={inspectionPage === 'properties'} onclick={() => inspectionPage = 'properties'}>Properties</button>
+            <button type="button" aria-pressed={inspectionPage === 'relationships'} onclick={() => inspectionPage = 'relationships'}>Relationships</button>
+            <button type="button" aria-pressed={inspectionPage === 'find'} onclick={() => inspectionPage = 'find'}>Find</button>
+          </div>
+          <div class="inspection-content">
+            {#if inspectionPage === 'find'}
+              <label class="source-finder">Source item<select aria-label="Structure source selection" value={inspectedId ?? ''} onchange={event => { const node = graph.nodes.find(entry => entry.id === event.currentTarget.value); if (node) void reveal(node); }}><option value="">Select an item</option>{#each graph.nodes as node (node.id)}<option value={node.id}>{structureNodePresentation(document, node.data).label} · {node.data.sourceId ?? parseStructureId(node.id)?.[2]}</option>{/each}</select></label>
+              <p class="inspection-hint">Includes hidden items and source references.</p>
+            {:else if !inspected}
+              <p class="inspection-hint">Select an item on the graph, or use Find.</p>
+            {:else if inspectionPage === 'properties'}
+              <div class="inspection-identity"><span>{inspected.data.kindLabel ?? inspected.data.kind}</span><code>{inspected.data.sourceId ?? parseStructureId(inspected.id)?.[2]}</code></div>
+              {#if inspected.data.occurrence}<button class="edit-handoff" type="button" disabled={blocked} onclick={() => navigate('inspector')}>Edit properties</button>{/if}
+              {#if inspected.data.kind === 'state'}<button class="edit-handoff" type="button" disabled={blocked} onclick={() => navigate('data')}>Edit in Data</button>{/if}
+              {#if inspected.data.kind === 'action'}<button class="edit-handoff" type="button" disabled={blocked} onclick={() => navigate('actions')}>Open Actions</button>{/if}
+              <div class="structure-facts">{#each facts as fact}<div><code>{fact.path}</code><span>{fact.value}</span></div>{/each}</div>
+            {:else}
+              <div class="structure-relations">{#each related as edge (edge.id)}{@const other = graph.nodes.find(node => node.id === (edge.source === inspectedId ? edge.target : edge.source))}<button type="button" disabled={blocked} onclick={() => { if (other) select(other); }}><strong>{other ? structureNodePresentation(document, other.data).label : 'Source item'}</strong><span>{edge.label}</span><code>{edge.data?.path}</code></button>{/each}</div>
+              {#if !related.length}<p class="inspection-hint">No declared relationships.</p>{:else}<button type="button" onclick={() => { if (inspected) void reveal(inspected); }}>Show on graph</button>{/if}
+            {/if}
+          </div>
+        {/if}
+      </aside>
     {/if}
   </div>
 </section>
 
 <style>
-  .structure-view { display: flex; flex-direction: column; flex: 1; min-height: 560px; height: 100%; min-width: 0; color: #172033; background: #f8fafc; font-size: 12px; }
-  .structure-heading { padding: 12px 14px 4px; display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
-  .structure-heading strong { font-size: 14px; } .structure-heading span, .structure-layers>span { color: #64748b; }
-  .structure-tools, .structure-layers, .structure-moves { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 8px 14px; }
-  .structure-layers { border-bottom: 1px solid #dbe3ed; } .structure-layers>span { margin-left: auto; }
-  button, select, input[type=search] { box-sizing: border-box; max-width: 100%; background: #fff; color: #172033; border: 1px solid #cbd5e1; border-radius: 6px; padding: 6px 8px; font: inherit; }
-  button { cursor: pointer; } button:hover { background: #eef2ff; } button:disabled { opacity: .5; cursor: default; }
+  .structure-view { display: flex; flex-direction: column; flex: 1; min-height: 0; height: 100%; min-width: 0; color: #26334b; background: #f8fafc; font: 12px/1.45 'Segoe UI', system-ui, sans-serif; }
+  .structure-tools { display: flex; align-items: center; gap: 6px; padding: 6px 10px; min-height: 40px; flex-shrink: 0; border-bottom: 1px solid #e1e6ee; }
+  button, select, input[type=search] { box-sizing: border-box; max-width: 100%; border: 1px solid #dce2eb; border-radius: 5px; background: white; color: inherit; padding: 6px 8px; font: inherit; }
+  button { cursor: pointer; } button:hover { background: #edf1ff; } button:disabled { opacity: .5; cursor: default; }
   button:focus-visible, select:focus-visible, input:focus-visible { outline: 2px solid #6366f1; outline-offset: 2px; }
-  input[type=search] { flex: 1; min-width: 170px; } label { display: flex; align-items: center; gap: 5px; }
-  .structure-canvas { position: relative; flex: 1; min-height: 350px; }
+  input[type=search] { flex: 1; min-width: 100px; max-width: 340px; }
+  .structure-count { margin-left: auto; color: #65748d; white-space: nowrap; }
+  .inspection-toggle { background: transparent; border-color: transparent; } .inspection-toggle[aria-expanded=true] { color: #405abd; background: #edf1ff; }
+  .scope-control { border: 0; background: #eef1f7; white-space: nowrap; }
+  .structure-body { display: flex; flex: 1; min-height: 0; overflow: hidden; }
+  .structure-canvas { position: relative; flex: 1; min-width: 0; min-height: 0; }
   .structure-canvas :global(.svelte-flow) { --xy-background-color: #f8fafc; --xy-minimap-background-color: #fff; --xy-controls-button-background-color: #fff; }
-  .structure-canvas :global(.svelte-flow__minimap) { width: 130px; height: 85px; }
+  .structure-canvas :global(.svelte-flow__minimap) { width: 110px; height: 72px; }
   .structure-canvas :global(.svelte-flow__edge.selected path) { stroke: #4f46e5 !important; stroke-width: 2.5px; }
-  .structure-empty { position: absolute; top: 35%; left: 10%; right: 10%; text-align: center; color: #64748b; pointer-events: none; }
-  .structure-details { padding: 10px 14px; border-top: 1px solid #dbe3ed; max-height: 240px; overflow: auto; background: #fff; }
-  .structure-details>label select { flex: 1; min-width: 0; } .structure-selection { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 8px 0; }
-  code { font-size: 11px; overflow-wrap: anywhere; color: #64748b; } summary { cursor: pointer; padding: 6px 0; font-weight: 600; }
-  .structure-facts>div { display: grid; grid-template-columns: minmax(120px, 1fr) 1fr; gap: 10px; padding: 4px 0; border-top: 1px solid #f1f5f9; overflow-wrap: anywhere; }
-  .structure-relations { display: flex; flex-wrap: wrap; gap: 6px; } .structure-relations button { display: flex; flex-direction: column; align-items: start; gap: 3px; max-width: 100%; text-align: left; }
-  .structure-moves { background: #eef2ff; } .structure-moves p { flex-basis: 100%; margin: 0; } .structure-moves select { max-width: 210px; }
-  @media (max-width: 600px) { .structure-heading span { font-size: 11px; } .structure-tools, .structure-layers { padding: 7px 10px; gap: 6px; } .structure-layers>span { flex-basis: 100%; margin: 0; } .structure-details { max-height: 210px; } }
+  .structure-empty { position: absolute; top: 35%; left: 10%; right: 10%; text-align: center; color: #64748b; }
+  .structure-status { position: absolute; top: 8px; left: 10px; right: 10px; margin: 0; color: #65748d; pointer-events: none; font-size: 11px; }
+  .structure-details { display: flex; flex-direction: column; width: min(320px, 44%); min-width: 240px; min-height: 0; flex-shrink: 0; border-left: 1px solid #e1e6ee; background: white; overflow: hidden; }
+  .inspection-heading { display: flex; align-items: center; gap: 8px; padding: 10px 12px 6px; flex-shrink: 0; }
+  .inspection-heading strong { flex: 1; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+  .inspection-heading button { border: 0; padding: 0; width: 28px; height: 28px; background: transparent; font-size: 20px; flex-shrink: 0; }
+  .inspection-pages { display: flex; gap: 3px; padding: 0 10px 8px; border-bottom: 1px solid #e1e6ee; flex-shrink: 0; }
+  .inspection-pages button { flex: 1; border: 0; padding: 5px 4px; color: #65748d; background: transparent; font-size: 11px; }
+  .inspection-pages button[aria-pressed=true] { background: #edf1ff; color: #405abd; }
+  .inspection-content, .structure-moves { padding: 12px; overflow: auto; min-height: 0; }
+  .inspection-identity { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px; margin-bottom: 10px; color: #65748d; }
+  .edit-handoff { margin-bottom: 12px; width: 100%; }
+  code { font-size: 11px; overflow-wrap: anywhere; color: #65748d; }
+  .structure-facts>div { display: grid; grid-template-columns: minmax(70px, 1fr) 1fr; gap: 10px; padding: 7px 0; border-top: 1px solid #eef1f6; overflow-wrap: anywhere; }
+  .structure-relations { display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px; }
+  .structure-relations button { display: flex; flex-direction: column; align-items: start; gap: 3px; text-align: left; overflow-wrap: anywhere; }
+  .structure-relations span, .inspection-hint { color: #65748d; font-size: 11px; }
+  .source-finder, .structure-moves label { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+  select { width: 100%; min-width: 0; }
+  .structure-moves h3 { font-size: 13px; margin: 0 0 14px; }
+  .move-actions { display: flex; gap: 6px; } .move-actions button { flex: 1; }
+  @media (max-width: 640px) {
+    .structure-tools { flex-wrap: wrap; padding: 6px 8px; gap: 4px; }
+    .structure-tools input { max-width: none; }
+    .structure-count { font-size: 11px; }
+    .structure-body { flex-direction: column; }
+    .structure-canvas { min-height: 140px; }
+    .structure-details { width: 100%; min-width: 0; flex-basis: 44%; max-height: 50%; border-left: 0; border-top: 1px solid #e1e6ee; }
+  }
 </style>

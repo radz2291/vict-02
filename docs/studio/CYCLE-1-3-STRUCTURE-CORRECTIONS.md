@@ -24,4 +24,8 @@ Run affected source/projection and real-component regression tests, Studio check
 
 ## Result
 
-Pending implementation and independent verification.
+Implementation candidate prepared: one compact toolbar with shared View/Object menus; explicit inspection dock with Properties/Relationships/Find; node-local group disclosure and contextual keyboard/handle Move; plain node presentation with optional exact text nodes; stable workspace modes and camera-preserving ordinary selection. Presentation transforms preserve the canonical graph/document, dynamic text bindings and source identities. Background dismissal clears selection only when drafts allow; Escape closes inspection and restores focus.
+
+Builder checks so far: Studio TypeScript PASS; Studio Svelte check 0 errors / 6 existing warnings in unchanged renderer/editor files; Flow Svelte check 0 errors / 0 warnings; 15 focused Structure tests and 4 existing composition/chat tests PASS. An initial new test used an invalid unwrapped text expression: TypeScript caught it, and the fixture was corrected to the canonical `expression` wrapper before the final focused run. No production expression contract was changed.
+
+Retained failed observation: the optional Vite dev preview initially failed dependency optimization on ELK's optional `web-worker`; a temporary, untracked config excluding that dependency allowed the UI to load but the dev layout import still reported unavailable. No package/config workaround is included in the candidate. Production-build browser verification is pending in a separate checkout so the running owner build is not overwritten. Exact production evidence and fresh independent verdict remain required before readiness.
