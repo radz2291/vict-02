@@ -1,0 +1,233 @@
+{
+  "date": "2026-10-24",
+  "timezone": "Asia/Kuala_Lumpur",
+  "runningProduct": "dabbe9027e335bab1a405f4a808711d93623b3c5",
+  "entryDelivery": "9ef563a737285a1f3398a29dcfb70425545d2ff9",
+  "branch": "codex/studio-cycle-1-3-completion",
+  "main": "d7401bef6e48330796c74ec00c86db9622d48cdf",
+  "model": "zai/glm-5.3-flash",
+  "turn": "turn-8962ea0a-84f4-46a7-8d82-e42366b98d21",
+  "profile": "v1_44b0efc033a305e436089d492696951ae9fda22054a9ae7ebe524393efff6671",
+  "status": {
+    "engine": "completed",
+    "studio": "STUDIO_AGENT_TOOL_FAILED",
+    "confirmedRevision": "r1#6",
+    "unresolvedTools": [
+      "studio_screen_observe"
+    ],
+    "appliedEdits": 6
+  },
+  "metrics": {
+    "editCommit": 6,
+    "editStarts": 7,
+    "observeStarts": 1,
+    "readStarts": 7,
+    "readSuccess": 6,
+    "totalActivityCards": 48,
+    "totalToolCalls": 15,
+    "toolFailures": 3,
+    "discoveryCallsBeforeFirstEdit": 6,
+    "writeAttemptSuccess": "6/7",
+    "timing": "Unavailable in retained trace; no latency, model-step or token/cost claim",
+    "activityCardCountMeaning": "48 phase cards represent 15 calls; do not equate with provider round trips"
+  },
+  "failures": [
+    {
+      "phase": "read",
+      "code": "STUDIO_AGENT_COMPONENT_NOT_FOUND",
+      "message": "Use recipe from palette. Native input uses wireInput; text uses text.",
+      "recovered": true,
+      "limit": "The exact failed recipe argument is not retained in the displayed refusal."
+    },
+    {
+      "phase": "edit-preparation",
+      "code": "STUDIO_AGENT_VALIDATION",
+      "operation": 2,
+      "message": "Insert index 2 out of range; three subsequent setStyleDeclaration target does not exist issues.",
+      "recovered": true,
+      "limit": "Full rejected arguments unavailable; does not prove nesting is unsupported."
+    },
+    {
+      "phase": "capture-before-model",
+      "code": "STUDIO_CAPTURE_NOT_VISIBLE",
+      "message": "The browser could not provide a current rendered image. No visual observation was made.",
+      "recovered": false,
+      "limit": "No capture-time frame/viewport geometry, mode or DOM-attachment record; exact visibility branch unproven."
+    }
+  ],
+  "source": {
+    "documentId": "screen-7d9d5400-6856-421e-967e-28b6501b2bf6",
+    "revision": "r1",
+    "nodeCount": 42,
+    "compactCharacters": 16919,
+    "stateCount": 12,
+    "inputs": [
+      {
+        "id": "name-input",
+        "interactions": [
+          {
+            "action": "setState",
+            "key": "buyerName",
+            "on": "change",
+            "value": {
+              "path": "state.buyerName",
+              "type": "ref"
+            }
+          }
+        ],
+        "labelTargetMatches": true,
+        "value": {
+          "path": "state.buyerName",
+          "type": "ref"
+        }
+      },
+      {
+        "id": "email-input",
+        "interactions": [
+          {
+            "action": "setState",
+            "key": "buyerEmail",
+            "on": "change",
+            "value": {
+              "path": "state.buyerEmail",
+              "type": "ref"
+            }
+          }
+        ],
+        "labelTargetMatches": true,
+        "value": {
+          "path": "state.buyerEmail",
+          "type": "ref"
+        }
+      },
+      {
+        "id": "msg-input",
+        "interactions": [
+          {
+            "action": "setState",
+            "key": "buyerMessage",
+            "on": "change",
+            "value": {
+              "path": "state.buyerMessage",
+              "type": "ref"
+            }
+          }
+        ],
+        "labelTargetMatches": true,
+        "value": {
+          "path": "state.buyerMessage",
+          "type": "ref"
+        }
+      }
+    ],
+    "buttons": [
+      {
+        "definitionId": "vict.catalog.button",
+        "id": "hero-cta",
+        "outputBindings": null
+      },
+      {
+        "definitionId": "vict.catalog.button",
+        "id": "send-btn",
+        "outputBindings": null
+      }
+    ],
+    "unreferencedStateKeys": [
+      "message",
+      "accepted",
+      "dialogOpen",
+      "actionError",
+      "actionResult",
+      "input_name-input",
+      "input_email-input",
+      "input_msg-input"
+    ]
+  },
+  "postRunGeometry": {
+    "viewport": {
+      "width": 810,
+      "height": 668
+    },
+    "canvasScroll": {
+      "x": 320,
+      "y": 82,
+      "width": 489.6000061035156,
+      "height": 532.7000122070312,
+      "scrollLeft": 0,
+      "scrollTop": 0
+    },
+    "designFrame": {
+      "x": 338,
+      "y": 98,
+      "width": 438.3999938964844,
+      "height": 1978.4000244140625
+    },
+    "meaning": "Positive frame/viewport intersection at review time only, not capture-time proof."
+  },
+  "coverage": {
+    "catalogDefinitionsPresent": 3,
+    "catalogDefinitionsAvailable": 78,
+    "agentDeclaredRecipes": 8,
+    "missingFromAgentManifest": 0,
+    "evidence": "Source presence only; user requested a landing page rather than a specific eight-recipe test."
+  },
+  "availableConsole": {
+    "warnings": 0,
+    "errors": 0,
+    "limit": 100,
+    "meaning": "Only currently retained browser log buffer; not complete historical server/provider diagnostics."
+  },
+  "preservation": {
+    "startIdentity": "v1_71520db9dc5d…",
+    "endIdentity": "v1_71520db9dc5d…",
+    "mode": "Design",
+    "sourceEdits": 0,
+    "providerRequestsByReviewer": 0,
+    "serverRestarts": 0,
+    "saveOrUndo": 0,
+    "panels": "Trace cards collapsed, Chat details closed, Document restored to Layers and closed."
+  },
+  "exclusions": "Full user source, transcript, generated example content and credentials are not stored in this evidence.",
+  "sourcePins": [
+    {
+      "path": "packages/ui-ai-svelte/src/capture.ts",
+      "gitBlob": "c1b28002c138c6507489d16fdc7e7d33d633f99d",
+      "sha256": "017328e2649278b20643a7a6f7b91224c8fc122abfcd329d49a5ef8fdbd5ff20"
+    },
+    {
+      "path": "apps/studio/src/lib/designer/visual-observation.ts",
+      "gitBlob": "de1f3aaed8e9b521a4eb01fb45f8ae2e8894c9d6",
+      "sha256": "f2b92921cc826ddd827359e176fd81929295ab13c9083da91808a3112eba0c23"
+    },
+    {
+      "path": "apps/studio/src/lib/server/designer-visual.ts",
+      "gitBlob": "9fe4ee57dc75f629e61f7b716ce835f2387f347e",
+      "sha256": "b41f94d7bc7f2b152214b11af54952c0efe721fa7ed1fd3afcce9f98e3b1d5be"
+    },
+    {
+      "path": "apps/studio/src/lib/designer/agent-reads.ts",
+      "gitBlob": "920387a78f0fc17f66d22636cb42cec6a7fb74c6",
+      "sha256": "1761a446685ac875a7d0f39bc73a50c8a3effc61dd9dfd0a0513199632af5269"
+    },
+    {
+      "path": "apps/studio/src/lib/designer/agent-edits.ts",
+      "gitBlob": "470b70adf2b6e45b335bbeb19951ce8135d78a80",
+      "sha256": "b268f1e6ab022dadec69aa3e0c3cd5814b5644c4e78997b502da569c0eca75c3"
+    },
+    {
+      "path": "apps/studio/src/lib/server/designer-agent.ts",
+      "gitBlob": "d2314158b9e01d5c7e4b37c805103ed15a85f0f4",
+      "sha256": "a7392c9f28e73be500718c546631b5c5284066bb6de51290e66e43586d344205"
+    },
+    {
+      "path": "apps/studio/src/lib/designer/AgentChat.svelte",
+      "gitBlob": "728507b806915d7013d8b5ced282d857bcb5d421",
+      "sha256": "d222d54f18020dbb8a292aa94b3f9f226b8da480f360faaafe6f554c55e0d6a9"
+    },
+    {
+      "path": "packages/ui-svelte/src/document/RenderNode.svelte",
+      "gitBlob": "ddfe93b80f19e371a2c940cd31a5061ceb3820d3",
+      "sha256": "e2e14c6469783faf05d50951d9a099c3714e6ba74a905b85d01bf23d597c46c9"
+    }
+  ]
+}
