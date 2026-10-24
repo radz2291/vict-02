@@ -13,7 +13,8 @@ it('routes deterministic image admission refusal to the pending tool as JSON rat
   vi.stubGlobal('fetch', transport);
   await uploadVisualCapture('id', 'nonce', { ok: true, blob: new Blob(['fixture'], { type: 'image/jpeg' }), metadata }, new AbortController().signal);
   expect(transport).toHaveBeenCalledTimes(2);
-  expect(transport.mock.calls[1]![1]).toMatchObject({ headers: { 'content-type': 'application/json', 'x-vict-csrf': 'nonce' }, body: JSON.stringify({ ok: false, code: 'STUDIO_CAPTURE_IMAGE_LIMIT' }) });
+  expect(transport.mock.calls[1]![1]).toMatchObject({ headers: { 'content-type': 'application/json', 'x-vict-csrf': 'nonce' } });
+  expect(JSON.parse(transport.mock.calls[1]![1].body)).toMatchObject({ok:false,code:'STUDIO_CAPTURE_IMAGE_LIMIT',diagnostics:{phase:'upload',reason:'image-admission-refused',expectedRevision:cursor.revision}});
 });
 it('does not retry expired or unauthorized image requests as new observations', async () => {
   const transport = vi.fn().mockResolvedValue(new Response(JSON.stringify({ ok: false, code: 'STUDIO_CAPTURE_UNAVAILABLE' }), { status: 404 }));

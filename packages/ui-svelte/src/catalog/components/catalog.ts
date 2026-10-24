@@ -9,5 +9,7 @@ import { b4CatalogDescriptors } from './b4-descriptors.js';
 import { b4CatalogImplementations } from './b4-implementations.js';
 import { b5CatalogDescriptors } from './b5-descriptors.js';
 import { b5CatalogImplementations } from './b5-implementations.js';
+import { catalogAuthoringRegistrations } from './authoring.js';
+import { withAuthoringRules } from '../../document/authoring-runtime.js';
 export const catalogDescriptors = [...b1CatalogDescriptors, ...b2CatalogDescriptors, ...b3CatalogDescriptors, ...b4CatalogDescriptors, ...b5CatalogDescriptors] as const;
-export const catalogImplementations = [...b1CatalogImplementations, ...b2CatalogImplementations, ...b3CatalogImplementations, ...b4CatalogImplementations, ...b5CatalogImplementations] as const;
+export const catalogImplementations = withAuthoringRules([...b1CatalogImplementations, ...b2CatalogImplementations, ...b3CatalogImplementations, ...b4CatalogImplementations, ...b5CatalogImplementations],catalogAuthoringRegistrations);

@@ -85,3 +85,5 @@ export { b4CatalogImplementations } from './catalog/components/b4-implementation
 export { b5CatalogDescriptors } from './catalog/components/b5-descriptors.js';
 export { b5CatalogImplementations } from './catalog/components/b5-implementations.js';
 export { catalogDescriptors, catalogImplementations } from './catalog/components/catalog.js';
+export { catalogAuthoringPackage, catalogAuthoringRegistrations } from './catalog/components/authoring.js';
+export { withAuthoringRules, runtimeAuthoringIssues } from './document/authoring-runtime.js';

@@ -135,6 +135,8 @@ export interface UiSelectOption {
   readonly label: string;
 }
 export * from './composition.js';
+export * from './authoring.js';
+export * from './authoring-semantics.js';
 export * from './feedback.js';
 
 export interface UiFormField {

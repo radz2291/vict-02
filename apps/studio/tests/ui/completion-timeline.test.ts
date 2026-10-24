@@ -88,7 +88,7 @@ it('labels subset coverage as an agent-declared manifest rather than global comp
   await vi.waitFor(()=>expect(document.body.textContent).toContain('Ready'));
   const input=document.querySelector<HTMLTextAreaElement>('textarea')!;input.value='Inventory requested controls';input.dispatchEvent(new Event('input',{bubbles:true}));flushSync();document.querySelector('form')!.dispatchEvent(new Event('submit',{bubbles:true,cancelable:true}));
   await vi.waitFor(()=>expect(document.body.textContent).toContain('1-item agent-declared manifest'));
-  expect(document.body.textContent).toContain('2/78 catalog definitions present');
+  expect(document.body.textContent).toContain('2/78 registered definitions present');
   expect(document.body.textContent).toContain('does not establish the full requested intent');
 });
 
@@ -105,13 +105,13 @@ it('settles parallel reads only by their matching call identity',async()=>{
   mounted=mount(AgentChat,{target:document.body,props:{screenLabel:'Parallel reads',selectionLabel:'Screen',blocked:false,getContext:()=>({document:source,cursor}),applyProposal:()=>{throw Error('No proposal');}}});
   await vi.waitFor(()=>expect(document.body.textContent).toContain('Ready'));
   const input=document.querySelector<HTMLTextAreaElement>('textarea')!;input.value='Inspect two pages';input.dispatchEvent(new Event('input',{bubbles:true}));flushSync();document.querySelector('form')!.dispatchEvent(new Event('submit',{bubbles:true,cancelable:true}));
-  await vi.waitFor(()=>expect(document.querySelector('[data-event-id="unassociated"]')).not.toBeNull());
-  expect(document.querySelector('[data-event-id="read-a"]')?.textContent).toContain('running');
-  expect(document.querySelector('[data-event-id="read-b"]')?.textContent).toContain('running');
+  await vi.waitFor(()=>expect(document.querySelector('[data-event-id="attempt-studio_screen_read:unassociated"]')).not.toBeNull());
+  expect(document.querySelector('[data-event-id="attempt-studio_screen_read:a"]')?.textContent).toContain('running');
+  expect(document.querySelector('[data-event-id="attempt-studio_screen_read:b"]')?.textContent).toContain('running');
   emit([{type:'tool-event',id:'failed-a',kind:'tool-failed',tool:'studio_screen_read',callId:'a',summary:'Read A failed'}]);
-  await vi.waitFor(()=>expect(document.querySelector('[data-event-id="read-a"]')?.textContent).toContain('failed'));
-  expect(document.querySelector('[data-event-id="read-b"]')?.textContent).toContain('running');
+  await vi.waitFor(()=>expect(document.querySelector('[data-event-id="attempt-studio_screen_read:a"]')?.textContent).toContain('failed'));
+  expect(document.querySelector('[data-event-id="attempt-studio_screen_read:b"]')?.textContent).toContain('running');
   emit([{type:'tool-event',id:'observed-b',kind:'observation',tool:'studio_screen_read',callId:'b',summary:'Read B observed'},{type:'done',status:'failed',code:'READ_REFUSED',applied:0}]);controller.close();
-  await vi.waitFor(()=>expect(document.querySelector('[data-event-id="read-b"]')?.textContent).toContain('completed'));
-  expect(document.querySelector('[data-event-id="read-a"]')?.textContent).toContain('failed');
+  await vi.waitFor(()=>expect(document.querySelector('[data-event-id="attempt-studio_screen_read:b"]')?.textContent).toContain('completed'));
+  expect(document.querySelector('[data-event-id="attempt-studio_screen_read:a"]')?.textContent).toContain('failed');
 });

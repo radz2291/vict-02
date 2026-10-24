@@ -4,6 +4,8 @@
   import { FlowCanvas, addEdge, type Node, type Edge, type Connection } from '@victframework/ui-flow-svelte';
   import StudioShowcase from '$lib/designer/StudioShowcase.svelte';
   import CompletionShowcase from '$lib/designer/CompletionShowcase.svelte';
+  import CoreAuthoringShowcase from '$lib/designer/CoreAuthoringShowcase.svelte';
+  import { screenRecipes } from '$lib/designer/recipes.js';
   import '@victframework/ui-ai-svelte/styles.css';
   import '@victframework/ui-flow-svelte/styles.css';
   let mounted = $state(false);
@@ -21,20 +23,21 @@
   onMount(() => { mounted = true; });
 </script>
 
-<svelte:head><title>Cycle 1.3 — complete UI showcase</title><meta name="description" content="Interactive AI patterns, shared UI building blocks, reusable node canvas, and all 83 Studio authoring recipes." /></svelte:head>
+<svelte:head><title>Cycle 1.3 — complete UI showcase</title><meta name="description" content="Interactive AI patterns, shared UI building blocks, reusable node canvas, and registered Studio authoring compositions." /></svelte:head>
 <main>
   <header>
     <p class="eyebrow">VICT Studio / Cycle 1.3</p>
     <h1>Complete UI showcase</h1>
     <p>Explore the actual reusable UI and Studio authoring surfaces. Examples use local presentation state and disposable in-memory documents. No provider calls or saved owner screens are used.</p>
-    <nav aria-label="Showcase sections"><a href="#completion">Completion round</a><a href="#ai-patterns">21 AI patterns</a><a href="#building-blocks">Shared building blocks</a><a href="#flow">Node canvas</a><a href="#designer">83 Designer recipes</a><a href="#scope">Scope and limits</a></nav>
+    <nav aria-label="Showcase sections"><a href="#core">Core authoring</a><a href="#completion">Completion round</a><a href="#ai-patterns">21 AI patterns</a><a href="#building-blocks">Shared building blocks</a><a href="#flow">Node canvas</a><a href="#designer">{screenRecipes.length} Designer compositions</a><a href="#scope">Scope and limits</a></nav>
   </header>
+  <section id="core" aria-label="Core authoring additions"><CoreAuthoringShowcase /></section>
   <section id="completion" aria-label="Completion round additions">{#if mounted}<CompletionShowcase />{/if}</section>
   <section id="ai-patterns" aria-label="AI patterns"><h2>All 21 AI Elements patterns</h2>{#if mounted}<PatternShowcase />{:else}<p>Interactive examples load after hydration.</p>{/if}</section>
   <section id="building-blocks" aria-label="Shared building blocks"><h2>Shared AI building blocks</h2>{#if mounted}<PrimitiveShowcase />{/if}</section>
   <section id="flow" aria-label="Reusable node canvas"><h2>Reusable node canvas</h2><p role="status">{flowNotice}</p><div class="flow">{#if mounted}<FlowCanvas bind:nodes bind:edges onconnect={connect} fitView aria-label="Showcase reusable node canvas" />{/if}</div></section>
   <section id="designer"><StudioShowcase /></section>
-  <section id="scope"><h2>Scope and limits</h2><p>The gallery includes the 21 AI patterns, 19 shared AI component families and their composition parts, the public Flow canvas, all 83 registered Designer recipes, Inspector, selection palette, Composer, Layers, composition navigation, typed data editors, and Studio source Structure view.</p><p>Provider execution, authentication, persistent screen storage, and application deployment are host services rather than gallery effects. Context-owned parts appear in valid ancestor compositions. The existing catalog omits unsupported RadioGroup and AppShell recipes; this showcase does not invent them. Save/reopen applies only to the currently selected in-memory demo. AI decision callbacks demonstrate presentation and do not grant execution authority.</p><p><a href="/design">Open the full Studio Designer</a> to review its existing workspace chrome and AgentChat integration in the authenticated host. That separate workspace uses its ordinary saved-screen storage.</p></section>
+  <section id="scope"><h2>Scope and limits</h2><p>The gallery includes the 21 AI patterns, 19 shared AI component families and their composition parts, the public Flow canvas, all {screenRecipes.length} registered Designer compositions, Inspector, selection palette, Composer, Layers, composition navigation, typed data editors, and Studio source Structure view. The Designer choices include actual authored AI/chat and read-only Flow compositions with their child parts.</p><p>Provider execution, authentication, persistent screen storage, and application deployment are host services rather than gallery effects. Context-owned parts appear in valid ancestor compositions. RadioGroup and AppShell remain host-required registrations rather than usable screen-local recipes. Save/reopen applies only to the selected in-memory demo. AI decisions and send/stop outputs demonstrate presentation and do not grant execution authority.</p><p><a href="/design">Open the full Studio Designer</a> to review its existing workspace chrome and AgentChat integration in the authenticated host. That separate workspace uses its ordinary saved-screen storage.</p></section>
 </main>
 
 <style>

@@ -13,6 +13,8 @@ export interface ConversationActivity {
   title: string;
   state: 'pending' | 'running' | 'completed' | 'failed' | 'cancelled';
   detail?: string;
+  /** Ordered public receipts for one actual tool attempt. No private reasoning. */
+  stages?: readonly { id: string; title: string; state: ConversationActivity['state']; detail?: string }[];
 }
 export type ConversationEvent =
   | { id: string; kind: 'text' | 'summary'; text: string }

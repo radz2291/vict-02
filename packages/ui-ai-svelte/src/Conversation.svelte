@@ -110,7 +110,15 @@
                                   <Trace.Icon>{#if event.activity.state === 'running'}<LoaderCircleIcon class="animate-spin"/>{:else if event.activity.state === 'completed'}<CircleCheckIcon/>{:else if event.activity.state === 'failed'}<CircleXIcon/>{:else}<CircleDashedIcon/>{/if}</Trace.Icon>
                                   <Trace.Title>{event.activity.title}</Trace.Title><span class="vict-ai-sr">{event.activity.state}</span>
                                 </Trace.Line></Trace.CollapsibleTrigger>
-                                <Trace.CollapsibleContent><pre class="vict-ai-event-detail">{event.activity.detail ?? event.activity.title}</pre></Trace.CollapsibleContent>
+                                <Trace.CollapsibleContent>
+                                  {#if event.activity.stages?.length}
+                                    <ol class="vict-ai-attempt-stages" aria-label="Attempt receipts">
+                                      {#each event.activity.stages as stage (stage.id)}
+                                        <li><span>{stage.title} · {stage.state}</span>{#if stage.detail}<pre class="vict-ai-event-detail">{stage.detail}</pre>{/if}</li>
+                                      {/each}
+                                    </ol>
+                                  {:else}<pre class="vict-ai-event-detail">{event.activity.detail ?? event.activity.title}</pre>{/if}
+                                </Trace.CollapsibleContent>
                               </Trace.Collapsible></Trace.Root>
                             {:else}
                               <p class="vict-ai-event-summary">{event.text}</p>
@@ -176,6 +184,7 @@
   .vict-ai-timeline{display:flex;flex-direction:column;gap:10px;min-width:0;width:100%}
   .vict-ai-event-summary{font-size:12px;color:var(--muted-foreground,#64748b);margin:0;overflow-wrap:anywhere}
   .vict-ai-event-detail{white-space:pre-wrap;font:12px/1.5 system-ui,sans-serif;overflow-wrap:anywhere;margin:0;max-height:240px;overflow:auto}
+  .vict-ai-attempt-stages{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:10px;max-height:320px;overflow:auto;font-size:12px}
   .vict-ai-markdown :global(pre){max-width:100%;overflow:auto}
   .vict-ai-empty{color:var(--muted-foreground,#64748b);margin:auto;text-align:center;padding:20px}
   .vict-ai-error{color:var(--destructive,#b42318);font-size:12px;margin:6px 0}

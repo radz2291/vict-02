@@ -1,0 +1,482 @@
+[
+  {
+    "id": "vict.catalog.button",
+    "revision": "1",
+    "descriptorDigest": "89aa541178fbf7fddd7f2347372eba8404e56e69cf6b7a4f8f98d2c126a1ac80",
+    "capabilitiesDigest": "2d9bfe48ef4e144e18cd1ef5068837e8f53b66d0f44ad10117a589e0ec382113"
+  },
+  {
+    "id": "vict.catalog.checkbox",
+    "revision": "1",
+    "descriptorDigest": "e178a20da741d225c14565e511f125018dd6ab7938d03b4dd39ae04016978fe0",
+    "capabilitiesDigest": "fb4fb267e0c90edac5af1fd9428a5288bd7efc65480cbe234aac0ce0b9774560"
+  },
+  {
+    "id": "vict.catalog.select",
+    "revision": "1",
+    "descriptorDigest": "726a83a94d24a97130efd788a9c89f9a3e92cc11d9a873be8cf995e924132703",
+    "capabilitiesDigest": "82cada5cc8efeea929686f6ab97668fc032b19d18cb6ea6c662238383338fb14"
+  },
+  {
+    "id": "vict.catalog.dialog",
+    "revision": "1",
+    "descriptorDigest": "6067d4406eb61486b082cf7241c487bccfe447c596c4d2fcbe910c5cc656b692",
+    "capabilitiesDigest": "cdf95e9f432227438c33c2b32ad44303787607e2c3ef00df5db9f21447141bd8"
+  },
+  {
+    "id": "vict.catalog.appshell",
+    "revision": "1",
+    "descriptorDigest": "34cbc70182322926da23811a739b58e88bff669b99cbf87a55919c76d2436a57",
+    "capabilitiesDigest": "bb02e55623f0ea62667b6a9a40c46af3fe5eb26514ef8dbf503c19c1647240f0"
+  },
+  {
+    "id": "vict.catalog.switch",
+    "revision": "1",
+    "descriptorDigest": "8fc27900965df060880832ac6ed94558c970e544f06fa6315661670e9174482b",
+    "capabilitiesDigest": "0d7ad9b81e3c6ce25d44a2a843cc9898663216f3d6af85a5bd28386d4e181d58"
+  },
+  {
+    "id": "vict.catalog.toggle",
+    "revision": "1",
+    "descriptorDigest": "b308fb9adcf1e293e7f54ab7266ccc556b58783ca41b0947985b9762f41e0bc6",
+    "capabilitiesDigest": "ef9c34e04f2a3b42c39869b205690dfa194284296b8427113f61a32b1d154f38"
+  },
+  {
+    "id": "vict.catalog.radio-group",
+    "revision": "1",
+    "descriptorDigest": "820e0ff5e245dcf3a08e08b6ae673a1b1a8aaa10c004e86fee2f1b6f07de5784",
+    "capabilitiesDigest": "e8136a03b8437cd780775e1b5531e8cc3f41da21d9091ac969605330209b5e71"
+  },
+  {
+    "id": "vict.catalog.select-multiple",
+    "revision": "1",
+    "descriptorDigest": "ebdd84c5cb9a7244e7246b62ef450d08bb43bfde5b0cf876771208bbe8bf6687",
+    "capabilitiesDigest": "eea0d751690d72664bbce3aac72d751d13200945f76da7e1b9056a07724acb63"
+  },
+  {
+    "id": "vict.catalog.select-item",
+    "revision": "1",
+    "descriptorDigest": "8790fbdc70e0aecdc582ae42a5f9a6a096510280e1906c02aa3d168b943db14b",
+    "capabilitiesDigest": "022d5f5d1cb52cca7b816b93e73cd77d7efe504096bc34030dccea0dcd08df12"
+  },
+  {
+    "id": "vict.catalog.combobox",
+    "revision": "1",
+    "descriptorDigest": "77accf54ce5af5fdd48467c5727b8810a631c57595544e0744d0ff6208a031d1",
+    "capabilitiesDigest": "f4ae0a1c79871a84451754ec3dae8db8bf36b375ed9b51dcc29f8e06beeeb8f5"
+  },
+  {
+    "id": "vict.catalog.combobox-multiple",
+    "revision": "1",
+    "descriptorDigest": "05942cabed1c788fce1500e14db85d5c3c73a74fadeb58041e79b4d4704fb714",
+    "capabilitiesDigest": "aa78bc7b9544219e656ec7463dcb47c026e030cc113b2728b031dc0edad8c0cf"
+  },
+  {
+    "id": "vict.catalog.combobox-item",
+    "revision": "1",
+    "descriptorDigest": "a5927424207e697f7968b1cc6c3501b9211a2f21218edee160078f33e34c0339",
+    "capabilitiesDigest": "14248aff37065338815c0e6795714f6d871d2b6b96f0d7afcd416e794fd00344"
+  },
+  {
+    "id": "vict.catalog.toggle-group",
+    "revision": "1",
+    "descriptorDigest": "ce031121e0c1e58231cdcdf8b10b697d18077d6871beff1687a7bb572f47e5d1",
+    "capabilitiesDigest": "4c4e4cf33a2d474c1e0460105c4d45a8e5d4e40bacfd92e96621b1756cd72e7c"
+  },
+  {
+    "id": "vict.catalog.toggle-group-multiple",
+    "revision": "1",
+    "descriptorDigest": "bd5a549a97afa693fee968e7c6b81e45c0f11277e05a401bc150247106b383c2",
+    "capabilitiesDigest": "79ce8ab96d681333b8d6f54399fd059a94501eba0c10ca18a7c73b54971e90ed"
+  },
+  {
+    "id": "vict.catalog.toggle-group-item",
+    "revision": "1",
+    "descriptorDigest": "c7fd6dbb1af428f232b959f89460cbb7ac4ba06c7a4432e3fea1783d875ac797",
+    "capabilitiesDigest": "77ea470df9006ad64f40c7fd3184a96fed02b25d34ef26a93eaa2850f908cc41"
+  },
+  {
+    "id": "vict.catalog.accordion",
+    "revision": "1",
+    "descriptorDigest": "a1a01302d32cc284dfcbab99559d2afc1f0b54cc48ded60bd29809d4eea1c87e",
+    "capabilitiesDigest": "f04764b2fbfd4ac798881bd400273b8f8353c9dcc2c1c83db0e0bcd11c5e6490"
+  },
+  {
+    "id": "vict.catalog.accordion-multiple",
+    "revision": "1",
+    "descriptorDigest": "5a27f4c26b613e315e4fd96d4bdf3bba7c9b6d52b19d825cc05d779188dba60d",
+    "capabilitiesDigest": "1dd4292c1a0cbcc0a5d6762c1064d8d2bdda8dd7ce0cb733ba2ef0467ae6f0b6"
+  },
+  {
+    "id": "vict.catalog.accordion-item",
+    "revision": "1",
+    "descriptorDigest": "17a61a438255c726b0825d046c84269f56929df6fcaac112255cb59bd11134a2",
+    "capabilitiesDigest": "c56aa3a4befe99b0f55f037b6cedff55ad89a73e49705aa2e8abb24236b92986"
+  },
+  {
+    "id": "vict.catalog.slider",
+    "revision": "1",
+    "descriptorDigest": "9bd3daadbdf1fad7ee300e3058c2d1c2c6cc2fe10f1d9f23c740409af1fa13a3",
+    "capabilitiesDigest": "51e726791a74fa52b74b671c1f40ec0d5b7ff21e6b1a46ba54a9d2857a8be3e0"
+  },
+  {
+    "id": "vict.catalog.meter",
+    "revision": "1",
+    "descriptorDigest": "fda74c75ccf9d887f9baf7951f886a246918e24d5ed15fb350e2ce47bbaec931",
+    "capabilitiesDigest": "efd61641d8d16bf35a3b8d3d67395ef0b3143e5d5a86670677e2cc90affa0623"
+  },
+  {
+    "id": "vict.catalog.progress",
+    "revision": "1",
+    "descriptorDigest": "ecdaea42f6c09dabd1f40b765f121074d0d09d567751030ec59fb5a9424724ae",
+    "capabilitiesDigest": "a4b5747545a9170cb1747e90cb640abaf0a8ad6da6f1e340a0ba1d9be37960fe"
+  },
+  {
+    "id": "vict.catalog.pagination",
+    "revision": "1",
+    "descriptorDigest": "2b4f98c5f1b4e2b40f8ad6ba5c5c9dc2bd278ae93199593b5cee73918f62ff87",
+    "capabilitiesDigest": "10af4544f04dd8a861c7bd186e2f5c3e7bd9cc3e2073943aa47b50d2bed38726"
+  },
+  {
+    "id": "vict.catalog.date-field",
+    "revision": "1",
+    "descriptorDigest": "13f11fc657dbdf68dcc5c49f7dd0a445dea1bcffc0a5d6267c26217898c08980",
+    "capabilitiesDigest": "9b12a9bec9024e6fbac17d30ae4bb9c7d8451eb5430338f22e1e3bc21af56a59"
+  },
+  {
+    "id": "vict.catalog.date-picker",
+    "revision": "1",
+    "descriptorDigest": "d78deaf5755f8cd815cadaee433fcd14e57aa7c5407422dd0aaee9a9bd29dfda",
+    "capabilitiesDigest": "9566b04dbe8c069b31e60fc68d1e3587115a36af097c148951c70e8deca9be25"
+  },
+  {
+    "id": "vict.catalog.calendar",
+    "revision": "1",
+    "descriptorDigest": "a323dd6bbb64b51ba98baa96ce8346a0dbccea77e622aeb2f425559d83e4cd09",
+    "capabilitiesDigest": "f9db6a3dff8c5219eb5e49200d9988c12558d20603f43d3a695ab38beff040e8"
+  },
+  {
+    "id": "vict.catalog.time-field",
+    "revision": "1",
+    "descriptorDigest": "d0eb27a73183abad2c79acc031f1f8257c20f58c91801b6c87286f1da96603ce",
+    "capabilitiesDigest": "d6134104964249a97927cdc3c5beb8a00f6a86164240681fe1eaaa1461f9e93b"
+  },
+  {
+    "id": "vict.catalog.date-range-field",
+    "revision": "1",
+    "descriptorDigest": "806a5b69ee3b77b046765b873f7a481aba712a757e2e3b5a9cbe5555f878e69a",
+    "capabilitiesDigest": "618bb4991273a48635fc9dda7f59c87a04e5a6c2a1a919ea2a47b029957fe12e"
+  },
+  {
+    "id": "vict.catalog.date-range-picker",
+    "revision": "1",
+    "descriptorDigest": "632e0e95365a81b2ea723e4f5743837762e7c8afdfdc48b4943199909cbbb900",
+    "capabilitiesDigest": "887a8b545458e1e2bbe349b817f7acf8f82f7dcd222e190e5e5365a195dae39c"
+  },
+  {
+    "id": "vict.catalog.range-calendar",
+    "revision": "1",
+    "descriptorDigest": "102141cfbf5cec71e63570b3a55e0335e862c0c152626af0d0b652ffec0f7892",
+    "capabilitiesDigest": "b3aaaf433a0978b291083f4f89607af31999cc2da62f112c0537b5b97cd2e453"
+  },
+  {
+    "id": "vict.catalog.dropdown-menu",
+    "revision": "1",
+    "descriptorDigest": "72b26c8617a82cde460918b01fc3bf829785764119816c3be20d32db6dcb3db5",
+    "capabilitiesDigest": "46a86f5cd7027b7a897c117902029c0b9547829d2f141cc3f6dd793853089417"
+  },
+  {
+    "id": "vict.catalog.context-menu",
+    "revision": "1",
+    "descriptorDigest": "2c2ef09734095157e8518f0f63a8b59a1f93a8fdb875b1639ae1a112631bee47",
+    "capabilitiesDigest": "a0d5d364d7b3a713e74dc1171a22fe2d226bafeecbe6f00394a06f333200caa5"
+  },
+  {
+    "id": "vict.catalog.menubar",
+    "revision": "1",
+    "descriptorDigest": "9a286a1553f084e6ffa926eb41101691f0e1394bdf4ede8f5cf4a20b3e53e71f",
+    "capabilitiesDigest": "8c836fb34f50c4ce00ca6c0c10ddbd2354552617c3af62f9cb8ae8d245beb360"
+  },
+  {
+    "id": "vict.catalog.menubar.menu",
+    "revision": "1",
+    "descriptorDigest": "f2029e213f3047df36962cdfd22aae5ef448416c093070b631e59ebf5eb0f9d3",
+    "capabilitiesDigest": "d4aeba8aadb8acb9f9bafecf33dc499c430a6d38a991fe13b090610d19bc495a"
+  },
+  {
+    "id": "vict.catalog.dropdown-menu.item",
+    "revision": "1",
+    "descriptorDigest": "955bffefdaa4b8fed4a03bcaf8859f55ebab9afcd85c7df377e93f33887fb938",
+    "capabilitiesDigest": "24483196aa4adf0c415915a25a3003bc480121dbe75e98fc7d910478402d0627"
+  },
+  {
+    "id": "vict.catalog.dropdown-menu.sub",
+    "revision": "1",
+    "descriptorDigest": "c5b0454a7e1071963bdd332299467f7794cc72f2e43dc7e4c46bc93300ac7231",
+    "capabilitiesDigest": "3b4cfaad45d23d2484d3a422b4411af40b8a2c10395fa2ac604afc505d026aea"
+  },
+  {
+    "id": "vict.catalog.dropdown-menu.checkbox-item",
+    "revision": "1",
+    "descriptorDigest": "cff341699ee41749beeeead43a248812dc8ae1ea65e38ddd7cfb0ccab68a480f",
+    "capabilitiesDigest": "b67b46218209326035c423e98dad7f06218f0dade07634dd450c46e9fc0ce070"
+  },
+  {
+    "id": "vict.catalog.dropdown-menu.checkbox-group",
+    "revision": "1",
+    "descriptorDigest": "84aa49693d8107d7b1fffe04153346a569dd6476a2d523600b9e03594940df19",
+    "capabilitiesDigest": "a4306333f4dc9396c566045565d24bdce9d80f8ed881912d8d9a56e5b0a42fe3"
+  },
+  {
+    "id": "vict.catalog.dropdown-menu.radio-group",
+    "revision": "1",
+    "descriptorDigest": "e0efb6db8ac45f11891e64a425263b1280caa9c6a5bdfde17ee37cade391fac5",
+    "capabilitiesDigest": "3e744b2fceb42daf3a0a72dab9062c43feedbe140e874ffe80e2afff1311695a"
+  },
+  {
+    "id": "vict.catalog.dropdown-menu.radio-item",
+    "revision": "1",
+    "descriptorDigest": "cee6c5fa875c95dc6c943a3ed9709235d24697a27c8bc1ee0d501266f77f2a4f",
+    "capabilitiesDigest": "9fff1105b5dd81f2f21d4d7ee4f7bd33569934e9bd5ed817ea95a041d9fe70b2"
+  },
+  {
+    "id": "vict.catalog.dropdown-menu.group",
+    "revision": "1",
+    "descriptorDigest": "a9e1ff0e7be7ddf74ca7ce9cce6d74bf8d46a29eb85b6adcd2ddfc6377638bb1",
+    "capabilitiesDigest": "5d9ede8c974dbc35d951df7e22b7b0e96a44e4dccfe11e2642c869cbf84d0a18"
+  },
+  {
+    "id": "vict.catalog.dropdown-menu.separator",
+    "revision": "1",
+    "descriptorDigest": "a9a1e3cab7e2f25cbaf8347a0d7a2c1bfb5b6a6cdd22a8dde2b6620b42bc060a",
+    "capabilitiesDigest": "487bb24c77f02a7268efc94c696e7fa2395699f94317e91356cfad92c5e0e3d8"
+  },
+  {
+    "id": "vict.catalog.context-menu.item",
+    "revision": "1",
+    "descriptorDigest": "b3beda4154b897f79fb284a4f031bdc1b643bf6a6cd47d4233b339ec0d98513c",
+    "capabilitiesDigest": "552adf528001bcc373e686e492f522d891866f251f004f69b0bbf82c5b978192"
+  },
+  {
+    "id": "vict.catalog.context-menu.sub",
+    "revision": "1",
+    "descriptorDigest": "aaec44429230ec1ebe1daf0929df0154b181c7e2cce70a8f019c9bb169e13443",
+    "capabilitiesDigest": "eb2990717cf82b83094e1cb8a42ac1bba9139e4675b777cbb705e5fbb2d9a97e"
+  },
+  {
+    "id": "vict.catalog.context-menu.checkbox-item",
+    "revision": "1",
+    "descriptorDigest": "ba8175687a4c452d41454e95e0ff9fc9b4a8805a75a519eac6e45e1ee8590758",
+    "capabilitiesDigest": "ea272e5b9ed6720b4801cd9b9fd30640e35a9bdea42c0416583c483b112ea867"
+  },
+  {
+    "id": "vict.catalog.context-menu.checkbox-group",
+    "revision": "1",
+    "descriptorDigest": "3342a75ff2b42492f0465a70ff0ab79515a553f3af15ec8da1e329c843af46e8",
+    "capabilitiesDigest": "c735c55caa085b06e89a8c91963379c0759f76f573be101376e20dac188dee7b"
+  },
+  {
+    "id": "vict.catalog.context-menu.radio-group",
+    "revision": "1",
+    "descriptorDigest": "c62533445c8f3998a2cbaaa37464e9e189a0d78da2a0b5474a12547a46515fb9",
+    "capabilitiesDigest": "1a55d53bdb68e69bc5c7b0c5a138fde65936936aee4e7602093ca7d3bf4dece4"
+  },
+  {
+    "id": "vict.catalog.context-menu.radio-item",
+    "revision": "1",
+    "descriptorDigest": "e70f842ff9acc2b8392c94170f0c95c8debe57e335ada5b63c0c2f9b03448d69",
+    "capabilitiesDigest": "f6c7133fbb03acc8645562cb8a23983a1f22e0b3be356e7e7ef42a141db61c71"
+  },
+  {
+    "id": "vict.catalog.context-menu.group",
+    "revision": "1",
+    "descriptorDigest": "e8fc41a1afaff227d1b3a57a90a2d5147090b3a5b6862662a3c7b9215bec8d79",
+    "capabilitiesDigest": "8ef3a1e8ef5fd0eb5ec8f582a4b1811d59a308f6af97fc6d41aa1bfee28fe555"
+  },
+  {
+    "id": "vict.catalog.context-menu.separator",
+    "revision": "1",
+    "descriptorDigest": "df9ae5c3444e5b30f97f750e63291febeaf2dd9c727e98774d4ce2a1e6345fe9",
+    "capabilitiesDigest": "1d655de6eb8582f5f082ca212cde1b9262d41d865870990e7a13de073a63bbe6"
+  },
+  {
+    "id": "vict.catalog.menubar.item",
+    "revision": "1",
+    "descriptorDigest": "59f8eeac430be9290b36d2fa8c18697f739cf074a7727650a5419a931ac2b259",
+    "capabilitiesDigest": "49f9f0675e92947d0106315219975ed1ac444303033cdbb74f1664a9844575e0"
+  },
+  {
+    "id": "vict.catalog.menubar.sub",
+    "revision": "1",
+    "descriptorDigest": "d81fa3d9186b2f4b7644e5fca8c5de57d8bd09302b5a63a99fcfad68a4b4820e",
+    "capabilitiesDigest": "86708399535ad64d608a95adcefce117858ab79ea797f327fb3de6234e76fc8f"
+  },
+  {
+    "id": "vict.catalog.menubar.checkbox-item",
+    "revision": "1",
+    "descriptorDigest": "2071d425c90f3a90d2a965567ae847c73bbe9d3e66d7b09778767177b74f66ea",
+    "capabilitiesDigest": "e244ad88007263ff7d39b70ac9bdee8ce4da6eda1eb8120dc0443768c6e5d0dc"
+  },
+  {
+    "id": "vict.catalog.menubar.checkbox-group",
+    "revision": "1",
+    "descriptorDigest": "c9c72e8e6ebb35ba6da8627694fe72920329943ab2f72b532aa2d6e115e5ffd9",
+    "capabilitiesDigest": "e65e8732d43e8def9b2b2358df6d3b2c23011a1bf9c2c3ae3245767f1571775e"
+  },
+  {
+    "id": "vict.catalog.menubar.radio-group",
+    "revision": "1",
+    "descriptorDigest": "a2ab3a27ce01ea12be19f632c17437aa6edb590fc3e20962c279ccf128540397",
+    "capabilitiesDigest": "83ec3084b0ee1cc684622c3c09d5d7969f5501b5d6c9fe8e94ac62c317f58940"
+  },
+  {
+    "id": "vict.catalog.menubar.radio-item",
+    "revision": "1",
+    "descriptorDigest": "eb1de8f94e05d2a3431431118a15090d2ed9ba59fd9c58d6d39d4a1e381db977",
+    "capabilitiesDigest": "53f380e4dd01787cfeacf44804edc008f068ed8b6b4ae0d206bbf98e44df3f6d"
+  },
+  {
+    "id": "vict.catalog.menubar.group",
+    "revision": "1",
+    "descriptorDigest": "1a0d2ed47fbdc8a1fe089efbd0713f909582d13acaf02511bcc7a3cac0fd642b",
+    "capabilitiesDigest": "5e642d56bc5cb998a4422e3315cf0bd2d29bf554cfaa781d12d5d3d932fd90fc"
+  },
+  {
+    "id": "vict.catalog.menubar.separator",
+    "revision": "1",
+    "descriptorDigest": "0d7a67670654856937cf12a87dda82ea3c261ac07e8d2d739ea9cb4ed97e868f",
+    "capabilitiesDigest": "408b50b1ec453db7636e0265bcf3f5985765afdcd5fc80c599d3b24eb3a3491b"
+  },
+  {
+    "id": "vict.catalog.command",
+    "revision": "1",
+    "descriptorDigest": "6253ab1f017ff022aef9ffaea886c79f0c5f9316aea1673a47dbd63c0452df81",
+    "capabilitiesDigest": "7d0706c799c10ea19941053722318bc5c42d5cf18a8b9c4fb88eda9ed1b17651"
+  },
+  {
+    "id": "vict.catalog.command.item",
+    "revision": "1",
+    "descriptorDigest": "4bc14962b7068b39829cdc55eb736ab7d34cce1ad39b36fe26108111268b69be",
+    "capabilitiesDigest": "28dbc313f3443c0d0d2ba653dbae9b8f857aed0177c92ae0c17379471fbf2b76"
+  },
+  {
+    "id": "vict.catalog.command.group",
+    "revision": "1",
+    "descriptorDigest": "b131564a7bdd5cac9f144b284ba5e4e8a9b52716f8b03cf5c3f26fe798f2c965",
+    "capabilitiesDigest": "e3d86bf0cc3d2c89a2e47d6be18f33d720b2a313a5e78f861c8df8f2df592cdc"
+  },
+  {
+    "id": "vict.catalog.navigation-menu",
+    "revision": "1",
+    "descriptorDigest": "ad30764dff1d80516043204059e44662696f3e77fcf45ff2542c93c386452c3c",
+    "capabilitiesDigest": "535bb7c542ad08a6dfb99523b93fcb936d69f44bfd9f628387b56f243ac45107"
+  },
+  {
+    "id": "vict.catalog.navigation-menu.item",
+    "revision": "1",
+    "descriptorDigest": "c7db9acc5867a5458cc8a5b702e277d0d0bd5c44f3691d5f7f78ac0b41caae40",
+    "capabilitiesDigest": "f3bbac52805389b89ed9fe3d670d039bc77a9e02acea7ad0fd6fc2433964de98"
+  },
+  {
+    "id": "vict.catalog.navigation-menu.link",
+    "revision": "1",
+    "descriptorDigest": "29720921e038dc15c462d2a44efc5d44d993b85053a6f14f284a53bfb36adf19",
+    "capabilitiesDigest": "3c2c544464d48a0af988d9d5a3f11eb011c56a32fd89d29e88515c95a3cc1410"
+  },
+  {
+    "id": "vict.catalog.navigation-menu.sub",
+    "revision": "1",
+    "descriptorDigest": "14fb920c7c254e8f282a51aea9c2044edbbb6fc3e219935c01c60488a171422f",
+    "capabilitiesDigest": "bccb067d981b672a77398fa3ff8b1fd81e317b81e788be21fcfe9d9f7f497123"
+  },
+  {
+    "id": "vict.catalog.avatar",
+    "revision": "1",
+    "descriptorDigest": "6e5b7c9cd61e31548cba7739680a0720ea31727cfbf845803d149f507a2488e8",
+    "capabilitiesDigest": "e0f479fb5630c3882b959f655fddaba74e8400c0e69620e7ee0753ba9d2970af"
+  },
+  {
+    "id": "vict.catalog.aspect-ratio",
+    "revision": "1",
+    "descriptorDigest": "d1c9215a06e06de923fac4b0b45d9fe509989b728d4666a6fd5ac453e47efb13",
+    "capabilitiesDigest": "9b0de375a53d7d7900639e3fd51e3b165d2b810c76dff04280819372c9abe01e"
+  },
+  {
+    "id": "vict.catalog.separator",
+    "revision": "1",
+    "descriptorDigest": "9a4bcbfdb44448985fb1c88b042cf5b6931c23e69be14b5ffb4593ecadff9ccb",
+    "capabilitiesDigest": "a56092d0e9bdfabb8e4483adf24a1bd5c6cb6d967fd978d36dd47aa0d7af4ceb"
+  },
+  {
+    "id": "vict.catalog.label",
+    "revision": "1",
+    "descriptorDigest": "2ef6e74eaa74bd18444362b151ef54fe522aefab05c491b838d1506afeb9a899",
+    "capabilitiesDigest": "2be3ba9da1e389f9af0e1acdb0d2611906b7d642dae63fbbccf05abc70bfda0e"
+  },
+  {
+    "id": "vict.catalog.scroll-area",
+    "revision": "1",
+    "descriptorDigest": "d0cf415ecd99c22deb68939b94f0d77469cc792ee89bfea81e91dba5990bcb21",
+    "capabilitiesDigest": "7266af3bfd9ea381854c704840dfdd4c3eb8756395260f667c9702308751ec74"
+  },
+  {
+    "id": "vict.catalog.toolbar",
+    "revision": "1",
+    "descriptorDigest": "8ce1ca929fa20a27342afd7224cbc61f5a9453ceacfa224dfa749612eae0a5af",
+    "capabilitiesDigest": "ab79bb4783047284bdbeb1ff5b77c159064087267b42607476bcfcbded20675a"
+  },
+  {
+    "id": "vict.catalog.toolbar-button",
+    "revision": "1",
+    "descriptorDigest": "51f45058938122c3b4dc77cb2f1559d11cd46144b54030f6ef2c0e2b6db9b80a",
+    "capabilitiesDigest": "a59f008fa52629eac25ed7326cb95f3595a14c212533cec453fa9e4af3c6c7f4"
+  },
+  {
+    "id": "vict.catalog.link-preview",
+    "revision": "1",
+    "descriptorDigest": "09e2fbd538e4e8c14491b796028bca25b0419789b9f9785a4621b3c4c9d06a1b",
+    "capabilitiesDigest": "7a3a4a0a7ed13975ac371c5889cb4553d501dd24dd77acf45d4148428ed526f2"
+  },
+  {
+    "id": "vict.catalog.tooltip",
+    "revision": "1",
+    "descriptorDigest": "7f4e08568290931a11061fb50338ace7c0e7426e8b4a6f91ab8ac29faab2673e",
+    "capabilitiesDigest": "db40ed4ecd924fbef236cbeeb966c51b9feefcc24b0a450e98dc3714fd9fce8c"
+  },
+  {
+    "id": "vict.catalog.popover",
+    "revision": "1",
+    "descriptorDigest": "063f12309608cb1631a87f76dee09a0e67f2aa720af673b80b8c331d72fe2662",
+    "capabilitiesDigest": "1b7a71b99c2d95f84a55475baf39e78bcbda8d4c044c88001038863f226c63fa"
+  },
+  {
+    "id": "vict.catalog.alert-dialog",
+    "revision": "1",
+    "descriptorDigest": "d83d89b56bb8d06ccb907b574df4a7e202e0d0561292aa0684459e9aacf416c0",
+    "capabilitiesDigest": "86ade9e0c66d6062bbd013d5f48ca09f62ab0b4504794f7c149826a947601f5b"
+  },
+  {
+    "id": "vict.catalog.tabs",
+    "revision": "1",
+    "descriptorDigest": "0cbc9c98ebbc5b2e5d5930ddc8a0e85030f914f07c0a384a29ff387bab81deaf",
+    "capabilitiesDigest": "45882f5c9bcca7891d6f19241f6c64ecd8fe4917f1672dc9b19bdb75ccb5acdf"
+  },
+  {
+    "id": "vict.catalog.tabs-trigger",
+    "revision": "1",
+    "descriptorDigest": "d821a44f1c202f876a773c36ade09b48738143a852755a2e3d46914f2df29eb1",
+    "capabilitiesDigest": "5916d502e844ceb992677b5a6c2f02ad1454f9dab5bcbf5bfb138942478d0a14"
+  },
+  {
+    "id": "vict.catalog.tabs-panel",
+    "revision": "1",
+    "descriptorDigest": "32b6842f134b9b6f87b6dbfc0974ffe7304c9cd99f24a45752d5c34062b7d449",
+    "capabilitiesDigest": "ce043a88163599bde9e23101610166c1ab1c051533ff8ead1664b429e54c3925"
+  },
+  {
+    "id": "vict.catalog.collapsible",
+    "revision": "1",
+    "descriptorDigest": "2de5809fe261f1dafbefe31cd2221162883a65231f69f9ecf669cd30e73db6bc",
+    "capabilitiesDigest": "8813774f577abf9fbcbc94621ea08c96d0ddf00d5dda1f7bffd2f573a3e43957"
+  }
+]

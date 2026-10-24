@@ -52,6 +52,8 @@ export default defineConfig({
             'packages/ui-svelte/**',
             'packages/mastra/**',
             'packages/ui-editor/**/*.svelte.test.ts',
+            'packages/ui-ai-svelte/**/*.svelte.test.ts',
+            'packages/ui-flow-svelte/**/*.svelte.test.ts',
           ],
         },
         resolve: { alias: aliases },

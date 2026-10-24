@@ -26,7 +26,7 @@ export function createShowcaseFixture(recipeId: string): {
   const visited = new Set([recipe.id]);
   let placement = recipe.placements?.[0];
   while (placement) {
-    const parentRecipe = screenRecipes.find(entry => `vict.catalog.${entry.id}` === placement!.definitionId);
+    const parentRecipe = screenRecipes.find(entry => (entry.id.startsWith('vict.')?entry.id:`vict.catalog.${entry.id}`) === placement!.definitionId);
     if (!parentRecipe || visited.has(parentRecipe.id)) throw new Error(`Invalid showcase ancestor for ${recipe.id}`);
     visited.add(parentRecipe.id);
     chain.unshift({ recipeId: parentRecipe.id, slotName: placement.slotName });

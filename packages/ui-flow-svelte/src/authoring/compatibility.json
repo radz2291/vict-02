@@ -1,0 +1,20 @@
+[
+  {
+    "id": "vict.flow.canvas",
+    "revision": "1",
+    "descriptorDigest": "b1284730404b3e8fa92250352f6794e726d4cf24ea7b725ef47f6d18a75c075e",
+    "capabilitiesDigest": "e6c763c7696a8e34f0c5e3f9ab6550e93234be297b2ad876cf96a72ce8922bbe"
+  },
+  {
+    "id": "vict.flow.node",
+    "revision": "1",
+    "descriptorDigest": "329aa01735c5b79feed0b313e1487c90d508780c7a6240b8866fd451d67766a5",
+    "capabilitiesDigest": "311bbe609f41777eeed37cfba0c9f66a6f652acb6532d4214a94d74f15a7de1b"
+  },
+  {
+    "id": "vict.flow.edge",
+    "revision": "1",
+    "descriptorDigest": "6b6eaaa2f0000ed580f3ce3b095c9d3fb2a8a49c51a5a98092e19f889d35304a",
+    "capabilitiesDigest": "243ab5640674b337df0e05ff1ac1bfd17f30c98fbca2dcdd308d70f8e7cfc383"
+  }
+]

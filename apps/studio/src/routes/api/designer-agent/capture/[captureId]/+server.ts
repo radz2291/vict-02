@@ -12,7 +12,7 @@ export const POST: RequestHandler = async ({ request, locals, params }) => {
   let length = 0; const chunks: Uint8Array[] = [];
   try {
     while (true) { const next = await reader.read(); if (next.done) break; length += next.value.byteLength;
-      if (length > (contentType === 'image/jpeg' ? VISUAL_LIMITS.bytes : 2048)) { await reader.cancel(); return json({ ok: false, code: 'STUDIO_CAPTURE_IMAGE_LIMIT' }, { status: 413 }); }
+      if (length > (contentType === 'image/jpeg' ? VISUAL_LIMITS.bytes : 4096)) { await reader.cancel(); return json({ ok: false, code: 'STUDIO_CAPTURE_IMAGE_LIMIT' }, { status: 413 }); }
       chunks.push(next.value);
     }
     const bytes = new Uint8Array(length); let offset = 0;
@@ -20,7 +20,7 @@ export const POST: RequestHandler = async ({ request, locals, params }) => {
     const owner = locals.session.sessionId; const id = params.captureId!;
     if (contentType === 'application/json') {
       const value = JSON.parse(new TextDecoder().decode(bytes));
-      const ok = refuseVisualCapture(owner, id, typeof value?.code === 'string' ? value.code : 'STUDIO_CAPTURE_FAILED');
+      const ok = refuseVisualCapture(owner, id, typeof value?.code === 'string' ? value.code : 'STUDIO_CAPTURE_FAILED',value?.diagnostics);
       return json({ ok }, { status: ok ? 200 : 404 });
     }
     const metadata = request.headers.get('x-vict-capture');

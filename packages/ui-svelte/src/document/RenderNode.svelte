@@ -34,6 +34,7 @@
   import SlotSnippets from './SlotSnippets.svelte';
   import Self from './RenderNode.svelte';
   import { interactiveSlotLabels } from './slot-labels.js';
+  import { runtimeAuthoringIssues } from './authoring-runtime.js';
 
   interface Props {
     readonly instruction: UiRenderInstruction;
@@ -123,6 +124,8 @@
   });
   const componentValues = $derived(instruction.kind === 'component' || instruction.kind === 'extension'
     ? evaluateComponentPropValues(instruction, scope) : { values: {}, invalidNames: [] });
+  const semanticIssues = $derived(instruction.kind === 'extension' ? runtimeAuthoringIssues(instruction,scope,plan,extensionImplementations) : []);
+  $effect(() => { for(const issue of semanticIssues) diagnose(issue); });
   $effect(() => {
     if (componentValues.invalidNames.length) diagnose({ code: 'UI_EXPR_TYPE_MISMATCH',
       message: 'Evaluated component properties must match their declared types.',
@@ -343,6 +346,8 @@
     extraClass={[...instruction.classes, extraClass ?? ''].join(' ')}
     extraStyle={[bindingStyleVariables(instruction.styleRuleIds, plan, scope), extraStyle ?? ''].join(' ')}
   />
+{:else if instruction.kind === 'extension' && semanticIssues.length}
+  <span class="uv-extension-unavailable" data-ui-owner={ownerId} onpointerdowncapture={selectTarget} data-ui-occ={occ} data-ui-node={instruction.nodeId} role="alert">{semanticIssues[0]?.message}</span>
 {:else if instruction.kind === 'extension'}
   {@const extensionProps = componentValues.values }
   {#if extension?.ok && extension.kind === 'component'}

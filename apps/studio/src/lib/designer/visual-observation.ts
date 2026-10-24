@@ -1,5 +1,6 @@
 import { captureRenderedElement } from '@victframework/ui-ai-svelte';
 import type { AgentCursor } from './agent-edits.js';
+import { captureEvidence, type CaptureEvidence } from './capture-evidence.js';
 
 export interface CaptureMetadata {
   cursor: AgentCursor;
@@ -8,7 +9,7 @@ export interface CaptureMetadata {
   image: { width: number; height: number; sourceWidth: number; sourceHeight: number; offsetLeft: number; offsetTop: number; cropped: boolean };
   preview: { mode: 'design' | 'interact'; fingerprint: string; selection?: string; composition?: string };
 }
-export type CaptureResult = { ok: true; blob: Blob; metadata: CaptureMetadata } | { ok: false; code: string; message: string };
+export type CaptureResult = { ok: true; blob: Blob; metadata: CaptureMetadata } | { ok: false; code: string; message: string; diagnostics?: CaptureEvidence };
 export interface CaptureState {
   cursor: AgentCursor;
   mode: 'design' | 'interact';
@@ -64,7 +65,7 @@ function previewCaptureGuard(frame: HTMLElement) {
   observer.observe(frame.ownerDocument.body, { subtree: true, childList: true, attributes: true, characterData: true });
   return { portals, signature, changed: () => { recordChanges(observer.takeRecords()); return changed; }, stop: () => observer.disconnect() };
 }
-const portalRefusal = (): CaptureResult => ({ ok: false, code: 'STUDIO_CAPTURE_PORTAL_UNSUPPORTED', message: 'An open preview dialog, menu or popup is outside the capture frame. Its appearance was not observed. Close it before capturing this frame; open portalled overlays are not supported by this image path.' });
+const portalRefusal = (): Extract<CaptureResult,{ok:false}> => ({ ok: false, code: 'STUDIO_CAPTURE_PORTAL_UNSUPPORTED', message: 'An open preview dialog, menu or popup is outside the capture frame. Its appearance was not observed. Close it before capturing this frame; open portalled overlays are not supported by this image path.' });
 
 /** Capture and fence both source and transient preview state around asynchronous rasterization. */
 export async function captureDesignerPreview(
@@ -74,10 +75,13 @@ export async function captureDesignerPreview(
   viewportElement?: HTMLElement,
 ): Promise<CaptureResult> {
   const before = getState();
+  const bounds = (target: HTMLElement | undefined) => { if(!target)return undefined;const r=target.getBoundingClientRect();return [r.x,r.y,r.width,r.height]; };
+  const frameBefore=bounds(element);const viewportBefore=bounds(viewportElement??element);
+  const refuse = (code:string,message:string,phase:CaptureEvidence['phase'],reason:string,changed?:string[]):CaptureResult => ({ok:false,code,message,diagnostics:captureEvidence({phase,reason,expectedRevision:expected.revision,actualRevision:getState()?.cursor.revision,mode:getState()?.mode,covered:getState()?.structureOpen,connected:element?.isConnected,layout:element?!!element.getClientRects().length:undefined,frame:bounds(element),frameBefore,viewport:bounds(viewportElement??element),viewportBefore,scroll:viewportElement?[viewportElement.scrollLeft,viewportElement.scrollTop]:undefined,changed})});
   if (!before || !equalCursor(before.cursor, expected))
-    return { ok: false, code: 'STUDIO_CAPTURE_STALE', message: 'The source changed. Read the current screen before requesting another image.' };
+    return refuse('STUDIO_CAPTURE_STALE','The source changed. Read the current screen before requesting another image.','source','cursor-mismatch',['source']);
   if (!element || before.structureOpen)
-    return { ok: false, code: 'STUDIO_CAPTURE_NOT_VISIBLE', message: 'Open Design or Interact to observe the rendered screen. Structure is a source view.' };
+    return refuse('STUDIO_CAPTURE_NOT_VISIBLE','Reveal the Design or Interact preview, then retry observation without replaying edits.','visibility',!element?'frame-missing':'preview-covered');
   const viewportTarget = viewportElement ?? element;
   const geometry = () => [element, viewportTarget].map(target => { const bounds = target.getBoundingClientRect(); return [bounds.x,bounds.y,bounds.width,bounds.height].join(','); }).join('|');
   const geometryToken = geometry();
@@ -85,23 +89,26 @@ export async function captureDesignerPreview(
   const viewport = { width: Math.ceil(rect.width), height: Math.ceil(rect.height), scrollLeft: viewportTarget.scrollLeft, scrollTop: viewportTarget.scrollTop, devicePixelRatio: window.devicePixelRatio };
   const stateToken = JSON.stringify(before);
   const guard = previewCaptureGuard(element);
+  const changedFences=(renderedToken:string)=>{const changes:string[]=[];if(JSON.stringify(getState())!==stateToken)changes.push('source-or-preview');if(geometry()!==geometryToken)changes.push('geometry');if(viewportTarget.scrollLeft!==viewport.scrollLeft||viewportTarget.scrollTop!==viewport.scrollTop)changes.push('scroll');if(guard.changed())changes.push('dom-mutation');if(guard.signature()!==renderedToken)changes.push('rendered-controls');return changes;};
   try {
-    if (guard.portals().length) return portalRefusal();
+    if (guard.portals().length) return {...portalRefusal(),...{diagnostics:captureEvidence({phase:'visibility',reason:'external-preview-portal',mode:before.mode,expectedRevision:expected.revision})}};
     const renderedStateToken = guard.signature();
     const capture = await captureRenderedElement(element, viewportElement);
-    if (guard.portals().length) return portalRefusal();
+    if (guard.portals().length) return {...portalRefusal(),diagnostics:captureEvidence({phase:'raster',reason:'external-preview-portal',mode:before.mode,expectedRevision:expected.revision})};
     const after = getState();
     if (!after || JSON.stringify(after) !== stateToken || geometry() !== geometryToken || viewportTarget.scrollLeft !== viewport.scrollLeft || viewportTarget.scrollTop !== viewport.scrollTop || guard.changed() || guard.signature() !== renderedStateToken)
-      return { ok: false, code: 'STUDIO_CAPTURE_STALE', message: 'The source or preview changed during capture. Request a fresh image.' };
+      return refuse('STUDIO_CAPTURE_STALE','The preview changed during capture. Retry observation after it settles.','raster','preview-changed',changedFences(renderedStateToken));
     const hash = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(`${stateToken}\n${renderedStateToken}`));
-    if (guard.portals().length) return portalRefusal();
-    if (JSON.stringify(getState()) !== stateToken || geometry() !== geometryToken || viewportTarget.scrollLeft !== viewport.scrollLeft || viewportTarget.scrollTop !== viewport.scrollTop || guard.changed() || guard.signature() !== renderedStateToken) return { ok: false, code: 'STUDIO_CAPTURE_STALE', message: 'The preview changed while associating image metadata. Request a fresh image.' };
+    if (guard.portals().length) return {...portalRefusal(),diagnostics:captureEvidence({phase:'metadata',reason:'external-preview-portal',mode:before.mode,expectedRevision:expected.revision})};
+    if (JSON.stringify(getState()) !== stateToken || geometry() !== geometryToken || viewportTarget.scrollLeft !== viewport.scrollLeft || viewportTarget.scrollTop !== viewport.scrollTop || guard.changed() || guard.signature() !== renderedStateToken) return refuse('STUDIO_CAPTURE_STALE','The preview changed while associating image metadata. Retry observation.','metadata','preview-changed',changedFences(renderedStateToken));
     const fingerprint = Array.from(new Uint8Array(hash), byte => byte.toString(16).padStart(2, '0')).join('');
     const { blob, ...image } = capture;
     return { ok: true, blob, metadata: { cursor: before.cursor, capturedAt: new Date().toISOString(), viewport, image,
       preview: { mode: before.mode, fingerprint, ...(before.selection ? { selection: before.selection } : {}), ...(before.composition ? { composition: before.composition } : {}) } } };
   } catch (error) {
-    return { ok: false, code: error instanceof Error && /^STUDIO_CAPTURE_[A-Z_]+$/.test(error.message) ? error.message : 'STUDIO_CAPTURE_FAILED', message: 'The browser could not capture this rendered preview. No visual observation was made.' };
+    const code=error instanceof Error && /^STUDIO_CAPTURE_[A-Z_]+$/.test(error.message)?error.message:'STUDIO_CAPTURE_FAILED';
+    const reason=error && typeof error==='object' && 'captureReason' in error ? String(error.captureReason):'raster-failed';
+    return refuse(code,'The browser could not capture this rendered preview. No visual observation was made.',code==='STUDIO_CAPTURE_NOT_VISIBLE'?'visibility':'raster',reason);
   } finally { guard.stop(); }
 }
 
@@ -123,7 +130,7 @@ export async function uploadVisualCapture(captureId: string, csrf: string, resul
       const refused = await fetch(`/api/designer-agent/capture/${encodeURIComponent(captureId)}`, {
         method: 'POST', signal,
         headers: { 'content-type': 'application/json', 'x-vict-csrf': csrf },
-        body: JSON.stringify({ ok: false, code }),
+        body: JSON.stringify({ ok: false, code,diagnostics:{phase:'upload',reason:'image-admission-refused',expectedRevision:result.metadata.cursor.revision} }),
       });
       if (refused.ok) return;
     }

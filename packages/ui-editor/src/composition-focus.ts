@@ -4,6 +4,7 @@ import type {
   UiRenderInstruction,
   UiRenderPlan,
 } from '@victframework/ui';
+import { effectiveUiDescriptor } from '@victframework/ui';
 import { compositionChildren, compositionName, compositionParent } from './composition.js';
 
 /** Editor navigation only. Never written to a document, application or runtime state. */
@@ -62,12 +63,7 @@ export function compositionSlots(
     if (!parent) return [];
     current = parent.nodeId;
   }
-  return (
-    descriptors.find(
-      (entry) =>
-        entry.id === node.definitionId && (!node.revision || entry.revision === node.revision),
-    )?.slots ?? []
-  );
+  return effectiveUiDescriptor(node,descriptors)?.slots ?? [];
 }
 
 export function firstCompositionSlot(slots: readonly string[]): string | undefined {

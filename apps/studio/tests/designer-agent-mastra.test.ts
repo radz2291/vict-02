@@ -624,6 +624,11 @@ it('labels agent-declared subset coverage separately from the complete catalog i
  if(!opened.ok)throw Error(opened.code);await opened.finished;
  expect(events.at(-1)).toMatchObject({type:'done',status:'completed',coverage:{scope:'agent-declared-manifest',requested:1,authored:1,missing:[]}});
  const done=events.at(-1);expect(done?.type==='done'&&done.coverage!.authored<done.coverage!.available).toBe(true);
+ expect(done).toMatchObject({metrics:{toolCalls:2,completedCalls:2,refusedCalls:0,modelSteps:null,cost:null},sourceEvidence:{confirmedEdits:1,appearanceObserved:false,interactionsVerified:false}});
+ if(done?.type!=='done')throw Error('Missing terminal receipt');
+ expect(done.metrics!.providerRequests).toBeGreaterThan(0);expect(done.metrics!.usage!.totalTokens).toBeGreaterThan(0);
+ const proposal=events.find(event=>event.type==='proposal');expect(proposal?.type==='proposal'&&proposal.callId).toBeTruthy();
+ const commit=events.find(event=>event.type==='tool-event'&&event.kind==='committed');expect(commit?.type==='tool-event'&&commit.details).toContain('coverage');
 },120000);
 
 it('makes bounded precise pre-invocation refusal guidance available to the model on the next overview read',async()=>{

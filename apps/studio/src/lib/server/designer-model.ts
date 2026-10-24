@@ -6,6 +6,7 @@ interface StreamPart {
   readonly warnings?: readonly unknown[];
   readonly input?: string;
   readonly finishReason?: string | { readonly unified?: string; readonly raw?: string };
+  readonly usage?: unknown;
 }
 interface StreamResult {
   readonly stream: ReadableStream<StreamPart>;
@@ -18,10 +19,12 @@ export function boundedProviderModel<T extends object>(
   signal: AbortSignal,
   deadlineAt: number,
   onFailure?: (code: string) => void,
+  observe?: (event: { kind: 'request' } | { kind: 'usage'; usage: unknown }) => void,
 ): T {
   const source = model as T & { doStream: (options: unknown) => Promise<StreamResult> };
   const original = source.doStream.bind(model);
   const wrap = async (options: unknown): Promise<StreamResult> => {
+    observe?.({kind:'request'});
     const upstreamAbort = new AbortController();
     const callerSignal = (options as { abortSignal?: AbortSignal } | undefined)?.abortSignal;
     const callOptions = {
@@ -117,7 +120,7 @@ export function boundedProviderModel<T extends object>(
                 fail('STUDIO_AGENT_OUTPUT_LIMIT');
                 break;
               }
-              if (next.value.type === 'finish') finished = true;
+              if (next.value.type === 'finish') { finished = true; if(next.value.usage!==undefined)observe?.({kind:'usage',usage:next.value.usage}); }
               if (next.value.type === 'stream-start') streamStarted = true;
               controller.enqueue(next.value);
             }

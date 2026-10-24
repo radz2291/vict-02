@@ -4,11 +4,18 @@ import {
   applyUiEdit,
   canonicalUiDocument,
   isUiValueOfType,
+  type UiNode,
   type UiDocument,
   type UiEditCommand,
 } from '@victframework/ui';
 import {
   insertRecipe,
+  insertSubtree,
+  insertRegisteredComponent,
+  insertRegisteredElement,
+  setBaseStyle,
+  setConditionalStyle,
+  allowConditionalStyles,
   wireNativeInput,
   interactiveSlotConflicts,
   compositionChildren,
@@ -19,7 +26,9 @@ import {
   type TransactionDraft,
 } from '@victframework/ui-editor';
 import { screenRecipes } from './recipes.js';
-import { catalogDescriptors, designerCatalogs, screenIssues, compileScreen, actionInputs } from './application.js';
+import { authoringContract, installedAuthoringRegistry, installedAuthoringHostCapabilities, nodeDescriptor } from './authoring.js';
+import { screenPlacementIssues } from './placement.js';
+import { designerCatalogs, screenIssues, compileScreen, actionInputs } from './application.js';
 
 const id = z
   .string()
@@ -42,6 +51,9 @@ const content = {
 };
 const position = { slotName: id.optional(), index: z.number().int().min(0).max(1000).optional() };
 export const agentOperationSchema = z.discriminatedUnion('op', [
+  z.object({op:z.literal('insert'),kind:z.enum(['element','text','component']),nodeId:id,parentId:id,
+    tag:z.string().min(1).max(60).optional(),componentId:id.optional(),revision:id.optional(),
+    expression:expression.optional(),...position,...content}).strict(),
   z
     .object({
       op: z.literal('add'),
@@ -53,7 +65,14 @@ export const agentOperationSchema = z.discriminatedUnion('op', [
       ...content,
     })
     .strict(),
-  z.object({ op: z.literal('declareState'), key: id.refine(value => /^[a-zA-Z0-9_-]+$/.test(value), 'Use a simple local state key.'), type: z.enum(['string','number','boolean']), initial: scalar }).strict(),
+  z.object({ op: z.literal('declareState'), key: id.refine(value => /^[a-zA-Z0-9_-]+$/.test(value), 'Use a simple local state key.'), type: z.enum(['string','number','boolean','isoDate','isoTime','stringList','numberList']), initial: value }).strict(),
+  z.object({op:z.literal('bindText'),nodeId:id,expression:expression.optional()}).strict(),
+  z.object({op:z.literal('bindAttribute'),nodeId:id,name:id,expression:expression.optional()}).strict(),
+  z.object({op:z.literal('declareToken'),id,value:z.string().min(1).max(500)}).strict(),
+  z.object({op:z.literal('declareCondition'),id,kind:z.enum(['media','container']),query:z.string().min(1).max(500),name:id.optional()}).strict(),
+  z.object({op:z.literal('style'),nodeId:id,property:z.string().min(1).max(80),
+    value:z.union([z.object({type:z.literal('text'),value:z.string().max(500)}).strict(),z.object({type:z.literal('token'),id}).strict(),z.object({type:z.literal('binding'),expression}).strict()]).optional(),
+    conditionId:id.optional(),pseudo:z.enum(['hover','focus','active','disabled']).optional()}).strict(),
   z.object({ op: z.literal('wireInput'), nodeId: id, key: id.refine(value => /^[a-zA-Z0-9_-]+$/.test(value), 'Use a simple local state key.'), initial: scalar.optional() }).strict(),
   z.object({ op: z.literal('modify'), nodeId: id, ...content }).strict(),
   z.object({ op: z.literal('move'), nodeId: id, newParentId: id, ...position }).strict(),
@@ -74,15 +93,16 @@ export const agentEditSchema = z
 /** Shared safe refusal guidance for browser preparation and provider contract validation. */
 export function agentEditDiagnostics(error:z.ZodError,input?:unknown) {
  const operations=input && typeof input==='object' && Array.isArray((input as {operations?:unknown}).operations) ? (input as {operations:unknown[]}).operations : [];
- const shape:Record<string,string>={add:'add(recipe,nodeId,parentId,slotName?,index?,text?,headingLevel?,attributes?,props?,styles?)',modify:'modify(nodeId,text?,headingLevel?,attributes?,props?,styles?)',move:'move(nodeId,newParentId,slotName?,index?)',remove:'remove(nodeId)',bind:'bind(nodeId,prop,expression?)',connect:'connect(nodeId,output,binding?)',declareState:'declareState(key,type:string|number|boolean,initial:matchingScalar)',wireInput:'wireInput(nodeId,key,initial?)'};
+ const shape:Record<string,string>={insert:'insert(kind:element|text|component,nodeId,parentId,tag?|componentId+revision|text/expression?,slotName?,index?)',bindText:'bindText(nodeId,expression?)',bindAttribute:'bindAttribute(nodeId,name,expression?)',style:'style(nodeId,property,value?:text|token|binding,conditionId?,pseudo?)',declareToken:'declareToken(id,value)',declareCondition:'declareCondition(id,kind:media|container,query,name?)',add:'add(recipe,nodeId,parentId,slotName?,index?,text?,headingLevel?,attributes?,props?,styles?)',modify:'modify(nodeId,text?,headingLevel?,attributes?,props?,styles?)',move:'move(nodeId,newParentId,slotName?,index?)',remove:'remove(nodeId)',bind:'bind(nodeId,prop,expression?)',connect:'connect(nodeId,output,binding?)',declareState:'declareState(key,type:string|number|boolean|isoDate|isoTime|stringList|numberList,initial:matchingValue)',wireInput:'wireInput(nodeId,key,initial?)'};
  return error.issues.slice(0,8).map(issue=>{
   const operation=typeof issue.path[1]==='number' ? issue.path[1] : undefined;
   const rawPath=issue.path.join('.');const path=rawPath.length>500 ? rawPath.slice(0,470)+'[path truncated]' : rawPath;let expected='';
   if(path.includes('.expression'))expected='Expected exactly {type:"literal",value:scalar} OR {type:"ref",path:"state.key"}; no extra fields. Example: {"type":"ref","path":"state.accepted"}.';
   else if(path.includes('.binding'))expected='Expected {setState:{key,value?:literalOrRef}} OR {invokeAction:{actionId,input?:{field:literalOrRef}}}; no extra fields. Example: {"setState":{"key":"accepted"}}.';
   else if(path.includes('.props'))expected='Expected a property record of scalar values or homogeneous string[]/number[] (max100). Example: {"options":["one","two"]}; mixed lists and object arrays are unsupported.';
-  else if(path.endsWith('.initial')||path.includes('.attributes'))expected='Expected string (max4000), finite number, or boolean. Expressions use bind/wireInput instead of attributes.';
-  else if(operation!==undefined){const value=operations[operation];const op=value && typeof value==='object' ? (value as {op?:unknown}).op : undefined;expected=typeof op==='string' && shape[op] ? 'Expected '+shape[op]+'.' : 'Expected a declared add/modify/move/remove/bind/connect/declareState/wireInput operation.';}
+  else if(path.endsWith('.initial'))expected='Expected a matching canonical scalar or homogeneous string[]/number[]; date/time strings must be valid ISO values.';
+  else if(path.includes('.attributes'))expected='Expected string (max4000), finite number, or boolean. Native expressions use bindAttribute or wireInput.';
+  else if(operation!==undefined){const value=operations[operation];const op=value && typeof value==='object' ? (value as {op?:unknown}).op : undefined;expected=typeof op==='string' && shape[op] ? 'Expected '+shape[op]+'.' : 'Expected a declared registered insertion, source edit, typed-state, binding or presentation operation.';}
   return {...(operation===undefined ? {} : {operation}),path,message:(expected+' '+issue.message).trim().slice(0,700)};
  });
 }
@@ -99,13 +119,27 @@ export interface AgentProposal {
   edit: AgentEdit;
   resultDigest: string;
 }
-export type EditFailure = { ok: false; code: string; message: string; diagnostics?: readonly { operation?: number; path: string; message: string }[] };
+export type EditFailure = { ok: false; code: string; message: string; diagnostics?: readonly { operation?: number; path: string; message: string; [key:string]:unknown }[] };
 export type EditReceipt = EditFailure | { ok: true; revision: string; digest: string };
 export const failure = (code: string, message: string): EditFailure => ({
   ok: false,
   code,
   message,
 });
+
+/** Preserve useful canonical detail without forwarding arbitrary compiler payloads. */
+export function canonicalEditFailure(issues:readonly {code:string;message:string;[key:string]:unknown}[],operation?:number):EditFailure {
+  const diagnostics=issues.slice(0,6).map(issue=>{
+    const details:Record<string,unknown>={};
+    for(const key of ['nodeId','parentId','definitionId','extensionId','prop','property','output','stateKey','expected','actual','target','slot','slotName','hostCode']) {
+      const item=issue[key];if(typeof item==='string')details[key]=item.slice(0,300);else if(typeof item==='number'||typeof item==='boolean')details[key]=item;
+    }
+    return {...details,...(operation===undefined?{}:{operation}),code:issue.code,
+      path:typeof issue.path==='string'?issue.path.slice(0,500):typeof issue.nodeId==='string'?`nodes.${issue.nodeId}`:operation===undefined?'document':`operations.${operation}`,
+      message:issue.message.slice(0,700)};
+  });
+  return {...failure('STUDIO_AGENT_VALIDATION',`${operation===undefined?'Edit':`Operation ${operation}`} rejected: `+diagnostics.map(issue=>`${issue.code}: ${issue.message}`).join('; ').slice(0,1800)),diagnostics};
+}
 
 export function documentCursor(document: UiDocument, revision: string, epoch: string): AgentCursor {
   return {
@@ -142,6 +176,32 @@ export function prepareAgentEdit(
   try {
     for (const [operationIndex, operation] of parsed.data.operations.entries()) {
       const next: UiEditCommand[] = [];
+      let inserted:readonly UiNode[]=[];
+      if(operation.op==='insert') {
+        if(Object.hasOwn(working.nodes,operation.nodeId))return failure('STUDIO_AGENT_NODE_EXISTS','Use a fresh node identity.');
+        if(operation.kind==='element') {
+          if(!operation.tag || !designerCatalogs.elements.elements.some(item=>item.tag===operation.tag))return failure('STUDIO_AGENT_ELEMENT','Use an exact tag from read section elements.');
+          if(operation.componentId||operation.revision||operation.expression)return failure('STUDIO_AGENT_INSERT_SHAPE','Element insertion takes tag, attributes and optional literal text, not component identity/expression.');
+          const definition=designerCatalogs.elements.elements.find(item=>item.tag===operation.tag)!;
+          if(definition.leaf&&operation.text!==undefined)return failure('STUDIO_AGENT_INSERT_SHAPE','This registered native element is leaf-only.');
+          inserted=[{kind:'element',id:operation.nodeId,tag:operation.tag,children:operation.text===undefined?[]:[`${operation.nodeId}-text`]},
+            ...(operation.text===undefined?[]:[{kind:'text' as const,id:`${operation.nodeId}-text`,content:{type:'literal' as const,value:operation.text}}])];
+        } else if(operation.kind==='text') {
+          if(operation.tag||operation.componentId||operation.revision||operation.attributes||operation.props||operation.headingLevel||operation.styles)return failure('STUDIO_AGENT_INSERT_SHAPE','Text insertion takes text or expression and its parent/slot position.');
+          if(operation.text!==undefined&&operation.expression)return failure('STUDIO_AGENT_INSERT_SHAPE','Choose literal text or a text expression.');
+          inserted=[{kind:'text',id:operation.nodeId,content:operation.expression?{type:'expression',expression:operation.expression}:{type:'literal',value:operation.text??''}}];
+        } else {
+          const contract=operation.componentId&&operation.revision?authoringContract(operation.componentId,operation.revision):undefined;
+          if(!installedAuthoringRegistry.ok||!contract)return failure('STUDIO_AGENT_COMPONENT_NOT_FOUND','Supply an exact installed componentId and revision from contracts discovery.');
+          if(!['standalone','part'].includes(contract.eligibility.kind))return failure('STUDIO_AGENT_COMPONENT_UNAVAILABLE',contract.eligibility.reason??'This registration needs unavailable host support.');
+          if(operation.tag||operation.expression||operation.text!==undefined||operation.attributes||operation.headingLevel)return failure('STUDIO_AGENT_INSERT_SHAPE','Registered components take componentId/revision and declared props/slots, not native text/tag fields.');
+          inserted=[{kind:'component',id:operation.nodeId,definitionId:contract.descriptor.id,revision:contract.descriptor.revision,props:{},slots:{}}];
+        }
+        const target={nodeId:operation.parentId,slotName:operation.slotName,index:operation.index};
+        if(operation.kind==='component')next.push(...insertRegisteredComponent({requestId,registry:installedAuthoringRegistry,nodeId:operation.nodeId,definitionId:operation.componentId!,revision:operation.revision!,target,hostCapabilities:installedAuthoringHostCapabilities}).commands);
+        else if(operation.kind==='element')next.push(...insertRegisteredElement({requestId,catalog:designerCatalogs.elements,nodeId:operation.nodeId,tag:operation.tag!,text:operation.text,target}).commands);
+        else next.push(...insertSubtree(requestId,inserted,target).commands);
+      }
       if (operation.op === 'add') {
         const recipe = screenRecipes.find((recipe) => recipe.id === operation.recipe)!;
         if (!canInsertRecipe(recipe, working, { nodeId: operation.parentId, slotName: operation.slotName }))
@@ -172,10 +232,28 @@ export function prepareAgentEdit(
       }
       if (operation.op === 'declareState') {
         if (Object.hasOwn(working.localState, operation.key)) return failure('STUDIO_AGENT_STATE_EXISTS', 'State already exists. Read state and bind its exact key; use a fresh key for an independent field.');
-        if (typeof operation.initial !== operation.type) return failure('STUDIO_AGENT_STATE_TYPE', 'The starting value must match the declared scalar type.');
+        if (!isUiValueOfType(operation.initial,operation.type)) return {...failure('STUDIO_AGENT_STATE_TYPE','The starting value must match the declared canonical type, including valid ISO date/time or a homogeneous list.'),diagnostics:[{operation:operationIndex,path:`operations.${operationIndex}.initial`,message:`Expected ${operation.type}.`,expected:operation.type,actual:Array.isArray(operation.initial)?'array':typeof operation.initial}]};
         next.push({ op: 'replaceDocument', document: { ...working, localState: { ...working.localState, [operation.key]: { key: operation.key, type: operation.type, initial: operation.initial } } } });
       }
       if (operation.op === 'wireInput') next.push(...wireNativeInput({ requestId, document: working, nodeId: operation.nodeId, key: operation.key, initial: operation.initial }).commands);
+      if(operation.op==='bindText')next.push({op:'bindExpression',nodeId:operation.nodeId,target:{kind:'text'},expression:operation.expression});
+      if(operation.op==='bindAttribute')next.push({op:'bindExpression',nodeId:operation.nodeId,target:{kind:'attribute',name:operation.name},expression:operation.expression});
+      if(operation.op==='declareToken'){
+        if(Object.hasOwn(working.tokens,operation.id))return failure('STUDIO_AGENT_TOKEN_EXISTS','Token already exists; use a fresh ID.');
+        next.push({op:'replaceDocument',document:{...working,tokens:{...working.tokens,[operation.id]:{id:operation.id,value:operation.value}}}});
+      }
+      if(operation.op==='declareCondition'){
+        if(Object.hasOwn(working.conditions,operation.id))return failure('STUDIO_AGENT_CONDITION_EXISTS','Condition already exists; use a fresh ID.');
+        if(operation.kind==='container'&&!operation.name)return failure('STUDIO_AGENT_CONDITION','Container conditions require a declared container name.');
+        const condition=operation.kind==='media'?{id:operation.id,kind:'media' as const,query:operation.query}:{id:operation.id,kind:'container' as const,query:operation.query,name:operation.name!};
+        next.push({op:'replaceDocument',document:{...working,conditions:{...working.conditions,[operation.id]:condition}}});
+      }
+      if(operation.op==='style'){
+        if(operation.conditionId||operation.pseudo) {
+          next.push(...allowConditionalStyles(requestId,working,operation.nodeId,operation.conditionId,operation.pseudo).commands);
+          next.push(...setConditionalStyle({requestId,nodeId:operation.nodeId,property:operation.property,value:operation.value,conditionId:operation.conditionId,pseudo:operation.pseudo}).commands);
+        } else next.push(...setBaseStyle(working,{requestId,nodeId:operation.nodeId,property:operation.property,value:operation.value}).commands);
+      }
       if (operation.op === 'move') {
         const node = working.nodes[operation.nodeId];
         const recipe = node?.kind === 'component' ? screenRecipes.find(recipe => recipe.id === node.definitionId.replace('vict.catalog.', '')) : undefined;
@@ -193,7 +271,7 @@ export function prepareAgentEdit(
         next.push({ op: 'remove', nodeId: operation.nodeId, detachFromParent: true });
       if (operation.op === 'bind' || operation.op === 'connect') {
         const node = working.nodes[operation.nodeId];
-        const descriptor = node?.kind === 'component' ? catalogDescriptors.find(item => item.id === node.definitionId) : undefined;
+        const descriptor = nodeDescriptor(node);
         const supported = operation.op === 'bind' ? descriptor?.props.map(prop => prop.name) : descriptor?.outputs?.map(output => output.name);
         const field = operation.op === 'bind' ? operation.prop : operation.output;
         if (!supported?.includes(field)) return { ...failure('STUDIO_AGENT_PROPERTY', `Operation ${operationIndex}: unsupported ${operation.op === 'bind' ? 'prop' : 'output'} ${field}. Supported: ${supported?.join(', ') || '(none)'}. Native fields use wireInput.`), diagnostics: [{ operation: operationIndex, path: `operations.${operationIndex}.${operation.op === 'bind' ? 'prop' : 'output'}`, message: `Expected one of: ${supported?.join(', ') || '(none)'}` }] };
@@ -202,7 +280,7 @@ export function prepareAgentEdit(
         next.push({ op: 'bindExpression', nodeId: operation.nodeId, target: { kind: 'prop', name: operation.prop }, expression: operation.expression });
       if (operation.op === 'connect')
         next.push({ op: 'setOutputBinding', nodeId: operation.nodeId, output: operation.output, binding: operation.binding });
-      if (operation.op === 'add' || operation.op === 'modify') {
+      if (operation.op === 'add' || operation.op === 'modify' || operation.op==='insert') {
         // Recipe IDs are known, so a fresh recipe's direct text child is addressable
         // before the assembled transaction is applied.
         const fresh =
@@ -210,8 +288,8 @@ export function prepareAgentEdit(
             ? screenRecipes
                 .find((recipe) => recipe.id === operation.recipe)!
                 .create(operation.nodeId)
-            : [];
-        if (operation.text !== undefined) {
+            : inserted;
+        if (operation.text !== undefined && operation.op!=='insert') {
           const target = literalTextTarget(working, operation.nodeId);
           const textId = fresh.find((node) => node.kind === 'text')?.id ?? target?.nodeId;
           if (!textId)
@@ -235,7 +313,7 @@ export function prepareAgentEdit(
             });
         }
         if(operation.headingLevel !== undefined) {
-          const node=operation.op === 'add' ? fresh[0] : working.nodes[operation.nodeId];
+          const node=operation.op === 'add'||operation.op==='insert' ? fresh[0] : working.nodes[operation.nodeId];
           if(node?.kind !== 'element' || !/^h[1-6]$/.test(node.tag)) return failure('STUDIO_AGENT_HEADING_TARGET','headingLevel requires an h1–h6 element. Use the heading recipe or modify an existing heading.');
           next.push({op:'setProperty',nodeId:operation.nodeId,property:'tag',value:`h${operation.headingLevel}`});
         }
@@ -252,9 +330,9 @@ export function prepareAgentEdit(
             const staged = next.length ? applyUiEdit({ document: working, revision: cursor.revision },
               { requestId, expectedDocumentRevision: cursor.revision, commands: next }, designerCatalogs)
               : { ok: true as const, document: working };
-            if (!staged.ok) return failure('STUDIO_AGENT_VALIDATION', 'The component could not be prepared for its list value.');
+            if (!staged.ok) return canonicalEditFailure(staged.issues,operationIndex);
             const node = staged.document.nodes[operation.nodeId];
-            const descriptor = node?.kind === 'component' ? catalogDescriptors.find(entry => entry.id === node.definitionId) : undefined;
+            const descriptor = nodeDescriptor(node);
             const prop = descriptor?.props.find(prop => prop.name === name);
             if (!prop || (prop.type !== 'stringList' && prop.type !== 'numberList') || !isUiValueOfType(value, prop.type))
               return failure('STUDIO_AGENT_VALIDATION', 'Use a homogeneous list matching the declared property type.');
@@ -278,12 +356,7 @@ export function prepareAgentEdit(
           });
         }
         for (const [property, value] of Object.entries(operation.styles ?? {}))
-          next.push({
-            op: 'setStyleDeclaration',
-            nodeId: operation.nodeId,
-            property,
-            value: { type: 'text', value },
-          });
+          next.push(...setBaseStyle(working,{requestId,nodeId:operation.nodeId,property,value:{type:'text',value}}).commands);
       }
       if (!next.length) return failure('STUDIO_AGENT_EMPTY_EDIT', 'Supply a property to modify.');
       const result = applyUiEdit(
@@ -291,11 +364,7 @@ export function prepareAgentEdit(
         { requestId, expectedDocumentRevision: cursor.revision, commands: next },
         designerCatalogs,
       );
-      if (!result.ok)
-        return failure(
-          'STUDIO_AGENT_VALIDATION',
-          `Operation ${operationIndex} (${operation.op}) rejected by canonical authoring: ` + result.issues.slice(0,5).map(issue => `${issue.code}: ${issue.message}`).join('; '),
-        );
+      if (!result.ok) return canonicalEditFailure(result.issues,operationIndex);
       working = result.document;
       commands.push(...next);
     }
@@ -306,19 +375,12 @@ export function prepareAgentEdit(
     if (addedConflicts.length) return { ...failure('STUDIO_AGENT_INTERACTIVE_SLOT','A trigger/action/cancel slot already supplies a button. Use text or noninteractive content.'), diagnostics:addedConflicts.map(issue => ({path:`nodes.${issue.nodeId}`,message:`${issue.parentId}.${issue.slot} already owns the interactive trigger.`})) };
     const compiled = compileScreen(working);
     const issues = [
+      ...screenPlacementIssues(working,document),
       ...screenIssues(working),
       ...(compiled.ok ? Object.values(compiled.plan.documentPlans ?? {}).flatMap(plan =>
         plan.diagnostics.filter(issue => issue.severity === 'error')) : []),
     ];
-    if (issues.length)
-      return failure(
-        'STUDIO_AGENT_VALIDATION',
-        'Edit rejected: ' +
-          issues
-            .map((issue) => issue.code)
-            .slice(0, 5)
-            .join(', '),
-      );
+    if (issues.length) return canonicalEditFailure(issues);
     if (JSON.stringify(working).length > 200_000 || Object.keys(working.nodes).length > 500)
       return failure('STUDIO_AGENT_LIMIT', 'This screen exceeds the Cycle 1.1 editing limit.');
     return {

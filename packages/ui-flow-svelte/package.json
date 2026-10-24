@@ -10,7 +10,12 @@
       "svelte": "./src/index.ts",
       "default": "./src/index.ts"
     },
-    "./styles.css": "./src/styles.css"
+    "./styles.css": "./src/styles.css",
+    "./authoring": {
+      "types": "./src/authoring/index.ts",
+      "svelte": "./src/authoring/index.ts",
+      "default": "./src/authoring/index.ts"
+    }
   },
   "files": [
     "src",
@@ -26,6 +31,8 @@
     "elkjs": "0.11.0"
   },
   "peerDependencies": {
+    "@victframework/ui": "0.4.0-rc.1",
+    "@victframework/ui-svelte": "0.4.0-rc.1",
     "svelte": "^5.25.0"
   },
   "license": "Apache-2.0"

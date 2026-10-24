@@ -1,12 +1,13 @@
 <script lang="ts">
   import { onDestroy, onMount } from 'svelte';
-  import { Conversation, conversationMessages, appendConversationEvent, type ConversationEvent } from '@victframework/ui-ai-svelte';
+  import { Conversation, conversationMessages, appendConversationEvent, type ConversationEvent, type ConversationActivity } from '@victframework/ui-ai-svelte';
   import '@victframework/ui-ai-svelte/styles.css';
   import { Popover } from '@victframework/ui-svelte/primitives';
   import type { UiConversationMessage, UiDocument } from '@victframework/ui';
   import type { AgentCursor, AgentProposal, EditFailure, EditReceipt } from './agent-edits.js';
   import { AGENT_REQUEST_BYTES, AGENT_STREAM_BYTES, AGENT_FRAME_CHARACTERS, boundedHistoryText, agentFailureMessage, withTurnAbort } from './agent-transport.js';
   import { uploadVisualCapture, type CaptureResult } from './visual-observation.js';
+  import { createTurnMetrics, phaseFailureStatus, type ToolFailure, type TurnMetrics } from './agent-progress.js';
   interface Props {
     screenLabel:string;
     selectionLabel:string;
@@ -22,9 +23,10 @@
   const presentedMessages=$derived(conversationMessages(messages).map(message=>({...message,...(timelines[message.id] ? {events:timelines[message.id]} : {})})));
   let status=$state('Checking agent configuration…');
   let model=$state('');let ready=$state(false);let busy=$state(false);let csrf='';
-  interface LocalTurn {controller:AbortController;runId:string;applied:number;cancelled:boolean;refusal?:EditFailure;}
+  interface LocalTurn {controller:AbortController;runId:string;applied:number;cancelled:boolean;refusal?:EditFailure;metrics:ReturnType<typeof createTurnMetrics>;}
   let activeTurn:LocalTurn|undefined;
   let evidence=$state('');
+  let lastMetrics=$state<TurnMetrics>();
   let disposed=false;
   let panel=$state<HTMLElement>();
   let detailsBoundary=$state<HTMLElement>();
@@ -50,10 +52,11 @@
   function stop(){
     const turn=activeTurn;if(!turn || turn.cancelled)return;
     turn.cancelled=true;cancelTransport(turn);
+    lastMetrics={...turn.metrics.snapshot(),partial:true};
     if(!disposed){failed=false;note(`Stopped. ${appliedEffects(turn.applied)}`);}
   }
   onDestroy(()=>{disposed=true;void stop();});
-  function failedStatus(code:string|undefined,applied:number){
+  function failedStatus(code:string|undefined,applied:number,failures:ToolFailure[]=[]){
     const effects=appliedEffects(applied);
     const boundedFailure=agentFailureMessage(code);if(boundedFailure)return `${boundedFailure} ${effects}`;
     if(code==='STUDIO_AGENT_BUSY')return `Another agent turn is still running in this session. Wait for it to finish, or stop it in its Designer tab, then retry. ${effects}`;
@@ -61,7 +64,7 @@
     if(code==='STUDIO_AGENT_UNCONFIGURED')return `The agent needs a server-side provider configuration. Reconnect after configuring it. ${effects}`;
     if(code==='STUDIO_AGENT_OUTPUT_LIMIT')return `The agent's response was cut off. Retry with a smaller change. ${effects}`;
     if(code==='STUDIO_AGENT_INCOMPLETE_TOOL')return `The agent returned an invalid or incomplete edit. Retry the change. ${effects}`;
-    if(code==='STUDIO_AGENT_TOOL_FAILED')return `The agent could not complete an edit. Check Chat details and retry. ${effects}`;
+    if(code==='STUDIO_AGENT_TOOL_FAILED'||code?.startsWith('STUDIO_CAPTURE_'))return `${phaseFailureStatus(failures)} ${effects}`;
     if(code==='UI_DOC_STALE_REVISION')return `The screen changed during this turn. Send a new request. ${effects}`;
     if(code==='STUDIO_AGENT_DRAFT')return `Apply or cancel the current draft, then send a new request. ${effects}`;
     return `${code==='STUDIO_AGENT_PROVIDER_FAILED'?'The provider could not complete this turn. Check the connection and retry.':'The agent stopped before finishing. Check Chat details and retry.'} ${effects}`;
@@ -80,6 +83,14 @@
     const messageId=`message-${responseIndex}`;let serial=0;
     const append=(event:ConversationEvent)=>{timelines={...timelines,[messageId]:appendConversationEvent(timelines[messageId]??[],event)};};
     const summary=(message:string)=>append({id:`local-${++serial}`,kind:'summary',text:message});
+    function stage(key:string,id:string,title:string,state:ConversationActivity['state'],detail?:string){
+      const eventId=`attempt-${key}`;
+      const previous=timelines[messageId]?.find(item=>item.id===eventId);
+      const stages=previous?.kind==='activity'?[...(previous.activity.stages??[])]:[];
+      const index=stages.findIndex(item=>item.id===id);const receipt={id,title,state,...(detail?{detail}:{})};
+      if(index>=0)stages[index]=receipt;else stages.push(receipt);
+      append({id:eventId,kind:'activity',activity:{id:eventId,title,state,stages:stages.slice(-12)}});
+    }
     const attempts=new Map<string,string[]>();
     function settle(ids:readonly string[],state:'completed'|'failed'|'cancelled',detail?:string){
       const selected=new Set(ids);
@@ -87,8 +98,8 @@
     }
     function finishPending(detail:string,cancelled=false){settle((timelines[messageId]??[]).filter(item=>item.kind==='activity'&&(item.activity.state==='running'||item.activity.state==='pending')).map(item=>item.id),cancelled?'cancelled':'failed',detail);}
     timelines={...timelines,[messageId]:[]};
-    const turn:LocalTurn={controller:new AbortController(),runId:'',applied:0,cancelled:false};activeTurn=turn;
-    busy=true;failed=false;progress=[];evidence='';let done=false;let sent=false;let lastRefusal='';let separateReply=false;
+    const turn:LocalTurn={controller:new AbortController(),runId:'',applied:0,cancelled:false,metrics:createTurnMetrics()};activeTurn=turn;
+    busy=true;failed=false;progress=[];evidence='';lastMetrics=undefined;let done=false;let sent=false;let lastRefusal='';let separateReply=false;
     note('Connecting…');
     try{
       const response=await fetch('/api/designer-agent',{method:'POST',headers:headers(),signal:turn.controller.signal,body:requestBody});
@@ -108,21 +119,22 @@
             const line=buffer.slice(0,newline);buffer=buffer.slice(newline+1);if(!line.trim())continue;
             const event=JSON.parse(line);
             if(event.type==='started'){sent=true;turn.runId=event.runId;model=event.model;note('Reading screen…');}
-            if(event.type==='progress'){note(event.message);summary(`Progress summary · ${event.message}`);separateReply=true;}
+            if(event.type==='progress'){note(event.message);if(!/^(Reading current source|Preparing and validating|Capturing and observing|Tool refused)/.test(event.message))summary(`Progress summary · ${event.message}`);separateReply=true;}
             if(event.type==='tool-event'){
-              const attemptKey=`${event.tool}:${event.callId??'current'}`;
+              const attemptKey=`${event.tool}:${event.callId??event.id}`;
               const refused=event.kind==='validation-refused'||event.kind==='tool-failed';
+              if(event.kind==='tool-start')turn.metrics.start(event.callId??event.id,event.tool);else if(event.callId&&(refused||event.kind==='observation'||event.kind==='committed'))turn.metrics.finish(event.callId,event.tool,!refused);
               if(event.callId&&event.kind!=='tool-start'&&event.kind!=='proposed'){
                 settle(attempts.get(attemptKey)??[],refused?'failed':'completed');attempts.delete(attemptKey);
               }
               const toolLabel=event.tool==='studio_screen_read'?'Read source':event.tool==='studio_screen_edit'?'Edit screen':event.tool==='studio_screen_observe'?'Observe preview':event.tool;
-              append({id:event.id,kind:'activity',activity:{id:event.id,title:event.kind==='tool-start'?`${toolLabel} started`:event.summary,state:event.kind==='tool-start'?'running':event.kind==='validation-refused'||event.kind==='tool-failed'?'failed':event.kind==='proposed'?'pending':'completed',detail:[event.kind,event.tool,event.details].filter(Boolean).join('\n')}});separateReply=true;
-              if(event.kind==='tool-start'||event.kind==='proposed')attempts.set(attemptKey,[...(attempts.get(attemptKey)??[]),event.id]);
+              stage(attemptKey,event.id,event.kind==='tool-start'?`${toolLabel} started`:event.summary,event.kind==='tool-start'?'running':refused?'failed':event.kind==='proposed'?'pending':'completed',[event.kind,event.tool,event.elapsedMs===undefined?undefined:`${event.elapsedMs} ms since turn start`,event.details].filter(Boolean).join('\n'));separateReply=true;
+              if(event.kind==='tool-start'||event.kind==='proposed')attempts.set(attemptKey,[`attempt-${attemptKey}`]);
             }
             if(event.type==='capture-request'){
               let captured:CaptureResult;
               try{captured=getCapture?await withTurnAbort(()=>getCapture!(event.cursor),turn.controller.signal):{ok:false,code:'STUDIO_CAPTURE_UNAVAILABLE',message:'The rendered preview is unavailable.'};}
-              catch(error){if(turn.controller.signal.aborted)throw error;captured={ok:false,code:error instanceof Error&&error.message==='STUDIO_CAPTURE_TIMEOUT'?'STUDIO_CAPTURE_TIMEOUT':'STUDIO_CAPTURE_FAILED',message:'The browser could not complete capture. No visual observation was made.'};}
+              catch(error){if(turn.controller.signal.aborted)throw error;captured={ok:false,code:error instanceof Error&&error.message==='STUDIO_CAPTURE_TIMEOUT'?'STUDIO_CAPTURE_TIMEOUT':'STUDIO_CAPTURE_FAILED',message:'The browser could not complete capture. No visual observation was made.',diagnostics:{phase:'raster',reason:error instanceof Error&&error.message==='STUDIO_CAPTURE_TIMEOUT'?'capture-timeout':'capture-failed',expectedRevision:event.cursor.revision}};}
               if(turn.controller.signal.aborted)throw new Error('stopped');
               await uploadVisualCapture(event.captureId,csrf,captured,turn.controller.signal);separateReply=true;
             }
@@ -135,7 +147,8 @@
             }
             if(event.type==='proposal'){
               const receipt=applyProposal(event.proposal);
-              append({id:`browser-${event.proposal.proposalId}`,kind:'activity',activity:{id:event.proposal.proposalId,title:receipt.ok?'Browser committed edit':`Browser refused edit · ${receipt.code}`,state:receipt.ok?'completed':'failed',detail:receipt.ok?`${event.proposal.edit.reason}\nCommitted to the screen. Undo is available.`:receipt.message}});
+              const proposalAttempt=`studio_screen_edit:${event.callId??event.proposal.proposalId}`;
+              stage(proposalAttempt,`browser-${event.proposal.proposalId}`,receipt.ok?'Browser committed edit':`Browser refused edit · ${receipt.code}`,receipt.ok?'pending':'failed',receipt.ok?`${event.proposal.edit.reason}\nCommitted to the screen. Undo is available.`:receipt.message);
               lastRefusal=receipt.ok?'':receipt.message;
               if(receipt.ok){turn.applied++;status='Applying edit…';}else {turn.refusal=receipt;failed=true;note(receipt.message);}
               separateReply=true;
@@ -144,7 +157,7 @@
               // this turn so only a new user request can capture refreshed context.
               if(!receipt.ok){cancelTransport(turn);throw new Error('canvas-refused');}
               if(!ack.ok)throw new Error('ack');
-              append({id:`ack-${event.proposal.proposalId}`,kind:'activity',activity:{id:`ack-${event.proposal.proposalId}`,title:'Commit receipt acknowledged',state:'completed',detail:event.proposal.edit.reason}});
+              stage(proposalAttempt,`ack-${event.proposal.proposalId}`,'Commit receipt acknowledged','completed',event.proposal.edit.reason);
             }
             if(event.type==='edit-result'){lastRefusal=event.result.ok?'':event.result.message;note(event.result.ok?`${event.reason} · applied`:event.result.message);separateReply=true;}
             if(event.type==='done'){
@@ -152,14 +165,16 @@
               done=true;turn.applied=Math.max(turn.applied,event.applied??0);
               const applied=turn.applied;
               failed=event.status==='failed'||Boolean(lastRefusal);
-              status=event.status==='completed'?(lastRefusal?`${lastRefusal} ${applied?`${applied} earlier edits remain undoable.`:''}`:`${applied} edit${applied===1?'':'s'} applied`):event.status==='cancelled'?`Stopped · ${applied} applied edits remain undoable.`:failedStatus(event.code,applied);
+              status=event.status==='completed'?(lastRefusal?`${lastRefusal} ${applied?`${applied} earlier edits remain undoable.`:''}`:`${applied} edit${applied===1?'':'s'} applied`):event.status==='cancelled'?`Stopped · ${applied} applied edits remain undoable.`:failedStatus(event.code,applied,event.toolFailures??[]);
+              lastMetrics=event.metrics;
               evidence=[event.turnId?`VICT turn ${event.turnId} · profile ${event.profileVersion}`:'',event.code??''].filter(Boolean).join(' · ');
               const boundary=`${appliedEffects(applied)}${event.confirmedRevision?` Confirmed revision ${event.confirmedRevision}.`:''}`;
               const terminal=event.termination?` Engine termination: ${event.termination.status}${event.termination.code?` (${event.termination.code})`:''}.`:'';
               const unresolved=event.unresolvedTools?.length?` Unresolved tools: ${event.unresolvedTools.join(', ')}.`:'';
-              const coverage=event.coverage?` Source coverage: ${event.coverage.catalogAuthored??event.coverage.authored}/${event.coverage.available} catalog definitions present. ${event.coverage.missing.length} missing from the ${event.coverage.requested??event.coverage.available}-item ${event.coverage.scope==='agent-declared-manifest'?'agent-declared manifest':'coverage scope'}. This inventory does not establish the full requested intent, interactions or visual completion.`:'';
-              summary(`${status}. ${boundary}${terminal}${unresolved}${coverage}`);
-              messages=messages.map((message,index)=>index===responseIndex?{...message,text:message.text+`\n\nConfirmed progress: ${boundary}${terminal}${unresolved}${coverage}`} :message);
+              const coverage=event.coverage?` Source coverage: ${event.coverage.catalogAuthored??event.coverage.authored}/${event.coverage.available} registered definitions present. ${event.coverage.missingCount??event.coverage.missing.length} missing from the ${event.coverage.requested??event.coverage.available}-item ${event.coverage.scope==='agent-declared-manifest'?'agent-declared manifest':'coverage scope'}.${event.coverage.moreMissing?' Missing IDs are paged through coverage reads.':''} This inventory does not establish the full requested intent, interactions or visual completion.`:'';
+              const facts=event.sourceEvidence?` Source: ${event.sourceEvidence.nodeCount} nodes, ${event.sourceEvidence.stateCount} state declarations; ${event.sourceEvidence.appearanceObserved?'a bounded preview image was observed':'current appearance unverified'}; interactions unverified by this agent.`:'';
+              summary(`${boundary}${terminal}${unresolved}${coverage}${facts}`);
+              messages=messages.map((message,index)=>index===responseIndex?{...message,text:message.text+`\n\nConfirmed progress: ${boundary}${terminal}${unresolved}${coverage}${facts}`} :message);
               if(!messages[responseIndex]?.text)messages=messages.map((message,index)=>index===responseIndex?{...message,text:status}:message);
             }
           }
@@ -179,7 +194,7 @@
         if(!messages[responseIndex]?.text)messages=messages.map((message,index)=>index===responseIndex?{...message,text:status}:message);
       }
       return sent?true:{ok:false,message:turn.cancelled?'Stopped before the request was admitted. Your draft is still here.':agentFailureMessage(error instanceof Error?error.message:undefined)??status};
-    }finally{if(!done)cancelTransport(turn);if(activeTurn===turn){activeTurn=undefined;busy=false;}}
+    }finally{if(!done){cancelTransport(turn);lastMetrics={...turn.metrics.snapshot(),partial:true};}if(activeTurn===turn){activeTurn=undefined;busy=false;}}
   }
 </script>
 
@@ -202,6 +217,7 @@
           <p>{status}</p>
           {#if !ready}<p>Set the server’s model and provider key, then restart Studio. Credentials stay on the server.</p>{/if}
           <button type="button" class="details-reconnect" disabled={busy} onclick={()=>void configure()}>Reconnect agent</button>
+          {#if lastMetrics}<h4>Turn measurements</h4><p>{lastMetrics.toolCalls} tool calls · {lastMetrics.refusedCalls} refused · {lastMetrics.recoveryAttempts} calls after refusal · {(lastMetrics.elapsedMs/1000).toFixed(1)} s elapsed.</p>{#if lastMetrics.partial}<p>Partial browser measurements; the server completion receipt was not received. Provider requests and token usage unavailable.</p>{:else}<p>{lastMetrics.providerRequests} authoring model requests · {lastMetrics.visionRequests} image requests. {lastMetrics.firstEditMs===undefined?'No confirmed edit.':`First confirmed edit ${(lastMetrics.firstEditMs/1000).toFixed(1)} s.`}</p><p>{lastMetrics.usage?`Reported authoring usage: ${lastMetrics.usage.inputTokens} input / ${lastMetrics.usage.outputTokens} output tokens.`:'Token usage unavailable.'}</p>{/if}<p>Exact model steps and cost unavailable. Concurrent tool durations do not add up to wall time.</p>{/if}
           {#if progress.length}<h4>Progress summaries</h4><p>The chronological transcript includes tool attempts and receipts. Summaries are user-facing progress, not private reasoning.</p><ol>{#each progress as message}<li>{message}</li>{/each}</ol>{/if}
           {#if evidence}<h4>Connection record</h4><p class="details-record">{evidence}</p>{/if}
         </Popover.Content>

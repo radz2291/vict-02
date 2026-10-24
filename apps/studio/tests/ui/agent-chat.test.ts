@@ -23,7 +23,7 @@ describe('rejected Studio chat admission', () => {
     [
       'STUDIO_AGENT_TOOL_FAILED',
       0,
-      'The agent could not complete an edit',
+      'A tool could not finish',
       'No edits were applied.',
     ],
   ])(

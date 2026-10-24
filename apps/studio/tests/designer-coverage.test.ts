@@ -5,6 +5,7 @@ import { screenRecipes } from '../src/lib/designer/recipes.js';
 import { newScreen, designerCatalogs, compileScreen, catalogDescriptors } from '../src/lib/designer/application.js';
 import { prepareAgentEdit, documentCursor, applyAgentProposal, agentContext, type AgentEdit } from '../src/lib/designer/agent-edits.js';
 import { screenStore } from '../src/lib/designer/storage.js';
+import { installedAuthoringRegistry } from '../src/lib/designer/authoring.js';
 
 const recipe = (id: string) => screenRecipes.find(recipe => recipe.id === id)!;
 function add(document: ReturnType<typeof newScreen>, id: string, parentId = document.root, slotName?: string) {
@@ -20,11 +21,12 @@ function add(document: ReturnType<typeof newScreen>, id: string, parentId = docu
 describe('Cycle 1.3 actual Designer coverage', () => {
   it('compiles every standalone recipe through canonical edits and finished application validation', () => {
     for (const entry of screenRecipes.filter(entry => !entry.placements)) add(newScreen('Coverage', 'coverage'), entry.id);
-    expect(screenRecipes.length).toBe(83); // 78 catalog registrations + five semantic recipes.
+    expect(screenRecipes.length).toBe(5+installedAuthoringRegistry.contracts.filter(entry=>entry.seed&&['standalone','part'].includes(entry.eligibility.kind)).length);
     expect(new Set(screenRecipes.map(entry => entry.id)).size).toBe(screenRecipes.length);
     const slider = add(newScreen('Typed source', 'typed-source'), 'slider');
-    expect(slider.nodes['added-slider']).toMatchObject({ props: { value: { type: 'ref', path: 'state.catalog_added-slider_value' } }, outputs: { valueChange: { setState: { key: 'catalog_added-slider_value' } } } });
-    expect(slider.localState['catalog_added-slider_value']).toEqual({ key: 'catalog_added-slider_value', type: 'numberList', initial: [25] });
+    const control=slider.nodes['added-slider'];if(control.kind!=='component'||control.props?.value?.type!=='ref')throw Error('Independent slider binding missing');
+    const key=control.props.value.path.slice(6);expect(control.outputs?.valueChange).toEqual({setState:{key}});
+    expect(slider.localState[key]).toEqual({key,type:'numberList',initial:[25]});
   });
   it('compiles every context-owned part in its declared parent slot and refuses standalone placement', () => {
     for (const entry of screenRecipes.filter(entry => entry.placements)) {

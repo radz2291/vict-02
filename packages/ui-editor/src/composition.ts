@@ -1,4 +1,4 @@
-import type { UiDocument, UiNode, UiEditCommand, UiExtensionDescriptor, UiLocalStateDecl } from '@victframework/ui';
+import { effectiveUiDescriptor, type UiDocument, type UiNode, type UiEditCommand, type UiExtensionDescriptor, type UiLocalStateDecl } from '@victframework/ui';
 import type { TransactionDraft } from './commands.js';
 import { nodeLabel, type EditorLabels } from './inspector-ux.js';
 
@@ -21,9 +21,27 @@ export interface InsertRecipe {
 /** Shared UI/tool affordance guard; the canonical compiler still validates the result. */
 export function canInsertRecipe(recipe: InsertRecipe, document: UiDocument, target: CompositionTarget): boolean {
   if (!recipe.placements) return true;
-  const parent = document.nodes[target.nodeId];
-  return parent?.kind === 'component' && recipe.placements.some(placement =>
-    placement.definitionId === parent.definitionId && placement.slotName === target.slotName);
+  type Context={definitionId:string;slotName:string};
+  type Fill={children:readonly (string|symbol)[];scope:Readonly<Record<string,Fill>>};
+  const results:boolean[]=[];
+  const marker=Symbol('insertion');
+  function visit(id:string|symbol,context:readonly Context[],fills:Readonly<Record<string,Fill>>,ancestors:ReadonlySet<string>){
+    if(id===marker){const nearest=[...context].reverse().find(entry=>recipe.placements!.some(placement=>placement.definitionId===entry.definitionId));results.push(!!nearest&&recipe.placements!.some(placement=>placement.definitionId===nearest.definitionId&&placement.slotName===nearest.slotName));return;}
+    if(typeof id!=='string'||ancestors.has(id))return;const node=document.nodes[id];if(!node)return;const next=new Set([...ancestors,id]);
+    const children=(ids:readonly (string|symbol)[],nextContext=context,nextFills=fills)=>ids.forEach(child=>visit(child,nextContext,nextFills,next));
+    if(node.kind==='element'||node.kind==='portal')children(node.id===target.nodeId?[...node.children,marker]:node.children);
+    else if(node.kind==='component'){
+      const slots:Record<string,readonly (string|symbol)[]>=Object.fromEntries(Object.entries(node.slots??{}).map(([name,fill])=>[name,fill.children]));
+      if(node.id===target.nodeId&&target.slotName)slots[target.slotName]=[...(slots[target.slotName]??[]),marker];
+      const definition=document.componentDefinitions[node.definitionId];
+      if(definition){const substituted=Object.fromEntries(Object.entries(slots).map(([name,ids])=>[name,{children:ids,scope:fills}]));children([definition.root],context,substituted);}
+      else for(const [slotName,ids]of Object.entries(slots))children(ids,[...context,{definitionId:node.definitionId,slotName}]);
+    }else if(node.kind==='slot'){const fill=fills[node.name];if(fill?.children.length)children(fill.children,context,fill.scope);else children(node.fallback??[]);}
+    else if(node.kind==='conditional')node.branches.forEach(branch=>children(branch.children));
+    else if(node.kind==='repeat')children([node.templateRoot]);
+  }
+  visit(document.root,[],{},new Set());
+  return results.length>0&&results.every(Boolean);
 }
 /** Seed local presentation state and source nodes as one canonical transaction. */
 export function insertRecipe(requestId: string, recipe: InsertRecipe, document: UiDocument, nodeId: string, target: CompositionTarget): TransactionDraft {
@@ -86,7 +104,7 @@ export function compositionTargets(
           },
         ];
       if (node.kind === 'component')
-        return (descriptors.find((d) => d.id === node.definitionId)?.slots ?? []).map(
+        return (effectiveUiDescriptor(node,descriptors)?.slots ?? []).map(
           (slotName) => ({
             nodeId: node.id,
             slotName,

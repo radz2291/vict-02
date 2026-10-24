@@ -4,6 +4,10 @@
   "type": "module",
   "description": "The permanent Svelte renderer for Vict Application Plans: the canonical ApplicationRenderer (mount/update/unmount machinery, generic VitApp host, recursive surface traversal, table/form/overlay adapters, route + structural validation, presentation normalization, canonical form-value conversion) plus the shared presentation components and packaged styles. Framework-neutral packages never depend on Svelte — Svelte lives only in this renderer boundary.",
   "exports": {
+    "./authoring": {
+      "types": "./src/catalog/components/authoring.ts",
+      "default": "./src/catalog/components/authoring.ts"
+    },
     ".": {
       "types": "./src/index.ts",
       "svelte": "./src/index.ts",

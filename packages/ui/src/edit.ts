@@ -26,6 +26,7 @@ import { UI_DOCUMENT_SCHEMA } from './document.js';
 import { uiDiagnostic, type UiDiagnostic } from './diagnostics.js';
 import { compileUiDocument, isUiComponentPlanDiagnostic } from './compile.js';
 import { validateUiDocument } from './validate.js';
+import { effectiveUiDescriptor } from './authoring.js';
 import type { UiCatalogs } from './document.js';
 
 export interface UiEditCommandInsert {
@@ -751,11 +752,7 @@ function declaredSlot(
   if (node.kind !== 'component') return false;
   const definition = document.componentDefinitions[node.definitionId];
   if (definition) return Object.hasOwn(definition.slots, slotName);
-  const descriptor = catalogs?.extensions?.find(
-    (entry) =>
-      entry.id === node.definitionId &&
-      (node.revision === undefined || entry.revision === node.revision),
-  );
+  const descriptor = effectiveUiDescriptor(node,catalogs?.extensions ?? []);
   return descriptor?.slots?.includes(slotName) ?? false;
 }
 

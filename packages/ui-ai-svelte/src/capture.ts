@@ -12,15 +12,19 @@ export interface RenderedCapture {
   cropped: boolean;
 }
 
+export class RenderedCaptureError extends Error {
+  constructor(code: string, readonly captureReason: string) { super(code); }
+}
+
 /** Rasterizes the existing, styled DOM; it does not render a source-document substitute.
  * The caller identifies the actual preview element and fences changing preview state.
  * Browser rasterization can refuse unsupported fonts/images rather than inventing pixels. */
 export async function captureRenderedElement(element: HTMLElement, viewport?: HTMLElement): Promise<RenderedCapture> {
   if (!element.isConnected || element.getClientRects().length === 0)
-    throw new Error('STUDIO_CAPTURE_NOT_VISIBLE');
+    throw new RenderedCaptureError('STUDIO_CAPTURE_NOT_VISIBLE', !element.isConnected ? 'frame-disconnected' : 'frame-no-layout');
   await document.fonts.ready;
   const rect = element.getBoundingClientRect();
-  if (rect.width < 1 || rect.height < 1) throw new Error('STUDIO_CAPTURE_NOT_VISIBLE');
+  if (rect.width < 1 || rect.height < 1) throw new RenderedCaptureError('STUDIO_CAPTURE_NOT_VISIBLE', 'frame-zero-size');
   const sourceWidth = Math.ceil(rect.width);
   const sourceHeight = Math.ceil(rect.height);
   const clipping = viewport?.getBoundingClientRect() ?? rect;
@@ -28,11 +32,11 @@ export async function captureRenderedElement(element: HTMLElement, viewport?: HT
   const offsetTop = Math.max(0, Math.ceil(clipping.top - rect.top));
   const width = Math.min(Math.ceil(Math.min(rect.right, clipping.right) - Math.max(rect.left, clipping.left)), RENDER_CAPTURE_LIMITS.width);
   const height = Math.min(Math.ceil(Math.min(rect.bottom, clipping.bottom) - Math.max(rect.top, clipping.top)), RENDER_CAPTURE_LIMITS.height);
-  if (width < 1 || height < 1) throw new Error('STUDIO_CAPTURE_NOT_VISIBLE');
+  if (width < 1 || height < 1) throw new RenderedCaptureError('STUDIO_CAPTURE_NOT_VISIBLE', 'frame-outside-viewport');
   // html-to-image does not preserve scrolled descendant offsets. Refuse such
   // a state instead of supplying a misleading top-of-content image.
   if (element.scrollTop !== 0 || element.scrollLeft !== 0 || Array.from(element.querySelectorAll<HTMLElement>('*')).some(node => node.scrollTop !== 0 || node.scrollLeft !== 0))
-    throw new Error('STUDIO_CAPTURE_NESTED_SCROLL');
+    throw new RenderedCaptureError('STUDIO_CAPTURE_NESTED_SCROLL', 'nested-scroll');
   const { toSvg } = await import('html-to-image');
   const renderedStyle = getComputedStyle(element);
   const svgUrl = await toSvg(element, {

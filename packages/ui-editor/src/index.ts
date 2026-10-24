@@ -66,3 +66,4 @@ export { isSelected, resolveOccurrence } from './occurrence.js';
 export type { OccurrenceReport } from './occurrence.js';
 
 export { interactiveSlotConflicts } from './interactive-slots.js';
+export { authoringRecipe, insertRegisteredComponent, insertRegisteredElement } from './registered-authoring.js';

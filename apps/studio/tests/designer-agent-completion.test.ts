@@ -42,7 +42,9 @@ describe('completion round canonical authoring and bounded discovery',()=>{
  });
  it('seeds independent manual/agent input and boolean control state',()=>{
   const document=newScreen('Fields','fields');const result=edit(document,[{op:'add',recipe:'input',nodeId:'email',parentId:'screen'},{op:'add',recipe:'input',nodeId:'name',parentId:'screen'},{op:'add',recipe:'switch',nodeId:'news',parentId:'screen'}]);expect(result.ok).toBe(true);if(!result.ok)throw Error(result.message);
-  expect(result.document.localState.input_email).toMatchObject({type:'string',initial:''});expect(result.document.localState.input_name).toBeDefined();expect(result.document.localState.field_news).toMatchObject({type:'boolean'});
+  expect(result.document.localState.input_email).toMatchObject({type:'string',initial:''});expect(result.document.localState.input_name).toBeDefined();
+  const news=result.document.nodes.news;if(news.kind!=='component'||news.props?.checked?.type!=='ref')throw Error('Independent switch binding missing');
+  const newsKey=news.props.checked.path.slice(6);expect(result.document.localState[newsKey]).toMatchObject({type:'boolean'});expect(news.outputs?.checkedChange).toEqual({setState:{key:newsKey}});expect(newsKey).not.toBe('accepted');
   const input=result.document.nodes.email;expect(input.kind==='element'&&input.interactions?.[0]).toMatchObject({on:'change',key:'input_email'});
   const manual=insertRecipe('manual',screenRecipes.find(recipe=>recipe.id==='input')!,document,'email',{nodeId:'screen'});expect(manual.commands).toEqual(result.draft.commands.slice(0,manual.commands.length));
  });

@@ -5,6 +5,7 @@ import type {
   UiRenderInstruction,
   UiRenderPlan,
   UiValue,
+  UiAuthoringRule,
 } from '@victframework/ui';
 
 /** The component-ABI marker (amendment §3.2) — declared as an events capability. */
@@ -24,6 +25,7 @@ export interface UiSvelteExtensionProps {
 
 /** Code registration is outside serialized source and requires exact identity. */
 export interface UiSvelteExtensionImplementation {
+  readonly authoringRules?: readonly UiAuthoringRule[];
   readonly extensionId: string;
   readonly revision: string;
   readonly rendererImplementationId: string;
@@ -57,6 +59,7 @@ export interface UiSvelteComponentProps extends UiSvelteExtensionProps {
  * extended with the ABI and slot-capability fields the contract requires.
  */
 export interface UiSvelteComponentImplementation {
+  readonly authoringRules?: readonly UiAuthoringRule[];
   readonly extensionId: string;
   readonly revision: string;
   readonly rendererImplementationId: string;
