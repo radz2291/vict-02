@@ -17,6 +17,14 @@ source, packs without publishing, performs a separate npm installation using the
 normal cache, copies the fixture and records installation evidence. It never
 changes an earlier consumer or the repository dependency tree.
 
+An explicitly authorized update of an existing independent consumer can use
+`--upgrade=true` with the same arguments. This packs all eight artifacts for
+identity, changes only dependency specifications whose tarball bytes changed,
+and runs normal npm install. Before doing so it preserves the old report,
+lock, fixtures, production build and actual framework package directories in
+`proof-history/`; original tarballs remain intact. Its new report explicitly
+labels the result an upgrade, never a fresh installation.
+
 In the resulting independent directory:
 
 ```powershell

@@ -11,22 +11,42 @@ const source = args['--source'];
 if (!source || !args['--directory'] || !args['--evidence']) throw Error('Required --source=<full SHA> --directory=<new absolute directory> --evidence=<absolute evidence directory>');
 const target = path.resolve(args['--directory']);
 const evidence = path.resolve(args['--evidence']);
-if (fs.existsSync(target)) throw Error('Use a fresh disposable directory; existing consumers are preserved.');
+const upgrade = args['--upgrade'] === 'true';
+if (fs.existsSync(target) && !upgrade) throw Error('Use a fresh disposable directory; existing consumers are preserved. Explicit --upgrade=true is required to update an existing isolated install.');
+const previous = upgrade ? JSON.parse(fs.readFileSync(path.join(target, 'installation.json'), 'utf8')) : undefined;
+if (previous && (previous.workspaceLinks || previous.aliases.length || path.resolve(previous.directory) !== target)) throw Error('Upgrade requires the existing independent consumer installation report.');
 const npm = [process.env.npm_execpath, path.join(path.dirname(process.execPath), 'node_modules/npm/bin/npm-cli.js')].find(item => item && fs.existsSync(item));
 if (!npm) throw Error('Cannot locate the installed npm CLI.');
 const run = (command, argv, cwd) => { const result = spawnSync(command, argv, { cwd, encoding: 'utf8', maxBuffer: 40 * 1024 * 1024, windowsHide: true }); if (result.status !== 0) throw Error(`${command} ${argv.join(' ')}\n${result.stdout}\n${result.stderr}`); return result.stdout; };
 const packageDirs = ['contracts', 'ui', 'sdk', 'application', 'ui-svelte', 'ui-editor', 'ui-ai-svelte', 'ui-flow-svelte'];
 run('git', ['rev-parse', '--verify', `${source}^{commit}`], repo);
 run('git', ['diff', '--exit-code', source, '--', ...packageDirs.map(item => `packages/${item}`)], repo);
-fs.mkdirSync(path.join(target, 'artifacts'), { recursive: true });
+const artifactFolder = upgrade ? `artifacts-${source.slice(0, 8)}` : 'artifacts';
+let preservedPrevious;
+if (previous) {
+  preservedPrevious = path.join(target, 'proof-history', `${previous.sourceCandidate.slice(0, 8)}-before-${source.slice(0, 8)}`);
+  if (fs.existsSync(preservedPrevious)) throw Error('Previous proof snapshot already exists; do not overwrite it.');
+  fs.mkdirSync(preservedPrevious, { recursive: true });
+  for (const name of ['package.json', 'package-lock.json', 'installation.json', 'index.html', 'main.ts', 'vite.config.ts', 'App.svelte', 'proof.ts', 'capture.html', 'capture-main.ts', 'CaptureProbe.svelte', 'capture-source.json', 'dist']) {
+    if (fs.existsSync(path.join(target, name))) fs.cpSync(path.join(target, name), path.join(preservedPrevious, name), { recursive: true });
+  }
+  for (const pkg of previous.packages) {
+    const installed = path.join(target, 'node_modules', ...pkg.name.split('/'));
+    if (fs.lstatSync(installed).isSymbolicLink()) throw Error(`Cannot preserve a linked framework package: ${pkg.name}`);
+    fs.cpSync(installed, path.join(preservedPrevious, 'framework-packages', pkg.name.split('/')[1]), { recursive: true });
+  }
+}
+fs.mkdirSync(path.join(target, artifactFolder), { recursive: true });
 fs.mkdirSync(evidence, { recursive: true });
-const manifest = JSON.parse(fs.readFileSync(path.join(fixture, 'package.json'), 'utf8'));
+const manifest = JSON.parse(fs.readFileSync(path.join(upgrade ? target : fixture, 'package.json'), 'utf8'));
 const packages = [];
 for (const directory of packageDirs) {
-  const packed = JSON.parse(run(process.execPath, [npm, 'pack', `./packages/${directory}`, '--json', '--pack-destination', path.join(target, 'artifacts')], repo))[0];
-  const tarball = path.join(target, 'artifacts', packed.filename);
-  manifest.dependencies[packed.name] = `file:artifacts/${packed.filename}`;
-  packages.push({ name: packed.name, version: packed.version, tarball, integrity: packed.integrity, shasum: packed.shasum, sha256: createHash('sha256').update(fs.readFileSync(tarball)).digest('hex'), files: packed.files.length, unpackedSize: packed.unpackedSize });
+  const packed = JSON.parse(run(process.execPath, [npm, 'pack', `./packages/${directory}`, '--json', '--pack-destination', path.join(target, artifactFolder)], repo))[0];
+  const tarball = path.join(target, artifactFolder, packed.filename);
+  const sha256 = createHash('sha256').update(fs.readFileSync(tarball)).digest('hex');
+  const changed = !previous || previous.packages.find(item => item.name === packed.name)?.sha256 !== sha256;
+  if (changed) manifest.dependencies[packed.name] = `file:${artifactFolder}/${packed.filename}`;
+  packages.push({ name: packed.name, version: packed.version, tarball, integrity: packed.integrity, shasum: packed.shasum, sha256, files: packed.files.length, unpackedSize: packed.unpackedSize, updatedByThisInstall: changed, installedSpecification: manifest.dependencies[packed.name] });
 }
 run('git', ['diff', '--exit-code', source, '--', ...packageDirs.map(item => `packages/${item}`)], repo);
 fs.writeFileSync(path.join(target, 'package.json'), JSON.stringify(manifest, null, 2) + '\n');
@@ -44,7 +64,7 @@ for (const pkg of packages) {
 const lock = fs.readFileSync(path.join(target, 'package-lock.json'));
 fs.copyFileSync(path.join(target, 'package-lock.json'), path.join(evidence, 'consumer-package-lock.json'));
 const lockPaths = Object.keys(JSON.parse(lock).packages).filter(Boolean);
-const report = { sourceCandidate: source, createdAt: new Date().toISOString(), directory: target, npmVersion: run(process.execPath, [npm, '--version'], target).trim(), nodeVersion: process.version, packages, packageCount: packages.length, lockSha256: createHash('sha256').update(lock).digest('hex'), lockPackageCount: lockPaths.length, installedPackageCount: lockPaths.filter(item => fs.existsSync(path.join(target, item, 'package.json'))).length, aliases: [], workspaceLinks: false, fixture: 'examples/studio-core-consumer', limitation: 'Builder installation evidence. Browser outcomes and independent gate verdict are recorded separately.' };
+const report = { sourceCandidate: source, installationKind: upgrade ? 'normal npm upgrade of changed tarballs in an existing independent install' : 'fresh independent npm install', previousCandidate: previous?.sourceCandidate, preservedPrevious, createdAt: new Date().toISOString(), directory: target, npmVersion: run(process.execPath, [npm, '--version'], target).trim(), nodeVersion: process.version, packages, packageCount: packages.length, lockSha256: createHash('sha256').update(lock).digest('hex'), lockPackageCount: lockPaths.length, installedPackageCount: lockPaths.filter(item => fs.existsSync(path.join(target, item, 'package.json'))).length, aliases: [], workspaceLinks: false, fixture: 'examples/studio-core-consumer', limitation: 'Builder installation evidence. Browser outcomes and independent gate verdict are recorded separately.' };
 fs.writeFileSync(path.join(evidence, 'installation.json'), JSON.stringify(report, null, 2) + '\n');
 fs.writeFileSync(path.join(target, 'installation.json'), JSON.stringify(report, null, 2) + '\n');
 fs.mkdirSync(path.join(target, 'public'), { recursive: true });
