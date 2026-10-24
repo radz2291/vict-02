@@ -240,7 +240,7 @@
     <button type="button" class="inspection-toggle" aria-label="Inspect structure" aria-expanded={inspectionOpen} aria-controls="structure-inspection" bind:this={inspectionButton} onclick={() => { if (inspectionOpen) closeInspection(); else openInspection(inspected ? 'properties' : 'find'); }}>Inspect</button>
   </div>
   <div class="structure-body">
-    <div class="structure-canvas">
+    <div class="structure-canvas" inert={presentation === 'drawer' && inspectionOpen}>
       <FlowCanvas bind:nodes bind:edges bind:viewport {nodeTypes} {edgeTypes} minZoom={.35} maxZoom={2} colorMode="light" showControls={false} showMiniMap={nodes.length > 12}
         nodesConnectable={allowMoves && !blocked} elementsSelectable={!blocked} deleteKey={null} multiSelectionKey={null} selectionKey={null} autoPanOnNodeFocus={false} isValidConnection={valid}
         onnodeclick={({ node }) => select(node as Node<StructureNodeData>)}
