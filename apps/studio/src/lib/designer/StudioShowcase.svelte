@@ -4,7 +4,7 @@
     Composer, CompositionNavigator, EditorBridge, EditorCanvas, Inspector, Layers,
     SelectionPalette, StateInitialEditor, StateValuesPanel, PanelResizer, authoredOccurrence,
     compositionName, compositionSlots, compositionTrail, firstCompositionSlot, resolveOccurrence,
-    duplicateSubtree, type CompositionFocus, type TransactionDraft,
+    type CompositionFocus, type TransactionDraft,
   } from '@victframework/ui-editor';
   import { ControlScope } from '@victframework/ui-svelte';
   import type { UiRenderPlan, UiValue } from '@victframework/ui';
@@ -14,11 +14,8 @@
   import { screenStore } from './storage.js';
   import { createScreenSimulation, screenDispatcher } from './execution.js';
   import { createShowcaseFixture, showcaseCatalog } from './showcase.js';
-  import { projectStructure, structureId, structureMove, type StructureEditRequest, type StructureHandoff } from './structure.js';
+  import { structureMove, type StructureEditRequest, type StructureHandoff } from './structure.js';
   import StructureView from './StructureView.svelte';
-  import DocumentInspector, { type InspectorPage } from './DocumentInspector.svelte';
-  import EditorContextMenu, { type ContextCommand } from './EditorContextMenu.svelte';
-  import './workspace.css';
   import '@victframework/ui-svelte/styles.css';
   import '@victframework/ui-svelte/catalog.css';
 
@@ -31,22 +28,6 @@
   let documentOpen = $state(true);
   let structureExpanded = $state(false);
   let structureWidth = $state(560);
-  let inspectorOpen = $state(false);
-  let inspectorExpanded = $state(false);
-  let inspectorPage = $state<InspectorPage>('Content');
-  let inspectorReveal = $state<symbol>();
-  let inspectionItem = $state<string>();
-
-  function openInspector(id?: string, page: InspectorPage = 'Content') {
-    if (blocked) return;
-    inspectionItem = id; inspectorPage = page; inspectorOpen = true; documentOpen = true; tools = 'inspector'; inspectorReveal = Symbol('showcase-inspect');
-  }
-  function inspectItem(id: string) {
-    if (!source || blocked) return;
-    const item = projectStructure(source).nodes.find(node => node.id === id);
-    if (item?.data.occurrence) select(item.data.occurrence);
-    inspectionItem = id;
-  }
   let expansionScroll: { x: number; y: number } | undefined;
   async function toggleStructureWorkbench() {
     const expand = !structureExpanded;
@@ -80,7 +61,6 @@
   const source = $derived.by(() => { void version; return bridge?.document; });
   const selected = $derived(snapshot?.selectedOccurrence);
   const selectedNodeId = $derived(source && selected ? resolveOccurrence(selected, source).sourceNodeId : undefined);
-  const inspectorItem = $derived(inspectionItem ?? (source && selectedNodeId ? structureId(source.id, 'node', selectedNodeId) : undefined));
   const blocked = $derived(propertyDraft || canvasDraft || dataDraft);
   const compilation = $derived(source ? compileScreen(source) : undefined);
   const visibleRecipes = $derived(showcaseCatalog.filter(entry => `${entry.label} ${entry.id} ${entry.description} ${entry.category}`.toLowerCase().includes(search.toLowerCase())));
@@ -104,7 +84,6 @@
     recipeId = id; targetNodeId = fixture.targetNodeId; exampleFocus = fixture.parentFocus;
     compositionFocus = fixture.parentFocus; mode = 'design'; view = 'canvas';
     selectedData = ''; plan = undefined; saved = false; issues = [];
-    inspectionItem = undefined;
     resetPreview();
     next.select(authoredOccurrence(next.document, fixture.targetNodeId) ?? `${next.document.id}|${fixture.targetNodeId}`);
     notice = `${showcaseCatalog.find(entry => entry.id === id)?.label} · fresh in-memory example. Switching examples or refreshing discards it.`;
@@ -117,7 +96,6 @@
   function select(occurrence: string) {
     if (blocked) { notice = 'Apply or cancel your draft before changing selection.'; return; }
     bridge?.select(occurrence);
-    inspectionItem = undefined;
   }
   function selectNode(id: string) {
     if (source) select(authoredOccurrence(source, id) ?? `${source.id}|${id}`);
@@ -191,10 +169,10 @@
       const target = find(); target?.scrollIntoView({ block: 'nearest', inline: 'nearest' }); target?.focus({ preventScroll: true });
       notice = target ? 'Located on canvas.' : 'This source has no visible canvas element.'; return;
     }
-    if (request.destination === 'inspector') { openInspector(); return; }
+    if (request.destination === 'inspector') tools = 'inspector';
     if (request.destination === 'data') selectedData = request.key ?? '';
     await tick();
-    const selector = request.destination === 'layers' ? '.layers' : request.destination === 'data' ? '[data-structure-data]' : request.destination === 'actions' ? '[data-structure-actions]' : '.canvas';
+    const selector = request.destination === 'layers' ? '.layers' : request.destination === 'data' ? '[data-structure-data]' : request.destination === 'actions' ? '[data-structure-actions]' : request.destination === 'inspector' ? '.inspector' : '.canvas';
     const element = canvasRoot?.closest('.studio-showcase')?.querySelector<HTMLElement>(selector);
     if (element instanceof HTMLDetailsElement) element.open = true;
     element?.scrollIntoView({ block: 'nearest' }); element?.focus({ preventScroll: true });
@@ -210,34 +188,6 @@
     const element = [...(canvasRoot?.querySelectorAll<HTMLElement>('[data-ui-occ]') ?? [])].find(entry => entry.dataset.uiOcc === occurrence && entry.getBoundingClientRect().width > 0);
     return element ? getComputedStyle(element).getPropertyValue(property) : undefined;
   }
-  let contextObject = $state(false);
-  function prepareContext(target: Element): boolean {
-    if (blocked) { notice = 'Apply or cancel your draft first.'; return false; }
-    const occurrence = target.closest<HTMLElement>('[data-ui-occ]')?.dataset.uiOcc;
-    contextObject = !!occurrence;
-    if (occurrence) select(occurrence);
-    return true;
-  }
-  function contextTools(page: 'insert' | 'arrange') {
-    if (blocked || !source) return;
-    if (!contextObject) selectNode(compositionFocus?.nodeId ?? source.root);
-    inspectorOpen = false; tools = 'palette'; palettePage = page;
-  }
-  let palettePage = $state<'format' | 'insert' | 'arrange' | 'connect'>('format');
-  const contextCommands = $derived<ContextCommand[]>(contextObject ? [
-    { label: 'Inspect', action: () => openInspector() },
-    { label: 'Insert…', action: () => contextTools('insert') },
-    { label: 'Arrange…', action: () => contextTools('arrange') },
-    { label: 'Open composition', action: () => openComposition() },
-    { label: 'Reveal in Structure', action: () => { view = 'structure'; documentOpen = true; }, separator: true },
-    { label: 'Duplicate', disabled: selectedNodeId === source?.root, action: () => { if (source && selectedNodeId) { const copy = duplicateSubtree(source, selectedNodeId); if (copy && apply(copy.draft)) selectNode(copy.nodeId); } }, separator: true },
-    { label: 'Delete', disabled: selectedNodeId === source?.root, action: () => { if (source && selectedNodeId && selectedNodeId !== source.root && apply({ requestId: crypto.randomUUID(), reason: 'Delete selection', commands: [{ op: 'remove', nodeId: selectedNodeId, detachFromParent: true }] })) selectNode(source.root); } },
-  ] : [
-    { label: 'Insert…', action: () => contextTools('insert') },
-    { label: 'Layers', action: () => { view = 'canvas'; documentOpen = true; } },
-    { label: 'Structure', action: () => { view = 'structure'; documentOpen = true; } },
-    { label: 'Reset preview', action: resetPreview, separator: true },
-  ]);
 </script>
 
 <ControlScope>
@@ -272,12 +222,9 @@
     {#if issues.length}<ul class="issues" role="alert">{#each issues as issue}<li>{issue.code}: {issue.message}</li>{/each}</ul>{/if}
     <div class="editor-grid" class:document-open={documentOpen} class:structure-open={documentOpen && view === 'structure'} class:structure-expanded={structureExpanded && documentOpen && view === 'structure'} style:--showcase-drawer-width={`${view === 'structure' ? structureWidth : 280}px`}>
       <aside class="layers showcase-document" hidden={!documentOpen} tabindex="-1" aria-label="Example Document">
-        <nav class="toolbar" aria-label="Example Document sections"><button type="button" disabled={blocked} aria-pressed={view === 'canvas'} onclick={() => view = 'canvas'}>Layers</button><button type="button" disabled={blocked} aria-expanded={inspectorOpen} onclick={() => openInspector()}>Inspect</button><button type="button" disabled={blocked} aria-pressed={view === 'structure'} onclick={() => view = 'structure'}>Structure</button>{#if view === 'structure'}<button type="button" aria-label={structureExpanded ? 'Restore Structure' : 'Expand Structure'} onclick={() => void toggleStructureWorkbench()}>{structureExpanded ? 'Restore' : 'Expand'}</button>{/if}</nav>
-        <div class="showcase-document-content" inert={inspectorOpen && inspectorExpanded}><div class="showcase-layers" hidden={view !== 'canvas'}>{#if plan}<Layers {plan} document={source} selectedOccurrence={selected} onSelect={select} onApply={apply} componentDescriptors={catalogDescriptors} onOpenComposition={navigateComposition} />{/if}</div>
-        <div class="structure" hidden={view !== 'structure'}><StructureView presentation="drawer" active={documentOpen && view === 'structure' && !inspectorExpanded} document={source} revision={snapshot.revision} {selectedNodeId} {blocked} descriptors={catalogDescriptors} recipes={screenRecipes} onSelect={selectStructure} onDeselect={() => { if (!blocked) bridge?.select(undefined); }} onMove={move} onNotice={message => notice = message} onNavigate={structureNavigate} onDismiss={() => { if (structureExpanded) void toggleStructureWorkbench(); else documentOpen = false; }} onInspect={(id, page) => openInspector(id, page === 'relationships' ? 'Relationships' : 'Content')} onInspectItem={id => inspectionItem = id} externalInspectionOpen={inspectorOpen} onCloseInspector={() => { if (!blocked) inspectorOpen = false; }} /></div></div>
-        <DocumentInspector document={source} itemId={inspectorItem} bind:open={inspectorOpen} bind:expanded={inspectorExpanded} bind:page={inspectorPage} revealSignal={inspectorReveal} {blocked} onSelectItem={inspectItem} onNavigate={structureNavigate} onNotice={message => notice = message}>
-          {#snippet editor(section)}<Inspector contextual {section} document={source} selectedOccurrence={selected} onApply={apply} lastIssues={issues} componentDescriptors={catalogDescriptors} knownActionIds={designerCatalogs.actionIds} knownRouteIds={designerCatalogs.routeIds} {actionInputs} readEffective={effective} onTextDraftChange={(dirty: boolean) => propertyDraft = dirty} />{/snippet}
-        </DocumentInspector>
+        <nav class="toolbar" aria-label="Example Document sections"><button type="button" disabled={blocked} aria-pressed={view === 'canvas'} onclick={() => view = 'canvas'}>Layers</button><button type="button" disabled={blocked} aria-pressed={view === 'structure'} onclick={() => view = 'structure'}>Structure</button>{#if view === 'structure'}<button type="button" aria-label={structureExpanded ? 'Restore Structure' : 'Expand Structure'} onclick={() => void toggleStructureWorkbench()}>{structureExpanded ? 'Restore' : 'Expand'}</button>{/if}</nav>
+        <div hidden={view !== 'canvas'}>{#if plan}<Layers {plan} document={source} selectedOccurrence={selected} onSelect={select} onApply={apply} componentDescriptors={catalogDescriptors} onOpenComposition={navigateComposition} />{/if}</div>
+        <div class="structure" hidden={view !== 'structure'}><StructureView presentation="drawer" active={documentOpen && view === 'structure'} document={source} revision={snapshot.revision} {selectedNodeId} {blocked} descriptors={catalogDescriptors} recipes={screenRecipes} onSelect={selectStructure} onDeselect={() => { if (!blocked) bridge?.select(undefined); }} onMove={move} onNotice={message => notice = message} onNavigate={structureNavigate} onDismiss={() => { if (structureExpanded) void toggleStructureWorkbench(); else documentOpen = false; }} /></div>
       </aside>
       <div class="showcase-resizer" hidden={!documentOpen || view !== 'structure' || structureExpanded}><PanelResizer label="Example Document width" value={structureWidth} min={440} max={800} reverse onChange={(value: number) => structureWidth = value} /></div>
       <div class="preview-column">
@@ -286,7 +233,7 @@
           <button type="button" disabled={blocked} onclick={() => openComposition()}>Open selected composition</button>
           {#if compositionFocus}<CompositionNavigator document={source} focus={compositionFocus} descriptors={catalogDescriptors} disabled={blocked} onNavigate={navigateComposition} />{/if}
         </div>
-        <div class="canvas" bind:this={canvasRoot}><EditorContextMenu class="showcase-canvas-context" label="Showcase canvas context commands" disabled={mode === 'interact'} prepare={prepareContext} commands={contextCommands}>
+        <div class="canvas" bind:this={canvasRoot}>
           {#key recipeId}
               <EditorCanvas document={source} catalogs={designerCatalogs} extensions={catalogDescriptors} extensionImplementations={catalogImplementations}
                 {compositionFocus} onOpenComposition={openComposition} interactionMode={mode}
@@ -298,7 +245,7 @@
                 onTextEditingChange={(dirty: boolean) => canvasDraft = dirty}
                 onRenderDiagnostic={(diagnostic: { code: string; message: string }) => issues = [...issues.slice(-4), diagnostic]} ariaLabel="Showcase canvas" />
           {/key}
-        </EditorContextMenu></div>
+        </div>
         <details><summary>Insert and arrange (Composer)</summary><Composer document={source} {selectedNodeId} recipes={screenRecipes} descriptors={catalogDescriptors} {compositionFocus} onApply={apply} onInserted={selectNode} onDetached={selectNode} /></details>
         <details data-structure-data tabindex="-1"><summary>Data: authored starting values</summary>
           <label>State declaration <select aria-label="Authored state declaration" value={selectedData} disabled={blocked} onchange={event => selectedData = event.currentTarget.value}><option value="">Choose a value</option>{#each Object.values(source.localState) as declaration}<option value={declaration.key}>{declaration.key} · {declaration.type}</option>{/each}</select></label>
@@ -307,7 +254,10 @@
         <details data-structure-actions tabindex="-1"><summary>Actions: declared simulation</summary><p>This screen declares demo.submit. Its input is message and accepted; execution is simulated in Interact. Source relationships do not prove an action ran.</p><code>demo.submit → local screen simulation</code></details>
         <details><summary>Preview values (temporary runtime data)</summary><p>Interact changes these values. Action calls use the local screen simulation with no live effects.</p>{#key recipeId}<StateValuesPanel localState={source.localState} stateValues={runtimeValues} onChange={(key: string, value: UiValue | undefined) => { const next = { ...runtimeValues }; if (value === undefined) delete next[key]; else next[key] = value; runtimeValues = next; }} />{/key}</details>
       </div>
-      <div class="inspector-example-controls toolbar"><button type="button" disabled={blocked} aria-pressed={tools === 'inspector' && inspectorOpen} onclick={() => openInspector()}>Docked Inspector</button><button type="button" disabled={blocked} aria-pressed={tools === 'palette'} onclick={() => { inspectorOpen = false; tools = 'palette'; }}>Selection palette</button></div>
+      <aside class="inspector" tabindex="-1"><h3>Selected source</h3>
+        <div class="toolbar"><button type="button" disabled={blocked} aria-pressed={tools === 'inspector'} onclick={() => tools = 'inspector'}>Docked Inspector</button><button type="button" disabled={blocked} aria-pressed={tools === 'palette'} onclick={() => tools = 'palette'}>Selection palette</button></div>
+        {#if tools === 'inspector'}<Inspector document={source} selectedOccurrence={selected} onApply={apply} lastIssues={issues} componentDescriptors={catalogDescriptors} knownActionIds={designerCatalogs.actionIds} knownRouteIds={designerCatalogs.routeIds} {actionInputs} readEffective={effective} onTextDraftChange={(dirty: boolean) => propertyDraft = dirty} />{:else}<p>Select source on the design canvas to use its floating Format, Insert, Arrange and Connect tools. F10 focuses the palette.</p>{/if}
+      </aside>
     </div>
     <details><summary>Canonical source (read only)</summary><pre>{JSON.stringify(source, null, 2)}</pre></details>
   {/if}
@@ -316,7 +266,7 @@
 
 {#snippet palette()}
   {#if source && selectedNodeId}
-    <SelectionPalette bind:page={palettePage} name={compositionName(source, selectedNodeId)} format={formatTools} insert={insertTools} arrange={arrangeTools} connect={connectTools} locked={blocked} onOpenComposition={() => openComposition()} />
+    <SelectionPalette name={compositionName(source, selectedNodeId)} format={formatTools} insert={insertTools} arrange={arrangeTools} connect={connectTools} locked={blocked} onOpenComposition={() => openComposition()} />
   {/if}
 {/snippet}
 {#snippet formatTools()}{#if source}<Inspector contextual document={source} selectedOccurrence={selected} onApply={apply} componentDescriptors={catalogDescriptors} readEffective={effective} onTextDraftChange={(dirty: boolean) => propertyDraft = dirty} />{/if}{/snippet}
@@ -326,7 +276,7 @@
 
 <style>
   .studio-showcase { color: #243047; font: 14px/1.5 system-ui, sans-serif; }
-  h2 { font-size: 24px; margin: 0 0 12px; }
+  h2 { font-size: 24px; margin: 0 0 12px; } h3 { font-size: 15px; margin: 0 0 12px; }
   header p { max-width: 900px; color: #59677b; }
   .catalog-picker, .toolbar, .composition-tools { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
   .catalog-picker { align-items: end; padding: 16px; background: #edf1f7; border-radius: 10px; }
@@ -337,15 +287,12 @@
   .editor-grid { position: relative; display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; align-items: start; }
   .editor-grid.document-open { grid-template-columns: minmax(340px, 1fr) 6px minmax(280px, var(--showcase-drawer-width)); }
   .editor-grid > .preview-column { grid-column: 1; grid-row: 1; }
-  .showcase-document { position: relative; overflow: hidden; grid-column: 3; grid-row: 1; padding: 0; height: 600px; display: flex; flex-direction: column; }
+  .showcase-document { grid-column: 3; grid-row: 1; padding: 0; height: 600px; display: flex; flex-direction: column; }
   .showcase-document > nav { padding: 10px; flex-shrink: 0; }
-  .showcase-document-content { display: flex; flex: 1; flex-direction: column; min-height: 140px; overflow: hidden; }
-  .showcase-layers { overflow: auto; flex: 1; min-height: 0; }
-  .showcase-document-content > [hidden] { display: none; }
-  .inspector-example-controls { grid-column: 1 / -1; }
-  :global(.showcase-canvas-context) { min-height: 100%; }
+  .showcase-document > div:not(.structure) { overflow: auto; }
   .showcase-resizer { display: grid; grid-column: 2; grid-row: 1; height: 600px; }
-  .showcase-document[hidden], .showcase-resizer[hidden] { display: none; }
+  .showcase-document[hidden], .showcase-resizer[hidden], .showcase-document > [hidden] { display: none; }
+  .inspector { grid-column: 1 / -1; }
   .editor-grid.structure-expanded > .showcase-document { position: absolute; grid-column: 1 / -1; grid-row: 1; inset: 0; width: auto; height: min(900px, calc(100dvh - 32px)); max-height: none; z-index: 20; }
   aside { padding: 12px; background: white; border: 1px solid #d7dfe9; border-radius: 8px; max-height: 850px; overflow: auto; min-width: 0; }
   .preview-column { min-width: 0; } .composition-tools { margin-bottom: 10px; }
@@ -353,6 +300,6 @@
   .structure { flex: 1; min-height: 0; }
   details { border: 1px solid #d7dfe9; border-radius: 8px; background: white; padding: 12px; margin-top: 12px; }
   summary { cursor: pointer; font-weight: 600; } details[open] > summary { margin-bottom: 14px; } pre { overflow: auto; max-height: 400px; font-size: 12px; }
-  @media(max-width: 1100px) { .editor-grid.document-open { grid-template-columns: minmax(0, 1fr); } .showcase-document { position: relative; overflow: hidden; grid-column: 1; grid-row: 2; height: 480px; } .showcase-resizer { display: none; } }
+  @media(max-width: 1100px) { .editor-grid.document-open { grid-template-columns: minmax(0, 1fr); } .showcase-document { grid-column: 1; grid-row: 2; height: 480px; } .showcase-resizer { display: none; } .inspector { grid-column: 1 / -1; max-height: none; } }
   @media(max-width: 700px) { aside { margin-bottom: 12px; } .catalog-picker label { width: 100%; } .canvas { height: 460px; } }
 </style>

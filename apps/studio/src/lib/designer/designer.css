@@ -149,7 +149,6 @@ body:has(.finished-screen) {
   font-size: 12px;
 }
 .document-drawer {
-  position: relative;
   min-width: 0;
   min-height: 0;
   display: flex;
@@ -158,11 +157,6 @@ body:has(.finished-screen) {
   border-left: 1px solid #e1e6ee;
   overflow: hidden;
 }
-.document-content { display: flex; flex-direction: column; flex: 1; min-height: 140px; min-width: 0; overflow: hidden; }
-.document-inspector-host { display: contents; }
-.document-inspector-host[hidden] { display: none; }
-.layers-context { display: flex; flex-direction: column; flex: 1; min-height: 0; }
-.layers-inspect { align-self: flex-end; margin: 3px 10px; border: 0; border-radius: 4px; padding: 4px 8px; background: transparent; color: #5269bd; font-size: 11px; }
 .document-drawer[hidden], .document-structure[hidden], .sidebar-body[hidden], .drawer-resizer[hidden] { display: none !important; }
 .document-structure { display: flex; flex: 1; min-height: 0; min-width: 0; overflow: hidden; }
 .sidebar-tabs .expand-structure { flex: 0 0 32px; font-size: 17px; padding: 0; border-bottom: 0; }

@@ -7,17 +7,14 @@
   import { projectStructure, filterStructure, compactStructure, structureNodePresentation, structureFacts, structureId, parseStructureId, structureMove, type StructureNodeData, type StructureEditRequest, type StructureHandoff } from './structure.js';
   import { Menubar } from '@victframework/ui-svelte/catalog/menubar';
   import WorkspaceMenu from './WorkspaceMenu.svelte';
-  import EditorContextMenu, { type ContextCommand } from './EditorContextMenu.svelte';
 
-  let { document, revision, selectedNodeId, blocked = false, active = true, presentation = 'workspace', descriptors = [], recipes = [], onSelect, onDeselect, onMove, onNotice, onNavigate, onDismiss, onInspect, onInspectItem, externalInspectionOpen = false, onCloseInspector }: {
+  let { document, revision, selectedNodeId, blocked = false, active = true, presentation = 'workspace', descriptors = [], recipes = [], onSelect, onDeselect, onMove, onNotice, onNavigate, onDismiss }: {
     document: UiDocument; revision: string; selectedNodeId?: string; blocked?: boolean; active?: boolean;
     descriptors?: readonly UiExtensionDescriptor[]; recipes?: readonly InsertRecipe[];
     onSelect: (occurrence: string) => void; onMove: (request: StructureEditRequest) => boolean;
     onDeselect?: () => void;
     presentation?: 'workspace' | 'drawer'; onDismiss?: () => void;
     onNotice: (message: string) => void; onNavigate?: (request: StructureHandoff) => void;
-    onInspect?: (id: string | undefined, page: 'properties' | 'relationships') => void;
-    onInspectItem?: (id: string) => void; externalInspectionOpen?: boolean; onCloseInspector?: () => void;
   } = $props();
   let nodes = $state<Node<StructureNodeData>[]>([]);
   let edges = $state<Edge[]>([]);
@@ -132,7 +129,6 @@
     if (blocked) { onNotice('Apply or cancel your draft before changing selection.'); return; }
     inspectedId = node.id;
     if (node.data.occurrence) onSelect(node.data.occurrence);
-    onInspectItem?.(node.id);
   }
   async function reveal(node: Node<StructureNodeData>) {
     if (blocked) { onNotice('Apply or cancel your draft before changing selection.'); return; }
@@ -146,7 +142,6 @@
     if (restoreFocus) inspectionButton?.focus({ preventScroll: true });
   }
   function openInspection(page: typeof inspectionPage = 'properties') {
-    if (onInspect && (page === 'properties' || page === 'relationships')) { closeInspection(false); onInspect(inspectedId, page); return; }
     allowMoves = page === 'move'; inspectionPage = page; inspectionOpen = true;
   }
   function deselect() {
@@ -167,14 +162,14 @@
     // Run before Flow's wrapper, which otherwise clears its own selection even
     // when Escape is only closing our dock. Keep the two selection owners equal.
     event.preventDefault(); event.stopPropagation();
-    if (inspectionOpen) closeInspection(); else if (externalInspectionOpen) onCloseInspector?.(); else if (inspectedId || !onDismiss) deselect(); else onDismiss();
+    if (inspectionOpen) closeInspection(); else if (inspectedId || !onDismiss) deselect(); else onDismiss();
   }
   function beginMove() {
     moveSource = inspected?.data.occurrence && inspected.data.sourceId !== document.root ? inspected.id : '';
     moveTarget = ''; openInspection('move');
   }
   function commitMove(request: StructureEditRequest) {
-    if (onMove(request)) { allowMoves = false; moveSource = ''; moveTarget = ''; openInspection('properties'); }
+    if (onMove(request)) { allowMoves = false; inspectionPage = 'properties'; moveSource = ''; moveTarget = ''; }
   }
   function escape(event: KeyboardEvent) {
     if (!active || event.defaultPrevented || event.key !== 'Escape' || activeMenu) return;
@@ -198,33 +193,6 @@
   }
   const moveSources = $derived(graph.nodes.filter(node => node.data.occurrence && node.data.sourceId !== document.root));
   const targetOptions = $derived(graph.nodes.filter(node => !!moveSource && valid({ source: moveSource, target: node.id, sourceHandle: 'content', targetHandle: 'container' })));
-  let contextNode = $state(false);
-  function prepareContext(target: Element): boolean {
-    if (blocked) { onNotice('Apply or cancel your draft first.'); return false; }
-    const wrapper = target.closest<HTMLElement>('.svelte-flow__node');
-    const node = wrapper && nodes.find(node => node.id === wrapper.dataset.id);
-    contextNode = !!node;
-    if (node) select(node);
-    return true;
-  }
-  const contextCommands = $derived<ContextCommand[]>(contextNode && inspected ? [
-    { label: 'Inspect', action: () => openInspection('properties') },
-    { label: 'Inspect relationships', action: () => openInspection('relationships') },
-    ...(inspected.data.childCount ? [{ label: collapsed.has(inspected.id) ? 'Expand group' : 'Collapse group', action: () => { if (inspected) collapse(inspected.id); } }] : []),
-    ...(inspected.data.occurrence ? [
-      { label: 'Locate on canvas', action: () => navigate('design'), separator: true },
-      { label: 'Reveal in Layers', action: () => navigate('layers') },
-      { label: 'Move inside…', action: beginMove, disabled: inspected.data.sourceId === document.root },
-    ] : []),
-    ...(inspected.data.kind === 'state' ? [{ label: 'Edit in Data', action: () => navigate('data') }] : []),
-    ...(inspected.data.kind === 'action' ? [{ label: 'Open Actions', action: () => navigate('actions') }] : []),
-  ] : [
-    { label: 'Frame all nodes', action: () => locate() },
-    { label: 'Arrange nodes', action: () => layoutVersion++ },
-    { label: 'Expand all groups', action: () => collapsed = new Set() },
-    { label: direction === 'RIGHT' ? 'Layout top to bottom' : 'Layout left to right', action: () => direction = direction === 'RIGHT' ? 'DOWN' : 'RIGHT' },
-    { label: 'Find source item', action: () => openInspection('find'), separator: true },
-  ]);
 </script>
 <svelte:window onkeydown={escape} onkeydowncapture={graphEscape} />
 <section class="structure-view" class:drawer-presentation={presentation === 'drawer'} class:inspection-open={inspectionOpen} aria-label="Source structure" bind:this={structureElement}>
@@ -269,10 +237,9 @@
     </Menubar.Root>
     {#if focusedId}<button class="scope-control" type="button" onclick={() => { focusedId = undefined; search = ''; }}>Show whole screen</button>{/if}
     <span class="structure-count" aria-live="polite">{nodes.length} items</span>
-    <button type="button" class="inspection-toggle" aria-label="Inspect structure" aria-expanded={inspectionOpen || externalInspectionOpen} aria-controls={onInspect ? undefined : 'structure-inspection'} bind:this={inspectionButton} onclick={() => { if (inspectionOpen) closeInspection(); else openInspection(inspected ? 'properties' : 'find'); }}>Inspect</button>
+    <button type="button" class="inspection-toggle" aria-label="Inspect structure" aria-expanded={inspectionOpen} aria-controls="structure-inspection" bind:this={inspectionButton} onclick={() => { if (inspectionOpen) closeInspection(); else openInspection(inspected ? 'properties' : 'find'); }}>Inspect</button>
   </div>
   <div class="structure-body">
-    <EditorContextMenu class="structure-context" label="Structure context commands" prepare={prepareContext} commands={contextCommands}>
     <div class="structure-canvas" inert={presentation === 'drawer' && inspectionOpen}>
       <FlowCanvas bind:nodes bind:edges bind:viewport {nodeTypes} {edgeTypes} minZoom={.35} maxZoom={2} colorMode="light" showControls={false} showMiniMap={nodes.length > 12}
         nodesConnectable={allowMoves && !blocked} elementsSelectable={!blocked} deleteKey={null} multiSelectionKey={null} selectionKey={null} autoPanOnNodeFocus={false} isValidConnection={valid}
@@ -288,7 +255,6 @@
       {#if layoutStatus}<p class="structure-status" role="status">{layoutStatus}</p>{/if}
       {#if !nodes.length}<div class="structure-empty"><p>No matching items</p><button type="button" onclick={() => { search = ''; focusedId = undefined; }}>Clear search</button></div>{/if}
     </div>
-    </EditorContextMenu>
     {#if inspectionOpen}
       <aside class="structure-details" id="structure-inspection" aria-label="Structure inspection">
         <div class="inspection-heading"><strong title={inspected?.data.label}>{inspected ? structureNodePresentation(document, inspected.data).label : 'Find source item'}</strong><button type="button" aria-label="Close inspection" onclick={() => closeInspection()}>×</button></div>
@@ -297,13 +263,13 @@
             <h3>Move inside</h3>
             <label>Content<select aria-label="Content to move" value={moveSource} onchange={event => { moveSource = event.currentTarget.value; moveTarget = ''; }}><option value="">Choose content</option>{#each moveSources as node (node.id)}<option value={node.id}>{structureNodePresentation(document, node.data).label} · {node.data.sourceId}</option>{/each}</select></label>
             <label>Container<select aria-label="Move destination" value={moveTarget} onchange={event => moveTarget = event.currentTarget.value}><option value="">Choose container</option>{#each targetOptions as node (node.id)}<option value={node.id}>{structureNodePresentation(document, node.data).label} · {node.data.sourceId}</option>{/each}</select></label>
-            <div class="move-actions"><button type="button" disabled={blocked || !moveSource || !targetOptions.some(node => node.id === moveTarget)} onclick={() => commitMove({ documentId: document.id, revision, source: moveSource, target: moveTarget })}>Move</button><button type="button" onclick={() => openInspection('properties')}>Cancel</button></div>
+            <div class="move-actions"><button type="button" disabled={blocked || !moveSource || !targetOptions.some(node => node.id === moveTarget)} onclick={() => commitMove({ documentId: document.id, revision, source: moveSource, target: moveTarget })}>Move</button><button type="button" onclick={() => { allowMoves = false; inspectionPage = 'properties'; }}>Cancel</button></div>
             <p class="inspection-hint">Moves content in the document. Undo restores its previous place.</p>
           </div>
         {:else}
           <div class="inspection-pages" aria-label="Inspection view">
-            <button type="button" aria-pressed={inspectionPage === 'properties'} onclick={() => openInspection('properties')}>Properties</button>
-            <button type="button" aria-pressed={inspectionPage === 'relationships'} onclick={() => openInspection('relationships')}>Relationships</button>
+            <button type="button" aria-pressed={inspectionPage === 'properties'} onclick={() => inspectionPage = 'properties'}>Properties</button>
+            <button type="button" aria-pressed={inspectionPage === 'relationships'} onclick={() => inspectionPage = 'relationships'}>Relationships</button>
             <button type="button" aria-pressed={inspectionPage === 'find'} onclick={() => inspectionPage = 'find'}>Find</button>
           </div>
           <div class="inspection-content">
@@ -348,7 +314,6 @@
   .inspection-toggle { background: transparent; border-color: transparent; } .inspection-toggle[aria-expanded=true] { color: #405abd; background: #edf1ff; }
   .scope-control { border: 0; background: #eef1f7; white-space: nowrap; }
   .structure-body { display: flex; flex: 1; min-height: 0; overflow: hidden; }
-  .structure-body :global(.structure-context) { display: flex; flex: 1; min-height: 0; min-width: 0; }
   .structure-canvas { position: relative; flex: 1; min-width: 0; min-height: 0; }
   .structure-canvas :global(.svelte-flow) { --xy-background-color: #f8fafc; --xy-minimap-background-color: #fff; --xy-controls-button-background-color: #fff; }
   .structure-canvas :global(.svelte-flow__minimap) { width: 110px; height: 72px; }

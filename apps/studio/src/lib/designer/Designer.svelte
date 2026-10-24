@@ -17,9 +17,7 @@
   import AgentChat from './AgentChat.svelte';
   import { captureDesignerPreview } from './visual-observation.js';
   import StructureView from './StructureView.svelte';
-  import DocumentInspector, { type InspectorPage } from './DocumentInspector.svelte';
-  import EditorContextMenu, { type ContextCommand } from './EditorContextMenu.svelte';
-  import { projectStructure, structureId, structureMove, type StructureEditRequest, type StructureHandoff } from './structure.js';
+  import { structureMove, type StructureEditRequest, type StructureHandoff } from './structure.js';
   function moveFromStructure(request: StructureEditRequest): boolean {
     if (!bridge) return false;
     const prepared = structureMove(bridge.document, bridge.getSnapshot().revision, request, textDraftDirty || sourceDraftDirty || renamingScreen, catalogDescriptors, screenRecipes);
@@ -28,7 +26,7 @@
   }
   function selectStructureNode(occurrence: string) {
     if (textDraftDirty || sourceDraftDirty || renamingScreen) { notice = 'Apply or cancel your draft first.'; return; }
-    bridge?.select(occurrence); paletteRequested = false; inspectionItem = undefined;
+    bridge?.select(occurrence); paletteRequested = false;
   }
   async function locateOnCanvas(occurrence: string) {
     if (!source || textDraftDirty || sourceDraftDirty || renamingScreen) return;
@@ -54,11 +52,12 @@
       drawerTab = 'Layers'; drawerOpen = true;
     } else {
       if (request.destination === 'design' && request.occurrence) { await locateOnCanvas(request.occurrence); return; }
-      if (request.destination === 'inspector') { openInspector(); return; }
+      closeDrawer(); changeMode('design');
+      if (request.destination === 'inspector' && request.occurrence) selectOccurrence(request.occurrence, true);
     }
     notice = request.destination === 'actions' ? `Declared action ${request.key ?? ''} · simulated execution is available in Interact.` : `Opened ${request.destination} for the selected source.`;
     await tick();
-    const target = request.destination === 'layers' || request.destination === 'data' || request.destination === 'actions' ? '#document-drawer' : '.design-frame .uv-canvas';
+    const target = request.destination === 'layers' || request.destination === 'data' || request.destination === 'actions' ? '#document-drawer' : request.destination === 'inspector' ? '.selection-palette' : '.design-frame .uv-canvas';
     globalThis.document.querySelector<HTMLElement>(target)?.focus({ preventScroll: true });
   }
   import { documentCursor, applyAgentProposal, type AgentProposal } from './agent-edits.js';
@@ -81,7 +80,7 @@
   const selected = $derived(snapshot?.selectedOccurrence);
   const selectedNode = $derived(source && selected ? resolveOccurrence(selected, source).node : undefined);
   let compositionFocus=$state<CompositionFocus>();
-  let canvasScroll=$state<HTMLElement | null>(null);
+  let canvasScroll=$state<HTMLDivElement>();
   const selectedSlots=$derived(source && selectedNode?compositionSlots(source,selectedNode.id,catalogDescriptors):[]);
   const focusedMembers=$derived(source && compositionFocus?compositionMembers(source,compositionFocus):undefined);
   $effect(()=>{if(source && compositionFocus && !compositionSlots(source,compositionFocus.nodeId,catalogDescriptors).includes(compositionFocus.slotName)) {compositionFocus=undefined;notice='Composition is no longer available. Returned to the screen.';}});
@@ -119,28 +118,6 @@
   let issues = $state<readonly { code: string; message: string }[]>([]);
   let notice = $state('Start with an empty screen. Add a heading or section to begin.');
   let drawerTab = $state('Layers');
-  let inspectorOpen = $state(false);
-  let inspectorExpanded = $state(false);
-  let inspectorPage = $state<InspectorPage>('Content');
-  let inspectorReveal = $state<symbol>();
-  let inspectionItem = $state<string>();
-  const inspectorItem = $derived(inspectionItem ?? (source && selectedNode ? structureId(source.id, 'node', selectedNode.id) : undefined));
-  function openInspector(id?: string, page: InspectorPage = 'Content') {
-    if (textDraftDirty || sourceDraftDirty || renamingScreen) { notice = 'Apply or cancel your draft first.'; return; }
-    if (drawerTab !== 'Layers' && drawerTab !== 'Structure') drawerTab = 'Layers';
-    drawerOpen = true; inspectorOpen = true; inspectionItem = id; inspectorPage = page;
-    paletteRequested = false; inspectorReveal = Symbol('inspect');
-  }
-  function closeInspector() {
-    if (textDraftDirty || sourceDraftDirty) { notice = 'Apply or cancel your draft first.'; return; }
-    inspectorOpen = false; inspectorExpanded = false;
-  }
-  function inspectItem(id: string) {
-    if (!source || textDraftDirty || sourceDraftDirty) return;
-    const item = projectStructure(source).nodes.find(node => node.id === id);
-    if (item?.data.occurrence) selectStructureNode(item.data.occurrence);
-    inspectionItem = id;
-  }
   let formatSection = $state<'Content' | 'Style' | 'Behavior'>('Style');
   let editTextSignal = $state<symbol>();
   let selectionToolsReveal = $state<symbol>();
@@ -151,7 +128,7 @@
   const dataName = (key:string) => editorLabels.state[key as keyof typeof editorLabels.state] ?? key;
   const dataType = (type:string) => ({string:'Text',boolean:'Yes / No',number:'Number',stringList:'Text list',numberList:'Number list'}[type] ?? type);
   function dataPreview(value:unknown) {return Array.isArray(value) ? `${value.length} items` : typeof value==='boolean' ? value?'Yes':'No' : value === '' ? 'Empty' : String(value);}
-  function changeDocumentTab(tab:string) {if(textDraftDirty || sourceDraftDirty) {notice='Apply or cancel your draft first.';return;} drawerTab=tab;selectedData=undefined;}
+  function changeDocumentTab(tab:string) {if(dataDraftDirty || sourceDraftDirty) {notice='Apply or cancel your draft first.';return;} drawerTab=tab;selectedData=undefined;}
   function openData(key?:string) {if(dataDraftDirty) {notice='Apply or cancel your draft first.';return;} selectedData=key;}
   async function toggleDocument() {if(drawerOpen)closeDrawer();else {if(textDraftDirty){notice='Apply or cancel your edit first.';return;} drawerOpen=true;await tick();globalThis.document.querySelector<HTMLButtonElement>('.sidebar-tabs button[aria-pressed=true]')?.focus();}}
 
@@ -163,13 +140,12 @@
   let mode = $state<'design' | 'interact'>('design');
   let drawerOpen = $state(false);
   const structureOpen = $derived(drawerOpen && drawerTab === 'Structure');
-  const inspectorVisible = $derived(drawerOpen && (drawerTab === 'Layers' || drawerTab === 'Structure') && inspectorOpen);
   let drawerWidth = $state(320);
   let structureWidth = $state(560);
   let workspaceWidth = $state(0);
   let structureExpanded = $state(false);
   const structureStacked = $derived(structureOpen && workspaceWidth < 860);
-  const effectiveDrawerWidth = $derived(structureOpen ? Math.min(structureWidth, Math.max(440, workspaceWidth - 326)) : inspectorVisible ? Math.max(360, drawerWidth) : drawerWidth);
+  const effectiveDrawerWidth = $derived(structureOpen ? Math.min(structureWidth, Math.max(440, workspaceWidth - 326)) : drawerWidth);
   function dismissStructure() { if (structureExpanded) structureExpanded = false; else closeDrawer(); }
   let renamingScreen=$state(false);
   let screenNameDraft=$state('');
@@ -192,7 +168,7 @@
     if(event.key==='Enter') {event.preventDefault();finishRename();void tick().then(()=>renameButton?.focus());}
   }
   let documentButton=$state<HTMLButtonElement>();
-  function closeDrawer() { if(textDraftDirty || sourceDraftDirty) {notice='Apply or cancel your draft before closing Document.';return;} drawerOpen = false; structureExpanded = false; documentButton?.focus(); }
+  function closeDrawer() { if(dataDraftDirty || sourceDraftDirty) {notice='Apply or cancel your draft before closing Document.';return;} drawerOpen = false; structureExpanded = false; documentButton?.focus(); }
   const editorLabels = { actions: { 'demo.submit': 'Submit (simulated)' }, nodes: { screen: 'Screen' },
     state: { message: 'Message', accepted: 'Agreement', dialogOpen: 'Dialog open', busy: 'Submitting', actionError: 'Action error', actionResult: 'Action result' },
     actionInputs: { message: 'Message', accepted: 'Agreement' } };
@@ -211,10 +187,9 @@
       if(compositionFocus && id!==compositionFocus.nodeId && !focusedMembers?.has(id))compositionFocus=undefined;
     }
     bridge?.select(occurrence);
-    inspectionItem = undefined;
-    palettePage = 'format'; paletteRequested = revealTools && !inspectorVisible;
+    palettePage = 'format'; paletteRequested = revealTools;
     formatSection = reportSection(occurrence);
-    if (revealTools && !inspectorVisible && matchMedia('(max-width: 760px)').matches) drawerOpen = false;
+    if (revealTools && matchMedia('(max-width: 760px)').matches) drawerOpen = false;
     if(revealTools) selectionToolsReveal = Symbol('selection-tools');
   }
   function editSelectedText(occurrence = selected) {
@@ -222,7 +197,6 @@
     const report = resolveOccurrence(occurrence, source);
     if (report.instancePath.some(step=>source.componentDefinitions[step.definitionId]) || report.repeatKeys.length || !literalTextTarget(source, report.sourceNodeId)) return;
     selectOccurrence(occurrence);
-    if (inspectorVisible) { inspectorPage = 'Content'; inspectorReveal = Symbol('inspect-text'); }
     editTextSignal = Symbol('edit');
   }
   function reportSection(occurrence: string): 'Content' | 'Style' {
@@ -265,7 +239,6 @@
     agentEpoch = crypto.randomUUID();
     compositionFocus=undefined;
     palettePage = 'format'; paletteRequested = false;
-    inspectionItem = undefined;
     unsubscribe?.(); bridge = next; version++;
     unsubscribe = next.subscribe(() => version++);
     plan = undefined; issues = []; resetRuntime();
@@ -367,7 +340,6 @@
       return;
     }
     if (event.target instanceof Element && event.target.closest('[role="menu"]')) return;
-    if (event.key === 'Escape' && inspectorVisible && event.target instanceof Element && event.target.closest('#document-drawer') && !event.target.closest('.structure-view')) { event.preventDefault(); closeInspector(); return; }
     if (event.key === 'Escape' && drawerOpen) {
       if (structureOpen && event.target instanceof Element && event.target.closest('.structure-view')) return;
       event.preventDefault(); dismissStructure(); return;
@@ -402,57 +374,6 @@
     if (index < 0 || index >= parent.children.length) return;
     apply({ requestId: crypto.randomUUID(), reason: 'Reorder selection', commands: [{ op: 'move', nodeId: selectedNode.id, newParentId: parent.nodeId, slotName: parent.slotName, index }] });
   }
-  let contextObject = $state(false);
-  let contextCursor: { id: string; revision: string; selection?: string } | undefined;
-  function prepareCanvasContext(target: Element): boolean {
-    if (textDraftDirty || sourceDraftDirty || renamingScreen) { notice = 'Apply or cancel your draft first.'; return false; }
-    const occurrence = target.closest<HTMLElement>('.design-frame [data-ui-occ]')?.dataset.uiOcc;
-    contextObject = !!occurrence;
-    if (occurrence) { selectOccurrence(occurrence, false); paletteRequested = false; }
-    const current = bridge?.getSnapshot();
-    contextCursor = source && current ? { id: source.id, revision: current.revision, selection: current.selectedOccurrence } : undefined;
-    return true;
-  }
-  function validateContext(): boolean {
-    const current = bridge?.getSnapshot();
-    if (textDraftDirty || sourceDraftDirty || !contextCursor || source?.id !== contextCursor.id || current?.revision !== contextCursor.revision || current?.selectedOccurrence !== contextCursor.selection) { notice = 'The selection or document changed. Open the context menu again.'; return false; }
-    return true;
-  }
-  function prepareLayersContext(target: Element): boolean {
-    if (!source || !bridge || textDraftDirty || sourceDraftDirty || renamingScreen) { notice = 'Apply or cancel your draft first.'; return false; }
-    const occurrence = target.closest<HTMLElement>('[role=treeitem]')?.dataset.key;
-    if (!occurrence || !resolveOccurrence(occurrence, source).node) return false;
-    selectStructureNode(occurrence); contextObject = true;
-    const current = bridge.getSnapshot(); contextCursor = { id: source.id, revision: current.revision, selection: current.selectedOccurrence };
-    return true;
-  }
-  function objectTools(page: 'insert' | 'arrange') {
-    if (textDraftDirty || sourceDraftDirty || !source) return;
-    if (!contextObject) bridge?.select(`${source.id}|${compositionFocus?.nodeId ?? source.root}`);
-    closeInspector(); palettePage = page; paletteRequested = true; paletteFocus = Symbol('context-tools'); selectionToolsReveal = Symbol('context-tools');
-  }
-  function showDocument(tab: 'Layers' | 'Structure') {
-    if (textDraftDirty || sourceDraftDirty) { notice = 'Apply or cancel your draft first.'; return; }
-    drawerTab = tab; drawerOpen = true;
-  }
-  const contextCommands = $derived<ContextCommand[]>(contextObject ? [
-    { label: 'Inspect', action: () => openInspector() },
-    { label: 'Insert…', action: () => objectTools('insert') },
-    { label: 'Arrange…', action: () => objectTools('arrange') },
-    ...(selectedSlots.length ? [{ label: 'Open composition', action: () => openComposition() }] : []),
-    { label: 'Reveal in Layers', action: () => showDocument('Layers'), separator: true },
-    { label: 'Reveal in Structure', action: () => showDocument('Structure') },
-    { label: 'Duplicate', action: duplicateSelection, disabled: !selectedNode || selectedNode.id === source?.root, separator: true },
-    { label: 'Delete', action: removeSelection, disabled: !selectedNode || selectedNode.id === source?.root },
-  ] : [
-    { label: 'Insert…', action: () => objectTools('insert') },
-    { label: 'Fit canvas', action: () => width = 'fluid', separator: true },
-    { label: 'Tablet · 768', action: () => width = '768' },
-    { label: 'Phone · 390', action: () => width = '390' },
-    { label: chatOpen ? 'Hide chat' : 'Show chat', action: () => chatOpen = !chatOpen, separator: true },
-    { label: 'Layers', action: () => showDocument('Layers') },
-    { label: 'Structure', action: () => showDocument('Structure') },
-  ]);
   async function beginCreate() { if (textDraftDirty || sourceDraftDirty) { notice = 'Apply or cancel your text/source draft before creating a screen.'; return; } createDialog.showModal(); await tick(); nameInput.focus(); nameInput.select(); }
   function exportSource() {
     if (!source) return;
@@ -526,13 +447,13 @@
     </SelectionPalette>
   {/snippet}
   <div class="agent-workspace" class:chat-open={chatOpen}>
-  <div class="agent-panel" hidden={!chatOpen}><AgentChat screenLabel={screenName(source)} selectionLabel={selectedNode ? compositionName(source, selectedNode.id) : "None"} blocked={textDraftDirty || sourceDraftDirty || renamingScreen} getContext={() => bridge ? {document:bridge.document, cursor:documentCursor(bridge.document,bridge.getSnapshot().revision,agentEpoch), ...(selected ? {selection:selected} : {})} : undefined} getCapture={cursor => captureDesignerPreview(canvasScroll?.querySelector<HTMLElement>('.design-frame') ?? undefined,cursor,()=>bridge ? {cursor:documentCursor(bridge.document,bridge.getSnapshot().revision,agentEpoch),mode,state:{runtimeValues,simulation:{denied:simulation.denied,failNext:simulation.failNext}},selection:selected,composition:compositionFocus ? `${compositionFocus.nodeId}/${compositionFocus.slotName}` : undefined,structureOpen:structureOpen && structureExpanded} : undefined,canvasScroll ?? undefined)} applyProposal={receiveAgentProposal} /></div>
+  <div class="agent-panel" hidden={!chatOpen}><AgentChat screenLabel={screenName(source)} selectionLabel={selectedNode ? compositionName(source, selectedNode.id) : "None"} blocked={textDraftDirty || sourceDraftDirty || renamingScreen} getContext={() => bridge ? {document:bridge.document, cursor:documentCursor(bridge.document,bridge.getSnapshot().revision,agentEpoch), ...(selected ? {selection:selected} : {})} : undefined} getCapture={cursor => captureDesignerPreview(canvasScroll?.querySelector<HTMLElement>('.design-frame') ?? undefined,cursor,()=>bridge ? {cursor:documentCursor(bridge.document,bridge.getSnapshot().revision,agentEpoch),mode,state:{runtimeValues,simulation:{denied:simulation.denied,failNext:simulation.failNext}},selection:selected,composition:compositionFocus ? `${compositionFocus.nodeId}/${compositionFocus.slotName}` : undefined,structureOpen:structureOpen && structureExpanded} : undefined,canvasScroll)} applyProposal={receiveAgentProposal} /></div>
   <div class="design-workspace" bind:clientWidth={workspaceWidth} class:structure-drawer={structureOpen} class:drawer-stacked={structureStacked} class:structure-expanded={structureOpen && structureExpanded} class:drawer-open={drawerOpen} class:has-object-tools={mode === 'design' && !!selectedNode && paletteRequested} style:--drawer-width={`${effectiveDrawerWidth}px`}>
     <main class="design-stage">
       <div class="canvas-toolbar workspace-tools"><div class="canvas-modes" aria-label="Workspace mode"><button type="button" aria-pressed={mode === 'design'} onclick={() => changeMode('design')}>Design</button><button type="button" aria-pressed={mode === 'interact'} onclick={() => changeMode('interact')}>Interact</button></div>{#if compositionFocus}<div class="composition-back"><CompositionNavigator compact document={source} focus={compositionFocus} descriptors={catalogDescriptors} disabled={textDraftDirty || sourceDraftDirty} onNavigate={navigateComposition} /></div>{/if}<button type="button" bind:this={documentButton} class="panel-toggle" aria-expanded={drawerOpen} aria-controls="document-drawer" onclick={toggleDocument}>Document</button></div>
 
 
-      <EditorContextMenu class="canvas-scroll workspace-scroll" bind:ref={canvasScroll} label="Canvas context commands" disabled={mode === 'interact'} prepare={prepareCanvasContext} validate={validateContext} commands={contextCommands}>
+      <div class="canvas-scroll workspace-scroll" bind:this={canvasScroll}>
         <div class="design-frame workspace-screen" bind:clientWidth={canvasWidth} style:max-width={width === 'fluid' ? 'none' : `${width}px`}>
           <EditorCanvas document={source} catalogs={designerCatalogs} extensions={catalogDescriptors} extensionImplementations={catalogImplementations}
             {compositionFocus} onOpenComposition={openComposition}
@@ -546,21 +467,19 @@
             onRenderDiagnostic={(diagnostic: { code: string; message: string }) => { issues = [...issues.slice(-4), diagnostic]; }} ariaLabel="Screen canvas" />
           {#if compositionFocus && !focusedMembers?.size}<div class="empty-composition"><h2>This composition is empty</h2><p>Select the composition, then choose Insert in its tools.</p></div>{:else if Object.keys(source.nodes).length === 1}<div class="empty-canvas"><span>＋</span><h1>What will you make?</h1><p>Select this screen to open its tools, then choose Insert.</p></div>{/if}
         </div>
-      </EditorContextMenu>
+      </div>
       <details class="simulation-panel workspace-simulation"><summary>Simulated execution <span>Local preview · no live effects</span></summary><div class="simulation-body"><label><input type="checkbox" bind:checked={simulation.denied} /> Deny demo writes</label><label><input type="checkbox" bind:checked={simulation.failNext} /> Fail next action</label><StateValuesPanel localState={source.localState} stateValues={runtimeValues} onChange={(key: string, value: UiValue | undefined) => { const next = { ...runtimeValues }; if (value === undefined) delete next[key]; else next[key] = value; runtimeValues = next; }} />{#each activity as entry}<p role="status">{entry}</p>{/each}<p class="panel-hint">Connect checkedChange to accepted, bind checked to state.accepted, then map a Button's press → Submit using state.message and state.accepted. Runtime values never enter undo history.</p></div></details>
     </main>
     <div class="drawer-resizer" hidden={!drawerOpen || structureStacked || (structureOpen && structureExpanded)}><PanelResizer label="Document drawer width" value={effectiveDrawerWidth} min={structureOpen ? 440 : 280} max={structureOpen ? Math.max(440, workspaceWidth - 326) : 460} reverse onChange={(value: number) => { if (structureOpen) structureWidth = value; else drawerWidth = value; }} /></div>
     <aside id="document-drawer" hidden={!drawerOpen} class="document-drawer" class:source-drawer={drawerTab==='Source'} aria-label="Document">
-      <nav class="sidebar-tabs" aria-label="Document sections">{#each ['Layers', 'Structure', 'Data', 'Actions', 'Source'] as tab}<button type="button" aria-pressed={drawerTab === tab} disabled={(textDraftDirty || sourceDraftDirty) && drawerTab!==tab} onclick={() => changeDocumentTab(tab)}>{tab}</button>{/each}<button class="expand-structure" type="button" hidden={drawerTab!=='Structure'} aria-label={structureExpanded ? 'Restore Structure' : 'Expand Structure'} title={structureExpanded ? 'Restore Structure' : 'Expand Structure'} aria-pressed={structureExpanded} onclick={() => structureExpanded = !structureExpanded}>{structureExpanded ? '↙' : '↗'}</button><button class="close-document" type="button" aria-label="Close document" onclick={closeDrawer}>×</button></nav>
-      {#if drawerTab === 'Layers'}<button class="layers-inspect" type="button" aria-expanded={inspectorOpen} disabled={textDraftDirty || sourceDraftDirty} onclick={() => openInspector()}>Inspect</button>{/if}
-      <div class="document-content" inert={inspectorVisible && inspectorExpanded}>
+      <nav class="sidebar-tabs" aria-label="Document sections">{#each ['Layers', 'Structure', 'Data', 'Actions', 'Source'] as tab}<button type="button" aria-pressed={drawerTab === tab} disabled={(dataDraftDirty || sourceDraftDirty) && drawerTab!==tab} onclick={() => changeDocumentTab(tab)}>{tab}</button>{/each}<button class="expand-structure" type="button" hidden={drawerTab!=='Structure'} aria-label={structureExpanded ? 'Restore Structure' : 'Expand Structure'} title={structureExpanded ? 'Restore Structure' : 'Expand Structure'} aria-pressed={structureExpanded} onclick={() => structureExpanded = !structureExpanded}>{structureExpanded ? '↙' : '↗'}</button><button class="close-document" type="button" aria-label="Close document" onclick={closeDrawer}>×</button></nav>
       <div class="document-structure" hidden={drawerTab !== 'Structure'}>
-        <StructureView presentation="drawer" active={structureOpen && !inspectorExpanded} document={source} revision={snapshot?.revision ?? ''} selectedNodeId={selectedNode?.id} descriptors={catalogDescriptors} recipes={screenRecipes} blocked={textDraftDirty || sourceDraftDirty || renamingScreen} onSelect={selectStructureNode} onDeselect={() => { if (!textDraftDirty && !sourceDraftDirty && !renamingScreen) { bridge?.select(undefined); paletteRequested = false; inspectionItem = undefined; } }} onMove={moveFromStructure} onNotice={message => notice = message} onNavigate={structureNavigate} onDismiss={dismissStructure} onInspect={(id, page) => openInspector(id, page === 'relationships' ? 'Relationships' : 'Content')} onInspectItem={id => inspectionItem = id} externalInspectionOpen={inspectorVisible} onCloseInspector={closeInspector} />
+        <StructureView presentation="drawer" active={structureOpen} document={source} revision={snapshot?.revision ?? ''} selectedNodeId={selectedNode?.id} descriptors={catalogDescriptors} recipes={screenRecipes} blocked={textDraftDirty || sourceDraftDirty || renamingScreen} onSelect={selectStructureNode} onDeselect={() => { if (!textDraftDirty && !sourceDraftDirty && !renamingScreen) { bridge?.select(undefined); paletteRequested = false; } }} onMove={moveFromStructure} onNotice={message => notice = message} onNavigate={structureNavigate} onDismiss={dismissStructure} />
       </div>
       {#if drawerOpen && drawerTab !== 'Structure'}
       <div class="sidebar-body" class:source-body={drawerTab==='Source'}>
         {#if drawerTab === 'Layers'}
-          {#if plan}<EditorContextMenu class="layers-context" label="Layers context commands" prepare={prepareLayersContext} validate={validateContext} commands={contextCommands}><Layers compact hideTextContent {plan} document={source} selectedOccurrence={selected} onSelect={selectFromStructure} onOpenComposition={navigateComposition} componentDescriptors={catalogDescriptors} /></EditorContextMenu>{/if}
+          {#if plan}<Layers compact hideTextContent {plan} document={source} selectedOccurrence={selected} onSelect={selectFromStructure} onOpenComposition={navigateComposition} componentDescriptors={catalogDescriptors} />{/if}
         {:else if drawerTab === 'Data'}
           {#if selectedData && source.localState[selectedData]}
             <button class="data-back" type="button" disabled={dataDraftDirty} onclick={()=>openData()}>← All data</button>
@@ -581,14 +500,6 @@
         {/if}
       </div>
       {/if}
-      </div>
-      <div class="document-inspector-host" hidden={drawerTab !== 'Layers' && drawerTab !== 'Structure'}>
-        <DocumentInspector document={source} itemId={inspectorItem} bind:open={inspectorOpen} bind:expanded={inspectorExpanded} bind:page={inspectorPage} revealSignal={inspectorReveal} blocked={textDraftDirty || sourceDraftDirty || renamingScreen} onSelectItem={inspectItem} onNavigate={structureNavigate} onNotice={message => notice = message}>
-          {#snippet editor(section)}
-            <Inspector contextual {section} document={source} selectedOccurrence={selected} onApply={apply} lastIssues={issues} componentDescriptors={catalogDescriptors} knownActionIds={designerCatalogs.actionIds} {actionInputs} knownRouteIds={['screen']} labels={editorLabels} styleConditions={[{ id: 'compact', label: 'Compact · ≤600px' }]} readEffective={effective} {editTextSignal} onTextDraftChange={(dirty: boolean) => propertyDraftDirty = dirty} />
-          {/snippet}
-        </DocumentInspector>
-      </div>
     </aside>
   </div>
   </div>
