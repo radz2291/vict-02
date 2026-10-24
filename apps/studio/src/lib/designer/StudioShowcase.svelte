@@ -28,6 +28,18 @@
   let documentOpen = $state(true);
   let structureExpanded = $state(false);
   let structureWidth = $state(560);
+  let expansionScroll: { x: number; y: number } | undefined;
+  async function toggleStructureWorkbench() {
+    const expand = !structureExpanded;
+    if (expand) expansionScroll = { x: window.scrollX, y: window.scrollY };
+    structureExpanded = expand;
+    await tick();
+    if (expand) {
+      const panel = canvasRoot?.closest('.studio-showcase')?.querySelector<HTMLElement>('.showcase-document');
+      panel?.scrollIntoView({ block: 'start', inline: 'nearest' });
+      panel?.querySelector<HTMLButtonElement>('[aria-label="Restore Structure"]')?.focus({ preventScroll: true });
+    } else if (expansionScroll) window.scrollTo(expansionScroll.x, expansionScroll.y);
+  }
   let tools = $state<'inspector' | 'palette'>('inspector');
   let compositionFocus = $state<CompositionFocus>();
   let exampleFocus = $state<CompositionFocus>();
@@ -210,9 +222,9 @@
     {#if issues.length}<ul class="issues" role="alert">{#each issues as issue}<li>{issue.code}: {issue.message}</li>{/each}</ul>{/if}
     <div class="editor-grid" class:document-open={documentOpen} class:structure-open={documentOpen && view === 'structure'} class:structure-expanded={structureExpanded && documentOpen && view === 'structure'} style:--showcase-drawer-width={`${view === 'structure' ? structureWidth : 280}px`}>
       <aside class="layers showcase-document" hidden={!documentOpen} tabindex="-1" aria-label="Example Document">
-        <nav class="toolbar" aria-label="Example Document sections"><button type="button" disabled={blocked} aria-pressed={view === 'canvas'} onclick={() => view = 'canvas'}>Layers</button><button type="button" disabled={blocked} aria-pressed={view === 'structure'} onclick={() => view = 'structure'}>Structure</button>{#if view === 'structure'}<button type="button" aria-label={structureExpanded ? 'Restore Structure' : 'Expand Structure'} onclick={() => structureExpanded = !structureExpanded}>{structureExpanded ? 'Restore' : 'Expand'}</button>{/if}</nav>
+        <nav class="toolbar" aria-label="Example Document sections"><button type="button" disabled={blocked} aria-pressed={view === 'canvas'} onclick={() => view = 'canvas'}>Layers</button><button type="button" disabled={blocked} aria-pressed={view === 'structure'} onclick={() => view = 'structure'}>Structure</button>{#if view === 'structure'}<button type="button" aria-label={structureExpanded ? 'Restore Structure' : 'Expand Structure'} onclick={() => void toggleStructureWorkbench()}>{structureExpanded ? 'Restore' : 'Expand'}</button>{/if}</nav>
         <div hidden={view !== 'canvas'}>{#if plan}<Layers {plan} document={source} selectedOccurrence={selected} onSelect={select} onApply={apply} componentDescriptors={catalogDescriptors} onOpenComposition={navigateComposition} />{/if}</div>
-        <div class="structure" hidden={view !== 'structure'}><StructureView presentation="drawer" active={documentOpen && view === 'structure'} document={source} revision={snapshot.revision} {selectedNodeId} {blocked} descriptors={catalogDescriptors} recipes={screenRecipes} onSelect={selectStructure} onDeselect={() => { if (!blocked) bridge?.select(undefined); }} onMove={move} onNotice={message => notice = message} onNavigate={structureNavigate} onDismiss={() => { if (structureExpanded) structureExpanded = false; else documentOpen = false; }} /></div>
+        <div class="structure" hidden={view !== 'structure'}><StructureView presentation="drawer" active={documentOpen && view === 'structure'} document={source} revision={snapshot.revision} {selectedNodeId} {blocked} descriptors={catalogDescriptors} recipes={screenRecipes} onSelect={selectStructure} onDeselect={() => { if (!blocked) bridge?.select(undefined); }} onMove={move} onNotice={message => notice = message} onNavigate={structureNavigate} onDismiss={() => { if (structureExpanded) void toggleStructureWorkbench(); else documentOpen = false; }} /></div>
       </aside>
       <div class="showcase-resizer" hidden={!documentOpen || view !== 'structure' || structureExpanded}><PanelResizer label="Example Document width" value={structureWidth} min={440} max={800} reverse onChange={(value: number) => structureWidth = value} /></div>
       <div class="preview-column">
