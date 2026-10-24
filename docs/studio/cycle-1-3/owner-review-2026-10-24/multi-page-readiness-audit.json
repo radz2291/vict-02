@@ -1,0 +1,87 @@
+{
+  "date": "2026-10-24",
+  "kind": "Source-only multi-page framework versus Studio integration review; no new browser journey or runtime test",
+  "finding": "OR-14",
+  "baselineDelivery": "3beba16c40a1a5441e1e94f39808de00a33ab244",
+  "product": "be893f29d44f595a8d9982575c2199636df69597",
+  "originMain": "d7401bef6e48330796c74ec00c86db9622d48cdf",
+  "framework": {
+    "applicationHasMultipleRoutesAndScreens": true,
+    "screenCanReferenceUiDocument": true,
+    "canonicalUiHasNavigateInteraction": true,
+    "documentHostRequiresNavigateHook": true,
+    "routeResolverAndNavigationActionHandlingPresent": true
+  },
+  "studio": {
+    "multipleSeparatelySavedScreens": true,
+    "screenApplicationRouteIds": [
+      "screen"
+    ],
+    "screenApplicationPath": "/",
+    "applicationWrapsOneCurrentDocument": true,
+    "designerNavigation": "One-screen notice",
+    "savedRunNavigation": "No-op callback",
+    "agentPageRouteNavigationAuthoring": false,
+    "connectedMultiPageDelivery": "Not integrated end to end in current designer/agent and Run"
+  },
+  "evidenceLimits": [
+    "No model request, browser mutation, owner Save or server restart.",
+    "Framework contract/runtime hook presence does not certify every multi-document journey.",
+    "Separate saved screens and Studio shell routes are not a connected authored app.",
+    "Proposed routing integration and acceptance tests are not implemented or authorized by this review."
+  ],
+  "sources": [
+    {
+      "path": "packages/sdk/src/application.ts",
+      "sha256": "e1121f17e463574518112dee824803a2a78e067985d9f5cb9f65cba0d7ae73e0"
+    },
+    {
+      "path": "packages/sdk/src/application-v3.ts",
+      "sha256": "be3ee7d8784477f2e63c7c70d2749b2575ac59e138ef3328af58adaf47a4fe00"
+    },
+    {
+      "path": "packages/application/src/compile.ts",
+      "sha256": "3f617dd1c2814d8d2017a02733247cf92d5574560b1b6cb4019564d0986d450f"
+    },
+    {
+      "path": "packages/application/src/ui-attach.ts",
+      "sha256": "abf6636acde215a02a0b7c96ea5dfc7a4a596144347077ef1d27db10d62f4592"
+    },
+    {
+      "path": "packages/ui/src/document.ts",
+      "sha256": "88d7503a7ba0f49cb7fedad29c0383d2dd0e8e9edf95201d04ebe71377ddc8f8"
+    },
+    {
+      "path": "packages/ui-svelte/src/logic.ts",
+      "sha256": "331ca81b1c1c8c88f2a42c7de8d68d41e33ff915120433c3cb847620770fd1a4"
+    },
+    {
+      "path": "packages/ui-svelte/src/VitApp.svelte",
+      "sha256": "55650872e8de75643b882f9020418af373d4699fb457fd982c87a173d86d4c90"
+    },
+    {
+      "path": "packages/ui-svelte/src/document/DocumentHost.svelte",
+      "sha256": "c42012a223d82bdb4c093f1caf0de063278e87a7d2df8a3d109eaf22f42d2af6"
+    },
+    {
+      "path": "apps/studio/src/lib/designer/application.ts",
+      "sha256": "788710a9ce6c83e4dbbd2f0fd843e052567f63129cde51bc596905bfb88e0305"
+    },
+    {
+      "path": "apps/studio/src/lib/designer/storage.ts",
+      "sha256": "b60edb2f71dee391effdeee8afb520bb1d0ff64304e5a2e3dcb3cbd0286a6dd3"
+    },
+    {
+      "path": "apps/studio/src/lib/designer/Designer.svelte",
+      "sha256": "2bda55db4f60bc336cff09060cb096f6ef71413c6ce3d2d906ea17f90156407e"
+    },
+    {
+      "path": "apps/studio/src/lib/designer/agent-edits.ts",
+      "sha256": "b268f1e6ab022dadec69aa3e0c3cd5814b5644c4e78997b502da569c0eca75c3"
+    },
+    {
+      "path": "apps/studio/src/routes/run-screen/+page.svelte",
+      "sha256": "f746b203981b6887f9430b51eed865170c67ac606744522ff73a34fe2429902e"
+    }
+  ]
+}
