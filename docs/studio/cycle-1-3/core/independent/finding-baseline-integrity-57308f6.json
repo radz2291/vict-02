@@ -1,0 +1,9 @@
+{
+  "baselineCandidate": "e7d2b51d3f22b549a0d4772ceaf8da623131da2c",
+  "candidate": "57308f6ffcd5c85415b38d9d68a6f696199ebfa7",
+  "method": "All baseline table IDs and original concern cells, including Builder-D1/D2; updated dispositions are separate cells",
+  "baselineRows": 101,
+  "currentRows": 101,
+  "missing": [],
+  "changedBaselineCells": []
+}

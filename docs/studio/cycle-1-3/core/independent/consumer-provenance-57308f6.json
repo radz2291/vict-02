@@ -1,0 +1,149 @@
+{
+  "checkedAt": "2026-10-24T12:44:07.752Z",
+  "candidate": "57308f6ffcd5c85415b38d9d68a6f696199ebfa7",
+  "installationCandidate": "57308f6ffcd5c85415b38d9d68a6f696199ebfa7",
+  "installationKind": "normal npm upgrade of changed tarballs in an existing independent install",
+  "previousCandidate": "7228ee3ccae4364da63a346c46010dde19b1992d",
+  "preservedPrevious": "C:\\Users\\RZ1\\.codex\\tmp\\studio-core-consumer-7228ee3\\proof-history\\7228ee3c-before-57308f6f",
+  "packages": [
+    {
+      "name": "@victframework/contracts",
+      "isLink": false,
+      "manifestEqual": true,
+      "tarballHashMatches": true,
+      "installedSpecification": "file:artifacts/victframework-contracts-0.4.0-rc.1.tgz",
+      "installedSpecificationHashMatches": true,
+      "filesCompared": 30,
+      "allEqual": true,
+      "mismatches": []
+    },
+    {
+      "name": "@victframework/ui",
+      "isLink": false,
+      "manifestEqual": true,
+      "tarballHashMatches": true,
+      "installedSpecification": "file:artifacts/victframework-ui-0.4.0-rc.1.tgz",
+      "installedSpecificationHashMatches": true,
+      "filesCompared": 63,
+      "allEqual": true,
+      "mismatches": []
+    },
+    {
+      "name": "@victframework/sdk",
+      "isLink": false,
+      "manifestEqual": true,
+      "tarballHashMatches": true,
+      "installedSpecification": "file:artifacts/victframework-sdk-0.4.0-rc.1.tgz",
+      "installedSpecificationHashMatches": true,
+      "filesCompared": 27,
+      "allEqual": true,
+      "mismatches": []
+    },
+    {
+      "name": "@victframework/application",
+      "isLink": false,
+      "manifestEqual": true,
+      "tarballHashMatches": true,
+      "installedSpecification": "file:artifacts/victframework-application-0.4.0-rc.1.tgz",
+      "installedSpecificationHashMatches": true,
+      "filesCompared": 33,
+      "allEqual": true,
+      "mismatches": []
+    },
+    {
+      "name": "@victframework/ui-svelte",
+      "isLink": false,
+      "manifestEqual": true,
+      "tarballHashMatches": true,
+      "installedSpecification": "file:artifacts/victframework-ui-svelte-0.4.0-rc.1.tgz",
+      "installedSpecificationHashMatches": true,
+      "filesCompared": 251,
+      "allEqual": true,
+      "mismatches": []
+    },
+    {
+      "name": "@victframework/ui-editor",
+      "isLink": false,
+      "manifestEqual": true,
+      "tarballHashMatches": true,
+      "installedSpecification": "file:artifacts/victframework-ui-editor-0.4.0-rc.1.tgz",
+      "installedSpecificationHashMatches": true,
+      "filesCompared": 85,
+      "allEqual": true,
+      "mismatches": []
+    },
+    {
+      "name": "@victframework/ui-ai-svelte",
+      "isLink": false,
+      "manifestEqual": true,
+      "tarballHashMatches": true,
+      "installedSpecification": "file:artifacts-57308f6f/victframework-ui-ai-svelte-0.4.0-rc.1.tgz",
+      "installedSpecificationHashMatches": true,
+      "filesCompared": 176,
+      "allEqual": true,
+      "mismatches": []
+    },
+    {
+      "name": "@victframework/ui-flow-svelte",
+      "isLink": false,
+      "manifestEqual": true,
+      "tarballHashMatches": true,
+      "installedSpecification": "file:artifacts/victframework-ui-flow-svelte-0.4.0-rc.1.tgz",
+      "installedSpecificationHashMatches": true,
+      "filesCompared": 19,
+      "allEqual": true,
+      "mismatches": []
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "index.html",
+      "receiptHashMatches": true,
+      "exactCandidateFixtureMatches": true
+    },
+    {
+      "path": "main.ts",
+      "receiptHashMatches": true,
+      "exactCandidateFixtureMatches": true
+    },
+    {
+      "path": "vite.config.ts",
+      "receiptHashMatches": true,
+      "exactCandidateFixtureMatches": true
+    },
+    {
+      "path": "App.svelte",
+      "receiptHashMatches": true,
+      "exactCandidateFixtureMatches": true
+    },
+    {
+      "path": "proof.ts",
+      "receiptHashMatches": true,
+      "exactCandidateFixtureMatches": true
+    },
+    {
+      "path": "capture.html",
+      "receiptHashMatches": true,
+      "exactCandidateFixtureMatches": true
+    },
+    {
+      "path": "capture-main.ts",
+      "receiptHashMatches": true,
+      "exactCandidateFixtureMatches": true
+    },
+    {
+      "path": "CaptureProbe.svelte",
+      "receiptHashMatches": true,
+      "exactCandidateFixtureMatches": true
+    },
+    {
+      "path": "capture-source.json",
+      "receiptHashMatches": true,
+      "exactCandidateFixtureMatches": true
+    }
+  ],
+  "filesCompared": 684,
+  "noViteAliases": true,
+  "passed": true,
+  "boundary": "Independent read-only package/manifest/tarball/fixture hash and link check. Normal npm upgrade provenance and preserved original fresh installation remain explicit; no reinstall/build or Studio source aliases used by this verifier."
+}
