@@ -132,7 +132,7 @@ export interface AgentProposal {
   edit: AgentEdit;
   resultDigest: string;
 }
-export type EditFailure = { ok: false; code: string; message: string; diagnostics?: readonly { operation?: number; path: string; message: string; [key:string]:unknown }[] };
+export type EditFailure = { ok: false; code: string; message: string; diagnostics?: readonly { operation?: number; path: string; message: string; [key:string]:unknown }[]; diagnosticsTruncated?: boolean };
 export type EditReceipt = EditFailure | { ok: true; revision: string; digest: string };
 export const failure = (code: string, message: string): EditFailure => ({
   ok: false,
@@ -141,17 +141,38 @@ export const failure = (code: string, message: string): EditFailure => ({
 });
 
 /** Preserve useful canonical detail without forwarding arbitrary compiler payloads. */
-export function canonicalEditFailure(issues:readonly {code:string;message:string;[key:string]:unknown}[],operation?:number):EditFailure {
-  const diagnostics=issues.slice(0,6).map(issue=>{
-    const details:Record<string,unknown>={};
-    for(const key of ['nodeId','parentId','definitionId','extensionId','prop','property','output','stateKey','expected','actual','target','slot','slotName','hostCode','styleSourceId','reference']) {
+export function canonicalEditFailure(issues:readonly {code:string;message:string;[key:string]:unknown}[],operation?:number,target?:{nodeId:string;property:string}):EditFailure {
+  type Issue={code:string;message:string;[key:string]:unknown};
+  const leaves:{issue:Issue;commandIndex?:number;envelopeCode?:string}[]=[];
+  let visited=0;let truncated=false;
+  function collect(issue:Issue,depth=0,commandIndex?:number,envelopeCode?:string){
+    if(leaves.length>=6||visited>=40){truncated=true;return;}visited++;
+    const index=typeof issue.commandIndex==='number'?issue.commandIndex:commandIndex;
+    // The canonical edit boundary already retains its authoritative causes.
+    // Unwrap only that known envelope; never forward arbitrary nested payloads.
+    if(issue.code==='UI_EDIT_VALIDATION_FAILED'&&Array.isArray(issue.diagnostics)&&issue.diagnostics.length){
+      if(depth<3){
+        const before=leaves.length;
+        for(const child of issue.diagnostics.slice(0,20))if(child&&typeof child==='object'&&typeof child.code==='string'&&typeof child.message==='string')collect(child,depth+1,index,envelopeCode??issue.code);
+        if(issue.diagnostics.length>20)truncated=true;
+        if(leaves.length>before)return;
+      }else truncated=true;
+    }
+    leaves.push({issue,...(index===undefined?{}:{commandIndex:index}),...(envelopeCode?{envelopeCode}:{})});
+  }
+  for(const issue of issues.slice(0,20))collect(issue);
+  if(issues.length>20)truncated=true;
+  const diagnostics=leaves.map(({issue,commandIndex,envelopeCode})=>{
+    const details:Record<string,unknown>={...(target?{nodeId:target.nodeId,property:target.property}:{})};
+    for(const key of ['documentId','nodeId','parentId','definitionId','extensionId','prop','property','output','stateKey','expected','actual','target','slot','slotName','hostCode','styleSourceId','reference']) {
       const item=issue[key];if(typeof item==='string')details[key]=item.slice(0,300);else if(typeof item==='number'||typeof item==='boolean')details[key]=item;
     }
-    return {...details,...(operation===undefined?{}:{operation}),code:issue.code,
+    if(typeof details.nodeId==='string')details.sourcePath=`nodes.${details.nodeId}`;
+    return {...details,...(operation===undefined?{}:{operation}),...(commandIndex===undefined?{}:{commandIndex}),...(envelopeCode?{envelopeCode}:{}),code:issue.code,
       path:typeof issue.path==='string'?issue.path.slice(0,500):typeof issue.nodeId==='string'?`nodes.${issue.nodeId}`:operation===undefined?'document':`operations.${operation}`,
       message:issue.message.slice(0,700)};
   });
-  return {...failure('STUDIO_AGENT_VALIDATION',`${operation===undefined?'Edit':`Operation ${operation}`} rejected: `+diagnostics.map(issue=>`${issue.code}: ${issue.message}`).join('; ').slice(0,1800)),diagnostics};
+  return {...failure('STUDIO_AGENT_VALIDATION',`${operation===undefined?'Edit':`Operation ${operation}`} rejected: `+diagnostics.map(issue=>`${issue.code}: ${issue.message}`).join('; ').slice(0,1800)),diagnostics,...(truncated?{diagnosticsTruncated:true}:{})};
 }
 
 export function documentCursor(document: UiDocument, revision: string, epoch: string): AgentCursor {
@@ -383,7 +404,7 @@ export function prepareAgentEdit(
         { requestId, expectedDocumentRevision: cursor.revision, commands: next },
         designerCatalogs,
       );
-      if (!result.ok) return canonicalEditFailure(result.issues,operationIndex);
+      if (!result.ok) return canonicalEditFailure(result.issues,operationIndex,operation.op==='style'?{nodeId:operation.nodeId,property:operation.property}:undefined);
       working = result.document;
       commands.push(...next);
     }

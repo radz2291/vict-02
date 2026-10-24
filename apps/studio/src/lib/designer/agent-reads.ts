@@ -6,6 +6,7 @@ import { screenRecipes } from './recipes.js';
 import { actionInputs, designerCatalogs } from './application.js';
 import type { AgentCursor } from './agent-edits.js';
 import { authoringContract, installedAuthoringRegistry } from './authoring.js';
+import { studioPreviewHost } from './preview-host.js';
 const registries=['componentDefinitions','styleSources','tokens','conditions','assets'] as const;
 export const agentReadSchema = z.object({
   section: z.enum(['overview','nodes','source','palette','component','state','registry','actions','coverage','families','catalog','contracts','elements']).default('overview'),
@@ -46,7 +47,10 @@ export function agentCoverage(document: UiDocument, requested?: readonly string[
   const availableIds = [...new Set(installedAuthoringRegistry.contracts.filter(item=>['standalone','part'].includes(item.eligibility.kind)).map(item=>item.descriptor.id))];
   const expected = requested ?? availableIds;
   const missing = expected.filter(id => {
-    const definitions = recipeDefinitions.get(id) ?? (id.startsWith('vict.') ? [id] : [`vict.catalog.${id}`]);
+    // Global inventory counts exact registered definitions. A Flow starter
+    // recipe may also include node/edge examples; those are required only when
+    // a caller explicitly requests that recipe, not for canvas presence.
+    const definitions = requested ? recipeDefinitions.get(id) ?? (id.startsWith('vict.') ? [id] : [`vict.catalog.${id}`]) : [id];
     if (!definitions.length) { const recipe = screenRecipes.find(recipe => recipe.id === id); const root = recipe?.create('example')[0]; return !root || !sourceNodes.some(node => node.kind === root.kind && (node.kind !== 'element' || root.kind !== 'element' || node.tag === root.tag)); }
     return !definitions.every(definition => authoredIds.has(definition));
   });
@@ -144,6 +148,7 @@ export function agentContext(document: UiDocument, cursor: AgentCursor, selectio
     result = { ...base,document:{schema:document.schema,id:document.id,revision:document.revision,root:document.root,nodeCount:nodes.length,stateCount:Object.keys(document.localState).length},
       selection:occurrence ? { occurrence:selection,nodeId:occurrence.sourceNodeId,repeated:!!occurrence.repeatKeys.length } : null,
       roots:nodes.filter(node => node.id === document.root).map(nodeSummary),
+      previewHost:studioPreviewHost,
       knowledge:{registryDigest:installedAuthoringRegistry.digest,contracts:installedAuthoringRegistry.contracts.length,families:new Set(installedAuthoringRegistry.contracts.map(item=>item.family)).size,ready:installedAuthoringRegistry.ok,
         discovery:'families → catalog with family/category/query → contracts with selected components and knownDigests. Native tags use elements; recipes use palette. Knowledge freshness is separate from this source cursor.'},
       discovery:'Read nodes/palette/state with offset and limit <=20. State initialJson is a preview; read state with stateKey for lossless declaration JSON pages. Registry lists componentDefinitions/styleSources/tokens/conditions/assets; provide registry and optional key to page a whole entry as lossless JSON text. Read component with recipe for exact props/outputs/slots. Read source with nodeId for lossless JSON text pages (nextOffset is character offset). Read coverage with requested recipe IDs for source presence only.',

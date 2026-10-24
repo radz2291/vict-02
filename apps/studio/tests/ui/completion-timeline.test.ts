@@ -4,7 +4,8 @@ import { afterEach, expect, it, vi } from 'vitest';
 import { Conversation, appendConversationEvent, type ConversationEvent } from '@victframework/ui-ai-svelte';
 import AgentChat from '../../src/lib/designer/AgentChat.svelte';
 import { newScreen } from '../../src/lib/designer/application.js';
-import { documentCursor } from '../../src/lib/designer/agent-edits.js';
+import { documentCursor, prepareAgentEdit } from '../../src/lib/designer/agent-edits.js';
+import { agentCoverage } from '../../src/lib/designer/agent-reads.js';
 import { boundedHistoryText, AGENT_REQUEST_BYTES } from '../../src/lib/designer/agent-transport.js';
 let mounted: ReturnType<typeof mount> | undefined;
 afterEach(async()=>{if(mounted)await unmount(mounted); mounted=undefined;document.body.innerHTML='';vi.unstubAllGlobals();});
@@ -82,13 +83,43 @@ it('labels subset coverage as an agent-declared manifest rather than global comp
   const source=newScreen('Coverage','coverage');const cursor=documentCursor(source,'r1#0',crypto.randomUUID());
   vi.stubGlobal('fetch',vi.fn(async(_url,init?:RequestInit)=>init?.method==='POST'?new Response([
     {type:'started',runId:crypto.randomUUID(),model:'fixture/model'},
-    {type:'done',status:'completed',applied:0,coverage:{available:78,authored:1,catalogAuthored:2,requested:1,scope:'agent-declared-manifest',missing:[]},confirmedRevision:cursor.revision},
+    {type:'done',status:'completed',applied:0,coverage:{available:78,authored:1,catalogAuthored:2,registeredAuthored:3,requested:1,scope:'agent-declared-manifest',missing:[]},confirmedRevision:cursor.revision},
   ].map(event=>JSON.stringify(event)).join('\n')+'\n'):new Response(JSON.stringify({ready:true,csrf:'n',model:'fixture/model'}))));
   mounted=mount(AgentChat,{target:document.body,props:{screenLabel:'Coverage',selectionLabel:'Screen',blocked:false,getContext:()=>({document:source,cursor}),applyProposal:()=>{throw Error('No proposal');}}});
   await vi.waitFor(()=>expect(document.body.textContent).toContain('Ready'));
   const input=document.querySelector<HTMLTextAreaElement>('textarea')!;input.value='Inventory requested controls';input.dispatchEvent(new Event('input',{bubbles:true}));flushSync();document.querySelector('form')!.dispatchEvent(new Event('submit',{bubbles:true,cancelable:true}));
   await vi.waitFor(()=>expect(document.body.textContent).toContain('1-item agent-declared manifest'));
-  expect(document.body.textContent).toContain('2/78 registered definitions present');
+  expect(document.body.textContent).toContain('3/78 registered definitions present');
+  expect(document.body.textContent).not.toContain('2/78 registered definitions present');
+  expect(document.body.textContent).toContain('does not establish the full requested intent');
+});
+
+it.each([false,true])('projects actual mixed general, AI and Flow coverage with separate requested scope (subset=%s)',async(subset)=>{
+  const initial=newScreen('Mixed coverage','mixed-coverage');const initialCursor=documentCursor(initial,'r1#0',crypto.randomUUID());
+  const prepared=prepareAgentEdit(initial,initialCursor,{expectedRevision:initialCursor.revision,reason:'Mixed registered coverage fixture',operations:[
+    {op:'insert',kind:'component',componentId:'vict.catalog.button',revision:'1',nodeId:'general',parentId:'screen'},
+    {op:'insert',kind:'component',componentId:'vict.ai.message',revision:'1',nodeId:'message',parentId:'screen'},
+    {op:'insert',kind:'component',componentId:'vict.flow.canvas',revision:'1',nodeId:'flow',parentId:'screen'},
+  ]},'mixed-coverage');
+  expect(prepared.ok,JSON.stringify(prepared)).toBe(true);if(!prepared.ok)throw Error('Mixed source refused');
+  const source=prepared.document;const cursor=documentCursor(source,'r1#1',initialCursor.epoch);
+  const facts=agentCoverage(source,subset?['vict.ai.message','vict.catalog.input']:undefined);
+  expect(facts).toMatchObject({registeredAuthored:3,catalogAuthored:1,authored:subset?1:3});
+  expect(facts.missing.length).toBe(subset?1:facts.available-3);
+  // An explicitly requested bundled starter retains its recipe requirements;
+  // an empty registered canvas is globally present but is not that full recipe.
+  expect(agentCoverage(source,['vict.flow.canvas'])).toMatchObject({authored:0,registeredAuthored:3,requested:1,missing:['vict.flow.canvas']});
+  const coverage={...facts,scope:subset?'agent-declared-manifest':'all-authorable-definitions',missing:facts.missing.slice(0,20),missingCount:facts.missing.length,moreMissing:facts.missing.length>20};
+  vi.stubGlobal('fetch',vi.fn(async(_url,init?:RequestInit)=>init?.method==='POST'?new Response([
+    {type:'started',runId:crypto.randomUUID(),model:'fixture/model'},
+    {type:'done',status:'completed',applied:0,coverage,confirmedRevision:cursor.revision},
+  ].map(event=>JSON.stringify(event)).join('\n')+'\n'):new Response(JSON.stringify({ready:true,csrf:'n',model:'fixture/model'}))));
+  mounted=mount(AgentChat,{target:document.body,props:{screenLabel:'Mixed coverage',selectionLabel:'Screen',blocked:false,getContext:()=>({document:source,cursor}),applyProposal:()=>{throw Error('No proposal');}}});
+  await vi.waitFor(()=>expect(document.body.textContent).toContain('Ready'));
+  const input=document.querySelector<HTMLTextAreaElement>('textarea')!;input.value='Review source coverage';input.dispatchEvent(new Event('input',{bubbles:true}));flushSync();document.querySelector('form')!.dispatchEvent(new Event('submit',{bubbles:true,cancelable:true}));
+  await vi.waitFor(()=>expect(document.body.textContent).toContain(`3/${facts.available} registered definitions present`));
+  expect(document.body.textContent).toContain(`${facts.missing.length} missing from the ${facts.requested}-item ${subset?'agent-declared manifest':'coverage scope'}`);
+  expect(document.body.textContent).not.toContain(`1/${facts.available} registered definitions present`);
   expect(document.body.textContent).toContain('does not establish the full requested intent');
 });
 
