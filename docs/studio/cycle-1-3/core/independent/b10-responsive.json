@@ -1,0 +1,62 @@
+{
+  "candidate": "b10c37a538a16f52e6430dfb9fc1eb317fc03745",
+  "consumerMobile": {
+    "alerts": [],
+    "bodyWidth": 375,
+    "cards": [
+      {
+        "label": " Start ",
+        "rect": [
+          44.60000228881836,
+          422.0045471191406,
+          118.63636779785156,
+          35.590919494628906
+        ]
+      },
+      {
+        "label": " Finish ",
+        "rect": [
+          215.963623046875,
+          422.0045471191406,
+          118.63640594482422,
+          35.590919494628906
+        ]
+      }
+    ],
+    "documentWidth": 375,
+    "flow": [
+      {
+        "height": 361.6000061035156,
+        "width": 319.20001220703125
+      }
+    ],
+    "viewport": [
+      390,
+      844
+    ]
+  },
+  "sharedMobileNotResized": {
+    "cards": [
+      {
+        "text": "Launch brief",
+        "top": 391.8000183105469,
+        "width": 544
+      },
+      {
+        "text": "Project status",
+        "top": 391.8000183105469,
+        "width": 544
+      }
+    ],
+    "documentWidth": 1265,
+    "sectionWidth": 1151.2000732421875,
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  "restored": {
+    "width": 1280,
+    "height": 720
+  }
+}

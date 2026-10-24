@@ -1,0 +1,6 @@
+{
+  "candidate": "b10c37a538a16f52e6430dfb9fc1eb317fc03745",
+  "origin": "http://127.0.0.10:5604",
+  "request": "Create a compact project dashboard for a small design team. Include a clear dashboard heading, three summary cards sharing one reusable card style, an editable project name whose value is echoed in the page, a due-date control with matching typed date state, a multi-select status filter with typed list state, and two distinct File and View menus. Add a read-only Flow showing Brief → Design → Review with correctly linked nodes. Keep labels clear, support a narrow layout, and connect supported local state behavior. Use only supported presentation capabilities; explain what was actually authored and observed, and any limits. Do not attach backend or provider execution to the authored screen.",
+  "startedAt": "2026-10-24T11:02:35.689Z"
+}

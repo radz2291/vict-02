@@ -1,0 +1,88 @@
+{
+  "selected": {
+    "expectedRevision": "showcase:r1",
+    "cursor": {
+      "documentId": "core-authoring-knowledge-fixture",
+      "revision": "showcase:r1",
+      "digest": "48a4a298150401b735ff68dfcbb274cd65a412d2b16efb0879fcf56ab3b17655",
+      "epoch": "core-authoring-showcase"
+    },
+    "section": "contracts",
+    "ok": true,
+    "complete": true,
+    "registryDigest": "6a06abc8ee99fa9f88e3abc5cfe9d8ea244ae35a79321284cd0e00de0308e80d",
+    "items": [
+      {
+        "id": "vict.flow.node",
+        "revision": "1",
+        "digest": "caa56fecde5ad7a22f0f4c369423b969edbb29044ae33743f88831420ec31c94",
+        "contractJson": "{\"descriptor\":{\"revision\":\"1\",\"abi\":\"vict.ui-component-abi@1\",\"events\":[\"vict.ui-component-abi@1\"],\"rendererImplementationId\":\"vict.svelte.flow.authoring\",\"styleTargets\":[\"root\"],\"outputs\":[],\"id\":\"vict.flow.node\",\"props\":[{\"name\":\"id\",\"type\":\"string\"},{\"name\":\"label\",\"type\":\"string\",\"default\":\"\"},{\"name\":\"x\",\"type\":\"number\",\"default\":0},{\"name\":\"y\",\"type\":\"number\",\"default\":0}],\"slots\":[]},\"label\":\"Flow node declaration\",\"family\":\"flow\",\"category\":\"diagram-part\",\"purpose\":\"Declare one visible card at scalar x/y in the owning canvas.\",\"eligibility\":{\"kind\":\"part\"},\"rules\":[{\"kind\":\"ancestorSlot\",\"placements\":[{\"definitionId\":\"vict.flow.canvas\",\"revision\":\"1\",\"slotName\":\"nodes\"}]},{\"kind\":\"uniqueValue\",\"property\":\"id\",\"providerIds\":[\"vict.flow.canvas\"],\"slots\":[\"nodes\"],\"namespace\":\"flow-node\",\"nonempty\":true},{\"kind\":\"hostRequirement\",\"capability\":\"vict.flow.canvas-context@1\",\"reason\":\"The nearest canvas owns this declaration and forwards the exact child presentation target onto its visible card.\"}],\"guidance\":[\"Not a standalone preview. Insert under canvas.nodes; wrappers, repeats and local definitions must preserve the provider slot.\",\"Evaluated ids must be unique in this canvas, and x/y must be finite numbers. Dynamic or repeated values are checked by the canvas at render time.\"],\"packageName\":\"@victframework/ui-flow-svelte\",\"packageVersion\":\"0.4.0-rc.1\",\"capabilities\":{\"extensionId\":\"vict.flow.node\",\"revision\":\"1\",\"rendererImplementationId\":\"vict.svelte.flow.authoring\",\"abi\":\"vict.ui-component-abi@1\",\"slots\":[],\"required\":[],\"styleTargets\":[\"root\"],\"requiresParentContext\":true,\"compositionSlots\":[]},\"descriptorDigest\":\"329aa01735c5b79feed0b313e1487c90d508780c7a6240b8866fd451d67766a5\",\"digest\":\"caa56fecde5ad7a22f0f4c369423b969edbb29044ae33743f88831420ec31c94\",\"exampleCount\":1,\"hasSeed\":false}",
+        "totalCharacters": 1826,
+        "offset": 0,
+        "nextOffset": null,
+        "bodyComplete": true
+      },
+      {
+        "id": "vict.flow.edge",
+        "revision": "1",
+        "digest": "62fad3846cdf76659b1d3d51b3fbfd506a8c74e704437d4e9634a68d9a7ddc8b",
+        "contractJson": "{\"descriptor\":{\"revision\":\"1\",\"abi\":\"vict.ui-component-abi@1\",\"events\":[\"vict.ui-component-abi@1\"],\"rendererImplementationId\":\"vict.svelte.flow.authoring\",\"styleTargets\":[\"root\"],\"outputs\":[],\"id\":\"vict.flow.edge\",\"props\":[{\"name\":\"id\",\"type\":\"string\"},{\"name\":\"source\",\"type\":\"string\"},{\"name\":\"target\",\"type\":\"string\"},{\"name\":\"label\",\"type\":\"string\",\"default\":\"\"}],\"slots\":[]},\"label\":\"Flow edge declaration\",\"family\":\"flow\",\"category\":\"diagram-part\",\"purpose\":\"Declare an edge between two unambiguous node ids in the owning canvas.\",\"eligibility\":{\"kind\":\"part\"},\"rules\":[{\"kind\":\"ancestorSlot\",\"placements\":[{\"definitionId\":\"vict.flow.canvas\",\"revision\":\"1\",\"slotName\":\"edges\"}]},{\"kind\":\"uniqueValue\",\"property\":\"id\",\"providerIds\":[\"vict.flow.canvas\"],\"slots\":[\"edges\"],\"namespace\":\"flow-edge\",\"nonempty\":true},{\"kind\":\"hostRequirement\",\"capability\":\"vict.flow.canvas-context@1\",\"reason\":\"The canvas validates evaluated endpoints and forwards the exact child target onto the visible SVG edge.\"}],\"guidance\":[\"Not a standalone preview. Insert under canvas.edges. source and target must each resolve to exactly one evaluated node id in the same canvas.\",\"Node and edge id namespaces are separate. No implicit workflow or connection mutation.\"],\"packageName\":\"@victframework/ui-flow-svelte\",\"packageVersion\":\"0.4.0-rc.1\",\"capabilities\":{\"extensionId\":\"vict.flow.edge\",\"revision\":\"1\",\"rendererImplementationId\":\"vict.svelte.flow.authoring\",\"abi\":\"vict.ui-component-abi@1\",\"slots\":[],\"required\":[],\"styleTargets\":[\"root\"],\"requiresParentContext\":true,\"compositionSlots\":[]},\"descriptorDigest\":\"6b6eaaa2f0000ed580f3ce3b095c9d3fb2a8a49c51a5a98092e19f889d35304a\",\"digest\":\"62fad3846cdf76659b1d3d51b3fbfd506a8c74e704437d4e9634a68d9a7ddc8b\",\"exampleCount\":1,\"hasSeed\":false}",
+        "totalCharacters": 1770,
+        "offset": 0,
+        "nextOffset": null,
+        "bodyComplete": true
+      },
+      {
+        "id": "vict.flow.canvas",
+        "revision": "1",
+        "digest": "3bf1d1da07ec917d35bc1c1bcddf23eb172d4d9d9b42c82c85e22938d8638743",
+        "contractJson": "{\"descriptor\":{\"revision\":\"1\",\"abi\":\"vict.ui-component-abi@1\",\"events\":[\"vict.ui-component-abi@1\"],\"rendererImplementationId\":\"vict.svelte.flow.authoring\",\"styleTargets\":[\"root\"],\"outputs\":[],\"id\":\"vict.flow.canvas\",\"props\":[{\"name\":\"label\",\"type\":\"string\",\"default\":\"Flow diagram\"},{\"name\":\"height\",\"type\":\"number\",\"default\":360},{\"name\":\"controls\",\"type\":\"boolean\",\"default\":true},{\"name\":\"minimap\",\"type\":\"boolean\",\"default\":false},{\"name\":\"background\",\"type\":\"boolean\",\"default\":true}],\"slots\":[\"nodes\",\"edges\"],\"inspectionLimits\":[\"Read-only authored topology and positions. Pan, zoom and keyboard selection are ephemeral. No workflow execution.\"]},\"label\":\"Flow canvas\",\"family\":\"flow\",\"category\":\"diagram\",\"purpose\":\"Read-only authored topology and positions with ephemeral pan, zoom and selection.\",\"eligibility\":{\"kind\":\"standalone\"},\"dependencies\":[{\"id\":\"vict.flow.node\",\"revision\":\"1\"},{\"id\":\"vict.flow.edge\",\"revision\":\"1\"}],\"guidance\":[\"Import @victframework/ui-flow-svelte/styles.css. Nodes and edges are canonical declaration children in explicit slots.\",\"Graph ids are local to this canvas occurrence and distinct from canonical source ids. Duplicate evaluated ids or unavailable endpoints refuse presentation.\",\"No dragging, connecting, deletion, executable node types or workflow execution is enabled. Change positions and topology through normal authored props and history.\"],\"packageName\":\"@victframework/ui-flow-svelte\",\"packageVersion\":\"0.4.0-rc.1\",\"capabilities\":{\"extensionId\":\"vict.flow.canvas\",\"revision\":\"1\",\"rendererImplementationId\":\"vict.svelte.flow.authoring\",\"abi\":\"vict.ui-component-abi@1\",\"slots\":[\"nodes\",\"edges\"],\"required\":[],\"styleTargets\":[\"root\"],\"requiresParentContext\":false,\"compositionSlots\":[]},\"descriptorDigest\":\"b1284730404b3e8fa92250352f6794e726d4cf24ea7b725ef47f6d18a75c075e\",\"digest\":\"3bf1d1da07ec917d35bc1c1bcddf23eb172d4d9d9b42c82c85e22938d8638743\",\"exampleCount\":1,\"hasSeed\":true}",
+        "totalCharacters": 1935,
+        "offset": 0,
+        "nextOffset": null,
+        "bodyComplete": true
+      }
+    ],
+    "pending": [],
+    "problems": [],
+    "projection": "contract-and-semantic-guidance",
+    "paging": "Bodies are lossless JSON text pages of the named projection. Request a selected ID with nextOffset until complete; retain its digest. includeExamples adds canonical seed/examples; omit its known digest when requesting a different projection. Pending dependencies are not a complete bundle. Source facts never use knowledge-cache digests."
+  },
+  "reused": {
+    "expectedRevision": "showcase:r1",
+    "cursor": {
+      "documentId": "core-authoring-knowledge-fixture",
+      "revision": "showcase:r1",
+      "digest": "48a4a298150401b735ff68dfcbb274cd65a412d2b16efb0879fcf56ab3b17655",
+      "epoch": "core-authoring-showcase"
+    },
+    "section": "contracts",
+    "ok": true,
+    "complete": true,
+    "registryDigest": "6a06abc8ee99fa9f88e3abc5cfe9d8ea244ae35a79321284cd0e00de0308e80d",
+    "items": [
+      {
+        "id": "vict.flow.node",
+        "revision": "1",
+        "digest": "caa56fecde5ad7a22f0f4c369423b969edbb29044ae33743f88831420ec31c94",
+        "unchanged": true
+      },
+      {
+        "id": "vict.flow.edge",
+        "revision": "1",
+        "digest": "62fad3846cdf76659b1d3d51b3fbfd506a8c74e704437d4e9634a68d9a7ddc8b",
+        "unchanged": true
+      },
+      {
+        "id": "vict.flow.canvas",
+        "revision": "1",
+        "digest": "3bf1d1da07ec917d35bc1c1bcddf23eb172d4d9d9b42c82c85e22938d8638743",
+        "unchanged": true
+      }
+    ],
+    "pending": [],
+    "problems": [],
+    "projection": "contract-and-semantic-guidance",
+    "paging": "Bodies are lossless JSON text pages of the named projection. Request a selected ID with nextOffset until complete; retain its digest. includeExamples adds canonical seed/examples; omit its known digest when requesting a different projection. Pending dependencies are not a complete bundle. Source facts never use knowledge-cache digests."
+  }
+}
