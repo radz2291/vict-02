@@ -1,0 +1,39 @@
+Independent verifier source audit
+Date: 2026-10-26
+Checkout: C:/Users/RZ1/.codex/worktrees/studio-cycle14-panel-stacks-independent/260831-VCT-02
+Exact candidate: d512106e47b026be6785b9d1e146991ee85e695a
+Entry: b71519e0101a7b3758124ea4cfa320204fa685e7
+Read AGENTS, canonical system ref and governance/architecture/handoff in prescribed order; current panel amendment governs scope.
+No source mutation, dependency installation, test generation, build or provider request performed by this verifier.
+Initial combined document-read output was truncated; focused current-authority and relevant semantics reads followed.
+A speculative read of PanelResize.svelte returned missing path; actual PanelResizer is package imported and unchanged.
+
+d512106e47b026be6785b9d1e146991ee85e695a
+d7401bef6e48330796c74ec00c86db9622d48cdf
+d512106e47b026be6785b9d1e146991ee85e695a
+d512106e47b026be6785b9d1e146991ee85e695a	refs/heads/codex/studio-cycle-1-4-panel-stacks
+d7401bef6e48330796c74ec00c86db9622d48cdf	refs/heads/main
+M	apps/studio/src/lib/designer/Cycle14Showcase.svelte
+M	apps/studio/src/lib/designer/Designer.svelte
+A	apps/studio/src/lib/designer/DocumentPanels.svelte
+A	apps/studio/src/lib/designer/LayersInspectPanels.svelte
+M	apps/studio/src/lib/designer/SourceDetails.svelte
+A	apps/studio/src/lib/designer/WorkspacePanelsShowcase.svelte
+M	apps/studio/src/lib/designer/designer.css
+M	apps/studio/tests/ui/chat-controls.test.ts
+M	apps/studio/tests/ui/composition.test.ts
+M	apps/studio/tests/ui/context-details.test.ts
+A	apps/studio/tests/ui/panel-stacks.test.ts
+M	apps/studio/tests/ui/workspace-scenarios.test.ts
+A	docs/studio/CYCLE-1-4-PANEL-STACKS.md
+
+Source conclusions:
+DocumentPanels has a single bindable active union data/actions/source/none; header click replaces it or closes all, hidden DOM remains rendered.
+Designer left sidebar retains AgentChat in mounted hidden tabpanel; no tab action calls destroy, stop or provider APIs.
+LayersInspectPanels independently toggles two content blocks, uses hidden to exclude controls from layout and keyboard traversal, shows separator only when both are expanded, clamps bounds and supports arrows/Home/End.
+Designer retains the canonical EditorBridge apply, source validation/stale-revision guard and explicit source handoff; pending source/data/property drafts disable the other edit surfaces and panel closing remains guarded.
+Shared Inspect remains read only; Structure and Layers selection feed selected/detailId, Edit properties still routes to floating canvas palette.
+Desktop normal grid gives Document a width column. Later <=760 media rule overrides historical absolute drawer rule with static second-row placement. Actual narrow geometry remains required for browser verification.
+Test audit: existing assertions updated for owner placement and exclusive accordion; new tests exercise mounted identity, Chat draft, independent collapses, separator bounds, source/data guards, exclusive/all-closed Document and actual showcase primitives. Active-turn stop/no-delete assertions remain in chat-controls.
+No changes outside authorized Studio designer/tests/documentation paths.
+Source audit alone is not independent hands-on evidence or owner acceptance.

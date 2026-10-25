@@ -1,0 +1,33 @@
+Independent hands-on final replacement observations
+Product: 13204fcaa3e111387b30b955e2e410513ec42bd9
+Date: 2026-10-26. Same fresh verifier and own disposable screen/tab as initial observations. All UI interactions via mcp__cua_repl; no provider requests. Own saved screen loaded from ordinary UI after navigation to final .18:5612/design. Builder final artifact was rebuilt serially and listener relaunched; source audited in separate clean detached exact checkout.
+
+Independent production seal verification:
+node docs/studio/cycle-1-4/panel-stacks/seal-production.mjs --verify
+Exit0: {"verified":true,"candidate":"13204fcaa3e111387b30b955e2e410513ec42bd9","inputs":754,"outputs":491}
+Manifest SHA256: 50e4df1ffd4e45fc950a807ebaf59835cc4c923d3c4dfac01be763bf2a0f7fc8
+Raw standalone output: independent-final-seal-verification.txt
+
+Desktop challenge1280x720:
+Added40 extra declared string values to own disposable fixture via Source->Apply (46total Data rows). Active Data body clientHeight512/scrollHeight2645/overflowYauto. Document y44/bottom696. All three headers visible: Data y82-116; Actions y628-662; Source y662-696.
+Ordinary pointer scroll at right Data body moved scrollTop to2132.800048828125; header rectangles remained exactly unchanged. Actions->Source exclusivity holds. Whitespace Source draft->Data retained and all Data rows disabled. Discard->click active Source closes all, textarea remains mounted. Screenshot displayed and visually inspected in independent CUA transcript.
+
+Final narrow760x640 with sidebar, Structure and Document open:
+Stage x0 y287.2 width744.8 height240 bottom527.2; Document x0 y527.2 width744.8 height280 bottom807.2, positionstatic. Canvas height71.2 with Structure open. Active Data body clientHeight139/scrollHeight2645. Outer workspace viewport572, scrollHeight763.
+Ordinary outer scroll191.2 made all headers reachable; Actions expanded exclusively, all headers within viewport (Data y374.8, Actions408.8, Source582-616). Active body height139. Source header opens usable scrolling source body; no canvas overlay.
+
+Final narrow390x740:
+Structure deliberately collapsed while left sidebar remained available. Last extra Data row ReviewField39 reached through ordinary locator click/scroll and its Starting value edited to "Narrow last-row draft". Switching Source disables source textarea; returning Data preserves exact draft; Cancel reached and executed.
+Source whitespace draft survived Actions->Source, Close Document refused, and draft remained. Stage240, Document280, active source body139. Screenshot displayed/inspected shows Data textarea, Apply/Cancel, Actions and Source headers reachable with outer/active-body scroll.
+Discarded source draft, restored pre-long-list fixture through Source->Apply, reset browser viewport to default1280x720, Save succeeded revisionr1.r3. Owner/root screen data were untouched.
+
+Final keyboard traversal:
+Collapse Layers; Tab from layers-panel-header focuses inspect-panel-header directly. Hidden Layers controls and absent divider are skipped. Restored Layers afterward.
+
+Final showcase affected-component check:
+Navigated own tab /showcase, Source opens with Datafalse/Actionsfalse/Sourcetrue. Actual shared active body clientHeight378, overflowYauto; no clipping observed. Initial-product independent stack/selection exercises still apply to unchanged code paths.
+
+Retained final setup observation:
+First seal/check aggregation printed sealverifiedtrue and correct hash but command exit1 solely because guessed build-final-serial.log was absent. Correct build log is build-13204fc-serial.log and ends checkmark done. Reran seal as standalone exit0. Builder logs reviewed: final/replacement9files43/43, types-final empty successful log, Svelte-final0errors5existingwarnings; no independent rerun of expensive generation/checks/build.
+
+Verdict: PASS for bounded panel-placement/exclusive-accordion amendment at13204fc, with initial failed observations retained. No remaining material product finding. No new independent live provider/in-flight-turn execution claimed; active-turn safety uses audited source+mocked regression evidence. Earlier workspace HELD is retained at predecessor scope; current hands-on gate was executed afresh and is not inferred from builder UI evidence. Owner acceptance and broader Stage9 closure remain pending/outside this verdict.

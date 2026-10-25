@@ -1,0 +1,33 @@
+Independent hands-on UI observations — initial product d512106e47b026be6785b9d1e146991ee85e695a
+2026-10-26. Executed by fresh verifier through mcp__cua_repl only. Origin http://127.0.0.18:5612. Own browser tab1. Initial browser inventory empty; normal login operator via ordinary UI; File > New screen "Independent panel stacks".
+Disposable screen ID screen-0434c36a-e924-42ef-ba49-0e327d9352a7. Own Source UI imported small canonical fixture: heading, state.message native input and simulated demo.submit catalog button. No provider request sent. Existing .16/.17 previews never navigated or reloaded.
+
+Desktop1280x720 measurements from read-only DOM:
+left x0 y44 w300 h652; stage x306 y44 w648 h652 right954;
+canvas x306 y82 w648 h579.2 right954;
+Document x960 y44 w320 h652 right1280; computed position static.
+Screenshot displayed in CUA transcript confirms central canvas, floating tools home and normal dock.
+
+Executed PASS observations at this initial product:
+- Actions expands while Source/Data collapse. Clicking active header folds all; canonical textarea remains mounted.
+- Source whitespace draft survives Source->Data->Source; data rows disabled; Close Document refuses with visible "Apply or cancel your draft before closing Document." Discard restores canonical source and editor availability.
+- Chat unsent draft "Independent unsent draft retained" survives Chat->Layers->Chat via ArrowRight/ArrowLeft with focus on selected tab.
+- Layers and Inspect header collapse independently: false/true and true/false states directly observed; other section fills remaining space. Divider absent when either closes.
+- Divider keyboard Home/End gives16/84 at desktop, within ARIA min/max; pointer drag y595->380 changes84->49. Keyboard focus remains separator. Hidden contents absent AX tree.
+- Layers heading selection updates shared Inspect; no floating tools until explicit Edit properties. Structure source field selection updates same Inspect with Review message and Input facts.
+- Edit properties opens central floating selection tools while left Inspect remains. Text Content draft disables Source. Apply text changes heading; Edit menu Undo restores prior heading; Redo restores edit. Ctrl+Z inside Source editor does not trigger authored undo (native editable context).
+- File Save -> saved revision r1.r1; File Reload saved version -> same edited heading and runtime reset. Data starting-value edit then Save -> r1.r2.
+- 760x640: Document static row below stage (stage y287.2 bottom474.2; Document y474.2 h153); with sidebar and Structure open canvas h36. Readable-minimum repair later requested by builder; initial geometry retained, no final narrow PASS claimed here.
+- 390x740: sidebar hidden and Structure deliberately collapsed; Data/Source reachable in ordinary layout below canvas; pending Data draft blocks Source, Apply changes canvas starting value. Header/tool horizontal scrolling and outer vertical scrolling observed. Temporary viewport reset to default afterward.
+- Preview > Try scenarios > Long content > Try on canvas fills connected input. Manual runtime value survives opening Document and switching Chat/Layers. Source starting value remains "Independent saved starting value" and save indicator remains ✓ Saved. Reset test restores authored initial.
+- /showcase actual shared panel fixture: Layers false/Inspect true and inverse observed; Continue selection synchronizes Inspect; Source exclusively displays read-only canonical text. Fixture is explicitly labelled disposable/no model request.
+
+Retained automation/setup observations (not product findings):
+- Initial combined canonical document read output truncated; focused current-authority and semantics reads followed.
+- Attempted source file PanelResize.svelte does not exist; actual PanelResizer comes from unchanged package import.
+- Initial Structure getByText("Element: Review message, source field") found no text match because this is accessible container name; refreshed AX index272 click succeeds.
+- Showcase getByRole button Layers was ambiguous between tab and section header; retargeted observed #layers-panel-header and subsequent independent checks succeed.
+- Second createBrowserTab returned "IAB visibility is not supported in a subagent thread"; existing verifier-owned tab remained fully usable and navigated to showcase after saving the screen.
+- Read of guessed types.log returned missing file; actual zero-output type logs are types-initial.log/types-repair.log/types-workspace.log.
+
+Builder reported Document long-Data header reachability issue and is preparing flex stack/active-body scroll plus narrow readable minima. d512 observations remain historical; final verdict requires replacement SHA/seal and affected desktop/narrow Document recheck. No independent live in-flight provider turn initiated; active-turn mount/no-stop protection is audited in retained chat-controls regression test and source, not claimed as fresh live provider execution.

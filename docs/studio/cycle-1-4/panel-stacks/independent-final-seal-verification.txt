@@ -1,0 +1,1 @@
+{"verified":true,"candidate":"13204fcaa3e111387b30b955e2e410513ec42bd9","inputs":754,"outputs":491}
