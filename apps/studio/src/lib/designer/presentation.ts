@@ -20,6 +20,9 @@ export function studioNodeLabels(document: UiDocument): Record<string, string> {
   }
   for (const node of Object.values(document.nodes)) {
     let label = baseNames.get(node.id) ?? 'Element';
+    // Text leaves have their own label so hidden text does not add spurious
+    // duplicate ordinals to its heading, paragraph or associated field.
+    if(node.kind==='text')label=node.content.type==='literal'?`Text · ${node.content.value || 'Empty'}`:'Connected text';
     if (node.kind === 'element' && !node.attributes?.['aria-label']) {
       const content = node.children.map(text).filter(Boolean).join(' ');
       const semantic = ({label:'Label',select:'Select',option:'Option',textarea:'Text area',h4:'Heading',h5:'Heading',h6:'Heading',header:'Header',footer:'Footer',aside:'Aside'} as Record<string,string>)[node.tag];

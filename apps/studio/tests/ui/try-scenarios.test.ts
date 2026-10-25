@@ -2,6 +2,7 @@
 import { afterEach, expect, it, vi } from 'vitest';
 import { mount, unmount, tick, flushSync } from 'svelte';
 import TryScenarios from '../../src/lib/designer/TryScenarios.svelte';
+import StudioShowcase from '../../src/lib/designer/StudioShowcase.svelte';
 import { newScreen } from '../../src/lib/designer/application.js';
 let editor:ReturnType<typeof mount>|undefined;
 afterEach(async()=>{if(editor)await unmount(editor);editor=undefined;document.body.innerHTML='';});
@@ -23,4 +24,11 @@ it('shows relevant sample choices, invokes the selected scenario and gives boole
   editor=mount(TryScenarios,{target:document.body,props:{document:source,values:{},onChoose:choose,onClose:vi.fn(),onReset:vi.fn(),onTry:vi.fn(),onChange:vi.fn()}});await settle();
   const choices=[...document.querySelectorAll<HTMLButtonElement>('.scenario-choice')];expect(choices).toHaveLength(3);choices[2]!.click();expect(choose).toHaveBeenCalledWith(expect.objectContaining({id:'content:long'}));
   expect(document.querySelector('[type="checkbox"][aria-label="accepted value"]')).not.toBeNull();
+});
+it('returns keyboard focus to the showcase disclosure when testing closes',async()=>{
+  editor=mount(StudioShowcase,{target:document.body});await settle();
+  const summary=document.querySelector<HTMLElement>('.testing-example > summary')!;summary.click();await settle();
+  document.querySelector<HTMLButtonElement>('[aria-label="Close testing"]')!.click();await settle();
+  expect(document.querySelector<HTMLDetailsElement>('.testing-example')!.open).toBe(false);
+  expect(document.activeElement).toBe(summary);
 });

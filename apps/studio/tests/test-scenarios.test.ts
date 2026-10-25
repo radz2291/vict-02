@@ -2,6 +2,8 @@ import { expect, it } from 'vitest';
 import { newScreen } from '../src/lib/designer/application.js';
 import { testScenarios } from '../src/lib/designer/test-scenarios.js';
 import type { UiDocument } from '@victframework/ui';
+import { studioNodeLabels } from '../src/lib/designer/presentation.js';
+import { compositionNames } from '@victframework/ui-editor';
 
 function fixture(): UiDocument {
   const seed=newScreen('Scenario projection','scenarios');
@@ -29,7 +31,8 @@ it('excludes hidden subtrees, conditional templates and arbitrary data attribute
   ])expect(testScenarios({...source,nodes:{...source.nodes,screen:parent}} as UiDocument)).toEqual([]);
   const arbitrary={...source,nodes:{...source.nodes,submit:{...source.nodes.submit,attributes:{'data-pending':{type:'ref',path:'state.busy'}}}}} as UiDocument;
   expect(testScenarios(arbitrary).some(choice=>choice.id==='loading')).toBe(false);
-  expect(testScenarios(arbitrary).find(choice=>choice.id==='failure')!.description).toContain('no directly connected error message');
+  expect(testScenarios(arbitrary).find(choice=>choice.id==='failure')!.description).toContain('Recent activity');
+  expect(testScenarios(arbitrary).find(choice=>choice.id==='failure')!.description).not.toContain('no directly connected');
 });
 it('seeds only connected plain text, excludes sensitive/specialized/unbound inputs and leaves canonical source exact',()=>{
   const source=fixture(),before=JSON.stringify(source);
@@ -53,4 +56,9 @@ it('offers opening a dialog only for a declared controlled Open binding of the r
   const dialog={...source,nodes:{...source.nodes,screen:{id:'screen',kind:'element',tag:'main',children:['dialog']},dialog:{id:'dialog',kind:'component',definitionId:'vict.catalog.dialog',props:{open:{type:'ref',path:'state.dialogOpen'}},slots:{}}}} as UiDocument;
   expect(testScenarios(dialog)).toMatchObject([{id:'open:dialog',values:{dialogOpen:true}}]);
   expect(testScenarios({...dialog,localState:{...dialog.localState,dialogOpen:{key:'dialogOpen',type:'string',initial:''}}})).toEqual([]);
+});
+it('keeps readable layer names free of duplicate ordinals from hidden literal text leaves',()=>{
+ const source={...fixture(),nodes:{screen:{id:'screen',kind:'element',tag:'h1',children:['title']},title:{id:'title',kind:'text',content:{type:'literal',value:'Workspace'}}}} as UiDocument;
+ const before=JSON.stringify(source),labels=compositionNames(source,{nodes:studioNodeLabels(source)});
+ expect(labels.get('screen')).toBe('Workspace');expect(labels.get('title')).toBe('Text · Workspace');expect(JSON.stringify(source)).toBe(before);
 });

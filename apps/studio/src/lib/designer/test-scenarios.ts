@@ -68,7 +68,7 @@ export function testScenarios(document: UiDocument): TestScenario[] {
     if (document.localState[pending]?.type === 'boolean' && displayed(pending)) scenarios.push({
       id: 'loading', label: 'Loading', description: 'Show the controls connected to this screen’s loading state. No request is started.', values: { [pending]: true },
     });
-    const errorNote = displayed(screenActionState['demo.submit'].error) ? ' Try the screen’s submit button to see its response.' : ' This view has no directly connected error message; check Recent activity after submitting.';
+    const errorNote = ' Try the screen’s submit button, then check its response or Recent activity.';
     scenarios.push(
       { id: 'failure', label: 'Something went wrong', description: 'The next submit action will fail.'+errorNote, simulation: 'failNext' },
       { id: 'denied', label: 'Permission denied', description: 'Submit actions will be refused until you reset the test.'+errorNote, simulation: 'denied' },
