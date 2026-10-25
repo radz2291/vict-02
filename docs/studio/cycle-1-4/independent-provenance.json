@@ -1,0 +1,388 @@
+{
+  "candidate": "e45e4eff037c6860c435ad0c3b2b1678df01c94a",
+  "checkedAt": "2026-10-25T09:58:39.264Z",
+  "upstreamCommit": "b10f153250b18abfccf49a06e1c4c68945edffa5",
+  "indexEntries": 268,
+  "uiFamilies": 63,
+  "sourcePayloads": 461,
+  "results": [
+    {
+      "family": "accordion",
+      "registrySha256": "4c77b3993546acfdb3ea5e0d7e268d4a53f2655856881b9909798fb3cdf1cf7e",
+      "sourcePayloads": 5,
+      "disposition": "compatible-general-presentation"
+    },
+    {
+      "family": "alert",
+      "registrySha256": "b7024145f7f3b861277d4e50051ef727ccd722d2c9c10b29d18f0cc57ce24a5d",
+      "sourcePayloads": 5,
+      "disposition": "native-source-pattern"
+    },
+    {
+      "family": "alert-dialog",
+      "registrySha256": "10dd8f12026d7b4924c003749d3c5f58e7c2c46b14708637931ee5356e4a0d02",
+      "sourcePayloads": 13,
+      "disposition": "compatible-general-presentation"
+    },
+    {
+      "family": "aspect-ratio",
+      "registrySha256": "d0ba92839bd39390ed67edbbd7c949a66e6ffb9e90e2e57d6026df4c3daea3a0",
+      "sourcePayloads": 2,
+      "disposition": "compatible-general-presentation"
+    },
+    {
+      "family": "attachment",
+      "registrySha256": "b3361dbd07ce4f37e240af7ae639e66b71a5732db8027cc5e5b3b3cf2fc742f2",
+      "sourcePayloads": 10,
+      "disposition": "existing-specialist-presentation"
+    },
+    {
+      "family": "avatar",
+      "registrySha256": "080843f688905b9ed48c2e7de4c35569340d6827e853efc9af0b8534459a4cd8",
+      "sourcePayloads": 7,
+      "disposition": "compatible-general-presentation"
+    },
+    {
+      "family": "badge",
+      "registrySha256": "147bc51a3f48c65e40e7e151828be7b52189dfa3557bc0b8d56aad701b809d7a",
+      "sourcePayloads": 2,
+      "disposition": "existing-specialist-presentation"
+    },
+    {
+      "family": "breadcrumb",
+      "registrySha256": "28861bae3610cabae2215a953f1e236792dbb2baa04ca2d35655c4f402741ac8",
+      "sourcePayloads": 8,
+      "disposition": "native-source-pattern"
+    },
+    {
+      "family": "bubble",
+      "registrySha256": "56eea7a27808cb31cc033b6d3e153520e0ebeacbe12929b9770819317208d31a",
+      "sourcePayloads": 5,
+      "disposition": "existing-specialist-presentation"
+    },
+    {
+      "family": "button",
+      "registrySha256": "17106eefc28b02c102f2be0d0822128ba26134b90f9c85c98d30f97fd235884f",
+      "sourcePayloads": 2,
+      "disposition": "compatible-general-presentation"
+    },
+    {
+      "family": "button-group",
+      "registrySha256": "d42be56cf091f77e95a194c5b1c4db9444a292b6b088bbad844ff8f005ab13f8",
+      "sourcePayloads": 4,
+      "disposition": "native-source-pattern"
+    },
+    {
+      "family": "calendar",
+      "registrySha256": "996f4093f8b67110d70c4250be818cd7ace2f54b51dc0d257a1ef3ce53a66df1",
+      "sourcePayloads": 19,
+      "disposition": "compatible-general-presentation"
+    },
+    {
+      "family": "card",
+      "registrySha256": "b91ea44bf7d3307fac722e619ce83af40aef01dd7a64a658b356af28f81e0e32",
+      "sourcePayloads": 8,
+      "disposition": "native-source-pattern"
+    },
+    {
+      "family": "carousel",
+      "registrySha256": "6ef89579953345d2ac309b1a4e4db91f1174b8b066506aec578fb93a5b8b0234",
+      "sourcePayloads": 7,
+      "disposition": "explicit-host-or-adapter-exception"
+    },
+    {
+      "family": "chart",
+      "registrySha256": "dccff6d1f478d5469fdd93e3ddca5eb8c42732ae1ca494da79028c5cdc422d51",
+      "sourcePayloads": 5,
+      "disposition": "explicit-host-or-adapter-exception"
+    },
+    {
+      "family": "checkbox",
+      "registrySha256": "dae26c1be5de8e1a4fd97d0df553261f44f308c469c7fbabefbc66232a7365e9",
+      "sourcePayloads": 2,
+      "disposition": "compatible-general-presentation"
+    },
+    {
+      "family": "code-block",
+      "registrySha256": "302b26733dfaa9b5b64770df49391a77b9cbc8a9b7d62fc567e90f30c714a7d9",
+      "sourcePayloads": 9,
+      "disposition": "existing-specialist-presentation"
+    },
+    {
+      "family": "collapsible",
+      "registrySha256": "d6ad641928024c72609982bf73a335163926ade283f4e9f8b8dbf600cc02b136",
+      "sourcePayloads": 4,
+      "disposition": "compatible-general-presentation"
+    },
+    {
+      "family": "command",
+      "registrySha256": "43fd16a4c7a2ec0e4b8e928cd7ff5d50bfa46772456a21882b7293afaa558bb9",
+      "sourcePayloads": 12,
+      "disposition": "compatible-general-presentation"
+    },
+    {
+      "family": "context-menu",
+      "registrySha256": "818923a04cd0a3e92239f6526ff986d8cf6abc679319ba4131c457e8cdff8cb8",
+      "sourcePayloads": 17,
+      "disposition": "compatible-general-presentation"
+    },
+    {
+      "family": "dialog",
+      "registrySha256": "7ef84d19a660d59f6c1abf4201a5d560732a9761cd106b7c0cb38dfde3adafec",
+      "sourcePayloads": 11,
+      "disposition": "compatible-general-presentation"
+    },
+    {
+      "family": "drawer",
+      "registrySha256": "633c00dfe0453be2d92402a63dc3aa49dfa1ab83303ffb256efdff475690c9df",
+      "sourcePayloads": 12,
+      "disposition": "explicit-host-or-adapter-exception"
+    },
+    {
+      "family": "dropdown-menu",
+      "registrySha256": "f1233d7f240add3efa169fc375c778716b26e25e3903cc907ee04cc220084092",
+      "sourcePayloads": 18,
+      "disposition": "compatible-general-presentation"
+    },
+    {
+      "family": "empty",
+      "registrySha256": "98eb7be625aa80c7c31706d26a435e7a6fa244424e5c5d8f9afcf52cf4c45cd2",
+      "sourcePayloads": 7,
+      "disposition": "native-source-pattern"
+    },
+    {
+      "family": "field",
+      "registrySha256": "52221aabeb9cc830693207cf852b7b0275d3dcfde5ebc04fe1e4db7b3d0375cc",
+      "sourcePayloads": 11,
+      "disposition": "native-source-pattern"
+    },
+    {
+      "family": "form",
+      "registrySha256": "c4d1f993f8aa9394b2df9c5c8c6141b18f7b8b7e8fb4c5a97967517f77a480d6",
+      "sourcePayloads": 9,
+      "disposition": "explicit-host-or-adapter-exception"
+    },
+    {
+      "family": "hover-card",
+      "registrySha256": "25193df24cfbf5fb53ec1d94362ed3e7f4a424637e8f6651c8cb943a5737c0a0",
+      "sourcePayloads": 5,
+      "disposition": "compatible-general-presentation"
+    },
+    {
+      "family": "input",
+      "registrySha256": "adc3d419fd87863dd7a6f1565ebda86d035693d07b82dbde2e8177c5adf3f395",
+      "sourcePayloads": 2,
+      "disposition": "native-source-pattern"
+    },
+    {
+      "family": "input-group",
+      "registrySha256": "2f4469146dd2df4cf9a6a4deeafecd1a5ddd32fb6ec2ed24c42909a529d1840c",
+      "sourcePayloads": 7,
+      "disposition": "existing-specialist-presentation"
+    },
+    {
+      "family": "input-otp",
+      "registrySha256": "071c44728a6fec24aba44651d2b90c0cd2e87303ced4ec4abd92f7ab7d3dcbba",
+      "sourcePayloads": 5,
+      "disposition": "explicit-host-or-adapter-exception"
+    },
+    {
+      "family": "item",
+      "registrySha256": "bb5a75ea19b35c2a4b91a2a30eec90f7d1d78d756bb500d3afb1288a9a08d4e3",
+      "sourcePayloads": 11,
+      "disposition": "existing-specialist-presentation"
+    },
+    {
+      "family": "kbd",
+      "registrySha256": "2cd3ef456bebfdf7ee756dfd84dbee7a9ef56f6ad7531f3418062914d317cebf",
+      "sourcePayloads": 3,
+      "disposition": "native-source-pattern"
+    },
+    {
+      "family": "label",
+      "registrySha256": "2518649ae021483bcdf1ce6db76010ddcbb08a78c1adcf0f72bc432c6371abc5",
+      "sourcePayloads": 2,
+      "disposition": "compatible-general-presentation"
+    },
+    {
+      "family": "marker",
+      "registrySha256": "a902b81be24f183f68b9bc260b9991c98794586ac5a2f2543be32673650e0b3e",
+      "sourcePayloads": 4,
+      "disposition": "existing-specialist-presentation"
+    },
+    {
+      "family": "menubar",
+      "registrySha256": "6fe91d8577ea122b6d98b416844a23f288128c81ed3963a348b7045a0e121cf3",
+      "sourcePayloads": 18,
+      "disposition": "compatible-general-presentation"
+    },
+    {
+      "family": "message",
+      "registrySha256": "094bf6ef8cac7883c42dc0282f1e868a0b85d7f3737c89fcdfd9d2f0204bb56b",
+      "sourcePayloads": 7,
+      "disposition": "existing-specialist-presentation"
+    },
+    {
+      "family": "message-scroller",
+      "registrySha256": "0c89db7f49825d44655bf0d5dccfc599ea63c8a526695639798d0941d208b4ed",
+      "sourcePayloads": 7,
+      "disposition": "existing-specialist-presentation"
+    },
+    {
+      "family": "native-select",
+      "registrySha256": "c2b23e42c3069fc364b71d76db442560e3c9024e0f807bce521e929cf8e8009e",
+      "sourcePayloads": 4,
+      "disposition": "native-source-pattern"
+    },
+    {
+      "family": "navigation-menu",
+      "registrySha256": "ae01c3e8138eaa12f2ed3086805dd47a688983a7458ce096163f7f28c1b5cabc",
+      "sourcePayloads": 9,
+      "disposition": "compatible-general-presentation"
+    },
+    {
+      "family": "pagination",
+      "registrySha256": "86074a1b7a57c9d4a2a6a9d079dc53c96124285f0a6f4c4a71d960d31d5b3531",
+      "sourcePayloads": 10,
+      "disposition": "compatible-general-presentation"
+    },
+    {
+      "family": "popover",
+      "registrySha256": "d83767cef945de427635e5a25e81f008b290ec8bd621a5b6dc4f5b6e8e541f4f",
+      "sourcePayloads": 9,
+      "disposition": "compatible-general-presentation"
+    },
+    {
+      "family": "progress",
+      "registrySha256": "b4c6937e4c432683eed4d99e06ee6344698e156c5dd512a885f0bf565c0b888a",
+      "sourcePayloads": 2,
+      "disposition": "compatible-general-presentation"
+    },
+    {
+      "family": "questionnaire",
+      "registrySha256": "b7b90939608c27978d34e901160ac84f00d32deb1ae853b4137659845249082a",
+      "sourcePayloads": 16,
+      "disposition": "explicit-host-or-adapter-exception"
+    },
+    {
+      "family": "radio-group",
+      "registrySha256": "fb68d46637ad7d4a5212c040148c35985a76edcf95fef2035bbebbe0cc383b59",
+      "sourcePayloads": 3,
+      "disposition": "compatible-general-presentation"
+    },
+    {
+      "family": "range-calendar",
+      "registrySha256": "f591f4f62e83111222f413035260f7503abc0fb340b3f87e46dfc0fbb2f82694",
+      "sourcePayloads": 19,
+      "disposition": "compatible-general-presentation"
+    },
+    {
+      "family": "resizable",
+      "registrySha256": "1ec9be08ee752a6f182f9f4fce1392792575817c6a43eae1c06d03e85eab13fd",
+      "sourcePayloads": 3,
+      "disposition": "explicit-host-or-adapter-exception"
+    },
+    {
+      "family": "scroll-area",
+      "registrySha256": "e7e24cacfb8eb00be2d14691f37b2f080e463d6833dbd139cb60d05aec450952",
+      "sourcePayloads": 3,
+      "disposition": "compatible-general-presentation"
+    },
+    {
+      "family": "select",
+      "registrySha256": "c3549cb6f13e5ecc51c15fbeefd46386b413f44da2c49889625a57c81eb9fda4",
+      "sourcePayloads": 13,
+      "disposition": "compatible-general-presentation"
+    },
+    {
+      "family": "separator",
+      "registrySha256": "6f53e106cb04597615e9f28d1cd1a34e04e9f81b7ceea1787935dd0e79b1521e",
+      "sourcePayloads": 2,
+      "disposition": "compatible-general-presentation"
+    },
+    {
+      "family": "sheet",
+      "registrySha256": "b52df379458b63e0289c6016b0a1159fbeb9a06f95798f7dd9d33b8e0422389d",
+      "sourcePayloads": 11,
+      "disposition": "explicit-host-or-adapter-exception"
+    },
+    {
+      "family": "sidebar",
+      "registrySha256": "d731d6c2091af38c1fdf2cdcc3f1ce3ccc9d3e319627c275e7fc9cc71d96a760",
+      "sourcePayloads": 26,
+      "disposition": "explicit-host-or-adapter-exception"
+    },
+    {
+      "family": "skeleton",
+      "registrySha256": "17f7d7f4d250eb8c5e081917d1c6251b6e24c6c410b037e83e4d421c6821a4a0",
+      "sourcePayloads": 2,
+      "disposition": "native-source-pattern"
+    },
+    {
+      "family": "slider",
+      "registrySha256": "a7717b41ac0846ed2b178f1fc764c8bed98ee6c50621c1a4d4004f2a94464766",
+      "sourcePayloads": 2,
+      "disposition": "compatible-general-presentation"
+    },
+    {
+      "family": "sonner",
+      "registrySha256": "d76a511a07d5d1d7f6bc8f8301f0bfe1dd3214c3ccbcd04f753ebae10134a67e",
+      "sourcePayloads": 2,
+      "disposition": "explicit-host-or-adapter-exception"
+    },
+    {
+      "family": "spinner",
+      "registrySha256": "bdd31b9901948d74eb3f303ea7b2f5ac4fc1708e7dfc893b4948c9f543a6f4ba",
+      "sourcePayloads": 2,
+      "disposition": "native-source-pattern"
+    },
+    {
+      "family": "switch",
+      "registrySha256": "acbbb2eb836b7d79945672f41bd2e0db28356c3dccfaf5a817aa53e5c713ce4c",
+      "sourcePayloads": 2,
+      "disposition": "compatible-general-presentation"
+    },
+    {
+      "family": "table",
+      "registrySha256": "76e7f96d099264fc6b24c423c2e3c96579d42be4cad1d733b610bfddb0c7794b",
+      "sourcePayloads": 9,
+      "disposition": "native-source-pattern"
+    },
+    {
+      "family": "tabs",
+      "registrySha256": "860afc63670b419d726900fecadc0ec88d6a95285b3d516cb3ae389de58e4be5",
+      "sourcePayloads": 5,
+      "disposition": "compatible-general-presentation"
+    },
+    {
+      "family": "textarea",
+      "registrySha256": "00d88b9db6f97dc98d14406f22811c2140a1c207eeb375ac476ee7fe437c8ffa",
+      "sourcePayloads": 2,
+      "disposition": "native-source-pattern"
+    },
+    {
+      "family": "toggle",
+      "registrySha256": "2b305cf7fcb40fdc85e01b5c445238c73449148de4864c761de23fafaacdf252",
+      "sourcePayloads": 2,
+      "disposition": "compatible-general-presentation"
+    },
+    {
+      "family": "toggle-group",
+      "registrySha256": "9fd33f078ecc76e4707ebb32cde224bc3db8160b69087d61f46a3b02d4a3fbfc",
+      "sourcePayloads": 3,
+      "disposition": "compatible-general-presentation"
+    },
+    {
+      "family": "tooltip",
+      "registrySha256": "7f41719c7c1f0697162fa007e34469c20e13e84cc04b02e13bb01d394f1f50dc",
+      "sourcePayloads": 6,
+      "disposition": "compatible-general-presentation"
+    },
+    {
+      "family": "trace",
+      "registrySha256": "695a317756575959901c31275b61568616f60cbde29ae46f5e6dfc8424b198d4",
+      "sourcePayloads": 9,
+      "disposition": "existing-specialist-presentation"
+    }
+  ]
+}
