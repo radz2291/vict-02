@@ -1,0 +1,54 @@
+{
+  "method": "Descriptive sum of independent actual-UI/receipt reconciliations; not normalized benchmark or causal speedup.",
+  "pairs": [
+    {
+      "pair": "form",
+      "candidateProduct": "4c76fb6da023c925825e511bfa7c9985aa662b5e",
+      "baselineProduct": "57308f6ffcd5c85415b38d9d68a6f696199ebfa7"
+    },
+    {
+      "pair": "dashboard",
+      "candidateProduct": "9fbda0f3ec0c14ff7be8bfb475d30e0cdc0f0993",
+      "baselineProduct": "57308f6ffcd5c85415b38d9d68a6f696199ebfa7"
+    },
+    {
+      "pair": "editor",
+      "candidateProduct": "9fbda0f3ec0c14ff7be8bfb475d30e0cdc0f0993",
+      "baselineProduct": "57308f6ffcd5c85415b38d9d68a6f696199ebfa7"
+    }
+  ],
+  "totals": {
+    "baseline": {
+      "toolCalls": 125,
+      "elapsedSeconds": 2953.5,
+      "authoringRequests": 81,
+      "imageRequests": 12,
+      "inputTokens": 3520841,
+      "outputTokens": 94718,
+      "uniqueAcknowledgedProposals": 31,
+      "refused": 10,
+      "knowledgeReads": 29,
+      "sourceReads": 44
+    },
+    "candidate": {
+      "toolCalls": 95,
+      "elapsedSeconds": 2833,
+      "authoringRequests": 78,
+      "imageRequests": 10,
+      "inputTokens": 3979273,
+      "outputTokens": 98963,
+      "uniqueAcknowledgedProposals": 29,
+      "refused": 17,
+      "knowledgeReads": 22,
+      "sourceReads": 18
+    }
+  },
+  "limits": [
+    "Form DPR differs; later pairs match.",
+    "Outputs/source complexity differ; provider capacity overlaps, source identities and model variability differ.",
+    "Candidate has more refusals and reported input tokens despite fewer total tool/read calls.",
+    "Natural editor Save feedback is not demonstrated; separate corrective/recovery leg is excluded from these totals.",
+    "Knowledge categories include refused read attempts; baseline categories are independently inferred, not native baseline telemetry.",
+    "No exact provider latency, cost, internal steps or statistical improvement claim."
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "date": "2026-10-25",
+  "verdict": "PASS_READY_FOR_OWNER_REVIEW",
+  "product": "e76e2fc0f64f5a451edae01f4b0a1c9e7cfc68db",
+  "builderEvidence": "c893b9254e6b5e78e1100f32f7f03f03763cd0ab",
+  "acceptedBaseline": {
+    "delivery": "0ac71d64caefaaf4351c43a68b67421a51b76aba",
+    "product": "57308f6ffcd5c85415b38d9d68a6f696199ebfa7",
+    "verdict": "c5ae1e9f718a31930f98a5ef300463f2c1b8db54"
+  },
+  "main": "d7401bef6e48330796c74ec00c86db9622d48cdf",
+  "verifierBranch": "codex/studio-cycle-1-4-independent",
+  "productionSeal": {
+    "sha256": "bb46d98cbe6e520ac487abd5928a1dc0e4343eebf1f6a16de37dab81adc1e17a",
+    "inputs": 747,
+    "outputs": 491,
+    "independentlyVerified": true
+  },
+  "criteria": {
+    "C14-01": "PASS_WITH_RECORDED_SCOPE",
+    "C14-02": "PASS_WITH_RECORDED_SCOPE",
+    "C14-03": "PASS_WITH_RECORDED_SCOPE",
+    "C14-04": "PASS_WITH_RECORDED_SCOPE",
+    "C14-05": "PASS_WITH_RECORDED_SCOPE",
+    "C14-06": "PASS_WITH_RECORDED_SCOPE",
+    "C14-07": "PASS_WITH_RECORDED_SCOPE",
+    "C14-08": "PASS_WITH_RECORDED_SCOPE",
+    "C14-09": "PASS_WITH_RECORDED_SCOPE",
+    "C14-10": "PASS_WITH_RECORDED_SCOPE"
+  },
+  "requiredFindings": {
+    "IV14-01": "CLOSED0c3: committed LF/provenance/seal",
+    "IV14-02": "CLOSED0c3: explicit Interact editing handoff actual recheck",
+    "IV14-03": "CLOSED4c76: real Source pointer hit under visible floating-tool trigger",
+    "IV14-04": "CLOSED9fb: shared showcase evidence states and actual real Chat renderer",
+    "IV14-05": "CLOSEDe76: actual completed-turn ledger remains historically scoped after manual source edit"
+  },
+  "method": "Fresh independent source/package/protocol/seal challenge and independently specified/reviewed actual browser/provider artifacts. Root executes CUA because child CUA unavailable; no synthetic-only actual-pointer claim.",
+  "recovery": {
+    "rawArtifacts": 91,
+    "portableHelperPass": true,
+    "stopAcknowledgedProposals": 5,
+    "continuationNewProposals": 1,
+    "manualProofPreserved": true,
+    "draftAndPromptExact": true,
+    "canonicalConcurrentRefusal": "UI_DOC_STALE_REVISION",
+    "savedReopenedSourceExact": true,
+    "savedRevision": "r1.r2"
+  },
+  "limits": [
+    "Owner acceptance remains pending.",
+    "Default640split cramped; explicitExpandStructure fallback verified.",
+    "Authored Flow overlap, narrow-editor layout and focus-border precedence retained.",
+    "Natural editor Save/copy misses retained; separate corrective local demo.submit intent proven without persistence authority.",
+    "Provider regions/interaction and receipt metrics remain bounded; source presence is not complete intent or behavior.",
+    "Single mixed natural comparisons and inconsistent knowledge-read aim do not establish universal efficiency improvement.",
+    "Natural server/tool/package bytes unchanged across later UI-only repairs are explicitly carried; no relabelled old binary."
+  ],
+  "nextAllowedAction": "Owner walkthrough and Milestone1 acceptance decision only",
+  "notAuthorized": [
+    "owner acceptance by verifier",
+    "Milestone2",
+    "main merge",
+    "publication",
+    "deployment",
+    "Stage9 closure"
+  ]
+}

@@ -1,0 +1,558 @@
+{
+  "pair": "editor",
+  "product": "9fbda0f3ec0c14ff7be8bfb475d30e0cdc0f0993",
+  "baselineProduct": "57308f6ffcd5c85415b38d9d68a6f696199ebfa7",
+  "model": "zai/glm-5.3-flash",
+  "method": "Root actual CUA natural-provider execution; independent initial-source equality, matching captured display, unique proposal/actual tool-start/category/measurement/region reconciliation. Independent screenshots reviewed separately.",
+  "initialIds": {
+    "candidate": "screen-0ebfda83-e72f-428a-a99b-d128c7338397",
+    "baseline": "screen-2da67e97-fe72-4bd7-af98-31bfa06bcad6"
+  },
+  "initialSourceEqualExceptDocumentId": true,
+  "matchedDisplay": {
+    "dpr": 1.0000000149011612,
+    "height": 720,
+    "width": 1280
+  },
+  "arms": {
+    "candidate": {
+      "traceArtifact": "provider-editor-candidate-expanded-trace.dom.txt",
+      "toolCalls": 31,
+      "refused": 6,
+      "elapsedSeconds": 1135.5,
+      "authoringRequests": 26,
+      "imageRequests": 3,
+      "firstEditSeconds": 551.8,
+      "usage": {
+        "input": 1454270,
+        "output": 41588
+      },
+      "calls": {
+        "studio_screen_read": 14,
+        "studio_screen_edit": 14,
+        "studio_screen_observe": 3
+      },
+      "independentlyInferredCategories": {
+        "knowledge": 10,
+        "source": 4,
+        "edit": 14,
+        "observe": 3
+      },
+      "refusedReadCalls": 1,
+      "categoryLimit": "Categories include refused reads with visible section identity. Baseline categories are inferred from actual response sections with current rule; they are not native baseline telemetry.",
+      "uniqueProposalCount": 9,
+      "committedRevisions": [
+        "r1#1",
+        "r1#2",
+        "r1#3",
+        "r1#4",
+        "r1#5",
+        "r1#6",
+        "r1#7",
+        "r1#8",
+        "r1#9"
+      ],
+      "observations": [
+        {
+          "receiptMs": 949554,
+          "revision": "r1#4",
+          "image": {
+            "width": 909,
+            "height": 560,
+            "sourceWidth": 909,
+            "sourceHeight": 560,
+            "offsetLeft": 0,
+            "offsetTop": 0,
+            "cropped": false
+          },
+          "viewport": {
+            "width": 960,
+            "height": 585,
+            "scrollLeft": 0,
+            "scrollTop": 0,
+            "devicePixelRatio": 1.0000000149011612
+          },
+          "capturedAt": "2026-10-25T13:00:24.805Z",
+          "model": "zai/glm-5.3-flash",
+          "interactionVerified": false,
+          "ok": true
+        },
+        {
+          "receiptMs": 1059327,
+          "revision": "r1#8",
+          "image": {
+            "width": 909,
+            "height": 560,
+            "sourceWidth": 909,
+            "sourceHeight": 560,
+            "offsetLeft": 0,
+            "offsetTop": 0,
+            "cropped": false
+          },
+          "viewport": {
+            "width": 960,
+            "height": 585,
+            "scrollLeft": 0,
+            "scrollTop": 0,
+            "devicePixelRatio": 1.0000000149011612
+          },
+          "capturedAt": "2026-10-25T13:01:53.282Z",
+          "model": "zai/glm-5.3-flash",
+          "interactionVerified": false,
+          "ok": true
+        },
+        {
+          "receiptMs": 1113401,
+          "revision": "r1#9",
+          "image": {
+            "width": 909,
+            "height": 560,
+            "sourceWidth": 909,
+            "sourceHeight": 560,
+            "offsetLeft": 0,
+            "offsetTop": 0,
+            "cropped": false
+          },
+          "viewport": {
+            "width": 960,
+            "height": 585,
+            "scrollLeft": 0,
+            "scrollTop": 0,
+            "devicePixelRatio": 1.0000000149011612
+          },
+          "capturedAt": "2026-10-25T13:03:07.756Z",
+          "model": "zai/glm-5.3-flash",
+          "interactionVerified": false,
+          "ok": true
+        }
+      ],
+      "finalSourceNodes": 49
+    },
+    "baseline": {
+      "traceArtifact": "provider-editor-baseline-expanded-trace.dom.txt",
+      "toolCalls": 59,
+      "refused": 7,
+      "elapsedSeconds": 1462.2,
+      "authoringRequests": 36,
+      "imageRequests": 4,
+      "firstEditSeconds": 416.3,
+      "usage": {
+        "input": 1919914,
+        "output": 47721
+      },
+      "calls": {
+        "studio_screen_read": 36,
+        "studio_screen_edit": 19,
+        "studio_screen_observe": 4
+      },
+      "independentlyInferredCategories": {
+        "knowledge": 13,
+        "source": 23,
+        "edit": 19,
+        "observe": 4
+      },
+      "refusedReadCalls": 1,
+      "categoryLimit": "Categories include refused reads with visible section identity. Baseline categories are inferred from actual response sections with current rule; they are not native baseline telemetry.",
+      "uniqueProposalCount": 13,
+      "committedRevisions": [
+        "r1#1",
+        "r1#2",
+        "r1#3",
+        "r1#4",
+        "r1#5",
+        "r1#6",
+        "r1#7",
+        "r1#8",
+        "r1#9",
+        "r1#10",
+        "r1#11",
+        "r1#12",
+        "r1#13"
+      ],
+      "observations": [
+        {
+          "receiptMs": 1060051,
+          "revision": "r1#6",
+          "image": {
+            "width": 909,
+            "height": 560,
+            "sourceWidth": 909,
+            "sourceHeight": 560,
+            "offsetLeft": 0,
+            "offsetTop": 0,
+            "cropped": false
+          },
+          "viewport": {
+            "width": 960,
+            "height": 585,
+            "scrollLeft": 0,
+            "scrollTop": 0,
+            "devicePixelRatio": 1.0000000149011612
+          },
+          "capturedAt": "2026-10-25T13:01:58.540Z",
+          "model": "zai/glm-5.3-flash",
+          "interactionVerified": false,
+          "ok": true
+        },
+        {
+          "receiptMs": 1233996,
+          "revision": "r1#10",
+          "image": {
+            "width": 909,
+            "height": 569,
+            "sourceWidth": 909,
+            "sourceHeight": 704,
+            "offsetLeft": 0,
+            "offsetTop": 0,
+            "cropped": true
+          },
+          "viewport": {
+            "width": 960,
+            "height": 585,
+            "scrollLeft": 0,
+            "scrollTop": 0,
+            "devicePixelRatio": 1.0000000149011612
+          },
+          "capturedAt": "2026-10-25T13:04:42.856Z",
+          "model": "zai/glm-5.3-flash",
+          "interactionVerified": false,
+          "ok": true
+        },
+        {
+          "receiptMs": 1303671,
+          "revision": "r1#11",
+          "image": {
+            "width": 909,
+            "height": 560,
+            "sourceWidth": 909,
+            "sourceHeight": 560,
+            "offsetLeft": 0,
+            "offsetTop": 0,
+            "cropped": false
+          },
+          "viewport": {
+            "width": 960,
+            "height": 585,
+            "scrollLeft": 0,
+            "scrollTop": 0,
+            "devicePixelRatio": 1.0000000149011612
+          },
+          "capturedAt": "2026-10-25T13:06:02.806Z",
+          "model": "zai/glm-5.3-flash",
+          "interactionVerified": false,
+          "ok": true
+        },
+        {
+          "receiptMs": 1421635,
+          "revision": "r1#13",
+          "image": {
+            "width": 909,
+            "height": 560,
+            "sourceWidth": 909,
+            "sourceHeight": 560,
+            "offsetLeft": 0,
+            "offsetTop": 0,
+            "cropped": false
+          },
+          "viewport": {
+            "width": 960,
+            "height": 585,
+            "scrollLeft": 0,
+            "scrollTop": 0,
+            "devicePixelRatio": 1.0000000149011612
+          },
+          "capturedAt": "2026-10-25T13:08:00.257Z",
+          "model": "zai/glm-5.3-flash",
+          "interactionVerified": false,
+          "ok": true
+        }
+      ],
+      "finalSourceNodes": 40
+    }
+  },
+  "limits": [
+    "One run per arm with overlapping provider load/model/source-identity confounders; no statistical speedup/cost claim.",
+    "Failed observe attempts are real calls; only successful bounded image receipts establish stated regions.",
+    "Provider image interactionVerified=false; actual separate local interactions are recorded with their binding/effect limits.",
+    "Source/region/actual runtime evidence remain distinct.",
+    "Editor/recovery legs are not inferred from dashboard completion."
+  ],
+  "artifacts": [
+    {
+      "name": "provider-editor-baseline-details-01.dom.txt",
+      "sha256": "addcb7c5c0814f6281eb2c77f27914061917d51532a884b401752a8eaf4a6cb5"
+    },
+    {
+      "name": "provider-editor-baseline-details-01.geometry.json",
+      "sha256": "c539563ca223539ae3290011c4f40eaf6a0f972bbb569d9cf2edee5b966116d4"
+    },
+    {
+      "name": "provider-editor-baseline-details-01.png",
+      "sha256": "1c29831c07589e6606f692706c06c61db1523290e946d381e2c76d7463e52cbd"
+    },
+    {
+      "name": "provider-editor-baseline-exercised.dom.txt",
+      "sha256": "9b2b48dc3c6a842640924ee8ed477b501b08486a7424770abb18903f205df57b"
+    },
+    {
+      "name": "provider-editor-baseline-exercised.geometry.json",
+      "sha256": "bd9c4fcc02c76a2fe908b94e8bf3616e80dbbf9b866bb4de1d62a8b734170e46"
+    },
+    {
+      "name": "provider-editor-baseline-exercised.png",
+      "sha256": "9460a2b0295bb65a14baba886754b968a761042c707361a79bc7caf3f1de9cda"
+    },
+    {
+      "name": "provider-editor-baseline-expanded-trace.dom.txt",
+      "sha256": "54d7d89fec2ab0911f3c9893302df945b12afdbabe3681badff9d5e165617511"
+    },
+    {
+      "name": "provider-editor-baseline-expanded-trace.geometry.json",
+      "sha256": "fe20e3fd1bc0e5a091399fc3fe274c0cbece45ae3f07ea0f3ef7ebfa0eff7bb2"
+    },
+    {
+      "name": "provider-editor-baseline-expanded-trace.png",
+      "sha256": "ed9fd05ad110fb2692566e8d1dc7be8b8531abd9023c38f70ed7476687daa479"
+    },
+    {
+      "name": "provider-editor-baseline-final-source.json",
+      "sha256": "129769bbea5f1e2affa12e727b76d0a045c4cd2797d51f8d793cba301ded6a22"
+    },
+    {
+      "name": "provider-editor-baseline-initial-source.json",
+      "sha256": "b70448ffaaf682f4b21410b9a7dd1c96bd70073e7b5f28c7a19adc1379ddf30c"
+    },
+    {
+      "name": "provider-editor-baseline-initial.dom.txt",
+      "sha256": "919a168245148775fd775adacd3b37a64107775995228ad9d7f8c9fb96fe072c"
+    },
+    {
+      "name": "provider-editor-baseline-initial.geometry.json",
+      "sha256": "a625060ae13c2fc84dd4097176bd03a34d237f3a33e4c0d152e2768eebb2b42c"
+    },
+    {
+      "name": "provider-editor-baseline-initial.png",
+      "sha256": "e8cab46adc0c80d332b8edd03a2f224a5b2f11984f2a8823d86b5654c9d9a0d6"
+    },
+    {
+      "name": "provider-editor-baseline-progress-01.dom.txt",
+      "sha256": "c0b377c6e604f45de7c6862308c9d14aef35dd8f5caec6cb3cebc6b026a05cc0"
+    },
+    {
+      "name": "provider-editor-baseline-progress-01.geometry.json",
+      "sha256": "8166bcb0e058f40e6de63fbfcc79ebae9f85f35eca22a9e949dba079624cef1b"
+    },
+    {
+      "name": "provider-editor-baseline-progress-01.png",
+      "sha256": "823ebf4b801886d89be1d8132d037b09cd94895001b4d5d974778fe91e938b45"
+    },
+    {
+      "name": "provider-editor-baseline-progress-02.dom.txt",
+      "sha256": "b56773d10280f02a9f5c3be50b7543d556261b6738abc8a622bb6b682ad424ae"
+    },
+    {
+      "name": "provider-editor-baseline-progress-02.geometry.json",
+      "sha256": "a10eb6a5b9c00d3b3a0d71299010d7eb737c9c8fc1d4af6db556505a25c1bf08"
+    },
+    {
+      "name": "provider-editor-baseline-progress-02.png",
+      "sha256": "e8a5622536af381a4edc872b15985b905799344a46c0e7f829680d0b33e4ff7d"
+    },
+    {
+      "name": "provider-editor-baseline-progress-03.dom.txt",
+      "sha256": "20848de2e9c3c90f01bf535bf4d3d8a10508d42625a992c34a7dfb63841efa42"
+    },
+    {
+      "name": "provider-editor-baseline-progress-03.geometry.json",
+      "sha256": "a9001cd6678263804b904fb35cc06aaf5446d0db82cc188daee1726b9f9895fe"
+    },
+    {
+      "name": "provider-editor-baseline-progress-03.png",
+      "sha256": "670783ec9679acea10841ed5a774bd291b9dd937eff9f0c51b203bb14fe09243"
+    },
+    {
+      "name": "provider-editor-baseline-progress-04.dom.txt",
+      "sha256": "5ae7b6717bc2746d6abb805220760410e853d7a32e7bc987c505e1937845a813"
+    },
+    {
+      "name": "provider-editor-baseline-progress-04.geometry.json",
+      "sha256": "1aba7986b3498e14d3c7f2621450e15f07e1d26e6747375ae0f2539002b4f47e"
+    },
+    {
+      "name": "provider-editor-baseline-progress-04.png",
+      "sha256": "eb662a49b336b94b3e907c44a3c162c08e7b7fed3190335f59b8f7153e50f86d"
+    },
+    {
+      "name": "provider-editor-baseline-progress-05.dom.txt",
+      "sha256": "16b2b79ac3268c97f18c5f6879158d9aa7000c380c6e5031345a19874c443a03"
+    },
+    {
+      "name": "provider-editor-baseline-progress-05.geometry.json",
+      "sha256": "18b6533e8816c394d1cf923680724e984d02020fdd4e61123994e854f8464fac"
+    },
+    {
+      "name": "provider-editor-baseline-progress-05.png",
+      "sha256": "4c02b8d2e54e6f6a5c728fdfc2e615bc116fc51d6c179f74d2cb63e21577f487"
+    },
+    {
+      "name": "provider-editor-baseline-selection-after-save.dom.txt",
+      "sha256": "1b952994c311136ac678bbc5f83796eecfea26c050657b3c055481474ce62f9b"
+    },
+    {
+      "name": "provider-editor-baseline-selection-after-save.geometry.json",
+      "sha256": "25340a74e09e4a9a47893b14121b4affd1f77b1a914e50d2d1b9f7cb8c367bae"
+    },
+    {
+      "name": "provider-editor-baseline-selection-after-save.png",
+      "sha256": "c14ed463cc62f378adfd17867168595a95b42f3d3db02e07120345f542b0c201"
+    },
+    {
+      "name": "provider-editor-baseline-terminal-01.dom.txt",
+      "sha256": "4204d528ce0878d1872d018920cefa29461257b6d3eaf6f81290e7b18c380e72"
+    },
+    {
+      "name": "provider-editor-baseline-terminal-01.geometry.json",
+      "sha256": "477681f0729909361a816ddf62e185c7371b0bff59ba98d00a484e8d3753f6cd"
+    },
+    {
+      "name": "provider-editor-baseline-terminal-01.png",
+      "sha256": "2fff0f678ed7f32ddbe7ec98973d5883ec84093ac278258a7d9020f62fe9096e"
+    },
+    {
+      "name": "provider-editor-candidate-details-01.dom.txt",
+      "sha256": "4c52264962e9acabe2b79251eb560673ba17bc3f48e2babc524b826fb258bc86"
+    },
+    {
+      "name": "provider-editor-candidate-details-01.geometry.json",
+      "sha256": "b912546566cdc4eafebea7a2b9aa6190f26f93dcb43d3012d704350a7372abcc"
+    },
+    {
+      "name": "provider-editor-candidate-details-01.png",
+      "sha256": "e04bcabcf3569ef6c9c68c300eda1bd43f61f79fa33b5ca1a396ca2b8489106a"
+    },
+    {
+      "name": "provider-editor-candidate-exercised.dom.txt",
+      "sha256": "a2bf447005ca2351506cf64d47c1d4fdf0e2dcc7b675b09bd9be979952627148"
+    },
+    {
+      "name": "provider-editor-candidate-exercised.geometry.json",
+      "sha256": "3c24ef5223210c91aeb5565516e6fe6f52d0bd3a1cc6864b0af600288d2cf621"
+    },
+    {
+      "name": "provider-editor-candidate-exercised.png",
+      "sha256": "f6400118cc17bc42b7d05e8d673d4f542e3a59af1ec54337e79856de91b2a2bc"
+    },
+    {
+      "name": "provider-editor-candidate-expanded-trace.dom.txt",
+      "sha256": "caf6c4a55a18ebd92e4b3e4a098111d026080b41b45c4da18b2cc4f3365b52a2"
+    },
+    {
+      "name": "provider-editor-candidate-expanded-trace.geometry.json",
+      "sha256": "bba40a6f07aec1667b2a75d2bcbe5f326c9694434814d3a13f65ded5f5823fe9"
+    },
+    {
+      "name": "provider-editor-candidate-expanded-trace.png",
+      "sha256": "c87d7e4d39e6335b90aa4b67c2b7001301fc01ff46675a53b1637f3c5e6b5401"
+    },
+    {
+      "name": "provider-editor-candidate-final-source.json",
+      "sha256": "ed703d86c52557fa46f76007217deceab76d75489ba2c3d4134b6eb41646d94b"
+    },
+    {
+      "name": "provider-editor-candidate-initial-source.json",
+      "sha256": "232a6357cec68aca3c54446566e9b294a5716db5fdaec8378785b05ccd1394df"
+    },
+    {
+      "name": "provider-editor-candidate-initial.dom.txt",
+      "sha256": "8e5310e620ba8fc37b64ea6ebeb678a805d02ef1d878d6d48abd2f8bb985723b"
+    },
+    {
+      "name": "provider-editor-candidate-initial.geometry.json",
+      "sha256": "ee2472037d695d43034e3e6aa3df189f850541e2b350e67434ae5b03c64aa1f3"
+    },
+    {
+      "name": "provider-editor-candidate-initial.png",
+      "sha256": "078ac4db23f461e6609505ff96d785a5033f661366e7d02fd50ad4661a7c5488"
+    },
+    {
+      "name": "provider-editor-candidate-progress-01.dom.txt",
+      "sha256": "c85dd90acf99d9e74be96c29410dfc98a5bf2a797e8873c607bfda15a7d7d497"
+    },
+    {
+      "name": "provider-editor-candidate-progress-01.geometry.json",
+      "sha256": "4051b7719120be2e040f6a78759b37f96db2646e00448afb60ac2ef9b0e94a7e"
+    },
+    {
+      "name": "provider-editor-candidate-progress-01.png",
+      "sha256": "69e15a234cfa5711efc912bbe60e068658281f81aed473a67cd10f19ce63b96a"
+    },
+    {
+      "name": "provider-editor-candidate-progress-02.dom.txt",
+      "sha256": "33945e0e93a6e374e44e6859fbfbb786c1608723633d18ba75fb933a1495c5a5"
+    },
+    {
+      "name": "provider-editor-candidate-progress-02.geometry.json",
+      "sha256": "f08b3312fcdd6a501752fe97c581669f8fdcdebba2391e433bd2a88cfb9ecb8c"
+    },
+    {
+      "name": "provider-editor-candidate-progress-02.png",
+      "sha256": "84f09496f3d892e7a0eddbe5ce78007481e8e1bfbca46b5ae484f75643beff89"
+    },
+    {
+      "name": "provider-editor-candidate-progress-03.dom.txt",
+      "sha256": "c82a4b67c64aabf233b0f1eaf8999e888872a474de800cc4ad5925cbc945d115"
+    },
+    {
+      "name": "provider-editor-candidate-progress-03.geometry.json",
+      "sha256": "e490d6aedbc658843a2054c36d6d350c00a2e83f7f51f0e28f58042a2bcfcf18"
+    },
+    {
+      "name": "provider-editor-candidate-progress-03.png",
+      "sha256": "57eb8a9e3c29f48316bbaa12c15a96ed2cd203af20b0b1bdfd57933477bfcb65"
+    },
+    {
+      "name": "provider-editor-candidate-progress-04.dom.txt",
+      "sha256": "4e08b31ac37c7aa8920081f9e0c5aa6d9198c4529b1f09fdd8b2672a00dd9a11"
+    },
+    {
+      "name": "provider-editor-candidate-progress-04.geometry.json",
+      "sha256": "58831f04e7b408a9c89310235941e3a27c63f1515212b6d6424d912300c70ab7"
+    },
+    {
+      "name": "provider-editor-candidate-progress-04.png",
+      "sha256": "79801bed18650262f9e032d1276bfa042c81049686ccb577c0d92dd7019d307c"
+    },
+    {
+      "name": "provider-editor-candidate-submitted.dom.txt",
+      "sha256": "9abc6542ff0125e8157759044704ff3954bfb3ede2b4168bd2dc02f865061749"
+    },
+    {
+      "name": "provider-editor-candidate-submitted.geometry.json",
+      "sha256": "0630744d49d226ac2711c912d2b7fea82c406355dbda0116bf7c60c65e02e036"
+    },
+    {
+      "name": "provider-editor-candidate-submitted.png",
+      "sha256": "f8531b133a2ebbab46ab7cf3c7d967a8dacc578884adad32d2da1f9a5cd0655a"
+    },
+    {
+      "name": "provider-editor-candidate-terminal-01.dom.txt",
+      "sha256": "594adb1a3310b5fa1de958aa3a471766a8ca207f33b13275cd6cbac773ea63b0"
+    },
+    {
+      "name": "provider-editor-candidate-terminal-01.geometry.json",
+      "sha256": "ce7692c14ae0dc64f714147454aa417c3c627eafe44911ed94c47d50005d4588"
+    },
+    {
+      "name": "provider-editor-candidate-terminal-01.png",
+      "sha256": "920d9c132a4916fb617dce3ec08a179b81e8f4b50fb2360881ec93c31117d5e8"
+    },
+    {
+      "name": "provider-editor-run-start.json",
+      "sha256": "e12d81b719a6fbb1d1eeb5e45f597a489f8a7ac05a36c2c5dafdf21d632d7009"
+    },
+    {
+      "name": "provider-editor-terminal-analysis.json",
+      "sha256": "572fb1a724520a3a40748b6deb46f39c0f64d9b62ff0c9eebb529a2e1a5226c0"
+    }
+  ]
+}

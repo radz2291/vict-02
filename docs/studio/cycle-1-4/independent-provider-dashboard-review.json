@@ -38,7 +38,8 @@
         "edit": 12,
         "observe": 5
       },
-      "categoryLimit": "Baseline categories are inferred from actual response sections with current rule; they are not native baseline telemetry.",
+      "refusedReadCalls": 0,
+      "categoryLimit": "Categories include refused reads with visible section identity. Baseline categories are inferred from actual response sections with current rule; they are not native baseline telemetry.",
       "uniqueProposalCount": 11,
       "committedRevisions": [
         "r1#1",
@@ -176,7 +177,8 @@
         "edit": 11,
         "observe": 5
       },
-      "categoryLimit": "Baseline categories are inferred from actual response sections with current rule; they are not native baseline telemetry.",
+      "refusedReadCalls": 0,
+      "categoryLimit": "Categories include refused reads with visible section identity. Baseline categories are inferred from actual response sections with current rule; they are not native baseline telemetry.",
       "uniqueProposalCount": 11,
       "committedRevisions": [
         "r1#1",
@@ -578,7 +580,7 @@
     },
     {
       "name": "provider-dashboard-terminal-analysis.json",
-      "sha256": "80b8a61355bde602a5d48f2c92920724ca234ea02d9a029968cbc1e501b62d02"
+      "sha256": "74d8b56516e47faef1b73f409a366e4ee851636c2cb0e7169ffdddae16b81746"
     }
   ]
 }
