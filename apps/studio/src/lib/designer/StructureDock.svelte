@@ -1,12 +1,21 @@
 <script lang="ts">
-  import { tick, type Snippet } from 'svelte';
-  let { open = $bindable(false), height = $bindable(300), availableHeight = 600, children }: {
-    open?: boolean; height?: number; availableHeight?: number; children: Snippet;
+  import { onMount, tick, type Snippet } from 'svelte';
+  let { open = $bindable(false), expanded = $bindable(false), height = $bindable(300), availableHeight = 600, children }: {
+    open?: boolean; expanded?: boolean; height?: number; availableHeight?: number; children: Snippet;
   } = $props();
-  let expanded = $state(false);
   let root: HTMLElement;
   let toggle: HTMLButtonElement;
-  const maximum = $derived(Math.max(96, availableHeight - (expanded ? 80 : 160) - 34));
+  onMount(() => {
+    const escape = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape' || event.defaultPrevented || !open || !(event.target instanceof Element) || !event.target.closest('.dock-bar')) return;
+      event.preventDefault(); event.stopPropagation();
+      if (expanded) expanded = false;
+      else { open = false; toggle?.focus({preventScroll:true}); }
+    };
+    root.addEventListener('keydown', escape);
+    return () => root.removeEventListener('keydown', escape);
+  });
+  const maximum = $derived(Math.max(96, availableHeight - (expanded ? 0 : 160) - 34));
   const minimum = $derived(Math.min(180, maximum));
   const actual = $derived(expanded ? maximum : Math.max(minimum, Math.min(maximum, height)));
   function setHeight(value: number) { height = Math.round(Math.max(minimum, Math.min(maximum, value))); }

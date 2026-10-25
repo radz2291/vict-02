@@ -145,8 +145,10 @@
   let inspectionWidth = $state(360);
   let stageHeight = $state(600);
   let structureOpen = $state(false);
+  let structureExpanded = $state(false);
   let detailsPage = $state<'properties'|'relationships'>('properties');
   const rightOpen = $derived(drawerOpen || detailsOpen);
+  const drawerOverlay = $derived(rightOpen && workspaceWidth < 760);
   let inspectionReturn: HTMLElement | undefined;
   function inspectSource(id = source && selected ? structureId(source.id,'node',resolveOccurrence(selected,source).sourceNodeId) : undefined, page:'properties'|'relationships'='properties') {
     const active = globalThis.document.activeElement;
@@ -203,7 +205,7 @@
   let drawerWidth = $state(320);
   let workspaceWidth = $state(0);
   const effectiveDrawerWidth = $derived(detailsOpen ? inspectionWidth : drawerWidth);
-  function dismissStructure() { structureOpen = false; void tick().then(()=>workspaceElement?.querySelector<HTMLButtonElement>('.structure-toggle')?.focus({preventScroll:true})); }
+  function dismissStructure() { if(structureExpanded){structureExpanded=false;return;} structureOpen = false; void tick().then(()=>workspaceElement?.querySelector<HTMLButtonElement>('.structure-toggle')?.focus({preventScroll:true})); }
   let renamingScreen=$state(false);
   let screenNameDraft=$state('');
   let screenNameInput=$state<HTMLInputElement>();
@@ -507,14 +509,14 @@
     </SelectionPalette>
   {/snippet}
   <div class="agent-workspace" class:chat-open={chatOpen}>
-  <div class="agent-panel" hidden={!chatOpen}><AgentChat screenLabel={screenName(source)} selectionLabel={selectedNode ? compositionName(source, selectedNode.id) : "None"} blocked={textDraftDirty || sourceDraftDirty || renamingScreen} getContext={() => bridge ? {document:bridge.document, cursor:documentCursor(bridge.document,bridge.getSnapshot().revision,agentEpoch), ...(selected ? {selection:selected} : {})} : undefined} getCapture={cursor => captureDesignerPreview(canvasScroll?.querySelector<HTMLElement>('.design-frame') ?? undefined,cursor,()=>bridge ? {cursor:documentCursor(bridge.document,bridge.getSnapshot().revision,agentEpoch),mode,state:{runtimeValues,simulation:{denied:simulation.denied,failNext:simulation.failNext}},selection:selected,composition:compositionFocus ? `${compositionFocus.nodeId}/${compositionFocus.slotName}` : undefined,structureOpen:false} : undefined,canvasScroll)} applyProposal={receiveAgentProposal} /></div>
-  <div class="design-workspace" bind:this={workspaceElement} bind:clientWidth={workspaceWidth} class:drawer-open={rightOpen} class:has-object-tools={mode === 'design' && !!selectedNode && paletteRequested} style:--drawer-width={`${effectiveDrawerWidth}px`}>
+  <div class="agent-panel" hidden={!chatOpen}><AgentChat screenLabel={screenName(source)} selectionLabel={selectedNode ? compositionName(source, selectedNode.id) : "None"} blocked={textDraftDirty || sourceDraftDirty || renamingScreen} getContext={() => bridge ? {document:bridge.document, cursor:documentCursor(bridge.document,bridge.getSnapshot().revision,agentEpoch), ...(selected ? {selection:selected} : {})} : undefined} getCapture={cursor => captureDesignerPreview(canvasScroll?.querySelector<HTMLElement>('.design-frame') ?? undefined,cursor,()=>bridge ? {cursor:documentCursor(bridge.document,bridge.getSnapshot().revision,agentEpoch),mode,state:{runtimeValues,simulation:{denied:simulation.denied,failNext:simulation.failNext}},selection:selected,composition:compositionFocus ? `${compositionFocus.nodeId}/${compositionFocus.slotName}` : undefined,structureOpen:structureOpen && structureExpanded} : undefined,canvasScroll)} applyProposal={receiveAgentProposal} /></div>
+  <div class="design-workspace" bind:this={workspaceElement} bind:clientWidth={workspaceWidth} class:drawer-open={rightOpen} class:drawer-overlay={drawerOverlay} class:has-object-tools={mode === 'design' && !!selectedNode && paletteRequested} style:--drawer-width={`${effectiveDrawerWidth}px`}>
     <WorkspaceContextMenu scope={workspaceElement} enabled={mode === 'design'} resolve={canvasContext} owns={ownsCanvasTarget} />
-    <main class="design-stage" bind:clientHeight={stageHeight}>
+    <main class="design-stage" class:structure-expanded={structureOpen && structureExpanded} inert={drawerOverlay} bind:clientHeight={stageHeight}>
       <div class="canvas-toolbar workspace-tools"><div class="canvas-modes" aria-label="Workspace mode"><button type="button" aria-pressed={mode === 'design'} onclick={() => changeMode('design')}>Design</button><button type="button" aria-pressed={mode === 'interact'} onclick={() => changeMode('interact')}>Interact</button></div>{#if compositionFocus}<div class="composition-back"><CompositionNavigator compact document={source} focus={compositionFocus} descriptors={catalogDescriptors} disabled={textDraftDirty || sourceDraftDirty} onNavigate={navigateComposition} /></div>{/if}<button type="button" bind:this={documentButton} class="panel-toggle" aria-expanded={drawerOpen} aria-controls="document-drawer" onclick={toggleDocument}>Document</button></div>
 
 
-      <div class="canvas-scroll workspace-scroll" bind:this={canvasScroll}>
+      <div class="canvas-scroll workspace-scroll" inert={structureOpen && structureExpanded} bind:this={canvasScroll}>
         <div class="design-frame workspace-screen" bind:clientWidth={canvasWidth} style:max-width={width === 'fluid' ? 'none' : `${width}px`}>
           <EditorCanvas document={source} catalogs={designerCatalogs} extensions={catalogDescriptors} extensionImplementations={catalogImplementations}
             {compositionFocus} onOpenComposition={openComposition}
@@ -529,7 +531,7 @@
           {#if compositionFocus && !focusedMembers?.size}<div class="empty-composition"><h2>This composition is empty</h2><p>Select the composition, then choose Insert in its tools.</p></div>{:else if Object.keys(source.nodes).length === 1}<div class="empty-canvas"><span>＋</span><h1>What will you make?</h1><p>Select this screen to open its tools, then choose Insert.</p></div>{/if}
         </div>
       </div>
-      <StructureDock bind:open={structureOpen} availableHeight={stageHeight - 38}>
+      <StructureDock bind:open={structureOpen} bind:expanded={structureExpanded} availableHeight={stageHeight - 38}>
         <StructureView presentation="drawer" active={structureOpen} document={source} revision={snapshot?.revision ?? ''} selectedNodeId={selectedNode?.id} descriptors={catalogDescriptors} recipes={screenRecipes} blocked={textDraftDirty || sourceDraftDirty || renamingScreen} onSelect={selectStructureNode} onDeselect={() => { if (!textDraftDirty && !sourceDraftDirty && !renamingScreen) { bridge?.select(undefined); paletteRequested = false; detailId=undefined; } }} onMove={moveFromStructure} onNotice={message => notice = message} onNavigate={structureNavigate} onDismiss={dismissStructure} onInspect={inspectSource} onCloseInspect={closeDetails} inspectionSelection={detailId} onInspectSelection={id=>detailId=id} inspectionExpanded={detailsOpen} objectCommands={occurrence=>objectContext(occurrence)?.commands ?? []} />
       </StructureDock>
     </main>
