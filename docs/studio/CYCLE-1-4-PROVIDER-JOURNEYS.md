@@ -1,6 +1,6 @@
 # Cycle 1.4 — real-provider journey and efficiency evidence
 
-2026-10-25. **Prepared protocol; execution has not started.** This is builder evidence for C14-07–09, not an independent verdict. The stage manager must supply the corrected exact candidate/seal and launch greenlight before product UI actions. Owner origins/data and the independent verifier fixture remain untouched.
+2026-10-25. **Prepared protocol; execution has not started because browser control is unavailable.** This is builder evidence for C14-07–09, not an independent verdict. The stage manager supplied the corrected exact candidate/seal and launched isolated hosts; actual UI actions await browser recovery and coordinated viewport ownership. Owner origins/data and the independent verifier fixture remain untouched.
 
 ## Controlled comparison protocol
 
@@ -26,6 +26,8 @@ Stale-context, unapplied-draft and recoverable refusal checks are separate label
 
 ## Execution status
 
-Pending launch/viewport greenlight. Preparation-only child CUA inventory returned no enabled browsers; the stage manager will expose exact isolated tab IDs or own UI execution if the child cannot bind them. No UI navigation or product mutation has occurred in this preparation step.
+Replacement candidate `0c3cee81fb02345f07b26e92acb2d2eb5463b203`, seal SHA-256 `05aa28b85fdb4150617e1562b957ab2b18ce944f282abb35c644db410a8d4bcb`, is running at `.12:5606`; accepted core delivery `0ac71d64caefaaf4351c43a68b67421a51b76aba` is separately running at `.15:5609`. Both retain the existing `zai/glm-5.3-flash` server configuration. No provider request has been submitted for this protocol.
+
+The preparation-only child initially saw no enabled browsers. A fresh provider executor subsequently established IAB browser2 and its viewport capability, then held all navigation while the independent responsive executor owned the viewport. Independent and root review-tab bind/create/navigation attempts timed out, including root's documented raw-tab alternative; the owner was asked to foreground the task/reopen the browser panel. The provider executor made no product UI actions and no source/data changes. This is an environment availability observation, not a provider/model/Studio failure. All six natural runs and separate recovery legs remain pending; their measurements are unavailable, not zero.
 
 Evidence destination: `docs/studio/cycle-1-4/core/browser/`. Exact candidate, baseline, seal, run IDs, source snapshots, measurements, observed failures and completed/not-demonstrated matrix will be added after actual execution. No outcome or improvement magnitude is claimed here.
