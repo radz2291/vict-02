@@ -1,6 +1,6 @@
 # Cycle 1.4 — independent challenge
 
-2026-10-25. **IN PROGRESS / readiness HELD pending required demonstrations.** Fresh independent verifier; no product implementation or repair. Exact challenged candidate: `e45e4eff037c6860c435ad0c3b2b1678df01c94a`, builder branch `codex/studio-cycle-1-4`. This is not an acceptance, merge, publication, deployment, Milestone2 authorization or Stage9 closure.
+2026-10-25. **Readiness HELD pending required browser/provider demonstrations.** Fresh independent verifier; no product implementation or repair. Current exact challenged product: `0c3cee81fb02345f07b26e92acb2d2eb5463b203`, builder branch `codex/studio-cycle-1-4`; initial candidate `e45e4eff037c6860c435ad0c3b2b1678df01c94a` and its failures remain below. Source/protocol/package/provenance checks pass at the replacement. Shared CUA executor failure prevents the required actual-browser gate. This is not an acceptance, merge, publication, deployment, Milestone2 authorization or Stage9 closure.
 
 ## Identity and boundaries
 
@@ -24,15 +24,15 @@ All browser actions use documented `mcp__cua_repl` APIs, own disposable tabs and
 | Criterion | Current result |
 | --- | --- |
 | C14-01 exact authority/baseline/isolation | PASS, independent source/remote check above. |
-| C14-02 all63 dispositions/compatibility | IN PROGRESS; deliberate omissions disclosed, exact independent machine checks pending. |
-| C14-03 shared theme/shell/portals/installed consumer | HELD pending actual production/consumer demonstrations. |
+| C14-02 all63 dispositions/compatibility | PASS for the complete63-family inventory, explicit10host/adapter exceptions,80descriptor compatibility and pinned upstream/local provenance; visual fidelity remains C14-03. |
+| C14-03 shared theme/shell/portals/installed consumer | Installed artifact/fixture integrity PASS; actual shell/portal/consumer presentation and interaction HELD. |
 | C14-04 first real pointer/keyboard/native/Interact menus | HELD pending actual browser sequence. |
 | C14-05 shared details/geometry/context preservation | HELD pending actual geometry and continuity. |
-| C14-06 paging/projection/cache/seed host guidance | IN PROGRESS; source challenge and independent negative execution pending. |
-| C14-07 early review/regions/freshness | HELD pending measured evidence review and independent execution. |
-| C14-08 receipt totals/category/timing/comparison limits | HELD pending measured evidence review and independent execution. |
+| C14-06 paging/projection/cache/seed host guidance | PASS for independent source and protocol/negative execution, including actual pinned executor with explicitly offline model. |
+| C14-07 early review/regions/freshness | Source/ledger/freshness negatives PASS; required actual early region observations HELD. |
+| C14-08 receipt totals/category/timing/comparison limits | Source/metrics/cleanup-deduplication negatives PASS; actual provider measurements/comparison HELD. |
 | C14-09 actual provider/integrated journeys | HELD pending required actual evidence. |
-| C14-10 checks/seal/provenance/verdict/remote | HELD pending final exact evidence and remote report identity. |
+| C14-10 checks/seal/provenance/verdict/remote | Appropriate affected checks, exact normalized746/491production seal, installed integrity and report remote equality PASS; readiness HELD for required browser/provider work. |
 
 Next allowed action: continue independent challenge and communicate material findings for bounded builder repair. No readiness verdict is inferred from builder tests or pushed code alone.
 
