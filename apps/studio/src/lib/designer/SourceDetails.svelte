@@ -51,12 +51,12 @@
 </script>
 <section class="source-details" aria-label="Source inspection details" bind:this={root}>
   <header><span>Inspect</span><strong title={label}>{label}</strong><button type="button" aria-label="Close inspection details" onclick={onClose}>×</button></header>
-  <nav aria-label="Source inspection view"><button type="button" aria-pressed={page === 'properties'} onclick={() => page = 'properties'}>Properties</button><button type="button" aria-pressed={page === 'relationships'} onclick={() => page = 'relationships'}>Relationships</button></nav>
+  <nav aria-label="Source inspection view"><button type="button" aria-pressed={page === 'properties'} onclick={() => page = 'properties'}>Details</button><button type="button" aria-pressed={page === 'relationships'} onclick={() => page = 'relationships'}>Relationships</button></nav>
   <div class="details-body">
     {#if !selected}<p>Select an item in Layers or Structure.</p>
     {:else if page === 'properties'}
       <div class="details-identity"><span>{selected.data.kindLabel ?? readableName(selected.data.kind)}</span></div>
-      {#if selected.data.occurrence}<button type="button" class="details-handoff" disabled={blocked} onclick={() => navigate('inspector')}>Edit properties ↗</button>{/if}
+      {#if selected.data.occurrence}<button type="button" class="details-handoff" disabled={blocked} onclick={() => navigate('inspector')}>Edit on canvas ↗</button>{/if}
       {#if selected.data.kind === 'state'}<button type="button" class="details-handoff" disabled={blocked} onclick={() => navigate('data')}>Edit in Data ↗</button>{/if}
       {#if selected.data.kind === 'action'}<button type="button" class="details-handoff" disabled={blocked} onclick={() => navigate('actions')}>Open Actions ↗</button>{/if}
       <dl class="useful-facts">{#each summary as fact}<div><dt>{fact.name}</dt><dd>{fact.value}</dd></div>{/each}</dl>

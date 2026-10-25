@@ -34,10 +34,10 @@
     if (!prepared.ok) { notice = prepared.message; return false; }
     return apply(prepared.draft);
   }
-  function selectStructureNode(occurrence: string) {
+  function selectStructureNode(occurrence: string,fromGraph=false) {
     if (textDraftDirty || sourceDraftDirty || renamingScreen) { notice = 'Apply or cancel your draft first.'; return; }
     bridge?.select(occurrence); paletteRequested = false;
-    if (source) detailId = structureId(source.id, 'node', resolveOccurrence(occurrence, source).sourceNodeId);
+    if (source) {detailId = structureId(source.id, 'node', resolveOccurrence(occurrence, source).sourceNodeId);if(!fromGraph)structureFocusId=detailId;}
   }
   async function locateOnCanvas(occurrence: string) {
     if (!source || textDraftDirty || sourceDraftDirty || renamingScreen) return;
@@ -58,11 +58,11 @@
     if (textDraftDirty || sourceDraftDirty || renamingScreen) { notice = 'Apply or cancel your draft first.'; return; }
     if (request.occurrence) selectStructureNode(request.occurrence);
     if (request.destination === 'data' || request.destination === 'actions') {
-      drawerOpen = true; testingOpen=false;
+      showPanel('document'); testingOpen=false;
       documentPanel=request.destination;
       selectedData = request.destination === 'data' ? request.key : undefined;
     } else if (request.destination === 'layers') {
-      documentPanel='layers';drawerOpen=true;testingOpen=false;
+      documentPanel='layers';showPanel('document');testingOpen=false;
     } else {
       if (request.destination === 'design' && request.occurrence) { await locateOnCanvas(request.occurrence); return; }
       if (request.destination === 'inspector' && request.occurrence) { detailsOpen=false; changeMode('design'); selectOccurrence(request.occurrence, true); paletteFocus=Symbol('edit-handoff'); }
@@ -74,9 +74,36 @@
   }
   import { documentCursor, applyAgentProposal, type AgentProposal } from './agent-edits.js';
   let agentEpoch = $state(crypto.randomUUID());
-  let chatOpen = $state(true);
+  let chatOpen = $state(false);
   let chatWidth = $state(280);
-  async function toggleChat(){chatOpen=!chatOpen;await tick();const target=chatOpen?globalThis.document.querySelector<HTMLElement>('.agent-panel textarea'):workspaceElement?.querySelector<HTMLElement>('#document-drawer:not([hidden]) .close-document,.testing-drawer [aria-label="Close testing"],main [aria-label="Show chat"]');target?.focus({preventScroll:true});}
+  async function toggleChat(){showPanel('chat',!chatOpen);await tick();(chatOpen?globalThis.document.querySelector<HTMLElement>('.agent-panel textarea'):viewButton)?.focus({preventScroll:true});}
+  type AuxiliaryPanel='chat'|'document'|'structure'|'testing';
+  let availableWidth=$state(0);
+  const compactWorkspace=$derived(availableWidth>0 && availableWidth<=1000);
+  let lastPanel:AuxiliaryPanel='structure';
+  let viewButton=$state<HTMLButtonElement|null>(null);
+  let structureFocusId=$state<string>();
+  function showPanel(panel:AuxiliaryPanel,open=true){
+    const focused=globalThis.document.activeElement;
+    if(open){
+      lastPanel=panel;
+      if(compactWorkspace){chatOpen=false;drawerOpen=false;structureOpen=false;testingOpen=false;}
+      if(panel==='structure' && source)structureFocusId=detailId ?? structureId(source.id,'node',selectedNode?.id ?? source.root);
+    }
+    if(panel==='chat')chatOpen=open;
+    else if(panel==='document'){drawerOpen=open;if(open)testingOpen=false;}
+    else if(panel==='structure')structureOpen=open;
+    else testingOpen=open;
+    void tick().then(()=>{if(focused instanceof HTMLElement && focused.isConnected && focused.closest('[hidden],[inert]')){
+      const selector=panel==='chat'?'.agent-panel:not([hidden]) textarea':panel==='document'?'#document-drawer:not([hidden]) .close-document':panel==='structure'?'.structure-dock:not([hidden]) [aria-label="Search structure"]':'.testing-drawer [aria-label="Close testing"]';
+      (open?globalThis.document.querySelector<HTMLElement>(selector) ?? viewButton:viewButton)?.focus({preventScroll:true});
+    }});
+  }
+  $effect(()=>{if(compactWorkspace)untrack(()=>{
+    const visible:AuxiliaryPanel[]=([...(['chat','document','structure','testing'] as const)]).filter(panel=>panel==='chat'?chatOpen:panel==='document'?drawerOpen:panel==='structure'?structureOpen:testingOpen);
+    if(visible.length>1)showPanel(visible.includes(lastPanel)?lastPanel:visible.at(-1)!);
+  });});
+  async function toggleStructure(){showPanel('structure',!structureOpen);await tick();(structureOpen?workspaceElement?.querySelector<HTMLElement>('[aria-label="Search structure"]'):viewButton)?.focus({preventScroll:true});}
 
   let structureHeight = $state(240);
   let testingOpen = $state(false);
@@ -87,11 +114,11 @@
     if(textDraftDirty || sourceDraftDirty || renamingScreen){notice='Apply or cancel your draft first.';return;}
     const active=globalThis.document.activeElement;
     testingReturn=active instanceof HTMLElement && !active.closest('[role="menu"]')?active:undefined;
-    testingOpen=true;
+    showPanel('testing');
   }
   function closeTesting() {
     testingOpen=false;void tick().then(()=>{
-      const target=testingReturn?.isConnected && !testingReturn.closest('[hidden],[inert]') && testingReturn.getClientRects().length ? testingReturn : workspaceElement?.querySelector<HTMLElement>('#document-drawer:not([hidden]) .close-document') ?? documentButton;
+      const target=testingReturn?.isConnected && !testingReturn.closest('[hidden],[inert]') && testingReturn.getClientRects().length ? testingReturn : viewButton;
       target?.focus({preventScroll:true});
     });
   }
@@ -178,7 +205,7 @@
   const dataType = (type:string) => ({string:'Text',boolean:'Yes / No',number:'Number',stringList:'Text list',numberList:'Number list'}[type] ?? type);
   function dataPreview(value:unknown) {return Array.isArray(value) ? `${value.length} items` : typeof value==='boolean' ? value?'Yes':'No' : value === '' ? 'Empty' : String(value);}
   function openData(key?:string) {if(textDraftDirty || sourceDraftDirty) {notice='Apply or cancel your draft first.';return;} selectedData=key;}
-  async function toggleDocument() {if(drawerOpen && !testingOpen)closeDrawer();else {testingOpen=false;drawerOpen=true;await tick();globalThis.document.querySelector<HTMLElement>('.close-document')?.focus({preventScroll:true});}}
+  async function toggleDocument() {if(drawerOpen && !testingOpen)closeDrawer();else {showPanel('document');await tick();globalThis.document.querySelector<HTMLElement>('.close-document')?.focus({preventScroll:true});}}
 
   let palettePage = $state<'format' | 'insert' | 'arrange' | 'connect'>('format');
   let paletteRequested = $state(false);
@@ -205,7 +232,7 @@
   function inspectSource(id = source && selected ? structureId(source.id,'node',resolveOccurrence(selected,source).sourceNodeId) : undefined, page:'properties'|'relationships'='properties') {
     const active = globalThis.document.activeElement;
     inspectionReturn = active instanceof HTMLElement && !active.closest('[role="menu"]') ? active : undefined;
-    detailId=id;detailsPage=page;structureOpen=true;detailsOpen=true;
+    detailId=id;detailsPage=page;showPanel('structure');structureFocusId=id;detailsOpen=true;
     void tick().then(()=>{const target=workspaceElement?.querySelector<HTMLElement>('.structure-inspection-pane [aria-label="Close inspection details"]');target?.scrollIntoView({block:'nearest'});target?.focus({preventScroll:true});});
   }
   function closeDetails() { detailsOpen = false; void tick().then(()=>{
@@ -216,6 +243,7 @@
     if (!source || textDraftDirty || sourceDraftDirty || renamingScreen) return;
     const item = projectStructure(source).nodes.find(node=>node.id===id);
     detailId = id;
+    structureFocusId=id;
     if (item?.data.occurrence) selectStructureNode(item.data.occurrence);
   }
   function objectContext(occurrence: string): WorkspaceContext | undefined {
@@ -232,7 +260,7 @@
     return { label:'Object commands', prepare:target, commands:[
       {label:'Inspect', disabled:blocked, run:()=>inspectSource(structureId(source!.id,'node',capability.report!.sourceNodeId))},
       {label:'Locate on canvas', disabled:blocked, run:()=>void locateOnCanvas(occurrence)},
-      {label:'Edit properties', disabled:blocked || !capability.direct, run:()=>act(()=>{changeMode('design');selectOccurrence(occurrence,true);paletteFocus=Symbol('edit-handoff');})},
+      {label:'Edit on canvas', disabled:blocked || !capability.direct, run:()=>act(()=>{changeMode('design');selectOccurrence(occurrence,true);paletteFocus=Symbol('edit-handoff');})},
       {label:'Duplicate', separator:true, disabled:blocked || !capability.removable, run:()=>act(duplicateSelection)},
       {label:'Delete', disabled:blocked || !capability.removable, run:()=>act(removeSelection)},
       {label:'Move earlier', separator:true, disabled:blocked || !capability.earlier, run:()=>act(()=>reorderSelection(-1))},
@@ -256,7 +284,8 @@
     return !!owner && target.closest<HTMLElement>('[data-ui-owner]')?.dataset.uiOwner===owner;
   }
 
-  function dismissStructure() { if(structureExpanded){structureExpanded=false;return;} structureOpen = false; void tick().then(()=>workspaceElement?.querySelector<HTMLButtonElement>('.structure-toggle')?.focus({preventScroll:true})); }
+  function dismissStructure() { if(structureExpanded){structureExpanded=false;return;} hideStructure(); }
+  function hideStructure(){showPanel('structure',false);void tick().then(()=>viewButton?.focus({preventScroll:true}));}
   let renamingScreen=$state(false);
   let screenNameDraft=$state('');
   let screenNameInput=$state<HTMLInputElement>();
@@ -277,8 +306,7 @@
     if(event.key==='Escape') {event.preventDefault();event.stopPropagation();renamingScreen=false;void tick().then(()=>renameButton?.focus());}
     if(event.key==='Enter') {event.preventDefault();finishRename();void tick().then(()=>renameButton?.focus());}
   }
-  let documentButton=$state<HTMLButtonElement>();
-  function closeDrawer() { if(textDraftDirty || sourceDraftDirty) {notice='Apply or cancel your draft before closing Document.';return;} drawerOpen = false; documentButton?.focus(); }
+  function closeDrawer() {showPanel('document',false);void tick().then(()=>viewButton?.focus({preventScroll:true}));}
   function documentKeys(event: KeyboardEvent) {
     if(event.key==='Escape' && !event.defaultPrevented){event.preventDefault();event.stopPropagation();closeDrawer();return;}
 
@@ -287,7 +315,7 @@
     state: { message: 'Message', accepted: 'Agreement', dialogOpen: 'Dialog open', busy: 'Submitting', actionError: 'Action error', actionResult: 'Action result' },
     actionInputs: { message: 'Message', accepted: 'Agreement' } });
   function selectOccurrence(occurrence: string, revealTools = true) {
-    if (textDraftDirty || (drawerOpen && sourceDraftDirty)) { notice = 'Apply or cancel your edit first.'; return; }
+    if (textDraftDirty || sourceDraftDirty) { notice = 'Apply or cancel your edit first.'; return; }
     if(revealTools) structureExpanded=false;
     editTextSignal = undefined;
     if (source) {
@@ -301,13 +329,13 @@
       if(compositionFocus && id!==compositionFocus.nodeId && !focusedMembers?.has(id))compositionFocus=undefined;
     }
     bridge?.select(occurrence);
-    if (source) detailId=structureId(source.id,'node',resolveOccurrence(occurrence,source).sourceNodeId);
+    if (source) {detailId=structureId(source.id,'node',resolveOccurrence(occurrence,source).sourceNodeId);structureFocusId=detailId;}
     palettePage = 'format'; paletteRequested = revealTools;
     formatSection = reportSection(occurrence);
     if(revealTools) selectionToolsReveal = Symbol('selection-tools');
   }
   function editSelectedText(occurrence = selected) {
-    if (!occurrence || !source || textDraftDirty) return;
+    if (!occurrence || !source || textDraftDirty || sourceDraftDirty) return;
     const report = resolveOccurrence(occurrence, source);
     if (report.instancePath.some(step=>source.componentDefinitions[step.definitionId]) || report.repeatKeys.length || !literalTextTarget(source, report.sourceNodeId)) return;
     selectOccurrence(occurrence);
@@ -354,7 +382,7 @@
   $effect(()=>{void authoredRevision;untrack(()=>{if(activeTest)resetRuntime();});});
   function openSession(next: EditorBridge) {
     agentEpoch = crypto.randomUUID();
-    compositionFocus=undefined;detailId=undefined;
+    compositionFocus=undefined;detailId=undefined;structureFocusId=undefined;
     palettePage = 'format'; paletteRequested = false;
     unsubscribe?.(); bridge = next; version++;
     unsubscribe = next.subscribe(() => version++);
@@ -415,8 +443,8 @@
     }
     return result.ok;
   }
-  function undo() { if (!bridge) return; if (textDraftDirty) { notice = 'Apply or cancel your property edit first.'; return; } const result = bridge.undo(); issues = result.ok ? [] : result.issues; notice = result.ok ? 'Undid the last authored change.' : 'Nothing to undo.'; }
-  function redo() { if (!bridge) return; if (textDraftDirty) { notice = 'Apply or cancel your property edit first.'; return; } const result = bridge.redo(); issues = result.ok ? [] : result.issues; notice = result.ok ? 'Redid the authored change.' : 'Nothing to redo.'; }
+  function undo() { if (!bridge) return; if (textDraftDirty || sourceDraftDirty) { notice = 'Apply or cancel your draft first.'; return; } const result = bridge.undo(); issues = result.ok ? [] : result.issues; notice = result.ok ? 'Undid the last authored change.' : 'Nothing to undo.'; }
+  function redo() { if (!bridge) return; if (textDraftDirty || sourceDraftDirty) { notice = 'Apply or cancel your draft first.'; return; } const result = bridge.redo(); issues = result.ok ? [] : result.issues; notice = result.ok ? 'Redid the authored change.' : 'Nothing to redo.'; }
   function save(): boolean {
     if (textDraftDirty) { notice = 'Apply or cancel your property edit before saving.'; return false; }
     if (sourceDraftDirty) { notice = 'Apply or discard your JSON draft before saving.'; return false; }
@@ -543,8 +571,11 @@
         <Menubar.Item title="Undo · Ctrl+Z" aria-label="Undo" disabled={!snapshot?.canUndo} onSelect={undo}>Undo <kbd>Ctrl+Z</kbd></Menubar.Item>
         <Menubar.Item aria-label="Redo" disabled={!snapshot?.canRedo} onSelect={redo}>Redo <kbd>Ctrl+Shift+Z</kbd></Menubar.Item>
       </WorkspaceMenu>
-      <WorkspaceMenu label="View" value="view" {activeMenu}>
-        <Menubar.Item onSelect={() => void toggleChat()}>{chatOpen ? "Hide chat" : "Show chat"}</Menubar.Item>
+      <WorkspaceMenu label="View" value="view" {activeMenu} bind:trigger={viewButton}>
+        <Menubar.CheckboxItem aria-label="Chat" checked={chatOpen} onSelect={() => void toggleChat()}>Chat<span aria-hidden="true">{chatOpen?'✓':''}</span></Menubar.CheckboxItem>
+        <Menubar.CheckboxItem aria-label="Document" checked={drawerOpen && !testingOpen} onSelect={() => void toggleDocument()}>Document<span aria-hidden="true">{drawerOpen && !testingOpen?'✓':''}</span></Menubar.CheckboxItem>
+        <Menubar.CheckboxItem aria-label="Structure" checked={structureOpen} onSelect={() => void toggleStructure()}>Structure<span aria-hidden="true">{structureOpen?'✓':''}</span></Menubar.CheckboxItem>
+        <Menubar.Separator />
         <Menubar.RadioGroup bind:value={width} aria-label="Canvas size">
           {#each [{value:'fluid',label:'Fit canvas'},{value:'768',label:'Tablet · 768'},{value:'390',label:'Phone · 390'}] as option}<Menubar.RadioItem value={option.value} closeOnSelect>{option.label}<span aria-hidden="true">{width===option.value?'\u2713':''}</span></Menubar.RadioItem>{/each}
         </Menubar.RadioGroup>
@@ -571,13 +602,13 @@
       {#snippet arrange()}<Composer document={source} selectedNodeId={selectedNode?.id} recipes={screenRecipes} descriptors={catalogDescriptors} compact showInsert={false} onApply={apply} onDuplicate={duplicateSelection} onDetached={(parentId: string)=>{selectOccurrence(`${source.id}|${parentId}`);notice='Content kept aside. Use Insert → Reuse to place it again.';}} />{#if !selectedNode || selectedNode.id === source.root}<p class="palette-hint">Select an element to move, duplicate or delete it.</p>{/if}{/snippet}
     </SelectionPalette>
   {/snippet}
-  <div class="agent-workspace" class:chat-open={chatOpen}>
+  <div class="agent-workspace" class:chat-open={chatOpen} bind:clientWidth={availableWidth}>
   <div class="agent-panel" hidden={!chatOpen} style:--chat-width={`${chatWidth}px`}><header class="panel-header chat-heading"><strong>Chat</strong><button type="button" aria-label="Hide chat" title="Hide chat" onclick={()=>void toggleChat()}>×</button></header><AgentChat screenLabel={screenName(source)} selectionLabel={selectedNode ? compositionName(source, selectedNode.id) : "None"} blocked={textDraftDirty || sourceDraftDirty || renamingScreen} getContext={() => bridge ? {document:bridge.document, cursor:documentCursor(bridge.document,bridge.getSnapshot().revision,agentEpoch), ...(selected ? {selection:selected} : {})} : undefined} getCapture={cursor => captureDesignerPreview(canvasScroll?.querySelector<HTMLElement>('.design-frame') ?? undefined,cursor,()=>bridge ? {cursor:documentCursor(bridge.document,bridge.getSnapshot().revision,agentEpoch),mode,state:{runtimeValues,simulation:{denied:simulation.denied,failNext:simulation.failNext}},selection:selected,composition:compositionFocus ? `${compositionFocus.nodeId}/${compositionFocus.slotName}` : undefined,structureOpen:structureOpen && structureExpanded} : undefined,canvasScroll)} applyProposal={receiveAgentProposal} /></div>
   <div class="chat-resizer" hidden={!chatOpen}><PanelResizer label="Chat width" value={chatWidth} min={240} max={400} onChange={(value:number)=>chatWidth=value} /></div>
   <div class="design-workspace" bind:this={workspaceElement} bind:clientWidth={workspaceWidth} class:drawer-open={rightOpen} class:has-object-tools={mode === 'design' && !!selectedNode && paletteRequested} style:--drawer-width={`${effectiveDrawerWidth}px`}>
     <WorkspaceContextMenu scope={workspaceElement} enabled={mode === 'design'} resolve={canvasContext} owns={ownsCanvasTarget} />
     <main class="design-stage" class:structure-expanded={structureOpen && structureExpanded} bind:clientHeight={stageHeight}>
-      <div class="canvas-toolbar workspace-tools" bind:clientHeight={toolbarHeight}>{#if !chatOpen}<button type="button" aria-label="Show chat" title="Show chat" onclick={()=>void toggleChat()}>Chat</button>{/if}<div class="canvas-modes" aria-label="Workspace mode"><button type="button" aria-pressed={mode === 'design'} onclick={() => changeMode('design')}>Design</button><button type="button" aria-pressed={mode === 'interact'} onclick={() => changeMode('interact')}>Interact</button></div>{#if compositionFocus}<div class="composition-back"><CompositionNavigator compact document={source} focus={compositionFocus} descriptors={catalogDescriptors} disabled={textDraftDirty || sourceDraftDirty} onNavigate={navigateComposition} /></div>{/if}<button type="button" bind:this={documentButton} class="panel-toggle" aria-expanded={drawerOpen && !testingOpen} aria-controls="document-drawer" onclick={toggleDocument}>Document</button>{#if activeTest}<button type="button" class="test-indicator" aria-label={`Testing: ${activeTest.label}`} onclick={()=>void openTesting()}>Testing: {activeTest.label}</button><button type="button" title="Return to starting values and clear simulated failures" onclick={resetRuntime}>Reset test</button>{/if}</div>
+      <div class="canvas-toolbar workspace-tools" bind:clientHeight={toolbarHeight}><div class="canvas-modes" aria-label="Workspace mode"><button type="button" aria-pressed={mode === 'design'} onclick={() => changeMode('design')}>Design</button><button type="button" aria-pressed={mode === 'interact'} onclick={() => changeMode('interact')}>Interact</button></div>{#if compositionFocus}<div class="composition-back"><CompositionNavigator compact document={source} focus={compositionFocus} descriptors={catalogDescriptors} disabled={textDraftDirty || sourceDraftDirty} onNavigate={navigateComposition} /></div>{/if}{#if activeTest}<button type="button" class="test-indicator" aria-label={`Testing: ${activeTest.label}`} onclick={()=>void openTesting()}>Testing: {activeTest.label}</button><button type="button" title="Return to starting values and clear simulated failures" onclick={resetRuntime}>Reset test</button>{/if}</div>
 
 
       <div class="canvas-scroll workspace-scroll" inert={structureOpen && structureExpanded} bind:this={canvasScroll}>
@@ -595,9 +626,9 @@
           {#if compositionFocus && !focusedMembers?.size}<div class="empty-composition"><h2>This composition is empty</h2><p>Select the composition, then choose Insert in its tools.</p></div>{:else if Object.keys(source.nodes).length === 1}<div class="empty-canvas"><span>＋</span><h1>What will you make?</h1><p>Select this screen to open its tools, then choose Insert.</p></div>{/if}
         </div>
       </div>
-      <StructureDock bind:open={structureOpen} bind:expanded={structureExpanded} bind:height={structureHeight} availableHeight={stageHeight - toolbarHeight}>
-        <StructureInspection open={detailsOpen} bind:width={inspectionWidth}>
-          {#snippet graphContent(visible:boolean)}<StructureView presentation="drawer" active={structureOpen && visible} document={source} revision={snapshot?.revision ?? ''} selectedNodeId={selectedNode?.id} descriptors={catalogDescriptors} recipes={screenRecipes} blocked={textDraftDirty || sourceDraftDirty || renamingScreen} onSelect={selectStructureNode} onDeselect={() => { if (!textDraftDirty && !sourceDraftDirty && !renamingScreen) { bridge?.select(undefined); paletteRequested = false; detailId=undefined; } }} onMove={moveFromStructure} onNotice={message => notice = message} onNavigate={structureNavigate} onDismiss={dismissStructure} onInspect={inspectSource} onCloseInspect={closeDetails} inspectionSelection={detailId} onInspectSelection={id=>detailId=id} inspectionExpanded={detailsOpen} objectCommands={occurrence=>objectContext(occurrence)?.commands ?? []} />{/snippet}
+      <StructureDock onClose={hideStructure} bind:open={structureOpen} bind:expanded={structureExpanded} bind:height={structureHeight} availableHeight={stageHeight - toolbarHeight}>
+        <StructureInspection open={detailsOpen} onBack={closeDetails} bind:width={inspectionWidth}>
+          {#snippet graphContent(visible:boolean)}<StructureView focusSelection={structureFocusId} presentation="drawer" active={structureOpen && visible} document={source} revision={snapshot?.revision ?? ''} selectedNodeId={selectedNode?.id} descriptors={catalogDescriptors} recipes={screenRecipes} blocked={textDraftDirty || sourceDraftDirty || renamingScreen} onSelect={(occurrence:string)=>selectStructureNode(occurrence,true)} onDeselect={() => { if (!textDraftDirty && !sourceDraftDirty && !renamingScreen) { bridge?.select(undefined); paletteRequested = false; detailId=undefined; } }} onMove={moveFromStructure} onNotice={message => notice = message} onNavigate={structureNavigate} onDismiss={dismissStructure} onInspect={inspectSource} onCloseInspect={closeDetails} inspectionSelection={detailId} onInspectSelection={id=>detailId=id} inspectionExpanded={detailsOpen} objectCommands={occurrence=>objectContext(occurrence)?.commands ?? []} />{/snippet}
           {#snippet inspectionContent()}<SourceDetails document={source} selectedId={detailId ?? (selectedNode ? structureId(source.id,'node',selectedNode.id) : undefined)} blocked={textDraftDirty || sourceDraftDirty || renamingScreen} bind:page={detailsPage} onClose={closeDetails} onSelect={selectDetail} onNavigate={structureNavigate} />{/snippet}
         </StructureInspection>
       </StructureDock>

@@ -1,4 +1,5 @@
 // @vitest-environment happy-dom
+import {workspaceControl,wholeHierarchy} from './studio-menu.js';
 import { afterEach, expect, it, vi } from 'vitest';
 import { mount, unmount, tick, flushSync, createRawSnippet } from 'svelte';
 vi.mock('$app/navigation', () => ({ beforeNavigate: () => {} }));
@@ -12,7 +13,7 @@ import { sourceCapabilities } from '../../src/lib/designer/workspace-context.js'
 import type { UiDocument } from '@victframework/ui';
 let editor: ReturnType<typeof mount> | undefined;
 afterEach(async()=>{if(editor)await unmount(editor);editor=undefined;document.body.innerHTML='';localStorage.clear();});
-const button=(name:string)=>[...document.querySelectorAll<HTMLElement>('button,[role="menuitem"]')].find(node=>node.getAttribute('aria-label')===name || node.textContent?.trim()===name)!;
+const button=(name:string)=>workspaceControl(name)!;
 async function settle(){flushSync();await tick();await tick();}
 async function start(){
   const seed=newScreen('Context details','context-details');
@@ -66,12 +67,13 @@ it('keeps shared inspection inside bottom Structure for Document Layers and grap
   button('Document').click();await settle();button('Inspect source').click();await settle();
   expect(document.querySelector('[aria-label="Source inspection details"]')).not.toBeNull();
   expect(document.querySelector('.structure-dock .structure-inspection-pane .source-details')).not.toBeNull();
-  button('Close inspection details').click();await settle();if(button('Structure').getAttribute('aria-expanded')!=='true')button('Structure').click();await settle();
+  button('Close inspection details').click();await settle();if(document.querySelector<HTMLElement>('.structure-dock')!.hidden)button('Structure').click();await settle();
   const resizer=document.querySelector<HTMLElement>('[aria-label="Structure panel height"]')!;
   const height=Number(resizer.getAttribute('aria-valuenow'));resizer.dispatchEvent(new KeyboardEvent('keydown',{key:'ArrowUp',bubbles:true,cancelable:true}));await settle();
   expect(Number(resizer.getAttribute('aria-valuenow'))).toBeGreaterThanOrEqual(height);
   const graph=document.querySelector('.svelte-flow')!;
   expect(graph.closest('[data-context-menu-trigger]')).toBeNull();
+  await wholeHierarchy();
   const node=[...document.querySelectorAll<HTMLElement>('.svelte-flow__node')].find(node=>node.dataset.id===structureId(source.id,'node','second'))!;
   scroll.scrollTop=83;scroll.scrollLeft=14;
   await secondary(node);expect(document.querySelector('[role="menu"][aria-label="Structure item commands"]')).not.toBeNull();
@@ -84,7 +86,7 @@ it('keeps shared inspection inside bottom Structure for Document Layers and grap
   button('Expand Structure').click();await settle();
   expect(document.querySelector<HTMLElement>('.canvas-scroll')!.inert).toBe(true);
   button('Inspect structure').click();await settle();
-  button('Edit properties ↗').click();await settle();expect(document.querySelector('[aria-label="Floating selection tools"]')).not.toBeNull();expect(document.querySelector('.source-details')).toBeNull();expect(document.querySelector<HTMLElement>('.canvas-scroll')!.inert).toBe(false);
+  button('Edit on canvas ↗').click();await settle();expect(document.querySelector('[aria-label="Floating selection tools"]')).not.toBeNull();expect(document.querySelector('.source-details')).toBeNull();expect(document.querySelector<HTMLElement>('.canvas-scroll')!.inert).toBe(false);
 });
 it('keeps ambiguous repeated/definition occurrences inspectable without granting source edits',()=>{
   const document=newScreen('Capabilities','capabilities');
@@ -121,9 +123,10 @@ it('keeps short-window splitter values and keyboard resize within the same dynam
 });
 it('explicitly hands Structure editing from Interact to visible Design floating tools',async()=>{
   const source=await start();button('Interact').click();await settle();button('Document').click();await settle();button('Structure').click();await settle();
+  await wholeHierarchy();
   const node=[...document.querySelectorAll<HTMLElement>('.svelte-flow__node')].find(node=>node.dataset.id===structureId(source.id,'node','second'))!;
   await secondary(node);
-  const edit=[...document.querySelectorAll<HTMLElement>('[role="menu"][data-state="open"] [role="menuitem"]')].find(node=>node.textContent?.trim()==='Edit properties')!;
+  const edit=[...document.querySelectorAll<HTMLElement>('[role="menu"][data-state="open"] [role="menuitem"]')].find(node=>node.textContent?.trim()==='Edit on canvas')!;
   edit.click();await settle();
   expect(button('Design').getAttribute('aria-pressed')).toBe('true');
   expect(document.querySelector('[aria-label="Floating selection tools"]')).not.toBeNull();

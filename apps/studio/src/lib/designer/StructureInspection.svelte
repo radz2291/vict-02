@@ -1,7 +1,7 @@
 <script lang="ts">
   import type {Snippet} from 'svelte';
   import {PanelResizer} from '@victframework/ui-editor';
-  let {open=false,width=$bindable(300),graphContent,inspectionContent}:{open?:boolean;width?:number;graphContent:Snippet<[boolean]>;inspectionContent:Snippet}=$props();
+  let {open=false,width=$bindable(300),onBack,graphContent,inspectionContent}:{open?:boolean;width?:number;onBack?:()=>void;graphContent:Snippet<[boolean]>;inspectionContent:Snippet}=$props();
   let available=$state(0);
   const narrow=$derived(available<600);
   const maximum=$derived(Math.max(240,Math.min(420,available-286)));
@@ -11,7 +11,7 @@
   <div class="structure-graph" hidden={open && narrow} inert={open && narrow}>{@render graphContent(!open || !narrow)}</div>
   {#if open}
     {#if !narrow}<div class="structure-inspection-resizer"><PanelResizer label="Structure inspection width" value={actual} min={240} max={maximum} reverse onChange={(value:number)=>width=value} /></div>{/if}
-    <aside class="structure-inspection-pane" aria-label="Structure inspection">{@render inspectionContent()}</aside>
+    <aside class="structure-inspection-pane" aria-label="Structure inspection">{#if narrow && onBack}<button class="back-to-graph" type="button" onclick={onBack}>← Back to graph</button>{/if}{@render inspectionContent()}</aside>
   {/if}
 </div>
 <style>
@@ -21,5 +21,7 @@
   .structure-graph{display:flex;min-height:0;min-width:0;overflow:hidden}.structure-graph[hidden]{display:none}
   .structure-graph :global(.structure-view){flex:1;min-width:0}
   .structure-inspection-resizer{display:flex;min-height:0}.structure-inspection-resizer :global(.resizer){flex:1}
-  .structure-inspection-pane{min-height:0;min-width:0;overflow:hidden}
+  .structure-inspection-pane{display:flex;flex-direction:column;min-height:0;min-width:0;overflow:hidden}
+  .structure-inspection-pane :global(.source-details){flex:1;height:auto}
+  .back-to-graph{flex:none;font:inherit;text-align:left;padding:6px 10px;border:0;border-bottom:1px solid var(--vict-color-border);background:var(--vict-color-surface);color:var(--vict-color-accent);cursor:pointer}
 </style>

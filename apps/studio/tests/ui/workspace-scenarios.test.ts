@@ -6,10 +6,10 @@ import Designer from '../../src/lib/designer/Designer.svelte';
 import { newScreen } from '../../src/lib/designer/application.js';
 import { screenStore } from '../../src/lib/designer/storage.js';
 import type { UiDocument } from '@victframework/ui';
-import { openStudioMenu } from './studio-menu.js';
+import { openStudioMenu,workspaceControl } from './studio-menu.js';
 let editor:ReturnType<typeof mount>|undefined;
 afterEach(async()=>{if(editor)await unmount(editor);editor=undefined;document.body.innerHTML='';localStorage.clear();});
-const button=(name:string)=>[...document.querySelectorAll<HTMLElement>('button,[role="menuitem"]')].find(node=>node.getAttribute('aria-label')===name||node.textContent?.trim()===name)!;
+const button=(name:string)=>workspaceControl(name)!;
 async function settle(){flushSync();await tick();await tick();}
 async function start(){
  const seed=newScreen('Test workspace','test-workspace');
@@ -36,7 +36,7 @@ it('offers plain scenarios outside Document, resets each test, preserves source 
  expect((document.querySelector('[aria-label="Example field"]') as HTMLInputElement).value.length).toBeGreaterThan(100);
  expect(button('Testing: Long content')).toBeDefined();
  button('Close testing').click();await settle();expect(document.querySelector<HTMLElement>('#document-drawer')!.hidden).toBe(false);
- expect(document.activeElement?.getAttribute('aria-label')).toBe('Close document');
+ expect(document.activeElement?.textContent).toBe('View');
  expect(screenStore(localStorage,source.id).rawLoad()).toMatchObject({document:source});
 });
 it('invalidates an in-flight failed action before another scenario can be overwritten',async()=>{

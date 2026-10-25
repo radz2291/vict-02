@@ -6,7 +6,7 @@ import Designer from '../../src/lib/designer/Designer.svelte';
 import { newScreen, compileScreen } from '../../src/lib/designer/application.js';
 import { screenStore } from '../../src/lib/designer/storage.js';
 import type { UiDocument } from '@victframework/ui';
-import { openStudioMenu } from './studio-menu.js';
+import { openStudioMenu,workspaceControl } from './studio-menu.js';
 import { structureId } from '../../src/lib/designer/structure.js';
 let editor: ReturnType<typeof mount> | undefined;
 afterEach(async () => {
@@ -15,9 +15,7 @@ afterEach(async () => {
   localStorage.clear();
 });
 const button = (name: string) => {
-  const item = [...document.querySelectorAll<HTMLElement>('button,[role="menuitem"]')].find(
-    (item) => item.getAttribute('aria-label') === name || item.textContent?.trim() === name,
-  );
+  const item = workspaceControl(name);
   expect(item, name).toBeDefined();
   if(!(['Layers','Data','Actions','Source'].includes(name) && item!.getAttribute('aria-expanded')==='true'))item!.click();
   flushSync();
@@ -65,7 +63,7 @@ it('preserves the canvas, runtime input, scroll and graph context through Struct
   expect(store.rawLoad()).toMatchObject({document:source});
 });
 
-it('retains Source drafts and refuses drawer/mode transitions until the draft is discarded', async () => {
+it('retains hidden Source drafts and refuses editing transitions until discarded', async () => {
   const source={...newScreen('Drawer draft','drawer-draft'),revision:'r1.r1'};
   expect(screenStore(localStorage,source.id).save({document:source,expectedStoredRevision:'r1',newStoredRevision:'r1.r1'}).ok).toBe(true);
   editor=mount(Designer,{target:document.body}); await tick(); await tick();
@@ -76,13 +74,13 @@ it('retains Source drafts and refuses drawer/mode transitions until the draft is
   expect(dataRow.disabled).toBe(true); button('Interact'); await tick();
   expect(document.querySelector('.canvas-modes button')!.getAttribute('aria-pressed')).toBe('true');
   button('Close document'); await tick();
-  expect(document.querySelector<HTMLElement>('#document-drawer')!.hidden).toBe(false); expect(draft.value.endsWith(' ')).toBe(true);
+  expect(document.querySelector<HTMLElement>('#document-drawer')!.hidden).toBe(true); expect(draft.value.endsWith(' ')).toBe(true);button('Document');await tick();
   button('Discard draft'); await tick(); button('Close document');await tick();button('Structure'); await tick();
   const search=document.querySelector<HTMLInputElement>('[aria-label="Search structure"]')!;
   search.focus(); search.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true,cancelable:true})); await tick();
   expect(document.querySelector<HTMLElement>('#document-drawer')!.hidden).toBe(true);
   expect(document.querySelector<HTMLElement>('.dock-panel')!.hidden).toBe(true);
-  expect(document.activeElement).toBe(document.querySelector('.structure-toggle'));
+  expect(document.activeElement?.textContent).toBe('View');
 });
 
 it('opens another saved screen through File and guards the cascading menu during a source draft', async () => {

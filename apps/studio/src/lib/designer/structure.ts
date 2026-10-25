@@ -186,6 +186,23 @@ export function structureFacts(document: UiDocument, node: Node<StructureNodeDat
 }
 
 export type StructureFilter = { search?: string; focusId?: string; collapsed?: ReadonlySet<string>; bindings?: boolean; definitions?: boolean };
+
+/** Selected source and declared connections; retain only containment paths needed for context. */
+export function connectedStructure(graph:StructureGraph,focusId:string):StructureGraph {
+  if(!graph.nodes.some(node=>node.id===focusId))return {nodes:[],edges:[]};
+  const scope=new Set([focusId]);
+  const containment=graph.edges.filter(edge=>edge.data?.kind==='containment');
+  for(const id of scope)for(const edge of containment)if(edge.source===id)scope.add(edge.target);
+  const connections=graph.edges.filter(edge=>edge.data?.kind!=='containment');
+  const direct=connections.filter(edge=>scope.has(edge.source)||scope.has(edge.target));
+  const references=new Set(direct.flatMap(edge=>[edge.source,edge.target]).filter(id=>!scope.has(id)));
+  const related=connections.filter(edge=>direct.includes(edge)||references.has(edge.source)||references.has(edge.target));
+  const visible=new Set([focusId,...related.flatMap(edge=>[edge.source,edge.target])]);
+  for(const id of visible){if(!scope.has(id))continue;let current=id;const seen=new Set<string>();
+    while(current!==focusId && !seen.has(current)){seen.add(current);const parent=containment.find(edge=>edge.target===current)?.source;if(!parent||!scope.has(parent))break;visible.add(parent);current=parent;}
+  }
+  return {nodes:graph.nodes.filter(node=>visible.has(node.id)),edges:graph.edges.filter(edge=>visible.has(edge.source)&&visible.has(edge.target))};
+}
 /** Collapse and layers are view projections. They do not alter canonical ownership. */
 export function filterStructure(graph: StructureGraph, options: StructureFilter = {}): StructureGraph {
   const containment = graph.edges.filter(edge => edge.data?.kind === 'containment');

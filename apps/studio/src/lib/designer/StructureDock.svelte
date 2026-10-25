@@ -1,16 +1,15 @@
 <script lang="ts">
-  import { onMount, tick, type Snippet } from 'svelte';
-  let { open = $bindable(false), expanded = $bindable(false), height = $bindable(300), availableHeight = 600, children }: {
-    open?: boolean; expanded?: boolean; height?: number; availableHeight?: number; children: Snippet;
+  import { onMount, type Snippet } from 'svelte';
+  let { open = $bindable(false), expanded = $bindable(false), height = $bindable(300), availableHeight = 600, onClose, children }: {
+    open?: boolean; expanded?: boolean; height?: number; availableHeight?: number; onClose?:()=>void; children: Snippet;
   } = $props();
   let root: HTMLElement;
-  let toggle: HTMLButtonElement;
   onMount(() => {
     const escape = (event: KeyboardEvent) => {
       if (event.key !== 'Escape' || event.defaultPrevented || !open || !(event.target instanceof Element) || !event.target.closest('.dock-bar')) return;
       event.preventDefault(); event.stopPropagation();
       if (expanded) expanded = false;
-      else { open = false; toggle?.focus({preventScroll:true}); }
+      else close();
     };
     root.addEventListener('keydown', escape);
     return () => root.removeEventListener('keydown', escape);
@@ -19,12 +18,7 @@
   const minimum = $derived(Math.min(180, maximum));
   const actual = $derived(expanded ? maximum : Math.max(minimum, Math.min(maximum, height)));
   function setHeight(value: number) { height = Math.round(Math.max(minimum, Math.min(maximum, value))); }
-  async function toggleOpen() {
-    open = !open;
-    await tick();
-    if (open) root?.querySelector<HTMLInputElement>('[aria-label="Search structure"]')?.focus({ preventScroll: true });
-    else toggle?.focus({ preventScroll: true });
-  }
+  function close(){if(onClose)onClose();else open=false;}
   function resize(event: PointerEvent) {
     if (event.button !== 0) return;
     event.preventDefault();
@@ -41,7 +35,8 @@
     setHeight(event.key === 'Home' ? minimum : event.key === 'End' ? maximum : actual + (event.key === 'ArrowUp' ? 24 : -24));
   }
 </script>
-<section class="structure-dock" aria-label="Structure panel" bind:this={root}>
+<section class="structure-dock" hidden={!open} aria-label="Structure panel" bind:this={root}>
+  <header class="dock-bar" aria-label="Structure panel controls"><strong>Structure</strong><button type="button" title={expanded ? 'Restore Structure' : 'Expand Structure'} aria-label={expanded ? 'Restore Structure' : 'Expand Structure'} aria-pressed={expanded} onclick={() => expanded = !expanded}>{expanded ? '↙' : '↗'}</button><button type="button" aria-label="Close Structure" onclick={close}>×</button></header>
   <div class="dock-panel" hidden={!open} style:height={`${actual}px`}>
     {#if !expanded}
       <!-- ARIA window splitter supports pointer capture and keyboard height adjustment. -->
@@ -50,20 +45,17 @@
     {/if}
     <div class="dock-content" id="structure-dock-content">{@render children()}</div>
   </div>
-  <nav class="dock-bar" aria-label="Structure panel controls">
-    <button type="button" class="structure-toggle" bind:this={toggle} aria-label="Structure" aria-expanded={open} aria-controls="structure-dock-content" onclick={() => void toggleOpen()}><span aria-hidden="true">{open ? '▾' : '▸'}</span>Structure</button>
-    {#if open}<button type="button" title={expanded ? 'Restore Structure' : 'Expand Structure'} aria-label={expanded ? 'Restore Structure' : 'Expand Structure'} aria-pressed={expanded} onclick={() => expanded = !expanded}>{expanded ? '↙' : '↗'}</button>{/if}
-  </nav>
 </section>
 <style>
   .structure-dock { flex:none; min-width:0; background:var(--vict-color-surface,#fff); border-top:1px solid var(--vict-color-border,#e1e6ee); }
+  .structure-dock[hidden]{display:none}
   .dock-panel { display:flex; flex-direction:column; min-height:0; overflow:hidden; }
   .dock-panel[hidden] { display:none; }
   .dock-content { flex:1; min-height:0; min-width:0; overflow:hidden; }
   .dock-bar { height:34px; display:flex; align-items:center; gap:4px; padding:0 8px; border-top:1px solid var(--vict-color-border,#e1e6ee); }
   button { font:inherit; font-size:11px; color:var(--vict-color-textMuted,#65748d); background:transparent; border:0; border-radius:4px; padding:5px 8px; cursor:pointer; }
-  .structure-toggle { display:flex; align-items:center; gap:6px; margin-right:auto; }
-  button:hover,button[aria-expanded=true] { color:var(--vict-color-text,#26334b); background:var(--vict-rhea-muted,#eef1f7); }
+  .dock-bar strong{font-weight:600;font-size:12px;margin-right:auto}
+  button:hover { color:var(--vict-color-text,#26334b); background:var(--vict-rhea-muted,#eef1f7); }
   .dock-resizer { height:7px; flex:none; display:flex; align-items:center; justify-content:center; touch-action:none; cursor:ns-resize; }
   .dock-resizer span { width:36px; height:2px; background:var(--vict-color-border,#e1e6ee); }
   :focus-visible { outline:2px solid var(--vict-color-focusRing,#5269bd); outline-offset:-2px; }

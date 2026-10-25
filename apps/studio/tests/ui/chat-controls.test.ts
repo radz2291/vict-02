@@ -3,7 +3,7 @@ import { mount, unmount, tick } from 'svelte';
 import { afterEach, expect, it, vi } from 'vitest';
 vi.mock('$app/navigation', () => ({ beforeNavigate: () => {} }));
 import Designer from '../../src/lib/designer/Designer.svelte';
-import { openStudioMenu } from './studio-menu.js';
+import { openStudioMenu,workspaceControl } from './studio-menu.js';
 
 let instance: ReturnType<typeof mount> | undefined;
 afterEach(async () => {
@@ -14,10 +14,7 @@ afterEach(async () => {
   vi.unstubAllGlobals();
 });
 async function visibility(label: string) {
-  await openStudioMenu('View');
-  const item = [...document.querySelectorAll<HTMLElement>('[role="menuitem"]')].find(
-    (node) => node.textContent?.trim() === label,
-  );
+  const item=workspaceControl(label);
   expect(item).toBeDefined();
   item!.click();
   await tick();
@@ -50,6 +47,7 @@ it('keeps draft, feed and an active turn mounted through hiding; the single comp
   await vi.waitFor(() =>
     expect(document.querySelector('.agent-status')?.textContent).toContain('Ready'),
   );
+  await visibility('Show chat');
   const panel = document.querySelector('.agent-panel')!;
   const chat = document.querySelector('.agent-chat')!;
   const input = document.querySelector<HTMLTextAreaElement>('[data-testid="conversation-input"]')!;

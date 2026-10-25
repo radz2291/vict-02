@@ -1,4 +1,5 @@
 // @vitest-environment happy-dom
+import {workspaceControl} from './studio-menu.js';
 import {afterEach,expect,it,vi} from 'vitest';
 import {mount,unmount,tick,flushSync} from 'svelte';
 vi.mock('$app/navigation',()=>({beforeNavigate:()=>{}}));
@@ -10,7 +11,7 @@ import type {UiDocument} from '@victframework/ui';
 let editor:ReturnType<typeof mount>|undefined;
 afterEach(async()=>{if(editor)await unmount(editor);editor=undefined;document.body.innerHTML='';localStorage.clear();});
 async function settle(){flushSync();await tick();await tick();}
-const button=(name:string)=>[...document.querySelectorAll<HTMLButtonElement>('button')].find(node=>node.getAttribute('aria-label')===name||node.textContent?.trim()===name)!;
+const button=(name:string)=>workspaceControl(name)!;
 async function click(name:string){button(name).click();await settle();}
 async function start(){
  const source:UiDocument={...newScreen('Panel placement','panel-placement'),revision:'r1.r1',nodes:{
@@ -23,6 +24,7 @@ async function start(){
 }
 it('keeps standalone Chat mounted and puts Layers first in the Document accordion',async()=>{
  const source=await start();const chat=document.querySelector('.agent-chat')!,canvas=document.querySelector('.design-frame')!;
+ await click('Chat');
  expect(document.querySelector('[role=tablist]')).toBeNull();
  const draft=document.querySelector<HTMLTextAreaElement>('[data-testid="conversation-input"]')!;draft.value='Keep my Chat draft';draft.dispatchEvent(new Event('input',{bubbles:true}));await settle();
  await click('Document');expect([...document.querySelectorAll('.document-section-header')].map(node=>node.textContent)).toEqual(['Layers','Data','Actions','Source']);
@@ -39,7 +41,7 @@ it('inspects selected layers inside Structure and keeps the graph mounted throug
  const graph=document.querySelector('.svelte-flow')!;expect(graph).not.toBeNull();
  expect(document.querySelector<HTMLElement>('.structure-graph')!.hidden).toBe(true);
  await click('Close inspection details');expect(document.querySelector('.svelte-flow')).toBe(graph);expect(document.querySelector<HTMLElement>('.structure-graph')!.hidden).toBe(false);
- await click('Inspect source');await click('Edit properties ↗');expect(document.querySelector('[aria-label="Floating selection tools"]')).not.toBeNull();expect(document.querySelector('.source-details')).toBeNull();
+ await click('Inspect source');await click('Edit on canvas ↗');expect(document.querySelector('[aria-label="Floating selection tools"]')).not.toBeNull();expect(document.querySelector('.source-details')).toBeNull();
 });
 it('does not apply canvas delete or duplicate shortcuts from Structure controls',async()=>{
  await start();await click('Document');
@@ -54,7 +56,7 @@ it('preserves hidden source drafts and permits only one Document section expande
  for(const name of ['Data','Actions','Source']){await click(name);expect(expanded()).toEqual([name]);}
  const field=document.querySelector<HTMLTextAreaElement>('#canonical-source')!;field.value+=' ';field.dispatchEvent(new Event('input',{bubbles:true}));await settle();const exact=field.value;
  await click('Layers');expect(expanded()).toEqual(['Layers']);await click('Data');expect(field.value).toBe(exact);expect(document.querySelector<HTMLButtonElement>('.data-row')!.disabled).toBe(true);
- await click('Close document');expect(document.querySelector<HTMLElement>('#document-drawer')!.hidden).toBe(false);
+ await click('Close document');expect(document.querySelector<HTMLElement>('#document-drawer')!.hidden).toBe(true);await click('Document');
  await click('Source');expect(field.value).toBe(exact);await click('Source');expect(expanded()).toEqual([]);expect(document.querySelector('#canonical-source')).toBe(field);
 });
 it('protects Data drafts while switching accordion sections',async()=>{
@@ -64,7 +66,7 @@ it('protects Data drafts while switching accordion sections',async()=>{
  await click('Data');expect(initial.value).toBe('Pending saved value');await click('Cancel');expect(initial.value).not.toBe('Pending saved value');
 });
 it('shows the actual accordion and Structure inspection in the disposable showcase',async()=>{
- editor=mount(WorkspacePanelsShowcase,{target:document.body});await settle();
+ editor=mount(WorkspacePanelsShowcase,{target:document.body});await settle();await click('Document');
  expect(document.querySelector('.document-section-header[aria-expanded=true]')?.textContent).toBe('Layers');
  await click('Inspect in Structure ↗');expect(document.querySelector('.structure-dock .source-details')).not.toBeNull();
  await click('Source');expect([...document.querySelectorAll('.document-section-header[aria-expanded=true]')].map(node=>node.textContent)).toEqual(['Source']);

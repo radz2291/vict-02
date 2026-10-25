@@ -1,4 +1,5 @@
 // @vitest-environment happy-dom
+import {wholeHierarchy} from './studio-menu.js';
 import { afterEach, expect, it, vi } from 'vitest';
 import { mount, unmount, tick } from 'svelte';
 import { canonicalUiDocument } from '@victframework/ui';
@@ -68,6 +69,7 @@ it('synchronizes keyboard graph selection with shared selection and inspection w
   mounted = mount(StructureView, { target: document.body, props: { document: source, revision: 'working', onSelect, onDeselect, onMove: vi.fn(() => false), onNotice: vi.fn() } });
   await tick(); await tick();
   const viewport = document.querySelector<HTMLElement>('.svelte-flow__viewport')!;
+  await wholeHierarchy();
   const before = viewport.style.transform;
   const node = [...document.querySelectorAll<HTMLElement>('.svelte-flow__node')].find(item => item.dataset.id === structureId(source.id, 'node', 'right'))!;
   node.focus(); node.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', code: 'Enter', bubbles: true, cancelable: true }));
@@ -107,7 +109,7 @@ it('hands declared state to Data and shows source facts without inventing runtim
   mounted = mount(StructureView, { target: document.body, props: { document: source, revision: 'working', onSelect, onMove: vi.fn(() => false), onNotice: vi.fn(), onNavigate } });
   await tick(); await tick();
   await find(structureId(source.id, 'state', 'accepted'));
-  button('Properties').click(); await tick(); button('Edit in Data').click(); await tick();
+  button('Details').click(); await tick(); button('Edit in Data').click(); await tick();
   expect(onSelect).not.toHaveBeenCalled();
   expect(onNavigate).toHaveBeenCalledWith({ destination: 'data', sourceId: undefined, occurrence: undefined, key: 'accepted' });
   expect(document.querySelector('.structure-facts')?.textContent).toContain('initial');
@@ -123,7 +125,7 @@ it('scopes drawer Escape to its own page and dismisses the host only after inspe
   outside.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true,cancelable:true}));await tick();
   expect(document.querySelector('[aria-label="Structure inspection"]')).not.toBeNull();
   expect(onDismiss).not.toHaveBeenCalled();
-  const properties=button('Properties');properties.focus();
+  const properties=button('Details');properties.focus();
   properties.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true,cancelable:true}));await tick();
   expect(document.querySelector('[aria-label="Structure inspection"]')).toBeNull();
   expect(onDismiss).not.toHaveBeenCalled();
