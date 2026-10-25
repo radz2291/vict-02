@@ -1,0 +1,36 @@
+{
+  "product": "9fbda0f3ec0c14ff7be8bfb475d30e0cdc0f0993",
+  "finding": "IV14-05",
+  "severity": "P2 required",
+  "verdict": "FAIL until historical-scope wording repair and actual recheck",
+  "method": "Root actual CUA independent-specified probe; independent source-only-change assertion and screenshot/DOM review.",
+  "manualOnlySourceChange": true,
+  "nodeCounts": {
+    "before": 49,
+    "after": 50
+  },
+  "oldRegionStillLabelled": "r1#9 · current source",
+  "visualScope": "Screenshot shows added manual note and open metrics; exact region wording is in actual DOM below popup crop.",
+  "artifacts": [
+    {
+      "name": "provider-editor-candidate-final-source.json",
+      "sha256": "ed703d86c52557fa46f76007217deceab76d75489ba2c3d4134b6eb41646d94b"
+    },
+    {
+      "name": "iv14-05-manually-changed-editor-source.json",
+      "sha256": "0d66d02c3dade7f73c2abb44896424409d4bd4df4724adfb1196bbfaa35c21f0"
+    },
+    {
+      "name": "iv14-05-after-manual-source-old-ledger.dom.txt",
+      "sha256": "ea76dc6f1de8e1aaaa0b886754c72886e37fd3f0fb0373f2edad865322ba4e17"
+    },
+    {
+      "name": "iv14-05-after-manual-source-old-ledger.geometry.json",
+      "sha256": "98972f0bea3a1467b916c65fe8a34bbaaf843de9b3080839020c1966b76d12ab"
+    },
+    {
+      "name": "iv14-05-after-manual-source-old-ledger.png",
+      "sha256": "38f02c6357354728692ca568dbffa4ffc1085d9647818f5a01d23f446bcbd6c5"
+    }
+  ]
+}
