@@ -1,0 +1,20 @@
+import {readFileSync,writeFileSync} from 'node:fs';
+import {createHash} from 'node:crypto';
+import {resolve} from 'node:path';
+const consumer='C:/Users/RZ1/.codex/studio-cycle-1-4-consumer';
+const load=p=>JSON.parse(readFileSync(p,'utf8'));
+const hash=p=>createHash('sha256').update(readFileSync(p)).digest('hex');
+const installation=load(resolve(consumer,'installation.json'));
+if(installation.sourceCandidate!=='0c3cee81fb02345f07b26e92acb2d2eb5463b203')throw Error('Wrong installed candidate');
+const lock=load(resolve(consumer,'package-lock.json'));
+const files=['index.html','main.ts','vite.config.ts','App.svelte','proof.ts','capture.html','capture-main.ts','CaptureProbe.svelte','capture-source.json'];
+for(const file of files)if(hash(resolve(consumer,file))!==hash(resolve('examples/studio-core-consumer',file)))throw Error('Consumer fixture differs: '+file);
+const metadata=['rhea-upstream-manifest.json','LICENSE.rhea','RHEA.md'];
+for(const file of metadata)if(hash(resolve(consumer,'node_modules/@victframework/ui-svelte',file))!==hash(resolve('packages/ui-svelte',file)))throw Error('Installed presentation metadata differs: '+file);
+for(const pkg of installation.packages){const entry=lock.packages['node_modules/'+pkg.name];if(entry.integrity!==pkg.integrity||entry.resolved!==pkg.installedSpecification)throw Error('Lock artifact mismatch: '+pkg.name);}
+if(lock.packages['node_modules/bits-ui'].version!=='2.19.3')throw Error('Unexpected Bits version');
+const config=readFileSync(resolve(consumer,'vite.config.ts'),'utf8');
+if(/alias\s*:/.test(config))throw Error('Consumer has source aliases');
+const result={candidate:installation.sourceCandidate,checkedAt:new Date().toISOString(),exactFixtureFiles:files.length,exactPresentationMetadata:metadata.length,frameworkLockIntegrities:installation.packages.length,bitsVersion:lock.packages['node_modules/bits-ui'].version,aliases:0,scope:'Independent installed-byte/fixture/lock validation; no actual browser claim.'};
+writeFileSync('docs/studio/cycle-1-4/independent-consumer/additional-integrity.json',JSON.stringify(result,null,2)+'\n');
+console.log(JSON.stringify(result));
