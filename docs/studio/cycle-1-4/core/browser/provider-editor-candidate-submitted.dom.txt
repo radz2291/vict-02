@@ -1,0 +1,51 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Content editor comparison"
+  - generic: ○ New screen
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- complementary "Chat":
+  - region "Conversation":
+    - region "Messages — Message":
+      - log:
+        - generic: You
+        - generic: Design a polished compact content editor with a document list, editable title and body, preview, status and local save feedback. Use independent local state, review the first meaningful visible section early and verify the result. Keep it within one screen.
+        - button "Copy message":
+        - generic: Assistant
+        - generic "Conversation timeline":
+          - paragraph: Progress summary · Connecting to the VICT / Mastra agent…
+    - button "Scroll to latest message":
+      - generic: Scroll to end
+    - textbox "Message":
+      - /placeholder: Ask for a change…
+      - text: Design a polished compact content editor with a document list, editable title and body, preview, status and local save feedback. Use independent local state, review the first meaningful visible section early and verify the result. Keep it within one screen.
+    - button "Stop":
+      - generic: Stop
+    - status
+  - status "Connecting to the VICT / Mastra agent…":
+    - generic: Working…
+  - button "Chat details": ···
+- main:
+  - generic "Workspace mode":
+    - button "Design" [pressed]
+    - button "Interact"
+  - button "Document"
+  - generic "Screen canvas":
+    - main "Content editor comparison"
+  - generic: ＋
+  - heading "What will you make?" [level=1]
+  - paragraph: Select this screen to open its tools, then choose Insert.
+  - generic "Simulated execution Local preview · no live effects":
+    - text: Simulated execution
+    - generic: Local preview · no live effects
+- contentinfo:
+  - status: New screen · not saved yet.
+  - generic "v1_0d9b3b8aebe740e7c5e2b2d8bc4d42facbe472bc2bf8db753e6ff82eae472d89": "@3 · v1_0d9b3b8aebe7…"

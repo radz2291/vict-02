@@ -1,0 +1,85 @@
+{
+  "capturedAt": "2026-10-25T12:41:24.378Z",
+  "url": "http://127.0.0.15:5609/design",
+  "active": {
+    "label": null,
+    "tag": "BUTTON",
+    "text": " Observed actual rendered appearancecompleted "
+  },
+  "rects": [
+    {
+      "class": "agent-chat svelte-1n95bvq",
+      "clientHeight": 652,
+      "display": "flex",
+      "height": 652,
+      "label": "Chat",
+      "overflow": "hidden",
+      "role": null,
+      "scrollHeight": 652,
+      "tag": "ASIDE",
+      "width": 320,
+      "x": 0,
+      "y": 44
+    },
+    {
+      "class": "design-stage",
+      "clientHeight": 652,
+      "display": "flex",
+      "height": 652,
+      "label": null,
+      "overflow": "visible",
+      "role": null,
+      "scrollHeight": 652,
+      "tag": "MAIN",
+      "width": 960,
+      "x": 320,
+      "y": 44
+    },
+    {
+      "class": "canvas-scroll workspace-scroll",
+      "clientHeight": 585,
+      "display": "block",
+      "height": 584.7000122070312,
+      "label": null,
+      "overflow": "auto",
+      "role": null,
+      "scrollHeight": 628,
+      "tag": "DIV",
+      "width": 960,
+      "x": 320,
+      "y": 82
+    },
+    {
+      "class": "uv-7498cef3-screen",
+      "clientHeight": 582,
+      "display": "flex",
+      "height": 582.0250244140625,
+      "label": "Dashboard baseline review",
+      "overflow": "visible",
+      "role": null,
+      "scrollHeight": 582,
+      "tag": "MAIN",
+      "width": 908.7999877929688,
+      "x": 338,
+      "y": 98
+    },
+    {
+      "class": "svelte-flow svelte-flow__container light svelte-1lz1xyo",
+      "clientHeight": 158,
+      "display": "block",
+      "height": 158.40000915527344,
+      "label": null,
+      "overflow": "hidden",
+      "role": "application",
+      "scrollHeight": 158,
+      "tag": "DIV",
+      "width": 277.3999938964844,
+      "x": 616.5,
+      "y": 343.32501220703125
+    }
+  ],
+  "viewport": {
+    "height": 720,
+    "width": 1280
+  }
+}

@@ -1,0 +1,1007 @@
+{
+  "before": {
+    "digest": "4229b3d77ee6f4699f5d83ad64a514f4d13454b9fde92b5787dc7b1e02deac9b",
+    "diagnostics": [],
+    "source": {
+      "schema": "vict.ui-document@1",
+      "id": "public-consumer",
+      "revision": "3",
+      "root": "root",
+      "nodes": {
+        "root": {
+          "kind": "element",
+          "id": "root",
+          "tag": "div",
+          "children": [
+            "recipient-label",
+            "recipient-input",
+            "recipient-text",
+            "notes-label",
+            "notes-input",
+            "notes-text",
+            "choice-label",
+            "choice-input",
+            "choice-text",
+            "chat",
+            "flow",
+            "inserted-button"
+          ]
+        },
+        "recipient-label": {
+          "kind": "element",
+          "id": "recipient-label",
+          "tag": "label",
+          "attributes": {
+            "for": "consumer-recipient"
+          },
+          "children": [
+            "recipient-caption"
+          ],
+          "styleSources": [
+            "consumer-shared-style"
+          ]
+        },
+        "recipient-caption": {
+          "kind": "text",
+          "id": "recipient-caption",
+          "content": {
+            "type": "literal",
+            "value": "Recipient (native input and text reference)"
+          }
+        },
+        "recipient-input": {
+          "kind": "element",
+          "id": "recipient-input",
+          "tag": "input",
+          "attributes": {
+            "id": "consumer-recipient",
+            "type": "text",
+            "value": {
+              "type": "ref",
+              "path": "state.recipient"
+            }
+          },
+          "children": [],
+          "interactions": [
+            {
+              "on": "change",
+              "action": "setState",
+              "key": "recipient",
+              "value": {
+                "type": "ref",
+                "path": "state.recipient"
+              }
+            }
+          ]
+        },
+        "recipient-text": {
+          "kind": "text",
+          "id": "recipient-text",
+          "content": {
+            "type": "expression",
+            "expression": {
+              "type": "ref",
+              "path": "state.recipient"
+            }
+          }
+        },
+        "notes-label": {
+          "kind": "element",
+          "id": "notes-label",
+          "tag": "label",
+          "attributes": {
+            "for": "consumer-notes"
+          },
+          "children": [
+            "notes-caption"
+          ]
+        },
+        "notes-caption": {
+          "kind": "text",
+          "id": "notes-caption",
+          "content": {
+            "type": "literal",
+            "value": "Notes (native textarea and text reference)"
+          }
+        },
+        "notes-input": {
+          "kind": "element",
+          "id": "notes-input",
+          "tag": "textarea",
+          "attributes": {
+            "id": "consumer-notes",
+            "rows": "3",
+            "value": {
+              "type": "ref",
+              "path": "state.notes"
+            }
+          },
+          "children": [],
+          "interactions": [
+            {
+              "on": "change",
+              "action": "setState",
+              "key": "notes",
+              "value": {
+                "type": "ref",
+                "path": "state.notes"
+              }
+            }
+          ]
+        },
+        "notes-text": {
+          "kind": "text",
+          "id": "notes-text",
+          "content": {
+            "type": "expression",
+            "expression": {
+              "type": "ref",
+              "path": "state.notes"
+            }
+          }
+        },
+        "choice-label": {
+          "kind": "element",
+          "id": "choice-label",
+          "tag": "label",
+          "attributes": {
+            "for": "consumer-choice"
+          },
+          "children": [
+            "choice-caption"
+          ]
+        },
+        "choice-caption": {
+          "kind": "text",
+          "id": "choice-caption",
+          "content": {
+            "type": "literal",
+            "value": "Choice (native select and text reference)"
+          }
+        },
+        "choice-input": {
+          "kind": "element",
+          "id": "choice-input",
+          "tag": "select",
+          "attributes": {
+            "id": "consumer-choice",
+            "value": {
+              "type": "ref",
+              "path": "state.choice"
+            }
+          },
+          "children": [
+            "choice-alpha",
+            "choice-beta"
+          ],
+          "interactions": [
+            {
+              "on": "change",
+              "action": "setState",
+              "key": "choice",
+              "value": {
+                "type": "ref",
+                "path": "state.choice"
+              }
+            }
+          ]
+        },
+        "choice-alpha": {
+          "kind": "element",
+          "id": "choice-alpha",
+          "tag": "option",
+          "attributes": {
+            "value": "alpha"
+          },
+          "children": [
+            "choice-alpha-text"
+          ]
+        },
+        "choice-alpha-text": {
+          "kind": "text",
+          "id": "choice-alpha-text",
+          "content": {
+            "type": "literal",
+            "value": "Alpha option"
+          }
+        },
+        "choice-beta": {
+          "kind": "element",
+          "id": "choice-beta",
+          "tag": "option",
+          "attributes": {
+            "value": "beta"
+          },
+          "children": [
+            "choice-beta-text"
+          ]
+        },
+        "choice-beta-text": {
+          "kind": "text",
+          "id": "choice-beta-text",
+          "content": {
+            "type": "literal",
+            "value": "Beta option"
+          }
+        },
+        "choice-text": {
+          "kind": "text",
+          "id": "choice-text",
+          "content": {
+            "type": "expression",
+            "expression": {
+              "type": "ref",
+              "path": "state.choice"
+            }
+          }
+        },
+        "chat": {
+          "kind": "component",
+          "id": "chat",
+          "definitionId": "vict.ai.conversation",
+          "revision": "1",
+          "slots": {
+            "messages": {
+              "name": "messages",
+              "children": [
+                "chat-message"
+              ]
+            },
+            "composer": {
+              "name": "composer",
+              "children": [
+                "chat-prompt"
+              ]
+            }
+          },
+          "props": {},
+          "styleSources": [
+            "consumer-shared-style"
+          ]
+        },
+        "chat-message": {
+          "kind": "component",
+          "id": "chat-message",
+          "definitionId": "vict.ai.message",
+          "revision": "1",
+          "props": {
+            "role": {
+              "type": "literal",
+              "value": "assistant"
+            },
+            "text": {
+              "type": "literal",
+              "value": "How can I help?"
+            }
+          }
+        },
+        "chat-prompt": {
+          "kind": "component",
+          "id": "chat-prompt",
+          "definitionId": "vict.ai.prompt-input",
+          "revision": "1",
+          "props": {
+            "value": {
+              "type": "ref",
+              "path": "state.catalog_chat_message"
+            }
+          },
+          "outputs": {
+            "valueChange": {
+              "setState": {
+                "key": "catalog_chat_message"
+              }
+            },
+            "send": {
+              "setState": {
+                "key": "lastSent"
+              }
+            }
+          }
+        },
+        "flow": {
+          "kind": "component",
+          "id": "flow",
+          "definitionId": "vict.flow.canvas",
+          "revision": "1",
+          "slots": {
+            "nodes": {
+              "name": "nodes",
+              "children": [
+                "flow-start",
+                "flow-finish"
+              ]
+            },
+            "edges": {
+              "name": "edges",
+              "children": [
+                "flow-connection"
+              ]
+            }
+          },
+          "props": {}
+        },
+        "flow-start": {
+          "kind": "component",
+          "id": "flow-start",
+          "definitionId": "vict.flow.node",
+          "revision": "1",
+          "props": {
+            "id": {
+              "type": "literal",
+              "value": "start"
+            },
+            "label": {
+              "type": "literal",
+              "value": "Start"
+            },
+            "x": {
+              "type": "literal",
+              "value": 20
+            },
+            "y": {
+              "type": "literal",
+              "value": 40
+            }
+          }
+        },
+        "flow-finish": {
+          "kind": "component",
+          "id": "flow-finish",
+          "definitionId": "vict.flow.node",
+          "revision": "1",
+          "props": {
+            "id": {
+              "type": "literal",
+              "value": "finish"
+            },
+            "label": {
+              "type": "literal",
+              "value": "Finish"
+            },
+            "x": {
+              "type": "literal",
+              "value": 280
+            },
+            "y": {
+              "type": "literal",
+              "value": 40
+            }
+          }
+        },
+        "flow-connection": {
+          "kind": "component",
+          "id": "flow-connection",
+          "definitionId": "vict.flow.edge",
+          "revision": "1",
+          "props": {
+            "id": {
+              "type": "literal",
+              "value": "start-finish"
+            },
+            "source": {
+              "type": "literal",
+              "value": "start"
+            },
+            "target": {
+              "type": "literal",
+              "value": "finish"
+            },
+            "label": {
+              "type": "literal",
+              "value": "Next"
+            }
+          }
+        },
+        "inserted-button": {
+          "kind": "component",
+          "id": "inserted-button",
+          "definitionId": "vict.catalog.button",
+          "revision": "1",
+          "props": {
+            "label": {
+              "type": "literal",
+              "value": "Inserted through the public helper"
+            }
+          },
+          "slots": {}
+        }
+      },
+      "componentDefinitions": {},
+      "styleSources": {
+        "consumer-shared-style": {
+          "id": "consumer-shared-style",
+          "declarations": [
+            {
+              "property": "color",
+              "value": {
+                "type": "text",
+                "value": "#146a53"
+              }
+            }
+          ]
+        }
+      },
+      "tokens": {},
+      "conditions": {},
+      "assets": {},
+      "localState": {
+        "catalog_chat_message": {
+          "key": "catalog_chat_message",
+          "type": "string",
+          "initial": ""
+        },
+        "recipient": {
+          "key": "recipient",
+          "type": "string",
+          "initial": "Avery"
+        },
+        "lastSent": {
+          "key": "lastSent",
+          "type": "string",
+          "initial": ""
+        },
+        "notes": {
+          "key": "notes",
+          "type": "string",
+          "initial": "Native textarea initial"
+        },
+        "choice": {
+          "key": "choice",
+          "type": "string",
+          "initial": "beta"
+        },
+        "date": {
+          "key": "date",
+          "type": "isoDate",
+          "initial": "2026-10-24"
+        },
+        "time": {
+          "key": "time",
+          "type": "isoTime",
+          "initial": "09:30"
+        },
+        "labels": {
+          "key": "labels",
+          "type": "stringList",
+          "initial": [
+            "Alpha",
+            "Beta"
+          ]
+        },
+        "points": {
+          "key": "points",
+          "type": "numberList",
+          "initial": [
+            10,
+            20
+          ]
+        }
+      }
+    }
+  },
+  "actions": [
+    {
+      "action": "Remove button",
+      "status": [
+        "Remove button: accepted"
+      ]
+    },
+    {
+      "action": "Undo",
+      "status": [
+        "Undo: accepted",
+        ""
+      ]
+    },
+    {
+      "action": "Redo",
+      "status": [
+        "Redo: accepted"
+      ]
+    },
+    {
+      "action": "Undo",
+      "status": [
+        "Undo: accepted",
+        ""
+      ]
+    },
+    {
+      "action": "Save source",
+      "status": [
+        "Save source: accepted",
+        ""
+      ]
+    },
+    {
+      "action": "Reopen source",
+      "status": [
+        "Reopen source: accepted",
+        ""
+      ]
+    }
+  ],
+  "after": {
+    "digest": "89e91e5a96943656fefcdf1282ac224e42c52bf527382bba6b03738f5549a486",
+    "diagnostics": [],
+    "source": {
+      "schema": "vict.ui-document@1",
+      "id": "public-consumer",
+      "revision": "4",
+      "root": "root",
+      "nodes": {
+        "root": {
+          "kind": "element",
+          "id": "root",
+          "tag": "div",
+          "children": [
+            "recipient-label",
+            "recipient-input",
+            "recipient-text",
+            "notes-label",
+            "notes-input",
+            "notes-text",
+            "choice-label",
+            "choice-input",
+            "choice-text",
+            "chat",
+            "flow",
+            "inserted-button"
+          ]
+        },
+        "recipient-label": {
+          "kind": "element",
+          "id": "recipient-label",
+          "tag": "label",
+          "attributes": {
+            "for": "consumer-recipient"
+          },
+          "children": [
+            "recipient-caption"
+          ],
+          "styleSources": [
+            "consumer-shared-style"
+          ]
+        },
+        "recipient-caption": {
+          "kind": "text",
+          "id": "recipient-caption",
+          "content": {
+            "type": "literal",
+            "value": "Recipient (native input and text reference)"
+          }
+        },
+        "recipient-input": {
+          "kind": "element",
+          "id": "recipient-input",
+          "tag": "input",
+          "attributes": {
+            "id": "consumer-recipient",
+            "type": "text",
+            "value": {
+              "type": "ref",
+              "path": "state.recipient"
+            }
+          },
+          "children": [],
+          "interactions": [
+            {
+              "on": "change",
+              "action": "setState",
+              "key": "recipient",
+              "value": {
+                "type": "ref",
+                "path": "state.recipient"
+              }
+            }
+          ]
+        },
+        "recipient-text": {
+          "kind": "text",
+          "id": "recipient-text",
+          "content": {
+            "type": "expression",
+            "expression": {
+              "type": "ref",
+              "path": "state.recipient"
+            }
+          }
+        },
+        "notes-label": {
+          "kind": "element",
+          "id": "notes-label",
+          "tag": "label",
+          "attributes": {
+            "for": "consumer-notes"
+          },
+          "children": [
+            "notes-caption"
+          ]
+        },
+        "notes-caption": {
+          "kind": "text",
+          "id": "notes-caption",
+          "content": {
+            "type": "literal",
+            "value": "Notes (native textarea and text reference)"
+          }
+        },
+        "notes-input": {
+          "kind": "element",
+          "id": "notes-input",
+          "tag": "textarea",
+          "attributes": {
+            "id": "consumer-notes",
+            "rows": "3",
+            "value": {
+              "type": "ref",
+              "path": "state.notes"
+            }
+          },
+          "children": [],
+          "interactions": [
+            {
+              "on": "change",
+              "action": "setState",
+              "key": "notes",
+              "value": {
+                "type": "ref",
+                "path": "state.notes"
+              }
+            }
+          ]
+        },
+        "notes-text": {
+          "kind": "text",
+          "id": "notes-text",
+          "content": {
+            "type": "expression",
+            "expression": {
+              "type": "ref",
+              "path": "state.notes"
+            }
+          }
+        },
+        "choice-label": {
+          "kind": "element",
+          "id": "choice-label",
+          "tag": "label",
+          "attributes": {
+            "for": "consumer-choice"
+          },
+          "children": [
+            "choice-caption"
+          ]
+        },
+        "choice-caption": {
+          "kind": "text",
+          "id": "choice-caption",
+          "content": {
+            "type": "literal",
+            "value": "Choice (native select and text reference)"
+          }
+        },
+        "choice-input": {
+          "kind": "element",
+          "id": "choice-input",
+          "tag": "select",
+          "attributes": {
+            "id": "consumer-choice",
+            "value": {
+              "type": "ref",
+              "path": "state.choice"
+            }
+          },
+          "children": [
+            "choice-alpha",
+            "choice-beta"
+          ],
+          "interactions": [
+            {
+              "on": "change",
+              "action": "setState",
+              "key": "choice",
+              "value": {
+                "type": "ref",
+                "path": "state.choice"
+              }
+            }
+          ]
+        },
+        "choice-alpha": {
+          "kind": "element",
+          "id": "choice-alpha",
+          "tag": "option",
+          "attributes": {
+            "value": "alpha"
+          },
+          "children": [
+            "choice-alpha-text"
+          ]
+        },
+        "choice-alpha-text": {
+          "kind": "text",
+          "id": "choice-alpha-text",
+          "content": {
+            "type": "literal",
+            "value": "Alpha option"
+          }
+        },
+        "choice-beta": {
+          "kind": "element",
+          "id": "choice-beta",
+          "tag": "option",
+          "attributes": {
+            "value": "beta"
+          },
+          "children": [
+            "choice-beta-text"
+          ]
+        },
+        "choice-beta-text": {
+          "kind": "text",
+          "id": "choice-beta-text",
+          "content": {
+            "type": "literal",
+            "value": "Beta option"
+          }
+        },
+        "choice-text": {
+          "kind": "text",
+          "id": "choice-text",
+          "content": {
+            "type": "expression",
+            "expression": {
+              "type": "ref",
+              "path": "state.choice"
+            }
+          }
+        },
+        "chat": {
+          "kind": "component",
+          "id": "chat",
+          "definitionId": "vict.ai.conversation",
+          "revision": "1",
+          "slots": {
+            "messages": {
+              "name": "messages",
+              "children": [
+                "chat-message"
+              ]
+            },
+            "composer": {
+              "name": "composer",
+              "children": [
+                "chat-prompt"
+              ]
+            }
+          },
+          "props": {},
+          "styleSources": [
+            "consumer-shared-style"
+          ]
+        },
+        "chat-message": {
+          "kind": "component",
+          "id": "chat-message",
+          "definitionId": "vict.ai.message",
+          "revision": "1",
+          "props": {
+            "role": {
+              "type": "literal",
+              "value": "assistant"
+            },
+            "text": {
+              "type": "literal",
+              "value": "How can I help?"
+            }
+          }
+        },
+        "chat-prompt": {
+          "kind": "component",
+          "id": "chat-prompt",
+          "definitionId": "vict.ai.prompt-input",
+          "revision": "1",
+          "props": {
+            "value": {
+              "type": "ref",
+              "path": "state.catalog_chat_message"
+            }
+          },
+          "outputs": {
+            "valueChange": {
+              "setState": {
+                "key": "catalog_chat_message"
+              }
+            },
+            "send": {
+              "setState": {
+                "key": "lastSent"
+              }
+            }
+          }
+        },
+        "flow": {
+          "kind": "component",
+          "id": "flow",
+          "definitionId": "vict.flow.canvas",
+          "revision": "1",
+          "slots": {
+            "nodes": {
+              "name": "nodes",
+              "children": [
+                "flow-start",
+                "flow-finish"
+              ]
+            },
+            "edges": {
+              "name": "edges",
+              "children": [
+                "flow-connection"
+              ]
+            }
+          },
+          "props": {}
+        },
+        "flow-start": {
+          "kind": "component",
+          "id": "flow-start",
+          "definitionId": "vict.flow.node",
+          "revision": "1",
+          "props": {
+            "id": {
+              "type": "literal",
+              "value": "start"
+            },
+            "label": {
+              "type": "literal",
+              "value": "Start"
+            },
+            "x": {
+              "type": "literal",
+              "value": 20
+            },
+            "y": {
+              "type": "literal",
+              "value": 40
+            }
+          }
+        },
+        "flow-finish": {
+          "kind": "component",
+          "id": "flow-finish",
+          "definitionId": "vict.flow.node",
+          "revision": "1",
+          "props": {
+            "id": {
+              "type": "literal",
+              "value": "finish"
+            },
+            "label": {
+              "type": "literal",
+              "value": "Finish"
+            },
+            "x": {
+              "type": "literal",
+              "value": 280
+            },
+            "y": {
+              "type": "literal",
+              "value": 40
+            }
+          }
+        },
+        "flow-connection": {
+          "kind": "component",
+          "id": "flow-connection",
+          "definitionId": "vict.flow.edge",
+          "revision": "1",
+          "props": {
+            "id": {
+              "type": "literal",
+              "value": "start-finish"
+            },
+            "source": {
+              "type": "literal",
+              "value": "start"
+            },
+            "target": {
+              "type": "literal",
+              "value": "finish"
+            },
+            "label": {
+              "type": "literal",
+              "value": "Next"
+            }
+          }
+        },
+        "inserted-button": {
+          "kind": "component",
+          "id": "inserted-button",
+          "definitionId": "vict.catalog.button",
+          "revision": "1",
+          "props": {
+            "label": {
+              "type": "literal",
+              "value": "Inserted through the public helper"
+            }
+          },
+          "slots": {}
+        }
+      },
+      "componentDefinitions": {},
+      "styleSources": {
+        "consumer-shared-style": {
+          "id": "consumer-shared-style",
+          "declarations": [
+            {
+              "property": "color",
+              "value": {
+                "type": "text",
+                "value": "#146a53"
+              }
+            }
+          ]
+        }
+      },
+      "tokens": {},
+      "conditions": {},
+      "assets": {},
+      "localState": {
+        "catalog_chat_message": {
+          "key": "catalog_chat_message",
+          "type": "string",
+          "initial": ""
+        },
+        "recipient": {
+          "key": "recipient",
+          "type": "string",
+          "initial": "Avery"
+        },
+        "lastSent": {
+          "key": "lastSent",
+          "type": "string",
+          "initial": ""
+        },
+        "notes": {
+          "key": "notes",
+          "type": "string",
+          "initial": "Native textarea initial"
+        },
+        "choice": {
+          "key": "choice",
+          "type": "string",
+          "initial": "beta"
+        },
+        "date": {
+          "key": "date",
+          "type": "isoDate",
+          "initial": "2026-10-24"
+        },
+        "time": {
+          "key": "time",
+          "type": "isoTime",
+          "initial": "09:30"
+        },
+        "labels": {
+          "key": "labels",
+          "type": "stringList",
+          "initial": [
+            "Alpha",
+            "Beta"
+          ]
+        },
+        "points": {
+          "key": "points",
+          "type": "numberList",
+          "initial": [
+            10,
+            20
+          ]
+        }
+      }
+    }
+  },
+  "sameDigest": false
+}

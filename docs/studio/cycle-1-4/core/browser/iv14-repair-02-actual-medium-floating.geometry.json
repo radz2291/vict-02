@@ -1,0 +1,141 @@
+{
+  "capturedAt": "2026-10-25T11:59:54.502Z",
+  "url": "http://127.0.0.13:5607/design",
+  "active": {
+    "label": "Container: Heading · Second heading, source second",
+    "tag": "DIV",
+    "text": " Heading  Second heading   "
+  },
+  "rects": [
+    {
+      "class": "agent-chat svelte-1n95bvq",
+      "clientHeight": 632,
+      "display": "flex",
+      "height": 632,
+      "label": "Chat",
+      "overflow": "hidden",
+      "role": null,
+      "scrollHeight": 632,
+      "tag": "ASIDE",
+      "width": 320,
+      "x": 0,
+      "y": 44
+    },
+    {
+      "class": "design-stage",
+      "clientHeight": 253,
+      "display": "flex",
+      "height": 252.8000030517578,
+      "label": null,
+      "overflow": "visible",
+      "role": null,
+      "scrollHeight": 253,
+      "tag": "MAIN",
+      "width": 680,
+      "x": 320,
+      "y": 44
+    },
+    {
+      "class": "canvas-scroll workspace-scroll",
+      "clientHeight": 186,
+      "display": "block",
+      "height": 185.5,
+      "label": null,
+      "overflow": "auto",
+      "role": null,
+      "scrollHeight": 1406,
+      "tag": "DIV",
+      "width": 680,
+      "x": 320,
+      "y": 82
+    },
+    {
+      "class": "uv-8ac86e67-screen",
+      "clientHeight": 1100,
+      "display": "flex",
+      "height": 1100,
+      "label": "Independent Cycle 1.4 challenge",
+      "overflow": "visible",
+      "role": null,
+      "scrollHeight": 1100,
+      "tag": "MAIN",
+      "width": 628.7999877929688,
+      "x": 338,
+      "y": 98
+    },
+    {
+      "class": "document-drawer",
+      "clientHeight": 378,
+      "display": "flex",
+      "height": 379.2000122070313,
+      "label": "Document",
+      "overflow": "hidden",
+      "role": null,
+      "scrollHeight": 378,
+      "tag": "ASIDE",
+      "width": 680,
+      "x": 320,
+      "y": 296.8000183105469
+    },
+    {
+      "class": "sidebar-tabs svelte-11390zq",
+      "clientHeight": 37,
+      "display": "flex",
+      "height": 38,
+      "label": "Document sections",
+      "overflow": "visible",
+      "role": null,
+      "scrollHeight": 37,
+      "tag": "NAV",
+      "width": 680,
+      "x": 320,
+      "y": 297.6000061035156
+    },
+    {
+      "class": "structure-view svelte-17c90px drawer-presentation",
+      "clientHeight": 340,
+      "display": "flex",
+      "height": 340.3999938964844,
+      "label": "Source structure",
+      "overflow": "visible",
+      "role": null,
+      "scrollHeight": 340,
+      "tag": "SECTION",
+      "width": 680,
+      "x": 320,
+      "y": 335.6000061035156
+    },
+    {
+      "class": "svelte-flow svelte-flow__container light svelte-1lz1xyo",
+      "clientHeight": 297,
+      "display": "block",
+      "height": 296.6000061035156,
+      "label": null,
+      "overflow": "hidden",
+      "role": "application",
+      "scrollHeight": 297,
+      "tag": "DIV",
+      "width": 680,
+      "x": 320,
+      "y": 379.3999938964844
+    },
+    {
+      "class": "uv-inspector ux-panel svelte-aknwc0 contextual",
+      "clientHeight": 202,
+      "display": "block",
+      "height": 201.8000030517578,
+      "label": "Object properties",
+      "overflow": "visible",
+      "role": null,
+      "scrollHeight": 202,
+      "tag": "ASIDE",
+      "width": 464.3999938964844,
+      "x": 7.800000190734863,
+      "y": 42
+    }
+  ],
+  "viewport": {
+    "height": 700,
+    "width": 1000
+  }
+}

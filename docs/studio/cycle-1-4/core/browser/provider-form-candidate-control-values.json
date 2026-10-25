@@ -1,0 +1,97 @@
+{
+  "controls": [
+    {
+      "checked": false,
+      "id": "onbNameInput",
+      "value": "Morgan Vale"
+    },
+    {
+      "checked": false,
+      "id": "onbEmailInput",
+      "value": "<redacted>"
+    },
+    {
+      "checked": false,
+      "id": "onbRoleSelect",
+      "value": "Design"
+    },
+    {
+      "checked": false,
+      "id": "onbNotifInput",
+      "value": "on"
+    },
+    {
+      "checked": false,
+      "id": "",
+      "value": "on"
+    },
+    {
+      "checked": false,
+      "id": "",
+      "value": "on"
+    },
+    {
+      "checked": false,
+      "id": "",
+      "value": "Hello from my screen"
+    },
+    {
+      "checked": false,
+      "id": "",
+      "value": "on"
+    },
+    {
+      "checked": false,
+      "id": "",
+      "value": "on"
+    },
+    {
+      "checked": false,
+      "id": "",
+      "value": "on"
+    },
+    {
+      "checked": false,
+      "id": "",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "id": "",
+      "value": "Simulated submission: ✓ Details captured locally — nothing was sent."
+    },
+    {
+      "checked": false,
+      "id": "",
+      "value": "Morgan Vale"
+    },
+    {
+      "checked": false,
+      "id": "",
+      "value": "<redacted>"
+    },
+    {
+      "checked": false,
+      "id": "",
+      "value": "Design"
+    },
+    {
+      "checked": false,
+      "id": "",
+      "value": "on"
+    },
+    {
+      "checked": false,
+      "id": "",
+      "value": ""
+    }
+  ],
+  "statuses": [
+    "Simulated submission: ✓ Details captured locally — nothing was sent.",
+    "demo.submit: Simulated submission: ✓ Details captured locally — nothing was sent."
+  ],
+  "viewport": {
+    "height": 720,
+    "width": 1280
+  }
+}

@@ -1,0 +1,81 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Independent Cycle 1.4 challenge"
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- complementary "Chat":
+  - region "Conversation":
+    - region "Messages — Message":
+      - log:
+        - paragraph: Describe a screen, or select an element to edit it.
+    - button "Scroll to latest message":
+      - generic: Scroll to end
+    - textbox "Message":
+      - /placeholder: Ask for a change…
+    - button "Send" [disabled]:
+      - generic: Send
+    - status
+  - status "Apply or cancel the current draft before asking the agent to edit.":
+    - generic: Apply or cancel the current draft first.
+  - button "Chat details": ···
+- main:
+  - generic "Workspace mode":
+    - button "Design" [pressed]
+    - button "Interact"
+  - button "Document" [expanded]
+  - generic "Screen canvas":
+    - main "Independent Cycle 1.4 challenge":
+      - region "Left group":
+        - heading "First heading" [level=1]:
+          - generic: First heading
+        - generic: Native message
+        - textbox "Native message": Initial independent message
+        - paragraph:
+          - generic: Initial independent message
+      - region "Right group":
+        - heading "Second heading" [level=2]:
+          - generic: Second heading
+        - paragraph:
+          - generic: Move or duplicate this exact source; retain its source identity and recover through history.
+      - article "Long content":
+        - generic: Long content provides a real scrolling canvas for continuity checks. Select a different source without moving the camera or scrolling the canvas. Keep this text available while opening and closing inspection details. Source facts, relationships and identities belong to inspection. Format, Insert, Arrange and Connect remain the floating editing tools. Native text editing and Interact keep their own context menus. A context command must target the object under the first secondary click, preserve pending drafts and use canonical history. Repeating the journey after Save and reopen should retain the same authored source. This lower section intentionally extends beyond the initial visible area. A screenshot of one visible crop is evidence only of that crop and does not prove offscreen content, runtime interactions or complete-page quality.
+  - generic "Simulated execution Local preview · no live effects":
+    - text: Simulated execution
+    - generic: Local preview · no live effects
+- separator "Document drawer width"
+- complementary "Document":
+  - navigation "Document sections":
+    - button "Layers" [disabled]
+    - button "Structure" [disabled]
+    - button "Data" [disabled]
+    - button "Actions" [disabled]
+    - button "Source" [pressed]
+    - button "Close document": ×
+  - generic: Canonical UI document
+  - textbox "Canonical UI document": "{ \"schema\": \"vict.ui-document@1\", \"id\": \"screen-d5aed627-e799-4d2c-a4eb-ea26a96b2027\", \"revision\": \"r1.r1\", \"root\": \"screen\", \"nodes\": { \"screen\": { \"kind\": \"element\", \"id\": \"screen\", \"tag\": \"main\", \"attributes\": { \"aria-label\": \"Independent Cycle 1.4 challenge\" }, \"children\": [ \"left\", \"right\", \"long\" ], \"styleSources\": [ \"shared-padding\", \"compact-padding\" ], \"localStyle\": [ { \"property\": \"display\", \"value\": { \"type\": \"text\", \"value\": \"flex\" } }, { \"property\": \"flex-direction\", \"value\": { \"type\": \"text\", \"value\": \"column\" } }, { \"property\": \"gap\", \"value\": { \"type\": \"text\", \"value\": \"16px\" } }, { \"property\": \"padding\", \"value\": { \"type\": \"text\", \"value\": \"40px\" } }, { \"property\": \"min-height\", \"value\": { \"type\": \"text\", \"value\": \"1100px\" } }, { \"property\": \"background-color\", \"value\": { \"type\": \"text\", \"value\": \"#ffffff\" } }, { \"property\": \"color\", \"value\": { \"type\": \"text\", \"value\": \"#243047\" } }, { \"property\": \"font-family\", \"value\": { \"type\": \"text\", \"value\": \"system-ui, sans-serif\" } } ] }, \"left\": { \"kind\": \"element\", \"id\": \"left\", \"tag\": \"section\", \"attributes\": { \"aria-label\": \"Left group\" }, \"classes\": [ \"vict-rhea-card\" ], \"children\": [ \"first\", \"field-label\", \"field\", \"echo\" ], \"localStyle\": [ { \"property\": \"padding\", \"value\": { \"type\": \"text\", \"value\": \"12px\" } }, { \"property\": \"gap\", \"value\": { \"type\": \"text\", \"value\": \"8px\" } } ] }, \"first\": { \"kind\": \"element\", \"id\": \"first\", \"tag\": \"h1\", \"children\": [ \"first-text\" ], \"localStyle\": [ { \"property\": \"margin\", \"value\": { \"type\": \"text\", \"value\": \"0px\" } }, { \"property\": \"font-size\", \"value\": { \"type\": \"text\", \"value\": \"24px\" } } ] }, \"first-text\": { \"kind\": \"text\", \"id\": \"first-text\", \"content\": { \"type\": \"literal\", \"value\": \"First heading\" } }, \"field-label\": { \"kind\": \"element\", \"id\": \"field-label\", \"tag\": \"label\", \"attributes\": { \"for\": \"independent-message\" }, \"children\": [ \"field-label-text\" ] }, \"field-label-text\": { \"kind\": \"text\", \"id\": \"field-label-text\", \"content\": { \"type\": \"literal\", \"value\": \"Native message\" } }, \"field\": { \"kind\": \"element\", \"id\": \"field\", \"tag\": \"input\", \"classes\": [ \"vict-rhea-input\" ], \"attributes\": { \"id\": \"independent-message\", \"type\": \"text\", \"value\": { \"type\": \"ref\", \"path\": \"state.message\" } }, \"children\": [], \"interactions\": [ { \"on\": \"change\", \"action\": \"setState\", \"key\": \"message\", \"value\": { \"type\": \"ref\", \"path\": \"state.message\" } } ] }, \"echo\": { \"kind\": \"element\", \"id\": \"echo\", \"tag\": \"p\", \"children\": [ \"echo-text\" ], \"localStyle\": [ { \"property\": \"margin\", \"value\": { \"type\": \"text\", \"value\": \"0px\" } } ] }, \"echo-text\": { \"kind\": \"text\", \"id\": \"echo-text\", \"content\": { \"type\": \"expression\", \"expression\": { \"type\": \"ref\", \"path\": \"state.message\" } } }, \"right\": { \"kind\": \"element\", \"id\": \"right\", \"tag\": \"section\", \"attributes\": { \"aria-label\": \"Right group\" }, \"classes\": [ \"vict-rhea-card\" ], \"children\": [ \"second\", \"copy\" ], \"localStyle\": [ { \"property\": \"padding\", \"value\": { \"type\": \"text\", \"value\": \"12px\" } }, { \"property\": \"gap\", \"value\": { \"type\": \"text\", \"value\": \"8px\" } } ] }, \"second\": { \"kind\": \"element\", \"id\": \"second\", \"tag\": \"h2\", \"children\": [ \"second-text\" ], \"localStyle\": [ { \"property\": \"margin\", \"value\": { \"type\": \"text\", \"value\": \"0px\" } }, { \"property\": \"font-size\", \"value\": { \"type\": \"text\", \"value\": \"20px\" } } ] }, \"second-text\": { \"kind\": \"text\", \"id\": \"second-text\", \"content\": { \"type\": \"literal\", \"value\": \"Second heading\" } }, \"copy\": { \"kind\": \"element\", \"id\": \"copy\", \"tag\": \"p\", \"children\": [ \"copy-text\" ], \"localStyle\": [ { \"property\": \"margin\", \"value\": { \"type\": \"text\", \"value\": \"0px\" } } ] }, \"copy-text\": { \"kind\": \"text\", \"id\": \"copy-text\", \"content\": { \"type\": \"literal\", \"value\": \"Move or duplicate this exact source; retain its source identity and recover through history.\" } }, \"long\": { \"kind\": \"element\", \"id\": \"long\", \"tag\": \"article\", \"attributes\": { \"aria-label\": \"Long content\" }, \"children\": [ \"long-text\" ] }, \"long-text\": { \"kind\": \"text\", \"id\": \"long-text\", \"content\": { \"type\": \"literal\", \"value\": \"Long content provides a real scrolling canvas for continuity checks. Select a different source without moving the camera or scrolling the canvas. Keep this text available while opening and closing inspection details. Source facts, relationships and identities belong to inspection. Format, Insert, Arrange and Connect remain the floating editing tools. Native text editing and Interact keep their own context menus. A context command must target the object under the first secondary click, preserve pending drafts and use canonical history. Repeating the journey after Save and reopen should retain the same authored source. This lower section intentionally extends beyond the initial visible area. A screenshot of one visible crop is evidence only of that crop and does not prove offscreen content, runtime interactions or complete-page quality.\" } } }, \"componentDefinitions\": {}, \"styleSources\": { \"shared-padding\": { \"id\": \"shared-padding\", \"declarations\": [ { \"property\": \"padding\", \"value\": { \"type\": \"text\", \"value\": \"8px\" } } ] }, \"compact-padding\": { \"id\": \"compact-padding\", \"conditionId\": \"compact\", \"declarations\": [ { \"property\": \"padding\", \"value\": { \"type\": \"text\", \"value\": \"16px\" } } ] } }, \"assets\": {}, \"tokens\": {}, \"conditions\": { \"compact\": { \"id\": \"compact\", \"kind\": \"container\", \"name\": \"studio-screen\", \"query\": \"(max-width: 600px)\" } }, \"localState\": { \"message\": { \"key\": \"message\", \"type\": \"string\", \"initial\": \"Initial independent message\" } } }"
+  - button "Apply source"
+  - button "Discard draft"
+  - button "Export"
+  - generic "Application attachment"
+- contentinfo:
+  - status: Design mode · select and edit without running behavior.
+  - generic "v1_2a9f402549eff46dae64181b45f5b931c7b169b08bc46f3bcfa9e8294f78ff90": "@3 · v1_2a9f402549ef…"
+- menu "Object commands" [active]:
+  - menuitem "Inspect" [disabled]
+  - menuitem "Locate on canvas" [disabled]
+  - menuitem "Edit properties" [disabled]
+  - separator
+  - menuitem "Duplicate" [disabled]
+  - menuitem "Delete" [disabled]
+  - separator
+  - menuitem "Move earlier" [disabled]
+  - menuitem "Move later" [disabled]
+  - menuitem "Arrange…" [disabled]

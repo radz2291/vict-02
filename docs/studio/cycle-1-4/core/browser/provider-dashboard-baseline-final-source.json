@@ -1,0 +1,2276 @@
+{
+  "schema": "vict.ui-document@1",
+  "id": "screen-a93369d2-4321-4b2c-90be-e4a3ef8b9187",
+  "revision": "r1",
+  "root": "screen",
+  "nodes": {
+    "screen": {
+      "kind": "element",
+      "id": "screen",
+      "tag": "main",
+      "attributes": {
+        "aria-label": "Dashboard baseline review"
+      },
+      "children": [
+        "ops-header",
+        "kpi-row",
+        "bottom-grid"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "10px 20px"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "520px"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#f5f6fa"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#243047"
+          }
+        },
+        {
+          "property": "font-family",
+          "value": {
+            "type": "text",
+            "value": "system-ui, sans-serif"
+          }
+        }
+      ]
+    },
+    "ops-header": {
+      "kind": "element",
+      "id": "ops-header",
+      "tag": "header",
+      "children": [
+        "ops-titleblock",
+        "ops-pill"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "align-items",
+          "value": {
+            "type": "text",
+            "value": "center"
+          }
+        },
+        {
+          "property": "justify-content",
+          "value": {
+            "type": "text",
+            "value": "space-between"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        }
+      ]
+    },
+    "ops-titleblock": {
+      "kind": "element",
+      "id": "ops-titleblock",
+      "tag": "div",
+      "children": [
+        "ops-title",
+        "ops-sub"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "2px"
+          }
+        },
+        {
+          "property": "min-width",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        }
+      ]
+    },
+    "ops-title": {
+      "kind": "element",
+      "id": "ops-title",
+      "tag": "h1",
+      "children": [
+        "ops-title-text"
+      ],
+      "localStyle": [
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "19px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "650"
+          }
+        },
+        {
+          "property": "letter-spacing",
+          "value": {
+            "type": "text",
+            "value": "-0.01em"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#101828"
+          }
+        }
+      ]
+    },
+    "ops-title-text": {
+      "kind": "text",
+      "id": "ops-title-text",
+      "content": {
+        "type": "literal",
+        "value": "Operations overview"
+      }
+    },
+    "ops-sub": {
+      "kind": "element",
+      "id": "ops-sub",
+      "tag": "p",
+      "children": [
+        "ops-sub-text"
+      ],
+      "localStyle": [
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "12.5px"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#667085"
+          }
+        }
+      ]
+    },
+    "ops-sub-text": {
+      "kind": "text",
+      "id": "ops-sub-text",
+      "content": {
+        "type": "literal",
+        "value": "Local snapshot — every control on this screen stays in-document"
+      }
+    },
+    "ops-pill": {
+      "kind": "element",
+      "id": "ops-pill",
+      "tag": "span",
+      "children": [
+        "ops-pill-text"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "inline-flex"
+          }
+        },
+        {
+          "property": "align-items",
+          "value": {
+            "type": "text",
+            "value": "center"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "6px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "4px 10px"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "999px"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#ecfdf3"
+          }
+        },
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "1px solid #abefc6"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#067647"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        },
+        {
+          "property": "flex",
+          "value": {
+            "type": "text",
+            "value": "none"
+          }
+        }
+      ]
+    },
+    "ops-pill-text": {
+      "kind": "text",
+      "id": "ops-pill-text",
+      "content": {
+        "type": "literal",
+        "value": "● All systems nominal"
+      }
+    },
+    "kpi-row": {
+      "kind": "element",
+      "id": "kpi-row",
+      "tag": "div",
+      "children": [
+        "kpi-throughput",
+        "kpi-errors",
+        "kpi-capacity"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "align-items",
+          "value": {
+            "type": "text",
+            "value": "stretch"
+          }
+        }
+      ]
+    },
+    "kpi-throughput": {
+      "kind": "element",
+      "id": "kpi-throughput",
+      "tag": "section",
+      "children": [
+        "kpi-throughput-label",
+        "kpi-throughput-value",
+        "kpi-throughput-delta"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "2px"
+          }
+        },
+        {
+          "property": "flex",
+          "value": {
+            "type": "text",
+            "value": "1 1 0"
+          }
+        },
+        {
+          "property": "min-width",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        }
+      ],
+      "styleSources": [
+        "surface-card"
+      ]
+    },
+    "kpi-throughput-label": {
+      "kind": "element",
+      "id": "kpi-throughput-label",
+      "tag": "span",
+      "children": [
+        "kpi-throughput-label-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "11px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        },
+        {
+          "property": "letter-spacing",
+          "value": {
+            "type": "text",
+            "value": "0.05em"
+          }
+        },
+        {
+          "property": "text-transform",
+          "value": {
+            "type": "text",
+            "value": "uppercase"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#667085"
+          }
+        }
+      ]
+    },
+    "kpi-throughput-label-text": {
+      "kind": "text",
+      "id": "kpi-throughput-label-text",
+      "content": {
+        "type": "literal",
+        "value": "Throughput · req/min"
+      }
+    },
+    "kpi-throughput-value": {
+      "kind": "element",
+      "id": "kpi-throughput-value",
+      "tag": "h2",
+      "children": [
+        "kpi-throughput-value-text"
+      ],
+      "localStyle": [
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "4px 0 0"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "26px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "700"
+          }
+        },
+        {
+          "property": "letter-spacing",
+          "value": {
+            "type": "text",
+            "value": "-0.02em"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#101828"
+          }
+        }
+      ]
+    },
+    "kpi-throughput-value-text": {
+      "kind": "text",
+      "id": "kpi-throughput-value-text",
+      "content": {
+        "type": "literal",
+        "value": "1,284"
+      }
+    },
+    "kpi-throughput-delta": {
+      "kind": "element",
+      "id": "kpi-throughput-delta",
+      "tag": "span",
+      "children": [
+        "kpi-throughput-delta-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#067647"
+          }
+        }
+      ]
+    },
+    "kpi-throughput-delta-text": {
+      "kind": "text",
+      "id": "kpi-throughput-delta-text",
+      "content": {
+        "type": "literal",
+        "value": "▲ 4.2% vs last hour"
+      }
+    },
+    "kpi-errors": {
+      "kind": "element",
+      "id": "kpi-errors",
+      "tag": "section",
+      "children": [
+        "kpi-errors-label",
+        "kpi-errors-value",
+        "kpi-errors-delta"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "2px"
+          }
+        },
+        {
+          "property": "flex",
+          "value": {
+            "type": "text",
+            "value": "1 1 0"
+          }
+        },
+        {
+          "property": "min-width",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        }
+      ],
+      "styleSources": [
+        "surface-card"
+      ]
+    },
+    "kpi-errors-label": {
+      "kind": "element",
+      "id": "kpi-errors-label",
+      "tag": "span",
+      "children": [
+        "kpi-errors-label-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "11px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        },
+        {
+          "property": "letter-spacing",
+          "value": {
+            "type": "text",
+            "value": "0.05em"
+          }
+        },
+        {
+          "property": "text-transform",
+          "value": {
+            "type": "text",
+            "value": "uppercase"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#667085"
+          }
+        }
+      ]
+    },
+    "kpi-errors-label-text": {
+      "kind": "text",
+      "id": "kpi-errors-label-text",
+      "content": {
+        "type": "literal",
+        "value": "Error rate"
+      }
+    },
+    "kpi-errors-value": {
+      "kind": "element",
+      "id": "kpi-errors-value",
+      "tag": "h2",
+      "children": [
+        "kpi-errors-value-text"
+      ],
+      "localStyle": [
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "4px 0 0"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "26px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "700"
+          }
+        },
+        {
+          "property": "letter-spacing",
+          "value": {
+            "type": "text",
+            "value": "-0.02em"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#101828"
+          }
+        }
+      ]
+    },
+    "kpi-errors-value-text": {
+      "kind": "text",
+      "id": "kpi-errors-value-text",
+      "content": {
+        "type": "literal",
+        "value": "0.42%"
+      }
+    },
+    "kpi-errors-delta": {
+      "kind": "element",
+      "id": "kpi-errors-delta",
+      "tag": "span",
+      "children": [
+        "kpi-errors-delta-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#067647"
+          }
+        }
+      ]
+    },
+    "kpi-errors-delta-text": {
+      "kind": "text",
+      "id": "kpi-errors-delta-text",
+      "content": {
+        "type": "literal",
+        "value": "▼ 0.08 pts — improving"
+      }
+    },
+    "kpi-capacity": {
+      "kind": "element",
+      "id": "kpi-capacity",
+      "tag": "section",
+      "children": [
+        "kpi-capacity-label",
+        "kpi-capacity-value",
+        "kpi-capacity-meter"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "2px"
+          }
+        },
+        {
+          "property": "flex",
+          "value": {
+            "type": "text",
+            "value": "1 1 0"
+          }
+        },
+        {
+          "property": "min-width",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        }
+      ],
+      "styleSources": [
+        "surface-card"
+      ]
+    },
+    "kpi-capacity-label": {
+      "kind": "element",
+      "id": "kpi-capacity-label",
+      "tag": "span",
+      "children": [
+        "kpi-capacity-label-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "11px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        },
+        {
+          "property": "letter-spacing",
+          "value": {
+            "type": "text",
+            "value": "0.05em"
+          }
+        },
+        {
+          "property": "text-transform",
+          "value": {
+            "type": "text",
+            "value": "uppercase"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#667085"
+          }
+        }
+      ]
+    },
+    "kpi-capacity-label-text": {
+      "kind": "text",
+      "id": "kpi-capacity-label-text",
+      "content": {
+        "type": "literal",
+        "value": "Cluster capacity"
+      }
+    },
+    "kpi-capacity-value": {
+      "kind": "element",
+      "id": "kpi-capacity-value",
+      "tag": "h2",
+      "children": [
+        "kpi-capacity-value-text"
+      ],
+      "localStyle": [
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "4px 0 0"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "26px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "700"
+          }
+        },
+        {
+          "property": "letter-spacing",
+          "value": {
+            "type": "text",
+            "value": "-0.02em"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#101828"
+          }
+        }
+      ]
+    },
+    "kpi-capacity-value-text": {
+      "kind": "text",
+      "id": "kpi-capacity-value-text",
+      "content": {
+        "type": "literal",
+        "value": "68%"
+      }
+    },
+    "kpi-capacity-meter": {
+      "kind": "component",
+      "id": "kpi-capacity-meter",
+      "definitionId": "vict.catalog.meter",
+      "revision": "1",
+      "slots": {},
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Capacity used"
+        },
+        "value": {
+          "type": "literal",
+          "value": 68
+        },
+        "min": {
+          "type": "literal",
+          "value": 0
+        },
+        "max": {
+          "type": "literal",
+          "value": 100
+        }
+      },
+      "localStyle": [
+        {
+          "property": "margin-top",
+          "value": {
+            "type": "text",
+            "value": "8px"
+          }
+        }
+      ]
+    },
+    "bottom-grid": {
+      "kind": "element",
+      "id": "bottom-grid",
+      "tag": "div",
+      "children": [
+        "panel-activity",
+        "panel-flow",
+        "panel-ai"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "align-items",
+          "value": {
+            "type": "text",
+            "value": "stretch"
+          }
+        },
+        {
+          "property": "flex",
+          "value": {
+            "type": "text",
+            "value": "1 1 auto"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        }
+      ]
+    },
+    "panel-activity": {
+      "kind": "element",
+      "id": "panel-activity",
+      "tag": "section",
+      "children": [
+        "act-heading",
+        "act-item-1",
+        "act-item-2",
+        "act-item-3"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "min-width",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "flex",
+          "value": {
+            "type": "text",
+            "value": "1.05 1 0"
+          }
+        }
+      ],
+      "styleSources": [
+        "surface-card"
+      ]
+    },
+    "act-heading": {
+      "kind": "element",
+      "id": "act-heading",
+      "tag": "h2",
+      "children": [
+        "act-heading-text"
+      ],
+      "localStyle": [
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0 0 4px"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "650"
+          }
+        },
+        {
+          "property": "text-transform",
+          "value": {
+            "type": "text",
+            "value": "uppercase"
+          }
+        },
+        {
+          "property": "letter-spacing",
+          "value": {
+            "type": "text",
+            "value": "0.06em"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#475467"
+          }
+        }
+      ]
+    },
+    "act-heading-text": {
+      "kind": "text",
+      "id": "act-heading-text",
+      "content": {
+        "type": "literal",
+        "value": "Recent activity"
+      }
+    },
+    "act-item-1": {
+      "kind": "element",
+      "id": "act-item-1",
+      "tag": "div",
+      "children": [
+        "act-1-dot",
+        "act-1-msg",
+        "act-1-time"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "align-items",
+          "value": {
+            "type": "text",
+            "value": "center"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "10px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "6px 0"
+          }
+        },
+        {
+          "property": "border-bottom",
+          "value": {
+            "type": "text",
+            "value": "1px solid #f2f4f8"
+          }
+        }
+      ]
+    },
+    "act-1-dot": {
+      "kind": "element",
+      "id": "act-1-dot",
+      "tag": "span",
+      "children": [],
+      "localStyle": [
+        {
+          "property": "width",
+          "value": {
+            "type": "text",
+            "value": "8px"
+          }
+        },
+        {
+          "property": "height",
+          "value": {
+            "type": "text",
+            "value": "8px"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "50%"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#12b76a"
+          }
+        },
+        {
+          "property": "flex",
+          "value": {
+            "type": "text",
+            "value": "none"
+          }
+        }
+      ]
+    },
+    "act-1-msg": {
+      "kind": "element",
+      "id": "act-1-msg",
+      "tag": "span",
+      "children": [
+        "act-1-msg-text"
+      ],
+      "localStyle": [
+        {
+          "property": "flex",
+          "value": {
+            "type": "text",
+            "value": "1 1 auto"
+          }
+        },
+        {
+          "property": "min-width",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "13px"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#344054"
+          }
+        }
+      ]
+    },
+    "act-1-msg-text": {
+      "kind": "text",
+      "id": "act-1-msg-text",
+      "content": {
+        "type": "literal",
+        "value": "deploy-248 promoted to production"
+      }
+    },
+    "act-1-time": {
+      "kind": "element",
+      "id": "act-1-time",
+      "tag": "span",
+      "children": [
+        "act-1-time-text"
+      ],
+      "localStyle": [
+        {
+          "property": "flex",
+          "value": {
+            "type": "text",
+            "value": "none"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#98a2b3"
+          }
+        },
+        {
+          "property": "white-space",
+          "value": {
+            "type": "text",
+            "value": "nowrap"
+          }
+        }
+      ]
+    },
+    "act-1-time-text": {
+      "kind": "text",
+      "id": "act-1-time-text",
+      "content": {
+        "type": "literal",
+        "value": "2m ago"
+      }
+    },
+    "act-item-2": {
+      "kind": "element",
+      "id": "act-item-2",
+      "tag": "div",
+      "children": [
+        "act-2-dot",
+        "act-2-msg",
+        "act-2-time"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "align-items",
+          "value": {
+            "type": "text",
+            "value": "center"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "10px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "6px 0"
+          }
+        },
+        {
+          "property": "border-bottom",
+          "value": {
+            "type": "text",
+            "value": "1px solid #f2f4f8"
+          }
+        }
+      ]
+    },
+    "act-2-dot": {
+      "kind": "element",
+      "id": "act-2-dot",
+      "tag": "span",
+      "children": [],
+      "localStyle": [
+        {
+          "property": "width",
+          "value": {
+            "type": "text",
+            "value": "8px"
+          }
+        },
+        {
+          "property": "height",
+          "value": {
+            "type": "text",
+            "value": "8px"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "50%"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#f79009"
+          }
+        },
+        {
+          "property": "flex",
+          "value": {
+            "type": "text",
+            "value": "none"
+          }
+        }
+      ]
+    },
+    "act-2-msg": {
+      "kind": "element",
+      "id": "act-2-msg",
+      "tag": "span",
+      "children": [
+        "act-2-msg-text"
+      ],
+      "localStyle": [
+        {
+          "property": "flex",
+          "value": {
+            "type": "text",
+            "value": "1 1 auto"
+          }
+        },
+        {
+          "property": "min-width",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "13px"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#344054"
+          }
+        }
+      ]
+    },
+    "act-2-msg-text": {
+      "kind": "text",
+      "id": "act-2-msg-text",
+      "content": {
+        "type": "literal",
+        "value": "Latency alert cleared on edge-3"
+      }
+    },
+    "act-2-time": {
+      "kind": "element",
+      "id": "act-2-time",
+      "tag": "span",
+      "children": [
+        "act-2-time-text"
+      ],
+      "localStyle": [
+        {
+          "property": "flex",
+          "value": {
+            "type": "text",
+            "value": "none"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#98a2b3"
+          }
+        },
+        {
+          "property": "white-space",
+          "value": {
+            "type": "text",
+            "value": "nowrap"
+          }
+        }
+      ]
+    },
+    "act-2-time-text": {
+      "kind": "text",
+      "id": "act-2-time-text",
+      "content": {
+        "type": "literal",
+        "value": "18m ago"
+      }
+    },
+    "act-item-3": {
+      "kind": "element",
+      "id": "act-item-3",
+      "tag": "div",
+      "children": [
+        "act-3-dot",
+        "act-3-msg",
+        "act-3-time"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "align-items",
+          "value": {
+            "type": "text",
+            "value": "center"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "10px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "6px 0"
+          }
+        }
+      ]
+    },
+    "act-3-dot": {
+      "kind": "element",
+      "id": "act-3-dot",
+      "tag": "span",
+      "children": [],
+      "localStyle": [
+        {
+          "property": "width",
+          "value": {
+            "type": "text",
+            "value": "8px"
+          }
+        },
+        {
+          "property": "height",
+          "value": {
+            "type": "text",
+            "value": "8px"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "50%"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#7a5af8"
+          }
+        },
+        {
+          "property": "flex",
+          "value": {
+            "type": "text",
+            "value": "none"
+          }
+        }
+      ]
+    },
+    "act-3-msg": {
+      "kind": "element",
+      "id": "act-3-msg",
+      "tag": "span",
+      "children": [
+        "act-3-msg-text"
+      ],
+      "localStyle": [
+        {
+          "property": "flex",
+          "value": {
+            "type": "text",
+            "value": "1 1 auto"
+          }
+        },
+        {
+          "property": "min-width",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "13px"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#344054"
+          }
+        }
+      ]
+    },
+    "act-3-msg-text": {
+      "kind": "text",
+      "id": "act-3-msg-text",
+      "content": {
+        "type": "literal",
+        "value": "Nightly backup snapshot completed · 2.4 TB"
+      }
+    },
+    "act-3-time": {
+      "kind": "element",
+      "id": "act-3-time",
+      "tag": "span",
+      "children": [
+        "act-3-time-text"
+      ],
+      "localStyle": [
+        {
+          "property": "flex",
+          "value": {
+            "type": "text",
+            "value": "none"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#98a2b3"
+          }
+        },
+        {
+          "property": "white-space",
+          "value": {
+            "type": "text",
+            "value": "nowrap"
+          }
+        }
+      ]
+    },
+    "act-3-time-text": {
+      "kind": "text",
+      "id": "act-3-time-text",
+      "content": {
+        "type": "literal",
+        "value": "1h ago"
+      }
+    },
+    "panel-flow": {
+      "kind": "element",
+      "id": "panel-flow",
+      "tag": "section",
+      "children": [
+        "flow-heading",
+        "ops-flow-canvas"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "min-width",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "flex",
+          "value": {
+            "type": "text",
+            "value": "1.5 1 0"
+          }
+        }
+      ],
+      "styleSources": [
+        "surface-card"
+      ]
+    },
+    "flow-heading": {
+      "kind": "element",
+      "id": "flow-heading",
+      "tag": "h2",
+      "children": [
+        "flow-heading-text"
+      ],
+      "localStyle": [
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0 0 4px"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "650"
+          }
+        },
+        {
+          "property": "text-transform",
+          "value": {
+            "type": "text",
+            "value": "uppercase"
+          }
+        },
+        {
+          "property": "letter-spacing",
+          "value": {
+            "type": "text",
+            "value": "0.06em"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#475467"
+          }
+        }
+      ]
+    },
+    "flow-heading-text": {
+      "kind": "text",
+      "id": "flow-heading-text",
+      "content": {
+        "type": "literal",
+        "value": "Ingest topology"
+      }
+    },
+    "ops-flow-canvas": {
+      "kind": "component",
+      "id": "ops-flow-canvas",
+      "definitionId": "vict.flow.canvas",
+      "revision": "1",
+      "slots": {
+        "nodes": {
+          "name": "nodes",
+          "children": [
+            "fn-intake",
+            "fn-validate",
+            "fn-dispatch",
+            "fn-archive"
+          ]
+        },
+        "edges": {
+          "name": "edges",
+          "children": [
+            "fe-intake-validate",
+            "fe-validate-dispatch",
+            "fe-validate-archive"
+          ]
+        }
+      },
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Ingest pipeline"
+        },
+        "height": {
+          "type": "literal",
+          "value": 150
+        },
+        "controls": {
+          "type": "literal",
+          "value": false
+        }
+      },
+      "localStyle": [
+        {
+          "property": "flex",
+          "value": {
+            "type": "text",
+            "value": "1 1 auto"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        }
+      ]
+    },
+    "fn-intake": {
+      "kind": "component",
+      "id": "fn-intake",
+      "definitionId": "vict.flow.node",
+      "revision": "1",
+      "slots": {},
+      "props": {
+        "id": {
+          "type": "literal",
+          "value": "intake"
+        },
+        "label": {
+          "type": "literal",
+          "value": "Intake"
+        },
+        "x": {
+          "type": "literal",
+          "value": 12
+        },
+        "y": {
+          "type": "literal",
+          "value": 78
+        }
+      }
+    },
+    "fn-validate": {
+      "kind": "component",
+      "id": "fn-validate",
+      "definitionId": "vict.flow.node",
+      "revision": "1",
+      "slots": {},
+      "props": {
+        "id": {
+          "type": "literal",
+          "value": "validate"
+        },
+        "label": {
+          "type": "literal",
+          "value": "Validate"
+        },
+        "x": {
+          "type": "literal",
+          "value": 140
+        },
+        "y": {
+          "type": "literal",
+          "value": 20
+        }
+      }
+    },
+    "fn-dispatch": {
+      "kind": "component",
+      "id": "fn-dispatch",
+      "definitionId": "vict.flow.node",
+      "revision": "1",
+      "slots": {},
+      "props": {
+        "id": {
+          "type": "literal",
+          "value": "dispatch"
+        },
+        "label": {
+          "type": "literal",
+          "value": "Dispatch"
+        },
+        "x": {
+          "type": "literal",
+          "value": 268
+        },
+        "y": {
+          "type": "literal",
+          "value": 78
+        }
+      }
+    },
+    "fe-intake-validate": {
+      "kind": "component",
+      "id": "fe-intake-validate",
+      "definitionId": "vict.flow.edge",
+      "revision": "1",
+      "slots": {},
+      "props": {
+        "id": {
+          "type": "literal",
+          "value": "e1"
+        },
+        "source": {
+          "type": "literal",
+          "value": "intake"
+        },
+        "target": {
+          "type": "literal",
+          "value": "validate"
+        },
+        "label": {
+          "type": "literal",
+          "value": "pass"
+        }
+      }
+    },
+    "fn-archive": {
+      "kind": "component",
+      "id": "fn-archive",
+      "definitionId": "vict.flow.node",
+      "revision": "1",
+      "slots": {},
+      "props": {
+        "id": {
+          "type": "literal",
+          "value": "archive"
+        },
+        "label": {
+          "type": "literal",
+          "value": "Archive"
+        },
+        "x": {
+          "type": "literal",
+          "value": 140
+        },
+        "y": {
+          "type": "literal",
+          "value": 136
+        }
+      }
+    },
+    "fe-validate-dispatch": {
+      "kind": "component",
+      "id": "fe-validate-dispatch",
+      "definitionId": "vict.flow.edge",
+      "revision": "1",
+      "slots": {},
+      "props": {
+        "id": {
+          "type": "literal",
+          "value": "e2"
+        },
+        "source": {
+          "type": "literal",
+          "value": "validate"
+        },
+        "target": {
+          "type": "literal",
+          "value": "dispatch"
+        },
+        "label": {
+          "type": "literal",
+          "value": "ship"
+        }
+      }
+    },
+    "fe-validate-archive": {
+      "kind": "component",
+      "id": "fe-validate-archive",
+      "definitionId": "vict.flow.edge",
+      "revision": "1",
+      "slots": {},
+      "props": {
+        "id": {
+          "type": "literal",
+          "value": "e3"
+        },
+        "source": {
+          "type": "literal",
+          "value": "validate"
+        },
+        "target": {
+          "type": "literal",
+          "value": "archive"
+        },
+        "label": {
+          "type": "literal",
+          "value": ""
+        }
+      }
+    },
+    "panel-ai": {
+      "kind": "element",
+      "id": "panel-ai",
+      "tag": "section",
+      "children": [
+        "ai-heading",
+        "ops-conversation"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "min-width",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "flex",
+          "value": {
+            "type": "text",
+            "value": "1.45 1 0"
+          }
+        }
+      ],
+      "styleSources": [
+        "surface-card"
+      ]
+    },
+    "ai-heading": {
+      "kind": "element",
+      "id": "ai-heading",
+      "tag": "h2",
+      "children": [
+        "ai-heading-text"
+      ],
+      "localStyle": [
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0 0 4px"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "650"
+          }
+        },
+        {
+          "property": "text-transform",
+          "value": {
+            "type": "text",
+            "value": "uppercase"
+          }
+        },
+        {
+          "property": "letter-spacing",
+          "value": {
+            "type": "text",
+            "value": "0.06em"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#475467"
+          }
+        }
+      ]
+    },
+    "ai-heading-text": {
+      "kind": "text",
+      "id": "ai-heading-text",
+      "content": {
+        "type": "literal",
+        "value": "Ops assistant"
+      }
+    },
+    "ops-conversation": {
+      "kind": "component",
+      "id": "ops-conversation",
+      "definitionId": "vict.ai.conversation",
+      "revision": "1",
+      "slots": {
+        "messages": {
+          "name": "messages",
+          "children": [
+            "ops-msg-2",
+            "ops-msg-3"
+          ]
+        },
+        "composer": {
+          "name": "composer",
+          "children": [
+            "ops-prompt"
+          ]
+        }
+      },
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Ops assistant"
+        }
+      },
+      "localStyle": [
+        {
+          "property": "flex",
+          "value": {
+            "type": "text",
+            "value": "1 1 auto"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        }
+      ]
+    },
+    "ops-msg-2": {
+      "kind": "component",
+      "id": "ops-msg-2",
+      "definitionId": "vict.ai.message",
+      "revision": "1",
+      "slots": {},
+      "props": {
+        "role": {
+          "type": "literal",
+          "value": "user"
+        },
+        "text": {
+          "type": "literal",
+          "value": "Risks for today's deploy window?"
+        }
+      }
+    },
+    "ops-msg-3": {
+      "kind": "component",
+      "id": "ops-msg-3",
+      "definitionId": "vict.ai.message",
+      "revision": "1",
+      "slots": {},
+      "props": {
+        "role": {
+          "type": "literal",
+          "value": "assistant"
+        },
+        "text": {
+          "type": "literal",
+          "value": "Low — edge-3 is cache-warmed; headroom is 32%."
+        }
+      }
+    },
+    "ops-prompt": {
+      "kind": "component",
+      "id": "ops-prompt",
+      "definitionId": "vict.ai.prompt-input",
+      "revision": "1",
+      "slots": {},
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Ask ops"
+        },
+        "placeholder": {
+          "type": "literal",
+          "value": "Ask about incidents, deploys, capacity…"
+        },
+        "value": {
+          "type": "ref",
+          "path": "state.opsPrompt"
+        }
+      },
+      "outputs": {
+        "valueChange": {
+          "setState": {
+            "key": "opsPrompt"
+          }
+        }
+      }
+    }
+  },
+  "componentDefinitions": {},
+  "styleSources": {
+    "surface-card": {
+      "id": "surface-card",
+      "declarations": [
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#ffffff"
+          }
+        },
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "1px solid #e4e7ef"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "box-shadow",
+          "value": {
+            "type": "text",
+            "value": "0 1px 2px rgba(16,24,40,0.05)"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "14px 16px"
+          }
+        }
+      ]
+    }
+  },
+  "assets": {},
+  "tokens": {},
+  "conditions": {
+    "compact": {
+      "id": "compact",
+      "kind": "container",
+      "name": "studio-screen",
+      "query": "(max-width: 600px)"
+    }
+  },
+  "localState": {
+    "message": {
+      "key": "message",
+      "type": "string",
+      "initial": "Hello from my screen"
+    },
+    "accepted": {
+      "key": "accepted",
+      "type": "boolean",
+      "initial": false
+    },
+    "dialogOpen": {
+      "key": "dialogOpen",
+      "type": "boolean",
+      "initial": false
+    },
+    "busy": {
+      "key": "busy",
+      "type": "boolean",
+      "initial": false
+    },
+    "actionError": {
+      "key": "actionError",
+      "type": "string",
+      "initial": ""
+    },
+    "actionResult": {
+      "key": "actionResult",
+      "type": "string",
+      "initial": ""
+    },
+    "opsPrompt": {
+      "key": "opsPrompt",
+      "type": "string",
+      "initial": ""
+    }
+  }
+}

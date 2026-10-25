@@ -1,0 +1,364 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Dashboard baseline review"
+  - generic: ● Unsaved changes
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- complementary "Chat":
+  - region "Conversation":
+    - region "Messages — Message":
+      - log:
+        - generic: You
+        - generic: Design a polished compact operations dashboard with three KPI cards, recent activity, a small authored read-only Flow topology and an authored AI conversation with local prompt input. Keep all effects local, make hierarchy clear, review the first meaningful visible section early and verify the result. Keep it within one screen.
+        - button "Copy message":
+        - generic: Assistant
+        - generic "Conversation timeline":
+          - paragraph: Progress summary · Connecting to the VICT / Mastra agent…
+          - paragraph: Progress summary · Agent is working on your request…
+          - paragraph: I'll start by discovering the design system families and the document's existing local state, then pull contracts for the AI conversation and flow components.
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - paragraph: "Families found: general, ai, flow. Now let me page the catalogs for the ai/flow components and check available native elements and general presentation components."
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - paragraph: Catalogs are in. Now I'll read the full contracts for the AI conversation, flow canvas parts, and meter (for a KPI gauge), with examples.
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - paragraph: The flow.canvas contract body was truncated (nextOffset 3600). Let me fetch the remaining page.
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - paragraph: The continuation resolved to a different projection. Let me continue the original contract-with-examples body page for flow.canvas explicitly.
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - paragraph:
+            - text: I now have complete contracts for all six components (flow.canvas body tail received, digest matches catalog). The document has only the empty
+            - code: screen
+            - text: root plus leftover demo state, so I'll build fresh.
+          - paragraph:
+            - strong: "Plan:"
+            - text: "header → 3 KPI cards (with meter on capacity) → bottom row: activity / flow topology / AI conversation, all compact and local."
+          - paragraph:
+            - strong: Batch 1
+            - text: "— root layout, shared card surface style, header with status pill:"
+          - button "Browser acknowledged committed transaction completed":
+            - generic: Browser acknowledged committed transaction
+            - generic: completed
+          - paragraph:
+            - text: Batch 1 acknowledged (r1#1).
+            - strong: Batch 2
+            - text: "— KPI row plus first card and second card shell:"
+          - button "Browser acknowledged committed transaction completed":
+            - generic: Browser acknowledged committed transaction
+            - generic: completed
+          - paragraph:
+            - strong: Batch 3
+            - text: "— complete error-rate card and capacity card with meter gauge:"
+          - button "Browser acknowledged committed transaction completed":
+            - generic: Browser acknowledged committed transaction
+            - generic: completed
+          - paragraph: "Header + KPI row are in. Per your request to review the first meaningful section early, let me observe the current top section:"
+          - button "Observed actual rendered appearance completed":
+            - generic: Observed actual rendered appearance
+            - generic: completed
+          - paragraph:
+            - text: Top section verified — clean hierarchy, meter at ~68%, no clipping; the empty lower area is where the remaining panels go.
+            - strong: Batch 4
+            - text: "— bottom grid, activity panel, first activity item:"
+          - button "Browser acknowledged committed transaction completed":
+            - generic: Browser acknowledged committed transaction
+            - generic: completed
+          - paragraph:
+            - strong: Batch 5
+            - text: "— remaining two activity rows:"
+          - button "Browser acknowledged committed transaction completed":
+            - generic: Browser acknowledged committed transaction
+            - generic: completed
+          - paragraph:
+            - strong: Batch 6
+            - text: "— flow panel, read-only canvas with three nodes and first edge:"
+          - button "Browser acknowledged committed transaction completed":
+            - generic: Browser acknowledged committed transaction
+            - generic: completed
+          - paragraph:
+            - strong: Batch 7
+            - text: "— finish flow topology, then AI panel with conversation shell and first message:"
+          - button "Browser acknowledged committed transaction completed":
+            - generic: Browser acknowledged committed transaction
+            - generic: completed
+          - paragraph:
+            - strong: Batch 8
+            - text: — remaining messages, prompt input with fresh local state wiring (value ⇄
+            - code: opsPrompt
+            - text: "):"
+          - button "Browser acknowledged committed transaction completed":
+            - generic: Browser acknowledged committed transaction
+            - generic: completed
+          - paragraph: "All eight batches acknowledged (r1#8). Now verifying: current source for actual structure/bindings, plus a full-screen visual check."
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Observed actual rendered appearance completed":
+            - generic: Observed actual rendered appearance
+            - generic: completed
+          - paragraph: "Verification findings: content is 705px tall in a 585px viewport (vertical overflow) and the vertical edge label renders illegibly. I'll compact the layout and fix that label, while separately confirming the prompt's wiring in source."
+          - button "Browser acknowledged committed transaction completed":
+            - generic: Browser acknowledged committed transaction
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - paragraph:
+            - text: Compaction applied (r1#9), and source confirms the prompt input is fully wired to local
+            - code: opsPrompt
+            - text: state (value ref +
+            - code: valueChange
+            - text: "→setState). Final visual verification:"
+          - button "Observed actual rendered appearance completed":
+            - generic: Observed actual rendered appearance
+            - generic: completed
+          - paragraph: "595px vs 585px viewport — about 10px still over, and the canvas zoom controls overlap the Intake node. Final polish batch:"
+          - button "Browser acknowledged committed transaction completed":
+            - generic: Browser acknowledged committed transaction
+            - generic: completed
+          - button "Observed actual rendered appearance completed":
+            - generic: Observed actual rendered appearance
+            - generic: completed
+          - paragraph: "Down to 591px content vs 585px viewport — ~6px over. One last trim:"
+          - button "Browser acknowledged committed transaction completed":
+            - generic: Browser acknowledged committed transaction
+            - generic: completed
+          - button "Observed actual rendered appearance completed":
+            - generic: Observed actual rendered appearance
+            - generic: completed
+          - paragraph:
+            - text: "The capture metadata confirms it: content height is now"
+            - strong: 583px against the 585px viewport
+            - text: — it fits (the vision model only received a 569px-tall crop, so it couldn't see the bottom edge, but the render height is authoritative).
+          - heading "Done — Operations dashboard at revision r1#11" [level=2]:
+            - text: Done — Operations dashboard at revision
+            - code: r1#11
+          - paragraph:
+            - strong: "Structure (70 nodes, all edits browser-acknowledged):"
+          - list:
+            - strong: Header
+            - text: —
+            - code: h1
+            - text: "\"Operations overview\", muted subtitle, green \"● All systems nominal\" pill"
+            - strong: Three KPI cards
+            - text: — shared
+            - code: surface-card
+            - text: "style source (white, 1px border, 12px radius, soft shadow) attached to each: Throughput"
+            - strong: 1,284
+            - text: ▲4.2% · Error rate
+            - strong: 0.42%
+            - text: ▼0.08 improving · Cluster capacity
+            - strong: 68%
+            - text: with an authored meter gauge
+            - strong: Recent activity
+            - text: — three rows with colored status dots and right-aligned timestamps
+            - strong: Ingest topology
+            - text: — authored read-only
+            - code: vict.flow.canvas
+            - text: "(controls off, 150px): Intake → Validate → Dispatch/Archive with labeled edges, no execution path"
+            - strong: Ops assistant
+            - text: —
+            - code: vict.ai.conversation
+            - text: with a user question + assistant answer and a
+            - code: vict.ai.prompt-input
+            - text: composer
+          - paragraph:
+            - strong: "Local-only effects, verified in source:"
+            - text: prompt
+            - code: value
+            - text: is a ref to fresh local state
+            - code: opsPrompt
+            - text: ", and"
+            - code: valueChange
+            - text: writes back to it. The
+            - code: send
+            - text: output is deliberately unbound — no provider, action, or network coupling anywhere. Baseline demo state (
+            - code: message
+            - text: ","
+            - code: accepted
+            - text: ","
+            - code: dialogOpen
+            - text: ","
+            - code: busy
+            - text: ","
+            - code: actionError
+            - text: ","
+            - code: actionResult
+            - text: ) is untouched and unused by the new UI.
+          - paragraph:
+            - strong: "Verified early + iterated:"
+            - text: observed the header/KPI section right after it was built (clean hierarchy, meter ~68%, no clipping); then three fit passes took content from 705px → 583px, also fixing an illegible mirrored edge label and zoom controls overlapping the Intake node. All flow labels and the prompt input are confirmed visible.
+          - paragraph:
+            - strong: "Honest limits:"
+            - text: I have no click/type/scroll tools, so typing in the composer, Enter-to-send, and canvas pan behavior are untested — source presence only. You save when ready.
+          - paragraph: "11 applied edits remain undoable. Confirmed revision r1#11. Engine termination: completed. Source coverage: 7/84 registered definitions present. 77 missing from the 84-item coverage scope. Missing IDs are paged through coverage reads. This inventory does not establish the full requested intent, interactions or visual completion. Source: 70 nodes, 7 state declarations; a bounded preview image was observed; interactions unverified by this agent."
+        - button "Copy message":
+    - button "Scroll to latest message":
+      - generic: Scroll to end
+    - textbox "Message":
+      - /placeholder: Ask for a change…
+    - button "Send" [disabled]:
+      - generic: Send
+    - status
+  - status "11 edits applied":
+    - generic: 11 edits applied
+  - button "Chat details" [expanded]: ···
+  - generic "Chat details":
+    - heading "Chat details" [level=3]
+    - button "Close chat details" [active]: ×
+    - paragraph: zai/glm-5.3-flash
+    - paragraph: 11 edits applied
+    - button "Reconnect agent"
+    - heading "Turn measurements" [level=4]
+    - paragraph: 27 tool calls · 0 refused · 0 calls after refusal · 681.5 s elapsed.
+    - paragraph: 22 authoring model requests · 5 image requests. First confirmed edit 304.9 s.
+    - paragraph: "Reported authoring usage: 731800 input / 22644 output tokens."
+    - paragraph: Exact model steps and cost unavailable. Concurrent tool durations do not add up to wall time.
+    - heading "Progress summaries" [level=4]
+    - paragraph: The chronological transcript includes tool attempts and receipts. Summaries are user-facing progress, not private reasoning.
+    - list:
+      - listitem: Connecting…
+      - listitem: Reading screen…
+      - listitem: Connecting to the VICT / Mastra agent…
+      - listitem: Agent is working on your request…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Preparing and validating an edit…
+      - listitem: "Dashboard shell: compact root layout, shared card surface rule, header with title and status pill · applied"
+      - listitem: Preparing and validating an edit…
+      - listitem: KPI row with throughput card complete and error-rate card shell · applied
+      - listitem: Preparing and validating an edit…
+      - listitem: Finish error-rate KPI and capacity KPI with meter gauge · applied
+      - listitem: Capturing and observing the rendered preview…
+      - listitem: Preparing and validating an edit…
+      - listitem: Bottom content grid, recent-activity panel and first activity row · applied
+      - listitem: Preparing and validating an edit…
+      - listitem: Add second and third recent-activity rows · applied
+      - listitem: Preparing and validating an edit…
+      - listitem: Flow panel with read-only canvas, three topology nodes and intake→validate edge · applied
+      - listitem: Preparing and validating an edit…
+      - listitem: Complete flow topology (archive node, ship/mirror edges) and open AI conversation panel with first message · applied
+      - listitem: Preparing and validating an edit…
+      - listitem: Authored conversation messages and prompt input controlled by fresh local opsPrompt state; send stays unbound (no provider) · applied
+      - listitem: Reading current source facts…
+      - listitem: Capturing and observing the rendered preview…
+      - listitem: Preparing and validating an edit…
+      - listitem: Reading current source facts…
+      - listitem: "Compact to one screen: shorter canvas, two-message conversation, no mirrored edge label, tighter root padding · applied"
+      - listitem: Capturing and observing the rendered preview…
+      - listitem: Preparing and validating an edit…
+      - listitem: Remove zoom-control overlay, shave final pixels for one-screen fit · applied
+      - listitem: Capturing and observing the rendered preview…
+      - listitem: Preparing and validating an edit…
+      - listitem: Final 8px shave to fit one 585px screen · applied
+      - listitem: Capturing and observing the rendered preview…
+    - heading "Connection record" [level=4]
+    - paragraph: VICT turn turn-b51892c0-55a6-4fdf-9277-78c782bebc07 · profile v1_44b0efc033a305e436089d492696951ae9fda22054a9ae7ebe524393efff6671
+- main:
+  - generic "Workspace mode":
+    - button "Design" [pressed]
+    - button "Interact"
+  - button "Document"
+  - generic "Screen canvas":
+    - main "Dashboard baseline review":
+      - heading "Operations overview" [level=1]:
+        - generic: Operations overview
+      - paragraph:
+        - generic: Local snapshot — every control on this screen stays in-document
+      - generic: ● All systems nominal
+      - generic: Throughput · req/min
+      - heading "1,284" [level=2]:
+        - generic: 1,284
+      - generic: ▲ 4.2% vs last hour
+      - generic: Error rate
+      - heading "0.42%" [level=2]:
+        - generic: 0.42%
+      - generic: ▼ 0.08 pts — improving
+      - generic: Cluster capacity
+      - heading "68%" [level=2]:
+        - generic: 68%
+      - generic: Capacity used
+      - meter "Capacity used"
+      - heading "Recent activity" [level=2]:
+        - generic: Recent activity
+      - generic: deploy-248 promoted to production
+      - generic: 2m ago
+      - generic: Latency alert cleared on edge-3
+      - generic: 18m ago
+      - generic: Nightly backup snapshot completed · 2.4 TB
+      - generic: 1h ago
+      - heading "Ingest topology" [level=2]:
+        - generic: Ingest topology
+      - region "Ingest pipeline":
+        - application:
+          - generic "Intake":
+            - button "Handle"
+            - strong: Intake
+            - button "Handle"
+          - generic "Validate":
+            - button "Handle"
+            - strong: Validate
+            - button "Handle"
+          - generic "Dispatch":
+            - button "Handle"
+            - strong: Dispatch
+            - button "Handle"
+          - generic "Archive":
+            - button "Handle"
+            - strong: Archive
+            - button "Handle"
+          - link "Svelte Flow attribution":
+            - /url: https://svelteflow.dev?utm_source=attribution
+            - text: Svelte Flow
+      - heading "Ops assistant" [level=2]:
+        - generic: Ops assistant
+      - region "Ops assistant":
+        - log "Messages":
+          - generic: Risks for today's deploy window?
+          - paragraph: Low — edge-3 is cache-warmed; headroom is 32%.
+        - textbox "Ask ops":
+          - /placeholder: Ask about incidents, deploys, capacity…
+        - button "Send" [disabled]:
+          - generic: Send
+  - generic "Simulated execution Local preview · no live effects":
+    - text: Simulated execution
+    - generic: Local preview · no live effects
+- contentinfo:
+  - status: Final 8px shave to fit one 585px screen · agent edit · unsaved
+  - generic "v1_d60bcd8df23d8bf1af4fb0f9c35b9fdce57b4518b4349b9abaa265ae40c4ae12": "@3 · v1_d60bcd8df23d…"

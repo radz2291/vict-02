@@ -1,0 +1,20 @@
+{
+  "model": "zai/glm-5.3-flash",
+  "prompt": "Design a polished compact operations dashboard with three KPI cards, recent activity, a small authored read-only Flow topology and an authored AI conversation with local prompt input. Keep all effects local, make hierarchy clear, review the first meaningful visible section early and verify the result. Keep it within one screen.",
+  "baselineProduct": "57308f6ffcd5c85415b38d9d68a6f696199ebfa7",
+  "candidateProduct": "9fbda0f3ec0c14ff7be8bfb475d30e0cdc0f0993",
+  "candidateSeal": "d0e2e491e7f9023e30f630b869866d2d5a081a8c859b7da646201e4ee6ec7749",
+  "baselineDisplay": {
+    "dpr": 1.0000000149011612,
+    "height": 720,
+    "width": 1280
+  },
+  "candidateDisplay": {
+    "dpr": 1.0000000149011612,
+    "height": 720,
+    "width": 1280
+  },
+  "conditions": "Fresh blank canonical source and conversation, same name and seeds, per-turn knowledge cache fresh, paired runs overlap provider capacity; single case, no statistical throughput claim.",
+  "baselineSubmittedAt": "2026-10-25T12:28:31.047Z",
+  "candidateSubmittedAt": "2026-10-25T12:28:31.341Z"
+}

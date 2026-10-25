@@ -1,0 +1,67 @@
+{
+  "portal": {
+    "chain": [
+      {
+        "class": "evidence-demo-popover",
+        "scope": null,
+        "tag": "DIV"
+      },
+      {
+        "class": "",
+        "scope": null,
+        "tag": "DIV"
+      },
+      {
+        "class": "evidence-guide svelte-tllzm3",
+        "scope": null,
+        "tag": "SECTION"
+      },
+      {
+        "class": "cycle14-showcase svelte-tllzm3",
+        "scope": null,
+        "tag": "SECTION"
+      },
+      {
+        "class": "vict-controls vict-rhea",
+        "scope": null,
+        "tag": "DIV"
+      },
+      {
+        "class": "svelte-1fte3s2",
+        "scope": null,
+        "tag": "SECTION"
+      },
+      {
+        "class": "vict-rhea svelte-1fte3s2",
+        "scope": null,
+        "tag": "MAIN"
+      },
+      {
+        "class": "",
+        "scope": null,
+        "tag": "DIV"
+      },
+      {
+        "class": "",
+        "scope": null,
+        "tag": "BODY"
+      },
+      {
+        "class": "",
+        "scope": null,
+        "tag": "HTML"
+      }
+    ],
+    "computed": {
+      "background": "rgb(255, 255, 255)",
+      "border": "8px",
+      "font": "system-ui, \"Segoe UI\", sans-serif"
+    }
+  },
+  "escape": {
+    "activeText": "Open simulated Chat evidence",
+    "at": "2026-10-25T12:31:36.024Z",
+    "expanded": "false",
+    "label": null
+  }
+}

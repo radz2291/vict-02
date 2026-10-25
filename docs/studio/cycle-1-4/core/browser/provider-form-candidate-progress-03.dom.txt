@@ -1,0 +1,158 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Customer onboarding"
+  - generic: ● Unsaved changes
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- complementary "Chat":
+  - region "Conversation":
+    - region "Messages — Message":
+      - log:
+        - generic: You
+        - generic: Design a polished compact customer onboarding form with name, work email, role selection, notification preference and a clear submit action. Use independent local state and truthful local feedback. Review the first meaningful visible section early, then verify the result. Keep it within one screen.
+        - button "Copy message":
+        - generic: Assistant
+        - generic "Conversation timeline":
+          - paragraph: Progress summary · Connecting to the VICT / Mastra agent…
+          - paragraph: Progress summary · Agent is working on your request…
+          - paragraph: "I'll start by inspecting the current document facts: existing state (the overview mentions 6 state entries), the recipe palette, allowed native elements, and registered components — all independent reads."
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - paragraph:
+            - text: The registry is empty, so components come through palette recipes (
+            - code: button
+            - text: ","
+            - code: checkbox
+            - text: ","
+            - code: select
+            - text: are recipe-backed components). Existing demo state (
+            - code: message
+            - text: ","
+            - code: accepted
+            - text: ","
+            - code: dialogOpen
+            - text: ","
+            - code: busy
+            - text: ","
+            - code: actionError
+            - text: ","
+            - code: actionResult
+            - text: ) stays untouched — I'll declare independent keys for this form. Now I need the rest of the allowed native tags (input/label/select/option) and exact contracts for the submit button and select/checkbox components.
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - paragraph: "Contracts and elements are confirmed:"
+          - list:
+            - strong: button
+            - text: (
+            - code: vict.catalog.button
+            - text: "@1): props"
+            - code: label/disabled/loading
+            - text: ", output"
+            - code: press
+            - text: → perfect for the submit action.
+            - text: Native
+            - code: label
+            - text: ","
+            - code: input
+            - text: ","
+            - code: select
+            - text: ","
+            - code: option
+            - text: ","
+            - code: form
+            - text: tags are registered — I'll build fields natively with
+            - code: wireInput
+            - text: for independent state, and use the catalog button only where an action output is needed.
+            - text: Existing demo state (
+            - code: message
+            - text: ","
+            - code: accepted
+            - text: ", etc.) stays untouched; I'll declare independent keys."
+          - paragraph:
+            - strong: Batch 1
+            - text: "— canvas tweak, card shell, header, and the name/email fields:"
+          - button "Tool failed (VICT_TOOL_FAILED); prior commits remain failed":
+            - generic: Tool failed (VICT_TOOL_FAILED); prior commits remain
+            - generic: failed
+          - button "Input schema diagnostics · Edit screen (not a tool attempt) failed":
+            - generic: Input schema diagnostics · Edit screen (not a tool attempt)
+            - generic: failed
+          - paragraph:
+            - text: The extra
+            - code: stylesNote
+            - text: key I accidentally included violates the strict contract. Resending the batch without it (and without the empty
+            - code: attributes
+            - text: "object):"
+          - button "Browser acknowledged committed transaction completed":
+            - generic: Browser acknowledged committed transaction
+            - generic: completed
+          - paragraph:
+            - text: Batch 1 acknowledged (revision
+            - code: r1#1
+            - text: "). The first meaningful section (card shell + header + two fields) now exists — observing it early as requested:"
+          - button "Observe preview started running":
+            - generic: Observe preview started
+            - generic: running
+    - button "Scroll to latest message":
+      - generic: Scroll to end
+    - textbox "Message":
+      - /placeholder: Ask for a change…
+      - text: Design a polished compact customer onboarding form with name, work email, role selection, notification preference and a clear submit action. Use independent local state and truthful local feedback. Review the first meaningful visible section early, then verify the result. Keep it within one screen.
+    - button "Stop":
+      - generic: Stop
+    - status
+  - status "Capturing and observing the rendered preview…":
+    - generic: Working…
+  - button "Chat details": ···
+- main:
+  - generic "Workspace mode":
+    - button "Design" [pressed]
+    - button "Interact"
+  - button "Document"
+  - generic "Screen canvas":
+    - main "Customer onboarding":
+      - heading "Create your account" [level=1]:
+        - generic: Create your account
+      - paragraph:
+        - generic: Set up your workspace in under a minute — just the essentials.
+      - generic: Full name
+      - textbox "Full name":
+        - /placeholder: Jordan Lee
+      - generic: Work email
+      - textbox "Work email":
+        - /placeholder: you@company.com
+  - generic "Simulated execution Local preview · no live effects":
+    - text: Simulated execution
+    - generic: Local preview · no live effects
+- contentinfo:
+  - status: "Compact onboarding form: canvas backdrop, card shell, header, name and work-email fields · agent edit · unsaved"
+  - generic "v1_63207e2d73a99f37a417577b160da5556f29f7242a5418acadd514b3d51e2aee": "@3 · v1_63207e2d73a9…"
+- generic: Designer — VICT Studio

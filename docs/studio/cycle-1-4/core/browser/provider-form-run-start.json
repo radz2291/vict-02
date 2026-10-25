@@ -1,0 +1,11 @@
+{
+  "prompt": "Design a polished compact customer onboarding form with name, work email, role selection, notification preference and a clear submit action. Use independent local state and truthful local feedback. Review the first meaningful visible section early, then verify the result. Keep it within one screen.",
+  "baselineSource": "57308f6ffcd5c85415b38d9d68a6f696199ebfa7",
+  "baselineDelivery": "0ac71d64caefaaf4351c43a68b67421a51b76aba",
+  "candidate": "4c76fb6da023c925825e511bfa7c9985aa662b5e",
+  "model": "zai/glm-5.3-flash",
+  "execution": "root CUA; independent artifact analysis",
+  "conditions": "fresh blank document and conversation; empty per-turn contract cache; matched1280x720; arms overlap at provider",
+  "baselineSubmittedAt": "2026-10-25T12:04:49.794Z",
+  "candidateSubmittedAt": "2026-10-25T12:04:50.132Z"
+}

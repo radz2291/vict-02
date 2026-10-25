@@ -1,0 +1,50 @@
+{
+  "rhea": {
+    "borderRadius": "16px",
+    "fontFamily": "system-ui, \"Segoe UI\", sans-serif",
+    "minHeight": "32px",
+    "rect": {
+      "bottom": 475.5250205993652,
+      "height": 38.60000228881836,
+      "left": 286.4125061035156,
+      "right": 369.73751068115234,
+      "top": 436.9250183105469,
+      "width": 83.32500457763672,
+      "x": 286.4125061035156,
+      "y": 436.9250183105469
+    },
+    "scope": "vict-controls vict-rhea"
+  },
+  "legacy": {
+    "borderRadius": "7px",
+    "fontFamily": "Inter, \"Segoe UI\", system-ui, sans-serif",
+    "minHeight": "40px",
+    "rect": {
+      "bottom": 392.3250122070313,
+      "height": 40,
+      "left": 277.8374938964844,
+      "right": 363.5374984741211,
+      "top": 352.32501220703125,
+      "width": 85.70000457763672,
+      "x": 277.8374938964844,
+      "y": 352.32501220703125
+    },
+    "scope": "vict-controls "
+  },
+  "popup": {
+    "background": "rgb(255, 255, 255)",
+    "borderRadius": "16px",
+    "rect": {
+      "bottom": 478.400016784668,
+      "height": 99.20000457763672,
+      "left": 255.1999969482422,
+      "right": 615.1999969482422,
+      "top": 379.2000122070313,
+      "width": 360,
+      "x": 255.1999969482422,
+      "y": 379.2000122070313
+    },
+    "rheaAncestor": true,
+    "scope": "vict-controls vict-rhea"
+  }
+}

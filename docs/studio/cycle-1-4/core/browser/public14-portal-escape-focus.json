@@ -1,0 +1,7 @@
+{
+  "kind": "retained read-only DOM result after actual Escape",
+  "result": {
+    "label": "Theme popup",
+    "popup": false
+  }
+}

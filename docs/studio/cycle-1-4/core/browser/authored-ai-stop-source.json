@@ -1,0 +1,203 @@
+{
+  "schema": "vict.ui-document@1",
+  "id": "screen-036cf343-a3bf-499e-9dd3-afddbdb976c8",
+  "revision": "r1",
+  "root": "screen",
+  "nodes": {
+    "screen": {
+      "kind": "element",
+      "id": "screen",
+      "tag": "main",
+      "attributes": {
+        "aria-label": "Local AI intent proof"
+      },
+      "children": [
+        "proof-title",
+        "proof-note",
+        "proof-prompt"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "20px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "40px"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "560px"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#ffffff"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#243047"
+          }
+        },
+        {
+          "property": "font-family",
+          "value": {
+            "type": "text",
+            "value": "system-ui, sans-serif"
+          }
+        }
+      ]
+    },
+    "proof-title": {
+      "kind": "element",
+      "id": "proof-title",
+      "tag": "h1",
+      "children": [
+        "proof-title-text"
+      ]
+    },
+    "proof-title-text": {
+      "kind": "text",
+      "id": "proof-title-text",
+      "content": {
+        "type": "literal",
+        "value": "Local AI stop intent"
+      }
+    },
+    "proof-note": {
+      "kind": "element",
+      "id": "proof-note",
+      "tag": "p",
+      "children": [
+        "proof-note-text"
+      ]
+    },
+    "proof-note-text": {
+      "kind": "text",
+      "id": "proof-note-text",
+      "content": {
+        "type": "literal",
+        "value": "Local fixture: Stop records an intent through the declared simulation. No agent or provider is running; busy is an authored presentation value."
+      }
+    },
+    "proof-prompt": {
+      "kind": "component",
+      "id": "proof-prompt",
+      "definitionId": "vict.ai.prompt-input",
+      "revision": "1",
+      "props": {
+        "value": {
+          "type": "ref",
+          "path": "state.proofDraft"
+        },
+        "busy": {
+          "type": "literal",
+          "value": true
+        },
+        "label": {
+          "type": "literal",
+          "value": "Local proof prompt"
+        }
+      },
+      "slots": {},
+      "outputs": {
+        "valueChange": {
+          "setState": {
+            "key": "proofDraft"
+          }
+        },
+        "stop": {
+          "invokeAction": {
+            "actionId": "demo.submit",
+            "input": {
+              "message": {
+                "type": "literal",
+                "value": "Stop intent recorded locally; no provider cancellation."
+              },
+              "accepted": {
+                "type": "literal",
+                "value": true
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "componentDefinitions": {},
+  "styleSources": {},
+  "assets": {},
+  "tokens": {},
+  "conditions": {
+    "compact": {
+      "id": "compact",
+      "kind": "container",
+      "name": "studio-screen",
+      "query": "(max-width: 600px)"
+    }
+  },
+  "localState": {
+    "message": {
+      "key": "message",
+      "type": "string",
+      "initial": "Hello from my screen"
+    },
+    "accepted": {
+      "key": "accepted",
+      "type": "boolean",
+      "initial": false
+    },
+    "dialogOpen": {
+      "key": "dialogOpen",
+      "type": "boolean",
+      "initial": false
+    },
+    "busy": {
+      "key": "busy",
+      "type": "boolean",
+      "initial": false
+    },
+    "actionError": {
+      "key": "actionError",
+      "type": "string",
+      "initial": ""
+    },
+    "actionResult": {
+      "key": "actionResult",
+      "type": "string",
+      "initial": ""
+    },
+    "proofDraft": {
+      "key": "proofDraft",
+      "type": "string",
+      "initial": "Pending local text"
+    }
+  }
+}

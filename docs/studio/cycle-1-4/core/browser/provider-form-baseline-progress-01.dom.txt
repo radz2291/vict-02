@@ -1,0 +1,53 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Untitled screen"
+  - generic: ○ New screen
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- complementary "Chat":
+  - region "Conversation":
+    - region "Messages — Message":
+      - log:
+        - generic: You
+        - generic: Design a polished compact customer onboarding form with name, work email, role selection, notification preference and a clear submit action. Use independent local state and truthful local feedback. Review the first meaningful visible section early, then verify the result. Keep it within one screen.
+        - button "Copy message":
+        - generic: Assistant
+        - generic "Conversation timeline":
+          - paragraph: Progress summary · Connecting to the VICT / Mastra agent…
+          - paragraph: Progress summary · Agent is working on your request…
+    - button "Scroll to latest message":
+      - generic: Scroll to end
+    - textbox "Message":
+      - /placeholder: Ask for a change…
+      - text: Design a polished compact customer onboarding form with name, work email, role selection, notification preference and a clear submit action. Use independent local state and truthful local feedback. Review the first meaningful visible section early, then verify the result. Keep it within one screen.
+    - button "Stop":
+      - generic: Stop
+    - status
+  - status "Agent is working on your request…":
+    - generic: Working…
+  - button "Chat details": ···
+- main:
+  - generic "Workspace mode":
+    - button "Design" [pressed]
+    - button "Interact"
+  - button "Document"
+  - generic "Screen canvas":
+    - main "Untitled screen"
+  - generic: ＋
+  - heading "What will you make?" [level=1]
+  - paragraph: Select this screen to open its tools, then choose Insert.
+  - generic "Simulated execution Local preview · no live effects":
+    - text: Simulated execution
+    - generic: Local preview · no live effects
+- contentinfo:
+  - status: New screen · not saved yet.
+  - generic "v1_68862ee1a0cf30c8444592a7092f07ad35bc61cf989641952b2e4f13d761d1e2": "@3 · v1_68862ee1a0cf…"
+- generic: Designer — VICT Studio

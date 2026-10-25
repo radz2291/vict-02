@@ -1,0 +1,1480 @@
+{
+  "schema": "vict.ui-document@1",
+  "id": "screen-49bbe8e6-3b04-4276-872e-959273f9e13e",
+  "revision": "r1",
+  "root": "screen",
+  "nodes": {
+    "screen": {
+      "kind": "element",
+      "id": "screen",
+      "tag": "main",
+      "attributes": {
+        "aria-label": "Customer onboarding form"
+      },
+      "children": [
+        "onboardingCard"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "20px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "16px 16px"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "560px"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#ffffff"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#243047"
+          }
+        },
+        {
+          "property": "font-family",
+          "value": {
+            "type": "text",
+            "value": "system-ui, sans-serif"
+          }
+        },
+        {
+          "property": "align-items",
+          "value": {
+            "type": "text",
+            "value": "center"
+          }
+        },
+        {
+          "property": "background",
+          "value": {
+            "type": "text",
+            "value": "#f4f6fb"
+          }
+        }
+      ]
+    },
+    "onboardingCard": {
+      "kind": "element",
+      "id": "onboardingCard",
+      "tag": "section",
+      "attributes": {
+        "aria-label": "Section"
+      },
+      "children": [
+        "cardTitle",
+        "cardSub",
+        "fieldName",
+        "fieldEmail",
+        "fieldRole",
+        "fieldNotify",
+        "footerActions"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "11px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "20px"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#f5f7fb"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "16px"
+          }
+        },
+        {
+          "property": "background",
+          "value": {
+            "type": "text",
+            "value": "#ffffff"
+          }
+        },
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "1px solid #e3e8f2"
+          }
+        },
+        {
+          "property": "box-shadow",
+          "value": {
+            "type": "text",
+            "value": "0 10px 30px rgba(36,48,71,0.08)"
+          }
+        },
+        {
+          "property": "box-sizing",
+          "value": {
+            "type": "text",
+            "value": "border-box"
+          }
+        },
+        {
+          "property": "max-width",
+          "value": {
+            "type": "text",
+            "value": "440px"
+          }
+        },
+        {
+          "property": "width",
+          "value": {
+            "type": "text",
+            "value": "100%"
+          }
+        }
+      ]
+    },
+    "cardTitle": {
+      "kind": "element",
+      "id": "cardTitle",
+      "tag": "h1",
+      "children": [
+        "cardTitle-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "22px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.2"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "letter-spacing",
+          "value": {
+            "type": "text",
+            "value": "-0.01em"
+          }
+        }
+      ]
+    },
+    "cardTitle-text": {
+      "kind": "text",
+      "id": "cardTitle-text",
+      "content": {
+        "type": "literal",
+        "value": "Create your account"
+      }
+    },
+    "cardSub": {
+      "kind": "element",
+      "id": "cardSub",
+      "tag": "p",
+      "children": [
+        "cardSub-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.6"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "-4px 0 0 0"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#5b6b84"
+          }
+        }
+      ]
+    },
+    "cardSub-text": {
+      "kind": "text",
+      "id": "cardSub-text",
+      "content": {
+        "type": "literal",
+        "value": "Tell us a bit about yourself to set up your workspace."
+      }
+    },
+    "fieldName": {
+      "kind": "element",
+      "id": "fieldName",
+      "tag": "section",
+      "attributes": {
+        "aria-label": "Section"
+      },
+      "children": [
+        "nameLabel",
+        "nameInput"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "6px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#f5f7fb"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "background",
+          "value": {
+            "type": "text",
+            "value": "transparent"
+          }
+        }
+      ]
+    },
+    "nameLabel": {
+      "kind": "component",
+      "id": "nameLabel",
+      "definitionId": "vict.catalog.label",
+      "revision": "1",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Full name"
+        },
+        "for": {
+          "type": "literal",
+          "value": "onb-name"
+        }
+      },
+      "slots": {},
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "13px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        }
+      ]
+    },
+    "nameInput": {
+      "kind": "element",
+      "id": "nameInput",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "type": "text",
+        "aria-label": "Full name",
+        "placeholder": "Ada Lovelace",
+        "value": {
+          "type": "ref",
+          "path": "state.fullName"
+        },
+        "id": "onb-name"
+      },
+      "interactions": [
+        {
+          "on": "change",
+          "action": "setState",
+          "key": "fullName",
+          "value": {
+            "type": "ref",
+            "path": "state.fullName"
+          }
+        }
+      ],
+      "localStyle": [
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "10px 12px"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "10px"
+          }
+        },
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "1px solid #cbd3e1"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "15px"
+          }
+        },
+        {
+          "property": "width",
+          "value": {
+            "type": "text",
+            "value": "100%"
+          }
+        },
+        {
+          "property": "box-sizing",
+          "value": {
+            "type": "text",
+            "value": "border-box"
+          }
+        }
+      ]
+    },
+    "fieldEmail": {
+      "kind": "element",
+      "id": "fieldEmail",
+      "tag": "section",
+      "attributes": {
+        "aria-label": "Section"
+      },
+      "children": [
+        "emailLabel",
+        "emailInput",
+        "emailHint"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "6px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#f5f7fb"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "background",
+          "value": {
+            "type": "text",
+            "value": "transparent"
+          }
+        }
+      ]
+    },
+    "emailLabel": {
+      "kind": "component",
+      "id": "emailLabel",
+      "definitionId": "vict.catalog.label",
+      "revision": "1",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Work email"
+        },
+        "for": {
+          "type": "literal",
+          "value": "onb-email"
+        }
+      },
+      "slots": {},
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "13px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        }
+      ]
+    },
+    "emailInput": {
+      "kind": "element",
+      "id": "emailInput",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "type": "email",
+        "aria-label": "Work email",
+        "placeholder": "you@company.com",
+        "value": {
+          "type": "ref",
+          "path": "state.workEmail"
+        },
+        "id": "onb-email"
+      },
+      "interactions": [
+        {
+          "on": "change",
+          "action": "setState",
+          "key": "workEmail",
+          "value": {
+            "type": "ref",
+            "path": "state.workEmail"
+          }
+        }
+      ],
+      "localStyle": [
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "10px 12px"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "10px"
+          }
+        },
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "1px solid #cbd3e1"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "15px"
+          }
+        },
+        {
+          "property": "width",
+          "value": {
+            "type": "text",
+            "value": "100%"
+          }
+        },
+        {
+          "property": "box-sizing",
+          "value": {
+            "type": "text",
+            "value": "border-box"
+          }
+        }
+      ]
+    },
+    "emailHint": {
+      "kind": "element",
+      "id": "emailHint",
+      "tag": "p",
+      "children": [
+        "emailHint-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.6"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#7a8699"
+          }
+        }
+      ]
+    },
+    "emailHint-text": {
+      "kind": "text",
+      "id": "emailHint-text",
+      "content": {
+        "type": "literal",
+        "value": "Format: name@company.com"
+      }
+    },
+    "fieldRole": {
+      "kind": "element",
+      "id": "fieldRole",
+      "tag": "section",
+      "attributes": {
+        "aria-label": "Section"
+      },
+      "children": [
+        "roleLabel",
+        "roleSelect"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "6px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#f5f7fb"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "background",
+          "value": {
+            "type": "text",
+            "value": "transparent"
+          }
+        }
+      ]
+    },
+    "roleLabel": {
+      "kind": "component",
+      "id": "roleLabel",
+      "definitionId": "vict.catalog.label",
+      "revision": "1",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Role"
+        }
+      },
+      "slots": {},
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "13px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        }
+      ]
+    },
+    "roleSelect": {
+      "kind": "component",
+      "id": "roleSelect",
+      "definitionId": "vict.catalog.select",
+      "revision": "1",
+      "props": {
+        "value": {
+          "type": "ref",
+          "path": "state.role"
+        }
+      },
+      "outputs": {
+        "valueChange": {
+          "setState": {
+            "key": "role"
+          }
+        }
+      },
+      "slots": {
+        "items": {
+          "name": "items",
+          "children": [
+            "roleIt1",
+            "roleIt2",
+            "roleIt3",
+            "roleIt4",
+            "roleIt5"
+          ]
+        }
+      },
+      "localStyle": [
+        {
+          "property": "width",
+          "value": {
+            "type": "text",
+            "value": "100%"
+          }
+        }
+      ]
+    },
+    "roleIt1": {
+      "kind": "component",
+      "id": "roleIt1",
+      "definitionId": "vict.catalog.select-item",
+      "revision": "1",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Founder"
+        },
+        "value": {
+          "type": "literal",
+          "value": "founder"
+        }
+      },
+      "slots": {}
+    },
+    "roleIt2": {
+      "kind": "component",
+      "id": "roleIt2",
+      "definitionId": "vict.catalog.select-item",
+      "revision": "1",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Engineer"
+        },
+        "value": {
+          "type": "literal",
+          "value": "engineer"
+        }
+      },
+      "slots": {}
+    },
+    "roleIt3": {
+      "kind": "component",
+      "id": "roleIt3",
+      "definitionId": "vict.catalog.select-item",
+      "revision": "1",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Designer"
+        },
+        "value": {
+          "type": "literal",
+          "value": "designer"
+        }
+      },
+      "slots": {}
+    },
+    "roleIt4": {
+      "kind": "component",
+      "id": "roleIt4",
+      "definitionId": "vict.catalog.select-item",
+      "revision": "1",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Product manager"
+        },
+        "value": {
+          "type": "literal",
+          "value": "product"
+        }
+      },
+      "slots": {}
+    },
+    "roleIt5": {
+      "kind": "component",
+      "id": "roleIt5",
+      "definitionId": "vict.catalog.select-item",
+      "revision": "1",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Operations"
+        },
+        "value": {
+          "type": "literal",
+          "value": "operations"
+        }
+      },
+      "slots": {}
+    },
+    "fieldNotify": {
+      "kind": "element",
+      "id": "fieldNotify",
+      "tag": "section",
+      "attributes": {
+        "aria-label": "Section"
+      },
+      "children": [
+        "notifyGroup"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "6px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#f5f7fb"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "background",
+          "value": {
+            "type": "text",
+            "value": "transparent"
+          }
+        }
+      ]
+    },
+    "notifyGroup": {
+      "kind": "component",
+      "id": "notifyGroup",
+      "definitionId": "vict.catalog.toggle-group",
+      "revision": "1",
+      "props": {
+        "value": {
+          "type": "ref",
+          "path": "state.notifyPref"
+        },
+        "label": {
+          "type": "literal",
+          "value": "Notification preference"
+        }
+      },
+      "outputs": {
+        "valueChange": {
+          "setState": {
+            "key": "notifyPref"
+          }
+        }
+      },
+      "slots": {
+        "items": {
+          "name": "items",
+          "children": [
+            "notifyAll",
+            "notifyWeekly",
+            "notifyMinimal"
+          ]
+        }
+      },
+      "localStyle": [
+        {
+          "property": "width",
+          "value": {
+            "type": "text",
+            "value": "100%"
+          }
+        }
+      ]
+    },
+    "notifyAll": {
+      "kind": "component",
+      "id": "notifyAll",
+      "definitionId": "vict.catalog.toggle-group-item",
+      "revision": "1",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "All updates"
+        },
+        "value": {
+          "type": "literal",
+          "value": "all"
+        }
+      },
+      "slots": {},
+      "localStyle": [
+        {
+          "property": "flex",
+          "value": {
+            "type": "text",
+            "value": "1 1 0"
+          }
+        }
+      ]
+    },
+    "notifyWeekly": {
+      "kind": "component",
+      "id": "notifyWeekly",
+      "definitionId": "vict.catalog.toggle-group-item",
+      "revision": "1",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Weekly digest"
+        },
+        "value": {
+          "type": "literal",
+          "value": "weekly"
+        }
+      },
+      "slots": {},
+      "localStyle": [
+        {
+          "property": "flex",
+          "value": {
+            "type": "text",
+            "value": "1 1 0"
+          }
+        }
+      ]
+    },
+    "notifyMinimal": {
+      "kind": "component",
+      "id": "notifyMinimal",
+      "definitionId": "vict.catalog.toggle-group-item",
+      "revision": "1",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Minimal"
+        },
+        "value": {
+          "type": "literal",
+          "value": "minimal"
+        }
+      },
+      "slots": {},
+      "localStyle": [
+        {
+          "property": "flex",
+          "value": {
+            "type": "text",
+            "value": "1 1 0"
+          }
+        }
+      ]
+    },
+    "footerActions": {
+      "kind": "element",
+      "id": "footerActions",
+      "tag": "section",
+      "attributes": {
+        "aria-label": "Section"
+      },
+      "children": [
+        "submitBtn",
+        "statusText",
+        "statusNote"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "6px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#f5f7fb"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "background",
+          "value": {
+            "type": "text",
+            "value": "transparent"
+          }
+        }
+      ]
+    },
+    "submitBtn": {
+      "kind": "component",
+      "id": "submitBtn",
+      "definitionId": "vict.catalog.button",
+      "revision": "1",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Create account"
+        }
+      },
+      "slots": {},
+      "localStyle": [
+        {
+          "property": "background",
+          "value": {
+            "type": "text",
+            "value": "#2f54eb"
+          }
+        },
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "none"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "10px"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#ffffff"
+          }
+        },
+        {
+          "property": "cursor",
+          "value": {
+            "type": "text",
+            "value": "pointer"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "15px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "12px 16px"
+          }
+        },
+        {
+          "property": "width",
+          "value": {
+            "type": "text",
+            "value": "100%"
+          }
+        }
+      ],
+      "outputs": {
+        "press": {
+          "invokeAction": {
+            "actionId": "demo.submit",
+            "input": {
+              "accepted": {
+                "type": "literal",
+                "value": true
+              },
+              "message": {
+                "type": "literal",
+                "value": "Customer onboarding details captured in this local preview."
+              }
+            }
+          }
+        }
+      }
+    },
+    "statusText": {
+      "kind": "element",
+      "id": "statusText",
+      "tag": "p",
+      "children": [
+        "statusText-text",
+        "statusTextValue"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "13px"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.6"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#1f7a4d"
+          }
+        },
+        {
+          "property": "text-align",
+          "value": {
+            "type": "text",
+            "value": "center"
+          }
+        }
+      ],
+      "attributes": {
+        "aria-live": "polite",
+        "role": "status"
+      }
+    },
+    "statusText-text": {
+      "kind": "text",
+      "id": "statusText-text",
+      "content": {
+        "type": "literal",
+        "value": ""
+      }
+    },
+    "statusTextValue": {
+      "kind": "text",
+      "id": "statusTextValue",
+      "content": {
+        "type": "expression",
+        "expression": {
+          "type": "ref",
+          "path": "state.actionResult"
+        }
+      }
+    },
+    "statusNote": {
+      "kind": "element",
+      "id": "statusNote",
+      "tag": "p",
+      "children": [
+        "statusNote-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.6"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#7a8699"
+          }
+        },
+        {
+          "property": "text-align",
+          "value": {
+            "type": "text",
+            "value": "center"
+          }
+        }
+      ]
+    },
+    "statusNote-text": {
+      "kind": "text",
+      "id": "statusNote-text",
+      "content": {
+        "type": "literal",
+        "value": "Local preview — nothing is sent to a server."
+      }
+    }
+  },
+  "componentDefinitions": {},
+  "styleSources": {},
+  "assets": {},
+  "tokens": {},
+  "conditions": {
+    "compact": {
+      "id": "compact",
+      "kind": "container",
+      "name": "studio-screen",
+      "query": "(max-width: 600px)"
+    }
+  },
+  "localState": {
+    "message": {
+      "key": "message",
+      "type": "string",
+      "initial": "Hello from my screen"
+    },
+    "accepted": {
+      "key": "accepted",
+      "type": "boolean",
+      "initial": false
+    },
+    "dialogOpen": {
+      "key": "dialogOpen",
+      "type": "boolean",
+      "initial": false
+    },
+    "busy": {
+      "key": "busy",
+      "type": "boolean",
+      "initial": false
+    },
+    "actionError": {
+      "key": "actionError",
+      "type": "string",
+      "initial": ""
+    },
+    "actionResult": {
+      "key": "actionResult",
+      "type": "string",
+      "initial": ""
+    },
+    "input_nameInput": {
+      "key": "input_nameInput",
+      "type": "string",
+      "initial": ""
+    },
+    "fullName": {
+      "key": "fullName",
+      "type": "string",
+      "initial": ""
+    },
+    "input_emailInput": {
+      "key": "input_emailInput",
+      "type": "string",
+      "initial": ""
+    },
+    "workEmail": {
+      "key": "workEmail",
+      "type": "string",
+      "initial": ""
+    },
+    "catalog_roleSelect_root_value": {
+      "key": "catalog_roleSelect_root_value",
+      "type": "string",
+      "initial": ""
+    },
+    "role": {
+      "key": "role",
+      "type": "string",
+      "initial": ""
+    },
+    "catalog_notifyGroup_root_value": {
+      "key": "catalog_notifyGroup_root_value",
+      "type": "string",
+      "initial": ""
+    },
+    "notifyPref": {
+      "key": "notifyPref",
+      "type": "string",
+      "initial": "weekly"
+    }
+  }
+}

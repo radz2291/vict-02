@@ -1,0 +1,31 @@
+{
+  "tools": {
+    "paletteCount": 1,
+    "scrollRect": {
+      "bottom": 267.5,
+      "height": 185.5,
+      "left": 320,
+      "right": 1000,
+      "top": 82,
+      "width": 680,
+      "x": 320,
+      "y": 82
+    },
+    "workspaceTools": true
+  },
+  "source": {
+    "hitTag": "BUTTON",
+    "hitText": "Source",
+    "ownsHit": true,
+    "rect": {
+      "bottom": 334.8000068664551,
+      "height": 37.20000076293945,
+      "left": 815.6000366210938,
+      "right": 938.0000381469728,
+      "top": 297.6000061035156,
+      "width": 122.4000015258789,
+      "x": 815.6000366210938,
+      "y": 297.6000061035156
+    }
+  }
+}

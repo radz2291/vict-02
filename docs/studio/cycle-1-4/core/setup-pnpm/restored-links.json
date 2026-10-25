@@ -1,0 +1,77 @@
+[
+  {
+    "after": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-3-core-authoring\\260831-VCT-02\\node_modules\\eslint",
+    "before": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-4\\260831-VCT-02\\node_modules\\.pnpm\\eslint@10.13.0\\node_modules\\eslint",
+    "name": "eslint"
+  },
+  {
+    "after": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-3-core-authoring\\260831-VCT-02\\node_modules\\globals",
+    "before": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-4\\260831-VCT-02\\node_modules\\.pnpm\\globals@17.13.0\\node_modules\\globals",
+    "name": "globals"
+  },
+  {
+    "after": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-3-core-authoring\\260831-VCT-02\\node_modules\\happy-dom",
+    "before": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-4\\260831-VCT-02\\node_modules\\.pnpm\\happy-dom@20.14.6\\node_modules\\happy-dom",
+    "name": "happy-dom"
+  },
+  {
+    "after": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-3-core-authoring\\260831-VCT-02\\node_modules\\js-yaml",
+    "before": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-4\\260831-VCT-02\\node_modules\\.pnpm\\js-yaml@4.3.2\\node_modules\\js-yaml",
+    "name": "js-yaml"
+  },
+  {
+    "after": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-3-core-authoring\\260831-VCT-02\\node_modules\\prettier",
+    "before": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-4\\260831-VCT-02\\node_modules\\.pnpm\\prettier@3.9.10\\node_modules\\prettier",
+    "name": "prettier"
+  },
+  {
+    "after": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-3-core-authoring\\260831-VCT-02\\node_modules\\svelte",
+    "before": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-4\\260831-VCT-02\\node_modules\\.pnpm\\svelte@5.57.2_@typescript-eslint+types@8.72.0\\node_modules\\svelte",
+    "name": "svelte"
+  },
+  {
+    "after": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-3-core-authoring\\260831-VCT-02\\node_modules\\svelte-check",
+    "before": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-4\\260831-VCT-02\\node_modules\\.pnpm\\svelte-check@4.7.7_picomatc_db0b8b9ba17c8edd24c04be84ffb63d8\\node_modules\\svelte-check",
+    "name": "svelte-check"
+  },
+  {
+    "after": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-3-core-authoring\\260831-VCT-02\\node_modules\\tsx",
+    "before": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-4\\260831-VCT-02\\node_modules\\.pnpm\\tsx@4.23.15\\node_modules\\tsx",
+    "name": "tsx"
+  },
+  {
+    "after": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-3-core-authoring\\260831-VCT-02\\node_modules\\typescript",
+    "before": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-4\\260831-VCT-02\\node_modules\\.pnpm\\typescript@6.0.3\\node_modules\\typescript",
+    "name": "typescript"
+  },
+  {
+    "after": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-3-core-authoring\\260831-VCT-02\\node_modules\\typescript-eslint",
+    "before": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-4\\260831-VCT-02\\node_modules\\.pnpm\\typescript-eslint@8.72.0_eslint@10.13.0_typescript@6.0.3\\node_modules\\typescript-eslint",
+    "name": "typescript-eslint"
+  },
+  {
+    "after": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-3-core-authoring\\260831-VCT-02\\node_modules\\vitest",
+    "before": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-4\\260831-VCT-02\\node_modules\\.pnpm\\vitest@4.1.12_@types+node@2_6a4b03b048befa5fa3f53d360c31031c\\node_modules\\vitest",
+    "name": "vitest"
+  },
+  {
+    "after": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-3-core-authoring\\260831-VCT-02\\node_modules\\zod",
+    "before": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-4\\260831-VCT-02\\node_modules\\.pnpm\\zod@3.25.76\\node_modules\\zod",
+    "name": "zod"
+  },
+  {
+    "after": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-3-core-authoring\\260831-VCT-02\\node_modules\\@eslint\\js",
+    "before": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-4\\260831-VCT-02\\node_modules\\.pnpm\\@eslint+js@10.0.1_eslint@10.13.0\\node_modules\\@eslint\\js",
+    "name": "@eslint\\js"
+  },
+  {
+    "after": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-3-core-authoring\\260831-VCT-02\\node_modules\\@sveltejs\\vite-plugin-svelte",
+    "before": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-4\\260831-VCT-02\\node_modules\\.pnpm\\@sveltejs+vite-plugin-svelt_873fd90031ba92ed8ecbbd72a2330ac0\\node_modules\\@sveltejs\\vite-plugin-svelte",
+    "name": "@sveltejs\\vite-plugin-svelte"
+  },
+  {
+    "after": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-3-core-authoring\\260831-VCT-02\\node_modules\\@types\\node",
+    "before": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-4\\260831-VCT-02\\node_modules\\.pnpm\\@types+node@26.6.5\\node_modules\\@types\\node",
+    "name": "@types\\node"
+  }
+]

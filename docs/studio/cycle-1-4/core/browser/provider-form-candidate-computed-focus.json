@@ -1,0 +1,16 @@
+{
+  "scope": "4c76 natural form, shared styling unchanged at9fb",
+  "blur": {
+    "border": "rgb(208, 215, 226)",
+    "font": "system-ui, sans-serif",
+    "outline": "none",
+    "shadow": "none"
+  },
+  "focus": {
+    "border": "rgb(208, 215, 226)",
+    "focused": true,
+    "font": "system-ui, sans-serif",
+    "outline": "solid",
+    "shadow": "rgba(59, 102, 245, 0.15) 0px 0px 0px 3px"
+  }
+}

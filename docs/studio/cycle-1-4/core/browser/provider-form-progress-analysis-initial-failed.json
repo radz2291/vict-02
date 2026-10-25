@@ -1,0 +1,10 @@
+{
+  "schema": "vict.studio.provider-ui-extract@1",
+  "pair": "form",
+  "runStart": "provider-form-run-start.json",
+  "method": "Read saved CUA DOM/geometry artifacts only; no hidden application state or API",
+  "captures": [],
+  "terminalMetrics": null,
+  "terminalOutcome": "pending",
+  "limits": "Snapshot event bounds only. Browser commit plus acknowledgement represents one transaction. Input-schema diagnostics labelled not a tool attempt are not added to tool totals."
+}

@@ -1,0 +1,52 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Dashboard baseline review"
+  - generic: ○ New screen
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- complementary "Chat":
+  - region "Conversation":
+    - region "Messages — Message":
+      - log:
+        - generic: You
+        - generic: Design a polished compact operations dashboard with three KPI cards, recent activity, a small authored read-only Flow topology and an authored AI conversation with local prompt input. Keep all effects local, make hierarchy clear, review the first meaningful visible section early and verify the result. Keep it within one screen.
+        - button "Copy message":
+        - generic: Assistant
+        - generic "Conversation timeline":
+          - paragraph: Progress summary · Connecting to the VICT / Mastra agent…
+    - button "Scroll to latest message":
+      - generic: Scroll to end
+    - textbox "Message":
+      - /placeholder: Ask for a change…
+      - text: Design a polished compact operations dashboard with three KPI cards, recent activity, a small authored read-only Flow topology and an authored AI conversation with local prompt input. Keep all effects local, make hierarchy clear, review the first meaningful visible section early and verify the result. Keep it within one screen.
+    - button "Stop":
+      - generic: Stop
+    - status
+  - status "Connecting to the VICT / Mastra agent…":
+    - generic: Working…
+  - button "Chat details": ···
+- main:
+  - generic "Workspace mode":
+    - button "Design" [pressed]
+    - button "Interact"
+  - button "Document"
+  - generic "Screen canvas":
+    - main "Dashboard baseline review"
+  - generic: ＋
+  - heading "What will you make?" [level=1]
+  - paragraph: Select this screen to open its tools, then choose Insert.
+  - generic "Simulated execution Local preview · no live effects":
+    - text: Simulated execution
+    - generic: Local preview · no live effects
+- contentinfo:
+  - status: New screen · not saved yet.
+  - generic "v1_595501a63bd2823a4fa333a6c78a0a004063e15d0fbbd6275482821469a09ccd": "@3 · v1_595501a63bd2…"
+- generic: Designer — VICT Studio

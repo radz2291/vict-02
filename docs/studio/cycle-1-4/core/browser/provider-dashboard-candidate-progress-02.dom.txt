@@ -1,0 +1,194 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Operations dashboard"
+  - generic: ● Unsaved changes
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- complementary "Chat":
+  - region "Conversation":
+    - region "Messages — Message":
+      - log:
+        - generic: You
+        - generic: Design a polished compact operations dashboard with three KPI cards, recent activity, a small authored read-only Flow topology and an authored AI conversation with local prompt input. Keep all effects local, make hierarchy clear, review the first meaningful visible section early and verify the result. Keep it within one screen.
+        - button "Copy message":
+        - generic: Assistant
+        - generic "Conversation timeline":
+          - paragraph: Progress summary · Connecting to the VICT / Mastra agent…
+          - paragraph: Progress summary · Agent is working on your request…
+          - paragraph: I'll start by reading the current document facts (nodes, state), plus the palette and section families to find the right recipes/components for the KPI cards, flow canvas, and AI conversation.
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - paragraph:
+            - text: The document has one empty
+            - code: main
+            - text: root and six pre-seeded demo state keys I'll leave untouched (I'll use fresh local state for the prompt input). Now let me look at the
+            - code: ai
+            - text: and
+            - code: flow
+            - text: family catalogs.
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - paragraph: Now I'll read the contracts for the six components I need (conversation, message, prompt-input, flow canvas + node/edge parts), with examples.
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - paragraph: The flow.canvas body is partial (needs its continuation page). Fetching it with the returned bodyIdentity.
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - paragraph: "All six contract bodies are complete. I have everything I need:"
+          - list:
+            - strong: Flow
+            - text: ":"
+            - code: vict.flow.canvas@1
+            - text: (props label/height/controls/minimap/background; slots
+            - code: nodes
+            - text: ","
+            - code: edges
+            - text: ) with
+            - code: vict.flow.node
+            - text: (id/label/x/y) and
+            - code: vict.flow.edge
+            - text: (id/source/target/label) parts placed in those slots.
+            - strong: AI
+            - text: ":"
+            - code: vict.ai.conversation@1
+            - text: (label prop; slots
+            - code: messages
+            - text: ","
+            - code: composer
+            - text: ) +
+            - code: vict.ai.message@1
+            - text: (role/text) +
+            - code: vict.ai.prompt-input@1
+            - text: (controlled
+            - code: value
+            - text: ↔
+            - code: valueChange
+            - text: string state).
+            - text: I'll leave the 6 pre-seeded demo state keys untouched and create fresh
+            - code: opsPrompt
+            - text: state for the composer. KPI cards will be hand-styled native elements for precise compact control (avoids any dependency on Rhea host styling).
+          - paragraph:
+            - strong: "Batch 1 — shell, header, KPI card containers:"
+          - button "Browser acknowledged committed transaction completed":
+            - generic: Browser acknowledged committed transaction
+            - generic: completed
+          - paragraph:
+            - text: Batch 1 acknowledged (r1#1).
+            - strong: "Batch 2 — third KPI card + card contents:"
+          - button "Browser acknowledged committed transaction completed":
+            - generic: Browser acknowledged committed transaction
+            - generic: completed
+          - paragraph: Header + KPI row is complete — this is the first meaningful visible section, so I'll review it now before continuing.
+          - button "Observed actual rendered appearance completed":
+            - generic: Observed actual rendered appearance
+            - generic: completed
+          - paragraph:
+            - text: Early review confirms the header and first two KPI cards render cleanly; card 3's empty area is just the pending value/delta. Continuing construction.
+            - strong: "Batch 3 — latency values + activity card with first items:"
+          - button "Browser acknowledged committed transaction completed":
+            - generic: Browser acknowledged committed transaction
+            - generic: completed
+          - paragraph:
+            - strong: "Batch 4 — activity timestamps, remaining events, flow card shell:"
+          - button "Browser acknowledged committed transaction completed":
+            - generic: Browser acknowledged committed transaction
+            - generic: completed
+          - paragraph:
+            - strong: "Batch 5 — read-only flow canvas with authored topology (4 nodes, 3 edges):"
+          - button "Tool failed (VICT_TOOL_FAILED); prior commits remain failed":
+            - generic: Tool failed (VICT_TOOL_FAILED); prior commits remain
+            - generic: failed
+          - button "Input schema diagnostics · Edit screen (not a tool attempt) failed":
+            - generic: Input schema diagnostics · Edit screen (not a tool attempt)
+            - generic: failed
+    - button "Scroll to latest message":
+      - generic: Scroll to end
+    - textbox "Message":
+      - /placeholder: Ask for a change…
+      - text: Design a polished compact operations dashboard with three KPI cards, recent activity, a small authored read-only Flow topology and an authored AI conversation with local prompt input. Keep all effects local, make hierarchy clear, review the first meaningful visible section early and verify the result. Keep it within one screen.
+    - button "Stop":
+      - generic: Stop
+    - status
+  - status "Tool refused (VICT_TOOL_FAILED). Previously applied edits remain available.":
+    - generic: Working…
+  - button "Chat details" [active]: ···
+- main:
+  - generic "Workspace mode":
+    - button "Design" [pressed]
+    - button "Interact"
+  - button "Document"
+  - generic "Screen canvas":
+    - main "Operations dashboard":
+      - heading "Operations overview" [level=1]:
+        - generic: Operations overview
+      - paragraph:
+        - generic: Live snapshot · updated 09:42
+      - paragraph:
+        - generic: ● All systems nominal
+      - article:
+        - paragraph:
+          - generic: Requests · 24h
+        - paragraph:
+          - generic: 48.2k
+        - paragraph:
+          - generic: ▲ 6.4% vs yesterday
+      - article:
+        - paragraph:
+          - generic: Error rate
+        - paragraph:
+          - generic: 0.42%
+        - paragraph:
+          - generic: ▼ 0.08 pts overnight
+      - article:
+        - paragraph:
+          - generic: p95 latency
+        - paragraph:
+          - generic: 142 ms
+        - paragraph:
+          - generic: ▲ 9 ms vs yesterday
+      - article:
+        - list:
+          - generic: 09:24
+          - generic: Deploy api-gateway v2.14.1
+          - generic: 08:57
+          - generic: Autoscale workers 6 → 10
+          - generic: 07:41
+          - generic: Resolved 5xx spike in eu-west
+          - generic: 03:12
+          - generic: Nightly backup completed
+        - heading "Recent activity" [level=2]:
+          - generic: Recent activity
+      - article:
+        - heading "Pipeline topology" [level=2]:
+          - generic: Pipeline topology
+  - generic "Simulated execution Local preview · no live effects":
+    - text: Simulated execution
+    - generic: Local preview · no live effects
+- contentinfo:
+  - status: Add timestamps to activity rows, remaining two events, and flow topology card shell · agent edit · unsaved
+  - generic "v1_5bd6b4e79f6c480eee0754ce567b4abbf0daa2485c54356234e501abd009ca94": "@3 · v1_5bd6b4e79f6c…"
+- generic: Designer — VICT Studio

@@ -1,0 +1,43 @@
+{
+  "capturedAt": "2026-10-25T11:52:24.033Z",
+  "url": "http://127.0.0.14:5608/",
+  "active": {
+    "label": null,
+    "tag": "BUTTON",
+    "text": "Reopen source"
+  },
+  "rects": [
+    {
+      "class": "svelte-n50uah",
+      "clientHeight": 2479,
+      "display": "block",
+      "height": 2479.199951171875,
+      "label": null,
+      "overflow": "visible",
+      "role": null,
+      "scrollHeight": 2479,
+      "tag": "MAIN",
+      "width": 624.7999877929688,
+      "x": 0,
+      "y": -620
+    },
+    {
+      "class": "svelte-flow svelte-flow__container light svelte-mkap6j",
+      "clientHeight": 358,
+      "display": "block",
+      "height": 358.3999938964844,
+      "label": null,
+      "overflow": "hidden",
+      "role": "application",
+      "scrollHeight": 521,
+      "tag": "DIV",
+      "width": 565.6000366210938,
+      "x": 29.600000381469727,
+      "y": 1235.0999755859375
+    }
+  ],
+  "viewport": {
+    "height": 480,
+    "width": 640
+  }
+}

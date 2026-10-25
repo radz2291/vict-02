@@ -1,0 +1,85 @@
+{
+  "capturedAt": "2026-10-25T12:42:54.309Z",
+  "url": "http://127.0.0.12:5606/design",
+  "active": {
+    "label": null,
+    "tag": "BUTTON",
+    "text": " Input schema diagnostics · Edit screen (not a tool attempt)failed "
+  },
+  "rects": [
+    {
+      "class": "agent-chat svelte-1n95bvq",
+      "clientHeight": 652,
+      "display": "flex",
+      "height": 652,
+      "label": "Chat",
+      "overflow": "hidden",
+      "role": null,
+      "scrollHeight": 652,
+      "tag": "ASIDE",
+      "width": 320,
+      "x": 0,
+      "y": 44
+    },
+    {
+      "class": "design-stage",
+      "clientHeight": 652,
+      "display": "flex",
+      "height": 652,
+      "label": null,
+      "overflow": "visible",
+      "role": null,
+      "scrollHeight": 652,
+      "tag": "MAIN",
+      "width": 960,
+      "x": 320,
+      "y": 44
+    },
+    {
+      "class": "canvas-scroll workspace-scroll",
+      "clientHeight": 585,
+      "display": "block",
+      "height": 584.7000122070312,
+      "label": null,
+      "overflow": "auto",
+      "role": null,
+      "scrollHeight": 606,
+      "tag": "DIV",
+      "width": 960,
+      "x": 320,
+      "y": 82
+    },
+    {
+      "class": "uv-fd411d62-screen",
+      "clientHeight": 558,
+      "display": "flex",
+      "height": 557.6000366210938,
+      "label": "Operations dashboard",
+      "overflow": "visible",
+      "role": null,
+      "scrollHeight": 558,
+      "tag": "MAIN",
+      "width": 908.7999877929688,
+      "x": 338,
+      "y": 98
+    },
+    {
+      "class": "svelte-flow svelte-flow__container light svelte-1lz1xyo",
+      "clientHeight": 158,
+      "display": "block",
+      "height": 158.40000915527344,
+      "label": null,
+      "overflow": "hidden",
+      "role": "application",
+      "scrollHeight": 158,
+      "tag": "DIV",
+      "width": 385.3999938964844,
+      "x": 371.6000061035156,
+      "y": 469.6000061035156
+    }
+  ],
+  "viewport": {
+    "height": 720,
+    "width": 1280
+  }
+}

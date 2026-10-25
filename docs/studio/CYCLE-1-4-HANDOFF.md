@@ -4,6 +4,10 @@
 
 ## Current execution checkpoint
 
+Actual verification resumed after the owner restarted the app. Current pushed product is **`9fbda0f3ec0c14ff7be8bfb475d30e0cdc0f0993`**; its747-input/491-output production seal passes. Independent checkpoint `ac484c6efafabbe1d68c1a478afb7cac026a2bb4` closes IV14-01–04 in their exact/carry scopes. Natural form arms completed on4c76; their execution logic is unchanged by9fb shared evidence presentation. Dashboard arms are running on9fb with matched1280×720/DPR≈1.0. Remaining actual terminal Chat/editor/recovery demonstrations keep readiness HELD. Preserve the older checkpoints below; see the [current report](CYCLE-1-4-REPORT.md).
+
+### Preserved earlier browser-blocked checkpoint
+
 Replacement product `0c3cee81fb02345f07b26e92acb2d2eb5463b203` is pushed on `codex/studio-cycle-1-4`; main remains `d7401bef6e48330796c74ec00c86db9622d48cdf`. Independent checkpoint `2f6ed51db39251529dd5440803756b25f5a4e2d8` on `codex/studio-cycle-1-4-independent` is **HELD**, with source/protocol/package/provenance and exact production seal checks passing but required actual browser/provider demonstrations missing. See [builder checkpoint](CYCLE-1-4-REPORT.md#replacement-candidate-checkpoint--actual-ui-still-pending) and [independent matrix](CYCLE-1-4-INDEPENDENT.md). This is an environment-blocked checkpoint, not delivery readiness or owner acceptance.
 
 Preserved isolated listeners: candidate `http://127.0.0.12:5606/design`, verifier `http://127.0.0.13:5607/design`, installed public consumer `http://127.0.0.14:5608/`, accepted core comparison `http://127.0.0.15:5609/design`. Product showcase is `/showcase#cycle14` on the candidate origin. Existing local operator login remains unchanged. Root and child CUA new-tab/bind/navigation attempts time out; inventory reports a crashed isolated verifier login page. The owner was asked to foreground this task and reopen the browser panel. Do not bypass browser control through shell automation or treat listener availability as UI proof. No owner-origin reload or request replay is authorized by this checkpoint.

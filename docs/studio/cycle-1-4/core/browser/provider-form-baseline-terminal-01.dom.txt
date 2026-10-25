@@ -1,0 +1,388 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Customer onboarding form"
+  - generic: ● Unsaved changes
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- complementary "Chat":
+  - region "Conversation":
+    - region "Messages — Message":
+      - log:
+        - generic: You
+        - generic: Design a polished compact customer onboarding form with name, work email, role selection, notification preference and a clear submit action. Use independent local state and truthful local feedback. Review the first meaningful visible section early, then verify the result. Keep it within one screen.
+        - button "Copy message":
+        - generic: Assistant
+        - generic "Conversation timeline":
+          - paragraph: Progress summary · Connecting to the VICT / Mastra agent…
+          - paragraph: Progress summary · Agent is working on your request…
+          - paragraph: I'll start by reading the current document state, then discover the component families I need for the form.
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - paragraph:
+            - text: "The document is a blank starter: one empty"
+            - code: screen
+            - text: root plus 6 pre-seeded demo states (
+            - code: message
+            - text: ","
+            - code: accepted
+            - text: ","
+            - code: dialogOpen
+            - text: ","
+            - code: busy
+            - text: ","
+            - code: actionError
+            - text: ","
+            - code: actionResult
+            - text: ) — I'll leave those untouched and declare independent state for the form. Now let me discover the input/presentation catalog and existing tokens.
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - paragraph: Catalog found. Now let me get the palette and exact contracts for the components I need (select + items, toggle-group + items, button, label, switch).
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - paragraph:
+            - text: The toggle-group contract body was cut off (incomplete page), and I need the exact wiring contract for the
+            - code: input
+            - text: palette recipe. Let me fetch the remainder and those details.
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - paragraph:
+            - text: "Contracts are clear:"
+            - code: select
+            - text: is a controlled component (
+            - code: value
+            - text: ↔
+            - code: valueChange
+            - text: with
+            - code: items
+            - text: slot),
+            - code: toggle-group
+            - text: owns its accessible label via its
+            - code: label
+            - text: prop,
+            - code: button
+            - text: has a
+            - code: press
+            - text: output, and
+            - code: input
+            - text: is a native recipe wired via
+            - code: wireInput
+            - text: . I'll build a compact centered card with independent state keys (
+            - code: fullName
+            - text: ","
+            - code: workEmail
+            - text: ","
+            - code: role
+            - text: ","
+            - code: notifyPref
+            - text: ","
+            - code: statusMessage
+            - text: ) — leaving the pre-seeded demo state untouched.
+          - paragraph:
+            - strong: "Batch 1 — screen layout, header, and the name field:"
+          - button "Browser acknowledged committed transaction completed":
+            - generic: Browser acknowledged committed transaction
+            - generic: completed
+          - paragraph:
+            - text: Batch 1 acknowledged (
+            - code: r1#1
+            - text: ). Per the request, let me review this first meaningful visible section (card + header + name field) in the source before continuing.
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - paragraph:
+            - text: The card structure is correct — children in order, and my styles (white card, shadow, 440px) landed after the recipe seed styles, so they win the cascade. Now
+            - strong: "Batch 2 — work email and role field scaffolding:"
+          - button "Browser acknowledged committed transaction completed":
+            - generic: Browser acknowledged committed transaction
+            - generic: completed
+          - paragraph:
+            - strong: "Batch 3 — role options and controlled select wiring:"
+          - button "Browser acknowledged committed transaction completed":
+            - generic: Browser acknowledged committed transaction
+            - generic: completed
+          - paragraph:
+            - strong: "Batch 4 — notification preference as a single-select toggle group with independent state:"
+          - button "Browser acknowledged committed transaction completed":
+            - generic: Browser acknowledged committed transaction
+            - generic: completed
+          - paragraph:
+            - strong: "Batch 5 — submit action with truthful local feedback:"
+          - button "Edit refused before browser proposal failed":
+            - generic: Edit refused before browser proposal
+            - generic: failed
+          - paragraph:
+            - text: "The refusal is specific:"
+            - code: bindText
+            - text: requires an actual text node — the
+            - code: text
+            - text: recipe creates a paragraph element, not a text node. I'll correct by inserting a real text node inside the status paragraph and binding that.
+          - button "Edit refused before browser proposal failed":
+            - generic: Edit refused before browser proposal
+            - generic: failed
+          - paragraph:
+            - text: The hover pseudo-style requires an element node —
+            - code: submitBtn
+            - text: is a component. I'll drop that optional hover rule and apply the rest (the button already renders as a primary action).
+          - button "Edit refused before browser proposal failed":
+            - generic: Edit refused before browser proposal
+            - generic: failed
+          - paragraph:
+            - text: The
+            - code: press
+            - text: output's void payload can't drive a string state directly — it likely needs a declared action. Let me inspect the actions registry.
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - paragraph:
+            - text: "Only one declared action exists:"
+            - code: demo.submit
+            - text: with
+            - code: message
+            - text: /
+            - code: accepted
+            - text: string-boolean inputs — that's the canonical local action for void
+            - code: press
+            - text: outputs in this starter document. I'll wire the button to it, bind the status line to the action's own reported local result (
+            - code: actionResult
+            - text: ), and add an always-visible truthful note that nothing leaves the preview.
+          - button "Browser acknowledged committed transaction completed":
+            - generic: Browser acknowledged committed transaction
+            - generic: completed
+          - paragraph:
+            - text: All edits acknowledged (
+            - code: r1#5
+            - text: ). Now let me verify the assembled source and state declarations.
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - paragraph:
+            - text: State list shows some auto-created seed keys (
+            - code: input_nameInput
+            - text: ","
+            - code: input_emailInput
+            - text: ","
+            - code: catalog_roleSelect_root_value
+            - text: ) alongside my named states. Let me page the remaining state and verify the actual wiring on the key nodes.
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - paragraph: All checked nodes are correctly wired to their own independent state keys. Let me verify the remaining nodes (email input, status text) and the full tree.
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - paragraph: Source verification is complete — every field is wired to its own state, the select and toggle-group are controlled pairs, and the button invokes the declared local action. Now let me verify the actual rendered appearance.
+          - button "Observed actual rendered appearance completed":
+            - generic: Observed actual rendered appearance
+            - generic: completed
+          - paragraph: The form renders correctly — but the capture shows the card's bottom edge is clipped vertically (source is 623px vs 569px captured), so it slightly exceeds one screen at this viewport height. I'll compact the vertical rhythm to fit.
+          - button "Browser acknowledged committed transaction completed":
+            - generic: Browser acknowledged committed transaction
+            - generic: completed
+          - paragraph:
+            - text: Compaction applied (
+            - code: r1#6
+            - text: "). Re-checking the full visible result:"
+          - button "Observed actual rendered appearance completed":
+            - generic: Observed actual rendered appearance
+            - generic: completed
+          - paragraph: "Good progress — the note and padding below it now show (content height 623→589px), but the card's bottom edge still sits ~20px past the capture boundary at this short viewport. One final compaction pass:"
+          - button "Browser acknowledged committed transaction completed":
+            - generic: Browser acknowledged committed transaction
+            - generic: completed
+          - button "Observed actual rendered appearance completed":
+            - generic: Observed actual rendered appearance
+            - generic: completed
+          - paragraph:
+            - text: The full card now fits with room to spare — final capture shows no clipping (
+            - code: cropped:false
+            - text: ), rounded bottom corners visible, and balanced compact spacing. Done at revision
+            - code: r1#7
+            - text: .
+          - heading "What was built" [level=2]
+          - paragraph: "A compact onboarding card (440px max-width, centered, soft shadow) on the gray screen background:"
+          - list:
+            - strong: Header
+            - text: —
+            - code: h1
+            - text: "\"Create your account\" + subtitle"
+            - strong: Full name
+            - text: — labeled text input, placeholder "Ada Lovelace"
+            - strong: Work email
+            - text: — labeled
+            - code: type="email"
+            - text: "input with a small \"Format:"
+            - 'generic "Blocked URL: mailto:name@company.com"': name@company.com [blocked]
+            - text: "\" hint"
+            - strong: Role
+            - text: — controlled select with 5 options (Founder, Engineer, Designer, Product manager, Operations)
+            - strong: Notification preference
+            - text: "— single-select toggle group: All updates /"
+            - strong: Weekly digest
+            - text: (default) / Minimal
+            - strong: Submit
+            - text: — full-width blue "Create account" button
+          - heading "State & feedback (independent, local)" [level=2]
+          - list:
+            - text: "Each field has its own state key:"
+            - code: fullName
+            - text: ","
+            - code: workEmail
+            - text: ","
+            - code: role
+            - text: ","
+            - code: notifyPref
+            - text: "— verified in source: inputs are wired value↔change, select and toggle-group are controlled"
+            - code: value
+            - text: ↔
+            - code: valueChange
+            - text: pairs. The pre-seeded demo states were left untouched.
+            - strong: "Truthful feedback:"
+            - text: the button's
+            - code: press
+            - text: invokes the document's only declared local action
+            - code: demo.submit
+            - text: (no network); the status line is a
+            - code: role="status"
+            - text: region bound to the action's own reported result, and an always-visible note states "Local preview — nothing is sent to a server."
+            - text: Labels use
+            - code: for
+            - text: matching input ids; the toggle group owns its accessible label.
+          - heading "Verification" [level=2]
+          - list:
+            - listitem: Reviewed the first section (card + header + name field) in source right after building it, then verified all wiring node-by-node after completion.
+            - listitem: Observed rendered appearance three times; two compaction passes brought content from 623px → 567px so everything, including the note and card's bottom edge, fits within one screen at a 585px-tall viewport.
+          - heading "Honest limits" [level=2]
+          - list:
+            - listitem: I have no click/type tools, so the change/press handlers are source-verified but not exercised; the status line's post-submit text depends on what the local action reports (it starts empty).
+            - listitem: No required-field validation logic — bindings here can't evaluate expressions, so the submit feedback describes what locally happened rather than gating on field validity.
+            - text: The recipe scaffolding left four unused auto-created state keys (
+            - code: input_nameInput
+            - text: ","
+            - code: input_emailInput
+            - text: ","
+            - code: catalog_roleSelect_root_value
+            - text: ","
+            - code: catalog_notifyGroup_root_value
+            - text: ); there's no state-removal op, and they're invisible in the UI.
+          - paragraph: The document is unsaved — saving is yours.
+          - paragraph: "7 applied edits remain undoable. Confirmed revision r1#7. Engine termination: completed. Source coverage: 6/84 registered definitions present. 78 missing from the 84-item coverage scope. Missing IDs are paged through coverage reads. This inventory does not establish the full requested intent, interactions or visual completion. Source: 34 nodes, 14 state declarations; a bounded preview image was observed; interactions unverified by this agent."
+        - button "Copy message":
+    - button "Scroll to latest message":
+      - generic: Scroll to end
+    - textbox "Message" [active]:
+      - /placeholder: Ask for a change…
+    - button "Send" [disabled]:
+      - generic: Send
+    - status
+  - status "7 edits applied":
+    - generic: 7 edits applied
+  - button "Chat details": ···
+- main:
+  - generic "Workspace mode":
+    - button "Design" [pressed]
+    - button "Interact"
+  - button "Document"
+  - generic "Screen canvas":
+    - main "Customer onboarding form":
+      - region "Section":
+        - heading "Create your account" [level=1]:
+          - generic: Create your account
+        - paragraph:
+          - generic: Tell us a bit about yourself to set up your workspace.
+        - region "Section":
+          - generic: Full name
+          - textbox "Full name":
+            - /placeholder: Ada Lovelace
+        - region "Section":
+          - generic: Work email
+          - textbox "Work email":
+            - /placeholder: you@company.com
+          - paragraph:
+            - generic: "Format: name@company.com"
+        - region "Section":
+          - generic: Role
+          - button "Choose an option":
+            - generic: Choose an option
+        - region "Section":
+          - generic: Notification preference
+          - group "Notification preference":
+            - radio "All updates"
+            - radio "Weekly digest" [checked]
+            - radio "Minimal"
+        - region "Section":
+          - button "Create account"
+          - status
+          - alert
+          - status
+          - paragraph:
+            - generic: Local preview — nothing is sent to a server.
+  - generic "Simulated execution Local preview · no live effects":
+    - text: Simulated execution
+    - generic: Local preview · no live effects
+- contentinfo:
+  - status: Final vertical compaction so the card bottom edge clears short viewports · agent edit · unsaved
+  - generic "v1_2b678c901b77214378dcbea7fcbce5bfb5abec1743af7bb6ea01b50794d4336a": "@3 · v1_2b678c901b77…"
+- generic: Designer — VICT Studio

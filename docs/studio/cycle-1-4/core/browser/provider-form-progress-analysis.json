@@ -1,0 +1,96 @@
+{
+  "schema": "vict.studio.provider-ui-extract@1",
+  "pair": "form",
+  "runStart": "provider-form-run-start.json",
+  "method": "Read saved CUA DOM/geometry artifacts only; no hidden application state or API",
+  "captures": [
+    {
+      "arm": "baseline",
+      "artifact": "provider-form-baseline-progress-01.dom.txt",
+      "capturedAt": "2026-10-25T12:06:10.47Z",
+      "sinceSubmittedMs": 80676.0,
+      "acknowledgedTransactionRows": 0,
+      "genericCompletedReadRows": 0,
+      "observationStartedRows": 0,
+      "failedRowLabels": [],
+      "note": "Cumulative visible rows in this snapshot only; generic read titles do not distinguish source/knowledge. Running outcome remains pending."
+    },
+    {
+      "arm": "baseline",
+      "artifact": "provider-form-baseline-progress-02.dom.txt",
+      "capturedAt": "2026-10-25T12:08:19.291Z",
+      "sinceSubmittedMs": 209497.0,
+      "acknowledgedTransactionRows": 0,
+      "genericCompletedReadRows": 13,
+      "observationStartedRows": 0,
+      "failedRowLabels": [],
+      "note": "Cumulative visible rows in this snapshot only; generic read titles do not distinguish source/knowledge. Running outcome remains pending."
+    },
+    {
+      "arm": "baseline",
+      "artifact": "provider-form-baseline-progress-03.dom.txt",
+      "capturedAt": "2026-10-25T12:12:07.401Z",
+      "sinceSubmittedMs": 437607.0,
+      "acknowledgedTransactionRows": 4,
+      "genericCompletedReadRows": 14,
+      "observationStartedRows": 0,
+      "failedRowLabels": [
+        "Edit refused before browser proposal failed"
+      ],
+      "note": "Cumulative visible rows in this snapshot only; generic read titles do not distinguish source/knowledge. Running outcome remains pending."
+    },
+    {
+      "arm": "candidate",
+      "artifact": "provider-form-candidate-progress-01.dom.txt",
+      "capturedAt": "2026-10-25T12:06:10.374Z",
+      "sinceSubmittedMs": 80242.0,
+      "acknowledgedTransactionRows": 0,
+      "genericCompletedReadRows": 0,
+      "observationStartedRows": 0,
+      "failedRowLabels": [],
+      "note": "Cumulative visible rows in this snapshot only; generic read titles do not distinguish source/knowledge. Running outcome remains pending."
+    },
+    {
+      "arm": "candidate",
+      "artifact": "provider-form-candidate-progress-02.dom.txt",
+      "capturedAt": "2026-10-25T12:08:19.147Z",
+      "sinceSubmittedMs": 209015.0,
+      "acknowledgedTransactionRows": 0,
+      "genericCompletedReadRows": 0,
+      "observationStartedRows": 0,
+      "failedRowLabels": [],
+      "note": "Cumulative visible rows in this snapshot only; generic read titles do not distinguish source/knowledge. Running outcome remains pending."
+    },
+    {
+      "arm": "candidate",
+      "artifact": "provider-form-candidate-progress-03.dom.txt",
+      "capturedAt": "2026-10-25T12:12:07.211Z",
+      "sinceSubmittedMs": 437079.0,
+      "acknowledgedTransactionRows": 1,
+      "genericCompletedReadRows": 8,
+      "observationStartedRows": 1,
+      "failedRowLabels": [
+        "Tool failed (VICT_TOOL_FAILED); prior commits remain failed",
+        "Input schema diagnostics · Edit screen (not a tool attempt) failed"
+      ],
+      "note": "Cumulative visible rows in this snapshot only; generic read titles do not distinguish source/knowledge. Running outcome remains pending."
+    },
+    {
+      "arm": "candidate",
+      "artifact": "provider-form-candidate-submitted.dom.txt",
+      "capturedAt": "2026-10-25T12:04:50.509Z",
+      "sinceSubmittedMs": 377.0,
+      "acknowledgedTransactionRows": 0,
+      "genericCompletedReadRows": 0,
+      "observationStartedRows": 0,
+      "failedRowLabels": [],
+      "note": "Cumulative visible rows in this snapshot only; generic read titles do not distinguish source/knowledge. Running outcome remains pending."
+    }
+  ],
+  "terminalMetrics": null,
+  "terminalOutcome": "pending",
+  "limits": "Snapshot event bounds only. Browser commit plus acknowledgement represents one transaction. Input-schema diagnostics labelled not a tool attempt are not added to tool totals.",
+  "analysisNotes": [
+    "First extraction used DateTimeOffset.Parse on PowerShell auto-converted JSON dates; culture conversion failed and yielded no captures. Original empty extraction retained as provider-form-progress-analysis-initial-failed.json. Corrected extraction casts typed dates directly; source artifacts unchanged."
+  ]
+}

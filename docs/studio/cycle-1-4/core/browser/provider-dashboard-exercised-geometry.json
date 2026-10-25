@@ -1,0 +1,148 @@
+{
+  "candidate": [
+    {
+      "class": "svelte-flow__node svelte-flow__node-authored selectable",
+      "id": "ingest",
+      "rect": {
+        "bottom": 512.3750076293945,
+        "height": 41.565773010253906,
+        "left": 388.6000061035156,
+        "right": 527.1526489257812,
+        "top": 470.8092346191406,
+        "width": 138.55264282226562,
+        "x": 388.6000061035156,
+        "y": 470.8092346191406
+      },
+      "style": "z-index: 0; transform: translate(12px, 18px); visibility: visible;",
+      "text": " Ingest "
+    },
+    {
+      "class": "svelte-flow__node svelte-flow__node-authored selectable",
+      "id": "validate",
+      "rect": {
+        "bottom": 512.3750076293945,
+        "height": 41.565773010253906,
+        "left": 494.8236999511719,
+        "right": 633.3763427734375,
+        "top": 470.8092346191406,
+        "width": 138.55264282226562,
+        "x": 494.8236999511719,
+        "y": 470.8092346191406
+      },
+      "style": "z-index: 0; transform: translate(150px, 18px); visibility: visible;",
+      "text": " Validate "
+    },
+    {
+      "class": "svelte-flow__node svelte-flow__node-authored selectable",
+      "id": "enrich",
+      "rect": {
+        "bottom": 512.3750076293945,
+        "height": 41.565773010253906,
+        "left": 601.04736328125,
+        "right": 739.6000061035156,
+        "top": 470.8092346191406,
+        "width": 138.55264282226562,
+        "x": 601.04736328125,
+        "y": 470.8092346191406
+      },
+      "style": "z-index: 0; transform: translate(288px, 18px); visibility: visible;",
+      "text": " Enrich "
+    },
+    {
+      "class": "svelte-flow__node svelte-flow__node-authored selectable",
+      "id": "store",
+      "rect": {
+        "bottom": 583.1907730102539,
+        "height": 41.565773010253906,
+        "left": 494.8236999511719,
+        "right": 633.3763427734375,
+        "top": 541.625,
+        "width": 138.55264282226562,
+        "x": 494.8236999511719,
+        "y": 541.625
+      },
+      "style": "z-index: 0; transform: translate(150px, 110px); visibility: visible;",
+      "text": " Store "
+    }
+  ],
+  "baseline": [
+    {
+      "class": "svelte-flow__node svelte-flow__node-authored selectable",
+      "id": "intake",
+      "rect": {
+        "bottom": 394.792444229126,
+        "height": 31.334863662719727,
+        "left": 628.5,
+        "right": 732.9495162963867,
+        "top": 363.45758056640625,
+        "width": 104.44951629638672,
+        "x": 628.5,
+        "y": 363.45758056640625
+      },
+      "style": "z-index: 0; transform: translate(12px, 78px); visibility: visible;",
+      "text": " Intake "
+    },
+    {
+      "class": "svelte-flow__node svelte-flow__node-authored selectable",
+      "id": "validate",
+      "rect": {
+        "bottom": 361.1364688873291,
+        "height": 31.334863662719727,
+        "left": 702.7752685546875,
+        "right": 807.2247848510742,
+        "top": 329.8016052246094,
+        "width": 104.44951629638672,
+        "x": 702.7752685546875,
+        "y": 329.8016052246094
+      },
+      "style": "z-index: 0; transform: translate(140px, 20px); visibility: visible;",
+      "text": " Validate "
+    },
+    {
+      "class": "svelte-flow__node svelte-flow__node-authored selectable",
+      "id": "dispatch",
+      "rect": {
+        "bottom": 394.792444229126,
+        "height": 31.334863662719727,
+        "left": 777.0504760742188,
+        "right": 881.4999923706055,
+        "top": 363.45758056640625,
+        "width": 104.44951629638672,
+        "x": 777.0504760742188,
+        "y": 363.45758056640625
+      },
+      "style": "z-index: 0; transform: translate(268px, 78px); visibility: visible;",
+      "text": " Dispatch "
+    },
+    {
+      "class": "svelte-flow__node svelte-flow__node-authored selectable",
+      "id": "archive",
+      "rect": {
+        "bottom": 428.4483890533447,
+        "height": 31.334863662719727,
+        "left": 702.7752685546875,
+        "right": 807.2247848510742,
+        "top": 397.113525390625,
+        "width": 104.44951629638672,
+        "x": 702.7752685546875,
+        "y": 397.113525390625
+      },
+      "style": "z-index: 0; transform: translate(140px, 136px); visibility: visible;",
+      "text": " Archive "
+    }
+  ],
+  "candidateScroll": [
+    {
+      "left": 0,
+      "top": 21.600000381469727
+    }
+  ],
+  "baselineScroll": [
+    {
+      "left": 0,
+      "top": 43.20000076293945
+    }
+  ],
+  "action": "Only first Flow node Enter selection; no drag/arrow topology edits; FileSave afterwards resets runtime through established behavior.",
+  "probeSetup": "Initial fixture-specific workspaceState helper errored because dashboard lacks its expected fixture element; corrected to guarded actual DOM geometry."
+}

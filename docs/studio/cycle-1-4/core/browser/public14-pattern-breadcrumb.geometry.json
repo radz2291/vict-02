@@ -1,0 +1,57 @@
+{
+  "capturedAt": "2026-10-25T11:46:40.928Z",
+  "url": "http://127.0.0.14:5608/",
+  "active": {
+    "label": null,
+    "tag": "BUTTON",
+    "text": "Theme popup"
+  },
+  "rects": [
+    {
+      "class": "svelte-n50uah",
+      "clientHeight": 2385,
+      "display": "block",
+      "height": 2385,
+      "label": null,
+      "overflow": "visible",
+      "role": null,
+      "scrollHeight": 2385,
+      "tag": "MAIN",
+      "width": 624.7999877929688,
+      "x": 0,
+      "y": -279.20001220703125
+    },
+    {
+      "class": "vict-rhea uv-a14a822b-public-pattern",
+      "clientHeight": 21,
+      "display": "block",
+      "height": 21,
+      "label": "Breadcrumb",
+      "overflow": "visible",
+      "role": null,
+      "scrollHeight": 21,
+      "tag": "NAV",
+      "width": 567.2000122070312,
+      "x": 28.80000114440918,
+      "y": 243.5
+    },
+    {
+      "class": "svelte-flow svelte-flow__container light svelte-mkap6j",
+      "clientHeight": 358,
+      "display": "block",
+      "height": 358.3999938964844,
+      "label": null,
+      "overflow": "hidden",
+      "role": "application",
+      "scrollHeight": 762,
+      "tag": "DIV",
+      "width": 565.6000366210938,
+      "x": 29.600000381469727,
+      "y": 1481.7000732421875
+    }
+  ],
+  "viewport": {
+    "height": 480,
+    "width": 640
+  }
+}

@@ -1,0 +1,132 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Independent Cycle 1.4 challenge"
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- complementary "Chat":
+  - region "Conversation":
+    - region "Messages — Message":
+      - log:
+        - paragraph: Describe a screen, or select an element to edit it.
+    - button "Scroll to latest message":
+      - generic: Scroll to end
+    - textbox "Message":
+      - /placeholder: Ask for a change…
+    - button "Send" [disabled]:
+      - generic: Send
+    - status
+  - status "Ready":
+    - generic: Ready
+  - button "Chat details": ···
+- main:
+  - generic "Workspace mode":
+    - button "Design" [pressed]
+    - button "Interact"
+  - button "Document" [expanded]
+  - generic "Screen canvas":
+    - main "Independent Cycle 1.4 challenge":
+      - region "Left group":
+        - heading "First heading" [level=1]:
+          - generic: First heading
+        - generic: Native message
+        - textbox "Native message": Initial independent message
+        - paragraph:
+          - generic: Initial independent message
+      - region "Right group":
+        - heading "Second heading" [level=2]:
+          - generic: Second heading
+        - paragraph:
+          - generic: Move or duplicate this exact source; retain its source identity and recover through history.
+      - article "Long content":
+        - generic: Long content provides a real scrolling canvas for continuity checks. Select a different source without moving the camera or scrolling the canvas. Keep this text available while opening and closing inspection details. Source facts, relationships and identities belong to inspection. Format, Insert, Arrange and Connect remain the floating editing tools. Native text editing and Interact keep their own context menus. A context command must target the object under the first secondary click, preserve pending drafts and use canonical history. Repeating the journey after Save and reopen should retain the same authored source. This lower section intentionally extends beyond the initial visible area. A screenshot of one visible crop is evidence only of that crop and does not prove offscreen content, runtime interactions or complete-page quality.
+  - generic "Simulated execution Local preview · no live effects":
+    - text: Simulated execution
+    - generic: Local preview · no live effects
+- complementary "Document":
+  - navigation "Document sections":
+    - button "Layers"
+    - button "Structure" [pressed]
+    - button "Data"
+    - button "Actions"
+    - button "Source"
+    - button "Expand Structure": ↗
+    - button "Close document": ×
+  - region "Source structure":
+    - searchbox "Search structure"
+    - menubar "Structure menus":
+      - menuitem "View"
+      - menuitem "Object"
+    - generic: 7 items
+    - button "Inspect structure": Inspect
+    - application:
+      - 'group "Container: Screen, source screen"':
+        - button
+        - generic: Container
+        - button "Collapse Screen" [expanded]: ⌄
+        - strong: Screen
+        - button
+      - 'group "Container: Left group, source left"':
+        - button
+        - generic: Container
+        - button "Expand Left group": ›
+        - strong: Left group
+        - generic: 7 hidden
+        - button
+      - 'group "Container: Right group, source right"':
+        - button
+        - generic: Container
+        - button "Collapse Right group" [expanded]: ⌄
+        - strong: Right group
+        - button
+      - 'group "Container: Heading · Second heading, source second" [active]':
+        - button
+        - generic: Heading
+        - strong: Second heading
+        - button
+      - 'group "Container: Paragraph · Move or duplicate this exact source; retain its source identity and recover through history., source copy"':
+        - button
+        - generic: Paragraph
+        - strong: Move or duplicate this exact source; retain its source identity and recover…
+        - button
+      - 'group "Container: Long content, source long"':
+        - button
+        - generic: Container
+        - button "Collapse Long content" [expanded]: ⌄
+        - strong: Long content
+        - button
+      - 'group "Text: Long content provides a real scrolling canvas for continuity checks. Select a different source without moving the camera or scrolling the canvas. Keep this text available while opening and closing inspection details. Source facts, relationships and identities belong to inspection. Format, Insert, Arrange and Connect remain the floating editing tools. Native text editing and Interact keep their own context menus. A context command must target the object under the first secondary click, preserve pending drafts and use canonical history. Repeating the journey after Save and reopen should retain the same authored source. This lower section intentionally extends beyond the initial visible area. A screenshot of one visible crop is evidence only of that crop and does not prove offscreen content, runtime interactions or complete-page quality., source long-text"':
+        - button
+        - generic: Text
+        - strong: Long content provides a real scrolling canvas for continuity checks. Select…
+        - button
+      - link "Svelte Flow attribution":
+        - /url: https://svelteflow.dev?utm_source=attribution
+        - text: Svelte Flow
+      - generic "Control Panel":
+        - button "Zoom In":
+        - button "Zoom Out":
+        - button "Fit View":
+- contentinfo:
+  - status: Design mode · select and edit without running behavior.
+  - generic "v1_2a9f402549eff46dae64181b45f5b931c7b169b08bc46f3bcfa9e8294f78ff90": "@3 · v1_2a9f402549ef…"
+- option "100"
+- option "200"
+- option "300"
+- option "400"
+- option "500"
+- option "600" [selected]
+- option "700"
+- option "800"
+- option "900"
+- option "normal"
+- option "bold"
+- option "bolder"
+- option "lighter"

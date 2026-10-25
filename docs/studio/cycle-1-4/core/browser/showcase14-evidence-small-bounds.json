@@ -1,0 +1,36 @@
+{
+  "ancestors": [
+    {
+      "attributes": [],
+      "class": "evidence-demo-popover"
+    },
+    {
+      "attributes": [],
+      "class": ""
+    },
+    {
+      "attributes": [],
+      "class": "evidence-guide svelte-tllzm3"
+    }
+  ],
+  "clientHeight": 198,
+  "rect": {
+    "bottom": 468.08750915527344,
+    "height": 200.08750915527344,
+    "left": 33,
+    "right": 313,
+    "top": 268,
+    "width": 280,
+    "x": 33,
+    "y": 268
+  },
+  "scrollHeight": 777,
+  "tokens": {
+    "radius": "8px",
+    "surface": "#fff"
+  },
+  "viewport": {
+    "height": 480,
+    "width": 640
+  }
+}

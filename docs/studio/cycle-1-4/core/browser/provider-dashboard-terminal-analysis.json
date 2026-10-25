@@ -1,0 +1,3695 @@
+{
+  "schema": "vict.studio.provider-ui-terminal-extract@1",
+  "pair": "dashboard",
+  "method": "Saved visible DOM/Source artifacts only. UI measurements retain displayed rounding. Trace result categories use delivered section names; no hidden state/API.",
+  "limits": "A terminal engine completion is not an interaction/intent verdict. Missing baseline host interval telemetry stays null. No exact provider latency, model steps, cost or statistical throughput inference.",
+  "arms": [
+    {
+      "arm": "baseline",
+      "status": "completed",
+      "artifacts": {
+        "trace": "provider-dashboard-baseline-expanded-trace.dom.txt",
+        "details": "provider-dashboard-baseline-details-01.dom.txt",
+        "source": "provider-dashboard-baseline-final-source.json"
+      },
+      "uiMeasurements": {
+        "toolCalls": 27,
+        "refusedCalls": 0,
+        "callsAfterRefusal": 0,
+        "elapsedSeconds": 681.5,
+        "authoringModelRequests": 22,
+        "imageRequests": 5,
+        "firstConfirmedEditSeconds": 304.9,
+        "inputTokens": 731800,
+        "outputTokens": 22644,
+        "confirmedEdits": 11,
+        "confirmedRevision": "r1#11",
+        "categories": null,
+        "summedToolSeconds": null,
+        "toolActiveUnionSeconds": null,
+        "outsideToolSeconds": null
+      },
+      "traceCounts": {
+        "toolStarts": 27,
+        "committedReceipts": 11,
+        "uniqueAcknowledgedProposals": 11,
+        "readSections": {
+          "families": 1,
+          "state": 1,
+          "catalog": 3,
+          "elements": 1,
+          "contracts": 3,
+          "source": 2
+        },
+        "knowledgeReadResults": 8,
+        "sourceReadResults": 3,
+        "firstToolStartMs": 41925,
+        "firstCommittedReceiptMs": 304935,
+        "firstObservationStartMs": 356217
+      },
+      "finalSource": {
+        "id": "screen-a93369d2-4321-4b2c-90be-e4a3ef8b9187",
+        "revision": "r1",
+        "nodeCount": 70,
+        "stateCount": 7,
+        "stateKeys": [
+          "message",
+          "accepted",
+          "dialogOpen",
+          "busy",
+          "actionError",
+          "actionResult",
+          "opsPrompt"
+        ]
+      },
+      "observations": [
+        {
+          "resultAtMs": 376395,
+          "ok": true,
+          "metadata": {
+            "cursor": {
+              "documentId": "screen-a93369d2-4321-4b2c-90be-e4a3ef8b9187",
+              "revision": "r1#3",
+              "digest": "85bdcfd8f02e66ae09f2beef7a27a5bcdd97a5a24c6e3e73fb97ae8ed3f6d8a7",
+              "epoch": "b68afce8-66fc-4685-8cf0-57899db6e037"
+            },
+            "capturedAt": "2026-10-25T12:34:27.671Z",
+            "viewport": {
+              "width": 960,
+              "height": 585,
+              "scrollLeft": 0,
+              "scrollTop": 0,
+              "devicePixelRatio": 1.0000000149011612
+            },
+            "image": {
+              "width": 909,
+              "height": 560,
+              "sourceWidth": 909,
+              "sourceHeight": 560,
+              "offsetLeft": 0,
+              "offsetTop": 0,
+              "cropped": false
+            },
+            "preview": {
+              "mode": "design",
+              "fingerprint": "c6ae2bb4a6cb05c846a609c17af489ed45c7a77931b3791c92bc85750f0f37f4",
+              "selection": "screen-a93369d2-4321-4b2c-90be-e4a3ef8b9187|screen"
+            }
+          },
+          "imageDigest": "24c566c959c920fee08271db270082d43b824cd47382e6898df36d6e90e58a2e",
+          "confirmedImageDigest": "24c566c959c920fee08271db270082d43b824cd47382e6898df36d6e90e58a2e",
+          "captureAttempts": 2,
+          "captureRecoveryAttempts": 0,
+          "revalidatedAt": "2026-10-25T12:34:47.578Z",
+          "interactionVerified": false,
+          "observation": "**Header:** Bold \"Operations overview\" with smaller gray subtitle \"Local snapshot — every control on this screen stays in-document\"; a light-green pill \"● All systems nominal\" sits top-right. Text is sharp and unclipped.\n\n**Cards:** Three equal-width white cards with light borders, rounded corners, and even horizontal spacing. Hierarchy is compact: small uppercase gray labels (THROUGHPUT · REQ/MIN, ERROR RATE, CLUSTER CAPACITY), large dark values (1,284; 0.42%; 68%), then small green deltas with ▲/▼ triangles (\"4.2% vs last hour\", \"0.08 pts — improving\").\n\n**Meter:** Capacity card shows \"Capacity used\" above a rounded bar — dark green fill to roughly two-thirds on a light gray track, consistent with 68%.\n\n**Spacing:** Padding is consistent; no clipping observed. Inference: content fills only the top ~40% of the viewport, leaving a large empty gray region below."
+        },
+        {
+          "resultAtMs": 489927,
+          "ok": true,
+          "metadata": {
+            "cursor": {
+              "documentId": "screen-a93369d2-4321-4b2c-90be-e4a3ef8b9187",
+              "revision": "r1#8",
+              "digest": "76c6e96e72e38c08d22e0ca4b68692de1f6c2fa1445cd265537dd8e2d31a8b7d",
+              "epoch": "b68afce8-66fc-4685-8cf0-57899db6e037"
+            },
+            "capturedAt": "2026-10-25T12:36:18.943Z",
+            "viewport": {
+              "width": 960,
+              "height": 585,
+              "scrollLeft": 0,
+              "scrollTop": 0,
+              "devicePixelRatio": 1.0000000149011612
+            },
+            "image": {
+              "width": 909,
+              "height": 569,
+              "sourceWidth": 909,
+              "sourceHeight": 705,
+              "offsetLeft": 0,
+              "offsetTop": 0,
+              "cropped": true
+            },
+            "preview": {
+              "mode": "design",
+              "fingerprint": "1225418fb34e416ead60867e23f6e6eb83507fd1500836a3124935765e9ed28c",
+              "selection": "screen-a93369d2-4321-4b2c-90be-e4a3ef8b9187|screen"
+            }
+          },
+          "imageDigest": "3772b311243f06ed15b6184dca8e968cfb9f34ee7d9441ac6e2b61c84adf0669",
+          "confirmedImageDigest": "3772b311243f06ed15b6184dca8e968cfb9f34ee7d9441ac6e2b61c84adf0669",
+          "captureAttempts": 3,
+          "captureRecoveryAttempts": 1,
+          "revalidatedAt": "2026-10-25T12:36:41.110Z",
+          "interactionVerified": false,
+          "observation": "**Visible observations (960×585 viewport, image cropped from 705px source height):**\n\n- Header, three aligned KPI cards, and bottom row are present with consistent gutters; KPI values, progress bar, and \"All systems nominal\" badge render cleanly.\n- One-screen fit cannot be confirmed: the bottom row is clipped at the image edge. The Ops Assistant prompt input (\"Ask about incidents, deploys…\") and the lower portions of all three cards are cut off — likely vertical overflow, though cropping is a provenance fact, not proof of overflow.\n- Topology canvas shows nodes Intake, Validate, Dispatch, Archive with an \"ingest\" edge label; a second label near center appears mirrored/upside-down and illegible. The third edge/label is not visibly confirmed.\n- Zoom controls sit close beneath the Intake node but don't appear to overlap.\n- Recent Activity timestamps align right; text wraps without clipping."
+        },
+        {
+          "resultAtMs": 580085,
+          "ok": true,
+          "metadata": {
+            "cursor": {
+              "documentId": "screen-a93369d2-4321-4b2c-90be-e4a3ef8b9187",
+              "revision": "r1#9",
+              "digest": "84c1e2b970c1dde6d82d993d0cd1a7d13c2c2e9e178319bd69ace845ca12d9c6",
+              "epoch": "b68afce8-66fc-4685-8cf0-57899db6e037"
+            },
+            "capturedAt": "2026-10-25T12:37:49.535Z",
+            "viewport": {
+              "width": 960,
+              "height": 585,
+              "scrollLeft": 0,
+              "scrollTop": 0,
+              "devicePixelRatio": 1.0000000149011612
+            },
+            "image": {
+              "width": 909,
+              "height": 569,
+              "sourceWidth": 909,
+              "sourceHeight": 595,
+              "offsetLeft": 0,
+              "offsetTop": 0,
+              "cropped": true
+            },
+            "preview": {
+              "mode": "design",
+              "fingerprint": "fd2c81289b01e052936cf7d0fcf2352526453c59ea7c5933dc71164855fc8a9e",
+              "selection": "screen-a93369d2-4321-4b2c-90be-e4a3ef8b9187|screen"
+            }
+          },
+          "imageDigest": "eeec4ee52caa7072b77856cf91448d43fc7b7f2361ad1a680d934e846c428507",
+          "confirmedImageDigest": "eeec4ee52caa7072b77856cf91448d43fc7b7f2361ad1a680d934e846c428507",
+          "captureAttempts": 2,
+          "captureRecoveryAttempts": 0,
+          "revalidatedAt": "2026-10-25T12:38:11.267Z",
+          "interactionVerified": false,
+          "observation": "Observed at the captured area (909×569, cropped from a 909×595 source; 960×585 viewport): header, KPI row of three equal-height cards aligned on one baseline, progress bar intact. Prompt input with send button is fully visible; activity list shows three items with timestamps.\n\nInference/limitations: because the capture excludes ~26 px at bottom and ~51 px at right of the viewport, the lower panels' bottom edges and the assistant panel's right edge fall outside the image — no vertical clipping beyond that point can be confirmed. In the topology, labels Validate, Dispatch, Archive are readable and thin edges visible, but a fourth node's label is obscured by the overlapping zoom-control panel."
+        },
+        {
+          "resultAtMs": 631584,
+          "ok": true,
+          "metadata": {
+            "cursor": {
+              "documentId": "screen-a93369d2-4321-4b2c-90be-e4a3ef8b9187",
+              "revision": "r1#10",
+              "digest": "8fa14d17d2c87862d0f5b35fbef4f7314c5c38ab2eec4390fee75d4c1f42f977",
+              "epoch": "b68afce8-66fc-4685-8cf0-57899db6e037"
+            },
+            "capturedAt": "2026-10-25T12:38:33.780Z",
+            "viewport": {
+              "width": 960,
+              "height": 585,
+              "scrollLeft": 0,
+              "scrollTop": 0,
+              "devicePixelRatio": 1.0000000149011612
+            },
+            "image": {
+              "width": 909,
+              "height": 569,
+              "sourceWidth": 909,
+              "sourceHeight": 591,
+              "offsetLeft": 0,
+              "offsetTop": 0,
+              "cropped": true
+            },
+            "preview": {
+              "mode": "design",
+              "fingerprint": "74ba0a2d848da661e628435cfa3a64ce9f2fc20d2eea671d86cf9c6705924c33",
+              "selection": "screen-a93369d2-4321-4b2c-90be-e4a3ef8b9187|screen"
+            }
+          },
+          "imageDigest": "403fe444d3f511504225d2fe205aa58831aa9056df4d073204e9b76f98f8c0e3",
+          "confirmedImageDigest": "403fe444d3f511504225d2fe205aa58831aa9056df4d073204e9b76f98f8c0e3",
+          "captureAttempts": 2,
+          "captureRecoveryAttempts": 0,
+          "revalidatedAt": "2026-10-25T12:39:02.768Z",
+          "interactionVerified": false,
+          "observation": "**Observed directly:** Within the captured crop (909×569 of the 960×585 viewport), the header, three metric cards (Throughput, Error Rate, Cluster Capacity), Recent Activity list, Ingest Topology, and Ops Assistant panels all render without internal overlap. Flow node labels — Intake, Validate, Dispatch, Archive — are fully readable, with the \"Svelte Flow\" caption visible. The prompt input (\"Ask about incidents, deploys, capacity…\") and circular send button appear complete, with space beneath them.\n\n**Inference/limitation:** The image is cropped — roughly 51px of width and ~16–22px of height are not shown. All three lower panels extend to the image's bottom edge with no visible bottom borders or corner rounding, so their true bottoms — and whether anything is clipped below — cannot be confirmed from this capture alone. One-screen fit is therefore only partially verifiable."
+        },
+        {
+          "resultAtMs": 659702,
+          "ok": true,
+          "metadata": {
+            "cursor": {
+              "documentId": "screen-a93369d2-4321-4b2c-90be-e4a3ef8b9187",
+              "revision": "r1#11",
+              "digest": "9a57529207eca724561706767c2b6662336306fe5b9111f01d66d17ffdf1db4d",
+              "epoch": "b68afce8-66fc-4685-8cf0-57899db6e037"
+            },
+            "capturedAt": "2026-10-25T12:39:17.262Z",
+            "viewport": {
+              "width": 960,
+              "height": 585,
+              "scrollLeft": 0,
+              "scrollTop": 0,
+              "devicePixelRatio": 1.0000000149011612
+            },
+            "image": {
+              "width": 909,
+              "height": 569,
+              "sourceWidth": 909,
+              "sourceHeight": 583,
+              "offsetLeft": 0,
+              "offsetTop": 0,
+              "cropped": true
+            },
+            "preview": {
+              "mode": "design",
+              "fingerprint": "8c8d44636bae7f77e08fac9a40b20b781b22009d492d44118b46c39350488d1b",
+              "selection": "screen-a93369d2-4321-4b2c-90be-e4a3ef8b9187|screen"
+            }
+          },
+          "imageDigest": "ac7af73e5707f3199f8e2036f6338cf23ad16f60fc7a50b71ae782e13d061efd",
+          "confirmedImageDigest": "ac7af73e5707f3199f8e2036f6338cf23ad16f60fc7a50b71ae782e13d061efd",
+          "captureAttempts": 2,
+          "captureRecoveryAttempts": 0,
+          "revalidatedAt": "2026-10-25T12:39:30.885Z",
+          "interactionVerified": false,
+          "observation": "No — this cannot be confirmed. Direct observation: the three bottom panels (Recent Activity, Ingest Topology, Ops Assistant) run all the way to the bottom edge of the image and are visibly cut off; none of their bottom edges or bottom rounded corners are rendered. The image itself is cropped (569px of a 583px source height captured), so additional content below the visible boundary may exist but is not observable. The KPI cards, header, and badge are fully visible with intact rounded corners, and the panels' side edges are clean, but the question of vertical fit within the 585px viewport remains unverified — the dashboard either extends beyond the viewport or the crop obscures it. Inference only: it likely overflows, but the render cannot prove either case."
+        }
+      ],
+      "events": [
+        {
+          "kind": "tool-start",
+          "tool": "studio_screen_read",
+          "sinceTurnStartMs": 41925,
+          "payload": null
+        },
+        {
+          "kind": "observation",
+          "tool": "studio_screen_read",
+          "sinceTurnStartMs": 41934,
+          "payload": {
+            "expectedRevision": "r1#0",
+            "cursor": {
+              "documentId": "screen-a93369d2-4321-4b2c-90be-e4a3ef8b9187",
+              "revision": "r1#0",
+              "digest": "09e81dfe395a1e005db6293ae5c90d0cdaec94f14cfcc0f9be5666cf892e0bc6",
+              "epoch": "b68afce8-66fc-4685-8cf0-57899db6e037"
+            },
+            "section": "families",
+            "registryDigest": "6a06abc8ee99fa9f88e3abc5cfe9d8ea244ae35a79321284cd0e00de0308e80d",
+            "items": [
+              {
+                "family": "general",
+                "count": 80,
+                "authorable": 78,
+                "categories": [
+                  "presentation",
+                  "input",
+                  "disclosure",
+                  "navigation",
+                  "date-time"
+                ],
+                "packages": [
+                  "@victframework/ui-svelte"
+                ]
+              },
+              {
+                "family": "ai",
+                "count": 3,
+                "authorable": 3,
+                "categories": [
+                  "chat"
+                ],
+                "packages": [
+                  "@victframework/ui-ai-svelte"
+                ]
+              },
+              {
+                "family": "flow",
+                "count": 3,
+                "authorable": 3,
+                "categories": [
+                  "diagram",
+                  "diagram-part"
+                ],
+                "packages": [
+                  "@victframework/ui-flow-svelte"
+                ]
+              }
+            ],
+            "total": 3,
+            "offset": 0,
+            "nextOffset": null
+          }
+        },
+        {
+          "kind": "tool-start",
+          "tool": "studio_screen_read",
+          "sinceTurnStartMs": 41927,
+          "payload": null
+        },
+        {
+          "kind": "observation",
+          "tool": "studio_screen_read",
+          "sinceTurnStartMs": 41935,
+          "payload": {
+            "expectedRevision": "r1#0",
+            "cursor": {
+              "documentId": "screen-a93369d2-4321-4b2c-90be-e4a3ef8b9187",
+              "revision": "r1#0",
+              "digest": "09e81dfe395a1e005db6293ae5c90d0cdaec94f14cfcc0f9be5666cf892e0bc6",
+              "epoch": "b68afce8-66fc-4685-8cf0-57899db6e037"
+            },
+            "section": "state",
+            "items": [
+              {
+                "key": "message",
+                "type": "string",
+                "initialJson": "\"Hello from my screen\"",
+                "fullSource": "Read state with stateKey for lossless declaration JSON pages."
+              },
+              {
+                "key": "accepted",
+                "type": "boolean",
+                "initialJson": "false",
+                "fullSource": "Read state with stateKey for lossless declaration JSON pages."
+              },
+              {
+                "key": "dialogOpen",
+                "type": "boolean",
+                "initialJson": "false",
+                "fullSource": "Read state with stateKey for lossless declaration JSON pages."
+              },
+              {
+                "key": "busy",
+                "type": "boolean",
+                "initialJson": "false",
+                "fullSource": "Read state with stateKey for lossless declaration JSON pages."
+              },
+              {
+                "key": "actionError",
+                "type": "string",
+                "initialJson": "\"\"",
+                "fullSource": "Read state with stateKey for lossless declaration JSON pages."
+              },
+              {
+                "key": "actionResult",
+                "type": "string",
+                "initialJson": "\"\"",
+                "fullSource": "Read state with stateKey for lossless declaration JSON pages."
+              }
+            ],
+            "total": 6,
+            "offset": 0,
+            "nextOffset": null
+          }
+        },
+        {
+          "kind": "tool-start",
+          "tool": "studio_screen_read",
+          "sinceTurnStartMs": 53174,
+          "payload": null
+        },
+        {
+          "kind": "observation",
+          "tool": "studio_screen_read",
+          "sinceTurnStartMs": 53192,
+          "payload": {
+            "expectedRevision": "r1#0",
+            "cursor": {
+              "documentId": "screen-a93369d2-4321-4b2c-90be-e4a3ef8b9187",
+              "revision": "r1#0",
+              "digest": "09e81dfe395a1e005db6293ae5c90d0cdaec94f14cfcc0f9be5666cf892e0bc6",
+              "epoch": "b68afce8-66fc-4685-8cf0-57899db6e037"
+            },
+            "section": "catalog",
+            "registryDigest": "6a06abc8ee99fa9f88e3abc5cfe9d8ea244ae35a79321284cd0e00de0308e80d",
+            "items": [
+              {
+                "id": "vict.ai.conversation",
+                "revision": "1",
+                "label": "Conversation",
+                "family": "ai",
+                "category": "chat",
+                "eligibility": {
+                  "kind": "standalone"
+                },
+                "digest": "55962dbc6fc4384501cb7cc00410ecb71c5b747c8aa1c9c967f64facb3a1ca7f",
+                "packageName": "@victframework/ui-ai-svelte"
+              },
+              {
+                "id": "vict.ai.message",
+                "revision": "1",
+                "label": "Chat message",
+                "family": "ai",
+                "category": "chat",
+                "eligibility": {
+                  "kind": "standalone"
+                },
+                "digest": "679df9e50d9eafd86d92172e72ecb00bc53bdbb4eb6cde3272139235c328913c",
+                "packageName": "@victframework/ui-ai-svelte"
+              },
+              {
+                "id": "vict.ai.prompt-input",
+                "revision": "1",
+                "label": "Prompt input",
+                "family": "ai",
+                "category": "chat",
+                "eligibility": {
+                  "kind": "standalone"
+                },
+                "digest": "012317a66d95ef8a3da8337344fea67877d73049ee58a0de4eaf22ee67cace64",
+                "packageName": "@victframework/ui-ai-svelte"
+              }
+            ],
+            "total": 3,
+            "offset": 0,
+            "nextOffset": null
+          }
+        },
+        {
+          "kind": "tool-start",
+          "tool": "studio_screen_read",
+          "sinceTurnStartMs": 53176,
+          "payload": null
+        },
+        {
+          "kind": "observation",
+          "tool": "studio_screen_read",
+          "sinceTurnStartMs": 53194,
+          "payload": {
+            "expectedRevision": "r1#0",
+            "cursor": {
+              "documentId": "screen-a93369d2-4321-4b2c-90be-e4a3ef8b9187",
+              "revision": "r1#0",
+              "digest": "09e81dfe395a1e005db6293ae5c90d0cdaec94f14cfcc0f9be5666cf892e0bc6",
+              "epoch": "b68afce8-66fc-4685-8cf0-57899db6e037"
+            },
+            "section": "catalog",
+            "registryDigest": "6a06abc8ee99fa9f88e3abc5cfe9d8ea244ae35a79321284cd0e00de0308e80d",
+            "items": [
+              {
+                "id": "vict.flow.canvas",
+                "revision": "1",
+                "label": "Flow canvas",
+                "family": "flow",
+                "category": "diagram",
+                "eligibility": {
+                  "kind": "standalone"
+                },
+                "digest": "3bf1d1da07ec917d35bc1c1bcddf23eb172d4d9d9b42c82c85e22938d8638743",
+                "packageName": "@victframework/ui-flow-svelte"
+              },
+              {
+                "id": "vict.flow.edge",
+                "revision": "1",
+                "label": "Flow edge declaration",
+                "family": "flow",
+                "category": "diagram-part",
+                "eligibility": {
+                  "kind": "part"
+                },
+                "digest": "62fad3846cdf76659b1d3d51b3fbfd506a8c74e704437d4e9634a68d9a7ddc8b",
+                "packageName": "@victframework/ui-flow-svelte"
+              },
+              {
+                "id": "vict.flow.node",
+                "revision": "1",
+                "label": "Flow node declaration",
+                "family": "flow",
+                "category": "diagram-part",
+                "eligibility": {
+                  "kind": "part"
+                },
+                "digest": "caa56fecde5ad7a22f0f4c369423b969edbb29044ae33743f88831420ec31c94",
+                "packageName": "@victframework/ui-flow-svelte"
+              }
+            ],
+            "total": 3,
+            "offset": 0,
+            "nextOffset": null
+          }
+        },
+        {
+          "kind": "tool-start",
+          "tool": "studio_screen_read",
+          "sinceTurnStartMs": 53177,
+          "payload": null
+        },
+        {
+          "kind": "observation",
+          "tool": "studio_screen_read",
+          "sinceTurnStartMs": 53196,
+          "payload": {
+            "expectedRevision": "r1#0",
+            "cursor": {
+              "documentId": "screen-a93369d2-4321-4b2c-90be-e4a3ef8b9187",
+              "revision": "r1#0",
+              "digest": "09e81dfe395a1e005db6293ae5c90d0cdaec94f14cfcc0f9be5666cf892e0bc6",
+              "epoch": "b68afce8-66fc-4685-8cf0-57899db6e037"
+            },
+            "section": "elements",
+            "items": [
+              {
+                "tag": "div",
+                "leaf": false
+              },
+              {
+                "tag": "section",
+                "leaf": false
+              },
+              {
+                "tag": "header",
+                "leaf": false
+              },
+              {
+                "tag": "footer",
+                "leaf": false
+              },
+              {
+                "tag": "main",
+                "leaf": false
+              },
+              {
+                "tag": "nav",
+                "leaf": false
+              },
+              {
+                "tag": "article",
+                "leaf": false
+              },
+              {
+                "tag": "aside",
+                "leaf": false
+              },
+              {
+                "tag": "h1",
+                "leaf": false
+              },
+              {
+                "tag": "h2",
+                "leaf": false
+              },
+              {
+                "tag": "h3",
+                "leaf": false
+              },
+              {
+                "tag": "h4",
+                "leaf": false
+              },
+              {
+                "tag": "h5",
+                "leaf": false
+              },
+              {
+                "tag": "h6",
+                "leaf": false
+              },
+              {
+                "tag": "p",
+                "leaf": false
+              },
+              {
+                "tag": "span",
+                "leaf": false
+              },
+              {
+                "tag": "strong",
+                "leaf": false
+              },
+              {
+                "tag": "em",
+                "leaf": false
+              },
+              {
+                "tag": "ul",
+                "leaf": false
+              },
+              {
+                "tag": "ol",
+                "leaf": false
+              }
+            ],
+            "total": 38,
+            "offset": 0,
+            "nextOffset": 20,
+            "guidance": "Read elements with tag for its attributes; native tags are not component descriptors."
+          }
+        },
+        {
+          "kind": "tool-start",
+          "tool": "studio_screen_read",
+          "sinceTurnStartMs": 53178,
+          "payload": null
+        },
+        {
+          "kind": "observation",
+          "tool": "studio_screen_read",
+          "sinceTurnStartMs": 53198,
+          "payload": {
+            "expectedRevision": "r1#0",
+            "cursor": {
+              "documentId": "screen-a93369d2-4321-4b2c-90be-e4a3ef8b9187",
+              "revision": "r1#0",
+              "digest": "09e81dfe395a1e005db6293ae5c90d0cdaec94f14cfcc0f9be5666cf892e0bc6",
+              "epoch": "b68afce8-66fc-4685-8cf0-57899db6e037"
+            },
+            "section": "catalog",
+            "registryDigest": "6a06abc8ee99fa9f88e3abc5cfe9d8ea244ae35a79321284cd0e00de0308e80d",
+            "items": [
+              {
+                "id": "vict.catalog.appshell",
+                "revision": "1",
+                "label": "Appshell",
+                "family": "general",
+                "category": "presentation",
+                "eligibility": {
+                  "kind": "host-required",
+                  "reason": "Requires application navigation host semantics."
+                },
+                "digest": "241f31ea1ad8d5409b64a90ed80fb0e908b0e29b72a5314724186ea2b911d531",
+                "packageName": "@victframework/ui-svelte"
+              },
+              {
+                "id": "vict.catalog.aspect-ratio",
+                "revision": "1",
+                "label": "Aspect Ratio",
+                "family": "general",
+                "category": "presentation",
+                "eligibility": {
+                  "kind": "standalone"
+                },
+                "digest": "800259d819f9d3a3a56d01ba2192ff5e3aacf084c2e5ea953aeaefb70af222b6",
+                "packageName": "@victframework/ui-svelte"
+              },
+              {
+                "id": "vict.catalog.avatar",
+                "revision": "1",
+                "label": "Avatar",
+                "family": "general",
+                "category": "presentation",
+                "eligibility": {
+                  "kind": "standalone"
+                },
+                "digest": "a5e9af51ee035d9c45874c0a0d340805b21fcf0dc3e366460645777bbebd37a5",
+                "packageName": "@victframework/ui-svelte"
+              },
+              {
+                "id": "vict.catalog.button",
+                "revision": "1",
+                "label": "Button",
+                "family": "general",
+                "category": "presentation",
+                "eligibility": {
+                  "kind": "standalone"
+                },
+                "digest": "cc715b1bdbfce5d03ec87d1e38715e362fc0bcc95d0ef00c256ef1bfa6b372c8",
+                "packageName": "@victframework/ui-svelte"
+              },
+              {
+                "id": "vict.catalog.label",
+                "revision": "1",
+                "label": "Label",
+                "family": "general",
+                "category": "presentation",
+                "eligibility": {
+                  "kind": "standalone"
+                },
+                "digest": "5ee619edf46e84c3305f291bfa9f61ad8266d4cef777fbc33c75c4e3a4c3abcf",
+                "packageName": "@victframework/ui-svelte"
+              },
+              {
+                "id": "vict.catalog.link-preview",
+                "revision": "1",
+                "label": "Link Preview",
+                "family": "general",
+                "category": "presentation",
+                "eligibility": {
+                  "kind": "standalone"
+                },
+                "digest": "63d0625939cc7d910dfc7d0b52a4323a6fa53e11e6a345612facdb96fc3a6633",
+                "packageName": "@victframework/ui-svelte"
+              },
+              {
+                "id": "vict.catalog.meter",
+                "revision": "1",
+                "label": "Meter",
+                "family": "general",
+                "category": "presentation",
+                "eligibility": {
+                  "kind": "standalone"
+                },
+                "digest": "97095caaf119fc84d8eb93d720463858ebeee57832524497d5dcdc17ab4ad1aa",
+                "packageName": "@victframework/ui-svelte"
+              },
+              {
+                "id": "vict.catalog.progress",
+                "revision": "1",
+                "label": "Progress",
+                "family": "general",
+                "category": "presentation",
+                "eligibility": {
+                  "kind": "standalone"
+                },
+                "digest": "bb5ca0c425e28211cffb04533d9ab09cc6b73f56499ecd10e8f681debfec632a",
+                "packageName": "@victframework/ui-svelte"
+              },
+              {
+                "id": "vict.catalog.scroll-area",
+                "revision": "1",
+                "label": "Scroll Area",
+                "family": "general",
+                "category": "presentation",
+                "eligibility": {
+                  "kind": "standalone"
+                },
+                "digest": "e1d30e9a700d1e27b9308b31eaf349f37e3c02d01a151f7f367046e4ea791c14",
+                "packageName": "@victframework/ui-svelte"
+              },
+              {
+                "id": "vict.catalog.separator",
+                "revision": "1",
+                "label": "Separator",
+                "family": "general",
+                "category": "presentation",
+                "eligibility": {
+                  "kind": "standalone"
+                },
+                "digest": "549973470dbb3fc6ff0513c384ecec46f5a5704ff65acd30586996bead0a15ee",
+                "packageName": "@victframework/ui-svelte"
+              },
+              {
+                "id": "vict.catalog.toolbar-button",
+                "revision": "1",
+                "label": "Toolbar Button",
+                "family": "general",
+                "category": "presentation",
+                "eligibility": {
+                  "kind": "part"
+                },
+                "digest": "2dba1f5369101322aa80d8fb882275e0440b085092456ce479e6f1d5702d8d26",
+                "packageName": "@victframework/ui-svelte"
+              },
+              {
+                "id": "vict.catalog.toolbar",
+                "revision": "1",
+                "label": "Toolbar",
+                "family": "general",
+                "category": "presentation",
+                "eligibility": {
+                  "kind": "standalone"
+                },
+                "digest": "3873c4849e7f3709aea81622a4b4e42a35a302ab08b39519ae5fe84c608a97a7",
+                "packageName": "@victframework/ui-svelte"
+              }
+            ],
+            "total": 12,
+            "offset": 0,
+            "nextOffset": null
+          }
+        },
+        {
+          "kind": "tool-start",
+          "tool": "studio_screen_read",
+          "sinceTurnStartMs": 64567,
+          "payload": null
+        },
+        {
+          "kind": "observation",
+          "tool": "studio_screen_read",
+          "sinceTurnStartMs": 64576,
+          "payload": null,
+          "rawPayload": "{\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-a93369d2-4321-4b2c-90be-e4a3ef8b9187\",\"revision\":\"r1#0\",\"digest\":\"09e81dfe395a1e005db6293ae5c90d0cdaec94f14cfcc0f9be5666cf892e0bc6\",\"epoch\":\"b68afce8-66fc-4685-8cf0-57899db6e037\"},\"section\":\"contracts\",\"ok\":true,\"complete\":false,\"registryDigest\":\"6a06abc8ee99fa9f88e3abc5cfe9d8ea244ae35a79321284cd0e00de0308e80d\",\"items\":[{\"id\":\"vict.ai.message\",\"revision\":\"1\",\"digest\":\"679df9e50d9eafd86d92172e72ecb00bc53bdbb4eb6cde3272139235c328913c\",\"contractJson\":\"{\\\"descriptor\\\":{\\\"revision\\\":\\\"1\\\",\\\"abi\\\":\\\"vict.ui-component-abi@1\\\",\\\"events\\\":[\\\"vict.ui-component-abi@1\\\"],\\\"rendererImplementationId\\\":\\\"vict.svelte.ai.authoring\\\",\\\"styleTargets\\\":[\\\"root\\\"],\\\"id\\\":\\\"vict.ai.message\\\",\\\"props\\\":[{\\\"name\\\":\\\"role\\\",\\\"type\\\":\\\"string\\\",\\\"default\\\":\\\"assistant\\\"},{\\\"name\\\":\\\"text\\\",\\\"type\\\":\\\"string\\\",\\\"default\\\":\\\"\\\"}],\\\"slots\\\":[],\\\"outputs\\\":[],\\\"inspectionLimits\\\":[\\\"Role is user or assistant; other values use assistant presentation. No unimplemented action controls.\\\"]},\\\"label\\\":\\\"Chat message\\\",\\\"family\\\":\\\"ai\\\",\\\"category\\\":\\\"chat\\\",\\\"purpose\\\":\\\"Render a user or assistant message using the pinned public Message presentation.\\\",\\\"eligibility\\\":{\\\"kind\\\":\\\"standalone\\\"},\\\"guidance\\\":[\\\"role is user or assistant. Other role strings use assistant presentation.\\\",\\\"No copy/edit/retry controls are advertised by this adapter. Assistant text uses the package safe Markdown presentation; user text is plain text.\\\"],\\\"seed\\\":{\\\"root\\\":\\\"message\\\",\\\"nodes\\\":[{\\\"kind\\\":\\\"component\\\",\\\"id\\\":\\\"message\\\",\\\"definitionId\\\":\\\"vict.ai.message\\\",\\\"revision\\\":\\\"1\\\",\\\"props\\\":{\\\"role\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"assistant\\\"},\\\"text\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"How can I help?\\\"}}}]},\\\"examples\\\":[{\\\"root\\\":\\\"message\\\",\\\"nodes\\\":[{\\\"kind\\\":\\\"component\\\",\\\"id\\\":\\\"message\\\",\\\"definitionId\\\":\\\"vict.ai.message\\\",\\\"revision\\\":\\\"1\\\",\\\"props\\\":{\\\"role\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"assistant\\\"},\\\"text\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"How can I help?\\\"}}}]}],\\\"packageName\\\":\\\"@victframework/ui-ai-svelte\\\",\\\"packageVersion\\\":\\\"0.4.0-rc.1\\\",\\\"capabilities\\\":{\\\"extensionId\\\":\\\"vict.ai.message\\\",\\\"revision\\\":\\\"1\\\",\\\"rendererImplementationId\\\":\\\"vict.svelte.ai.authoring\\\",\\\"abi\\\":\\\"vict.ui-component-abi@1\\\",\\\"slots\\\":[],\\\"required\\\":[],\\\"styleTargets\\\":[\\\"root\\\"],\\\"requiresParentContext\\\":false,\\\"compositionSlots\\\":[]},\\\"descriptorDigest\\\":\\\"41a81a1f0615be770587d1e7f822697bbace94e39dd32d78aab27e013bcc74f5\\\",\\\"digest\\\":\\\"679df9e50d9eafd86d92172e72ecb00bc53bdbb4eb6cde3272139235c328913c\\\"}\",\"totalCharacters\":1828,\"offset\":0,\"nextOffset\":null,\"bodyComplete\":true},{\"id\":\"vict.ai.prompt-input\",\"revision\":\"1\",\"digest\":\"012317a66d95ef8a3da8337344fea67877d73049ee58a0de4eaf22ee67cace64\",\"contractJson\":\"{\\\"descriptor\\\":{\\\"revision\\\":\\\"1\\\",\\\"abi\\\":\\\"vict.ui-component-abi@1\\\",\\\"events\\\":[\\\"vict.ui-component-abi@1\\\"],\\\"rendererImplementationId\\\":\\\"vict.svelte.ai.authoring\\\",\\\"styleTargets\\\":[\\\"root\\\"],\\\"id\\\":\\\"vict.ai.prompt-input\\\",\\\"props\\\":[{\\\"name\\\":\\\"value\\\",\\\"type\\\":\\\"string\\\",\\\"default\\\":\\\"\\\"},{\\\"name\\\":\\\"busy\\\",\\\"type\\\":\\\"boolean\\\",\\\"default\\\":false},{\\\"name\\\":\\\"label\\\",\\\"type\\\":\\\"string\\\",\\\"default\\\":\\\"Message\\\"},{\\\"name\\\":\\\"placeholder\\\",\\\"type\\\":\\\"string\\\",\\\"default\\\":\\\"Write a message…\\\"}],\\\"slots\\\":[],\\\"outputs\\\":[{\\\"name\\\":\\\"valueChange\\\",\\\"payload\\\":\\\"string\\\",\\\"description\\\":\\\"Controlled value request; connect to string local state for editable input.\\\"},{\\\"name\\\":\\\"send\\\",\\\"payload\\\":\\\"string\\\",\\\"description\\\":\\\"Submit nonempty trimmed authored value while not busy. Does not clear the value or execute a provider.\\\"},{\\\"name\\\":\\\"stop\\\",\\\"payload\\\":\\\"void\\\",\\\"description\\\":\\\"Stop intent while busy. No implicit cancellation authority.\\\"}],\\\"inspectionLimits\\\":[\\\"Controlled scalar value. Host-authored output bindings decide state and actions. No attachment, provider or execution API.\\\"]},\\\"label\\ [Details truncated for the bounded trace. Read current source for complete facts.]"
+        },
+        {
+          "kind": "tool-start",
+          "tool": "studio_screen_read",
+          "sinceTurnStartMs": 196344,
+          "payload": null
+        },
+        {
+          "kind": "observation",
+          "tool": "studio_screen_read",
+          "sinceTurnStartMs": 196356,
+          "payload": {
+            "expectedRevision": "r1#0",
+            "cursor": {
+              "documentId": "screen-a93369d2-4321-4b2c-90be-e4a3ef8b9187",
+              "revision": "r1#0",
+              "digest": "09e81dfe395a1e005db6293ae5c90d0cdaec94f14cfcc0f9be5666cf892e0bc6",
+              "epoch": "b68afce8-66fc-4685-8cf0-57899db6e037"
+            },
+            "section": "contracts",
+            "ok": true,
+            "complete": false,
+            "registryDigest": "6a06abc8ee99fa9f88e3abc5cfe9d8ea244ae35a79321284cd0e00de0308e80d",
+            "items": [
+              {
+                "id": "vict.flow.node",
+                "revision": "1",
+                "digest": "caa56fecde5ad7a22f0f4c369423b969edbb29044ae33743f88831420ec31c94",
+                "contractJson": "",
+                "totalCharacters": 1826,
+                "offset": 3600,
+                "nextOffset": null,
+                "bodyComplete": false
+              },
+              {
+                "id": "vict.flow.edge",
+                "revision": "1",
+                "digest": "62fad3846cdf76659b1d3d51b3fbfd506a8c74e704437d4e9634a68d9a7ddc8b",
+                "contractJson": "",
+                "totalCharacters": 1770,
+                "offset": 3600,
+                "nextOffset": null,
+                "bodyComplete": false
+              },
+              {
+                "id": "vict.flow.canvas",
+                "revision": "1",
+                "digest": "3bf1d1da07ec917d35bc1c1bcddf23eb172d4d9d9b42c82c85e22938d8638743",
+                "contractJson": "",
+                "totalCharacters": 1935,
+                "offset": 3600,
+                "nextOffset": null,
+                "bodyComplete": false
+              }
+            ],
+            "pending": [],
+            "problems": [],
+            "projection": "contract-and-semantic-guidance",
+            "paging": "Bodies are lossless JSON text pages of the named projection. Request a selected ID with nextOffset until complete; retain its digest. includeExamples adds canonical seed/examples; omit its known digest when requesting a different projection. Pending dependencies are not a complete bundle. Source facts never use knowledge-cache digests."
+          }
+        },
+        {
+          "kind": "tool-start",
+          "tool": "studio_screen_read",
+          "sinceTurnStartMs": 214413,
+          "payload": null
+        },
+        {
+          "kind": "observation",
+          "tool": "studio_screen_read",
+          "sinceTurnStartMs": 214429,
+          "payload": {
+            "expectedRevision": "r1#0",
+            "cursor": {
+              "documentId": "screen-a93369d2-4321-4b2c-90be-e4a3ef8b9187",
+              "revision": "r1#0",
+              "digest": "09e81dfe395a1e005db6293ae5c90d0cdaec94f14cfcc0f9be5666cf892e0bc6",
+              "epoch": "b68afce8-66fc-4685-8cf0-57899db6e037"
+            },
+            "section": "contracts",
+            "ok": true,
+            "complete": false,
+            "registryDigest": "6a06abc8ee99fa9f88e3abc5cfe9d8ea244ae35a79321284cd0e00de0308e80d",
+            "items": [
+              {
+                "id": "vict.flow.node",
+                "revision": "1",
+                "digest": "caa56fecde5ad7a22f0f4c369423b969edbb29044ae33743f88831420ec31c94",
+                "contractJson": "",
+                "totalCharacters": 2796,
+                "offset": 3600,
+                "nextOffset": null,
+                "bodyComplete": false
+              },
+              {
+                "id": "vict.flow.edge",
+                "revision": "1",
+                "digest": "62fad3846cdf76659b1d3d51b3fbfd506a8c74e704437d4e9634a68d9a7ddc8b",
+                "contractJson": "",
+                "totalCharacters": 2740,
+                "offset": 3600,
+                "nextOffset": null,
+                "bodyComplete": false
+              },
+              {
+                "id": "vict.flow.canvas",
+                "revision": "1",
+                "digest": "3bf1d1da07ec917d35bc1c1bcddf23eb172d4d9d9b42c82c85e22938d8638743",
+                "contractJson": "ict.ui-component-abi@1\",\"slots\":[\"nodes\",\"edges\"],\"required\":[],\"styleTargets\":[\"root\"],\"requiresParentContext\":false,\"compositionSlots\":[]},\"descriptorDigest\":\"b1284730404b3e8fa92250352f6794e726d4cf24ea7b725ef47f6d18a75c075e\",\"digest\":\"3bf1d1da07ec917d35bc1c1bcddf23eb172d4d9d9b42c82c85e22938d8638743\"}",
+                "totalCharacters": 3903,
+                "offset": 3600,
+                "nextOffset": null,
+                "bodyComplete": false
+              }
+            ],
+            "pending": [],
+            "problems": [],
+            "projection": "contract-with-examples",
+            "paging": "Bodies are lossless JSON text pages of the named projection. Request a selected ID with nextOffset until complete; retain its digest. includeExamples adds canonical seed/examples; omit its known digest when requesting a different projection. Pending dependencies are not a complete bundle. Source facts never use knowledge-cache digests."
+          }
+        },
+        {
+          "kind": "tool-start",
+          "tool": "studio_screen_edit",
+          "sinceTurnStartMs": 304846,
+          "payload": null
+        },
+        {
+          "kind": "proposed",
+          "tool": "studio_screen_edit",
+          "sinceTurnStartMs": 304891,
+          "payload": {
+            "proposalId": "f0abaee7-94c7-442b-a152-f33ac661f9d9",
+            "reason": "Dashboard shell: compact root layout, shared card surface rule, header with title and status pill",
+            "revision": "r1#0"
+          }
+        },
+        {
+          "kind": "committed",
+          "tool": "studio_screen_edit",
+          "sinceTurnStartMs": 304935,
+          "payload": {
+            "proposalId": "f0abaee7-94c7-442b-a152-f33ac661f9d9",
+            "ok": true,
+            "revision": "r1#1",
+            "digest": "e7e9d7506ec111572a2a70948f019b2659e5ca2fef94f1a892195e380a2e1f5b",
+            "applied": 1,
+            "coverage": {
+              "available": 84,
+              "authored": 0,
+              "catalogAuthored": 0,
+              "registeredAuthored": 0,
+              "reachableSourceNodes": 9,
+              "requested": 84,
+              "scope": "all-authorable-definitions",
+              "missing": [
+                "vict.catalog.button",
+                "vict.catalog.checkbox",
+                "vict.catalog.select",
+                "vict.catalog.dialog",
+                "vict.catalog.switch",
+                "vict.catalog.toggle",
+                "vict.catalog.select-multiple",
+                "vict.catalog.select-item",
+                "vict.catalog.combobox",
+                "vict.catalog.combobox-multiple",
+                "vict.catalog.combobox-item",
+                "vict.catalog.toggle-group",
+                "vict.catalog.toggle-group-multiple",
+                "vict.catalog.toggle-group-item",
+                "vict.catalog.accordion",
+                "vict.catalog.accordion-multiple",
+                "vict.catalog.accordion-item",
+                "vict.catalog.slider",
+                "vict.catalog.meter",
+                "vict.catalog.progress"
+              ],
+              "evidence": "Reachable declared source presence only, including inactive branches/templates. An agent-declared manifest is not proof of the user intent, observed appearance, exercised interaction or completion.",
+              "missingCount": 84,
+              "moreMissing": true
+            }
+          }
+        },
+        {
+          "kind": "tool-start",
+          "tool": "studio_screen_edit",
+          "sinceTurnStartMs": 330634,
+          "payload": null
+        },
+        {
+          "kind": "proposed",
+          "tool": "studio_screen_edit",
+          "sinceTurnStartMs": 330710,
+          "payload": {
+            "proposalId": "457aec04-afaf-42e7-af20-650e903aeaab",
+            "reason": "KPI row with throughput card complete and error-rate card shell",
+            "revision": "r1#1"
+          }
+        },
+        {
+          "kind": "committed",
+          "tool": "studio_screen_edit",
+          "sinceTurnStartMs": 330758,
+          "payload": {
+            "proposalId": "457aec04-afaf-42e7-af20-650e903aeaab",
+            "ok": true,
+            "revision": "r1#2",
+            "digest": "6b33378747b176b00a654404467d5b1cf1256fdff6c755422a388f254ad13a16",
+            "applied": 2,
+            "coverage": {
+              "available": 84,
+              "authored": 0,
+              "catalogAuthored": 0,
+              "registeredAuthored": 0,
+              "reachableSourceNodes": 18,
+              "requested": 84,
+              "scope": "all-authorable-definitions",
+              "missing": [
+                "vict.catalog.button",
+                "vict.catalog.checkbox",
+                "vict.catalog.select",
+                "vict.catalog.dialog",
+                "vict.catalog.switch",
+                "vict.catalog.toggle",
+                "vict.catalog.select-multiple",
+                "vict.catalog.select-item",
+                "vict.catalog.combobox",
+                "vict.catalog.combobox-multiple",
+                "vict.catalog.combobox-item",
+                "vict.catalog.toggle-group",
+                "vict.catalog.toggle-group-multiple",
+                "vict.catalog.toggle-group-item",
+                "vict.catalog.accordion",
+                "vict.catalog.accordion-multiple",
+                "vict.catalog.accordion-item",
+                "vict.catalog.slider",
+                "vict.catalog.meter",
+                "vict.catalog.progress"
+              ],
+              "evidence": "Reachable declared source presence only, including inactive branches/templates. An agent-declared manifest is not proof of the user intent, observed appearance, exercised interaction or completion.",
+              "missingCount": 84,
+              "moreMissing": true
+            }
+          }
+        },
+        {
+          "kind": "tool-start",
+          "tool": "studio_screen_edit",
+          "sinceTurnStartMs": 349383,
+          "payload": null
+        },
+        {
+          "kind": "proposed",
+          "tool": "studio_screen_edit",
+          "sinceTurnStartMs": 349429,
+          "payload": {
+            "proposalId": "ba00c0f1-8976-4329-89e9-486ba7cfdc9e",
+            "reason": "Finish error-rate KPI and capacity KPI with meter gauge",
+            "revision": "r1#2"
+          }
+        },
+        {
+          "kind": "committed",
+          "tool": "studio_screen_edit",
+          "sinceTurnStartMs": 349470,
+          "payload": {
+            "proposalId": "ba00c0f1-8976-4329-89e9-486ba7cfdc9e",
+            "ok": true,
+            "revision": "r1#3",
+            "digest": "85bdcfd8f02e66ae09f2beef7a27a5bcdd97a5a24c6e3e73fb97ae8ed3f6d8a7",
+            "applied": 3,
+            "coverage": {
+              "available": 84,
+              "authored": 1,
+              "catalogAuthored": 1,
+              "registeredAuthored": 1,
+              "reachableSourceNodes": 30,
+              "requested": 84,
+              "scope": "all-authorable-definitions",
+              "missing": [
+                "vict.catalog.button",
+                "vict.catalog.checkbox",
+                "vict.catalog.select",
+                "vict.catalog.dialog",
+                "vict.catalog.switch",
+                "vict.catalog.toggle",
+                "vict.catalog.select-multiple",
+                "vict.catalog.select-item",
+                "vict.catalog.combobox",
+                "vict.catalog.combobox-multiple",
+                "vict.catalog.combobox-item",
+                "vict.catalog.toggle-group",
+                "vict.catalog.toggle-group-multiple",
+                "vict.catalog.toggle-group-item",
+                "vict.catalog.accordion",
+                "vict.catalog.accordion-multiple",
+                "vict.catalog.accordion-item",
+                "vict.catalog.slider",
+                "vict.catalog.progress",
+                "vict.catalog.pagination"
+              ],
+              "evidence": "Reachable declared source presence only, including inactive branches/templates. An agent-declared manifest is not proof of the user intent, observed appearance, exercised interaction or completion.",
+              "missingCount": 83,
+              "moreMissing": true
+            }
+          }
+        },
+        {
+          "kind": "tool-start",
+          "tool": "studio_screen_observe",
+          "sinceTurnStartMs": 356217,
+          "payload": null
+        },
+        {
+          "kind": "observation",
+          "tool": "studio_screen_observe",
+          "sinceTurnStartMs": 376395,
+          "payload": {
+            "ok": true,
+            "evidence": "observed-appearance",
+            "observation": "**Header:** Bold \"Operations overview\" with smaller gray subtitle \"Local snapshot — every control on this screen stays in-document\"; a light-green pill \"● All systems nominal\" sits top-right. Text is sharp and unclipped.\n\n**Cards:** Three equal-width white cards with light borders, rounded corners, and even horizontal spacing. Hierarchy is compact: small uppercase gray labels (THROUGHPUT · REQ/MIN, ERROR RATE, CLUSTER CAPACITY), large dark values (1,284; 0.42%; 68%), then small green deltas with ▲/▼ triangles (\"4.2% vs last hour\", \"0.08 pts — improving\").\n\n**Meter:** Capacity card shows \"Capacity used\" above a rounded bar — dark green fill to roughly two-thirds on a light gray track, consistent with 68%.\n\n**Spacing:** Padding is consistent; no clipping observed. Inference: content fills only the top ~40% of the viewport, leaving a large empty gray region below.",
+            "metadata": {
+              "cursor": {
+                "documentId": "screen-a93369d2-4321-4b2c-90be-e4a3ef8b9187",
+                "revision": "r1#3",
+                "digest": "85bdcfd8f02e66ae09f2beef7a27a5bcdd97a5a24c6e3e73fb97ae8ed3f6d8a7",
+                "epoch": "b68afce8-66fc-4685-8cf0-57899db6e037"
+              },
+              "capturedAt": "2026-10-25T12:34:27.671Z",
+              "viewport": {
+                "width": 960,
+                "height": 585,
+                "scrollLeft": 0,
+                "scrollTop": 0,
+                "devicePixelRatio": 1.0000000149011612
+              },
+              "image": {
+                "width": 909,
+                "height": 560,
+                "sourceWidth": 909,
+                "sourceHeight": 560,
+                "offsetLeft": 0,
+                "offsetTop": 0,
+                "cropped": false
+              },
+              "preview": {
+                "mode": "design",
+                "fingerprint": "c6ae2bb4a6cb05c846a609c17af489ed45c7a77931b3791c92bc85750f0f37f4",
+                "selection": "screen-a93369d2-4321-4b2c-90be-e4a3ef8b9187|screen"
+              }
+            },
+            "revalidatedAt": "2026-10-25T12:34:47.578Z",
+            "validation": "same-source-preview-viewport-and-image-bytes-after-inference",
+            "imageDigest": "24c566c959c920fee08271db270082d43b824cd47382e6898df36d6e90e58a2e",
+            "confirmedImageDigest": "24c566c959c920fee08271db270082d43b824cd47382e6898df36d6e90e58a2e",
+            "imageComparison": "sha256-identical",
+            "imageComparisonScope": "within-this-observation-before-and-after-inference",
+            "fingerprintMeaning": "Source and preview state identity, not a pixel digest. Separate successful observations may have different fingerprints and identical pixels.",
+            "captureAttempts": 2,
+            "captureRecoveryAttempts": 0,
+            "bytes": 21937,
+            "model": "zai/glm-5.3-flash",
+            "interactionVerified": false,
+            "limitation": "Only the captured preview frame region and stated preview state were inspected. Equal image bytes across separate observations do not prove stale capture or a rasterizer defect; a source edit may have no effect in this crop. Open preview-owned external portals refuse capture; unrelated Studio chrome is outside this image. Source relationships and interaction outcomes require separate checks."
+          }
+        },
+        {
+          "kind": "tool-start",
+          "tool": "studio_screen_edit",
+          "sinceTurnStartMs": 391502,
+          "payload": null
+        },
+        {
+          "kind": "proposed",
+          "tool": "studio_screen_edit",
+          "sinceTurnStartMs": 391584,
+          "payload": {
+            "proposalId": "50978ed8-6e59-4ae3-9455-a4d8f407464e",
+            "reason": "Bottom content grid, recent-activity panel and first activity row",
+            "revision": "r1#3"
+          }
+        },
+        {
+          "kind": "committed",
+          "tool": "studio_screen_edit",
+          "sinceTurnStartMs": 391636,
+          "payload": {
+            "proposalId": "50978ed8-6e59-4ae3-9455-a4d8f407464e",
+            "ok": true,
+            "revision": "r1#4",
+            "digest": "1491b2b7a30a8a880e3d12db3ebc4217d0758f64a27794865b450762facbbd93",
+            "applied": 4,
+            "coverage": {
+              "available": 84,
+              "authored": 1,
+              "catalogAuthored": 1,
+              "registeredAuthored": 1,
+              "reachableSourceNodes": 40,
+              "requested": 84,
+              "scope": "all-authorable-definitions",
+              "missing": [
+                "vict.catalog.button",
+                "vict.catalog.checkbox",
+                "vict.catalog.select",
+                "vict.catalog.dialog",
+                "vict.catalog.switch",
+                "vict.catalog.toggle",
+                "vict.catalog.select-multiple",
+                "vict.catalog.select-item",
+                "vict.catalog.combobox",
+                "vict.catalog.combobox-multiple",
+                "vict.catalog.combobox-item",
+                "vict.catalog.toggle-group",
+                "vict.catalog.toggle-group-multiple",
+                "vict.catalog.toggle-group-item",
+                "vict.catalog.accordion",
+                "vict.catalog.accordion-multiple",
+                "vict.catalog.accordion-item",
+                "vict.catalog.slider",
+                "vict.catalog.progress",
+                "vict.catalog.pagination"
+              ],
+              "evidence": "Reachable declared source presence only, including inactive branches/templates. An agent-declared manifest is not proof of the user intent, observed appearance, exercised interaction or completion.",
+              "missingCount": 83,
+              "moreMissing": true
+            }
+          }
+        },
+        {
+          "kind": "tool-start",
+          "tool": "studio_screen_edit",
+          "sinceTurnStartMs": 405993,
+          "payload": null
+        },
+        {
+          "kind": "proposed",
+          "tool": "studio_screen_edit",
+          "sinceTurnStartMs": 406058,
+          "payload": {
+            "proposalId": "3c4af76d-456a-454e-bb9f-f9854de9d1ed",
+            "reason": "Add second and third recent-activity rows",
+            "revision": "r1#4"
+          }
+        },
+        {
+          "kind": "committed",
+          "tool": "studio_screen_edit",
+          "sinceTurnStartMs": 406113,
+          "payload": {
+            "proposalId": "3c4af76d-456a-454e-bb9f-f9854de9d1ed",
+            "ok": true,
+            "revision": "r1#5",
+            "digest": "579f817cc524acf5fff1831fb1c2e123c35c9a76ebaed1d28d7cc2a77e8b5b02",
+            "applied": 5,
+            "coverage": {
+              "available": 84,
+              "authored": 1,
+              "catalogAuthored": 1,
+              "registeredAuthored": 1,
+              "reachableSourceNodes": 52,
+              "requested": 84,
+              "scope": "all-authorable-definitions",
+              "missing": [
+                "vict.catalog.button",
+                "vict.catalog.checkbox",
+                "vict.catalog.select",
+                "vict.catalog.dialog",
+                "vict.catalog.switch",
+                "vict.catalog.toggle",
+                "vict.catalog.select-multiple",
+                "vict.catalog.select-item",
+                "vict.catalog.combobox",
+                "vict.catalog.combobox-multiple",
+                "vict.catalog.combobox-item",
+                "vict.catalog.toggle-group",
+                "vict.catalog.toggle-group-multiple",
+                "vict.catalog.toggle-group-item",
+                "vict.catalog.accordion",
+                "vict.catalog.accordion-multiple",
+                "vict.catalog.accordion-item",
+                "vict.catalog.slider",
+                "vict.catalog.progress",
+                "vict.catalog.pagination"
+              ],
+              "evidence": "Reachable declared source presence only, including inactive branches/templates. An agent-declared manifest is not proof of the user intent, observed appearance, exercised interaction or completion.",
+              "missingCount": 83,
+              "moreMissing": true
+            }
+          }
+        },
+        {
+          "kind": "tool-start",
+          "tool": "studio_screen_edit",
+          "sinceTurnStartMs": 427051,
+          "payload": null
+        },
+        {
+          "kind": "proposed",
+          "tool": "studio_screen_edit",
+          "sinceTurnStartMs": 427123,
+          "payload": {
+            "proposalId": "b6cacdb8-6e5d-46d2-9ada-a419806dcdad",
+            "reason": "Flow panel with read-only canvas, three topology nodes and intake→validate edge",
+            "revision": "r1#5"
+          }
+        },
+        {
+          "kind": "committed",
+          "tool": "studio_screen_edit",
+          "sinceTurnStartMs": 427196,
+          "payload": {
+            "proposalId": "b6cacdb8-6e5d-46d2-9ada-a419806dcdad",
+            "ok": true,
+            "revision": "r1#6",
+            "digest": "147218c2caa9741d249e6c71289d8dd46f6903076274ec9db3988d9f80e486c5",
+            "applied": 6,
+            "coverage": {
+              "available": 84,
+              "authored": 4,
+              "catalogAuthored": 1,
+              "registeredAuthored": 4,
+              "reachableSourceNodes": 60,
+              "requested": 84,
+              "scope": "all-authorable-definitions",
+              "missing": [
+                "vict.catalog.button",
+                "vict.catalog.checkbox",
+                "vict.catalog.select",
+                "vict.catalog.dialog",
+                "vict.catalog.switch",
+                "vict.catalog.toggle",
+                "vict.catalog.select-multiple",
+                "vict.catalog.select-item",
+                "vict.catalog.combobox",
+                "vict.catalog.combobox-multiple",
+                "vict.catalog.combobox-item",
+                "vict.catalog.toggle-group",
+                "vict.catalog.toggle-group-multiple",
+                "vict.catalog.toggle-group-item",
+                "vict.catalog.accordion",
+                "vict.catalog.accordion-multiple",
+                "vict.catalog.accordion-item",
+                "vict.catalog.slider",
+                "vict.catalog.progress",
+                "vict.catalog.pagination"
+              ],
+              "evidence": "Reachable declared source presence only, including inactive branches/templates. An agent-declared manifest is not proof of the user intent, observed appearance, exercised interaction or completion.",
+              "missingCount": 80,
+              "moreMissing": true
+            }
+          }
+        },
+        {
+          "kind": "tool-start",
+          "tool": "studio_screen_edit",
+          "sinceTurnStartMs": 444109,
+          "payload": null
+        },
+        {
+          "kind": "proposed",
+          "tool": "studio_screen_edit",
+          "sinceTurnStartMs": 444215,
+          "payload": {
+            "proposalId": "c35653ba-3252-488e-a5ee-5b77c17b1614",
+            "reason": "Complete flow topology (archive node, ship/mirror edges) and open AI conversation panel with first message",
+            "revision": "r1#6"
+          }
+        },
+        {
+          "kind": "committed",
+          "tool": "studio_screen_edit",
+          "sinceTurnStartMs": 444306,
+          "payload": {
+            "proposalId": "c35653ba-3252-488e-a5ee-5b77c17b1614",
+            "ok": true,
+            "revision": "r1#7",
+            "digest": "0f606fb12f027554344e208a0653b7a8e8835810f77a645e66c7bd7c5f3baf9f",
+            "applied": 7,
+            "coverage": {
+              "available": 84,
+              "authored": 6,
+              "catalogAuthored": 1,
+              "registeredAuthored": 6,
+              "reachableSourceNodes": 68,
+              "requested": 84,
+              "scope": "all-authorable-definitions",
+              "missing": [
+                "vict.catalog.button",
+                "vict.catalog.checkbox",
+                "vict.catalog.select",
+                "vict.catalog.dialog",
+                "vict.catalog.switch",
+                "vict.catalog.toggle",
+                "vict.catalog.select-multiple",
+                "vict.catalog.select-item",
+                "vict.catalog.combobox",
+                "vict.catalog.combobox-multiple",
+                "vict.catalog.combobox-item",
+                "vict.catalog.toggle-group",
+                "vict.catalog.toggle-group-multiple",
+                "vict.catalog.toggle-group-item",
+                "vict.catalog.accordion",
+                "vict.catalog.accordion-multiple",
+                "vict.catalog.accordion-item",
+                "vict.catalog.slider",
+                "vict.catalog.progress",
+                "vict.catalog.pagination"
+              ],
+              "evidence": "Reachable declared source presence only, including inactive branches/templates. An agent-declared manifest is not proof of the user intent, observed appearance, exercised interaction or completion.",
+              "missingCount": 78,
+              "moreMissing": true
+            }
+          }
+        },
+        {
+          "kind": "tool-start",
+          "tool": "studio_screen_edit",
+          "sinceTurnStartMs": 456104,
+          "payload": null
+        },
+        {
+          "kind": "proposed",
+          "tool": "studio_screen_edit",
+          "sinceTurnStartMs": 456171,
+          "payload": {
+            "proposalId": "f27d7d86-5095-4061-8016-4c18c6913258",
+            "reason": "Authored conversation messages and prompt input controlled by fresh local opsPrompt state; send stays unbound (no provider)",
+            "revision": "r1#7"
+          }
+        },
+        {
+          "kind": "committed",
+          "tool": "studio_screen_edit",
+          "sinceTurnStartMs": 456269,
+          "payload": {
+            "proposalId": "f27d7d86-5095-4061-8016-4c18c6913258",
+            "ok": true,
+            "revision": "r1#8",
+            "digest": "76c6e96e72e38c08d22e0ca4b68692de1f6c2fa1445cd265537dd8e2d31a8b7d",
+            "applied": 8,
+            "coverage": {
+              "available": 84,
+              "authored": 7,
+              "catalogAuthored": 1,
+              "registeredAuthored": 7,
+              "reachableSourceNodes": 71,
+              "requested": 84,
+              "scope": "all-authorable-definitions",
+              "missing": [
+                "vict.catalog.button",
+                "vict.catalog.checkbox",
+                "vict.catalog.select",
+                "vict.catalog.dialog",
+                "vict.catalog.switch",
+                "vict.catalog.toggle",
+                "vict.catalog.select-multiple",
+                "vict.catalog.select-item",
+                "vict.catalog.combobox",
+                "vict.catalog.combobox-multiple",
+                "vict.catalog.combobox-item",
+                "vict.catalog.toggle-group",
+                "vict.catalog.toggle-group-multiple",
+                "vict.catalog.toggle-group-item",
+                "vict.catalog.accordion",
+                "vict.catalog.accordion-multiple",
+                "vict.catalog.accordion-item",
+                "vict.catalog.slider",
+                "vict.catalog.progress",
+                "vict.catalog.pagination"
+              ],
+              "evidence": "Reachable declared source presence only, including inactive branches/templates. An agent-declared manifest is not proof of the user intent, observed appearance, exercised interaction or completion.",
+              "missingCount": 77,
+              "moreMissing": true
+            }
+          }
+        },
+        {
+          "kind": "tool-start",
+          "tool": "studio_screen_read",
+          "sinceTurnStartMs": 465711,
+          "payload": null
+        },
+        {
+          "kind": "observation",
+          "tool": "studio_screen_read",
+          "sinceTurnStartMs": 465730,
+          "payload": {
+            "expectedRevision": "r1#8",
+            "cursor": {
+              "documentId": "screen-a93369d2-4321-4b2c-90be-e4a3ef8b9187",
+              "revision": "r1#8",
+              "digest": "76c6e96e72e38c08d22e0ca4b68692de1f6c2fa1445cd265537dd8e2d31a8b7d",
+              "epoch": "b68afce8-66fc-4685-8cf0-57899db6e037"
+            },
+            "section": "source",
+            "nodeId": "screen",
+            "sourceJson": "{\"kind\":\"element\",\"id\":\"screen\",\"tag\":\"main\",\"attributes\":{\"aria-label\":\"Dashboard baseline review\"},\"children\":[\"ops-header\",\"kpi-row\",\"bottom-grid\"],\"localStyle\":[{\"property\":\"display\",\"value\":{\"type\":\"text\",\"value\":\"flex\"}},{\"property\":\"flex-direction\",\"value\":{\"type\":\"text\",\"value\":\"column\"}},{\"property\":\"gap\",\"value\":{\"type\":\"text\",\"value\":\"14px\"}},{\"property\":\"padding\",\"value\":{\"type\":\"text\",\"value\":\"20px 24px\"}},{\"property\":\"min-height\",\"value\":{\"type\":\"text\",\"value\":\"560px\"}},{\"property\":\"background-color\",\"value\":{\"type\":\"text\",\"value\":\"#f5f6fa\"}},{\"property\":\"color\",\"value\":{\"type\":\"text\",\"value\":\"#243047\"}},{\"property\":\"font-family\",\"value\":{\"type\":\"text\",\"value\":\"system-ui, sans-serif\"}}]}",
+            "totalCharacters": 710,
+            "offset": 0,
+            "nextOffset": null
+          }
+        },
+        {
+          "kind": "tool-start",
+          "tool": "studio_screen_observe",
+          "sinceTurnStartMs": 465716,
+          "payload": null
+        },
+        {
+          "kind": "observation",
+          "tool": "studio_screen_observe",
+          "sinceTurnStartMs": 489927,
+          "payload": {
+            "ok": true,
+            "evidence": "observed-appearance",
+            "observation": "**Visible observations (960×585 viewport, image cropped from 705px source height):**\n\n- Header, three aligned KPI cards, and bottom row are present with consistent gutters; KPI values, progress bar, and \"All systems nominal\" badge render cleanly.\n- One-screen fit cannot be confirmed: the bottom row is clipped at the image edge. The Ops Assistant prompt input (\"Ask about incidents, deploys…\") and the lower portions of all three cards are cut off — likely vertical overflow, though cropping is a provenance fact, not proof of overflow.\n- Topology canvas shows nodes Intake, Validate, Dispatch, Archive with an \"ingest\" edge label; a second label near center appears mirrored/upside-down and illegible. The third edge/label is not visibly confirmed.\n- Zoom controls sit close beneath the Intake node but don't appear to overlap.\n- Recent Activity timestamps align right; text wraps without clipping.",
+            "metadata": {
+              "cursor": {
+                "documentId": "screen-a93369d2-4321-4b2c-90be-e4a3ef8b9187",
+                "revision": "r1#8",
+                "digest": "76c6e96e72e38c08d22e0ca4b68692de1f6c2fa1445cd265537dd8e2d31a8b7d",
+                "epoch": "b68afce8-66fc-4685-8cf0-57899db6e037"
+              },
+              "capturedAt": "2026-10-25T12:36:18.943Z",
+              "viewport": {
+                "width": 960,
+                "height": 585,
+                "scrollLeft": 0,
+                "scrollTop": 0,
+                "devicePixelRatio": 1.0000000149011612
+              },
+              "image": {
+                "width": 909,
+                "height": 569,
+                "sourceWidth": 909,
+                "sourceHeight": 705,
+                "offsetLeft": 0,
+                "offsetTop": 0,
+                "cropped": true
+              },
+              "preview": {
+                "mode": "design",
+                "fingerprint": "1225418fb34e416ead60867e23f6e6eb83507fd1500836a3124935765e9ed28c",
+                "selection": "screen-a93369d2-4321-4b2c-90be-e4a3ef8b9187|screen"
+              }
+            },
+            "revalidatedAt": "2026-10-25T12:36:41.110Z",
+            "validation": "same-source-preview-viewport-and-image-bytes-after-inference",
+            "imageDigest": "3772b311243f06ed15b6184dca8e968cfb9f34ee7d9441ac6e2b61c84adf0669",
+            "confirmedImageDigest": "3772b311243f06ed15b6184dca8e968cfb9f34ee7d9441ac6e2b61c84adf0669",
+            "imageComparison": "sha256-identical",
+            "imageComparisonScope": "within-this-observation-before-and-after-inference",
+            "fingerprintMeaning": "Source and preview state identity, not a pixel digest. Separate successful observations may have different fingerprints and identical pixels.",
+            "captureAttempts": 3,
+            "captureRecoveryAttempts": 1,
+            "bytes": 59314,
+            "model": "zai/glm-5.3-flash",
+            "interactionVerified": false,
+            "limitation": "Only the captured preview frame region and stated preview state were inspected. Equal image bytes across separate observations do not prove stale capture or a rasterizer defect; a source edit may have no effect in this crop. Open preview-owned external portals refuse capture; unrelated Studio chrome is outside this image. Source relationships and interaction outcomes require separate checks."
+          }
+        },
+        {
+          "kind": "tool-start",
+          "tool": "studio_screen_edit",
+          "sinceTurnStartMs": 549148,
+          "payload": null
+        },
+        {
+          "kind": "proposed",
+          "tool": "studio_screen_edit",
+          "sinceTurnStartMs": 549253,
+          "payload": {
+            "proposalId": "1b93e474-2ac0-4be4-b627-57c40577f2da",
+            "reason": "Compact to one screen: shorter canvas, two-message conversation, no mirrored edge label, tighter root padding",
+            "revision": "r1#8"
+          }
+        },
+        {
+          "kind": "committed",
+          "tool": "studio_screen_edit",
+          "sinceTurnStartMs": 549340,
+          "payload": {
+            "proposalId": "1b93e474-2ac0-4be4-b627-57c40577f2da",
+            "ok": true,
+            "revision": "r1#9",
+            "digest": "84c1e2b970c1dde6d82d993d0cd1a7d13c2c2e9e178319bd69ace845ca12d9c6",
+            "applied": 9,
+            "coverage": {
+              "available": 84,
+              "authored": 7,
+              "catalogAuthored": 1,
+              "registeredAuthored": 7,
+              "reachableSourceNodes": 70,
+              "requested": 84,
+              "scope": "all-authorable-definitions",
+              "missing": [
+                "vict.catalog.button",
+                "vict.catalog.checkbox",
+                "vict.catalog.select",
+                "vict.catalog.dialog",
+                "vict.catalog.switch",
+                "vict.catalog.toggle",
+                "vict.catalog.select-multiple",
+                "vict.catalog.select-item",
+                "vict.catalog.combobox",
+                "vict.catalog.combobox-multiple",
+                "vict.catalog.combobox-item",
+                "vict.catalog.toggle-group",
+                "vict.catalog.toggle-group-multiple",
+                "vict.catalog.toggle-group-item",
+                "vict.catalog.accordion",
+                "vict.catalog.accordion-multiple",
+                "vict.catalog.accordion-item",
+                "vict.catalog.slider",
+                "vict.catalog.progress",
+                "vict.catalog.pagination"
+              ],
+              "evidence": "Reachable declared source presence only, including inactive branches/templates. An agent-declared manifest is not proof of the user intent, observed appearance, exercised interaction or completion.",
+              "missingCount": 77,
+              "moreMissing": true
+            }
+          }
+        },
+        {
+          "kind": "tool-start",
+          "tool": "studio_screen_read",
+          "sinceTurnStartMs": 549149,
+          "payload": null
+        },
+        {
+          "kind": "observation",
+          "tool": "studio_screen_read",
+          "sinceTurnStartMs": 549254,
+          "payload": {
+            "expectedRevision": "r1#8",
+            "cursor": {
+              "documentId": "screen-a93369d2-4321-4b2c-90be-e4a3ef8b9187",
+              "revision": "r1#8",
+              "digest": "76c6e96e72e38c08d22e0ca4b68692de1f6c2fa1445cd265537dd8e2d31a8b7d",
+              "epoch": "b68afce8-66fc-4685-8cf0-57899db6e037"
+            },
+            "section": "source",
+            "nodeId": "ops-prompt",
+            "sourceJson": "{\"kind\":\"component\",\"id\":\"ops-prompt\",\"definitionId\":\"vict.ai.prompt-input\",\"revision\":\"1\",\"slots\":{},\"props\":{\"label\":{\"type\":\"literal\",\"value\":\"Ask ops\"},\"placeholder\":{\"type\":\"literal\",\"value\":\"Ask about incidents, deploys, capacity…\"},\"value\":{\"type\":\"ref\",\"path\":\"state.opsPrompt\"}},\"outputs\":{\"valueChange\":{\"setState\":{\"key\":\"opsPrompt\"}}}}",
+            "totalCharacters": 347,
+            "offset": 0,
+            "nextOffset": null
+          }
+        },
+        {
+          "kind": "tool-start",
+          "tool": "studio_screen_observe",
+          "sinceTurnStartMs": 557586,
+          "payload": null
+        },
+        {
+          "kind": "observation",
+          "tool": "studio_screen_observe",
+          "sinceTurnStartMs": 580085,
+          "payload": {
+            "ok": true,
+            "evidence": "observed-appearance",
+            "observation": "Observed at the captured area (909×569, cropped from a 909×595 source; 960×585 viewport): header, KPI row of three equal-height cards aligned on one baseline, progress bar intact. Prompt input with send button is fully visible; activity list shows three items with timestamps.\n\nInference/limitations: because the capture excludes ~26 px at bottom and ~51 px at right of the viewport, the lower panels' bottom edges and the assistant panel's right edge fall outside the image — no vertical clipping beyond that point can be confirmed. In the topology, labels Validate, Dispatch, Archive are readable and thin edges visible, but a fourth node's label is obscured by the overlapping zoom-control panel.",
+            "metadata": {
+              "cursor": {
+                "documentId": "screen-a93369d2-4321-4b2c-90be-e4a3ef8b9187",
+                "revision": "r1#9",
+                "digest": "84c1e2b970c1dde6d82d993d0cd1a7d13c2c2e9e178319bd69ace845ca12d9c6",
+                "epoch": "b68afce8-66fc-4685-8cf0-57899db6e037"
+              },
+              "capturedAt": "2026-10-25T12:37:49.535Z",
+              "viewport": {
+                "width": 960,
+                "height": 585,
+                "scrollLeft": 0,
+                "scrollTop": 0,
+                "devicePixelRatio": 1.0000000149011612
+              },
+              "image": {
+                "width": 909,
+                "height": 569,
+                "sourceWidth": 909,
+                "sourceHeight": 595,
+                "offsetLeft": 0,
+                "offsetTop": 0,
+                "cropped": true
+              },
+              "preview": {
+                "mode": "design",
+                "fingerprint": "fd2c81289b01e052936cf7d0fcf2352526453c59ea7c5933dc71164855fc8a9e",
+                "selection": "screen-a93369d2-4321-4b2c-90be-e4a3ef8b9187|screen"
+              }
+            },
+            "revalidatedAt": "2026-10-25T12:38:11.267Z",
+            "validation": "same-source-preview-viewport-and-image-bytes-after-inference",
+            "imageDigest": "eeec4ee52caa7072b77856cf91448d43fc7b7f2361ad1a680d934e846c428507",
+            "confirmedImageDigest": "eeec4ee52caa7072b77856cf91448d43fc7b7f2361ad1a680d934e846c428507",
+            "imageComparison": "sha256-identical",
+            "imageComparisonScope": "within-this-observation-before-and-after-inference",
+            "fingerprintMeaning": "Source and preview state identity, not a pixel digest. Separate successful observations may have different fingerprints and identical pixels.",
+            "captureAttempts": 2,
+            "captureRecoveryAttempts": 0,
+            "bytes": 53005,
+            "model": "zai/glm-5.3-flash",
+            "interactionVerified": false,
+            "limitation": "Only the captured preview frame region and stated preview state were inspected. Equal image bytes across separate observations do not prove stale capture or a rasterizer defect; a source edit may have no effect in this crop. Open preview-owned external portals refuse capture; unrelated Studio chrome is outside this image. Source relationships and interaction outcomes require separate checks."
+          }
+        },
+        {
+          "kind": "tool-start",
+          "tool": "studio_screen_edit",
+          "sinceTurnStartMs": 596711,
+          "payload": null
+        },
+        {
+          "kind": "proposed",
+          "tool": "studio_screen_edit",
+          "sinceTurnStartMs": 596790,
+          "payload": {
+            "proposalId": "8219e316-08fe-4fc2-a86a-645653b1a616",
+            "reason": "Remove zoom-control overlay, shave final pixels for one-screen fit",
+            "revision": "r1#9"
+          }
+        },
+        {
+          "kind": "committed",
+          "tool": "studio_screen_edit",
+          "sinceTurnStartMs": 596869,
+          "payload": {
+            "proposalId": "8219e316-08fe-4fc2-a86a-645653b1a616",
+            "ok": true,
+            "revision": "r1#10",
+            "digest": "8fa14d17d2c87862d0f5b35fbef4f7314c5c38ab2eec4390fee75d4c1f42f977",
+            "applied": 10,
+            "coverage": {
+              "available": 84,
+              "authored": 7,
+              "catalogAuthored": 1,
+              "registeredAuthored": 7,
+              "reachableSourceNodes": 70,
+              "requested": 84,
+              "scope": "all-authorable-definitions",
+              "missing": [
+                "vict.catalog.button",
+                "vict.catalog.checkbox",
+                "vict.catalog.select",
+                "vict.catalog.dialog",
+                "vict.catalog.switch",
+                "vict.catalog.toggle",
+                "vict.catalog.select-multiple",
+                "vict.catalog.select-item",
+                "vict.catalog.combobox",
+                "vict.catalog.combobox-multiple",
+                "vict.catalog.combobox-item",
+                "vict.catalog.toggle-group",
+                "vict.catalog.toggle-group-multiple",
+                "vict.catalog.toggle-group-item",
+                "vict.catalog.accordion",
+                "vict.catalog.accordion-multiple",
+                "vict.catalog.accordion-item",
+                "vict.catalog.slider",
+                "vict.catalog.progress",
+                "vict.catalog.pagination"
+              ],
+              "evidence": "Reachable declared source presence only, including inactive branches/templates. An agent-declared manifest is not proof of the user intent, observed appearance, exercised interaction or completion.",
+              "missingCount": 77,
+              "moreMissing": true
+            }
+          }
+        },
+        {
+          "kind": "tool-start",
+          "tool": "studio_screen_observe",
+          "sinceTurnStartMs": 601893,
+          "payload": null
+        },
+        {
+          "kind": "observation",
+          "tool": "studio_screen_observe",
+          "sinceTurnStartMs": 631584,
+          "payload": {
+            "ok": true,
+            "evidence": "observed-appearance",
+            "observation": "**Observed directly:** Within the captured crop (909×569 of the 960×585 viewport), the header, three metric cards (Throughput, Error Rate, Cluster Capacity), Recent Activity list, Ingest Topology, and Ops Assistant panels all render without internal overlap. Flow node labels — Intake, Validate, Dispatch, Archive — are fully readable, with the \"Svelte Flow\" caption visible. The prompt input (\"Ask about incidents, deploys, capacity…\") and circular send button appear complete, with space beneath them.\n\n**Inference/limitation:** The image is cropped — roughly 51px of width and ~16–22px of height are not shown. All three lower panels extend to the image's bottom edge with no visible bottom borders or corner rounding, so their true bottoms — and whether anything is clipped below — cannot be confirmed from this capture alone. One-screen fit is therefore only partially verifiable.",
+            "metadata": {
+              "cursor": {
+                "documentId": "screen-a93369d2-4321-4b2c-90be-e4a3ef8b9187",
+                "revision": "r1#10",
+                "digest": "8fa14d17d2c87862d0f5b35fbef4f7314c5c38ab2eec4390fee75d4c1f42f977",
+                "epoch": "b68afce8-66fc-4685-8cf0-57899db6e037"
+              },
+              "capturedAt": "2026-10-25T12:38:33.780Z",
+              "viewport": {
+                "width": 960,
+                "height": 585,
+                "scrollLeft": 0,
+                "scrollTop": 0,
+                "devicePixelRatio": 1.0000000149011612
+              },
+              "image": {
+                "width": 909,
+                "height": 569,
+                "sourceWidth": 909,
+                "sourceHeight": 591,
+                "offsetLeft": 0,
+                "offsetTop": 0,
+                "cropped": true
+              },
+              "preview": {
+                "mode": "design",
+                "fingerprint": "74ba0a2d848da661e628435cfa3a64ce9f2fc20d2eea671d86cf9c6705924c33",
+                "selection": "screen-a93369d2-4321-4b2c-90be-e4a3ef8b9187|screen"
+              }
+            },
+            "revalidatedAt": "2026-10-25T12:39:02.768Z",
+            "validation": "same-source-preview-viewport-and-image-bytes-after-inference",
+            "imageDigest": "403fe444d3f511504225d2fe205aa58831aa9056df4d073204e9b76f98f8c0e3",
+            "confirmedImageDigest": "403fe444d3f511504225d2fe205aa58831aa9056df4d073204e9b76f98f8c0e3",
+            "imageComparison": "sha256-identical",
+            "imageComparisonScope": "within-this-observation-before-and-after-inference",
+            "fingerprintMeaning": "Source and preview state identity, not a pixel digest. Separate successful observations may have different fingerprints and identical pixels.",
+            "captureAttempts": 2,
+            "captureRecoveryAttempts": 0,
+            "bytes": 52509,
+            "model": "zai/glm-5.3-flash",
+            "interactionVerified": false,
+            "limitation": "Only the captured preview frame region and stated preview state were inspected. Equal image bytes across separate observations do not prove stale capture or a rasterizer defect; a source edit may have no effect in this crop. Open preview-owned external portals refuse capture; unrelated Studio chrome is outside this image. Source relationships and interaction outcomes require separate checks."
+          }
+        },
+        {
+          "kind": "tool-start",
+          "tool": "studio_screen_edit",
+          "sinceTurnStartMs": 642837,
+          "payload": null
+        },
+        {
+          "kind": "proposed",
+          "tool": "studio_screen_edit",
+          "sinceTurnStartMs": 642884,
+          "payload": {
+            "proposalId": "e0de7f93-91fc-440f-be27-2f115e9c2b6d",
+            "reason": "Final 8px shave to fit one 585px screen",
+            "revision": "r1#10"
+          }
+        },
+        {
+          "kind": "committed",
+          "tool": "studio_screen_edit",
+          "sinceTurnStartMs": 642949,
+          "payload": {
+            "proposalId": "e0de7f93-91fc-440f-be27-2f115e9c2b6d",
+            "ok": true,
+            "revision": "r1#11",
+            "digest": "9a57529207eca724561706767c2b6662336306fe5b9111f01d66d17ffdf1db4d",
+            "applied": 11,
+            "coverage": {
+              "available": 84,
+              "authored": 7,
+              "catalogAuthored": 1,
+              "registeredAuthored": 7,
+              "reachableSourceNodes": 70,
+              "requested": 84,
+              "scope": "all-authorable-definitions",
+              "missing": [
+                "vict.catalog.button",
+                "vict.catalog.checkbox",
+                "vict.catalog.select",
+                "vict.catalog.dialog",
+                "vict.catalog.switch",
+                "vict.catalog.toggle",
+                "vict.catalog.select-multiple",
+                "vict.catalog.select-item",
+                "vict.catalog.combobox",
+                "vict.catalog.combobox-multiple",
+                "vict.catalog.combobox-item",
+                "vict.catalog.toggle-group",
+                "vict.catalog.toggle-group-multiple",
+                "vict.catalog.toggle-group-item",
+                "vict.catalog.accordion",
+                "vict.catalog.accordion-multiple",
+                "vict.catalog.accordion-item",
+                "vict.catalog.slider",
+                "vict.catalog.progress",
+                "vict.catalog.pagination"
+              ],
+              "evidence": "Reachable declared source presence only, including inactive branches/templates. An agent-declared manifest is not proof of the user intent, observed appearance, exercised interaction or completion.",
+              "missingCount": 77,
+              "moreMissing": true
+            }
+          }
+        },
+        {
+          "kind": "tool-start",
+          "tool": "studio_screen_observe",
+          "sinceTurnStartMs": 645349,
+          "payload": null
+        },
+        {
+          "kind": "observation",
+          "tool": "studio_screen_observe",
+          "sinceTurnStartMs": 659702,
+          "payload": {
+            "ok": true,
+            "evidence": "observed-appearance",
+            "observation": "No — this cannot be confirmed. Direct observation: the three bottom panels (Recent Activity, Ingest Topology, Ops Assistant) run all the way to the bottom edge of the image and are visibly cut off; none of their bottom edges or bottom rounded corners are rendered. The image itself is cropped (569px of a 583px source height captured), so additional content below the visible boundary may exist but is not observable. The KPI cards, header, and badge are fully visible with intact rounded corners, and the panels' side edges are clean, but the question of vertical fit within the 585px viewport remains unverified — the dashboard either extends beyond the viewport or the crop obscures it. Inference only: it likely overflows, but the render cannot prove either case.",
+            "metadata": {
+              "cursor": {
+                "documentId": "screen-a93369d2-4321-4b2c-90be-e4a3ef8b9187",
+                "revision": "r1#11",
+                "digest": "9a57529207eca724561706767c2b6662336306fe5b9111f01d66d17ffdf1db4d",
+                "epoch": "b68afce8-66fc-4685-8cf0-57899db6e037"
+              },
+              "capturedAt": "2026-10-25T12:39:17.262Z",
+              "viewport": {
+                "width": 960,
+                "height": 585,
+                "scrollLeft": 0,
+                "scrollTop": 0,
+                "devicePixelRatio": 1.0000000149011612
+              },
+              "image": {
+                "width": 909,
+                "height": 569,
+                "sourceWidth": 909,
+                "sourceHeight": 583,
+                "offsetLeft": 0,
+                "offsetTop": 0,
+                "cropped": true
+              },
+              "preview": {
+                "mode": "design",
+                "fingerprint": "8c8d44636bae7f77e08fac9a40b20b781b22009d492d44118b46c39350488d1b",
+                "selection": "screen-a93369d2-4321-4b2c-90be-e4a3ef8b9187|screen"
+              }
+            },
+            "revalidatedAt": "2026-10-25T12:39:30.885Z",
+            "validation": "same-source-preview-viewport-and-image-bytes-after-inference",
+            "imageDigest": "ac7af73e5707f3199f8e2036f6338cf23ad16f60fc7a50b71ae782e13d061efd",
+            "confirmedImageDigest": "ac7af73e5707f3199f8e2036f6338cf23ad16f60fc7a50b71ae782e13d061efd",
+            "imageComparison": "sha256-identical",
+            "imageComparisonScope": "within-this-observation-before-and-after-inference",
+            "fingerprintMeaning": "Source and preview state identity, not a pixel digest. Separate successful observations may have different fingerprints and identical pixels.",
+            "captureAttempts": 2,
+            "captureRecoveryAttempts": 0,
+            "bytes": 51766,
+            "model": "zai/glm-5.3-flash",
+            "interactionVerified": false,
+            "limitation": "Only the captured preview frame region and stated preview state were inspected. Equal image bytes across separate observations do not prove stale capture or a rasterizer defect; a source edit may have no effect in this crop. Open preview-owned external portals refuse capture; unrelated Studio chrome is outside this image. Source relationships and interaction outcomes require separate checks."
+          }
+        }
+      ]
+    },
+    {
+      "arm": "candidate",
+      "status": "completed",
+      "artifacts": {
+        "trace": "provider-dashboard-candidate-expanded-trace-complete.dom.txt",
+        "details": "provider-dashboard-candidate-details-01.dom.txt",
+        "source": "provider-dashboard-candidate-final-source.json"
+      },
+      "uiMeasurements": {
+        "toolCalls": 31,
+        "refusedCalls": 2,
+        "callsAfterRefusal": 2,
+        "elapsedSeconds": 754.8,
+        "authoringModelRequests": 25,
+        "imageRequests": 4,
+        "firstConfirmedEditSeconds": 245.8,
+        "inputTokens": 1269524,
+        "outputTokens": 25261,
+        "confirmedEdits": 11,
+        "confirmedRevision": "r1#11",
+        "categories": {
+          "knowledge": 6,
+          "source": 8,
+          "edit": 12,
+          "observe": 5
+        },
+        "summedToolSeconds": 137.5,
+        "toolActiveUnionSeconds": 137.4,
+        "outsideToolSeconds": 617.5
+      },
+      "traceCounts": {
+        "toolStarts": 31,
+        "committedReceipts": 11,
+        "uniqueAcknowledgedProposals": 11,
+        "readSections": {
+          "nodes": 1,
+          "state": 1,
+          "families": 1,
+          "palette": 1,
+          "catalog": 2,
+          "contracts": 2,
+          "overview": 1,
+          "source": 5
+        },
+        "knowledgeReadResults": 6,
+        "sourceReadResults": 8,
+        "firstToolStartMs": 34161,
+        "firstCommittedReceiptMs": 245825,
+        "firstObservationStartMs": 267249
+      },
+      "finalSource": {
+        "id": "screen-aa7ccbed-eb90-41b0-ab46-1f762f2636ae",
+        "revision": "r1",
+        "nodeCount": 71,
+        "stateCount": 7,
+        "stateKeys": [
+          "message",
+          "accepted",
+          "dialogOpen",
+          "busy",
+          "actionError",
+          "actionResult",
+          "opsPrompt"
+        ]
+      },
+      "observations": [
+        {
+          "resultAtMs": 286457,
+          "ok": true,
+          "metadata": {
+            "cursor": {
+              "documentId": "screen-aa7ccbed-eb90-41b0-ab46-1f762f2636ae",
+              "revision": "r1#2",
+              "digest": "9d3fcff8bccd619669405e6ced21765140a2ad2775d175ee2576cc3da5090627",
+              "epoch": "8ada4339-bf79-487b-bfd1-d27d86048278"
+            },
+            "capturedAt": "2026-10-25T12:32:59.238Z",
+            "viewport": {
+              "width": 960,
+              "height": 585,
+              "scrollLeft": 0,
+              "scrollTop": 0,
+              "devicePixelRatio": 1.0000000149011612
+            },
+            "image": {
+              "width": 909,
+              "height": 560,
+              "sourceWidth": 909,
+              "sourceHeight": 560,
+              "offsetLeft": 0,
+              "offsetTop": 0,
+              "cropped": false
+            },
+            "preview": {
+              "mode": "design",
+              "fingerprint": "abe42ffa5c54d2db55cfcdb2fbf60fce6d473832a6e7f603d972c41e05ebad3a",
+              "selection": "screen-aa7ccbed-eb90-41b0-ab46-1f762f2636ae|screen"
+            }
+          },
+          "imageDigest": "b114a5a445ecadad0735d3ec15070c5f1fd9ee6a00582d156429b7980aeaf216",
+          "confirmedImageDigest": "b114a5a445ecadad0735d3ec15070c5f1fd9ee6a00582d156429b7980aeaf216",
+          "captureAttempts": 3,
+          "captureRecoveryAttempts": 1,
+          "revalidatedAt": "2026-10-25T12:33:18.034Z",
+          "interactionVerified": false,
+          "observation": "**Visible observations:**\n\n- Header: bold dark \"Operations overview\" with gray \"Live snapshot · updated 09:42\" beside it, roughly baseline-aligned; a light-green \"All systems nominal\" chip with dot sits right-aligned. Hierarchy reads clearly.\n- Three equal-width white cards on a pale background, evenly gapped and left-aligned with the title; consistent rounded corners.\n- Cards 1–2 show uppercase gray label, large dark value (48.2k, 0.42%), and a small green delta row with triangle icon; contrast is adequate throughout.\n- Card 3 shows only the \"P95 LATENCY\" label — its value/delta area is visibly empty at matching card height. This is directly observed; whether content is missing or clipped cannot be confirmed.\n- No horizontal clipping or overflow within the visible region; everything below the cards is empty background."
+        },
+        {
+          "resultAtMs": 450768,
+          "ok": true,
+          "metadata": {
+            "cursor": {
+              "documentId": "screen-aa7ccbed-eb90-41b0-ab46-1f762f2636ae",
+              "revision": "r1#7",
+              "digest": "f604cf35c5f21de8cc5adb5fc9e5f1b50c9ff845a19b256d9a5632732d249357",
+              "epoch": "8ada4339-bf79-487b-bfd1-d27d86048278"
+            },
+            "capturedAt": "2026-10-25T12:35:43.380Z",
+            "viewport": {
+              "width": 960,
+              "height": 585,
+              "scrollLeft": 0,
+              "scrollTop": 0,
+              "devicePixelRatio": 1.0000000149011612
+            },
+            "image": {
+              "width": 909,
+              "height": 569,
+              "sourceWidth": 909,
+              "sourceHeight": 784,
+              "offsetLeft": 0,
+              "offsetTop": 0,
+              "cropped": true
+            },
+            "preview": {
+              "mode": "design",
+              "fingerprint": "9ccdc62b486ef2af9d84947adb59e4654cd1478dd219a79f66e05c0539b3863e",
+              "selection": "screen-aa7ccbed-eb90-41b0-ab46-1f762f2636ae|screen"
+            }
+          },
+          "imageDigest": "24098f5fe1facdd2095132abcf8fe9bd6d55903618b5bece200cfe233b554ec2",
+          "confirmedImageDigest": "24098f5fe1facdd2095132abcf8fe9bd6d55903618b5bece200cfe233b554ec2",
+          "captureAttempts": 2,
+          "captureRecoveryAttempts": 0,
+          "revalidatedAt": "2026-10-25T12:36:02.345Z",
+          "interactionVerified": false,
+          "observation": "**Directly visible:** Header with title, timestamp, and \"All systems nominal\" pill; three KPI cards render completely with legible values, labels, and colored deltas — hierarchy is clear. The Ops assistant card dominates vertically, with a large empty gap below its title before the user bubble (\"Summarize overnight incidents.\") and two reply paragraphs; the prompt field with purple send button sits inside. Spacing there reads loose, not compact.\n\n**Clipping:** The bottom row is cut mid-content — only \"09:24 … Deploy api-gateway v2.14.1\" and the \"Pipeline topology\" title show; no nodes or labeled edges are visible.\n\n**Limitation/inference:** The capture is cropped, so full-page fit can't be confirmed, but the dashboard clearly exceeds the 585px viewport, pushing the activity list and topology below the fold."
+        },
+        {
+          "resultAtMs": 563185,
+          "ok": true,
+          "metadata": {
+            "cursor": {
+              "documentId": "screen-aa7ccbed-eb90-41b0-ab46-1f762f2636ae",
+              "revision": "r1#8",
+              "digest": "eb4aba536eb5df8f985993e08ae27b24ae4cf053f3d5d68f11f02834e65fc083",
+              "epoch": "8ada4339-bf79-487b-bfd1-d27d86048278"
+            },
+            "capturedAt": "2026-10-25T12:37:17.152Z",
+            "viewport": {
+              "width": 960,
+              "height": 585,
+              "scrollLeft": 0,
+              "scrollTop": 0,
+              "devicePixelRatio": 1.0000000149011612
+            },
+            "image": {
+              "width": 909,
+              "height": 569,
+              "sourceWidth": 909,
+              "sourceHeight": 752,
+              "offsetLeft": 0,
+              "offsetTop": 0,
+              "cropped": true
+            },
+            "preview": {
+              "mode": "design",
+              "fingerprint": "8819cee4a7859b8294ea6dedb874c4346c6503db805b189d50b69b4ea33f9704",
+              "selection": "screen-aa7ccbed-eb90-41b0-ab46-1f762f2636ae|screen"
+            }
+          },
+          "imageDigest": "1b32e37954af59fe849b6f8df822977a659949538999c4ddd921c2a215fc9986",
+          "confirmedImageDigest": "1b32e37954af59fe849b6f8df822977a659949538999c4ddd921c2a215fc9986",
+          "captureAttempts": 3,
+          "captureRecoveryAttempts": 1,
+          "revalidatedAt": "2026-10-25T12:37:54.764Z",
+          "interactionVerified": false,
+          "observation": "**Section order (observed):** header (\"Operations overview\" with status badge), then three KPI cards (Requests, Error rate, P95 latency), then a row pairing Recent activity with Pipeline topology, then the Ops assistant conversation — matches the expected sequence.\n\n**Screen fit:** the image is cropped; the bottom edge cuts through the Ops assistant card, so whether the dashboard ends within the viewport cannot be confirmed. The capture's taller source height suggests content may extend below, but that is inference.\n\n**Conversation spacing:** messages sit at consistent intervals; no oversized blank gap appears between the user bubble and replies. The gap between the \"Ops assistant\" heading and first message is larger. Notably, the \"Recent activity\" title renders below its list rows."
+        },
+        {
+          "resultAtMs": 724141,
+          "ok": true,
+          "metadata": {
+            "cursor": {
+              "documentId": "screen-aa7ccbed-eb90-41b0-ab46-1f762f2636ae",
+              "revision": "r1#11",
+              "digest": "8622446f60b1d42aa57053c55bc6ee2a9ef69fd54d9f329a06c3f68d1d32fac7",
+              "epoch": "8ada4339-bf79-487b-bfd1-d27d86048278"
+            },
+            "capturedAt": "2026-10-25T12:39:41.336Z",
+            "viewport": {
+              "width": 960,
+              "height": 585,
+              "scrollLeft": 0,
+              "scrollTop": 0,
+              "devicePixelRatio": 1.0000000149011612
+            },
+            "image": {
+              "width": 909,
+              "height": 560,
+              "sourceWidth": 909,
+              "sourceHeight": 560,
+              "offsetLeft": 0,
+              "offsetTop": 0,
+              "cropped": false
+            },
+            "preview": {
+              "mode": "design",
+              "fingerprint": "a2e6643449ed3ed5ac4bb044767d6a90c5f1418935305aada47add0bc5c37c25",
+              "selection": "screen-aa7ccbed-eb90-41b0-ab46-1f762f2636ae|screen"
+            }
+          },
+          "imageDigest": "eb79e6a6ba834973f9cf0c7f32416adb41fb40003f89e69344794a560fce3987",
+          "confirmedImageDigest": "eb79e6a6ba834973f9cf0c7f32416adb41fb40003f89e69344794a560fce3987",
+          "captureAttempts": 3,
+          "captureRecoveryAttempts": 1,
+          "revalidatedAt": "2026-10-25T12:40:35.719Z",
+          "interactionVerified": false,
+          "observation": "**Observed:** Header \"Operations overview\" with \"Live snapshot · updated 09:42\" and green \"All systems nominal\" pill; three aligned KPI cards (48.2k, 0.42%, 142 ms). Left column: \"Recent activity\" title sits above its four timestamped rows; below, \"Pipeline topology\" shows Ingest, Validate, Enrich, Store nodes on a dotted canvas with visible edges (one labeled \"archive\") plus a small circle node; \"Svelte Flow\" credit visible. Right: \"Ops assistant\" chat with user bubble, two reply paragraphs, and an input with blue send button. Text is legible, spacing even; nodes, edges, and text show no clipping; no empty containers. **Limitation:** a thin blue strip crosses the very bottom, and the Ops assistant card's bottom border isn't visible, so its lower edge can't be directly confirmed."
+        }
+      ],
+      "events": [
+        {
+          "kind": "tool-start",
+          "tool": "studio_screen_read",
+          "sinceTurnStartMs": 34161,
+          "payload": null
+        },
+        {
+          "kind": "observation",
+          "tool": "studio_screen_read",
+          "sinceTurnStartMs": 34192,
+          "payload": {
+            "expectedRevision": "r1#0",
+            "cursor": {
+              "documentId": "screen-aa7ccbed-eb90-41b0-ab46-1f762f2636ae",
+              "revision": "r1#0",
+              "digest": "649c27bf4e987694228649081355f672d6ee054cf350af15ef208fbd6d1709ad",
+              "epoch": "8ada4339-bf79-487b-bfd1-d27d86048278"
+            },
+            "section": "nodes",
+            "items": [
+              {
+                "id": "screen",
+                "kind": "element",
+                "tag": "main",
+                "children": [],
+                "childCount": 0,
+                "sourcePreview": "{\"kind\":\"element\",\"id\":\"screen\",\"tag\":\"main\",\"attributes\":{\"aria-label\":\"Dashboard baseline review\"},\"children\":[],\"localStyle\":[{\"property\":\"display\",\"value\":{\"type\":\"text\",\"value\":\"flex\"}},{\"property\":\"flex-direction\",\"value\":{\"type\":\"text\",\"value\":\"column\"}},{\"property\":\"gap\",\"value\":{\"type\":\"text\",\"value\":\"20px\"}},{\"property\":\"padding\",\"value\":{\"type\":\"text\",\"value\":\"40px\"}},{\"property\":\"min-height\",\"value\":{\"type\":\"text\",\"value\":\"560px\"}},{\"property\":\"background-color\",\"value\":{\"type\":\"text\",\"value\":\"#ffffff\"}},{\"property\":\"color\",\"value\":{\"type\":\"text\",\"value\":\"#243047\"}},{\"property\":\"fo… [truncated; use source pages]"
+              }
+            ],
+            "total": 1,
+            "offset": 0,
+            "nextOffset": null
+          }
+        },
+        {
+          "kind": "tool-start",
+          "tool": "studio_screen_read",
+          "sinceTurnStartMs": 34162,
+          "payload": null
+        },
+        {
+          "kind": "observation",
+          "tool": "studio_screen_read",
+          "sinceTurnStartMs": 34198,
+          "payload": {
+            "expectedRevision": "r1#0",
+            "cursor": {
+              "documentId": "screen-aa7ccbed-eb90-41b0-ab46-1f762f2636ae",
+              "revision": "r1#0",
+              "digest": "649c27bf4e987694228649081355f672d6ee054cf350af15ef208fbd6d1709ad",
+              "epoch": "8ada4339-bf79-487b-bfd1-d27d86048278"
+            },
+            "section": "state",
+            "items": [
+              {
+                "key": "message",
+                "type": "string",
+                "initialJson": "\"Hello from my screen\"",
+                "fullSource": "Read state with stateKey for lossless declaration JSON pages."
+              },
+              {
+                "key": "accepted",
+                "type": "boolean",
+                "initialJson": "false",
+                "fullSource": "Read state with stateKey for lossless declaration JSON pages."
+              },
+              {
+                "key": "dialogOpen",
+                "type": "boolean",
+                "initialJson": "false",
+                "fullSource": "Read state with stateKey for lossless declaration JSON pages."
+              },
+              {
+                "key": "busy",
+                "type": "boolean",
+                "initialJson": "false",
+                "fullSource": "Read state with stateKey for lossless declaration JSON pages."
+              },
+              {
+                "key": "actionError",
+                "type": "string",
+                "initialJson": "\"\"",
+                "fullSource": "Read state with stateKey for lossless declaration JSON pages."
+              },
+              {
+                "key": "actionResult",
+                "type": "string",
+                "initialJson": "\"\"",
+                "fullSource": "Read state with stateKey for lossless declaration JSON pages."
+              }
+            ],
+            "total": 6,
+            "offset": 0,
+            "nextOffset": null
+          }
+        },
+        {
+          "kind": "tool-start",
+          "tool": "studio_screen_read",
+          "sinceTurnStartMs": 34164,
+          "payload": null
+        },
+        {
+          "kind": "observation",
+          "tool": "studio_screen_read",
+          "sinceTurnStartMs": 34200,
+          "payload": {
+            "expectedRevision": "r1#0",
+            "cursor": {
+              "documentId": "screen-aa7ccbed-eb90-41b0-ab46-1f762f2636ae",
+              "revision": "r1#0",
+              "digest": "649c27bf4e987694228649081355f672d6ee054cf350af15ef208fbd6d1709ad",
+              "epoch": "8ada4339-bf79-487b-bfd1-d27d86048278"
+            },
+            "section": "families",
+            "registryDigest": "6a06abc8ee99fa9f88e3abc5cfe9d8ea244ae35a79321284cd0e00de0308e80d",
+            "items": [
+              {
+                "family": "general",
+                "count": 80,
+                "authorable": 78,
+                "categories": [
+                  "presentation",
+                  "input",
+                  "disclosure",
+                  "navigation",
+                  "date-time"
+                ],
+                "packages": [
+                  "@victframework/ui-svelte"
+                ]
+              },
+              {
+                "family": "ai",
+                "count": 3,
+                "authorable": 3,
+                "categories": [
+                  "chat"
+                ],
+                "packages": [
+                  "@victframework/ui-ai-svelte"
+                ]
+              },
+              {
+                "family": "flow",
+                "count": 3,
+                "authorable": 3,
+                "categories": [
+                  "diagram",
+                  "diagram-part"
+                ],
+                "packages": [
+                  "@victframework/ui-flow-svelte"
+                ]
+              }
+            ],
+            "total": 3,
+            "offset": 0,
+            "nextOffset": null
+          }
+        },
+        {
+          "kind": "tool-start",
+          "tool": "studio_screen_read",
+          "sinceTurnStartMs": 34165,
+          "payload": null
+        },
+        {
+          "kind": "observation",
+          "tool": "studio_screen_read",
+          "sinceTurnStartMs": 34213,
+          "payload": null,
+          "rawPayload": "{\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-aa7ccbed-eb90-41b0-ab46-1f762f2636ae\",\"revision\":\"r1#0\",\"digest\":\"649c27bf4e987694228649081355f672d6ee054cf350af15ef208fbd6d1709ad\",\"epoch\":\"8ada4339-bf79-487b-bfd1-d27d86048278\"},\"section\":\"palette\",\"items\":[{\"id\":\"section\",\"label\":\"Section\",\"description\":\"A vertical container for nested content\",\"preparation\":{\"rootKind\":\"element\",\"seedClasses\":[],\"seedStyles\":[{\"property\":\"display\",\"value\":{\"type\":\"text\",\"value\":\"flex\"}},{\"property\":\"flex-direction\",\"value\":{\"type\":\"text\",\"value\":\"column\"}},{\"property\":\"gap\",\"value\":{\"type\":\"text\",\"value\":\"16px\"}},{\"property\":\"padding\",\"value\":{\"type\":\"text\",\"value\":\"24px\"}},{\"property\":\"min-height\",\"value\":{\"type\":\"text\",\"value\":\"100px\"}},{\"property\":\"background-color\",\"value\":{\"type\":\"text\",\"value\":\"#f5f7fb\"}},{\"property\":\"border-radius\",\"value\":{\"type\":\"text\",\"value\":\"12px\"}}],\"styledNodeCount\":1,\"initialStateKeys\":[],\"definitionIds\":[],\"hostRequirements\":[],\"patternHostRequirements\":[],\"guidance\":\"Seed local styles remain in the authored source and override shared style sources. Review padding, minimum size, background and color before adding; replace/remove explicitly or use generic insert for an unstyled native element. Read component/recipe for full source.\"}},{\"id\":\"row\",\"label\":\"Row\",\"description\":\"Arrange children side by side, with wrapping\",\"preparation\":{\"rootKind\":\"element\",\"seedClasses\":[],\"seedStyles\":[{\"property\":\"display\",\"value\":{\"type\":\"text\",\"value\":\"flex\"}},{\"property\":\"flex-wrap\",\"value\":{\"type\":\"text\",\"value\":\"wrap\"}},{\"property\":\"gap\",\"value\":{\"type\":\"text\",\"value\":\"16px\"}},{\"property\":\"align-items\",\"value\":{\"type\":\"text\",\"value\":\"center\"}},{\"property\":\"min-height\",\"value\":{\"type\":\"text\",\"value\":\"60px\"}}],\"styledNodeCount\":1,\"initialStateKeys\":[],\"definitionIds\":[],\"hostRequirements\":[],\"patternHostRequirements\":[],\"guidance\":\"Seed local styles remain in the authored source and override shared style sources. Review padding, minimum size, background and color before adding; replace/remove explicitly or use generic insert for an unstyled native element. Read component/recipe for full source.\"}},{\"id\":\"heading\",\"label\":\"Heading\",\"description\":\"A clear title for your screen\",\"preparation\":{\"rootKind\":\"element\",\"seedClasses\":[],\"seedStyles\":[{\"property\":\"font-size\",\"value\":{\"type\":\"text\",\"value\":\"32px\"}},{\"property\":\"font-weight\",\"value\":{\"type\":\"text\",\"value\":\"600\"}},{\"property\":\"line-height\",\"value\":{\"type\":\"text\",\"value\":\"1.2\"}},{\"property\":\"margin\",\"value\":{\"type\":\"text\",\"value\":\"0\"}}],\"styledNodeCount\":1,\"initialStateKeys\":[],\"definitionIds\":[],\"hostRequirements\":[],\"patternHostRequirements\":[],\"guidance\":\"Seed local styles remain in the authored source and override shared style sources. Review padding, minimum size, background and color before adding; replace/remove explicitly or use generic insert for an unstyled native element. Read component/recipe for full source.\"}},{\"id\":\"text\",\"label\":\"Text\",\"description\":\"Supporting copy or a state-bound value\",\"preparation\":{\"rootKind\":\"element\",\"seedClasses\":[],\"seedStyles\":[{\"property\":\"font-size\",\"value\":{\"type\":\"text\",\"value\":\"16px\"}},{\"property\":\"line-height\",\"value\":{\"type\":\"text\",\"value\":\"1.6\"}},{\"property\":\"margin\",\"value\":{\"type\":\"text\",\"value\":\"0\"}},{\"property\":\"color\",\"value\":{\"type\":\"text\",\"value\":\"#647187\"}}],\"styledNodeCount\":1,\"initialStateKeys\":[],\"definitionIds\":[],\"hostRequirements\":[],\"patternHostRequirements\":[],\"guidance\":\"Seed local styles remain in the authored source and override shared style sources. Review padding, minimum size, background and color before adding; replace/remove explicitly or use generic insert for an unstyled native element. Read component/recipe for full source.\"}},{\"id\":\"input\",\"label\":\"Text input\",\"description\":\"Accessible text input with independent local state and change binding\",\"preparation\":{\"rootKind\":\"element\",\"see [Details truncated for the bounded trace. Read current source for complete facts.]"
+        },
+        {
+          "kind": "tool-start",
+          "tool": "studio_screen_read",
+          "sinceTurnStartMs": 45902,
+          "payload": null
+        },
+        {
+          "kind": "observation",
+          "tool": "studio_screen_read",
+          "sinceTurnStartMs": 45914,
+          "payload": {
+            "expectedRevision": "r1#0",
+            "cursor": {
+              "documentId": "screen-aa7ccbed-eb90-41b0-ab46-1f762f2636ae",
+              "revision": "r1#0",
+              "digest": "649c27bf4e987694228649081355f672d6ee054cf350af15ef208fbd6d1709ad",
+              "epoch": "8ada4339-bf79-487b-bfd1-d27d86048278"
+            },
+            "section": "catalog",
+            "registryDigest": "6a06abc8ee99fa9f88e3abc5cfe9d8ea244ae35a79321284cd0e00de0308e80d",
+            "items": [
+              {
+                "id": "vict.ai.conversation",
+                "revision": "1",
+                "label": "Conversation",
+                "family": "ai",
+                "category": "chat",
+                "eligibility": {
+                  "kind": "standalone"
+                },
+                "digest": "55962dbc6fc4384501cb7cc00410ecb71c5b747c8aa1c9c967f64facb3a1ca7f",
+                "packageName": "@victframework/ui-ai-svelte"
+              },
+              {
+                "id": "vict.ai.message",
+                "revision": "1",
+                "label": "Chat message",
+                "family": "ai",
+                "category": "chat",
+                "eligibility": {
+                  "kind": "standalone"
+                },
+                "digest": "679df9e50d9eafd86d92172e72ecb00bc53bdbb4eb6cde3272139235c328913c",
+                "packageName": "@victframework/ui-ai-svelte"
+              },
+              {
+                "id": "vict.ai.prompt-input",
+                "revision": "1",
+                "label": "Prompt input",
+                "family": "ai",
+                "category": "chat",
+                "eligibility": {
+                  "kind": "standalone"
+                },
+                "digest": "012317a66d95ef8a3da8337344fea67877d73049ee58a0de4eaf22ee67cace64",
+                "packageName": "@victframework/ui-ai-svelte"
+              }
+            ],
+            "total": 3,
+            "offset": 0,
+            "nextOffset": null
+          }
+        },
+        {
+          "kind": "tool-start",
+          "tool": "studio_screen_read",
+          "sinceTurnStartMs": 45903,
+          "payload": null
+        },
+        {
+          "kind": "observation",
+          "tool": "studio_screen_read",
+          "sinceTurnStartMs": 45917,
+          "payload": {
+            "expectedRevision": "r1#0",
+            "cursor": {
+              "documentId": "screen-aa7ccbed-eb90-41b0-ab46-1f762f2636ae",
+              "revision": "r1#0",
+              "digest": "649c27bf4e987694228649081355f672d6ee054cf350af15ef208fbd6d1709ad",
+              "epoch": "8ada4339-bf79-487b-bfd1-d27d86048278"
+            },
+            "section": "catalog",
+            "registryDigest": "6a06abc8ee99fa9f88e3abc5cfe9d8ea244ae35a79321284cd0e00de0308e80d",
+            "items": [
+              {
+                "id": "vict.flow.canvas",
+                "revision": "1",
+                "label": "Flow canvas",
+                "family": "flow",
+                "category": "diagram",
+                "eligibility": {
+                  "kind": "standalone"
+                },
+                "digest": "3bf1d1da07ec917d35bc1c1bcddf23eb172d4d9d9b42c82c85e22938d8638743",
+                "packageName": "@victframework/ui-flow-svelte"
+              },
+              {
+                "id": "vict.flow.edge",
+                "revision": "1",
+                "label": "Flow edge declaration",
+                "family": "flow",
+                "category": "diagram-part",
+                "eligibility": {
+                  "kind": "part"
+                },
+                "digest": "62fad3846cdf76659b1d3d51b3fbfd506a8c74e704437d4e9634a68d9a7ddc8b",
+                "packageName": "@victframework/ui-flow-svelte"
+              },
+              {
+                "id": "vict.flow.node",
+                "revision": "1",
+                "label": "Flow node declaration",
+                "family": "flow",
+                "category": "diagram-part",
+                "eligibility": {
+                  "kind": "part"
+                },
+                "digest": "caa56fecde5ad7a22f0f4c369423b969edbb29044ae33743f88831420ec31c94",
+                "packageName": "@victframework/ui-flow-svelte"
+              }
+            ],
+            "total": 3,
+            "offset": 0,
+            "nextOffset": null
+          }
+        },
+        {
+          "kind": "tool-start",
+          "tool": "studio_screen_read",
+          "sinceTurnStartMs": 53256,
+          "payload": null
+        },
+        {
+          "kind": "observation",
+          "tool": "studio_screen_read",
+          "sinceTurnStartMs": 53268,
+          "payload": null,
+          "rawPayload": "{\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-aa7ccbed-eb90-41b0-ab46-1f762f2636ae\",\"revision\":\"r1#0\",\"digest\":\"649c27bf4e987694228649081355f672d6ee054cf350af15ef208fbd6d1709ad\",\"epoch\":\"8ada4339-bf79-487b-bfd1-d27d86048278\"},\"section\":\"contracts\",\"ok\":true,\"complete\":false,\"registryDigest\":\"6a06abc8ee99fa9f88e3abc5cfe9d8ea244ae35a79321284cd0e00de0308e80d\",\"items\":[{\"id\":\"vict.ai.message\",\"revision\":\"1\",\"digest\":\"679df9e50d9eafd86d92172e72ecb00bc53bdbb4eb6cde3272139235c328913c\",\"bodyIdentity\":\"studio-contract-body@2:examples:679df9e50d9eafd86d92172e72ecb00bc53bdbb4eb6cde3272139235c328913c\",\"contractJson\":\"{\\\"descriptor\\\":{\\\"revision\\\":\\\"1\\\",\\\"abi\\\":\\\"vict.ui-component-abi@1\\\",\\\"events\\\":[\\\"vict.ui-component-abi@1\\\"],\\\"rendererImplementationId\\\":\\\"vict.svelte.ai.authoring\\\",\\\"styleTargets\\\":[\\\"root\\\"],\\\"id\\\":\\\"vict.ai.message\\\",\\\"props\\\":[{\\\"name\\\":\\\"role\\\",\\\"type\\\":\\\"string\\\",\\\"default\\\":\\\"assistant\\\"},{\\\"name\\\":\\\"text\\\",\\\"type\\\":\\\"string\\\",\\\"default\\\":\\\"\\\"}],\\\"slots\\\":[],\\\"outputs\\\":[],\\\"inspectionLimits\\\":[\\\"Role is user or assistant; other values use assistant presentation. No unimplemented action controls.\\\"]},\\\"label\\\":\\\"Chat message\\\",\\\"family\\\":\\\"ai\\\",\\\"category\\\":\\\"chat\\\",\\\"purpose\\\":\\\"Render a user or assistant message using the pinned public Message presentation.\\\",\\\"eligibility\\\":{\\\"kind\\\":\\\"standalone\\\"},\\\"guidance\\\":[\\\"role is user or assistant. Other role strings use assistant presentation.\\\",\\\"No copy/edit/retry controls are advertised by this adapter. Assistant text uses the package safe Markdown presentation; user text is plain text.\\\"],\\\"seed\\\":{\\\"root\\\":\\\"message\\\",\\\"nodes\\\":[{\\\"kind\\\":\\\"component\\\",\\\"id\\\":\\\"message\\\",\\\"definitionId\\\":\\\"vict.ai.message\\\",\\\"revision\\\":\\\"1\\\",\\\"props\\\":{\\\"role\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"assistant\\\"},\\\"text\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"How can I help?\\\"}}}]},\\\"examples\\\":[{\\\"root\\\":\\\"message\\\",\\\"nodes\\\":[{\\\"kind\\\":\\\"component\\\",\\\"id\\\":\\\"message\\\",\\\"definitionId\\\":\\\"vict.ai.message\\\",\\\"revision\\\":\\\"1\\\",\\\"props\\\":{\\\"role\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"assistant\\\"},\\\"text\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"How can I help?\\\"}}}]}],\\\"packageName\\\":\\\"@victframework/ui-ai-svelte\\\",\\\"packageVersion\\\":\\\"0.4.0-rc.1\\\",\\\"capabilities\\\":{\\\"extensionId\\\":\\\"vict.ai.message\\\",\\\"revision\\\":\\\"1\\\",\\\"rendererImplementationId\\\":\\\"vict.svelte.ai.authoring\\\",\\\"abi\\\":\\\"vict.ui-component-abi@1\\\",\\\"slots\\\":[],\\\"required\\\":[],\\\"styleTargets\\\":[\\\"root\\\"],\\\"requiresParentContext\\\":false,\\\"compositionSlots\\\":[]},\\\"descriptorDigest\\\":\\\"41a81a1f0615be770587d1e7f822697bbace94e39dd32d78aab27e013bcc74f5\\\",\\\"digest\\\":\\\"679df9e50d9eafd86d92172e72ecb00bc53bdbb4eb6cde3272139235c328913c\\\",\\\"preparation\\\":{\\\"seedStyles\\\":[],\\\"hostRequirements\\\":[],\\\"dependencies\\\":[],\\\"seedStylePrecedence\\\":\\\"Local styles override shared style sources; explicitly replace/remove undesired seed declarations before construction.\\\"}}\",\"totalCharacters\":2043,\"offset\":0,\"nextOffset\":null,\"bodyComplete\":true},{\"id\":\"vict.ai.prompt-input\",\"revision\":\"1\",\"digest\":\"012317a66d95ef8a3da8337344fea67877d73049ee58a0de4eaf22ee67cace64\",\"bodyIdentity\":\"studio-contract-body@2:examples:012317a66d95ef8a3da8337344fea67877d73049ee58a0de4eaf22ee67cace64\",\"contractJson\":\"{\\\"descriptor\\\":{\\\"revision\\\":\\\"1\\\",\\\"abi\\\":\\\"vict.ui-component-abi@1\\\",\\\"events\\\":[\\\"vict.ui-component-abi@1\\\"],\\\"rendererImplementationId\\\":\\\"vict.svelte.ai.authoring\\\",\\\"styleTargets\\\":[\\\"root\\\"],\\\"id\\\":\\\"vict.ai.prompt-input\\\",\\\"props\\\":[{\\\"name\\\":\\\"value\\\",\\\"type\\\":\\\"string\\\",\\\"default\\\":\\\"\\\"},{\\\"name\\\":\\\"busy\\\",\\\"type\\\":\\\"boolean\\\",\\\"default\\\":false},{\\\"name\\\":\\\"label\\\",\\\"type\\\":\\\"string\\\",\\\"default\\\":\\\"Message\\\"},{\\\"name\\\":\\\"placeholder\\\",\\\"type\\\":\\\"string\\\",\\\"default\\\":\\\"Write a message…\\\"}],\\\"slots\\\":[],\\\"outputs\\\":[{\\\"name\\\":\\\"valueChange\\\",\\\"payload\\\":\\\"string\\\",\\\"description\\\":\\\"Controlled value request; connect to string local state for editable in [Details truncated for the bounded trace. Read current source for complete facts.]"
+        },
+        {
+          "kind": "tool-start",
+          "tool": "studio_screen_read",
+          "sinceTurnStartMs": 63143,
+          "payload": null
+        },
+        {
+          "kind": "observation",
+          "tool": "studio_screen_read",
+          "sinceTurnStartMs": 63152,
+          "payload": {
+            "expectedRevision": "r1#0",
+            "cursor": {
+              "documentId": "screen-aa7ccbed-eb90-41b0-ab46-1f762f2636ae",
+              "revision": "r1#0",
+              "digest": "649c27bf4e987694228649081355f672d6ee054cf350af15ef208fbd6d1709ad",
+              "epoch": "8ada4339-bf79-487b-bfd1-d27d86048278"
+            },
+            "section": "contracts",
+            "ok": true,
+            "complete": false,
+            "registryDigest": "6a06abc8ee99fa9f88e3abc5cfe9d8ea244ae35a79321284cd0e00de0308e80d",
+            "items": [
+              {
+                "id": "vict.flow.canvas",
+                "revision": "1",
+                "digest": "3bf1d1da07ec917d35bc1c1bcddf23eb172d4d9d9b42c82c85e22938d8638743",
+                "bodyIdentity": "studio-contract-body@2:examples:3bf1d1da07ec917d35bc1c1bcddf23eb172d4d9d9b42c82c85e22938d8638743",
+                "contractJson": "ict.ui-component-abi@1\",\"slots\":[\"nodes\",\"edges\"],\"required\":[],\"styleTargets\":[\"root\"],\"requiresParentContext\":false,\"compositionSlots\":[]},\"descriptorDigest\":\"b1284730404b3e8fa92250352f6794e726d4cf24ea7b725ef47f6d18a75c075e\",\"digest\":\"3bf1d1da07ec917d35bc1c1bcddf23eb172d4d9d9b42c82c85e22938d8638743\",\"preparation\":{\"seedStyles\":[],\"hostRequirements\":[],\"dependencies\":[{\"id\":\"vict.flow.node\",\"revision\":\"1\"},{\"id\":\"vict.flow.edge\",\"revision\":\"1\"}],\"seedStylePrecedence\":\"Local styles override shared style sources; explicitly replace/remove undesired seed declarations before construction.\"}}",
+                "totalCharacters": 4195,
+                "offset": 3600,
+                "nextOffset": null,
+                "bodyComplete": false
+              }
+            ],
+            "pending": [],
+            "problems": [],
+            "projection": "contract-with-examples",
+            "paging": "Bodies are lossless JSON text pages. Initial bundles include dependency bodies; continuations page only explicitly selected components, one body at its own nextOffset. Send expectedBodyIdentities:{\"id@revision\":bodyIdentity} with unchanged includeExamples. Changing projection invalidates partial pages. Retain digest/bodyIdentity only after assembling every character from offset 0 to totalCharacters. knownBodyIdentities proves projection when reusing examples; a guidance-only body does not contain examples. Pending/partial dependencies are not complete knowledge. Source facts never use knowledge-cache digests."
+          }
+        },
+        {
+          "kind": "tool-start",
+          "tool": "studio_screen_edit",
+          "sinceTurnStartMs": 245673,
+          "payload": null
+        },
+        {
+          "kind": "proposed",
+          "tool": "studio_screen_edit",
+          "sinceTurnStartMs": 245749,
+          "payload": {
+            "proposalId": "0c50635c-2a55-4cdc-b08e-a9a07a3fa6a3",
+            "reason": "Compact dashboard shell: header row, status chip, KPI row with first two card containers",
+            "revision": "r1#0"
+          }
+        },
+        {
+          "kind": "committed",
+          "tool": "studio_screen_edit",
+          "sinceTurnStartMs": 245825,
+          "payload": {
+            "proposalId": "0c50635c-2a55-4cdc-b08e-a9a07a3fa6a3",
+            "ok": true,
+            "revision": "r1#1",
+            "digest": "58f2ff4739699fde33eaa0a34fbe935c11aa45360ab9d186b6b1c923ed5b5eb1",
+            "applied": 1,
+            "coverage": {
+              "available": 84,
+              "authored": 0,
+              "catalogAuthored": 0,
+              "registeredAuthored": 0,
+              "reachableSourceNodes": 11,
+              "requested": 84,
+              "scope": "all-authorable-definitions",
+              "missing": [
+                "vict.catalog.button",
+                "vict.catalog.checkbox",
+                "vict.catalog.select",
+                "vict.catalog.dialog",
+                "vict.catalog.switch",
+                "vict.catalog.toggle",
+                "vict.catalog.select-multiple",
+                "vict.catalog.select-item",
+                "vict.catalog.combobox",
+                "vict.catalog.combobox-multiple",
+                "vict.catalog.combobox-item",
+                "vict.catalog.toggle-group",
+                "vict.catalog.toggle-group-multiple",
+                "vict.catalog.toggle-group-item",
+                "vict.catalog.accordion",
+                "vict.catalog.accordion-multiple",
+                "vict.catalog.accordion-item",
+                "vict.catalog.slider",
+                "vict.catalog.meter",
+                "vict.catalog.progress"
+              ],
+              "evidence": "Reachable declared source presence only, including inactive branches/templates. An agent-declared manifest is not proof of the user intent, observed appearance, exercised interaction or completion.",
+              "missingCount": 84,
+              "moreMissing": true
+            }
+          }
+        },
+        {
+          "kind": "tool-start",
+          "tool": "studio_screen_edit",
+          "sinceTurnStartMs": 260765,
+          "payload": null
+        },
+        {
+          "kind": "proposed",
+          "tool": "studio_screen_edit",
+          "sinceTurnStartMs": 260817,
+          "payload": {
+            "proposalId": "ee9c0326-8350-4121-9318-df2f188c8cf7",
+            "reason": "Fill KPI cards: labels, values and deltas for requests and error rate; latency card label",
+            "revision": "r1#1"
+          }
+        },
+        {
+          "kind": "committed",
+          "tool": "studio_screen_edit",
+          "sinceTurnStartMs": 260854,
+          "payload": {
+            "proposalId": "ee9c0326-8350-4121-9318-df2f188c8cf7",
+            "ok": true,
+            "revision": "r1#2",
+            "digest": "9d3fcff8bccd619669405e6ced21765140a2ad2775d175ee2576cc3da5090627",
+            "applied": 2,
+            "coverage": {
+              "available": 84,
+              "authored": 0,
+              "catalogAuthored": 0,
+              "registeredAuthored": 0,
+              "reachableSourceNodes": 26,
+              "requested": 84,
+              "scope": "all-authorable-definitions",
+              "missing": [
+                "vict.catalog.button",
+                "vict.catalog.checkbox",
+                "vict.catalog.select",
+                "vict.catalog.dialog",
+                "vict.catalog.switch",
+                "vict.catalog.toggle",
+                "vict.catalog.select-multiple",
+                "vict.catalog.select-item",
+                "vict.catalog.combobox",
+                "vict.catalog.combobox-multiple",
+                "vict.catalog.combobox-item",
+                "vict.catalog.toggle-group",
+                "vict.catalog.toggle-group-multiple",
+                "vict.catalog.toggle-group-item",
+                "vict.catalog.accordion",
+                "vict.catalog.accordion-multiple",
+                "vict.catalog.accordion-item",
+                "vict.catalog.slider",
+                "vict.catalog.meter",
+                "vict.catalog.progress"
+              ],
+              "evidence": "Reachable declared source presence only, including inactive branches/templates. An agent-declared manifest is not proof of the user intent, observed appearance, exercised interaction or completion.",
+              "missingCount": 84,
+              "moreMissing": true
+            }
+          }
+        },
+        {
+          "kind": "tool-start",
+          "tool": "studio_screen_observe",
+          "sinceTurnStartMs": 267249,
+          "payload": null
+        },
+        {
+          "kind": "observation",
+          "tool": "studio_screen_observe",
+          "sinceTurnStartMs": 286457,
+          "payload": {
+            "ok": true,
+            "evidence": "observed-appearance",
+            "observation": "**Visible observations:**\n\n- Header: bold dark \"Operations overview\" with gray \"Live snapshot · updated 09:42\" beside it, roughly baseline-aligned; a light-green \"All systems nominal\" chip with dot sits right-aligned. Hierarchy reads clearly.\n- Three equal-width white cards on a pale background, evenly gapped and left-aligned with the title; consistent rounded corners.\n- Cards 1–2 show uppercase gray label, large dark value (48.2k, 0.42%), and a small green delta row with triangle icon; contrast is adequate throughout.\n- Card 3 shows only the \"P95 LATENCY\" label — its value/delta area is visibly empty at matching card height. This is directly observed; whether content is missing or clipped cannot be confirmed.\n- No horizontal clipping or overflow within the visible region; everything below the cards is empty background.",
+            "metadata": {
+              "cursor": {
+                "documentId": "screen-aa7ccbed-eb90-41b0-ab46-1f762f2636ae",
+                "revision": "r1#2",
+                "digest": "9d3fcff8bccd619669405e6ced21765140a2ad2775d175ee2576cc3da5090627",
+                "epoch": "8ada4339-bf79-487b-bfd1-d27d86048278"
+              },
+              "capturedAt": "2026-10-25T12:32:59.238Z",
+              "viewport": {
+                "width": 960,
+                "height": 585,
+                "scrollLeft": 0,
+                "scrollTop": 0,
+                "devicePixelRatio": 1.0000000149011612
+              },
+              "image": {
+                "width": 909,
+                "height": 560,
+                "sourceWidth": 909,
+                "sourceHeight": 560,
+                "offsetLeft": 0,
+                "offsetTop": 0,
+                "cropped": false
+              },
+              "preview": {
+                "mode": "design",
+                "fingerprint": "abe42ffa5c54d2db55cfcdb2fbf60fce6d473832a6e7f603d972c41e05ebad3a",
+                "selection": "screen-aa7ccbed-eb90-41b0-ab46-1f762f2636ae|screen"
+              }
+            },
+            "revalidatedAt": "2026-10-25T12:33:18.034Z",
+            "validation": "same-source-preview-viewport-and-image-bytes-after-inference",
+            "imageDigest": "b114a5a445ecadad0735d3ec15070c5f1fd9ee6a00582d156429b7980aeaf216",
+            "confirmedImageDigest": "b114a5a445ecadad0735d3ec15070c5f1fd9ee6a00582d156429b7980aeaf216",
+            "imageComparison": "sha256-identical",
+            "imageComparisonScope": "within-this-observation-before-and-after-inference",
+            "fingerprintMeaning": "Source and preview state identity, not a pixel digest. Separate successful observations may have different fingerprints and identical pixels.",
+            "captureAttempts": 3,
+            "captureRecoveryAttempts": 1,
+            "bytes": 17323,
+            "model": "zai/glm-5.3-flash",
+            "interactionVerified": false,
+            "limitation": "Only the captured preview frame region and stated preview state were inspected. Equal image bytes across separate observations do not prove stale capture or a rasterizer defect; a source edit may have no effect in this crop. Open preview-owned external portals refuse capture; unrelated Studio chrome is outside this image. Source relationships and interaction outcomes require separate checks."
+          }
+        },
+        {
+          "kind": "tool-start",
+          "tool": "studio_screen_edit",
+          "sinceTurnStartMs": 301347,
+          "payload": null
+        },
+        {
+          "kind": "proposed",
+          "tool": "studio_screen_edit",
+          "sinceTurnStartMs": 301407,
+          "payload": {
+            "proposalId": "dcff3b0c-4a9f-42b2-948b-7f103b34a16b",
+            "reason": "Finish latency KPI; add middle row with activity list card and first two events",
+            "revision": "r1#2"
+          }
+        },
+        {
+          "kind": "committed",
+          "tool": "studio_screen_edit",
+          "sinceTurnStartMs": 301461,
+          "payload": {
+            "proposalId": "dcff3b0c-4a9f-42b2-948b-7f103b34a16b",
+            "ok": true,
+            "revision": "r1#3",
+            "digest": "d344f41278a7bced23782b55fea085fb602870a401e2421581e9fa6e71109b6f",
+            "applied": 3,
+            "coverage": {
+              "available": 84,
+              "authored": 0,
+              "catalogAuthored": 0,
+              "registeredAuthored": 0,
+              "reachableSourceNodes": 39,
+              "requested": 84,
+              "scope": "all-authorable-definitions",
+              "missing": [
+                "vict.catalog.button",
+                "vict.catalog.checkbox",
+                "vict.catalog.select",
+                "vict.catalog.dialog",
+                "vict.catalog.switch",
+                "vict.catalog.toggle",
+                "vict.catalog.select-multiple",
+                "vict.catalog.select-item",
+                "vict.catalog.combobox",
+                "vict.catalog.combobox-multiple",
+                "vict.catalog.combobox-item",
+                "vict.catalog.toggle-group",
+                "vict.catalog.toggle-group-multiple",
+                "vict.catalog.toggle-group-item",
+                "vict.catalog.accordion",
+                "vict.catalog.accordion-multiple",
+                "vict.catalog.accordion-item",
+                "vict.catalog.slider",
+                "vict.catalog.meter",
+                "vict.catalog.progress"
+              ],
+              "evidence": "Reachable declared source presence only, including inactive branches/templates. An agent-declared manifest is not proof of the user intent, observed appearance, exercised interaction or completion.",
+              "missingCount": 84,
+              "moreMissing": true
+            }
+          }
+        },
+        {
+          "kind": "tool-start",
+          "tool": "studio_screen_edit",
+          "sinceTurnStartMs": 325096,
+          "payload": null
+        },
+        {
+          "kind": "proposed",
+          "tool": "studio_screen_edit",
+          "sinceTurnStartMs": 325163,
+          "payload": {
+            "proposalId": "34f3698d-bfa3-41b0-9b25-f7623324b90a",
+            "reason": "Add timestamps to activity rows, remaining two events, and flow topology card shell",
+            "revision": "r1#3"
+          }
+        },
+        {
+          "kind": "committed",
+          "tool": "studio_screen_edit",
+          "sinceTurnStartMs": 325218,
+          "payload": {
+            "proposalId": "34f3698d-bfa3-41b0-9b25-f7623324b90a",
+            "ok": true,
+            "revision": "r1#4",
+            "digest": "db4c4f18efbdfac7f7adc067d6c992f9fda315cf3f40bfbeb28d2de7093aa57f",
+            "applied": 4,
+            "coverage": {
+              "available": 84,
+              "authored": 0,
+              "catalogAuthored": 0,
+              "registeredAuthored": 0,
+              "reachableSourceNodes": 54,
+              "requested": 84,
+              "scope": "all-authorable-definitions",
+              "missing": [
+                "vict.catalog.button",
+                "vict.catalog.checkbox",
+                "vict.catalog.select",
+                "vict.catalog.dialog",
+                "vict.catalog.switch",
+                "vict.catalog.toggle",
+                "vict.catalog.select-multiple",
+                "vict.catalog.select-item",
+                "vict.catalog.combobox",
+                "vict.catalog.combobox-multiple",
+                "vict.catalog.combobox-item",
+                "vict.catalog.toggle-group",
+                "vict.catalog.toggle-group-multiple",
+                "vict.catalog.toggle-group-item",
+                "vict.catalog.accordion",
+                "vict.catalog.accordion-multiple",
+                "vict.catalog.accordion-item",
+                "vict.catalog.slider",
+                "vict.catalog.meter",
+                "vict.catalog.progress"
+              ],
+              "evidence": "Reachable declared source presence only, including inactive branches/templates. An agent-declared manifest is not proof of the user intent, observed appearance, exercised interaction or completion.",
+              "missingCount": 84,
+              "moreMissing": true
+            }
+          }
+        },
+        {
+          "kind": "tool-start",
+          "tool": "studio_screen_edit",
+          "sinceTurnStartMs": 338656,
+          "payload": null
+        },
+        {
+          "kind": "tool-failed",
+          "tool": "studio_screen_edit",
+          "sinceTurnStartMs": 338678,
+          "payload": {
+            "code": "VICT_TOOL_FAILED"
+          }
+        },
+        {
+          "kind": "tool-start",
+          "tool": "studio_screen_read",
+          "sinceTurnStartMs": 358552,
+          "payload": null
+        },
+        {
+          "kind": "observation",
+          "tool": "studio_screen_read",
+          "sinceTurnStartMs": 358561,
+          "payload": null,
+          "rawPayload": "{\"expectedRevision\":\"r1#4\",\"cursor\":{\"documentId\":\"screen-aa7ccbed-eb90-41b0-ab46-1f762f2636ae\",\"revision\":\"r1#4\",\"digest\":\"db4c4f18efbdfac7f7adc067d6c992f9fda315cf3f40bfbeb28d2de7093aa57f\",\"epoch\":\"8ada4339-bf79-487b-bfd1-d27d86048278\"},\"section\":\"overview\",\"document\":{\"schema\":\"vict.ui-document@1\",\"id\":\"screen-aa7ccbed-eb90-41b0-ab46-1f762f2636ae\",\"revision\":\"r1\",\"root\":\"screen\",\"nodeCount\":54,\"stateCount\":6},\"selection\":{\"occurrence\":\"screen-aa7ccbed-eb90-41b0-ab46-1f762f2636ae|screen\",\"nodeId\":\"screen\",\"repeated\":false},\"roots\":[{\"id\":\"screen\",\"kind\":\"element\",\"tag\":\"main\",\"children\":[\"hdr\",\"kpiRow\",\"midRow\"],\"childCount\":3,\"sourcePreview\":\"{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"screen\\\",\\\"tag\\\":\\\"main\\\",\\\"attributes\\\":{\\\"aria-label\\\":\\\"Operations dashboard\\\"},\\\"children\\\":[\\\"hdr\\\",\\\"kpiRow\\\",\\\"midRow\\\"],\\\"localStyle\\\":[{\\\"property\\\":\\\"display\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"flex\\\"}},{\\\"property\\\":\\\"flex-direction\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"column\\\"}},{\\\"property\\\":\\\"gap\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"12px\\\"}},{\\\"property\\\":\\\"padding\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"18px 22px\\\"}},{\\\"property\\\":\\\"min-height\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"560px\\\"}},{\\\"property\\\":\\\"background-color\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"#f4f6fb\\\"}},{\\\"property\\\":\\\"color\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"#24… [truncated; use source pages]\"}],\"previewHost\":{\"surfaces\":[\"Design\",\"Run\"],\"selector\":\".workspace-screen\",\"container\":{\"name\":\"studio-screen\",\"type\":\"inline-size\"},\"widthPresets\":\"Change the preview host width, not the outer browser viewport.\",\"mediaQueries\":\"Evaluate against the outer browser viewport, not the preview width preset.\",\"canonicalRoot\":\"The Studio host is an ancestor; the canonical root need not establish this container.\",\"portability\":\"Other consumers must establish a compatible host explicitly; this container is not a portable document guarantee.\",\"provenance\":\"apps/studio/src/lib/designer/workspace.css\"},\"knowledge\":{\"registryDigest\":\"6a06abc8ee99fa9f88e3abc5cfe9d8ea244ae35a79321284cd0e00de0308e80d\",\"contracts\":86,\"families\":3,\"ready\":true,\"discovery\":\"families → catalog with family/category/query → contracts with selected components and knownDigests. Native tags use elements; recipes use palette. Knowledge freshness is separate from this source cursor.\"},\"discovery\":\"Read nodes/palette/state with offset and limit <=20. State initialJson is a preview; read state with stateKey for lossless declaration JSON pages. Registry lists componentDefinitions/styleSources/tokens/conditions/assets; provide registry and optional key to page a whole entry as lossless JSON text. Read component with recipe for exact props/outputs/slots. Read source with nodeId for lossless JSON text pages (nextOffset is character offset). Read coverage with requested recipe IDs for source presence only.\",\"editing\":\"Use add with a palette recipe as an accelerator, or insert kind element/text/component through the registered canonical path. Component insertion requires exact componentId/revision from catalog/contracts and explicit slotName for slot children. Native tags come from elements. declareState accepts string/number/boolean/isoDate/isoTime/stringList/numberList with a matching canonical initial value. bindText targets an actual text node; bindAttribute targets a native attribute. bind/connect use exact component props/outputs. style accepts text/token/binding values and optional conditionId/pseudo; declareToken and declareCondition add registered presentation data. defineStyleSource and attachStyleSource/detachStyleSource reuse ordered rules; replace:true explicitly updates a shared source. removeStyleSource requires no remaining references. Local styles retain precedence. Heading levels1..6 are native headings. Compatible same-batch construction is supported; final semantic/renderer c [Details truncated for the bounded trace. Read current source for complete facts.]"
+        },
+        {
+          "kind": "tool-start",
+          "tool": "studio_screen_edit",
+          "sinceTurnStartMs": 377849,
+          "payload": null
+        },
+        {
+          "kind": "proposed",
+          "tool": "studio_screen_edit",
+          "sinceTurnStartMs": 377961,
+          "payload": {
+            "proposalId": "2429b927-36e0-4eaa-84ca-86953318a79d",
+            "reason": "Authored small read-only flow topology via component insert: compact canvas, four pipeline nodes, three labeled edges",
+            "revision": "r1#4"
+          }
+        },
+        {
+          "kind": "committed",
+          "tool": "studio_screen_edit",
+          "sinceTurnStartMs": 378051,
+          "payload": {
+            "proposalId": "2429b927-36e0-4eaa-84ca-86953318a79d",
+            "ok": true,
+            "revision": "r1#5",
+            "digest": "b88da2a8bf17157dbfdaa2df40b818b5e193dfd6a01c9ddda7de6d3eb473d674",
+            "applied": 5,
+            "coverage": {
+              "available": 84,
+              "authored": 3,
+              "catalogAuthored": 0,
+              "registeredAuthored": 3,
+              "reachableSourceNodes": 62,
+              "requested": 84,
+              "scope": "all-authorable-definitions",
+              "missing": [
+                "vict.catalog.button",
+                "vict.catalog.checkbox",
+                "vict.catalog.select",
+                "vict.catalog.dialog",
+                "vict.catalog.switch",
+                "vict.catalog.toggle",
+                "vict.catalog.select-multiple",
+                "vict.catalog.select-item",
+                "vict.catalog.combobox",
+                "vict.catalog.combobox-multiple",
+                "vict.catalog.combobox-item",
+                "vict.catalog.toggle-group",
+                "vict.catalog.toggle-group-multiple",
+                "vict.catalog.toggle-group-item",
+                "vict.catalog.accordion",
+                "vict.catalog.accordion-multiple",
+                "vict.catalog.accordion-item",
+                "vict.catalog.slider",
+                "vict.catalog.meter",
+                "vict.catalog.progress"
+              ],
+              "evidence": "Reachable declared source presence only, including inactive branches/templates. An agent-declared manifest is not proof of the user intent, observed appearance, exercised interaction or completion.",
+              "missingCount": 81,
+              "moreMissing": true
+            }
+          }
+        },
+        {
+          "kind": "tool-start",
+          "tool": "studio_screen_edit",
+          "sinceTurnStartMs": 397784,
+          "payload": null
+        },
+        {
+          "kind": "proposed",
+          "tool": "studio_screen_edit",
+          "sinceTurnStartMs": 397939,
+          "payload": {
+            "proposalId": "6884791f-6db2-44c9-8b9c-a8b2b4113410",
+            "reason": "Add AI conversation card: fresh local opsPrompt state, conversation shell with three authored chat messages",
+            "revision": "r1#5"
+          }
+        },
+        {
+          "kind": "committed",
+          "tool": "studio_screen_edit",
+          "sinceTurnStartMs": 398074,
+          "payload": {
+            "proposalId": "6884791f-6db2-44c9-8b9c-a8b2b4113410",
+            "ok": true,
+            "revision": "r1#6",
+            "digest": "0eacc46050bf71a77585edd4ae22475d968b2a37b2507defc0e90e9fce078bd7",
+            "applied": 6,
+            "coverage": {
+              "available": 84,
+              "authored": 5,
+              "catalogAuthored": 0,
+              "registeredAuthored": 5,
+              "reachableSourceNodes": 69,
+              "requested": 84,
+              "scope": "all-authorable-definitions",
+              "missing": [
+                "vict.catalog.button",
+                "vict.catalog.checkbox",
+                "vict.catalog.select",
+                "vict.catalog.dialog",
+                "vict.catalog.switch",
+                "vict.catalog.toggle",
+                "vict.catalog.select-multiple",
+                "vict.catalog.select-item",
+                "vict.catalog.combobox",
+                "vict.catalog.combobox-multiple",
+                "vict.catalog.combobox-item",
+                "vict.catalog.toggle-group",
+                "vict.catalog.toggle-group-multiple",
+                "vict.catalog.toggle-group-item",
+                "vict.catalog.accordion",
+                "vict.catalog.accordion-multiple",
+                "vict.catalog.accordion-item",
+                "vict.catalog.slider",
+                "vict.catalog.meter",
+                "vict.catalog.progress"
+              ],
+              "evidence": "Reachable declared source presence only, including inactive branches/templates. An agent-declared manifest is not proof of the user intent, observed appearance, exercised interaction or completion.",
+              "missingCount": 79,
+              "moreMissing": true
+            }
+          }
+        },
+        {
+          "kind": "tool-start",
+          "tool": "studio_screen_read",
+          "sinceTurnStartMs": 403866,
+          "payload": null
+        },
+        {
+          "kind": "observation",
+          "tool": "studio_screen_read",
+          "sinceTurnStartMs": 403873,
+          "payload": {
+            "expectedRevision": "r1#6",
+            "cursor": {
+              "documentId": "screen-aa7ccbed-eb90-41b0-ab46-1f762f2636ae",
+              "revision": "r1#6",
+              "digest": "0eacc46050bf71a77585edd4ae22475d968b2a37b2507defc0e90e9fce078bd7",
+              "epoch": "8ada4339-bf79-487b-bfd1-d27d86048278"
+            },
+            "section": "source",
+            "nodeId": "chatCard",
+            "sourceJson": "{\"kind\":\"element\",\"id\":\"chatCard\",\"tag\":\"article\",\"children\":[\"chatHead\",\"chatConv\"],\"localStyle\":[{\"property\":\"background-color\",\"value\":{\"type\":\"text\",\"value\":\"#ffffff\"}},{\"property\":\"border\",\"value\":{\"type\":\"text\",\"value\":\"1px solid #e4e9f2\"}},{\"property\":\"border-radius\",\"value\":{\"type\":\"text\",\"value\":\"12px\"}},{\"property\":\"box-shadow\",\"value\":{\"type\":\"text\",\"value\":\"0 1px 2px rgba(36,48,71,0.05)\"}},{\"property\":\"display\",\"value\":{\"type\":\"text\",\"value\":\"flex\"}},{\"property\":\"flex-direction\",\"value\":{\"type\":\"text\",\"value\":\"column\"}},{\"property\":\"gap\",\"value\":{\"type\":\"text\",\"value\":\"8px\"}},{\"property\":\"padding\",\"value\":{\"type\":\"text\",\"value\":\"14px 16px\"}}]}",
+            "totalCharacters": 663,
+            "offset": 0,
+            "nextOffset": null
+          }
+        },
+        {
+          "kind": "tool-start",
+          "tool": "studio_screen_read",
+          "sinceTurnStartMs": 409649,
+          "payload": null
+        },
+        {
+          "kind": "observation",
+          "tool": "studio_screen_read",
+          "sinceTurnStartMs": 409656,
+          "payload": {
+            "expectedRevision": "r1#6",
+            "cursor": {
+              "documentId": "screen-aa7ccbed-eb90-41b0-ab46-1f762f2636ae",
+              "revision": "r1#6",
+              "digest": "0eacc46050bf71a77585edd4ae22475d968b2a37b2507defc0e90e9fce078bd7",
+              "epoch": "8ada4339-bf79-487b-bfd1-d27d86048278"
+            },
+            "section": "source",
+            "nodeId": "chatConv",
+            "sourceJson": "{\"kind\":\"component\",\"id\":\"chatConv\",\"definitionId\":\"vict.ai.conversation\",\"revision\":\"1\",\"slots\":{\"messages\":{\"name\":\"messages\",\"children\":[\"msg1\",\"msg2\",\"msg3\"]}},\"props\":{\"label\":{\"type\":\"literal\",\"value\":\"Ops assistant\"}}}",
+            "totalCharacters": 225,
+            "offset": 0,
+            "nextOffset": null
+          }
+        },
+        {
+          "kind": "tool-start",
+          "tool": "studio_screen_edit",
+          "sinceTurnStartMs": 416393,
+          "payload": null
+        },
+        {
+          "kind": "proposed",
+          "tool": "studio_screen_edit",
+          "sinceTurnStartMs": 416467,
+          "payload": {
+            "proposalId": "8cf62e9e-392b-4e86-8b7f-28b202f845ae",
+            "reason": "Author prompt input in composer slot, controlled by fresh local opsPrompt state",
+            "revision": "r1#6"
+          }
+        },
+        {
+          "kind": "committed",
+          "tool": "studio_screen_edit",
+          "sinceTurnStartMs": 416544,
+          "payload": {
+            "proposalId": "8cf62e9e-392b-4e86-8b7f-28b202f845ae",
+            "ok": true,
+            "revision": "r1#7",
+            "digest": "f604cf35c5f21de8cc5adb5fc9e5f1b50c9ff845a19b256d9a5632732d249357",
+            "applied": 7,
+            "coverage": {
+              "available": 84,
+              "authored": 6,
+              "catalogAuthored": 0,
+              "registeredAuthored": 6,
+              "reachableSourceNodes": 70,
+              "requested": 84,
+              "scope": "all-authorable-definitions",
+              "missing": [
+                "vict.catalog.button",
+                "vict.catalog.checkbox",
+                "vict.catalog.select",
+                "vict.catalog.dialog",
+                "vict.catalog.switch",
+                "vict.catalog.toggle",
+                "vict.catalog.select-multiple",
+                "vict.catalog.select-item",
+                "vict.catalog.combobox",
+                "vict.catalog.combobox-multiple",
+                "vict.catalog.combobox-item",
+                "vict.catalog.toggle-group",
+                "vict.catalog.toggle-group-multiple",
+                "vict.catalog.toggle-group-item",
+                "vict.catalog.accordion",
+                "vict.catalog.accordion-multiple",
+                "vict.catalog.accordion-item",
+                "vict.catalog.slider",
+                "vict.catalog.meter",
+                "vict.catalog.progress"
+              ],
+              "evidence": "Reachable declared source presence only, including inactive branches/templates. An agent-declared manifest is not proof of the user intent, observed appearance, exercised interaction or completion.",
+              "missingCount": 78,
+              "moreMissing": true
+            }
+          }
+        },
+        {
+          "kind": "tool-start",
+          "tool": "studio_screen_observe",
+          "sinceTurnStartMs": 431100,
+          "payload": null
+        },
+        {
+          "kind": "observation",
+          "tool": "studio_screen_observe",
+          "sinceTurnStartMs": 450768,
+          "payload": {
+            "ok": true,
+            "evidence": "observed-appearance",
+            "observation": "**Directly visible:** Header with title, timestamp, and \"All systems nominal\" pill; three KPI cards render completely with legible values, labels, and colored deltas — hierarchy is clear. The Ops assistant card dominates vertically, with a large empty gap below its title before the user bubble (\"Summarize overnight incidents.\") and two reply paragraphs; the prompt field with purple send button sits inside. Spacing there reads loose, not compact.\n\n**Clipping:** The bottom row is cut mid-content — only \"09:24 … Deploy api-gateway v2.14.1\" and the \"Pipeline topology\" title show; no nodes or labeled edges are visible.\n\n**Limitation/inference:** The capture is cropped, so full-page fit can't be confirmed, but the dashboard clearly exceeds the 585px viewport, pushing the activity list and topology below the fold.",
+            "metadata": {
+              "cursor": {
+                "documentId": "screen-aa7ccbed-eb90-41b0-ab46-1f762f2636ae",
+                "revision": "r1#7",
+                "digest": "f604cf35c5f21de8cc5adb5fc9e5f1b50c9ff845a19b256d9a5632732d249357",
+                "epoch": "8ada4339-bf79-487b-bfd1-d27d86048278"
+              },
+              "capturedAt": "2026-10-25T12:35:43.380Z",
+              "viewport": {
+                "width": 960,
+                "height": 585,
+                "scrollLeft": 0,
+                "scrollTop": 0,
+                "devicePixelRatio": 1.0000000149011612
+              },
+              "image": {
+                "width": 909,
+                "height": 569,
+                "sourceWidth": 909,
+                "sourceHeight": 784,
+                "offsetLeft": 0,
+                "offsetTop": 0,
+                "cropped": true
+              },
+              "preview": {
+                "mode": "design",
+                "fingerprint": "9ccdc62b486ef2af9d84947adb59e4654cd1478dd219a79f66e05c0539b3863e",
+                "selection": "screen-aa7ccbed-eb90-41b0-ab46-1f762f2636ae|screen"
+              }
+            },
+            "revalidatedAt": "2026-10-25T12:36:02.345Z",
+            "validation": "same-source-preview-viewport-and-image-bytes-after-inference",
+            "imageDigest": "24098f5fe1facdd2095132abcf8fe9bd6d55903618b5bece200cfe233b554ec2",
+            "confirmedImageDigest": "24098f5fe1facdd2095132abcf8fe9bd6d55903618b5bece200cfe233b554ec2",
+            "imageComparison": "sha256-identical",
+            "imageComparisonScope": "within-this-observation-before-and-after-inference",
+            "fingerprintMeaning": "Source and preview state identity, not a pixel digest. Separate successful observations may have different fingerprints and identical pixels.",
+            "captureAttempts": 2,
+            "captureRecoveryAttempts": 0,
+            "bytes": 38176,
+            "model": "zai/glm-5.3-flash",
+            "interactionVerified": false,
+            "limitation": "Only the captured preview frame region and stated preview state were inspected. Equal image bytes across separate observations do not prove stale capture or a rasterizer defect; a source edit may have no effect in this crop. Open preview-owned external portals refuse capture; unrelated Studio chrome is outside this image. Source relationships and interaction outcomes require separate checks."
+          }
+        },
+        {
+          "kind": "tool-start",
+          "tool": "studio_screen_read",
+          "sinceTurnStartMs": 431101,
+          "payload": null
+        },
+        {
+          "kind": "observation",
+          "tool": "studio_screen_read",
+          "sinceTurnStartMs": 431112,
+          "payload": {
+            "expectedRevision": "r1#7",
+            "cursor": {
+              "documentId": "screen-aa7ccbed-eb90-41b0-ab46-1f762f2636ae",
+              "revision": "r1#7",
+              "digest": "f604cf35c5f21de8cc5adb5fc9e5f1b50c9ff845a19b256d9a5632732d249357",
+              "epoch": "8ada4339-bf79-487b-bfd1-d27d86048278"
+            },
+            "section": "source",
+            "nodeId": "chatConv",
+            "sourceJson": "{\"kind\":\"component\",\"id\":\"chatConv\",\"definitionId\":\"vict.ai.conversation\",\"revision\":\"1\",\"slots\":{\"messages\":{\"name\":\"messages\",\"children\":[\"msg1\",\"msg2\",\"msg3\"]},\"composer\":{\"name\":\"composer\",\"children\":[\"chatPrompt\"]}},\"props\":{\"label\":{\"type\":\"literal\",\"value\":\"Ops assistant\"}}}",
+            "totalCharacters": 282,
+            "offset": 0,
+            "nextOffset": null
+          }
+        },
+        {
+          "kind": "tool-start",
+          "tool": "studio_screen_read",
+          "sinceTurnStartMs": 431101,
+          "payload": null
+        },
+        {
+          "kind": "observation",
+          "tool": "studio_screen_read",
+          "sinceTurnStartMs": 431114,
+          "payload": {
+            "expectedRevision": "r1#7",
+            "cursor": {
+              "documentId": "screen-aa7ccbed-eb90-41b0-ab46-1f762f2636ae",
+              "revision": "r1#7",
+              "digest": "f604cf35c5f21de8cc5adb5fc9e5f1b50c9ff845a19b256d9a5632732d249357",
+              "epoch": "8ada4339-bf79-487b-bfd1-d27d86048278"
+            },
+            "section": "source",
+            "nodeId": "flowCanvas",
+            "sourceJson": "{\"kind\":\"component\",\"id\":\"flowCanvas\",\"definitionId\":\"vict.flow.canvas\",\"revision\":\"1\",\"slots\":{\"nodes\":{\"name\":\"nodes\",\"children\":[\"nIngest\",\"nValidate\",\"nEnrich\",\"nStore\"]},\"edges\":{\"name\":\"edges\",\"children\":[\"eRaw\",\"eClean\",\"eArchive\"]}},\"props\":{\"background\":{\"type\":\"literal\",\"value\":true},\"controls\":{\"type\":\"literal\",\"value\":false},\"height\":{\"type\":\"literal\",\"value\":170},\"label\":{\"type\":\"literal\",\"value\":\"Ingest pipeline\"},\"minimap\":{\"type\":\"literal\",\"value\":false}}}",
+            "totalCharacters": 476,
+            "offset": 0,
+            "nextOffset": null
+          }
+        },
+        {
+          "kind": "tool-start",
+          "tool": "studio_screen_edit",
+          "sinceTurnStartMs": 517356,
+          "payload": null
+        },
+        {
+          "kind": "proposed",
+          "tool": "studio_screen_edit",
+          "sinceTurnStartMs": 517502,
+          "payload": {
+            "proposalId": "db67ce83-405b-432b-9f0d-1faf2a374ca8",
+            "reason": "Restore section order (activity and topology before assistant), compact paddings, tighten conversation shell and canvas height for one-screen fit",
+            "revision": "r1#7"
+          }
+        },
+        {
+          "kind": "committed",
+          "tool": "studio_screen_edit",
+          "sinceTurnStartMs": 517589,
+          "payload": {
+            "proposalId": "db67ce83-405b-432b-9f0d-1faf2a374ca8",
+            "ok": true,
+            "revision": "r1#8",
+            "digest": "eb4aba536eb5df8f985993e08ae27b24ae4cf053f3d5d68f11f02834e65fc083",
+            "applied": 8,
+            "coverage": {
+              "available": 84,
+              "authored": 6,
+              "catalogAuthored": 0,
+              "registeredAuthored": 6,
+              "reachableSourceNodes": 70,
+              "requested": 84,
+              "scope": "all-authorable-definitions",
+              "missing": [
+                "vict.catalog.button",
+                "vict.catalog.checkbox",
+                "vict.catalog.select",
+                "vict.catalog.dialog",
+                "vict.catalog.switch",
+                "vict.catalog.toggle",
+                "vict.catalog.select-multiple",
+                "vict.catalog.select-item",
+                "vict.catalog.combobox",
+                "vict.catalog.combobox-multiple",
+                "vict.catalog.combobox-item",
+                "vict.catalog.toggle-group",
+                "vict.catalog.toggle-group-multiple",
+                "vict.catalog.toggle-group-item",
+                "vict.catalog.accordion",
+                "vict.catalog.accordion-multiple",
+                "vict.catalog.accordion-item",
+                "vict.catalog.slider",
+                "vict.catalog.meter",
+                "vict.catalog.progress"
+              ],
+              "evidence": "Reachable declared source presence only, including inactive branches/templates. An agent-declared manifest is not proof of the user intent, observed appearance, exercised interaction or completion.",
+              "missingCount": 78,
+              "moreMissing": true
+            }
+          }
+        },
+        {
+          "kind": "tool-start",
+          "tool": "studio_screen_observe",
+          "sinceTurnStartMs": 524137,
+          "payload": null
+        },
+        {
+          "kind": "observation",
+          "tool": "studio_screen_observe",
+          "sinceTurnStartMs": 563185,
+          "payload": {
+            "ok": true,
+            "evidence": "observed-appearance",
+            "observation": "**Section order (observed):** header (\"Operations overview\" with status badge), then three KPI cards (Requests, Error rate, P95 latency), then a row pairing Recent activity with Pipeline topology, then the Ops assistant conversation — matches the expected sequence.\n\n**Screen fit:** the image is cropped; the bottom edge cuts through the Ops assistant card, so whether the dashboard ends within the viewport cannot be confirmed. The capture's taller source height suggests content may extend below, but that is inference.\n\n**Conversation spacing:** messages sit at consistent intervals; no oversized blank gap appears between the user bubble and replies. The gap between the \"Ops assistant\" heading and first message is larger. Notably, the \"Recent activity\" title renders below its list rows.",
+            "metadata": {
+              "cursor": {
+                "documentId": "screen-aa7ccbed-eb90-41b0-ab46-1f762f2636ae",
+                "revision": "r1#8",
+                "digest": "eb4aba536eb5df8f985993e08ae27b24ae4cf053f3d5d68f11f02834e65fc083",
+                "epoch": "8ada4339-bf79-487b-bfd1-d27d86048278"
+              },
+              "capturedAt": "2026-10-25T12:37:17.152Z",
+              "viewport": {
+                "width": 960,
+                "height": 585,
+                "scrollLeft": 0,
+                "scrollTop": 0,
+                "devicePixelRatio": 1.0000000149011612
+              },
+              "image": {
+                "width": 909,
+                "height": 569,
+                "sourceWidth": 909,
+                "sourceHeight": 752,
+                "offsetLeft": 0,
+                "offsetTop": 0,
+                "cropped": true
+              },
+              "preview": {
+                "mode": "design",
+                "fingerprint": "8819cee4a7859b8294ea6dedb874c4346c6503db805b189d50b69b4ea33f9704",
+                "selection": "screen-aa7ccbed-eb90-41b0-ab46-1f762f2636ae|screen"
+              }
+            },
+            "revalidatedAt": "2026-10-25T12:37:54.764Z",
+            "validation": "same-source-preview-viewport-and-image-bytes-after-inference",
+            "imageDigest": "1b32e37954af59fe849b6f8df822977a659949538999c4ddd921c2a215fc9986",
+            "confirmedImageDigest": "1b32e37954af59fe849b6f8df822977a659949538999c4ddd921c2a215fc9986",
+            "imageComparison": "sha256-identical",
+            "imageComparisonScope": "within-this-observation-before-and-after-inference",
+            "fingerprintMeaning": "Source and preview state identity, not a pixel digest. Separate successful observations may have different fingerprints and identical pixels.",
+            "captureAttempts": 3,
+            "captureRecoveryAttempts": 1,
+            "bytes": 51423,
+            "model": "zai/glm-5.3-flash",
+            "interactionVerified": false,
+            "limitation": "Only the captured preview frame region and stated preview state were inspected. Equal image bytes across separate observations do not prove stale capture or a rasterizer defect; a source edit may have no effect in this crop. Open preview-owned external portals refuse capture; unrelated Studio chrome is outside this image. Source relationships and interaction outcomes require separate checks."
+          }
+        },
+        {
+          "kind": "tool-start",
+          "tool": "studio_screen_edit",
+          "sinceTurnStartMs": 630216,
+          "payload": null
+        },
+        {
+          "kind": "proposed",
+          "tool": "studio_screen_edit",
+          "sinceTurnStartMs": 630354,
+          "payload": {
+            "proposalId": "8be8b391-a661-40bf-a1ea-2e88becb452e",
+            "reason": "Restructure bottom into two columns: activity and topology stacked left, assistant conversation right; drop now-empty middle row",
+            "revision": "r1#8"
+          }
+        },
+        {
+          "kind": "committed",
+          "tool": "studio_screen_edit",
+          "sinceTurnStartMs": 630448,
+          "payload": {
+            "proposalId": "8be8b391-a661-40bf-a1ea-2e88becb452e",
+            "ok": true,
+            "revision": "r1#9",
+            "digest": "c307e4e2156242216875f16220f59b5c5a20d38386d2153004596c6458575acb",
+            "applied": 9,
+            "coverage": {
+              "available": 84,
+              "authored": 6,
+              "catalogAuthored": 0,
+              "registeredAuthored": 6,
+              "reachableSourceNodes": 71,
+              "requested": 84,
+              "scope": "all-authorable-definitions",
+              "missing": [
+                "vict.catalog.button",
+                "vict.catalog.checkbox",
+                "vict.catalog.select",
+                "vict.catalog.dialog",
+                "vict.catalog.switch",
+                "vict.catalog.toggle",
+                "vict.catalog.select-multiple",
+                "vict.catalog.select-item",
+                "vict.catalog.combobox",
+                "vict.catalog.combobox-multiple",
+                "vict.catalog.combobox-item",
+                "vict.catalog.toggle-group",
+                "vict.catalog.toggle-group-multiple",
+                "vict.catalog.toggle-group-item",
+                "vict.catalog.accordion",
+                "vict.catalog.accordion-multiple",
+                "vict.catalog.accordion-item",
+                "vict.catalog.slider",
+                "vict.catalog.meter",
+                "vict.catalog.progress"
+              ],
+              "evidence": "Reachable declared source presence only, including inactive branches/templates. An agent-declared manifest is not proof of the user intent, observed appearance, exercised interaction or completion.",
+              "missingCount": 78,
+              "moreMissing": true
+            }
+          }
+        },
+        {
+          "kind": "tool-start",
+          "tool": "studio_screen_edit",
+          "sinceTurnStartMs": 637877,
+          "payload": null
+        },
+        {
+          "kind": "proposed",
+          "tool": "studio_screen_edit",
+          "sinceTurnStartMs": 637925,
+          "payload": {
+            "proposalId": "2e162954-46a2-49ed-b943-bcc6c6e13904",
+            "reason": "Compact canvas height so stacked activity and topology fit the one-screen two-column layout",
+            "revision": "r1#9"
+          }
+        },
+        {
+          "kind": "committed",
+          "tool": "studio_screen_edit",
+          "sinceTurnStartMs": 637982,
+          "payload": {
+            "proposalId": "2e162954-46a2-49ed-b943-bcc6c6e13904",
+            "ok": true,
+            "revision": "r1#10",
+            "digest": "ec852334a429298f8d58df655b481603fa2e9fbb4dbe332e09de4282f462f9bf",
+            "applied": 10,
+            "coverage": {
+              "available": 84,
+              "authored": 6,
+              "catalogAuthored": 0,
+              "registeredAuthored": 6,
+              "reachableSourceNodes": 71,
+              "requested": 84,
+              "scope": "all-authorable-definitions",
+              "missing": [
+                "vict.catalog.button",
+                "vict.catalog.checkbox",
+                "vict.catalog.select",
+                "vict.catalog.dialog",
+                "vict.catalog.switch",
+                "vict.catalog.toggle",
+                "vict.catalog.select-multiple",
+                "vict.catalog.select-item",
+                "vict.catalog.combobox",
+                "vict.catalog.combobox-multiple",
+                "vict.catalog.combobox-item",
+                "vict.catalog.toggle-group",
+                "vict.catalog.toggle-group-multiple",
+                "vict.catalog.toggle-group-item",
+                "vict.catalog.accordion",
+                "vict.catalog.accordion-multiple",
+                "vict.catalog.accordion-item",
+                "vict.catalog.slider",
+                "vict.catalog.meter",
+                "vict.catalog.progress"
+              ],
+              "evidence": "Reachable declared source presence only, including inactive branches/templates. An agent-declared manifest is not proof of the user intent, observed appearance, exercised interaction or completion.",
+              "missingCount": 78,
+              "moreMissing": true
+            }
+          }
+        },
+        {
+          "kind": "tool-start",
+          "tool": "studio_screen_observe",
+          "sinceTurnStartMs": 645382,
+          "payload": null
+        },
+        {
+          "kind": "validation-refused",
+          "tool": "studio_screen_observe",
+          "sinceTurnStartMs": 647167,
+          "payload": {
+            "ok": false,
+            "code": "STUDIO_CAPTURE_STALE",
+            "message": "The browser could not provide a current rendered image. No visual observation was made.",
+            "diagnostics": {
+              "phase": "raster",
+              "reason": "preview-changed",
+              "expectedRevision": "r1#10",
+              "actualRevision": "r1#10",
+              "mode": "design",
+              "covered": false,
+              "connected": true,
+              "layout": true,
+              "frame": [
+                338,
+                98,
+                908.7999877929688,
+                560
+              ],
+              "frameBefore": [
+                338,
+                98,
+                908.7999877929688,
+                560
+              ],
+              "viewport": [
+                320,
+                82,
+                960,
+                584.7000122070312
+              ],
+              "viewportBefore": [
+                320,
+                82,
+                960,
+                584.7000122070312
+              ],
+              "scroll": [
+                0,
+                0
+              ],
+              "changed": [
+                "dom-mutation"
+              ]
+            },
+            "recovery": {
+              "action": "Read current source and retry observation only after the preview settles.",
+              "editsReplayed": false,
+              "captureAttempts": 2
+            }
+          }
+        },
+        {
+          "kind": "tool-start",
+          "tool": "studio_screen_read",
+          "sinceTurnStartMs": 645382,
+          "payload": null
+        },
+        {
+          "kind": "observation",
+          "tool": "studio_screen_read",
+          "sinceTurnStartMs": 645392,
+          "payload": {
+            "expectedRevision": "r1#10",
+            "cursor": {
+              "documentId": "screen-aa7ccbed-eb90-41b0-ab46-1f762f2636ae",
+              "revision": "r1#10",
+              "digest": "ec852334a429298f8d58df655b481603fa2e9fbb4dbe332e09de4282f462f9bf",
+              "epoch": "8ada4339-bf79-487b-bfd1-d27d86048278"
+            },
+            "section": "source",
+            "nodeId": "actCard",
+            "sourceJson": "{\"kind\":\"element\",\"id\":\"actCard\",\"tag\":\"article\",\"children\":[\"actList\",\"actHead\"],\"localStyle\":[{\"property\":\"background-color\",\"value\":{\"type\":\"text\",\"value\":\"#ffffff\"}},{\"property\":\"border\",\"value\":{\"type\":\"text\",\"value\":\"1px solid #e4e9f2\"}},{\"property\":\"border-radius\",\"value\":{\"type\":\"text\",\"value\":\"12px\"}},{\"property\":\"box-shadow\",\"value\":{\"type\":\"text\",\"value\":\"0 1px 2px rgba(36,48,71,0.05)\"}},{\"property\":\"display\",\"value\":{\"type\":\"text\",\"value\":\"flex\"}},{\"property\":\"flex\",\"value\":{\"type\":\"text\",\"value\":\"1 1 0\"}},{\"property\":\"flex-direction\",\"value\":{\"type\":\"text\",\"value\":\"column\"}},{\"property\":\"gap\",\"value\":{\"type\":\"text\",\"value\":\"8px\"}},{\"property\":\"min-width\",\"value\":{\"type\":\"text\",\"value\":\"260px\"}},{\"property\":\"padding\",\"value\":{\"type\":\"text\",\"value\":\"12px 14px\"}}]}",
+            "totalCharacters": 785,
+            "offset": 0,
+            "nextOffset": null
+          }
+        },
+        {
+          "kind": "tool-start",
+          "tool": "studio_screen_edit",
+          "sinceTurnStartMs": 661883,
+          "payload": null
+        },
+        {
+          "kind": "proposed",
+          "tool": "studio_screen_edit",
+          "sinceTurnStartMs": 661957,
+          "payload": {
+            "proposalId": "29c4a7f0-8d9c-4ca0-b713-85a32680766f",
+            "reason": "Place Recent activity heading above its list",
+            "revision": "r1#10"
+          }
+        },
+        {
+          "kind": "committed",
+          "tool": "studio_screen_edit",
+          "sinceTurnStartMs": 662035,
+          "payload": {
+            "proposalId": "29c4a7f0-8d9c-4ca0-b713-85a32680766f",
+            "ok": true,
+            "revision": "r1#11",
+            "digest": "8622446f60b1d42aa57053c55bc6ee2a9ef69fd54d9f329a06c3f68d1d32fac7",
+            "applied": 11,
+            "coverage": {
+              "available": 84,
+              "authored": 6,
+              "catalogAuthored": 0,
+              "registeredAuthored": 6,
+              "reachableSourceNodes": 71,
+              "requested": 84,
+              "scope": "all-authorable-definitions",
+              "missing": [
+                "vict.catalog.button",
+                "vict.catalog.checkbox",
+                "vict.catalog.select",
+                "vict.catalog.dialog",
+                "vict.catalog.switch",
+                "vict.catalog.toggle",
+                "vict.catalog.select-multiple",
+                "vict.catalog.select-item",
+                "vict.catalog.combobox",
+                "vict.catalog.combobox-multiple",
+                "vict.catalog.combobox-item",
+                "vict.catalog.toggle-group",
+                "vict.catalog.toggle-group-multiple",
+                "vict.catalog.toggle-group-item",
+                "vict.catalog.accordion",
+                "vict.catalog.accordion-multiple",
+                "vict.catalog.accordion-item",
+                "vict.catalog.slider",
+                "vict.catalog.meter",
+                "vict.catalog.progress"
+              ],
+              "evidence": "Reachable declared source presence only, including inactive branches/templates. An agent-declared manifest is not proof of the user intent, observed appearance, exercised interaction or completion.",
+              "missingCount": 78,
+              "moreMissing": true
+            }
+          }
+        },
+        {
+          "kind": "tool-start",
+          "tool": "studio_screen_observe",
+          "sinceTurnStartMs": 668466,
+          "payload": null
+        },
+        {
+          "kind": "observation",
+          "tool": "studio_screen_observe",
+          "sinceTurnStartMs": 724141,
+          "payload": {
+            "ok": true,
+            "evidence": "observed-appearance",
+            "observation": "**Observed:** Header \"Operations overview\" with \"Live snapshot · updated 09:42\" and green \"All systems nominal\" pill; three aligned KPI cards (48.2k, 0.42%, 142 ms). Left column: \"Recent activity\" title sits above its four timestamped rows; below, \"Pipeline topology\" shows Ingest, Validate, Enrich, Store nodes on a dotted canvas with visible edges (one labeled \"archive\") plus a small circle node; \"Svelte Flow\" credit visible. Right: \"Ops assistant\" chat with user bubble, two reply paragraphs, and an input with blue send button. Text is legible, spacing even; nodes, edges, and text show no clipping; no empty containers. **Limitation:** a thin blue strip crosses the very bottom, and the Ops assistant card's bottom border isn't visible, so its lower edge can't be directly confirmed.",
+            "metadata": {
+              "cursor": {
+                "documentId": "screen-aa7ccbed-eb90-41b0-ab46-1f762f2636ae",
+                "revision": "r1#11",
+                "digest": "8622446f60b1d42aa57053c55bc6ee2a9ef69fd54d9f329a06c3f68d1d32fac7",
+                "epoch": "8ada4339-bf79-487b-bfd1-d27d86048278"
+              },
+              "capturedAt": "2026-10-25T12:39:41.336Z",
+              "viewport": {
+                "width": 960,
+                "height": 585,
+                "scrollLeft": 0,
+                "scrollTop": 0,
+                "devicePixelRatio": 1.0000000149011612
+              },
+              "image": {
+                "width": 909,
+                "height": 560,
+                "sourceWidth": 909,
+                "sourceHeight": 560,
+                "offsetLeft": 0,
+                "offsetTop": 0,
+                "cropped": false
+              },
+              "preview": {
+                "mode": "design",
+                "fingerprint": "a2e6643449ed3ed5ac4bb044767d6a90c5f1418935305aada47add0bc5c37c25",
+                "selection": "screen-aa7ccbed-eb90-41b0-ab46-1f762f2636ae|screen"
+              }
+            },
+            "revalidatedAt": "2026-10-25T12:40:35.719Z",
+            "validation": "same-source-preview-viewport-and-image-bytes-after-inference",
+            "imageDigest": "eb79e6a6ba834973f9cf0c7f32416adb41fb40003f89e69344794a560fce3987",
+            "confirmedImageDigest": "eb79e6a6ba834973f9cf0c7f32416adb41fb40003f89e69344794a560fce3987",
+            "imageComparison": "sha256-identical",
+            "imageComparisonScope": "within-this-observation-before-and-after-inference",
+            "fingerprintMeaning": "Source and preview state identity, not a pixel digest. Separate successful observations may have different fingerprints and identical pixels.",
+            "captureAttempts": 3,
+            "captureRecoveryAttempts": 1,
+            "bytes": 58490,
+            "model": "zai/glm-5.3-flash",
+            "interactionVerified": false,
+            "limitation": "Only the captured preview frame region and stated preview state were inspected. Equal image bytes across separate observations do not prove stale capture or a rasterizer defect; a source edit may have no effect in this crop. Open preview-owned external portals refuse capture; unrelated Studio chrome is outside this image. Source relationships and interaction outcomes require separate checks."
+          }
+        }
+      ]
+    }
+  ]
+}

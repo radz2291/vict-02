@@ -1,0 +1,112 @@
+- main:
+  - paragraph: Installed tarballs / standalone public consumer
+  - heading "Canonical chat and Flow, outside Studio" [level=1]
+  - paragraph:
+    - text: Eight framework packages installed from npm-packed local artifacts. No source aliases or workspace links. Source candidate
+    - code: 0c3cee81fb02345f07b26e92acb2d2eb5463b203
+    - text: .
+  - region "Installed package proof":
+    - heading "Source helper checks" [level=2]
+    - paragraph: PASS · 29/29 local checks · 86 strict pinned contracts
+    - generic "Source check evidence and boundaries"
+    - paragraph:
+      - link "Installed package paths and artifact hashes":
+        - /url: /installation.json
+      - text: ·
+      - link "Actual public capture fixture":
+        - /url: /capture.html
+  - region "Installed Rhea presentation":
+    - heading "Shared Rhea controls and native source" [level=2]
+    - button "Use legacy controls"
+    - button "Public theme probe": Continue
+    - button "Theme popup" [active]
+    - paragraph: Rhea is an explicit scoped stylesheet; legacy controls retain their default profile. Native patterns always declare their Rhea presentation dependency.
+    - text: Native pattern
+    - combobox "Native pattern":
+      - option "Alert"
+      - option "Breadcrumb"
+      - option "Button group"
+      - option "Card"
+      - option "Empty state"
+      - option "Field"
+      - option "Input"
+      - option "Text area"
+      - option "Native select"
+      - option "Keyboard hint"
+      - option "Skeleton"
+      - option "Spinner"
+      - option "Table" [selected]
+    - generic "Public native source pattern":
+      - table "Example records":
+        - caption:
+          - generic: Example records
+        - rowgroup:
+          - row "Name Status":
+            - columnheader "Name":
+              - generic: Name
+            - columnheader "Status":
+              - generic: Status
+        - rowgroup:
+          - row "Example item Ready":
+            - cell "Example item":
+              - generic: Example item
+            - cell "Ready":
+              - generic: Ready
+    - generic: "{}"
+  - region "Canonical history and memory persistence":
+    - heading "Authoring and history" [level=2]
+    - button "Insert button" [disabled]
+    - button "Remove button"
+    - button "Undo" [disabled]
+    - button "Redo" [disabled]
+    - button "Save source"
+    - button "Reopen source"
+    - status: Canonical source checks completed. Try the actual rendered controls below.
+    - paragraph:
+      - text: "Revision 2#0 · saved source · selection:"
+      - code: none
+      - text: . Runtime input values are ephemeral; Save stores canonical source and initials.
+  - region "Actual canonical document rendering":
+    - heading "Actual DocumentHost rendering" [level=2]
+    - paragraph: "The native input, textarea and select start from canonical state. Edit each field and leave it to commit its change; the bound text and observed local state follow. Type a chat message and send: its typed output updates local state only. The Flow diagram supports pan, zoom and keyboard selection; its topology and positions remain authored source."
+    - generic: Recipient (native input and text reference)
+    - textbox "Recipient (native input and text reference)": Avery
+    - generic: Avery
+    - generic: Notes (native textarea and text reference)
+    - textbox "Notes (native textarea and text reference)": Native textarea initial
+    - generic: Native textarea initial
+    - generic: Choice (native select and text reference)
+    - combobox "Choice (native select and text reference)":
+      - option
+      - option [selected]
+    - generic: beta
+    - region "Conversation":
+      - log "Messages":
+        - paragraph: How can I help?
+      - textbox "Message":
+        - /placeholder: Write a message…
+      - button "Send" [disabled]:
+        - generic: Send
+    - region "Flow diagram":
+      - application:
+        - generic "Start":
+          - button "Handle"
+          - strong: Start
+          - button "Handle"
+        - generic "Finish":
+          - button "Handle"
+          - strong: Finish
+          - button "Handle"
+        - link "Svelte Flow attribution":
+          - /url: https://svelteflow.dev?utm_source=attribution
+          - text: Svelte Flow
+        - generic "Control Panel":
+          - button "Zoom In" [disabled]:
+          - button "Zoom Out":
+          - button "Fit View":
+    - button "Inserted through the public helper"
+    - status
+    - alert
+  - heading "Observed local state" [level=2]
+  - generic: "{}"
+  - generic "Canonical source and current renderer diagnostics"

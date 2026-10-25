@@ -1,0 +1,7 @@
+{
+  "product": "9fbda0f3ec0c14ff7be8bfb475d30e0cdc0f0993",
+  "label": "Manual disposable canonical fixture; actual browser interaction; simulated action only",
+  "result": "Simulated submission: Stop intent recorded locally; no provider cancellation.",
+  "busyPresentation": "constanttrue; Stop remainsvisible anddoesnotcancelprovider",
+  "providerRunning": false
+}

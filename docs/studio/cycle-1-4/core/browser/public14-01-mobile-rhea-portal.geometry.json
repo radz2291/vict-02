@@ -1,0 +1,43 @@
+{
+  "capturedAt": "2026-10-25T11:45:40.445Z",
+  "url": "http://127.0.0.14:5608/",
+  "active": {
+    "label": null,
+    "tag": "BUTTON",
+    "text": "Close popup"
+  },
+  "rects": [
+    {
+      "class": "svelte-n50uah",
+      "clientHeight": 2432,
+      "display": "block",
+      "height": 2431.625,
+      "label": null,
+      "overflow": "visible",
+      "role": null,
+      "scrollHeight": 2432,
+      "tag": "MAIN",
+      "width": 1100,
+      "x": 82.4000015258789,
+      "y": -96
+    },
+    {
+      "class": "svelte-flow svelte-flow__container light svelte-mkap6j",
+      "clientHeight": 358,
+      "display": "block",
+      "height": 358.3999938964844,
+      "label": null,
+      "overflow": "hidden",
+      "role": "application",
+      "scrollHeight": 762,
+      "tag": "DIV",
+      "width": 996.7999877929688,
+      "x": 134,
+      "y": 1685.5250244140625
+    }
+  ],
+  "viewport": {
+    "height": 720,
+    "width": 1280
+  }
+}

@@ -1,0 +1,1040 @@
+- main:
+  - paragraph: VICT Studio / Cycle 1.4
+  - heading "Complete UI showcase" [level=1]
+  - paragraph: Explore the actual reusable UI and Studio authoring surfaces. Examples use local presentation state and disposable in-memory documents. No provider calls or saved owner screens are used.
+  - navigation "Showcase sections":
+    - link "Cycle 1.4 additions":
+      - /url: "#cycle14"
+    - link "Core authoring":
+      - /url: "#core"
+    - link "Completion round":
+      - /url: "#completion"
+    - link "21 AI patterns":
+      - /url: "#ai-patterns"
+    - link "Shared building blocks":
+      - /url: "#building-blocks"
+    - link "Node canvas":
+      - /url: "#flow"
+    - link "100 Designer compositions":
+      - /url: "#designer"
+    - link "Scope and limits":
+      - /url: "#scope"
+  - region "Cycle 1.4 additions":
+    - paragraph: Cycle 1.4
+    - heading "One visual language. The same source." [level=2]
+    - paragraph: Try the new reusable native patterns, then use the Designer example below for context menus and inspection details. All examples are disposable; no model requests are sent.
+    - generic: Native pattern
+    - combobox "Native pattern":
+      - option "Alert" [selected]
+      - option "Breadcrumb"
+      - option "Button group"
+      - option "Card"
+      - option "Empty state"
+      - option "Field"
+      - option "Input"
+      - option "Text area"
+      - option "Native select"
+      - option "Keyboard hint"
+      - option "Skeleton"
+      - option "Spinner"
+      - option "Table"
+    - paragraph: A semantic inline status with title and description; no toast host.
+    - paragraph: These are editable native compositions, alongside the registered component catalog.
+    - link "Open in the disposable Designer":
+      - /url: /showcase?recipe=rhea-alert#designer
+    - generic "Host requirements and source"
+    - generic "Actual native pattern preview":
+      - generic "Alert native pattern":
+        - main "Alert · Rhea showcase":
+          - status:
+            - strong:
+              - generic: Changes saved
+            - paragraph:
+              - generic: Your work is ready to review.
+    - generic "All 63 pinned UI families and support limits"
+    - region "Simulated agent evidence showcase":
+      - heading "Agent measurements and observed regions · SIMULATED" [level=3]
+      - paragraph: The same evidence component appears in actual Chat details. These representative values and regions are simulated UI examples, not a real run or captured image. No model request is sent.
+      - generic: Evidence state
+      - combobox "Evidence state":
+        - option "Complete server receipt"
+        - option "Partial browser measurements"
+        - option "Complete receipt · usage unavailable / no edit" [selected]
+      - button "Open simulated Chat evidence" [expanded]
+      - generic "Simulated Chat evidence":
+        - strong: SIMULATED evidence
+        - button "Close simulated evidence" [active]: ×
+        - heading "Turn measurements" [level=4]
+        - paragraph: 3 tool calls · 0 refused · 0 calls after refusal · 9.0 s elapsed.
+        - paragraph: 2 authoring model requests · 0 image requests. No confirmed edit.
+        - paragraph: Token usage unavailable.
+        - paragraph: 0 receipt-derived edits including cleanup.
+        - paragraph: 2 knowledge reads · 1 source reads · 0 edit calls · 0 observation calls.
+        - paragraph: "Settled tool durations summed: 0.5 s; tool-active interval union: 0.5 s; outside-tool time: 8.6 s."
+        - paragraph: Outside-tool time includes waiting, generation, transport and host overhead; exact provider latency is unavailable.
+        - paragraph: Exact model steps and cost unavailable. Concurrent tool durations do not add up to wall time.
+    - heading "Try the workspace changes" [level=3]
+    - list:
+      - listitem: In Design, right-click an object or the empty canvas. Try Shift+F10 on a focused target.
+      - listitem: Open Document → Layers or Structure, select a source, and deliberately open Inspect.
+      - listitem: Resize or expand the details, then close them. The canvas and its floating editing tools retain their places.
+    - paragraph: The examples below share the actual workspace components. Interact preserves native application menus. Actual Chat measurements and bounded visual regions come from real receipts; the evidence example above and simulated timelines remain labelled.
+  - region "Core authoring additions":
+    - paragraph: Cycle 1.3 / core authoring
+    - heading "Discover components. Keep the evidence." [level=2]
+    - paragraph: Explore the installed package knowledge through the actual bounded agent read path. The recovery timeline beside it uses the public Conversation component with clearly simulated receipts.
+    - region "Live package knowledge discovery":
+      - heading "Installed component knowledge" [level=3]
+      - paragraph: Actual local reads · disposable source · no provider requests
+      - text: Family
+      - combobox "Family":
+        - option "general · 80 contracts"
+        - option "ai · 3 contracts" [selected]
+        - option "flow · 3 contracts"
+      - text: Category
+      - combobox "Category":
+        - option "All categories" [selected]
+        - option "chat"
+      - list:
+        - button "Conversation vict.ai.conversation@1 · standalone":
+          - generic: Conversation
+          - generic: vict.ai.conversation@1 · standalone
+        - button "Chat message vict.ai.message@1 · standalone":
+          - generic: Chat message
+          - generic: vict.ai.message@1 · standalone
+        - button "Prompt input vict.ai.prompt-input@1 · standalone" [pressed]:
+          - generic: Prompt input
+          - generic: vict.ai.prompt-input@1 · standalone
+      - paragraph: Showing 3 of 3 matching contracts; this read is capped at 6 items.
+      - strong: vict.ai.prompt-input@1
+      - paragraph: 1 contract entries · 2,387 body characters returned · complete response
+      - button "Re-read with these digests"
+      - generic "Selected contract response"
+      - generic "Source cursor and discovery response"
+      - paragraph: Knowledge digests describe component contracts. They do not cache source facts or authorize product actions.
+    - region "Simulated grouped tool attempts":
+      - heading "One tool attempt, expandable stages" [level=3]
+      - paragraph: Simulation · scripted receipts and timings · no provider execution
+      - region "Conversation":
+        - region "Messages — Message":
+          - log:
+            - generic: You
+            - generic: Add a controlled chat composer, then inspect the current screen.
+            - button "Copy message":
+            - generic: Assistant
+            - generic "Conversation timeline":
+              - paragraph: Presentation fixture · inspect the source, make one edit, then observe without replaying it.
+              - button "studio_screen_edit · attempt 1 completed":
+                - generic: studio_screen_edit · attempt 1
+                - generic: completed
+              - button "studio_screen_observe · attempt 1 failed":
+                - generic: studio_screen_observe · attempt 1
+                - generic: failed
+              - paragraph: The edit is already confirmed in this fixture. Restore preview visibility and retry only the observation.
+              - button "studio_screen_observe · attempt 2 completed":
+                - generic: studio_screen_observe · attempt 2
+                - generic: completed
+              - button "Input schema diagnostics · Edit screen (not a tool attempt) failed":
+                - generic: Input schema diagnostics · Edit screen (not a tool attempt)
+                - generic: failed
+              - paragraph: Fixture summary · one edit, two observation attempts, failed evidence retained. Standalone schema diagnostics do not add tool calls. This gallery makes no live completion claim.
+            - button "Copy message":
+        - button "Scroll to latest message":
+          - generic: Scroll to end
+        - textbox "Message":
+          - /placeholder: Fixed presentation fixture
+        - button "Send" [disabled]:
+          - generic: Send
+        - status
+      - generic "Failure status and bounded metrics fixture"
+    - region "Non-blocking source guidance example":
+      - heading "Source guidance" [level=3]
+      - paragraph: Actual guidance for a disposable read-only composer. The same collapsed details appear in Document → Source and saved Run when notes exist.
+      - generic "Source guidance (1)"
+    - region "Actual shared style source editing":
+      - heading "One style, two cards" [level=3]
+      - generic: Actual canonical editing · no provider
+      - generic "Shared style example commands":
+        - button "Use plum"
+        - button "Undo" [disabled]
+        - button "Redo" [disabled]
+        - button "Save in memory"
+        - button "Reopen saved" [disabled]
+      - generic "Shared style rendered cards":
+        - main "Two cards sharing one style source":
+          - article "Launch brief card":
+            - generic: Launch brief
+          - article "Project status card":
+            - generic: Project status
+      - status: Two attachments · one canonical style source.
+      - paragraph: Preview runtime is temporary. Save stores canonical source only in this private memory example; refresh discards it.
+      - generic "Actual source and last receipt"
+    - strong: Try the actual authored compositions
+    - paragraph:
+      - link "Conversation":
+        - /url: /showcase?recipe=vict.ai.conversation#designer
+      - link "Message":
+        - /url: /showcase?recipe=vict.ai.message#designer
+      - link "Prompt input":
+        - /url: /showcase?recipe=vict.ai.prompt-input#designer
+      - link "Read-only Flow canvas":
+        - /url: /showcase?recipe=vict.flow.canvas#designer
+    - text: Open the disposable Designer example to configure source, interact and review history. Chat presentation does not attach a provider; Flow presentation does not execute a workflow.
+  - region "Completion round additions":
+    - 'heading "Completion round: ordered progress and actual rendered capture" [level=2]'
+    - paragraph: The conversation uses the actual public Conversation component with an explicitly simulated event fixture. The image demo captures its existing rendered DOM locally. Neither example calls a provider, edits saved screens, or proves canonical authoring.
+    - region "Simulated chronological conversation":
+      - heading "Chronological recovery fixture" [level=3]
+      - region "Conversation":
+        - region "Messages — Message":
+          - log:
+            - generic: You
+            - generic: Create two independent contact fields and inspect the visible result.
+            - button "Copy message":
+            - generic: Assistant
+            - generic "Conversation timeline":
+              - paragraph: Progress summary · I will inspect the current source before editing.
+              - button "Read current source completed":
+                - generic: Read current source
+                - generic: completed
+              - paragraph: Each field needs its own state reference and matching change output.
+              - button "Edit validation refused failed":
+                - generic: Edit validation refused
+                - generic: failed
+              - paragraph: The input shape was invalid. I will correct it and keep canonical typing.
+              - button "Corrected edit acknowledged completed":
+                - generic: Corrected edit acknowledged
+                - generic: completed
+              - button "Rendered observation still pending pending":
+                - generic: Rendered observation still pending
+                - generic: pending
+              - button "Earlier observation stopped cancelled":
+                - generic: Earlier observation stopped
+                - generic: cancelled
+              - paragraph: "Partial completion · one simulated edit confirmed. Remaining work: exercise both fields and inspect a current rendered image. Compilation and acknowledgement do not establish those results."
+            - button "Copy message":
+        - button "Scroll to latest message":
+          - generic: Scroll to end
+        - textbox "Message":
+          - /placeholder: Presentation fixture only
+        - button "Send" [disabled]:
+          - generic: Send
+        - status
+    - region "Actual rendered capture demo":
+      - heading "Actual capture, local preview" [level=3]
+      - paragraph: Local browser fixture · current state
+      - heading "People joining your workspace" [level=4]
+      - text: First person
+      - textbox "First person": Avery
+      - text: Second person
+      - textbox "Second person": Morgan
+      - paragraph:
+        - text: "Visible result:"
+        - strong: Avery
+        - text: and
+        - strong: Morgan
+      - button "Capture rendered fixture"
+      - status: Capture this actual rendered fixture. No model or server request is made.
+      - paragraph: These two fields use ordinary local Svelte state solely to make capture changes visible. Canonical native input wiring, independent state, shared manual/agent transactions and declared relationship diagnosis are available in the real Designer examples below. A screenshot cannot verify bindings or actions.
+    - paragraph:
+      - link "Try native Input, Checkbox, Select and other recipes":
+        - /url: "#designer"
+      - text: ", then switch the disposable example to Structure for search, focus, collapse, relationship layers, measured layout and source facts. The full"
+      - link "Designer":
+        - /url: /design
+      - text: adds real provider execution and source-aware capture.
+  - region "AI patterns":
+    - heading "All 21 AI Elements patterns" [level=2]
+    - region "AI Elements complete pattern gallery":
+      - heading "All 21 AI Elements patterns" [level=2]
+      - paragraph: Presentation fixtures only. Actions update local examples; they do not approve, execute, restore, upload, or select a provider. Copy writes to your local clipboard.
+      - status: No simulated action yet.
+      - article:
+        - heading "chain-of-thought" [level=3]
+        - link "Official example (opens in a new tab)":
+          - /url: https://www.shadcn-svelte.com/docs/ai-elements/chain-of-thought
+          - text: Official example
+          - generic: (opens in a new tab)
+        - button "Public activity summary" [expanded]:
+          - generic: Public activity summary
+        - paragraph: Observed public activity only; no private model reasoning.
+        - button "Inspect source" [expanded]:
+          - generic: Inspect source
+        - paragraph: "Fixture only: stable screen identity found."
+        - code: const screen = "screen-1";
+        - generic: Source
+        - link "VICT framework (opens in a new tab)":
+          - /url: https://github.com/radz2291/vict-02
+          - text: VICT framework
+          - generic: (opens in a new tab)
+        - generic: Validate requested edit
+        - generic: Commit canonical command
+      - article:
+        - heading "chat" [level=3]
+        - link "Official example (opens in a new tab)":
+          - /url: https://www.shadcn-svelte.com/docs/ai-elements/chat
+          - text: Official example
+          - generic: (opens in a new tab)
+        - region "Conversation":
+          - generic: New Thread
+          - generic: Local presentation fixture
+          - button "Reset conversation":
+          - region "Messages — Message":
+            - log:
+              - generic: You
+              - generic: Describe the selected screen.
+              - button "Copy message":
+              - generic: Assistant
+              - paragraph:
+                - text: This is a
+                - strong: presentation fixture
+                - text: with a
+                - code: screen-1
+                - text: identity.
+              - button "Copy message":
+          - button "Scroll to latest message":
+            - generic: Scroll to end
+          - textbox "Message":
+            - /placeholder: Write a message…
+          - button "Send" [disabled]:
+            - generic: Send
+          - status
+      - article:
+        - heading "checkpoint" [level=3]
+        - link "Official example (opens in a new tab)":
+          - /url: https://www.shadcn-svelte.com/docs/ai-elements/checkpoint
+          - text: Official example
+          - generic: (opens in a new tab)
+        - generic: Rename the button component to action.
+        - paragraph: "Example: renamed Button to Action."
+        - text: Button renamed
+        - button "Restore to Button renamed": Restore
+        - generic: Update the docs to match.
+        - paragraph: "Example: updated the Button page to say Action."
+        - button "Reset checkpoint fixture"
+      - article:
+        - heading "confirmation" [level=3]
+        - link "Official example (opens in a new tab)":
+          - /url: https://www.shadcn-svelte.com/docs/ai-elements/confirmation
+          - text: Official example
+          - generic: (opens in a new tab)
+        - generic: Apply the prepared change?
+        - paragraph: Fixture request only; production requires a host-owned approval identity and authorization.
+        - button "Deny"
+        - button "Approve"
+        - button "Reset decision fixture"
+        - button "Show completed fixture"
+      - article:
+        - heading "context" [level=3]
+        - link "Official example (opens in a new tab)":
+          - /url: https://www.shadcn-svelte.com/docs/ai-elements/context
+          - text: Official example
+          - generic: (opens in a new tab)
+        - button "8% context"
+      - article:
+        - heading "file-tree" [level=3]
+        - link "Official example (opens in a new tab)":
+          - /url: https://www.shadcn-svelte.com/docs/ai-elements/file-tree
+          - text: Official example
+          - generic: (opens in a new tab)
+        - button "components" [expanded]:
+          - text: components
+        - button "ui" [expanded]:
+          - text: ui
+        - button "button.tsx":
+          - text: button.tsx
+        - button "dialog.tsx":
+          - text: dialog.tsx
+      - article:
+        - heading "inline-citation" [level=3]
+        - link "Official example (opens in a new tab)":
+          - /url: https://www.shadcn-svelte.com/docs/ai-elements/inline-citation
+          - text: Official example
+          - generic: (opens in a new tab)
+        - paragraph:
+          - text: This design uses a canonical source
+          - button "github.com"
+          - text: and upstream presentation
+          - button "shadcn-svelte.com"
+          - text: .
+      - article:
+        - heading "message" [level=3]
+        - link "Official example (opens in a new tab)":
+          - /url: https://www.shadcn-svelte.com/docs/ai-elements/message
+          - text: Official example
+          - generic: (opens in a new tab)
+        - generic: How do I add a settings dialog? It should open from the gear icon in the header.
+        - button "Copy message":
+        - button "Edit message":
+        - paragraph: Install the dialog, then connect its trigger to the settings button.
+        - generic: ts
+        - button "Copy":
+        - code:
+          - generic: const screen = "settings";
+        - paragraph:
+          - text: This is a
+          - strong: local presentation fixture
+          - text: .
+        - button "Copy message":
+        - button "Good response":
+        - button "Bad response":
+        - button "Retry response":
+      - article:
+        - heading "model-selector" [level=3]
+        - link "Official example (opens in a new tab)":
+          - /url: https://www.shadcn-svelte.com/docs/ai-elements/model-selector
+          - text: Official example
+          - generic: (opens in a new tab)
+        - textbox "Model selection prompt":
+          - /placeholder: Write a message…
+        - 'button "Model: Example model"':
+          - text: Example model
+        - 'button "Effort: Medium"':
+          - generic: Effort
+          - text: Medium
+        - button "Send" [disabled]:
+          - generic: Send
+      - article:
+        - heading "plan" [level=3]
+        - link "Official example (opens in a new tab)":
+          - /url: https://www.shadcn-svelte.com/docs/ai-elements/plan
+          - text: Official example
+          - generic: (opens in a new tab)
+        - button "Update the settings screen 1 of 3 done" [expanded]:
+          - generic: Update the settings screen
+          - generic: 1 of 3 done
+        - paragraph: A proposed plan; these fixture steps do not execute.
+        - button "Inspect source":
+          - generic: Inspect source
+        - generic: Validate requested edit
+        - generic: Commit canonical command
+      - article:
+        - heading "prompt-input" [level=3]
+        - link "Official example (opens in a new tab)":
+          - /url: https://www.shadcn-svelte.com/docs/ai-elements/prompt-input
+          - text: Official example
+          - generic: (opens in a new tab)
+        - generic: example.txt (fixture)
+        - button "Remove example.txt (fixture)":
+        - textbox "Message":
+          - /placeholder: Write a message…
+        - button "Attach files":
+        - 'button "Model: Example model"':
+          - text: Example model
+        - 'button "Effort: Medium"':
+          - generic: Effort
+          - text: Medium
+        - button "Send" [disabled]:
+          - generic: Send
+      - article:
+        - heading "queue" [level=3]
+        - link "Official example (opens in a new tab)":
+          - /url: https://www.shadcn-svelte.com/docs/ai-elements/queue
+          - text: Official example
+          - generic: (opens in a new tab)
+        - button "2 to do" [expanded]:
+          - generic: 2 to do
+        - generic: Validate requested edit
+        - generic: Commit canonical command
+        - button "1 completed" [expanded]:
+          - generic: 1 completed
+        - button "Inspect source":
+          - generic: Inspect source
+      - article:
+        - heading "reasoning" [level=3]
+        - link "Official example (opens in a new tab)":
+          - /url: https://www.shadcn-svelte.com/docs/ai-elements/reasoning
+          - text: Official example
+          - generic: (opens in a new tab)
+        - button "Thought 4s":
+          - generic: Thought
+          - generic: 4s
+        - checkbox "Simulate running summary"
+        - text: Simulate running summary
+      - article:
+        - heading "sources" [level=3]
+        - link "Official example (opens in a new tab)":
+          - /url: https://www.shadcn-svelte.com/docs/ai-elements/sources
+          - text: Official example
+          - generic: (opens in a new tab)
+        - button "Used 3 sources" [expanded]:
+          - generic: Used 3 sources
+        - link "VICT framework (opens in a new tab)":
+          - /url: https://github.com/radz2291/vict-02
+          - text: VICT framework
+          - generic: (opens in a new tab)
+        - link "shadcn-svelte (opens in a new tab)":
+          - /url: https://www.shadcn-svelte.com/docs/ai-elements
+          - text: shadcn-svelte
+          - generic: (opens in a new tab)
+        - link "Svelte Flow (opens in a new tab)":
+          - /url: https://svelteflow.dev/
+          - text: Svelte Flow
+          - generic: (opens in a new tab)
+      - article:
+        - heading "stack-trace" [level=3]
+        - link "Official example (opens in a new tab)":
+          - /url: https://www.shadcn-svelte.com/docs/ai-elements/stack-trace
+          - text: Official example
+          - generic: (opens in a new tab)
+        - 'button "Failed: ValidationError: fixture only" [expanded]':
+          - generic: "Failed: ValidationError: fixture only"
+        - paragraph: "ValidationError: fixture only"
+        - generic: validate in src/validate.ts:12
+        - generic: apply in src/app.ts:24
+        - button "1 framework frames":
+          - generic: 1 framework frames
+      - article:
+        - heading "subagent" [level=3]
+        - link "Official example (opens in a new tab)":
+          - /url: https://www.shadcn-svelte.com/docs/ai-elements/subagent
+          - text: Official example
+          - generic: (opens in a new tab)
+        - button "Layout reviewer (fixture) 8s" [expanded]:
+          - generic: Layout reviewer (fixture)
+          - generic: 8s
+        - generic: Example model
+        - generic: Read source
+        - generic: Validate
+        - paragraph: Review layout without changing source.
+        - button "Inspect source":
+          - generic: Inspect source
+        - generic: Validate requested edit
+        - generic: Commit canonical command
+        - paragraph: "Example finding: preserve stable source IDs."
+      - article:
+        - heading "suggestion" [level=3]
+        - link "Official example (opens in a new tab)":
+          - /url: https://www.shadcn-svelte.com/docs/ai-elements/suggestion
+          - text: Official example
+          - generic: (opens in a new tab)
+        - button "Explain this screen"
+        - button "Add a settings dialog"
+        - button "Check accessibility"
+        - textbox "Message":
+          - /placeholder: Write a message…
+        - button "Send" [disabled]:
+          - generic: Send
+      - article:
+        - heading "task" [level=3]
+        - link "Official example (opens in a new tab)":
+          - /url: https://www.shadcn-svelte.com/docs/ai-elements/task
+          - text: Official example
+          - generic: (opens in a new tab)
+        - button "Updating settings" [expanded]:
+          - generic: Updating settings
+        - button "Inspect source":
+          - generic: Inspect source
+        - generic: Validate requested edit
+      - article:
+        - heading "terminal" [level=3]
+        - link "Official example (opens in a new tab)":
+          - /url: https://www.shadcn-svelte.com/docs/ai-elements/terminal
+          - text: Official example
+          - generic: (opens in a new tab)
+        - button "npm run check exited with code 1" [expanded]:
+          - generic: npm run check exited with code 1
+        - code: "Fixture: type check failed at src/settings.ts:12. This command was not executed."
+        - checkbox "Simulate running terminal"
+        - text: Simulate running terminal
+      - article:
+        - heading "test-results" [level=3]
+        - link "Official example (opens in a new tab)":
+          - /url: https://www.shadcn-svelte.com/docs/ai-elements/test-results
+          - text: Official example
+          - generic: (opens in a new tab)
+        - button "Ran 3 tests, 1 failed, 1 skipped" [expanded]:
+          - generic: Ran 3 tests, 1 failed, 1 skipped
+        - button "settings.test.ts, 3 tests, 1 failed, 1 skipped" [expanded]:
+          - generic: settings.test.ts, 3 tests, 1 failed, 1 skipped
+        - generic: opens settings
+        - button "rejects invalid source" [expanded]:
+          - generic: rejects invalid source
+        - code: "Fixture assertion: expected a validation message."
+        - generic: Skipped provider integration
+        - code: 3 simulated results; not verification evidence.
+        - checkbox "Simulate running tests"
+        - text: Simulate running tests
+      - article:
+        - heading "tool" [level=3]
+        - link "Official example (opens in a new tab)":
+          - /url: https://www.shadcn-svelte.com/docs/ai-elements/tool
+          - text: Official example
+          - generic: (opens in a new tab)
+        - button "Apply source edit (fixture)" [expanded]:
+          - generic: Apply source edit (fixture)
+        - code: "Fixture: committed revision 3"
+        - text: Fixture state
+        - combobox "Fixture state":
+          - option "Running"
+          - option "Completed" [selected]
+          - option "Error"
+          - option "Denied"
+          - option "Pending"
+  - region "Shared building blocks":
+    - heading "Shared AI building blocks" [level=2]
+    - heading "UI building blocks" [level=2]
+    - paragraph: 19 visual families, composed from the pinned upstream components. Controls change local examples only. Part names refer to canonical exports; their long-form aliases use the same components.
+    - status: No local action yet.
+    - heading "Button" [level=3]
+    - paragraph: All variants and sizes, including labeled icon actions and disabled state.
+    - paragraph: "Parts: Root / Button"
+    - button "default"
+    - button "outline"
+    - button "secondary"
+    - button "ghost"
+    - button "destructive"
+    - button "link"
+    - button "xs"
+    - button "sm"
+    - button "default"
+    - button "lg"
+    - button "Add (icon-xs)":
+    - button "Add (icon-sm)":
+    - button "Add (icon)":
+    - button "Add (icon-lg)":
+    - button "Disabled" [disabled]
+    - heading "Badge" [level=3]
+    - paragraph: Six variants, including an icon label. Status labels do not imply execution.
+    - paragraph: "Parts: Badge"
+    - generic: default
+    - generic: outline
+    - generic: secondary
+    - generic: ghost
+    - generic: destructive
+    - generic: link
+    - text: Reviewed fixture
+    - heading "Bubble" [level=3]
+    - paragraph: All seven visual variants; a local reaction is composed beneath the final bubble.
+    - paragraph: "Parts: Root, Group, Content, Reactions"
+    - generic: default bubble
+    - generic: secondary bubble
+    - generic: muted bubble
+    - generic: tinted bubble
+    - generic: outline bubble
+    - generic: ghost bubble
+    - generic: destructive bubble
+    - generic: React to this local example.
+    - button "Like local bubble": +1 0
+    - heading "Message" [level=3]
+    - paragraph: Grouped messages with initials avatars, headers, footers and opposite alignment. No remote avatar request.
+    - paragraph: "Parts: Root, Group, Avatar, Content, Header, Footer"
+    - generic "Example author initials": EV
+    - generic: Example author · 10:30
+    - generic: A composed message.
+    - generic: Local fixture · delivered
+    - generic: You
+    - generic: Reply example.
+    - generic: Local fixture
+    - heading "Message scroller" [level=3]
+    - paragraph: Scroll within the bounded region. Scroll buttons appear when the corresponding edge is out of view; Provider supplies their shared context.
+    - paragraph: "Parts: Provider, Root, Viewport, Content, Item, Button"
+    - region "Local message scroller":
+      - log:
+        - generic: Local message 1
+        - generic: Local message 2
+        - generic: Local message 3
+        - generic: Local message 4
+        - generic: Local message 5
+        - generic: Local message 6
+        - generic: Local message 7
+        - generic: Local message 8
+    - button "Scroll to start":
+      - generic: Scroll to start
+    - button "Scroll to end":
+      - generic: Scroll to end
+    - button "Append local message"
+    - heading "Trace" [level=3]
+    - paragraph: Complete, pending, running and error rows with a genuine disclosure.
+    - paragraph: "Parts: Root, Line, Icon, Title, Description, Collapsible, CollapsibleTrigger, CollapsibleContent"
+    - generic: Completed fixture
+    - generic: 1s
+    - generic: Pending fixture
+    - generic: Running fixture
+    - button "Failed fixture — toggle details" [expanded]:
+      - generic: Failed fixture — toggle details
+    - generic: Escaped public error detail. No operation is running.
+    - heading "Code block" [level=3]
+    - paragraph: Numbered source, explicit diff line variants, a clipboard action and footer. Copy uses the browser clipboard.
+    - paragraph: "Parts: Root, Header, Title, Actions, CopyButton, Content, Line, Footer"
+    - generic: example.ts
+    - button "Copy":
+    - code:
+      - generic: const oldName = "world";
+      - text: −
+      - generic: const greeting = "Hello, VICT";
+      - text: +
+      - generic: console.log(greeting);
+      - generic: // Plain line
+    - generic: Diff fixture · TypeScript
+    - code: "Error: example validation failed"
+    - heading "Input group" [level=3]
+    - paragraph: Inline and block addons, an editable input, multiline field and a local action.
+    - paragraph: "Parts: Root, Addon, Button, Input, Text, Textarea"
+    - generic: Find
+    - textbox "Grouped search": Editable local text
+    - button "Search"
+    - textbox "Grouped notes": This text remains only in this showcase.
+    - generic: 40 characters
+    - button "Inspect"
+    - textbox "Invalid grouped field": Invalid fixture
+    - generic: Needs correction
+    - textbox "Disabled grouped field" [disabled]: Disabled fixture
+    - heading "Input" [level=3]
+    - paragraph: Editable, invalid and disabled states with associated labels.
+    - paragraph: "Parts: Root / Input"
+    - generic: Example name
+    - textbox "Example name": Editable local text
+    - generic: Invalid name
+    - textbox "Invalid name": "?"
+    - paragraph: Example validation message.
+    - textbox "Disabled name" [disabled]: Read-only fixture
+    - heading "Textarea" [level=3]
+    - paragraph: Editable, invalid and disabled multiline states.
+    - paragraph: "Parts: Root / Textarea"
+    - generic: Example notes
+    - textbox "Example notes": This text remains only in this showcase.
+    - textbox "Invalid notes": Incomplete fixture
+    - paragraph: Example validation message.
+    - textbox "Disabled notes" [disabled]: Disabled fixture
+    - heading "Marker" [level=3]
+    - paragraph: Default, separator and border markers inside a conversation or activity list.
+    - paragraph: "Parts: Root, Icon, Content"
+    - generic: default marker
+    - generic: separator marker
+    - generic: border marker
+    - heading "Item" [level=3]
+    - paragraph: A small list with metadata, an icon, a local action and a separator.
+    - paragraph: "Parts: Root, Group, Separator, Header, Footer, Media, Content, Title, Description, Actions"
+    - list:
+      - generic: Example collection
+      - generic: Design notes
+      - paragraph: A local list item with supporting detail.
+      - button "Select"
+      - generic: Updated in this fixture
+      - separator
+      - generic: Second item
+      - paragraph: Compact list row
+    - heading "Attachment" [level=3]
+    - paragraph: A real overlay trigger and independent remove action. Upload/error labels are fixtures; no files are uploaded.
+    - paragraph: "Parts: Root, Group, Media, Content, Title, Description, Trigger, Actions, Action"
+    - generic: notes.txt
+    - generic: Text · local fixture
+    - button "Inspect notes attachment"
+    - button "Remove notes attachment":
+    - generic: idle.txt
+    - generic: idle fixture
+    - generic: uploading.txt
+    - generic: uploading fixture
+    - generic: processing.txt
+    - generic: processing fixture
+    - generic: error.txt
+    - generic: error fixture
+    - heading "Progress" [level=3]
+    - paragraph: Determinate progress with an accessible label and local adjustment.
+    - paragraph: "Parts: Root / Progress"
+    - progressbar "Example progress"
+    - paragraph: 45% fixture progress
+    - button "Decrease"
+    - button "Increase"
+    - heading "Collapsible" [level=3]
+    - paragraph: A provider and trigger compose one keyboard-operable disclosure.
+    - paragraph: "Parts: Root, Trigger, Content"
+    - button "Toggle local details"
+    - heading "Tooltip" [level=3]
+    - paragraph: Hover or focus the trigger. Content mounts through its upstream Portal; no nested standalone portal is needed.
+    - paragraph: "Parts: Provider, Root, Trigger, Content, Portal (inside Content)"
+    - button "About tooltip example":
+    - heading "Hover card" [level=3]
+    - paragraph: Hover or focus to preview contextual content. The content uses the existing portal composition.
+    - paragraph: "Parts: Root, Trigger, Content, Portal (inside Content)"
+    - button "Preview local record"
+    - heading "Dropdown menu" [level=3]
+    - paragraph: Open the portaled menu to use checkbox/radio selections and a submenu. Portals are composed internally by Content and SubContent.
+    - paragraph: "Parts: Root, Trigger, Content, Portal, Group, GroupHeading, Label, Item, Shortcut, Separator, CheckboxGroup, CheckboxItem, RadioGroup, RadioItem, Sub, SubTrigger, SubContent"
+    - button "Open example menu"
+    - paragraph: "Selection: details · comfortable"
+    - heading "Separator" [level=3]
+    - paragraph: Horizontal and vertical separators use the same primitive with explicit orientation.
+    - paragraph: "Parts: Root / Separator"
+    - paragraph: Above
+    - separator
+    - paragraph: Below
+    - generic: Left
+    - separator
+    - generic: Right
+    - heading "Nonvisual utilities and export aliases" [level=3]
+    - paragraph: use-highlighted-code and highlighter are internal utilities, not standalone UI families. Highlighting is represented through the safe Markdown composition below. The MessageScroller hooks require its Provider and support the scroller example; they are not standalone controls. Variant factories and TypeScript types describe these components. Long-form export aliases refer to the same displayed parts.
+    - generic: typescript
+    - button "Copy":
+    - code:
+      - generic: const greeting = "Hello, VICT";
+      - generic: console.log(greeting);
+  - region "Reusable node canvas":
+    - heading "Reusable node canvas" [level=2]
+    - status: Drag nodes, select, zoom, pan, and connect handles. This generic example has presentation meaning only.
+    - application "Showcase reusable node canvas":
+      - text: Source definition
+      - button "Handle"
+      - button "Handle"
+      - text: Rendered view
+      - button "Handle"
+      - text: Declared output
+      - button "Handle"
+      - link "Svelte Flow attribution":
+        - /url: https://svelteflow.dev?utm_source=attribution
+        - text: Svelte Flow
+      - generic "Control Panel":
+        - button "Zoom In":
+        - button "Zoom Out":
+        - button "Fit View":
+        - button "Toggle Interactivity":
+      - img "Mini Map"
+  - region "Studio authoring showcase":
+    - 'heading "Designer: all 100 recipes" [level=2]'
+    - paragraph: Real editor components, canonical edits, and valid parent compositions. Each example is disposable. Save and reopen use a private memory store; refreshing or changing recipes starts over.
+    - text: Search recipes
+    - searchbox "Search recipes"
+    - text: Recipe (100 of 100)
+    - combobox "Showcase recipe":
+      - option "Section · Standalone"
+      - option "Row · Standalone"
+      - option "Heading · Standalone"
+      - option "Text · Standalone"
+      - option "Text input · Standalone"
+      - option "Alert · Rhea · Standalone"
+      - option "Breadcrumb · Rhea · Standalone"
+      - option "Button group · Rhea · Standalone"
+      - option "Card · Rhea · Standalone"
+      - option "Empty state · Rhea · Standalone"
+      - option "Field · Rhea · Standalone"
+      - option "Input · Rhea · Standalone"
+      - option "Text area · Rhea · Standalone"
+      - option "Native select · Rhea · Standalone"
+      - option "Keyboard hint · Rhea · Standalone"
+      - option "Skeleton · Rhea · Standalone"
+      - option "Spinner · Rhea · Standalone"
+      - option "Table · Rhea · Standalone"
+      - option "Button · Standalone"
+      - option "Checkbox · Standalone"
+      - option "Select · Standalone"
+      - option "Dialog · Standalone"
+      - option "Switch · Standalone"
+      - option "Toggle · Standalone"
+      - option "Select Multiple · Standalone"
+      - option "Select Item · Context-owned part"
+      - option "Combobox · Standalone"
+      - option "Combobox Multiple · Standalone"
+      - option "Combobox Item · Context-owned part"
+      - option "Toggle Group · Standalone"
+      - option "Toggle Group Multiple · Standalone"
+      - option "Toggle Group Item · Context-owned part"
+      - option "Accordion · Standalone"
+      - option "Accordion Multiple · Standalone"
+      - option "Accordion Item · Context-owned part"
+      - option "Slider · Standalone" [selected]
+      - option "Meter · Standalone"
+      - option "Progress · Standalone"
+      - option "Pagination · Standalone"
+      - option "Date Field · Standalone"
+      - option "Date Picker · Standalone"
+      - option "Calendar · Standalone"
+      - option "Time Field · Standalone"
+      - option "Date Range Field · Standalone"
+      - option "Date Range Picker · Standalone"
+      - option "Range Calendar · Standalone"
+      - option "Dropdown Menu · Standalone"
+      - option "Context Menu · Standalone"
+      - option "Menubar · Standalone"
+      - option "Menubar Menu · Context-owned part"
+      - option "Dropdown Menu Item · Context-owned part"
+      - option "Dropdown Menu Sub · Context-owned part"
+      - option "Dropdown Menu Checkbox Item · Context-owned part"
+      - option "Dropdown Menu Checkbox Group · Context-owned part"
+      - option "Dropdown Menu Radio Group · Context-owned part"
+      - option "Dropdown Menu Radio Item · Context-owned part"
+      - option "Dropdown Menu Group · Context-owned part"
+      - option "Dropdown Menu Separator · Context-owned part"
+      - option "Context Menu Item · Context-owned part"
+      - option "Context Menu Sub · Context-owned part"
+      - option "Context Menu Checkbox Item · Context-owned part"
+      - option "Context Menu Checkbox Group · Context-owned part"
+      - option "Context Menu Radio Group · Context-owned part"
+      - option "Context Menu Radio Item · Context-owned part"
+      - option "Context Menu Group · Context-owned part"
+      - option "Context Menu Separator · Context-owned part"
+      - option "Menubar Item · Context-owned part"
+      - option "Menubar Sub · Context-owned part"
+      - option "Menubar Checkbox Item · Context-owned part"
+      - option "Menubar Checkbox Group · Context-owned part"
+      - option "Menubar Radio Group · Context-owned part"
+      - option "Menubar Radio Item · Context-owned part"
+      - option "Menubar Group · Context-owned part"
+      - option "Menubar Separator · Context-owned part"
+      - option "Command · Standalone"
+      - option "Command Item · Context-owned part"
+      - option "Command Group · Context-owned part"
+      - option "Navigation Menu · Standalone"
+      - option "Navigation Menu Item · Context-owned part"
+      - option "Navigation Menu Link · Context-owned part"
+      - option "Navigation Menu Sub · Context-owned part"
+      - option "Avatar · Standalone"
+      - option "Aspect Ratio · Standalone"
+      - option "Separator · Standalone"
+      - option "Label · Standalone"
+      - option "Scroll Area · Standalone"
+      - option "Toolbar · Standalone"
+      - option "Toolbar Button · Context-owned part"
+      - option "Link Preview · Standalone"
+      - option "Tooltip · Standalone"
+      - option "Popover · Standalone"
+      - option "Alert Dialog · Standalone"
+      - option "Tabs · Standalone"
+      - option "Tabs Trigger · Context-owned part"
+      - option "Tabs Panel · Context-owned part"
+      - option "Collapsible · Standalone"
+      - option "Conversation · Standalone"
+      - option "Chat message · Standalone"
+      - option "Prompt input · Standalone"
+      - option "Flow canvas · Standalone"
+    - button "Reset example"
+    - paragraph:
+      - strong: Slider
+      - text: — Slider · editable properties, declared slots and outputs
+    - generic "Example controls":
+      - button "Document" [expanded]
+      - button "Design" [pressed]
+      - button "Interact"
+      - button "Undo" [disabled]
+      - button "Redo" [disabled]
+      - button "Save in memory"
+      - button "Reopen saved" [disabled]
+      - button "Reset preview"
+    - status: Slider · fresh in-memory example. Switching examples or refreshing discards it.
+    - complementary "Example Document":
+      - navigation "Example Document sections":
+        - button "Layers" [pressed]
+        - button "Structure"
+      - button "Inspect example source": Inspect
+      - navigation "Layers":
+        - heading "Layers" [level=2]
+        - searchbox "Search layers"
+        - tree "Document layers":
+          - button "Collapse Slider showcase":
+          - treeitem "Slider showcase" [expanded] [level=1]:
+            - generic "Slider showcase"
+          - button "Expand Slider":
+          - treeitem "Slider 1 direct child Component" [level=2] [selected]:
+            - generic "Slider"
+            - generic "1 direct child": "1"
+            - generic "Component": ◇
+        - paragraph: ↑ ↓ navigate · → expand · ← collapse · Enter select
+        - paragraph: Drag to move, or use Arrange tools.
+        - status
+        - generic "Selection details & provenance"
+    - button "Select example part"
+    - button "Open selected composition"
+    - generic "Showcase canvas":
+      - main "Slider showcase":
+        - generic: Slider
+        - generic "Slider":
+          - slider "Slider 1"
+    - generic "Insert and arrange (Composer)"
+    - option "Choose a parent or slot…" [selected]
+    - option "Screen"
+    - option "Inside a container or slot" [selected]
+    - option "Before selection"
+    - option "After selection"
+    - option "Screen"
+    - option "Slider / Help" [selected]
+    - 'generic "Data: authored starting values"'
+    - option "Choose a value" [selected]
+    - option "message · string"
+    - option "accepted · boolean"
+    - option "dialogOpen · boolean"
+    - option "busy · boolean"
+    - option "actionError · string"
+    - option "actionResult · string"
+    - option "catalog_example-slider_root_value · numberList"
+    - 'generic "Actions: declared simulation"'
+    - generic "Preview values (temporary runtime data)"
+    - complementary:
+      - heading "Selected source" [level=3]
+      - button "Docked Inspector" [pressed]
+      - button "Selection palette"
+      - complementary "Inspector":
+        - heading "Slider" [level=2]
+        - generic "Location · Slider showcase"
+        - generic: Source element
+        - navigation "Inspector sections":
+          - button "Content" [pressed]
+          - button "Style"
+          - button "Behavior"
+        - heading "Content" [level=3]
+        - heading "Component properties" [level=3]
+        - generic "Component details"
+        - text: Label
+        - combobox "label source":
+          - option "Default"
+          - option "Fixed value" [selected]
+          - option "State / expression"
+        - textbox "label value": Slider
+        - button "Apply value"
+        - text: Disabled
+        - combobox "disabled source":
+          - option "Default" [selected]
+          - option "Fixed value"
+          - option "State / expression"
+        - paragraph: "Default: false"
+        - text: Value
+        - combobox "value source":
+          - option "Default"
+          - option "State / expression" [selected]
+        - paragraph: "Bound to: state.catalog_example-slider_root_value"
+        - combobox "value reference":
+          - option "Choose a compatible reference…"
+          - option "state.catalog_example-slider_root_value" [selected]
+        - text: Starting value
+        - textbox "Starting value": "25"
+        - paragraph: One value per line.
+        - paragraph: Saved with your screen. Shared by controls connected to catalog_example-slider_root_value. Use Interact for temporary test input.
+        - button "Apply starting value"
+        - text: Min
+        - combobox "min source":
+          - option "Default" [selected]
+          - option "Fixed value"
+          - option "State / expression"
+        - paragraph: "Default: 0"
+        - text: Max
+        - combobox "max source":
+          - option "Default" [selected]
+          - option "Fixed value"
+          - option "State / expression"
+        - paragraph: "Default: 100"
+        - text: Step
+        - combobox "step source":
+          - option "Default" [selected]
+          - option "Fixed value"
+          - option "State / expression"
+        - paragraph: "Default: 1"
+        - text: Orientation
+        - combobox "orientation source":
+          - option "Default" [selected]
+          - option "Fixed value"
+          - option "State / expression"
+        - paragraph: "Default: horizontal"
+        - region "Component composition":
+          - heading "Content composition" [level=3]
+          - paragraph: Slot content appears inside this component. Select its children in Layers to edit them.
+          - heading "help" [level=4]
+          - list
+          - paragraph: Use Insert to add content to this slot.
+        - generic "Advanced · source & declarations"
+    - generic "Canonical source (read only)"
+  - heading "Scope and limits" [level=2]
+  - paragraph: The gallery includes the 21 AI patterns, 19 shared AI component families and their composition parts, the public Flow canvas, all 100 registered Designer compositions, Inspector, selection palette, Composer, Layers, composition navigation, typed data editors, and Studio source Structure view. The Designer choices include actual authored AI/chat and read-only Flow compositions with their child parts.
+  - paragraph: Provider execution, authentication, persistent screen storage, and application deployment are host services rather than gallery effects. Context-owned parts appear in valid ancestor compositions. RadioGroup and AppShell remain host-required registrations rather than usable screen-local recipes. Save/reopen applies only to the selected in-memory demo. AI decisions and send/stop outputs demonstrate presentation and do not grant execution authority.
+  - paragraph:
+    - link "Open the full Studio Designer":
+      - /url: /design
+    - text: to review its existing workspace chrome and AgentChat integration in the authenticated host. That separate workspace uses its ordinary saved-screen storage.

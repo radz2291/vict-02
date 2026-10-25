@@ -1,0 +1,201 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Customer onboarding form"
+  - generic: ● Unsaved changes
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- complementary "Chat":
+  - region "Conversation":
+    - region "Messages — Message":
+      - log:
+        - generic: You
+        - generic: Design a polished compact customer onboarding form with name, work email, role selection, notification preference and a clear submit action. Use independent local state and truthful local feedback. Review the first meaningful visible section early, then verify the result. Keep it within one screen.
+        - button "Copy message":
+        - generic: Assistant
+        - generic "Conversation timeline":
+          - paragraph: Progress summary · Connecting to the VICT / Mastra agent…
+          - paragraph: Progress summary · Agent is working on your request…
+          - paragraph: I'll start by reading the current document state, then discover the component families I need for the form.
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - paragraph:
+            - text: "The document is a blank starter: one empty"
+            - code: screen
+            - text: root plus 6 pre-seeded demo states (
+            - code: message
+            - text: ","
+            - code: accepted
+            - text: ","
+            - code: dialogOpen
+            - text: ","
+            - code: busy
+            - text: ","
+            - code: actionError
+            - text: ","
+            - code: actionResult
+            - text: ) — I'll leave those untouched and declare independent state for the form. Now let me discover the input/presentation catalog and existing tokens.
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - paragraph: Catalog found. Now let me get the palette and exact contracts for the components I need (select + items, toggle-group + items, button, label, switch).
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - paragraph:
+            - text: The toggle-group contract body was cut off (incomplete page), and I need the exact wiring contract for the
+            - code: input
+            - text: palette recipe. Let me fetch the remainder and those details.
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - paragraph:
+            - text: "Contracts are clear:"
+            - code: select
+            - text: is a controlled component (
+            - code: value
+            - text: ↔
+            - code: valueChange
+            - text: with
+            - code: items
+            - text: slot),
+            - code: toggle-group
+            - text: owns its accessible label via its
+            - code: label
+            - text: prop,
+            - code: button
+            - text: has a
+            - code: press
+            - text: output, and
+            - code: input
+            - text: is a native recipe wired via
+            - code: wireInput
+            - text: . I'll build a compact centered card with independent state keys (
+            - code: fullName
+            - text: ","
+            - code: workEmail
+            - text: ","
+            - code: role
+            - text: ","
+            - code: notifyPref
+            - text: ","
+            - code: statusMessage
+            - text: ) — leaving the pre-seeded demo state untouched.
+          - paragraph:
+            - strong: "Batch 1 — screen layout, header, and the name field:"
+          - button "Browser acknowledged committed transaction completed":
+            - generic: Browser acknowledged committed transaction
+            - generic: completed
+          - paragraph:
+            - text: Batch 1 acknowledged (
+            - code: r1#1
+            - text: ). Per the request, let me review this first meaningful visible section (card + header + name field) in the source before continuing.
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - paragraph:
+            - text: The card structure is correct — children in order, and my styles (white card, shadow, 440px) landed after the recipe seed styles, so they win the cascade. Now
+            - strong: "Batch 2 — work email and role field scaffolding:"
+          - button "Browser acknowledged committed transaction completed":
+            - generic: Browser acknowledged committed transaction
+            - generic: completed
+          - paragraph:
+            - strong: "Batch 3 — role options and controlled select wiring:"
+          - button "Browser acknowledged committed transaction completed":
+            - generic: Browser acknowledged committed transaction
+            - generic: completed
+          - paragraph:
+            - strong: "Batch 4 — notification preference as a single-select toggle group with independent state:"
+          - button "Browser acknowledged committed transaction completed":
+            - generic: Browser acknowledged committed transaction
+            - generic: completed
+          - paragraph:
+            - strong: "Batch 5 — submit action with truthful local feedback:"
+          - button "Edit refused before browser proposal failed":
+            - generic: Edit refused before browser proposal
+            - generic: failed
+    - button "Scroll to latest message":
+      - generic: Scroll to end
+    - textbox "Message":
+      - /placeholder: Ask for a change…
+      - text: Design a polished compact customer onboarding form with name, work email, role selection, notification preference and a clear submit action. Use independent local state and truthful local feedback. Review the first meaningful visible section early, then verify the result. Keep it within one screen.
+    - button "Stop":
+      - generic: Stop
+    - status
+  - 'status "Operation 5 rejected: UI_EDIT_VALIDATION_FAILED: text binding requires a text node."':
+    - generic: Working…
+  - button "Chat details": ···
+- main:
+  - generic "Workspace mode":
+    - button "Design" [pressed]
+    - button "Interact"
+  - button "Document"
+  - generic "Screen canvas":
+    - main "Customer onboarding form":
+      - region "Section":
+        - heading "Create your account" [level=1]:
+          - generic: Create your account
+        - paragraph:
+          - generic: Tell us a bit about yourself to set up your workspace.
+        - region "Section":
+          - generic: Full name
+          - textbox "Full name":
+            - /placeholder: Ada Lovelace
+        - region "Section":
+          - generic: Work email
+          - textbox "Work email":
+            - /placeholder: you@company.com
+          - paragraph:
+            - generic: "Format: name@company.com"
+        - region "Section":
+          - generic: Role
+          - button "Choose an option":
+            - generic: Choose an option
+        - region "Section":
+          - generic: Notification preference
+          - group "Notification preference":
+            - radio "All updates"
+            - radio "Weekly digest" [checked]
+            - radio "Minimal"
+  - generic "Simulated execution Local preview · no live effects":
+    - text: Simulated execution
+    - generic: Local preview · no live effects
+- contentinfo:
+  - status: Add notification preference toggle group with three options and controlled state wiring · agent edit · unsaved
+  - generic "v1_d38bff6e0c6da347fcfb4087becd21a9e3f9b99e80a05d736f70e430fb70d6c6": "@3 · v1_d38bff6e0c6d…"
+- generic: Designer — VICT Studio
