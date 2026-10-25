@@ -1,0 +1,6 @@
+{
+  "at": "2026-10-25T13:35:36.925Z",
+  "product": "e76e2fc0f64f5a451edae01f4b0a1c9e7cfc68db",
+  "scope": "Separate actual concurrent manual source-change probe; outcome may be source-stale refusal, UI cancellation/draft fence or fresh-context recovery; no forced stale injection",
+  "prompt": "Read the current source of hdrTitle, then change only its text color to #334155. Preserve every source text and binding, including manual-proof and after-turn-proof. Do not invoke host actions or change other nodes. Observe the result if the edit succeeds."
+}

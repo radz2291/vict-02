@@ -1,0 +1,199 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Content editor comparison"
+  - generic: ● Unsaved changes
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- complementary "Chat":
+  - region "Conversation":
+    - region "Messages — Message":
+      - log:
+        - generic: You
+        - generic: Correct this local editor while preserving its existing independent title, body and document-selection state and live preview. Use only the already declared demo.submit action to record a local Save intent and display its actual simulated result; label the button "Preview save intent". Replace any autosave or persistence claim with "Temporary preview values; no document persistence." Do not add host actions or providers, and do not force void outputs into typed state. Also add an Editing tips section with eight short title-and-description rows. Use incremental batches and review the first meaningful change early.
+        - button "Copy message":
+        - generic: Assistant
+        - generic "Conversation timeline":
+          - paragraph: Progress summary · Connecting to the VICT / Mastra agent…
+          - paragraph: Progress summary · Agent is working on your request…
+          - paragraph: I'll start by reading the current document structure, state, and declared actions to understand what exists before planning edits.
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - paragraph: I have the state and action facts. Now let me read the remaining nodes and the button component contract.
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - paragraph: I now have the full structure. Before editing, let me verify the exact current wiring on the save button and the title/body inputs (to preserve them correctly).
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - paragraph:
+            - text: "Source confirmed:"
+            - code: saveBtn
+            - text: currently has no output connection; title/body inputs have value refs + change→setState wiring (to preserve); document selection flows through
+            - code: docList
+            - text: →
+            - code: openDoc
+            - text: ". The claims to replace: header subtitle (\"everything stays in this browser\"), editor hint (\"Drafts save locally as you type.\"), and the \"Local draft\" pill."
+          - paragraph:
+            - strong: Batch 1
+            - text: — button correction to
+            - code: demo.submit
+            - text: "(void output → invokeAction only, no state forcing), claim replacements, and a truthful simulated-result line:"
+          - button "Browser acknowledged committed transaction completed":
+            - generic: Browser acknowledged committed transaction
+            - generic: completed
+          - paragraph: "Batch 1 acknowledged (r1#2). Now the early review of the first meaningful change:"
+          - button "Observed actual rendered appearance completed":
+            - generic: Observed actual rendered appearance
+            - generic: completed
+          - paragraph:
+            - text: Early review confirms all Batch 1 changes render correctly. Now
+            - strong: Batch 2
+            - text: "— the Editing tips section skeleton plus the first two tip rows:"
+          - button "Browser acknowledged committed transaction completed":
+            - generic: Browser acknowledged committed transaction
+            - generic: completed
+          - paragraph:
+            - strong: Batch 3
+            - text: "— tips 3 and 4:"
+          - button "Browser acknowledged committed transaction completed":
+            - generic: Browser acknowledged committed transaction
+            - generic: completed
+          - paragraph:
+            - strong: Batch 4
+            - text: "— tips 5 and 6:"
+          - button "Browser acknowledged committed transaction completed":
+            - generic: Browser acknowledged committed transaction
+            - generic: completed
+          - paragraph:
+            - strong: Batch 5
+            - text: "— tips 7 and 8:"
+          - button "Browser acknowledged committed transaction completed":
+            - generic: Browser acknowledged committed transaction
+            - generic: completed
+    - button "Scroll to latest message":
+      - generic: Scroll to end
+    - textbox "Message":
+      - /placeholder: Ask for a change…
+      - text: Correct this local editor while preserving its existing independent title, body and document-selection state and live preview. Use only the already declared demo.submit action to record a local Save intent and display its actual simulated result; label the button "Preview save intent". Replace any autosave or persistence claim with "Temporary preview values; no document persistence." Do not add host actions or providers, and do not force void outputs into typed state. Also add an Editing tips section with eight short title-and-description rows. Use incremental batches and review the first meaningful change early.
+    - button "Stop":
+      - generic: Stop
+    - status
+  - status "Add Editing tips rows 7 and 8 to complete the eight-row section · applied":
+    - generic: Working…
+  - button "Chat details": ···
+- main:
+  - generic "Workspace mode":
+    - button "Design" [pressed]
+    - button "Interact"
+  - button "Document"
+  - generic "Screen canvas":
+    - main "Content editor comparison":
+      - heading "Content editor" [level=1]:
+        - generic: Content editor
+      - paragraph:
+        - generic: Temporary preview values; no document persistence.
+      - paragraph:
+        - generic: Temporary preview values; no document persistence.
+      - button "Preview save intent"
+      - status
+      - alert
+      - generic "Documents":
+        - generic: Documents
+        - group "Documents":
+          - radio "Product brief" [checked]
+          - radio "Design notes"
+          - radio "Sprint retro"
+      - paragraph:
+        - generic: Editing
+      - generic: Product brief
+      - generic: Title
+      - textbox "Title":
+        - /placeholder: Document title
+        - text: October release plan
+      - generic: Body
+      - textbox "Body":
+        - /placeholder: Write the document body…
+        - text: Draft the messaging for the October release. - Lead with the new compact editor - Call out local-first drafts - Keep the whole page on one screen
+      - paragraph:
+        - generic: Temporary preview values; no document persistence.
+      - paragraph:
+        - generic: "demo.submit (simulated): save intent recorded"
+      - paragraph:
+        - generic: Preview
+      - heading "October release plan" [level=2]:
+        - generic: October release plan
+      - generic: Draft the messaging for the October release. - Lead with the new compact editor - Call out local-first drafts - Keep the whole page on one screen
+      - paragraph:
+        - generic: Live preview — updates as you type
+      - generic: Status
+      - status:
+        - generic: Unsaved changes
+      - generic: 3 documents · Compact view
+      - heading "Editing tips" [level=2]:
+        - generic: Editing tips
+      - heading "Independent fields" [level=3]:
+        - generic: Independent fields
+      - paragraph:
+        - generic: Title, body and document choice each keep their own state.
+      - heading "Live preview" [level=3]:
+        - generic: Live preview
+      - paragraph:
+        - generic: The preview mirrors the title and body as you type.
+      - heading "Switch documents" [level=3]:
+        - generic: Switch documents
+      - paragraph:
+        - generic: Selecting a document in the list changes the draft you edit.
+      - heading "Preview save intent" [level=3]:
+        - generic: Preview save intent
+      - paragraph:
+        - generic: The header button records a simulated save via demo.submit.
+      - heading "No persistence" [level=3]:
+        - generic: No persistence
+      - paragraph:
+        - generic: Nothing is written to storage; values reset when the preview reloads.
+      - heading "Keep drafts short" [level=3]:
+        - generic: Keep drafts short
+      - paragraph:
+        - generic: Short text reads best in the compact preview column.
+      - heading "Watch the status" [level=3]:
+        - generic: Watch the status
+      - paragraph:
+        - generic: The footer status line shows the current draft state.
+      - heading "One compact screen" [level=3]:
+        - generic: One compact screen
+      - paragraph:
+        - generic: List, editor and preview sit side by side in one view.
+  - generic "Simulated execution Local preview · no live effects":
+    - text: Simulated execution
+    - generic: Local preview · no live effects
+- contentinfo:
+  - status: Add Editing tips rows 7 and 8 to complete the eight-row section · agent edit · unsaved
+  - generic "v1_f6b54be2184219f37ad663e7b76068b6dcafde583a59a1a35005baff693d352d": "@3 · v1_f6b54be21842…"

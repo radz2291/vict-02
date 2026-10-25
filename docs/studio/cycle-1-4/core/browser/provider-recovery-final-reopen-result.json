@@ -1,0 +1,9 @@
+{
+  "at": "2026-10-25T13:43:57.547Z",
+  "savedRevision": "r1.r2",
+  "exactSourceRetained": true,
+  "manualCheckpointRetained": true,
+  "concurrentCheckpointRetained": true,
+  "runtimeTitleAfterReopen": "October release plan",
+  "scope": "Actual explicit Studio File Save/Reload saved version; canonical source persistence, temporary preview state reset. Not authored per-document persistence."
+}

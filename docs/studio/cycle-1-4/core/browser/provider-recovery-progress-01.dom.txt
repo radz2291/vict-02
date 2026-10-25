@@ -1,0 +1,118 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Content editor comparison"
+  - generic: ● Unsaved changes
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- complementary "Chat":
+  - region "Conversation":
+    - region "Messages — Message":
+      - log:
+        - generic: You
+        - generic: Correct this local editor while preserving its existing independent title, body and document-selection state and live preview. Use only the already declared demo.submit action to record a local Save intent and display its actual simulated result; label the button "Preview save intent". Replace any autosave or persistence claim with "Temporary preview values; no document persistence." Do not add host actions or providers, and do not force void outputs into typed state. Also add an Editing tips section with eight short title-and-description rows. Use incremental batches and review the first meaningful change early.
+        - button "Copy message":
+        - generic: Assistant
+        - generic "Conversation timeline":
+          - paragraph: Progress summary · Connecting to the VICT / Mastra agent…
+          - paragraph: Progress summary · Agent is working on your request…
+          - paragraph: I'll start by reading the current document structure, state, and declared actions to understand what exists before planning edits.
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - paragraph: I have the state and action facts. Now let me read the remaining nodes and the button component contract.
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - paragraph: I now have the full structure. Before editing, let me verify the exact current wiring on the save button and the title/body inputs (to preserve them correctly).
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+    - button "Scroll to latest message":
+      - generic: Scroll to end
+    - textbox "Message":
+      - /placeholder: Ask for a change…
+      - text: Correct this local editor while preserving its existing independent title, body and document-selection state and live preview. Use only the already declared demo.submit action to record a local Save intent and display its actual simulated result; label the button "Preview save intent". Replace any autosave or persistence claim with "Temporary preview values; no document persistence." Do not add host actions or providers, and do not force void outputs into typed state. Also add an Editing tips section with eight short title-and-description rows. Use incremental batches and review the first meaningful change early.
+    - button "Stop":
+      - generic: Stop
+    - status
+  - status "Reading current source facts…":
+    - generic: Working…
+  - button "Chat details": ···
+- main:
+  - generic "Workspace mode":
+    - button "Design" [pressed]
+    - button "Interact"
+  - button "Document"
+  - generic "Screen canvas":
+    - main "Content editor comparison":
+      - heading "Content editor" [level=1]:
+        - generic: Content editor
+      - paragraph:
+        - generic: Compact workspace · local draft — everything stays in this browser
+      - paragraph:
+        - generic: Local draft
+      - button "Save changes"
+      - status
+      - alert
+      - generic "Documents":
+        - generic: Documents
+        - group "Documents":
+          - radio "Product brief" [checked]
+          - radio "Design notes"
+          - radio "Sprint retro"
+      - paragraph:
+        - generic: Editing
+      - generic: Product brief
+      - generic: Title
+      - textbox "Title":
+        - /placeholder: Document title
+        - text: October release plan
+      - generic: Body
+      - textbox "Body":
+        - /placeholder: Write the document body…
+        - text: Draft the messaging for the October release. - Lead with the new compact editor - Call out local-first drafts - Keep the whole page on one screen
+      - paragraph:
+        - generic: Drafts save locally as you type.
+      - paragraph:
+        - generic: Preview
+      - heading "October release plan" [level=2]:
+        - generic: October release plan
+      - generic: Draft the messaging for the October release. - Lead with the new compact editor - Call out local-first drafts - Keep the whole page on one screen
+      - paragraph:
+        - generic: Live preview — updates as you type
+      - generic: Status
+      - status:
+        - generic: Unsaved changes
+      - generic: 3 documents · Compact view
+  - generic "Simulated execution Local preview · no live effects":
+    - text: Simulated execution
+    - generic: Local preview · no live effects
+- contentinfo:
+  - status: Apply canonical source · unsaved
+  - generic "v1_ffbe5a794cc4f6bba96ced45dff536960fab8023ba636bef630776d6e5e7480b": "@3 · v1_ffbe5a794cc4…"

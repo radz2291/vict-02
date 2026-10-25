@@ -1,6 +1,14 @@
 # Cycle 1.4 — integration and verification report
 
-2026-10-25. **IMPLEMENTATION IN PROGRESS; independent readiness not yet established.**
+2026-10-25. **Implementation and required actual journeys complete; final independent remote-pinned verdict pending.**
+
+## Final integration evidence awaiting independent verdict
+
+Exact product remains `e76e2fc0f64f5a451edae01f4b0a1c9e7cfc68db`; no product bytes changed during final recovery checks. The fresh pinned Svelte5.57.0 build and exact seal verify747 inputs/491 outputs, SHA-256 `bb46d98cbe6e520ac487abd5928a1dc0e4343eebf1f6a16de37dab81adc1e17a`. Later sections preserve earlier checkpoints and failed observations; their pending statements describe those historical checkpoints.
+
+The real e76 recovery leg exercised AgentChat Stop after five acknowledged edits, manual Source Apply and explicit Save, an exact whitespace-draft Send refusal, continuation without replaying prior edits, exact Undo/Redo, actual declared local Save-intent feedback, and the repaired historical region labels after a later manual source change. A separate concurrent manual change after two completed agent source reads produced actual `UI_DOC_STALE_REVISION`; the proposed agent edit did not apply and final source exactly equals the manual checkpoint. Explicit Studio Save/reopen retained all97 nodes at `r1.r2`, including both manual checkpoints, and reset the temporary title to its canonical initial value. [Full provider and recovery evidence](CYCLE-1-4-PROVIDER-JOURNEYS.md) keeps these separate from natural comparisons and from authored AI presentation fixtures.
+
+Root executed browser cases specified by the fresh independent verifier. The verifier independently checks source, production bytes, portable raw DOM/receipt/source/geometry assertions and screenshots; its own direct browser control remained unavailable. This is disclosed rather than represented as child-operated pointer execution. No required repair remains reported by the verifier; its final pushed verdict, integration and remote checks still gate delivery.
 
 Current actual-verification update: current pushed product **`e76e2fc0f64f5a451edae01f4b0a1c9e7cfc68db`** repairs required IV14-05: completed-turn region labels no longer imply live source freshness after later edits. Fresh pinned build and747/491 seal pass; seal SHA-256 `bb46d98cbe6e520ac487abd5928a1dc0e4343eebf1f6a16de37dab81adc1e17a`. The earlier9fb actual manual-change failure and independent required-failure checkpoint `3135583729a77d1be3785218fdcfe82db42d60af` are retained. All three natural provider comparisons completed; their unchanged execution logic is carried explicitly from4c76/9fb. Corrected small showcase labels pass actual review; post-completion manual-change ledger and the separate corrective/Stop/mixed/history legs still gate readiness. No owner acceptance or Stage9 closure is claimed.
 

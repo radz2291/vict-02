@@ -1,0 +1,7 @@
+{
+  "product": "e76e2fc0f64f5a451edae01f4b0a1c9e7cfc68db",
+  "scope": "Continuation after Stop5acks + manualSource checkpoint + explicitSave; pendingwhitespaceSource draft refused before model; discardedwithoutapplying",
+  "submittedAt": "2026-10-25T13:29:17.517Z",
+  "prompt": "Continue from the saved manual change. Preserve manual-proof and all existing independent title/body/document-selection state and bindings. The eight tips already exist; do not recreate them. Bind saveResultLine-text to actual state.actionResult so it is empty before a click, instead of static success text. Correct tipBody3-text to say selection changes the label and does not load per-document drafts. Clarify that the footer status is a fixed local label unless a host updates it. Keep Preview save intent connected only to the existing demo.submit simulation, and do not claim persistence. Observe the corrected result and finish.",
+  "discardRestoredExactSavedRaw": true
+}
