@@ -89,7 +89,7 @@
     const act=(action:()=>void)=>{target();if(!blocked && capability.direct)action();};
     return {label:'Example object commands',prepare:target,commands:[
       {label:'Inspect',disabled:blocked,run:()=>inspect(structureId(source!.id,'node',capability.report!.sourceNodeId))},
-      {label:'Edit properties',disabled:blocked || !capability.direct,run:()=>act(()=>{tools='palette';paletteRequested=true;palettePage='format';paletteFocus=Symbol('edit-handoff');})},
+      {label:'Edit properties',disabled:blocked || !capability.direct,run:()=>act(()=>{changeMode('design');tools='palette';paletteRequested=true;palettePage='format';paletteFocus=Symbol('edit-handoff');})},
       {label:'Duplicate',separator:true,disabled:blocked || !capability.removable,run:()=>act(()=>{const copy=duplicateSubtree(source!,capability.report!.sourceNodeId);if(copy && apply(copy.draft))selectNode(copy.nodeId);})},
       {label:'Delete',disabled:blocked || !capability.removable,run:()=>act(()=>{const id=capability.report!.sourceNodeId;const parent=compositionParent(source!,id);if(apply({requestId:crypto.randomUUID(),reason:'Delete example selection',commands:[{op:'remove',nodeId:id,detachFromParent:true}]}))selectNode(parent?.nodeId??source!.root);})},
     ]};
@@ -220,7 +220,7 @@
       const target = find(); target?.scrollIntoView({ block: 'nearest', inline: 'nearest' }); target?.focus({ preventScroll: true });
       notice = target ? 'Located on canvas.' : 'This source has no visible canvas element.'; return;
     }
-    if (request.destination === 'inspector') {tools = 'palette';paletteRequested=true;palettePage='format';paletteFocus=Symbol('edit-handoff');return;}
+    if (request.destination === 'inspector') {changeMode('design');tools = 'palette';paletteRequested=true;palettePage='format';paletteFocus=Symbol('edit-handoff');return;}
     if (request.destination === 'data') selectedData = request.key ?? '';
     await tick();
     const selector = request.destination === 'layers' ? '.layers' : request.destination === 'data' ? '[data-structure-data]' : request.destination === 'actions' ? '[data-structure-actions]' : '.canvas';

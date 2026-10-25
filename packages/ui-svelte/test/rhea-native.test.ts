@@ -1,4 +1,5 @@
 import { readFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
 import { flushSync, mount, unmount } from 'svelte';
 import { describe, expect, it } from 'vitest';
 import postcss from 'postcss';
@@ -17,6 +18,14 @@ function source(id: string): UiDocument {
 }
 
 describe('Rhea canonical native compositions', () => {
+  it('pins exact shipped local source and license bytes, including LF policy', () => {
+    const manifest = JSON.parse(readFileSync('packages/ui-svelte/rhea-upstream-manifest.json', 'utf8'));
+    for (const file of manifest.localFiles) {
+      const bytes = readFileSync(`packages/ui-svelte/${file.path}`);
+      expect(bytes.includes(Buffer.from('\r\n')), file.path).toBe(false);
+      expect(createHash('sha256').update(bytes).digest('hex'), file.path).toBe(file.sha256);
+    }
+  });
   for (const pattern of rheaNativePatterns) {
     it(`${pattern.id} compiles and renders through the same DocumentHost`, async () => {
       const doc = source(pattern.id), before = JSON.stringify(doc);

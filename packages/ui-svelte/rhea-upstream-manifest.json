@@ -2692,15 +2692,16 @@
   "localFiles": [
     {
       "path": "src/rhea.css",
-      "sha256": "3d7431b0f54a3c9fd8ae8bd97e249fdceed2d8cbb6f9d2bdcfd17324f242d8f6"
+      "sha256": "9d9a9ef5fee7a219f968b68bb5646645f6ff36d148865b68ce6a4b78b16fb310"
     },
     {
       "path": "src/rhea.ts",
-      "sha256": "73f16e8d0ddd3a6b7c9599f37b05e8ca4003edbb2f3846900801ce8d9fb867b0"
+      "sha256": "4fa209f305a873a54ae64ff3cfe3d3d86150b90a13318c9658930281715e80a8"
     },
     {
       "path": "LICENSE.rhea",
       "sha256": "230594c9dedb06fb0759381a520b449c1b47b0f63b95fc88ef9d7e851e2540a9"
     }
-  ]
+  ],
+  "localHashPolicy": "Exact shipped UTF-8/LF bytes, matching committed source and package tarballs; no CRLF normalization at verification."
 }

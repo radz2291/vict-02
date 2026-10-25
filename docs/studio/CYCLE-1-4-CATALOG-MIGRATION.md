@@ -192,4 +192,3 @@ gave `import.meta.url` a non-file URL; a repository-relative fixture read
 corrected it, followed by 19/19 and the expanded 20/20 pass. Five existing
 DocumentHost/RenderNode Svelte warnings remain. These are builder checks,
 not the independent integrated verdict or browser computed-style proof.
-

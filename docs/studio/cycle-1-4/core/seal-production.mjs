@@ -8,6 +8,19 @@ const manifestPath=resolve(root,'docs/studio/cycle-1-4/core/production-seal.json
 const git=(...args)=>execFileSync('git',args,{cwd:root,encoding:'utf8'}).trim();
 const digest=path=>createHash('sha256').update(readFileSync(resolve(root,path))).digest('hex');
 const product=['apps/studio','packages','package.json','package-lock.json','docs/studio/CYCLE-1-4-CATALOG-MIGRATION.json'];
+function assertCommittedInputBytes(candidate, paths) {
+  // Read all blobs in one Git process. Worktree line-ending filters must not
+  // make a seal that fails in a normal exact-candidate checkout.
+  const payload=execFileSync('git',['cat-file','--batch'],{cwd:root,input:paths.map(path=>`${candidate}:${path}\n`).join(''),maxBuffer:128*1024*1024});
+  let offset=0;
+  for(const path of paths){
+    const newline=payload.indexOf(10,offset),header=payload.subarray(offset,newline).toString('utf8').split(' '),size=Number(header[2]);
+    if(header[1]!=='blob'||!Number.isSafeInteger(size))throw Error('Missing committed input: '+path);
+    const committed=payload.subarray(newline+1,newline+1+size);
+    if(!committed.equals(readFileSync(resolve(root,path))))throw Error('Build input differs from exact committed bytes (including line endings): '+path);
+    offset=newline+1+size+1;
+  }
+}
 function assertSource(candidate){
   const changes=git('diff','--name-only',candidate,'--',...product);
   const untracked=git('ls-files','--others','--exclude-standard','--',...product);
@@ -20,7 +33,9 @@ if(process.argv.includes('--verify')){
   console.log(JSON.stringify({verified:true,candidate:seal.candidate,inputs:seal.inputs.length,outputs:seal.outputs.length}));
 }else{
   const candidate=git('rev-parse','HEAD');assertSource(candidate);
-  const inputs=git('ls-files','--',...product).split('\n').filter(Boolean).filter(path=>!path.includes('/test/')&&!path.includes('/tests/')).map(path=>({path,sha256:digest(path)}));
+  const paths=git('ls-files','--',...product).split('\n').filter(Boolean).filter(path=>!path.includes('/test/')&&!path.includes('/tests/'));
+  assertCommittedInputBytes(candidate,paths);
+  const inputs=paths.map(path=>({path,sha256:digest(path)}));
   const outputs=[];
   function walk(directory){for(const entry of readdirSync(directory,{withFileTypes:true})){const path=resolve(directory,entry.name);if(entry.isDirectory())walk(path);else if(entry.isFile()){const name=relative(root,path).replaceAll('\\','/');outputs.push({path:name,sha256:digest(name)});}}}
   walk(resolve(root,'apps/studio/build'));

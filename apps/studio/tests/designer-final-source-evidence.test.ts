@@ -14,11 +14,12 @@ it('preserves the historical intentional all-83 source and history while explici
  // The retained provider run predates specialist seeds. Its old manifest remains
  // exactly83 recipes; extending today's catalogue must not rewrite that evidence.
  const laterSpecialists=['vict.ai.conversation','vict.ai.message','vict.ai.prompt-input','vict.flow.canvas'];
- const requested=screenRecipes.filter(recipe=>!laterSpecialists.includes(recipe.id)).map(recipe=>recipe.id);
+ const laterRecipes=screenRecipes.filter(recipe=>laterSpecialists.includes(recipe.id)||recipe.id.startsWith('rhea-')).map(recipe=>recipe.id);
+ const requested=screenRecipes.filter(recipe=>!laterRecipes.includes(recipe.id)).map(recipe=>recipe.id);
  expect(requested).toHaveLength(83);
  expect(agentCoverage(document,requested)).toMatchObject({authored:83,catalogAuthored:78,missing:[]});
  const currentRequested=screenRecipes.map(recipe=>recipe.id);
- expect(agentCoverage(document,currentRequested)).toMatchObject({authored:83,catalogAuthored:78,requested:87,missing:laterSpecialists});
+ expect(agentCoverage(document,currentRequested)).toMatchObject({authored:83,catalogAuthored:78,requested:100,missing:laterRecipes});
  expect(Object.keys(document.nodes).filter(id=>id.startsWith('retained-'))).toEqual([]);
  const headings=Object.values(document.nodes).filter(node=>node.kind==='element'&&node.tag==='h1');expect(headings).toHaveLength(1);
  for(const phrase of ['Add your details here','Your content','Add your own content','First option','Second option'])expect(JSON.stringify(document)).not.toContain(phrase);
@@ -39,7 +40,7 @@ it('preserves the historical intentional all-83 source and history while explici
  expect(bridge.getSnapshot().contentDigest).toBe(savedDigest);
  const {revision:savedRevision,...savedBody}=bridge.document;expect(savedBody).toEqual(originalBody);
  expect(agentCoverage(bridge.document,requested).missing).toEqual([]);
- expect(agentCoverage(bridge.document,currentRequested).missing).toEqual(laterSpecialists);
+ expect(agentCoverage(bridge.document,currentRequested).missing).toEqual(laterRecipes);
 });
 it('keeps the real run failure honest and scopes the expected visual source delta explicitly',()=>{
  const result=JSON.parse(readFileSync(prefix+'-result.json','utf8'));

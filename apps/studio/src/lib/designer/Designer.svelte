@@ -177,12 +177,12 @@
     return { label:'Object commands', prepare:target, commands:[
       {label:'Inspect', disabled:blocked, run:()=>inspectSource(structureId(source!.id,'node',capability.report!.sourceNodeId))},
       {label:'Locate on canvas', disabled:blocked, run:()=>void locateOnCanvas(occurrence)},
-      {label:'Edit properties', disabled:blocked || !capability.direct, run:()=>act(()=>{selectOccurrence(occurrence,true);paletteFocus=Symbol('edit-handoff');})},
+      {label:'Edit properties', disabled:blocked || !capability.direct, run:()=>act(()=>{changeMode('design');selectOccurrence(occurrence,true);paletteFocus=Symbol('edit-handoff');})},
       {label:'Duplicate', separator:true, disabled:blocked || !capability.removable, run:()=>act(duplicateSelection)},
       {label:'Delete', disabled:blocked || !capability.removable, run:()=>act(removeSelection)},
       {label:'Move earlier', separator:true, disabled:blocked || !capability.earlier, run:()=>act(()=>reorderSelection(-1))},
       {label:'Move later', disabled:blocked || !capability.later, run:()=>act(()=>reorderSelection(1))},
-      {label:'Arrange…', disabled:blocked || !capability.direct, run:()=>act(()=>{ selectOccurrence(occurrence,true); palettePage='arrange'; })},
+      {label:'Arrange…', disabled:blocked || !capability.direct, run:()=>act(()=>{ changeMode('design'); selectOccurrence(occurrence,true); palettePage='arrange'; })},
     ] };
   }
   function canvasContext(target:Element):WorkspaceContext|undefined {

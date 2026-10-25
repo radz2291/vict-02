@@ -101,3 +101,12 @@ it('keeps short-window splitter values and keyboard resize within the same dynam
   expect(splitter.getAttribute('aria-valuemin')).toBe('120');expect(splitter.getAttribute('aria-valuemax')).toBe('120');expect(splitter.getAttribute('aria-valuenow')).toBe('120');
   for(const key of ['ArrowUp','ArrowDown','Home','End']){splitter.dispatchEvent(new KeyboardEvent('keydown',{key,bubbles:true,cancelable:true}));await settle();expect(splitter.getAttribute('aria-valuenow')).toBe('120');}
 });
+it('explicitly hands Structure editing from Interact to visible Design floating tools',async()=>{
+  const source=await start();button('Interact').click();await settle();button('Document').click();await settle();button('Structure').click();await settle();
+  const node=[...document.querySelectorAll<HTMLElement>('.svelte-flow__node')].find(node=>node.dataset.id===structureId(source.id,'node','second'))!;
+  await secondary(node);
+  const edit=[...document.querySelectorAll<HTMLElement>('[role="menu"][data-state="open"] [role="menuitem"]')].find(node=>node.textContent?.trim()==='Edit properties')!;
+  edit.click();await settle();
+  expect(button('Design').getAttribute('aria-pressed')).toBe('true');
+  expect(document.querySelector('[aria-label="Floating selection tools"]')).not.toBeNull();
+});

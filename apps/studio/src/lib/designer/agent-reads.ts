@@ -37,6 +37,7 @@ export const agentReadPresentation = { type:'object',additionalProperties:false,
 } };
 const truncate = (text: string, max = 1200) => text.length > max ? text.slice(0,max) + '… [truncated; use source pages]' : text;
 const recipeDefinitions = new Map(screenRecipes.map(recipe => [recipe.id,recipe.create('example').filter(node => node.kind === 'component').map(node => node.kind === 'component' ? node.definitionId : '')]));
+const nativeRecipeSignatures = new Map(screenRecipes.map(recipe => [recipe.id, recipe.create('example').filter((node): node is Extract<UiNode,{kind:'element'}> => node.kind === 'element').map(node => ({tag:node.tag,classes:node.classes ?? []}))]));
 /** Describes existing seeds without changing canonical defaults or pretending a recipe is a contract. */
 function recipePreparation(recipe:typeof screenRecipes[number]) {
   const nodes=recipe.create('example');
@@ -67,7 +68,17 @@ export function agentCoverage(document: UiDocument, requested?: readonly string[
     // recipe may also include node/edge examples; those are required only when
     // a caller explicitly requests that recipe, not for canvas presence.
     const definitions = requested ? recipeDefinitions.get(id) ?? (id.startsWith('vict.') ? [id] : [`vict.catalog.${id}`]) : [id];
-    if (!definitions.length) { const recipe = screenRecipes.find(recipe => recipe.id === id); const root = recipe?.create('example')[0]; return !root || !sourceNodes.some(node => node.kind === root.kind && (node.kind !== 'element' || root.kind !== 'element' || node.tag === root.tag)); }
+    if (!definitions.length) {
+      const recipe = screenRecipes.find(recipe => recipe.id === id), root = recipe?.create('example')[0];
+      const signature = nativeRecipeSignatures.get(id) ?? [];
+      return !root || !sourceNodes.some(node => {
+        if (node.kind !== root.kind || node.kind !== 'element' || root.kind !== 'element' || node.tag !== root.tag || !(root.classes ?? []).every(name => node.classes?.includes(name))) return false;
+        const members: UiNode[] = [], visited = new Set<string>();
+        const collect = (key:string) => {if(visited.has(key))return;visited.add(key);const child=document.nodes[key];if(!child)return;members.push(child);compositionChildren(child).forEach(collect);};
+        collect(node.id);
+        return signature.every(required => members.some(child => child.kind === 'element' && child.tag === required.tag && required.classes.every(name => child.classes?.includes(name))));
+      });
+    }
     return !definitions.every(definition => authoredIds.has(definition));
   });
   return { available:availableIds.length, authored:expected.length-missing.length, catalogAuthored:availableIds.filter(id => id.startsWith('vict.catalog.')&&authoredIds.has(id)).length,

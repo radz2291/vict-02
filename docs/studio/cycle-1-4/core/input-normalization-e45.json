@@ -1,0 +1,18 @@
+{
+  "candidate": "e45e4eff037c6860c435ad0c3b2b1678df01c94a",
+  "method": "exact committed blob bytes; only CRLF/LF differences admitted",
+  "changed": [
+    "apps/studio/src/lib/designer/AgentChat.svelte",
+    "apps/studio/src/lib/designer/Designer.svelte",
+    "apps/studio/src/lib/designer/SourceDetails.svelte",
+    "apps/studio/src/lib/designer/StructureView.svelte",
+    "apps/studio/src/lib/designer/StudioShowcase.svelte",
+    "apps/studio/src/lib/server/designer-agent.ts",
+    "docs/studio/CYCLE-1-4-CATALOG-MIGRATION.json",
+    "packages/ui-svelte/RHEA.md",
+    "packages/ui-svelte/package.json",
+    "packages/ui-svelte/rhea-upstream-manifest.json",
+    "packages/ui-svelte/src/rhea.css",
+    "packages/ui-svelte/src/rhea.ts"
+  ]
+}
