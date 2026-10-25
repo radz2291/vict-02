@@ -1,0 +1,105 @@
+{
+  "product": "9fbda0f3ec0c14ff7be8bfb475d30e0cdc0f0993",
+  "method": "Root actual CUA execution; independent complete/partial/unavailable and current/earlier-region actual screenshot/DOM/geometry review.",
+  "IV14_04": "CLOSED: changed shared production evidence component now actually rendered in labelled showcase states.",
+  "simulationBoundary": "All displayed fixture metrics/regions remain explicitly simulated. Actual provider evidence is separately identified.",
+  "smallPopover": {
+    "bottom": 468.08750915527344,
+    "height": 200.08750915527344,
+    "left": 33,
+    "right": 313,
+    "top": 268,
+    "width": 280,
+    "x": 33,
+    "y": 268
+  },
+  "smallScroll": {
+    "clientHeight": 198,
+    "scrollHeight": 777
+  },
+  "smallRegionLedgerActuallyScrolled": true,
+  "scopeAndEscapeFocusReturn": true,
+  "pending": "Actual production AgentChat renderer on new9fb terminal turn still needs recheck.",
+  "artifacts": [
+    {
+      "name": "showcase14-evidence-01-complete.dom.txt",
+      "sha256": "66fee3f45bb739d9cedb8ce24125712529fef02ced7ea4aff4f7fbca543ba532"
+    },
+    {
+      "name": "showcase14-evidence-01-complete.geometry.json",
+      "sha256": "83bb532fd5485d1365ff1f0c7e8265e6d2959498768dba1dfff00eaab0ca3e50"
+    },
+    {
+      "name": "showcase14-evidence-01-complete.png",
+      "sha256": "72060bd61e802313fd417ef41a85e956592b8222bb42e013d8d54bfae0a04189"
+    },
+    {
+      "name": "showcase14-evidence-02-regions.dom.txt",
+      "sha256": "66fee3f45bb739d9cedb8ce24125712529fef02ced7ea4aff4f7fbca543ba532"
+    },
+    {
+      "name": "showcase14-evidence-02-regions.geometry.json",
+      "sha256": "f97f430f3b7b6d2f85d23fc683aaaccb8652eb85122b012f5b3365120c6804ae"
+    },
+    {
+      "name": "showcase14-evidence-02-regions.png",
+      "sha256": "1ef9eb7553ff4bdcca2b7f7a3c04fc65c04a280669c9d922c8375226e0f19cff"
+    },
+    {
+      "name": "showcase14-evidence-03-partial.dom.txt",
+      "sha256": "809fb79191aa470a23916abb57d48ffaa0e8299215001c59a72f5ca56623d16c"
+    },
+    {
+      "name": "showcase14-evidence-03-partial.geometry.json",
+      "sha256": "ac34ac78a4a88887690344c5ede364dec38838dcd9f91b1c6086644f1c308372"
+    },
+    {
+      "name": "showcase14-evidence-03-partial.png",
+      "sha256": "dbb222f6a104ee2e44e9adb2d072927fb976db3d457559440fdb24bea90619ce"
+    },
+    {
+      "name": "showcase14-evidence-04-unavailable.dom.txt",
+      "sha256": "b8520f6d46b439a9e8a41d59686d8ebeb6b6a2f34eebc4b8fc1b0fd61d751884"
+    },
+    {
+      "name": "showcase14-evidence-04-unavailable.geometry.json",
+      "sha256": "7729eba2529da62823d628a76c74ed54c6eed72f2adb4365527b4d5a41232448"
+    },
+    {
+      "name": "showcase14-evidence-04-unavailable.png",
+      "sha256": "7474c420eb0df974b5e71a73d3c481ebff6a6e94628cb02a146abbfd5a2754c7"
+    },
+    {
+      "name": "showcase14-evidence-05-small-complete.dom.txt",
+      "sha256": "66fee3f45bb739d9cedb8ce24125712529fef02ced7ea4aff4f7fbca543ba532"
+    },
+    {
+      "name": "showcase14-evidence-05-small-complete.geometry.json",
+      "sha256": "fa2aa9abd7e0ceeaddab383aae6bbd2ba70a2c54a9ae980d46e7d0d6614b19d0"
+    },
+    {
+      "name": "showcase14-evidence-05-small-complete.png",
+      "sha256": "118be0d28f88c448e10f056927e9fce4393fcc3d1acabd9a9eb62917966c470c"
+    },
+    {
+      "name": "showcase14-evidence-06-small-regions.dom.txt",
+      "sha256": "66fee3f45bb739d9cedb8ce24125712529fef02ced7ea4aff4f7fbca543ba532"
+    },
+    {
+      "name": "showcase14-evidence-06-small-regions.geometry.json",
+      "sha256": "373cc3f28e5caaa6e531b5a654f21b8d380dc0c33107306cf90aaac66896abc9"
+    },
+    {
+      "name": "showcase14-evidence-06-small-regions.png",
+      "sha256": "ec0a74b53bae6c69abd153e048ff9787cf805505665dacc8bdaf3fce1f23f249"
+    },
+    {
+      "name": "showcase14-evidence-escape-scope.json",
+      "sha256": "e2278e7605a8e3e035e5ea967f35e818b77b6bc4a9e340b8f4c0400f156030c4"
+    },
+    {
+      "name": "showcase14-evidence-small-bounds.json",
+      "sha256": "6dccdffc720e54e4089878787ccbf08a30edac6eb7382840660d7d17dba8a26c"
+    }
+  ]
+}

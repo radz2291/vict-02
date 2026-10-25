@@ -1,0 +1,477 @@
+{
+  "product": "4c76fb6da023c925825e511bfa7c9985aa662b5e",
+  "baselineProduct": "57308f6ffcd5c85415b38d9d68a6f696199ebfa7",
+  "method": "Root actual CUA provider execution and runtime exercise; independent complete starting-source equality, unique committed receipts, actual tool-start/measurements/region reconciliation and settled screenshot review.",
+  "initialIds": {
+    "candidate": "screen-5354440e-8d56-4f45-bc4f-33f1ef1cd742",
+    "baseline": "screen-49bbe8e6-3b04-4276-872e-959273f9e13e"
+  },
+  "startingSourceEqualExceptDocumentId": true,
+  "arms": {
+    "candidate": {
+      "toolCalls": 33,
+      "refused": 9,
+      "elapsedSeconds": 942.7,
+      "authoringRequests": 27,
+      "imageRequests": 3,
+      "firstEditSeconds": 419.7,
+      "usage": {
+        "input": 1255479,
+        "output": 32114
+      },
+      "calls": {
+        "studio_screen_read": 12,
+        "studio_screen_edit": 18,
+        "studio_screen_observe": 3
+      },
+      "uniqueProposalCount": 9,
+      "committedRevisions": [
+        "r1#1",
+        "r1#2",
+        "r1#3",
+        "r1#4",
+        "r1#5",
+        "r1#6",
+        "r1#7",
+        "r1#8",
+        "r1#9"
+      ],
+      "observations": [
+        {
+          "receiptMs": 446032,
+          "revision": "r1#1",
+          "image": {
+            "width": 909,
+            "height": 560,
+            "sourceWidth": 909,
+            "sourceHeight": 560,
+            "offsetLeft": 0,
+            "offsetTop": 0,
+            "cropped": false
+          },
+          "capturedAt": "2026-10-25T12:11:59.718Z",
+          "model": "zai/glm-5.3-flash",
+          "interactionVerified": false,
+          "ok": true
+        },
+        {
+          "receiptMs": 862204,
+          "revision": "r1#8",
+          "image": {
+            "width": 909,
+            "height": 569,
+            "sourceWidth": 909,
+            "sourceHeight": 612,
+            "offsetLeft": 0,
+            "offsetTop": 0,
+            "cropped": true
+          },
+          "capturedAt": "2026-10-25T12:19:02.273Z",
+          "model": "zai/glm-5.3-flash",
+          "interactionVerified": false,
+          "ok": true
+        },
+        {
+          "receiptMs": 917547,
+          "revision": "r1#9",
+          "image": {
+            "width": 909,
+            "height": 569,
+            "sourceWidth": 909,
+            "sourceHeight": 612,
+            "offsetLeft": 0,
+            "offsetTop": 0,
+            "cropped": true
+          },
+          "capturedAt": "2026-10-25T12:19:54.196Z",
+          "model": "zai/glm-5.3-flash",
+          "interactionVerified": false,
+          "ok": true
+        }
+      ],
+      "localRuntimeExercisedSeparately": true
+    },
+    "baseline": {
+      "toolCalls": 39,
+      "refused": 3,
+      "elapsedSeconds": 809.8,
+      "authoringRequests": 23,
+      "imageRequests": 3,
+      "firstEditSeconds": 346.8,
+      "usage": {
+        "input": 869127,
+        "output": 24353
+      },
+      "calls": {
+        "studio_screen_read": 26,
+        "studio_screen_edit": 10,
+        "studio_screen_observe": 3
+      },
+      "uniqueProposalCount": 7,
+      "committedRevisions": [
+        "r1#1",
+        "r1#2",
+        "r1#3",
+        "r1#4",
+        "r1#5",
+        "r1#6",
+        "r1#7"
+      ],
+      "observations": [
+        {
+          "receiptMs": 653785,
+          "revision": "r1#5",
+          "image": {
+            "width": 909,
+            "height": 569,
+            "sourceWidth": 909,
+            "sourceHeight": 623,
+            "offsetLeft": 0,
+            "offsetTop": 0,
+            "cropped": true
+          },
+          "capturedAt": "2026-10-25T12:15:23.575Z",
+          "model": "zai/glm-5.3-flash",
+          "interactionVerified": false,
+          "ok": true
+        },
+        {
+          "receiptMs": 725586,
+          "revision": "r1#6",
+          "image": {
+            "width": 909,
+            "height": 569,
+            "sourceWidth": 909,
+            "sourceHeight": 589,
+            "offsetLeft": 0,
+            "offsetTop": 0,
+            "cropped": true
+          },
+          "capturedAt": "2026-10-25T12:16:09.097Z",
+          "model": "zai/glm-5.3-flash",
+          "interactionVerified": false,
+          "ok": true
+        },
+        {
+          "receiptMs": 782694,
+          "revision": "r1#7",
+          "image": {
+            "width": 909,
+            "height": 567,
+            "sourceWidth": 909,
+            "sourceHeight": 567,
+            "offsetLeft": 0,
+            "offsetTop": 0,
+            "cropped": false
+          },
+          "capturedAt": "2026-10-25T12:17:23.480Z",
+          "model": "zai/glm-5.3-flash",
+          "interactionVerified": false,
+          "ok": true
+        }
+      ],
+      "localRuntimeExercisedSeparately": true
+    }
+  },
+  "assessment": "Candidate used fewer tool/read calls and reviewed the first source section earlier in this one paired case, but took longer, reached its first edit later, incurred more refusals and reported higher token usage. No latency/token speedup claim.",
+  "limits": [
+    "One case per arm with provider/model/load/order/source-identity confounders, not a statistical improvement.",
+    "Form captured DPR differs baseline1.25versus candidate approximately1.0; same frame dimensions do not erase this confounder.",
+    "Final candidate observation is cropped909x569within909x612; no offscreen or current-runtime proof from that image.",
+    "Baseline final role is a free-text field; candidate uses native select. Output semantics/quality are not identical.",
+    "Large knowledge-read receipt bodies are deliberately truncated by bounded UI trace; failed full-JSON exploration retained as extraction limitation, not a complete-body/cache proof.",
+    "Email input values are omitted from accessibility DOM; actual settled screenshots separately show typed email, correcting the initial helper DOM-value assertion.",
+    "Provider image receipts explicitly state interactionVerified=false; actual CUA settled exercise is separate.",
+    "Dashboard/editor/recovery legs and new9fbshared renderer actual recheck remain pending."
+  ],
+  "artifacts": [
+    {
+      "name": "provider-form-baseline-details-01.dom.txt",
+      "sha256": "42e5a91317beabf83b3444c7bba3da9ac8bbce1019a75efd412ba10a18e99c7c"
+    },
+    {
+      "name": "provider-form-baseline-details-01.geometry.json",
+      "sha256": "d9c8e28c8bc5a189f614a066246664261991c91ed36a96707ffaa32c5b9ea574"
+    },
+    {
+      "name": "provider-form-baseline-details-01.png",
+      "sha256": "9933b21bdc7d62ea3d3b3d72d46aedd392e9fec69dea1d6dc6485ffbc2e8da6f"
+    },
+    {
+      "name": "provider-form-baseline-exercised-01.dom.txt",
+      "sha256": "1feb15ca3471c8d1ec69101dff67601a9451576a59b5e61d89baeed2b011e5a9"
+    },
+    {
+      "name": "provider-form-baseline-exercised-01.geometry.json",
+      "sha256": "e2d96f6193e0e18b08a504c67cf5c6f9108f338d7be9904486a8aef49284579a"
+    },
+    {
+      "name": "provider-form-baseline-exercised-01.png",
+      "sha256": "f63a883966b92b717bd9e537e2878a8b3dc8797ce1a1d745a502885d9a578ca3"
+    },
+    {
+      "name": "provider-form-baseline-exercised-02-settled.dom.txt",
+      "sha256": "8918ad6923def2d910e1ad4eeb5c84451e379e427a4f643e4a22fe1f2cc5f23d"
+    },
+    {
+      "name": "provider-form-baseline-exercised-02-settled.geometry.json",
+      "sha256": "e2e3c3d6c98578969e1774c1e5f9d113ea806a2eb078d281690416de2435f90b"
+    },
+    {
+      "name": "provider-form-baseline-exercised-02-settled.png",
+      "sha256": "0ce1c6fd379d7ce7204d181f39055d143b6b38b8f1d50432f8e6f7ee89a861ea"
+    },
+    {
+      "name": "provider-form-baseline-expanded-trace.dom.txt",
+      "sha256": "46ed7157ad412cecbc01e71b86236c3cfb4191193330556741221d47662aaf44"
+    },
+    {
+      "name": "provider-form-baseline-expanded-trace.geometry.json",
+      "sha256": "c1383c52885dfc70699baf239f7c117972db3743f383dab3196d574a9563c2bd"
+    },
+    {
+      "name": "provider-form-baseline-expanded-trace.png",
+      "sha256": "12a6e277b23c509e75352f52d1fa23be858e0531e783eae42ce70d2299474960"
+    },
+    {
+      "name": "provider-form-baseline-final-source.json",
+      "sha256": "f77aefb36496cc000df14c9c1f2b062c98eccb77e8de5064af293b4cfefd46c6"
+    },
+    {
+      "name": "provider-form-baseline-initial-source.json",
+      "sha256": "dd849d42c53d09d456da0e61a385ad4d1012064680761225d57e7f14c1294bc0"
+    },
+    {
+      "name": "provider-form-baseline-initial.dom.txt",
+      "sha256": "44e479b011e80df647cb89d7a81c511feae5695e6d7c2f422959ded169972405"
+    },
+    {
+      "name": "provider-form-baseline-initial.geometry.json",
+      "sha256": "d5f5b7df1245941e68e0edea23158d2e3e8090723e57cc47194f109abf08a704"
+    },
+    {
+      "name": "provider-form-baseline-initial.png",
+      "sha256": "664114a9e10d025733aa9b411bcbfa4c5234ecb0f4166a32afee44587cd25742"
+    },
+    {
+      "name": "provider-form-baseline-progress-01.dom.txt",
+      "sha256": "afd10730f29dc565909966e4f91716fcb30ae398158c6d96147e59c382d0076d"
+    },
+    {
+      "name": "provider-form-baseline-progress-01.geometry.json",
+      "sha256": "d5dbf7c3dba1de1dd7990ca2304f7146d7721f6b8b4c2456c5022510504406cb"
+    },
+    {
+      "name": "provider-form-baseline-progress-01.png",
+      "sha256": "6e2d7805d25dbcc13500ebbebd1438a4cca9c06008fc4e15a0d222519c416aa0"
+    },
+    {
+      "name": "provider-form-baseline-progress-02.dom.txt",
+      "sha256": "ba3bfd721813d7e224c99efd13c499bea935d1fc563be60984fedf7ba528a88e"
+    },
+    {
+      "name": "provider-form-baseline-progress-02.geometry.json",
+      "sha256": "15af7869ec8195d623b88f1af1ad247c2d3696a509fd3d2370a620935400ec33"
+    },
+    {
+      "name": "provider-form-baseline-progress-02.png",
+      "sha256": "86930bee89f1471495c6c56873a2833ef2cc23563374ade8e2a6097b43526dee"
+    },
+    {
+      "name": "provider-form-baseline-progress-03.dom.txt",
+      "sha256": "4bc4363fd54803aebc8c1658ef8bc457a8f32803bbc75723a8ad995bfd5e9dc6"
+    },
+    {
+      "name": "provider-form-baseline-progress-03.geometry.json",
+      "sha256": "5acc5b5ff6a18380ac05d34e4589e42257692bd0ea840fe22d49153bb778de5f"
+    },
+    {
+      "name": "provider-form-baseline-progress-03.png",
+      "sha256": "bed90a9d5010e1fb453aad2bbba89f8ec69fc49ba2ec5597cc4b4d10dd9a87f2"
+    },
+    {
+      "name": "provider-form-baseline-terminal-01.dom.txt",
+      "sha256": "6c69672a1cf7c4779e9ca05e6c3d60fbd8043761f98b30ae81860a19fa6b88af"
+    },
+    {
+      "name": "provider-form-baseline-terminal-01.geometry.json",
+      "sha256": "27961bd02cb1575237a402d7246e98a2e57f7b095c31fd780ac650cb4c00e851"
+    },
+    {
+      "name": "provider-form-baseline-terminal-01.png",
+      "sha256": "83b525c13aeab0b16f66532c4e7432a59caa09f32c8ddc870d479e88272eecd8"
+    },
+    {
+      "name": "provider-form-candidate-control-values.json",
+      "sha256": "d3e8384b99fe58401781d6d4c7e779341ec4099ee37d33f859428551c135082c"
+    },
+    {
+      "name": "provider-form-candidate-details-01.dom.txt",
+      "sha256": "996510ac0704bacc6e2798a7ecc7ee9107bf67e10e6e8dcaa30daa4a1b56d692"
+    },
+    {
+      "name": "provider-form-candidate-details-01.geometry.json",
+      "sha256": "221bf55126714b88bbe0dc7e5ba2d1ea74b81706a7f129c9dbefc7dd5965dc44"
+    },
+    {
+      "name": "provider-form-candidate-details-01.png",
+      "sha256": "218c29c0faad8f303e834b21476e67f47c9bbcf20ebf5df3de4f2db2d4ed5c75"
+    },
+    {
+      "name": "provider-form-candidate-exercised-01.dom.txt",
+      "sha256": "2f2ac2a45379b7b970c555ecf3e18bd4e49d04300a60fd18f8263d91a5fb5c3f"
+    },
+    {
+      "name": "provider-form-candidate-exercised-01.geometry.json",
+      "sha256": "bf4d80e96ca4de17483933a9a6de257cefc15104b19e2e0c4540ae9a69b8a53f"
+    },
+    {
+      "name": "provider-form-candidate-exercised-01.png",
+      "sha256": "09553bf5b2f2a06e0be0bd915e45dd34393a7a865bf799d484b625e258c57d71"
+    },
+    {
+      "name": "provider-form-candidate-exercised-02-settled.dom.txt",
+      "sha256": "3e455d80d090e427fe7c63b82e054d082fd9a6cf21b931bef87751f6caf7d915"
+    },
+    {
+      "name": "provider-form-candidate-exercised-02-settled.geometry.json",
+      "sha256": "c7b79d0f08eb04d7c97643f121128304aa4e1b6e97eaaafef3276585d2f260fc"
+    },
+    {
+      "name": "provider-form-candidate-exercised-02-settled.png",
+      "sha256": "c20758a6b3ad770aa55b9bc0cfd6f172f2f49dfcd32c0a44bc9d87dafed39577"
+    },
+    {
+      "name": "provider-form-candidate-expanded-trace.dom.txt",
+      "sha256": "f310a66a7098b89ef3fb8d2b66f69ef8a7e2c95d43cad5855ec64904e3f6ca9c"
+    },
+    {
+      "name": "provider-form-candidate-expanded-trace.geometry.json",
+      "sha256": "ff6074bc9664f9e159ebece9f664a928d09735563a8e456eb0c67464f0a787bd"
+    },
+    {
+      "name": "provider-form-candidate-expanded-trace.png",
+      "sha256": "8fd56852f3d60c3738df56c096ead652e3fd7384d3a44917c4854415d909fddf"
+    },
+    {
+      "name": "provider-form-candidate-final-source.json",
+      "sha256": "da9e21a0a4813677dd52c790b105b4714a9eb26c90eb3e42126fa30e2ad7223e"
+    },
+    {
+      "name": "provider-form-candidate-initial-source.json",
+      "sha256": "a68f83d6e2be24c881a84a1c1747081e5271ed0c2c9b97ae03002d78ca67ad0e"
+    },
+    {
+      "name": "provider-form-candidate-initial.dom.txt",
+      "sha256": "52b16aee7b68f79d0fb1b0c8e9e29e470d7acf039fa7ca3c0056360bc6244ff2"
+    },
+    {
+      "name": "provider-form-candidate-initial.geometry.json",
+      "sha256": "7b14046a4544e47b92076b5b82b626c45e2ff6d54394edc5d7f570cacf0535ea"
+    },
+    {
+      "name": "provider-form-candidate-initial.png",
+      "sha256": "2633791df263ff1f73f2ef5b9f76ab55942e7c4a78049de9c8ef61f489392ace"
+    },
+    {
+      "name": "provider-form-candidate-progress-01.dom.txt",
+      "sha256": "5c2ab1177a54614f81f2ac403c124e3a1562c41359096b653fc8d2f1d3b952cf"
+    },
+    {
+      "name": "provider-form-candidate-progress-01.geometry.json",
+      "sha256": "50a3602dc8a7810de61918d1314c05221cd80457ce5cad3b3c9b8d10b69c2ebe"
+    },
+    {
+      "name": "provider-form-candidate-progress-01.png",
+      "sha256": "90d7a94fd3e5406714d9dfada42596b0ceb49f3dfcab695b9b8eecb6d644cb50"
+    },
+    {
+      "name": "provider-form-candidate-progress-02.dom.txt",
+      "sha256": "5c2ab1177a54614f81f2ac403c124e3a1562c41359096b653fc8d2f1d3b952cf"
+    },
+    {
+      "name": "provider-form-candidate-progress-02.geometry.json",
+      "sha256": "f9a3ee37408761d432ecd7c9687abc6448e509368e990db75d739399b137b47d"
+    },
+    {
+      "name": "provider-form-candidate-progress-02.png",
+      "sha256": "90d7a94fd3e5406714d9dfada42596b0ceb49f3dfcab695b9b8eecb6d644cb50"
+    },
+    {
+      "name": "provider-form-candidate-progress-03.dom.txt",
+      "sha256": "37f2df5313708f50322959521dd37d0a04ca34bb7dc318db6a00472ec5c8b7aa"
+    },
+    {
+      "name": "provider-form-candidate-progress-03.geometry.json",
+      "sha256": "a9a28c5113261b48773f09449503fa1aeaad2fa898b36bde05e565cc42b8df37"
+    },
+    {
+      "name": "provider-form-candidate-progress-03.png",
+      "sha256": "740cc25c52a160568dabc55a32a28943e965b4b286e683e84f92f82169d5dc76"
+    },
+    {
+      "name": "provider-form-candidate-progress-04.dom.txt",
+      "sha256": "a8f3f2b3bf3303f441bd036bf40d1a15db570f45d2f3a3ea7662ed2f78e853ac"
+    },
+    {
+      "name": "provider-form-candidate-progress-04.geometry.json",
+      "sha256": "4a1efc3844edfe52afb05df1d3eec4870db19551be044a1a8eab60c86617d365"
+    },
+    {
+      "name": "provider-form-candidate-progress-04.png",
+      "sha256": "bb49a4f6df09be058e58e2bd602c3154404c5f8689fbb80a211698618c565021"
+    },
+    {
+      "name": "provider-form-candidate-saved-before-rebuild.dom.txt",
+      "sha256": "eb43bb7d577c652e1d5be890a6a8e402be4dd86f8dc49ba9d0f0bb0b6076a811"
+    },
+    {
+      "name": "provider-form-candidate-saved-before-rebuild.geometry.json",
+      "sha256": "868e00c591cf9531c1a1970185c6f41ae709126840bd6734f94974e04b74e904"
+    },
+    {
+      "name": "provider-form-candidate-saved-before-rebuild.png",
+      "sha256": "e302c9e73d7d86132ea185b818d3bdbbb59280680e5ad0c50be4f22891cd02f1"
+    },
+    {
+      "name": "provider-form-candidate-submitted.dom.txt",
+      "sha256": "0f4490b62d0e17a3f6af00c10d3222fa02aa4b3eaf262510dd205fc7fe5e4195"
+    },
+    {
+      "name": "provider-form-candidate-submitted.geometry.json",
+      "sha256": "5f1d3470010d6e09f0bef5c274236b2e86c1ecf7cc32fe12b99a60830cfa10b1"
+    },
+    {
+      "name": "provider-form-candidate-submitted.png",
+      "sha256": "aa576633e691464c8e89131e02cbd651688ab3470ba292a86982fbabd8b43679"
+    },
+    {
+      "name": "provider-form-candidate-terminal-01.dom.txt",
+      "sha256": "f7cfe2868b9ff412c712b3591ee1bb24bdd89e24024c6b0a31bec27714c4099e"
+    },
+    {
+      "name": "provider-form-candidate-terminal-01.geometry.json",
+      "sha256": "e4fe504a1d1d0804df211403c3b4b4a690b63b3ff249fc1e0e2cb79ee5318a1c"
+    },
+    {
+      "name": "provider-form-candidate-terminal-01.png",
+      "sha256": "0a2ecb02cf8529ad34ed38f866c0858d8014308793aa7c21bf5829bd288734a3"
+    },
+    {
+      "name": "provider-form-progress-analysis-initial-failed.json",
+      "sha256": "23dcd7366ffb3bde5eb27da1321afcc575dc985103a66980d923446ddd7b34ae"
+    },
+    {
+      "name": "provider-form-progress-analysis.json",
+      "sha256": "94554936f1cfb59477403c04322ebbe47fd946f16edb540172669a7314420ac6"
+    },
+    {
+      "name": "provider-form-run-start.json",
+      "sha256": "898f3ca73ed6733e7e5d86254dc270fcc3aaef2a46b063e9e15afccb0ce627ab"
+    },
+    {
+      "name": "provider-form-terminal-analysis.json",
+      "sha256": "e6d6579359a3c59d0b664c63a523de70f3971bac7add99d1996b1d27c274a77b"
+    }
+  ]
+}

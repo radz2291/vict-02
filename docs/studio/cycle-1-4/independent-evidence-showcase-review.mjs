@@ -1,0 +1,18 @@
+import {readFileSync,writeFileSync,readdirSync} from 'node:fs';
+import {createHash} from 'node:crypto';
+import assert from 'node:assert/strict';
+const root='C:/Users/RZ1/.codex/worktrees/studio-cycle-1-4/260831-VCT-02/docs/studio/cycle-1-4/core/browser/';
+const dom=name=>readFileSync(root+name+'.dom.txt','utf8');
+const complete=dom('showcase14-evidence-01-complete'),regions=dom('showcase14-evidence-02-regions');
+for(const value of ['SIMULATED evidence','12 tool calls','6 receipt-derived edits including cleanup','Reported authoring usage: 1800 input / 900 output tokens','not a real run or captured image'])assert(complete.includes(value));
+for(const value of ['earlier source','current source','within 560×1400','Offscreen content and interactions remain unverified'])assert(regions.includes(value));
+const partial=dom('showcase14-evidence-03-partial');for(const value of ['Partial browser measurements','Provider requests and token usage unavailable','2 receipt-derived edits'])assert(partial.includes(value));
+const unavailable=dom('showcase14-evidence-04-unavailable');for(const value of ['No confirmed edit','Token usage unavailable','0 receipt-derived edits'])assert(unavailable.includes(value));
+const bounds=JSON.parse(readFileSync(root+'showcase14-evidence-small-bounds.json','utf8'));
+assert.deepEqual(bounds.viewport,{height:480,width:640});assert(bounds.rect.left>=0&&bounds.rect.top>=0&&bounds.rect.right<=640&&bounds.rect.bottom<=480);assert(bounds.scrollHeight>bounds.clientHeight);
+const scope=JSON.parse(readFileSync(root+'showcase14-evidence-escape-scope.json','utf8'));assert(scope.portal.chain.some(item=>item.class==='vict-controls vict-rhea'));assert.equal(scope.escape.activeText,'Open simulated Chat evidence');assert.equal(scope.escape.expanded,'false');
+for(const name of ['showcase14-evidence-05-small-complete','showcase14-evidence-06-small-regions'])assert.deepEqual(JSON.parse(readFileSync(root+name+'.geometry.json','utf8')).viewport,{height:480,width:640});
+const names=readdirSync(root).filter(name=>name.startsWith('showcase14-evidence-')).sort();
+const output={product:'9fbda0f3ec0c14ff7be8bfb475d30e0cdc0f0993',method:'Root actual CUA execution; independent complete/partial/unavailable and current/earlier-region actual screenshot/DOM/geometry review.',IV14_04:'CLOSED: changed shared production evidence component now actually rendered in labelled showcase states.',simulationBoundary:'All displayed fixture metrics/regions remain explicitly simulated. Actual provider evidence is separately identified.',smallPopover:bounds.rect,smallScroll:{clientHeight:bounds.clientHeight,scrollHeight:bounds.scrollHeight},smallRegionLedgerActuallyScrolled:true,scopeAndEscapeFocusReturn:true,pending:'Actual production AgentChat renderer on new9fb terminal turn still needs recheck.',artifacts:names.map(name=>({name,sha256:createHash('sha256').update(readFileSync(root+name)).digest('hex')}))};
+writeFileSync('docs/studio/cycle-1-4/independent-evidence-showcase-review.json',JSON.stringify(output,null,2)+'\n');
+console.log(JSON.stringify({pass:true,product:output.product,IV14_04:'CLOSED',artifacts:names.length}));
