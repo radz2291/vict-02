@@ -1,0 +1,333 @@
+{
+  "product": "92f7c4f176a7130157633725b5badcb64f89662b",
+  "screenId": "screen-4f44fedc-6993-41ff-b7d1-bd28b8b87bb2",
+  "origin": "http://127.0.0.20:5614",
+  "checks": [
+    {
+      "name": "Chat resize",
+      "min": "240",
+      "max": "400"
+    },
+    {
+      "name": "Structure splitter canonical fence",
+      "min": "240",
+      "max": "420",
+      "sourceUnchanged": true
+    },
+    {
+      "name": "Hidden Data guard",
+      "documentHidden": true,
+      "inspected": "FullName",
+      "notice": "Apply or cancel your edit first.",
+      "selected": "Full name",
+      "draft": "Independent retained full name"
+    },
+    {
+      "name": "state relation survives Data commit",
+      "canvasName": "Independent retained full name",
+      "graph": [
+        " Element  Full name   ",
+        " State  FullName string · declared initial value  "
+      ],
+      "inspection": "InspectFullName× DetailsRelationships State  Edit in Data ↗  TypeStateValue typeStringStarting valueIndependent retained full name Technical detailskeyfullNametypestringinitialIndependent retained full name",
+      "status": "Edit saved starting value · unsaved"
+    },
+    {
+      "name": "same canonical reselect after state inspect",
+      "inspected": "Full name"
+    },
+    {
+      "name": "external selection updates scope",
+      "inspected": "Work email",
+      "nodes": [
+        " Element  Work email   ",
+        " State  WorkEmail string · declared initial value  "
+      ]
+    },
+    {
+      "name": "action relation and handoff",
+      "facts": "Inspect\nSubmit (simulated)\n×\nDetails\nRelationships\nAction\nOpen Actions ↗\nType\nAction\nTechnical details",
+      "actionsExpanded": "true"
+    },
+    {
+      "name": "hidden Source guards",
+      "saveEnabled": false,
+      "documentHidden": true,
+      "draftRetained": true,
+      "notice": "Apply or discard your JSON draft before saving.",
+      "selected": "Full name"
+    },
+    {
+      "name": "1000 breakpoint transition",
+      "draft": "Keep my independent draft through panel changes",
+      "focus": null,
+      "visiblePanels": [
+        "agent-panel"
+      ]
+    },
+    {
+      "name": "390 compact Document and top menu",
+      "canvas": {
+        "bottom": 470.8000183105469,
+        "height": 426.8000183105469,
+        "left": 0,
+        "right": 390.3999938964844,
+        "top": 44,
+        "width": 390.3999938964844,
+        "x": 0,
+        "y": 44
+      },
+      "headers": [
+        {
+          "expanded": "true",
+          "label": "Layers",
+          "rect": {
+            "bottom": 543.6000061035156,
+            "height": 34,
+            "left": 0,
+            "right": 390.3999938964844,
+            "top": 509.6000061035156,
+            "width": 390.3999938964844,
+            "x": 0,
+            "y": 509.6000061035156
+          }
+        },
+        {
+          "expanded": "false",
+          "label": "Data",
+          "rect": {
+            "bottom": 752,
+            "height": 34,
+            "left": 0,
+            "right": 390.3999938964844,
+            "top": 718,
+            "width": 390.3999938964844,
+            "x": 0,
+            "y": 718
+          }
+        },
+        {
+          "expanded": "false",
+          "label": "Actions",
+          "rect": {
+            "bottom": 786,
+            "height": 34,
+            "left": 0,
+            "right": 390.3999938964844,
+            "top": 752,
+            "width": 390.3999938964844,
+            "x": 0,
+            "y": 752
+          }
+        },
+        {
+          "expanded": "false",
+          "label": "Source",
+          "rect": {
+            "bottom": 820,
+            "height": 34,
+            "left": 0,
+            "right": 390.3999938964844,
+            "top": 786,
+            "width": 390.3999938964844,
+            "x": 0,
+            "y": 786
+          }
+        }
+      ],
+      "menus": [
+        {
+          "label": "File",
+          "rect": {
+            "bottom": 35.59999990463257,
+            "height": 28,
+            "left": 34,
+            "right": 64.72500038146973,
+            "top": 7.599999904632568,
+            "width": 30.725000381469727,
+            "x": 34,
+            "y": 7.599999904632568
+          }
+        },
+        {
+          "label": "Edit",
+          "rect": {
+            "bottom": 35.59999990463257,
+            "height": 28,
+            "left": 66.7249984741211,
+            "right": 99.5,
+            "top": 7.599999904632568,
+            "width": 32.775001525878906,
+            "x": 66.7249984741211,
+            "y": 7.599999904632568
+          }
+        },
+        {
+          "label": "View",
+          "rect": {
+            "bottom": 35.59999990463257,
+            "height": 28,
+            "left": 101.5,
+            "right": 139.20000076293945,
+            "top": 7.599999904632568,
+            "width": 37.70000076293945,
+            "x": 101.5,
+            "y": 7.599999904632568
+          }
+        },
+        {
+          "label": "Preview",
+          "rect": {
+            "bottom": 35.59999990463257,
+            "height": 28,
+            "left": 141.1999969482422,
+            "right": 193.67499923706055,
+            "top": 7.599999904632568,
+            "width": 52.47500228881836,
+            "x": 141.1999969482422,
+            "y": 7.599999904632568
+          }
+        }
+      ],
+      "pageScrollWidth": 390,
+      "panels": [
+        {
+          "class": "document-drawer",
+          "rect": {
+            "bottom": 820.0000305175781,
+            "height": 349.20001220703125,
+            "left": 0,
+            "right": 390.3999938964844,
+            "top": 470.8000183105469,
+            "width": 390.3999938964844,
+            "x": 0,
+            "y": 470.8000183105469
+          }
+        }
+      ],
+      "title": {
+        "client": 149,
+        "scroll": 149
+      },
+      "viewport": 390
+    },
+    {
+      "name": "390 Inspect Back to graph",
+      "narrowInspect": {
+        "back": true,
+        "graphHidden": true,
+        "graphInert": true,
+        "graphNodes": 2,
+        "panels": [
+          "structure-dock svelte-1nzupsb"
+        ],
+        "transform": "transform: translate(45.1108px, 38.1097px) scale(1.0741);"
+      },
+      "afterBack": {
+        "focus": "Inspect structure",
+        "graphHidden": false,
+        "selected": "Full name",
+        "transform": "transform: translate(45.1108px, 38.1097px) scale(1.0741);"
+      }
+    },
+    {
+      "name": "compact own close focus",
+      "hidden": false,
+      "text": "View"
+    },
+    {
+      "name": "compact Chat retains draft",
+      "draft": "Keep my independent draft through panel changes"
+    },
+    {
+      "name": "width transition repairs hidden Chat focus",
+      "draft": "Keep my independent draft through panel changes",
+      "focusLabel": "Search structure",
+      "hiddenOwner": false,
+      "visiblePanels": [
+        "structure-dock svelte-1nzupsb"
+      ]
+    },
+    {
+      "name": "optional whole hierarchy",
+      "nodes": 31,
+      "connections": 2
+    },
+    {
+      "name": "Edit on canvas Undo Redo Save reload",
+      "changedHeading": "Independently edited workspace",
+      "undone": 1,
+      "draft": "Keep my independent draft through panel changes",
+      "fullName": "Independent retained full name",
+      "heading": "Independently edited workspace",
+      "notice": "Reloaded revision r1.r2; runtime state reset."
+    },
+    {
+      "name": "new screen resets connection identity",
+      "nodes": [
+        {
+          "id": "%5B%22screen-5c6bbe98-ef8a-4ebf-8f12-12969a9ecc45%22%2C%22node%22%2C%22screen%22%5D",
+          "text": " Element  Screen   "
+        }
+      ],
+      "structureVisible": true,
+      "title": "Independent second screen"
+    },
+    {
+      "name": "panel visibility retains temporary runtime",
+      "value": "Temporary preview value",
+      "sourceInitial": "Independent retained full name"
+    },
+    {
+      "name": "compact simulated refusal",
+      "body": "Try scenarios× Each scenario starts a fresh test. Your saved design stays unchanged and nothing is sent. Something went wrongThe next submit action will fail. Try the screen’s submit button, then check its response or Recent activity.Permission deniedSubmit actions will be refused until you reset the test. Try the screen’s submit button, then check its response or Recent activity.Empty contentFill connected plain-text fields with temporary sample content. Other fields stay unchanged.Typical contentFill connected plain-text fields with temporary sample content. Other fields stay unchanged.Long contentFill connected plain-text fields with temporary sample content. Other fields stay unchanged. Try on canvasReset test Reset returns temporary values to the screen’s starting values and clears simulated failures. Recent activity (1)demo.submit: Simulated write permission denied. AdvancedState valuesPreview state Temporary test values. Your saved design stays unchanged. message string  accepted boolean  false dialogOpen boolean  false busy boolean  false actionError string  actionResult string  fullName string  workEmail string  role string  updatesOptIn boolean  true submitMessage string  ",
+      "source": "Independent retained full name",
+      "visible": [
+        "testing-drawer"
+      ]
+    },
+    {
+      "name": "showcase wide to compact",
+      "draft": "Keep this disposable showcase draft",
+      "focus": "View",
+      "panels": [
+        {
+          "class": "left svelte-rkyxn2",
+          "hidden": true
+        },
+        {
+          "class": "structure-dock svelte-1nzupsb",
+          "hidden": false
+        },
+        {
+          "class": "right svelte-rkyxn2",
+          "hidden": true
+        }
+      ]
+    },
+    {
+      "name": "92 Structure close reopen after graph state browse",
+      "beforeHide": {
+        "nodes": [
+          "%5B%22screen-4f44fedc-6993-41ff-b7d1-bd28b8b87bb2%22%2C%22node%22%2C%22onbNameInput%22%5D",
+          "%5B%22screen-4f44fedc-6993-41ff-b7d1-bd28b8b87bb2%22%2C%22state%22%2C%22fullName%22%5D"
+        ],
+        "selected": [
+          "%5B%22screen-4f44fedc-6993-41ff-b7d1-bd28b8b87bb2%22%2C%22state%22%2C%22fullName%22%5D"
+        ],
+        "transform": "transform: translate(-180.12px, 13.2567px) scale(1.54671);"
+      },
+      "afterHide": {
+        "nodes": [
+          "%5B%22screen-4f44fedc-6993-41ff-b7d1-bd28b8b87bb2%22%2C%22node%22%2C%22onbNameInput%22%5D",
+          "%5B%22screen-4f44fedc-6993-41ff-b7d1-bd28b8b87bb2%22%2C%22state%22%2C%22fullName%22%5D"
+        ],
+        "selected": [
+          "%5B%22screen-4f44fedc-6993-41ff-b7d1-bd28b8b87bb2%22%2C%22state%22%2C%22fullName%22%5D"
+        ],
+        "transform": "transform: translate(249.88px, 36.75px) scale(1.1);"
+      },
+      "cameraSame": false
+    }
+  ]
+}

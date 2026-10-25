@@ -1,0 +1,74 @@
+{
+  "product": "b46fe84b3b5e9fb38224d608bce27919b94cd3ce",
+  "checks": [
+    {
+      "name": "own close reopen context",
+      "before": {
+        "nodes": [
+          "%5B%22screen-4f44fedc-6993-41ff-b7d1-bd28b8b87bb2%22%2C%22node%22%2C%22onbNameInput%22%5D",
+          "%5B%22screen-4f44fedc-6993-41ff-b7d1-bd28b8b87bb2%22%2C%22state%22%2C%22fullName%22%5D"
+        ],
+        "selected": [
+          "%5B%22screen-4f44fedc-6993-41ff-b7d1-bd28b8b87bb2%22%2C%22state%22%2C%22fullName%22%5D"
+        ],
+        "transform": "transform: translate(114.747px, 11.2987px) scale(1.584);"
+      },
+      "after": {
+        "nodes": [
+          "%5B%22screen-4f44fedc-6993-41ff-b7d1-bd28b8b87bb2%22%2C%22node%22%2C%22onbNameInput%22%5D",
+          "%5B%22screen-4f44fedc-6993-41ff-b7d1-bd28b8b87bb2%22%2C%22state%22%2C%22fullName%22%5D"
+        ],
+        "selected": [
+          "%5B%22screen-4f44fedc-6993-41ff-b7d1-bd28b8b87bb2%22%2C%22state%22%2C%22fullName%22%5D"
+        ],
+        "transform": "transform: translate(114.747px, 11.2987px) scale(1.584);"
+      },
+      "equal": true
+    },
+    {
+      "name": "View toggle retains context",
+      "selected": [
+        "%5B%22screen-4f44fedc-6993-41ff-b7d1-bd28b8b87bb2%22%2C%22state%22%2C%22fullName%22%5D"
+      ],
+      "transform": "transform: translate(114.747px, 11.2987px) scale(1.584);",
+      "equal": true
+    },
+    {
+      "name": "panel bounds",
+      "docMin": "280",
+      "docMax": "460",
+      "structMin": "180",
+      "structMax": "701"
+    },
+    {
+      "name": "compact auto-hide and reopen retains graph",
+      "before": {
+        "selected": [
+          "%5B%22screen-4f44fedc-6993-41ff-b7d1-bd28b8b87bb2%22%2C%22state%22%2C%22fullName%22%5D"
+        ],
+        "transform": "transform: translate(114.747px, 11.2987px) scale(1.584);"
+      },
+      "after": {
+        "draft": "Replacement compact draft",
+        "panels": [
+          "structure-dock svelte-1nzupsb"
+        ],
+        "selected": [
+          "%5B%22screen-4f44fedc-6993-41ff-b7d1-bd28b8b87bb2%22%2C%22state%22%2C%22fullName%22%5D"
+        ],
+        "transform": "transform: translate(114.747px, 11.2987px) scale(1.584);"
+      },
+      "equal": true
+    },
+    {
+      "name": "replacement new-session identity",
+      "nodes": [
+        {
+          "id": "%5B%22screen-c56f80df-147d-4d0e-a832-a6cc69124406%22%2C%22node%22%2C%22screen%22%5D",
+          "text": " Element  Screen   "
+        }
+      ],
+      "title": "Independent replacement transition"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+2026-10-26 independent identity/source checkpoint
+Verifier checkout: C:/Users/RZ1/.codex/worktrees/studio-cycle14-clean-workspace-verifier/260831-VCT-02
+Detached HEAD: 92f7c4f176a7130157633725b5badcb64f89662b
+Initial git status --porcelain: empty
+Live git ls-remote:
+92f7c4f176a7130157633725b5badcb64f89662b refs/heads/codex/studio-cycle-1-4-clean-workspace
+d7401bef6e48330796c74ec00c86db9622d48cdf refs/heads/main
+Baseline: 04ab0631e6508f415b71d8b86f2bb5947916524b
+Changed product paths: Studio-local designer components/styles/structure projection; affected tests only.
+Unchanged authority boundaries: packages/public ABI, canonical schema, agent/provider/effects/capture, storage/history engines.
+CW-V01/V02 preliminary scope-staleness observations were reported before candidate; repaired paths independently reread in exact checkout. canonicalSelection now depends only on actual selected node/document identity; ancestor expansion separately reads graph revisions. Designer external selection/relationship targets explicitly set structureFocusId. Ordinary graph browsing sets graphSelection and retains graph scope. Compact width-transition effect retains last panel and showPanel restores focus when its prior owner becomes hidden/inert. Showcase applies same compact transition guard. Exact actual UI remains pending.
+No verifier install, test, generation or build ran. Builder serial production build was active during this read-only source audit.
+
+Replacement source checkpoint: b46fe84b3b5e9fb38224d608bce27919b94cd3ce
+Detached checkout was clean at92, then git checkout --detach b46fe84 completed. Live remote branch equals b46fe84b3b5e9fb38224d608bce27919b94cd3ce; main remains d7401bef6e48330796c74ec00c86db9622d48cdf.
+Compared exact92..b46 product delta: two Designer lines only. showPanel initializes Structure focus only when unset; openSession explicitly initializes it to the new document root. Canonical/Inspect/relation selection paths remain unchanged. Added regression uses an input with two bindings and a shared consumer, then graph-browses one state before hide/reopen and verifies projected source IDs/selection are retained. This tests scope drift rather than mirroring the new condition. Actual camera challenge and replacement artifact verification pending.
