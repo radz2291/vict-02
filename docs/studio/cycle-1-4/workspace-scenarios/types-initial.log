@@ -1,0 +1,2 @@
+tests/test-scenarios.test.ts(8,505): error TS1005: ',' expected.
+tests/test-scenarios.test.ts(37,1): error TS1005: '}' expected.

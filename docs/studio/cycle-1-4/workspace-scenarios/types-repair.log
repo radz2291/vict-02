@@ -1,0 +1,1 @@
+src/lib/designer/test-scenarios.ts(23,75): error TS2367: This comparison appears to be unintentional because the types 'UiAttributeValue' and 'boolean' have no overlap.

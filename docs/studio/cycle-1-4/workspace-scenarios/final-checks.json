@@ -1,0 +1,14 @@
+{
+  "product": "b2d4b10552c9237c95b24180323f43b9ad460f70",
+  "branch": "codex/studio-cycle-1-4-workspace",
+  "builder": "root",
+  "tests": {"files": 7, "passed": 37, "failed": 0, "exitCode": 0, "log": "tests-final.log"},
+  "types": {"exitCode": 0, "log": "types-delivery.log"},
+  "svelte": {"exitCode": 0, "errors": 0, "existingWarnings": 5, "log": "svelte-delivery.log"},
+  "productionBuild": {"exitCode": 0, "serialAfterChecks": true, "log": "build-b2d4b10-serial.log"},
+  "seal": {"verified": true, "inputs": 751, "outputs": 491, "sha256": "5ffb354eece36f66f64ba1f92b78ec304895446ca114a1749adb25891e2aefe2"},
+  "finalBrowserRechecks": {"executedBy": "builder", "freshTabs": [20, 21], "origin": "http://127.0.0.17:5611", "facts": "final-b2-facts.json", "showcaseFocus": "final-b2-showcase-focus.json", "earlierUnchangedJourneys": "721b1f1d86ce85637abf16d4208230278c602977"},
+  "independentHandsOnUiGate": "HELD: verifier CUA has no available browser",
+  "ownerProductAcceptance": "pending",
+  "mainMerged": false
+}

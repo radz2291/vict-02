@@ -1,0 +1,4 @@
+Browser tab: 17, Title: "127.0.0.17:5611/design", URL: "http://127.0.0.17:5611/design".
+1 AXWebArea 127.0.0.17:5611/design
+
+The focused UI element is 1 AXWebArea 127.0.0.17:5611/design

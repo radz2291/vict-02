@@ -1,0 +1,3 @@
+Browser tab: 18, Title: "Designer — VICT Studio", URL: "http://127.0.0.17:5611/design".
+There has been no change in the accessibility tree.
+The focused UI element is 409 tab (selected, expanded, settable, boolean) Description: Format tools, Value: 1, ID: c52-format, Secondary Actions: Collapse

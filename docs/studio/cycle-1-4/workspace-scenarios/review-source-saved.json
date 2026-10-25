@@ -1,0 +1,1177 @@
+{
+  "schema": "vict.ui-document@1",
+  "id": "screen-81674ae1-1a22-492f-b2a5-9d469e839e31",
+  "revision": "r1.r1",
+  "root": "screen",
+  "nodes": {
+    "screen": {
+      "kind": "element",
+      "id": "screen",
+      "tag": "main",
+      "attributes": {
+        "aria-label": "Workspace testing review"
+      },
+      "children": [
+        "onbCard"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "20px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "40px"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "560px"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#eef1f6"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#243047"
+          }
+        },
+        {
+          "property": "font-family",
+          "value": {
+            "type": "text",
+            "value": "system-ui, sans-serif"
+          }
+        }
+      ]
+    },
+    "onbCard": {
+      "kind": "element",
+      "id": "onbCard",
+      "tag": "section",
+      "children": [
+        "onbTitle",
+        "onbSubtitle",
+        "onbNameLabel",
+        "onbNameInput",
+        "onbEmailLabel",
+        "onbEmailInput",
+        "onbRoleLabel",
+        "onbRoleSelect",
+        "onbNotifRow",
+        "onbSubmit",
+        "onbFeedback"
+      ],
+      "localStyle": [
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#ffffff"
+          }
+        },
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "1px solid #e3e8f0"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "16px"
+          }
+        },
+        {
+          "property": "box-shadow",
+          "value": {
+            "type": "text",
+            "value": "0 12px 32px rgba(15,23,42,0.07)"
+          }
+        },
+        {
+          "property": "box-sizing",
+          "value": {
+            "type": "text",
+            "value": "border-box"
+          }
+        },
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "16px auto 24px"
+          }
+        },
+        {
+          "property": "max-width",
+          "value": {
+            "type": "text",
+            "value": "460px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "24px"
+          }
+        },
+        {
+          "property": "width",
+          "value": {
+            "type": "text",
+            "value": "100%"
+          }
+        }
+      ]
+    },
+    "onbTitle": {
+      "kind": "element",
+      "id": "onbTitle",
+      "tag": "h1",
+      "children": [
+        "onbTitle-text"
+      ],
+      "localStyle": [
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#101828"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "20px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "700"
+          }
+        },
+        {
+          "property": "letter-spacing",
+          "value": {
+            "type": "text",
+            "value": "-0.01em"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.3"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        }
+      ]
+    },
+    "onbTitle-text": {
+      "kind": "text",
+      "id": "onbTitle-text",
+      "content": {
+        "type": "literal",
+        "value": "Create your workspace"
+      }
+    },
+    "onbSubtitle": {
+      "kind": "element",
+      "id": "onbSubtitle",
+      "tag": "p",
+      "children": [
+        "onbSubtitle-text"
+      ],
+      "localStyle": [
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#5d6b82"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "13px"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.55"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        }
+      ]
+    },
+    "onbSubtitle-text": {
+      "kind": "text",
+      "id": "onbSubtitle-text",
+      "content": {
+        "type": "literal",
+        "value": "Set up your workspace in under a minute — just the essentials."
+      }
+    },
+    "onbNameLabel": {
+      "kind": "element",
+      "id": "onbNameLabel",
+      "tag": "label",
+      "children": [
+        "onbNameLabel-text"
+      ],
+      "attributes": {
+        "for": "onbNameInput"
+      },
+      "localStyle": [
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#344054"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "12.5px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        }
+      ]
+    },
+    "onbNameLabel-text": {
+      "kind": "text",
+      "id": "onbNameLabel-text",
+      "content": {
+        "type": "literal",
+        "value": "Full name"
+      }
+    },
+    "onbNameInput": {
+      "kind": "element",
+      "id": "onbNameInput",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "autocomplete": "name",
+        "id": "onbNameInput",
+        "placeholder": "Jordan Lee",
+        "type": "text",
+        "value": {
+          "type": "ref",
+          "path": "state.fullName"
+        }
+      },
+      "localStyle": [
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#ffffff"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "10px"
+          }
+        },
+        {
+          "property": "box-sizing",
+          "value": {
+            "type": "text",
+            "value": "border-box"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#101828"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        },
+        {
+          "property": "outline",
+          "value": {
+            "type": "text",
+            "value": "none"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "10px 12px"
+          }
+        },
+        {
+          "property": "width",
+          "value": {
+            "type": "text",
+            "value": "100%"
+          }
+        }
+      ],
+      "interactions": [
+        {
+          "on": "change",
+          "action": "setState",
+          "key": "fullName",
+          "value": {
+            "type": "ref",
+            "path": "state.fullName"
+          }
+        }
+      ],
+      "styleSources": [
+        "src.onbNameInput.always.focus",
+        "src.onbNameInput.always.plain"
+      ]
+    },
+    "onbEmailLabel": {
+      "kind": "element",
+      "id": "onbEmailLabel",
+      "tag": "label",
+      "children": [
+        "onbEmailLabel-text"
+      ],
+      "attributes": {
+        "for": "onbEmailInput"
+      },
+      "localStyle": [
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#344054"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "12.5px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        }
+      ]
+    },
+    "onbEmailLabel-text": {
+      "kind": "text",
+      "id": "onbEmailLabel-text",
+      "content": {
+        "type": "literal",
+        "value": "Work email"
+      }
+    },
+    "onbEmailInput": {
+      "kind": "element",
+      "id": "onbEmailInput",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "autocomplete": "email",
+        "id": "onbEmailInput",
+        "placeholder": "you@company.com",
+        "type": "email",
+        "value": {
+          "type": "ref",
+          "path": "state.workEmail"
+        }
+      },
+      "localStyle": [
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#ffffff"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "10px"
+          }
+        },
+        {
+          "property": "box-sizing",
+          "value": {
+            "type": "text",
+            "value": "border-box"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#101828"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        },
+        {
+          "property": "outline",
+          "value": {
+            "type": "text",
+            "value": "none"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "10px 12px"
+          }
+        },
+        {
+          "property": "width",
+          "value": {
+            "type": "text",
+            "value": "100%"
+          }
+        }
+      ],
+      "interactions": [
+        {
+          "on": "change",
+          "action": "setState",
+          "key": "workEmail",
+          "value": {
+            "type": "ref",
+            "path": "state.workEmail"
+          }
+        }
+      ],
+      "styleSources": [
+        "src.onbEmailInput.always.focus",
+        "src.onbEmailInput.always.plain"
+      ]
+    },
+    "onbRoleLabel": {
+      "kind": "element",
+      "id": "onbRoleLabel",
+      "tag": "label",
+      "children": [
+        "onbRoleLabel-text"
+      ],
+      "attributes": {
+        "for": "onbRoleSelect"
+      },
+      "localStyle": [
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#344054"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "12.5px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        }
+      ]
+    },
+    "onbRoleLabel-text": {
+      "kind": "text",
+      "id": "onbRoleLabel-text",
+      "content": {
+        "type": "literal",
+        "value": "Role"
+      }
+    },
+    "onbRoleSelect": {
+      "kind": "element",
+      "id": "onbRoleSelect",
+      "tag": "select",
+      "children": [
+        "onbRolePlaceholder",
+        "onbRoleOptProduct",
+        "onbRoleOptDesign",
+        "onbRoleOptEngineering",
+        "onbRoleOptMarketing",
+        "onbRoleOptSales"
+      ],
+      "attributes": {
+        "id": "onbRoleSelect",
+        "value": {
+          "type": "ref",
+          "path": "state.role"
+        }
+      },
+      "localStyle": [
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#ffffff"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "10px"
+          }
+        },
+        {
+          "property": "box-sizing",
+          "value": {
+            "type": "text",
+            "value": "border-box"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#101828"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        },
+        {
+          "property": "height",
+          "value": {
+            "type": "text",
+            "value": "40px"
+          }
+        },
+        {
+          "property": "outline",
+          "value": {
+            "type": "text",
+            "value": "none"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "0 12px"
+          }
+        },
+        {
+          "property": "width",
+          "value": {
+            "type": "text",
+            "value": "100%"
+          }
+        }
+      ],
+      "interactions": [
+        {
+          "on": "change",
+          "action": "setState",
+          "key": "role",
+          "value": {
+            "type": "ref",
+            "path": "state.role"
+          }
+        }
+      ],
+      "styleSources": [
+        "src.onbRoleSelect.always.focus",
+        "src.onbRoleSelect.always.plain"
+      ]
+    },
+    "onbRolePlaceholder": {
+      "kind": "element",
+      "id": "onbRolePlaceholder",
+      "tag": "option",
+      "children": [
+        "onbRolePlaceholder-text"
+      ],
+      "attributes": {
+        "value": ""
+      }
+    },
+    "onbRolePlaceholder-text": {
+      "kind": "text",
+      "id": "onbRolePlaceholder-text",
+      "content": {
+        "type": "literal",
+        "value": "Select your role…"
+      }
+    },
+    "onbRoleOptProduct": {
+      "kind": "element",
+      "id": "onbRoleOptProduct",
+      "tag": "option",
+      "children": [
+        "onbRoleOptProduct-text"
+      ]
+    },
+    "onbRoleOptProduct-text": {
+      "kind": "text",
+      "id": "onbRoleOptProduct-text",
+      "content": {
+        "type": "literal",
+        "value": "Product"
+      }
+    },
+    "onbRoleOptDesign": {
+      "kind": "element",
+      "id": "onbRoleOptDesign",
+      "tag": "option",
+      "children": [
+        "onbRoleOptDesign-text"
+      ]
+    },
+    "onbRoleOptDesign-text": {
+      "kind": "text",
+      "id": "onbRoleOptDesign-text",
+      "content": {
+        "type": "literal",
+        "value": "Design"
+      }
+    },
+    "onbRoleOptEngineering": {
+      "kind": "element",
+      "id": "onbRoleOptEngineering",
+      "tag": "option",
+      "children": [
+        "onbRoleOptEngineering-text"
+      ]
+    },
+    "onbRoleOptEngineering-text": {
+      "kind": "text",
+      "id": "onbRoleOptEngineering-text",
+      "content": {
+        "type": "literal",
+        "value": "Engineering"
+      }
+    },
+    "onbRoleOptMarketing": {
+      "kind": "element",
+      "id": "onbRoleOptMarketing",
+      "tag": "option",
+      "children": [
+        "onbRoleOptMarketing-text"
+      ]
+    },
+    "onbRoleOptMarketing-text": {
+      "kind": "text",
+      "id": "onbRoleOptMarketing-text",
+      "content": {
+        "type": "literal",
+        "value": "Marketing"
+      }
+    },
+    "onbRoleOptSales": {
+      "kind": "element",
+      "id": "onbRoleOptSales",
+      "tag": "option",
+      "children": [
+        "onbRoleOptSales-text"
+      ]
+    },
+    "onbRoleOptSales-text": {
+      "kind": "text",
+      "id": "onbRoleOptSales-text",
+      "content": {
+        "type": "literal",
+        "value": "Sales"
+      }
+    },
+    "onbNotifRow": {
+      "kind": "element",
+      "id": "onbNotifRow",
+      "tag": "div",
+      "children": [
+        "onbNotifInput",
+        "onbNotifLabel"
+      ],
+      "localStyle": [
+        {
+          "property": "align-items",
+          "value": {
+            "type": "text",
+            "value": "center"
+          }
+        },
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "10px"
+          }
+        }
+      ]
+    },
+    "onbNotifInput": {
+      "kind": "element",
+      "id": "onbNotifInput",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "id": "onbNotifInput",
+        "type": "checkbox",
+        "checked": {
+          "type": "ref",
+          "path": "state.updatesOptIn"
+        }
+      },
+      "localStyle": [
+        {
+          "property": "accent-color",
+          "value": {
+            "type": "text",
+            "value": "#3b66f5"
+          }
+        },
+        {
+          "property": "flex",
+          "value": {
+            "type": "text",
+            "value": "none"
+          }
+        },
+        {
+          "property": "height",
+          "value": {
+            "type": "text",
+            "value": "16px"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "width",
+          "value": {
+            "type": "text",
+            "value": "16px"
+          }
+        }
+      ],
+      "interactions": [
+        {
+          "on": "change",
+          "action": "setState",
+          "key": "updatesOptIn",
+          "value": {
+            "type": "ref",
+            "path": "state.updatesOptIn"
+          }
+        }
+      ]
+    },
+    "onbNotifLabel": {
+      "kind": "element",
+      "id": "onbNotifLabel",
+      "tag": "label",
+      "children": [
+        "onbNotifLabel-text"
+      ],
+      "attributes": {
+        "for": "onbNotifInput"
+      },
+      "localStyle": [
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#344054"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "13px"
+          }
+        }
+      ]
+    },
+    "onbNotifLabel-text": {
+      "kind": "text",
+      "id": "onbNotifLabel-text",
+      "content": {
+        "type": "literal",
+        "value": "Email me product updates"
+      }
+    },
+    "onbSubmit": {
+      "kind": "component",
+      "id": "onbSubmit",
+      "definitionId": "vict.catalog.button",
+      "revision": "1",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Create account"
+        }
+      },
+      "slots": {},
+      "localStyle": [
+        {
+          "property": "width",
+          "value": {
+            "type": "text",
+            "value": "100%"
+          }
+        }
+      ],
+      "outputs": {
+        "press": {
+          "invokeAction": {
+            "actionId": "demo.submit",
+            "input": {
+              "accepted": {
+                "type": "literal",
+                "value": true
+              },
+              "message": {
+                "type": "literal",
+                "value": "✓ Details captured locally — nothing was sent."
+              }
+            }
+          }
+        }
+      }
+    },
+    "onbFeedback": {
+      "kind": "element",
+      "id": "onbFeedback",
+      "tag": "p",
+      "children": [
+        "onbFeedbackStatic"
+      ],
+      "localStyle": [
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#0e7a4a"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "13px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "18px"
+          }
+        }
+      ]
+    },
+    "onbFeedbackStatic": {
+      "kind": "text",
+      "id": "onbFeedbackStatic",
+      "content": {
+        "type": "literal",
+        "value": "Your details stay on this screen — nothing is sent."
+      }
+    }
+  },
+  "componentDefinitions": {},
+  "styleSources": {
+    "src.onbNameInput.always.focus": {
+      "id": "src.onbNameInput.always.focus",
+      "declarations": [
+        {
+          "property": "border-color",
+          "value": {
+            "type": "text",
+            "value": "#3b66f5"
+          }
+        },
+        {
+          "property": "box-shadow",
+          "value": {
+            "type": "text",
+            "value": "0 0 0 3px rgba(59,102,245,0.15)"
+          }
+        }
+      ],
+      "pseudo": "focus"
+    },
+    "src.onbEmailInput.always.focus": {
+      "id": "src.onbEmailInput.always.focus",
+      "declarations": [
+        {
+          "property": "border-color",
+          "value": {
+            "type": "text",
+            "value": "#3b66f5"
+          }
+        },
+        {
+          "property": "box-shadow",
+          "value": {
+            "type": "text",
+            "value": "0 0 0 3px rgba(59,102,245,0.15)"
+          }
+        }
+      ],
+      "pseudo": "focus"
+    },
+    "src.onbRoleSelect.always.focus": {
+      "id": "src.onbRoleSelect.always.focus",
+      "declarations": [
+        {
+          "property": "border-color",
+          "value": {
+            "type": "text",
+            "value": "#3b66f5"
+          }
+        },
+        {
+          "property": "box-shadow",
+          "value": {
+            "type": "text",
+            "value": "0 0 0 3px rgba(59,102,245,0.15)"
+          }
+        }
+      ],
+      "pseudo": "focus"
+    },
+    "src.onbNameInput.always.plain": {
+      "id": "src.onbNameInput.always.plain",
+      "declarations": [
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "1px solid #d0d7e2"
+          }
+        }
+      ]
+    },
+    "src.onbEmailInput.always.plain": {
+      "id": "src.onbEmailInput.always.plain",
+      "declarations": [
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "1px solid #d0d7e2"
+          }
+        }
+      ]
+    },
+    "src.onbRoleSelect.always.plain": {
+      "id": "src.onbRoleSelect.always.plain",
+      "declarations": [
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "1px solid #d0d7e2"
+          }
+        }
+      ]
+    }
+  },
+  "assets": {},
+  "tokens": {},
+  "conditions": {
+    "compact": {
+      "id": "compact",
+      "kind": "container",
+      "name": "studio-screen",
+      "query": "(max-width: 600px)"
+    }
+  },
+  "localState": {
+    "message": {
+      "key": "message",
+      "type": "string",
+      "initial": "Hello from my screen"
+    },
+    "accepted": {
+      "key": "accepted",
+      "type": "boolean",
+      "initial": false
+    },
+    "dialogOpen": {
+      "key": "dialogOpen",
+      "type": "boolean",
+      "initial": false
+    },
+    "busy": {
+      "key": "busy",
+      "type": "boolean",
+      "initial": false
+    },
+    "actionError": {
+      "key": "actionError",
+      "type": "string",
+      "initial": ""
+    },
+    "actionResult": {
+      "key": "actionResult",
+      "type": "string",
+      "initial": ""
+    },
+    "fullName": {
+      "key": "fullName",
+      "type": "string",
+      "initial": ""
+    },
+    "workEmail": {
+      "key": "workEmail",
+      "type": "string",
+      "initial": ""
+    },
+    "role": {
+      "key": "role",
+      "type": "string",
+      "initial": ""
+    },
+    "updatesOptIn": {
+      "key": "updatesOptIn",
+      "type": "boolean",
+      "initial": true
+    },
+    "submitMessage": {
+      "key": "submitMessage",
+      "type": "string",
+      "initial": ""
+    }
+  }
+}

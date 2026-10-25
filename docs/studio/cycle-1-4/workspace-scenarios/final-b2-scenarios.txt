@@ -1,0 +1,89 @@
+Browser tab: 20, Title: "Designer — VICT Studio", URL: "http://127.0.0.17:5611/design".
+1 AXWebArea Designer — VICT Studio, URL: 127.0.0.17:5611/design
+	2 container
+		3 container
+			4 link Description: VICT Studio, Value: 127.0.0.17:5611/design
+			5 menu bar Description: Studio menus, ID: bits-c3
+				6 (collapsed) File, ID: bits-c5, Secondary Actions: Expand
+				7 (collapsed) Edit, ID: bits-c7, Secondary Actions: Expand
+				8 (collapsed) View, ID: bits-c9, Secondary Actions: Expand
+				9 (collapsed) Preview, ID: bits-c11, Secondary Actions: Expand
+			10 text Workspace testing review ✓ Saved
+			11 link Description: Operator tools, Value: 127.0.0.17:5611/
+		12 container
+			13 text Chat
+			14 button Hide chat
+		15 container Chat
+			16 container Conversation
+				17 container Messages — Message
+					18 text Describe a screen, or select an element to edit it.
+				19 container
+					20 text entry area (settable) Description: Message, Help: Enter to send. Shift+Enter for a new line.
+					21 button (disabled) Send
+			22 text Ready
+			23 pop up button (collapsed) Description: Chat details, ID: bits-c20, Secondary Actions: Expand
+		24 splitter Description: Chat width, Value: 240
+		59 container
+			60 container Workspace mode
+				61 checkbox Design, Value: 1
+				62 checkbox Interact, Value: 0
+			63 button (collapsed) Document, Secondary Actions: Expand
+			64 container Screen canvas
+				65 container Workspace testing review
+					66 container
+						67 heading Create your workspace, Value: 1
+							68 text Create your workspace
+						69 text Set up your workspace in under a minute — just the essentials. Full name
+						70 text field (settable) Full name, ID: onbNameInput
+						71 text Work email
+						72 text field (settable) Work email
+						73 text Role
+						74 pop up button (collapsed, settable) Role, Value: Select your role…, ID: onbRoleSelect, Secondary Actions: Expand
+							75 menu
+								76 (selected) Select your role…
+								77 Product
+								78 Design
+								79 Engineering
+								80 Marketing
+								81 Sales
+						82 checkbox (settable, integer) Description: Email me product updates, Value: 1, ID: onbNotifInput
+						83 text Email me product updates
+						84 button Create account
+						85 text Your details stay on this screen — nothing is sent.
+			86 container Structure panel
+				87 container Structure panel controls
+					88 button (collapsed) Description: Structure, Secondary Actions: Expand
+			89 splitter Description: Document drawer width, Value: 320
+			90 container Testing
+				91 container Try scenarios
+					92 container
+						93 text Try scenarios
+						94 button Description: Close testing, Help: Close testing (Escape)
+					95 container
+						96 text Each scenario starts a fresh test. Your saved design stays unchanged and nothing is sent.
+						97 checkbox Value: 0, Something went wrong The next submit action will fail. Try the screen’s submit button, then check its response or Recent activity.
+							98 text Something went wrong
+							99 text The next submit action will fail. Try the screen’s submit button, then check its response or Recent activity.
+						100 checkbox Value: 0, Permission denied Submit actions will be refused until you reset the test. Try the screen’s submit button, then check its response or Recent activity.
+							101 text Permission denied
+							102 text Submit actions will be refused until you reset the test. Try the screen’s submit button, then check its response or Recent activity.
+						103 checkbox Value: 0, Empty content Fill connected plain-text fields with temporary sample content. Other fields stay unchanged.
+							104 text Empty content
+							105 text Fill connected plain-text fields with temporary sample content. Other fields stay unchanged.
+						106 checkbox Value: 0, Typical content Fill connected plain-text fields with temporary sample content. Other fields stay unchanged.
+							107 text Typical content
+							108 text Fill connected plain-text fields with temporary sample content. Other fields stay unchanged.
+						109 checkbox Value: 0, Long content Fill connected plain-text fields with temporary sample content. Other fields stay unchanged.
+							110 text Long content
+							111 text Fill connected plain-text fields with temporary sample content. Other fields stay unchanged.
+						112 button Try on canvas
+						113 button Reset test
+						114 text Reset returns temporary values to the screen’s starting values and clears simulated failures.
+						115 button (collapsed) Advanced, Secondary Actions: Expand
+							116 text Advanced
+		55 container
+			56 text Loaded the saved screen.
+			57 text @3 · v1_2d5d0b5428ff…
+		58 text Designer — VICT Studio
+
+The focused UI element is 94 button Description: Close testing, Help: Close testing (Escape)

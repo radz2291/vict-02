@@ -1,0 +1,19 @@
+{
+  "inspect": {
+    "focus": "Close inspection details",
+    "inspector": {
+      "bottom": 616.0000305175781,
+      "height": 326.8000183105469,
+      "left": 31.200000762939453,
+      "right": 390.4000129699707,
+      "top": 289.20001220703125,
+      "width": 359.20001220703125,
+      "x": 31.200000762939453,
+      "y": 289.20001220703125
+    }
+  },
+  "testingReturn": {
+    "documentVisible": true,
+    "label": "Layers"
+  }
+}

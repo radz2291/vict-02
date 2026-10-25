@@ -1,0 +1,93 @@
+Browser tab: 20, Title: "Designer — VICT Studio", URL: "http://127.0.0.17:5611/design".
+1 AXWebArea Designer — VICT Studio, URL: 127.0.0.17:5611/design
+	2 container
+		3 container
+			4 link Description: VICT Studio, Value: 127.0.0.17:5611/design
+			5 menu bar Description: Studio menus, ID: bits-c3
+				6 (collapsed) File, ID: bits-c5, Secondary Actions: Expand
+				7 (collapsed) Edit, ID: bits-c7, Secondary Actions: Expand
+				8 (collapsed) View, ID: bits-c9, Secondary Actions: Expand
+				9 (collapsed) Preview, ID: bits-c11, Secondary Actions: Expand
+			10 text Workspace testing review ✓ Saved
+			11 link Description: Operator tools, Value: 127.0.0.17:5611/
+		12 container
+			13 text Chat
+			14 button Hide chat
+		15 container Chat
+			16 container Conversation
+				17 container Messages — Message
+					18 text Describe a screen, or select an element to edit it.
+				19 container
+					20 text entry area (settable) Description: Message, Help: Enter to send. Shift+Enter for a new line.
+					21 button (disabled) Send
+			22 text Ready
+			23 pop up button (collapsed) Description: Chat details, ID: bits-c20, Secondary Actions: Expand
+		24 splitter Description: Chat width, Value: 240
+		59 container
+			60 container Workspace mode
+				61 checkbox Design, Value: 0
+				62 checkbox Interact, Value: 1
+			63 button (collapsed) Document, Secondary Actions: Expand
+			66 container Screen canvas
+				91 container Workspace testing review
+					92 container
+						93 heading Create your workspace, Value: 1
+							94 text Create your workspace
+						95 text Set up your workspace in under a minute — just the essentials. Full name
+						96 text field (settable) Full name, ID: onbNameInput
+						97 text Work email
+						98 text field (settable) Work email
+						99 text Role
+						100 pop up button (collapsed, settable) Role, Value: Select your role…, ID: onbRoleSelect, Secondary Actions: Expand
+							101 menu
+								102 (selected) Select your role…
+								103 Product
+								104 Design
+								105 Engineering
+								106 Marketing
+								107 Sales
+						108 checkbox (settable, integer) Description: Email me product updates, Value: 1, ID: onbNotifInput
+						109 text Email me product updates
+						110 button Create account
+						111 text Your details stay on this screen — nothing is sent.
+			88 container Structure panel
+				112 splitter Description: Structure panel height, Value: 180
+				113 container Source structure
+					114 search text field (settable) Search structure
+					115 menu bar Description: Structure menus, ID: bits-c23
+						116 (collapsed) View, ID: bits-c25, Secondary Actions: Expand
+						117 (collapsed) Object, ID: bits-c37, Secondary Actions: Expand
+					118 text 2 items
+					119 button (collapsed) Description: Inspect structure, Secondary Actions: Expand
+					120 container
+						121 container
+							122 image
+							123 image
+								124 container contains, declared source location screen.contains.0
+							125 container Container: Screen, source screen
+								126 text CONTAINER
+								127 button (expanded) Description: Collapse Screen, Secondary Actions: Collapse
+								128 text Screen
+							129 container Container: Section, source onbCard
+								130 text CONTAINER
+								131 button (collapsed) Description: Expand Section, Secondary Actions: Expand
+								132 text Section
+								133 text 32 items inside
+						134 link Description: Svelte Flow attribution, Value: svelteflow.dev/?utm_source=attribution
+						135 image
+						136 container Control Panel
+							137 button Zoom In
+								138 image
+							139 button Zoom Out
+								140 image
+							141 button Fit View
+								142 image
+				89 container Structure panel controls
+					90 button (expanded) Description: Structure, Secondary Actions: Collapse
+					143 checkbox Description: Expand Structure, Value: 0
+		55 container
+			56 text Interact mode · simulated behavior, no live effects.
+			57 text @3 · v1_2d5d0b5428ff…
+		58 text Designer — VICT Studio
+
+The focused UI element is 114 search text field (settable) Search structure

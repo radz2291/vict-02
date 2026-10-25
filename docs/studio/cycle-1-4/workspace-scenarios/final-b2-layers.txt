@@ -1,0 +1,127 @@
+Browser tab: 20, Title: "Designer — VICT Studio", URL: "http://127.0.0.17:5611/design".
+1 AXWebArea Designer — VICT Studio, URL: 127.0.0.17:5611/design
+	2 container
+		3 container
+			4 link Description: VICT Studio, Value: 127.0.0.17:5611/design
+			5 menu bar Description: Studio menus, ID: bits-c3
+				6 (collapsed) File, ID: bits-c5, Secondary Actions: Expand
+				7 (collapsed) Edit, ID: bits-c7, Secondary Actions: Expand
+				8 (collapsed) View, ID: bits-c9, Secondary Actions: Expand
+				9 (collapsed) Preview, ID: bits-c11, Secondary Actions: Expand
+			10 text Workspace testing review ✓ Saved
+			11 link Description: Operator tools, Value: 127.0.0.17:5611/
+		12 container
+			13 text Chat
+			14 button Hide chat
+		15 container Chat
+			16 container Conversation
+				17 container Messages — Message
+					18 text Describe a screen, or select an element to edit it.
+				19 container
+					20 text entry area (settable) Description: Message, Help: Enter to send. Shift+Enter for a new line.
+					21 button (disabled) Send
+			22 text Ready
+			23 pop up button (collapsed) Description: Chat details, ID: bits-c20, Secondary Actions: Expand
+		24 splitter Description: Chat width, Value: 240
+		59 container
+			60 container Workspace mode
+				61 checkbox Design, Value: 1
+				62 checkbox Interact, Value: 0
+			63 button (expanded) Document, Secondary Actions: Collapse
+			64 container Screen canvas
+				65 container Workspace testing review
+					66 container
+						67 heading Create your workspace, Value: 1
+							68 text Create your workspace
+						69 text Set up your workspace in under a minute — just the essentials. Full name
+						70 text field (settable) Full name, ID: onbNameInput
+						71 text Work email
+						72 text field (settable) Work email
+						73 text Role
+						74 pop up button (collapsed, settable) Role, Value: Select your role…, ID: onbRoleSelect, Secondary Actions: Expand
+							75 menu
+								76 (selected) Select your role…
+								77 Product
+								78 Design
+								79 Engineering
+								80 Marketing
+								81 Sales
+						82 checkbox (settable, integer) Description: Email me product updates, Value: 1, ID: onbNotifInput
+						83 text Email me product updates
+						84 button Create account
+						85 text Your details stay on this screen — nothing is sent.
+			86 container Structure panel
+				87 container Structure panel controls
+					88 button (collapsed) Description: Structure, Secondary Actions: Expand
+			89 splitter Description: Document drawer width, Value: 320
+			90 container Description: Document, ID: document-drawer
+				91 container
+					92 text Document
+					93 button Description: Close document, Help: Close document (Escape)
+				94 container Document sections
+					95 checkbox Layers, Value: 1
+					96 checkbox Data, Value: 0
+					97 checkbox Actions, Value: 0
+					98 checkbox Source, Value: 0
+				99 container
+					100 text Selected object
+					101 button (collapsed) Description: Inspect source, Secondary Actions: Expand
+					102 container Layers
+						103 search text field (settable) Search layers
+						104 outline Document layers
+							105 button Collapse Workspace testing review
+							106 row (selected, expanded) Workspace testing review, Help: Workspace testing review · screen, Secondary Actions: Collapse
+								107 text Workspace testing review
+							108 button Collapse Section
+							109 row (selectable, expanded) Section, Help: Section · onbCard, Secondary Actions: Collapse
+								110 text Section
+							111 row (selectable) Create your workspace, Help: Create your workspace · onbTitle
+								112 text Create your workspace
+							113 row (selectable) Set up your workspace in under a minute — just the essentials., Help: Set up your workspace in under a minute — just the essentials. · onbSubtitle
+								114 text Set up your workspace in under a minute — just the essentials.
+							115 row (selectable) Label · Full name, Help: Label · Full name · onbNameLabel
+								116 text Label · Full name
+							117 row (selectable) Full name, Help: Full name · onbNameInput
+								118 text Full name
+							119 row (selectable) Label · Work email, Help: Label · Work email · onbEmailLabel
+								120 text Label · Work email
+							121 row (selectable) Work email, Help: Work email · onbEmailInput
+								122 text Work email
+							123 row (selectable) Label · Role, Help: Label · Role · onbRoleLabel
+								124 text Label · Role
+							125 button Collapse Role
+							126 row (selectable, expanded) Role, Help: Role · onbRoleSelect, Secondary Actions: Collapse
+								127 text Role
+							128 row (selectable) Option · Select your role…, Help: Option · Select your role… · onbRolePlaceholder
+								129 text Option · Select your role…
+							130 row (selectable) Option · Product, Help: Option · Product · onbRoleOptProduct
+								131 text Option · Product
+							132 row (selectable) Option · Design, Help: Option · Design · onbRoleOptDesign
+								133 text Option · Design
+							134 row (selectable) Option · Engineering, Help: Option · Engineering · onbRoleOptEngineering
+								135 text Option · Engineering
+							136 row (selectable) Option · Marketing, Help: Option · Marketing · onbRoleOptMarketing
+								137 text Option · Marketing
+							138 row (selectable) Option · Sales, Help: Option · Sales · onbRoleOptSales
+								139 text Option · Sales
+							140 button Collapse Row
+							141 row (selectable, expanded) Row, Help: Row · onbNotifRow, Secondary Actions: Collapse
+								142 text Row
+							143 row (selectable) Email me product updates, Help: Email me product updates · onbNotifInput
+								144 text Email me product updates
+							145 row (selectable) Label · Email me product updates, Help: Label · Email me product updates · onbNotifLabel
+								146 text Label · Email me product updates
+							147 row (selectable) Create account Component, Help: Create account · onbSubmit
+								148 text Create account
+								149 container Component
+									150 text ◇
+							151 row (selectable) Your details stay on this screen — nothing is sent., Help: Your details stay on this screen — nothing is sent. · onbFeedback
+								152 text Your details stay on this screen — nothing is sent.
+						153 button (collapsed) Selection details & provenance, Secondary Actions: Expand
+							154 text Selection details & provenance
+		55 container
+			56 text Loaded the saved screen.
+			57 text @3 · v1_2d5d0b5428ff…
+		58 text Designer — VICT Studio
+
+The focused UI element is 95 checkbox Layers, Value: 1

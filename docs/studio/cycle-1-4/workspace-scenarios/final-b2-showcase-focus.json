@@ -1,0 +1,16 @@
+{
+  "close": {
+    "tag": "SUMMARY",
+    "text": "Try scenarios"
+  },
+  "escape": {
+    "tag": "SUMMARY",
+    "text": "Try scenarios"
+  },
+  "tryCanvas": {
+    "label": null,
+    "tag": "BUTTON",
+    "text": "Continue"
+  },
+  "errors": []
+}

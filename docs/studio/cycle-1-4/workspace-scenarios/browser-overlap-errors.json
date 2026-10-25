@@ -1,0 +1,20 @@
+[
+  {
+    "level": "error",
+    "message": "TypeError: Cannot read properties of undefined (reading 'data')\n    at Module.Lr (http://127.0.0.17:5611/_app/immutable/chunks/Bfgkc6GS.js:2:1009)\n    at http://127.0.0.17:5611/login:25:11",
+    "timestamp": "2026-10-25T16:12:53.448Z",
+    "url": "http://127.0.0.17:5611/_app/immutable/chunks/Bfgkc6GS.js"
+  },
+  {
+    "level": "error",
+    "message": "TypeError: Cannot read properties of undefined (reading 'data')\n    at Module.Lr (http://127.0.0.17:5611/_app/immutable/chunks/Bfgkc6GS.js:2:1009)\n    at http://127.0.0.17:5611/:27:11",
+    "timestamp": "2026-10-25T16:13:00.404Z",
+    "url": "http://127.0.0.17:5611/_app/immutable/chunks/Bfgkc6GS.js"
+  },
+  {
+    "level": "error",
+    "message": "TypeError: Cannot read properties of undefined (reading 'data')\n    at Module.Lr (http://127.0.0.17:5611/_app/immutable/chunks/Bfgkc6GS.js:2:1009)\n    at http://127.0.0.17:5611/design:28:11",
+    "timestamp": "2026-10-25T16:13:05.876Z",
+    "url": "http://127.0.0.17:5611/_app/immutable/chunks/Bfgkc6GS.js"
+  }
+]
