@@ -1,6 +1,8 @@
 # Cycle1.4 panel stacks — independent verification
 
-2026-10-26. **PASS — READY FOR OWNER REVIEW** on exact product **`13204fcaa3e111387b30b955e2e410513ec42bd9`**, branch `codex/studio-cycle-1-4-panel-stacks`. This fresh verifier audits only the owner-approved docked Document / left Chat–Layers / independently collapsible Layers–Inspect amendment. No owner acceptance, Milestone2, main merge, publication, deployment or Stage9 closure is implied.
+2026-10-26. **HISTORICAL BOUNDED PASS** on exact product **`13204fcaa3e111387b30b955e2e410513ec42bd9`**, branch `codex/studio-cycle-1-4-panel-stacks`. This fresh verifier audits only the then-authorized docked Document / left Chat–Layers / independently collapsible Layers–Inspect amendment. No owner acceptance, Milestone2, main merge, publication, deployment or Stage9 closure is implied.
+
+**Owner placement amendment issued before acceptance:** after seeing this live candidate, the owner requested Inspect back inside bottom Structure, Layers back inside the Document accordion, and normal standalone Chat, while retaining Document's exclusive accordion selection. This supersedes the placement verified here. The replacement layout is **NOT VERIFIED** by this report; its exact implementation and new independent gate remain pending. Preserve this report as the intermediate checkpoint for `13204fc…`, not current delivery readiness or owner acceptance.
 
 ## Identity and authority
 
@@ -41,4 +43,4 @@ Independent standalone seal verification exited 0: exact product, **754 inputs /
 
 The initial long-body header finding is **RESOLVED** by final actual-body scrolling; the earlier 36px canvas-strip observation is retained at its initial scope and addressed by the final readable minima. With all panels open a short narrow viewport still deliberately uses outer scrolling; collapsing Structure/sidebar provides more canvas space. There is no remaining material product finding in this bounded amendment.
 
-One final aggregated command printed successful seal verification but exited 1 because a guessed build-log filename was absent; the correct log was read and standalone seal verification rerun successfully. This is retained in the final observations. The final verdict depends on this verifier's own actual UI execution and exact seal, not builder screenshots. Next allowed action: owner review of this candidate. Broader acceptance and Stage9 closure remain the owner's separate decisions.
+One final aggregated command printed successful seal verification but exited 1 because a guessed build-log filename was absent; the correct log was read and standalone seal verification rerun successfully. This is retained in the final observations. The verdict depends on this verifier's own actual UI execution and exact seal, not builder screenshots. The owner subsequently amended placement before acceptance as recorded above; next allowed action is the authorized replacement implementation followed by a new exact-candidate independent gate. Broader acceptance and Stage9 closure remain the owner's separate decisions.
