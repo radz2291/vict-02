@@ -1,0 +1,130 @@
+{
+  "product": "4c76fb6da023c925825e511bfa7c9985aa662b5e",
+  "method": "Root actual CUA execution; independent actual screenshot/DOM/geometry/source review.",
+  "all63RowsExactlyMatchDispositions": true,
+  "actualNativeFieldSection": true,
+  "actualHeadingContextMenu": true,
+  "actualInteractExplicitEditingHandoff": true,
+  "actualSharedLowerPropertiesRelationshipsAndExpansion": true,
+  "IV14_02Showcase": "CLOSED",
+  "IV14_04": "HELD: new Turn measurements/Observed regions production surface absent from this shared showcase candidate; root replacement pending.",
+  "limits": [
+    "01fragment URL lands on Cycle1.3 section, retained as navigation setup.",
+    "06details mostly below crop;07/08/09provide visible details and relationships.",
+    "This inventory rendering does not establish63functioning upstream wrappers."
+  ],
+  "artifacts": [
+    {
+      "name": "showcase14-family-rows.json",
+      "sha256": "773f2eed06f8f85134391c2f8381b760204229ce48483c56be293b3dbe6cafc4"
+    },
+    {
+      "name": "showcase14-01-cycle-entry.dom.txt",
+      "sha256": "fdf4e58ac772fde7bf460aaea0f7ac2c3b19160b9aad8e3ac9500d28850223d5"
+    },
+    {
+      "name": "showcase14-01-cycle-entry.geometry.json",
+      "sha256": "d7f205152c075cc78d00d99733a479b01aa04455604d227aa2fc999946135eec"
+    },
+    {
+      "name": "showcase14-01-cycle-entry.png",
+      "sha256": "d1f5f2b2788a1d1ba6653c4738097dfccd56982aed02e94f46dcbe6d1cca6611"
+    },
+    {
+      "name": "showcase14-02-complete-family-matrix.dom.txt",
+      "sha256": "f1fc665ec416104945905b2215349d33250fa9c6d81c4c5a63eab1154059288f"
+    },
+    {
+      "name": "showcase14-02-complete-family-matrix.geometry.json",
+      "sha256": "1ef02b60b156ea3b923f05b2bd5749e71750540695d63a758003b857198153c4"
+    },
+    {
+      "name": "showcase14-02-complete-family-matrix.png",
+      "sha256": "7439a4688375999199dc5cd03ccf83a659110cdc44ffe7586b4f0e8af93ac58b"
+    },
+    {
+      "name": "showcase14-03-visible-native-section.dom.txt",
+      "sha256": "63b3bb45ad1a29310450d53cdf56fe48fd5408252f20362eb7174df636d325d4"
+    },
+    {
+      "name": "showcase14-03-visible-native-section.geometry.json",
+      "sha256": "17dcd7d3c19c864a0235edf7c49126ec7948750d1db22a29a2111f25a3fdc79f"
+    },
+    {
+      "name": "showcase14-03-visible-native-section.png",
+      "sha256": "e9b343c2b3ac6d578446cdccfb609a003f6fbe6e1c63d194420e67780159e633"
+    },
+    {
+      "name": "showcase14-04-heading-workspace.dom.txt",
+      "sha256": "ce788e6967649d6f2cdd5fa9e5faf1cd99d92aff44bbb1158a2ecaf4e5fd7043"
+    },
+    {
+      "name": "showcase14-04-heading-workspace.geometry.json",
+      "sha256": "bb780910c75cb83916b6d168f1e9e8f9cff9c746e2d6741a7f54563201759662"
+    },
+    {
+      "name": "showcase14-04-heading-workspace.png",
+      "sha256": "ef8bb52d668584e7e43fafbe14bfb99b553a5861570d5bbfb212ea318ef00df8"
+    },
+    {
+      "name": "showcase14-05-object-context.dom.txt",
+      "sha256": "8bc6c833a44d089f9bbf9f86f1640f1e2a8b01ee08cc284e5eb754f9b46c1946"
+    },
+    {
+      "name": "showcase14-05-object-context.geometry.json",
+      "sha256": "4863f86707d418aeb2b996699241b15da12437793d27736c46c8606ac5ab4b92"
+    },
+    {
+      "name": "showcase14-05-object-context.png",
+      "sha256": "0c8b8e749dec9ff7c1cecde5f48d3584264981246c901e5120d325b7ce300300"
+    },
+    {
+      "name": "showcase14-06-shared-structure-details.dom.txt",
+      "sha256": "62dfb3b8ca8936f5980776cabaaf3c431f1e5bccc7449442d9f8c7a9a148a32e"
+    },
+    {
+      "name": "showcase14-06-shared-structure-details.geometry.json",
+      "sha256": "f3ecbf372317a053561e77c37155100721855fde2c626dc7ddeecf0e4153727b"
+    },
+    {
+      "name": "showcase14-06-shared-structure-details.png",
+      "sha256": "75377149d5c8c7252b0bf5fe3e96ffae3153faee79d5fbb1431b83fc10c1aef3"
+    },
+    {
+      "name": "showcase14-07-interact-edit-handoff.dom.txt",
+      "sha256": "1c5426572290cfdd8be2e4061e1f2e3c74bd0ce4348e930844c6e395ca06e117"
+    },
+    {
+      "name": "showcase14-07-interact-edit-handoff.geometry.json",
+      "sha256": "ab496e4fef734faafe78724ab43f53c7f159e563562d98db66597cdd891bbc5c"
+    },
+    {
+      "name": "showcase14-07-interact-edit-handoff.png",
+      "sha256": "ecefe4b5b38457c396c0ca8744762920829d7e6f4b805a55c6ca70095a807160"
+    },
+    {
+      "name": "showcase14-08-visible-lower-relationships.dom.txt",
+      "sha256": "7dec2990c33f40ef70a16f6778a2c9b63eed2c4577de41839d34223daba05435"
+    },
+    {
+      "name": "showcase14-08-visible-lower-relationships.geometry.json",
+      "sha256": "1ba399758c61ecc6973ea7948041f8217f24e2c3296de87c370807ed532f26d1"
+    },
+    {
+      "name": "showcase14-08-visible-lower-relationships.png",
+      "sha256": "aeefccb3b373fee8ecc0886544234c50c0f28737479f4de5c14068ac66958d63"
+    },
+    {
+      "name": "showcase14-09-expanded-lower-details.dom.txt",
+      "sha256": "8aa25fb30cb75e72091c6f2d9ae619361c0ee2255da3271e3e7fd5fc44a1fde7"
+    },
+    {
+      "name": "showcase14-09-expanded-lower-details.geometry.json",
+      "sha256": "ce10540afc15eca2bf56ad4676e681424e9339669d6d16d2da637194d4f5be6a"
+    },
+    {
+      "name": "showcase14-09-expanded-lower-details.png",
+      "sha256": "57f5207eda8bd41a50302e268896a90fcd751c60b72cc6fd915489e607322ec6"
+    }
+  ]
+}

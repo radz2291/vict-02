@@ -1,0 +1,34 @@
+import {readFileSync,writeFileSync,existsSync} from 'node:fs';
+import {createHash} from 'node:crypto';
+const root='C:/Users/RZ1/.codex/worktrees/studio-cycle-1-4/260831-VCT-02/docs/studio/cycle-1-4/core/browser/';
+const read=name=>JSON.parse(readFileSync(root+name,'utf8'));
+const fixture=JSON.parse(readFileSync('docs/studio/cycle-1-4/independent-browser-fixture.json','utf8'));
+const applied=read('iv14-applied-fixture.json');
+fixture.id=applied.id;fixture.revision=applied.revision;
+if(JSON.stringify(fixture)!==JSON.stringify(applied))throw Error('Applied fixture differs beyond declared id/revision adaptation');
+const duplicate=read('iv14-duplicated-source.json');
+if(Object.keys(applied.nodes).length!==16||Object.keys(duplicate.nodes).length!==18)throw Error('Unexpected duplicate source size');
+if(JSON.stringify(duplicate.nodes.left)!==JSON.stringify(applied.nodes.left))throw Error('Duplicate affected wrong group');
+if(duplicate.nodes.right.children[0]!=='second'||duplicate.nodes.right.children[2]!=='copy')throw Error('Duplicate placement differs');
+const cloneId=duplicate.nodes.right.children[1],clone=duplicate.nodes[cloneId];
+if(clone.kind!=='element'||clone.tag!=='h2'||duplicate.nodes[clone.children[0]]?.content?.value!=='Second heading')throw Error('Wrong source duplicated');
+const history=read('iv14-history-checks.json');
+const equal=(left,right)=>JSON.stringify(left)===JSON.stringify(right);
+if(!equal(history.undo,applied)||!equal(history.redo,duplicate)||!equal(history.finalUndo,applied))throw Error('Raw source history differs');
+const continuity=read('iv14-continuity.json'),zoom=read('iv14-zoom-continuity.json');
+for(const state of [continuity.before,continuity.expanded,continuity.restored]){
+  if(state.runtime!=='Runtime survives details'||state.search!=='Second'||state.graphTransform!==continuity.before.graphTransform||state.rootPadding!=='40px'||state.groupPadding!=='12px')throw Error('Context/style continuity differs');
+}
+if(zoom.before.graphTransform!==zoom.after.graphTransform||zoom.before.runtime!==zoom.after.runtime||zoom.before.search!==zoom.after.search)throw Error('Zoom continuity differs');
+const fallback=read('iv14-small-structure-fallback.json'),settled=read('iv14-settled-scroll-continuity.json');
+for(const state of [fallback.before,fallback.expanded,fallback.restored])if(state.canvas.top!==fallback.before.canvas.top||state.graphTransform!==fallback.before.graphTransform||state.search!==fallback.before.search||!equal(state.selectedGraph,fallback.before.selectedGraph))throw Error('Small fallback continuity differs');
+if(settled.before.canvas.top<=0||settled.before.canvas.top!==settled.after.canvas.top||settled.before.runtime!==settled.after.runtime||settled.before.graphTransform!==settled.after.graphTransform||settled.before.search!==settled.after.search)throw Error('Settled nonzero scroll context differs');
+const selectedId=state=>JSON.parse(decodeURIComponent(state.selectedGraph[0]))[2];
+if(selectedId(settled.before)!=='right'||selectedId(settled.after)!=='second')throw Error('Actual graph selection target differs');
+const tabFocus=read('iv14-resume-20-expanded-tab-focus.geometry.json'),escapeFocus=read('iv14-resume-21-details-escape-focus.geometry.json');
+if(tabFocus.active.label!=='Close inspection details'||escapeFocus.active.label!=='Inspect structure')throw Error('Details focus lifecycle differs');
+const cases=['01-initial-source','02-first-right-new-target','03-right-exposed-second','04-empty-canvas','05-native-context','06-runtime-layers-details','07-structure-details-runtime','08-keyboard-structure-menu','09-expanded-details','10-restored-details','11-small-split','12-small-expanded','13-small-restored-focus','14-medium-split','15-interact-edit-handoff','16-interact-arrange-handoff','17-nav-hit-blocked','18-small-expanded-structure','19-small-structure-restored','20-expanded-tab-focus','21-details-escape-focus','22-real-wheel-inspection','23-settled-scroll-continuity'];
+const artifacts=['iv14-applied-fixture.json','iv14-duplicated-source.json','iv14-history-checks.json','iv14-continuity.json','iv14-zoom-continuity.json','iv14-small-structure-fallback.json','iv14-real-wheel-continuity.json','iv14-settled-scroll-continuity.json',...cases.flatMap(name=>['.dom.txt','.geometry.json','.png'].map(suffix=>'iv14-resume-'+name+suffix))];
+const output={product:'0c3cee81fb02345f07b26e92acb2d2eb5463b203',method:'Root CUA execution of independent-specified cases; independent raw artifact/source/image review. No child-executed browser claim.',fixtureOnlyAdaptedIdRevision:true,appliedDocumentId:applied.id,duplicateExactSecond:true,clonedHeading:cloneId,rawHistoryEquality:true,runtimeSearchCameraContinuity:true,zoomContinuity:true,smallStructureFallbackContinuity:true,smallSplitLimit:'44.6px Flow is cramped; explicit expanded Structure supplies116.4px graph and175px details within448x374 Document. Non-blocking physical split limitation if final repair preserves fallback.',settledNonzeroScroll:settled.after.canvas.top,actualGraphSelectionTargets:['right','second'],detailsFocusLifecycle:true,initialProbeLimit:'Initial selected[] query and unsettled wheel samples do not establish selection/scroll continuity; corrected settled probes above do.',requiredFinding:'IV14-03: stacked canvas306px exceeds252.8px stage and intercepts Document navigation at1000x700; actual evidence reviewed, exact replacement re-verification pending.',artifacts:artifacts.filter(name=>existsSync(root+name)).map(name=>({name,sha256:createHash('sha256').update(readFileSync(root+name)).digest('hex')}))};
+writeFileSync('docs/studio/cycle-1-4/independent-browser-review.json',JSON.stringify(output,null,2)+'\n');
+console.log(JSON.stringify({appliedDocumentId:applied.id,fixtureOnlyAdaptedIdRevision:true,duplicateExactSecond:true,artifacts:output.artifacts.length}));

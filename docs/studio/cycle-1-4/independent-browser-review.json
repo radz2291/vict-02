@@ -1,0 +1,331 @@
+{
+  "product": "0c3cee81fb02345f07b26e92acb2d2eb5463b203",
+  "method": "Root CUA execution of independent-specified cases; independent raw artifact/source/image review. No child-executed browser claim.",
+  "fixtureOnlyAdaptedIdRevision": true,
+  "appliedDocumentId": "screen-d5aed627-e799-4d2c-a4eb-ea26a96b2027",
+  "duplicateExactSecond": true,
+  "clonedHeading": "copy-e8cd988a-ef97-477a-b6b1-9579d23fa7a2",
+  "rawHistoryEquality": true,
+  "runtimeSearchCameraContinuity": true,
+  "zoomContinuity": true,
+  "smallStructureFallbackContinuity": true,
+  "smallSplitLimit": "44.6px Flow is cramped; explicit expanded Structure supplies116.4px graph and175px details within448x374 Document. Non-blocking physical split limitation if final repair preserves fallback.",
+  "settledNonzeroScroll": 586.4000244140625,
+  "actualGraphSelectionTargets": [
+    "right",
+    "second"
+  ],
+  "detailsFocusLifecycle": true,
+  "initialProbeLimit": "Initial selected[] query and unsettled wheel samples do not establish selection/scroll continuity; corrected settled probes above do.",
+  "requiredFinding": "IV14-03: stacked canvas306px exceeds252.8px stage and intercepts Document navigation at1000x700; actual evidence reviewed, exact replacement re-verification pending.",
+  "artifacts": [
+    {
+      "name": "iv14-applied-fixture.json",
+      "sha256": "88559d52ac1a90aaafeddcc5c7075c3924989029c4ce4e44ef77e43dca777dcb"
+    },
+    {
+      "name": "iv14-duplicated-source.json",
+      "sha256": "1039cbd840919a5dd2c3a7c68e249ac40a759f68e57b8568b2716527c27345be"
+    },
+    {
+      "name": "iv14-history-checks.json",
+      "sha256": "1d39442e8f02a5ec8dad0f348f34ad08f9de91ee870d592c680bd32fc853a6b8"
+    },
+    {
+      "name": "iv14-continuity.json",
+      "sha256": "8e2763f75ff40b632241142d81d5098596ce5b793764b1269599c4804ffd8dc1"
+    },
+    {
+      "name": "iv14-zoom-continuity.json",
+      "sha256": "0bfb33b68aac7ba1c2d4cbe4a8f2d828e3783b37d6dba60801371e44866ae06a"
+    },
+    {
+      "name": "iv14-small-structure-fallback.json",
+      "sha256": "1c5ad83ab27cd4d59222a638b12b88ed9fcb3055a24377e32b140a5bb3cc2ce4"
+    },
+    {
+      "name": "iv14-real-wheel-continuity.json",
+      "sha256": "21a728dce361ea46391b80f564ad6f795600243f3d54dd98daf9eb31ad1e149d"
+    },
+    {
+      "name": "iv14-settled-scroll-continuity.json",
+      "sha256": "e22c61ddad00b0c814275049cd31dc07f715182ecf8e111293502be8438d0c62"
+    },
+    {
+      "name": "iv14-resume-01-initial-source.dom.txt",
+      "sha256": "27f10ad9939791df322c308c8768d1a0fd8d05243606f1a64ceca61fa51448ac"
+    },
+    {
+      "name": "iv14-resume-01-initial-source.geometry.json",
+      "sha256": "d490c16b07b596d2538292809e7d4fd3900fe4bfdd76046af8c3bfeb9db93ab2"
+    },
+    {
+      "name": "iv14-resume-01-initial-source.png",
+      "sha256": "a828c18077d9d6622e4d8bbfc53b08186cc3ddc5b36c3349e67cf0fbe404b597"
+    },
+    {
+      "name": "iv14-resume-02-first-right-new-target.dom.txt",
+      "sha256": "9c5b420e580ca016dc50e1b68e6dafa3604851b69e183ba146848b7cc707b528"
+    },
+    {
+      "name": "iv14-resume-02-first-right-new-target.geometry.json",
+      "sha256": "751aa10eecd33cedf9feb0e5e73431d796dbedd86d41a4f41559d706544f970c"
+    },
+    {
+      "name": "iv14-resume-02-first-right-new-target.png",
+      "sha256": "f4dce79aa4d5d03271b96cd7323c0e9cefe1a1c0a4e6d4a273697927f6c118bc"
+    },
+    {
+      "name": "iv14-resume-03-right-exposed-second.dom.txt",
+      "sha256": "f48d1d68027912b7f115e9a0c3a124a98e4d683458dbbc05c7e7ce1a2eda8d5a"
+    },
+    {
+      "name": "iv14-resume-03-right-exposed-second.geometry.json",
+      "sha256": "25016689e33bf9762082285ee708e69173a04aa949180221f92fa4d6d1df02eb"
+    },
+    {
+      "name": "iv14-resume-03-right-exposed-second.png",
+      "sha256": "924d6399c8fce88ee84bbfb3a79ad9138913edd4d18cb771e1643c53bd6f16e3"
+    },
+    {
+      "name": "iv14-resume-04-empty-canvas.dom.txt",
+      "sha256": "e722434df75d98e81a1bba02d6f68bb0356f4d8d85c651083b7224d40bcc1e42"
+    },
+    {
+      "name": "iv14-resume-04-empty-canvas.geometry.json",
+      "sha256": "8cd3c3cee1626103526fc2a05ef0cdb27fff9160a4cbc4d7cb56fbfe980eddac"
+    },
+    {
+      "name": "iv14-resume-04-empty-canvas.png",
+      "sha256": "86e2acd9a93b96f4d27c9c7b61d8ea2d02a83e8137ceac95144a78d9c9ac9189"
+    },
+    {
+      "name": "iv14-resume-05-native-context.dom.txt",
+      "sha256": "ba380d5c5403740f092789638a89d2eb14b04e27b0ddf4c03e9333faacce426c"
+    },
+    {
+      "name": "iv14-resume-05-native-context.geometry.json",
+      "sha256": "7b8f7fc008a40aa700211bfbc9346ca79e3996ba25e4e874a35423e2e1ecf0b9"
+    },
+    {
+      "name": "iv14-resume-05-native-context.png",
+      "sha256": "5be09cfda7162416791d92ced7880e9a3bb337a5e29e091b541a193f4dd9f504"
+    },
+    {
+      "name": "iv14-resume-06-runtime-layers-details.dom.txt",
+      "sha256": "61e44f669123a431e3276e4be2e95859cc3bf91f060ecc0502a2e3fe2d704e8c"
+    },
+    {
+      "name": "iv14-resume-06-runtime-layers-details.geometry.json",
+      "sha256": "698b31a2a3de2416692beac94c82e1c9a76f6ef0cc768fe38e30b6ec24472a14"
+    },
+    {
+      "name": "iv14-resume-06-runtime-layers-details.png",
+      "sha256": "33a98b95adf3df0ebe3c082ebb0310d36c321db6a5fccbf1926622a946182284"
+    },
+    {
+      "name": "iv14-resume-07-structure-details-runtime.dom.txt",
+      "sha256": "b5b79d19166e59886cac3ed086cfc11b5bc68d5ee70888bc44382305e28a9d6d"
+    },
+    {
+      "name": "iv14-resume-07-structure-details-runtime.geometry.json",
+      "sha256": "f14e0bab438addb5fc0de2f10f792463d449428670660acc67d00be946db3074"
+    },
+    {
+      "name": "iv14-resume-07-structure-details-runtime.png",
+      "sha256": "991321185a096ccc4e726dab2414e6284914bf06b27bc14ac6aa2f420384e23f"
+    },
+    {
+      "name": "iv14-resume-08-keyboard-structure-menu.dom.txt",
+      "sha256": "02ddc7fb9d1b911036830ecb304f9f310875b861e86bf3b213ffd47670a09964"
+    },
+    {
+      "name": "iv14-resume-08-keyboard-structure-menu.geometry.json",
+      "sha256": "c9f5d68056b874ef2440969d12fac97e5b5120babf8b49efc0153250590e847a"
+    },
+    {
+      "name": "iv14-resume-08-keyboard-structure-menu.png",
+      "sha256": "2fd3481cca66bdf28eda98a0673af6271c51f7f587ed7f2767aaafa36b238ff8"
+    },
+    {
+      "name": "iv14-resume-09-expanded-details.dom.txt",
+      "sha256": "8f2d3cf323d5edc62d6e28e2bad994f8337683c87fe8d34e8332a7c599c7b3c5"
+    },
+    {
+      "name": "iv14-resume-09-expanded-details.geometry.json",
+      "sha256": "98998350df1756e719a9ecddd4ab6fef0257c4fe5850dc6ba6c6ca6ecc20e1d4"
+    },
+    {
+      "name": "iv14-resume-09-expanded-details.png",
+      "sha256": "ce98da4e4fa50c5f87f5fb3265994152b5d32767c520b539b9cad74d598e5bff"
+    },
+    {
+      "name": "iv14-resume-10-restored-details.dom.txt",
+      "sha256": "764d192e42aac7745c947b84e8bdb3cefc93717f794f21b506b2d41eea4f5383"
+    },
+    {
+      "name": "iv14-resume-10-restored-details.geometry.json",
+      "sha256": "a5c7ef59ae8ff83ccfa75ffd1c00fa8e868ac98f005cb237f16ca854ee61b676"
+    },
+    {
+      "name": "iv14-resume-10-restored-details.png",
+      "sha256": "a080cb8238663be9f1a5942a51ab8d4bb14a5f1f902440fbed7f0edda80efc71"
+    },
+    {
+      "name": "iv14-resume-11-small-split.dom.txt",
+      "sha256": "ea3300c7ff381c596ec21b7bd696c307b0be44e99cddf6d241e0ad56c549b228"
+    },
+    {
+      "name": "iv14-resume-11-small-split.geometry.json",
+      "sha256": "050f1817012f5c6a67e5197e9650ca90a297083164cedcc03c0b892e2f2ba8ba"
+    },
+    {
+      "name": "iv14-resume-11-small-split.png",
+      "sha256": "ffe1f29ff4e5b8c45e1e3f1c69cb003659ff1cb8ac5953ff80c90d9ea8b95ef2"
+    },
+    {
+      "name": "iv14-resume-12-small-expanded.dom.txt",
+      "sha256": "4a90213ff81b030d63b92788ec0a495a7acd978effa536d6dd74b0daff3f4045"
+    },
+    {
+      "name": "iv14-resume-12-small-expanded.geometry.json",
+      "sha256": "6573b33aa7f264d3f8b4baede3d4ec7767ee11ae8f634a2099ccaff5b39842b9"
+    },
+    {
+      "name": "iv14-resume-12-small-expanded.png",
+      "sha256": "84c6650fb389d1edc7ad909260070de852a5aefa6e9762e1cf6493ffaa33a8c1"
+    },
+    {
+      "name": "iv14-resume-13-small-restored-focus.dom.txt",
+      "sha256": "01e4d66bd5c9a5b76a5f2ecf253f4333f6016b751848065fa69034fe54a0be45"
+    },
+    {
+      "name": "iv14-resume-13-small-restored-focus.geometry.json",
+      "sha256": "26c4e2291861bcc550ed8b903f60369d78b5b734a32d8a12f5c6e907144ec5fb"
+    },
+    {
+      "name": "iv14-resume-13-small-restored-focus.png",
+      "sha256": "d41c1344ed903074b108b6598185604a09394e1a669310dba2773a1d755c1dc5"
+    },
+    {
+      "name": "iv14-resume-14-medium-split.dom.txt",
+      "sha256": "ea402b4b76286507705b8949ede7ec1ab775832f5240781042827cfa8adc4052"
+    },
+    {
+      "name": "iv14-resume-14-medium-split.geometry.json",
+      "sha256": "f71f22ad39d8bd3f684d28b91e1f82d63f9434e070edf3b488e2e0b38a560d55"
+    },
+    {
+      "name": "iv14-resume-14-medium-split.png",
+      "sha256": "cbd256dafab4773869255ca3808c617aa8c1b86bd7eb480933092f62181c6d46"
+    },
+    {
+      "name": "iv14-resume-15-interact-edit-handoff.dom.txt",
+      "sha256": "8fd1606effcdae6ecb6edb51cc73ba87b9456206b330a950a9826c8b1ebadeec"
+    },
+    {
+      "name": "iv14-resume-15-interact-edit-handoff.geometry.json",
+      "sha256": "dbf0bdc9839f0a2d35e82ec78214bd0a133fb8e328d554701a0fc2476be54c07"
+    },
+    {
+      "name": "iv14-resume-15-interact-edit-handoff.png",
+      "sha256": "ad3518cbaae61f7bcb219bf1fbce0cac4eda735f1060d849409b87e3d14b37c9"
+    },
+    {
+      "name": "iv14-resume-16-interact-arrange-handoff.dom.txt",
+      "sha256": "c515b4a50756117c8b41cb1b999d6f1b309155b63b37326eaca95a47c6edf285"
+    },
+    {
+      "name": "iv14-resume-16-interact-arrange-handoff.geometry.json",
+      "sha256": "da4353bdddedb91edd57f60f07c9d4b565ba67ab1ef7358697a0f174179f1a3c"
+    },
+    {
+      "name": "iv14-resume-16-interact-arrange-handoff.png",
+      "sha256": "4d1cb4977468905ac9a681633d3b3ab94b11e785c4bca288cad4a63f668fad63"
+    },
+    {
+      "name": "iv14-resume-17-nav-hit-blocked.dom.txt",
+      "sha256": "1d454909c9cb456f738fe70fe759c418bab9c79de3138b1f4eb3a93a30479eae"
+    },
+    {
+      "name": "iv14-resume-17-nav-hit-blocked.geometry.json",
+      "sha256": "65331f76e46ba5cbe105865c27ab80f92c6df1131c855bba5f15ed1a5fb641a4"
+    },
+    {
+      "name": "iv14-resume-17-nav-hit-blocked.png",
+      "sha256": "add846bed4d3cba283141a30e497ed2c887dddc69ca7bb0f1639e525f8eccbc2"
+    },
+    {
+      "name": "iv14-resume-18-small-expanded-structure.dom.txt",
+      "sha256": "8ce2973f4608bea4071a8651ba6ba10d4907d9a8604e2c9c3b72c6a7289b16fc"
+    },
+    {
+      "name": "iv14-resume-18-small-expanded-structure.geometry.json",
+      "sha256": "706a1251bfc71d25a23da0db65513dbed261eb3a3e58f295b72949da12d0fdeb"
+    },
+    {
+      "name": "iv14-resume-18-small-expanded-structure.png",
+      "sha256": "b12a23f454d2c3b6e475f54488e8c3ea567e3362c25413291a924caa60fe7ef2"
+    },
+    {
+      "name": "iv14-resume-19-small-structure-restored.dom.txt",
+      "sha256": "01ef4479d62d1ec9d8f11b0b3125b14c5cdac04b9bed13da8f9db9fe44f0e834"
+    },
+    {
+      "name": "iv14-resume-19-small-structure-restored.geometry.json",
+      "sha256": "31fc31ea4bcc61ebef457ff4273f527069a8b672af7869d9b33811010804e101"
+    },
+    {
+      "name": "iv14-resume-19-small-structure-restored.png",
+      "sha256": "0568cd253a371d3cc9c2c0df795fdec9f9e39fe8ec15221be161f9c926a99e28"
+    },
+    {
+      "name": "iv14-resume-20-expanded-tab-focus.dom.txt",
+      "sha256": "86d6e058761a09e98e30be0d05f8f5d6884e6c6624e12849ba4d57373aa165bd"
+    },
+    {
+      "name": "iv14-resume-20-expanded-tab-focus.geometry.json",
+      "sha256": "636d3f3851de5bd753ca5b1ab7949b1e78851c3049be872e1c6df7ab1a71b599"
+    },
+    {
+      "name": "iv14-resume-20-expanded-tab-focus.png",
+      "sha256": "97680da06aca6038e379182f7f21555b770fd4722414a96f36b9d593c0dd8a36"
+    },
+    {
+      "name": "iv14-resume-21-details-escape-focus.dom.txt",
+      "sha256": "8ee232bd7f38ceab603fac08e5cf4b7317b8b8914a0d2db886b6bbcf501a250a"
+    },
+    {
+      "name": "iv14-resume-21-details-escape-focus.geometry.json",
+      "sha256": "ee226cf2e1cdadf48c6f5785762b97f58c6d22bea54f15ec6f4cb3b5db5d1301"
+    },
+    {
+      "name": "iv14-resume-21-details-escape-focus.png",
+      "sha256": "33406d984ee7bda9f544095ca27980d2c043e203513d6a395a62d9482d3960fd"
+    },
+    {
+      "name": "iv14-resume-22-real-wheel-inspection.dom.txt",
+      "sha256": "081ec1871211fb7e0fde0b785b294e99d4c4f01f0bbf2b65b498c1ff59d3a598"
+    },
+    {
+      "name": "iv14-resume-22-real-wheel-inspection.geometry.json",
+      "sha256": "29ce994a88c53269e84d7febc6cab0cd3872d22f8802519085e1bb6c20f870e3"
+    },
+    {
+      "name": "iv14-resume-22-real-wheel-inspection.png",
+      "sha256": "62c7d24f9999c7785db5d9377d36870bb1f4e01333cc35d33be5ec12c93b15a2"
+    },
+    {
+      "name": "iv14-resume-23-settled-scroll-continuity.dom.txt",
+      "sha256": "b8315f4df41e47dd670730760154bf3b066ffac8d3763cf5668a72b5487e158b"
+    },
+    {
+      "name": "iv14-resume-23-settled-scroll-continuity.geometry.json",
+      "sha256": "83f7c865d2b45b6d20693a747003524222055a92c9d6aac417720a35799cdc46"
+    },
+    {
+      "name": "iv14-resume-23-settled-scroll-continuity.png",
+      "sha256": "af7f1a972a4db88e1e8956250c8df3e3ce31a8a114173180d9df23f0486e6ba6"
+    }
+  ]
+}

@@ -1,0 +1,283 @@
+{
+  "productPackageSource": "0c3cee81fb02345f07b26e92acb2d2eb5463b203",
+  "carryToStudioProduct": "4c76fb6da023c925825e511bfa7c9985aa662b5e",
+  "carryReason": "Independent product diff confirms reusable package and installed-consumer fixture bytes unchanged; 4c76 changes only Studio canvas CSS.",
+  "method": "Root actual CUA execution; independent raw JSON/DOM/source equality and all13 pattern/consumer screenshot review. No child-executed browser claim.",
+  "normalInstalledConsumerOrigin": "http://127.0.0.14:5608/",
+  "rheaMinimumHeight": "32px",
+  "rheaActualSampleHeight": 38.60000228881836,
+  "legacyActualSampleHeight": 40,
+  "scopedPopup": true,
+  "popupEscapeAndFocusReturn": true,
+  "filenameLimit": "public14-01-mobile-rhea-portal is1280x720 desktop despite name; public14-02 is actual640x480.",
+  "actualPatternsReviewed": [
+    "alert",
+    "breadcrumb",
+    "button-group",
+    "card",
+    "empty",
+    "field",
+    "input",
+    "textarea",
+    "kbd",
+    "native-select",
+    "skeleton",
+    "spinner",
+    "table"
+  ],
+  "controlledFieldsAndLocalAI": true,
+  "actualFlowZoomAndKeyboard": true,
+  "sourceHistoryActionsAccepted": [
+    "Remove button",
+    "Undo",
+    "Redo",
+    "Undo",
+    "Save source",
+    "Reopen source"
+  ],
+  "reopenedSourceEqualsBeforeExceptRevision": true,
+  "revision": {
+    "before": "3",
+    "after": "4"
+  },
+  "runtimeResetOnReopen": true,
+  "limits": [
+    "29/29 helper remains source-only; actual demonstrations are the separate artifacts.",
+    "Local authored AI send and Flow controls do not establish provider/backend execution or AI Stop.",
+    "Static spinner screenshot does not prove animation."
+  ],
+  "artifacts": [
+    {
+      "name": "public14-01-mobile-rhea-portal.dom.txt",
+      "sha256": "8bf0a4ec26fe371d55be81623dbf5effede64e3ae7f1767103863a691412faa6"
+    },
+    {
+      "name": "public14-01-mobile-rhea-portal.geometry.json",
+      "sha256": "84c77ff6aa34e0c638fa6d434516529d7315e780a8c7942ba0b35b665b601268"
+    },
+    {
+      "name": "public14-01-mobile-rhea-portal.png",
+      "sha256": "5f9b356817dc15e182eabff5a0efa2b52e05432ded154cadd35c16bc59fa458e"
+    },
+    {
+      "name": "public14-02-actual-small-portal.dom.txt",
+      "sha256": "7d917eee5cb84e9bac1d769f731b8a4839ac2501e97773f64563bcaf1325292a"
+    },
+    {
+      "name": "public14-02-actual-small-portal.geometry.json",
+      "sha256": "1087f2daf87d19bc9226c16a5e10616edbf6fa6c9597db7f4169ee85f6ceaa15"
+    },
+    {
+      "name": "public14-02-actual-small-portal.png",
+      "sha256": "ab065c32a3cd32e345c2a44e0d1a827bb888df6928f79be01106ab5e545bdca2"
+    },
+    {
+      "name": "public14-03-controlled-ai-flow.dom.txt",
+      "sha256": "96ae27f27a5e146382c4a0a397ccf0ef6569af05e78747b6a861f57bbae9c4b4"
+    },
+    {
+      "name": "public14-03-controlled-ai-flow.geometry.json",
+      "sha256": "7d1efe24a03db92c71f13e83e2a7aca3104a156568efcb3f10363deb80081ed3"
+    },
+    {
+      "name": "public14-03-controlled-ai-flow.png",
+      "sha256": "dd43baac37189f61b329ce5552c97fad59f9f02d99d72ded816d790bcda61e7e"
+    },
+    {
+      "name": "public14-04-history-save-reopen.dom.txt",
+      "sha256": "50c410fd112b38218b25eaf737a36d97001af9235bf72b9f8bc85df9790f5ea8"
+    },
+    {
+      "name": "public14-04-history-save-reopen.geometry.json",
+      "sha256": "fc146e0b2efde7986e868a18b7b0bfb7b106e6cdf955b9d91c8429cf28d3915b"
+    },
+    {
+      "name": "public14-04-history-save-reopen.png",
+      "sha256": "8d085ddca025adafdf6016c724de39d0fe75015b0fb544c2e2c1bd12d2cae413"
+    },
+    {
+      "name": "public14-05-flow-keyboard.dom.txt",
+      "sha256": "81a73b13902a532d6f6dd21b48ad19c36ec8132378541e87479ba3eea044b746"
+    },
+    {
+      "name": "public14-05-flow-keyboard.geometry.json",
+      "sha256": "1b6a95982cc9fa05efa250a00402f8619b47ad58cadf00cb5ad39fa112182448"
+    },
+    {
+      "name": "public14-05-flow-keyboard.png",
+      "sha256": "53b71fe84a28af1494a01e374b27712f0ac8927ed847874646801613211124c9"
+    },
+    {
+      "name": "public14-actual-history-source.json",
+      "sha256": "76c0b3c663336865cb73a972ff175044597f08de5c2299430da058fccc44722d"
+    },
+    {
+      "name": "public14-history-source-diff.json",
+      "sha256": "62b8cd2bb632f74cb9422746123ccb4873f4c6bf833246dbb7a291f4805f90e3"
+    },
+    {
+      "name": "public14-pattern-alert.dom.txt",
+      "sha256": "7839a2ae5b47c6c143a7e25839fa717f0c97a3f5805ac2c00d5e2fec983173ae"
+    },
+    {
+      "name": "public14-pattern-alert.geometry.json",
+      "sha256": "d0f3ae70201e5ffd9c8b2b18caae0692af6486863516b0ad292b23eefb959a26"
+    },
+    {
+      "name": "public14-pattern-alert.png",
+      "sha256": "8f592ace1cb6272eb03a4c12535d58acb1425c1f2a9f31b2e2a8e67bb9438b3f"
+    },
+    {
+      "name": "public14-pattern-breadcrumb.dom.txt",
+      "sha256": "123719f1d32b71565c8e672f5f8885723aefad5fba6f7aafe78bd462cab03263"
+    },
+    {
+      "name": "public14-pattern-breadcrumb.geometry.json",
+      "sha256": "1198c418bb9f93720ca0b53a0650a1759cb6824d6df45a648d5ed6a8666a71ac"
+    },
+    {
+      "name": "public14-pattern-breadcrumb.png",
+      "sha256": "c7b7f5291247149a59b41cb9a0b6c5ac0f681b81bb28de228e16f53663790ffc"
+    },
+    {
+      "name": "public14-pattern-button-group.dom.txt",
+      "sha256": "c40224470e517f6330d508c25e0730969a90940c448e0f7f78b3c25572fd3021"
+    },
+    {
+      "name": "public14-pattern-button-group.geometry.json",
+      "sha256": "1b7d11b7f1b4a1818a33d32bba51afd4363271a58ee57cbbd1819634c819c809"
+    },
+    {
+      "name": "public14-pattern-button-group.png",
+      "sha256": "5ee5595ddb7155d6199f4ad42a4a93fb62fd785e61f600bbe82ea283b09aa45d"
+    },
+    {
+      "name": "public14-pattern-card.dom.txt",
+      "sha256": "6269b5aa5b2a580808c3adedfc4602b74f9384b0eeb546afb359bb4aea99e555"
+    },
+    {
+      "name": "public14-pattern-card.geometry.json",
+      "sha256": "f03d002d4f20d6f017601640248d60af8e5ccf78b4218dbecb106fd444911001"
+    },
+    {
+      "name": "public14-pattern-card.png",
+      "sha256": "2c0ba2a69d294f52b72445f9c2013ba938581e8b3a67a624ba15315ff9516f30"
+    },
+    {
+      "name": "public14-pattern-empty.dom.txt",
+      "sha256": "334ac72f748bdae8973ff623e987f43bb9e36ad559ed943bbcb5a680a3d795f4"
+    },
+    {
+      "name": "public14-pattern-empty.geometry.json",
+      "sha256": "bb4c1be78471591a119a8b04e1a5b41c3e3db6ce43f0dee323d5c592b3717508"
+    },
+    {
+      "name": "public14-pattern-empty.png",
+      "sha256": "4fba03e752353b220175639fc52bceece5f13ea8cf2774d3f14a91142512437b"
+    },
+    {
+      "name": "public14-pattern-field.dom.txt",
+      "sha256": "5f855f89d72de834253b50758bde9acbdd2c99bda87fd10d183c8e44f54b4b99"
+    },
+    {
+      "name": "public14-pattern-field.geometry.json",
+      "sha256": "58eb5837c300330eb2fe850da11f73e4ae0b8a0af562b3dda24517e698fb28db"
+    },
+    {
+      "name": "public14-pattern-field.png",
+      "sha256": "d886a3e4bbe2834001312027389ef997d11d8f0d67a921fa50095637ebb0d280"
+    },
+    {
+      "name": "public14-pattern-input.dom.txt",
+      "sha256": "deda270659a0081b44c4a6b2eacb1ac2be68c317ab12cb5368143d4661b14d03"
+    },
+    {
+      "name": "public14-pattern-input.geometry.json",
+      "sha256": "dd589644e35c52d8cf7fe01dcd1d6c3b2801ac96a0b4b8872db9bc60f7732d0a"
+    },
+    {
+      "name": "public14-pattern-input.png",
+      "sha256": "a4af8cb4636bdd9f0b33a5fa97ba83fabd67a5828a2e581a29ccc8d3661b9377"
+    },
+    {
+      "name": "public14-pattern-kbd.dom.txt",
+      "sha256": "b951f12e324b2d4736a25f8961f78a515367f10d99ebae80e98266caa4837221"
+    },
+    {
+      "name": "public14-pattern-kbd.geometry.json",
+      "sha256": "a4fe32102e5c007f56e8a383bf60effc4d9a1b327b975c5508d844d1a40976fb"
+    },
+    {
+      "name": "public14-pattern-kbd.png",
+      "sha256": "a535f9dc17c180a28875460df436dc2635794f35440f8bdc78f5adfaf84fa013"
+    },
+    {
+      "name": "public14-pattern-native-select.dom.txt",
+      "sha256": "ec3fb241ebc520145ec3a59f842b4d38c2529be3c20e49a72d7418b7837e7f7a"
+    },
+    {
+      "name": "public14-pattern-native-select.geometry.json",
+      "sha256": "837b982ca5c0c0b5499dc343019b349670c7d0be1661afab0b5da1aa5fa25012"
+    },
+    {
+      "name": "public14-pattern-native-select.png",
+      "sha256": "408da83f05d7e702535c1664f215d79e361b100eaaaf9eecfd5dbd61e7625f7c"
+    },
+    {
+      "name": "public14-pattern-skeleton.dom.txt",
+      "sha256": "1d588d9bc8e0fb84aebed69123900d21ad3e62640857203d7c06ab50f62c5870"
+    },
+    {
+      "name": "public14-pattern-skeleton.geometry.json",
+      "sha256": "a08bfda8754468c1aaef0f6d8dc1a8cbad8b3746f10ef5c61974a9a4e0653bba"
+    },
+    {
+      "name": "public14-pattern-skeleton.png",
+      "sha256": "414cf9ecd19bde49fd169f77d76601af5fa9608927c787227472fc37518e2bef"
+    },
+    {
+      "name": "public14-pattern-spinner.dom.txt",
+      "sha256": "2f09d167a2681090fe0985a051dbe730d0a06555973e64fd4e46dabb059ea8e9"
+    },
+    {
+      "name": "public14-pattern-spinner.geometry.json",
+      "sha256": "f4a6bf083735073cf2b2163a2d27a63847ddcdfe0723546ea47a05945fe6a8ba"
+    },
+    {
+      "name": "public14-pattern-spinner.png",
+      "sha256": "4be9540a28601e557e18bedc88100e1dcbc6a084e4b59f6329dc77a3776c2d0c"
+    },
+    {
+      "name": "public14-pattern-table.dom.txt",
+      "sha256": "455da027ab2a95fe0e4174a9871eed0210ab4abf00521d29bd38d45f36662808"
+    },
+    {
+      "name": "public14-pattern-table.geometry.json",
+      "sha256": "9f1777be6c89a23da4731009abda78fbf4ff0ac9cc9a5fc58ba15b9491752709"
+    },
+    {
+      "name": "public14-pattern-table.png",
+      "sha256": "5d768efb614c0e3d249445c55d9ef208f0ecaf7cd5255c5844b2fcd7f0f3541f"
+    },
+    {
+      "name": "public14-pattern-textarea.dom.txt",
+      "sha256": "b881f399c849507f7b31fc40f52c645a153799d117ff04318392521a678c835f"
+    },
+    {
+      "name": "public14-pattern-textarea.geometry.json",
+      "sha256": "e1cd6d77836a477bd89d9a7f700a646d7cc591083d03a75bb5c20ccfface3592"
+    },
+    {
+      "name": "public14-pattern-textarea.png",
+      "sha256": "50ade67d875fc112943b88b8b80d341c660d541138cc5cd77d24be03e029d5a2"
+    },
+    {
+      "name": "public14-portal-escape-focus.json",
+      "sha256": "389f98f5b5001f1bf4cd8f2fe9940f3382623e9842fbc87b97d8f4ebb56b92d8"
+    },
+    {
+      "name": "public14-theme-profiles.json",
+      "sha256": "7224ea7d04e1b9029fde04a2129d835f2690a21481718d1b2765760f1f72b5f9"
+    }
+  ]
+}

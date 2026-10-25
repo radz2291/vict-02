@@ -1,0 +1,17 @@
+import {readFileSync,writeFileSync} from 'node:fs';
+import {createHash} from 'node:crypto';
+import assert from 'node:assert/strict';
+const root='C:/Users/RZ1/.codex/worktrees/studio-cycle-1-4/260831-VCT-02/docs/studio/cycle-1-4/core/browser/';
+const rows=JSON.parse(readFileSync(root+'showcase14-family-rows.json','utf8'));
+const migration=JSON.parse(readFileSync('docs/studio/CYCLE-1-4-CATALOG-MIGRATION.json','utf8'));
+assert.equal(rows.length,64);assert.equal(new Set(rows).size,64);
+for(const family of migration.families)assert(rows.includes(family.family+family.disposition.replaceAll('-',' ')+family.omittedFunctionality));
+const handoff=readFileSync(root+'showcase14-07-interact-edit-handoff.dom.txt','utf8');
+for(const value of ['button "Design" [pressed]','button "Selection palette" [pressed]','tab "Format tools" [expanded] [selected]','generic "Floating selection tools"','button "Edit properties ↗"'])assert(handoff.includes(value));
+const relationships=readFileSync(root+'showcase14-08-visible-lower-relationships.dom.txt','utf8');
+assert(/button "Relationships"[^\n]*\[pressed\]/.test(relationships));assert(relationships.includes('screen.contains.0'));
+const cases=['01-cycle-entry','02-complete-family-matrix','03-visible-native-section','04-heading-workspace','05-object-context','06-shared-structure-details','07-interact-edit-handoff','08-visible-lower-relationships','09-expanded-lower-details'];
+const names=['showcase14-family-rows.json',...cases.flatMap(name=>['.dom.txt','.geometry.json','.png'].map(suffix=>'showcase14-'+name+suffix))];
+const output={product:'4c76fb6da023c925825e511bfa7c9985aa662b5e',method:'Root actual CUA execution; independent actual screenshot/DOM/geometry/source review.',all63RowsExactlyMatchDispositions:true,actualNativeFieldSection:true,actualHeadingContextMenu:true,actualInteractExplicitEditingHandoff:true,actualSharedLowerPropertiesRelationshipsAndExpansion:true,IV14_02Showcase:'CLOSED',IV14_04:'HELD: new Turn measurements/Observed regions production surface absent from this shared showcase candidate; root replacement pending.',limits:['01fragment URL lands on Cycle1.3 section, retained as navigation setup.','06details mostly below crop;07/08/09provide visible details and relationships.','This inventory rendering does not establish63functioning upstream wrappers.'],artifacts:names.map(name=>({name,sha256:createHash('sha256').update(readFileSync(root+name)).digest('hex')}))};
+writeFileSync('docs/studio/cycle-1-4/independent-showcase-browser-review.json',JSON.stringify(output,null,2)+'\n');
+console.log(JSON.stringify({pass:true,familyRows:63,actualArtifacts:names.length,remainingRequiredFinding:'IV14-04'}));

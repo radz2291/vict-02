@@ -1,0 +1,158 @@
+{
+  "product": "4c76fb6da023c925825e511bfa7c9985aa662b5e",
+  "method": "Root actual CUA execution of independent challenges; independent screenshot/DOM/geometry/canonical-source and raw draft review.",
+  "IV14_03": "CLOSED: exact actual1000x700 visible Format palette and has-object-tools trigger; scrollport185.5px remains inside252.8px stage, Source owns hit and actual Source pointer opens canonical editor.",
+  "retainedLimit": "Floating Format surface itself deliberately overlays part of the tab strip in this short canvas; no claim that every tab remains exposed while palette open. Small default split remains cramped; explicit Structure expansion supplies usable graph/details.",
+  "excludedSetup": "iv14-repair-01 is640viewport with explicit narrow Edit closing Document, not1000repair proof. repair02 shows no visible palette and is not relied upon for the trigger closure.",
+  "draftExactWhitespacePreserved": true,
+  "guardedCommandsAndNavigation": true,
+  "legacySavedSourceExactExceptDeclaredRevision": true,
+  "smallFallbackRetained": true,
+  "keyboardDetailsResize": true,
+  "artifacts": [
+    {
+      "name": "iv14-repair-01-stacked-floating-tools.dom.txt",
+      "sha256": "2518da5c9267ee0c0a9bd893cbd72974164ee90d97437f5b1d8f88c1366d645c"
+    },
+    {
+      "name": "iv14-repair-01-stacked-floating-tools.geometry.json",
+      "sha256": "3a282a844e11637661b3a7cac6a622c5dc2dfd1508f24bc4a824c847df77ce82"
+    },
+    {
+      "name": "iv14-repair-01-stacked-floating-tools.png",
+      "sha256": "047d5da17560a096068c3e4b16a7287aefdbac4e9ab82dbf2b56fa212bc5d10b"
+    },
+    {
+      "name": "iv14-repair-02-actual-medium-floating.dom.txt",
+      "sha256": "926ee2ee5d886feb9694564cb081a2968d0ff14a8c8c65d92b310e8af0b43946"
+    },
+    {
+      "name": "iv14-repair-02-actual-medium-floating.geometry.json",
+      "sha256": "0a9328d77fb2a1706406c4f2b89c11788ad2e326f3bec2545c75707813770d96"
+    },
+    {
+      "name": "iv14-repair-02-actual-medium-floating.png",
+      "sha256": "6b3513bd4f511083d269f5b415fade83235607caf91ef52256a4cee07195ce3b"
+    },
+    {
+      "name": "iv14-repair-03-source-pointer-opens.dom.txt",
+      "sha256": "c61cbe514bd5c267b0822c12674f7485c393ea10968e3350579930a16e4192d3"
+    },
+    {
+      "name": "iv14-repair-03-source-pointer-opens.geometry.json",
+      "sha256": "db5597b3a6b2b150717c84aba4a6bb3556159f5d8567c790b1c82e5a50978372"
+    },
+    {
+      "name": "iv14-repair-03-source-pointer-opens.png",
+      "sha256": "c0db054f930a411a72bdef899d8103d42d27817d43f7d4ecd95177e50804949a"
+    },
+    {
+      "name": "iv14-repair-04-draft-disabled-menu.dom.txt",
+      "sha256": "afa9ac9a9ef46bcc0463e67ecffb2b636eb0b11d93bd340df16f0ed37b6dbdab"
+    },
+    {
+      "name": "iv14-repair-04-draft-disabled-menu.geometry.json",
+      "sha256": "092bcbef98da4830d987d0029c06a02976287b814b8743dcf994ce51ac5193e1"
+    },
+    {
+      "name": "iv14-repair-04-draft-disabled-menu.png",
+      "sha256": "9efa573a9e0a694de75f9bcff469e1fdffc3a773e14fe788a12fb752409a65c4"
+    },
+    {
+      "name": "iv14-repair-05-draft-preserved.dom.txt",
+      "sha256": "6ef711d5fcf74872f755cb8f76fe26262a0edbb01b6bf562cf67ecfbb8a61fce"
+    },
+    {
+      "name": "iv14-repair-05-draft-preserved.geometry.json",
+      "sha256": "51e6e1ad3c9c0cafd33e6ae74b9afed52a746791ad285ccfeab8321d4f702044"
+    },
+    {
+      "name": "iv14-repair-05-draft-preserved.png",
+      "sha256": "5b2013768e4f4658b9e131e4c601487a21177675adc78f4424e5c90741948a74"
+    },
+    {
+      "name": "iv14-repair-06-small-split.dom.txt",
+      "sha256": "518256a46c63cc898e31401cab4a2a571495f330ba43440ca4680e70cbbdf2e2"
+    },
+    {
+      "name": "iv14-repair-06-small-split.geometry.json",
+      "sha256": "f492ecb42487d270e7774c54df90ea2b9a41eec7a02838717a192dde7505f5a4"
+    },
+    {
+      "name": "iv14-repair-06-small-split.png",
+      "sha256": "3ea9450fc06333347cf6857d83c9e4398f3403bcb280a7e48328089b78efb2cd"
+    },
+    {
+      "name": "iv14-repair-07-small-fallback.dom.txt",
+      "sha256": "50b9155bfa230f55de21da072dfdfb45890e9cca9b910fa6fc499adc2632d8ca"
+    },
+    {
+      "name": "iv14-repair-07-small-fallback.geometry.json",
+      "sha256": "594f1d7ad940cb0107fe1ca81ccc297ee16e587fd71907e11162c0771f60101e"
+    },
+    {
+      "name": "iv14-repair-07-small-fallback.png",
+      "sha256": "07c69d4e1e0f028c1162504c03b862e6c12d0dae6230e536b0440e59912418ba"
+    },
+    {
+      "name": "iv14-repair-08-small-restored.dom.txt",
+      "sha256": "5ae67bc2ca3732733333e21c4aeb867e006fd09e748a8d37a0513912b2c039bb"
+    },
+    {
+      "name": "iv14-repair-08-small-restored.geometry.json",
+      "sha256": "7763d8fb37072faa46a4f335dcf00b6eea8da3f33700ab4278a6e82c08e38f42"
+    },
+    {
+      "name": "iv14-repair-08-small-restored.png",
+      "sha256": "3acc2f3cafde83b0acd807e0da0842781eccbe2723ca3df4da9b958344354767"
+    },
+    {
+      "name": "iv14-repair-09-visible-format-trigger.dom.txt",
+      "sha256": "7b3e9b4d7c5b829de8611d2183cbc9121b987b3c85403047d1809b24cc48e3a3"
+    },
+    {
+      "name": "iv14-repair-09-visible-format-trigger.geometry.json",
+      "sha256": "6fb0f53f4f528064090c1811cea1d600e10e9104ab50d1561241d22405efc386"
+    },
+    {
+      "name": "iv14-repair-09-visible-format-trigger.png",
+      "sha256": "ac96cec1486a0aee23cb412cbdf41d721636c60f9ddede507ae514ac1cfb15e9"
+    },
+    {
+      "name": "iv14-repair-10-visible-tools-source-click.dom.txt",
+      "sha256": "319068a59f8788ea17f13f32c9617ec8f7335c766090839767e71d6af0533025"
+    },
+    {
+      "name": "iv14-repair-10-visible-tools-source-click.geometry.json",
+      "sha256": "4ad205536ad565cfda73c9686aa2bb5ab9748dfd2ba7c864228463952aae34de"
+    },
+    {
+      "name": "iv14-repair-10-visible-tools-source-click.png",
+      "sha256": "c4bbfc6b6200845b3d8b9fdbab60090e43a5b79809f085136c68e7fc3f3f4d3b"
+    },
+    {
+      "name": "iv14-repair-draft-guards.json",
+      "sha256": "c3bc2d8752b94c566b372fa2bc5e248296893c51c03e939fa3aa40d3b86d3c11"
+    },
+    {
+      "name": "iv14-repair-keyboard-resize.json",
+      "sha256": "9fb996c1bff84ac7f09f6ad50030770f1bb801cde9cc98f3d6302b86302d056b"
+    },
+    {
+      "name": "iv14-repair-legacy-reopened-source.json",
+      "sha256": "851b837ca2d177ffc9dcfbcd1e6312af990e72c919029bfadbaf511d2f45767c"
+    },
+    {
+      "name": "iv14-repair-raw-draft-preservation.json",
+      "sha256": "a0053d73c15f3c5f9ab0cd3ab20c3910e99a0e711155d912058a376821d7d405"
+    },
+    {
+      "name": "iv14-repair-source-hit.json",
+      "sha256": "901ad25e72fb636b2a08eb7c8068c1f08720dcba9b724f85a9bc2ee67d364e72"
+    },
+    {
+      "name": "iv14-repair-visible-tools-hit.json",
+      "sha256": "510358e2d2e8dfcfc66d1ff00627584133a21a34d83442af5a80500b3106bd42"
+    }
+  ]
+}
