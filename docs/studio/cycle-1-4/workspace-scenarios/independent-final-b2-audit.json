@@ -1,0 +1,45 @@
+{
+  "candidate": "b2d4b10552c9237c95b24180323f43b9ad460f70",
+  "date": "2026-10-26",
+  "checkoutStatus": "clean detached HEAD at exact final candidate; no product edits, installs, tests or build by verifier",
+  "remoteShaObserved": "b2d4b10552c9237c95b24180323f43b9ad460f70",
+  "mainShaObserved": "d7401bef6e48330796c74ec00c86db9622d48cdf",
+  "sealSha256": "5ffb354eece36f66f64ba1f92b78ec304895446ca114a1749adb25891e2aefe2",
+  "sealVerification": {
+    "verified": true,
+    "candidate": "b2d4b10552c9237c95b24180323f43b9ad460f70",
+    "inputs": 751,
+    "outputs": 491
+  },
+  "sealCommand": "node docs/studio/cycle-1-4/workspace-scenarios/seal-production.mjs --verify",
+  "sourceReview": "PASS within owner amendment; original source findings and repairs retained in independent report",
+  "builderChecksReviewed": {
+    "testFiles": 7,
+    "testsPassed": 37,
+    "types": "builder reported pass; empty log",
+    "svelteErrors": 0,
+    "svelteExistingWarnings": 5,
+    "build": "serial production successful"
+  },
+  "builderFinalUiEvidenceReviewed": [
+    "final-b2-layers.txt",
+    "final-b2-scenarios.png",
+    "final-b2-scenarios.txt",
+    "final-b2-canvas.png",
+    "final-b2-facts.json",
+    "final-b2-showcase-focus.json",
+    "final-b2-showcase.png"
+  ],
+  "builderFinalUiFacts": {
+    "sampleLength": 330,
+    "focus": "onbNameInput",
+    "resetValue": "",
+    "errors": [],
+    "showcaseCloseFocus": "SUMMARY Try scenarios",
+    "showcaseEscapeFocus": "SUMMARY Try scenarios",
+    "showcaseTryFocus": "BUTTON Continue"
+  },
+  "independentUiActionsExecuted": 0,
+  "verdict": "HELD",
+  "remainingGateGap": "Independent hands-on desktop/small-window UI execution unavailable; builder-operated observations are independently reviewed with builder execution provenance, not substituted for verifier execution."
+}
