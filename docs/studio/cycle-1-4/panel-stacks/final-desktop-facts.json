@@ -1,0 +1,44 @@
+{
+  "activeBody": {
+    "height": 512,
+    "scrollHeight": 676
+  },
+  "document": {
+    "bottom": 696,
+    "height": 652,
+    "right": 1280,
+    "width": 280,
+    "x": 1000,
+    "y": 44
+  },
+  "headers": [
+    {
+      "bottom": 116,
+      "expanded": "true",
+      "text": "Data",
+      "y": 82
+    },
+    {
+      "bottom": 662,
+      "expanded": "false",
+      "text": "Actions",
+      "y": 628
+    },
+    {
+      "bottom": 696,
+      "expanded": "false",
+      "text": "Source",
+      "y": 662
+    }
+  ],
+  "inspect": "Full name",
+  "stage": {
+    "bottom": 696,
+    "height": 652,
+    "right": 994,
+    "width": 688,
+    "x": 306,
+    "y": 44
+  },
+  "errors": []
+}

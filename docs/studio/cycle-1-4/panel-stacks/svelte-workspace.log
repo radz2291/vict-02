@@ -1,0 +1,143 @@
+Loading svelte-check in workspace: c:\Users\RZ1\.codex\worktrees\studio-cycle14-panel-stacks\260831-VCT-02\apps\studio
+Getting Svelte diagnostics...
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-panel-stacks\260831-VCT-02\apps\studio\..\..\packages\ui-svelte\src\document\RenderNode.svelte:309:3
+Warn: Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events (svelte)
+{:else if instruction.kind === 'text'}
+  <span
+    class="uv-text"
+    data-ui-owner={ownerId}
+    data-ui-node={instruction.nodeId}
+    data-ui-occ={occ}
+    style="display: contents"
+    onclick={(event) => {
+      if (selectOccurrence !== undefined) {
+        event.stopPropagation();
+        selectOccurrence(occ);
+      }
+    }}
+  >
+    {#if instruction.content.type === 'literal'}
+      {instruction.content.value}
+    {:else}
+      {String(resolveValue({ type: 'expression', expression: instruction.content.expression }, scope) ?? '')}
+    {/if}
+  </span>
+{:else if (instruction.kind === 'component' || instruction.kind === 'extension') && componentValues.invalidNames.length}
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-panel-stacks\260831-VCT-02\apps\studio\..\..\packages\ui-svelte\src\document\RenderNode.svelte:309:3
+Warn: `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions (svelte)
+{:else if instruction.kind === 'text'}
+  <span
+    class="uv-text"
+    data-ui-owner={ownerId}
+    data-ui-node={instruction.nodeId}
+    data-ui-occ={occ}
+    style="display: contents"
+    onclick={(event) => {
+      if (selectOccurrence !== undefined) {
+        event.stopPropagation();
+        selectOccurrence(occ);
+      }
+    }}
+  >
+    {#if instruction.content.type === 'literal'}
+      {instruction.content.value}
+    {:else}
+      {String(resolveValue({ type: 'expression', expression: instruction.content.expression }, scope) ?? '')}
+    {/if}
+  </span>
+{:else if (instruction.kind === 'component' || instruction.kind === 'extension') && componentValues.invalidNames.length}
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-panel-stacks\260831-VCT-02\apps\studio\..\..\packages\ui-svelte\src\document\RenderNode.svelte:379:5
+Warn: Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events (svelte)
+    {@const Implementation = extension.component}
+    <span style="display: contents" data-extension-id={instruction.extensionId} data-ui-owner={ownerId} data-ui-occ={occ} data-ui-node={instruction.nodeId}
+      onclick={event => { event.stopPropagation(); selectOccurrence?.(occ); }}>
+      <Implementation props={extensionProps} occurrenceKey={occ} nodeId={instruction.nodeId} {presentation} />
+    </span>
+  {:else}
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-panel-stacks\260831-VCT-02\apps\studio\..\..\packages\ui-svelte\src\document\RenderNode.svelte:379:5
+Warn: `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions (svelte)
+    {@const Implementation = extension.component}
+    <span style="display: contents" data-extension-id={instruction.extensionId} data-ui-owner={ownerId} data-ui-occ={occ} data-ui-node={instruction.nodeId}
+      onclick={event => { event.stopPropagation(); selectOccurrence?.(occ); }}>
+      <Implementation props={extensionProps} occurrenceKey={occ} nodeId={instruction.nodeId} {presentation} />
+    </span>
+  {:else}
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-panel-stacks\260831-VCT-02\apps\studio\..\..\packages\ui-svelte\src\document\DocumentHost.svelte:105:31
+Warn: This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+  let acceptedSupplied: Record<string, UiValue> = {};
+  let lastDocumentId = $state(plan.documentId);
+  let lastSignal: symbol | undefined = $state<symbol | undefined>(undefined);
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-panel-stacks\260831-VCT-02\apps\studio\src\lib\designer\WorkspacePanelsShowcase.svelte:38:251
+Error: Parameter 'next' implicitly has an 'any' type. (ts)
+      </aside>
+      <div class="example-canvas"><EditorCanvas {document} catalogs={designerCatalogs} extensions={catalogDescriptors} extensionImplementations={catalogImplementations} interactionMode="design" selectedOccurrence={selected} onSelect={select} onPlan={next=>plan=next} ariaLabel="Docked panel example canvas" /></div>
+      <aside class="right" hidden={!documentOpen} aria-label="Example stacked Document"><header>Document</header><DocumentPanels>
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-panel-stacks\260831-VCT-02\apps\studio\src\lib\designer\Designer.svelte:581:50
+Warn: Elements with the 'tablist' interactive role must have a tabindex value
+https://svelte.dev/e/a11y_interactive_supports_focus (svelte)
+  <aside class="left-sidebar" hidden={!chatOpen} style:--sidebar-width={`${chatWidth}px`} aria-label="Workspace sidebar">
+    <header class="panel-header sidebar-heading"><div role="tablist" aria-label="Sidebar panels" onkeydown={leftTabKeys}><button id="sidebar-chat-tab" role="tab" type="button" aria-selected={leftTab==='Chat'} aria-controls="sidebar-chat" tabindex={leftTab==='Chat'?0:-1} onclick={()=>void changeLeftTab('Chat')}>Chat</button><button id="sidebar-layers-tab" role="tab" type="button" aria-selected={leftTab==='Layers'} aria-controls="sidebar-layers" tabindex={leftTab==='Layers'?0:-1} onclick={()=>void changeLeftTab('Layers')}>Layers</button></div><button type="button" aria-label="Hide sidebar" title="Hide sidebar" onclick={()=>void toggleChat()}>×</button></header>
+    <div id="sidebar-chat" class="sidebar-tab-content agent-panel" role="tabpanel" aria-labelledby="sidebar-chat-tab" hidden={leftTab!=='Chat'}><AgentChat screenLabel={screenName(source)} selectionLabel={selectedNode ? compositionName(source, selectedNode.id) : "None"} blocked={textDraftDirty || sourceDraftDirty || renamingScreen} getContext={() => bridge ? {document:bridge.document, cursor:documentCursor(bridge.document,bridge.getSnapshot().revision,agentEpoch), ...(selected ? {selection:selected} : {})} : undefined} getCapture={cursor => captureDesignerPreview(canvasScroll?.querySelector<HTMLElement>('.design-frame') ?? undefined,cursor,()=>bridge ? {cursor:documentCursor(bridge.document,bridge.getSnapshot().revision,agentEpoch),mode,state:{runtimeValues,simulation:{denied:simulation.denied,failNext:simulation.failNext}},selection:selected,composition:compositionFocus ? `${compositionFocus.nodeId}/${compositionFocus.slotName}` : undefined,structureOpen:structureOpen && structureExpanded} : undefined,canvasScroll)} applyProposal={receiveAgentProposal} /></div>
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-panel-stacks\260831-VCT-02\apps\studio\src\lib\designer\Designer.svelte:622:39
+Error: Property 'localState' does not exist on type 'Snippet<[]>'. (ts)
+        {#snippet data()}
+          {#if selectedData && source.localState[selectedData]}
+            <button class="data-back" type="button" disabled={dataDraftDirty} onclick={()=>openData()}>← All data</button>
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-panel-stacks\260831-VCT-02\apps\studio\src\lib\designer\Designer.svelte:624:95
+Error: Property 'localState' does not exist on type 'Snippet<[]>'. (ts)
+            <button class="data-back" type="button" disabled={dataDraftDirty} onclick={()=>openData()}>← All data</button>
+            <div class="data-heading"><h2>{dataName(selectedData)}</h2><span>{dataType(source.localState[selectedData]!.type)}</span></div>
+            {#key selectedData}<fieldset class="editor-guard" disabled={sourceDraftDirty || propertyDraftDirty}><StateInitialEditor compact document={source} expression={{type:'ref',path:`state.${selectedData}`}} labels={editorLabels} onApply={apply} onDirtyChange={(dirty:boolean)=>dataDraftDirty=dirty} /></fieldset>{/key}
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-panel-stacks\260831-VCT-02\apps\studio\src\lib\designer\Designer.svelte:628:65
+Error: Property 'localState' does not exist on type 'Snippet<[]>'. (ts)
+            <div class="section-heading"><h2>Screen data</h2><span>Saved starting values</span></div>
+            <div class="data-list">{#each Object.entries(source.localState) as [key,declaration] (key)}<button type="button" class="data-row" disabled={sourceDraftDirty || propertyDraftDirty} onclick={()=>openData(key)}><span><strong>{dataName(key)}</strong><small>{dataType(declaration.type)}</small></span><span class="data-preview">{dataPreview(declaration.initial)}</span><span aria-hidden="true">›</span></button>{/each}</div>
+            {#if !Object.keys(source.localState).length}<p class="panel-hint">This screen has no saved data.</p>{/if}
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-panel-stacks\260831-VCT-02\apps\studio\src\lib\designer\Designer.svelte:628:276
+Error: 'declaration' is of type 'unknown'. (ts)
+            <div class="section-heading"><h2>Screen data</h2><span>Saved starting values</span></div>
+            <div class="data-list">{#each Object.entries(source.localState) as [key,declaration] (key)}<button type="button" class="data-row" disabled={sourceDraftDirty || propertyDraftDirty} onclick={()=>openData(key)}><span><strong>{dataName(key)}</strong><small>{dataType(declaration.type)}</small></span><span class="data-preview">{dataPreview(declaration.initial)}</span><span aria-hidden="true">›</span></button>{/each}</div>
+            {#if !Object.keys(source.localState).length}<p class="panel-hint">This screen has no saved data.</p>{/if}
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-panel-stacks\260831-VCT-02\apps\studio\src\lib\designer\Designer.svelte:628:349
+Error: 'declaration' is of type 'unknown'. (ts)
+            <div class="section-heading"><h2>Screen data</h2><span>Saved starting values</span></div>
+            <div class="data-list">{#each Object.entries(source.localState) as [key,declaration] (key)}<button type="button" class="data-row" disabled={sourceDraftDirty || propertyDraftDirty} onclick={()=>openData(key)}><span><strong>{dataName(key)}</strong><small>{dataType(declaration.type)}</small></span><span class="data-preview">{dataPreview(declaration.initial)}</span><span aria-hidden="true">›</span></button>{/each}</div>
+            {#if !Object.keys(source.localState).length}<p class="panel-hint">This screen has no saved data.</p>{/if}
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-panel-stacks\260831-VCT-02\apps\studio\src\lib\designer\Designer.svelte:629:38
+Error: Property 'localState' does not exist on type 'Snippet<[]>'. (ts)
+            <div class="data-list">{#each Object.entries(source.localState) as [key,declaration] (key)}<button type="button" class="data-row" disabled={sourceDraftDirty || propertyDraftDirty} onclick={()=>openData(key)}><span><strong>{dataName(key)}</strong><small>{dataType(declaration.type)}</small></span><span class="data-preview">{dataPreview(declaration.initial)}</span><span aria-hidden="true">›</span></button>{/each}</div>
+            {#if !Object.keys(source.localState).length}<p class="panel-hint">This screen has no saved data.</p>{/if}
+          {/if}
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-panel-stacks\260831-VCT-02\apps\studio\src\lib\designer\Designer.svelte:637:30
+Error: Type 'Snippet<[]>' is not assignable to type 'UiDocument'. (ts)
+        {#snippet source()}
+          <AuthoringGuidance document={source} />
+          <label class="sr-only" for="canonical-source">Canonical UI document</label><textarea id="canonical-source" class="source-editor" disabled={textDraftDirty} wrap="off" spellcheck="false" bind:value={sourceDraft} oninput={() => sourceDraftDirty = true}></textarea>
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-panel-stacks\260831-VCT-02\apps\studio\src\lib\designer\Designer.svelte:640:154
+Error: Argument of type 'Snippet<[]>' is not assignable to parameter of type 'UiDocument'. (ts)
+          <div class="source-actions"><button type="button" disabled={!sourceDraftDirty || textDraftDirty} onclick={applySource}>Apply source</button><button type="button" disabled={!sourceDraftDirty} onclick={() => { sourceDraftDirty = false; sourceDraft = JSON.stringify(source, null, 2); sourceDraftRevision = snapshot?.revision ?? ''; issues = []; }}>Discard draft</button><button type="button" onclick={exportSource}>Export</button></div>
+          <details class="application-attachment"><summary>Application attachment</summary><pre class="source-preview">{JSON.stringify(screenApplication(source), null, 2)}</pre></details>
+        {/snippet}
+
+====================================
+svelte-check found 9 errors and 6 warnings in 4 files

@@ -1,0 +1,14 @@
+{
+  "selected": "Full name",
+  "layersCollapsed": {
+    "inspect": "true",
+    "inspectHeight": 580,
+    "layers": "false"
+  },
+  "inspectCollapsed": {
+    "inspect": "false",
+    "layers": "true",
+    "layersHeight": 580
+  },
+  "chatDraft": "Keep this Chat draft while I inspect the screen."
+}

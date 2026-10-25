@@ -1,0 +1,42 @@
+{
+  "canvas": {
+    "bottom": 661.2000122070312,
+    "height": 579.2000122070312,
+    "right": 954,
+    "width": 648,
+    "x": 306,
+    "y": 82
+  },
+  "document": {
+    "bottom": 696,
+    "height": 652,
+    "right": 1280,
+    "width": 320,
+    "x": 960,
+    "y": 44
+  },
+  "expanded": [
+    "Data"
+  ],
+  "left": {
+    "bottom": 696,
+    "height": 652,
+    "right": 300,
+    "width": 300,
+    "x": 0,
+    "y": 44
+  },
+  "mainInert": false,
+  "stage": {
+    "bottom": 696,
+    "height": 652,
+    "right": 954,
+    "width": 648,
+    "x": 306,
+    "y": 44
+  },
+  "before": {
+    "right": 1280,
+    "width": 974
+  }
+}

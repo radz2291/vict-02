@@ -1,0 +1,14 @@
+{
+  "product": "13204fcaa3e111387b30b955e2e410513ec42bd9",
+  "branch": "codex/studio-cycle-1-4-panel-stacks",
+  "tests": {"files":9,"passed":43,"failed":0,"exitCode":0,"log":"tests-replacement.log"},
+  "types": {"exitCode":0,"log":"types-final.log"},
+  "svelte": {"exitCode":0,"errors":0,"existingWarnings":5,"log":"svelte-final.log"},
+  "build": {"exitCode":0,"serialAfterChecks":true,"log":"build-13204fc-serial.log"},
+  "seal": {"verified":true,"inputs":754,"outputs":491,"sha256":"50e4df1ffd4e45fc950a807ebaf59835cc4c923d3c4dfac01be763bf2a0f7fc8"},
+  "independentVerdict":"historical bounded PASS",
+  "independentEvidenceCommit":"53b418a319b7d7a906404864450f460e851588b3",
+  "supersessionCommit":"d73d8cf75fafd1344cd8410dc8191c8dc03746cb",
+  "ownerAcceptance":false,
+  "latestOwnerPlacement":"standalone Chat, Layers in Document accordion, Inspect inside Structure; NOT IMPLEMENTED / NOT VERIFIED at this checkpoint"
+}
