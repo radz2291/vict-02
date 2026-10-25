@@ -1,14 +1,63 @@
 # Cycle 1.4 — integration and verification report
 
-2026-10-25. **Implementation and required actual journeys complete; final independent remote-pinned verdict pending.**
+2026-10-25. **Independent technical PASS — READY FOR OWNER REVIEW, within the documented limits.** Cycle1.4/Milestone1 owner acceptance remains pending; Stage9 remains REOPENED / IN PROGRESS.
 
-## Final integration evidence awaiting independent verdict
+## Owner delivery guide
+
+Branch: `codex/studio-cycle-1-4`. Product: **`e76e2fc0f64f5a451edae01f4b0a1c9e7cfc68db`**. Final raw builder/provider/recovery delivery: **`c893b9254e6b5e78e1100f32f7f03f03763cd0ab`**. Integrated independent verdict/evidence: **`a6003c06fd8e73b918ac0a619d5626bd37e95b81`**, remote-equal on `codex/studio-cycle-1-4-independent`; [independent report](CYCLE-1-4-INDEPENDENT.md), [machine verdict and complete C14-01–10 matrix](cycle-1-4/independent-verdict.json). All five required findings are closed. Delivery is not owner acceptance. [Accepted Cycle1.3 core closure](CYCLE-1-3-CORE-OWNER-CLOSURE.md) remains delivery `0ac71d64caefaaf4351c43a68b67421a51b76aba`, product `57308f6ffcd5c85415b38d9d68a6f696199ebfa7`, independent `c5ae1e9f718a31930f98a5ef300463f2c1b8db54`.
+
+### What changed and where each owner request landed
+
+| Owner requirement | Implementation and evidence |
+| --- | --- |
+| One coherent general/AI/Studio visual family | Opt-in public Rhea tokens/CSS and reusable native patterns, scoped Studio shell/portals and legacy compatibility. [All63 dispositions](CYCLE-1-4-CATALOG-MIGRATION.md), [machine matrix](CYCLE-1-4-CATALOG-MIGRATION.json), independently installed public consumer. |
+| Correct first right-click on objects, empty canvas and Structure | Exact context target and existing guarded commands; actual first pointer sequence, Shift+F10, Escape/focus/native/Interact cases. [Workspace implementation and actual evidence](CYCLE-1-4-WORKSPACE.md). |
+| Shared inspection below Layers and Structure | Deliberately opened source details with resize/Expand, bounded scrolling and retained canvas/graph context. Floating Format/Insert/Arrange/Connect remain on canvas; explicit Edit hands off to them. [Workspace evidence](CYCLE-1-4-WORKSPACE.md). |
+| Less repetitive component discovery | Stable paged-body identity/invalidation, complete unchanged-body reuse, compact overview and selected dependency bundles; source freshness remains separate. [Efficiency implementation](CYCLE-1-4-AGENT-EFFICIENCY.md). |
+| Useful recipes across the application spectrum | Seed styles, supported state and host requirements are discoverable before construction. This guides composition without inventing host services or forcing a single layout. |
+| Earlier actual visual observation | Early meaningful-section guidance and bounded captured-region ledger, with historical-turn labels and explicit later-change limits. No arbitrary runtime click/type/scroll authority. |
+| Honest agent latency and completion | Receipt-derived transaction totals including cleanup; knowledge/source/edit/observation categories, first edit, active/waiting intervals and unavailable fields. [Six natural provider runs and separate recovery](CYCLE-1-4-PROVIDER-JOURNEYS.md). |
+| See every changed UI after delivery | [Complete showcase](http://127.0.0.12:5606/showcase#cycle14):13native patterns, all63 family dispositions, shared real-Chat evidence renderer in explicitly simulated states, real workspace and100 source compositions.100 recipes are not100 component definitions. |
+
+The63-family reconciliation is **30 general counterparts +13 native source patterns +10 existing specialist presentations +10 explicit host/adapter exceptions**. The exceptions are carousel, chart, drawer, form, input-otp, questionnaire, resizable, sheet, sidebar and sonner. Their omitted gesture/chart/form/authentication/splitter/routing/toast behavior needs its own complete contract; it is not silently counted as supported. Existing80 general component identities/revisions/defaults/slots/output contracts remain compatible. This is not full63-adapter adoption or pixel parity.
+
+### Short integrated walkthrough
+
+1. Open [current Studio](http://127.0.0.12:5606/design). Existing local operator login is `operator` / `studio-local-pass`; this is not the provider key. The server is already configured for `zai/glm-5.3-flash`. Use a disposable screen for experiments.
+2. Right-click an authored object, then empty Design canvas. Try a focused Structure node with Shift+F10. Check that the first gesture uses the intended target, Escape dismisses, and native input/Interact menus remain available.
+3. Open Document → Layers or Structure, select a source and open Inspect. Resize or explicitly Expand the lower facts panel, close it and switch views. Use Edit properties to return to the floating canvas controls. Small windows benefit from deliberate Expand.
+4. Ask the agent for a small form. Expand chronological attempt receipts and Chat details: compare confirmed edits, measured call categories, first-edit/waiting times and actual observed-region bounds. Images prove their captured regions; interactions need separate exercise.
+5. Try Stop after an acknowledgement, make a manual Source edit and continue. Test Undo/Redo, explicit File Save and Reload saved version. Saved canonical source survives; temporary preview values reset. Unapplied Source drafts block Send, and concurrent manual edits refuse stale proposals.
+6. Open [showcase additions](http://127.0.0.12:5606/showcase#cycle14), select native patterns and all63 dispositions, then inspect the simulated complete/partial/unavailable Chat-evidence states. The disposable Designer below demonstrates real context/details and memory-only Save/reopen; the gallery sends no provider request.
+
+### Verification and practical limits
+
+- Fresh pinned production build passes; exact e76 seal verifies747 input/491 output files. Independent production build/seal and affected semantic assertion pass. Builder shared-evidence/real-Chat affected checks pass2/2 and TypeScript passes. Earlier broad source/protocol/context/Rhea checks and installed-consumer proof retain their exact identities. The initial full Studio result remains310PASS/1obsolete-auditFAIL/2intentional skips; the audit was repaired and scoped rechecks passed. These overlapping scopes are not summed into a fictitious new full-suite result. Six carried compiler warnings remain.
+- All required IV14-01–05 failures and fixes are retained: raw input/provenance mismatch, Structure editing handoff, stacked details hit geometry, missing evidence showcase and misleading post-turn region wording. The final independent report supplies their gate dispositions. Raw console whitespace is retained; no blanket clean-log whitespace claim.
+- Installed proof uses eight normally packed/installed packages,687 matching framework files and24,710 dependency files with zero dependency links/source aliases. Actual public controls, portals,13native patterns, controlled state, wired local AI Send, Flow focus/zoom/history and canonical memory Save/reopen were exercised. Authored AI Stop separately records a declared local simulated intent; it does not cancel a provider.
+- Natural form: baseline39calls/809.8s versus candidate33/942.7s. Dashboard:27/681.5s versus31/754.8s. Editor:59/1462.2s versus31/1135.5s, but candidate first edit was later551.8s versus416.3s. Candidate natural knowledge attempts were6/6/10, so the two-to-three knowledge-read aim was not consistently met. Fewer calls do not establish lower token usage or a general speedup. Each arm is one run; form has a retained DPR confounder, dashboard/editor matched DPR/viewport. Full counts, refusals, usage and timing scopes are in the provider report.
+- Natural model outputs remain imperfect: dashboard Flow nodes overlap; editor per-document draft loading/persistence is absent and natural Save was unwired; narrow Source-pane preview compresses/overlaps editor columns. A separate corrective continuation truthfully wires only the declared simulated Save intent. Focus shadow/outline appears, but an intended focus border loses the source cascade. None is relabelled as complete professional responsive output or host persistence.
+- Very small normal inspection split is cramped; explicit Expand is the useful fallback. Graph camera zoom/state preservation was exercised. The attempted browser zoom shortcut did not establish text/browser-zoom coverage. Bounded model captures do not certify offscreen content or exercised interactions. Public activity summaries and traces do not expose private chain of thought.
+
+### Launch and next allowed action
+
+Current isolated candidate is `.12:5606`, independent preview `.13:5607`, installed consumer `.14:5608`, accepted-core comparison `.15:5609`. Owner previews/data/provider credentials were preserved. Two current Studio/showcase tabs are retained for review; the saved recovery sample is a disposable test document.
+
+If the candidate listener has stopped, run `pwsh -File docs/studio/cycle-1-4/core/launch-review.ps1` from this worktree. The launcher refuses an occupied port and verifies the exact production seal before using the existing server-side model/auth files; it does not print or replace credentials. [Launcher](cycle-1-4/core/launch-review.ps1), [seal](cycle-1-4/core/production-seal.json).
+
+Next allowed action is owner hands-on review of Cycle1.4 and the integrated Milestone1 experience after final independent delivery verification. Cycle1.4/Milestone1 acceptance remains the owner's decision. Stage9 remains REOPENED / IN PROGRESS. No Milestone2, main merge, package publication, deployment or Stage9 closure.
+
+## Final recovery evidence and independent disposition
 
 Exact product remains `e76e2fc0f64f5a451edae01f4b0a1c9e7cfc68db`; no product bytes changed during final recovery checks. The fresh pinned Svelte5.57.0 build and exact seal verify747 inputs/491 outputs, SHA-256 `bb46d98cbe6e520ac487abd5928a1dc0e4343eebf1f6a16de37dab81adc1e17a`. Later sections preserve earlier checkpoints and failed observations; their pending statements describe those historical checkpoints.
 
 The real e76 recovery leg exercised AgentChat Stop after five acknowledged edits, manual Source Apply and explicit Save, an exact whitespace-draft Send refusal, continuation without replaying prior edits, exact Undo/Redo, actual declared local Save-intent feedback, and the repaired historical region labels after a later manual source change. A separate concurrent manual change after two completed agent source reads produced actual `UI_DOC_STALE_REVISION`; the proposed agent edit did not apply and final source exactly equals the manual checkpoint. Explicit Studio Save/reopen retained all97 nodes at `r1.r2`, including both manual checkpoints, and reset the temporary title to its canonical initial value. [Full provider and recovery evidence](CYCLE-1-4-PROVIDER-JOURNEYS.md) keeps these separate from natural comparisons and from authored AI presentation fixtures.
 
-Root executed browser cases specified by the fresh independent verifier. The verifier independently checks source, production bytes, portable raw DOM/receipt/source/geometry assertions and screenshots; its own direct browser control remained unavailable. This is disclosed rather than represented as child-operated pointer execution. No required repair remains reported by the verifier; its final pushed verdict, integration and remote checks still gate delivery.
+Root executed browser cases specified by the fresh independent verifier. The verifier independently checked source, production bytes, portable raw DOM/receipt/source/geometry assertions and screenshots; its own direct browser control remained unavailable. This is disclosed rather than represented as child-operated pointer execution. Independent recovery review passes91raw artifacts, dashboard64 and editor69; exact747/491seal is independently verified. Final pushed verdict is PASS_READY_FOR_OWNER_REVIEW at `a6003c06fd8e73b918ac0a619d5626bd37e95b81`, now integrated without a product change.
+
+## Preserved pre-recovery checkpoints
+
+The following in-progress/HELD statements retain what was known at those earlier identities. The current final verdict, mapping, limitations and next action are above.
 
 Current actual-verification update: current pushed product **`e76e2fc0f64f5a451edae01f4b0a1c9e7cfc68db`** repairs required IV14-05: completed-turn region labels no longer imply live source freshness after later edits. Fresh pinned build and747/491 seal pass; seal SHA-256 `bb46d98cbe6e520ac487abd5928a1dc0e4343eebf1f6a16de37dab81adc1e17a`. The earlier9fb actual manual-change failure and independent required-failure checkpoint `3135583729a77d1be3785218fdcfe82db42d60af` are retained. All three natural provider comparisons completed; their unchanged execution logic is carried explicitly from4c76/9fb. Corrected small showcase labels pass actual review; post-completion manual-change ledger and the separate corrective/Stop/mixed/history legs still gate readiness. No owner acceptance or Stage9 closure is claimed.
 
