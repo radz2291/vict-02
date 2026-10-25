@@ -1,0 +1,14 @@
+{
+  "candidate":"e98e7b033369ba29a458119b7f8047f405130005",
+  "observer":"fresh independent verifier / structure_dock_independent",
+  "freshTabs":["http://127.0.0.16:5610/showcase?verify=e98e7b0","http://127.0.0.16:5610/design?verify=e98e7b0"],
+  "remoteCandidateEqual":true,
+  "main":"d7401bef6e48330796c74ec00c86db9622d48cdf",
+  "seal":{"verified":true,"candidate":"e98e7b033369ba29a458119b7f8047f405130005","inputs":748,"outputs":491},
+  "showcaseDesktop":{"viewport":[1280,720],"position":"sticky","panel":{"x":872.7999877929688,"y":12,"width":360,"height":600},"close":{"x":1196,"y":17.80000114440918,"width":28,"height":28},"focus":"Close inspection details","escapeClosed":true,"escapeReturn":"Inspect structure"},
+  "showcasePhone":{"viewport":[390,640],"position":"fixed","panel":{"x":3.200000047683716,"y":12,"width":360,"height":600},"close":{"x":326.3999938964844,"y":17.80000114440918,"width":28,"height":28},"previewInert":true,"shiftTabStaysInside":true,"shiftTabFocus":"Edit properties ↗","escapeClosed":true,"escapeReturn":"Inspect structure","previewInertAfterClose":false},
+  "studioDefaultSmoke":{"rightInspectCount":1,"lowerInspect":false,"focus":"Close inspection details","close":{"x":1244,"y":49,"width":28,"height":28},"desktopMainInert":false,"escapeClosed":true,"escapeReturn":"Inspect structure","expandedCanvasHeight":0,"expandedGraphHeight":536.2000122070312},
+  "viewportReset":true,
+  "verdict":"PASS — READY FOR OWNER REVIEW",
+  "findings":{"SDI-01":"closed on unchanged c9 Designer/Dock bytes","SDI-02":"closed on unchanged c9 Designer/Dock bytes","SDI-03":"closed on unchanged c9 handoff bytes","SDI-04":"closed by fresh e98 actual showcase observations"}
+}

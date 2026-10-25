@@ -1,0 +1,32 @@
+{
+  "candidate": "c9b6d86ebdbef09c5379214208a062bf70753f8e",
+  "origin": "http://127.0.0.16:5610/design?verify=c9b6d86",
+  "freshNavigation": true,
+  "staleReloadExcluded": "Original tab1 reload retained09055e0 state/classes and was excluded. Fresh tab2 loaded replacement structure-expanded class and zero-height hidden canvas.",
+  "remoteCandidateEqual": true,
+  "mainUnchanged": "d7401bef6e48330796c74ec00c86db9622d48cdf",
+  "sealIndependentVerify": {"verified":true,"candidate":"c9b6d86ebdbef09c5379214208a062bf70753f8e","inputs":748,"outputs":491},
+  "SDI01": {
+    "viewport":[390,640],
+    "expandedGraphHeight":148.1999969482422,
+    "canvasHeight":0,
+    "canvasInert":true,
+    "canvasVisibility":"hidden",
+    "fitViewGraphRect":{"x":0,"y":434.2000122070313,"width":390.3999938964844,"height":148.1999969482422},
+    "completeNodesAfterFitView":[
+      {"sourceId":"screen","x":17,"y":482.8856506347656,"width":149.22157287597656,"height":50.62871170043945},
+      {"sourceId":"onbCard","x":223.7784423828125,"y":481.22021484375,"width":149.2215576171875,"height":53.726417541503906}
+    ],
+    "result":"closed"
+  },
+  "SDI02":{"inspectOpenWorkspaceInert":true,"shiftTabFromCloseFocus":"Chat details","coveredWorkspaceSkipped":true,"result":"closed"},
+  "SDI03":{
+    "editProperties":{"expanded":false,"canvasHeight":95.5999984741211,"canvasInert":false,"floatingToolsPresent":true,"detailsOpen":false},
+    "locate":{"expanded":false,"canvasHeight":95.5999984741211,"canvasInert":false,"notice":"Located on canvas."},
+    "result":"closed"
+  },
+  "keyboard":{"escapeFromExpandedBarRestores":true,"desktopHeightHome":180,"desktopHeightEnd":420},
+  "preservation":{"jsonDraftExactAfterInspect":true,"jsonDraftExactAfterToggle":true,"editPropertiesDisabledDuringDraft":true,"searchFullNameRetained":true,"graphViewportTransformRetained":true},
+  "captureClaim":"Source guard remains unchanged and receives structureOpen && structureExpanded; actual covered/inert canvas observed. Fresh provider capture/refusal was not invoked or claimed.",
+  "viewportOverrideReset":true
+}

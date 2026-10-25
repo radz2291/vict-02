@@ -1,0 +1,32 @@
+{
+  "candidate": "09055e07631f8a2f53f34342540b7b4944a8850c",
+  "observer": "fresh independent verifier / structure_dock_independent",
+  "origin": "http://127.0.0.16:5610",
+  "fixture": "fresh unsaved screen-bb648614-2519-4d44-aa8b-02066cdb6a64, heading/input authored through Source UI",
+  "measurements": [
+    {"viewport":[1280,720],"stageHeight":652,"canvasHeight":279.20001220703125,"dockHeight":300,"graphHeight":249.1999969482422},
+    {"viewport":[820,600],"stageHeight":532,"canvasHeight":159.1999969482422,"dockHeight":300,"graphHeight":249.1999969482422,"keyboardHome":180,"keyboardEnd":300},
+    {"viewport":[820,600],"expanded":true,"canvasHeight":79.20000457763672,"dockHeight":380,"graphHeight":336.20001220703125},
+    {"viewport":[390,640],"stageHeight":277.6000061035156,"canvasHeight":108.8000030517578,"dockHeight":96,"graphHeight":45.20000076293945},
+    {"viewport":[390,640],"expanded":true,"canvasHeight":78.80000305175781,"dockHeight":126,"graphHeight":82.20000457763672}
+  ],
+  "focus": {
+    "openInspect": "Close inspection details",
+    "escapeReturns": "Inspect structure",
+    "phoneShiftTabFromClose": "Restore Structure",
+    "phoneCoveredFocusRect": {"x":357.6000061035156,"y":585.7000122070312,"width":24.80000114440918,"height":27.399999618530273},
+    "phoneFocusedControlCoveredByInspectionDrawer": true
+  },
+  "preservation": {
+    "jsonDraftExactAfterInspect": true,
+    "jsonDraftExactAfterStructureToggle": true,
+    "editPropertiesDisabledDuringDraft": true,
+    "applySourceAvailableOnReturn": true,
+    "searchAfterStructureToggle": "Independent",
+    "graphViewportTransformRetained": true
+  },
+  "viewportOverrideReset": true,
+  "sealIndependentVerify": {"verified":true,"candidate":"09055e07631f8a2f53f34342540b7b4944a8850c","inputs":748,"outputs":491},
+  "verdict": "HELD",
+  "findings": ["SDI-01", "SDI-02"]
+}
