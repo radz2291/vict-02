@@ -1,0 +1,11 @@
+# Cycle1.4 owner amendment — Structure bottom panel and right inspection
+
+2026-10-25. AUTHORIZED / IMPLEMENTING. The owner explicitly approved moving Structure out of Document into its own toggled bottom panel in the former Simulated execution area, with shared inspection in a right drawer. This supersedes the former Structure-in-Document/lower-inspection placement only. Floating canvas editing tools remain unchanged.
+
+Baseline delivery `09aafcaa7b3ab7620ec75151020075632f78ff18`, exact product `e76e2fc0f64f5a451edae01f4b0a1c9e7cfc68db`, independent verdict `a6003c06fd8e73b918ac0a619d5626bd37e95b81`; local/remote matched clean before isolating branch `codex/studio-cycle-1-4-structure-dock`. Main remains `d7401bef6e48330796c74ec00c86db9622d48cdf`. Preserve the owner's `.12:5606` browser/build/data; use a separate preview.
+
+Allowed paths: Studio Designer/Structure/source-details/showcase composition, focused UI tests and associated evidence/current pointers. No component ABI, engine/provider, capture authority, storage/history or application contracts change. No main merge/publication/deployment/next milestone/self-acceptance.
+
+Implementation decisions: bottom Structure toggle and resizable panel, persistent graph/canvas mounts across hide/show, source-fact Inspect on the right from either Layers or Structure, one right-side drawer at a time with Document context retained. Small views use bounded drawers and deliberate larger Structure height. Retain valuable temporary preview values and deny/fail controls under Document → Preview; remove their permanent bottom panel and obsolete tutorial copy. Simulation dispatch/effect boundaries stay intact.
+
+Required checks: graph/canvas/runtime/search/selection/camera/draft preservation; first contextual commands; keyboard resizing/Escape/focus; comfortable actual desktop/small geometry; no nested bottom Inspect; floating Format/Insert/Arrange/Connect remain on canvas; temporary preview/failure controls still function; showcase reflects both new panels; meaningful affected tests/types/build and exact-source seal; fresh independent exact-candidate challenge, push/remote verification. Retain failed observations. Stop at readiness for owner review.
