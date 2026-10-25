@@ -1,0 +1,13 @@
+{
+  "product": "e76e2fc0f64f5a451edae01f4b0a1c9e7cfc68db",
+  "seal": "bb46d98cbe6e520ac487abd5928a1dc0e4343eebf1f6a16de37dab81adc1e17a",
+  "model": "zai/glm-5.3-flash",
+  "scope": "Separate corrective/recovery leg; not part of the natural editor comparison. Fresh document/conversation cloned from captured natural source except new document ID/revision. Initial UI import is one manual history transaction, not an agent acknowledgement.",
+  "prompt": "Correct this local editor while preserving its existing independent title, body and document-selection state and live preview. Use only the already declared demo.submit action to record a local Save intent and display its actual simulated result; label the button \"Preview save intent\". Replace any autosave or persistence claim with \"Temporary preview values; no document persistence.\" Do not add host actions or providers, and do not force void outputs into typed state. Also add an Editing tips section with eight short title-and-description rows. Use incremental batches and review the first meaningful change early.",
+  "submittedAt": "2026-10-25T13:18:07.774Z",
+  "display": {
+    "dpr": 1.0000000149011612,
+    "height": 720,
+    "width": 1280
+  }
+}

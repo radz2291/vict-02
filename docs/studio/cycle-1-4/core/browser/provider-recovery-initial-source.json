@@ -1,0 +1,2133 @@
+{
+  "schema": "vict.ui-document@1",
+  "id": "screen-12d6dd18-acce-492d-95fb-89507f1e02b3",
+  "revision": "r1",
+  "root": "screen",
+  "nodes": {
+    "screen": {
+      "kind": "element",
+      "id": "screen",
+      "tag": "main",
+      "attributes": {
+        "aria-label": "Content editor comparison"
+      },
+      "children": [
+        "hdr",
+        "bodyRow",
+        "ftr"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "24px"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "560px"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#ffffff"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#243047"
+          }
+        },
+        {
+          "property": "font-family",
+          "value": {
+            "type": "text",
+            "value": "Inter, system-ui, -apple-system, 'Segoe UI', sans-serif"
+          }
+        }
+      ]
+    },
+    "hdr": {
+      "kind": "element",
+      "id": "hdr",
+      "tag": "div",
+      "children": [
+        "hdrLeft",
+        "hdrRight"
+      ],
+      "localStyle": [
+        {
+          "property": "align-items",
+          "value": {
+            "type": "text",
+            "value": "center"
+          }
+        },
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex",
+          "value": {
+            "type": "text",
+            "value": "none"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "16px"
+          }
+        },
+        {
+          "property": "justify-content",
+          "value": {
+            "type": "text",
+            "value": "space-between"
+          }
+        }
+      ]
+    },
+    "hdrLeft": {
+      "kind": "element",
+      "id": "hdrLeft",
+      "tag": "div",
+      "children": [
+        "hdrTitle",
+        "hdrSub"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "2px"
+          }
+        },
+        {
+          "property": "min-width",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        }
+      ]
+    },
+    "hdrTitle": {
+      "kind": "element",
+      "id": "hdrTitle",
+      "tag": "h1",
+      "children": [
+        "hdrTitle-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "19px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "700"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.2"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#1c2740"
+          }
+        },
+        {
+          "property": "letter-spacing",
+          "value": {
+            "type": "text",
+            "value": "-0.01em"
+          }
+        }
+      ]
+    },
+    "hdrTitle-text": {
+      "kind": "text",
+      "id": "hdrTitle-text",
+      "content": {
+        "type": "literal",
+        "value": "Content editor"
+      }
+    },
+    "hdrSub": {
+      "kind": "element",
+      "id": "hdrSub",
+      "tag": "p",
+      "children": [
+        "hdrSub-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "12.5px"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.4"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#64748b"
+          }
+        }
+      ]
+    },
+    "hdrSub-text": {
+      "kind": "text",
+      "id": "hdrSub-text",
+      "content": {
+        "type": "literal",
+        "value": "Compact workspace · local draft — everything stays in this browser"
+      }
+    },
+    "hdrRight": {
+      "kind": "element",
+      "id": "hdrRight",
+      "tag": "div",
+      "children": [
+        "statusPill",
+        "saveBtn"
+      ],
+      "localStyle": [
+        {
+          "property": "align-items",
+          "value": {
+            "type": "text",
+            "value": "center"
+          }
+        },
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex",
+          "value": {
+            "type": "text",
+            "value": "none"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "10px"
+          }
+        }
+      ]
+    },
+    "statusPill": {
+      "kind": "element",
+      "id": "statusPill",
+      "tag": "p",
+      "children": [
+        "statusPill-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#475569"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#eef2f7"
+          }
+        },
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "1px solid #e2e8f0"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "999px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "6px 11px"
+          }
+        },
+        {
+          "property": "white-space",
+          "value": {
+            "type": "text",
+            "value": "nowrap"
+          }
+        }
+      ]
+    },
+    "statusPill-text": {
+      "kind": "text",
+      "id": "statusPill-text",
+      "content": {
+        "type": "literal",
+        "value": "Local draft"
+      }
+    },
+    "saveBtn": {
+      "kind": "component",
+      "id": "saveBtn",
+      "definitionId": "vict.catalog.button",
+      "revision": "1",
+      "slots": {},
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Save changes"
+        }
+      },
+      "localStyle": [
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#4f46e5"
+          }
+        },
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "none"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "8px"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#ffffff"
+          }
+        },
+        {
+          "property": "cursor",
+          "value": {
+            "type": "text",
+            "value": "pointer"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "13px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "8px 14px"
+          }
+        }
+      ]
+    },
+    "bodyRow": {
+      "kind": "element",
+      "id": "bodyRow",
+      "tag": "div",
+      "children": [
+        "listCol",
+        "editorCol",
+        "previewCol"
+      ],
+      "localStyle": [
+        {
+          "property": "align-items",
+          "value": {
+            "type": "text",
+            "value": "stretch"
+          }
+        },
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex",
+          "value": {
+            "type": "text",
+            "value": "1 1 auto"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "16px"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        }
+      ]
+    },
+    "listCol": {
+      "kind": "element",
+      "id": "listCol",
+      "tag": "div",
+      "children": [
+        "docList"
+      ],
+      "attributes": {
+        "aria-label": "Documents"
+      },
+      "localStyle": [
+        {
+          "property": "border-right",
+          "value": {
+            "type": "text",
+            "value": "1px solid #e8edf4"
+          }
+        },
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex",
+          "value": {
+            "type": "text",
+            "value": "none"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "2px"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "padding-right",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        },
+        {
+          "property": "width",
+          "value": {
+            "type": "text",
+            "value": "220px"
+          }
+        }
+      ]
+    },
+    "docList": {
+      "kind": "component",
+      "id": "docList",
+      "definitionId": "vict.catalog.toggle-group",
+      "revision": "1",
+      "slots": {
+        "items": {
+          "name": "items",
+          "children": [
+            "docItem1",
+            "docItem2",
+            "docItem3"
+          ]
+        }
+      },
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Documents"
+        },
+        "value": {
+          "type": "ref",
+          "path": "state.openDoc"
+        }
+      },
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "2px"
+          }
+        },
+        {
+          "property": "width",
+          "value": {
+            "type": "text",
+            "value": "100%"
+          }
+        }
+      ],
+      "outputs": {
+        "valueChange": {
+          "setState": {
+            "key": "openDoc"
+          }
+        }
+      }
+    },
+    "docItem1": {
+      "kind": "component",
+      "id": "docItem1",
+      "definitionId": "vict.catalog.toggle-group-item",
+      "revision": "1",
+      "slots": {},
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Product brief"
+        },
+        "value": {
+          "type": "literal",
+          "value": "Product brief"
+        }
+      },
+      "localStyle": [
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "8px"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "13px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "500"
+          }
+        },
+        {
+          "property": "justify-content",
+          "value": {
+            "type": "text",
+            "value": "flex-start"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "7px 10px"
+          }
+        },
+        {
+          "property": "text-align",
+          "value": {
+            "type": "text",
+            "value": "left"
+          }
+        },
+        {
+          "property": "width",
+          "value": {
+            "type": "text",
+            "value": "100%"
+          }
+        }
+      ]
+    },
+    "docItem2": {
+      "kind": "component",
+      "id": "docItem2",
+      "definitionId": "vict.catalog.toggle-group-item",
+      "revision": "1",
+      "slots": {},
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Design notes"
+        },
+        "value": {
+          "type": "literal",
+          "value": "Design notes"
+        }
+      },
+      "localStyle": [
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "8px"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "13px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "500"
+          }
+        },
+        {
+          "property": "justify-content",
+          "value": {
+            "type": "text",
+            "value": "flex-start"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "7px 10px"
+          }
+        },
+        {
+          "property": "text-align",
+          "value": {
+            "type": "text",
+            "value": "left"
+          }
+        },
+        {
+          "property": "width",
+          "value": {
+            "type": "text",
+            "value": "100%"
+          }
+        }
+      ]
+    },
+    "docItem3": {
+      "kind": "component",
+      "id": "docItem3",
+      "definitionId": "vict.catalog.toggle-group-item",
+      "revision": "1",
+      "slots": {},
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Sprint retro"
+        },
+        "value": {
+          "type": "literal",
+          "value": "Sprint retro"
+        }
+      },
+      "localStyle": [
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "8px"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "13px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "500"
+          }
+        },
+        {
+          "property": "justify-content",
+          "value": {
+            "type": "text",
+            "value": "flex-start"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "7px 10px"
+          }
+        },
+        {
+          "property": "text-align",
+          "value": {
+            "type": "text",
+            "value": "left"
+          }
+        },
+        {
+          "property": "width",
+          "value": {
+            "type": "text",
+            "value": "100%"
+          }
+        }
+      ]
+    },
+    "editorCol": {
+      "kind": "element",
+      "id": "editorCol",
+      "tag": "div",
+      "children": [
+        "capRow",
+        "titleField",
+        "bodyField",
+        "editorHint"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex",
+          "value": {
+            "type": "text",
+            "value": "1 1 auto"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "10px"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "min-width",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        }
+      ]
+    },
+    "capRow": {
+      "kind": "element",
+      "id": "capRow",
+      "tag": "div",
+      "children": [
+        "capLabel",
+        "capDocText"
+      ],
+      "localStyle": [
+        {
+          "property": "align-items",
+          "value": {
+            "type": "text",
+            "value": "baseline"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#4f46e5"
+          }
+        },
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "12.5px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "6px"
+          }
+        }
+      ]
+    },
+    "capLabel": {
+      "kind": "element",
+      "id": "capLabel",
+      "tag": "p",
+      "children": [
+        "capLabel-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "11px"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.2"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#94a3b8"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "700"
+          }
+        },
+        {
+          "property": "letter-spacing",
+          "value": {
+            "type": "text",
+            "value": "0.08em"
+          }
+        },
+        {
+          "property": "text-transform",
+          "value": {
+            "type": "text",
+            "value": "uppercase"
+          }
+        }
+      ]
+    },
+    "capLabel-text": {
+      "kind": "text",
+      "id": "capLabel-text",
+      "content": {
+        "type": "literal",
+        "value": "Editing"
+      }
+    },
+    "capDocText": {
+      "kind": "text",
+      "id": "capDocText",
+      "content": {
+        "type": "expression",
+        "expression": {
+          "type": "ref",
+          "path": "state.openDoc"
+        }
+      }
+    },
+    "titleField": {
+      "kind": "element",
+      "id": "titleField",
+      "tag": "div",
+      "children": [
+        "titleLabel",
+        "titleInput"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "flex",
+          "value": {
+            "type": "text",
+            "value": "none"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "6px"
+          }
+        }
+      ]
+    },
+    "titleLabel": {
+      "kind": "element",
+      "id": "titleLabel",
+      "tag": "label",
+      "children": [
+        "titleLabel-text"
+      ],
+      "attributes": {
+        "for": "doc-title-input"
+      },
+      "localStyle": [
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#475569"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.2"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        }
+      ]
+    },
+    "titleLabel-text": {
+      "kind": "text",
+      "id": "titleLabel-text",
+      "content": {
+        "type": "literal",
+        "value": "Title"
+      }
+    },
+    "titleInput": {
+      "kind": "element",
+      "id": "titleInput",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "id": "doc-title-input",
+        "name": "title",
+        "placeholder": "Document title",
+        "value": {
+          "type": "ref",
+          "path": "state.docTitle"
+        }
+      },
+      "localStyle": [
+        {
+          "property": "background",
+          "value": {
+            "type": "text",
+            "value": "#ffffff"
+          }
+        },
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "1px solid #d7deeb"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "8px"
+          }
+        },
+        {
+          "property": "box-sizing",
+          "value": {
+            "type": "text",
+            "value": "border-box"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#1e293b"
+          }
+        },
+        {
+          "property": "font-family",
+          "value": {
+            "type": "text",
+            "value": "inherit"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "13.5px"
+          }
+        },
+        {
+          "property": "outline",
+          "value": {
+            "type": "text",
+            "value": "none"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "8px 10px"
+          }
+        },
+        {
+          "property": "width",
+          "value": {
+            "type": "text",
+            "value": "100%"
+          }
+        }
+      ],
+      "interactions": [
+        {
+          "on": "change",
+          "action": "setState",
+          "key": "docTitle",
+          "value": {
+            "type": "ref",
+            "path": "state.docTitle"
+          }
+        }
+      ],
+      "styleSources": [
+        "src.titleInput.always.focus"
+      ]
+    },
+    "bodyField": {
+      "kind": "element",
+      "id": "bodyField",
+      "tag": "div",
+      "children": [
+        "bodyLabel",
+        "bodyInput"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex",
+          "value": {
+            "type": "text",
+            "value": "1 1 auto"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "6px"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        }
+      ]
+    },
+    "bodyLabel": {
+      "kind": "element",
+      "id": "bodyLabel",
+      "tag": "label",
+      "children": [
+        "bodyLabel-text"
+      ],
+      "attributes": {
+        "for": "doc-body-input"
+      },
+      "localStyle": [
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#475569"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.2"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        }
+      ]
+    },
+    "bodyLabel-text": {
+      "kind": "text",
+      "id": "bodyLabel-text",
+      "content": {
+        "type": "literal",
+        "value": "Body"
+      }
+    },
+    "bodyInput": {
+      "kind": "element",
+      "id": "bodyInput",
+      "tag": "textarea",
+      "children": [],
+      "attributes": {
+        "id": "doc-body-input",
+        "name": "body",
+        "placeholder": "Write the document body…",
+        "rows": {
+          "type": "literal",
+          "value": 6
+        },
+        "value": {
+          "type": "ref",
+          "path": "state.docBody"
+        }
+      },
+      "localStyle": [
+        {
+          "property": "background",
+          "value": {
+            "type": "text",
+            "value": "#ffffff"
+          }
+        },
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "1px solid #d7deeb"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "8px"
+          }
+        },
+        {
+          "property": "box-sizing",
+          "value": {
+            "type": "text",
+            "value": "border-box"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#1e293b"
+          }
+        },
+        {
+          "property": "flex",
+          "value": {
+            "type": "text",
+            "value": "1 1 auto"
+          }
+        },
+        {
+          "property": "font-family",
+          "value": {
+            "type": "text",
+            "value": "inherit"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "13.5px"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.55"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "outline",
+          "value": {
+            "type": "text",
+            "value": "none"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "10px"
+          }
+        },
+        {
+          "property": "resize",
+          "value": {
+            "type": "text",
+            "value": "none"
+          }
+        },
+        {
+          "property": "width",
+          "value": {
+            "type": "text",
+            "value": "100%"
+          }
+        }
+      ],
+      "interactions": [
+        {
+          "on": "change",
+          "action": "setState",
+          "key": "docBody",
+          "value": {
+            "type": "ref",
+            "path": "state.docBody"
+          }
+        }
+      ],
+      "styleSources": [
+        "src.bodyInput.always.focus"
+      ]
+    },
+    "editorHint": {
+      "kind": "element",
+      "id": "editorHint",
+      "tag": "p",
+      "children": [
+        "editorHint-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "11.5px"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.4"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#94a3b8"
+          }
+        }
+      ]
+    },
+    "editorHint-text": {
+      "kind": "text",
+      "id": "editorHint-text",
+      "content": {
+        "type": "literal",
+        "value": "Drafts save locally as you type."
+      }
+    },
+    "previewCol": {
+      "kind": "element",
+      "id": "previewCol",
+      "tag": "div",
+      "children": [
+        "pvLabel",
+        "pvDivider",
+        "pvTitle",
+        "pvBodyWrap",
+        "pvMeta"
+      ],
+      "localStyle": [
+        {
+          "property": "background",
+          "value": {
+            "type": "text",
+            "value": "#f8fafc"
+          }
+        },
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "1px solid #e8edf4"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "box-sizing",
+          "value": {
+            "type": "text",
+            "value": "border-box"
+          }
+        },
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex",
+          "value": {
+            "type": "text",
+            "value": "none"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "10px"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "16px"
+          }
+        },
+        {
+          "property": "width",
+          "value": {
+            "type": "text",
+            "value": "300px"
+          }
+        }
+      ]
+    },
+    "pvLabel": {
+      "kind": "element",
+      "id": "pvLabel",
+      "tag": "p",
+      "children": [
+        "pvLabel-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "11px"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.2"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#94a3b8"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "700"
+          }
+        },
+        {
+          "property": "letter-spacing",
+          "value": {
+            "type": "text",
+            "value": "0.08em"
+          }
+        },
+        {
+          "property": "text-transform",
+          "value": {
+            "type": "text",
+            "value": "uppercase"
+          }
+        }
+      ]
+    },
+    "pvLabel-text": {
+      "kind": "text",
+      "id": "pvLabel-text",
+      "content": {
+        "type": "literal",
+        "value": "Preview"
+      }
+    },
+    "pvDivider": {
+      "kind": "element",
+      "id": "pvDivider",
+      "tag": "div",
+      "children": [],
+      "localStyle": [
+        {
+          "property": "border-top",
+          "value": {
+            "type": "text",
+            "value": "1px solid #e2e8f0"
+          }
+        },
+        {
+          "property": "flex",
+          "value": {
+            "type": "text",
+            "value": "none"
+          }
+        }
+      ]
+    },
+    "pvTitle": {
+      "kind": "element",
+      "id": "pvTitle",
+      "tag": "h2",
+      "children": [
+        "pvTitle-text",
+        "pvTitleText"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "16px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.3"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#1e293b"
+          }
+        },
+        {
+          "property": "overflow-wrap",
+          "value": {
+            "type": "text",
+            "value": "break-word"
+          }
+        }
+      ]
+    },
+    "pvTitle-text": {
+      "kind": "text",
+      "id": "pvTitle-text",
+      "content": {
+        "type": "literal",
+        "value": ""
+      }
+    },
+    "pvTitleText": {
+      "kind": "text",
+      "id": "pvTitleText",
+      "content": {
+        "type": "expression",
+        "expression": {
+          "type": "ref",
+          "path": "state.docTitle"
+        }
+      }
+    },
+    "pvBodyWrap": {
+      "kind": "element",
+      "id": "pvBodyWrap",
+      "tag": "div",
+      "children": [
+        "pvBodyText"
+      ],
+      "localStyle": [
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#475569"
+          }
+        },
+        {
+          "property": "flex",
+          "value": {
+            "type": "text",
+            "value": "1 1 auto"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "13px"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.6"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "overflow",
+          "value": {
+            "type": "text",
+            "value": "auto"
+          }
+        },
+        {
+          "property": "white-space",
+          "value": {
+            "type": "text",
+            "value": "pre-wrap"
+          }
+        }
+      ]
+    },
+    "pvBodyText": {
+      "kind": "text",
+      "id": "pvBodyText",
+      "content": {
+        "type": "expression",
+        "expression": {
+          "type": "ref",
+          "path": "state.docBody"
+        }
+      }
+    },
+    "pvMeta": {
+      "kind": "element",
+      "id": "pvMeta",
+      "tag": "p",
+      "children": [
+        "pvMeta-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "11px"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.3"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#94a3b8"
+          }
+        }
+      ]
+    },
+    "pvMeta-text": {
+      "kind": "text",
+      "id": "pvMeta-text",
+      "content": {
+        "type": "literal",
+        "value": "Live preview — updates as you type"
+      }
+    },
+    "ftr": {
+      "kind": "element",
+      "id": "ftr",
+      "tag": "div",
+      "children": [
+        "ftrLeft",
+        "ftrRight"
+      ],
+      "localStyle": [
+        {
+          "property": "align-items",
+          "value": {
+            "type": "text",
+            "value": "center"
+          }
+        },
+        {
+          "property": "border-top",
+          "value": {
+            "type": "text",
+            "value": "1px solid #e8edf4"
+          }
+        },
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex",
+          "value": {
+            "type": "text",
+            "value": "none"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "8px"
+          }
+        },
+        {
+          "property": "justify-content",
+          "value": {
+            "type": "text",
+            "value": "space-between"
+          }
+        },
+        {
+          "property": "padding-top",
+          "value": {
+            "type": "text",
+            "value": "10px"
+          }
+        }
+      ]
+    },
+    "ftrLeft": {
+      "kind": "element",
+      "id": "ftrLeft",
+      "tag": "div",
+      "children": [
+        "ftrStatusLabel",
+        "ftrStatusWrap"
+      ],
+      "localStyle": [
+        {
+          "property": "align-items",
+          "value": {
+            "type": "text",
+            "value": "baseline"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#64748b"
+          }
+        },
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "6px"
+          }
+        }
+      ]
+    },
+    "ftrStatusLabel": {
+      "kind": "text",
+      "id": "ftrStatusLabel",
+      "content": {
+        "type": "literal",
+        "value": "Status"
+      }
+    },
+    "ftrRight": {
+      "kind": "text",
+      "id": "ftrRight",
+      "content": {
+        "type": "literal",
+        "value": "3 documents · Compact view"
+      }
+    },
+    "ftrStatusWrap": {
+      "kind": "element",
+      "id": "ftrStatusWrap",
+      "tag": "span",
+      "children": [
+        "ftrStatusText"
+      ],
+      "attributes": {
+        "role": "status"
+      },
+      "localStyle": [
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        },
+        {
+          "property": "margin-left",
+          "value": {
+            "type": "text",
+            "value": "2px"
+          }
+        }
+      ]
+    },
+    "ftrStatusText": {
+      "kind": "text",
+      "id": "ftrStatusText",
+      "content": {
+        "type": "expression",
+        "expression": {
+          "type": "ref",
+          "path": "state.saveStatus"
+        }
+      }
+    }
+  },
+  "componentDefinitions": {},
+  "styleSources": {
+    "src.titleInput.always.focus": {
+      "id": "src.titleInput.always.focus",
+      "declarations": [
+        {
+          "property": "border-color",
+          "value": {
+            "type": "text",
+            "value": "#4f46e5"
+          }
+        }
+      ],
+      "pseudo": "focus"
+    },
+    "src.bodyInput.always.focus": {
+      "id": "src.bodyInput.always.focus",
+      "declarations": [
+        {
+          "property": "border-color",
+          "value": {
+            "type": "text",
+            "value": "#4f46e5"
+          }
+        }
+      ],
+      "pseudo": "focus"
+    }
+  },
+  "assets": {},
+  "tokens": {},
+  "conditions": {
+    "compact": {
+      "id": "compact",
+      "kind": "container",
+      "name": "studio-screen",
+      "query": "(max-width: 600px)"
+    }
+  },
+  "localState": {
+    "message": {
+      "key": "message",
+      "type": "string",
+      "initial": "Hello from my screen"
+    },
+    "accepted": {
+      "key": "accepted",
+      "type": "boolean",
+      "initial": false
+    },
+    "dialogOpen": {
+      "key": "dialogOpen",
+      "type": "boolean",
+      "initial": false
+    },
+    "busy": {
+      "key": "busy",
+      "type": "boolean",
+      "initial": false
+    },
+    "actionError": {
+      "key": "actionError",
+      "type": "string",
+      "initial": ""
+    },
+    "actionResult": {
+      "key": "actionResult",
+      "type": "string",
+      "initial": ""
+    },
+    "openDoc": {
+      "key": "openDoc",
+      "type": "string",
+      "initial": "Product brief"
+    },
+    "docTitle": {
+      "key": "docTitle",
+      "type": "string",
+      "initial": "October release plan"
+    },
+    "docBody": {
+      "key": "docBody",
+      "type": "string",
+      "initial": "Draft the messaging for the October release.\n\n- Lead with the new compact editor\n- Call out local-first drafts\n- Keep the whole page on one screen"
+    },
+    "saveStatus": {
+      "key": "saveStatus",
+      "type": "string",
+      "initial": "Unsaved changes"
+    }
+  }
+}

@@ -1,0 +1,106 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Content editor comparison"
+  - generic: ○ New screen
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- complementary "Chat":
+  - region "Conversation":
+    - region "Messages — Message":
+      - log:
+        - generic: You
+        - generic: Design a polished compact content editor with a document list, editable title and body, preview, status and local save feedback. Use independent local state, review the first meaningful visible section early and verify the result. Keep it within one screen.
+        - button "Copy message":
+        - generic: Assistant
+        - generic "Conversation timeline":
+          - paragraph: Progress summary · Connecting to the VICT / Mastra agent…
+          - paragraph: Progress summary · Agent is working on your request…
+          - paragraph: I'll start by reading the current document state, recipe palette, and token registry in parallel, then pull the exact contracts I need before composing.
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - paragraph:
+            - text: "Good context: 6 demo states exist (message, accepted, dialogOpen, busy, actionError, actionResult) — I'll declare independent keys instead. No tokens registered. Palette shows element recipes (section/row/heading/text/input) and a component-based"
+            - code: button
+            - text: . Now I need the button contract (componentId/revision/outputs), plus label/separator contracts, and confirmation that native
+            - code: input
+            - text: /
+            - code: textarea
+            - text: tags are registered.
+          - button "Read query refused safely failed":
+            - generic: Read query refused safely
+            - generic: failed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - paragraph:
+            - text: The contracts call needs exact revisions for the component-based
+            - code: button
+            - text: . Native
+            - code: input
+            - text: /
+            - code: textarea
+            - text: are registered leaf elements, so generic insert works for those. Let me find the button's catalog entry and check the next palette page for
+            - code: label
+            - text: /
+            - code: separator
+            - text: seeds.
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - paragraph:
+            - text: "Found it:"
+            - code: vict.catalog.button
+            - text: revision
+            - code: "1"
+            - text: . Now let me read its full contract with examples to get exact props, slots, and outputs.
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+    - button "Scroll to latest message":
+      - generic: Scroll to end
+    - textbox "Message":
+      - /placeholder: Ask for a change…
+      - text: Design a polished compact content editor with a document list, editable title and body, preview, status and local save feedback. Use independent local state, review the first meaningful visible section early and verify the result. Keep it within one screen.
+    - button "Stop":
+      - generic: Stop
+    - status
+  - status "Reading current source facts…":
+    - generic: Working…
+  - button "Chat details": ···
+- main:
+  - generic "Workspace mode":
+    - button "Design" [pressed]
+    - button "Interact"
+  - button "Document"
+  - generic "Screen canvas":
+    - main "Content editor comparison"
+  - generic: ＋
+  - heading "What will you make?" [level=1]
+  - paragraph: Select this screen to open its tools, then choose Insert.
+  - generic "Simulated execution Local preview · no live effects":
+    - text: Simulated execution
+    - generic: Local preview · no live effects
+- contentinfo:
+  - status: New screen · not saved yet.
+  - generic "v1_0d9b3b8aebe740e7c5e2b2d8bc4d42facbe472bc2bf8db753e6ff82eae472d89": "@3 · v1_0d9b3b8aebe7…"

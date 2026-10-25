@@ -1,0 +1,445 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Content editor"
+  - generic: ● Unsaved changes
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- complementary "Chat":
+  - region "Conversation":
+    - region "Messages — Message":
+      - log:
+        - generic: You
+        - generic: Design a polished compact content editor with a document list, editable title and body, preview, status and local save feedback. Use independent local state, review the first meaningful visible section early and verify the result. Keep it within one screen.
+        - button "Copy message":
+        - generic: Assistant
+        - generic "Conversation timeline":
+          - paragraph: Progress summary · Connecting to the VICT / Mastra agent…
+          - paragraph: Progress summary · Agent is working on your request…
+          - paragraph: I'll start by reading the current document state, structure, and available building blocks.
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - paragraph:
+            - text: "Fresh document: only the"
+            - code: screen
+            - text: root exists, plus 6 pre-seeded demo states and one
+            - code: demo.submit
+            - text: action — I'll leave those untouched and declare independent local state for the editor. Now let me get the exact contracts for the components I need, and check that
+            - code: textarea
+            - text: is a registered native element.
+          - button "Read query refused safely failed":
+            - generic: Read query refused safely
+            - generic: failed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - paragraph: The contracts need exact catalog IDs. Let me discover the families and the remaining registered elements.
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - paragraph:
+            - code: textarea
+            - text: is registered. Now let me get exact catalog IDs and revisions for the general-family components I plan to use.
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - paragraph:
+            - code: section
+            - text: /
+            - code: row
+            - text: /
+            - code: heading
+            - text: /
+            - code: text
+            - text: are recipe primitives (no catalog contract), while
+            - code: button
+            - text: /
+            - code: input
+            - text: are catalog components. Let me read their exact contracts with examples.
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - paragraph:
+            - text: "Contracts confirmed:"
+            - code: button
+            - text: (props
+            - code: label
+            - text: ", output"
+            - code: press
+            - text: ),
+            - code: input
+            - text: is a native recipe pattern (value ref + change→state),
+            - code: textarea
+            - text: is registered. The 6 seeded states (
+            - code: message
+            - text: ","
+            - code: accepted
+            - text: ","
+            - code: dialogOpen
+            - text: ", …) are demo leftovers — I'll leave them and declare my own independent local state."
+          - paragraph:
+            - strong: Plan
+            - text: "(compact, one screen): header (title + live status pill + last-saved + Save) → left document list (3 items) → right column with Draft card (title input + body textarea) and live Preview card."
+          - paragraph: "Batch 1 — restyle the root and declare the save-status state:"
+          - button "Browser acknowledged committed transaction completed":
+            - generic: Browser acknowledged committed transaction
+            - generic: completed
+          - paragraph:
+            - code: "applied: 1"
+            - text: but I sent 3 operations — let me verify the state declarations actually landed before building on them.
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - paragraph:
+            - text: State confirmed (
+            - code: saveStatus
+            - text: ","
+            - code: lastSaved
+            - text: declared; revision now
+            - code: r1#1
+            - text: "). Building the header section next:"
+          - button "Browser acknowledged committed transaction completed":
+            - generic: Browser acknowledged committed transaction
+            - generic: completed
+          - paragraph: "Header applied. Now the Save button with its bindings (also testing whether one output can take two state connections), plus the start of the content row:"
+          - button "Edit refused before browser proposal failed":
+            - generic: Edit refused before browser proposal
+            - generic: failed
+          - paragraph:
+            - code: bindText
+            - text: needs an actual text node, not a
+            - code: text
+            - text: "recipe element — the batch was rejected atomically. Restructuring: raw text nodes inside wrappers for both bound values, plus the Save button:"
+          - button "Browser acknowledged committed transaction completed":
+            - generic: Browser acknowledged committed transaction
+            - generic: completed
+          - paragraph:
+            - text: Header complete with bindings. Now wiring the Save button — connecting its
+            - code: press
+            - text: output to both
+            - code: saveStatus
+            - text: and
+            - code: lastSaved
+            - text: "(verifying a single output accepts two state connections):"
+          - button "Edit refused before browser proposal failed":
+            - generic: Edit refused before browser proposal
+            - generic: failed
+          - paragraph:
+            - text: A
+            - code: press
+            - text: output carries a
+            - code: void
+            - text: "payload and the validator ties the state type to it — let me test whether a single connect to a string state is accepted at all:"
+          - button "Edit refused before browser proposal failed":
+            - generic: Edit refused before browser proposal
+            - generic: failed
+          - paragraph:
+            - text: The
+            - code: press
+            - text: output (void payload) can't drive a string state at all — output payload types must match state types. I need the full contracts to see the canonical composition/binding rules before reworking the interaction model. The button descriptor was a complete body, so I can pass its digest; I'll also pull
+            - code: select
+            - text: /
+            - code: combobox
+            - text: "since their outputs carry string payloads:"
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - paragraph:
+            - text: "Key discovery: outputs carry typed payloads —"
+            - code: select.valueChange
+            - text: (string) → string state is the canonical pattern, and
+            - code: button.press
+            - text: "(void) can't write typed state. Let me check the boolean-family components' contracts and simultaneously test whether a void output can at least drive a boolean state:"
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Edit refused before browser proposal failed":
+            - generic: Edit refused before browser proposal
+            - generic: failed
+          - paragraph:
+            - text: "Confirmed:"
+            - code: press
+            - text: (void) can't write any state — the platform's canonical writers are typed-payload outputs (
+            - code: select.valueChange
+            - text: →string,
+            - code: switch.checkedChange
+            - text: →boolean) and
+            - code: wireInput
+            - text: for native fields. The batch was rejected atomically, so no
+            - code: saved
+            - text: state exists.
+          - paragraph:
+            - strong: "Revised canonical design:"
+            - text: document list = real
+            - code: select
+            - text: (string payload →
+            - code: docName
+            - text: ", mirrored live in the status pill); title/body = native fields via"
+            - code: wireInput
+            - text: (independent state); save feedback = a
+            - code: switch
+            - text: (
+            - code: Saved
+            - text: ", boolean payload →"
+            - code: saved
+            - text: ") — no dead buttons. First, reworking the header (drop the dead Save button, repoint the pill at the live document state):"
+          - button "Edit refused before browser proposal failed":
+            - generic: Edit refused before browser proposal
+            - generic: failed
+          - paragraph: "Resetting a binding by omitting the expression isn't accepted — I'll replace the bound text node with a fresh static one instead:"
+          - button "Browser acknowledged committed transaction completed":
+            - generic: Browser acknowledged committed transaction
+            - generic: completed
+          - paragraph:
+            - text: Header reworked (r1#4). Now the document list — a real
+            - code: select
+            - text: with three items, controlled by
+            - code: docName
+            - text: ", whose"
+            - code: valueChange
+            - text: "(string payload) writes that same state — then I'll review this first visible section:"
+          - button "Edit refused before browser proposal failed":
+            - generic: Edit refused before browser proposal
+            - generic: failed
+          - paragraph:
+            - code: sidebar
+            - text: "was part of the earlier rejected batch — it doesn't exist yet. Creating the content row and sidebar first, then the select:"
+          - button "Browser acknowledged committed transaction completed":
+            - generic: Browser acknowledged committed transaction
+            - generic: completed
+          - paragraph:
+            - text: Now wiring the select to
+            - code: docName
+            - text: "and adding a helper hint — then reviewing the first visible section:"
+          - button "Browser acknowledged committed transaction completed":
+            - generic: Browser acknowledged committed transaction
+            - generic: completed
+          - paragraph: "First meaningful section is in place (header with live status pill + document list). Reviewing it now, as requested:"
+          - button "Observed actual rendered appearance completed":
+            - generic: Observed actual rendered appearance
+            - generic: completed
+          - paragraph: "First section looks clean — pill, labels, and select render properly (with a possible minor select overflow I'll re-check at the end). Building the editor column now:"
+          - button "Browser acknowledged committed transaction completed":
+            - generic: Browser acknowledged committed transaction
+            - generic: completed
+          - paragraph: "Editor card in place. Now wiring the two fields to independent local state, the saved switch, and starting the preview card:"
+          - button "Browser acknowledged committed transaction completed":
+            - generic: Browser acknowledged committed transaction
+            - generic: completed
+          - paragraph: "Final structure and polish batch — preview body with live bindings, focus styles for the fields, and a sidebar width guard:"
+          - button "Browser acknowledged committed transaction completed":
+            - generic: Browser acknowledged committed transaction
+            - generic: completed
+          - paragraph: "All structure is in (r1#9). Before final visual verification, inspecting the actual source to confirm bindings/wiring and check for leftover seeds:"
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - paragraph:
+            - code: docName
+            - text: /
+            - code: saved
+            - text: are declared, but I see seed states from the component accelerators (
+            - code: catalog_docSelect_root_value
+            - text: ","
+            - code: catalog_savedSwitch_root_checked
+            - text: ") and two more state entries off-page. Verifying the actual component wiring points at MY states, not seed leftovers:"
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - paragraph:
+            - text: "Found leftover seed items: the select still contains seeded"
+            - code: docSelect-items-1/2
+            - text: "ahead of my three documents — removing them:"
+          - button "Browser acknowledged committed transaction completed":
+            - generic: Browser acknowledged committed transaction
+            - generic: completed
+          - paragraph: "Seed items removed. Now verifying the remaining bindings directly at the nodes:"
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - paragraph: "Every binding and wiring path checks out in source. Final visual verification of the whole editor:"
+          - button "Observed actual rendered appearance completed":
+            - generic: Observed actual rendered appearance
+            - generic: completed
+          - paragraph: "Everything renders correctly, but the screen is 704px tall vs the ~570px preview viewport — the Preview card is cut below the fold, violating \"one screen\". Fix: move Preview beside the Draft card (the row wraps gracefully on narrow presets) and tighten vertical spacing:"
+          - button "Browser acknowledged committed transaction completed":
+            - generic: Browser acknowledged committed transaction
+            - generic: completed
+          - paragraph: "Layout restructured (r1#11). Confirming the one-screen fit:"
+          - button "Observed actual rendered appearance completed":
+            - generic: Observed actual rendered appearance
+            - generic: completed
+          - paragraph: "Much better — everything fits with no horizontal overflow. Two cosmetic issues remain: uneven column tops and a bottom-edge artifact. Inspecting the row structure:"
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - paragraph:
+            - text: Found it — the
+            - code: section
+            - text: /
+            - code: row
+            - text: recipe seeds injected styles I didn't set (
+            - code: "padding: 24px"
+            - text: ","
+            - code: min-height
+            - text: ", background on"
+            - code: mainCol
+            - text: ), and
+            - code: modify
+            - text: "merged rather than replaced. Checking which other recipe nodes carry seed styles:"
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - paragraph:
+            - text: The recipe seeds left
+            - code: padding:24px / background / radius / min-height
+            - text: "on"
+            - code: mainCol
+            - text: ","
+            - code: sidebar
+            - text: ", and"
+            - code: hdrLeft
+            - text: "(that's the gray inner block and the offset column tops). Removing the visually-active seed declarations:"
+          - button "Browser acknowledged committed transaction completed":
+            - generic: Browser acknowledged committed transaction
+            - generic: completed
+          - paragraph: "Now the same seed cleanup on the header's title block:"
+          - button "Browser acknowledged committed transaction completed":
+            - generic: Browser acknowledged committed transaction
+            - generic: completed
+          - paragraph: "Seed styles stripped (r1#13). Final verification:"
+          - button "Observed actual rendered appearance completed":
+            - generic: Observed actual rendered appearance
+            - generic: completed
+    - button "Scroll to latest message":
+      - generic: Scroll to end
+    - textbox "Message":
+      - /placeholder: Ask for a change…
+      - text: Design a polished compact content editor with a document list, editable title and body, preview, status and local save feedback. Use independent local state, review the first meaningful visible section early and verify the result. Keep it within one screen.
+    - button "Stop":
+      - generic: Stop
+    - status
+  - status "Capturing and observing the rendered preview…":
+    - generic: Working…
+  - button "Chat details": ···
+- main:
+  - generic "Workspace mode":
+    - button "Design" [pressed]
+    - button "Interact"
+  - button "Document"
+  - generic "Screen canvas":
+    - main "Content editor":
+      - region "Section":
+        - heading "Content editor" [level=1]:
+          - generic: Content editor
+        - paragraph:
+          - generic: Local drafts · changes stay in this browser
+      - generic: "Open:"
+      - generic: Launch checklist
+      - generic: "Autosave: off"
+      - region "Section":
+        - heading "Documents" [level=2]:
+          - generic: Documents
+        - button "Launch checklist":
+          - generic: Launch checklist
+        - paragraph:
+          - generic: Switch the open document — status updates live.
+      - region "Section":
+        - region "Section":
+          - heading "Draft" [level=2]:
+            - generic: Draft
+          - textbox "Document title": Launch checklist
+          - textbox "Document body":
+            - /placeholder: Start writing…
+            - text: • Confirm analytics events are live • QA checkout flow on staging • Draft the launch announcement • Sync with support on FAQs
+          - switch "Saved"
+          - generic: Saved
+          - paragraph:
+            - generic: Checkpoints stay in this browser — nothing is uploaded.
+      - region "Section":
+        - heading "Preview" [level=2]:
+          - generic: Preview
+        - paragraph:
+          - generic: Launch checklist
+        - paragraph:
+          - generic: • Confirm analytics events are live • QA checkout flow on staging • Draft the launch announcement • Sync with support on FAQs
+  - generic "Simulated execution Local preview · no live effects":
+    - text: Simulated execution
+    - generic: Local preview · no live effects
+- contentinfo:
+  - status: Strip seed styles from header title block · agent edit · unsaved
+  - generic "v1_2c1a5a3f9fdc566d0ed7daef4388c2a72de092571fbad12882043cb61bb86c56": "@3 · v1_2c1a5a3f9fdc…"

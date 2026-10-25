@@ -48,6 +48,9 @@
         },
         "knowledgeReadResults": 8,
         "sourceReadResults": 18,
+        "refusedReadSections": [],
+        "knowledgeReadAttempts": 8,
+        "sourceReadAttempts": 18,
         "firstToolStartMs": 123090,
         "firstCommittedReceiptMs": 346786,
         "firstObservationStartMs": 632840
@@ -2032,6 +2035,9 @@
         },
         "knowledgeReadResults": 6,
         "sourceReadResults": 6,
+        "refusedReadSections": [],
+        "knowledgeReadAttempts": 6,
+        "sourceReadAttempts": 6,
         "firstToolStartMs": 232215,
         "firstCommittedReceiptMs": 419737,
         "firstObservationStartMs": 429267

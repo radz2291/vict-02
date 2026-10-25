@@ -1,0 +1,142 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Content editor comparison"
+  - generic: ● Unsaved changes
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- complementary "Chat":
+  - region "Conversation":
+    - region "Messages — Message":
+      - log:
+        - generic: You
+        - generic: Design a polished compact content editor with a document list, editable title and body, preview, status and local save feedback. Use independent local state, review the first meaningful visible section early and verify the result. Keep it within one screen.
+        - button "Copy message":
+        - generic: Assistant
+        - generic "Conversation timeline":
+          - paragraph: Progress summary · Connecting to the VICT / Mastra agent…
+          - paragraph: Progress summary · Agent is working on your request…
+          - paragraph: I'll start by reading the current document state, recipe palette, and token registry in parallel, then pull the exact contracts I need before composing.
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - paragraph:
+            - text: "Good context: 6 demo states exist (message, accepted, dialogOpen, busy, actionError, actionResult) — I'll declare independent keys instead. No tokens registered. Palette shows element recipes (section/row/heading/text/input) and a component-based"
+            - code: button
+            - text: . Now I need the button contract (componentId/revision/outputs), plus label/separator contracts, and confirmation that native
+            - code: input
+            - text: /
+            - code: textarea
+            - text: tags are registered.
+          - button "Read query refused safely failed":
+            - generic: Read query refused safely
+            - generic: failed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - paragraph:
+            - text: The contracts call needs exact revisions for the component-based
+            - code: button
+            - text: . Native
+            - code: input
+            - text: /
+            - code: textarea
+            - text: are registered leaf elements, so generic insert works for those. Let me find the button's catalog entry and check the next palette page for
+            - code: label
+            - text: /
+            - code: separator
+            - text: seeds.
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - paragraph:
+            - text: "Found it:"
+            - code: vict.catalog.button
+            - text: revision
+            - code: "1"
+            - text: . Now let me read its full contract with examples to get exact props, slots, and outputs.
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - paragraph:
+            - text: "The button contract is complete (props: label/disabled/loading; output:"
+            - code: press
+            - text: "; style target: root; no slots). One last check — whether the native"
+            - code: label
+            - text: tag supports the
+            - code: for
+            - text: attribute for proper label association.
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - paragraph: "All contracts and element facts are confirmed. Now I'll build the editor in governed batches. Batch 1: independent local state, root compaction, and the header."
+          - button "Browser acknowledged committed transaction completed":
+            - generic: Browser acknowledged committed transaction
+            - generic: completed
+          - paragraph:
+            - text: "Batch 1 confirmed (r1#1). Batch 2: header text, status pill, save button with"
+            - code: press
+            - text: →setState, and the body row + list column.
+          - button "Edit refused before browser proposal failed":
+            - generic: Edit refused before browser proposal
+            - generic: failed
+          - paragraph:
+            - text: The pseudo-style on a component node isn't supported (
+            - code: setConditionalStyle requires an element node
+            - text: ). I'll drop that hover op and re-run the batch — nothing else was applied.
+          - button "Edit refused before browser proposal failed":
+            - generic: Edit refused before browser proposal
+            - generic: failed
+          - paragraph:
+            - code: press
+            - text: has a
+            - code: void
+            - text: payload — it can't set a string state. Let me inspect the actions section to see what declared actions or compatible targets exist.
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+    - button "Scroll to latest message":
+      - generic: Scroll to end
+    - textbox "Message":
+      - /placeholder: Ask for a change…
+      - text: Design a polished compact content editor with a document list, editable title and body, preview, status and local save feedback. Use independent local state, review the first meaningful visible section early and verify the result. Keep it within one screen.
+    - button "Stop":
+      - generic: Stop
+    - status
+  - status "Reading current source facts…":
+    - generic: Working…
+  - button "Chat details": ···
+- main:
+  - generic "Workspace mode":
+    - button "Design" [pressed]
+    - button "Interact"
+  - button "Document"
+  - generic "Screen canvas":
+    - main "Content editor comparison":
+      - heading "Content editor" [level=1]:
+        - generic: Content editor
+  - generic "Simulated execution Local preview · no live effects":
+    - text: Simulated execution
+    - generic: Local preview · no live effects
+- contentinfo:
+  - status: Declare independent editor state and build header structure · agent edit · unsaved
+  - generic "v1_1dd26e9d21733c6019a6c20d744e685e8474d81accfffa9cc64eb1f35bfaa788": "@3 · v1_1dd26e9d2173…"

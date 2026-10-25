@@ -1,6 +1,6 @@
 # Cycle 1.4 — real-provider journey and efficiency evidence
 
-2026-10-25. **Natural form and dashboard arms completed; editor pair running.** Recovery legs remain pending. This is builder evidence for C14-07–09, not an independent verdict. After browser recovery and the independent responsive verifier's viewport release, the stage manager ran the matched natural pairs at 1280 × 720. Owner origins/data and the independent verifier fixture remain untouched.
+2026-10-25. **All six natural authoring turns completed; natural editor behavior remains incomplete. A separate corrective/recovery leg is running.** This is builder evidence for C14-07–09, not an independent verdict. After browser recovery and the independent responsive verifier's viewport release, the stage manager ran the matched natural pairs at 1280 × 720. Owner origins/data and the independent verifier fixture remain untouched.
 
 ## Controlled comparison protocol
 
@@ -153,4 +153,45 @@ The [baseline exercised DOM](cycle-1-4/core/browser/provider-dashboard-baseline-
 
 [Editor run-start record](cycle-1-4/core/browser/provider-editor-run-start.json) pins accepted baseline product `57308f6ffcd5c85415b38d9d68a6f696199ebfa7` and candidate `9fbda0f3ec0c14ff7be8bfb475d30e0cdc0f0993`, seal `d0e2e491e7f9023e30f630b869866d2d5a081a8c859b7da646201e4ee6ec7749`. Both use the exact content-editor prompt above, `zai/glm-5.3-flash`, actual 1280 × 720/DPR `1.0000000149011612`, fresh conversations and fresh per-turn caches. Baseline submission was `2026-10-25T12:44:47.262Z`, candidate `12:44:47.568Z`, 306 ms later. The paired provider requests overlap and are single cases.
 
-Captured [baseline](cycle-1-4/core/browser/provider-editor-baseline-initial-source.json) and [candidate](cycle-1-4/core/browser/provider-editor-candidate-initial-source.json) initial Source JSON are equal after removing only independent top-level document IDs. Both have one empty root, identical seed styles/six seed-state declarations and `Content editor comparison` source label. IDs are baseline `screen-2da67e97-fe72-4bd7-af98-31bfa06bcad6` and candidate `screen-0ebfda83-e72f-428a-a99b-d128c7338397`. Both arms are running; no terminal or behavioral outcome is inferred yet.
+Captured [baseline](cycle-1-4/core/browser/provider-editor-baseline-initial-source.json) and [candidate](cycle-1-4/core/browser/provider-editor-candidate-initial-source.json) initial Source JSON are equal after removing only independent top-level document IDs. Both have one empty root, identical seed styles/six seed-state declarations and `Content editor comparison` source label. IDs are baseline `screen-2da67e97-fe72-4bd7-af98-31bfa06bcad6` and candidate `screen-0ebfda83-e72f-428a-a99b-d128c7338397`. Running states were not treated as outcomes; both terminal results are now recorded below.
+
+## Natural content editor — terminal comparison and intent limits
+
+Both engines terminated `completed`, baseline at `r1#13`, candidate at `r1#9`. [Baseline details](cycle-1-4/core/browser/provider-editor-baseline-details-01.dom.txt), [candidate details](cycle-1-4/core/browser/provider-editor-candidate-details-01.dom.txt), their final Source JSON and [terminal extraction](cycle-1-4/core/browser/provider-editor-terminal-analysis.json) retain the evidence. Reproduce with `node docs/studio/cycle-1-4/core/browser/extract-provider-ui.cjs editor`. The expanded traces reconcile all 59/31 starts and thirteen/nine distinct committed proposals. Root's first baseline UI-expansion attempt timed out after 32 controls; fresh state and bounded batches expanded the remaining controls. That was evidence-capture setup, not an agent-run failure.
+
+| Measurement | Accepted core baseline | Cycle 1.4 candidate |
+| --- | ---: | ---: |
+| Tool calls | 59 | 31 |
+| Refused calls / calls after refusal | 7 / 6 | 6 / 5 |
+| Acknowledged transactions, including cleanup | 13 | 9 |
+| Knowledge / source read attempts | 13 / 23, trace-derived | 10 / 4, UI and trace agree |
+| Edit / observation calls | 19 / 4, trace-derived | 14 / 3, UI and trace agree |
+| First confirmed edit | 416.3 s | 551.8 s |
+| First observation start | 1030.694 s, after sixth edit | 936.397 s, after fourth edit |
+| First observation result | 1060.051 s | 949.554 s |
+| Elapsed | 1462.2 s | 1135.5 s |
+| Authoring / image requests | 36 / 4 | 26 / 3 |
+| Reported input / output tokens | 1,919,914 / 47,721 | 1,454,270 / 41,588 |
+| Summed settled tool durations | unavailable in baseline UI | 63.5 s |
+| Tool-active interval union | unavailable in baseline UI | 63.4 s |
+| Outside-tool time | unavailable in baseline UI | 1072.1 s |
+
+Each arm has one safely refused contracts query using recipe aliases/current instead of exact component IDs/revisions. Hence successful knowledge-result counts are twelve baseline/nine candidate, while attempted knowledge reads are thirteen/ten. These refused reads are included in total calls and refusal totals, not lost from the category comparison. Remaining baseline failures reject a non-text binding target, three void-to-state connections, a missing text expression and nonexistent insertion parents; the latter failed atomically. Candidate's remaining five failures reject conditional styling of a component, two void-to-state connections, a non-text binding target and invalid text-insertion shape. Refusal recovery is real, but repeats the form pair's void-payload and text-target friction; no universal efficiency improvement is inferred.
+
+Baseline's thirteen-edit total includes removing the dead Save button, seed placeholder select items, inherited container seed styles and header seed styles, plus one-screen compaction. Candidate's nine include a redundant-caption cleanup and final footer/hint polish. Final Source has 40 nodes/fourteen state declarations baseline and 49 nodes/ten state declarations candidate. Candidate finishes 326.7 s sooner with fewer calls/requests/tokens, but its first edit is 135.5 s later and the resulting behaviors differ. Alongside the other two pairs, this remains three case studies with explicit limits, not a statistical or causal speedup estimate.
+
+Baseline observations occur at `r1#6`, `r1#10`, `r1#11`, `r1#13`: captured/source heights 560/560, 569/704, 560/560 and 560/560 px respectively. Candidate's `r1#4`, `r1#8`, `r1#9` regions are all uncropped 909 × 560. All use the 960 × 585 preview, (0, 0) crop origin and matched DPR approximately 1.0; terminal-source images remain interaction-unverified by the authoring agent. Both first reviews occur mid-construction after substantial preceding read/refusal time, rather than promptly after request submission. Exact metadata and source epochs remain in the extraction.
+
+Engine completion does **not** complete the requested editor behavior. Candidate's final response discloses Save as a visual affordance, with `saveStatus` left at its initial value and per-document title/body switching unsupported. The final catalog Save button has no connected output. Its rendered hint says `Drafts save locally as you type.`, while the response also says nothing was saved; canonical local state alone does not establish persistence or a successful save. Requested truthful local save feedback and per-document editing are therefore not demonstrated by this natural candidate. Baseline removed its dead Save button and substitutes a controlled `Saved` boolean switch, with an explicit `Autosave: off` label; that supplies a local boolean checkpoint, not saved document content. It also discloses missing per-document title/body switching.
+
+Root's [candidate runtime exercise](cycle-1-4/core/browser/provider-editor-candidate-exercised.dom.txt) confirms edited title/body mirror into Preview and document selection changes the Editing caption. Clicking Save changes leaves `Unsaved changes`; the screenshot was inspected. [Baseline runtime exercise](cycle-1-4/core/browser/provider-editor-baseline-exercised.dom.txt) confirms edited title/body mirror into Preview and the Saved switch checks. After explicit Studio File Save reset runtime to initial values, [baseline document selection](cycle-1-4/core/browser/provider-editor-baseline-selection-after-save.dom.txt) changes Open to Design critique notes while title/body remain Launch checklist. Authored runtime save, Studio canonical File Save and persistent per-document content are separate behaviors. Later corrective/recovery legs must retain these natural results rather than retroactively promote them to complete natural editor journeys.
+
+Root's later IV14-05 UI-only repair is pinned separately at product `e76e2fc0f64f5a451edae01f4b0a1c9e7cfc68db` and does not change the authoring execution logic according to the stage manager. All six natural measurements remain evidence of their actual `4c76fb6…`/`9fbda0f…` candidates; they are not described as fresh provider runs on the later UI repair. Stop/manual source edit/Save/continue, stale/draft/history and any explicit corrective editor leg remain separate pending records.
+
+## Separate corrective/recovery leg — entry
+
+[Recovery run-start record](cycle-1-4/core/browser/provider-recovery-run-start.json) pins product `e76e2fc0f64f5a451edae01f4b0a1c9e7cfc68db`, production-seal SHA-256 `bb46d98cbe6e520ac487abd5928a1dc0e4343eebf1f6a16de37dab81adc1e17a`, existing `zai/glm-5.3-flash` and actual 1280 × 720/DPR approximately 1.0. Submission was `2026-10-25T13:18:07.774Z`. This is a fresh disposable document/conversation and a deliberately different corrective prompt, excluded from natural comparison totals.
+
+The [initial Source](cycle-1-4/core/browser/provider-recovery-initial-source.json) has 49 nodes and matches the natural candidate editor's final Source after removing the independent top-level document ID. Both exported source revisions are `r1`; live history cursors/epochs are independent. New ID is `screen-12d6dd18-acce-492d-95fb-89507f1e02b3`. The initial UI Source import is one manual history transaction, not an agent acknowledgement.
+
+The exact corrective prompt is retained in the run-start artifact. It preserves title/body/selection and live preview, asks only the already declared `demo.submit` action for a truthful local Save intent, labels the button `Preview save intent`, replaces persistence/autosave claims with `Temporary preview values; no document persistence.`, and requests eight Editing tips rows in incremental batches with early review. No new host actions/providers or void-to-typed-state coercion are authorized. Root plans Stop after a confirmed acknowledgement, then manual Source change/explicit Save, draft guard, continuation, history/reopen and source-stale probes. These actions and their outcomes remain pending evidence; entry does not establish their success.
