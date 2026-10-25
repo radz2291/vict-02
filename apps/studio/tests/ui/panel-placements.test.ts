@@ -41,6 +41,14 @@ it('inspects selected layers inside Structure and keeps the graph mounted throug
  await click('Close inspection details');expect(document.querySelector('.svelte-flow')).toBe(graph);expect(document.querySelector<HTMLElement>('.structure-graph')!.hidden).toBe(false);
  await click('Inspect source');await click('Edit properties ↗');expect(document.querySelector('[aria-label="Floating selection tools"]')).not.toBeNull();expect(document.querySelector('.source-details')).toBeNull();
 });
+it('does not apply canvas delete or duplicate shortcuts from Structure controls',async()=>{
+ await start();await click('Document');
+ [...document.querySelectorAll<HTMLElement>('.uv-layers [role=treeitem]')].find(node=>node.textContent?.includes('A useful heading'))!.click();await settle();
+ await click('Inspect source');
+ const source=document.querySelector<HTMLTextAreaElement>('#canonical-source')!,before=source.value;
+ const separator=document.querySelector<HTMLElement>('[aria-label="Structure panel height"]')!;separator.focus();
+ for(const [key,ctrlKey] of [['Delete',false],['d',true]] as const){separator.dispatchEvent(new KeyboardEvent('keydown',{key,ctrlKey,bubbles:true,cancelable:true}));await settle();expect(source.value).toBe(before);}
+});
 it('preserves hidden source drafts and permits only one Document section expanded',async()=>{
  await start();await click('Document');const expanded=()=>[...document.querySelectorAll('.document-section-header[aria-expanded=true]')].map(node=>node.textContent);
  for(const name of ['Data','Actions','Source']){await click(name);expect(expanded()).toEqual([name]);}

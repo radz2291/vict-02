@@ -469,7 +469,7 @@
       event.preventDefault(); closeDrawer(); return;
     }
     const editable = event.target instanceof HTMLElement && (event.target.matches('input,textarea,select') || event.target.isContentEditable);
-    if (!editable && mode === 'design' && !(event.target instanceof Element && event.target.closest('.structure-view,.source-details,#document-drawer,.testing-drawer,.agent-panel'))) {
+    if (!editable && mode === 'design' && !(event.target instanceof Element && event.target.closest('.structure-dock,.structure-view,.source-details,#document-drawer,.testing-drawer,.agent-panel,.chat-resizer,.drawer-resizer,.canvas-toolbar'))) {
       if (['Delete', 'Backspace'].includes(event.key)) { event.preventDefault(); removeSelection(); }
       if (event.key === 'F2') { event.preventDefault(); editSelectedText(); }
       if (event.altKey && ['ArrowUp', 'ArrowDown'].includes(event.key)) { event.preventDefault(); reorderSelection(event.key === 'ArrowUp' ? -1 : 1); }
