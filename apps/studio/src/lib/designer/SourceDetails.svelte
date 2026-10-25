@@ -3,8 +3,8 @@
   import type { UiDocument } from '@victframework/ui';
   import { projectStructure, structureFacts, structureNodePresentation, parseStructureId, type StructureHandoff } from './structure.js';
   import { readableName } from './presentation.js';
-  let { document, selectedId, blocked = false, containFocus = false, embedded = false, page = $bindable('properties'), onClose, onSelect, onNavigate }: {
-    document: UiDocument; selectedId?: string; blocked?: boolean; containFocus?: boolean; embedded?: boolean; page?: 'properties' | 'relationships';
+  let { document, selectedId, blocked = false, containFocus = false, page = $bindable('properties'), onClose, onSelect, onNavigate }: {
+    document: UiDocument; selectedId?: string; blocked?: boolean; containFocus?: boolean; page?: 'properties' | 'relationships';
     onClose: () => void; onSelect: (id: string) => void; onNavigate: (request: StructureHandoff) => void;
   } = $props();
   const graph = $derived(projectStructure(document));
@@ -41,7 +41,7 @@
       if(event.key==='Escape' && !event.defaultPrevented){event.preventDefault();event.stopPropagation();onClose();}
     };
     root.addEventListener('keydown',escape);
-    if(!embedded)root.querySelector<HTMLButtonElement>('[aria-label="Close inspection details"]')?.focus({preventScroll:true});
+    root.querySelector<HTMLButtonElement>('[aria-label="Close inspection details"]')?.focus({preventScroll:true});
     return ()=>root.removeEventListener('keydown',escape);
   });
   function navigate(destination: StructureHandoff['destination']) {
@@ -49,8 +49,8 @@
     onNavigate({ destination, sourceId: selected.data.sourceId, occurrence: selected.data.occurrence, key: parseStructureId(selected.id)?.[2] });
   }
 </script>
-<section class="source-details" class:embedded aria-label="Source inspection details" bind:this={root}>
-  {#if !embedded}<header><span>Inspect</span><strong title={label}>{label}</strong><button type="button" aria-label="Close inspection details" onclick={onClose}>×</button></header>{:else}<div class="embedded-title"><strong title={label}>{label}</strong></div>{/if}
+<section class="source-details" aria-label="Source inspection details" bind:this={root}>
+  <header><span>Inspect</span><strong title={label}>{label}</strong><button type="button" aria-label="Close inspection details" onclick={onClose}>×</button></header>
   <nav aria-label="Source inspection view"><button type="button" aria-pressed={page === 'properties'} onclick={() => page = 'properties'}>Properties</button><button type="button" aria-pressed={page === 'relationships'} onclick={() => page = 'relationships'}>Relationships</button></nav>
   <div class="details-body">
     {#if !selected}<p>Select an item in Layers or Structure.</p>
@@ -69,7 +69,6 @@
 </section>
 <style>
   .source-details { box-sizing:border-box; display:flex; flex-direction:column; flex:none; height:100%; min-height:0; min-width:0; border-left:1px solid var(--vict-color-border,#e1e6ee); background:var(--vict-color-surface,#fff); color:var(--vict-color-text,#26334b); font:inherit; font-size:12px; line-height:1.45; overflow:hidden; }
-  .source-details.embedded{flex:1;border-left:0}.embedded-title{padding:8px 10px;flex:none;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   header { display:flex; align-items:center; gap:6px; padding:5px 8px; height:38px;box-sizing:border-box;flex:none;border-bottom:1px solid var(--vict-color-border,#e1e6ee); }
   header strong { flex:1; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-weight:600; }
   button { font:inherit; color:inherit; cursor:pointer; border:1px solid var(--vict-color-border,#dce2eb); border-radius:5px; background:var(--vict-color-surface,#fff); padding:5px 8px; }

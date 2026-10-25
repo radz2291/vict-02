@@ -19,7 +19,7 @@ const button = (name: string) => {
     (item) => item.getAttribute('aria-label') === name || item.textContent?.trim() === name,
   );
   expect(item, name).toBeDefined();
-  if(!(['Data','Actions','Source'].includes(name) && item!.getAttribute('aria-expanded')==='true'))item!.click();
+  if(!(['Layers','Data','Actions','Source'].includes(name) && item!.getAttribute('aria-expanded')==='true'))item!.click();
   flushSync();
   return item!;
 };
@@ -202,7 +202,7 @@ it('opens a closed composition without authored or runtime changes, guards draft
   expect(document.querySelector('.design-frame')?.textContent).not.toContain(
     'Edited composition body',
   );
-  button('Layers');
+  button('Document');await tick();button('Layers');
   await tick();
   const collapsedDetails=document.querySelector<HTMLButtonElement>('[aria-label="Expand Details"]');
   if(collapsedDetails){collapsedDetails.click();await tick();}

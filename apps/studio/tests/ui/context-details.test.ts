@@ -61,12 +61,12 @@ it('empty canvas clears an old object target, supports Shift+F10, and leaves nat
   const nativeKey=new KeyboardEvent('keydown',{key:'F10',shiftKey:true,bubbles:true,cancelable:true});document.querySelector('input[aria-label="Native field"]')!.dispatchEvent(nativeKey);await settle();expect(nativeKey.defaultPrevented).toBe(false);
   button('Interact').click();await settle();expect((await secondary(heading)).defaultPrevented).toBe(false);expect(document.querySelector('[role="menu"][data-state="open"]')).toBeNull();
 });
-it('shares left stacked inspection between Layers and bottom Structure; retains mounted canvas, graph, scroll and floating editing home',async()=>{
+it('keeps shared inspection inside bottom Structure for Document Layers and graph selection; retains mounted canvas, graph, scroll and floating editing home',async()=>{
   const source=await start();const frame=document.querySelector('.design-frame')!,scroll=document.querySelector<HTMLElement>('.canvas-scroll')!;
-  button('Layers').click();await settle();
+  button('Document').click();await settle();button('Inspect source').click();await settle();
   expect(document.querySelector('[aria-label="Source inspection details"]')).not.toBeNull();
-  expect(document.querySelector('#sidebar-layers .source-details')).not.toBeNull();
-  document.querySelector<HTMLButtonElement>('#inspect-panel-header')!.click();await settle();button('Structure').click();await settle();
+  expect(document.querySelector('.structure-dock .structure-inspection-pane .source-details')).not.toBeNull();
+  button('Close inspection details').click();await settle();if(button('Structure').getAttribute('aria-expanded')!=='true')button('Structure').click();await settle();
   const resizer=document.querySelector<HTMLElement>('[aria-label="Structure panel height"]')!;
   const height=Number(resizer.getAttribute('aria-valuenow'));resizer.dispatchEvent(new KeyboardEvent('keydown',{key:'ArrowUp',bubbles:true,cancelable:true}));await settle();
   expect(Number(resizer.getAttribute('aria-valuenow'))).toBeGreaterThanOrEqual(height);
@@ -75,16 +75,16 @@ it('shares left stacked inspection between Layers and bottom Structure; retains 
   const node=[...document.querySelectorAll<HTMLElement>('.svelte-flow__node')].find(node=>node.dataset.id===structureId(source.id,'node','second'))!;
   scroll.scrollTop=83;scroll.scrollLeft=14;
   await secondary(node);expect(document.querySelector('[role="menu"][aria-label="Structure item commands"]')).not.toBeNull();
-  [...document.querySelectorAll<HTMLElement>('[role="menu"][data-state="open"] [role="menuitem"]')].find(node=>node.textContent?.trim()==='Inspect')!.click();await settle();expect(document.querySelector('.source-details .embedded-title strong')?.textContent).toBe('Second heading');
+  [...document.querySelectorAll<HTMLElement>('[role="menu"][data-state="open"] [role="menuitem"]')].find(node=>node.textContent?.trim()==='Inspect')!.click();await settle();expect(document.querySelector('.source-details header strong')?.textContent).toBe('Second heading');
   expect(scroll.scrollTop).toBe(83);expect(scroll.scrollLeft).toBe(14);expect(document.querySelector('.design-frame')).toBe(frame);
   expect(document.querySelector('[aria-label="Floating selection tools"]')).toBeNull();
-  expect(document.querySelector('.structure-dock .source-details')).toBeNull();
-  document.querySelector<HTMLButtonElement>('#inspect-panel-header')!.click();await settle();
+  expect(document.querySelector('.structure-dock .source-details')).not.toBeNull();
+  button('Close inspection details').click();await settle();
   button('Structure').click();await settle();button('Structure').click();await settle();expect(document.querySelector('.svelte-flow')).toBe(graph);
   button('Expand Structure').click();await settle();
   expect(document.querySelector<HTMLElement>('.canvas-scroll')!.inert).toBe(true);
   button('Inspect structure').click();await settle();
-  button('Edit properties ↗').click();await settle();expect(document.querySelector('[aria-label="Floating selection tools"]')).not.toBeNull();expect(document.querySelector('#sidebar-layers .source-details')).not.toBeNull();expect(document.querySelector<HTMLElement>('.canvas-scroll')!.inert).toBe(false);
+  button('Edit properties ↗').click();await settle();expect(document.querySelector('[aria-label="Floating selection tools"]')).not.toBeNull();expect(document.querySelector('.source-details')).toBeNull();expect(document.querySelector<HTMLElement>('.canvas-scroll')!.inert).toBe(false);
 });
 it('keeps ambiguous repeated/definition occurrences inspectable without granting source edits',()=>{
   const document=newScreen('Capabilities','capabilities');

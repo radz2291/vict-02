@@ -19,7 +19,7 @@
   import { captureDesignerPreview } from './visual-observation.js';
   import StructureView from './StructureView.svelte';
   import SourceDetails from './SourceDetails.svelte';
-  import LayersInspectPanels from './LayersInspectPanels.svelte';
+  import StructureInspection from './StructureInspection.svelte';
   import DocumentPanels from './DocumentPanels.svelte';
   import StructureDock from './StructureDock.svelte';
   import TryScenarios from './TryScenarios.svelte';
@@ -41,7 +41,7 @@
   }
   async function locateOnCanvas(occurrence: string) {
     if (!source || textDraftDirty || sourceDraftDirty || renamingScreen) return;
-    structureExpanded = false; await tick();
+    structureExpanded = false; detailsOpen=false; await tick();
     const find = () => [...(canvasScroll?.querySelectorAll<HTMLElement>('[data-ui-occ]') ?? [])].find(element => element.dataset.uiOcc === occurrence && element.getClientRects().length);
     if (!find()) {
       if (mode === 'interact') { notice = 'This source is hidden in Interact. Switch to Design, then Locate on canvas to inspect its composition.'; return; }
@@ -62,26 +62,22 @@
       documentPanel=request.destination;
       selectedData = request.destination === 'data' ? request.key : undefined;
     } else if (request.destination === 'layers') {
-      leftTab='Layers';chatOpen=true;layersOpen=true;
+      documentPanel='layers';drawerOpen=true;testingOpen=false;
     } else {
       if (request.destination === 'design' && request.occurrence) { await locateOnCanvas(request.occurrence); return; }
-      if (request.destination === 'inspector' && request.occurrence) { changeMode('design'); selectOccurrence(request.occurrence, true); paletteFocus=Symbol('edit-handoff'); }
+      if (request.destination === 'inspector' && request.occurrence) { detailsOpen=false; changeMode('design'); selectOccurrence(request.occurrence, true); paletteFocus=Symbol('edit-handoff'); }
     }
     notice = request.destination === 'actions' ? `Declared action ${request.key ?? ''} · simulated execution is available in Interact.` : `Opened ${request.destination} for the selected source.`;
     await tick();
-    const target = request.destination === 'layers' ? '#layers-panel-header' : request.destination === 'data' || request.destination === 'actions' ? `[data-document-section=${request.destination}]` : request.destination === 'inspector' ? '.selection-palette' : '.design-frame .uv-canvas';
+    const target = request.destination === 'layers' ? '[data-document-section=layers]' : request.destination === 'data' || request.destination === 'actions' ? `[data-document-section=${request.destination}]` : request.destination === 'inspector' ? '.selection-palette' : '.design-frame .uv-canvas';
     globalThis.document.querySelector<HTMLElement>(target)?.focus({ preventScroll: true });
   }
   import { documentCursor, applyAgentProposal, type AgentProposal } from './agent-edits.js';
   let agentEpoch = $state(crypto.randomUUID());
   let chatOpen = $state(true);
-  let chatWidth = $state(300);
-  let leftTab = $state<'Chat'|'Layers'>('Chat');
-  let layersOpen=$state(true);
-  let layerSplit=$state(50);
-  async function changeLeftTab(tab:'Chat'|'Layers') {leftTab=tab;await tick();globalThis.document.querySelector<HTMLElement>(tab==='Chat'?'#sidebar-chat-tab':'#sidebar-layers-tab')?.focus({preventScroll:true});}
-  function leftTabKeys(event:KeyboardEvent) {if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;event.preventDefault();void changeLeftTab(event.key==='Home'?'Chat':event.key==='End'?'Layers':leftTab==='Chat'?'Layers':'Chat');}
-  async function toggleChat() {chatOpen=!chatOpen;await tick();const target=chatOpen?globalThis.document.querySelector<HTMLElement>(leftTab==='Chat'?'#sidebar-chat-tab':'#sidebar-layers-tab'):globalThis.document.querySelector<HTMLElement>('#document-drawer:not([hidden]) .close-document,.testing-drawer [aria-label="Close testing"],main [aria-label="Show sidebar"]');target?.focus({preventScroll:true});}
+  let chatWidth = $state(280);
+  async function toggleChat(){chatOpen=!chatOpen;await tick();const target=chatOpen?globalThis.document.querySelector<HTMLElement>('.agent-panel textarea'):workspaceElement?.querySelector<HTMLElement>('#document-drawer:not([hidden]) .close-document,.testing-drawer [aria-label="Close testing"],main [aria-label="Show chat"]');target?.focus({preventScroll:true});}
+
   let structureHeight = $state(240);
   let testingOpen = $state(false);
   let activeTest = $state<TestScenario>();
@@ -170,7 +166,7 @@
   let plan = $state<UiRenderPlan>();
   let issues = $state<readonly { code: string; message: string }[]>([]);
   let notice = $state('Start with an empty screen. Add a heading or section to begin.');
-  let documentPanel=$state<'data'|'actions'|'source'|'none'>('data');
+  let documentPanel=$state<'layers'|'data'|'actions'|'source'|'none'>('layers');
   let formatSection = $state<'Content' | 'Style' | 'Behavior'>('Style');
   let editTextSignal = $state<symbol>();
   let selectionToolsReveal = $state<symbol>();
@@ -193,7 +189,8 @@
   let drawerOpen = $state(false);
   let workspaceElement = $state<HTMLDivElement>();
   let detailId = $state<string>();
-  let detailsOpen = $state(true);
+  let detailsOpen = $state(false);
+  let inspectionWidth=$state(300);
   $effect(()=>{const occurrence=selected;untrack(()=>{if(source && occurrence)detailId=structureId(source.id,'node',resolveOccurrence(occurrence,source).sourceNodeId);});});
   let drawerWidth = $state(320);
   const effectiveDrawerWidth = $derived(drawerWidth);
@@ -208,12 +205,12 @@
   function inspectSource(id = source && selected ? structureId(source.id,'node',resolveOccurrence(selected,source).sourceNodeId) : undefined, page:'properties'|'relationships'='properties') {
     const active = globalThis.document.activeElement;
     inspectionReturn = active instanceof HTMLElement && !active.closest('[role="menu"]') ? active : undefined;
-    detailId = id; detailsPage = page; leftTab='Layers';chatOpen=true;detailsOpen = true;
-    void tick().then(()=>globalThis.document.querySelector<HTMLElement>('#inspect-panel-header')?.focus({preventScroll:true}));
+    detailId=id;detailsPage=page;structureOpen=true;detailsOpen=true;
+    void tick().then(()=>{const target=workspaceElement?.querySelector<HTMLElement>('.structure-inspection-pane [aria-label="Close inspection details"]');target?.scrollIntoView({block:'nearest'});target?.focus({preventScroll:true});});
   }
   function closeDetails() { detailsOpen = false; void tick().then(()=>{
-    const target = inspectionReturn?.isConnected && !inspectionReturn.closest('[hidden],[inert]') ? inspectionReturn : globalThis.document.querySelector<HTMLElement>('#inspect-panel-header');
-    target?.focus({ preventScroll:true });
+    const target = inspectionReturn?.isConnected && !inspectionReturn.closest('[hidden],[inert]') ? inspectionReturn : workspaceElement?.querySelector<HTMLElement>('.inspection-toggle');
+    target?.scrollIntoView({block:'nearest'});target?.focus({ preventScroll:true });
   }); }
   function selectDetail(id:string) {
     if (!source || textDraftDirty || sourceDraftDirty || renamingScreen) return;
@@ -385,7 +382,7 @@
     sessions.set(id, next); openSession(next); notice = 'Loaded the saved screen.';
   }
   onMount(() => {
-    try {const sizes=JSON.parse(localStorage.getItem('vict.studio.workspace-sizes') ?? '{}');chatWidth=Math.max(240,Math.min(400,Number(sizes.chat)||300));layerSplit=Math.max(10,Math.min(90,Number(sizes.layerSplit)||50));leftTab=sizes.leftTab==='Layers'?'Layers':'Chat';layersOpen=sizes.layersOpen!==false;detailsOpen=sizes.inspectOpen!==false;structureHeight=Math.max(180,Math.min(420,Number(sizes.structure)||240));drawerWidth=Math.max(280,Math.min(460,Number(sizes.document)||320));}catch{/* Optional layout preferences never block document loading. */}
+    try {const sizes=JSON.parse(localStorage.getItem('vict.studio.workspace-sizes') ?? '{}');chatWidth=Math.max(240,Math.min(400,Number(sizes.chat)||280));inspectionWidth=Math.max(240,Math.min(420,Number(sizes.inspect)||300));structureHeight=Math.max(180,Math.min(420,Number(sizes.structure)||240));drawerWidth=Math.max(280,Math.min(460,Number(sizes.document)||320));}catch{/* Optional layout preferences never block document loading. */}
     try {
       library = savedScreens(localStorage);
       const active = localStorage.getItem('vict.studio.active-screen');
@@ -395,8 +392,8 @@
     } catch { issues = [{ code: 'STUDIO_STORAGE_UNAVAILABLE', message: 'Browser storage is unavailable. Enable storage to author and save screens.' }]; }
     return () => { unsubscribe?.(); };
   });
-  function rememberSizes() {try{localStorage.setItem('vict.studio.workspace-sizes',JSON.stringify({chat:chatWidth,structure:structureHeight,document:drawerWidth,layerSplit,leftTab,layersOpen,inspectOpen:detailsOpen}));}catch{/* Session dimensions remain usable without storage. */}}
-  $effect(()=>{void chatWidth;void structureHeight;void drawerWidth;void layerSplit;void leftTab;void layersOpen;void detailsOpen;if(bridge)rememberSizes();});
+  function rememberSizes() {try{localStorage.setItem('vict.studio.workspace-sizes',JSON.stringify({chat:chatWidth,structure:structureHeight,document:drawerWidth,inspect:inspectionWidth}));}catch{/* Session dimensions remain usable without storage. */}}
+  $effect(()=>{void chatWidth;void structureHeight;void drawerWidth;void inspectionWidth;if(bridge)rememberSizes();});
   function receiveAgentProposal(proposal: AgentProposal) {
     if (!bridge) return {ok:false as const,code:"UI_DOC_STALE_REVISION",message:"The screen is no longer open."};
     const result = applyAgentProposal(bridge, proposal, agentEpoch, textDraftDirty || sourceDraftDirty || renamingScreen || !!createDialog?.open);
@@ -472,7 +469,7 @@
       event.preventDefault(); closeDrawer(); return;
     }
     const editable = event.target instanceof HTMLElement && (event.target.matches('input,textarea,select') || event.target.isContentEditable);
-    if (!editable && mode === 'design' && !(event.target instanceof Element && event.target.closest('.structure-view,.source-details,#document-drawer,.testing-drawer,.left-sidebar'))) {
+    if (!editable && mode === 'design' && !(event.target instanceof Element && event.target.closest('.structure-view,.source-details,#document-drawer,.testing-drawer,.agent-panel'))) {
       if (['Delete', 'Backspace'].includes(event.key)) { event.preventDefault(); removeSelection(); }
       if (event.key === 'F2') { event.preventDefault(); editSelectedText(); }
       if (event.altKey && ['ArrowUp', 'ArrowDown'].includes(event.key)) { event.preventDefault(); reorderSelection(event.key === 'ArrowUp' ? -1 : 1); }
@@ -547,7 +544,7 @@
         <Menubar.Item aria-label="Redo" disabled={!snapshot?.canRedo} onSelect={redo}>Redo <kbd>Ctrl+Shift+Z</kbd></Menubar.Item>
       </WorkspaceMenu>
       <WorkspaceMenu label="View" value="view" {activeMenu}>
-        <Menubar.Item onSelect={() => void toggleChat()}>{chatOpen ? "Hide sidebar" : "Show sidebar"}</Menubar.Item>
+        <Menubar.Item onSelect={() => void toggleChat()}>{chatOpen ? "Hide chat" : "Show chat"}</Menubar.Item>
         <Menubar.RadioGroup bind:value={width} aria-label="Canvas size">
           {#each [{value:'fluid',label:'Fit canvas'},{value:'768',label:'Tablet · 768'},{value:'390',label:'Phone · 390'}] as option}<Menubar.RadioItem value={option.value} closeOnSelect>{option.label}<span aria-hidden="true">{width===option.value?'\u2713':''}</span></Menubar.RadioItem>{/each}
         </Menubar.RadioGroup>
@@ -575,21 +572,12 @@
     </SelectionPalette>
   {/snippet}
   <div class="agent-workspace" class:chat-open={chatOpen}>
-  <aside class="left-sidebar" hidden={!chatOpen} style:--sidebar-width={`${chatWidth}px`} aria-label="Workspace sidebar">
-    <header class="panel-header sidebar-heading"><div role="tablist" tabindex="-1" aria-label="Sidebar panels" onkeydown={leftTabKeys}><button id="sidebar-chat-tab" role="tab" type="button" aria-selected={leftTab==='Chat'} aria-controls="sidebar-chat" tabindex={leftTab==='Chat'?0:-1} onclick={()=>void changeLeftTab('Chat')}>Chat</button><button id="sidebar-layers-tab" role="tab" type="button" aria-selected={leftTab==='Layers'} aria-controls="sidebar-layers" tabindex={leftTab==='Layers'?0:-1} onclick={()=>void changeLeftTab('Layers')}>Layers</button></div><button type="button" aria-label="Hide sidebar" title="Hide sidebar" onclick={()=>void toggleChat()}>×</button></header>
-    <div id="sidebar-chat" class="sidebar-tab-content agent-panel" role="tabpanel" aria-labelledby="sidebar-chat-tab" hidden={leftTab!=='Chat'}><AgentChat screenLabel={screenName(source)} selectionLabel={selectedNode ? compositionName(source, selectedNode.id) : "None"} blocked={textDraftDirty || sourceDraftDirty || renamingScreen} getContext={() => bridge ? {document:bridge.document, cursor:documentCursor(bridge.document,bridge.getSnapshot().revision,agentEpoch), ...(selected ? {selection:selected} : {})} : undefined} getCapture={cursor => captureDesignerPreview(canvasScroll?.querySelector<HTMLElement>('.design-frame') ?? undefined,cursor,()=>bridge ? {cursor:documentCursor(bridge.document,bridge.getSnapshot().revision,agentEpoch),mode,state:{runtimeValues,simulation:{denied:simulation.denied,failNext:simulation.failNext}},selection:selected,composition:compositionFocus ? `${compositionFocus.nodeId}/${compositionFocus.slotName}` : undefined,structureOpen:structureOpen && structureExpanded} : undefined,canvasScroll)} applyProposal={receiveAgentProposal} /></div>
-    <div id="sidebar-layers" class="sidebar-tab-content" role="tabpanel" aria-labelledby="sidebar-layers-tab" hidden={leftTab!=='Layers'}>
-      <LayersInspectPanels bind:layersOpen bind:inspectOpen={detailsOpen} bind:split={layerSplit}>
-        {#snippet layers()}{#if plan}<Layers compact hideTextContent labels={editorLabels} {plan} document={source} selectedOccurrence={selected} onSelect={selectFromStructure} onOpenComposition={navigateComposition} componentDescriptors={catalogDescriptors} />{/if}{/snippet}
-        {#snippet inspect()}<SourceDetails embedded document={source} selectedId={detailId ?? (selectedNode ? structureId(source.id,'node',selectedNode.id) : undefined)} blocked={textDraftDirty || sourceDraftDirty || renamingScreen} bind:page={detailsPage} onClose={closeDetails} onSelect={selectDetail} onNavigate={structureNavigate} />{/snippet}
-      </LayersInspectPanels>
-    </div>
-  </aside>
-  <div class="chat-resizer" hidden={!chatOpen}><PanelResizer label="Sidebar width" value={chatWidth} min={240} max={400} onChange={(value:number)=>chatWidth=value} /></div>
+  <div class="agent-panel" hidden={!chatOpen} style:--chat-width={`${chatWidth}px`}><header class="panel-header chat-heading"><strong>Chat</strong><button type="button" aria-label="Hide chat" title="Hide chat" onclick={()=>void toggleChat()}>×</button></header><AgentChat screenLabel={screenName(source)} selectionLabel={selectedNode ? compositionName(source, selectedNode.id) : "None"} blocked={textDraftDirty || sourceDraftDirty || renamingScreen} getContext={() => bridge ? {document:bridge.document, cursor:documentCursor(bridge.document,bridge.getSnapshot().revision,agentEpoch), ...(selected ? {selection:selected} : {})} : undefined} getCapture={cursor => captureDesignerPreview(canvasScroll?.querySelector<HTMLElement>('.design-frame') ?? undefined,cursor,()=>bridge ? {cursor:documentCursor(bridge.document,bridge.getSnapshot().revision,agentEpoch),mode,state:{runtimeValues,simulation:{denied:simulation.denied,failNext:simulation.failNext}},selection:selected,composition:compositionFocus ? `${compositionFocus.nodeId}/${compositionFocus.slotName}` : undefined,structureOpen:structureOpen && structureExpanded} : undefined,canvasScroll)} applyProposal={receiveAgentProposal} /></div>
+  <div class="chat-resizer" hidden={!chatOpen}><PanelResizer label="Chat width" value={chatWidth} min={240} max={400} onChange={(value:number)=>chatWidth=value} /></div>
   <div class="design-workspace" bind:this={workspaceElement} bind:clientWidth={workspaceWidth} class:drawer-open={rightOpen} class:has-object-tools={mode === 'design' && !!selectedNode && paletteRequested} style:--drawer-width={`${effectiveDrawerWidth}px`}>
     <WorkspaceContextMenu scope={workspaceElement} enabled={mode === 'design'} resolve={canvasContext} owns={ownsCanvasTarget} />
     <main class="design-stage" class:structure-expanded={structureOpen && structureExpanded} bind:clientHeight={stageHeight}>
-      <div class="canvas-toolbar workspace-tools" bind:clientHeight={toolbarHeight}>{#if !chatOpen}<button type="button" aria-label="Show sidebar" title="Show sidebar" onclick={()=>void toggleChat()}>Sidebar</button>{/if}<div class="canvas-modes" aria-label="Workspace mode"><button type="button" aria-pressed={mode === 'design'} onclick={() => changeMode('design')}>Design</button><button type="button" aria-pressed={mode === 'interact'} onclick={() => changeMode('interact')}>Interact</button></div>{#if compositionFocus}<div class="composition-back"><CompositionNavigator compact document={source} focus={compositionFocus} descriptors={catalogDescriptors} disabled={textDraftDirty || sourceDraftDirty} onNavigate={navigateComposition} /></div>{/if}<button type="button" bind:this={documentButton} class="panel-toggle" aria-expanded={drawerOpen && !testingOpen} aria-controls="document-drawer" onclick={toggleDocument}>Document</button>{#if activeTest}<button type="button" class="test-indicator" aria-label={`Testing: ${activeTest.label}`} onclick={()=>void openTesting()}>Testing: {activeTest.label}</button><button type="button" title="Return to starting values and clear simulated failures" onclick={resetRuntime}>Reset test</button>{/if}</div>
+      <div class="canvas-toolbar workspace-tools" bind:clientHeight={toolbarHeight}>{#if !chatOpen}<button type="button" aria-label="Show chat" title="Show chat" onclick={()=>void toggleChat()}>Chat</button>{/if}<div class="canvas-modes" aria-label="Workspace mode"><button type="button" aria-pressed={mode === 'design'} onclick={() => changeMode('design')}>Design</button><button type="button" aria-pressed={mode === 'interact'} onclick={() => changeMode('interact')}>Interact</button></div>{#if compositionFocus}<div class="composition-back"><CompositionNavigator compact document={source} focus={compositionFocus} descriptors={catalogDescriptors} disabled={textDraftDirty || sourceDraftDirty} onNavigate={navigateComposition} /></div>{/if}<button type="button" bind:this={documentButton} class="panel-toggle" aria-expanded={drawerOpen && !testingOpen} aria-controls="document-drawer" onclick={toggleDocument}>Document</button>{#if activeTest}<button type="button" class="test-indicator" aria-label={`Testing: ${activeTest.label}`} onclick={()=>void openTesting()}>Testing: {activeTest.label}</button><button type="button" title="Return to starting values and clear simulated failures" onclick={resetRuntime}>Reset test</button>{/if}</div>
 
 
       <div class="canvas-scroll workspace-scroll" inert={structureOpen && structureExpanded} bind:this={canvasScroll}>
@@ -608,7 +596,10 @@
         </div>
       </div>
       <StructureDock bind:open={structureOpen} bind:expanded={structureExpanded} bind:height={structureHeight} availableHeight={stageHeight - toolbarHeight}>
-        <StructureView presentation="drawer" active={structureOpen} document={source} revision={snapshot?.revision ?? ''} selectedNodeId={selectedNode?.id} descriptors={catalogDescriptors} recipes={screenRecipes} blocked={textDraftDirty || sourceDraftDirty || renamingScreen} onSelect={selectStructureNode} onDeselect={() => { if (!textDraftDirty && !sourceDraftDirty && !renamingScreen) { bridge?.select(undefined); paletteRequested = false; detailId=undefined; } }} onMove={moveFromStructure} onNotice={message => notice = message} onNavigate={structureNavigate} onDismiss={dismissStructure} onInspect={inspectSource} onCloseInspect={closeDetails} inspectionSelection={detailId} onInspectSelection={id=>detailId=id} inspectionExpanded={chatOpen && leftTab==='Layers' && detailsOpen} objectCommands={occurrence=>objectContext(occurrence)?.commands ?? []} />
+        <StructureInspection open={detailsOpen} bind:width={inspectionWidth}>
+          {#snippet graphContent(visible:boolean)}<StructureView presentation="drawer" active={structureOpen && visible} document={source} revision={snapshot?.revision ?? ''} selectedNodeId={selectedNode?.id} descriptors={catalogDescriptors} recipes={screenRecipes} blocked={textDraftDirty || sourceDraftDirty || renamingScreen} onSelect={selectStructureNode} onDeselect={() => { if (!textDraftDirty && !sourceDraftDirty && !renamingScreen) { bridge?.select(undefined); paletteRequested = false; detailId=undefined; } }} onMove={moveFromStructure} onNotice={message => notice = message} onNavigate={structureNavigate} onDismiss={dismissStructure} onInspect={inspectSource} onCloseInspect={closeDetails} inspectionSelection={detailId} onInspectSelection={id=>detailId=id} inspectionExpanded={detailsOpen} objectCommands={occurrence=>objectContext(occurrence)?.commands ?? []} />{/snippet}
+          {#snippet inspectionContent()}<SourceDetails document={source} selectedId={detailId ?? (selectedNode ? structureId(source.id,'node',selectedNode.id) : undefined)} blocked={textDraftDirty || sourceDraftDirty || renamingScreen} bind:page={detailsPage} onClose={closeDetails} onSelect={selectDetail} onNavigate={structureNavigate} />{/snippet}
+        </StructureInspection>
       </StructureDock>
     </main>
     <div class="drawer-resizer" hidden={!rightOpen}><PanelResizer label="Document drawer width" value={effectiveDrawerWidth} min={280} max={460} reverse onChange={(value: number) => drawerWidth = value} /></div>
@@ -616,6 +607,7 @@
     <aside id="document-drawer" hidden={!drawerOpen || testingOpen} class="document-drawer" aria-label="Document" onkeydown={documentKeys}>
       <header class="panel-header"><strong>Document</strong><button class="close-document" type="button" aria-label="Close document" title="Close document (Escape)" onclick={closeDrawer}>×</button></header>
       <DocumentPanels bind:active={documentPanel}>
+        {#snippet layersContent()}<div class="layer-actions"><span>Selected object</span><button type="button" class="inspect-source" aria-label="Inspect source" aria-expanded={structureOpen && detailsOpen} onclick={()=>inspectSource()}>Inspect in Structure ↗</button></div>{#if plan}<Layers compact hideTextContent labels={editorLabels} {plan} document={source} selectedOccurrence={selected} onSelect={selectFromStructure} onOpenComposition={navigateComposition} componentDescriptors={catalogDescriptors} />{/if}{/snippet}
         {#snippet dataContent()}
           {#if selectedData && source.localState[selectedData]}
             <button class="data-back" type="button" disabled={dataDraftDirty} onclick={()=>openData()}>← All data</button>
