@@ -442,7 +442,7 @@ body:has(.finished-screen) {
   .left-sidebar{width:100%;height:min(260px,38dvh);min-height:160px;flex:none;border-bottom:1px solid var(--vict-color-border)}
   .chat-resizer{display:none}
   .design-workspace{flex:1 0 280px}
-  .design-workspace.drawer-open{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(120px,1fr) minmax(140px,45%);min-height:340px}
+  .design-workspace.drawer-open{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(240px,1fr) minmax(280px,45%);min-height:520px}
   .drawer-resizer{display:none}
   .design-workspace>.document-drawer,.design-workspace>.testing-drawer{position:static;inset:auto;width:auto;grid-column:1;grid-row:2;border-left:0;border-top:1px solid var(--vict-color-border)}
   .canvas-toolbar{flex-wrap:wrap;height:auto;min-height:38px}
