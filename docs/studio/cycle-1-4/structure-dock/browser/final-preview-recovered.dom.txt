@@ -1,0 +1,142 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Structure layout review"
+  - generic: ✓ Saved
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- complementary "Chat":
+  - region "Conversation":
+    - region "Messages — Message":
+      - log:
+        - paragraph: Describe a screen, or select an element to edit it.
+    - button "Scroll to latest message":
+      - generic: Scroll to end
+    - textbox "Message":
+      - /placeholder: Ask for a change…
+    - button "Send" [disabled]:
+      - generic: Send
+    - status
+  - status "Ready":
+    - generic: Ready
+  - button "Chat details": ···
+- main:
+  - generic "Workspace mode":
+    - button "Design"
+    - button "Interact" [pressed]
+  - button "Document" [expanded]
+  - generic "Screen canvas":
+    - main "Structure layout review":
+      - heading "Create your account" [level=1]:
+        - generic: Create your account
+      - paragraph:
+        - generic: Set up your workspace in under a minute — just the essentials.
+      - generic: Full name
+      - textbox "Full name":
+        - /placeholder: Jordan Lee
+        - text: Layout review
+      - generic: Work email
+      - textbox "Work email":
+        - /placeholder: you@company.com
+        - text: <redacted>
+      - generic: Role
+      - combobox "Role":
+        - option
+        - option
+        - option [selected]
+        - option
+        - option
+        - option
+      - checkbox "Email me product updates" [checked]
+      - generic: Email me product updates
+      - button "Create account" [active]
+      - status: "Simulated submission: ✓ Details captured locally — nothing was sent."
+      - alert
+      - paragraph:
+        - generic: Your details stay on this screen — nothing is sent.
+  - region "Structure panel":
+    - navigation "Structure panel controls":
+      - button "Structure":
+        - generic: ▸
+        - text: Structure
+- separator "Document drawer width"
+- complementary "Document":
+  - navigation "Document sections":
+    - button "Layers"
+    - button "Data"
+    - button "Actions"
+    - button "Source"
+    - button "Preview" [pressed]
+    - button "Close document": ×
+  - heading "Preview" [level=2]
+  - text: Temporary values · no live effects
+  - checkbox "Deny demo writes"
+  - text: Deny demo writes
+  - checkbox "Fail next action"
+  - text: Fail next action
+  - region "Preview state":
+    - heading "Preview state" [level=3]
+    - paragraph: Seeds the canvas run. Editing here never changes document source.
+    - code: message
+    - generic: string
+    - textbox "message value":
+      - /placeholder: ""
+      - text: Hello from my screen
+    - code: accepted
+    - generic: boolean
+    - checkbox "false"
+    - generic: "false"
+    - code: dialogOpen
+    - generic: boolean
+    - checkbox "false"
+    - generic: "false"
+    - code: busy
+    - generic: boolean
+    - checkbox "false"
+    - generic: "false"
+    - code: actionError
+    - generic: string
+    - textbox "actionError value":
+      - /placeholder: ""
+    - code: actionResult
+    - generic: string
+    - textbox "actionResult value":
+      - /placeholder: ""
+      - text: "Simulated submission: ✓ Details captured locally — nothing was sent."
+    - code: fullName
+    - generic: string
+    - textbox "fullName value":
+      - /placeholder: ""
+      - text: Layout review
+    - code: workEmail
+    - generic: string
+    - textbox "workEmail value":
+      - /placeholder: ""
+      - text: <redacted>
+    - code: role
+    - generic: string
+    - textbox "role value":
+      - /placeholder: ""
+      - text: Design
+    - code: updatesOptIn
+    - generic: boolean
+    - checkbox "true" [checked]
+    - generic: "true"
+    - code: submitMessage
+    - generic: string
+    - textbox "submitMessage value":
+      - /placeholder: ""
+  - status: "demo.submit: Simulated write permission denied."
+  - status: "demo.submit: Simulated service failure. Try again."
+  - status: "demo.submit: Simulated submission: ✓ Details captured locally — nothing was sent."
+- contentinfo:
+  - status: Interact mode · simulated behavior, no live effects.
+  - generic "v1_fa97758080e78e2a5b00a5107590ee744ae5e4ccf6bcb92175e8035f74fcb8cb": "@3 · v1_fa97758080e7…"
+- generic: Designer — VICT Studio

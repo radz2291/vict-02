@@ -1,0 +1,125 @@
+{
+  "active": null,
+  "at": "2026-10-25T14:44:44.124Z",
+  "elements": {
+    "#document-drawer": {
+      "display": "flex",
+      "rect": {
+        "bottom": 696,
+        "height": 652,
+        "left": 960,
+        "right": 1280,
+        "top": 44,
+        "width": 320,
+        "x": 960,
+        "y": 44
+      },
+      "scrollLeft": 0,
+      "scrollTop": 0,
+      "transform": "none"
+    },
+    ".canvas-scroll": {
+      "display": "block",
+      "rect": {
+        "bottom": 661.2000122070312,
+        "height": 579.2000122070312,
+        "left": 320,
+        "right": 954,
+        "top": 82,
+        "width": 634,
+        "x": 320,
+        "y": 82
+      },
+      "scrollLeft": 0,
+      "scrollTop": 98.4000015258789,
+      "transform": "none"
+    },
+    ".design-frame": {
+      "display": "block",
+      "rect": {
+        "bottom": 631.375024408102,
+        "height": 631.7750244140625,
+        "left": 338,
+        "right": 920.7999877929688,
+        "top": -0.4000000059604645,
+        "width": 582.7999877929688,
+        "x": 338,
+        "y": -0.4000000059604645
+      },
+      "scrollLeft": 0,
+      "scrollTop": 0,
+      "transform": "none"
+    },
+    ".dock-bar": {
+      "display": "flex",
+      "rect": {
+        "bottom": 696,
+        "height": 34,
+        "left": 320,
+        "right": 954,
+        "top": 662,
+        "width": 634,
+        "x": 320,
+        "y": 662
+      },
+      "scrollLeft": 0,
+      "scrollTop": 0,
+      "transform": "none"
+    },
+    ".dock-panel": {
+      "display": "none",
+      "rect": {
+        "bottom": 0,
+        "height": 0,
+        "left": 0,
+        "right": 0,
+        "top": 0,
+        "width": 0,
+        "x": 0,
+        "y": 0
+      },
+      "scrollLeft": 0,
+      "scrollTop": 0,
+      "transform": "none"
+    },
+    ".inspection-drawer": null,
+    ".source-details": null,
+    ".structure-canvas": {
+      "display": "block",
+      "rect": {
+        "bottom": 0,
+        "height": 0,
+        "left": 0,
+        "right": 0,
+        "top": 0,
+        "width": 0,
+        "x": 0,
+        "y": 0
+      },
+      "scrollLeft": 0,
+      "scrollTop": 0,
+      "transform": "none"
+    },
+    ".svelte-flow__viewport": {
+      "display": "block",
+      "rect": {
+        "bottom": 0,
+        "height": 0,
+        "left": 0,
+        "right": 0,
+        "top": 0,
+        "width": 0,
+        "x": 0,
+        "y": 0
+      },
+      "scrollLeft": 0,
+      "scrollTop": 0,
+      "transform": "none"
+    }
+  },
+  "viewport": {
+    "dpr": 1.25,
+    "height": 720,
+    "width": 1280
+  }
+}

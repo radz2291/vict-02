@@ -1,0 +1,225 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Structure layout review"
+  - generic: ✓ Saved
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- complementary "Chat":
+  - region "Conversation":
+    - region "Messages — Message":
+      - log:
+        - paragraph: Describe a screen, or select an element to edit it.
+    - button "Scroll to latest message":
+      - generic: Scroll to end
+    - textbox "Message":
+      - /placeholder: Ask for a change…
+    - button "Send" [disabled]:
+      - generic: Send
+    - status
+  - status "Ready":
+    - generic: Ready
+  - button "Chat details": ···
+- main:
+  - generic "Workspace mode":
+    - button "Design" [pressed]
+    - button "Interact"
+  - button "Document"
+  - generic "Screen canvas":
+    - main "Structure layout review":
+      - heading "Create your account" [level=1]:
+        - generic: Create your account
+      - paragraph:
+        - generic: Set up your workspace in under a minute — just the essentials.
+      - generic: Full name
+      - textbox "Full name":
+        - /placeholder: Jordan Lee
+      - generic: Work email
+      - textbox "Work email":
+        - /placeholder: you@company.com
+      - generic: Role
+      - combobox "Role":
+        - option [selected]
+        - option
+        - option
+        - option
+        - option
+        - option
+      - checkbox "Email me product updates" [checked]
+      - generic: Email me product updates
+      - button "Create account"
+      - status
+      - alert
+      - paragraph:
+        - generic: Your details stay on this screen — nothing is sent.
+  - region "Structure panel":
+    - separator "Structure panel height"
+    - region "Source structure":
+      - searchbox "Search structure"
+      - menubar "Structure menus":
+        - menuitem "View"
+        - menuitem "Object"
+      - generic: 2 items
+      - button "Inspect structure" [expanded]: Inspect
+      - application:
+        - 'group "Container: Screen, source screen"':
+          - button
+          - generic: Container
+          - button "Collapse Screen" [expanded]: ⌄
+          - strong: Screen
+          - button
+        - 'group "Container: Section, source onbCard"':
+          - button
+          - generic: Container
+          - button "Expand Section": ›
+          - strong: Section
+          - generic: 32 hidden
+          - button
+        - link "Svelte Flow attribution":
+          - /url: https://svelteflow.dev?utm_source=attribution
+          - text: Svelte Flow
+        - generic "Control Panel":
+          - button "Zoom In":
+          - button "Zoom Out":
+          - button "Fit View":
+    - navigation "Structure panel controls":
+      - button "Structure" [expanded]:
+        - generic: ▾
+        - text: Structure
+      - button "Expand Structure": ↗
+- separator "Inspection drawer width"
+- complementary "Inspect":
+  - region "Source inspection details":
+    - generic: Inspect
+    - strong: Section
+    - button "Close inspection details" [active]: ×
+    - navigation "Source inspection view":
+      - button "Properties" [pressed]
+      - button "Relationships"
+    - generic: Container
+    - code: onbCard
+    - button "Edit properties ↗"
+    - term: kind
+    - definition: element
+    - term: id
+    - definition: onbCard
+    - term: tag
+    - definition: section
+    - term: children.0
+    - definition: onbTitle
+    - term: children.1
+    - definition: onbSubtitle
+    - term: children.2
+    - definition: onbNameLabel
+    - term: children.3
+    - definition: onbNameInput
+    - term: children.4
+    - definition: onbEmailLabel
+    - term: children.5
+    - definition: onbEmailInput
+    - term: children.6
+    - definition: onbRoleLabel
+    - term: children.7
+    - definition: onbRoleSelect
+    - term: children.8
+    - definition: onbNotifRow
+    - term: children.9
+    - definition: onbSubmit
+    - term: children.10
+    - definition: onbFeedback
+    - term: localStyle.0.property
+    - definition: background-color
+    - term: localStyle.0.value.type
+    - definition: text
+    - term: localStyle.0.value.value
+    - definition: "#ffffff"
+    - term: localStyle.1.property
+    - definition: border
+    - term: localStyle.1.value.type
+    - definition: text
+    - term: localStyle.1.value.value
+    - definition: "1px solid #e3e8f0"
+    - term: localStyle.2.property
+    - definition: border-radius
+    - term: localStyle.2.value.type
+    - definition: text
+    - term: localStyle.2.value.value
+    - definition: 16px
+    - term: localStyle.3.property
+    - definition: box-shadow
+    - term: localStyle.3.value.type
+    - definition: text
+    - term: localStyle.3.value.value
+    - definition: 0 12px 32px rgba(15,23,42,0.07)
+    - term: localStyle.4.property
+    - definition: box-sizing
+    - term: localStyle.4.value.type
+    - definition: text
+    - term: localStyle.4.value.value
+    - definition: border-box
+    - term: localStyle.5.property
+    - definition: display
+    - term: localStyle.5.value.type
+    - definition: text
+    - term: localStyle.5.value.value
+    - definition: flex
+    - term: localStyle.6.property
+    - definition: flex-direction
+    - term: localStyle.6.value.type
+    - definition: text
+    - term: localStyle.6.value.value
+    - definition: column
+    - term: localStyle.7.property
+    - definition: gap
+    - term: localStyle.7.value.type
+    - definition: text
+    - term: localStyle.7.value.value
+    - definition: 14px
+    - term: localStyle.8.property
+    - definition: margin
+    - term: localStyle.8.value.type
+    - definition: text
+    - term: localStyle.8.value.value
+    - definition: 16px auto 24px
+    - term: localStyle.9.property
+    - definition: max-width
+    - term: localStyle.9.value.type
+    - definition: text
+    - term: localStyle.9.value.value
+    - definition: 460px
+    - term: localStyle.10.property
+    - definition: padding
+    - term: localStyle.10.value.type
+    - definition: text
+    - term: localStyle.10.value.value
+    - definition: 24px
+    - term: localStyle.11.property
+    - definition: width
+    - term: localStyle.11.value.type
+    - definition: text
+    - term: localStyle.11.value.value
+    - definition: 100%
+- contentinfo:
+  - status: Opened inspector for the selected source.
+  - generic "v1_fa97758080e78e2a5b00a5107590ee744ae5e4ccf6bcb92175e8035f74fcb8cb": "@3 · v1_fa97758080e7…"
+- generic: Designer — VICT Studio
+- option "px" [selected]
+- option "rem"
+- option "em"
+- option "%"
+- option "vh"
+- option "vw"
+- option "—"
+- option "Choose…"
+- option "block"
+- option "flex" [selected]
+- option "grid"
+- option "inline"
+- option "none"

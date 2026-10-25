@@ -1,0 +1,168 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Structure layout review"
+  - generic: ✓ Saved
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- complementary "Chat":
+  - region "Conversation":
+    - region "Messages — Message":
+      - log:
+        - paragraph: Describe a screen, or select an element to edit it.
+    - button "Scroll to latest message":
+      - generic: Scroll to end
+    - textbox "Message":
+      - /placeholder: Ask for a change…
+    - button "Send" [disabled]:
+      - generic: Send
+    - status
+  - status "Ready":
+    - generic: Ready
+  - button "Chat details": ···
+- main:
+  - generic "Workspace mode":
+    - button "Design" [pressed]
+    - button "Interact"
+  - button "Document"
+  - generic "Screen canvas":
+    - main "Structure layout review":
+      - heading "Create your account" [level=1]:
+        - generic: Create your account
+      - paragraph:
+        - generic: Set up your workspace in under a minute — just the essentials.
+      - generic: Full name
+      - textbox "Full name":
+        - /placeholder: Jordan Lee
+      - generic: Work email
+      - textbox "Work email":
+        - /placeholder: you@company.com
+      - generic: Role
+      - combobox "Role":
+        - option [selected]
+        - option
+        - option
+        - option
+        - option
+        - option
+      - checkbox "Email me product updates" [checked]
+      - generic: Email me product updates
+      - button "Create account"
+      - status
+      - alert
+      - paragraph:
+        - generic: Your details stay on this screen — nothing is sent.
+  - region "Structure panel":
+    - separator "Structure panel height"
+    - region "Source structure":
+      - searchbox "Search structure"
+      - menubar "Structure menus":
+        - menuitem "View"
+        - menuitem "Object"
+      - generic: 2 items
+      - button "Inspect structure": Inspect
+      - application:
+        - 'group "Container: Screen, source screen"':
+          - button
+          - generic: Container
+          - button "Collapse Screen" [expanded]: ⌄
+          - strong: Screen
+          - button
+        - 'group "Container: Section, source onbCard"':
+          - button
+          - generic: Container
+          - button "Expand Section": ›
+          - strong: Section
+          - generic: 32 hidden
+          - button
+        - link "Svelte Flow attribution":
+          - /url: https://svelteflow.dev?utm_source=attribution
+          - text: Svelte Flow
+        - generic "Control Panel":
+          - button "Zoom In":
+          - button "Zoom Out":
+          - button "Fit View":
+    - navigation "Structure panel controls":
+      - button "Structure" [expanded]:
+        - generic: ▾
+        - text: Structure
+      - button "Expand Structure": ↗
+- contentinfo:
+  - status: Opened inspector for the selected source.
+  - generic "v1_fa97758080e78e2a5b00a5107590ee744ae5e4ccf6bcb92175e8035f74fcb8cb": "@3 · v1_fa97758080e7…"
+- generic: Designer — VICT Studio
+- generic "Floating selection tools":
+  - button "Hide tools": ×
+  - generic "Tools for Section":
+    - tablist "Tool pages":
+      - tab "Format tools" [expanded] [active] [selected]: Format
+      - tab "Insert tools": Insert
+      - tab "Arrange tools": Arrange
+      - tab "Connect tools": Connect
+    - generic "Section"
+    - tabpanel "Format tools":
+      - complementary "Object properties":
+        - tablist "Format categories":
+          - tab "Content"
+          - tab "Text"
+          - tab "Fill"
+          - tab "Spacing"
+          - tab "Layout" [expanded] [selected]
+          - tab "Rules"
+        - tabpanel "Layout":
+          - tablist "Layout pages":
+            - tab "Flow" [expanded] [selected]
+            - tab "Alignment"
+            - tab "Grid"
+          - tabpanel "Flow":
+            - generic: Gap between children
+            - spinbutton "Gap between children": "14"
+            - combobox "Gap between children unit":
+              - option "px" [selected]
+              - option "rem"
+              - option "em"
+              - option "%"
+              - option "vh"
+              - option "vw"
+              - option "—"
+            - generic: Layout
+            - combobox "Layout":
+              - option "Choose…"
+              - option "block"
+              - option "flex" [selected]
+              - option "grid"
+              - option "inline"
+              - option "none"
+            - generic: Direction
+            - group "Direction":
+              - 'button "Direction: row"':
+                - text: →
+                - generic: row
+              - 'button "Direction: column" [pressed]':
+                - text: ↓
+                - generic: column
+              - 'button "Direction: row-reverse"':
+                - text: ←
+                - generic: row-reverse
+              - 'button "Direction: column-reverse"':
+                - text: ↑
+                - generic: column-reverse
+            - generic: Wrapping
+            - group "Wrapping":
+              - 'button "Wrapping: nowrap" [pressed]':
+                - text: →
+                - generic: nowrap
+              - 'button "Wrapping: wrap"':
+                - text: ↵
+                - generic: wrap
+              - 'button "Wrapping: wrap-reverse"':
+                - text: ↰
+                - generic: wrap-reverse
+            - paragraph: All sizes · normal

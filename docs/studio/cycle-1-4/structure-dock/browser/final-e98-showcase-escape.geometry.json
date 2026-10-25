@@ -1,0 +1,80 @@
+{
+  "active": "Inspect structure",
+  "at": "2026-10-25T14:57:43.839Z",
+  "elements": {
+    "#document-drawer": null,
+    ".canvas-scroll": null,
+    ".design-frame": null,
+    ".dock-bar": {
+      "display": "flex",
+      "rect": {
+        "bottom": 993.2000122070312,
+        "height": 34,
+        "left": 32,
+        "right": 860.7999877929688,
+        "top": 959.2000122070312,
+        "width": 828.7999877929688,
+        "x": 32,
+        "y": 959.2000122070312
+      },
+      "scrollLeft": 0,
+      "scrollTop": 0,
+      "transform": "none"
+    },
+    ".dock-panel": {
+      "display": "flex",
+      "rect": {
+        "bottom": 959.2000122070312,
+        "height": 300,
+        "left": 32,
+        "right": 860.7999877929688,
+        "top": 659.2000122070312,
+        "width": 828.7999877929688,
+        "x": 32,
+        "y": 659.2000122070312
+      },
+      "scrollLeft": 0,
+      "scrollTop": 0,
+      "transform": "none"
+    },
+    ".inspection-drawer": null,
+    ".source-details": null,
+    ".structure-canvas": {
+      "display": "block",
+      "rect": {
+        "bottom": 959.1999969482422,
+        "height": 249.1999969482422,
+        "left": 32,
+        "right": 860.7999877929688,
+        "top": 710,
+        "width": 828.7999877929688,
+        "x": 32,
+        "y": 710
+      },
+      "scrollLeft": 0,
+      "scrollTop": 0,
+      "transform": "none"
+    },
+    ".svelte-flow__viewport": {
+      "display": "block",
+      "rect": {
+        "bottom": -11.1253662109375,
+        "height": 732.76123046875,
+        "left": 55.23283767700195,
+        "right": 2007.9600105285645,
+        "top": -743.8865966796875,
+        "width": 1952.7271728515625,
+        "x": 55.23283767700195,
+        "y": -743.8865966796875
+      },
+      "scrollLeft": 0,
+      "scrollTop": 0,
+      "transform": "matrix(1.62836, 0, 0, 1.62836, 22.4328, 13.3134)"
+    }
+  },
+  "viewport": {
+    "dpr": 1.25,
+    "height": 720,
+    "width": 1280
+  }
+}

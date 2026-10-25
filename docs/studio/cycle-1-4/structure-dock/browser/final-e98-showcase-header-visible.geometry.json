@@ -1,0 +1,95 @@
+{
+  "active": "Close inspection details",
+  "at": "2026-10-25T14:57:12.742Z",
+  "elements": {
+    "#document-drawer": null,
+    ".canvas-scroll": null,
+    ".design-frame": null,
+    ".dock-bar": {
+      "display": "flex",
+      "rect": {
+        "bottom": 665.2000122070312,
+        "height": 34,
+        "left": 32,
+        "right": 860.7999877929688,
+        "top": 631.2000122070312,
+        "width": 828.7999877929688,
+        "x": 32,
+        "y": 631.2000122070312
+      },
+      "scrollLeft": 0,
+      "scrollTop": 0,
+      "transform": "none"
+    },
+    ".dock-panel": {
+      "display": "flex",
+      "rect": {
+        "bottom": 631.2000122070312,
+        "height": 300,
+        "left": 32,
+        "right": 860.7999877929688,
+        "top": 331.20001220703125,
+        "width": 828.7999877929688,
+        "x": 32,
+        "y": 331.20001220703125
+      },
+      "scrollLeft": 0,
+      "scrollTop": 0,
+      "transform": "none"
+    },
+    ".inspection-drawer": null,
+    ".source-details": {
+      "display": "flex",
+      "rect": {
+        "bottom": 611.2000246047974,
+        "height": 598.4000244140625,
+        "left": 873.6000366210938,
+        "right": 1232.000030517578,
+        "top": 12.800000190734863,
+        "width": 358.3999938964844,
+        "x": 873.6000366210938,
+        "y": 12.800000190734863
+      },
+      "scrollLeft": 0,
+      "scrollTop": 0,
+      "transform": "none"
+    },
+    ".structure-canvas": {
+      "display": "block",
+      "rect": {
+        "bottom": 631.1999969482422,
+        "height": 249.1999969482422,
+        "left": 32,
+        "right": 860.7999877929688,
+        "top": 382,
+        "width": 828.7999877929688,
+        "x": 32,
+        "y": 382
+      },
+      "scrollLeft": 0,
+      "scrollTop": 0,
+      "transform": "none"
+    },
+    ".svelte-flow__viewport": {
+      "display": "block",
+      "rect": {
+        "bottom": -339.12542724609375,
+        "height": 732.7611694335938,
+        "left": 55.23283767700195,
+        "right": 2007.9600105285645,
+        "top": -1071.8865966796875,
+        "width": 1952.7271728515625,
+        "x": 55.23283767700195,
+        "y": -1071.8865966796875
+      },
+      "scrollLeft": 0,
+      "scrollTop": 0,
+      "transform": "matrix(1.62836, 0, 0, 1.62836, 22.4328, 13.3134)"
+    }
+  },
+  "viewport": {
+    "dpr": 1.25,
+    "height": 720,
+    "width": 1280
+  }
+}

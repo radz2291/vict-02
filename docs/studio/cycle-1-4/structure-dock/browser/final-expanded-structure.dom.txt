@@ -1,0 +1,85 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Structure layout review"
+  - generic: ✓ Saved
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- complementary "Chat":
+  - region "Conversation":
+    - region "Messages — Message":
+      - log:
+        - paragraph: Describe a screen, or select an element to edit it.
+    - button "Scroll to latest message":
+      - generic: Scroll to end
+    - textbox "Message":
+      - /placeholder: Ask for a change…
+    - button "Send" [disabled]:
+      - generic: Send
+    - status
+  - status "Ready":
+    - generic: Ready
+  - button "Chat details": ···
+- main:
+  - generic "Workspace mode":
+    - button "Design"
+    - button "Interact" [pressed]
+  - button "Document"
+  - generic: Create your account
+  - generic: Set up your workspace in under a minute — just the essentials.
+  - generic: Full name
+  - generic: Work email
+  - generic: Role
+  - option
+  - option
+  - option [selected]
+  - option
+  - option
+  - option
+  - generic: Email me product updates
+  - generic: Your details stay on this screen — nothing is sent.
+  - region "Structure panel":
+    - region "Source structure":
+      - searchbox "Search structure"
+      - menubar "Structure menus":
+        - menuitem "View"
+        - menuitem "Object"
+      - generic: 2 items
+      - button "Inspect structure": Inspect
+      - application:
+        - 'group "Container: Screen, source screen"':
+          - button
+          - generic: Container
+          - button "Collapse Screen" [expanded]: ⌄
+          - strong: Screen
+          - button
+        - 'group "Container: Section, source onbCard"':
+          - button
+          - generic: Container
+          - button "Expand Section": ›
+          - strong: Section
+          - generic: 32 hidden
+          - button
+        - link "Svelte Flow attribution":
+          - /url: https://svelteflow.dev?utm_source=attribution
+          - text: Svelte Flow
+        - generic "Control Panel":
+          - button "Zoom In":
+          - button "Zoom Out":
+          - button "Fit View":
+    - navigation "Structure panel controls":
+      - button "Structure" [expanded]:
+        - generic: ▾
+        - text: Structure
+      - button "Restore Structure" [active] [pressed]: ↙
+- contentinfo:
+  - status: Interact mode · simulated behavior, no live effects.
+  - generic "v1_fa97758080e78e2a5b00a5107590ee744ae5e4ccf6bcb92175e8035f74fcb8cb": "@3 · v1_fa97758080e7…"
+- generic: Designer — VICT Studio

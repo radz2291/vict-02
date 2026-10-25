@@ -1,0 +1,258 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Structure layout review"
+  - generic: ● Unsaved changes
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- complementary "Chat":
+  - region "Conversation":
+    - region "Messages — Message":
+      - log:
+        - paragraph: Describe a screen, or select an element to edit it.
+    - button "Scroll to latest message":
+      - generic: Scroll to end
+    - textbox "Message":
+      - /placeholder: Ask for a change…
+    - button "Send" [disabled]:
+      - generic: Send
+    - status
+  - status "Ready":
+    - generic: Ready
+  - button "Chat details": ···
+- main:
+  - generic "Workspace mode":
+    - button "Design" [pressed]
+    - button "Interact"
+  - button "Document"
+  - generic "Screen canvas":
+    - main "Structure layout review":
+      - heading "Create your account" [level=1]:
+        - generic: Create your account
+      - paragraph:
+        - generic: Set up your workspace in under a minute — just the essentials.
+      - generic: Full name
+      - textbox "Full name":
+        - /placeholder: Jordan Lee
+      - generic: Work email
+      - textbox "Work email":
+        - /placeholder: you@company.com
+      - generic: Role
+      - combobox "Role":
+        - option [selected]
+        - option
+        - option
+        - option
+        - option
+        - option
+      - checkbox "Email me product updates" [checked]
+      - generic: Email me product updates
+      - button "Create account"
+      - status
+      - alert
+      - paragraph:
+        - generic: Your details stay on this screen — nothing is sent.
+  - region "Structure panel":
+    - separator "Structure panel height"
+    - region "Source structure":
+      - searchbox "Search structure" [active]
+      - menubar "Structure menus":
+        - menuitem "View"
+        - menuitem "Object"
+      - generic: 31 items
+      - button "Inspect structure": Inspect
+      - application:
+        - 'group "Container: Screen, source screen"':
+          - button
+          - generic: Container
+          - button "Collapse Screen" [expanded]: ⌄
+          - strong: Screen
+          - button
+        - 'group "Container: Section, source onbCard"':
+          - button
+          - generic: Container
+          - button "Collapse Section" [expanded]: ⌄
+          - strong: Section
+          - button
+        - 'group "Container: Heading · Create your account, source onbTitle"':
+          - button
+          - generic: Heading
+          - strong: Create your account
+          - button
+        - 'group "Container: Paragraph · Set up your workspace in under a minute — just the essentials., source onbSubtitle"':
+          - button
+          - generic: Paragraph
+          - strong: Set up your workspace in under a minute — just the essentials.
+          - button
+        - 'group "Container: label · Full name, source onbNameLabel"':
+          - button
+          - generic: Container
+          - button "Collapse label · Full name" [expanded]: ⌄
+          - strong: label · Full name
+          - button
+        - 'group "Text: Full name, source onbNameLabel-text"':
+          - button
+          - generic: Text
+          - strong: Full name
+          - button
+        - 'group "Element: Input 1, source onbNameInput"':
+          - button
+          - generic: Element
+          - strong: Input 1
+          - button
+        - 'group "Container: label · Work email, source onbEmailLabel"':
+          - button
+          - generic: Container
+          - button "Collapse label · Work email" [expanded]: ⌄
+          - strong: label · Work email
+          - button
+        - 'group "Text: Work email, source onbEmailLabel-text"':
+          - button
+          - generic: Text
+          - strong: Work email
+          - button
+        - 'group "Element: Input 2, source onbEmailInput"':
+          - button
+          - generic: Element
+          - strong: Input 2
+          - button
+        - 'group "Container: label · Role, source onbRoleLabel"':
+          - button
+          - generic: Container
+          - button "Collapse label · Role" [expanded]: ⌄
+          - strong: label · Role
+          - button
+        - 'group "Text: Role, source onbRoleLabel-text"':
+          - button
+          - generic: Text
+          - strong: Role
+          - button
+        - 'group "Container: select, source onbRoleSelect"':
+          - button
+          - generic: Container
+          - button "Collapse select" [expanded]: ⌄
+          - strong: select
+          - button
+        - 'group "Container: option · Select your role…, source onbRolePlaceholder"':
+          - button
+          - generic: Container
+          - button "Collapse option · Select your role…" [expanded]: ⌄
+          - strong: option · Select your role…
+          - button
+        - 'group "Text: Select your role…, source onbRolePlaceholder-text"':
+          - button
+          - generic: Text
+          - strong: Select your role…
+          - button
+        - 'group "Container: option · Product, source onbRoleOptProduct"':
+          - button
+          - generic: Container
+          - button "Collapse option · Product" [expanded]: ⌄
+          - strong: option · Product
+          - button
+        - 'group "Text: Product, source onbRoleOptProduct-text"':
+          - button
+          - generic: Text
+          - strong: Product
+          - button
+        - 'group "Container: option · Design, source onbRoleOptDesign"':
+          - button
+          - generic: Container
+          - button "Collapse option · Design" [expanded]: ⌄
+          - strong: option · Design
+          - button
+        - 'group "Text: Design, source onbRoleOptDesign-text"':
+          - button
+          - generic: Text
+          - strong: Design
+          - button
+        - 'group "Container: option · Engineering, source onbRoleOptEngineering"':
+          - button
+          - generic: Container
+          - button "Collapse option · Engineering" [expanded]: ⌄
+          - strong: option · Engineering
+          - button
+        - 'group "Text: Engineering, source onbRoleOptEngineering-text"':
+          - button
+          - generic: Text
+          - strong: Engineering
+          - button
+        - 'group "Container: option · Marketing, source onbRoleOptMarketing"':
+          - button
+          - generic: Container
+          - button "Collapse option · Marketing" [expanded]: ⌄
+          - strong: option · Marketing
+          - button
+        - 'group "Text: Marketing, source onbRoleOptMarketing-text"':
+          - button
+          - generic: Text
+          - strong: Marketing
+          - button
+        - 'group "Container: option · Sales, source onbRoleOptSales"':
+          - button
+          - generic: Container
+          - button "Collapse option · Sales" [expanded]: ⌄
+          - strong: option · Sales
+          - button
+        - 'group "Text: Sales, source onbRoleOptSales-text"':
+          - button
+          - generic: Text
+          - strong: Sales
+          - button
+        - 'group "Container: Row, source onbNotifRow"':
+          - button
+          - generic: Container
+          - button "Collapse Row" [expanded]: ⌄
+          - strong: Row
+          - button
+        - 'group "Element: Input 3, source onbNotifInput"':
+          - button
+          - generic: Element
+          - strong: Input 3
+          - button
+        - 'group "Container: label · Email me product updates, source onbNotifLabel"':
+          - button
+          - generic: Container
+          - button "Collapse label · Email me product updates" [expanded]: ⌄
+          - strong: label · Email me product updates
+          - button
+        - 'group "Text: Email me product updates, source onbNotifLabel-text"':
+          - button
+          - generic: Text
+          - strong: Email me product updates
+          - button
+        - 'group "Component: Create account, source onbSubmit"':
+          - button
+          - generic: Component
+          - strong: Create account
+          - generic: Button
+          - button
+        - 'group "Container: Paragraph · Your details stay on this screen — nothing is sent., source onbFeedback"':
+          - button
+          - generic: Paragraph
+          - strong: Your details stay on this screen — nothing is sent.
+          - button
+        - link "Svelte Flow attribution":
+          - /url: https://svelteflow.dev?utm_source=attribution
+          - text: Svelte Flow
+        - img "Mini Map"
+        - generic "Control Panel":
+          - button "Zoom In":
+          - button "Zoom Out" [disabled]:
+          - button "Fit View":
+    - navigation "Structure panel controls":
+      - button "Structure" [expanded]:
+        - generic: ▾
+        - text: Structure
+      - button "Expand Structure": ↗
+- contentinfo:
+  - status: Apply canonical source · unsaved
+  - generic "v1_e55141256dd1e601a6a1f5dc310b89ef5a350f877198d82e48d00c4638ce4a5b": "@3 · v1_e55141256dd1…"
+- generic: Designer — VICT Studio
