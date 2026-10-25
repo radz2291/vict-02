@@ -5,9 +5,12 @@
   import StudioShowcase from '$lib/designer/StudioShowcase.svelte';
   import CompletionShowcase from '$lib/designer/CompletionShowcase.svelte';
   import CoreAuthoringShowcase from '$lib/designer/CoreAuthoringShowcase.svelte';
+  import Cycle14Showcase from '$lib/designer/Cycle14Showcase.svelte';
   import { screenRecipes } from '$lib/designer/recipes.js';
   import '@victframework/ui-ai-svelte/styles.css';
   import '@victframework/ui-flow-svelte/styles.css';
+  import '@victframework/ui-svelte/rhea.css';
+  import '$lib/designer/studio-theme.css';
   let mounted = $state(false);
   let nodes = $state<Node[]>([
     { id: 'source', type: 'input', position: { x: 20, y: 60 }, data: { label: 'Source definition' } },
@@ -23,14 +26,15 @@
   onMount(() => { mounted = true; });
 </script>
 
-<svelte:head><title>Cycle 1.3 — complete UI showcase</title><meta name="description" content="Interactive AI patterns, shared UI building blocks, reusable node canvas, and registered Studio authoring compositions." /></svelte:head>
-<main>
+<svelte:head><title>Cycle 1.4 — complete UI showcase</title><meta name="description" content="Coherent reusable UI, native patterns, contextual workspace tools, AI patterns and registered Studio authoring compositions." /></svelte:head>
+<main class="vict-rhea">
   <header>
-    <p class="eyebrow">VICT Studio / Cycle 1.3</p>
+    <p class="eyebrow">VICT Studio / Cycle 1.4</p>
     <h1>Complete UI showcase</h1>
     <p>Explore the actual reusable UI and Studio authoring surfaces. Examples use local presentation state and disposable in-memory documents. No provider calls or saved owner screens are used.</p>
-    <nav aria-label="Showcase sections"><a href="#core">Core authoring</a><a href="#completion">Completion round</a><a href="#ai-patterns">21 AI patterns</a><a href="#building-blocks">Shared building blocks</a><a href="#flow">Node canvas</a><a href="#designer">{screenRecipes.length} Designer compositions</a><a href="#scope">Scope and limits</a></nav>
+    <nav aria-label="Showcase sections"><a href="#cycle14">Cycle 1.4 additions</a><a href="#core">Core authoring</a><a href="#completion">Completion round</a><a href="#ai-patterns">21 AI patterns</a><a href="#building-blocks">Shared building blocks</a><a href="#flow">Node canvas</a><a href="#designer">{screenRecipes.length} Designer compositions</a><a href="#scope">Scope and limits</a></nav>
   </header>
+  <section id="cycle14">{#if mounted}<Cycle14Showcase />{/if}</section>
   <section id="core" aria-label="Core authoring additions"><CoreAuthoringShowcase /></section>
   <section id="completion" aria-label="Completion round additions">{#if mounted}<CompletionShowcase />{/if}</section>
   <section id="ai-patterns" aria-label="AI patterns"><h2>All 21 AI Elements patterns</h2>{#if mounted}<PatternShowcase />{:else}<p>Interactive examples load after hydration.</p>{/if}</section>

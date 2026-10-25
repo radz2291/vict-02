@@ -7,14 +7,18 @@
   import { projectStructure, filterStructure, compactStructure, structureNodePresentation, structureFacts, structureId, parseStructureId, structureMove, type StructureNodeData, type StructureEditRequest, type StructureHandoff } from './structure.js';
   import { Menubar } from '@victframework/ui-svelte/catalog/menubar';
   import WorkspaceMenu from './WorkspaceMenu.svelte';
+  import WorkspaceContextMenu from './WorkspaceContextMenu.svelte';
+  import { sourceCapabilities, type WorkspaceContext, type WorkspaceCommand } from './workspace-context.js';
 
-  let { document, revision, selectedNodeId, blocked = false, active = true, presentation = 'workspace', descriptors = [], recipes = [], onSelect, onDeselect, onMove, onNotice, onNavigate, onDismiss }: {
+  let { document, revision, selectedNodeId, blocked = false, active = true, presentation = 'workspace', descriptors = [], recipes = [], onSelect, onDeselect, onMove, onNotice, onNavigate, onDismiss, onInspect, onInspectSelection, inspectionExpanded = false, inspectionSelection, objectCommands }: {
     document: UiDocument; revision: string; selectedNodeId?: string; blocked?: boolean; active?: boolean;
     descriptors?: readonly UiExtensionDescriptor[]; recipes?: readonly InsertRecipe[];
     onSelect: (occurrence: string) => void; onMove: (request: StructureEditRequest) => boolean;
     onDeselect?: () => void;
     presentation?: 'workspace' | 'drawer'; onDismiss?: () => void;
     onNotice: (message: string) => void; onNavigate?: (request: StructureHandoff) => void;
+    onInspect?: (id?:string, page?:'properties'|'relationships') => void; onInspectSelection?: (id:string) => void; inspectionExpanded?:boolean; inspectionSelection?:string;
+    objectCommands?: (occurrence:string) => WorkspaceCommand[];
   } = $props();
   let nodes = $state<Node<StructureNodeData>[]>([]);
   let edges = $state<Edge[]>([]);
@@ -38,9 +42,10 @@
   let inspectionPage = $state<'properties' | 'relationships' | 'find' | 'move'>('properties');
   let showTextNodes = $state(false);
   let inspectionButton: HTMLButtonElement;
-  let structureElement: HTMLElement;
+  let structureElement = $state<HTMLElement>();
   const fittedDocuments = new Set<string>();
   const graph = $derived(projectStructure(document));
+  $effect(()=>{if(inspectionSelection && graph.nodes.some(node=>node.id===inspectionSelection))inspectedId=inspectionSelection;});
   const compactGraph = $derived(compactStructure(graph, document));
   const groupGraph = $derived(showTextNodes || search ? graph : compactGraph);
   const inspected = $derived(graph.nodes.find(node => node.id === inspectedId));
@@ -128,6 +133,7 @@
   function select(node: Node<StructureNodeData>) {
     if (blocked) { onNotice('Apply or cancel your draft before changing selection.'); return; }
     inspectedId = node.id;
+    onInspectSelection?.(node.id);
     if (node.data.occurrence) onSelect(node.data.occurrence);
   }
   async function reveal(node: Node<StructureNodeData>) {
@@ -142,6 +148,7 @@
     if (restoreFocus) inspectionButton?.focus({ preventScroll: true });
   }
   function openInspection(page: typeof inspectionPage = 'properties') {
+    if (onInspect && (page === 'properties' || page === 'relationships')) { onInspect(inspectedId,page); return; }
     allowMoves = page === 'move'; inspectionPage = page; inspectionOpen = true;
   }
   function deselect() {
@@ -193,9 +200,25 @@
   }
   const moveSources = $derived(graph.nodes.filter(node => node.data.occurrence && node.data.sourceId !== document.root));
   const targetOptions = $derived(graph.nodes.filter(node => !!moveSource && valid({ source: moveSource, target: node.id, sourceHandle: 'content', targetHandle: 'container' })));
+  function context(target:Element):WorkspaceContext|undefined {
+    if (!target.closest('.structure-canvas')) return;
+    const id = target.closest<HTMLElement>('.svelte-flow__node')?.dataset.id;
+    const node = graph.nodes.find(entry=>entry.id===id);
+    if (!node) return;
+    const direct = node.data.occurrence && sourceCapabilities(document,node.data.occurrence).direct;
+    const commands:WorkspaceCommand[] = node.data.occurrence && objectCommands ? objectCommands(node.data.occurrence) : [
+      {label:'Inspect', disabled:blocked, run:()=>openInspection('properties')},
+      ...(direct ? [{label:'Edit properties', disabled:blocked, run:()=>navigate('inspector')}, {label:'Locate on canvas',disabled:blocked,run:()=>navigate('design')}] : []),
+    ];
+    commands.push({label:'Inspect relationships',disabled:blocked,run:()=>openInspection('relationships')});
+    if (node.data.childCount) commands.push({label:collapsed.has(node.id)?'Expand group':'Collapse group',run:()=>collapse(node.id)});
+    if (direct) commands.push({label:'Move inside…',disabled:blocked || node.data.sourceId===document.root,run:beginMove});
+    return {label:'Structure item commands', prepare:()=>select(node), commands};
+  }
 </script>
 <svelte:window onkeydown={escape} onkeydowncapture={graphEscape} />
 <section class="structure-view" class:drawer-presentation={presentation === 'drawer'} class:inspection-open={inspectionOpen} aria-label="Source structure" bind:this={structureElement}>
+  <WorkspaceContextMenu scope={structureElement} enabled={active} resolve={context} />
   <div class="structure-tools">
     <input type="search" aria-label="Search structure" placeholder="Search structure" bind:value={search} />
     <Menubar.Root class="workspace-menus" aria-label="Structure menus" bind:value={activeMenu} loop>
@@ -237,7 +260,7 @@
     </Menubar.Root>
     {#if focusedId}<button class="scope-control" type="button" onclick={() => { focusedId = undefined; search = ''; }}>Show whole screen</button>{/if}
     <span class="structure-count" aria-live="polite">{nodes.length} items</span>
-    <button type="button" class="inspection-toggle" aria-label="Inspect structure" aria-expanded={inspectionOpen} aria-controls="structure-inspection" bind:this={inspectionButton} onclick={() => { if (inspectionOpen) closeInspection(); else openInspection(inspected ? 'properties' : 'find'); }}>Inspect</button>
+    <button type="button" class="inspection-toggle" aria-label="Inspect structure" aria-expanded={onInspect ? inspectionExpanded : inspectionOpen} aria-controls={onInspect ? undefined : 'structure-inspection'} bind:this={inspectionButton} onclick={() => { if (inspectionOpen) closeInspection(); else openInspection(inspected ? 'properties' : 'find'); }}>Inspect</button>
   </div>
   <div class="structure-body">
     <div class="structure-canvas" inert={presentation === 'drawer' && inspectionOpen}>

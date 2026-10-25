@@ -1,0 +1,2706 @@
+{
+  "schema": "vict.rhea.presentation-provenance@1",
+  "repository": "https://github.com/huntabyte/shadcn-svelte",
+  "commit": "b10f153250b18abfccf49a06e1c4c68945edffa5",
+  "style": "rhea",
+  "implementation": "VICT-owned scoped CSS translation of pinned registry presentation; upstream Svelte source is not copied or substituted for the existing Bits public API.",
+  "adaptations": [
+    "Retain exact installed bits-ui2.19.3 and existing canonical Component ABI adapters.",
+    "No Tailwind runtime, preflight, external fonts, source blocks or new primitive version.",
+    "Theme and native patterns opt in through vict-rhea; legacy styles and saved source keep existing defaults.",
+    "Retain controlled dates, context ownership, host callbacks and VICT effect boundaries.",
+    "Geometry intentionally allows44px coarse pointer targets and owner shell exceptions."
+  ],
+  "entries": [
+    {
+      "name": "accordion",
+      "source": "docs/static/registry/styles/rhea/accordion.json",
+      "sha256": "4c77b3993546acfdb3ea5e0d7e268d4a53f2655856881b9909798fb3cdf1cf7e",
+      "registryDependencies": [],
+      "dependencies": [],
+      "devDependencies": [
+        "bits-ui@^2.20.0",
+        "@internationalized/date@^3.12.0"
+      ],
+      "files": [
+        {
+          "target": "accordion/accordion-content.svelte",
+          "sha256": "4d887f73fb688360efdb14b6c6cb4ed4634218b48a7165141048995984f2cdfe"
+        },
+        {
+          "target": "accordion/accordion-item.svelte",
+          "sha256": "8bfde3b567d52d8f3e8600a84ec69db4d4789a33564cb1dede5b7f1e656f8405"
+        },
+        {
+          "target": "accordion/accordion-trigger.svelte",
+          "sha256": "fcd3c3241f3b0172efe0336cb11bdeec2360dc6edec7cffb64db14d61671467a"
+        },
+        {
+          "target": "accordion/accordion.svelte",
+          "sha256": "3c0e93e9957a5f6966562dfd09798aae7beed2c5e977afebedc0c842269b8200"
+        },
+        {
+          "target": "accordion/index.ts",
+          "sha256": "09287793984e259485e7f93911fc65a43e958dc92353b66bcb5cab55435daa58"
+        }
+      ]
+    },
+    {
+      "name": "alert",
+      "source": "docs/static/registry/styles/rhea/alert.json",
+      "sha256": "b7024145f7f3b861277d4e50051ef727ccd722d2c9c10b29d18f0cc57ce24a5d",
+      "registryDependencies": [],
+      "dependencies": [],
+      "devDependencies": [
+        "tailwind-variants@^3.3.0"
+      ],
+      "files": [
+        {
+          "target": "alert/alert-action.svelte",
+          "sha256": "3ccec121b755f70d42ac01b84d2e93e215863db44cf49e6e545413f78c477537"
+        },
+        {
+          "target": "alert/alert-description.svelte",
+          "sha256": "74a0d07a0af2e865a1e2f43361bebc865b16cbd47ca1209c9740eef88fde5222"
+        },
+        {
+          "target": "alert/alert-title.svelte",
+          "sha256": "7d7bda9d05a8691bba90f78d9dece7e28618a9885f7e3ec4b3ae057a7e5e0d52"
+        },
+        {
+          "target": "alert/alert.svelte",
+          "sha256": "167f8e9ce17673119ec94d40ee50f43f9732eaa8111ff7a8c92f85d5dd1a2136"
+        },
+        {
+          "target": "alert/index.ts",
+          "sha256": "28eb51f1c28bc903091a8282b754448a7529ba4bd2894a520a85ec13e3895dc5"
+        }
+      ]
+    },
+    {
+      "name": "alert-dialog",
+      "source": "docs/static/registry/styles/rhea/alert-dialog.json",
+      "sha256": "10dd8f12026d7b4924c003749d3c5f58e7c2c46b14708637931ee5356e4a0d02",
+      "registryDependencies": [
+        "button"
+      ],
+      "dependencies": [],
+      "devDependencies": [
+        "bits-ui@^2.20.0",
+        "@internationalized/date@^3.12.0"
+      ],
+      "files": [
+        {
+          "target": "alert-dialog/alert-dialog-action.svelte",
+          "sha256": "93824ddd9f67c6ee676e68daad4c4baacdb5476adacc55ebabe13a068589d330"
+        },
+        {
+          "target": "alert-dialog/alert-dialog-cancel.svelte",
+          "sha256": "50f06ac5ccd0dfdd737d12c71266e6f527f3fded7d80f1b118314a8fdc2b3171"
+        },
+        {
+          "target": "alert-dialog/alert-dialog-content.svelte",
+          "sha256": "2cb5cf3ac2cd85e6ab1d608f7f39df5200a549a34cd60f06dfac4ba4184f9169"
+        },
+        {
+          "target": "alert-dialog/alert-dialog-description.svelte",
+          "sha256": "ab6e5fa55539622b0d89a79f830ccda60f8d2b79f6102ed86cce7ae5dda55986"
+        },
+        {
+          "target": "alert-dialog/alert-dialog-footer.svelte",
+          "sha256": "a6085b8159b0004018535b5c19a1545ee6848d2ee6d9bccdae749f78ea26cbb3"
+        },
+        {
+          "target": "alert-dialog/alert-dialog-header.svelte",
+          "sha256": "f447d42cf4a5bc7fd102fe6427c6e9c97f82464de0a296a3da8e1e89e5ded923"
+        },
+        {
+          "target": "alert-dialog/alert-dialog-media.svelte",
+          "sha256": "51491e92ccdfeecc67ff3a96a7b229a9809006d580a309f5a64450bd8a13e4a6"
+        },
+        {
+          "target": "alert-dialog/alert-dialog-overlay.svelte",
+          "sha256": "b3c2de35cd82fc62631e9a178e7345680ada0ad04bf416b847264404459de723"
+        },
+        {
+          "target": "alert-dialog/alert-dialog-portal.svelte",
+          "sha256": "0979d2c7fb096434b1339c047f2d0c6bb8b5894e23cb82f3d304644c3c855f46"
+        },
+        {
+          "target": "alert-dialog/alert-dialog-title.svelte",
+          "sha256": "413fab6dff4a3ea9cfa2b522629e32600c73a5ee0a9de11ab663b908f7be56b4"
+        },
+        {
+          "target": "alert-dialog/alert-dialog-trigger.svelte",
+          "sha256": "e752721879d70621d40095eff1758f843fc35444554c85d91d55c1f6413e115d"
+        },
+        {
+          "target": "alert-dialog/alert-dialog.svelte",
+          "sha256": "3c1fcf5e5ce4fe37c365f2bda61a9dd42c1f3aa5c97074908f661a5760f7191b"
+        },
+        {
+          "target": "alert-dialog/index.ts",
+          "sha256": "94dc7681aa010d35916faa44b27eecba06cafe9a896e0904f129f2597dd61fe5"
+        }
+      ]
+    },
+    {
+      "name": "aspect-ratio",
+      "source": "docs/static/registry/styles/rhea/aspect-ratio.json",
+      "sha256": "d0ba92839bd39390ed67edbbd7c949a66e6ffb9e90e2e57d6026df4c3daea3a0",
+      "registryDependencies": [],
+      "dependencies": [],
+      "devDependencies": [
+        "bits-ui@^2.20.0",
+        "@internationalized/date@^3.12.0"
+      ],
+      "files": [
+        {
+          "target": "aspect-ratio/aspect-ratio.svelte",
+          "sha256": "6374ef8dd91c600d77001f00daf0c2a6dae78edbbce3d5746bad62b7ecc0391a"
+        },
+        {
+          "target": "aspect-ratio/index.ts",
+          "sha256": "9aa4e9c86da3e3f6d0edaf9d7a2f63f9080f7066f48dad841ae094b8cd962003"
+        }
+      ]
+    },
+    {
+      "name": "attachment",
+      "source": "docs/static/registry/styles/rhea/attachment.json",
+      "sha256": "b3361dbd07ce4f37e240af7ae639e66b71a5732db8027cc5e5b3b3cf2fc742f2",
+      "registryDependencies": [
+        "button"
+      ],
+      "dependencies": [],
+      "devDependencies": [
+        "tailwind-variants@^3.3.0"
+      ],
+      "files": [
+        {
+          "target": "attachment/attachment-action.svelte",
+          "sha256": "aa251f50989e6f92bea7173ea74d5d99f7a2cc7704ac54e6d54307f0a6566a58"
+        },
+        {
+          "target": "attachment/attachment-actions.svelte",
+          "sha256": "75c7ee29688d704ca74a5a0ef6bf6bbe3e48a71420ace4a1a3294fd70ebc53f8"
+        },
+        {
+          "target": "attachment/attachment-content.svelte",
+          "sha256": "5fb5584c9797696743247cf5e6008c038d73962572b1c5bab5554de3f0835478"
+        },
+        {
+          "target": "attachment/attachment-description.svelte",
+          "sha256": "a4d7eb5a62462e9d09da85789b277cf3cfe4ee7e5fc3036c3116d5ecd91cf79d"
+        },
+        {
+          "target": "attachment/attachment-group.svelte",
+          "sha256": "14f36f8fd045ad9bf65431165be369f1a8235e89025f89bda557ab8be717a524"
+        },
+        {
+          "target": "attachment/attachment-media.svelte",
+          "sha256": "89f9af425e5ec9defc370cceb0901bdd86dc8b289e683fda07b26009b3d3aa37"
+        },
+        {
+          "target": "attachment/attachment-title.svelte",
+          "sha256": "9b7bac396c9b32f9d9e817e238ef68e5f4347a1221428d45f0507d98d28aa75a"
+        },
+        {
+          "target": "attachment/attachment-trigger.svelte",
+          "sha256": "0757c6eb8218d126a0e62a4571f47c57d1f101367898d4878a09e90e33118b43"
+        },
+        {
+          "target": "attachment/attachment.svelte",
+          "sha256": "b5f7641d37bcad8022d002daf76a8387f402f0ee0ae52a5fda5d3d3399fe8d3f"
+        },
+        {
+          "target": "attachment/index.ts",
+          "sha256": "b6aa1a9339c9a6b2f3b30b219783907a01e3776aea138d74e4512a6faa6e8036"
+        }
+      ]
+    },
+    {
+      "name": "avatar",
+      "source": "docs/static/registry/styles/rhea/avatar.json",
+      "sha256": "080843f688905b9ed48c2e7de4c35569340d6827e853efc9af0b8534459a4cd8",
+      "registryDependencies": [],
+      "dependencies": [],
+      "devDependencies": [
+        "bits-ui@^2.20.0",
+        "@internationalized/date@^3.12.0"
+      ],
+      "files": [
+        {
+          "target": "avatar/avatar-badge.svelte",
+          "sha256": "3694627b744d41a2494dc714c97ad569c2f7fee8abadc1c4463d39a5bae90dd6"
+        },
+        {
+          "target": "avatar/avatar-fallback.svelte",
+          "sha256": "b99759755788f144ce4efd48ac92743ef39c33c1797196957f6df17d43ac478e"
+        },
+        {
+          "target": "avatar/avatar-group-count.svelte",
+          "sha256": "893dbe697e60d558c75138a8ab8d50fcf4cb4d03c7d7f6936fec3bf8ee38f664"
+        },
+        {
+          "target": "avatar/avatar-group.svelte",
+          "sha256": "b88013757de3a7f1e3b6bfeae0f03a980c76f2b72e7e575578c8ecfce741da02"
+        },
+        {
+          "target": "avatar/avatar-image.svelte",
+          "sha256": "98545f7fa89c2d81ee3ad24057e531d75914deda4aefdd0fb3393a82ae7fe312"
+        },
+        {
+          "target": "avatar/avatar.svelte",
+          "sha256": "ac7a7e76ba81f056332eec2f62d725e25d2358c906d4592b32dcf671e8430954"
+        },
+        {
+          "target": "avatar/index.ts",
+          "sha256": "cddb7340b5f1bc0904d2142e13aeb9b7197b327bcc08aab37cfd519c61165f2d"
+        }
+      ]
+    },
+    {
+      "name": "badge",
+      "source": "docs/static/registry/styles/rhea/badge.json",
+      "sha256": "147bc51a3f48c65e40e7e151828be7b52189dfa3557bc0b8d56aad701b809d7a",
+      "registryDependencies": [],
+      "dependencies": [],
+      "devDependencies": [
+        "tailwind-variants@^3.3.0"
+      ],
+      "files": [
+        {
+          "target": "badge/badge.svelte",
+          "sha256": "e6a8e8bf5dbca436fddd636373151a353e01052fe9c4874311b5cc6515164687"
+        },
+        {
+          "target": "badge/index.ts",
+          "sha256": "1dc9eba432869188db370b8e984ca8ff97430c609746a8274a0edecc0d55b765"
+        }
+      ]
+    },
+    {
+      "name": "breadcrumb",
+      "source": "docs/static/registry/styles/rhea/breadcrumb.json",
+      "sha256": "28861bae3610cabae2215a953f1e236792dbb2baa04ca2d35655c4f402741ac8",
+      "registryDependencies": [],
+      "dependencies": [],
+      "devDependencies": [],
+      "files": [
+        {
+          "target": "breadcrumb/breadcrumb-ellipsis.svelte",
+          "sha256": "67c751557b7b335acf927fc7b8e1428f4adacf82045ee623fd4143083cc3c6e5"
+        },
+        {
+          "target": "breadcrumb/breadcrumb-item.svelte",
+          "sha256": "a4da9d0846f249faa85e454fe26ea707d5861a46f4115a470dbf347975616c0b"
+        },
+        {
+          "target": "breadcrumb/breadcrumb-link.svelte",
+          "sha256": "ab0feb77ac61ee8aa06d1dc48b1f318ae13036ef58a583c8dc81190dbcacce3c"
+        },
+        {
+          "target": "breadcrumb/breadcrumb-list.svelte",
+          "sha256": "3b833e796a5435eaf5c8a78570c4126152de265da12d89431f7fd327c1cbbba7"
+        },
+        {
+          "target": "breadcrumb/breadcrumb-page.svelte",
+          "sha256": "6087b01df6455d23a99b04b46873d501697d5df3d3a6a849a55d6f5d61dbc9d5"
+        },
+        {
+          "target": "breadcrumb/breadcrumb-separator.svelte",
+          "sha256": "ae7e2bc91364f8ebed3402110f8f1ab2b0480c9f13f509acd22d7c7793615857"
+        },
+        {
+          "target": "breadcrumb/breadcrumb.svelte",
+          "sha256": "c383ea64e9484545cf91a6537e6ff82860a1e72dcefeb8e7b0a9297b643fb5bd"
+        },
+        {
+          "target": "breadcrumb/index.ts",
+          "sha256": "ebd2367a93398b84fa8371d5b2655f784c4dfe76f08eff561fcd218c5b7229a5"
+        }
+      ]
+    },
+    {
+      "name": "bubble",
+      "source": "docs/static/registry/styles/rhea/bubble.json",
+      "sha256": "56eea7a27808cb31cc033b6d3e153520e0ebeacbe12929b9770819317208d31a",
+      "registryDependencies": [],
+      "dependencies": [],
+      "devDependencies": [
+        "tailwind-variants@^3.3.0"
+      ],
+      "files": [
+        {
+          "target": "bubble/bubble-content.svelte",
+          "sha256": "861d8f781b67504f33072f5739100e84f5176523551ef978dad60e08fbfe0bc3"
+        },
+        {
+          "target": "bubble/bubble-group.svelte",
+          "sha256": "a06437b8c3dbbf97d535dd6fbed8773f9666498adac479f57fc6dc0d2c363abb"
+        },
+        {
+          "target": "bubble/bubble-reactions.svelte",
+          "sha256": "ad8c2e6166fb5a4c33291f88b672403e99ee0e8cb139d5b8adea8baacdd07557"
+        },
+        {
+          "target": "bubble/bubble.svelte",
+          "sha256": "5001628c457a8e1341385842fb67c6654d860dd34476ae9badf177b02ef1e622"
+        },
+        {
+          "target": "bubble/index.ts",
+          "sha256": "2fb8af8da6dd467a9a49d6d60a1fe0c34547930703f2c80b5c4d236abb88bab0"
+        }
+      ]
+    },
+    {
+      "name": "button",
+      "source": "docs/static/registry/styles/rhea/button.json",
+      "sha256": "17106eefc28b02c102f2be0d0822128ba26134b90f9c85c98d30f97fd235884f",
+      "registryDependencies": [],
+      "dependencies": [],
+      "devDependencies": [
+        "tailwind-variants@^3.3.0"
+      ],
+      "files": [
+        {
+          "target": "button/button.svelte",
+          "sha256": "2e5cb61e27b1e304ec5ecd241b44b119cbdfc0d4598a9beb87d27cb5fd6fd6b5"
+        },
+        {
+          "target": "button/index.ts",
+          "sha256": "0f6b6f040d92b4153821d3f9b4d6b9cbc567247e4fda913e64c1d0fcc4a2f386"
+        }
+      ]
+    },
+    {
+      "name": "button-group",
+      "source": "docs/static/registry/styles/rhea/button-group.json",
+      "sha256": "d42be56cf091f77e95a194c5b1c4db9444a292b6b088bbad844ff8f005ab13f8",
+      "registryDependencies": [
+        "separator"
+      ],
+      "dependencies": [],
+      "devDependencies": [
+        "tailwind-variants@^3.3.0"
+      ],
+      "files": [
+        {
+          "target": "button-group/button-group-separator.svelte",
+          "sha256": "3f4def6273b6cb3256eea71702d465e9d49fc6fdc7fdb53437c4984f988b4e33"
+        },
+        {
+          "target": "button-group/button-group-text.svelte",
+          "sha256": "60fd0ccc6143e869baddc1ce1d6547b7121d0f099391a07e3ff9a0653fcdfe5b"
+        },
+        {
+          "target": "button-group/button-group.svelte",
+          "sha256": "aebdf81589f2b7cd4f1ddc6eeb0d41ee1ce4748142e85d31b16dcf533a39da6e"
+        },
+        {
+          "target": "button-group/index.ts",
+          "sha256": "ec151d515cb7cd6a3322e838425565beaa12b83330ebe7f27c085cb57770070e"
+        }
+      ]
+    },
+    {
+      "name": "calendar",
+      "source": "docs/static/registry/styles/rhea/calendar.json",
+      "sha256": "996f4093f8b67110d70c4250be818cd7ace2f54b51dc0d257a1ef3ce53a66df1",
+      "registryDependencies": [
+        "button"
+      ],
+      "dependencies": [],
+      "devDependencies": [
+        "@internationalized/date@^3.12.0",
+        "bits-ui@^2.20.0"
+      ],
+      "files": [
+        {
+          "target": "calendar/calendar-caption.svelte",
+          "sha256": "44dfd5af94cd58532f35717d630fa1a39c43906816393f4fed025a9c0c074b1c"
+        },
+        {
+          "target": "calendar/calendar-cell.svelte",
+          "sha256": "5c1ebc45dfef90488eb717c8467564eec7212388a1099e784e2db6e704dcf22c"
+        },
+        {
+          "target": "calendar/calendar-day.svelte",
+          "sha256": "4c7b6aafe33daa90922a1e24aa2ae7c8928d6df3e4dcbb4a56056f16451fbd46"
+        },
+        {
+          "target": "calendar/calendar-grid-body.svelte",
+          "sha256": "0c822e8d5cce686a9d3d17d744e518ec4cd278ec16d6be8bd8deb7f4806235f6"
+        },
+        {
+          "target": "calendar/calendar-grid-head.svelte",
+          "sha256": "22fb9e818072e57718ee2131c4614011360875765d9e11a1a64ad7b7a56715fd"
+        },
+        {
+          "target": "calendar/calendar-grid-row.svelte",
+          "sha256": "32c4601e0f8e197565e7e4562a4444eda595a19e6e9efa2b98899aa4971e8915"
+        },
+        {
+          "target": "calendar/calendar-grid.svelte",
+          "sha256": "bd48b86db0a862e3abd3a89a2b53a1686476981db23e32d2b6a4197e5c174de0"
+        },
+        {
+          "target": "calendar/calendar-head-cell.svelte",
+          "sha256": "cf87061ec2f6bb7d655616fd94a6f551bf9c99a5835a1953b43f728e60b60628"
+        },
+        {
+          "target": "calendar/calendar-header.svelte",
+          "sha256": "681277ff263bbb17a844b31389d781fa0c9a56920b5714150caeb9db7b239b37"
+        },
+        {
+          "target": "calendar/calendar-heading.svelte",
+          "sha256": "4f435340304a05bc404e7bfe7a0df38ddbadda90b9aa97c74fd6d0253539c8a9"
+        },
+        {
+          "target": "calendar/calendar-month-select.svelte",
+          "sha256": "737925aac48c4056bdc28e4e13e7062c1d5ed724af923c196ff58ad48a89ed57"
+        },
+        {
+          "target": "calendar/calendar-month.svelte",
+          "sha256": "e50f65475f7fd4996d1223438edfd77c12c161c7640dcf7d318a7673c492b780"
+        },
+        {
+          "target": "calendar/calendar-months.svelte",
+          "sha256": "3faf7b70e3f3e61bc4dc77d27b4ba4b41e888379fbaa6518b80e2d10937cfeac"
+        },
+        {
+          "target": "calendar/calendar-nav.svelte",
+          "sha256": "3bdf0f1b6498896b4d91b6ecd861341e7a8c10ddc19fde8883b5e3ede326e505"
+        },
+        {
+          "target": "calendar/calendar-next-button.svelte",
+          "sha256": "68027655ffe8ba82ee6bbcf5040ecfbeeb20efe68a07c388ae99dece2642d328"
+        },
+        {
+          "target": "calendar/calendar-prev-button.svelte",
+          "sha256": "00f5bea0f720475cea0458999f8f35ee607f2f005e4d98b91a042eca24d8e108"
+        },
+        {
+          "target": "calendar/calendar-year-select.svelte",
+          "sha256": "9900bc3b9dd4cd7def021eb690778625d8e2dd49b4847afd90e6492b4388bda6"
+        },
+        {
+          "target": "calendar/calendar.svelte",
+          "sha256": "1847d22b20e3ed5554e580faa36669ad3d76ea2bd4e9c8eecfb8dd617d50abdc"
+        },
+        {
+          "target": "calendar/index.ts",
+          "sha256": "f81c71d408c50b879ae00a24335734e3ff7922293dce1656ea31c28a8173cdc2"
+        }
+      ]
+    },
+    {
+      "name": "card",
+      "source": "docs/static/registry/styles/rhea/card.json",
+      "sha256": "b91ea44bf7d3307fac722e619ce83af40aef01dd7a64a658b356af28f81e0e32",
+      "registryDependencies": [],
+      "dependencies": [],
+      "devDependencies": [],
+      "files": [
+        {
+          "target": "card/card-action.svelte",
+          "sha256": "4c7378986a24d731451c45bad07c49d1e6de5f0e02be58951bfdfd8d00670d8c"
+        },
+        {
+          "target": "card/card-content.svelte",
+          "sha256": "b02fd3ed4f3eacd699f33738a316fcb4368c77129aed30f61e3da3889cac9785"
+        },
+        {
+          "target": "card/card-description.svelte",
+          "sha256": "3e46ed4c5afcf83c515f38863d23d99bfaada54bd06c96617c152bc65f521fbe"
+        },
+        {
+          "target": "card/card-footer.svelte",
+          "sha256": "157c51baa710408407b0d7c52d7bd175f3d468d6e429001edd08058b7293a56c"
+        },
+        {
+          "target": "card/card-header.svelte",
+          "sha256": "db623f3be0cfcc19dd0dc6a683064c6a5efffce982531cf6ad0d65c7b3c89298"
+        },
+        {
+          "target": "card/card-title.svelte",
+          "sha256": "af29071525ba57909caac04e0c28c2b0d1328f87f34c5361a971fd8600868041"
+        },
+        {
+          "target": "card/card.svelte",
+          "sha256": "26811f2488f48bc6f82b92dfb80355304f7db99c323b281811e1f7ddbe15a831"
+        },
+        {
+          "target": "card/index.ts",
+          "sha256": "41b4e0bf782f5e2bbed1863de169ad9f623b47a73f9fc57ba6776779e4be9edb"
+        }
+      ]
+    },
+    {
+      "name": "carousel",
+      "source": "docs/static/registry/styles/rhea/carousel.json",
+      "sha256": "6ef89579953345d2ac309b1a4e4db91f1174b8b066506aec578fb93a5b8b0234",
+      "registryDependencies": [
+        "button"
+      ],
+      "dependencies": [],
+      "devDependencies": [
+        "embla-carousel-svelte@^8.6.0",
+        "bits-ui@^2.20.0",
+        "@internationalized/date@^3.12.0"
+      ],
+      "files": [
+        {
+          "target": "carousel/carousel-content.svelte",
+          "sha256": "22900d3c9b9da18af2d037e88390b3cd4d97f7d7b5f2ac4f8953569648ca4300"
+        },
+        {
+          "target": "carousel/carousel-item.svelte",
+          "sha256": "b8d5351e49f5369d04526b21dfc00413f249722f4193fbeb50e298857e496e43"
+        },
+        {
+          "target": "carousel/carousel-next.svelte",
+          "sha256": "4f55a0a66ca90fffe4462faa762ad342b0f1c20789b27d8599c0110714d3e469"
+        },
+        {
+          "target": "carousel/carousel-previous.svelte",
+          "sha256": "ce18257c89ba987137d8d6d450063e45566cbbd9ba181b5b897877866d3e1ec4"
+        },
+        {
+          "target": "carousel/carousel.svelte",
+          "sha256": "0f90f0ac2c7942e277d21c2720e97cd0e2e5798479a86a5b3e2c740150fc41d2"
+        },
+        {
+          "target": "carousel/context.ts",
+          "sha256": "eb17b1922463a0dfd6eb1e9c6517a11e0b9bac098165709ca50eba964ea2994b"
+        },
+        {
+          "target": "carousel/index.ts",
+          "sha256": "a8093d44f5decface2d922144d6ea7f54438ea003bb2afa11814d39e1aaa94f4"
+        }
+      ]
+    },
+    {
+      "name": "chart",
+      "source": "docs/static/registry/styles/rhea/chart.json",
+      "sha256": "dccff6d1f478d5469fdd93e3ddca5eb8c42732ae1ca494da79028c5cdc422d51",
+      "registryDependencies": [],
+      "dependencies": [],
+      "devDependencies": [
+        "layerchart@^2.0.0"
+      ],
+      "files": [
+        {
+          "target": "chart/chart-container.svelte",
+          "sha256": "47bf7fafeb4971c49be68e6f8a3af6eeb85c6e62198eb2ddbfb07b15006390ac"
+        },
+        {
+          "target": "chart/chart-style.svelte",
+          "sha256": "f550b1030828476e1a49c4cf5f719e5b99064f65fab5a5ac51d77e94f88d3dfd"
+        },
+        {
+          "target": "chart/chart-tooltip.svelte",
+          "sha256": "feb0d8b6a9b13925b63b4ede004c7ffedfc860f61e4369161ac767dded80cba1"
+        },
+        {
+          "target": "chart/chart-utils.ts",
+          "sha256": "0930719005de73d984c58402dd87761587a2f2c5ce49b27a7f6950db2006b7fa"
+        },
+        {
+          "target": "chart/index.ts",
+          "sha256": "4321738bd45fe5b53f46297709bc1ff3228da9c74a944548027700251ddad301"
+        }
+      ]
+    },
+    {
+      "name": "checkbox",
+      "source": "docs/static/registry/styles/rhea/checkbox.json",
+      "sha256": "dae26c1be5de8e1a4fd97d0df553261f44f308c469c7fbabefbc66232a7365e9",
+      "registryDependencies": [],
+      "dependencies": [],
+      "devDependencies": [
+        "bits-ui@^2.20.0",
+        "@internationalized/date@^3.12.0"
+      ],
+      "files": [
+        {
+          "target": "checkbox/checkbox.svelte",
+          "sha256": "c818a22c91bd254f68d7e528c2dfc9f425d3bdaeb1023aafde34faa0599f4c30"
+        },
+        {
+          "target": "checkbox/index.ts",
+          "sha256": "39b322ab4a26c63f60c64588ff4b18552c8b596e8472b9261fb68429b8cff1d6"
+        }
+      ]
+    },
+    {
+      "name": "code-block",
+      "source": "docs/static/registry/styles/rhea/code-block.json",
+      "sha256": "302b26733dfaa9b5b64770df49391a77b9cbc8a9b7d62fc567e90f30c714a7d9",
+      "registryDependencies": [
+        "use-highlighted-code",
+        "button"
+      ],
+      "dependencies": [],
+      "devDependencies": [
+        "tailwind-variants@^3.3.0"
+      ],
+      "files": [
+        {
+          "target": "code-block/code-block-actions.svelte",
+          "sha256": "4cd27c134ac914017edc8cf42fe77031c3f92ffe25ceacf34cdc15c07cb277d7"
+        },
+        {
+          "target": "code-block/code-block-content.svelte",
+          "sha256": "53a8b74b2f82497b96d705223eb6bdb3f926fde40bdb93c78ab6991e66b64b33"
+        },
+        {
+          "target": "code-block/code-block-copy-button.svelte",
+          "sha256": "d67e6d528c8fc52cf62f6fa2f35d8228d129d288d2a6ed80e79526efb8b58fc7"
+        },
+        {
+          "target": "code-block/code-block-footer.svelte",
+          "sha256": "9659120064108b2e07b684d43c7955ec8018292c199f88811548afa30ebc1246"
+        },
+        {
+          "target": "code-block/code-block-header.svelte",
+          "sha256": "2ae03ec7e9d52bbb1c08f6c76c078b39ed788aaadbf991c34eac8acfe0d24d4c"
+        },
+        {
+          "target": "code-block/code-block-line.svelte",
+          "sha256": "74cd5085fd0887c7719645296c7bf24ca9ac0103a845e17560c6404cc9056adf"
+        },
+        {
+          "target": "code-block/code-block-title.svelte",
+          "sha256": "cf9dd4b910b0b028ff051cf25700c0510bbcfe4b6c3ac891f2379f0e0bbb1ef9"
+        },
+        {
+          "target": "code-block/code-block.svelte",
+          "sha256": "cfa1d88b89b28b7c5ecd933289224190c2091e58bc702a52147f67a9aeaceaad"
+        },
+        {
+          "target": "code-block/index.ts",
+          "sha256": "1a7e7af13524a63ebd7014e5099cd26ba31c391797b5f7cec1458bf023279451"
+        }
+      ]
+    },
+    {
+      "name": "collapsible",
+      "source": "docs/static/registry/styles/rhea/collapsible.json",
+      "sha256": "d6ad641928024c72609982bf73a335163926ade283f4e9f8b8dbf600cc02b136",
+      "registryDependencies": [],
+      "dependencies": [],
+      "devDependencies": [
+        "bits-ui@^2.20.0",
+        "@internationalized/date@^3.12.0"
+      ],
+      "files": [
+        {
+          "target": "collapsible/collapsible-content.svelte",
+          "sha256": "8af85ac6ed50471ad32a4e90fb0c54b0fbe0b0700cd3fc5a91b85de70bf22554"
+        },
+        {
+          "target": "collapsible/collapsible-trigger.svelte",
+          "sha256": "e74d7c62176b48d8f5a7282fd0491fbab4dcfb0f23690b6cfae3f3d08b630e3a"
+        },
+        {
+          "target": "collapsible/collapsible.svelte",
+          "sha256": "1d48e117ac1b8fef1af070c56237a04e5ad1d4bafd4372852a0e9d10e9f4afc2"
+        },
+        {
+          "target": "collapsible/index.ts",
+          "sha256": "abeb5bef64eabc6e378338dddcecee0df56ab18ece8b1d08bd1ed6e740aff05e"
+        }
+      ]
+    },
+    {
+      "name": "command",
+      "source": "docs/static/registry/styles/rhea/command.json",
+      "sha256": "43fd16a4c7a2ec0e4b8e928cd7ff5d50bfa46772456a21882b7293afaa558bb9",
+      "registryDependencies": [
+        "dialog",
+        "input-group"
+      ],
+      "dependencies": [],
+      "devDependencies": [
+        "bits-ui@^2.20.0",
+        "@internationalized/date@^3.12.0"
+      ],
+      "files": [
+        {
+          "target": "command/command-dialog.svelte",
+          "sha256": "0ddbd026ba0ae754dec2e736ca3b7abe0489773ef6de6c0face3d8e3d2092b32"
+        },
+        {
+          "target": "command/command-empty.svelte",
+          "sha256": "2c5c63897c3bcceaf8eb13769c69e155ef8e535050ce2fd80cea81c95b335934"
+        },
+        {
+          "target": "command/command-group.svelte",
+          "sha256": "41ba164c79b43ab74b35a091d9434e4959479291c1965f9e768a148cb88b2fa4"
+        },
+        {
+          "target": "command/command-input.svelte",
+          "sha256": "8b136158f3dea0ed29b5d75da277e31e7713784da2ca1ed1f976ea2b4054903e"
+        },
+        {
+          "target": "command/command-item.svelte",
+          "sha256": "1e046acea6608d4d0343e875e695e250e5ffa87a3c9c4ce6106ee20a0aaf5398"
+        },
+        {
+          "target": "command/command-link-item.svelte",
+          "sha256": "390136a8daf01fe70353a62c6663d922157010e4ba2dd3092c50ee368d24a0be"
+        },
+        {
+          "target": "command/command-list.svelte",
+          "sha256": "f85d61b890043de6e2031d1f17c5bc4f56abe0954b3608c0aea96fc33e9103c1"
+        },
+        {
+          "target": "command/command-loading.svelte",
+          "sha256": "f3512497277a540ed8e365cd2d85084394172896131f555b631a1d57f7487fbf"
+        },
+        {
+          "target": "command/command-separator.svelte",
+          "sha256": "23ad6a97d972841c78d791b12c7bf49a687cc06b48e2672a2818a63b588b94d1"
+        },
+        {
+          "target": "command/command-shortcut.svelte",
+          "sha256": "2cfc4b17c490c14ddf2f3c74eb72e049f8a5bbf84f299ddb8d5642d80d268d0d"
+        },
+        {
+          "target": "command/command.svelte",
+          "sha256": "e28141de796e499d907d386c764e763c6c0abd8bb7a1721577cc3ccc3e29816b"
+        },
+        {
+          "target": "command/index.ts",
+          "sha256": "0e427102f2ca74f024f104aba811fc9c8852deac397bf09ed2a1d65dad36b1d7"
+        }
+      ]
+    },
+    {
+      "name": "context-menu",
+      "source": "docs/static/registry/styles/rhea/context-menu.json",
+      "sha256": "818923a04cd0a3e92239f6526ff986d8cf6abc679319ba4131c457e8cdff8cb8",
+      "registryDependencies": [],
+      "dependencies": [],
+      "devDependencies": [
+        "bits-ui@^2.20.0",
+        "@internationalized/date@^3.12.0"
+      ],
+      "files": [
+        {
+          "target": "context-menu/context-menu-checkbox-item.svelte",
+          "sha256": "22fbb6e8a0498dc51ed4e151a91d5c623c5ab3b7d00448da8c73e092af45fb67"
+        },
+        {
+          "target": "context-menu/context-menu-content.svelte",
+          "sha256": "43f3d322baace4c17d07ed9194975c6f239db132c07989816ecc5efc921f5415"
+        },
+        {
+          "target": "context-menu/context-menu-group-heading.svelte",
+          "sha256": "a9954510a46c74414840783ff2b5dd04d783c6659bdb7cf8471fca53fc4296dd"
+        },
+        {
+          "target": "context-menu/context-menu-group.svelte",
+          "sha256": "0b45789d7c5122e189a3439b26058689e80903b082c42e36c4f4c20df78e5077"
+        },
+        {
+          "target": "context-menu/context-menu-item.svelte",
+          "sha256": "25ffb3bc6a9bf43bbcfec9378bbd87f518c737bbb7b0e97b24a17fc2dd5cd157"
+        },
+        {
+          "target": "context-menu/context-menu-label.svelte",
+          "sha256": "c818093adc5530cef3bef10c03567276cec00e949ec200fedac228ee26a0a172"
+        },
+        {
+          "target": "context-menu/context-menu-portal.svelte",
+          "sha256": "e9adbaa372be1c37bb66e1cd71234964297f29773f6e9d73e2c7bf4528c289ef"
+        },
+        {
+          "target": "context-menu/context-menu-radio-group.svelte",
+          "sha256": "e7c64034148c15ec226fdd0f28b445c041b1defca18e5ac608a899db65bf5c0f"
+        },
+        {
+          "target": "context-menu/context-menu-radio-item.svelte",
+          "sha256": "59a8b01d406cba62c2ffae6c21d8a5677210312fb7b78f292e06095c030af036"
+        },
+        {
+          "target": "context-menu/context-menu-separator.svelte",
+          "sha256": "fce9cedb6736e1006d5d8c027d156d866840708e1263f3f7181741cd351ef56d"
+        },
+        {
+          "target": "context-menu/context-menu-shortcut.svelte",
+          "sha256": "e4a3726644634bb4e470a53379e2a6d0a65202926740596d2e19f491288f3ada"
+        },
+        {
+          "target": "context-menu/context-menu-sub-content.svelte",
+          "sha256": "3826a3fb5d8a96232f6270f6853cf21d88253bcf200e1e8c88f0c2ac84630720"
+        },
+        {
+          "target": "context-menu/context-menu-sub-trigger.svelte",
+          "sha256": "f8ee90e4515d5fc119a7e1ce6a23d3070ead228b6a14ecf8b9121e29b77f9200"
+        },
+        {
+          "target": "context-menu/context-menu-sub.svelte",
+          "sha256": "3efb4787da299f9a01097e779ba794c9cc18d62cd1ab71718a5def0568c1a0e8"
+        },
+        {
+          "target": "context-menu/context-menu-trigger.svelte",
+          "sha256": "678636b91485b757e40e28b8df4a0e22fd578dc2619c1b036a11181f7da81166"
+        },
+        {
+          "target": "context-menu/context-menu.svelte",
+          "sha256": "00d205bc97aac4ddd81ca701b1b40c0cbcbf59b4a28b616eb117e92e1cd7f48e"
+        },
+        {
+          "target": "context-menu/index.ts",
+          "sha256": "8b27e1f341d527394302b20931b929d46a17976888f60c3550fbdb76c2a0e235"
+        }
+      ]
+    },
+    {
+      "name": "dialog",
+      "source": "docs/static/registry/styles/rhea/dialog.json",
+      "sha256": "7ef84d19a660d59f6c1abf4201a5d560732a9761cd106b7c0cb38dfde3adafec",
+      "registryDependencies": [
+        "button"
+      ],
+      "dependencies": [],
+      "devDependencies": [
+        "bits-ui@^2.20.0",
+        "@internationalized/date@^3.12.0"
+      ],
+      "files": [
+        {
+          "target": "dialog/dialog-close.svelte",
+          "sha256": "4a9a1a6327d4e68fd87e8292dcb176eab244ba8da455f15997d2308b1fa03d46"
+        },
+        {
+          "target": "dialog/dialog-content.svelte",
+          "sha256": "aa48c6d7fd7e3b087dddfd3763fec524114ce463c482e3412e0cd8a6fd70a427"
+        },
+        {
+          "target": "dialog/dialog-description.svelte",
+          "sha256": "55847482a30ce0ca48208ef4e0aa3e5444f18ed84cc144b00e68204635a10db2"
+        },
+        {
+          "target": "dialog/dialog-footer.svelte",
+          "sha256": "71982a96b5bf01cacf68bb81fd45a500315d213df4908e294894a182fd1434fa"
+        },
+        {
+          "target": "dialog/dialog-header.svelte",
+          "sha256": "dbef6eb45bb5eba77014a1ed2ccb0a5211f34af9256bf90660498654f5195983"
+        },
+        {
+          "target": "dialog/dialog-overlay.svelte",
+          "sha256": "86dbbc89af2ef19a607ed6fa7bd2997557d846881629e302d2587803b86f48e0"
+        },
+        {
+          "target": "dialog/dialog-portal.svelte",
+          "sha256": "718c0b6672a2911d7f9398e4ef14813cceabcf0be02b7920f10028d213a674b6"
+        },
+        {
+          "target": "dialog/dialog-title.svelte",
+          "sha256": "7f309e7226a15bac50a929218564961a495a71d7c76f60a02abb2d716ffa1b9f"
+        },
+        {
+          "target": "dialog/dialog-trigger.svelte",
+          "sha256": "7b72b3d7fc35bf00f331716f723ee711125263ab09329952728483bb3237dd09"
+        },
+        {
+          "target": "dialog/dialog.svelte",
+          "sha256": "cc60100e895410b9b5f17b6071c933dfc950e5dbf4d00b261edec1e443008a27"
+        },
+        {
+          "target": "dialog/index.ts",
+          "sha256": "8357364bc114cc306188b2ed974986fa47d1c2018ae9b730b66e75ea7ae77753"
+        }
+      ]
+    },
+    {
+      "name": "drawer",
+      "source": "docs/static/registry/styles/rhea/drawer.json",
+      "sha256": "633c00dfe0453be2d92402a63dc3aa49dfa1ab83303ffb256efdff475690c9df",
+      "registryDependencies": [],
+      "dependencies": [],
+      "devDependencies": [
+        "vaul-svelte@next"
+      ],
+      "files": [
+        {
+          "target": "drawer/drawer-close.svelte",
+          "sha256": "2c791c60b4655e75868177d84ec3041ab9cea7d27d6b643008fd791f09f36db3"
+        },
+        {
+          "target": "drawer/drawer-content.svelte",
+          "sha256": "abb1bd6b996ac3e289c553a0498f4515efae71366d50fd76c3a2f52f08c8926d"
+        },
+        {
+          "target": "drawer/drawer-description.svelte",
+          "sha256": "996f3accea9843618bc66295a2a9bfd0c4e71d645fe04736313af5d54b60ba4a"
+        },
+        {
+          "target": "drawer/drawer-footer.svelte",
+          "sha256": "344839e7941af259476293bd025801129614b3d374a705b482493e82464d4503"
+        },
+        {
+          "target": "drawer/drawer-header.svelte",
+          "sha256": "178fcacf0e4173c949070e0221b6726625e19fa74da6fa4055a89941d7f9369f"
+        },
+        {
+          "target": "drawer/drawer-nested.svelte",
+          "sha256": "cdda5309195d2a31f9cc475fb0afd56e0284166d2ca2deeac049194a427387a8"
+        },
+        {
+          "target": "drawer/drawer-overlay.svelte",
+          "sha256": "7c0bbc7d1ae075a5f5428c8b36509bbe214bd36abe5f171347a6faf0f0b5bf9c"
+        },
+        {
+          "target": "drawer/drawer-portal.svelte",
+          "sha256": "3d4d91d0253ae11043145b8d32e6c4cb523ebb024f40016225a1f3da12b61610"
+        },
+        {
+          "target": "drawer/drawer-title.svelte",
+          "sha256": "5691f1e3a35703bc4e68d81a785e2f53a3b4016c2637f21316a4b743e5644f41"
+        },
+        {
+          "target": "drawer/drawer-trigger.svelte",
+          "sha256": "09077b24733d00adaed1f56c2769b5723f06058f83ba8b1159df12bbbffafcb7"
+        },
+        {
+          "target": "drawer/drawer.svelte",
+          "sha256": "caa374b5e5dc45a0a9f6e7b7b1023610a211f8f62296a044c408c9d54927c8ef"
+        },
+        {
+          "target": "drawer/index.ts",
+          "sha256": "ea52ceda738a11c1f3b047bdcf2d4e1b96cc52fdbdfdff9eac71956611c07c35"
+        }
+      ]
+    },
+    {
+      "name": "dropdown-menu",
+      "source": "docs/static/registry/styles/rhea/dropdown-menu.json",
+      "sha256": "f1233d7f240add3efa169fc375c778716b26e25e3903cc907ee04cc220084092",
+      "registryDependencies": [],
+      "dependencies": [],
+      "devDependencies": [
+        "bits-ui@^2.20.0",
+        "@internationalized/date@^3.12.0"
+      ],
+      "files": [
+        {
+          "target": "dropdown-menu/dropdown-menu-checkbox-group.svelte",
+          "sha256": "96f8cf7d2ce72fd2fd4ff5e579067b1a32101abbbe5a20612aa00a69e5df205d"
+        },
+        {
+          "target": "dropdown-menu/dropdown-menu-checkbox-item.svelte",
+          "sha256": "45816a1276b14843f81439165e932f4f0b11fed80b8abff105db9fb09ae58a7d"
+        },
+        {
+          "target": "dropdown-menu/dropdown-menu-content.svelte",
+          "sha256": "c4c704b0aa0319979803560116b3904e69b71cccee3b539acc5f92b3e0f4ed90"
+        },
+        {
+          "target": "dropdown-menu/dropdown-menu-group-heading.svelte",
+          "sha256": "a6f6df794e4c2fc01fef097c1f15934e33eaf3263ea530111f6291fef6826c57"
+        },
+        {
+          "target": "dropdown-menu/dropdown-menu-group.svelte",
+          "sha256": "75f1eaeff2b3cf25f957d7f9137d3addb409815ec480e1a3bb4036bb82e8d60c"
+        },
+        {
+          "target": "dropdown-menu/dropdown-menu-item.svelte",
+          "sha256": "ee4634b0805f70ba7a20925dba0773c9ea39f02bd656251658999bf9915bf74a"
+        },
+        {
+          "target": "dropdown-menu/dropdown-menu-label.svelte",
+          "sha256": "26b0712559e499430d4eeac848597a8b207b63be0dd79a204395e4f3defd934b"
+        },
+        {
+          "target": "dropdown-menu/dropdown-menu-portal.svelte",
+          "sha256": "38f6abf9c1d47d2ab4912556d05845ec9ba1ee6825405adb5f8831d6a30ac08b"
+        },
+        {
+          "target": "dropdown-menu/dropdown-menu-radio-group.svelte",
+          "sha256": "ac025c63e0ade7c26cef7db98de2fe217208fe9387eb8bfaf97730ab3f013da2"
+        },
+        {
+          "target": "dropdown-menu/dropdown-menu-radio-item.svelte",
+          "sha256": "c885c2e59eda460e79e4cf6b65cb06d846a075b6ec84f5cdefd8107e74799118"
+        },
+        {
+          "target": "dropdown-menu/dropdown-menu-separator.svelte",
+          "sha256": "269e33338dcd2617e69d7ac5c057ed9d76bd7f4e9c4cee70ce8819801a26cc3f"
+        },
+        {
+          "target": "dropdown-menu/dropdown-menu-shortcut.svelte",
+          "sha256": "23fee7839d3dbd9011b1ced66874659332b5d4952c50a62593572b4f3e7659dc"
+        },
+        {
+          "target": "dropdown-menu/dropdown-menu-sub-content.svelte",
+          "sha256": "dfcbbc4a659567e96361b77c73a3b53dcd33b52a08e77e437215ee132ff652e3"
+        },
+        {
+          "target": "dropdown-menu/dropdown-menu-sub-trigger.svelte",
+          "sha256": "1dcee2a86b8a272ead6bda5075dd97a6929720c35442dfed15cf06f7533d4ca4"
+        },
+        {
+          "target": "dropdown-menu/dropdown-menu-sub.svelte",
+          "sha256": "1208155828183ef72dc8c96ff58c90fcd5584cce28d938a23545253013cfb9c5"
+        },
+        {
+          "target": "dropdown-menu/dropdown-menu-trigger.svelte",
+          "sha256": "bdad1ff46fd23466dec6d1212186e9ac4e34edf862987308821956c6b24f709c"
+        },
+        {
+          "target": "dropdown-menu/dropdown-menu.svelte",
+          "sha256": "d49b60f3d9832a870e5eed726d39f9c0e09abb2bc061deb1ef0dfec97aa319e5"
+        },
+        {
+          "target": "dropdown-menu/index.ts",
+          "sha256": "843e6f031021c365665e0de10bb9862fa8dba12066336fbd3348fa0078028bcc"
+        }
+      ]
+    },
+    {
+      "name": "empty",
+      "source": "docs/static/registry/styles/rhea/empty.json",
+      "sha256": "98eb7be625aa80c7c31706d26a435e7a6fa244424e5c5d8f9afcf52cf4c45cd2",
+      "registryDependencies": [],
+      "dependencies": [],
+      "devDependencies": [
+        "tailwind-variants@^3.3.0"
+      ],
+      "files": [
+        {
+          "target": "empty/empty-content.svelte",
+          "sha256": "103a93e05c85bd9452d598c9865adbb90695b56f57160bb397d196ba8e00cd00"
+        },
+        {
+          "target": "empty/empty-description.svelte",
+          "sha256": "70ca9e3c4e73e72f2cab21542f3b897b01bce0c2fec6aace1772bdbd41a06bcd"
+        },
+        {
+          "target": "empty/empty-header.svelte",
+          "sha256": "3795e8af24effe0efe3a81c3c7aeb74ae73574a095e76f5c045509654a56afe7"
+        },
+        {
+          "target": "empty/empty-media.svelte",
+          "sha256": "1a78d7ab4591b2fb03b28fbc9cd65c1d71fb3ece958e5ee1cec8e69fbcc08e91"
+        },
+        {
+          "target": "empty/empty-title.svelte",
+          "sha256": "6d97502f945e75be2d4221fcd738a7827d16a1c7b3bb45d8275aecd2d9de217c"
+        },
+        {
+          "target": "empty/empty.svelte",
+          "sha256": "0748b5d7a8e600fae41bcf3dbf2ebdc9cb9f5e1fb48f35781509b49f4973129a"
+        },
+        {
+          "target": "empty/index.ts",
+          "sha256": "2969750549e68f2cf14e8a6f46bdaf93bdd4a6fe252b000e802805c94f4a0f26"
+        }
+      ]
+    },
+    {
+      "name": "field",
+      "source": "docs/static/registry/styles/rhea/field.json",
+      "sha256": "52221aabeb9cc830693207cf852b7b0275d3dcfde5ebc04fe1e4db7b3d0375cc",
+      "registryDependencies": [
+        "label",
+        "separator"
+      ],
+      "dependencies": [],
+      "devDependencies": [
+        "tailwind-variants@^3.3.0"
+      ],
+      "files": [
+        {
+          "target": "field/field-content.svelte",
+          "sha256": "b4a244764ece24bfc5498144e3f3016ccd25fad709feb86789e156c620c0dbce"
+        },
+        {
+          "target": "field/field-description.svelte",
+          "sha256": "9a7d9b7fa66bb3f741cf995dc5cd8afd5c73862802e9cf68f3183b11d9504825"
+        },
+        {
+          "target": "field/field-error.svelte",
+          "sha256": "b8ee1ac4dce1f660f3b0e56f194f5abea9c646afa807e5e976004cf85f1b6953"
+        },
+        {
+          "target": "field/field-group.svelte",
+          "sha256": "fca1ffdd4091709697358d893f3ba34cbc0fe31bcd1449b76ec91214d9cd7e81"
+        },
+        {
+          "target": "field/field-label.svelte",
+          "sha256": "ca3a31688c81d5905b04bdba123d12e1ac2e17774fea5d5defbce8fe691dc774"
+        },
+        {
+          "target": "field/field-legend.svelte",
+          "sha256": "b22f9b1f9ad15beccdac57b8b56760ad2e1baeb03af46f3b228c571b0670aa90"
+        },
+        {
+          "target": "field/field-separator.svelte",
+          "sha256": "e975473fbfd99d4183bafd022b7086245479f4543aeec30936d46a9ce7b47470"
+        },
+        {
+          "target": "field/field-set.svelte",
+          "sha256": "53661b51f2b4fcce1822899c072ab8608504fb1d0815c0526d8854338b3ab3fe"
+        },
+        {
+          "target": "field/field-title.svelte",
+          "sha256": "c959788774cf9760c7ff143953ea3d3b6a640f56da16816054e9084852255e09"
+        },
+        {
+          "target": "field/field.svelte",
+          "sha256": "ecb177b291d065244f5e99f713a869be539cd019b21a1543917a4e0376d2526b"
+        },
+        {
+          "target": "field/index.ts",
+          "sha256": "f23a9216b464c2d979b5994b8088e915e4ae8b69d1ee8eaa611ea336a8971e05"
+        }
+      ]
+    },
+    {
+      "name": "form",
+      "source": "docs/static/registry/styles/rhea/form.json",
+      "sha256": "c4d1f993f8aa9394b2df9c5c8c6141b18f7b8b7e8fb4c5a97967517f77a480d6",
+      "registryDependencies": [
+        "button",
+        "label"
+      ],
+      "dependencies": [],
+      "devDependencies": [
+        "formsnap@^2.1.0",
+        "sveltekit-superforms@^3.0.0"
+      ],
+      "files": [
+        {
+          "target": "form/form-button.svelte",
+          "sha256": "7bd9883cb3ee2d661770e9e527674827e4d814d8765ff56d78f5f5ad85e586aa"
+        },
+        {
+          "target": "form/form-description.svelte",
+          "sha256": "6ce2679aa2eaff4ff92eaf5a44486ce892cbab5b5186351ab2a951471b044135"
+        },
+        {
+          "target": "form/form-element-field.svelte",
+          "sha256": "c9d2a41dc42b55e6210de29a40b8154b6a89942fee0db8351927bf3bd958dd48"
+        },
+        {
+          "target": "form/form-field-errors.svelte",
+          "sha256": "c23160cabb8707ebe0d0e3666c57e0dfaedc11828d17e9de76724f401f55e2e7"
+        },
+        {
+          "target": "form/form-field.svelte",
+          "sha256": "3a437f6c590ce57cca0bb5a16e52fd456043966aa105e871e01bb6b1e59763c7"
+        },
+        {
+          "target": "form/form-fieldset.svelte",
+          "sha256": "3ff3577b2d008c2d2f0a8ff3345495e91ee9ad0461db2e58bd4d679c7df858a7"
+        },
+        {
+          "target": "form/form-label.svelte",
+          "sha256": "3669d34431cfd801b4699cd89162032f935319d03066beb7bfedc3e600bb5866"
+        },
+        {
+          "target": "form/form-legend.svelte",
+          "sha256": "d76d794de8fd58b14aaa8037486a31a59a47a2876c32f71c3fc252a743fb4c57"
+        },
+        {
+          "target": "form/index.ts",
+          "sha256": "f9273a73a493587790ac986e9aaa7005d68952ac58cf6da171ebfa9f9e348f4a"
+        }
+      ]
+    },
+    {
+      "name": "hover-card",
+      "source": "docs/static/registry/styles/rhea/hover-card.json",
+      "sha256": "25193df24cfbf5fb53ec1d94362ed3e7f4a424637e8f6651c8cb943a5737c0a0",
+      "registryDependencies": [],
+      "dependencies": [],
+      "devDependencies": [
+        "bits-ui@^2.20.0",
+        "@internationalized/date@^3.12.0"
+      ],
+      "files": [
+        {
+          "target": "hover-card/hover-card-content.svelte",
+          "sha256": "e7527266911251686cd03198202fbbf89bafa183ff97ad96037ec52307cd8d51"
+        },
+        {
+          "target": "hover-card/hover-card-portal.svelte",
+          "sha256": "4bc8e49f3936fff222eab5f65724130dba5be7cd69ae5dd8e1a62cc86e1f8dca"
+        },
+        {
+          "target": "hover-card/hover-card-trigger.svelte",
+          "sha256": "83e114e2a0edefb11599fe749283713e0fb0c76ce81f23579ae16be349332fdd"
+        },
+        {
+          "target": "hover-card/hover-card.svelte",
+          "sha256": "39946ce6ee8ed12a62f3e9cd2ae86408ae2843afb0546ee1313af7998a53a046"
+        },
+        {
+          "target": "hover-card/index.ts",
+          "sha256": "bc5681b0719b54549f8ebe6624b468f7487752132f69f365d1a394d1176cb7c9"
+        }
+      ]
+    },
+    {
+      "name": "input",
+      "source": "docs/static/registry/styles/rhea/input.json",
+      "sha256": "adc3d419fd87863dd7a6f1565ebda86d035693d07b82dbde2e8177c5adf3f395",
+      "registryDependencies": [],
+      "dependencies": [],
+      "devDependencies": [],
+      "files": [
+        {
+          "target": "input/index.ts",
+          "sha256": "4e0ad69d49a27194c7f3dfd0cdd5933ee13fc40cc13a77138b547d300701d390"
+        },
+        {
+          "target": "input/input.svelte",
+          "sha256": "e5e3f4e92908e9f3114aaa6610b769aa19b6e5ec6eec866ab9a28ccd51b01924"
+        }
+      ]
+    },
+    {
+      "name": "input-group",
+      "source": "docs/static/registry/styles/rhea/input-group.json",
+      "sha256": "2f4469146dd2df4cf9a6a4deeafecd1a5ddd32fb6ec2ed24c42909a529d1840c",
+      "registryDependencies": [
+        "button",
+        "input",
+        "textarea"
+      ],
+      "dependencies": [],
+      "devDependencies": [
+        "tailwind-variants@^3.3.0"
+      ],
+      "files": [
+        {
+          "target": "input-group/index.ts",
+          "sha256": "1dd120de081b76517fb92d58822cf8966457dd283ab34454e14225cfd66d8907"
+        },
+        {
+          "target": "input-group/input-group-addon.svelte",
+          "sha256": "438e3d00f86d8a4860df4be9a912b32c6f3bce2a024ccd9cfa79add7ba495313"
+        },
+        {
+          "target": "input-group/input-group-button.svelte",
+          "sha256": "77833f01f5c431522b6ed2f99e7f87cb5f30df21cc2fb16a1286e97d8ce6c9ad"
+        },
+        {
+          "target": "input-group/input-group-input.svelte",
+          "sha256": "d2a2710a1c45c08b809e9103d6c4629aad56f339ad826e453920d20e41e3f626"
+        },
+        {
+          "target": "input-group/input-group-text.svelte",
+          "sha256": "6bb2b40ddde0123e1ff3ad8555e2d3af32d8a436c6bd2eafe79b37b7fbd50b11"
+        },
+        {
+          "target": "input-group/input-group-textarea.svelte",
+          "sha256": "a9cde3198323274a2bc3debb1cb6cd43808f5e2cf75d2b629bfe64d82c40485f"
+        },
+        {
+          "target": "input-group/input-group.svelte",
+          "sha256": "f616877158be3a34f6232222c758f23c7b386cc78817d799c5fc114b8b7faa44"
+        }
+      ]
+    },
+    {
+      "name": "input-otp",
+      "source": "docs/static/registry/styles/rhea/input-otp.json",
+      "sha256": "071c44728a6fec24aba44651d2b90c0cd2e87303ced4ec4abd92f7ab7d3dcbba",
+      "registryDependencies": [],
+      "dependencies": [],
+      "devDependencies": [
+        "bits-ui@^2.20.0",
+        "@internationalized/date@^3.12.0"
+      ],
+      "files": [
+        {
+          "target": "input-otp/index.ts",
+          "sha256": "eb74abe29492c4b0a1481b91f3a01deffcd2e4c7f9903533d49426e1c4d6941e"
+        },
+        {
+          "target": "input-otp/input-otp-group.svelte",
+          "sha256": "595b3e57df8f6a421ce46c9ba4492d349ff4d487e09e0ef84a354d65639af23f"
+        },
+        {
+          "target": "input-otp/input-otp-separator.svelte",
+          "sha256": "7b9aa007504d40c27ae12d39d7a57d7fc29e256327a5bec24fd420d3ffe5daa6"
+        },
+        {
+          "target": "input-otp/input-otp-slot.svelte",
+          "sha256": "b8aa4ecb057e27b6f664e5158b7edd2c674c48fb7508a1b7457dc27fcc48a450"
+        },
+        {
+          "target": "input-otp/input-otp.svelte",
+          "sha256": "b013a354e28755174f47683d7040c59e8e65da45a03085bf6ce031e145b7104d"
+        }
+      ]
+    },
+    {
+      "name": "item",
+      "source": "docs/static/registry/styles/rhea/item.json",
+      "sha256": "bb5a75ea19b35c2a4b91a2a30eec90f7d1d78d756bb500d3afb1288a9a08d4e3",
+      "registryDependencies": [
+        "separator"
+      ],
+      "dependencies": [],
+      "devDependencies": [
+        "tailwind-variants@^3.3.0"
+      ],
+      "files": [
+        {
+          "target": "item/index.ts",
+          "sha256": "dc3f805dca04b1ad0a8e3f502a744988e4cb534313a9a0ca4499d0a1aef1e123"
+        },
+        {
+          "target": "item/item-actions.svelte",
+          "sha256": "89f582c3317e4b7d2701b0bcd9f95c9c84aefc7b1d33b5f8c122ad4b2389ffb7"
+        },
+        {
+          "target": "item/item-content.svelte",
+          "sha256": "23ab1c760b45e062d84a0320319b706abc4cdb2278b20e8e68368556a287f571"
+        },
+        {
+          "target": "item/item-description.svelte",
+          "sha256": "3e871d3587f7e54199ded27ee2397b914bec762bc78aacd0f8a9c02e9092e914"
+        },
+        {
+          "target": "item/item-footer.svelte",
+          "sha256": "4ae2a20ef796d82cfe9b386a455ab4ee4f1848c2e34f2fdce867a3a093101220"
+        },
+        {
+          "target": "item/item-group.svelte",
+          "sha256": "9b8105569798640412dd7e4d3017b683d6b5fb65c0d857a6d0cd0874b9d3464a"
+        },
+        {
+          "target": "item/item-header.svelte",
+          "sha256": "b43210ad02bb2bd7c0e2fb8c0720b1ef2e38dc64a2886c32dc67704878c256c3"
+        },
+        {
+          "target": "item/item-media.svelte",
+          "sha256": "aa10a3e3c34df768198dc93d6d0c688685e853be0b28d7ce4e19a60107bdac0b"
+        },
+        {
+          "target": "item/item-separator.svelte",
+          "sha256": "23d8bae63c2767a386ab6d4415d068211d4ea382af5a6579ee548585b98ca963"
+        },
+        {
+          "target": "item/item-title.svelte",
+          "sha256": "1c92839aaecbd8ae58ce9ca8dd4833e09179380ec5edc1bda4170f5c10aadeb9"
+        },
+        {
+          "target": "item/item.svelte",
+          "sha256": "bf0ae1b0dfdc929f4769d4bd133a4858e8e480bd30e9966b4b4c53767c801459"
+        }
+      ]
+    },
+    {
+      "name": "kbd",
+      "source": "docs/static/registry/styles/rhea/kbd.json",
+      "sha256": "2cd3ef456bebfdf7ee756dfd84dbee7a9ef56f6ad7531f3418062914d317cebf",
+      "registryDependencies": [],
+      "dependencies": [],
+      "devDependencies": [],
+      "files": [
+        {
+          "target": "kbd/index.ts",
+          "sha256": "66a7bb22914cddccd4f5cfc49ddf135e960f96fd4de0ce95c62641427b478be3"
+        },
+        {
+          "target": "kbd/kbd-group.svelte",
+          "sha256": "c3ab6b584259a98f3816e534410000825636d513cbe7599ca64c85610ef40703"
+        },
+        {
+          "target": "kbd/kbd.svelte",
+          "sha256": "2d6c213be64055b9d6924ce33205316b097ed35ada261684b1f4fbef299c363d"
+        }
+      ]
+    },
+    {
+      "name": "label",
+      "source": "docs/static/registry/styles/rhea/label.json",
+      "sha256": "2518649ae021483bcdf1ce6db76010ddcbb08a78c1adcf0f72bc432c6371abc5",
+      "registryDependencies": [],
+      "dependencies": [],
+      "devDependencies": [
+        "bits-ui@^2.20.0",
+        "@internationalized/date@^3.12.0"
+      ],
+      "files": [
+        {
+          "target": "label/index.ts",
+          "sha256": "ea17621b03066fc6c0ab811ec97aac0cb2de4b504c0a1fc3f480c8fc4bef12f1"
+        },
+        {
+          "target": "label/label.svelte",
+          "sha256": "b15b499cfca1ebcfa417cf818f3f370de0bc02fd6f4b0bbcc16ec9dc85ecf858"
+        }
+      ]
+    },
+    {
+      "name": "marker",
+      "source": "docs/static/registry/styles/rhea/marker.json",
+      "sha256": "a902b81be24f183f68b9bc260b9991c98794586ac5a2f2543be32673650e0b3e",
+      "registryDependencies": [],
+      "dependencies": [],
+      "devDependencies": [
+        "tailwind-variants@^3.3.0"
+      ],
+      "files": [
+        {
+          "target": "marker/index.ts",
+          "sha256": "3994e004651b8fe3b36e194e5b9720de636c2ff5c51f946b940313616971f325"
+        },
+        {
+          "target": "marker/marker-content.svelte",
+          "sha256": "c4ae88a0ef689166fc48bc19dc3997a498419649a66a184c0c89df7dd8a6899f"
+        },
+        {
+          "target": "marker/marker-icon.svelte",
+          "sha256": "7f17676c07dc171c5b242e78cded977178ae5c2b59583cb2361c2840df9df5ae"
+        },
+        {
+          "target": "marker/marker.svelte",
+          "sha256": "094ae065c7b391287d9cddfe8e03d96b4f233c60a57f00663b8773d7cdfc5cae"
+        }
+      ]
+    },
+    {
+      "name": "menubar",
+      "source": "docs/static/registry/styles/rhea/menubar.json",
+      "sha256": "6fe91d8577ea122b6d98b416844a23f288128c81ed3963a348b7045a0e121cf3",
+      "registryDependencies": [],
+      "dependencies": [],
+      "devDependencies": [
+        "bits-ui@^2.20.0",
+        "@internationalized/date@^3.12.0"
+      ],
+      "files": [
+        {
+          "target": "menubar/index.ts",
+          "sha256": "c143941584e3e021f443e14696c60d933a08fb23617e87d3053e7d57b08cd3b4"
+        },
+        {
+          "target": "menubar/menubar-checkbox-item.svelte",
+          "sha256": "1440b5c1b68aae4cf1f7fbdaca087bf612f5bf832f455c7ebce192cc612c8bfb"
+        },
+        {
+          "target": "menubar/menubar-content.svelte",
+          "sha256": "c9b7edb645bb3ba52349a61e2c8e8257e655d2fe93e33527ee48267b160f8274"
+        },
+        {
+          "target": "menubar/menubar-group-heading.svelte",
+          "sha256": "ab417f4a41d447723af75d42d19b505e2643d00fc077cf4ea97ff3ee4ccf57fc"
+        },
+        {
+          "target": "menubar/menubar-group.svelte",
+          "sha256": "7d5cce3b6701cbbebfbd31165cd54dbe467f11cb6f8a9203e7b742a54b2c5538"
+        },
+        {
+          "target": "menubar/menubar-item.svelte",
+          "sha256": "97282f1417cb91cd6a8d4a57718c974ca10e3e09357a3577fa896e142e6493d1"
+        },
+        {
+          "target": "menubar/menubar-label.svelte",
+          "sha256": "8b16d2bd2187770741ad65823b1891082adf2d1bb77ee26448369c0c23f42bd8"
+        },
+        {
+          "target": "menubar/menubar-menu.svelte",
+          "sha256": "66be33ad897320ab874e94c266c4935a0138189844a9ff99ca18870bcc834501"
+        },
+        {
+          "target": "menubar/menubar-portal.svelte",
+          "sha256": "0cf6e74112f4b30b4126b38ac054a6995d5193a972091391a113dea93a5fa4fe"
+        },
+        {
+          "target": "menubar/menubar-radio-group.svelte",
+          "sha256": "2c46ad49481ea5aade0289e89c4e40fb29a8111f2dc7acf5f0273aba62667c77"
+        },
+        {
+          "target": "menubar/menubar-radio-item.svelte",
+          "sha256": "16a0e686de8e6ad3fb4e65d979720edd8ee154203943b88ec9316e4643e018e7"
+        },
+        {
+          "target": "menubar/menubar-separator.svelte",
+          "sha256": "f5ffa547f5bdeddfb16f3c466df1f0939c2c91f8153e895e532db74b4fb61f6d"
+        },
+        {
+          "target": "menubar/menubar-shortcut.svelte",
+          "sha256": "2cedaa174d7dc43abeeb0b5e56400a2738396d1ac87cccf7e66d801758bb449f"
+        },
+        {
+          "target": "menubar/menubar-sub-content.svelte",
+          "sha256": "3741c5b8ff28288956d493db3ddd579db3ab94cb3ff9002f13a1cc477b86472b"
+        },
+        {
+          "target": "menubar/menubar-sub-trigger.svelte",
+          "sha256": "920b53281cceaa9a344606cb2a02d5769c86d5d57ff0e4e29a0b2257e75356d4"
+        },
+        {
+          "target": "menubar/menubar-sub.svelte",
+          "sha256": "d6740b0060d04bcaff496fbf24ccc0bdcf6e09834088e1ce7595126e7539a226"
+        },
+        {
+          "target": "menubar/menubar-trigger.svelte",
+          "sha256": "5c4f847a30e9574f4b02e6bec4966c2f756068e4cce4584fff362f02008bbb8c"
+        },
+        {
+          "target": "menubar/menubar.svelte",
+          "sha256": "ffc51cd7f3d5fd63c875c2d0a25c9a0d65f81ce2c3c397980789aa77fc670384"
+        }
+      ]
+    },
+    {
+      "name": "message",
+      "source": "docs/static/registry/styles/rhea/message.json",
+      "sha256": "094bf6ef8cac7883c42dc0282f1e868a0b85d7f3737c89fcdfd9d2f0204bb56b",
+      "registryDependencies": [],
+      "dependencies": [],
+      "devDependencies": [],
+      "files": [
+        {
+          "target": "message/index.ts",
+          "sha256": "205f411cf3616d705f621bcf5361b26ed01232ef6c9135aa708f2245601cde7e"
+        },
+        {
+          "target": "message/message-avatar.svelte",
+          "sha256": "ecaab985065fb3ff27d4f1d425a5f03be1a87594238e2b1eea8006946d7368a4"
+        },
+        {
+          "target": "message/message-content.svelte",
+          "sha256": "f035b5e5aedc2add2690b73593750740d1d63fd5d472bed3490eb51f0b22f020"
+        },
+        {
+          "target": "message/message-footer.svelte",
+          "sha256": "d951a1a19e2eeaaf4d9ccda76edd24a9fcf79aaf3781ddca91fb15cf2a9e0fd5"
+        },
+        {
+          "target": "message/message-group.svelte",
+          "sha256": "867d08031081cd26ee9169c443dbb3b4b8e1281905a07b43473e160085e3477b"
+        },
+        {
+          "target": "message/message-header.svelte",
+          "sha256": "81a883771223bd2da115b875eb5df810e960d7c80b321e8272dd95fc39037f21"
+        },
+        {
+          "target": "message/message.svelte",
+          "sha256": "8a28650ab09e71eecd939a5721f9268ed9fded11f35af253ef5cdd24f42bf104"
+        }
+      ]
+    },
+    {
+      "name": "message-scroller",
+      "source": "docs/static/registry/styles/rhea/message-scroller.json",
+      "sha256": "0c89db7f49825d44655bf0d5dccfc599ea63c8a526695639798d0941d208b4ed",
+      "registryDependencies": [
+        "button"
+      ],
+      "dependencies": [],
+      "devDependencies": [
+        "@shadcn-svelte/primitives@^0.0.1"
+      ],
+      "files": [
+        {
+          "target": "message-scroller/index.ts",
+          "sha256": "87d61d1ec739c25e5c5058541044cccdff00026311761a97cb1a73cf1d4301b3"
+        },
+        {
+          "target": "message-scroller/message-scroller-button.svelte",
+          "sha256": "f8c008bd0792451ebd832bf7ffbd7eb76c67eff6adf515f340af2d1ac26282cd"
+        },
+        {
+          "target": "message-scroller/message-scroller-content.svelte",
+          "sha256": "01fd0428f0d1680afe4f62927cef4197c2be8ff3eb5a7416209e98f1ebe412fa"
+        },
+        {
+          "target": "message-scroller/message-scroller-item.svelte",
+          "sha256": "9992a7a3dd708bc68071bdf8b8961011cc11ddffa5b73a85660e53672201397c"
+        },
+        {
+          "target": "message-scroller/message-scroller-provider.svelte",
+          "sha256": "c26bd0bb1a729c227d6ca3630fb9e0acde98baa05398ce80cc7f162f599d927f"
+        },
+        {
+          "target": "message-scroller/message-scroller-viewport.svelte",
+          "sha256": "2c07ab3d8b609f42dfa9dd20cf5b0266a9d02e474a4486e805d460959fe43d79"
+        },
+        {
+          "target": "message-scroller/message-scroller.svelte",
+          "sha256": "266eae02ad46fc8ed76dbbf683976d15aeae1fb428144edae7b1a69c67fa9ddc"
+        }
+      ]
+    },
+    {
+      "name": "native-select",
+      "source": "docs/static/registry/styles/rhea/native-select.json",
+      "sha256": "c2b23e42c3069fc364b71d76db442560e3c9024e0f807bce521e929cf8e8009e",
+      "registryDependencies": [],
+      "dependencies": [],
+      "devDependencies": [],
+      "files": [
+        {
+          "target": "native-select/index.ts",
+          "sha256": "5b4a2b59e247be89e9586dd8e82e3e6578698be5ca03e5332d70383646ff201a"
+        },
+        {
+          "target": "native-select/native-select-opt-group.svelte",
+          "sha256": "d3bc23ce31eedfedb08d11d93e3a9d894bf5c5f0db14b0b4f6ae10be00dc9882"
+        },
+        {
+          "target": "native-select/native-select-option.svelte",
+          "sha256": "d14b60202533492eac815288ab3c7237de3310340f576b788a610d7ded94734d"
+        },
+        {
+          "target": "native-select/native-select.svelte",
+          "sha256": "fb735f737747990b673238c963c0b9093019e53a26f329ebd1bd4ef127943f62"
+        }
+      ]
+    },
+    {
+      "name": "navigation-menu",
+      "source": "docs/static/registry/styles/rhea/navigation-menu.json",
+      "sha256": "ae01c3e8138eaa12f2ed3086805dd47a688983a7458ce096163f7f28c1b5cabc",
+      "registryDependencies": [],
+      "dependencies": [],
+      "devDependencies": [
+        "bits-ui@^2.20.0",
+        "@internationalized/date@^3.12.0",
+        "tailwind-variants@^3.3.0"
+      ],
+      "files": [
+        {
+          "target": "navigation-menu/index.ts",
+          "sha256": "65b57b2aa0a630d8fd9a997cc724edc587b88ed2707a3c5787feed642e86f018"
+        },
+        {
+          "target": "navigation-menu/navigation-menu-content.svelte",
+          "sha256": "d40d1a9fc67e4ff3e98c388c5847de68f4156f86c709ae1f6a174cf3bb34db9f"
+        },
+        {
+          "target": "navigation-menu/navigation-menu-indicator.svelte",
+          "sha256": "424aef61ce90d79a111e5f87a9c7bcfb20c967480d22f27eb1c1dd8708be51bb"
+        },
+        {
+          "target": "navigation-menu/navigation-menu-item.svelte",
+          "sha256": "65c4019bced7b13b49254904dc3b06d5b22381bd48bf7229d33af8d9e9e3cf12"
+        },
+        {
+          "target": "navigation-menu/navigation-menu-link.svelte",
+          "sha256": "8fb61d226aeead801e8adda80ab1d48e25467b9633fa0f67ad2e7a690d37c813"
+        },
+        {
+          "target": "navigation-menu/navigation-menu-list.svelte",
+          "sha256": "501bd69e1f39f007193c0658b013cde4a5c9a6125843947d480720a16a1d8334"
+        },
+        {
+          "target": "navigation-menu/navigation-menu-trigger.svelte",
+          "sha256": "a7901c6c5353a45f0d507fab332c03472ea5d8f4b5a7c4b33a60dc9838ad86cb"
+        },
+        {
+          "target": "navigation-menu/navigation-menu-viewport.svelte",
+          "sha256": "312054c013c102ae97e8a7a4c51d254905f17d4d72eb215a555eaf74282e8d03"
+        },
+        {
+          "target": "navigation-menu/navigation-menu.svelte",
+          "sha256": "01203238cd353561dfd3170046861e92d98b532520a2d6b13ac1b6cef4828c98"
+        }
+      ]
+    },
+    {
+      "name": "pagination",
+      "source": "docs/static/registry/styles/rhea/pagination.json",
+      "sha256": "86074a1b7a57c9d4a2a6a9d079dc53c96124285f0a6f4c4a71d960d31d5b3531",
+      "registryDependencies": [
+        "button"
+      ],
+      "dependencies": [],
+      "devDependencies": [
+        "bits-ui@^2.20.0",
+        "@internationalized/date@^3.12.0"
+      ],
+      "files": [
+        {
+          "target": "pagination/index.ts",
+          "sha256": "f44e6beed47819f055bb611fef35e554b9ac4cd0678d5234e1cf7a88adc7fe4e"
+        },
+        {
+          "target": "pagination/pagination-content.svelte",
+          "sha256": "e4dd7d07f3c1254d08e5f34b86a5b1eddea9d0215f674e7e9407b0cc42b174ab"
+        },
+        {
+          "target": "pagination/pagination-ellipsis.svelte",
+          "sha256": "52941634d52d06564adbcf5b9b93022c3ee5a3d8993b478ed157d4fd0783498c"
+        },
+        {
+          "target": "pagination/pagination-item.svelte",
+          "sha256": "7dbf70614092eaa3583126ac182f448338ff16c6b0c7ae651999993f1553b87a"
+        },
+        {
+          "target": "pagination/pagination-link.svelte",
+          "sha256": "f00a96c219ca77c48ebf40657ae2562d4ff2fed65b15c5e790e58e2430df0a92"
+        },
+        {
+          "target": "pagination/pagination-next-button.svelte",
+          "sha256": "13848914427793b67181851c4bc5e775bb289a4ad4354a9bbaf2111a7e66f8c8"
+        },
+        {
+          "target": "pagination/pagination-next.svelte",
+          "sha256": "9d43cda675d6e189b73674cbc5dbc7fba7a4d65e84e1dfc48920d0aef909ece2"
+        },
+        {
+          "target": "pagination/pagination-prev-button.svelte",
+          "sha256": "01cedb441e312ea386fa428cf2c597048f69aca1d5e485750cf59409a5043e43"
+        },
+        {
+          "target": "pagination/pagination-previous.svelte",
+          "sha256": "183159b0c60af9e3467ed43ab58b1dae03f6b930b8e570d27cfff63eae95b585"
+        },
+        {
+          "target": "pagination/pagination.svelte",
+          "sha256": "a211e269c6f1cbf7b0c6b004fd56239f0bb7334be6445a72f1caf729cf13fb9f"
+        }
+      ]
+    },
+    {
+      "name": "popover",
+      "source": "docs/static/registry/styles/rhea/popover.json",
+      "sha256": "d83767cef945de427635e5a25e81f008b290ec8bd621a5b6dc4f5b6e8e541f4f",
+      "registryDependencies": [],
+      "dependencies": [],
+      "devDependencies": [
+        "bits-ui@^2.20.0",
+        "@internationalized/date@^3.12.0"
+      ],
+      "files": [
+        {
+          "target": "popover/index.ts",
+          "sha256": "6d1d43ce7deeebfa752727224c91962335fbc9fedd1ff007cffcdc4efc4e264f"
+        },
+        {
+          "target": "popover/popover-close.svelte",
+          "sha256": "bec13457158cb16ba4a0d45789ef2a6b6f3b2c84e14c819ebfa8eca76baced77"
+        },
+        {
+          "target": "popover/popover-content.svelte",
+          "sha256": "4a9247dedf33cda2d1abee33277bde900f67e7ae9df0180ff35dabb4c2c8d515"
+        },
+        {
+          "target": "popover/popover-description.svelte",
+          "sha256": "75cabfb4be96b51dd607fa155f54568674a3e44d7c7f41d2faa96c4e3b91a6d9"
+        },
+        {
+          "target": "popover/popover-header.svelte",
+          "sha256": "5c72db8d7e96bc66618c5decaa50dc85c1f7246a2473d70e4077fff87e1f56db"
+        },
+        {
+          "target": "popover/popover-portal.svelte",
+          "sha256": "4db64c036aace1359a29d703a842998a6c74b17e84900eb6289cedc5f37ff43a"
+        },
+        {
+          "target": "popover/popover-title.svelte",
+          "sha256": "701adc196cfca2a7dbeeadfaeeb3df2fd9c431d4e51f3969a6f6ffad80e23aa8"
+        },
+        {
+          "target": "popover/popover-trigger.svelte",
+          "sha256": "8b3b365d4de23d3a1b9f6177ce18ee08d20ed3117c3eb89b1da2802a8ac8794b"
+        },
+        {
+          "target": "popover/popover.svelte",
+          "sha256": "9697cf96a4ab4970b93e0aafd3962aaa21a97d88d2976886f2a7dd22db87b1ca"
+        }
+      ]
+    },
+    {
+      "name": "progress",
+      "source": "docs/static/registry/styles/rhea/progress.json",
+      "sha256": "b4c6937e4c432683eed4d99e06ee6344698e156c5dd512a885f0bf565c0b888a",
+      "registryDependencies": [],
+      "dependencies": [],
+      "devDependencies": [
+        "bits-ui@^2.20.0",
+        "@internationalized/date@^3.12.0"
+      ],
+      "files": [
+        {
+          "target": "progress/index.ts",
+          "sha256": "047b1de9082bd67dde821e907845484557cfbac5525dd672434250420d61e6d6"
+        },
+        {
+          "target": "progress/progress.svelte",
+          "sha256": "2017c94d8acd97b4e460d6598ffbf6a966c6da0a92f6b439beb0678ab797ae2e"
+        }
+      ]
+    },
+    {
+      "name": "questionnaire",
+      "source": "docs/static/registry/styles/rhea/questionnaire.json",
+      "sha256": "b7b90939608c27978d34e901160ac84f00d32deb1ae853b4137659845249082a",
+      "registryDependencies": [
+        "button"
+      ],
+      "dependencies": [],
+      "devDependencies": [
+        "@shadcn-svelte/primitives@^0.0.1"
+      ],
+      "files": [
+        {
+          "target": "questionnaire/index.ts",
+          "sha256": "157b7ead197374e8096e999cc00f23750ba36c39e0f5a7b121f2dc4a3bb37fda"
+        },
+        {
+          "target": "questionnaire/questionnaire-actions.svelte",
+          "sha256": "d57f804a4bfcd942b21db738673e0e6977cfa10ed1ce402d76e21d340a9be31f"
+        },
+        {
+          "target": "questionnaire/questionnaire-choice-description.svelte",
+          "sha256": "ceac7da593feee16c37f2cb997d9b117773ca26dc8c7414af7ba758313670d41"
+        },
+        {
+          "target": "questionnaire/questionnaire-choice.svelte",
+          "sha256": "2f4554786b0da8d504412d30f6a8d3f731419b3186f8ee020b1cbd70ce957240"
+        },
+        {
+          "target": "questionnaire/questionnaire-choices.svelte",
+          "sha256": "e2a21eaa0a2d40ffe924baf67e015f76724db20b23b07851df58b4f94bb90dff"
+        },
+        {
+          "target": "questionnaire/questionnaire-description.svelte",
+          "sha256": "10908a1042e1c11371f6cdcd30f0b7c803c9bbadbb93622b567cb8d9f8addb66"
+        },
+        {
+          "target": "questionnaire/questionnaire-error.svelte",
+          "sha256": "a3582dffa0b248f72840184b405feec03edac627ed585cd747dce6b3cfbf907e"
+        },
+        {
+          "target": "questionnaire/questionnaire-input.svelte",
+          "sha256": "ca18bfc84297e4d6315f538587e4cbcdbc842e6ef6400dbf3bf8591bc659c35d"
+        },
+        {
+          "target": "questionnaire/questionnaire-item.svelte",
+          "sha256": "7ec2ae9c709c4a46290bcd45eb6a7dd330e9242b9bd6cabfd386e58b62dcf9f5"
+        },
+        {
+          "target": "questionnaire/questionnaire-next.svelte",
+          "sha256": "087dc6f6deda114caae16cb554b6df127a71cf49b72d58b9877a0cae5c5c5c21"
+        },
+        {
+          "target": "questionnaire/questionnaire-previous.svelte",
+          "sha256": "3560104d4d58992d65b28b5aa32cf0c049d95b7566f2d63b8831215b18e2f6d3"
+        },
+        {
+          "target": "questionnaire/questionnaire-progress.svelte",
+          "sha256": "a5a29c986f48475418a148a1a3a64c37803bf381eb684394e6df1bdbdb74e546"
+        },
+        {
+          "target": "questionnaire/questionnaire-skip.svelte",
+          "sha256": "d1ad5386d602385f20269ffd7e3152cc3d767071662d540eb56549b18eee2fe2"
+        },
+        {
+          "target": "questionnaire/questionnaire-submit.svelte",
+          "sha256": "a63e161ccda1b8b3d225c9cf03788acf4854aa1a41263340acb53dc4acda0178"
+        },
+        {
+          "target": "questionnaire/questionnaire-title.svelte",
+          "sha256": "4e55932fa6d7ebbe260f8fc2f7138901cb3778692c05431354e934c85daad8f4"
+        },
+        {
+          "target": "questionnaire/questionnaire.svelte",
+          "sha256": "d204c75d8ed8024f9f06a968710d1f1be426dbf8266711f12072862a78e47d8a"
+        }
+      ]
+    },
+    {
+      "name": "radio-group",
+      "source": "docs/static/registry/styles/rhea/radio-group.json",
+      "sha256": "fb68d46637ad7d4a5212c040148c35985a76edcf95fef2035bbebbe0cc383b59",
+      "registryDependencies": [],
+      "dependencies": [],
+      "devDependencies": [
+        "bits-ui@^2.20.0",
+        "@internationalized/date@^3.12.0"
+      ],
+      "files": [
+        {
+          "target": "radio-group/index.ts",
+          "sha256": "362d6e9a225a65e43e6f223a3a4b9aea4a3c3e6fe7f5d66464ee4df3e8df18f5"
+        },
+        {
+          "target": "radio-group/radio-group-item.svelte",
+          "sha256": "56b59a9e391d4677d43fa430b0d9a933ef249b42d257a776c7ff56f7f2625e8e"
+        },
+        {
+          "target": "radio-group/radio-group.svelte",
+          "sha256": "8b2c413a83c86c38449ff79484a4dd3f941b78daa76ec86dacdd9f6fe5bce61e"
+        }
+      ]
+    },
+    {
+      "name": "range-calendar",
+      "source": "docs/static/registry/styles/rhea/range-calendar.json",
+      "sha256": "f591f4f62e83111222f413035260f7503abc0fb340b3f87e46dfc0fbb2f82694",
+      "registryDependencies": [
+        "button"
+      ],
+      "dependencies": [],
+      "devDependencies": [
+        "@internationalized/date@^3.12.0",
+        "bits-ui@^2.20.0"
+      ],
+      "files": [
+        {
+          "target": "range-calendar/index.ts",
+          "sha256": "6aa3eac823a0e3baa6d5d03c2cc0d56ed52299049902e2094e4cab20385ace16"
+        },
+        {
+          "target": "range-calendar/range-calendar-caption.svelte",
+          "sha256": "76ad6a933f1aade630a77fe33f12c397335f91e12a3fceb2bbf0488d09224803"
+        },
+        {
+          "target": "range-calendar/range-calendar-cell.svelte",
+          "sha256": "c113bcefe25d1f0215e5fe90ef532d4b8491a8d552fbd001f94382d7c330441a"
+        },
+        {
+          "target": "range-calendar/range-calendar-day.svelte",
+          "sha256": "8c68e3195e9aa48a7b7709730cd878986ffa7763f9acf936235973b704dd6a46"
+        },
+        {
+          "target": "range-calendar/range-calendar-grid-body.svelte",
+          "sha256": "9f5056f09fe21e8d419ce2a23e47dc15a10050085cb3f8a11efac18a8f0bf341"
+        },
+        {
+          "target": "range-calendar/range-calendar-grid-head.svelte",
+          "sha256": "581c6173b249f24a01c1759432578a8b6cb16acabb1acb7fbff073d7acddd58b"
+        },
+        {
+          "target": "range-calendar/range-calendar-grid-row.svelte",
+          "sha256": "4c43752b5d51beb7a77d11428451f2a41dc7c8808c76fc98394c055e0e15bb1a"
+        },
+        {
+          "target": "range-calendar/range-calendar-grid.svelte",
+          "sha256": "7b40236fa573d2b2ce04ebee9bf9dee29b5a1a8e324fc59ac125f6d746d4962b"
+        },
+        {
+          "target": "range-calendar/range-calendar-head-cell.svelte",
+          "sha256": "9e6be1910a6108472f82e6afd4452a3412041a0e680568f28580f869c1e36ef4"
+        },
+        {
+          "target": "range-calendar/range-calendar-header.svelte",
+          "sha256": "8083aa76651d9a6f95bb745f2346320a94dcd25259e4fda557250d1c8022530e"
+        },
+        {
+          "target": "range-calendar/range-calendar-heading.svelte",
+          "sha256": "888dfbf6ed99eadb733d5de7d00fe2c166bb5cc862f95a8dd5c474e973baf56f"
+        },
+        {
+          "target": "range-calendar/range-calendar-month-select.svelte",
+          "sha256": "90ac8a2fdfefad83d3416c5e327143e7dd7820093902ffbb00591f1d86eb6e75"
+        },
+        {
+          "target": "range-calendar/range-calendar-month.svelte",
+          "sha256": "70046e08ac2a41ce2e6a43fcf4edd35b3d98eba9b22cbe9f3a5935eea4593c72"
+        },
+        {
+          "target": "range-calendar/range-calendar-months.svelte",
+          "sha256": "3faf7b70e3f3e61bc4dc77d27b4ba4b41e888379fbaa6518b80e2d10937cfeac"
+        },
+        {
+          "target": "range-calendar/range-calendar-nav.svelte",
+          "sha256": "3bdf0f1b6498896b4d91b6ecd861341e7a8c10ddc19fde8883b5e3ede326e505"
+        },
+        {
+          "target": "range-calendar/range-calendar-next-button.svelte",
+          "sha256": "c60bb64ca0278d2f2a41a3de138dcf53dd9908461116369b920d0b1bb13196d0"
+        },
+        {
+          "target": "range-calendar/range-calendar-prev-button.svelte",
+          "sha256": "dfe74e8514ce3647a5ab02024ae51b415241928b32b653c42bae95a08ff8cd12"
+        },
+        {
+          "target": "range-calendar/range-calendar-year-select.svelte",
+          "sha256": "a0c28b978020740927de07d3805909e4524a17bafe2a81c4d493dedc8b88f2b6"
+        },
+        {
+          "target": "range-calendar/range-calendar.svelte",
+          "sha256": "3f10cdc7e5d4c53eb0029cc4d2245e20a832ae9679aeafa572598dd1a62e8722"
+        }
+      ]
+    },
+    {
+      "name": "resizable",
+      "source": "docs/static/registry/styles/rhea/resizable.json",
+      "sha256": "1ec9be08ee752a6f182f9f4fce1392792575817c6a43eae1c06d03e85eab13fd",
+      "registryDependencies": [],
+      "dependencies": [],
+      "devDependencies": [
+        "paneforge@^1.0.2"
+      ],
+      "files": [
+        {
+          "target": "resizable/index.ts",
+          "sha256": "43adf3c048151a6417d06f58ca3e8e42ea4286d38d4b0d3ccc79c7fa5808485f"
+        },
+        {
+          "target": "resizable/resizable-handle.svelte",
+          "sha256": "e1d8ac7100111b989bf24c8b159ff3903009f35a867070c4901a3d9d7472cb06"
+        },
+        {
+          "target": "resizable/resizable-pane-group.svelte",
+          "sha256": "3d7418fcaf07001a758ea31090b44b7d2d005bba2c260c236b9ed5b05024a5c0"
+        }
+      ]
+    },
+    {
+      "name": "scroll-area",
+      "source": "docs/static/registry/styles/rhea/scroll-area.json",
+      "sha256": "e7e24cacfb8eb00be2d14691f37b2f080e463d6833dbd139cb60d05aec450952",
+      "registryDependencies": [],
+      "dependencies": [],
+      "devDependencies": [
+        "bits-ui@^2.20.0",
+        "@internationalized/date@^3.12.0"
+      ],
+      "files": [
+        {
+          "target": "scroll-area/index.ts",
+          "sha256": "9b88919b9751aa6bcc575ce5f848c4f1098336867d2a4c982a7d9071712dc26e"
+        },
+        {
+          "target": "scroll-area/scroll-area-scrollbar.svelte",
+          "sha256": "3697b75adeacaac1682256a68c3a4c59877a0ab2bcd4b0ca377bd9924fa4c90f"
+        },
+        {
+          "target": "scroll-area/scroll-area.svelte",
+          "sha256": "70687e490aa01676018b592253be269d884887e05dc729bf0c7ef81c4219f0fd"
+        }
+      ]
+    },
+    {
+      "name": "select",
+      "source": "docs/static/registry/styles/rhea/select.json",
+      "sha256": "c3549cb6f13e5ecc51c15fbeefd46386b413f44da2c49889625a57c81eb9fda4",
+      "registryDependencies": [
+        "separator"
+      ],
+      "dependencies": [],
+      "devDependencies": [
+        "bits-ui@^2.20.0",
+        "@internationalized/date@^3.12.0"
+      ],
+      "files": [
+        {
+          "target": "select/index.ts",
+          "sha256": "bc04c69cc47b7caed758af0ace370ccc0eb8adc969797108fce8eb80e89c73ac"
+        },
+        {
+          "target": "select/select-content.svelte",
+          "sha256": "7ce1ba926cc49dcbe925e76a22a498f223439c659a03538d3fb0f34f2bc358c0"
+        },
+        {
+          "target": "select/select-group-heading.svelte",
+          "sha256": "ac04792e78359fa517d559176d911523dff71543339ca53e5b48eff6bf4f72d7"
+        },
+        {
+          "target": "select/select-group.svelte",
+          "sha256": "184b9729f9aa4c58bddc0219ac484d7a2f7850206bd383dbcf331fe09a05430d"
+        },
+        {
+          "target": "select/select-item.svelte",
+          "sha256": "f50358efb22c87700d803b15bea957c58e3a7f5e9684b87709e680b30f1f9200"
+        },
+        {
+          "target": "select/select-label.svelte",
+          "sha256": "368a44afcc9273d025a7229c274e2cc2feea24843c9a8cac0be6cc3a30a42da4"
+        },
+        {
+          "target": "select/select-portal.svelte",
+          "sha256": "3ad1139eaca3b9c989495982493c99f42893d1aafbbf2f4aaab6fd117fbab742"
+        },
+        {
+          "target": "select/select-scroll-down-button.svelte",
+          "sha256": "8f48ad06230cd7b7db1c3c84360a714760e81d88eddbcea5f746aee1ef486d28"
+        },
+        {
+          "target": "select/select-scroll-up-button.svelte",
+          "sha256": "adfc33038b8bc841b61e92736875c420913c8822dd15a9f137008535fde18e1a"
+        },
+        {
+          "target": "select/select-separator.svelte",
+          "sha256": "78936e253f04a57f27699c356d991e4c33270a26ba0199afdba2a53d46b60003"
+        },
+        {
+          "target": "select/select-trigger.svelte",
+          "sha256": "b6dca633e5b65ba13fe6130bc4980f104bf263d123478d23b3cc9575fdd3c328"
+        },
+        {
+          "target": "select/select-value.svelte",
+          "sha256": "d74206c96be85eb35c08d88bfefc082db217a164f1e13ff83536363edf28a455"
+        },
+        {
+          "target": "select/select.svelte",
+          "sha256": "4a7062d01d4cd23edfb5667f3da7a829626c169dff46846d713af524ebf30704"
+        }
+      ]
+    },
+    {
+      "name": "separator",
+      "source": "docs/static/registry/styles/rhea/separator.json",
+      "sha256": "6f53e106cb04597615e9f28d1cd1a34e04e9f81b7ceea1787935dd0e79b1521e",
+      "registryDependencies": [],
+      "dependencies": [],
+      "devDependencies": [
+        "bits-ui@^2.20.0",
+        "@internationalized/date@^3.12.0"
+      ],
+      "files": [
+        {
+          "target": "separator/index.ts",
+          "sha256": "beeaaaab286f1aeff1e43a8ef1c02a60de5e6349780d12af73e9646c6db98bf6"
+        },
+        {
+          "target": "separator/separator.svelte",
+          "sha256": "4f1ace23e08adf96922cb1c47b6eb680e240082c2b72d91d68f8bc0599cf66f7"
+        }
+      ]
+    },
+    {
+      "name": "sheet",
+      "source": "docs/static/registry/styles/rhea/sheet.json",
+      "sha256": "b52df379458b63e0289c6016b0a1159fbeb9a06f95798f7dd9d33b8e0422389d",
+      "registryDependencies": [
+        "button"
+      ],
+      "dependencies": [],
+      "devDependencies": [
+        "bits-ui@^2.20.0",
+        "@internationalized/date@^3.12.0"
+      ],
+      "files": [
+        {
+          "target": "sheet/index.ts",
+          "sha256": "76e46597c822fc9a41b6b63b517ba313792cc4419c6e9ec2d6697e485dda9d06"
+        },
+        {
+          "target": "sheet/sheet-close.svelte",
+          "sha256": "5513573158c75ade2db6b5a07b59cf40f60f26e456cd811cd1f492057608216d"
+        },
+        {
+          "target": "sheet/sheet-content.svelte",
+          "sha256": "35970000ae12601206940ef487c371e932241209897add22622ebe019c3da09d"
+        },
+        {
+          "target": "sheet/sheet-description.svelte",
+          "sha256": "46737ec551b234cdb09e5a6cacc6067d87f1a441c56444f35429cccb73f6c662"
+        },
+        {
+          "target": "sheet/sheet-footer.svelte",
+          "sha256": "82192500953c3eb39e5de866857981bf053a6f27ce29cffa8860926039d16cdd"
+        },
+        {
+          "target": "sheet/sheet-header.svelte",
+          "sha256": "6e9d679570039b9d180e7021ea04b3c2cd7e0a5db1f6b955c19d6a9e547d2b3b"
+        },
+        {
+          "target": "sheet/sheet-overlay.svelte",
+          "sha256": "8184418793c08dd93ae48a7a232ffad2b44b6f688067e4b81a69a59e1e49ad48"
+        },
+        {
+          "target": "sheet/sheet-portal.svelte",
+          "sha256": "9391a12d66727280eadc465b8edfa04134f92a28468218683140624feebe5c94"
+        },
+        {
+          "target": "sheet/sheet-title.svelte",
+          "sha256": "d8d8cbdcc1e184c8b3bd9774853ac3161d49df9c3a2f6ffe5c40fa2c5f6d78c7"
+        },
+        {
+          "target": "sheet/sheet-trigger.svelte",
+          "sha256": "5e22ce7c04bbe478db7c37a43128902563c90d53febe6aa5684a706c959ca05b"
+        },
+        {
+          "target": "sheet/sheet.svelte",
+          "sha256": "eed2a698206fc1fb24ca85f7ff351c8520a8fcc3f8fd489c04b974738088f00e"
+        }
+      ]
+    },
+    {
+      "name": "sidebar",
+      "source": "docs/static/registry/styles/rhea/sidebar.json",
+      "sha256": "d731d6c2091af38c1fdf2cdcc3f1ce3ccc9d3e319627c275e7fc9cc71d96a760",
+      "registryDependencies": [
+        "is-mobile",
+        "input",
+        "tooltip",
+        "skeleton",
+        "separator",
+        "button",
+        "sheet"
+      ],
+      "dependencies": [],
+      "devDependencies": [
+        "bits-ui@^2.20.0",
+        "@internationalized/date@^3.12.0",
+        "tailwind-variants@^3.3.0"
+      ],
+      "files": [
+        {
+          "target": "sidebar/constants.ts",
+          "sha256": "ea5f64cfad10009a71dc8148ca91b0db9f7bd386468300ff82e68093dffe2fa4"
+        },
+        {
+          "target": "sidebar/context.svelte.ts",
+          "sha256": "6412350797180b86e9d35c2cf99b4c2f728e2cb09157ce67f11a978f934ee49a"
+        },
+        {
+          "target": "sidebar/index.ts",
+          "sha256": "d74498b2de3d3fbaa2e5944136d8f3e673de6a1d3f88a1440f9a88814640ba1f"
+        },
+        {
+          "target": "sidebar/sidebar-content.svelte",
+          "sha256": "7c10750ae35d942fc8c0d21c4fd5bf71aa21d4cbdffcb03ed9e508b1fba5478b"
+        },
+        {
+          "target": "sidebar/sidebar-footer.svelte",
+          "sha256": "c326543206b8897a5e6082fd7f22440aa20947ddd9ffb201bcc0fa34757f1bda"
+        },
+        {
+          "target": "sidebar/sidebar-group-action.svelte",
+          "sha256": "981650bd2a65676c0a438c5f2118ca5259449bb635d6439ade1108bd69d11ef9"
+        },
+        {
+          "target": "sidebar/sidebar-group-content.svelte",
+          "sha256": "ced10e364b9ea3bf89952b21a27e71bf6c66ba8b5b0988ac93cb1bcd18d7a5fa"
+        },
+        {
+          "target": "sidebar/sidebar-group-label.svelte",
+          "sha256": "debe8ee558fbe75714f00b958dbe9154b6a37363a82a4fcb8ef072d4e5feb6ae"
+        },
+        {
+          "target": "sidebar/sidebar-group.svelte",
+          "sha256": "8878e789dcb128462d6e42b2b9c245e9c047e9be216a08e87c510d2524e12907"
+        },
+        {
+          "target": "sidebar/sidebar-header.svelte",
+          "sha256": "f3162d7df4305ee20678a0c0c5ad3444249aa86123d7fe00fe190b1d16a5cfb7"
+        },
+        {
+          "target": "sidebar/sidebar-input.svelte",
+          "sha256": "17f037fe548ce243b02de8ecb9eec82aaed3ec9a6bfbb3fcafb167da13cbbbba"
+        },
+        {
+          "target": "sidebar/sidebar-inset.svelte",
+          "sha256": "132737666dd4128dd06377dba16c04416dae4d300a18c5f37c43a111a053f6b5"
+        },
+        {
+          "target": "sidebar/sidebar-menu-action.svelte",
+          "sha256": "519c75ee6f3d597c0c611a1f8a68a8fc4ac0266b82168820d2a7a097398fee00"
+        },
+        {
+          "target": "sidebar/sidebar-menu-badge.svelte",
+          "sha256": "9c7d06908daca54737ab5827abc93086b5ddff286678518cc34bac9b3d99ce00"
+        },
+        {
+          "target": "sidebar/sidebar-menu-button.svelte",
+          "sha256": "840acd3b7ef0c909aa7eb9a19030f0d4e56c0e1efea24846d5464d114c296f6f"
+        },
+        {
+          "target": "sidebar/sidebar-menu-item.svelte",
+          "sha256": "9557aeaf84ecc1c281e50aef33d248c5413a2bb78dd6204a77509dfdd6045d89"
+        },
+        {
+          "target": "sidebar/sidebar-menu-skeleton.svelte",
+          "sha256": "761e144d7224735ea4099b0ecc3268d3779ab79f8f8ab7702af9c6598759796c"
+        },
+        {
+          "target": "sidebar/sidebar-menu-sub-button.svelte",
+          "sha256": "82dac6fb9c5f78d4c2f570c1657b89d993c08ee3b83f9ff9b1e4b0ad671dc249"
+        },
+        {
+          "target": "sidebar/sidebar-menu-sub-item.svelte",
+          "sha256": "654ab3ed5805b3daa6fceec9cc05ea2a5b20bfce8618845aeed478985326234f"
+        },
+        {
+          "target": "sidebar/sidebar-menu-sub.svelte",
+          "sha256": "30338ece86f953dc18722c85cb3036300d7543c11a891aa344620497b71cd993"
+        },
+        {
+          "target": "sidebar/sidebar-menu.svelte",
+          "sha256": "b51500fd619e5933bde2f6edd93f61c292687c3359f7acf97084e793f267c64a"
+        },
+        {
+          "target": "sidebar/sidebar-provider.svelte",
+          "sha256": "d5b882a955b4222eb0900616d6a5f9d91d41ca38d8167e6a991f08fd8709a0c0"
+        },
+        {
+          "target": "sidebar/sidebar-rail.svelte",
+          "sha256": "128bf3419e435a2246b58f31af4037f75a3ac85449a8adb3fde8786608649122"
+        },
+        {
+          "target": "sidebar/sidebar-separator.svelte",
+          "sha256": "dcf2b4a50706471e78a4845957c22d3765ad8e2c56b2836b0168d72a8362ad1b"
+        },
+        {
+          "target": "sidebar/sidebar-trigger.svelte",
+          "sha256": "5e59016d236ca06b813ac759c0b32bd9e80e4807a805eccac0f909b386c22f20"
+        },
+        {
+          "target": "sidebar/sidebar.svelte",
+          "sha256": "9b32236d8796f14930a8a179271cfb65ff095bd04ed945ecfee11fdba451f2e0"
+        }
+      ]
+    },
+    {
+      "name": "skeleton",
+      "source": "docs/static/registry/styles/rhea/skeleton.json",
+      "sha256": "17f7d7f4d250eb8c5e081917d1c6251b6e24c6c410b037e83e4d421c6821a4a0",
+      "registryDependencies": [],
+      "dependencies": [],
+      "devDependencies": [],
+      "files": [
+        {
+          "target": "skeleton/index.ts",
+          "sha256": "25f4d78e3dbd09eaf8eaa356a6a907f2e9b8f701190bcc402ee698a39974ca65"
+        },
+        {
+          "target": "skeleton/skeleton.svelte",
+          "sha256": "8694f9260b0040bf6acd2606055273b162e6cd18b72796cdd42d0f0a003bf7eb"
+        }
+      ]
+    },
+    {
+      "name": "slider",
+      "source": "docs/static/registry/styles/rhea/slider.json",
+      "sha256": "a7717b41ac0846ed2b178f1fc764c8bed98ee6c50621c1a4d4004f2a94464766",
+      "registryDependencies": [],
+      "dependencies": [],
+      "devDependencies": [
+        "bits-ui@^2.20.0",
+        "@internationalized/date@^3.12.0"
+      ],
+      "files": [
+        {
+          "target": "slider/index.ts",
+          "sha256": "0e2bda41f2c93303b7c87ddf67ff6e1d05ecfdfb3e834fbf5707ba6961eeb4d5"
+        },
+        {
+          "target": "slider/slider.svelte",
+          "sha256": "bbc071047c21ec7038485f6c3c89f93bad94da85045b34000d127613a1330217"
+        }
+      ]
+    },
+    {
+      "name": "sonner",
+      "source": "docs/static/registry/styles/rhea/sonner.json",
+      "sha256": "d76a511a07d5d1d7f6bc8f8301f0bfe1dd3214c3ccbcd04f753ebae10134a67e",
+      "registryDependencies": [],
+      "dependencies": [],
+      "devDependencies": [
+        "mode-watcher@^1.1.0",
+        "svelte-sonner@^1.2.0"
+      ],
+      "files": [
+        {
+          "target": "sonner/index.ts",
+          "sha256": "a72067e92f2db255eb6133c065bf75ef5650abcd9487ddbd9db118ca99b9dcca"
+        },
+        {
+          "target": "sonner/sonner.svelte",
+          "sha256": "9769a0c4f581371931844d0c4f155e6376aa29d5ed2bcaa67934e9e52f2d0962"
+        }
+      ]
+    },
+    {
+      "name": "spinner",
+      "source": "docs/static/registry/styles/rhea/spinner.json",
+      "sha256": "bdd31b9901948d74eb3f303ea7b2f5ac4fc1708e7dfc893b4948c9f543a6f4ba",
+      "registryDependencies": [],
+      "dependencies": [],
+      "devDependencies": [],
+      "files": [
+        {
+          "target": "spinner/index.ts",
+          "sha256": "ce8a9f311c7abdc8773e2ce6439c89f0c8a9edbc273f5ff44e3f31cd380420c6"
+        },
+        {
+          "target": "spinner/spinner.svelte",
+          "sha256": "5bbeeb74166eaf20ed6fc54e5129b197a098aca0d596fe6fcd0b0aa9c842b014"
+        }
+      ]
+    },
+    {
+      "name": "switch",
+      "source": "docs/static/registry/styles/rhea/switch.json",
+      "sha256": "acbbb2eb836b7d79945672f41bd2e0db28356c3dccfaf5a817aa53e5c713ce4c",
+      "registryDependencies": [],
+      "dependencies": [],
+      "devDependencies": [
+        "bits-ui@^2.20.0",
+        "@internationalized/date@^3.12.0"
+      ],
+      "files": [
+        {
+          "target": "switch/index.ts",
+          "sha256": "29fe3052a55b69e37d9995a3a74ad196bda339c438596bda0dac0bde426a420b"
+        },
+        {
+          "target": "switch/switch.svelte",
+          "sha256": "a05868c8022807b3671b8b328e27c6f9e2901abbd3af68bba1ce7cabc7a691a2"
+        }
+      ]
+    },
+    {
+      "name": "table",
+      "source": "docs/static/registry/styles/rhea/table.json",
+      "sha256": "76e7f96d099264fc6b24c423c2e3c96579d42be4cad1d733b610bfddb0c7794b",
+      "registryDependencies": [],
+      "dependencies": [],
+      "devDependencies": [],
+      "files": [
+        {
+          "target": "table/index.ts",
+          "sha256": "25acd0f0d67391720a63212a88a31b27490041addf0000284e3200a18e808eea"
+        },
+        {
+          "target": "table/table-body.svelte",
+          "sha256": "1cd221bb2ef6dcfa58590799bc0bceeb7c3b4e54f419ed6f325e1161526b1f9d"
+        },
+        {
+          "target": "table/table-caption.svelte",
+          "sha256": "a631650d692024eb032a9f17b98b7d5672ebbc182e4c40295c3aad243c71491c"
+        },
+        {
+          "target": "table/table-cell.svelte",
+          "sha256": "9fdeaad2f81218dbbfb48f6d0f8d626577f01e0e51df4ad2a69409dfae2ad0d6"
+        },
+        {
+          "target": "table/table-footer.svelte",
+          "sha256": "94e292ca538f3d67c724af15424ae7e1ba61d7b0459b90d7b3e7ea79318a2295"
+        },
+        {
+          "target": "table/table-head.svelte",
+          "sha256": "209ff217eec44bac0a91733b3f9c7068bcda00a0a2c999462b9e0c19c460cf49"
+        },
+        {
+          "target": "table/table-header.svelte",
+          "sha256": "60f127c155d713f565b8c523717b8931dfa96d0761e92be54fb14ab2fb95939c"
+        },
+        {
+          "target": "table/table-row.svelte",
+          "sha256": "48b08521424f34129f35e3fff7d92970fbe3d981c76630ae9b84375b8946c101"
+        },
+        {
+          "target": "table/table.svelte",
+          "sha256": "c420dd0ce67f62db2c2b309eded58c22e9ad58e2b8a058cf4885cce100f688b6"
+        }
+      ]
+    },
+    {
+      "name": "tabs",
+      "source": "docs/static/registry/styles/rhea/tabs.json",
+      "sha256": "860afc63670b419d726900fecadc0ec88d6a95285b3d516cb3ae389de58e4be5",
+      "registryDependencies": [],
+      "dependencies": [],
+      "devDependencies": [
+        "bits-ui@^2.20.0",
+        "@internationalized/date@^3.12.0",
+        "tailwind-variants@^3.3.0"
+      ],
+      "files": [
+        {
+          "target": "tabs/index.ts",
+          "sha256": "e8c5e55fb540595b2a250f2ffd292cac31b2b272820df0f36df348351c7a84b5"
+        },
+        {
+          "target": "tabs/tabs-content.svelte",
+          "sha256": "df48a17899892b6e9130aba13f787d26c442f03dfc8b9f27404d1919d350eaef"
+        },
+        {
+          "target": "tabs/tabs-list.svelte",
+          "sha256": "f7aeaec219a99fd67070b8b86831fe5bc88a96eba3333d90ed45d2c1cff5579a"
+        },
+        {
+          "target": "tabs/tabs-trigger.svelte",
+          "sha256": "16745f0196df2b8cda387295cbfb60ed369731c8bb110a9d8cc7689bf53de80f"
+        },
+        {
+          "target": "tabs/tabs.svelte",
+          "sha256": "7882853ab4dac5be86ffd65fe33995af02ff3917f2da59a5a7f0b38e96082632"
+        }
+      ]
+    },
+    {
+      "name": "textarea",
+      "source": "docs/static/registry/styles/rhea/textarea.json",
+      "sha256": "00d88b9db6f97dc98d14406f22811c2140a1c207eeb375ac476ee7fe437c8ffa",
+      "registryDependencies": [],
+      "dependencies": [],
+      "devDependencies": [],
+      "files": [
+        {
+          "target": "textarea/index.ts",
+          "sha256": "3b5f25dfd5d1d9b5305f613f7544a7e39362cd4b0a9c3250414cd5ff02e45398"
+        },
+        {
+          "target": "textarea/textarea.svelte",
+          "sha256": "bd96eea0ca0120d833feaea3b93f810c23231662ab6a08e503fb335555adb6cc"
+        }
+      ]
+    },
+    {
+      "name": "toggle",
+      "source": "docs/static/registry/styles/rhea/toggle.json",
+      "sha256": "2b305cf7fcb40fdc85e01b5c445238c73449148de4864c761de23fafaacdf252",
+      "registryDependencies": [],
+      "dependencies": [],
+      "devDependencies": [
+        "bits-ui@^2.20.0",
+        "@internationalized/date@^3.12.0",
+        "tailwind-variants@^3.3.0"
+      ],
+      "files": [
+        {
+          "target": "toggle/index.ts",
+          "sha256": "96772363857f0c48a0b412dd27a84857a5940273e02b583ae03ebcf2aeda50ef"
+        },
+        {
+          "target": "toggle/toggle.svelte",
+          "sha256": "86fb2c7528b1e277dcf7f6ec59131d5953cc3883590f096bfd4dc8ece6574f4d"
+        }
+      ]
+    },
+    {
+      "name": "toggle-group",
+      "source": "docs/static/registry/styles/rhea/toggle-group.json",
+      "sha256": "9fd33f078ecc76e4707ebb32cde224bc3db8160b69087d61f46a3b02d4a3fbfc",
+      "registryDependencies": [
+        "toggle"
+      ],
+      "dependencies": [],
+      "devDependencies": [
+        "bits-ui@^2.20.0",
+        "@internationalized/date@^3.12.0",
+        "tailwind-variants@^3.3.0"
+      ],
+      "files": [
+        {
+          "target": "toggle-group/index.ts",
+          "sha256": "bf1fbf2a05265a8520afd79845049548688b1c040441892fec5d8fc8d4971585"
+        },
+        {
+          "target": "toggle-group/toggle-group-item.svelte",
+          "sha256": "5e04d574a58fdd2270fad956adc433cd8cd5f95ebb6340b02c34fe569f5e2df4"
+        },
+        {
+          "target": "toggle-group/toggle-group.svelte",
+          "sha256": "f2f1e3343e900c8dcfb9acf52942c55fc71ccffdc14f29f3e49bd01ed0d89de5"
+        }
+      ]
+    },
+    {
+      "name": "tooltip",
+      "source": "docs/static/registry/styles/rhea/tooltip.json",
+      "sha256": "7f41719c7c1f0697162fa007e34469c20e13e84cc04b02e13bb01d394f1f50dc",
+      "registryDependencies": [],
+      "dependencies": [],
+      "devDependencies": [
+        "bits-ui@^2.20.0",
+        "@internationalized/date@^3.12.0"
+      ],
+      "files": [
+        {
+          "target": "tooltip/index.ts",
+          "sha256": "a5924dc1196bf9f431af3ef3d9675ded3f30d38f9f3148118cb6f4cad433e0c4"
+        },
+        {
+          "target": "tooltip/tooltip-content.svelte",
+          "sha256": "d95c49c3e392b7afcf427ef617a9585c4159da38a43ca710e3f8d853e6f25b84"
+        },
+        {
+          "target": "tooltip/tooltip-portal.svelte",
+          "sha256": "d38e62fa30732ba5ea79df440badb59331d22c13a19fdc1ad777857f6039b648"
+        },
+        {
+          "target": "tooltip/tooltip-provider.svelte",
+          "sha256": "3599daffb73460dc3377582b99fb04503cc1f3facd660f99db5e9c785c48367e"
+        },
+        {
+          "target": "tooltip/tooltip-trigger.svelte",
+          "sha256": "139ecd079c457f1318a8cfee9495143859a84fda92b0b811e893a738b46dddbd"
+        },
+        {
+          "target": "tooltip/tooltip.svelte",
+          "sha256": "a33d843a5e4e6e5fe426654f6742a453f44f4ff928e94a21d188d9035e4d02f8"
+        }
+      ]
+    },
+    {
+      "name": "trace",
+      "source": "docs/static/registry/styles/rhea/trace.json",
+      "sha256": "695a317756575959901c31275b61568616f60cbde29ae46f5e6dfc8424b198d4",
+      "registryDependencies": [
+        "collapsible"
+      ],
+      "dependencies": [],
+      "devDependencies": [
+        "bits-ui@^2.20.0",
+        "@internationalized/date@^3.12.0"
+      ],
+      "files": [
+        {
+          "target": "trace/index.ts",
+          "sha256": "dc19208aff0796b8247ecedabc5e0e497acde3ffffb1de8caf5c9116a6553e8a"
+        },
+        {
+          "target": "trace/trace-collapsible-content.svelte",
+          "sha256": "ead5fff813a19f2bdab9f8458619c316b640dca594954e0963ae2dca75cc563d"
+        },
+        {
+          "target": "trace/trace-collapsible-trigger.svelte",
+          "sha256": "8a12f5a189d4ec5081b59140f146c3976ae0566ff3f3adf4e42186a966d9e885"
+        },
+        {
+          "target": "trace/trace-collapsible.svelte",
+          "sha256": "3401eb7b5c0fc579620ef381d63bed4efebc9fb1449633d8e4f7737cb356344e"
+        },
+        {
+          "target": "trace/trace-description.svelte",
+          "sha256": "738f3ea757ce2c6090b6d71c3ba2a3ea6fb2008e2fe6c975ac0669a571122b87"
+        },
+        {
+          "target": "trace/trace-icon.svelte",
+          "sha256": "97e9311ffcd6d7c90286425d63d7a3cb68db41f2e3e28cf3d476bb7825ddb983"
+        },
+        {
+          "target": "trace/trace-line.svelte",
+          "sha256": "8beffa214751f050ab90c515cc17eab7d2813c3781f1fd59db99fe2ce3202b04"
+        },
+        {
+          "target": "trace/trace-title.svelte",
+          "sha256": "941154680f4a71777f810f5f3686014e732aface7fd989d8a660917ef953ef22"
+        },
+        {
+          "target": "trace/trace.svelte",
+          "sha256": "e86e0b26c9f3034a5ed375768b48d889ad96fe37650f1c306d2eff3c02cb5830"
+        }
+      ]
+    }
+  ],
+  "localFiles": [
+    {
+      "path": "src/rhea.css",
+      "sha256": "3d7431b0f54a3c9fd8ae8bd97e249fdceed2d8cbb6f9d2bdcfd17324f242d8f6"
+    },
+    {
+      "path": "src/rhea.ts",
+      "sha256": "73f16e8d0ddd3a6b7c9599f37b05e8ca4003edbb2f3846900801ce8d9fb867b0"
+    },
+    {
+      "path": "LICENSE.rhea",
+      "sha256": "230594c9dedb06fb0759381a520b449c1b47b0f63b95fc88ef9d7e851e2540a9"
+    }
+  ]
+}

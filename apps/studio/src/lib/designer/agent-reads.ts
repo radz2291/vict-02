@@ -2,7 +2,7 @@
 import { z } from 'zod';
 import { authoringIndex, authoringContractBundle, type UiDocument, type UiNode } from '@victframework/ui';
 import { resolveOccurrence, compositionChildren } from '@victframework/ui-editor';
-import { screenRecipes } from './recipes.js';
+import { screenRecipes, recipeHostRequirements } from './recipes.js';
 import { actionInputs, designerCatalogs } from './application.js';
 import type { AgentCursor } from './agent-edits.js';
 import { authoringContract, installedAuthoringRegistry } from './authoring.js';
@@ -20,6 +20,8 @@ export const agentReadSchema = z.object({
   components:z.array(z.object({id:z.string().min(1).max(160),revision:z.string().min(1).max(100).optional()}).strict()).min(1).max(12).optional(),
   knownDigests:z.record(z.string().min(1).max(270),z.string().max(100)).refine(value=>Object.keys(value).length<=30,'At most 30 known digests.').optional(),
   includeExamples:z.boolean().optional(),
+  expectedBodyIdentities:z.record(z.string().max(270),z.string().max(300)).refine(value=>Object.keys(value).length<=30,'At most 30 body identities.').optional(),
+  knownBodyIdentities:z.record(z.string().max(270),z.string().max(300)).refine(value=>Object.keys(value).length<=30,'At most 30 body identities.').optional(),
 }).strict();
 export const agentReadPresentation = { type:'object',additionalProperties:false,properties:{
   section:{type:'string',enum:['overview','nodes','source','palette','component','state','registry','actions','coverage','families','catalog','contracts','elements']},
@@ -30,9 +32,23 @@ export const agentReadPresentation = { type:'object',additionalProperties:false,
   components:{type:'array',minItems:1,maxItems:12,items:{type:'object',additionalProperties:false,required:['id'],properties:{id:{type:'string'},revision:{type:'string'}}}},
   knownDigests:{type:'object',maxProperties:30,additionalProperties:{type:'string'}},
   includeExamples:{type:'boolean'},
+  expectedBodyIdentities:{type:'object',maxProperties:30,additionalProperties:{type:'string'}},
+  knownBodyIdentities:{type:'object',maxProperties:30,additionalProperties:{type:'string'}},
 } };
 const truncate = (text: string, max = 1200) => text.length > max ? text.slice(0,max) + '… [truncated; use source pages]' : text;
 const recipeDefinitions = new Map(screenRecipes.map(recipe => [recipe.id,recipe.create('example').filter(node => node.kind === 'component').map(node => node.kind === 'component' ? node.definitionId : '')]));
+/** Describes existing seeds without changing canonical defaults or pretending a recipe is a contract. */
+function recipePreparation(recipe:typeof screenRecipes[number]) {
+  const nodes=recipe.create('example');
+  const root=nodes[0];
+  const definitionIds=[...new Set(nodes.flatMap(node=>node.kind==='component'?[node.definitionId]:[]))];
+  return {rootKind:root?.kind,seedClasses:root&&'classes' in root?root.classes??[]:[],seedStyles:root&&'localStyle' in root?root.localStyle??[]:[],
+    styledNodeCount:nodes.filter(node=>'localStyle' in node&&node.localStyle?.length).length,
+    initialStateKeys:Object.keys(recipe.initialState?.('example')??{}),definitionIds,
+    hostRequirements:definitionIds.flatMap(id=>authoringContract(id)?.rules?.filter(rule=>rule.kind==='hostRequirement')??[]),patternHostRequirements:recipeHostRequirements(recipe.id),
+    guidance:'Seed local styles remain in the authored source and override shared style sources. Review padding, minimum size, background and color before adding; replace/remove explicitly or use generic insert for an unstyled native element. Read component/recipe for full source.'};
+}
+export const contractBodyIdentity=(digest:string,includeExamples=false)=>`studio-contract-body@2:${includeExamples?'examples':'guidance'}:${digest}`;
 export function agentCoverage(document: UiDocument, requested?: readonly string[]) {
   const reachable=new Set<string>();
   const visit=(id:string)=>{if(reachable.has(id))return;reachable.add(id);const node=document.nodes[id];if(!node)return;
@@ -76,6 +92,7 @@ function assertBounded<T>(value: T) {
   visit(value,0); return value;
 }
 export interface AgentReadResult {
+  ok?: boolean; items?: unknown;
   expectedRevision?: string; cursor?: AgentCursor; section?: string;
   selection?: { occurrence?: string; nodeId: string; repeated: boolean } | null;
   [key:string]: unknown;
@@ -102,17 +119,27 @@ export function agentContext(document: UiDocument, cursor: AgentCursor, selectio
   } else if(query.section==='catalog') result={...base,...authoringIndex(installedAuthoringRegistry,query)};
   else if(query.section==='contracts') {
     if(!query.components)return {...base,ok:false,code:'STUDIO_AGENT_READ_QUERY',message:'contracts requires selected components:[{id,revision?}]. Discover exact identities with catalog; knownDigests reuses unchanged knowledge.'};
-    const bundle=authoringContractBundle(installedAuthoringRegistry,{requested:query.components,knownDigests:query.knownDigests,maxItems:12,maxBytes:42000});
-    const items=bundle.items.map(item=>{
-      if('unchanged' in item)return item;
+    // An unchanged guidance digest cannot stand in for a body containing examples.
+    const knownDigests=Object.fromEntries(Object.entries(query.knownDigests??{}).filter(([key,digest])=>!query.includeExamples||query.knownBodyIdentities?.[key]===contractBodyIdentity(digest,true)));
+    const bundle=authoringContractBundle(installedAuthoringRegistry,{requested:query.components,knownDigests:query.offset===0?knownDigests:undefined,maxItems:12,maxBytes:42000});
+    const invalidations:unknown[]=[];
+    // A continuation pages only named bodies. Automatically expanded dependency
+    // bodies may have different lengths and must not share the selected offset.
+    const pageItems=query.offset>0?bundle.items.filter(item=>query.components!.some(component=>component.id===item.id&&(!component.revision||component.revision===item.revision))):bundle.items;
+    const items=pageItems.map(item=>{
+      const key=`${item.id}@${item.revision}`,bodyIdentity=contractBodyIdentity(item.digest,query.includeExamples);
+      if('unchanged' in item)return {...item,bodyIdentity};
+      if(query.offset>0&&query.expectedBodyIdentities?.[key]!==bodyIdentity){invalidations.push({key,expected:query.expectedBodyIdentities?.[key]??null,actual:bodyIdentity});return {id:item.id,revision:item.revision,digest:item.digest,bodyIdentity,invalidated:true,bodyComplete:false};}
       const {seed,examples,...contract}=item.contract;
-      const projection=query.includeExamples?item.contract:{...contract,exampleCount:examples?.length??0,hasSeed:!!seed};
+      const preparation={seedStyles:seed?.nodes.filter(node=>'localStyle' in node&&node.localStyle?.length).map(node=>({nodeId:node.id,localStyle:'localStyle' in node?node.localStyle:[]}))??[],hostRequirements:item.contract.rules?.filter(rule=>rule.kind==='hostRequirement')??[],dependencies:item.contract.dependencies??[],seedStylePrecedence:'Local styles override shared style sources; explicitly replace/remove undesired seed declarations before construction.'};
+      const projection=query.includeExamples?{...item.contract,preparation}:{...contract,exampleCount:examples?.length??0,hasSeed:!!seed,preparation};
       const json=JSON.stringify(projection),length=Math.min(query.limit*300,6000),next=query.offset+length;
-      return {id:item.id,revision:item.revision,digest:item.digest,contractJson:json.slice(query.offset,next),totalCharacters:json.length,offset:query.offset,nextOffset:next<json.length?next:null,bodyComplete:query.offset===0&&next>=json.length};
+      if(query.offset>=json.length&&query.offset>0){invalidations.push({key,reason:'offset-outside-body',totalCharacters:json.length});return {id:item.id,revision:item.revision,digest:item.digest,bodyIdentity,invalidated:true,bodyComplete:false};}
+      return {id:item.id,revision:item.revision,digest:item.digest,bodyIdentity,contractJson:json.slice(query.offset,next),totalCharacters:json.length,offset:query.offset,nextOffset:next<json.length?next:null,bodyComplete:query.offset===0&&next>=json.length};
     });
-    result={...base,ok:bundle.ok,complete:bundle.complete&&items.every(item=>'unchanged' in item||item.bodyComplete),registryDigest:bundle.registryDigest,items,pending:bundle.pending,problems:bundle.problems,...(bundle.budgetCause?{budgetCause:bundle.budgetCause}:{}),
+    result={...base,ok:bundle.ok&&!invalidations.length,...(invalidations.length?{code:'STUDIO_AGENT_CONTRACT_BODY_INVALIDATED',invalidations,message:'Discard partial text for these identities and restart at offset 0 with the intended includeExamples projection. Continuations require expectedBodyIdentities keyed id@revision.'}:{}),complete:bundle.complete&&items.every(item=>'unchanged' in item||item.bodyComplete),registryDigest:bundle.registryDigest,items,pending:bundle.pending,problems:bundle.problems,...(bundle.budgetCause?{budgetCause:bundle.budgetCause}:{}),
       projection:query.includeExamples?'contract-with-examples':'contract-and-semantic-guidance',
-      paging:'Bodies are lossless JSON text pages of the named projection. Request a selected ID with nextOffset until complete; retain its digest. includeExamples adds canonical seed/examples; omit its known digest when requesting a different projection. Pending dependencies are not a complete bundle. Source facts never use knowledge-cache digests.'};
+      paging:'Bodies are lossless JSON text pages. Initial bundles include dependency bodies; continuations page only explicitly selected components, one body at its own nextOffset. Send expectedBodyIdentities:{"id@revision":bodyIdentity} with unchanged includeExamples. Changing projection invalidates partial pages. Retain digest/bodyIdentity only after assembling every character from offset 0 to totalCharacters. knownBodyIdentities proves projection when reusing examples; a guidance-only body does not contain examples. Pending/partial dependencies are not complete knowledge. Source facts never use knowledge-cache digests.'};
   } else if(query.section==='elements') {
     const catalog=designerCatalogs.elements;
     result=query.tag?{...base,element:catalog.elements.find(item=>item.tag===query.tag)??null,globalAttributes:catalog.globalAttributes,
@@ -125,7 +152,7 @@ export function agentContext(document: UiDocument, cursor: AgentCursor, selectio
     // Source is losslessly paged as text so deep/large authored expressions cannot violate delivery snapshots.
     const length = Math.min(query.limit * 300,6000);
     result = { ...base,nodeId:node.id,sourceJson:source.slice(query.offset,query.offset+length),totalCharacters:source.length,offset:query.offset,nextOffset:query.offset+length < source.length ? query.offset+length : null };
-  } else if (query.section === 'palette') result = { ...base,...page(screenRecipes.filter(recipe => !query.query || `${recipe.id} ${recipe.label} ${recipe.description}`.toLowerCase().includes(query.query.toLowerCase())).map(({id,label,description,placements}) => ({id,label,description,...(placements ? {placements} : {})}))) };
+  } else if (query.section === 'palette') result = { ...base,...page(screenRecipes.filter(recipe => !query.query || `${recipe.id} ${recipe.label} ${recipe.description}`.toLowerCase().includes(query.query.toLowerCase())).map(recipe => ({id:recipe.id,label:recipe.label,description:recipe.description,...(recipe.placements ? {placements:recipe.placements} : {}),preparation:recipePreparation(recipe)}))) };
   else if (query.section === 'component') {
     const recipe=screenRecipes.find(item=>item.id===query.recipe);
     const root=recipe?.create('example')[0];

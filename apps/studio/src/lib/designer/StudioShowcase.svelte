@@ -5,6 +5,7 @@
     SelectionPalette, StateInitialEditor, StateValuesPanel, PanelResizer, authoredOccurrence,
     compositionName, compositionSlots, compositionTrail, firstCompositionSlot, resolveOccurrence,
     type CompositionFocus, type TransactionDraft,
+    duplicateSubtree, compositionParent,
   } from '@victframework/ui-editor';
   import { ControlScope } from '@victframework/ui-svelte';
   import type { UiRenderPlan, UiValue } from '@victframework/ui';
@@ -15,10 +16,15 @@
   import { screenStore } from './storage.js';
   import { createScreenSimulation, screenDispatcher } from './execution.js';
   import { createShowcaseFixture, showcaseCatalog } from './showcase.js';
-  import { structureMove, type StructureEditRequest, type StructureHandoff } from './structure.js';
+  import { structureMove, structureId, projectStructure, type StructureEditRequest, type StructureHandoff } from './structure.js';
   import StructureView from './StructureView.svelte';
+  import SourceDetails from './SourceDetails.svelte';
+  import WorkspaceContextMenu from './WorkspaceContextMenu.svelte';
+  import { sourceCapabilities, type WorkspaceContext } from './workspace-context.js';
   import '@victframework/ui-svelte/styles.css';
   import '@victframework/ui-svelte/catalog.css';
+  import '@victframework/ui-svelte/rhea.css';
+  import './studio-theme.css';
 
   let bridge = $state<EditorBridge>();
   let version = $state(0);
@@ -57,6 +63,47 @@
   let saved = $state(false);
   let unsubscribe: (() => void) | undefined;
   let canvasRoot = $state<HTMLDivElement>();
+  let showcaseRoot = $state<HTMLElement>();
+  let detailsOpen = $state(false);
+  let detailsExpanded = $state(false);
+  let detailsHeight = $state(240);
+  let detailsPage = $state<'properties'|'relationships'>('properties');
+  let detailId = $state<string>();
+  let documentHeight = $state(540);
+  let detailsReturn:HTMLElement|undefined;
+  let paletteRequested = $state(true);
+  let palettePage = $state<'format'|'insert'|'arrange'|'connect'>('format');
+  let paletteFocus = $state<symbol>();
+  function inspect(id=source && selectedNodeId?structureId(source.id,'node',selectedNodeId):undefined,page:'properties'|'relationships'='properties') {
+    const active=globalThis.document.activeElement;
+    detailsReturn = active instanceof HTMLElement && !active.closest('[role="menu"]') ? active : undefined;
+    detailId=id;detailsPage=page;detailsOpen=true;documentOpen=true;
+  }
+  function closeDetails(){detailsOpen=false;detailsExpanded=false;void tick().then(()=>{const target=detailsReturn?.isConnected && !detailsReturn.closest('[hidden],[inert]')?detailsReturn:showcaseRoot?.querySelector<HTMLElement>(view==='structure'?'.inspection-toggle':'[aria-label="Inspect example source"]');target?.focus({preventScroll:true});});}
+  function selectDetail(id:string){if(!source || blocked)return;detailId=id;const node=projectStructure(source).nodes.find(node=>node.id===id);if(node?.data.occurrence)selectStructure(node.data.occurrence);}
+  function objectContext(occurrence:string):WorkspaceContext|undefined {
+    if(!source)return;
+    const capability=sourceCapabilities(source,occurrence);
+    if(!capability.report?.node)return;
+    const target=()=>{if(!blocked){selectStructure(occurrence);paletteRequested=false;}};
+    const act=(action:()=>void)=>{target();if(!blocked && capability.direct)action();};
+    return {label:'Example object commands',prepare:target,commands:[
+      {label:'Inspect',disabled:blocked,run:()=>inspect(structureId(source!.id,'node',capability.report!.sourceNodeId))},
+      {label:'Edit properties',disabled:blocked || !capability.direct,run:()=>act(()=>{tools='palette';paletteRequested=true;palettePage='format';paletteFocus=Symbol('edit-handoff');})},
+      {label:'Duplicate',separator:true,disabled:blocked || !capability.removable,run:()=>act(()=>{const copy=duplicateSubtree(source!,capability.report!.sourceNodeId);if(copy && apply(copy.draft))selectNode(copy.nodeId);})},
+      {label:'Delete',disabled:blocked || !capability.removable,run:()=>act(()=>{const id=capability.report!.sourceNodeId;const parent=compositionParent(source!,id);if(apply({requestId:crypto.randomUUID(),reason:'Delete example selection',commands:[{op:'remove',nodeId:id,detachFromParent:true}]}))selectNode(parent?.nodeId??source!.root);})},
+    ]};
+  }
+  function canvasContext(target:Element):WorkspaceContext|undefined {
+    if(!source || mode!=='design' || (!canvasRoot?.contains(target) && !ownsCanvasTarget(target)))return;
+    const occurrence=target.closest<HTMLElement>('[data-ui-occ]')?.dataset.uiOcc;
+    if(occurrence && resolveOccurrence(occurrence,source).sourceNodeId!==source.root)return objectContext(occurrence);
+    return {label:'Example canvas commands',prepare:()=>{if(!blocked){bridge?.select(undefined);paletteRequested=false;}},commands:[{label:'Insert…',disabled:blocked,run:()=>{selectNode(source!.root);tools='palette';paletteRequested=true;palettePage='insert';}},{label:'Reset preview',run:resetPreview}]};
+  }
+  function ownsCanvasTarget(target:Element):boolean {
+    const owner=canvasRoot?.querySelector<HTMLElement>('[data-ui-owner-root]')?.dataset.uiOwnerRoot;
+    return !!owner && target.closest<HTMLElement>('[data-ui-owner]')?.dataset.uiOwner===owner;
+  }
   const simulation = createScreenSimulation({ denied: false, failNext: false });
   const snapshot = $derived.by(() => { void version; return bridge?.getSnapshot(); });
   const source = $derived.by(() => { void version; return bridge?.document; });
@@ -97,6 +144,8 @@
   function select(occurrence: string) {
     if (blocked) { notice = 'Apply or cancel your draft before changing selection.'; return; }
     bridge?.select(occurrence);
+    if(source)detailId=structureId(source.id,'node',resolveOccurrence(occurrence,source).sourceNodeId);
+    paletteRequested=true;
   }
   function selectNode(id: string) {
     if (source) select(authoredOccurrence(source, id) ?? `${source.id}|${id}`);
@@ -104,6 +153,7 @@
   function selectStructure(occurrence: string) {
     if (blocked || !source) return;
     select(occurrence);
+    paletteRequested=false;
   }
   function apply(draft: TransactionDraft): boolean {
     if (blocked || !bridge) { notice = 'Apply or cancel your draft first.'; return false; }
@@ -170,10 +220,10 @@
       const target = find(); target?.scrollIntoView({ block: 'nearest', inline: 'nearest' }); target?.focus({ preventScroll: true });
       notice = target ? 'Located on canvas.' : 'This source has no visible canvas element.'; return;
     }
-    if (request.destination === 'inspector') tools = 'inspector';
+    if (request.destination === 'inspector') {tools = 'palette';paletteRequested=true;palettePage='format';paletteFocus=Symbol('edit-handoff');return;}
     if (request.destination === 'data') selectedData = request.key ?? '';
     await tick();
-    const selector = request.destination === 'layers' ? '.layers' : request.destination === 'data' ? '[data-structure-data]' : request.destination === 'actions' ? '[data-structure-actions]' : request.destination === 'inspector' ? '.inspector' : '.canvas';
+    const selector = request.destination === 'layers' ? '.layers' : request.destination === 'data' ? '[data-structure-data]' : request.destination === 'actions' ? '[data-structure-actions]' : '.canvas';
     const element = canvasRoot?.closest('.studio-showcase')?.querySelector<HTMLElement>(selector);
     if (element instanceof HTMLDetailsElement) element.open = true;
     element?.scrollIntoView({ block: 'nearest' }); element?.focus({ preventScroll: true });
@@ -191,8 +241,9 @@
   }
 </script>
 
-<ControlScope>
-<section class="studio-showcase" aria-label="Studio authoring showcase" data-showcase-recipe={recipeId}>
+<ControlScope class="vict-rhea">
+<section class="studio-showcase" aria-label="Studio authoring showcase" data-showcase-recipe={recipeId} bind:this={showcaseRoot}>
+  <WorkspaceContextMenu scope={showcaseRoot} enabled={mode==='design'} resolve={canvasContext} owns={ownsCanvasTarget} />
   <header>
     <h2>Designer: all {showcaseCatalog.length} recipes</h2>
     <p>Real editor components, canonical edits, and valid parent compositions. Each example is disposable. Save and reopen use a private memory store; refreshing or changing recipes starts over.</p>
@@ -224,8 +275,13 @@
     <div class="editor-grid" class:document-open={documentOpen} class:structure-open={documentOpen && view === 'structure'} class:structure-expanded={structureExpanded && documentOpen && view === 'structure'} style:--showcase-drawer-width={`${view === 'structure' ? structureWidth : 280}px`}>
       <aside class="layers showcase-document" hidden={!documentOpen} tabindex="-1" aria-label="Example Document">
         <nav class="toolbar" aria-label="Example Document sections"><button type="button" disabled={blocked} aria-pressed={view === 'canvas'} onclick={() => view = 'canvas'}>Layers</button><button type="button" disabled={blocked} aria-pressed={view === 'structure'} onclick={() => view = 'structure'}>Structure</button>{#if view === 'structure'}<button type="button" aria-label={structureExpanded ? 'Restore Structure' : 'Expand Structure'} onclick={() => void toggleStructureWorkbench()}>{structureExpanded ? 'Restore' : 'Expand'}</button>{/if}</nav>
-        <div hidden={view !== 'canvas'}>{#if plan}<Layers {plan} document={source} selectedOccurrence={selected} onSelect={select} onApply={apply} componentDescriptors={catalogDescriptors} onOpenComposition={navigateComposition} />{/if}</div>
-        <div class="structure" hidden={view !== 'structure'}><StructureView presentation="drawer" active={documentOpen && view === 'structure'} document={source} revision={snapshot.revision} {selectedNodeId} {blocked} descriptors={catalogDescriptors} recipes={screenRecipes} onSelect={selectStructure} onDeselect={() => { if (!blocked) bridge?.select(undefined); }} onMove={move} onNotice={message => notice = message} onNavigate={structureNavigate} onDismiss={() => { if (structureExpanded) void toggleStructureWorkbench(); else documentOpen = false; }} /></div>
+        <div class="example-document-content" bind:clientHeight={documentHeight}>
+        <div class="example-navigation" inert={detailsOpen && detailsExpanded}>
+        <div class="example-layers" hidden={view !== 'canvas'}><button type="button" aria-label="Inspect example source" aria-expanded={detailsOpen} onclick={()=>detailsOpen?closeDetails():inspect()}>Inspect</button>{#if plan}<Layers {plan} document={source} selectedOccurrence={selected} onSelect={selectStructure} onApply={apply} componentDescriptors={catalogDescriptors} onOpenComposition={navigateComposition} />{/if}</div>
+        <div class="structure" hidden={view !== 'structure'}><StructureView presentation="drawer" active={documentOpen && view === 'structure'} document={source} revision={snapshot.revision} {selectedNodeId} {blocked} descriptors={catalogDescriptors} recipes={screenRecipes} onSelect={selectStructure} onDeselect={() => { if (!blocked) {bridge?.select(undefined);detailId=undefined;} }} onMove={move} onNotice={message => notice = message} onNavigate={structureNavigate} onDismiss={() => { if (structureExpanded) void toggleStructureWorkbench(); else documentOpen = false; }} onInspect={inspect} inspectionSelection={detailId} onInspectSelection={id=>detailId=id} inspectionExpanded={detailsOpen} objectCommands={occurrence=>objectContext(occurrence)?.commands??[]} /></div>
+        </div>
+        {#if detailsOpen}<SourceDetails document={source} selectedId={detailId} {blocked} bind:height={detailsHeight} bind:expanded={detailsExpanded} bind:page={detailsPage} availableHeight={documentHeight} onClose={closeDetails} onSelect={selectDetail} onNavigate={structureNavigate} />{/if}
+        </div>
       </aside>
       <div class="showcase-resizer" hidden={!documentOpen || view !== 'structure' || structureExpanded}><PanelResizer label="Example Document width" value={structureWidth} min={440} max={800} reverse onChange={(value: number) => structureWidth = value} /></div>
       <div class="preview-column">
@@ -239,7 +295,7 @@
               <EditorCanvas document={source} catalogs={designerCatalogs} extensions={catalogDescriptors} extensionImplementations={catalogImplementations}
                 {compositionFocus} onOpenComposition={openComposition} interactionMode={mode}
                 selectedOccurrence={mode === 'design' ? selected : undefined} onSelect={select} onApply={apply}
-                selectionTools={tools === 'palette' && mode === 'design' ? palette : undefined} selectionToolsPinned={blocked}
+                selectionTools={tools === 'palette' && mode === 'design' && paletteRequested ? palette : undefined} selectionToolsPinned={blocked}
                 {dispatch} navigate={() => notice = 'This example has one screen.'}
                 stateValues={runtimeValues} onStateChange={(key: string, value: UiValue) => runtimeValues = { ...runtimeValues, [key]: value }}
                 {resetSignal} actionState={screenActionState} onPlan={(next: UiRenderPlan) => plan = next}
@@ -268,7 +324,7 @@
 
 {#snippet palette()}
   {#if source && selectedNodeId}
-    <SelectionPalette name={compositionName(source, selectedNodeId)} format={formatTools} insert={insertTools} arrange={arrangeTools} connect={connectTools} locked={blocked} onOpenComposition={() => openComposition()} />
+    <SelectionPalette bind:page={palettePage} focusSignal={paletteFocus} name={compositionName(source, selectedNodeId)} format={formatTools} insert={insertTools} arrange={arrangeTools} connect={connectTools} locked={blocked} onOpenComposition={() => openComposition()} />
   {/if}
 {/snippet}
 {#snippet formatTools()}{#if source}<Inspector contextual document={source} selectedOccurrence={selected} onApply={apply} componentDescriptors={catalogDescriptors} readEffective={effective} onTextDraftChange={(dirty: boolean) => propertyDraft = dirty} />{/if}{/snippet}
@@ -291,9 +347,13 @@
   .editor-grid > .preview-column { grid-column: 1; grid-row: 1; }
   .showcase-document { grid-column: 3; grid-row: 1; padding: 0; height: 600px; display: flex; flex-direction: column; }
   .showcase-document > nav { padding: 10px; flex-shrink: 0; }
+  .example-document-content { display:flex; flex-direction:column; flex:1; min-height:0; position:relative; overflow:hidden; }
+  .example-navigation { display:flex; flex-direction:column; flex:1; min-height:0; overflow:hidden; }
+  .example-navigation>[hidden] {display:none;}
+  .example-layers {overflow:auto;min-height:0;flex:1;}
   .showcase-document > div:not(.structure) { overflow: auto; }
   .showcase-resizer { display: grid; grid-column: 2; grid-row: 1; height: 600px; }
-  .showcase-document[hidden], .showcase-resizer[hidden], .showcase-document > [hidden] { display: none; }
+  .showcase-document[hidden], .showcase-resizer[hidden] { display: none; }
   .inspector { grid-column: 1 / -1; }
   .editor-grid.structure-expanded > .showcase-document { position: absolute; grid-column: 1 / -1; grid-row: 1; inset: 0; width: auto; height: min(900px, calc(100dvh - 32px)); max-height: none; z-index: 20; }
   aside { padding: 12px; background: white; border: 1px solid #d7dfe9; border-radius: 8px; max-height: 850px; overflow: auto; min-width: 0; }

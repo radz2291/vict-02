@@ -15,6 +15,8 @@
   import '@victframework/ui-ai-svelte/styles.css';
   import '@victframework/ui-flow-svelte/styles.css';
   import '$lib/designer/workspace.css';
+  import '@victframework/ui-svelte/rhea.css';
+  import '$lib/designer/studio-theme.css';
   let activeMenu=$state('');
   let source = $state<UiDocument>();
   let failure = $state('');
@@ -49,7 +51,7 @@
   }
 </script>
 <svelte:head><title>{source ? screenName(source) : 'Saved screen'} — VICT</title></svelte:head>
-<ControlScope><div class="vict-app finished-screen studio-workspace">
+<ControlScope class="vict-rhea"><div class="vict-app finished-screen studio-workspace">
   <header class="workspace-header">
     <WorkspaceBrand />
     <Menubar.Root bind:value={activeMenu} class="workspace-menus" aria-label="Run menus" loop>

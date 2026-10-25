@@ -1,6 +1,7 @@
 import { authoringRecipe, type InsertRecipe } from '@victframework/ui-editor';
 import type { UiNode } from '@victframework/ui';
 import { installedAuthoringRegistry } from './authoring.js';
+import { rheaNativePatterns } from '@victframework/ui-svelte/rhea';
 const styles = (values: Record<string, string>) =>
   Object.entries(values).map(([property, value]) => ({
     property,
@@ -124,6 +125,18 @@ const basicRecipes: readonly InsertRecipe[] = [
 ];
 
 /** Recipes accelerate the same package-owned registered composition path. */
-export const screenRecipes: readonly InsertRecipe[] = [...basicRecipes, ...installedAuthoringRegistry.contracts.flatMap(registration => {
+export const screenRecipes: readonly InsertRecipe[] = [...basicRecipes, ...rheaNativePatterns.map(pattern => ({
+  id: `rhea-${pattern.id}`,
+  label: `${pattern.label} · Rhea`,
+  description: `${pattern.description} Uses the public Rhea stylesheet.`,
+  create: (id: string) => pattern.create(id).nodes,
+  initialState: (id: string) => pattern.create(id).localState ?? {},
+})), ...installedAuthoringRegistry.contracts.flatMap(registration => {
   const recipe=authoringRecipe(registration); return recipe?[recipe]:[];
 })];
+
+/** Host requirements come from the same reusable pattern, never a prompt copy. */
+export function recipeHostRequirements(recipeId: string): readonly string[] {
+  const pattern = rheaNativePatterns.find(item => `rhea-${item.id}` === recipeId);
+  return pattern ? ['Import @victframework/ui-svelte/rhea.css in the rendering host.', ...pattern.hostRequirements] : [];
+}

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { untrack } from 'svelte';
   import { Conversation, type ConversationMessage } from '@victframework/ui-ai-svelte';
   import { newScreen } from './application.js';
   import { documentCursor } from './agent-edits.js';
@@ -22,7 +23,7 @@
   const cursor = documentCursor(fixture, 'showcase:r1', 'core-authoring-showcase');
   interface Family { family: string; count: number; authorable: number; categories: string[] }
   interface CatalogItem { id: string; revision: string; label: string; family: string; category: string; digest: string; eligibility: { kind: string } }
-  interface ContractItem { id: string; revision: string; digest: string; unchanged?: boolean; contractJson?: string; totalCharacters?: number; nextOffset?: number | null; bodyComplete?: boolean }
+  interface ContractItem { id: string; revision: string; digest: string; bodyIdentity?: string; unchanged?: boolean; contractJson?: string; offset?: number; totalCharacters?: number; nextOffset?: number | null; bodyComplete?: boolean }
   const items = <T,>(read: AgentReadResult): T[] => Array.isArray(read.items) ? read.items as T[] : [];
   const families = items<Family>(agentContext(fixture, cursor, undefined, { section: 'families', limit: 20 }));
   let family = $state('ai');
@@ -33,6 +34,29 @@
   const initialSelection = { id: 'vict.ai.prompt-input', revision: '1' };
   let selected = $state(initialSelection);
   let contractRead = $state(agentContext(fixture, cursor, undefined, { section: 'contracts', components: [initialSelection], limit: 20 }));
+  let delivered = $state<Record<string, { item: ContractItem; chunks: Record<string, string> }>>({});
+  let bundleKeys = $state<string[]>([]);
+  function retain(read: AgentReadResult, initial = false) {
+    const bodies = items<ContractItem>(read);
+    if (initial) bundleKeys = bodies.map(item => `${item.id}@${item.revision}`);
+    const next = { ...delivered };
+    for (const item of bodies) {
+      if (!item.bodyIdentity || item.contractJson === undefined || item.offset === undefined) continue;
+      const key = `${item.id}@${item.revision}`;
+      const previous = next[key];
+      next[key] = { item, chunks: { ...(previous?.item.bodyIdentity === item.bodyIdentity ? previous.chunks : {}), [item.offset]: item.contractJson } };
+    }
+    delivered = next;
+  }
+  retain(untrack(() => contractRead), true);
+  const pendingPages = $derived(bundleKeys.flatMap(key => {
+    const body = delivered[key];
+    if (!body) return [];
+    let offset = 0;
+    while (body.chunks[offset]) offset += body.chunks[offset].length;
+    return offset < (body.item.totalCharacters ?? 0) ? [{ ...body.item, nextOffset: offset }] : [];
+  }));
+  const bundleComplete = $derived(bundleKeys.length > 0 && pendingPages.length === 0 && bundleKeys.every(key => delivered[key]) && !(Array.isArray(contractRead.pending) && contractRead.pending.length));
   let reuse = $state(false);
   const contracts = $derived(items<ContractItem>(contractRead));
   const bodySize = $derived(contracts.reduce((total, item) => total + (item.contractJson?.length ?? 0), 0));
@@ -40,16 +64,19 @@
     selected = { id: item.id, revision: item.revision };
     reuse = false;
     contractRead = agentContext(fixture, cursor, undefined, { section: 'contracts', components: [selected], limit: 20 });
+    retain(contractRead, true);
   }
   function reuseKnowledge() {
-    if (contractRead.complete !== true) return;
-    const knownDigests = Object.fromEntries(contracts.map(item => [`${item.id}@${item.revision}`, item.digest]));
-    contractRead = agentContext(fixture, cursor, undefined, { section: 'contracts', components: [selected], knownDigests, limit: 20 });
+    if (!bundleComplete) return;
+    const knownDigests = Object.fromEntries(bundleKeys.map(key => [key, delivered[key].item.digest]));
+    const knownBodyIdentities = Object.fromEntries(bundleKeys.map(key => [key, delivered[key].item.bodyIdentity]));
+    contractRead = agentContext(fixture, cursor, undefined, { section: 'contracts', components: [selected], knownDigests, knownBodyIdentities, limit: 20 });
     reuse = true;
   }
   function nextPage(item: ContractItem) {
     if (typeof item.nextOffset !== 'number') return;
-    contractRead = agentContext(fixture, cursor, undefined, { section: 'contracts', components: [{ id: item.id, revision: item.revision }], offset: item.nextOffset, limit: 20 });
+    contractRead = agentContext(fixture, cursor, undefined, { section: 'contracts', components: [{ id: item.id, revision: item.revision }], offset: item.nextOffset, expectedBodyIdentities: {[`${item.id}@${item.revision}`]: item.bodyIdentity}, limit: 20 });
+    retain(contractRead);
     reuse = false;
   }
 
@@ -111,11 +138,11 @@
       <div class="selected-contract" aria-live="polite">
         <strong>{selected.id}@{selected.revision}</strong>
         <p>{contracts.length} contract entries · {bodySize.toLocaleString()} body characters returned · {contractRead.complete === true ? 'complete response' : 'more pages or dependencies required'}</p>
-        <button type="button" class="reuse" onclick={reuseKnowledge} disabled={contractRead.complete !== true || reuse}>Re-read with these digests</button>
+        <button type="button" class="reuse" onclick={reuseKnowledge} disabled={!bundleComplete || reuse}>Re-read with these digests</button>
         {#if reuse}<p class="cache-result">{contracts.filter(item => item.unchanged).length} unchanged entries; contract bodies omitted. Source freshness still uses its own cursor.</p>{/if}
       </div>
       <details><summary>Selected contract response</summary><pre>{JSON.stringify(contractRead, null, 2)}</pre>
-        {#each contracts.filter(item => typeof item.nextOffset === 'number') as item}<button type="button" onclick={() => nextPage(item)}>Next body page: {item.id}</button>{/each}
+        {#each pendingPages as item}<button type="button" onclick={() => nextPage(item)}>Next body page: {item.id}</button>{/each}
       </details>
       <details><summary>Source cursor and discovery response</summary><pre>{JSON.stringify({ cursor, catalog }, null, 2)}</pre></details>
       <p class="muted">Knowledge digests describe component contracts. They do not cache source facts or authorize product actions.</p>

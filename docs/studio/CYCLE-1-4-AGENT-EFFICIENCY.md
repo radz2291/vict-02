@@ -1,0 +1,37 @@
+# Cycle 1.4 — agent discovery, observations and measurements
+
+2026-10-25. Builder implementation evidence; not an independent gate verdict or an owner acceptance. Scope is [C14-06–08](CYCLE-1-4-DESIGN.md), retaining the [owner-run landing-page observations](CYCLE-1-3-CORE-REPORT.md#2026-10-25-owner-run-landing-page-review).
+
+## Changes
+
+| Owner-run concern | Implemented behavior | Limit |
+| --- | --- | --- |
+| Eleven initial reads, changed contract projection and restart | Startup guidance uses the bounded current overview already supplied in `untrusted_screen`. Selected contract bodies have explicit `studio-contract-body@2` identities, including contract digest and guidance/examples projection. Continuations require `expectedBodyIdentities` keyed `id@revision`; missing/changed identity or an offset outside the body returns `STUDIO_AGENT_CONTRACT_BODY_INVALIDATED` with restart guidance. Dependency bodies use their own offsets. | Bounded reads and dependency pages remain real calls. One overview plus one selected bundle and optional refresh is a two-to-three knowledge-read aim only when the selection fits; never a total-call promise. |
+| Repeated knowledge reads | Host tracks contiguous character coverage of delivered contract bodies. Only complete bodies can populate the turn-local reuse cache; catalog digests, source reads and partial contract pages cannot. `knownBodyIdentities` separates guidance and examples; guidance-only reuse cannot suppress examples. Tool results report retained complete identities. | Cache is confined to this turn; no across-turn reuse claim. The model must still possess the complete body in context before claiming reuse. Legacy direct helper callers may assert complete guidance through `knownDigests`; the actual server boundary additionally checks delivery history. |
+| Three cleanup batches for inherited defaults | Palette preparation exposes actual root seed styles/classes, styled node count, state keys, component identities and package/pattern host obligations before insertion. Contract preparation exposes seed styles, host rules and dependencies even in the guidance projection. Guidance explains local-style precedence and explicit replacement/removal or unstyled native insertion. | Existing recipe defaults, descriptor revisions and canonical source semantics remain unchanged. Static seed metadata is not a claim about actual computed CSS. |
+| Late single middle-page image | Guidance requests a meaningful early hero/first-section observation and further visible-section review. A bounded ledger retains the last twelve successful regions with exact source cursor, image digest, capture timestamp, image/source dimensions, crop offsets, viewport and preview identity. Subsequent results and terminal UI distinguish current source from earlier-source images. | This adds no navigation, scrolling, clicking or typing tool. Regions are not combined into a full-page percentage; source match does not prove current runtime/viewport freshness or exercised behavior. Existing capture revalidation/recovery remains authoritative. |
+| Long elapsed time and misleading totals | Metrics separate knowledge reads, source reads, edits and observations. They retain first acknowledged edit, deduplicated confirmed transaction counts including cleanup, summed settled tool durations, tool-active interval union (including still-active attempts), and outside-tool elapsed time. Tool results and terminal receipts provide host-derived progress. | Outside-tool time includes waiting/generation/transport/host overhead, not exact provider latency. Usage remains provider-reported when available; model-internal steps/cost stay unavailable. A new turn has new metrics. |
+
+## Host protocol version treatment
+
+Identity-required continuation is a changed host read contract, so the server-owned per-turn artifacts are explicitly advanced:
+
+- `studio.screen.read`: revision 1 → 2; still `effect: read` and provider tool name `studio_screen_read`.
+- `studio.agent.read-input`: revision 2 → 3.
+- `studio.agent.instructions`: revision 2 → 3.
+- `studio.designer.agent`: profile revision 1 → 2, activating the exact new instruction/capability references.
+
+Each turn installs its own fresh registry. Existing active owner tabs/runs are not replayed or migrated. Component/package revisions, documents, renderer contracts, persisted source and edit/effect authority are unchanged by these host protocol revisions. The separate optional output measurement metadata does not authorize writes, providers or workflows.
+
+## Builder verification
+
+Owned implementation: `agent-reads.ts`, `agent-progress.ts`, `AgentChat.svelte`, `server/designer-agent.ts`; focused regression `tests/designer-cycle14-efficiency.test.ts`. Existing observer metadata is consumed directly; `designer-visual.ts` was not modified. AgentChat chrome consumes shared theme tokens and has token-based focus styling; geometry is preserved.
+
+- Initial existing regression selection: four files / 26 tests PASS (`designer-core-authoring`, `designer-reliability`, `designer-agent-completion`, `ui/core-agent-progress`).
+- Expanded actual pinned executor and UI selection: three files / 27 tests PASS, including six new focused cases, the existing Mastra executor regressions and chronological progress UI. These overlap earlier tests and must not be summed as unique totals.
+- A first TypeScript check found weak-type incompatibility between the read result interface and knowledge tracker input; explicit optional result fields corrected it. Subsequent `tsc --noEmit` PASS. This failed observation is retained rather than relabelled as an initial pass.
+- Final affected protocol/UI rerun and current typecheck are recorded by the stage manager with the exact candidate. Tests simulate provider responses where explicitly labelled; they do not establish live provider efficiency, professional output quality or integrated owner-journey acceptance.
+
+The pinned executor test exercises partial-body delivery, a premature known digest forcing a full body, then successful completed-body reuse. It inspects the actual next model prompts for measurement/retained-knowledge delivery and terminal receipt categories. Pure negative tests cover projection switches in both directions, missing identity, out-of-range offsets, lossless reconstruction, missing prefix pages, overlapping intervals, repeated settlement/receipt identity, classification/start ordering and source cursor/epoch observation freshness. Recipe assertions require real Rhea field/card entries and compare advertised styles to actual seeds.
+
+Required next evidence belongs to the integrated gate: matched real-provider form/dashboard/editor comparisons at the same model, starting source and knowledge-cache state; actual early region observations and measured results; browser-rendered details/geometry and showcase coverage; fresh independent challenge of the exact candidate. No speedup magnitude is claimed from the implementation or offline tests alone.

@@ -35,6 +35,97 @@
     "placements": []
   },
   {
+    "id": "rhea-alert",
+    "label": "Alert · Rhea",
+    "description": "A semantic inline status with title and description; no toast host. Uses the public Rhea stylesheet.",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "rhea-breadcrumb",
+    "label": "Breadcrumb · Rhea",
+    "description": "Labelled native navigation and current-page semantics; destinations remain host-owned. Uses the public Rhea stylesheet.",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "rhea-button-group",
+    "label": "Button group · Rhea",
+    "description": "A labelled group of ordinary buttons; connect each through declared canonical interactions. Uses the public Rhea stylesheet.",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "rhea-card",
+    "label": "Card · Rhea",
+    "description": "A reusable semantic article with editable title and body; no fixed marketing template. Uses the public Rhea stylesheet.",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "rhea-empty",
+    "label": "Empty state · Rhea",
+    "description": "A restrained empty-content message; add an action only when the product has one. Uses the public Rhea stylesheet.",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "rhea-field",
+    "label": "Field · Rhea",
+    "description": "Associated native label, typed local value and canonical change binding. No form transport. Uses the public Rhea stylesheet.",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "rhea-input",
+    "label": "Input · Rhea",
+    "description": "Associated native label, typed local value and canonical change binding. No form transport. Uses the public Rhea stylesheet.",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "rhea-textarea",
+    "label": "Text area · Rhea",
+    "description": "Associated native label, typed local value and canonical change binding. No form transport. Uses the public Rhea stylesheet.",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "rhea-native-select",
+    "label": "Native select · Rhea",
+    "description": "Associated native label, typed local value and canonical change binding. No form transport. Uses the public Rhea stylesheet.",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "rhea-kbd",
+    "label": "Keyboard hint · Rhea",
+    "description": "A native kbd label; this does not register a shortcut. Uses the public Rhea stylesheet.",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "rhea-skeleton",
+    "label": "Skeleton · Rhea",
+    "description": "A decorative loading placeholder; drive visibility from real loading state. Uses the public Rhea stylesheet.",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "rhea-spinner",
+    "label": "Spinner · Rhea",
+    "description": "An accessible local status indicator with reduced-motion support; no fabricated task progress. Uses the public Rhea stylesheet.",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "rhea-table",
+    "label": "Table · Rhea",
+    "description": "Native semantic table with headers and caption; not a sorting/filtering data-grid adapter. Uses the public Rhea stylesheet.",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
     "id": "button",
     "label": "Button",
     "description": "Button · editable properties, declared slots and outputs",

@@ -7,7 +7,7 @@
   import type { AgentCursor, AgentProposal, EditFailure, EditReceipt } from './agent-edits.js';
   import { AGENT_REQUEST_BYTES, AGENT_STREAM_BYTES, AGENT_FRAME_CHARACTERS, boundedHistoryText, agentFailureMessage, withTurnAbort } from './agent-transport.js';
   import { uploadVisualCapture, type CaptureResult } from './visual-observation.js';
-  import { createTurnMetrics, phaseFailureStatus, type ToolFailure, type TurnMetrics } from './agent-progress.js';
+  import { createTurnMetrics, phaseFailureStatus, type ToolFailure, type TurnMetrics, type ObservedRegion } from './agent-progress.js';
   interface Props {
     screenLabel:string;
     selectionLabel:string;
@@ -27,6 +27,7 @@
   let activeTurn:LocalTurn|undefined;
   let evidence=$state('');
   let lastMetrics=$state<TurnMetrics>();
+  let lastRegions=$state<(ObservedRegion & {currentSource:boolean})[]>([]);
   let disposed=false;
   let panel=$state<HTMLElement>();
   let detailsBoundary=$state<HTMLElement>();
@@ -99,7 +100,7 @@
     function finishPending(detail:string,cancelled=false){settle((timelines[messageId]??[]).filter(item=>item.kind==='activity'&&(item.activity.state==='running'||item.activity.state==='pending')).map(item=>item.id),cancelled?'cancelled':'failed',detail);}
     timelines={...timelines,[messageId]:[]};
     const turn:LocalTurn={controller:new AbortController(),runId:'',applied:0,cancelled:false,metrics:createTurnMetrics()};activeTurn=turn;
-    busy=true;failed=false;progress=[];evidence='';lastMetrics=undefined;let done=false;let sent=false;let lastRefusal='';let separateReply=false;
+    busy=true;failed=false;progress=[];evidence='';lastMetrics=undefined;lastRegions=[];let done=false;let sent=false;let lastRefusal='';let separateReply=false;
     note('Connecting…');
     try{
       const response=await fetch('/api/designer-agent',{method:'POST',headers:headers(),signal:turn.controller.signal,body:requestBody});
@@ -158,7 +159,7 @@
               const proposalAttempt=`studio_screen_edit:${event.callId??event.proposal.proposalId}`;
               stage(proposalAttempt,`browser-${event.proposal.proposalId}`,receipt.ok?'Browser committed edit':`Browser refused edit · ${receipt.code}`,receipt.ok?'pending':'failed',receipt.ok?`${event.proposal.edit.reason}\nCommitted to the screen. Undo is available.`:receipt.message);
               lastRefusal=receipt.ok?'':receipt.message;
-              if(receipt.ok){turn.applied++;status='Applying edit…';}else {turn.refusal=receipt;failed=true;note(receipt.message);}
+              if(receipt.ok){turn.applied++;turn.metrics.edit(0,event.proposal.proposalId);status='Applying edit…';}else {turn.refusal=receipt;failed=true;note(receipt.message);}
               separateReply=true;
               const ack=await fetch('/api/designer-agent/ack',{method:'POST',headers:headers(),signal:turn.controller.signal,body:JSON.stringify({runId:turn.runId,proposalId:event.proposal.proposalId,receipt})});
               // The host fences every browser refusal. Acknowledge it, then end
@@ -175,15 +176,18 @@
               failed=event.status==='failed'||Boolean(lastRefusal);
               status=event.status==='completed'?(lastRefusal?`${lastRefusal} ${applied?`${applied} earlier edits remain undoable.`:''}`:`${applied} edit${applied===1?'':'s'} applied`):event.status==='cancelled'?`Stopped · ${applied} applied edits remain undoable.`:failedStatus(event.code,applied,event.toolFailures??[]);
               lastMetrics=event.metrics;
+              lastRegions=event.visualEvidence?.regions??[];
               evidence=[event.turnId?`VICT turn ${event.turnId} · profile ${event.profileVersion}`:'',event.code??''].filter(Boolean).join(' · ');
               const boundary=`${appliedEffects(applied)}${event.confirmedRevision?` Confirmed revision ${event.confirmedRevision}.`:''}`;
               const terminal=event.termination?` Engine termination: ${event.termination.status}${event.termination.code?` (${event.termination.code})`:''}.`:'';
               const unresolved=event.unresolvedTools?.length?` Unresolved tools: ${event.unresolvedTools.join(', ')}.`:'';
               const registeredAuthored=event.coverage?.registeredAuthored??(event.coverage?.scope==='all-authorable-definitions'||event.coverage?.scope==='registered-component-inventory'?event.coverage.authored:undefined);
               const coverage=event.coverage?` Source coverage: ${registeredAuthored===undefined?'Registered-definition inventory count unavailable':`${registeredAuthored}/${event.coverage.available} registered definitions present`}. ${event.coverage.missingCount??event.coverage.missing.length} missing from the ${event.coverage.requested??event.coverage.available}-item ${event.coverage.scope==='agent-declared-manifest'?'agent-declared manifest':'coverage scope'}.${event.coverage.moreMissing?' Missing IDs are paged through coverage reads.':''} This inventory does not establish the full requested intent, interactions or visual completion.`:'';
+              const region=lastRegions.filter(item=>item.currentSource).at(-1);
+              const regionFacts=region?` Captured region: ${region.image.width}×${region.image.height} at (${region.image.offsetLeft}, ${region.image.offsetTop}) within ${region.image.sourceWidth}×${region.image.sourceHeight}; ${region.preview.mode} at ${region.capturedAt}. This does not verify offscreen content or current runtime state.`:'';
               const facts=event.sourceEvidence?` Source: ${event.sourceEvidence.nodeCount} nodes, ${event.sourceEvidence.stateCount} state declarations; ${event.sourceEvidence.appearanceObserved?'a bounded preview image was observed':'current appearance unverified'}; interactions unverified by this agent.`:'';
-              summary(`${boundary}${terminal}${unresolved}${coverage}${facts}`);
-              messages=messages.map((message,index)=>index===responseIndex?{...message,text:message.text+`\n\nConfirmed progress: ${boundary}${terminal}${unresolved}${coverage}${facts}`} :message);
+              summary(`${boundary}${terminal}${unresolved}${coverage}${facts}${regionFacts}`);
+              messages=messages.map((message,index)=>index===responseIndex?{...message,text:message.text+`\n\nConfirmed progress: ${boundary}${terminal}${unresolved}${coverage}${facts}${regionFacts}`} :message);
               if(!messages[responseIndex]?.text)messages=messages.map((message,index)=>index===responseIndex?{...message,text:status}:message);
             }
           }
@@ -226,8 +230,8 @@
           <p>{status}</p>
           {#if !ready}<p>Set the server’s model and provider key, then restart Studio. Credentials stay on the server.</p>{/if}
           <button type="button" class="details-reconnect" disabled={busy} onclick={()=>void configure()}>Reconnect agent</button>
-          {#if lastMetrics}<h4>Turn measurements</h4><p>{lastMetrics.toolCalls} tool calls · {lastMetrics.refusedCalls} refused · {lastMetrics.recoveryAttempts} calls after refusal · {(lastMetrics.elapsedMs/1000).toFixed(1)} s elapsed.</p>{#if lastMetrics.partial}<p>Partial browser measurements; the server completion receipt was not received. Provider requests and token usage unavailable.</p>{:else}<p>{lastMetrics.providerRequests} authoring model requests · {lastMetrics.visionRequests} image requests. {lastMetrics.firstEditMs===undefined?'No confirmed edit.':`First confirmed edit ${(lastMetrics.firstEditMs/1000).toFixed(1)} s.`}</p><p>{lastMetrics.usage?`Reported authoring usage: ${lastMetrics.usage.inputTokens} input / ${lastMetrics.usage.outputTokens} output tokens.`:'Token usage unavailable.'}</p>{/if}<p>Exact model steps and cost unavailable. Concurrent tool durations do not add up to wall time.</p>{/if}
-          {#if progress.length}<h4>Progress summaries</h4><p>The chronological transcript includes tool attempts and receipts. Summaries are user-facing progress, not private reasoning.</p><ol>{#each progress as message}<li>{message}</li>{/each}</ol>{/if}
+          {#if lastMetrics}<h4>Turn measurements</h4><p>{lastMetrics.toolCalls} tool calls · {lastMetrics.refusedCalls} refused · {lastMetrics.recoveryAttempts} calls after refusal · {(lastMetrics.elapsedMs/1000).toFixed(1)} s elapsed.</p>{#if lastMetrics.partial}<p>Partial browser measurements; the server completion receipt was not received. Provider requests and token usage unavailable.</p>{:else}<p>{lastMetrics.providerRequests} authoring model requests · {lastMetrics.visionRequests} image requests. {lastMetrics.firstEditMs===undefined?'No confirmed edit.':`First confirmed edit ${(lastMetrics.firstEditMs/1000).toFixed(1)} s.`}</p><p>{lastMetrics.usage?`Reported authoring usage: ${lastMetrics.usage.inputTokens} input / ${lastMetrics.usage.outputTokens} output tokens.`:'Token usage unavailable.'}</p>{/if}<p>{lastMetrics.confirmedEdits??0} receipt-derived edits including cleanup.</p>{#if lastMetrics.categories}<p>{lastMetrics.categories.knowledge} knowledge reads · {lastMetrics.categories.source} source reads · {lastMetrics.categories.edit} edit calls · {lastMetrics.categories.observe} observation calls.</p>{/if}{#if lastMetrics.toolActiveMs!==undefined}<p>Settled tool durations summed: {(lastMetrics.toolElapsedMs/1000).toFixed(1)} s; tool-active interval union: {(lastMetrics.toolActiveMs/1000).toFixed(1)} s; outside-tool time: {((lastMetrics.outsideToolMs??0)/1000).toFixed(1)} s.</p><p>Outside-tool time includes waiting, generation, transport and host overhead; exact provider latency is unavailable.</p>{/if}<p>Exact model steps and cost unavailable. Concurrent tool durations do not add up to wall time.</p>{/if}
+          {#if lastRegions.length}<h4>Observed regions</h4>{#each lastRegions as region}<p>{region.cursor.revision} · {region.currentSource?"current source":"earlier source"} · {region.image.width}×{region.image.height} at ({region.image.offsetLeft}, {region.image.offsetTop}) within {region.image.sourceWidth}×{region.image.sourceHeight}; {region.preview.mode}; {region.capturedAt}.</p>{/each}<p>Only these captured regions were inspected. Current source does not establish current runtime/viewport freshness. Offscreen content and interactions remain unverified.</p>{/if}{#if progress.length}<h4>Progress summaries</h4><p>The chronological transcript includes tool attempts and receipts. Summaries are user-facing progress, not private reasoning.</p><ol>{#each progress as message}<li>{message}</li>{/each}</ol>{/if}
           {#if evidence}<h4>Connection record</h4><p class="details-record">{evidence}</p>{/if}
         </Popover.Content>
       </Popover.Root>
@@ -235,25 +239,26 @@
 </aside>
 
 <style>
-  .agent-chat{display:flex;flex-direction:column;min-height:0;min-width:0;width:320px;border-right:1px solid #e0e5ee;background:#fff;color:#263246;overflow:hidden;font-size:12px}
+  .agent-chat{display:flex;flex-direction:column;min-height:0;min-width:0;width:320px;border-right:1px solid var(--vict-color-border);background:var(--vict-color-surface);color:var(--vict-color-text);overflow:hidden;font-size:12px}
   .agent-footer{display:flex;flex:none;align-items:center;justify-content:space-between;padding:3px 12px 6px;gap:8px}
-  :global(.agent-details-trigger){flex:none;height:28px;border:1px solid transparent;border-radius:5px;background:transparent;color:#63718a;cursor:pointer;padding:3px 8px;width:28px;font-size:20px;line-height:1}
-  :global(.agent-details-trigger:hover),:global(.agent-details-trigger[data-state="open"]){background:#f0f3f8}
+  :global(.agent-details-trigger){flex:none;height:28px;border:1px solid transparent;border-radius:5px;background:transparent;color:var(--vict-color-textMuted);cursor:pointer;padding:3px 8px;width:28px;font-size:20px;line-height:1}
+  :global(.agent-details-trigger:hover),:global(.agent-details-trigger[data-state="open"]){background:var(--vict-rhea-muted)}
+  :global(.agent-details-trigger:focus-visible),.agent-chat :global(.details-reconnect:focus-visible),.agent-chat :global(.details-heading button:focus-visible){outline:2px solid var(--vict-color-focusRing);outline-offset:2px}
   .agent-chat :global(.vict-ai-conversation){flex:1;min-height:0;height:auto}
-  .agent-status{flex:1;min-width:0;display:flex;align-items:flex-start;gap:6px;margin:0;color:#748098;font-size:10px;line-height:1.5;min-height:15px;overflow-wrap:anywhere}
+  .agent-status{flex:1;min-width:0;display:flex;align-items:flex-start;gap:6px;margin:0;color:var(--vict-color-textMuted);font-size:10px;line-height:1.5;min-height:15px;overflow-wrap:anywhere}
   .agent-status>span:last-child{display:-webkit-box;line-clamp:2;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-  .status-dot{flex:none;width:5px;height:5px;border-radius:50%;background:#a2b0c0;margin-top:5px}.status-dot--busy{background:#5874bb}.agent-status--failed{color:#9a5547}.agent-status--failed .status-dot{background:#b87865}
+  .status-dot{flex:none;width:5px;height:5px;border-radius:50%;background:var(--vict-color-textMuted);margin-top:5px}.status-dot--busy{background:var(--vict-color-info)}.agent-status--failed{color:var(--vict-color-danger)}.agent-status--failed .status-dot{background:var(--vict-color-danger)}
   /* Own this surface over the catalog's generic ControlScope popover recipe. */
-  .agent-chat :global(.studio-chat-details[data-popover-content]){display:block;gap:0;z-index:50;width:280px;min-width:0;max-width:min(280px,var(--bits-floating-available-width,calc(100vw - 32px)));max-height:min(320px,var(--bits-floating-available-height,320px));overflow:auto;overscroll-behavior:contain;box-sizing:border-box;border:1px solid #dce2eb;border-radius:8px;background:#fff;padding:12px;color:#526078;box-shadow:0 8px 24px #24334c1c;font:11px/1.6 'Segoe UI',system-ui,sans-serif;overflow-wrap:anywhere}
-  .agent-chat :global(.studio-chat-details h3){font-size:12px;margin:0;color:#263246}
-  .agent-chat :global(.studio-chat-details h4){font-size:10px;font-weight:600;margin:14px 0 5px;color:#7a8598}
+  .agent-chat :global(.studio-chat-details[data-popover-content]){display:block;gap:0;z-index:50;width:280px;min-width:0;max-width:min(280px,var(--bits-floating-available-width,calc(100vw - 32px)));max-height:min(320px,var(--bits-floating-available-height,320px));overflow:auto;overscroll-behavior:contain;box-sizing:border-box;border:1px solid var(--vict-color-border);border-radius:8px;background:var(--vict-color-surface);padding:12px;color:var(--vict-color-text);box-shadow:var(--vict-elevation-high,0 8px 24px #0002);font:11px/1.6 var(--vict-font-family,system-ui,sans-serif);overflow-wrap:anywhere}
+  .agent-chat :global(.studio-chat-details h3){font-size:12px;margin:0;color:var(--vict-color-text)}
+  .agent-chat :global(.studio-chat-details h4){font-size:10px;font-weight:600;margin:14px 0 5px;color:var(--vict-color-textMuted)}
   .agent-chat :global(.studio-chat-details p){margin:6px 0;color:inherit}
-  .agent-chat :global(.studio-chat-details .details-model){font-size:10px;color:#7a8598}
+  .agent-chat :global(.studio-chat-details .details-model){font-size:10px;color:var(--vict-color-textMuted)}
   .agent-chat :global(.details-heading){display:flex;align-items:center;justify-content:space-between}
-  .agent-chat :global(.details-heading button){border:0;background:transparent;color:#718098;font-size:18px;cursor:pointer;line-height:1;padding:2px 4px}
-  .agent-chat :global(.details-reconnect){border:1px solid #dce2eb;border-radius:5px;background:#fff;color:#5269a2;padding:5px 8px;font:inherit;cursor:pointer;margin-top:5px}
+  .agent-chat :global(.details-heading button){border:0;background:transparent;color:var(--vict-color-textMuted);font-size:18px;cursor:pointer;line-height:1;padding:2px 4px}
+  .agent-chat :global(.details-reconnect){border:1px solid var(--vict-color-border);border-radius:5px;background:var(--vict-color-surface);color:var(--vict-color-accent);padding:5px 8px;font:inherit;cursor:pointer;margin-top:5px}
   .agent-chat :global(.details-reconnect:disabled){opacity:.5;cursor:default}
   .agent-chat :global(.studio-chat-details ol){padding-left:17px;margin:0}.agent-chat :global(.studio-chat-details li){margin:5px 0}
-  .agent-chat :global(.studio-chat-details .details-record){font:10px/1.6 ui-monospace,monospace;color:#788398}
-  @media(max-width:760px){.agent-chat{width:100%;height:320px;max-height:46vh;border-right:0;border-bottom:1px solid #e0e5ee;flex-shrink:0}.agent-chat :global(.vict-conversation-textarea){min-height:52px;max-height:76px}}
+  .agent-chat :global(.studio-chat-details .details-record){font:10px/1.6 ui-monospace,monospace;color:var(--vict-color-textMuted)}
+  @media(max-width:760px){.agent-chat{width:100%;height:320px;max-height:46vh;border-right:0;border-bottom:1px solid var(--vict-color-border);flex-shrink:0}.agent-chat :global(.vict-conversation-textarea){min-height:52px;max-height:76px}}
 </style>

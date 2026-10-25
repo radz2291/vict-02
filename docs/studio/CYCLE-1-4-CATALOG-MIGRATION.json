@@ -1,0 +1,1807 @@
+{
+  "schema": "vict.studio.rhea-migration@1",
+  "date": "2026-10-25",
+  "upstreamCommit": "b10f153250b18abfccf49a06e1c4c68945edffa5",
+  "baselineDelivery": "0ac71d64caefaaf4351c43a68b67421a51b76aba",
+  "totals": {
+    "pinnedUiFamilies": 63,
+    "dispositions": {
+      "compatible-general-presentation": 30,
+      "native-source-pattern": 13,
+      "existing-specialist-presentation": 10,
+      "explicit-host-or-adapter-exception": 10
+    },
+    "newNativePatterns": 13,
+    "existingGeneralRegisteredComponents": 80,
+    "additionalRegisteredComponents": 0
+  },
+  "claimLimits": [
+    "All63families reconciled; not63authorable family parity.",
+    "268registry entries include148blocks and52fonts; neither is component coverage.",
+    "Ten host/adapter exceptions are explicit omitted functionality, not implemented shadcn contracts.",
+    "Legacy default CSS and descriptor contracts are preserved; Rhea is an explicit shared presentation dependency."
+  ],
+  "families": [
+    {
+      "family": "accordion",
+      "upstreamRegistry": "docs/static/registry/styles/rhea/accordion.json",
+      "upstreamSha256": "4c77b3993546acfdb3ea5e0d7e268d4a53f2655856881b9909798fb3cdf1cf7e",
+      "dependencies": {
+        "runtime": [],
+        "upstreamDevelopment": [
+          "bits-ui@^2.20.0",
+          "@internationalized/date@^3.12.0"
+        ],
+        "registry": []
+      },
+      "compatibility": "Existing canonical component IDs/revisions/defaults/required slots/output shapes remain unchanged. New native source is additive; stylesheet is explicit opt-in.",
+      "evidence": "Source reconciliation and package regression tests; actual Studio/portal/consumer/browser evidence is recorded separately in the Cycle1.4 report.",
+      "disposition": "compatible-general-presentation",
+      "counterpart": "packages/ui-svelte/src/catalog/accordion.ts",
+      "authoring": {
+        "kind": "registered-component-and-parts",
+        "registeredComponents": [
+          "vict.catalog.accordion@1",
+          "vict.catalog.accordion-multiple@1",
+          "vict.catalog.accordion-item@1"
+        ]
+      },
+      "presentation": "Retain existing Bits public parts and canonical adapters; opt-in rhea.css translates pinned family geometry, tokens, state/focus, surface and overlay presentation.",
+      "hostRequirements": [],
+      "omittedFunctionality": "Upstream wrapper-specific props/variants not in the existing contract are not silently added. Source slots/control semantics stay VICT-owned."
+    },
+    {
+      "family": "alert",
+      "upstreamRegistry": "docs/static/registry/styles/rhea/alert.json",
+      "upstreamSha256": "b7024145f7f3b861277d4e50051ef727ccd722d2c9c10b29d18f0cc57ce24a5d",
+      "dependencies": {
+        "runtime": [],
+        "upstreamDevelopment": [
+          "tailwind-variants@^3.3.0"
+        ],
+        "registry": []
+      },
+      "compatibility": "Existing canonical component IDs/revisions/defaults/required slots/output shapes remain unchanged. New native source is additive; stylesheet is explicit opt-in.",
+      "evidence": "Source reconciliation and package regression tests; actual Studio/portal/consumer/browser evidence is recorded separately in the Cycle1.4 report.",
+      "disposition": "native-source-pattern",
+      "counterpart": "@victframework/ui-svelte/rhea: rheaNativePatterns[alert]",
+      "authoring": {
+        "kind": "canonical-native-source",
+        "registeredComponents": [],
+        "recipe": "rhea-alert",
+        "styleDependency": "@victframework/ui-svelte/rhea.css in preview and product hosts"
+      },
+      "presentation": "Reusable scoped Rhea class and semantic source fragment; labels, table headers, caption and typed local field state are retained.",
+      "hostRequirements": [],
+      "omittedFunctionality": "No backend, authentication, authorization or provider behavior."
+    },
+    {
+      "family": "alert-dialog",
+      "upstreamRegistry": "docs/static/registry/styles/rhea/alert-dialog.json",
+      "upstreamSha256": "10dd8f12026d7b4924c003749d3c5f58e7c2c46b14708637931ee5356e4a0d02",
+      "dependencies": {
+        "runtime": [],
+        "upstreamDevelopment": [
+          "bits-ui@^2.20.0",
+          "@internationalized/date@^3.12.0"
+        ],
+        "registry": [
+          "button"
+        ]
+      },
+      "compatibility": "Existing canonical component IDs/revisions/defaults/required slots/output shapes remain unchanged. New native source is additive; stylesheet is explicit opt-in.",
+      "evidence": "Source reconciliation and package regression tests; actual Studio/portal/consumer/browser evidence is recorded separately in the Cycle1.4 report.",
+      "disposition": "compatible-general-presentation",
+      "counterpart": "packages/ui-svelte/src/catalog/alert-dialog.ts",
+      "authoring": {
+        "kind": "registered-component-and-parts",
+        "registeredComponents": [
+          "vict.catalog.alert-dialog@1"
+        ]
+      },
+      "presentation": "Retain existing Bits public parts and canonical adapters; opt-in rhea.css translates pinned family geometry, tokens, state/focus, surface and overlay presentation.",
+      "hostRequirements": [],
+      "omittedFunctionality": "Upstream wrapper-specific props/variants not in the existing contract are not silently added. Source slots/control semantics stay VICT-owned."
+    },
+    {
+      "family": "aspect-ratio",
+      "upstreamRegistry": "docs/static/registry/styles/rhea/aspect-ratio.json",
+      "upstreamSha256": "d0ba92839bd39390ed67edbbd7c949a66e6ffb9e90e2e57d6026df4c3daea3a0",
+      "dependencies": {
+        "runtime": [],
+        "upstreamDevelopment": [
+          "bits-ui@^2.20.0",
+          "@internationalized/date@^3.12.0"
+        ],
+        "registry": []
+      },
+      "compatibility": "Existing canonical component IDs/revisions/defaults/required slots/output shapes remain unchanged. New native source is additive; stylesheet is explicit opt-in.",
+      "evidence": "Source reconciliation and package regression tests; actual Studio/portal/consumer/browser evidence is recorded separately in the Cycle1.4 report.",
+      "disposition": "compatible-general-presentation",
+      "counterpart": "packages/ui-svelte/src/catalog/aspect-ratio.ts",
+      "authoring": {
+        "kind": "registered-component-and-parts",
+        "registeredComponents": [
+          "vict.catalog.aspect-ratio@1"
+        ]
+      },
+      "presentation": "Retain existing Bits public parts and canonical adapters; opt-in rhea.css translates pinned family geometry, tokens, state/focus, surface and overlay presentation.",
+      "hostRequirements": [],
+      "omittedFunctionality": "Upstream wrapper-specific props/variants not in the existing contract are not silently added. Source slots/control semantics stay VICT-owned."
+    },
+    {
+      "family": "attachment",
+      "upstreamRegistry": "docs/static/registry/styles/rhea/attachment.json",
+      "upstreamSha256": "b3361dbd07ce4f37e240af7ae639e66b71a5732db8027cc5e5b3b3cf2fc742f2",
+      "dependencies": {
+        "runtime": [],
+        "upstreamDevelopment": [
+          "tailwind-variants@^3.3.0"
+        ],
+        "registry": [
+          "button"
+        ]
+      },
+      "compatibility": "Existing canonical component IDs/revisions/defaults/required slots/output shapes remain unchanged. New native source is additive; stylesheet is explicit opt-in.",
+      "evidence": "Source reconciliation and package regression tests; actual Studio/portal/consumer/browser evidence is recorded separately in the Cycle1.4 report.",
+      "disposition": "existing-specialist-presentation",
+      "counterpart": "@victframework/ui-ai-svelte/components/attachment",
+      "authoring": {
+        "kind": "public-presentation-composition-only",
+        "registeredComponents": []
+      },
+      "presentation": "Existing copied pinned AI Rhea source and scoped built CSS; shared Rhea token bridge aligns surrounding presentation.",
+      "hostRequirements": [
+        "Host supplies actual records/callbacks; presentation is not agent/provider execution."
+      ],
+      "omittedFunctionality": "Raw exported parts are not all canonical authorable components. AI package has exactly three registered contracts; only eligible compositions count."
+    },
+    {
+      "family": "avatar",
+      "upstreamRegistry": "docs/static/registry/styles/rhea/avatar.json",
+      "upstreamSha256": "080843f688905b9ed48c2e7de4c35569340d6827e853efc9af0b8534459a4cd8",
+      "dependencies": {
+        "runtime": [],
+        "upstreamDevelopment": [
+          "bits-ui@^2.20.0",
+          "@internationalized/date@^3.12.0"
+        ],
+        "registry": []
+      },
+      "compatibility": "Existing canonical component IDs/revisions/defaults/required slots/output shapes remain unchanged. New native source is additive; stylesheet is explicit opt-in.",
+      "evidence": "Source reconciliation and package regression tests; actual Studio/portal/consumer/browser evidence is recorded separately in the Cycle1.4 report.",
+      "disposition": "compatible-general-presentation",
+      "counterpart": "packages/ui-svelte/src/catalog/avatar.ts",
+      "authoring": {
+        "kind": "registered-component-and-parts",
+        "registeredComponents": [
+          "vict.catalog.avatar@1"
+        ]
+      },
+      "presentation": "Retain existing Bits public parts and canonical adapters; opt-in rhea.css translates pinned family geometry, tokens, state/focus, surface and overlay presentation.",
+      "hostRequirements": [],
+      "omittedFunctionality": "Upstream wrapper-specific props/variants not in the existing contract are not silently added. Source slots/control semantics stay VICT-owned."
+    },
+    {
+      "family": "badge",
+      "upstreamRegistry": "docs/static/registry/styles/rhea/badge.json",
+      "upstreamSha256": "147bc51a3f48c65e40e7e151828be7b52189dfa3557bc0b8d56aad701b809d7a",
+      "dependencies": {
+        "runtime": [],
+        "upstreamDevelopment": [
+          "tailwind-variants@^3.3.0"
+        ],
+        "registry": []
+      },
+      "compatibility": "Existing canonical component IDs/revisions/defaults/required slots/output shapes remain unchanged. New native source is additive; stylesheet is explicit opt-in.",
+      "evidence": "Source reconciliation and package regression tests; actual Studio/portal/consumer/browser evidence is recorded separately in the Cycle1.4 report.",
+      "disposition": "existing-specialist-presentation",
+      "counterpart": "@victframework/ui-ai-svelte/components/badge",
+      "authoring": {
+        "kind": "public-presentation-composition-only",
+        "registeredComponents": []
+      },
+      "presentation": "Existing copied pinned AI Rhea source and scoped built CSS; shared Rhea token bridge aligns surrounding presentation.",
+      "hostRequirements": [
+        "Host supplies actual records/callbacks; presentation is not agent/provider execution."
+      ],
+      "omittedFunctionality": "Raw exported parts are not all canonical authorable components. AI package has exactly three registered contracts; only eligible compositions count."
+    },
+    {
+      "family": "breadcrumb",
+      "upstreamRegistry": "docs/static/registry/styles/rhea/breadcrumb.json",
+      "upstreamSha256": "28861bae3610cabae2215a953f1e236792dbb2baa04ca2d35655c4f402741ac8",
+      "dependencies": {
+        "runtime": [],
+        "upstreamDevelopment": [],
+        "registry": []
+      },
+      "compatibility": "Existing canonical component IDs/revisions/defaults/required slots/output shapes remain unchanged. New native source is additive; stylesheet is explicit opt-in.",
+      "evidence": "Source reconciliation and package regression tests; actual Studio/portal/consumer/browser evidence is recorded separately in the Cycle1.4 report.",
+      "disposition": "native-source-pattern",
+      "counterpart": "@victframework/ui-svelte/rhea: rheaNativePatterns[breadcrumb]",
+      "authoring": {
+        "kind": "canonical-native-source",
+        "registeredComponents": [],
+        "recipe": "rhea-breadcrumb",
+        "styleDependency": "@victframework/ui-svelte/rhea.css in preview and product hosts"
+      },
+      "presentation": "Reusable scoped Rhea class and semantic source fragment; labels, table headers, caption and typed local field state are retained.",
+      "hostRequirements": [
+        "Declared submission/navigation/data actions remain host-owned."
+      ],
+      "omittedFunctionality": "No backend, authentication, authorization or provider behavior."
+    },
+    {
+      "family": "bubble",
+      "upstreamRegistry": "docs/static/registry/styles/rhea/bubble.json",
+      "upstreamSha256": "56eea7a27808cb31cc033b6d3e153520e0ebeacbe12929b9770819317208d31a",
+      "dependencies": {
+        "runtime": [],
+        "upstreamDevelopment": [
+          "tailwind-variants@^3.3.0"
+        ],
+        "registry": []
+      },
+      "compatibility": "Existing canonical component IDs/revisions/defaults/required slots/output shapes remain unchanged. New native source is additive; stylesheet is explicit opt-in.",
+      "evidence": "Source reconciliation and package regression tests; actual Studio/portal/consumer/browser evidence is recorded separately in the Cycle1.4 report.",
+      "disposition": "existing-specialist-presentation",
+      "counterpart": "@victframework/ui-ai-svelte/components/bubble",
+      "authoring": {
+        "kind": "public-presentation-composition-only",
+        "registeredComponents": []
+      },
+      "presentation": "Existing copied pinned AI Rhea source and scoped built CSS; shared Rhea token bridge aligns surrounding presentation.",
+      "hostRequirements": [
+        "Host supplies actual records/callbacks; presentation is not agent/provider execution."
+      ],
+      "omittedFunctionality": "Raw exported parts are not all canonical authorable components. AI package has exactly three registered contracts; only eligible compositions count."
+    },
+    {
+      "family": "button",
+      "upstreamRegistry": "docs/static/registry/styles/rhea/button.json",
+      "upstreamSha256": "17106eefc28b02c102f2be0d0822128ba26134b90f9c85c98d30f97fd235884f",
+      "dependencies": {
+        "runtime": [],
+        "upstreamDevelopment": [
+          "tailwind-variants@^3.3.0"
+        ],
+        "registry": []
+      },
+      "compatibility": "Existing canonical component IDs/revisions/defaults/required slots/output shapes remain unchanged. New native source is additive; stylesheet is explicit opt-in.",
+      "evidence": "Source reconciliation and package regression tests; actual Studio/portal/consumer/browser evidence is recorded separately in the Cycle1.4 report.",
+      "disposition": "compatible-general-presentation",
+      "counterpart": "packages/ui-svelte/src/catalog/button.ts",
+      "authoring": {
+        "kind": "registered-component-and-parts",
+        "registeredComponents": [
+          "vict.catalog.button@1"
+        ]
+      },
+      "presentation": "Retain existing Bits public parts and canonical adapters; opt-in rhea.css translates pinned family geometry, tokens, state/focus, surface and overlay presentation.",
+      "hostRequirements": [],
+      "omittedFunctionality": "Upstream wrapper-specific props/variants not in the existing contract are not silently added. Source slots/control semantics stay VICT-owned."
+    },
+    {
+      "family": "button-group",
+      "upstreamRegistry": "docs/static/registry/styles/rhea/button-group.json",
+      "upstreamSha256": "d42be56cf091f77e95a194c5b1c4db9444a292b6b088bbad844ff8f005ab13f8",
+      "dependencies": {
+        "runtime": [],
+        "upstreamDevelopment": [
+          "tailwind-variants@^3.3.0"
+        ],
+        "registry": [
+          "separator"
+        ]
+      },
+      "compatibility": "Existing canonical component IDs/revisions/defaults/required slots/output shapes remain unchanged. New native source is additive; stylesheet is explicit opt-in.",
+      "evidence": "Source reconciliation and package regression tests; actual Studio/portal/consumer/browser evidence is recorded separately in the Cycle1.4 report.",
+      "disposition": "native-source-pattern",
+      "counterpart": "@victframework/ui-svelte/rhea: rheaNativePatterns[button-group]",
+      "authoring": {
+        "kind": "canonical-native-source",
+        "registeredComponents": [],
+        "recipe": "rhea-button-group",
+        "styleDependency": "@victframework/ui-svelte/rhea.css in preview and product hosts"
+      },
+      "presentation": "Reusable scoped Rhea class and semantic source fragment; labels, table headers, caption and typed local field state are retained.",
+      "hostRequirements": [
+        "Declared submission/navigation/data actions remain host-owned."
+      ],
+      "omittedFunctionality": "No backend, authentication, authorization or provider behavior."
+    },
+    {
+      "family": "calendar",
+      "upstreamRegistry": "docs/static/registry/styles/rhea/calendar.json",
+      "upstreamSha256": "996f4093f8b67110d70c4250be818cd7ace2f54b51dc0d257a1ef3ce53a66df1",
+      "dependencies": {
+        "runtime": [],
+        "upstreamDevelopment": [
+          "@internationalized/date@^3.12.0",
+          "bits-ui@^2.20.0"
+        ],
+        "registry": [
+          "button"
+        ]
+      },
+      "compatibility": "Existing canonical component IDs/revisions/defaults/required slots/output shapes remain unchanged. New native source is additive; stylesheet is explicit opt-in.",
+      "evidence": "Source reconciliation and package regression tests; actual Studio/portal/consumer/browser evidence is recorded separately in the Cycle1.4 report.",
+      "disposition": "compatible-general-presentation",
+      "counterpart": "packages/ui-svelte/src/catalog/calendar.ts",
+      "authoring": {
+        "kind": "registered-component-and-parts",
+        "registeredComponents": [
+          "vict.catalog.calendar@1"
+        ]
+      },
+      "presentation": "Retain existing Bits public parts and canonical adapters; opt-in rhea.css translates pinned family geometry, tokens, state/focus, surface and overlay presentation.",
+      "hostRequirements": [],
+      "omittedFunctionality": "Upstream wrapper-specific props/variants not in the existing contract are not silently added. Source slots/control semantics stay VICT-owned."
+    },
+    {
+      "family": "card",
+      "upstreamRegistry": "docs/static/registry/styles/rhea/card.json",
+      "upstreamSha256": "b91ea44bf7d3307fac722e619ce83af40aef01dd7a64a658b356af28f81e0e32",
+      "dependencies": {
+        "runtime": [],
+        "upstreamDevelopment": [],
+        "registry": []
+      },
+      "compatibility": "Existing canonical component IDs/revisions/defaults/required slots/output shapes remain unchanged. New native source is additive; stylesheet is explicit opt-in.",
+      "evidence": "Source reconciliation and package regression tests; actual Studio/portal/consumer/browser evidence is recorded separately in the Cycle1.4 report.",
+      "disposition": "native-source-pattern",
+      "counterpart": "@victframework/ui-svelte/rhea: rheaNativePatterns[card]",
+      "authoring": {
+        "kind": "canonical-native-source",
+        "registeredComponents": [],
+        "recipe": "rhea-card",
+        "styleDependency": "@victframework/ui-svelte/rhea.css in preview and product hosts"
+      },
+      "presentation": "Reusable scoped Rhea class and semantic source fragment; labels, table headers, caption and typed local field state are retained.",
+      "hostRequirements": [],
+      "omittedFunctionality": "No backend, authentication, authorization or provider behavior."
+    },
+    {
+      "family": "carousel",
+      "upstreamRegistry": "docs/static/registry/styles/rhea/carousel.json",
+      "upstreamSha256": "6ef89579953345d2ac309b1a4e4db91f1174b8b066506aec578fb93a5b8b0234",
+      "dependencies": {
+        "runtime": [],
+        "upstreamDevelopment": [
+          "embla-carousel-svelte@^8.6.0",
+          "bits-ui@^2.20.0",
+          "@internationalized/date@^3.12.0"
+        ],
+        "registry": [
+          "button"
+        ]
+      },
+      "compatibility": "Existing canonical component IDs/revisions/defaults/required slots/output shapes remain unchanged. New native source is additive; stylesheet is explicit opt-in.",
+      "evidence": "Source reconciliation and package regression tests; actual Studio/portal/consumer/browser evidence is recorded separately in the Cycle1.4 report.",
+      "disposition": "explicit-host-or-adapter-exception",
+      "counterpart": "No reusable carousel adapter.",
+      "authoring": {
+        "kind": "host-composition-or-unavailable",
+        "registeredComponents": []
+      },
+      "presentation": "Existing VICT host surfaces share Rhea tokens where mounted in its scope; no false upstream-family parity.",
+      "hostRequirements": [
+        "Embla-style snap/drag/keyboard/dependency contract is absent; horizontal native content is not claimed as a carousel."
+      ],
+      "omittedFunctionality": "Embla-style snap/drag/keyboard/dependency contract is absent; horizontal native content is not claimed as a carousel."
+    },
+    {
+      "family": "chart",
+      "upstreamRegistry": "docs/static/registry/styles/rhea/chart.json",
+      "upstreamSha256": "dccff6d1f478d5469fdd93e3ddca5eb8c42732ae1ca494da79028c5cdc422d51",
+      "dependencies": {
+        "runtime": [],
+        "upstreamDevelopment": [
+          "layerchart@^2.0.0"
+        ],
+        "registry": []
+      },
+      "compatibility": "Existing canonical component IDs/revisions/defaults/required slots/output shapes remain unchanged. New native source is additive; stylesheet is explicit opt-in.",
+      "evidence": "Source reconciliation and package regression tests; actual Studio/portal/consumer/browser evidence is recorded separately in the Cycle1.4 report.",
+      "disposition": "explicit-host-or-adapter-exception",
+      "counterpart": "packages/ui-svelte/src/Chart.svelte",
+      "authoring": {
+        "kind": "host-composition-or-unavailable",
+        "registeredComponents": []
+      },
+      "presentation": "Existing VICT host surfaces share Rhea tokens where mounted in its scope; no false upstream-family parity.",
+      "hostRequirements": [
+        "Existing application-data chart is host-driven, not an arbitrary canonical chart-data adapter; shadcn layerchart graph/tooltip/legend closure is not adopted."
+      ],
+      "omittedFunctionality": "Existing application-data chart is host-driven, not an arbitrary canonical chart-data adapter; shadcn layerchart graph/tooltip/legend closure is not adopted."
+    },
+    {
+      "family": "checkbox",
+      "upstreamRegistry": "docs/static/registry/styles/rhea/checkbox.json",
+      "upstreamSha256": "dae26c1be5de8e1a4fd97d0df553261f44f308c469c7fbabefbc66232a7365e9",
+      "dependencies": {
+        "runtime": [],
+        "upstreamDevelopment": [
+          "bits-ui@^2.20.0",
+          "@internationalized/date@^3.12.0"
+        ],
+        "registry": []
+      },
+      "compatibility": "Existing canonical component IDs/revisions/defaults/required slots/output shapes remain unchanged. New native source is additive; stylesheet is explicit opt-in.",
+      "evidence": "Source reconciliation and package regression tests; actual Studio/portal/consumer/browser evidence is recorded separately in the Cycle1.4 report.",
+      "disposition": "compatible-general-presentation",
+      "counterpart": "packages/ui-svelte/src/catalog/checkbox.ts",
+      "authoring": {
+        "kind": "registered-component-and-parts",
+        "registeredComponents": [
+          "vict.catalog.checkbox@1"
+        ]
+      },
+      "presentation": "Retain existing Bits public parts and canonical adapters; opt-in rhea.css translates pinned family geometry, tokens, state/focus, surface and overlay presentation.",
+      "hostRequirements": [],
+      "omittedFunctionality": "Upstream wrapper-specific props/variants not in the existing contract are not silently added. Source slots/control semantics stay VICT-owned."
+    },
+    {
+      "family": "code-block",
+      "upstreamRegistry": "docs/static/registry/styles/rhea/code-block.json",
+      "upstreamSha256": "302b26733dfaa9b5b64770df49391a77b9cbc8a9b7d62fc567e90f30c714a7d9",
+      "dependencies": {
+        "runtime": [],
+        "upstreamDevelopment": [
+          "tailwind-variants@^3.3.0"
+        ],
+        "registry": [
+          "use-highlighted-code",
+          "button"
+        ]
+      },
+      "compatibility": "Existing canonical component IDs/revisions/defaults/required slots/output shapes remain unchanged. New native source is additive; stylesheet is explicit opt-in.",
+      "evidence": "Source reconciliation and package regression tests; actual Studio/portal/consumer/browser evidence is recorded separately in the Cycle1.4 report.",
+      "disposition": "existing-specialist-presentation",
+      "counterpart": "@victframework/ui-ai-svelte/components/code-block",
+      "authoring": {
+        "kind": "public-presentation-composition-only",
+        "registeredComponents": []
+      },
+      "presentation": "Existing copied pinned AI Rhea source and scoped built CSS; shared Rhea token bridge aligns surrounding presentation.",
+      "hostRequirements": [
+        "Host supplies actual records/callbacks; presentation is not agent/provider execution."
+      ],
+      "omittedFunctionality": "Raw exported parts are not all canonical authorable components. AI package has exactly three registered contracts; only eligible compositions count."
+    },
+    {
+      "family": "collapsible",
+      "upstreamRegistry": "docs/static/registry/styles/rhea/collapsible.json",
+      "upstreamSha256": "d6ad641928024c72609982bf73a335163926ade283f4e9f8b8dbf600cc02b136",
+      "dependencies": {
+        "runtime": [],
+        "upstreamDevelopment": [
+          "bits-ui@^2.20.0",
+          "@internationalized/date@^3.12.0"
+        ],
+        "registry": []
+      },
+      "compatibility": "Existing canonical component IDs/revisions/defaults/required slots/output shapes remain unchanged. New native source is additive; stylesheet is explicit opt-in.",
+      "evidence": "Source reconciliation and package regression tests; actual Studio/portal/consumer/browser evidence is recorded separately in the Cycle1.4 report.",
+      "disposition": "compatible-general-presentation",
+      "counterpart": "packages/ui-svelte/src/catalog/collapsible.ts",
+      "authoring": {
+        "kind": "registered-component-and-parts",
+        "registeredComponents": [
+          "vict.catalog.collapsible@1"
+        ]
+      },
+      "presentation": "Retain existing Bits public parts and canonical adapters; opt-in rhea.css translates pinned family geometry, tokens, state/focus, surface and overlay presentation.",
+      "hostRequirements": [],
+      "omittedFunctionality": "Upstream wrapper-specific props/variants not in the existing contract are not silently added. Source slots/control semantics stay VICT-owned."
+    },
+    {
+      "family": "command",
+      "upstreamRegistry": "docs/static/registry/styles/rhea/command.json",
+      "upstreamSha256": "43fd16a4c7a2ec0e4b8e928cd7ff5d50bfa46772456a21882b7293afaa558bb9",
+      "dependencies": {
+        "runtime": [],
+        "upstreamDevelopment": [
+          "bits-ui@^2.20.0",
+          "@internationalized/date@^3.12.0"
+        ],
+        "registry": [
+          "dialog",
+          "input-group"
+        ]
+      },
+      "compatibility": "Existing canonical component IDs/revisions/defaults/required slots/output shapes remain unchanged. New native source is additive; stylesheet is explicit opt-in.",
+      "evidence": "Source reconciliation and package regression tests; actual Studio/portal/consumer/browser evidence is recorded separately in the Cycle1.4 report.",
+      "disposition": "compatible-general-presentation",
+      "counterpart": "packages/ui-svelte/src/catalog/command.ts",
+      "authoring": {
+        "kind": "registered-component-and-parts",
+        "registeredComponents": [
+          "vict.catalog.command@1",
+          "vict.catalog.command.item@1",
+          "vict.catalog.command.group@1"
+        ]
+      },
+      "presentation": "Retain existing Bits public parts and canonical adapters; opt-in rhea.css translates pinned family geometry, tokens, state/focus, surface and overlay presentation.",
+      "hostRequirements": [],
+      "omittedFunctionality": "Upstream wrapper-specific props/variants not in the existing contract are not silently added. Source slots/control semantics stay VICT-owned."
+    },
+    {
+      "family": "context-menu",
+      "upstreamRegistry": "docs/static/registry/styles/rhea/context-menu.json",
+      "upstreamSha256": "818923a04cd0a3e92239f6526ff986d8cf6abc679319ba4131c457e8cdff8cb8",
+      "dependencies": {
+        "runtime": [],
+        "upstreamDevelopment": [
+          "bits-ui@^2.20.0",
+          "@internationalized/date@^3.12.0"
+        ],
+        "registry": []
+      },
+      "compatibility": "Existing canonical component IDs/revisions/defaults/required slots/output shapes remain unchanged. New native source is additive; stylesheet is explicit opt-in.",
+      "evidence": "Source reconciliation and package regression tests; actual Studio/portal/consumer/browser evidence is recorded separately in the Cycle1.4 report.",
+      "disposition": "compatible-general-presentation",
+      "counterpart": "packages/ui-svelte/src/catalog/context-menu.ts",
+      "authoring": {
+        "kind": "registered-component-and-parts",
+        "registeredComponents": [
+          "vict.catalog.context-menu@1",
+          "vict.catalog.context-menu.item@1",
+          "vict.catalog.context-menu.sub@1",
+          "vict.catalog.context-menu.checkbox-item@1",
+          "vict.catalog.context-menu.checkbox-group@1",
+          "vict.catalog.context-menu.radio-group@1",
+          "vict.catalog.context-menu.radio-item@1",
+          "vict.catalog.context-menu.group@1",
+          "vict.catalog.context-menu.separator@1"
+        ]
+      },
+      "presentation": "Retain existing Bits public parts and canonical adapters; opt-in rhea.css translates pinned family geometry, tokens, state/focus, surface and overlay presentation.",
+      "hostRequirements": [],
+      "omittedFunctionality": "Upstream wrapper-specific props/variants not in the existing contract are not silently added. Source slots/control semantics stay VICT-owned."
+    },
+    {
+      "family": "dialog",
+      "upstreamRegistry": "docs/static/registry/styles/rhea/dialog.json",
+      "upstreamSha256": "7ef84d19a660d59f6c1abf4201a5d560732a9761cd106b7c0cb38dfde3adafec",
+      "dependencies": {
+        "runtime": [],
+        "upstreamDevelopment": [
+          "bits-ui@^2.20.0",
+          "@internationalized/date@^3.12.0"
+        ],
+        "registry": [
+          "button"
+        ]
+      },
+      "compatibility": "Existing canonical component IDs/revisions/defaults/required slots/output shapes remain unchanged. New native source is additive; stylesheet is explicit opt-in.",
+      "evidence": "Source reconciliation and package regression tests; actual Studio/portal/consumer/browser evidence is recorded separately in the Cycle1.4 report.",
+      "disposition": "compatible-general-presentation",
+      "counterpart": "packages/ui-svelte/src/catalog/dialog.ts",
+      "authoring": {
+        "kind": "registered-component-and-parts",
+        "registeredComponents": [
+          "vict.catalog.dialog@1"
+        ]
+      },
+      "presentation": "Retain existing Bits public parts and canonical adapters; opt-in rhea.css translates pinned family geometry, tokens, state/focus, surface and overlay presentation.",
+      "hostRequirements": [],
+      "omittedFunctionality": "Upstream wrapper-specific props/variants not in the existing contract are not silently added. Source slots/control semantics stay VICT-owned."
+    },
+    {
+      "family": "drawer",
+      "upstreamRegistry": "docs/static/registry/styles/rhea/drawer.json",
+      "upstreamSha256": "633c00dfe0453be2d92402a63dc3aa49dfa1ab83303ffb256efdff475690c9df",
+      "dependencies": {
+        "runtime": [],
+        "upstreamDevelopment": [
+          "vaul-svelte@next"
+        ],
+        "registry": []
+      },
+      "compatibility": "Existing canonical component IDs/revisions/defaults/required slots/output shapes remain unchanged. New native source is additive; stylesheet is explicit opt-in.",
+      "evidence": "Source reconciliation and package regression tests; actual Studio/portal/consumer/browser evidence is recorded separately in the Cycle1.4 report.",
+      "disposition": "explicit-host-or-adapter-exception",
+      "counterpart": "packages/ui-svelte/src/Overlay.svelte",
+      "authoring": {
+        "kind": "host-composition-or-unavailable",
+        "registeredComponents": []
+      },
+      "presentation": "Existing VICT host surfaces share Rhea tokens where mounted in its scope; no false upstream-family parity.",
+      "hostRequirements": [
+        "Existing accessible product drawer uses declared application overlay semantics. Touch/drag drawer behavior and new canonical drawer contract are not adopted."
+      ],
+      "omittedFunctionality": "Existing accessible product drawer uses declared application overlay semantics. Touch/drag drawer behavior and new canonical drawer contract are not adopted."
+    },
+    {
+      "family": "dropdown-menu",
+      "upstreamRegistry": "docs/static/registry/styles/rhea/dropdown-menu.json",
+      "upstreamSha256": "f1233d7f240add3efa169fc375c778716b26e25e3903cc907ee04cc220084092",
+      "dependencies": {
+        "runtime": [],
+        "upstreamDevelopment": [
+          "bits-ui@^2.20.0",
+          "@internationalized/date@^3.12.0"
+        ],
+        "registry": []
+      },
+      "compatibility": "Existing canonical component IDs/revisions/defaults/required slots/output shapes remain unchanged. New native source is additive; stylesheet is explicit opt-in.",
+      "evidence": "Source reconciliation and package regression tests; actual Studio/portal/consumer/browser evidence is recorded separately in the Cycle1.4 report.",
+      "disposition": "compatible-general-presentation",
+      "counterpart": "packages/ui-svelte/src/catalog/dropdown-menu.ts",
+      "authoring": {
+        "kind": "registered-component-and-parts",
+        "registeredComponents": [
+          "vict.catalog.dropdown-menu@1",
+          "vict.catalog.dropdown-menu.item@1",
+          "vict.catalog.dropdown-menu.sub@1",
+          "vict.catalog.dropdown-menu.checkbox-item@1",
+          "vict.catalog.dropdown-menu.checkbox-group@1",
+          "vict.catalog.dropdown-menu.radio-group@1",
+          "vict.catalog.dropdown-menu.radio-item@1",
+          "vict.catalog.dropdown-menu.group@1",
+          "vict.catalog.dropdown-menu.separator@1"
+        ]
+      },
+      "presentation": "Retain existing Bits public parts and canonical adapters; opt-in rhea.css translates pinned family geometry, tokens, state/focus, surface and overlay presentation.",
+      "hostRequirements": [],
+      "omittedFunctionality": "Upstream wrapper-specific props/variants not in the existing contract are not silently added. Source slots/control semantics stay VICT-owned."
+    },
+    {
+      "family": "empty",
+      "upstreamRegistry": "docs/static/registry/styles/rhea/empty.json",
+      "upstreamSha256": "98eb7be625aa80c7c31706d26a435e7a6fa244424e5c5d8f9afcf52cf4c45cd2",
+      "dependencies": {
+        "runtime": [],
+        "upstreamDevelopment": [
+          "tailwind-variants@^3.3.0"
+        ],
+        "registry": []
+      },
+      "compatibility": "Existing canonical component IDs/revisions/defaults/required slots/output shapes remain unchanged. New native source is additive; stylesheet is explicit opt-in.",
+      "evidence": "Source reconciliation and package regression tests; actual Studio/portal/consumer/browser evidence is recorded separately in the Cycle1.4 report.",
+      "disposition": "native-source-pattern",
+      "counterpart": "@victframework/ui-svelte/rhea: rheaNativePatterns[empty]",
+      "authoring": {
+        "kind": "canonical-native-source",
+        "registeredComponents": [],
+        "recipe": "rhea-empty",
+        "styleDependency": "@victframework/ui-svelte/rhea.css in preview and product hosts"
+      },
+      "presentation": "Reusable scoped Rhea class and semantic source fragment; labels, table headers, caption and typed local field state are retained.",
+      "hostRequirements": [],
+      "omittedFunctionality": "No backend, authentication, authorization or provider behavior."
+    },
+    {
+      "family": "field",
+      "upstreamRegistry": "docs/static/registry/styles/rhea/field.json",
+      "upstreamSha256": "52221aabeb9cc830693207cf852b7b0275d3dcfde5ebc04fe1e4db7b3d0375cc",
+      "dependencies": {
+        "runtime": [],
+        "upstreamDevelopment": [
+          "tailwind-variants@^3.3.0"
+        ],
+        "registry": [
+          "label",
+          "separator"
+        ]
+      },
+      "compatibility": "Existing canonical component IDs/revisions/defaults/required slots/output shapes remain unchanged. New native source is additive; stylesheet is explicit opt-in.",
+      "evidence": "Source reconciliation and package regression tests; actual Studio/portal/consumer/browser evidence is recorded separately in the Cycle1.4 report.",
+      "disposition": "native-source-pattern",
+      "counterpart": "@victframework/ui-svelte/rhea: rheaNativePatterns[field]",
+      "authoring": {
+        "kind": "canonical-native-source",
+        "registeredComponents": [],
+        "recipe": "rhea-field",
+        "styleDependency": "@victframework/ui-svelte/rhea.css in preview and product hosts"
+      },
+      "presentation": "Reusable scoped Rhea class and semantic source fragment; labels, table headers, caption and typed local field state are retained.",
+      "hostRequirements": [
+        "Declared submission/navigation/data actions remain host-owned."
+      ],
+      "omittedFunctionality": "No backend, authentication, authorization or provider behavior."
+    },
+    {
+      "family": "form",
+      "upstreamRegistry": "docs/static/registry/styles/rhea/form.json",
+      "upstreamSha256": "c4d1f993f8aa9394b2df9c5c8c6141b18f7b8b7e8fb4c5a97967517f77a480d6",
+      "dependencies": {
+        "runtime": [],
+        "upstreamDevelopment": [
+          "formsnap@^2.1.0",
+          "sveltekit-superforms@^3.0.0"
+        ],
+        "registry": [
+          "button",
+          "label"
+        ]
+      },
+      "compatibility": "Existing canonical component IDs/revisions/defaults/required slots/output shapes remain unchanged. New native source is additive; stylesheet is explicit opt-in.",
+      "evidence": "Source reconciliation and package regression tests; actual Studio/portal/consumer/browser evidence is recorded separately in the Cycle1.4 report.",
+      "disposition": "explicit-host-or-adapter-exception",
+      "counterpart": "packages/ui-svelte/src/Form.svelte + FormField.svelte",
+      "authoring": {
+        "kind": "host-composition-or-unavailable",
+        "registeredComponents": []
+      },
+      "presentation": "Existing VICT host surfaces share Rhea tokens where mounted in its scope; no false upstream-family parity.",
+      "hostRequirements": [
+        "Existing declared product form and canonical native form compositions remain. Superforms/formsnap validation adapters and backend submission are not adopted."
+      ],
+      "omittedFunctionality": "Existing declared product form and canonical native form compositions remain. Superforms/formsnap validation adapters and backend submission are not adopted."
+    },
+    {
+      "family": "hover-card",
+      "upstreamRegistry": "docs/static/registry/styles/rhea/hover-card.json",
+      "upstreamSha256": "25193df24cfbf5fb53ec1d94362ed3e7f4a424637e8f6651c8cb943a5737c0a0",
+      "dependencies": {
+        "runtime": [],
+        "upstreamDevelopment": [
+          "bits-ui@^2.20.0",
+          "@internationalized/date@^3.12.0"
+        ],
+        "registry": []
+      },
+      "compatibility": "Existing canonical component IDs/revisions/defaults/required slots/output shapes remain unchanged. New native source is additive; stylesheet is explicit opt-in.",
+      "evidence": "Source reconciliation and package regression tests; actual Studio/portal/consumer/browser evidence is recorded separately in the Cycle1.4 report.",
+      "disposition": "compatible-general-presentation",
+      "counterpart": "packages/ui-svelte/src/catalog/link-preview.ts",
+      "authoring": {
+        "kind": "registered-component-and-parts",
+        "registeredComponents": [
+          "vict.catalog.link-preview@1"
+        ]
+      },
+      "presentation": "Retain existing Bits public parts and canonical adapters; opt-in rhea.css translates pinned family geometry, tokens, state/focus, surface and overlay presentation.",
+      "hostRequirements": [],
+      "omittedFunctionality": "Upstream wrapper-specific props/variants not in the existing contract are not silently added. Source slots/control semantics stay VICT-owned."
+    },
+    {
+      "family": "input",
+      "upstreamRegistry": "docs/static/registry/styles/rhea/input.json",
+      "upstreamSha256": "adc3d419fd87863dd7a6f1565ebda86d035693d07b82dbde2e8177c5adf3f395",
+      "dependencies": {
+        "runtime": [],
+        "upstreamDevelopment": [],
+        "registry": []
+      },
+      "compatibility": "Existing canonical component IDs/revisions/defaults/required slots/output shapes remain unchanged. New native source is additive; stylesheet is explicit opt-in.",
+      "evidence": "Source reconciliation and package regression tests; actual Studio/portal/consumer/browser evidence is recorded separately in the Cycle1.4 report.",
+      "disposition": "native-source-pattern",
+      "counterpart": "@victframework/ui-svelte/rhea: rheaNativePatterns[input]",
+      "authoring": {
+        "kind": "canonical-native-source",
+        "registeredComponents": [],
+        "recipe": "rhea-input",
+        "styleDependency": "@victframework/ui-svelte/rhea.css in preview and product hosts"
+      },
+      "presentation": "Reusable scoped Rhea class and semantic source fragment; labels, table headers, caption and typed local field state are retained.",
+      "hostRequirements": [
+        "Declared submission/navigation/data actions remain host-owned."
+      ],
+      "omittedFunctionality": "No backend, authentication, authorization or provider behavior.",
+      "additionalCounterpart": "@victframework/ui-ai-svelte/components/input (existing pinned raw presentation)"
+    },
+    {
+      "family": "input-group",
+      "upstreamRegistry": "docs/static/registry/styles/rhea/input-group.json",
+      "upstreamSha256": "2f4469146dd2df4cf9a6a4deeafecd1a5ddd32fb6ec2ed24c42909a529d1840c",
+      "dependencies": {
+        "runtime": [],
+        "upstreamDevelopment": [
+          "tailwind-variants@^3.3.0"
+        ],
+        "registry": [
+          "button",
+          "input",
+          "textarea"
+        ]
+      },
+      "compatibility": "Existing canonical component IDs/revisions/defaults/required slots/output shapes remain unchanged. New native source is additive; stylesheet is explicit opt-in.",
+      "evidence": "Source reconciliation and package regression tests; actual Studio/portal/consumer/browser evidence is recorded separately in the Cycle1.4 report.",
+      "disposition": "existing-specialist-presentation",
+      "counterpart": "@victframework/ui-ai-svelte/components/input-group",
+      "authoring": {
+        "kind": "public-presentation-composition-only",
+        "registeredComponents": []
+      },
+      "presentation": "Existing copied pinned AI Rhea source and scoped built CSS; shared Rhea token bridge aligns surrounding presentation.",
+      "hostRequirements": [
+        "Host supplies actual records/callbacks; presentation is not agent/provider execution."
+      ],
+      "omittedFunctionality": "Raw exported parts are not all canonical authorable components. AI package has exactly three registered contracts; only eligible compositions count."
+    },
+    {
+      "family": "input-otp",
+      "upstreamRegistry": "docs/static/registry/styles/rhea/input-otp.json",
+      "upstreamSha256": "071c44728a6fec24aba44651d2b90c0cd2e87303ced4ec4abd92f7ab7d3dcbba",
+      "dependencies": {
+        "runtime": [],
+        "upstreamDevelopment": [
+          "bits-ui@^2.20.0",
+          "@internationalized/date@^3.12.0"
+        ],
+        "registry": []
+      },
+      "compatibility": "Existing canonical component IDs/revisions/defaults/required slots/output shapes remain unchanged. New native source is additive; stylesheet is explicit opt-in.",
+      "evidence": "Source reconciliation and package regression tests; actual Studio/portal/consumer/browser evidence is recorded separately in the Cycle1.4 report.",
+      "disposition": "explicit-host-or-adapter-exception",
+      "counterpart": "Bits PinInput remains deferred in FOUNDATION-CATALOG.md.",
+      "authoring": {
+        "kind": "host-composition-or-unavailable",
+        "registeredComponents": []
+      },
+      "presentation": "Existing VICT host surfaces share Rhea tokens where mounted in its scope; no false upstream-family parity.",
+      "hostRequirements": [
+        "Authentication/paste/autofill/recovery/secret-value contract is absent; an input presentation must not imply an authentication flow."
+      ],
+      "omittedFunctionality": "Authentication/paste/autofill/recovery/secret-value contract is absent; an input presentation must not imply an authentication flow."
+    },
+    {
+      "family": "item",
+      "upstreamRegistry": "docs/static/registry/styles/rhea/item.json",
+      "upstreamSha256": "bb5a75ea19b35c2a4b91a2a30eec90f7d1d78d756bb500d3afb1288a9a08d4e3",
+      "dependencies": {
+        "runtime": [],
+        "upstreamDevelopment": [
+          "tailwind-variants@^3.3.0"
+        ],
+        "registry": [
+          "separator"
+        ]
+      },
+      "compatibility": "Existing canonical component IDs/revisions/defaults/required slots/output shapes remain unchanged. New native source is additive; stylesheet is explicit opt-in.",
+      "evidence": "Source reconciliation and package regression tests; actual Studio/portal/consumer/browser evidence is recorded separately in the Cycle1.4 report.",
+      "disposition": "existing-specialist-presentation",
+      "counterpart": "@victframework/ui-ai-svelte/components/item",
+      "authoring": {
+        "kind": "public-presentation-composition-only",
+        "registeredComponents": []
+      },
+      "presentation": "Existing copied pinned AI Rhea source and scoped built CSS; shared Rhea token bridge aligns surrounding presentation.",
+      "hostRequirements": [
+        "Host supplies actual records/callbacks; presentation is not agent/provider execution."
+      ],
+      "omittedFunctionality": "Raw exported parts are not all canonical authorable components. AI package has exactly three registered contracts; only eligible compositions count."
+    },
+    {
+      "family": "kbd",
+      "upstreamRegistry": "docs/static/registry/styles/rhea/kbd.json",
+      "upstreamSha256": "2cd3ef456bebfdf7ee756dfd84dbee7a9ef56f6ad7531f3418062914d317cebf",
+      "dependencies": {
+        "runtime": [],
+        "upstreamDevelopment": [],
+        "registry": []
+      },
+      "compatibility": "Existing canonical component IDs/revisions/defaults/required slots/output shapes remain unchanged. New native source is additive; stylesheet is explicit opt-in.",
+      "evidence": "Source reconciliation and package regression tests; actual Studio/portal/consumer/browser evidence is recorded separately in the Cycle1.4 report.",
+      "disposition": "native-source-pattern",
+      "counterpart": "@victframework/ui-svelte/rhea: rheaNativePatterns[kbd]",
+      "authoring": {
+        "kind": "canonical-native-source",
+        "registeredComponents": [],
+        "recipe": "rhea-kbd",
+        "styleDependency": "@victframework/ui-svelte/rhea.css in preview and product hosts"
+      },
+      "presentation": "Reusable scoped Rhea class and semantic source fragment; labels, table headers, caption and typed local field state are retained.",
+      "hostRequirements": [],
+      "omittedFunctionality": "Native table does not imply data-grid sorting/filtering; keyboard hints do not register shortcuts; status visuals do not create task execution."
+    },
+    {
+      "family": "label",
+      "upstreamRegistry": "docs/static/registry/styles/rhea/label.json",
+      "upstreamSha256": "2518649ae021483bcdf1ce6db76010ddcbb08a78c1adcf0f72bc432c6371abc5",
+      "dependencies": {
+        "runtime": [],
+        "upstreamDevelopment": [
+          "bits-ui@^2.20.0",
+          "@internationalized/date@^3.12.0"
+        ],
+        "registry": []
+      },
+      "compatibility": "Existing canonical component IDs/revisions/defaults/required slots/output shapes remain unchanged. New native source is additive; stylesheet is explicit opt-in.",
+      "evidence": "Source reconciliation and package regression tests; actual Studio/portal/consumer/browser evidence is recorded separately in the Cycle1.4 report.",
+      "disposition": "compatible-general-presentation",
+      "counterpart": "packages/ui-svelte/src/catalog/label.ts",
+      "authoring": {
+        "kind": "registered-component-and-parts",
+        "registeredComponents": [
+          "vict.catalog.label@1"
+        ]
+      },
+      "presentation": "Retain existing Bits public parts and canonical adapters; opt-in rhea.css translates pinned family geometry, tokens, state/focus, surface and overlay presentation.",
+      "hostRequirements": [],
+      "omittedFunctionality": "Upstream wrapper-specific props/variants not in the existing contract are not silently added. Source slots/control semantics stay VICT-owned."
+    },
+    {
+      "family": "marker",
+      "upstreamRegistry": "docs/static/registry/styles/rhea/marker.json",
+      "upstreamSha256": "a902b81be24f183f68b9bc260b9991c98794586ac5a2f2543be32673650e0b3e",
+      "dependencies": {
+        "runtime": [],
+        "upstreamDevelopment": [
+          "tailwind-variants@^3.3.0"
+        ],
+        "registry": []
+      },
+      "compatibility": "Existing canonical component IDs/revisions/defaults/required slots/output shapes remain unchanged. New native source is additive; stylesheet is explicit opt-in.",
+      "evidence": "Source reconciliation and package regression tests; actual Studio/portal/consumer/browser evidence is recorded separately in the Cycle1.4 report.",
+      "disposition": "existing-specialist-presentation",
+      "counterpart": "@victframework/ui-ai-svelte/components/marker",
+      "authoring": {
+        "kind": "public-presentation-composition-only",
+        "registeredComponents": []
+      },
+      "presentation": "Existing copied pinned AI Rhea source and scoped built CSS; shared Rhea token bridge aligns surrounding presentation.",
+      "hostRequirements": [
+        "Host supplies actual records/callbacks; presentation is not agent/provider execution."
+      ],
+      "omittedFunctionality": "Raw exported parts are not all canonical authorable components. AI package has exactly three registered contracts; only eligible compositions count."
+    },
+    {
+      "family": "menubar",
+      "upstreamRegistry": "docs/static/registry/styles/rhea/menubar.json",
+      "upstreamSha256": "6fe91d8577ea122b6d98b416844a23f288128c81ed3963a348b7045a0e121cf3",
+      "dependencies": {
+        "runtime": [],
+        "upstreamDevelopment": [
+          "bits-ui@^2.20.0",
+          "@internationalized/date@^3.12.0"
+        ],
+        "registry": []
+      },
+      "compatibility": "Existing canonical component IDs/revisions/defaults/required slots/output shapes remain unchanged. New native source is additive; stylesheet is explicit opt-in.",
+      "evidence": "Source reconciliation and package regression tests; actual Studio/portal/consumer/browser evidence is recorded separately in the Cycle1.4 report.",
+      "disposition": "compatible-general-presentation",
+      "counterpart": "packages/ui-svelte/src/catalog/menubar.ts",
+      "authoring": {
+        "kind": "registered-component-and-parts",
+        "registeredComponents": [
+          "vict.catalog.menubar@1",
+          "vict.catalog.menubar.menu@1",
+          "vict.catalog.menubar.item@1",
+          "vict.catalog.menubar.sub@1",
+          "vict.catalog.menubar.checkbox-item@1",
+          "vict.catalog.menubar.checkbox-group@1",
+          "vict.catalog.menubar.radio-group@1",
+          "vict.catalog.menubar.radio-item@1",
+          "vict.catalog.menubar.group@1",
+          "vict.catalog.menubar.separator@1"
+        ]
+      },
+      "presentation": "Retain existing Bits public parts and canonical adapters; opt-in rhea.css translates pinned family geometry, tokens, state/focus, surface and overlay presentation.",
+      "hostRequirements": [],
+      "omittedFunctionality": "Upstream wrapper-specific props/variants not in the existing contract are not silently added. Source slots/control semantics stay VICT-owned."
+    },
+    {
+      "family": "message",
+      "upstreamRegistry": "docs/static/registry/styles/rhea/message.json",
+      "upstreamSha256": "094bf6ef8cac7883c42dc0282f1e868a0b85d7f3737c89fcdfd9d2f0204bb56b",
+      "dependencies": {
+        "runtime": [],
+        "upstreamDevelopment": [],
+        "registry": []
+      },
+      "compatibility": "Existing canonical component IDs/revisions/defaults/required slots/output shapes remain unchanged. New native source is additive; stylesheet is explicit opt-in.",
+      "evidence": "Source reconciliation and package regression tests; actual Studio/portal/consumer/browser evidence is recorded separately in the Cycle1.4 report.",
+      "disposition": "existing-specialist-presentation",
+      "counterpart": "@victframework/ui-ai-svelte/components/message",
+      "authoring": {
+        "kind": "registered-specialist",
+        "registeredComponents": [
+          "vict.ai.message@1"
+        ]
+      },
+      "presentation": "Existing copied pinned AI Rhea source and scoped built CSS; shared Rhea token bridge aligns surrounding presentation.",
+      "hostRequirements": [
+        "Host supplies actual records/callbacks; presentation is not agent/provider execution."
+      ],
+      "omittedFunctionality": "Raw exported parts are not all canonical authorable components. AI package has exactly three registered contracts; only eligible compositions count."
+    },
+    {
+      "family": "message-scroller",
+      "upstreamRegistry": "docs/static/registry/styles/rhea/message-scroller.json",
+      "upstreamSha256": "0c89db7f49825d44655bf0d5dccfc599ea63c8a526695639798d0941d208b4ed",
+      "dependencies": {
+        "runtime": [],
+        "upstreamDevelopment": [
+          "@shadcn-svelte/primitives@^0.0.1"
+        ],
+        "registry": [
+          "button"
+        ]
+      },
+      "compatibility": "Existing canonical component IDs/revisions/defaults/required slots/output shapes remain unchanged. New native source is additive; stylesheet is explicit opt-in.",
+      "evidence": "Source reconciliation and package regression tests; actual Studio/portal/consumer/browser evidence is recorded separately in the Cycle1.4 report.",
+      "disposition": "existing-specialist-presentation",
+      "counterpart": "@victframework/ui-ai-svelte/components/message-scroller",
+      "authoring": {
+        "kind": "registered-specialist",
+        "registeredComponents": [
+          "vict.ai.conversation@1"
+        ]
+      },
+      "presentation": "Existing copied pinned AI Rhea source and scoped built CSS; shared Rhea token bridge aligns surrounding presentation.",
+      "hostRequirements": [
+        "Host supplies actual records/callbacks; presentation is not agent/provider execution."
+      ],
+      "omittedFunctionality": "Raw exported parts are not all canonical authorable components. AI package has exactly three registered contracts; only eligible compositions count."
+    },
+    {
+      "family": "native-select",
+      "upstreamRegistry": "docs/static/registry/styles/rhea/native-select.json",
+      "upstreamSha256": "c2b23e42c3069fc364b71d76db442560e3c9024e0f807bce521e929cf8e8009e",
+      "dependencies": {
+        "runtime": [],
+        "upstreamDevelopment": [],
+        "registry": []
+      },
+      "compatibility": "Existing canonical component IDs/revisions/defaults/required slots/output shapes remain unchanged. New native source is additive; stylesheet is explicit opt-in.",
+      "evidence": "Source reconciliation and package regression tests; actual Studio/portal/consumer/browser evidence is recorded separately in the Cycle1.4 report.",
+      "disposition": "native-source-pattern",
+      "counterpart": "@victframework/ui-svelte/rhea: rheaNativePatterns[native-select]",
+      "authoring": {
+        "kind": "canonical-native-source",
+        "registeredComponents": [],
+        "recipe": "rhea-native-select",
+        "styleDependency": "@victframework/ui-svelte/rhea.css in preview and product hosts"
+      },
+      "presentation": "Reusable scoped Rhea class and semantic source fragment; labels, table headers, caption and typed local field state are retained.",
+      "hostRequirements": [
+        "Declared submission/navigation/data actions remain host-owned."
+      ],
+      "omittedFunctionality": "No backend, authentication, authorization or provider behavior."
+    },
+    {
+      "family": "navigation-menu",
+      "upstreamRegistry": "docs/static/registry/styles/rhea/navigation-menu.json",
+      "upstreamSha256": "ae01c3e8138eaa12f2ed3086805dd47a688983a7458ce096163f7f28c1b5cabc",
+      "dependencies": {
+        "runtime": [],
+        "upstreamDevelopment": [
+          "bits-ui@^2.20.0",
+          "@internationalized/date@^3.12.0",
+          "tailwind-variants@^3.3.0"
+        ],
+        "registry": []
+      },
+      "compatibility": "Existing canonical component IDs/revisions/defaults/required slots/output shapes remain unchanged. New native source is additive; stylesheet is explicit opt-in.",
+      "evidence": "Source reconciliation and package regression tests; actual Studio/portal/consumer/browser evidence is recorded separately in the Cycle1.4 report.",
+      "disposition": "compatible-general-presentation",
+      "counterpart": "packages/ui-svelte/src/catalog/navigation-menu.ts",
+      "authoring": {
+        "kind": "registered-component-and-parts",
+        "registeredComponents": [
+          "vict.catalog.navigation-menu@1",
+          "vict.catalog.navigation-menu.item@1",
+          "vict.catalog.navigation-menu.link@1",
+          "vict.catalog.navigation-menu.sub@1"
+        ]
+      },
+      "presentation": "Retain existing Bits public parts and canonical adapters; opt-in rhea.css translates pinned family geometry, tokens, state/focus, surface and overlay presentation.",
+      "hostRequirements": [],
+      "omittedFunctionality": "Upstream wrapper-specific props/variants not in the existing contract are not silently added. Source slots/control semantics stay VICT-owned."
+    },
+    {
+      "family": "pagination",
+      "upstreamRegistry": "docs/static/registry/styles/rhea/pagination.json",
+      "upstreamSha256": "86074a1b7a57c9d4a2a6a9d079dc53c96124285f0a6f4c4a71d960d31d5b3531",
+      "dependencies": {
+        "runtime": [],
+        "upstreamDevelopment": [
+          "bits-ui@^2.20.0",
+          "@internationalized/date@^3.12.0"
+        ],
+        "registry": [
+          "button"
+        ]
+      },
+      "compatibility": "Existing canonical component IDs/revisions/defaults/required slots/output shapes remain unchanged. New native source is additive; stylesheet is explicit opt-in.",
+      "evidence": "Source reconciliation and package regression tests; actual Studio/portal/consumer/browser evidence is recorded separately in the Cycle1.4 report.",
+      "disposition": "compatible-general-presentation",
+      "counterpart": "packages/ui-svelte/src/catalog/pagination.ts",
+      "authoring": {
+        "kind": "registered-component-and-parts",
+        "registeredComponents": [
+          "vict.catalog.pagination@1"
+        ]
+      },
+      "presentation": "Retain existing Bits public parts and canonical adapters; opt-in rhea.css translates pinned family geometry, tokens, state/focus, surface and overlay presentation.",
+      "hostRequirements": [],
+      "omittedFunctionality": "Upstream wrapper-specific props/variants not in the existing contract are not silently added. Source slots/control semantics stay VICT-owned."
+    },
+    {
+      "family": "popover",
+      "upstreamRegistry": "docs/static/registry/styles/rhea/popover.json",
+      "upstreamSha256": "d83767cef945de427635e5a25e81f008b290ec8bd621a5b6dc4f5b6e8e541f4f",
+      "dependencies": {
+        "runtime": [],
+        "upstreamDevelopment": [
+          "bits-ui@^2.20.0",
+          "@internationalized/date@^3.12.0"
+        ],
+        "registry": []
+      },
+      "compatibility": "Existing canonical component IDs/revisions/defaults/required slots/output shapes remain unchanged. New native source is additive; stylesheet is explicit opt-in.",
+      "evidence": "Source reconciliation and package regression tests; actual Studio/portal/consumer/browser evidence is recorded separately in the Cycle1.4 report.",
+      "disposition": "compatible-general-presentation",
+      "counterpart": "packages/ui-svelte/src/catalog/popover.ts",
+      "authoring": {
+        "kind": "registered-component-and-parts",
+        "registeredComponents": [
+          "vict.catalog.popover@1"
+        ]
+      },
+      "presentation": "Retain existing Bits public parts and canonical adapters; opt-in rhea.css translates pinned family geometry, tokens, state/focus, surface and overlay presentation.",
+      "hostRequirements": [],
+      "omittedFunctionality": "Upstream wrapper-specific props/variants not in the existing contract are not silently added. Source slots/control semantics stay VICT-owned."
+    },
+    {
+      "family": "progress",
+      "upstreamRegistry": "docs/static/registry/styles/rhea/progress.json",
+      "upstreamSha256": "b4c6937e4c432683eed4d99e06ee6344698e156c5dd512a885f0bf565c0b888a",
+      "dependencies": {
+        "runtime": [],
+        "upstreamDevelopment": [
+          "bits-ui@^2.20.0",
+          "@internationalized/date@^3.12.0"
+        ],
+        "registry": []
+      },
+      "compatibility": "Existing canonical component IDs/revisions/defaults/required slots/output shapes remain unchanged. New native source is additive; stylesheet is explicit opt-in.",
+      "evidence": "Source reconciliation and package regression tests; actual Studio/portal/consumer/browser evidence is recorded separately in the Cycle1.4 report.",
+      "disposition": "compatible-general-presentation",
+      "counterpart": "packages/ui-svelte/src/catalog/progress.ts",
+      "authoring": {
+        "kind": "registered-component-and-parts",
+        "registeredComponents": [
+          "vict.catalog.progress@1"
+        ]
+      },
+      "presentation": "Retain existing Bits public parts and canonical adapters; opt-in rhea.css translates pinned family geometry, tokens, state/focus, surface and overlay presentation.",
+      "hostRequirements": [],
+      "omittedFunctionality": "Upstream wrapper-specific props/variants not in the existing contract are not silently added. Source slots/control semantics stay VICT-owned."
+    },
+    {
+      "family": "questionnaire",
+      "upstreamRegistry": "docs/static/registry/styles/rhea/questionnaire.json",
+      "upstreamSha256": "b7b90939608c27978d34e901160ac84f00d32deb1ae853b4137659845249082a",
+      "dependencies": {
+        "runtime": [],
+        "upstreamDevelopment": [
+          "@shadcn-svelte/primitives@^0.0.1"
+        ],
+        "registry": [
+          "button"
+        ]
+      },
+      "compatibility": "Existing canonical component IDs/revisions/defaults/required slots/output shapes remain unchanged. New native source is additive; stylesheet is explicit opt-in.",
+      "evidence": "Source reconciliation and package regression tests; actual Studio/portal/consumer/browser evidence is recorded separately in the Cycle1.4 report.",
+      "disposition": "explicit-host-or-adapter-exception",
+      "counterpart": "No canonical questionnaire adapter.",
+      "authoring": {
+        "kind": "host-composition-or-unavailable",
+        "registeredComponents": []
+      },
+      "presentation": "Existing VICT host surfaces share Rhea tokens where mounted in its scope; no false upstream-family parity.",
+      "hostRequirements": [
+        "Schema-driven conditional questions/validation/navigation and submission host contract are absent; ordinary native fields can be composed without that promise."
+      ],
+      "omittedFunctionality": "Schema-driven conditional questions/validation/navigation and submission host contract are absent; ordinary native fields can be composed without that promise."
+    },
+    {
+      "family": "radio-group",
+      "upstreamRegistry": "docs/static/registry/styles/rhea/radio-group.json",
+      "upstreamSha256": "fb68d46637ad7d4a5212c040148c35985a76edcf95fef2035bbebbe0cc383b59",
+      "dependencies": {
+        "runtime": [],
+        "upstreamDevelopment": [
+          "bits-ui@^2.20.0",
+          "@internationalized/date@^3.12.0"
+        ],
+        "registry": []
+      },
+      "compatibility": "Existing canonical component IDs/revisions/defaults/required slots/output shapes remain unchanged. New native source is additive; stylesheet is explicit opt-in.",
+      "evidence": "Source reconciliation and package regression tests; actual Studio/portal/consumer/browser evidence is recorded separately in the Cycle1.4 report.",
+      "disposition": "compatible-general-presentation",
+      "counterpart": "packages/ui-svelte/src/catalog/radio-group.ts",
+      "authoring": {
+        "kind": "host-required",
+        "registeredComponents": [
+          "vict.catalog.radio-group@1"
+        ]
+      },
+      "presentation": "Retain existing Bits public parts and canonical adapters; opt-in rhea.css translates pinned family geometry, tokens, state/focus, surface and overlay presentation.",
+      "hostRequirements": [
+        "Structured radio options require a declared view; arbitrary object arrays are not local state."
+      ],
+      "omittedFunctionality": "Upstream wrapper-specific props/variants not in the existing contract are not silently added. Source slots/control semantics stay VICT-owned."
+    },
+    {
+      "family": "range-calendar",
+      "upstreamRegistry": "docs/static/registry/styles/rhea/range-calendar.json",
+      "upstreamSha256": "f591f4f62e83111222f413035260f7503abc0fb340b3f87e46dfc0fbb2f82694",
+      "dependencies": {
+        "runtime": [],
+        "upstreamDevelopment": [
+          "@internationalized/date@^3.12.0",
+          "bits-ui@^2.20.0"
+        ],
+        "registry": [
+          "button"
+        ]
+      },
+      "compatibility": "Existing canonical component IDs/revisions/defaults/required slots/output shapes remain unchanged. New native source is additive; stylesheet is explicit opt-in.",
+      "evidence": "Source reconciliation and package regression tests; actual Studio/portal/consumer/browser evidence is recorded separately in the Cycle1.4 report.",
+      "disposition": "compatible-general-presentation",
+      "counterpart": "packages/ui-svelte/src/catalog/range-calendar.ts",
+      "authoring": {
+        "kind": "registered-component-and-parts",
+        "registeredComponents": [
+          "vict.catalog.range-calendar@1"
+        ]
+      },
+      "presentation": "Retain existing Bits public parts and canonical adapters; opt-in rhea.css translates pinned family geometry, tokens, state/focus, surface and overlay presentation.",
+      "hostRequirements": [],
+      "omittedFunctionality": "Upstream wrapper-specific props/variants not in the existing contract are not silently added. Source slots/control semantics stay VICT-owned."
+    },
+    {
+      "family": "resizable",
+      "upstreamRegistry": "docs/static/registry/styles/rhea/resizable.json",
+      "upstreamSha256": "1ec9be08ee752a6f182f9f4fce1392792575817c6a43eae1c06d03e85eab13fd",
+      "dependencies": {
+        "runtime": [],
+        "upstreamDevelopment": [
+          "paneforge@^1.0.2"
+        ],
+        "registry": []
+      },
+      "compatibility": "Existing canonical component IDs/revisions/defaults/required slots/output shapes remain unchanged. New native source is additive; stylesheet is explicit opt-in.",
+      "evidence": "Source reconciliation and package regression tests; actual Studio/portal/consumer/browser evidence is recorded separately in the Cycle1.4 report.",
+      "disposition": "explicit-host-or-adapter-exception",
+      "counterpart": "Studio inspection sizing is product composition, not a reusable canonical splitter.",
+      "authoring": {
+        "kind": "host-composition-or-unavailable",
+        "registeredComponents": []
+      },
+      "presentation": "Existing VICT host surfaces share Rhea tokens where mounted in its scope; no false upstream-family parity.",
+      "hostRequirements": [
+        "Pane focus, keyboard resize, persistence and paneforge closure are not introduced as a general authorable family."
+      ],
+      "omittedFunctionality": "Pane focus, keyboard resize, persistence and paneforge closure are not introduced as a general authorable family."
+    },
+    {
+      "family": "scroll-area",
+      "upstreamRegistry": "docs/static/registry/styles/rhea/scroll-area.json",
+      "upstreamSha256": "e7e24cacfb8eb00be2d14691f37b2f080e463d6833dbd139cb60d05aec450952",
+      "dependencies": {
+        "runtime": [],
+        "upstreamDevelopment": [
+          "bits-ui@^2.20.0",
+          "@internationalized/date@^3.12.0"
+        ],
+        "registry": []
+      },
+      "compatibility": "Existing canonical component IDs/revisions/defaults/required slots/output shapes remain unchanged. New native source is additive; stylesheet is explicit opt-in.",
+      "evidence": "Source reconciliation and package regression tests; actual Studio/portal/consumer/browser evidence is recorded separately in the Cycle1.4 report.",
+      "disposition": "compatible-general-presentation",
+      "counterpart": "packages/ui-svelte/src/catalog/scroll-area.ts",
+      "authoring": {
+        "kind": "registered-component-and-parts",
+        "registeredComponents": [
+          "vict.catalog.scroll-area@1"
+        ]
+      },
+      "presentation": "Retain existing Bits public parts and canonical adapters; opt-in rhea.css translates pinned family geometry, tokens, state/focus, surface and overlay presentation.",
+      "hostRequirements": [],
+      "omittedFunctionality": "Upstream wrapper-specific props/variants not in the existing contract are not silently added. Source slots/control semantics stay VICT-owned."
+    },
+    {
+      "family": "select",
+      "upstreamRegistry": "docs/static/registry/styles/rhea/select.json",
+      "upstreamSha256": "c3549cb6f13e5ecc51c15fbeefd46386b413f44da2c49889625a57c81eb9fda4",
+      "dependencies": {
+        "runtime": [],
+        "upstreamDevelopment": [
+          "bits-ui@^2.20.0",
+          "@internationalized/date@^3.12.0"
+        ],
+        "registry": [
+          "separator"
+        ]
+      },
+      "compatibility": "Existing canonical component IDs/revisions/defaults/required slots/output shapes remain unchanged. New native source is additive; stylesheet is explicit opt-in.",
+      "evidence": "Source reconciliation and package regression tests; actual Studio/portal/consumer/browser evidence is recorded separately in the Cycle1.4 report.",
+      "disposition": "compatible-general-presentation",
+      "counterpart": "packages/ui-svelte/src/catalog/select.ts",
+      "authoring": {
+        "kind": "registered-component-and-parts",
+        "registeredComponents": [
+          "vict.catalog.select@1",
+          "vict.catalog.select-multiple@1",
+          "vict.catalog.select-item@1"
+        ]
+      },
+      "presentation": "Retain existing Bits public parts and canonical adapters; opt-in rhea.css translates pinned family geometry, tokens, state/focus, surface and overlay presentation.",
+      "hostRequirements": [],
+      "omittedFunctionality": "Upstream wrapper-specific props/variants not in the existing contract are not silently added. Source slots/control semantics stay VICT-owned."
+    },
+    {
+      "family": "separator",
+      "upstreamRegistry": "docs/static/registry/styles/rhea/separator.json",
+      "upstreamSha256": "6f53e106cb04597615e9f28d1cd1a34e04e9f81b7ceea1787935dd0e79b1521e",
+      "dependencies": {
+        "runtime": [],
+        "upstreamDevelopment": [
+          "bits-ui@^2.20.0",
+          "@internationalized/date@^3.12.0"
+        ],
+        "registry": []
+      },
+      "compatibility": "Existing canonical component IDs/revisions/defaults/required slots/output shapes remain unchanged. New native source is additive; stylesheet is explicit opt-in.",
+      "evidence": "Source reconciliation and package regression tests; actual Studio/portal/consumer/browser evidence is recorded separately in the Cycle1.4 report.",
+      "disposition": "compatible-general-presentation",
+      "counterpart": "packages/ui-svelte/src/catalog/separator.ts",
+      "authoring": {
+        "kind": "registered-component-and-parts",
+        "registeredComponents": [
+          "vict.catalog.separator@1"
+        ]
+      },
+      "presentation": "Retain existing Bits public parts and canonical adapters; opt-in rhea.css translates pinned family geometry, tokens, state/focus, surface and overlay presentation.",
+      "hostRequirements": [],
+      "omittedFunctionality": "Upstream wrapper-specific props/variants not in the existing contract are not silently added. Source slots/control semantics stay VICT-owned."
+    },
+    {
+      "family": "sheet",
+      "upstreamRegistry": "docs/static/registry/styles/rhea/sheet.json",
+      "upstreamSha256": "b52df379458b63e0289c6016b0a1159fbeb9a06f95798f7dd9d33b8e0422389d",
+      "dependencies": {
+        "runtime": [],
+        "upstreamDevelopment": [
+          "bits-ui@^2.20.0",
+          "@internationalized/date@^3.12.0"
+        ],
+        "registry": [
+          "button"
+        ]
+      },
+      "compatibility": "Existing canonical component IDs/revisions/defaults/required slots/output shapes remain unchanged. New native source is additive; stylesheet is explicit opt-in.",
+      "evidence": "Source reconciliation and package regression tests; actual Studio/portal/consumer/browser evidence is recorded separately in the Cycle1.4 report.",
+      "disposition": "explicit-host-or-adapter-exception",
+      "counterpart": "packages/ui-svelte/src/Overlay.svelte",
+      "authoring": {
+        "kind": "host-composition-or-unavailable",
+        "registeredComponents": []
+      },
+      "presentation": "Existing VICT host surfaces share Rhea tokens where mounted in its scope; no false upstream-family parity.",
+      "hostRequirements": [
+        "Existing declared drawer/overlay owns focus and dismissal. A second general sheet contract is not copied under an unchanged dialog revision."
+      ],
+      "omittedFunctionality": "Existing declared drawer/overlay owns focus and dismissal. A second general sheet contract is not copied under an unchanged dialog revision."
+    },
+    {
+      "family": "sidebar",
+      "upstreamRegistry": "docs/static/registry/styles/rhea/sidebar.json",
+      "upstreamSha256": "d731d6c2091af38c1fdf2cdcc3f1ce3ccc9d3e319627c275e7fc9cc71d96a760",
+      "dependencies": {
+        "runtime": [],
+        "upstreamDevelopment": [
+          "bits-ui@^2.20.0",
+          "@internationalized/date@^3.12.0",
+          "tailwind-variants@^3.3.0"
+        ],
+        "registry": [
+          "is-mobile",
+          "input",
+          "tooltip",
+          "skeleton",
+          "separator",
+          "button",
+          "sheet"
+        ]
+      },
+      "compatibility": "Existing canonical component IDs/revisions/defaults/required slots/output shapes remain unchanged. New native source is additive; stylesheet is explicit opt-in.",
+      "evidence": "Source reconciliation and package regression tests; actual Studio/portal/consumer/browser evidence is recorded separately in the Cycle1.4 report.",
+      "disposition": "explicit-host-or-adapter-exception",
+      "counterpart": "packages/ui-svelte/src/AppShell.svelte; vict.catalog.appshell@1 host-required",
+      "authoring": {
+        "kind": "host-composition-or-unavailable",
+        "registeredComponents": [
+          "vict.catalog.appshell@1"
+        ]
+      },
+      "presentation": "Existing VICT host surfaces share Rhea tokens where mounted in its scope; no false upstream-family parity.",
+      "hostRequirements": [
+        "Declared application navigation/path/permissions stay host-owned; no screen-local route or sidebar state authority is invented."
+      ],
+      "omittedFunctionality": "Declared application navigation/path/permissions stay host-owned; no screen-local route or sidebar state authority is invented."
+    },
+    {
+      "family": "skeleton",
+      "upstreamRegistry": "docs/static/registry/styles/rhea/skeleton.json",
+      "upstreamSha256": "17f7d7f4d250eb8c5e081917d1c6251b6e24c6c410b037e83e4d421c6821a4a0",
+      "dependencies": {
+        "runtime": [],
+        "upstreamDevelopment": [],
+        "registry": []
+      },
+      "compatibility": "Existing canonical component IDs/revisions/defaults/required slots/output shapes remain unchanged. New native source is additive; stylesheet is explicit opt-in.",
+      "evidence": "Source reconciliation and package regression tests; actual Studio/portal/consumer/browser evidence is recorded separately in the Cycle1.4 report.",
+      "disposition": "native-source-pattern",
+      "counterpart": "@victframework/ui-svelte/rhea: rheaNativePatterns[skeleton]",
+      "authoring": {
+        "kind": "canonical-native-source",
+        "registeredComponents": [],
+        "recipe": "rhea-skeleton",
+        "styleDependency": "@victframework/ui-svelte/rhea.css in preview and product hosts"
+      },
+      "presentation": "Reusable scoped Rhea class and semantic source fragment; labels, table headers, caption and typed local field state are retained.",
+      "hostRequirements": [],
+      "omittedFunctionality": "Native table does not imply data-grid sorting/filtering; keyboard hints do not register shortcuts; status visuals do not create task execution."
+    },
+    {
+      "family": "slider",
+      "upstreamRegistry": "docs/static/registry/styles/rhea/slider.json",
+      "upstreamSha256": "a7717b41ac0846ed2b178f1fc764c8bed98ee6c50621c1a4d4004f2a94464766",
+      "dependencies": {
+        "runtime": [],
+        "upstreamDevelopment": [
+          "bits-ui@^2.20.0",
+          "@internationalized/date@^3.12.0"
+        ],
+        "registry": []
+      },
+      "compatibility": "Existing canonical component IDs/revisions/defaults/required slots/output shapes remain unchanged. New native source is additive; stylesheet is explicit opt-in.",
+      "evidence": "Source reconciliation and package regression tests; actual Studio/portal/consumer/browser evidence is recorded separately in the Cycle1.4 report.",
+      "disposition": "compatible-general-presentation",
+      "counterpart": "packages/ui-svelte/src/catalog/slider.ts",
+      "authoring": {
+        "kind": "registered-component-and-parts",
+        "registeredComponents": [
+          "vict.catalog.slider@1"
+        ]
+      },
+      "presentation": "Retain existing Bits public parts and canonical adapters; opt-in rhea.css translates pinned family geometry, tokens, state/focus, surface and overlay presentation.",
+      "hostRequirements": [],
+      "omittedFunctionality": "Upstream wrapper-specific props/variants not in the existing contract are not silently added. Source slots/control semantics stay VICT-owned."
+    },
+    {
+      "family": "sonner",
+      "upstreamRegistry": "docs/static/registry/styles/rhea/sonner.json",
+      "upstreamSha256": "d76a511a07d5d1d7f6bc8f8301f0bfe1dd3214c3ccbcd04f753ebae10134a67e",
+      "dependencies": {
+        "runtime": [],
+        "upstreamDevelopment": [
+          "mode-watcher@^1.1.0",
+          "svelte-sonner@^1.2.0"
+        ],
+        "registry": []
+      },
+      "compatibility": "Existing canonical component IDs/revisions/defaults/required slots/output shapes remain unchanged. New native source is additive; stylesheet is explicit opt-in.",
+      "evidence": "Source reconciliation and package regression tests; actual Studio/portal/consumer/browser evidence is recorded separately in the Cycle1.4 report.",
+      "disposition": "explicit-host-or-adapter-exception",
+      "counterpart": "packages/ui-svelte/src/Feedback.svelte and ActionFeedback.svelte",
+      "authoring": {
+        "kind": "host-composition-or-unavailable",
+        "registeredComponents": []
+      },
+      "presentation": "Existing VICT host surfaces share Rhea tokens where mounted in its scope; no false upstream-family parity.",
+      "hostRequirements": [
+        "Existing inline action feedback remains. A toast queue, host announcer, persistence, dismissal policy and svelte-sonner dependency are not introduced."
+      ],
+      "omittedFunctionality": "Existing inline action feedback remains. A toast queue, host announcer, persistence, dismissal policy and svelte-sonner dependency are not introduced."
+    },
+    {
+      "family": "spinner",
+      "upstreamRegistry": "docs/static/registry/styles/rhea/spinner.json",
+      "upstreamSha256": "bdd31b9901948d74eb3f303ea7b2f5ac4fc1708e7dfc893b4948c9f543a6f4ba",
+      "dependencies": {
+        "runtime": [],
+        "upstreamDevelopment": [],
+        "registry": []
+      },
+      "compatibility": "Existing canonical component IDs/revisions/defaults/required slots/output shapes remain unchanged. New native source is additive; stylesheet is explicit opt-in.",
+      "evidence": "Source reconciliation and package regression tests; actual Studio/portal/consumer/browser evidence is recorded separately in the Cycle1.4 report.",
+      "disposition": "native-source-pattern",
+      "counterpart": "@victframework/ui-svelte/rhea: rheaNativePatterns[spinner]",
+      "authoring": {
+        "kind": "canonical-native-source",
+        "registeredComponents": [],
+        "recipe": "rhea-spinner",
+        "styleDependency": "@victframework/ui-svelte/rhea.css in preview and product hosts"
+      },
+      "presentation": "Reusable scoped Rhea class and semantic source fragment; labels, table headers, caption and typed local field state are retained.",
+      "hostRequirements": [],
+      "omittedFunctionality": "Native table does not imply data-grid sorting/filtering; keyboard hints do not register shortcuts; status visuals do not create task execution."
+    },
+    {
+      "family": "switch",
+      "upstreamRegistry": "docs/static/registry/styles/rhea/switch.json",
+      "upstreamSha256": "acbbb2eb836b7d79945672f41bd2e0db28356c3dccfaf5a817aa53e5c713ce4c",
+      "dependencies": {
+        "runtime": [],
+        "upstreamDevelopment": [
+          "bits-ui@^2.20.0",
+          "@internationalized/date@^3.12.0"
+        ],
+        "registry": []
+      },
+      "compatibility": "Existing canonical component IDs/revisions/defaults/required slots/output shapes remain unchanged. New native source is additive; stylesheet is explicit opt-in.",
+      "evidence": "Source reconciliation and package regression tests; actual Studio/portal/consumer/browser evidence is recorded separately in the Cycle1.4 report.",
+      "disposition": "compatible-general-presentation",
+      "counterpart": "packages/ui-svelte/src/catalog/switch.ts",
+      "authoring": {
+        "kind": "registered-component-and-parts",
+        "registeredComponents": [
+          "vict.catalog.switch@1"
+        ]
+      },
+      "presentation": "Retain existing Bits public parts and canonical adapters; opt-in rhea.css translates pinned family geometry, tokens, state/focus, surface and overlay presentation.",
+      "hostRequirements": [],
+      "omittedFunctionality": "Upstream wrapper-specific props/variants not in the existing contract are not silently added. Source slots/control semantics stay VICT-owned."
+    },
+    {
+      "family": "table",
+      "upstreamRegistry": "docs/static/registry/styles/rhea/table.json",
+      "upstreamSha256": "76e7f96d099264fc6b24c423c2e3c96579d42be4cad1d733b610bfddb0c7794b",
+      "dependencies": {
+        "runtime": [],
+        "upstreamDevelopment": [],
+        "registry": []
+      },
+      "compatibility": "Existing canonical component IDs/revisions/defaults/required slots/output shapes remain unchanged. New native source is additive; stylesheet is explicit opt-in.",
+      "evidence": "Source reconciliation and package regression tests; actual Studio/portal/consumer/browser evidence is recorded separately in the Cycle1.4 report.",
+      "disposition": "native-source-pattern",
+      "counterpart": "@victframework/ui-svelte/rhea: rheaNativePatterns[table]",
+      "authoring": {
+        "kind": "canonical-native-source",
+        "registeredComponents": [],
+        "recipe": "rhea-table",
+        "styleDependency": "@victframework/ui-svelte/rhea.css in preview and product hosts"
+      },
+      "presentation": "Reusable scoped Rhea class and semantic source fragment; labels, table headers, caption and typed local field state are retained.",
+      "hostRequirements": [
+        "Declared submission/navigation/data actions remain host-owned."
+      ],
+      "omittedFunctionality": "Native table does not imply data-grid sorting/filtering; keyboard hints do not register shortcuts; status visuals do not create task execution."
+    },
+    {
+      "family": "tabs",
+      "upstreamRegistry": "docs/static/registry/styles/rhea/tabs.json",
+      "upstreamSha256": "860afc63670b419d726900fecadc0ec88d6a95285b3d516cb3ae389de58e4be5",
+      "dependencies": {
+        "runtime": [],
+        "upstreamDevelopment": [
+          "bits-ui@^2.20.0",
+          "@internationalized/date@^3.12.0",
+          "tailwind-variants@^3.3.0"
+        ],
+        "registry": []
+      },
+      "compatibility": "Existing canonical component IDs/revisions/defaults/required slots/output shapes remain unchanged. New native source is additive; stylesheet is explicit opt-in.",
+      "evidence": "Source reconciliation and package regression tests; actual Studio/portal/consumer/browser evidence is recorded separately in the Cycle1.4 report.",
+      "disposition": "compatible-general-presentation",
+      "counterpart": "packages/ui-svelte/src/catalog/tabs.ts",
+      "authoring": {
+        "kind": "registered-component-and-parts",
+        "registeredComponents": [
+          "vict.catalog.tabs@1",
+          "vict.catalog.tabs-trigger@1",
+          "vict.catalog.tabs-panel@1"
+        ]
+      },
+      "presentation": "Retain existing Bits public parts and canonical adapters; opt-in rhea.css translates pinned family geometry, tokens, state/focus, surface and overlay presentation.",
+      "hostRequirements": [],
+      "omittedFunctionality": "Upstream wrapper-specific props/variants not in the existing contract are not silently added. Source slots/control semantics stay VICT-owned."
+    },
+    {
+      "family": "textarea",
+      "upstreamRegistry": "docs/static/registry/styles/rhea/textarea.json",
+      "upstreamSha256": "00d88b9db6f97dc98d14406f22811c2140a1c207eeb375ac476ee7fe437c8ffa",
+      "dependencies": {
+        "runtime": [],
+        "upstreamDevelopment": [],
+        "registry": []
+      },
+      "compatibility": "Existing canonical component IDs/revisions/defaults/required slots/output shapes remain unchanged. New native source is additive; stylesheet is explicit opt-in.",
+      "evidence": "Source reconciliation and package regression tests; actual Studio/portal/consumer/browser evidence is recorded separately in the Cycle1.4 report.",
+      "disposition": "native-source-pattern",
+      "counterpart": "@victframework/ui-svelte/rhea: rheaNativePatterns[textarea]",
+      "authoring": {
+        "kind": "canonical-native-source",
+        "registeredComponents": [],
+        "recipe": "rhea-textarea",
+        "styleDependency": "@victframework/ui-svelte/rhea.css in preview and product hosts"
+      },
+      "presentation": "Reusable scoped Rhea class and semantic source fragment; labels, table headers, caption and typed local field state are retained.",
+      "hostRequirements": [
+        "Declared submission/navigation/data actions remain host-owned."
+      ],
+      "omittedFunctionality": "No backend, authentication, authorization or provider behavior.",
+      "additionalCounterpart": "@victframework/ui-ai-svelte/components/textarea (existing pinned raw presentation)"
+    },
+    {
+      "family": "toggle",
+      "upstreamRegistry": "docs/static/registry/styles/rhea/toggle.json",
+      "upstreamSha256": "2b305cf7fcb40fdc85e01b5c445238c73449148de4864c761de23fafaacdf252",
+      "dependencies": {
+        "runtime": [],
+        "upstreamDevelopment": [
+          "bits-ui@^2.20.0",
+          "@internationalized/date@^3.12.0",
+          "tailwind-variants@^3.3.0"
+        ],
+        "registry": []
+      },
+      "compatibility": "Existing canonical component IDs/revisions/defaults/required slots/output shapes remain unchanged. New native source is additive; stylesheet is explicit opt-in.",
+      "evidence": "Source reconciliation and package regression tests; actual Studio/portal/consumer/browser evidence is recorded separately in the Cycle1.4 report.",
+      "disposition": "compatible-general-presentation",
+      "counterpart": "packages/ui-svelte/src/catalog/toggle.ts",
+      "authoring": {
+        "kind": "registered-component-and-parts",
+        "registeredComponents": [
+          "vict.catalog.toggle@1"
+        ]
+      },
+      "presentation": "Retain existing Bits public parts and canonical adapters; opt-in rhea.css translates pinned family geometry, tokens, state/focus, surface and overlay presentation.",
+      "hostRequirements": [],
+      "omittedFunctionality": "Upstream wrapper-specific props/variants not in the existing contract are not silently added. Source slots/control semantics stay VICT-owned."
+    },
+    {
+      "family": "toggle-group",
+      "upstreamRegistry": "docs/static/registry/styles/rhea/toggle-group.json",
+      "upstreamSha256": "9fd33f078ecc76e4707ebb32cde224bc3db8160b69087d61f46a3b02d4a3fbfc",
+      "dependencies": {
+        "runtime": [],
+        "upstreamDevelopment": [
+          "bits-ui@^2.20.0",
+          "@internationalized/date@^3.12.0",
+          "tailwind-variants@^3.3.0"
+        ],
+        "registry": [
+          "toggle"
+        ]
+      },
+      "compatibility": "Existing canonical component IDs/revisions/defaults/required slots/output shapes remain unchanged. New native source is additive; stylesheet is explicit opt-in.",
+      "evidence": "Source reconciliation and package regression tests; actual Studio/portal/consumer/browser evidence is recorded separately in the Cycle1.4 report.",
+      "disposition": "compatible-general-presentation",
+      "counterpart": "packages/ui-svelte/src/catalog/toggle-group.ts",
+      "authoring": {
+        "kind": "registered-component-and-parts",
+        "registeredComponents": [
+          "vict.catalog.toggle-group@1",
+          "vict.catalog.toggle-group-multiple@1",
+          "vict.catalog.toggle-group-item@1"
+        ]
+      },
+      "presentation": "Retain existing Bits public parts and canonical adapters; opt-in rhea.css translates pinned family geometry, tokens, state/focus, surface and overlay presentation.",
+      "hostRequirements": [],
+      "omittedFunctionality": "Upstream wrapper-specific props/variants not in the existing contract are not silently added. Source slots/control semantics stay VICT-owned."
+    },
+    {
+      "family": "tooltip",
+      "upstreamRegistry": "docs/static/registry/styles/rhea/tooltip.json",
+      "upstreamSha256": "7f41719c7c1f0697162fa007e34469c20e13e84cc04b02e13bb01d394f1f50dc",
+      "dependencies": {
+        "runtime": [],
+        "upstreamDevelopment": [
+          "bits-ui@^2.20.0",
+          "@internationalized/date@^3.12.0"
+        ],
+        "registry": []
+      },
+      "compatibility": "Existing canonical component IDs/revisions/defaults/required slots/output shapes remain unchanged. New native source is additive; stylesheet is explicit opt-in.",
+      "evidence": "Source reconciliation and package regression tests; actual Studio/portal/consumer/browser evidence is recorded separately in the Cycle1.4 report.",
+      "disposition": "compatible-general-presentation",
+      "counterpart": "packages/ui-svelte/src/catalog/tooltip.ts",
+      "authoring": {
+        "kind": "registered-component-and-parts",
+        "registeredComponents": [
+          "vict.catalog.tooltip@1"
+        ]
+      },
+      "presentation": "Retain existing Bits public parts and canonical adapters; opt-in rhea.css translates pinned family geometry, tokens, state/focus, surface and overlay presentation.",
+      "hostRequirements": [],
+      "omittedFunctionality": "Upstream wrapper-specific props/variants not in the existing contract are not silently added. Source slots/control semantics stay VICT-owned."
+    },
+    {
+      "family": "trace",
+      "upstreamRegistry": "docs/static/registry/styles/rhea/trace.json",
+      "upstreamSha256": "695a317756575959901c31275b61568616f60cbde29ae46f5e6dfc8424b198d4",
+      "dependencies": {
+        "runtime": [],
+        "upstreamDevelopment": [
+          "bits-ui@^2.20.0",
+          "@internationalized/date@^3.12.0"
+        ],
+        "registry": [
+          "collapsible"
+        ]
+      },
+      "compatibility": "Existing canonical component IDs/revisions/defaults/required slots/output shapes remain unchanged. New native source is additive; stylesheet is explicit opt-in.",
+      "evidence": "Source reconciliation and package regression tests; actual Studio/portal/consumer/browser evidence is recorded separately in the Cycle1.4 report.",
+      "disposition": "existing-specialist-presentation",
+      "counterpart": "@victframework/ui-ai-svelte/components/trace",
+      "authoring": {
+        "kind": "public-presentation-composition-only",
+        "registeredComponents": []
+      },
+      "presentation": "Existing copied pinned AI Rhea source and scoped built CSS; shared Rhea token bridge aligns surrounding presentation.",
+      "hostRequirements": [
+        "Host supplies actual records/callbacks; presentation is not agent/provider execution."
+      ],
+      "omittedFunctionality": "Raw exported parts are not all canonical authorable components. AI package has exactly three registered contracts; only eligible compositions count."
+    }
+  ],
+  "outsidePinnedGeneralFamilies": [
+    {
+      "name": "Combobox",
+      "slug": "combobox",
+      "status": "styled and usable",
+      "treatment": "Retain existing public API and canonical registration/disposition; shared Rhea controls/tokens apply where relevant. Bits deferred families remain deferred."
+    },
+    {
+      "name": "DateField",
+      "slug": "date-field",
+      "status": "styled and usable",
+      "treatment": "Retain existing public API and canonical registration/disposition; shared Rhea controls/tokens apply where relevant. Bits deferred families remain deferred."
+    },
+    {
+      "name": "DatePicker",
+      "slug": "date-picker",
+      "status": "styled and usable",
+      "treatment": "Retain existing public API and canonical registration/disposition; shared Rhea controls/tokens apply where relevant. Bits deferred families remain deferred."
+    },
+    {
+      "name": "DateRangeField",
+      "slug": "date-range-field",
+      "status": "styled and usable",
+      "treatment": "Retain existing public API and canonical registration/disposition; shared Rhea controls/tokens apply where relevant. Bits deferred families remain deferred."
+    },
+    {
+      "name": "DateRangePicker",
+      "slug": "date-range-picker",
+      "status": "styled and usable",
+      "treatment": "Retain existing public API and canonical registration/disposition; shared Rhea controls/tokens apply where relevant. Bits deferred families remain deferred."
+    },
+    {
+      "name": "Meter",
+      "slug": "meter",
+      "status": "styled and usable",
+      "treatment": "Retain existing public API and canonical registration/disposition; shared Rhea controls/tokens apply where relevant. Bits deferred families remain deferred."
+    },
+    {
+      "name": "PinInput",
+      "slug": "pin-input",
+      "status": "deferred",
+      "treatment": "Retain existing public API and canonical registration/disposition; shared Rhea controls/tokens apply where relevant. Bits deferred families remain deferred."
+    },
+    {
+      "name": "RatingGroup",
+      "slug": "rating-group",
+      "status": "deferred",
+      "treatment": "Retain existing public API and canonical registration/disposition; shared Rhea controls/tokens apply where relevant. Bits deferred families remain deferred."
+    },
+    {
+      "name": "TimeField",
+      "slug": "time-field",
+      "status": "styled and usable",
+      "treatment": "Retain existing public API and canonical registration/disposition; shared Rhea controls/tokens apply where relevant. Bits deferred families remain deferred."
+    },
+    {
+      "name": "TimeRangeField",
+      "slug": "time-range-field",
+      "status": "deferred",
+      "treatment": "Retain existing public API and canonical registration/disposition; shared Rhea controls/tokens apply where relevant. Bits deferred families remain deferred."
+    },
+    {
+      "name": "Toolbar",
+      "slug": "toolbar",
+      "status": "supported direct composition",
+      "treatment": "Retain existing public API and canonical registration/disposition; shared Rhea controls/tokens apply where relevant. Bits deferred families remain deferred."
+    }
+  ]
+}

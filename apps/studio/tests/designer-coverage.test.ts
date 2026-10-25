@@ -6,6 +6,7 @@ import { newScreen, designerCatalogs, compileScreen, catalogDescriptors } from '
 import { prepareAgentEdit, documentCursor, applyAgentProposal, agentContext, type AgentEdit } from '../src/lib/designer/agent-edits.js';
 import { screenStore } from '../src/lib/designer/storage.js';
 import { installedAuthoringRegistry } from '../src/lib/designer/authoring.js';
+import { rheaNativePatterns } from '@victframework/ui-svelte/rhea';
 
 const recipe = (id: string) => screenRecipes.find(recipe => recipe.id === id)!;
 function add(document: ReturnType<typeof newScreen>, id: string, parentId = document.root, slotName?: string) {
@@ -21,7 +22,8 @@ function add(document: ReturnType<typeof newScreen>, id: string, parentId = docu
 describe('Cycle 1.3 actual Designer coverage', () => {
   it('compiles every standalone recipe through canonical edits and finished application validation', () => {
     for (const entry of screenRecipes.filter(entry => !entry.placements)) add(newScreen('Coverage', 'coverage'), entry.id);
-    expect(screenRecipes.length).toBe(5+installedAuthoringRegistry.contracts.filter(entry=>entry.seed&&['standalone','part'].includes(entry.eligibility.kind)).length);
+    expect(screenRecipes.length).toBe(5+rheaNativePatterns.length+installedAuthoringRegistry.contracts.filter(entry=>entry.seed&&['standalone','part'].includes(entry.eligibility.kind)).length);
+    expect(screenRecipes.filter(entry => entry.id.startsWith('rhea-')).map(entry => entry.id)).toEqual(rheaNativePatterns.map(entry => `rhea-${entry.id}`));
     expect(new Set(screenRecipes.map(entry => entry.id)).size).toBe(screenRecipes.length);
     const slider = add(newScreen('Typed source', 'typed-source'), 'slider');
     const control=slider.nodes['added-slider'];if(control.kind!=='component'||control.props?.value?.type!=='ref')throw Error('Independent slider binding missing');

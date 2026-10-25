@@ -1,5 +1,12 @@
 # Foundation catalog coverage
 
+Cycle 1.4 adds an explicit shared [Rhea presentation profile](RHEA.md) and thirteen
+canonical native source patterns. The [complete pinned-family matrix](../../docs/studio/CYCLE-1-4-CATALOG-MIGRATION.md)
+reconciles all 63 upstream UI families, including ten material host/adapter
+exceptions. This does not turn the historical 41 Bits-family inventory below
+into 63 registered components. Existing contracts and legacy default CSS remain
+compatible; Studio and opted-in consumers share `rhea.css`.
+
 Audited against the installed **Bits UI 2.19.3**, Svelte **5.57.0**, and @internationalized/date **3.12.4**. The installed Bits family exports and the public VICT subpaths are checked by `node scripts/audit-ui-catalog.mjs`. Dependency versions are unchanged in this cycle.
 
 ## Audit and outcome
