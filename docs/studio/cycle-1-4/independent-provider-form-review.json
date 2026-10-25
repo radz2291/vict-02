@@ -24,6 +24,11 @@
         "studio_screen_edit": 18,
         "studio_screen_observe": 3
       },
+      "inferredReadCategories": {
+        "knowledge": 6,
+        "source": 6,
+        "method": "Independent classification of visible response sections using9fbreadCategory rule; baseline has no native category telemetry."
+      },
       "uniqueProposalCount": 9,
       "committedRevisions": [
         "r1#1",
@@ -49,6 +54,13 @@
             "offsetTop": 0,
             "cropped": false
           },
+          "viewport": {
+            "width": 960,
+            "height": 585,
+            "scrollLeft": 0,
+            "scrollTop": 0,
+            "devicePixelRatio": 1.0000000149011612
+          },
           "capturedAt": "2026-10-25T12:11:59.718Z",
           "model": "zai/glm-5.3-flash",
           "interactionVerified": false,
@@ -66,6 +78,13 @@
             "offsetTop": 0,
             "cropped": true
           },
+          "viewport": {
+            "width": 960,
+            "height": 585,
+            "scrollLeft": 0,
+            "scrollTop": 0,
+            "devicePixelRatio": 1.0000000149011612
+          },
           "capturedAt": "2026-10-25T12:19:02.273Z",
           "model": "zai/glm-5.3-flash",
           "interactionVerified": false,
@@ -82,6 +101,13 @@
             "offsetLeft": 0,
             "offsetTop": 0,
             "cropped": true
+          },
+          "viewport": {
+            "width": 960,
+            "height": 585,
+            "scrollLeft": 0,
+            "scrollTop": 0,
+            "devicePixelRatio": 1.0000000149011612
           },
           "capturedAt": "2026-10-25T12:19:54.196Z",
           "model": "zai/glm-5.3-flash",
@@ -107,6 +133,11 @@
         "studio_screen_edit": 10,
         "studio_screen_observe": 3
       },
+      "inferredReadCategories": {
+        "knowledge": 8,
+        "source": 18,
+        "method": "Independent classification of visible response sections using9fbreadCategory rule; baseline has no native category telemetry."
+      },
       "uniqueProposalCount": 7,
       "committedRevisions": [
         "r1#1",
@@ -130,6 +161,13 @@
             "offsetTop": 0,
             "cropped": true
           },
+          "viewport": {
+            "width": 960,
+            "height": 585,
+            "scrollLeft": 0,
+            "scrollTop": 0,
+            "devicePixelRatio": 1.25
+          },
           "capturedAt": "2026-10-25T12:15:23.575Z",
           "model": "zai/glm-5.3-flash",
           "interactionVerified": false,
@@ -147,6 +185,13 @@
             "offsetTop": 0,
             "cropped": true
           },
+          "viewport": {
+            "width": 960,
+            "height": 585,
+            "scrollLeft": 0,
+            "scrollTop": 0,
+            "devicePixelRatio": 1.25
+          },
           "capturedAt": "2026-10-25T12:16:09.097Z",
           "model": "zai/glm-5.3-flash",
           "interactionVerified": false,
@@ -163,6 +208,13 @@
             "offsetLeft": 0,
             "offsetTop": 0,
             "cropped": false
+          },
+          "viewport": {
+            "width": 960,
+            "height": 585,
+            "scrollLeft": 0,
+            "scrollTop": 0,
+            "devicePixelRatio": 1.25
           },
           "capturedAt": "2026-10-25T12:17:23.480Z",
           "model": "zai/glm-5.3-flash",
@@ -302,6 +354,10 @@
       "sha256": "83b525c13aeab0b16f66532c4e7432a59caa09f32c8ddc870d479e88272eecd8"
     },
     {
+      "name": "provider-form-candidate-computed-focus.json",
+      "sha256": "6f0a9ec74970c8a917fee60a30fc544870c14cce539a2873a0d0cbca830045eb"
+    },
+    {
       "name": "provider-form-candidate-control-values.json",
       "sha256": "d3e8384b99fe58401781d6d4c7e779341ec4099ee37d33f859428551c135082c"
     },
@@ -356,6 +412,18 @@
     {
       "name": "provider-form-candidate-final-source.json",
       "sha256": "da9e21a0a4813677dd52c790b105b4714a9eb26c90eb3e42126fa30e2ad7223e"
+    },
+    {
+      "name": "provider-form-candidate-focused.dom.txt",
+      "sha256": "b0dda3ad38bb80279d629f1e536d3e5f65f9f4462eedb910c936a7c82a6315e3"
+    },
+    {
+      "name": "provider-form-candidate-focused.geometry.json",
+      "sha256": "3c5722aa48462a51c2ab0c254d3cd1727521498bd42d9b01a3c0145f018bf7bb"
+    },
+    {
+      "name": "provider-form-candidate-focused.png",
+      "sha256": "a45f9611756e9a2940fa5166a7561ab975e75dca7e7036550be30a26875b8ff3"
     },
     {
       "name": "provider-form-candidate-initial-source.json",
@@ -459,11 +527,11 @@
     },
     {
       "name": "provider-form-progress-analysis-initial-failed.json",
-      "sha256": "23dcd7366ffb3bde5eb27da1321afcc575dc985103a66980d923446ddd7b34ae"
+      "sha256": "f3a65cf101c1841ea34336dba29be515eb6e0caaea18c302ebdf60ebefd5d284"
     },
     {
       "name": "provider-form-progress-analysis.json",
-      "sha256": "94554936f1cfb59477403c04322ebbe47fd946f16edb540172669a7314420ac6"
+      "sha256": "fadcf22844d220bc36cfef3a20692e6b99530a2590019d524f4d93e086909343"
     },
     {
       "name": "provider-form-run-start.json",

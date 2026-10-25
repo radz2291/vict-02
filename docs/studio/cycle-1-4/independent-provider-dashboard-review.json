@@ -1,0 +1,584 @@
+{
+  "pair": "dashboard",
+  "product": "9fbda0f3ec0c14ff7be8bfb475d30e0cdc0f0993",
+  "baselineProduct": "57308f6ffcd5c85415b38d9d68a6f696199ebfa7",
+  "model": "zai/glm-5.3-flash",
+  "method": "Root actual CUA natural-provider execution; independent initial-source equality, matching captured display, unique proposal/actual tool-start/category/measurement/region reconciliation. Independent screenshots reviewed separately.",
+  "initialIds": {
+    "candidate": "screen-aa7ccbed-eb90-41b0-ab46-1f762f2636ae",
+    "baseline": "screen-a93369d2-4321-4b2c-90be-e4a3ef8b9187"
+  },
+  "initialSourceEqualExceptDocumentId": true,
+  "matchedDisplay": {
+    "dpr": 1.0000000149011612,
+    "height": 720,
+    "width": 1280
+  },
+  "arms": {
+    "candidate": {
+      "traceArtifact": "provider-dashboard-candidate-expanded-trace-complete.dom.txt",
+      "toolCalls": 31,
+      "refused": 2,
+      "elapsedSeconds": 754.8,
+      "authoringRequests": 25,
+      "imageRequests": 4,
+      "firstEditSeconds": 245.8,
+      "usage": {
+        "input": 1269524,
+        "output": 25261
+      },
+      "calls": {
+        "studio_screen_read": 14,
+        "studio_screen_edit": 12,
+        "studio_screen_observe": 5
+      },
+      "independentlyInferredCategories": {
+        "knowledge": 6,
+        "source": 8,
+        "edit": 12,
+        "observe": 5
+      },
+      "categoryLimit": "Baseline categories are inferred from actual response sections with current rule; they are not native baseline telemetry.",
+      "uniqueProposalCount": 11,
+      "committedRevisions": [
+        "r1#1",
+        "r1#2",
+        "r1#3",
+        "r1#4",
+        "r1#5",
+        "r1#6",
+        "r1#7",
+        "r1#8",
+        "r1#9",
+        "r1#10",
+        "r1#11"
+      ],
+      "observations": [
+        {
+          "receiptMs": 286457,
+          "revision": "r1#2",
+          "image": {
+            "width": 909,
+            "height": 560,
+            "sourceWidth": 909,
+            "sourceHeight": 560,
+            "offsetLeft": 0,
+            "offsetTop": 0,
+            "cropped": false
+          },
+          "viewport": {
+            "width": 960,
+            "height": 585,
+            "scrollLeft": 0,
+            "scrollTop": 0,
+            "devicePixelRatio": 1.0000000149011612
+          },
+          "capturedAt": "2026-10-25T12:32:59.238Z",
+          "model": "zai/glm-5.3-flash",
+          "interactionVerified": false,
+          "ok": true
+        },
+        {
+          "receiptMs": 450768,
+          "revision": "r1#7",
+          "image": {
+            "width": 909,
+            "height": 569,
+            "sourceWidth": 909,
+            "sourceHeight": 784,
+            "offsetLeft": 0,
+            "offsetTop": 0,
+            "cropped": true
+          },
+          "viewport": {
+            "width": 960,
+            "height": 585,
+            "scrollLeft": 0,
+            "scrollTop": 0,
+            "devicePixelRatio": 1.0000000149011612
+          },
+          "capturedAt": "2026-10-25T12:35:43.380Z",
+          "model": "zai/glm-5.3-flash",
+          "interactionVerified": false,
+          "ok": true
+        },
+        {
+          "receiptMs": 563185,
+          "revision": "r1#8",
+          "image": {
+            "width": 909,
+            "height": 569,
+            "sourceWidth": 909,
+            "sourceHeight": 752,
+            "offsetLeft": 0,
+            "offsetTop": 0,
+            "cropped": true
+          },
+          "viewport": {
+            "width": 960,
+            "height": 585,
+            "scrollLeft": 0,
+            "scrollTop": 0,
+            "devicePixelRatio": 1.0000000149011612
+          },
+          "capturedAt": "2026-10-25T12:37:17.152Z",
+          "model": "zai/glm-5.3-flash",
+          "interactionVerified": false,
+          "ok": true
+        },
+        {
+          "receiptMs": 724141,
+          "revision": "r1#11",
+          "image": {
+            "width": 909,
+            "height": 560,
+            "sourceWidth": 909,
+            "sourceHeight": 560,
+            "offsetLeft": 0,
+            "offsetTop": 0,
+            "cropped": false
+          },
+          "viewport": {
+            "width": 960,
+            "height": 585,
+            "scrollLeft": 0,
+            "scrollTop": 0,
+            "devicePixelRatio": 1.0000000149011612
+          },
+          "capturedAt": "2026-10-25T12:39:41.336Z",
+          "model": "zai/glm-5.3-flash",
+          "interactionVerified": false,
+          "ok": true
+        }
+      ],
+      "finalSourceNodes": 71
+    },
+    "baseline": {
+      "traceArtifact": "provider-dashboard-baseline-expanded-trace.dom.txt",
+      "toolCalls": 27,
+      "refused": 0,
+      "elapsedSeconds": 681.5,
+      "authoringRequests": 22,
+      "imageRequests": 5,
+      "firstEditSeconds": 304.9,
+      "usage": {
+        "input": 731800,
+        "output": 22644
+      },
+      "calls": {
+        "studio_screen_read": 11,
+        "studio_screen_edit": 11,
+        "studio_screen_observe": 5
+      },
+      "independentlyInferredCategories": {
+        "knowledge": 8,
+        "source": 3,
+        "edit": 11,
+        "observe": 5
+      },
+      "categoryLimit": "Baseline categories are inferred from actual response sections with current rule; they are not native baseline telemetry.",
+      "uniqueProposalCount": 11,
+      "committedRevisions": [
+        "r1#1",
+        "r1#2",
+        "r1#3",
+        "r1#4",
+        "r1#5",
+        "r1#6",
+        "r1#7",
+        "r1#8",
+        "r1#9",
+        "r1#10",
+        "r1#11"
+      ],
+      "observations": [
+        {
+          "receiptMs": 376395,
+          "revision": "r1#3",
+          "image": {
+            "width": 909,
+            "height": 560,
+            "sourceWidth": 909,
+            "sourceHeight": 560,
+            "offsetLeft": 0,
+            "offsetTop": 0,
+            "cropped": false
+          },
+          "viewport": {
+            "width": 960,
+            "height": 585,
+            "scrollLeft": 0,
+            "scrollTop": 0,
+            "devicePixelRatio": 1.0000000149011612
+          },
+          "capturedAt": "2026-10-25T12:34:27.671Z",
+          "model": "zai/glm-5.3-flash",
+          "interactionVerified": false,
+          "ok": true
+        },
+        {
+          "receiptMs": 489927,
+          "revision": "r1#8",
+          "image": {
+            "width": 909,
+            "height": 569,
+            "sourceWidth": 909,
+            "sourceHeight": 705,
+            "offsetLeft": 0,
+            "offsetTop": 0,
+            "cropped": true
+          },
+          "viewport": {
+            "width": 960,
+            "height": 585,
+            "scrollLeft": 0,
+            "scrollTop": 0,
+            "devicePixelRatio": 1.0000000149011612
+          },
+          "capturedAt": "2026-10-25T12:36:18.943Z",
+          "model": "zai/glm-5.3-flash",
+          "interactionVerified": false,
+          "ok": true
+        },
+        {
+          "receiptMs": 580085,
+          "revision": "r1#9",
+          "image": {
+            "width": 909,
+            "height": 569,
+            "sourceWidth": 909,
+            "sourceHeight": 595,
+            "offsetLeft": 0,
+            "offsetTop": 0,
+            "cropped": true
+          },
+          "viewport": {
+            "width": 960,
+            "height": 585,
+            "scrollLeft": 0,
+            "scrollTop": 0,
+            "devicePixelRatio": 1.0000000149011612
+          },
+          "capturedAt": "2026-10-25T12:37:49.535Z",
+          "model": "zai/glm-5.3-flash",
+          "interactionVerified": false,
+          "ok": true
+        },
+        {
+          "receiptMs": 631584,
+          "revision": "r1#10",
+          "image": {
+            "width": 909,
+            "height": 569,
+            "sourceWidth": 909,
+            "sourceHeight": 591,
+            "offsetLeft": 0,
+            "offsetTop": 0,
+            "cropped": true
+          },
+          "viewport": {
+            "width": 960,
+            "height": 585,
+            "scrollLeft": 0,
+            "scrollTop": 0,
+            "devicePixelRatio": 1.0000000149011612
+          },
+          "capturedAt": "2026-10-25T12:38:33.780Z",
+          "model": "zai/glm-5.3-flash",
+          "interactionVerified": false,
+          "ok": true
+        },
+        {
+          "receiptMs": 659702,
+          "revision": "r1#11",
+          "image": {
+            "width": 909,
+            "height": 569,
+            "sourceWidth": 909,
+            "sourceHeight": 583,
+            "offsetLeft": 0,
+            "offsetTop": 0,
+            "cropped": true
+          },
+          "viewport": {
+            "width": 960,
+            "height": 585,
+            "scrollLeft": 0,
+            "scrollTop": 0,
+            "devicePixelRatio": 1.0000000149011612
+          },
+          "capturedAt": "2026-10-25T12:39:17.262Z",
+          "model": "zai/glm-5.3-flash",
+          "interactionVerified": false,
+          "ok": true
+        }
+      ],
+      "finalSourceNodes": 70
+    }
+  },
+  "limits": [
+    "One run per arm with overlapping provider load/model/source-identity confounders; no statistical speedup/cost claim.",
+    "Failed observe attempts are real calls; only successful bounded image receipts establish stated regions.",
+    "Provider image interactionVerified=false; actual separate local interactions are recorded with their binding/effect limits.",
+    "Source/region/actual runtime evidence remain distinct.",
+    "Editor/recovery legs are not inferred from dashboard completion."
+  ],
+  "artifacts": [
+    {
+      "name": "provider-dashboard-baseline-details-01.dom.txt",
+      "sha256": "da1314ce1f7c58ed1c2358034b47f42f783774e738df87c9f96b3d5e713d96d7"
+    },
+    {
+      "name": "provider-dashboard-baseline-details-01.geometry.json",
+      "sha256": "37111c3b8a0c37fa60bdcd27e870f8bad2aeb54fee94998288643871073cbb35"
+    },
+    {
+      "name": "provider-dashboard-baseline-details-01.png",
+      "sha256": "a2dff44be4269699706481b8a87d4eae3816a91bf6fbd320497fa87eeda81131"
+    },
+    {
+      "name": "provider-dashboard-baseline-exercised.dom.txt",
+      "sha256": "115560b821f08372ce4c3d44b7dfe378b214c08bdf04680b7ee77646a095db29"
+    },
+    {
+      "name": "provider-dashboard-baseline-exercised.geometry.json",
+      "sha256": "f38c6dd0d50d2440ce650c912d474f44af750b6cd2f25698cc13bb272003e456"
+    },
+    {
+      "name": "provider-dashboard-baseline-exercised.png",
+      "sha256": "e02d36dc4c3094e9087c0ee428d0f15ba3e612e222a3a24f90bf39eac21a6034"
+    },
+    {
+      "name": "provider-dashboard-baseline-expanded-trace.dom.txt",
+      "sha256": "30bde013a1d07e12fa8db2b258f421c1bd169c94d5f9388d1b7b02cdf3564dea"
+    },
+    {
+      "name": "provider-dashboard-baseline-expanded-trace.geometry.json",
+      "sha256": "775dab9c18caa31a3c8753679ca739038ccd2dbe478c6e412f47b76ded4a136b"
+    },
+    {
+      "name": "provider-dashboard-baseline-expanded-trace.png",
+      "sha256": "87c815afa33c7f0569eed9bc41deb46d41ad27eb463cd823e823843f87d7399d"
+    },
+    {
+      "name": "provider-dashboard-baseline-final-source.json",
+      "sha256": "404604c4a49eae951d0b0a7c1b196b5ff88cca69f68cccb83b10c8782658eb55"
+    },
+    {
+      "name": "provider-dashboard-baseline-initial-source.json",
+      "sha256": "279ed2e5f98bc438fb9ed6e9fd7b55b1b7139b839846868c6373743b853ed20e"
+    },
+    {
+      "name": "provider-dashboard-baseline-initial.dom.txt",
+      "sha256": "22fd352713e243fd4cd2e257ef2ef672d736decf584084e3c5d00e3200bec594"
+    },
+    {
+      "name": "provider-dashboard-baseline-initial.geometry.json",
+      "sha256": "30bdd9803e9ae5785d2783b3530026e4681880c961526c52e99bf4fc6fb07f31"
+    },
+    {
+      "name": "provider-dashboard-baseline-initial.png",
+      "sha256": "b254a7a7e767f4686c898455a106de9edbf932570713d8594fd1ff2490d7a78e"
+    },
+    {
+      "name": "provider-dashboard-baseline-progress-01.dom.txt",
+      "sha256": "44e14cf19ec218023d326b1db40db301fae2466282fd751ed40bc6c0b3645784"
+    },
+    {
+      "name": "provider-dashboard-baseline-progress-01.geometry.json",
+      "sha256": "7b3fcc7448e60e5a90cf280e201ee447dcca4c423d2a4d5341a99a5e2d131f81"
+    },
+    {
+      "name": "provider-dashboard-baseline-progress-01.png",
+      "sha256": "e19cb7744dcd12117500c56395746554f429c18b11eab13fd5679c164cb7818e"
+    },
+    {
+      "name": "provider-dashboard-baseline-progress-02.dom.txt",
+      "sha256": "e757890b6766022a1f3a39d377d7eef028547f992bceacfe16b4021f0922f9af"
+    },
+    {
+      "name": "provider-dashboard-baseline-progress-02.geometry.json",
+      "sha256": "182c9cb9d0d5689ae4eeb7ea96286b6bbe61d1f731e9b5f7ff22d066e26816de"
+    },
+    {
+      "name": "provider-dashboard-baseline-progress-02.png",
+      "sha256": "e6858be14f3d1cf2617fa430bdc0913fe355f3c231145813981d2b99cb050965"
+    },
+    {
+      "name": "provider-dashboard-baseline-progress-03.dom.txt",
+      "sha256": "7d582910946bc708d79fe051f0b9b253217af441e9b6e4ccf8a9864da32c3fa0"
+    },
+    {
+      "name": "provider-dashboard-baseline-progress-03.geometry.json",
+      "sha256": "59856e1ef4618a11d2eefdb5be4d972b28756884755a40810628b2ee5dd1f50e"
+    },
+    {
+      "name": "provider-dashboard-baseline-progress-03.png",
+      "sha256": "f76f13319bc149a6704a49c19e07c5440ba7d61c3621f6ce04a124b1c939852f"
+    },
+    {
+      "name": "provider-dashboard-baseline-terminal-01.dom.txt",
+      "sha256": "58cfae54a499d4b1abcb7248c174845b0d65e460b049406f449fab8d26b26725"
+    },
+    {
+      "name": "provider-dashboard-baseline-terminal-01.geometry.json",
+      "sha256": "f27a427e5bd2c4f099062915f888c2afb3386a848c7046cd0bc194673a5c75e3"
+    },
+    {
+      "name": "provider-dashboard-baseline-terminal-01.png",
+      "sha256": "efdbab47dc92661b2f53234b61a56aa1d58669d3539149e81daf229049af77a6"
+    },
+    {
+      "name": "provider-dashboard-candidate-details-01.dom.txt",
+      "sha256": "05550f155c405ade84743cc92f6d65199393b925eaa4aa3b05a62b55652e42df"
+    },
+    {
+      "name": "provider-dashboard-candidate-details-01.geometry.json",
+      "sha256": "596f02107000e80f2ebb412076b039000ef5c0f1b7cbe46df1512f32984ee0d4"
+    },
+    {
+      "name": "provider-dashboard-candidate-details-01.png",
+      "sha256": "20f41955a04e111c9bb64feb2cc0b3347ffc25254e709b5b64b7bd7ca61acb15"
+    },
+    {
+      "name": "provider-dashboard-candidate-details-running.dom.txt",
+      "sha256": "8e0fb27944d2aca24c70a6b94fa855417466efd21ae6155e5e444c373ca8a82c"
+    },
+    {
+      "name": "provider-dashboard-candidate-details-running.geometry.json",
+      "sha256": "4a2ebf3e722217d402e17589b930a5835a01125527a4e66890c6bf820752caf4"
+    },
+    {
+      "name": "provider-dashboard-candidate-details-running.png",
+      "sha256": "3cd83c57a2ae28de4a4a81d68fb3b2e8b5f6aeefff66134a94db24a3193b3f25"
+    },
+    {
+      "name": "provider-dashboard-candidate-exercised.dom.txt",
+      "sha256": "e31cadf59edf9e292fd410308c376e0750309dfaca4cf790b320d463c54a9f70"
+    },
+    {
+      "name": "provider-dashboard-candidate-exercised.geometry.json",
+      "sha256": "80ade8717477cfeaaf5ba0c8344b75d30d5bad32ac5b6ef36ef92e9bbf383ef2"
+    },
+    {
+      "name": "provider-dashboard-candidate-exercised.png",
+      "sha256": "84c6f6a8e47cfa7638cca7b3c395ceecac4d8c948c0d2326529a7f84330546ee"
+    },
+    {
+      "name": "provider-dashboard-candidate-expanded-trace-complete.dom.txt",
+      "sha256": "8bb1595d0881466701c83dac1b6205899fc8663e583766bbc7e8b1aec91a6149"
+    },
+    {
+      "name": "provider-dashboard-candidate-expanded-trace-complete.geometry.json",
+      "sha256": "f0abbdc4001af6fbddc1d85b92debc002eac55b5ae0aaae2f09e2cf3f981a24b"
+    },
+    {
+      "name": "provider-dashboard-candidate-expanded-trace-complete.png",
+      "sha256": "ae738a61a5d2795a1d04d31ab81244bb3f3529f272656e6a007e4bcac2207afb"
+    },
+    {
+      "name": "provider-dashboard-candidate-expanded-trace.dom.txt",
+      "sha256": "3db70c311d00af046a2e789d9d964cfbb5d52d30b14fe9c2adbbdf06304cbace"
+    },
+    {
+      "name": "provider-dashboard-candidate-expanded-trace.geometry.json",
+      "sha256": "805d6766ebdaca26b231179059c5e8467705b0632ef7785f14332a12d98fa46e"
+    },
+    {
+      "name": "provider-dashboard-candidate-expanded-trace.png",
+      "sha256": "b4cfaddc8024a7ab569a181b1f9bdb1818f7d248d3a975c0791dc532f9c04bf7"
+    },
+    {
+      "name": "provider-dashboard-candidate-final-source.json",
+      "sha256": "f6ff400eed1a3566a6685fb15d1630019edef4fd8232347d28cac6aec84b29e1"
+    },
+    {
+      "name": "provider-dashboard-candidate-initial-source.json",
+      "sha256": "3b3b233594aef2e1373c5dd9b920c218e8a94c0194f352e69925c576209fb6bd"
+    },
+    {
+      "name": "provider-dashboard-candidate-initial.dom.txt",
+      "sha256": "cf8e2a09da4e6fe0b97d9ba1223fdd431d34b7b62633e747dce6fed34b6ddaf3"
+    },
+    {
+      "name": "provider-dashboard-candidate-initial.geometry.json",
+      "sha256": "c0dd862330cd621c60666e989eee11b244c3536c92ebba852722c710bf952c27"
+    },
+    {
+      "name": "provider-dashboard-candidate-initial.png",
+      "sha256": "bc9ca4bf02150174572179b15715d004c454b7d21c5c37b3594364977dc32703"
+    },
+    {
+      "name": "provider-dashboard-candidate-progress-01.dom.txt",
+      "sha256": "3e776374875066ac5b351bd561c36d69049736e72f9ad2295d1c7da7e52bdf58"
+    },
+    {
+      "name": "provider-dashboard-candidate-progress-01.geometry.json",
+      "sha256": "2d60e0a8fdcbcb33f78f374926eec594a7e3c54fa3e4c988106209187db8482f"
+    },
+    {
+      "name": "provider-dashboard-candidate-progress-01.png",
+      "sha256": "8a268d4da09e6a3b11a40cca75deeef75e5fa8d6583a8913ccade1a629c07c9e"
+    },
+    {
+      "name": "provider-dashboard-candidate-progress-02.dom.txt",
+      "sha256": "d388cc31cc02b0ae80cf2042aa0e24bafa571150c8f85f33a75a97de5947bd93"
+    },
+    {
+      "name": "provider-dashboard-candidate-progress-02.geometry.json",
+      "sha256": "d0a7768e297d4f4886182ff77e652b17e47018a54ae3e73681a02f8d34857b6a"
+    },
+    {
+      "name": "provider-dashboard-candidate-progress-02.png",
+      "sha256": "caa989181c88e9961f551f83c0450aa4cc46371d9637f51c8301c5b9aef26d27"
+    },
+    {
+      "name": "provider-dashboard-candidate-progress-03.dom.txt",
+      "sha256": "16caa425a0e4e2620e16ccf284399fb9d418621d0f63a5e1e9f46bd129601fc5"
+    },
+    {
+      "name": "provider-dashboard-candidate-progress-03.geometry.json",
+      "sha256": "c302ab190aa8f4a028c22d2376ed54abeb1c7f13081fefbb551ad9777b9343cd"
+    },
+    {
+      "name": "provider-dashboard-candidate-progress-03.png",
+      "sha256": "cac69682d1453f5efc0524d7c7a03fdeeb76f6ecba89d9ce4bdf40b185df128a"
+    },
+    {
+      "name": "provider-dashboard-candidate-submitted.dom.txt",
+      "sha256": "9ac6db9df7001927175f1e33d4e7f31612ffd503e1ad1463d9962a63be68a7b7"
+    },
+    {
+      "name": "provider-dashboard-candidate-submitted.geometry.json",
+      "sha256": "743f0a0ff11e30475d988e24c5633565a13203fd69ff88cb2ab1ef84d6deab88"
+    },
+    {
+      "name": "provider-dashboard-candidate-submitted.png",
+      "sha256": "ba0d8b1451be463ba7097bcdbb873d1cc89db49998223d86005eca5530ec39ee"
+    },
+    {
+      "name": "provider-dashboard-candidate-terminal-01.dom.txt",
+      "sha256": "73b43a1cdd71af24c507ae2f940933562678fa868915968c72cae49c2ca9a49e"
+    },
+    {
+      "name": "provider-dashboard-candidate-terminal-01.geometry.json",
+      "sha256": "e41f3434dec899179f9cbe5ba82e4805d67d69eb52ff63a0d68716bbfced326b"
+    },
+    {
+      "name": "provider-dashboard-candidate-terminal-01.png",
+      "sha256": "0ff13618766046bd6ece0ac48d6168ccde7e2d48eea14330f24537f42f9bb856"
+    },
+    {
+      "name": "provider-dashboard-exercised-geometry.json",
+      "sha256": "b0f00adb3e714d273b02b5949ef29b35984875486c42fbb17912660acd4935c7"
+    },
+    {
+      "name": "provider-dashboard-run-start.json",
+      "sha256": "f5263d0e5a352aed6440d5ebfeba489f1fd057a0c07c18a0495327102f49736a"
+    },
+    {
+      "name": "provider-dashboard-terminal-analysis.json",
+      "sha256": "80b8a61355bde602a5d48f2c92920724ca234ea02d9a029968cbc1e501b62d02"
+    }
+  ]
+}

@@ -1,7 +1,8 @@
 import {readFileSync,writeFileSync} from 'node:fs';
 import {createHash} from 'node:crypto';
 import assert from 'node:assert/strict';
-const root='C:/Users/RZ1/.codex/worktrees/studio-cycle-1-4/260831-VCT-02/docs/studio/cycle-1-4/core/browser/';
+import {fileURLToPath} from 'node:url';
+const root=fileURLToPath(new URL('./core/browser/',import.meta.url));
 const rows=JSON.parse(readFileSync(root+'showcase14-family-rows.json','utf8'));
 const migration=JSON.parse(readFileSync('docs/studio/CYCLE-1-4-CATALOG-MIGRATION.json','utf8'));
 assert.equal(rows.length,64);assert.equal(new Set(rows).size,64);

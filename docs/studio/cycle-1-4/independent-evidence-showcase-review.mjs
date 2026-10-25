@@ -1,7 +1,8 @@
 import {readFileSync,writeFileSync,readdirSync} from 'node:fs';
 import {createHash} from 'node:crypto';
 import assert from 'node:assert/strict';
-const root='C:/Users/RZ1/.codex/worktrees/studio-cycle-1-4/260831-VCT-02/docs/studio/cycle-1-4/core/browser/';
+import {fileURLToPath} from 'node:url';
+const root=fileURLToPath(new URL('./core/browser/',import.meta.url));
 const dom=name=>readFileSync(root+name+'.dom.txt','utf8');
 const complete=dom('showcase14-evidence-01-complete'),regions=dom('showcase14-evidence-02-regions');
 for(const value of ['SIMULATED evidence','12 tool calls','6 receipt-derived edits including cleanup','Reported authoring usage: 1800 input / 900 output tokens','not a real run or captured image'])assert(complete.includes(value));

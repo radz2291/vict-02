@@ -1,7 +1,8 @@
 import {readFileSync,writeFileSync,readdirSync} from 'node:fs';
 import {createHash} from 'node:crypto';
 import assert from 'node:assert/strict';
-const root='C:/Users/RZ1/.codex/worktrees/studio-cycle-1-4/260831-VCT-02/docs/studio/cycle-1-4/core/browser/';
+import {fileURLToPath} from 'node:url';
+const root=fileURLToPath(new URL('./core/browser/',import.meta.url));
 const read=name=>JSON.parse(readFileSync(root+name,'utf8'));
 const hit=read('iv14-repair-visible-tools-hit.json');
 assert.equal(hit.tools.workspaceTools,true);assert.equal(hit.tools.paletteCount,1);assert.equal(hit.source.ownsHit,true);assert.equal(hit.source.hitText,'Source');

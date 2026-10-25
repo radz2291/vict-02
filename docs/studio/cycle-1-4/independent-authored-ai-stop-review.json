@@ -1,0 +1,47 @@
+{
+  "product": "9fbda0f3ec0c14ff7be8bfb475d30e0cdc0f0993",
+  "method": "Root actual CUA execution; independent source-byte equality, before/after screenshot and actual output DOM review.",
+  "sourceBytesEqual": true,
+  "controlledDraftPreserved": true,
+  "stopOutput": "Declared demo.submit local simulation receipt; no provider cancellation.",
+  "busy": "Authored constant true; Stop deliberately stays visible.",
+  "visualLimit": "02screenshot shows Stop and expanded simulation panel; actual outcome is in DOM below image crop, not claimed as pictured receipt text.",
+  "artifacts": [
+    {
+      "name": "authored-ai-stop-01-before.dom.txt",
+      "sha256": "92aea6d683ea1a47e2d4f9b3c306aa1a2d31fe301702aebd75e31fb070cc2442"
+    },
+    {
+      "name": "authored-ai-stop-01-before.geometry.json",
+      "sha256": "5b084f4cf209ca1f6f7d15e6407e328d12b4a6d431a9c6f68881ee96e9ca3dd4"
+    },
+    {
+      "name": "authored-ai-stop-01-before.png",
+      "sha256": "1e7e3398b403574c4d3ad29f60513ca5db844446361e698eecf9f3506d53f863"
+    },
+    {
+      "name": "authored-ai-stop-02-local-receipt.dom.txt",
+      "sha256": "6b7fcaff204965ce98d2ea9f6b7b1981f09b0b710156f84de86b47fa77918828"
+    },
+    {
+      "name": "authored-ai-stop-02-local-receipt.geometry.json",
+      "sha256": "e08ff2fe80931fc731de07ea4670a48a8b49d7201f51dc573af82862cbbe2e40"
+    },
+    {
+      "name": "authored-ai-stop-02-local-receipt.png",
+      "sha256": "f67c62a36bc5c885dec894eb719b0603bd672da32c64d87e9ad69f54ad470843"
+    },
+    {
+      "name": "authored-ai-stop-after-source.json",
+      "sha256": "1b5bfff22ee95f1ee27c3510e5a617ad8d5e17c5cf1d2060962a8bdfb356b246"
+    },
+    {
+      "name": "authored-ai-stop-result.json",
+      "sha256": "be2ba3ff0c80b3e380986847ced89ce0165dfcd57da4188c7543256fcbcd89f6"
+    },
+    {
+      "name": "authored-ai-stop-source.json",
+      "sha256": "1b5bfff22ee95f1ee27c3510e5a617ad8d5e17c5cf1d2060962a8bdfb356b246"
+    }
+  ]
+}
