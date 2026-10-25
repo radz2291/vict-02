@@ -96,8 +96,9 @@
   }
   let simulationControls=$state({denied:false,failNext:false});
   let activeTest=$state<TestScenario>();
+  let testChoice=0;
   const simulation = createScreenSimulation(simulationControls);
-  function chooseTest(test:TestScenario){if(blocked)return;changeMode('interact');resetPreview();simulationControls.denied=test.simulation==='denied';simulationControls.failNext=test.simulation==='failNext';runtimeValues={...test.values};activeTest=test;}
+  async function chooseTest(test:TestScenario){if(blocked)return;changeMode('interact');resetPreview();const choice=testChoice;await tick();if(choice!==testChoice)return;simulationControls.denied=test.simulation==='denied';simulationControls.failNext=test.simulation==='failNext';runtimeValues={...test.values};activeTest=test;}
   const snapshot = $derived.by(() => { void version; return bridge?.getSnapshot(); });
   const source = $derived.by(() => { void version; return bridge?.document; });
   const selected = $derived(snapshot?.selectedOccurrence);
@@ -108,6 +109,7 @@
   const recipe = $derived(showcaseCatalog.find(entry => entry.id === recipeId));
 
   function resetPreview() {
+    testChoice++;
     simulation.reset();simulationControls.denied=false;simulationControls.failNext=false;activeTest=undefined; runtimeValues = {}; resetSignal = Symbol('showcase-reset');
   }
   function openExample(id: string) {

@@ -77,6 +77,7 @@
   let structureHeight = $state(240);
   let testingOpen = $state(false);
   let activeTest = $state<TestScenario>();
+  let testChoice = 0;
   let testingReturn: HTMLElement | undefined;
   async function openTesting() {
     if(textDraftDirty || sourceDraftDirty || renamingScreen){notice='Apply or cancel your draft first.';return;}
@@ -90,17 +91,19 @@
       target?.focus({preventScroll:true});
     });
   }
-  function chooseTest(test:TestScenario) {
+  async function chooseTest(test:TestScenario) {
     if(textDraftDirty || sourceDraftDirty || renamingScreen)return;
     changeMode('interact');
-    resetRuntime();simulation.denied=test.simulation==='denied';simulation.failNext=test.simulation==='failNext';
+    resetRuntime();const choice=testChoice;await tick();if(choice!==testChoice)return;
+    simulation.denied=test.simulation==='denied';simulation.failNext=test.simulation==='failNext';
     runtimeValues={...test.values};activeTest=test;
     notice=test.description;
   }
-  function changeTestValue(key:string,value:UiValue|undefined) {
+  async function changeTestValue(key:string,value:UiValue|undefined) {
     if(textDraftDirty || sourceDraftDirty || renamingScreen)return;
     const retained={...runtimeValues};if(value===undefined)delete retained[key];else retained[key]=value;
-    resetRuntime();runtimeValues=retained;activeTest={id:'custom',label:'Custom values',description:'Temporary state values.'};
+    resetRuntime();const choice=testChoice;await tick();if(choice!==testChoice)return;
+    runtimeValues=retained;activeTest={id:'custom',label:'Custom values',description:'Temporary state values.'};
   }
   async function tryCanvas() {
     if(textDraftDirty || sourceDraftDirty || renamingScreen)return;
@@ -340,6 +343,7 @@
     operations: [{ op: 'studio.demo:submit', implementation: 'simulated' }], resetBoundary: 'session' } as const;
   let preview = createPreviewSession({ scenario, dataAdapter: { adapter, context: actor => ({ permissions: actor.permissions, effect: 'write', actor: actor.actorId }) } });
   function resetRuntime() {
+    testChoice++;
     adapter.reset(); preview.reset();
     simulation.denied=false;simulation.failNext=false;activeTest=undefined;
     const document = bridge?.document;

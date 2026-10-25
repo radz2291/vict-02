@@ -39,6 +39,15 @@ it('seeds only connected plain text, excludes sensitive/specialized/unbound inpu
   const field=source.nodes.field!;
   for(const type of ['password','email','hidden'])expect(testScenarios({...source,nodes:{...source.nodes,field:{...field,attributes:{type,value:{type:'ref',path:'state.message'}}}}} as UiDocument).some(choice=>choice.id.startsWith('content:'))).toBe(false);
 });
+it('does not offer action tests for disabled controls, disabled fieldsets or incompatible input mappings',()=>{
+ const source=fixture();
+ for(const submit of [
+  {...source.nodes.submit,attributes:{disabled:{type:'literal',value:true}}},
+  {...source.nodes.submit,interactions:[{on:'click',action:'invokeAction',actionId:'demo.submit'}]},
+ ])expect(testScenarios({...source,nodes:{...source.nodes,submit}} as UiDocument).some(choice=>choice.simulation)).toBe(false);
+ const fieldset={...source,nodes:{...source.nodes,screen:{id:'screen',kind:'element',tag:'fieldset',attributes:{disabled:{type:'literal',value:true}},children:['field','submit']}}} as UiDocument;
+ expect(testScenarios(fieldset)).toEqual([]);
+});
 it('offers opening a dialog only for a declared controlled Open binding of the right type',()=>{
   const source=fixture();
   const dialog={...source,nodes:{...source.nodes,screen:{id:'screen',kind:'element',tag:'main',children:['dialog']},dialog:{id:'dialog',kind:'component',definitionId:'vict.catalog.dialog',props:{open:{type:'ref',path:'state.dialogOpen'}},slots:{}}}} as UiDocument;

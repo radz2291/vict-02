@@ -12,6 +12,16 @@ export type TestScenario = {
 /** Presentation projection of declared behavior, never a variable-name heuristic. */
 export function testScenarios(document: UiDocument): TestScenario[] {
   const reachable: UiNode[] = [], seen = new Set<string>();
+  const disabled = (value: unknown): boolean => {
+    if(value===undefined)return false;
+    if(!value || typeof value!=='object')return true;
+    const expression=value as UiExpression;
+    if(expression.type==='literal')return expression.value!==false;
+    if(expression.type==='ref' && expression.path.startsWith('state.')) {
+      const state=document.localState[expression.path.slice(6)];return state?.type!=='boolean' || state.initial!==false;
+    }
+    return true;
+  };
   function visit(id: string) {
     if (seen.has(id)) return;
     seen.add(id);
@@ -25,6 +35,7 @@ export function testScenarios(document: UiDocument): TestScenario[] {
       const hidden=node.attributes.hidden;
       if(typeof hidden==='string' || hidden.type!=='literal' || hidden.value!==false)return;
     }
+    if(node.kind==='element' && node.tag==='fieldset' && disabled(node.attributes?.disabled))return;
     const styles=[...(node.localStyle??[]),...(node.styleSources??[]).flatMap(id=>document.styleSources[id]?.declarations??[])];
     if(styles.some(style=>style.value.type==='text' && ((style.property==='display' && style.value.value==='none') || (style.property==='visibility' && ['hidden','collapse'].includes(style.value.value)))) )return;
     reachable.push(node);
@@ -38,7 +49,7 @@ export function testScenarios(document: UiDocument): TestScenario[] {
       return expression?.type==='literal' ? typeof expression.value===type : expression?.type==='ref' && expression.path.startsWith('state.') && document.localState[expression.path.slice(6)]?.type===type;
     });
   }
-  const hasSubmit = reachable.filter(node => node.kind==='element' || (node.kind==='component' && node.definitionId==='vict.catalog.button')).some(node =>
+  const hasSubmit = reachable.filter(node => (node.kind==='element' && !disabled(node.attributes?.disabled)) || (node.kind==='component' && node.definitionId==='vict.catalog.button' && !disabled(node.props?.disabled))).some(node =>
     node.interactions?.some(binding => binding.action === 'invokeAction' && binding.actionId === 'demo.submit' && validSubmit(binding.input)) ||
     (node.kind === 'component' && Object.values(node.outputs ?? {}).some(binding => 'invokeAction' in binding && binding.invokeAction.actionId === 'demo.submit' && validSubmit(binding.invokeAction.input))));
   const reads = (value: unknown, key: string): boolean => {

@@ -47,6 +47,15 @@ it('invalidates an in-flight failed action before another scenario can be overwr
  expect(button('Submit example').hasAttribute('disabled')).toBe(false);
  expect((document.querySelector('[aria-label="Example field"]') as HTMLInputElement).value.length).toBeGreaterThan(100);
 });
+it('lets the new Loading seed win over cleanup from a pending action',async()=>{
+ await start();await testing();choose('Something went wrong');await settle();button('Try on canvas').click();await settle();
+ button('Submit example').click();await settle();
+ await testing();choose('Loading');await settle();
+ expect(button('Submit example').hasAttribute('disabled')).toBe(true);
+ await new Promise(resolve=>setTimeout(resolve,550));await settle();
+ expect(button('Submit example').hasAttribute('disabled')).toBe(true);
+ expect(button('Testing: Loading')).toBeDefined();
+});
 it('does not apply canvas delete/duplicate shortcuts from side-panel controls and keeps resizing preferences',async()=>{
  await start();const heading=document.querySelector<HTMLElement>('.design-frame h1')!;heading.dispatchEvent(new PointerEvent('pointerdown',{button:0,bubbles:true}));await settle();
  button('Document').click();await settle();
