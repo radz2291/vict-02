@@ -4,6 +4,7 @@ import { mount, unmount, tick, flushSync, createRawSnippet } from 'svelte';
 vi.mock('$app/navigation', () => ({ beforeNavigate: () => {} }));
 import Designer from '../../src/lib/designer/Designer.svelte';
 import StructureDock from '../../src/lib/designer/StructureDock.svelte';
+import SourceDetails from '../../src/lib/designer/SourceDetails.svelte';
 import { newScreen } from '../../src/lib/designer/application.js';
 import { screenStore } from '../../src/lib/designer/storage.js';
 import { structureId } from '../../src/lib/designer/structure.js';
@@ -90,6 +91,15 @@ it('keeps ambiguous repeated/definition occurrences inspectable without granting
   expect(sourceCapabilities(document,`${document.id}|screen|row-1`).direct).toBe(false);
   expect(sourceCapabilities(document,`${document.id}|screen`).removable).toBe(false);
   expect(sourceCapabilities(document,'other|screen').direct).toBe(false);
+});
+it('contains narrow showcase inspection focus and keeps Escape available',async()=>{
+  const close=vi.fn();
+  editor=mount(SourceDetails,{target:document.body,props:{document:newScreen('Inspection focus','focus'),containFocus:true,onClose:close,onSelect:vi.fn(),onNavigate:vi.fn()}});await settle();
+  const first=button('Close inspection details'),last=button('Relationships');
+  expect(document.activeElement).toBe(first);
+  first.dispatchEvent(new KeyboardEvent('keydown',{key:'Tab',shiftKey:true,bubbles:true,cancelable:true}));await settle();expect(document.activeElement).toBe(last);
+  last.dispatchEvent(new KeyboardEvent('keydown',{key:'Tab',bubbles:true,cancelable:true}));await settle();expect(document.activeElement).toBe(first);
+  first.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true,cancelable:true}));await settle();expect(close).toHaveBeenCalledTimes(1);
 });
 it('refuses contextual source commands during a JSON draft and does not intercept outside this workspace',async()=>{
   await start();button('Document').click();await settle();button('Source').click();await settle();

@@ -2,8 +2,8 @@
   import { onMount } from 'svelte';
   import type { UiDocument } from '@victframework/ui';
   import { projectStructure, structureFacts, structureNodePresentation, parseStructureId, type StructureHandoff } from './structure.js';
-  let { document, selectedId, blocked = false, page = $bindable('properties'), onClose, onSelect, onNavigate }: {
-    document: UiDocument; selectedId?: string; blocked?: boolean; page?: 'properties' | 'relationships';
+  let { document, selectedId, blocked = false, containFocus = false, page = $bindable('properties'), onClose, onSelect, onNavigate }: {
+    document: UiDocument; selectedId?: string; blocked?: boolean; containFocus?: boolean; page?: 'properties' | 'relationships';
     onClose: () => void; onSelect: (id: string) => void; onNavigate: (request: StructureHandoff) => void;
   } = $props();
   const graph = $derived(projectStructure(document));
@@ -13,7 +13,14 @@
   const relationships = $derived(graph.edges.filter(edge => edge.source === selectedId || edge.target === selectedId));
   let root: HTMLElement;
   onMount(()=>{
-    const escape=(event:KeyboardEvent)=>{if(event.key==='Escape' && !event.defaultPrevented){event.preventDefault();event.stopPropagation();onClose();}};
+    const escape=(event:KeyboardEvent)=>{
+      if(event.key==='Tab' && containFocus){
+        const controls=[...root.querySelectorAll<HTMLElement>('button:not(:disabled),a[href],input:not(:disabled),select:not(:disabled),[tabindex="0"]')];
+        const index=controls.indexOf(globalThis.document.activeElement as HTMLElement);
+        if(controls.length && ((event.shiftKey && index<=0) || (!event.shiftKey && index===controls.length-1))){event.preventDefault();controls[event.shiftKey?controls.length-1:0]?.focus({preventScroll:true});}
+      }
+      if(event.key==='Escape' && !event.defaultPrevented){event.preventDefault();event.stopPropagation();onClose();}
+    };
     root.addEventListener('keydown',escape);
     root.querySelector<HTMLButtonElement>('[aria-label="Close inspection details"]')?.focus({preventScroll:true});
     return ()=>root.removeEventListener('keydown',escape);

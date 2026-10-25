@@ -35,7 +35,7 @@
   let documentOpen = $state(true);
   let structureOpen = $state(false);
   let structureExpanded = $state(false);
-  let showcaseWidth = $state(0);
+  let showcaseViewport = $state(1280);
   let tools = $state<'inspector' | 'palette'>('inspector');
   let compositionFocus = $state<CompositionFocus>();
   let exampleFocus = $state<CompositionFocus>();
@@ -229,8 +229,9 @@
   }
 </script>
 
+<svelte:window bind:innerWidth={showcaseViewport} />
 <ControlScope class="vict-rhea">
-<section class="studio-showcase" aria-label="Studio authoring showcase" data-showcase-recipe={recipeId} bind:this={showcaseRoot} bind:clientWidth={showcaseWidth}>
+<section class="studio-showcase" aria-label="Studio authoring showcase" data-showcase-recipe={recipeId} bind:this={showcaseRoot}>
   <WorkspaceContextMenu scope={showcaseRoot} enabled={mode==='design'} resolve={canvasContext} owns={ownsCanvasTarget} />
   <header>
     <h2>Designer: all {showcaseCatalog.length} recipes</h2>
@@ -267,8 +268,8 @@
           <div class="example-layers">{#if plan}<Layers {plan} document={source} selectedOccurrence={selected} onSelect={selectStructure} onApply={apply} componentDescriptors={catalogDescriptors} onOpenComposition={navigateComposition} />{/if}</div>
         </div>
       </aside>
-      {#if detailsOpen}<aside class="showcase-document showcase-inspection" aria-label="Example Inspect"><SourceDetails document={source} selectedId={detailId} {blocked} bind:page={detailsPage} onClose={closeDetails} onSelect={selectDetail} onNavigate={structureNavigate} /></aside>{/if}
-      <div class="preview-column" inert={detailsOpen && showcaseWidth < 1000}>
+      {#if detailsOpen}<aside class="showcase-document showcase-inspection" aria-label="Example Inspect"><SourceDetails document={source} selectedId={detailId} {blocked} containFocus={showcaseViewport <= 1100} bind:page={detailsPage} onClose={closeDetails} onSelect={selectDetail} onNavigate={structureNavigate} /></aside>{/if}
+      <div class="preview-column" inert={detailsOpen && showcaseViewport <= 1100}>
         <div class="composition-tools">
           <button type="button" disabled={blocked} onclick={() => { if (!blocked) { compositionFocus = exampleFocus; selectNode(targetNodeId); } }}>Select example part</button>
           <button type="button" disabled={blocked} onclick={() => openComposition()}>Open selected composition</button>
@@ -344,6 +345,7 @@
   details { border: 1px solid #d7dfe9; border-radius: 8px; background: white; padding: 12px; margin-top: 12px; }
   summary { cursor: pointer; font-weight: 600; } details[open] > summary { margin-bottom: 14px; } pre { overflow: auto; max-height: 400px; font-size: 12px; }
   @media(max-width: 1100px) { .editor-grid.document-open { grid-template-columns: minmax(0, 1fr); } .showcase-document { grid-column: 1; grid-row: 2; height: 480px; } .inspector { grid-column: 1 / -1; max-height: none; } }
-  @media(max-width:1100px) { .showcase-inspection { position:absolute; top:0; right:0; grid-column:1; grid-row:1; width:min(360px,100%); height:600px; z-index:20; } }
+  .showcase-inspection { position:sticky; top:12px; align-self:start; height:min(600px,calc(100dvh - 24px)); max-height:none; }
+  @media(max-width:1100px) { .showcase-inspection { position:fixed; top:12px; right:12px; grid-column:1; grid-row:1; width:min(360px,calc(100dvw - 24px)); z-index:20; } }
   @media(max-width: 700px) { aside { margin-bottom: 12px; } .catalog-picker label { width: 100%; } .canvas { height: 460px; } }
 </style>
