@@ -1,0 +1,8 @@
+{
+  "candidate": "0c3cee81fb02345f07b26e92acb2d2eb5463b203",
+  "fixtureId": "independent-cycle14-browser",
+  "fixtureNodes": 16,
+  "contentDigest": "cdcfcc4de678ec71c6f24819669afb061b66edc64dea60e1a63149875a04beb5",
+  "compiled": true,
+  "evidence": "Canonical compile/source only. Apply through visible Source UI; no browser/store injection."
+}
