@@ -19,7 +19,7 @@ const button = (name: string) => {
     (item) => item.getAttribute('aria-label') === name || item.textContent?.trim() === name,
   );
   expect(item, name).toBeDefined();
-  item!.click();
+  if(!(['Data','Actions','Source'].includes(name) && item!.getAttribute('aria-expanded')==='true'))item!.click();
   flushSync();
   return item!;
 };
@@ -72,8 +72,8 @@ it('retains Source drafts and refuses drawer/mode transitions until the draft is
   button('Document'); await tick(); button('Source'); await tick();
   const draft=document.querySelector<HTMLTextAreaElement>('#canonical-source')!;
   draft.value+=' '; draft.dispatchEvent(new Event('input',{bubbles:true})); await tick();
-  const dataTab=[...document.querySelectorAll<HTMLButtonElement>('.sidebar-tabs button')].find(node=>node.textContent==='Data')!;
-  expect(dataTab.disabled).toBe(true); button('Interact'); await tick();
+  const dataRow=document.querySelector<HTMLButtonElement>('.data-row')!;
+  expect(dataRow.disabled).toBe(true); button('Interact'); await tick();
   expect(document.querySelector('.canvas-modes button')!.getAttribute('aria-pressed')).toBe('true');
   button('Close document'); await tick();
   expect(document.querySelector<HTMLElement>('#document-drawer')!.hidden).toBe(false); expect(draft.value.endsWith(' ')).toBe(true);
@@ -202,10 +202,11 @@ it('opens a closed composition without authored or runtime changes, guards draft
   expect(document.querySelector('.design-frame')?.textContent).not.toContain(
     'Edited composition body',
   );
-  button('Document');
+  button('Layers');
   await tick();
-  document.querySelector<HTMLButtonElement>('[aria-label="Expand Details"]')!.click();
-  await tick();
+  const collapsedDetails=document.querySelector<HTMLButtonElement>('[aria-label="Expand Details"]');
+  if(collapsedDetails){collapsedDetails.click();await tick();}
+  expect(document.querySelector('[role="treeitem"][data-key$="|dialog"]')?.getAttribute('aria-expanded')).toBe('true');
   document.querySelector<HTMLButtonElement>('[role="treeitem"][data-key$="slot:body"]')!.click();
   await tick();
   await tick();
@@ -276,11 +277,7 @@ it('keeps data drafts safe across document navigation and saves applied starting
   field.dispatchEvent(new Event('input', { bubbles: true }));
   await tick();
   await tick();
-  expect(
-    [...document.querySelectorAll<HTMLButtonElement>('.sidebar-tabs button')].find(
-      item => item.textContent === 'Source',
-    )?.disabled,
-  ).toBe(true);
+  expect(document.querySelector<HTMLTextAreaElement>('#canonical-source')!.disabled).toBe(true);
   document.querySelector<HTMLButtonElement>('[aria-label="Close document"]')!.click();
   await tick();
   expect(document.querySelector('#document-drawer')).not.toBeNull();
@@ -302,7 +299,7 @@ it('keeps data drafts safe across document navigation and saves applied starting
   expect(saved.document.localState.message!.initial).toBe('Saved from the document data editor');
   button('Source');
   await tick();
-  expect(document.querySelector('.source-drawer')).not.toBeNull();
+  expect(document.querySelector('.document-sections .source-body')).not.toBeNull();
   expect(document.querySelector<HTMLTextAreaElement>('#canonical-source')?.value).toContain(
     'Saved from the document data editor',
   );

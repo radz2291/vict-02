@@ -50,20 +50,24 @@ it('keeps draft, feed and an active turn mounted through hiding; the single comp
   await vi.waitFor(() =>
     expect(document.querySelector('.agent-status')?.textContent).toContain('Ready'),
   );
-  const panel = document.querySelector('.agent-panel')!;
+  const panel = document.querySelector('.left-sidebar')!;
   const chat = document.querySelector('.agent-chat')!;
   const input = document.querySelector<HTMLTextAreaElement>('[data-testid="conversation-input"]')!;
   const beforeCanvas = document.querySelector('.design-frame')!.innerHTML;
   input.value = 'Create a landing page';
   input.dispatchEvent(new Event('input', { bubbles: true }));
   await tick();
-  await visibility('Hide chat');
+  document.querySelector<HTMLButtonElement>('#sidebar-layers-tab')!.click();await tick();
+  expect(document.querySelector('.agent-chat')).toBe(chat);
+  expect(document.querySelector<HTMLElement>('#sidebar-chat')!.hidden).toBe(true);
+  document.querySelector<HTMLButtonElement>('#sidebar-chat-tab')!.click();await tick();
+  await visibility('Hide sidebar');
   expect(panel.hasAttribute('hidden')).toBe(true);
   expect(document.querySelector('.agent-chat')).toBe(chat);
   expect(document.querySelector('[data-testid="conversation-input"]')).toBe(input);
   expect(input.value).toBe('Create a landing page');
   expect(document.querySelector('.design-frame')!.innerHTML).toBe(beforeCanvas);
-  await visibility('Show chat');
+  await visibility('Show sidebar');
   expect(panel.hasAttribute('hidden')).toBe(false);
   expect(chat.querySelector('h2')).toBeNull();
   expect(chat.getAttribute('aria-label')).toBe('Chat');
@@ -77,12 +81,16 @@ it('keeps draft, feed and an active turn mounted through hiding; the single comp
   expect(chat.querySelectorAll('.vict-conversation-input-row button')).toHaveLength(1);
   expect(chat.querySelector('.agent-status')?.textContent).toContain('Working…');
   const feed = chat.querySelector('.vict-conversation')!;
-  await visibility('Hide chat');
+  document.querySelector<HTMLButtonElement>('#sidebar-layers-tab')!.click();await tick();
+  expect(chat.querySelector('.vict-conversation')).toBe(feed);
+  expect(fetcher.mock.calls.filter(([,init])=>init?.method==='DELETE')).toHaveLength(0);
+  document.querySelector<HTMLButtonElement>('#sidebar-chat-tab')!.click();await tick();
+  await visibility('Hide sidebar');
   expect(panel.hasAttribute('hidden')).toBe(true);
   expect(chat.querySelector('.vict-conversation')).toBe(feed);
   expect(chat.textContent).toContain('Working on your screen.');
   expect(fetcher.mock.calls.filter(([, init]) => init?.method === 'DELETE')).toHaveLength(0);
-  await visibility('Show chat');
+  await visibility('Show sidebar');
   const stop = chat.querySelector<HTMLButtonElement>('.vict-conversation-input-row [data-testid="conversation-stop"]')!;
   expect(stop).not.toBeNull();
   stop.click();
