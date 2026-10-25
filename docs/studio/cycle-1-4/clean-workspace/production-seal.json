@@ -1,6 +1,6 @@
 {
-  "candidate": "92f7c4f176a7130157633725b5badcb64f89662b",
-  "createdAt": "2026-10-25T23:06:10.532Z",
+  "candidate": "b46fe84b3b5e9fb38224d608bce27919b94cd3ce",
+  "createdAt": "2026-10-25T23:21:59.880Z",
   "node": "v22.13.1",
   "sourceExportPackages": [
     "ui-svelte",
@@ -105,7 +105,7 @@
     },
     {
       "path": "apps/studio/src/lib/designer/Designer.svelte",
-      "sha256": "83255c12aa0be1055575dc9f85b73a078164d3375bb345b12ddad775f8357f2c"
+      "sha256": "cd5880d3904ff8331caa46b9013544ff7fb7affeecc425186ce7ed4797cdf410"
     },
     {
       "path": "apps/studio/src/lib/designer/DocumentPanels.svelte",
@@ -3218,18 +3218,6 @@
       "sha256": "6377150f6de67296c8f900fdef9d2817b5b7eab0418c13cceb0570a54aa66ef3"
     },
     {
-      "path": "apps/studio/build/client/_app/immutable/chunks/B1hOSMnR.js",
-      "sha256": "6715ea60927b01db2ffcdb74265c429fbc56beea4916b083b3bc5f4fb7e23c7e"
-    },
-    {
-      "path": "apps/studio/build/client/_app/immutable/chunks/B1hOSMnR.js.br",
-      "sha256": "d66e8ff513cac7f0c64d51c16fde3639500b84d485434d8a16e50e1947855260"
-    },
-    {
-      "path": "apps/studio/build/client/_app/immutable/chunks/B1hOSMnR.js.gz",
-      "sha256": "4ea09328119f5101959a7c1f90acef8beb440edd929fabae13ef6c22260780f5"
-    },
-    {
       "path": "apps/studio/build/client/_app/immutable/chunks/B4eLpzvX.js",
       "sha256": "d7f1333552e6bbb4b2da9e05507e5d2929c237a354289cc89ab1b32d94b7147b"
     },
@@ -3302,18 +3290,6 @@
       "sha256": "fc927e532c9ae2d2a1520cbc14e4fdf7402ed65e18e3cd7562ef48e911a71304"
     },
     {
-      "path": "apps/studio/build/client/_app/immutable/chunks/BSAWYlBt.js",
-      "sha256": "bf0f05ad9031e97a2ec2027fff11e4e949dc30265de32edc7b3307e04a0d0245"
-    },
-    {
-      "path": "apps/studio/build/client/_app/immutable/chunks/BSAWYlBt.js.br",
-      "sha256": "486eb9ffac186c4c4661e64e9f4607fa23fc635f9126890d630106897e06c792"
-    },
-    {
-      "path": "apps/studio/build/client/_app/immutable/chunks/BSAWYlBt.js.gz",
-      "sha256": "16d3aafbacbf55fd5996afa5b4fcc3fa4f1de4e8d3da11612390fc0d34a8b144"
-    },
-    {
       "path": "apps/studio/build/client/_app/immutable/chunks/Buea-lGh.js",
       "sha256": "a7a8b4fc14fa7ba338598f61185a3a13e49d7450830af367407ae61b9634bede"
     },
@@ -3336,18 +3312,6 @@
     {
       "path": "apps/studio/build/client/_app/immutable/chunks/Bzak7iHL.js.gz",
       "sha256": "253e9579e781c0e2b765bc754f80952c3b271ff63e49d70c7d10b59673eca238"
-    },
-    {
-      "path": "apps/studio/build/client/_app/immutable/chunks/C-NK8H_Z.js",
-      "sha256": "8baeafe536349d3527ba253678b909578a50944f8397da7374e0a0ad8adbc2a7"
-    },
-    {
-      "path": "apps/studio/build/client/_app/immutable/chunks/C-NK8H_Z.js.br",
-      "sha256": "ef669a379e81b4a1a3f7cd58e75ad3a0e5d3d1b0104bdc953396d21918b4938f"
-    },
-    {
-      "path": "apps/studio/build/client/_app/immutable/chunks/C-NK8H_Z.js.gz",
-      "sha256": "c45a9804a7cd74d7aed550548ed62406456169a992a27bd91549bb3468f6e547"
     },
     {
       "path": "apps/studio/build/client/_app/immutable/chunks/C1MzSNew.js",
@@ -3494,6 +3458,18 @@
       "sha256": "a7ec7eccbb4bb44ac711bd65f9a61adc41936d07a39ab2b8a762ba509d63eb94"
     },
     {
+      "path": "apps/studio/build/client/_app/immutable/chunks/D_tAgohe.js",
+      "sha256": "732ed093b8d2a0724ec08ecbee9dd4b3ebca8c7f70cc08cfb0cb7515f5f5c5c7"
+    },
+    {
+      "path": "apps/studio/build/client/_app/immutable/chunks/D_tAgohe.js.br",
+      "sha256": "0f22fcd57e81da577f9bd34721bb2a6610ae281ed801f0acd33f6f5223847075"
+    },
+    {
+      "path": "apps/studio/build/client/_app/immutable/chunks/D_tAgohe.js.gz",
+      "sha256": "492f35de3755396041304484380fe0deffda77b25d457c05d212132ccabe47de"
+    },
+    {
       "path": "apps/studio/build/client/_app/immutable/chunks/D7GHUIoo.js",
       "sha256": "d87320186c4dab9956a91a3e1e531097b8eef38a146257f6af056249c15626d0"
     },
@@ -3602,6 +3578,30 @@
       "sha256": "ab34c53fbbed9031b879a44fa3c5ebedcf94a8b08b3ed11933b40b0b456c71fe"
     },
     {
+      "path": "apps/studio/build/client/_app/immutable/chunks/DpTMHwvp.js",
+      "sha256": "9daed54f7f1e8257aa1fa3a21f1b9f65c22d1da954895f900d05c3fd360b6fb3"
+    },
+    {
+      "path": "apps/studio/build/client/_app/immutable/chunks/DpTMHwvp.js.br",
+      "sha256": "72f040e77318207a7d1770fe144d1a04f07c17d4c84f42aeb492335be5f3ace3"
+    },
+    {
+      "path": "apps/studio/build/client/_app/immutable/chunks/DpTMHwvp.js.gz",
+      "sha256": "747d3d0b6563f8901bc91f7c99eef52ee8f0f4b3f7c1db4a454eb38a3c5753da"
+    },
+    {
+      "path": "apps/studio/build/client/_app/immutable/chunks/DYXeiV3R.js",
+      "sha256": "0a171436e64d840eac942b6284954a698c83f6f13d67d7ad3b23554190df3d52"
+    },
+    {
+      "path": "apps/studio/build/client/_app/immutable/chunks/DYXeiV3R.js.br",
+      "sha256": "a48b77b4bb3198afba712c39d3984d048f105e892e0b89696543b1d60438fb9f"
+    },
+    {
+      "path": "apps/studio/build/client/_app/immutable/chunks/DYXeiV3R.js.gz",
+      "sha256": "4715a3697fc0972402c7f2b8cc2f51f8e219efb28d90611ec386bf8ae717ffde"
+    },
+    {
       "path": "apps/studio/build/client/_app/immutable/chunks/g9-lgVsj.js",
       "sha256": "abb8a7007d9a1f743c33283c233a509dc702eb618d1447d128b1330b73851bf2"
     },
@@ -3686,28 +3686,28 @@
       "sha256": "f5e5e5d49dfbd65c9626b466241b3008977fdab1b4459846bff107407a79b4f7"
     },
     {
-      "path": "apps/studio/build/client/_app/immutable/entry/app.Bi3Olyzb.js",
-      "sha256": "76e51f304447f797f15c4f0f9e68ffb3034cd69657b72775504610516e2ff93a"
+      "path": "apps/studio/build/client/_app/immutable/entry/app.Djr7WsCd.js",
+      "sha256": "8355afce937cbb63b0929e8df372f4b98173918c03dacbc49fe004c51c789c16"
     },
     {
-      "path": "apps/studio/build/client/_app/immutable/entry/app.Bi3Olyzb.js.br",
-      "sha256": "65de6fd63e8b0c5adb3f32074bad0344efe2aa3dea622b339949276e45933e21"
+      "path": "apps/studio/build/client/_app/immutable/entry/app.Djr7WsCd.js.br",
+      "sha256": "1fc1f2da47e66ea368983bcbf185dd969e8479d69d1cbc189d3f782a49d9c08a"
     },
     {
-      "path": "apps/studio/build/client/_app/immutable/entry/app.Bi3Olyzb.js.gz",
-      "sha256": "13b2fe2decafc3741e30a9dfc8abc2fcbb2a1e0a8ce660c578b9e0bca3ee578f"
+      "path": "apps/studio/build/client/_app/immutable/entry/app.Djr7WsCd.js.gz",
+      "sha256": "7d286767ddd03a2f302435fb60f50d4ccc503989d68d188bcfe56d0bfa8e6f36"
     },
     {
-      "path": "apps/studio/build/client/_app/immutable/entry/start.BBny9XOj.js",
-      "sha256": "81845c66d3c5fe5e500d128ea272209313350bd16ca9aa92be053a7475ff6529"
+      "path": "apps/studio/build/client/_app/immutable/entry/start.BDQYkHXF.js",
+      "sha256": "759a0397fe1ca1faddf8c60c80ef5ceb46eeb206f029732e58b72143055f5fff"
     },
     {
-      "path": "apps/studio/build/client/_app/immutable/entry/start.BBny9XOj.js.br",
-      "sha256": "f4cf70186dbd6000cd470d39032874305d27bac14d87c2e01f7b3ebacc3df6ba"
+      "path": "apps/studio/build/client/_app/immutable/entry/start.BDQYkHXF.js.br",
+      "sha256": "fd08d2e3d71772b61209d4498326329be801c49a794141a4987915b45668e28e"
     },
     {
-      "path": "apps/studio/build/client/_app/immutable/entry/start.BBny9XOj.js.gz",
-      "sha256": "103d0631edb3e5f061a941c255428be25eb1a5527ecf784fd5d1e49d40c8505a"
+      "path": "apps/studio/build/client/_app/immutable/entry/start.BDQYkHXF.js.gz",
+      "sha256": "3882ab2f9b3564cdd01aec70d9d320bbfd9b3eedbb41d298df6c54ca3144cf7c"
     },
     {
       "path": "apps/studio/build/client/_app/immutable/nodes/0.CKD-a7Me.js",
@@ -3722,28 +3722,28 @@
       "sha256": "e229c82e736bacf81d05917ba970997a3e0ff90e12bfdf85b6e0c94b8542f106"
     },
     {
-      "path": "apps/studio/build/client/_app/immutable/nodes/1.DRk4Hr4Q.js",
-      "sha256": "9a98dc97efe9d4474e87356b417fa3a7a29d7ab7467f974048ceae8ae1df696a"
+      "path": "apps/studio/build/client/_app/immutable/nodes/1.CfBGhc5x.js",
+      "sha256": "0e3797c031d2facb448eb37e97f2c0a65e06bdf21452a451028e47a6c2e0bb52"
     },
     {
-      "path": "apps/studio/build/client/_app/immutable/nodes/1.DRk4Hr4Q.js.br",
-      "sha256": "dfdf379b208fa2e1118714a9324e88f895e8f94546f265bfd8e1b9eaae44c93b"
+      "path": "apps/studio/build/client/_app/immutable/nodes/1.CfBGhc5x.js.br",
+      "sha256": "1a4ea4fbf196593d24455e9da5984dbd9f98080569dc156ec7b6f97247a96de4"
     },
     {
-      "path": "apps/studio/build/client/_app/immutable/nodes/1.DRk4Hr4Q.js.gz",
-      "sha256": "2b8ab2efdc786b14249e5407c2220c4faeed3d8830ebc3124f32556a92d2ef19"
+      "path": "apps/studio/build/client/_app/immutable/nodes/1.CfBGhc5x.js.gz",
+      "sha256": "50019c00673404065f4e2b49df4958f5ad48f49aae170471de983820afd1267f"
     },
     {
-      "path": "apps/studio/build/client/_app/immutable/nodes/10.D_q_bFUA.js",
-      "sha256": "acb68dd7cd309f364cf6e5b92dbae3dcac6ad6d69bb2fd643fbfd8f4ae154d5f"
+      "path": "apps/studio/build/client/_app/immutable/nodes/10.DSIV30BX.js",
+      "sha256": "4dfcdbecd7faea4735b95b298d6a62168dc0e0f2a840c7653d558654d796ee70"
     },
     {
-      "path": "apps/studio/build/client/_app/immutable/nodes/10.D_q_bFUA.js.br",
-      "sha256": "092d38a970fd0bfcf9b3de9cd96f206f63a31f63aa6d46f0c0ee50bc51afe610"
+      "path": "apps/studio/build/client/_app/immutable/nodes/10.DSIV30BX.js.br",
+      "sha256": "c436e26dda8482186b867fe4896955977ab4d28b8dc176fcf557aec32cd5f72f"
     },
     {
-      "path": "apps/studio/build/client/_app/immutable/nodes/10.D_q_bFUA.js.gz",
-      "sha256": "7af38c2d0325db1bae4d814102ccf79052fdbd27a30dea4ffe2b4b83266a8b6b"
+      "path": "apps/studio/build/client/_app/immutable/nodes/10.DSIV30BX.js.gz",
+      "sha256": "98123f9add1d11742cb14a999168d04da720e89adf16326a4300780299f839e5"
     },
     {
       "path": "apps/studio/build/client/_app/immutable/nodes/2.DY2OCI9E.js",
@@ -3770,16 +3770,16 @@
       "sha256": "c32d33381c2d6463c1f00bf103220d2a5d3c1f13a077ac064fced8e8d66040c7"
     },
     {
-      "path": "apps/studio/build/client/_app/immutable/nodes/4.CgxngB_e.js",
-      "sha256": "cf194e94a906d1da2738fbc6dc13d6a470d377d27180ba4231fcf3816094cf26"
+      "path": "apps/studio/build/client/_app/immutable/nodes/4.B0cj1GYX.js",
+      "sha256": "7b36a0a963e0f99d5866f1267b8b7fcf3cfe9b519539e3047d86ee09080f3b34"
     },
     {
-      "path": "apps/studio/build/client/_app/immutable/nodes/4.CgxngB_e.js.br",
-      "sha256": "30663e3fc7231f874818986675e5c5f7795b1555651e3c00fae391ad5d72449e"
+      "path": "apps/studio/build/client/_app/immutable/nodes/4.B0cj1GYX.js.br",
+      "sha256": "688a13d58be437004e4060ba1be72b30cf0c93c684063c74e874c3ff68e21422"
     },
     {
-      "path": "apps/studio/build/client/_app/immutable/nodes/4.CgxngB_e.js.gz",
-      "sha256": "52fde3dde7be8df925ee3e4797807aeeecf7913f3a600f244cd42473206ecea8"
+      "path": "apps/studio/build/client/_app/immutable/nodes/4.B0cj1GYX.js.gz",
+      "sha256": "df346ceae5c0ebd51fa48b0eccda6fbb23f0ca6ee292933cfcaf25f6e6c0f99b"
     },
     {
       "path": "apps/studio/build/client/_app/immutable/nodes/5.B9I-f4Qb.js",
@@ -3843,15 +3843,15 @@
     },
     {
       "path": "apps/studio/build/client/_app/version.json",
-      "sha256": "36e44d5446c1260e020d484d6c3df8f5cfaced40914e43a8ce924a8678ac4aec"
+      "sha256": "310da307157ffcde32d2aa89feb561ac00a2bf74fc6e828b3ed32b473b2009be"
     },
     {
       "path": "apps/studio/build/client/_app/version.json.br",
-      "sha256": "89ee7312e87c31d916ca2fea55e2c5e9209aa8c39ac576988495535c5b77731b"
+      "sha256": "fd88a810ecf20d5d63f2e0cdd6fb2116558fe9dff5b0908535a26b3c05674481"
     },
     {
       "path": "apps/studio/build/client/_app/version.json.gz",
-      "sha256": "96ad6472a8f6a0a2a1189c1c66447c0e5463dadc3a6c4ded00e67a30dea7c570"
+      "sha256": "af52e66af6a8f6527b0f7a3c0b6a793266275f0cc6b9fe27e89baf459e75cd75"
     },
     {
       "path": "apps/studio/build/env.js",
@@ -3863,7 +3863,7 @@
     },
     {
       "path": "apps/studio/build/handler.js",
-      "sha256": "74dde18551a93de9d24b48f1a4e73ee349a8c243dfddf71cbd28e6fb6f81a808"
+      "sha256": "588fefc2aff753e25d14788f995a4fc3b00052fe69d6ec7eab9dd0b177572c2e"
     },
     {
       "path": "apps/studio/build/handler.js.map",
@@ -3871,91 +3871,91 @@
     },
     {
       "path": "apps/studio/build/index.js",
-      "sha256": "276923de045a1bc672c2d90e47abd62c37d0271f852556b0aca6a02f1c515743"
+      "sha256": "2048dcd92e50d6ede9a830216c1803e73e7c12ac6803b8a6bb42c8a323f7eb03"
     },
     {
       "path": "apps/studio/build/index.js.map",
       "sha256": "def32b88fad1898bd2937a90351d4e4a3d8fc14b0942e26ed79df02f008d0e2d"
     },
     {
-      "path": "apps/studio/build/server/chunks/_page.svelte-B54LS2M8.js",
-      "sha256": "5bdef9559b4a0a155a57d772012574f1fb188cd315cc1edd90ffad81996cf7b8"
+      "path": "apps/studio/build/server/chunks/_page.svelte-Bc9rVJLh.js",
+      "sha256": "316ed38c29945176d76be2e12f114755fbfc407719e910c6e99c513f93ed2819"
     },
     {
-      "path": "apps/studio/build/server/chunks/_page.svelte-B54LS2M8.js.map",
-      "sha256": "528867c11e3935aa18c00a0bee67823809e975c20dc4022357ee19d43fbf29b8"
+      "path": "apps/studio/build/server/chunks/_page.svelte-Bc9rVJLh.js.map",
+      "sha256": "58a13d47a4112787e9ac2caca0d02c0fa472f2f4b7978be43611f5f28b73c543"
     },
     {
-      "path": "apps/studio/build/server/chunks/_page.svelte-BnexwUZX.js",
-      "sha256": "cbe6785a135a5a10777b88afd9c045175c68dae42df0c200c88ad846af147869"
+      "path": "apps/studio/build/server/chunks/_page.svelte-Be4IMpnP.js",
+      "sha256": "b59a15051d6e6aa389b81d3a88ffbd38a6b0941996f35e5c4c5f8b02f8b17e63"
     },
     {
-      "path": "apps/studio/build/server/chunks/_page.svelte-BnexwUZX.js.map",
-      "sha256": "b3ec7055e4f5378698ec5697e0e205b7cd0683ebd1b98b0be8a09bbe8bbd52f5"
+      "path": "apps/studio/build/server/chunks/_page.svelte-Be4IMpnP.js.map",
+      "sha256": "6df928f262ae674aa4b72e6596ec4137ce14420418d09aba670d10d24c44cf95"
     },
     {
-      "path": "apps/studio/build/server/chunks/_page.svelte-DAXAXjK5.js",
-      "sha256": "77eacc7de3d6dc07d538b84c16eaa1169bb9505ea83ed9a8279c97479f6297e9"
+      "path": "apps/studio/build/server/chunks/_page.svelte-Bj2ypI8I.js",
+      "sha256": "71fbe22cb8ce0c5e4518202ecc9577cfb5fb5305a724a2e7e1f53ffd4004dfe2"
     },
     {
-      "path": "apps/studio/build/server/chunks/_page.svelte-DAXAXjK5.js.map",
-      "sha256": "d602c8268c001fa10ea9f293916f9749d53793947f9db955d3ca98e1d9d770cd"
+      "path": "apps/studio/build/server/chunks/_page.svelte-Bj2ypI8I.js.map",
+      "sha256": "875c598b1f671595733514f81cba8a6d80c5ee6343fe3507496407a82fdd7e46"
     },
     {
-      "path": "apps/studio/build/server/chunks/_page.svelte-DoxpW8Zq.js",
-      "sha256": "b0c5e9a27cef4350432791328c9f5046322afa1bc159c81e450e0032e405a97d"
+      "path": "apps/studio/build/server/chunks/_page.svelte-BunWsFJk.js",
+      "sha256": "62badb2dc7cbe40fd09c137b2e2457a2c85fcc50a99b2b53262ac276067c37cd"
     },
     {
-      "path": "apps/studio/build/server/chunks/_page.svelte-DoxpW8Zq.js.map",
-      "sha256": "935af481e66e42bfe1c12342ed97445fe804a6d1cae136d0c9b4329b8e53b20a"
+      "path": "apps/studio/build/server/chunks/_page.svelte-BunWsFJk.js.map",
+      "sha256": "dc105b965f1970606cffc3235b8c473d73f44e2e1ffd71a560b635d60a4bbb66"
     },
     {
-      "path": "apps/studio/build/server/chunks/_page.svelte-Dplclj8T.js",
-      "sha256": "b4373dfaa81359d3cf6ea6dab91c0d4eaf9cfa8404a3b7190138dc4bd7f64f24"
+      "path": "apps/studio/build/server/chunks/_page.svelte-CrsVzNLO.js",
+      "sha256": "90fff0a3a85a2dcd7cbe50c7e29cc0086eaa853b66a0e1b4ab439086ad198f2d"
     },
     {
-      "path": "apps/studio/build/server/chunks/_page.svelte-Dplclj8T.js.map",
-      "sha256": "9b836a346d23592328cdee831aa55388e9769fc293e40d9ce645bcf060611c2f"
+      "path": "apps/studio/build/server/chunks/_page.svelte-CrsVzNLO.js.map",
+      "sha256": "68d69aac6190d003f98fbdaaf3b0eb3e8f3e95f5a2fc028ac53226deb5f39ce4"
     },
     {
-      "path": "apps/studio/build/server/chunks/_page.svelte-hfMsF3r_.js",
-      "sha256": "146c6b87011f32f1e88763e8bfc95209e00c94499a3fdc815f733bb091010c5a"
+      "path": "apps/studio/build/server/chunks/_page.svelte-JZJPUiJ4.js",
+      "sha256": "a079d77da8a2ecd1cb136c1c921ade28713de17349df161a41eb21b4c175bf9f"
     },
     {
-      "path": "apps/studio/build/server/chunks/_page.svelte-hfMsF3r_.js.map",
-      "sha256": "14fc1f6dae399789a916e8871f95097b58ce86a1d36b92fa121dfd9e77db9f76"
+      "path": "apps/studio/build/server/chunks/_page.svelte-JZJPUiJ4.js.map",
+      "sha256": "fda8040965635bd7174c5c95c509dbc428e9a48730d056d6ac80ab59c8cc6c55"
     },
     {
-      "path": "apps/studio/build/server/chunks/_page.svelte-qbetOLMG.js",
-      "sha256": "ba4622ca80ea3f93f15074e5a5c3d45ac0809fe2caa2905e2160acc73eee74ca"
+      "path": "apps/studio/build/server/chunks/_page.svelte-vKZCnNmZ.js",
+      "sha256": "45d0685eb34650b4fb436c04e7ebb1689a5cd730f9626bed36889d29277c07ac"
     },
     {
-      "path": "apps/studio/build/server/chunks/_page.svelte-qbetOLMG.js.map",
-      "sha256": "fe3cfc8ff71444b24ad699b078288cb2f6be868667b380718a6af23e2b5d0ceb"
+      "path": "apps/studio/build/server/chunks/_page.svelte-vKZCnNmZ.js.map",
+      "sha256": "a0c1021d69d7c28fa14fe249ebb9b25b54e87868ccf133eb2c7b0d7f2e236334"
     },
     {
-      "path": "apps/studio/build/server/chunks/_server.ts-BADD1UZ7.js",
-      "sha256": "f7c2f674d02420f9e5df7145d32f6f1679aae33feef097040b637ebed0f42554"
+      "path": "apps/studio/build/server/chunks/_server.ts-B7EIDnqG.js",
+      "sha256": "c37cb627bb8537de381bd1184b3708eb0be2191985b532428017744dc7e4c2a8"
     },
     {
-      "path": "apps/studio/build/server/chunks/_server.ts-BADD1UZ7.js.map",
-      "sha256": "30e6b8bda6681277a104727c857e60fef654b430fe2a67d786ec94c698a041f3"
+      "path": "apps/studio/build/server/chunks/_server.ts-B7EIDnqG.js.map",
+      "sha256": "1004c647edbf811e6634467896fe08e732110e948605722a964951b275e72ad9"
     },
     {
-      "path": "apps/studio/build/server/chunks/_server.ts-C04R3u4h.js",
-      "sha256": "b1df4bc6512a8d8e68744349182fe762ad8228e5771f59fa875b3179fb511eea"
+      "path": "apps/studio/build/server/chunks/_server.ts-CbYkknmk.js",
+      "sha256": "f8ba40b4052da5c50db789d8ef480df46651e5b78a6235901deeee6c8eab2044"
     },
     {
-      "path": "apps/studio/build/server/chunks/_server.ts-C04R3u4h.js.map",
-      "sha256": "c04fd0bcceb06d6ad0ca28a63f31b3d7ac51b23476353be179da583e57152804"
+      "path": "apps/studio/build/server/chunks/_server.ts-CbYkknmk.js.map",
+      "sha256": "0c2aa86a06020e442e989eaf55c2e237d7bbe2fffb124a5574a45e3c864083a6"
     },
     {
-      "path": "apps/studio/build/server/chunks/_server.ts-CTVr3ezC.js",
-      "sha256": "5b60817233ef3874a2bf609798c8aba28b6aa79c57b80591299299a5d0e455df"
+      "path": "apps/studio/build/server/chunks/_server.ts-CQ-PH_VI.js",
+      "sha256": "1b29a0363d2d3e79ef84d2f99f44a303a914de1b02bbcbd70772dd369ff8379d"
     },
     {
-      "path": "apps/studio/build/server/chunks/_server.ts-CTVr3ezC.js.map",
-      "sha256": "9f7b5a049f42f1b00e6b2f29464bc6e30fe3ad642cf5ffbb04cb719f7a2d28cb"
+      "path": "apps/studio/build/server/chunks/_server.ts-CQ-PH_VI.js.map",
+      "sha256": "cb881d52a7881a817ce9b8a2f1f749e2268b85171bb152d23c29a755c46e96fe"
     },
     {
       "path": "apps/studio/build/server/chunks/0-feexgArb.js",
@@ -3966,60 +3966,60 @@
       "sha256": "464e07961e0f88fab72635d238672860e68731b3274e7e4e53128b0655767246"
     },
     {
-      "path": "apps/studio/build/server/chunks/1-BCf_R0JL.js",
-      "sha256": "717f9dbd984cb755557fc0874be1b0622672b5ca8966975d782829e7a8ed13bb"
+      "path": "apps/studio/build/server/chunks/1-DwxdW7hK.js",
+      "sha256": "33bdd021769a350e6645eaff7157b4d3d103fad42fe965af24439293aa42e9e1"
     },
     {
-      "path": "apps/studio/build/server/chunks/1-BCf_R0JL.js.map",
-      "sha256": "2daf2f25042f6b451e8b35f68e880926b1520745b5223af6fea20b2efc07590e"
+      "path": "apps/studio/build/server/chunks/1-DwxdW7hK.js.map",
+      "sha256": "f7e7eaccaf959bc641de4d434617d3c0a1ec3fff1b13116e0c43a99b540162c7"
     },
     {
-      "path": "apps/studio/build/server/chunks/10-DQSyTyR8.js",
-      "sha256": "e33161bb9b531eb55f62d5fb9d6c0555391771dc9c922aae26d092f56a186d55"
+      "path": "apps/studio/build/server/chunks/10-CqcwVi1R.js",
+      "sha256": "40d43cbfcf42ac63af4e317fb12e24cd10276d4d218ab2f8e7db797abae965a5"
     },
     {
-      "path": "apps/studio/build/server/chunks/10-DQSyTyR8.js.map",
-      "sha256": "fe296539e9634a6d8b0a8fcb3cc2d97687128d2f068dce989a16dc771e41460b"
+      "path": "apps/studio/build/server/chunks/10-CqcwVi1R.js.map",
+      "sha256": "50b4c11e3d04d82070197f4527464b802bd469b715f43035664e4f84f1020e99"
     },
     {
-      "path": "apps/studio/build/server/chunks/2-D7hi088j.js",
-      "sha256": "c5788b4557eca140d972e96ad6d5f25693e483e55007f90411615016abe7c607"
+      "path": "apps/studio/build/server/chunks/2-Dqwgc4oE.js",
+      "sha256": "3e7ffdffb01b83938b27b3e95b1cef4868d5973c21e580eda1153a89decbac8e"
     },
     {
-      "path": "apps/studio/build/server/chunks/2-D7hi088j.js.map",
-      "sha256": "b51eb365e51d3c2d7802fcdb9ac0c6d3cde33ece8f38fbb1937ae70df3198a1d"
+      "path": "apps/studio/build/server/chunks/2-Dqwgc4oE.js.map",
+      "sha256": "06b069ae87f14b17157b98ae5a0d1f54c76d8d906629424b44daada4283ebae3"
     },
     {
-      "path": "apps/studio/build/server/chunks/3-DrgfoDhC.js",
-      "sha256": "adcba84fa6e39fcc23478fcd98f20857f8f5a33834b331ae6cfe8ab239564e84"
+      "path": "apps/studio/build/server/chunks/3-DfdHiaZb.js",
+      "sha256": "bff0204159087cf9cc37e2b54233daeaea15cbe40e74f3666b3eb5afc6fbe345"
     },
     {
-      "path": "apps/studio/build/server/chunks/3-DrgfoDhC.js.map",
-      "sha256": "def4d0eeb3f34319154028d8f7ca45cf4347747b4abe32e3dd338786c608665c"
+      "path": "apps/studio/build/server/chunks/3-DfdHiaZb.js.map",
+      "sha256": "a68f98accbd4aa1d85fbbfa121ea039db3a03054b98682ab584134ada5fda1a9"
     },
     {
-      "path": "apps/studio/build/server/chunks/4-jJO1u0pj.js",
-      "sha256": "b6b5335c1b72cd2043bb58870dd841681607032db33be2bef8842ee2ee6879ca"
+      "path": "apps/studio/build/server/chunks/4-BFeG_RI5.js",
+      "sha256": "94a00f6caffcdb6462c861789923fa4716e0d0ed1630399077e855d7b17f982c"
     },
     {
-      "path": "apps/studio/build/server/chunks/4-jJO1u0pj.js.map",
-      "sha256": "fefbe4b9f36ce3458bf3dfafce238dd254d2055166dac5e307975db74cd1dd6e"
+      "path": "apps/studio/build/server/chunks/4-BFeG_RI5.js.map",
+      "sha256": "7700efa97642f79ca1e8a9b0b63b9a1d991f3de7d33e75f47b06b493debb4b4d"
     },
     {
-      "path": "apps/studio/build/server/chunks/5-uPnSC1WR.js",
-      "sha256": "ef85dd6759df91009bd972a58d9b53c399d44b0b63d11b6435683d8e141b5094"
+      "path": "apps/studio/build/server/chunks/5-Co9p8O4J.js",
+      "sha256": "40d320d2030864938eb6f83be6f7a9ad4cce102fcaae7af5f1e5f8ebb82fb3fb"
     },
     {
-      "path": "apps/studio/build/server/chunks/5-uPnSC1WR.js.map",
-      "sha256": "6111f83ed937262385b680b75e8d1bc2febe93023f02492fe301f4bcf16cdee6"
+      "path": "apps/studio/build/server/chunks/5-Co9p8O4J.js.map",
+      "sha256": "a1d1fa2edd79fc2a749a4f66f42d422c6b55e49f313973957a0e584c6d7107a0"
     },
     {
-      "path": "apps/studio/build/server/chunks/6-CMkjNH3O.js",
-      "sha256": "a1180924353f1d70a58adfd09b9208e30f0e077724b680443250743e0ed2f6f0"
+      "path": "apps/studio/build/server/chunks/6-BbuZsjh1.js",
+      "sha256": "ceb0e8bf31baa8064f594079889f968f6034bb9ce3398752a827edc831bddaad"
     },
     {
-      "path": "apps/studio/build/server/chunks/6-CMkjNH3O.js.map",
-      "sha256": "7dcb185ae15dffdf897ccd020fc0d1de3df4bbf85b83b72cde0dd1da40c70866"
+      "path": "apps/studio/build/server/chunks/6-BbuZsjh1.js.map",
+      "sha256": "92ac7ccc7c0f06fb9ea6172edd20e303fb05037826c06ceaab155cb1cd64f4b5"
     },
     {
       "path": "apps/studio/build/server/chunks/7-CDkm7cn0.js",
@@ -4030,28 +4030,28 @@
       "sha256": "22a29f7785fa327367e2155b03e4f97e2e7154de6e4fdc764fbc687224839ba1"
     },
     {
-      "path": "apps/studio/build/server/chunks/8-CPyVAImC.js",
-      "sha256": "aff0fc0f852abb95dfbc9b55ff8092c5a410a09ea3b05eae5dfa5fb766e6bea8"
+      "path": "apps/studio/build/server/chunks/8-B5u-r6Um.js",
+      "sha256": "8691c2e6b4024037711ec21e07850640a0f916cb3ecc97ac0dffd87117380f6f"
     },
     {
-      "path": "apps/studio/build/server/chunks/8-CPyVAImC.js.map",
-      "sha256": "c05c614df1cbccadf1184296938dbb176d28682ec67bb1d0a17e0ce6f51ef516"
+      "path": "apps/studio/build/server/chunks/8-B5u-r6Um.js.map",
+      "sha256": "1847014794b8213132beaf2d9e2f845fc931d859f6ac09143a0af821443c9cc3"
     },
     {
-      "path": "apps/studio/build/server/chunks/9-BqelTBfZ.js",
-      "sha256": "958ae96a8f4cb4e74d5f9718a5eb282a9c566c97d9d690a2b0408e587d7923c8"
+      "path": "apps/studio/build/server/chunks/9-Cd_igGDq.js",
+      "sha256": "16632363ac9d02e97c123386321c237061be794caaaa9e79aa27709dc61c7034"
     },
     {
-      "path": "apps/studio/build/server/chunks/9-BqelTBfZ.js.map",
-      "sha256": "21a0073ff00c645cc2a2ef7845751077b83198ee3ae481718cbb281f9f2dc23e"
+      "path": "apps/studio/build/server/chunks/9-Cd_igGDq.js.map",
+      "sha256": "a8fa8bd9739f08c135e9c66e50237dc246c299d4b730b15246ef010bba769cd3"
     },
     {
-      "path": "apps/studio/build/server/chunks/agent-progress-CGecy-lq.js",
-      "sha256": "616bc0862c4861b4e6ac28070cde6b088f51de099e2be8326da4c6c91063b86f"
+      "path": "apps/studio/build/server/chunks/agent-progress-C76_yPF9.js",
+      "sha256": "e43ba7b7cae9993b3e2838b29b5dd2ffde9751bf6bac47a0bcbcdb2bb9672a65"
     },
     {
-      "path": "apps/studio/build/server/chunks/agent-progress-CGecy-lq.js.map",
-      "sha256": "27243aa4c331854f273db8d84dac888dbbb84a903f74b5cfaef6a84d3d51b2bb"
+      "path": "apps/studio/build/server/chunks/agent-progress-C76_yPF9.js.map",
+      "sha256": "89f95a4940dd0718cd7378e93ce34fe5b652f2a0a4a98a7c6c275ffa21c08063"
     },
     {
       "path": "apps/studio/build/server/chunks/agent-stream-DRXSACDk.js",
@@ -4062,28 +4062,28 @@
       "sha256": "6f0e0a60c0be3e366c96f19bcfcabaa511409c6b0e219c688c33cef4a0434617"
     },
     {
-      "path": "apps/studio/build/server/chunks/AppShell-CstvK3SJ.js",
-      "sha256": "603f05a437b4ed3ee41196bca5ae82135678abd698e104c439d9da49ff4528bb"
+      "path": "apps/studio/build/server/chunks/AppShell-BbPKyoQx.js",
+      "sha256": "42f87e2c680c461c0122f57a233f60e658213d5956ac24cde0936ad51a004844"
     },
     {
-      "path": "apps/studio/build/server/chunks/AppShell-CstvK3SJ.js.map",
-      "sha256": "6b10f8bfcabc594c5eb2712c4c8f90da6d58a828ed8a9572a419b63eff6e4d1f"
+      "path": "apps/studio/build/server/chunks/AppShell-BbPKyoQx.js.map",
+      "sha256": "2d7a918b96185077be823ee9a3496bc8c5dba3fe5f722b0ab17177bcbbafec8a"
     },
     {
-      "path": "apps/studio/build/server/chunks/ConfirmationReview-BzPFf_Ny.js",
-      "sha256": "2457245d79004df199584cc72f93089b2952abcf94584ffcd0bfd896296f5daa"
+      "path": "apps/studio/build/server/chunks/ConfirmationReview-D8z3diwi.js",
+      "sha256": "d8d1505e420314c3b5275b07c33408b23681044d9f255a5a3e7768575ea54c57"
     },
     {
-      "path": "apps/studio/build/server/chunks/ConfirmationReview-BzPFf_Ny.js.map",
-      "sha256": "1060ce61b25f680a0eb5be1986148ca550e5a0f8d2eccad4e21b54ba3ab6833a"
+      "path": "apps/studio/build/server/chunks/ConfirmationReview-D8z3diwi.js.map",
+      "sha256": "0c318349f94b420b5a424cd85913e3e522c14b6780301c27860097f9142b857a"
     },
     {
-      "path": "apps/studio/build/server/chunks/designer-agent-http-B6C3YVgr.js",
-      "sha256": "81a0792b676b808ecb9d1fbde435ff202ef4a2d58a0f474ac4310234ced185df"
+      "path": "apps/studio/build/server/chunks/designer-agent-http-BRT2qfWO.js",
+      "sha256": "bcf8fbd140832fb8f3356a51866d8ed1894584e53230c2840412361c776f235c"
     },
     {
-      "path": "apps/studio/build/server/chunks/designer-agent-http-B6C3YVgr.js.map",
-      "sha256": "0b706d6722ac1717d3095bf65d45bfd304528abe8a0a7409f1063708ec2e2dbd"
+      "path": "apps/studio/build/server/chunks/designer-agent-http-BRT2qfWO.js.map",
+      "sha256": "54fb91b2e3f85829603d2f5930860f56ea915609e8ce9d01b80edc6a54cbb8c8"
     },
     {
       "path": "apps/studio/build/server/chunks/designer-visual-DdSCTp4v.js",
@@ -4094,44 +4094,44 @@
       "sha256": "71f313cd27479c9c2aaaf2b0e6289945630f82a094e95d7962c93883a051a9b7"
     },
     {
-      "path": "apps/studio/build/server/chunks/error.svelte-BvD8NQN2.js",
-      "sha256": "dceb0ee5e20fbbd225af0f718de7fbdd197ed600c1c9aed23c224a82f6f2127f"
+      "path": "apps/studio/build/server/chunks/error.svelte-CURMqLSt.js",
+      "sha256": "a7d8b0aa7d04237bc44688aa8bc14f811adae2096d97ec5a69f3a9babde0a73a"
     },
     {
-      "path": "apps/studio/build/server/chunks/error.svelte-BvD8NQN2.js.map",
-      "sha256": "71bbcb5c647280080f29a3705f2c771899e4ab31c753f7f71176770881c3e628"
+      "path": "apps/studio/build/server/chunks/error.svelte-CURMqLSt.js.map",
+      "sha256": "e6a947557a8c8ece3d216518c15f6fae9a3262abef3351d77d09875a0f6d02cc"
     },
     {
-      "path": "apps/studio/build/server/chunks/handler-B6anzONu.js",
-      "sha256": "b452c51dd9176eeb07370586fa30542913c2dd1976eec0b831c9e51a53e5afb0"
+      "path": "apps/studio/build/server/chunks/handler-gfUyynLi.js",
+      "sha256": "b8561623626f7bda5a45c9c60cda30aa1c660a38750f7f47fd854ff2e96852d0"
     },
     {
-      "path": "apps/studio/build/server/chunks/handler-B6anzONu.js.map",
-      "sha256": "2dcb4a7c22f45c01b96044c70966fd81de5294a298a816087f73b703186186b1"
+      "path": "apps/studio/build/server/chunks/handler-gfUyynLi.js.map",
+      "sha256": "8359ddee8864ebb7eb40ffb54705ee613d8a1d9edd61c070bc14e773bd593959"
     },
     {
-      "path": "apps/studio/build/server/chunks/hooks.server-Cz4azGGF.js",
-      "sha256": "76eb2d6f0a13556826c000ff5db3b456acebc29f529a94dda1a1d933f5b9f626"
+      "path": "apps/studio/build/server/chunks/hooks.server-C_daQ3Mp.js",
+      "sha256": "8e45c03f269cbf889134859c201f79c824f0001b4b79d0f88f3a5bf73fd731ea"
     },
     {
-      "path": "apps/studio/build/server/chunks/hooks.server-Cz4azGGF.js.map",
-      "sha256": "45fe14288a049d3e2d43d85b7551cea42dfdaff008e4a49b80df55554f9a05b0"
+      "path": "apps/studio/build/server/chunks/hooks.server-C_daQ3Mp.js.map",
+      "sha256": "fbf6baf45cd23f591d819683dc3f15c84e2c0a30b9a6e8cdafd03856f95175c2"
     },
     {
-      "path": "apps/studio/build/server/chunks/index.js-CCUFKmR6.js",
-      "sha256": "4b60bd521a1915700a0e4cdc505db7f56354e30c90a329e0fb18b59b975e307d"
+      "path": "apps/studio/build/server/chunks/index.js-BKHanmhd.js",
+      "sha256": "7c05325195248f7eff76a958dc30ec3b759de3f8404032f4b7544839c1935196"
     },
     {
-      "path": "apps/studio/build/server/chunks/index.js-CCUFKmR6.js.map",
-      "sha256": "3268002c64baa61655d3c94041a577d6ebd448717c1ae71a21761b61ff6e0ef4"
+      "path": "apps/studio/build/server/chunks/index.js-BKHanmhd.js.map",
+      "sha256": "c512e1f35dd1ad7c931fcd03662090ea0d6abc6bc97e346b1a2db1cf5fe6de83"
     },
     {
-      "path": "apps/studio/build/server/chunks/index2-DO_aTdY2.js",
-      "sha256": "fe6b636ac4c86d20b756e3727be83f143ac2c78a7b48bb42669556073031148d"
+      "path": "apps/studio/build/server/chunks/index2-qmPDG9p7.js",
+      "sha256": "56d4055d876074c81f9c685a930b081c31058d9af5e61371d8e695b58844e5d8"
     },
     {
-      "path": "apps/studio/build/server/chunks/index2-DO_aTdY2.js.map",
-      "sha256": "197618d40b408f711902bfb32938b744cc77a6c72fdd551d8eea3159c170b06b"
+      "path": "apps/studio/build/server/chunks/index2-qmPDG9p7.js.map",
+      "sha256": "2622e8bdb23ad2db741966d51d585ca3ef839a1017fdfbad984ac6a45983d7c1"
     },
     {
       "path": "apps/studio/build/server/chunks/layout.svelte-UxsTmhKc.js",
@@ -4142,12 +4142,12 @@
       "sha256": "c30e8ab368c521af183631b9534c2723bb14225201d702eecba5618d5c688bef"
     },
     {
-      "path": "apps/studio/build/server/chunks/manifest.js-BecR9Pc9.js",
-      "sha256": "323b3ee9d613109d8a1baa23fafb00eeca6e9a8bec3ca4d9d6d0f4b43d4827f0"
+      "path": "apps/studio/build/server/chunks/manifest.js-BgY3THs5.js",
+      "sha256": "6a4ba1cd60f81ed620ce428f59c59202f9969e9705eec2c4f0416f539104462b"
     },
     {
-      "path": "apps/studio/build/server/chunks/manifest.js-BecR9Pc9.js.map",
-      "sha256": "b2c6258b048716ba1b83a0e3eef5813862435b271b1f518c50837dd261f1e65f"
+      "path": "apps/studio/build/server/chunks/manifest.js-BgY3THs5.js.map",
+      "sha256": "dadd804bc10a6c403002893591620665be71a80a179df49e1de34af3a75a01fd"
     },
     {
       "path": "apps/studio/build/server/chunks/session-C_Eoxncf.js",
