@@ -2,7 +2,7 @@
   import { onMount, tick, untrack } from 'svelte';
   import { beforeNavigate } from '$app/navigation';
   import { ControlScope } from '@victframework/ui-svelte';
-  import { Composer, EditorBridge, EditorCanvas, Inspector, Layers, StateValuesPanel, PanelResizer, StateInitialEditor, SelectionPalette, setAttribute, resolveOccurrence, compositionParent, compositionName, literalTextTarget, duplicateSubtree, type TransactionDraft } from '@victframework/ui-editor';
+  import { Composer, EditorBridge, EditorCanvas, Inspector, Layers, PanelResizer, StateInitialEditor, SelectionPalette, setAttribute, resolveOccurrence, compositionParent, compositionName, literalTextTarget, duplicateSubtree, type TransactionDraft } from '@victframework/ui-editor';
   import { createPreviewSession } from '@victframework/ui-preview';
   import { CompositionNavigator, authoredOccurrence, compositionSlots, compositionMembers, compositionTrail, firstCompositionSlot, type CompositionFocus } from '@victframework/ui-editor';
   import type { UiDocument, UiRenderPlan, UiValue } from '@victframework/ui';
@@ -20,6 +20,9 @@
   import StructureView from './StructureView.svelte';
   import SourceDetails from './SourceDetails.svelte';
   import StructureDock from './StructureDock.svelte';
+  import TryScenarios from './TryScenarios.svelte';
+  import type { TestScenario } from './test-scenarios.js';
+  import { readableName, studioNodeLabels } from './presentation.js';
   import WorkspaceContextMenu from './WorkspaceContextMenu.svelte';
   import { sourceCapabilities, type WorkspaceContext } from './workspace-context.js';
   import { projectStructure, structureId, structureMove, type StructureEditRequest, type StructureHandoff } from './structure.js';
@@ -69,6 +72,44 @@
   import { documentCursor, applyAgentProposal, type AgentProposal } from './agent-edits.js';
   let agentEpoch = $state(crypto.randomUUID());
   let chatOpen = $state(true);
+  let chatWidth = $state(280);
+  async function toggleChat() {chatOpen=!chatOpen;await tick();const target=chatOpen?globalThis.document.querySelector<HTMLElement>('.agent-panel textarea'):workspaceElement?.querySelector<HTMLElement>('#document-drawer:not([hidden]) .close-document,.testing-drawer [aria-label="Close testing"],.inspection-drawer [aria-label="Close inspection details"],main:not([inert]) [aria-label="Show chat"]');target?.focus({preventScroll:true});}
+  let structureHeight = $state(240);
+  let testingOpen = $state(false);
+  let activeTest = $state<TestScenario>();
+  let testingReturn: HTMLElement | undefined;
+  async function openTesting() {
+    if(textDraftDirty || sourceDraftDirty || renamingScreen){notice='Apply or cancel your draft first.';return;}
+    const active=globalThis.document.activeElement;
+    testingReturn=active instanceof HTMLElement && !active.closest('[role="menu"]')?active:undefined;
+    detailsOpen=false;testingOpen=true;
+  }
+  function closeTesting() {
+    testingOpen=false;void tick().then(()=>{
+      const target=testingReturn?.isConnected && !testingReturn.closest('[hidden],[inert]') && testingReturn.getClientRects().length ? testingReturn : workspaceElement?.querySelector<HTMLElement>('#document-drawer:not([hidden]) .sidebar-tabs button[aria-pressed=true]') ?? documentButton;
+      target?.focus({preventScroll:true});
+    });
+  }
+  function chooseTest(test:TestScenario) {
+    if(textDraftDirty || sourceDraftDirty || renamingScreen)return;
+    changeMode('interact');
+    resetRuntime();simulation.denied=test.simulation==='denied';simulation.failNext=test.simulation==='failNext';
+    runtimeValues={...test.values};activeTest=test;
+    notice=test.description;
+  }
+  function changeTestValue(key:string,value:UiValue|undefined) {
+    if(textDraftDirty || sourceDraftDirty || renamingScreen)return;
+    const retained={...runtimeValues};if(value===undefined)delete retained[key];else retained[key]=value;
+    resetRuntime();runtimeValues=retained;activeTest={id:'custom',label:'Custom values',description:'Temporary state values.'};
+  }
+  async function tryCanvas() {
+    if(textDraftDirty || sourceDraftDirty || renamingScreen)return;
+    // Mode entry can reset the run; retain deliberately prepared temporary values.
+    const retained={...runtimeValues},test=activeTest,denied=simulation.denied,failNext=simulation.failNext;
+    changeMode('interact');runtimeValues=retained;activeTest=test;simulation.denied=denied;simulation.failNext=failNext;
+    testingOpen=false;drawerOpen=false;detailsOpen=false;structureExpanded=false;
+    await tick();canvasScroll?.querySelector<HTMLElement>('input,button,select,textarea,[tabindex="0"]')?.focus({preventScroll:true});
+  }
   import '@victframework/ui-svelte/styles.css';
   import '@victframework/ui-svelte/catalog.css';
   import './workspace.css';
@@ -126,12 +167,12 @@
   let dataDraftDirty = $state(false);
   const textDraftDirty = $derived(propertyDraftDirty || dataDraftDirty);
   let selectedData = $state<string>();
-  const dataName = (key:string) => editorLabels.state[key as keyof typeof editorLabels.state] ?? key;
+  const dataName = (key:string) => editorLabels.state[key as keyof typeof editorLabels.state] ?? readableName(key);
   const dataType = (type:string) => ({string:'Text',boolean:'Yes / No',number:'Number',stringList:'Text list',numberList:'Number list'}[type] ?? type);
   function dataPreview(value:unknown) {return Array.isArray(value) ? `${value.length} items` : typeof value==='boolean' ? value?'Yes':'No' : value === '' ? 'Empty' : String(value);}
   function changeDocumentTab(tab:string) {if(dataDraftDirty || sourceDraftDirty) {notice='Apply or cancel your draft first.';return;} drawerTab=tab;selectedData=undefined;}
   function openData(key?:string) {if(dataDraftDirty) {notice='Apply or cancel your draft first.';return;} selectedData=key;}
-  async function toggleDocument() {if(drawerOpen && !detailsOpen)closeDrawer();else {if(textDraftDirty){notice='Apply or cancel your edit first.';return;} detailsOpen=false;drawerOpen=true;await tick();globalThis.document.querySelector<HTMLButtonElement>('.sidebar-tabs button[aria-pressed=true]')?.focus();}}
+  async function toggleDocument() {if(drawerOpen && !detailsOpen && !testingOpen)closeDrawer();else {if(textDraftDirty){notice='Apply or cancel your edit first.';return;} detailsOpen=false;testingOpen=false;drawerOpen=true;await tick();globalThis.document.querySelector<HTMLButtonElement>('.sidebar-tabs button[aria-pressed=true]')?.focus();}}
 
   let palettePage = $state<'format' | 'insert' | 'arrange' | 'connect'>('format');
   let paletteRequested = $state(false);
@@ -144,21 +185,24 @@
   let detailId = $state<string>();
   let detailsOpen = $state(false);
   let inspectionWidth = $state(360);
+  let drawerWidth = $state(320);
+  const effectiveDrawerWidth = $derived(detailsOpen ? inspectionWidth : drawerWidth);
   let stageHeight = $state(600);
+  let toolbarHeight = $state(38);
   let structureOpen = $state(false);
   let structureExpanded = $state(false);
   let detailsPage = $state<'properties'|'relationships'>('properties');
   let workspaceWidth = $state(0);
-  const rightOpen = $derived(drawerOpen || detailsOpen);
-  const drawerOverlay = $derived(rightOpen && workspaceWidth < 760);
+  const rightOpen = $derived(drawerOpen || detailsOpen || testingOpen);
+  const drawerOverlay = $derived(rightOpen && workspaceWidth < effectiveDrawerWidth + 426);
   let inspectionReturn: HTMLElement | undefined;
   function inspectSource(id = source && selected ? structureId(source.id,'node',resolveOccurrence(selected,source).sourceNodeId) : undefined, page:'properties'|'relationships'='properties') {
     const active = globalThis.document.activeElement;
     inspectionReturn = active instanceof HTMLElement && !active.closest('[role="menu"]') ? active : undefined;
-    detailId = id; detailsPage = page; detailsOpen = true;
+    detailId = id; detailsPage = page; testingOpen=false; detailsOpen = true;
   }
   function closeDetails() { detailsOpen = false; void tick().then(()=>{
-    const target = inspectionReturn?.isConnected && !inspectionReturn.closest('[hidden],[inert]') ? inspectionReturn : workspaceElement?.querySelector<HTMLElement>(structureOpen ? '.inspection-toggle' : '.inspect-source');
+    const target = inspectionReturn?.isConnected && !inspectionReturn.closest('[hidden],[inert]') ? inspectionReturn : workspaceElement?.querySelector<HTMLElement>('#document-drawer:not([hidden]) .inspect-source') ?? workspaceElement?.querySelector<HTMLElement>(structureOpen ? '.inspection-toggle' : '.panel-toggle');
     target?.focus({ preventScroll:true });
   }); }
   function selectDetail(id:string) {
@@ -204,8 +248,7 @@
     const owner=canvasScroll?.querySelector<HTMLElement>('[data-ui-owner-root]')?.dataset.uiOwnerRoot;
     return !!owner && target.closest<HTMLElement>('[data-ui-owner]')?.dataset.uiOwner===owner;
   }
-  let drawerWidth = $state(320);
-  const effectiveDrawerWidth = $derived(detailsOpen ? inspectionWidth : drawerWidth);
+
   function dismissStructure() { if(structureExpanded){structureExpanded=false;return;} structureOpen = false; void tick().then(()=>workspaceElement?.querySelector<HTMLButtonElement>('.structure-toggle')?.focus({preventScroll:true})); }
   let renamingScreen=$state(false);
   let screenNameDraft=$state('');
@@ -229,9 +272,17 @@
   }
   let documentButton=$state<HTMLButtonElement>();
   function closeDrawer() { if(dataDraftDirty || sourceDraftDirty) {notice='Apply or cancel your draft before closing Document.';return;} drawerOpen = false; documentButton?.focus(); }
-  const editorLabels = { actions: { 'demo.submit': 'Submit (simulated)' }, nodes: { screen: 'Screen' },
+  function documentKeys(event: KeyboardEvent) {
+    if(event.key==='Escape' && !event.defaultPrevented){event.preventDefault();event.stopPropagation();closeDrawer();return;}
+    if(event.key!=='Tab' || !drawerOverlay)return;
+    const root=event.currentTarget as HTMLElement,closed=[...root.querySelectorAll('details:not([open])')];
+    const controls=[...root.querySelectorAll<HTMLElement>('button:not(:disabled),summary,input:not(:disabled),textarea:not(:disabled),select:not(:disabled),[tabindex="0"]')].filter(element=>!element.closest('[hidden]') && !closed.some(details=>details.contains(element) && details.querySelector(':scope > summary')!==element));
+    const index=controls.indexOf(globalThis.document.activeElement as HTMLElement);
+    if(controls.length && ((event.shiftKey && index<=0)||(!event.shiftKey && index===controls.length-1))){event.preventDefault();controls[event.shiftKey?controls.length-1:0]?.focus({preventScroll:true});}
+  }
+  const editorLabels = $derived({ actions: { 'demo.submit': 'Submit (simulated)' }, nodes: source ? studioNodeLabels(source) : {screen:'Screen'},
     state: { message: 'Message', accepted: 'Agreement', dialogOpen: 'Dialog open', busy: 'Submitting', actionError: 'Action error', actionResult: 'Action result' },
-    actionInputs: { message: 'Message', accepted: 'Agreement' } };
+    actionInputs: { message: 'Message', accepted: 'Agreement' } });
   function selectOccurrence(occurrence: string, revealTools = true) {
     if (textDraftDirty || (drawerOpen && sourceDraftDirty)) { notice = 'Apply or cancel your edit first.'; return; }
     if(revealTools) { structureExpanded=false; detailsOpen=false; }
@@ -290,6 +341,7 @@
   let preview = createPreviewSession({ scenario, dataAdapter: { adapter, context: actor => ({ permissions: actor.permissions, effect: 'write', actor: actor.actorId }) } });
   function resetRuntime() {
     adapter.reset(); preview.reset();
+    simulation.denied=false;simulation.failNext=false;activeTest=undefined;
     const document = bridge?.document;
     preview = createPreviewSession({ scenario: { ...scenario, references: {
       application: { id: document ? `studio.${document.id}` : 'studio.screen', revision: '1' },
@@ -297,6 +349,7 @@
     } }, dataAdapter: { adapter, context: actor => ({ permissions: actor.permissions, effect: 'write', actor: actor.actorId }) } });
     runtimeValues = {}; resetSignal = Symbol('reset'); activity = [];
   }
+  $effect(()=>{void authoredRevision;untrack(()=>{if(activeTest)resetRuntime();});});
   function openSession(next: EditorBridge) {
     agentEpoch = crypto.randomUUID();
     compositionFocus=undefined;
@@ -327,6 +380,7 @@
     sessions.set(id, next); openSession(next); notice = 'Loaded the saved screen.';
   }
   onMount(() => {
+    try {const sizes=JSON.parse(localStorage.getItem('vict.studio.workspace-sizes') ?? '{}');chatWidth=Math.max(240,Math.min(400,Number(sizes.chat)||280));structureHeight=Math.max(180,Math.min(420,Number(sizes.structure)||240));drawerWidth=Math.max(280,Math.min(460,Number(sizes.document)||320));inspectionWidth=Math.max(280,Math.min(460,Number(sizes.inspect)||360));}catch{/* Optional layout preferences never block document loading. */}
     try {
       library = savedScreens(localStorage);
       const active = localStorage.getItem('vict.studio.active-screen');
@@ -336,6 +390,8 @@
     } catch { issues = [{ code: 'STUDIO_STORAGE_UNAVAILABLE', message: 'Browser storage is unavailable. Enable storage to author and save screens.' }]; }
     return () => { unsubscribe?.(); };
   });
+  function rememberSizes() {try{localStorage.setItem('vict.studio.workspace-sizes',JSON.stringify({chat:chatWidth,structure:structureHeight,document:drawerWidth,inspect:inspectionWidth}));}catch{/* Session dimensions remain usable without storage. */}}
+  $effect(()=>{void chatWidth;void structureHeight;void drawerWidth;void inspectionWidth;if(bridge)rememberSizes();});
   function receiveAgentProposal(proposal: AgentProposal) {
     if (!bridge) return {ok:false as const,code:"UI_DOC_STALE_REVISION",message:"The screen is no longer open."};
     const result = applyAgentProposal(bridge, proposal, agentEpoch, textDraftDirty || sourceDraftDirty || renamingScreen || !!createDialog?.open);
@@ -398,18 +454,19 @@
   }
   function shortcuts(event: KeyboardEvent) {
     if(event.defaultPrevented)return;
+    if(event.key==='Escape' && event.target instanceof Element && event.target.closest('#document-drawer')){event.preventDefault();closeDrawer();return;}
     if (event.key === 'Escape' && detailsOpen && event.target instanceof Element && event.target.closest('.source-details')) {event.preventDefault();closeDetails();return;}
     if(activeMenu) {
       if((event.ctrlKey || event.metaKey) && event.key.toLowerCase()==='s'){event.preventDefault();activeMenu='';void save();}
       return;
     }
     if (event.target instanceof Element && event.target.closest('[role="menu"]')) return;
-    if (event.key === 'Escape' && drawerOpen && !detailsOpen) {
+    if (event.key === 'Escape' && drawerOpen && !detailsOpen && !testingOpen) {
       if (structureOpen && event.target instanceof Element && event.target.closest('.structure-view')) return;
       event.preventDefault(); closeDrawer(); return;
     }
     const editable = event.target instanceof HTMLElement && (event.target.matches('input,textarea,select') || event.target.isContentEditable);
-    if (!editable && mode === 'design' && !(event.target instanceof Element && event.target.closest('.structure-view'))) {
+    if (!editable && mode === 'design' && !(event.target instanceof Element && event.target.closest('.structure-view,.source-details,#document-drawer,.testing-drawer,.agent-panel'))) {
       if (['Delete', 'Backspace'].includes(event.key)) { event.preventDefault(); removeSelection(); }
       if (event.key === 'F2') { event.preventDefault(); editSelectedText(); }
       if (event.altKey && ['ArrowUp', 'ArrowDown'].includes(event.key)) { event.preventDefault(); reorderSelection(event.key === 'ArrowUp' ? -1 : 1); }
@@ -484,14 +541,15 @@
         <Menubar.Item aria-label="Redo" disabled={!snapshot?.canRedo} onSelect={redo}>Redo <kbd>Ctrl+Shift+Z</kbd></Menubar.Item>
       </WorkspaceMenu>
       <WorkspaceMenu label="View" value="view" {activeMenu}>
-        <Menubar.Item onSelect={() => chatOpen = !chatOpen}>{chatOpen ? "Hide chat" : "Show chat"}</Menubar.Item>
+        <Menubar.Item onSelect={() => void toggleChat()}>{chatOpen ? "Hide chat" : "Show chat"}</Menubar.Item>
         <Menubar.RadioGroup bind:value={width} aria-label="Canvas size">
           {#each [{value:'fluid',label:'Fit canvas'},{value:'768',label:'Tablet · 768'},{value:'390',label:'Phone · 390'}] as option}<Menubar.RadioItem value={option.value} closeOnSelect>{option.label}<span aria-hidden="true">{width===option.value?'\u2713':''}</span></Menubar.RadioItem>{/each}
         </Menubar.RadioGroup>
       </WorkspaceMenu>
       <WorkspaceMenu label="Preview" value="preview" {activeMenu}>
+        <Menubar.Item disabled={!source || textDraftDirty || sourceDraftDirty || renamingScreen} onSelect={()=>void openTesting()}>Try scenarios…</Menubar.Item>
         <Menubar.Item disabled={!source || snapshot?.dirty || sourceDraftDirty || textDraftDirty || snapshot?.storedRevision==='r1'} onSelect={()=>{if(source && !snapshot?.dirty && !sourceDraftDirty && !textDraftDirty && snapshot?.storedRevision!=='r1')location.href=`/run-screen?screen=${encodeURIComponent(source.id)}${canvasWidth>0?`&width=${canvasWidth}`:''}`;}}>Run saved<span aria-hidden="true">↗</span></Menubar.Item>
-        <Menubar.Item onSelect={resetRuntime}>Reset preview</Menubar.Item>
+        <Menubar.Item onSelect={resetRuntime}>Reset test</Menubar.Item>
       </WorkspaceMenu>
     </Menubar.Root>
     <div class="screen-picker">{#if renamingScreen}<input class="screen-name-edit" aria-label="Screen name" bind:this={screenNameInput} bind:value={screenNameDraft} maxlength="80" onkeydown={renameKey} onblur={finishRename} />{:else}<span class="current-screen" title={source?screenName(source):'No screen'}>{source?screenName(source):'No screen'}</span>{/if}</div>
@@ -511,11 +569,12 @@
     </SelectionPalette>
   {/snippet}
   <div class="agent-workspace" class:chat-open={chatOpen}>
-  <div class="agent-panel" hidden={!chatOpen}><AgentChat screenLabel={screenName(source)} selectionLabel={selectedNode ? compositionName(source, selectedNode.id) : "None"} blocked={textDraftDirty || sourceDraftDirty || renamingScreen} getContext={() => bridge ? {document:bridge.document, cursor:documentCursor(bridge.document,bridge.getSnapshot().revision,agentEpoch), ...(selected ? {selection:selected} : {})} : undefined} getCapture={cursor => captureDesignerPreview(canvasScroll?.querySelector<HTMLElement>('.design-frame') ?? undefined,cursor,()=>bridge ? {cursor:documentCursor(bridge.document,bridge.getSnapshot().revision,agentEpoch),mode,state:{runtimeValues,simulation:{denied:simulation.denied,failNext:simulation.failNext}},selection:selected,composition:compositionFocus ? `${compositionFocus.nodeId}/${compositionFocus.slotName}` : undefined,structureOpen:structureOpen && structureExpanded} : undefined,canvasScroll)} applyProposal={receiveAgentProposal} /></div>
+  <div class="agent-panel" hidden={!chatOpen} style:--chat-width={`${chatWidth}px`}><header class="panel-header chat-heading"><strong>Chat</strong><button type="button" aria-label="Hide chat" title="Hide chat" onclick={()=>void toggleChat()}>×</button></header><AgentChat screenLabel={screenName(source)} selectionLabel={selectedNode ? compositionName(source, selectedNode.id) : "None"} blocked={textDraftDirty || sourceDraftDirty || renamingScreen} getContext={() => bridge ? {document:bridge.document, cursor:documentCursor(bridge.document,bridge.getSnapshot().revision,agentEpoch), ...(selected ? {selection:selected} : {})} : undefined} getCapture={cursor => captureDesignerPreview(canvasScroll?.querySelector<HTMLElement>('.design-frame') ?? undefined,cursor,()=>bridge ? {cursor:documentCursor(bridge.document,bridge.getSnapshot().revision,agentEpoch),mode,state:{runtimeValues,simulation:{denied:simulation.denied,failNext:simulation.failNext}},selection:selected,composition:compositionFocus ? `${compositionFocus.nodeId}/${compositionFocus.slotName}` : undefined,structureOpen:structureOpen && structureExpanded} : undefined,canvasScroll)} applyProposal={receiveAgentProposal} /></div>
+  <div class="chat-resizer" hidden={!chatOpen}><PanelResizer label="Chat width" value={chatWidth} min={240} max={400} onChange={(value:number)=>chatWidth=value} /></div>
   <div class="design-workspace" bind:this={workspaceElement} bind:clientWidth={workspaceWidth} class:drawer-open={rightOpen} class:drawer-overlay={drawerOverlay} class:has-object-tools={mode === 'design' && !!selectedNode && paletteRequested} style:--drawer-width={`${effectiveDrawerWidth}px`}>
     <WorkspaceContextMenu scope={workspaceElement} enabled={mode === 'design'} resolve={canvasContext} owns={ownsCanvasTarget} />
     <main class="design-stage" class:structure-expanded={structureOpen && structureExpanded} inert={drawerOverlay} bind:clientHeight={stageHeight}>
-      <div class="canvas-toolbar workspace-tools"><div class="canvas-modes" aria-label="Workspace mode"><button type="button" aria-pressed={mode === 'design'} onclick={() => changeMode('design')}>Design</button><button type="button" aria-pressed={mode === 'interact'} onclick={() => changeMode('interact')}>Interact</button></div>{#if compositionFocus}<div class="composition-back"><CompositionNavigator compact document={source} focus={compositionFocus} descriptors={catalogDescriptors} disabled={textDraftDirty || sourceDraftDirty} onNavigate={navigateComposition} /></div>{/if}<button type="button" bind:this={documentButton} class="panel-toggle" aria-expanded={drawerOpen && !detailsOpen} aria-controls="document-drawer" onclick={toggleDocument}>Document</button></div>
+      <div class="canvas-toolbar workspace-tools" bind:clientHeight={toolbarHeight}>{#if !chatOpen}<button type="button" aria-label="Show chat" title="Show chat" onclick={()=>void toggleChat()}>Chat</button>{/if}<div class="canvas-modes" aria-label="Workspace mode"><button type="button" aria-pressed={mode === 'design'} onclick={() => changeMode('design')}>Design</button><button type="button" aria-pressed={mode === 'interact'} onclick={() => changeMode('interact')}>Interact</button></div>{#if compositionFocus}<div class="composition-back"><CompositionNavigator compact document={source} focus={compositionFocus} descriptors={catalogDescriptors} disabled={textDraftDirty || sourceDraftDirty} onNavigate={navigateComposition} /></div>{/if}<button type="button" bind:this={documentButton} class="panel-toggle" aria-expanded={drawerOpen && !detailsOpen && !testingOpen} aria-controls="document-drawer" onclick={toggleDocument}>Document</button>{#if activeTest}<button type="button" class="test-indicator" aria-label={`Testing: ${activeTest.label}`} onclick={()=>void openTesting()}>Testing: {activeTest.label}</button><button type="button" title="Return to starting values and clear simulated failures" onclick={resetRuntime}>Reset test</button>{/if}</div>
 
 
       <div class="canvas-scroll workspace-scroll" inert={structureOpen && structureExpanded} bind:this={canvasScroll}>
@@ -533,19 +592,22 @@
           {#if compositionFocus && !focusedMembers?.size}<div class="empty-composition"><h2>This composition is empty</h2><p>Select the composition, then choose Insert in its tools.</p></div>{:else if Object.keys(source.nodes).length === 1}<div class="empty-canvas"><span>＋</span><h1>What will you make?</h1><p>Select this screen to open its tools, then choose Insert.</p></div>{/if}
         </div>
       </div>
-      <StructureDock bind:open={structureOpen} bind:expanded={structureExpanded} availableHeight={stageHeight - 38}>
+      <StructureDock bind:open={structureOpen} bind:expanded={structureExpanded} bind:height={structureHeight} availableHeight={stageHeight - toolbarHeight}>
         <StructureView presentation="drawer" active={structureOpen} document={source} revision={snapshot?.revision ?? ''} selectedNodeId={selectedNode?.id} descriptors={catalogDescriptors} recipes={screenRecipes} blocked={textDraftDirty || sourceDraftDirty || renamingScreen} onSelect={selectStructureNode} onDeselect={() => { if (!textDraftDirty && !sourceDraftDirty && !renamingScreen) { bridge?.select(undefined); paletteRequested = false; detailId=undefined; } }} onMove={moveFromStructure} onNotice={message => notice = message} onNavigate={structureNavigate} onDismiss={dismissStructure} onInspect={inspectSource} onCloseInspect={closeDetails} inspectionSelection={detailId} onInspectSelection={id=>detailId=id} inspectionExpanded={detailsOpen} objectCommands={occurrence=>objectContext(occurrence)?.commands ?? []} />
       </StructureDock>
     </main>
     <div class="drawer-resizer" hidden={!rightOpen}><PanelResizer label={detailsOpen ? "Inspection drawer width" : "Document drawer width"} value={effectiveDrawerWidth} min={280} max={460} reverse onChange={(value: number) => { if (detailsOpen) inspectionWidth = value; else drawerWidth = value; }} /></div>
-    <aside id="document-drawer" hidden={!drawerOpen || detailsOpen} class="document-drawer" class:source-drawer={drawerTab==='Source'} aria-label="Document">
-      <nav class="sidebar-tabs" aria-label="Document sections">{#each ['Layers', 'Data', 'Actions', 'Source', 'Preview'] as tab}<button type="button" aria-pressed={drawerTab === tab} disabled={(dataDraftDirty || sourceDraftDirty) && drawerTab!==tab} onclick={() => changeDocumentTab(tab)}>{tab}</button>{/each}<button class="inspect-source" type="button" hidden={drawerTab!=='Layers'} aria-label="Inspect source" aria-expanded={detailsOpen} onclick={() => detailsOpen ? closeDetails() : inspectSource()}>Inspect</button><button class="close-document" type="button" aria-label="Close document" onclick={closeDrawer}>×</button></nav>
+    <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+    <aside id="document-drawer" hidden={!drawerOpen || detailsOpen || testingOpen} class="document-drawer" class:source-drawer={drawerTab==='Source'} aria-label="Document" onkeydown={documentKeys}>
+      <header class="panel-header"><strong>Document</strong><button class="close-document" type="button" aria-label="Close document" title="Close document (Escape)" onclick={closeDrawer}>×</button></header>
+      <nav class="sidebar-tabs" aria-label="Document sections">{#each ['Layers', 'Data', 'Actions', 'Source'] as tab}<button type="button" aria-pressed={drawerTab === tab} disabled={(dataDraftDirty || sourceDraftDirty) && drawerTab!==tab} onclick={() => changeDocumentTab(tab)}>{tab}</button>{/each}</nav>
       <div class="document-content">
       <div class="document-navigation">
       {#if drawerOpen}
       <div class="sidebar-body" class:source-body={drawerTab==='Source'}>
         {#if drawerTab === 'Layers'}
-          {#if plan}<Layers compact hideTextContent {plan} document={source} selectedOccurrence={selected} onSelect={selectFromStructure} onOpenComposition={navigateComposition} componentDescriptors={catalogDescriptors} />{/if}
+          <div class="layer-actions"><span>Selected object</span><button class="inspect-source" type="button" aria-label="Inspect source" aria-expanded={detailsOpen} onclick={()=>inspectSource()}>Inspect ↗</button></div>
+          {#if plan}<Layers compact hideTextContent labels={editorLabels} {plan} document={source} selectedOccurrence={selected} onSelect={selectFromStructure} onOpenComposition={navigateComposition} componentDescriptors={catalogDescriptors} />{/if}
         {:else if drawerTab === 'Data'}
           {#if selectedData && source.localState[selectedData]}
             <button class="data-back" type="button" disabled={dataDraftDirty} onclick={()=>openData()}>← All data</button>
@@ -559,9 +621,6 @@
         {:else if drawerTab === 'Actions'}
           <div class="section-heading"><h2>Available actions</h2><span>Connect them from an object's tools</span></div>
           {#each designerCatalogs.actionIds as id}<section class="action-card"><div><h3>{(editorLabels.actions[id as keyof typeof editorLabels.actions] ?? id).replace(' (simulated)','')}</h3><span class="simulation-badge" title="Local preview only; no live effects">Simulated</span></div><p>Uses</p><div class="action-inputs">{#each Object.keys(actionInputs[id] ?? {}) as key}<span>{editorLabels.actionInputs[key as keyof typeof editorLabels.actionInputs] ?? key}</span>{:else}<span>No inputs</span>{/each}</div></section>{/each}
-        {:else if drawerTab === 'Preview'}
-          <div class="section-heading"><h2>Preview</h2><span>Temporary values · no live effects</span></div>
-          <div class="simulation-body"><label><input type="checkbox" bind:checked={simulation.denied} /> Deny demo writes</label><label><input type="checkbox" bind:checked={simulation.failNext} /> Fail next action</label><StateValuesPanel localState={source.localState} stateValues={runtimeValues} onChange={(key: string, value: UiValue | undefined) => { const next = { ...runtimeValues }; if (value === undefined) delete next[key]; else next[key] = value; runtimeValues = next; }} />{#each activity as entry}<p role="status">{entry}</p>{/each}</div>
         {:else if drawerTab === 'Source'}
           <AuthoringGuidance document={source} />
           <label class="sr-only" for="canonical-source">Canonical UI document</label><textarea id="canonical-source" class="source-editor" wrap="off" spellcheck="false" bind:value={sourceDraft} oninput={() => sourceDraftDirty = true}></textarea>
@@ -573,7 +632,8 @@
       </div>
       </div>
     </aside>
-    {#if detailsOpen}<aside class="inspection-drawer" aria-label="Inspect"><SourceDetails document={source} selectedId={detailId} blocked={textDraftDirty || sourceDraftDirty || renamingScreen} bind:page={detailsPage} onClose={closeDetails} onSelect={selectDetail} onNavigate={structureNavigate} /></aside>{/if}
+    {#if testingOpen}<aside class="testing-drawer" aria-label="Testing"><TryScenarios document={source} active={activeTest?.id} values={runtimeValues} {activity} blocked={textDraftDirty || sourceDraftDirty || renamingScreen} onChoose={chooseTest} onReset={resetRuntime} onTry={()=>void tryCanvas()} onClose={closeTesting} onChange={changeTestValue} /></aside>{/if}
+    {#if detailsOpen}<aside class="inspection-drawer" aria-label="Inspect"><SourceDetails document={source} selectedId={detailId} blocked={textDraftDirty || sourceDraftDirty || renamingScreen} containFocus={drawerOverlay} bind:page={detailsPage} onClose={closeDetails} onSelect={selectDetail} onNavigate={structureNavigate} /></aside>{/if}
   </div>
   </div>
   {/if}
@@ -588,5 +648,4 @@
   .document-content { display:flex; flex-direction:column; flex:1; min-height:0; position:relative; overflow:hidden; }
   .document-navigation { display:flex; flex-direction:column; flex:1; min-height:0; overflow:hidden; }
   .document-navigation > .sidebar-body { flex:1; min-height:0; overflow:auto; }
-  .sidebar-tabs .inspect-source { margin-left:auto; }
 </style>

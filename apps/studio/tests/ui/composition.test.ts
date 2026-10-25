@@ -72,16 +72,17 @@ it('retains Source drafts and refuses drawer/mode transitions until the draft is
   button('Document'); await tick(); button('Source'); await tick();
   const draft=document.querySelector<HTMLTextAreaElement>('#canonical-source')!;
   draft.value+=' '; draft.dispatchEvent(new Event('input',{bubbles:true})); await tick();
-  const structureTab=[...document.querySelectorAll<HTMLButtonElement>('.sidebar-tabs button')].find(node=>node.textContent==='Structure')!;
-  expect(structureTab.disabled).toBe(true); button('Interact'); await tick();
+  const dataTab=[...document.querySelectorAll<HTMLButtonElement>('.sidebar-tabs button')].find(node=>node.textContent==='Data')!;
+  expect(dataTab.disabled).toBe(true); button('Interact'); await tick();
   expect(document.querySelector('.canvas-modes button')!.getAttribute('aria-pressed')).toBe('true');
   button('Close document'); await tick();
   expect(document.querySelector<HTMLElement>('#document-drawer')!.hidden).toBe(false); expect(draft.value.endsWith(' ')).toBe(true);
-  button('Discard draft'); await tick(); button('Structure'); await tick();
+  button('Discard draft'); await tick(); button('Close document');await tick();button('Structure'); await tick();
   const search=document.querySelector<HTMLInputElement>('[aria-label="Search structure"]')!;
   search.focus(); search.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true,cancelable:true})); await tick();
   expect(document.querySelector<HTMLElement>('#document-drawer')!.hidden).toBe(true);
-  expect(document.activeElement).toBe(document.querySelector('[aria-controls="document-drawer"]'));
+  expect(document.querySelector<HTMLElement>('.dock-panel')!.hidden).toBe(true);
+  expect(document.activeElement).toBe(document.querySelector('.structure-toggle'));
 });
 
 it('opens another saved screen through File and guards the cascading menu during a source draft', async () => {
@@ -246,6 +247,8 @@ it('keeps data drafts safe across document navigation and saves applied starting
   await tick();
   button('Document');
   await tick();
+  if(document.querySelector<HTMLElement>('#document-drawer')!.hidden){button('Document');await tick();}
+  button('Layers');await tick();
   document.querySelector<HTMLButtonElement>('.uv-layers [role="treeitem"]')!.click();
   await tick();
   expect(document.querySelector('#document-drawer')).not.toBeNull();
@@ -256,6 +259,8 @@ it('keeps data drafts safe across document navigation and saves applied starting
   await tick();
   await tick();
   expect(document.querySelector('[aria-label="Floating selection tools"]')).not.toBeNull();
+  if(document.querySelector<HTMLElement>('#document-drawer')!.hidden){button('Document');await tick();}
+  button('Layers');await tick();
   document.querySelector<HTMLButtonElement>('.uv-layers [role="treeitem"]')!.click();
   await tick();
   expect(document.querySelector('[aria-label="Floating selection tools"]')).toBeNull();

@@ -56,7 +56,7 @@
         </Popover.Content>
       </Popover.Root>
     </section>
-    <div class="interaction-guide"><h3>Try the workspace changes</h3><ol><li>In Design, right-click an object or the empty canvas. Try Shift+F10 on a focused target.</li><li>Open Structure from the bottom bar, or Layers from Document. Select a source and open Inspect in the right drawer.</li><li>Resize or expand the bottom Structure panel, then close and reopen it. The canvas, graph context and floating editing tools retain their places.</li></ol><p class="muted">The examples below share the actual workspace components. Interact preserves native application menus. Actual Chat measurements and bounded visual regions come from real receipts; the evidence example above and simulated timelines remain labelled.</p></div>
+    <div class="interaction-guide"><h3>Try the workspace changes</h3><ol><li>In Design, right-click an object or the empty canvas. Try Shift+F10 on a focused target.</li><li>Open Structure from the bottom bar, or Layers from Document. Select a source and open Inspect in the right drawer.</li><li>Resize or expand the bottom Structure panel, then close and reopen it. The canvas, graph context and floating editing tools retain their places.</li></ol><p class="muted">The examples below share the actual workspace components, including readable inspection and optional Try scenarios with Advanced state values. Chat hide/show and resizing are available in the Studio designer. Interact preserves native application menus. Actual Chat measurements and bounded visual regions come from real receipts; the evidence example above and simulated timelines remain labelled.</p></div>
   </section>
 </ControlScope>
 

@@ -52,7 +52,7 @@
   </div>
   <nav class="dock-bar" aria-label="Structure panel controls">
     <button type="button" class="structure-toggle" bind:this={toggle} aria-label="Structure" aria-expanded={open} aria-controls="structure-dock-content" onclick={() => void toggleOpen()}><span aria-hidden="true">{open ? '▾' : '▸'}</span>Structure</button>
-    {#if open}<button type="button" aria-label={expanded ? 'Restore Structure' : 'Expand Structure'} aria-pressed={expanded} onclick={() => expanded = !expanded}>{expanded ? '↙' : '↗'}</button>{/if}
+    {#if open}<button type="button" title={expanded ? 'Restore Structure' : 'Expand Structure'} aria-label={expanded ? 'Restore Structure' : 'Expand Structure'} aria-pressed={expanded} onclick={() => expanded = !expanded}>{expanded ? '↙' : '↗'}</button>{/if}
   </nav>
 </section>
 <style>

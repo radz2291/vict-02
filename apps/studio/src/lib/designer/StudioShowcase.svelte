@@ -2,7 +2,7 @@
   import { onMount, tick } from 'svelte';
   import {
     Composer, CompositionNavigator, EditorBridge, EditorCanvas, Inspector, Layers,
-    SelectionPalette, StateInitialEditor, StateValuesPanel, authoredOccurrence,
+    SelectionPalette, StateInitialEditor, authoredOccurrence,
     compositionName, compositionSlots, compositionTrail, firstCompositionSlot, resolveOccurrence,
     type CompositionFocus, type TransactionDraft,
     duplicateSubtree, compositionParent,
@@ -19,6 +19,9 @@
   import { structureMove, structureId, projectStructure, type StructureEditRequest, type StructureHandoff } from './structure.js';
   import StructureView from './StructureView.svelte';
   import SourceDetails from './SourceDetails.svelte';
+  import TryScenarios from './TryScenarios.svelte';
+  import type { TestScenario } from './test-scenarios.js';
+  import { studioNodeLabels } from './presentation.js';
   import StructureDock from './StructureDock.svelte';
   import WorkspaceContextMenu from './WorkspaceContextMenu.svelte';
   import { sourceCapabilities, type WorkspaceContext } from './workspace-context.js';
@@ -91,7 +94,10 @@
     const owner=canvasRoot?.querySelector<HTMLElement>('[data-ui-owner-root]')?.dataset.uiOwnerRoot;
     return !!owner && target.closest<HTMLElement>('[data-ui-owner]')?.dataset.uiOwner===owner;
   }
-  const simulation = createScreenSimulation({ denied: false, failNext: false });
+  let simulationControls=$state({denied:false,failNext:false});
+  let activeTest=$state<TestScenario>();
+  const simulation = createScreenSimulation(simulationControls);
+  function chooseTest(test:TestScenario){if(blocked)return;changeMode('interact');resetPreview();simulationControls.denied=test.simulation==='denied';simulationControls.failNext=test.simulation==='failNext';runtimeValues={...test.values};activeTest=test;}
   const snapshot = $derived.by(() => { void version; return bridge?.getSnapshot(); });
   const source = $derived.by(() => { void version; return bridge?.document; });
   const selected = $derived(snapshot?.selectedOccurrence);
@@ -102,7 +108,7 @@
   const recipe = $derived(showcaseCatalog.find(entry => entry.id === recipeId));
 
   function resetPreview() {
-    simulation.reset(); runtimeValues = {}; resetSignal = Symbol('showcase-reset');
+    simulation.reset();simulationControls.denied=false;simulationControls.failNext=false;activeTest=undefined; runtimeValues = {}; resetSignal = Symbol('showcase-reset');
   }
   function openExample(id: string) {
     if (blocked) { notice = 'Apply or cancel your draft before changing examples.'; return; }
@@ -265,7 +271,7 @@
       <aside class="layers showcase-document" hidden={!documentOpen || detailsOpen} tabindex="-1" aria-label="Example Document">
         <nav class="toolbar" aria-label="Example Document sections"><strong>Layers</strong><button type="button" aria-label="Inspect example source" aria-expanded={detailsOpen} onclick={()=>inspect()}>Inspect</button></nav>
         <div class="example-document-content">
-          <div class="example-layers">{#if plan}<Layers {plan} document={source} selectedOccurrence={selected} onSelect={selectStructure} onApply={apply} componentDescriptors={catalogDescriptors} onOpenComposition={navigateComposition} />{/if}</div>
+          <div class="example-layers">{#if plan}<Layers labels={{nodes:studioNodeLabels(source)}} {plan} document={source} selectedOccurrence={selected} onSelect={selectStructure} onApply={apply} componentDescriptors={catalogDescriptors} onOpenComposition={navigateComposition} />{/if}</div>
         </div>
       </aside>
       {#if detailsOpen}<aside class="showcase-document showcase-inspection" aria-label="Example Inspect"><SourceDetails document={source} selectedId={detailId} {blocked} containFocus={showcaseViewport <= 1100} bind:page={detailsPage} onClose={closeDetails} onSelect={selectDetail} onNavigate={structureNavigate} /></aside>{/if}
@@ -295,7 +301,7 @@
           {#if selectedData}{#key `${recipeId}:${selectedData}`}<StateInitialEditor document={source} expression={{ type: 'ref', path: `state.${selectedData}` }} onApply={apply} onDirtyChange={(dirty: boolean) => dataDraft = dirty} />{/key}{/if}
         </details>
         <details data-structure-actions tabindex="-1"><summary>Actions: declared simulation</summary><p>This screen declares demo.submit. Its input is message and accepted; execution is simulated in Interact. Source relationships do not prove an action ran.</p><code>demo.submit → local screen simulation</code></details>
-        <details><summary>Preview values (temporary runtime data)</summary><p>Interact changes these values. Action calls use the local screen simulation with no live effects.</p>{#key recipeId}<StateValuesPanel localState={source.localState} stateValues={runtimeValues} onChange={(key: string, value: UiValue | undefined) => { const next = { ...runtimeValues }; if (value === undefined) delete next[key]; else next[key] = value; runtimeValues = next; }} />{/key}</details>
+        <details class="testing-example"><summary>Try scenarios</summary><div class="testing-example-body"><TryScenarios document={source} active={activeTest?.id} values={runtimeValues} {blocked} onChoose={chooseTest} onReset={resetPreview} onClose={()=>showcaseRoot?.querySelector<HTMLDetailsElement>('.testing-example')?.removeAttribute('open')} onTry={async()=>{const retained={...runtimeValues},test=activeTest,denied=simulationControls.denied,failNext=simulationControls.failNext;changeMode('interact');runtimeValues=retained;activeTest=test;simulationControls.denied=denied;simulationControls.failNext=failNext;showcaseRoot?.querySelector<HTMLDetailsElement>('.testing-example')?.removeAttribute('open');canvasRoot?.scrollIntoView({block:'center'});}} onChange={(key,value)=>{const next={...runtimeValues};if(value===undefined)delete next[key];else next[key]=value;runtimeValues=next;}} /></div></details>
       </div>
       <aside class="inspector" tabindex="-1"><h3>Selected source</h3>
         <div class="toolbar"><button type="button" disabled={blocked} aria-pressed={tools === 'inspector'} onclick={() => tools = 'inspector'}>Docked Inspector</button><button type="button" disabled={blocked} aria-pressed={tools === 'palette'} onclick={() => tools = 'palette'}>Selection palette</button></div>
@@ -319,6 +325,7 @@
 {#snippet connectTools()}{#if source}<Inspector contextual section="Behavior" document={source} selectedOccurrence={selected} onApply={apply} componentDescriptors={catalogDescriptors} knownActionIds={designerCatalogs.actionIds} knownRouteIds={designerCatalogs.routeIds} {actionInputs} />{/if}{/snippet}
 
 <style>
+  .testing-example-body {height:min(600px,80dvh);overflow:hidden;}
   .studio-showcase { color: #243047; font: 14px/1.5 system-ui, sans-serif; }
   h2 { font-size: 24px; margin: 0 0 12px; } h3 { font-size: 15px; margin: 0 0 12px; }
   header p { max-width: 900px; color: #59677b; }

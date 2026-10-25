@@ -24,7 +24,7 @@
   </div>
   <strong>{data.label}</strong>
   {#if data.summary}<span class="vict-source-summary">{data.summary}</span>{/if}
-  {#if data.collapsedCount}<span class="vict-source-summary">{data.collapsedCount} hidden</span>{/if}
+  {#if data.collapsedCount}<span class="vict-source-summary">{data.collapsedCount} items inside</span>{/if}
   <Handle type="source" id="content" position={horizontal ? Position.Right : Position.Bottom} isConnectable={!!data.moveSource} class={data.moveSource ? 'edit-handle' : 'read-handle'} aria-hidden={!data.moveSource} aria-label={`Move ${data.label} to a container`} />
 </div>
 

@@ -1,6 +1,7 @@
 import type { UiDocument, UiNode, UiExtensionDescriptor } from '@victframework/ui';
 import { authoredOccurrence, compositionNames, moveRelative, canInsertRecipe, type InsertRecipe, type TransactionDraft } from '@victframework/ui-editor';
 import type { Node, Edge } from '@victframework/ui-flow-svelte';
+import { studioNodeLabels } from './presentation.js';
 
 /** Graph ids identify source, never a transient rendered occurrence or array position. */
 // Flow interpolates these ids into quoted attribute selectors. Encode the entire
@@ -93,7 +94,7 @@ export function projectStructure(document: UiDocument): StructureGraph {
   const edges: Edge<StructureEdgeData>[] = [];
   const known = new Set<string>();
   const key = (kind: string, id: string) => structureId(document.id, kind, id);
-  const sourceNames = compositionNames(document);
+  const sourceNames = compositionNames(document, { nodes: studioNodeLabels(document) });
   const uniquelyAuthored = ownershipGuard(document);
   const add = (kind: string, id: string, label: string, data: Partial<StructureNodeData> = {}) => {
     const graphId = key(kind, id);
@@ -107,7 +108,7 @@ export function projectStructure(document: UiDocument): StructureGraph {
     id: encodeURIComponent(JSON.stringify([source, target, label, path])), source, target, label,
     deletable: false, type: 'routed', sourceHandle: 'content', targetHandle: 'container',
     data: { kind, path }, ariaLabel: `${label}, declared source location ${path}`,
-    style: kind === 'containment' ? 'stroke: #94a3b8' : 'stroke: #7c3aed; stroke-dasharray: 5 3',
+    style: kind === 'containment' ? 'stroke: #8191a8; stroke-width: 1.5' : 'stroke: #7c3aed; stroke-dasharray: 5 3',
   });
   for (const node of Object.values(document.nodes)) {
     const description = node.kind === 'element' ? `<${node.tag}>` : node.kind === 'component' ? friendly(node.definitionId) : node.kind === 'text' && node.content.type === 'literal' ? node.content.value.slice(0, 55) : friendly(node.kind);
