@@ -8,9 +8,16 @@
   "rawHistoryEquality": true,
   "runtimeSearchCameraContinuity": true,
   "zoomContinuity": true,
-  "initialScrollEvidence": "Only zero scroll was present in these samples; nonzero challenge requested.",
-  "selectedIdentityEvidence": "Initial probe selected[] does not establish selected-ID continuity; corrected probe requested.",
-  "requiredFinding": "IV14-03: stacked canvas306px exceeds252.8px stage and intercepts Document navigation at1000x700; actual evidence reviewed, repair required.",
+  "smallStructureFallbackContinuity": true,
+  "smallSplitLimit": "44.6px Flow is cramped; explicit expanded Structure supplies116.4px graph and175px details within448x374 Document. Non-blocking physical split limitation if final repair preserves fallback.",
+  "settledNonzeroScroll": 586.4000244140625,
+  "actualGraphSelectionTargets": [
+    "right",
+    "second"
+  ],
+  "detailsFocusLifecycle": true,
+  "initialProbeLimit": "Initial selected[] query and unsettled wheel samples do not establish selection/scroll continuity; corrected settled probes above do.",
+  "requiredFinding": "IV14-03: stacked canvas306px exceeds252.8px stage and intercepts Document navigation at1000x700; actual evidence reviewed, exact replacement re-verification pending.",
   "artifacts": [
     {
       "name": "iv14-applied-fixture.json",
@@ -31,6 +38,18 @@
     {
       "name": "iv14-zoom-continuity.json",
       "sha256": "0bfb33b68aac7ba1c2d4cbe4a8f2d828e3783b37d6dba60801371e44866ae06a"
+    },
+    {
+      "name": "iv14-small-structure-fallback.json",
+      "sha256": "1c5ad83ab27cd4d59222a638b12b88ed9fcb3055a24377e32b140a5bb3cc2ce4"
+    },
+    {
+      "name": "iv14-real-wheel-continuity.json",
+      "sha256": "21a728dce361ea46391b80f564ad6f795600243f3d54dd98daf9eb31ad1e149d"
+    },
+    {
+      "name": "iv14-settled-scroll-continuity.json",
+      "sha256": "e22c61ddad00b0c814275049cd31dc07f715182ecf8e111293502be8438d0c62"
     },
     {
       "name": "iv14-resume-01-initial-source.dom.txt",
@@ -235,6 +254,78 @@
     {
       "name": "iv14-resume-17-nav-hit-blocked.png",
       "sha256": "add846bed4d3cba283141a30e497ed2c887dddc69ca7bb0f1639e525f8eccbc2"
+    },
+    {
+      "name": "iv14-resume-18-small-expanded-structure.dom.txt",
+      "sha256": "8ce2973f4608bea4071a8651ba6ba10d4907d9a8604e2c9c3b72c6a7289b16fc"
+    },
+    {
+      "name": "iv14-resume-18-small-expanded-structure.geometry.json",
+      "sha256": "706a1251bfc71d25a23da0db65513dbed261eb3a3e58f295b72949da12d0fdeb"
+    },
+    {
+      "name": "iv14-resume-18-small-expanded-structure.png",
+      "sha256": "b12a23f454d2c3b6e475f54488e8c3ea567e3362c25413291a924caa60fe7ef2"
+    },
+    {
+      "name": "iv14-resume-19-small-structure-restored.dom.txt",
+      "sha256": "01ef4479d62d1ec9d8f11b0b3125b14c5cdac04b9bed13da8f9db9fe44f0e834"
+    },
+    {
+      "name": "iv14-resume-19-small-structure-restored.geometry.json",
+      "sha256": "31fc31ea4bcc61ebef457ff4273f527069a8b672af7869d9b33811010804e101"
+    },
+    {
+      "name": "iv14-resume-19-small-structure-restored.png",
+      "sha256": "0568cd253a371d3cc9c2c0df795fdec9f9e39fe8ec15221be161f9c926a99e28"
+    },
+    {
+      "name": "iv14-resume-20-expanded-tab-focus.dom.txt",
+      "sha256": "86d6e058761a09e98e30be0d05f8f5d6884e6c6624e12849ba4d57373aa165bd"
+    },
+    {
+      "name": "iv14-resume-20-expanded-tab-focus.geometry.json",
+      "sha256": "636d3f3851de5bd753ca5b1ab7949b1e78851c3049be872e1c6df7ab1a71b599"
+    },
+    {
+      "name": "iv14-resume-20-expanded-tab-focus.png",
+      "sha256": "97680da06aca6038e379182f7f21555b770fd4722414a96f36b9d593c0dd8a36"
+    },
+    {
+      "name": "iv14-resume-21-details-escape-focus.dom.txt",
+      "sha256": "8ee232bd7f38ceab603fac08e5cf4b7317b8b8914a0d2db886b6bbcf501a250a"
+    },
+    {
+      "name": "iv14-resume-21-details-escape-focus.geometry.json",
+      "sha256": "ee226cf2e1cdadf48c6f5785762b97f58c6d22bea54f15ec6f4cb3b5db5d1301"
+    },
+    {
+      "name": "iv14-resume-21-details-escape-focus.png",
+      "sha256": "33406d984ee7bda9f544095ca27980d2c043e203513d6a395a62d9482d3960fd"
+    },
+    {
+      "name": "iv14-resume-22-real-wheel-inspection.dom.txt",
+      "sha256": "081ec1871211fb7e0fde0b785b294e99d4c4f01f0bbf2b65b498c1ff59d3a598"
+    },
+    {
+      "name": "iv14-resume-22-real-wheel-inspection.geometry.json",
+      "sha256": "29ce994a88c53269e84d7febc6cab0cd3872d22f8802519085e1bb6c20f870e3"
+    },
+    {
+      "name": "iv14-resume-22-real-wheel-inspection.png",
+      "sha256": "62c7d24f9999c7785db5d9377d36870bb1f4e01333cc35d33be5ec12c93b15a2"
+    },
+    {
+      "name": "iv14-resume-23-settled-scroll-continuity.dom.txt",
+      "sha256": "b8315f4df41e47dd670730760154bf3b066ffac8d3763cf5668a72b5487e158b"
+    },
+    {
+      "name": "iv14-resume-23-settled-scroll-continuity.geometry.json",
+      "sha256": "83f7c865d2b45b6d20693a747003524222055a92c9d6aac417720a35799cdc46"
+    },
+    {
+      "name": "iv14-resume-23-settled-scroll-continuity.png",
+      "sha256": "af7f1a972a4db88e1e8956250c8df3e3ce31a8a114173180d9df23f0486e6ba6"
     }
   ]
 }
