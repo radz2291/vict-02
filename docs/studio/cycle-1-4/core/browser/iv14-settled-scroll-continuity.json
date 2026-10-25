@@ -1,0 +1,60 @@
+{
+  "before": {
+    "canvas": {
+      "left": 0,
+      "top": 586.4000244140625
+    },
+    "detailsTitle": "Right group",
+    "frameWidth": 412.8000183105469,
+    "graphTransform": "transform: translate(31.8493px, -13.9387px) scale(0.42);",
+    "groupPadding": "12px",
+    "inert": [
+      {
+        "class": "focus-visible:border-ring focus-visible:ring-ring/30 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-2xl border bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 aria-expanded:bg-secondary aria-expanded:text-secondary-foreground size-7 absolute inset-s-1/2 -translate-x-1/2 border-border bg-background text-foreground transition-[translate,scale,opacity] duration-200 hover:bg-muted hover:text-foreground data-[active=false]:pointer-events-none data-[active=false]:scale-95 data-[active=false]:opacity-0 data-[active=false]:duration-400 data-[active=false]:ease-[cubic-bezier(0.7,0,0.84,0)] data-[active=true]:translate-y-0 data-[active=true]:scale-100 data-[active=true]:opacity-100 data-[active=true]:ease-[cubic-bezier(0.23,1,0.32,1)] data-[direction=end]:bottom-4 data-[direction=end]:data-[active=false]:translate-y-full data-[direction=start]:top-4 data-[direction=start]:data-[active=false]:-translate-y-full rtl:translate-x-1/2 data-[direction=start]:[&_svg]:rotate-180",
+        "tag": "BUTTON"
+      }
+    ],
+    "mode": [
+      "Interact",
+      "Structure",
+      "Properties"
+    ],
+    "rootPadding": "40px",
+    "runtime": "Runtime after real wheel",
+    "search": "Second",
+    "selected": [],
+    "sourceWidth": 412.8000183105469,
+    "selectedGraph": [
+      "%5B%22screen-d5aed627-e799-4d2c-a4eb-ea26a96b2027%22%2C%22node%22%2C%22right%22%5D"
+    ]
+  },
+  "after": {
+    "canvas": {
+      "left": 0,
+      "top": 586.4000244140625
+    },
+    "detailsTitle": "Second heading",
+    "frameWidth": 412.8000183105469,
+    "graphTransform": "transform: translate(31.8493px, -13.9387px) scale(0.42);",
+    "groupPadding": "12px",
+    "inert": [
+      {
+        "class": "focus-visible:border-ring focus-visible:ring-ring/30 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-2xl border bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 aria-expanded:bg-secondary aria-expanded:text-secondary-foreground size-7 absolute inset-s-1/2 -translate-x-1/2 border-border bg-background text-foreground transition-[translate,scale,opacity] duration-200 hover:bg-muted hover:text-foreground data-[active=false]:pointer-events-none data-[active=false]:scale-95 data-[active=false]:opacity-0 data-[active=false]:duration-400 data-[active=false]:ease-[cubic-bezier(0.7,0,0.84,0)] data-[active=true]:translate-y-0 data-[active=true]:scale-100 data-[active=true]:opacity-100 data-[active=true]:ease-[cubic-bezier(0.23,1,0.32,1)] data-[direction=end]:bottom-4 data-[direction=end]:data-[active=false]:translate-y-full data-[direction=start]:top-4 data-[direction=start]:data-[active=false]:-translate-y-full rtl:translate-x-1/2 data-[direction=start]:[&_svg]:rotate-180",
+        "tag": "BUTTON"
+      }
+    ],
+    "mode": [
+      "Interact",
+      "Structure",
+      "Properties"
+    ],
+    "rootPadding": "40px",
+    "runtime": "Runtime after real wheel",
+    "search": "Second",
+    "selected": [],
+    "sourceWidth": 412.8000183105469,
+    "selectedGraph": [
+      "%5B%22screen-d5aed627-e799-4d2c-a4eb-ea26a96b2027%22%2C%22node%22%2C%22second%22%5D"
+    ]
+  }
+}

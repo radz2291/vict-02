@@ -1,0 +1,286 @@
+{
+  "ancestors": [
+    {
+      "class": "",
+      "overflow": "visible",
+      "pointer": "auto",
+      "position": "static",
+      "rect": {
+        "bottom": 334.8000068664551,
+        "height": 37.20000076293945,
+        "left": 815.6000366210938,
+        "right": 938.0000381469728,
+        "top": 297.6000061035156,
+        "width": 122.4000015258789,
+        "x": 815.6000366210938,
+        "y": 297.6000061035156
+      },
+      "tag": "BUTTON",
+      "z": "auto"
+    },
+    {
+      "class": "sidebar-tabs svelte-11390zq",
+      "overflow": "visible",
+      "pointer": "auto",
+      "position": "static",
+      "rect": {
+        "bottom": 335.6000061035156,
+        "height": 38,
+        "left": 320,
+        "right": 1000,
+        "top": 297.6000061035156,
+        "width": 680,
+        "x": 320,
+        "y": 297.6000061035156
+      },
+      "tag": "NAV",
+      "z": "auto"
+    },
+    {
+      "class": "document-drawer",
+      "overflow": "hidden",
+      "pointer": "auto",
+      "position": "static",
+      "rect": {
+        "bottom": 676.0000305175781,
+        "height": 379.2000122070313,
+        "left": 320,
+        "right": 1000,
+        "top": 296.8000183105469,
+        "width": 680,
+        "x": 320,
+        "y": 296.8000183105469
+      },
+      "tag": "ASIDE",
+      "z": "auto"
+    },
+    {
+      "class": "design-workspace structure-drawer drawer-stacked drawer-open has-object-tools",
+      "overflow": "hidden",
+      "pointer": "auto",
+      "position": "relative",
+      "rect": {
+        "bottom": 676,
+        "height": 632,
+        "left": 320,
+        "right": 1000,
+        "top": 44,
+        "width": 680,
+        "x": 320,
+        "y": 44
+      },
+      "tag": "DIV",
+      "z": "auto"
+    },
+    {
+      "class": "agent-workspace chat-open",
+      "overflow": "hidden",
+      "pointer": "auto",
+      "position": "static",
+      "rect": {
+        "bottom": 676,
+        "height": 632,
+        "left": 0,
+        "right": 1000,
+        "top": 44,
+        "width": 1000,
+        "x": 0,
+        "y": 44
+      },
+      "tag": "DIV",
+      "z": "auto"
+    },
+    {
+      "class": "vict-app studio-designer studio-workspace",
+      "overflow": "hidden",
+      "pointer": "auto",
+      "position": "static",
+      "rect": {
+        "bottom": 700,
+        "height": 700,
+        "left": 0,
+        "right": 1000,
+        "top": 0,
+        "width": 1000,
+        "x": 0,
+        "y": 0
+      },
+      "tag": "DIV",
+      "z": "auto"
+    },
+    {
+      "class": "vict-controls vict-rhea",
+      "overflow": "visible",
+      "pointer": "auto",
+      "position": "static",
+      "rect": {
+        "bottom": 700,
+        "height": 700,
+        "left": 0,
+        "right": 1000,
+        "top": 0,
+        "width": 1000,
+        "x": 0,
+        "y": 0
+      },
+      "tag": "DIV",
+      "z": "auto"
+    },
+    {
+      "class": "",
+      "overflow": "visible",
+      "pointer": "auto",
+      "position": "static",
+      "rect": {
+        "bottom": 0,
+        "height": 0,
+        "left": 0,
+        "right": 0,
+        "top": 0,
+        "width": 0,
+        "x": 0,
+        "y": 0
+      },
+      "tag": "DIV",
+      "z": "auto"
+    },
+    {
+      "class": "",
+      "overflow": "visible",
+      "pointer": "auto",
+      "position": "static",
+      "rect": {
+        "bottom": 700,
+        "height": 700,
+        "left": 0,
+        "right": 1000,
+        "top": 0,
+        "width": 1000,
+        "x": 0,
+        "y": 0
+      },
+      "tag": "BODY",
+      "z": "auto"
+    },
+    {
+      "class": "",
+      "overflow": "visible",
+      "pointer": "auto",
+      "position": "static",
+      "rect": {
+        "bottom": 700,
+        "height": 700,
+        "left": 0,
+        "right": 1000,
+        "top": 0,
+        "width": 1000,
+        "x": 0,
+        "y": 0
+      },
+      "tag": "HTML",
+      "z": "auto"
+    }
+  ],
+  "rect": {
+    "bottom": 334.8000068664551,
+    "height": 37.20000076293945,
+    "left": 815.6000366210938,
+    "right": 938.0000381469728,
+    "top": 297.6000061035156,
+    "width": 122.4000015258789,
+    "x": 815.6000366210938,
+    "y": 297.6000061035156
+  },
+  "stack": [
+    {
+      "class": "uv-8ac86e67-screen",
+      "label": "Independent Cycle 1.4 challenge",
+      "overflow": "visible",
+      "pointer": "auto",
+      "position": "static",
+      "tag": "MAIN",
+      "z": "auto"
+    },
+    {
+      "class": "uv-root-screen-d5aed627-e799-4d2c-a4eb-ea26a96b2027-r1",
+      "label": "Screen canvas",
+      "overflow": "visible",
+      "pointer": "auto",
+      "position": "static",
+      "tag": "DIV",
+      "z": "auto"
+    },
+    {
+      "class": "uv-canvas uv-canvas-has-selection svelte-1oxksuu uv-canvas-design",
+      "label": null,
+      "overflow": "visible",
+      "pointer": "auto",
+      "position": "relative",
+      "tag": "DIV",
+      "z": "auto"
+    },
+    {
+      "class": "design-frame workspace-screen",
+      "label": null,
+      "overflow": "visible",
+      "pointer": "auto",
+      "position": "relative",
+      "tag": "DIV",
+      "z": "auto"
+    },
+    {
+      "class": "",
+      "label": null,
+      "overflow": "visible",
+      "pointer": "auto",
+      "position": "static",
+      "tag": "BUTTON",
+      "z": "auto"
+    },
+    {
+      "class": "sidebar-tabs svelte-11390zq",
+      "label": "Document sections",
+      "overflow": "visible",
+      "pointer": "auto",
+      "position": "static",
+      "tag": "NAV",
+      "z": "auto"
+    },
+    {
+      "class": "document-drawer",
+      "label": "Document",
+      "overflow": "hidden",
+      "pointer": "auto",
+      "position": "static",
+      "tag": "ASIDE",
+      "z": "auto"
+    },
+    {
+      "class": "canvas-scroll workspace-scroll",
+      "label": null,
+      "overflow": "auto",
+      "pointer": "auto",
+      "position": "static",
+      "tag": "DIV",
+      "z": "auto"
+    },
+    {
+      "class": "design-workspace structure-drawer drawer-stacked drawer-open has-object-tools",
+      "label": null,
+      "overflow": "hidden",
+      "pointer": "auto",
+      "position": "relative",
+      "tag": "DIV",
+      "z": "auto"
+    },
+    {
+      "class": "agent-workspace chat-open",
+      "label": null,
+      "overflow": "hidden",
+      "pointer": "auto",
+      "position": "static",
+      "tag": "DIV",
+      "z": "auto"
+    }
+  ]
+}

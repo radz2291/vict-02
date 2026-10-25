@@ -1,6 +1,6 @@
 # Cycle 1.4 — real-provider journey and efficiency evidence
 
-2026-10-25. **Prepared protocol; execution has not started because browser control is unavailable.** This is builder evidence for C14-07–09, not an independent verdict. The stage manager supplied the corrected exact candidate/seal and launched isolated hosts; actual UI actions await browser recovery and coordinated viewport ownership. Owner origins/data and the independent verifier fixture remain untouched.
+2026-10-25. **Prepared protocol; provider execution has not started.** This is builder evidence for C14-07–09, not an independent verdict. After the owner restarted the app, the stage manager confirmed restored browser control and restarted the isolated hosts. Natural provider runs await the independent responsive verifier's viewport release. Owner origins/data and the independent verifier fixture remain untouched.
 
 ## Controlled comparison protocol
 
@@ -29,5 +29,15 @@ Stale-context, unapplied-draft and recoverable refusal checks are separate label
 Replacement candidate `0c3cee81fb02345f07b26e92acb2d2eb5463b203`, seal SHA-256 `05aa28b85fdb4150617e1562b957ab2b18ce944f282abb35c644db410a8d4bcb`, is running at `.12:5606`; accepted core delivery `0ac71d64caefaaf4351c43a68b67421a51b76aba` is separately running at `.15:5609`. Both retain the existing `zai/glm-5.3-flash` server configuration. No provider request has been submitted for this protocol.
 
 The preparation-only child initially saw no enabled browsers. A fresh provider executor subsequently established IAB browser2 and its viewport capability, then held all navigation while the independent responsive executor owned the viewport. Independent and root review-tab bind/create/navigation attempts timed out, including root's documented raw-tab alternative; the owner was asked to foreground the task/reopen the browser panel. The provider executor made no product UI actions and no source/data changes. This is an environment availability observation, not a provider/model/Studio failure. All six natural runs and separate recovery legs remain pending; their measurements are unavailable, not zero.
+
+After the owner restarted the app, the clean remote-equal checkpoint was `964f9da65a6ca1172a7f98667d80cc8ffe84893e`; product `0c3cee81fb02345f07b26e92acb2d2eb5463b203` remained unchanged. The stage manager confirmed restored CUA control and restarted candidate `.12:5606`, baseline `.15:5609` and the separate consumer. The resumed evidence analyst has no CUA tool exposed and will therefore make no product interactions. The stage manager owns actual CUA runs and supplies visible DOM, Source JSON, receipts and JPEG artifacts; the analyst extracts and reconciles the measurements below. This division is builder evidence analysis, not independent gate verification.
+
+## Artifact extraction rules
+
+Each arm retains the initial visible Source JSON and fresh conversation/model evidence, then the natural turn's chronological tool transcript, terminal Chat details measurements and observed-region ledger, final visible Source JSON and canvas JPEG. Root records arm/run labels and capture times. First acknowledged edit and first observation are recorded from actual UI measurements or timed captures; a polling gap is reported as a bound, never an exact event time.
+
+Count acknowledged proposals once: a browser-commit row and its server acknowledgement describe the same edit. Preserve cleanup transactions, refused attempts, recoveries and terminal failures. Source/knowledge read categories, observation calls, first confirmed edit, elapsed time, authoring/image request counts, provider-reported usage and candidate tool-duration/active-union/outside-tool measurements are extracted only where actually displayed. Preserve the UI's rounding. Baseline fields absent from its UI remain unavailable; no exact provider latency, model-internal step count, cost or statistical speedup is inferred.
+
+Compare starting structural source while recording independent IDs/epochs. Report canonical-source findings, captured-region dimensions/offset/source revision/freshness and actually exercised local interactions separately. A successful image call establishes only its stated region and state; a successful source change does not establish runtime behavior. Natural-run totals exclude the separately labelled Stop/manual-edit/Save/continue, draft/stale/history and refusal probes.
 
 Evidence destination: `docs/studio/cycle-1-4/core/browser/`. Exact candidate, baseline, seal, run IDs, source snapshots, measurements, observed failures and completed/not-demonstrated matrix will be added after actual execution. No outcome or improvement magnitude is claimed here.
