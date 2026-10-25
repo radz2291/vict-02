@@ -17,9 +17,11 @@ it('renders the shared evidence UI in a clearly simulated public Popover, includ
  expect(content().textContent).toContain('12 tool calls');
  expect(content().textContent).toContain('6 receipt-derived edits including cleanup.');
  expect(content().textContent).toContain('tool-active interval union: 12.0 s');
- expect(content().textContent).toContain('earlier source');
- expect(content().textContent).toContain('current source');
+ expect(content().textContent).toContain('earlier source in this turn');
+ expect(content().textContent).toContain('matched final source of this turn');
  expect(content().textContent).toContain('within 560×1400');
+ expect(content().textContent).toContain("Region labels compare with the completed turn's final source;");
+ expect(content().textContent).toContain('they do not track later source, runtime or viewport changes.');
  expect(content().textContent).toContain('Offscreen content and interactions remain unverified.');
  expect(content().textContent).toContain('exact provider latency is unavailable.');
  document.querySelector<HTMLButtonElement>('[aria-label="Close simulated evidence"]')!.click();flushSync();
