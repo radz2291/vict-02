@@ -1,0 +1,24 @@
+Independent panel-placement source audit, 2026-10-26
+Verifier checkout: C:/Users/RZ1/.codex/worktrees/studio-cycle14-panel-placements-verifier/260831-VCT-02
+Detached HEAD: ace94995101ca7af87d4240dccdad1ca3bef959d
+Clean git status observed at entry. No dependency install, generation, checks/tests or build run by verifier.
+Live ls-remote origin: candidate branch ace94995101ca7af87d4240dccdad1ca3bef959d; main d7401bef6e48330796c74ec00c86db9622d48cdf.
+Authorized predecessor checkpoint: 5bd95523adc22b5bb679f1899c06e8337454572d. Product predecessor 13204fcaa3e111387b30b955e2e410513ec42bd9 has historical bounded PASS only; current layout independently unverified at entry.
+Read AGENTS, canonical system reference, Stage 09 state, architecture and handoff in order; current owner amendment and CYCLE-1-4-PANEL-PLACEMENTS.md control bounded scope.
+Diff from checkpoint: 15 paths, restricted to Studio designer components/styles, affected UI tests and bounded report. No package/lock/schema/provider/canonical storage/history engine source changes. git diff --check clean.
+Source observations:
+- AgentChat remains unconditional and is hidden by an ancestor hidden attribute. Sidebar tab state/wrapper removed, ordinary Chat header and hide/show/width controls restored.
+- DocumentPanels mounts all four snippets, Layers first, with one scalar active key. Headers outside each body; body hidden instead of unmounted. Bodies use bounded overflow, Layers embeds its existing scroll container.
+- StructureInspection always renders the graph snippet. Under 600px and Inspect open, graph ancestor hidden and inert, callback visible false drives StructureView active false. Close removes inspection only. Wider split uses PanelResizer bounds 240..min(420,available-286).
+- Designer selection uses shared canonical occurrence/id without requesting palette; explicit Inspect reveals Structure; explicit Edit properties closes Inspect and requests existing floating palette. SourceDetails renders shared facts/relationships read-only.
+- Draft guards remain on navigation/canonical edits/Save/reopen; accordion state changes do not apply or discard drafts.
+- Actual reusable DocumentPanels/StructureInspection/SourceDetails/StructureView/EditorCanvas/Layers used in disposable showcase, local-only Chat text explicitly states no provider request.
+- New placement tests cover Chat mounting/draft, no tablist, Layers order/exclusivity, source/data draft retention, narrow hidden graph same DOM identity, explicit editing and showcase. Existing chat-controls test mocks a streaming active turn and cancellation. It does not prove live provider behavior.
+Builder check logs inspected in builder tree: tests-initial.log 9 files/43 tests pass; types-initial.log empty (builder exit status reported PASS, not independently rerun); svelte-initial.log 0 errors/5 warnings in existing renderer files. Tests retain repeated localhost:3000 ECONNREFUSED readiness observations; suite passes. Serial build not overlapped by verifier generation.
+No concrete gating source defect found. Actual production UI, seal and report commit remain pending at this audit checkpoint.
+
+Subsequent keyboard-boundary finding (ace9499, before UI gate): builder independently identified and verifier source-confirmed a gating risk. Object shortcuts exclude .structure-view/.source-details but new Structure inspection separator and dock chrome are outside those descendants. PanelResizer does not consume Delete/Backspace/F2/AltUpDown/CtrlD, so a focused panel separator can trigger a selected canonical object edit. No live failing UI claim is made: this is a source-confirmed path, pending regression/fix. Original no-concrete-defect observation above is retained as an earlier audit checkpoint and superseded by this finding. Final verdict/UI is held for replacement candidate. Source untouched by verifier.
+
+Replacement audit checkpoint:
+Clean detached verifier checkout moved to ab845373842d4582ad1e486cfab12c9b7a6dd1aa. Live ls-remote candidate equals this SHA; main remains d7401bef6e48330796c74ec00c86db9622d48cdf. Diff from ace contains only shortcut ancestor exclusion, one regression and bounded report. git diff --check clean. Source risk closed by .structure-dock exclusion; no silent verifier repair. New independent hands-on UI must use this replacement.
+Builder final logs report 8 UI files/37 pass plus separately selected tests/test-scenarios.test.ts/7 pass = 9 files/44 pass. Original final command used wrong tests/ui scenario path, truthfully disclosed and not counted; final scenario log is separate. Types exit0 reported by builder; Svelte0 errors/5 existing warnings. Verifier has not rerun heavy checks or generation, to preserve serial production artifact.

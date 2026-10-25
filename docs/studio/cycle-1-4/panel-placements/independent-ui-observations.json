@@ -1,0 +1,177 @@
+{
+  "candidate": "ab845373842d4582ad1e486cfab12c9b7a6dd1aa",
+  "origin": "http://127.0.0.19:5613",
+  "fixtureId": "screen-e24b4d6a-4143-419b-a831-9c954f490d86",
+  "notes": [
+    {
+      "check": "desktop split keyboard and shortcut repair",
+      "min": "240",
+      "max": "420",
+      "sourceUnchanged": true
+    },
+    {
+      "check": "narrow graph restore",
+      "graphBefore": {
+        "search": "Full name",
+        "style": "transform: translate(29.1676px, 21.3975px) scale(0.652701);"
+      },
+      "graphAfter": {
+        "hidden": false,
+        "search": "Full name",
+        "style": "transform: translate(29.1676px, 21.3975px) scale(0.652701);"
+      }
+    },
+    {
+      "check": "source draft fold guards",
+      "retained": true,
+      "documentVisible": true
+    },
+    {
+      "check": "data pending folded guard",
+      "sourceDisabled": true,
+      "retained": "Pending independent value",
+      "selectedAfterBlockedLayer": [
+        "Full name"
+      ]
+    },
+    {
+      "check": "Chat hide restore",
+      "draft": "Independent draft remains unsent"
+    },
+    {
+      "check": "all accordion headers",
+      "accordion": [
+        {
+          "expanded": [
+            "Data"
+          ],
+          "headers": [
+            {
+              "height": 34,
+              "text": "Layers"
+            },
+            {
+              "height": 34,
+              "text": "Data"
+            },
+            {
+              "height": 34,
+              "text": "Actions"
+            },
+            {
+              "height": 34,
+              "text": "Source"
+            }
+          ]
+        },
+        {
+          "expanded": [
+            "Actions"
+          ],
+          "headers": [
+            {
+              "height": 34,
+              "text": "Layers"
+            },
+            {
+              "height": 34,
+              "text": "Data"
+            },
+            {
+              "height": 34,
+              "text": "Actions"
+            },
+            {
+              "height": 34,
+              "text": "Source"
+            }
+          ]
+        },
+        {
+          "expanded": [
+            "Source"
+          ],
+          "headers": [
+            {
+              "height": 34,
+              "text": "Layers"
+            },
+            {
+              "height": 34,
+              "text": "Data"
+            },
+            {
+              "height": 34,
+              "text": "Actions"
+            },
+            {
+              "height": 34,
+              "text": "Source"
+            }
+          ]
+        },
+        {
+          "expanded": [
+            "Layers"
+          ],
+          "headers": [
+            {
+              "height": 34,
+              "text": "Layers"
+            },
+            {
+              "height": 34,
+              "text": "Data"
+            },
+            {
+              "height": 34,
+              "text": "Actions"
+            },
+            {
+              "height": 34,
+              "text": "Source"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "check": "floating canonical edit undo redo save reload",
+      "undoRestored": true,
+      "reloadedHeading": 1,
+      "sourceRevision": "r1.r2",
+      "chatDraft": "Independent draft remains unsent"
+    },
+    {
+      "check": "runtime across Document toggle",
+      "fullName": "Independent runtime name"
+    },
+    {
+      "check": "scenario long content and permission refused simulation",
+      "longLength": 330,
+      "canonicalUnchanged": true
+    },
+    {
+      "check": "actual shared showcase",
+      "detailsWithinDock": 1,
+      "expanded": [
+        "Source"
+      ],
+      "draft": "Local independent showcase draft"
+    },
+    {
+      "check": "Document reflows central canvas and Chat resize",
+      "stageOpen": 668,
+      "stageClosed": 994,
+      "delta": 326,
+      "chatMin": "240",
+      "chatMax": "400",
+      "chatDraft": "Independent draft remains unsent"
+    }
+  ],
+  "limitations": [
+    "No new provider call; active turn mounting is mocked test/source evidence.",
+    "At 390px the top menu/title row clips horizontally; existing header limitation outside placement scope.",
+    "Initial hidden textbox role read timed out; selector of observed canonical-source field used for read-only comparison."
+  ]
+}
