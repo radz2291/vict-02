@@ -1,6 +1,29 @@
 # Cycle1.4 owner amendment — Structure bottom panel and right inspection
 
-2026-10-25. AUTHORIZED / IMPLEMENTING. The owner explicitly approved moving Structure out of Document into its own toggled bottom panel in the former Simulated execution area, with shared inspection in a right drawer. This supersedes the former Structure-in-Document/lower-inspection placement only. Floating canvas editing tools remain unchanged.
+2026-10-25. **INDEPENDENT TECHNICAL PASS — READY FOR OWNER REVIEW.** The owner explicitly approved moving Structure out of Document into its own toggled bottom panel in the former Simulated execution area, with shared inspection in a right drawer. This supersedes the former Structure-in-Document/lower-inspection placement only. Floating canvas editing tools remain unchanged.
+
+## Final delivery and walkthrough
+
+- Branch: `codex/studio-cycle-1-4-structure-dock`.
+- Product: **`e98e7b033369ba29a458119b7f8047f405130005`**.
+- Builder raw evidence delivery: **`286324b53f15a96bd942232dbe764f7343382628`**.
+- Independent verdict/evidence: **`e914625209076676dd8b7c70f3e86f1b95570b3e`**, pushed and remote-equal on the same isolated branch. [Independent report and complete criterion matrix](CYCLE-1-4-STRUCTURE-DOCK-INDEPENDENT.md). The fresh verifier made no product edits and executed its own actual browser checks. All four required SDI-01–04 findings are closed; failures remain below and in the independent record.
+
+Open [updated Studio](http://127.0.0.16:5610/design) and [updated showcase](http://127.0.0.16:5610/showcase#designer). The previous `.12:5606` and `.13:5607` previews retain the earlier layout. Existing local login remains `operator` / `studio-local-pass`; server-side GLM5.3flash configuration is preserved.
+
+1. Click **Structure** in the bottom bar to open/close its own graph panel. Drag the top divider or use its keyboard arrows; Expand temporarily uses the canvas area, and Restore returns it. The canvas stays mounted; it is hidden/inert only during deliberate expansion.
+2. Select an item in Structure and click Inspect. Its source facts and relationships open on the right. Document→Layers uses the same inspection drawer. Only one right drawer is visible at a time; close/Escape returns to its previous context. No lower inspection panel remains.
+3. Use **Edit properties** or **Locate on canvas** from expanded Structure. The canvas is restored first, and explicit editing opens the existing floating Format/Insert/Arrange/Connect controls. Ordinary navigation does not reveal them automatically.
+4. Try **Document→Preview** for temporary runtime values, denied writes, one-shot failure and local action outcomes. These useful controls were retained; the permanent bottom Simulated execution strip and obsolete tutorial copy were removed. No live effects were added.
+5. Try an unapplied Source draft, panel hide/show, Undo/Redo and explicit Save/reopen. Actual checks retain exact draft/source, graph camera/search and selection. Saved canonical source survives; temporary preview input resets. Mode-switch runtime-reset behavior is unchanged.
+
+Final validation: fresh exact e98 build/seal **748inputs/491outputs**, SHA-256 `9ed9429ad568649497026c35f6d1e311f62a4348a5eba487a4a736604342b81b`; TypeScript PASS; Svelte0errors/6carriedwarnings. Six-file c9 affected regression23/23 is explicitly carried for unchanged paths; final two-file showcase/focus9/9 is fresh on e98. These overlap and are not summed into a new full-suite count. Independent actual desktop/phone source, focus, sizing, editing handoffs and showcase rechecks pass. Canonical Save/reopen is exact at r1.r2; preview deny/fail/recovery remains local simulation.
+
+Small default stacked layout remains compact: deliberate Expand and Fit View are the useful phone fallback. Existing narrow header/floating-tool density remains disclosed. The final showcase inspector header stays inside the viewport on desktop and390×640; narrow focus is contained and Escape restores the trigger. Broader package-consumer/provider/stale evidence is carried from its unchanged Cycle1.4 scope; no new live-provider run or actual expanded capture refusal is claimed by this layout amendment.
+
+If its isolated listener has stopped, run `pwsh -NoProfile -File docs/studio/cycle-1-4/structure-dock/launch-review.ps1` from this worktree. It refuses an occupied port and verifies the exact production seal before reusing existing server-held configuration. [Launcher](cycle-1-4/structure-dock/launch-review.ps1), [seal](cycle-1-4/structure-dock/production-seal.json).
+
+**Next allowed action: owner hands-on review and acceptance decision.** Cycle1.4/Milestone1 owner acceptance remains pending; Stage9 remains REOPENED / IN PROGRESS. No main merge, publication, deployment, Milestone2 or Stage9 closure. Historical candidates/checkpoints below retain their exact scopes.
 
 Baseline delivery `09aafcaa7b3ab7620ec75151020075632f78ff18`, exact product `e76e2fc0f64f5a451edae01f4b0a1c9e7cfc68db`, independent verdict `a6003c06fd8e73b918ac0a619d5626bd37e95b81`; local/remote matched clean before isolating branch `codex/studio-cycle-1-4-structure-dock`. Main remains `d7401bef6e48330796c74ec00c86db9622d48cdf`. Preserve the owner's `.12:5606` browser/build/data; use a separate preview.
 
