@@ -80,8 +80,10 @@ it('shares a right inspection drawer between Layers and bottom Structure; retain
   expect(document.querySelector('.structure-dock .source-details')).toBeNull();
   button('Close inspection details').click();await settle();
   button('Structure').click();await settle();button('Structure').click();await settle();expect(document.querySelector('.svelte-flow')).toBe(graph);
+  button('Expand Structure').click();await settle();
+  expect(document.querySelector<HTMLElement>('.canvas-scroll')!.inert).toBe(true);
   button('Inspect structure').click();await settle();
-  button('Edit properties ↗').click();await settle();expect(document.querySelector('[aria-label="Floating selection tools"]')).not.toBeNull();expect(document.querySelector('.source-details')).toBeNull();
+  button('Edit properties ↗').click();await settle();expect(document.querySelector('[aria-label="Floating selection tools"]')).not.toBeNull();expect(document.querySelector('.source-details')).toBeNull();expect(document.querySelector<HTMLElement>('.canvas-scroll')!.inert).toBe(false);
 });
 it('keeps ambiguous repeated/definition occurrences inspectable without granting source edits',()=>{
   const document=newScreen('Capabilities','capabilities');

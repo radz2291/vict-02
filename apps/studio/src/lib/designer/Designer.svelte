@@ -36,6 +36,7 @@
   }
   async function locateOnCanvas(occurrence: string) {
     if (!source || textDraftDirty || sourceDraftDirty || renamingScreen) return;
+    structureExpanded = false; detailsOpen = false; if(workspaceWidth<760)drawerOpen=false; await tick();
     const find = () => [...(canvasScroll?.querySelectorAll<HTMLElement>('[data-ui-occ]') ?? [])].find(element => element.dataset.uiOcc === occurrence && element.getClientRects().length);
     if (!find()) {
       if (mode === 'interact') { notice = 'This source is hidden in Interact. Switch to Design, then Locate on canvas to inspect its composition.'; return; }
@@ -147,6 +148,7 @@
   let structureOpen = $state(false);
   let structureExpanded = $state(false);
   let detailsPage = $state<'properties'|'relationships'>('properties');
+  let workspaceWidth = $state(0);
   const rightOpen = $derived(drawerOpen || detailsOpen);
   const drawerOverlay = $derived(rightOpen && workspaceWidth < 760);
   let inspectionReturn: HTMLElement | undefined;
@@ -203,7 +205,6 @@
     return !!owner && target.closest<HTMLElement>('[data-ui-owner]')?.dataset.uiOwner===owner;
   }
   let drawerWidth = $state(320);
-  let workspaceWidth = $state(0);
   const effectiveDrawerWidth = $derived(detailsOpen ? inspectionWidth : drawerWidth);
   function dismissStructure() { if(structureExpanded){structureExpanded=false;return;} structureOpen = false; void tick().then(()=>workspaceElement?.querySelector<HTMLButtonElement>('.structure-toggle')?.focus({preventScroll:true})); }
   let renamingScreen=$state(false);
@@ -233,6 +234,7 @@
     actionInputs: { message: 'Message', accepted: 'Agreement' } };
   function selectOccurrence(occurrence: string, revealTools = true) {
     if (textDraftDirty || (drawerOpen && sourceDraftDirty)) { notice = 'Apply or cancel your edit first.'; return; }
+    if(revealTools) { structureExpanded=false; detailsOpen=false; }
     if(drawerTab!=='Layers') drawerOpen=false;
     editTextSignal = undefined;
     if (source) {
@@ -249,7 +251,7 @@
     if (source) detailId=structureId(source.id,'node',resolveOccurrence(occurrence,source).sourceNodeId);
     palettePage = 'format'; paletteRequested = revealTools;
     formatSection = reportSection(occurrence);
-    if (revealTools && matchMedia('(max-width: 760px)').matches) drawerOpen = false;
+    if (revealTools && workspaceWidth < 760) drawerOpen = false;
     if(revealTools) selectionToolsReveal = Symbol('selection-tools');
   }
   function editSelectedText(occurrence = selected) {
@@ -513,7 +515,7 @@
   <div class="design-workspace" bind:this={workspaceElement} bind:clientWidth={workspaceWidth} class:drawer-open={rightOpen} class:drawer-overlay={drawerOverlay} class:has-object-tools={mode === 'design' && !!selectedNode && paletteRequested} style:--drawer-width={`${effectiveDrawerWidth}px`}>
     <WorkspaceContextMenu scope={workspaceElement} enabled={mode === 'design'} resolve={canvasContext} owns={ownsCanvasTarget} />
     <main class="design-stage" class:structure-expanded={structureOpen && structureExpanded} inert={drawerOverlay} bind:clientHeight={stageHeight}>
-      <div class="canvas-toolbar workspace-tools"><div class="canvas-modes" aria-label="Workspace mode"><button type="button" aria-pressed={mode === 'design'} onclick={() => changeMode('design')}>Design</button><button type="button" aria-pressed={mode === 'interact'} onclick={() => changeMode('interact')}>Interact</button></div>{#if compositionFocus}<div class="composition-back"><CompositionNavigator compact document={source} focus={compositionFocus} descriptors={catalogDescriptors} disabled={textDraftDirty || sourceDraftDirty} onNavigate={navigateComposition} /></div>{/if}<button type="button" bind:this={documentButton} class="panel-toggle" aria-expanded={drawerOpen} aria-controls="document-drawer" onclick={toggleDocument}>Document</button></div>
+      <div class="canvas-toolbar workspace-tools"><div class="canvas-modes" aria-label="Workspace mode"><button type="button" aria-pressed={mode === 'design'} onclick={() => changeMode('design')}>Design</button><button type="button" aria-pressed={mode === 'interact'} onclick={() => changeMode('interact')}>Interact</button></div>{#if compositionFocus}<div class="composition-back"><CompositionNavigator compact document={source} focus={compositionFocus} descriptors={catalogDescriptors} disabled={textDraftDirty || sourceDraftDirty} onNavigate={navigateComposition} /></div>{/if}<button type="button" bind:this={documentButton} class="panel-toggle" aria-expanded={drawerOpen && !detailsOpen} aria-controls="document-drawer" onclick={toggleDocument}>Document</button></div>
 
 
       <div class="canvas-scroll workspace-scroll" inert={structureOpen && structureExpanded} bind:this={canvasScroll}>

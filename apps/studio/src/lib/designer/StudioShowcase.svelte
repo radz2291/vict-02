@@ -76,7 +76,7 @@
     const act=(action:()=>void)=>{target();if(!blocked && capability.direct)action();};
     return {label:'Example object commands',prepare:target,commands:[
       {label:'Inspect',disabled:blocked,run:()=>inspect(structureId(source!.id,'node',capability.report!.sourceNodeId))},
-      {label:'Edit properties',disabled:blocked || !capability.direct,run:()=>act(()=>{changeMode('design');tools='palette';paletteRequested=true;palettePage='format';paletteFocus=Symbol('edit-handoff');})},
+      {label:'Edit properties',disabled:blocked || !capability.direct,run:()=>act(()=>{structureExpanded=false;detailsOpen=false;changeMode('design');tools='palette';paletteRequested=true;palettePage='format';paletteFocus=Symbol('edit-handoff');})},
       {label:'Duplicate',separator:true,disabled:blocked || !capability.removable,run:()=>act(()=>{const copy=duplicateSubtree(source!,capability.report!.sourceNodeId);if(copy && apply(copy.draft))selectNode(copy.nodeId);})},
       {label:'Delete',disabled:blocked || !capability.removable,run:()=>act(()=>{const id=capability.report!.sourceNodeId;const parent=compositionParent(source!,id);if(apply({requestId:crypto.randomUUID(),reason:'Delete example selection',commands:[{op:'remove',nodeId:id,detachFromParent:true}]}))selectNode(parent?.nodeId??source!.root);})},
     ]};
@@ -196,6 +196,7 @@
     if (request.occurrence) selectStructure(request.occurrence);
     if (request.destination === 'layers') { documentOpen = true; detailsOpen = false; }
     if (request.destination === 'design' && request.occurrence && source) {
+      structureExpanded=false;detailsOpen=false;await tick();
       const find = () => [...(canvasRoot?.querySelectorAll<HTMLElement>('[data-ui-occ]') ?? [])].find(element => element.dataset.uiOcc === request.occurrence && element.getClientRects().length);
       if (!find()) {
         if (mode === 'interact') { notice = 'Switch to Design to locate source inside a closed composition.'; return; }
@@ -207,7 +208,7 @@
       const target = find(); target?.scrollIntoView({ block: 'nearest', inline: 'nearest' }); target?.focus({ preventScroll: true });
       notice = target ? 'Located on canvas.' : 'This source has no visible canvas element.'; return;
     }
-    if (request.destination === 'inspector') {detailsOpen=false;changeMode('design');tools = 'palette';paletteRequested=true;palettePage='format';paletteFocus=Symbol('edit-handoff');return;}
+    if (request.destination === 'inspector') {structureExpanded=false;detailsOpen=false;changeMode('design');tools = 'palette';paletteRequested=true;palettePage='format';paletteFocus=Symbol('edit-handoff');return;}
     if (request.destination === 'data') selectedData = request.key ?? '';
     await tick();
     const selector = request.destination === 'layers' ? '.layers' : request.destination === 'data' ? '[data-structure-data]' : request.destination === 'actions' ? '[data-structure-actions]' : '.canvas';
