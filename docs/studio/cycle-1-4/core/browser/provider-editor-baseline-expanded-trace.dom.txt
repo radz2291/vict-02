@@ -1,0 +1,902 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Content editor"
+  - generic: ● Unsaved changes
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- complementary "Chat":
+  - region "Conversation":
+    - region "Messages — Message":
+      - log:
+        - generic: You
+        - generic: Design a polished compact content editor with a document list, editable title and body, preview, status and local save feedback. Use independent local state, review the first meaningful visible section early and verify the result. Keep it within one screen.
+        - button "Copy message":
+        - generic: Assistant
+        - generic "Conversation timeline":
+          - paragraph: Progress summary · Connecting to the VICT / Mastra agent…
+          - paragraph: Progress summary · Agent is working on your request…
+          - paragraph: I'll start by reading the current document state, structure, and available building blocks.
+          - button "Read current source facts completed" [expanded]:
+            - generic: Read current source facts
+            - generic: completed
+          - list "Attempt receipts":
+            - text: Read source started · running
+            - generic: tool-start studio_screen_read 214386 ms since turn start
+            - text: Read current source facts · completed
+            - generic: "observation studio_screen_read 214414 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-2da67e97-fe72-4bd7-af98-31bfa06bcad6\",\"revision\":\"r1#0\",\"digest\":\"44bc1c709febddecfe7c0b9b0cb76015fba9e7f48df77b6ebe7f9a6c3297a23d\",\"epoch\":\"4448bebd-d21f-4e0f-b7d7-8c05a6a54983\"},\"section\":\"overview\",\"document\":{\"schema\":\"vict.ui-document@1\",\"id\":\"screen-2da67e97-fe72-4bd7-af98-31bfa06bcad6\",\"revision\":\"r1\",\"root\":\"screen\",\"nodeCount\":1,\"stateCount\":6},\"selection\":{\"occurrence\":\"screen-2da67e97-fe72-4bd7-af98-31bfa06bcad6|screen\",\"nodeId\":\"screen\",\"repeated\":false},\"roots\":[{\"id\":\"screen\",\"kind\":\"element\",\"tag\":\"main\",\"children\":[],\"childCount\":0,\"sourcePreview\":\"{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"screen\\\",\\\"tag\\\":\\\"main\\\",\\\"attributes\\\":{\\\"aria-label\\\":\\\"Content editor comparison\\\"},\\\"children\\\":[],\\\"localStyle\\\":[{\\\"property\\\":\\\"display\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"flex\\\"}},{\\\"property\\\":\\\"flex-direction\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"column\\\"}},{\\\"property\\\":\\\"gap\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"20px\\\"}},{\\\"property\\\":\\\"padding\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"40px\\\"}},{\\\"property\\\":\\\"min-height\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"560px\\\"}},{\\\"property\\\":\\\"background-color\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"#ffffff\\\"}},{\\\"property\\\":\\\"color\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"#243047\\\"}},{\\\"property\\\":\\\"fo… [truncated; use source pages]\"}],\"previewHost\":{\"surfaces\":[\"Design\",\"Run\"],\"selector\":\".workspace-screen\",\"container\":{\"name\":\"studio-screen\",\"type\":\"inline-size\"},\"widthPresets\":\"Change the preview host width, not the outer browser viewport.\",\"mediaQueries\":\"Evaluate against the outer browser viewport, not the preview width preset.\",\"canonicalRoot\":\"The Studio host is an ancestor; the canonical root need not establish this container.\",\"portability\":\"Other consumers must establish a compatible host explicitly; this container is not a portable document guarantee.\",\"provenance\":\"apps/studio/src/lib/designer/workspace.css\"},\"knowledge\":{\"registryDigest\":\"6a06abc8ee99fa9f88e3abc5cfe9d8ea244ae35a79321284cd0e00de0308e80d\",\"contracts\":86,\"families\":3,\"ready\":true,\"discovery\":\"families → catalog with family/category/query → contracts with selected components and knownDigests. Native tags use elements; recipes use palette. Knowledge freshness is separate from this source cursor.\"},\"discovery\":\"Read nodes/palette/state with offset and limit <=20. State initialJson is a preview; read state with stateKey for lossless declaration JSON pages. Registry lists componentDefinitions/styleSources/tokens/conditions/assets; provide registry and optional key to page a whole entry as lossless JSON text. Read component with recipe for exact props/outputs/slots. Read source with nodeId for lossless JSON text pages (nextOffset is character offset). Read coverage with requested recipe IDs for source presence only.\",\"editing\":\"Use add with a palette recipe as an accelerator, or insert kind element/text/component through the registered canonical path. Component insertion requires exact componentId/revision from catalog/contracts and explicit slotName for slot children. Native tags come from elements. declareState accepts string/number/boolean/isoDate/isoTime/stringList/numberList with a matching canonical initial value. bindText targets an actual text node; bindAttribute targets a native attribute. bind/connect use exact component props/outputs. style accepts text/token/binding values and optional conditionId/pseudo; declareToken and declareCondition add registered presentation data. defineStyleSource and attachStyleSource/detachStyleSource reuse ordered rules; replace:true explicitly updates a shared source. removeStyleSource requires no remaining references. Local styles retain precedence. Heading levels1..6 are native headings. Compatible same-batch construction is supported; final semantic/renderer checks are atomic. Read the [Details truncated for the bounded trace. Read current source for complete facts.]"
+          - button "Read current source facts completed" [expanded]:
+            - generic: Read current source facts
+            - generic: completed
+          - list "Attempt receipts":
+            - text: Read source started · running
+            - generic: tool-start studio_screen_read 214388 ms since turn start
+            - text: Read current source facts · completed
+            - generic: "observation studio_screen_read 214417 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-2da67e97-fe72-4bd7-af98-31bfa06bcad6\",\"revision\":\"r1#0\",\"digest\":\"44bc1c709febddecfe7c0b9b0cb76015fba9e7f48df77b6ebe7f9a6c3297a23d\",\"epoch\":\"4448bebd-d21f-4e0f-b7d7-8c05a6a54983\"},\"section\":\"nodes\",\"items\":[{\"id\":\"screen\",\"kind\":\"element\",\"tag\":\"main\",\"children\":[],\"childCount\":0,\"sourcePreview\":\"{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"screen\\\",\\\"tag\\\":\\\"main\\\",\\\"attributes\\\":{\\\"aria-label\\\":\\\"Content editor comparison\\\"},\\\"children\\\":[],\\\"localStyle\\\":[{\\\"property\\\":\\\"display\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"flex\\\"}},{\\\"property\\\":\\\"flex-direction\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"column\\\"}},{\\\"property\\\":\\\"gap\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"20px\\\"}},{\\\"property\\\":\\\"padding\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"40px\\\"}},{\\\"property\\\":\\\"min-height\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"560px\\\"}},{\\\"property\\\":\\\"background-color\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"#ffffff\\\"}},{\\\"property\\\":\\\"color\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"#243047\\\"}},{\\\"property\\\":\\\"fo… [truncated; use source pages]\"}],\"total\":1,\"offset\":0,\"nextOffset\":null}"
+          - button "Read current source facts completed" [expanded]:
+            - generic: Read current source facts
+            - generic: completed
+          - list "Attempt receipts":
+            - text: Read source started · running
+            - generic: tool-start studio_screen_read 214390 ms since turn start
+            - text: Read current source facts · completed
+            - generic: "observation studio_screen_read 214419 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-2da67e97-fe72-4bd7-af98-31bfa06bcad6\",\"revision\":\"r1#0\",\"digest\":\"44bc1c709febddecfe7c0b9b0cb76015fba9e7f48df77b6ebe7f9a6c3297a23d\",\"epoch\":\"4448bebd-d21f-4e0f-b7d7-8c05a6a54983\"},\"section\":\"state\",\"items\":[{\"key\":\"message\",\"type\":\"string\",\"initialJson\":\"\\\"Hello from my screen\\\"\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"},{\"key\":\"accepted\",\"type\":\"boolean\",\"initialJson\":\"false\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"},{\"key\":\"dialogOpen\",\"type\":\"boolean\",\"initialJson\":\"false\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"},{\"key\":\"busy\",\"type\":\"boolean\",\"initialJson\":\"false\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"},{\"key\":\"actionError\",\"type\":\"string\",\"initialJson\":\"\\\"\\\"\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"},{\"key\":\"actionResult\",\"type\":\"string\",\"initialJson\":\"\\\"\\\"\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"}],\"total\":6,\"offset\":0,\"nextOffset\":null}"
+          - button "Read current source facts completed" [expanded]:
+            - generic: Read current source facts
+            - generic: completed
+          - list "Attempt receipts":
+            - text: Read source started · running
+            - generic: tool-start studio_screen_read 214391 ms since turn start
+            - text: Read current source facts · completed
+            - generic: "observation studio_screen_read 214420 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-2da67e97-fe72-4bd7-af98-31bfa06bcad6\",\"revision\":\"r1#0\",\"digest\":\"44bc1c709febddecfe7c0b9b0cb76015fba9e7f48df77b6ebe7f9a6c3297a23d\",\"epoch\":\"4448bebd-d21f-4e0f-b7d7-8c05a6a54983\"},\"section\":\"palette\",\"items\":[{\"id\":\"section\",\"label\":\"Section\",\"description\":\"A vertical container for nested content\"},{\"id\":\"row\",\"label\":\"Row\",\"description\":\"Arrange children side by side, with wrapping\"},{\"id\":\"heading\",\"label\":\"Heading\",\"description\":\"A clear title for your screen\"},{\"id\":\"text\",\"label\":\"Text\",\"description\":\"Supporting copy or a state-bound value\"},{\"id\":\"input\",\"label\":\"Text input\",\"description\":\"Accessible text input with independent local state and change binding\"},{\"id\":\"button\",\"label\":\"Button\",\"description\":\"Button · editable properties, declared slots and outputs\"},{\"id\":\"checkbox\",\"label\":\"Checkbox\",\"description\":\"Checkbox · editable properties, declared slots and outputs\"},{\"id\":\"select\",\"label\":\"Select\",\"description\":\"Select · editable properties, declared slots and outputs\"},{\"id\":\"dialog\",\"label\":\"Dialog\",\"description\":\"Dialog · editable properties, declared slots and outputs\"},{\"id\":\"switch\",\"label\":\"Switch\",\"description\":\"Switch · editable properties, declared slots and outputs\"},{\"id\":\"toggle\",\"label\":\"Toggle\",\"description\":\"Toggle · editable properties, declared slots and outputs\"},{\"id\":\"select-multiple\",\"label\":\"Select Multiple\",\"description\":\"Select Multiple · editable properties, declared slots and outputs\"},{\"id\":\"select-item\",\"label\":\"Select Item\",\"description\":\"Select Item · part for its compatible provider slot\",\"placements\":[{\"definitionId\":\"vict.catalog.select\",\"slotName\":\"items\"},{\"definitionId\":\"vict.catalog.select-multiple\",\"slotName\":\"items\"}]},{\"id\":\"combobox\",\"label\":\"Combobox\",\"description\":\"Combobox · editable properties, declared slots and outputs\"},{\"id\":\"combobox-multiple\",\"label\":\"Combobox Multiple\",\"description\":\"Combobox Multiple · editable properties, declared slots and outputs\"},{\"id\":\"combobox-item\",\"label\":\"Combobox Item\",\"description\":\"Combobox Item · part for its compatible provider slot\",\"placements\":[{\"definitionId\":\"vict.catalog.combobox\",\"slotName\":\"items\"},{\"definitionId\":\"vict.catalog.combobox-multiple\",\"slotName\":\"items\"}]},{\"id\":\"toggle-group\",\"label\":\"Toggle Group\",\"description\":\"Toggle Group · editable properties, declared slots and outputs\"},{\"id\":\"toggle-group-multiple\",\"label\":\"Toggle Group Multiple\",\"description\":\"Toggle Group Multiple · editable properties, declared slots and outputs\"},{\"id\":\"toggle-group-item\",\"label\":\"Toggle Group Item\",\"description\":\"Toggle Group Item · part for its compatible provider slot\",\"placements\":[{\"definitionId\":\"vict.catalog.toggle-group\",\"slotName\":\"items\"},{\"definitionId\":\"vict.catalog.toggle-group-multiple\",\"slotName\":\"items\"}]},{\"id\":\"accordion\",\"label\":\"Accordion\",\"description\":\"Accordion · editable properties, declared slots and outputs\"}],\"total\":87,\"offset\":0,\"nextOffset\":20}"
+          - button "Read current source facts completed" [expanded]:
+            - generic: Read current source facts
+            - generic: completed
+          - list "Attempt receipts":
+            - text: Read source started · running
+            - generic: tool-start studio_screen_read 214393 ms since turn start
+            - text: Read current source facts · completed
+            - generic: "observation studio_screen_read 214431 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-2da67e97-fe72-4bd7-af98-31bfa06bcad6\",\"revision\":\"r1#0\",\"digest\":\"44bc1c709febddecfe7c0b9b0cb76015fba9e7f48df77b6ebe7f9a6c3297a23d\",\"epoch\":\"4448bebd-d21f-4e0f-b7d7-8c05a6a54983\"},\"section\":\"elements\",\"items\":[{\"tag\":\"div\",\"leaf\":false},{\"tag\":\"section\",\"leaf\":false},{\"tag\":\"header\",\"leaf\":false},{\"tag\":\"footer\",\"leaf\":false},{\"tag\":\"main\",\"leaf\":false},{\"tag\":\"nav\",\"leaf\":false},{\"tag\":\"article\",\"leaf\":false},{\"tag\":\"aside\",\"leaf\":false},{\"tag\":\"h1\",\"leaf\":false},{\"tag\":\"h2\",\"leaf\":false},{\"tag\":\"h3\",\"leaf\":false},{\"tag\":\"h4\",\"leaf\":false},{\"tag\":\"h5\",\"leaf\":false},{\"tag\":\"h6\",\"leaf\":false},{\"tag\":\"p\",\"leaf\":false},{\"tag\":\"span\",\"leaf\":false},{\"tag\":\"strong\",\"leaf\":false},{\"tag\":\"em\",\"leaf\":false},{\"tag\":\"ul\",\"leaf\":false},{\"tag\":\"ol\",\"leaf\":false}],\"total\":38,\"offset\":0,\"nextOffset\":20,\"guidance\":\"Read elements with tag for its attributes; native tags are not component descriptors.\"}"
+          - button "Read current source facts completed" [expanded]:
+            - generic: Read current source facts
+            - generic: completed
+          - list "Attempt receipts":
+            - text: Read source started · running
+            - generic: tool-start studio_screen_read 214395 ms since turn start
+            - text: Read current source facts · completed
+            - generic: "observation studio_screen_read 214433 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-2da67e97-fe72-4bd7-af98-31bfa06bcad6\",\"revision\":\"r1#0\",\"digest\":\"44bc1c709febddecfe7c0b9b0cb76015fba9e7f48df77b6ebe7f9a6c3297a23d\",\"epoch\":\"4448bebd-d21f-4e0f-b7d7-8c05a6a54983\"},\"section\":\"actions\",\"actions\":[\"demo.submit\"],\"actionInputs\":{\"demo.submit\":{\"message\":\"string\",\"accepted\":\"boolean\"}}}"
+          - paragraph:
+            - text: "Fresh document: only the"
+            - code: screen
+            - text: root exists, plus 6 pre-seeded demo states and one
+            - code: demo.submit
+            - text: action — I'll leave those untouched and declare independent local state for the editor. Now let me get the exact contracts for the components I need, and check that
+            - code: textarea
+            - text: is a registered native element.
+          - button "Read query refused safely failed" [expanded]:
+            - generic: Read query refused safely
+            - generic: failed
+          - list "Attempt receipts":
+            - text: Read source started · running
+            - generic: tool-start studio_screen_read 223293 ms since turn start
+            - text: Read query refused safely · failed
+            - generic: "validation-refused studio_screen_read 223302 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-2da67e97-fe72-4bd7-af98-31bfa06bcad6\",\"revision\":\"r1#0\",\"digest\":\"44bc1c709febddecfe7c0b9b0cb76015fba9e7f48df77b6ebe7f9a6c3297a23d\",\"epoch\":\"4448bebd-d21f-4e0f-b7d7-8c05a6a54983\"},\"section\":\"contracts\",\"ok\":false,\"complete\":false,\"registryDigest\":\"6a06abc8ee99fa9f88e3abc5cfe9d8ea244ae35a79321284cd0e00de0308e80d\",\"items\":[],\"pending\":[],\"problems\":[\"Exact contract unavailable: section@current\",\"Exact contract unavailable: row@current\",\"Exact contract unavailable: heading@current\",\"Exact contract unavailable: text@current\",\"Exact contract unavailable: input@current\",\"Exact contract unavailable: button@current\",\"Exact contract unavailable: separator@current\",\"Exact contract unavailable: label@current\"],\"projection\":\"contract-with-examples\",\"paging\":\"Bodies are lossless JSON text pages of the named projection. Request a selected ID with nextOffset until complete; retain its digest. includeExamples adds canonical seed/examples; omit its known digest when requesting a different projection. Pending dependencies are not a complete bundle. Source facts never use knowledge-cache digests.\"}"
+          - button "Read current source facts completed" [expanded]:
+            - generic: Read current source facts
+            - generic: completed
+          - list "Attempt receipts":
+            - text: Read source started · running
+            - generic: tool-start studio_screen_read 223295 ms since turn start
+            - text: Read current source facts · completed
+            - generic: "observation studio_screen_read 223305 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-2da67e97-fe72-4bd7-af98-31bfa06bcad6\",\"revision\":\"r1#0\",\"digest\":\"44bc1c709febddecfe7c0b9b0cb76015fba9e7f48df77b6ebe7f9a6c3297a23d\",\"epoch\":\"4448bebd-d21f-4e0f-b7d7-8c05a6a54983\"},\"section\":\"elements\",\"element\":{\"tag\":\"textarea\",\"attributes\":[\"name\",\"value\",\"placeholder\",\"rows\",\"required\",\"disabled\",\"id\",\"aria-label\",\"aria-describedby\"],\"leaf\":true},\"globalAttributes\":[\"id\",\"title\",\"hidden\",\"role\",\"tabindex\",\"aria-label\",\"aria-labelledby\",\"aria-describedby\",\"aria-hidden\",\"aria-expanded\",\"aria-current\",\"aria-live\",\"aria-disabled\",\"data-test-id\"],\"guidance\":\"Insert a registered native tag; use bindText on an actual text node and bindAttribute for native refs. Leaf elements cannot contain child text. Attributes and interactions still pass canonical validation.\"}"
+          - paragraph: The contracts need exact catalog IDs. Let me discover the families and the remaining registered elements.
+          - button "Read current source facts completed" [expanded]:
+            - generic: Read current source facts
+            - generic: completed
+          - list "Attempt receipts":
+            - text: Read source started · running
+            - generic: tool-start studio_screen_read 238395 ms since turn start
+            - text: Read current source facts · completed
+            - generic: "observation studio_screen_read 238405 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-2da67e97-fe72-4bd7-af98-31bfa06bcad6\",\"revision\":\"r1#0\",\"digest\":\"44bc1c709febddecfe7c0b9b0cb76015fba9e7f48df77b6ebe7f9a6c3297a23d\",\"epoch\":\"4448bebd-d21f-4e0f-b7d7-8c05a6a54983\"},\"section\":\"families\",\"registryDigest\":\"6a06abc8ee99fa9f88e3abc5cfe9d8ea244ae35a79321284cd0e00de0308e80d\",\"items\":[{\"family\":\"general\",\"count\":80,\"authorable\":78,\"categories\":[\"presentation\",\"input\",\"disclosure\",\"navigation\",\"date-time\"],\"packages\":[\"@victframework/ui-svelte\"]},{\"family\":\"ai\",\"count\":3,\"authorable\":3,\"categories\":[\"chat\"],\"packages\":[\"@victframework/ui-ai-svelte\"]},{\"family\":\"flow\",\"count\":3,\"authorable\":3,\"categories\":[\"diagram\",\"diagram-part\"],\"packages\":[\"@victframework/ui-flow-svelte\"]}],\"total\":3,\"offset\":0,\"nextOffset\":null}"
+          - button "Read current source facts completed" [expanded]:
+            - generic: Read current source facts
+            - generic: completed
+          - list "Attempt receipts":
+            - text: Read source started · running
+            - generic: tool-start studio_screen_read 238398 ms since turn start
+            - text: Read current source facts · completed
+            - generic: "observation studio_screen_read 238407 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-2da67e97-fe72-4bd7-af98-31bfa06bcad6\",\"revision\":\"r1#0\",\"digest\":\"44bc1c709febddecfe7c0b9b0cb76015fba9e7f48df77b6ebe7f9a6c3297a23d\",\"epoch\":\"4448bebd-d21f-4e0f-b7d7-8c05a6a54983\"},\"section\":\"elements\",\"items\":[{\"tag\":\"li\",\"leaf\":false},{\"tag\":\"img\",\"leaf\":true},{\"tag\":\"form\",\"leaf\":false},{\"tag\":\"label\",\"leaf\":false},{\"tag\":\"input\",\"leaf\":true},{\"tag\":\"select\",\"leaf\":false},{\"tag\":\"option\",\"leaf\":false},{\"tag\":\"textarea\",\"leaf\":true},{\"tag\":\"fieldset\",\"leaf\":false},{\"tag\":\"legend\",\"leaf\":true},{\"tag\":\"button\",\"leaf\":false},{\"tag\":\"a\",\"leaf\":false},{\"tag\":\"table\",\"leaf\":false},{\"tag\":\"thead\",\"leaf\":false},{\"tag\":\"tbody\",\"leaf\":false},{\"tag\":\"tr\",\"leaf\":false},{\"tag\":\"th\",\"leaf\":false},{\"tag\":\"td\",\"leaf\":false}],\"total\":38,\"offset\":20,\"nextOffset\":null,\"guidance\":\"Read elements with tag for its attributes; native tags are not component descriptors.\"}"
+          - paragraph:
+            - code: textarea
+            - text: is registered. Now let me get exact catalog IDs and revisions for the general-family components I plan to use.
+          - button "Read current source facts completed" [expanded]:
+            - generic: Read current source facts
+            - generic: completed
+          - list "Attempt receipts":
+            - text: Read source started · running
+            - generic: tool-start studio_screen_read 247786 ms since turn start
+            - text: Read current source facts · completed
+            - generic: "observation studio_screen_read 247795 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-2da67e97-fe72-4bd7-af98-31bfa06bcad6\",\"revision\":\"r1#0\",\"digest\":\"44bc1c709febddecfe7c0b9b0cb76015fba9e7f48df77b6ebe7f9a6c3297a23d\",\"epoch\":\"4448bebd-d21f-4e0f-b7d7-8c05a6a54983\"},\"section\":\"catalog\",\"registryDigest\":\"6a06abc8ee99fa9f88e3abc5cfe9d8ea244ae35a79321284cd0e00de0308e80d\",\"items\":[{\"id\":\"vict.catalog.appshell\",\"revision\":\"1\",\"label\":\"Appshell\",\"family\":\"general\",\"category\":\"presentation\",\"eligibility\":{\"kind\":\"host-required\",\"reason\":\"Requires application navigation host semantics.\"},\"digest\":\"241f31ea1ad8d5409b64a90ed80fb0e908b0e29b72a5314724186ea2b911d531\",\"packageName\":\"@victframework/ui-svelte\"},{\"id\":\"vict.catalog.aspect-ratio\",\"revision\":\"1\",\"label\":\"Aspect Ratio\",\"family\":\"general\",\"category\":\"presentation\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"800259d819f9d3a3a56d01ba2192ff5e3aacf084c2e5ea953aeaefb70af222b6\",\"packageName\":\"@victframework/ui-svelte\"},{\"id\":\"vict.catalog.avatar\",\"revision\":\"1\",\"label\":\"Avatar\",\"family\":\"general\",\"category\":\"presentation\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"a5e9af51ee035d9c45874c0a0d340805b21fcf0dc3e366460645777bbebd37a5\",\"packageName\":\"@victframework/ui-svelte\"},{\"id\":\"vict.catalog.button\",\"revision\":\"1\",\"label\":\"Button\",\"family\":\"general\",\"category\":\"presentation\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"cc715b1bdbfce5d03ec87d1e38715e362fc0bcc95d0ef00c256ef1bfa6b372c8\",\"packageName\":\"@victframework/ui-svelte\"},{\"id\":\"vict.catalog.label\",\"revision\":\"1\",\"label\":\"Label\",\"family\":\"general\",\"category\":\"presentation\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"5ee619edf46e84c3305f291bfa9f61ad8266d4cef777fbc33c75c4e3a4c3abcf\",\"packageName\":\"@victframework/ui-svelte\"},{\"id\":\"vict.catalog.link-preview\",\"revision\":\"1\",\"label\":\"Link Preview\",\"family\":\"general\",\"category\":\"presentation\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"63d0625939cc7d910dfc7d0b52a4323a6fa53e11e6a345612facdb96fc3a6633\",\"packageName\":\"@victframework/ui-svelte\"},{\"id\":\"vict.catalog.meter\",\"revision\":\"1\",\"label\":\"Meter\",\"family\":\"general\",\"category\":\"presentation\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"97095caaf119fc84d8eb93d720463858ebeee57832524497d5dcdc17ab4ad1aa\",\"packageName\":\"@victframework/ui-svelte\"},{\"id\":\"vict.catalog.progress\",\"revision\":\"1\",\"label\":\"Progress\",\"family\":\"general\",\"category\":\"presentation\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"bb5ca0c425e28211cffb04533d9ab09cc6b73f56499ecd10e8f681debfec632a\",\"packageName\":\"@victframework/ui-svelte\"},{\"id\":\"vict.catalog.scroll-area\",\"revision\":\"1\",\"label\":\"Scroll Area\",\"family\":\"general\",\"category\":\"presentation\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"e1d30e9a700d1e27b9308b31eaf349f37e3c02d01a151f7f367046e4ea791c14\",\"packageName\":\"@victframework/ui-svelte\"},{\"id\":\"vict.catalog.separator\",\"revision\":\"1\",\"label\":\"Separator\",\"family\":\"general\",\"category\":\"presentation\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"549973470dbb3fc6ff0513c384ecec46f5a5704ff65acd30586996bead0a15ee\",\"packageName\":\"@victframework/ui-svelte\"},{\"id\":\"vict.catalog.toolbar-button\",\"revision\":\"1\",\"label\":\"Toolbar Button\",\"family\":\"general\",\"category\":\"presentation\",\"eligibility\":{\"kind\":\"part\"},\"digest\":\"2dba1f5369101322aa80d8fb882275e0440b085092456ce479e6f1d5702d8d26\",\"packageName\":\"@victframework/ui-svelte\"},{\"id\":\"vict.catalog.toolbar\",\"revision\":\"1\",\"label\":\"Toolbar\",\"family\":\"general\",\"category\":\"presentation\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"3873c4849e7f3709aea81622a4b4e42a35a302ab08b39519ae5fe84c608a97a7\",\"packageName\":\"@victframework/ui-svelte\"}],\"total\":12,\"offset\":0,\"nextOffset\":null}"
+          - button "Read current source facts completed" [expanded]:
+            - generic: Read current source facts
+            - generic: completed
+          - list "Attempt receipts":
+            - text: Read source started · running
+            - generic: tool-start studio_screen_read 247787 ms since turn start
+            - text: Read current source facts · completed
+            - generic: "observation studio_screen_read 247797 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-2da67e97-fe72-4bd7-af98-31bfa06bcad6\",\"revision\":\"r1#0\",\"digest\":\"44bc1c709febddecfe7c0b9b0cb76015fba9e7f48df77b6ebe7f9a6c3297a23d\",\"epoch\":\"4448bebd-d21f-4e0f-b7d7-8c05a6a54983\"},\"section\":\"catalog\",\"registryDigest\":\"6a06abc8ee99fa9f88e3abc5cfe9d8ea244ae35a79321284cd0e00de0308e80d\",\"items\":[{\"id\":\"vict.catalog.checkbox\",\"revision\":\"1\",\"label\":\"Checkbox\",\"family\":\"general\",\"category\":\"input\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"9a1034b3539bed47c9a35e1ebc1767d84cf739703e1c3df8af967659b07b13ac\",\"packageName\":\"@victframework/ui-svelte\"},{\"id\":\"vict.catalog.combobox-item\",\"revision\":\"1\",\"label\":\"Combobox Item\",\"family\":\"general\",\"category\":\"input\",\"eligibility\":{\"kind\":\"part\"},\"digest\":\"6e32c3dcfc2aa72c61fef130a4e1e4de666b140fdd1ebe739fcc138ff22c9bdb\",\"packageName\":\"@victframework/ui-svelte\"},{\"id\":\"vict.catalog.combobox-multiple\",\"revision\":\"1\",\"label\":\"Combobox Multiple\",\"family\":\"general\",\"category\":\"input\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"f27a54fd36e526a58786b7e068aff59c8f6d013340222f43476c102aa530fadb\",\"packageName\":\"@victframework/ui-svelte\"},{\"id\":\"vict.catalog.combobox\",\"revision\":\"1\",\"label\":\"Combobox\",\"family\":\"general\",\"category\":\"input\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"533130ecfabc5c3d6d0825df502efd69964aa56b9992495774e3f58f36db126f\",\"packageName\":\"@victframework/ui-svelte\"},{\"id\":\"vict.catalog.radio-group\",\"revision\":\"1\",\"label\":\"Radio Group\",\"family\":\"general\",\"category\":\"input\",\"eligibility\":{\"kind\":\"host-required\",\"reason\":\"Requires a structured-options host view.\"},\"digest\":\"d337e0c0388faa309c60b099459028a5821ad45efb3d8d5c203a395e0c9ee891\",\"packageName\":\"@victframework/ui-svelte\"},{\"id\":\"vict.catalog.select-item\",\"revision\":\"1\",\"label\":\"Select Item\",\"family\":\"general\",\"category\":\"input\",\"eligibility\":{\"kind\":\"part\"},\"digest\":\"115c1e28de9a5cb359fe55b5aa5ffe25f1dd9073c846e5ad53bdc54d8a8d5c89\",\"packageName\":\"@victframework/ui-svelte\"},{\"id\":\"vict.catalog.select-multiple\",\"revision\":\"1\",\"label\":\"Select Multiple\",\"family\":\"general\",\"category\":\"input\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"a9fe78af0f5b93903b8804c01802ccad02780c3016921bd61005fe546016b608\",\"packageName\":\"@victframework/ui-svelte\"},{\"id\":\"vict.catalog.select\",\"revision\":\"1\",\"label\":\"Select\",\"family\":\"general\",\"category\":\"input\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"0bc249f5ec87e33b73d49ea5a8e7ea040e0bc8d8d05b0ce4b4f7f738c8543820\",\"packageName\":\"@victframework/ui-svelte\"},{\"id\":\"vict.catalog.slider\",\"revision\":\"1\",\"label\":\"Slider\",\"family\":\"general\",\"category\":\"input\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"ea476696526e244f6ccf65add75f3b5c66a946ecfa761ef7a6f15b2745fb78ba\",\"packageName\":\"@victframework/ui-svelte\"},{\"id\":\"vict.catalog.switch\",\"revision\":\"1\",\"label\":\"Switch\",\"family\":\"general\",\"category\":\"input\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"d05f403b8336f0d21304f8c2dd7d6f5ab8c2125f4a5ff89616d456c7a8d8dfca\",\"packageName\":\"@victframework/ui-svelte\"},{\"id\":\"vict.catalog.toggle-group-item\",\"revision\":\"1\",\"label\":\"Toggle Group Item\",\"family\":\"general\",\"category\":\"input\",\"eligibility\":{\"kind\":\"part\"},\"digest\":\"fc560bce0db50c639eb3c2506cf3c1a92d0dfb7e1f5d6e60d56d52bdb9317899\",\"packageName\":\"@victframework/ui-svelte\"},{\"id\":\"vict.catalog.toggle-group-multiple\",\"revision\":\"1\",\"label\":\"Toggle Group Multiple\",\"family\":\"general\",\"category\":\"input\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"1bfd0e0ad1e7bc63c9655fba86ba051d4ce0f5fba6212f9907e41d31abe75ab2\",\"packageName\":\"@victframework/ui-svelte\"},{\"id\":\"vict.catalog.toggle-group\",\"revision\":\"1\",\"label\":\"Toggle Group\",\"family\":\"general\",\"category\":\"input\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"1273eecf0e0827ea33ffd139804bb3bca4c1679a166eec7d9152485607ed68cd\",\"packageName\":\"@victframework/ui-svelte\"},{\"id\":\"vict.catalog.toggle\",\"revision\":\"1\",\"label\":\"Toggle\",\"family\":\"general\",\"category\": [Details truncated for the bounded trace. Read current source for complete facts.]"
+          - paragraph:
+            - code: section
+            - text: /
+            - code: row
+            - text: /
+            - code: heading
+            - text: /
+            - code: text
+            - text: are recipe primitives (no catalog contract), while
+            - code: button
+            - text: /
+            - code: input
+            - text: are catalog components. Let me read their exact contracts with examples.
+          - button "Read current source facts completed" [expanded]:
+            - generic: Read current source facts
+            - generic: completed
+          - list "Attempt receipts":
+            - text: Read source started · running
+            - generic: tool-start studio_screen_read 272121 ms since turn start
+            - text: Read current source facts · completed
+            - generic: "observation studio_screen_read 272130 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-2da67e97-fe72-4bd7-af98-31bfa06bcad6\",\"revision\":\"r1#0\",\"digest\":\"44bc1c709febddecfe7c0b9b0cb76015fba9e7f48df77b6ebe7f9a6c3297a23d\",\"epoch\":\"4448bebd-d21f-4e0f-b7d7-8c05a6a54983\"},\"section\":\"component\",\"id\":\"vict.catalog.button\",\"revision\":\"1\",\"digest\":\"cc715b1bdbfce5d03ec87d1e38715e362fc0bcc95d0ef00c256ef1bfa6b372c8\",\"descriptorJson\":\"{\\\"id\\\":\\\"vict.catalog.button\\\",\\\"revision\\\":\\\"1\\\",\\\"abi\\\":\\\"vict.ui-component-abi@1\\\",\\\"events\\\":[\\\"vict.ui-component-abi@1\\\"],\\\"props\\\":[{\\\"name\\\":\\\"label\\\",\\\"type\\\":\\\"string\\\",\\\"default\\\":\\\"\\\"},{\\\"name\\\":\\\"disabled\\\",\\\"type\\\":\\\"boolean\\\",\\\"default\\\":false},{\\\"name\\\":\\\"loading\\\",\\\"type\\\":\\\"boolean\\\",\\\"default\\\":false}],\\\"outputs\\\":[{\\\"name\\\":\\\"press\\\",\\\"payload\\\":\\\"void\\\",\\\"description\\\":\\\"Fires on activation while not disabled/loading.\\\"}],\\\"rendererImplementationId\\\":\\\"vict.svelte.catalog\\\",\\\"styleTargets\\\":[\\\"root\\\"]}\",\"totalCharacters\":456,\"offset\":0,\"nextOffset\":null,\"knowledge\":\"Read contracts with this exact id/revision for composition, dependencies, eligibility and semantic rules.\"}"
+          - button "Read current source facts completed" [expanded]:
+            - generic: Read current source facts
+            - generic: completed
+          - list "Attempt receipts":
+            - text: Read source started · running
+            - generic: tool-start studio_screen_read 272122 ms since turn start
+            - text: Read current source facts · completed
+            - generic: "observation studio_screen_read 272132 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-2da67e97-fe72-4bd7-af98-31bfa06bcad6\",\"revision\":\"r1#0\",\"digest\":\"44bc1c709febddecfe7c0b9b0cb76015fba9e7f48df77b6ebe7f9a6c3297a23d\",\"epoch\":\"4448bebd-d21f-4e0f-b7d7-8c05a6a54983\"},\"section\":\"component\",\"kind\":\"native-recipe\",\"recipe\":\"input\",\"description\":\"Accessible text input with independent local state and change binding\",\"sourceJson\":\"{\\\"nodes\\\":[{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"example\\\",\\\"tag\\\":\\\"input\\\",\\\"children\\\":[],\\\"attributes\\\":{\\\"type\\\":\\\"text\\\",\\\"aria-label\\\":\\\"Message\\\",\\\"placeholder\\\":\\\"Your message\\\",\\\"value\\\":{\\\"type\\\":\\\"ref\\\",\\\"path\\\":\\\"state.input_example\\\"}},\\\"interactions\\\":[{\\\"on\\\":\\\"change\\\",\\\"action\\\":\\\"setState\\\",\\\"key\\\":\\\"input_example\\\",\\\"value\\\":{\\\"type\\\":\\\"ref\\\",\\\"path\\\":\\\"state.input_example\\\"}}],\\\"localStyle\\\":[{\\\"property\\\":\\\"padding\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"12px\\\"}},{\\\"property\\\":\\\"border-radius\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"8px\\\"}},{\\\"property\\\":\\\"border\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"1px solid #cbd3e1\\\"}},{\\\"property\\\":\\\"font-size\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"16px\\\"}},{\\\"property\\\":\\\"width\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"100%\\\"}},{\\\"property\\\":\\\"box-sizing\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"border-box\\\"}}]}],\\\"localState\\\":{\\\"input_example\\\":{\\\"key\\\":\\\"input_example\\\",\\\"type\\\":\\\"string\\\",\\\"initial\\\":\\\"\\\"}}}\",\"totalCharacters\":830,\"offset\":0,\"nextOffset\":null,\"knowledge\":\"Native recipe source, not a component descriptor. Generic native insertion uses elements.\"}"
+          - button "Read current source facts completed" [expanded]:
+            - generic: Read current source facts
+            - generic: completed
+          - list "Attempt receipts":
+            - text: Read source started · running
+            - generic: tool-start studio_screen_read 272123 ms since turn start
+            - text: Read current source facts · completed
+            - generic: "observation studio_screen_read 272134 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-2da67e97-fe72-4bd7-af98-31bfa06bcad6\",\"revision\":\"r1#0\",\"digest\":\"44bc1c709febddecfe7c0b9b0cb76015fba9e7f48df77b6ebe7f9a6c3297a23d\",\"epoch\":\"4448bebd-d21f-4e0f-b7d7-8c05a6a54983\"},\"section\":\"component\",\"id\":\"vict.catalog.separator\",\"revision\":\"1\",\"digest\":\"549973470dbb3fc6ff0513c384ecec46f5a5704ff65acd30586996bead0a15ee\",\"descriptorJson\":\"{\\\"revision\\\":\\\"1\\\",\\\"abi\\\":\\\"vict.ui-component-abi@1\\\",\\\"events\\\":[\\\"vict.ui-component-abi@1\\\"],\\\"rendererImplementationId\\\":\\\"vict.svelte.catalog\\\",\\\"id\\\":\\\"vict.catalog.separator\\\",\\\"props\\\":[{\\\"name\\\":\\\"orientation\\\",\\\"type\\\":\\\"string\\\",\\\"default\\\":\\\"horizontal\\\"},{\\\"name\\\":\\\"decorative\\\",\\\"type\\\":\\\"boolean\\\",\\\"default\\\":false}],\\\"outputs\\\":[],\\\"slots\\\":[],\\\"styleTargets\\\":[\\\"root\\\"]}\",\"totalCharacters\":339,\"offset\":0,\"nextOffset\":null,\"knowledge\":\"Read contracts with this exact id/revision for composition, dependencies, eligibility and semantic rules.\"}"
+          - paragraph:
+            - text: "Contracts confirmed:"
+            - code: button
+            - text: (props
+            - code: label
+            - text: ", output"
+            - code: press
+            - text: ),
+            - code: input
+            - text: is a native recipe pattern (value ref + change→state),
+            - code: textarea
+            - text: is registered. The 6 seeded states (
+            - code: message
+            - text: ","
+            - code: accepted
+            - text: ","
+            - code: dialogOpen
+            - text: ", …) are demo leftovers — I'll leave them and declare my own independent local state."
+          - paragraph:
+            - strong: Plan
+            - text: "(compact, one screen): header (title + live status pill + last-saved + Save) → left document list (3 items) → right column with Draft card (title input + body textarea) and live Preview card."
+          - paragraph: "Batch 1 — restyle the root and declare the save-status state:"
+          - button "Browser acknowledged committed transaction completed" [expanded]:
+            - generic: Browser acknowledged committed transaction
+            - generic: completed
+          - list "Attempt receipts":
+            - text: Edit screen started · running
+            - generic: tool-start studio_screen_edit 416202 ms since turn start
+            - text: Proposed validated transaction; awaiting browser commit · pending
+            - generic: "proposed studio_screen_edit 416247 ms since turn start {\"proposalId\":\"c19cac26-1222-4c46-b069-cdff9f0716dd\",\"reason\":\"Compact content editor: restyle root canvas and declare independent save-status state\",\"revision\":\"r1#0\"}"
+            - text: Browser committed edit · pending
+            - generic: "Compact content editor: restyle root canvas and declare independent save-status state Committed to the screen. Undo is available."
+            - text: Commit receipt acknowledged · completed
+            - generic: "Compact content editor: restyle root canvas and declare independent save-status state"
+            - text: Browser acknowledged committed transaction · completed
+            - generic: "committed studio_screen_edit 416297 ms since turn start {\"proposalId\":\"c19cac26-1222-4c46-b069-cdff9f0716dd\",\"ok\":true,\"revision\":\"r1#1\",\"digest\":\"f7bdfc0104671883790eb9a31fc20f8d6b2f49e852f17248ea4625890ce7a22f\",\"applied\":1,\"coverage\":{\"available\":84,\"authored\":0,\"catalogAuthored\":0,\"registeredAuthored\":0,\"reachableSourceNodes\":1,\"requested\":84,\"scope\":\"all-authorable-definitions\",\"missing\":[\"vict.catalog.button\",\"vict.catalog.checkbox\",\"vict.catalog.select\",\"vict.catalog.dialog\",\"vict.catalog.switch\",\"vict.catalog.toggle\",\"vict.catalog.select-multiple\",\"vict.catalog.select-item\",\"vict.catalog.combobox\",\"vict.catalog.combobox-multiple\",\"vict.catalog.combobox-item\",\"vict.catalog.toggle-group\",\"vict.catalog.toggle-group-multiple\",\"vict.catalog.toggle-group-item\",\"vict.catalog.accordion\",\"vict.catalog.accordion-multiple\",\"vict.catalog.accordion-item\",\"vict.catalog.slider\",\"vict.catalog.meter\",\"vict.catalog.progress\"],\"evidence\":\"Reachable declared source presence only, including inactive branches/templates. An agent-declared manifest is not proof of the user intent, observed appearance, exercised interaction or completion.\",\"missingCount\":84,\"moreMissing\":true}}"
+          - paragraph:
+            - code: "applied: 1"
+            - text: but I sent 3 operations — let me verify the state declarations actually landed before building on them.
+          - button "Read current source facts completed" [expanded]:
+            - generic: Read current source facts
+            - generic: completed
+          - list "Attempt receipts":
+            - text: Read source started · running
+            - generic: tool-start studio_screen_read 427553 ms since turn start
+            - text: Read current source facts · completed
+            - generic: "observation studio_screen_read 427564 ms since turn start {\"expectedRevision\":\"r1#1\",\"cursor\":{\"documentId\":\"screen-2da67e97-fe72-4bd7-af98-31bfa06bcad6\",\"revision\":\"r1#1\",\"digest\":\"f7bdfc0104671883790eb9a31fc20f8d6b2f49e852f17248ea4625890ce7a22f\",\"epoch\":\"4448bebd-d21f-4e0f-b7d7-8c05a6a54983\"},\"section\":\"state\",\"items\":[{\"key\":\"message\",\"type\":\"string\",\"initialJson\":\"\\\"Hello from my screen\\\"\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"},{\"key\":\"accepted\",\"type\":\"boolean\",\"initialJson\":\"false\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"},{\"key\":\"dialogOpen\",\"type\":\"boolean\",\"initialJson\":\"false\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"},{\"key\":\"busy\",\"type\":\"boolean\",\"initialJson\":\"false\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"},{\"key\":\"actionError\",\"type\":\"string\",\"initialJson\":\"\\\"\\\"\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"},{\"key\":\"actionResult\",\"type\":\"string\",\"initialJson\":\"\\\"\\\"\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"},{\"key\":\"saveStatus\",\"type\":\"string\",\"initialJson\":\"\\\"Unsaved changes\\\"\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"},{\"key\":\"lastSaved\",\"type\":\"string\",\"initialJson\":\"\\\"Not saved yet\\\"\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"}],\"total\":8,\"offset\":0,\"nextOffset\":null}"
+          - paragraph:
+            - text: State confirmed (
+            - code: saveStatus
+            - text: ","
+            - code: lastSaved
+            - text: declared; revision now
+            - code: r1#1
+            - text: "). Building the header section next:"
+          - button "Browser acknowledged committed transaction completed" [expanded]:
+            - generic: Browser acknowledged committed transaction
+            - generic: completed
+          - list "Attempt receipts":
+            - text: Edit screen started · running
+            - generic: tool-start studio_screen_edit 449819 ms since turn start
+            - text: Proposed validated transaction; awaiting browser commit · pending
+            - generic: "proposed studio_screen_edit 449878 ms since turn start {\"proposalId\":\"c1c86dd6-dcc5-4aae-8616-762fa5a487e1\",\"reason\":\"Compact content editor: header with title, live status pill and last-saved feedback\",\"revision\":\"r1#1\"}"
+            - text: Browser committed edit · pending
+            - generic: "Compact content editor: header with title, live status pill and last-saved feedback Committed to the screen. Undo is available."
+            - text: Commit receipt acknowledged · completed
+            - generic: "Compact content editor: header with title, live status pill and last-saved feedback"
+            - text: Browser acknowledged committed transaction · completed
+            - generic: "committed studio_screen_edit 449923 ms since turn start {\"proposalId\":\"c1c86dd6-dcc5-4aae-8616-762fa5a487e1\",\"ok\":true,\"revision\":\"r1#2\",\"digest\":\"6aeb45acfaf17fd697e8beabcdf5d4e69ecaabad98a8f9536ddfef2021960f59\",\"applied\":2,\"coverage\":{\"available\":84,\"authored\":0,\"catalogAuthored\":0,\"registeredAuthored\":0,\"reachableSourceNodes\":13,\"requested\":84,\"scope\":\"all-authorable-definitions\",\"missing\":[\"vict.catalog.button\",\"vict.catalog.checkbox\",\"vict.catalog.select\",\"vict.catalog.dialog\",\"vict.catalog.switch\",\"vict.catalog.toggle\",\"vict.catalog.select-multiple\",\"vict.catalog.select-item\",\"vict.catalog.combobox\",\"vict.catalog.combobox-multiple\",\"vict.catalog.combobox-item\",\"vict.catalog.toggle-group\",\"vict.catalog.toggle-group-multiple\",\"vict.catalog.toggle-group-item\",\"vict.catalog.accordion\",\"vict.catalog.accordion-multiple\",\"vict.catalog.accordion-item\",\"vict.catalog.slider\",\"vict.catalog.meter\",\"vict.catalog.progress\"],\"evidence\":\"Reachable declared source presence only, including inactive branches/templates. An agent-declared manifest is not proof of the user intent, observed appearance, exercised interaction or completion.\",\"missingCount\":84,\"moreMissing\":true}}"
+          - paragraph: "Header applied. Now the Save button with its bindings (also testing whether one output can take two state connections), plus the start of the content row:"
+          - button "Edit refused before browser proposal failed" [expanded]:
+            - generic: Edit refused before browser proposal
+            - generic: failed
+          - list "Attempt receipts":
+            - text: Edit screen started · running
+            - generic: tool-start studio_screen_edit 465888 ms since turn start
+            - text: Edit refused before browser proposal · failed
+            - generic: "validation-refused studio_screen_edit 465925 ms since turn start {\"ok\":false,\"code\":\"STUDIO_AGENT_VALIDATION\",\"message\":\"Operation 1 rejected: UI_EDIT_VALIDATION_FAILED: text binding requires a text node.\",\"diagnostics\":[{\"operation\":1,\"commandIndex\":0,\"code\":\"UI_EDIT_VALIDATION_FAILED\",\"path\":\"operations.1\",\"message\":\"text binding requires a text node.\"}]}"
+          - paragraph:
+            - code: bindText
+            - text: needs an actual text node, not a
+            - code: text
+            - text: "recipe element — the batch was rejected atomically. Restructuring: raw text nodes inside wrappers for both bound values, plus the Save button:"
+          - button "Browser acknowledged committed transaction completed" [expanded]:
+            - generic: Browser acknowledged committed transaction
+            - generic: completed
+          - list "Attempt receipts":
+            - text: Edit screen started · running
+            - generic: tool-start studio_screen_edit 498934 ms since turn start
+            - text: Proposed validated transaction; awaiting browser commit · pending
+            - generic: "proposed studio_screen_edit 498990 ms since turn start {\"proposalId\":\"124163ad-5089-49fb-8555-739e785d8832\",\"reason\":\"Save button plus status/last-saved text nodes bound to independent local state\",\"revision\":\"r1#2\"}"
+            - text: Browser committed edit · pending
+            - generic: Save button plus status/last-saved text nodes bound to independent local state Committed to the screen. Undo is available.
+            - text: Commit receipt acknowledged · completed
+            - generic: Save button plus status/last-saved text nodes bound to independent local state
+            - text: Browser acknowledged committed transaction · completed
+            - generic: "committed studio_screen_edit 499042 ms since turn start {\"proposalId\":\"124163ad-5089-49fb-8555-739e785d8832\",\"ok\":true,\"revision\":\"r1#3\",\"digest\":\"002c3518e8d2db275b25367c82fa86dc8f73776a195ebba13e4566db1252d2a6\",\"applied\":3,\"coverage\":{\"available\":84,\"authored\":1,\"catalogAuthored\":1,\"registeredAuthored\":1,\"reachableSourceNodes\":13,\"requested\":84,\"scope\":\"all-authorable-definitions\",\"missing\":[\"vict.catalog.checkbox\",\"vict.catalog.select\",\"vict.catalog.dialog\",\"vict.catalog.switch\",\"vict.catalog.toggle\",\"vict.catalog.select-multiple\",\"vict.catalog.select-item\",\"vict.catalog.combobox\",\"vict.catalog.combobox-multiple\",\"vict.catalog.combobox-item\",\"vict.catalog.toggle-group\",\"vict.catalog.toggle-group-multiple\",\"vict.catalog.toggle-group-item\",\"vict.catalog.accordion\",\"vict.catalog.accordion-multiple\",\"vict.catalog.accordion-item\",\"vict.catalog.slider\",\"vict.catalog.meter\",\"vict.catalog.progress\",\"vict.catalog.pagination\"],\"evidence\":\"Reachable declared source presence only, including inactive branches/templates. An agent-declared manifest is not proof of the user intent, observed appearance, exercised interaction or completion.\",\"missingCount\":83,\"moreMissing\":true}}"
+          - paragraph:
+            - text: Header complete with bindings. Now wiring the Save button — connecting its
+            - code: press
+            - text: output to both
+            - code: saveStatus
+            - text: and
+            - code: lastSaved
+            - text: "(verifying a single output accepts two state connections):"
+          - button "Edit refused before browser proposal failed" [expanded]:
+            - generic: Edit refused before browser proposal
+            - generic: failed
+          - list "Attempt receipts":
+            - text: Edit screen started · running
+            - generic: tool-start studio_screen_edit 508269 ms since turn start
+            - text: Edit refused before browser proposal · failed
+            - generic: "validation-refused studio_screen_edit 508310 ms since turn start {\"ok\":false,\"code\":\"STUDIO_AGENT_VALIDATION\",\"message\":\"Edit rejected: UI_COMPONENT_BINDING_INCOMPATIBLE: Output 'press' payload void is incompatible with state 'lastSaved' type string.\",\"diagnostics\":[{\"documentId\":\"screen-2da67e97-fe72-4bd7-af98-31bfa06bcad6\",\"nodeId\":\"saveBtn\",\"output\":\"press\",\"stateKey\":\"lastSaved\",\"sourcePath\":\"nodes.saveBtn\",\"code\":\"UI_COMPONENT_BINDING_INCOMPATIBLE\",\"path\":\"nodes.saveBtn\",\"message\":\"Output 'press' payload void is incompatible with state 'lastSaved' type string.\"}]}"
+          - paragraph:
+            - text: A
+            - code: press
+            - text: output carries a
+            - code: void
+            - text: "payload and the validator ties the state type to it — let me test whether a single connect to a string state is accepted at all:"
+          - button "Edit refused before browser proposal failed" [expanded]:
+            - generic: Edit refused before browser proposal
+            - generic: failed
+          - list "Attempt receipts":
+            - text: Edit screen started · running
+            - generic: tool-start studio_screen_edit 533510 ms since turn start
+            - text: Edit refused before browser proposal · failed
+            - generic: "validation-refused studio_screen_edit 533567 ms since turn start {\"ok\":false,\"code\":\"STUDIO_AGENT_VALIDATION\",\"message\":\"Edit rejected: UI_COMPONENT_BINDING_INCOMPATIBLE: Output 'press' payload void is incompatible with state 'saveStatus' type string.\",\"diagnostics\":[{\"documentId\":\"screen-2da67e97-fe72-4bd7-af98-31bfa06bcad6\",\"nodeId\":\"saveBtn\",\"output\":\"press\",\"stateKey\":\"saveStatus\",\"sourcePath\":\"nodes.saveBtn\",\"code\":\"UI_COMPONENT_BINDING_INCOMPATIBLE\",\"path\":\"nodes.saveBtn\",\"message\":\"Output 'press' payload void is incompatible with state 'saveStatus' type string.\"}]}"
+          - paragraph:
+            - text: The
+            - code: press
+            - text: output (void payload) can't drive a string state at all — output payload types must match state types. I need the full contracts to see the canonical composition/binding rules before reworking the interaction model. The button descriptor was a complete body, so I can pass its digest; I'll also pull
+            - code: select
+            - text: /
+            - code: combobox
+            - text: "since their outputs carry string payloads:"
+          - button "Read current source facts completed" [expanded]:
+            - generic: Read current source facts
+            - generic: completed
+          - list "Attempt receipts":
+            - text: Read source started · running
+            - generic: tool-start studio_screen_read 586356 ms since turn start
+            - text: Read current source facts · completed
+            - generic: "observation studio_screen_read 586369 ms since turn start {\"expectedRevision\":\"r1#3\",\"cursor\":{\"documentId\":\"screen-2da67e97-fe72-4bd7-af98-31bfa06bcad6\",\"revision\":\"r1#3\",\"digest\":\"002c3518e8d2db275b25367c82fa86dc8f73776a195ebba13e4566db1252d2a6\",\"epoch\":\"4448bebd-d21f-4e0f-b7d7-8c05a6a54983\"},\"section\":\"contracts\",\"ok\":true,\"complete\":false,\"registryDigest\":\"6a06abc8ee99fa9f88e3abc5cfe9d8ea244ae35a79321284cd0e00de0308e80d\",\"items\":[{\"id\":\"vict.catalog.button\",\"revision\":\"1\",\"digest\":\"cc715b1bdbfce5d03ec87d1e38715e362fc0bcc95d0ef00c256ef1bfa6b372c8\",\"unchanged\":true},{\"id\":\"vict.catalog.select-item\",\"revision\":\"1\",\"digest\":\"115c1e28de9a5cb359fe55b5aa5ffe25f1dd9073c846e5ad53bdc54d8a8d5c89\",\"contractJson\":\"{\\\"descriptor\\\":{\\\"id\\\":\\\"vict.catalog.select-item\\\",\\\"revision\\\":\\\"1\\\",\\\"abi\\\":\\\"vict.ui-component-abi@1\\\",\\\"events\\\":[\\\"vict.ui-component-abi@1\\\"],\\\"rendererImplementationId\\\":\\\"vict.svelte.catalog\\\",\\\"props\\\":[{\\\"name\\\":\\\"value\\\",\\\"type\\\":\\\"string\\\",\\\"default\\\":\\\"\\\"},{\\\"name\\\":\\\"label\\\",\\\"type\\\":\\\"string\\\",\\\"default\\\":\\\"\\\"},{\\\"name\\\":\\\"disabled\\\",\\\"type\\\":\\\"boolean\\\",\\\"default\\\":false}],\\\"outputs\\\":[],\\\"slots\\\":[\\\"content\\\"],\\\"styleTargets\\\":[\\\"root\\\"]},\\\"label\\\":\\\"Select Item\\\",\\\"family\\\":\\\"general\\\",\\\"category\\\":\\\"input\\\",\\\"purpose\\\":\\\"Select Item · part for its compatible provider slot\\\",\\\"eligibility\\\":{\\\"kind\\\":\\\"part\\\"},\\\"dependencies\\\":[],\\\"rules\\\":[{\\\"kind\\\":\\\"ancestorSlot\\\",\\\"placements\\\":[{\\\"definitionId\\\":\\\"vict.catalog.select\\\",\\\"revision\\\":\\\"1\\\",\\\"slotName\\\":\\\"items\\\"},{\\\"definitionId\\\":\\\"vict.catalog.select-multiple\\\",\\\"revision\\\":\\\"1\\\",\\\"slotName\\\":\\\"items\\\"}]},{\\\"kind\\\":\\\"labelOwnership\\\",\\\"mode\\\":\\\"component\\\",\\\"property\\\":\\\"label\\\"},{\\\"kind\\\":\\\"uniqueValue\\\",\\\"property\\\":\\\"value\\\",\\\"providerIds\\\":[\\\"vict.catalog.select\\\",\\\"vict.catalog.select-multiple\\\"],\\\"slots\\\":[\\\"items\\\"],\\\"nonempty\\\":true}],\\\"guidance\\\":[\\\"Use exact declared props, slots, output payloads and style targets.\\\",\\\"Source composition does not prove observed behavior or completion.\\\",\\\"Context-owned parts keep their compatible provider/slot; wrappers do not grant a new context.\\\",\\\"The component owns its accessible label; avoid adding a duplicate external label.\\\"],\\\"seed\\\":{\\\"root\\\":\\\"root\\\",\\\"nodes\\\":[{\\\"kind\\\":\\\"component\\\",\\\"id\\\":\\\"root\\\",\\\"definitionId\\\":\\\"vict.catalog.select-item\\\",\\\"revision\\\":\\\"1\\\",\\\"props\\\":{\\\"label\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"Select Item\\\"}}}],\\\"localState\\\":{},\\\"identities\\\":[{\\\"nodeId\\\":\\\"root\\\",\\\"property\\\":\\\"value\\\",\\\"sourceNodeId\\\":\\\"root\\\"}]},\\\"examples\\\":[{\\\"root\\\":\\\"root\\\",\\\"nodes\\\":[{\\\"kind\\\":\\\"component\\\",\\\"id\\\":\\\"root\\\",\\\"definitionId\\\":\\\"vict.catalog.select\\\",\\\"revision\\\":\\\"1\\\",\\\"props\\\":{\\\"value\\\":{\\\"type\\\":\\\"ref\\\",\\\"path\\\":\\\"state.root_value\\\"}},\\\"outputs\\\":{\\\"valueChange\\\":{\\\"setState\\\":{\\\"key\\\":\\\"root_value\\\"}}},\\\"slots\\\":{\\\"items\\\":{\\\"name\\\":\\\"items\\\",\\\"children\\\":[\\\"root-items-1\\\"]}}},{\\\"kind\\\":\\\"component\\\",\\\"id\\\":\\\"root-items-1\\\",\\\"definitionId\\\":\\\"vict.catalog.select-item\\\",\\\"revision\\\":\\\"1\\\",\\\"props\\\":{\\\"label\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"Select Item\\\"}}}],\\\"localState\\\":{\\\"root_value\\\":{\\\"key\\\":\\\"root_value\\\",\\\"type\\\":\\\"string\\\",\\\"initial\\\":\\\"\\\"}},\\\"identities\\\":[{\\\"nodeId\\\":\\\"root-items-1\\\",\\\"property\\\":\\\"value\\\",\\\"sourceNodeId\\\":\\\"root-items-1\\\"}]}],\\\"legacyCompatibility\\\":true,\\\"packageName\\\":\\\"@victframework/ui-svelte\\\",\\\"packageVersion\\\":\\\"0.4.0-rc.1\\\",\\\"capabilities\\\":{\\\"extensionId\\\":\\\"vict.catalog.select-item\\\",\\\"revision\\\":\\\"1\\\",\\\"rendererImplementationId\\\":\\\"vict.svelte.catalog\\\",\\\"abi\\\":\\\"vict.ui-component-abi@1\\\",\\\"slots\\\":[\\\"content\\\"],\\\"required\\\":[],\\\"styleTargets\\\":[\\\"root\\\"],\\\"requiresParentContext\\\":false,\\\"compositionSlots\\\":[]},\\\"descriptorDigest\\\":\\\"8790fbdc70e0aecdc582ae42a5f9a6a096510280e1906c02aa3d168b943db14b\\\",\\\"digest\\\":\\\"115c1e28de9a5cb359fe55b5aa5ffe25f1dd9073c846e5ad53bdc54d8a8d5c89\\\"}\",\"totalCharacters\":2737,\"offset\":0,\"nextOffset\":null,\"bodyComplete\":true},{\"id\":\"vict.catalog.select\",\"revision\":\"1\",\"dig [Details truncated for the bounded trace. Read current source for complete facts.]"
+          - paragraph:
+            - text: "Key discovery: outputs carry typed payloads —"
+            - code: select.valueChange
+            - text: (string) → string state is the canonical pattern, and
+            - code: button.press
+            - text: "(void) can't write typed state. Let me check the boolean-family components' contracts and simultaneously test whether a void output can at least drive a boolean state:"
+          - button "Read current source facts completed" [expanded]:
+            - generic: Read current source facts
+            - generic: completed
+          - list "Attempt receipts":
+            - text: Read source started · running
+            - generic: tool-start studio_screen_read 825065 ms since turn start
+            - text: Read current source facts · completed
+            - generic: "observation studio_screen_read 825086 ms since turn start {\"expectedRevision\":\"r1#3\",\"cursor\":{\"documentId\":\"screen-2da67e97-fe72-4bd7-af98-31bfa06bcad6\",\"revision\":\"r1#3\",\"digest\":\"002c3518e8d2db275b25367c82fa86dc8f73776a195ebba13e4566db1252d2a6\",\"epoch\":\"4448bebd-d21f-4e0f-b7d7-8c05a6a54983\"},\"section\":\"contracts\",\"ok\":true,\"complete\":true,\"registryDigest\":\"6a06abc8ee99fa9f88e3abc5cfe9d8ea244ae35a79321284cd0e00de0308e80d\",\"items\":[{\"id\":\"vict.catalog.checkbox\",\"revision\":\"1\",\"digest\":\"9a1034b3539bed47c9a35e1ebc1767d84cf739703e1c3df8af967659b07b13ac\",\"contractJson\":\"{\\\"descriptor\\\":{\\\"id\\\":\\\"vict.catalog.checkbox\\\",\\\"revision\\\":\\\"1\\\",\\\"abi\\\":\\\"vict.ui-component-abi@1\\\",\\\"events\\\":[\\\"vict.ui-component-abi@1\\\"],\\\"props\\\":[{\\\"name\\\":\\\"disabled\\\",\\\"type\\\":\\\"boolean\\\",\\\"default\\\":false},{\\\"name\\\":\\\"label\\\",\\\"type\\\":\\\"string\\\",\\\"default\\\":\\\"\\\"},{\\\"name\\\":\\\"checked\\\",\\\"type\\\":\\\"boolean\\\",\\\"default\\\":false},{\\\"name\\\":\\\"indeterminate\\\",\\\"type\\\":\\\"boolean\\\",\\\"default\\\":false}],\\\"outputs\\\":[{\\\"name\\\":\\\"checkedChange\\\",\\\"payload\\\":\\\"boolean\\\",\\\"description\\\":\\\"Fires when the user toggles the checkbox.\\\"}],\\\"rendererImplementationId\\\":\\\"vict.svelte.catalog\\\",\\\"styleTargets\\\":[\\\"root\\\"],\\\"inspectionLimits\\\":[\\\"internal focus ring styling\\\"]},\\\"label\\\":\\\"Checkbox\\\",\\\"family\\\":\\\"general\\\",\\\"category\\\":\\\"input\\\",\\\"purpose\\\":\\\"Checkbox · editable properties, declared slots and outputs\\\",\\\"eligibility\\\":{\\\"kind\\\":\\\"standalone\\\"},\\\"dependencies\\\":[],\\\"rules\\\":[{\\\"kind\\\":\\\"controlledPair\\\",\\\"prop\\\":\\\"checked\\\",\\\"output\\\":\\\"checkedChange\\\"},{\\\"kind\\\":\\\"labelOwnership\\\",\\\"mode\\\":\\\"component\\\",\\\"property\\\":\\\"label\\\"}],\\\"guidance\\\":[\\\"Use exact declared props, slots, output payloads and style targets.\\\",\\\"Source composition does not prove observed behavior or completion.\\\",\\\"The component owns its accessible label; avoid adding a duplicate external label.\\\"],\\\"seed\\\":{\\\"root\\\":\\\"root\\\",\\\"nodes\\\":[{\\\"kind\\\":\\\"component\\\",\\\"id\\\":\\\"root\\\",\\\"definitionId\\\":\\\"vict.catalog.checkbox\\\",\\\"revision\\\":\\\"1\\\",\\\"props\\\":{\\\"checked\\\":{\\\"type\\\":\\\"ref\\\",\\\"path\\\":\\\"state.root_checked\\\"},\\\"label\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"I agree to continue\\\"}},\\\"outputs\\\":{\\\"checkedChange\\\":{\\\"setState\\\":{\\\"key\\\":\\\"root_checked\\\"}}}}],\\\"localState\\\":{\\\"root_checked\\\":{\\\"key\\\":\\\"root_checked\\\",\\\"type\\\":\\\"boolean\\\",\\\"initial\\\":false}},\\\"identities\\\":[]},\\\"examples\\\":[{\\\"root\\\":\\\"root\\\",\\\"nodes\\\":[{\\\"kind\\\":\\\"component\\\",\\\"id\\\":\\\"root\\\",\\\"definitionId\\\":\\\"vict.catalog.checkbox\\\",\\\"revision\\\":\\\"1\\\",\\\"props\\\":{\\\"checked\\\":{\\\"type\\\":\\\"ref\\\",\\\"path\\\":\\\"state.root_checked\\\"},\\\"label\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"I agree to continue\\\"}},\\\"outputs\\\":{\\\"checkedChange\\\":{\\\"setState\\\":{\\\"key\\\":\\\"root_checked\\\"}}}}],\\\"localState\\\":{\\\"root_checked\\\":{\\\"key\\\":\\\"root_checked\\\",\\\"type\\\":\\\"boolean\\\",\\\"initial\\\":false}},\\\"identities\\\":[]}],\\\"legacyCompatibility\\\":true,\\\"packageName\\\":\\\"@victframework/ui-svelte\\\",\\\"packageVersion\\\":\\\"0.4.0-rc.1\\\",\\\"capabilities\\\":{\\\"extensionId\\\":\\\"vict.catalog.checkbox\\\",\\\"revision\\\":\\\"1\\\",\\\"rendererImplementationId\\\":\\\"vict.svelte.catalog\\\",\\\"abi\\\":\\\"vict.ui-component-abi@1\\\",\\\"slots\\\":[],\\\"required\\\":[],\\\"styleTargets\\\":[\\\"root\\\"],\\\"requiresParentContext\\\":false,\\\"compositionSlots\\\":[]},\\\"descriptorDigest\\\":\\\"e178a20da741d225c14565e511f125018dd6ab7938d03b4dd39ae04016978fe0\\\",\\\"digest\\\":\\\"9a1034b3539bed47c9a35e1ebc1767d84cf739703e1c3df8af967659b07b13ac\\\"}\",\"totalCharacters\":2477,\"offset\":0,\"nextOffset\":null,\"bodyComplete\":true},{\"id\":\"vict.catalog.switch\",\"revision\":\"1\",\"digest\":\"d05f403b8336f0d21304f8c2dd7d6f5ab8c2125f4a5ff89616d456c7a8d8dfca\",\"contractJson\":\"{\\\"descriptor\\\":{\\\"id\\\":\\\"vict.catalog.switch\\\",\\\"revision\\\":\\\"1\\\",\\\"abi\\\":\\\"vict.ui-component-abi@1\\\",\\\"events\\\":[\\\"vict.ui-component-abi@1\\\"],\\\"props\\\":[{\\\"name\\\":\\\"disabled\\\",\\\"type\\\":\\\"boolean\\\",\\\"default\\\":false},{\\\"name\\\":\\\"label\\\",\\\"type\\\":\\\"string\\\",\\\"default\\\":\\\"\\\"},{\\\"name\\\":\\\"checked\\\",\\\"type\\\":\\\"boolean\\\",\\\"default\\\":false}],\\\"outputs\\\":[{\\\"name [Details truncated for the bounded trace. Read current source for complete facts.]"
+          - button "Edit refused before browser proposal failed" [expanded]:
+            - generic: Edit refused before browser proposal
+            - generic: failed
+          - list "Attempt receipts":
+            - text: Edit screen started · running
+            - generic: tool-start studio_screen_edit 825067 ms since turn start
+            - text: Edit refused before browser proposal · failed
+            - generic: "validation-refused studio_screen_edit 825127 ms since turn start {\"ok\":false,\"code\":\"STUDIO_AGENT_VALIDATION\",\"message\":\"Edit rejected: UI_COMPONENT_BINDING_INCOMPATIBLE: Output 'press' payload void is incompatible with state 'saved' type boolean.\",\"diagnostics\":[{\"documentId\":\"screen-2da67e97-fe72-4bd7-af98-31bfa06bcad6\",\"nodeId\":\"saveBtn\",\"output\":\"press\",\"stateKey\":\"saved\",\"sourcePath\":\"nodes.saveBtn\",\"code\":\"UI_COMPONENT_BINDING_INCOMPATIBLE\",\"path\":\"nodes.saveBtn\",\"message\":\"Output 'press' payload void is incompatible with state 'saved' type boolean.\"}]}"
+          - paragraph:
+            - text: "Confirmed:"
+            - code: press
+            - text: (void) can't write any state — the platform's canonical writers are typed-payload outputs (
+            - code: select.valueChange
+            - text: →string,
+            - code: switch.checkedChange
+            - text: →boolean) and
+            - code: wireInput
+            - text: for native fields. The batch was rejected atomically, so no
+            - code: saved
+            - text: state exists.
+          - paragraph:
+            - strong: "Revised canonical design:"
+            - text: document list = real
+            - code: select
+            - text: (string payload →
+            - code: docName
+            - text: ", mirrored live in the status pill); title/body = native fields via"
+            - code: wireInput
+            - text: (independent state); save feedback = a
+            - code: switch
+            - text: (
+            - code: Saved
+            - text: ", boolean payload →"
+            - code: saved
+            - text: ") — no dead buttons. First, reworking the header (drop the dead Save button, repoint the pill at the live document state):"
+          - button "Edit refused before browser proposal failed" [expanded]:
+            - generic: Edit refused before browser proposal
+            - generic: failed
+          - list "Attempt receipts":
+            - text: Edit screen started · running
+            - generic: tool-start studio_screen_edit 968364 ms since turn start
+            - text: Edit refused before browser proposal · failed
+            - generic: "validation-refused studio_screen_edit 968388 ms since turn start {\"ok\":false,\"code\":\"STUDIO_AGENT_VALIDATION\",\"message\":\"Operation 4 rejected: UI_EDIT_VALIDATION_FAILED: text binding needs an expression.\",\"diagnostics\":[{\"operation\":4,\"commandIndex\":0,\"code\":\"UI_EDIT_VALIDATION_FAILED\",\"path\":\"operations.4\",\"message\":\"text binding needs an expression.\"}]}"
+          - paragraph: "Resetting a binding by omitting the expression isn't accepted — I'll replace the bound text node with a fresh static one instead:"
+          - button "Browser acknowledged committed transaction completed" [expanded]:
+            - generic: Browser acknowledged committed transaction
+            - generic: completed
+          - list "Attempt receipts":
+            - text: Edit screen started · running
+            - generic: tool-start studio_screen_edit 979641 ms since turn start
+            - text: Proposed validated transaction; awaiting browser commit · pending
+            - generic: "proposed studio_screen_edit 979698 ms since turn start {\"proposalId\":\"502cc32d-4a60-4813-8ef2-df627f487a45\",\"reason\":\"Drop unwirable save button; declare document/saved state; static autosave label in header\",\"revision\":\"r1#3\"}"
+            - text: Browser committed edit · pending
+            - generic: Drop unwirable save button; declare document/saved state; static autosave label in header Committed to the screen. Undo is available.
+            - text: Commit receipt acknowledged · completed
+            - generic: Drop unwirable save button; declare document/saved state; static autosave label in header
+            - text: Browser acknowledged committed transaction · completed
+            - generic: "committed studio_screen_edit 979746 ms since turn start {\"proposalId\":\"502cc32d-4a60-4813-8ef2-df627f487a45\",\"ok\":true,\"revision\":\"r1#4\",\"digest\":\"f93fd5a8a8272d828c0fa82e697b734857e754ad09cfd8afdc9f17cc22f5e62f\",\"applied\":4,\"coverage\":{\"available\":84,\"authored\":0,\"catalogAuthored\":0,\"registeredAuthored\":0,\"reachableSourceNodes\":13,\"requested\":84,\"scope\":\"all-authorable-definitions\",\"missing\":[\"vict.catalog.button\",\"vict.catalog.checkbox\",\"vict.catalog.select\",\"vict.catalog.dialog\",\"vict.catalog.switch\",\"vict.catalog.toggle\",\"vict.catalog.select-multiple\",\"vict.catalog.select-item\",\"vict.catalog.combobox\",\"vict.catalog.combobox-multiple\",\"vict.catalog.combobox-item\",\"vict.catalog.toggle-group\",\"vict.catalog.toggle-group-multiple\",\"vict.catalog.toggle-group-item\",\"vict.catalog.accordion\",\"vict.catalog.accordion-multiple\",\"vict.catalog.accordion-item\",\"vict.catalog.slider\",\"vict.catalog.meter\",\"vict.catalog.progress\"],\"evidence\":\"Reachable declared source presence only, including inactive branches/templates. An agent-declared manifest is not proof of the user intent, observed appearance, exercised interaction or completion.\",\"missingCount\":84,\"moreMissing\":true}}"
+          - paragraph:
+            - text: Header reworked (r1#4). Now the document list — a real
+            - code: select
+            - text: with three items, controlled by
+            - code: docName
+            - text: ", whose"
+            - code: valueChange
+            - text: "(string payload) writes that same state — then I'll review this first visible section:"
+          - button "Edit refused before browser proposal failed" [expanded]:
+            - generic: Edit refused before browser proposal
+            - generic: failed
+          - list "Attempt receipts":
+            - text: Edit screen started · running
+            - generic: tool-start studio_screen_edit 997569 ms since turn start
+            - text: Edit refused before browser proposal · failed
+            - generic: "validation-refused studio_screen_edit 997580 ms since turn start {\"ok\":false,\"code\":\"STUDIO_AGENT_VALIDATION\",\"message\":\"Operation 0 rejected: UI_EDIT_VALIDATION_FAILED: Insert parent 'sidebar' does not exist.; UI_EDIT_VALIDATION_FAILED: Insert parent 'docSelect' does not exist.; UI_EDIT_VALIDATION_FAILED: Insert parent 'docSelect' does not exist.; UI_EDIT_VALIDATION_FAILED: setStyleDeclaration target does not exist.; UI_EDIT_VALIDATION_FAILED: setStyleDeclaration target does not exist.\",\"diagnostics\":[{\"operation\":0,\"commandIndex\":1,\"code\":\"UI_EDIT_VALIDATION_FAILED\",\"path\":\"operations.0\",\"message\":\"Insert parent 'sidebar' does not exist.\"},{\"operation\":0,\"commandIndex\":2,\"code\":\"UI_EDIT_VALIDATION_FAILED\",\"path\":\"operations.0\",\"message\":\"Insert parent 'docSelect' does not exist.\"},{\"operation\":0,\"commandIndex\":3,\"code\":\"UI_EDIT_VALIDATION_FAILED\",\"path\":\"operations.0\",\"message\":\"Insert parent 'docSelect' does not exist.\"},{\"operation\":0,\"commandIndex\":4,\"code\":\"UI_EDIT_VALIDATION_FAILED\",\"path\":\"operations.0\",\"message\":\"setStyleDeclaration target does not exist.\"},{\"operation\":0,\"commandIndex\":5,\"code\":\"UI_EDIT_VALIDATION_FAILED\",\"path\":\"operations.0\",\"message\":\"setStyleDeclaration target does not exist.\"}]}"
+          - paragraph:
+            - code: sidebar
+            - text: "was part of the earlier rejected batch — it doesn't exist yet. Creating the content row and sidebar first, then the select:"
+          - button "Browser acknowledged committed transaction completed" [expanded]:
+            - generic: Browser acknowledged committed transaction
+            - generic: completed
+          - list "Attempt receipts":
+            - text: Edit screen started · running
+            - generic: tool-start studio_screen_edit 1013645 ms since turn start
+            - text: Proposed validated transaction; awaiting browser commit · pending
+            - generic: "proposed studio_screen_edit 1013699 ms since turn start {\"proposalId\":\"bd6b7198-27a1-408d-85c8-b97dbd4900c6\",\"reason\":\"Content row, sidebar heading and document select with three unique documents\",\"revision\":\"r1#4\"}"
+            - text: Browser committed edit · pending
+            - generic: Content row, sidebar heading and document select with three unique documents Committed to the screen. Undo is available.
+            - text: Commit receipt acknowledged · completed
+            - generic: Content row, sidebar heading and document select with three unique documents
+            - text: Browser acknowledged committed transaction · completed
+            - generic: "committed studio_screen_edit 1013754 ms since turn start {\"proposalId\":\"bd6b7198-27a1-408d-85c8-b97dbd4900c6\",\"ok\":true,\"revision\":\"r1#5\",\"digest\":\"6062c53bd06016454df3cbd766d188caf526c75c8d92157ebbeb83a566818b74\",\"applied\":5,\"coverage\":{\"available\":84,\"authored\":2,\"catalogAuthored\":2,\"registeredAuthored\":2,\"reachableSourceNodes\":23,\"requested\":84,\"scope\":\"all-authorable-definitions\",\"missing\":[\"vict.catalog.button\",\"vict.catalog.checkbox\",\"vict.catalog.dialog\",\"vict.catalog.switch\",\"vict.catalog.toggle\",\"vict.catalog.select-multiple\",\"vict.catalog.combobox\",\"vict.catalog.combobox-multiple\",\"vict.catalog.combobox-item\",\"vict.catalog.toggle-group\",\"vict.catalog.toggle-group-multiple\",\"vict.catalog.toggle-group-item\",\"vict.catalog.accordion\",\"vict.catalog.accordion-multiple\",\"vict.catalog.accordion-item\",\"vict.catalog.slider\",\"vict.catalog.meter\",\"vict.catalog.progress\",\"vict.catalog.pagination\",\"vict.catalog.date-field\"],\"evidence\":\"Reachable declared source presence only, including inactive branches/templates. An agent-declared manifest is not proof of the user intent, observed appearance, exercised interaction or completion.\",\"missingCount\":82,\"moreMissing\":true}}"
+          - paragraph:
+            - text: Now wiring the select to
+            - code: docName
+            - text: "and adding a helper hint — then reviewing the first visible section:"
+          - button "Browser acknowledged committed transaction completed" [expanded]:
+            - generic: Browser acknowledged committed transaction
+            - generic: completed
+          - list "Attempt receipts":
+            - text: Edit screen started · running
+            - generic: tool-start studio_screen_edit 1022803 ms since turn start
+            - text: Proposed validated transaction; awaiting browser commit · pending
+            - generic: "proposed studio_screen_edit 1022868 ms since turn start {\"proposalId\":\"f2e8475d-222c-4bf3-9b58-2fab0a5761fc\",\"reason\":\"Controlled document select writes open-document state; status pill mirrors it\",\"revision\":\"r1#5\"}"
+            - text: Browser committed edit · pending
+            - generic: Controlled document select writes open-document state; status pill mirrors it Committed to the screen. Undo is available.
+            - text: Commit receipt acknowledged · completed
+            - generic: Controlled document select writes open-document state; status pill mirrors it
+            - text: Browser acknowledged committed transaction · completed
+            - generic: "committed studio_screen_edit 1022919 ms since turn start {\"proposalId\":\"f2e8475d-222c-4bf3-9b58-2fab0a5761fc\",\"ok\":true,\"revision\":\"r1#6\",\"digest\":\"1bfafc637c2c9e7aeed3643238578345814d78177456a67fee6a0bafa559267d\",\"applied\":6,\"coverage\":{\"available\":84,\"authored\":2,\"catalogAuthored\":2,\"registeredAuthored\":2,\"reachableSourceNodes\":25,\"requested\":84,\"scope\":\"all-authorable-definitions\",\"missing\":[\"vict.catalog.button\",\"vict.catalog.checkbox\",\"vict.catalog.dialog\",\"vict.catalog.switch\",\"vict.catalog.toggle\",\"vict.catalog.select-multiple\",\"vict.catalog.combobox\",\"vict.catalog.combobox-multiple\",\"vict.catalog.combobox-item\",\"vict.catalog.toggle-group\",\"vict.catalog.toggle-group-multiple\",\"vict.catalog.toggle-group-item\",\"vict.catalog.accordion\",\"vict.catalog.accordion-multiple\",\"vict.catalog.accordion-item\",\"vict.catalog.slider\",\"vict.catalog.meter\",\"vict.catalog.progress\",\"vict.catalog.pagination\",\"vict.catalog.date-field\"],\"evidence\":\"Reachable declared source presence only, including inactive branches/templates. An agent-declared manifest is not proof of the user intent, observed appearance, exercised interaction or completion.\",\"missingCount\":82,\"moreMissing\":true}}"
+          - paragraph: "First meaningful section is in place (header with live status pill + document list). Reviewing it now, as requested:"
+          - button "Observed actual rendered appearance completed" [expanded]:
+            - generic: Observed actual rendered appearance
+            - generic: completed
+          - list "Attempt receipts":
+            - text: Observe preview started · running
+            - generic: tool-start studio_screen_observe 1030694 ms since turn start
+            - text: Observed actual rendered appearance · completed
+            - generic: "observation studio_screen_observe 1060051 ms since turn start {\"ok\":true,\"evidence\":\"observed-appearance\",\"observation\":\"Visible in the 909×560 viewport: a white rounded header card containing a light-gray inner card with bold \\\"Content editor\\\" and the subtitle \\\"Local drafts · changes stay in this browser\\\"; at right, a fully rounded lavender pill reading \\\"Open: Launch checklist\\\" (blue text, no clipping) beside gray \\\"Autosave: off\\\". Alignment of pill/label with the card looks vertically centered.\\n\\nBelow, small-caps \\\"DOCUMENTS\\\" label, a bordered white select showing only \\\"Launch checklist\\\" (its closed state shows one option; three documents cannot be verified visually), and two-line helper text \\\"Switch the open document — status updates live.\\\" with no truncation.\\n\\nInference: the select (~218px wide) appears wider than the ~200px sidebar column region, potentially overflowing its right edge; this could not be conclusively confirmed against the uniform background. The pink outline is an editor selection annotation, not UI.\",\"metadata\":{\"cursor\":{\"documentId\":\"screen-2da67e97-fe72-4bd7-af98-31bfa06bcad6\",\"revision\":\"r1#6\",\"digest\":\"1bfafc637c2c9e7aeed3643238578345814d78177456a67fee6a0bafa559267d\",\"epoch\":\"4448bebd-d21f-4e0f-b7d7-8c05a6a54983\"},\"capturedAt\":\"2026-10-25T13:01:58.540Z\",\"viewport\":{\"width\":960,\"height\":585,\"scrollLeft\":0,\"scrollTop\":0,\"devicePixelRatio\":1.0000000149011612},\"image\":{\"width\":909,\"height\":560,\"sourceWidth\":909,\"sourceHeight\":560,\"offsetLeft\":0,\"offsetTop\":0,\"cropped\":false},\"preview\":{\"mode\":\"design\",\"fingerprint\":\"77f084262d1dd2a5b78f0359c551b016c95b61927860cfcaf98b38e7047e4d9f\",\"selection\":\"screen-2da67e97-fe72-4bd7-af98-31bfa06bcad6|screen\"}},\"revalidatedAt\":\"2026-10-25T13:02:27.439Z\",\"validation\":\"same-source-preview-viewport-and-image-bytes-after-inference\",\"imageDigest\":\"49220171d58cf02b7ad39321496951c1fd283f5fed80a7a26b7c42e6175cfb78\",\"confirmedImageDigest\":\"49220171d58cf02b7ad39321496951c1fd283f5fed80a7a26b7c42e6175cfb78\",\"imageComparison\":\"sha256-identical\",\"imageComparisonScope\":\"within-this-observation-before-and-after-inference\",\"fingerprintMeaning\":\"Source and preview state identity, not a pixel digest. Separate successful observations may have different fingerprints and identical pixels.\",\"captureAttempts\":3,\"captureRecoveryAttempts\":1,\"bytes\":16582,\"model\":\"zai/glm-5.3-flash\",\"interactionVerified\":false,\"limitation\":\"Only the captured preview frame region and stated preview state were inspected. Equal image bytes across separate observations do not prove stale capture or a rasterizer defect; a source edit may have no effect in this crop. Open preview-owned external portals refuse capture; unrelated Studio chrome is outside this image. Source relationships and interaction outcomes require separate checks.\"}"
+          - paragraph: "First section looks clean — pill, labels, and select render properly (with a possible minor select overflow I'll re-check at the end). Building the editor column now:"
+          - button "Browser acknowledged committed transaction completed" [expanded]:
+            - generic: Browser acknowledged committed transaction
+            - generic: completed
+          - list "Attempt receipts":
+            - text: Edit screen started · running
+            - generic: tool-start studio_screen_edit 1094104 ms since turn start
+            - text: Proposed validated transaction; awaiting browser commit · pending
+            - generic: "proposed studio_screen_edit 1094193 ms since turn start {\"proposalId\":\"a5e8f093-0c9e-4f4d-98fc-1755dab1ae98\",\"reason\":\"Editor column: draft card with title input, body textarea and saved switch footer\",\"revision\":\"r1#6\"}"
+            - text: Browser committed edit · pending
+            - generic: "Editor column: draft card with title input, body textarea and saved switch footer Committed to the screen. Undo is available."
+            - text: Commit receipt acknowledged · completed
+            - generic: "Editor column: draft card with title input, body textarea and saved switch footer"
+            - text: Browser acknowledged committed transaction · completed
+            - generic: "committed studio_screen_edit 1094274 ms since turn start {\"proposalId\":\"a5e8f093-0c9e-4f4d-98fc-1755dab1ae98\",\"ok\":true,\"revision\":\"r1#7\",\"digest\":\"27128f972a6025aa0b231f5a8c14edcbcd3f43476fe82a2b676aaef3f2a1a73f\",\"applied\":7,\"coverage\":{\"available\":84,\"authored\":3,\"catalogAuthored\":3,\"registeredAuthored\":3,\"reachableSourceNodes\":35,\"requested\":84,\"scope\":\"all-authorable-definitions\",\"missing\":[\"vict.catalog.button\",\"vict.catalog.checkbox\",\"vict.catalog.dialog\",\"vict.catalog.toggle\",\"vict.catalog.select-multiple\",\"vict.catalog.combobox\",\"vict.catalog.combobox-multiple\",\"vict.catalog.combobox-item\",\"vict.catalog.toggle-group\",\"vict.catalog.toggle-group-multiple\",\"vict.catalog.toggle-group-item\",\"vict.catalog.accordion\",\"vict.catalog.accordion-multiple\",\"vict.catalog.accordion-item\",\"vict.catalog.slider\",\"vict.catalog.meter\",\"vict.catalog.progress\",\"vict.catalog.pagination\",\"vict.catalog.date-field\",\"vict.catalog.date-picker\"],\"evidence\":\"Reachable declared source presence only, including inactive branches/templates. An agent-declared manifest is not proof of the user intent, observed appearance, exercised interaction or completion.\",\"missingCount\":81,\"moreMissing\":true}}"
+          - paragraph: "Editor card in place. Now wiring the two fields to independent local state, the saved switch, and starting the preview card:"
+          - button "Browser acknowledged committed transaction completed" [expanded]:
+            - generic: Browser acknowledged committed transaction
+            - generic: completed
+          - list "Attempt receipts":
+            - text: Edit screen started · running
+            - generic: tool-start studio_screen_edit 1107720 ms since turn start
+            - text: Proposed validated transaction; awaiting browser commit · pending
+            - generic: "proposed studio_screen_edit 1107831 ms since turn start {\"proposalId\":\"2261c85d-f0b9-4e98-ab5f-a5e674f9d794\",\"reason\":\"Independent field state via wireInput; saved switch controlled pair; preview title node\",\"revision\":\"r1#7\"}"
+            - text: Browser committed edit · pending
+            - generic: Independent field state via wireInput; saved switch controlled pair; preview title node Committed to the screen. Undo is available.
+            - text: Commit receipt acknowledged · completed
+            - generic: Independent field state via wireInput; saved switch controlled pair; preview title node
+            - text: Browser acknowledged committed transaction · completed
+            - generic: "committed studio_screen_edit 1107922 ms since turn start {\"proposalId\":\"2261c85d-f0b9-4e98-ab5f-a5e674f9d794\",\"ok\":true,\"revision\":\"r1#8\",\"digest\":\"3a4519530e3ab18327cda105b94b4463f4899b920cc37c3120a0e62b6b45af20\",\"applied\":8,\"coverage\":{\"available\":84,\"authored\":3,\"catalogAuthored\":3,\"registeredAuthored\":3,\"reachableSourceNodes\":40,\"requested\":84,\"scope\":\"all-authorable-definitions\",\"missing\":[\"vict.catalog.button\",\"vict.catalog.checkbox\",\"vict.catalog.dialog\",\"vict.catalog.toggle\",\"vict.catalog.select-multiple\",\"vict.catalog.combobox\",\"vict.catalog.combobox-multiple\",\"vict.catalog.combobox-item\",\"vict.catalog.toggle-group\",\"vict.catalog.toggle-group-multiple\",\"vict.catalog.toggle-group-item\",\"vict.catalog.accordion\",\"vict.catalog.accordion-multiple\",\"vict.catalog.accordion-item\",\"vict.catalog.slider\",\"vict.catalog.meter\",\"vict.catalog.progress\",\"vict.catalog.pagination\",\"vict.catalog.date-field\",\"vict.catalog.date-picker\"],\"evidence\":\"Reachable declared source presence only, including inactive branches/templates. An agent-declared manifest is not proof of the user intent, observed appearance, exercised interaction or completion.\",\"missingCount\":81,\"moreMissing\":true}}"
+          - paragraph: "Final structure and polish batch — preview body with live bindings, focus styles for the fields, and a sidebar width guard:"
+          - button "Browser acknowledged committed transaction completed" [expanded]:
+            - generic: Browser acknowledged committed transaction
+            - generic: completed
+          - list "Attempt receipts":
+            - text: Edit screen started · running
+            - generic: tool-start studio_screen_edit 1130547 ms since turn start
+            - text: Proposed validated transaction; awaiting browser commit · pending
+            - generic: "proposed studio_screen_edit 1130622 ms since turn start {\"proposalId\":\"12069fbe-0292-4e9e-acd4-a2a788f88c0c\",\"reason\":\"Live preview bindings, focus ring on fields, sidebar width guard\",\"revision\":\"r1#8\"}"
+            - text: Browser committed edit · pending
+            - generic: Live preview bindings, focus ring on fields, sidebar width guard Committed to the screen. Undo is available.
+            - text: Commit receipt acknowledged · completed
+            - generic: Live preview bindings, focus ring on fields, sidebar width guard
+            - text: Browser acknowledged committed transaction · completed
+            - generic: "committed studio_screen_edit 1130713 ms since turn start {\"proposalId\":\"12069fbe-0292-4e9e-acd4-a2a788f88c0c\",\"ok\":true,\"revision\":\"r1#9\",\"digest\":\"93f81722260d13ccb3e2c2c6fc53a1813e937c80d260e65f70f9f3d9c6632101\",\"applied\":9,\"coverage\":{\"available\":84,\"authored\":3,\"catalogAuthored\":3,\"registeredAuthored\":3,\"reachableSourceNodes\":42,\"requested\":84,\"scope\":\"all-authorable-definitions\",\"missing\":[\"vict.catalog.button\",\"vict.catalog.checkbox\",\"vict.catalog.dialog\",\"vict.catalog.toggle\",\"vict.catalog.select-multiple\",\"vict.catalog.combobox\",\"vict.catalog.combobox-multiple\",\"vict.catalog.combobox-item\",\"vict.catalog.toggle-group\",\"vict.catalog.toggle-group-multiple\",\"vict.catalog.toggle-group-item\",\"vict.catalog.accordion\",\"vict.catalog.accordion-multiple\",\"vict.catalog.accordion-item\",\"vict.catalog.slider\",\"vict.catalog.meter\",\"vict.catalog.progress\",\"vict.catalog.pagination\",\"vict.catalog.date-field\",\"vict.catalog.date-picker\"],\"evidence\":\"Reachable declared source presence only, including inactive branches/templates. An agent-declared manifest is not proof of the user intent, observed appearance, exercised interaction or completion.\",\"missingCount\":81,\"moreMissing\":true}}"
+          - paragraph: "All structure is in (r1#9). Before final visual verification, inspecting the actual source to confirm bindings/wiring and check for leftover seeds:"
+          - button "Read current source facts completed" [expanded]:
+            - generic: Read current source facts
+            - generic: completed
+          - list "Attempt receipts":
+            - text: Read source started · running
+            - generic: tool-start studio_screen_read 1138472 ms since turn start
+            - text: Read current source facts · completed
+            - generic: "observation studio_screen_read 1138488 ms since turn start {\"expectedRevision\":\"r1#9\",\"cursor\":{\"documentId\":\"screen-2da67e97-fe72-4bd7-af98-31bfa06bcad6\",\"revision\":\"r1#9\",\"digest\":\"93f81722260d13ccb3e2c2c6fc53a1813e937c80d260e65f70f9f3d9c6632101\",\"epoch\":\"4448bebd-d21f-4e0f-b7d7-8c05a6a54983\"},\"section\":\"source\",\"nodeId\":\"screen\",\"sourceJson\":\"{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"screen\\\",\\\"tag\\\":\\\"main\\\",\\\"attributes\\\":{\\\"aria-label\\\":\\\"Content editor\\\"},\\\"children\\\":[\\\"hdr\\\",\\\"contentRow\\\"],\\\"localStyle\\\":[{\\\"property\\\":\\\"display\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"flex\\\"}},{\\\"property\\\":\\\"flex-direction\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"column\\\"}},{\\\"property\\\":\\\"gap\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"12px\\\"}},{\\\"property\\\":\\\"padding\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"20px\\\"}},{\\\"property\\\":\\\"min-height\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"540px\\\"}},{\\\"property\\\":\\\"background-color\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"#f4f6fb\\\"}},{\\\"property\\\":\\\"color\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"#1f2937\\\"}},{\\\"property\\\":\\\"font-family\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"-apple-system, 'Segoe UI', system-ui, Roboto, sans-serif\\\"}},{\\\"property\\\":\\\"box-sizing\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"border-box\\\"}},{\\\"property\\\":\\\"margin\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"0 auto\\\"}},{\\\"property\\\":\\\"max-width\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"960px\\\"}},{\\\"property\\\":\\\"width\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"100%\\\"}}]}\",\"totalCharacters\":970,\"offset\":0,\"nextOffset\":null}"
+          - button "Read current source facts completed" [expanded]:
+            - generic: Read current source facts
+            - generic: completed
+          - list "Attempt receipts":
+            - text: Read source started · running
+            - generic: tool-start studio_screen_read 1138473 ms since turn start
+            - text: Read current source facts · completed
+            - generic: "observation studio_screen_read 1138489 ms since turn start {\"expectedRevision\":\"r1#9\",\"cursor\":{\"documentId\":\"screen-2da67e97-fe72-4bd7-af98-31bfa06bcad6\",\"revision\":\"r1#9\",\"digest\":\"93f81722260d13ccb3e2c2c6fc53a1813e937c80d260e65f70f9f3d9c6632101\",\"epoch\":\"4448bebd-d21f-4e0f-b7d7-8c05a6a54983\"},\"section\":\"state\",\"items\":[{\"key\":\"message\",\"type\":\"string\",\"initialJson\":\"\\\"Hello from my screen\\\"\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"},{\"key\":\"accepted\",\"type\":\"boolean\",\"initialJson\":\"false\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"},{\"key\":\"dialogOpen\",\"type\":\"boolean\",\"initialJson\":\"false\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"},{\"key\":\"busy\",\"type\":\"boolean\",\"initialJson\":\"false\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"},{\"key\":\"actionError\",\"type\":\"string\",\"initialJson\":\"\\\"\\\"\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"},{\"key\":\"actionResult\",\"type\":\"string\",\"initialJson\":\"\\\"\\\"\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"},{\"key\":\"saveStatus\",\"type\":\"string\",\"initialJson\":\"\\\"Unsaved changes\\\"\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"},{\"key\":\"lastSaved\",\"type\":\"string\",\"initialJson\":\"\\\"Not saved yet\\\"\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"},{\"key\":\"docName\",\"type\":\"string\",\"initialJson\":\"\\\"Launch checklist\\\"\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"},{\"key\":\"saved\",\"type\":\"boolean\",\"initialJson\":\"false\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"},{\"key\":\"catalog_docSelect_root_value\",\"type\":\"string\",\"initialJson\":\"\\\"\\\"\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"},{\"key\":\"catalog_savedSwitch_root_checked\",\"type\":\"boolean\",\"initialJson\":\"false\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"}],\"total\":14,\"offset\":0,\"nextOffset\":12}"
+          - paragraph:
+            - code: docName
+            - text: /
+            - code: saved
+            - text: are declared, but I see seed states from the component accelerators (
+            - code: catalog_docSelect_root_value
+            - text: ","
+            - code: catalog_savedSwitch_root_checked
+            - text: ") and two more state entries off-page. Verifying the actual component wiring points at MY states, not seed leftovers:"
+          - button "Read current source facts completed" [expanded]:
+            - generic: Read current source facts
+            - generic: completed
+          - list "Attempt receipts":
+            - text: Read source started · running
+            - generic: tool-start studio_screen_read 1154435 ms since turn start
+            - text: Read current source facts · completed
+            - generic: "observation studio_screen_read 1154449 ms since turn start {\"expectedRevision\":\"r1#9\",\"cursor\":{\"documentId\":\"screen-2da67e97-fe72-4bd7-af98-31bfa06bcad6\",\"revision\":\"r1#9\",\"digest\":\"93f81722260d13ccb3e2c2c6fc53a1813e937c80d260e65f70f9f3d9c6632101\",\"epoch\":\"4448bebd-d21f-4e0f-b7d7-8c05a6a54983\"},\"section\":\"source\",\"nodeId\":\"docSelect\",\"sourceJson\":\"{\\\"kind\\\":\\\"component\\\",\\\"id\\\":\\\"docSelect\\\",\\\"definitionId\\\":\\\"vict.catalog.select\\\",\\\"revision\\\":\\\"1\\\",\\\"props\\\":{\\\"value\\\":{\\\"type\\\":\\\"ref\\\",\\\"path\\\":\\\"state.docName\\\"}},\\\"outputs\\\":{\\\"valueChange\\\":{\\\"setState\\\":{\\\"key\\\":\\\"docName\\\"}}},\\\"slots\\\":{\\\"items\\\":{\\\"name\\\":\\\"items\\\",\\\"children\\\":[\\\"docSelect-items-1\\\",\\\"docSelect-items-2\\\",\\\"docItem1\\\",\\\"docItem2\\\",\\\"docItem3\\\"]}},\\\"localStyle\\\":[{\\\"property\\\":\\\"box-sizing\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"border-box\\\"}},{\\\"property\\\":\\\"width\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"100%\\\"}}]}\",\"totalCharacters\":469,\"offset\":0,\"nextOffset\":null}"
+          - button "Read current source facts completed" [expanded]:
+            - generic: Read current source facts
+            - generic: completed
+          - list "Attempt receipts":
+            - text: Read source started · running
+            - generic: tool-start studio_screen_read 1154437 ms since turn start
+            - text: Read current source facts · completed
+            - generic: "observation studio_screen_read 1154452 ms since turn start {\"expectedRevision\":\"r1#9\",\"cursor\":{\"documentId\":\"screen-2da67e97-fe72-4bd7-af98-31bfa06bcad6\",\"revision\":\"r1#9\",\"digest\":\"93f81722260d13ccb3e2c2c6fc53a1813e937c80d260e65f70f9f3d9c6632101\",\"epoch\":\"4448bebd-d21f-4e0f-b7d7-8c05a6a54983\"},\"section\":\"source\",\"nodeId\":\"savedSwitch\",\"sourceJson\":\"{\\\"kind\\\":\\\"component\\\",\\\"id\\\":\\\"savedSwitch\\\",\\\"definitionId\\\":\\\"vict.catalog.switch\\\",\\\"revision\\\":\\\"1\\\",\\\"props\\\":{\\\"checked\\\":{\\\"type\\\":\\\"ref\\\",\\\"path\\\":\\\"state.saved\\\"},\\\"label\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"Saved\\\"}},\\\"outputs\\\":{\\\"checkedChange\\\":{\\\"setState\\\":{\\\"key\\\":\\\"saved\\\"}}},\\\"slots\\\":{},\\\"localStyle\\\":[{\\\"property\\\":\\\"font-size\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"13px\\\"}}]}\",\"totalCharacters\":337,\"offset\":0,\"nextOffset\":null}"
+          - button "Read current source facts completed" [expanded]:
+            - generic: Read current source facts
+            - generic: completed
+          - list "Attempt receipts":
+            - text: Read source started · running
+            - generic: tool-start studio_screen_read 1154438 ms since turn start
+            - text: Read current source facts · completed
+            - generic: "observation studio_screen_read 1154454 ms since turn start {\"expectedRevision\":\"r1#9\",\"cursor\":{\"documentId\":\"screen-2da67e97-fe72-4bd7-af98-31bfa06bcad6\",\"revision\":\"r1#9\",\"digest\":\"93f81722260d13ccb3e2c2c6fc53a1813e937c80d260e65f70f9f3d9c6632101\",\"epoch\":\"4448bebd-d21f-4e0f-b7d7-8c05a6a54983\"},\"section\":\"state\",\"items\":[{\"key\":\"docTitle\",\"type\":\"string\",\"initialJson\":\"\\\"Launch checklist\\\"\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"},{\"key\":\"docBody\",\"type\":\"string\",\"initialJson\":\"\\\"• Confirm analytics events are live\\\\n• QA checkout flow on staging\\\\n• Draft the launch announcement\\\\n• Sync with support on FAQs\\\"\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"}],\"total\":14,\"offset\":12,\"nextOffset\":null}"
+          - paragraph:
+            - text: "Found leftover seed items: the select still contains seeded"
+            - code: docSelect-items-1/2
+            - text: "ahead of my three documents — removing them:"
+          - button "Browser acknowledged committed transaction completed" [expanded]:
+            - generic: Browser acknowledged committed transaction
+            - generic: completed
+          - list "Attempt receipts":
+            - text: Edit screen started · running
+            - generic: tool-start studio_screen_edit 1167303 ms since turn start
+            - text: Proposed validated transaction; awaiting browser commit · pending
+            - generic: "proposed studio_screen_edit 1167381 ms since turn start {\"proposalId\":\"f9a256c0-5125-4c8f-adb0-fdbdf34a16d6\",\"reason\":\"Remove seeded placeholder select items so the list shows only the three real documents\",\"revision\":\"r1#9\"}"
+            - text: Browser committed edit · pending
+            - generic: Remove seeded placeholder select items so the list shows only the three real documents Committed to the screen. Undo is available.
+            - text: Commit receipt acknowledged · completed
+            - generic: Remove seeded placeholder select items so the list shows only the three real documents
+            - text: Browser acknowledged committed transaction · completed
+            - generic: "committed studio_screen_edit 1167437 ms since turn start {\"proposalId\":\"f9a256c0-5125-4c8f-adb0-fdbdf34a16d6\",\"ok\":true,\"revision\":\"r1#10\",\"digest\":\"d3a5b9c927592e2321613fa9b605278f0d86a4ac2ca918002f351e52a6e7f032\",\"applied\":10,\"coverage\":{\"available\":84,\"authored\":3,\"catalogAuthored\":3,\"registeredAuthored\":3,\"reachableSourceNodes\":40,\"requested\":84,\"scope\":\"all-authorable-definitions\",\"missing\":[\"vict.catalog.button\",\"vict.catalog.checkbox\",\"vict.catalog.dialog\",\"vict.catalog.toggle\",\"vict.catalog.select-multiple\",\"vict.catalog.combobox\",\"vict.catalog.combobox-multiple\",\"vict.catalog.combobox-item\",\"vict.catalog.toggle-group\",\"vict.catalog.toggle-group-multiple\",\"vict.catalog.toggle-group-item\",\"vict.catalog.accordion\",\"vict.catalog.accordion-multiple\",\"vict.catalog.accordion-item\",\"vict.catalog.slider\",\"vict.catalog.meter\",\"vict.catalog.progress\",\"vict.catalog.pagination\",\"vict.catalog.date-field\",\"vict.catalog.date-picker\"],\"evidence\":\"Reachable declared source presence only, including inactive branches/templates. An agent-declared manifest is not proof of the user intent, observed appearance, exercised interaction or completion.\",\"missingCount\":81,\"moreMissing\":true}}"
+          - paragraph: "Seed items removed. Now verifying the remaining bindings directly at the nodes:"
+          - button "Read current source facts completed" [expanded]:
+            - generic: Read current source facts
+            - generic: completed
+          - list "Attempt receipts":
+            - text: Read source started · running
+            - generic: tool-start studio_screen_read 1184908 ms since turn start
+            - text: Read current source facts · completed
+            - generic: "observation studio_screen_read 1184921 ms since turn start {\"expectedRevision\":\"r1#10\",\"cursor\":{\"documentId\":\"screen-2da67e97-fe72-4bd7-af98-31bfa06bcad6\",\"revision\":\"r1#10\",\"digest\":\"d3a5b9c927592e2321613fa9b605278f0d86a4ac2ca918002f351e52a6e7f032\",\"epoch\":\"4448bebd-d21f-4e0f-b7d7-8c05a6a54983\"},\"section\":\"source\",\"nodeId\":\"statusTextNode\",\"sourceJson\":\"{\\\"kind\\\":\\\"text\\\",\\\"id\\\":\\\"statusTextNode\\\",\\\"content\\\":{\\\"type\\\":\\\"expression\\\",\\\"expression\\\":{\\\"type\\\":\\\"ref\\\",\\\"path\\\":\\\"state.docName\\\"}}}\",\"totalCharacters\":120,\"offset\":0,\"nextOffset\":null}"
+          - button "Read current source facts completed" [expanded]:
+            - generic: Read current source facts
+            - generic: completed
+          - list "Attempt receipts":
+            - text: Read source started · running
+            - generic: tool-start studio_screen_read 1184909 ms since turn start
+            - text: Read current source facts · completed
+            - generic: "observation studio_screen_read 1184922 ms since turn start {\"expectedRevision\":\"r1#10\",\"cursor\":{\"documentId\":\"screen-2da67e97-fe72-4bd7-af98-31bfa06bcad6\",\"revision\":\"r1#10\",\"digest\":\"d3a5b9c927592e2321613fa9b605278f0d86a4ac2ca918002f351e52a6e7f032\",\"epoch\":\"4448bebd-d21f-4e0f-b7d7-8c05a6a54983\"},\"section\":\"source\",\"nodeId\":\"titleInput\",\"sourceJson\":\"{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"titleInput\\\",\\\"tag\\\":\\\"input\\\",\\\"children\\\":[],\\\"attributes\\\":{\\\"aria-label\\\":\\\"Document title\\\",\\\"placeholder\\\":\\\"Document title\\\",\\\"type\\\":\\\"text\\\",\\\"value\\\":{\\\"type\\\":\\\"ref\\\",\\\"path\\\":\\\"state.docTitle\\\"}},\\\"localStyle\\\":[{\\\"property\\\":\\\"background-color\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"#fbfcfe\\\"}},{\\\"property\\\":\\\"border\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"1px solid #cbd5e1\\\"}},{\\\"property\\\":\\\"border-radius\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"9px\\\"}},{\\\"property\\\":\\\"box-sizing\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"border-box\\\"}},{\\\"property\\\":\\\"color\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"#111827\\\"}},{\\\"property\\\":\\\"font-family\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"inherit\\\"}},{\\\"property\\\":\\\"font-size\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"15px\\\"}},{\\\"property\\\":\\\"font-weight\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"600\\\"}},{\\\"property\\\":\\\"padding\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"9px 11px\\\"}},{\\\"property\\\":\\\"width\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"100%\\\"}}],\\\"interactions\\\":[{\\\"on\\\":\\\"change\\\",\\\"action\\\":\\\"setState\\\",\\\"key\\\":\\\"docTitle\\\",\\\"value\\\":{\\\"type\\\":\\\"ref\\\",\\\"path\\\":\\\"state.docTitle\\\"}}],\\\"styleSources\\\":[\\\"fieldFocus\\\"]}\",\"totalCharacters\":1036,\"offset\":0,\"nextOffset\":null}"
+          - button "Read current source facts completed" [expanded]:
+            - generic: Read current source facts
+            - generic: completed
+          - list "Attempt receipts":
+            - text: Read source started · running
+            - generic: tool-start studio_screen_read 1184910 ms since turn start
+            - text: Read current source facts · completed
+            - generic: "observation studio_screen_read 1184923 ms since turn start {\"expectedRevision\":\"r1#10\",\"cursor\":{\"documentId\":\"screen-2da67e97-fe72-4bd7-af98-31bfa06bcad6\",\"revision\":\"r1#10\",\"digest\":\"d3a5b9c927592e2321613fa9b605278f0d86a4ac2ca918002f351e52a6e7f032\",\"epoch\":\"4448bebd-d21f-4e0f-b7d7-8c05a6a54983\"},\"section\":\"source\",\"nodeId\":\"bodyArea\",\"sourceJson\":\"{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"bodyArea\\\",\\\"tag\\\":\\\"textarea\\\",\\\"children\\\":[],\\\"attributes\\\":{\\\"aria-label\\\":\\\"Document body\\\",\\\"placeholder\\\":\\\"Start writing…\\\",\\\"rows\\\":\\\"5\\\",\\\"value\\\":{\\\"type\\\":\\\"ref\\\",\\\"path\\\":\\\"state.docBody\\\"}},\\\"localStyle\\\":[{\\\"property\\\":\\\"background-color\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"#fbfcfe\\\"}},{\\\"property\\\":\\\"border\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"1px solid #cbd5e1\\\"}},{\\\"property\\\":\\\"border-radius\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"9px\\\"}},{\\\"property\\\":\\\"box-sizing\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"border-box\\\"}},{\\\"property\\\":\\\"color\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"#1f2937\\\"}},{\\\"property\\\":\\\"font-family\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"inherit\\\"}},{\\\"property\\\":\\\"font-size\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"13px\\\"}},{\\\"property\\\":\\\"line-height\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"1.55\\\"}},{\\\"property\\\":\\\"min-height\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"110px\\\"}},{\\\"property\\\":\\\"padding\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"9px 11px\\\"}},{\\\"property\\\":\\\"resize\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"vertical\\\"}},{\\\"property\\\":\\\"width\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"100%\\\"}}],\\\"interactions\\\":[{\\\"on\\\":\\\"change\\\",\\\"action\\\":\\\"setState\\\",\\\"key\\\":\\\"docBody\\\",\\\"value\\\":{\\\"type\\\":\\\"ref\\\",\\\"path\\\":\\\"state.docBody\\\"}}],\\\"styleSources\\\":[\\\"fieldFocus\\\"]}\",\"totalCharacters\":1162,\"offset\":0,\"nextOffset\":null}"
+          - button "Read current source facts completed" [expanded]:
+            - generic: Read current source facts
+            - generic: completed
+          - list "Attempt receipts":
+            - text: Read source started · running
+            - generic: tool-start studio_screen_read 1184911 ms since turn start
+            - text: Read current source facts · completed
+            - generic: "observation studio_screen_read 1184924 ms since turn start {\"expectedRevision\":\"r1#10\",\"cursor\":{\"documentId\":\"screen-2da67e97-fe72-4bd7-af98-31bfa06bcad6\",\"revision\":\"r1#10\",\"digest\":\"d3a5b9c927592e2321613fa9b605278f0d86a4ac2ca918002f351e52a6e7f032\",\"epoch\":\"4448bebd-d21f-4e0f-b7d7-8c05a6a54983\"},\"section\":\"source\",\"nodeId\":\"prevTitleNode\",\"sourceJson\":\"{\\\"kind\\\":\\\"text\\\",\\\"id\\\":\\\"prevTitleNode\\\",\\\"content\\\":{\\\"type\\\":\\\"expression\\\",\\\"expression\\\":{\\\"type\\\":\\\"ref\\\",\\\"path\\\":\\\"state.docTitle\\\"}}}\",\"totalCharacters\":120,\"offset\":0,\"nextOffset\":null}"
+          - button "Read current source facts completed" [expanded]:
+            - generic: Read current source facts
+            - generic: completed
+          - list "Attempt receipts":
+            - text: Read source started · running
+            - generic: tool-start studio_screen_read 1184912 ms since turn start
+            - text: Read current source facts · completed
+            - generic: "observation studio_screen_read 1184925 ms since turn start {\"expectedRevision\":\"r1#10\",\"cursor\":{\"documentId\":\"screen-2da67e97-fe72-4bd7-af98-31bfa06bcad6\",\"revision\":\"r1#10\",\"digest\":\"d3a5b9c927592e2321613fa9b605278f0d86a4ac2ca918002f351e52a6e7f032\",\"epoch\":\"4448bebd-d21f-4e0f-b7d7-8c05a6a54983\"},\"section\":\"source\",\"nodeId\":\"prevBodyNode\",\"sourceJson\":\"{\\\"kind\\\":\\\"text\\\",\\\"id\\\":\\\"prevBodyNode\\\",\\\"content\\\":{\\\"type\\\":\\\"expression\\\",\\\"expression\\\":{\\\"type\\\":\\\"ref\\\",\\\"path\\\":\\\"state.docBody\\\"}}}\",\"totalCharacters\":118,\"offset\":0,\"nextOffset\":null}"
+          - paragraph: "Every binding and wiring path checks out in source. Final visual verification of the whole editor:"
+          - button "Observed actual rendered appearance completed" [expanded]:
+            - generic: Observed actual rendered appearance
+            - generic: completed
+          - list "Attempt receipts":
+            - text: Observe preview started · running
+            - generic: tool-start studio_screen_observe 1194689 ms since turn start
+            - text: Observed actual rendered appearance · completed
+            - generic: "observation studio_screen_observe 1233996 ms since turn start {\"ok\":true,\"evidence\":\"observed-appearance\",\"observation\":\"**Visible:** Header card spans full width: bold \\\"Content editor,\\\" gray subtitle \\\"Local drafts · changes stay in this browser\\\"; right-aligned lavender pill \\\"Open: Launch checklist\\\" plus gray \\\"Autosave: off.\\\" Left \\\"DOCUMENTS\\\" panel shows a bordered item \\\"Launch checklist\\\" and a two-line gray helper; no dropdown caret visible. Right \\\"DRAFT\\\" card: full-width title input \\\"Launch checklist,\\\" textarea with four bullets, footer with dark toggle (knob appears left) labeled \\\"Saved\\\" and right-aligned helper — rows aligned, spacing even. \\\"PREVIEW\\\" card repeats the title; only the top of its first bullet line shows.\\n\\n**Clipping/fit:** The capture (569px) is shorter than source height (704px), so the Preview bullets are cut mid-line; content evidently continues below the fold. No horizontal overflow or text truncation observed.\",\"metadata\":{\"cursor\":{\"documentId\":\"screen-2da67e97-fe72-4bd7-af98-31bfa06bcad6\",\"revision\":\"r1#10\",\"digest\":\"d3a5b9c927592e2321613fa9b605278f0d86a4ac2ca918002f351e52a6e7f032\",\"epoch\":\"4448bebd-d21f-4e0f-b7d7-8c05a6a54983\"},\"capturedAt\":\"2026-10-25T13:04:42.856Z\",\"viewport\":{\"width\":960,\"height\":585,\"scrollLeft\":0,\"scrollTop\":0,\"devicePixelRatio\":1.0000000149011612},\"image\":{\"width\":909,\"height\":569,\"sourceWidth\":909,\"sourceHeight\":704,\"offsetLeft\":0,\"offsetTop\":0,\"cropped\":true},\"preview\":{\"mode\":\"design\",\"fingerprint\":\"0aab68d2f14781b2b314b536f923c61772eb9a0b0c79cec2dc411bd145c5095f\",\"selection\":\"screen-2da67e97-fe72-4bd7-af98-31bfa06bcad6|screen\"}},\"revalidatedAt\":\"2026-10-25T13:05:21.384Z\",\"validation\":\"same-source-preview-viewport-and-image-bytes-after-inference\",\"imageDigest\":\"f25a8a5653733be8e08ee635aabeb1b7c9f1fd773c01e0cfa8c7d56fb845597a\",\"confirmedImageDigest\":\"f25a8a5653733be8e08ee635aabeb1b7c9f1fd773c01e0cfa8c7d56fb845597a\",\"imageComparison\":\"sha256-identical\",\"imageComparisonScope\":\"within-this-observation-before-and-after-inference\",\"fingerprintMeaning\":\"Source and preview state identity, not a pixel digest. Separate successful observations may have different fingerprints and identical pixels.\",\"captureAttempts\":2,\"captureRecoveryAttempts\":0,\"bytes\":32602,\"model\":\"zai/glm-5.3-flash\",\"interactionVerified\":false,\"limitation\":\"Only the captured preview frame region and stated preview state were inspected. Equal image bytes across separate observations do not prove stale capture or a rasterizer defect; a source edit may have no effect in this crop. Open preview-owned external portals refuse capture; unrelated Studio chrome is outside this image. Source relationships and interaction outcomes require separate checks.\"}"
+          - paragraph: "Everything renders correctly, but the screen is 704px tall vs the ~570px preview viewport — the Preview card is cut below the fold, violating \"one screen\". Fix: move Preview beside the Draft card (the row wraps gracefully on narrow presets) and tighten vertical spacing:"
+          - button "Browser acknowledged committed transaction completed" [expanded]:
+            - generic: Browser acknowledged committed transaction
+            - generic: completed
+          - list "Attempt receipts":
+            - text: Edit screen started · running
+            - generic: tool-start studio_screen_edit 1271735 ms since turn start
+            - text: Proposed validated transaction; awaiting browser commit · pending
+            - generic: "proposed studio_screen_edit 1271830 ms since turn start {\"proposalId\":\"b48bd031-fc41-4bde-865b-ce09ccceeda9\",\"reason\":\"Fit one screen: preview beside draft in wrapping row, tighter paddings and shorter body field\",\"revision\":\"r1#10\"}"
+            - text: Browser committed edit · pending
+            - generic: "Fit one screen: preview beside draft in wrapping row, tighter paddings and shorter body field Committed to the screen. Undo is available."
+            - text: Commit receipt acknowledged · completed
+            - generic: "Fit one screen: preview beside draft in wrapping row, tighter paddings and shorter body field"
+            - text: Browser acknowledged committed transaction · completed
+            - generic: "committed studio_screen_edit 1271941 ms since turn start {\"proposalId\":\"b48bd031-fc41-4bde-865b-ce09ccceeda9\",\"ok\":true,\"revision\":\"r1#11\",\"digest\":\"8d4fffc1ede9d39aa21ed2634d04462276a95b1c0bdab047b2e61016f7feb90d\",\"applied\":11,\"coverage\":{\"available\":84,\"authored\":3,\"catalogAuthored\":3,\"registeredAuthored\":3,\"reachableSourceNodes\":40,\"requested\":84,\"scope\":\"all-authorable-definitions\",\"missing\":[\"vict.catalog.button\",\"vict.catalog.checkbox\",\"vict.catalog.dialog\",\"vict.catalog.toggle\",\"vict.catalog.select-multiple\",\"vict.catalog.combobox\",\"vict.catalog.combobox-multiple\",\"vict.catalog.combobox-item\",\"vict.catalog.toggle-group\",\"vict.catalog.toggle-group-multiple\",\"vict.catalog.toggle-group-item\",\"vict.catalog.accordion\",\"vict.catalog.accordion-multiple\",\"vict.catalog.accordion-item\",\"vict.catalog.slider\",\"vict.catalog.meter\",\"vict.catalog.progress\",\"vict.catalog.pagination\",\"vict.catalog.date-field\",\"vict.catalog.date-picker\"],\"evidence\":\"Reachable declared source presence only, including inactive branches/templates. An agent-declared manifest is not proof of the user intent, observed appearance, exercised interaction or completion.\",\"missingCount\":81,\"moreMissing\":true}}"
+          - paragraph: "Layout restructured (r1#11). Confirming the one-screen fit:"
+          - button "Observed actual rendered appearance completed" [expanded]:
+            - generic: Observed actual rendered appearance
+            - generic: completed
+          - list "Attempt receipts":
+            - text: Observe preview started · running
+            - generic: tool-start studio_screen_observe 1275127 ms since turn start
+            - text: Observed actual rendered appearance · completed
+            - generic: "observation studio_screen_observe 1303671 ms since turn start {\"ok\":true,\"evidence\":\"observed-appearance\",\"observation\":\"**Fit check (960×585 viewport):**\\n\\nNo horizontal overflow; all content sits within margins. Header spans full width: \\\"Content editor\\\" title, subtitle, \\\"Open: Launch checklist\\\" pill, and \\\"Autosave: off\\\" right-aligned — all legible. Documents sidebar, Draft card, and Preview card render side by side with comfortable gaps. Draft card shows the title input, full four-bullet textarea, dark toggle labeled \\\"Saved\\\" (knob left despite dark track), and helper text. Preview card shows bold \\\"Launch checklist\\\" plus the complete bullet body, uncut.\\n\\n**Issues observed:**\\n- Column tops are uneven — the Draft card starts visibly lower than the Preview card.\\n- A full-width horizontal rule near the bottom edge, with a sliver of content beneath it, is truncated by the viewport — content below the fold is cut.\",\"metadata\":{\"cursor\":{\"documentId\":\"screen-2da67e97-fe72-4bd7-af98-31bfa06bcad6\",\"revision\":\"r1#11\",\"digest\":\"8d4fffc1ede9d39aa21ed2634d04462276a95b1c0bdab047b2e61016f7feb90d\",\"epoch\":\"4448bebd-d21f-4e0f-b7d7-8c05a6a54983\"},\"capturedAt\":\"2026-10-25T13:06:02.806Z\",\"viewport\":{\"width\":960,\"height\":585,\"scrollLeft\":0,\"scrollTop\":0,\"devicePixelRatio\":1.0000000149011612},\"image\":{\"width\":909,\"height\":560,\"sourceWidth\":909,\"sourceHeight\":560,\"offsetLeft\":0,\"offsetTop\":0,\"cropped\":false},\"preview\":{\"mode\":\"design\",\"fingerprint\":\"45d3a3585344f7fabe31bda90f935a010a6118d06ef4f05d6cf22e7e56e6ca96\",\"selection\":\"screen-2da67e97-fe72-4bd7-af98-31bfa06bcad6|screen\"}},\"revalidatedAt\":\"2026-10-25T13:06:31.061Z\",\"validation\":\"same-source-preview-viewport-and-image-bytes-after-inference\",\"imageDigest\":\"2e9e0050b374101259ada7d369076d521f351135364e3a6c178a9e94d8d169bf\",\"confirmedImageDigest\":\"2e9e0050b374101259ada7d369076d521f351135364e3a6c178a9e94d8d169bf\",\"imageComparison\":\"sha256-identical\",\"imageComparisonScope\":\"within-this-observation-before-and-after-inference\",\"fingerprintMeaning\":\"Source and preview state identity, not a pixel digest. Separate successful observations may have different fingerprints and identical pixels.\",\"captureAttempts\":2,\"captureRecoveryAttempts\":0,\"bytes\":40033,\"model\":\"zai/glm-5.3-flash\",\"interactionVerified\":false,\"limitation\":\"Only the captured preview frame region and stated preview state were inspected. Equal image bytes across separate observations do not prove stale capture or a rasterizer defect; a source edit may have no effect in this crop. Open preview-owned external portals refuse capture; unrelated Studio chrome is outside this image. Source relationships and interaction outcomes require separate checks.\"}"
+          - paragraph: "Much better — everything fits with no horizontal overflow. Two cosmetic issues remain: uneven column tops and a bottom-edge artifact. Inspecting the row structure:"
+          - button "Read current source facts completed" [expanded]:
+            - generic: Read current source facts
+            - generic: completed
+          - list "Attempt receipts":
+            - text: Read source started · running
+            - generic: tool-start studio_screen_read 1330919 ms since turn start
+            - text: Read current source facts · completed
+            - generic: "observation studio_screen_read 1330931 ms since turn start {\"expectedRevision\":\"r1#11\",\"cursor\":{\"documentId\":\"screen-2da67e97-fe72-4bd7-af98-31bfa06bcad6\",\"revision\":\"r1#11\",\"digest\":\"8d4fffc1ede9d39aa21ed2634d04462276a95b1c0bdab047b2e61016f7feb90d\",\"epoch\":\"4448bebd-d21f-4e0f-b7d7-8c05a6a54983\"},\"section\":\"source\",\"nodeId\":\"contentRow\",\"sourceJson\":\"{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"contentRow\\\",\\\"tag\\\":\\\"div\\\",\\\"children\\\":[\\\"sidebar\\\",\\\"mainCol\\\",\\\"previewCard\\\"],\\\"localStyle\\\":[{\\\"property\\\":\\\"display\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"flex\\\"}},{\\\"property\\\":\\\"flex-wrap\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"wrap\\\"}},{\\\"property\\\":\\\"gap\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"12px\\\"}},{\\\"property\\\":\\\"align-items\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"flex-start\\\"}},{\\\"property\\\":\\\"min-height\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"60px\\\"}},{\\\"property\\\":\\\"box-sizing\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"border-box\\\"}},{\\\"property\\\":\\\"width\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"100%\\\"}}]}\",\"totalCharacters\":562,\"offset\":0,\"nextOffset\":null}"
+          - button "Read current source facts completed" [expanded]:
+            - generic: Read current source facts
+            - generic: completed
+          - list "Attempt receipts":
+            - text: Read source started · running
+            - generic: tool-start studio_screen_read 1330920 ms since turn start
+            - text: Read current source facts · completed
+            - generic: "observation studio_screen_read 1330932 ms since turn start {\"expectedRevision\":\"r1#11\",\"cursor\":{\"documentId\":\"screen-2da67e97-fe72-4bd7-af98-31bfa06bcad6\",\"revision\":\"r1#11\",\"digest\":\"8d4fffc1ede9d39aa21ed2634d04462276a95b1c0bdab047b2e61016f7feb90d\",\"epoch\":\"4448bebd-d21f-4e0f-b7d7-8c05a6a54983\"},\"section\":\"source\",\"nodeId\":\"mainCol\",\"sourceJson\":\"{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"mainCol\\\",\\\"tag\\\":\\\"section\\\",\\\"attributes\\\":{\\\"aria-label\\\":\\\"Section\\\"},\\\"children\\\":[\\\"draftCard\\\"],\\\"localStyle\\\":[{\\\"property\\\":\\\"display\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"flex\\\"}},{\\\"property\\\":\\\"flex-direction\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"column\\\"}},{\\\"property\\\":\\\"gap\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"12px\\\"}},{\\\"property\\\":\\\"padding\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"24px\\\"}},{\\\"property\\\":\\\"min-height\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"100px\\\"}},{\\\"property\\\":\\\"background-color\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"#f5f7fb\\\"}},{\\\"property\\\":\\\"border-radius\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"12px\\\"}},{\\\"property\\\":\\\"box-sizing\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"border-box\\\"}},{\\\"property\\\":\\\"flex\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"1 1 0%\\\"}},{\\\"property\\\":\\\"min-width\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"0\\\"}}]}\",\"totalCharacters\":781,\"offset\":0,\"nextOffset\":null}"
+          - paragraph:
+            - text: Found it — the
+            - code: section
+            - text: /
+            - code: row
+            - text: recipe seeds injected styles I didn't set (
+            - code: "padding: 24px"
+            - text: ","
+            - code: min-height
+            - text: ", background on"
+            - code: mainCol
+            - text: ), and
+            - code: modify
+            - text: "merged rather than replaced. Checking which other recipe nodes carry seed styles:"
+          - button "Read current source facts completed" [expanded]:
+            - generic: Read current source facts
+            - generic: completed
+          - list "Attempt receipts":
+            - text: Read source started · running
+            - generic: tool-start studio_screen_read 1356623 ms since turn start
+            - text: Read current source facts · completed
+            - generic: "observation studio_screen_read 1356636 ms since turn start {\"expectedRevision\":\"r1#11\",\"cursor\":{\"documentId\":\"screen-2da67e97-fe72-4bd7-af98-31bfa06bcad6\",\"revision\":\"r1#11\",\"digest\":\"8d4fffc1ede9d39aa21ed2634d04462276a95b1c0bdab047b2e61016f7feb90d\",\"epoch\":\"4448bebd-d21f-4e0f-b7d7-8c05a6a54983\"},\"section\":\"source\",\"nodeId\":\"hdr\",\"sourceJson\":\"{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"hdr\\\",\\\"tag\\\":\\\"div\\\",\\\"children\\\":[\\\"hdrLeft\\\",\\\"hdrRight\\\"],\\\"localStyle\\\":[{\\\"property\\\":\\\"display\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"flex\\\"}},{\\\"property\\\":\\\"flex-wrap\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"wrap\\\"}},{\\\"property\\\":\\\"gap\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"12px\\\"}},{\\\"property\\\":\\\"align-items\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"center\\\"}},{\\\"property\\\":\\\"min-height\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"60px\\\"}},{\\\"property\\\":\\\"background-color\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"#ffffff\\\"}},{\\\"property\\\":\\\"border\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"1px solid #e4e8f0\\\"}},{\\\"property\\\":\\\"border-radius\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"14px\\\"}},{\\\"property\\\":\\\"box-shadow\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"0 1px 2px rgba(15,23,42,0.04)\\\"}},{\\\"property\\\":\\\"box-sizing\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"border-box\\\"}},{\\\"property\\\":\\\"justify-content\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"space-between\\\"}},{\\\"property\\\":\\\"padding\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"12px 16px\\\"}},{\\\"property\\\":\\\"width\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"100%\\\"}}]}\",\"totalCharacters\":990,\"offset\":0,\"nextOffset\":null}"
+          - button "Read current source facts completed" [expanded]:
+            - generic: Read current source facts
+            - generic: completed
+          - list "Attempt receipts":
+            - text: Read source started · running
+            - generic: tool-start studio_screen_read 1356624 ms since turn start
+            - text: Read current source facts · completed
+            - generic: "observation studio_screen_read 1356637 ms since turn start {\"expectedRevision\":\"r1#11\",\"cursor\":{\"documentId\":\"screen-2da67e97-fe72-4bd7-af98-31bfa06bcad6\",\"revision\":\"r1#11\",\"digest\":\"8d4fffc1ede9d39aa21ed2634d04462276a95b1c0bdab047b2e61016f7feb90d\",\"epoch\":\"4448bebd-d21f-4e0f-b7d7-8c05a6a54983\"},\"section\":\"source\",\"nodeId\":\"sidebar\",\"sourceJson\":\"{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"sidebar\\\",\\\"tag\\\":\\\"section\\\",\\\"attributes\\\":{\\\"aria-label\\\":\\\"Section\\\"},\\\"children\\\":[\\\"sideHead\\\",\\\"docSelect\\\",\\\"sideHint\\\"],\\\"localStyle\\\":[{\\\"property\\\":\\\"display\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"flex\\\"}},{\\\"property\\\":\\\"flex-direction\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"column\\\"}},{\\\"property\\\":\\\"gap\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"6px\\\"}},{\\\"property\\\":\\\"padding\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"24px\\\"}},{\\\"property\\\":\\\"min-height\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"100px\\\"}},{\\\"property\\\":\\\"background-color\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"#f5f7fb\\\"}},{\\\"property\\\":\\\"border-radius\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"12px\\\"}},{\\\"property\\\":\\\"box-sizing\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"border-box\\\"}},{\\\"property\\\":\\\"flex\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"0 0 216px\\\"}},{\\\"property\\\":\\\"min-width\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"0\\\"}}]}\",\"totalCharacters\":805,\"offset\":0,\"nextOffset\":null}"
+          - button "Read current source facts completed" [expanded]:
+            - generic: Read current source facts
+            - generic: completed
+          - list "Attempt receipts":
+            - text: Read source started · running
+            - generic: tool-start studio_screen_read 1356625 ms since turn start
+            - text: Read current source facts · completed
+            - generic: "observation studio_screen_read 1356637 ms since turn start {\"expectedRevision\":\"r1#11\",\"cursor\":{\"documentId\":\"screen-2da67e97-fe72-4bd7-af98-31bfa06bcad6\",\"revision\":\"r1#11\",\"digest\":\"8d4fffc1ede9d39aa21ed2634d04462276a95b1c0bdab047b2e61016f7feb90d\",\"epoch\":\"4448bebd-d21f-4e0f-b7d7-8c05a6a54983\"},\"section\":\"source\",\"nodeId\":\"hdrLeft\",\"sourceJson\":\"{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"hdrLeft\\\",\\\"tag\\\":\\\"section\\\",\\\"attributes\\\":{\\\"aria-label\\\":\\\"Section\\\"},\\\"children\\\":[\\\"hdrTitle\\\",\\\"hdrSub\\\"],\\\"localStyle\\\":[{\\\"property\\\":\\\"display\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"flex\\\"}},{\\\"property\\\":\\\"flex-direction\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"column\\\"}},{\\\"property\\\":\\\"gap\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"2px\\\"}},{\\\"property\\\":\\\"padding\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"24px\\\"}},{\\\"property\\\":\\\"min-height\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"100px\\\"}},{\\\"property\\\":\\\"background-color\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"#f5f7fb\\\"}},{\\\"property\\\":\\\"border-radius\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"12px\\\"}}]}\",\"totalCharacters\":595,\"offset\":0,\"nextOffset\":null}"
+          - button "Read current source facts completed" [expanded]:
+            - generic: Read current source facts
+            - generic: completed
+          - list "Attempt receipts":
+            - text: Read source started · running
+            - generic: tool-start studio_screen_read 1356626 ms since turn start
+            - text: Read current source facts · completed
+            - generic: "observation studio_screen_read 1356638 ms since turn start {\"expectedRevision\":\"r1#11\",\"cursor\":{\"documentId\":\"screen-2da67e97-fe72-4bd7-af98-31bfa06bcad6\",\"revision\":\"r1#11\",\"digest\":\"8d4fffc1ede9d39aa21ed2634d04462276a95b1c0bdab047b2e61016f7feb90d\",\"epoch\":\"4448bebd-d21f-4e0f-b7d7-8c05a6a54983\"},\"section\":\"source\",\"nodeId\":\"hdrRight\",\"sourceJson\":\"{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"hdrRight\\\",\\\"tag\\\":\\\"div\\\",\\\"children\\\":[\\\"statusWrap\\\",\\\"lastSavedWrap\\\"],\\\"localStyle\\\":[{\\\"property\\\":\\\"display\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"flex\\\"}},{\\\"property\\\":\\\"flex-wrap\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"wrap\\\"}},{\\\"property\\\":\\\"gap\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"10px\\\"}},{\\\"property\\\":\\\"align-items\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"center\\\"}},{\\\"property\\\":\\\"min-height\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"60px\\\"}}]}\",\"totalCharacters\":420,\"offset\":0,\"nextOffset\":null}"
+          - button "Read current source facts completed" [expanded]:
+            - generic: Read current source facts
+            - generic: completed
+          - list "Attempt receipts":
+            - text: Read source started · running
+            - generic: tool-start studio_screen_read 1356627 ms since turn start
+            - text: Read current source facts · completed
+            - generic: "observation studio_screen_read 1356639 ms since turn start {\"expectedRevision\":\"r1#11\",\"cursor\":{\"documentId\":\"screen-2da67e97-fe72-4bd7-af98-31bfa06bcad6\",\"revision\":\"r1#11\",\"digest\":\"8d4fffc1ede9d39aa21ed2634d04462276a95b1c0bdab047b2e61016f7feb90d\",\"epoch\":\"4448bebd-d21f-4e0f-b7d7-8c05a6a54983\"},\"section\":\"source\",\"nodeId\":\"draftCard\",\"sourceJson\":\"{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"draftCard\\\",\\\"tag\\\":\\\"section\\\",\\\"attributes\\\":{\\\"aria-label\\\":\\\"Section\\\"},\\\"children\\\":[\\\"draftHead\\\",\\\"titleInput\\\",\\\"bodyArea\\\",\\\"footerRow\\\"],\\\"localStyle\\\":[{\\\"property\\\":\\\"display\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"flex\\\"}},{\\\"property\\\":\\\"flex-direction\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"column\\\"}},{\\\"property\\\":\\\"gap\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"10px\\\"}},{\\\"property\\\":\\\"padding\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"12px 14px\\\"}},{\\\"property\\\":\\\"min-height\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"100px\\\"}},{\\\"property\\\":\\\"background-color\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"#ffffff\\\"}},{\\\"property\\\":\\\"border-radius\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"14px\\\"}},{\\\"property\\\":\\\"border\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"1px solid #e4e8f0\\\"}},{\\\"property\\\":\\\"box-shadow\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"0 1px 2px rgba(15,23,42,0.04)\\\"}},{\\\"property\\\":\\\"box-sizing\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"border-box\\\"}},{\\\"property\\\":\\\"width\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"100%\\\"}}]}\",\"totalCharacters\":926,\"offset\":0,\"nextOffset\":null}"
+          - button "Read current source facts completed" [expanded]:
+            - generic: Read current source facts
+            - generic: completed
+          - list "Attempt receipts":
+            - text: Read source started · running
+            - generic: tool-start studio_screen_read 1356628 ms since turn start
+            - text: Read current source facts · completed
+            - generic: "observation studio_screen_read 1356639 ms since turn start {\"expectedRevision\":\"r1#11\",\"cursor\":{\"documentId\":\"screen-2da67e97-fe72-4bd7-af98-31bfa06bcad6\",\"revision\":\"r1#11\",\"digest\":\"8d4fffc1ede9d39aa21ed2634d04462276a95b1c0bdab047b2e61016f7feb90d\",\"epoch\":\"4448bebd-d21f-4e0f-b7d7-8c05a6a54983\"},\"section\":\"source\",\"nodeId\":\"previewCard\",\"sourceJson\":\"{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"previewCard\\\",\\\"tag\\\":\\\"section\\\",\\\"attributes\\\":{\\\"aria-label\\\":\\\"Section\\\"},\\\"children\\\":[\\\"prevHead\\\",\\\"prevTitle\\\",\\\"prevBody\\\"],\\\"localStyle\\\":[{\\\"property\\\":\\\"display\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"flex\\\"}},{\\\"property\\\":\\\"flex-direction\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"column\\\"}},{\\\"property\\\":\\\"gap\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"8px\\\"}},{\\\"property\\\":\\\"padding\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"12px 14px\\\"}},{\\\"property\\\":\\\"min-height\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"100px\\\"}},{\\\"property\\\":\\\"background-color\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"#ffffff\\\"}},{\\\"property\\\":\\\"border-radius\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"14px\\\"}},{\\\"property\\\":\\\"border\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"1px solid #e4e8f0\\\"}},{\\\"property\\\":\\\"box-shadow\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"0 1px 2px rgba(15,23,42,0.04)\\\"}},{\\\"property\\\":\\\"box-sizing\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"border-box\\\"}},{\\\"property\\\":\\\"width\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"100%\\\"}},{\\\"property\\\":\\\"flex\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"1 1 0%\\\"}},{\\\"property\\\":\\\"min-width\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"0\\\"}}]}\",\"totalCharacters\":1035,\"offset\":0,\"nextOffset\":null}"
+          - paragraph:
+            - text: The recipe seeds left
+            - code: padding:24px / background / radius / min-height
+            - text: "on"
+            - code: mainCol
+            - text: ","
+            - code: sidebar
+            - text: ", and"
+            - code: hdrLeft
+            - text: "(that's the gray inner block and the offset column tops). Removing the visually-active seed declarations:"
+          - button "Browser acknowledged committed transaction completed" [expanded]:
+            - generic: Browser acknowledged committed transaction
+            - generic: completed
+          - list "Attempt receipts":
+            - text: Edit screen started · running
+            - generic: tool-start studio_screen_edit 1377351 ms since turn start
+            - text: Proposed validated transaction; awaiting browser commit · pending
+            - generic: "proposed studio_screen_edit 1377488 ms since turn start {\"proposalId\":\"1d2b71a0-dac0-441d-a6db-03cfb8816658\",\"reason\":\"Strip recipe seed padding/background/radius from layout containers causing column offset\",\"revision\":\"r1#11\"}"
+            - text: Browser committed edit · pending
+            - generic: Strip recipe seed padding/background/radius from layout containers causing column offset Committed to the screen. Undo is available.
+            - text: Commit receipt acknowledged · completed
+            - generic: Strip recipe seed padding/background/radius from layout containers causing column offset
+            - text: Browser acknowledged committed transaction · completed
+            - generic: "committed studio_screen_edit 1377584 ms since turn start {\"proposalId\":\"1d2b71a0-dac0-441d-a6db-03cfb8816658\",\"ok\":true,\"revision\":\"r1#12\",\"digest\":\"b4673fcd5279c0e420bf496e320eaf5dfce9c5638a3464efbfd49e8c12e14c07\",\"applied\":12,\"coverage\":{\"available\":84,\"authored\":3,\"catalogAuthored\":3,\"registeredAuthored\":3,\"reachableSourceNodes\":40,\"requested\":84,\"scope\":\"all-authorable-definitions\",\"missing\":[\"vict.catalog.button\",\"vict.catalog.checkbox\",\"vict.catalog.dialog\",\"vict.catalog.toggle\",\"vict.catalog.select-multiple\",\"vict.catalog.combobox\",\"vict.catalog.combobox-multiple\",\"vict.catalog.combobox-item\",\"vict.catalog.toggle-group\",\"vict.catalog.toggle-group-multiple\",\"vict.catalog.toggle-group-item\",\"vict.catalog.accordion\",\"vict.catalog.accordion-multiple\",\"vict.catalog.accordion-item\",\"vict.catalog.slider\",\"vict.catalog.meter\",\"vict.catalog.progress\",\"vict.catalog.pagination\",\"vict.catalog.date-field\",\"vict.catalog.date-picker\"],\"evidence\":\"Reachable declared source presence only, including inactive branches/templates. An agent-declared manifest is not proof of the user intent, observed appearance, exercised interaction or completion.\",\"missingCount\":81,\"moreMissing\":true}}"
+          - paragraph: "Now the same seed cleanup on the header's title block:"
+          - button "Browser acknowledged committed transaction completed" [expanded]:
+            - generic: Browser acknowledged committed transaction
+            - generic: completed
+          - list "Attempt receipts":
+            - text: Edit screen started · running
+            - generic: tool-start studio_screen_edit 1384340 ms since turn start
+            - text: Proposed validated transaction; awaiting browser commit · pending
+            - generic: "proposed studio_screen_edit 1384415 ms since turn start {\"proposalId\":\"afe2cea1-4ea1-4ad7-9af3-e0aabff65864\",\"reason\":\"Strip seed styles from header title block\",\"revision\":\"r1#12\"}"
+            - text: Browser committed edit · pending
+            - generic: Strip seed styles from header title block Committed to the screen. Undo is available.
+            - text: Commit receipt acknowledged · completed
+            - generic: Strip seed styles from header title block
+            - text: Browser acknowledged committed transaction · completed
+            - generic: "committed studio_screen_edit 1384512 ms since turn start {\"proposalId\":\"afe2cea1-4ea1-4ad7-9af3-e0aabff65864\",\"ok\":true,\"revision\":\"r1#13\",\"digest\":\"190b83b73d556d9b9e1f197797ce6fc95d643092056c6a2a94193c37b11e4469\",\"applied\":13,\"coverage\":{\"available\":84,\"authored\":3,\"catalogAuthored\":3,\"registeredAuthored\":3,\"reachableSourceNodes\":40,\"requested\":84,\"scope\":\"all-authorable-definitions\",\"missing\":[\"vict.catalog.button\",\"vict.catalog.checkbox\",\"vict.catalog.dialog\",\"vict.catalog.toggle\",\"vict.catalog.select-multiple\",\"vict.catalog.combobox\",\"vict.catalog.combobox-multiple\",\"vict.catalog.combobox-item\",\"vict.catalog.toggle-group\",\"vict.catalog.toggle-group-multiple\",\"vict.catalog.toggle-group-item\",\"vict.catalog.accordion\",\"vict.catalog.accordion-multiple\",\"vict.catalog.accordion-item\",\"vict.catalog.slider\",\"vict.catalog.meter\",\"vict.catalog.progress\",\"vict.catalog.pagination\",\"vict.catalog.date-field\",\"vict.catalog.date-picker\"],\"evidence\":\"Reachable declared source presence only, including inactive branches/templates. An agent-declared manifest is not proof of the user intent, observed appearance, exercised interaction or completion.\",\"missingCount\":81,\"moreMissing\":true}}"
+          - paragraph: "Seed styles stripped (r1#13). Final verification:"
+          - button "Observed actual rendered appearance completed" [expanded] [active]:
+            - generic: Observed actual rendered appearance
+            - generic: completed
+          - list "Attempt receipts":
+            - text: Observe preview started · running
+            - generic: tool-start studio_screen_observe 1392327 ms since turn start
+            - text: Observed actual rendered appearance · completed
+            - generic: "observation studio_screen_observe 1421635 ms since turn start {\"ok\":true,\"evidence\":\"observed-appearance\",\"observation\":\"**Direct observations:** Header card shows bold “Content editor,” subtitle “Local drafts · changes stay in this browser,” and a legible “Open: Launch checklist” pill plus “Autosave: off” at right. Three columns sit under it with DOCUMENTS / DRAFT / PREVIEW labels roughly top-aligned; the Documents column lacks a card wrapper while Draft and Preview are white cards. Draft and Preview share the “Launch checklist” title and four identical bullets; text is readable, no clipping, nothing exceeds the viewport. The “Saved” toggle (dark track, white knob) is legible. Background is plain light lavender — no gray seed blocks behind the title or columns.\\n\\n**Possible issue:** A thin full-width blue horizontal line appears near the bottom edge (~y530) with lighter space below — a visible rule artifact, so that check appears unmet.\",\"metadata\":{\"cursor\":{\"documentId\":\"screen-2da67e97-fe72-4bd7-af98-31bfa06bcad6\",\"revision\":\"r1#13\",\"digest\":\"190b83b73d556d9b9e1f197797ce6fc95d643092056c6a2a94193c37b11e4469\",\"epoch\":\"4448bebd-d21f-4e0f-b7d7-8c05a6a54983\"},\"capturedAt\":\"2026-10-25T13:08:00.257Z\",\"viewport\":{\"width\":960,\"height\":585,\"scrollLeft\":0,\"scrollTop\":0,\"devicePixelRatio\":1.0000000149011612},\"image\":{\"width\":909,\"height\":560,\"sourceWidth\":909,\"sourceHeight\":560,\"offsetLeft\":0,\"offsetTop\":0,\"cropped\":false},\"preview\":{\"mode\":\"design\",\"fingerprint\":\"d4225b416e18faf718ca9f1639ee448a2350d36b357b30ddd00c24b0cd4ea132\",\"selection\":\"screen-2da67e97-fe72-4bd7-af98-31bfa06bcad6|screen\"}},\"revalidatedAt\":\"2026-10-25T13:08:29.023Z\",\"validation\":\"same-source-preview-viewport-and-image-bytes-after-inference\",\"imageDigest\":\"c0a49b182de86c66b286fd9586cf639d46fc40017b691e06e6664707d9e99af2\",\"confirmedImageDigest\":\"c0a49b182de86c66b286fd9586cf639d46fc40017b691e06e6664707d9e99af2\",\"imageComparison\":\"sha256-identical\",\"imageComparisonScope\":\"within-this-observation-before-and-after-inference\",\"fingerprintMeaning\":\"Source and preview state identity, not a pixel digest. Separate successful observations may have different fingerprints and identical pixels.\",\"captureAttempts\":2,\"captureRecoveryAttempts\":0,\"bytes\":39183,\"model\":\"zai/glm-5.3-flash\",\"interactionVerified\":false,\"limitation\":\"Only the captured preview frame region and stated preview state were inspected. Equal image bytes across separate observations do not prove stale capture or a rasterizer defect; a source edit may have no effect in this crop. Open preview-owned external portals refuse capture; unrelated Studio chrome is outside this image. Source relationships and interaction outcomes require separate checks.\"}"
+          - paragraph: "The editor is complete and verified. Here's the final state of things:"
+          - 'heading "Built: compact content editor (one screen, ~560px tall)" [level=2]'
+          - paragraph:
+            - strong: Layout
+            - text: "— header card, then three top-aligned columns (the row wraps on narrow widths):"
+          - list:
+            - strong: Header
+            - text: ":"
+            - code: h1 "Content editor"
+            - text: + subtitle, live status pill
+            - code: "\"Open: Launch checklist\""
+            - text: (
+            - code: aria-live="polite"
+            - text: "), \"Autosave: off\" label"
+            - strong: Documents
+            - text: "(left): real"
+            - code: select
+            - text: with 3 unique items (Launch checklist, Design critique notes, Support macros), controlled pair
+            - code: value ← state.docName
+            - text: /
+            - code: valueChange → docName
+            - text: ; the header pill mirrors it live
+            - strong: Draft
+            - text: "(middle): title"
+            - code: input
+            - text: and body
+            - code: textarea
+            - text: ", each wired via"
+            - code: wireInput
+            - text: to its own independent state (
+            - code: docTitle
+            - text: ","
+            - code: docBody
+            - text: ) — value binding + change-to-state, verified in source; shared focus-ring style source on both fields; footer with a
+            - code: Saved
+            - code: switch
+            - text: (
+            - code: checked ↔ state.saved
+            - text: ) = the local save checkpoint
+            - strong: Preview
+            - text: "(right): title and bullet body bound live to"
+            - code: docTitle
+            - text: /
+            - code: docBody
+            - text: (
+            - code: "white-space: pre-line"
+            - text: ), so edits reflect as you type
+          - paragraph:
+            - strong: Evidence
+            - text: "— observations confirmed: clean three-column fit, no clipping/overflow, pill and switch legible, preview uncut. All bindings verified in source, not assumed. Heading hierarchy: one"
+            - code: h1
+            - text: ", three"
+            - code: h2
+            - text: section labels.
+          - paragraph:
+            - strong: "Things you should know:"
+          - list:
+            - strong: Dead Save button removed
+            - text: ": this platform's"
+            - code: button.press
+            - text: output carries a
+            - code: void
+            - text: payload and validator-rejected every state write (tested against string
+            - emphasis: and
+            - text: boolean states). The
+            - code: Saved
+            - text: switch is the canonical save feedback control here, and the pill tracks the open document.
+            - strong: Leftover declarations (harmless, not removable via supported ops)
+            - text: ":"
+            - code: saveStatus
+            - text: /
+            - code: lastSaved
+            - text: (declared early, orphaned by the rework — no node references them), the 6 pre-seeded demo states +
+            - code: demo.submit
+            - text: action (untouched), and 2 unwired
+            - code: catalog_*
+            - text: seed states from the component accelerators.
+            - strong: Not runtime-tested
+            - text: ": I can't click/type, so the select, switch, and input change-wiring are source-verified canonical wiring, not exercised interactions — worth a quick manual pass in Run mode."
+            - listitem: The faint full-width line near the bottom is the document root's boundary against the lighter host canvas, not document content.
+          - paragraph:
+            - strong: Not yet done (if you want more)
+            - text: ": per-document title+body switching (needs a second state writer — the platform allows one string payload per output), or a narrow-width stacked layout via a container condition. The user saves from here."
+          - paragraph: "13 applied edits remain undoable. Confirmed revision r1#13. Engine termination: completed. Source coverage: 3/84 registered definitions present. 81 missing from the 84-item coverage scope. Missing IDs are paged through coverage reads. This inventory does not establish the full requested intent, interactions or visual completion. Source: 40 nodes, 14 state declarations; a bounded preview image was observed; interactions unverified by this agent."
+        - button "Copy message":
+    - button "Scroll to latest message":
+      - generic: Scroll to end
+    - textbox "Message":
+      - /placeholder: Ask for a change…
+    - button "Send" [disabled]:
+      - generic: Send
+    - status
+  - status "13 edits applied":
+    - generic: 13 edits applied
+  - button "Chat details": ···
+- main:
+  - generic "Workspace mode":
+    - button "Design" [pressed]
+    - button "Interact"
+  - button "Document"
+  - generic "Screen canvas":
+    - main "Content editor":
+      - region "Section":
+        - heading "Content editor" [level=1]:
+          - generic: Content editor
+        - paragraph:
+          - generic: Local drafts · changes stay in this browser
+      - generic: "Open:"
+      - generic: Launch checklist
+      - generic: "Autosave: off"
+      - region "Section":
+        - heading "Documents" [level=2]:
+          - generic: Documents
+        - button "Launch checklist":
+          - generic: Launch checklist
+        - paragraph:
+          - generic: Switch the open document — status updates live.
+      - region "Section":
+        - region "Section":
+          - heading "Draft" [level=2]:
+            - generic: Draft
+          - textbox "Document title": Launch checklist
+          - textbox "Document body":
+            - /placeholder: Start writing…
+            - text: • Confirm analytics events are live • QA checkout flow on staging • Draft the launch announcement • Sync with support on FAQs
+          - switch "Saved"
+          - generic: Saved
+          - paragraph:
+            - generic: Checkpoints stay in this browser — nothing is uploaded.
+      - region "Section":
+        - heading "Preview" [level=2]:
+          - generic: Preview
+        - paragraph:
+          - generic: Launch checklist
+        - paragraph:
+          - generic: • Confirm analytics events are live • QA checkout flow on staging • Draft the launch announcement • Sync with support on FAQs
+  - generic "Simulated execution Local preview · no live effects":
+    - text: Simulated execution
+    - generic: Local preview · no live effects
+- contentinfo:
+  - status: Strip seed styles from header title block · agent edit · unsaved
+  - generic "v1_2c1a5a3f9fdc566d0ed7daef4388c2a72de092571fbad12882043cb61bb86c56": "@3 · v1_2c1a5a3f9fdc…"

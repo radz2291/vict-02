@@ -1,0 +1,195 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Content editor"
+  - generic: ● Unsaved changes
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- complementary "Chat":
+  - region "Conversation":
+    - region "Messages — Message":
+      - log:
+        - generic: You
+        - generic: Design a polished compact content editor with a document list, editable title and body, preview, status and local save feedback. Use independent local state, review the first meaningful visible section early and verify the result. Keep it within one screen.
+        - button "Copy message":
+        - generic: Assistant
+        - generic "Conversation timeline":
+          - paragraph: Progress summary · Connecting to the VICT / Mastra agent…
+          - paragraph: Progress summary · Agent is working on your request…
+          - paragraph: I'll start by reading the current document state, structure, and available building blocks.
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - paragraph:
+            - text: "Fresh document: only the"
+            - code: screen
+            - text: root exists, plus 6 pre-seeded demo states and one
+            - code: demo.submit
+            - text: action — I'll leave those untouched and declare independent local state for the editor. Now let me get the exact contracts for the components I need, and check that
+            - code: textarea
+            - text: is a registered native element.
+          - button "Read query refused safely failed":
+            - generic: Read query refused safely
+            - generic: failed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - paragraph: The contracts need exact catalog IDs. Let me discover the families and the remaining registered elements.
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - paragraph:
+            - code: textarea
+            - text: is registered. Now let me get exact catalog IDs and revisions for the general-family components I plan to use.
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - paragraph:
+            - code: section
+            - text: /
+            - code: row
+            - text: /
+            - code: heading
+            - text: /
+            - code: text
+            - text: are recipe primitives (no catalog contract), while
+            - code: button
+            - text: /
+            - code: input
+            - text: are catalog components. Let me read their exact contracts with examples.
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - paragraph:
+            - text: "Contracts confirmed:"
+            - code: button
+            - text: (props
+            - code: label
+            - text: ", output"
+            - code: press
+            - text: ),
+            - code: input
+            - text: is a native recipe pattern (value ref + change→state),
+            - code: textarea
+            - text: is registered. The 6 seeded states (
+            - code: message
+            - text: ","
+            - code: accepted
+            - text: ","
+            - code: dialogOpen
+            - text: ", …) are demo leftovers — I'll leave them and declare my own independent local state."
+          - paragraph:
+            - strong: Plan
+            - text: "(compact, one screen): header (title + live status pill + last-saved + Save) → left document list (3 items) → right column with Draft card (title input + body textarea) and live Preview card."
+          - paragraph: "Batch 1 — restyle the root and declare the save-status state:"
+          - button "Browser acknowledged committed transaction completed":
+            - generic: Browser acknowledged committed transaction
+            - generic: completed
+          - paragraph:
+            - code: "applied: 1"
+            - text: but I sent 3 operations — let me verify the state declarations actually landed before building on them.
+          - button "Read current source facts completed":
+            - generic: Read current source facts
+            - generic: completed
+          - paragraph:
+            - text: State confirmed (
+            - code: saveStatus
+            - text: ","
+            - code: lastSaved
+            - text: declared; revision now
+            - code: r1#1
+            - text: "). Building the header section next:"
+          - button "Browser acknowledged committed transaction completed":
+            - generic: Browser acknowledged committed transaction
+            - generic: completed
+          - paragraph: "Header applied. Now the Save button with its bindings (also testing whether one output can take two state connections), plus the start of the content row:"
+          - button "Edit refused before browser proposal failed":
+            - generic: Edit refused before browser proposal
+            - generic: failed
+          - paragraph:
+            - code: bindText
+            - text: needs an actual text node, not a
+            - code: text
+            - text: "recipe element — the batch was rejected atomically. Restructuring: raw text nodes inside wrappers for both bound values, plus the Save button:"
+          - button "Browser acknowledged committed transaction completed":
+            - generic: Browser acknowledged committed transaction
+            - generic: completed
+          - paragraph:
+            - text: Header complete with bindings. Now wiring the Save button — connecting its
+            - code: press
+            - text: output to both
+            - code: saveStatus
+            - text: and
+            - code: lastSaved
+            - text: "(verifying a single output accepts two state connections):"
+          - button "Edit refused before browser proposal failed":
+            - generic: Edit refused before browser proposal
+            - generic: failed
+    - button "Scroll to latest message":
+      - generic: Scroll to end
+    - textbox "Message":
+      - /placeholder: Ask for a change…
+      - text: Design a polished compact content editor with a document list, editable title and body, preview, status and local save feedback. Use independent local state, review the first meaningful visible section early and verify the result. Keep it within one screen.
+    - button "Stop":
+      - generic: Stop
+    - status
+  - 'status "Edit rejected: UI_COMPONENT_BINDING_INCOMPATIBLE: Output ''press'' payload void is incompatible with state ''lastSaved'' type string."':
+    - generic: Working…
+  - button "Chat details": ···
+- main:
+  - generic "Workspace mode":
+    - button "Design" [pressed]
+    - button "Interact"
+  - button "Document"
+  - generic "Screen canvas":
+    - main "Content editor":
+      - region "Section":
+        - heading "Content editor" [level=1]:
+          - generic: Content editor
+        - paragraph:
+          - generic: Local drafts · changes stay in this browser
+      - generic: Unsaved changes
+      - button "Save"
+      - status
+      - alert
+      - generic: Not saved yet
+  - generic "Simulated execution Local preview · no live effects":
+    - text: Simulated execution
+    - generic: Local preview · no live effects
+- contentinfo:
+  - status: Save button plus status/last-saved text nodes bound to independent local state · agent edit · unsaved
+  - generic "v1_8331c0228783d46635a1dedabedb68b633fced404219a655494e1bc3d6ff18c9": "@3 · v1_8331c0228783…"

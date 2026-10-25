@@ -4,7 +4,7 @@
 
 ## Current execution checkpoint
 
-Actual verification resumed after the owner restarted the app. Current pushed product is **`9fbda0f3ec0c14ff7be8bfb475d30e0cdc0f0993`**; its747-input/491-output production seal passes. Independent checkpoint `ac484c6efafabbe1d68c1a478afb7cac026a2bb4` closes IV14-01–04 in their exact/carry scopes. Natural form arms completed on4c76; their execution logic is unchanged by9fb shared evidence presentation. Dashboard arms are running on9fb with matched1280×720/DPR≈1.0. Remaining actual terminal Chat/editor/recovery demonstrations keep readiness HELD. Preserve the older checkpoints below; see the [current report](CYCLE-1-4-REPORT.md).
+Actual verification resumed after browser recovery. Current product **`e76e2fc0f64f5a451edae01f4b0a1c9e7cfc68db`** is pushed/sealed747inputs/491outputs. All natural form/dashboard/editor comparisons completed at their recorded4c76/9fb identities; source execution is unchanged by the subsequent historical-label repair. Required IV14-05 reproduced misleading current-source wording after a real manual edit; its bounded repair and small showcase pass await real completed-turn/post-manual-change verification. The separate corrective Stop/manual-source/Save/draft/continue/history/reopen leg is active on e76. Readiness remains HELD. Earlier checkpoints below retain their scope; see the [current report](CYCLE-1-4-REPORT.md).
 
 ### Preserved earlier browser-blocked checkpoint
 

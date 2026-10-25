@@ -1,0 +1,81 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Content editor comparison"
+  - generic: ● Unsaved changes
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- complementary "Chat":
+  - region "Conversation":
+    - region "Messages — Message":
+      - log:
+        - paragraph: Describe a screen, or select an element to edit it.
+    - button "Scroll to latest message":
+      - generic: Scroll to end
+    - textbox "Message":
+      - /placeholder: Ask for a change…
+    - button "Send" [disabled]:
+      - generic: Send
+    - status
+  - status "Ready":
+    - generic: Ready
+  - button "Chat details": ···
+- main:
+  - generic "Workspace mode":
+    - button "Design" [pressed]
+    - button "Interact"
+  - button "Document" [active]
+  - generic "Screen canvas":
+    - main "Content editor comparison":
+      - heading "Content editor" [level=1]:
+        - generic: Content editor
+      - paragraph:
+        - generic: Compact workspace · local draft — everything stays in this browser
+      - paragraph:
+        - generic: Local draft
+      - button "Save changes"
+      - status
+      - alert
+      - generic "Documents":
+        - generic: Documents
+        - group "Documents":
+          - radio "Product brief" [checked]
+          - radio "Design notes"
+          - radio "Sprint retro"
+      - paragraph:
+        - generic: Editing
+      - generic: Product brief
+      - generic: Title
+      - textbox "Title":
+        - /placeholder: Document title
+        - text: October release plan
+      - generic: Body
+      - textbox "Body":
+        - /placeholder: Write the document body…
+        - text: Draft the messaging for the October release. - Lead with the new compact editor - Call out local-first drafts - Keep the whole page on one screen
+      - paragraph:
+        - generic: Drafts save locally as you type.
+      - paragraph:
+        - generic: Preview
+      - heading "October release plan" [level=2]:
+        - generic: October release plan
+      - generic: Draft the messaging for the October release. - Lead with the new compact editor - Call out local-first drafts - Keep the whole page on one screen
+      - paragraph:
+        - generic: Live preview — updates as you type
+      - generic: Status
+      - status:
+        - generic: Unsaved changes
+      - generic: 3 documents · Compact view
+  - generic "Simulated execution Local preview · no live effects":
+    - text: Simulated execution
+    - generic: Local preview · no live effects
+- contentinfo:
+  - status: Apply canonical source · unsaved
+  - generic "v1_ffbe5a794cc4f6bba96ced45dff536960fab8023ba636bef630776d6e5e7480b": "@3 · v1_ffbe5a794cc4…"

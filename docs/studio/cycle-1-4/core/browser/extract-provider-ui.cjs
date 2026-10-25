@@ -43,6 +43,7 @@ function extract(arm) {
   }));
   const readCounts = {};
   for (const item of reads) readCounts[item.section || 'unavailable'] = (readCounts[item.section || 'unavailable'] || 0) + 1;
+  const refusedReadSections = events.filter(event=>event.tool==='studio_screen_read'&&event.kind==='validation-refused').map(event=>event.payload?.section||event.rawPayload?.match(/"section":"([^"]+)"/)?.[1]||null);
   const observations = events.filter(event => event.kind === 'observation' && event.tool === 'studio_screen_observe').map(event => ({
     resultAtMs:event.sinceTurnStartMs,ok:event.payload?.ok ?? null,metadata:event.payload?.metadata || null,
     imageDigest:event.payload?.imageDigest || null,confirmedImageDigest:event.payload?.confirmedImageDigest || null,
@@ -63,6 +64,9 @@ function extract(arm) {
     traceCounts:{toolStarts:events.filter(event=>event.kind==='tool-start').length,committedReceipts:committed.length,uniqueAcknowledgedProposals:proposals.length,
       readSections:readCounts,knowledgeReadResults:reads.filter(item=>knowledgeSections.has(item.section)).length,
       sourceReadResults:reads.filter(item=>item.section&&!knowledgeSections.has(item.section)).length,
+      refusedReadSections,
+      knowledgeReadAttempts:reads.filter(item=>knowledgeSections.has(item.section)).length+refusedReadSections.filter(section=>knowledgeSections.has(section)).length,
+      sourceReadAttempts:reads.filter(item=>item.section&&!knowledgeSections.has(item.section)).length+refusedReadSections.filter(section=>section&&!knowledgeSections.has(section)).length,
       firstToolStartMs:events.find(event=>event.kind==='tool-start')?.sinceTurnStartMs??null,
       firstCommittedReceiptMs:committed[0]?.sinceTurnStartMs??null,
       firstObservationStartMs:events.find(event=>event.kind==='tool-start'&&event.tool==='studio_screen_observe')?.sinceTurnStartMs??null},
