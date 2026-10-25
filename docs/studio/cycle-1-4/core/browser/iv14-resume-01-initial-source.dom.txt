@@ -1,0 +1,61 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Untitled screen"
+  - generic: ○ New screen
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- complementary "Chat":
+  - region "Conversation":
+    - region "Messages — Message":
+      - log:
+        - paragraph: Describe a screen, or select an element to edit it.
+    - button "Scroll to latest message":
+      - generic: Scroll to end
+    - textbox "Message":
+      - /placeholder: Ask for a change…
+    - button "Send" [disabled]:
+      - generic: Send
+    - status
+  - status "Ready":
+    - generic: Ready
+  - button "Chat details": ···
+- main:
+  - generic "Workspace mode":
+    - button "Design" [pressed]
+    - button "Interact"
+  - button "Document" [expanded]
+  - generic "Screen canvas":
+    - main "Untitled screen"
+  - generic: ＋
+  - heading "What will you make?" [level=1]
+  - paragraph: Select this screen to open its tools, then choose Insert.
+  - generic "Simulated execution Local preview · no live effects":
+    - text: Simulated execution
+    - generic: Local preview · no live effects
+- separator "Document drawer width"
+- complementary "Document":
+  - navigation "Document sections":
+    - button "Layers"
+    - button "Structure"
+    - button "Data"
+    - button "Actions"
+    - button "Source" [active] [pressed]
+    - button "Close document": ×
+  - generic: Canonical UI document
+  - textbox "Canonical UI document": "{ \"schema\": \"vict.ui-document@1\", \"id\": \"screen-d5aed627-e799-4d2c-a4eb-ea26a96b2027\", \"revision\": \"r1\", \"root\": \"screen\", \"nodes\": { \"screen\": { \"kind\": \"element\", \"id\": \"screen\", \"tag\": \"main\", \"attributes\": { \"aria-label\": \"Untitled screen\" }, \"children\": [], \"localStyle\": [ { \"property\": \"display\", \"value\": { \"type\": \"text\", \"value\": \"flex\" } }, { \"property\": \"flex-direction\", \"value\": { \"type\": \"text\", \"value\": \"column\" } }, { \"property\": \"gap\", \"value\": { \"type\": \"text\", \"value\": \"20px\" } }, { \"property\": \"padding\", \"value\": { \"type\": \"text\", \"value\": \"40px\" } }, { \"property\": \"min-height\", \"value\": { \"type\": \"text\", \"value\": \"560px\" } }, { \"property\": \"background-color\", \"value\": { \"type\": \"text\", \"value\": \"#ffffff\" } }, { \"property\": \"color\", \"value\": { \"type\": \"text\", \"value\": \"#243047\" } }, { \"property\": \"font-family\", \"value\": { \"type\": \"text\", \"value\": \"system-ui, sans-serif\" } } ] } }, \"componentDefinitions\": {}, \"styleSources\": {}, \"assets\": {}, \"tokens\": {}, \"conditions\": { \"compact\": { \"id\": \"compact\", \"kind\": \"container\", \"name\": \"studio-screen\", \"query\": \"(max-width: 600px)\" } }, \"localState\": { \"message\": { \"key\": \"message\", \"type\": \"string\", \"initial\": \"Hello from my screen\" }, \"accepted\": { \"key\": \"accepted\", \"type\": \"boolean\", \"initial\": false }, \"dialogOpen\": { \"key\": \"dialogOpen\", \"type\": \"boolean\", \"initial\": false }, \"busy\": { \"key\": \"busy\", \"type\": \"boolean\", \"initial\": false }, \"actionError\": { \"key\": \"actionError\", \"type\": \"string\", \"initial\": \"\" }, \"actionResult\": { \"key\": \"actionResult\", \"type\": \"string\", \"initial\": \"\" } } }"
+  - button "Apply source" [disabled]
+  - button "Discard draft" [disabled]
+  - button "Export"
+  - generic "Application attachment"
+- contentinfo:
+  - status: New screen · not saved yet.
+  - generic "v1_df27a65a5c3653ce3627863c8c8c51bbf19e39ac83ab8042c540567abf3f1aef": "@3 · v1_df27a65a5c36…"
+- generic: Designer — VICT Studio

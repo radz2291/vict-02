@@ -1,0 +1,127 @@
+{
+  "capturedAt": "2026-10-25T11:41:45.225Z",
+  "url": "http://127.0.0.13:5607/design",
+  "active": {
+    "label": "Inspect structure",
+    "tag": "BUTTON",
+    "text": "Inspect"
+  },
+  "rects": [
+    {
+      "class": "agent-chat svelte-1n95bvq",
+      "clientHeight": 412,
+      "display": "flex",
+      "height": 412,
+      "label": "Chat",
+      "overflow": "hidden",
+      "role": null,
+      "scrollHeight": 412,
+      "tag": "ASIDE",
+      "width": 192,
+      "x": 0,
+      "y": 44
+    },
+    {
+      "class": "design-stage",
+      "clientHeight": 165,
+      "display": "flex",
+      "height": 164.8000030517578,
+      "label": null,
+      "overflow": "visible",
+      "role": null,
+      "scrollHeight": 165,
+      "tag": "MAIN",
+      "width": 448,
+      "x": 192,
+      "y": 44
+    },
+    {
+      "class": "canvas-scroll workspace-scroll",
+      "clientHeight": 98,
+      "display": "block",
+      "height": 97.5,
+      "label": null,
+      "overflow": "auto",
+      "role": null,
+      "scrollHeight": 1136,
+      "tag": "DIV",
+      "width": 448,
+      "x": 192,
+      "y": 82
+    },
+    {
+      "class": "uv-8ac86e67-screen",
+      "clientHeight": 1100,
+      "display": "flex",
+      "height": 1100,
+      "label": "Independent Cycle 1.4 challenge",
+      "overflow": "visible",
+      "role": null,
+      "scrollHeight": 1100,
+      "tag": "MAIN",
+      "width": 412.8000183105469,
+      "x": 202,
+      "y": -216.40000915527344
+    },
+    {
+      "class": "document-drawer",
+      "clientHeight": 246,
+      "display": "flex",
+      "height": 247.1999969482422,
+      "label": "Document",
+      "overflow": "hidden",
+      "role": null,
+      "scrollHeight": 246,
+      "tag": "ASIDE",
+      "width": 448,
+      "x": 192,
+      "y": 208.8000030517578
+    },
+    {
+      "class": "sidebar-tabs svelte-11390zq",
+      "clientHeight": 37,
+      "display": "flex",
+      "height": 38,
+      "label": "Document sections",
+      "overflow": "visible",
+      "role": null,
+      "scrollHeight": 37,
+      "tag": "NAV",
+      "width": 448,
+      "x": 192,
+      "y": 209.6000061035156
+    },
+    {
+      "class": "structure-view svelte-17c90px drawer-presentation",
+      "clientHeight": 208,
+      "display": "flex",
+      "height": 208.40000915527344,
+      "label": "Source structure",
+      "overflow": "visible",
+      "role": null,
+      "scrollHeight": 208,
+      "tag": "SECTION",
+      "width": 448,
+      "x": 192,
+      "y": 247.6000061035156
+    },
+    {
+      "class": "svelte-flow svelte-flow__container light svelte-1lz1xyo",
+      "clientHeight": 165,
+      "display": "block",
+      "height": 164.60000610351562,
+      "label": null,
+      "overflow": "hidden",
+      "role": "application",
+      "scrollHeight": 165,
+      "tag": "DIV",
+      "width": 448,
+      "x": 192,
+      "y": 291.3999938964844
+    }
+  ],
+  "viewport": {
+    "height": 480,
+    "width": 640
+  }
+}

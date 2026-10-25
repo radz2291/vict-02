@@ -1,0 +1,408 @@
+{
+  "schema": "vict.ui-document@1",
+  "id": "screen-d5aed627-e799-4d2c-a4eb-ea26a96b2027",
+  "revision": "r1",
+  "root": "screen",
+  "nodes": {
+    "screen": {
+      "kind": "element",
+      "id": "screen",
+      "tag": "main",
+      "attributes": {
+        "aria-label": "Independent Cycle 1.4 challenge"
+      },
+      "children": [
+        "left",
+        "right",
+        "long"
+      ],
+      "styleSources": [
+        "shared-padding",
+        "compact-padding"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "16px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "40px"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "1100px"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#ffffff"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#243047"
+          }
+        },
+        {
+          "property": "font-family",
+          "value": {
+            "type": "text",
+            "value": "system-ui, sans-serif"
+          }
+        }
+      ]
+    },
+    "left": {
+      "kind": "element",
+      "id": "left",
+      "tag": "section",
+      "attributes": {
+        "aria-label": "Left group"
+      },
+      "classes": [
+        "vict-rhea-card"
+      ],
+      "children": [
+        "first",
+        "field-label",
+        "field",
+        "echo"
+      ],
+      "localStyle": [
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "8px"
+          }
+        }
+      ]
+    },
+    "first": {
+      "kind": "element",
+      "id": "first",
+      "tag": "h1",
+      "children": [
+        "first-text"
+      ],
+      "localStyle": [
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0px"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "24px"
+          }
+        }
+      ]
+    },
+    "first-text": {
+      "kind": "text",
+      "id": "first-text",
+      "content": {
+        "type": "literal",
+        "value": "First heading"
+      }
+    },
+    "field-label": {
+      "kind": "element",
+      "id": "field-label",
+      "tag": "label",
+      "attributes": {
+        "for": "independent-message"
+      },
+      "children": [
+        "field-label-text"
+      ]
+    },
+    "field-label-text": {
+      "kind": "text",
+      "id": "field-label-text",
+      "content": {
+        "type": "literal",
+        "value": "Native message"
+      }
+    },
+    "field": {
+      "kind": "element",
+      "id": "field",
+      "tag": "input",
+      "classes": [
+        "vict-rhea-input"
+      ],
+      "attributes": {
+        "id": "independent-message",
+        "type": "text",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      },
+      "children": [],
+      "interactions": [
+        {
+          "on": "change",
+          "action": "setState",
+          "key": "message",
+          "value": {
+            "type": "ref",
+            "path": "state.message"
+          }
+        }
+      ]
+    },
+    "echo": {
+      "kind": "element",
+      "id": "echo",
+      "tag": "p",
+      "children": [
+        "echo-text"
+      ],
+      "localStyle": [
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0px"
+          }
+        }
+      ]
+    },
+    "echo-text": {
+      "kind": "text",
+      "id": "echo-text",
+      "content": {
+        "type": "expression",
+        "expression": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "right": {
+      "kind": "element",
+      "id": "right",
+      "tag": "section",
+      "attributes": {
+        "aria-label": "Right group"
+      },
+      "classes": [
+        "vict-rhea-card"
+      ],
+      "children": [
+        "second",
+        "copy-e8cd988a-ef97-477a-b6b1-9579d23fa7a2",
+        "copy"
+      ],
+      "localStyle": [
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "8px"
+          }
+        }
+      ]
+    },
+    "second": {
+      "kind": "element",
+      "id": "second",
+      "tag": "h2",
+      "children": [
+        "second-text"
+      ],
+      "localStyle": [
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0px"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "20px"
+          }
+        }
+      ]
+    },
+    "second-text": {
+      "kind": "text",
+      "id": "second-text",
+      "content": {
+        "type": "literal",
+        "value": "Second heading"
+      }
+    },
+    "copy": {
+      "kind": "element",
+      "id": "copy",
+      "tag": "p",
+      "children": [
+        "copy-text"
+      ],
+      "localStyle": [
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0px"
+          }
+        }
+      ]
+    },
+    "copy-text": {
+      "kind": "text",
+      "id": "copy-text",
+      "content": {
+        "type": "literal",
+        "value": "Move or duplicate this exact source; retain its source identity and recover through history."
+      }
+    },
+    "long": {
+      "kind": "element",
+      "id": "long",
+      "tag": "article",
+      "attributes": {
+        "aria-label": "Long content"
+      },
+      "children": [
+        "long-text"
+      ]
+    },
+    "long-text": {
+      "kind": "text",
+      "id": "long-text",
+      "content": {
+        "type": "literal",
+        "value": "Long content provides a real scrolling canvas for continuity checks. Select a different source without moving the camera or scrolling the canvas. Keep this text available while opening and closing inspection details. Source facts, relationships and identities belong to inspection. Format, Insert, Arrange and Connect remain the floating editing tools. Native text editing and Interact keep their own context menus. A context command must target the object under the first secondary click, preserve pending drafts and use canonical history. Repeating the journey after Save and reopen should retain the same authored source. This lower section intentionally extends beyond the initial visible area. A screenshot of one visible crop is evidence only of that crop and does not prove offscreen content, runtime interactions or complete-page quality."
+      }
+    },
+    "copy-e8cd988a-ef97-477a-b6b1-9579d23fa7a2": {
+      "kind": "element",
+      "id": "copy-e8cd988a-ef97-477a-b6b1-9579d23fa7a2",
+      "tag": "h2",
+      "children": [
+        "copy-9a4efec8-572c-4fc8-8f6e-67c207c6c0e9"
+      ],
+      "localStyle": [
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0px"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "20px"
+          }
+        }
+      ]
+    },
+    "copy-9a4efec8-572c-4fc8-8f6e-67c207c6c0e9": {
+      "kind": "text",
+      "id": "copy-9a4efec8-572c-4fc8-8f6e-67c207c6c0e9",
+      "content": {
+        "type": "literal",
+        "value": "Second heading"
+      }
+    }
+  },
+  "componentDefinitions": {},
+  "styleSources": {
+    "shared-padding": {
+      "id": "shared-padding",
+      "declarations": [
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "8px"
+          }
+        }
+      ]
+    },
+    "compact-padding": {
+      "id": "compact-padding",
+      "conditionId": "compact",
+      "declarations": [
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "16px"
+          }
+        }
+      ]
+    }
+  },
+  "assets": {},
+  "tokens": {},
+  "conditions": {
+    "compact": {
+      "id": "compact",
+      "kind": "container",
+      "name": "studio-screen",
+      "query": "(max-width: 600px)"
+    }
+  },
+  "localState": {
+    "message": {
+      "key": "message",
+      "type": "string",
+      "initial": "Initial independent message"
+    }
+  }
+}

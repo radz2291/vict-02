@@ -1,0 +1,194 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Independent Cycle 1.4 challenge"
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- complementary "Chat":
+  - region "Conversation":
+    - region "Messages — Message":
+      - log:
+        - paragraph: Describe a screen, or select an element to edit it.
+    - button "Scroll to latest message":
+      - generic: Scroll to end
+    - textbox "Message":
+      - /placeholder: Ask for a change…
+    - button "Send" [disabled]:
+      - generic: Send
+    - status
+  - status "Ready":
+    - generic: Ready
+  - button "Chat details": ···
+- main:
+  - generic "Workspace mode":
+    - button "Design" [pressed]
+    - button "Interact"
+  - button "Document" [expanded]
+  - generic "Screen canvas":
+    - main "Independent Cycle 1.4 challenge":
+      - region "Left group":
+        - heading "First heading" [level=1]:
+          - generic: First heading
+        - generic: Native message
+        - textbox "Native message": Initial independent message
+        - paragraph:
+          - generic: Initial independent message
+      - region "Right group":
+        - heading "Second heading" [level=2]:
+          - generic: Second heading
+        - paragraph:
+          - generic: Move or duplicate this exact source; retain its source identity and recover through history.
+      - article "Long content":
+        - generic: Long content provides a real scrolling canvas for continuity checks. Select a different source without moving the camera or scrolling the canvas. Keep this text available while opening and closing inspection details. Source facts, relationships and identities belong to inspection. Format, Insert, Arrange and Connect remain the floating editing tools. Native text editing and Interact keep their own context menus. A context command must target the object under the first secondary click, preserve pending drafts and use canonical history. Repeating the journey after Save and reopen should retain the same authored source. This lower section intentionally extends beyond the initial visible area. A screenshot of one visible crop is evidence only of that crop and does not prove offscreen content, runtime interactions or complete-page quality.
+  - generic "Simulated execution Local preview · no live effects":
+    - text: Simulated execution
+    - generic: Local preview · no live effects
+- complementary "Document":
+  - navigation "Document sections":
+    - button "Layers"
+    - button "Structure" [pressed]
+    - button "Data"
+    - button "Actions"
+    - button "Source"
+    - button "Expand Structure": ↗
+    - button "Close document": ×
+  - region "Source structure":
+    - searchbox "Search structure": Second
+    - menubar "Structure menus":
+      - menuitem "View"
+      - menuitem "Object"
+    - generic: 6 items
+    - button "Inspect structure" [expanded]: Inspect
+    - application:
+      - 'group "Container: Screen, source screen"':
+        - button
+        - generic: Container
+        - button "Collapse Screen" [expanded]: ⌄
+        - strong: Screen
+        - button
+      - 'group "Container: Right group, source right"':
+        - button
+        - generic: Container
+        - button "Collapse Right group" [expanded]: ⌄
+        - strong: Right group
+        - button
+      - 'group "Container: Heading · Second heading, source second"':
+        - button
+        - generic: Heading
+        - button "Collapse Second heading" [expanded]: ⌄
+        - strong: Second heading
+        - button
+      - 'group "Text: Second heading, source second-text"':
+        - button
+        - generic: Text
+        - strong: Second heading
+        - button
+      - 'group "Container: Long content, source long"':
+        - button
+        - generic: Container
+        - button "Collapse Long content" [expanded]: ⌄
+        - strong: Long content
+        - button
+      - 'group "Text: Long content provides a real scrolling canvas for continuity checks. Select a different source without moving the camera or scrolling the canvas. Keep this text available while opening and closing inspection details. Source facts, relationships and identities belong to inspection. Format, Insert, Arrange and Connect remain the floating editing tools. Native text editing and Interact keep their own context menus. A context command must target the object under the first secondary click, preserve pending drafts and use canonical history. Repeating the journey after Save and reopen should retain the same authored source. This lower section intentionally extends beyond the initial visible area. A screenshot of one visible crop is evidence only of that crop and does not prove offscreen content, runtime interactions or complete-page quality., source long-text"':
+        - button
+        - generic: Text
+        - strong: Long content provides a real scrolling canvas for continuity checks. Select…
+        - button
+      - link "Svelte Flow attribution":
+        - /url: https://svelteflow.dev?utm_source=attribution
+        - text: Svelte Flow
+      - generic "Control Panel":
+        - button "Zoom In":
+        - button "Zoom Out":
+        - button "Fit View":
+  - region "Source inspection details":
+    - separator "Inspection details height"
+    - strong: Second heading
+    - button "Expand inspection details": ↗
+    - button "Close inspection details": ×
+    - navigation "Source inspection view":
+      - button "Properties" [pressed]
+      - button "Relationships"
+    - generic: Container
+    - code: second
+    - button "Edit properties ↗"
+    - term: kind
+    - definition: element
+    - term: id
+    - definition: second
+    - term: tag
+    - definition: h2
+    - term: children.0
+    - definition: second-text
+    - term: localStyle.0.property
+    - definition: margin
+    - term: localStyle.0.value.type
+    - definition: text
+    - term: localStyle.0.value.value
+    - definition: 0px
+    - term: localStyle.1.property
+    - definition: font-size
+    - term: localStyle.1.value.type
+    - definition: text
+    - term: localStyle.1.value.value
+    - definition: 20px
+- contentinfo:
+  - status: Design mode · select and edit without running behavior.
+  - generic "v1_6d9eaf0c85ff5e26c67cbda786dc4e85a6ebfdba24ffd647d676cd292535f901": "@3 · v1_6d9eaf0c85ff…"
+- generic: Designer — VICT Studio
+- generic "Floating selection tools":
+  - button "Hide tools": ×
+  - generic "Tools for Heading · Second heading":
+    - tablist "Tool pages":
+      - tab "Format tools" [expanded] [active] [selected]: Format
+      - tab "Insert tools": Insert
+      - tab "Arrange tools": Arrange
+      - tab "Connect tools": Connect
+    - generic "Heading · Second heading"
+    - tabpanel "Format tools":
+      - complementary "Object properties":
+        - tablist "Format categories":
+          - tab "Text" [expanded] [selected]
+          - tab "Fill"
+          - tab "Spacing"
+          - tab "Layout"
+          - tab "Rules"
+        - tabpanel "Text":
+          - tablist "Text pages":
+            - tab "Content"
+            - tab "Font" [expanded] [selected]
+            - tab "Paragraph"
+          - tabpanel "Font":
+            - text: Font
+            - textbox "Font family": system-ui, sans-serif
+            - text: Size
+            - textbox "Text size": 20px
+            - text: Weight
+            - combobox "Weight":
+              - option "100"
+              - option "200"
+              - option "300"
+              - option "400"
+              - option "500"
+              - option "600" [selected]
+              - option "700"
+              - option "800"
+              - option "900"
+              - option "normal"
+              - option "bold"
+              - option "bolder"
+              - option "lighter"
+            - text: Color
+            - textbox "Text color picker": "#20232b"
+            - textbox "Text color": rgb(32, 35, 43)
+            - text: Opacity
+            - spinbutton "Text color opacity": "100"
+            - text: "%"
+          - generic: All sizes · normal
