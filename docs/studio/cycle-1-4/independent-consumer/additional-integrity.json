@@ -1,0 +1,10 @@
+{
+  "candidate": "0c3cee81fb02345f07b26e92acb2d2eb5463b203",
+  "checkedAt": "2026-10-25T10:34:28.399Z",
+  "exactFixtureFiles": 9,
+  "exactPresentationMetadata": 3,
+  "frameworkLockIntegrities": 8,
+  "bitsVersion": "2.19.3",
+  "aliases": 0,
+  "scope": "Independent installed-byte/fixture/lock validation; no actual browser claim."
+}
