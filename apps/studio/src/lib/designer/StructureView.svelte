@@ -10,14 +10,14 @@
   import WorkspaceContextMenu from './WorkspaceContextMenu.svelte';
   import { sourceCapabilities, type WorkspaceContext, type WorkspaceCommand } from './workspace-context.js';
 
-  let { document, revision, selectedNodeId, blocked = false, active = true, presentation = 'workspace', descriptors = [], recipes = [], onSelect, onDeselect, onMove, onNotice, onNavigate, onDismiss, onInspect, onInspectSelection, inspectionExpanded = false, inspectionSelection, objectCommands }: {
+  let { document, revision, selectedNodeId, blocked = false, active = true, presentation = 'workspace', descriptors = [], recipes = [], onSelect, onDeselect, onMove, onNotice, onNavigate, onDismiss, onInspect, onCloseInspect, onInspectSelection, inspectionExpanded = false, inspectionSelection, objectCommands }: {
     document: UiDocument; revision: string; selectedNodeId?: string; blocked?: boolean; active?: boolean;
     descriptors?: readonly UiExtensionDescriptor[]; recipes?: readonly InsertRecipe[];
     onSelect: (occurrence: string) => void; onMove: (request: StructureEditRequest) => boolean;
     onDeselect?: () => void;
     presentation?: 'workspace' | 'drawer'; onDismiss?: () => void;
     onNotice: (message: string) => void; onNavigate?: (request: StructureHandoff) => void;
-    onInspect?: (id?:string, page?:'properties'|'relationships') => void; onInspectSelection?: (id:string) => void; inspectionExpanded?:boolean; inspectionSelection?:string;
+    onInspect?: (id?:string, page?:'properties'|'relationships') => void; onCloseInspect?: () => void; onInspectSelection?: (id:string) => void; inspectionExpanded?:boolean; inspectionSelection?:string;
     objectCommands?: (occurrence:string) => WorkspaceCommand[];
   } = $props();
   let nodes = $state<Node<StructureNodeData>[]>([]);
@@ -260,7 +260,7 @@
     </Menubar.Root>
     {#if focusedId}<button class="scope-control" type="button" onclick={() => { focusedId = undefined; search = ''; }}>Show whole screen</button>{/if}
     <span class="structure-count" aria-live="polite">{nodes.length} items</span>
-    <button type="button" class="inspection-toggle" aria-label="Inspect structure" aria-expanded={onInspect ? inspectionExpanded : inspectionOpen} aria-controls={onInspect ? undefined : 'structure-inspection'} bind:this={inspectionButton} onclick={() => { if (inspectionOpen) closeInspection(); else openInspection(inspected ? 'properties' : 'find'); }}>Inspect</button>
+    <button type="button" class="inspection-toggle" aria-label="Inspect structure" aria-expanded={onInspect ? inspectionExpanded : inspectionOpen} aria-controls={onInspect ? undefined : 'structure-inspection'} bind:this={inspectionButton} onclick={() => { if (onInspect && inspectionExpanded && onCloseInspect) onCloseInspect(); else if (onInspect) onInspect(inspectedId, 'properties'); else if (inspectionOpen) closeInspection(); else openInspection(inspected ? 'properties' : 'find'); }}>Inspect</button>
   </div>
   <div class="structure-body">
     <div class="structure-canvas" inert={presentation === 'drawer' && inspectionOpen}>

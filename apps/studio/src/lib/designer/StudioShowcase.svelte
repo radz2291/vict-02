@@ -2,7 +2,7 @@
   import { onMount, tick } from 'svelte';
   import {
     Composer, CompositionNavigator, EditorBridge, EditorCanvas, Inspector, Layers,
-    SelectionPalette, StateInitialEditor, StateValuesPanel, PanelResizer, authoredOccurrence,
+    SelectionPalette, StateInitialEditor, StateValuesPanel, authoredOccurrence,
     compositionName, compositionSlots, compositionTrail, firstCompositionSlot, resolveOccurrence,
     type CompositionFocus, type TransactionDraft,
     duplicateSubtree, compositionParent,
@@ -19,6 +19,7 @@
   import { structureMove, structureId, projectStructure, type StructureEditRequest, type StructureHandoff } from './structure.js';
   import StructureView from './StructureView.svelte';
   import SourceDetails from './SourceDetails.svelte';
+  import StructureDock from './StructureDock.svelte';
   import WorkspaceContextMenu from './WorkspaceContextMenu.svelte';
   import { sourceCapabilities, type WorkspaceContext } from './workspace-context.js';
   import '@victframework/ui-svelte/styles.css';
@@ -31,22 +32,8 @@
   let recipeId = $state('slider');
   let search = $state('');
   let mode = $state<'design' | 'interact'>('design');
-  let view = $state<'canvas' | 'structure'>('canvas');
   let documentOpen = $state(true);
-  let structureExpanded = $state(false);
-  let structureWidth = $state(560);
-  let expansionScroll: { x: number; y: number } | undefined;
-  async function toggleStructureWorkbench() {
-    const expand = !structureExpanded;
-    if (expand) expansionScroll = { x: window.scrollX, y: window.scrollY };
-    structureExpanded = expand;
-    await tick();
-    if (expand) {
-      const panel = canvasRoot?.closest('.studio-showcase')?.querySelector<HTMLElement>('.showcase-document');
-      panel?.scrollIntoView({ block: 'start', inline: 'nearest' });
-      panel?.querySelector<HTMLButtonElement>('[aria-label="Restore Structure"]')?.focus({ preventScroll: true });
-    } else if (expansionScroll) window.scrollTo(expansionScroll.x, expansionScroll.y);
-  }
+  let structureOpen = $state(false);
   let tools = $state<'inspector' | 'palette'>('inspector');
   let compositionFocus = $state<CompositionFocus>();
   let exampleFocus = $state<CompositionFocus>();
@@ -65,11 +52,9 @@
   let canvasRoot = $state<HTMLDivElement>();
   let showcaseRoot = $state<HTMLElement>();
   let detailsOpen = $state(false);
-  let detailsExpanded = $state(false);
-  let detailsHeight = $state(240);
   let detailsPage = $state<'properties'|'relationships'>('properties');
   let detailId = $state<string>();
-  let documentHeight = $state(540);
+  const rightOpen = $derived(documentOpen || detailsOpen);
   let detailsReturn:HTMLElement|undefined;
   let paletteRequested = $state(true);
   let palettePage = $state<'format'|'insert'|'arrange'|'connect'>('format');
@@ -77,9 +62,9 @@
   function inspect(id=source && selectedNodeId?structureId(source.id,'node',selectedNodeId):undefined,page:'properties'|'relationships'='properties') {
     const active=globalThis.document.activeElement;
     detailsReturn = active instanceof HTMLElement && !active.closest('[role="menu"]') ? active : undefined;
-    detailId=id;detailsPage=page;detailsOpen=true;documentOpen=true;
+    detailId=id;detailsPage=page;detailsOpen=true;
   }
-  function closeDetails(){detailsOpen=false;detailsExpanded=false;void tick().then(()=>{const target=detailsReturn?.isConnected && !detailsReturn.closest('[hidden],[inert]')?detailsReturn:showcaseRoot?.querySelector<HTMLElement>(view==='structure'?'.inspection-toggle':'[aria-label="Inspect example source"]');target?.focus({preventScroll:true});});}
+  function closeDetails(){detailsOpen=false;void tick().then(()=>{const target=detailsReturn?.isConnected && !detailsReturn.closest('[hidden],[inert]')?detailsReturn:showcaseRoot?.querySelector<HTMLElement>(structureOpen?'.inspection-toggle':'[aria-label="Inspect example source"]');target?.focus({preventScroll:true});});}
   function selectDetail(id:string){if(!source || blocked)return;detailId=id;const node=projectStructure(source).nodes.find(node=>node.id===id);if(node?.data.occurrence)selectStructure(node.data.occurrence);}
   function objectContext(occurrence:string):WorkspaceContext|undefined {
     if(!source)return;
@@ -130,7 +115,7 @@
     unsubscribe?.(); bridge = next; version++;
     unsubscribe = next.subscribe(() => version++);
     recipeId = id; targetNodeId = fixture.targetNodeId; exampleFocus = fixture.parentFocus;
-    compositionFocus = fixture.parentFocus; mode = 'design'; view = 'canvas';
+    compositionFocus = fixture.parentFocus; mode = 'design';
     selectedData = ''; plan = undefined; saved = false; issues = [];
     resetPreview();
     next.select(authoredOccurrence(next.document, fixture.targetNodeId) ?? `${next.document.id}|${fixture.targetNodeId}`);
@@ -207,7 +192,7 @@
   async function structureNavigate(request: StructureHandoff) {
     if (blocked) return;
     if (request.occurrence) selectStructure(request.occurrence);
-    if (request.destination === 'layers') { view = 'canvas'; documentOpen = true; }
+    if (request.destination === 'layers') { documentOpen = true; detailsOpen = false; }
     if (request.destination === 'design' && request.occurrence && source) {
       const find = () => [...(canvasRoot?.querySelectorAll<HTMLElement>('[data-ui-occ]') ?? [])].find(element => element.dataset.uiOcc === request.occurrence && element.getClientRects().length);
       if (!find()) {
@@ -261,7 +246,7 @@
   {#if bridge && source && snapshot}
     <p><strong>{recipe?.label}</strong> — {recipe?.description} {#if recipe?.placements.length}This part is composed within {recipe.placements[0]?.definitionId} / {recipe.placements[0]?.slotName}.{/if}</p>
     <div class="toolbar" aria-label="Example controls">
-      <button type="button" disabled={blocked} aria-expanded={documentOpen} onclick={() => documentOpen = !documentOpen}>Document</button>
+      <button type="button" disabled={blocked} aria-expanded={documentOpen} onclick={() => { if(detailsOpen){detailsOpen=false;documentOpen=true;} else documentOpen = !documentOpen; }}>Document</button>
       <button type="button" disabled={blocked} aria-pressed={mode === 'design'} onclick={() => changeMode('design')}>Design</button>
       <button type="button" disabled={blocked} aria-pressed={mode === 'interact'} onclick={() => changeMode('interact')}>Interact</button>
       <button type="button" disabled={blocked || !snapshot.canUndo} onclick={() => history('undo')}>Undo</button>
@@ -272,18 +257,14 @@
     </div>
     <p role="status" class="notice">{notice}</p>
     {#if issues.length}<ul class="issues" role="alert">{#each issues as issue}<li>{issue.code}: {issue.message}</li>{/each}</ul>{/if}
-    <div class="editor-grid" class:document-open={documentOpen} class:structure-open={documentOpen && view === 'structure'} class:structure-expanded={structureExpanded && documentOpen && view === 'structure'} style:--showcase-drawer-width={`${view === 'structure' ? structureWidth : 280}px`}>
-      <aside class="layers showcase-document" hidden={!documentOpen} tabindex="-1" aria-label="Example Document">
-        <nav class="toolbar" aria-label="Example Document sections"><button type="button" disabled={blocked} aria-pressed={view === 'canvas'} onclick={() => view = 'canvas'}>Layers</button><button type="button" disabled={blocked} aria-pressed={view === 'structure'} onclick={() => view = 'structure'}>Structure</button>{#if view === 'structure'}<button type="button" aria-label={structureExpanded ? 'Restore Structure' : 'Expand Structure'} onclick={() => void toggleStructureWorkbench()}>{structureExpanded ? 'Restore' : 'Expand'}</button>{/if}</nav>
-        <div class="example-document-content" bind:clientHeight={documentHeight}>
-        <div class="example-navigation" inert={detailsOpen && detailsExpanded}>
-        <div class="example-layers" hidden={view !== 'canvas'}><button type="button" aria-label="Inspect example source" aria-expanded={detailsOpen} onclick={()=>detailsOpen?closeDetails():inspect()}>Inspect</button>{#if plan}<Layers {plan} document={source} selectedOccurrence={selected} onSelect={selectStructure} onApply={apply} componentDescriptors={catalogDescriptors} onOpenComposition={navigateComposition} />{/if}</div>
-        <div class="structure" hidden={view !== 'structure'}><StructureView presentation="drawer" active={documentOpen && view === 'structure'} document={source} revision={snapshot.revision} {selectedNodeId} {blocked} descriptors={catalogDescriptors} recipes={screenRecipes} onSelect={selectStructure} onDeselect={() => { if (!blocked) {bridge?.select(undefined);detailId=undefined;} }} onMove={move} onNotice={message => notice = message} onNavigate={structureNavigate} onDismiss={() => { if (structureExpanded) void toggleStructureWorkbench(); else documentOpen = false; }} onInspect={inspect} inspectionSelection={detailId} onInspectSelection={id=>detailId=id} inspectionExpanded={detailsOpen} objectCommands={occurrence=>objectContext(occurrence)?.commands??[]} /></div>
-        </div>
-        {#if detailsOpen}<SourceDetails document={source} selectedId={detailId} {blocked} bind:height={detailsHeight} bind:expanded={detailsExpanded} bind:page={detailsPage} availableHeight={documentHeight} onClose={closeDetails} onSelect={selectDetail} onNavigate={structureNavigate} />{/if}
+    <div class="editor-grid" class:document-open={rightOpen}>
+      <aside class="layers showcase-document" hidden={!documentOpen || detailsOpen} tabindex="-1" aria-label="Example Document">
+        <nav class="toolbar" aria-label="Example Document sections"><strong>Layers</strong><button type="button" aria-label="Inspect example source" aria-expanded={detailsOpen} onclick={()=>inspect()}>Inspect</button></nav>
+        <div class="example-document-content">
+          <div class="example-layers">{#if plan}<Layers {plan} document={source} selectedOccurrence={selected} onSelect={selectStructure} onApply={apply} componentDescriptors={catalogDescriptors} onOpenComposition={navigateComposition} />{/if}</div>
         </div>
       </aside>
-      <div class="showcase-resizer" hidden={!documentOpen || view !== 'structure' || structureExpanded}><PanelResizer label="Example Document width" value={structureWidth} min={440} max={800} reverse onChange={(value: number) => structureWidth = value} /></div>
+      {#if detailsOpen}<aside class="showcase-document showcase-inspection" aria-label="Example Inspect"><SourceDetails document={source} selectedId={detailId} {blocked} bind:page={detailsPage} onClose={closeDetails} onSelect={selectDetail} onNavigate={structureNavigate} /></aside>{/if}
       <div class="preview-column">
         <div class="composition-tools">
           <button type="button" disabled={blocked} onclick={() => { if (!blocked) { compositionFocus = exampleFocus; selectNode(targetNodeId); } }}>Select example part</button>
@@ -303,6 +284,7 @@
                 onRenderDiagnostic={(diagnostic: { code: string; message: string }) => issues = [...issues.slice(-4), diagnostic]} ariaLabel="Showcase canvas" />
           {/key}
         </div>
+        <StructureDock bind:open={structureOpen} availableHeight={600}><StructureView presentation="drawer" active={structureOpen} document={source} revision={snapshot.revision} {selectedNodeId} {blocked} descriptors={catalogDescriptors} recipes={screenRecipes} onSelect={selectStructure} onDeselect={() => { if (!blocked) {bridge?.select(undefined);detailId=undefined;} }} onMove={move} onNotice={message => notice = message} onNavigate={structureNavigate} onDismiss={() => structureOpen = false} onInspect={inspect} onCloseInspect={closeDetails} inspectionSelection={detailId} onInspectSelection={id=>detailId=id} inspectionExpanded={detailsOpen} objectCommands={occurrence=>objectContext(occurrence)?.commands??[]} /></StructureDock>
         <details><summary>Insert and arrange (Composer)</summary><Composer document={source} {selectedNodeId} recipes={screenRecipes} descriptors={catalogDescriptors} {compositionFocus} onApply={apply} onInserted={selectNode} onDetached={selectNode} /></details>
         <details data-structure-data tabindex="-1"><summary>Data: authored starting values</summary>
           <label>State declaration <select aria-label="Authored state declaration" value={selectedData} disabled={blocked} onchange={event => selectedData = event.currentTarget.value}><option value="">Choose a value</option>{#each Object.values(source.localState) as declaration}<option value={declaration.key}>{declaration.key} · {declaration.type}</option>{/each}</select></label>
@@ -343,25 +325,20 @@
   button { cursor: pointer; } button[aria-pressed=true] { background: #e3eaff; border-color: #627ccc; } :disabled { opacity: .5; cursor: default; }
   .notice { padding: 10px 12px; background: #eef3ff; border-radius: 6px; } .issues { color: #9d2828; }
   .editor-grid { position: relative; display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; align-items: start; }
-  .editor-grid.document-open { grid-template-columns: minmax(340px, 1fr) 6px minmax(280px, var(--showcase-drawer-width)); }
+  .editor-grid.document-open { grid-template-columns: minmax(340px, 1fr) minmax(280px, 360px); }
   .editor-grid > .preview-column { grid-column: 1; grid-row: 1; }
-  .showcase-document { grid-column: 3; grid-row: 1; padding: 0; height: 600px; display: flex; flex-direction: column; }
+  .showcase-document { grid-column: 2; grid-row: 1; padding: 0; height: 600px; display: flex; flex-direction: column; }
   .showcase-document > nav { padding: 10px; flex-shrink: 0; }
   .example-document-content { display:flex; flex-direction:column; flex:1; min-height:0; position:relative; overflow:hidden; }
-  .example-navigation { display:flex; flex-direction:column; flex:1; min-height:0; overflow:hidden; }
-  .example-navigation>[hidden] {display:none;}
   .example-layers {overflow:auto;min-height:0;flex:1;}
   .showcase-document > div:not(.structure) { overflow: auto; }
-  .showcase-resizer { display: grid; grid-column: 2; grid-row: 1; height: 600px; }
-  .showcase-document[hidden], .showcase-resizer[hidden] { display: none; }
+  .showcase-document[hidden] { display: none; }
   .inspector { grid-column: 1 / -1; }
-  .editor-grid.structure-expanded > .showcase-document { position: absolute; grid-column: 1 / -1; grid-row: 1; inset: 0; width: auto; height: min(900px, calc(100dvh - 32px)); max-height: none; z-index: 20; }
   aside { padding: 12px; background: white; border: 1px solid #d7dfe9; border-radius: 8px; max-height: 850px; overflow: auto; min-width: 0; }
   .preview-column { min-width: 0; } .composition-tools { margin-bottom: 10px; }
   .canvas { height: 560px; overflow: auto; border: 1px solid #d7dfe9; background: white; border-radius: 8px; container: studio-screen / inline-size; }
-  .structure { flex: 1; min-height: 0; }
   details { border: 1px solid #d7dfe9; border-radius: 8px; background: white; padding: 12px; margin-top: 12px; }
   summary { cursor: pointer; font-weight: 600; } details[open] > summary { margin-bottom: 14px; } pre { overflow: auto; max-height: 400px; font-size: 12px; }
-  @media(max-width: 1100px) { .editor-grid.document-open { grid-template-columns: minmax(0, 1fr); } .showcase-document { grid-column: 1; grid-row: 2; height: 480px; } .showcase-resizer { display: none; } .inspector { grid-column: 1 / -1; max-height: none; } }
+  @media(max-width: 1100px) { .editor-grid.document-open { grid-template-columns: minmax(0, 1fr); } .showcase-document { grid-column: 1; grid-row: 2; height: 480px; } .inspector { grid-column: 1 / -1; max-height: none; } }
   @media(max-width: 700px) { aside { margin-bottom: 12px; } .catalog-picker label { width: 100%; } .canvas { height: 460px; } }
 </style>

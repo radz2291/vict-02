@@ -1,9 +1,9 @@
 // @vitest-environment happy-dom
 import { afterEach, expect, it, vi } from 'vitest';
-import { mount, unmount, tick, flushSync } from 'svelte';
+import { mount, unmount, tick, flushSync, createRawSnippet } from 'svelte';
 vi.mock('$app/navigation', () => ({ beforeNavigate: () => {} }));
 import Designer from '../../src/lib/designer/Designer.svelte';
-import SourceDetails from '../../src/lib/designer/SourceDetails.svelte';
+import StructureDock from '../../src/lib/designer/StructureDock.svelte';
 import { newScreen } from '../../src/lib/designer/application.js';
 import { screenStore } from '../../src/lib/designer/storage.js';
 import { structureId } from '../../src/lib/designer/structure.js';
@@ -60,14 +60,16 @@ it('empty canvas clears an old object target, supports Shift+F10, and leaves nat
   const nativeKey=new KeyboardEvent('keydown',{key:'F10',shiftKey:true,bubbles:true,cancelable:true});document.querySelector('input[aria-label="Native field"]')!.dispatchEvent(nativeKey);await settle();expect(nativeKey.defaultPrevented).toBe(false);
   button('Interact').click();await settle();expect((await secondary(heading)).defaultPrevented).toBe(false);expect(document.querySelector('[role="menu"][data-state="open"]')).toBeNull();
 });
-it('shares deliberate details beneath Layers and Structure; retains canvas, graph, scroll, height and floating editing home',async()=>{
+it('shares a right inspection drawer between Layers and bottom Structure; retains mounted canvas, graph, scroll and floating editing home',async()=>{
   const source=await start();const frame=document.querySelector('.design-frame')!,scroll=document.querySelector<HTMLElement>('.canvas-scroll')!;
   button('Document').click();await settle();button('Inspect source').click();await settle();
   expect(document.querySelector('[aria-label="Source inspection details"]')).not.toBeNull();
-  const resizer=document.querySelector<HTMLElement>('[aria-label="Inspection details height"]')!;
+  expect(document.querySelector('.inspection-drawer .source-details')).not.toBeNull();
+  button('Close inspection details').click();await settle();button('Structure').click();await settle();
+  const resizer=document.querySelector<HTMLElement>('[aria-label="Structure panel height"]')!;
   const height=Number(resizer.getAttribute('aria-valuenow'));resizer.dispatchEvent(new KeyboardEvent('keydown',{key:'ArrowUp',bubbles:true,cancelable:true}));await settle();
   expect(Number(resizer.getAttribute('aria-valuenow'))).toBeGreaterThanOrEqual(height);
-  button('Structure').click();await settle();const graph=document.querySelector('.svelte-flow')!;
+  const graph=document.querySelector('.svelte-flow')!;
   expect(graph.closest('[data-context-menu-trigger]')).toBeNull();
   const node=[...document.querySelectorAll<HTMLElement>('.svelte-flow__node')].find(node=>node.dataset.id===structureId(source.id,'node','second'))!;
   scroll.scrollTop=83;scroll.scrollLeft=14;
@@ -75,10 +77,11 @@ it('shares deliberate details beneath Layers and Structure; retains canvas, grap
   [...document.querySelectorAll<HTMLElement>('[role="menu"][data-state="open"] [role="menuitem"]')].find(node=>node.textContent?.trim()==='Inspect')!.click();await settle();expect(document.querySelector('.source-details header strong')?.textContent).toBe('Second heading');
   expect(scroll.scrollTop).toBe(83);expect(scroll.scrollLeft).toBe(14);expect(document.querySelector('.design-frame')).toBe(frame);
   expect(document.querySelector('[aria-label="Floating selection tools"]')).toBeNull();
-  button('Expand inspection details').click();await settle();expect(document.querySelector<HTMLElement>('.document-navigation')?.inert).toBe(true);
-  button('Restore inspection details').click();await settle();expect(document.querySelector<HTMLElement>('.document-navigation')?.inert).toBe(false);
-  button('Layers').click();await settle();button('Structure').click();await settle();expect(document.querySelector('.svelte-flow')).toBe(graph);
-  button('Edit properties ↗').click();await settle();expect(document.querySelector('[aria-label="Floating selection tools"]')).not.toBeNull();expect(document.querySelector('.source-details')).not.toBeNull();
+  expect(document.querySelector('.structure-dock .source-details')).toBeNull();
+  button('Close inspection details').click();await settle();
+  button('Structure').click();await settle();button('Structure').click();await settle();expect(document.querySelector('.svelte-flow')).toBe(graph);
+  button('Inspect structure').click();await settle();
+  button('Edit properties ↗').click();await settle();expect(document.querySelector('[aria-label="Floating selection tools"]')).not.toBeNull();expect(document.querySelector('.source-details')).toBeNull();
 });
 it('keeps ambiguous repeated/definition occurrences inspectable without granting source edits',()=>{
   const document=newScreen('Capabilities','capabilities');
@@ -89,6 +92,9 @@ it('keeps ambiguous repeated/definition occurrences inspectable without granting
 it('refuses contextual source commands during a JSON draft and does not intercept outside this workspace',async()=>{
   await start();button('Document').click();await settle();button('Source').click();await settle();
   const draft=document.querySelector<HTMLTextAreaElement>('#canonical-source')!;draft.value+=' ';draft.dispatchEvent(new Event('input',{bubbles:true}));await settle();
+  const exactDraft=draft.value;
+  button('Structure').click();await settle();button('Structure').click();await settle();
+  expect(document.querySelector('#canonical-source')).toBe(draft);expect(draft.value).toBe(exactDraft);
   await secondary(document.querySelector('.design-frame h2')!);
   const duplicate=[...document.querySelectorAll<HTMLElement>('[role="menu"][data-state="open"] [role="menuitem"]')].find(node=>node.textContent?.trim()==='Duplicate')!;
   expect(duplicate.getAttribute('aria-disabled')).toBe('true');duplicate.click();await settle();
@@ -96,10 +102,10 @@ it('refuses contextual source commands during a JSON draft and does not intercep
   const outside=document.createElement('p');document.body.append(outside);expect((await secondary(outside)).defaultPrevented).toBe(false);
 });
 it('keeps short-window splitter values and keyboard resize within the same dynamic bounds',async()=>{
-  editor=mount(SourceDetails,{target:document.body,props:{document:newScreen('Short details','short-details'),availableHeight:240,onClose:vi.fn(),onSelect:vi.fn(),onNavigate:vi.fn()}});await settle();
-  const splitter=document.querySelector<HTMLElement>('[aria-label="Inspection details height"]')!;
-  expect(splitter.getAttribute('aria-valuemin')).toBe('120');expect(splitter.getAttribute('aria-valuemax')).toBe('120');expect(splitter.getAttribute('aria-valuenow')).toBe('120');
-  for(const key of ['ArrowUp','ArrowDown','Home','End']){splitter.dispatchEvent(new KeyboardEvent('keydown',{key,bubbles:true,cancelable:true}));await settle();expect(splitter.getAttribute('aria-valuenow')).toBe('120');}
+  editor=mount(StructureDock,{target:document.body,props:{open:true,availableHeight:240,children:createRawSnippet(()=>({render:()=>'<p>Graph content</p>'}))}});await settle();
+  const splitter=document.querySelector<HTMLElement>('[aria-label="Structure panel height"]')!;
+  expect(splitter.getAttribute('aria-valuemin')).toBe('96');expect(splitter.getAttribute('aria-valuemax')).toBe('96');expect(splitter.getAttribute('aria-valuenow')).toBe('96');
+  for(const key of ['ArrowUp','ArrowDown','Home','End']){splitter.dispatchEvent(new KeyboardEvent('keydown',{key,bubbles:true,cancelable:true}));await settle();expect(splitter.getAttribute('aria-valuenow')).toBe('96');}
 });
 it('explicitly hands Structure editing from Interact to visible Design floating tools',async()=>{
   const source=await start();button('Interact').click();await settle();button('Document').click();await settle();button('Structure').click();await settle();
