@@ -88,7 +88,7 @@
     if(open){
       lastPanel=panel;
       if(compactWorkspace){chatOpen=false;drawerOpen=false;structureOpen=false;testingOpen=false;}
-      if(panel==='structure' && source)structureFocusId=detailId ?? structureId(source.id,'node',selectedNode?.id ?? source.root);
+      if(panel==='structure' && source && !structureFocusId)structureFocusId=detailId ?? structureId(source.id,'node',selectedNode?.id ?? source.root);
     }
     if(panel==='chat')chatOpen=open;
     else if(panel==='document'){drawerOpen=open;if(open)testingOpen=false;}
@@ -382,7 +382,7 @@
   $effect(()=>{void authoredRevision;untrack(()=>{if(activeTest)resetRuntime();});});
   function openSession(next: EditorBridge) {
     agentEpoch = crypto.randomUUID();
-    compositionFocus=undefined;detailId=undefined;structureFocusId=undefined;
+    compositionFocus=undefined;detailId=undefined;structureFocusId=structureId(next.document.id,'node',next.document.root);
     palettePage = 'format'; paletteRequested = false;
     unsubscribe?.(); bridge = next; version++;
     unsubscribe = next.subscribe(() => version++);

@@ -49,3 +49,18 @@ it('retains inspected data scope through a canonical Data edit with the same occ
  expect(document.querySelector('.source-details header strong')?.textContent).toBe('Message');expect(document.querySelector<HTMLElement>('.svelte-flow__node.selected')?.dataset.id).toBe(structureId(source.id,'state','message'));
  expect(document.querySelector<HTMLTextAreaElement>('#canonical-source')!.value).toContain('Edited through Data');
 });
+it('preserves the browsed connection scope when Structure is hidden and reopened',async()=>{
+ const source=await start();await click('Document');await click('Source');
+ const field=document.querySelector<HTMLTextAreaElement>('#canonical-source')!;
+ const next=JSON.parse(field.value);next.nodes.screen.children.push('consumer');
+ next.nodes.field.attributes.disabled={type:'ref',path:'state.accepted'};
+ next.nodes.consumer={id:'consumer',kind:'element',tag:'input',children:[],attributes:{type:'checkbox','aria-label':'Shared consumer',checked:{type:'ref',path:'state.accepted'}}};
+ field.value=JSON.stringify(next);field.dispatchEvent(new Event('input',{bubbles:true}));await settle();await click('Apply source');await click('Close document');
+ document.querySelector('.design-frame input')!.dispatchEvent(new PointerEvent('pointerdown',{button:0,bubbles:true,cancelable:true}));await settle();await click('Structure');
+ const ids=()=>[...document.querySelectorAll<HTMLElement>('.svelte-flow__node')].map(node=>node.dataset.id).sort();
+ const before=ids();expect(before).toContain(structureId(source.id,'node','consumer'));
+ const state=[...document.querySelectorAll<HTMLElement>('.svelte-flow__node')].find(node=>node.dataset.id===structureId(source.id,'state','message'))!;
+ state.click();await settle();expect(ids()).toEqual(before);
+ await click('Close Structure');await click('Structure');expect(ids()).toEqual(before);
+ expect(document.querySelector<HTMLElement>('.svelte-flow__node.selected')?.dataset.id).toBe(structureId(source.id,'state','message'));
+});
