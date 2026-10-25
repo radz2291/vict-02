@@ -1,0 +1,79 @@
+{
+  "controls": [
+    {
+      "id": "doc-title-input",
+      "label": null,
+      "value": "Local intent verification title"
+    },
+    {
+      "id": "doc-body-input",
+      "label": null,
+      "value": "Independent temporary editor text for a local intent test."
+    },
+    {
+      "id": "",
+      "label": null,
+      "value": "on"
+    },
+    {
+      "id": "",
+      "label": null,
+      "value": "on"
+    },
+    {
+      "id": "",
+      "label": "message value",
+      "value": "Hello from my screen"
+    },
+    {
+      "id": "",
+      "label": null,
+      "value": "on"
+    },
+    {
+      "id": "",
+      "label": null,
+      "value": "on"
+    },
+    {
+      "id": "",
+      "label": null,
+      "value": "on"
+    },
+    {
+      "id": "",
+      "label": "actionError value",
+      "value": ""
+    },
+    {
+      "id": "",
+      "label": "actionResult value",
+      "value": "Simulated submission: Local intent verification title"
+    },
+    {
+      "id": "",
+      "label": "openDoc value",
+      "value": "Product brief"
+    },
+    {
+      "id": "",
+      "label": "docTitle value",
+      "value": "Local intent verification title"
+    },
+    {
+      "id": "",
+      "label": "docBody value",
+      "value": "Independent temporary editor text for a local intent test."
+    },
+    {
+      "id": "",
+      "label": "saveStatus value",
+      "value": "Unsaved changes"
+    }
+  ],
+  "statuses": [
+    "Simulated submission: Local intent verification title",
+    "Unsaved changes",
+    "demo.submit: Simulated submission: Local intent verification title"
+  ]
+}

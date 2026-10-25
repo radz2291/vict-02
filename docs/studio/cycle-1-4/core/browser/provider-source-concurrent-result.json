@@ -1,0 +1,15 @@
+{
+  "at": "2026-10-25T13:43:09.594Z",
+  "actualManualApplyAfterVisibleRead": true,
+  "manualRetained": true,
+  "sourceExactlyManualApply": true,
+  "fontSize": {
+    "property": "font-size",
+    "value": {
+      "type": "text",
+      "value": "19px"
+    }
+  },
+  "outcome": "UI_DOC_STALE_REVISION; no edit applied",
+  "missedEarlierAttempt": "color-only turn completed before manual intervention; retained separately"
+}

@@ -1,0 +1,6 @@
+{
+  "undoDiffers": true,
+  "redoExact": true,
+  "manualProofAfterUndo": true,
+  "manualProofAfterRedo": true
+}

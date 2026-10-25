@@ -1,0 +1,113 @@
+{
+  "capturedAt": "2026-10-25T13:43:09.422Z",
+  "url": "http://127.0.0.12:5606/design",
+  "active": {
+    "label": null,
+    "tag": "BUTTON",
+    "text": " Browser refused edit · UI_DOC_STALE_REVISIONfailed "
+  },
+  "rects": [
+    {
+      "class": "agent-chat svelte-1n95bvq",
+      "clientHeight": 652,
+      "display": "flex",
+      "height": 652,
+      "label": "Chat",
+      "overflow": "hidden",
+      "role": null,
+      "scrollHeight": 652,
+      "tag": "ASIDE",
+      "width": 320,
+      "x": 0,
+      "y": 44
+    },
+    {
+      "class": "design-stage",
+      "clientHeight": 652,
+      "display": "flex",
+      "height": 652,
+      "label": null,
+      "overflow": "visible",
+      "role": null,
+      "scrollHeight": 652,
+      "tag": "MAIN",
+      "width": 634,
+      "x": 320,
+      "y": 44
+    },
+    {
+      "class": "canvas-scroll workspace-scroll",
+      "clientHeight": 585,
+      "display": "block",
+      "height": 584.7000122070312,
+      "label": null,
+      "overflow": "auto",
+      "role": null,
+      "scrollHeight": 1375,
+      "tag": "DIV",
+      "width": 634,
+      "x": 320,
+      "y": 82
+    },
+    {
+      "class": "uv-e5000caa-screen",
+      "clientHeight": 1329,
+      "display": "flex",
+      "height": 1328.5750732421875,
+      "label": "Cycle 1.4 recovery review",
+      "overflow": "visible",
+      "role": null,
+      "scrollHeight": 1329,
+      "tag": "MAIN",
+      "width": 582.7999877929688,
+      "x": 338,
+      "y": 98
+    },
+    {
+      "class": "resizer svelte-qt87z",
+      "clientHeight": 652,
+      "display": "flex",
+      "height": 652,
+      "label": "Document drawer width",
+      "overflow": "visible",
+      "role": "separator",
+      "scrollHeight": 652,
+      "tag": "DIV",
+      "width": 6,
+      "x": 954,
+      "y": 44
+    },
+    {
+      "class": "document-drawer source-drawer",
+      "clientHeight": 652,
+      "display": "flex",
+      "height": 652,
+      "label": "Document",
+      "overflow": "hidden",
+      "role": null,
+      "scrollHeight": 652,
+      "tag": "ASIDE",
+      "width": 320,
+      "x": 960,
+      "y": 44
+    },
+    {
+      "class": "sidebar-tabs svelte-11390zq",
+      "clientHeight": 37,
+      "display": "flex",
+      "height": 38,
+      "label": "Document sections",
+      "overflow": "visible",
+      "role": null,
+      "scrollHeight": 37,
+      "tag": "NAV",
+      "width": 319.20001220703125,
+      "x": 960.7999877929688,
+      "y": 44
+    }
+  ],
+  "viewport": {
+    "height": 720,
+    "width": 1280
+  }
+}
