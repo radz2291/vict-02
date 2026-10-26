@@ -1,6 +1,6 @@
 # Cycle 1.4 — owner panel polish
 
-Status: implementing the owner-released six-item batch; owner test candidate, independent gate pending.
+Status: BUILDER CHECKS PASS / READY FOR OWNER TEST; independent gate and owner acceptance pending.
 
 Exact clean baseline bf9d4f304bfd2411a70b5b424c56e3898baf5c5d (remote equal), main d7401bef6e48330796c74ec00c86db9622d48cdf (remote equal). Isolated branch codex/studio-cycle-1-4-panel-polish in the existing owned selection-panel worktree. The owner's “Ok now pls proceed” releases the previously held batch.
 
@@ -15,3 +15,17 @@ Initial Svelte check found four implicit toolbar snippet parameter types and nin
 Builder checks before production: 16/16 focused tests across panel-polish, selection-panel, structure-workspace and structure-portals; TypeScript noEmit passes; Svelte check has 0 errors and 5 unchanged renderer warnings. Raw logs are in cycle-1-4/panel-polish. Test-only agent-status requests against absent port3000 log connection errors, with no provider turn or product failure claimed. No broad renderer suite rerun or inherited-failure closure is claimed. Serial production build and actual-browser checks follow this source commit.
 
 Actual-browser observation on product5fc16e8: Selection and Data controls work and screenshots match the intended layout; saved screen remains r1.r1. Advanced inherited a wrapper height cap that squeezed its new explanation into a short scroll area. Retained source-advanced-initial.png and the initial seal/build log. Removed the wrapper cap and limited scrolling to the code block; no behavior/source changes. Replacement serial build follows.
+
+## Delivered owner test candidate
+
+Branch: codex/studio-cycle-1-4-panel-polish. Final product: cce7c1d63f502c58fa96400dda25d2fa0ff2cda9 (pushed and remote-equal). Initial behavior candidate: 5fc16e8eb0bffab6e5fbf694b4fa6af562f22738; the replacement changes only the Advanced wrapper/code scrolling CSS and removes the obsolete wrapper limit.
+
+The 16 focused behavioral tests, TypeScript and Svelte checks passed on the behavior candidate before that CSS-only correction. The replacement serial production build and exact committed-byte seal pass: 758 inputs / 491 outputs; manifest SHA256 058e27569302fb5e54ca7bc84ae0dd04faed1cfa08eb97c038746f8f525678fd. Final build retains existing dependency circular warnings; no new Svelte warnings were introduced. Seal manifest and verify script are under cycle-1-4/panel-polish.
+
+Actual root-operated CUA on the final production origin confirms single layer click retains Document, double click opens Selection, Structure mode remains active, Overview/Relationships/Technical information expand exclusively, and Technical information preserves occurrence provenance. Data's Back and Apply share one row; a temporary browser draft disabled Back, enabled Apply, and Cancel restored the empty starting value. Applying canonical data through the new toolbar is covered by the focused test; no persistent data edit was made in the owner's browser. Advanced now has an unclipped heading/explanation and a bounded scrollable code block. The saved owner fixture remains r1.r1 / Saved. The same workspace fixture uses the actual new Selection and Data components; its mount/interaction test passes. All native Studio-owned text disclosures in the designer source inventory opt in to the full-row/chevron/divider style; existing floating inspector disclosures use the same header treatment. Authored page controls and generic library defaults remain unchanged.
+
+[Current Studio](http://127.0.0.22:5616/design) is logged in and left on Design → Selection → Overview. [Showcase](http://127.0.0.22:5616/showcase) contains the updated disposable workspace example. Browser proof: [review record](cycle-1-4/panel-polish/browser-review.json), [Selection](cycle-1-4/panel-polish/selection-overview.png), [Technical information](cycle-1-4/panel-polish/selection-technical.png), [Data toolbar](cycle-1-4/panel-polish/data-toolbar.png), [Advanced](cycle-1-4/panel-polish/source-advanced.png), [Structure continuity](cycle-1-4/panel-polish/structure-selection.png). Initial squeezed Advanced screenshot and initial seal/build are retained.
+
+No new provider turn, full gallery hands-on sweep, independent gate verdict or inherited renderer-failure closure is claimed. Existing zai/glm-5.3-flash configuration is preserved. The five inherited Svelte warnings and historical 19 authoring-probe failures retain their prior scope. No changes to canonical semantics, edit transactions, history, storage, generated application content, server provider/effects, authored UI or floating Format placement.
+
+Next allowed action: owner hands-on review and explicit next bounded revision. Try Layers → double-click an item; switch the three Selection accordions; Document → Data → an item for Back/Apply; Document → Source → Advanced. Independent verification is still pending. This is a revision checkpoint, not finalization, owner acceptance, Stage9 closure, main merge, release or deployment.

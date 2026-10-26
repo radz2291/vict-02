@@ -1,0 +1,31 @@
+{
+  "candidate": "cce7c1d63f502c58fa96400dda25d2fa0ff2cda9",
+  "url": "http://127.0.0.22:5616/design",
+  "method": "Root-operated CUA, actual production artifact; no independent hands-on gate",
+  "checks": {
+    "singleClickKeepsDocument": true,
+    "doubleClickOpensSelection": true,
+    "structureModeRetained": true,
+    "exclusiveSections": true,
+    "provenanceVisible": true,
+    "dataDraftBackBlocked": true,
+    "dataCancelRestoresEmptyValue": true,
+    "backApplySameToolbar": true,
+    "advancedExplainedAndUnclipped": true,
+    "savedRevision": "r1.r1",
+    "providerTurn": false
+  },
+  "limits": [
+    "No full gallery hands-on sweep",
+    "Five pre-existing renderer warnings",
+    "Independent gate and owner acceptance pending"
+  ],
+  "screenshots": [
+    "selection-overview.png",
+    "selection-technical.png",
+    "data-toolbar.png",
+    "source-advanced.png",
+    "structure-selection.png"
+  ],
+  "retainedFailedObservation": "source-advanced-initial.png"
+}
