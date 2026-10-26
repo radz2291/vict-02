@@ -2,6 +2,7 @@
   import { onDestroy, tick, untrack } from 'svelte';
   import { FlowCanvas, SourceNode, RoutedEdge, FlowNavigation, Controls, layoutGraph, LayoutFence, type Node, type Edge, type Connection, type Viewport, type LayoutDirection } from '@victframework/ui-flow-svelte';
   import '@victframework/ui-flow-svelte/styles.css';
+  import './studio-cards.css';
   import type { UiDocument, UiExtensionDescriptor } from '@victframework/ui';
   import { type InsertRecipe } from '@victframework/ui-editor';
   import { projectStructure, filterStructure, connectedStructure, compactStructure, structureNodePresentation, structureFacts, structureId, parseStructureId, structureMove, type StructureNodeData, type StructureEditRequest, type StructureHandoff } from './structure.js';

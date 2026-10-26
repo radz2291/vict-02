@@ -1,5 +1,6 @@
 <script lang="ts">
   import './disclosures.css';
+  import './studio-cards.css';
   import { onMount } from 'svelte';
   import type { UiDocument } from '@victframework/ui';
   import { projectStructure, structureFacts, structureNodePresentation, parseStructureId, type StructureHandoff } from './structure.js';
@@ -65,7 +66,7 @@
   }
 </script>
 <section data-studio-typography class="studio-type-scope source-details" aria-label="Source inspection details" bind:this={root}>
-  <header>{#if !embedded}<span>Inspect</span>{/if}<strong title={label}>{label}</strong>{#if !embedded}<button type="button" aria-label="Close inspection details" onclick={onClose}>×</button>{/if}</header>
+  <header>{#if !embedded}<span>Inspect</span>{/if}<div class="selection-identity-card">{#if selected}<span>{selected.data.kindLabel ?? readableName(selected.data.kind)}</span>{/if}<strong title={label}>{label}</strong></div>{#if !embedded}<button type="button" aria-label="Close inspection details" onclick={onClose}>×</button>{/if}</header>
   <div class="selection-sections">
     {#if !selected}<p class="empty-selection">Select an item on the canvas, in Layers or in the graph.</p>
     {:else}
@@ -86,7 +87,7 @@
 </section>
 <style>
   .source-details { box-sizing:border-box; display:flex; flex-direction:column; flex:none; height:100%; min-height:0; min-width:0; border-left:1px solid var(--vict-color-border,#e1e6ee); background:var(--vict-color-surface,#fff); color:var(--vict-color-text,#26334b); font:var(--studio-font-ui,12px/1.45 system-ui,sans-serif); overflow:hidden; }
-  header { display:flex; align-items:center; gap:6px; padding:5px 8px; height:38px;box-sizing:border-box;flex:none;border-bottom:1px solid var(--vict-color-border,#e1e6ee); }
+  header { display:flex; align-items:center; gap:6px; padding:12px;box-sizing:border-box;flex:none;border-bottom:1px solid var(--vict-color-border,#e1e6ee); }
   header strong { flex:1; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-weight:600; }
   button:not(.studio-section-header) { font:inherit; color:inherit; cursor:pointer; border:1px solid var(--vict-color-border,#dce2eb); border-radius:5px; background:var(--vict-color-surface,#fff); padding:5px 8px; }
   header button { width:28px; height:28px; border:0; padding:0; }
