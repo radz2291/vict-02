@@ -244,7 +244,7 @@
   }
 </script>
 <svelte:window onkeydown={escape} onkeydowncapture={graphEscape} />
-<section data-studio-typography class="studio-type-scope structure-view" class:overview-scale={viewport.zoom<.65} class:drawer-presentation={presentation === 'drawer'} class:inspection-open={inspectionOpen} aria-label="Source structure" bind:this={structureElement}>
+<section data-studio-typography class="studio-type-scope structure-view" class:drawer-presentation={presentation === 'drawer'} class:inspection-open={inspectionOpen} aria-label="Source structure" bind:this={structureElement}>
   <WorkspaceContextMenu scope={structureElement} enabled={active} resolve={context} />
   <div class="structure-tools">
     <input type="search" aria-label="Search structure" placeholder="Search structure" bind:value={search} />
@@ -308,7 +308,7 @@
       </FlowCanvas>
       {#if graphView==='connections' && !search && connectionGraph.edges.length===0}<p class="connection-empty">No declared connections for this item.</p>{/if}
       {#if layoutStatus}<p class="structure-status" role="status">{layoutStatus}</p>{/if}
-      {#if viewport.zoom<.65 && !layoutStatus && nodes.length}<div class="structure-scale-hint">Zoom in for connection details.<button type="button" onclick={()=>locate(inspectedId?[inspectedId]:[])}>Frame selection</button></div>{/if}
+      {#if viewport.zoom<.65 && !layoutStatus && nodes.length}<div class="structure-scale-hint">Zoom in for easier reading.<button type="button" onclick={()=>locate(inspectedId?[inspectedId]:[])}>Frame selection</button></div>{/if}
       {#if !nodes.length}<div class="structure-empty"><p>No matching items</p><button type="button" onclick={() => { search = ''; focusedId = undefined; }}>Clear search</button></div>{/if}
     </div>
     {#if inspectionOpen}
