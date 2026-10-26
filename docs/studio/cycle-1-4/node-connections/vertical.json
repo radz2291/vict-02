@@ -1,0 +1,1137 @@
+{
+  "edges": [
+    {
+      "caption": "Contains",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522screen%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22contains%22%2C%22%2Fnodes%2Fscreen%2Fchildren%2F0%22%5D",
+      "label": "Screen -> Section: Contains; /nodes/screen/children/0",
+      "path": "M 1618.7000122070312,116.59998430524554 L 1638.7000122070312,116.59998430524554 L 1638.7000122070312,208.4 L 1369.2999790736608,208.4 L 1369.2999790736608,336.99998430524556 L 1389.2999790736608,336.99998430524556",
+      "visible": "0"
+    },
+    {
+      "caption": "Contains",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbTitle%2522%255D%22%2C%22contains%22%2C%22%2Fnodes%2FonbCard%2Fchildren%2F0%22%5D",
+      "label": "Section -> Create your workspace: Contains; /nodes/onbCard/children/0",
+      "path": "M 1618.7000558035716,336.99998430524556 L 1638.7000558035716,336.99998430524556 L 1638.7000558035716,378.4 L 9.299979073660715,378.4 L 9.299979073660715,533.4000453404018 L 29.299979073660715,533.4000453404018",
+      "visible": "0"
+    },
+    {
+      "caption": "Contains",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbSubtitle%2522%255D%22%2C%22contains%22%2C%22%2Fnodes%2FonbCard%2Fchildren%2F1%22%5D",
+      "label": "Section -> Set up your workspace in under a minute — just the essentials.: Contains; /nodes/onbCard/children/1",
+      "path": "M 1618.7000558035716,336.99998430524556 L 1638.7000558035716,336.99998430524556 L 1638.7000558035716,428.79999999999995 L 281.2999790736607,428.79999999999995 L 281.2999790736607,548.399996294294 L 301.2999790736607,548.399996294294",
+      "visible": "0"
+    },
+    {
+      "caption": "Contains",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameLabel%2522%255D%22%2C%22contains%22%2C%22%2Fnodes%2FonbCard%2Fchildren%2F2%22%5D",
+      "label": "Section -> Label · Full name: Contains; /nodes/onbCard/children/2",
+      "path": "M 1618.7000558035716,336.99998430524556 L 1638.7000558035716,336.99998430524556 L 1638.7000558035716,428.79999999999995 L 553.2999790736607,428.79999999999995 L 553.2999790736607,533.399996294294 L 573.2999790736607,533.399996294294",
+      "visible": "0"
+    },
+    {
+      "caption": "Contains",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22contains%22%2C%22%2Fnodes%2FonbCard%2Fchildren%2F3%22%5D",
+      "label": "Section -> Full name: Contains; /nodes/onbCard/children/3",
+      "path": "M 1618.7000558035716,336.99998430524556 L 1638.7000558035716,336.99998430524556 L 1638.7000558035716,378.4 L 1369.2999790736608,378.4 L 1369.2999790736608,533.3999581473214 L 1389.2999790736608,533.3999581473214",
+      "visible": "0"
+    },
+    {
+      "caption": "Contains",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbEmailLabel%2522%255D%22%2C%22contains%22%2C%22%2Fnodes%2FonbCard%2Fchildren%2F4%22%5D",
+      "label": "Section -> Label · Work email: Contains; /nodes/onbCard/children/4",
+      "path": "M 1618.7000558035716,336.99998430524556 L 1638.7000558035716,336.99998430524556 L 1638.7000558035716,378.4 L 825.2999790736607,378.4 L 825.2999790736607,533.3999908447265 L 845.2999790736607,533.3999908447265",
+      "visible": "0"
+    },
+    {
+      "caption": "Contains",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbEmailInput%2522%255D%22%2C%22contains%22%2C%22%2Fnodes%2FonbCard%2Fchildren%2F5%22%5D",
+      "label": "Section -> Work email: Contains; /nodes/onbCard/children/5",
+      "path": "M1618.7000558035716 336.99998430524556L1638.7000558035716 336.99998430524556L 1907.0000174386162,336.99998430524556Q 1912.0000174386162,336.99998430524556 1912.0000174386162,341.99998430524556L 1912.0000174386162,528.4000453404018Q 1912.0000174386162,533.4000453404018 1917.0000174386162,533.4000453404018L2185.299979073661 533.4000453404018L2205.299979073661 533.4000453404018",
+      "visible": "0"
+    },
+    {
+      "caption": "Contains",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleLabel%2522%255D%22%2C%22contains%22%2C%22%2Fnodes%2FonbCard%2Fchildren%2F6%22%5D",
+      "label": "Section -> Label · Role: Contains; /nodes/onbCard/children/6",
+      "path": "M 1618.7000558035716,336.99998430524556 L 1638.7000558035716,336.99998430524556 L 1638.7000558035716,378.4 L 1097.2999790736608,378.4 L 1097.2999790736608,533.3999581473214 L 1117.2999790736608,533.3999581473214",
+      "visible": "0"
+    },
+    {
+      "caption": "Contains",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleSelect%2522%255D%22%2C%22contains%22%2C%22%2Fnodes%2FonbCard%2Fchildren%2F7%22%5D",
+      "label": "Section -> Role: Contains; /nodes/onbCard/children/7",
+      "path": "M1618.7000558035716 336.99998430524556L1638.7000558035716 336.99998430524556L 2315.000017438616,336.99998430524556Q 2320.000017438616,336.99998430524556 2320.000017438616,341.99998430524556L 2320.000017438616,528.4000453404018Q 2320.000017438616,533.4000453404018 2325.000017438616,533.4000453404018L3001.299979073661 533.4000453404018L3021.299979073661 533.4000453404018",
+      "visible": "0"
+    },
+    {
+      "caption": "Contains",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNotifRow%2522%255D%22%2C%22contains%22%2C%22%2Fnodes%2FonbCard%2Fchildren%2F8%22%5D",
+      "label": "Section -> Row: Contains; /nodes/onbCard/children/8",
+      "path": "M1618.7000558035716 336.99998430524556L1638.7000558035716 336.99998430524556L 2709.000017438616,336.99998430524556Q 2714.000017438616,336.99998430524556 2714.000017438616,341.99998430524556L 2714.000017438616,576.4000279017857Q 2714.000017438616,581.4000279017857 2719.000017438616,581.4000279017857L3789.299979073661 581.4000279017857L3809.299979073661 581.4000279017857",
+      "visible": "0"
+    },
+    {
+      "caption": "Contains",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbSubmit%2522%255D%22%2C%22contains%22%2C%22%2Fnodes%2FonbCard%2Fchildren%2F9%22%5D",
+      "label": "Section -> Create account: Contains; /nodes/onbCard/children/9",
+      "path": "M1618.7000558035716 336.99998430524556L1638.7000558035716 336.99998430524556L 2845.000017438616,336.99998430524556Q 2850.000017438616,336.99998430524556 2850.000017438616,341.99998430524556L 2850.000017438616,576.4000279017857Q 2850.000017438616,581.4000279017857 2855.000017438616,581.4000279017857L4061.299979073661 581.4000279017857L4081.299979073661 581.4000279017857",
+      "visible": "0"
+    },
+    {
+      "caption": "Contains",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbFeedback%2522%255D%22%2C%22contains%22%2C%22%2Fnodes%2FonbCard%2Fchildren%2F10%22%5D",
+      "label": "Section -> Your details stay on this screen — nothing is sent.: Contains; /nodes/onbCard/children/10",
+      "path": "M1618.7000558035716 336.99998430524556L1638.7000558035716 336.99998430524556L 2981.000017438616,336.99998430524556Q 2986.000017438616,336.99998430524556 2986.000017438616,341.99998430524556L 2986.000017438616,543.3999581473214Q 2986.000017438616,548.3999581473214 2991.000017438616,548.3999581473214L4333.29997907366 548.3999581473214L4353.29997907366 548.3999581473214",
+      "visible": "0"
+    },
+    {
+      "caption": "Styles",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522style%2522%252C%2522src.onbNameInput.always.focus%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22styles%22%2C%22%2Fnodes%2FonbNameInput%2FstyleSources%2F0%22%5D",
+      "label": "Src onb Name Input always focus -> Full name: Styles; /nodes/onbNameInput/styleSources/0",
+      "path": "M 1890.7000558035716,348.9999581473214 L 1910.7000558035716,348.9999581473214 L 1910.7000558035716,390.4 L 1369.2999790736608,390.4 L 1369.2999790736608,581.3999668666295 L 1389.2999790736608,581.3999668666295",
+      "visible": "0"
+    },
+    {
+      "caption": "Styles",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522style%2522%252C%2522src.onbNameInput.always.plain%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22styles%22%2C%22%2Fnodes%2FonbNameInput%2FstyleSources%2F1%22%5D",
+      "label": "Src onb Name Input always plain -> Full name: Styles; /nodes/onbNameInput/styleSources/1",
+      "path": "M 2162.7000558035716,348.9999581473214 L 2182.7000558035716,348.9999581473214 L 2182.7000558035716,390.4 L 1369.2999790736608,390.4 L 1369.2999790736608,581.3999668666295 L 1389.2999790736608,581.3999668666295",
+      "visible": "0"
+    },
+    {
+      "caption": "Value",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522fullName%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22value%22%2C%22%2Fnodes%2FonbNameInput%2Fattributes%2Fvalue%22%5D",
+      "label": "Full Name -> Full name: Value; /nodes/onbNameInput/attributes/value",
+      "path": "M1346.7000558035716 348.9999668666295L1366.7000558035716 348.9999668666295L 1367.3500366210938,348.9999668666295Q 1368.0000174386162,348.9999668666295 1368.0000174386162,349.6499476841518L 1368.0000174386162,604.749968610491Q 1368.0000174386162,605.3999494280133 1368.6499982561386,605.3999494280133L1369.2999790736608 605.3999494280133L1389.2999790736608 605.3999494280133",
+      "visible": "0"
+    },
+    {
+      "caption": "Updates",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522fullName%2522%255D%22%2C%22updates%22%2C%22%2Fnodes%2FonbNameInput%2Finteractions%2F0%22%5D",
+      "label": "Full name -> Full Name: Updates; /nodes/onbNameInput/interactions/0",
+      "path": "M 1618.7000558035716,533.3999581473214 L 1638.7000558035716,533.3999581473214 L 1638.7000558035716,428.79999999999995 L 1097.2999790736608,428.79999999999995 L 1097.2999790736608,324.99996250697546 L 1117.2999790736608,324.99996250697546",
+      "visible": "0"
+    },
+    {
+      "caption": "Fallback",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522fullName%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22fallback%22%2C%22%2Fnodes%2FonbNameInput%2Finteractions%2F0%2Fvalue%22%5D",
+      "label": "Full Name -> Full name: Fallback; /nodes/onbNameInput/interactions/0/value",
+      "path": "M1346.7000558035716 324.99996250697546L1366.7000558035716 324.99996250697546L 1367.3500366210938,324.99996250697546Q 1368.0000174386162,324.99996250697546 1368.0000174386162,325.64994332449777L 1368.0000174386162,556.749959891183Q 1368.0000174386162,557.3999407087053 1368.6499982561386,557.3999407087053L1369.2999790736608 557.3999407087053L1389.2999790736608 557.3999407087053",
+      "visible": "0"
+    },
+    {
+      "caption": "Styles",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522style%2522%252C%2522src.onbEmailInput.always.focus%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbEmailInput%2522%255D%22%2C%22styles%22%2C%22%2Fnodes%2FonbEmailInput%2FstyleSources%2F0%22%5D",
+      "label": "Src onb Email Input always focus -> Work email: Styles; /nodes/onbEmailInput/styleSources/0",
+      "path": "M 2706.7000558035716,348.9999581473214 L 2726.7000558035716,348.9999581473214 L 2726.7000558035716,390.4 L 2185.299979073661,390.4 L 2185.299979073661,581.4000104631696 L 2205.299979073661,581.4000104631696",
+      "visible": "0"
+    },
+    {
+      "caption": "Styles",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522style%2522%252C%2522src.onbEmailInput.always.plain%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbEmailInput%2522%255D%22%2C%22styles%22%2C%22%2Fnodes%2FonbEmailInput%2FstyleSources%2F1%22%5D",
+      "label": "Src onb Email Input always plain -> Work email: Styles; /nodes/onbEmailInput/styleSources/1",
+      "path": "M 2978.7000558035716,349.00004534040175 L 2998.7000558035716,349.00004534040175 L 2998.7000558035716,390.4 L 2185.299979073661,390.4 L 2185.299979073661,581.4000104631696 L 2205.299979073661,581.4000104631696",
+      "visible": "0"
+    },
+    {
+      "caption": "Value",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522workEmail%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbEmailInput%2522%255D%22%2C%22value%22%2C%22%2Fnodes%2FonbEmailInput%2Fattributes%2Fvalue%22%5D",
+      "label": "Work Email -> Work email: Value; /nodes/onbEmailInput/attributes/value",
+      "path": "M 2434.7000558035716,349.00009765625003 L 2454.7000558035716,349.00009765625003 L 2454.7000558035716,390.4 L 2185.299979073661,390.4 L 2185.299979073661,605.3999930245535 L 2205.299979073661,605.3999930245535",
+      "visible": "0"
+    },
+    {
+      "caption": "Updates",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbEmailInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522workEmail%2522%255D%22%2C%22updates%22%2C%22%2Fnodes%2FonbEmailInput%2Finteractions%2F0%22%5D",
+      "label": "Work email -> Work Email: Updates; /nodes/onbEmailInput/interactions/0",
+      "path": "M 2434.7000558035716,533.4000453404018 L 2454.7000558035716,533.4000453404018 L 2454.7000558035716,428.79999999999995 L 2185.299979073661,428.79999999999995 L 2185.299979073661,325.00002790178576 L 2205.299979073661,325.00002790178576",
+      "visible": "0"
+    },
+    {
+      "caption": "Fallback",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522workEmail%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbEmailInput%2522%255D%22%2C%22fallback%22%2C%22%2Fnodes%2FonbEmailInput%2Finteractions%2F0%2Fvalue%22%5D",
+      "label": "Work Email -> Work email: Fallback; /nodes/onbEmailInput/interactions/0/value",
+      "path": "M 2434.7000558035716,325.00002790178576 L 2454.7000558035716,325.00002790178576 L 2454.7000558035716,390.4 L 2185.299979073661,390.4 L 2185.299979073661,557.4000279017857 L 2205.299979073661,557.4000279017857",
+      "visible": "0"
+    },
+    {
+      "caption": "Contains",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleSelect%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRolePlaceholder%2522%255D%22%2C%22contains%22%2C%22%2Fnodes%2FonbRoleSelect%2Fchildren%2F0%22%5D",
+      "label": "Role -> Option · Select your role…: Contains; /nodes/onbRoleSelect/children/0",
+      "path": "M 3250.7000558035716,533.4000453404018 L 3270.7000558035716,533.4000453404018 L 3270.7000558035716,685.1999999999999 L 1641.2998046875,685.1999999999999 L 1641.2998046875,789.7999145507812 L 1661.2998046875,789.7999145507812",
+      "visible": "0"
+    },
+    {
+      "caption": "Contains",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleSelect%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleOptProduct%2522%255D%22%2C%22contains%22%2C%22%2Fnodes%2FonbRoleSelect%2Fchildren%2F1%22%5D",
+      "label": "Role -> Option · Product: Contains; /nodes/onbRoleSelect/children/1",
+      "path": "M 3250.7000558035716,533.4000453404018 L 3270.7000558035716,533.4000453404018 L 3270.7000558035716,646.8 L 1913.2998046875,646.8 L 1913.2998046875,789.8000453404018 L 1933.2998046875,789.8000453404018",
+      "visible": "0"
+    },
+    {
+      "caption": "Contains",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleSelect%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleOptDesign%2522%255D%22%2C%22contains%22%2C%22%2Fnodes%2FonbRoleSelect%2Fchildren%2F2%22%5D",
+      "label": "Role -> Option · Design: Contains; /nodes/onbRoleSelect/children/2",
+      "path": "M 3250.7000558035716,533.4000453404018 L 3270.7000558035716,533.4000453404018 L 3270.7000558035716,646.8 L 2185.2998046875,646.8 L 2185.2998046875,789.8000453404018 L 2205.2998046875,789.8000453404018",
+      "visible": "0"
+    },
+    {
+      "caption": "Contains",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleSelect%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleOptEngineering%2522%255D%22%2C%22contains%22%2C%22%2Fnodes%2FonbRoleSelect%2Fchildren%2F3%22%5D",
+      "label": "Role -> Option · Engineering: Contains; /nodes/onbRoleSelect/children/3",
+      "path": "M 3250.7000558035716,533.4000453404018 L 3270.7000558035716,533.4000453404018 L 3270.7000558035716,646.8 L 2457.2998046875,646.8 L 2457.2998046875,789.8000453404018 L 2477.2998046875,789.8000453404018",
+      "visible": "0"
+    },
+    {
+      "caption": "Contains",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleSelect%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleOptMarketing%2522%255D%22%2C%22contains%22%2C%22%2Fnodes%2FonbRoleSelect%2Fchildren%2F4%22%5D",
+      "label": "Role -> Option · Marketing: Contains; /nodes/onbRoleSelect/children/4",
+      "path": "M 3250.7000558035716,533.4000453404018 L 3270.7000558035716,533.4000453404018 L 3270.7000558035716,646.8 L 2729.2998046875,646.8 L 2729.2998046875,789.7999581473214 L 2749.2998046875,789.7999581473214",
+      "visible": "0"
+    },
+    {
+      "caption": "Contains",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleSelect%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleOptSales%2522%255D%22%2C%22contains%22%2C%22%2Fnodes%2FonbRoleSelect%2Fchildren%2F5%22%5D",
+      "label": "Role -> Option · Sales: Contains; /nodes/onbRoleSelect/children/5",
+      "path": "M 3250.7000558035716,533.4000453404018 L 3270.7000558035716,533.4000453404018 L 3270.7000558035716,646.8 L 3001.2998046875,646.8 L 3001.2998046875,789.8000453404018 L 3021.2998046875,789.8000453404018",
+      "visible": "0"
+    },
+    {
+      "caption": "Styles",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522style%2522%252C%2522src.onbRoleSelect.always.focus%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleSelect%2522%255D%22%2C%22styles%22%2C%22%2Fnodes%2FonbRoleSelect%2FstyleSources%2F0%22%5D",
+      "label": "Src onb Role Select always focus -> Role: Styles; /nodes/onbRoleSelect/styleSources/0",
+      "path": "M 3522.7000558035716,348.9999581473214 L 3542.7000558035716,348.9999581473214 L 3542.7000558035716,390.4 L 3001.299979073661,390.4 L 3001.299979073661,581.4000104631696 L 3021.299979073661,581.4000104631696",
+      "visible": "0"
+    },
+    {
+      "caption": "Styles",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522style%2522%252C%2522src.onbRoleSelect.always.plain%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleSelect%2522%255D%22%2C%22styles%22%2C%22%2Fnodes%2FonbRoleSelect%2FstyleSources%2F1%22%5D",
+      "label": "Src onb Role Select always plain -> Role: Styles; /nodes/onbRoleSelect/styleSources/1",
+      "path": "M 3794.7000558035716,349.00013253348214 L 3814.7000558035716,349.00013253348214 L 3814.7000558035716,428.79999999999995 L 3001.299979073661,428.79999999999995 L 3001.299979073661,581.4000104631696 L 3021.299979073661,581.4000104631696",
+      "visible": "0"
+    },
+    {
+      "caption": "Value",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522role%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleSelect%2522%255D%22%2C%22value%22%2C%22%2Fnodes%2FonbRoleSelect%2Fattributes%2Fvalue%22%5D",
+      "label": "Role -> Role: Value; /nodes/onbRoleSelect/attributes/value",
+      "path": "M 3250.7000558035716,349.00009765625003 L 3270.7000558035716,349.00009765625003 L 3270.7000558035716,390.4 L 3001.299979073661,390.4 L 3001.299979073661,605.4000802176339 L 3021.299979073661,605.4000802176339",
+      "visible": "0"
+    },
+    {
+      "caption": "Updates",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleSelect%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522role%2522%255D%22%2C%22updates%22%2C%22%2Fnodes%2FonbRoleSelect%2Finteractions%2F0%22%5D",
+      "label": "Role -> Role: Updates; /nodes/onbRoleSelect/interactions/0",
+      "path": "M 3250.7000558035716,557.3999407087053 L 3270.7000558035716,557.3999407087053 L 3270.7000558035716,428.79999999999995 L 3001.299979073661,428.79999999999995 L 3001.299979073661,325.00002790178576 L 3021.299979073661,325.00002790178576",
+      "visible": "0"
+    },
+    {
+      "caption": "Fallback",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522role%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleSelect%2522%255D%22%2C%22fallback%22%2C%22%2Fnodes%2FonbRoleSelect%2Finteractions%2F0%2Fvalue%22%5D",
+      "label": "Role -> Role: Fallback; /nodes/onbRoleSelect/interactions/0/value",
+      "path": "M 3250.7000558035716,325.00002790178576 L 3270.7000558035716,325.00002790178576 L 3270.7000558035716,390.4 L 3001.299979073661,390.4 L 3001.299979073661,557.3999407087053 L 3021.299979073661,557.3999407087053",
+      "visible": "0"
+    },
+    {
+      "caption": "Contains",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNotifRow%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNotifInput%2522%255D%22%2C%22contains%22%2C%22%2Fnodes%2FonbNotifRow%2Fchildren%2F0%22%5D",
+      "label": "Row -> Email me product updates: Contains; /nodes/onbNotifRow/children/0",
+      "path": "M4038.7000558035716 581.4000279017857L4058.7000558035716 581.4000279017857L 4326.999930245536,581.4000279017857Q 4331.999930245536,581.4000279017857 4331.999930245536,586.4000279017857L 4331.999930245536,784.7997837611606Q 4331.999930245536,789.7997837611606 4336.999930245536,789.7997837611606L4605.2998046875 789.7997837611606L4625.2998046875 789.7997837611606",
+      "visible": "0"
+    },
+    {
+      "caption": "Contains",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNotifRow%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNotifLabel%2522%255D%22%2C%22contains%22%2C%22%2Fnodes%2FonbNotifRow%2Fchildren%2F1%22%5D",
+      "label": "Row -> Label · Email me product updates: Contains; /nodes/onbNotifRow/children/1",
+      "path": "M 4038.7000558035716,581.4000279017857 L 4058.7000558035716,581.4000279017857 L 4058.7000558035716,622.8 L 3789.2998046875,622.8 L 3789.2998046875,789.800132533482 L 3809.2998046875,789.800132533482",
+      "visible": "0"
+    },
+    {
+      "caption": "Value",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522updatesOptIn%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNotifInput%2522%255D%22%2C%22value%22%2C%22%2Fnodes%2FonbNotifInput%2Fattributes%2Fchecked%22%5D",
+      "label": "Updates Opt In -> Email me product updates: Value; /nodes/onbNotifInput/attributes/checked",
+      "path": "M 4854.700055803572,605.3999232700893 L 4874.700055803572,605.3999232700893 L 4874.700055803572,646.8 L 4605.2998046875,646.8 L 4605.2998046875,837.7999232700893 L 4625.2998046875,837.7999232700893",
+      "visible": "0"
+    },
+    {
+      "caption": "Updates",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNotifInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522updatesOptIn%2522%255D%22%2C%22updates%22%2C%22%2Fnodes%2FonbNotifInput%2Finteractions%2F0%22%5D",
+      "label": "Email me product updates -> Updates Opt In: Updates; /nodes/onbNotifInput/interactions/0",
+      "path": "M 4854.69988141741,789.7997837611606 L 4874.69988141741,789.7997837611606 L 4874.69988141741,685.1999999999999 L 4605.29997907366,685.1999999999999 L 4605.29997907366,581.399853515625 L 4625.29997907366,581.399853515625",
+      "visible": "0"
+    },
+    {
+      "caption": "Fallback",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522updatesOptIn%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNotifInput%2522%255D%22%2C%22fallback%22%2C%22%2Fnodes%2FonbNotifInput%2Finteractions%2F0%2Fvalue%22%5D",
+      "label": "Updates Opt In -> Email me product updates: Fallback; /nodes/onbNotifInput/interactions/0/value",
+      "path": "M 4854.700055803572,581.399853515625 L 4874.700055803572,581.399853515625 L 4874.700055803572,646.8 L 4605.2998046875,646.8 L 4605.2998046875,813.7998535156249 L 4625.2998046875,813.7998535156249",
+      "visible": "0"
+    },
+    {
+      "caption": "Emits",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbSubmit%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522output%2522%252C%2522%255B%255C%2522%255B%255C%255C%255C%2522output%255C%255C%255C%2522%252Cnull%252C%255B%255D%252C%255C%255C%255C%2522onbSubmit%255C%255C%255C%2522%252C%255C%255C%255C%2522press%255C%255C%255C%2522%255D%255C%2522%252C%255C%2522%2524output%255C%2522%255D%2522%255D%22%2C%22emits%22%2C%22%2Fnodes%2FonbSubmit%2Foutputs%2Fpress%22%5D",
+      "label": "Create account -> Press: Emits; /nodes/onbSubmit/outputs/press",
+      "path": "M 4310.700055803572,581.4000279017857 L 4330.700055803572,581.4000279017857 L 4330.700055803572,622.8 L 4061.2998046875,622.8 L 4061.2998046875,825.8000279017856 L 4081.2998046875,825.8000279017856",
+      "visible": "0"
+    },
+    {
+      "caption": "Invokes",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522output%2522%252C%2522%255B%255C%2522%255B%255C%255C%255C%2522output%255C%255C%255C%2522%252Cnull%252C%255B%255D%252C%255C%255C%255C%2522onbSubmit%255C%255C%255C%2522%252C%255C%255C%255C%2522press%255C%255C%255C%2522%255D%255C%2522%252C%255C%2522%2524output%255C%2522%255D%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522action%2522%252C%2522demo.submit%2522%255D%22%2C%22invokes%22%2C%22%2Fnodes%2FonbSubmit%2Foutputs%2Fpress%2FinvokeAction%22%5D",
+      "label": "Press -> Demo submit: Invokes; /nodes/onbSubmit/outputs/press/invokeAction",
+      "path": "M 4310.69988141741,825.8000279017856 L 4330.69988141741,825.8000279017856 L 4330.69988141741,867.1999999999999 L 4061.299979073661,867.1999999999999 L 4061.299979073661,1065.1999232700891 L 4081.299979073661,1065.1999232700891",
+      "visible": "0"
+    },
+    {
+      "caption": "Pending",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522action%2522%252C%2522demo.submit%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522busy%2522%255D%22%2C%22pending%22%2C%22%2FactionState%2Fdemo.submit%2Fpending%22%5D",
+      "label": "Demo submit -> Busy: Pending; /actionState/demo.submit/pending",
+      "path": "M 4310.69988141741,1089.1998186383928 L 4330.69988141741,1089.1998186383928 L 4330.69988141741,1154.6 L 3517.299979073661,1154.6 L 3517.299979073661,1321.6000279017858 L 3537.299979073661,1321.6000279017858",
+      "visible": "0"
+    },
+    {
+      "caption": "Error",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522action%2522%252C%2522demo.submit%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522actionError%2522%255D%22%2C%22error%22%2C%22%2FactionState%2Fdemo.submit%2Ferror%22%5D",
+      "label": "Demo submit -> Action Error: Error; /actionState/demo.submit/error",
+      "path": "M 4310.69988141741,1065.1999232700891 L 4330.69988141741,1065.1999232700891 L 4330.69988141741,1154.6 L 3789.299979073661,1154.6 L 3789.299979073661,1321.6000279017858 L 3809.299979073661,1321.6000279017858",
+      "visible": "0"
+    },
+    {
+      "caption": "Result",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522action%2522%252C%2522demo.submit%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522actionResult%2522%255D%22%2C%22result%22%2C%22%2FactionState%2Fdemo.submit%2Fresult%22%5D",
+      "label": "Demo submit -> Action Result: Result; /actionState/demo.submit/result",
+      "path": "M 4310.69988141741,1113.199888392857 L 4330.69988141741,1113.199888392857 L 4330.69988141741,1154.6 L 4061.299979073661,1154.6 L 4061.299979073661,1321.6000279017858 L 4081.299979073661,1321.6000279017858",
+      "visible": "0"
+    }
+  ],
+  "footer": "Loaded the saved screen.@3 · v1_fe0ac678e805…",
+  "nodes": [
+    {
+      "dimmed": false,
+      "height": 122,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22screen%22%5D",
+      "label": "Container: Screen, source screen",
+      "rows": [
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "out-contains",
+          "text": "Contains",
+          "top": 92
+        }
+      ],
+      "transform": "translate(1392px, 12px)",
+      "width": 224
+    },
+    {
+      "dimmed": false,
+      "height": 122,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbCard%22%5D",
+      "label": "Section: Section, source onbCard",
+      "rows": [
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "in-contains",
+          "text": "Contains",
+          "top": 92
+        },
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "out-contains",
+          "text": "Contains· 11",
+          "top": 92
+        }
+      ],
+      "transform": "translate(1392px, 232.4px)",
+      "width": 224
+    },
+    {
+      "dimmed": false,
+      "height": 98,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbTitle%22%5D",
+      "label": "Heading: Create your workspace, source onbTitle",
+      "rows": [
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "in-contains",
+          "text": "Contains",
+          "top": 68
+        }
+      ],
+      "transform": "translate(32px, 452.8px)",
+      "width": 224
+    },
+    {
+      "dimmed": false,
+      "height": 113,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbSubtitle%22%5D",
+      "label": "Paragraph: Set up your workspace in under a minute — just the essentials., source onbSubtitle",
+      "rows": [
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "in-contains",
+          "text": "Contains",
+          "top": 83
+        }
+      ],
+      "transform": "translate(304px, 452.8px)",
+      "width": 224
+    },
+    {
+      "dimmed": false,
+      "height": 98,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbNameLabel%22%5D",
+      "label": "Label: Full name, source onbNameLabel",
+      "rows": [
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "in-contains",
+          "text": "Contains",
+          "top": 68
+        }
+      ],
+      "transform": "translate(576px, 452.8px)",
+      "width": 224
+    },
+    {
+      "dimmed": false,
+      "height": 170,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbNameInput%22%5D",
+      "label": "Input: Full name, source onbNameInput",
+      "rows": [
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "in-contains",
+          "text": "Contains",
+          "top": 68
+        },
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "in-fallback",
+          "text": "Fallback",
+          "top": 92
+        },
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "in-styles",
+          "text": "Styles· 2",
+          "top": 116
+        },
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "in-value",
+          "text": "Value",
+          "top": 140
+        },
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "out-updates",
+          "text": "Updates",
+          "top": 68
+        }
+      ],
+      "transform": "translate(1392px, 452.8px)",
+      "width": 224
+    },
+    {
+      "dimmed": false,
+      "height": 98,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbEmailLabel%22%5D",
+      "label": "Label: Work email, source onbEmailLabel",
+      "rows": [
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "in-contains",
+          "text": "Contains",
+          "top": 68
+        }
+      ],
+      "transform": "translate(848px, 452.8px)",
+      "width": 224
+    },
+    {
+      "dimmed": false,
+      "height": 170,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbEmailInput%22%5D",
+      "label": "Input: Work email, source onbEmailInput",
+      "rows": [
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "in-contains",
+          "text": "Contains",
+          "top": 68
+        },
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "in-fallback",
+          "text": "Fallback",
+          "top": 92
+        },
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "in-styles",
+          "text": "Styles· 2",
+          "top": 116
+        },
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "in-value",
+          "text": "Value",
+          "top": 140
+        },
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "out-updates",
+          "text": "Updates",
+          "top": 68
+        }
+      ],
+      "transform": "translate(2208px, 452.8px)",
+      "width": 224
+    },
+    {
+      "dimmed": false,
+      "height": 98,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbRoleLabel%22%5D",
+      "label": "Label: Role, source onbRoleLabel",
+      "rows": [
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "in-contains",
+          "text": "Contains",
+          "top": 68
+        }
+      ],
+      "transform": "translate(1120px, 452.8px)",
+      "width": 224
+    },
+    {
+      "dimmed": false,
+      "height": 170,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbRoleSelect%22%5D",
+      "label": "Select: Role, source onbRoleSelect",
+      "rows": [
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "in-contains",
+          "text": "Contains",
+          "top": 68
+        },
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "in-fallback",
+          "text": "Fallback",
+          "top": 92
+        },
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "in-styles",
+          "text": "Styles· 2",
+          "top": 116
+        },
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "in-value",
+          "text": "Value",
+          "top": 140
+        },
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "out-contains",
+          "text": "Contains· 6",
+          "top": 68
+        },
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "out-updates",
+          "text": "Updates",
+          "top": 92
+        }
+      ],
+      "transform": "translate(3024px, 452.8px)",
+      "width": 224
+    },
+    {
+      "dimmed": false,
+      "height": 98,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbRolePlaceholder%22%5D",
+      "label": "Option: Select your role…, source onbRolePlaceholder",
+      "rows": [
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "in-contains",
+          "text": "Contains",
+          "top": 68
+        }
+      ],
+      "transform": "translate(1664px, 709.2px)",
+      "width": 224
+    },
+    {
+      "dimmed": false,
+      "height": 98,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbRoleOptProduct%22%5D",
+      "label": "Option: Product, source onbRoleOptProduct",
+      "rows": [
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "in-contains",
+          "text": "Contains",
+          "top": 68
+        }
+      ],
+      "transform": "translate(1936px, 709.2px)",
+      "width": 224
+    },
+    {
+      "dimmed": false,
+      "height": 98,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbRoleOptDesign%22%5D",
+      "label": "Option: Design, source onbRoleOptDesign",
+      "rows": [
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "in-contains",
+          "text": "Contains",
+          "top": 68
+        }
+      ],
+      "transform": "translate(2208px, 709.2px)",
+      "width": 224
+    },
+    {
+      "dimmed": false,
+      "height": 98,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbRoleOptEngineering%22%5D",
+      "label": "Option: Engineering, source onbRoleOptEngineering",
+      "rows": [
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "in-contains",
+          "text": "Contains",
+          "top": 68
+        }
+      ],
+      "transform": "translate(2480px, 709.2px)",
+      "width": 224
+    },
+    {
+      "dimmed": false,
+      "height": 98,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbRoleOptMarketing%22%5D",
+      "label": "Option: Marketing, source onbRoleOptMarketing",
+      "rows": [
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "in-contains",
+          "text": "Contains",
+          "top": 68
+        }
+      ],
+      "transform": "translate(2752px, 709.2px)",
+      "width": 224
+    },
+    {
+      "dimmed": false,
+      "height": 98,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbRoleOptSales%22%5D",
+      "label": "Option: Sales, source onbRoleOptSales",
+      "rows": [
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "in-contains",
+          "text": "Contains",
+          "top": 68
+        }
+      ],
+      "transform": "translate(3024px, 709.2px)",
+      "width": 224
+    },
+    {
+      "dimmed": false,
+      "height": 122,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbNotifRow%22%5D",
+      "label": "Container: Row, source onbNotifRow",
+      "rows": [
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "in-contains",
+          "text": "Contains",
+          "top": 92
+        },
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "out-contains",
+          "text": "Contains· 2",
+          "top": 92
+        }
+      ],
+      "transform": "translate(3812px, 476.8px)",
+      "width": 224
+    },
+    {
+      "dimmed": false,
+      "height": 146,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbNotifInput%22%5D",
+      "label": "Checkbox: Email me product updates, source onbNotifInput",
+      "rows": [
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "in-contains",
+          "text": "Contains",
+          "top": 68
+        },
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "in-fallback",
+          "text": "Fallback",
+          "top": 92
+        },
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "in-value",
+          "text": "Value",
+          "top": 116
+        },
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "out-updates",
+          "text": "Updates",
+          "top": 68
+        }
+      ],
+      "transform": "translate(4628px, 709.2px)",
+      "width": 224
+    },
+    {
+      "dimmed": false,
+      "height": 98,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbNotifLabel%22%5D",
+      "label": "Label: Email me product updates, source onbNotifLabel",
+      "rows": [
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "in-contains",
+          "text": "Contains",
+          "top": 68
+        }
+      ],
+      "transform": "translate(3812px, 709.2px)",
+      "width": 224
+    },
+    {
+      "dimmed": false,
+      "height": 122,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbSubmit%22%5D",
+      "label": "Component: Create account, source onbSubmit",
+      "rows": [
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "in-contains",
+          "text": "Contains",
+          "top": 92
+        },
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "out-emits",
+          "text": "Emits",
+          "top": 92
+        }
+      ],
+      "transform": "translate(4084px, 476.8px)",
+      "width": 224
+    },
+    {
+      "dimmed": false,
+      "height": 113,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbFeedback%22%5D",
+      "label": "Paragraph: Your details stay on this screen — nothing is sent., source onbFeedback",
+      "rows": [
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "in-contains",
+          "text": "Contains",
+          "top": 83
+        }
+      ],
+      "transform": "translate(4356px, 452.8px)",
+      "width": 224
+    },
+    {
+      "dimmed": false,
+      "height": 122,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22state%22%2C%22busy%22%5D",
+      "label": "State: Busy",
+      "rows": [
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "in-pending",
+          "text": "Pending",
+          "top": 92
+        }
+      ],
+      "transform": "translate(3540px, 1217px)",
+      "width": 224
+    },
+    {
+      "dimmed": false,
+      "height": 122,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22state%22%2C%22actionError%22%5D",
+      "label": "State: Action Error",
+      "rows": [
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "in-error",
+          "text": "Error",
+          "top": 92
+        }
+      ],
+      "transform": "translate(3812px, 1217px)",
+      "width": 224
+    },
+    {
+      "dimmed": false,
+      "height": 122,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22state%22%2C%22actionResult%22%5D",
+      "label": "State: Action Result",
+      "rows": [
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "in-result",
+          "text": "Result",
+          "top": 92
+        }
+      ],
+      "transform": "translate(4084px, 1217px)",
+      "width": 224
+    },
+    {
+      "dimmed": false,
+      "height": 146,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22state%22%2C%22fullName%22%5D",
+      "label": "State: Full Name",
+      "rows": [
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "in-updates",
+          "text": "Updates",
+          "top": 92
+        },
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "out-fallback",
+          "text": "Fallback",
+          "top": 92
+        },
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "out-value",
+          "text": "Value",
+          "top": 116
+        }
+      ],
+      "transform": "translate(1120px, 220.4px)",
+      "width": 224
+    },
+    {
+      "dimmed": false,
+      "height": 146,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22state%22%2C%22workEmail%22%5D",
+      "label": "State: Work Email",
+      "rows": [
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "in-updates",
+          "text": "Updates",
+          "top": 92
+        },
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "out-fallback",
+          "text": "Fallback",
+          "top": 92
+        },
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "out-value",
+          "text": "Value",
+          "top": 116
+        }
+      ],
+      "transform": "translate(2208px, 220.4px)",
+      "width": 224
+    },
+    {
+      "dimmed": false,
+      "height": 146,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22state%22%2C%22role%22%5D",
+      "label": "State: Role",
+      "rows": [
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "in-updates",
+          "text": "Updates",
+          "top": 92
+        },
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "out-fallback",
+          "text": "Fallback",
+          "top": 92
+        },
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "out-value",
+          "text": "Value",
+          "top": 116
+        }
+      ],
+      "transform": "translate(3024px, 220.4px)",
+      "width": 224
+    },
+    {
+      "dimmed": false,
+      "height": 146,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22state%22%2C%22updatesOptIn%22%5D",
+      "label": "State: Updates Opt In",
+      "rows": [
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "in-updates",
+          "text": "Updates",
+          "top": 92
+        },
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "out-fallback",
+          "text": "Fallback",
+          "top": 92
+        },
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "out-value",
+          "text": "Value",
+          "top": 116
+        }
+      ],
+      "transform": "translate(4628px, 476.8px)",
+      "width": 224
+    },
+    {
+      "dimmed": false,
+      "height": 98,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22style%22%2C%22src.onbNameInput.always.focus%22%5D",
+      "label": "Style: Src onb Name Input always focus",
+      "rows": [
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "out-styles",
+          "text": "Styles",
+          "top": 68
+        }
+      ],
+      "transform": "translate(1664px, 268.4px)",
+      "width": 224
+    },
+    {
+      "dimmed": false,
+      "height": 98,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22style%22%2C%22src.onbEmailInput.always.focus%22%5D",
+      "label": "Style: Src onb Email Input always focus",
+      "rows": [
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "out-styles",
+          "text": "Styles",
+          "top": 68
+        }
+      ],
+      "transform": "translate(2480px, 268.4px)",
+      "width": 224
+    },
+    {
+      "dimmed": false,
+      "height": 98,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22style%22%2C%22src.onbRoleSelect.always.focus%22%5D",
+      "label": "Style: Src onb Role Select always focus",
+      "rows": [
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "out-styles",
+          "text": "Styles",
+          "top": 68
+        }
+      ],
+      "transform": "translate(3296px, 268.4px)",
+      "width": 224
+    },
+    {
+      "dimmed": false,
+      "height": 98,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22style%22%2C%22src.onbNameInput.always.plain%22%5D",
+      "label": "Style: Src onb Name Input always plain",
+      "rows": [
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "out-styles",
+          "text": "Styles",
+          "top": 68
+        }
+      ],
+      "transform": "translate(1936px, 268.4px)",
+      "width": 224
+    },
+    {
+      "dimmed": false,
+      "height": 98,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22style%22%2C%22src.onbEmailInput.always.plain%22%5D",
+      "label": "Style: Src onb Email Input always plain",
+      "rows": [
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "out-styles",
+          "text": "Styles",
+          "top": 68
+        }
+      ],
+      "transform": "translate(2752px, 268.4px)",
+      "width": 224
+    },
+    {
+      "dimmed": false,
+      "height": 98,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22style%22%2C%22src.onbRoleSelect.always.plain%22%5D",
+      "label": "Style: Src onb Role Select always plain",
+      "rows": [
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "out-styles",
+          "text": "Styles",
+          "top": 68
+        }
+      ],
+      "transform": "translate(3568px, 268.4px)",
+      "width": 224
+    },
+    {
+      "dimmed": false,
+      "height": 122,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22output%22%2C%22%5B%5C%22%5B%5C%5C%5C%22output%5C%5C%5C%22%2Cnull%2C%5B%5D%2C%5C%5C%5C%22onbSubmit%5C%5C%5C%22%2C%5C%5C%5C%22press%5C%5C%5C%22%5D%5C%22%2C%5C%22%24output%5C%22%5D%22%5D",
+      "label": "Output: Press",
+      "rows": [
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "in-emits",
+          "text": "Emits",
+          "top": 92
+        },
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "out-invokes",
+          "text": "Invokes",
+          "top": 92
+        }
+      ],
+      "transform": "translate(4084px, 721.2px)",
+      "width": 224
+    },
+    {
+      "dimmed": false,
+      "height": 189,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22action%22%2C%22demo.submit%22%5D",
+      "label": "Action: Demo submit",
+      "rows": [
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "in-invokes",
+          "text": "Invokes",
+          "top": 111
+        },
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "out-error",
+          "text": "Error",
+          "top": 111
+        },
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "out-pending",
+          "text": "Pending",
+          "top": 135
+        },
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "out-result",
+          "text": "Result",
+          "top": 159
+        }
+      ],
+      "transform": "translate(4084px, 941.6px)",
+      "width": 224
+    }
+  ]
+}

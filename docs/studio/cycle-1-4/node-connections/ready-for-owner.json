@@ -1,0 +1,176 @@
+{
+  "edges": [
+    {
+      "caption": "Contains",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22contains%22%2C%22%2Fnodes%2FonbCard%2Fchildren%2F3%22%5D",
+      "label": "Section -> Full name: Contains; /nodes/onbCard/children/3",
+      "path": "M248.70003995028407 116.5999922318892L268.70003995028407 116.5999922318892L 284.20006103515624,116.5999922318892Q 289.20006103515624,116.5999922318892 289.20006103515624,121.5999922318892L 289.20006103515624,245.59999778053975Q 289.20006103515624,250.59999778053975 294.20006103515624,250.59999778053975L309.7000821200284 250.59999778053975L329.7000821200284 250.59999778053975",
+      "visible": "0"
+    },
+    {
+      "caption": "Styles",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522style%2522%252C%2522src.onbNameInput.always.focus%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22styles%22%2C%22%2Fnodes%2FonbNameInput%2FstyleSources%2F0%22%5D",
+      "label": "Src onb Name Input always focus -> Full name: Styles; /nodes/onbNameInput/styleSources/0",
+      "path": "M248.70015092329544 456.6001642400568L268.70015092329544 456.6001642400568L 284.2001165216619,456.6001642400568Q 289.2001165216619,456.6001642400568 289.2001165216619,451.6001642400568L 289.2001165216619,303.59993119673294Q 289.2001165216619,298.59993119673294 294.2001165216619,298.59993119673294L309.7000821200284 298.59993119673294L329.7000821200284 298.59993119673294",
+      "visible": "0"
+    },
+    {
+      "caption": "Styles",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522style%2522%252C%2522src.onbNameInput.always.plain%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22styles%22%2C%22%2Fnodes%2FonbNameInput%2FstyleSources%2F1%22%5D",
+      "label": "Src onb Name Input always plain -> Full name: Styles; /nodes/onbNameInput/styleSources/1",
+      "path": "M248.70015092329544 602.5998313210227L268.70015092329544 602.5998313210227L 284.2001165216619,602.5998313210227Q 289.2001165216619,602.5998313210227 289.2001165216619,597.5998313210227L 289.2001165216619,303.59993119673294Q 289.2001165216619,298.59993119673294 294.2001165216619,298.59993119673294L309.7000821200284 298.59993119673294L329.7000821200284 298.59993119673294",
+      "visible": "0"
+    },
+    {
+      "caption": "Value",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522fullName%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22value%22%2C%22%2Fnodes%2FonbNameInput%2Fattributes%2Fvalue%22%5D",
+      "label": "Full Name -> Full name: Value; /nodes/onbNameInput/attributes/value",
+      "path": "M248.70015092329544 310.60009765625L268.70015092329544 310.60009765625L 284.2001165216619,310.60009765625Q 289.2001165216619,310.60009765625 289.2001165216619,315.60009765625L 289.2001165216619,317.59995339133525Q 289.2001165216619,322.59995339133525 294.2001165216619,322.59995339133525L309.7000821200284 322.59995339133525L329.7000821200284 322.59995339133525",
+      "visible": "0"
+    },
+    {
+      "caption": "Updates",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522fullName%2522%255D%22%2C%22updates%22%2C%22%2Fnodes%2FonbNameInput%2Finteractions%2F0%22%5D",
+      "label": "Full name -> Full Name: Updates; /nodes/onbNameInput/interactions/0",
+      "path": "M 559.1000399502841,250.59999778053975 L 579.1000399502841,250.59999778053975 L 579.1000399502841,352 L -0.6999733664772734,352 L -0.6999733664772734,286.60007546164775 L 19.300026633522727,286.60007546164775",
+      "visible": "0"
+    },
+    {
+      "caption": "Fallback",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522fullName%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22fallback%22%2C%22%2Fnodes%2FonbNameInput%2Finteractions%2F0%2Fvalue%22%5D",
+      "label": "Full Name -> Full name: Fallback; /nodes/onbNameInput/interactions/0/value",
+      "path": "M248.70015092329544 286.60007546164775L268.70015092329544 286.60007546164775L 284.2001165216619,286.60007546164775Q 289.2001165216619,286.60007546164775 289.2001165216619,281.60007546164775L 289.2001165216619,279.5999644886364Q 289.2001165216619,274.5999644886364 294.2001165216619,274.5999644886364L309.7000821200284 274.5999644886364L329.7000821200284 274.5999644886364",
+      "visible": "0"
+    }
+  ],
+  "footer": "Loaded the saved screen.@3 · v1_fe0ac678e805…",
+  "nodes": [
+    {
+      "dimmed": false,
+      "height": 122,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbCard%22%5D",
+      "label": "Section: Section, source onbCard",
+      "rows": [
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "out-contains",
+          "text": "Contains",
+          "top": 92
+        }
+      ],
+      "transform": "translate(22px, 12px)",
+      "width": 224
+    },
+    {
+      "dimmed": false,
+      "height": 170,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbNameInput%22%5D",
+      "label": "Input: Full name, source onbNameInput",
+      "rows": [
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "in-contains",
+          "text": "Contains",
+          "top": 68
+        },
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "in-fallback",
+          "text": "Fallback",
+          "top": 92
+        },
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "in-styles",
+          "text": "Styles· 2",
+          "top": 116
+        },
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "in-value",
+          "text": "Value",
+          "top": 140
+        },
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "out-updates",
+          "text": "Updates",
+          "top": 68
+        }
+      ],
+      "transform": "translate(332.4px, 170px)",
+      "width": 224
+    },
+    {
+      "dimmed": false,
+      "height": 146,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22state%22%2C%22fullName%22%5D",
+      "label": "State: Full Name",
+      "rows": [
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "in-updates",
+          "text": "Updates",
+          "top": 92
+        },
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "out-fallback",
+          "text": "Fallback",
+          "top": 92
+        },
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "out-value",
+          "text": "Value",
+          "top": 116
+        }
+      ],
+      "transform": "translate(22px, 182px)",
+      "width": 224
+    },
+    {
+      "dimmed": false,
+      "height": 98,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22style%22%2C%22src.onbNameInput.always.focus%22%5D",
+      "label": "Style: Src onb Name Input always focus",
+      "rows": [
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "out-styles",
+          "text": "Styles",
+          "top": 68
+        }
+      ],
+      "transform": "translate(22px, 376px)",
+      "width": 224
+    },
+    {
+      "dimmed": false,
+      "height": 98,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22style%22%2C%22src.onbNameInput.always.plain%22%5D",
+      "label": "Style: Src onb Name Input always plain",
+      "rows": [
+        {
+          "height": 24,
+          "highlighted": false,
+          "port": "out-styles",
+          "text": "Styles",
+          "top": 68
+        }
+      ],
+      "transform": "translate(22px, 522px)",
+      "width": 224
+    }
+  ]
+}

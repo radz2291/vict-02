@@ -1,0 +1,123 @@
+Browser tab: 10, Title: "Designer — VICT Studio", URL: "http://127.0.0.22:5616/design".
+1 AXWebArea Designer — VICT Studio, URL: 127.0.0.22:5616/design
+	2 container
+		3 container
+			4 link Description: VICT Studio, Value: 127.0.0.22:5616/design
+			5 menu bar Description: Studio menus, ID: bits-c1
+				6 (collapsed) File, ID: bits-c3, Secondary Actions: Expand
+				7 (collapsed) Edit, ID: bits-c5, Secondary Actions: Expand
+				8 (collapsed) View, ID: bits-c7, Secondary Actions: Expand
+				9 (collapsed) Preview, ID: bits-c9, Secondary Actions: Expand
+			10 text Document and Selection review
+			11 link Description: Operator tools, Value: 127.0.0.22:5616/
+		12 container
+			13 container Workspace mode
+				14 checkbox Design, Value: 0
+				15 checkbox Interact, Value: 0
+				16 checkbox Structure, Value: 1
+			42 container Structure workspace
+				43 container Source structure
+					44 search text field (settable) Search structure
+					45 menu bar Description: Structure menus, ID: bits-c21
+						46 (collapsed) View, ID: bits-c23, Secondary Actions: Expand
+						47 (collapsed) Object, ID: bits-c38, Secondary Actions: Expand
+					48 text Declared
+					52 text Focus: Full name
+					50 text 5 items
+					51 button (collapsed) Description: Selection panel, Secondary Actions: Expand
+					53 container Connection scope
+					54 container
+						55 container
+							56 image
+							57 image
+								58 container Section -> Full name: Contains; /nodes/onbCard/children/3
+									59 container Contains · /nodes/onbCard/children/3
+										60 text Contains
+							61 image
+								62 container Src onb Name Input always focus -> Full name: Styles; /nodes/onbNameInput/styleSources/0
+									63 container Styles · /nodes/onbNameInput/styleSources/0
+										64 text Styles
+							65 image
+								66 container Src onb Name Input always plain -> Full name: Styles; /nodes/onbNameInput/styleSources/1
+									67 container Styles · /nodes/onbNameInput/styleSources/1
+										68 text Styles
+							69 image
+								70 container Full Name -> Full name: Value; /nodes/onbNameInput/attributes/value
+									71 container Value · /nodes/onbNameInput/attributes/value
+										72 text Value
+							73 image
+								74 container Full name -> Full Name: Updates; /nodes/onbNameInput/interactions/0
+									75 container Updates · /nodes/onbNameInput/interactions/0
+										76 text Updates
+							77 image
+								78 container Full Name -> Full name: Fallback; /nodes/onbNameInput/interactions/0/value
+									79 container Fallback · /nodes/onbNameInput/interactions/0/value
+										80 text Fallback
+							81 container Section: Section, source onbCard
+								82 container
+									83 text Section
+									84 button (collapsed) Description: Expand Section, Secondary Actions: Expand
+									85 text 11 direct children
+									86 content list Incoming connections
+									87 content list Outgoing connections
+										88 container Outgoing Contains · 1 declared reference
+											89 text Contains
+							90 container Input: Full name, source onbNameInput
+								91 container
+									92 text Input
+									93 text Full name
+									94 content list Incoming connections
+										95 container Incoming Contains · 1 declared reference
+											96 text Contains
+										97 container Incoming Fallback · 1 declared reference
+											98 text Fallback
+										99 container Incoming Styles · 2 declared references
+											100 text Styles · 2
+										101 container Incoming Value · 1 declared reference
+											102 text Value
+									103 content list Outgoing connections
+										104 container Outgoing Updates · 1 declared reference
+											105 text Updates
+							106 container State: Full Name
+								107 container
+									108 text State
+									109 text Full Name
+									110 text Text · starts empty
+									111 content list Incoming connections
+										112 container Incoming Updates · 1 declared reference
+											113 text Updates
+									114 content list Outgoing connections
+										115 container Outgoing Fallback · 1 declared reference
+											116 text Fallback
+										117 container Outgoing Value · 1 declared reference
+											118 text Value
+							119 container Style: Src onb Name Input always focus
+								120 container
+									121 text Style
+									122 text Src onb Name Input always focus
+									123 content list Incoming connections
+									124 content list Outgoing connections
+										125 container Outgoing Styles · 1 declared reference
+											126 text Styles
+							127 container Style: Src onb Name Input always plain
+								128 container
+									129 text Style
+									130 text Src onb Name Input always plain
+									131 content list Incoming connections
+									132 content list Outgoing connections
+										133 container Outgoing Styles · 1 declared reference
+											134 text Styles
+						135 link Description: Svelte Flow attribution, Value: svelteflow.dev/?utm_source=attribution
+						136 image
+						137 container Control Panel
+							138 button Zoom In
+								139 image
+							140 button Zoom Out
+								141 image
+							142 button Fit View
+								143 image
+		39 container
+			40 text Loaded the saved screen.
+			41 text @3 · v1_fe0ac678e805…
+
+The focused UI element is 142 button Fit View

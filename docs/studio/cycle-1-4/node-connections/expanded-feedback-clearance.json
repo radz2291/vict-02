@@ -1,0 +1,18 @@
+[
+  {
+    "conflicts": [],
+    "edge": "Full name -> Full Name: Updates; /nodes/onbNameInput/interactions/0"
+  },
+  {
+    "conflicts": [],
+    "edge": "Work email -> Work Email: Updates; /nodes/onbEmailInput/interactions/0"
+  },
+  {
+    "conflicts": [],
+    "edge": "Role -> Role: Updates; /nodes/onbRoleSelect/interactions/0"
+  },
+  {
+    "conflicts": [],
+    "edge": "Email me product updates -> Updates Opt In: Updates; /nodes/onbNotifInput/interactions/0"
+  }
+]

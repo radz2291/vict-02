@@ -1,0 +1,52 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/studio-cycle14-selection-panel/260831-VCT-02/apps/studio
+
+8:20:11 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle14-selection-panel/260831-VCT-02/packages/ui-svelte/src/document/DocumentHost.svelte:105:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+8:20:11 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle14-selection-panel/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:309:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+8:20:11 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle14-selection-panel/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:309:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+8:20:11 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle14-selection-panel/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:379:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+8:20:11 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle14-selection-panel/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:379:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+8:20:21 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle14-selection-panel/260831-VCT-02/packages/ui-svelte/src/document/DocumentHost.svelte:105:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+8:20:21 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle14-selection-panel/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:309:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+8:20:21 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle14-selection-panel/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:309:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+8:20:21 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle14-selection-panel/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:379:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+8:20:21 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle14-selection-panel/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:379:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+ ❯ tests/ui/structure-node-connections.test.ts (2 tests | 1 failed) 859ms
+   × separates Value, Fallback and Updates at their actual read-only endpoint rows 104ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/ui/structure-node-connections.test.ts > separates Value, Fallback and Updates at their actual read-only endpoint rows
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/ui/structure-node-connections.test.ts:32:56
+     30|  const source=bindingFixture();await start(source,structureId(source.i…
+     31|  const rows=[...document.querySelectorAll<HTMLElement>('.connection-ro…
+     32|  expect(rows.some(row=>row.dataset.port==='in-value')).toBe(true);
+       |                                                        ^
+     33|  expect(rows.some(row=>row.dataset.port==='in-fallback')).toBe(true);
+     34|  expect(rows.some(row=>row.dataset.port==='out-updates')).toBe(true);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 5 passed (6)
+      Tests  1 failed | 28 passed (29)
+   Start at  20:19:47
+   Duration  52.39s (transform 192.66s, setup 0ms, import 266.56s, tests 4.27s, environment 3.39s)
