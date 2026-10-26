@@ -1,0 +1,1173 @@
+{
+  "origin": "http://127.0.0.22:5616/design",
+  "kind": "Read-only CUA audit; UI-only temporary tab; no source apply/save or provider turn",
+  "observations": [
+    {
+      "label": "default-selected-connections",
+      "edges": [
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522screen%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22contains%22%2C%22screen.contains.0%22%5D",
+          "label": "contains, declared source location screen.contains.0"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22contains%22%2C%22onbCard.contains.3%22%5D",
+          "label": "contains, declared source location onbCard.contains.3"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbEmailInput%2522%255D%22%2C%22contains%22%2C%22onbCard.contains.5%22%5D",
+          "label": "contains, declared source location onbCard.contains.5"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleSelect%2522%255D%22%2C%22contains%22%2C%22onbCard.contains.7%22%5D",
+          "label": "contains, declared source location onbCard.contains.7"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNotifRow%2522%255D%22%2C%22contains%22%2C%22onbCard.contains.8%22%5D",
+          "label": "contains, declared source location onbCard.contains.8"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbSubmit%2522%255D%22%2C%22contains%22%2C%22onbCard.contains.9%22%5D",
+          "label": "contains, declared source location onbCard.contains.9"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522fullName%2522%255D%22%2C%22reads%3A%20state.fullName%22%2C%22onbNameInput.attributes.value%22%5D",
+          "label": "reads: state.fullName, declared source location onbNameInput.attributes.value"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522fullName%2522%255D%22%2C%22writes%20state%22%2C%22onbNameInput.interactions.0%22%5D",
+          "label": "writes state, declared source location onbNameInput.interactions.0"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522fullName%2522%255D%22%2C%22reads%3A%20state.fullName%22%2C%22onbNameInput.interactions.0.value%22%5D",
+          "label": "reads: state.fullName, declared source location onbNameInput.interactions.0.value"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbEmailInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522workEmail%2522%255D%22%2C%22reads%3A%20state.workEmail%22%2C%22onbEmailInput.attributes.value%22%5D",
+          "label": "reads: state.workEmail, declared source location onbEmailInput.attributes.value"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbEmailInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522workEmail%2522%255D%22%2C%22writes%20state%22%2C%22onbEmailInput.interactions.0%22%5D",
+          "label": "writes state, declared source location onbEmailInput.interactions.0"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbEmailInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522workEmail%2522%255D%22%2C%22reads%3A%20state.workEmail%22%2C%22onbEmailInput.interactions.0.value%22%5D",
+          "label": "reads: state.workEmail, declared source location onbEmailInput.interactions.0.value"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleSelect%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522role%2522%255D%22%2C%22reads%3A%20state.role%22%2C%22onbRoleSelect.attributes.value%22%5D",
+          "label": "reads: state.role, declared source location onbRoleSelect.attributes.value"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleSelect%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522role%2522%255D%22%2C%22writes%20state%22%2C%22onbRoleSelect.interactions.0%22%5D",
+          "label": "writes state, declared source location onbRoleSelect.interactions.0"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleSelect%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522role%2522%255D%22%2C%22reads%3A%20state.role%22%2C%22onbRoleSelect.interactions.0.value%22%5D",
+          "label": "reads: state.role, declared source location onbRoleSelect.interactions.0.value"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNotifRow%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNotifInput%2522%255D%22%2C%22contains%22%2C%22onbNotifRow.contains.0%22%5D",
+          "label": "contains, declared source location onbNotifRow.contains.0"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNotifInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522updatesOptIn%2522%255D%22%2C%22reads%3A%20state.updatesOptIn%22%2C%22onbNotifInput.attributes.checked%22%5D",
+          "label": "reads: state.updatesOptIn, declared source location onbNotifInput.attributes.checked"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNotifInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522updatesOptIn%2522%255D%22%2C%22writes%20state%22%2C%22onbNotifInput.interactions.0%22%5D",
+          "label": "writes state, declared source location onbNotifInput.interactions.0"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNotifInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522updatesOptIn%2522%255D%22%2C%22reads%3A%20state.updatesOptIn%22%2C%22onbNotifInput.interactions.0.value%22%5D",
+          "label": "reads: state.updatesOptIn, declared source location onbNotifInput.interactions.0.value"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbSubmit%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522catalog%2522%252C%2522vict.catalog.button%25401%2522%255D%22%2C%22uses%20definition%22%2C%22onbSubmit.definitionId%22%5D",
+          "label": "uses definition, declared source location onbSubmit.definitionId"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbSubmit%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522action%2522%252C%2522demo.submit%2522%255D%22%2C%22invokes%20action%22%2C%22onbSubmit.outputs.press.invokeAction%22%5D",
+          "label": "invokes action, declared source location onbSubmit.outputs.press.invokeAction"
+        }
+      ],
+      "footer": "↑ ↓ navigate · → expand · ← collapse · Enter select",
+      "nodes": [
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22screen%22%5D",
+          "text": " ContainerScreen ⌄ 1 direct child  Children  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbCard%22%5D",
+          "text": " SectionSection › 11 direct children  Parent Children5  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbNameInput%22%5D",
+          "text": " InputFull name    Parent Reads2 Updates  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbEmailInput%22%5D",
+          "text": " InputWork email    Parent Reads2 Updates  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbRoleSelect%22%5D",
+          "text": " SelectRole ›   Parent Reads2 Updates  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbNotifRow%22%5D",
+          "text": " ContainerRow › 2 direct children  Parent Children  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbNotifInput%22%5D",
+          "text": " CheckboxEmail me product updates    Parent Reads2 Updates  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbSubmit%22%5D",
+          "text": " ComponentCreate account  Button  Parent Invokes Definition  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22state%22%2C%22fullName%22%5D",
+          "text": " StateFullName  Text · starts empty  Read by2 Updated by  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22state%22%2C%22workEmail%22%5D",
+          "text": " StateWorkEmail  Text · starts empty  Read by2 Updated by  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22state%22%2C%22role%22%5D",
+          "text": " StateRole  Text · starts empty  Read by2 Updated by  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22state%22%2C%22updatesOptIn%22%5D",
+          "text": " StateUpdatesOptIn  Boolean · initially on  Read by2 Updated by  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22catalog%22%2C%22vict.catalog.button%401%22%5D",
+          "text": " CatalogButton  Library definition · revision 1  Definition links  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22action%22%2C%22demo.submit%22%5D",
+          "text": " ActionSubmit (simulated)  Declared action reference  Invoked by  "
+        }
+      ],
+      "status": "✓ Saved"
+    },
+    {
+      "label": "collapse-screen-in-connections",
+      "edges": [
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522screen%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22contains%22%2C%22screen.contains.0%22%5D",
+          "label": "contains, declared source location screen.contains.0"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22contains%22%2C%22onbCard.contains.3%22%5D",
+          "label": "contains, declared source location onbCard.contains.3"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbEmailInput%2522%255D%22%2C%22contains%22%2C%22onbCard.contains.5%22%5D",
+          "label": "contains, declared source location onbCard.contains.5"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleSelect%2522%255D%22%2C%22contains%22%2C%22onbCard.contains.7%22%5D",
+          "label": "contains, declared source location onbCard.contains.7"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNotifRow%2522%255D%22%2C%22contains%22%2C%22onbCard.contains.8%22%5D",
+          "label": "contains, declared source location onbCard.contains.8"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbSubmit%2522%255D%22%2C%22contains%22%2C%22onbCard.contains.9%22%5D",
+          "label": "contains, declared source location onbCard.contains.9"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522fullName%2522%255D%22%2C%22reads%3A%20state.fullName%22%2C%22onbNameInput.attributes.value%22%5D",
+          "label": "reads: state.fullName, declared source location onbNameInput.attributes.value"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522fullName%2522%255D%22%2C%22writes%20state%22%2C%22onbNameInput.interactions.0%22%5D",
+          "label": "writes state, declared source location onbNameInput.interactions.0"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522fullName%2522%255D%22%2C%22reads%3A%20state.fullName%22%2C%22onbNameInput.interactions.0.value%22%5D",
+          "label": "reads: state.fullName, declared source location onbNameInput.interactions.0.value"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbEmailInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522workEmail%2522%255D%22%2C%22reads%3A%20state.workEmail%22%2C%22onbEmailInput.attributes.value%22%5D",
+          "label": "reads: state.workEmail, declared source location onbEmailInput.attributes.value"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbEmailInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522workEmail%2522%255D%22%2C%22writes%20state%22%2C%22onbEmailInput.interactions.0%22%5D",
+          "label": "writes state, declared source location onbEmailInput.interactions.0"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbEmailInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522workEmail%2522%255D%22%2C%22reads%3A%20state.workEmail%22%2C%22onbEmailInput.interactions.0.value%22%5D",
+          "label": "reads: state.workEmail, declared source location onbEmailInput.interactions.0.value"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleSelect%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522role%2522%255D%22%2C%22reads%3A%20state.role%22%2C%22onbRoleSelect.attributes.value%22%5D",
+          "label": "reads: state.role, declared source location onbRoleSelect.attributes.value"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleSelect%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522role%2522%255D%22%2C%22writes%20state%22%2C%22onbRoleSelect.interactions.0%22%5D",
+          "label": "writes state, declared source location onbRoleSelect.interactions.0"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleSelect%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522role%2522%255D%22%2C%22reads%3A%20state.role%22%2C%22onbRoleSelect.interactions.0.value%22%5D",
+          "label": "reads: state.role, declared source location onbRoleSelect.interactions.0.value"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNotifRow%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNotifInput%2522%255D%22%2C%22contains%22%2C%22onbNotifRow.contains.0%22%5D",
+          "label": "contains, declared source location onbNotifRow.contains.0"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNotifInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522updatesOptIn%2522%255D%22%2C%22reads%3A%20state.updatesOptIn%22%2C%22onbNotifInput.attributes.checked%22%5D",
+          "label": "reads: state.updatesOptIn, declared source location onbNotifInput.attributes.checked"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNotifInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522updatesOptIn%2522%255D%22%2C%22writes%20state%22%2C%22onbNotifInput.interactions.0%22%5D",
+          "label": "writes state, declared source location onbNotifInput.interactions.0"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNotifInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522updatesOptIn%2522%255D%22%2C%22reads%3A%20state.updatesOptIn%22%2C%22onbNotifInput.interactions.0.value%22%5D",
+          "label": "reads: state.updatesOptIn, declared source location onbNotifInput.interactions.0.value"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbSubmit%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522catalog%2522%252C%2522vict.catalog.button%25401%2522%255D%22%2C%22uses%20definition%22%2C%22onbSubmit.definitionId%22%5D",
+          "label": "uses definition, declared source location onbSubmit.definitionId"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbSubmit%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522action%2522%252C%2522demo.submit%2522%255D%22%2C%22invokes%20action%22%2C%22onbSubmit.outputs.press.invokeAction%22%5D",
+          "label": "invokes action, declared source location onbSubmit.outputs.press.invokeAction"
+        }
+      ],
+      "footer": "↑ ↓ navigate · → expand · ← collapse · Enter select",
+      "nodes": [
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22screen%22%5D",
+          "text": " ContainerScreen › 1 direct child  Children  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbCard%22%5D",
+          "text": " SectionSection › 11 direct children  Parent Children5  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbNameInput%22%5D",
+          "text": " InputFull name    Parent Reads2 Updates  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbEmailInput%22%5D",
+          "text": " InputWork email    Parent Reads2 Updates  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbRoleSelect%22%5D",
+          "text": " SelectRole ›   Parent Reads2 Updates  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbNotifRow%22%5D",
+          "text": " ContainerRow › 2 direct children  Parent Children  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbNotifInput%22%5D",
+          "text": " CheckboxEmail me product updates    Parent Reads2 Updates  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbSubmit%22%5D",
+          "text": " ComponentCreate account  Button  Parent Invokes Definition  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22state%22%2C%22fullName%22%5D",
+          "text": " StateFullName  Text · starts empty  Read by2 Updated by  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22state%22%2C%22workEmail%22%5D",
+          "text": " StateWorkEmail  Text · starts empty  Read by2 Updated by  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22state%22%2C%22role%22%5D",
+          "text": " StateRole  Text · starts empty  Read by2 Updated by  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22state%22%2C%22updatesOptIn%22%5D",
+          "text": " StateUpdatesOptIn  Boolean · initially on  Read by2 Updated by  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22catalog%22%2C%22vict.catalog.button%401%22%5D",
+          "text": " CatalogButton  Library definition · revision 1  Definition links  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22action%22%2C%22demo.submit%22%5D",
+          "text": " ActionSubmit (simulated)  Declared action reference  Invoked by  "
+        }
+      ],
+      "status": "✓ Saved"
+    },
+    {
+      "label": "all-three-visibility-options-on-in-connections",
+      "edges": [
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522screen%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22contains%22%2C%22screen.contains.0%22%5D",
+          "label": "contains, declared source location screen.contains.0"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22contains%22%2C%22onbCard.contains.3%22%5D",
+          "label": "contains, declared source location onbCard.contains.3"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbEmailInput%2522%255D%22%2C%22contains%22%2C%22onbCard.contains.5%22%5D",
+          "label": "contains, declared source location onbCard.contains.5"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleSelect%2522%255D%22%2C%22contains%22%2C%22onbCard.contains.7%22%5D",
+          "label": "contains, declared source location onbCard.contains.7"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNotifRow%2522%255D%22%2C%22contains%22%2C%22onbCard.contains.8%22%5D",
+          "label": "contains, declared source location onbCard.contains.8"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbSubmit%2522%255D%22%2C%22contains%22%2C%22onbCard.contains.9%22%5D",
+          "label": "contains, declared source location onbCard.contains.9"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522fullName%2522%255D%22%2C%22reads%3A%20state.fullName%22%2C%22onbNameInput.attributes.value%22%5D",
+          "label": "reads: state.fullName, declared source location onbNameInput.attributes.value"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522fullName%2522%255D%22%2C%22writes%20state%22%2C%22onbNameInput.interactions.0%22%5D",
+          "label": "writes state, declared source location onbNameInput.interactions.0"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522fullName%2522%255D%22%2C%22reads%3A%20state.fullName%22%2C%22onbNameInput.interactions.0.value%22%5D",
+          "label": "reads: state.fullName, declared source location onbNameInput.interactions.0.value"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbEmailInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522workEmail%2522%255D%22%2C%22reads%3A%20state.workEmail%22%2C%22onbEmailInput.attributes.value%22%5D",
+          "label": "reads: state.workEmail, declared source location onbEmailInput.attributes.value"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbEmailInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522workEmail%2522%255D%22%2C%22writes%20state%22%2C%22onbEmailInput.interactions.0%22%5D",
+          "label": "writes state, declared source location onbEmailInput.interactions.0"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbEmailInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522workEmail%2522%255D%22%2C%22reads%3A%20state.workEmail%22%2C%22onbEmailInput.interactions.0.value%22%5D",
+          "label": "reads: state.workEmail, declared source location onbEmailInput.interactions.0.value"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleSelect%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522role%2522%255D%22%2C%22reads%3A%20state.role%22%2C%22onbRoleSelect.attributes.value%22%5D",
+          "label": "reads: state.role, declared source location onbRoleSelect.attributes.value"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleSelect%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522role%2522%255D%22%2C%22writes%20state%22%2C%22onbRoleSelect.interactions.0%22%5D",
+          "label": "writes state, declared source location onbRoleSelect.interactions.0"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleSelect%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522role%2522%255D%22%2C%22reads%3A%20state.role%22%2C%22onbRoleSelect.interactions.0.value%22%5D",
+          "label": "reads: state.role, declared source location onbRoleSelect.interactions.0.value"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNotifRow%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNotifInput%2522%255D%22%2C%22contains%22%2C%22onbNotifRow.contains.0%22%5D",
+          "label": "contains, declared source location onbNotifRow.contains.0"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNotifInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522updatesOptIn%2522%255D%22%2C%22reads%3A%20state.updatesOptIn%22%2C%22onbNotifInput.attributes.checked%22%5D",
+          "label": "reads: state.updatesOptIn, declared source location onbNotifInput.attributes.checked"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNotifInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522updatesOptIn%2522%255D%22%2C%22writes%20state%22%2C%22onbNotifInput.interactions.0%22%5D",
+          "label": "writes state, declared source location onbNotifInput.interactions.0"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNotifInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522updatesOptIn%2522%255D%22%2C%22reads%3A%20state.updatesOptIn%22%2C%22onbNotifInput.interactions.0.value%22%5D",
+          "label": "reads: state.updatesOptIn, declared source location onbNotifInput.interactions.0.value"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbSubmit%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522catalog%2522%252C%2522vict.catalog.button%25401%2522%255D%22%2C%22uses%20definition%22%2C%22onbSubmit.definitionId%22%5D",
+          "label": "uses definition, declared source location onbSubmit.definitionId"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbSubmit%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522action%2522%252C%2522demo.submit%2522%255D%22%2C%22invokes%20action%22%2C%22onbSubmit.outputs.press.invokeAction%22%5D",
+          "label": "invokes action, declared source location onbSubmit.outputs.press.invokeAction"
+        }
+      ],
+      "footer": "↑ ↓ navigate · → expand · ← collapse · Enter select",
+      "nodes": [
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22screen%22%5D",
+          "text": " ContainerScreen › 1 direct child  Children  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbCard%22%5D",
+          "text": " SectionSection › 11 direct children  Parent Children5  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbNameInput%22%5D",
+          "text": " InputFull name    Parent Reads2 Updates  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbEmailInput%22%5D",
+          "text": " InputWork email    Parent Reads2 Updates  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbRoleSelect%22%5D",
+          "text": " SelectRole ›   Parent Reads2 Updates  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbNotifRow%22%5D",
+          "text": " ContainerRow › 2 direct children  Parent Children  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbNotifInput%22%5D",
+          "text": " CheckboxEmail me product updates    Parent Reads2 Updates  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbSubmit%22%5D",
+          "text": " ComponentCreate account  Button  Parent Invokes Definition  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22state%22%2C%22fullName%22%5D",
+          "text": " StateFullName  Text · starts empty  Read by2 Updated by  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22state%22%2C%22workEmail%22%5D",
+          "text": " StateWorkEmail  Text · starts empty  Read by2 Updated by  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22state%22%2C%22role%22%5D",
+          "text": " StateRole  Text · starts empty  Read by2 Updated by  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22state%22%2C%22updatesOptIn%22%5D",
+          "text": " StateUpdatesOptIn  Boolean · initially on  Read by2 Updated by  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22catalog%22%2C%22vict.catalog.button%401%22%5D",
+          "text": " CatalogButton  Library definition · revision 1  Definition links  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22action%22%2C%22demo.submit%22%5D",
+          "text": " ActionSubmit (simulated)  Declared action reference  Invoked by  "
+        }
+      ],
+      "status": "✓ Saved"
+    },
+    {
+      "label": "hierarchy-respects-collapsed-screen",
+      "edges": [],
+      "footer": "↑ ↓ navigate · → expand · ← collapse · Enter select",
+      "nodes": [
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22screen%22%5D",
+          "text": " ContainerScreen › 33 items inside   "
+        }
+      ],
+      "status": "✓ Saved"
+    },
+    {
+      "label": "hierarchy-expand-all-options-on",
+      "edges": [
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522screen%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22contains%22%2C%22screen.contains.0%22%5D",
+          "label": "contains, declared source location screen.contains.0"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbTitle%2522%255D%22%2C%22contains%22%2C%22onbCard.contains.0%22%5D",
+          "label": "contains, declared source location onbCard.contains.0"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbSubtitle%2522%255D%22%2C%22contains%22%2C%22onbCard.contains.1%22%5D",
+          "label": "contains, declared source location onbCard.contains.1"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameLabel%2522%255D%22%2C%22contains%22%2C%22onbCard.contains.2%22%5D",
+          "label": "contains, declared source location onbCard.contains.2"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22contains%22%2C%22onbCard.contains.3%22%5D",
+          "label": "contains, declared source location onbCard.contains.3"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbEmailLabel%2522%255D%22%2C%22contains%22%2C%22onbCard.contains.4%22%5D",
+          "label": "contains, declared source location onbCard.contains.4"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbEmailInput%2522%255D%22%2C%22contains%22%2C%22onbCard.contains.5%22%5D",
+          "label": "contains, declared source location onbCard.contains.5"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleLabel%2522%255D%22%2C%22contains%22%2C%22onbCard.contains.6%22%5D",
+          "label": "contains, declared source location onbCard.contains.6"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleSelect%2522%255D%22%2C%22contains%22%2C%22onbCard.contains.7%22%5D",
+          "label": "contains, declared source location onbCard.contains.7"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNotifRow%2522%255D%22%2C%22contains%22%2C%22onbCard.contains.8%22%5D",
+          "label": "contains, declared source location onbCard.contains.8"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbSubmit%2522%255D%22%2C%22contains%22%2C%22onbCard.contains.9%22%5D",
+          "label": "contains, declared source location onbCard.contains.9"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbFeedback%2522%255D%22%2C%22contains%22%2C%22onbCard.contains.10%22%5D",
+          "label": "contains, declared source location onbCard.contains.10"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbTitle%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbTitle-text%2522%255D%22%2C%22contains%22%2C%22onbTitle.contains.0%22%5D",
+          "label": "contains, declared source location onbTitle.contains.0"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbSubtitle%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbSubtitle-text%2522%255D%22%2C%22contains%22%2C%22onbSubtitle.contains.0%22%5D",
+          "label": "contains, declared source location onbSubtitle.contains.0"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameLabel%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameLabel-text%2522%255D%22%2C%22contains%22%2C%22onbNameLabel.contains.0%22%5D",
+          "label": "contains, declared source location onbNameLabel.contains.0"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522fullName%2522%255D%22%2C%22reads%3A%20state.fullName%22%2C%22onbNameInput.attributes.value%22%5D",
+          "label": "reads: state.fullName, declared source location onbNameInput.attributes.value"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522fullName%2522%255D%22%2C%22writes%20state%22%2C%22onbNameInput.interactions.0%22%5D",
+          "label": "writes state, declared source location onbNameInput.interactions.0"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522fullName%2522%255D%22%2C%22reads%3A%20state.fullName%22%2C%22onbNameInput.interactions.0.value%22%5D",
+          "label": "reads: state.fullName, declared source location onbNameInput.interactions.0.value"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbEmailLabel%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbEmailLabel-text%2522%255D%22%2C%22contains%22%2C%22onbEmailLabel.contains.0%22%5D",
+          "label": "contains, declared source location onbEmailLabel.contains.0"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbEmailInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522workEmail%2522%255D%22%2C%22reads%3A%20state.workEmail%22%2C%22onbEmailInput.attributes.value%22%5D",
+          "label": "reads: state.workEmail, declared source location onbEmailInput.attributes.value"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbEmailInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522workEmail%2522%255D%22%2C%22writes%20state%22%2C%22onbEmailInput.interactions.0%22%5D",
+          "label": "writes state, declared source location onbEmailInput.interactions.0"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbEmailInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522workEmail%2522%255D%22%2C%22reads%3A%20state.workEmail%22%2C%22onbEmailInput.interactions.0.value%22%5D",
+          "label": "reads: state.workEmail, declared source location onbEmailInput.interactions.0.value"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleLabel%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleLabel-text%2522%255D%22%2C%22contains%22%2C%22onbRoleLabel.contains.0%22%5D",
+          "label": "contains, declared source location onbRoleLabel.contains.0"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleSelect%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRolePlaceholder%2522%255D%22%2C%22contains%22%2C%22onbRoleSelect.contains.0%22%5D",
+          "label": "contains, declared source location onbRoleSelect.contains.0"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleSelect%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleOptProduct%2522%255D%22%2C%22contains%22%2C%22onbRoleSelect.contains.1%22%5D",
+          "label": "contains, declared source location onbRoleSelect.contains.1"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleSelect%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleOptDesign%2522%255D%22%2C%22contains%22%2C%22onbRoleSelect.contains.2%22%5D",
+          "label": "contains, declared source location onbRoleSelect.contains.2"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleSelect%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleOptEngineering%2522%255D%22%2C%22contains%22%2C%22onbRoleSelect.contains.3%22%5D",
+          "label": "contains, declared source location onbRoleSelect.contains.3"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleSelect%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleOptMarketing%2522%255D%22%2C%22contains%22%2C%22onbRoleSelect.contains.4%22%5D",
+          "label": "contains, declared source location onbRoleSelect.contains.4"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleSelect%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleOptSales%2522%255D%22%2C%22contains%22%2C%22onbRoleSelect.contains.5%22%5D",
+          "label": "contains, declared source location onbRoleSelect.contains.5"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleSelect%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522role%2522%255D%22%2C%22reads%3A%20state.role%22%2C%22onbRoleSelect.attributes.value%22%5D",
+          "label": "reads: state.role, declared source location onbRoleSelect.attributes.value"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleSelect%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522role%2522%255D%22%2C%22writes%20state%22%2C%22onbRoleSelect.interactions.0%22%5D",
+          "label": "writes state, declared source location onbRoleSelect.interactions.0"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleSelect%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522role%2522%255D%22%2C%22reads%3A%20state.role%22%2C%22onbRoleSelect.interactions.0.value%22%5D",
+          "label": "reads: state.role, declared source location onbRoleSelect.interactions.0.value"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRolePlaceholder%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRolePlaceholder-text%2522%255D%22%2C%22contains%22%2C%22onbRolePlaceholder.contains.0%22%5D",
+          "label": "contains, declared source location onbRolePlaceholder.contains.0"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleOptProduct%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleOptProduct-text%2522%255D%22%2C%22contains%22%2C%22onbRoleOptProduct.contains.0%22%5D",
+          "label": "contains, declared source location onbRoleOptProduct.contains.0"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleOptDesign%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleOptDesign-text%2522%255D%22%2C%22contains%22%2C%22onbRoleOptDesign.contains.0%22%5D",
+          "label": "contains, declared source location onbRoleOptDesign.contains.0"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleOptEngineering%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleOptEngineering-text%2522%255D%22%2C%22contains%22%2C%22onbRoleOptEngineering.contains.0%22%5D",
+          "label": "contains, declared source location onbRoleOptEngineering.contains.0"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleOptMarketing%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleOptMarketing-text%2522%255D%22%2C%22contains%22%2C%22onbRoleOptMarketing.contains.0%22%5D",
+          "label": "contains, declared source location onbRoleOptMarketing.contains.0"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleOptSales%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleOptSales-text%2522%255D%22%2C%22contains%22%2C%22onbRoleOptSales.contains.0%22%5D",
+          "label": "contains, declared source location onbRoleOptSales.contains.0"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNotifRow%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNotifInput%2522%255D%22%2C%22contains%22%2C%22onbNotifRow.contains.0%22%5D",
+          "label": "contains, declared source location onbNotifRow.contains.0"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNotifRow%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNotifLabel%2522%255D%22%2C%22contains%22%2C%22onbNotifRow.contains.1%22%5D",
+          "label": "contains, declared source location onbNotifRow.contains.1"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNotifInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522updatesOptIn%2522%255D%22%2C%22reads%3A%20state.updatesOptIn%22%2C%22onbNotifInput.attributes.checked%22%5D",
+          "label": "reads: state.updatesOptIn, declared source location onbNotifInput.attributes.checked"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNotifInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522updatesOptIn%2522%255D%22%2C%22writes%20state%22%2C%22onbNotifInput.interactions.0%22%5D",
+          "label": "writes state, declared source location onbNotifInput.interactions.0"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNotifInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522updatesOptIn%2522%255D%22%2C%22reads%3A%20state.updatesOptIn%22%2C%22onbNotifInput.interactions.0.value%22%5D",
+          "label": "reads: state.updatesOptIn, declared source location onbNotifInput.interactions.0.value"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNotifLabel%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNotifLabel-text%2522%255D%22%2C%22contains%22%2C%22onbNotifLabel.contains.0%22%5D",
+          "label": "contains, declared source location onbNotifLabel.contains.0"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbSubmit%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522catalog%2522%252C%2522vict.catalog.button%25401%2522%255D%22%2C%22uses%20definition%22%2C%22onbSubmit.definitionId%22%5D",
+          "label": "uses definition, declared source location onbSubmit.definitionId"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbSubmit%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522action%2522%252C%2522demo.submit%2522%255D%22%2C%22invokes%20action%22%2C%22onbSubmit.outputs.press.invokeAction%22%5D",
+          "label": "invokes action, declared source location onbSubmit.outputs.press.invokeAction"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbFeedback%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbFeedbackStatic%2522%255D%22%2C%22contains%22%2C%22onbFeedback.contains.0%22%5D",
+          "label": "contains, declared source location onbFeedback.contains.0"
+        }
+      ],
+      "footer": "↑ ↓ navigate · → expand · ← collapse · Enter select",
+      "nodes": [
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22screen%22%5D",
+          "text": " ContainerScreen ⌄ 1 direct child  Children  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbCard%22%5D",
+          "text": " SectionSection ⌄ 11 direct children  Parent Children11  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbTitle%22%5D",
+          "text": " HeadingCreate your workspace ⌄   Parent Children  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbTitle-text%22%5D",
+          "text": " TextText · Create your workspace    Parent  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbSubtitle%22%5D",
+          "text": " ParagraphSet up your workspace in under a minute — just the essentials. ⌄   Parent Children  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbSubtitle-text%22%5D",
+          "text": " TextText · Set up your workspace in under a minute — just the essentials.    Parent  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbNameLabel%22%5D",
+          "text": " LabelLabel · Full name ⌄   Parent Children  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbNameLabel-text%22%5D",
+          "text": " TextText · Full name    Parent  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbNameInput%22%5D",
+          "text": " InputFull name    Parent Reads2 Updates  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbEmailLabel%22%5D",
+          "text": " LabelLabel · Work email ⌄   Parent Children  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbEmailLabel-text%22%5D",
+          "text": " TextText · Work email    Parent  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbEmailInput%22%5D",
+          "text": " InputWork email    Parent Reads2 Updates  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbRoleLabel%22%5D",
+          "text": " LabelLabel · Role ⌄   Parent Children  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbRoleLabel-text%22%5D",
+          "text": " TextText · Role    Parent  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbRoleSelect%22%5D",
+          "text": " SelectRole ⌄   Parent Children6 Reads2 Updates  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbRolePlaceholder%22%5D",
+          "text": " OptionOption · Select your role… ⌄   Parent Children  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbRolePlaceholder-text%22%5D",
+          "text": " TextText · Select your role…    Parent  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbRoleOptProduct%22%5D",
+          "text": " OptionOption · Product ⌄   Parent Children  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbRoleOptProduct-text%22%5D",
+          "text": " TextText · Product    Parent  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbRoleOptDesign%22%5D",
+          "text": " OptionOption · Design ⌄   Parent Children  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbRoleOptDesign-text%22%5D",
+          "text": " TextText · Design    Parent  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbRoleOptEngineering%22%5D",
+          "text": " OptionOption · Engineering ⌄   Parent Children  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbRoleOptEngineering-text%22%5D",
+          "text": " TextText · Engineering    Parent  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbRoleOptMarketing%22%5D",
+          "text": " OptionOption · Marketing ⌄   Parent Children  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbRoleOptMarketing-text%22%5D",
+          "text": " TextText · Marketing    Parent  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbRoleOptSales%22%5D",
+          "text": " OptionOption · Sales ⌄   Parent Children  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbRoleOptSales-text%22%5D",
+          "text": " TextText · Sales    Parent  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbNotifRow%22%5D",
+          "text": " ContainerRow ⌄ 2 direct children  Parent Children2  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbNotifInput%22%5D",
+          "text": " CheckboxEmail me product updates    Parent Reads2 Updates  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbNotifLabel%22%5D",
+          "text": " LabelLabel · Email me product updates ⌄   Parent Children  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbNotifLabel-text%22%5D",
+          "text": " TextText · Email me product updates    Parent  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbSubmit%22%5D",
+          "text": " ComponentCreate account  Button  Parent Invokes Definition  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbFeedback%22%5D",
+          "text": " ParagraphYour details stay on this screen — nothing is sent. ⌄   Parent Children  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbFeedbackStatic%22%5D",
+          "text": " TextText · Your details stay on this screen — nothing is sent.    Parent  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22state%22%2C%22fullName%22%5D",
+          "text": " StateFullName  Text · starts empty  Read by2 Updated by  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22state%22%2C%22workEmail%22%5D",
+          "text": " StateWorkEmail  Text · starts empty  Read by2 Updated by  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22state%22%2C%22role%22%5D",
+          "text": " StateRole  Text · starts empty  Read by2 Updated by  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22state%22%2C%22updatesOptIn%22%5D",
+          "text": " StateUpdatesOptIn  Boolean · initially on  Read by2 Updated by  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22catalog%22%2C%22vict.catalog.button%401%22%5D",
+          "text": " CatalogButton  Library definition · revision 1  Definition links  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22action%22%2C%22demo.submit%22%5D",
+          "text": " ActionSubmit (simulated)  Declared action reference  Invoked by  "
+        }
+      ],
+      "status": "✓ Saved"
+    },
+    {
+      "label": "search-displayed-kind-heading",
+      "edges": [],
+      "footer": "↑ ↓ navigate · → expand · ← collapse · Enter select",
+      "nodes": [],
+      "status": "✓ Saved"
+    },
+    {
+      "label": "search-source-id-title",
+      "edges": [
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522screen%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22contains%22%2C%22screen.contains.0%22%5D",
+          "label": "contains, declared source location screen.contains.0"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbTitle%2522%255D%22%2C%22contains%22%2C%22onbCard.contains.0%22%5D",
+          "label": "contains, declared source location onbCard.contains.0"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbTitle%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbTitle-text%2522%255D%22%2C%22contains%22%2C%22onbTitle.contains.0%22%5D",
+          "label": "contains, declared source location onbTitle.contains.0"
+        }
+      ],
+      "footer": "↑ ↓ navigate · → expand · ← collapse · Enter select",
+      "nodes": [
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22screen%22%5D",
+          "text": " ContainerScreen ⌄ 1 direct child  Children  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbCard%22%5D",
+          "text": " SectionSection ⌄ 11 direct children  Parent Children  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbTitle%22%5D",
+          "text": " HeadingCreate your workspace ⌄   Parent Children  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbTitle-text%22%5D",
+          "text": " TextText · Create your workspace    Parent  "
+        }
+      ],
+      "status": "✓ Saved"
+    },
+    {
+      "label": "heading-selected-connections",
+      "edges": [
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522screen%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22contains%22%2C%22screen.contains.0%22%5D",
+          "label": "contains, declared source location screen.contains.0"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22contains%22%2C%22onbCard.contains.3%22%5D",
+          "label": "contains, declared source location onbCard.contains.3"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbEmailInput%2522%255D%22%2C%22contains%22%2C%22onbCard.contains.5%22%5D",
+          "label": "contains, declared source location onbCard.contains.5"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleSelect%2522%255D%22%2C%22contains%22%2C%22onbCard.contains.7%22%5D",
+          "label": "contains, declared source location onbCard.contains.7"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNotifRow%2522%255D%22%2C%22contains%22%2C%22onbCard.contains.8%22%5D",
+          "label": "contains, declared source location onbCard.contains.8"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbSubmit%2522%255D%22%2C%22contains%22%2C%22onbCard.contains.9%22%5D",
+          "label": "contains, declared source location onbCard.contains.9"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522fullName%2522%255D%22%2C%22reads%3A%20state.fullName%22%2C%22onbNameInput.attributes.value%22%5D",
+          "label": "reads: state.fullName, declared source location onbNameInput.attributes.value"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522fullName%2522%255D%22%2C%22writes%20state%22%2C%22onbNameInput.interactions.0%22%5D",
+          "label": "writes state, declared source location onbNameInput.interactions.0"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522fullName%2522%255D%22%2C%22reads%3A%20state.fullName%22%2C%22onbNameInput.interactions.0.value%22%5D",
+          "label": "reads: state.fullName, declared source location onbNameInput.interactions.0.value"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbEmailInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522workEmail%2522%255D%22%2C%22reads%3A%20state.workEmail%22%2C%22onbEmailInput.attributes.value%22%5D",
+          "label": "reads: state.workEmail, declared source location onbEmailInput.attributes.value"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbEmailInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522workEmail%2522%255D%22%2C%22writes%20state%22%2C%22onbEmailInput.interactions.0%22%5D",
+          "label": "writes state, declared source location onbEmailInput.interactions.0"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbEmailInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522workEmail%2522%255D%22%2C%22reads%3A%20state.workEmail%22%2C%22onbEmailInput.interactions.0.value%22%5D",
+          "label": "reads: state.workEmail, declared source location onbEmailInput.interactions.0.value"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleSelect%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522role%2522%255D%22%2C%22reads%3A%20state.role%22%2C%22onbRoleSelect.attributes.value%22%5D",
+          "label": "reads: state.role, declared source location onbRoleSelect.attributes.value"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleSelect%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522role%2522%255D%22%2C%22writes%20state%22%2C%22onbRoleSelect.interactions.0%22%5D",
+          "label": "writes state, declared source location onbRoleSelect.interactions.0"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleSelect%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522role%2522%255D%22%2C%22reads%3A%20state.role%22%2C%22onbRoleSelect.interactions.0.value%22%5D",
+          "label": "reads: state.role, declared source location onbRoleSelect.interactions.0.value"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNotifRow%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNotifInput%2522%255D%22%2C%22contains%22%2C%22onbNotifRow.contains.0%22%5D",
+          "label": "contains, declared source location onbNotifRow.contains.0"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNotifInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522updatesOptIn%2522%255D%22%2C%22reads%3A%20state.updatesOptIn%22%2C%22onbNotifInput.attributes.checked%22%5D",
+          "label": "reads: state.updatesOptIn, declared source location onbNotifInput.attributes.checked"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNotifInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522updatesOptIn%2522%255D%22%2C%22writes%20state%22%2C%22onbNotifInput.interactions.0%22%5D",
+          "label": "writes state, declared source location onbNotifInput.interactions.0"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNotifInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522updatesOptIn%2522%255D%22%2C%22reads%3A%20state.updatesOptIn%22%2C%22onbNotifInput.interactions.0.value%22%5D",
+          "label": "reads: state.updatesOptIn, declared source location onbNotifInput.interactions.0.value"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbSubmit%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522catalog%2522%252C%2522vict.catalog.button%25401%2522%255D%22%2C%22uses%20definition%22%2C%22onbSubmit.definitionId%22%5D",
+          "label": "uses definition, declared source location onbSubmit.definitionId"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbSubmit%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522action%2522%252C%2522demo.submit%2522%255D%22%2C%22invokes%20action%22%2C%22onbSubmit.outputs.press.invokeAction%22%5D",
+          "label": "invokes action, declared source location onbSubmit.outputs.press.invokeAction"
+        }
+      ],
+      "footer": "↑ ↓ navigate · → expand · ← collapse · Enter select",
+      "nodes": [
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22screen%22%5D",
+          "text": " ContainerScreen ⌄ 1 direct child  Children  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbCard%22%5D",
+          "text": " SectionSection ⌄ 11 direct children  Parent Children5  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbNameInput%22%5D",
+          "text": " InputFull name    Parent Reads2 Updates  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbEmailInput%22%5D",
+          "text": " InputWork email    Parent Reads2 Updates  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbRoleSelect%22%5D",
+          "text": " SelectRole ⌄   Parent Reads2 Updates  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbNotifRow%22%5D",
+          "text": " ContainerRow ⌄ 2 direct children  Parent Children  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbNotifInput%22%5D",
+          "text": " CheckboxEmail me product updates    Parent Reads2 Updates  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbSubmit%22%5D",
+          "text": " ComponentCreate account  Button  Parent Invokes Definition  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22state%22%2C%22fullName%22%5D",
+          "text": " StateFullName  Text · starts empty  Read by2 Updated by  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22state%22%2C%22workEmail%22%5D",
+          "text": " StateWorkEmail  Text · starts empty  Read by2 Updated by  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22state%22%2C%22role%22%5D",
+          "text": " StateRole  Text · starts empty  Read by2 Updated by  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22state%22%2C%22updatesOptIn%22%5D",
+          "text": " StateUpdatesOptIn  Boolean · initially on  Read by2 Updated by  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22catalog%22%2C%22vict.catalog.button%401%22%5D",
+          "text": " CatalogButton  Library definition · revision 1  Definition links  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22action%22%2C%22demo.submit%22%5D",
+          "text": " ActionSubmit (simulated)  Declared action reference  Invoked by  "
+        }
+      ],
+      "status": "✓ Saved",
+      "qualification": "Attempted heading selection did not change the root-scoped projection; not evidence of a heading empty state"
+    },
+    {
+      "label": "heading-keyboard-selected-connections",
+      "edges": [
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522screen%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22contains%22%2C%22screen.contains.0%22%5D",
+          "label": "contains, declared source location screen.contains.0"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22contains%22%2C%22onbCard.contains.3%22%5D",
+          "label": "contains, declared source location onbCard.contains.3"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbEmailInput%2522%255D%22%2C%22contains%22%2C%22onbCard.contains.5%22%5D",
+          "label": "contains, declared source location onbCard.contains.5"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleSelect%2522%255D%22%2C%22contains%22%2C%22onbCard.contains.7%22%5D",
+          "label": "contains, declared source location onbCard.contains.7"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNotifRow%2522%255D%22%2C%22contains%22%2C%22onbCard.contains.8%22%5D",
+          "label": "contains, declared source location onbCard.contains.8"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbSubmit%2522%255D%22%2C%22contains%22%2C%22onbCard.contains.9%22%5D",
+          "label": "contains, declared source location onbCard.contains.9"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522fullName%2522%255D%22%2C%22reads%3A%20state.fullName%22%2C%22onbNameInput.attributes.value%22%5D",
+          "label": "reads: state.fullName, declared source location onbNameInput.attributes.value"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522fullName%2522%255D%22%2C%22writes%20state%22%2C%22onbNameInput.interactions.0%22%5D",
+          "label": "writes state, declared source location onbNameInput.interactions.0"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522fullName%2522%255D%22%2C%22reads%3A%20state.fullName%22%2C%22onbNameInput.interactions.0.value%22%5D",
+          "label": "reads: state.fullName, declared source location onbNameInput.interactions.0.value"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbEmailInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522workEmail%2522%255D%22%2C%22reads%3A%20state.workEmail%22%2C%22onbEmailInput.attributes.value%22%5D",
+          "label": "reads: state.workEmail, declared source location onbEmailInput.attributes.value"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbEmailInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522workEmail%2522%255D%22%2C%22writes%20state%22%2C%22onbEmailInput.interactions.0%22%5D",
+          "label": "writes state, declared source location onbEmailInput.interactions.0"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbEmailInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522workEmail%2522%255D%22%2C%22reads%3A%20state.workEmail%22%2C%22onbEmailInput.interactions.0.value%22%5D",
+          "label": "reads: state.workEmail, declared source location onbEmailInput.interactions.0.value"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleSelect%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522role%2522%255D%22%2C%22reads%3A%20state.role%22%2C%22onbRoleSelect.attributes.value%22%5D",
+          "label": "reads: state.role, declared source location onbRoleSelect.attributes.value"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleSelect%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522role%2522%255D%22%2C%22writes%20state%22%2C%22onbRoleSelect.interactions.0%22%5D",
+          "label": "writes state, declared source location onbRoleSelect.interactions.0"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleSelect%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522role%2522%255D%22%2C%22reads%3A%20state.role%22%2C%22onbRoleSelect.interactions.0.value%22%5D",
+          "label": "reads: state.role, declared source location onbRoleSelect.interactions.0.value"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNotifRow%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNotifInput%2522%255D%22%2C%22contains%22%2C%22onbNotifRow.contains.0%22%5D",
+          "label": "contains, declared source location onbNotifRow.contains.0"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNotifInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522updatesOptIn%2522%255D%22%2C%22reads%3A%20state.updatesOptIn%22%2C%22onbNotifInput.attributes.checked%22%5D",
+          "label": "reads: state.updatesOptIn, declared source location onbNotifInput.attributes.checked"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNotifInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522updatesOptIn%2522%255D%22%2C%22writes%20state%22%2C%22onbNotifInput.interactions.0%22%5D",
+          "label": "writes state, declared source location onbNotifInput.interactions.0"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNotifInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522updatesOptIn%2522%255D%22%2C%22reads%3A%20state.updatesOptIn%22%2C%22onbNotifInput.interactions.0.value%22%5D",
+          "label": "reads: state.updatesOptIn, declared source location onbNotifInput.interactions.0.value"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbSubmit%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522catalog%2522%252C%2522vict.catalog.button%25401%2522%255D%22%2C%22uses%20definition%22%2C%22onbSubmit.definitionId%22%5D",
+          "label": "uses definition, declared source location onbSubmit.definitionId"
+        },
+        {
+          "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbSubmit%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522action%2522%252C%2522demo.submit%2522%255D%22%2C%22invokes%20action%22%2C%22onbSubmit.outputs.press.invokeAction%22%5D",
+          "label": "invokes action, declared source location onbSubmit.outputs.press.invokeAction"
+        }
+      ],
+      "footer": "↑ ↓ navigate · → expand · ← collapse · Enter select",
+      "nodes": [
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22screen%22%5D",
+          "text": " ContainerScreen ⌄ 1 direct child  Children  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbCard%22%5D",
+          "text": " SectionSection ⌄ 11 direct children  Parent Children5  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbNameInput%22%5D",
+          "text": " InputFull name    Parent Reads2 Updates  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbEmailInput%22%5D",
+          "text": " InputWork email    Parent Reads2 Updates  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbRoleSelect%22%5D",
+          "text": " SelectRole ⌄   Parent Reads2 Updates  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbNotifRow%22%5D",
+          "text": " ContainerRow ⌄ 2 direct children  Parent Children  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbNotifInput%22%5D",
+          "text": " CheckboxEmail me product updates    Parent Reads2 Updates  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbSubmit%22%5D",
+          "text": " ComponentCreate account  Button  Parent Invokes Definition  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22state%22%2C%22fullName%22%5D",
+          "text": " StateFullName  Text · starts empty  Read by2 Updated by  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22state%22%2C%22workEmail%22%5D",
+          "text": " StateWorkEmail  Text · starts empty  Read by2 Updated by  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22state%22%2C%22role%22%5D",
+          "text": " StateRole  Text · starts empty  Read by2 Updated by  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22state%22%2C%22updatesOptIn%22%5D",
+          "text": " StateUpdatesOptIn  Boolean · initially on  Read by2 Updated by  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22catalog%22%2C%22vict.catalog.button%401%22%5D",
+          "text": " CatalogButton  Library definition · revision 1  Definition links  "
+        },
+        {
+          "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22action%22%2C%22demo.submit%22%5D",
+          "text": " ActionSubmit (simulated)  Declared action reference  Invoked by  "
+        }
+      ],
+      "status": "✓ Saved",
+      "qualification": "Attempted heading selection did not change the root-scoped projection; not evidence of a heading empty state"
+    }
+  ],
+  "scopeMismatchAX": "Browser tab: 8, Title: \"Designer — VICT Studio\", URL: \"http://127.0.0.22:5616/design\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\nRemoved element IDs: 220-238\n~\t\t\t\t\t\t\t219 button (collapsed) Overview, Secondary Actions: Expand\n~\t\t\t\t\t\t\t240 button (expanded) Relationships, Secondary Actions: Collapse\n+\t\t\t\t\t\t\t243 container c26-relationships\n+\t\t\t\t\t\t\t\t244 button Inside Section\n+\t\t\t\t\t\t\t\t\t245 text Inside\n+\t\t\t\t\t\t\t\t\t246 text Section\n+\t\t\t\t\t\t\t\t247 button Contains Text · Create your workspace\n+\t\t\t\t\t\t\t\t\t248 text Contains\n+\t\t\t\t\t\t\t\t\t249 text Text · Create your workspace\nThe focused UI element is 240 button (expanded) Relationships, Secondary Actions: Collapse",
+  "framedHeadingAX": "Browser tab: 8, Title: \"Designer — VICT Studio\", URL: \"http://127.0.0.22:5616/design\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\nRemoved element IDs: 58-194, 197, 205-206, 250-268\n~\t\t\t\t\t\t50 (collapsed) View, ID: bits-c23, Secondary Actions: Expand\n~\t\t\t\t\t53 text 1 items\n+\t\t\t\t\t\t\t250 container Container: Create your workspace, source onbTitle\n+\t\t\t\t\t\t\t\t251 container\n+\t\t\t\t\t\t\t\t\t252 text Heading Create your workspace\n+\t\t\t\t\t\t\t\t\t253 button (expanded) Description: Collapse Create your workspace, Secondary Actions: Collapse\n+\t\t\t\t\t\t254 text No declared connections for this item.\nThe focused UI element is 50 (collapsed) View, ID: bits-c23, Secondary Actions: Expand",
+  "notes": [
+    "AX-only heading click/Enter did update Selection; graph scope stayed at root until menu Frame selection. Earlier labels saying heading-selected-connections refer to that mismatch, not the final heading scope.",
+    "A Playwright checkbox lookup failed because the DOM role did not match the native AX checkbox; recovered through current AX control.",
+    "The source title revision footer remained @3/v1_fe0ac678e805."
+  ]
+}

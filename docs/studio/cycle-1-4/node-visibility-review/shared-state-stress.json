@@ -1,0 +1,12 @@
+{
+  "compileOk": true,
+  "sourceNodes": 141,
+  "selectedSources": 1,
+  "connectedNodes": 141,
+  "connectedEdges": 140,
+  "layout": {
+    "engine": "dagre",
+    "reason": "Large expanded view uses the faster hierarchy layout. Focus or collapse groups to enable routed layout."
+  },
+  "note": "No browser rendering, visual overlap or interaction latency verdict follows from this projection probe"
+}

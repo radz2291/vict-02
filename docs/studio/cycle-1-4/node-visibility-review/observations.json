@@ -1,0 +1,173 @@
+{
+  "kind": "Current-behavior diagnostic; passing assertions reproduce gaps, not product acceptance",
+  "compile": {
+    "ok": true,
+    "diagnostics": [
+      {
+        "code": "UI_DOC_UNSUPPORTED_FEATURE",
+        "message": "Portal rendering is pending beyond the U1 slice.",
+        "severity": "warning",
+        "documentId": "visibility-probe",
+        "nodeId": "portal",
+        "feature": "portal"
+      },
+      {
+        "code": "UI_DOC_UNSUPPORTED_FEATURE",
+        "message": "Portal rendering is unsupported; its logical child ownership stays in occurrence provenance (U2-02).",
+        "severity": "warning",
+        "documentId": "visibility-probe",
+        "nodeId": "portal",
+        "feature": "portal"
+      }
+    ]
+  },
+  "sourceKinds": [
+    "element",
+    "portal",
+    "text",
+    "repeat",
+    "conditional",
+    "component",
+    "slot"
+  ],
+  "defaultHidden": [
+    "template",
+    "yes",
+    "no",
+    "definition",
+    "slot",
+    "fallback"
+  ],
+  "definitionsOnHidden": [],
+  "conditionalConnections": [],
+  "visibleStateHasAnyConnection": false,
+  "projectedKinds": [
+    "node",
+    "state",
+    "definition",
+    "route"
+  ],
+  "declaredRegistries": {
+    "conditions": [
+      "compact",
+      "show"
+    ],
+    "styles": [
+      "shared"
+    ],
+    "tokens": [
+      "ink"
+    ],
+    "assets": [
+      "hero"
+    ]
+  },
+  "displayedHeading": {
+    "id": "%5B%22visibility-probe%22%2C%22node%22%2C%22headline%22%5D",
+    "label": "A deliberately long title A deliberately long title A deliberately long tit…",
+    "kind": "node",
+    "sourceId": "headline",
+    "kindLabel": "Heading",
+    "childCount": 1,
+    "occurrence": "visibility-probe|headline"
+  },
+  "searchHeading": [],
+  "searchHeadlineId": [
+    "screen",
+    "headline",
+    "headlineText"
+  ],
+  "labelSourceLength": 182,
+  "labelDisplayLength": 76,
+  "branchOriginalLabel": "branch: show",
+  "branchDisplayedRelationship": {
+    "targetId": "%5B%22visibility-probe%22%2C%22node%22%2C%22yes%22%5D",
+    "count": 1,
+    "relations": [
+      {
+        "kind": "hierarchy",
+        "label": "Contains",
+        "count": 1,
+        "paths": [
+          "conditional.branch: show.0"
+        ]
+      }
+    ]
+  },
+  "firstFieldVisibleSources": [
+    "inputA",
+    "inputB"
+  ],
+  "headingSelectedConnections": {
+    "nodes": 1,
+    "edges": 0,
+    "authoredChildren": 1
+  },
+  "portCountInHierarchy": [
+    {
+      "id": "in-hierarchy",
+      "kind": "hierarchy",
+      "side": "in",
+      "label": "Parent",
+      "count": 1,
+      "color": "#7b879a"
+    }
+  ],
+  "allRelationshipsForInput": [
+    {
+      "targetId": "%5B%22visibility-probe%22%2C%22node%22%2C%22screen%22%5D",
+      "count": 1,
+      "relations": [
+        {
+          "kind": "hierarchy",
+          "label": "Inside",
+          "count": 1,
+          "paths": [
+            "screen.contains.4"
+          ]
+        }
+      ]
+    },
+    {
+      "targetId": "%5B%22visibility-probe%22%2C%22state%22%2C%22message%22%5D",
+      "count": 3,
+      "relations": [
+        {
+          "kind": "read",
+          "label": "Reads",
+          "count": 2,
+          "paths": [
+            "inputA.attributes.value",
+            "inputA.interactions.0.value"
+          ]
+        },
+        {
+          "kind": "write",
+          "label": "Updates",
+          "count": 1,
+          "paths": [
+            "inputA.interactions.0"
+          ]
+        }
+      ]
+    }
+  ],
+  "fullStateFacts": [
+    {
+      "path": "key",
+      "value": "visible"
+    },
+    {
+      "path": "type",
+      "value": "boolean"
+    },
+    {
+      "path": "initial",
+      "value": "true"
+    }
+  ],
+  "largeLayout": {
+    "engine": "dagre",
+    "reason": "Large expanded view uses the faster hierarchy layout. Focus or collapse groups to enable routed layout."
+  }
+}
