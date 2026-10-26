@@ -1,0 +1,265 @@
+{
+  "candidate": "b251606212f79f7fdc2ee48e61edb82b75f711e7",
+  "method": "Root-operated actual production CUA; background tab for remaining checks after owner tab changed state",
+  "url": "http://127.0.0.22:5616/design",
+  "authoredUnchanged": true,
+  "document": [
+    {
+      "font": "system-ui, \"Segoe UI\", sans-serif",
+      "line": "18px",
+      "padding": "8px 12px",
+      "size": "12px",
+      "text": "Layers",
+      "weight": "500"
+    },
+    {
+      "font": "system-ui, \"Segoe UI\", sans-serif",
+      "line": "18px",
+      "padding": "0px",
+      "size": "12px",
+      "text": "Layers tree",
+      "weight": "400"
+    },
+    {
+      "font": "system-ui, \"Segoe UI\", sans-serif",
+      "line": "18px",
+      "padding": "8px 12px",
+      "size": "12px",
+      "text": "Data",
+      "weight": "500"
+    },
+    {
+      "font": "system-ui, \"Segoe UI\", sans-serif",
+      "line": "18px",
+      "padding": "8px 12px",
+      "size": "12px",
+      "text": "Actions",
+      "weight": "500"
+    },
+    {
+      "font": "system-ui, \"Segoe UI\", sans-serif",
+      "line": "18px",
+      "padding": "8px 12px",
+      "size": "12px",
+      "text": "Source",
+      "weight": "500"
+    }
+  ],
+  "selection": [
+    {
+      "font": "system-ui, \"Segoe UI\", sans-serif",
+      "line": "18px",
+      "padding": "8px 12px",
+      "size": "12px",
+      "text": "Overview",
+      "weight": "500"
+    },
+    {
+      "font": "system-ui, \"Segoe UI\", sans-serif",
+      "line": "18px",
+      "padding": "12px",
+      "size": "12px",
+      "text": "Panel content",
+      "weight": "400"
+    },
+    {
+      "font": "system-ui, \"Segoe UI\", sans-serif",
+      "line": "18px",
+      "padding": "8px 12px",
+      "size": "12px",
+      "text": "Relationships",
+      "weight": "500"
+    },
+    {
+      "font": "system-ui, \"Segoe UI\", sans-serif",
+      "line": "18px",
+      "padding": "8px 12px",
+      "size": "12px",
+      "text": "Technical information",
+      "weight": "500"
+    }
+  ],
+  "floating": [
+    {
+      "font": "system-ui, \"Segoe UI\", sans-serif",
+      "line": "18px",
+      "size": "12px",
+      "text": "palette svelte-1ub7ic8",
+      "weight": "400"
+    },
+    {
+      "font": "system-ui, \"Segoe UI\", sans-serif",
+      "line": "18px",
+      "size": "12px",
+      "text": "Format",
+      "weight": "500"
+    },
+    {
+      "font": "system-ui, \"Segoe UI\", sans-serif",
+      "line": "18px",
+      "size": "12px",
+      "text": "Insert",
+      "weight": "400"
+    },
+    {
+      "font": "system-ui, \"Segoe UI\", sans-serif",
+      "line": "18px",
+      "size": "12px",
+      "text": "Arrange",
+      "weight": "400"
+    },
+    {
+      "font": "system-ui, \"Segoe UI\", sans-serif",
+      "line": "18px",
+      "size": "12px",
+      "text": "Connect",
+      "weight": "400"
+    },
+    {
+      "font": "system-ui, \"Segoe UI\", sans-serif",
+      "line": "18px",
+      "size": "12px",
+      "text": "uv-inspector ux-panel svelte-54v4x6 contextual",
+      "weight": "400"
+    },
+    {
+      "font": "system-ui, \"Segoe UI\", sans-serif",
+      "line": "18px",
+      "size": "12px",
+      "text": "Content",
+      "weight": "500"
+    },
+    {
+      "font": "system-ui, \"Segoe UI\", sans-serif",
+      "line": "18px",
+      "size": "12px",
+      "text": "Text",
+      "weight": "400"
+    },
+    {
+      "font": "system-ui, \"Segoe UI\", sans-serif",
+      "line": "18px",
+      "size": "12px",
+      "text": "Fill",
+      "weight": "400"
+    },
+    {
+      "font": "system-ui, \"Segoe UI\", sans-serif",
+      "line": "18px",
+      "size": "12px",
+      "text": "Spacing",
+      "weight": "400"
+    },
+    {
+      "font": "system-ui, \"Segoe UI\", sans-serif",
+      "line": "18px",
+      "size": "12px",
+      "text": "Layout",
+      "weight": "400"
+    }
+  ],
+  "chat": [
+    {
+      "class": "vict-ai-empty svelte-vdr0mt",
+      "font": "system-ui, \"Segoe UI\", sans-serif",
+      "line": "20px",
+      "padding": "20px",
+      "size": "13px",
+      "weight": "400"
+    },
+    {
+      "class": "border-transparent focus-visible:border-ring focus-visible:ring-ring/30 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 px-2.5 text-base transition-[color,box-shadow] duration-200 md:text-sm flex field-sizing-content min-h-16 w-full outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 rounded-none border-0 bg-transparent py-2 shadow-none ring-0 focus-visible:ring-0 aria-invalid:ring-0 dark:bg-transparent flex-1 resize-none vict-conversation-textarea",
+      "font": "system-ui, \"Segoe UI\", sans-serif",
+      "line": "20px",
+      "padding": "8px 12px",
+      "size": "13px",
+      "weight": "400"
+    },
+    {
+      "class": "agent-status svelte-1n95bvq",
+      "font": "system-ui, \"Segoe UI\", sans-serif",
+      "line": "16px",
+      "padding": "0px",
+      "size": "11px",
+      "weight": "400"
+    }
+  ],
+  "structure": [
+    {
+      "font": "system-ui, \"Segoe UI\", sans-serif",
+      "line": "18px",
+      "padding": "0px",
+      "size": "12px",
+      "text": "Structure",
+      "weight": "400"
+    },
+    {
+      "font": "system-ui, \"Segoe UI\", sans-serif",
+      "line": "16px",
+      "padding": "0px",
+      "size": "11px",
+      "text": "Container",
+      "weight": "400"
+    },
+    {
+      "font": "system-ui, \"Segoe UI\", sans-serif",
+      "line": "18px",
+      "padding": "0px",
+      "size": "12px",
+      "text": "Screen",
+      "weight": "500"
+    },
+    {
+      "font": "system-ui, \"Segoe UI\", sans-serif",
+      "line": "16px",
+      "padding": "0px",
+      "size": "11px",
+      "text": "Container",
+      "weight": "400"
+    },
+    {
+      "font": "system-ui, \"Segoe UI\", sans-serif",
+      "line": "18px",
+      "padding": "0px",
+      "size": "12px",
+      "text": "Section",
+      "weight": "500"
+    },
+    {
+      "font": "system-ui, \"Segoe UI\", sans-serif",
+      "line": "16px",
+      "padding": "0px",
+      "size": "11px",
+      "text": "Element",
+      "weight": "400"
+    },
+    {
+      "font": "system-ui, \"Segoe UI\", sans-serif",
+      "line": "18px",
+      "padding": "0px",
+      "size": "12px",
+      "text": "Full name",
+      "weight": "500"
+    }
+  ],
+  "checks": {
+    "ui12Line18": true,
+    "headings500": true,
+    "chat13Line20": true,
+    "metadata11Line16": true,
+    "panelPadding12": true,
+    "toolbarGap8AndGroupSpace16": true,
+    "authoredSnapshotExactMatch": true,
+    "providerTurn": false,
+    "independentGate": false
+  },
+  "observations": [
+    "Owner-tab Back/Layers locators no longer matched after panel state changed; no retry against changed state, remaining checks used a separate background tab.",
+    "No persistent edit was made to the owner screen."
+  ],
+  "limits": [
+    "No full gallery hands-on sweep",
+    "Five inherited renderer Svelte warnings",
+    "Owner testing and independent gate pending"
+  ]
+}
