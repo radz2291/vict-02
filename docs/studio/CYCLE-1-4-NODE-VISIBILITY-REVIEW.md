@@ -46,3 +46,5 @@ The card system is coherent: quiet white cards, a stable selected border, semant
 - Static review: `structure.ts`, `StructureView.svelte`, `StructuredSourceNode.svelte`, `structure-connections.ts`, `SourceDetails.svelte`, and shared `layout.ts`. This covers projection/control semantics across all seven source kinds, not live visual proof for every component, arbitrary graph size, branch combination, language, zoom or viewport. No new full-suite/type/build claim. Existing production seal reverified: 763 inputs/491 outputs, product bytes unchanged.
 
 Recommended next scope: address NV-01–04 first, then semantic node facts/search/count clarity. Retain the current visual foundation and stable zoom. Owner review is next; implementation, independent verification, overall acceptance and Stage9 closure remain pending. No merge/release/deployment authority follows from this report.
+
+Evidence packaging note: the initial staged whitespace check flagged trailing spaces/blank final lines in captured logs. Those whitespace characters were normalized without removing observations; final whitespace check passes. No product bytes changed.

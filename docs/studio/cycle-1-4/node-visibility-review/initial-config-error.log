@@ -41,7 +41,7 @@ stderr | tests/ui/context-details.test.ts > keeps shared inspection inside the S
 [svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
 [svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
 
-AggregateError: 
+AggregateError:
     at internalConnectMultiple (node:net:1139:18)
     at afterConnectMultiple (node:net:1712:7) {
   code: 'ECONNREFUSED',
@@ -66,7 +66,7 @@ AggregateError:
     }
   ]
 }
-AggregateError: 
+AggregateError:
     at internalConnectMultiple (node:net:1139:18)
     at afterConnectMultiple (node:net:1712:7) {
   code: 'ECONNREFUSED',
@@ -91,7 +91,7 @@ AggregateError:
     }
   ]
 }
-AggregateError: 
+AggregateError:
     at internalConnectMultiple (node:net:1139:18)
     at afterConnectMultiple (node:net:1712:7) {
   code: 'ECONNREFUSED',
@@ -116,7 +116,7 @@ AggregateError:
     }
   ]
 }
-AggregateError: 
+AggregateError:
     at internalConnectMultiple (node:net:1139:18)
     at afterConnectMultiple (node:net:1712:7) {
   code: 'ECONNREFUSED',
@@ -141,7 +141,7 @@ AggregateError:
     }
   ]
 }
-AggregateError: 
+AggregateError:
     at internalConnectMultiple (node:net:1139:18)
     at afterConnectMultiple (node:net:1712:7) {
   code: 'ECONNREFUSED',
@@ -184,7 +184,7 @@ stderr | tests/ui/composition.test.ts > opens a closed composition without autho
 [svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
 [svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
 
-AggregateError: 
+AggregateError:
     at internalConnectMultiple (node:net:1139:18)
     at afterConnectMultiple (node:net:1712:7) {
   code: 'ECONNREFUSED',
@@ -209,7 +209,7 @@ AggregateError:
     }
   ]
 }
-AggregateError: 
+AggregateError:
     at internalConnectMultiple (node:net:1139:18)
     at afterConnectMultiple (node:net:1712:7) {
   code: 'ECONNREFUSED',
@@ -234,7 +234,7 @@ AggregateError:
     }
   ]
 }
-AggregateError: 
+AggregateError:
     at internalConnectMultiple (node:net:1139:18)
     at afterConnectMultiple (node:net:1712:7) {
   code: 'ECONNREFUSED',
@@ -259,7 +259,7 @@ AggregateError:
     }
   ]
 }
-AggregateError: 
+AggregateError:
     at internalConnectMultiple (node:net:1139:18)
     at afterConnectMultiple (node:net:1712:7) {
   code: 'ECONNREFUSED',
@@ -284,7 +284,7 @@ AggregateError:
     }
   ]
 }
-AggregateError: 
+AggregateError:
     at internalConnectMultiple (node:net:1139:18)
     at afterConnectMultiple (node:net:1712:7) {
   code: 'ECONNREFUSED',
@@ -319,7 +319,7 @@ stderr | tests/ui/composition.test.ts > keeps data drafts safe across document n
    × retains hidden Source drafts and refuses editing transitions until discarded 1171ms
    × opens a closed composition without authored or runtime changes, guards drafts, and saves the same edited source for replay 1977ms
    × keeps data drafts safe across document navigation and saves applied starting values 1433ms
-AggregateError: 
+AggregateError:
     at internalConnectMultiple (node:net:1139:18)
     at afterConnectMultiple (node:net:1712:7) {
   code: 'ECONNREFUSED',
@@ -344,7 +344,7 @@ AggregateError:
     }
   ]
 }
-AggregateError: 
+AggregateError:
     at internalConnectMultiple (node:net:1139:18)
     at afterConnectMultiple (node:net:1712:7) {
   code: 'ECONNREFUSED',
@@ -369,7 +369,7 @@ AggregateError:
     }
   ]
 }
-AggregateError: 
+AggregateError:
     at internalConnectMultiple (node:net:1139:18)
     at afterConnectMultiple (node:net:1712:7) {
   code: 'ECONNREFUSED',
@@ -398,4 +398,3 @@ stderr | tests/ui/clean-workspace.test.ts > retains a hidden Source draft and pr
 [svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
 [svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
 [svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
-
