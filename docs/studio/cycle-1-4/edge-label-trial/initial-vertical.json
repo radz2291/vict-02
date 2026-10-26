@@ -1,0 +1,94 @@
+{
+  "edges": [
+    {
+      "caption": "Contains",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22contains%22%2C%22onbCard.contains.3%22%5D",
+      "marker": "url('#1__color=#7b879a&height=12&type=arrowclosed&width=12')",
+      "opacity": "0",
+      "path": "M 124,102 L 124,188.4"
+    },
+    {
+      "caption": "Reads · 2",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522fullName%2522%255D%22%2C%22reads%3A%20state.fullName%22%2C%22onbNameInput.attributes.value%22%5D",
+      "marker": "url('#1__color=#0f766e&height=12&type=arrowclosed&width=12')",
+      "opacity": "1",
+      "path": "M86.92470153605707 267.09969097072366L86.92470153605707 287.09969097072366L 86.92470153605707,307.59983875805483Q 86.92470153605707,307.59985276954137 86.92468752457054,307.59985276954137L 86.92468752457054,307.59985276954137Q 86.924673513084,307.59985276954137 86.924673513084,307.5998667810279L86.924673513084 328.1000145683591L86.924673513084 348.1000145683591"
+    },
+    {
+      "caption": "Updates",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522fullName%2522%255D%22%2C%22writes%20state%22%2C%22onbNameInput.interactions.0%22%5D",
+      "marker": "url('#1__color=#a16207&height=12&type=arrowclosed&width=12')",
+      "opacity": "1",
+      "path": "M161.06188674974115 267.09969097072366L161.06188674974115 287.09969097072366L 161.06188674974115,307.59983875805483Q 161.06188674974115,307.59985276954137 161.06187273825464,307.59985276954137L 161.06187273825464,307.59985276954137Q 161.0618587267681,307.59985276954137 161.0618587267681,307.5998667810279L161.0618587267681 328.1000145683591L161.0618587267681 348.1000145683591"
+    },
+    {
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522fullName%2522%255D%22%2C%22reads%3A%20state.fullName%22%2C%22onbNameInput.interactions.0.value%22%5D",
+      "marker": "url('#1__color=#0f766e&height=12&type=arrowclosed&width=12')",
+      "opacity": null,
+      "path": "M86.92470153605707 267.09969097072366L86.92470153605707 287.09969097072366L 86.92470153605707,307.59983875805483Q 86.92470153605707,307.59985276954137 86.92468752457054,307.59985276954137L 86.92468752457054,307.59985276954137Q 86.924673513084,307.59985276954137 86.924673513084,307.5998667810279L86.924673513084 328.1000145683591L86.924673513084 348.1000145683591"
+    }
+  ],
+  "handles": [
+    {
+      "connectable": false,
+      "hidden": "true",
+      "id": "out-hierarchy",
+      "tabindex": "-1"
+    },
+    {
+      "connectable": false,
+      "hidden": "true",
+      "id": "in-hierarchy",
+      "tabindex": "-1"
+    },
+    {
+      "connectable": false,
+      "hidden": "true",
+      "id": "out-read",
+      "tabindex": "-1"
+    },
+    {
+      "connectable": false,
+      "hidden": "true",
+      "id": "out-write",
+      "tabindex": "-1"
+    },
+    {
+      "connectable": false,
+      "hidden": "true",
+      "id": "in-read",
+      "tabindex": "-1"
+    },
+    {
+      "connectable": false,
+      "hidden": "true",
+      "id": "in-write",
+      "tabindex": "-1"
+    }
+  ],
+  "nodes": [
+    {
+      "height": 90,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbCard%22%5D",
+      "text": " Section › 11 direct children   ",
+      "width": 224,
+      "world": "translate(12px, 12px)"
+    },
+    {
+      "height": 76,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbNameInput%22%5D",
+      "text": " InputFull name     ",
+      "width": 224,
+      "world": "translate(12px, 188.4px)"
+    },
+    {
+      "height": 90,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22state%22%2C%22fullName%22%5D",
+      "text": " StateFull Name  Text · starts empty   ",
+      "width": 224,
+      "world": "translate(12px, 350.8px)"
+    }
+  ],
+  "revision": "@3 · v1_fe0ac678e805…",
+  "viewport": "transform: translate(368.797px, 9.81903px) scale(1.09841);"
+}

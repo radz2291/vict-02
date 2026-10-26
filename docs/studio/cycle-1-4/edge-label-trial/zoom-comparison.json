@@ -1,0 +1,7 @@
+{
+  "nodesStable": true,
+  "sameEdgeCount": true,
+  "maxPathCoordinateDelta": 0,
+  "lowViewport": "transform: translate(31.9318px, 196.426px) scale(1.08902);",
+  "highViewport": "transform: translate(-176.304px, 169.158px) scale(1.56818);"
+}

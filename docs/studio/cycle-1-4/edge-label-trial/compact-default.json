@@ -1,0 +1,671 @@
+{
+  "edges": [
+    {
+      "caption": "Contains",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522screen%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22contains%22%2C%22screen.contains.0%22%5D",
+      "marker": "url('#1__color=#7b879a&height=12&type=arrowclosed&width=12')",
+      "opacity": "0",
+      "path": "M 236,673 L 322.4,673"
+    },
+    {
+      "caption": "Contains",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbTitle%2522%255D%22%2C%22contains%22%2C%22onbCard.contains.0%22%5D",
+      "marker": "url('#1__color=#7b879a&height=12&type=arrowclosed&width=12')",
+      "opacity": "0",
+      "path": "M 546.4,673 L 556.4,673 L 556.4,50 L 632.8,50"
+    },
+    {
+      "caption": "Contains",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbSubtitle%2522%255D%22%2C%22contains%22%2C%22onbCard.contains.1%22%5D",
+      "marker": "url('#1__color=#7b879a&height=12&type=arrowclosed&width=12')",
+      "opacity": "0",
+      "path": "M 546.4,673 L 556.4,673 L 556.4,175.5 L 632.8,175.5"
+    },
+    {
+      "caption": "Contains",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameLabel%2522%255D%22%2C%22contains%22%2C%22onbCard.contains.2%22%5D",
+      "marker": "url('#1__color=#7b879a&height=12&type=arrowclosed&width=12')",
+      "opacity": "0",
+      "path": "M 546.4,673 L 556.4,673 L 556.4,301 L 632.8,301"
+    },
+    {
+      "caption": "Contains",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22contains%22%2C%22onbCard.contains.3%22%5D",
+      "marker": "url('#1__color=#7b879a&height=12&type=arrowclosed&width=12')",
+      "opacity": "0",
+      "path": "M 546.4,673 L 556.4,673 L 556.4,425 L 632.8,425"
+    },
+    {
+      "caption": "Contains",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbEmailLabel%2522%255D%22%2C%22contains%22%2C%22onbCard.contains.4%22%5D",
+      "marker": "url('#1__color=#7b879a&height=12&type=arrowclosed&width=12')",
+      "opacity": "0",
+      "path": "M 546.4,673 L 556.4,673 L 556.4,549 L 632.8,549"
+    },
+    {
+      "caption": "Contains",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbEmailInput%2522%255D%22%2C%22contains%22%2C%22onbCard.contains.5%22%5D",
+      "marker": "url('#1__color=#7b879a&height=12&type=arrowclosed&width=12')",
+      "opacity": "0",
+      "path": "M 546.4,673 L 632.8,673"
+    },
+    {
+      "caption": "Contains",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleLabel%2522%255D%22%2C%22contains%22%2C%22onbCard.contains.6%22%5D",
+      "marker": "url('#1__color=#7b879a&height=12&type=arrowclosed&width=12')",
+      "opacity": "0",
+      "path": "M 546.4,673 L 556.4,673 L 556.4,797 L 632.8,797"
+    },
+    {
+      "caption": "Contains",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleSelect%2522%255D%22%2C%22contains%22%2C%22onbCard.contains.7%22%5D",
+      "marker": "url('#1__color=#7b879a&height=12&type=arrowclosed&width=12')",
+      "opacity": "0",
+      "path": "M 546.4,673 L 556.4,673 L 556.4,1300 L 632.8,1300"
+    },
+    {
+      "caption": "Contains",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNotifRow%2522%255D%22%2C%22contains%22%2C%22onbCard.contains.8%22%5D",
+      "marker": "url('#1__color=#7b879a&height=12&type=arrowclosed&width=12')",
+      "opacity": "0",
+      "path": "M 546.4,673 L 556.4,673 L 556.4,1686 L 632.8,1686"
+    },
+    {
+      "caption": "Contains",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbSubmit%2522%255D%22%2C%22contains%22%2C%22onbCard.contains.9%22%5D",
+      "marker": "url('#1__color=#7b879a&height=12&type=arrowclosed&width=12')",
+      "opacity": "0",
+      "path": "M 546.4,673 L 556.4,673 L 556.4,1941 L 632.8,1941"
+    },
+    {
+      "caption": "Contains",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbFeedback%2522%255D%22%2C%22contains%22%2C%22onbCard.contains.10%22%5D",
+      "marker": "url('#1__color=#7b879a&height=12&type=arrowclosed&width=12')",
+      "opacity": "0",
+      "path": "M 546.4,673 L 556.4,673 L 556.4,2073.5 L 632.8,2073.5"
+    },
+    {
+      "caption": "Reads · 2",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522fullName%2522%255D%22%2C%22reads%3A%20state.fullName%22%2C%22onbNameInput.attributes.value%22%5D",
+      "marker": "url('#1__color=#0f766e&height=12&type=arrowclosed&width=12')",
+      "opacity": "1",
+      "path": "M859.500039950284 412.59999778053975L879.500039950284 412.59999778053975L 898.7625233043323,412.59999778053975Q 900.0000332919033,412.59999778053975 900.0000332919033,411.36248779296875L 900.0000332919033,411.36248779296875Q 900.0000332919033,410.12497780539775 901.2375432794743,410.12497780539775L920.5000266335227 410.12497780539775L940.5000266335227 410.12497780539775"
+    },
+    {
+      "caption": "Updates",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522fullName%2522%255D%22%2C%22writes%20state%22%2C%22onbNameInput.interactions.0%22%5D",
+      "marker": "url('#1__color=#a16207&height=12&type=arrowclosed&width=12')",
+      "opacity": "1",
+      "path": "M859.500039950284 437.3999689275568L879.500039950284 437.3999689275568L 898.9687832919033,437.3999689275568Q 900.0000332919033,437.3999689275568 900.0000332919033,438.4312189275568L 900.0000332919033,438.4312189275568Q 900.0000332919033,439.4624689275568 901.0312832919033,439.4624689275568L920.5000266335227 439.4624689275568L940.5000266335227 439.4624689275568"
+    },
+    {
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522fullName%2522%255D%22%2C%22reads%3A%20state.fullName%22%2C%22onbNameInput.interactions.0.value%22%5D",
+      "marker": "url('#1__color=#0f766e&height=12&type=arrowclosed&width=12')",
+      "opacity": null,
+      "path": "M859.500039950284 412.59999778053975L879.500039950284 412.59999778053975L 898.7625233043323,412.59999778053975Q 900.0000332919033,412.59999778053975 900.0000332919033,411.36248779296875L 900.0000332919033,411.36248779296875Q 900.0000332919033,410.12497780539775 901.2375432794743,410.12497780539775L920.5000266335227 410.12497780539775L940.5000266335227 410.12497780539775"
+    },
+    {
+      "caption": "Reads · 2",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbEmailInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522workEmail%2522%255D%22%2C%22reads%3A%20state.workEmail%22%2C%22onbEmailInput.attributes.value%22%5D",
+      "marker": "url('#1__color=#0f766e&height=12&type=arrowclosed&width=12')",
+      "opacity": "1",
+      "path": "M859.500039950284 660.5999977805398L879.500039950284 660.5999977805398L 898.7625233043323,660.5999977805398Q 900.0000332919033,660.5999977805398 900.0000332919033,659.3624877929688L 900.0000332919033,659.3624877929688Q 900.0000332919033,658.1249778053977 901.2375432794743,658.1249778053977L920.5000266335227 658.1249778053977L940.5000266335227 658.1249778053977"
+    },
+    {
+      "caption": "Updates",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbEmailInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522workEmail%2522%255D%22%2C%22writes%20state%22%2C%22onbEmailInput.interactions.0%22%5D",
+      "marker": "url('#1__color=#a16207&height=12&type=arrowclosed&width=12')",
+      "opacity": "1",
+      "path": "M859.500039950284 685.4000244140625L879.500039950284 685.4000244140625L 898.9688110351561,685.4000244140625Q 900.0000332919033,685.4000244140625 900.0000332919033,686.4312466708096L 900.0000332919033,686.4312466708096Q 900.0000332919033,687.4624689275568 901.0312555486504,687.4624689275568L920.5000266335227 687.4624689275568L940.5000266335227 687.4624689275568"
+    },
+    {
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbEmailInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522workEmail%2522%255D%22%2C%22reads%3A%20state.workEmail%22%2C%22onbEmailInput.interactions.0.value%22%5D",
+      "marker": "url('#1__color=#0f766e&height=12&type=arrowclosed&width=12')",
+      "opacity": null,
+      "path": "M859.500039950284 660.5999977805398L879.500039950284 660.5999977805398L 898.7625233043323,660.5999977805398Q 900.0000332919033,660.5999977805398 900.0000332919033,659.3624877929688L 900.0000332919033,659.3624877929688Q 900.0000332919033,658.1249778053977 901.2375432794743,658.1249778053977L920.5000266335227 658.1249778053977L940.5000266335227 658.1249778053977"
+    },
+    {
+      "caption": "Contains",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleSelect%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRolePlaceholder%2522%255D%22%2C%22contains%22%2C%22onbRoleSelect.contains.0%22%5D",
+      "marker": "url('#1__color=#7b879a&height=12&type=arrowclosed&width=12')",
+      "opacity": "0",
+      "path": "M859.4999289772727 1281.399991122159L879.4999289772727 1281.399991122159L 894.9999778053977,1281.399991122159Q 899.9999778053977,1281.399991122159 899.9999778053977,1276.399991122159L 899.9999778053977,809.0000110973011Q 899.9999778053977,804.0000110973011 904.9999778053977,804.0000110973011L920.5000266335227 804.0000110973011L940.5000266335227 804.0000110973011"
+    },
+    {
+      "caption": "Contains",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleSelect%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleOptProduct%2522%255D%22%2C%22contains%22%2C%22onbRoleSelect.contains.1%22%5D",
+      "marker": "url('#1__color=#7b879a&height=12&type=arrowclosed&width=12')",
+      "opacity": "0",
+      "path": "M859.4999289772727 1281.399991122159L879.4999289772727 1281.399991122159L 894.9999778053977,1281.399991122159Q 899.9999778053977,1281.399991122159 899.9999778053977,1276.399991122159L 899.9999778053977,932.9999556107955Q 899.9999778053977,927.9999556107955 904.9999778053977,927.9999556107955L920.5000266335227 927.9999556107955L940.5000266335227 927.9999556107955"
+    },
+    {
+      "caption": "Contains",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleSelect%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleOptDesign%2522%255D%22%2C%22contains%22%2C%22onbRoleSelect.contains.2%22%5D",
+      "marker": "url('#1__color=#7b879a&height=12&type=arrowclosed&width=12')",
+      "opacity": "0",
+      "path": "M859.4999289772727 1281.399991122159L879.4999289772727 1281.399991122159L 894.9999778053977,1281.399991122159Q 899.9999778053977,1281.399991122159 899.9999778053977,1276.399991122159L 899.9999778053977,1056.9999556107955Q 899.9999778053977,1051.9999556107955 904.9999778053977,1051.9999556107955L920.5000266335227 1051.9999556107955L940.5000266335227 1051.9999556107955"
+    },
+    {
+      "caption": "Contains",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleSelect%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleOptEngineering%2522%255D%22%2C%22contains%22%2C%22onbRoleSelect.contains.3%22%5D",
+      "marker": "url('#1__color=#7b879a&height=12&type=arrowclosed&width=12')",
+      "opacity": "0",
+      "path": "M859.4999289772727 1281.399991122159L879.4999289772727 1281.399991122159L 894.9999778053977,1281.399991122159Q 899.9999778053977,1281.399991122159 899.9999778053977,1276.399991122159L 899.9999778053977,1180.9999556107955Q 899.9999778053977,1175.9999556107955 904.9999778053977,1175.9999556107955L920.5000266335227 1175.9999556107955L940.5000266335227 1175.9999556107955"
+    },
+    {
+      "caption": "Contains",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleSelect%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleOptMarketing%2522%255D%22%2C%22contains%22%2C%22onbRoleSelect.contains.4%22%5D",
+      "marker": "url('#1__color=#7b879a&height=12&type=arrowclosed&width=12')",
+      "opacity": "0",
+      "path": "M859.4999289772727 1281.399991122159L879.4999289772727 1281.399991122159L 894.9999778053977,1281.399991122159Q 899.9999778053977,1281.399991122159 899.9999778053977,1286.399991122159L 899.9999778053977,1295.0000110973012Q 899.9999778053977,1300.0000110973012 904.9999778053977,1300.0000110973012L920.5000266335227 1300.0000110973012L940.5000266335227 1300.0000110973012"
+    },
+    {
+      "caption": "Contains",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleSelect%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleOptSales%2522%255D%22%2C%22contains%22%2C%22onbRoleSelect.contains.5%22%5D",
+      "marker": "url('#1__color=#7b879a&height=12&type=arrowclosed&width=12')",
+      "opacity": "0",
+      "path": "M859.4999289772727 1281.399991122159L879.4999289772727 1281.399991122159L 894.9999778053977,1281.399991122159Q 899.9999778053977,1281.399991122159 899.9999778053977,1286.399991122159L 899.9999778053977,1418.9999556107955Q 899.9999778053977,1423.9999556107955 904.9999778053977,1423.9999556107955L920.5000266335227 1423.9999556107955L940.5000266335227 1423.9999556107955"
+    },
+    {
+      "caption": "Reads · 2",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleSelect%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522role%2522%255D%22%2C%22reads%3A%20state.role%22%2C%22onbRoleSelect.attributes.value%22%5D",
+      "marker": "url('#1__color=#0f766e&height=12&type=arrowclosed&width=12')",
+      "opacity": "1",
+      "path": "M859.4999289772727 1300.0000110973012L879.4999289772727 1300.0000110973012L 894.9999778053977,1300.0000110973012Q 899.9999778053977,1300.0000110973012 899.9999778053977,1305.0000110973012L 899.9999778053977,1535.1249778053977Q 899.9999778053977,1540.1249778053977 904.9999778053977,1540.1249778053977L920.5000266335227 1540.1249778053977L940.5000266335227 1540.1249778053977"
+    },
+    {
+      "caption": "Updates",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleSelect%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522role%2522%255D%22%2C%22writes%20state%22%2C%22onbRoleSelect.interactions.0%22%5D",
+      "marker": "url('#1__color=#a16207&height=12&type=arrowclosed&width=12')",
+      "opacity": "1",
+      "path": "M859.4999289772727 1318.6000310724432L879.4999289772727 1318.6000310724432L 894.9999778053977,1318.6000310724432Q 899.9999778053977,1318.6000310724432 899.9999778053977,1323.6000310724432L 899.9999778053977,1564.4625521573153Q 899.9999778053977,1569.4625521573153 904.9999778053977,1569.4625521573153L920.5000266335227 1569.4625521573153L940.5000266335227 1569.4625521573153"
+    },
+    {
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbRoleSelect%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522role%2522%255D%22%2C%22reads%3A%20state.role%22%2C%22onbRoleSelect.interactions.0.value%22%5D",
+      "marker": "url('#1__color=#0f766e&height=12&type=arrowclosed&width=12')",
+      "opacity": null,
+      "path": "M859.4999289772727 1300.0000110973012L879.4999289772727 1300.0000110973012L 894.9999778053977,1300.0000110973012Q 899.9999778053977,1300.0000110973012 899.9999778053977,1305.0000110973012L 899.9999778053977,1535.1249778053977Q 899.9999778053977,1540.1249778053977 904.9999778053977,1540.1249778053977L920.5000266335227 1540.1249778053977L940.5000266335227 1540.1249778053977"
+    },
+    {
+      "caption": "Contains",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNotifRow%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNotifInput%2522%255D%22%2C%22contains%22%2C%22onbNotifRow.contains.0%22%5D",
+      "marker": "url('#1__color=#7b879a&height=12&type=arrowclosed&width=12')",
+      "opacity": "0",
+      "path": "M 856.8,1686 L 943.1999999999999,1686"
+    },
+    {
+      "caption": "Contains",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNotifRow%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNotifLabel%2522%255D%22%2C%22contains%22%2C%22onbNotifRow.contains.1%22%5D",
+      "marker": "url('#1__color=#7b879a&height=12&type=arrowclosed&width=12')",
+      "opacity": "0",
+      "path": "M 856.8,1686 L 866.8,1686 L 866.8,1810 L 943.1999999999999,1810"
+    },
+    {
+      "caption": "Reads · 2",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNotifInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522updatesOptIn%2522%255D%22%2C%22reads%3A%20state.updatesOptIn%22%2C%22onbNotifInput.attributes.checked%22%5D",
+      "marker": "url('#1__color=#0f766e&height=12&type=arrowclosed&width=12')",
+      "opacity": "1",
+      "path": "M1169.900039950284 1673.6000532670455L1189.900039950284 1673.6000532670455L 1209.1624955610796,1673.6000532670455Q 1210.4000332919034,1673.6000532670455 1210.4000332919034,1672.3625155362215L 1210.4000332919034,1672.3625155362215Q 1210.4000332919034,1671.1249778053977 1211.6375710227271,1671.1249778053977L1230.9000266335227 1671.1249778053977L1250.9000266335227 1671.1249778053977"
+    },
+    {
+      "caption": "Updates",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNotifInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522updatesOptIn%2522%255D%22%2C%22writes%20state%22%2C%22onbNotifInput.interactions.0%22%5D",
+      "marker": "url('#1__color=#a16207&height=12&type=arrowclosed&width=12')",
+      "opacity": "1",
+      "path": "M1169.900039950284 1698.3999689275568L1189.900039950284 1698.3999689275568L 1209.3687832919034,1698.3999689275568Q 1210.4000332919034,1698.3999689275568 1210.4000332919034,1699.4312189275568L 1210.4000332919034,1699.4312189275568Q 1210.4000332919034,1700.4624689275568 1211.4312832919034,1700.4624689275568L1230.9000266335227 1700.4624689275568L1250.9000266335227 1700.4624689275568"
+    },
+    {
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNotifInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522updatesOptIn%2522%255D%22%2C%22reads%3A%20state.updatesOptIn%22%2C%22onbNotifInput.interactions.0.value%22%5D",
+      "marker": "url('#1__color=#0f766e&height=12&type=arrowclosed&width=12')",
+      "opacity": null,
+      "path": "M1169.900039950284 1673.6000532670455L1189.900039950284 1673.6000532670455L 1209.1624955610796,1673.6000532670455Q 1210.4000332919034,1673.6000532670455 1210.4000332919034,1672.3625155362215L 1210.4000332919034,1672.3625155362215Q 1210.4000332919034,1671.1249778053977 1211.6375710227271,1671.1249778053977L1230.9000266335227 1671.1249778053977L1250.9000266335227 1671.1249778053977"
+    },
+    {
+      "caption": "Invokes",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbSubmit%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522action%2522%252C%2522demo.submit%2522%255D%22%2C%22invokes%20action%22%2C%22onbSubmit.outputs.press.invokeAction%22%5D",
+      "marker": "url('#1__color=#7c3aed&height=12&type=arrowclosed&width=12')",
+      "opacity": "1",
+      "path": "M 856.8,1941 L 943.1999999999999,1941"
+    }
+  ],
+  "handles": [
+    {
+      "connectable": false,
+      "hidden": "true",
+      "id": "out-hierarchy",
+      "tabindex": "-1"
+    },
+    {
+      "connectable": false,
+      "hidden": "true",
+      "id": "in-hierarchy",
+      "tabindex": "-1"
+    },
+    {
+      "connectable": false,
+      "hidden": "true",
+      "id": "out-hierarchy",
+      "tabindex": "-1"
+    },
+    {
+      "connectable": false,
+      "hidden": "true",
+      "id": "in-hierarchy",
+      "tabindex": "-1"
+    },
+    {
+      "connectable": false,
+      "hidden": "true",
+      "id": "in-hierarchy",
+      "tabindex": "-1"
+    },
+    {
+      "connectable": false,
+      "hidden": "true",
+      "id": "in-hierarchy",
+      "tabindex": "-1"
+    },
+    {
+      "connectable": false,
+      "hidden": "true",
+      "id": "in-hierarchy",
+      "tabindex": "-1"
+    },
+    {
+      "connectable": false,
+      "hidden": "true",
+      "id": "out-read",
+      "tabindex": "-1"
+    },
+    {
+      "connectable": false,
+      "hidden": "true",
+      "id": "out-write",
+      "tabindex": "-1"
+    },
+    {
+      "connectable": false,
+      "hidden": "true",
+      "id": "in-hierarchy",
+      "tabindex": "-1"
+    },
+    {
+      "connectable": false,
+      "hidden": "true",
+      "id": "in-hierarchy",
+      "tabindex": "-1"
+    },
+    {
+      "connectable": false,
+      "hidden": "true",
+      "id": "out-read",
+      "tabindex": "-1"
+    },
+    {
+      "connectable": false,
+      "hidden": "true",
+      "id": "out-write",
+      "tabindex": "-1"
+    },
+    {
+      "connectable": false,
+      "hidden": "true",
+      "id": "in-hierarchy",
+      "tabindex": "-1"
+    },
+    {
+      "connectable": false,
+      "hidden": "true",
+      "id": "in-hierarchy",
+      "tabindex": "-1"
+    },
+    {
+      "connectable": false,
+      "hidden": "true",
+      "id": "out-hierarchy",
+      "tabindex": "-1"
+    },
+    {
+      "connectable": false,
+      "hidden": "true",
+      "id": "out-read",
+      "tabindex": "-1"
+    },
+    {
+      "connectable": false,
+      "hidden": "true",
+      "id": "out-write",
+      "tabindex": "-1"
+    },
+    {
+      "connectable": false,
+      "hidden": "true",
+      "id": "in-hierarchy",
+      "tabindex": "-1"
+    },
+    {
+      "connectable": false,
+      "hidden": "true",
+      "id": "in-hierarchy",
+      "tabindex": "-1"
+    },
+    {
+      "connectable": false,
+      "hidden": "true",
+      "id": "in-hierarchy",
+      "tabindex": "-1"
+    },
+    {
+      "connectable": false,
+      "hidden": "true",
+      "id": "in-hierarchy",
+      "tabindex": "-1"
+    },
+    {
+      "connectable": false,
+      "hidden": "true",
+      "id": "in-hierarchy",
+      "tabindex": "-1"
+    },
+    {
+      "connectable": false,
+      "hidden": "true",
+      "id": "in-hierarchy",
+      "tabindex": "-1"
+    },
+    {
+      "connectable": false,
+      "hidden": "true",
+      "id": "in-hierarchy",
+      "tabindex": "-1"
+    },
+    {
+      "connectable": false,
+      "hidden": "true",
+      "id": "out-hierarchy",
+      "tabindex": "-1"
+    },
+    {
+      "connectable": false,
+      "hidden": "true",
+      "id": "in-hierarchy",
+      "tabindex": "-1"
+    },
+    {
+      "connectable": false,
+      "hidden": "true",
+      "id": "out-read",
+      "tabindex": "-1"
+    },
+    {
+      "connectable": false,
+      "hidden": "true",
+      "id": "out-write",
+      "tabindex": "-1"
+    },
+    {
+      "connectable": false,
+      "hidden": "true",
+      "id": "in-hierarchy",
+      "tabindex": "-1"
+    },
+    {
+      "connectable": false,
+      "hidden": "true",
+      "id": "in-hierarchy",
+      "tabindex": "-1"
+    },
+    {
+      "connectable": false,
+      "hidden": "true",
+      "id": "out-action",
+      "tabindex": "-1"
+    },
+    {
+      "connectable": false,
+      "hidden": "true",
+      "id": "in-hierarchy",
+      "tabindex": "-1"
+    },
+    {
+      "connectable": false,
+      "hidden": "true",
+      "id": "in-read",
+      "tabindex": "-1"
+    },
+    {
+      "connectable": false,
+      "hidden": "true",
+      "id": "in-write",
+      "tabindex": "-1"
+    },
+    {
+      "connectable": false,
+      "hidden": "true",
+      "id": "in-read",
+      "tabindex": "-1"
+    },
+    {
+      "connectable": false,
+      "hidden": "true",
+      "id": "in-write",
+      "tabindex": "-1"
+    },
+    {
+      "connectable": false,
+      "hidden": "true",
+      "id": "in-read",
+      "tabindex": "-1"
+    },
+    {
+      "connectable": false,
+      "hidden": "true",
+      "id": "in-write",
+      "tabindex": "-1"
+    },
+    {
+      "connectable": false,
+      "hidden": "true",
+      "id": "in-read",
+      "tabindex": "-1"
+    },
+    {
+      "connectable": false,
+      "hidden": "true",
+      "id": "in-write",
+      "tabindex": "-1"
+    },
+    {
+      "connectable": false,
+      "hidden": "true",
+      "id": "in-action",
+      "tabindex": "-1"
+    }
+  ],
+  "nodes": [
+    {
+      "height": 90,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22screen%22%5D",
+      "text": " ContainerScreen ⌄ 1 direct child   ",
+      "width": 224,
+      "world": "translate(12px, 628px)"
+    },
+    {
+      "height": 90,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbCard%22%5D",
+      "text": " Section ⌄ 11 direct children   ",
+      "width": 224,
+      "world": "translate(322.4px, 628px)"
+    },
+    {
+      "height": 76,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbTitle%22%5D",
+      "text": " HeadingCreate your workspace     ",
+      "width": 224,
+      "world": "translate(632.8px, 12px)"
+    },
+    {
+      "height": 79,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbSubtitle%22%5D",
+      "text": " ParagraphSet up your workspace in under a minute — just the essentials.     ",
+      "width": 224,
+      "world": "translate(632.8px, 136px)"
+    },
+    {
+      "height": 76,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbNameLabel%22%5D",
+      "text": " LabelFull name     ",
+      "width": 224,
+      "world": "translate(632.8px, 263px)"
+    },
+    {
+      "height": 76,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbNameInput%22%5D",
+      "text": " InputFull name     ",
+      "width": 224,
+      "world": "translate(632.8px, 387px)"
+    },
+    {
+      "height": 76,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbEmailLabel%22%5D",
+      "text": " LabelWork email     ",
+      "width": 224,
+      "world": "translate(632.8px, 511px)"
+    },
+    {
+      "height": 76,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbEmailInput%22%5D",
+      "text": " InputWork email     ",
+      "width": 224,
+      "world": "translate(632.8px, 635px)"
+    },
+    {
+      "height": 76,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbRoleLabel%22%5D",
+      "text": " LabelRole     ",
+      "width": 224,
+      "world": "translate(632.8px, 759px)"
+    },
+    {
+      "height": 76,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbRoleSelect%22%5D",
+      "text": " SelectRole ⌄    ",
+      "width": 224,
+      "world": "translate(632.8px, 1262px)"
+    },
+    {
+      "height": 76,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbRolePlaceholder%22%5D",
+      "text": " OptionSelect your role…     ",
+      "width": 224,
+      "world": "translate(943.2px, 766px)"
+    },
+    {
+      "height": 76,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbRoleOptProduct%22%5D",
+      "text": " OptionProduct     ",
+      "width": 224,
+      "world": "translate(943.2px, 890px)"
+    },
+    {
+      "height": 76,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbRoleOptDesign%22%5D",
+      "text": " OptionDesign     ",
+      "width": 224,
+      "world": "translate(943.2px, 1014px)"
+    },
+    {
+      "height": 76,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbRoleOptEngineering%22%5D",
+      "text": " OptionEngineering     ",
+      "width": 224,
+      "world": "translate(943.2px, 1138px)"
+    },
+    {
+      "height": 76,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbRoleOptMarketing%22%5D",
+      "text": " OptionMarketing     ",
+      "width": 224,
+      "world": "translate(943.2px, 1262px)"
+    },
+    {
+      "height": 76,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbRoleOptSales%22%5D",
+      "text": " OptionSales     ",
+      "width": 224,
+      "world": "translate(943.2px, 1386px)"
+    },
+    {
+      "height": 90,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbNotifRow%22%5D",
+      "text": " ContainerRow ⌄ 2 direct children   ",
+      "width": 224,
+      "world": "translate(632.8px, 1641px)"
+    },
+    {
+      "height": 76,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbNotifInput%22%5D",
+      "text": " CheckboxEmail me product updates     ",
+      "width": 224,
+      "world": "translate(943.2px, 1648px)"
+    },
+    {
+      "height": 76,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbNotifLabel%22%5D",
+      "text": " LabelEmail me product updates     ",
+      "width": 224,
+      "world": "translate(943.2px, 1772px)"
+    },
+    {
+      "height": 90,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbSubmit%22%5D",
+      "text": " ComponentCreate account  Button   ",
+      "width": 224,
+      "world": "translate(632.8px, 1896px)"
+    },
+    {
+      "height": 79,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbFeedback%22%5D",
+      "text": " ParagraphYour details stay on this screen — nothing is sent.     ",
+      "width": 224,
+      "world": "translate(632.8px, 2034px)"
+    },
+    {
+      "height": 90,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22state%22%2C%22fullName%22%5D",
+      "text": " StateFull Name  Text · starts empty   ",
+      "width": 224,
+      "world": "translate(943.2px, 380px)"
+    },
+    {
+      "height": 90,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22state%22%2C%22workEmail%22%5D",
+      "text": " StateWork Email  Text · starts empty   ",
+      "width": 224,
+      "world": "translate(943.2px, 628px)"
+    },
+    {
+      "height": 90,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22state%22%2C%22role%22%5D",
+      "text": " StateRole  Text · starts empty   ",
+      "width": 224,
+      "world": "translate(943.2px, 1510px)"
+    },
+    {
+      "height": 90,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22state%22%2C%22updatesOptIn%22%5D",
+      "text": " StateUpdates Opt In  Boolean · initially on   ",
+      "width": 224,
+      "world": "translate(1253.6px, 1641px)"
+    },
+    {
+      "height": 90,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22action%22%2C%22demo.submit%22%5D",
+      "text": " ActionSubmit (simulated)  Declared action reference   ",
+      "width": 224,
+      "world": "translate(943.2px, 1896px)"
+    }
+  ],
+  "revision": "@3 · v1_fe0ac678e805…",
+  "viewport": "transform: translate(197.88px, 195.8px) scale(1.1);"
+}

@@ -1,0 +1,82 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Document and Selection review"
+  - generic: ✓ Saved
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- main:
+  - group "Workspace mode":
+    - button "Design"
+    - button "Interact"
+    - button "Structure" [pressed]
+  - region "Structure workspace":
+    - region "Source structure":
+      - searchbox "Search structure"
+      - menubar "Structure menus":
+        - menuitem "View"
+        - menuitem "Object"
+      - generic "Focused on Full name": "Focus: Full name"
+      - generic "Nearby items after visibility settings": 3 items
+      - button "Selection panel" [expanded]: Selection
+      - generic "Connection scope"
+      - application:
+        - 'group "Section: Section, source onbCard"':
+          - strong: Section
+          - button "Expand Section": ›
+          - generic: 11 direct children
+          - button
+        - 'group "Input: Full name, source onbNameInput"':
+          - generic: Input
+          - strong: Full name
+          - button
+          - button
+          - button
+        - 'group "State: Full Name"':
+          - generic: State
+          - strong: Full Name
+          - generic: Text · starts empty
+          - button
+          - button
+        - link "Svelte Flow attribution":
+          - /url: https://svelteflow.dev?utm_source=attribution
+          - text: Svelte Flow
+        - generic "Control Panel":
+          - button "Zoom In":
+          - button "Zoom Out":
+          - button "Fit View" [active]:
+- separator "Document drawer width"
+- complementary "Document and Selection":
+  - tablist "Panel context":
+    - tab "Document"
+    - tab "Selection" [selected]
+  - button "Close panel": ×
+  - tabpanel "Selection":
+    - region "Source inspection details":
+      - generic: Input
+      - strong: Full name
+      - region "Selection overview":
+        - button "Overview"
+      - region "Selection relationships":
+        - button "Relationships" [expanded]
+        - button "Inside Section":
+          - generic: Inside
+          - strong: Section
+        - button "Reads (2) Updates Full Name 3 source reference locations":
+          - generic: Reads (2)
+          - generic: Updates
+          - strong: Full Name
+          - generic: 3 source reference locations
+      - region "Selection technical information":
+        - button "Technical information"
+- contentinfo:
+  - status: Loaded the saved screen.
+  - generic "v1_fe0ac678e80522e8c9b9a004c95ba6f59c9d3261bd0e4fd54fe1bd47a0a54152": "@3 · v1_fe0ac678e805…"
+- generic: Designer — VICT Studio
