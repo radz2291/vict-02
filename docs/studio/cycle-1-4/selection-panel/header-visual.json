@@ -1,0 +1,59 @@
+{
+  "candidate": "fad503f93d0173ce522464cadb14e2b9ce985d1b",
+  "panel": {
+    "bottom": 644,
+    "height": 600,
+    "left": 815.4000244140625,
+    "right": 1130.4000244140625,
+    "top": 44,
+    "width": 315,
+    "x": 815.4000244140625,
+    "y": 44
+  },
+  "tabs": [
+    {
+      "bounds": {
+        "bottom": 83.20000076293945,
+        "height": 39.20000076293945,
+        "left": 816.2000122070312,
+        "right": 957.3000183105468,
+        "top": 44,
+        "width": 141.10000610351562,
+        "x": 816.2000122070312,
+        "y": 44
+      },
+      "divider": "0.8px",
+      "label": "Document",
+      "selected": "false",
+      "textAlign": "center",
+      "underline": {
+        "content": "none",
+        "height": "auto"
+      }
+    },
+    {
+      "bounds": {
+        "bottom": 83.20000076293945,
+        "height": 39.20000076293945,
+        "left": 957.2999877929688,
+        "right": 1098.3999938964844,
+        "top": 44,
+        "width": 141.10000610351562,
+        "x": 957.2999877929688,
+        "y": 44
+      },
+      "divider": "0.8px",
+      "label": "Selection",
+      "selected": "true",
+      "textAlign": "center",
+      "underline": {
+        "content": "\"\"",
+        "height": "2px"
+      }
+    }
+  ],
+  "viewport": {
+    "height": 668,
+    "width": 1130
+  }
+}
