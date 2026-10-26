@@ -1,0 +1,138 @@
+Loading svelte-check in workspace: c:\Users\RZ1\.codex\worktrees\studio-cycle14-selection-panel\260831-VCT-02\apps\studio
+Getting Svelte diagnostics...
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-selection-panel\260831-VCT-02\apps\studio\..\..\packages\ui-svelte\src\document\RenderNode.svelte:309:3
+Warn: Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events (svelte)
+{:else if instruction.kind === 'text'}
+  <span
+    class="uv-text"
+    data-ui-owner={ownerId}
+    data-ui-node={instruction.nodeId}
+    data-ui-occ={occ}
+    style="display: contents"
+    onclick={(event) => {
+      if (selectOccurrence !== undefined) {
+        event.stopPropagation();
+        selectOccurrence(occ);
+      }
+    }}
+  >
+    {#if instruction.content.type === 'literal'}
+      {instruction.content.value}
+    {:else}
+      {String(resolveValue({ type: 'expression', expression: instruction.content.expression }, scope) ?? '')}
+    {/if}
+  </span>
+{:else if (instruction.kind === 'component' || instruction.kind === 'extension') && componentValues.invalidNames.length}
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-selection-panel\260831-VCT-02\apps\studio\..\..\packages\ui-svelte\src\document\RenderNode.svelte:309:3
+Warn: `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions (svelte)
+{:else if instruction.kind === 'text'}
+  <span
+    class="uv-text"
+    data-ui-owner={ownerId}
+    data-ui-node={instruction.nodeId}
+    data-ui-occ={occ}
+    style="display: contents"
+    onclick={(event) => {
+      if (selectOccurrence !== undefined) {
+        event.stopPropagation();
+        selectOccurrence(occ);
+      }
+    }}
+  >
+    {#if instruction.content.type === 'literal'}
+      {instruction.content.value}
+    {:else}
+      {String(resolveValue({ type: 'expression', expression: instruction.content.expression }, scope) ?? '')}
+    {/if}
+  </span>
+{:else if (instruction.kind === 'component' || instruction.kind === 'extension') && componentValues.invalidNames.length}
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-selection-panel\260831-VCT-02\apps\studio\..\..\packages\ui-svelte\src\document\RenderNode.svelte:379:5
+Warn: Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events (svelte)
+    {@const Implementation = extension.component}
+    <span style="display: contents" data-extension-id={instruction.extensionId} data-ui-owner={ownerId} data-ui-occ={occ} data-ui-node={instruction.nodeId}
+      onclick={event => { event.stopPropagation(); selectOccurrence?.(occ); }}>
+      <Implementation props={extensionProps} occurrenceKey={occ} nodeId={instruction.nodeId} {presentation} />
+    </span>
+  {:else}
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-selection-panel\260831-VCT-02\apps\studio\..\..\packages\ui-svelte\src\document\RenderNode.svelte:379:5
+Warn: `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions (svelte)
+    {@const Implementation = extension.component}
+    <span style="display: contents" data-extension-id={instruction.extensionId} data-ui-owner={ownerId} data-ui-occ={occ} data-ui-node={instruction.nodeId}
+      onclick={event => { event.stopPropagation(); selectOccurrence?.(occ); }}>
+      <Implementation props={extensionProps} occurrenceKey={occ} nodeId={instruction.nodeId} {presentation} />
+    </span>
+  {:else}
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-selection-panel\260831-VCT-02\apps\studio\..\..\packages\ui-svelte\src\document\DocumentHost.svelte:105:31
+Warn: This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+  let acceptedSupplied: Record<string, UiValue> = {};
+  let lastDocumentId = $state(plan.documentId);
+  let lastSignal: symbol | undefined = $state<symbol | undefined>(undefined);
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-selection-panel\260831-VCT-02\apps\studio\src\lib\designer\StructureView.svelte:34:61
+Warn: This reference only captures the initial value of `document`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+  let edges = $state<Edge[]>([]);
+  let localSelection=$state<WorkspaceSelection>({documentId:document.id,items:[]});
+  const currentSelection=$derived(selection??localSelection);
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-selection-panel\260831-VCT-02\apps\studio\src\lib\designer\StructureView.svelte:380:5
+Warn: `<div>` with a dblclick handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions (svelte)
+  <div class="structure-body">
+    <div class="structure-canvas" ondblclick={event=>{if(event.target instanceof Element && event.target.closest('.svelte-flow__edge'))onInspect?.();}} onfocusin={focusConnection} onfocusout={()=>{focusedEdges=[];}} inert={presentation === 'drawer' && inspectionOpen}>
+      <FlowCanvas bind:nodes bind:edges bind:viewport {nodeTypes} {edgeTypes} minZoom={.35} maxZoom={2} colorMode="light" showControls={false} showMiniMap={nodes.length > 12}
+        nodesConnectable={allowMoves && !blocked} elementsSelectable={!blocked} deleteKey={null} multiSelectionKey={null} selectionKey={null} autoPanOnNodeFocus={false} isValidConnection={valid}
+        onnodeclick={({ node,event }) => select(node as Node<StructureNodeData>,event)}
+        onkeydown={keyboardSelection}
+        onpaneclick={deselect}
+        onedgepointerenter={({edge})=>{hoveredEdges=connectionGroup(edges,edge.id).map(item=>item.id);}}
+        onedgepointerleave={()=>{hoveredEdges=[];}}
+        onedgeclick={({edge,event})=>requestSelection(connectionGroup(edges,edge.id).map(item=>({kind:'edge' as const,id:item.id})),selectionOperation(event))}
+
+        onnodedragstart={() => fence.cancel()}
+        onconnectstart={() => { connectionStart = { documentId: document.id, revision }; }}
+        onclickconnectstart={() => { connectionStart = { documentId: document.id, revision }; }} onconnect={connect}>
+        <Controls showLock={false} />
+        <FlowNavigation request={navigationRequest} ids={navigationIds} />
+      </FlowCanvas>
+      {#if graphView==='connections' && !search && connectionGraph.edges.length===0}<p class="connection-empty">{rawConnections ? 'Connections are hidden by visibility settings or collapsed groups.' : 'This item has no declared connections.'}</p>{/if}
+      {#if layoutStatus}<p class="structure-status" role="status">{layoutStatus}</p>{/if}
+      {#if layoutNote && !layoutStatus}<p class="structure-layout-note" role="status">{layoutNote}</p>{/if}
+      {#if viewport.zoom<.65 && !layoutStatus && nodes.length}<div class="structure-scale-hint">Zoom in for easier reading.<button type="button" disabled={!nodes.some(node=>node.id===inspectedId)} onclick={()=>locate(inspectedId?[inspectedId]:[])}>Frame selection</button></div>{/if}
+      {#if !nodes.length}<div class="structure-empty"><p>No matching items</p><button type="button" onclick={() => { search = ''; focusedId = undefined; }}>Clear search</button></div>{/if}
+    </div>
+    {#if inspectionOpen}
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-selection-panel\260831-VCT-02\apps\studio\src\lib\designer\WorkspaceSelectionDetails.svelte:44:2
+Warn: Non-interactive element `<section>` should not be assigned mouse or keyboard event listeners
+https://svelte.dev/e/a11y_no_noninteractive_element_interactions (svelte)
+{:else}
+ <section class="workspace-selection-details studio-type-scope" data-studio-typography aria-label="Selection details" onkeydown={event=>{if(event.key==='Escape'){event.preventDefault();event.stopPropagation();onClose();}}}>
+  <header><span>{items.length?title:'No selection'}</span></header>
+  {#if !items.length}<p class="empty">Select nodes, layers or connections. Ctrl-click adds to your selection.</p>
+  {:else}
+   <section class:expanded={page==='properties'}><button class="studio-section-header" type="button" aria-expanded={page==='properties'} aria-controls={id+'-overview'} onclick={()=>page=page==='properties'?'none':'properties'}>Overview</button><div id={id+'-overview'} hidden={page!=='properties'} class="body">
+    {#if single?.kind==='edge' && connections[0]}{@const edge=connections[0]}<dl><div><dt>Relationship</dt><dd>{relationLabel(edge)}</dd></div><div><dt>From</dt><dd>{nodeName(edge.source)}</dd></div><div><dt>To</dt><dd>{nodeName(edge.target)}</dd></div><div><dt>Origin</dt><dd>{edge.data?.origin==='host'?'Host connection':'Document declaration'}</dd></div>{#if edge.data?.description}<div><dt>Meaning</dt><dd>{edge.data.description}</dd></div>{/if}</dl><p class="quiet">Declared direction; this does not indicate a live execution.</p>{/if}
+    {#if shared.length}<dl aria-label="Shared properties">{#each shared as fact}<div><dt>{fact.name}</dt><dd title={fact.value}>{fact.value}</dd></div>{/each}</dl><p class="quiet">Read-only comparison. Mixed means the selected items differ.</p>{/if}
+    {#if !single}<ul class="selection-items" aria-label="Selected items">{#each items as item (itemKey(item))}<li><button class="inspect-item" type="button" disabled={blocked} title={identity(item)} onclick={()=>onInspect(item)}>{itemName(item)}{#if identity(item)}<small>{identity(item)}</small>{/if}</button><button class="remove-item" type="button" disabled={blocked} aria-label={`Remove ${itemName(item)} from selection`} onclick={()=>onRemove(item)}>×</button></li>{/each}</ul>{/if}
+   </div></section>
+   <section class:expanded={page==='relationships'}><button class="studio-section-header" type="button" aria-expanded={page==='relationships'} aria-controls={id+'-relationships'} onclick={()=>page=page==='relationships'?'none':'relationships'}>Relationships</button><div id={id+'-relationships'} hidden={page!=='relationships'} class="body">
+    {#if related.length}<p class="quiet">{related.length} declared relationships; related items are not automatically selected.</p>{#each related as edge (edge.id)}<div class="connection-card"><span>{relationLabel(edge)}</span><strong>{nodeName(edge.source)} → {nodeName(edge.target)}</strong>{#if edge.data?.description}<small>{edge.data.description}</small>{/if}</div>{/each}{:else}<p>Select a connection or inspect an individual node to see its relationship details.</p>{/if}
+   </div></section>
+   <section class:expanded={page==='technical'}><button class="studio-section-header" type="button" aria-expanded={page==='technical'} aria-controls={id+'-technical'} onclick={()=>page=page==='technical'?'none':'technical'}>Technical information</button><div id={id+'-technical'} hidden={page!=='technical'} class="body"><dl>{#each items as item (itemKey(item))}<div><dt>{itemName(item)}</dt><dd><code>{item.kind==='node'?item.occurrence??item.id:graph.edges.find(edge=>edge.id===item.id)?.data?.path}</code></dd></div>{/each}</dl></div></section>
+  {/if}
+ </section>
+{/if}
+
+====================================
+svelte-check found 0 errors and 8 warnings in 4 files

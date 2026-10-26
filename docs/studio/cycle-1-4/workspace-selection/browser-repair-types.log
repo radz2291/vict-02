@@ -1,0 +1,4 @@
+tests/ui/workspace-selection.test.ts(19,16): error TS2542: Index signature in type 'Readonly<Record<string, UiNode>>' only permits reading.
+tests/ui/workspace-selection.test.ts(19,112): error TS2542: Index signature in type 'Readonly<Record<string, UiNode>>' only permits reading.
+tests/ui/workspace-selection.test.ts(19,225): error TS2542: Index signature in type 'Readonly<Record<string, UiNode>>' only permits reading.
+tests/ui/workspace-selection.test.ts(19,340): error TS2542: Index signature in type 'Readonly<Record<string, UiNode>>' only permits reading.

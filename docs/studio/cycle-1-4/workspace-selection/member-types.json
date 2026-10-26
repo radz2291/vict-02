@@ -1,0 +1,47 @@
+{
+  "canvas": [
+    "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbNameLabel",
+    "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbNameInput"
+  ],
+  "captions": 0,
+  "edges": [],
+  "footer": "Design mode · select and edit without running behavior.@3 · v1_fe0ac678e805…",
+  "highlightedRows": [
+    {
+      "node": "Section: Section, source onbCard",
+      "port": "out-contains"
+    },
+    {
+      "node": "Label: Full name, source onbNameLabel",
+      "port": "in-contains"
+    }
+  ],
+  "layers": [
+    "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbNameLabel",
+    "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbNameInput"
+  ],
+  "nodes": [
+    {
+      "dimmed": false,
+      "height": 0,
+      "highlighted": true,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbCard%22%5D",
+      "label": "Section: Section, source onbCard",
+      "selected": false,
+      "transform": "translate(22px, 12px)",
+      "width": 0
+    },
+    {
+      "dimmed": false,
+      "height": 0,
+      "highlighted": true,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbNameLabel%22%5D",
+      "label": "Label: Full name, source onbNameLabel",
+      "selected": true,
+      "transform": "translate(580px, 250px)",
+      "width": 0
+    }
+  ],
+  "panel": "2 nodes Overview TypeMixedElementMixedautocompleteMixedforMixedidMixedplaceholderMixedtypeMixedvalueMixedRead-only comparison. Mixed means the selected items differ. LabelFull name×InputFull name× Relationships8 declared relationships; related items are not automatically selected.ContainsSection → Full nameThe source directly contains the destination in the declared structure.ContainsSection → Full nameThe source directly contains the destination in the declared structure.ContainsFull name → Full nameThe source directly contains the destination in the declared structure.StylesSrc onb Name Input always focus → Full nameThe source contributes declared styling to the destination.StylesSrc onb Name Input always plain → Full nameThe source contributes declared styling to the destination.ValueFull Name → Full nameThe source supplies a value read by the destination.UpdatesFull name → Full NameThe source declares an update to the destination state.FallbackFull Name → Full nameThe source supplies a declared fallback value or content for the destination. Technical informationFull namescreen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbNameLabelFull namescreen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbNameInput",
+  "tools": 0
+}

@@ -1,0 +1,298 @@
+{
+  "added": {
+    "canvas": [
+      "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbNameInput"
+    ],
+    "captions": 0,
+    "edges": [
+      {
+        "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22contains%22%2C%22%2Fnodes%2FonbCard%2Fchildren%2F3%22%5D",
+        "label": "Section -> Full name: Contains; /nodes/onbCard/children/3",
+        "path": "M248.7000301585478 116.59999712775736L268.7000301585478 116.59999712775736L 284.2000251321232,116.59999712775736Q 289.2000251321232,116.59999712775736 289.2000251321232,121.59999712775736L 289.2000251321232,245.60000430836396Q 289.2000251321232,250.60000430836396 294.2000251321232,250.60000430836396L309.7000201056985 250.60000430836396L329.7000201056985 250.60000430836396",
+        "selected": false
+      },
+      {
+        "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522style%2522%252C%2522src.onbNameInput.always.focus%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22styles%22%2C%22%2Fnodes%2FonbNameInput%2FstyleSources%2F0%22%5D",
+        "label": "Src onb Name Input always focus -> Full name: Styles; /nodes/onbNameInput/styleSources/0",
+        "path": "M248.70013786764707 456.6000402113971L268.7001378676471 456.6000402113971L 284.2000789866728,456.6000402113971Q 289.2000789866728,456.6000402113971 289.2000789866728,451.6000402113971L 289.2000789866728,303.6000617532169Q 289.2000789866728,298.6000617532169 294.2000789866728,298.6000617532169L309.7000201056985 298.6000617532169L329.7000201056985 298.6000617532169",
+        "selected": true
+      },
+      {
+        "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522style%2522%252C%2522src.onbNameInput.always.plain%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22styles%22%2C%22%2Fnodes%2FonbNameInput%2FstyleSources%2F1%22%5D",
+        "label": "Src onb Name Input always plain -> Full name: Styles; /nodes/onbNameInput/styleSources/1",
+        "path": "M248.70013786764707 602.6001838235294L268.7001378676471 602.6001838235294L 284.2000789866728,602.6001838235294Q 289.2000789866728,602.6001838235294 289.2000789866728,597.6001838235294L 289.2000789866728,303.6000617532169Q 289.2000789866728,298.6000617532169 294.2000789866728,298.6000617532169L309.7000201056985 298.6000617532169L329.7000201056985 298.6000617532169",
+        "selected": true
+      },
+      {
+        "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522fullName%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22value%22%2C%22%2Fnodes%2FonbNameInput%2Fattributes%2Fvalue%22%5D",
+        "label": "Full Name -> Full name: Value; /nodes/onbNameInput/attributes/value",
+        "path": "M248.70013786764707 310.5999540441177L268.7001378676471 310.5999540441177L 284.2000789866728,310.5999540441177Q 289.2000789866728,310.5999540441177 289.2000789866728,315.5999540441177L 289.2000789866728,317.6000186695772Q 289.2000789866728,322.6000186695772 294.2000789866728,322.6000186695772L309.7000201056985 322.6000186695772L329.7000201056985 322.6000186695772",
+        "selected": true
+      },
+      {
+        "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522fullName%2522%255D%22%2C%22updates%22%2C%22%2Fnodes%2FonbNameInput%2Finteractions%2F0%22%5D",
+        "label": "Full name -> Full Name: Updates; /nodes/onbNameInput/interactions/0",
+        "path": "M 559.1000660615808,250.60000430836396 L 579.1000660615808,250.60000430836396 L 579.1000660615808,352 L -0.6999080882352935,352 L -0.6999080882352935,286.59992532169116 L 19.300091911764707,286.59992532169116",
+        "selected": true
+      },
+      {
+        "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522fullName%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22fallback%22%2C%22%2Fnodes%2FonbNameInput%2Finteractions%2F0%2Fvalue%22%5D",
+        "label": "Full Name -> Full name: Fallback; /nodes/onbNameInput/interactions/0/value",
+        "path": "M248.70013786764707 286.59992532169116L268.7001378676471 286.59992532169116L 284.2000789866728,286.59992532169116Q 289.2000789866728,286.59992532169116 289.2000789866728,281.59992532169116L 289.2000789866728,279.6000330307904Q 289.2000789866728,274.6000330307904 294.2000789866728,274.6000330307904L309.7000201056985 274.6000330307904L329.7000201056985 274.6000330307904",
+        "selected": false
+      }
+    ],
+    "footer": "Loaded the saved screen.@3 · v1_fe0ac678e805…",
+    "highlightedRows": [
+      {
+        "node": "Section: Section, source onbCard",
+        "port": "out-contains"
+      },
+      {
+        "node": "Input: Full name, source onbNameInput",
+        "port": "in-contains"
+      },
+      {
+        "node": "Input: Full name, source onbNameInput",
+        "port": "in-fallback"
+      },
+      {
+        "node": "Input: Full name, source onbNameInput",
+        "port": "in-styles"
+      },
+      {
+        "node": "Input: Full name, source onbNameInput",
+        "port": "in-value"
+      },
+      {
+        "node": "Input: Full name, source onbNameInput",
+        "port": "out-updates"
+      },
+      {
+        "node": "State: Full Name",
+        "port": "in-updates"
+      },
+      {
+        "node": "State: Full Name",
+        "port": "out-fallback"
+      },
+      {
+        "node": "State: Full Name",
+        "port": "out-value"
+      },
+      {
+        "node": "Style: Src onb Name Input always focus",
+        "port": "out-styles"
+      },
+      {
+        "node": "Style: Src onb Name Input always plain",
+        "port": "out-styles"
+      }
+    ],
+    "layers": [
+      "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbNameInput"
+    ],
+    "nodes": [
+      {
+        "dimmed": false,
+        "height": 122,
+        "highlighted": true,
+        "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbCard%22%5D",
+        "label": "Section: Section, source onbCard",
+        "selected": false,
+        "transform": "translate(22px, 12px)",
+        "width": 224
+      },
+      {
+        "dimmed": false,
+        "height": 170,
+        "highlighted": true,
+        "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbNameInput%22%5D",
+        "label": "Input: Full name, source onbNameInput",
+        "selected": true,
+        "transform": "translate(332.4px, 170px)",
+        "width": 224
+      },
+      {
+        "dimmed": false,
+        "height": 146,
+        "highlighted": true,
+        "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22state%22%2C%22fullName%22%5D",
+        "label": "State: Full Name",
+        "selected": true,
+        "transform": "translate(22px, 182px)",
+        "width": 224
+      },
+      {
+        "dimmed": false,
+        "height": 98,
+        "highlighted": true,
+        "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22style%22%2C%22src.onbNameInput.always.focus%22%5D",
+        "label": "Style: Src onb Name Input always focus",
+        "selected": false,
+        "transform": "translate(22px, 376px)",
+        "width": 224
+      },
+      {
+        "dimmed": false,
+        "height": 98,
+        "highlighted": true,
+        "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22style%22%2C%22src.onbNameInput.always.plain%22%5D",
+        "label": "Style: Src onb Name Input always plain",
+        "selected": false,
+        "transform": "translate(22px, 522px)",
+        "width": 224
+      }
+    ],
+    "panel": "2 nodes · 4 connections Overview TypeMixedRead-only comparison. Mixed means the selected items differ. ConnectionFull Name → Value → Full name×ConnectionFull name → Updates → Full Name×InputFull name×StateFull Name×ConnectionSrc onb Name Input always focus → Styles → Full name×ConnectionSrc onb Name Input always plain → Styles → Full name× Relationships6 declared relationships; related items are not automatically selected.ContainsSection → Full nameThe source directly contains the destination in the declared structure.StylesSrc onb Name Input always focus → Full nameThe source contributes declared styling to the destination.StylesSrc onb Name Input always plain → Full nameThe source contributes declared styling to the destination.ValueFull Name → Full nameThe source supplies a value read by the destination.UpdatesFull name → Full NameThe source declares an update to the destination state.FallbackFull Name → Full nameThe source supplies a declared fallback value or content for the destination. Technical informationFull Name → Value → Full name/nodes/onbNameInput/attributes/valueFull name → Updates → Full Name/nodes/onbNameInput/interactions/0Full namescreen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbNameInputFull Name%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22state%22%2C%22fullName%22%5DSrc onb Name Input always focus → Styles → Full name/nodes/onbNameInput/styleSources/0Src onb Name Input always plain → Styles → Full name/nodes/onbNameInput/styleSources/1",
+    "tools": 0
+  },
+  "removed": {
+    "canvas": [
+      "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbNameInput"
+    ],
+    "captions": 0,
+    "edges": [
+      {
+        "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22contains%22%2C%22%2Fnodes%2FonbCard%2Fchildren%2F3%22%5D",
+        "label": "Section -> Full name: Contains; /nodes/onbCard/children/3",
+        "path": "M248.7000301585478 116.59999712775736L268.7000301585478 116.59999712775736L 284.2000251321232,116.59999712775736Q 289.2000251321232,116.59999712775736 289.2000251321232,121.59999712775736L 289.2000251321232,245.60000430836396Q 289.2000251321232,250.60000430836396 294.2000251321232,250.60000430836396L309.7000201056985 250.60000430836396L329.7000201056985 250.60000430836396",
+        "selected": false
+      },
+      {
+        "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522style%2522%252C%2522src.onbNameInput.always.focus%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22styles%22%2C%22%2Fnodes%2FonbNameInput%2FstyleSources%2F0%22%5D",
+        "label": "Src onb Name Input always focus -> Full name: Styles; /nodes/onbNameInput/styleSources/0",
+        "path": "M248.70013786764707 456.6000402113971L268.7001378676471 456.6000402113971L 284.2000789866728,456.6000402113971Q 289.2000789866728,456.6000402113971 289.2000789866728,451.6000402113971L 289.2000789866728,303.6000617532169Q 289.2000789866728,298.6000617532169 294.2000789866728,298.6000617532169L309.7000201056985 298.6000617532169L329.7000201056985 298.6000617532169",
+        "selected": false
+      },
+      {
+        "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522style%2522%252C%2522src.onbNameInput.always.plain%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22styles%22%2C%22%2Fnodes%2FonbNameInput%2FstyleSources%2F1%22%5D",
+        "label": "Src onb Name Input always plain -> Full name: Styles; /nodes/onbNameInput/styleSources/1",
+        "path": "M248.70013786764707 602.6001838235294L268.7001378676471 602.6001838235294L 284.2000789866728,602.6001838235294Q 289.2000789866728,602.6001838235294 289.2000789866728,597.6001838235294L 289.2000789866728,303.6000617532169Q 289.2000789866728,298.6000617532169 294.2000789866728,298.6000617532169L309.7000201056985 298.6000617532169L329.7000201056985 298.6000617532169",
+        "selected": false
+      },
+      {
+        "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522fullName%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22value%22%2C%22%2Fnodes%2FonbNameInput%2Fattributes%2Fvalue%22%5D",
+        "label": "Full Name -> Full name: Value; /nodes/onbNameInput/attributes/value",
+        "path": "M248.70013786764707 310.5999540441177L268.7001378676471 310.5999540441177L 284.2000789866728,310.5999540441177Q 289.2000789866728,310.5999540441177 289.2000789866728,315.5999540441177L 289.2000789866728,317.6000186695772Q 289.2000789866728,322.6000186695772 294.2000789866728,322.6000186695772L309.7000201056985 322.6000186695772L329.7000201056985 322.6000186695772",
+        "selected": true
+      },
+      {
+        "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522fullName%2522%255D%22%2C%22updates%22%2C%22%2Fnodes%2FonbNameInput%2Finteractions%2F0%22%5D",
+        "label": "Full name -> Full Name: Updates; /nodes/onbNameInput/interactions/0",
+        "path": "M 559.1000660615808,250.60000430836396 L 579.1000660615808,250.60000430836396 L 579.1000660615808,352 L -0.6999080882352935,352 L -0.6999080882352935,286.59992532169116 L 19.300091911764707,286.59992532169116",
+        "selected": true
+      },
+      {
+        "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522fullName%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22fallback%22%2C%22%2Fnodes%2FonbNameInput%2Finteractions%2F0%2Fvalue%22%5D",
+        "label": "Full Name -> Full name: Fallback; /nodes/onbNameInput/interactions/0/value",
+        "path": "M248.70013786764707 286.59992532169116L268.7001378676471 286.59992532169116L 284.2000789866728,286.59992532169116Q 289.2000789866728,286.59992532169116 289.2000789866728,281.59992532169116L 289.2000789866728,279.6000330307904Q 289.2000789866728,274.6000330307904 294.2000789866728,274.6000330307904L309.7000201056985 274.6000330307904L329.7000201056985 274.6000330307904",
+        "selected": false
+      }
+    ],
+    "footer": "Loaded the saved screen.@3 · v1_fe0ac678e805…",
+    "highlightedRows": [
+      {
+        "node": "Section: Section, source onbCard",
+        "port": "out-contains"
+      },
+      {
+        "node": "Input: Full name, source onbNameInput",
+        "port": "in-contains"
+      },
+      {
+        "node": "Input: Full name, source onbNameInput",
+        "port": "in-fallback"
+      },
+      {
+        "node": "Input: Full name, source onbNameInput",
+        "port": "in-styles"
+      },
+      {
+        "node": "Input: Full name, source onbNameInput",
+        "port": "in-value"
+      },
+      {
+        "node": "Input: Full name, source onbNameInput",
+        "port": "out-updates"
+      },
+      {
+        "node": "State: Full Name",
+        "port": "in-updates"
+      },
+      {
+        "node": "State: Full Name",
+        "port": "out-fallback"
+      },
+      {
+        "node": "State: Full Name",
+        "port": "out-value"
+      },
+      {
+        "node": "Style: Src onb Name Input always focus",
+        "port": "out-styles"
+      },
+      {
+        "node": "Style: Src onb Name Input always plain",
+        "port": "out-styles"
+      }
+    ],
+    "layers": [
+      "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbNameInput"
+    ],
+    "nodes": [
+      {
+        "dimmed": false,
+        "height": 122,
+        "highlighted": true,
+        "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbCard%22%5D",
+        "label": "Section: Section, source onbCard",
+        "selected": false,
+        "transform": "translate(22px, 12px)",
+        "width": 224
+      },
+      {
+        "dimmed": false,
+        "height": 170,
+        "highlighted": true,
+        "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbNameInput%22%5D",
+        "label": "Input: Full name, source onbNameInput",
+        "selected": true,
+        "transform": "translate(332.4px, 170px)",
+        "width": 224
+      },
+      {
+        "dimmed": false,
+        "height": 146,
+        "highlighted": true,
+        "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22state%22%2C%22fullName%22%5D",
+        "label": "State: Full Name",
+        "selected": true,
+        "transform": "translate(22px, 182px)",
+        "width": 224
+      },
+      {
+        "dimmed": false,
+        "height": 98,
+        "highlighted": true,
+        "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22style%22%2C%22src.onbNameInput.always.focus%22%5D",
+        "label": "Style: Src onb Name Input always focus",
+        "selected": false,
+        "transform": "translate(22px, 376px)",
+        "width": 224
+      },
+      {
+        "dimmed": false,
+        "height": 98,
+        "highlighted": true,
+        "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22style%22%2C%22src.onbNameInput.always.plain%22%5D",
+        "label": "Style: Src onb Name Input always plain",
+        "selected": false,
+        "transform": "translate(22px, 522px)",
+        "width": 224
+      }
+    ],
+    "panel": "2 nodes · 2 connections Overview TypeMixedRead-only comparison. Mixed means the selected items differ. ConnectionFull Name → Value → Full name×ConnectionFull name → Updates → Full Name×InputFull name×StateFull Name× Relationships6 declared relationships; related items are not automatically selected.ContainsSection → Full nameThe source directly contains the destination in the declared structure.StylesSrc onb Name Input always focus → Full nameThe source contributes declared styling to the destination.StylesSrc onb Name Input always plain → Full nameThe source contributes declared styling to the destination.ValueFull Name → Full nameThe source supplies a value read by the destination.UpdatesFull name → Full NameThe source declares an update to the destination state.FallbackFull Name → Full nameThe source supplies a declared fallback value or content for the destination. Technical informationFull Name → Value → Full name/nodes/onbNameInput/attributes/valueFull name → Updates → Full Name/nodes/onbNameInput/interactions/0Full namescreen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbNameInputFull Name%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22state%22%2C%22fullName%22%5D",
+    "tools": 0
+  }
+}

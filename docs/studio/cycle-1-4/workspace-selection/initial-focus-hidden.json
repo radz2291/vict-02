@@ -1,0 +1,33 @@
+{
+  "canvas": [
+    {
+      "occurrence": "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbNameInput",
+      "text": ""
+    }
+  ],
+  "captions": 0,
+  "edges": [],
+  "footer": "Loaded the saved screen.@3 · v1_fe0ac678e805…",
+  "highlightedRows": [],
+  "layers": [
+    {
+      "key": "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbNameInput",
+      "text": "Full name"
+    }
+  ],
+  "mode": "structure",
+  "nodes": [
+    {
+      "dimmed": false,
+      "height": 76,
+      "highlighted": true,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbNameInput%22%5D",
+      "label": "Input: Full name, source onbNameInput",
+      "selected": true,
+      "transform": "translate(12px, 12px)",
+      "width": 224
+    }
+  ],
+  "panel": "InputFull name OverviewEdit on canvas ↗   TypeInputChildren0When changedUpdates Full Name from the entered value; fallback Full NameBackground#ffffffText color#101828Text size14pxPadding10px 12pxWidth100%InsideSection Relationships← ContainsSection← StylesSrc onb Name Input always focus← StylesSrc onb Name Input always plain← Value→ Updates← FallbackFull Name3 source reference locations  Technical informationSource nodeonbNameInputOccurrencescreen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbNameInputkindelementidonbNameInputtaginputattributes.autocompletenameattributes.idonbNameInputattributes.placeholderJordan Leeattributes.typetextattributes.value.typerefattributes.value.pathstate.fullNamelocalStyle.0.propertybackground-colorlocalStyle.0.value.typetextlocalStyle.0.value.value#fffffflocalStyle.1.propertyborder-radiuslocalStyle.1.value.typetextlocalStyle.1.value.value10pxlocalStyle.2.propertybox-sizinglocalStyle.2.value.typetextlocalStyle.2.value.valueborder-boxlocalStyle.3.propertycolorlocalStyle.3.value.typetextlocalStyle.3.value.value#101828localStyle.4.propertyfont-sizelocalStyle.4.value.typetextlocalStyle.4.value.value14pxlocalStyle.5.propertyoutlinelocalStyle.5.value.typetextlocalStyle.5.value.valuenonelocalStyle.6.propertypaddinglocalStyle.6.value.typetextlocalStyle.6.value.value10px 12pxlocalStyle.7.propertywidthlocalStyle.7.value.typetextlocalStyle.7.value.value100%interactions.0.onchangeinteractions.0.actionsetStateinteractions.0.keyfullNameinteractions.0.value.typerefinteractions.0.value.pathstate.fullNamestyleSources.0src.onbNameInput.always.focusstyleSources.1src.onbNameInput.always.plain",
+  "tools": 1
+}

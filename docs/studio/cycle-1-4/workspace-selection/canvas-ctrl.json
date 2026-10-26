@@ -1,0 +1,41 @@
+{
+  "canvas": [
+    {
+      "occurrence": "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbTitle",
+      "text": "Create your workspace"
+    },
+    {
+      "occurrence": "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbSubtitle",
+      "text": "Set up your workspace in under a minute — just the essentials."
+    }
+  ],
+  "captions": 0,
+  "edges": [],
+  "footer": "Loaded the saved screen.@3 · v1_fe0ac678e805…",
+  "highlightedRows": [],
+  "layers": [
+    {
+      "key": "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbTitle",
+      "text": "Create your workspace"
+    },
+    {
+      "key": "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbSubtitle",
+      "text": "Set up your workspace in under a minute — just the essentials."
+    }
+  ],
+  "mode": "design",
+  "nodes": [
+    {
+      "dimmed": false,
+      "height": 0,
+      "highlighted": true,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbTitle%22%5D",
+      "label": "Heading: Create your workspace, source onbTitle",
+      "selected": true,
+      "transform": "translate(580px, 0px)",
+      "width": 0
+    }
+  ],
+  "panel": "2 nodes Overview TypeMixedElementMixedRead-only comparison. Mixed means the selected items differ. Create your workspace×Set up your workspace in under a minute — just the essentials.× Relationships4 declared relationships; related items are not automatically selected.ContainsSection → Create your workspaceThe source directly contains the destination in the declared structure.ContainsSection → Set up your workspace in under a minute — just the essentials.The source directly contains the destination in the declared structure.ContainsCreate your workspace → Create your workspaceThe source directly contains the destination in the declared structure.ContainsSet up your workspace in under a minute — just the essentials. → Set up your workspace in under a minute — just the essentials.The source directly contains the destination in the declared structure. Technical informationCreate your workspacescreen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbTitleSet up your workspace in under a minute — just the essentials.screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbSubtitle",
+  "tools": 0
+}

@@ -1,0 +1,166 @@
+Browser tab: 11, Title: "Designer — VICT Studio", URL: "http://127.0.0.22:5616/design".
+1 AXWebArea Designer — VICT Studio, URL: 127.0.0.22:5616/design
+	2 container
+		3 container
+			4 link Description: VICT Studio, Value: 127.0.0.22:5616/design
+			5 menu bar Description: Studio menus, ID: bits-c3
+				6 (collapsed) File, ID: bits-c5, Secondary Actions: Expand
+				7 (collapsed) Edit, ID: bits-c7, Secondary Actions: Expand
+				8 (collapsed) View, ID: bits-c9, Secondary Actions: Expand
+				9 (collapsed) Preview, ID: bits-c11, Secondary Actions: Expand
+			10 text Document and Selection review ✓ Saved
+			11 link Description: Operator tools, Value: 127.0.0.22:5616/
+		43 container
+			44 container Workspace mode
+				45 checkbox Design, Value: 0
+				46 checkbox Interact, Value: 0
+				47 checkbox Structure, Value: 1
+			48 container Structure workspace
+				49 container Source structure
+					50 search text field (settable) Search structure
+					51 menu bar Description: Structure menus, ID: bits-c23
+						52 (collapsed) View, ID: bits-c25, Secondary Actions: Expand
+						158 (collapsed) Object, ID: bits-c56, Secondary Actions: Expand
+					53 text Declared
+					54 text Focus: Full name
+					159 text 4 selected
+					56 text 5 items
+					57 button (expanded) Description: Selection panel, Secondary Actions: Collapse
+					58 container Connection scope
+						160 button Focus on selection
+					59 container
+						60 container
+							61 image
+							62 image
+								63 container Section -> Full name: Contains; /nodes/onbCard/children/3
+							64 image
+								65 container Src onb Name Input always focus -> Full name: Styles; /nodes/onbNameInput/styleSources/0
+							66 image
+								67 container Src onb Name Input always plain -> Full name: Styles; /nodes/onbNameInput/styleSources/1
+							68 image
+								69 container Full Name -> Full name: Value; /nodes/onbNameInput/attributes/value
+							70 image
+								71 container Full name -> Full Name: Updates; /nodes/onbNameInput/interactions/0
+							72 image
+								73 container Full Name -> Full name: Fallback; /nodes/onbNameInput/interactions/0/value
+							74 container Section: Section, source onbCard
+								75 container
+									76 text Section
+									77 button (collapsed) Description: Expand Section, Secondary Actions: Expand
+									78 text 11 direct children
+									79 content list Incoming connections
+									80 content list Outgoing connections
+										81 container Outgoing Contains · 1 declared reference
+											82 text Contains
+											83 checkbox Description: Select outgoing Contains connections for Section, Help: Contains · 1 visible references; Ctrl-click to add or remove, Value: 0
+							84 container Input: Full name, source onbNameInput
+								85 container
+									86 text Input
+									87 text Full name
+									88 content list Incoming connections
+										89 container Incoming Contains · 1 declared reference
+											90 text Contains
+											91 checkbox Description: Select incoming Contains connections for Full name, Help: Contains · 1 visible references; Ctrl-click to add or remove, Value: 0
+										92 container Incoming Fallback · 1 declared reference
+											93 text Fallback
+											94 checkbox Description: Select incoming Fallback connections for Full name, Help: Fallback · 1 visible references; Ctrl-click to add or remove, Value: 0
+										95 container Incoming Styles · 2 declared references
+											96 text Styles · 2
+											97 checkbox Description: Select incoming Styles connections for Full name, Help: Styles · 2 visible references; Ctrl-click to add or remove, Value: 0
+										98 container Incoming Value · 1 declared reference
+											99 text Value
+											100 checkbox Description: Select incoming Value connections for Full name, Help: Value · 1 visible references; Ctrl-click to add or remove, Value: 1
+									101 content list Outgoing connections
+										102 container Outgoing Updates · 1 declared reference
+											103 text Updates
+											104 checkbox Description: Select outgoing Updates connections for Full name, Help: Updates · 1 visible references; Ctrl-click to add or remove, Value: 1
+							105 container State: Full Name
+								106 container
+									107 text State
+									108 text Full Name
+									109 text Text · starts empty
+									110 content list Incoming connections
+										111 container Incoming Updates · 1 declared reference
+											112 text Updates
+											113 checkbox Description: Select incoming Updates connections for Full Name, Help: Updates · 1 visible references; Ctrl-click to add or remove, Value: 1
+									114 content list Outgoing connections
+										115 container Outgoing Fallback · 1 declared reference
+											116 text Fallback
+											117 checkbox Description: Select outgoing Fallback connections for Full Name, Help: Fallback · 1 visible references; Ctrl-click to add or remove, Value: 0
+										118 container Outgoing Value · 1 declared reference
+											119 text Value
+											120 checkbox Description: Select outgoing Value connections for Full Name, Help: Value · 1 visible references; Ctrl-click to add or remove, Value: 1
+							121 container Style: Src onb Name Input always focus
+								122 container
+									123 text Style
+									124 text Src onb Name Input always focus
+									125 content list Incoming connections
+									126 content list Outgoing connections
+										127 container Outgoing Styles · 1 declared reference
+											128 text Styles
+											129 checkbox Description: Select outgoing Styles connections for Src onb Name Input always focus, Help: Styles · 1 visible references; Ctrl-click to add or remove, Value: 0
+							130 container Style: Src onb Name Input always plain
+								131 container
+									132 text Style
+									133 text Src onb Name Input always plain
+									134 content list Incoming connections
+									135 content list Outgoing connections
+										136 container Outgoing Styles · 1 declared reference
+											137 text Styles
+											138 checkbox Description: Select outgoing Styles connections for Src onb Name Input always plain, Help: Styles · 1 visible references; Ctrl-click to add or remove, Value: 0
+						139 link Description: Svelte Flow attribution, Value: svelteflow.dev/?utm_source=attribution
+						140 image
+						141 container Control Panel
+							142 button Zoom In
+								143 image
+							144 button Zoom Out
+								145 image
+							146 button Fit View
+								147 image
+			148 splitter Description: Document drawer width, Value: 315
+			149 container Description: Document and Selection, ID: document-drawer
+				150 container
+					151 tab group Panel context
+						152 tab (selectable, settable, boolean) Document, Value: 0, ID: c26-document-tab
+						153 tab (selected, settable, boolean) Selection, Value: 1, ID: c26-selection-tab
+					154 button Description: Close panel, Help: Close panel (Escape)
+				155 container Description: Selection, ID: c26-selection
+					156 container Selection details
+						157 text 2 nodes · 2 connections
+						161 container
+							162 button (expanded) Overview, Secondary Actions: Collapse
+							163 container c28-overview
+								164 definition list Shared properties
+									165 container Type
+										166 text Type
+									167 text Mixed
+								168 text Read-only comparison. Mixed means the selected items differ.
+								169 content list Selected items
+									170 container
+										171 button Connection Full Name → Value → Full name
+											172 text Connection
+											173 text Full Name → Value → Full name
+										174 button Remove Connection Full Name → Value → Full name from selection
+									175 container
+										176 button Connection Full name → Updates → Full Name
+											177 text Connection
+											178 text Full name → Updates → Full Name
+										179 button Remove Connection Full name → Updates → Full Name from selection
+									180 container
+										181 button Input Full name
+											182 text Input
+											183 text Full name
+										184 button Remove Input Full name from selection
+									185 container
+										186 button State Full Name
+											187 text State
+											188 text Full Name
+										189 button Remove State Full Name from selection
+						190 button (collapsed) Relationships, Secondary Actions: Expand
+						191 button (collapsed) Technical information, Secondary Actions: Expand
+		39 container
+			40 text Loaded the saved screen.
+			41 text @3 · v1_fe0ac678e805…
+		42 text Designer — VICT Studio
+
+The focused UI element is 146 button Fit View

@@ -1,0 +1,537 @@
+Browser tab: 10, Title: "Designer — VICT Studio", URL: "http://127.0.0.22:5616/design".
+0 AXWebArea Designer — VICT Studio, URL: 127.0.0.22:5616/design
+	1 container
+		2 container
+			3 link Description: VICT Studio, Value: 127.0.0.22:5616/design
+			4 menu bar Description: Studio menus, ID: bits-c1
+				5 (collapsed) File, ID: bits-c3, Secondary Actions: Expand
+				6 (collapsed) Edit, ID: bits-c5, Secondary Actions: Expand
+				7 (collapsed) View, ID: bits-c7, Secondary Actions: Expand
+				8 (collapsed) Preview, ID: bits-c9, Secondary Actions: Expand
+			9 text Document and Selection review
+			10 link Description: Operator tools, Value: 127.0.0.22:5616/
+		11 container
+			12 container Workspace mode
+				13 checkbox Design, Value: 0
+				14 checkbox Interact, Value: 0
+				15 checkbox Structure, Value: 1
+			16 container Structure workspace
+				17 container Source structure
+					18 search text field (settable) Search structure
+					19 menu bar Description: Structure menus, ID: bits-c21
+						20 (collapsed) View, ID: bits-c23, Secondary Actions: Expand
+						21 (collapsed) Object, ID: bits-c115, Secondary Actions: Expand
+					22 text Declared
+					23 text 30 of 55 items
+					24 button (expanded) Description: Selection panel, Secondary Actions: Collapse
+					25 container
+						26 container
+							27 image
+							28 image
+								29 container Screen -> Section: Contains; /nodes/screen/children/0
+									30 container Contains · /nodes/screen/children/0
+										31 text Contains
+							32 image
+								33 container Section -> Create your workspace: Contains; /nodes/onbCard/children/0
+									34 container Contains · /nodes/onbCard/children/0
+										35 text Contains
+							36 image
+								37 container Section -> Set up your workspace in under a minute — just the essentials.: Contains; /nodes/onbCard/children/1
+									38 container Contains · /nodes/onbCard/children/1
+										39 text Contains
+							40 image
+								41 container Section -> Label · Full name: Contains; /nodes/onbCard/children/2
+									42 container Contains · /nodes/onbCard/children/2
+										43 text Contains
+							44 image
+								45 container Section -> Full name: Contains; /nodes/onbCard/children/3
+									46 container Contains · /nodes/onbCard/children/3
+										47 text Contains
+							48 image
+								49 container Section -> Label · Work email: Contains; /nodes/onbCard/children/4
+									50 container Contains · /nodes/onbCard/children/4
+										51 text Contains
+							52 image
+								53 container Section -> Work email: Contains; /nodes/onbCard/children/5
+									54 container Contains · /nodes/onbCard/children/5
+										55 text Contains
+							56 image
+								57 container Section -> Label · Role: Contains; /nodes/onbCard/children/6
+									58 container Contains · /nodes/onbCard/children/6
+										59 text Contains
+							60 image
+								61 container Section -> Role: Contains; /nodes/onbCard/children/7
+									62 container Contains · /nodes/onbCard/children/7
+										63 text Contains
+							64 image
+								65 container Section -> Row: Contains; /nodes/onbCard/children/8
+									66 container Contains · /nodes/onbCard/children/8
+										67 text Contains
+							68 image
+								69 container Section -> Create account: Contains; /nodes/onbCard/children/9
+									70 container Contains · /nodes/onbCard/children/9
+										71 text Contains
+							72 image
+								73 container Section -> Your details stay on this screen — nothing is sent.: Contains; /nodes/onbCard/children/10
+									74 container Contains · /nodes/onbCard/children/10
+										75 text Contains
+							76 image
+								77 container Src onb Name Input always focus -> Full name: Styles; /nodes/onbNameInput/styleSources/0
+									78 container Styles · /nodes/onbNameInput/styleSources/0
+										79 text Styles
+							80 image
+								81 container Src onb Name Input always plain -> Full name: Styles; /nodes/onbNameInput/styleSources/1
+									82 container Styles · /nodes/onbNameInput/styleSources/1
+										83 text Styles
+							84 image
+								85 container Full Name -> Full name: Value; /nodes/onbNameInput/attributes/value
+									86 container Value · /nodes/onbNameInput/attributes/value
+										87 text Value
+							88 image
+								89 container Full name -> Full Name: Updates; /nodes/onbNameInput/interactions/0
+									90 container Updates · /nodes/onbNameInput/interactions/0
+										91 text Updates
+							92 image
+								93 container Full Name -> Full name: Fallback; /nodes/onbNameInput/interactions/0/value
+									94 container Fallback · /nodes/onbNameInput/interactions/0/value
+										95 text Fallback
+							96 image
+								97 container Src onb Email Input always focus -> Work email: Styles; /nodes/onbEmailInput/styleSources/0
+									98 container Styles · /nodes/onbEmailInput/styleSources/0
+										99 text Styles
+							100 image
+								101 container Src onb Email Input always plain -> Work email: Styles; /nodes/onbEmailInput/styleSources/1
+									102 container Styles · /nodes/onbEmailInput/styleSources/1
+										103 text Styles
+							104 image
+								105 container Work Email -> Work email: Value; /nodes/onbEmailInput/attributes/value
+									106 container Value · /nodes/onbEmailInput/attributes/value
+										107 text Value
+							108 image
+								109 container Work email -> Work Email: Updates; /nodes/onbEmailInput/interactions/0
+									110 container Updates · /nodes/onbEmailInput/interactions/0
+										111 text Updates
+							112 image
+								113 container Work Email -> Work email: Fallback; /nodes/onbEmailInput/interactions/0/value
+									114 container Fallback · /nodes/onbEmailInput/interactions/0/value
+										115 text Fallback
+							116 image
+								117 container Src onb Role Select always focus -> Role: Styles; /nodes/onbRoleSelect/styleSources/0
+									118 container Styles · /nodes/onbRoleSelect/styleSources/0
+										119 text Styles
+							120 image
+								121 container Src onb Role Select always plain -> Role: Styles; /nodes/onbRoleSelect/styleSources/1
+									122 container Styles · /nodes/onbRoleSelect/styleSources/1
+										123 text Styles
+							124 image
+								125 container Role -> Role: Value; /nodes/onbRoleSelect/attributes/value
+									126 container Value · /nodes/onbRoleSelect/attributes/value
+										127 text Value
+							128 image
+								129 container Role -> Role: Updates; /nodes/onbRoleSelect/interactions/0
+									130 container Updates · /nodes/onbRoleSelect/interactions/0
+										131 text Updates
+							132 image
+								133 container Role -> Role: Fallback; /nodes/onbRoleSelect/interactions/0/value
+									134 container Fallback · /nodes/onbRoleSelect/interactions/0/value
+										135 text Fallback
+							136 image
+								137 container Row -> Email me product updates: Contains; /nodes/onbNotifRow/children/0
+									138 container Contains · /nodes/onbNotifRow/children/0
+										139 text Contains
+							140 image
+								141 container Row -> Label · Email me product updates: Contains; /nodes/onbNotifRow/children/1
+									142 container Contains · /nodes/onbNotifRow/children/1
+										143 text Contains
+							144 image
+								145 container Updates Opt In -> Email me product updates: Value; /nodes/onbNotifInput/attributes/checked
+									146 container Value · /nodes/onbNotifInput/attributes/checked
+										147 text Value
+							148 image
+								149 container Email me product updates -> Updates Opt In: Updates; /nodes/onbNotifInput/interactions/0
+									150 container Updates · /nodes/onbNotifInput/interactions/0
+										151 text Updates
+							152 image
+								153 container Updates Opt In -> Email me product updates: Fallback; /nodes/onbNotifInput/interactions/0/value
+									154 container Fallback · /nodes/onbNotifInput/interactions/0/value
+										155 text Fallback
+							156 image
+								157 container Create account -> Press: Emits; /nodes/onbSubmit/outputs/press
+									158 container Emits · /nodes/onbSubmit/outputs/press
+										159 text Emits
+							160 image
+								161 container Press -> Demo submit: Invokes; /nodes/onbSubmit/outputs/press/invokeAction
+									162 container Invokes · /nodes/onbSubmit/outputs/press/invokeAction
+										163 text Invokes
+							164 image
+								165 container Demo submit -> Busy: Pending; /actionState/demo.submit/pending
+									166 container Pending · /actionState/demo.submit/pending
+										167 text Pending
+							168 image
+								169 container Demo submit -> Action Error: Error; /actionState/demo.submit/error
+									170 container Error · /actionState/demo.submit/error
+										171 text Error
+							172 image
+								173 container Demo submit -> Action Result: Result; /actionState/demo.submit/result
+									174 container Result · /actionState/demo.submit/result
+										175 text Result
+							176 container Container: Screen, source screen
+								177 container
+									178 text Container
+									179 text Screen
+									180 button (expanded) Description: Collapse Screen, Secondary Actions: Collapse
+									181 text 1 direct child
+									182 content list Incoming connections
+									183 content list Outgoing connections
+										184 container Outgoing Contains · 1 declared reference
+											185 text Contains
+							186 container Section: Section, source onbCard
+								187 container
+									188 text Section
+									189 button (expanded) Description: Collapse Section, Secondary Actions: Collapse
+									190 text 11 direct children
+									191 content list Incoming connections
+										192 container Incoming Contains · 1 declared reference
+											193 text Contains
+									194 content list Outgoing connections
+										195 container Outgoing Contains · 11 declared references
+											196 text Contains · 11
+							197 container Heading: Create your workspace, source onbTitle
+								198 container
+									199 text Heading
+									200 text Create your workspace
+									201 content list Incoming connections
+										202 container Incoming Contains · 1 declared reference
+											203 text Contains
+									204 content list Outgoing connections
+							205 container Paragraph: Set up your workspace in under a minute — just the essentials., source onbSubtitle
+								206 container
+									207 text Paragraph
+									208 text Set up your workspace in under a minute — just the essentials.
+									209 content list Incoming connections
+										210 container Incoming Contains · 1 declared reference
+											211 text Contains
+									212 content list Outgoing connections
+							213 container Label: Full name, source onbNameLabel
+								214 container
+									215 text Label
+									216 text Full name
+									217 content list Incoming connections
+										218 container Incoming Contains · 1 declared reference
+											219 text Contains
+									220 content list Outgoing connections
+							221 container Input: Full name, source onbNameInput
+								222 container
+									223 text Input
+									224 text Full name
+									225 content list Incoming connections
+										226 container Incoming Contains · 1 declared reference
+											227 text Contains
+										228 container Incoming Fallback · 1 declared reference
+											229 text Fallback
+										230 container Incoming Styles · 2 declared references
+											231 text Styles · 2
+										232 container Incoming Value · 1 declared reference
+											233 text Value
+									234 content list Outgoing connections
+										235 container Outgoing Updates · 1 declared reference
+											236 text Updates
+							237 container Label: Work email, source onbEmailLabel
+								238 container
+									239 text Label
+									240 text Work email
+									241 content list Incoming connections
+										242 container Incoming Contains · 1 declared reference
+											243 text Contains
+									244 content list Outgoing connections
+							245 container Input: Work email, source onbEmailInput
+								246 container
+									247 text Input
+									248 text Work email
+									249 content list Incoming connections
+										250 container Incoming Contains · 1 declared reference
+											251 text Contains
+										252 container Incoming Fallback · 1 declared reference
+											253 text Fallback
+										254 container Incoming Styles · 2 declared references
+											255 text Styles · 2
+										256 container Incoming Value · 1 declared reference
+											257 text Value
+									258 content list Outgoing connections
+										259 container Outgoing Updates · 1 declared reference
+											260 text Updates
+							261 container Label: Role, source onbRoleLabel
+								262 container
+									263 text Label
+									264 text Role
+									265 content list Incoming connections
+										266 container Incoming Contains · 1 declared reference
+											267 text Contains
+									268 content list Outgoing connections
+							269 container Select: Role, source onbRoleSelect
+								270 container
+									271 text Select
+									272 text Role
+									273 button (collapsed) Description: Expand Role, Secondary Actions: Expand
+									274 text 12 items inside
+									275 content list Incoming connections
+										276 container Incoming Contains · 1 declared reference
+											277 text Contains
+										278 container Incoming Fallback · 1 declared reference
+											279 text Fallback
+										280 container Incoming Styles · 2 declared references
+											281 text Styles · 2
+										282 container Incoming Value · 1 declared reference
+											283 text Value
+									284 content list Outgoing connections
+										285 container Outgoing Updates · 1 declared reference
+											286 text Updates
+							287 container Container: Row, source onbNotifRow
+								288 container
+									289 text Container
+									290 text Row
+									291 button (expanded) Description: Collapse Row, Secondary Actions: Collapse
+									292 text 2 direct children
+									293 content list Incoming connections
+										294 container Incoming Contains · 1 declared reference
+											295 text Contains
+									296 content list Outgoing connections
+										297 container Outgoing Contains · 2 declared references
+											298 text Contains · 2
+							299 container Checkbox: Email me product updates, source onbNotifInput
+								300 container
+									301 text Checkbox
+									302 text Email me product updates
+									303 content list Incoming connections
+										304 container Incoming Contains · 1 declared reference
+											305 text Contains
+										306 container Incoming Fallback · 1 declared reference
+											307 text Fallback
+										308 container Incoming Value · 1 declared reference
+											309 text Value
+									310 content list Outgoing connections
+										311 container Outgoing Updates · 1 declared reference
+											312 text Updates
+							313 container Label: Email me product updates, source onbNotifLabel
+								314 container
+									315 text Label
+									316 text Email me product updates
+									317 content list Incoming connections
+										318 container Incoming Contains · 1 declared reference
+											319 text Contains
+									320 content list Outgoing connections
+							321 container Component: Create account, source onbSubmit
+								322 container
+									323 text Component
+									324 text Create account
+									325 text Button
+									326 content list Incoming connections
+										327 container Incoming Contains · 1 declared reference
+											328 text Contains
+									329 content list Outgoing connections
+										330 container Outgoing Emits · 1 declared reference
+											331 text Emits
+							332 container Paragraph: Your details stay on this screen — nothing is sent., source onbFeedback
+								333 container
+									334 text Paragraph
+									335 text Your details stay on this screen — nothing is sent.
+									336 content list Incoming connections
+										337 container Incoming Contains · 1 declared reference
+											338 text Contains
+									339 content list Outgoing connections
+							340 container State: Busy
+								341 container
+									342 text State
+									343 text Busy
+									344 text Boolean · initially off
+									345 content list Incoming connections
+										346 container Incoming Pending · 1 declared reference
+											347 text Pending
+									348 content list Outgoing connections
+							349 container State: Action Error
+								350 container
+									351 text State
+									352 text Action Error
+									353 text Text · starts empty
+									354 content list Incoming connections
+										355 container Incoming Error · 1 declared reference
+											356 text Error
+									357 content list Outgoing connections
+							358 container State: Action Result
+								359 container
+									360 text State
+									361 text Action Result
+									362 text Text · starts empty
+									363 content list Incoming connections
+										364 container Incoming Result · 1 declared reference
+											365 text Result
+									366 content list Outgoing connections
+							367 container State: Full Name
+								368 container
+									369 text State
+									370 text Full Name
+									371 text Text · starts empty
+									372 content list Incoming connections
+										373 container Incoming Updates · 1 declared reference
+											374 text Updates
+									375 content list Outgoing connections
+										376 container Outgoing Fallback · 1 declared reference
+											377 text Fallback
+										378 container Outgoing Value · 1 declared reference
+											379 text Value
+							380 container State: Work Email
+								381 container
+									382 text State
+									383 text Work Email
+									384 text Text · starts empty
+									385 content list Incoming connections
+										386 container Incoming Updates · 1 declared reference
+											387 text Updates
+									388 content list Outgoing connections
+										389 container Outgoing Fallback · 1 declared reference
+											390 text Fallback
+										391 container Outgoing Value · 1 declared reference
+											392 text Value
+							393 container State: Role
+								394 container
+									395 text State
+									396 text Role
+									397 text Text · starts empty
+									398 content list Incoming connections
+										399 container Incoming Updates · 1 declared reference
+											400 text Updates
+									401 content list Outgoing connections
+										402 container Outgoing Fallback · 1 declared reference
+											403 text Fallback
+										404 container Outgoing Value · 1 declared reference
+											405 text Value
+							406 container State: Updates Opt In
+								407 container
+									408 text State
+									409 text Updates Opt In
+									410 text Boolean · initially on
+									411 content list Incoming connections
+										412 container Incoming Updates · 1 declared reference
+											413 text Updates
+									414 content list Outgoing connections
+										415 container Outgoing Fallback · 1 declared reference
+											416 text Fallback
+										417 container Outgoing Value · 1 declared reference
+											418 text Value
+							419 container Style: Src onb Name Input always focus
+								420 container
+									421 text Style
+									422 text Src onb Name Input always focus
+									423 content list Incoming connections
+									424 content list Outgoing connections
+										425 container Outgoing Styles · 1 declared reference
+											426 text Styles
+							427 container Style: Src onb Email Input always focus
+								428 container
+									429 text Style
+									430 text Src onb Email Input always focus
+									431 content list Incoming connections
+									432 content list Outgoing connections
+										433 container Outgoing Styles · 1 declared reference
+											434 text Styles
+							435 container Style: Src onb Role Select always focus
+								436 container
+									437 text Style
+									438 text Src onb Role Select always focus
+									439 content list Incoming connections
+									440 content list Outgoing connections
+										441 container Outgoing Styles · 1 declared reference
+											442 text Styles
+							443 container Style: Src onb Name Input always plain
+								444 container
+									445 text Style
+									446 text Src onb Name Input always plain
+									447 content list Incoming connections
+									448 content list Outgoing connections
+										449 container Outgoing Styles · 1 declared reference
+											450 text Styles
+							451 container Style: Src onb Email Input always plain
+								452 container
+									453 text Style
+									454 text Src onb Email Input always plain
+									455 content list Incoming connections
+									456 content list Outgoing connections
+										457 container Outgoing Styles · 1 declared reference
+											458 text Styles
+							459 container Style: Src onb Role Select always plain
+								460 container
+									461 text Style
+									462 text Src onb Role Select always plain
+									463 content list Incoming connections
+									464 content list Outgoing connections
+										465 container Outgoing Styles · 1 declared reference
+											466 text Styles
+							467 container Output: Press
+								468 container
+									469 text Output
+									470 text Press
+									471 text Component onbSubmit
+									472 content list Incoming connections
+										473 container Incoming Emits · 1 declared reference
+											474 text Emits
+									475 content list Outgoing connections
+										476 container Outgoing Invokes · 1 declared reference
+											477 text Invokes
+							478 container Action: Demo submit
+								479 container
+									480 text Action
+									481 text Demo submit
+									482 text Configured host connection External
+									483 content list Incoming connections
+										484 container Incoming Invokes · 1 declared reference
+											485 text Invokes
+									486 content list Outgoing connections
+										487 container Outgoing Error · 1 declared reference
+											488 text Error
+										489 container Outgoing Pending · 1 declared reference
+											490 text Pending
+										491 container Outgoing Result · 1 declared reference
+											492 text Result
+						493 link Description: Svelte Flow attribution, Value: svelteflow.dev/?utm_source=attribution
+						494 image
+						495 image Mini Map
+						496 container Control Panel
+							497 button Zoom In
+								498 image
+							499 button Zoom Out
+								500 image
+							501 button Fit View
+								502 image
+			503 splitter Description: Document drawer width, Value: 315
+			504 container Description: Document and Selection, ID: document-drawer
+				505 container
+					506 tab group Panel context
+						507 tab (selectable, settable, boolean) Document, Value: 0, ID: c24-document-tab
+						508 tab (selected, settable, boolean) Selection, Value: 1, ID: c24-selection-tab
+					509 button Description: Close panel, Help: Close panel (Escape)
+				510 container Description: Selection, ID: c24-selection
+					511 container Source inspection details
+						512 container
+							513 text State Work Email
+						514 container Selection overview
+							515 button (expanded) Overview, Secondary Actions: Collapse
+							516 container c26-overview
+								517 button Edit in Data ↗
+								518 definition list
+									519 container Type
+										520 text Type
+									521 text State
+									522 container Value type
+										523 text Value type
+									524 text String
+									525 container Starting value
+										526 text Starting value
+						527 container Selection relationships
+							528 button (collapsed) Relationships, Secondary Actions: Expand
+						529 container Selection technical information
+							530 button (collapsed) Technical information, Secondary Actions: Expand
+		531 container
+			532 text Design mode · select and edit without running behavior.
+			533 text @3 · v1_fe0ac678e805…
+
+The focused UI element is 73 container Section -> Your details stay on this screen — nothing is sent.: Contains; /nodes/onbCard/children/10

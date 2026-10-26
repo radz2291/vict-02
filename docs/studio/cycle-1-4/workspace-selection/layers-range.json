@@ -1,0 +1,57 @@
+{
+  "canvas": [
+    {
+      "occurrence": "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbTitle",
+      "text": "Create your workspace"
+    },
+    {
+      "occurrence": "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbSubtitle",
+      "text": "Set up your workspace in under a minute — just the essentials."
+    },
+    {
+      "occurrence": "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbNameLabel",
+      "text": "Full name"
+    },
+    {
+      "occurrence": "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbNameInput",
+      "text": ""
+    }
+  ],
+  "captions": 0,
+  "edges": [],
+  "footer": "Loaded the saved screen.@3 · v1_fe0ac678e805…",
+  "highlightedRows": [],
+  "layers": [
+    {
+      "key": "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbTitle",
+      "text": "Create your workspace"
+    },
+    {
+      "key": "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbSubtitle",
+      "text": "Set up your workspace in under a minute — just the essentials."
+    },
+    {
+      "key": "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbNameLabel",
+      "text": "Label · Full name"
+    },
+    {
+      "key": "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbNameInput",
+      "text": "Full name"
+    }
+  ],
+  "mode": "design",
+  "nodes": [
+    {
+      "dimmed": false,
+      "height": 0,
+      "highlighted": true,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbTitle%22%5D",
+      "label": "Heading: Create your workspace, source onbTitle",
+      "selected": true,
+      "transform": "translate(580px, 0px)",
+      "width": 0
+    }
+  ],
+  "panel": "4 nodes Overview TypeMixedElementMixedautocompleteMixedforMixedidMixedplaceholderMixedtypeMixedvalueMixedRead-only comparison. Mixed means the selected items differ. Create your workspace×Set up your workspace in under a minute — just the essentials.×Full name×Full name× Relationships12 declared relationships; related items are not automatically selected.ContainsSection → Create your workspaceThe source directly contains the destination in the declared structure.ContainsSection → Set up your workspace in under a minute — just the essentials.The source directly contains the destination in the declared structure.ContainsSection → Full nameThe source directly contains the destination in the declared structure.ContainsSection → Full nameThe source directly contains the destination in the declared structure.ContainsCreate your workspace → Create your workspaceThe source directly contains the destination in the declared structure.ContainsSet up your workspace in under a minute — just the essentials. → Set up your workspace in under a minute — just the essentials.The source directly contains the destination in the declared structure.ContainsFull name → Full nameThe source directly contains the destination in the declared structure.StylesSrc onb Name Input always focus → Full nameThe source contributes declared styling to the destination.StylesSrc onb Name Input always plain → Full nameThe source contributes declared styling to the destination.ValueFull Name → Full nameThe source supplies a value read by the destination.UpdatesFull name → Full NameThe source declares an update to the destination state.FallbackFull Name → Full nameThe source supplies a declared fallback value or content for the destination. Technical informationCreate your workspacescreen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbTitleSet up your workspace in under a minute — just the essentials.screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbSubtitleFull namescreen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbNameLabelFull namescreen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbNameInput",
+  "tools": 0
+}
