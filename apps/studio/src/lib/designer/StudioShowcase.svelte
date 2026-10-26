@@ -1,4 +1,5 @@
 <script lang="ts">
+  import './disclosures.css';
   import { onMount, tick } from 'svelte';
   import {
     Composer, CompositionNavigator, EditorBridge, EditorCanvas, Inspector, Layers,
@@ -300,13 +301,13 @@
           {/key}
         </div>
         <StructureDock bind:open={structureOpen} bind:expanded={structureExpanded} availableHeight={600}><StructureView presentation="drawer" active={structureOpen} document={source} revision={snapshot.revision} {selectedNodeId} {blocked} descriptors={catalogDescriptors} recipes={screenRecipes} onSelect={selectStructure} onDeselect={() => { if (!blocked) {bridge?.select(undefined);detailId=undefined;} }} onMove={move} onNotice={message => notice = message} onNavigate={structureNavigate} onDismiss={() => {if(structureExpanded)structureExpanded=false;else structureOpen=false;}} onInspect={inspect} onCloseInspect={closeDetails} inspectionSelection={detailId} onInspectSelection={id=>detailId=id} inspectionExpanded={detailsOpen} objectCommands={occurrence=>objectContext(occurrence)?.commands??[]} /></StructureDock>
-        <details><summary>Insert and arrange (Composer)</summary><Composer document={source} {selectedNodeId} recipes={screenRecipes} descriptors={catalogDescriptors} {compositionFocus} onApply={apply} onInserted={selectNode} onDetached={selectNode} /></details>
-        <details data-structure-data tabindex="-1"><summary>Data: authored starting values</summary>
+        <details class="studio-disclosure"><summary>Insert and arrange (Composer)</summary><Composer document={source} {selectedNodeId} recipes={screenRecipes} descriptors={catalogDescriptors} {compositionFocus} onApply={apply} onInserted={selectNode} onDetached={selectNode} /></details>
+        <details class="studio-disclosure" data-structure-data tabindex="-1"><summary>Data: authored starting values</summary>
           <label>State declaration <select aria-label="Authored state declaration" value={selectedData} disabled={blocked} onchange={event => selectedData = event.currentTarget.value}><option value="">Choose a value</option>{#each Object.values(source.localState) as declaration}<option value={declaration.key}>{declaration.key} · {declaration.type}</option>{/each}</select></label>
           {#if selectedData}{#key `${recipeId}:${selectedData}`}<StateInitialEditor document={source} expression={{ type: 'ref', path: `state.${selectedData}` }} onApply={apply} onDirtyChange={(dirty: boolean) => dataDraft = dirty} />{/key}{/if}
         </details>
-        <details data-structure-actions tabindex="-1"><summary>Actions: declared simulation</summary><p>This screen declares demo.submit. Its input is message and accepted; execution is simulated in Interact. Source relationships do not prove an action ran.</p><code>demo.submit → local screen simulation</code></details>
-        <details class="testing-example"><summary>Try scenarios</summary><div class="testing-example-body"><TryScenarios document={source} active={activeTest?.id} values={runtimeValues} {blocked} onChoose={chooseTest} onReset={resetPreview} onClose={closeTestingExample} onTry={()=>void tryTestingExample()} onChange={changeTestValue} /></div></details>
+        <details class="studio-disclosure" data-structure-actions tabindex="-1"><summary>Actions: declared simulation</summary><p>This screen declares demo.submit. Its input is message and accepted; execution is simulated in Interact. Source relationships do not prove an action ran.</p><code>demo.submit → local screen simulation</code></details>
+        <details class="studio-disclosure testing-example"><summary>Try scenarios</summary><div class="testing-example-body"><TryScenarios document={source} active={activeTest?.id} values={runtimeValues} {blocked} onChoose={chooseTest} onReset={resetPreview} onClose={closeTestingExample} onTry={()=>void tryTestingExample()} onChange={changeTestValue} /></div></details>
       </div>
       <aside class="inspector" tabindex="-1"><h3>Selected source</h3>
         <div class="toolbar"><button type="button" disabled={blocked} aria-pressed={tools === 'inspector'} onclick={() => tools = 'inspector'}>Docked Inspector</button><button type="button" disabled={blocked} aria-pressed={tools === 'palette'} onclick={() => tools = 'palette'}>Selection palette</button></div>
@@ -314,7 +315,7 @@
       </aside>
     </div>
     <AuthoringGuidance document={source} />
-    <details><summary>Canonical source (read only)</summary><pre>{JSON.stringify(source, null, 2)}</pre></details>
+    <details class="studio-disclosure"><summary>Canonical source (read only)</summary><pre>{JSON.stringify(source, null, 2)}</pre></details>
   {/if}
 </section>
 </ControlScope>

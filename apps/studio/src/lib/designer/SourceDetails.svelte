@@ -1,10 +1,12 @@
 <script lang="ts">
+  import './disclosures.css';
   import { onMount } from 'svelte';
   import type { UiDocument } from '@victframework/ui';
   import { projectStructure, structureFacts, structureNodePresentation, parseStructureId, type StructureHandoff } from './structure.js';
+  import { resolveOccurrence } from '@victframework/ui-editor';
   import { readableName } from './presentation.js';
-  let { document, selectedId, blocked = false, containFocus = false, embedded=false, page = $bindable('properties'), onClose, onSelect, onNavigate }: {
-    document: UiDocument; selectedId?: string; embedded?:boolean; blocked?: boolean; containFocus?: boolean; page?: 'properties' | 'relationships';
+  let { document, selectedId, selectedOccurrence, layerProvenance, blocked = false, containFocus = false, embedded=false, page = $bindable('properties'), onClose, onSelect, onNavigate }: {
+    document: UiDocument; selectedId?: string; selectedOccurrence?:string; layerProvenance?:{occurrence:string;detail:string}; embedded?:boolean; blocked?: boolean; containFocus?: boolean; page?: 'properties' | 'relationships' | 'technical' | 'none';
     onClose: () => void; onSelect: (id: string) => void; onNavigate: (request: StructureHandoff) => void;
   } = $props();
   const graph = $derived(projectStructure(document));
@@ -29,12 +31,25 @@
     if(parentNode)result.push({name:'Inside',value:structureNodePresentation(document,parentNode.data).label});
     return result;
   });
+  const accordionId=$props.id();
+  const provenance=$derived.by(()=>{
+    if(!selected || !selectedOccurrence)return [];
+    const occurrence=resolveOccurrence(selectedOccurrence,document);
+    if(parseStructureId(selected.id)?.[1]!=='node' || selected.data.sourceId!==occurrence.sourceNodeId)return [];
+    const result=[{path:'Source node',value:occurrence.sourceNodeId},{path:'Occurrence',value:selectedOccurrence}];
+    if(occurrence.owningDefinitionId)result.push({path:'Owning definition',value:occurrence.owningDefinitionId});
+    if(occurrence.instancePath.length)result.push({path:'Instance path',value:occurrence.instancePath.map(item=>item.sourceNodeId+' @ '+item.definitionId).join(' / ')});
+    if(occurrence.repeatKeys.length)result.push({path:'Record keys',value:occurrence.repeatKeys.join(' / ')});
+    if(occurrence.portalPath.length)result.push({path:'Portal ownership',value:occurrence.portalPath.map(item=>item.sourceNodeId+' → '+item.overlayId).join(' / ')});
+    if(layerProvenance?.occurrence===selectedOccurrence)result.push({path:'Layer provenance',value:layerProvenance.detail});
+    return result;
+  });
   let root: HTMLElement;
   onMount(()=>{
     const escape=(event:KeyboardEvent)=>{
       if(event.key==='Tab' && containFocus){
         const closed=[...root.querySelectorAll('details:not([open])')];
-        const controls=[...root.querySelectorAll<HTMLElement>('button:not(:disabled),summary,a[href],input:not(:disabled),select:not(:disabled),[tabindex="0"]')].filter(element=>!closed.some(details=>details.contains(element) && details.querySelector(':scope > summary')!==element));
+        const controls=[...root.querySelectorAll<HTMLElement>('button:not(:disabled),summary,a[href],input:not(:disabled),select:not(:disabled),[tabindex="0"]')].filter(element=>!element.closest('[hidden],[inert]') && !closed.some(details=>details.contains(element) && details.querySelector(':scope > summary')!==element));
         const index=controls.indexOf(globalThis.document.activeElement as HTMLElement);
         if(controls.length && ((event.shiftKey && index<=0) || (!event.shiftKey && index===controls.length-1))){event.preventDefault();controls[event.shiftKey?controls.length-1:0]?.focus({preventScroll:true});}
       }
@@ -51,19 +66,21 @@
 </script>
 <section class="source-details" aria-label="Source inspection details" bind:this={root}>
   <header>{#if !embedded}<span>Inspect</span>{/if}<strong title={label}>{label}</strong>{#if !embedded}<button type="button" aria-label="Close inspection details" onclick={onClose}>×</button>{/if}</header>
-  <nav aria-label="Source inspection view"><button type="button" aria-pressed={page === 'properties'} onclick={() => page = 'properties'}>Details</button><button type="button" aria-pressed={page === 'relationships'} onclick={() => page = 'relationships'}>Relationships</button></nav>
-  <div class="details-body">
-    {#if !selected}<p>Select an item on the canvas, in Layers or in the graph.</p>
-    {:else if page === 'properties'}
+  <div class="selection-sections">
+    {#if !selected}<p class="empty-selection">Select an item on the canvas, in Layers or in the graph.</p>
+    {:else}
+      <section class:expanded={page==='properties'} aria-label="Selection overview"><button class="studio-section-header" type="button" aria-expanded={page==='properties'} aria-controls={accordionId+'-overview'} onclick={()=>page=page==='properties'?'none':'properties'}>Overview</button><div id={accordionId+'-overview'} class="details-body" hidden={page!=='properties'}>
       <div class="details-identity"><span>{selected.data.kindLabel ?? readableName(selected.data.kind)}</span></div>
       {#if selected.data.occurrence}<button type="button" class="details-handoff" disabled={blocked} onclick={() => navigate('inspector')}>Edit on canvas ↗</button>{/if}
       {#if selected.data.kind === 'state'}<button type="button" class="details-handoff" disabled={blocked} onclick={() => navigate('data')}>Edit in Data ↗</button>{/if}
       {#if selected.data.kind === 'action'}<button type="button" class="details-handoff" disabled={blocked} onclick={() => navigate('actions')}>Open Actions ↗</button>{/if}
       <dl class="useful-facts">{#each summary as fact}<div><dt>{fact.name}</dt><dd>{fact.value}</dd></div>{/each}</dl>
-      <details class="technical-details"><summary>Technical details</summary><dl>{#each facts as fact}<div><dt>{fact.path}</dt><dd>{fact.value}</dd></div>{/each}</dl></details>
-    {:else}
+      </div></section>
+      <section class:expanded={page==='relationships'} aria-label="Selection relationships"><button class="studio-section-header" type="button" aria-expanded={page==='relationships'} aria-controls={accordionId+'-relationships'} onclick={()=>page=page==='relationships'?'none':'relationships'}>Relationships</button><div id={accordionId+'-relationships'} class="details-body" hidden={page!=='relationships'}>
       <div class="details-relationships">{#each relationships as edge (edge.id)}{@const outgoing=edge.source===selectedId}{@const other = graph.nodes.find(node => node.id === (outgoing ? edge.target : edge.source))}<button type="button" disabled={blocked} onclick={() => { if (other) onSelect(other.id); }}><span>{edge.data?.kind==='containment' ? outgoing ? 'Contains' : 'Inside' : edge.data?.kind==='definition' ? outgoing ? 'Uses definition' : 'Used by' : outgoing ? readableName(edge.label ?? 'Connected to') : 'Referenced by'}</span><strong>{other ? structureNodePresentation(document, other.data).label : 'Source item'}</strong></button>{/each}</div>
       {#if !relationships.length}<p>No declared relationships.</p>{/if}
+      </div></section>
+      <section class:expanded={page==='technical'} aria-label="Selection technical information"><button class="studio-section-header" type="button" aria-expanded={page==='technical'} aria-controls={accordionId+'-technical'} onclick={()=>page=page==='technical'?'none':'technical'}>Technical information</button><div id={accordionId+'-technical'} class="details-body" hidden={page!=='technical'}><dl>{#each [...provenance,...facts] as fact}<div><dt>{fact.path}</dt><dd>{fact.value}</dd></div>{/each}</dl></div></section>
     {/if}
   </div>
 </section>
@@ -71,18 +88,16 @@
   .source-details { box-sizing:border-box; display:flex; flex-direction:column; flex:none; height:100%; min-height:0; min-width:0; border-left:1px solid var(--vict-color-border,#e1e6ee); background:var(--vict-color-surface,#fff); color:var(--vict-color-text,#26334b); font:inherit; font-size:12px; line-height:1.45; overflow:hidden; }
   header { display:flex; align-items:center; gap:6px; padding:5px 8px; height:38px;box-sizing:border-box;flex:none;border-bottom:1px solid var(--vict-color-border,#e1e6ee); }
   header strong { flex:1; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-weight:600; }
-  button { font:inherit; color:inherit; cursor:pointer; border:1px solid var(--vict-color-border,#dce2eb); border-radius:5px; background:var(--vict-color-surface,#fff); padding:5px 8px; }
+  button:not(.studio-section-header) { font:inherit; color:inherit; cursor:pointer; border:1px solid var(--vict-color-border,#dce2eb); border-radius:5px; background:var(--vict-color-surface,#fff); padding:5px 8px; }
   header button { width:28px; height:28px; border:0; padding:0; }
-  nav { display:flex; gap:4px; padding:0 8px 7px; flex:none; border-bottom:1px solid var(--vict-color-border,#e1e6ee); }
-  nav button { border:0; background:transparent; }
-  nav button[aria-pressed=true] { background:var(--vict-rhea-muted,#eef1f7); }
   .details-body { flex:1; min-height:0; overflow:auto; overscroll-behavior:contain; padding:10px; }
+  .selection-sections{display:flex;flex-direction:column;flex:1;min-height:0;overflow:hidden}.selection-sections>section{display:flex;flex-direction:column;flex:none;min-height:0;overflow:hidden}.selection-sections>section.expanded{flex:1}.details-body[hidden]{display:none}.empty-selection{padding:10px;margin:0}.studio-section-header{flex:none}
   .details-identity { display:flex; gap:8px; justify-content:space-between; color:var(--vict-color-textMuted,#65748d); margin-bottom:8px; overflow-wrap:anywhere; }
   .details-handoff { margin-bottom:8px; }
   dt { font:11px/1.45 ui-monospace,monospace; overflow-wrap:anywhere; }
   dl { margin:0; } dl>div { display:grid; grid-template-columns:minmax(80px,1fr) minmax(0,1.25fr); gap:10px; padding:6px 0; border-top:1px solid var(--vict-color-border,#eef1f6); } dd { margin:0; overflow-wrap:anywhere; }
   .details-relationships { display:grid; gap:6px; }.details-relationships button { display:flex; flex-direction:column; gap:3px; text-align:left; overflow-wrap:anywhere; }
   .details-relationships span,p { color:var(--vict-color-textMuted,#65748d); }
-  .useful-facts dt{font:inherit;color:var(--vict-color-textMuted,#65748d)}.technical-details{margin-top:16px;border-top:1px solid var(--vict-color-border);padding-top:10px}.technical-details summary{cursor:pointer;color:var(--vict-color-textMuted)}
+  .useful-facts dt{font:inherit;color:var(--vict-color-textMuted,#65748d)}
   :focus-visible { outline:2px solid var(--vict-color-focusRing,#5269bd); outline-offset:-2px; } :disabled { opacity:.5; cursor:default; }
 </style>

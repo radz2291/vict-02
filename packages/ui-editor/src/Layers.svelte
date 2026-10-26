@@ -8,7 +8,7 @@
   import { compositionName, moveRelative, type CompositionPlacement } from './composition.js';
   import type { TransactionDraft } from './commands.js';
   import {compositionSlots,type CompositionFocus} from './composition-focus.js';
-  let { plan, document, selectedOccurrence, onSelect, ariaLabel = 'Layers', labels = {}, scope, onApply, componentDescriptors = [], onOpenComposition, compact = false, hideTextContent = false }: {
+  let { plan, document, selectedOccurrence, onSelect, ariaLabel = 'Layers', labels = {}, scope, onApply, componentDescriptors = [], onOpenComposition, compact = false, hideTextContent = false, showSelectionDetails = true, onInspect }: {
     plan: UiRenderPlan; document?: UiDocument; selectedOccurrence?: string; onSelect?: (occurrence: string) => void;
     ariaLabel?: string; labels?: EditorLabels; scope?: DocumentScope;
     onApply?: (draft: TransactionDraft) => boolean; componentDescriptors?: readonly import('@victframework/ui').UiExtensionDescriptor[];
@@ -17,6 +17,10 @@
     compact?: boolean;
     /** Hide sole source-owned text children when the host selects their parent. */
     hideTextContent?: boolean;
+    /** Hosts may place provenance in a shared selection panel instead. */
+    showSelectionDetails?: boolean;
+    /** With a host inspector, rows select their authored owner and activate on double click. */
+    onInspect?: (occurrence:string, sourceNodeId:string, provenance:string)=>void;
   } = $props();
   interface Entry { hiddenText?: boolean; key: string; nodeId: string; label: string; detail: string; parent?: string; depth: number; children: boolean; component: boolean; compact: boolean; selectable: boolean; composition?:CompositionFocus; }
   let expanded = $state(new Set<string>());
@@ -187,7 +191,8 @@
     else { closed = new Set([...closed].filter(k => k !== entry.key)); expanded = new Set([...expanded, entry.key]); }
   }
   async function focus(key: string) { focusKey = key; await tick(); Array.from(root?.querySelectorAll<HTMLElement>('[role=treeitem]') ?? []).find(e => e.dataset.key === key)?.focus(); }
-  function select(entry: Entry) { focusKey = entry.key; if(entry.composition)onOpenComposition?.(entry.composition); else if (entry.selectable) onSelect?.(entry.key); else if (entry.children && !query) toggle(entry); }
+  function selectionKey(entry:Entry){return entry.composition ? entry.key.slice(0,entry.key.lastIndexOf('|slot:')) : entry.key;}
+  function select(entry: Entry) { focusKey = entry.key; if(onInspect){onSelect?.(selectionKey(entry));return;} if(entry.composition)onOpenComposition?.(entry.composition); else if (entry.selectable) onSelect?.(entry.key); else if (entry.children && !query) toggle(entry); }
   function keyboard(event: KeyboardEvent, entry: Entry) {
     const index = entries.findIndex(e => e.key === entry.key);
     let next: string | undefined;
@@ -208,7 +213,7 @@
       <li role="none" class:is-parent={entry.children && (!entry.compact || entry.component)} class:is-ancestor={selectedAncestors.has(entry.key)} class:is-selected={entry.key===selectedOccurrence} style:padding-left={`${entry.depth * 16}px`}>
         <span class="tree-guides" aria-hidden="true">{#each treeGuides.get(entry.key) ?? [] as guide}{#if guide.continues || guide.end}<span class="tree-guide" class:branch={guide.end} class:last={!guide.continues} style:left={`${guide.level*16+10}px`}></span>{/if}{/each}</span>
         {#if entry.children}<button class="disclosure" type="button" tabindex="-1" disabled={!!query} aria-label={`${query || isOpen(entry) ? 'Collapse' : 'Expand'} ${entry.label}`} onclick={() => toggle(entry)}><svg viewBox="0 0 16 16" aria-hidden="true" class:expanded={!!query || isOpen(entry)}><path d="m6 4 4 4-4 4" /></svg></button>{:else}<span class="spacer"></span>{/if}
-        <button type="button" role="treeitem" data-key={entry.key} data-drop={dropKey === entry.key ? dropPosition : undefined} aria-level={entry.depth + 1} aria-expanded={entry.children ? !!query || isOpen(entry) : undefined} aria-selected={entry.key === selectedOccurrence} tabindex={entry.key === tabStop ? 0 : -1} title={`${entry.label} · ${entry.detail}`} onclick={() => select(entry)} onkeydown={e => keyboard(e, entry)} onfocus={() => focusKey = entry.key}
+        <button type="button" role="treeitem" data-key={entry.key} data-drop={dropKey === entry.key ? dropPosition : undefined} aria-level={entry.depth + 1} aria-expanded={entry.children ? !!query || isOpen(entry) : undefined} aria-selected={entry.key === selectedOccurrence} tabindex={entry.key === tabStop ? 0 : -1} title={`${entry.label} · ${entry.detail}`} onclick={() => select(entry)} ondblclick={() => onInspect?.(selectionKey(entry),entry.nodeId,entry.detail)} onkeydown={e => keyboard(e, entry)} onfocus={() => focusKey = entry.key}
           draggable={!!onApply && direct(entry) && !query} ondragstart={event => { if (!direct(entry)) { event.preventDefault(); return; } draggedId = entry.nodeId; if (event.dataTransfer) { event.dataTransfer.effectAllowed = 'move'; event.dataTransfer.setData('text/plain', entry.nodeId); } }}
           ondragover={event => dragOver(event, entry)} ondrop={event => drop(event, entry)} ondragleave={() => { dropKey = ''; }} ondragend={() => { draggedId = ''; dropKey = ''; moveMessage = ''; }}>
           <span class="icon" aria-hidden="true"><svg viewBox="0 0 16 16"><path d={iconPath(entry)} /></svg></span><span class="name" title={visibleLabel(entry)}>{visibleLabel(entry)}</span>{#if entry.children && !query && !isOpen(entry)}<span class="child-count" title="Direct children" aria-label={`${childCounts.get(entry.key) ?? 0} direct ${childCounts.get(entry.key) === 1 ? 'child' : 'children'}`}>{childCounts.get(entry.key)}</span>{/if}{#if entry.component}<span class="badge" title="Component" aria-label="Component">◇</span>{/if}
@@ -217,7 +222,7 @@
     {/each}
   </ul>
   {#if query && !matches.length}<p class="empty" role="status">No matching elements. Clear search to return to the page.</p>{/if}
-  <footer><p>↑ ↓ navigate · → expand · ← collapse · Enter select</p>{#if onApply}<p>Drag to move, or use Arrange tools.</p><p role="status">{moveMessage}</p>{/if}<details><summary>Selection details & provenance</summary><p><strong>{all.find(e => e.key === selectedOccurrence)?.label ?? 'No selected element'}</strong></p><p>{all.find(e => e.key === selectedOccurrence)?.detail}</p><code>{selectedOccurrence ?? ''}</code></details></footer>
+  <footer><p>↑ ↓ navigate · → expand · ← collapse · Enter select</p>{#if onApply}<p>Drag to move, or use Arrange tools.</p><p role="status">{moveMessage}</p>{/if}{#if showSelectionDetails}<details><summary>Selection details & provenance</summary><p><strong>{all.find(e => e.key === selectedOccurrence)?.label ?? 'No selected element'}</strong></p><p>{all.find(e => e.key === selectedOccurrence)?.detail}</p><code>{selectedOccurrence ?? ''}</code></details>{/if}</footer>
 </nav>
 <style>
   .uv-layers { font: 12px/1.5 var(--ui-editor-font, 'Segoe UI', sans-serif); color: var(--ui-editor-ink, #202938); background: var(--ui-editor-panel, #f8f9fb); min-width: 0; display: flex; flex-direction: column; height: 100%; }

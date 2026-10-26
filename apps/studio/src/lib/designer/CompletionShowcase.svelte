@@ -1,4 +1,5 @@
 <script lang="ts">
+  import './disclosures.css';
   import { onDestroy } from 'svelte';
   import { Conversation, type ConversationMessage } from '@victframework/ui-ai-svelte';
   import { captureDesignerPreview, type CaptureMetadata } from './visual-observation.js';
@@ -54,7 +55,7 @@
       <button type="button" onclick={capture} disabled={busy}>{busy?'Capturing…':'Capture rendered fixture'}</button>
       <p class="capture-notice" role="status">{notice}</p>
       {#if imageUrl}<img class="captured-image" src={imageUrl} alt="Actual raster capture of the rendered local two-person fixture" />{/if}
-      {#if metadata}<details><summary>Image provenance</summary><pre>{JSON.stringify(metadata,null,2)}</pre></details>{/if}
+      {#if metadata}<details class="studio-disclosure"><summary>Image provenance</summary><pre>{JSON.stringify(metadata,null,2)}</pre></details>{/if}
       <p class="demo-limit">These two fields use ordinary local Svelte state solely to make capture changes visible. Canonical native input wiring, independent state, shared manual/agent transactions and declared relationship diagnosis are available in the real Designer examples below. A screenshot cannot verify bindings or actions.</p>
     </section>
   </div>

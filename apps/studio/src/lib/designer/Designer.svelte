@@ -1,4 +1,5 @@
 <script lang="ts">
+  import './disclosures.css';
   import { onMount, tick, untrack } from 'svelte';
   import { beforeNavigate } from '$app/navigation';
   import { ControlScope } from '@victframework/ui-svelte';
@@ -19,6 +20,7 @@
   import { captureDesignerPreview } from './visual-observation.js';
   import StructureView from './StructureView.svelte';
   import SourceDetails from './SourceDetails.svelte';
+  import DataEditorHeader from './DataEditorHeader.svelte';
   import WorkspaceDetails from './WorkspaceDetails.svelte';
   import DocumentPanels from './DocumentPanels.svelte';
   import WorkspaceModes from './WorkspaceModes.svelte';
@@ -218,13 +220,14 @@
   let drawerOpen = $state(false);
   let workspaceElement = $state<HTMLDivElement>();
   let detailId = $state<string>();
+  let layerProvenance=$state<{occurrence:string;detail:string}>();
   let drawerContext=$state<'document'|'selection'>('document');
   const detailsOpen=$derived(drawerOpen && !testingOpen && drawerContext==='selection');
   $effect(()=>{const occurrence=selected;untrack(()=>{if(source)detailId=occurrence?structureId(source.id,'node',resolveOccurrence(occurrence,source).sourceNodeId):undefined;});});
   let drawerWidth = $state(320);
   const effectiveDrawerWidth = $derived(drawerWidth);
   const structureOpen=$derived(workspaceView==='structure');
-  let detailsPage = $state<'properties'|'relationships'>('properties');
+  let detailsPage = $state<'properties'|'relationships'|'technical'|'none'>('properties');
   let workspaceWidth = $state(0);
   const rightOpen = $derived(drawerOpen || testingOpen);
   let inspectionReturn: HTMLElement | undefined;
@@ -639,12 +642,10 @@
     <aside id="document-drawer" hidden={!drawerOpen || testingOpen} class="document-drawer" aria-label="Document and Selection" onkeydown={documentKeys}>
       <WorkspaceDetails bind:context={drawerContext} onClose={closeDrawer}>
       {#snippet documentContent()}<DocumentPanels bind:active={documentPanel}>
-        {#snippet layersContent()}<div class="layer-actions"><span>Selected object</span><button type="button" class="inspect-source" aria-label="Inspect source" aria-expanded={detailsOpen} onclick={()=>inspectSource()}>Open Selection ↗</button></div>{#if plan}<Layers compact hideTextContent labels={editorLabels} {plan} document={source} selectedOccurrence={selected} onSelect={selectFromStructure} onOpenComposition={navigateComposition} componentDescriptors={catalogDescriptors} />{/if}{/snippet}
+        {#snippet layersContent()}{#if plan}<Layers compact hideTextContent showSelectionDetails={false} labels={editorLabels} {plan} document={source} selectedOccurrence={selected} onSelect={selectFromStructure} onInspect={(occurrence:string,nodeId:string,detail:string)=>{if(textDraftDirty || sourceDraftDirty || renamingScreen)return;selectFromStructure(occurrence);layerProvenance={occurrence,detail};inspectSource(structureId(source.id,'node',nodeId));}} onOpenComposition={navigateComposition} componentDescriptors={catalogDescriptors} />{/if}{/snippet}
         {#snippet dataContent()}
           {#if selectedData && source.localState[selectedData]}
-            <button class="data-back" type="button" disabled={dataDraftDirty} onclick={()=>openData()}>← All data</button>
-            <div class="data-heading"><h2>{dataName(selectedData)}</h2><span>{dataType(source.localState[selectedData]!.type)}</span></div>
-            {#key selectedData}<fieldset class="editor-guard" disabled={sourceDraftDirty || propertyDraftDirty}><StateInitialEditor compact document={source} expression={{type:'ref',path:`state.${selectedData}`}} labels={editorLabels} onApply={apply} onDirtyChange={(dirty:boolean)=>dataDraftDirty=dirty} /></fieldset>{/key}
+            {#key selectedData}<fieldset class="editor-guard" disabled={sourceDraftDirty || propertyDraftDirty}><StateInitialEditor compact document={source} expression={{type:'ref',path:`state.${selectedData}`}} labels={editorLabels} onApply={apply} onDirtyChange={(dirty:boolean)=>dataDraftDirty=dirty}>{#snippet toolbar({apply:applyValue,dirty}:{apply:()=>void;dirty:boolean})}<DataEditorHeader name={dataName(selectedData!)} type={dataType(source.localState[selectedData!]!.type)} {dirty} onBack={()=>openData()} onApply={applyValue} />{/snippet}</StateInitialEditor></fieldset>{/key}
           {:else}
             <div class="section-heading"><h2>Screen data</h2><span>Saved starting values</span></div>
             <div class="data-list">{#each Object.entries(source.localState) as [key,declaration] (key)}<button type="button" class="data-row" disabled={sourceDraftDirty || propertyDraftDirty} onclick={()=>openData(key)}><span><strong>{dataName(key)}</strong><small>{dataType(declaration.type)}</small></span><span class="data-preview">{dataPreview(declaration.initial)}</span><span aria-hidden="true">›</span></button>{/each}</div>
@@ -659,10 +660,10 @@
           <AuthoringGuidance document={source} />
           <label class="sr-only" for="canonical-source">Canonical UI document</label><textarea id="canonical-source" class="source-editor" disabled={textDraftDirty} wrap="off" spellcheck="false" bind:value={sourceDraft} oninput={() => sourceDraftDirty = true}></textarea>
           <div class="source-actions"><button type="button" disabled={!sourceDraftDirty || textDraftDirty} onclick={applySource}>Apply source</button><button type="button" disabled={!sourceDraftDirty} onclick={() => { sourceDraftDirty = false; sourceDraft = JSON.stringify(source, null, 2); sourceDraftRevision = snapshot?.revision ?? ''; issues = []; }}>Discard draft</button><button type="button" onclick={exportSource}>Export</button></div>
-          <details class="application-attachment"><summary>Application attachment</summary><pre class="source-preview">{JSON.stringify(screenApplication(source), null, 2)}</pre></details>
+          <details class="studio-disclosure application-attachment"><summary>Advanced</summary><h3>Generated application definition</h3><p>Generated by Studio to connect this screen to VICT.</p><pre class="source-preview">{JSON.stringify(screenApplication(source), null, 2)}</pre></details>
         {/snippet}
       </DocumentPanels>{/snippet}
-      {#snippet selectionContent()}<SourceDetails embedded document={source} selectedId={detailId} blocked={textDraftDirty || sourceDraftDirty || renamingScreen} bind:page={detailsPage} onClose={closeDetails} onSelect={selectDetail} onNavigate={structureNavigate} />{/snippet}
+      {#snippet selectionContent()}<SourceDetails embedded document={source} selectedId={detailId} selectedOccurrence={selected} {layerProvenance} blocked={textDraftDirty || sourceDraftDirty || renamingScreen} bind:page={detailsPage} onClose={closeDetails} onSelect={selectDetail} onNavigate={structureNavigate} />{/snippet}
       </WorkspaceDetails>
     </aside>
     {#if testingOpen}<aside class="testing-drawer" aria-label="Testing"><TryScenarios document={source} active={activeTest?.id} values={runtimeValues} {activity} blocked={textDraftDirty || sourceDraftDirty || renamingScreen} onChoose={chooseTest} onReset={resetRuntime} onTry={()=>void tryCanvas()} onClose={closeTesting} onChange={changeTestValue} /></aside>{/if}

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import './disclosures.css';
   import { onMount } from 'svelte';
   import { applyUiEdit, type UiDocument, type UiStyleSource } from '@victframework/ui';
   import { EditorBridge, attachStyleSource, defineStyleSource, type TransactionDraft } from '@victframework/ui-editor';
@@ -95,7 +96,7 @@
   </div>
   <p class="notice" role="status">{notice}</p>
   <p class="scope">Preview runtime is temporary. Save stores canonical source only in this private memory example; refresh discards it.</p>
-  <details><summary>Actual source and last receipt</summary><pre>{JSON.stringify({ canonicalSource: source, receipt }, null, 2)}</pre></details>
+  <details class="studio-disclosure"><summary>Actual source and last receipt</summary><pre>{JSON.stringify({ canonicalSource: source, receipt }, null, 2)}</pre></details>
 </section>
 
 <style>

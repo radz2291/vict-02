@@ -1,4 +1,5 @@
 <script lang="ts">
+  import './disclosures.css';
   import type { Snippet } from 'svelte';
   let { active=$bindable<'layers'|'data'|'actions'|'source'|'none'>('layers'), layersContent, dataContent, actionsContent, sourceContent }: {
     active?:'layers'|'data'|'actions'|'source'|'none';layersContent:Snippet;dataContent:Snippet;actionsContent:Snippet;sourceContent:Snippet;
@@ -6,10 +7,10 @@
   const id=$props.id();
 </script>
 <div class="document-sections">
-  <section class:expanded={active==='layers'} aria-label="Document layers"><button data-document-section="layers" class="document-section-header" type="button" aria-expanded={active==='layers'} aria-controls={`${id}-layers`} onclick={()=>active=active==='layers'?'none':'layers'}>Layers</button><div id={`${id}-layers`} class="document-section-body layers-body" hidden={active!=='layers'}>{@render layersContent()}</div></section>
-  <section class:expanded={active==='data'} aria-label="Document data"><button data-document-section="data" class="document-section-header" type="button" aria-expanded={active==='data'} aria-controls={`${id}-data`} onclick={()=>active=active==='data'?'none':'data'}>Data</button><div id={`${id}-data`} class="document-section-body" hidden={active!=='data'}>{@render dataContent()}</div></section>
-  <section class:expanded={active==='actions'} aria-label="Document actions"><button data-document-section="actions" class="document-section-header" type="button" aria-expanded={active==='actions'} aria-controls={`${id}-actions`} onclick={()=>active=active==='actions'?'none':'actions'}>Actions</button><div id={`${id}-actions`} class="document-section-body" hidden={active!=='actions'}>{@render actionsContent()}</div></section>
-  <section class:expanded={active==='source'} aria-label="Document source"><button data-document-section="source" class="document-section-header" type="button" aria-expanded={active==='source'} aria-controls={`${id}-source`} onclick={()=>active=active==='source'?'none':'source'}>Source</button><div id={`${id}-source`} class="document-section-body source-body" hidden={active!=='source'}>{@render sourceContent()}</div></section>
+  <section class:expanded={active==='layers'} aria-label="Document layers"><button data-document-section="layers" class="document-section-header studio-section-header" type="button" aria-expanded={active==='layers'} aria-controls={`${id}-layers`} onclick={()=>active=active==='layers'?'none':'layers'}>Layers</button><div id={`${id}-layers`} class="document-section-body layers-body" hidden={active!=='layers'}>{@render layersContent()}</div></section>
+  <section class:expanded={active==='data'} aria-label="Document data"><button data-document-section="data" class="document-section-header studio-section-header" type="button" aria-expanded={active==='data'} aria-controls={`${id}-data`} onclick={()=>active=active==='data'?'none':'data'}>Data</button><div id={`${id}-data`} class="document-section-body" hidden={active!=='data'}>{@render dataContent()}</div></section>
+  <section class:expanded={active==='actions'} aria-label="Document actions"><button data-document-section="actions" class="document-section-header studio-section-header" type="button" aria-expanded={active==='actions'} aria-controls={`${id}-actions`} onclick={()=>active=active==='actions'?'none':'actions'}>Actions</button><div id={`${id}-actions`} class="document-section-body" hidden={active!=='actions'}>{@render actionsContent()}</div></section>
+  <section class:expanded={active==='source'} aria-label="Document source"><button data-document-section="source" class="document-section-header studio-section-header" type="button" aria-expanded={active==='source'} aria-controls={`${id}-source`} onclick={()=>active=active==='source'?'none':'source'}>Source</button><div id={`${id}-source`} class="document-section-body source-body" hidden={active!=='source'}>{@render sourceContent()}</div></section>
 </div>
 <style>
   .document-sections{display:flex;flex-direction:column;flex:1;min-height:0;overflow:hidden}

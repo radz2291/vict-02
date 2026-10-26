@@ -1,0 +1,169 @@
+Loading svelte-check in workspace: c:\Users\RZ1\.codex\worktrees\studio-cycle14-selection-panel\260831-VCT-02\apps\studio
+Getting Svelte diagnostics...
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-selection-panel\260831-VCT-02\apps\studio\..\..\packages\ui-svelte\src\document\RenderNode.svelte:309:3
+Warn: Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events (svelte)
+{:else if instruction.kind === 'text'}
+  <span
+    class="uv-text"
+    data-ui-owner={ownerId}
+    data-ui-node={instruction.nodeId}
+    data-ui-occ={occ}
+    style="display: contents"
+    onclick={(event) => {
+      if (selectOccurrence !== undefined) {
+        event.stopPropagation();
+        selectOccurrence(occ);
+      }
+    }}
+  >
+    {#if instruction.content.type === 'literal'}
+      {instruction.content.value}
+    {:else}
+      {String(resolveValue({ type: 'expression', expression: instruction.content.expression }, scope) ?? '')}
+    {/if}
+  </span>
+{:else if (instruction.kind === 'component' || instruction.kind === 'extension') && componentValues.invalidNames.length}
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-selection-panel\260831-VCT-02\apps\studio\..\..\packages\ui-svelte\src\document\RenderNode.svelte:309:3
+Warn: `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions (svelte)
+{:else if instruction.kind === 'text'}
+  <span
+    class="uv-text"
+    data-ui-owner={ownerId}
+    data-ui-node={instruction.nodeId}
+    data-ui-occ={occ}
+    style="display: contents"
+    onclick={(event) => {
+      if (selectOccurrence !== undefined) {
+        event.stopPropagation();
+        selectOccurrence(occ);
+      }
+    }}
+  >
+    {#if instruction.content.type === 'literal'}
+      {instruction.content.value}
+    {:else}
+      {String(resolveValue({ type: 'expression', expression: instruction.content.expression }, scope) ?? '')}
+    {/if}
+  </span>
+{:else if (instruction.kind === 'component' || instruction.kind === 'extension') && componentValues.invalidNames.length}
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-selection-panel\260831-VCT-02\apps\studio\..\..\packages\ui-svelte\src\document\RenderNode.svelte:379:5
+Warn: Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events (svelte)
+    {@const Implementation = extension.component}
+    <span style="display: contents" data-extension-id={instruction.extensionId} data-ui-owner={ownerId} data-ui-occ={occ} data-ui-node={instruction.nodeId}
+      onclick={event => { event.stopPropagation(); selectOccurrence?.(occ); }}>
+      <Implementation props={extensionProps} occurrenceKey={occ} nodeId={instruction.nodeId} {presentation} />
+    </span>
+  {:else}
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-selection-panel\260831-VCT-02\apps\studio\..\..\packages\ui-svelte\src\document\RenderNode.svelte:379:5
+Warn: `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions (svelte)
+    {@const Implementation = extension.component}
+    <span style="display: contents" data-extension-id={instruction.extensionId} data-ui-owner={ownerId} data-ui-occ={occ} data-ui-node={instruction.nodeId}
+      onclick={event => { event.stopPropagation(); selectOccurrence?.(occ); }}>
+      <Implementation props={extensionProps} occurrenceKey={occ} nodeId={instruction.nodeId} {presentation} />
+    </span>
+  {:else}
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-selection-panel\260831-VCT-02\apps\studio\..\..\packages\ui-svelte\src\document\DocumentHost.svelte:105:31
+Warn: This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+  let acceptedSupplied: Record<string, UiValue> = {};
+  let lastDocumentId = $state(plan.documentId);
+  let lastSignal: symbol | undefined = $state<symbol | undefined>(undefined);
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-selection-panel\260831-VCT-02\apps\studio\src\lib\designer\WorkspacePanelsShowcase.svelte:28:26
+Warn: This reference only captures the initial value of `document`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+  let plan=$state<UiRenderPlan>();
+  let selected=$state(`${document.id}|${document.root}`);
+  let selectedId=$state(structureId(document.id,'node',document.root));
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-selection-panel\260831-VCT-02\apps\studio\src\lib\designer\WorkspacePanelsShowcase.svelte:28:41
+Warn: This reference only captures the initial value of `document`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+  let plan=$state<UiRenderPlan>();
+  let selected=$state(`${document.id}|${document.root}`);
+  let selectedId=$state(structureId(document.id,'node',document.root));
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-selection-panel\260831-VCT-02\apps\studio\src\lib\designer\WorkspacePanelsShowcase.svelte:29:37
+Warn: This reference only captures the initial value of `document`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+  let selected=$state(`${document.id}|${document.root}`);
+  let selectedId=$state(structureId(document.id,'node',document.root));
+  let exampleFocus=$state(structureId(document.id,'node',document.root));
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-selection-panel\260831-VCT-02\apps\studio\src\lib\designer\WorkspacePanelsShowcase.svelte:29:56
+Warn: This reference only captures the initial value of `document`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+  let selected=$state(`${document.id}|${document.root}`);
+  let selectedId=$state(structureId(document.id,'node',document.root));
+  let exampleFocus=$state(structureId(document.id,'node',document.root));
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-selection-panel\260831-VCT-02\apps\studio\src\lib\designer\WorkspacePanelsShowcase.svelte:30:39
+Warn: This reference only captures the initial value of `document`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+  let selectedId=$state(structureId(document.id,'node',document.root));
+  let exampleFocus=$state(structureId(document.id,'node',document.root));
+  let selectedNodeId=$derived(resolveOccurrence(selected,document).sourceNodeId);
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-selection-panel\260831-VCT-02\apps\studio\src\lib\designer\WorkspacePanelsShowcase.svelte:30:58
+Warn: This reference only captures the initial value of `document`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+  let selectedId=$state(structureId(document.id,'node',document.root));
+  let exampleFocus=$state(structureId(document.id,'node',document.root));
+  let selectedNodeId=$derived(resolveOccurrence(selected,document).sourceNodeId);
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-selection-panel\260831-VCT-02\apps\studio\src\lib\designer\WorkspacePanelsShowcase.svelte:88:172
+Warn: Unused CSS selector "dl"
+https://svelte.dev/e/css_unused_selector (svelte)
+  .structure-workspace{display:flex;flex:1;min-width:0;min-height:0;overflow:hidden}.structure-workspace :global(.structure-inspection-layout){flex:1}
+  header{display:flex;align-items:center;justify-content:space-between;height:38px;flex:none;padding:10px;font-weight:600;border-bottom:1px solid var(--vict-color-border)}dl{margin:0}dl>div{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:6px 0}dd{margin:0;overflow-wrap:anywhere}pre{font-size:10px;max-height:240px;overflow:auto}
+  .right :global(.uv-layers){height:auto;flex:1;min-height:0}
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-selection-panel\260831-VCT-02\apps\studio\src\lib\designer\WorkspacePanelsShowcase.svelte:88:184
+Warn: Unused CSS selector "dl>div"
+https://svelte.dev/e/css_unused_selector (svelte)
+  .structure-workspace{display:flex;flex:1;min-width:0;min-height:0;overflow:hidden}.structure-workspace :global(.structure-inspection-layout){flex:1}
+  header{display:flex;align-items:center;justify-content:space-between;height:38px;flex:none;padding:10px;font-weight:600;border-bottom:1px solid var(--vict-color-border)}dl{margin:0}dl>div{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:6px 0}dd{margin:0;overflow-wrap:anywhere}pre{font-size:10px;max-height:240px;overflow:auto}
+  .right :global(.uv-layers){height:auto;flex:1;min-height:0}
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-selection-panel\260831-VCT-02\apps\studio\src\lib\designer\WorkspacePanelsShowcase.svelte:88:256
+Warn: Unused CSS selector "dd"
+https://svelte.dev/e/css_unused_selector (svelte)
+  .structure-workspace{display:flex;flex:1;min-width:0;min-height:0;overflow:hidden}.structure-workspace :global(.structure-inspection-layout){flex:1}
+  header{display:flex;align-items:center;justify-content:space-between;height:38px;flex:none;padding:10px;font-weight:600;border-bottom:1px solid var(--vict-color-border)}dl{margin:0}dl>div{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:6px 0}dd{margin:0;overflow-wrap:anywhere}pre{font-size:10px;max-height:240px;overflow:auto}
+  .right :global(.uv-layers){height:auto;flex:1;min-height:0}
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-selection-panel\260831-VCT-02\apps\studio\src\lib\designer\WorkspacePanelsShowcase.svelte:69:182
+Error: Binding element 'apply' implicitly has an 'any' type. (ts)
+        {#snippet layersContent()}{#if plan}<Layers compact hideTextContent showSelectionDetails={false} onInspect={(occurrence:string,nodeId:string)=>{select(occurrence);inspect(structureId(document.id,'node',nodeId));}} {plan} {document} labels={{nodes:studioNodeLabels(document)}} selectedOccurrence={selected} onSelect={select} componentDescriptors={catalogDescriptors} />{/if}{/snippet}
+        {#snippet dataContent()}{#if selectedData}<StateInitialEditor compact {document} expression={{type:'ref',path:'state.'+selectedData}} onApply={applyData}>{#snippet toolbar({apply,dirty})}<DataEditorHeader name={selectedData} type={document.localState[selectedData]!.type} {dirty} onBack={()=>selectedData=''} onApply={apply} />{/snippet}</StateInitialEditor>{:else}{#each Object.keys(document.localState) as key}<button type="button" onclick={()=>selectedData=key}>{key}</button>{/each}{/if}{/snippet}
+        {#snippet actionsContent()}<p>demo.submit uses the existing local simulation. This read-only fixture does not invoke it.</p>{/snippet}
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-selection-panel\260831-VCT-02\apps\studio\src\lib\designer\WorkspacePanelsShowcase.svelte:69:188
+Error: Binding element 'dirty' implicitly has an 'any' type. (ts)
+        {#snippet layersContent()}{#if plan}<Layers compact hideTextContent showSelectionDetails={false} onInspect={(occurrence:string,nodeId:string)=>{select(occurrence);inspect(structureId(document.id,'node',nodeId));}} {plan} {document} labels={{nodes:studioNodeLabels(document)}} selectedOccurrence={selected} onSelect={select} componentDescriptors={catalogDescriptors} />{/if}{/snippet}
+        {#snippet dataContent()}{#if selectedData}<StateInitialEditor compact {document} expression={{type:'ref',path:'state.'+selectedData}} onApply={applyData}>{#snippet toolbar({apply,dirty})}<DataEditorHeader name={selectedData} type={document.localState[selectedData]!.type} {dirty} onBack={()=>selectedData=''} onApply={apply} />{/snippet}</StateInitialEditor>{:else}{#each Object.keys(document.localState) as key}<button type="button" onclick={()=>selectedData=key}>{key}</button>{/each}{/if}{/snippet}
+        {#snippet actionsContent()}<p>demo.submit uses the existing local simulation. This read-only fixture does not invoke it.</p>{/snippet}
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-selection-panel\260831-VCT-02\apps\studio\src\lib\designer\Designer.svelte:648:331
+Error: Binding element 'applyValue' implicitly has an 'any' type. (ts)
+          {#if selectedData && source.localState[selectedData]}
+            {#key selectedData}<fieldset class="editor-guard" disabled={sourceDraftDirty || propertyDraftDirty}><StateInitialEditor compact document={source} expression={{type:'ref',path:`state.${selectedData}`}} labels={editorLabels} onApply={apply} onDirtyChange={(dirty:boolean)=>dataDraftDirty=dirty}>{#snippet toolbar({apply:applyValue,dirty})}<DataEditorHeader name={dataName(selectedData!)} type={dataType(source.localState[selectedData!]!.type)} {dirty} onBack={()=>openData()} onApply={applyValue} />{/snippet}</StateInitialEditor></fieldset>{/key}
+          {:else}
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-selection-panel\260831-VCT-02\apps\studio\src\lib\designer\Designer.svelte:648:342
+Error: Binding element 'dirty' implicitly has an 'any' type. (ts)
+          {#if selectedData && source.localState[selectedData]}
+            {#key selectedData}<fieldset class="editor-guard" disabled={sourceDraftDirty || propertyDraftDirty}><StateInitialEditor compact document={source} expression={{type:'ref',path:`state.${selectedData}`}} labels={editorLabels} onApply={apply} onDirtyChange={(dirty:boolean)=>dataDraftDirty=dirty}>{#snippet toolbar({apply:applyValue,dirty})}<DataEditorHeader name={dataName(selectedData!)} type={dataType(source.localState[selectedData!]!.type)} {dirty} onBack={()=>openData()} onApply={applyValue} />{/snippet}</StateInitialEditor></fieldset>{/key}
+          {:else}
+
+====================================
+svelte-check found 4 errors and 14 warnings in 4 files

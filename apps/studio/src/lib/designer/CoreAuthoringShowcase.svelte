@@ -1,4 +1,5 @@
 <script lang="ts">
+  import './disclosures.css';
   import { untrack } from 'svelte';
   import { Conversation, type ConversationMessage } from '@victframework/ui-ai-svelte';
   import { newScreen } from './application.js';
@@ -141,17 +142,17 @@
         <button type="button" class="reuse" onclick={reuseKnowledge} disabled={!bundleComplete || reuse}>Re-read with these digests</button>
         {#if reuse}<p class="cache-result">{contracts.filter(item => item.unchanged).length} unchanged entries; contract bodies omitted. Source freshness still uses its own cursor.</p>{/if}
       </div>
-      <details><summary>Selected contract response</summary><pre>{JSON.stringify(contractRead, null, 2)}</pre>
+      <details class="studio-disclosure"><summary>Selected contract response</summary><pre>{JSON.stringify(contractRead, null, 2)}</pre>
         {#each pendingPages as item}<button type="button" onclick={() => nextPage(item)}>Next body page: {item.id}</button>{/each}
       </details>
-      <details><summary>Source cursor and discovery response</summary><pre>{JSON.stringify({ cursor, catalog }, null, 2)}</pre></details>
+      <details class="studio-disclosure"><summary>Source cursor and discovery response</summary><pre>{JSON.stringify({ cursor, catalog }, null, 2)}</pre></details>
       <p class="muted">Knowledge digests describe component contracts. They do not cache source facts or authorize product actions.</p>
     </section>
     <section class="recovery" aria-label="Simulated grouped tool attempts">
       <h3>One tool attempt, expandable stages</h3>
       <p class="simulation-label">Simulation · scripted receipts and timings · no provider execution</p>
       <div class="conversation-frame"><Conversation {messages} inputPlaceholder="Fixed presentation fixture" onSend={async () => ({ ok: false, message: 'This is a simulated presentation fixture. Use Designer Chat for a real agent turn.' })} /></div>
-      <details><summary>Failure status and bounded metrics fixture</summary>
+      <details class="studio-disclosure"><summary>Failure status and bounded metrics fixture</summary>
         <p>{failureStatus}</p>
         <dl><div><dt>Tool attempts</dt><dd>{metrics.toolCalls}</dd></div><div><dt>Recovery attempts</dt><dd>{metrics.recoveryAttempts}</dd></div><div><dt>Provider requests</dt><dd>{metrics.providerRequests}</dd></div><div><dt>Scripted elapsed time</dt><dd>{metrics.elapsedMs} ms</dd></div></dl>
         <p class="muted">These helper outputs use a deterministic fixture clock. Token usage, model steps and cost are unavailable.</p>

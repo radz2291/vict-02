@@ -1,0 +1,8 @@
+/* Opt-in Studio chrome only: never style authored page disclosures. */
+.studio-disclosure { margin-block: 8px; padding: 0; border: 0; }
+:is(.studio-disclosure, .floating-selection .uv-inspector details) > summary, .studio-section-header { box-sizing:border-box; display:flex; align-items:center; justify-content:space-between; gap:12px; width:100%; min-height:36px; margin:0; padding:8px 10px; border:0; border-bottom:1px solid var(--vict-color-border,#e1e6ee); background:var(--vict-color-surface,#fff); color:var(--vict-color-text,#26334b); font:inherit; font-weight:600; text-align:left; cursor:pointer; list-style:none; }
+:is(.studio-disclosure, .floating-selection .uv-inspector details) > summary::-webkit-details-marker { display:none; }
+:is(.studio-disclosure, .floating-selection .uv-inspector details) > summary::after, .studio-section-header::after { content:''; flex:none; width:6px; height:6px; border-right:1.5px solid currentColor; border-bottom:1.5px solid currentColor; transform:rotate(-45deg); margin:0 3px; }
+:is(.studio-disclosure, .floating-selection .uv-inspector details)[open] > summary::after, .studio-section-header[aria-expanded=true]::after { transform:rotate(45deg); }
+:is(.studio-disclosure, .floating-selection .uv-inspector details) > summary:hover, .studio-section-header:hover { background:var(--vict-control-selected,#eef1f7); }
+:is(.studio-disclosure, .floating-selection .uv-inspector details) > summary:focus-visible, .studio-section-header:focus-visible { outline:2px solid var(--vict-color-focusRing,#5269bd); outline-offset:-2px; }

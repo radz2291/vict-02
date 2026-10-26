@@ -1,4 +1,5 @@
 <script lang="ts">
+  import './disclosures.css';
   import WorkspacePanelsShowcase from "./WorkspacePanelsShowcase.svelte";
   import { ControlScope, DocumentHost } from '@victframework/ui-svelte';
   import { Popover } from '@victframework/ui-svelte/primitives';
@@ -33,13 +34,13 @@
         <p>{selected.description}</p>
         <p class="muted">These are editable native compositions, alongside the registered component catalog.</p>
         <a href={`/showcase?recipe=rhea-${pattern}#designer`}>Open in the disposable Designer</a>
-        <details><summary>Host requirements and source</summary><p>Rendering hosts import the public Rhea stylesheet.</p>{#each selected.hostRequirements as requirement}<p>{requirement}</p>{/each}<pre>{JSON.stringify(fixture.document, null, 2)}</pre></details>
+        <details class="studio-disclosure"><summary>Host requirements and source</summary><p>Rendering hosts import the public Rhea stylesheet.</p>{#each selected.hostRequirements as requirement}<p>{requirement}</p>{/each}<pre>{JSON.stringify(fixture.document, null, 2)}</pre></details>
       </div>
       <div class="pattern-preview" aria-label="Actual native pattern preview">
         {#key pattern}{#if plan}<DocumentHost {plan} localState={fixture.document.localState} extensionDescriptors={catalogDescriptors} extensionImplementations={catalogImplementations} dispatch={async () => ({ok:false,code:'SHOWCASE_NO_HOST_ACTION'})} navigate={() => {}} ariaLabel={`${selected.label} native pattern`} />{:else}<p role="alert">The source could not compile.</p>{/if}{/key}
       </div>
     </div>
-    <details class="family-matrix"><summary>All {migration.totals.pinnedUiFamilies} pinned UI families and support limits</summary>
+    <details class="studio-disclosure family-matrix"><summary>All {migration.totals.pinnedUiFamilies} pinned UI families and support limits</summary>
       <p>30 general counterparts, 13 native source patterns, 10 specialist presentations and 10 explicit host or adapter exceptions. This is a complete disposition inventory, not a claim that every upstream wrapper is authorable.</p>
       <label for="family-search">Find a family</label><input id="family-search" type="search" bind:value={query} placeholder="Family or disposition" />
       <div class="matrix-scroll"><table><thead><tr><th>Family</th><th>Support</th><th>Limits</th></tr></thead><tbody>{#each families as item}<tr><th scope="row">{item.family}</th><td>{item.disposition.replaceAll('-', ' ')}</td><td>{item.omittedFunctionality}</td></tr>{/each}</tbody></table></div>

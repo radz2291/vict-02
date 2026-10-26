@@ -387,8 +387,8 @@ body:has(.finished-screen) {
 /* All Document sections share the same drawer width. */
 .document-drawer .sidebar-body {display:flex;flex-direction:column;gap:0;padding:12px;}
 .document-drawer .uv-layers {flex:1;min-height:0;height:auto;}
-.section-heading {margin:2px 0 14px;} .section-heading h2,.data-heading h2 {font-size:13px;font-weight:600;color:var(--vict-color-text);margin:0 0 4px;}
-.section-heading > span,.data-heading > span {font-size:10px;color:#7d8a9d;}
+.section-heading {margin:2px 0 14px;} .section-heading h2 {font-size:13px;font-weight:600;color:var(--vict-color-text);margin:0 0 4px;}
+.section-heading > span {font-size:10px;color:#7d8a9d;}
 .data-list {display:flex;flex-direction:column;}
 .data-row {display:flex;align-items:center;gap:10px;padding:11px 4px;text-align:left;background:transparent;border:0;border-bottom:1px solid var(--vict-rhea-muted);cursor:pointer;}
 .data-row:hover {background:var(--vict-rhea-muted);}
@@ -397,8 +397,6 @@ body:has(.finished-screen) {
 .data-row small {font-size:10px;color:var(--vict-color-textMuted);}
 .data-preview {max-width:45%;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-size:11px;color:var(--vict-color-textMuted);}
 .data-row > span:last-child {color:#9ba6b6;}
-.data-back {align-self:flex-start;background:transparent;border:0;color:var(--vict-color-accent);padding:2px 0 14px;font-size:11px;cursor:pointer;}
-.data-heading {margin:0 0 20px;}
 .action-card {padding:12px;border:1px solid var(--vict-color-border);border-radius:6px;margin-bottom:10px;}
 .action-card > div:first-child {display:flex;align-items:center;justify-content:space-between;gap:8px;}
 .action-card h3 {margin:0;font-size:12px;font-weight:600;color:var(--vict-color-text);}
@@ -450,6 +448,3 @@ body:has(.studio-designer[data-workspace-view="structure"]) .floating-selection{
 @media(max-width:600px){.studio-designer .operator-link{display:none}.studio-designer .studio-menus>button{padding:5px 6px;font-size:11px}.studio-designer .screen-picker .current-screen{font-size:11px}}
 
 .editor-guard{border:0;padding:0;margin:0;min-width:0}
-
-.layer-actions{display:flex;align-items:center;justify-content:space-between;gap:6px;flex:none;padding:8px 10px;font-size:10px;color:var(--vict-color-textMuted)}
-.layer-actions button{font:inherit;border:0;border-radius:4px;padding:5px;background:transparent;color:var(--vict-color-accent);cursor:pointer}

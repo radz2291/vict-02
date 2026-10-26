@@ -3,22 +3,31 @@
   import {Menubar} from '@victframework/ui-svelte/catalog/menubar';
   import WorkspaceMenu from './WorkspaceMenu.svelte';
   import {ControlScope} from '@victframework/ui-svelte';
-  import {EditorCanvas,Layers,resolveOccurrence} from '@victframework/ui-editor';
+  import {EditorCanvas,Layers,resolveOccurrence,StateInitialEditor,EditorBridge} from '@victframework/ui-editor';
   import type {UiRenderPlan} from '@victframework/ui';
   import {createShowcaseFixture} from './showcase.js';
-  import {designerCatalogs,catalogDescriptors,catalogImplementations} from './application.js';
+  import {designerCatalogs,catalogDescriptors,catalogImplementations,screenApplication} from './application.js';
   import {studioNodeLabels} from './presentation.js';
+  import {screenStore} from './storage.js';
+  import {screenPlacementIssues} from './placement.js';
   import {structureId,projectStructure} from './structure.js';
   import DocumentPanels from './DocumentPanels.svelte';
   import WorkspaceDetails from './WorkspaceDetails.svelte';
   import StructureView from './StructureView.svelte';
   import WorkspaceModes from './WorkspaceModes.svelte';
   import SourceDetails from './SourceDetails.svelte';
-  const {document}=createShowcaseFixture('button');
+  import DataEditorHeader from './DataEditorHeader.svelte';
+  import './disclosures.css';
+  const fixture=createShowcaseFixture('button');
+  const memory=new Map<string,string>();
+  const bridge=new EditorBridge({catalogs:designerCatalogs,validateDocument:screenPlacementIssues,initial:{document:fixture.document,storedRevision:'r1'},store:screenStore({getItem:key=>memory.get(key)??null,setItem:(key,value)=>{memory.set(key,value);}},fixture.document.id)});
+  let document=$state(fixture.document);
+  let selectedData=$state('');
+  function applyData(draft:import('@victframework/ui-editor').TransactionDraft){const result=bridge.apply(draft);if(result.ok)document=bridge.document;return result.ok;}
   let plan=$state<UiRenderPlan>();
-  let selected=$state(`${document.id}|${document.root}`);
-  let selectedId=$state(structureId(document.id,'node',document.root));
-  let exampleFocus=$state(structureId(document.id,'node',document.root));
+  let selected=$state(`${fixture.document.id}|${fixture.document.root}`);
+  let selectedId=$state(structureId(fixture.document.id,'node',fixture.document.root));
+  let exampleFocus=$state(structureId(fixture.document.id,'node',fixture.document.root));
   let selectedNodeId=$derived(resolveOccurrence(selected,document).sourceNodeId);
   let chatOpen=$state(false),documentOpen=$state(false);
   let context=$state<'document'|'selection'>('document');
@@ -41,7 +50,7 @@
 <ControlScope class="vict-rhea">
   <section class="workspace-panel-showcase" aria-label="Docked workspace panel example">
     <h3>Design, Interact and Structure workspace views</h3>
-    <p>Actual workspace components in a disposable read-only fixture. This Chat draft stays local; no model request is sent. Live Chat and authoring are available in <a href="/design">Studio</a>.</p>
+    <p>Actual workspace components in a disposable fixture. Data edits stay in memory. This Chat draft stays local; no model request is sent. Live Chat and authoring are available in <a href="/design">Studio</a>.</p>
     <Menubar.Root class="workspace-menus studio-menus" aria-label="Example workspace menus" bind:value={activeMenu}><WorkspaceMenu label="View" value="example-view" {activeMenu}>
       <Menubar.CheckboxItem aria-label="Chat" checked={chatOpen} onSelect={()=>panel('chat',!chatOpen)}>Chat</Menubar.CheckboxItem>
       <Menubar.CheckboxItem aria-label="Document" checked={documentOpen} onSelect={()=>panel('document',!documentOpen)}>Document</Menubar.CheckboxItem>
@@ -56,11 +65,11 @@
         </section>
       </div>
       <aside class="right" hidden={!documentOpen} aria-label="Example stacked Document"><WorkspaceDetails bind:context onClose={()=>panel('document',false)}>{#snippet documentContent()}<DocumentPanels>
-        {#snippet layersContent()}<button type="button" onclick={()=>inspect()}>Open Selection ↗</button>{#if plan}<Layers compact hideTextContent {plan} {document} labels={{nodes:studioNodeLabels(document)}} selectedOccurrence={selected} onSelect={select} componentDescriptors={catalogDescriptors} />{/if}{/snippet}
-        {#snippet dataContent()}<dl>{#each Object.entries(document.localState) as [key,value]}<div><dt>{key}</dt><dd>{JSON.stringify(value.initial)}</dd></div>{/each}</dl>{/snippet}
+        {#snippet layersContent()}{#if plan}<Layers compact hideTextContent showSelectionDetails={false} onInspect={(occurrence:string,nodeId:string)=>{select(occurrence);inspect(structureId(document.id,'node',nodeId));}} {plan} {document} labels={{nodes:studioNodeLabels(document)}} selectedOccurrence={selected} onSelect={select} componentDescriptors={catalogDescriptors} />{/if}{/snippet}
+        {#snippet dataContent()}{#if selectedData}<StateInitialEditor compact {document} expression={{type:'ref',path:'state.'+selectedData}} onApply={applyData}>{#snippet toolbar({apply,dirty}:{apply:()=>void;dirty:boolean})}<DataEditorHeader name={selectedData} type={document.localState[selectedData]!.type} {dirty} onBack={()=>selectedData=''} onApply={apply} />{/snippet}</StateInitialEditor>{:else}{#each Object.keys(document.localState) as key}<button type="button" onclick={()=>selectedData=key}>{key}</button>{/each}{/if}{/snippet}
         {#snippet actionsContent()}<p>demo.submit uses the existing local simulation. This read-only fixture does not invoke it.</p>{/snippet}
-        {#snippet sourceContent()}<pre>{JSON.stringify(document,null,2)}</pre>{/snippet}
-      </DocumentPanels>{/snippet}{#snippet selectionContent()}<SourceDetails embedded {document} {selectedId} onClose={()=>panel('document',false)} onSelect={selectDetail} onNavigate={()=>notice='Use Studio for document edits and floating editing tools.'} />{/snippet}</WorkspaceDetails></aside>
+        {#snippet sourceContent()}<pre>{JSON.stringify(document,null,2)}</pre><details class="studio-disclosure"><summary>Advanced</summary><h4>Generated application definition</h4><p>Generated by Studio to connect this screen to VICT.</p><pre>{JSON.stringify(screenApplication(document),null,2)}</pre></details>{/snippet}
+      </DocumentPanels>{/snippet}{#snippet selectionContent()}<SourceDetails embedded {document} {selectedId} selectedOccurrence={selected} onClose={()=>panel('document',false)} onSelect={selectDetail} onNavigate={()=>notice='Use Studio for document edits and floating editing tools.'} />{/snippet}</WorkspaceDetails></aside>
     </div>
     <p role="status">{notice}</p>
   </section>
@@ -76,7 +85,7 @@
   .example-stage{display:flex;flex-direction:column;min-width:0;min-height:0;overflow:hidden}.example-canvas{padding:16px;flex:1;min-height:0;overflow:auto}.example-canvas :global(.uv-canvas){min-height:280px;background:var(--vict-color-surface)}
   .example-canvas[hidden],.structure-workspace[hidden]{display:none}.example-modes{display:flex;padding:4px 8px;border-bottom:1px solid var(--vict-color-border)}
   .structure-workspace{display:flex;flex:1;min-width:0;min-height:0;overflow:hidden}.structure-workspace :global(.structure-inspection-layout){flex:1}
-  header{display:flex;align-items:center;justify-content:space-between;height:38px;flex:none;padding:10px;font-weight:600;border-bottom:1px solid var(--vict-color-border)}dl{margin:0}dl>div{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:6px 0}dd{margin:0;overflow-wrap:anywhere}pre{font-size:10px;max-height:240px;overflow:auto}
+  header{display:flex;align-items:center;justify-content:space-between;height:38px;flex:none;padding:10px;font-weight:600;border-bottom:1px solid var(--vict-color-border)}pre{font-size:10px;max-height:240px;overflow:auto}
   .right :global(.uv-layers){height:auto;flex:1;min-height:0}
   @media(max-width:1000px){.panel-example,.panel-example.document-open,.panel-example.chat-open,.panel-example.chat-open.document-open{grid-template-columns:minmax(0,1fr);height:auto}.left{height:180px}.example-stage{height:560px}.right{height:440px;border-left:0;border-top:1px solid var(--vict-color-border)}}
 </style>
