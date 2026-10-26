@@ -40,9 +40,10 @@
     focusedEdge=target instanceof Element?target.closest('.svelte-flow__edge')?.getAttribute('data-id')??undefined:undefined;
   }
   const captionPaths=new SvelteMap<string,string>(),captionLabels=new SvelteMap<string,string>();
+  const nodeRects=$derived(new Map(nodes.map(node=>[node.id,{x:node.position.x,y:node.position.y,width:node.measured?.width??node.width??224,height:node.measured?.height??node.height??94}])));
   const activeCaptionLabels=$derived(new Map(tracedConnection ? [[tracedConnection.id,captionLabels.get(tracedConnection.id)??'']] : []));
   const captions=$derived(layoutCaptions(captionPaths,activeCaptionLabels,nodes.map(node=>({x:node.position.x,y:node.position.y,width:node.measured?.width??node.width??224,height:node.measured?.height??node.height??94}))));
-  setContext<CaptionContext>(captionContext,{paths:captionPaths,labels:captionLabels,captions:()=>captions});
+  setContext<CaptionContext>(captionContext,{paths:captionPaths,labels:captionLabels,captions:()=>captions,nodes:()=>nodeRects});
   let viewport = $state<Viewport>({ x: 24, y: 24, zoom: .85 });
   let allowMoves = $state(false);
   let inspectedId = $state<string>();

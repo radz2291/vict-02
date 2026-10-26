@@ -1,16 +1,20 @@
 <script lang="ts">
-  import {BaseEdge,getSmoothStepPath,type EdgeProps} from '@victframework/ui-flow-svelte';
+  import {BaseEdge,getSmoothStepPath,Position,type EdgeProps} from '@victframework/ui-flow-svelte';
   import {getContext} from 'svelte';
-  import {edgeCaption,captionContext,type CaptionContext} from './structure-edge-geometry.js';
+  import {edgeCaption,feedbackPath,captionContext,type CaptionContext} from './structure-edge-geometry.js';
   import {structureTraceContext,type StructureTraceContext} from './structure-trace.js';
   const traceContext=getContext<StructureTraceContext|undefined>(structureTraceContext);
   const trace=$derived(traceContext?.current());
-  let {id,sourceX,sourceY,targetX,targetY,sourcePosition,targetPosition,markerEnd,style,data,label}:EdgeProps=$props();
+  let {id,source,target,sourceX,sourceY,targetX,targetY,sourcePosition,targetPosition,markerEnd,style,data,label}:EdgeProps=$props();
   const traced=$derived(trace?.id===id);
   const surrounding=getContext<CaptionContext|undefined>(captionContext);
   // Same routed-path validity rule as the shared renderer. Caption geometry is
   // derived from world coordinates only and never participates in node layout.
   const geometry=$derived.by(()=>{
+    const cards=surrounding?.nodes(),sourceCard=cards?.get(source),targetCard=cards?.get(target);
+    if(sourcePosition===Position.Right && targetPosition===Position.Left && sourceX>targetX && sourceCard && targetCard){
+      return {path:feedbackPath({x:sourceX,y:sourceY},{x:targetX,y:targetY},sourceCard,targetCard,[...cards!.values()])};
+    }
     const route=(data as {route?:{x:number;y:number}[]} | undefined)?.route;
     if(route?.length && Math.abs(route[0]!.x-sourceX)<3 && Math.abs(route[0]!.y-sourceY)<3 && Math.abs(route.at(-1)!.x-targetX)<3 && Math.abs(route.at(-1)!.y-targetY)<3){
       const lengths=route.slice(1).map((point,index)=>Math.hypot(point.x-route[index]!.x,point.y-route[index]!.y));

@@ -5,6 +5,7 @@ export type CaptionContext = {
   paths: Map<string, string>;
   labels: Map<string, string>;
   captions: () => ReadonlyMap<string, CaptionRect>;
+  nodes: () => ReadonlyMap<string, CaptionRect>;
 };
 function segments(path: string): Segment[] {
   let current = { x: 0, y: 0 };
@@ -27,6 +28,27 @@ function lineBounds(segment: Segment): CaptionRect {
     width: Math.abs(segment.x2 - segment.x1) + 4,
     height: Math.abs(segment.y2 - segment.y1) + 4,
   };
+}
+/** Return connections leave/enter their cards from the outside. The default
+ * midpoint elbow can cross a tall endpoint card when ports occupy different rows.
+ * Prefer a clear nearby corridor; this is not a replacement for graph layout. */
+export function feedbackPath(
+  source: {x:number;y:number}, target: {x:number;y:number},
+  sourceCard: CaptionRect, targetCard: CaptionRect, obstacles: readonly CaptionRect[],
+): string {
+  const inset = obstacles.map(rect=>({x:rect.x+3,y:rect.y+3,width:Math.max(0,rect.width-6),height:Math.max(0,rect.height-6)}));
+  const top=obstacles.reduce((value,rect)=>Math.min(value,rect.y-24),sourceCard.y-24);
+  const bottom=obstacles.reduce((value,rect)=>Math.max(value,rect.y+rect.height+24),sourceCard.y+sourceCard.height+24);
+  const corridors = [...new Set([sourceCard.y-24,sourceCard.y+sourceCard.height+24,targetCard.y-24,targetCard.y+targetCard.height+24,top,bottom])];
+  const candidates=corridors.map(y=>{
+    const points=[source,{x:source.x+20,y:source.y},{x:source.x+20,y},{x:target.x-20,y},{x:target.x-20,y:target.y},target];
+    const path=points.map((point,index)=>`${index?'L':'M'} ${point.x},${point.y}`).join(' ');
+    const lines=segments(path);
+    const collisions=lines.reduce((sum,line)=>sum+inset.filter(rect=>overlaps(lineBounds(line),rect)).length,0);
+    const length=lines.reduce((sum,line)=>sum+Math.abs(line.x2-line.x1)+Math.abs(line.y2-line.y1),0);
+    return {path,score:collisions*1000000+length};
+  });
+  return candidates.sort((a,b)=>a.score-b.score)[0]!.path;
 }
 /** Pure world-coordinate placement. No DOM measurements, zoom or canonical mutations. */
 export function edgeCaption(
