@@ -1,0 +1,415 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/studio-cycle14-structure-view/260831-VCT-02
+
+8:49:41 am [vite-plugin-svelte] packages/ui-svelte/src/document/DocumentHost.svelte:105:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+8:49:41 am [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:309:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+8:49:41 am [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:309:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+8:49:41 am [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:379:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+8:49:41 am [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:379:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+8:50:05 am [vite-plugin-svelte] packages/ui-svelte/test/DateClearFixture.svelte:22:21 This reference only captures the initial value of `initial`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+8:50:05 am [vite-plugin-svelte] packages/ui-svelte/test/DateClearFixture.svelte:23:19 This reference only captures the initial value of `initial`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+8:50:07 am [vite-plugin-svelte] packages/ui-svelte/test/TimePrimitiveFixture.svelte:8:48 This reference only captures the initial value of `value`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+ ❯ |renderer| packages/ui-svelte/test/probe-authoring-coverage.test.ts (75 tests | 19 failed) 7012ms
+     × authoring round-trip: vict.catalog.select-item (label) 46ms
+     × authoring round-trip: vict.catalog.combobox-item (label) 23ms
+     × authoring round-trip: vict.catalog.toggle-group-item (label) 58ms
+     × authoring round-trip: vict.catalog.accordion-item (label) 15ms
+     × authoring round-trip: vict.catalog.menubar.menu (label) 219ms
+     × authoring round-trip: vict.catalog.menubar.item (label) 15ms
+     × authoring round-trip: vict.catalog.menubar.sub (label) 15ms
+     × authoring round-trip: vict.catalog.menubar.checkbox-item (label) 13ms
+     × authoring round-trip: vict.catalog.menubar.radio-group (value) 17ms
+     × authoring round-trip: vict.catalog.menubar.radio-item (label) 36ms
+     × authoring round-trip: vict.catalog.menubar.group (label) 10ms
+     × authoring round-trip: vict.catalog.command (label) 9ms
+     × authoring round-trip: vict.catalog.command.item (label) 41ms
+     × authoring round-trip: vict.catalog.command.group (label) 20ms
+     × authoring round-trip: vict.catalog.navigation-menu (value) 8ms
+     × authoring round-trip: vict.catalog.navigation-menu.item (label) 47ms
+     × authoring round-trip: vict.catalog.navigation-menu.link (label) 12ms
+     × authoring round-trip: vict.catalog.tabs (label) 23ms
+     × authoring round-trip: vict.catalog.tabs-trigger (label) 10ms
+8:50:14 am [vite-plugin-svelte] packages/ui-svelte/test/CatalogCheckboxFixture.svelte:27:0 Buttons and links should either contain text or have an `aria-label`, `aria-labelledby` or `title` attribute
+https://svelte.dev/e/a11y_consider_explicit_label
+8:50:14 am [vite-plugin-svelte] packages/ui-svelte/test/CatalogCheckboxFixture.svelte:32:0 Buttons and links should either contain text or have an `aria-label`, `aria-labelledby` or `title` attribute
+https://svelte.dev/e/a11y_consider_explicit_label
+8:50:48 am [vite-plugin-svelte] packages/ui-svelte/test/RangeStateFixture.svelte:23:8 This reference only captures the initial value of `documentId`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 19 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |renderer| packages/ui-svelte/test/probe-authoring-coverage.test.ts > authoring coverage: every catalog family through the Inspector data path > authoring round-trip: vict.catalog.select-item (label)
+AssertionError: vict.catalog.select-item: composes through its documented slots (no unavailable surface): expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ packages/ui-svelte/test/probe-authoring-coverage.test.ts:408:9
+    406|         /unavailable/i.test(rendered),
+    407|         `${descriptor.id}: composes through its documented slots (no u…
+    408|       ).toBe(false);
+       |         ^
+    409|       const planText = JSON.stringify(edited.plan);
+    410|       expect(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/19]⎯
+
+ FAIL  |renderer| packages/ui-svelte/test/probe-authoring-coverage.test.ts > authoring coverage: every catalog family through the Inspector data path > authoring round-trip: vict.catalog.combobox-item (label)
+AssertionError: vict.catalog.combobox-item: composes through its documented slots (no unavailable surface): expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ packages/ui-svelte/test/probe-authoring-coverage.test.ts:408:9
+    406|         /unavailable/i.test(rendered),
+    407|         `${descriptor.id}: composes through its documented slots (no u…
+    408|       ).toBe(false);
+       |         ^
+    409|       const planText = JSON.stringify(edited.plan);
+    410|       expect(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/19]⎯
+
+ FAIL  |renderer| packages/ui-svelte/test/probe-authoring-coverage.test.ts > authoring coverage: every catalog family through the Inspector data path > authoring round-trip: vict.catalog.toggle-group-item (label)
+AssertionError: vict.catalog.toggle-group-item: composes through its documented slots (no unavailable surface): expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ packages/ui-svelte/test/probe-authoring-coverage.test.ts:408:9
+    406|         /unavailable/i.test(rendered),
+    407|         `${descriptor.id}: composes through its documented slots (no u…
+    408|       ).toBe(false);
+       |         ^
+    409|       const planText = JSON.stringify(edited.plan);
+    410|       expect(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/19]⎯
+
+ FAIL  |renderer| packages/ui-svelte/test/probe-authoring-coverage.test.ts > authoring coverage: every catalog family through the Inspector data path > authoring round-trip: vict.catalog.accordion-item (label)
+AssertionError: vict.catalog.accordion-item: composes through its documented slots (no unavailable surface): expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ packages/ui-svelte/test/probe-authoring-coverage.test.ts:408:9
+    406|         /unavailable/i.test(rendered),
+    407|         `${descriptor.id}: composes through its documented slots (no u…
+    408|       ).toBe(false);
+       |         ^
+    409|       const planText = JSON.stringify(edited.plan);
+    410|       expect(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/19]⎯
+
+ FAIL  |renderer| packages/ui-svelte/test/probe-authoring-coverage.test.ts > authoring coverage: every catalog family through the Inspector data path > authoring round-trip: vict.catalog.menubar.menu (label)
+AssertionError: vict.catalog.menubar.menu: composes through its documented slots (no unavailable surface): expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ packages/ui-svelte/test/probe-authoring-coverage.test.ts:408:9
+    406|         /unavailable/i.test(rendered),
+    407|         `${descriptor.id}: composes through its documented slots (no u…
+    408|       ).toBe(false);
+       |         ^
+    409|       const planText = JSON.stringify(edited.plan);
+    410|       expect(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/19]⎯
+
+ FAIL  |renderer| packages/ui-svelte/test/probe-authoring-coverage.test.ts > authoring coverage: every catalog family through the Inspector data path > authoring round-trip: vict.catalog.menubar.item (label)
+AssertionError: vict.catalog.menubar.item: composes through its documented slots (no unavailable surface): expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ packages/ui-svelte/test/probe-authoring-coverage.test.ts:408:9
+    406|         /unavailable/i.test(rendered),
+    407|         `${descriptor.id}: composes through its documented slots (no u…
+    408|       ).toBe(false);
+       |         ^
+    409|       const planText = JSON.stringify(edited.plan);
+    410|       expect(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/19]⎯
+
+ FAIL  |renderer| packages/ui-svelte/test/probe-authoring-coverage.test.ts > authoring coverage: every catalog family through the Inspector data path > authoring round-trip: vict.catalog.menubar.sub (label)
+AssertionError: vict.catalog.menubar.sub: composes through its documented slots (no unavailable surface): expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ packages/ui-svelte/test/probe-authoring-coverage.test.ts:408:9
+    406|         /unavailable/i.test(rendered),
+    407|         `${descriptor.id}: composes through its documented slots (no u…
+    408|       ).toBe(false);
+       |         ^
+    409|       const planText = JSON.stringify(edited.plan);
+    410|       expect(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/19]⎯
+
+ FAIL  |renderer| packages/ui-svelte/test/probe-authoring-coverage.test.ts > authoring coverage: every catalog family through the Inspector data path > authoring round-trip: vict.catalog.menubar.checkbox-item (label)
+AssertionError: vict.catalog.menubar.checkbox-item: composes through its documented slots (no unavailable surface): expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ packages/ui-svelte/test/probe-authoring-coverage.test.ts:408:9
+    406|         /unavailable/i.test(rendered),
+    407|         `${descriptor.id}: composes through its documented slots (no u…
+    408|       ).toBe(false);
+       |         ^
+    409|       const planText = JSON.stringify(edited.plan);
+    410|       expect(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/19]⎯
+
+ FAIL  |renderer| packages/ui-svelte/test/probe-authoring-coverage.test.ts > authoring coverage: every catalog family through the Inspector data path > authoring round-trip: vict.catalog.menubar.radio-group (value)
+AssertionError: vict.catalog.menubar.radio-group: composes through its documented slots (no unavailable surface): expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ packages/ui-svelte/test/probe-authoring-coverage.test.ts:408:9
+    406|         /unavailable/i.test(rendered),
+    407|         `${descriptor.id}: composes through its documented slots (no u…
+    408|       ).toBe(false);
+       |         ^
+    409|       const planText = JSON.stringify(edited.plan);
+    410|       expect(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/19]⎯
+
+ FAIL  |renderer| packages/ui-svelte/test/probe-authoring-coverage.test.ts > authoring coverage: every catalog family through the Inspector data path > authoring round-trip: vict.catalog.menubar.radio-item (label)
+AssertionError: vict.catalog.menubar.radio-item: composes through its documented slots (no unavailable surface): expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ packages/ui-svelte/test/probe-authoring-coverage.test.ts:408:9
+    406|         /unavailable/i.test(rendered),
+    407|         `${descriptor.id}: composes through its documented slots (no u…
+    408|       ).toBe(false);
+       |         ^
+    409|       const planText = JSON.stringify(edited.plan);
+    410|       expect(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/19]⎯
+
+ FAIL  |renderer| packages/ui-svelte/test/probe-authoring-coverage.test.ts > authoring coverage: every catalog family through the Inspector data path > authoring round-trip: vict.catalog.menubar.group (label)
+AssertionError: vict.catalog.menubar.group: composes through its documented slots (no unavailable surface): expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ packages/ui-svelte/test/probe-authoring-coverage.test.ts:408:9
+    406|         /unavailable/i.test(rendered),
+    407|         `${descriptor.id}: composes through its documented slots (no u…
+    408|       ).toBe(false);
+       |         ^
+    409|       const planText = JSON.stringify(edited.plan);
+    410|       expect(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/19]⎯
+
+ FAIL  |renderer| packages/ui-svelte/test/probe-authoring-coverage.test.ts > authoring coverage: every catalog family through the Inspector data path > authoring round-trip: vict.catalog.command (label)
+AssertionError: vict.catalog.command: composes through its documented slots (no unavailable surface): expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ packages/ui-svelte/test/probe-authoring-coverage.test.ts:408:9
+    406|         /unavailable/i.test(rendered),
+    407|         `${descriptor.id}: composes through its documented slots (no u…
+    408|       ).toBe(false);
+       |         ^
+    409|       const planText = JSON.stringify(edited.plan);
+    410|       expect(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/19]⎯
+
+ FAIL  |renderer| packages/ui-svelte/test/probe-authoring-coverage.test.ts > authoring coverage: every catalog family through the Inspector data path > authoring round-trip: vict.catalog.command.item (label)
+AssertionError: vict.catalog.command.item: composes through its documented slots (no unavailable surface): expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ packages/ui-svelte/test/probe-authoring-coverage.test.ts:408:9
+    406|         /unavailable/i.test(rendered),
+    407|         `${descriptor.id}: composes through its documented slots (no u…
+    408|       ).toBe(false);
+       |         ^
+    409|       const planText = JSON.stringify(edited.plan);
+    410|       expect(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/19]⎯
+
+ FAIL  |renderer| packages/ui-svelte/test/probe-authoring-coverage.test.ts > authoring coverage: every catalog family through the Inspector data path > authoring round-trip: vict.catalog.command.group (label)
+AssertionError: vict.catalog.command.group: composes through its documented slots (no unavailable surface): expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ packages/ui-svelte/test/probe-authoring-coverage.test.ts:408:9
+    406|         /unavailable/i.test(rendered),
+    407|         `${descriptor.id}: composes through its documented slots (no u…
+    408|       ).toBe(false);
+       |         ^
+    409|       const planText = JSON.stringify(edited.plan);
+    410|       expect(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/19]⎯
+
+ FAIL  |renderer| packages/ui-svelte/test/probe-authoring-coverage.test.ts > authoring coverage: every catalog family through the Inspector data path > authoring round-trip: vict.catalog.navigation-menu (value)
+AssertionError: vict.catalog.navigation-menu: composes through its documented slots (no unavailable surface): expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ packages/ui-svelte/test/probe-authoring-coverage.test.ts:408:9
+    406|         /unavailable/i.test(rendered),
+    407|         `${descriptor.id}: composes through its documented slots (no u…
+    408|       ).toBe(false);
+       |         ^
+    409|       const planText = JSON.stringify(edited.plan);
+    410|       expect(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/19]⎯
+
+ FAIL  |renderer| packages/ui-svelte/test/probe-authoring-coverage.test.ts > authoring coverage: every catalog family through the Inspector data path > authoring round-trip: vict.catalog.navigation-menu.item (label)
+AssertionError: vict.catalog.navigation-menu.item: composes through its documented slots (no unavailable surface): expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ packages/ui-svelte/test/probe-authoring-coverage.test.ts:408:9
+    406|         /unavailable/i.test(rendered),
+    407|         `${descriptor.id}: composes through its documented slots (no u…
+    408|       ).toBe(false);
+       |         ^
+    409|       const planText = JSON.stringify(edited.plan);
+    410|       expect(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/19]⎯
+
+ FAIL  |renderer| packages/ui-svelte/test/probe-authoring-coverage.test.ts > authoring coverage: every catalog family through the Inspector data path > authoring round-trip: vict.catalog.navigation-menu.link (label)
+AssertionError: vict.catalog.navigation-menu.link: composes through its documented slots (no unavailable surface): expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ packages/ui-svelte/test/probe-authoring-coverage.test.ts:408:9
+    406|         /unavailable/i.test(rendered),
+    407|         `${descriptor.id}: composes through its documented slots (no u…
+    408|       ).toBe(false);
+       |         ^
+    409|       const planText = JSON.stringify(edited.plan);
+    410|       expect(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/19]⎯
+
+ FAIL  |renderer| packages/ui-svelte/test/probe-authoring-coverage.test.ts > authoring coverage: every catalog family through the Inspector data path > authoring round-trip: vict.catalog.tabs (label)
+AssertionError: vict.catalog.tabs: authored label reaches the canvas: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ packages/ui-svelte/test/probe-authoring-coverage.test.ts:429:11
+    427|           rendered.includes(String(edit.next)) || ariaEcho,
+    428|           `${descriptor.id}: authored ${edit.name} reaches the canvas`,
+    429|         ).toBe(true);
+       |           ^
+    430|       }
+    431|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[18/19]⎯
+
+ FAIL  |renderer| packages/ui-svelte/test/probe-authoring-coverage.test.ts > authoring coverage: every catalog family through the Inspector data path > authoring round-trip: vict.catalog.tabs-trigger (label)
+AssertionError: vict.catalog.tabs-trigger: composes through its documented slots (no unavailable surface): expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ packages/ui-svelte/test/probe-authoring-coverage.test.ts:408:9
+    406|         /unavailable/i.test(rendered),
+    407|         `${descriptor.id}: composes through its documented slots (no u…
+    408|       ).toBe(false);
+       |         ^
+    409|       const planText = JSON.stringify(edited.plan);
+    410|       expect(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[19/19]⎯
+
+
+ Test Files  1 failed | 40 passed (41)
+      Tests  19 failed | 274 passed | 1 skipped (294)
+   Start at  08:49:33
+   Duration  83.49s (transform 86.23s, setup 0ms, import 274.90s, tests 40.56s, environment 181.89s)
+

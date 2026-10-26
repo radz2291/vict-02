@@ -1,0 +1,26 @@
+{
+  "sameFailCases": true,
+  "baselineFailCount": 19,
+  "repairFailCount": 19,
+  "failCases": [
+    "FAIL  |renderer| packages/ui-svelte/test/probe-authoring-coverage.test.ts > authoring coverage: every catalog family through the Inspector data path > authoring round-trip: vict.catalog.accordion-item (label)",
+    "FAIL  |renderer| packages/ui-svelte/test/probe-authoring-coverage.test.ts > authoring coverage: every catalog family through the Inspector data path > authoring round-trip: vict.catalog.combobox-item (label)",
+    "FAIL  |renderer| packages/ui-svelte/test/probe-authoring-coverage.test.ts > authoring coverage: every catalog family through the Inspector data path > authoring round-trip: vict.catalog.command (label)",
+    "FAIL  |renderer| packages/ui-svelte/test/probe-authoring-coverage.test.ts > authoring coverage: every catalog family through the Inspector data path > authoring round-trip: vict.catalog.command.group (label)",
+    "FAIL  |renderer| packages/ui-svelte/test/probe-authoring-coverage.test.ts > authoring coverage: every catalog family through the Inspector data path > authoring round-trip: vict.catalog.command.item (label)",
+    "FAIL  |renderer| packages/ui-svelte/test/probe-authoring-coverage.test.ts > authoring coverage: every catalog family through the Inspector data path > authoring round-trip: vict.catalog.menubar.checkbox-item (label)",
+    "FAIL  |renderer| packages/ui-svelte/test/probe-authoring-coverage.test.ts > authoring coverage: every catalog family through the Inspector data path > authoring round-trip: vict.catalog.menubar.group (label)",
+    "FAIL  |renderer| packages/ui-svelte/test/probe-authoring-coverage.test.ts > authoring coverage: every catalog family through the Inspector data path > authoring round-trip: vict.catalog.menubar.item (label)",
+    "FAIL  |renderer| packages/ui-svelte/test/probe-authoring-coverage.test.ts > authoring coverage: every catalog family through the Inspector data path > authoring round-trip: vict.catalog.menubar.menu (label)",
+    "FAIL  |renderer| packages/ui-svelte/test/probe-authoring-coverage.test.ts > authoring coverage: every catalog family through the Inspector data path > authoring round-trip: vict.catalog.menubar.radio-group (value)",
+    "FAIL  |renderer| packages/ui-svelte/test/probe-authoring-coverage.test.ts > authoring coverage: every catalog family through the Inspector data path > authoring round-trip: vict.catalog.menubar.radio-item (label)",
+    "FAIL  |renderer| packages/ui-svelte/test/probe-authoring-coverage.test.ts > authoring coverage: every catalog family through the Inspector data path > authoring round-trip: vict.catalog.menubar.sub (label)",
+    "FAIL  |renderer| packages/ui-svelte/test/probe-authoring-coverage.test.ts > authoring coverage: every catalog family through the Inspector data path > authoring round-trip: vict.catalog.navigation-menu (value)",
+    "FAIL  |renderer| packages/ui-svelte/test/probe-authoring-coverage.test.ts > authoring coverage: every catalog family through the Inspector data path > authoring round-trip: vict.catalog.navigation-menu.item (label)",
+    "FAIL  |renderer| packages/ui-svelte/test/probe-authoring-coverage.test.ts > authoring coverage: every catalog family through the Inspector data path > authoring round-trip: vict.catalog.navigation-menu.link (label)",
+    "FAIL  |renderer| packages/ui-svelte/test/probe-authoring-coverage.test.ts > authoring coverage: every catalog family through the Inspector data path > authoring round-trip: vict.catalog.select-item (label)",
+    "FAIL  |renderer| packages/ui-svelte/test/probe-authoring-coverage.test.ts > authoring coverage: every catalog family through the Inspector data path > authoring round-trip: vict.catalog.tabs (label)",
+    "FAIL  |renderer| packages/ui-svelte/test/probe-authoring-coverage.test.ts > authoring coverage: every catalog family through the Inspector data path > authoring round-trip: vict.catalog.tabs-trigger (label)",
+    "FAIL  |renderer| packages/ui-svelte/test/probe-authoring-coverage.test.ts > authoring coverage: every catalog family through the Inspector data path > authoring round-trip: vict.catalog.toggle-group-item (label)"
+  ]
+}
