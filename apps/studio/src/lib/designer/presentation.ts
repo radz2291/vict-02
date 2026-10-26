@@ -26,7 +26,7 @@ export function studioNodeLabels(document: UiDocument): Record<string, string> {
     if (node.kind === 'element' && !node.attributes?.['aria-label']) {
       const content = node.children.map(text).filter(Boolean).join(' ');
       const semantic = ({label:'Label',select:'Select',option:'Option',textarea:'Text area',h4:'Heading',h5:'Heading',h6:'Heading',header:'Header',footer:'Footer',aside:'Aside'} as Record<string,string>)[node.tag];
-      if (semantic) label = content ? content : semantic;
+      if (semantic) label = content ? `${semantic} · ${content}` : semantic;
       if (/^(h[1-6]|p)$/.test(node.tag) && content) label = content;
       const identity = typeof node.attributes?.id === 'string' ? node.attributes.id : node.id;
       const linked = fieldLabels.get(identity);

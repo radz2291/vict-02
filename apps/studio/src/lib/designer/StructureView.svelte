@@ -1,5 +1,7 @@
 <script lang="ts">
-  import { onDestroy, tick, untrack } from 'svelte';
+  import { onDestroy, tick, untrack, setContext } from 'svelte';
+  import {SvelteMap} from 'svelte/reactivity';
+  import {captionContext,type CaptionContext} from './structure-edge-geometry.js';
   import { FlowCanvas, FlowNavigation, Controls, layoutGraph, LayoutFence, type Node, type Edge, type Connection, type Viewport, type LayoutDirection } from '@victframework/ui-flow-svelte';
   import StructureEdge from './StructureEdge.svelte';
   import StructuredSourceNode from './StructuredSourceNode.svelte';
@@ -26,6 +28,7 @@
   } = $props();
   let nodes = $state<Node<StructureNodeData>[]>([]);
   let edges = $state<Edge[]>([]);
+  setContext<CaptionContext>(captionContext,{paths:new SvelteMap(),nodes:()=>nodes.map(node=>({x:node.position.x,y:node.position.y,width:node.measured?.width??node.width??224,height:node.measured?.height??node.height??94}))});
   let viewport = $state<Viewport>({ x: 24, y: 24, zoom: .85 });
   let allowMoves = $state(false);
   let inspectedId = $state<string>();

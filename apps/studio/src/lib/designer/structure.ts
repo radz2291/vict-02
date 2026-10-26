@@ -6,7 +6,6 @@ import {
 } from '@victframework/ui';
 import {
   authoredOccurrence,
-  compositionNames,
   moveRelative,
   canInsertRecipe,
   type InsertRecipe,
@@ -263,7 +262,7 @@ export function projectStructure(
   const known = new Map<string, Node<StructureNodeData>>();
   const edgeIds = new Set<string>();
   const key = (kind: string, id: string) => structureId(document.id, kind, id);
-  const sourceNames = compositionNames(document, { nodes: studioNodeLabels(document) });
+  const sourceNames = new Map(Object.entries(studioNodeLabels(document)));
   const uniquelyAuthored = ownershipGuard(document);
   // Visibility follows logical ownership, independently of permission to edit an occurrence.
   const definitionSources = new Set<string>();

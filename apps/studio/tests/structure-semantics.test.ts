@@ -54,6 +54,28 @@ it('shows Value and Fallback from state to input, Updates in reverse, with no me
   expect(relations.some((r) => r.label === 'Updates' && r.direction === 'outgoing')).toBe(true);
   expect(structureBehavior(source, 'field')[0]?.value).toContain('entered value; fallback');
 });
+it('keeps an associated input name free of artificial numbering from its label', () => {
+  const seed = bindingFixture(),
+    source: UiDocument = {
+      ...seed,
+      nodes: {
+        ...seed.nodes,
+        screen: { id: 'screen', kind: 'element', tag: 'main', children: ['label', 'field'] },
+        label: {
+          id: 'label',
+          kind: 'element',
+          tag: 'label',
+          attributes: { for: 'field' },
+          children: ['copy'],
+        },
+        copy: { id: 'copy', kind: 'text', content: { type: 'literal', value: 'Full name' } },
+      },
+    };
+  expect(compileFixture(source).ok).toBe(true);
+  expect(
+    projectStructure(source).nodes.find((node) => node.data.sourceId === 'field')?.data.fullLabel,
+  ).toBe('Full name');
+});
 it('never interprets inert host-registered attributes as action declarations', () => {
   const seed = bindingFixture(),
     source: UiDocument = {
@@ -256,4 +278,15 @@ it('places captions beside horizontal and vertical path segments without coverin
   const bent = edgeCaption('M0 0L60 0Q65 0 65 5L65 120', 'Value');
   expect(bent.x).toBeGreaterThan(65);
   expect(bent.y).toBeGreaterThan(5);
+});
+it('keeps a caption away from neighbouring paths and node cards', () => {
+  const other = 'M0 -16L160 -16';
+  expect(edgeCaption('M0 0L160 0', 'Value', [other]).y).toBeGreaterThan(0);
+  const constrained = edgeCaption(
+    'M0 0L160 0',
+    'Value',
+    [other],
+    [{ x: 0, y: 4, width: 160, height: 28 }],
+  );
+  expect(constrained.y + constrained.height).toBeLessThan(-18);
 });

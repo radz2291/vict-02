@@ -1,7 +1,9 @@
 <script lang="ts">
   import {BaseEdge,getSmoothStepPath,type EdgeProps} from '@victframework/ui-flow-svelte';
-  import {edgeCaption} from './structure-edge-geometry.js';
+  import {getContext} from 'svelte';
+  import {edgeCaption,captionContext,type CaptionContext} from './structure-edge-geometry.js';
   let {id,sourceX,sourceY,targetX,targetY,sourcePosition,targetPosition,markerEnd,style,data,label,selected=false}:EdgeProps=$props();
+  const surrounding=getContext<CaptionContext|undefined>(captionContext);
   // Same routed-path validity rule as the shared renderer. Caption geometry is
   // derived from world coordinates only and never participates in node layout.
   const geometry=$derived.by(()=>{
@@ -19,7 +21,8 @@
     return {path,x,y};
   });
   const quiet=$derived(data?.role==='contains');
-  const caption=$derived(edgeCaption(geometry.path,String(label??'')));
+  $effect(()=>{const path=geometry.path;surrounding?.paths.set(id,path);return()=>{surrounding?.paths.delete(id);};});
+  const caption=$derived(edgeCaption(geometry.path,String(label??''),surrounding?[...surrounding.paths].filter(([key])=>key!==id).map(([,path])=>path):[],surrounding?.nodes()??[]));
 </script>
 <g class="studio-edge" class:quiet class:duplicate={!label}>
   <title>{label ?? 'Declared connection'} · {String(data?.path ?? '')}</title>
