@@ -1,0 +1,34 @@
+{
+  "count": "3 items",
+  "edges": [
+    {
+      "id": "%5B%22%255B%2522screen-01592f58-c5be-4cd0-9e43-e04cf777f006%2522%252C%2522node%2522%252C%2522screen%2522%255D%22%2C%22%255B%2522screen-01592f58-c5be-4cd0-9e43-e04cf777f006%2522%252C%2522node%2522%252C%2522card%2522%255D%22%2C%22contains%22%2C%22screen.contains.2%22%5D",
+      "path": "M238.70011820020082 117.60003820009139L258.7001182002008 117.60003820009139L279.2000512025502 117.60003820009139L279.2000512025502 117.60003820009139L299.6999842048995 117.60003820009139L319.6999842048995 117.60003820009139"
+    },
+    {
+      "id": "%5B%22%255B%2522screen-01592f58-c5be-4cd0-9e43-e04cf777f006%2522%252C%2522node%2522%252C%2522card%2522%255D%22%2C%22%255B%2522screen-01592f58-c5be-4cd0-9e43-e04cf777f006%2522%252C%2522definition%2522%252C%2522local.card%2522%255D%22%2C%22uses%20definition%22%2C%22card.definitionId%22%5D",
+      "path": "M549.1000860138573 117.60003820009139L569.1000860138573 117.60003820009139L 589.5999868298633,117.60003820009139Q 589.6000190162067,117.60003820009139 589.6000190162067,117.60000601374792L 589.6000190162067,117.60000601374792Q 589.6000190162067,117.59997382740444 589.6000512025502,117.59997382740444L610.099952018556 117.59997382740444L630.099952018556 117.59997382740444"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "%5B%22screen-01592f58-c5be-4cd0-9e43-e04cf777f006%22%2C%22node%22%2C%22screen%22%5D",
+      "text": " ContainerScreen › 143 direct children  Children  ",
+      "world": "translate(12px, 12px)"
+    },
+    {
+      "id": "%5B%22screen-01592f58-c5be-4cd0-9e43-e04cf777f006%22%2C%22node%22%2C%22card%22%5D",
+      "text": " ComponentComponent  Local card  Parent Definition  ",
+      "world": "translate(322.4px, 12px)"
+    },
+    {
+      "id": "%5B%22screen-01592f58-c5be-4cd0-9e43-e04cf777f006%22%2C%22definition%22%2C%22local.card%22%5D",
+      "text": " DefinitionLocal card  Local definition · revision 1  Definition links  ",
+      "world": "translate(632.8px, 12px)"
+    }
+  ],
+  "saved": "● Unsaved changes",
+  "scope": "Focus: Component",
+  "selection": "ComponentComponent OverviewEdit on canvas ↗   TypeComponentComponentLocal cardInsideScreen RelationshipsInsideScreenUses definitionLocal card  Technical informationSource nodecardOccurrencescreen-01592f58-c5be-4cd0-9e43-e04cf777f006|cardidcardkindcomponentdefinitionIdlocal.card",
+  "label": "component-definitions-restored"
+}

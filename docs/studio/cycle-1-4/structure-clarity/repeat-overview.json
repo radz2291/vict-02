@@ -1,0 +1,43 @@
+{
+  "count": "4 items",
+  "edges": [
+    {
+      "id": "%5B%22%255B%2522screen-01592f58-c5be-4cd0-9e43-e04cf777f006%2522%252C%2522node%2522%252C%2522screen%2522%255D%22%2C%22%255B%2522screen-01592f58-c5be-4cd0-9e43-e04cf777f006%2522%252C%2522node%2522%252C%2522repeat%2522%255D%22%2C%22contains%22%2C%22screen.contains.1%22%5D",
+      "path": "M238.70011820020082 261.6000382000914L258.7001182002008 261.6000382000914L 274.2000672957219,261.6000382000914Q 279.2000672957219,261.6000382000914 279.2000672957219,256.6000382000914L 279.2000672957219,254.60007038643488Q 279.2000672957219,249.60007038643488 284.2000672957219,249.60007038643488L299.700016391243 249.60007038643488L319.700016391243 249.60007038643488"
+    },
+    {
+      "id": "%5B%22%255B%2522screen-01592f58-c5be-4cd0-9e43-e04cf777f006%2522%252C%2522node%2522%252C%2522repeat%2522%255D%22%2C%22%255B%2522screen-01592f58-c5be-4cd0-9e43-e04cf777f006%2522%252C%2522node%2522%252C%2522template%2522%255D%22%2C%22repeat%20template%22%2C%22repeat.repeat%20template.0%22%5D",
+      "path": "M549.1001182002008 249.60007038643488L569.1001182002008 249.60007038643488L 584.6000351093784,249.60007038643488Q 589.6000351093784,249.60007038643488 589.6000351093784,244.60007038643488L 589.6000351093784,96.60007087257739Q 589.6000351093784,91.60007087257739 594.6000351093784,91.60007087257739L610.099952018556 91.60007087257739L630.099952018556 91.60007087257739"
+    },
+    {
+      "id": "%5B%22%255B%2522screen-01592f58-c5be-4cd0-9e43-e04cf777f006%2522%252C%2522node%2522%252C%2522repeat%2522%255D%22%2C%22%255B%2522screen-01592f58-c5be-4cd0-9e43-e04cf777f006%2522%252C%2522state%2522%252C%2522items%2522%255D%22%2C%22reads%3A%20state.items%22%2C%22repeat.collection%22%5D",
+      "path": "M549.1001182002008 273.60004270308957L569.1001182002008 273.60004270308957L 584.6000351093784,273.60004270308957Q 589.6000351093784,273.60004270308957 589.6000351093784,268.60004270308957L 589.6000351093784,266.6000382000914Q 589.6000351093784,261.6000382000914 594.6000351093784,261.6000382000914L610.099952018556 261.6000382000914L630.099952018556 261.6000382000914"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "%5B%22screen-01592f58-c5be-4cd0-9e43-e04cf777f006%22%2C%22node%22%2C%22screen%22%5D",
+      "text": " ContainerScreen › 143 direct children  Children  ",
+      "world": "translate(12px, 156px)"
+    },
+    {
+      "id": "%5B%22screen-01592f58-c5be-4cd0-9e43-e04cf777f006%22%2C%22node%22%2C%22repeat%22%5D",
+      "text": " RepeatRepeated content 1 ⌄ One template for each item in Items  Parent Children Reads  ",
+      "world": "translate(322.4px, 144px)"
+    },
+    {
+      "id": "%5B%22screen-01592f58-c5be-4cd0-9e43-e04cf777f006%22%2C%22node%22%2C%22template%22%5D",
+      "text": " TextText · Repeated content    Parent  ",
+      "world": "translate(632.8px, 12px)"
+    },
+    {
+      "id": "%5B%22screen-01592f58-c5be-4cd0-9e43-e04cf777f006%22%2C%22state%22%2C%22items%22%5D",
+      "text": " StateItems  StringList · 0 initial items  Read by  ",
+      "world": "translate(632.8px, 156px)"
+    }
+  ],
+  "saved": "● Unsaved changes",
+  "scope": "Focus: Repeated content 1",
+  "selection": "RepeatRepeated content 1 OverviewEdit on canvas ↗   TypeRepeatRepeatsOne template for each item in ItemsItem identity“stable”ViewTemplate source; individual runtime rows are not shown hereInsideScreen RelationshipsInsideScreenRepeated templateText · Repeated contentReadsItems  Technical informationSource noderepeatOccurrencescreen-01592f58-c5be-4cd0-9e43-e04cf777f006|repeatidrepeatkindrepeatcollection.typerefcollection.pathstate.itemskey.typeliteralkey.valuestableitemNameitemtemplateRoottemplate",
+  "label": "repeat-overview"
+}

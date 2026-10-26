@@ -1,0 +1,50 @@
+[
+  {
+    "label": "candidate-1-before-neighbour-expansion",
+    "count": "2 items",
+    "edges": [
+      {
+        "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522screen%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22contains%22%2C%22screen.contains.0%22%5D",
+        "path": "M238.7000301585478 117.60000430836398L258.7000301585478 117.60000430836398L279.2000251321232 117.60000430836398L279.2000251321232 117.60000430836398L299.7000201056985 117.60000430836398L319.7000201056985 117.60000430836398"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22screen%22%5D",
+        "text": " ContainerScreen ⌄ 1 direct child  Children  ",
+        "world": "width: 224px; z-index: 1000; transform: translate(12px, 12px); visibility: visible; touch-action: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+      },
+      {
+        "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbCard%22%5D",
+        "text": " SectionSection › 32 items inside  Parent  ",
+        "world": "width: 224px; z-index: 0; transform: translate(322.4px, 12px); visibility: visible; touch-action: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+      }
+    ],
+    "saved": "✓ Saved",
+    "scope": "Focus: Screen"
+  },
+  {
+    "label": "candidate-1-neighbour-expand-has-no-effect",
+    "count": "2 items",
+    "edges": [
+      {
+        "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522screen%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22contains%22%2C%22screen.contains.0%22%5D",
+        "path": "M238.69998446377838 117.59999778053977L258.6999844637784 117.59999778053977L279.1999778053977 117.59999778053977L279.1999778053977 117.59999778053977L299.69997114701704 117.59999778053977L319.69997114701704 117.59999778053977"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22screen%22%5D",
+        "text": " ContainerScreen ⌄ 1 direct child  Children  ",
+        "world": "width: 224px; z-index: 1000; transform: translate(12px, 12px); visibility: visible; touch-action: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+      },
+      {
+        "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbCard%22%5D",
+        "text": " SectionSection ⌄ 11 direct children  Parent  ",
+        "world": "width: 224px; z-index: 0; transform: translate(322.4px, 12px); visibility: visible; touch-action: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+      }
+    ],
+    "saved": "✓ Saved",
+    "scope": "Focus: Screen"
+  }
+]

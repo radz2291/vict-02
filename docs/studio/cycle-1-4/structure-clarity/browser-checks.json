@@ -1,0 +1,74 @@
+{
+  "kind": "Assertions over saved CUA observations; not independent live-browser verification",
+  "product": "f161cc0e31c703d817cd08ab7afbac9820303cb4",
+  "results": [
+    {
+      "name": "group expansion and collapse",
+      "pass": true
+    },
+    {
+      "name": "inspection keeps scope; explicit focus changes it",
+      "pass": true
+    },
+    {
+      "name": "binding visibility",
+      "pass": true
+    },
+    {
+      "name": "camera-only framing and stable zoom",
+      "pass": true
+    },
+    {
+      "name": "semantic search",
+      "pass": true
+    },
+    {
+      "name": "bounded large-state paging",
+      "pass": true
+    },
+    {
+      "name": "other users are opt-in and reversible",
+      "pass": true
+    },
+    {
+      "name": "declared behaviour and definition visibility",
+      "pass": true
+    },
+    {
+      "name": "authored styles and saved owner state",
+      "pass": true
+    },
+    {
+      "name": "edge endpoint closure: explicit-input-focus",
+      "pass": true
+    },
+    {
+      "name": "edge endpoint closure: bindings-off",
+      "pass": true
+    },
+    {
+      "name": "edge endpoint closure: bindings-on",
+      "pass": true
+    },
+    {
+      "name": "edge endpoint closure: large-state-first-batch",
+      "pass": true
+    },
+    {
+      "name": "edge endpoint closure: large-state-second-batch",
+      "pass": true
+    },
+    {
+      "name": "edge endpoint closure: large-field-other-users",
+      "pass": true
+    },
+    {
+      "name": "edge endpoint closure: conditional-focus",
+      "pass": true
+    },
+    {
+      "name": "edge endpoint closure: component-definitions-restored",
+      "pass": true
+    }
+  ]
+}

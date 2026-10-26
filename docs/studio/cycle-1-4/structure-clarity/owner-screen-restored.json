@@ -1,0 +1,25 @@
+{
+  "count": "2 items",
+  "edges": [
+    {
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522screen%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22contains%22%2C%22screen.contains.0%22%5D",
+      "path": "M238.70000158656725 117.60002552379261L258.7000015865673 117.60002552379261L 279.19998680028044,117.60002552379261Q 279.2000006719069,117.60002552379261 279.2000006719069,117.60001165216619L 279.2000006719069,117.60001165216619Q 279.2000006719069,117.59999778053977 279.2000145435333,117.59999778053977L299.69999975724653 117.59999778053977L319.69999975724653 117.59999778053977"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22screen%22%5D",
+      "text": " ContainerScreen ⌄ 1 direct child  Children  ",
+      "world": "translate(12px, 12px)"
+    },
+    {
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbCard%22%5D",
+      "text": " SectionSection › 11 direct children  Parent  ",
+      "world": "translate(322.4px, 12px)"
+    }
+  ],
+  "saved": "✓ Saved",
+  "scope": "Focus: Screen",
+  "selection": "ContainerScreen OverviewEdit on canvas ↗   TypeMainChildren1LayoutflexDirectioncolumnSpacing20pxPadding40pxBackground#eef1f6Text color#243047 RelationshipsContainsSection  Technical informationSource nodescreenOccurrencescreen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|screenkindelementidscreentagmainattributes.aria-labelDocument and Selection reviewchildren.0onbCardlocalStyle.0.propertydisplaylocalStyle.0.value.typetextlocalStyle.0.value.valueflexlocalStyle.1.propertyflex-directionlocalStyle.1.value.typetextlocalStyle.1.value.valuecolumnlocalStyle.2.propertygaplocalStyle.2.value.typetextlocalStyle.2.value.value20pxlocalStyle.3.propertypaddinglocalStyle.3.value.typetextlocalStyle.3.value.value40pxlocalStyle.4.propertymin-heightlocalStyle.4.value.typetextlocalStyle.4.value.value560pxlocalStyle.5.propertybackground-colorlocalStyle.5.value.typetextlocalStyle.5.value.value#eef1f6localStyle.6.propertycolorlocalStyle.6.value.typetextlocalStyle.6.value.value#243047localStyle.7.propertyfont-familylocalStyle.7.value.typetextlocalStyle.7.value.valuesystem-ui, sans-serif",
+  "label": "owner-screen-restored"
+}

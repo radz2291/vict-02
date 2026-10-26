@@ -1,0 +1,23 @@
+{
+  "count": "3 items",
+  "footer": "Loaded the saved screen.@3 · v1_fe0ac678e805…",
+  "nodes": [
+    {
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbCard%22%5D",
+      "text": " SectionSection › 11 direct children  Children  ",
+      "world": "translate(12px, 24px)"
+    },
+    {
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbNameInput%22%5D",
+      "text": " InputFull name    Parent Reads2 Updates  ",
+      "world": "translate(322.4px, 25px)"
+    },
+    {
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22state%22%2C%22fullName%22%5D",
+      "text": " StateFull Name  Text · starts empty  Read by2 Updated by  ",
+      "world": "translate(632.8px, 12px)"
+    }
+  ],
+  "saved": "✓ Saved",
+  "scope": "Focus: Full name"
+}

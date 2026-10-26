@@ -1,0 +1,2191 @@
+{
+  "schema": "vict.ui-document@1",
+  "id": "screen-01592f58-c5be-4cd0-9e43-e04cf777f006",
+  "revision": "r1",
+  "root": "screen",
+  "nodes": {
+    "screen": {
+      "kind": "element",
+      "id": "screen",
+      "tag": "main",
+      "attributes": {
+        "aria-label": "Temporary Structure clarity check"
+      },
+      "children": [
+        "conditional",
+        "repeat",
+        "card",
+        "field-0",
+        "field-1",
+        "field-2",
+        "field-3",
+        "field-4",
+        "field-5",
+        "field-6",
+        "field-7",
+        "field-8",
+        "field-9",
+        "field-10",
+        "field-11",
+        "field-12",
+        "field-13",
+        "field-14",
+        "field-15",
+        "field-16",
+        "field-17",
+        "field-18",
+        "field-19",
+        "field-20",
+        "field-21",
+        "field-22",
+        "field-23",
+        "field-24",
+        "field-25",
+        "field-26",
+        "field-27",
+        "field-28",
+        "field-29",
+        "field-30",
+        "field-31",
+        "field-32",
+        "field-33",
+        "field-34",
+        "field-35",
+        "field-36",
+        "field-37",
+        "field-38",
+        "field-39",
+        "field-40",
+        "field-41",
+        "field-42",
+        "field-43",
+        "field-44",
+        "field-45",
+        "field-46",
+        "field-47",
+        "field-48",
+        "field-49",
+        "field-50",
+        "field-51",
+        "field-52",
+        "field-53",
+        "field-54",
+        "field-55",
+        "field-56",
+        "field-57",
+        "field-58",
+        "field-59",
+        "field-60",
+        "field-61",
+        "field-62",
+        "field-63",
+        "field-64",
+        "field-65",
+        "field-66",
+        "field-67",
+        "field-68",
+        "field-69",
+        "field-70",
+        "field-71",
+        "field-72",
+        "field-73",
+        "field-74",
+        "field-75",
+        "field-76",
+        "field-77",
+        "field-78",
+        "field-79",
+        "field-80",
+        "field-81",
+        "field-82",
+        "field-83",
+        "field-84",
+        "field-85",
+        "field-86",
+        "field-87",
+        "field-88",
+        "field-89",
+        "field-90",
+        "field-91",
+        "field-92",
+        "field-93",
+        "field-94",
+        "field-95",
+        "field-96",
+        "field-97",
+        "field-98",
+        "field-99",
+        "field-100",
+        "field-101",
+        "field-102",
+        "field-103",
+        "field-104",
+        "field-105",
+        "field-106",
+        "field-107",
+        "field-108",
+        "field-109",
+        "field-110",
+        "field-111",
+        "field-112",
+        "field-113",
+        "field-114",
+        "field-115",
+        "field-116",
+        "field-117",
+        "field-118",
+        "field-119",
+        "field-120",
+        "field-121",
+        "field-122",
+        "field-123",
+        "field-124",
+        "field-125",
+        "field-126",
+        "field-127",
+        "field-128",
+        "field-129",
+        "field-130",
+        "field-131",
+        "field-132",
+        "field-133",
+        "field-134",
+        "field-135",
+        "field-136",
+        "field-137",
+        "field-138",
+        "field-139"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "20px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "40px"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "560px"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#ffffff"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#243047"
+          }
+        },
+        {
+          "property": "font-family",
+          "value": {
+            "type": "text",
+            "value": "system-ui, sans-serif"
+          }
+        }
+      ]
+    },
+    "conditional": {
+      "id": "conditional",
+      "kind": "conditional",
+      "branches": [
+        {
+          "when": "show",
+          "children": [
+            "yes"
+          ]
+        },
+        {
+          "children": [
+            "no"
+          ]
+        }
+      ]
+    },
+    "yes": {
+      "id": "yes",
+      "kind": "text",
+      "content": {
+        "type": "literal",
+        "value": "Shown content"
+      }
+    },
+    "no": {
+      "id": "no",
+      "kind": "text",
+      "content": {
+        "type": "literal",
+        "value": "Fallback content"
+      }
+    },
+    "repeat": {
+      "id": "repeat",
+      "kind": "repeat",
+      "collection": {
+        "type": "ref",
+        "path": "state.items"
+      },
+      "key": {
+        "type": "literal",
+        "value": "stable"
+      },
+      "itemName": "item",
+      "templateRoot": "template"
+    },
+    "template": {
+      "id": "template",
+      "kind": "text",
+      "content": {
+        "type": "literal",
+        "value": "Repeated content"
+      }
+    },
+    "card": {
+      "id": "card",
+      "kind": "component",
+      "definitionId": "local.card",
+      "slots": {}
+    },
+    "definition": {
+      "id": "definition",
+      "kind": "element",
+      "tag": "section",
+      "children": [
+        "slot"
+      ]
+    },
+    "slot": {
+      "id": "slot",
+      "kind": "slot",
+      "name": "content",
+      "fallback": [
+        "fallback"
+      ]
+    },
+    "fallback": {
+      "id": "fallback",
+      "kind": "text",
+      "content": {
+        "type": "literal",
+        "value": "Default slot content"
+      }
+    },
+    "field-0": {
+      "id": "field-0",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 0",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-1": {
+      "id": "field-1",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 1",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-2": {
+      "id": "field-2",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 2",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-3": {
+      "id": "field-3",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 3",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-4": {
+      "id": "field-4",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 4",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-5": {
+      "id": "field-5",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 5",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-6": {
+      "id": "field-6",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 6",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-7": {
+      "id": "field-7",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 7",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-8": {
+      "id": "field-8",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 8",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-9": {
+      "id": "field-9",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 9",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-10": {
+      "id": "field-10",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 10",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-11": {
+      "id": "field-11",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 11",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-12": {
+      "id": "field-12",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 12",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-13": {
+      "id": "field-13",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 13",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-14": {
+      "id": "field-14",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 14",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-15": {
+      "id": "field-15",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 15",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-16": {
+      "id": "field-16",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 16",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-17": {
+      "id": "field-17",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 17",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-18": {
+      "id": "field-18",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 18",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-19": {
+      "id": "field-19",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 19",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-20": {
+      "id": "field-20",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 20",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-21": {
+      "id": "field-21",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 21",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-22": {
+      "id": "field-22",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 22",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-23": {
+      "id": "field-23",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 23",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-24": {
+      "id": "field-24",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 24",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-25": {
+      "id": "field-25",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 25",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-26": {
+      "id": "field-26",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 26",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-27": {
+      "id": "field-27",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 27",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-28": {
+      "id": "field-28",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 28",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-29": {
+      "id": "field-29",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 29",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-30": {
+      "id": "field-30",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 30",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-31": {
+      "id": "field-31",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 31",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-32": {
+      "id": "field-32",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 32",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-33": {
+      "id": "field-33",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 33",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-34": {
+      "id": "field-34",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 34",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-35": {
+      "id": "field-35",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 35",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-36": {
+      "id": "field-36",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 36",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-37": {
+      "id": "field-37",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 37",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-38": {
+      "id": "field-38",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 38",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-39": {
+      "id": "field-39",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 39",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-40": {
+      "id": "field-40",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 40",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-41": {
+      "id": "field-41",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 41",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-42": {
+      "id": "field-42",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 42",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-43": {
+      "id": "field-43",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 43",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-44": {
+      "id": "field-44",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 44",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-45": {
+      "id": "field-45",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 45",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-46": {
+      "id": "field-46",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 46",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-47": {
+      "id": "field-47",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 47",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-48": {
+      "id": "field-48",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 48",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-49": {
+      "id": "field-49",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 49",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-50": {
+      "id": "field-50",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 50",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-51": {
+      "id": "field-51",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 51",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-52": {
+      "id": "field-52",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 52",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-53": {
+      "id": "field-53",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 53",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-54": {
+      "id": "field-54",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 54",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-55": {
+      "id": "field-55",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 55",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-56": {
+      "id": "field-56",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 56",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-57": {
+      "id": "field-57",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 57",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-58": {
+      "id": "field-58",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 58",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-59": {
+      "id": "field-59",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 59",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-60": {
+      "id": "field-60",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 60",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-61": {
+      "id": "field-61",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 61",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-62": {
+      "id": "field-62",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 62",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-63": {
+      "id": "field-63",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 63",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-64": {
+      "id": "field-64",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 64",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-65": {
+      "id": "field-65",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 65",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-66": {
+      "id": "field-66",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 66",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-67": {
+      "id": "field-67",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 67",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-68": {
+      "id": "field-68",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 68",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-69": {
+      "id": "field-69",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 69",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-70": {
+      "id": "field-70",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 70",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-71": {
+      "id": "field-71",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 71",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-72": {
+      "id": "field-72",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 72",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-73": {
+      "id": "field-73",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 73",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-74": {
+      "id": "field-74",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 74",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-75": {
+      "id": "field-75",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 75",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-76": {
+      "id": "field-76",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 76",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-77": {
+      "id": "field-77",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 77",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-78": {
+      "id": "field-78",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 78",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-79": {
+      "id": "field-79",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 79",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-80": {
+      "id": "field-80",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 80",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-81": {
+      "id": "field-81",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 81",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-82": {
+      "id": "field-82",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 82",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-83": {
+      "id": "field-83",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 83",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-84": {
+      "id": "field-84",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 84",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-85": {
+      "id": "field-85",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 85",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-86": {
+      "id": "field-86",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 86",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-87": {
+      "id": "field-87",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 87",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-88": {
+      "id": "field-88",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 88",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-89": {
+      "id": "field-89",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 89",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-90": {
+      "id": "field-90",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 90",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-91": {
+      "id": "field-91",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 91",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-92": {
+      "id": "field-92",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 92",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-93": {
+      "id": "field-93",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 93",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-94": {
+      "id": "field-94",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 94",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-95": {
+      "id": "field-95",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 95",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-96": {
+      "id": "field-96",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 96",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-97": {
+      "id": "field-97",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 97",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-98": {
+      "id": "field-98",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 98",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-99": {
+      "id": "field-99",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 99",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-100": {
+      "id": "field-100",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 100",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-101": {
+      "id": "field-101",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 101",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-102": {
+      "id": "field-102",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 102",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-103": {
+      "id": "field-103",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 103",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-104": {
+      "id": "field-104",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 104",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-105": {
+      "id": "field-105",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 105",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-106": {
+      "id": "field-106",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 106",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-107": {
+      "id": "field-107",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 107",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-108": {
+      "id": "field-108",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 108",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-109": {
+      "id": "field-109",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 109",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-110": {
+      "id": "field-110",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 110",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-111": {
+      "id": "field-111",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 111",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-112": {
+      "id": "field-112",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 112",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-113": {
+      "id": "field-113",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 113",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-114": {
+      "id": "field-114",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 114",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-115": {
+      "id": "field-115",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 115",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-116": {
+      "id": "field-116",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 116",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-117": {
+      "id": "field-117",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 117",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-118": {
+      "id": "field-118",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 118",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-119": {
+      "id": "field-119",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 119",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-120": {
+      "id": "field-120",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 120",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-121": {
+      "id": "field-121",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 121",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-122": {
+      "id": "field-122",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 122",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-123": {
+      "id": "field-123",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 123",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-124": {
+      "id": "field-124",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 124",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-125": {
+      "id": "field-125",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 125",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-126": {
+      "id": "field-126",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 126",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-127": {
+      "id": "field-127",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 127",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-128": {
+      "id": "field-128",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 128",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-129": {
+      "id": "field-129",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 129",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-130": {
+      "id": "field-130",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 130",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-131": {
+      "id": "field-131",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 131",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-132": {
+      "id": "field-132",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 132",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-133": {
+      "id": "field-133",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 133",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-134": {
+      "id": "field-134",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 134",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-135": {
+      "id": "field-135",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 135",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-136": {
+      "id": "field-136",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 136",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-137": {
+      "id": "field-137",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 137",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-138": {
+      "id": "field-138",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 138",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    },
+    "field-139": {
+      "id": "field-139",
+      "kind": "element",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Field 139",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      }
+    }
+  },
+  "componentDefinitions": {
+    "local.card": {
+      "id": "local.card",
+      "revision": "1",
+      "root": "definition",
+      "props": [],
+      "slots": {
+        "content": {}
+      }
+    }
+  },
+  "styleSources": {},
+  "assets": {},
+  "tokens": {},
+  "conditions": {
+    "compact": {
+      "id": "compact",
+      "kind": "container",
+      "name": "studio-screen",
+      "query": "(max-width: 600px)"
+    },
+    "show": {
+      "id": "show",
+      "kind": "localState",
+      "when": {
+        "type": "ref",
+        "path": "state.accepted"
+      }
+    }
+  },
+  "localState": {
+    "message": {
+      "key": "message",
+      "type": "string",
+      "initial": "Hello from my screen"
+    },
+    "accepted": {
+      "key": "accepted",
+      "type": "boolean",
+      "initial": false
+    },
+    "dialogOpen": {
+      "key": "dialogOpen",
+      "type": "boolean",
+      "initial": false
+    },
+    "busy": {
+      "key": "busy",
+      "type": "boolean",
+      "initial": false
+    },
+    "actionError": {
+      "key": "actionError",
+      "type": "string",
+      "initial": ""
+    },
+    "actionResult": {
+      "key": "actionResult",
+      "type": "string",
+      "initial": ""
+    },
+    "items": {
+      "key": "items",
+      "type": "stringList",
+      "initial": []
+    }
+  }
+}

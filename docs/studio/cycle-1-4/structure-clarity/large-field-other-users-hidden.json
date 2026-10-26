@@ -1,0 +1,34 @@
+{
+  "count": "3 items",
+  "edges": [
+    {
+      "id": "%5B%22%255B%2522screen-01592f58-c5be-4cd0-9e43-e04cf777f006%2522%252C%2522node%2522%252C%2522screen%2522%255D%22%2C%22%255B%2522screen-01592f58-c5be-4cd0-9e43-e04cf777f006%2522%252C%2522node%2522%252C%2522field-0%2522%255D%22%2C%22contains%22%2C%22screen.contains.3%22%5D",
+      "path": "M238.70011820020082 117.60003820009139L258.7001182002008 117.60003820009139L 274.2000512025502,117.60003820009139Q 279.2000512025502,117.60003820009139 279.2000512025502,112.60003820009139L 279.2000512025502,109.60000649989044Q 279.2000512025502,104.60000649989044 284.2000512025502,104.60000649989044L299.6999842048995 104.60000649989044L319.6999842048995 104.60000649989044"
+    },
+    {
+      "id": "%5B%22%255B%2522screen-01592f58-c5be-4cd0-9e43-e04cf777f006%2522%252C%2522node%2522%252C%2522field-0%2522%255D%22%2C%22%255B%2522screen-01592f58-c5be-4cd0-9e43-e04cf777f006%2522%252C%2522state%2522%252C%2522message%2522%255D%22%2C%22reads%3A%20state.message%22%2C%22field-0.attributes.value%22%5D",
+      "path": "M549.1000860138573 104.60000649989044L569.1000860138573 104.60000649989044L 584.6000190162067,104.60000649989044Q 589.6000190162067,104.60000649989044 589.6000190162067,109.60000649989044L 589.6000190162067,112.59997382740444Q 589.6000190162067,117.59997382740444 594.6000190162067,117.59997382740444L610.099952018556 117.59997382740444L630.099952018556 117.59997382740444"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "%5B%22screen-01592f58-c5be-4cd0-9e43-e04cf777f006%22%2C%22node%22%2C%22screen%22%5D",
+      "text": " ContainerScreen › 143 direct children  Children  ",
+      "world": "translate(12px, 12px)"
+    },
+    {
+      "id": "%5B%22screen-01592f58-c5be-4cd0-9e43-e04cf777f006%22%2C%22node%22%2C%22field-0%22%5D",
+      "text": " InputField 0    Parent Reads  ",
+      "world": "translate(322.4px, 25px)"
+    },
+    {
+      "id": "%5B%22screen-01592f58-c5be-4cd0-9e43-e04cf777f006%22%2C%22state%22%2C%22message%22%5D",
+      "text": " StateMessage  Text · starts with “Hello from my screen”  Read by  ",
+      "world": "translate(632.8px, 12px)"
+    }
+  ],
+  "saved": "● Unsaved changes",
+  "scope": "Focus: Field 0",
+  "selection": "InputField 0 OverviewEdit on canvas ↗   TypeInputChildren0InsideScreen RelationshipsInsideScreenReadsMessage  Technical informationSource nodefield-0Occurrencescreen-01592f58-c5be-4cd0-9e43-e04cf777f006|field-0idfield-0kindelementtaginputattributes.aria-labelField 0attributes.value.typerefattributes.value.pathstate.message",
+  "label": "large-field-other-users-hidden"
+}

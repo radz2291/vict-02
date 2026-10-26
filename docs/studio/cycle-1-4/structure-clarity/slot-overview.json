@@ -1,0 +1,34 @@
+{
+  "count": "3 items",
+  "edges": [
+    {
+      "id": "%5B%22%255B%2522screen-01592f58-c5be-4cd0-9e43-e04cf777f006%2522%252C%2522node%2522%252C%2522definition%2522%255D%22%2C%22%255B%2522screen-01592f58-c5be-4cd0-9e43-e04cf777f006%2522%252C%2522node%2522%252C%2522slot%2522%255D%22%2C%22contains%22%2C%22definition.contains.0%22%5D",
+      "path": "M238.70024694557472 117.60003820009139L258.7002469455747 117.60003820009139L 279.2001477615806,117.60003820009139Q 279.2001638547523,117.60003820009139 279.2001638547523,117.60002210691965L 279.2001638547523,117.60002210691965Q 279.2001638547523,117.60000601374792 279.200179947924,117.60000601374792L299.70008076393 117.60000601374792L319.70008076393 117.60000601374792"
+    },
+    {
+      "id": "%5B%22%255B%2522screen-01592f58-c5be-4cd0-9e43-e04cf777f006%2522%252C%2522node%2522%252C%2522slot%2522%255D%22%2C%22%255B%2522screen-01592f58-c5be-4cd0-9e43-e04cf777f006%2522%252C%2522node%2522%252C%2522fallback%2522%255D%22%2C%22fallback%3A%20content%22%2C%22slot.fallback%3A%20content.0%22%5D",
+      "path": "M549.1002469455747 117.60000601374792L569.1002469455747 117.60000601374792L 584.6001638547523,117.60000601374792Q 589.6001638547523,117.60000601374792 589.6001638547523,112.60000601374792L 589.6001638547523,109.60003868623392Q 589.6001638547523,104.60003868623392 594.6001638547523,104.60003868623392L610.1000807639299 104.60003868623392L630.1000807639299 104.60003868623392"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "%5B%22screen-01592f58-c5be-4cd0-9e43-e04cf777f006%22%2C%22node%22%2C%22definition%22%5D",
+      "text": " SectionSection › 1 direct child  Children  ",
+      "world": "translate(12px, 12px)"
+    },
+    {
+      "id": "%5B%22screen-01592f58-c5be-4cd0-9e43-e04cf777f006%22%2C%22node%22%2C%22slot%22%5D",
+      "text": " SlotSlot ⌄ Content  Parent Children  ",
+      "world": "translate(322.4px, 12px)"
+    },
+    {
+      "id": "%5B%22screen-01592f58-c5be-4cd0-9e43-e04cf777f006%22%2C%22node%22%2C%22fallback%22%5D",
+      "text": " TextText · Default slot content    Parent  ",
+      "world": "translate(632.8px, 25px)"
+    }
+  ],
+  "saved": "● Unsaved changes",
+  "scope": "Focus: Slot",
+  "selection": "SlotSlot Overview   TypeSlotSlotContentFallback1 items used when no content is suppliedInsideSection RelationshipsInsideSectionFallback · contentText · Default slot content  Technical informationidslotkindslotnamecontentfallback.0fallback",
+  "label": "slot-overview"
+}

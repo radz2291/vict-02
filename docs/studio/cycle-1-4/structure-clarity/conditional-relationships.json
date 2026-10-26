@@ -1,0 +1,52 @@
+{
+  "count": "5 items",
+  "edges": [
+    {
+      "id": "%5B%22%255B%2522screen-01592f58-c5be-4cd0-9e43-e04cf777f006%2522%252C%2522node%2522%252C%2522screen%2522%255D%22%2C%22%255B%2522screen-01592f58-c5be-4cd0-9e43-e04cf777f006%2522%252C%2522node%2522%252C%2522conditional%2522%255D%22%2C%22contains%22%2C%22screen.contains.0%22%5D",
+      "path": "M238.70011820020082 248.60003820009138L258.7001182002008 248.60003820009138L 274.2000672957219,248.60003820009138Q 279.2000672957219,248.60003820009138 279.2000672957219,243.60003820009138L 279.2000672957219,241.60003820009138Q 279.2000672957219,236.60003820009138 284.2000672957219,236.60003820009138L299.700016391243 236.60003820009138L319.700016391243 236.60003820009138"
+    },
+    {
+      "id": "%5B%22%255B%2522screen-01592f58-c5be-4cd0-9e43-e04cf777f006%2522%252C%2522node%2522%252C%2522conditional%2522%255D%22%2C%22%255B%2522screen-01592f58-c5be-4cd0-9e43-e04cf777f006%2522%252C%2522node%2522%252C%2522yes%2522%255D%22%2C%22branch%3A%20show%22%2C%22conditional.branch%3A%20show.0%22%5D",
+      "path": "M549.1001182002008 236.60003820009138L569.1001182002008 236.60003820009138L 584.6000351093784,236.60003820009138Q 589.6000351093784,236.60003820009138 589.6000351093784,231.60003820009138L 589.6000351093784,96.60003868623392Q 589.6000351093784,91.60003868623392 594.6000351093784,91.60003868623392L610.099952018556 91.60003868623392L630.099952018556 91.60003868623392"
+    },
+    {
+      "id": "%5B%22%255B%2522screen-01592f58-c5be-4cd0-9e43-e04cf777f006%2522%252C%2522node%2522%252C%2522conditional%2522%255D%22%2C%22%255B%2522screen-01592f58-c5be-4cd0-9e43-e04cf777f006%2522%252C%2522node%2522%252C%2522no%2522%255D%22%2C%22branch%3A%20else%202%22%2C%22conditional.branch%3A%20else%202.1%22%5D",
+      "path": "M549.1001182002008 236.60003820009138L569.1001182002008 236.60003820009138L 589.1000192592779,236.60003820009138Q 589.6000351093784,236.60003820009138 589.6000351093784,236.10002234999092L 589.6000351093784,236.10002234999092Q 589.6000351093784,235.60000649989044 590.1000509594788,235.60000649989044L610.099952018556 235.60000649989044L630.099952018556 235.60000649989044"
+    },
+    {
+      "id": "%5B%22%255B%2522screen-01592f58-c5be-4cd0-9e43-e04cf777f006%2522%252C%2522node%2522%252C%2522conditional%2522%255D%22%2C%22%255B%2522screen-01592f58-c5be-4cd0-9e43-e04cf777f006%2522%252C%2522state%2522%252C%2522accepted%2522%255D%22%2C%22reads%3A%20state.accepted%22%2C%22conditions.show.when%22%5D",
+      "path": "M549.1001182002008 260.6000748894331L569.1001182002008 260.6000748894331L 584.6000351093784,260.6000748894331Q 589.6000351093784,260.6000748894331 589.6000351093784,265.6000748894331L 589.6000351093784,400.60000601374793Q 589.6000351093784,405.60000601374793 594.6000351093784,405.60000601374793L610.099952018556 405.60000601374793L630.099952018556 405.60000601374793"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "%5B%22screen-01592f58-c5be-4cd0-9e43-e04cf777f006%22%2C%22node%22%2C%22screen%22%5D",
+      "text": " ContainerScreen › 143 direct children  Children  ",
+      "world": "translate(12px, 143px)"
+    },
+    {
+      "id": "%5B%22screen-01592f58-c5be-4cd0-9e43-e04cf777f006%22%2C%22node%22%2C%22conditional%22%5D",
+      "text": " ConditionalConditional content ⌄ Shown when Agreement is on · 1 item  Parent Children2 Reads  ",
+      "world": "translate(322.4px, 131px)"
+    },
+    {
+      "id": "%5B%22screen-01592f58-c5be-4cd0-9e43-e04cf777f006%22%2C%22node%22%2C%22yes%22%5D",
+      "text": " TextText · Shown content    Parent  ",
+      "world": "translate(632.8px, 12px)"
+    },
+    {
+      "id": "%5B%22screen-01592f58-c5be-4cd0-9e43-e04cf777f006%22%2C%22node%22%2C%22no%22%5D",
+      "text": " TextText · Fallback content    Parent  ",
+      "world": "translate(632.8px, 156px)"
+    },
+    {
+      "id": "%5B%22screen-01592f58-c5be-4cd0-9e43-e04cf777f006%22%2C%22state%22%2C%22accepted%22%5D",
+      "text": " StateAgreement  Boolean · initially off  Read by  ",
+      "world": "translate(632.8px, 300px)"
+    }
+  ],
+  "saved": "● Unsaved changes",
+  "scope": "Focus: Conditional content",
+  "selection": "ConditionalConditional content OverviewEdit on canvas ↗   TypeConditionalBranch 1Shown when Agreement is on · 1 itemOtherwiseFallback branch after earlier branches · 1 itemInsideScreen RelationshipsInsideScreenShown when Agreement is onText · Shown contentOtherwiseText · Fallback contentReadsAgreement  Technical informationSource nodeconditionalOccurrencescreen-01592f58-c5be-4cd0-9e43-e04cf777f006|conditionalidconditionalkindconditionalbranches.0.whenshowbranches.0.children.0yesbranches.1.children.0no",
+  "label": "conditional-relationships"
+}

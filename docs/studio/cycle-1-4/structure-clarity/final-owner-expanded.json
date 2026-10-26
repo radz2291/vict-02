@@ -1,0 +1,93 @@
+{
+  "count": "17 items",
+  "footer": "Loaded the saved screen.@3 · v1_fe0ac678e805…",
+  "nodes": [
+    {
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22screen%22%5D",
+      "text": " ContainerScreen ⌄ 1 direct child  Children  ",
+      "world": "translate(12px, 770px)"
+    },
+    {
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbCard%22%5D",
+      "text": " SectionSection ⌄ 11 direct children  Parent Children11  ",
+      "world": "translate(322.4px, 770px)"
+    },
+    {
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbTitle%22%5D",
+      "text": " HeadingCreate your workspace    Parent  ",
+      "world": "translate(632.8px, 12px)"
+    },
+    {
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbSubtitle%22%5D",
+      "text": " ParagraphSet up your workspace in under a minute — just the essentials.    Parent  ",
+      "world": "translate(632.8px, 156px)"
+    },
+    {
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbNameLabel%22%5D",
+      "text": " LabelLabel · Full name ›   Parent  ",
+      "world": "translate(632.8px, 315px)"
+    },
+    {
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbNameInput%22%5D",
+      "text": " InputFull name    Parent Reads2 Updates  ",
+      "world": "translate(632.8px, 459px)"
+    },
+    {
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbEmailLabel%22%5D",
+      "text": " LabelLabel · Work email ›   Parent  ",
+      "world": "translate(632.8px, 627px)"
+    },
+    {
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbEmailInput%22%5D",
+      "text": " InputWork email    Parent Reads2 Updates  ",
+      "world": "translate(632.8px, 771px)"
+    },
+    {
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbRoleLabel%22%5D",
+      "text": " LabelLabel · Role ›   Parent  ",
+      "world": "translate(632.8px, 939px)"
+    },
+    {
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbRoleSelect%22%5D",
+      "text": " SelectRole › 12 items inside  Parent Reads2 Updates  ",
+      "world": "translate(632.8px, 1083px)"
+    },
+    {
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbNotifRow%22%5D",
+      "text": " ContainerRow › 3 items inside  Parent  ",
+      "world": "translate(632.8px, 1277px)"
+    },
+    {
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbSubmit%22%5D",
+      "text": " ComponentCreate account  Button  Parent Invokes  ",
+      "world": "translate(632.8px, 1447px)"
+    },
+    {
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbFeedback%22%5D",
+      "text": " ParagraphYour details stay on this screen — nothing is sent.    Parent  ",
+      "world": "translate(632.8px, 1617px)"
+    },
+    {
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22state%22%2C%22fullName%22%5D",
+      "text": " StateFull Name  Text · starts empty  Read by2 Updated by  ",
+      "world": "translate(943.2px, 446px)"
+    },
+    {
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22state%22%2C%22workEmail%22%5D",
+      "text": " StateWork Email  Text · starts empty  Read by2 Updated by  ",
+      "world": "translate(943.2px, 758px)"
+    },
+    {
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22state%22%2C%22role%22%5D",
+      "text": " StateRole  Text · starts empty  Read by2 Updated by  ",
+      "world": "translate(943.2px, 1083px)"
+    },
+    {
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22action%22%2C%22demo.submit%22%5D",
+      "text": " ActionSubmit (simulated)  Declared action reference  Invoked by  ",
+      "world": "translate(943.2px, 1447px)"
+    }
+  ],
+  "saved": "✓ Saved",
+  "scope": "Focus: Screen"
+}
