@@ -43,7 +43,7 @@ describe('Structure completion: useful source projection', () => {
     expect(structureFacts(document, checkbox)).toEqual(expect.arrayContaining([{ path: 'props.checked.path', value: 'state.accepted' }, { path: 'outputs.checkedChange.setState.key', value: 'accepted' }]));
     const related = filterStructure(graph, { bindings: true, focusId: structureId(document.id, 'state', 'accepted') });
     expect(related.nodes.some(node => node.id === checkbox.id)).toBe(true);
-    expect(related.edges.map(edge => edge.data?.path)).toEqual(expect.arrayContaining(['item-2.props.checked', 'item-2.outputs.checkedChange']));
+    expect(related.edges.map(edge => edge.data?.path)).toEqual(expect.arrayContaining(['/nodes/item-2/props/checked', '/nodes/item-2/outputs/checkedChange']));
     expect(canonicalUiDocument(document).contentDigest).toBe(digest);
   });
   it('search reveals collapsed descendants with their authored path and collapse preserves source', () => {
@@ -91,7 +91,7 @@ it('compares real Dagre and ELK layouts at small, owner-sized and advertised-siz
     }
     expect(canonicalUiDocument(source).contentDigest).toBe(before);
   }
-  const directory = fileURLToPath(new URL('../../../docs/studio/cycle-1-3/completion/structure/', import.meta.url));
+  const directory = fileURLToPath(new URL('../../../docs/studio/cycle-1-4/structure-semantics/', import.meta.url));
   mkdirSync(directory, { recursive: true });
   writeFileSync(`${directory}/layout-comparison.json`, JSON.stringify({ kind: 'deterministic synthetic source fixture benchmark; variable measured sizes supplied; not a browser measurement', engines: { dagre: '1.1.5', elk: '0.11.0' }, results }, null, 2));
 }, 120_000);

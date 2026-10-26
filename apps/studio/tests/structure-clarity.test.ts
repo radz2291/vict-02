@@ -27,19 +27,19 @@ it('applies visibility and collapsed ownership before a direct neighbourhood wit
   expect(collapsed.nodes).toHaveLength(1);expect(collapsed.edges).toHaveLength(0);
   expect(on.edges.every(edge=>on.nodes.some(node=>node.id===edge.source)&&on.nodes.some(node=>node.id===edge.target))).toBe(true);
   const expanded=connectedStructure(filterStructure(graph,{bindings:true}),id('node','screen'),{expanded:new Set([id('node','conditional')])});
-  expect(expanded.nodes.some(node=>node.data.sourceId==='yes')).toBe(true);expect(expanded.nodes.some(node=>node.id===id('state','accepted'))).toBe(true);
+  expect(expanded.nodes.some(node=>node.data.sourceId==='yes')).toBe(true);expect(expanded.nodes.some(node=>node.id===id('condition','show'))).toBe(true);
 });
 it('maps a conditional to its declared controlling data without evaluating the condition',()=>{
   const source=clarityFixture(),graph=projectStructure(source),id=structureId(source.id,'node','conditional');
-  expect(conditionDescription(source,'show')).toBe('Agreement is on');
-  expect(graph.edges.some(edge=>edge.source===id&&edge.target===structureId(source.id,'state','accepted')&&edge.data?.path==='conditions.show.when')).toBe(true);
+  expect(conditionDescription(source,'show')).toBe('Accepted is on');
+  expect(graph.edges.some(edge=>edge.source===structureId(source.id,'condition','show')&&edge.target===id&&edge.data?.path==='/nodes/conditional/branches/0/when')).toBe(true);
   const groups=groupStructureRelationships(graph,id);
-  expect(groups.flatMap(group=>group.relations.map(relation=>relation.label))).toEqual(expect.arrayContaining(['Shown when Agreement is on','Otherwise']));
-  expect(structureBehavior(source,'conditional').map(fact=>fact.value)).toContain('Shown when Agreement is on · 1 item');
+  expect(groups.flatMap(group=>group.relations.map(relation=>relation.label))).toEqual(expect.arrayContaining(['Branch','Otherwise']));
+  expect(structureBehavior(source,'conditional').map(fact=>fact.value)).toContain('Shown when Accepted is on · 1 item');
   expect(structureBehavior(source,'repeat').map(fact=>fact.value)).toContain('One template for each item in Items');
   expect(structureBehavior(source,'portal').map(fact=>fact.value)).toContain('Logical ownership only; native portal rendering is not supported');
   expect(source.localState.accepted?.initial).toBe(false);
-  expect(branchDescription(source,'show',1)).toBe('Otherwise, when Agreement is on');
+  expect(branchDescription(source,'show',1)).toBe('Otherwise, when Accepted is on');
 });
 it('searches displayed semantic types and retains full identities after concise card presentation',()=>{
   const source=clarityFixture(),graph=projectStructure(source),node=graph.nodes.find(node=>node.data.sourceId==='title')!,presentation=structureNodePresentation(source,node.data);

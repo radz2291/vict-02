@@ -14,9 +14,9 @@ it('keeps each declared edge identity/path and gives both ends a matching read-o
 it('groups repeated reads and updates to one target without dropping any distinct source path',()=>{
  const source=fixture(),graph=projectStructure(source),id=structureId(source.id,'state','name'),groups=groupStructureRelationships(graph,id);
  expect(groups).toHaveLength(1);expect(groups[0]?.count).toBe(3);
- expect(groups[0]?.relations.map(relation=>[relation.label,relation.count])).toEqual([['Read by',2],['Updated by',1]]);
- expect(groups[0]?.relations.flatMap(relation=>relation.paths).sort()).toEqual(graph.edges.filter(edge=>edge.target===id).map(edge=>edge.data!.path).sort());
- const ports=structurePorts(graph,id);expect(ports.map(port=>[port.id,port.count])).toEqual([['in-read',2],['in-write',1]]);
+ expect(groups[0]?.relations.map(relation=>[relation.label,relation.count])).toEqual([['Value',1],['Updates',1],['Fallback',1]]);
+ expect(groups[0]?.relations.flatMap(relation=>relation.paths).sort()).toEqual(graph.edges.filter(edge=>edge.target===id||edge.source===id).map(edge=>edge.data!.path).sort());
+ const ports=structurePorts(graph,id);expect(ports.map(port=>[port.id,port.count])).toEqual([['in-updates',1],['out-fallback',1],['out-value',1]]);
 });
 it('uses semantic native labels without renaming source ids or making up data values',()=>{
  const source=fixture(),graph=projectStructure(source),node=graph.nodes.find(node=>node.data.sourceId==='name')!;

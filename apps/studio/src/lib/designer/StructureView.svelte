@@ -8,14 +8,14 @@
   import './studio-cards.css';
   import type { UiDocument, UiExtensionDescriptor } from '@victframework/ui';
   import { type InsertRecipe } from '@victframework/ui-editor';
-  import { projectStructure, filterStructure, connectedStructure, compactStructure, structureNodePresentation, structureFacts, structureId, parseStructureId, structureMove, type StructureNodeData, type StructureEditRequest, type StructureHandoff } from './structure.js';
+  import { projectStructure, filterStructure, connectedStructure, compactStructure, structureNodePresentation, structureFacts, structureId, parseStructureId, structureMove, type StructureNodeData, type StructureEditRequest, type StructureHandoff, type StructureContext } from './structure.js';
   import { Menubar } from '@victframework/ui-svelte/catalog/menubar';
   import WorkspaceMenu from './WorkspaceMenu.svelte';
   import WorkspaceContextMenu from './WorkspaceContextMenu.svelte';
   import { sourceCapabilities, type WorkspaceContext, type WorkspaceCommand } from './workspace-context.js';
 
-  let { document, revision, selectedNodeId, focusSelection, blocked = false, active = true, presentation = 'workspace', descriptors = [], recipes = [], onSelect, onDeselect, onMove, onNotice, onNavigate, onDismiss, onInspect, onCloseInspect, onInspectSelection, inspectionExpanded = false, inspectionSelection, inspectionLabel='Inspect', objectCommands }: {
-    document: UiDocument; revision: string; selectedNodeId?: string; focusSelection?:string; blocked?: boolean; active?: boolean;
+  let { document, context={}, revision, selectedNodeId, focusSelection, blocked = false, active = true, presentation = 'workspace', descriptors = [], recipes = [], onSelect, onDeselect, onMove, onNotice, onNavigate, onDismiss, onInspect, onCloseInspect, onInspectSelection, inspectionExpanded = false, inspectionSelection, inspectionLabel='Inspect', objectCommands }: {
+    document: UiDocument; context?:StructureContext; revision: string; selectedNodeId?: string; focusSelection?:string; blocked?: boolean; active?: boolean;
     descriptors?: readonly UiExtensionDescriptor[]; recipes?: readonly InsertRecipe[];
     onSelect: (occurrence: string) => void; onMove: (request: StructureEditRequest) => boolean;
     onDeselect?: () => void;
@@ -31,6 +31,7 @@
   let inspectedId = $state<string>();
   let search = $state('');
   let showBindings = $state(true);
+  let inventory = $state(false);
   let showDefinitions = $state(false);
   let focusedId = $state<string>();
   let graphView=$state('connections');
@@ -56,14 +57,14 @@
   let inspectionButton: HTMLButtonElement;
   let structureElement = $state<HTMLElement>();
   const fittedDocuments = new Set<string>();
-  const graph = $derived(projectStructure(document));
+  const graph = $derived(projectStructure(document,{descriptors,...context}));
   $effect(()=>{if(inspectionSelection && graph.nodes.some(node=>node.id===inspectionSelection))inspectedId=inspectionSelection;});
   const compactGraph = $derived(compactStructure(graph, document));
   const groupGraph = $derived(showTextNodes || search ? graph : compactGraph);
   const inspected = $derived(graph.nodes.find(node => node.id === inspectedId));
   const related = $derived(graph.edges.filter(edge => (edge.source === inspectedId || edge.target === inspectedId) && edge.data?.kind !== 'containment'));
   const facts = $derived(inspected ? structureFacts(document, inspected) : []);
-  const filtered = $derived(filterStructure(graph, { search, focusId: focusedId, collapsed, bindings: showBindings, definitions: showDefinitions }));
+  const filtered = $derived(filterStructure(graph, { search, focusId: focusedId, collapsed, bindings: showBindings, definitions: showDefinitions, inventory }));
   const scopeId = $derived(connectionFocus ?? structureId(document.id,'node',selectedNodeId ?? document.root));
   const scopeNode = $derived(graph.nodes.find(node=>node.id===scopeId));
   const scopeLabel = $derived(scopeNode ? structureNodePresentation(document,scopeNode.data).fullLabel : 'Screen');
@@ -84,10 +85,10 @@
   const fence = new LayoutFence();
   let connectionStart: { documentId: string; revision: string } | undefined;
   let layoutDocument = '';
-  const presentations = new Map<string, { viewport: Viewport; positions: Map<string, { x: number; y: number }>; collapsed: Set<string>; inspectedId?: string; connectionFocus?:string; direction: LayoutDirection; search: string; focusedId?: string; bindings: boolean; definitions: boolean; text: boolean; inspection: boolean; page: typeof inspectionPage }>();
+  const presentations = new Map<string, { viewport: Viewport; positions: Map<string, { x: number; y: number }>; collapsed: Set<string>; inspectedId?: string; connectionFocus?:string; direction: LayoutDirection; search: string; focusedId?: string; bindings: boolean; definitions: boolean; inventory:boolean; text: boolean; inspection: boolean; page: typeof inspectionPage }>();
   function remember() {
     if (!layoutDocument) return;
-    presentations.set(layoutDocument, { viewport: { ...viewport }, positions: new Map(nodes.map(node => [node.id, { ...node.position }])), collapsed: new Set(collapsed), inspectedId, connectionFocus, direction, search, focusedId, bindings: showBindings, definitions: showDefinitions, text: showTextNodes, inspection: inspectionOpen, page: inspectionPage === 'move' ? 'properties' : inspectionPage });
+    presentations.set(layoutDocument, { viewport: { ...viewport }, positions: new Map(nodes.map(node => [node.id, { ...node.position }])), collapsed: new Set(collapsed), inspectedId, connectionFocus, direction, search, focusedId, bindings: showBindings, definitions: showDefinitions, inventory, text: showTextNodes, inspection: inspectionOpen, page: inspectionPage === 'move' ? 'properties' : inspectionPage });
   }
   $effect(() => {
     const id = document.id;
@@ -100,7 +101,7 @@
     inspectedId = saved?.inspectedId ?? (selectedNodeId ? structureId(id, 'node', selectedNodeId) : structureId(id, 'node', document.root));
     connectionFocus=focusSelection ?? saved?.connectionFocus ?? structureId(id,'node',selectedNodeId ?? document.root);
     direction = saved?.direction ?? 'RIGHT'; search = saved?.search ?? ''; focusedId = saved?.focusedId;
-    showBindings = saved?.bindings ?? true; showDefinitions = saved?.definitions ?? false; allowMoves = false;
+    inventory=saved?.inventory??false;showBindings = saved?.bindings ?? true; showDefinitions = saved?.definitions ?? false; allowMoves = false;
     showTextNodes = saved?.text ?? false; inspectionOpen = saved?.inspection ?? false; inspectionPage = saved?.page ?? 'properties';
   });
   const canonicalSelection=$derived(selectedNodeId?structureId(document.id,'node',selectedNodeId):undefined);
@@ -254,7 +255,7 @@
   }
   const moveSources = $derived(graph.nodes.filter(node => node.data.occurrence && node.data.sourceId !== document.root));
   const targetOptions = $derived(graph.nodes.filter(node => !!moveSource && valid({ source: moveSource, target: node.id, sourceHandle: 'content', targetHandle: 'container' })));
-  function context(target:Element):WorkspaceContext|undefined {
+  function resolveContext(target:Element):WorkspaceContext|undefined {
     if (!target.closest('.structure-canvas')) return;
     const id = target.closest<HTMLElement>('.svelte-flow__node')?.dataset.id;
     const node = graph.nodes.find(entry=>entry.id===id);
@@ -272,7 +273,7 @@
 </script>
 <svelte:window onkeydown={escape} onkeydowncapture={graphEscape} />
 <section data-studio-typography class="studio-type-scope structure-view" class:drawer-presentation={presentation === 'drawer'} class:inspection-open={inspectionOpen} aria-label="Source structure" bind:this={structureElement}>
-  <WorkspaceContextMenu scope={structureElement} enabled={active} resolve={context} />
+  <WorkspaceContextMenu scope={structureElement} enabled={active} resolve={resolveContext} />
   <div class="structure-tools">
     <input type="search" aria-label="Search structure" placeholder="Search structure" bind:value={search} />
     <Menubar.Root class="workspace-menus" aria-label="Structure menus" bind:value={activeMenu} loop>
@@ -280,7 +281,8 @@
         <Menubar.RadioGroup bind:value={graphView} aria-label="Structure view">
           <Menubar.RadioItem value="connections" closeOnSelect>Focused connections<span aria-hidden="true">{graphView==='connections'?'✓':''}</span></Menubar.RadioItem>
           <Menubar.RadioItem value="hierarchy" closeOnSelect onSelect={()=>{focusedId=undefined;search='';}}>Whole hierarchy<span aria-hidden="true">{graphView==='hierarchy'?'✓':''}</span></Menubar.RadioItem>
-        </Menubar.RadioGroup><Menubar.Separator />
+        </Menubar.RadioGroup>
+        <Menubar.CheckboxItem bind:checked={inventory} closeOnSelect={false} onSelect={()=>{graphView='hierarchy';focusedId=undefined;}}>All declarations<span aria-hidden="true">{inventory?'✓':''}</span></Menubar.CheckboxItem><Menubar.Separator />
         <Menubar.Item disabled={!inspected || !nodes.some(node=>node.id===inspectedId)} onSelect={() => locate(inspectedId?[inspectedId]:[])}>Frame selection</Menubar.Item>
         <Menubar.Item disabled={!inspected || blocked} onSelect={() => { if (inspected) void reveal(inspected); }}>Focus on selection</Menubar.Item>
         <Menubar.Item onSelect={() => { graphView='hierarchy';focusedId = undefined; search = ''; }}>Show whole screen</Menubar.Item>
@@ -296,7 +298,7 @@
         </Menubar.Group>
         <Menubar.Separator />
         <Menubar.Group><Menubar.GroupHeading class="menu-caption">Relationships</Menubar.GroupHeading>
-          <Menubar.CheckboxItem bind:checked={showBindings} closeOnSelect={false}>State and actions<span aria-hidden="true">{showBindings ? '✓' : ''}</span></Menubar.CheckboxItem>
+          <Menubar.CheckboxItem bind:checked={showBindings} closeOnSelect={false}>Dependencies<span aria-hidden="true">{showBindings ? '✓' : ''}</span></Menubar.CheckboxItem>
           <Menubar.CheckboxItem bind:checked={showDefinitions} closeOnSelect={false}>Component definitions<span aria-hidden="true">{showDefinitions ? '✓' : ''}</span></Menubar.CheckboxItem>
           <Menubar.CheckboxItem bind:checked={showTextNodes} closeOnSelect={false}>Show text nodes<span aria-hidden="true">{showTextNodes ? '✓' : ''}</span></Menubar.CheckboxItem>
         </Menubar.Group>
@@ -317,6 +319,7 @@
         </WorkspaceMenu>
       {/if}
     </Menubar.Root>
+    <span class="declaration-label" title={`Source declarations; ${inventory?'all registries':'used dependencies'}; visibility filters still apply. This is not live execution.`}>Declared</span>
     {#if search}<span class="scope-label" title="Search includes hidden items and their parent paths. Relationship visibility settings still apply.">Search results · includes hidden items</span>{:else if graphView==='connections'}<span class="scope-label" title={`Focused on ${scopeLabel}`}>Focus: {scopeLabel}</span>{/if}
     <span class="structure-count" aria-live="polite" title={graphView==='connections' && !search?'Nearby items after visibility settings':'All declared items; visibility settings, collapsed groups and compact text may hide some'}>{nodes.length < availableItems ? `${nodes.length} of ${availableItems}` : nodes.length} items</span>
     <button type="button" class="inspection-toggle" aria-label={inspectionLabel==='Inspect'?'Inspect structure':'Selection panel'} aria-expanded={onInspect ? inspectionExpanded : inspectionOpen} aria-controls={onInspect ? undefined : 'structure-inspection'} bind:this={inspectionButton} onclick={() => { if (onInspect && inspectionExpanded && onCloseInspect) onCloseInspect(); else if (onInspect) onInspect(inspectedId, 'properties'); else if (inspectionOpen) closeInspection(); else openInspection(inspected ? 'properties' : 'find'); }}>{inspectionLabel}</button>
@@ -388,6 +391,7 @@
 </section>
 
 <style>
+  .declaration-label{font:var(--studio-font-meta);color:var(--vict-color-textMuted)}
   .scope-label { max-width:220px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   .structure-scope-actions { display:flex; align-items:center; gap:8px; padding:0 10px; flex-wrap:wrap; }
   .structure-scope-actions:has(button) { padding-top:4px; padding-bottom:4px; border-bottom:1px solid var(--vict-color-border); }

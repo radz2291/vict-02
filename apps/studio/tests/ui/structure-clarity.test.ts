@@ -18,7 +18,7 @@ it('separates inspect, explicit focus and camera-only framing',async()=>{
  expect(ids()).toEqual(before);expect(document.querySelector('.svelte-flow__viewport')?.getAttribute('style')).toContain(viewport);expect(document.querySelector('.scope-label')?.textContent).toContain('Screen');
  button('Focus on selection').click();await settle();expect(document.querySelector('.scope-label')?.textContent).toContain('Field 0');expect(ids()).toContain(structureId(source.id,'state','message'));
  const focused=ids();await viewItem('Frame selection');expect(ids()).toEqual(focused);expect(document.querySelector('.scope-label')?.textContent).toContain('Field 0');
- await viewItem('State and actions');expect(ids()).not.toContain(structureId(source.id,'state','message'));await viewItem('State and actions');expect(ids()).toContain(structureId(source.id,'state','message'));
+ await viewItem('Dependencies');expect(ids()).not.toContain(structureId(source.id,'state','message'));await viewItem('Dependencies');expect(ids()).toContain(structureId(source.id,'state','message'));
 });
 it('honours collapse in both views and text visibility in a focused heading',async()=>{
  const source=await start();button('Collapse Screen').click();await settle();expect(ids()).toHaveLength(1);
@@ -37,6 +37,6 @@ it('pages large direct connections and resets the batch on explicit focus',async
 });
 it('explains declared conditional behaviour and exposes distinct branch meanings in Selection',async()=>{
  const source=clarityFixture();instance=mount(SourceDetails,{target:document.body,props:{document:source,selectedId:structureId(source.id,'node','conditional'),embedded:true,onClose:vi.fn(),onSelect:vi.fn(),onNavigate:vi.fn()}});await settle();
- expect(document.querySelector('.useful-facts')?.textContent).toContain('Shown when Agreement is on');expect(document.querySelector('.useful-facts')?.textContent).toContain('Fallback branch');
- button('Relationships').click();await settle();expect(document.querySelector('.details-relationships')?.textContent).toContain('Shown when Agreement is on');expect(document.querySelector('.details-relationships')?.textContent).toContain('Otherwise');expect(document.querySelector('.details-relationships button[title]')).not.toBeNull();
+ expect(document.querySelector('.useful-facts')?.textContent).toContain('Shown when Accepted is on');expect(document.querySelector('.useful-facts')?.textContent).toContain('Fallback branch');
+ button('Relationships').click();await settle();expect(document.querySelector('.details-relationships')?.textContent).toContain('Branch');expect([...document.querySelectorAll('.details-relationships button')].some(el=>el.getAttribute('title')?.includes('Shown when Accepted is on'))).toBe(true);expect(document.querySelector('.details-relationships')?.textContent).toContain('Otherwise');expect(document.querySelector('.details-relationships button[title]')).not.toBeNull();
 });

@@ -1,6 +1,6 @@
 import type { UiDocument, UiExpression } from '@victframework/ui';
 import { readableName } from './presentation.js';
-export const structureStateName = (key: string) => ({message:'Message',accepted:'Agreement',busy:'Submitting',dialogOpen:'Dialog open',actionError:'Action error',actionResult:'Action result'} as Record<string,string>)[key] ?? readableName(key);
+export const structureStateName = readableName;
 
 /** Describes declarations only. No expression evaluation or runtime-state inference. */
 export function expressionDescription(expression: UiExpression): string {
@@ -52,7 +52,7 @@ export function structureBehavior(document: UiDocument, sourceId: string): Struc
   const actionName=(id:string)=>id==='demo.submit'?'Submit (simulated)':readableName(id);
   const events=(source.interactions??[]).map(interaction=>({
     name:interaction.on==='click'?'When clicked':interaction.on==='change'?'When changed':'When submitted',
-    value:interaction.action==='setState'?`Updates ${structureStateName(interaction.key)} from ${expressionDescription(interaction.value)}`:interaction.action==='navigate'?`Requests navigation to ${readableName(interaction.routeId)}`:`Requests ${actionName(interaction.actionId)}`,
+    value:interaction.action==='setState'?`Updates ${structureStateName(interaction.key)} from the ${source.kind==='element'&&source.tag==='input'&&source.attributes?.type==='checkbox'?'checked':'entered'} value; fallback ${expressionDescription(interaction.value)}`:interaction.action==='navigate'?`Requests navigation to ${readableName(interaction.routeId)}`:`Requests ${actionName(interaction.actionId)}`,
   }));
   if(source.kind==='component')for(const [name,binding] of Object.entries(source.outputs??{}))events.push({name:`On ${readableName(name)}`,value:'setState' in binding?`Updates ${structureStateName(binding.setState.key)}`:`Requests ${actionName(binding.invokeAction.actionId)}`});
   return [...structuralFacts(document,sourceId),...events];

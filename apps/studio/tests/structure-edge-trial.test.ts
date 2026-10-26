@@ -32,7 +32,7 @@ it('compacts only duplicated literal content, keeping distinct accessible/visibl
 it('labels parallel reference locations once without removing edges or declared source paths',()=>{
  const source=fixture(),graph=projectStructure(source),edges=structureConnectionEdges(graph);
  expect(edges.map(e=>[e.id,e.source,e.target,e.data])).toEqual(graph.edges.map(e=>[e.id,e.source,e.target,e.data]));
- const reads=edges.filter(e=>e.source===structureId(source.id,'node','field')&&String(e.label??'').startsWith('Reads'));
- expect(reads).toHaveLength(1);expect(reads[0]?.label).toBe('Reads · 2');
+ const reads=edges.filter(e=>e.target===structureId(source.id,'node','field')&&e.data?.role==='value');
+ expect(reads).toHaveLength(1);expect(reads[0]?.label).toBe('Value');
  expect(edges.some(e=>e.label==='Updates')).toBe(true);expect(edges.every(e=>!!e.markerEnd)).toBe(true);
 });

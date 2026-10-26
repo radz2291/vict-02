@@ -4,29 +4,31 @@
   import {groupStructureRelationships,connectionKinds} from './structure-connections.js';
   import { onMount } from 'svelte';
   import type { UiDocument } from '@victframework/ui';
-  import { projectStructure, structureFacts, structureNodePresentation, parseStructureId, type StructureHandoff } from './structure.js';
+  import { projectStructure, structureFacts, structureNodePresentation, parseStructureId, type StructureHandoff, type StructureContext } from './structure.js';
   import { resolveOccurrence } from '@victframework/ui-editor';
   import { readableName } from './presentation.js';
   import { structureBehavior } from './structure-behavior.js';
-  let { document, selectedId, selectedOccurrence, layerProvenance, blocked = false, containFocus = false, embedded=false, page = $bindable('properties'), onClose, onSelect, onNavigate }: {
-    document: UiDocument; selectedId?: string; selectedOccurrence?:string; layerProvenance?:{occurrence:string;detail:string}; embedded?:boolean; blocked?: boolean; containFocus?: boolean; page?: 'properties' | 'relationships' | 'technical' | 'none';
+  let { document, context={}, selectedId, selectedOccurrence, layerProvenance, blocked = false, containFocus = false, embedded=false, page = $bindable('properties'), onClose, onSelect, onNavigate }: {
+    document: UiDocument; context?:StructureContext; selectedId?: string; selectedOccurrence?:string; layerProvenance?:{occurrence:string;detail:string}; embedded?:boolean; blocked?: boolean; containFocus?: boolean; page?: 'properties' | 'relationships' | 'technical' | 'none';
     onClose: () => void; onSelect: (id: string) => void; onNavigate: (request: StructureHandoff) => void;
   } = $props();
-  const graph = $derived(projectStructure(document));
+  const graph = $derived(projectStructure(document,context));
   const selected = $derived(graph.nodes.find(node => node.id === selectedId));
   const label = $derived(selected ? structureNodePresentation(document, selected.data).label : 'No selection');
   const fullLabel = $derived(selected ? structureNodePresentation(document, selected.data).fullLabel : 'No selection');
-  const facts = $derived(selected ? structureFacts(document, selected) : []);
+  const facts = $derived(selected ? structureFacts(document, selected,context) : []);
   const relationships = $derived(groupStructureRelationships(graph,selectedId));
   const summary = $derived.by(() => {
     if (!selected) return [];
     const tuple = parseStructureId(selected.id);
     const node = selected.data.sourceId ? document.nodes[selected.data.sourceId] : undefined;
-    const nativeType=node?.kind==='element' ? ({h1:'Heading',h2:'Heading',h3:'Heading',h4:'Heading',h5:'Heading',h6:'Heading',p:'Paragraph',input:node.attributes?.type==='checkbox'?'Checkbox':'Input',select:'Select',textarea:'Text area'} as Record<string,string>)[node.tag] ?? readableName(node.tag) : undefined;
-    const result = [{name:'Type',value:nativeType ?? selected.data.kindLabel ?? readableName(selected.data.kind)}];
+    const result = [{name:'Type',value:structureNodePresentation(document,selected.data).kindLabel ?? readableName(selected.data.kind)}];
+    if(selected.data.scope)result.push({name:'Scope',value:selected.data.scope});
+    if(selected.data.support)result.push({name:'Support',value:selected.data.support});
+    for(const issue of selected.data.issues??[])result.push({name:'Warning',value:issue});
     if (node?.kind === 'element') result.push({name:'Children',value:String(node.children.length)});
     if (node?.kind === 'component') result.push({name:'Component',value:readableName(node.definitionId)});
-    if (node?.kind === 'text') result.push({name:'Content',value:node.content.type === 'literal' ? String(node.content.value) : 'Connected to screen data'});
+    if (node?.kind === 'text') result.push({name:'Content',value:node.content.type === 'literal' ? String(node.content.value) : 'Declared expression (see Relationships)'});
     if (node) result.push(...structureBehavior(document,node.id));
     const styleNames:Record<string,string>={display:'Layout','flex-direction':'Direction',gap:'Spacing',width:'Width',height:'Height',padding:'Padding','font-size':'Text size',color:'Text color','background-color':'Background'};
     for(const style of node?.localStyle??[])if(styleNames[style.property])result.push({name:styleNames[style.property]!,value:style.value.type==='text'?style.value.value:style.value.type==='token'?'Theme value':'Connected value'});
@@ -81,7 +83,7 @@
       <dl class="useful-facts">{#each summary as fact}<div><dt>{fact.name}</dt><dd>{fact.value}</dd></div>{/each}</dl>
       </div></section>
       <section class:expanded={page==='relationships'} aria-label="Selection relationships"><button class="studio-section-header" type="button" aria-expanded={page==='relationships'} aria-controls={accordionId+'-relationships'} onclick={()=>page=page==='relationships'?'none':'relationships'}>Relationships</button><div id={accordionId+'-relationships'} class="details-body" hidden={page!=='relationships'}>
-      <div class="details-relationships">{#each relationships as group (group.targetId)}{@const other=graph.nodes.find(node=>node.id===group.targetId)}<button type="button" disabled={blocked} title={group.relations.flatMap(relation=>relation.paths).join('\n')} onclick={()=>{if(other)onSelect(other.id);}}><span class="relationship-label">{#each group.relations as relation}<span class="relationship-kind"><i aria-hidden="true" style:background={connectionKinds[relation.kind].color}></i>{relation.label}{relation.count>1?` (${relation.count})`:''}</span>{/each}</span><strong title={other?structureNodePresentation(document,other.data).fullLabel:undefined}>{other?structureNodePresentation(document,other.data).label:'Source item'}</strong>{#if group.count>1}<small>{group.count} source reference locations</small>{/if}</button>{/each}</div>
+      <div class="details-relationships">{#each relationships as group (group.targetId)}{@const other=graph.nodes.find(node=>node.id===group.targetId)}<button type="button" disabled={blocked} title={group.relations.flatMap(relation=>[relation.description??'',relation.origin==='host'?'Host connection':'Document declaration',...relation.paths]).filter(Boolean).join('\n')} onclick={()=>{if(other)onSelect(other.id);}}><span class="relationship-label">{#each group.relations as relation}<span class="relationship-kind"><i aria-hidden="true" style:background={connectionKinds[relation.kind].color}></i><span aria-label={relation.direction}>{relation.direction==='incoming'?'←':'→'}</span> {relation.label}{relation.count>1?` (${relation.count})`:''}</span>{/each}</span><strong title={other?structureNodePresentation(document,other.data).fullLabel:undefined}>{other?structureNodePresentation(document,other.data).label:'Source item'}</strong>{#if group.count>1}<small>{group.count} source reference locations</small>{/if}</button>{/each}</div>
       {#if !relationships.length}<p>No declared relationships.</p>{/if}
       </div></section>
       <section class:expanded={page==='technical'} aria-label="Selection technical information"><button class="studio-section-header" type="button" aria-expanded={page==='technical'} aria-controls={accordionId+'-technical'} onclick={()=>page=page==='technical'?'none':'technical'}>Technical information</button><div id={accordionId+'-technical'} class="details-body" hidden={page!=='technical'}><dl>{#each [...provenance,...facts] as fact}<div><dt>{fact.path}</dt><dd>{fact.value}</dd></div>{/each}</dl></div></section>

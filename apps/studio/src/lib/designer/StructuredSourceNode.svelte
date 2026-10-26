@@ -4,6 +4,7 @@
   import StructureTypeIcon from './StructureTypeIcon.svelte';
   import type {StructurePort} from './structure-connections.js';
   let {id,data,selected}:NodeProps=$props();
+  const issues=$derived((data.issues??[]) as string[]);
   const ports=$derived((data.ports ?? []) as StructurePort[]);
   const incoming=$derived(ports.filter(port=>port.side==='in'));
   const outgoing=$derived(ports.filter(port=>port.side==='out'));
@@ -19,7 +20,7 @@
     <div class="structured-node-identity">{#if String(data.kindLabel ?? data.kind).toLowerCase()!==String(data.label).toLowerCase()}<span class="vict-source-kind">{data.kindLabel ?? data.kind}</span>{/if}<strong title={String(data.fullLabel ?? data.label)}>{data.label}</strong></div>
     {#if toggleGroup}<button type="button" class="node-group-toggle nodrag nopan" aria-label={`${data.collapsed?'Expand':'Collapse'} ${data.label}`} aria-expanded={!data.collapsed} onkeydown={event=>{if(event.key==='Enter'||event.key===' ')event.stopPropagation();}} onclick={event=>{event.stopPropagation();toggleGroup();}}>{data.collapsed?'›':'⌄'}</button>{/if}
   </header>
-  {#if data.summary || data.collapsedCount}<div class="structured-node-facts"><span class="vict-source-summary" title={String(data.summary ?? '')}>{data.collapsedCount?`${data.collapsedCount} items inside`:data.summary}</span></div>{/if}
+  {#if data.summary || data.collapsedCount || data.support || issues.length}<div class="structured-node-facts"><span class="vict-source-summary" title={String(data.summary ?? '')}>{data.collapsedCount?`${data.collapsedCount} items inside`:data.summary}</span>{#if data.support || issues.length}<span class="vict-source-summary" title={issues.join('\n')}>{data.support ?? 'Warning'}</span>{/if}</div>{/if}
   {#each [incoming,outgoing] as side,index}
       {#each side as port,slot (port.id)}<div class="node-socket" style:left={horizontal?(index===0?'0%':'100%'):`${(slot+1)*100/(side.length+1)}%`} style:top={horizontal?`${(slot+1)*100/(side.length+1)}%`:(index===0?'0%':'100%')} style:--connection-color={port.color}>
         <Handle id={port.id} type={port.side==='out'?'source':'target'} position={horizontal?(port.side==='out'?Position.Right:Position.Left):(port.side==='out'?Position.Bottom:Position.Top)} isConnectable={false} isConnectableStart={false} isConnectableEnd={false} class="declared-connection-handle" aria-hidden="true" tabindex={-1}/>
@@ -36,7 +37,7 @@
   strong{display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere;min-height:20px;line-height:20px}
   .node-group-toggle{border:0;background:transparent;color:var(--vict-color-textMuted);font:18px/20px system-ui;cursor:pointer;padding:0;width:20px;height:20px;border-radius:3px;flex:none}
   .node-group-toggle:hover{background:var(--vict-control-selected)}.node-group-toggle:focus-visible{outline:2px solid var(--vict-color-focusRing)}
-  .structured-node-facts{padding:0 8px 8px}
+  .structured-node-facts{padding:0 8px 8px;display:flex;flex-direction:column;gap:3px}
   .node-socket{position:absolute;width:0;height:0;pointer-events:none}
   :global(.declared-connection-handle){width:7px;height:7px;background:var(--connection-color);border:1px solid white;pointer-events:none}
   :global(.edit-handle){width:10px;height:10px;background:#4f46e5}:global(.edit-handle.valid){background:#15803d;outline:3px solid #bbf7d0}

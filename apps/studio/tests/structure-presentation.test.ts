@@ -23,7 +23,7 @@ it('simplifies only redundant literal leaves, keeping dynamic bindings, standalo
   expect(simple.nodes.some(node => node.data.sourceId === 'title')).toBe(true);
   expect(simple.nodes.some(node => node.data.sourceId === 'live-text')).toBe(true);
   expect(simple.nodes.some(node => node.data.sourceId === 'standalone')).toBe(true);
-  expect(simple.edges.some(edge => edge.data?.path === 'live-text.content.expression')).toBe(true);
+  expect(simple.edges.some(edge => edge.data?.path === '/nodes/live-text/content/expression')).toBe(true);
   expect(full.nodes.some(node => node.data.sourceId === 'title-text')).toBe(true);
   expect(canonicalUiDocument(source).contentDigest).toBe(before);
 });

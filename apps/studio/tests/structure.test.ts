@@ -36,7 +36,7 @@ describe('source structure projection and canonical edits', () => {
     }
     for (const edge of graph.edges) {
       expect(edge.id).not.toMatch(/["\\\[\]]/);
-      expect(JSON.parse(decodeURIComponent(edge.id))).toEqual([edge.source, edge.target, edge.label, expect.any(String)]);
+      expect(JSON.parse(decodeURIComponent(edge.id))).toEqual([edge.source, edge.target, edge.data?.role, expect.any(String)]);
     }
     expect(parseStructureId(structureId(documentId, 'node', sourceId))).toEqual([documentId, 'node', sourceId]);
     for (const malformed of ['%', '%E0%A4', 'null', '%5B1%2C2%2C3%5D', '%5B%22one%22%5D', '%7B%7D']) expect(parseStructureId(malformed)).toBeUndefined();
@@ -76,7 +76,7 @@ describe('source structure projection and canonical edits', () => {
       'conditional-text': { kind: 'text', id: 'conditional-text', content: { type: 'literal', value: 'Conditional' } },
     } };
     const graph = projectStructure(document);
-    expect(graph.edges.map(edge => edge.label)).toEqual(expect.arrayContaining(['definition root', 'uses definition', 'slot: body', 'repeat template', 'branch: else 1', 'reads: state.value', 'writes state', 'invokes action']));
+    expect(graph.edges.map(edge => edge.label)).toEqual(expect.arrayContaining(['Defines', 'Uses', 'Slot', 'Template', 'Otherwise', 'Value', 'Updates', 'Invokes']));
     expect(graph.edges.every(edge => graph.nodes.some(node => node.id === edge.source) && graph.nodes.some(node => node.id === edge.target))).toBe(true);
     expect(structureOccurrence(document, 'definition-text')).toBeUndefined();
     expect(structureOccurrence(document, 'template')).toBeUndefined();
