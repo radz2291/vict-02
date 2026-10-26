@@ -71,17 +71,15 @@
 .studio-type-scope[data-studio-typography] .uv-inspector .details-identity {margin-bottom:var(--studio-space-2)}
 .studio-type-scope[data-studio-typography] .details-identity {margin-bottom:var(--studio-space-2)}
 
-/* Regular text stays quiet; active selection alone raises workspace weight. */
+/* Selection weight is reserved for panel context; menu ticks and mode selectors suffice. */
 .studio-type-scope[data-studio-typography] .uv-layers .is-parent .name {font-weight:var(--studio-weight-label)}
 .studio-type-scope[data-studio-typography] .scenario-choice strong {font:inherit}
 .studio-type-scope[data-studio-typography] .action-card :is(p,.action-inputs>span) {font:var(--studio-font-ui)}
-.studio-type-scope[data-studio-typography] :is([role=tab][aria-selected=true],button[aria-pressed=true],.workspace-menus>button[aria-expanded=true],.studio-section-header[aria-expanded=true],.document-section-header[aria-expanded=true],.scenario-choice[aria-pressed=true]) {font-weight:var(--studio-weight-selected)}
+.studio-type-scope[data-studio-typography] :is([role=tab][aria-selected=true],button[aria-pressed=true]:not(.canvas-modes button),.studio-section-header[aria-expanded=true],.document-section-header[aria-expanded=true],.scenario-choice[aria-pressed=true]) {font-weight:var(--studio-weight-selected)}
 .studio-type-scope[data-studio-typography] .uv-layers [role=treeitem][aria-selected=true] .name,
 .studio-type-scope[data-studio-typography] .vict-source-node.selected strong {font-weight:var(--studio-weight-selected)}
-.studio-type-scope.workspace-menu[data-studio-typography] [aria-checked=true] {font-weight:var(--studio-weight-selected)}
 
 .studio-type-scope[data-studio-typography] .structure-tools [role=menubar]>button {font:var(--studio-font-ui)}
-.studio-type-scope[data-studio-typography] .structure-tools [role=menubar]>button[aria-expanded=true] {font-weight:var(--studio-weight-selected)}
 
 /* Content identity keeps a small hierarchy, independent of control selection. */
 .studio-type-scope[data-studio-typography] :is(.action-card h3,.data-editor-heading h2,.data-row strong,.details-relationships button strong) {font:var(--studio-font-ui);font-weight:var(--studio-weight-content)}
