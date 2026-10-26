@@ -5,6 +5,7 @@
   import { FlowCanvas, FlowNavigation, Controls, layoutGraph, LayoutFence, type Node, type Edge, type Connection, type Viewport, type LayoutDirection } from '@victframework/ui-flow-svelte';
   import StructureEdge from './StructureEdge.svelte';
   import StructuredSourceNode from './StructuredSourceNode.svelte';
+  import {structureTraceContext,structureTrace,type StructureTraceContext} from './structure-trace.js';
   import {structurePorts,structureConnectionEdges} from './structure-connections.js';
   import '@victframework/ui-flow-svelte/styles.css';
   import './studio-cards.css';
@@ -28,8 +29,19 @@
   } = $props();
   let nodes = $state<Node<StructureNodeData>[]>([]);
   let edges = $state<Edge[]>([]);
+  let hoveredEdge=$state<string>();
+  let focusedEdge=$state<string>();
+  let pinnedEdge=$state<string>();
+  const tracedConnection=$derived(structureTrace(edges,hoveredEdge ?? focusedEdge ?? pinnedEdge ?? edges.find(edge=>edge.selected)?.id));
+  setContext<StructureTraceContext>(structureTraceContext,{current:()=>tracedConnection});
+  function clearTrace(){hoveredEdge=undefined;focusedEdge=undefined;pinnedEdge=undefined;edges=edges.map(edge=>edge.selected?{...edge,selected:false}:edge);}
+  function focusConnection(event:FocusEvent){
+    const target=event.target;
+    focusedEdge=target instanceof Element?target.closest('.svelte-flow__edge')?.getAttribute('data-id')??undefined:undefined;
+  }
   const captionPaths=new SvelteMap<string,string>(),captionLabels=new SvelteMap<string,string>();
-  const captions=$derived(layoutCaptions(captionPaths,captionLabels,nodes.map(node=>({x:node.position.x,y:node.position.y,width:node.measured?.width??node.width??224,height:node.measured?.height??node.height??94}))));
+  const activeCaptionLabels=$derived(new Map(tracedConnection ? [[tracedConnection.id,captionLabels.get(tracedConnection.id)??'']] : []));
+  const captions=$derived(layoutCaptions(captionPaths,activeCaptionLabels,nodes.map(node=>({x:node.position.x,y:node.position.y,width:node.measured?.width??node.width??224,height:node.measured?.height??node.height??94}))));
   setContext<CaptionContext>(captionContext,{paths:captionPaths,labels:captionLabels,captions:()=>captions});
   let viewport = $state<Viewport>({ x: 24, y: 24, zoom: .85 });
   let allowMoves = $state(false);
@@ -98,6 +110,7 @@
   $effect(() => {
     const id = document.id;
     if (id === untrack(() => layoutDocument)) return;
+    untrack(clearTrace);
     untrack(remember);
     layoutDocument = id;
     const saved = presentations.get(id);
@@ -179,6 +192,7 @@
   });
   function locate(ids: string[] = []) { navigationIds = ids; navigationRequest = {}; }
   function select(node: Node<StructureNodeData>) {
+    clearTrace();
     if (blocked) { onNotice('Apply or cancel your draft before changing selection.'); return; }
     inspectedId = node.id;
     onInspectSelection?.(node.id);
@@ -203,6 +217,7 @@
     allowMoves = page === 'move'; inspectionPage = page; inspectionOpen = true;
   }
   function deselect() {
+    clearTrace();
     closeInspection(false);
     if (blocked) return;
     inspectedId = undefined; onDeselect?.();
@@ -216,6 +231,7 @@
     if (node && (event.key === 'Enter' || event.key === ' ')) select(node);
   }
   function graphEscape(event: KeyboardEvent) {
+    if(active && !activeMenu && event.key==='Escape' && tracedConnection && event.target instanceof Element && structureElement?.contains(event.target) && !event.target.closest('[role=menu]')){event.preventDefault();event.stopPropagation();clearTrace();return;}
     if (!active || activeMenu || event.key !== 'Escape' || !(event.target instanceof HTMLElement) || event.target.closest('[role="menu"]')) return;
     if(!event.target.matches('.svelte-flow__node')){
       if(structureElement?.contains(event.target)){escape(event);if(event.defaultPrevented)event.stopPropagation();}
@@ -337,12 +353,15 @@
     </div>
   {/if}
   <div class="structure-body">
-    <div class="structure-canvas" inert={presentation === 'drawer' && inspectionOpen}>
+    <div class="structure-canvas" onfocusin={focusConnection} onfocusout={()=>{focusedEdge=undefined;}} inert={presentation === 'drawer' && inspectionOpen}>
       <FlowCanvas bind:nodes bind:edges bind:viewport {nodeTypes} {edgeTypes} minZoom={.35} maxZoom={2} colorMode="light" showControls={false} showMiniMap={nodes.length > 12}
         nodesConnectable={allowMoves && !blocked} elementsSelectable={!blocked} deleteKey={null} multiSelectionKey={null} selectionKey={null} autoPanOnNodeFocus={false} isValidConnection={valid}
         onnodeclick={({ node }) => select(node as Node<StructureNodeData>)}
         onkeydown={keyboardSelection}
         onpaneclick={deselect}
+        onedgepointerenter={({edge})=>{hoveredEdge=edge.id;}}
+        onedgepointerleave={({edge})=>{if(hoveredEdge===edge.id)hoveredEdge=undefined;}}
+        onedgeclick={({edge})=>{pinnedEdge=edge.id;}}
         onnodedragstart={() => fence.cancel()}
         onconnectstart={() => { connectionStart = { documentId: document.id, revision }; }}
         onclickconnectstart={() => { connectionStart = { documentId: document.id, revision }; }} onconnect={connect}>
@@ -425,7 +444,7 @@
   .structure-scale-hint{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:8px;background:var(--vict-color-surface);padding:4px 8px;border:1px solid var(--vict-color-border);border-radius:5px;font:var(--studio-font-meta);white-space:nowrap;max-width:calc(100% - 110px)}.structure-scale-hint button{font:inherit;padding:2px 4px}
   .structure-canvas :global(.svelte-flow) { --xy-background-color: #f8fafc; --xy-minimap-background-color: #fff; --xy-controls-button-background-color: #fff; }
   .structure-canvas :global(.svelte-flow__minimap) { width: 110px; height: 72px; }
-  .structure-canvas :global(.svelte-flow__edge.selected path) { stroke: #4f46e5 !important; stroke-width: 2.5px; }
+  .structure-canvas :global(.svelte-flow__edge.selected .svelte-flow__edge-path) { stroke-width: 2.5px; }
   .structure-empty { position: absolute; top: 35%; left: 10%; right: 10%; text-align: center; color: #64748b; }
   .structure-status { position: absolute; top: 8px; left: 10px; right: 10px; margin: 0; color: #65748d; pointer-events: none; font-size: 11px; }
   .structure-details { display: flex; flex-direction: column; width: min(320px, 44%); min-width: 240px; min-height: 0; flex-shrink: 0; border-left: 1px solid #e1e6ee; background: white; overflow: hidden; }

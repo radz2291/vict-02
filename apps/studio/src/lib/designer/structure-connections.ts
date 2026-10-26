@@ -98,6 +98,8 @@ export function structureConnectionEdges(graph: StructureGraph): StructureGraph[
       ...edge,
       sourceHandle: `out-${edge.data?.role ?? kind}`,
       targetHandle: `in-${edge.data?.role ?? kind}`,
+      focusable: group[0]?.id === edge.id,
+      selectable: group[0]?.id === edge.id,
       label:
         group[0]?.id === edge.id
           ? `${name}${group.length > 1 ? ` · ${group.length}` : ''}`
