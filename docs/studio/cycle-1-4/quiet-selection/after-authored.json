@@ -1,0 +1,86 @@
+{
+  "authored": [
+    {
+      "color": "rgb(16, 24, 40)",
+      "font": "system-ui, sans-serif",
+      "id": "",
+      "line": "26px",
+      "padding": "0px",
+      "size": "20px",
+      "tag": "H1",
+      "weight": "700"
+    },
+    {
+      "color": "rgb(52, 64, 84)",
+      "font": "system-ui, sans-serif",
+      "id": "",
+      "line": "18.125px",
+      "padding": "0px",
+      "size": "12.5px",
+      "tag": "LABEL",
+      "weight": "600"
+    },
+    {
+      "color": "rgb(16, 24, 40)",
+      "font": "system-ui, sans-serif",
+      "id": "onbNameInput",
+      "line": "20.3px",
+      "padding": "10px 12px",
+      "size": "14px",
+      "tag": "INPUT",
+      "weight": "400"
+    },
+    {
+      "color": "rgb(52, 64, 84)",
+      "font": "system-ui, sans-serif",
+      "id": "",
+      "line": "18.125px",
+      "padding": "0px",
+      "size": "12.5px",
+      "tag": "LABEL",
+      "weight": "600"
+    },
+    {
+      "color": "rgb(16, 24, 40)",
+      "font": "system-ui, sans-serif",
+      "id": "onbEmailInput",
+      "line": "20.3px",
+      "padding": "10px 12px",
+      "size": "14px",
+      "tag": "INPUT",
+      "weight": "400"
+    },
+    {
+      "color": "rgb(52, 64, 84)",
+      "font": "system-ui, sans-serif",
+      "id": "",
+      "line": "18.125px",
+      "padding": "0px",
+      "size": "12.5px",
+      "tag": "LABEL",
+      "weight": "600"
+    },
+    {
+      "color": "rgb(0, 0, 0)",
+      "font": "system-ui, sans-serif",
+      "id": "onbNotifInput",
+      "line": "17.4px",
+      "padding": "0px",
+      "size": "12px",
+      "tag": "INPUT",
+      "weight": "400"
+    },
+    {
+      "color": "rgb(52, 64, 84)",
+      "font": "system-ui, sans-serif",
+      "id": "",
+      "line": "18.85px",
+      "padding": "0px",
+      "size": "13px",
+      "tag": "LABEL",
+      "weight": "400"
+    }
+  ],
+  "revision": "r1.r1",
+  "saved": "✓ Saved"
+}

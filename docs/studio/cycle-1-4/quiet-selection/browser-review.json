@@ -1,0 +1,160 @@
+{
+  "candidate": "4de22c897d530a2f99025f73751a359ebe0bb4b0",
+  "method": "Root-operated actual production CUA; independent gate pending",
+  "url": "http://127.0.0.22:5616/design",
+  "actions": [
+    {
+      "line": "18px",
+      "padding": "4px 8px",
+      "size": "12px",
+      "text": "File",
+      "weight": "400"
+    },
+    {
+      "line": "18px",
+      "padding": "4px 8px",
+      "size": "12px",
+      "text": "Edit",
+      "weight": "400"
+    },
+    {
+      "line": "18px",
+      "padding": "4px 8px",
+      "size": "12px",
+      "text": "View",
+      "weight": "400"
+    },
+    {
+      "line": "18px",
+      "padding": "4px 8px",
+      "size": "12px",
+      "text": "Preview",
+      "weight": "400"
+    },
+    {
+      "line": "18px",
+      "padding": "8px 12px",
+      "size": "12px",
+      "text": "Layers",
+      "weight": "400"
+    },
+    {
+      "line": "18px",
+      "padding": "8px 12px",
+      "size": "12px",
+      "text": "Data",
+      "weight": "400"
+    },
+    {
+      "line": "18px",
+      "padding": "8px 12px",
+      "size": "12px",
+      "text": "Actions",
+      "weight": "500"
+    },
+    {
+      "line": "18px",
+      "padding": "0px",
+      "size": "12px",
+      "text": "Submit",
+      "weight": "400"
+    },
+    {
+      "line": "18px",
+      "padding": "3px 5px",
+      "size": "12px",
+      "text": "Simulated",
+      "weight": "400"
+    },
+    {
+      "line": "18px",
+      "padding": "0px",
+      "size": "12px",
+      "text": "Uses",
+      "weight": "400"
+    },
+    {
+      "line": "18px",
+      "padding": "4px 7px",
+      "size": "12px",
+      "text": "Message",
+      "weight": "400"
+    },
+    {
+      "line": "18px",
+      "padding": "4px 7px",
+      "size": "12px",
+      "text": "Agreement",
+      "weight": "400"
+    },
+    {
+      "line": "18px",
+      "padding": "8px 12px",
+      "size": "12px",
+      "text": "Source",
+      "weight": "400"
+    }
+  ],
+  "layers": [
+    {
+      "selected": "false",
+      "text": "Document and Selection review",
+      "weight": "400"
+    },
+    {
+      "selected": "false",
+      "text": "Section",
+      "weight": "400"
+    },
+    {
+      "selected": "false",
+      "text": "Create your workspace",
+      "weight": "400"
+    },
+    {
+      "selected": "false",
+      "text": "Set up your workspace in under a minute — just the essentials.",
+      "weight": "400"
+    },
+    {
+      "selected": "false",
+      "text": "Label · Full name",
+      "weight": "400"
+    },
+    {
+      "selected": "true",
+      "text": "Full name",
+      "weight": "500"
+    }
+  ],
+  "buttons": [
+    {
+      "line": "18px",
+      "size": "12px",
+      "text": "Back",
+      "weight": "400"
+    },
+    {
+      "line": "18px",
+      "size": "12px",
+      "text": "Apply",
+      "weight": "400"
+    }
+  ],
+  "authoredUnchanged": true,
+  "revision": "r1.r1",
+  "providerTurn": false,
+  "checks": {
+    "ordinaryMenus400": true,
+    "inactiveHeadings400": true,
+    "expandedHeading500": true,
+    "selectedLayer500": true,
+    "otherLayers400": true,
+    "actionNamesBadgesChips12Line18Weight400": true,
+    "backApply12Line18Weight400": true
+  },
+  "limits": [
+    "No new provider turn or full gallery sweep",
+    "Independent verification and owner acceptance pending"
+  ]
+}
