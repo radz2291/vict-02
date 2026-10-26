@@ -7,8 +7,9 @@
   --studio-font-reading: 400 13px/20px var(--studio-font-family);
   --studio-font-meta: 400 11px/16px var(--studio-font-family);
   --studio-font-code: 400 11px/16px var(--studio-font-mono);
-  --studio-font-title: 600 14px/20px var(--studio-font-family);
-  --studio-weight-label: 500;
+  --studio-font-title: 400 14px/20px var(--studio-font-family);
+  --studio-weight-label: 400;
+  --studio-weight-selected: 500;
   --studio-space-1: 4px;
   --studio-space-2: 8px;
   --studio-space-3: 12px;
@@ -21,9 +22,8 @@
 .studio-type-scope[data-studio-typography] :is(.palette,.uv-inspector,.composer,.uv-layers,.starting-value) {font:var(--studio-font-ui)}
 .studio-type-scope[data-studio-typography] :is(.uv-inspector,.composer,.starting-value) :is(input,textarea,select,button,label),
 .studio-type-scope[data-studio-typography] :is(.palette [role=tab],.canvas-modes button,.workspace-menus>button,.data-editor-toolbar button,.details-handoff,.data-row,.source-actions button,.scenario-choice,.test-actions button) {font:var(--studio-font-ui)}
-.studio-type-scope[data-studio-typography] :is(.studio-section-header,.document-section-header,.source-details header strong,.chat-heading strong,.panel-header strong,.data-editor-heading h2,.section-heading h2,.uv-layers .is-parent .name,.uv-inspector h3,.composer h3,.action-card h3,.application-attachment h3,.studio-chat-details h3,.studio-chat-details h4) {font:var(--studio-font-ui);font-weight:var(--studio-weight-label)}
+.studio-type-scope[data-studio-typography] :is(.studio-section-header,.document-section-header,.source-details header strong,.chat-heading strong,.panel-header strong,.data-editor-heading h2,.section-heading h2,.uv-inspector h3,.composer h3,.action-card h3,.application-attachment h3,.studio-chat-details h3,.studio-chat-details h4) {font:var(--studio-font-ui);font-weight:var(--studio-weight-label)}
 .studio-type-scope.source-details[data-studio-typography] header strong {font-weight:var(--studio-weight-label)}
-.studio-type-scope[data-studio-typography] :is([role=tab][aria-selected=true],.workspace-menus>button,.canvas-modes button[aria-pressed=true]) {font-weight:var(--studio-weight-label)}
 .studio-type-scope[data-studio-typography] :is(.save-state,.agent-status,.details-model,.scope-label,.connection-empty,.structure-status,.vict-source-kind,.vict-source-summary,.child-count,.uv-layers footer,.data-editor-heading>span,.data-row small,.data-preview,.panel-hint,.scenario-choice span,.reset-hint,.rule-context,.selection-name,.composition-link,.composer small,.keep-aside span) {font:var(--studio-font-meta)}
 .studio-type-scope.workspace-status[data-studio-typography] {font:var(--studio-font-meta)}
 .studio-type-scope[data-studio-typography] :is(.source-editor,.source-preview,.studio-chat-details .details-record,.uv-inspector pre,[aria-label='Selection technical information'] dl) {font:var(--studio-font-code)}
@@ -69,3 +69,15 @@
 .studio-type-scope[data-studio-typography] .uv-layers .search input {font:var(--studio-font-ui);padding:var(--studio-space-1) var(--studio-space-2);min-height:32px}
 .studio-type-scope[data-studio-typography] .uv-inspector .details-identity {margin-bottom:var(--studio-space-2)}
 .studio-type-scope[data-studio-typography] .details-identity {margin-bottom:var(--studio-space-2)}
+
+/* Regular text stays quiet; active selection alone raises workspace weight. */
+.studio-type-scope[data-studio-typography] .uv-layers .is-parent .name {font-weight:var(--studio-weight-label)}
+.studio-type-scope[data-studio-typography] :is(.data-row,.details-relationships button,.scenario-choice) strong {font:inherit}
+.studio-type-scope[data-studio-typography] .action-card :is(h3,p,.simulation-badge,.action-inputs>span) {font:var(--studio-font-ui)}
+.studio-type-scope[data-studio-typography] :is([role=tab][aria-selected=true],button[aria-pressed=true],.workspace-menus>button[aria-expanded=true],.studio-section-header[aria-expanded=true],.document-section-header[aria-expanded=true],.scenario-choice[aria-pressed=true]) {font-weight:var(--studio-weight-selected)}
+.studio-type-scope[data-studio-typography] .uv-layers [role=treeitem][aria-selected=true] .name,
+.studio-type-scope[data-studio-typography] .vict-source-node.selected strong {font-weight:var(--studio-weight-selected)}
+.studio-type-scope.workspace-menu[data-studio-typography] [aria-checked=true] {font-weight:var(--studio-weight-selected)}
+
+.studio-type-scope[data-studio-typography] .structure-tools [role=menubar]>button {font:var(--studio-font-ui)}
+.studio-type-scope[data-studio-typography] .structure-tools [role=menubar]>button[aria-expanded=true] {font-weight:var(--studio-weight-selected)}
