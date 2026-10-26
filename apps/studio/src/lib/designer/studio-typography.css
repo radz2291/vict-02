@@ -71,11 +71,11 @@
 .studio-type-scope[data-studio-typography] .uv-inspector .details-identity {margin-bottom:var(--studio-space-2)}
 .studio-type-scope[data-studio-typography] .details-identity {margin-bottom:var(--studio-space-2)}
 
-/* Selection weight is reserved for panel context; menu ticks and mode selectors suffice. */
+/* Menus use ticks; active panel context and workspace mode retain a small weight step. */
 .studio-type-scope[data-studio-typography] .uv-layers .is-parent .name {font-weight:var(--studio-weight-label)}
 .studio-type-scope[data-studio-typography] .scenario-choice strong {font:inherit}
 .studio-type-scope[data-studio-typography] .action-card :is(p,.action-inputs>span) {font:var(--studio-font-ui)}
-.studio-type-scope[data-studio-typography] :is([role=tab][aria-selected=true],button[aria-pressed=true]:not(.canvas-modes button),.studio-section-header[aria-expanded=true],.document-section-header[aria-expanded=true],.scenario-choice[aria-pressed=true]) {font-weight:var(--studio-weight-selected)}
+.studio-type-scope[data-studio-typography] :is([role=tab][aria-selected=true],button[aria-pressed=true],.studio-section-header[aria-expanded=true],.document-section-header[aria-expanded=true],.scenario-choice[aria-pressed=true]) {font-weight:var(--studio-weight-selected)}
 .studio-type-scope[data-studio-typography] .uv-layers [role=treeitem][aria-selected=true] .name,
 .studio-type-scope[data-studio-typography] .vict-source-node.selected strong {font-weight:var(--studio-weight-selected)}
 
