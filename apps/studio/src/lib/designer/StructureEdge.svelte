@@ -20,7 +20,7 @@
   const quiet=$derived(data?.kind==='containment' && !data?.description && label==='Contains');
   const width=$derived(Math.min(172,Math.max(52,String(label??'').length*6+16)));
 </script>
-<g class="studio-edge" class:quiet>
+<g class="studio-edge" class:quiet class:duplicate={!label}>
   <title>{label ?? 'Declared connection'} · {String(data?.path ?? '')}</title>
   <BaseEdge {id} path={geometry.path} {markerEnd} {style}/>
   {#if label}<foreignObject class="studio-edge-caption" class:revealed={selected} x={geometry.x-width/2} y={geometry.y-20} {width} height={40} pointer-events="none" data-caption={label}>
@@ -28,6 +28,9 @@
   </foreignObject>{/if}
 </g>
 <style>
+  /* Coincident reference locations are represented by the counted caption.
+     Keep their edge/path identity, but do not paint over the visible caption. */
+  .duplicate{opacity:0;pointer-events:none}
   .studio-edge-caption{overflow:visible;pointer-events:none}
   .caption{height:40px;display:flex;align-items:center;justify-content:center;pointer-events:none}
   .caption span{max-width:100%;box-sizing:border-box;padding:2px 5px;border-radius:3px;background:var(--vict-color-surface,#fff);color:var(--vict-color-textMuted,#65748d);font:var(--studio-font-meta,400 11px/16px system-ui,sans-serif);text-align:center;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
