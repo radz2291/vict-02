@@ -1,0 +1,175 @@
+{
+  "design": {
+    "centreOffset": 0,
+    "modes": [
+      {
+        "pressed": "true",
+        "text": "Design",
+        "weight": "500"
+      },
+      {
+        "pressed": "false",
+        "text": "Interact",
+        "weight": "400"
+      },
+      {
+        "pressed": "false",
+        "text": "Structure",
+        "weight": "400"
+      }
+    ]
+  },
+  "menu": [
+    {
+      "text": "View",
+      "weight": "400"
+    },
+    {
+      "text": "Fit canvas✓",
+      "weight": "400"
+    }
+  ],
+  "layers": [
+    {
+      "ancestor": true,
+      "background": "rgba(0, 0, 0, 0)",
+      "guide": null,
+      "nameColour": "rgb(32, 41, 56)",
+      "rowColour": "rgb(32, 41, 56)",
+      "selected": "false",
+      "text": "Document and Selection review"
+    },
+    {
+      "ancestor": true,
+      "background": "rgba(0, 0, 0, 0)",
+      "guide": "rgb(154, 171, 211)",
+      "nameColour": "rgb(32, 41, 56)",
+      "rowColour": "rgb(32, 41, 56)",
+      "selected": "false",
+      "text": "Section"
+    },
+    {
+      "ancestor": false,
+      "background": "rgb(237, 241, 255)",
+      "guide": "rgb(154, 171, 211)",
+      "nameColour": "rgb(48, 70, 165)",
+      "rowColour": "rgb(48, 70, 165)",
+      "selected": "true",
+      "text": "Full name"
+    }
+  ],
+  "splitterBefore": {
+    "background": "rgb(255, 255, 255)",
+    "grip": "rgb(219, 224, 232)",
+    "width": "315"
+  },
+  "splitterWidened": "331",
+  "splitterRestored": "315",
+  "interact": {
+    "centreOffset": -0.0000152587890625,
+    "modes": [
+      {
+        "pressed": "false",
+        "text": "Design",
+        "weight": "400"
+      },
+      {
+        "pressed": "true",
+        "text": "Interact",
+        "weight": "500"
+      },
+      {
+        "pressed": "false",
+        "text": "Structure",
+        "weight": "400"
+      }
+    ]
+  },
+  "structure": {
+    "centreOffset": -0.006256103515625,
+    "modes": [
+      {
+        "pressed": "false",
+        "text": "Design",
+        "weight": "400"
+      },
+      {
+        "pressed": "false",
+        "text": "Interact",
+        "weight": "400"
+      },
+      {
+        "pressed": "true",
+        "text": "Structure",
+        "weight": "500"
+      }
+    ]
+  },
+  "after": {
+    "authored": [
+      {
+        "color": "rgb(16, 24, 40)",
+        "font": "700 20px / 26px system-ui, sans-serif",
+        "id": "",
+        "padding": "0px",
+        "tag": "H1"
+      },
+      {
+        "color": "rgb(52, 64, 84)",
+        "font": "600 12.5px / 18.125px system-ui, sans-serif",
+        "id": "",
+        "padding": "0px",
+        "tag": "LABEL"
+      },
+      {
+        "color": "rgb(16, 24, 40)",
+        "font": "14px / 20.3px system-ui, sans-serif",
+        "id": "onbNameInput",
+        "padding": "10px 12px",
+        "tag": "INPUT"
+      },
+      {
+        "color": "rgb(52, 64, 84)",
+        "font": "600 12.5px / 18.125px system-ui, sans-serif",
+        "id": "",
+        "padding": "0px",
+        "tag": "LABEL"
+      },
+      {
+        "color": "rgb(16, 24, 40)",
+        "font": "14px / 20.3px system-ui, sans-serif",
+        "id": "onbEmailInput",
+        "padding": "10px 12px",
+        "tag": "INPUT"
+      },
+      {
+        "color": "rgb(52, 64, 84)",
+        "font": "600 12.5px / 18.125px system-ui, sans-serif",
+        "id": "",
+        "padding": "0px",
+        "tag": "LABEL"
+      },
+      {
+        "color": "rgb(0, 0, 0)",
+        "font": "12px / 17.4px system-ui, sans-serif",
+        "id": "onbNotifInput",
+        "padding": "0px",
+        "tag": "INPUT"
+      },
+      {
+        "color": "rgb(52, 64, 84)",
+        "font": "13px / 18.85px system-ui, sans-serif",
+        "id": "",
+        "padding": "0px",
+        "tag": "LABEL"
+      }
+    ],
+    "revision": "Interact mode · simulated behavior, no live effects.@3 · v1_fe0ac678e805…",
+    "saved": "✓ Saved"
+  },
+  "authoredUnchanged": true,
+  "observations": [
+    "Immediate goto after submitting sign-in raced its redirect and returned ERR_ABORTED; fresh AX confirmed the logged-in dashboard. Designer then opened normally.",
+    "Disconnected operator targets shown on the dashboard retain historical scope; no target-health claim or provider turn is made."
+  ]
+}
