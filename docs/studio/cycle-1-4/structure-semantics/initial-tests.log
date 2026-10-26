@@ -1,0 +1,339 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/studio-cycle14-selection-panel/260831-VCT-02/apps/studio
+
+7:10:37 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle14-selection-panel/260831-VCT-02/packages/ui-svelte/src/document/DocumentHost.svelte:105:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+7:10:37 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle14-selection-panel/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:309:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+7:10:37 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle14-selection-panel/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:309:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+7:10:37 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle14-selection-panel/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:379:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+7:10:37 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle14-selection-panel/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:379:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+ ❯ tests/structure.test.ts (7 tests | 2 failed) 120ms
+     × encodes graph ids for upstream attribute selectors while preserving exact source tuples 31ms
+     × projects actual definitions, slots, templates, conditions and bindings without invented workflow edges 7ms
+ ❯ tests/structure-completion.test.ts (5 tests | 1 failed) 6611ms
+     × starts with containment, exposes precise source facts and reads/writes on demand 35ms
+7:11:13 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle14-selection-panel/260831-VCT-02/packages/ui-svelte/src/document/DocumentHost.svelte:105:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+7:11:13 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle14-selection-panel/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:309:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+7:11:13 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle14-selection-panel/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:309:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+7:11:13 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle14-selection-panel/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:379:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+7:11:13 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle14-selection-panel/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:379:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+ ❯ tests/ui/structure-clarity.test.ts (4 tests | 2 failed) 2078ms
+   × separates inspect, explicit focus and camera-only framing 402ms
+   × explains declared conditional behaviour and exposes distinct branch meanings in Selection 41ms
+AggregateError:
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1712:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 3000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 3000
+    }
+  ]
+}
+AggregateError:
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1712:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 3000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 3000
+    }
+  ]
+}
+AggregateError:
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1712:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 3000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 3000
+    }
+  ]
+}
+ ❯ tests/structure-clarity.test.ts (6 tests | 2 failed) 203ms
+   × applies visibility and collapsed ownership before a direct neighbourhood without dangling edges 22ms
+   × maps a conditional to its declared controlling data without evaluating the condition 6ms
+ ❯ tests/structure-edge-trial.test.ts (3 tests | 1 failed) 68ms
+   × labels parallel reference locations once without removing edges or declared source paths 15ms
+ ❯ tests/structure-node-anatomy.test.ts (3 tests | 1 failed) 73ms
+   × groups repeated reads and updates to one target without dropping any distinct source path 22ms
+ ❯ tests/structure-presentation.test.ts (2 tests | 1 failed) 37ms
+   × simplifies only redundant literal leaves, keeping dynamic bindings, standalone copy and source identity 27ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 10 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/structure-clarity.test.ts > applies visibility and collapsed ownership before a direct neighbourhood without dangling edges
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/structure-clarity.test.ts:30:144
+     28|   expect(on.edges.every(edge=>on.nodes.some(node=>node.id===edge.sourc…
+     29|   const expanded=connectedStructure(filterStructure(graph,{bindings:tr…
+     30|   expect(expanded.nodes.some(node=>node.data.sourceId==='yes')).toBe(t…
+       |                                                                                                                                                ^
+     31| });
+     32| it('maps a conditional to its declared controlling data without evalua…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/10]⎯
+
+ FAIL  tests/structure-clarity.test.ts > maps a conditional to its declared controlling data without evaluating the condition
+AssertionError: expected 'Accepted is on' to be 'Agreement is on' // Object.is equality
+
+Expected: "Agreement is on"
+Received: "Accepted is on"
+
+ ❯ tests/structure-clarity.test.ts:34:47
+     32| it('maps a conditional to its declared controlling data without evalua…
+     33|   const source=clarityFixture(),graph=projectStructure(source),id=stru…
+     34|   expect(conditionDescription(source,'show')).toBe('Agreement is on');
+       |                                               ^
+     35|   expect(graph.edges.some(edge=>edge.source===id&&edge.target===struct…
+     36|   const groups=groupStructureRelationships(graph,id);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/10]⎯
+
+ FAIL  tests/structure-completion.test.ts > Structure completion: useful source projection > starts with containment, exposes precise source facts and reads/writes on demand
+AssertionError: expected [ '/nodes/item-2/props/checked', …(2) ] to deeply equal ArrayContaining{…}
+
+- Expected
++ Received
+
+- ArrayContaining [
+-   "item-2.props.checked",
+-   "item-2.outputs.checkedChange",
++ [
++   "/nodes/item-2/props/checked",
++   "/nodes/item-2/outputs/checkedChange",
++   "/nodes/item-2/outputs/checkedChange/setState",
+  ]
+
+ ❯ tests/structure-completion.test.ts:46:56
+     44|     const related = filterStructure(graph, { bindings: true, focusId: …
+     45|     expect(related.nodes.some(node => node.id === checkbox.id)).toBe(t…
+     46|     expect(related.edges.map(edge => edge.data?.path)).toEqual(expect.…
+       |                                                        ^
+     47|     expect(canonicalUiDocument(document).contentDigest).toBe(digest);
+     48|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/10]⎯
+
+ FAIL  tests/structure-edge-trial.test.ts > labels parallel reference locations once without removing edges or declared source paths
+AssertionError: expected [] to have a length of 1 but got +0
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ tests/structure-edge-trial.test.ts:36:16
+     34|  expect(edges.map(e=>[e.id,e.source,e.target,e.data])).toEqual(graph.e…
+     35|  const reads=edges.filter(e=>e.source===structureId(source.id,'node','…
+     36|  expect(reads).toHaveLength(1);expect(reads[0]?.label).toBe('Reads · 2…
+       |                ^
+     37|  expect(edges.some(e=>e.label==='Updates')).toBe(true);expect(edges.ev…
+     38| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/10]⎯
+
+ FAIL  tests/structure-node-anatomy.test.ts > groups repeated reads and updates to one target without dropping any distinct source path
+AssertionError: expected [ [ 'Value', 1 ], …(2) ] to deeply equal [ [ 'Read by', 2 ], …(1) ]
+
+- Expected
++ Received
+
+  [
+    [
+-     "Read by",
+-     2,
++     "Value",
++     1,
+    ],
+    [
+-     "Updated by",
++     "Updates",
++     1,
++   ],
++   [
++     "Fallback",
+      1,
+    ],
+  ]
+
+ ❯ tests/structure-node-anatomy.test.ts:17:78
+     15|  const source=fixture(),graph=projectStructure(source),id=structureId(…
+     16|  expect(groups).toHaveLength(1);expect(groups[0]?.count).toBe(3);
+     17|  expect(groups[0]?.relations.map(relation=>[relation.label,relation.co…
+       |                                                                              ^
+     18|  expect(groups[0]?.relations.flatMap(relation=>relation.paths).sort())…
+     19|  const ports=structurePorts(graph,id);expect(ports.map(port=>[port.id,…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/10]⎯
+
+ FAIL  tests/structure-presentation.test.ts > simplifies only redundant literal leaves, keeping dynamic bindings, standalone copy and source identity
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/structure-presentation.test.ts:26:89
+     24|   expect(simple.nodes.some(node => node.data.sourceId === 'live-text')…
+     25|   expect(simple.nodes.some(node => node.data.sourceId === 'standalone'…
+     26|   expect(simple.edges.some(edge => edge.data?.path === 'live-text.cont…
+       |                                                                                         ^
+     27|   expect(full.nodes.some(node => node.data.sourceId === 'title-text'))…
+     28|   expect(canonicalUiDocument(source).contentDigest).toBe(before);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/10]⎯
+
+ FAIL  tests/structure.test.ts > source structure projection and canonical edits > encodes graph ids for upstream attribute selectors while preserving exact source tuples
+AssertionError: expected [ …(4) ] to deeply equal [ …(4) ]
+
+- Expected
++ Received
+
+  [
+    "%5B%22document%5C%22%2F%25%5Bone%5D%5C%5C%22%2C%22node%22%2C%22screen%22%5D",
+    "%5B%22document%5C%22%2F%25%5Bone%5D%5C%5C%22%2C%22node%22%2C%22child%5C%22%2F%25%5Btwo%5D%5C%5C%22%5D",
+-   "Contains",
++   "contains",
+    "/nodes/screen/children/0",
+  ]
+
+ ❯ tests/structure.test.ts:39:55
+     37|     for (const edge of graph.edges) {
+     38|       expect(edge.id).not.toMatch(/["\\\[\]]/);
+     39|       expect(JSON.parse(decodeURIComponent(edge.id))).toEqual([edge.so…
+       |                                                       ^
+     40|     }
+     41|     expect(parseStructureId(structureId(documentId, 'node', sourceId))…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/10]⎯
+
+ FAIL  tests/structure.test.ts > source structure projection and canonical edits > projects actual definitions, slots, templates, conditions and bindings without invented workflow edges
+AssertionError: expected [ 'Defines', 'Contains', …(13) ] to deeply equal ArrayContaining{…}
+
+- Expected
++ Received
+
+- ArrayContaining [
+-   "definition root",
+-   "uses definition",
+-   "slot: body",
+-   "repeat template",
+-   "branch: else 1",
+-   "reads: state.value",
+-   "writes state",
+-   "invokes action",
++ [
++   "Defines",
++   "Contains",
++   "Contains",
++   "Contains",
++   "Slot",
++   "Uses",
++   "Value",
++   "Emits",
++   "Updates",
++   "Emits",
++   "Invokes",
++   "Template",
++   "Items",
++   "Key",
++   "Otherwise",
+  ]
+
+ ❯ tests/structure.test.ts:79:49
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/10]⎯
+
+ FAIL  tests/ui/structure-clarity.test.ts > separates inspect, explicit focus and camera-only framing
+AssertionError: expected 'Declared' to contain 'Screen'
+
+Expected: "Screen"
+Received: "Declared"
+
+ ❯ tests/ui/structure-clarity.test.ts:18:192
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/10]⎯
+
+ FAIL  tests/ui/structure-clarity.test.ts > explains declared conditional behaviour and exposes distinct branch meanings in Selection
+AssertionError: expected 'TypeConditionalBranch 1Shown when Acc…' to contain 'Shown when Agreement is on'
+
+Expected: "Shown when Agreement is on"
+Received: "TypeConditionalBranch 1Shown when Accepted is on · 1 itemOtherwiseFallback branch after earlier branches · 1 itemInsideScreen"
+
+ ❯ tests/ui/structure-clarity.test.ts:40:63
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/10]⎯
+
+
+ Test Files  7 failed | 4 passed (11)
+      Tests  10 failed | 39 passed (49)
+   Start at  19:10:25
+   Duration  83.15s (transform 71.41s, setup 0ms, import 127.73s, tests 12.29s, environment 12.68s)

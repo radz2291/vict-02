@@ -1,0 +1,202 @@
+{
+  "edges": [
+    {
+      "aria": "Section -> Full name: Contains; /nodes/onbCard/children/3",
+      "background": "rgba(0, 0, 0, 0)",
+      "caption": "Contains",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22contains%22%2C%22%2Fnodes%2FonbCard%2Fchildren%2F3%22%5D",
+      "marker": "url('#1__color=#7b879a&height=12&type=arrowclosed&width=12')",
+      "opacity": "0",
+      "path": "M124.00012159201897 112.3000954029972L124.00012159201897 132.30009540299721L 124.00012159201897,148.00004805378907Q 124.00012159201897,153.00004805378907 129.00012159201896,153.00004805378907L 324.2750533438819,153.00004805378907Q 329.2750533438819,153.00004805378907 329.2750533438819,158.00004805378907L329.2750533438819 173.70000070458093L329.2750533438819 193.70000070458093",
+      "rect": {
+        "height": 20,
+        "width": 56,
+        "x": 198.6375874679504,
+        "y": 127.00004805378909
+      }
+    },
+    {
+      "aria": "Src onb Name Input always focus -> Full name: Styles; /nodes/onbNameInput/styleSources/0",
+      "background": "rgba(0, 0, 0, 0)",
+      "caption": "Styles",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522style%2522%252C%2522src.onbNameInput.always.focus%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22styles%22%2C%22%2Fnodes%2FonbNameInput%2FstyleSources%2F0%22%5D",
+      "marker": "url('#1__color=#3566a4&height=12&type=arrowclosed&width=12')",
+      "opacity": "1",
+      "path": "M668.000121592019 112.70006095365207L668.000121592019 132.70006095365207L 668.000121592019,148.20003082911649Q 668.000121592019,153.20003082911649 663.000121592019,153.20003082911649L 423.23764791166946,153.20003082911649Q 418.23764791166946,153.20003082911649 418.23764791166946,158.20003082911649L418.23764791166946 173.70000070458093L418.23764791166946 193.70000070458093",
+      "rect": {
+        "height": 20,
+        "width": 44,
+        "x": 521.1188847518442,
+        "y": 127.20003082911649
+      }
+    },
+    {
+      "aria": "Src onb Name Input always plain -> Full name: Styles; /nodes/onbNameInput/styleSources/1",
+      "background": "rgba(0, 0, 0, 0)",
+      "caption": "Styles",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522style%2522%252C%2522src.onbNameInput.always.plain%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22styles%22%2C%22%2Fnodes%2FonbNameInput%2FstyleSources%2F1%22%5D",
+      "marker": "url('#1__color=#3566a4&height=12&type=arrowclosed&width=12')",
+      "opacity": "1",
+      "path": "M940.000121592019 112.70003782533877L940.000121592019 132.70003782533877L 940.000121592019,148.20001926495985Q 940.000121592019,153.20001926495985 935.000121592019,153.20001926495985L 423.23764791166946,153.20001926495985Q 418.23764791166946,153.20001926495985 418.23764791166946,158.20001926495985L418.23764791166946 173.70000070458093L418.23764791166946 193.70000070458093",
+      "rect": {
+        "height": 20,
+        "width": 44,
+        "x": 657.1188847518442,
+        "y": 159.20001926495985
+      }
+    },
+    {
+      "aria": "Full Name -> Full name: Value; /nodes/onbNameInput/attributes/value",
+      "background": "rgba(0, 0, 0, 0)",
+      "caption": "Value",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522fullName%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22value%22%2C%22%2Fnodes%2FonbNameInput%2Fattributes%2Fvalue%22%5D",
+      "marker": "url('#1__color=#0f766e&height=12&type=arrowclosed&width=12')",
+      "opacity": "1",
+      "path": "M433.0626654581031 112.30011274923218L433.0626654581031 132.3001127492322L 433.0626654581031,148.00005672690656Q 433.0626654581031,153.00005672690656 438.0626654581031,153.00005672690656L 457.71270055097045,153.00005672690656Q 462.71270055097045,153.00005672690656 462.71270055097045,158.00005672690656L462.71270055097045 173.70000070458093L462.71270055097045 193.70000070458093",
+      "rect": {
+        "height": 20,
+        "width": 42,
+        "x": 468.71270055097045,
+        "y": 155.85002871574375
+      }
+    },
+    {
+      "aria": "Full name -> Full Name: Updates; /nodes/onbNameInput/interactions/0",
+      "background": "rgba(0, 0, 0, 0)",
+      "caption": "Updates",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522fullName%2522%255D%22%2C%22updates%22%2C%22%2Fnodes%2FonbNameInput%2Finteractions%2F0%22%5D",
+      "marker": "url('#1__color=#a16207&height=12&type=arrowclosed&width=12')",
+      "opacity": "1",
+      "path": "M 396,272.4 L 396,282.4 L 1062,282.4 L 1062,12 L 396,12 L 396,22",
+      "rect": {
+        "height": 20,
+        "width": 50,
+        "x": 704,
+        "y": 256.4
+      }
+    },
+    {
+      "aria": "Full Name -> Full name: Fallback; /nodes/onbNameInput/interactions/0/value",
+      "background": "rgba(0, 0, 0, 0)",
+      "caption": "Fallback",
+      "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522fullName%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22fallback%22%2C%22%2Fnodes%2FonbNameInput%2Finteractions%2F0%2Fvalue%22%5D",
+      "marker": "url('#1__color=#0f766e&height=12&type=arrowclosed&width=12')",
+      "opacity": "1",
+      "path": "M358.92511156506254 112.30011274923218L358.92511156506254 132.3001127492322L 358.92511156506254,148.00005672690656Q 358.92511156506254,153.00005672690656 363.92511156506254,153.00005672690656L 368.7501059831829,153.00005672690656Q 373.7501059831829,153.00005672690656 373.7501059831829,158.00005672690656L373.7501059831829 173.70000070458093L373.7501059831829 193.70000070458093",
+      "rect": {
+        "height": 20,
+        "width": 56,
+        "x": 296.92511156506254,
+        "y": 130.15008473806938
+      }
+    }
+  ],
+  "handles": [
+    {
+      "connectable": false,
+      "hidden": "true",
+      "id": "out-contains",
+      "tabindex": "-1"
+    },
+    {
+      "connectable": false,
+      "hidden": "true",
+      "id": "in-contains",
+      "tabindex": "-1"
+    },
+    {
+      "connectable": false,
+      "hidden": "true",
+      "id": "in-fallback",
+      "tabindex": "-1"
+    },
+    {
+      "connectable": false,
+      "hidden": "true",
+      "id": "in-styles",
+      "tabindex": "-1"
+    },
+    {
+      "connectable": false,
+      "hidden": "true",
+      "id": "in-value",
+      "tabindex": "-1"
+    },
+    {
+      "connectable": false,
+      "hidden": "true",
+      "id": "out-updates",
+      "tabindex": "-1"
+    },
+    {
+      "connectable": false,
+      "hidden": "true",
+      "id": "in-updates",
+      "tabindex": "-1"
+    },
+    {
+      "connectable": false,
+      "hidden": "true",
+      "id": "out-fallback",
+      "tabindex": "-1"
+    },
+    {
+      "connectable": false,
+      "hidden": "true",
+      "id": "out-value",
+      "tabindex": "-1"
+    },
+    {
+      "connectable": false,
+      "hidden": "true",
+      "id": "out-styles",
+      "tabindex": "-1"
+    },
+    {
+      "connectable": false,
+      "hidden": "true",
+      "id": "out-styles",
+      "tabindex": "-1"
+    }
+  ],
+  "nodes": [
+    {
+      "height": 88,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbCard%22%5D",
+      "text": " Section › 11 direct children   ",
+      "width": 224,
+      "world": "translate(12px, 22px)"
+    },
+    {
+      "height": 76,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbNameInput%22%5D",
+      "text": " InputFull name     ",
+      "width": 224,
+      "world": "translate(284px, 196.4px)"
+    },
+    {
+      "height": 88,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22state%22%2C%22fullName%22%5D",
+      "text": " StateFull Name  Text · starts empty   ",
+      "width": 224,
+      "world": "translate(284px, 22px)"
+    },
+    {
+      "height": 76,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22style%22%2C%22src.onbNameInput.always.focus%22%5D",
+      "text": " StyleSrc onb Name Input always focus     ",
+      "width": 224,
+      "world": "translate(556px, 34px)"
+    },
+    {
+      "height": 76,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22style%22%2C%22src.onbNameInput.always.plain%22%5D",
+      "text": " StyleSrc onb Name Input always plain     ",
+      "width": 224,
+      "world": "translate(828px, 34px)"
+    }
+  ],
+  "revision": "Loaded the saved screen.\n@3 · v1_fe0ac678e805…",
+  "saved": "✓ Saved",
+  "viewport": "transform: translate(44.5692px, 119.749px) scale(1.11923);"
+}

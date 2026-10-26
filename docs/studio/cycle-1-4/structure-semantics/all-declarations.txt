@@ -1,0 +1,372 @@
+Browser tab: 10, Title: "Designer — VICT Studio", URL: "http://127.0.0.22:5616/design".
+0 AXWebArea Designer — VICT Studio, URL: 127.0.0.22:5616/design
+	1 container
+		2 container
+			3 link Description: VICT Studio, Value: 127.0.0.22:5616/design
+			4 menu bar Description: Studio menus, ID: bits-c3
+				5 (collapsed) File, ID: bits-c5, Secondary Actions: Expand
+				6 (collapsed) Edit, ID: bits-c7, Secondary Actions: Expand
+				7 (collapsed) View, ID: bits-c9, Secondary Actions: Expand
+				8 (collapsed) Preview, ID: bits-c11, Secondary Actions: Expand
+			9 text Document and Selection review ✓ Saved
+			10 link Description: Operator tools, Value: 127.0.0.22:5616/
+		11 container
+			12 container Workspace mode
+				13 checkbox Design, Value: 0
+				14 checkbox Interact, Value: 0
+				15 checkbox Structure, Value: 1
+			16 container Structure workspace
+				17 container Source structure
+					18 search text field (settable) Search structure
+					19 menu bar Description: Structure menus, ID: bits-c23
+						20 (collapsed) View, ID: bits-c25, Secondary Actions: Expand
+						21 (collapsed) Object, ID: bits-c40, Secondary Actions: Expand
+					22 text Declared
+					23 text 33 of 55 items
+					24 button (expanded) Description: Selection panel, Secondary Actions: Collapse
+					25 container
+						26 container
+							27 image
+							28 image
+								29 container Screen -> Section: Contains; /nodes/screen/children/0
+									30 container Contains · /nodes/screen/children/0
+										31 text Contains
+							32 image
+								33 container Section -> Create your workspace: Contains; /nodes/onbCard/children/0
+									34 container Contains · /nodes/onbCard/children/0
+										35 text Contains
+							36 image
+								37 container Section -> Set up your workspace in under a minute — just the essentials.: Contains; /nodes/onbCard/children/1
+									38 container Contains · /nodes/onbCard/children/1
+										39 text Contains
+							40 image
+								41 container Section -> Label · Full name: Contains; /nodes/onbCard/children/2
+									42 container Contains · /nodes/onbCard/children/2
+										43 text Contains
+							44 image
+								45 container Section -> Full name: Contains; /nodes/onbCard/children/3
+									46 container Contains · /nodes/onbCard/children/3
+										47 text Contains
+							48 image
+								49 container Section -> Label · Work email: Contains; /nodes/onbCard/children/4
+									50 container Contains · /nodes/onbCard/children/4
+										51 text Contains
+							52 image
+								53 container Section -> Work email: Contains; /nodes/onbCard/children/5
+									54 container Contains · /nodes/onbCard/children/5
+										55 text Contains
+							56 image
+								57 container Section -> Label · Role: Contains; /nodes/onbCard/children/6
+									58 container Contains · /nodes/onbCard/children/6
+										59 text Contains
+							60 image
+								61 container Section -> Role: Contains; /nodes/onbCard/children/7
+									62 container Contains · /nodes/onbCard/children/7
+										63 text Contains
+							64 image
+								65 container Section -> Row: Contains; /nodes/onbCard/children/8
+									66 container Contains · /nodes/onbCard/children/8
+										67 text Contains
+							68 image
+								69 container Section -> Create account: Contains; /nodes/onbCard/children/9
+									70 container Contains · /nodes/onbCard/children/9
+										71 text Contains
+							72 image
+								73 container Section -> Your details stay on this screen — nothing is sent.: Contains; /nodes/onbCard/children/10
+									74 container Contains · /nodes/onbCard/children/10
+										75 text Contains
+							76 image
+								77 container Src onb Name Input always focus -> Full name: Styles; /nodes/onbNameInput/styleSources/0
+									78 container Styles · /nodes/onbNameInput/styleSources/0
+										79 text Styles
+							80 image
+								81 container Src onb Name Input always plain -> Full name: Styles; /nodes/onbNameInput/styleSources/1
+									82 container Styles · /nodes/onbNameInput/styleSources/1
+										83 text Styles
+							84 image
+								85 container Full Name -> Full name: Value; /nodes/onbNameInput/attributes/value
+									86 container Value · /nodes/onbNameInput/attributes/value
+										87 text Value
+							88 image
+								89 container Full name -> Full Name: Updates; /nodes/onbNameInput/interactions/0
+									90 container Updates · /nodes/onbNameInput/interactions/0
+										91 text Updates
+							92 image
+								93 container Full Name -> Full name: Fallback; /nodes/onbNameInput/interactions/0/value
+									94 container Fallback · /nodes/onbNameInput/interactions/0/value
+										95 text Fallback
+							96 image
+								97 container Src onb Email Input always focus -> Work email: Styles; /nodes/onbEmailInput/styleSources/0
+									98 container Styles · /nodes/onbEmailInput/styleSources/0
+										99 text Styles
+							100 image
+								101 container Src onb Email Input always plain -> Work email: Styles; /nodes/onbEmailInput/styleSources/1
+									102 container Styles · /nodes/onbEmailInput/styleSources/1
+										103 text Styles
+							104 image
+								105 container Work Email -> Work email: Value; /nodes/onbEmailInput/attributes/value
+									106 container Value · /nodes/onbEmailInput/attributes/value
+										107 text Value
+							108 image
+								109 container Work email -> Work Email: Updates; /nodes/onbEmailInput/interactions/0
+									110 container Updates · /nodes/onbEmailInput/interactions/0
+										111 text Updates
+							112 image
+								113 container Work Email -> Work email: Fallback; /nodes/onbEmailInput/interactions/0/value
+									114 container Fallback · /nodes/onbEmailInput/interactions/0/value
+										115 text Fallback
+							116 image
+								117 container Src onb Role Select always focus -> Role: Styles; /nodes/onbRoleSelect/styleSources/0
+									118 container Styles · /nodes/onbRoleSelect/styleSources/0
+										119 text Styles
+							120 image
+								121 container Src onb Role Select always plain -> Role: Styles; /nodes/onbRoleSelect/styleSources/1
+									122 container Styles · /nodes/onbRoleSelect/styleSources/1
+										123 text Styles
+							124 image
+								125 container Role -> Role: Value; /nodes/onbRoleSelect/attributes/value
+									126 container Value · /nodes/onbRoleSelect/attributes/value
+										127 text Value
+							128 image
+								129 container Role -> Role: Updates; /nodes/onbRoleSelect/interactions/0
+									130 container Updates · /nodes/onbRoleSelect/interactions/0
+										131 text Updates
+							132 image
+								133 container Role -> Role: Fallback; /nodes/onbRoleSelect/interactions/0/value
+									134 container Fallback · /nodes/onbRoleSelect/interactions/0/value
+										135 text Fallback
+							136 image
+								137 container Create account -> Press: Emits; /nodes/onbSubmit/outputs/press
+									138 container Emits · /nodes/onbSubmit/outputs/press
+										139 text Emits
+							140 image
+								141 container Press -> Demo submit: Invokes; /nodes/onbSubmit/outputs/press/invokeAction
+									142 container Invokes · /nodes/onbSubmit/outputs/press/invokeAction
+										143 text Invokes
+							144 image
+								145 container Demo submit -> Busy: Pending; /actionState/demo.submit/pending
+									146 container Pending · /actionState/demo.submit/pending
+										147 text Pending
+							148 image
+								149 container Demo submit -> Action Error: Error; /actionState/demo.submit/error
+									150 container Error · /actionState/demo.submit/error
+										151 text Error
+							152 image
+								153 container Demo submit -> Action Result: Result; /actionState/demo.submit/result
+									154 container Result · /actionState/demo.submit/result
+										155 text Result
+							156 container Container: Screen, source screen
+								157 container
+									158 text Container
+									159 text Screen
+									160 button (expanded) Description: Collapse Screen, Secondary Actions: Collapse
+									161 text 1 direct child
+							162 container Section: Section, source onbCard
+								163 container
+									164 text Section
+									165 button (expanded) Description: Collapse Section, Secondary Actions: Collapse
+									166 text 11 direct children
+							167 container Heading: Create your workspace, source onbTitle
+								168 container
+									169 text Heading
+									170 text Create your workspace
+							171 container Paragraph: Set up your workspace in under a minute — just the essentials., source onbSubtitle
+								172 container
+									173 text Paragraph
+									174 text Set up your workspace in under a minute — just the essentials.
+							175 container Label: Full name, source onbNameLabel
+								176 container
+									177 text Label
+									178 text Full name
+							179 container Input: Full name, source onbNameInput
+								180 container
+									181 text Input
+									182 text Full name
+							183 container Label: Work email, source onbEmailLabel
+								184 container
+									185 text Label
+									186 text Work email
+							187 container Input: Work email, source onbEmailInput
+								188 container
+									189 text Input
+									190 text Work email
+							191 container Label: Role, source onbRoleLabel
+								192 container
+									193 text Label
+									194 text Role
+							195 container Select: Role, source onbRoleSelect
+								196 container
+									197 text Select
+									198 text Role
+									199 button (collapsed) Description: Expand Role, Secondary Actions: Expand
+									200 text 12 items inside
+							201 container Container: Row, source onbNotifRow
+								202 container
+									203 text Container
+									204 text Row
+									205 button (collapsed) Description: Expand Row, Secondary Actions: Expand
+									206 text 3 items inside
+							207 container Component: Create account, source onbSubmit
+								208 container
+									209 text Component
+									210 text Create account
+									211 text Button
+							212 container Paragraph: Your details stay on this screen — nothing is sent., source onbFeedback
+								213 container
+									214 text Paragraph
+									215 text Your details stay on this screen — nothing is sent.
+							216 container State: Message
+								217 container
+									218 text State
+									219 text Message
+									220 text Text · starts with “Hello from my screen”
+							221 container State: Accepted
+								222 container
+									223 text State
+									224 text Accepted
+									225 text Boolean · initially off
+							226 container State: Dialog Open
+								227 container
+									228 text State
+									229 text Dialog Open
+									230 text Boolean · initially off
+							231 container State: Busy
+								232 container
+									233 text State
+									234 text Busy
+									235 text Boolean · initially off
+							236 container State: Action Error
+								237 container
+									238 text State
+									239 text Action Error
+									240 text Text · starts empty
+							241 container State: Action Result
+								242 container
+									243 text State
+									244 text Action Result
+									245 text Text · starts empty
+							246 container State: Full Name
+								247 container
+									248 text State
+									249 text Full Name
+									250 text Text · starts empty
+							251 container State: Work Email
+								252 container
+									253 text State
+									254 text Work Email
+									255 text Text · starts empty
+							256 container State: Role
+								257 container
+									258 text State
+									259 text Role
+									260 text Text · starts empty
+							261 container State: Updates Opt In
+								262 container
+									263 text State
+									264 text Updates Opt In
+									265 text Boolean · initially on
+							266 container State: Submit Message
+								267 container
+									268 text State
+									269 text Submit Message
+									270 text Text · starts empty
+							271 container Style: Src onb Name Input always focus
+								272 container
+									273 text Style
+									274 text Src onb Name Input always focus
+							275 container Style: Src onb Email Input always focus
+								276 container
+									277 text Style
+									278 text Src onb Email Input always focus
+							279 container Style: Src onb Role Select always focus
+								280 container
+									281 text Style
+									282 text Src onb Role Select always focus
+							283 container Style: Src onb Name Input always plain
+								284 container
+									285 text Style
+									286 text Src onb Name Input always plain
+							287 container Style: Src onb Email Input always plain
+								288 container
+									289 text Style
+									290 text Src onb Email Input always plain
+							291 container Style: Src onb Role Select always plain
+								292 container
+									293 text Style
+									294 text Src onb Role Select always plain
+							295 container Condition: Compact
+								296 container
+									297 text Condition
+									298 text Compact
+									299 text Studio screen is 600 px wide or smaller
+							300 container Output: Press
+								301 container
+									302 text Output
+									303 text Press
+									304 text Component onbSubmit
+							305 container Action: Demo submit
+								306 container
+									307 text Action
+									308 text Demo submit
+									309 text Configured host connection External
+						310 link Description: Svelte Flow attribution, Value: svelteflow.dev/?utm_source=attribution
+						311 image
+						312 image Mini Map
+						313 container Control Panel
+							314 button Zoom In
+								315 image
+							316 button Zoom Out
+								317 image
+							318 button Fit View
+								319 image
+			320 splitter Description: Document drawer width, Value: 315
+			321 container Description: Document and Selection, ID: document-drawer
+				322 container
+					323 tab group Panel context
+						324 tab (selectable, settable, boolean) Document, Value: 0, ID: c26-document-tab
+						325 tab (selected, settable, boolean) Selection, Value: 1, ID: c26-selection-tab
+					326 button Description: Close panel, Help: Close panel (Escape)
+				327 container Description: Selection, ID: c26-selection
+					328 container Source inspection details
+						329 container
+							330 text Input Full name
+						331 container Selection overview
+							332 button (collapsed) Overview, Secondary Actions: Expand
+						333 container Selection relationships
+							334 button (expanded) Relationships, Secondary Actions: Collapse
+							335 container c28-relationships
+								336 button incoming Contains Section, Help: Document declaration /nodes/onbCard/children/3
+									337 container incoming
+										338 text ←
+									339 text Contains
+									340 text Section
+								341 button incoming Styles Src onb Name Input always focus, Help: Document declaration /nodes/onbNameInput/styleSources/0
+									342 container incoming
+										343 text ←
+									344 text Styles
+									345 text Src onb Name Input always focus
+								346 button incoming Styles Src onb Name Input always plain, Help: Document declaration /nodes/onbNameInput/styleSources/1
+									347 container incoming
+										348 text ←
+									349 text Styles
+									350 text Src onb Name Input always plain
+								351 button incoming Value outgoing Updates incoming Fallback Full Name 3 source reference locations, Help: Document declaration /nodes/onbNameInput/attributes/value Document declaration /nodes/onbNameInput/interactions/0 Document declaration /nodes/onbNameInput/interactions/0/value
+									352 container incoming
+										353 text ←
+									354 text Value
+									355 container outgoing
+										356 text →
+									357 text Updates
+									358 container incoming
+										359 text ←
+									360 text Fallback
+									361 text Full Name
+									362 text 3 source reference locations
+						363 container Selection technical information
+							364 button (collapsed) Technical information, Secondary Actions: Expand
+		365 container
+			366 text Loaded the saved screen.
+			367 text @3 · v1_fe0ac678e805…
+		389 text Designer — VICT Studio
+
+The focused UI element is 20 (collapsed) View, ID: bits-c25, Secondary Actions: Expand

@@ -1,0 +1,137 @@
+Browser tab: 10, Title: "Designer — VICT Studio", URL: "http://127.0.0.22:5616/design".
+0 AXWebArea Designer — VICT Studio, URL: 127.0.0.22:5616/design
+	1 container
+		2 container
+			3 link Description: VICT Studio, Value: 127.0.0.22:5616/design
+			4 menu bar Description: Studio menus, ID: bits-c3
+				5 (collapsed) File, ID: bits-c5, Secondary Actions: Expand
+				6 (collapsed) Edit, ID: bits-c7, Secondary Actions: Expand
+				7 (collapsed) View, ID: bits-c9, Secondary Actions: Expand
+				8 (collapsed) Preview, ID: bits-c11, Secondary Actions: Expand
+			9 text Document and Selection review ✓ Saved
+			10 link Description: Operator tools, Value: 127.0.0.22:5616/
+		11 container
+			12 container Workspace mode
+				13 checkbox Design, Value: 0
+				14 checkbox Interact, Value: 0
+				15 checkbox Structure, Value: 1
+			16 container Structure workspace
+				17 container Source structure
+					18 search text field (settable) Search structure
+					19 menu bar Description: Structure menus, ID: bits-c23
+						20 (collapsed) View, ID: bits-c25, Secondary Actions: Expand
+						21 (collapsed) Object, ID: bits-c40, Secondary Actions: Expand
+					22 text Declared
+					390 text Focus: Full name
+					23 text 5 items
+					24 button (expanded) Description: Selection panel, Secondary Actions: Collapse
+					391 container Connection scope
+					392 container
+						393 container
+							394 image
+							395 image
+								396 container Section -> Full name: Contains; /nodes/onbCard/children/3
+									397 container Contains · /nodes/onbCard/children/3
+										398 text Contains
+							399 image
+								400 container Src onb Name Input always focus -> Full name: Styles; /nodes/onbNameInput/styleSources/0
+									401 container Styles · /nodes/onbNameInput/styleSources/0
+										402 text Styles
+							403 image
+								404 container Src onb Name Input always plain -> Full name: Styles; /nodes/onbNameInput/styleSources/1
+									405 container Styles · /nodes/onbNameInput/styleSources/1
+										406 text Styles
+							407 image
+								408 container Full Name -> Full name: Value; /nodes/onbNameInput/attributes/value
+									409 container Value · /nodes/onbNameInput/attributes/value
+										410 text Value
+							411 image
+								412 container Full name -> Full Name: Updates; /nodes/onbNameInput/interactions/0
+									413 container Updates · /nodes/onbNameInput/interactions/0
+										414 text Updates
+							415 image
+								416 container Full Name -> Full name: Fallback; /nodes/onbNameInput/interactions/0/value
+									417 container Fallback · /nodes/onbNameInput/interactions/0/value
+										418 text Fallback
+							419 container Section: Section, source onbCard
+								420 container
+									421 text Section
+									422 button (collapsed) Description: Expand Section, Secondary Actions: Expand
+									423 text 11 direct children
+							424 container Input: Full name, source onbNameInput
+								425 container
+									426 text Input
+									427 text Full name
+							428 container State: Full Name
+								429 container
+									430 text State
+									431 text Full Name
+									432 text Text · starts empty
+							433 container Style: Src onb Name Input always focus
+								434 container
+									435 text Style
+									436 text Src onb Name Input always focus
+							437 container Style: Src onb Name Input always plain
+								438 container
+									439 text Style
+									440 text Src onb Name Input always plain
+						441 link Description: Svelte Flow attribution, Value: svelteflow.dev/?utm_source=attribution
+						442 image
+						443 container Control Panel
+							444 button Zoom In
+								445 image
+							446 button Zoom Out
+								447 image
+							448 button Fit View
+								449 image
+			320 splitter Description: Document drawer width, Value: 315
+			321 container Description: Document and Selection, ID: document-drawer
+				322 container
+					323 tab group Panel context
+						324 tab (selectable, settable, boolean) Document, Value: 0, ID: c26-document-tab
+						325 tab (selected, settable, boolean) Selection, Value: 1, ID: c26-selection-tab
+					326 button Description: Close panel, Help: Close panel (Escape)
+				327 container Description: Selection, ID: c26-selection
+					328 container Source inspection details
+						329 container
+							330 text Input Full name
+						331 container Selection overview
+							332 button (collapsed) Overview, Secondary Actions: Expand
+						333 container Selection relationships
+							334 button (expanded) Relationships, Secondary Actions: Collapse
+							335 container c28-relationships
+								336 button incoming Contains Section, Help: Document declaration /nodes/onbCard/children/3
+									337 container incoming
+										338 text ←
+									339 text Contains
+									340 text Section
+								341 button incoming Styles Src onb Name Input always focus, Help: Document declaration /nodes/onbNameInput/styleSources/0
+									342 container incoming
+										343 text ←
+									344 text Styles
+									345 text Src onb Name Input always focus
+								346 button incoming Styles Src onb Name Input always plain, Help: Document declaration /nodes/onbNameInput/styleSources/1
+									347 container incoming
+										348 text ←
+									349 text Styles
+									350 text Src onb Name Input always plain
+								351 button incoming Value outgoing Updates incoming Fallback Full Name 3 source reference locations, Help: Document declaration /nodes/onbNameInput/attributes/value Document declaration /nodes/onbNameInput/interactions/0 Document declaration /nodes/onbNameInput/interactions/0/value
+									352 container incoming
+										353 text ←
+									354 text Value
+									355 container outgoing
+										356 text →
+									357 text Updates
+									358 container incoming
+										359 text ←
+									360 text Fallback
+									361 text Full Name
+									362 text 3 source reference locations
+						363 container Selection technical information
+							364 button (collapsed) Technical information, Secondary Actions: Expand
+		365 container
+			366 text Loaded the saved screen.
+			367 text @3 · v1_fe0ac678e805…
+		389 text Designer — VICT Studio
+
+The focused UI element is 448 button Fit View

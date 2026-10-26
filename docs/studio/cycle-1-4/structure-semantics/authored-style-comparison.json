@@ -1,0 +1,77 @@
+{
+  "equal": true,
+  "before": [
+    {
+      "color": "rgb(36, 48, 71)",
+      "font": "12px / 17.4px system-ui, sans-serif",
+      "gap": "14px",
+      "id": "onbCard",
+      "padding": "24px"
+    },
+    {
+      "color": "rgb(16, 24, 40)",
+      "font": "700 20px / 26px system-ui, sans-serif",
+      "gap": "normal",
+      "id": "onbTitle",
+      "padding": "0px"
+    },
+    {
+      "color": "rgb(93, 107, 130)",
+      "font": "13px / 20.15px system-ui, sans-serif",
+      "gap": "normal",
+      "id": "onbSubtitle",
+      "padding": "0px"
+    },
+    {
+      "color": "rgb(16, 24, 40)",
+      "font": "14px / 20.3px system-ui, sans-serif",
+      "gap": "normal",
+      "id": "onbNameInput",
+      "padding": "10px 12px"
+    },
+    {
+      "color": "rgb(255, 255, 255)",
+      "font": "500 14px / 18px system-ui, sans-serif",
+      "gap": "6px",
+      "id": "onbSubmit",
+      "padding": "6px 12px"
+    }
+  ],
+  "after": [
+    {
+      "color": "rgb(36, 48, 71)",
+      "font": "12px / 17.4px system-ui, sans-serif",
+      "gap": "14px",
+      "id": "onbCard",
+      "padding": "24px"
+    },
+    {
+      "color": "rgb(16, 24, 40)",
+      "font": "700 20px / 26px system-ui, sans-serif",
+      "gap": "normal",
+      "id": "onbTitle",
+      "padding": "0px"
+    },
+    {
+      "color": "rgb(93, 107, 130)",
+      "font": "13px / 20.15px system-ui, sans-serif",
+      "gap": "normal",
+      "id": "onbSubtitle",
+      "padding": "0px"
+    },
+    {
+      "color": "rgb(16, 24, 40)",
+      "font": "14px / 20.3px system-ui, sans-serif",
+      "gap": "normal",
+      "id": "onbNameInput",
+      "padding": "10px 12px"
+    },
+    {
+      "color": "rgb(255, 255, 255)",
+      "font": "500 14px / 18px system-ui, sans-serif",
+      "gap": "6px",
+      "id": "onbSubmit",
+      "padding": "6px 12px"
+    }
+  ]
+}

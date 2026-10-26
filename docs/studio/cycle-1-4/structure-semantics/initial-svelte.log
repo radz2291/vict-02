@@ -1,0 +1,203 @@
+Loading svelte-check in workspace: c:\Users\RZ1\.codex\worktrees\studio-cycle14-selection-panel\260831-VCT-02\apps\studio
+Getting Svelte diagnostics...
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-selection-panel\260831-VCT-02\apps\studio\..\..\packages\ui-svelte\src\document\RenderNode.svelte:309:3
+Warn: Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events (svelte)
+{:else if instruction.kind === 'text'}
+  <span
+    class="uv-text"
+    data-ui-owner={ownerId}
+    data-ui-node={instruction.nodeId}
+    data-ui-occ={occ}
+    style="display: contents"
+    onclick={(event) => {
+      if (selectOccurrence !== undefined) {
+        event.stopPropagation();
+        selectOccurrence(occ);
+      }
+    }}
+  >
+    {#if instruction.content.type === 'literal'}
+      {instruction.content.value}
+    {:else}
+      {String(resolveValue({ type: 'expression', expression: instruction.content.expression }, scope) ?? '')}
+    {/if}
+  </span>
+{:else if (instruction.kind === 'component' || instruction.kind === 'extension') && componentValues.invalidNames.length}
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-selection-panel\260831-VCT-02\apps\studio\..\..\packages\ui-svelte\src\document\RenderNode.svelte:309:3
+Warn: `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions (svelte)
+{:else if instruction.kind === 'text'}
+  <span
+    class="uv-text"
+    data-ui-owner={ownerId}
+    data-ui-node={instruction.nodeId}
+    data-ui-occ={occ}
+    style="display: contents"
+    onclick={(event) => {
+      if (selectOccurrence !== undefined) {
+        event.stopPropagation();
+        selectOccurrence(occ);
+      }
+    }}
+  >
+    {#if instruction.content.type === 'literal'}
+      {instruction.content.value}
+    {:else}
+      {String(resolveValue({ type: 'expression', expression: instruction.content.expression }, scope) ?? '')}
+    {/if}
+  </span>
+{:else if (instruction.kind === 'component' || instruction.kind === 'extension') && componentValues.invalidNames.length}
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-selection-panel\260831-VCT-02\apps\studio\..\..\packages\ui-svelte\src\document\RenderNode.svelte:379:5
+Warn: Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events (svelte)
+    {@const Implementation = extension.component}
+    <span style="display: contents" data-extension-id={instruction.extensionId} data-ui-owner={ownerId} data-ui-occ={occ} data-ui-node={instruction.nodeId}
+      onclick={event => { event.stopPropagation(); selectOccurrence?.(occ); }}>
+      <Implementation props={extensionProps} occurrenceKey={occ} nodeId={instruction.nodeId} {presentation} />
+    </span>
+  {:else}
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-selection-panel\260831-VCT-02\apps\studio\..\..\packages\ui-svelte\src\document\RenderNode.svelte:379:5
+Warn: `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions (svelte)
+    {@const Implementation = extension.component}
+    <span style="display: contents" data-extension-id={instruction.extensionId} data-ui-owner={ownerId} data-ui-occ={occ} data-ui-node={instruction.nodeId}
+      onclick={event => { event.stopPropagation(); selectOccurrence?.(occ); }}>
+      <Implementation props={extensionProps} occurrenceKey={occ} nodeId={instruction.nodeId} {presentation} />
+    </span>
+  {:else}
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-selection-panel\260831-VCT-02\apps\studio\..\..\packages\ui-svelte\src\document\DocumentHost.svelte:105:31
+Warn: This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+  let acceptedSupplied: Record<string, UiValue> = {};
+  let lastDocumentId = $state(plan.documentId);
+  let lastSignal: symbol | undefined = $state<symbol | undefined>(undefined);
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-selection-panel\260831-VCT-02\apps\studio\src\lib\designer\structure-semantics.ts:97:117
+Error: The left-hand side of an arithmetic operation must be of type 'any', 'number', 'bigint' or an enum type.
+  for(const definition of Object.values(document.componentDefinitions)){
+    const from=b.add('definition',definition.id,display(definition.id),{sourcePath:`/componentDefinitions/${segment(definition/id)}`,summary:`Revision ${definition.revision}`});
+    b.link(from,b.node(definition.root),{role:'defines',path:`/componentDefinitions/${segment(definition/id)}/root`,owner:from});
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-selection-panel\260831-VCT-02\apps\studio\src\lib\designer\structure-semantics.ts:97:117
+Error: Argument of type 'number' is not assignable to parameter of type 'string'.
+  for(const definition of Object.values(document.componentDefinitions)){
+    const from=b.add('definition',definition.id,display(definition.id),{sourcePath:`/componentDefinitions/${segment(definition/id)}`,summary:`Revision ${definition.revision}`});
+    b.link(from,b.node(definition.root),{role:'defines',path:`/componentDefinitions/${segment(definition/id)}/root`,owner:from});
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-selection-panel\260831-VCT-02\apps\studio\src\lib\designer\structure-semantics.ts:97:128
+Error: Cannot find name 'id'.
+  for(const definition of Object.values(document.componentDefinitions)){
+    const from=b.add('definition',definition.id,display(definition.id),{sourcePath:`/componentDefinitions/${segment(definition/id)}`,summary:`Revision ${definition.revision}`});
+    b.link(from,b.node(definition.root),{role:'defines',path:`/componentDefinitions/${segment(definition/id)}/root`,owner:from});
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-selection-panel\260831-VCT-02\apps\studio\src\lib\designer\structure-semantics.ts:98:95
+Error: The left-hand side of an arithmetic operation must be of type 'any', 'number', 'bigint' or an enum type.
+    const from=b.add('definition',definition.id,display(definition.id),{sourcePath:`/componentDefinitions/${segment(definition/id)}`,summary:`Revision ${definition.revision}`});
+    b.link(from,b.node(definition.root),{role:'defines',path:`/componentDefinitions/${segment(definition/id)}/root`,owner:from});
+    for(const [slot,value] of Object.entries(definition.slots))value.fallback?.forEach((child,i)=>b.link(from,b.node(child),{role:'fallback',path:`/componentDefinitions/${segment(definition/id)}/slots/${segment(slot)}/fallback/${i}`,owner:from,description:`Slot ${segment(slot)}`}));
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-selection-panel\260831-VCT-02\apps\studio\src\lib\designer\structure-semantics.ts:98:95
+Error: Argument of type 'number' is not assignable to parameter of type 'string'.
+    const from=b.add('definition',definition.id,display(definition.id),{sourcePath:`/componentDefinitions/${segment(definition/id)}`,summary:`Revision ${definition.revision}`});
+    b.link(from,b.node(definition.root),{role:'defines',path:`/componentDefinitions/${segment(definition/id)}/root`,owner:from});
+    for(const [slot,value] of Object.entries(definition.slots))value.fallback?.forEach((child,i)=>b.link(from,b.node(child),{role:'fallback',path:`/componentDefinitions/${segment(definition/id)}/slots/${segment(slot)}/fallback/${i}`,owner:from,description:`Slot ${segment(slot)}`}));
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-selection-panel\260831-VCT-02\apps\studio\src\lib\designer\structure-semantics.ts:98:106
+Error: Cannot find name 'id'.
+    const from=b.add('definition',definition.id,display(definition.id),{sourcePath:`/componentDefinitions/${segment(definition/id)}`,summary:`Revision ${definition.revision}`});
+    b.link(from,b.node(definition.root),{role:'defines',path:`/componentDefinitions/${segment(definition/id)}/root`,owner:from});
+    for(const [slot,value] of Object.entries(definition.slots))value.fallback?.forEach((child,i)=>b.link(from,b.node(child),{role:'fallback',path:`/componentDefinitions/${segment(definition/id)}/slots/${segment(slot)}/fallback/${i}`,owner:from,description:`Slot ${segment(slot)}`}));
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-selection-panel\260831-VCT-02\apps\studio\src\lib\designer\structure-semantics.ts:99:180
+Error: The left-hand side of an arithmetic operation must be of type 'any', 'number', 'bigint' or an enum type.
+    b.link(from,b.node(definition.root),{role:'defines',path:`/componentDefinitions/${segment(definition/id)}/root`,owner:from});
+    for(const [slot,value] of Object.entries(definition.slots))value.fallback?.forEach((child,i)=>b.link(from,b.node(child),{role:'fallback',path:`/componentDefinitions/${segment(definition/id)}/slots/${segment(slot)}/fallback/${i}`,owner:from,description:`Slot ${segment(slot)}`}));
+    if(definition.baseStyle)b.link(registry('style',definition.baseStyle),from,{role:'styles',path:`/componentDefinitions/${segment(definition/id)}/baseStyle`,owner:from});
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-selection-panel\260831-VCT-02\apps\studio\src\lib\designer\structure-semantics.ts:99:180
+Error: Argument of type 'number' is not assignable to parameter of type 'string'.
+    b.link(from,b.node(definition.root),{role:'defines',path:`/componentDefinitions/${segment(definition/id)}/root`,owner:from});
+    for(const [slot,value] of Object.entries(definition.slots))value.fallback?.forEach((child,i)=>b.link(from,b.node(child),{role:'fallback',path:`/componentDefinitions/${segment(definition/id)}/slots/${segment(slot)}/fallback/${i}`,owner:from,description:`Slot ${segment(slot)}`}));
+    if(definition.baseStyle)b.link(registry('style',definition.baseStyle),from,{role:'styles',path:`/componentDefinitions/${segment(definition/id)}/baseStyle`,owner:from});
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-selection-panel\260831-VCT-02\apps\studio\src\lib\designer\structure-semantics.ts:99:191
+Error: Cannot find name 'id'.
+    b.link(from,b.node(definition.root),{role:'defines',path:`/componentDefinitions/${segment(definition/id)}/root`,owner:from});
+    for(const [slot,value] of Object.entries(definition.slots))value.fallback?.forEach((child,i)=>b.link(from,b.node(child),{role:'fallback',path:`/componentDefinitions/${segment(definition/id)}/slots/${segment(slot)}/fallback/${i}`,owner:from,description:`Slot ${segment(slot)}`}));
+    if(definition.baseStyle)b.link(registry('style',definition.baseStyle),from,{role:'styles',path:`/componentDefinitions/${segment(definition/id)}/baseStyle`,owner:from});
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-selection-panel\260831-VCT-02\apps\studio\src\lib\designer\structure-semantics.ts:100:133
+Error: The left-hand side of an arithmetic operation must be of type 'any', 'number', 'bigint' or an enum type.
+    for(const [slot,value] of Object.entries(definition.slots))value.fallback?.forEach((child,i)=>b.link(from,b.node(child),{role:'fallback',path:`/componentDefinitions/${segment(definition/id)}/slots/${segment(slot)}/fallback/${i}`,owner:from,description:`Slot ${segment(slot)}`}));
+    if(definition.baseStyle)b.link(registry('style',definition.baseStyle),from,{role:'styles',path:`/componentDefinitions/${segment(definition/id)}/baseStyle`,owner:from});
+    for(const [name,variant] of Object.entries(definition.variants??{}))b.link(registry('condition',variant.conditionId),from,{role:'condition',path:`/componentDefinitions/${segment(definition/id)}/variants/${segment(name)}/conditionId`,owner:from,description:`Variant ${name}`});
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-selection-panel\260831-VCT-02\apps\studio\src\lib\designer\structure-semantics.ts:100:133
+Error: Argument of type 'number' is not assignable to parameter of type 'string'.
+    for(const [slot,value] of Object.entries(definition.slots))value.fallback?.forEach((child,i)=>b.link(from,b.node(child),{role:'fallback',path:`/componentDefinitions/${segment(definition/id)}/slots/${segment(slot)}/fallback/${i}`,owner:from,description:`Slot ${segment(slot)}`}));
+    if(definition.baseStyle)b.link(registry('style',definition.baseStyle),from,{role:'styles',path:`/componentDefinitions/${segment(definition/id)}/baseStyle`,owner:from});
+    for(const [name,variant] of Object.entries(definition.variants??{}))b.link(registry('condition',variant.conditionId),from,{role:'condition',path:`/componentDefinitions/${segment(definition/id)}/variants/${segment(name)}/conditionId`,owner:from,description:`Variant ${name}`});
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-selection-panel\260831-VCT-02\apps\studio\src\lib\designer\structure-semantics.ts:100:144
+Error: Cannot find name 'id'.
+    for(const [slot,value] of Object.entries(definition.slots))value.fallback?.forEach((child,i)=>b.link(from,b.node(child),{role:'fallback',path:`/componentDefinitions/${segment(definition/id)}/slots/${segment(slot)}/fallback/${i}`,owner:from,description:`Slot ${segment(slot)}`}));
+    if(definition.baseStyle)b.link(registry('style',definition.baseStyle),from,{role:'styles',path:`/componentDefinitions/${segment(definition/id)}/baseStyle`,owner:from});
+    for(const [name,variant] of Object.entries(definition.variants??{}))b.link(registry('condition',variant.conditionId),from,{role:'condition',path:`/componentDefinitions/${segment(definition/id)}/variants/${segment(name)}/conditionId`,owner:from,description:`Variant ${name}`});
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-selection-panel\260831-VCT-02\apps\studio\src\lib\designer\structure-semantics.ts:101:183
+Error: The left-hand side of an arithmetic operation must be of type 'any', 'number', 'bigint' or an enum type.
+    if(definition.baseStyle)b.link(registry('style',definition.baseStyle),from,{role:'styles',path:`/componentDefinitions/${segment(definition/id)}/baseStyle`,owner:from});
+    for(const [name,variant] of Object.entries(definition.variants??{}))b.link(registry('condition',variant.conditionId),from,{role:'condition',path:`/componentDefinitions/${segment(definition/id)}/variants/${segment(name)}/conditionId`,owner:from,description:`Variant ${name}`});
+  }
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-selection-panel\260831-VCT-02\apps\studio\src\lib\designer\structure-semantics.ts:101:183
+Error: Argument of type 'number' is not assignable to parameter of type 'string'.
+    if(definition.baseStyle)b.link(registry('style',definition.baseStyle),from,{role:'styles',path:`/componentDefinitions/${segment(definition/id)}/baseStyle`,owner:from});
+    for(const [name,variant] of Object.entries(definition.variants??{}))b.link(registry('condition',variant.conditionId),from,{role:'condition',path:`/componentDefinitions/${segment(definition/id)}/variants/${segment(name)}/conditionId`,owner:from,description:`Variant ${name}`});
+  }
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-selection-panel\260831-VCT-02\apps\studio\src\lib\designer\structure-semantics.ts:101:194
+Error: Cannot find name 'id'.
+    if(definition.baseStyle)b.link(registry('style',definition.baseStyle),from,{role:'styles',path:`/componentDefinitions/${segment(definition/id)}/baseStyle`,owner:from});
+    for(const [name,variant] of Object.entries(definition.variants??{}))b.link(registry('condition',variant.conditionId),from,{role:'condition',path:`/componentDefinitions/${segment(definition/id)}/variants/${segment(name)}/conditionId`,owner:from,description:`Variant ${name}`});
+  }
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-selection-panel\260831-VCT-02\apps\studio\src\lib\designer\StructuredSourceNode.svelte:22:76
+Error: Property 'length' does not exist on type '{}'. (ts)
+  </header>
+  {#if data.summary || data.collapsedCount || data.support || data.issues?.length}<div class="structured-node-facts"><span class="vict-source-summary" title={String(data.summary ?? '')}>{data.collapsedCount?`${data.collapsedCount} items inside`:data.summary}</span>{#if data.support || data.issues?.length}<span class="vict-source-summary" title={(data.issues as string[]|undefined)?.join('\n')}>{data.support ?? 'Warning'}</span>{/if}</div>{/if}
+  {#each [incoming,outgoing] as side,index}
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-selection-panel\260831-VCT-02\apps\studio\src\lib\designer\StructuredSourceNode.svelte:22:300
+Error: Property 'length' does not exist on type '{}'. (ts)
+  </header>
+  {#if data.summary || data.collapsedCount || data.support || data.issues?.length}<div class="structured-node-facts"><span class="vict-source-summary" title={String(data.summary ?? '')}>{data.collapsedCount?`${data.collapsedCount} items inside`:data.summary}</span>{#if data.support || data.issues?.length}<span class="vict-source-summary" title={(data.issues as string[]|undefined)?.join('\n')}>{data.support ?? 'Warning'}</span>{/if}</div>{/if}
+  {#each [incoming,outgoing] as side,index}
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-selection-panel\260831-VCT-02\apps\studio\src\lib\designer\StructureView.svelte:258:12
+Error: Identifier 'context' has already been declared
+https://svelte.dev/e/js_parse_error (svelte)
+  const targetOptions = $derived(graph.nodes.filter(node => !!moveSource && valid({ source: moveSource, target: node.id, sourceHandle: 'content', targetHandle: 'container' })));
+  function context(target:Element):WorkspaceContext|undefined {
+    if (!target.closest('.structure-canvas')) return;
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-selection-panel\260831-VCT-02\apps\studio\src\lib\designer\StructureView.svelte:17:19
+Error: Duplicate identifier 'context'. (ts)
+
+  let { document, context={}, revision, selectedNodeId, focusSelection, blocked = false, active = true, presentation = 'workspace', descriptors = [], recipes = [], onSelect, onDeselect, onMove, onNotice, onNavigate, onDismiss, onInspect, onCloseInspect, onInspectSelection, inspectionExpanded = false, inspectionSelection, inspectionLabel='Inspect', objectCommands }: {
+    document: UiDocument; context?:StructureContext; revision: string; selectedNodeId?: string; focusSelection?:string; blocked?: boolean; active?: boolean;
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-selection-panel\260831-VCT-02\apps\studio\src\lib\designer\StructureView.svelte:258:12
+Error: Duplicate identifier 'context'. (ts)
+  const targetOptions = $derived(graph.nodes.filter(node => !!moveSource && valid({ source: moveSource, target: node.id, sourceHandle: 'content', targetHandle: 'container' })));
+  function context(target:Element):WorkspaceContext|undefined {
+    if (!target.closest('.structure-canvas')) return;
+
+====================================
+svelte-check found 20 errors and 5 warnings in 5 files
