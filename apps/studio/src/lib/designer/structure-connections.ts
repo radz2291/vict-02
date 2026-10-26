@@ -162,3 +162,32 @@ export function groupStructureRelationships(
   }
   return [...groups.values()];
 }
+
+const relationMeanings:Record<RelationRole,string>={
+ contains:'The source directly contains the destination in the declared structure.',
+ value:'The source supplies a value read by the destination.',
+ updates:'The source declares an update to the destination state.',
+ payload:'The source supplies part of the destination action or navigation input.',
+ fallback:'The source supplies a declared fallback value or content for the destination.',
+ items:'The source supplies the collection used by the destination repeat.',
+ key:'The source contributes to the identity of repeated items.',
+ condition:'The source controls when the destination applies.',
+ branch:'The destination belongs to a conditional branch of the source.',
+ otherwise:'The destination is fallback branch content of the source.',
+ template:'The destination is the source repeat template, not an individual runtime row.',
+ uses:'The source uses the destination component definition or library entry.',
+ defines:'The source definition declares the destination root.',
+ slot:'The destination is slot content owned by the source.',
+ invokes:'The source declares a request to invoke the destination action.',
+ navigates:'The source declares navigation to the destination route.',
+ styles:'The source contributes declared styling to the destination.',
+ pending:'The host maps the source action pending state to the destination state.',
+ error:'The host maps the source action error to the destination state.',
+ result:'The host maps the source action result to the destination state.',
+ success:'The host maps the source action success to the destination state.',
+ overlay:'The source is the logical overlay target of the destination.',
+ emits:'The source component declares the destination output.',
+};
+export function relationMeaning(edge:Edge<StructureEdgeData>):string {
+ return edge.data?.role?relationMeanings[edge.data.role]:'A declared relationship between the source and destination.';
+}

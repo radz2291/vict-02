@@ -3,11 +3,11 @@
   import {Handle,Position,useUpdateNodeInternals,type NodeProps} from '@victframework/ui-flow-svelte';
   import StructureTypeIcon from './StructureTypeIcon.svelte';
   import type {StructurePort} from './structure-connections.js';
-  import {structureTraceContext,type StructureTraceContext} from './structure-trace.js';
+  import {structureTraceContext,portKey,type StructureTraceContext} from './structure-trace.js';
   let {id,data,selected}:NodeProps=$props();
   const traceContext=getContext<StructureTraceContext|undefined>(structureTraceContext);
   const trace=$derived(traceContext?.current());
-  const traced=$derived(!!trace && (trace.source===id || trace.target===id));
+  const traced=$derived(!!trace?.nodes.has(id));
   const issues=$derived((data.issues??[]) as string[]);
   const ports=$derived((data.ports ?? []) as StructurePort[]);
   const incoming=$derived(ports.filter(port=>port.side==='in'));
@@ -30,9 +30,10 @@
       {#each [incoming,outgoing] as side,index}
         <div class="connection-side" class:outgoing={index===1} role="list" aria-label={index===0?'Incoming connections':'Outgoing connections'}>
           {#each side as port (port.id)}
-            {@const highlighted=!!trace && (port.side==='out'?trace.source===id && trace.sourceHandle===port.id:trace.target===id && trace.targetHandle===port.id)}
+            {@const highlighted=!!trace?.ports.has(portKey(id,port.id))}
             <div class="connection-row" class:highlighted role="listitem" data-port={port.id} title={`${port.side==='in'?'Incoming':'Outgoing'} ${port.label} · ${port.count} declared ${port.count===1?'reference':'references'}`} style:--connection-color={port.color}>
               <span class="connection-label">{port.label}</span>{#if port.count>1}<span class="connection-count">· {port.count}</span>{/if}
+              <button type="button" class="port-control nodrag nopan" disabled={traceContext?.blocked?.()??false} aria-pressed={traceContext?.isPortSelected?.(id,port.id)??false} aria-label={`Select ${port.side==='in'?'incoming':'outgoing'} ${port.label} connections for ${data.label}`} title={`${port.label} · ${port.count} visible references; Ctrl-click to add or remove`} onpointerdown={event=>event.stopPropagation()} onpointerenter={()=>traceContext?.hoverPort?.(id,port.id)} onpointerleave={()=>traceContext?.hoverPort?.(id,undefined)} onclick={event=>{event.stopPropagation();traceContext?.selectPort?.(id,port.id,event);}} onkeydown={event=>event.stopPropagation()}><span class="port-hit" aria-hidden="true"></span></button>
               <div class="node-socket">
                 <Handle id={port.id} type={port.side==='out'?'source':'target'} position={port.side==='out'?Position.Right:Position.Left} isConnectable={false} isConnectableStart={false} isConnectableEnd={false} class="declared-connection-handle" aria-hidden="true" tabindex={-1}/>
               </div>
@@ -64,6 +65,8 @@
   .connection-row.highlighted{background:var(--vict-control-selected,#edf1ff);color:var(--vict-color-text,#26334b)}
   .node-socket{position:absolute;left:0;top:50%;width:0;height:0;pointer-events:none}
   .outgoing .node-socket{left:auto;right:0}
+  .port-control{position:absolute;left:-10px;top:1px;width:20px;height:22px;border:0;padding:0;background:transparent;cursor:pointer;z-index:2;border-radius:4px}
+  .outgoing .port-control{left:auto;right:-10px}.port-control:hover{background:#355cc914}.port-control:focus-visible{outline:2px solid var(--vict-color-focusRing,#355cc9)}
   .trace-dim{opacity:.3}.traced:not(.selected){border-color:#9aa9c2}
   :global(.declared-connection-handle){width:7px;height:7px;background:var(--connection-color);border:1px solid white;pointer-events:none}
   :global(.edit-handle){width:10px;height:10px;background:#4f46e5}:global(.edit-handle.valid){background:#15803d;outline:3px solid #bbf7d0}

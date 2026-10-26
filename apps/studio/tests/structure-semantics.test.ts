@@ -18,7 +18,6 @@ import {
   structureConnectionEdges,
 } from '../src/lib/designer/structure-connections.js';
 import { structureBehavior } from '../src/lib/designer/structure-behavior.js';
-import { edgeCaption, layoutCaptions } from '../src/lib/designer/structure-edge-geometry.js';
 import {
   bindingFixture,
   definitionsFixture,
@@ -269,42 +268,4 @@ it('All declarations includes unused registries while Used keeps them quiet', ()
       graph.edges.some((original) => original.id === e.id),
     ),
   ).toBe(true);
-});
-it('places captions beside horizontal and vertical path segments without covering the line', () => {
-  const horizontal = edgeCaption('M0 0L120 0', 'Updates'),
-    vertical = edgeCaption('M0 0L0 120', 'Value');
-  expect(horizontal.y + horizontal.height).toBeLessThan(0);
-  expect(vertical.x).toBeGreaterThan(0);
-  const bent = edgeCaption('M0 0L60 0Q65 0 65 5L65 120', 'Value');
-  expect(bent.x).toBeGreaterThan(65);
-  expect(bent.y).toBeGreaterThan(5);
-});
-it('keeps a caption away from neighbouring paths and node cards', () => {
-  const other = 'M0 -16L160 -16';
-  expect(edgeCaption('M0 0L160 0', 'Value', [other]).y).toBeGreaterThan(0);
-  const constrained = edgeCaption(
-    'M0 0L160 0',
-    'Value',
-    [other],
-    [{ x: 0, y: 4, width: 160, height: 28 }],
-  );
-  expect(constrained.y + constrained.height).toBeLessThan(-18);
-});
-
-it('reserves separate caption rectangles on closely spaced parallel connections', () => {
-  const paths = new Map([
-      ['a', 'M0 0L160 0'],
-      ['b', 'M0 10L160 10'],
-    ]),
-    labels = new Map([
-      ['a', 'Value'],
-      ['b', 'Styles'],
-    ]);
-  const captions = layoutCaptions(paths, labels, []),
-    a = captions.get('a')!,
-    b = captions.get('b')!;
-  expect(
-    a.y + a.height <= b.y || b.y + b.height <= a.y || a.x + a.width <= b.x || b.x + b.width <= a.x,
-  ).toBe(true);
-  expect([...layoutCaptions(new Map([...paths].reverse()), labels, [])]).toEqual([...captions]);
 });

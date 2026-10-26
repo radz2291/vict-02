@@ -19,7 +19,9 @@
   import AgentChat from './AgentChat.svelte';
   import { captureDesignerPreview } from './visual-observation.js';
   import StructureView from './StructureView.svelte';
-  import SourceDetails from './SourceDetails.svelte';
+  import WorkspaceSelectionDetails from './WorkspaceSelectionDetails.svelte';
+  import {changeSelection,pruneSelection,nodeItem,itemKey,primaryItem,singleOccurrence,type WorkspaceSelection,type WorkspaceItem} from './workspace-selection.js';
+  import type {OccurrenceSelectionIntent,SelectionOperation} from '@victframework/ui-editor';
   import DataEditorHeader from './DataEditorHeader.svelte';
   import WorkspaceDetails from './WorkspaceDetails.svelte';
   import DocumentPanels from './DocumentPanels.svelte';
@@ -38,7 +40,7 @@
   }
   function selectStructureNode(occurrence: string,fromGraph=false) {
     if (textDraftDirty || sourceDraftDirty || renamingScreen) { notice = 'Apply or cancel your draft first.'; return; }
-    bridge?.select(occurrence); paletteRequested = false;
+    if(source){const item=nodeItem(source,occurrence);if(item)updateSelection([item]);}paletteRequested=false;
     if (source) {detailId = structureId(source.id, 'node', resolveOccurrence(occurrence, source).sourceNodeId);if(!fromGraph)structureFocusId=detailId;}
   }
   async function locateOnCanvas(occurrence: string) {
@@ -165,10 +167,49 @@
   const source = $derived.by(() => { void version; return bridge?.document; });
   const compilation = $derived(source ? compileScreen(source) : undefined);
   const structureContext=$derived({descriptors:catalogDescriptors,actionState:screenActionState,actionIds:designerCatalogs.actionIds,routeIds:designerCatalogs.routeIds,plan:compilation?.ok?Object.values(compilation.plan.documentPlans??{}).find(item=>item.documentId===source?.id):undefined});
-  const selected = $derived(snapshot?.selectedOccurrence);
+  let workspaceSelection=$state<WorkspaceSelection>({documentId:'',items:[]});
+  const savedSelections=new Map<string,WorkspaceSelection>();
+  const workspaceGraph=$derived(source?projectStructure(source,structureContext):{nodes:[],edges:[]});
+  const selectedOccurrences=$derived(workspaceSelection.items.flatMap(item=>item.kind==='node'&&item.occurrence?[item.occurrence]:[]));
+  const selected = $derived(singleOccurrence(workspaceSelection));
+  $effect(()=>{
+    if(!source)return;const document=source,graph=workspaceGraph,state=workspaceSelection;
+    untrack(()=>{
+      const next=pruneSelection(state,document,graph);
+      if(JSON.stringify(next)!==JSON.stringify(state))workspaceSelection=next;
+      const occurrence=singleOccurrence(next);if(bridge?.getSnapshot().selectedOccurrence!==occurrence)bridge?.select(occurrence);
+      const primary=primaryItem(next);detailId=primary?.kind==='node'?primary.id:undefined;
+      if(next.items.length!==1||!occurrence)paletteRequested=false;
+    });
+  });
+  function updateSelection(items:readonly WorkspaceItem[],operation:SelectionOperation='replace',primary?:WorkspaceItem){
+    if(!source||textDraftDirty||sourceDraftDirty||renamingScreen){notice='Apply or cancel your draft before changing selection.';return;}
+    workspaceSelection=changeSelection({...workspaceSelection,documentId:source.id},items,operation,primary);
+    paletteRequested=false;layerProvenance=undefined;
+  }
+  function clearWorkspaceSelection(){updateSelection([]);}
+  function layerSelection(intent:OccurrenceSelectionIntent){
+    if(!source)return;if(textDraftDirty||sourceDraftDirty||renamingScreen){notice='Apply or cancel your draft before changing selection.';return;}
+    const items=intent.occurrences.flatMap(occurrence=>{const item=nodeItem(source,occurrence);return item?[item]:[];});
+    updateSelection(items,intent.operation,nodeItem(source,intent.primary));
+  }
+  function normalizedOccurrence(occurrence:string){
+    if(!source)return occurrence;const report=resolveOccurrence(occurrence,source);
+    const direct=!report.instancePath.some(step=>source.componentDefinitions[step.definitionId])&&!report.repeatKeys.length;
+    const parent=report.node?.kind==='text'&&direct?compositionParent(source,report.node.id):undefined;
+    const owner=parent?source.nodes[parent.nodeId]:undefined;
+    return owner?.kind==='element'&&owner.children.length===1?authoredOccurrence(source,owner.id)??occurrence:direct&&occurrence.split('|').length===2?authoredOccurrence(source,report.sourceNodeId)??occurrence:occurrence;
+  }
+  function canvasSelection(intent:OccurrenceSelectionIntent){
+    if(!source)return;if(textDraftDirty||sourceDraftDirty||renamingScreen){notice='Apply or cancel your draft before changing selection.';return;}
+    if(intent.operation==='replace'&&intent.occurrences.length===1){selectOccurrence(intent.primary);return;}
+    const items=intent.occurrences.flatMap(occurrence=>{const item=nodeItem(source,normalizedOccurrence(occurrence));return item?[item]:[];});updateSelection(items,intent.operation);
+  }
+
   const selectedNode = $derived(source && selected ? resolveOccurrence(selected, source).node : undefined);
   let compositionFocus=$state<CompositionFocus>();
   let canvasScroll=$state<HTMLDivElement>();
+  $effect(()=>{const element=canvasScroll;if(!element)return;const clear=(event:MouseEvent)=>{if(mode==='design'&&!event.ctrlKey&&!event.metaKey&&(event.target===element||event.target instanceof Element&&event.target.matches('.design-frame')))clearWorkspaceSelection();};element.addEventListener('click',clear);return()=>element.removeEventListener('click',clear);});
   const selectedSlots=$derived(source && selectedNode?compositionSlots(source,selectedNode.id,catalogDescriptors):[]);
   const focusedMembers=$derived(source && compositionFocus?compositionMembers(source,compositionFocus):undefined);
   $effect(()=>{if(source && compositionFocus && !compositionSlots(source,compositionFocus.nodeId,catalogDescriptors).includes(compositionFocus.slotName)) {compositionFocus=undefined;notice='Composition is no longer available. Returned to the screen.';}});
@@ -178,7 +219,7 @@
     const previous=compositionFocus;
     compositionFocus=next;
     const nodeId=next?.nodeId ?? (previous?compositionTrail(source,previous)[0]?.nodeId:undefined) ?? source.root;
-    bridge?.select(authoredOccurrence(source,nodeId) ?? `${source.id}|${source.root}`);
+    const target=nodeItem(source,authoredOccurrence(source,nodeId)??`${source.id}|${source.root}`);if(target)updateSelection([target]);
     editTextSignal=undefined;paletteRequested=false;
     notice=next?`Editing ${compositionName(source,next.nodeId)} / ${next.slotName}. App visibility is unchanged.`:'Returned to the screen.';
     await tick(); globalThis.document.querySelector<HTMLElement>('.design-frame .uv-canvas')?.focus({preventScroll:true});
@@ -225,7 +266,6 @@
   let layerProvenance=$state<{occurrence:string;detail:string}>();
   let drawerContext=$state<'document'|'selection'>('document');
   const detailsOpen=$derived(drawerOpen && !testingOpen && drawerContext==='selection');
-  $effect(()=>{const occurrence=selected;untrack(()=>{if(source)detailId=occurrence?structureId(source.id,'node',resolveOccurrence(occurrence,source).sourceNodeId):undefined;});});
   let drawerWidth = $state(320);
   const effectiveDrawerWidth = $derived(drawerWidth);
   const structureOpen=$derived(workspaceView==='structure');
@@ -245,7 +285,8 @@
   }); }
   function selectDetail(id:string) {
     if (!source || textDraftDirty || sourceDraftDirty || renamingScreen) return;
-    const item = projectStructure(source).nodes.find(node=>node.id===id);
+    const item = workspaceGraph.nodes.find(node=>node.id===id);
+    updateSelection([{kind:'node',id,...(item?.data.occurrence?{occurrence:item.data.occurrence}:{})}]);
     detailId = id;
     structureFocusId=id;
     if (item?.data.occurrence) selectStructureNode(item.data.occurrence);
@@ -278,7 +319,7 @@
     const occurrence = target.closest<HTMLElement>('[data-ui-occ]')?.dataset.uiOcc;
     if (occurrence && resolveOccurrence(occurrence,source).sourceNodeId !== source.root) return objectContext(occurrence);
     const blocked=textDraftDirty || sourceDraftDirty || renamingScreen;
-    return { label:'Canvas commands', prepare:()=>{if(!blocked){bridge?.select(undefined);paletteRequested=false;}}, commands:[
+    return { label:'Canvas commands', prepare:()=>{if(!blocked){clearWorkspaceSelection();paletteRequested=false;}}, commands:[
       {label:'Fit canvas', run:()=>width='fluid'}, {label:'Tablet · 768',run:()=>width='768'}, {label:'Phone · 390',run:()=>width='390'},
       {label:'Insert…', separator:true, disabled:blocked, run:()=>{selectOccurrence(`${source!.id}|${source!.root}`,true);palettePage='insert';}},
     ]};
@@ -331,7 +372,7 @@
       const id=resolveOccurrence(occurrence,source).sourceNodeId;
       if(compositionFocus && id!==compositionFocus.nodeId && !focusedMembers?.has(id))compositionFocus=undefined;
     }
-    bridge?.select(occurrence);
+    if(source){const item=nodeItem(source,occurrence);if(item)updateSelection([item]);}
     if (source) {detailId=structureId(source.id,'node',resolveOccurrence(occurrence,source).sourceNodeId);structureFocusId=detailId;}
     palettePage = 'format'; paletteRequested = revealTools;
     formatSection = reportSection(occurrence);
@@ -387,10 +428,13 @@
     agentEpoch = crypto.randomUUID();
     compositionFocus=undefined;detailId=undefined;structureFocusId=structureId(next.document.id,'node',next.document.root);
     palettePage = 'format'; paletteRequested = false;
+    if(bridge)savedSelections.set(bridge.document.id,workspaceSelection);
     unsubscribe?.(); bridge = next; version++;
+    const root=nodeItem(next.document,`${next.document.id}|${next.document.root}`)!;
+    workspaceSelection=savedSelections.get(next.document.id)??{documentId:next.document.id,items:[root],primary:itemKey(root)};
     unsubscribe = next.subscribe(() => version++);
     plan = undefined; issues = []; resetRuntime();
-    next.select(`${next.document.id}|${next.document.root}`);
+    next.select(singleOccurrence(workspaceSelection));
     try { localStorage.setItem('vict.studio.active-screen', next.document.id); } catch { /* document save reports storage failures */ }
   }
   function createScreen(title: string) {
@@ -430,7 +474,6 @@
     const result = applyAgentProposal(bridge, proposal, agentEpoch, textDraftDirty || sourceDraftDirty || renamingScreen || !!createDialog?.open);
     if (result.ok) {
       notice = `${proposal.edit.reason} · agent edit · unsaved`; issues = [];
-      if (selected && !resolveOccurrence(selected, bridge.document).node) bridge.select(`${bridge.document.id}|${bridge.document.root}`);
     } else notice = result.message;
     return result;
   }
@@ -442,7 +485,6 @@
     issues = result.ok ? [] : result.issues;
     if (result.ok) {
       notice = `${draft.reason ?? 'Change applied'} · unsaved`;
-      if (selected && !resolveOccurrence(selected, bridge.document).node) bridge.select(`${bridge.document.id}|${bridge.document.root}`);
     }
     return result.ok;
   }
@@ -468,7 +510,7 @@
     if (result.ok) agentEpoch = crypto.randomUUID();
     if (!result.ok) { issues = [{ code: result.code, message: result.message ?? 'Reload failed.' }]; return; }
     compositionFocus=undefined;paletteRequested = false; palettePage = 'format';
-    resetRuntime(); bridge.select(`${bridge.document.id}|${bridge.document.root}`); issues = []; notice = `Reloaded revision ${result.storedRevision}; runtime state reset.`;
+    resetRuntime(); const root=nodeItem(bridge.document,`${bridge.document.id}|${bridge.document.root}`);if(root)updateSelection([root]); issues = []; notice = `Reloaded revision ${result.storedRevision}; runtime state reset.`;
   }
   async function dispatch(actionId: string, input?: unknown) {
     if (mode === 'design') return { ok: false, code: 'UI_EDITOR_DESIGN_MODE', message: 'Switch to Interact to run behavior.' };
@@ -542,7 +584,7 @@
       const document = JSON.parse(sourceDraft) as UiDocument;
       const problems = screenIssues(document);
       if (problems.length) { issues = problems; return; }
-      if (apply({ requestId: crypto.randomUUID(), reason: 'Apply canonical source', commands: [{ op: 'replaceDocument', document }] },true)) { sourceDraftDirty = false; compositionFocus=undefined; bridge.select(`${source.id}|${source.root}`); }
+      if (apply({ requestId: crypto.randomUUID(), reason: 'Apply canonical source', commands: [{ op: 'replaceDocument', document }] },true)) { sourceDraftDirty = false; compositionFocus=undefined; const root=nodeItem(source,`${source.id}|${source.root}`);if(root)updateSelection([root]); }
     } catch { issues = [{ code: 'STUDIO_JSON_INVALID', message: 'Enter valid canonical UI document JSON.' }]; }
   }
   // Authored revisions invalidate any in-flight simulation without adding history.
@@ -550,6 +592,7 @@
 </script>
 
 <svelte:window onkeydowncapture={event=>{
+  if(event.key==='Escape'&&!structureOpen&&!activeMenu&&event.target instanceof Element&&event.target.closest('.design-frame .uv-canvas,[role=tree]')&&!event.target.closest('input,textarea,[contenteditable=true]')&&workspaceSelection.items.length&&!textDraftDirty&&!sourceDraftDirty){event.preventDefault();event.stopPropagation();clearWorkspaceSelection();return;}
   if(!structureOpen || activeMenu || !(event.target instanceof Element) || event.target.closest('[role="menu"]'))return;
   // Canvas tools are portaled and retained, but their global shortcuts must not
   // claim keyboard interaction from the active Structure work surface.
@@ -630,7 +673,7 @@
             {selectionToolsReveal} selectionToolsPinned={textDraftDirty}
             selectionToolsPlacement="below"
             onEditTextRequest={editSelectedText}
-            interactionMode={mode} selectedOccurrence={mode === 'design' ? selected : undefined} onSelect={mode === 'design' ? selectOccurrence : () => {}} {dispatch} navigate={() => { notice = 'This application contains one screen.'; }}
+            interactionMode={mode} selectedOccurrences={mode==='design'?selectedOccurrences:[]} onSelectionIntent={canvasSelection} onClearSelection={clearWorkspaceSelection} selectedOccurrence={mode === 'design' ? selected : undefined} onSelect={mode === 'design' ? selectOccurrence : () => {}} {dispatch} navigate={() => { notice = 'This application contains one screen.'; }}
             stateValues={runtimeValues} onStateChange={(key: string, value: UiValue) => runtimeValues = { ...runtimeValues, [key]: value }} {resetSignal}
             actionState={screenActionState} onPlan={(next: UiRenderPlan) => { plan = next; }}
             onRenderDiagnostic={(diagnostic: { code: string; message: string }) => { issues = [...issues.slice(-4), diagnostic]; }} ariaLabel="Screen canvas" />
@@ -638,7 +681,7 @@
         </div>
       </div>
       <section class="structure-workspace" aria-label="Structure workspace" hidden={!structureOpen} inert={!structureOpen}>
-        <StructureView context={structureContext} focusSelection={structureFocusId} presentation="drawer" active={structureOpen} document={source} revision={snapshot?.revision ?? ''} selectedNodeId={selectedNode?.id} descriptors={catalogDescriptors} recipes={screenRecipes} blocked={textDraftDirty || sourceDraftDirty || renamingScreen} onSelect={(occurrence:string)=>selectStructureNode(occurrence,true)} onDeselect={() => { if (!textDraftDirty && !sourceDraftDirty && !renamingScreen) { bridge?.select(undefined); paletteRequested = false; detailId=undefined; } }} onMove={moveFromStructure} onNotice={message => notice = message} onNavigate={structureNavigate} onDismiss={dismissStructure} onInspect={inspectSource} onCloseInspect={closeDetails} inspectionSelection={detailId} onInspectSelection={id=>detailId=id} inspectionExpanded={detailsOpen} inspectionLabel="Selection" objectCommands={occurrence=>objectContext(occurrence)?.commands ?? []} />
+        <StructureView selection={workspaceSelection} onSelectionIntent={updateSelection} context={structureContext} focusSelection={structureFocusId} presentation="drawer" active={structureOpen} document={source} revision={snapshot?.revision ?? ''} selectedNodeId={selectedNode?.id} descriptors={catalogDescriptors} recipes={screenRecipes} blocked={textDraftDirty || sourceDraftDirty || renamingScreen} onSelect={(occurrence:string)=>selectStructureNode(occurrence,true)} onDeselect={clearWorkspaceSelection} onMove={moveFromStructure} onNotice={message => notice = message} onNavigate={structureNavigate} onDismiss={dismissStructure} onInspect={inspectSource} onCloseInspect={closeDetails} inspectionSelection={detailId} inspectionExpanded={detailsOpen} inspectionLabel="Selection" objectCommands={occurrence=>objectContext(occurrence)?.commands ?? []} />
       </section>
     </main>
     <div class="drawer-resizer" hidden={!rightOpen}><PanelResizer label="Document drawer width" value={effectiveDrawerWidth} min={280} max={460} reverse onChange={(value: number) => drawerWidth = value} /></div>
@@ -646,7 +689,7 @@
     <aside id="document-drawer" hidden={!drawerOpen || testingOpen} data-studio-typography class="studio-type-scope document-drawer" aria-label="Document and Selection" onkeydown={documentKeys}>
       <WorkspaceDetails bind:context={drawerContext} onClose={closeDrawer}>
       {#snippet documentContent()}<DocumentPanels bind:active={documentPanel}>
-        {#snippet layersContent()}{#if plan}<Layers compact hideTextContent showSelectionDetails={false} labels={editorLabels} {plan} document={source} selectedOccurrence={selected} onSelect={selectFromStructure} onInspect={(occurrence:string,nodeId:string,detail:string)=>{if(textDraftDirty || sourceDraftDirty || renamingScreen)return;selectFromStructure(occurrence);layerProvenance={occurrence,detail};inspectSource(structureId(source.id,'node',nodeId));}} onOpenComposition={navigateComposition} componentDescriptors={catalogDescriptors} />{/if}{/snippet}
+        {#snippet layersContent()}{#if plan}<Layers selectedOccurrences={selectedOccurrences} onSelectionIntent={layerSelection} compact hideTextContent showSelectionDetails={false} labels={editorLabels} {plan} document={source} selectedOccurrence={selected} onSelect={selectFromStructure} onInspect={(occurrence:string,nodeId:string,detail:string)=>{if(textDraftDirty || sourceDraftDirty || renamingScreen)return;selectFromStructure(occurrence);layerProvenance={occurrence,detail};inspectSource(structureId(source.id,'node',nodeId));}} onOpenComposition={navigateComposition} componentDescriptors={catalogDescriptors} />{/if}{/snippet}
         {#snippet dataContent()}
           {#if selectedData && source.localState[selectedData]}
             {#key selectedData}<fieldset class="editor-guard" disabled={sourceDraftDirty || propertyDraftDirty}><StateInitialEditor compact document={source} expression={{type:'ref',path:`state.${selectedData}`}} labels={editorLabels} onApply={apply} onDirtyChange={(dirty:boolean)=>dataDraftDirty=dirty}>{#snippet toolbar({apply:applyValue,dirty}:{apply:()=>void;dirty:boolean})}<DataEditorHeader name={dataName(selectedData!)} type={dataType(source.localState[selectedData!]!.type)} {dirty} onBack={()=>openData()} onApply={applyValue} />{/snippet}</StateInitialEditor></fieldset>{/key}
@@ -667,7 +710,7 @@
           <details class="studio-disclosure application-attachment"><summary>Advanced</summary><h3>Generated application definition</h3><p>Generated by Studio to connect this screen to VICT.</p><pre class="source-preview">{JSON.stringify(screenApplication(source), null, 2)}</pre></details>
         {/snippet}
       </DocumentPanels>{/snippet}
-      {#snippet selectionContent()}<SourceDetails context={structureContext} embedded document={source} selectedId={detailId} selectedOccurrence={selected} {layerProvenance} blocked={textDraftDirty || sourceDraftDirty || renamingScreen} bind:page={detailsPage} onClose={closeDetails} onSelect={selectDetail} onNavigate={structureNavigate} />{/snippet}
+      {#snippet selectionContent()}<WorkspaceSelectionDetails selection={workspaceSelection} onInspect={item=>updateSelection([item])} onRemove={item=>updateSelection([item],'toggle')} context={structureContext} document={source} {layerProvenance} blocked={textDraftDirty || sourceDraftDirty || renamingScreen} bind:page={detailsPage} onClose={()=>{if(workspaceSelection.items.length)clearWorkspaceSelection();else closeDetails();}} onSelect={selectDetail} onNavigate={structureNavigate} />{/snippet}
       </WorkspaceDetails>
     </aside>
     {#if testingOpen}<aside class="testing-drawer" aria-label="Testing"><TryScenarios document={source} active={activeTest?.id} values={runtimeValues} {activity} blocked={textDraftDirty || sourceDraftDirty || renamingScreen} onChoose={chooseTest} onReset={resetRuntime} onTry={()=>void tryCanvas()} onClose={closeTesting} onChange={changeTestValue} /></aside>{/if}

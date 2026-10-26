@@ -1,11 +1,12 @@
 <script lang="ts">
   import { onDestroy, tick, untrack, setContext } from 'svelte';
-  import {SvelteMap} from 'svelte/reactivity';
-  import {captionContext,layoutCaptions,type CaptionContext} from './structure-edge-geometry.js';
+  import {structureGeometryContext,type StructureGeometryContext} from './structure-edge-geometry.js';
   import { FlowCanvas, FlowNavigation, Controls, layoutGraph, LayoutFence, type Node, type Edge, type Connection, type Viewport, type LayoutDirection } from '@victframework/ui-flow-svelte';
   import StructureEdge from './StructureEdge.svelte';
   import StructuredSourceNode from './StructuredSourceNode.svelte';
-  import {structureTraceContext,structureTrace,type StructureTraceContext} from './structure-trace.js';
+  import {structureTraceContext,selectionHighlight,connectionGroup,portConnections,type StructureTraceContext} from './structure-trace.js';
+  import {selectionOperation,type SelectionOperation} from '@victframework/ui-editor';
+  import {changeSelection,primaryItem,type WorkspaceSelection,type WorkspaceItem} from './workspace-selection.js';
   import {structurePorts,structureConnectionEdges} from './structure-connections.js';
   import '@victframework/ui-flow-svelte/styles.css';
   import './studio-cards.css';
@@ -17,7 +18,8 @@
   import WorkspaceContextMenu from './WorkspaceContextMenu.svelte';
   import { sourceCapabilities, type WorkspaceContext, type WorkspaceCommand } from './workspace-context.js';
 
-  let { document, context={}, revision, selectedNodeId, focusSelection, blocked = false, active = true, presentation = 'workspace', descriptors = [], recipes = [], onSelect, onDeselect, onMove, onNotice, onNavigate, onDismiss, onInspect, onCloseInspect, onInspectSelection, inspectionExpanded = false, inspectionSelection, inspectionLabel='Inspect', objectCommands }: {
+  let { document, context={}, selection, onSelectionIntent, revision, selectedNodeId, focusSelection, blocked = false, active = true, presentation = 'workspace', descriptors = [], recipes = [], onSelect, onDeselect, onMove, onNotice, onNavigate, onDismiss, onInspect, onCloseInspect, onInspectSelection, inspectionExpanded = false, inspectionSelection, inspectionLabel='Inspect', objectCommands }: {
+    selection?:WorkspaceSelection;onSelectionIntent?:(items:readonly WorkspaceItem[],operation:SelectionOperation)=>void;
     document: UiDocument; context?:StructureContext; revision: string; selectedNodeId?: string; focusSelection?:string; blocked?: boolean; active?: boolean;
     descriptors?: readonly UiExtensionDescriptor[]; recipes?: readonly InsertRecipe[];
     onSelect: (occurrence: string) => void; onMove: (request: StructureEditRequest) => boolean;
@@ -29,21 +31,41 @@
   } = $props();
   let nodes = $state<Node<StructureNodeData>[]>([]);
   let edges = $state<Edge[]>([]);
-  let hoveredEdge=$state<string>();
-  let focusedEdge=$state<string>();
-  let pinnedEdge=$state<string>();
-  const tracedConnection=$derived(structureTrace(edges,hoveredEdge ?? focusedEdge ?? pinnedEdge ?? edges.find(edge=>edge.selected)?.id));
-  setContext<StructureTraceContext>(structureTraceContext,{current:()=>tracedConnection});
-  function clearTrace(){hoveredEdge=undefined;focusedEdge=undefined;pinnedEdge=undefined;edges=edges.map(edge=>edge.selected?{...edge,selected:false}:edge);}
-  function focusConnection(event:FocusEvent){
-    const target=event.target;
-    focusedEdge=target instanceof Element?target.closest('.svelte-flow__edge')?.getAttribute('data-id')??undefined:undefined;
+  let localSelection=$state<WorkspaceSelection>({documentId:'',items:[]});
+  const currentSelection=$derived(selection??localSelection);
+  const chosenItems=$derived(currentSelection.items);
+  let hoveredEdges=$state<string[]>([]);
+  let focusedEdges=$state<string[]>([]);
+  const visibleChosen=$derived(chosenItems.filter(item=>item.kind==='node'?nodes.some(node=>node.id===item.id):edges.some(edge=>edge.id===item.id)));
+  const tracedConnection=$derived(selectionHighlight(edges,visibleChosen,hoveredEdges.length?hoveredEdges:focusedEdges));
+  function requestSelection(items:readonly WorkspaceItem[],operation:SelectionOperation='replace'){
+    if(blocked){onNotice('Apply or cancel your draft before changing selection.');return;}
+    hoveredEdges=[];focusedEdges=[];
+    if(onSelectionIntent)onSelectionIntent(items,operation);
+    else localSelection=changeSelection(localSelection,items,operation);
   }
-  const captionPaths=new SvelteMap<string,string>(),captionLabels=new SvelteMap<string,string>();
+  function clearTrace(){requestSelection([]);}
+  function focusConnection(event:FocusEvent){
+    const id=event.target instanceof Element?event.target.closest('.svelte-flow__edge')?.getAttribute('data-id'):undefined;
+    focusedEdges=id?connectionGroup(edges,id).map(edge=>edge.id):[];
+  }
+  setContext<StructureTraceContext>(structureTraceContext,{
+    current:()=>tracedConnection,
+    blocked:()=>blocked,
+    isPortSelected:(node,port)=>{const members=portConnections(edges,node,port);return members.length>0&&members.every(edge=>chosenItems.some(item=>item.kind==='edge'&&item.id===edge.id));},
+    hoverPort:(node,port)=>{hoveredEdges=port?portConnections(edges,node,port).map(edge=>edge.id):[];},
+    selectPort:(node,port,event)=>requestSelection(portConnections(edges,node,port).map(edge=>({kind:'edge' as const,id:edge.id})),selectionOperation(event)),
+  });
   const nodeRects=$derived(new Map(nodes.map(node=>[node.id,{x:node.position.x,y:node.position.y,width:node.measured?.width??node.width??224,height:node.measured?.height??node.height??94}])));
-  const activeCaptionLabels=$derived(new Map(tracedConnection ? [[tracedConnection.id,captionLabels.get(tracedConnection.id)??'']] : []));
-  const captions=$derived(layoutCaptions(captionPaths,activeCaptionLabels,nodes.map(node=>({x:node.position.x,y:node.position.y,width:node.measured?.width??node.width??224,height:node.measured?.height??node.height??94}))));
-  setContext<CaptionContext>(captionContext,{paths:captionPaths,labels:captionLabels,captions:()=>captions,nodes:()=>nodeRects});
+  setContext<StructureGeometryContext>(structureGeometryContext,{nodes:()=>nodeRects});
+  $effect(()=>{
+    const items=chosenItems;
+    untrack(()=>{
+      nodes=nodes.map(node=>{const selected=items.some(item=>item.kind==='node'&&item.id===node.id);return node.selected===selected?node:{...node,selected};});
+      edges=edges.map(edge=>{const selected=items.some(item=>item.kind==='edge'&&item.id===edge.id);return edge.selected===selected?edge:{...edge,selected};});
+      const primary=primaryItem(currentSelection);if(selection)inspectedId=primary?.kind==='node'?primary.id:undefined;
+    });
+  });
   let viewport = $state<Viewport>({ x: 24, y: 24, zoom: .85 });
   let allowMoves = $state(false);
   let inspectedId = $state<string>();
@@ -74,12 +96,14 @@
   let showTextNodes = $state(false);
   let inspectionButton: HTMLButtonElement;
   let structureElement = $state<HTMLElement>();
+  $effect(()=>{const element=structureElement;if(!element)return;const inspect=(event:MouseEvent)=>{if(!blocked&&event.target instanceof Element&&event.target.closest('.svelte-flow__edge,.svelte-flow__node')&&!event.target.closest('.port-control'))onInspect?.();};element.addEventListener('dblclick',inspect);return()=>element.removeEventListener('dblclick',inspect);});
   const fittedDocuments = new Set<string>();
   const graph = $derived(projectStructure(document,{descriptors,...context}));
-  $effect(()=>{if(inspectionSelection && graph.nodes.some(node=>node.id===inspectionSelection))inspectedId=inspectionSelection;});
+  $effect(()=>{if(!selection && inspectionSelection && graph.nodes.some(node=>node.id===inspectionSelection))inspectedId=inspectionSelection;});
   const compactGraph = $derived(compactStructure(graph, document));
   const groupGraph = $derived(showTextNodes || search ? graph : compactGraph);
   const inspected = $derived(graph.nodes.find(node => node.id === inspectedId));
+  const framingIds=$derived([...new Set(chosenItems.flatMap(item=>item.kind==='node'?[item.id]:edges.filter(edge=>edge.id===item.id).flatMap(edge=>[edge.source,edge.target])).filter(id=>nodes.some(node=>node.id===id)))]);
   const related = $derived(graph.edges.filter(edge => (edge.source === inspectedId || edge.target === inspectedId) && edge.data?.kind !== 'containment'));
   const facts = $derived(inspected ? structureFacts(document, inspected) : []);
   const filtered = $derived(filterStructure(graph, { search, focusId: focusedId, collapsed, bindings: showBindings, definitions: showDefinitions, inventory }));
@@ -111,7 +135,8 @@
   $effect(() => {
     const id = document.id;
     if (id === untrack(() => layoutDocument)) return;
-    untrack(clearTrace);
+    if(!selection)localSelection={documentId:id,items:[]};
+    hoveredEdges=[];focusedEdges=[];
     untrack(remember);
     layoutDocument = id;
     const saved = presentations.get(id);
@@ -126,12 +151,12 @@
   const canonicalSelection=$derived(selectedNodeId?structureId(document.id,'node',selectedNodeId):undefined);
   $effect(() => {
     const selectedId=canonicalSelection;
-    if(!selectedId)return;
+    if(selection||!selectedId)return;
     untrack(()=>{inspectedId=selectedId;if(graphSelection!==selectedId)connectionFocus=selectedId;graphSelection=undefined;});
   });
   $effect(() => {
     const selectedId=canonicalSelection;
-    if(!selectedId)return;
+    if(selection||!selectedId)return;
     // Canonical revisions may change ancestry, but must not replace an
     // inspected data/action scope when the selected occurrence is unchanged.
     const next = new Set(untrack(() => collapsed));
@@ -155,11 +180,12 @@
       const old = previous.get(node.id);
       const source = node.data.sourceId && document.nodes[node.data.sourceId];
       const target = !!node.data.occurrence && !!source && ((source.kind === 'element' && ['main', 'section', 'div', 'article', 'aside', 'header', 'footer', 'nav', 'form', 'fieldset', 'ul', 'ol', 'li'].includes(source.tag)) || (source.kind === 'component' && (descriptors.find(entry => entry.id === source.definitionId)?.slots?.length ?? 0) === 1));
-      return { ...node, position: old?.position ?? remembered?.get(node.id) ?? node.position, measured: old?.measured, selected: node.id === inspectedId,
+      return { ...node, position: old?.position ?? remembered?.get(node.id) ?? node.position, measured: old?.measured, selectable:false,selected:untrack(()=>chosenItems.some(item=>item.kind==='node'&&item.id===node.id)),
         data: { ...structureNodePresentation(document, node.data), ports:structurePorts(currentGraph,node.id), direction: orientation, moveSource: editable && !!node.data.occurrence && node.data.sourceId !== document.root, moveTarget: editable && target,
           collapsed: groupClosed(node.id), onToggleGroup: groupGraph.edges.some(edge => edge.source === node.id && edge.data?.kind === 'containment') ? () => collapse(node.id) : undefined } };
     });
-    edges = structureConnectionEdges(currentGraph);
+    const oldEdges=untrack(()=>new Map(edges.map(edge=>[edge.id,edge])));
+    edges=structureConnectionEdges(currentGraph).map(edge=>({...edge,selectable:false,selected:untrack(()=>chosenItems.some(item=>item.kind==='edge'&&item.id===edge.id)),data:{...edge.data,route:oldEdges.get(edge.id)?.data?.route}}));
   });
   const measuredSignature = $derived(nodes.map(node => `${node.id}:${node.measured?.width ?? 0}:${node.measured?.height ?? 0}`).join('|'));
   $effect(() => {
@@ -192,12 +218,12 @@
     if(key!==framedConnections){framedConnections=key;locate();}
   });
   function locate(ids: string[] = []) { navigationIds = ids; navigationRequest = {}; }
-  function select(node: Node<StructureNodeData>) {
-    clearTrace();
+  function select(node: Node<StructureNodeData>,event:{ctrlKey?:boolean;metaKey?:boolean}={}) {
     if (blocked) { onNotice('Apply or cancel your draft before changing selection.'); return; }
     inspectedId = node.id;
-    onInspectSelection?.(node.id);
-    if (node.data.occurrence) {graphSelection=node.id;onSelect(node.data.occurrence);}
+    requestSelection([{kind:'node',id:node.id,...(node.data.occurrence?{occurrence:node.data.occurrence}:{})}],selectionOperation(event));
+    if(!selection)onInspectSelection?.(node.id);
+    if(!selection && node.data.occurrence){graphSelection=node.id;onSelect(node.data.occurrence);}
   }
   async function reveal(node: Node<StructureNodeData>) {
     if (blocked) { onNotice('Apply or cancel your draft before changing selection.'); return; }
@@ -227,12 +253,13 @@
     // Flow's Enter/Space selection does not emit onnodeclick. Only handle a
     // focused node wrapper, never an input or its nested disclosure button.
     const target = event.target;
+    if(target instanceof Element && target.matches('.svelte-flow__edge') && ['Enter',' '].includes(event.key)){event.preventDefault();const id=target.getAttribute('data-id');if(id)requestSelection(connectionGroup(edges,id).map(edge=>({kind:'edge' as const,id:edge.id})),selectionOperation(event));return;}
     if (!(target instanceof HTMLElement) || !target.matches('.svelte-flow__node')) return;
     const node = nodes.find(entry => entry.id === target.dataset.id);
-    if (node && (event.key === 'Enter' || event.key === ' ')) select(node);
+    if(node && ['Enter',' '].includes(event.key)){event.preventDefault();select(node,event);}
   }
   function graphEscape(event: KeyboardEvent) {
-    if(active && !activeMenu && event.key==='Escape' && tracedConnection && event.target instanceof Element && structureElement?.contains(event.target) && !event.target.closest('[role=menu]')){event.preventDefault();event.stopPropagation();clearTrace();return;}
+    if(active && !activeMenu && event.key==='Escape' && tracedConnection && event.target instanceof Element && structureElement?.contains(event.target) && !event.target.closest('[role=menu],input,textarea,[contenteditable=true]')){event.preventDefault();event.stopPropagation();clearTrace();return;}
     if (!active || activeMenu || event.key !== 'Escape' || !(event.target instanceof HTMLElement) || event.target.closest('[role="menu"]')) return;
     if(!event.target.matches('.svelte-flow__node')){
       if(structureElement?.contains(event.target)){escape(event);if(event.defaultPrevented)event.stopPropagation();}
@@ -305,7 +332,7 @@
           <Menubar.RadioItem value="hierarchy" closeOnSelect onSelect={()=>{focusedId=undefined;search='';}}>Whole hierarchy<span aria-hidden="true">{graphView==='hierarchy'?'✓':''}</span></Menubar.RadioItem>
         </Menubar.RadioGroup>
         <Menubar.CheckboxItem bind:checked={inventory} closeOnSelect={false} onSelect={()=>{graphView='hierarchy';focusedId=undefined;}}>All declarations<span aria-hidden="true">{inventory?'✓':''}</span></Menubar.CheckboxItem><Menubar.Separator />
-        <Menubar.Item disabled={!inspected || !nodes.some(node=>node.id===inspectedId)} onSelect={() => locate(inspectedId?[inspectedId]:[])}>Frame selection</Menubar.Item>
+        <Menubar.Item disabled={!framingIds.length} onSelect={() => locate(framingIds)}>Frame selection</Menubar.Item>
         <Menubar.Item disabled={!inspected || blocked} onSelect={() => { if (inspected) void reveal(inspected); }}>Focus on selection</Menubar.Item>
         <Menubar.Item onSelect={() => { graphView='hierarchy';focusedId = undefined; search = ''; }}>Show whole screen</Menubar.Item>
         <Menubar.Item onSelect={() => openInspection('find')}>Find source item</Menubar.Item>
@@ -343,6 +370,7 @@
     </Menubar.Root>
     <span class="declaration-label" title={`Source declarations; ${inventory?'all registries':'used dependencies'}; visibility filters still apply. This is not live execution.`}>Declared</span>
     {#if search}<span class="scope-label" title="Search includes hidden items and their parent paths. Relationship visibility settings still apply.">Search results · includes hidden items</span>{:else if graphView==='connections'}<span class="scope-label" title={`Focused on ${scopeLabel}`}>Focus: {scopeLabel}</span>{/if}
+    {#if chosenItems.length}<span class="scope-label" aria-live="polite">{chosenItems.length} selected{chosenItems.some(item=>item.kind==='node'?!nodes.some(node=>node.id===item.id):!edges.some(edge=>edge.id===item.id))?' · some outside view':''}</span>{/if}
     <span class="structure-count" aria-live="polite" title={graphView==='connections' && !search?'Nearby items after visibility settings':'All declared items; visibility settings, collapsed groups and compact text may hide some'}>{nodes.length < availableItems ? `${nodes.length} of ${availableItems}` : nodes.length} items</span>
     <button type="button" class="inspection-toggle" aria-label={inspectionLabel==='Inspect'?'Inspect structure':'Selection panel'} aria-expanded={onInspect ? inspectionExpanded : inspectionOpen} aria-controls={onInspect ? undefined : 'structure-inspection'} bind:this={inspectionButton} onclick={() => { if (onInspect && inspectionExpanded && onCloseInspect) onCloseInspect(); else if (onInspect) onInspect(inspectedId, 'properties'); else if (inspectionOpen) closeInspection(); else openInspection(inspected ? 'properties' : 'find'); }}>{inspectionLabel}</button>
   </div>
@@ -354,15 +382,16 @@
     </div>
   {/if}
   <div class="structure-body">
-    <div class="structure-canvas" onfocusin={focusConnection} onfocusout={()=>{focusedEdge=undefined;}} inert={presentation === 'drawer' && inspectionOpen}>
+    <div class="structure-canvas" onfocusin={focusConnection} onfocusout={()=>{focusedEdges=[];}} inert={presentation === 'drawer' && inspectionOpen}>
       <FlowCanvas bind:nodes bind:edges bind:viewport {nodeTypes} {edgeTypes} minZoom={.35} maxZoom={2} colorMode="light" showControls={false} showMiniMap={nodes.length > 12}
         nodesConnectable={allowMoves && !blocked} elementsSelectable={!blocked} deleteKey={null} multiSelectionKey={null} selectionKey={null} autoPanOnNodeFocus={false} isValidConnection={valid}
-        onnodeclick={({ node }) => select(node as Node<StructureNodeData>)}
+        onnodeclick={({ node,event }) => select(node as Node<StructureNodeData>,event)}
         onkeydown={keyboardSelection}
-        onpaneclick={deselect}
-        onedgepointerenter={({edge})=>{hoveredEdge=edge.id;}}
-        onedgepointerleave={({edge})=>{if(hoveredEdge===edge.id)hoveredEdge=undefined;}}
-        onedgeclick={({edge})=>{pinnedEdge=edge.id;}}
+        onpaneclick={({event})=>{if(!event.ctrlKey&&!event.metaKey)deselect();}}
+        onedgepointerenter={({edge})=>{hoveredEdges=connectionGroup(edges,edge.id).map(item=>item.id);}}
+        onedgepointerleave={()=>{hoveredEdges=[];}}
+        onedgeclick={({edge,event})=>requestSelection(connectionGroup(edges,edge.id).map(item=>({kind:'edge' as const,id:item.id})),selectionOperation(event))}
+
         onnodedragstart={() => fence.cancel()}
         onconnectstart={() => { connectionStart = { documentId: document.id, revision }; }}
         onclickconnectstart={() => { connectionStart = { documentId: document.id, revision }; }} onconnect={connect}>
@@ -372,7 +401,7 @@
       {#if graphView==='connections' && !search && connectionGraph.edges.length===0}<p class="connection-empty">{rawConnections ? 'Connections are hidden by visibility settings or collapsed groups.' : 'This item has no declared connections.'}</p>{/if}
       {#if layoutStatus}<p class="structure-status" role="status">{layoutStatus}</p>{/if}
       {#if layoutNote && !layoutStatus}<p class="structure-layout-note" role="status">{layoutNote}</p>{/if}
-      {#if viewport.zoom<.65 && !layoutStatus && nodes.length}<div class="structure-scale-hint">Zoom in for easier reading.<button type="button" disabled={!nodes.some(node=>node.id===inspectedId)} onclick={()=>locate(inspectedId?[inspectedId]:[])}>Frame selection</button></div>{/if}
+      {#if viewport.zoom<.65 && !layoutStatus && nodes.length}<div class="structure-scale-hint">Zoom in for easier reading.<button type="button" disabled={!framingIds.length} onclick={()=>locate(framingIds)}>Frame selection</button></div>{/if}
       {#if !nodes.length}<div class="structure-empty"><p>No matching items</p><button type="button" onclick={() => { search = ''; focusedId = undefined; }}>Clear search</button></div>{/if}
     </div>
     {#if inspectionOpen}

@@ -9,6 +9,7 @@
    */
   import { tick, untrack, type Snippet } from 'svelte';
   import FloatingSelection from './FloatingSelection.svelte';
+  import {selectionOperation,type OccurrenceSelectionIntent} from './selection-intent.js';
   import { literalTextTarget, editLiteralText } from './selection-tools.js';
   import { resolveOccurrence } from './occurrence.js';
   import type { TransactionDraft } from './commands.js';
@@ -62,6 +63,9 @@
     readonly view?: Readonly<Record<string, unknown>>;
     readonly record?: Readonly<Record<string, unknown>>;
     readonly selectedOccurrence?: string;
+    readonly selectedOccurrences?: readonly string[];
+    readonly onSelectionIntent?: (intent:OccurrenceSelectionIntent)=>void;
+    readonly onClearSelection?: ()=>void;
     readonly onSelect: (occurrence: string) => void;
     readonly dispatch: (actionId: string, input?: unknown) => Promise<unknown>;
     readonly navigate: (routeId: string, params?: Readonly<Record<string, unknown>>) => void;
@@ -100,6 +104,7 @@
     view = {},
     record = {},
     selectedOccurrence,
+    selectedOccurrences, onSelectionIntent, onClearSelection,
     onSelect,
     dispatch,
     navigate,
@@ -130,6 +135,7 @@
   });
   const focusedPlan=$derived(compiled.ok && interactionMode==='design' && compositionFocus?projectComposition(compiled.plan,document,compositionFocus,extensions,extensionImplementations.filter(entry=>'requiresParentContext' in entry && entry.requiresParentContext).map(entry=>entry.extensionId),extensionImplementations.filter(entry=>'compositionSlots' in entry && entry.compositionSlots?.includes(compositionFocus.slotName)).map(entry=>`${entry.extensionId}@${entry.revision}`)):undefined);
 
+  const selectionOccurrences=$derived(selectedOccurrences??(selectedOccurrence?[selectedOccurrence]:[]));
   function handleSelect(occurrence: string): void {
     onSelect(occurrence);
   }
@@ -194,6 +200,8 @@
       if (event.target instanceof Element && event.target.closest('[data-ui-inline-editor]')) return;
       const target = event.target instanceof Element ? event.target.closest<HTMLElement>('[data-ui-occ]') : null;
       const owner = canvasEl?.querySelector<HTMLElement>('[data-ui-owner-root]')?.dataset.uiOwnerRoot;
+      if(event.type==='click'&&event.target===canvasEl){if(!(event as MouseEvent).ctrlKey&&!(event as MouseEvent).metaKey)onClearSelection?.();return;}
+      if(event instanceof KeyboardEvent && event.key==='Escape' && selectionOccurrences.length && !inlineEdit && !!owner && !!target && target.dataset.uiOwner===owner && onClearSelection){event.preventDefault();event.stopImmediatePropagation();onClearSelection();return;}
       if (!owner || target?.dataset.uiOwner !== owner) return;
       if (selectionTools && event instanceof KeyboardEvent && event.key === 'F10') return;
       if ((onApply || onEditTextRequest) && event instanceof KeyboardEvent && (['F2', 'Delete', 'Backspace'].includes(event.key) || (event.altKey && ['ArrowUp', 'ArrowDown'].includes(event.key)))) return;
@@ -204,12 +212,15 @@
       }
       // Tab and Escape remain available for navigation and overlay dismissal. Activation/editing
       // events stop before catalog handlers, native inputs and form submission.
-      if (event instanceof KeyboardEvent && (['Tab', 'Escape'].includes(event.key) || event.ctrlKey || event.metaKey)) return;
+      if (event instanceof KeyboardEvent && (['Tab', 'Escape'].includes(event.key) || ((event.ctrlKey || event.metaKey) && !['Enter',' '].includes(event.key)))) return;
       if (event.cancelable) event.preventDefault();
       event.stopImmediatePropagation();
       if (event.type === 'pointerdown' || (event.type === 'click' && !completedPointerSelection) || (event instanceof KeyboardEvent && ['Enter', ' '].includes(event.key))) {
         if (event.type === 'pointerdown') selectedByPointer = true;
-        if (target.dataset.uiOcc) onSelect(target.dataset.uiOcc);
+        if(target.dataset.uiOcc){
+          if(onSelectionIntent)onSelectionIntent({occurrences:[target.dataset.uiOcc],operation:selectionOperation(event as MouseEvent),primary:target.dataset.uiOcc});
+          else onSelect(target.dataset.uiOcc);
+        }
       }
     };
     const events = ['pointerdown', 'pointercancel', 'click', 'dblclick', 'keydown', 'keyup', 'beforeinput', 'input', 'change', 'submit'] as const;
@@ -217,11 +228,11 @@
     return () => { for (const event of events) globalThis.document.removeEventListener(event, intercept, true); };
   });
   $effect(() => {
-    const occurrence = selectedOccurrence;
+    const occurrences = selectionOccurrences;
     void compiled;
     let cancelled = false;
     let observer: MutationObserver | undefined;
-    let marked: HTMLElement | undefined;
+    let marked: HTMLElement[] = [];
     const mark = () => {
       if (cancelled || canvasEl === undefined) return;
       const owner = canvasEl.querySelector<HTMLElement>('[data-ui-owner-root]')?.dataset.uiOwnerRoot;
@@ -233,10 +244,8 @@
         ...globalThis.document.querySelectorAll<HTMLElement>('[data-ui-owner]'),
       ])].filter(element => element.dataset.uiOwner === owner);
       for (const element of targets) element.removeAttribute('data-ui-selected');
-      const matching = targets.filter(element => element.dataset.uiOcc === occurrence);
-      marked = occurrence === undefined ? undefined
-        : matching.find(element => element.hasAttribute('data-ui-primary')) ?? matching[0];
-      marked?.setAttribute('data-ui-selected', '');
+      marked=occurrences.flatMap(occurrence=>{const matching=targets.filter(element=>element.dataset.uiOcc===occurrence);const primary=matching.find(element=>element.hasAttribute('data-ui-primary'))??matching[0];return primary?[primary]:[];});
+      for(const element of marked)element.setAttribute('data-ui-selected','');
     };
     void tick().then(() => {
       if (cancelled || canvasEl === undefined) return;
@@ -247,11 +256,11 @@
       observer.observe(globalThis.document.body, { childList: true, subtree: true });
       observer.observe(canvasEl, { childList: true, subtree: true });
     });
-    return () => { cancelled = true; observer?.disconnect(); marked?.removeAttribute('data-ui-selected'); };
+    return () => { cancelled = true; observer?.disconnect(); for(const element of marked)element.removeAttribute('data-ui-selected'); };
   });
 
   const canvasClasses = $derived(
-    selectedOccurrence !== undefined ? 'uv-canvas uv-canvas-has-selection' : 'uv-canvas',
+    selectionOccurrences.length ? 'uv-canvas uv-canvas-has-selection' : 'uv-canvas',
   );
   const toolAncestors = $derived.by(() => {
     if (!selectedOccurrence) return [];

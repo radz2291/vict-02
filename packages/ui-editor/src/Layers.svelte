@@ -4,12 +4,13 @@
   import { type EditorLabels } from './inspector-ux.js';
   import { resolveOccurrence } from './occurrence.js';
   import { tick, untrack } from 'svelte';
+  import {occurrenceRange,selectionOperation,type OccurrenceSelectionIntent} from './selection-intent.js';
   import { previewValues } from './preview-values.js';
   import { compositionName, moveRelative, type CompositionPlacement } from './composition.js';
   import type { TransactionDraft } from './commands.js';
   import {compositionSlots,type CompositionFocus} from './composition-focus.js';
-  let { plan, document, selectedOccurrence, onSelect, ariaLabel = 'Layers', labels = {}, scope, onApply, componentDescriptors = [], onOpenComposition, compact = false, hideTextContent = false, showSelectionDetails = true, onInspect }: {
-    plan: UiRenderPlan; document?: UiDocument; selectedOccurrence?: string; onSelect?: (occurrence: string) => void;
+  let { plan, document, selectedOccurrence, selectedOccurrences, onSelectionIntent, onSelect, ariaLabel = 'Layers', labels = {}, scope, onApply, componentDescriptors = [], onOpenComposition, compact = false, hideTextContent = false, showSelectionDetails = true, onInspect }: {
+    plan: UiRenderPlan; document?: UiDocument; selectedOccurrence?: string; selectedOccurrences?:readonly string[]; onSelectionIntent?:(intent:OccurrenceSelectionIntent)=>void; onSelect?: (occurrence: string) => void;
     ariaLabel?: string; labels?: EditorLabels; scope?: DocumentScope;
     onApply?: (draft: TransactionDraft) => boolean; componentDescriptors?: readonly import('@victframework/ui').UiExtensionDescriptor[];
     onOpenComposition?:(focus:CompositionFocus)=>void;
@@ -23,6 +24,9 @@
     onInspect?: (occurrence:string, sourceNodeId:string, provenance:string)=>void;
   } = $props();
   interface Entry { hiddenText?: boolean; key: string; nodeId: string; label: string; detail: string; parent?: string; depth: number; children: boolean; component: boolean; compact: boolean; selectable: boolean; composition?:CompositionFocus; }
+  const selectedKeys=$derived(new Set(selectedOccurrences??(selectedOccurrence?[selectedOccurrence]:[])));
+  let rangeAnchor=$state<string>();
+  $effect(()=>{void plan.documentId;rangeAnchor=undefined;});
   let expanded = $state(new Set<string>());
   let closed = $state(new Set<string>());
   let focusKey = $state('');
@@ -130,8 +134,8 @@
   }));
   const selectedAncestors = $derived.by(() => {
     const keys = new Set<string>();
-    let parent = all.find(entry => entry.key === selectedOccurrence)?.parent;
-    while(parent) {keys.add(parent);parent=all.find(entry=>entry.key===parent)?.parent;}
+    for(const selectedKey of selectedKeys){let parent=all.find(entry=>selectionKey(entry)===selectedKey)?.parent;
+    while(parent){keys.add(parent);parent=all.find(entry=>entry.key===parent)?.parent;}}
     return keys;
   });
   const treeGuides = $derived.by(() => {
@@ -192,7 +196,15 @@
   }
   async function focus(key: string) { focusKey = key; await tick(); Array.from(root?.querySelectorAll<HTMLElement>('[role=treeitem]') ?? []).find(e => e.dataset.key === key)?.focus(); }
   function selectionKey(entry:Entry){return entry.composition ? entry.key.slice(0,entry.key.lastIndexOf('|slot:')) : entry.key;}
-  function select(entry: Entry) { focusKey = entry.key; if(onInspect){onSelect?.(selectionKey(entry));return;} if(entry.composition)onOpenComposition?.(entry.composition); else if (entry.selectable) onSelect?.(entry.key); else if (entry.children && !query) toggle(entry); }
+  function select(entry: Entry,event?:{shiftKey?:boolean;ctrlKey?:boolean;metaKey?:boolean}) { focusKey = entry.key;
+    if(onSelectionIntent){
+      const target=selectionKey(entry);
+      const order=[...new Set(entries.map(selectionKey))];
+      const range=!!event?.shiftKey;
+      const occurrences=range?occurrenceRange(order,rangeAnchor,target):[target];
+      if(!range)rangeAnchor=target;
+      onSelectionIntent({occurrences,operation:range?(event?.ctrlKey||event?.metaKey?'add':'replace'):selectionOperation(event??{}),primary:target});return;
+    } if(onInspect){onSelect?.(selectionKey(entry));return;} if(entry.composition)onOpenComposition?.(entry.composition); else if (entry.selectable) onSelect?.(entry.key); else if (entry.children && !query) toggle(entry); }
   function keyboard(event: KeyboardEvent, entry: Entry) {
     const index = entries.findIndex(e => e.key === entry.key);
     let next: string | undefined;
@@ -203,17 +215,18 @@
     if (event.key === 'ArrowRight') { if (!query && entry.children && !isOpen(entry)) toggle(entry); else next = entries[index + 1]?.parent === entry.key ? entries[index + 1]?.key : undefined; }
     if (event.key === 'ArrowLeft') { if (!query && entry.children && isOpen(entry)) toggle(entry); else next = entry.parent; }
     if (['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) event.preventDefault();
-    if (next) void focus(next);
+    if(onSelectionIntent && ['Enter',' '].includes(event.key)){event.preventDefault();select(entry,event);}
+    if(next){if(onSelectionIntent && event.shiftKey && ['ArrowUp','ArrowDown','Home','End'].includes(event.key)){const nextEntry=entries.find(item=>item.key===next);if(nextEntry)select(nextEntry,event);}void focus(next);}
   }
 </script>
 <nav class="uv-layers" class:compact aria-label={ariaLabel} bind:this={root}>
   <header><h2>{ariaLabel}</h2><div class="search"><input type="search" aria-label="Search layers" placeholder="Search layers" bind:value={search} onkeydown={e => { if (e.key === 'Escape') search = ''; if (e.key === 'ArrowDown' && entries[0]) { e.preventDefault(); void focus(entries[0].key); } }} />{#if query}<button type="button" aria-label="Clear layers search" onclick={() => search = ''}>×</button>{/if}</div>{#if query}<p role="status">{matches.length} matches · ancestors shown</p>{/if}</header>
-  <ul role="tree" aria-label="Document layers">
+  <ul role="tree" aria-label="Document layers" aria-multiselectable={onSelectionIntent?true:undefined}>
     {#each entries as entry (entry.key)}
-      <li role="none" class:is-parent={entry.children && (!entry.compact || entry.component)} class:is-ancestor={selectedAncestors.has(entry.key)} class:is-selected={entry.key===selectedOccurrence} style:padding-left={`${entry.depth * 16}px`}>
+      <li role="none" class:is-parent={entry.children && (!entry.compact || entry.component)} class:is-ancestor={selectedAncestors.has(entry.key)} class:is-selected={selectedKeys.has(entry.key)} style:padding-left={`${entry.depth * 16}px`}>
         <span class="tree-guides" aria-hidden="true">{#each treeGuides.get(entry.key) ?? [] as guide}{#if guide.continues || guide.end}<span class="tree-guide" class:branch={guide.end} class:last={!guide.continues} style:left={`${guide.level*16+10}px`}></span>{/if}{/each}</span>
         {#if entry.children}<button class="disclosure" type="button" tabindex="-1" disabled={!!query} aria-label={`${query || isOpen(entry) ? 'Collapse' : 'Expand'} ${entry.label}`} onclick={() => toggle(entry)}><svg viewBox="0 0 16 16" aria-hidden="true" class:expanded={!!query || isOpen(entry)}><path d="m6 4 4 4-4 4" /></svg></button>{:else}<span class="spacer"></span>{/if}
-        <button type="button" role="treeitem" data-key={entry.key} data-drop={dropKey === entry.key ? dropPosition : undefined} aria-level={entry.depth + 1} aria-expanded={entry.children ? !!query || isOpen(entry) : undefined} aria-selected={entry.key === selectedOccurrence} tabindex={entry.key === tabStop ? 0 : -1} title={`${entry.label} · ${entry.detail}`} onclick={() => select(entry)} ondblclick={() => onInspect?.(selectionKey(entry),entry.nodeId,entry.detail)} onkeydown={e => keyboard(e, entry)} onfocus={() => focusKey = entry.key}
+        <button type="button" role="treeitem" data-key={entry.key} data-drop={dropKey === entry.key ? dropPosition : undefined} aria-level={entry.depth + 1} aria-expanded={entry.children ? !!query || isOpen(entry) : undefined} aria-selected={selectedKeys.has(entry.key)} tabindex={entry.key === tabStop ? 0 : -1} title={`${entry.label} · ${entry.detail}`} onclick={event => select(entry,event)} ondblclick={() => onInspect?.(selectionKey(entry),entry.nodeId,entry.detail)} onkeydown={e => keyboard(e, entry)} onfocus={() => focusKey = entry.key}
           draggable={!!onApply && direct(entry) && !query} ondragstart={event => { if (!direct(entry)) { event.preventDefault(); return; } draggedId = entry.nodeId; if (event.dataTransfer) { event.dataTransfer.effectAllowed = 'move'; event.dataTransfer.setData('text/plain', entry.nodeId); } }}
           ondragover={event => dragOver(event, entry)} ondrop={event => drop(event, entry)} ondragleave={() => { dropKey = ''; }} ondragend={() => { draggedId = ''; dropKey = ''; moveMessage = ''; }}>
           <span class="icon" aria-hidden="true"><svg viewBox="0 0 16 16"><path d={iconPath(entry)} /></svg></span><span class="name" title={visibleLabel(entry)}>{visibleLabel(entry)}</span>{#if entry.children && !query && !isOpen(entry)}<span class="child-count" title="Direct children" aria-label={`${childCounts.get(entry.key) ?? 0} direct ${childCounts.get(entry.key) === 1 ? 'child' : 'children'}`}>{childCounts.get(entry.key)}</span>{/if}{#if entry.component}<span class="badge" title="Component" aria-label="Component">◇</span>{/if}
