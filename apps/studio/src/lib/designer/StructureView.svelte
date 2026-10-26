@@ -80,7 +80,10 @@
   let connectionLimit = $state(25);
   let expandedGroups = $state<Set<string>>(new Set());
   let graphSelection:string|undefined;
-  $effect(()=>{if(focusSelection)connectionFocus=focusSelection;});
+  $effect(()=>{
+    const focus=focusSelection;void graph.edges;
+    if(focus)untrack(()=>{connectionFocus=focus;openAncestorPath(focus);});
+  });
   let collapsed = $state<Set<string>>(new Set());
   let direction = $state<LayoutDirection>('RIGHT');
   let layoutVersion = $state(0);
@@ -147,6 +150,7 @@
     direction = saved?.direction ?? 'RIGHT'; search = saved?.search ?? ''; focusedId = saved?.focusedId;
     inventory=saved?.inventory??false;showBindings = saved?.bindings ?? true; showDefinitions = saved?.definitions ?? false; allowMoves = false;
     showTextNodes = saved?.text ?? false; inspectionOpen = saved?.inspection ?? false; inspectionPage = saved?.page ?? 'properties';
+    untrack(()=>openAncestorPath(connectionFocus));
   });
   const canonicalSelection=$derived(selectedNodeId?structureId(document.id,'node',selectedNodeId):undefined);
   $effect(() => {
@@ -159,16 +163,21 @@
     if(selection||!selectedId)return;
     // Canonical revisions may change ancestry, but must not replace an
     // inspected data/action scope when the selected occurrence is unchanged.
-    const next = new Set(untrack(() => collapsed));
-    const seen = new Set<string>(); let current = selectedId;
+    void graph.edges;
+    untrack(()=>openAncestorPath(selectedId));
+  });
+  function openAncestorPath(id:string|undefined){
+    if(!id)return;
+    const next = new Set(collapsed);
+    const seen = new Set<string>(); let current = id;
     while (!seen.has(current)) {
       seen.add(current);
       const owner = graph.edges.find(edge => edge.data?.kind === 'containment' && edge.target === current)?.source;
       if (!owner) break;
       next.delete(owner); current = owner;
     }
-    if (next.size !== untrack(() => collapsed.size)) collapsed = next;
-  });
+    if (next.size !== collapsed.size) collapsed = next;
+  }
   $effect(() => {
     void revision;
     const currentGraph = projected;
