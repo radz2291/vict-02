@@ -1,0 +1,208 @@
+{
+  "coverage": {
+    "entityKinds": [
+      {
+        "kind": "node/element/Container",
+        "header": "ContainerScreen",
+        "overview": "TypeContainerChildren7"
+      },
+      {
+        "kind": "node/element/Heading",
+        "header": "HeadingAn intentionally long heading whose complete content must remain available…",
+        "overview": "TypeHeadingChildren1InsideScreen"
+      },
+      {
+        "kind": "node/text/Text",
+        "header": "TextAn intentionally long heading whose complete content must remain available…",
+        "overview": "TypeTextContentAn intentionally long heading whose complete content must remain available in accessible labels and tooltipsInsideAn intentionally long heading whose complete content must remain available…"
+      },
+      {
+        "kind": "node/conditional/Conditional",
+        "header": "ConditionalConditional content",
+        "overview": "TypeConditionalBranch 1Shown when Accepted is on · 1 itemOtherwiseFallback branch after earlier branches · 1 itemInsideScreen"
+      },
+      {
+        "kind": "node/repeat/Repeat",
+        "header": "RepeatRepeated content 1",
+        "overview": "TypeRepeatRepeatsOne template for each item in ItemsItem identity“stable”ViewTemplate source; individual runtime rows are not shown hereInsideScreen"
+      },
+      {
+        "kind": "node/component/Component",
+        "header": "Component",
+        "overview": "TypeComponentComponentLocal cardSlot · Content1 supplied itemInsideScreen"
+      },
+      {
+        "kind": "node/element/Section",
+        "header": "Section",
+        "overview": "TypeSectionChildren1"
+      },
+      {
+        "kind": "node/slot/Slot",
+        "header": "Slot",
+        "overview": "TypeSlotSlotContentFallback1 items used when no content is suppliedInsideSection"
+      },
+      {
+        "kind": "node/portal/Portal",
+        "header": "PortalOverlay",
+        "overview": "TypePortalOverlay targetlogical-overlaySupportLogical ownership only; native portal rendering is not supportedInsideScreen"
+      },
+      {
+        "kind": "node/element/Input",
+        "header": "InputField 0",
+        "overview": "TypeInputChildren0InsideScreen"
+      },
+      {
+        "kind": "state",
+        "header": "StateMessage",
+        "overview": "TypeStateValue typeStringStarting valueHello from my screen"
+      },
+      {
+        "kind": "condition",
+        "header": "ConditionShow",
+        "overview": "TypeCondition"
+      },
+      {
+        "kind": "definition",
+        "header": "DefinitionLocal card",
+        "overview": "TypeDefinition"
+      },
+      {
+        "kind": "overlay",
+        "header": "Overlaylogical-overlay",
+        "overview": "TypeOverlaySupportUnsupported"
+      },
+      {
+        "kind": "action",
+        "header": "ActionDemo submit",
+        "overview": "TypeActionSupportExternal"
+      },
+      {
+        "kind": "prop",
+        "header": "PropTitle",
+        "overview": "TypePropScopeDefinition a"
+      },
+      {
+        "kind": "data",
+        "header": "ViewProducts",
+        "overview": "TypeViewScopeDocument data"
+      },
+      {
+        "kind": "item",
+        "header": "ItemId",
+        "overview": "TypeItemScopeRepeat a"
+      },
+      {
+        "kind": "catalog",
+        "header": "LibraryProbe toggle",
+        "overview": "TypeLibrarySupportExternal"
+      },
+      {
+        "kind": "output",
+        "header": "OutputChange",
+        "overview": "TypeOutputScopeComponent a"
+      },
+      {
+        "kind": "node/element/Element",
+        "header": "ElementScreen",
+        "overview": "TypeElementChildren0"
+      },
+      {
+        "kind": "style",
+        "header": "StyleShared",
+        "overview": "TypeStyle"
+      },
+      {
+        "kind": "token",
+        "header": "TokenAccent",
+        "overview": "TypeToken"
+      },
+      {
+        "kind": "asset",
+        "header": "AssetLogo",
+        "overview": "TypeAsset"
+      },
+      {
+        "kind": "reference",
+        "header": "ReferenceOpaque value",
+        "overview": "TypeReferenceScopeDocument data"
+      },
+      {
+        "kind": "route",
+        "header": "RouteScreen",
+        "overview": "TypeRouteSupportExternal"
+      }
+    ],
+    "roles": [
+      "defines",
+      "contains",
+      "branch",
+      "otherwise",
+      "condition",
+      "template",
+      "items",
+      "slot",
+      "uses",
+      "fallback",
+      "overlay",
+      "value",
+      "pending",
+      "error",
+      "result",
+      "success",
+      "updates",
+      "key",
+      "emits",
+      "styles",
+      "invokes",
+      "payload",
+      "navigates"
+    ]
+  },
+  "scopedNames": {
+    "sourceScopes": [
+      "Definition a",
+      "Definition b"
+    ],
+    "displayedMembers": [
+      "PropTitle",
+      "PropTitle"
+    ]
+  },
+  "relationships": {
+    "single": {
+      "expandedSections": 1,
+      "navigationButtons": 2
+    },
+    "multiple": {
+      "navigationButtons": 0,
+      "cards": 4
+    }
+  },
+  "repeatLayers": {
+    "canvasKeys": [
+      "repeat-review|field|stable",
+      "repeat-review|field|stable#dup1"
+    ],
+    "layerKeys": [
+      "repeat-review|screen",
+      "repeat-review|repeat",
+      "repeat-review|field"
+    ],
+    "selectedLayerCount": 0
+  },
+  "staleRow": {
+    "retainedOccurrence": "repeats|ta|no-longer-rendered-row",
+    "reason": "Pruning validates source ownership, not current rendered row membership."
+  },
+  "chat": {
+    "canvasSelected": 2,
+    "cue": "No Selected cue for multiple selection; host passes only singleOccurrence to agent context."
+  },
+  "keyboardRange": {
+    "focusedStart": "keyboard-review|a",
+    "selectedAfterShiftDown": [
+      "keyboard-review|b"
+    ],
+    "expectedInteraction": "Extend from the focused start row when no previous pointer anchor exists."
+  }
+}

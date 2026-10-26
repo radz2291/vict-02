@@ -1,0 +1,148 @@
+{
+  "singleStyleOverview": {
+    "class": "studio-type-scope source-details svelte-xg0qt0",
+    "facts": [
+      {
+        "font": "12px / 18px system-ui, \"Segoe UI\", sans-serif",
+        "text": "Type"
+      },
+      {
+        "font": "11px / 15.95px ui-monospace, monospace",
+        "text": "id"
+      },
+      {
+        "font": "11px / 15.95px ui-monospace, monospace",
+        "text": "declarations.0.property"
+      },
+      {
+        "font": "11px / 15.95px ui-monospace, monospace",
+        "text": "declarations.0.value.type"
+      }
+    ],
+    "footer": "Loaded the saved screen.@3 · v1_fe0ac678e805…",
+    "rootStyle": {
+      "display": "flex",
+      "overflow": "hidden"
+    },
+    "sections": [
+      {
+        "font": "500 12px / 18px system-ui, \"Segoe UI\", sans-serif",
+        "height": 36,
+        "name": "Overview",
+        "weight": "500",
+        "y": 159.40000915527344
+      },
+      {
+        "font": "12px / 18px system-ui, \"Segoe UI\", sans-serif",
+        "height": 36,
+        "name": "Relationships",
+        "weight": "400",
+        "y": 571.2000122070312
+      },
+      {
+        "font": "12px / 18px system-ui, \"Segoe UI\", sans-serif",
+        "height": 36,
+        "name": "Technical information",
+        "weight": "400",
+        "y": 607.2000122070312
+      }
+    ],
+    "text": "StyleSrc onb Name Input always focus Overview   TypeStyle Relationships→ StylesFull name  Technical informationidsrc.onbNameInput.always.focusdeclarations.0.propertyborder-colordeclarations.0.value.typetextdeclarations.0.value.value#3b66f5declarations.1.propertybox-shadowdeclarations.1.value.typetextdeclarations.1.value.value0 0 0 3px rgba(59,102,245,0.15)pseudofocus"
+  },
+  "singleStyleRelationships": {
+    "class": "studio-type-scope source-details svelte-xg0qt0",
+    "facts": [
+      {
+        "font": "12px / 18px system-ui, \"Segoe UI\", sans-serif",
+        "text": "Type"
+      },
+      {
+        "font": "11px / 15.95px ui-monospace, monospace",
+        "text": "id"
+      },
+      {
+        "font": "11px / 15.95px ui-monospace, monospace",
+        "text": "declarations.0.property"
+      },
+      {
+        "font": "11px / 15.95px ui-monospace, monospace",
+        "text": "declarations.0.value.type"
+      }
+    ],
+    "footer": "Loaded the saved screen.@3 · v1_fe0ac678e805…",
+    "rootStyle": {
+      "display": "flex",
+      "overflow": "hidden"
+    },
+    "sections": [
+      {
+        "font": "12px / 18px system-ui, \"Segoe UI\", sans-serif",
+        "height": 36,
+        "name": "Overview",
+        "weight": "400",
+        "y": 159.40000915527344
+      },
+      {
+        "font": "500 12px / 18px system-ui, \"Segoe UI\", sans-serif",
+        "height": 36,
+        "name": "Relationships",
+        "weight": "500",
+        "y": 195.40000915527344
+      },
+      {
+        "font": "12px / 18px system-ui, \"Segoe UI\", sans-serif",
+        "height": 36,
+        "name": "Technical information",
+        "weight": "400",
+        "y": 607.2000122070312
+      }
+    ],
+    "text": "StyleSrc onb Name Input always focus Overview   TypeStyle Relationships→ StylesFull name  Technical informationidsrc.onbNameInput.always.focusdeclarations.0.propertyborder-colordeclarations.0.value.typetextdeclarations.0.value.value#3b66f5declarations.1.propertybox-shadowdeclarations.1.value.typetextdeclarations.1.value.value0 0 0 3px rgba(59,102,245,0.15)pseudofocus"
+  },
+  "mixedRelationships": {
+    "class": "workspace-selection-details studio-type-scope svelte-1te22ys",
+    "facts": [
+      {
+        "font": "12px / 18px system-ui, \"Segoe UI\", sans-serif",
+        "text": "Type"
+      },
+      {
+        "font": "12px / 18px system-ui, \"Segoe UI\", sans-serif",
+        "text": "Src onb Name Input always focus"
+      },
+      {
+        "font": "12px / 18px system-ui, \"Segoe UI\", sans-serif",
+        "text": "Demo submit"
+      }
+    ],
+    "footer": "Loaded the saved screen.@3 · v1_fe0ac678e805…",
+    "rootStyle": {
+      "display": "block",
+      "overflow": "auto"
+    },
+    "sections": [
+      {
+        "font": "12px / 18px system-ui, \"Segoe UI\", sans-serif",
+        "height": 36,
+        "name": "Overview",
+        "weight": "400",
+        "y": 126.8000030517578
+      },
+      {
+        "font": "500 12px / 18px system-ui, \"Segoe UI\", sans-serif",
+        "height": 36,
+        "name": "Relationships",
+        "weight": "500",
+        "y": 162.8000030517578
+      },
+      {
+        "font": "12px / 18px system-ui, \"Segoe UI\", sans-serif",
+        "height": 36,
+        "name": "Technical information",
+        "weight": "400",
+        "y": 764.7999877929688
+      }
+    ],
+    "text": "2 nodes Overview TypeMixedRead-only comparison. Mixed means the selected items differ. StyleSrc onb Name Input always focus×ActionDemo submit× Relationships5 declared relationships; related items are not automatically selected.StylesSrc onb Name Input always focus → Full nameThe source contributes declared styling to the destination.InvokesPress → Demo submitThe source declares a request to invoke the destination action.PendingDemo submit → BusyThe host maps the source action pending state to the destination state.ErrorDemo submit → Action ErrorThe host maps the source action error to the destination state.ResultDemo submit → Action ResultThe host maps the source action result to the destination state. Technical informationSrc onb Name Input always focus%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22style%22%2C%22src.onbNameInput.always.focus%22%5DDemo submit%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22action%22%2C%22demo.submit%22%5D"
+  }
+}
