@@ -21,7 +21,7 @@
   import SourceDetails from './SourceDetails.svelte';
   import StructureInspection from './StructureInspection.svelte';
   import DocumentPanels from './DocumentPanels.svelte';
-  import StructureDock from './StructureDock.svelte';
+  import WorkspaceModes from './WorkspaceModes.svelte';
   import TryScenarios from './TryScenarios.svelte';
   import type { TestScenario } from './test-scenarios.js';
   import { readableName, studioNodeLabels } from './presentation.js';
@@ -41,7 +41,7 @@
   }
   async function locateOnCanvas(occurrence: string) {
     if (!source || textDraftDirty || sourceDraftDirty || renamingScreen) return;
-    structureExpanded = false; detailsOpen=false; await tick();
+    workspaceView=mode; detailsOpen=false; await tick();
     const find = () => [...(canvasScroll?.querySelectorAll<HTMLElement>('[data-ui-occ]') ?? [])].find(element => element.dataset.uiOcc === occurrence && element.getClientRects().length);
     if (!find()) {
       if (mode === 'interact') { notice = 'This source is hidden in Interact. Switch to Design, then Locate on canvas to inspect its composition.'; return; }
@@ -77,35 +77,36 @@
   let chatOpen = $state(false);
   let chatWidth = $state(280);
   async function toggleChat(){showPanel('chat',!chatOpen);await tick();(chatOpen?globalThis.document.querySelector<HTMLElement>('.agent-panel textarea'):viewButton)?.focus({preventScroll:true});}
-  type AuxiliaryPanel='chat'|'document'|'structure'|'testing';
+  type AuxiliaryPanel='chat'|'document'|'testing';
   let availableWidth=$state(0);
   const compactWorkspace=$derived(availableWidth>0 && availableWidth<=1000);
-  let lastPanel:AuxiliaryPanel='structure';
+  let lastPanel:AuxiliaryPanel='document';
   let viewButton=$state<HTMLButtonElement|null>(null);
   let structureFocusId=$state<string>();
   function showPanel(panel:AuxiliaryPanel,open=true){
     const focused=globalThis.document.activeElement;
     if(open){
       lastPanel=panel;
-      if(compactWorkspace){chatOpen=false;drawerOpen=false;structureOpen=false;testingOpen=false;}
-      if(panel==='structure' && source && !structureFocusId)structureFocusId=detailId ?? structureId(source.id,'node',selectedNode?.id ?? source.root);
+      if(compactWorkspace){chatOpen=false;drawerOpen=false;testingOpen=false;}
     }
     if(panel==='chat')chatOpen=open;
     else if(panel==='document'){drawerOpen=open;if(open)testingOpen=false;}
-    else if(panel==='structure')structureOpen=open;
     else testingOpen=open;
     void tick().then(()=>{if(focused instanceof HTMLElement && focused.isConnected && focused.closest('[hidden],[inert]')){
-      const selector=panel==='chat'?'.agent-panel:not([hidden]) textarea':panel==='document'?'#document-drawer:not([hidden]) .close-document':panel==='structure'?'.structure-dock:not([hidden]) [aria-label="Search structure"]':'.testing-drawer [aria-label="Close testing"]';
+      const selector=panel==='chat'?'.agent-panel:not([hidden]) textarea':panel==='document'?'#document-drawer:not([hidden]) .close-document':'.testing-drawer [aria-label="Close testing"]';
       (open?globalThis.document.querySelector<HTMLElement>(selector) ?? viewButton:viewButton)?.focus({preventScroll:true});
     }});
   }
   $effect(()=>{if(compactWorkspace)untrack(()=>{
-    const visible:AuxiliaryPanel[]=([...(['chat','document','structure','testing'] as const)]).filter(panel=>panel==='chat'?chatOpen:panel==='document'?drawerOpen:panel==='structure'?structureOpen:testingOpen);
+    const visible:AuxiliaryPanel[]=([...(['chat','document','testing'] as const)]).filter(panel=>panel==='chat'?chatOpen:panel==='document'?drawerOpen:testingOpen);
     if(visible.length>1)showPanel(visible.includes(lastPanel)?lastPanel:visible.at(-1)!);
   });});
-  async function toggleStructure(){showPanel('structure',!structureOpen);await tick();(structureOpen?workspaceElement?.querySelector<HTMLElement>('[aria-label="Search structure"]'):viewButton)?.focus({preventScroll:true});}
-
-  let structureHeight = $state(240);
+  function showStructure(){
+    if(source && !structureFocusId)structureFocusId=detailId ?? structureId(source.id,'node',selectedNode?.id ?? source.root);
+    workspaceView='structure';
+    void tick().then(()=>workspaceElement?.querySelector<HTMLElement>('[aria-label="Search structure"]')?.focus({preventScroll:true}));
+  }
+  function changeView(next:'design'|'interact'|'structure'){if(next==='structure')showStructure();else changeMode(next);}
   let testingOpen = $state(false);
   let activeTest = $state<TestScenario>();
   let testChoice = 0;
@@ -141,7 +142,7 @@
     // Mode entry can reset the run; retain deliberately prepared temporary values.
     const retained={...runtimeValues},test=activeTest,denied=simulation.denied,failNext=simulation.failNext;
     changeMode('interact');runtimeValues=retained;activeTest=test;simulation.denied=denied;simulation.failNext=failNext;
-    testingOpen=false;drawerOpen=false;structureExpanded=false;
+    testingOpen=false;drawerOpen=false;
     await tick();canvasScroll?.querySelector<HTMLElement>('input,button,select,textarea,[tabindex="0"]')?.focus({preventScroll:true});
   }
   import '@victframework/ui-svelte/styles.css';
@@ -213,6 +214,7 @@
   let width = $state('fluid');
   let canvasWidth=$state(0);
   let mode = $state<'design' | 'interact'>('design');
+  let workspaceView=$state<'design'|'interact'|'structure'>('design');
   let drawerOpen = $state(false);
   let workspaceElement = $state<HTMLDivElement>();
   let detailId = $state<string>();
@@ -221,10 +223,7 @@
   $effect(()=>{const occurrence=selected;untrack(()=>{if(source && occurrence)detailId=structureId(source.id,'node',resolveOccurrence(occurrence,source).sourceNodeId);});});
   let drawerWidth = $state(320);
   const effectiveDrawerWidth = $derived(drawerWidth);
-  let stageHeight = $state(600);
-  let toolbarHeight = $state(38);
-  let structureOpen = $state(false);
-  let structureExpanded = $state(false);
+  const structureOpen=$derived(workspaceView==='structure');
   let detailsPage = $state<'properties'|'relationships'>('properties');
   let workspaceWidth = $state(0);
   const rightOpen = $derived(drawerOpen || testingOpen);
@@ -232,7 +231,7 @@
   function inspectSource(id = source && selected ? structureId(source.id,'node',resolveOccurrence(selected,source).sourceNodeId) : undefined, page:'properties'|'relationships'='properties') {
     const active = globalThis.document.activeElement;
     inspectionReturn = active instanceof HTMLElement && !active.closest('[role="menu"]') ? active : undefined;
-    detailId=id;detailsPage=page;showPanel('structure');structureFocusId=id;detailsOpen=true;
+    detailId=id;detailsPage=page;showStructure();structureFocusId=id;detailsOpen=true;
     void tick().then(()=>{const target=workspaceElement?.querySelector<HTMLElement>('.structure-inspection-pane [aria-label="Close inspection details"]');target?.scrollIntoView({block:'nearest'});target?.focus({preventScroll:true});});
   }
   function closeDetails() { detailsOpen = false; void tick().then(()=>{
@@ -269,7 +268,7 @@
     ] };
   }
   function canvasContext(target:Element):WorkspaceContext|undefined {
-    if (!source || mode !== 'design' || (!canvasScroll?.contains(target) && !ownsCanvasTarget(target))) return;
+    if (!source || workspaceView !== 'design' || (!canvasScroll?.contains(target) && !ownsCanvasTarget(target))) return;
     if (target.closest('.selection-palette,[data-ui-selection-tools]')) return;
     const occurrence = target.closest<HTMLElement>('[data-ui-occ]')?.dataset.uiOcc;
     if (occurrence && resolveOccurrence(occurrence,source).sourceNodeId !== source.root) return objectContext(occurrence);
@@ -284,8 +283,7 @@
     return !!owner && target.closest<HTMLElement>('[data-ui-owner]')?.dataset.uiOwner===owner;
   }
 
-  function dismissStructure() { if(structureExpanded){structureExpanded=false;return;} hideStructure(); }
-  function hideStructure(){showPanel('structure',false);void tick().then(()=>viewButton?.focus({preventScroll:true}));}
+  function dismissStructure() {workspaceView=mode;void tick().then(()=>workspaceElement?.querySelector<HTMLElement>('.canvas-modes button[aria-pressed=true]')?.focus({preventScroll:true}));}
   let renamingScreen=$state(false);
   let screenNameDraft=$state('');
   let screenNameInput=$state<HTMLInputElement>();
@@ -316,7 +314,7 @@
     actionInputs: { message: 'Message', accepted: 'Agreement' } });
   function selectOccurrence(occurrence: string, revealTools = true) {
     if (textDraftDirty || sourceDraftDirty) { notice = 'Apply or cancel your edit first.'; return; }
-    if(revealTools) structureExpanded=false;
+    if(revealTools) workspaceView='design';
     editTextSignal = undefined;
     if (source) {
       const report = resolveOccurrence(occurrence, source);
@@ -345,7 +343,7 @@
     const node = source && resolveOccurrence(occurrence, source).node;
     return node?.kind === 'component' || (node?.kind === 'element' && ['input', 'textarea'].includes(node.tag)) ? 'Content' : 'Style';
   }
-  function changeMode(next: 'design' | 'interact') { if (textDraftDirty || sourceDraftDirty || renamingScreen) { notice = 'Apply or cancel your draft first.'; return; } if (mode !== next) { compositionFocus=undefined; mode = next; resetRuntime(); } notice = next === 'design' ? 'Design mode · select and edit without running behavior.' : 'Interact mode · simulated behavior, no live effects.'; }
+  function changeMode(next: 'design' | 'interact') { if (mode!==next && (textDraftDirty || sourceDraftDirty || renamingScreen)) { notice = 'Apply or cancel your draft first.'; return; } if (mode !== next) { compositionFocus=undefined; mode = next; resetRuntime(); } workspaceView=next; notice = next === 'design' ? 'Design mode · select and edit without running behavior.' : 'Interact mode · simulated behavior, no live effects.'; }
   let createDialog: HTMLDialogElement;
   let nameInput: HTMLInputElement;
   let screenTitle = $state('My first screen');
@@ -410,7 +408,7 @@
     sessions.set(id, next); openSession(next); notice = 'Loaded the saved screen.';
   }
   onMount(() => {
-    try {const sizes=JSON.parse(localStorage.getItem('vict.studio.workspace-sizes') ?? '{}');chatWidth=Math.max(240,Math.min(400,Number(sizes.chat)||280));inspectionWidth=Math.max(240,Math.min(420,Number(sizes.inspect)||300));structureHeight=Math.max(180,Math.min(420,Number(sizes.structure)||240));drawerWidth=Math.max(280,Math.min(460,Number(sizes.document)||320));}catch{/* Optional layout preferences never block document loading. */}
+    try {const sizes=JSON.parse(localStorage.getItem('vict.studio.workspace-sizes') ?? '{}');chatWidth=Math.max(240,Math.min(400,Number(sizes.chat)||280));inspectionWidth=Math.max(240,Math.min(420,Number(sizes.inspect)||300));drawerWidth=Math.max(280,Math.min(460,Number(sizes.document)||320));}catch{/* Optional layout preferences never block document loading. */}
     try {
       library = savedScreens(localStorage);
       const active = localStorage.getItem('vict.studio.active-screen');
@@ -420,8 +418,8 @@
     } catch { issues = [{ code: 'STUDIO_STORAGE_UNAVAILABLE', message: 'Browser storage is unavailable. Enable storage to author and save screens.' }]; }
     return () => { unsubscribe?.(); };
   });
-  function rememberSizes() {try{localStorage.setItem('vict.studio.workspace-sizes',JSON.stringify({chat:chatWidth,structure:structureHeight,document:drawerWidth,inspect:inspectionWidth}));}catch{/* Session dimensions remain usable without storage. */}}
-  $effect(()=>{void chatWidth;void structureHeight;void drawerWidth;void inspectionWidth;if(bridge)rememberSizes();});
+  function rememberSizes() {try{localStorage.setItem('vict.studio.workspace-sizes',JSON.stringify({chat:chatWidth,document:drawerWidth,inspect:inspectionWidth}));}catch{/* Session dimensions remain usable without storage. */}}
+  $effect(()=>{void chatWidth;void drawerWidth;void inspectionWidth;if(bridge)rememberSizes();});
   function receiveAgentProposal(proposal: AgentProposal) {
     if (!bridge) return {ok:false as const,code:"UI_DOC_STALE_REVISION",message:"The screen is no longer open."};
     const result = applyAgentProposal(bridge, proposal, agentEpoch, textDraftDirty || sourceDraftDirty || renamingScreen || !!createDialog?.open);
@@ -497,7 +495,7 @@
       event.preventDefault(); closeDrawer(); return;
     }
     const editable = event.target instanceof HTMLElement && (event.target.matches('input,textarea,select') || event.target.isContentEditable);
-    if (!editable && mode === 'design' && !(event.target instanceof Element && event.target.closest('.structure-dock,.structure-view,.source-details,#document-drawer,.testing-drawer,.agent-panel,.chat-resizer,.drawer-resizer,.canvas-toolbar'))) {
+    if (!editable && workspaceView === 'design' && !(event.target instanceof Element && event.target.closest('.structure-workspace,.structure-view,.source-details,#document-drawer,.testing-drawer,.agent-panel,.chat-resizer,.drawer-resizer,.canvas-toolbar'))) {
       if (['Delete', 'Backspace'].includes(event.key)) { event.preventDefault(); removeSelection(); }
       if (event.key === 'F2') { event.preventDefault(); editSelectedText(); }
       if (event.altKey && ['ArrowUp', 'ArrowDown'].includes(event.key)) { event.preventDefault(); reorderSelection(event.key === 'ArrowUp' ? -1 : 1); }
@@ -546,9 +544,16 @@
   $effect.pre(() => { if (authoredRevision) untrack(resetRuntime); });
 </script>
 
-<svelte:window onkeydown={shortcuts} onbeforeunload={event => { if (textDraftDirty || sourceDraftDirty || [...sessions.values()].some(session => session.getSnapshot().dirty)) { event.preventDefault(); event.returnValue = ''; } }} />
+<svelte:window onkeydowncapture={event=>{
+  if(!structureOpen || activeMenu || !(event.target instanceof Element) || event.target.closest('[role="menu"]'))return;
+  // Canvas tools are portaled and retained, but their global shortcuts must not
+  // claim keyboard interaction from the active Structure work surface.
+  if(event.key==='F10' && !event.shiftKey){event.preventDefault();event.stopPropagation();}
+  if(event.key==='Escape' && event.target.closest('.agent-panel'))event.preventDefault();
+  if(event.key==='Escape' && event.target.closest('.canvas-modes')){event.preventDefault();event.stopPropagation();dismissStructure();}
+}} onkeydown={shortcuts} onbeforeunload={event => { if (textDraftDirty || sourceDraftDirty || [...sessions.values()].some(session => session.getSnapshot().dirty)) { event.preventDefault(); event.returnValue = ''; } }} />
 <ControlScope class="vict-rhea">
-<div class="vict-app studio-designer studio-workspace">
+<div class="vict-app studio-designer studio-workspace" data-workspace-view={workspaceView}>
   <header class="design-toolbar workspace-header">
     <WorkspaceBrand />
     <Menubar.Root class="studio-menus workspace-menus" aria-label="Studio menus" bind:value={activeMenu} loop>
@@ -574,7 +579,6 @@
       <WorkspaceMenu label="View" value="view" {activeMenu} bind:trigger={viewButton}>
         <Menubar.CheckboxItem aria-label="Chat" checked={chatOpen} onSelect={() => void toggleChat()}>Chat<span aria-hidden="true">{chatOpen?'✓':''}</span></Menubar.CheckboxItem>
         <Menubar.CheckboxItem aria-label="Document" checked={drawerOpen && !testingOpen} onSelect={() => void toggleDocument()}>Document<span aria-hidden="true">{drawerOpen && !testingOpen?'✓':''}</span></Menubar.CheckboxItem>
-        <Menubar.CheckboxItem aria-label="Structure" checked={structureOpen} onSelect={() => void toggleStructure()}>Structure<span aria-hidden="true">{structureOpen?'✓':''}</span></Menubar.CheckboxItem>
         <Menubar.Separator />
         <Menubar.RadioGroup bind:value={width} aria-label="Canvas size">
           {#each [{value:'fluid',label:'Fit canvas'},{value:'768',label:'Tablet · 768'},{value:'390',label:'Phone · 390'}] as option}<Menubar.RadioItem value={option.value} closeOnSelect>{option.label}<span aria-hidden="true">{width===option.value?'\u2713':''}</span></Menubar.RadioItem>{/each}
@@ -603,15 +607,15 @@
     </SelectionPalette>
   {/snippet}
   <div class="agent-workspace" class:chat-open={chatOpen} bind:clientWidth={availableWidth}>
-  <div class="agent-panel" hidden={!chatOpen} style:--chat-width={`${chatWidth}px`}><header class="panel-header chat-heading"><strong>Chat</strong><button type="button" aria-label="Hide chat" title="Hide chat" onclick={()=>void toggleChat()}>×</button></header><AgentChat screenLabel={screenName(source)} selectionLabel={selectedNode ? compositionName(source, selectedNode.id) : "None"} blocked={textDraftDirty || sourceDraftDirty || renamingScreen} getContext={() => bridge ? {document:bridge.document, cursor:documentCursor(bridge.document,bridge.getSnapshot().revision,agentEpoch), ...(selected ? {selection:selected} : {})} : undefined} getCapture={cursor => captureDesignerPreview(canvasScroll?.querySelector<HTMLElement>('.design-frame') ?? undefined,cursor,()=>bridge ? {cursor:documentCursor(bridge.document,bridge.getSnapshot().revision,agentEpoch),mode,state:{runtimeValues,simulation:{denied:simulation.denied,failNext:simulation.failNext}},selection:selected,composition:compositionFocus ? `${compositionFocus.nodeId}/${compositionFocus.slotName}` : undefined,structureOpen:structureOpen && structureExpanded} : undefined,canvasScroll)} applyProposal={receiveAgentProposal} /></div>
+  <div class="agent-panel" hidden={!chatOpen} style:--chat-width={`${chatWidth}px`}><header class="panel-header chat-heading"><strong>Chat</strong><button type="button" aria-label="Hide chat" title="Hide chat" onclick={()=>void toggleChat()}>×</button></header><AgentChat screenLabel={screenName(source)} selectionLabel={selectedNode ? compositionName(source, selectedNode.id) : "None"} blocked={textDraftDirty || sourceDraftDirty || renamingScreen} getContext={() => bridge ? {document:bridge.document, cursor:documentCursor(bridge.document,bridge.getSnapshot().revision,agentEpoch), ...(selected ? {selection:selected} : {})} : undefined} getCapture={cursor => captureDesignerPreview(canvasScroll?.querySelector<HTMLElement>('.design-frame') ?? undefined,cursor,()=>bridge ? {cursor:documentCursor(bridge.document,bridge.getSnapshot().revision,agentEpoch),mode,state:{runtimeValues,simulation:{denied:simulation.denied,failNext:simulation.failNext}},selection:selected,composition:compositionFocus ? `${compositionFocus.nodeId}/${compositionFocus.slotName}` : undefined,structureOpen} : undefined,canvasScroll)} applyProposal={receiveAgentProposal} /></div>
   <div class="chat-resizer" hidden={!chatOpen}><PanelResizer label="Chat width" value={chatWidth} min={240} max={400} onChange={(value:number)=>chatWidth=value} /></div>
   <div class="design-workspace" bind:this={workspaceElement} bind:clientWidth={workspaceWidth} class:drawer-open={rightOpen} class:has-object-tools={mode === 'design' && !!selectedNode && paletteRequested} style:--drawer-width={`${effectiveDrawerWidth}px`}>
-    <WorkspaceContextMenu scope={workspaceElement} enabled={mode === 'design'} resolve={canvasContext} owns={ownsCanvasTarget} />
-    <main class="design-stage" class:structure-expanded={structureOpen && structureExpanded} bind:clientHeight={stageHeight}>
-      <div class="canvas-toolbar workspace-tools" bind:clientHeight={toolbarHeight}><div class="canvas-modes" aria-label="Workspace mode"><button type="button" aria-pressed={mode === 'design'} onclick={() => changeMode('design')}>Design</button><button type="button" aria-pressed={mode === 'interact'} onclick={() => changeMode('interact')}>Interact</button></div>{#if compositionFocus}<div class="composition-back"><CompositionNavigator compact document={source} focus={compositionFocus} descriptors={catalogDescriptors} disabled={textDraftDirty || sourceDraftDirty} onNavigate={navigateComposition} /></div>{/if}{#if activeTest}<button type="button" class="test-indicator" aria-label={`Testing: ${activeTest.label}`} onclick={()=>void openTesting()}>Testing: {activeTest.label}</button><button type="button" title="Return to starting values and clear simulated failures" onclick={resetRuntime}>Reset test</button>{/if}</div>
+    <WorkspaceContextMenu scope={workspaceElement} enabled={workspaceView === 'design'} resolve={canvasContext} owns={ownsCanvasTarget} />
+    <main class="design-stage">
+      <div class="canvas-toolbar workspace-tools"><WorkspaceModes view={workspaceView} onChange={changeView}/>{#if compositionFocus && !structureOpen}<div class="composition-back"><CompositionNavigator compact document={source} focus={compositionFocus} descriptors={catalogDescriptors} disabled={textDraftDirty || sourceDraftDirty} onNavigate={navigateComposition} /></div>{/if}{#if activeTest && !structureOpen}<button type="button" class="test-indicator" aria-label={`Testing: ${activeTest.label}`} onclick={()=>void openTesting()}>Testing: {activeTest.label}</button><button type="button" title="Return to starting values and clear simulated failures" onclick={resetRuntime}>Reset test</button>{/if}</div>
 
 
-      <div class="canvas-scroll workspace-scroll" inert={structureOpen && structureExpanded} bind:this={canvasScroll}>
+      <div class="canvas-scroll workspace-scroll" hidden={structureOpen} inert={structureOpen} bind:this={canvasScroll}>
         <div class="design-frame workspace-screen" bind:clientWidth={canvasWidth} style:max-width={width === 'fluid' ? 'none' : `${width}px`}>
           <EditorCanvas document={source} catalogs={designerCatalogs} extensions={catalogDescriptors} extensionImplementations={catalogImplementations}
             {compositionFocus} onOpenComposition={openComposition}
@@ -626,12 +630,12 @@
           {#if compositionFocus && !focusedMembers?.size}<div class="empty-composition"><h2>This composition is empty</h2><p>Select the composition, then choose Insert in its tools.</p></div>{:else if Object.keys(source.nodes).length === 1}<div class="empty-canvas"><span>＋</span><h1>What will you make?</h1><p>Select this screen to open its tools, then choose Insert.</p></div>{/if}
         </div>
       </div>
-      <StructureDock onClose={hideStructure} bind:open={structureOpen} bind:expanded={structureExpanded} bind:height={structureHeight} availableHeight={stageHeight - toolbarHeight}>
+      <section class="structure-workspace" aria-label="Structure workspace" hidden={!structureOpen} inert={!structureOpen}>
         <StructureInspection open={detailsOpen} onBack={closeDetails} bind:width={inspectionWidth}>
           {#snippet graphContent(visible:boolean)}<StructureView focusSelection={structureFocusId} presentation="drawer" active={structureOpen && visible} document={source} revision={snapshot?.revision ?? ''} selectedNodeId={selectedNode?.id} descriptors={catalogDescriptors} recipes={screenRecipes} blocked={textDraftDirty || sourceDraftDirty || renamingScreen} onSelect={(occurrence:string)=>selectStructureNode(occurrence,true)} onDeselect={() => { if (!textDraftDirty && !sourceDraftDirty && !renamingScreen) { bridge?.select(undefined); paletteRequested = false; detailId=undefined; } }} onMove={moveFromStructure} onNotice={message => notice = message} onNavigate={structureNavigate} onDismiss={dismissStructure} onInspect={inspectSource} onCloseInspect={closeDetails} inspectionSelection={detailId} onInspectSelection={id=>detailId=id} inspectionExpanded={detailsOpen} objectCommands={occurrence=>objectContext(occurrence)?.commands ?? []} />{/snippet}
           {#snippet inspectionContent()}<SourceDetails document={source} selectedId={detailId ?? (selectedNode ? structureId(source.id,'node',selectedNode.id) : undefined)} blocked={textDraftDirty || sourceDraftDirty || renamingScreen} bind:page={detailsPage} onClose={closeDetails} onSelect={selectDetail} onNavigate={structureNavigate} />{/snippet}
         </StructureInspection>
-      </StructureDock>
+      </section>
     </main>
     <div class="drawer-resizer" hidden={!rightOpen}><PanelResizer label="Document drawer width" value={effectiveDrawerWidth} min={280} max={460} reverse onChange={(value: number) => drawerWidth = value} /></div>
     <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->

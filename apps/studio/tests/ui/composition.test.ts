@@ -35,7 +35,7 @@ it('preserves the canvas, runtime input, scroll and graph context through Struct
   const frame = document.querySelector('.design-frame')!;
   const scroll = document.querySelector<HTMLElement>('.canvas-scroll')!;
   const identity = document.querySelector('.design-status > span:last-child')!.getAttribute('title');
-  expect([...document.querySelectorAll('.canvas-modes button')].map(node=>node.textContent)).toEqual(['Design','Interact']);
+  expect([...document.querySelectorAll('.canvas-modes button')].map(node=>node.textContent)).toEqual(['Design','Interact','Structure']);
   button('Interact'); await tick();
   const input = document.querySelector<HTMLInputElement>('.design-frame [aria-label="Customer name"]')!;
   input.value='Runtime stays here'; input.dispatchEvent(new Event('change',{bubbles:true})); await tick(); await tick();
@@ -43,7 +43,7 @@ it('preserves the canvas, runtime input, scroll and graph context through Struct
   button('Document'); await tick(); button('Structure'); await tick(); await tick();
   const graph = document.querySelector('.structure-view')!;
   expect(document.querySelector('.design-frame')).toBe(frame);
-  expect(scroll.style.display).not.toBe('none'); expect(input.value).toBe('Runtime stays here');
+  expect(scroll.hidden).toBe(true); expect(input.value).toBe('Runtime stays here');
   const search = document.querySelector<HTMLInputElement>('[aria-label="Search structure"]')!;
   search.value='Customer'; search.dispatchEvent(new Event('input',{bubbles:true})); await tick(); await tick();
   const node = [...document.querySelectorAll<HTMLElement>('.svelte-flow__node')].find(node=>node.dataset.id===structureId(source.id,'node','group'))!;
@@ -51,7 +51,7 @@ it('preserves the canvas, runtime input, scroll and graph context through Struct
   expect(document.querySelector('[aria-label="Composition navigation"]')).toBeNull();
   expect(scroll.scrollTop).toBe(70); expect(scroll.scrollLeft).toBe(15);
   expect(document.querySelector('[aria-label="Floating selection tools"]')).toBeNull();
-  button('Expand Structure'); await tick(); button('Restore Structure'); await tick();
+  button('Interact'); await tick(); expect(input.value).toBe('Runtime stays here');button('Structure');await tick();
   button('Data'); await tick(); button('Structure'); await tick();
   expect(document.querySelector('.structure-view')).toBe(graph); expect(search.value).toBe('Customer');
   button('Close document'); await tick();
@@ -79,8 +79,8 @@ it('retains hidden Source drafts and refuses editing transitions until discarded
   const search=document.querySelector<HTMLInputElement>('[aria-label="Search structure"]')!;
   search.focus(); search.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true,cancelable:true})); await tick();
   expect(document.querySelector<HTMLElement>('#document-drawer')!.hidden).toBe(true);
-  expect(document.querySelector<HTMLElement>('.dock-panel')!.hidden).toBe(true);
-  expect(document.activeElement?.textContent).toBe('View');
+  expect(document.querySelector<HTMLElement>('.structure-workspace')!.hidden).toBe(true);
+  expect(document.activeElement?.textContent).toBe('Design');
 });
 
 it('opens another saved screen through File and guards the cascading menu during a source draft', async () => {

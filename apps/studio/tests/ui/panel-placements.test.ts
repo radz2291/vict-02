@@ -36,7 +36,7 @@ it('inspects selected layers inside Structure and keeps the graph mounted throug
  await start();await click('Document');
  [...document.querySelectorAll<HTMLElement>('.uv-layers [role=treeitem]')].find(node=>node.textContent?.includes('A useful heading'))!.click();await settle();
  expect(document.querySelector('[aria-label="Floating selection tools"]')).toBeNull();
- await click('Inspect source');expect(document.querySelector('.structure-dock .source-details header strong')?.textContent).toBe('A useful heading');
+ await click('Inspect source');expect(document.querySelector('.structure-workspace .source-details header strong')?.textContent).toBe('A useful heading');
  expect(document.querySelector('.agent-panel .source-details')).toBeNull();expect(document.querySelector('#document-drawer .source-details')).toBeNull();
  const graph=document.querySelector('.svelte-flow')!;expect(graph).not.toBeNull();
  expect(document.querySelector<HTMLElement>('.structure-graph')!.hidden).toBe(true);
@@ -48,7 +48,7 @@ it('does not apply canvas delete or duplicate shortcuts from Structure controls'
  [...document.querySelectorAll<HTMLElement>('.uv-layers [role=treeitem]')].find(node=>node.textContent?.includes('A useful heading'))!.click();await settle();
  await click('Inspect source');
  const source=document.querySelector<HTMLTextAreaElement>('#canonical-source')!,before=source.value;
- const separator=document.querySelector<HTMLElement>('[aria-label="Structure panel height"]')!;separator.focus();
+ const separator=button('Inspect structure');separator.focus();
  for(const [key,ctrlKey] of [['Delete',false],['d',true]] as const){separator.dispatchEvent(new KeyboardEvent('keydown',{key,ctrlKey,bubbles:true,cancelable:true}));await settle();expect(source.value).toBe(before);}
 });
 it('preserves hidden source drafts and permits only one Document section expanded',async()=>{
@@ -68,7 +68,7 @@ it('protects Data drafts while switching accordion sections',async()=>{
 it('shows the actual accordion and Structure inspection in the disposable showcase',async()=>{
  editor=mount(WorkspacePanelsShowcase,{target:document.body});await settle();await click('Document');
  expect(document.querySelector('.document-section-header[aria-expanded=true]')?.textContent).toBe('Layers');
- await click('Inspect in Structure ↗');expect(document.querySelector('.structure-dock .source-details')).not.toBeNull();
+ await click('Inspect in Structure ↗');expect(document.querySelector('.structure-workspace .source-details')).not.toBeNull();
  await click('Source');expect([...document.querySelectorAll('.document-section-header[aria-expanded=true]')].map(node=>node.textContent)).toEqual(['Source']);
  expect(document.body.textContent).toContain('no model request is sent');
 });

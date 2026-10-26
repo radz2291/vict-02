@@ -427,8 +427,11 @@ body:has(.finished-screen) {
 .panel-header button:hover{background:var(--vict-control-selected);color:var(--vict-color-text)}
 .testing-drawer{display:flex;flex-direction:column;min-width:0;min-height:0;overflow:hidden;border-left:1px solid var(--vict-color-border);background:var(--vict-color-surface)}
 .canvas-toolbar .test-indicator{font-size:10px;color:var(--vict-color-accent);max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-/* Structure still has a deliberate full-space mode; neither sidebar covers it. */
-.design-stage.structure-expanded>.canvas-scroll{flex:0;height:0;min-height:0;padding:0;overflow:hidden;visibility:hidden}
+/* Both primary views stay mounted; only the active work surface is visible. */
+.canvas-scroll[hidden],.structure-workspace[hidden]{display:none!important}
+.structure-workspace{display:flex;flex:1;min-width:0;min-height:0;overflow:hidden}
+.structure-workspace>.structure-inspection-layout{flex:1}
+body:has(.studio-designer[data-workspace-view="structure"]) .floating-selection{display:none!important}
 @media(max-width:1000px){
   .agent-workspace{flex-direction:column;overflow:auto}
   .agent-panel{width:100%;height:min(260px,38dvh);min-height:160px;flex:none;border-bottom:1px solid var(--vict-color-border)}

@@ -12,7 +12,7 @@
   import DocumentPanels from './DocumentPanels.svelte';
   import StructureInspection from './StructureInspection.svelte';
   import StructureView from './StructureView.svelte';
-  import StructureDock from './StructureDock.svelte';
+  import WorkspaceModes from './WorkspaceModes.svelte';
   import SourceDetails from './SourceDetails.svelte';
   const {document}=createShowcaseFixture('button');
   let plan=$state<UiRenderPlan>();
@@ -20,38 +20,41 @@
   let selectedId=$state(structureId(document.id,'node',document.root));
   let exampleFocus=$state(structureId(document.id,'node',document.root));
   let selectedNodeId=$derived(resolveOccurrence(selected,document).sourceNodeId);
-  let chatOpen=$state(false),documentOpen=$state(false),structureOpen=$state(false),inspectOpen=$state(false);
+  let chatOpen=$state(false),documentOpen=$state(false),inspectOpen=$state(false);
+  let view=$state<'design'|'interact'|'structure'>('design'),canvasMode=$state<'design'|'interact'>('design');
+  const structureOpen=$derived(view==='structure');
+  function changeView(next:'design'|'interact'|'structure'){view=next;if(next!=='structure')canvasMode=next;}
   let exampleWidth=$state(0),activeMenu=$state('');
-  let lastPanel:'chat'|'document'|'structure'='structure';
+  let lastPanel:'chat'|'document'='document';
   const compact=$derived(exampleWidth>0 && exampleWidth<=1000);
-  function panel(name:'chat'|'document'|'structure',open=true){const focused=globalThis.document.activeElement;if(open){lastPanel=name;if(compact){chatOpen=false;documentOpen=false;structureOpen=false;}}if(name==='chat')chatOpen=open;else if(name==='document')documentOpen=open;else structureOpen=open;void tick().then(()=>{if(focused instanceof HTMLElement && focused.isConnected && focused.closest('[hidden],[inert]'))globalThis.document.querySelector<HTMLElement>('.workspace-panel-showcase .studio-menus>button')?.focus({preventScroll:true});});}
-  $effect(()=>{if(compact)untrack(()=>{if([chatOpen,documentOpen,structureOpen].filter(Boolean).length>1)panel(lastPanel);});});
+  function panel(name:'chat'|'document',open=true){const focused=globalThis.document.activeElement;if(open){lastPanel=name;if(compact){chatOpen=false;documentOpen=false;}}if(name==='chat')chatOpen=open;else documentOpen=open;void tick().then(()=>{if(focused instanceof HTMLElement && focused.isConnected && focused.closest('[hidden],[inert]'))globalThis.document.querySelector<HTMLElement>('.workspace-panel-showcase .studio-menus>button')?.focus({preventScroll:true});});}
+  $effect(()=>{if(compact)untrack(()=>{if(chatOpen && documentOpen)panel(lastPanel);});});
   let draft=$state('');
   let notice=$state('Select a layer or graph item, then Inspect inside Structure.');
   function selectGraph(occurrence:string){selected=occurrence;selectedId=structureId(document.id,'node',resolveOccurrence(occurrence,document).sourceNodeId);}
   function select(occurrence:string){selectGraph(occurrence);exampleFocus=selectedId;}
   function selectDetail(id:string){selectedId=id;exampleFocus=id;const node=projectStructure(document).nodes.find(node=>node.id===id);if(node?.data.occurrence)selected=node.data.occurrence;}
-  function inspect(id=selectedId){selectedId=id;exampleFocus=id;panel('structure');inspectOpen=true;}
+  function inspect(id=selectedId){selectedId=id;exampleFocus=id;view='structure';inspectOpen=true;}
 </script>
 <ControlScope class="vict-rhea">
   <section class="workspace-panel-showcase" aria-label="Docked workspace panel example">
-    <h3>Chat, Document accordion and Structure inspection</h3>
+    <h3>Design, Interact and Structure workspace views</h3>
     <p>Actual workspace components in a disposable read-only fixture. This Chat draft stays local; no model request is sent. Live Chat and authoring are available in <a href="/design">Studio</a>.</p>
     <Menubar.Root class="workspace-menus studio-menus" aria-label="Example workspace menus" bind:value={activeMenu}><WorkspaceMenu label="View" value="example-view" {activeMenu}>
       <Menubar.CheckboxItem aria-label="Chat" checked={chatOpen} onSelect={()=>panel('chat',!chatOpen)}>Chat</Menubar.CheckboxItem>
       <Menubar.CheckboxItem aria-label="Document" checked={documentOpen} onSelect={()=>panel('document',!documentOpen)}>Document</Menubar.CheckboxItem>
-      <Menubar.CheckboxItem aria-label="Structure" checked={structureOpen} onSelect={()=>panel('structure',!structureOpen)}>Structure</Menubar.CheckboxItem>
     </WorkspaceMenu></Menubar.Root>
     <div class="panel-example" class:document-open={documentOpen} class:chat-open={chatOpen} bind:clientWidth={exampleWidth}>
       <aside class="left" hidden={!chatOpen} aria-label="Example Chat"><header>Chat<button type="button" aria-label="Close example Chat" onclick={()=>panel('chat',false)}>×</button></header><label>Local example draft<textarea bind:value={draft} placeholder="This layout example has no agent connection."></textarea></label></aside>
       <div class="example-stage">
-        <div class="example-canvas"><EditorCanvas {document} catalogs={designerCatalogs} extensions={catalogDescriptors} extensionImplementations={catalogImplementations} interactionMode="design" selectedOccurrence={selected} onSelect={select} onPlan={(next:UiRenderPlan)=>plan=next} ariaLabel="Docked panel example canvas" /></div>
-        <StructureDock onClose={()=>panel('structure',false)} bind:open={structureOpen} availableHeight={600} height={240}>
+        <div class="example-modes"><WorkspaceModes {view} onChange={changeView}/></div>
+        <div class="example-canvas" hidden={structureOpen} inert={structureOpen}><EditorCanvas {document} catalogs={designerCatalogs} extensions={catalogDescriptors} extensionImplementations={catalogImplementations} interactionMode={canvasMode} selectedOccurrence={selected} onSelect={select} onPlan={(next:UiRenderPlan)=>plan=next} ariaLabel="Docked panel example canvas" /></div>
+        <section class="structure-workspace" aria-label="Example Structure workspace" hidden={!structureOpen} inert={!structureOpen}>
           <StructureInspection open={inspectOpen} onBack={()=>inspectOpen=false}>
             {#snippet graphContent(visible:boolean)}<StructureView focusSelection={exampleFocus} presentation="drawer" active={structureOpen && visible} {document} revision={document.revision} {selectedNodeId} descriptors={catalogDescriptors} onSelect={selectGraph} onMove={()=>false} onNotice={(message:string)=>notice=message} onInspect={(id?:string)=>inspect(id)} onCloseInspect={()=>inspectOpen=false} inspectionExpanded={inspectOpen} inspectionSelection={selectedId} onInspectSelection={(id:string)=>selectedId=id} />{/snippet}
             {#snippet inspectionContent()}<SourceDetails {document} {selectedId} onClose={()=>inspectOpen=false} onSelect={selectDetail} onNavigate={()=>notice='Use Studio for document edits and floating editing tools.'} />{/snippet}
           </StructureInspection>
-        </StructureDock>
+        </section>
       </div>
       <aside class="right" hidden={!documentOpen} aria-label="Example stacked Document"><header>Document<button type="button" aria-label="Close example Document" onclick={()=>panel('document',false)}>×</button></header><DocumentPanels>
         {#snippet layersContent()}<button type="button" onclick={()=>inspect()}>Inspect in Structure ↗</button>{#if plan}<Layers compact hideTextContent {plan} {document} labels={{nodes:studioNodeLabels(document)}} selectedOccurrence={selected} onSelect={select} componentDescriptors={catalogDescriptors} />{/if}{/snippet}
@@ -72,6 +75,8 @@
   .left{border-right:1px solid var(--vict-color-border)}.right{border-left:1px solid var(--vict-color-border)}
   label{display:grid;gap:8px;margin:12px}textarea{width:100%;min-height:100px;font:inherit}
   .example-stage{display:flex;flex-direction:column;min-width:0;min-height:0;overflow:hidden}.example-canvas{padding:16px;flex:1;min-height:0;overflow:auto}.example-canvas :global(.uv-canvas){min-height:280px;background:var(--vict-color-surface)}
+  .example-canvas[hidden],.structure-workspace[hidden]{display:none}.example-modes{display:flex;padding:4px 8px;border-bottom:1px solid var(--vict-color-border)}
+  .structure-workspace{display:flex;flex:1;min-width:0;min-height:0;overflow:hidden}.structure-workspace :global(.structure-inspection-layout){flex:1}
   header{display:flex;align-items:center;justify-content:space-between;height:38px;flex:none;padding:10px;font-weight:600;border-bottom:1px solid var(--vict-color-border)}dl{margin:0}dl>div{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:6px 0}dd{margin:0;overflow-wrap:anywhere}pre{font-size:10px;max-height:240px;overflow:auto}
   .right :global(.uv-layers){height:auto;flex:1;min-height:0}
   @media(max-width:1000px){.panel-example,.panel-example.document-open,.panel-example.chat-open,.panel-example.chat-open.document-open{grid-template-columns:minmax(0,1fr);height:auto}.left{height:180px}.example-stage{height:560px}.right{height:440px;border-left:0;border-top:1px solid var(--vict-color-border)}}

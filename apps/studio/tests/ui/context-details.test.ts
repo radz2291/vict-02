@@ -62,15 +62,14 @@ it('empty canvas clears an old object target, supports Shift+F10, and leaves nat
   const nativeKey=new KeyboardEvent('keydown',{key:'F10',shiftKey:true,bubbles:true,cancelable:true});document.querySelector('input[aria-label="Native field"]')!.dispatchEvent(nativeKey);await settle();expect(nativeKey.defaultPrevented).toBe(false);
   button('Interact').click();await settle();expect((await secondary(heading)).defaultPrevented).toBe(false);expect(document.querySelector('[role="menu"][data-state="open"]')).toBeNull();
 });
-it('keeps shared inspection inside bottom Structure for Document Layers and graph selection; retains mounted canvas, graph, scroll and floating editing home',async()=>{
+it('keeps shared inspection inside the Structure view for Layers and graph selection; retains mounted surfaces and editing home',async()=>{
   const source=await start();const frame=document.querySelector('.design-frame')!,scroll=document.querySelector<HTMLElement>('.canvas-scroll')!;
   button('Document').click();await settle();button('Inspect source').click();await settle();
   expect(document.querySelector('[aria-label="Source inspection details"]')).not.toBeNull();
-  expect(document.querySelector('.structure-dock .structure-inspection-pane .source-details')).not.toBeNull();
-  button('Close inspection details').click();await settle();if(document.querySelector<HTMLElement>('.structure-dock')!.hidden)button('Structure').click();await settle();
-  const resizer=document.querySelector<HTMLElement>('[aria-label="Structure panel height"]')!;
-  const height=Number(resizer.getAttribute('aria-valuenow'));resizer.dispatchEvent(new KeyboardEvent('keydown',{key:'ArrowUp',bubbles:true,cancelable:true}));await settle();
-  expect(Number(resizer.getAttribute('aria-valuenow'))).toBeGreaterThanOrEqual(height);
+  expect(document.querySelector('.structure-workspace .structure-inspection-pane .source-details')).not.toBeNull();
+  button('Close inspection details').click();await settle();if(document.querySelector<HTMLElement>('.structure-workspace')!.hidden)button('Structure').click();await settle();
+  expect(button('Structure').getAttribute('aria-pressed')).toBe('true');
+  expect(document.querySelector('[aria-label="Structure panel height"]')).toBeNull();
   const graph=document.querySelector('.svelte-flow')!;
   expect(graph.closest('[data-context-menu-trigger]')).toBeNull();
   await wholeHierarchy();
@@ -80,10 +79,9 @@ it('keeps shared inspection inside bottom Structure for Document Layers and grap
   [...document.querySelectorAll<HTMLElement>('[role="menu"][data-state="open"] [role="menuitem"]')].find(node=>node.textContent?.trim()==='Inspect')!.click();await settle();expect(document.querySelector('.source-details header strong')?.textContent).toBe('Second heading');
   expect(scroll.scrollTop).toBe(83);expect(scroll.scrollLeft).toBe(14);expect(document.querySelector('.design-frame')).toBe(frame);
   expect(document.querySelector('[aria-label="Floating selection tools"]')).toBeNull();
-  expect(document.querySelector('.structure-dock .source-details')).not.toBeNull();
+  expect(document.querySelector('.structure-workspace .source-details')).not.toBeNull();
   button('Close inspection details').click();await settle();
-  button('Structure').click();await settle();button('Structure').click();await settle();expect(document.querySelector('.svelte-flow')).toBe(graph);
-  button('Expand Structure').click();await settle();
+  button('Design').click();await settle();button('Structure').click();await settle();expect(document.querySelector('.svelte-flow')).toBe(graph);
   expect(document.querySelector<HTMLElement>('.canvas-scroll')!.inert).toBe(true);
   button('Inspect structure').click();await settle();
   button('Edit on canvas ↗').click();await settle();expect(document.querySelector('[aria-label="Floating selection tools"]')).not.toBeNull();expect(document.querySelector('.source-details')).toBeNull();expect(document.querySelector<HTMLElement>('.canvas-scroll')!.inert).toBe(false);
@@ -107,7 +105,7 @@ it('refuses contextual source commands during a JSON draft and does not intercep
   await start();button('Document').click();await settle();button('Source').click();await settle();
   const draft=document.querySelector<HTMLTextAreaElement>('#canonical-source')!;draft.value+=' ';draft.dispatchEvent(new Event('input',{bubbles:true}));await settle();
   const exactDraft=draft.value;
-  button('Structure').click();await settle();button('Structure').click();await settle();
+  button('Structure').click();await settle();button('Design').click();await settle();
   expect(document.querySelector('#canonical-source')).toBe(draft);expect(draft.value).toBe(exactDraft);
   await secondary(document.querySelector('.design-frame h2')!);
   const duplicate=[...document.querySelectorAll<HTMLElement>('[role="menu"][data-state="open"] [role="menuitem"]')].find(node=>node.textContent?.trim()==='Duplicate')!;

@@ -185,7 +185,11 @@
     if (node && (event.key === 'Enter' || event.key === ' ')) select(node);
   }
   function graphEscape(event: KeyboardEvent) {
-    if (!active || activeMenu || event.key !== 'Escape' || !(event.target instanceof HTMLElement) || !event.target.matches('.svelte-flow__node')) return;
+    if (!active || activeMenu || event.key !== 'Escape' || !(event.target instanceof HTMLElement) || event.target.closest('[role="menu"]')) return;
+    if(!event.target.matches('.svelte-flow__node')){
+      if(structureElement?.contains(event.target)){escape(event);if(event.defaultPrevented)event.stopPropagation();}
+      return;
+    }
     // Run before Flow's wrapper, which otherwise clears its own selection even
     // when Escape is only closing our dock. Keep the two selection owners equal.
     event.preventDefault(); event.stopPropagation();
