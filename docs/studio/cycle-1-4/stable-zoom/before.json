@@ -1,0 +1,61 @@
+{
+  "authored": [
+    {
+      "color": "rgb(16, 24, 40)",
+      "font": "700 20px / 26px system-ui, sans-serif",
+      "id": "",
+      "padding": "0px",
+      "tag": "H1"
+    },
+    {
+      "color": "rgb(52, 64, 84)",
+      "font": "600 12.5px / 18.125px system-ui, sans-serif",
+      "id": "",
+      "padding": "0px",
+      "tag": "LABEL"
+    },
+    {
+      "color": "rgb(16, 24, 40)",
+      "font": "14px / 20.3px system-ui, sans-serif",
+      "id": "onbNameInput",
+      "padding": "10px 12px",
+      "tag": "INPUT"
+    },
+    {
+      "color": "rgb(52, 64, 84)",
+      "font": "600 12.5px / 18.125px system-ui, sans-serif",
+      "id": "",
+      "padding": "0px",
+      "tag": "LABEL"
+    },
+    {
+      "color": "rgb(16, 24, 40)",
+      "font": "14px / 20.3px system-ui, sans-serif",
+      "id": "onbEmailInput",
+      "padding": "10px 12px",
+      "tag": "INPUT"
+    },
+    {
+      "color": "rgb(52, 64, 84)",
+      "font": "600 12.5px / 18.125px system-ui, sans-serif",
+      "id": "",
+      "padding": "0px",
+      "tag": "LABEL"
+    },
+    {
+      "color": "rgb(0, 0, 0)",
+      "font": "12px / 17.4px system-ui, sans-serif",
+      "id": "onbNotifInput",
+      "padding": "0px",
+      "tag": "INPUT"
+    },
+    {
+      "color": "rgb(52, 64, 84)",
+      "font": "13px / 18.85px system-ui, sans-serif",
+      "id": "",
+      "padding": "0px",
+      "tag": "LABEL"
+    }
+  ],
+  "saved": "✓ Saved"
+}

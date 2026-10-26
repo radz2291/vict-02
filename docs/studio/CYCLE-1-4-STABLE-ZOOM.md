@@ -1,0 +1,21 @@
+# Cycle 1.4 — stable Structure zoom
+
+Owner-authorized correction, 2026-10-26. Zoom must change the camera without changing node sizes, typography, socket locations or graph positions. Remove the65% overview class and its font/visibility/row-height rules. Keep ordinary node details present at every zoom, with the existing absolute Frame selection hint for readability. Existing layout measurement remains available for real content/topology changes, expansion, orientation and explicit Arrange; it no longer receives size changes caused by zoom styling.
+
+Clean local/remote baseline524d1bf969b2ef54dceb361584f5ed20d192d47b; main local/remote d7401bef6e48330796c74ec00c86db9622d48cdf. Isolated codex/studio-cycle-1-4-stable-zoom reuses the owned selection-panel worktree. Productb63dbb86ea3810c6695be8c4987009828ce04ee7 changes only StructureView's presentation class/hint copy and removes five zoom-specific card rules. Labels/icons/colors/relationship grouping, read-only port fencing, graph effects, source/history, layout engines and authored-page styling remain unchanged.
+
+Actual old-candidate reproduction: on the owner's expanded30-node hierarchy, zooming from below to above65% changed all30 nodes' dimensions and/or world positions. Screen height changed84→122 in the captured DOM. This confirms the reported distraction and is retained in before-regression.json. The first browser probe had a syntax error before executing any UI action; it was corrected before the recorded reproduction.
+
+Validation for this CSS/presentation-only repair is serial production build/seal and actual-browser repeated zoom comparisons of world transforms, dimensions, fonts, socket offsets and edge paths. No new CSS-mirroring test, automated/type suite rerun or provider turn is claimed. Earlier structured-node tests/type checks retain their recorded scope. Independent gate, owner acceptance and Stage9 closure remain pending.
+
+## Review checkpoint
+
+BUILDER CHECKS PASS / READY FOR OWNER TEST; INDEPENDENT GATE PENDING. Productb63dbb86ea3810c6695be8c4987009828ce04ee7 is pushed and remote verified. Serial production build exits0 with inherited renderer/dependency warnings retained. Exact-byte seal passes:763 inputs/491 outputs; manifest SHA256edc4b61ae17391e5c0a8717114077c9ff1d3eca853453b667b7fca999302be5a. Whitespace check passes.
+
+Actual CUA repeated the owner's30-node expanded hierarchy, with the same Full name label group collapsed. Horizontal and vertical each passed a35%→87.0912%→35% cycle, five Zoom In plus five Zoom Out actions per direction,22 recorded geometry frames total. All node world transforms, dimensions and fonts remained exact; all edge path strings remained exact. Socket-local offsets varied by at most0.000477px due to rectangle rounding. No sampled Arranging status occurred. This proves stable geometry in the recorded cycles, without claiming instrumentation of every internal layout invocation. Direction changes and expansion still intentionally arrange the graph.
+
+Frame selection35%→110% also preserves all30 nodes and all edge paths; socket offset variation is below0.00024px. Authored h1/input/label font, colour and padding snapshots match; Saved/revision3/version v1_fe0ac678e805 remain unchanged. No source save or provider turn occurred. Earlier structured-node failed observations remain historical, including the compact-rail correction now superseded by retaining full node geometry at every zoom. No exhaustive graph-size/responsive/live-agent verdict is claimed.
+
+[Updated Studio](http://127.0.0.22:5616/design) is logged in and left on horizontal whole hierarchy with30 nodes, Option · Engineering selected, Selection → Relationships open and the camera framed on that node. [Final screenshot](cycle-1-4/stable-zoom/stable-zoom.png), [horizontal high zoom](cycle-1-4/stable-zoom/horizontal-high.png), [vertical high zoom](cycle-1-4/stable-zoom/vertical-high.png), [final browser geometry](cycle-1-4/stable-zoom/browser-review.json), [retained old regression](cycle-1-4/stable-zoom/before-regression.json).
+
+Next allowed action: owner hands-on zoom review and further bounded feedback. Independent gate, overall acceptance and Stage9 closure remain pending; no merge, release or deployment authority follows.
