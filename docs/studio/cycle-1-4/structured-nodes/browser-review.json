@@ -1,0 +1,794 @@
+{
+  "candidate": "1d477ae5a80a4dc02a1d95a9566d7da14f1cb368",
+  "readOnlySockets": [
+    {
+      "classes": "svelte-flow__handle svelte-flow__handle-right nodrag nopan right declared-connection-handle source",
+      "hidden": "true",
+      "pointerEvents": "none",
+      "tabIndex": "-1"
+    },
+    {
+      "classes": "svelte-flow__handle svelte-flow__handle-left nodrag nopan left declared-connection-handle target",
+      "hidden": "true",
+      "pointerEvents": "none",
+      "tabIndex": "-1"
+    },
+    {
+      "classes": "svelte-flow__handle svelte-flow__handle-right nodrag nopan right declared-connection-handle source",
+      "hidden": "true",
+      "pointerEvents": "none",
+      "tabIndex": "-1"
+    },
+    {
+      "classes": "svelte-flow__handle svelte-flow__handle-left nodrag nopan left declared-connection-handle target",
+      "hidden": "true",
+      "pointerEvents": "none",
+      "tabIndex": "-1"
+    },
+    {
+      "classes": "svelte-flow__handle svelte-flow__handle-right nodrag nopan right declared-connection-handle source",
+      "hidden": "true",
+      "pointerEvents": "none",
+      "tabIndex": "-1"
+    },
+    {
+      "classes": "svelte-flow__handle svelte-flow__handle-right nodrag nopan right declared-connection-handle source",
+      "hidden": "true",
+      "pointerEvents": "none",
+      "tabIndex": "-1"
+    },
+    {
+      "classes": "svelte-flow__handle svelte-flow__handle-left nodrag nopan left declared-connection-handle target",
+      "hidden": "true",
+      "pointerEvents": "none",
+      "tabIndex": "-1"
+    },
+    {
+      "classes": "svelte-flow__handle svelte-flow__handle-right nodrag nopan right declared-connection-handle source",
+      "hidden": "true",
+      "pointerEvents": "none",
+      "tabIndex": "-1"
+    },
+    {
+      "classes": "svelte-flow__handle svelte-flow__handle-right nodrag nopan right declared-connection-handle source",
+      "hidden": "true",
+      "pointerEvents": "none",
+      "tabIndex": "-1"
+    },
+    {
+      "classes": "svelte-flow__handle svelte-flow__handle-left nodrag nopan left declared-connection-handle target",
+      "hidden": "true",
+      "pointerEvents": "none",
+      "tabIndex": "-1"
+    },
+    {
+      "classes": "svelte-flow__handle svelte-flow__handle-right nodrag nopan right declared-connection-handle source",
+      "hidden": "true",
+      "pointerEvents": "none",
+      "tabIndex": "-1"
+    },
+    {
+      "classes": "svelte-flow__handle svelte-flow__handle-right nodrag nopan right declared-connection-handle source",
+      "hidden": "true",
+      "pointerEvents": "none",
+      "tabIndex": "-1"
+    },
+    {
+      "classes": "svelte-flow__handle svelte-flow__handle-left nodrag nopan left declared-connection-handle target",
+      "hidden": "true",
+      "pointerEvents": "none",
+      "tabIndex": "-1"
+    },
+    {
+      "classes": "svelte-flow__handle svelte-flow__handle-right nodrag nopan right declared-connection-handle source",
+      "hidden": "true",
+      "pointerEvents": "none",
+      "tabIndex": "-1"
+    },
+    {
+      "classes": "svelte-flow__handle svelte-flow__handle-left nodrag nopan left declared-connection-handle target",
+      "hidden": "true",
+      "pointerEvents": "none",
+      "tabIndex": "-1"
+    },
+    {
+      "classes": "svelte-flow__handle svelte-flow__handle-right nodrag nopan right declared-connection-handle source",
+      "hidden": "true",
+      "pointerEvents": "none",
+      "tabIndex": "-1"
+    },
+    {
+      "classes": "svelte-flow__handle svelte-flow__handle-right nodrag nopan right declared-connection-handle source",
+      "hidden": "true",
+      "pointerEvents": "none",
+      "tabIndex": "-1"
+    },
+    {
+      "classes": "svelte-flow__handle svelte-flow__handle-left nodrag nopan left declared-connection-handle target",
+      "hidden": "true",
+      "pointerEvents": "none",
+      "tabIndex": "-1"
+    },
+    {
+      "classes": "svelte-flow__handle svelte-flow__handle-right nodrag nopan right declared-connection-handle source",
+      "hidden": "true",
+      "pointerEvents": "none",
+      "tabIndex": "-1"
+    },
+    {
+      "classes": "svelte-flow__handle svelte-flow__handle-right nodrag nopan right declared-connection-handle source",
+      "hidden": "true",
+      "pointerEvents": "none",
+      "tabIndex": "-1"
+    },
+    {
+      "classes": "svelte-flow__handle svelte-flow__handle-left nodrag nopan left declared-connection-handle target",
+      "hidden": "true",
+      "pointerEvents": "none",
+      "tabIndex": "-1"
+    },
+    {
+      "classes": "svelte-flow__handle svelte-flow__handle-left nodrag nopan left declared-connection-handle target",
+      "hidden": "true",
+      "pointerEvents": "none",
+      "tabIndex": "-1"
+    },
+    {
+      "classes": "svelte-flow__handle svelte-flow__handle-left nodrag nopan left declared-connection-handle target",
+      "hidden": "true",
+      "pointerEvents": "none",
+      "tabIndex": "-1"
+    },
+    {
+      "classes": "svelte-flow__handle svelte-flow__handle-left nodrag nopan left declared-connection-handle target",
+      "hidden": "true",
+      "pointerEvents": "none",
+      "tabIndex": "-1"
+    },
+    {
+      "classes": "svelte-flow__handle svelte-flow__handle-left nodrag nopan left declared-connection-handle target",
+      "hidden": "true",
+      "pointerEvents": "none",
+      "tabIndex": "-1"
+    },
+    {
+      "classes": "svelte-flow__handle svelte-flow__handle-left nodrag nopan left declared-connection-handle target",
+      "hidden": "true",
+      "pointerEvents": "none",
+      "tabIndex": "-1"
+    },
+    {
+      "classes": "svelte-flow__handle svelte-flow__handle-left nodrag nopan left declared-connection-handle target",
+      "hidden": "true",
+      "pointerEvents": "none",
+      "tabIndex": "-1"
+    },
+    {
+      "classes": "svelte-flow__handle svelte-flow__handle-left nodrag nopan left declared-connection-handle target",
+      "hidden": "true",
+      "pointerEvents": "none",
+      "tabIndex": "-1"
+    },
+    {
+      "classes": "svelte-flow__handle svelte-flow__handle-left nodrag nopan left declared-connection-handle target",
+      "hidden": "true",
+      "pointerEvents": "none",
+      "tabIndex": "-1"
+    },
+    {
+      "classes": "svelte-flow__handle svelte-flow__handle-left nodrag nopan left declared-connection-handle target",
+      "hidden": "true",
+      "pointerEvents": "none",
+      "tabIndex": "-1"
+    }
+  ],
+  "horizontalDom": {
+    "edges": [
+      {
+        "d": "M238.70063885305234 104.60019866884647L258.70063885305234 104.60019866884647L 274.20031856701826,104.60019866884647Q 279.20031856701826,104.60019866884647 279.20031856701826,109.60019866884647L 279.20031856701826,112.6002551404198Q 279.20031856701826,117.6002551404198 284.20031856701826,117.6002551404198L299.69999828098423 117.6002551404198L319.69999828098423 117.6002551404198",
+        "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522fullName%2522%255D%22%2C%22reads%3A%20state.fullName%22%2C%22onbNameInput.attributes.value%22%5D"
+      },
+      {
+        "d": "M238.70063885305234 128.60024861469475L258.70063885305234 128.60024861469475L 274.20031856701826,128.60024861469475Q 279.20031856701826,128.60024861469475 279.20031856701826,133.60024861469475L 279.20031856701826,136.60036181197256Q 279.20031856701826,141.60036181197256 284.20031856701826,141.60036181197256L299.69999828098423 141.60036181197256L319.69999828098423 141.60036181197256",
+        "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522fullName%2522%255D%22%2C%22writes%20state%22%2C%22onbNameInput.interactions.0%22%5D"
+      },
+      {
+        "d": "M238.70063885305234 104.60019866884647L258.70063885305234 104.60019866884647L 274.20031856701826,104.60019866884647Q 279.20031856701826,104.60019866884647 279.20031856701826,109.60019866884647L 279.20031856701826,112.6002551404198Q 279.20031856701826,117.6002551404198 284.20031856701826,117.6002551404198L299.69999828098423 117.6002551404198L319.69999828098423 117.6002551404198",
+        "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522fullName%2522%255D%22%2C%22reads%3A%20state.fullName%22%2C%22onbNameInput.interactions.0.value%22%5D"
+      }
+    ],
+    "nodes": [
+      {
+        "handles": [
+          {
+            "classes": "svelte-flow__handle svelte-flow__handle-right nodrag nopan right declared-connection-handle source",
+            "hidden": "true",
+            "id": "out-read",
+            "position": "right",
+            "rect": {
+              "height": 7.531836032867432,
+              "width": 7.531811714172363,
+              "x": 294.39129638671875,
+              "y": 402.22314453125
+            },
+            "role": "button"
+          },
+          {
+            "classes": "svelte-flow__handle svelte-flow__handle-right nodrag nopan right declared-connection-handle source",
+            "hidden": "true",
+            "id": "out-write",
+            "position": "right",
+            "rect": {
+              "height": 7.531836032867432,
+              "width": 7.531811714172363,
+              "x": 294.39129638671875,
+              "y": 428.0464782714844
+            },
+            "role": "button"
+          }
+        ],
+        "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbNameInput%22%5D",
+        "rect": {
+          "height": 129.5471649169922,
+          "width": 241.0179748535156,
+          "x": 58,
+          "y": 320.34161376953125
+        },
+        "transform": "translate(12px, 25px)",
+        "width": 224
+      },
+      {
+        "handles": [
+          {
+            "classes": "svelte-flow__handle svelte-flow__handle-left nodrag nopan left declared-connection-handle target",
+            "hidden": "true",
+            "id": "in-read",
+            "position": "left",
+            "rect": {
+              "height": 7.531836032867432,
+              "width": 7.531811714172363,
+              "x": 389.076904296875,
+              "y": 416.2107849121094
+            },
+            "role": "button"
+          },
+          {
+            "classes": "svelte-flow__handle svelte-flow__handle-left nodrag nopan left declared-connection-handle target",
+            "hidden": "true",
+            "id": "in-write",
+            "position": "left",
+            "rect": {
+              "height": 7.531787395477295,
+              "width": 7.531811714172363,
+              "x": 389.076904296875,
+              "y": 442.0341796875
+            },
+            "role": "button"
+          }
+        ],
+        "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22state%22%2C%22fullName%22%5D",
+        "rect": {
+          "height": 157.5224609375,
+          "width": 241.0179748535156,
+          "x": 391.9820251464844,
+          "y": 306.3539733886719
+        },
+        "transform": "translate(322.4px, 12px)",
+        "width": 224
+      }
+    ]
+  },
+  "horizontal": [
+    {
+      "label": "reads: state.fullName",
+      "ends": [
+        {
+          "side": "source",
+          "position": "right",
+          "distancePixels": 0.0007173553787753044,
+          "offsetFromNodeBottomPixels": 43.89971613883972,
+          "offsetFromNodeTopPixels": 85.64744877815247
+        },
+        {
+          "side": "target",
+          "position": "left",
+          "distancePixels": 0.00030467330060751803,
+          "offsetFromNodeBottomPixels": 43.899731397628784,
+          "offsetFromNodeTopPixels": 113.62272953987122
+        }
+      ]
+    },
+    {
+      "label": "writes state",
+      "ends": [
+        {
+          "side": "source",
+          "position": "right",
+          "distancePixels": 0.0007439625656746996,
+          "offsetFromNodeBottomPixels": 18.076382398605347,
+          "offsetFromNodeTopPixels": 111.47078251838684
+        },
+        {
+          "side": "target",
+          "position": "left",
+          "distancePixels": 0.0004034127281083443,
+          "offsetFromNodeBottomPixels": 18.076360940933228,
+          "offsetFromNodeTopPixels": 139.44609999656677
+        }
+      ]
+    },
+    {
+      "label": "reads: state.fullName",
+      "ends": [
+        {
+          "side": "source",
+          "position": "right",
+          "distancePixels": 0.0007173553787753044,
+          "offsetFromNodeBottomPixels": 43.89971613883972,
+          "offsetFromNodeTopPixels": 85.64744877815247
+        },
+        {
+          "side": "target",
+          "position": "left",
+          "distancePixels": 0.00030467330060751803,
+          "offsetFromNodeBottomPixels": 43.899731397628784,
+          "offsetFromNodeTopPixels": 113.62272953987122
+        }
+      ]
+    }
+  ],
+  "grouping": {
+    "cards": 1,
+    "text": "Read by (2)Updated byFull name3 declared connections"
+  },
+  "verticalDom": {
+    "edges": [
+      {
+        "d": "M68.40014424257515 103.10025313459889L68.40014424257515 123.10025313459889L 68.40014424257515,143.40010089029585Q 68.40014424257515,143.40011152636544 68.40013360650556,143.40011152636544L 68.40013360650556,143.40011152636544Q 68.40012297043597,143.40011152636544 68.40012297043597,143.40012216243503L68.40012297043597 163.699969918132L68.40012297043597 183.699969918132",
+        "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522fullName%2522%255D%22%2C%22reads%3A%20state.fullName%22%2C%22onbNameInput.attributes.value%22%5D"
+      },
+      {
+        "d": "M179.60045743789615 103.10025313459889L179.60045743789615 123.10025313459889L 179.60045743789615,143.40008316351322Q 179.60045743789615,143.40011152636544 179.6004858007484,143.40011152636544L 179.6004858007484,143.40011152636544Q 179.60051416360062,143.40011152636544 179.60051416360062,143.40013988921766L179.60051416360062 163.699969918132L179.60051416360062 183.699969918132",
+        "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522fullName%2522%255D%22%2C%22writes%20state%22%2C%22onbNameInput.interactions.0%22%5D"
+      },
+      {
+        "d": "M68.40014424257515 103.10025313459889L68.40014424257515 123.10025313459889L 68.40014424257515,143.40010089029585Q 68.40014424257515,143.40011152636544 68.40013360650556,143.40011152636544L 68.40013360650556,143.40011152636544Q 68.40012297043597,143.40011152636544 68.40012297043597,143.40012216243503L68.40012297043597 163.699969918132L68.40012297043597 183.699969918132",
+        "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522fullName%2522%255D%22%2C%22reads%3A%20state.fullName%22%2C%22onbNameInput.interactions.0.value%22%5D"
+      }
+    ],
+    "nodes": [
+      {
+        "handles": [
+          {
+            "classes": "svelte-flow__handle svelte-flow__handle-bottom nodrag nopan bottom declared-connection-handle source",
+            "hidden": "true",
+            "id": "out-read",
+            "position": "bottom",
+            "rect": {
+              "height": 7.531787395477295,
+              "width": 7.531811714172363,
+              "x": 114.9189682006836,
+              "y": 396.84332275390625
+            },
+            "role": "button"
+          },
+          {
+            "classes": "svelte-flow__handle svelte-flow__handle-bottom nodrag nopan bottom declared-connection-handle source",
+            "hidden": "true",
+            "id": "out-write",
+            "position": "bottom",
+            "rect": {
+              "height": 7.531787395477295,
+              "width": 7.531811714172363,
+              "x": 234.56716918945312,
+              "y": 396.84332275390625
+            },
+            "role": "button"
+          }
+        ],
+        "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbNameInput%22%5D",
+        "rect": {
+          "height": 95.11602020263672,
+          "width": 241.0179748535156,
+          "x": 58,
+          "y": 306.3539733886719
+        },
+        "transform": "translate(12px, 12px)",
+        "width": 224
+      },
+      {
+        "handles": [
+          {
+            "classes": "svelte-flow__handle svelte-flow__handle-top nodrag nopan top declared-connection-handle target",
+            "hidden": "true",
+            "id": "in-read",
+            "position": "top",
+            "rect": {
+              "height": 7.531836032867432,
+              "width": 7.531811714172363,
+              "x": 114.9189682006836,
+              "y": 491.0985412597656
+            },
+            "role": "button"
+          },
+          {
+            "classes": "svelte-flow__handle svelte-flow__handle-top nodrag nopan top declared-connection-handle target",
+            "hidden": "true",
+            "id": "in-write",
+            "position": "top",
+            "rect": {
+              "height": 7.531836032867432,
+              "width": 7.531811714172363,
+              "x": 234.56716918945312,
+              "y": 491.0985412597656
+            },
+            "role": "button"
+          }
+        ],
+        "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22state%22%2C%22fullName%22%5D",
+        "rect": {
+          "height": 123.09130859375,
+          "width": 241.0179748535156,
+          "x": 58,
+          "y": 494.003662109375
+        },
+        "transform": "translate(12px, 186.4px)",
+        "width": 224
+      }
+    ]
+  },
+  "vertical": [
+    {
+      "label": "reads: state.fullName",
+      "ends": [
+        {
+          "side": "source",
+          "position": "bottom",
+          "distancePixels": 0.0003290393653432072,
+          "offsetFromNodeBottomPixels": 0.8607771396636963,
+          "offsetFromNodeTopPixels": 94.25524306297302
+        },
+        {
+          "side": "target",
+          "position": "top",
+          "distancePixels": 0.00014646754830348007,
+          "offsetFromNodeBottomPixels": 122.23051142692566,
+          "offsetFromNodeTopPixels": 0.8607971668243408
+        }
+      ]
+    },
+    {
+      "label": "writes state",
+      "ends": [
+        {
+          "side": "source",
+          "position": "bottom",
+          "distancePixels": 0.0005834932265864511,
+          "offsetFromNodeBottomPixels": 0.8607771396636963,
+          "offsetFromNodeTopPixels": 94.25524306297302
+        },
+        {
+          "side": "target",
+          "position": "top",
+          "distancePixels": 0.0005714041766962891,
+          "offsetFromNodeBottomPixels": 122.23051142692566,
+          "offsetFromNodeTopPixels": 0.8607971668243408
+        }
+      ]
+    },
+    {
+      "label": "reads: state.fullName",
+      "ends": [
+        {
+          "side": "source",
+          "position": "bottom",
+          "distancePixels": 0.0003290393653432072,
+          "offsetFromNodeBottomPixels": 0.8607771396636963,
+          "offsetFromNodeTopPixels": 94.25524306297302
+        },
+        {
+          "side": "target",
+          "position": "top",
+          "distancePixels": 0.00014646754830348007,
+          "offsetFromNodeBottomPixels": 122.23051142692566,
+          "offsetFromNodeTopPixels": 0.8607971668243408
+        }
+      ]
+    }
+  ],
+  "overviewDom": {
+    "edges": [
+      {
+        "d": "M68.39996987676308 91.09994092351286L68.39996987676308 111.09994092351286L68.39996987676308 131.39996694552292L68.39996987676308 131.39996694552292L68.39996987676308 151.69999296753298L68.39996987676308 171.69999296753298",
+        "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522fullName%2522%255D%22%2C%22reads%3A%20state.fullName%22%2C%22onbNameInput.attributes.value%22%5D"
+      },
+      {
+        "d": "M179.5998746843859 91.09994092351286L179.5998746843859 111.09994092351286L179.5998746843859 131.39996694552292L179.5998746843859 131.39996694552292L179.5998746843859 151.69999296753298L179.5998746843859 171.69999296753298",
+        "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522fullName%2522%255D%22%2C%22writes%20state%22%2C%22onbNameInput.interactions.0%22%5D"
+      },
+      {
+        "d": "M68.39996987676308 91.09994092351286L68.39996987676308 111.09994092351286L68.39996987676308 131.39996694552292L68.39996987676308 131.39996694552292L68.39996987676308 151.69999296753298L68.39996987676308 171.69999296753298",
+        "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522fullName%2522%255D%22%2C%22reads%3A%20state.fullName%22%2C%22onbNameInput.interactions.0.value%22%5D"
+      }
+    ],
+    "nodes": [
+      {
+        "handles": [
+          {
+            "classes": "svelte-flow__handle svelte-flow__handle-bottom nodrag nopan bottom declared-connection-handle source",
+            "hidden": "true",
+            "id": "out-read",
+            "position": "bottom",
+            "rect": {
+              "height": 4.358691692352295,
+              "width": 4.358666896820068,
+              "x": 211.722900390625,
+              "y": 384.29681396484375
+            },
+            "role": "button"
+          },
+          {
+            "classes": "svelte-flow__handle svelte-flow__handle-bottom nodrag nopan bottom declared-connection-handle source",
+            "hidden": "true",
+            "id": "out-write",
+            "position": "bottom",
+            "rect": {
+              "height": 4.358691692352295,
+              "width": 4.358691692352295,
+              "x": 280.9637451171875,
+              "y": 384.29681396484375
+            },
+            "role": "button"
+          }
+        ],
+        "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbNameInput%22%5D",
+        "rect": {
+          "height": 47.57194900512695,
+          "width": 139.47801208496094,
+          "x": 178.78367614746094,
+          "y": 339.40234375
+        },
+        "transform": "translate(12px, 12px)",
+        "width": 224
+      },
+      {
+        "handles": [
+          {
+            "classes": "svelte-flow__handle svelte-flow__handle-top nodrag nopan top declared-connection-handle target",
+            "hidden": "true",
+            "id": "in-read",
+            "position": "top",
+            "rect": {
+              "height": 4.358691692352295,
+              "width": 4.358666896820068,
+              "x": 211.722900390625,
+              "y": 438.8426818847656
+            },
+            "role": "button"
+          },
+          {
+            "classes": "svelte-flow__handle svelte-flow__handle-top nodrag nopan top declared-connection-handle target",
+            "hidden": "true",
+            "id": "in-write",
+            "position": "top",
+            "rect": {
+              "height": 4.358691692352295,
+              "width": 4.358691692352295,
+              "x": 280.9637451171875,
+              "y": 438.8426818847656
+            },
+            "role": "button"
+          }
+        ],
+        "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22state%22%2C%22fullName%22%5D",
+        "rect": {
+          "height": 47.57192611694336,
+          "width": 139.47801208496094,
+          "x": 178.78367614746094,
+          "y": 440.5238952636719
+        },
+        "transform": "translate(12px, 174.4px)",
+        "width": 224
+      }
+    ]
+  },
+  "overview": [
+    {
+      "label": "reads: state.fullName",
+      "ends": [
+        {
+          "side": "source",
+          "position": "bottom",
+          "distancePixels": 0.00002626751197273524,
+          "offsetFromNodeBottomPixels": 0.49813294410705566,
+          "offsetFromNodeTopPixels": 47.0738160610199
+        },
+        {
+          "side": "target",
+          "position": "top",
+          "distancePixels": 0.000005608502397765891,
+          "offsetFromNodeBottomPixels": 47.07379364967346,
+          "offsetFromNodeTopPixels": 0.49813246726989746
+        }
+      ]
+    },
+    {
+      "label": "writes state",
+      "ends": [
+        {
+          "side": "source",
+          "position": "bottom",
+          "distancePixels": 0.000057689431218268595,
+          "offsetFromNodeBottomPixels": 0.49813294410705566,
+          "offsetFromNodeTopPixels": 47.0738160610199
+        },
+        {
+          "side": "target",
+          "position": "top",
+          "distancePixels": 0.000051667626113411665,
+          "offsetFromNodeBottomPixels": 47.07379364967346,
+          "offsetFromNodeTopPixels": 0.49813246726989746
+        }
+      ]
+    },
+    {
+      "label": "reads: state.fullName",
+      "ends": [
+        {
+          "side": "source",
+          "position": "bottom",
+          "distancePixels": 0.00002626751197273524,
+          "offsetFromNodeBottomPixels": 0.49813294410705566,
+          "offsetFromNodeTopPixels": 47.0738160610199
+        },
+        {
+          "side": "target",
+          "position": "top",
+          "distancePixels": 0.000005608502397765891,
+          "offsetFromNodeBottomPixels": 47.07379364967346,
+          "offsetFromNodeTopPixels": 0.49813246726989746
+        }
+      ]
+    }
+  ],
+  "compact": {
+    "compact": true,
+    "labels": [
+      "hidden",
+      "hidden",
+      "hidden",
+      "hidden"
+    ],
+    "names": [
+      {
+        "font": "500 16px / 20px system-ui, \"Segoe UI\", sans-serif",
+        "text": "Full name"
+      },
+      {
+        "font": "500 16px / 20px system-ui, \"Segoe UI\", sans-serif",
+        "text": "FullName"
+      }
+    ]
+  },
+  "frameSelection": {
+    "compact": false,
+    "labels": [
+      "visible",
+      "visible",
+      "visible",
+      "visible"
+    ]
+  },
+  "relationshipNavigation": "Input\nFull name",
+  "inputSelectedWeights": [
+    {
+      "name": "Full name",
+      "selected": true,
+      "weight": "500"
+    },
+    {
+      "name": "FullName",
+      "selected": false,
+      "weight": "500"
+    }
+  ],
+  "after": {
+    "authored": [
+      {
+        "color": "rgb(16, 24, 40)",
+        "font": "700 20px / 26px system-ui, sans-serif",
+        "id": "",
+        "padding": "0px",
+        "tag": "H1"
+      },
+      {
+        "color": "rgb(52, 64, 84)",
+        "font": "600 12.5px / 18.125px system-ui, sans-serif",
+        "id": "",
+        "padding": "0px",
+        "tag": "LABEL"
+      },
+      {
+        "color": "rgb(16, 24, 40)",
+        "font": "14px / 20.3px system-ui, sans-serif",
+        "id": "onbNameInput",
+        "padding": "10px 12px",
+        "tag": "INPUT"
+      },
+      {
+        "color": "rgb(52, 64, 84)",
+        "font": "600 12.5px / 18.125px system-ui, sans-serif",
+        "id": "",
+        "padding": "0px",
+        "tag": "LABEL"
+      },
+      {
+        "color": "rgb(16, 24, 40)",
+        "font": "14px / 20.3px system-ui, sans-serif",
+        "id": "onbEmailInput",
+        "padding": "10px 12px",
+        "tag": "INPUT"
+      },
+      {
+        "color": "rgb(52, 64, 84)",
+        "font": "600 12.5px / 18.125px system-ui, sans-serif",
+        "id": "",
+        "padding": "0px",
+        "tag": "LABEL"
+      },
+      {
+        "color": "rgb(0, 0, 0)",
+        "font": "12px / 17.4px system-ui, sans-serif",
+        "id": "onbNotifInput",
+        "padding": "0px",
+        "tag": "INPUT"
+      },
+      {
+        "color": "rgb(52, 64, 84)",
+        "font": "13px / 18.85px system-ui, sans-serif",
+        "id": "",
+        "padding": "0px",
+        "tag": "LABEL"
+      }
+    ],
+    "revision": "Loaded the saved screen.@3 · v1_fe0ac678e805…",
+    "saved": "✓ Saved",
+    "weights": [
+      {
+        "name": "Full name",
+        "selected": false,
+        "weight": "500"
+      },
+      {
+        "name": "FullName",
+        "selected": true,
+        "weight": "500"
+      }
+    ],
+    "wireStyles": [
+      {
+        "dash": "none",
+        "stroke": "rgb(15, 118, 110)"
+      },
+      {
+        "dash": "5px, 3px",
+        "stroke": "rgb(161, 98, 7)"
+      },
+      {
+        "dash": "none",
+        "stroke": "rgb(15, 118, 110)"
+      }
+    ]
+  },
+  "authoredUnchanged": true,
+  "retainedFindings": [
+    "SN-V01: initial 17dbb06 declared sockets appeared as buttons to assistive technology even though not connectable. Repair hides decorative handles, retains readable row text, disables all connectability flags, and fences move callbacks to content/container handles.",
+    "SN-V02: initial 17dbb06 compact vertical output centres sat7.47px above the bottom due to the24px rail minimum. Repair reduces compact rails to12px.",
+    "Geometry probes using decodeURIComponent/getScreenCTM inside DOM evaluate were unsupported; switched to DOM attributes/rectangles and SVG path coordinates, with parsing performed outside the page. XYFlow endpoints meet socket outer boundaries, not their centres."
+  ],
+  "observations": [
+    "SN-V01 repaired: declared sockets aria-hidden=true/tabindex=-1, pointer-events none; no connectable/start/end classes. Text labels and counts remain accessible.",
+    "SN-V02 repaired: compact vertical output centres now0.498px from node bottom, matching the input border inset.",
+    "No source save or provider turn. Disconnected dashboard targets retain historical scope."
+  ]
+}
