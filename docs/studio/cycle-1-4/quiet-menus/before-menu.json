@@ -1,0 +1,79 @@
+[
+  {
+    "checked": null,
+    "expanded": "false",
+    "role": "menuitem",
+    "text": "File",
+    "weight": "400"
+  },
+  {
+    "checked": null,
+    "expanded": "false",
+    "role": "menuitem",
+    "text": "Edit",
+    "weight": "400"
+  },
+  {
+    "checked": null,
+    "expanded": "true",
+    "role": "menuitem",
+    "text": "View",
+    "weight": "500"
+  },
+  {
+    "checked": null,
+    "expanded": "false",
+    "role": "menuitem",
+    "text": "Preview",
+    "weight": "400"
+  },
+  {
+    "checked": null,
+    "expanded": "false",
+    "role": "menuitem",
+    "text": "View",
+    "weight": "400"
+  },
+  {
+    "checked": null,
+    "expanded": "false",
+    "role": "menuitem",
+    "text": "Object",
+    "weight": "400"
+  },
+  {
+    "checked": "false",
+    "expanded": null,
+    "role": "menuitemcheckbox",
+    "text": "Chat",
+    "weight": "400"
+  },
+  {
+    "checked": "true",
+    "expanded": null,
+    "role": "menuitemcheckbox",
+    "text": "Document✓",
+    "weight": "500"
+  },
+  {
+    "checked": "true",
+    "expanded": null,
+    "role": "menuitemradio",
+    "text": "Fit canvas✓",
+    "weight": "500"
+  },
+  {
+    "checked": "false",
+    "expanded": null,
+    "role": "menuitemradio",
+    "text": "Tablet · 768",
+    "weight": "400"
+  },
+  {
+    "checked": "false",
+    "expanded": null,
+    "role": "menuitemradio",
+    "text": "Phone · 390",
+    "weight": "400"
+  }
+]

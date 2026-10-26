@@ -1,0 +1,290 @@
+{
+  "design": [
+    {
+      "pressed": "true",
+      "text": "Design",
+      "weight": "400"
+    },
+    {
+      "pressed": "false",
+      "text": "Interact",
+      "weight": "400"
+    },
+    {
+      "pressed": "false",
+      "text": "Structure",
+      "weight": "400"
+    }
+  ],
+  "interact": [
+    {
+      "pressed": "false",
+      "text": "Design",
+      "weight": "400"
+    },
+    {
+      "pressed": "true",
+      "text": "Interact",
+      "weight": "400"
+    },
+    {
+      "pressed": "false",
+      "text": "Structure",
+      "weight": "400"
+    }
+  ],
+  "structure": [
+    {
+      "pressed": "false",
+      "text": "Design",
+      "weight": "400"
+    },
+    {
+      "pressed": "false",
+      "text": "Interact",
+      "weight": "400"
+    },
+    {
+      "pressed": "true",
+      "text": "Structure",
+      "weight": "400"
+    }
+  ],
+  "structureMenu": [
+    {
+      "checked": null,
+      "expanded": "true",
+      "text": "View",
+      "weight": "400"
+    },
+    {
+      "checked": null,
+      "expanded": "false",
+      "text": "Object",
+      "weight": "400"
+    },
+    {
+      "checked": "true",
+      "expanded": null,
+      "text": "Selected connections✓",
+      "weight": "400"
+    },
+    {
+      "checked": "false",
+      "expanded": null,
+      "text": "Whole hierarchy",
+      "weight": "400"
+    },
+    {
+      "checked": null,
+      "expanded": null,
+      "text": "Frame selection",
+      "weight": "400"
+    },
+    {
+      "checked": null,
+      "expanded": null,
+      "text": "Show whole screen",
+      "weight": "400"
+    },
+    {
+      "checked": null,
+      "expanded": null,
+      "text": "Find source item",
+      "weight": "400"
+    },
+    {
+      "checked": null,
+      "expanded": null,
+      "text": "Arrange nodes",
+      "weight": "400"
+    },
+    {
+      "checked": null,
+      "expanded": null,
+      "text": "Expand all groups",
+      "weight": "400"
+    },
+    {
+      "checked": "true",
+      "expanded": null,
+      "text": "Left to right",
+      "weight": "400"
+    },
+    {
+      "checked": "false",
+      "expanded": null,
+      "text": "Top to bottom",
+      "weight": "400"
+    },
+    {
+      "checked": "false",
+      "expanded": null,
+      "text": "State and actions",
+      "weight": "400"
+    },
+    {
+      "checked": "false",
+      "expanded": null,
+      "text": "Definitions and templates",
+      "weight": "400"
+    },
+    {
+      "checked": "false",
+      "expanded": null,
+      "text": "Show text nodes",
+      "weight": "400"
+    }
+  ],
+  "viewMenu": [
+    {
+      "checked": null,
+      "expanded": "false",
+      "text": "File",
+      "weight": "400"
+    },
+    {
+      "checked": null,
+      "expanded": "false",
+      "text": "Edit",
+      "weight": "400"
+    },
+    {
+      "checked": null,
+      "expanded": "true",
+      "text": "View",
+      "weight": "400"
+    },
+    {
+      "checked": null,
+      "expanded": "false",
+      "text": "Preview",
+      "weight": "400"
+    },
+    {
+      "checked": "false",
+      "expanded": null,
+      "text": "Chat",
+      "weight": "400"
+    },
+    {
+      "checked": "false",
+      "expanded": null,
+      "text": "Document",
+      "weight": "400"
+    },
+    {
+      "checked": "true",
+      "expanded": null,
+      "text": "Fit canvas✓",
+      "weight": "400"
+    },
+    {
+      "checked": "false",
+      "expanded": null,
+      "text": "Tablet · 768",
+      "weight": "400"
+    },
+    {
+      "checked": "false",
+      "expanded": null,
+      "text": "Phone · 390",
+      "weight": "400"
+    }
+  ],
+  "checkedDocument": {
+    "checked": "true",
+    "text": "Document✓",
+    "weight": "400"
+  },
+  "submenu": [
+    {
+      "checked": null,
+      "expanded": "true",
+      "font": "12px / 18px system-ui, \"Segoe UI\", sans-serif",
+      "text": "File",
+      "weight": "400"
+    },
+    {
+      "checked": null,
+      "expanded": "true",
+      "font": "12px / 18px system-ui, \"Segoe UI\", sans-serif",
+      "text": "Open screen›",
+      "weight": "400"
+    },
+    {
+      "checked": "true",
+      "expanded": null,
+      "font": "12px / 18px system-ui, \"Segoe UI\", sans-serif",
+      "text": "Document and Selection review✓",
+      "weight": "400"
+    }
+  ],
+  "after": {
+    "authored": [
+      {
+        "color": "rgb(16, 24, 40)",
+        "font": "700 20px / 26px system-ui, sans-serif",
+        "id": "",
+        "padding": "0px",
+        "tag": "H1"
+      },
+      {
+        "color": "rgb(52, 64, 84)",
+        "font": "600 12.5px / 18.125px system-ui, sans-serif",
+        "id": "",
+        "padding": "0px",
+        "tag": "LABEL"
+      },
+      {
+        "color": "rgb(16, 24, 40)",
+        "font": "14px / 20.3px system-ui, sans-serif",
+        "id": "onbNameInput",
+        "padding": "10px 12px",
+        "tag": "INPUT"
+      },
+      {
+        "color": "rgb(52, 64, 84)",
+        "font": "600 12.5px / 18.125px system-ui, sans-serif",
+        "id": "",
+        "padding": "0px",
+        "tag": "LABEL"
+      },
+      {
+        "color": "rgb(16, 24, 40)",
+        "font": "14px / 20.3px system-ui, sans-serif",
+        "id": "onbEmailInput",
+        "padding": "10px 12px",
+        "tag": "INPUT"
+      },
+      {
+        "color": "rgb(52, 64, 84)",
+        "font": "600 12.5px / 18.125px system-ui, sans-serif",
+        "id": "",
+        "padding": "0px",
+        "tag": "LABEL"
+      },
+      {
+        "color": "rgb(0, 0, 0)",
+        "font": "12px / 17.4px system-ui, sans-serif",
+        "id": "onbNotifInput",
+        "padding": "0px",
+        "tag": "INPUT"
+      },
+      {
+        "color": "rgb(52, 64, 84)",
+        "font": "13px / 18.85px system-ui, sans-serif",
+        "id": "",
+        "padding": "0px",
+        "tag": "LABEL"
+      }
+    ],
+    "saved": "✓ Saved"
+  },
+  "authoredStylesUnchanged": true,
+  "observations": [
+    "Pre-update Escape directed to the menu opener timed out while focus was on Chat; fresh AX confirmed no state change. Escape on the focused menu item closed it.",
+    "Escape from checked submenu item closed the entire File menu; a redundant subsequent New screen locator had no match. Fresh AX showed menus closed; no edit occurred.",
+    "Restart required routine local re-login. Dashboard reported disconnected operator targets; this style check makes no target-health claim."
+  ]
+}
