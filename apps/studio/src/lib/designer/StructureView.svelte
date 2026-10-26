@@ -214,11 +214,11 @@
   }
   function connect(connection: Connection) {
     const start = connectionStart; connectionStart = undefined;
-    if (!allowMoves || !start) return;
+    if (!allowMoves || !start || connection.sourceHandle!=='content' || connection.targetHandle!=='container') return;
     commitMove({ ...start, source: connection.source, target: connection.target });
   }
   function valid(connection: Connection | Edge): boolean {
-    return allowMoves && !blocked && structureMove(document, revision, { documentId: document.id, revision, source: connection.source, target: connection.target }, false, descriptors, recipes).ok;
+    return allowMoves && !blocked && connection.sourceHandle==='content' && connection.targetHandle==='container' && structureMove(document, revision, { documentId: document.id, revision, source: connection.source, target: connection.target }, false, descriptors, recipes).ok;
   }
   function collapse(id: string) { const next = new Set(collapsed); if (next.has(id)) next.delete(id); else next.add(id); collapsed = next; }
   function navigate(destination: StructureHandoff['destination']) {

@@ -23,7 +23,7 @@
   {#if ports.length}<div class="structured-node-ports">
     {#each [incoming,outgoing] as side,index}{#if side.length}<div class="node-port-list" class:outgoing={index===1}>
       {#each side as port (port.id)}<div class="node-port" style:--connection-color={port.color} title={`${port.label}: ${port.count} declared connection${port.count===1?'':'s'}`}>
-        <Handle id={port.id} type={port.side==='out'?'source':'target'} position={horizontal?(port.side==='out'?Position.Right:Position.Left):(port.side==='out'?Position.Bottom:Position.Top)} isConnectable={false} class="declared-connection-handle" aria-label={`${port.label}: ${port.count} declared connections`}/>
+        <Handle id={port.id} type={port.side==='out'?'source':'target'} position={horizontal?(port.side==='out'?Position.Right:Position.Left):(port.side==='out'?Position.Bottom:Position.Top)} isConnectable={false} isConnectableStart={false} isConnectableEnd={false} class="declared-connection-handle" aria-hidden="true" tabindex={-1}/>
         <span class="node-port-label">{port.label}</span>{#if port.count>1}<span class="node-port-count">{port.count}</span>{/if}
       </div>{/each}
     </div>{/if}{/each}

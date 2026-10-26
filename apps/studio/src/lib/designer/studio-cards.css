@@ -38,6 +38,7 @@
 .studio-type-scope[data-studio-typography].overview-scale :is(.structured-node-facts,.node-port-label,.node-port-count){visibility:hidden}
 .studio-type-scope[data-studio-typography].overview-scale .structured-node-facts{display:none}
 .studio-type-scope[data-studio-typography].overview-scale .node-port{height:12px;min-height:12px;padding-block:0;line-height:12px}
+.studio-type-scope[data-studio-typography].overview-scale .vertical .node-port-list{min-height:12px}
 .studio-type-scope[data-studio-typography] .structured-source-node:not(.selected):hover,
 .studio-type-scope[data-studio-typography] .details-relationships>button:hover:not(:disabled){border-color:#9aa9c2}
 .studio-type-scope[data-studio-typography] .details-relationships>button:hover:not(:disabled){background:#f8fafc}
