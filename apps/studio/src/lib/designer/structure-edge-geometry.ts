@@ -1,7 +1,11 @@
 export type CaptionRect = { x: number; y: number; width: number; height: number };
 type Segment = { x1: number; y1: number; x2: number; y2: number };
 export const captionContext = Symbol('Studio Structure captions');
-export type CaptionContext = { paths: Map<string, string>; nodes: () => CaptionRect[] };
+export type CaptionContext = {
+  paths: Map<string, string>;
+  labels: Map<string, string>;
+  captions: () => ReadonlyMap<string, CaptionRect>;
+};
 function segments(path: string): Segment[] {
   let current = { x: 0, y: 0 };
   const result: Segment[] = [];
@@ -74,4 +78,26 @@ export function edgeCaption(
   return (
     candidates.sort((a, b) => a.score - b.score)[0]?.rect ?? { x: 8, y: -height - 6, width, height }
   );
+}
+/** A deterministic pass also reserves room for earlier captions, without reactive feedback. */
+export function layoutCaptions(
+  paths: ReadonlyMap<string, string>,
+  labels: ReadonlyMap<string, string>,
+  nodes: readonly CaptionRect[],
+): ReadonlyMap<string, CaptionRect> {
+  const result = new Map<string, CaptionRect>();
+  for (const [id, path] of [...paths].sort(([a], [b]) => a.localeCompare(b))) {
+    const label = labels.get(id);
+    if (!label) continue;
+    result.set(
+      id,
+      edgeCaption(
+        path,
+        label,
+        [...paths].filter(([other]) => other !== id).map(([, value]) => value),
+        [...nodes, ...result.values()],
+      ),
+    );
+  }
+  return result;
 }

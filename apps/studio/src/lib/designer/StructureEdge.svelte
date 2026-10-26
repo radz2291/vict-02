@@ -21,8 +21,8 @@
     return {path,x,y};
   });
   const quiet=$derived(data?.role==='contains');
-  $effect(()=>{const path=geometry.path;surrounding?.paths.set(id,path);return()=>{surrounding?.paths.delete(id);};});
-  const caption=$derived(edgeCaption(geometry.path,String(label??''),surrounding?[...surrounding.paths].filter(([key])=>key!==id).map(([,path])=>path):[],surrounding?.nodes()??[]));
+  $effect(()=>{const path=geometry.path;surrounding?.paths.set(id,path);surrounding?.labels.set(id,String(label??''));return()=>{surrounding?.paths.delete(id);surrounding?.labels.delete(id);};});
+  const caption=$derived(surrounding?.captions().get(id)??edgeCaption(geometry.path,String(label??'')));
 </script>
 <g class="studio-edge" class:quiet class:duplicate={!label}>
   <title>{label ?? 'Declared connection'} · {String(data?.path ?? '')}</title>
