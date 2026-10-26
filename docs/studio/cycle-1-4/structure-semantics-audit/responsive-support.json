@@ -1,0 +1,24 @@
+{
+  "facts": [
+    {
+      "name": "Branch 1",
+      "value": "Shown when screen is 600 px wide or smaller · 1 item"
+    },
+    {
+      "name": "Otherwise",
+      "value": "Fallback branch after earlier branches · 1 item"
+    }
+  ],
+  "invalidSource": true,
+  "compilerCorrectlyRefuses": true,
+  "runtimeAlwaysRejectsNonLocalStateCondition": true,
+  "compileIssues": [
+    {
+      "code": "UI_STYLE_CONDITION_UNKNOWN",
+      "message": "A conditional branch requires a localState condition (media conditions belong to style rules).",
+      "severity": "error",
+      "documentId": "responsive-branch",
+      "conditionId": "compact"
+    }
+  ]
+}

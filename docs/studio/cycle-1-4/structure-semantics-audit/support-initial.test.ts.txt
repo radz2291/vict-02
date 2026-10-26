@@ -1,0 +1,21 @@
+import {expect,it} from 'vitest';
+import {writeFileSync} from 'node:fs';
+import {fileURLToPath} from 'node:url';
+import {compileUiDocument,defaultSemanticElementCatalog,type UiDocument} from '@victframework/ui';
+import {newScreen} from '../../../../apps/studio/src/lib/designer/application.js';
+import {projectStructure} from '../../../../apps/studio/src/lib/designer/structure.js';
+import {structureBehavior} from '../../../../apps/studio/src/lib/designer/structure-behavior.js';
+import {evaluateCondition} from '../../../../packages/ui-svelte/src/document/logic.js';
+it('SA11: responsive branch description implies support that the branch runtime does not implement',()=>{
+ const seed=newScreen('Responsive branch','responsive-branch'),source:UiDocument={...seed,conditions:{compact:{id:'compact',kind:'media',query:'(max-width: 600px)'}},nodes:{screen:{id:'screen',kind:'conditional',branches:[{when:'compact',children:['yes']},{children:['no']}]},yes:{id:'yes',kind:'text',content:{type:'literal',value:'Compact'}},no:{id:'no',kind:'text',content:{type:'literal',value:'Otherwise'}}}};
+ const result=compileUiDocument(source,defaultSemanticElementCatalog());expect(result.ok,JSON.stringify(result.issues)).toBe(true);
+ const evaluated=evaluateCondition('compact',source.conditions,{state:{},tokens:{}});expect(evaluated).toBe(false);
+ const facts=structureBehavior(source,'screen');expect(facts[0]!.value).toContain('Shown when screen is 600 px wide or smaller');
+ writeFileSync(fileURLToPath(new URL('./responsive-support.json',import.meta.url)),JSON.stringify({facts,runtimeAlwaysRejectsNonLocalStateCondition:evaluated===false,compileIssues:result.issues},null,2)+'\n');
+});
+it('SA12: a dropped conditional style is diagnosed by the compiler but not represented by Structure',()=>{
+ const seed=newScreen('Conditional style','conditional-style'),source:UiDocument={...seed,conditions:{enabled:{id:'enabled',kind:'localState',when:{type:'ref',path:'state.accepted'}}},styleSources:{style:{id:'style',conditionId:'enabled',declarations:[{property:'color',value:{type:'text',value:'#123456'}}]}},nodes:{screen:{id:'screen',kind:'element',tag:'main',children:[],styleSources:['style']}}};
+ const result=compileUiDocument(source,defaultSemanticElementCatalog());expect(result.ok,JSON.stringify(result.issues)).toBe(true);expect(result.issues.some(issue=>issue.code==='UI_DOC_UNSUPPORTED_FEATURE')).toBe(true);
+ const graph=projectStructure(source);expect(graph.edges).toHaveLength(0);
+ writeFileSync(fileURLToPath(new URL('./conditional-style-support.json',import.meta.url)),JSON.stringify({compileIssues:result.issues,graphEdges:graph.edges,graphRoot:graph.nodes.find(n=>n.data.sourceId==='screen')},null,2)+'\n');
+});

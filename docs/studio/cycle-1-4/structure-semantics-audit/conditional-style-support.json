@@ -1,0 +1,34 @@
+{
+  "compileIssues": [
+    {
+      "code": "UI_DOC_UNSUPPORTED_FEATURE",
+      "message": "Style condition kind 'localState' is unsupported; the conditioned rule is dropped (declared limitation).",
+      "severity": "warning",
+      "documentId": "conditional-style",
+      "feature": "condition:localState"
+    }
+  ],
+  "graphEdges": [],
+  "graphRoot": {
+    "id": "%5B%22conditional-style%22%2C%22node%22%2C%22screen%22%5D",
+    "type": "source",
+    "position": {
+      "x": 0,
+      "y": 0
+    },
+    "width": 224,
+    "data": {
+      "label": "Screen",
+      "kind": "node",
+      "sourceId": "screen",
+      "definitionSource": false,
+      "summary": "<main>",
+      "kindLabel": "Element",
+      "childCount": 0,
+      "occurrence": "conditional-style|screen",
+      "fullLabel": "Screen"
+    },
+    "ariaLabel": "Element: Screen, source screen",
+    "deletable": false
+  }
+}

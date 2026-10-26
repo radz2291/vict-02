@@ -1,0 +1,386 @@
+{
+  "SA01": {
+    "edges": [
+      {
+        "label": "Reads · 2",
+        "from": "%5B%22semantic-audit%22%2C%22node%22%2C%22screen%22%5D",
+        "to": "%5B%22semantic-audit%22%2C%22state%22%2C%22message%22%5D",
+        "path": "screen.attributes.value"
+      },
+      {
+        "label": "Updates",
+        "from": "%5B%22semantic-audit%22%2C%22node%22%2C%22screen%22%5D",
+        "to": "%5B%22semantic-audit%22%2C%22state%22%2C%22message%22%5D",
+        "path": "screen.interactions.0"
+      },
+      {
+        "from": "%5B%22semantic-audit%22%2C%22node%22%2C%22screen%22%5D",
+        "to": "%5B%22semantic-audit%22%2C%22state%22%2C%22message%22%5D",
+        "path": "screen.interactions.0.value"
+      }
+    ],
+    "behaviour": [
+      {
+        "name": "When changed",
+        "value": "Updates Message from Message"
+      }
+    ]
+  },
+  "SA02": {
+    "reference": {
+      "id": "%5B%22semantic-audit%22%2C%22reference%22%2C%22prop.title%22%5D",
+      "type": "source",
+      "position": {
+        "x": 870,
+        "y": 1000
+      },
+      "width": 224,
+      "data": {
+        "label": "Reference: prop.title",
+        "kind": "reference",
+        "fullLabel": "Reference: prop.title"
+      },
+      "ariaLabel": "Reference: Reference: prop.title",
+      "deletable": false
+    },
+    "consumers": [
+      {
+        "id": "%5B%22%255B%2522semantic-audit%2522%252C%2522node%2522%252C%2522ta%2522%255D%22%2C%22%255B%2522semantic-audit%2522%252C%2522reference%2522%252C%2522prop.title%2522%255D%22%2C%22reads%3A%20prop.title%22%2C%22ta.content.expression%22%5D",
+        "source": "%5B%22semantic-audit%22%2C%22node%22%2C%22ta%22%5D",
+        "target": "%5B%22semantic-audit%22%2C%22reference%22%2C%22prop.title%22%5D",
+        "label": "reads: prop.title",
+        "deletable": false,
+        "type": "routed",
+        "sourceHandle": "content",
+        "targetHandle": "container",
+        "data": {
+          "kind": "binding",
+          "path": "ta.content.expression"
+        },
+        "ariaLabel": "reads: prop.title, declared source location ta.content.expression",
+        "style": "stroke: #7c3aed; stroke-dasharray: 5 3"
+      },
+      {
+        "id": "%5B%22%255B%2522semantic-audit%2522%252C%2522node%2522%252C%2522tb%2522%255D%22%2C%22%255B%2522semantic-audit%2522%252C%2522reference%2522%252C%2522prop.title%2522%255D%22%2C%22reads%3A%20prop.title%22%2C%22tb.content.expression%22%5D",
+        "source": "%5B%22semantic-audit%22%2C%22node%22%2C%22tb%22%5D",
+        "target": "%5B%22semantic-audit%22%2C%22reference%22%2C%22prop.title%22%5D",
+        "label": "reads: prop.title",
+        "deletable": false,
+        "type": "routed",
+        "sourceHandle": "content",
+        "targetHandle": "container",
+        "data": {
+          "kind": "binding",
+          "path": "tb.content.expression"
+        },
+        "ariaLabel": "reads: prop.title, declared source location tb.content.expression",
+        "style": "stroke: #7c3aed; stroke-dasharray: 5 3"
+      }
+    ]
+  },
+  "SA03": [
+    {
+      "id": "%5B%22%255B%2522semantic-audit%2522%252C%2522node%2522%252C%2522ta%2522%255D%22%2C%22%255B%2522semantic-audit%2522%252C%2522reference%2522%252C%2522repeat.row.name%2522%255D%22%2C%22reads%3A%20repeat.row.name%22%2C%22ta.content.expression%22%5D",
+      "source": "%5B%22semantic-audit%22%2C%22node%22%2C%22ta%22%5D",
+      "target": "%5B%22semantic-audit%22%2C%22reference%22%2C%22repeat.row.name%22%5D",
+      "label": "reads: repeat.row.name",
+      "deletable": false,
+      "type": "routed",
+      "sourceHandle": "content",
+      "targetHandle": "container",
+      "data": {
+        "kind": "binding",
+        "path": "ta.content.expression"
+      },
+      "ariaLabel": "reads: repeat.row.name, declared source location ta.content.expression",
+      "style": "stroke: #7c3aed; stroke-dasharray: 5 3"
+    },
+    {
+      "id": "%5B%22%255B%2522semantic-audit%2522%252C%2522node%2522%252C%2522tb%2522%255D%22%2C%22%255B%2522semantic-audit%2522%252C%2522reference%2522%252C%2522repeat.row.name%2522%255D%22%2C%22reads%3A%20repeat.row.name%22%2C%22tb.content.expression%22%5D",
+      "source": "%5B%22semantic-audit%22%2C%22node%22%2C%22tb%22%5D",
+      "target": "%5B%22semantic-audit%22%2C%22reference%22%2C%22repeat.row.name%22%5D",
+      "label": "reads: repeat.row.name",
+      "deletable": false,
+      "type": "routed",
+      "sourceHandle": "content",
+      "targetHandle": "container",
+      "data": {
+        "kind": "binding",
+        "path": "tb.content.expression"
+      },
+      "ariaLabel": "reads: repeat.row.name, declared source location tb.content.expression",
+      "style": "stroke: #7c3aed; stroke-dasharray: 5 3"
+    }
+  ],
+  "SA04": [
+    {
+      "id": "%5B%22%255B%2522semantic-audit%2522%252C%2522node%2522%252C%2522a%2522%255D%22%2C%22%255B%2522semantic-audit%2522%252C%2522reference%2522%252C%2522%2524output%2522%255D%22%2C%22reads%3A%20%24output%22%2C%22a.outputs.change.setState.value%22%5D",
+      "source": "%5B%22semantic-audit%22%2C%22node%22%2C%22a%22%5D",
+      "target": "%5B%22semantic-audit%22%2C%22reference%22%2C%22%24output%22%5D",
+      "label": "reads: $output",
+      "deletable": false,
+      "type": "routed",
+      "sourceHandle": "content",
+      "targetHandle": "container",
+      "data": {
+        "kind": "binding",
+        "path": "a.outputs.change.setState.value"
+      },
+      "ariaLabel": "reads: $output, declared source location a.outputs.change.setState.value",
+      "style": "stroke: #7c3aed; stroke-dasharray: 5 3"
+    },
+    {
+      "id": "%5B%22%255B%2522semantic-audit%2522%252C%2522node%2522%252C%2522b%2522%255D%22%2C%22%255B%2522semantic-audit%2522%252C%2522reference%2522%252C%2522%2524output%2522%255D%22%2C%22reads%3A%20%24output%22%2C%22b.outputs.change.setState.value%22%5D",
+      "source": "%5B%22semantic-audit%22%2C%22node%22%2C%22b%22%5D",
+      "target": "%5B%22semantic-audit%22%2C%22reference%22%2C%22%24output%22%5D",
+      "label": "reads: $output",
+      "deletable": false,
+      "type": "routed",
+      "sourceHandle": "content",
+      "targetHandle": "container",
+      "data": {
+        "kind": "binding",
+        "path": "b.outputs.change.setState.value"
+      },
+      "ariaLabel": "reads: $output, declared source location b.outputs.change.setState.value",
+      "style": "stroke: #7c3aed; stroke-dasharray: 5 3"
+    }
+  ],
+  "SA05": {
+    "declaredStyle": {
+      "id": "shared",
+      "conditionId": "compact",
+      "declarations": [
+        {
+          "property": "color",
+          "value": {
+            "type": "binding",
+            "expression": {
+              "type": "ref",
+              "path": "state.tint"
+            }
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "token",
+            "id": "accent"
+          }
+        }
+      ]
+    },
+    "graphKinds": [
+      "node",
+      "state",
+      "state",
+      "state",
+      "state",
+      "state",
+      "state",
+      "state"
+    ],
+    "stateIsolated": true
+  },
+  "SA06": {
+    "hostWiring": {
+      "pending": "busy",
+      "error": "actionError",
+      "result": "actionResult"
+    },
+    "outgoingActionEdges": []
+  },
+  "SA07": {
+    "interactions": [],
+    "edges": [
+      {
+        "id": "%5B%22%255B%2522semantic-audit%2522%252C%2522node%2522%252C%2522screen%2522%255D%22%2C%22%255B%2522semantic-audit%2522%252C%2522action%2522%252C%2522decorative-name%2522%255D%22%2C%22invokes%20action%22%2C%22screen.attributes%22%5D",
+        "source": "%5B%22semantic-audit%22%2C%22node%22%2C%22screen%22%5D",
+        "target": "%5B%22semantic-audit%22%2C%22action%22%2C%22decorative-name%22%5D",
+        "label": "invokes action",
+        "deletable": false,
+        "type": "routed",
+        "sourceHandle": "content",
+        "targetHandle": "container",
+        "data": {
+          "kind": "binding",
+          "path": "screen.attributes"
+        },
+        "ariaLabel": "invokes action, declared source location screen.attributes",
+        "style": "stroke: #7c3aed; stroke-dasharray: 5 3"
+      }
+    ]
+  },
+  "SA08": {
+    "branchEdges": [
+      {
+        "id": "%5B%22%255B%2522structure-clarity%2522%252C%2522node%2522%252C%2522conditional%2522%255D%22%2C%22%255B%2522structure-clarity%2522%252C%2522node%2522%252C%2522yes%2522%255D%22%2C%22branch%3A%20show%22%2C%22conditional.branch%3A%20show.0%22%5D",
+        "source": "%5B%22structure-clarity%22%2C%22node%22%2C%22conditional%22%5D",
+        "target": "%5B%22structure-clarity%22%2C%22node%22%2C%22yes%22%5D",
+        "label": "branch: show",
+        "deletable": false,
+        "type": "routed",
+        "sourceHandle": "content",
+        "targetHandle": "container",
+        "data": {
+          "kind": "containment",
+          "path": "conditional.branch: show.0",
+          "description": "Shown when Agreement is on"
+        },
+        "ariaLabel": "Shown when Agreement is on, declared source location conditional.branch: show.0",
+        "style": "stroke: #8191a8; stroke-width: 1.5"
+      },
+      {
+        "id": "%5B%22%255B%2522structure-clarity%2522%252C%2522node%2522%252C%2522conditional%2522%255D%22%2C%22%255B%2522structure-clarity%2522%252C%2522node%2522%252C%2522no%2522%255D%22%2C%22branch%3A%20else%202%22%2C%22conditional.branch%3A%20else%202.1%22%5D",
+        "source": "%5B%22structure-clarity%22%2C%22node%22%2C%22conditional%22%5D",
+        "target": "%5B%22structure-clarity%22%2C%22node%22%2C%22no%22%5D",
+        "label": "branch: else 2",
+        "deletable": false,
+        "type": "routed",
+        "sourceHandle": "content",
+        "targetHandle": "container",
+        "data": {
+          "kind": "containment",
+          "path": "conditional.branch: else 2.1",
+          "description": "Otherwise"
+        },
+        "ariaLabel": "Otherwise, declared source location conditional.branch: else 2.1",
+        "style": "stroke: #8191a8; stroke-width: 1.5"
+      }
+    ],
+    "definitionEdges": [
+      {
+        "id": "%5B%22%255B%2522structure-clarity%2522%252C%2522definition%2522%252C%2522local.card%2522%255D%22%2C%22%255B%2522structure-clarity%2522%252C%2522node%2522%252C%2522definition%2522%255D%22%2C%22definition%20root%22%2C%22root%22%5D",
+        "source": "%5B%22structure-clarity%22%2C%22definition%22%2C%22local.card%22%5D",
+        "target": "%5B%22structure-clarity%22%2C%22node%22%2C%22definition%22%5D",
+        "label": "definition root",
+        "deletable": false,
+        "type": "routed",
+        "sourceHandle": "content",
+        "targetHandle": "container",
+        "data": {
+          "kind": "definition",
+          "path": "root"
+        },
+        "ariaLabel": "definition root, declared source location root",
+        "style": "stroke: #7c3aed; stroke-dasharray: 5 3"
+      }
+    ],
+    "sourceUnchanged": true
+  },
+  "SA09": {
+    "all": 7,
+    "visible": 1,
+    "hiddenStates": [
+      "Message",
+      "Agreement",
+      "Dialog open",
+      "Submitting",
+      "Action error",
+      "Action result"
+    ]
+  },
+  "SA10": {
+    "kinds": [
+      "element",
+      "text",
+      "conditional",
+      "repeat",
+      "component",
+      "slot",
+      "portal"
+    ],
+    "branchRelations": [
+      {
+        "targetId": "%5B%22structure-clarity%22%2C%22node%22%2C%22screen%22%5D",
+        "count": 1,
+        "relations": [
+          {
+            "kind": "hierarchy",
+            "label": "Inside",
+            "count": 1,
+            "paths": [
+              "screen.contains.1"
+            ]
+          }
+        ]
+      },
+      {
+        "targetId": "%5B%22structure-clarity%22%2C%22node%22%2C%22yes%22%5D",
+        "count": 1,
+        "relations": [
+          {
+            "kind": "hierarchy",
+            "label": "Shown when Agreement is on",
+            "count": 1,
+            "paths": [
+              "conditional.branch: show.0"
+            ]
+          }
+        ]
+      },
+      {
+        "targetId": "%5B%22structure-clarity%22%2C%22node%22%2C%22no%22%5D",
+        "count": 1,
+        "relations": [
+          {
+            "kind": "hierarchy",
+            "label": "Otherwise",
+            "count": 1,
+            "paths": [
+              "conditional.branch: else 2.1"
+            ]
+          }
+        ]
+      },
+      {
+        "targetId": "%5B%22structure-clarity%22%2C%22state%22%2C%22accepted%22%5D",
+        "count": 1,
+        "relations": [
+          {
+            "kind": "read",
+            "label": "Reads",
+            "count": 1,
+            "paths": [
+              "conditions.show.when"
+            ]
+          }
+        ]
+      }
+    ],
+    "repeat": [
+      {
+        "name": "Repeats",
+        "value": "One template for each item in Items"
+      },
+      {
+        "name": "Item identity",
+        "value": "“stable”"
+      },
+      {
+        "name": "View",
+        "value": "Template source; individual runtime rows are not shown here"
+      }
+    ],
+    "slot": [
+      {
+        "name": "Slot",
+        "value": "Content"
+      },
+      {
+        "name": "Fallback",
+        "value": "1 items used when no content is supplied"
+      }
+    ],
+    "portal": [
+      {
+        "name": "Overlay target",
+        "value": "logical-overlay"
+      },
+      {
+        "name": "Support",
+        "value": "Logical ownership only; native portal rendering is not supported"
+      }
+    ]
+  }
+}
