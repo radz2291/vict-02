@@ -4,7 +4,7 @@ import {newScreen} from '../src/lib/designer/application.js';
 import {projectStructure,structureId,structureNodePresentation} from '../src/lib/designer/structure.js';
 import {structurePorts,structureConnectionEdges,groupStructureRelationships} from '../src/lib/designer/structure-connections.js';
 
-function fixture(){const base=newScreen('Connections','connections');return {...base,localState:{...base.localState,name:{type:'string' as const,initial:''}},nodes:{...base.nodes,screen:{id:'screen',kind:'element' as const,tag:'main',children:['name']},name:{id:'name',kind:'element' as const,tag:'input',children:[],attributes:{'aria-label':'Full name',value:{type:'ref' as const,path:'state.name'}},interactions:[{on:'input' as const,action:'setState' as const,key:'name',value:{type:'ref' as const,path:'state.name'}}]}}};}
+function fixture(){const base=newScreen('Connections','connections');return {...base,localState:{...base.localState,name:{key:'name',type:'string' as const,initial:''}},nodes:{...base.nodes,screen:{id:'screen',kind:'element' as const,tag:'main',children:['name']},name:{id:'name',kind:'element' as const,tag:'input',children:[],attributes:{'aria-label':'Full name',value:{type:'ref' as const,path:'state.name'}},interactions:[{on:'change' as const,action:'setState' as const,key:'name',value:{type:'ref' as const,path:'state.name'}}]}}};}
 it('keeps each declared edge identity/path and gives both ends a matching read-only presentation port',()=>{
  const source=fixture(),digest=canonicalUiDocument(source).contentDigest,graph=projectStructure(source),edges=structureConnectionEdges(graph);
  expect(edges.map(edge=>[edge.id,edge.source,edge.target,edge.data])).toEqual(graph.edges.map(edge=>[edge.id,edge.source,edge.target,edge.data]));

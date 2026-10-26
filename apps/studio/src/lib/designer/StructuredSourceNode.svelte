@@ -16,13 +16,13 @@
 <div class="vict-source-node structured-source-node" class:selected class:vertical={!horizontal} data-kind={String(data.kind)}>
   <header class="structured-node-header">
     <span class="structured-node-icon" data-family={String(data.kind)}><StructureTypeIcon kind={String(data.kind==='node' && data.kindLabel==='Text'?'text':data.kind)}/></span>
-    <div class="structured-node-identity"><span class="vict-source-kind">{data.kindLabel ?? data.kind}</span><strong title={String(data.label)}>{data.label}</strong></div>
+    <div class="structured-node-identity"><span class="vict-source-kind">{data.kindLabel ?? data.kind}</span><strong title={String(data.fullLabel ?? data.label)}>{data.label}</strong></div>
     {#if toggleGroup}<button type="button" class="node-group-toggle nodrag nopan" aria-label={`${data.collapsed?'Expand':'Collapse'} ${data.label}`} aria-expanded={!data.collapsed} onkeydown={event=>{if(event.key==='Enter'||event.key===' ')event.stopPropagation();}} onclick={event=>{event.stopPropagation();toggleGroup();}}>{data.collapsed?'›':'⌄'}</button>{/if}
   </header>
-  {#if data.summary || data.collapsedCount}<div class="structured-node-facts"><span class="vict-source-summary">{data.collapsedCount?`${data.collapsedCount} items inside`:data.summary}</span></div>{/if}
+  {#if data.summary || data.collapsedCount}<div class="structured-node-facts"><span class="vict-source-summary" title={String(data.summary ?? '')}>{data.collapsedCount?`${data.collapsedCount} items inside`:data.summary}</span></div>{/if}
   {#if ports.length}<div class="structured-node-ports">
     {#each [incoming,outgoing] as side,index}{#if side.length}<div class="node-port-list" class:outgoing={index===1}>
-      {#each side as port (port.id)}<div class="node-port" style:--connection-color={port.color} title={`${port.label}: ${port.count} declared connection${port.count===1?'':'s'}`}>
+      {#each side as port (port.id)}<div class="node-port" style:--connection-color={port.color} title={`${port.label}: ${port.count} visible source connection${port.count===1?'':'s'} (reference locations, not unique targets)`}>
         <Handle id={port.id} type={port.side==='out'?'source':'target'} position={horizontal?(port.side==='out'?Position.Right:Position.Left):(port.side==='out'?Position.Bottom:Position.Top)} isConnectable={false} isConnectableStart={false} isConnectableEnd={false} class="declared-connection-handle" aria-hidden="true" tabindex={-1}/>
         <span class="node-port-label">{port.label}</span>{#if port.count>1}<span class="node-port-count">{port.count}</span>{/if}
       </div>{/each}

@@ -7,6 +7,7 @@
   import { projectStructure, structureFacts, structureNodePresentation, parseStructureId, type StructureHandoff } from './structure.js';
   import { resolveOccurrence } from '@victframework/ui-editor';
   import { readableName } from './presentation.js';
+  import { structureBehavior } from './structure-behavior.js';
   let { document, selectedId, selectedOccurrence, layerProvenance, blocked = false, containFocus = false, embedded=false, page = $bindable('properties'), onClose, onSelect, onNavigate }: {
     document: UiDocument; selectedId?: string; selectedOccurrence?:string; layerProvenance?:{occurrence:string;detail:string}; embedded?:boolean; blocked?: boolean; containFocus?: boolean; page?: 'properties' | 'relationships' | 'technical' | 'none';
     onClose: () => void; onSelect: (id: string) => void; onNavigate: (request: StructureHandoff) => void;
@@ -14,6 +15,7 @@
   const graph = $derived(projectStructure(document));
   const selected = $derived(graph.nodes.find(node => node.id === selectedId));
   const label = $derived(selected ? structureNodePresentation(document, selected.data).label : 'No selection');
+  const fullLabel = $derived(selected ? structureNodePresentation(document, selected.data).fullLabel : 'No selection');
   const facts = $derived(selected ? structureFacts(document, selected) : []);
   const relationships = $derived(groupStructureRelationships(graph,selectedId));
   const summary = $derived.by(() => {
@@ -25,6 +27,7 @@
     if (node?.kind === 'element') result.push({name:'Children',value:String(node.children.length)});
     if (node?.kind === 'component') result.push({name:'Component',value:readableName(node.definitionId)});
     if (node?.kind === 'text') result.push({name:'Content',value:node.content.type === 'literal' ? String(node.content.value) : 'Connected to screen data'});
+    if (node) result.push(...structureBehavior(document,node.id));
     const styleNames:Record<string,string>={display:'Layout','flex-direction':'Direction',gap:'Spacing',width:'Width',height:'Height',padding:'Padding','font-size':'Text size',color:'Text color','background-color':'Background'};
     for(const style of node?.localStyle??[])if(styleNames[style.property])result.push({name:styleNames[style.property]!,value:style.value.type==='text'?style.value.value:style.value.type==='token'?'Theme value':'Connected value'});
     if (tuple?.[1] === 'state' && document.localState[tuple[2]]) {const state=document.localState[tuple[2]]!;result.push({name:'Value type',value:readableName(state.type)},{name:'Starting value',value:Array.isArray(state.initial)?`${state.initial.length} items`:String(state.initial)});}
@@ -67,19 +70,18 @@
   }
 </script>
 <section data-studio-typography class="studio-type-scope source-details" aria-label="Source inspection details" bind:this={root}>
-  <header>{#if !embedded}<span>Inspect</span>{/if}<div class="selection-identity-card">{#if selected}<span>{structureNodePresentation(document,selected.data).kindLabel ?? readableName(selected.data.kind)}</span>{/if}<strong title={label}>{label}</strong></div>{#if !embedded}<button type="button" aria-label="Close inspection details" onclick={onClose}>×</button>{/if}</header>
+  <header>{#if !embedded}<span>Inspect</span>{/if}<div class="selection-identity-card">{#if selected}<span>{structureNodePresentation(document,selected.data).kindLabel ?? readableName(selected.data.kind)}</span>{/if}<strong title={fullLabel}>{label}</strong></div>{#if !embedded}<button type="button" aria-label="Close inspection details" onclick={onClose}>×</button>{/if}</header>
   <div class="selection-sections">
     {#if !selected}<p class="empty-selection">Select an item on the canvas, in Layers or in the graph.</p>
     {:else}
       <section class:expanded={page==='properties'} aria-label="Selection overview"><button class="studio-section-header" type="button" aria-expanded={page==='properties'} aria-controls={accordionId+'-overview'} onclick={()=>page=page==='properties'?'none':'properties'}>Overview</button><div id={accordionId+'-overview'} class="details-body" hidden={page!=='properties'}>
-      <div class="details-identity"><span>{selected.data.kindLabel ?? readableName(selected.data.kind)}</span></div>
       {#if selected.data.occurrence}<button type="button" class="details-handoff" disabled={blocked} onclick={() => navigate('inspector')}>Edit on canvas ↗</button>{/if}
       {#if selected.data.kind === 'state'}<button type="button" class="details-handoff" disabled={blocked} onclick={() => navigate('data')}>Edit in Data ↗</button>{/if}
       {#if selected.data.kind === 'action'}<button type="button" class="details-handoff" disabled={blocked} onclick={() => navigate('actions')}>Open Actions ↗</button>{/if}
       <dl class="useful-facts">{#each summary as fact}<div><dt>{fact.name}</dt><dd>{fact.value}</dd></div>{/each}</dl>
       </div></section>
       <section class:expanded={page==='relationships'} aria-label="Selection relationships"><button class="studio-section-header" type="button" aria-expanded={page==='relationships'} aria-controls={accordionId+'-relationships'} onclick={()=>page=page==='relationships'?'none':'relationships'}>Relationships</button><div id={accordionId+'-relationships'} class="details-body" hidden={page!=='relationships'}>
-      <div class="details-relationships">{#each relationships as group (group.targetId)}{@const other=graph.nodes.find(node=>node.id===group.targetId)}<button type="button" disabled={blocked} onclick={()=>{if(other)onSelect(other.id);}}><span class="relationship-label">{#each group.relations as relation}<span class="relationship-kind"><i aria-hidden="true" style:background={connectionKinds[relation.kind].color}></i>{relation.label}{relation.count>1?` (${relation.count})`:''}</span>{/each}</span><strong>{other?structureNodePresentation(document,other.data).label:'Source item'}</strong>{#if group.count>1}<small>{group.count} declared connections</small>{/if}</button>{/each}</div>
+      <div class="details-relationships">{#each relationships as group (group.targetId)}{@const other=graph.nodes.find(node=>node.id===group.targetId)}<button type="button" disabled={blocked} title={group.relations.flatMap(relation=>relation.paths).join('\n')} onclick={()=>{if(other)onSelect(other.id);}}><span class="relationship-label">{#each group.relations as relation}<span class="relationship-kind"><i aria-hidden="true" style:background={connectionKinds[relation.kind].color}></i>{relation.label}{relation.count>1?` (${relation.count})`:''}</span>{/each}</span><strong title={other?structureNodePresentation(document,other.data).fullLabel:undefined}>{other?structureNodePresentation(document,other.data).label:'Source item'}</strong>{#if group.count>1}<small>{group.count} source reference locations</small>{/if}</button>{/each}</div>
       {#if !relationships.length}<p>No declared relationships.</p>{/if}
       </div></section>
       <section class:expanded={page==='technical'} aria-label="Selection technical information"><button class="studio-section-header" type="button" aria-expanded={page==='technical'} aria-controls={accordionId+'-technical'} onclick={()=>page=page==='technical'?'none':'technical'}>Technical information</button><div id={accordionId+'-technical'} class="details-body" hidden={page!=='technical'}><dl>{#each [...provenance,...facts] as fact}<div><dt>{fact.path}</dt><dd>{fact.value}</dd></div>{/each}</dl></div></section>
@@ -94,7 +96,6 @@
   header button { width:28px; height:28px; border:0; padding:0; }
   .details-body { flex:1; min-height:0; overflow:auto; overscroll-behavior:contain; padding:10px; }
   .selection-sections{display:flex;flex-direction:column;flex:1;min-height:0;overflow:hidden}.selection-sections>section{display:flex;flex-direction:column;flex:none;min-height:0;overflow:hidden}.selection-sections>section.expanded{flex:1}.details-body[hidden]{display:none}.empty-selection{padding:10px;margin:0}.studio-section-header{flex:none}
-  .details-identity { display:flex; gap:8px; justify-content:space-between; color:var(--vict-color-textMuted,#65748d); margin-bottom:8px; overflow-wrap:anywhere; }
   .details-handoff { margin-bottom:8px; }
   dt { font:11px/1.45 ui-monospace,monospace; overflow-wrap:anywhere; }
   dl { margin:0; } dl>div { display:grid; grid-template-columns:minmax(80px,1fr) minmax(0,1.25fr); gap:10px; padding:6px 0; border-top:1px solid var(--vict-color-border,#eef1f6); } dd { margin:0; overflow-wrap:anywhere; }

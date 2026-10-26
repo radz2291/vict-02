@@ -44,6 +44,14 @@ export function structureConnectionEdges(graph:StructureGraph):StructureGraph['e
   });
 }
 export type RelationshipGroup={targetId:string; count:number; relations:{kind:ConnectionKind;label:string;count:number;paths:string[]}[]};
+function hierarchyDescription(edge: Edge<StructureEdgeData>, outgoing: boolean): string {
+  const label=String(edge.label ?? '');
+  if(edge.data?.description) return edge.data.description;
+  if(label.startsWith('slot: ')) return `${outgoing?'Slot':'In slot'} · ${label.slice(6)}`;
+  if(label.startsWith('fallback: ')) return `Fallback · ${label.slice(10)}`;
+  if(label==='repeat template') return outgoing?'Repeated template':'Template of';
+  return outgoing?'Contains':'Inside';
+}
 /** One target card retains each distinct relation and all declared source paths. */
 export function groupStructureRelationships(graph:StructureGraph,selectedId?:string):RelationshipGroup[] {
   const groups=new Map<string,RelationshipGroup>();
@@ -51,7 +59,7 @@ export function groupStructureRelationships(graph:StructureGraph,selectedId?:str
     if(edge.source!==selectedId && edge.target!==selectedId)continue;
     const outgoing=edge.source===selectedId,targetId=outgoing?edge.target:edge.source;
     const kind=connectionKind(edge),meta=connectionKinds[kind];
-    const label=kind==='hierarchy'?(outgoing?'Contains':'Inside'):kind==='definition'
+    const label=kind==='hierarchy'?hierarchyDescription(edge,outgoing):kind==='definition'
       ? String(edge.label).startsWith('definition')?(outgoing?'Defines':'Defined by'):(outgoing?'Uses definition':'Used by')
       :outgoing?meta.out:meta.incoming;
     const group=groups.get(targetId)??{targetId,count:0,relations:[]};
