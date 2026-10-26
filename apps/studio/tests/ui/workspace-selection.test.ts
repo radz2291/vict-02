@@ -65,3 +65,14 @@ it('distinguishes equally named label and input members with quiet types',async(
  expect(members.map(item=>item.querySelector('.item-type')?.textContent)).toEqual(['Label','Input']);expect(members.every(item=>item.textContent?.includes('Name'))).toBe(true);
  expect(screenStore(localStorage,source.id).rawLoad()).toMatchObject({document:source});
 });
+it('previews focused points without selecting, and supports one Ctrl keyboard toggle per activation',async()=>{
+ const source=await start(true);await pointer(document.querySelector('.design-frame input')!);button('Structure').click();await settle();
+ const value=button('Select incoming Value connections for Name'),updates=button('Select outgoing Updates connections for Name');
+ value.click();await settle();updates.focus();await settle();
+ expect(updates.getAttribute('aria-pressed')).toBe('false');expect(value.getAttribute('aria-pressed')).toBe('true');expect(document.querySelector('.structure-tools')?.textContent).toContain('1 selected');
+ expect(updates.closest('.connection-row')?.classList.contains('highlighted')).toBe(true);
+ const activate=()=>{const key=new KeyboardEvent('keydown',{key:'Enter',ctrlKey:true,bubbles:true,cancelable:true});updates.dispatchEvent(key);return key;};
+ expect(activate().defaultPrevented).toBe(true);await settle();expect(document.querySelector('.structure-tools')?.textContent).toContain('2 selected');expect(updates.getAttribute('aria-pressed')).toBe('true');
+ activate();await settle();expect(document.querySelector('.structure-tools')?.textContent).toContain('1 selected');expect(value.getAttribute('aria-pressed')).toBe('true');expect(updates.getAttribute('aria-pressed')).toBe('false');
+ expect(screenStore(localStorage,source.id).rawLoad()).toMatchObject({document:source});
+});

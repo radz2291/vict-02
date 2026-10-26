@@ -46,7 +46,11 @@
   }
   function clearTrace(){requestSelection([]);}
   function focusConnection(event:FocusEvent){
-    const id=event.target instanceof Element?event.target.closest('.svelte-flow__edge')?.getAttribute('data-id'):undefined;
+    const target=event.target instanceof Element?event.target:undefined;
+    const point=target?.closest('.port-control');
+    const node=point?.closest('.svelte-flow__node')?.getAttribute('data-id'),port=point?.closest('.connection-row')?.getAttribute('data-port');
+    if(node&&port){focusedEdges=portConnections(edges,node,port).map(edge=>edge.id);return;}
+    const id=target?.closest('.svelte-flow__edge')?.getAttribute('data-id');
     focusedEdges=id?connectionGroup(edges,id).map(edge=>edge.id):[];
   }
   setContext<StructureTraceContext>(structureTraceContext,{

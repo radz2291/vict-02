@@ -8,7 +8,7 @@ export type StructureTraceContext={
  blocked?:()=>boolean;
  isPortSelected?:(node:string,port:string)=>boolean;
  hoverPort?:(node:string,port:string|undefined)=>void;
- selectPort?:(node:string,port:string,event:MouseEvent)=>void;
+ selectPort?:(node:string,port:string,event:Pick<MouseEvent,'ctrlKey'|'metaKey'>)=>void;
 };
 export function connectionGroup(edges:readonly Edge[],id:string):Edge[]{
  const selected=edges.find(edge=>edge.id===id);if(!selected)return [];
