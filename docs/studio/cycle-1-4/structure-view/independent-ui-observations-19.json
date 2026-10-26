@@ -1,0 +1,212 @@
+{
+  "candidate": "19a5570b3f694ac52ab05d810e5f353c8eb24f40",
+  "fixture": "screen-bb418710-5677-4ae3-9443-be9157f50ea3",
+  "portalCheck": {
+    "canvasHidden": true,
+    "focused": "Search structure",
+    "tools": [
+      {
+        "display": "none",
+        "rect": 0
+      }
+    ]
+  },
+  "checks": [
+    {
+      "name": "graph camera and selection across Design",
+      "graphBefore": {
+        "ids": [
+          "%5B%22screen-bb418710-5677-4ae3-9443-be9157f50ea3%22%2C%22node%22%2C%22onbNameInput%22%5D",
+          "%5B%22screen-bb418710-5677-4ae3-9443-be9157f50ea3%22%2C%22state%22%2C%22fullName%22%5D"
+        ],
+        "selected": [
+          "%5B%22screen-bb418710-5677-4ae3-9443-be9157f50ea3%22%2C%22state%22%2C%22fullName%22%5D"
+        ],
+        "transform": "transform: translate(345.067px, 341.799px) scale(1.584);"
+      },
+      "graphAfter": {
+        "ids": [
+          "%5B%22screen-bb418710-5677-4ae3-9443-be9157f50ea3%22%2C%22node%22%2C%22onbNameInput%22%5D",
+          "%5B%22screen-bb418710-5677-4ae3-9443-be9157f50ea3%22%2C%22state%22%2C%22fullName%22%5D"
+        ],
+        "selected": [
+          "%5B%22screen-bb418710-5677-4ae3-9443-be9157f50ea3%22%2C%22state%22%2C%22fullName%22%5D"
+        ],
+        "transform": "transform: translate(345.067px, 341.799px) scale(1.584);"
+      }
+    },
+    {
+      "name": "Interact Structure Interact retains temporary value",
+      "canonical": "Saved independent initial",
+      "runtime": "Temporary runtime survives",
+      "view": "interact"
+    },
+    {
+      "name": "Locate retained Interact",
+      "result": {
+        "value": "Temporary runtime survives",
+        "view": "interact"
+      }
+    },
+    {
+      "name": "floating draft retained under Structure",
+      "textDraftBefore": {
+        "tag": "TEXTAREA",
+        "value": "Independent title draft"
+      },
+      "draftCovered": {
+        "draft": "Independent title draft",
+        "portalDisplay": "none",
+        "view": "structure"
+      },
+      "restored": "Independent title draft"
+    },
+    {
+      "name": "retained draft apply Undo Redo",
+      "undoHeading": "Create your workspace",
+      "redoHeading": "Independent title draft"
+    },
+    {
+      "name": "hidden Source guard",
+      "exactDraftRetained": true,
+      "selected": [
+        "screen-bb418710-5677-4ae3-9443-be9157f50ea3|onbTitle"
+      ],
+      "view": "design",
+      "status": "Apply or cancel your edit first.@3 · v1_474cb7195828…"
+    },
+    {
+      "name": "compact Inspect Back retains graph",
+      "compactInspect": {
+        "chatHidden": false,
+        "documentHidden": true,
+        "graphHidden": true,
+        "graphInert": "",
+        "scrollWidth": 390,
+        "transform": "transform: translate(583.6px, 370px) scale(1.1);",
+        "width": 390
+      },
+      "compactBack": {
+        "focus": "Inspect structure",
+        "graphHidden": false,
+        "transform": "transform: translate(583.6px, 370px) scale(1.1);"
+      }
+    },
+    {
+      "name": "compact optional-panel exclusivity",
+      "chatDraft": "Unsent independent continuity draft",
+      "chatHidden": true,
+      "documentHidden": false,
+      "pageWidth": 390,
+      "primary": "structure"
+    },
+    {
+      "name": "authored Popover ordinary view switch",
+      "ownedPortalBefore": {
+        "external": [
+          {
+            "owner": "c22",
+            "part": "root",
+            "text": "Popover ✕ Add your own content. Your content",
+            "visible": true
+          },
+          {
+            "owner": "c22",
+            "part": null,
+            "text": "Your content",
+            "visible": true
+          },
+          {
+            "owner": "c22",
+            "part": null,
+            "text": "Your content",
+            "visible": false
+          }
+        ],
+        "owners": [
+          "c22"
+        ]
+      },
+      "ownedPortalAfter": {
+        "external": [],
+        "view": "structure"
+      }
+    },
+    {
+      "name": "Data initial true while Structure retained Interact",
+      "canvasHidden": true,
+      "external": [
+        {
+          "display": "grid",
+          "part": "root",
+          "text": "Popover ✕ Add your own content. Your content",
+          "visible": true
+        },
+        {
+          "display": "block",
+          "part": null,
+          "text": "Your content",
+          "visible": true
+        },
+        {
+          "display": "contents",
+          "part": null,
+          "text": "Your content",
+          "visible": false
+        }
+      ],
+      "triggers": [
+        {
+          "expanded": "true",
+          "text": "Popover"
+        }
+      ],
+      "view": "structure"
+    },
+    {
+      "name": "SV-V04 confirmed authored modal over active Structure",
+      "bodyPointerEvents": "none",
+      "canvasHidden": true,
+      "external": [
+        {
+          "display": "grid",
+          "owner": "c22",
+          "part": "root",
+          "rect": {
+            "height": 131.1999969482422,
+            "width": 480,
+            "x": 480,
+            "y": 434.3999938964844
+          },
+          "text": "More details ✕ Add your details here."
+        },
+        {
+          "display": "block",
+          "owner": "c22",
+          "part": null,
+          "rect": {
+            "height": 21,
+            "width": 430.3999938964844,
+            "x": 504.8000183105469,
+            "y": 507.8000183105469
+          },
+          "text": "Add your details here."
+        },
+        {
+          "display": "contents",
+          "owner": "c22",
+          "part": null,
+          "rect": {
+            "height": 0,
+            "width": 0,
+            "x": 0,
+            "y": 0
+          },
+          "text": "Add your details here."
+        }
+      ],
+      "focused": "<button aria-label=\"Close\" data-testid=\"dialog-close\" id=\"bits-c179\" data-dialog-close=\"\" tabindex=\"0\" data-state=\"open\">✕<!----></button>",
+      "view": "structure"
+    }
+  ]
+}

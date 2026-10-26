@@ -1,0 +1,76 @@
+{
+  "candidate": "ed28b023a195d3944145a8b36135340629bb0491",
+  "time": "2026-10-26T01:14:03.310Z",
+  "desktop": {
+    "canvas": [
+      {
+        "hidden": false,
+        "inert": false
+      }
+    ],
+    "graph": {
+      "bottom": 896.0000305175781,
+      "height": 557.6000366210938,
+      "left": 57.60000228881836,
+      "right": 901.200038909912,
+      "top": 338.3999938964844,
+      "width": 843.6000366210938,
+      "x": 57.60000228881836,
+      "y": 338.3999938964844
+    },
+    "inspection": {
+      "bottom": 896.0000305175781,
+      "height": 557.6000366210938,
+      "left": 907.2000122070312,
+      "right": 1207.2000122070312,
+      "top": 338.3999938964844,
+      "width": 300,
+      "x": 907.2000122070312,
+      "y": 338.3999938964844
+    },
+    "modes": [
+      {
+        "label": "Design",
+        "pressed": "false"
+      },
+      {
+        "label": "Interact",
+        "pressed": "false"
+      },
+      {
+        "label": "Structure",
+        "pressed": "true"
+      }
+    ],
+    "text": "Design, Interact and Structure workspace views Actual workspace components in a disposable read-only fixture. This Chat draft stays local; no model request is sent. Live Chat and authoring are available in Studio. View  Chat×Local example draft DesignInteractStructure    .uv-canvas-design [data-ui-occ]:hover:not(:has([data-ui-occ]:hover)) {\n        outline: 1px dashed var(--ui-editor-hover, #7aa7ff);\n        cursor: pointer;\n      }\n      [data-ui-selected] {\n        outline: 2px solid var(--ui-editor-selected, #2b6cff);\n        outline-offset: 1px;\n      } Continue       View  Object  Connections 3 items Inspect        Container ⌄ Screen    Component  Continue Button   Catalog  Button Library definition · revision 1      Svelte Flow Press enter or space to select a node. You can then use the arrow keys to move the node around. Press delete to remove it and escape to cancel. Press enter or space to select an edge. You can then press delete to remove it or escape to cancel.                  InspectScreen× DetailsRelationships Container Edit on canvas ↗   TypeMainChildren1LayoutflexDirectioncolumnSpacing20pxPadding40pxBackground#ffffffText color#243047 Technical detailskindelementidscreentagmainattributes.aria-labelButton showcasechildren.0example-buttonlocalStyle.0.propertydisplaylocalStyle.0.value.typetextlocalStyle.0.value.valueflexlocalStyle.1.propertyflex-directionlocalStyle.1.value.typetextlocalStyle.1.value.valuecolumnlocalStyle.2.propertygaplocalStyle.2.value.typetextlocalStyle.2.value.value20pxlocalStyle.3.propertypaddinglocalStyle.3.value.typetextlocalStyle.3.value.value40pxlocalStyle.4.propertymin-heightlocalStyle.4.value.typetextlocalStyle.4.value.value560pxlocalStyle.5.propertybackground-colorlocalStyle.5.value.typetextlocalStyle.5.value.value#fffffflocalStyle.6.propertycolorlocalStyle.6.value.typetextlocalStyle.6.value.value#243047localStyle.7.propertyfont-familylocalStyle.7.value.typetextlocalStyle.7.value.valuesystem-ui, sans-serif Document×LayersInspect in Structure ↗Layers   Button showcase  Continue◇  ↑ ↓ navigate · → expand · ← collapse · Enter selectSelection details & provenanceButton showcasescreenshowcase-button|screen Datamessage\"Hello from my screen\"acceptedfalsedialogOpenfalsebusyfalseactionError\"\"actionResult\"\" Actionsdemo.submit uses the existing local simulation. This read-only fixture does not invoke it. Source{\n  \"schema\": \"vict.ui-document@1\",\n  \"id\": \"showcase-button\",\n  \"revision\": \"r1\",\n  \"root\": \"screen\",\n  \"nodes\": {\n    \"screen\": {\n      \"kind\": \"element\",\n      \"id\": \"screen\",\n      \"tag\": \"main\",\n      \"attributes\": {\n        \"aria-label\": \"Button showcase\"\n      },\n      \"children\": [\n        \"example-button\"\n      ],\n      \"localStyle\": [\n        {\n          \"property\": \"display\",\n          \"value\": {\n            \"type\": \"text\",\n            \"value\": \"flex\"\n          }\n        },\n        {\n          \"property\": \"flex-direction\",\n          \"value\": {\n            \"type\": \"text\",\n            \"value\": \"column\"\n          }\n        },\n        {\n          \"property\": \"gap\",\n          \"value\": {\n            \"type\": \"text\",\n            \"value\": \"20px\"\n          }\n        },\n        {\n          \"property\": \"padding\",\n          \"value\": {\n            \"type\": \"text\",\n            \"value\": \"40px\"\n          }\n        },\n        {\n          \"property\": \"min-height\",\n          \"value\": {\n            \"type\": \"text\",\n            \"value\": \"560px\"\n          }\n        },\n        {\n          \"property\": \"background-color\",\n          \"value\": {\n            \"type\": \"text\",\n            \"value\": \"#ffffff\"\n          }\n        },\n        {\n          \"property\": \"color\",\n          \"value\": {\n            \"type\": \"text\",\n            \"value\": \"#243047\"\n          }\n        },\n        {\n          \"property\": \"font-family\",\n          \"value\": {\n            \"type\": \"text\",\n            \"value\": \"system-ui, sans-serif\"\n          }\n        }\n      ]\n    },\n    \"example-button\": {\n      \"kind\": \"component\",\n      \"id\": \"example-button\",\n      \"definitionId\": \"vict.catalog.button\",\n      \"revision\": \"1\",\n      \"props\": {\n        \"label\": {\n          \"type\": \"literal\",\n          \"value\": \"Continue\"\n        }\n      },\n      \"slots\": {}\n    }\n  },\n  \"componentDefinitions\": {},\n  \"styleSources\": {},\n  \"assets\": {},\n  \"tokens\": {},\n  \"conditions\": {\n    \"compact\": {\n      \"id\": \"compact\",\n      \"kind\": \"container\",\n      \"name\": \"studio-screen\",\n      \"query\": \"(max-width: 600px)\"\n    }\n  },\n  \"localState\": {\n    \"message\": {\n      \"key\": \"message\",\n      \"type\": \"string\",\n      \"initial\": \"Hello from my screen\"\n    },\n    \"accepted\": {\n      \"key\": \"accepted\",\n      \"type\": \"boolean\",\n      \"initial\": false\n    },\n    \"dialogOpen\": {\n      \"key\": \"dialogOpen\",\n      \"type\": \"boolean\",\n      \"initial\": false\n    },\n    \"busy\": {\n      \"key\": \"busy\",\n      \"type\": \"boolean\",\n      \"initial\": false\n    },\n    \"actionError\": {\n      \"key\": \"actionError\",\n      \"type\": \"string\",\n      \"initial\": \"\"\n    },\n    \"actionResult\": {\n      \"key\": \"actionResult\",\n      \"type\": \"string\",\n      \"initial\": \"\"\n    }\n  }\n} Select a layer or graph item, then Inspect inside Structure."
+  },
+  "compact": {
+    "draft": "Reviewer compact draft",
+    "hiddenDraftAncestor": true,
+    "modes": [
+      {
+        "label": "Design",
+        "pressed": "false"
+      },
+      {
+        "label": "Interact",
+        "pressed": "false"
+      },
+      {
+        "label": "Structure",
+        "pressed": "true"
+      }
+    ],
+    "scrollWidth": 375,
+    "viewport": {
+      "height": 844,
+      "width": 390
+    },
+    "visibleText": "Design, Interact and Structure workspace views\n\nActual workspace components in a disposable read-only fixture. This Chat draft stays local; no model request is sent. Live Chat and authoring are available in Studio.\n\nView\nDesign\nInteract\nStructure\nView\nObject\nConnections\n3 items\nInspect\nCONTAINER\n⌄\nScreen\nCOMPONENT\nContinue\nButton\nCATALOG\nButton\nLibrary definition · revision 1\nSvelte Flow\nDocument\n×\nLayers\nInspect in Structure ↗\nButton showcase\nContinue\n◇\nSelection details & provenance\nData\nActions\nSource\n\nSelect a layer or graph item, then Inspect inside Structure."
+  },
+  "chatRestored": {
+    "draft": "Reviewer compact draft",
+    "hiddenDraftAncestor": false,
+    "visibleText": "Design, Interact and Structure workspace views\n\nActual workspace components in a disposable read-only fixture. This Chat draft stays local; no model request is sent. Live Chat and authoring are available in Studio.\n\nView\nChat\n×\nLocal example draft\nDesign\nInteract\nStructure\nView\nObject\nConnections\n3 items\nInspect\nCONTAINER\n⌄\nScreen\nCOMPONENT\nContinue\nButton\nCATALOG\nButton\nLibrary definition · revision 1\nSvelte Flow\n\nSelect a layer or graph item, then Inspect inside Structure."
+  }
+}

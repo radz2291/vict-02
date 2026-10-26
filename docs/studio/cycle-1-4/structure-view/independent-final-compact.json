@@ -1,0 +1,49 @@
+{
+  "candidate": "ed28b023a195d3944145a8b36135340629bb0491",
+  "time": "2026-10-26T01:12:51.878Z",
+  "keyboard": [
+    {
+      "checkpoint": "F10",
+      "focusLabel": "Search structure",
+      "view": "structure"
+    },
+    {
+      "checkpoint": "firstEscape",
+      "focusLabel": "Search structure",
+      "query": "",
+      "view": "structure"
+    },
+    {
+      "checkpoint": "secondEscape",
+      "focusText": "Design",
+      "view": "design"
+    }
+  ],
+  "before": {
+    "camera": "transform: translate(259.88px, 367.25px) scale(1.1);",
+    "focus": "<button type=\"button\" class=\"svelte-762fh8\" aria-pressed=\"true\">Structure</button>",
+    "graph": [
+      {
+        "class": "structure-graph svelte-93dd96",
+        "hidden": true,
+        "inert": true
+      }
+    ],
+    "scrollWidth": 390,
+    "view": "structure",
+    "viewport": {
+      "height": 844,
+      "width": 390
+    }
+  },
+  "after": {
+    "camera": "transform: translate(259.88px, 367.25px) scale(1.1);",
+    "focus": "<button type=\"button\" class=\"inspection-toggle svelte-17c90px\" aria-label=\"Inspect structure\" aria-expanded=\"false\">Inspect</button>",
+    "scrollWidth": 390,
+    "view": "structure",
+    "viewport": {
+      "height": 844,
+      "width": 390
+    }
+  }
+}

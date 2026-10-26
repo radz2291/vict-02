@@ -1,0 +1,173 @@
+{
+  "schema": "vict.ui-document@1",
+  "id": "screen-f4903798-7410-49e2-8fc3-15545b292e7b",
+  "revision": "r1",
+  "root": "screen",
+  "nodes": {
+    "screen": {
+      "kind": "element",
+      "id": "screen",
+      "tag": "main",
+      "attributes": {
+        "aria-label": "Independent authored dialog"
+      },
+      "children": [
+        "dialog-15cc8ccb"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "20px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "40px"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "560px"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#ffffff"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#243047"
+          }
+        },
+        {
+          "property": "font-family",
+          "value": {
+            "type": "text",
+            "value": "system-ui, sans-serif"
+          }
+        }
+      ]
+    },
+    "dialog-15cc8ccb": {
+      "kind": "component",
+      "id": "dialog-15cc8ccb",
+      "definitionId": "vict.catalog.dialog",
+      "revision": "1",
+      "props": {
+        "open": {
+          "type": "ref",
+          "path": "state.catalog_dialog-15cc8ccb_root_open"
+        },
+        "title": {
+          "type": "literal",
+          "value": "More details"
+        }
+      },
+      "outputs": {
+        "openChange": {
+          "setState": {
+            "key": "catalog_dialog-15cc8ccb_root_open"
+          }
+        }
+      },
+      "slots": {
+        "body": {
+          "name": "body",
+          "children": [
+            "dialog-15cc8ccb-body-1"
+          ]
+        }
+      }
+    },
+    "dialog-15cc8ccb-body-1": {
+      "kind": "element",
+      "id": "dialog-15cc8ccb-body-1",
+      "tag": "p",
+      "children": [
+        "dialog-15cc8ccb-body-1-text"
+      ]
+    },
+    "dialog-15cc8ccb-body-1-text": {
+      "kind": "text",
+      "id": "dialog-15cc8ccb-body-1-text",
+      "content": {
+        "type": "literal",
+        "value": "Add your details here."
+      }
+    }
+  },
+  "componentDefinitions": {},
+  "styleSources": {},
+  "assets": {},
+  "tokens": {},
+  "conditions": {
+    "compact": {
+      "id": "compact",
+      "kind": "container",
+      "name": "studio-screen",
+      "query": "(max-width: 600px)"
+    }
+  },
+  "localState": {
+    "message": {
+      "key": "message",
+      "type": "string",
+      "initial": "Hello from my screen"
+    },
+    "accepted": {
+      "key": "accepted",
+      "type": "boolean",
+      "initial": false
+    },
+    "dialogOpen": {
+      "key": "dialogOpen",
+      "type": "boolean",
+      "initial": false
+    },
+    "busy": {
+      "key": "busy",
+      "type": "boolean",
+      "initial": false
+    },
+    "actionError": {
+      "key": "actionError",
+      "type": "string",
+      "initial": ""
+    },
+    "actionResult": {
+      "key": "actionResult",
+      "type": "string",
+      "initial": ""
+    },
+    "catalog_dialog-15cc8ccb_root_open": {
+      "key": "catalog_dialog-15cc8ccb_root_open",
+      "type": "boolean",
+      "initial": true
+    }
+  }
+}

@@ -1,0 +1,37 @@
+Independent exact-candidate source audit, 2026-10-26
+Candidate: 19a5570b3f694ac52ab05d810e5f353c8eb24f40
+Baseline: b7392aeb44b2560adced3725e82d9d99d0dfa1d4
+Fresh detached checkout: C:/Users/RZ1/.codex/worktrees/studio-cycle14-structure-view-verifier/260831-VCT-02
+Initial checkout status --porcelain: empty. No installs/generation/tests/build in verifier checkout.
+Live remote candidate matched19; main matched d7401bef6e48330796c74ec00c86db9622d48cdf.
+
+Changed paths: six Studio-local product files, six UI-test files, six governance pointers, controlling report, launch/seal evidence scripts. No packages, package manifest/lock, public ABI/schema, provider/server/effect, canonical engine or storage engine changes.
+
+Designer: workspaceView is distinct from retained design/interact mode. showStructure changes only primary view plus optional initial graph focus/focus handling. changeMode resets runtime only when mode changes; same-mode return restores visible canvas without reset. Both canvas and graph remain mounted and hidden/inert are inverse. StructureView active false fences hidden graph layout/context handlers. AgentChat remains mounted under optional panel. Compact panel set excludes Structure because it is a primary view. Optional panel policy remains exclusive <=1000.
+
+Draft fences: floating property/Data/Source dirty flags are retained. Structure reads are permitted; graph selection/movement/edit handoffs retain dirty guards. Different canvas mode is refused while dirty; return to same canvas mode is allowed. Shared canonical apply/history/save/proposal code unchanged. Prior Source/Data hidden selection restrictions remain. Existing floating editor is retained, with Studio CSS hiding its body portal during Structure.
+
+P-01 source disposition: Studio capture blocks plainF10 during Structure, protects ChatEscape from floating bubble handler, and handles modebarEscape return. StructureView capture handles graph/search Escape before global FloatingSelection bubble handler. ShiftF10 menu path remains. Actual UI challenge pending.
+P-02 source disposition: report narrowed precisely: Edit on canvas returns Design; Locate returns retained canvas mode; Data/Actions use Document alongside Structure when possible. Source corresponds. No new Data shortcut outside Document.
+P-03 source disposition: test selects input before entering Structure; external selection helper uses Design→Structure transitions. No hidden canvas click needed for that scenario.
+
+Capture: only Designer capture state argument changes from structureOpen&&expanded to structureOpen. visual-observation.ts remains byte-unchanged and refuses STUDIO_CAPTURE_NOT_VISIBLE when structureOpen. Async before/after state fences remain unchanged. No expanded capture/provider authority. This is source and mocked-regression support, not a new live-provider capture turn.
+
+Tests reviewed: five focused primary-view regressions; amended composition/context/panel/clean-workspace/menu helpers. Builder final raw log14files/60PASS; earlier11files47/45PASS2FAIL preserved (obsolete 2-mode and removeddock expectation). Final Svelte raw log0errors5warnings in two existing package files; types log empty and stage manager recorded exit0. Readiness ECONNREFUSED output remains raw; not provider success. No independent rerun claimed.
+
+Source verdict at this checkpoint: no additional concrete source defect identified; final gate pending exact production seal and desktop/compact actual UI.
+
+Replacement exact-source/artifact audit, 2026-10-26
+Replacement product: ed28b023a195d3944145a8b36135340629bb0491
+Pushed builder evidence checkpoint: 747daf7d55ce5444bf890012436c08ccb1fcfc44
+Detached verifier worktree was clean before its granted switch from19 toed28 and remained clean afterward. Live remote matched747daf7 checkpoint; main remained d7401bef6e48330796c74ec00c86db9622d48cdf. No later product diff observed.
+
+19→ed28 product delta is exactly private packages/ui-svelte/src/catalog/components/CatalogPortal.svelte plus new Studio structure-portals regression; all other delta is bounded report/evidence. Original Studio-only path assumption is explicitly reconciled in controlling report after actual SV-V04: existing renderer-owned portal lifecycle must be suspended under hidden/inert logical owner. Existing DocumentHost owner metadata/public presentation target is reused; no new prop/export/ABI/schema, canonical/runtime/storage/provider/effect/capture authority or package/lock/dependency change. DocumentHost remains free of editor-specific semantics.
+
+Final private gate audit: exact one connected owner root; no declared owner preserves standalone behavior. While open, observer covers membership/removal plus current ancestor hidden/inert/class/style and resize; cleanup disconnects both observers and resize listener. Visibility excludes hidden/inert/displaynone/visibilityhidden but intentionally ignores modal-owned aria-hidden/pointer-events/zero rectangles. Only portal consumer unmounts; Root/open binding stays. Existing focus-return refuses inert canvas trigger. No additional concrete source issue identified in bounded repair.
+
+Builder-run evidence independently read: replacement15files63PASS; typesexit0; Svelte0errors5existingwarnings. New3portaltests cover SourceApply canonical-reset whileStructure, noModal/bodylock, retained true onInteract, runtimeClose+canonicalunchanged, ownerhide/inert/style/removal/reattachment, and standalone behavior. HappyDOM boolean-Data select diagnostics did not dirty editor/enableApply and are retained, not treated as product portal failures. The replacement's actual DataYes path is separately required. Restoring old19Portal made newregression fail at visibleDialog assertion; repairedSource restoration recorded. Renderer broad41files/274PASS19FAIL1SKIP; exact19Portal baseline authoringprobe56PASS19FAIL has identical19contextfamilycases. These remain an inherited limitation; fullrenderergreen is not claimed.
+
+Independent replacement seal:755 committed Gitblob hashes equalmanifest and actualbuilderinputs;491actualoutputs equalmanifest. Seal SHA2569d6cfe3f0a326fc22e11d547935131ecb64def6b05d03b91553b53f6f3c551e2. Result independent-seal-result-final.log. No tests/install/sync/generation/build run by verifier.
+
+ReplacementUI method limitation: verifier CUA create iab and exactid2 both reported unavailable; getState returned no apps/browsers. Ordinary .21open_in_codex queued a tab accessible to root. Reviewer then specified checkpoints/actions; root acted only as UIoperator, saved rawimages/DOM/actiontranscript and stopped at eachcheckpoint; reviewer independently read source/seal/rawdata and viewedimages before directingnextactions. This is reviewer-directed actualUI evidence; not a separate independent hands-on CUA session. Initial19 actualUI and gatingfailure were directly operated by verifier. Rootoperator method is disclosed and not conflated with original19 evidence.
