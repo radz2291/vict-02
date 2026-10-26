@@ -405,7 +405,10 @@ body:has(.finished-screen) {
 .action-inputs {display:flex;flex-wrap:wrap;gap:5px;} .action-inputs > span {padding:4px 7px;background:var(--vict-color-bg);border-radius:4px;font-size:10px;color:var(--vict-color-textMuted);}
 .source-body .source-editor {white-space:pre;overflow:auto;flex:1;min-height:160px;resize:none;height:auto;font-size:12px;line-height:1.65;padding:12px;}
 .source-body .source-actions {flex:none;margin:10px 0;}
-.application-attachment {flex:none;font-size:10px;color:var(--vict-color-textMuted);max-height:25%;overflow:auto;}
+.application-attachment {flex:none;font-size:11px;color:var(--vict-color-textMuted);}
+.application-attachment h3 {font-size:12px;font-weight:600;margin:12px 0 6px;color:var(--vict-color-text);}
+.application-attachment p {line-height:1.5;margin:0 0 10px;}
+.application-attachment .source-preview {max-height:240px;overflow:auto;}
 .document-drawer :focus-visible {outline:2px solid var(--vict-color-accent);outline-offset:-1px;}
 
 .screen-picker .screen-name-edit {width:180px;min-width:0;font:12px 'Segoe UI',system-ui,sans-serif;padding:4px 6px;border:1px solid var(--vict-color-accent);border-radius:4px;background:white;color:var(--vict-color-text);}

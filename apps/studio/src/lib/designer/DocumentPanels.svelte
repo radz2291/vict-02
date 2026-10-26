@@ -22,6 +22,5 @@
   .layers-body{padding:0;overflow:hidden}
   .document-section-body :global(.section-heading h2){display:none}
   .source-body :global(.source-editor){flex:none;height:280px;min-height:160px;width:100%;resize:vertical}
-  .document-section-body :global(.application-attachment){max-height:240px}
   :focus-visible{outline:2px solid var(--vict-color-accent);outline-offset:-2px}
 </style>
