@@ -3,14 +3,14 @@ transforming...
 5:30:14 pm [vite-plugin-svelte] src/routes/changesets/+page.svelte:26:24 This reference only captures the initial value of `data`. Did you mean to reference it inside a closure instead?
 https://svelte.dev/e/state_referenced_locally
 24:   } = $props();
-25: 
+25:
 26:   const targetChoices = data?.targets ?? [];
                                 ^
 27:   const changesetRows = data?.changesets ?? [];
 28:   const defaultTarget = targetChoices[0]?.id ?? 'local';
 5:30:14 pm [vite-plugin-svelte] src/routes/changesets/+page.svelte:27:24 This reference only captures the initial value of `data`. Did you mean to reference it inside a closure instead?
 https://svelte.dev/e/state_referenced_locally
-25: 
+25:
 26:   const targetChoices = data?.targets ?? [];
 27:   const changesetRows = data?.changesets ?? [];
                                 ^
@@ -19,7 +19,7 @@ https://svelte.dev/e/state_referenced_locally
 5:30:14 pm [vite-plugin-svelte] src/routes/confirmations/+page.svelte:22:24 This reference only captures the initial value of `data`. Did you mean to reference it inside a closure instead?
 https://svelte.dev/e/state_referenced_locally
 20:   let { data, form }: { data: { targets: readonly { id: string; label: string }[] }; form: Record<string, unknown> | null } = $props();
-21: 
+21:
 22:   const targetChoices = data?.targets ?? [];
                                 ^
 23:   const defaultTarget = targetChoices.find((entry) => entry.id.startsWith('g2-mutator'))?.id ?? targetChoices[0]?.id ?? 'local';
@@ -63,7 +63,7 @@ https://svelte.dev/e/state_referenced_locally
 105:   let lastDocumentId = $state(plan.documentId);
                                        ^
 106:   let lastSignal: symbol | undefined = $state<symbol | undefined>(undefined);
-107: 
+107:
 "handleConnectionChange" and "handleAttributionWarning" are imported from external module "@xyflow/system" but never used in "../../../../studio-cycle-1-3-completion/260831-VCT-02/node_modules/@xyflow/svelte/dist/lib/hooks/useNodeConnections.svelte.js", "../../../../studio-cycle-1-3-completion/260831-VCT-02/node_modules/@xyflow/svelte/dist/lib/components/Handle/Handle.svelte" and "../../../../studio-cycle-1-3-completion/260831-VCT-02/node_modules/@xyflow/svelte/dist/lib/components/Attribution/Attribution.svelte".
 ✓ 1705 modules transformed.
 rendering chunks...
@@ -72,14 +72,14 @@ transforming...
 5:30:54 pm [vite-plugin-svelte] src/routes/changesets/+page.svelte:26:24 This reference only captures the initial value of `data`. Did you mean to reference it inside a closure instead?
 https://svelte.dev/e/state_referenced_locally
 24:   } = $props();
-25: 
+25:
 26:   const targetChoices = data?.targets ?? [];
                                 ^
 27:   const changesetRows = data?.changesets ?? [];
 28:   const defaultTarget = targetChoices[0]?.id ?? 'local';
 5:30:54 pm [vite-plugin-svelte] src/routes/changesets/+page.svelte:27:24 This reference only captures the initial value of `data`. Did you mean to reference it inside a closure instead?
 https://svelte.dev/e/state_referenced_locally
-25: 
+25:
 26:   const targetChoices = data?.targets ?? [];
 27:   const changesetRows = data?.changesets ?? [];
                                 ^
@@ -88,7 +88,7 @@ https://svelte.dev/e/state_referenced_locally
 5:30:54 pm [vite-plugin-svelte] src/routes/confirmations/+page.svelte:22:24 This reference only captures the initial value of `data`. Did you mean to reference it inside a closure instead?
 https://svelte.dev/e/state_referenced_locally
 20:   let { data, form }: { data: { targets: readonly { id: string; label: string }[] }; form: Record<string, unknown> | null } = $props();
-21: 
+21:
 22:   const targetChoices = data?.targets ?? [];
                                 ^
 23:   const defaultTarget = targetChoices.find((entry) => entry.id.startsWith('g2-mutator'))?.id ?? targetChoices[0]?.id ?? 'local';
@@ -100,7 +100,7 @@ https://svelte.dev/e/state_referenced_locally
 105:   let lastDocumentId = $state(plan.documentId);
                                        ^
 106:   let lastSignal: symbol | undefined = $state<symbol | undefined>(undefined);
-107: 
+107:
 5:30:59 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle14-selection-panel/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:309:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
 https://svelte.dev/e/a11y_click_events_have_key_events
 307:   {/if}
