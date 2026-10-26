@@ -68,7 +68,7 @@
 <ContextMenu.Root bind:open>
   <ContextMenu.Trigger bind:ref={trigger} class="workspace-context-anchor" aria-hidden="true" tabindex={-1} />
   <ContextMenu.Portal>
-    <ContextMenu.Content class="workspace-menu" aria-label={context?.label ?? 'Context commands'} collisionPadding={8} sideOffset={2} onCloseAutoFocus={restoreFocus}>
+    <ContextMenu.Content data-studio-typography class="studio-type-scope workspace-menu" aria-label={context?.label ?? 'Context commands'} collisionPadding={8} sideOffset={2} onCloseAutoFocus={restoreFocus}>
       {#each context?.commands ?? [] as command}
         {#if command.separator}<ContextMenu.Separator />{/if}
         <ContextMenu.Item disabled={command.disabled} onSelect={() => command.run()}>{command.label}</ContextMenu.Item>

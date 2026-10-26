@@ -23,7 +23,7 @@
 </script>
 <!-- Keyboard handling belongs to this labelled testing surface. -->
 <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-<section class="try-scenarios" aria-label="Try scenarios" bind:this={root} onkeydown={keys}>
+<section data-studio-typography class="studio-type-scope try-scenarios" aria-label="Try scenarios" bind:this={root} onkeydown={keys}>
   <header class="panel-header"><strong>Try scenarios</strong><button type="button" aria-label="Close testing" title="Close testing (Escape)" onclick={onClose}>×</button></header>
   <div class="testing-body">
     <p class="testing-intro">Each scenario starts a fresh test. Your saved design stays unchanged and nothing is sent.</p>

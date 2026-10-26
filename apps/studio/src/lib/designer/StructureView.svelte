@@ -241,7 +241,7 @@
   }
 </script>
 <svelte:window onkeydown={escape} onkeydowncapture={graphEscape} />
-<section class="structure-view" class:drawer-presentation={presentation === 'drawer'} class:inspection-open={inspectionOpen} aria-label="Source structure" bind:this={structureElement}>
+<section data-studio-typography class="studio-type-scope structure-view" class:drawer-presentation={presentation === 'drawer'} class:inspection-open={inspectionOpen} aria-label="Source structure" bind:this={structureElement}>
   <WorkspaceContextMenu scope={structureElement} enabled={active} resolve={context} />
   <div class="structure-tools">
     <input type="search" aria-label="Search structure" placeholder="Search structure" bind:value={search} />
@@ -348,7 +348,7 @@
 </section>
 
 <style>
-  .structure-view { display: flex; flex-direction: column; flex: 1; min-height: 0; height: 100%; min-width: 0; color: #26334b; background: #f8fafc; font: 12px/1.45 'Segoe UI', system-ui, sans-serif; }
+  .structure-view { display: flex; flex-direction: column; flex: 1; min-height: 0; height: 100%; min-width: 0; color: #26334b; background: #f8fafc; font:var(--studio-font-ui,12px/1.45 system-ui,sans-serif); }
   .drawer-presentation { container: structure-panel / inline-size; }
   .drawer-presentation .structure-body { position: relative; }
   .drawer-presentation.inspection-open .structure-canvas { visibility: hidden; }

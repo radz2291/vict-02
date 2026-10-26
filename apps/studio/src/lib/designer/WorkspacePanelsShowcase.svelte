@@ -18,6 +18,7 @@
   import SourceDetails from './SourceDetails.svelte';
   import DataEditorHeader from './DataEditorHeader.svelte';
   import './disclosures.css';
+  import './studio-typography.css';
   const fixture=createShowcaseFixture('button');
   const memory=new Map<string,string>();
   const bridge=new EditorBridge({catalogs:designerCatalogs,validateDocument:screenPlacementIssues,initial:{document:fixture.document,storedRevision:'r1'},store:screenStore({getItem:key=>memory.get(key)??null,setItem:(key,value)=>{memory.set(key,value);}},fixture.document.id)});
@@ -56,15 +57,15 @@
       <Menubar.CheckboxItem aria-label="Document" checked={documentOpen} onSelect={()=>panel('document',!documentOpen)}>Document</Menubar.CheckboxItem>
     </WorkspaceMenu></Menubar.Root>
     <div class="panel-example" class:document-open={documentOpen} class:chat-open={chatOpen} bind:clientWidth={exampleWidth}>
-      <aside class="left" hidden={!chatOpen} aria-label="Example Chat"><header>Chat<button type="button" aria-label="Close example Chat" onclick={()=>panel('chat',false)}>×</button></header><label>Local example draft<textarea bind:value={draft} placeholder="This layout example has no agent connection."></textarea></label></aside>
+      <aside data-studio-typography class="studio-type-scope left" hidden={!chatOpen} aria-label="Example Chat"><header>Chat<button type="button" aria-label="Close example Chat" onclick={()=>panel('chat',false)}>×</button></header><label>Local example draft<textarea class="studio-reading-input" bind:value={draft} placeholder="This layout example has no agent connection."></textarea></label></aside>
       <div class="example-stage">
-        <div class="example-modes"><WorkspaceModes {view} onChange={changeView}/></div>
+        <div data-studio-typography class="studio-type-scope example-modes"><WorkspaceModes {view} onChange={changeView}/></div>
         <div class="example-canvas" hidden={structureOpen} inert={structureOpen}><EditorCanvas {document} catalogs={designerCatalogs} extensions={catalogDescriptors} extensionImplementations={catalogImplementations} interactionMode={canvasMode} selectedOccurrence={selected} onSelect={select} onPlan={(next:UiRenderPlan)=>plan=next} ariaLabel="Docked panel example canvas" /></div>
         <section class="structure-workspace" aria-label="Example Structure workspace" hidden={!structureOpen} inert={!structureOpen}>
         <StructureView focusSelection={exampleFocus} presentation="drawer" active={structureOpen} {document} revision={document.revision} {selectedNodeId} descriptors={catalogDescriptors} onSelect={selectGraph} onMove={()=>false} onNotice={(message:string)=>notice=message} onInspect={(id?:string)=>inspect(id)} onCloseInspect={()=>panel('document',false)} inspectionExpanded={inspectOpen} inspectionLabel="Selection" inspectionSelection={selectedId} onInspectSelection={(id:string)=>selectedId=id} />
         </section>
       </div>
-      <aside class="right" hidden={!documentOpen} aria-label="Example stacked Document"><WorkspaceDetails bind:context onClose={()=>panel('document',false)}>{#snippet documentContent()}<DocumentPanels>
+      <aside data-studio-typography class="studio-type-scope right" hidden={!documentOpen} aria-label="Example stacked Document"><WorkspaceDetails bind:context onClose={()=>panel('document',false)}>{#snippet documentContent()}<DocumentPanels>
         {#snippet layersContent()}{#if plan}<Layers compact hideTextContent showSelectionDetails={false} onInspect={(occurrence:string,nodeId:string)=>{select(occurrence);inspect(structureId(document.id,'node',nodeId));}} {plan} {document} labels={{nodes:studioNodeLabels(document)}} selectedOccurrence={selected} onSelect={select} componentDescriptors={catalogDescriptors} />{/if}{/snippet}
         {#snippet dataContent()}{#if selectedData}<StateInitialEditor compact {document} expression={{type:'ref',path:'state.'+selectedData}} onApply={applyData}>{#snippet toolbar({apply,dirty}:{apply:()=>void;dirty:boolean})}<DataEditorHeader name={selectedData} type={document.localState[selectedData]!.type} {dirty} onBack={()=>selectedData=''} onApply={apply} />{/snippet}</StateInitialEditor>{:else}{#each Object.keys(document.localState) as key}<button type="button" onclick={()=>selectedData=key}>{key}</button>{/each}{/if}{/snippet}
         {#snippet actionsContent()}<p>demo.submit uses the existing local simulation. This read-only fixture does not invoke it.</p>{/snippet}

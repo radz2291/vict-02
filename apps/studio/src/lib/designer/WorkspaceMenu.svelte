@@ -13,7 +13,7 @@
 </script>
 <Menubar.Menu {value}>
   <Menubar.Trigger bind:ref={trigger}>{label}</Menubar.Trigger>
-  <Menubar.Portal><Menubar.Content class="workspace-menu" sideOffset={6} collisionPadding={8} onCloseAutoFocus={restoreFocus}>
+  <Menubar.Portal><Menubar.Content data-studio-typography class="studio-type-scope workspace-menu" sideOffset={6} collisionPadding={8} onCloseAutoFocus={restoreFocus}>
     {@render children()}
   </Menubar.Content></Menubar.Portal>
 </Menubar.Menu>

@@ -212,7 +212,7 @@
   }
 </script>
 
-<aside class="agent-chat" aria-label="Chat" bind:this={panel}>
+<aside data-studio-typography class="studio-type-scope agent-chat" aria-label="Chat" bind:this={panel}>
   <Conversation messages={presentedMessages} {busy}
     emptyMessage="Describe a screen, or select an element to edit it."
     inputLabel="Message" inputPlaceholder="Ask for a change…"

@@ -30,6 +30,7 @@
   import '@victframework/ui-svelte/catalog.css';
   import '@victframework/ui-svelte/rhea.css';
   import './studio-theme.css';
+  import './studio-typography.css';
 
   let bridge = $state<EditorBridge>();
   let version = $state(0);
@@ -322,7 +323,7 @@
 
 {#snippet palette()}
   {#if source && selectedNodeId}
-    <SelectionPalette bind:page={palettePage} focusSignal={paletteFocus} name={compositionName(source, selectedNodeId)} format={formatTools} insert={insertTools} arrange={arrangeTools} connect={connectTools} locked={blocked} onOpenComposition={() => openComposition()} />
+    <div data-studio-typography class="studio-type-scope"><SelectionPalette bind:page={palettePage} focusSignal={paletteFocus} name={compositionName(source, selectedNodeId)} format={formatTools} insert={insertTools} arrange={arrangeTools} connect={connectTools} locked={blocked} onOpenComposition={() => openComposition()} /></div>
   {/if}
 {/snippet}
 {#snippet formatTools()}{#if source}<Inspector contextual document={source} selectedOccurrence={selected} onApply={apply} componentDescriptors={catalogDescriptors} readEffective={effective} onTextDraftChange={(dirty: boolean) => propertyDraft = dirty} />{/if}{/snippet}
