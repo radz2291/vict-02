@@ -19,9 +19,14 @@
 <div class="context-content" role="tabpanel" id={`${id}-document`} aria-labelledby={`${id}-document-tab`} hidden={context!=='document'} inert={context!=='document'}>{@render documentContent()}</div>
 <div class="context-content" role="tabpanel" id={`${id}-selection`} aria-labelledby={`${id}-selection-tab`} hidden={context!=='selection'} inert={context!=='selection'}>{@render selectionContent()}</div>
 <style>
-  .details-header{display:flex;align-items:center;justify-content:space-between;flex:none;min-height:42px;padding:5px 8px;border-bottom:1px solid var(--vict-color-border);gap:8px}
-  [role=tablist]{display:flex;gap:3px;min-width:0}button{font:inherit;cursor:pointer;border:0;border-radius:4px;background:transparent;color:var(--vict-color-textMuted);padding:6px 9px}
-  [role=tab][aria-selected=true]{background:var(--vict-control-selected);color:var(--vict-color-text);font-weight:600}.close-document{font-size:18px;padding:2px 7px}
+  .details-header{display:flex;flex:none;height:40px;min-height:40px;border-bottom:1px solid var(--vict-color-border)}
+  [role=tablist]{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));flex:1;min-width:0}
+  button{font:inherit;cursor:pointer;border:0;border-radius:0;background:transparent;color:var(--vict-color-textMuted)}
+  [role=tab]{position:relative;min-width:0;padding:0 12px;text-align:center;border-right:1px solid var(--vict-color-border);background:var(--vict-color-bg)}
+  [role=tab][aria-selected=true]{background:var(--vict-color-surface);color:var(--vict-color-text);font-weight:600}
+  [role=tab][aria-selected=true]::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--vict-color-accent)}
+  [role=tab]:hover,.close-document:hover{color:var(--vict-color-text);background:var(--vict-control-selected)}
+  .close-document{flex:none;width:32px;font-size:18px;padding:0;display:grid;place-items:center}
   .context-content{display:flex;flex-direction:column;flex:1;min-height:0;min-width:0;overflow:hidden}.context-content[hidden]{display:none}
   :focus-visible{outline:2px solid var(--vict-color-accent);outline-offset:-1px}
 </style>
