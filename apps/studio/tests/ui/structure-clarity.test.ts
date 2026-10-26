@@ -23,6 +23,8 @@ it('separates inspect, explicit focus and camera-only framing',async()=>{
 it('honours collapse in both views and text visibility in a focused heading',async()=>{
  const source=await start();button('Collapse Screen').click();await settle();expect(ids()).toHaveLength(1);
  button('Expand Screen').click();await settle();expect(ids().length).toBeGreaterThan(1);
+ const conditionalToggle=()=>document.querySelector<HTMLButtonElement>(`[data-id="${structureId(source.id,'node','conditional')}"] .node-group-toggle`)!;
+ expect(conditionalToggle()?.getAttribute('aria-expanded')).toBe('false');conditionalToggle().click();await settle();expect(ids()).toContain(structureId(source.id,'node','yes'));expect(conditionalToggle().getAttribute('aria-expanded')).toBe('true');conditionalToggle().click();await settle();expect(ids()).not.toContain(structureId(source.id,'node','yes'));
  await viewItem('Whole hierarchy');button('Collapse Screen').click();await settle();expect(ids()).toHaveLength(1);button('Expand Screen').click();await settle();
  document.querySelector<HTMLElement>(`[data-id="${structureId(source.id,'node','title')}"]`)!.click();await settle();await viewItem('Focus on selection');
  expect(ids()).not.toContain(structureId(source.id,'node','title-text'));await viewItem('Show text nodes');expect(ids()).toContain(structureId(source.id,'node','title-text'));

@@ -218,16 +218,26 @@ export function structureFacts(document: UiDocument, node: Node<StructureNodeDat
 export type StructureFilter = { search?: string; focusId?: string; collapsed?: ReadonlySet<string>; bindings?: boolean; definitions?: boolean };
 
 /** A bounded, direct neighbourhood. Other users of shared references are opt-in. */
-export function connectedStructure(graph:StructureGraph,focusId:string,options:{ related?:boolean; limit?:number }={}):StructureGraph {
+export function connectedStructure(graph:StructureGraph,focusId:string,options:{ related?:boolean; limit?:number; expanded?:ReadonlySet<string> }={}):StructureGraph {
   if(!graph.nodes.some(node=>node.id===focusId))return {nodes:[],edges:[]};
   const direct=graph.edges.filter(edge=>edge.source===focusId||edge.target===focusId);
   const visible=new Set([focusId,...direct.flatMap(edge=>[edge.source,edge.target])]);
+  const groupChildren=new Set<string>();
+  // Only deliberate group expansion adds another hierarchy level. Do not
+  // automatically traverse the whole tree through the selected item's parent.
+  for(const id of visible)if(options.expanded?.has(id)){
+    groupChildren.add(id);
+    for(const edge of graph.edges)if(edge.source===id&&edge.data?.kind==='containment'){visible.add(edge.target);groupChildren.add(edge.target);}
+  }
+  for(const edge of graph.edges)if(edge.data?.kind!=='containment'&&groupChildren.has(edge.source))visible.add(edge.target);
   if(options.related){
     const references=new Set(graph.nodes.filter(node=>visible.has(node.id)&&node.data.kind!=='node').map(node=>node.id));
     for(const edge of graph.edges)if(edge.data?.kind!=='containment'&&(references.has(edge.source)||references.has(edge.target))){visible.add(edge.source);visible.add(edge.target);}
   }
   const limit=Math.max(1,options.limit??25);
-  const bounded=new Set([...visible].slice(0,limit));
+  const auxiliary=new Set(graph.nodes.filter(node=>node.data.kind!=='node').map(node=>node.id));
+  const ordered=[focusId,...[...visible].filter(id=>id!==focusId&&auxiliary.has(id)),...[...visible].filter(id=>id!==focusId&&!auxiliary.has(id))];
+  const bounded=new Set(ordered.slice(0,limit));
   return {nodes:graph.nodes.filter(node=>bounded.has(node.id)),edges:graph.edges.filter(edge=>bounded.has(edge.source)&&bounded.has(edge.target))};
 }
 /** Collapse and layers are view projections. They do not alter canonical ownership. */

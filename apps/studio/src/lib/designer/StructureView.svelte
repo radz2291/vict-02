@@ -36,6 +36,7 @@
   let connectionFocus=$state<string>();
   let showOtherUsers = $state(false);
   let connectionLimit = $state(25);
+  let expandedGroups = $state<Set<string>>(new Set());
   let graphSelection:string|undefined;
   $effect(()=>{if(focusSelection)connectionFocus=focusSelection;});
   let collapsed = $state<Set<string>>(new Set());
@@ -68,15 +69,15 @@
   const visibleGraph = $derived(showTextNodes || search ? filtered : compactStructure(filtered, document));
   // Keep the explicit focus visible even if its category is currently hidden.
   const eligibleGraph = $derived(scopeNode && !visibleGraph.nodes.some(node=>node.id===scopeId) ? {...visibleGraph,nodes:[...visibleGraph.nodes,scopeNode]} : visibleGraph);
-  const directConnections = $derived(connectedStructure(eligibleGraph,scopeId,{limit:Infinity}));
-  const extendedConnections = $derived(connectedStructure(eligibleGraph,scopeId,{related:true,limit:Infinity}));
+  const directConnections = $derived(connectedStructure(eligibleGraph,scopeId,{limit:Infinity,expanded:expandedGroups}));
+  const extendedConnections = $derived(connectedStructure(eligibleGraph,scopeId,{related:true,limit:Infinity,expanded:expandedGroups}));
   const otherUsers = $derived(extendedConnections.nodes.length-directConnections.nodes.length);
-  const connectionGraph=$derived(connectedStructure(eligibleGraph,scopeId,{related:showOtherUsers,limit:connectionLimit}));
+  const connectionGraph=$derived(connectedStructure(eligibleGraph,scopeId,{related:showOtherUsers,limit:connectionLimit,expanded:expandedGroups}));
   const availableConnections = $derived(showOtherUsers ? extendedConnections.nodes.length : directConnections.nodes.length);
   const projected = $derived(graphView==='connections' && !search ? connectionGraph : visibleGraph);
   const availableItems = $derived(graphView==='connections' && !search ? availableConnections : graph.nodes.length);
   const rawConnections = $derived(graph.edges.some(edge=>edge.source===scopeId || edge.target===scopeId));
-  $effect(()=>{void scopeId;showOtherUsers=false;connectionLimit=25;});
+  $effect(()=>{void scopeId;showOtherUsers=false;connectionLimit=25;expandedGroups=new Set();});
   const nodeTypes = { source: StructuredSourceNode };
   const edgeTypes = { routed: RoutedEdge };
   const fence = new LayoutFence();
@@ -135,7 +136,7 @@
       const target = !!node.data.occurrence && !!source && ((source.kind === 'element' && ['main', 'section', 'div', 'article', 'aside', 'header', 'footer', 'nav', 'form', 'fieldset', 'ul', 'ol', 'li'].includes(source.tag)) || (source.kind === 'component' && (descriptors.find(entry => entry.id === source.definitionId)?.slots?.length ?? 0) === 1));
       return { ...node, position: old?.position ?? remembered?.get(node.id) ?? node.position, measured: old?.measured, selected: node.id === inspectedId,
         data: { ...structureNodePresentation(document, node.data), ports:structurePorts(currentGraph,node.id), direction: orientation, moveSource: editable && !!node.data.occurrence && node.data.sourceId !== document.root, moveTarget: editable && target,
-          collapsed: collapsed.has(node.id), onToggleGroup: groupGraph.edges.some(edge => edge.source === node.id && edge.data?.kind === 'containment') ? () => collapse(node.id) : undefined } };
+          collapsed: groupClosed(node.id), onToggleGroup: groupGraph.edges.some(edge => edge.source === node.id && edge.data?.kind === 'containment') ? () => collapse(node.id) : undefined } };
     });
     edges = structureConnectionEdges(currentGraph);
   });
@@ -240,7 +241,12 @@
   function valid(connection: Connection | Edge): boolean {
     return allowMoves && !blocked && connection.sourceHandle==='content' && connection.targetHandle==='container' && structureMove(document, revision, { documentId: document.id, revision, source: connection.source, target: connection.target }, false, descriptors, recipes).ok;
   }
-  function collapse(id: string) { const next = new Set(collapsed); if (next.has(id)) next.delete(id); else next.add(id); collapsed = next; }
+  function groupClosed(id:string) {return collapsed.has(id) || (graphView==='connections' && !search && id!==scopeId && !expandedGroups.has(id));}
+  function collapse(id: string) {
+    const next = new Set(collapsed),expanded=new Set(expandedGroups);
+    if(groupClosed(id)){next.delete(id);expanded.add(id);}else{next.add(id);expanded.delete(id);}
+    collapsed = next;expandedGroups=expanded;
+  }
   function navigate(destination: StructureHandoff['destination']) {
     if (!inspected || blocked) return;
     onNavigate?.({ destination, sourceId: inspected.data.sourceId, occurrence: inspected.data.occurrence, key: parseStructureId(inspected.id)?.[2] });
@@ -258,7 +264,7 @@
       ...(direct ? [{label:'Edit on canvas', disabled:blocked, run:()=>navigate('inspector')}, {label:'Locate on canvas',disabled:blocked,run:()=>navigate('design')}] : []),
     ];
     commands.push({label:'Inspect relationships',disabled:blocked,run:()=>openInspection('relationships')});
-    if (node.data.childCount) commands.push({label:collapsed.has(node.id)?'Expand group':'Collapse group',run:()=>collapse(node.id)});
+    if (node.data.childCount) commands.push({label:groupClosed(node.id)?'Expand group':'Collapse group',run:()=>collapse(node.id)});
     if (direct) commands.push({label:'Move inside…',disabled:blocked || node.data.sourceId===document.root,run:beginMove});
     return {label:'Structure item commands', prepare:()=>select(node), commands};
   }
@@ -280,7 +286,7 @@
         <Menubar.Item onSelect={() => openInspection('find')}>Find source item</Menubar.Item>
         <Menubar.Separator />
         <Menubar.Item onSelect={() => layoutVersion++}>Arrange nodes</Menubar.Item>
-        <Menubar.Item onSelect={() => { collapsed = new Set(); }}>Expand all groups</Menubar.Item>
+        <Menubar.Item onSelect={() => { collapsed = new Set(); expandedGroups=new Set(graph.nodes.filter(node=>node.data.childCount).map(node=>node.id)); }}>Expand all groups</Menubar.Item>
         <Menubar.Group><Menubar.GroupHeading class="menu-caption">Layout</Menubar.GroupHeading>
           <Menubar.RadioGroup bind:value={direction} aria-label="Structure layout direction">
             <Menubar.RadioItem value="RIGHT" closeOnSelect>Left to right</Menubar.RadioItem>
@@ -296,7 +302,7 @@
       </WorkspaceMenu>
       {#if inspected}
         <WorkspaceMenu label="Object" value="structure-object" {activeMenu}>
-          {#if inspected.data.childCount}<Menubar.Item onSelect={() => collapse(inspected.id)}>{collapsed.has(inspected.id) ? 'Expand group' : 'Collapse group'}</Menubar.Item>{/if}
+          {#if inspected.data.childCount}<Menubar.Item onSelect={() => collapse(inspected.id)}>{groupClosed(inspected.id) ? 'Expand group' : 'Collapse group'}</Menubar.Item>{/if}
           {#if inspected.data.occurrence}
             <Menubar.Item disabled={blocked} onSelect={() => navigate('inspector')}>Edit on canvas</Menubar.Item>
             <Menubar.Item disabled={blocked} onSelect={() => navigate('layers')}>Reveal in Layers</Menubar.Item>

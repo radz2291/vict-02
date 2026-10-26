@@ -26,6 +26,8 @@ it('applies visibility and collapsed ownership before a direct neighbourhood wit
   const collapsed=connectedStructure(filterStructure(graph,{bindings:true,collapsed:new Set([id('node','screen')])}),id('node','screen'));
   expect(collapsed.nodes).toHaveLength(1);expect(collapsed.edges).toHaveLength(0);
   expect(on.edges.every(edge=>on.nodes.some(node=>node.id===edge.source)&&on.nodes.some(node=>node.id===edge.target))).toBe(true);
+  const expanded=connectedStructure(filterStructure(graph,{bindings:true}),id('node','screen'),{expanded:new Set([id('node','conditional')])});
+  expect(expanded.nodes.some(node=>node.data.sourceId==='yes')).toBe(true);expect(expanded.nodes.some(node=>node.id===id('state','accepted'))).toBe(true);
 });
 it('maps a conditional to its declared controlling data without evaluating the condition',()=>{
   const source=clarityFixture(),graph=projectStructure(source),id=structureId(source.id,'node','conditional');
@@ -61,6 +63,7 @@ it('bounds shared-state fanout, reveals other users only on demand, and preserve
   expect(direct.nodes.map(node=>node.data.sourceId).filter(Boolean)).toEqual(['screen','field-0']);
   const related=connectedStructure(graph,field,{related:true}),more=connectedStructure(graph,field,{related:true,limit:49});
   expect(related.nodes).toHaveLength(25);expect(more.nodes).toHaveLength(49);
+  expect(related.nodes.some(node=>node.id===state)).toBe(true);
   expect(related.nodes.every(node=>more.nodes.some(other=>node.id===other.id))).toBe(true);
   expect(connectedStructure(graph,state).nodes).toHaveLength(25);
   const complete=connectedStructure(graph,state,{limit:Infinity});expect(complete.nodes).toHaveLength(141);expect(complete.edges).toHaveLength(140);
