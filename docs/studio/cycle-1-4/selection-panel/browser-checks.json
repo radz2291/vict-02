@@ -1,0 +1,57 @@
+{
+  "candidate": "95ce6c7927b26cd233090faaddda7660e2f9e74a",
+  "time": "2026-10-26T01:55:24.021Z",
+  "documentContextHeld": "true",
+  "selectionGraphCheck": {
+    "inspectionInsideGraph": false,
+    "rightPanel": {
+      "bottom": 644,
+      "height": 280,
+      "left": 0,
+      "right": 785.6000366210938,
+      "top": 364,
+      "width": 785.6000366210938,
+      "x": 0,
+      "y": 364
+    },
+    "selectedName": "Work email",
+    "selectionTab": "true",
+    "sourceDetails": {
+      "bottom": 644.0000152587891,
+      "height": 237.1999969482422,
+      "left": 0,
+      "right": 785.6000366210938,
+      "top": 406.8000183105469,
+      "width": 785.6000366210938,
+      "x": 0,
+      "y": 406.8000183105469
+    },
+    "view": "structure"
+  },
+  "wideSelectionCheck": {
+    "floatingInsidePanel": false,
+    "panel": {
+      "bottom": 976,
+      "height": 932,
+      "left": 1120,
+      "right": 1440,
+      "top": 44,
+      "width": 320,
+      "x": 1120,
+      "y": 44
+    },
+    "selectionName": "Full name",
+    "viewport": {
+      "height": 1000,
+      "width": 1440
+    }
+  },
+  "notes": [
+    "Ordinary Source Apply imported committed natural fixture with current ID/revision and review name; explicitly saved r1.r1.",
+    "Document stayed active when choosing another canvas item.",
+    "Structure graph item updated shared Selection; state Edit in Data switched to Document/Data.",
+    "An initial Full name locator click hit the clipped header area because its canvas was scrolled; ordinary canvas scroll then visible input click correctly selected Full name and showed existing floating Format. No synthetic mutation.",
+    "Existing <=1000 compact panel placement below canvas retained. Desktop right dock checked separately at1440x1000.",
+    "Temporary viewport reset. No live provider turn or independent gate claimed."
+  ]
+}
