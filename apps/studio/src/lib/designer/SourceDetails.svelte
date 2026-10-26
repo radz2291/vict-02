@@ -3,8 +3,8 @@
   import type { UiDocument } from '@victframework/ui';
   import { projectStructure, structureFacts, structureNodePresentation, parseStructureId, type StructureHandoff } from './structure.js';
   import { readableName } from './presentation.js';
-  let { document, selectedId, blocked = false, containFocus = false, page = $bindable('properties'), onClose, onSelect, onNavigate }: {
-    document: UiDocument; selectedId?: string; blocked?: boolean; containFocus?: boolean; page?: 'properties' | 'relationships';
+  let { document, selectedId, blocked = false, containFocus = false, embedded=false, page = $bindable('properties'), onClose, onSelect, onNavigate }: {
+    document: UiDocument; selectedId?: string; embedded?:boolean; blocked?: boolean; containFocus?: boolean; page?: 'properties' | 'relationships';
     onClose: () => void; onSelect: (id: string) => void; onNavigate: (request: StructureHandoff) => void;
   } = $props();
   const graph = $derived(projectStructure(document));
@@ -41,7 +41,7 @@
       if(event.key==='Escape' && !event.defaultPrevented){event.preventDefault();event.stopPropagation();onClose();}
     };
     root.addEventListener('keydown',escape);
-    root.querySelector<HTMLButtonElement>('[aria-label="Close inspection details"]')?.focus({preventScroll:true});
+    if(!embedded)root.querySelector<HTMLButtonElement>('[aria-label="Close inspection details"]')?.focus({preventScroll:true});
     return ()=>root.removeEventListener('keydown',escape);
   });
   function navigate(destination: StructureHandoff['destination']) {
@@ -50,10 +50,10 @@
   }
 </script>
 <section class="source-details" aria-label="Source inspection details" bind:this={root}>
-  <header><span>Inspect</span><strong title={label}>{label}</strong><button type="button" aria-label="Close inspection details" onclick={onClose}>×</button></header>
+  <header>{#if !embedded}<span>Inspect</span>{/if}<strong title={label}>{label}</strong>{#if !embedded}<button type="button" aria-label="Close inspection details" onclick={onClose}>×</button>{/if}</header>
   <nav aria-label="Source inspection view"><button type="button" aria-pressed={page === 'properties'} onclick={() => page = 'properties'}>Details</button><button type="button" aria-pressed={page === 'relationships'} onclick={() => page = 'relationships'}>Relationships</button></nav>
   <div class="details-body">
-    {#if !selected}<p>Select an item in Layers or Structure.</p>
+    {#if !selected}<p>Select an item on the canvas, in Layers or in the graph.</p>
     {:else if page === 'properties'}
       <div class="details-identity"><span>{selected.data.kindLabel ?? readableName(selected.data.kind)}</span></div>
       {#if selected.data.occurrence}<button type="button" class="details-handoff" disabled={blocked} onclick={() => navigate('inspector')}>Edit on canvas ↗</button>{/if}

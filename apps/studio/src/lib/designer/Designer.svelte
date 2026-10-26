@@ -19,7 +19,7 @@
   import { captureDesignerPreview } from './visual-observation.js';
   import StructureView from './StructureView.svelte';
   import SourceDetails from './SourceDetails.svelte';
-  import StructureInspection from './StructureInspection.svelte';
+  import WorkspaceDetails from './WorkspaceDetails.svelte';
   import DocumentPanels from './DocumentPanels.svelte';
   import WorkspaceModes from './WorkspaceModes.svelte';
   import TryScenarios from './TryScenarios.svelte';
@@ -41,7 +41,7 @@
   }
   async function locateOnCanvas(occurrence: string) {
     if (!source || textDraftDirty || sourceDraftDirty || renamingScreen) return;
-    workspaceView=mode; detailsOpen=false; await tick();
+    workspaceView=mode; await tick();
     const find = () => [...(canvasScroll?.querySelectorAll<HTMLElement>('[data-ui-occ]') ?? [])].find(element => element.dataset.uiOcc === occurrence && element.getClientRects().length);
     if (!find()) {
       if (mode === 'interact') { notice = 'This source is hidden in Interact. Switch to Design, then Locate on canvas to inspect its composition.'; return; }
@@ -58,14 +58,14 @@
     if (textDraftDirty || sourceDraftDirty || renamingScreen) { notice = 'Apply or cancel your draft first.'; return; }
     if (request.occurrence) selectStructureNode(request.occurrence);
     if (request.destination === 'data' || request.destination === 'actions') {
-      showPanel('document'); testingOpen=false;
+      drawerContext='document';showPanel('document'); testingOpen=false;
       documentPanel=request.destination;
       selectedData = request.destination === 'data' ? request.key : undefined;
     } else if (request.destination === 'layers') {
-      documentPanel='layers';showPanel('document');testingOpen=false;
+      documentPanel='layers';drawerContext='document';showPanel('document');testingOpen=false;
     } else {
       if (request.destination === 'design' && request.occurrence) { await locateOnCanvas(request.occurrence); return; }
-      if (request.destination === 'inspector' && request.occurrence) { detailsOpen=false; changeMode('design'); selectOccurrence(request.occurrence, true); paletteFocus=Symbol('edit-handoff'); }
+      if (request.destination === 'inspector' && request.occurrence) { changeMode('design'); selectOccurrence(request.occurrence, true); paletteFocus=Symbol('edit-handoff'); }
     }
     notice = request.destination === 'actions' ? `Declared action ${request.key ?? ''} · simulated execution is available in Interact.` : `Opened ${request.destination} for the selected source.`;
     await tick();
@@ -218,9 +218,9 @@
   let drawerOpen = $state(false);
   let workspaceElement = $state<HTMLDivElement>();
   let detailId = $state<string>();
-  let detailsOpen = $state(false);
-  let inspectionWidth=$state(300);
-  $effect(()=>{const occurrence=selected;untrack(()=>{if(source && occurrence)detailId=structureId(source.id,'node',resolveOccurrence(occurrence,source).sourceNodeId);});});
+  let drawerContext=$state<'document'|'selection'>('document');
+  const detailsOpen=$derived(drawerOpen && !testingOpen && drawerContext==='selection');
+  $effect(()=>{const occurrence=selected;untrack(()=>{if(source)detailId=occurrence?structureId(source.id,'node',resolveOccurrence(occurrence,source).sourceNodeId):undefined;});});
   let drawerWidth = $state(320);
   const effectiveDrawerWidth = $derived(drawerWidth);
   const structureOpen=$derived(workspaceView==='structure');
@@ -231,10 +231,10 @@
   function inspectSource(id = source && selected ? structureId(source.id,'node',resolveOccurrence(selected,source).sourceNodeId) : undefined, page:'properties'|'relationships'='properties') {
     const active = globalThis.document.activeElement;
     inspectionReturn = active instanceof HTMLElement && !active.closest('[role="menu"]') ? active : undefined;
-    detailId=id;detailsPage=page;showStructure();structureFocusId=id;detailsOpen=true;
-    void tick().then(()=>{const target=workspaceElement?.querySelector<HTMLElement>('.structure-inspection-pane [aria-label="Close inspection details"]');target?.scrollIntoView({block:'nearest'});target?.focus({preventScroll:true});});
+    detailId=id;detailsPage=page;drawerContext='selection';showPanel('document');
+    void tick().then(()=>{const target=workspaceElement?.querySelector<HTMLElement>('#document-drawer [role=tab][data-context=selection]');target?.scrollIntoView({block:'nearest'});target?.focus({preventScroll:true});});
   }
-  function closeDetails() { detailsOpen = false; void tick().then(()=>{
+  function closeDetails() { showPanel('document',false); void tick().then(()=>{
     const target = inspectionReturn?.isConnected && !inspectionReturn.closest('[hidden],[inert]') ? inspectionReturn : workspaceElement?.querySelector<HTMLElement>('.inspection-toggle');
     target?.scrollIntoView({block:'nearest'});target?.focus({ preventScroll:true });
   }); }
@@ -408,7 +408,7 @@
     sessions.set(id, next); openSession(next); notice = 'Loaded the saved screen.';
   }
   onMount(() => {
-    try {const sizes=JSON.parse(localStorage.getItem('vict.studio.workspace-sizes') ?? '{}');chatWidth=Math.max(240,Math.min(400,Number(sizes.chat)||280));inspectionWidth=Math.max(240,Math.min(420,Number(sizes.inspect)||300));drawerWidth=Math.max(280,Math.min(460,Number(sizes.document)||320));}catch{/* Optional layout preferences never block document loading. */}
+    try {const sizes=JSON.parse(localStorage.getItem('vict.studio.workspace-sizes') ?? '{}');chatWidth=Math.max(240,Math.min(400,Number(sizes.chat)||280));drawerWidth=Math.max(280,Math.min(460,Number(sizes.document)||320));}catch{/* Optional layout preferences never block document loading. */}
     try {
       library = savedScreens(localStorage);
       const active = localStorage.getItem('vict.studio.active-screen');
@@ -418,8 +418,8 @@
     } catch { issues = [{ code: 'STUDIO_STORAGE_UNAVAILABLE', message: 'Browser storage is unavailable. Enable storage to author and save screens.' }]; }
     return () => { unsubscribe?.(); };
   });
-  function rememberSizes() {try{localStorage.setItem('vict.studio.workspace-sizes',JSON.stringify({chat:chatWidth,document:drawerWidth,inspect:inspectionWidth}));}catch{/* Session dimensions remain usable without storage. */}}
-  $effect(()=>{void chatWidth;void drawerWidth;void inspectionWidth;if(bridge)rememberSizes();});
+  function rememberSizes() {try{localStorage.setItem('vict.studio.workspace-sizes',JSON.stringify({chat:chatWidth,document:drawerWidth}));}catch{/* Session dimensions remain usable without storage. */}}
+  $effect(()=>{void chatWidth;void drawerWidth;if(bridge)rememberSizes();});
   function receiveAgentProposal(proposal: AgentProposal) {
     if (!bridge) return {ok:false as const,code:"UI_DOC_STALE_REVISION",message:"The screen is no longer open."};
     const result = applyAgentProposal(bridge, proposal, agentEpoch, textDraftDirty || sourceDraftDirty || renamingScreen || !!createDialog?.open);
@@ -631,18 +631,15 @@
         </div>
       </div>
       <section class="structure-workspace" aria-label="Structure workspace" hidden={!structureOpen} inert={!structureOpen}>
-        <StructureInspection open={detailsOpen} onBack={closeDetails} bind:width={inspectionWidth}>
-          {#snippet graphContent(visible:boolean)}<StructureView focusSelection={structureFocusId} presentation="drawer" active={structureOpen && visible} document={source} revision={snapshot?.revision ?? ''} selectedNodeId={selectedNode?.id} descriptors={catalogDescriptors} recipes={screenRecipes} blocked={textDraftDirty || sourceDraftDirty || renamingScreen} onSelect={(occurrence:string)=>selectStructureNode(occurrence,true)} onDeselect={() => { if (!textDraftDirty && !sourceDraftDirty && !renamingScreen) { bridge?.select(undefined); paletteRequested = false; detailId=undefined; } }} onMove={moveFromStructure} onNotice={message => notice = message} onNavigate={structureNavigate} onDismiss={dismissStructure} onInspect={inspectSource} onCloseInspect={closeDetails} inspectionSelection={detailId} onInspectSelection={id=>detailId=id} inspectionExpanded={detailsOpen} objectCommands={occurrence=>objectContext(occurrence)?.commands ?? []} />{/snippet}
-          {#snippet inspectionContent()}<SourceDetails document={source} selectedId={detailId ?? (selectedNode ? structureId(source.id,'node',selectedNode.id) : undefined)} blocked={textDraftDirty || sourceDraftDirty || renamingScreen} bind:page={detailsPage} onClose={closeDetails} onSelect={selectDetail} onNavigate={structureNavigate} />{/snippet}
-        </StructureInspection>
+        <StructureView focusSelection={structureFocusId} presentation="drawer" active={structureOpen} document={source} revision={snapshot?.revision ?? ''} selectedNodeId={selectedNode?.id} descriptors={catalogDescriptors} recipes={screenRecipes} blocked={textDraftDirty || sourceDraftDirty || renamingScreen} onSelect={(occurrence:string)=>selectStructureNode(occurrence,true)} onDeselect={() => { if (!textDraftDirty && !sourceDraftDirty && !renamingScreen) { bridge?.select(undefined); paletteRequested = false; detailId=undefined; } }} onMove={moveFromStructure} onNotice={message => notice = message} onNavigate={structureNavigate} onDismiss={dismissStructure} onInspect={inspectSource} onCloseInspect={closeDetails} inspectionSelection={detailId} onInspectSelection={id=>detailId=id} inspectionExpanded={detailsOpen} inspectionLabel="Selection" objectCommands={occurrence=>objectContext(occurrence)?.commands ?? []} />
       </section>
     </main>
     <div class="drawer-resizer" hidden={!rightOpen}><PanelResizer label="Document drawer width" value={effectiveDrawerWidth} min={280} max={460} reverse onChange={(value: number) => drawerWidth = value} /></div>
     <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-    <aside id="document-drawer" hidden={!drawerOpen || testingOpen} class="document-drawer" aria-label="Document" onkeydown={documentKeys}>
-      <header class="panel-header"><strong>Document</strong><button class="close-document" type="button" aria-label="Close document" title="Close document (Escape)" onclick={closeDrawer}>×</button></header>
-      <DocumentPanels bind:active={documentPanel}>
-        {#snippet layersContent()}<div class="layer-actions"><span>Selected object</span><button type="button" class="inspect-source" aria-label="Inspect source" aria-expanded={structureOpen && detailsOpen} onclick={()=>inspectSource()}>Inspect in Structure ↗</button></div>{#if plan}<Layers compact hideTextContent labels={editorLabels} {plan} document={source} selectedOccurrence={selected} onSelect={selectFromStructure} onOpenComposition={navigateComposition} componentDescriptors={catalogDescriptors} />{/if}{/snippet}
+    <aside id="document-drawer" hidden={!drawerOpen || testingOpen} class="document-drawer" aria-label="Document and Selection" onkeydown={documentKeys}>
+      <WorkspaceDetails bind:context={drawerContext} onClose={closeDrawer}>
+      {#snippet documentContent()}<DocumentPanels bind:active={documentPanel}>
+        {#snippet layersContent()}<div class="layer-actions"><span>Selected object</span><button type="button" class="inspect-source" aria-label="Inspect source" aria-expanded={detailsOpen} onclick={()=>inspectSource()}>Open Selection ↗</button></div>{#if plan}<Layers compact hideTextContent labels={editorLabels} {plan} document={source} selectedOccurrence={selected} onSelect={selectFromStructure} onOpenComposition={navigateComposition} componentDescriptors={catalogDescriptors} />{/if}{/snippet}
         {#snippet dataContent()}
           {#if selectedData && source.localState[selectedData]}
             <button class="data-back" type="button" disabled={dataDraftDirty} onclick={()=>openData()}>← All data</button>
@@ -664,7 +661,9 @@
           <div class="source-actions"><button type="button" disabled={!sourceDraftDirty || textDraftDirty} onclick={applySource}>Apply source</button><button type="button" disabled={!sourceDraftDirty} onclick={() => { sourceDraftDirty = false; sourceDraft = JSON.stringify(source, null, 2); sourceDraftRevision = snapshot?.revision ?? ''; issues = []; }}>Discard draft</button><button type="button" onclick={exportSource}>Export</button></div>
           <details class="application-attachment"><summary>Application attachment</summary><pre class="source-preview">{JSON.stringify(screenApplication(source), null, 2)}</pre></details>
         {/snippet}
-      </DocumentPanels>
+      </DocumentPanels>{/snippet}
+      {#snippet selectionContent()}<SourceDetails embedded document={source} selectedId={detailId} blocked={textDraftDirty || sourceDraftDirty || renamingScreen} bind:page={detailsPage} onClose={closeDetails} onSelect={selectDetail} onNavigate={structureNavigate} />{/snippet}
+      </WorkspaceDetails>
     </aside>
     {#if testingOpen}<aside class="testing-drawer" aria-label="Testing"><TryScenarios document={source} active={activeTest?.id} values={runtimeValues} {activity} blocked={textDraftDirty || sourceDraftDirty || renamingScreen} onChoose={chooseTest} onReset={resetRuntime} onTry={()=>void tryCanvas()} onClose={closeTesting} onChange={changeTestValue} /></aside>{/if}
   </div>

@@ -10,7 +10,7 @@
   import {studioNodeLabels} from './presentation.js';
   import {structureId,projectStructure} from './structure.js';
   import DocumentPanels from './DocumentPanels.svelte';
-  import StructureInspection from './StructureInspection.svelte';
+  import WorkspaceDetails from './WorkspaceDetails.svelte';
   import StructureView from './StructureView.svelte';
   import WorkspaceModes from './WorkspaceModes.svelte';
   import SourceDetails from './SourceDetails.svelte';
@@ -20,7 +20,9 @@
   let selectedId=$state(structureId(document.id,'node',document.root));
   let exampleFocus=$state(structureId(document.id,'node',document.root));
   let selectedNodeId=$derived(resolveOccurrence(selected,document).sourceNodeId);
-  let chatOpen=$state(false),documentOpen=$state(false),inspectOpen=$state(false);
+  let chatOpen=$state(false),documentOpen=$state(false);
+  let context=$state<'document'|'selection'>('document');
+  const inspectOpen=$derived(documentOpen && context==='selection');
   let view=$state<'design'|'interact'|'structure'>('design'),canvasMode=$state<'design'|'interact'>('design');
   const structureOpen=$derived(view==='structure');
   function changeView(next:'design'|'interact'|'structure'){view=next;if(next!=='structure')canvasMode=next;}
@@ -30,11 +32,11 @@
   function panel(name:'chat'|'document',open=true){const focused=globalThis.document.activeElement;if(open){lastPanel=name;if(compact){chatOpen=false;documentOpen=false;}}if(name==='chat')chatOpen=open;else documentOpen=open;void tick().then(()=>{if(focused instanceof HTMLElement && focused.isConnected && focused.closest('[hidden],[inert]'))globalThis.document.querySelector<HTMLElement>('.workspace-panel-showcase .studio-menus>button')?.focus({preventScroll:true});});}
   $effect(()=>{if(compact)untrack(()=>{if(chatOpen && documentOpen)panel(lastPanel);});});
   let draft=$state('');
-  let notice=$state('Select a layer or graph item, then Inspect inside Structure.');
+  let notice=$state('Document shows the whole screen. Selection follows the item you choose.');
   function selectGraph(occurrence:string){selected=occurrence;selectedId=structureId(document.id,'node',resolveOccurrence(occurrence,document).sourceNodeId);}
   function select(occurrence:string){selectGraph(occurrence);exampleFocus=selectedId;}
   function selectDetail(id:string){selectedId=id;exampleFocus=id;const node=projectStructure(document).nodes.find(node=>node.id===id);if(node?.data.occurrence)selected=node.data.occurrence;}
-  function inspect(id=selectedId){selectedId=id;exampleFocus=id;view='structure';inspectOpen=true;}
+  function inspect(id=selectedId){selectedId=id;exampleFocus=id;context='selection';panel('document');}
 </script>
 <ControlScope class="vict-rhea">
   <section class="workspace-panel-showcase" aria-label="Docked workspace panel example">
@@ -50,18 +52,15 @@
         <div class="example-modes"><WorkspaceModes {view} onChange={changeView}/></div>
         <div class="example-canvas" hidden={structureOpen} inert={structureOpen}><EditorCanvas {document} catalogs={designerCatalogs} extensions={catalogDescriptors} extensionImplementations={catalogImplementations} interactionMode={canvasMode} selectedOccurrence={selected} onSelect={select} onPlan={(next:UiRenderPlan)=>plan=next} ariaLabel="Docked panel example canvas" /></div>
         <section class="structure-workspace" aria-label="Example Structure workspace" hidden={!structureOpen} inert={!structureOpen}>
-          <StructureInspection open={inspectOpen} onBack={()=>inspectOpen=false}>
-            {#snippet graphContent(visible:boolean)}<StructureView focusSelection={exampleFocus} presentation="drawer" active={structureOpen && visible} {document} revision={document.revision} {selectedNodeId} descriptors={catalogDescriptors} onSelect={selectGraph} onMove={()=>false} onNotice={(message:string)=>notice=message} onInspect={(id?:string)=>inspect(id)} onCloseInspect={()=>inspectOpen=false} inspectionExpanded={inspectOpen} inspectionSelection={selectedId} onInspectSelection={(id:string)=>selectedId=id} />{/snippet}
-            {#snippet inspectionContent()}<SourceDetails {document} {selectedId} onClose={()=>inspectOpen=false} onSelect={selectDetail} onNavigate={()=>notice='Use Studio for document edits and floating editing tools.'} />{/snippet}
-          </StructureInspection>
+        <StructureView focusSelection={exampleFocus} presentation="drawer" active={structureOpen} {document} revision={document.revision} {selectedNodeId} descriptors={catalogDescriptors} onSelect={selectGraph} onMove={()=>false} onNotice={(message:string)=>notice=message} onInspect={(id?:string)=>inspect(id)} onCloseInspect={()=>panel('document',false)} inspectionExpanded={inspectOpen} inspectionLabel="Selection" inspectionSelection={selectedId} onInspectSelection={(id:string)=>selectedId=id} />
         </section>
       </div>
-      <aside class="right" hidden={!documentOpen} aria-label="Example stacked Document"><header>Document<button type="button" aria-label="Close example Document" onclick={()=>panel('document',false)}>×</button></header><DocumentPanels>
-        {#snippet layersContent()}<button type="button" onclick={()=>inspect()}>Inspect in Structure ↗</button>{#if plan}<Layers compact hideTextContent {plan} {document} labels={{nodes:studioNodeLabels(document)}} selectedOccurrence={selected} onSelect={select} componentDescriptors={catalogDescriptors} />{/if}{/snippet}
+      <aside class="right" hidden={!documentOpen} aria-label="Example stacked Document"><WorkspaceDetails bind:context onClose={()=>panel('document',false)}>{#snippet documentContent()}<DocumentPanels>
+        {#snippet layersContent()}<button type="button" onclick={()=>inspect()}>Open Selection ↗</button>{#if plan}<Layers compact hideTextContent {plan} {document} labels={{nodes:studioNodeLabels(document)}} selectedOccurrence={selected} onSelect={select} componentDescriptors={catalogDescriptors} />{/if}{/snippet}
         {#snippet dataContent()}<dl>{#each Object.entries(document.localState) as [key,value]}<div><dt>{key}</dt><dd>{JSON.stringify(value.initial)}</dd></div>{/each}</dl>{/snippet}
         {#snippet actionsContent()}<p>demo.submit uses the existing local simulation. This read-only fixture does not invoke it.</p>{/snippet}
         {#snippet sourceContent()}<pre>{JSON.stringify(document,null,2)}</pre>{/snippet}
-      </DocumentPanels></aside>
+      </DocumentPanels>{/snippet}{#snippet selectionContent()}<SourceDetails embedded {document} {selectedId} onClose={()=>panel('document',false)} onSelect={selectDetail} onNavigate={()=>notice='Use Studio for document edits and floating editing tools.'} />{/snippet}</WorkspaceDetails></aside>
     </div>
     <p role="status">{notice}</p>
   </section>

@@ -1,0 +1,23 @@
+X [ERROR] Could not resolve "web-worker"
+
+    ../../../../studio-cycle-1-3-completion/260831-VCT-02/node_modules/elkjs/lib/main.js:39:29:
+      39 │         var Worker = require('web-worker');
+         ╵                              ~~~~~~~~~~~~
+
+  You can mark the path "web-worker" as external to exclude it from the bundle, which will remove this error and leave the unresolved path in the bundle. You can also surround this "require" call with a try/catch block to handle this failure at run-time instead of bundle-time.
+
+C:\Users\RZ1\.codex\worktrees\studio-cycle-1-3-completion\260831-VCT-02\node_modules\vite\node_modules\esbuild\lib\main.js:1467
+  let error = new Error(text);
+              ^
+
+Error: Build failed with 1 error:
+../../../../studio-cycle-1-3-completion/260831-VCT-02/node_modules/elkjs/lib/main.js:39:29: ERROR: Could not resolve "web-worker"
+    at failureErrorWithLog (C:\Users\RZ1\.codex\worktrees\studio-cycle-1-3-completion\260831-VCT-02\node_modules\vite\node_modules\esbuild\lib\main.js:1467:15)
+    at C:\Users\RZ1\.codex\worktrees\studio-cycle-1-3-completion\260831-VCT-02\node_modules\vite\node_modules\esbuild\lib\main.js:926:25
+    at C:\Users\RZ1\.codex\worktrees\studio-cycle-1-3-completion\260831-VCT-02\node_modules\vite\node_modules\esbuild\lib\main.js:1345:9
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5) {
+  errors: [Getter/Setter],
+  warnings: [Getter/Setter]
+}
+
+Node.js v22.13.1

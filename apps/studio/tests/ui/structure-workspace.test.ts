@@ -47,7 +47,7 @@ it('retains a pending floating text draft through Structure and restores the sam
 });
 it('retains and protects a pending Source draft while visiting Structure and returning to its canvas mode',async()=>{
  await start();await click('Document');await click('Source');const draft=document.querySelector<HTMLTextAreaElement>('#canonical-source')!;draft.value+=' ';draft.dispatchEvent(new Event('input',{bubbles:true}));await settle();const exact=draft.value;
- await click('Close document');await click('Structure');await click('Design');expect(draft.value).toBe(exact);
+ await click('Close panel');await click('Structure');await click('Design');expect(draft.value).toBe(exact);
  await click('Interact');expect(workspaceControl('Design')?.getAttribute('aria-pressed')).toBe('true');
  await click('Document');expect(document.querySelector('#canonical-source')).toBe(draft);expect(draft.value).toBe(exact);await click('Discard draft');await click('Interact');expect(workspaceControl('Interact')?.getAttribute('aria-pressed')).toBe('true');
 });

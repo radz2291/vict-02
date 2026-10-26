@@ -1,0 +1,56 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/studio-cycle14-selection-panel/260831-VCT-02/apps/studio
+
+9:35:47 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle14-selection-panel/260831-VCT-02/packages/ui-svelte/src/document/DocumentHost.svelte:105:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+9:35:48 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle14-selection-panel/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:309:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+9:35:48 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle14-selection-panel/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:309:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+9:35:48 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle14-selection-panel/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:379:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+9:35:48 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle14-selection-panel/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:379:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+9:36:05 am [vite-plugin-svelte] src/lib/designer/WorkspaceDetails.svelte:12:2 Elements with the 'tablist' interactive role must have a tabindex value
+https://svelte.dev/e/a11y_interactive_supports_focus
+ ❯ tests/ui/selection-panel.test.ts (3 tests | 3 failed) 1289ms
+   × shares one right Selection across canvas and graph, without relocating floating Format or forcing Structure 754ms
+   × keeps Document selected while selection changes and preserves a hidden Source draft across contexts 284ms
+   × offers an honest empty selection and arrow-key navigation between the two panel contexts 248ms
+ ❯ tests/ui/structure-portals.test.ts (3 tests | 1 failed) 1511ms
+   × does not let a source edit open a modal over Structure, releases locks and restores its open state in Interact 878ms
+ ❯ tests/ui/structure-workspace.test.ts (5 tests | 5 failed) 1622ms
+   × makes Structure the third primary view, with one visible work surface and no View-menu or bottom-dock launcher 751ms
+   × does not restart Interact values or mutate saved source when visiting Structure 291ms
+   × retains a pending floating text draft through Structure and restores the same editor on returning to Design 258ms
+   × retains and protects a pending Source draft while visiting Structure and returning to its canvas mode 163ms
+   × keeps retained floating-tool shortcuts from claiming Structure keyboard focus or Escape 154ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 9 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/ui/selection-panel.test.ts > shares one right Selection across canvas and graph, without relocating floating Format or forcing Structure
+ FAIL  tests/ui/selection-panel.test.ts > keeps Document selected while selection changes and preserves a hidden Source draft across contexts
+ FAIL  tests/ui/selection-panel.test.ts > offers an honest empty selection and arrow-key navigation between the two panel contexts
+ FAIL  tests/ui/structure-portals.test.ts > does not let a source edit open a modal over Structure, releases locks and restores its open state in Interact
+ FAIL  tests/ui/structure-workspace.test.ts > makes Structure the third primary view, with one visible work surface and no View-menu or bottom-dock launcher
+ FAIL  tests/ui/structure-workspace.test.ts > does not restart Interact values or mutate saved source when visiting Structure
+ FAIL  tests/ui/structure-workspace.test.ts > retains a pending floating text draft through Structure and restores the same editor on returning to Design
+ FAIL  tests/ui/structure-workspace.test.ts > retains and protects a pending Source draft while visiting Structure and returning to its canvas mode
+ FAIL  tests/ui/structure-workspace.test.ts > keeps retained floating-tool shortcuts from claiming Structure keyboard focus or Escape
+ReferenceError: inspectionWidth is not defined
+
+	in $effect
+	in Designer.svelte
+	in undefined
+
+ ❯ $effect src/lib/designer/Designer.svelte:1274:3
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/9]⎯
+
+
+ Test Files  3 failed (3)
+      Tests  9 failed | 2 passed (11)
+   Start at  09:35:32
+   Duration  34.72s (transform 66.68s, setup 0ms, import 93.17s, tests 4.42s, environment 4.49s)
+
