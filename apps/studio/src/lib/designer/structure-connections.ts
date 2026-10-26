@@ -1,4 +1,4 @@
-import type { Edge } from '@victframework/ui-flow-svelte';
+import { MarkerType, type Edge } from '@victframework/ui-flow-svelte';
 import type { StructureEdgeData, StructureGraph } from './structure.js';
 
 export type ConnectionKind = 'hierarchy' | 'read' | 'write' | 'action' | 'definition' | 'navigation' | 'reference';
@@ -37,9 +37,16 @@ export function structurePorts(graph:StructureGraph,nodeId:string):StructurePort
   return [...ports.values()].sort((a,b)=>a.id.localeCompare(b.id));
 }
 export function structureConnectionEdges(graph:StructureGraph):StructureGraph['edges'] {
+  const groups=new Map<string,StructureGraph['edges']>();
+  const groupKey=(edge:StructureGraph['edges'][number])=>JSON.stringify([edge.source,edge.target,connectionKind(edge),edge.data?.description ?? edge.label]);
+  for(const edge of graph.edges){const key=groupKey(edge);groups.set(key,[...(groups.get(key)??[]),edge]);}
   return graph.edges.map(edge=>{
     const kind=connectionKind(edge),meta=connectionKinds[kind];
+    const group=groups.get(groupKey(edge))!;
+    const name=kind==='hierarchy'?hierarchyDescription(edge,true):kind==='definition'?String(edge.label).startsWith('definition')?'Defines':'Uses definition':meta.out;
     return {...edge,sourceHandle:`out-${kind}`,targetHandle:`in-${kind}`,
+      label:group[0]?.id===edge.id?`${name}${group.length>1?` · ${group.length}`:''}`:undefined,
+      markerEnd:{type:MarkerType.ArrowClosed,color:meta.color,width:12,height:12},
       style:`stroke: ${meta.color}; stroke-width: 1.5${meta.dash?`; stroke-dasharray: ${meta.dash}`:''}`};
   });
 }

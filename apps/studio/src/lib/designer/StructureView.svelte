@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onDestroy, tick, untrack } from 'svelte';
-  import { FlowCanvas, RoutedEdge, FlowNavigation, Controls, layoutGraph, LayoutFence, type Node, type Edge, type Connection, type Viewport, type LayoutDirection } from '@victframework/ui-flow-svelte';
+  import { FlowCanvas, FlowNavigation, Controls, layoutGraph, LayoutFence, type Node, type Edge, type Connection, type Viewport, type LayoutDirection } from '@victframework/ui-flow-svelte';
+  import StructureEdge from './StructureEdge.svelte';
   import StructuredSourceNode from './StructuredSourceNode.svelte';
   import {structurePorts,structureConnectionEdges} from './structure-connections.js';
   import '@victframework/ui-flow-svelte/styles.css';
@@ -79,7 +80,7 @@
   const rawConnections = $derived(graph.edges.some(edge=>edge.source===scopeId || edge.target===scopeId));
   $effect(()=>{void scopeId;showOtherUsers=false;connectionLimit=25;expandedGroups=new Set();});
   const nodeTypes = { source: StructuredSourceNode };
-  const edgeTypes = { routed: RoutedEdge };
+  const edgeTypes = { routed: StructureEdge };
   const fence = new LayoutFence();
   let connectionStart: { documentId: string; revision: string } | undefined;
   let layoutDocument = '';

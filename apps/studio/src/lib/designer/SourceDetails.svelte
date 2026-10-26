@@ -70,7 +70,7 @@
   }
 </script>
 <section data-studio-typography class="studio-type-scope source-details" aria-label="Source inspection details" bind:this={root}>
-  <header>{#if !embedded}<span>Inspect</span>{/if}<div class="selection-identity-card">{#if selected}<span>{structureNodePresentation(document,selected.data).kindLabel ?? readableName(selected.data.kind)}</span>{/if}<strong title={fullLabel}>{label}</strong></div>{#if !embedded}<button type="button" aria-label="Close inspection details" onclick={onClose}>×</button>{/if}</header>
+  <header>{#if !embedded}<span>Inspect</span>{/if}<div class="selection-identity-card">{#if selected && (structureNodePresentation(document,selected.data).kindLabel ?? readableName(selected.data.kind)).toLowerCase()!==label.toLowerCase()}<span>{structureNodePresentation(document,selected.data).kindLabel ?? readableName(selected.data.kind)}</span>{/if}<strong title={fullLabel}>{label}</strong></div>{#if !embedded}<button type="button" aria-label="Close inspection details" onclick={onClose}>×</button>{/if}</header>
   <div class="selection-sections">
     {#if !selected}<p class="empty-selection">Select an item on the canvas, in Layers or in the graph.</p>
     {:else}

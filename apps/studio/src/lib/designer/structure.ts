@@ -30,7 +30,10 @@ export function compactStructure(graph: StructureGraph, document: UiDocument): S
     if (incident.length !== 1 || incident[0]?.data?.kind !== 'containment') continue;
     const owner = graph.nodes.find(entry => entry.id === incident[0]?.source);
     const parent = owner?.data.sourceId ? document.nodes[owner.data.sourceId] : undefined;
-    if (parent?.kind === 'element' && /^(p|h[1-6])$/.test(parent.tag) && parent.children.length === 1) hidden.add(node.id);
+    if (parent?.kind === 'element' && /^(p|h[1-6]|label|option|button|a)$/.test(parent.tag) && parent.children.length === 1 && owner) {
+      const normalize=(value:string)=>value.trim().replace(/\s+/g,' ');
+      if(normalize(structureNodePresentation(document,owner.data).fullLabel ?? '')===normalize(source.content.value))hidden.add(node.id);
+    }
   }
   return { nodes: graph.nodes.filter(node => !hidden.has(node.id)), edges: graph.edges.filter(edge => !hidden.has(edge.source) && !hidden.has(edge.target)) };
 }
@@ -41,7 +44,7 @@ export function structureNodePresentation(document: UiDocument, data: StructureN
   let label = data.label;
   let kind = data.kindLabel;
   let summary = data.summary;
-  if (source?.kind === 'text') summary = undefined;
+  if (source?.kind === 'text') {summary = undefined;if(source.content.type==='literal')label=source.content.value || 'Empty';}
   if (source && ['repeat', 'conditional', 'slot', 'portal'].includes(source.kind)) summary = structureBehavior(document, source.id)[0]?.value;
   if (source?.kind === 'element') {
     if (source.id !== document.root && typeof source.attributes?.['aria-label'] === 'string' && source.attributes['aria-label'].trim()) label = source.attributes['aria-label'];
@@ -49,7 +52,7 @@ export function structureNodePresentation(document: UiDocument, data: StructureN
     else if (source.tag === 'p') kind = 'Paragraph';
     else kind = ({input:source.attributes?.type==='checkbox'?'Checkbox':source.attributes?.type==='radio'?'Radio button':'Input',textarea:'Text area',select:'Select',option:'Option',label:'Label',button:'Button',a:'Link',img:'Image',form:'Form',nav:'Navigation',header:'Header',footer:'Footer',section:'Section',article:'Article',aside:'Aside',ul:'List',ol:'List',li:'List item',table:'Table'} as Record<string,string>)[source.tag] ?? kind;
     const text = source.children.length === 1 ? document.nodes[source.children[0]!] : undefined;
-    if (/^(p|h[1-6])$/.test(source.tag) && !source.attributes?.['aria-label'] && text?.kind === 'text' && text.content.type === 'literal') label = text.content.value;
+    if (/^(p|h[1-6]|label|option|button|a)$/.test(source.tag) && !source.attributes?.['aria-label'] && text?.kind === 'text' && text.content.type === 'literal') label = text.content.value;
     summary = source.children.length && /^(main|section|div|article|aside|header|footer|nav|form|fieldset|ul|ol)$/.test(source.tag) ? `${source.children.length} direct child${source.children.length===1?'':'ren'}` : undefined;
   }
   const normalize = (value: string) => value.trim().replace(/\s+/g, ' ');
