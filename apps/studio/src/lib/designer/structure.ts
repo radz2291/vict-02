@@ -45,9 +45,10 @@ export function structureNodePresentation(document: UiDocument, data: StructureN
     if (source.id !== document.root && typeof source.attributes?.['aria-label'] === 'string' && source.attributes['aria-label'].trim()) label = source.attributes['aria-label'];
     if (/^h[1-6]$/.test(source.tag)) kind = 'Heading';
     else if (source.tag === 'p') kind = 'Paragraph';
+    else kind = ({input:source.attributes?.type==='checkbox'?'Checkbox':source.attributes?.type==='radio'?'Radio button':'Input',textarea:'Text area',select:'Select',option:'Option',label:'Label',button:'Button',a:'Link',img:'Image',form:'Form',nav:'Navigation',header:'Header',footer:'Footer',section:'Section',article:'Article',aside:'Aside',ul:'List',ol:'List',li:'List item',table:'Table'} as Record<string,string>)[source.tag] ?? kind;
     const text = source.children.length === 1 ? document.nodes[source.children[0]!] : undefined;
     if (/^(p|h[1-6])$/.test(source.tag) && !source.attributes?.['aria-label'] && text?.kind === 'text' && text.content.type === 'literal') label = text.content.value;
-    summary = undefined;
+    summary = source.children.length && /^(main|section|div|article|aside|header|footer|nav|form|fieldset|ul|ol)$/.test(source.tag) ? `${source.children.length} direct child${source.children.length===1?'':'ren'}` : undefined;
   }
   const normalize = (value: string) => value.trim().replace(/\s+/g, ' ');
   label = normalize(label);
@@ -114,7 +115,11 @@ export function projectStructure(document: UiDocument): StructureGraph {
     const description = node.kind === 'element' ? `<${node.tag}>` : node.kind === 'component' ? friendly(node.definitionId) : node.kind === 'text' && node.content.type === 'literal' ? node.content.value.slice(0, 55) : friendly(node.kind);
     add('node', node.id, node.id === document.root ? 'Screen' : sourceNames.get(node.id) ?? friendly(node.kind), { sourceId: node.id, summary: description, kindLabel: kindLabel(node), childCount: children(node).length, occurrence: uniquelyAuthored(node.id) ? authoredOccurrence(document, node.id) : undefined });
   }
-  for (const [id, state] of Object.entries(document.localState)) add('state', id, stateNames[id] ?? friendly(id), { summary: `${state.type} · declared initial value`, kindLabel: 'State' });
+  for (const [id, state] of Object.entries(document.localState)) {
+    const initial=state.initial;
+    const start=initial===''?'starts empty':typeof initial==='boolean'?`initially ${initial?'on':'off'}`:typeof initial==='number'?`starts at ${initial}`:typeof initial==='string'?`starts with “${initial.length>32?initial.slice(0,31)+'…':initial}”`:Array.isArray(initial)?`${initial.length} initial items`:'declared starting value';
+    add('state',id,stateNames[id] ?? friendly(id),{summary:`${state.type==='string'?'Text':friendly(state.type)} · ${start}`,kindLabel:'State'});
+  }
   for (const [id, definition] of Object.entries(document.componentDefinitions)) {
     const source = add('definition', id, friendly(id), { summary: `Local definition · revision ${definition.revision}`, kindLabel: 'Definition' });
     link(source, key('node', definition.root), 'definition root', 'root', 'definition');

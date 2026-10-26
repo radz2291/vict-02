@@ -32,3 +32,12 @@
   outline:2px solid var(--vict-color-accent,#355cc9);
   outline-offset:-1px;
 }
+.studio-type-scope[data-studio-typography] .vict-source-node.structured-source-node[data-kind]{padding:0;gap:0}
+.studio-type-scope[data-studio-typography] .structured-source-node .structured-node-identity strong{line-height:20px}
+.studio-type-scope[data-studio-typography].overview-scale .structured-node-identity strong{font-size:16px}
+.studio-type-scope[data-studio-typography].overview-scale :is(.structured-node-facts,.node-port-label,.node-port-count){visibility:hidden}
+.studio-type-scope[data-studio-typography].overview-scale .structured-node-facts{display:none}
+.studio-type-scope[data-studio-typography].overview-scale .node-port{height:12px;min-height:12px;padding-block:0;line-height:12px}
+.studio-type-scope[data-studio-typography] .structured-source-node:not(.selected):hover,
+.studio-type-scope[data-studio-typography] .details-relationships>button:hover:not(:disabled){border-color:#9aa9c2}
+.studio-type-scope[data-studio-typography] .details-relationships>button:hover:not(:disabled){background:#f8fafc}

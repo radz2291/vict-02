@@ -1,6 +1,7 @@
 <script lang="ts">
   import './disclosures.css';
   import './studio-cards.css';
+  import {groupStructureRelationships,connectionKinds} from './structure-connections.js';
   import { onMount } from 'svelte';
   import type { UiDocument } from '@victframework/ui';
   import { projectStructure, structureFacts, structureNodePresentation, parseStructureId, type StructureHandoff } from './structure.js';
@@ -14,7 +15,7 @@
   const selected = $derived(graph.nodes.find(node => node.id === selectedId));
   const label = $derived(selected ? structureNodePresentation(document, selected.data).label : 'No selection');
   const facts = $derived(selected ? structureFacts(document, selected) : []);
-  const relationships = $derived(graph.edges.filter(edge => edge.source === selectedId || edge.target === selectedId));
+  const relationships = $derived(groupStructureRelationships(graph,selectedId));
   const summary = $derived.by(() => {
     if (!selected) return [];
     const tuple = parseStructureId(selected.id);
@@ -66,7 +67,7 @@
   }
 </script>
 <section data-studio-typography class="studio-type-scope source-details" aria-label="Source inspection details" bind:this={root}>
-  <header>{#if !embedded}<span>Inspect</span>{/if}<div class="selection-identity-card">{#if selected}<span>{selected.data.kindLabel ?? readableName(selected.data.kind)}</span>{/if}<strong title={label}>{label}</strong></div>{#if !embedded}<button type="button" aria-label="Close inspection details" onclick={onClose}>×</button>{/if}</header>
+  <header>{#if !embedded}<span>Inspect</span>{/if}<div class="selection-identity-card">{#if selected}<span>{structureNodePresentation(document,selected.data).kindLabel ?? readableName(selected.data.kind)}</span>{/if}<strong title={label}>{label}</strong></div>{#if !embedded}<button type="button" aria-label="Close inspection details" onclick={onClose}>×</button>{/if}</header>
   <div class="selection-sections">
     {#if !selected}<p class="empty-selection">Select an item on the canvas, in Layers or in the graph.</p>
     {:else}
@@ -78,7 +79,7 @@
       <dl class="useful-facts">{#each summary as fact}<div><dt>{fact.name}</dt><dd>{fact.value}</dd></div>{/each}</dl>
       </div></section>
       <section class:expanded={page==='relationships'} aria-label="Selection relationships"><button class="studio-section-header" type="button" aria-expanded={page==='relationships'} aria-controls={accordionId+'-relationships'} onclick={()=>page=page==='relationships'?'none':'relationships'}>Relationships</button><div id={accordionId+'-relationships'} class="details-body" hidden={page!=='relationships'}>
-      <div class="details-relationships">{#each relationships as edge (edge.id)}{@const outgoing=edge.source===selectedId}{@const other = graph.nodes.find(node => node.id === (outgoing ? edge.target : edge.source))}<button type="button" disabled={blocked} onclick={() => { if (other) onSelect(other.id); }}><span>{edge.data?.kind==='containment' ? outgoing ? 'Contains' : 'Inside' : edge.data?.kind==='definition' ? outgoing ? 'Uses definition' : 'Used by' : outgoing ? readableName(edge.label ?? 'Connected to') : 'Referenced by'}</span><strong>{other ? structureNodePresentation(document, other.data).label : 'Source item'}</strong></button>{/each}</div>
+      <div class="details-relationships">{#each relationships as group (group.targetId)}{@const other=graph.nodes.find(node=>node.id===group.targetId)}<button type="button" disabled={blocked} onclick={()=>{if(other)onSelect(other.id);}}><span class="relationship-label">{#each group.relations as relation}<span class="relationship-kind"><i aria-hidden="true" style:background={connectionKinds[relation.kind].color}></i>{relation.label}{relation.count>1?` (${relation.count})`:''}</span>{/each}</span><strong>{other?structureNodePresentation(document,other.data).label:'Source item'}</strong>{#if group.count>1}<small>{group.count} declared connections</small>{/if}</button>{/each}</div>
       {#if !relationships.length}<p>No declared relationships.</p>{/if}
       </div></section>
       <section class:expanded={page==='technical'} aria-label="Selection technical information"><button class="studio-section-header" type="button" aria-expanded={page==='technical'} aria-controls={accordionId+'-technical'} onclick={()=>page=page==='technical'?'none':'technical'}>Technical information</button><div id={accordionId+'-technical'} class="details-body" hidden={page!=='technical'}><dl>{#each [...provenance,...facts] as fact}<div><dt>{fact.path}</dt><dd>{fact.value}</dd></div>{/each}</dl></div></section>
@@ -99,6 +100,7 @@
   dl { margin:0; } dl>div { display:grid; grid-template-columns:minmax(80px,1fr) minmax(0,1.25fr); gap:10px; padding:6px 0; border-top:1px solid var(--vict-color-border,#eef1f6); } dd { margin:0; overflow-wrap:anywhere; }
   .details-relationships { display:grid; gap:6px; }.details-relationships button { display:flex; flex-direction:column; gap:3px; text-align:left; overflow-wrap:anywhere; }
   .details-relationships span,p { color:var(--vict-color-textMuted,#65748d); }
+  .relationship-label{display:flex;flex-wrap:wrap;gap:4px 10px}.relationship-kind{display:inline-flex;align-items:center;gap:4px}.relationship-kind i{width:5px;height:5px;border-radius:50%;flex:none}.details-relationships small{font:var(--studio-font-meta);color:var(--vict-color-textMuted)}
   .useful-facts dt{font:inherit;color:var(--vict-color-textMuted,#65748d)}
   :focus-visible { outline:2px solid var(--vict-color-focusRing,#5269bd); outline-offset:-2px; } :disabled { opacity:.5; cursor:default; }
 </style>

@@ -1,6 +1,8 @@
 <script lang="ts">
   import { onDestroy, tick, untrack } from 'svelte';
-  import { FlowCanvas, SourceNode, RoutedEdge, FlowNavigation, Controls, layoutGraph, LayoutFence, type Node, type Edge, type Connection, type Viewport, type LayoutDirection } from '@victframework/ui-flow-svelte';
+  import { FlowCanvas, RoutedEdge, FlowNavigation, Controls, layoutGraph, LayoutFence, type Node, type Edge, type Connection, type Viewport, type LayoutDirection } from '@victframework/ui-flow-svelte';
+  import StructuredSourceNode from './StructuredSourceNode.svelte';
+  import {structurePorts,structureConnectionEdges} from './structure-connections.js';
   import '@victframework/ui-flow-svelte/styles.css';
   import './studio-cards.css';
   import type { UiDocument, UiExtensionDescriptor } from '@victframework/ui';
@@ -59,7 +61,7 @@
   const filtered = $derived(filterStructure(graph, { search, focusId: focusedId, collapsed, bindings: showBindings, definitions: showDefinitions }));
   const connectionGraph=$derived(connectedStructure(graph,connectionFocus ?? structureId(document.id,'node',selectedNodeId ?? document.root)));
   const projected = $derived(graphView==='connections' && !search ? connectionGraph : showTextNodes || search ? filtered : compactStructure(filtered, document));
-  const nodeTypes = { source: SourceNode };
+  const nodeTypes = { source: StructuredSourceNode };
   const edgeTypes = { routed: RoutedEdge };
   const fence = new LayoutFence();
   let connectionStart: { documentId: string; revision: string } | undefined;
@@ -116,10 +118,10 @@
       const source = node.data.sourceId && document.nodes[node.data.sourceId];
       const target = !!node.data.occurrence && !!source && ((source.kind === 'element' && ['main', 'section', 'div', 'article', 'aside', 'header', 'footer', 'nav', 'form', 'fieldset', 'ul', 'ol', 'li'].includes(source.tag)) || (source.kind === 'component' && (descriptors.find(entry => entry.id === source.definitionId)?.slots?.length ?? 0) === 1));
       return { ...node, position: old?.position ?? remembered?.get(node.id) ?? node.position, measured: old?.measured, selected: node.id === inspectedId,
-        data: { ...structureNodePresentation(document, node.data), direction: orientation, moveSource: editable && !!node.data.occurrence && node.data.sourceId !== document.root, moveTarget: editable && target,
+        data: { ...structureNodePresentation(document, node.data), ports:structurePorts(currentGraph,node.id), direction: orientation, moveSource: editable && !!node.data.occurrence && node.data.sourceId !== document.root, moveTarget: editable && target,
           collapsed: collapsed.has(node.id), onToggleGroup: groupGraph.edges.some(edge => edge.source === node.id && edge.data?.kind === 'containment') ? () => collapse(node.id) : undefined } };
     });
-    edges = currentGraph.edges;
+    edges = structureConnectionEdges(currentGraph);
   });
   const measuredSignature = $derived(nodes.map(node => `${node.id}:${node.measured?.width ?? 0}:${node.measured?.height ?? 0}`).join('|'));
   $effect(() => {
@@ -242,7 +244,7 @@
   }
 </script>
 <svelte:window onkeydown={escape} onkeydowncapture={graphEscape} />
-<section data-studio-typography class="studio-type-scope structure-view" class:drawer-presentation={presentation === 'drawer'} class:inspection-open={inspectionOpen} aria-label="Source structure" bind:this={structureElement}>
+<section data-studio-typography class="studio-type-scope structure-view" class:overview-scale={viewport.zoom<.65} class:drawer-presentation={presentation === 'drawer'} class:inspection-open={inspectionOpen} aria-label="Source structure" bind:this={structureElement}>
   <WorkspaceContextMenu scope={structureElement} enabled={active} resolve={context} />
   <div class="structure-tools">
     <input type="search" aria-label="Search structure" placeholder="Search structure" bind:value={search} />
@@ -306,6 +308,7 @@
       </FlowCanvas>
       {#if graphView==='connections' && !search && connectionGraph.edges.length===0}<p class="connection-empty">No declared connections for this item.</p>{/if}
       {#if layoutStatus}<p class="structure-status" role="status">{layoutStatus}</p>{/if}
+      {#if viewport.zoom<.65 && !layoutStatus && nodes.length}<div class="structure-scale-hint">Zoom in for connection details.<button type="button" onclick={()=>locate(inspectedId?[inspectedId]:[])}>Frame selection</button></div>{/if}
       {#if !nodes.length}<div class="structure-empty"><p>No matching items</p><button type="button" onclick={() => { search = ''; focusedId = undefined; }}>Clear search</button></div>{/if}
     </div>
     {#if inspectionOpen}
@@ -369,6 +372,7 @@
   .scope-control { border: 0; background: #eef1f7; white-space: nowrap; }
   .structure-body { display: flex; flex: 1; min-height: 0; overflow: hidden; }
   .structure-canvas { position: relative; flex: 1; min-width: 0; min-height: 0; }
+  .structure-scale-hint{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:8px;background:var(--vict-color-surface);padding:4px 8px;border:1px solid var(--vict-color-border);border-radius:5px;font:var(--studio-font-meta);white-space:nowrap;max-width:calc(100% - 110px)}.structure-scale-hint button{font:inherit;padding:2px 4px}
   .structure-canvas :global(.svelte-flow) { --xy-background-color: #f8fafc; --xy-minimap-background-color: #fff; --xy-controls-button-background-color: #fff; }
   .structure-canvas :global(.svelte-flow__minimap) { width: 110px; height: 72px; }
   .structure-canvas :global(.svelte-flow__edge.selected path) { stroke: #4f46e5 !important; stroke-width: 2.5px; }
