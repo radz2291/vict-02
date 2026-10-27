@@ -1,0 +1,3317 @@
+{
+  "schema": "vict.studio-dropdown-review@1",
+  "observedAt": "2026-10-27T11:16:25.826Z",
+  "reportBaseline": "b5264415babb1c75bedea373effaad117a867371",
+  "previewProduct": "e5bc3cd36aae5e7d2934aa03f293fb49c8ce1006",
+  "method": "Read-only existing DOM, canonical Source textarea, current open-menu computed styles, and sanitized rendered tool Input/Result. No clicks, hover changes, edits, Save, reload, restart or provider run.",
+  "contrast": {
+    "foreground": "#c7ccd6",
+    "background": "#ffffff",
+    "ratio": 1.6108523029419017
+  },
+  "documentId": "screen-949a8f5e-eed5-4877-ac59-09ebafcad678",
+  "items": [
+    {
+      "bounds": {
+        "height": 39,
+        "width": 186.40000915527344,
+        "x": 662.7999877929688,
+        "y": 168.40000915527344
+      },
+      "className": "uv-c74457cf-navWomenItem1",
+      "computed": {
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "0px none rgb(199, 204, 214)",
+        "color": "rgb(199, 204, 214)",
+        "font": "600 14px / 21px system-ui, \"Segoe UI\", sans-serif",
+        "opacity": "1",
+        "padding": "9px 14px"
+      },
+      "node": "navWomenItem1",
+      "part": "root",
+      "role": "menuitem",
+      "style": "",
+      "tag": "DIV",
+      "text": "Sneakers"
+    },
+    {
+      "bounds": {
+        "height": 39,
+        "width": 186.40000915527344,
+        "x": 662.7999877929688,
+        "y": 207.40000915527344
+      },
+      "className": "uv-c74457cf-navWomenItem2",
+      "computed": {
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "0px none rgb(199, 204, 214)",
+        "color": "rgb(199, 204, 214)",
+        "font": "600 14px / 21px system-ui, \"Segoe UI\", sans-serif",
+        "opacity": "1",
+        "padding": "9px 14px"
+      },
+      "node": "navWomenItem2",
+      "part": "root",
+      "role": "menuitem",
+      "style": "",
+      "tag": "DIV",
+      "text": "Running"
+    },
+    {
+      "bounds": {
+        "height": 39,
+        "width": 186.40000915527344,
+        "x": 662.7999877929688,
+        "y": 246.40000915527344
+      },
+      "className": "uv-c74457cf-navWomenItem3",
+      "computed": {
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "0px none rgb(199, 204, 214)",
+        "color": "rgb(199, 204, 214)",
+        "font": "600 14px / 21px system-ui, \"Segoe UI\", sans-serif",
+        "opacity": "1",
+        "padding": "9px 14px"
+      },
+      "node": "navWomenItem3",
+      "part": "root",
+      "role": "menuitem",
+      "style": "",
+      "tag": "DIV",
+      "text": "Lifestyle"
+    }
+  ],
+  "localState": {
+    "catalog_navMenMenu_root_open": {
+      "initial": false,
+      "key": "catalog_navMenMenu_root_open",
+      "type": "boolean"
+    },
+    "catalog_navWomenMenu_root_open": {
+      "initial": false,
+      "key": "catalog_navWomenMenu_root_open",
+      "type": "boolean"
+    },
+    "menMenuOpen": {
+      "initial": false,
+      "key": "menMenuOpen",
+      "type": "boolean"
+    },
+    "womenMenuOpen": {
+      "initial": false,
+      "key": "womenMenuOpen",
+      "type": "boolean"
+    }
+  },
+  "menu": {
+    "bounds": {
+      "height": 130.60000610351562,
+      "width": 200,
+      "x": 656,
+      "y": 161.60000610351562
+    },
+    "className": "",
+    "computed": {
+      "background": "rgb(255, 255, 255)",
+      "border": "0.8px solid rgb(219, 224, 232)",
+      "color": "rgb(32, 35, 43)",
+      "font": "14px / 21px system-ui, \"Segoe UI\", sans-serif",
+      "opacity": "1",
+      "padding": "6px"
+    },
+    "node": "navWomenMenu",
+    "part": "content",
+    "role": "menu",
+    "style": "pointer-events: auto; --bits-dropdown-menu-content-transform-origin: var(--bits-floating-transform-origin); --bits-dropdown-menu-content-available-width: var(--bits-floating-available-width); --bits-dropdown-menu-content-available-height: var(--bits-floating-available-height); --bits-dropdown-menu-anchor-width: var(--bits-floating-anchor-width); --bits-dropdown-menu-anchor-height: var(--bits-floating-anchor-height);",
+    "tag": "DIV",
+    "text": "SneakersRunningLifestyle"
+  },
+  "nodes": [
+    {
+      "attributes": {
+        "aria-label": "Shoes Landing Page"
+      },
+      "children": [
+        "nav",
+        "hero",
+        "products",
+        "benefits",
+        "support",
+        "footer"
+      ],
+      "id": "screen",
+      "kind": "element",
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "0px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "0px"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "560px"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#0e1116"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#171b22"
+          }
+        },
+        {
+          "property": "font-family",
+          "value": {
+            "type": "text",
+            "value": "system-ui, sans-serif"
+          }
+        }
+      ],
+      "tag": "main"
+    },
+    {
+      "children": [
+        "brand",
+        "navLinks",
+        "navCta"
+      ],
+      "id": "nav",
+      "kind": "element",
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "align-items",
+          "value": {
+            "type": "text",
+            "value": "center"
+          }
+        },
+        {
+          "property": "justify-content",
+          "value": {
+            "type": "text",
+            "value": "space-between"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "18px 48px"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#0e1116"
+          }
+        },
+        {
+          "property": "border-bottom",
+          "value": {
+            "type": "text",
+            "value": "1px solid #1c212b"
+          }
+        },
+        {
+          "property": "position",
+          "value": {
+            "type": "text",
+            "value": "sticky"
+          }
+        },
+        {
+          "property": "top",
+          "value": {
+            "type": "text",
+            "value": "0px"
+          }
+        },
+        {
+          "property": "z-index",
+          "value": {
+            "type": "text",
+            "value": "40"
+          }
+        }
+      ],
+      "tag": "header"
+    },
+    {
+      "children": [
+        "navLink1",
+        "navMenMenu",
+        "navWomenMenu",
+        "navLink4"
+      ],
+      "id": "navLinks",
+      "kind": "element",
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "28px"
+          }
+        },
+        {
+          "property": "align-items",
+          "value": {
+            "type": "text",
+            "value": "center"
+          }
+        }
+      ],
+      "styleSources": [
+        "src.navLinks.cqNarrow.plain"
+      ],
+      "tag": "div"
+    },
+    {
+      "children": [
+        "navLink1-text"
+      ],
+      "id": "navLink1",
+      "kind": "element",
+      "localStyle": [
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#c7ccd6"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        },
+        {
+          "property": "cursor",
+          "value": {
+            "type": "text",
+            "value": "pointer"
+          }
+        }
+      ],
+      "tag": "span"
+    },
+    {
+      "content": {
+        "type": "literal",
+        "value": "New Drops"
+      },
+      "id": "navLink1-text",
+      "kind": "text"
+    },
+    {
+      "children": [
+        "navLink4-text"
+      ],
+      "id": "navLink4",
+      "kind": "element",
+      "localStyle": [
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#c7ccd6"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        },
+        {
+          "property": "cursor",
+          "value": {
+            "type": "text",
+            "value": "pointer"
+          }
+        }
+      ],
+      "tag": "span"
+    },
+    {
+      "content": {
+        "type": "literal",
+        "value": "Support"
+      },
+      "id": "navLink4-text",
+      "kind": "text"
+    },
+    {
+      "children": [
+        "btnSignin"
+      ],
+      "id": "navCta",
+      "kind": "element",
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "align-items",
+          "value": {
+            "type": "text",
+            "value": "center"
+          }
+        }
+      ],
+      "tag": "div"
+    },
+    {
+      "definitionId": "vict.catalog.dropdown-menu",
+      "id": "navMenMenu",
+      "kind": "component",
+      "localStyle": [
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#c7ccd6"
+          }
+        },
+        {
+          "property": "cursor",
+          "value": {
+            "type": "text",
+            "value": "pointer"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "transparent"
+          }
+        },
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "none"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "0px"
+          }
+        }
+      ],
+      "outputs": {
+        "openChange": {
+          "setState": {
+            "key": "menMenuOpen"
+          }
+        }
+      },
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Men"
+        },
+        "open": {
+          "path": "state.menMenuOpen",
+          "type": "ref"
+        }
+      },
+      "revision": "1",
+      "slots": {
+        "items": {
+          "children": [
+            "navMenItem1",
+            "navMenItem2",
+            "navMenItem3"
+          ],
+          "name": "items"
+        },
+        "trigger": {
+          "children": [
+            "navMenTrigger"
+          ],
+          "name": "trigger"
+        }
+      }
+    },
+    {
+      "definitionId": "vict.catalog.dropdown-menu.item",
+      "id": "navMenItem1",
+      "kind": "component",
+      "localStyle": [
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#c7ccd6"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "9px 14px"
+          }
+        }
+      ],
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Sneakers"
+        },
+        "value": {
+          "type": "literal",
+          "value": "sneakers"
+        }
+      },
+      "revision": "1",
+      "slots": {}
+    },
+    {
+      "definitionId": "vict.catalog.dropdown-menu.item",
+      "id": "navMenItem2",
+      "kind": "component",
+      "localStyle": [
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#c7ccd6"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "9px 14px"
+          }
+        }
+      ],
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Running"
+        },
+        "value": {
+          "type": "literal",
+          "value": "running"
+        }
+      },
+      "revision": "1",
+      "slots": {}
+    },
+    {
+      "definitionId": "vict.catalog.dropdown-menu.item",
+      "id": "navMenItem3",
+      "kind": "component",
+      "localStyle": [
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#c7ccd6"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "9px 14px"
+          }
+        }
+      ],
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Basketball"
+        },
+        "value": {
+          "type": "literal",
+          "value": "basketball"
+        }
+      },
+      "revision": "1",
+      "slots": {}
+    },
+    {
+      "definitionId": "vict.catalog.dropdown-menu",
+      "id": "navWomenMenu",
+      "kind": "component",
+      "localStyle": [
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#c7ccd6"
+          }
+        },
+        {
+          "property": "cursor",
+          "value": {
+            "type": "text",
+            "value": "pointer"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "transparent"
+          }
+        },
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "none"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "0px"
+          }
+        }
+      ],
+      "outputs": {
+        "openChange": {
+          "setState": {
+            "key": "womenMenuOpen"
+          }
+        }
+      },
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Women"
+        },
+        "open": {
+          "path": "state.womenMenuOpen",
+          "type": "ref"
+        }
+      },
+      "revision": "1",
+      "slots": {
+        "items": {
+          "children": [
+            "navWomenItem1",
+            "navWomenItem2",
+            "navWomenItem3"
+          ],
+          "name": "items"
+        },
+        "trigger": {
+          "children": [
+            "navWomenTrigger"
+          ],
+          "name": "trigger"
+        }
+      }
+    },
+    {
+      "definitionId": "vict.catalog.dropdown-menu.item",
+      "id": "navWomenItem1",
+      "kind": "component",
+      "localStyle": [
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#c7ccd6"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "9px 14px"
+          }
+        }
+      ],
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Sneakers"
+        },
+        "value": {
+          "type": "literal",
+          "value": "w-sneakers"
+        }
+      },
+      "revision": "1",
+      "slots": {}
+    },
+    {
+      "definitionId": "vict.catalog.dropdown-menu.item",
+      "id": "navWomenItem2",
+      "kind": "component",
+      "localStyle": [
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#c7ccd6"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "9px 14px"
+          }
+        }
+      ],
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Running"
+        },
+        "value": {
+          "type": "literal",
+          "value": "w-running"
+        }
+      },
+      "revision": "1",
+      "slots": {}
+    },
+    {
+      "definitionId": "vict.catalog.dropdown-menu.item",
+      "id": "navWomenItem3",
+      "kind": "component",
+      "localStyle": [
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#c7ccd6"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "9px 14px"
+          }
+        }
+      ],
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Lifestyle"
+        },
+        "value": {
+          "type": "literal",
+          "value": "w-lifestyle"
+        }
+      },
+      "revision": "1",
+      "slots": {}
+    },
+    {
+      "children": [
+        "navMenTrigger-text"
+      ],
+      "id": "navMenTrigger",
+      "kind": "element",
+      "localStyle": [
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#c7ccd6"
+          }
+        },
+        {
+          "property": "cursor",
+          "value": {
+            "type": "text",
+            "value": "pointer"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        }
+      ],
+      "tag": "span"
+    },
+    {
+      "content": {
+        "type": "literal",
+        "value": "Men ▾"
+      },
+      "id": "navMenTrigger-text",
+      "kind": "text"
+    },
+    {
+      "children": [
+        "navWomenTrigger-text"
+      ],
+      "id": "navWomenTrigger",
+      "kind": "element",
+      "localStyle": [
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#c7ccd6"
+          }
+        },
+        {
+          "property": "cursor",
+          "value": {
+            "type": "text",
+            "value": "pointer"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        }
+      ],
+      "tag": "span"
+    },
+    {
+      "content": {
+        "type": "literal",
+        "value": "Women ▾"
+      },
+      "id": "navWomenTrigger-text",
+      "kind": "text"
+    }
+  ],
+  "revision": "r1.r1",
+  "themeAncestors": [
+    {
+      "bounds": {
+        "height": 130.60000610351562,
+        "width": 200,
+        "x": 656,
+        "y": 161.60000610351562
+      },
+      "className": "",
+      "computed": {
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "0px none rgb(32, 35, 43)",
+        "color": "rgb(32, 35, 43)",
+        "font": "14px / 21px system-ui, \"Segoe UI\", sans-serif",
+        "opacity": "1",
+        "padding": "0px"
+      },
+      "node": null,
+      "part": null,
+      "role": null,
+      "style": "position: fixed; left: 0px; top: 0px; transform: translate(656px, 161.6px); min-width: max-content; z-index: 160; --bits-floating-transform-origin: 50% 0px; --bits-floating-available-width: 1026.4000244140625px; --bits-floating-available-height: 490.4000015258789px; --bits-floating-anchor-width: 66.1875px; --bits-floating-anchor-height: 32px; pointer-events: auto;",
+      "tag": "DIV",
+      "text": "SneakersRunningLifestyle",
+      "tokens": {
+        "--vict-catalog-layer": "100",
+        "--vict-color-background": "",
+        "--vict-color-text": "#20232b",
+        "--vict-control-bg": ""
+      }
+    },
+    {
+      "bounds": {
+        "height": 0,
+        "width": 0,
+        "x": 0,
+        "y": 0
+      },
+      "className": "uv-root-screen-949a8f5e-eed5-4877-ac59-09ebafcad678-r1_r1",
+      "computed": {
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "0px none rgb(32, 35, 43)",
+        "color": "rgb(32, 35, 43)",
+        "font": "14px / 21px system-ui, \"Segoe UI\", sans-serif",
+        "opacity": "1",
+        "padding": "0px"
+      },
+      "node": null,
+      "part": null,
+      "role": null,
+      "style": "display: contents; --vict-catalog-layer: 100;",
+      "tag": "DIV",
+      "text": " SneakersRunningLifestyle",
+      "tokens": {
+        "--vict-catalog-layer": "100",
+        "--vict-color-background": "",
+        "--vict-color-text": "#20232b",
+        "--vict-control-bg": ""
+      }
+    }
+  ],
+  "trace": [
+    {
+      "index": 1,
+      "title": "Read screen",
+      "input": {
+        "section": "source",
+        "offset": 0,
+        "limit": 12,
+        "nodeId": "nav"
+      },
+      "result": {
+        "expectedRevision": "r1.r1#3",
+        "cursor": {
+          "documentId": "screen-949a8f5e-eed5-4877-ac59-09ebafcad678",
+          "revision": "r1.r1#3",
+          "digest": "b7e98e26f5f5cdb67f708ee85f0ebcfae0f18e3e73bc62855a57e754c51f5f32",
+          "epoch": "7c0c8780-09a3-4038-ae3c-ba51d6db7731"
+        },
+        "section": "source",
+        "nodeId": "nav",
+        "sourceJson": "{\"kind\":\"element\",\"id\":\"nav\",\"tag\":\"header\",\"children\":[\"brand\",\"navLinks\",\"navCta\"],\"localStyle\":[{\"property\":\"display\",\"value\":{\"type\":\"text\",\"value\":\"flex\"}},{\"property\":\"align-items\",\"value\":{\"type\":\"text\",\"value\":\"center\"}},{\"property\":\"justify-content\",\"value\":{\"type\":\"text\",\"value\":\"space-between\"}},{\"property\":\"padding\",\"value\":{\"type\":\"text\",\"value\":\"18px 48px\"}},{\"property\":\"background-color\",\"value\":{\"type\":\"text\",\"value\":\"#0e1116\"}},{\"property\":\"border-bottom\",\"value\":{\"type\":\"text\",\"value\":\"1px solid #1c212b\"}},{\"property\":\"position\",\"value\":{\"type\":\"text\",\"value\":\"sticky\"}},{\"property\":\"top\",\"value\":{\"type\":\"text\",\"value\":\"0px\"}},{\"property\":\"z-index\",\"value\":{\"type\":\"text\",\"value\":\"40\"}}]}",
+        "totalCharacters": 713,
+        "offset": 0,
+        "nextOffset": null,
+        "turnProgress": {
+          "applied": 0,
+          "metrics": {
+            "toolCalls": 2,
+            "completedCalls": 1,
+            "refusedCalls": 0,
+            "recoveryAttempts": 0,
+            "toolElapsedMs": 7,
+            "providerRequests": 1,
+            "visionRequests": 0,
+            "acknowledgementMs": 0,
+            "confirmedEdits": 0,
+            "usage": {
+              "inputTokens": 10556,
+              "outputTokens": 480,
+              "totalTokens": 11036
+            },
+            "categories": {
+              "knowledge": 0,
+              "source": 2,
+              "edit": 0,
+              "observe": 0,
+              "other": 0
+            },
+            "elapsedMs": 20032,
+            "toolActiveMs": 7,
+            "outsideToolMs": 20025,
+            "modelSteps": null,
+            "cost": null
+          },
+          "retainedKnowledge": {
+            "scope": "Complete contract bodies delivered in this turn only; reuse still requires their content to remain available in model context. Source facts are never cached knowledge.",
+            "complete": [],
+            "partialCount": 0
+          },
+          "visualEvidence": {
+            "regions": [],
+            "currentSourceObservations": 0,
+            "scope": "Captured regions only; source freshness does not establish current runtime/viewport freshness or offscreen/interaction coverage.",
+            "interactionsVerified": false
+          },
+          "evidence": "Host receipt-derived totals include all acknowledged transactions, including cleanup. Outside-tool time is waiting/generation/transport/host overhead, not measured provider latency. Captured regions do not establish full-page or interaction coverage."
+        }
+      },
+      "notices": []
+    },
+    {
+      "index": 2,
+      "title": "Read screen",
+      "input": {
+        "section": "palette",
+        "offset": 0,
+        "limit": 12,
+        "query": "dropdown-menu"
+      },
+      "rawResult": "{\n  \"expectedRevision\": \"r1.r1#3\",\n  \"cursor\": {\n    \"documentId\": \"screen-949a8f5e-eed5-4877-ac59-09ebafcad678\",\n    \"revision\": \"r1.r1#3\",\n    \"digest\": \"b7e98e26f5f5cdb67f708ee85f0ebcfae0f18e3e73bc62855a57e754c51f5f32\",\n    \"epoch\": \"7c0c8780-09a3-4038-ae3c-ba51d6db7731\"\n  },\n  \"section\": \"palette\",\n  \"items\": [\n    {\n      \"id\": \"dropdown-menu\",\n      \"label\": \"Dropdown Menu\",\n      \"description\": \"Dropdown Menu · editable properties, declared slots and outputs\",\n      \"preparation\": {\n        \"rootKind\": \"component\",\n        \"seedClasses\": [],\n        \"seedStyles\": [],\n        \"styledNodeCount\": 0,\n        \"initialStateKeys\": [\n          \"catalog_example_root_open\"\n        ],\n        \"definitionIds\": [\n          \"vict.catalog.dropdown-menu\",\n          \"vict.catalog.dropdown-menu.item\"\n        ],\n        \"hostRequirements\": [],\n        \"patternHostRequirements\": [],\n        \"guidance\": \"Seed local styles remain in the authored source and override shared style sources. Review padding, minimum size, background and color before adding; replace/remove explicitly or use generic insert for an unstyled native element. Read component/recipe for full source.\"\n      }\n    },\n    {\n      \"id\": \"dropdown-menu.item\",\n      \"label\": \"Dropdown Menu Item\",\n      \"description\": \"Dropdown Menu Item · part for its compatible provider slot\",\n      \"placements\": [\n        {\n          \"definitionId\": \"vict.catalog.dropdown-menu\",\n          \"slotName\": \"items\"\n        },\n        {\n          \"definitionId\": \"vict.catalog.dropdown-menu.sub\",\n          \"slotName\": \"items\"\n        },\n        {\n          \"definitionId\": \"vict.catalog.dropdown-menu.group\",\n          \"slotName\": \"items\"\n        }\n      ],\n      \"preparation\": {\n        \"rootKind\": \"component\",\n        \"seedClasses\": [],\n        \"seedStyles\": [],\n        \"styledNodeCount\": 0,\n        \"initialStateKeys\": [],\n        \"definitionIds\": [\n          \"vict.catalog.dropdown-menu.item\"\n        ],\n        \"hostRequirements\": [],\n        \"patternHostRequirements\": [],\n        \"guidance\": \"Seed local styles remain in the authored source and override shared style sources. Review padding, minimum size, background and color before adding; replace/remove explicitly or use generic insert for an unstyled native element. Read component/recipe for full source.\"\n      }\n    },\n    {\n      \"id\": \"dropdown-menu.sub\",\n      \"label\": \"Dropdown Menu Sub\",\n      \"description\": \"Dropdown Menu Sub · part for its compatible provider slot\",\n      \"placements\": [\n        {\n          \"definitionId\": \"vict.catalog.dropdown-menu\",\n          \"slotName\": \"items\"\n        },\n        {\n          \"definitionId\": \"vict.catalog.dropdown-menu.sub\",\n          \"slotName\": \"items\"\n        },\n        {\n          \"definitionId\": \"vict.catalog.dropdown-menu.group\",\n          \"slotName\": \"items\"\n        }\n      ],\n      \"preparation\": {\n        \"rootKind\": \"component\",\n        \"seedClasses\": [],\n        \"seedStyles\": [],\n        \"styledNodeCount\": 0,\n        \"initialStateKeys\": [\n          \"catalog_example_root_open\"\n        ],\n        \"definitionIds\": [\n          \"vict.catalog.dropdown-menu.sub\",\n          \"vict.catalog.dropdown-menu.item\"\n        ],\n        \"hostRequirements\": [],\n        \"patternHostRequirements\": [],\n        \"guidance\": \"Seed local styles remain in the authored source and override shared style sources. Review padding, minimum size, background and color before adding; replace/remove explicitly or use generic insert for an unstyled native element. Read component/recipe for full source.\"\n      }\n    },\n    {\n      \"id\": \"dropdown-menu.checkbox-item\",\n      \"label\": \"Dropdown Menu Checkbox Item\",\n      \"description\": \"Dropdown Menu Checkbox Item · part for its compatible provider slot\",\n      \"placements\": [\n        {\n          \"definitionId\": \"vict.catalog.dropdown-menu\",\n          \"slotName\": \"items\"\n        },\n        {\n          \"definitionId\": \"vict.catalog.dropdown-menu.sub\",\n          \"slotName\": \"items\"\n        },\n        {\n          \"definitionId\": \"vict.catalog.dropdown-menu.group\",\n          \"slotName\": \"items\"\n        },\n        {\n          \"definitionId\": \"vict.catalog.dropdown-menu.checkbox-group\",\n          \"slotName\": \"items\"\n        }\n      ],\n      \"preparation\": {\n        \"rootKind\": \"component\",\n        \"seedClasses\": [],\n        \"seedStyles\": [],\n        \"styledNodeCount\": 0,\n        \"initialStateKeys\": [\n          \"catalog_example_root_checked\",\n          \"catalog_example_root_indeterminate\"\n        ],\n        \"definitionIds\": [\n          \"vict.catalog.dropdown-menu.checkbox-item\"\n        ],\n        \"hostRequirements\": [],\n        \"patternHostRequirements\": [],\n        \"guidance\": \"Seed local styles remain in the authored source and override shared style sources. Review padding, minimum size, background and color before adding; replace/remove explicitly or use generic insert for an unstyled native element. Read component/recipe for full source.\"\n      }\n    },\n    {\n      \"id\": \"dropdown-menu.checkbox-group\",\n      \"label\": \"Dropdown Menu Checkbox Group\",\n      \"description\": \"Dropdown Menu Checkbox Group · part for its compatible provider slot\",\n      \"placements\": [\n        {\n          \"definitionId\": \"vict.catalog.dropdown-menu\",\n          \"slotName\": \"items\"\n        },\n        {\n          \"definitionId\": \"vict.catalog.dropdown-menu.sub\",\n          \"slotName\": \"items\"\n        },\n        {\n          \"definitionId\": \"vict.catalog.dropdown-menu.group\",\n          \"slotName\": \"items\"\n        }\n      ],\n      \"preparation\": {\n        \"rootKind\": \"component\",\n        \"seedClasses\": [],\n        \"seedStyles\": [],\n        \"styledNodeCount\": 0,\n        \"initialStateKeys\": [\n          \"catalog_example_root_values\",\n          \"catalog_example_root-items-1_checked\",\n          \"catalog_example_root-items-1_indeterminate\"\n        ],\n        \"definitionIds\": [\n          \"vict.catalog.dropdown-menu.checkbox-group\",\n          \"vict.catalog.dropdown-menu.checkbox-item\"\n        ],\n        \"hostRequirements\": [],\n        \"patternHostRequirements\": [],\n        \"guidance\": \"Seed local styles remain in the authored source and override shared style sources. Review padding, minimum size, background and color before adding; replace/remove explicitly or use generic insert for an unstyled native element. Read component/recipe for full source.\"\n      }\n    },\n    {\n      \"id\": \"dropdown-menu.radio-group\",\n      \"label\": \"Dropdown Menu Radio Group\",\n      \"description\": \"Dropdown Menu Radio Group · part for its compatible provider slot\",\n      \"placements\": [\n        {\n          \"definitionId\": \"vict.catalog.dropdown-menu\",\n          \"slotName\": \"items\"\n        },\n        {\n          \"definitionId\": \"vict.catalog.dropdown-menu.sub\",\n          \"slotName\": \"items\"\n        },\n        {\n          \"definitionId\": \"vict.catalog.dropdown-menu.group\",\n          \"slotName\": \"items\"\n        }\n      ],\n      \"preparation\": {\n        \"rootKind\": \"component\",\n        \"seedClasses\": [],\n        \"seedStyles\": [],\n        \"styledNodeCount\": 0,\n        \"initialStateKeys\": [\n          \"catalog_example_root_value\"\n        ],\n        \"definitionIds\": [\n          \"vict.catalog.dropdown-menu.radio-group\",\n          \"vict.catalog.dropdown-menu.radio-item\"\n        ],\n        \"hostRequirements\": [],\n        \"patternHostRequirements\": [],\n        \"guidance\": \"Seed local styles remain in the authored source and override shared style sources. Review padding, minimum size, background and color before adding; replace/remove explicitly or use generic insert for an unstyled native element. Read component/recipe for full source.\"\n      }\n    },\n    {\n      \"id\": \"dropdown-menu.radio-item\",\n      \"label\": \"Dropdown Menu Radio Item\",\n      \"description\": \"Dropdown Menu Radio Item · part for its compatible provider slot\",\n      \"placements\": [\n        {\n          \"definitionId\": \"vict.catalog.dropdown-menu.radio-group\",\n          \"slotName\": \"items\"\n        }\n      ],\n      \"p",
+      "notices": [
+        "Content truncated"
+      ]
+    },
+    {
+      "index": 3,
+      "title": "Read screen",
+      "input": {
+        "section": "source",
+        "offset": 0,
+        "limit": 12,
+        "nodeId": "navLinks"
+      },
+      "result": {
+        "expectedRevision": "r1.r1#3",
+        "cursor": {
+          "documentId": "screen-949a8f5e-eed5-4877-ac59-09ebafcad678",
+          "revision": "r1.r1#3",
+          "digest": "b7e98e26f5f5cdb67f708ee85f0ebcfae0f18e3e73bc62855a57e754c51f5f32",
+          "epoch": "7c0c8780-09a3-4038-ae3c-ba51d6db7731"
+        },
+        "section": "source",
+        "nodeId": "navLinks",
+        "sourceJson": "{\"kind\":\"element\",\"id\":\"navLinks\",\"tag\":\"div\",\"children\":[\"navLink1\",\"navLink2\",\"navLink3\",\"navLink4\"],\"localStyle\":[{\"property\":\"display\",\"value\":{\"type\":\"text\",\"value\":\"flex\"}},{\"property\":\"gap\",\"value\":{\"type\":\"text\",\"value\":\"28px\"}},{\"property\":\"align-items\",\"value\":{\"type\":\"text\",\"value\":\"center\"}}],\"styleSources\":[\"src.navLinks.cqNarrow.plain\"]}",
+        "totalCharacters": 353,
+        "offset": 0,
+        "nextOffset": null,
+        "turnProgress": {
+          "applied": 0,
+          "metrics": {
+            "toolCalls": 4,
+            "completedCalls": 3,
+            "refusedCalls": 0,
+            "recoveryAttempts": 0,
+            "toolElapsedMs": 20,
+            "providerRequests": 2,
+            "visionRequests": 0,
+            "acknowledgementMs": 0,
+            "confirmedEdits": 0,
+            "usage": {
+              "inputTokens": 24205,
+              "outputTokens": 745,
+              "totalTokens": 24950
+            },
+            "categories": {
+              "knowledge": 1,
+              "source": 3,
+              "edit": 0,
+              "observe": 0,
+              "other": 0
+            },
+            "elapsedMs": 29576,
+            "toolActiveMs": 15,
+            "outsideToolMs": 29561,
+            "modelSteps": null,
+            "cost": null
+          },
+          "retainedKnowledge": {
+            "scope": "Complete contract bodies delivered in this turn only; reuse still requires their content to remain available in model context. Source facts are never cached knowledge.",
+            "complete": [],
+            "partialCount": 0
+          },
+          "visualEvidence": {
+            "regions": [],
+            "currentSourceObservations": 0,
+            "scope": "Captured regions only; source freshness does not establish current runtime/viewport freshness or offscreen/interaction coverage.",
+            "interactionsVerified": false
+          },
+          "evidence": "Host receipt-derived totals include all acknowledged transactions, including cleanup. Outside-tool time is waiting/generation/transport/host overhead, not measured provider latency. Captured regions do not establish full-page or interaction coverage."
+        }
+      },
+      "notices": []
+    },
+    {
+      "index": 4,
+      "title": "Read screen",
+      "input": {
+        "section": "contracts",
+        "offset": 0,
+        "limit": 12,
+        "components": [
+          {
+            "id": "vict.catalog.dropdown-menu"
+          },
+          {
+            "id": "vict.catalog.dropdown-menu.item"
+          },
+          {
+            "id": "vict.catalog.dropdown-menu.sub"
+          }
+        ],
+        "includeExamples": true
+      },
+      "rawResult": "{\n  \"expectedRevision\": \"r1.r1#3\",\n  \"cursor\": {\n    \"documentId\": \"screen-949a8f5e-eed5-4877-ac59-09ebafcad678\",\n    \"revision\": \"r1.r1#3\",\n    \"digest\": \"b7e98e26f5f5cdb67f708ee85f0ebcfae0f18e3e73bc62855a57e754c51f5f32\",\n    \"epoch\": \"7c0c8780-09a3-4038-ae3c-ba51d6db7731\"\n  },\n  \"section\": \"contracts\",\n  \"ok\": true,\n  \"complete\": false,\n  \"registryDigest\": \"6a06abc8ee99fa9f88e3abc5cfe9d8ea244ae35a79321284cd0e00de0308e80d\",\n  \"items\": [\n    {\n      \"id\": \"vict.catalog.dropdown-menu.item\",\n      \"revision\": \"1\",\n      \"digest\": \"dfe53b4dc86347a9964366f991f47abc203e1b5c5b2e172d29dc3316f63dfbb6\",\n      \"bodyIdentity\": \"studio-contract-body@2:examples:dfe53b4dc86347a9964366f991f47abc203e1b5c5b2e172d29dc3316f63dfbb6\",\n      \"contractJson\": \"{\\\"descriptor\\\":{\\\"id\\\":\\\"vict.catalog.dropdown-menu.item\\\",\\\"revision\\\":\\\"1\\\",\\\"abi\\\":\\\"vict.ui-component-abi@1\\\",\\\"events\\\":[\\\"vict.ui-component-abi@1\\\"],\\\"props\\\":[{\\\"name\\\":\\\"label\\\",\\\"type\\\":\\\"string\\\",\\\"default\\\":\\\"\\\"},{\\\"name\\\":\\\"disabled\\\",\\\"type\\\":\\\"boolean\\\",\\\"default\\\":false},{\\\"name\\\":\\\"value\\\",\\\"type\\\":\\\"string\\\",\\\"default\\\":\\\"\\\"},{\\\"name\\\":\\\"closeOnSelect\\\",\\\"type\\\":\\\"boolean\\\",\\\"default\\\":true}],\\\"outputs\\\":[{\\\"name\\\":\\\"itemActivate\\\",\\\"payload\\\":\\\"string\\\"}],\\\"slots\\\":[\\\"content\\\"],\\\"rendererImplementationId\\\":\\\"vict.svelte.catalog\\\",\\\"styleTargets\\\":[\\\"root\\\"]},\\\"label\\\":\\\"Dropdown Menu Item\\\",\\\"family\\\":\\\"general\\\",\\\"category\\\":\\\"navigation\\\",\\\"purpose\\\":\\\"Dropdown Menu Item · part for its compatible provider slot\\\",\\\"eligibility\\\":{\\\"kind\\\":\\\"part\\\"},\\\"dependencies\\\":[],\\\"rules\\\":[{\\\"kind\\\":\\\"ancestorSlot\\\",\\\"placements\\\":[{\\\"definitionId\\\":\\\"vict.catalog.dropdown-menu\\\",\\\"revision\\\":\\\"1\\\",\\\"slotName\\\":\\\"items\\\"},{\\\"definitionId\\\":\\\"vict.catalog.dropdown-menu.sub\\\",\\\"revision\\\":\\\"1\\\",\\\"slotName\\\":\\\"items\\\"},{\\\"definitionId\\\":\\\"vict.catalog.dropdown-menu.group\\\",\\\"revision\\\":\\\"1\\\",\\\"slotName\\\":\\\"items\\\"}]},{\\\"kind\\\":\\\"labelOwnership\\\",\\\"mode\\\":\\\"component\\\",\\\"property\\\":\\\"label\\\"}],\\\"guidance\\\":[\\\"Use exact declared props, slots, output payloads and style targets.\\\",\\\"Source composition does not prove observed behavior or completion.\\\",\\\"Context-owned parts keep their compatible provider/slot; wrappers do not grant a new context.\\\",\\\"The component owns its accessible label; avoid adding a duplicate external label.\\\"],\\\"seed\\\":{\\\"root\\\":\\\"root\\\",\\\"nodes\\\":[{\\\"kind\\\":\\\"component\\\",\\\"id\\\":\\\"root\\\",\\\"definitionId\\\":\\\"vict.catalog.dropdown-menu.item\\\",\\\"revision\\\":\\\"1\\\",\\\"props\\\":{\\\"label\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"Dropdown Menu Item\\\"}}}],\\\"localState\\\":{},\\\"identities\\\":[]},\\\"examples\\\":[{\\\"root\\\":\\\"root\\\",\\\"nodes\\\":[{\\\"kind\\\":\\\"component\\\",\\\"id\\\":\\\"root\\\",\\\"definitionId\\\":\\\"vict.catalog.dropdown-menu\\\",\\\"revision\\\":\\\"1\\\",\\\"props\\\":{\\\"open\\\":{\\\"type\\\":\\\"ref\\\",\\\"path\\\":\\\"state.root_open\\\"},\\\"label\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"Dropdown Menu\\\"}},\\\"outputs\\\":{\\\"openChange\\\":{\\\"setState\\\":{\\\"key\\\":\\\"root_open\\\"}}},\\\"slots\\\":{\\\"items\\\":{\\\"name\\\":\\\"items\\\",\\\"children\\\":[\\\"root-items-1\\\"]}}},{\\\"kind\\\":\\\"component\\\",\\\"id\\\":\\\"root-items-1\\\",\\\"definitionId\\\":\\\"vict.catalog.dropdown-menu.item\\\",\\\"revision\\\":\\\"1\\\",\\\"props\\\":{\\\"label\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"Dropdown Menu Item\\\"}}}],\\\"localState\\\":{\\\"root_open\\\":{\\\"key\\\":\\\"root_open\\\",\\\"type\\\":\\\"boolean\\\",\\\"initial\\\":false}},\\\"identities\\\":[]}],\\\"legacyCompatibility\\\":true,\\\"packageName\\\":\\\"@victframework/ui-svelte\\\",\\\"packageVersion\\\":\\\"0.4.0-rc.1\\\",\\\"capabilities\\\":{\\\"extensionId\\\":\\\"vict.catalog.dropdown-menu.item\\\",\\\"revision\\\":\\\"1\\\",\\\"rendererImplementationId\\\":\\\"vict.svelte.catalog\\\",\\\"abi\\\":\\\"vict.ui-component-abi@1\\\",\\\"slots\\\":[\\\"content\\\"],\\\"required\\\":[],\\\"styleTargets\\\":[\\\"root\\\"],\\\"requiresParentContext\\\":false,\\\"compositionSlots\\\":[]},\\\"descriptorDigest\\\":\\\"955bffefdaa4b8fed4a03bcaf8859f55ebab9afcd85c7df377e93f33887fb938\\\",\\\"digest\\\":\\\"dfe53b4dc86347a9964366f991f47abc203e1b5c5b2e172d29dc3316f63dfbb6\\\",\\\"preparation\\\":{\\\"seedStyles\\\":[],\\\"hostRequirements\\\":[],\\\"dependencies\\\":[],\\\"seedStylePrecedence\\\":\\\"Local styles override shared style sources; explicitly replace/remove undesired seed declarations before construction.\\\"}}\",\n      \"totalCharacters\": 2986,\n      \"offset\": 0,\n      \"nextOffset\": null,\n      \"bodyComplete\": true\n    },\n    {\n      \"id\": \"vict.catalog.dropdown-menu\",\n      \"revision\": \"1\",\n      \"digest\": \"99cde36abc18b7255b40c778b3bab7bdb300a96cdf332c7538eaf467b1f09249\",\n      \"bodyIdentity\": \"studio-contract-body@2:examples:99cde36abc18b7255b40c778b3bab7bdb300a96cdf332c7538eaf467b1f09249\",\n      \"contractJson\": \"{\\\"descriptor\\\":{\\\"id\\\":\\\"vict.catalog.dropdown-menu\\\",\\\"revision\\\":\\\"1\\\",\\\"abi\\\":\\\"vict.ui-component-abi@1\\\",\\\"events\\\":[\\\"vict.ui-component-abi@1\\\"],\\\"props\\\":[{\\\"name\\\":\\\"label\\\",\\\"type\\\":\\\"string\\\",\\\"default\\\":\\\"\\\"},{\\\"name\\\":\\\"disabled\\\",\\\"type\\\":\\\"boolean\\\",\\\"default\\\":false},{\\\"name\\\":\\\"open\\\",\\\"type\\\":\\\"boolean\\\",\\\"default\\\":false}],\\\"outputs\\\":[{\\\"name\\\":\\\"openChange\\\",\\\"payload\\\":\\\"boolean\\\"}],\\\"slots\\\":[\\\"trigger\\\",\\\"items\\\"],\\\"rendererImplementationId\\\":\\\"vict.svelte.catalog\\\",\\\"styleTargets\\\":[\\\"root\\\",\\\"content\\\"]},\\\"label\\\":\\\"Dropdown Menu\\\",\\\"family\\\":\\\"general\\\",\\\"category\\\":\\\"navigation\\\",\\\"purpose\\\":\\\"Dropdown Menu · editable properties, declared slots and outputs\\\",\\\"eligibility\\\":{\\\"kind\\\":\\\"standalone\\\"},\\\"dependencies\\\":[{\\\"id\\\":\\\"vict.catalog.dropdown-menu.item\\\",\\\"revision\\\":\\\"1\\\"}],\\\"rules\\\":[{\\\"kind\\\":\\\"controlledPair\\\",\\\"prop\\\":\\\"open\\\",\\\"output\\\":\\\"openChange\\\"},{\\\"kind\\\":\\\"labelOwnership\\\",\\\"mode\\\":\\\"component\\\",\\\"property\\\":\\\"label\\\"}],\\\"guidance\\\":[\\\"Use exact declared props, slots, output payloads and style targets.\\\",\\\"Source composition does not prove observed behavior or completion.\\\",\\\"The component owns its accessible label; avoid adding a duplicate external label.\\\"],\\\"seed\\\":{\\\"root\\\":\\\"root\\\",\\\"nodes\\\":[{\\\"kind\\\":\\\"component\\\",\\\"id\\\":\\\"root\\\",\\\"definitionId\\\":\\\"vict.catalog.dropdown-menu\\\",\\\"revision\\\":\\\"1\\\",\\\"props\\\":{\\\"open\\\":{\\\"type\\\":\\\"ref\\\",\\\"path\\\":\\\"state.root_open\\\"},\\\"label\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"Dropdown Menu\\\"}},\\\"outputs\\\":{\\\"openChange\\\":{\\\"setState\\\":{\\\"key\\\":\\\"root_open\\\"}}},\\\"slots\\\":{\\\"items\\\":{\\\"name\\\":\\\"items\\\",\\\"children\\\":[\\\"root-items-1\\\"]}}},{\\\"kind\\\":\\\"component\\\",\\\"id\\\":\\\"root-items-1\\\",\\\"definitionId\\\":\\\"vict.catalog.dropdown-menu.item\\\",\\\"revision\\\":\\\"1\\\",\\\"props\\\":{\\\"label\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"New item\\\"},\\\"value\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"first\\\"}}}],\\\"localState\\\":{\\\"root_open\\\":{\\\"key\\\":\\\"root_open\\\",\\\"type\\\":\\\"boolean\\\",\\\"initial\\\":false}},\\\"identities\\\":[]},\\\"examples\\\":[{\\\"root\\\":\\\"root\\\",\\\"nodes\\\":[{\\\"kind\\\":\\\"component\\\",\\\"id\\\":\\\"root\\\",\\\"definitionId\\\":\\\"vict.catalog.dropdown-menu\\\",\\\"revision\\\":\\\"1\\\",\\\"props\\\":{\\\"open\\\":{\\\"type\\\":\\\"ref\\\",\\\"path\\\":\\\"state.root_open\\\"},\\\"label\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"Dropdown Menu\\\"}},\\\"outputs\\\":{\\\"openChange\\\":{\\\"setState\\\":{\\\"key\\\":\\\"root_open\\\"}}},\\\"slots\\\":{\\\"items\\\":{\\\"name\\\":\\\"items\\\",\\\"children\\\":[\\\"root-items-1\\\"]}}},{\\\"kind\\\":\\\"component\\\",\\\"id\\\":\\\"root-items-1\\\",\\\"definitionId\\\":\\\"vict.catalog.dropdown-menu.item\\\",\\\"revision\\\":\\\"1\\\",\\\"props\\\":{\\\"label\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"New item\\\"},\\\"value\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"first\\\"}}}],\\\"localState\\\":{\\\"root_open\\\":{\\\"key\\\":\\\"root_open\\\",\\\"type\\\":\\\"boolean\\\",\\\"initial\\\":false}},\\\"identities\\\":[]}],\\\"legacyCompatibility\\\":true,\\\"packageName\\\":\\\"@victframework/ui-svelte\\\",\\\"packageVersion\\\":\\\"0.4.0-rc.1\\\",\\\"capabilities\\\":{\\\"extensionId\\\":\\\"vict.catalog.dropdown-menu\\\",\\\"revision\\\":\\\"1\\\",\\\"rendererImplementationId\\\":\\\"vict.svelte.catalog\\\",\\\"abi\\\":\\\"vict.ui-component-abi@1\\\",\\\"slots\\\":[\\\"trigger\\\",\\\"items\\\"],\\\"required\\\":[\\\"items\\\"],\\\"styleTargets\\\":[\\\"root\\\",\\\"content\\\"],\\\"requiresParentContext\\\":false,\\\"compositionSlots\\\":[]},\\\"descriptorDigest\\\":\\\"72b26c8617a82cde460918b01fc3bf829785764119816c3be20d32db6dcb3db5\\\",\\\"digest\\\":\\\"99cde36abc18b7255b40c778b3bab7bdb300a96cdf332c7538eaf467b1f09249\\\",\\\"preparation\\\":{\\\"seedStyles\\\":[],\\\"hostRequirements\\\":[],\\\"dependencie",
+      "notices": [
+        "Content truncated"
+      ]
+    },
+    {
+      "index": 5,
+      "title": "Read screen",
+      "input": {
+        "section": "contracts",
+        "offset": 3600,
+        "limit": 12,
+        "components": [
+          {
+            "id": "vict.catalog.dropdown-menu.sub"
+          }
+        ],
+        "knownDigests": {
+          "vict.catalog.dropdown-menu.item@1": "dfe53b4dc86347a9964366f991f47abc203e1b5c5b2e172d29dc3316f63dfbb6",
+          "vict.catalog.dropdown-menu@1": "99cde36abc18b7255b40c778b3bab7bdb300a96cdf332c7538eaf467b1f09249"
+        },
+        "includeExamples": true,
+        "expectedBodyIdentities": {
+          "vict.catalog.dropdown-menu.sub@1": "studio-contract-body@2:examples:91b300b5e07dfe944c31f166f2ee40cb562cb4abbb55487432755221405e7ed3"
+        }
+      },
+      "result": {
+        "expectedRevision": "r1.r1#3",
+        "cursor": {
+          "documentId": "screen-949a8f5e-eed5-4877-ac59-09ebafcad678",
+          "revision": "r1.r1#3",
+          "digest": "b7e98e26f5f5cdb67f708ee85f0ebcfae0f18e3e73bc62855a57e754c51f5f32",
+          "epoch": "7c0c8780-09a3-4038-ae3c-ba51d6db7731"
+        },
+        "section": "contracts",
+        "ok": true,
+        "complete": false,
+        "registryDigest": "6a06abc8ee99fa9f88e3abc5cfe9d8ea244ae35a79321284cd0e00de0308e80d",
+        "items": [
+          {
+            "id": "vict.catalog.dropdown-menu.sub",
+            "revision": "1",
+            "digest": "91b300b5e07dfe944c31f166f2ee40cb562cb4abbb55487432755221405e7ed3",
+            "bodyIdentity": "studio-contract-body@2:examples:91b300b5e07dfe944c31f166f2ee40cb562cb4abbb55487432755221405e7ed3",
+            "contractJson": "text\":false,\"compositionSlots\":[]},\"descriptorDigest\":\"c5b0454a7e1071963bdd332299467f7794cc72f2e43dc7e4c46bc93300ac7231\",\"digest\":\"91b300b5e07dfe944c31f166f2ee40cb562cb4abbb55487432755221405e7ed3\",\"preparation\":{\"seedStyles\":[],\"hostRequirements\":[],\"dependencies\":[{\"id\":\"vict.catalog.dropdown-menu.item\",\"revision\":\"1\"}],\"seedStylePrecedence\":\"Local styles override shared style sources; explicitly replace/remove undesired seed declarations before construction.\"}}",
+            "totalCharacters": 4067,
+            "offset": 3600,
+            "nextOffset": null,
+            "bodyComplete": false
+          }
+        ],
+        "pending": [],
+        "problems": [],
+        "projection": "contract-with-examples",
+        "paging": "Bodies are lossless JSON text pages. Initial bundles include dependency bodies; continuations page only explicitly selected components, one body at its own nextOffset. Send expectedBodyIdentities:{\"id@revision\":bodyIdentity} with unchanged includeExamples. Changing projection invalidates partial pages. Retain digest/bodyIdentity only after assembling every character from offset 0 to totalCharacters. knownBodyIdentities proves projection when reusing examples; a guidance-only body does not contain examples. Pending/partial dependencies are not complete knowledge. Source facts never use knowledge-cache digests.",
+        "turnProgress": {
+          "applied": 0,
+          "metrics": {
+            "toolCalls": 6,
+            "completedCalls": 5,
+            "refusedCalls": 0,
+            "recoveryAttempts": 0,
+            "toolElapsedMs": 35,
+            "providerRequests": 3,
+            "visionRequests": 0,
+            "acknowledgementMs": 0,
+            "confirmedEdits": 0,
+            "usage": {
+              "inputTokens": 42472,
+              "outputTokens": 1911,
+              "totalTokens": 44383
+            },
+            "categories": {
+              "knowledge": 3,
+              "source": 3,
+              "edit": 0,
+              "observe": 0,
+              "other": 0
+            },
+            "elapsedMs": 59774,
+            "toolActiveMs": 26,
+            "outsideToolMs": 59747,
+            "modelSteps": null,
+            "cost": null
+          },
+          "retainedKnowledge": {
+            "scope": "Complete contract bodies delivered in this turn only; reuse still requires their content to remain available in model context. Source facts are never cached knowledge.",
+            "complete": [
+              {
+                "key": "vict.catalog.dropdown-menu.item@1",
+                "digest": "dfe53b4dc86347a9964366f991f47abc203e1b5c5b2e172d29dc3316f63dfbb6",
+                "bodyIdentity": "studio-contract-body@2:examples:dfe53b4dc86347a9964366f991f47abc203e1b5c5b2e172d29dc3316f63dfbb6"
+              },
+              {
+                "key": "vict.catalog.dropdown-menu@1",
+                "digest": "99cde36abc18b7255b40c778b3bab7bdb300a96cdf332c7538eaf467b1f09249",
+                "bodyIdentity": "studio-contract-body@2:examples:99cde36abc18b7255b40c778b3bab7bdb300a96cdf332c7538eaf467b1f09249"
+              },
+              {
+                "key": "vict.catalog.dropdown-menu.sub@1",
+                "digest": "91b300b5e07dfe944c31f166f2ee40cb562cb4abbb55487432755221405e7ed3",
+                "bodyIdentity": "studio-contract-body@2:examples:91b300b5e07dfe944c31f166f2ee40cb562cb4abbb55487432755221405e7ed3"
+              }
+            ],
+            "partialCount": 0
+          },
+          "visualEvidence": {
+            "regions": [],
+            "currentSourceObservations": 0,
+            "scope": "Captured regions only; source freshness does not establish current runtime/viewport freshness or offscreen/interaction coverage.",
+            "interactionsVerified": false
+          },
+          "evidence": "Host receipt-derived totals include all acknowledged transactions, including cleanup. Outside-tool time is waiting/generation/transport/host overhead, not measured provider latency. Captured regions do not establish full-page or interaction coverage."
+        }
+      },
+      "notices": []
+    },
+    {
+      "index": 6,
+      "title": "Read screen",
+      "input": {
+        "section": "nodes",
+        "offset": 0,
+        "limit": 12,
+        "nodeId": "navLinks"
+      },
+      "rawResult": "{\n  \"expectedRevision\": \"r1.r1#3\",\n  \"cursor\": {\n    \"documentId\": \"screen-949a8f5e-eed5-4877-ac59-09ebafcad678\",\n    \"revision\": \"r1.r1#3\",\n    \"digest\": \"b7e98e26f5f5cdb67f708ee85f0ebcfae0f18e3e73bc62855a57e754c51f5f32\",\n    \"epoch\": \"7c0c8780-09a3-4038-ae3c-ba51d6db7731\"\n  },\n  \"section\": \"nodes\",\n  \"items\": [\n    {\n      \"id\": \"screen\",\n      \"kind\": \"element\",\n      \"tag\": \"main\",\n      \"children\": [\n        \"nav\",\n        \"hero\",\n        \"products\",\n        \"benefits\",\n        \"support\",\n        \"footer\"\n      ],\n      \"childCount\": 6,\n      \"sourcePreview\": \"{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"screen\\\",\\\"tag\\\":\\\"main\\\",\\\"attributes\\\":{\\\"aria-label\\\":\\\"Shoes Landing Page\\\"},\\\"children\\\":[\\\"nav\\\",\\\"hero\\\",\\\"products\\\",\\\"benefits\\\",\\\"support\\\",\\\"footer\\\"],\\\"localStyle\\\":[{\\\"property\\\":\\\"display\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"flex\\\"}},{\\\"property\\\":\\\"flex-direction\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"column\\\"}},{\\\"property\\\":\\\"gap\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"0px\\\"}},{\\\"property\\\":\\\"padding\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"0px\\\"}},{\\\"property\\\":\\\"min-height\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"560px\\\"}},{\\\"property\\\":\\\"background-color\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"#0e1116\\\"}},{\\\"property\\\":\\\"color\\\",\\\"value\\\":{\\\"type… [truncated; use source pages]\"\n    },\n    {\n      \"id\": \"nav\",\n      \"kind\": \"element\",\n      \"tag\": \"header\",\n      \"children\": [\n        \"brand\",\n        \"navLinks\",\n        \"navCta\"\n      ],\n      \"childCount\": 3,\n      \"sourcePreview\": \"{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"nav\\\",\\\"tag\\\":\\\"header\\\",\\\"children\\\":[\\\"brand\\\",\\\"navLinks\\\",\\\"navCta\\\"],\\\"localStyle\\\":[{\\\"property\\\":\\\"display\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"flex\\\"}},{\\\"property\\\":\\\"align-items\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"center\\\"}},{\\\"property\\\":\\\"justify-content\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"space-between\\\"}},{\\\"property\\\":\\\"padding\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"18px 48px\\\"}},{\\\"property\\\":\\\"background-color\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"#0e1116\\\"}},{\\\"property\\\":\\\"border-bottom\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"1px solid #1c212b\\\"}},{\\\"property\\\":\\\"position\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"sticky\\\"}},{\\\"pro… [truncated; use source pages]\"\n    },\n    {\n      \"id\": \"brand\",\n      \"kind\": \"element\",\n      \"tag\": \"span\",\n      \"children\": [\n        \"brand-text\"\n      ],\n      \"childCount\": 1,\n      \"sourcePreview\": \"{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"brand\\\",\\\"tag\\\":\\\"span\\\",\\\"children\\\":[\\\"brand-text\\\"],\\\"localStyle\\\":[{\\\"property\\\":\\\"color\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"#ffffff\\\"}},{\\\"property\\\":\\\"font-size\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"20px\\\"}},{\\\"property\\\":\\\"font-weight\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"800\\\"}},{\\\"property\\\":\\\"letter-spacing\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"3px\\\"}}]}\"\n    },\n    {\n      \"id\": \"brand-text\",\n      \"kind\": \"text\",\n      \"children\": [],\n      \"childCount\": 0,\n      \"sourcePreview\": \"{\\\"kind\\\":\\\"text\\\",\\\"id\\\":\\\"brand-text\\\",\\\"content\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"STRIDE.\\\"}}\"\n    },\n    {\n      \"id\": \"navLinks\",\n      \"kind\": \"element\",\n      \"tag\": \"div\",\n      \"children\": [\n        \"navLink1\",\n        \"navLink2\",\n        \"navLink3\",\n        \"navLink4\"\n      ],\n      \"childCount\": 4,\n      \"sourcePreview\": \"{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"navLinks\\\",\\\"tag\\\":\\\"div\\\",\\\"children\\\":[\\\"navLink1\\\",\\\"navLink2\\\",\\\"navLink3\\\",\\\"navLink4\\\"],\\\"localStyle\\\":[{\\\"property\\\":\\\"display\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"flex\\\"}},{\\\"property\\\":\\\"gap\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"28px\\\"}},{\\\"property\\\":\\\"align-items\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"center\\\"}}],\\\"styleSources\\\":[\\\"src.navLinks.cqNarrow.plain\\\"]}\"\n    },\n    {\n      \"id\": \"navLink1\",\n      \"kind\": \"element\",\n      \"tag\": \"span\",\n      \"children\": [\n        \"navLink1-text\"\n      ],\n      \"childCount\": 1,\n      \"sourcePreview\": \"{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"navLink1\\\",\\\"tag\\\":\\\"span\\\",\\\"children\\\":[\\\"navLink1-text\\\"],\\\"localStyle\\\":[{\\\"property\\\":\\\"color\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"#c7ccd6\\\"}},{\\\"property\\\":\\\"font-size\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"14px\\\"}},{\\\"property\\\":\\\"font-weight\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"600\\\"}},{\\\"property\\\":\\\"cursor\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"pointer\\\"}}]}\"\n    },\n    {\n      \"id\": \"navLink1-text\",\n      \"kind\": \"text\",\n      \"children\": [],\n      \"childCount\": 0,\n      \"sourcePreview\": \"{\\\"kind\\\":\\\"text\\\",\\\"id\\\":\\\"navLink1-text\\\",\\\"content\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"New Drops\\\"}}\"\n    },\n    {\n      \"id\": \"navLink2\",\n      \"kind\": \"element\",\n      \"tag\": \"span\",\n      \"children\": [\n        \"navLink2-text\"\n      ],\n      \"childCount\": 1,\n      \"sourcePreview\": \"{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"navLink2\\\",\\\"tag\\\":\\\"span\\\",\\\"children\\\":[\\\"navLink2-text\\\"],\\\"localStyle\\\":[{\\\"property\\\":\\\"color\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"#c7ccd6\\\"}},{\\\"property\\\":\\\"font-size\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"14px\\\"}},{\\\"property\\\":\\\"font-weight\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"600\\\"}},{\\\"property\\\":\\\"cursor\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"pointer\\\"}}]}\"\n    },\n    {\n      \"id\": \"navLink2-text\",\n      \"kind\": \"text\",\n      \"children\": [],\n      \"childCount\": 0,\n      \"sourcePreview\": \"{\\\"kind\\\":\\\"text\\\",\\\"id\\\":\\\"navLink2-text\\\",\\\"content\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"Men\\\"}}\"\n    },\n    {\n      \"id\": \"navLink3\",\n      \"kind\": \"element\",\n      \"tag\": \"span\",\n      \"children\": [\n        \"navLink3-text\"\n      ],\n      \"childCount\": 1,\n      \"sourcePreview\": \"{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"navLink3\\\",\\\"tag\\\":\\\"span\\\",\\\"children\\\":[\\\"navLink3-text\\\"],\\\"localStyle\\\":[{\\\"property\\\":\\\"color\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"#c7ccd6\\\"}},{\\\"property\\\":\\\"font-size\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"14px\\\"}},{\\\"property\\\":\\\"font-weight\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"600\\\"}},{\\\"property\\\":\\\"cursor\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"pointer\\\"}}]}\"\n    },\n    {\n      \"id\": \"navLink3-text\",\n      \"kind\": \"text\",\n      \"children\": [],\n      \"childCount\": 0,\n      \"sourcePreview\": \"{\\\"kind\\\":\\\"text\\\",\\\"id\\\":\\\"navLink3-text\\\",\\\"content\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"Women\\\"}}\"\n    },\n    {\n      \"id\": \"navLink4\",\n      \"kind\": \"element\",\n      \"tag\": \"span\",\n      \"children\": [\n        \"navLink4-text\"\n      ],\n      \"childCount\": 1,\n      \"sourcePreview\": \"{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"navLink4\\\",\\\"tag\\\":\\\"span\\\",\\\"children\\\":[\\\"navLink4-text\\\"],\\\"localStyle\\\":[{\\\"property\\\":\\\"color\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"#c7ccd6\\\"}},{\\\"property\\\":\\\"font-size\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"14px\\\"}},{\\\"property\\\":\\\"font-weight\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"600\\\"}},{\\\"property\\\":\\\"cursor\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"pointer\\\"}}]}\"\n    }\n  ],\n  \"total\": 152,\n  \"offset\": 0,\n  \"nextOffset\": 12,\n  \"turnProgress\": {\n    \"applied\": 0,\n    \"metrics\": {\n      \"toolCalls\": 6,\n      \"completedCalls\": 6,\n      \"refusedCalls\": 0,\n      \"recoveryAttempts\": 0,\n      \"toolElapsedMs\": 46,\n      \"providerRequests\": 3,\n      \"visionRequests\": 0,\n      \"acknowledgementMs\": 0,\n      \"confirmedEdits\": 0,\n      \"usage\": {\n        \"inputTokens\": 42472,\n        \"outputTokens\": 1911,\n        \"totalTokens\": 44383\n      },\n      \"categories\": {\n        \"knowledge\": 3,\n        \"source\": 3,\n        \"edit\": 0,\n        \"observe\": 0,\n        \"other\": 0\n      },\n      \"elapsedMs\": 59778,\n      \"toolActiveMs\": 30,\n      \"outsideToolMs\": 59748,\n      \"modelSteps\": null,\n      \"cost\": null\n    },\n    \"retainedKnowledge\": {\n      \"scope\": \"Complete contract bodies delivered in this turn only; reuse still requires their content to remain available in model context. Source facts are never cached knowledge.\",\n      \"complete\": [\n        {\n          \"key\": \"vict.catalog.dropdown-menu.item@1\",\n          \"digest\": \"dfe53b4dc86347a996436",
+      "notices": [
+        "Content truncated"
+      ]
+    },
+    {
+      "index": 7,
+      "title": "Edit screen",
+      "input": {
+        "expectedRevision": "r1.r1#3",
+        "reason": "Convert nav Men link into a working themed dropdown-menu with controlled open state",
+        "operations": [
+          {
+            "op": "declareState",
+            "key": "menMenuOpen",
+            "type": "boolean",
+            "initial": false
+          },
+          {
+            "op": "remove",
+            "nodeId": "navLink2"
+          },
+          {
+            "op": "add",
+            "recipe": "dropdown-menu",
+            "nodeId": "navMenMenu",
+            "parentId": "navLinks",
+            "index": 1,
+            "props": {
+              "label": "Men"
+            },
+            "styles": {
+              "color": "#c7ccd6",
+              "cursor": "pointer",
+              "font-size": "14px",
+              "font-weight": "600"
+            }
+          },
+          {
+            "op": "add",
+            "recipe": "dropdown-menu.item",
+            "nodeId": "navMenItem1",
+            "parentId": "navMenMenu",
+            "slotName": "items",
+            "props": {
+              "label": "Sneakers",
+              "value": "sneakers"
+            },
+            "styles": {
+              "color": "#c7ccd6",
+              "font-size": "14px",
+              "font-weight": "600",
+              "padding": "9px 14px"
+            }
+          },
+          {
+            "op": "add",
+            "recipe": "dropdown-menu.item",
+            "nodeId": "navMenItem2",
+            "parentId": "navMenMenu",
+            "slotName": "items",
+            "props": {
+              "label": "Running",
+              "value": "running"
+            },
+            "styles": {
+              "color": "#c7ccd6",
+              "font-size": "14px",
+              "font-weight": "600",
+              "padding": "9px 14px"
+            }
+          },
+          {
+            "op": "add",
+            "recipe": "dropdown-menu.item",
+            "nodeId": "navMenItem3",
+            "parentId": "navMenMenu",
+            "slotName": "items",
+            "props": {
+              "label": "Basketball",
+              "value": "basketball"
+            },
+            "styles": {
+              "color": "#c7ccd6",
+              "font-size": "14px",
+              "font-weight": "600",
+              "padding": "9px 14px"
+            }
+          },
+          {
+            "op": "bind",
+            "nodeId": "navMenMenu",
+            "prop": "open",
+            "expression": {
+              "type": "ref",
+              "path": "state.menMenuOpen"
+            }
+          },
+          {
+            "op": "connect",
+            "nodeId": "navMenMenu",
+            "output": "openChange",
+            "binding": {
+              "setState": {
+                "key": "menMenuOpen"
+              }
+            }
+          }
+        ]
+      },
+      "result": {
+        "ok": true,
+        "expectedRevision": "r1.r1#4",
+        "revision": "r1.r1#4",
+        "digest": "3b9aa122ac3f78a68b9039e3552d5d2e21b334a78cf761eb265cce1a98dbbb68",
+        "applied": 1,
+        "coverage": {
+          "available": 84,
+          "authored": 6,
+          "catalogAuthored": 3,
+          "registeredAuthored": 6,
+          "reachableSourceNodes": 154,
+          "requested": 84,
+          "scope": "all-authorable-definitions",
+          "missing": [
+            "vict.catalog.checkbox",
+            "vict.catalog.select",
+            "vict.catalog.dialog",
+            "vict.catalog.switch",
+            "vict.catalog.toggle",
+            "vict.catalog.select-multiple",
+            "vict.catalog.select-item",
+            "vict.catalog.combobox",
+            "vict.catalog.combobox-multiple",
+            "vict.catalog.combobox-item",
+            "vict.catalog.toggle-group",
+            "vict.catalog.toggle-group-multiple",
+            "vict.catalog.toggle-group-item",
+            "vict.catalog.accordion",
+            "vict.catalog.accordion-multiple",
+            "vict.catalog.accordion-item",
+            "vict.catalog.slider",
+            "vict.catalog.meter",
+            "vict.catalog.progress",
+            "vict.catalog.pagination"
+          ],
+          "evidence": "Reachable declared source presence only, including inactive branches/templates. An agent-declared manifest is not proof of the user intent, observed appearance, exercised interaction or completion.",
+          "missingCount": 78,
+          "moreMissing": true
+        },
+        "verification": "source-only",
+        "turnProgress": {
+          "applied": 1,
+          "metrics": {
+            "toolCalls": 7,
+            "completedCalls": 7,
+            "refusedCalls": 0,
+            "recoveryAttempts": 0,
+            "toolElapsedMs": 452,
+            "providerRequests": 4,
+            "visionRequests": 0,
+            "acknowledgementMs": 289,
+            "confirmedEdits": 1,
+            "usage": {
+              "inputTokens": 65280,
+              "outputTokens": 7259,
+              "totalTokens": 72539
+            },
+            "firstEditMs": 195219.17069999967,
+            "categories": {
+              "knowledge": 3,
+              "source": 3,
+              "edit": 1,
+              "observe": 0,
+              "other": 0
+            },
+            "elapsedMs": 195220,
+            "toolActiveMs": 436,
+            "outsideToolMs": 194784,
+            "modelSteps": null,
+            "cost": null
+          },
+          "retainedKnowledge": {
+            "scope": "Complete contract bodies delivered in this turn only; reuse still requires their content to remain available in model context. Source facts are never cached knowledge.",
+            "complete": [
+              {
+                "key": "vict.catalog.dropdown-menu.item@1",
+                "digest": "dfe53b4dc86347a9964366f991f47abc203e1b5c5b2e172d29dc3316f63dfbb6",
+                "bodyIdentity": "studio-contract-body@2:examples:dfe53b4dc86347a9964366f991f47abc203e1b5c5b2e172d29dc3316f63dfbb6"
+              },
+              {
+                "key": "vict.catalog.dropdown-menu@1",
+                "digest": "99cde36abc18b7255b40c778b3bab7bdb300a96cdf332c7538eaf467b1f09249",
+                "bodyIdentity": "studio-contract-body@2:examples:99cde36abc18b7255b40c778b3bab7bdb300a96cdf332c7538eaf467b1f09249"
+              },
+              {
+                "key": "vict.catalog.dropdown-menu.sub@1",
+                "digest": "91b300b5e07dfe944c31f166f2ee40cb562cb4abbb55487432755221405e7ed3",
+                "bodyIdentity": "studio-contract-body@2:examples:91b300b5e07dfe944c31f166f2ee40cb562cb4abbb55487432755221405e7ed3"
+              }
+            ],
+            "partialCount": 0
+          },
+          "visualEvidence": {
+            "regions": [],
+            "currentSourceObservations": 0,
+            "scope": "Captured regions only; source freshness does not establish current runtime/viewport freshness or offscreen/interaction coverage.",
+            "interactionsVerified": false
+          },
+          "evidence": "Host receipt-derived totals include all acknowledged transactions, including cleanup. Outside-tool time is waiting/generation/transport/host overhead, not measured provider latency. Captured regions do not establish full-page or interaction coverage."
+        }
+      },
+      "notices": []
+    },
+    {
+      "index": 8,
+      "title": "Edit screen",
+      "input": {
+        "expectedRevision": "r1.r1#4",
+        "reason": "Convert nav Women link into a second working themed dropdown-menu with its own open state",
+        "operations": [
+          {
+            "op": "declareState",
+            "key": "womenMenuOpen",
+            "type": "boolean",
+            "initial": false
+          },
+          {
+            "op": "remove",
+            "nodeId": "navLink3"
+          },
+          {
+            "op": "add",
+            "recipe": "dropdown-menu",
+            "nodeId": "navWomenMenu",
+            "parentId": "navLinks",
+            "index": 2,
+            "props": {
+              "label": "Women"
+            },
+            "styles": {
+              "color": "#c7ccd6",
+              "cursor": "pointer",
+              "font-size": "14px",
+              "font-weight": "600"
+            }
+          },
+          {
+            "op": "add",
+            "recipe": "dropdown-menu.item",
+            "nodeId": "navWomenItem1",
+            "parentId": "navWomenMenu",
+            "slotName": "items",
+            "props": {
+              "label": "Sneakers",
+              "value": "w-sneakers"
+            },
+            "styles": {
+              "color": "#c7ccd6",
+              "font-size": "14px",
+              "font-weight": "600",
+              "padding": "9px 14px"
+            }
+          },
+          {
+            "op": "add",
+            "recipe": "dropdown-menu.item",
+            "nodeId": "navWomenItem2",
+            "parentId": "navWomenMenu",
+            "slotName": "items",
+            "props": {
+              "label": "Running",
+              "value": "w-running"
+            },
+            "styles": {
+              "color": "#c7ccd6",
+              "font-size": "14px",
+              "font-weight": "600",
+              "padding": "9px 14px"
+            }
+          },
+          {
+            "op": "add",
+            "recipe": "dropdown-menu.item",
+            "nodeId": "navWomenItem3",
+            "parentId": "navWomenMenu",
+            "slotName": "items",
+            "props": {
+              "label": "Lifestyle",
+              "value": "w-lifestyle"
+            },
+            "styles": {
+              "color": "#c7ccd6",
+              "font-size": "14px",
+              "font-weight": "600",
+              "padding": "9px 14px"
+            }
+          },
+          {
+            "op": "bind",
+            "nodeId": "navWomenMenu",
+            "prop": "open",
+            "expression": {
+              "type": "ref",
+              "path": "state.womenMenuOpen"
+            }
+          },
+          {
+            "op": "connect",
+            "nodeId": "navWomenMenu",
+            "output": "openChange",
+            "binding": {
+              "setState": {
+                "key": "womenMenuOpen"
+              }
+            }
+          }
+        ]
+      },
+      "result": {
+        "ok": true,
+        "expectedRevision": "r1.r1#5",
+        "revision": "r1.r1#5",
+        "digest": "c31f4b1dd2dc406af4ab8eeb90b041da7552f5199445868c24513a4c59a36a2d",
+        "applied": 2,
+        "coverage": {
+          "available": 84,
+          "authored": 6,
+          "catalogAuthored": 3,
+          "registeredAuthored": 6,
+          "reachableSourceNodes": 156,
+          "requested": 84,
+          "scope": "all-authorable-definitions",
+          "missing": [
+            "vict.catalog.checkbox",
+            "vict.catalog.select",
+            "vict.catalog.dialog",
+            "vict.catalog.switch",
+            "vict.catalog.toggle",
+            "vict.catalog.select-multiple",
+            "vict.catalog.select-item",
+            "vict.catalog.combobox",
+            "vict.catalog.combobox-multiple",
+            "vict.catalog.combobox-item",
+            "vict.catalog.toggle-group",
+            "vict.catalog.toggle-group-multiple",
+            "vict.catalog.toggle-group-item",
+            "vict.catalog.accordion",
+            "vict.catalog.accordion-multiple",
+            "vict.catalog.accordion-item",
+            "vict.catalog.slider",
+            "vict.catalog.meter",
+            "vict.catalog.progress",
+            "vict.catalog.pagination"
+          ],
+          "evidence": "Reachable declared source presence only, including inactive branches/templates. An agent-declared manifest is not proof of the user intent, observed appearance, exercised interaction or completion.",
+          "missingCount": 78,
+          "moreMissing": true
+        },
+        "verification": "source-only",
+        "turnProgress": {
+          "applied": 2,
+          "metrics": {
+            "toolCalls": 8,
+            "completedCalls": 8,
+            "refusedCalls": 0,
+            "recoveryAttempts": 0,
+            "toolElapsedMs": 789,
+            "providerRequests": 5,
+            "visionRequests": 0,
+            "acknowledgementMs": 508,
+            "confirmedEdits": 2,
+            "usage": {
+              "inputTokens": 94342,
+              "outputTokens": 7887,
+              "totalTokens": 102229
+            },
+            "firstEditMs": 195219.17069999967,
+            "categories": {
+              "knowledge": 3,
+              "source": 3,
+              "edit": 2,
+              "observe": 0,
+              "other": 0
+            },
+            "elapsedMs": 208929,
+            "toolActiveMs": 774,
+            "outsideToolMs": 208155,
+            "modelSteps": null,
+            "cost": null
+          },
+          "retainedKnowledge": {
+            "scope": "Complete contract bodies delivered in this turn only; reuse still requires their content to remain available in model context. Source facts are never cached knowledge.",
+            "complete": [
+              {
+                "key": "vict.catalog.dropdown-menu.item@1",
+                "digest": "dfe53b4dc86347a9964366f991f47abc203e1b5c5b2e172d29dc3316f63dfbb6",
+                "bodyIdentity": "studio-contract-body@2:examples:dfe53b4dc86347a9964366f991f47abc203e1b5c5b2e172d29dc3316f63dfbb6"
+              },
+              {
+                "key": "vict.catalog.dropdown-menu@1",
+                "digest": "99cde36abc18b7255b40c778b3bab7bdb300a96cdf332c7538eaf467b1f09249",
+                "bodyIdentity": "studio-contract-body@2:examples:99cde36abc18b7255b40c778b3bab7bdb300a96cdf332c7538eaf467b1f09249"
+              },
+              {
+                "key": "vict.catalog.dropdown-menu.sub@1",
+                "digest": "91b300b5e07dfe944c31f166f2ee40cb562cb4abbb55487432755221405e7ed3",
+                "bodyIdentity": "studio-contract-body@2:examples:91b300b5e07dfe944c31f166f2ee40cb562cb4abbb55487432755221405e7ed3"
+              }
+            ],
+            "partialCount": 0
+          },
+          "visualEvidence": {
+            "regions": [],
+            "currentSourceObservations": 0,
+            "scope": "Captured regions only; source freshness does not establish current runtime/viewport freshness or offscreen/interaction coverage.",
+            "interactionsVerified": false
+          },
+          "evidence": "Host receipt-derived totals include all acknowledged transactions, including cleanup. Outside-tool time is waiting/generation/transport/host overhead, not measured provider latency. Captured regions do not establish full-page or interaction coverage."
+        }
+      },
+      "notices": []
+    },
+    {
+      "index": 9,
+      "title": "Read screen",
+      "input": {
+        "section": "source",
+        "offset": 0,
+        "limit": 12,
+        "nodeId": "navMenMenu"
+      },
+      "result": {
+        "expectedRevision": "r1.r1#5",
+        "cursor": {
+          "documentId": "screen-949a8f5e-eed5-4877-ac59-09ebafcad678",
+          "revision": "r1.r1#5",
+          "digest": "c31f4b1dd2dc406af4ab8eeb90b041da7552f5199445868c24513a4c59a36a2d",
+          "epoch": "7c0c8780-09a3-4038-ae3c-ba51d6db7731"
+        },
+        "section": "source",
+        "nodeId": "navMenMenu",
+        "sourceJson": "{\"kind\":\"component\",\"id\":\"navMenMenu\",\"definitionId\":\"vict.catalog.dropdown-menu\",\"revision\":\"1\",\"props\":{\"open\":{\"type\":\"ref\",\"path\":\"state.menMenuOpen\"},\"label\":{\"type\":\"literal\",\"value\":\"Men\"}},\"outputs\":{\"openChange\":{\"setState\":{\"key\":\"menMenuOpen\"}}},\"slots\":{\"items\":{\"name\":\"items\",\"children\":[\"navMenItem1\",\"navMenItem2\",\"navMenItem3\"]}},\"localStyle\":[{\"property\":\"color\",\"value\":{\"type\":\"text\",\"value\":\"#c7ccd6\"}},{\"property\":\"cursor\",\"value\":{\"type\":\"text\",\"value\":\"pointer\"}},{\"property\":\"font-size\",\"value\":{\"type\":\"text\",\"value\":\"14px\"}},{\"property\":\"font-weight\",\"value\":{\"type\":\"text\",\"value\":\"600\"}}]}",
+        "totalCharacters": 618,
+        "offset": 0,
+        "nextOffset": null,
+        "turnProgress": {
+          "applied": 2,
+          "metrics": {
+            "toolCalls": 12,
+            "completedCalls": 9,
+            "refusedCalls": 0,
+            "recoveryAttempts": 0,
+            "toolElapsedMs": 798,
+            "providerRequests": 6,
+            "visionRequests": 0,
+            "acknowledgementMs": 508,
+            "confirmedEdits": 2,
+            "usage": {
+              "inputTokens": 124939,
+              "outputTokens": 8307,
+              "totalTokens": 133246
+            },
+            "firstEditMs": 195219.17069999967,
+            "categories": {
+              "knowledge": 3,
+              "source": 6,
+              "edit": 2,
+              "observe": 1,
+              "other": 0
+            },
+            "elapsedMs": 224688,
+            "toolActiveMs": 782,
+            "outsideToolMs": 223905,
+            "modelSteps": null,
+            "cost": null
+          },
+          "retainedKnowledge": {
+            "scope": "Complete contract bodies delivered in this turn only; reuse still requires their content to remain available in model context. Source facts are never cached knowledge.",
+            "complete": [
+              {
+                "key": "vict.catalog.dropdown-menu.item@1",
+                "digest": "dfe53b4dc86347a9964366f991f47abc203e1b5c5b2e172d29dc3316f63dfbb6",
+                "bodyIdentity": "studio-contract-body@2:examples:dfe53b4dc86347a9964366f991f47abc203e1b5c5b2e172d29dc3316f63dfbb6"
+              },
+              {
+                "key": "vict.catalog.dropdown-menu@1",
+                "digest": "99cde36abc18b7255b40c778b3bab7bdb300a96cdf332c7538eaf467b1f09249",
+                "bodyIdentity": "studio-contract-body@2:examples:99cde36abc18b7255b40c778b3bab7bdb300a96cdf332c7538eaf467b1f09249"
+              },
+              {
+                "key": "vict.catalog.dropdown-menu.sub@1",
+                "digest": "91b300b5e07dfe944c31f166f2ee40cb562cb4abbb55487432755221405e7ed3",
+                "bodyIdentity": "studio-contract-body@2:examples:91b300b5e07dfe944c31f166f2ee40cb562cb4abbb55487432755221405e7ed3"
+              }
+            ],
+            "partialCount": 0
+          },
+          "visualEvidence": {
+            "regions": [],
+            "currentSourceObservations": 0,
+            "scope": "Captured regions only; source freshness does not establish current runtime/viewport freshness or offscreen/interaction coverage.",
+            "interactionsVerified": false
+          },
+          "evidence": "Host receipt-derived totals include all acknowledged transactions, including cleanup. Outside-tool time is waiting/generation/transport/host overhead, not measured provider latency. Captured regions do not establish full-page or interaction coverage."
+        }
+      },
+      "notices": []
+    },
+    {
+      "index": 10,
+      "title": "Read screen",
+      "input": {
+        "section": "source",
+        "offset": 0,
+        "limit": 12,
+        "nodeId": "navWomenMenu"
+      },
+      "result": {
+        "expectedRevision": "r1.r1#5",
+        "cursor": {
+          "documentId": "screen-949a8f5e-eed5-4877-ac59-09ebafcad678",
+          "revision": "r1.r1#5",
+          "digest": "c31f4b1dd2dc406af4ab8eeb90b041da7552f5199445868c24513a4c59a36a2d",
+          "epoch": "7c0c8780-09a3-4038-ae3c-ba51d6db7731"
+        },
+        "section": "source",
+        "nodeId": "navWomenMenu",
+        "sourceJson": "{\"kind\":\"component\",\"id\":\"navWomenMenu\",\"definitionId\":\"vict.catalog.dropdown-menu\",\"revision\":\"1\",\"props\":{\"open\":{\"type\":\"ref\",\"path\":\"state.womenMenuOpen\"},\"label\":{\"type\":\"literal\",\"value\":\"Women\"}},\"outputs\":{\"openChange\":{\"setState\":{\"key\":\"womenMenuOpen\"}}},\"slots\":{\"items\":{\"name\":\"items\",\"children\":[\"navWomenItem1\",\"navWomenItem2\",\"navWomenItem3\"]}},\"localStyle\":[{\"property\":\"color\",\"value\":{\"type\":\"text\",\"value\":\"#c7ccd6\"}},{\"property\":\"cursor\",\"value\":{\"type\":\"text\",\"value\":\"pointer\"}},{\"property\":\"font-size\",\"value\":{\"type\":\"text\",\"value\":\"14px\"}},{\"property\":\"font-weight\",\"value\":{\"type\":\"text\",\"value\":\"600\"}}]}",
+        "totalCharacters": 632,
+        "offset": 0,
+        "nextOffset": null,
+        "turnProgress": {
+          "applied": 2,
+          "metrics": {
+            "toolCalls": 12,
+            "completedCalls": 10,
+            "refusedCalls": 0,
+            "recoveryAttempts": 0,
+            "toolElapsedMs": 807,
+            "providerRequests": 6,
+            "visionRequests": 0,
+            "acknowledgementMs": 508,
+            "confirmedEdits": 2,
+            "usage": {
+              "inputTokens": 124939,
+              "outputTokens": 8307,
+              "totalTokens": 133246
+            },
+            "firstEditMs": 195219.17069999967,
+            "categories": {
+              "knowledge": 3,
+              "source": 6,
+              "edit": 2,
+              "observe": 1,
+              "other": 0
+            },
+            "elapsedMs": 224689,
+            "toolActiveMs": 784,
+            "outsideToolMs": 223905,
+            "modelSteps": null,
+            "cost": null
+          },
+          "retainedKnowledge": {
+            "scope": "Complete contract bodies delivered in this turn only; reuse still requires their content to remain available in model context. Source facts are never cached knowledge.",
+            "complete": [
+              {
+                "key": "vict.catalog.dropdown-menu.item@1",
+                "digest": "dfe53b4dc86347a9964366f991f47abc203e1b5c5b2e172d29dc3316f63dfbb6",
+                "bodyIdentity": "studio-contract-body@2:examples:dfe53b4dc86347a9964366f991f47abc203e1b5c5b2e172d29dc3316f63dfbb6"
+              },
+              {
+                "key": "vict.catalog.dropdown-menu@1",
+                "digest": "99cde36abc18b7255b40c778b3bab7bdb300a96cdf332c7538eaf467b1f09249",
+                "bodyIdentity": "studio-contract-body@2:examples:99cde36abc18b7255b40c778b3bab7bdb300a96cdf332c7538eaf467b1f09249"
+              },
+              {
+                "key": "vict.catalog.dropdown-menu.sub@1",
+                "digest": "91b300b5e07dfe944c31f166f2ee40cb562cb4abbb55487432755221405e7ed3",
+                "bodyIdentity": "studio-contract-body@2:examples:91b300b5e07dfe944c31f166f2ee40cb562cb4abbb55487432755221405e7ed3"
+              }
+            ],
+            "partialCount": 0
+          },
+          "visualEvidence": {
+            "regions": [],
+            "currentSourceObservations": 0,
+            "scope": "Captured regions only; source freshness does not establish current runtime/viewport freshness or offscreen/interaction coverage.",
+            "interactionsVerified": false
+          },
+          "evidence": "Host receipt-derived totals include all acknowledged transactions, including cleanup. Outside-tool time is waiting/generation/transport/host overhead, not measured provider latency. Captured regions do not establish full-page or interaction coverage."
+        }
+      },
+      "notices": []
+    },
+    {
+      "index": 11,
+      "title": "Read screen",
+      "input": {
+        "section": "nodes",
+        "offset": 0,
+        "limit": 12,
+        "nodeId": "navLinks"
+      },
+      "rawResult": "{\n  \"expectedRevision\": \"r1.r1#5\",\n  \"cursor\": {\n    \"documentId\": \"screen-949a8f5e-eed5-4877-ac59-09ebafcad678\",\n    \"revision\": \"r1.r1#5\",\n    \"digest\": \"c31f4b1dd2dc406af4ab8eeb90b041da7552f5199445868c24513a4c59a36a2d\",\n    \"epoch\": \"7c0c8780-09a3-4038-ae3c-ba51d6db7731\"\n  },\n  \"section\": \"nodes\",\n  \"items\": [\n    {\n      \"id\": \"screen\",\n      \"kind\": \"element\",\n      \"tag\": \"main\",\n      \"children\": [\n        \"nav\",\n        \"hero\",\n        \"products\",\n        \"benefits\",\n        \"support\",\n        \"footer\"\n      ],\n      \"childCount\": 6,\n      \"sourcePreview\": \"{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"screen\\\",\\\"tag\\\":\\\"main\\\",\\\"attributes\\\":{\\\"aria-label\\\":\\\"Shoes Landing Page\\\"},\\\"children\\\":[\\\"nav\\\",\\\"hero\\\",\\\"products\\\",\\\"benefits\\\",\\\"support\\\",\\\"footer\\\"],\\\"localStyle\\\":[{\\\"property\\\":\\\"display\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"flex\\\"}},{\\\"property\\\":\\\"flex-direction\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"column\\\"}},{\\\"property\\\":\\\"gap\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"0px\\\"}},{\\\"property\\\":\\\"padding\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"0px\\\"}},{\\\"property\\\":\\\"min-height\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"560px\\\"}},{\\\"property\\\":\\\"background-color\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"#0e1116\\\"}},{\\\"property\\\":\\\"color\\\",\\\"value\\\":{\\\"type… [truncated; use source pages]\"\n    },\n    {\n      \"id\": \"nav\",\n      \"kind\": \"element\",\n      \"tag\": \"header\",\n      \"children\": [\n        \"brand\",\n        \"navLinks\",\n        \"navCta\"\n      ],\n      \"childCount\": 3,\n      \"sourcePreview\": \"{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"nav\\\",\\\"tag\\\":\\\"header\\\",\\\"children\\\":[\\\"brand\\\",\\\"navLinks\\\",\\\"navCta\\\"],\\\"localStyle\\\":[{\\\"property\\\":\\\"display\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"flex\\\"}},{\\\"property\\\":\\\"align-items\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"center\\\"}},{\\\"property\\\":\\\"justify-content\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"space-between\\\"}},{\\\"property\\\":\\\"padding\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"18px 48px\\\"}},{\\\"property\\\":\\\"background-color\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"#0e1116\\\"}},{\\\"property\\\":\\\"border-bottom\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"1px solid #1c212b\\\"}},{\\\"property\\\":\\\"position\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"sticky\\\"}},{\\\"pro… [truncated; use source pages]\"\n    },\n    {\n      \"id\": \"brand\",\n      \"kind\": \"element\",\n      \"tag\": \"span\",\n      \"children\": [\n        \"brand-text\"\n      ],\n      \"childCount\": 1,\n      \"sourcePreview\": \"{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"brand\\\",\\\"tag\\\":\\\"span\\\",\\\"children\\\":[\\\"brand-text\\\"],\\\"localStyle\\\":[{\\\"property\\\":\\\"color\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"#ffffff\\\"}},{\\\"property\\\":\\\"font-size\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"20px\\\"}},{\\\"property\\\":\\\"font-weight\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"800\\\"}},{\\\"property\\\":\\\"letter-spacing\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"3px\\\"}}]}\"\n    },\n    {\n      \"id\": \"brand-text\",\n      \"kind\": \"text\",\n      \"children\": [],\n      \"childCount\": 0,\n      \"sourcePreview\": \"{\\\"kind\\\":\\\"text\\\",\\\"id\\\":\\\"brand-text\\\",\\\"content\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"STRIDE.\\\"}}\"\n    },\n    {\n      \"id\": \"navLinks\",\n      \"kind\": \"element\",\n      \"tag\": \"div\",\n      \"children\": [\n        \"navLink1\",\n        \"navMenMenu\",\n        \"navWomenMenu\",\n        \"navLink4\"\n      ],\n      \"childCount\": 4,\n      \"sourcePreview\": \"{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"navLinks\\\",\\\"tag\\\":\\\"div\\\",\\\"children\\\":[\\\"navLink1\\\",\\\"navMenMenu\\\",\\\"navWomenMenu\\\",\\\"navLink4\\\"],\\\"localStyle\\\":[{\\\"property\\\":\\\"display\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"flex\\\"}},{\\\"property\\\":\\\"gap\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"28px\\\"}},{\\\"property\\\":\\\"align-items\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"center\\\"}}],\\\"styleSources\\\":[\\\"src.navLinks.cqNarrow.plain\\\"]}\"\n    },\n    {\n      \"id\": \"navLink1\",\n      \"kind\": \"element\",\n      \"tag\": \"span\",\n      \"children\": [\n        \"navLink1-text\"\n      ],\n      \"childCount\": 1,\n      \"sourcePreview\": \"{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"navLink1\\\",\\\"tag\\\":\\\"span\\\",\\\"children\\\":[\\\"navLink1-text\\\"],\\\"localStyle\\\":[{\\\"property\\\":\\\"color\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"#c7ccd6\\\"}},{\\\"property\\\":\\\"font-size\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"14px\\\"}},{\\\"property\\\":\\\"font-weight\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"600\\\"}},{\\\"property\\\":\\\"cursor\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"pointer\\\"}}]}\"\n    },\n    {\n      \"id\": \"navLink1-text\",\n      \"kind\": \"text\",\n      \"children\": [],\n      \"childCount\": 0,\n      \"sourcePreview\": \"{\\\"kind\\\":\\\"text\\\",\\\"id\\\":\\\"navLink1-text\\\",\\\"content\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"New Drops\\\"}}\"\n    },\n    {\n      \"id\": \"navLink4\",\n      \"kind\": \"element\",\n      \"tag\": \"span\",\n      \"children\": [\n        \"navLink4-text\"\n      ],\n      \"childCount\": 1,\n      \"sourcePreview\": \"{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"navLink4\\\",\\\"tag\\\":\\\"span\\\",\\\"children\\\":[\\\"navLink4-text\\\"],\\\"localStyle\\\":[{\\\"property\\\":\\\"color\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"#c7ccd6\\\"}},{\\\"property\\\":\\\"font-size\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"14px\\\"}},{\\\"property\\\":\\\"font-weight\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"600\\\"}},{\\\"property\\\":\\\"cursor\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"pointer\\\"}}]}\"\n    },\n    {\n      \"id\": \"navLink4-text\",\n      \"kind\": \"text\",\n      \"children\": [],\n      \"childCount\": 0,\n      \"sourcePreview\": \"{\\\"kind\\\":\\\"text\\\",\\\"id\\\":\\\"navLink4-text\\\",\\\"content\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"Support\\\"}}\"\n    },\n    {\n      \"id\": \"navCta\",\n      \"kind\": \"element\",\n      \"tag\": \"div\",\n      \"children\": [\n        \"btnSignin\"\n      ],\n      \"childCount\": 1,\n      \"sourcePreview\": \"{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"navCta\\\",\\\"tag\\\":\\\"div\\\",\\\"children\\\":[\\\"btnSignin\\\"],\\\"localStyle\\\":[{\\\"property\\\":\\\"display\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"flex\\\"}},{\\\"property\\\":\\\"align-items\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"center\\\"}}]}\"\n    },\n    {\n      \"id\": \"hero\",\n      \"kind\": \"element\",\n      \"tag\": \"section\",\n      \"children\": [\n        \"heroCopy\",\n        \"heroVisual\"\n      ],\n      \"childCount\": 2,\n      \"sourcePreview\": \"{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"hero\\\",\\\"tag\\\":\\\"section\\\",\\\"children\\\":[\\\"heroCopy\\\",\\\"heroVisual\\\"],\\\"localStyle\\\":[{\\\"property\\\":\\\"display\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"grid\\\"}},{\\\"property\\\":\\\"grid-template-columns\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"1.05fr 0.95fr\\\"}},{\\\"property\\\":\\\"gap\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"56px\\\"}},{\\\"property\\\":\\\"align-items\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"center\\\"}},{\\\"property\\\":\\\"padding\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"80px 48px 96px\\\"}},{\\\"property\\\":\\\"background-color\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"#0e1116\\\"}},{\\\"property\\\":\\\"background-image\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"radial-gradient(900px… [truncated; use source pages]\"\n    },\n    {\n      \"id\": \"heroCopy\",\n      \"kind\": \"element\",\n      \"tag\": \"div\",\n      \"children\": [\n        \"heroEyebrow\",\n        \"heroTitle\",\n        \"heroSub\",\n        \"heroCtas\",\n        \"heroNote\"\n      ],\n      \"childCount\": 5,\n      \"sourcePreview\": \"{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"heroCopy\\\",\\\"tag\\\":\\\"div\\\",\\\"children\\\":[\\\"heroEyebrow\\\",\\\"heroTitle\\\",\\\"heroSub\\\",\\\"heroCtas\\\",\\\"heroNote\\\"],\\\"localStyle\\\":[{\\\"property\\\":\\\"display\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"flex\\\"}},{\\\"property\\\":\\\"flex-direction\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"column\\\"}},{\\\"property\\\":\\\"gap\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"18px\\\"}},{\\\"property\\\":\\\"max-width\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"560px\\\"}}]}\"\n    }\n  ],\n  \"total\": 156,\n  \"offset\": 0,\n  \"nextOffset\": 12,\n  \"turnProgress\": {\n    \"applied\": 2,\n    \"metrics\": {\n      \"toolCalls\": 12,\n      \"completedCalls\": 11,\n      \"refusedCalls\": 0,\n      \"recoveryAttempts\": 0,\n      \"toolElapsedMs\": 819,\n      \"providerRequests\": 6,\n      \"visionRequests\": 0,\n      \"acknowledgementMs\": 508,\n      \"confirmedEdits\": 2,\n      \"usage\": {\n        \"in",
+      "notices": [
+        "Content truncated"
+      ]
+    },
+    {
+      "index": 12,
+      "title": "Observe preview",
+      "input": {
+        "focus": "Top navigation bar: brand STRIDE., link row with New Drops, Men, Women dropdown triggers and the right-side CTA; check spacing, colors and that the new dropdown triggers align with the other links on the dark header"
+      },
+      "result": {
+        "ok": true,
+        "evidence": "observed-appearance",
+        "observation": "Directly visible: The dark header shows brand \"STRIDE.\" left, links \"New Drops,\" \"Support,\" and right-side \"Sign in\" in a bordered pill — all in white text with even spacing and consistent baseline alignment.\n\nHowever, \"Men\" and \"Women\" render as light/white filled pill buttons with white text, making their labels nearly illegible (low contrast). They visibly break from the plain-text style of the other links, so the row does not read as aligned or uniform. No chevron/caret icons appear on these triggers, so their dropdown affordance is only inferable. Colors elsewhere look consistent (dark background, white text).\n\nLimitation: only this cropped viewport was captured; open dropdown states and content below the fold are not observable.",
+        "metadata": {
+          "cursor": {
+            "documentId": "screen-949a8f5e-eed5-4877-ac59-09ebafcad678",
+            "revision": "r1.r1#5",
+            "digest": "c31f4b1dd2dc406af4ab8eeb90b041da7552f5199445868c24513a4c59a36a2d",
+            "epoch": "7c0c8780-09a3-4038-ae3c-ba51d6db7731"
+          },
+          "capturedAt": "2026-10-27T11:07:15.512Z",
+          "viewport": {
+            "width": 1120,
+            "height": 561,
+            "scrollLeft": 0,
+            "scrollTop": 0,
+            "devicePixelRatio": 1.25
+          },
+          "image": {
+            "width": 1069,
+            "height": 545,
+            "sourceWidth": 1069,
+            "sourceHeight": 2713,
+            "offsetLeft": 0,
+            "offsetTop": 0,
+            "cropped": true
+          },
+          "preview": {
+            "mode": "design",
+            "fingerprint": "f3847dd8d56bf75ca5616d844d4a32699625411c09a220c8914c023bc770ef8e"
+          }
+        },
+        "revalidatedAt": "2026-10-27T11:07:32.795Z",
+        "validation": "same-source-preview-viewport-and-image-bytes-after-inference",
+        "imageDigest": "6d44dee7d58d76fa8b9673809e0a1f7227e96f03c9242b44aaccc4741f5a8912",
+        "confirmedImageDigest": "6d44dee7d58d76fa8b9673809e0a1f7227e96f03c9242b44aaccc4741f5a8912",
+        "imageComparison": "sha256-identical",
+        "imageComparisonScope": "within-this-observation-before-and-after-inference",
+        "fingerprintMeaning": "Source and preview state identity, not a pixel digest. Separate successful observations may have different fingerprints and identical pixels.",
+        "captureAttempts": 2,
+        "captureRecoveryAttempts": 0,
+        "bytes": 47889,
+        "model": "zai/glm-5.3-flash",
+        "interactionVerified": false,
+        "limitation": "Only the captured preview frame region and stated preview state were inspected. Equal image bytes across separate observations do not prove stale capture or a rasterizer defect; a source edit may have no effect in this crop. Open preview-owned external portals refuse capture; unrelated Studio chrome is outside this image. Source relationships and interaction outcomes require separate checks.",
+        "turnProgress": {
+          "applied": 2,
+          "metrics": {
+            "toolCalls": 12,
+            "completedCalls": 12,
+            "refusedCalls": 0,
+            "recoveryAttempts": 0,
+            "toolElapsedMs": 20353,
+            "providerRequests": 6,
+            "visionRequests": 1,
+            "acknowledgementMs": 508,
+            "confirmedEdits": 2,
+            "usage": {
+              "inputTokens": 124939,
+              "outputTokens": 8307,
+              "totalTokens": 133246
+            },
+            "firstEditMs": 195219.17069999967,
+            "categories": {
+              "knowledge": 3,
+              "source": 6,
+              "edit": 2,
+              "observe": 1,
+              "other": 0
+            },
+            "elapsedMs": 244215,
+            "toolActiveMs": 20310,
+            "outsideToolMs": 223906,
+            "modelSteps": null,
+            "cost": null
+          },
+          "retainedKnowledge": {
+            "scope": "Complete contract bodies delivered in this turn only; reuse still requires their content to remain available in model context. Source facts are never cached knowledge.",
+            "complete": [
+              {
+                "key": "vict.catalog.dropdown-menu.item@1",
+                "digest": "dfe53b4dc86347a9964366f991f47abc203e1b5c5b2e172d29dc3316f63dfbb6",
+                "bodyIdentity": "studio-contract-body@2:examples:dfe53b4dc86347a9964366f991f47abc203e1b5c5b2e172d29dc3316f63dfbb6"
+              },
+              {
+                "key": "vict.catalog.dropdown-menu@1",
+                "digest": "99cde36abc18b7255b40c778b3bab7bdb300a96cdf332c7538eaf467b1f09249",
+                "bodyIdentity": "studio-contract-body@2:examples:99cde36abc18b7255b40c778b3bab7bdb300a96cdf332c7538eaf467b1f09249"
+              },
+              {
+                "key": "vict.catalog.dropdown-menu.sub@1",
+                "digest": "91b300b5e07dfe944c31f166f2ee40cb562cb4abbb55487432755221405e7ed3",
+                "bodyIdentity": "studio-contract-body@2:examples:91b300b5e07dfe944c31f166f2ee40cb562cb4abbb55487432755221405e7ed3"
+              }
+            ],
+            "partialCount": 0
+          },
+          "visualEvidence": {
+            "regions": [
+              {
+                "cursor": "[repeated reference]",
+                "capturedAt": "2026-10-27T11:07:15.512Z",
+                "viewport": "[repeated reference]",
+                "image": "[repeated reference]",
+                "preview": "[repeated reference]",
+                "imageDigest": "6d44dee7d58d76fa8b9673809e0a1f7227e96f03c9242b44aaccc4741f5a8912",
+                "currentSource": true
+              }
+            ],
+            "currentSourceObservations": 1,
+            "scope": "Captured regions only; source freshness does not establish current runtime/viewport freshness or offscreen/interaction coverage.",
+            "interactionsVerified": false
+          },
+          "evidence": "Host receipt-derived totals include all acknowledged transactions, including cleanup. Outside-tool time is waiting/generation/transport/host overhead, not measured provider latency. Captured regions do not establish full-page or interaction coverage."
+        }
+      },
+      "notices": [
+        "Content truncated"
+      ]
+    },
+    {
+      "index": 13,
+      "title": "Edit screen",
+      "input": {
+        "expectedRevision": "r1.r1#5",
+        "reason": "Theme the dropdown triggers: authored trigger spans with caret match the nav links; neutralize pinned pill background",
+        "operations": [
+          {
+            "op": "insert",
+            "kind": "element",
+            "nodeId": "navMenTrigger",
+            "parentId": "navMenMenu",
+            "tag": "span",
+            "slotName": "trigger",
+            "text": "Men ▾",
+            "styles": {
+              "color": "#c7ccd6",
+              "cursor": "pointer",
+              "font-size": "14px",
+              "font-weight": "600"
+            }
+          },
+          {
+            "op": "insert",
+            "kind": "element",
+            "nodeId": "navWomenTrigger",
+            "parentId": "navWomenMenu",
+            "tag": "span",
+            "slotName": "trigger",
+            "text": "Women ▾",
+            "styles": {
+              "color": "#c7ccd6",
+              "cursor": "pointer",
+              "font-size": "14px",
+              "font-weight": "600"
+            }
+          },
+          {
+            "op": "style",
+            "nodeId": "navMenMenu",
+            "property": "background-color",
+            "value": {
+              "type": "text",
+              "value": "transparent"
+            }
+          },
+          {
+            "op": "style",
+            "nodeId": "navWomenMenu",
+            "property": "background-color",
+            "value": {
+              "type": "text",
+              "value": "transparent"
+            }
+          }
+        ]
+      },
+      "result": {
+        "ok": true,
+        "expectedRevision": "r1.r1#6",
+        "revision": "r1.r1#6",
+        "digest": "cb3b17e2d6a0ef6a75657dacb6250e66a44a0346c4850670d608706524176c10",
+        "applied": 3,
+        "coverage": {
+          "available": 84,
+          "authored": 6,
+          "catalogAuthored": 3,
+          "registeredAuthored": 6,
+          "reachableSourceNodes": 160,
+          "requested": 84,
+          "scope": "all-authorable-definitions",
+          "missing": [
+            "vict.catalog.checkbox",
+            "vict.catalog.select",
+            "vict.catalog.dialog",
+            "vict.catalog.switch",
+            "vict.catalog.toggle",
+            "vict.catalog.select-multiple",
+            "vict.catalog.select-item",
+            "vict.catalog.combobox",
+            "vict.catalog.combobox-multiple",
+            "vict.catalog.combobox-item",
+            "vict.catalog.toggle-group",
+            "vict.catalog.toggle-group-multiple",
+            "vict.catalog.toggle-group-item",
+            "vict.catalog.accordion",
+            "vict.catalog.accordion-multiple",
+            "vict.catalog.accordion-item",
+            "vict.catalog.slider",
+            "vict.catalog.meter",
+            "vict.catalog.progress",
+            "vict.catalog.pagination"
+          ],
+          "evidence": "Reachable declared source presence only, including inactive branches/templates. An agent-declared manifest is not proof of the user intent, observed appearance, exercised interaction or completion.",
+          "missingCount": 78,
+          "moreMissing": true
+        },
+        "verification": "source-only",
+        "turnProgress": {
+          "applied": 3,
+          "metrics": {
+            "toolCalls": 13,
+            "completedCalls": 13,
+            "refusedCalls": 0,
+            "recoveryAttempts": 0,
+            "toolElapsedMs": 20633,
+            "providerRequests": 7,
+            "visionRequests": 1,
+            "acknowledgementMs": 684,
+            "confirmedEdits": 3,
+            "usage": {
+              "inputTokens": 161848,
+              "outputTokens": 11736,
+              "totalTokens": 173584
+            },
+            "firstEditMs": 195219.17069999967,
+            "categories": {
+              "knowledge": 3,
+              "source": 6,
+              "edit": 3,
+              "observe": 1,
+              "other": 0
+            },
+            "elapsedMs": 350301,
+            "toolActiveMs": 20589,
+            "outsideToolMs": 329712,
+            "modelSteps": null,
+            "cost": null
+          },
+          "retainedKnowledge": {
+            "scope": "Complete contract bodies delivered in this turn only; reuse still requires their content to remain available in model context. Source facts are never cached knowledge.",
+            "complete": [
+              {
+                "key": "vict.catalog.dropdown-menu.item@1",
+                "digest": "dfe53b4dc86347a9964366f991f47abc203e1b5c5b2e172d29dc3316f63dfbb6",
+                "bodyIdentity": "studio-contract-body@2:examples:dfe53b4dc86347a9964366f991f47abc203e1b5c5b2e172d29dc3316f63dfbb6"
+              },
+              {
+                "key": "vict.catalog.dropdown-menu@1",
+                "digest": "99cde36abc18b7255b40c778b3bab7bdb300a96cdf332c7538eaf467b1f09249",
+                "bodyIdentity": "studio-contract-body@2:examples:99cde36abc18b7255b40c778b3bab7bdb300a96cdf332c7538eaf467b1f09249"
+              },
+              {
+                "key": "vict.catalog.dropdown-menu.sub@1",
+                "digest": "91b300b5e07dfe944c31f166f2ee40cb562cb4abbb55487432755221405e7ed3",
+                "bodyIdentity": "studio-contract-body@2:examples:91b300b5e07dfe944c31f166f2ee40cb562cb4abbb55487432755221405e7ed3"
+              }
+            ],
+            "partialCount": 0
+          },
+          "visualEvidence": {
+            "regions": [
+              {
+                "cursor": {
+                  "documentId": "screen-949a8f5e-eed5-4877-ac59-09ebafcad678",
+                  "revision": "r1.r1#5",
+                  "digest": "c31f4b1dd2dc406af4ab8eeb90b041da7552f5199445868c24513a4c59a36a2d",
+                  "epoch": "7c0c8780-09a3-4038-ae3c-ba51d6db7731"
+                },
+                "capturedAt": "2026-10-27T11:07:15.512Z",
+                "viewport": {
+                  "width": 1120,
+                  "height": 561,
+                  "scrollLeft": 0,
+                  "scrollTop": 0,
+                  "devicePixelRatio": 1.25
+                },
+                "image": {
+                  "width": 1069,
+                  "height": 545,
+                  "sourceWidth": 1069,
+                  "sourceHeight": 2713,
+                  "offsetLeft": 0,
+                  "offsetTop": 0,
+                  "cropped": true
+                },
+                "preview": {
+                  "mode": "design",
+                  "fingerprint": "f3847dd8d56bf75ca5616d844d4a32699625411c09a220c8914c023bc770ef8e"
+                },
+                "imageDigest": "6d44dee7d58d76fa8b9673809e0a1f7227e96f03c9242b44aaccc4741f5a8912",
+                "currentSource": false
+              }
+            ],
+            "currentSourceObservations": 0,
+            "scope": "Captured regions only; source freshness does not establish current runtime/viewport freshness or offscreen/interaction coverage.",
+            "interactionsVerified": false
+          },
+          "evidence": "Host receipt-derived totals include all acknowledged transactions, including cleanup. Outside-tool time is waiting/generation/transport/host overhead, not measured provider latency. Captured regions do not establish full-page or interaction coverage."
+        }
+      },
+      "notices": []
+    },
+    {
+      "index": 14,
+      "title": "Observe preview",
+      "input": {
+        "focus": "Top navigation: do Men and Women now render as plain light-gray nav links with a small caret matching New Drops and Support, without any white pill backgrounds? Check alignment and contrast on the dark header"
+      },
+      "result": {
+        "ok": true,
+        "evidence": "observed-appearance",
+        "observation": "Observed: No — \"Men ▾\" and \"Women ▾\" do not render as plain links. Both still sit inside rounded outline pill/capsule backgrounds (dark fill with a light gray border), while \"New Drops\" and \"Support\" appear as bare text links without containers. So the two dropdown items remain visually distinct from the plain links.\n\nCarets: Yes, small down carets are visible next to both \"Men\" and \"Women\".\n\nContrast: The labels read as light gray/white on the near-black header and are legible; the pill borders are lower-contrast but visible.\n\nAlignment: All nav items appear roughly vertically centered on one baseline row; \"Men\" and \"Women\" look slightly larger and sit with a bit more visual weight due to the pill frames. Inference: pill removal appears not yet applied.",
+        "metadata": {
+          "cursor": {
+            "documentId": "screen-949a8f5e-eed5-4877-ac59-09ebafcad678",
+            "revision": "r1.r1#6",
+            "digest": "cb3b17e2d6a0ef6a75657dacb6250e66a44a0346c4850670d608706524176c10",
+            "epoch": "7c0c8780-09a3-4038-ae3c-ba51d6db7731"
+          },
+          "capturedAt": "2026-10-27T11:09:27.412Z",
+          "viewport": {
+            "width": 1120,
+            "height": 561,
+            "scrollLeft": 0,
+            "scrollTop": 0,
+            "devicePixelRatio": 1.25
+          },
+          "image": {
+            "width": 1069,
+            "height": 545,
+            "sourceWidth": 1069,
+            "sourceHeight": 2713,
+            "offsetLeft": 0,
+            "offsetTop": 0,
+            "cropped": true
+          },
+          "preview": {
+            "mode": "design",
+            "fingerprint": "cf0abfcd6703534cc35e95e17f236d0321671ec8e72d81dcc200ee40312a3ab3"
+          }
+        },
+        "revalidatedAt": "2026-10-27T11:09:41.188Z",
+        "validation": "same-source-preview-viewport-and-image-bytes-after-inference",
+        "imageDigest": "77d24573d9d3cecef918ce52364d0572343c755d61f314d49dc55cc5f5cd1fe1",
+        "confirmedImageDigest": "77d24573d9d3cecef918ce52364d0572343c755d61f314d49dc55cc5f5cd1fe1",
+        "imageComparison": "sha256-identical",
+        "imageComparisonScope": "within-this-observation-before-and-after-inference",
+        "fingerprintMeaning": "Source and preview state identity, not a pixel digest. Separate successful observations may have different fingerprints and identical pixels.",
+        "captureAttempts": 2,
+        "captureRecoveryAttempts": 0,
+        "bytes": 48128,
+        "model": "zai/glm-5.3-flash",
+        "interactionVerified": false,
+        "limitation": "Only the captured preview frame region and stated preview state were inspected. Equal image bytes across separate observations do not prove stale capture or a rasterizer defect; a source edit may have no effect in this crop. Open preview-owned external portals refuse capture; unrelated Studio chrome is outside this image. Source relationships and interaction outcomes require separate checks.",
+        "turnProgress": {
+          "applied": 3,
+          "metrics": {
+            "toolCalls": 14,
+            "completedCalls": 14,
+            "refusedCalls": 0,
+            "recoveryAttempts": 0,
+            "toolElapsedMs": 36550,
+            "providerRequests": 8,
+            "visionRequests": 2,
+            "acknowledgementMs": 684,
+            "confirmedEdits": 3,
+            "usage": {
+              "inputTokens": 203409,
+              "outputTokens": 11860,
+              "totalTokens": 215269
+            },
+            "firstEditMs": 195219.17069999967,
+            "categories": {
+              "knowledge": 3,
+              "source": 6,
+              "edit": 3,
+              "observe": 2,
+              "other": 0
+            },
+            "elapsedMs": 372608,
+            "toolActiveMs": 36506,
+            "outsideToolMs": 336102,
+            "modelSteps": null,
+            "cost": null
+          },
+          "retainedKnowledge": {
+            "scope": "Complete contract bodies delivered in this turn only; reuse still requires their content to remain available in model context. Source facts are never cached knowledge.",
+            "complete": [
+              {
+                "key": "vict.catalog.dropdown-menu.item@1",
+                "digest": "dfe53b4dc86347a9964366f991f47abc203e1b5c5b2e172d29dc3316f63dfbb6",
+                "bodyIdentity": "studio-contract-body@2:examples:dfe53b4dc86347a9964366f991f47abc203e1b5c5b2e172d29dc3316f63dfbb6"
+              },
+              {
+                "key": "vict.catalog.dropdown-menu@1",
+                "digest": "99cde36abc18b7255b40c778b3bab7bdb300a96cdf332c7538eaf467b1f09249",
+                "bodyIdentity": "studio-contract-body@2:examples:99cde36abc18b7255b40c778b3bab7bdb300a96cdf332c7538eaf467b1f09249"
+              },
+              {
+                "key": "vict.catalog.dropdown-menu.sub@1",
+                "digest": "91b300b5e07dfe944c31f166f2ee40cb562cb4abbb55487432755221405e7ed3",
+                "bodyIdentity": "studio-contract-body@2:examples:91b300b5e07dfe944c31f166f2ee40cb562cb4abbb55487432755221405e7ed3"
+              }
+            ],
+            "partialCount": 0
+          },
+          "visualEvidence": {
+            "regions": [
+              {
+                "cursor": {
+                  "documentId": "screen-949a8f5e-eed5-4877-ac59-09ebafcad678",
+                  "revision": "r1.r1#5",
+                  "digest": "c31f4b1dd2dc406af4ab8eeb90b041da7552f5199445868c24513a4c59a36a2d",
+                  "epoch": "7c0c8780-09a3-4038-ae3c-ba51d6db7731"
+                },
+                "capturedAt": "2026-10-27T11:07:15.512Z",
+                "viewport": {
+                  "width": 1120,
+                  "height": 561,
+                  "scrollLeft": 0,
+                  "scrollTop": 0,
+                  "devicePixelRatio": 1.25
+                },
+                "image": {
+                  "width": 1069,
+                  "height": 545,
+                  "sourceWidth": 1069,
+                  "sourceHeight": 2713,
+                  "offsetLeft": 0,
+                  "offsetTop": 0,
+                  "cropped": true
+                },
+                "preview": {
+                  "mode": "design",
+                  "fingerprint": "f3847dd8d56bf75ca5616d844d4a32699625411c09a220c8914c023bc770ef8e"
+                },
+                "imageDigest": "6d44dee7d58d76fa8b9673809e0a1f7227e96f03c9242b44aaccc4741f5a8912",
+                "currentSource": false
+              },
+              {
+                "cursor": "[repeated reference]",
+                "capturedAt": "2026-10-27T11:09:27.412Z",
+                "viewport": "[repeated reference]",
+                "image": "[repeated reference]",
+                "preview": "[repeated reference]",
+                "imageDigest": "77d24573d9d3cecef918ce52364d0572343c755d61f314d49dc55cc5f5cd1fe1",
+                "currentSource": true
+              }
+            ],
+            "currentSourceObservations": 1,
+            "scope": "Captured regions only; source freshness does not establish current runtime/viewport freshness or offscreen/interaction coverage.",
+            "interactionsVerified": false
+          },
+          "evidence": "Host receipt-derived totals include all acknowledged transactions, including cleanup. Outside-tool time is waiting/generation/transport/host overhead, not measured provider latency. Captured regions do not establish full-page or interaction coverage."
+        }
+      },
+      "notices": [
+        "Content truncated"
+      ]
+    },
+    {
+      "index": 15,
+      "title": "Edit screen",
+      "input": {
+        "expectedRevision": "r1.r1#6",
+        "reason": "Remove remaining capsule border and padding on dropdown trigger roots to match bare nav links",
+        "operations": [
+          {
+            "op": "style",
+            "nodeId": "navMenMenu",
+            "property": "border",
+            "value": {
+              "type": "text",
+              "value": "none"
+            }
+          },
+          {
+            "op": "style",
+            "nodeId": "navWomenMenu",
+            "property": "border",
+            "value": {
+              "type": "text",
+              "value": "none"
+            }
+          },
+          {
+            "op": "style",
+            "nodeId": "navMenMenu",
+            "property": "padding",
+            "value": {
+              "type": "text",
+              "value": "0px"
+            }
+          },
+          {
+            "op": "style",
+            "nodeId": "navWomenMenu",
+            "property": "padding",
+            "value": {
+              "type": "text",
+              "value": "0px"
+            }
+          }
+        ]
+      },
+      "result": {
+        "ok": true,
+        "expectedRevision": "r1.r1#7",
+        "revision": "r1.r1#7",
+        "digest": "635e2deac4635de83918797275ab4640a0b340f95bce12f29452c3800136f8e8",
+        "applied": 4,
+        "coverage": {
+          "available": 84,
+          "authored": 6,
+          "catalogAuthored": 3,
+          "registeredAuthored": 6,
+          "reachableSourceNodes": 160,
+          "requested": 84,
+          "scope": "all-authorable-definitions",
+          "missing": [
+            "vict.catalog.checkbox",
+            "vict.catalog.select",
+            "vict.catalog.dialog",
+            "vict.catalog.switch",
+            "vict.catalog.toggle",
+            "vict.catalog.select-multiple",
+            "vict.catalog.select-item",
+            "vict.catalog.combobox",
+            "vict.catalog.combobox-multiple",
+            "vict.catalog.combobox-item",
+            "vict.catalog.toggle-group",
+            "vict.catalog.toggle-group-multiple",
+            "vict.catalog.toggle-group-item",
+            "vict.catalog.accordion",
+            "vict.catalog.accordion-multiple",
+            "vict.catalog.accordion-item",
+            "vict.catalog.slider",
+            "vict.catalog.meter",
+            "vict.catalog.progress",
+            "vict.catalog.pagination"
+          ],
+          "evidence": "Reachable declared source presence only, including inactive branches/templates. An agent-declared manifest is not proof of the user intent, observed appearance, exercised interaction or completion.",
+          "missingCount": 78,
+          "moreMissing": true
+        },
+        "verification": "source-only",
+        "turnProgress": {
+          "applied": 4,
+          "metrics": {
+            "toolCalls": 15,
+            "completedCalls": 15,
+            "refusedCalls": 0,
+            "recoveryAttempts": 0,
+            "toolElapsedMs": 36798,
+            "providerRequests": 9,
+            "visionRequests": 2,
+            "acknowledgementMs": 836,
+            "confirmedEdits": 4,
+            "usage": {
+              "inputTokens": 247071,
+              "outputTokens": 12706,
+              "totalTokens": 259777
+            },
+            "firstEditMs": 195219.17069999967,
+            "categories": {
+              "knowledge": 3,
+              "source": 6,
+              "edit": 4,
+              "observe": 2,
+              "other": 0
+            },
+            "elapsedMs": 397198,
+            "toolActiveMs": 36755,
+            "outsideToolMs": 360443,
+            "modelSteps": null,
+            "cost": null
+          },
+          "retainedKnowledge": {
+            "scope": "Complete contract bodies delivered in this turn only; reuse still requires their content to remain available in model context. Source facts are never cached knowledge.",
+            "complete": [
+              {
+                "key": "vict.catalog.dropdown-menu.item@1",
+                "digest": "dfe53b4dc86347a9964366f991f47abc203e1b5c5b2e172d29dc3316f63dfbb6",
+                "bodyIdentity": "studio-contract-body@2:examples:dfe53b4dc86347a9964366f991f47abc203e1b5c5b2e172d29dc3316f63dfbb6"
+              },
+              {
+                "key": "vict.catalog.dropdown-menu@1",
+                "digest": "99cde36abc18b7255b40c778b3bab7bdb300a96cdf332c7538eaf467b1f09249",
+                "bodyIdentity": "studio-contract-body@2:examples:99cde36abc18b7255b40c778b3bab7bdb300a96cdf332c7538eaf467b1f09249"
+              },
+              {
+                "key": "vict.catalog.dropdown-menu.sub@1",
+                "digest": "91b300b5e07dfe944c31f166f2ee40cb562cb4abbb55487432755221405e7ed3",
+                "bodyIdentity": "studio-contract-body@2:examples:91b300b5e07dfe944c31f166f2ee40cb562cb4abbb55487432755221405e7ed3"
+              }
+            ],
+            "partialCount": 0
+          },
+          "visualEvidence": {
+            "regions": [
+              {
+                "cursor": {
+                  "documentId": "screen-949a8f5e-eed5-4877-ac59-09ebafcad678",
+                  "revision": "r1.r1#5",
+                  "digest": "c31f4b1dd2dc406af4ab8eeb90b041da7552f5199445868c24513a4c59a36a2d",
+                  "epoch": "7c0c8780-09a3-4038-ae3c-ba51d6db7731"
+                },
+                "capturedAt": "2026-10-27T11:07:15.512Z",
+                "viewport": {
+                  "width": 1120,
+                  "height": 561,
+                  "scrollLeft": 0,
+                  "scrollTop": 0,
+                  "devicePixelRatio": 1.25
+                },
+                "image": {
+                  "width": 1069,
+                  "height": 545,
+                  "sourceWidth": 1069,
+                  "sourceHeight": 2713,
+                  "offsetLeft": 0,
+                  "offsetTop": 0,
+                  "cropped": true
+                },
+                "preview": {
+                  "mode": "design",
+                  "fingerprint": "f3847dd8d56bf75ca5616d844d4a32699625411c09a220c8914c023bc770ef8e"
+                },
+                "imageDigest": "6d44dee7d58d76fa8b9673809e0a1f7227e96f03c9242b44aaccc4741f5a8912",
+                "currentSource": false
+              },
+              {
+                "cursor": {
+                  "documentId": "screen-949a8f5e-eed5-4877-ac59-09ebafcad678",
+                  "revision": "r1.r1#6",
+                  "digest": "cb3b17e2d6a0ef6a75657dacb6250e66a44a0346c4850670d608706524176c10",
+                  "epoch": "7c0c8780-09a3-4038-ae3c-ba51d6db7731"
+                },
+                "capturedAt": "2026-10-27T11:09:27.412Z",
+                "viewport": {
+                  "width": 1120,
+                  "height": 561,
+                  "scrollLeft": 0,
+                  "scrollTop": 0,
+                  "devicePixelRatio": 1.25
+                },
+                "image": {
+                  "width": 1069,
+                  "height": 545,
+                  "sourceWidth": 1069,
+                  "sourceHeight": 2713,
+                  "offsetLeft": 0,
+                  "offsetTop": 0,
+                  "cropped": true
+                },
+                "preview": {
+                  "mode": "design",
+                  "fingerprint": "cf0abfcd6703534cc35e95e17f236d0321671ec8e72d81dcc200ee40312a3ab3"
+                },
+                "imageDigest": "77d24573d9d3cecef918ce52364d0572343c755d61f314d49dc55cc5f5cd1fe1",
+                "currentSource": false
+              }
+            ],
+            "currentSourceObservations": 0,
+            "scope": "Captured regions only; source freshness does not establish current runtime/viewport freshness or offscreen/interaction coverage.",
+            "interactionsVerified": false
+          },
+          "evidence": "Host receipt-derived totals include all acknowledged transactions, including cleanup. Outside-tool time is waiting/generation/transport/host overhead, not measured provider latency. Captured regions do not establish full-page or interaction coverage."
+        }
+      },
+      "notices": []
+    },
+    {
+      "index": 16,
+      "title": "Observe preview",
+      "input": {
+        "focus": "Top navigation: are the Men and Women dropdown triggers now bare light-gray links with small carets matching New Drops and Support (no capsule outline)? Check overall nav alignment and readability"
+      },
+      "result": {
+        "ok": false,
+        "code": "STUDIO_CAPTURE_STALE",
+        "message": "The preview could not be revalidated after image inference (STUDIO_CAPTURE_STALE). Request a fresh observation; the previous image cannot verify the current preview.",
+        "diagnostics": {
+          "phase": "revalidation",
+          "reason": "confirmation-refused",
+          "expectedRevision": "r1.r1#7",
+          "actualRevision": "r1.r1#7",
+          "mode": "design",
+          "covered": false,
+          "connected": true,
+          "layout": true,
+          "frame": [
+            378,
+            98.80000305175781,
+            647.2000122070312,
+            3314.400146484375
+          ],
+          "frameBefore": [
+            378,
+            98.80000305175781,
+            647.2000122070312,
+            3314.400146484375
+          ],
+          "viewport": [
+            360,
+            82.80000305175781,
+            698.4000244140625,
+            560.4000244140625
+          ],
+          "viewportBefore": [
+            360,
+            82.80000305175781,
+            698.4000244140625,
+            560.4000244140625
+          ],
+          "scroll": [
+            0,
+            0
+          ],
+          "changed": [
+            "rendered-controls"
+          ]
+        },
+        "turnProgress": {
+          "applied": 4,
+          "metrics": {
+            "toolCalls": 16,
+            "completedCalls": 15,
+            "refusedCalls": 1,
+            "recoveryAttempts": 0,
+            "toolElapsedMs": 55073,
+            "providerRequests": 10,
+            "visionRequests": 3,
+            "acknowledgementMs": 836,
+            "confirmedEdits": 4,
+            "usage": {
+              "inputTokens": 293113,
+              "outputTokens": 12791,
+              "totalTokens": 305904
+            },
+            "firstEditMs": 195219.17069999967,
+            "categories": {
+              "knowledge": 3,
+              "source": 6,
+              "edit": 4,
+              "observe": 3,
+              "other": 0
+            },
+            "elapsedMs": 422334,
+            "toolActiveMs": 55030,
+            "outsideToolMs": 367304,
+            "modelSteps": null,
+            "cost": null
+          },
+          "retainedKnowledge": {
+            "scope": "Complete contract bodies delivered in this turn only; reuse still requires their content to remain available in model context. Source facts are never cached knowledge.",
+            "complete": [
+              {
+                "key": "vict.catalog.dropdown-menu.item@1",
+                "digest": "dfe53b4dc86347a9964366f991f47abc203e1b5c5b2e172d29dc3316f63dfbb6",
+                "bodyIdentity": "studio-contract-body@2:examples:dfe53b4dc86347a9964366f991f47abc203e1b5c5b2e172d29dc3316f63dfbb6"
+              },
+              {
+                "key": "vict.catalog.dropdown-menu@1",
+                "digest": "99cde36abc18b7255b40c778b3bab7bdb300a96cdf332c7538eaf467b1f09249",
+                "bodyIdentity": "studio-contract-body@2:examples:99cde36abc18b7255b40c778b3bab7bdb300a96cdf332c7538eaf467b1f09249"
+              },
+              {
+                "key": "vict.catalog.dropdown-menu.sub@1",
+                "digest": "91b300b5e07dfe944c31f166f2ee40cb562cb4abbb55487432755221405e7ed3",
+                "bodyIdentity": "studio-contract-body@2:examples:91b300b5e07dfe944c31f166f2ee40cb562cb4abbb55487432755221405e7ed3"
+              }
+            ],
+            "partialCount": 0
+          },
+          "visualEvidence": {
+            "regions": [
+              {
+                "cursor": {
+                  "documentId": "screen-949a8f5e-eed5-4877-ac59-09ebafcad678",
+                  "revision": "r1.r1#5",
+                  "digest": "c31f4b1dd2dc406af4ab8eeb90b041da7552f5199445868c24513a4c59a36a2d",
+                  "epoch": "7c0c8780-09a3-4038-ae3c-ba51d6db7731"
+                },
+                "capturedAt": "2026-10-27T11:07:15.512Z",
+                "viewport": {
+                  "width": 1120,
+                  "height": 561,
+                  "scrollLeft": 0,
+                  "scrollTop": 0,
+                  "devicePixelRatio": 1.25
+                },
+                "image": {
+                  "width": 1069,
+                  "height": 545,
+                  "sourceWidth": 1069,
+                  "sourceHeight": 2713,
+                  "offsetLeft": 0,
+                  "offsetTop": 0,
+                  "cropped": true
+                },
+                "preview": {
+                  "mode": "design",
+                  "fingerprint": "f3847dd8d56bf75ca5616d844d4a32699625411c09a220c8914c023bc770ef8e"
+                },
+                "imageDigest": "6d44dee7d58d76fa8b9673809e0a1f7227e96f03c9242b44aaccc4741f5a8912",
+                "currentSource": false
+              },
+              {
+                "cursor": {
+                  "documentId": "screen-949a8f5e-eed5-4877-ac59-09ebafcad678",
+                  "revision": "r1.r1#6",
+                  "digest": "cb3b17e2d6a0ef6a75657dacb6250e66a44a0346c4850670d608706524176c10",
+                  "epoch": "7c0c8780-09a3-4038-ae3c-ba51d6db7731"
+                },
+                "capturedAt": "2026-10-27T11:09:27.412Z",
+                "viewport": {
+                  "width": 1120,
+                  "height": 561,
+                  "scrollLeft": 0,
+                  "scrollTop": 0,
+                  "devicePixelRatio": 1.25
+                },
+                "image": {
+                  "width": 1069,
+                  "height": 545,
+                  "sourceWidth": 1069,
+                  "sourceHeight": 2713,
+                  "offsetLeft": 0,
+                  "offsetTop": 0,
+                  "cropped": true
+                },
+                "preview": {
+                  "mode": "design",
+                  "fingerprint": "cf0abfcd6703534cc35e95e17f236d0321671ec8e72d81dcc200ee40312a3ab3"
+                },
+                "imageDigest": "77d24573d9d3cecef918ce52364d0572343c755d61f314d49dc55cc5f5cd1fe1",
+                "currentSource": false
+              }
+            ],
+            "currentSourceObservations": 0,
+            "scope": "Captured regions only; source freshness does not establish current runtime/viewport freshness or offscreen/interaction coverage.",
+            "interactionsVerified": false
+          },
+          "evidence": "Host receipt-derived totals include all acknowledged transactions, including cleanup. Outside-tool time is waiting/generation/transport/host overhead, not measured provider latency. Captured regions do not establish full-page or interaction coverage."
+        }
+      },
+      "notices": []
+    },
+    {
+      "index": 17,
+      "title": "Observe preview",
+      "input": {
+        "focus": "Top navigation: are the Men and Women dropdown triggers now bare light-gray links with small carets matching New Drops and Support (no capsule outline)? Check overall nav alignment and readability"
+      },
+      "result": {
+        "ok": false,
+        "code": "STUDIO_CAPTURE_PORTAL_UNSUPPORTED",
+        "message": "An open preview dialog, menu or popup is outside the capture frame. No image or overlay observation was made. Close it before capturing the frame; open portalled overlays are unsupported by this image path.",
+        "diagnostics": {
+          "phase": "visibility",
+          "reason": "external-preview-portal",
+          "expectedRevision": "r1.r1#7",
+          "mode": "interact"
+        },
+        "recovery": {
+          "action": "Close the preview popup, then request observation only.",
+          "editsReplayed": false,
+          "captureAttempts": 1
+        },
+        "turnProgress": {
+          "applied": 4,
+          "metrics": {
+            "toolCalls": 17,
+            "completedCalls": 15,
+            "refusedCalls": 2,
+            "recoveryAttempts": 1,
+            "toolElapsedMs": 55123,
+            "providerRequests": 11,
+            "visionRequests": 3,
+            "acknowledgementMs": 836,
+            "confirmedEdits": 4,
+            "usage": {
+              "inputTokens": 340743,
+              "outputTokens": 12966,
+              "totalTokens": 353709
+            },
+            "firstEditMs": 195219.17069999967,
+            "categories": {
+              "knowledge": 3,
+              "source": 6,
+              "edit": 4,
+              "observe": 4,
+              "other": 0
+            },
+            "elapsedMs": 430994,
+            "toolActiveMs": 55080,
+            "outsideToolMs": 375914,
+            "modelSteps": null,
+            "cost": null
+          },
+          "retainedKnowledge": {
+            "scope": "Complete contract bodies delivered in this turn only; reuse still requires their content to remain available in model context. Source facts are never cached knowledge.",
+            "complete": [
+              {
+                "key": "vict.catalog.dropdown-menu.item@1",
+                "digest": "dfe53b4dc86347a9964366f991f47abc203e1b5c5b2e172d29dc3316f63dfbb6",
+                "bodyIdentity": "studio-contract-body@2:examples:dfe53b4dc86347a9964366f991f47abc203e1b5c5b2e172d29dc3316f63dfbb6"
+              },
+              {
+                "key": "vict.catalog.dropdown-menu@1",
+                "digest": "99cde36abc18b7255b40c778b3bab7bdb300a96cdf332c7538eaf467b1f09249",
+                "bodyIdentity": "studio-contract-body@2:examples:99cde36abc18b7255b40c778b3bab7bdb300a96cdf332c7538eaf467b1f09249"
+              },
+              {
+                "key": "vict.catalog.dropdown-menu.sub@1",
+                "digest": "91b300b5e07dfe944c31f166f2ee40cb562cb4abbb55487432755221405e7ed3",
+                "bodyIdentity": "studio-contract-body@2:examples:91b300b5e07dfe944c31f166f2ee40cb562cb4abbb55487432755221405e7ed3"
+              }
+            ],
+            "partialCount": 0
+          },
+          "visualEvidence": {
+            "regions": [
+              {
+                "cursor": {
+                  "documentId": "screen-949a8f5e-eed5-4877-ac59-09ebafcad678",
+                  "revision": "r1.r1#5",
+                  "digest": "c31f4b1dd2dc406af4ab8eeb90b041da7552f5199445868c24513a4c59a36a2d",
+                  "epoch": "7c0c8780-09a3-4038-ae3c-ba51d6db7731"
+                },
+                "capturedAt": "2026-10-27T11:07:15.512Z",
+                "viewport": {
+                  "width": 1120,
+                  "height": 561,
+                  "scrollLeft": 0,
+                  "scrollTop": 0,
+                  "devicePixelRatio": 1.25
+                },
+                "image": {
+                  "width": 1069,
+                  "height": 545,
+                  "sourceWidth": 1069,
+                  "sourceHeight": 2713,
+                  "offsetLeft": 0,
+                  "offsetTop": 0,
+                  "cropped": true
+                },
+                "preview": {
+                  "mode": "design",
+                  "fingerprint": "f3847dd8d56bf75ca5616d844d4a32699625411c09a220c8914c023bc770ef8e"
+                },
+                "imageDigest": "6d44dee7d58d76fa8b9673809e0a1f7227e96f03c9242b44aaccc4741f5a8912",
+                "currentSource": false
+              },
+              {
+                "cursor": {
+                  "documentId": "screen-949a8f5e-eed5-4877-ac59-09ebafcad678",
+                  "revision": "r1.r1#6",
+                  "digest": "cb3b17e2d6a0ef6a75657dacb6250e66a44a0346c4850670d608706524176c10",
+                  "epoch": "7c0c8780-09a3-4038-ae3c-ba51d6db7731"
+                },
+                "capturedAt": "2026-10-27T11:09:27.412Z",
+                "viewport": {
+                  "width": 1120,
+                  "height": 561,
+                  "scrollLeft": 0,
+                  "scrollTop": 0,
+                  "devicePixelRatio": 1.25
+                },
+                "image": {
+                  "width": 1069,
+                  "height": 545,
+                  "sourceWidth": 1069,
+                  "sourceHeight": 2713,
+                  "offsetLeft": 0,
+                  "offsetTop": 0,
+                  "cropped": true
+                },
+                "preview": {
+                  "mode": "design",
+                  "fingerprint": "cf0abfcd6703534cc35e95e17f236d0321671ec8e72d81dcc200ee40312a3ab3"
+                },
+                "imageDigest": "77d24573d9d3cecef918ce52364d0572343c755d61f314d49dc55cc5f5cd1fe1",
+                "currentSource": false
+              }
+            ],
+            "currentSourceObservations": 0,
+            "scope": "Captured regions only; source freshness does not establish current runtime/viewport freshness or offscreen/interaction coverage.",
+            "interactionsVerified": false
+          },
+          "evidence": "Host receipt-derived totals include all acknowledged transactions, including cleanup. Outside-tool time is waiting/generation/transport/host overhead, not measured provider latency. Captured regions do not establish full-page or interaction coverage."
+        }
+      },
+      "notices": []
+    },
+    {
+      "index": 18,
+      "title": "Read screen",
+      "input": {
+        "section": "source",
+        "offset": 0,
+        "limit": 12,
+        "nodeId": "navMenMenu"
+      },
+      "result": {
+        "expectedRevision": "r1.r1#7",
+        "cursor": {
+          "documentId": "screen-949a8f5e-eed5-4877-ac59-09ebafcad678",
+          "revision": "r1.r1#7",
+          "digest": "635e2deac4635de83918797275ab4640a0b340f95bce12f29452c3800136f8e8",
+          "epoch": "7c0c8780-09a3-4038-ae3c-ba51d6db7731"
+        },
+        "section": "source",
+        "nodeId": "navMenMenu",
+        "sourceJson": "{\"kind\":\"component\",\"id\":\"navMenMenu\",\"definitionId\":\"vict.catalog.dropdown-menu\",\"revision\":\"1\",\"props\":{\"open\":{\"type\":\"ref\",\"path\":\"state.menMenuOpen\"},\"label\":{\"type\":\"literal\",\"value\":\"Men\"}},\"outputs\":{\"openChange\":{\"setState\":{\"key\":\"menMenuOpen\"}}},\"slots\":{\"items\":{\"name\":\"items\",\"children\":[\"navMenItem1\",\"navMenItem2\",\"navMenItem3\"]},\"trigger\":{\"name\":\"trigger\",\"children\":[\"navMenTrigger\"]}},\"localStyle\":[{\"property\":\"color\",\"value\":{\"type\":\"text\",\"value\":\"#c7ccd6\"}},{\"property\":\"cursor\",\"value\":{\"type\":\"text\",\"value\":\"pointer\"}},{\"property\":\"font-size\",\"value\":{\"type\":\"text\",\"value\":\"14px\"}},{\"property\":\"font-weight\",\"value\":{\"type\":\"text\",\"value\":\"600\"}},{\"property\":\"background-color\",\"value\":{\"type\":\"text\",\"value\":\"transparent\"}},{\"property\":\"border\",\"value\":{\"type\":\"text\",\"value\":\"none\"}},{\"property\":\"padding\",\"value\":{\"type\":\"text\",\"value\":\"0px\"}}]}",
+        "totalCharacters": 876,
+        "offset": 0,
+        "nextOffset": null,
+        "turnProgress": {
+          "applied": 4,
+          "metrics": {
+            "toolCalls": 19,
+            "completedCalls": 16,
+            "refusedCalls": 2,
+            "recoveryAttempts": 1,
+            "toolElapsedMs": 55128,
+            "providerRequests": 12,
+            "visionRequests": 3,
+            "acknowledgementMs": 836,
+            "confirmedEdits": 4,
+            "usage": {
+              "inputTokens": 389900,
+              "outputTokens": 13888,
+              "totalTokens": 403788
+            },
+            "firstEditMs": 195219.17069999967,
+            "categories": {
+              "knowledge": 3,
+              "source": 8,
+              "edit": 4,
+              "observe": 4,
+              "other": 0
+            },
+            "elapsedMs": 461302,
+            "toolActiveMs": 55085,
+            "outsideToolMs": 406217,
+            "modelSteps": null,
+            "cost": null
+          },
+          "retainedKnowledge": {
+            "scope": "Complete contract bodies delivered in this turn only; reuse still requires their content to remain available in model context. Source facts are never cached knowledge.",
+            "complete": [
+              {
+                "key": "vict.catalog.dropdown-menu.item@1",
+                "digest": "dfe53b4dc86347a9964366f991f47abc203e1b5c5b2e172d29dc3316f63dfbb6",
+                "bodyIdentity": "studio-contract-body@2:examples:dfe53b4dc86347a9964366f991f47abc203e1b5c5b2e172d29dc3316f63dfbb6"
+              },
+              {
+                "key": "vict.catalog.dropdown-menu@1",
+                "digest": "99cde36abc18b7255b40c778b3bab7bdb300a96cdf332c7538eaf467b1f09249",
+                "bodyIdentity": "studio-contract-body@2:examples:99cde36abc18b7255b40c778b3bab7bdb300a96cdf332c7538eaf467b1f09249"
+              },
+              {
+                "key": "vict.catalog.dropdown-menu.sub@1",
+                "digest": "91b300b5e07dfe944c31f166f2ee40cb562cb4abbb55487432755221405e7ed3",
+                "bodyIdentity": "studio-contract-body@2:examples:91b300b5e07dfe944c31f166f2ee40cb562cb4abbb55487432755221405e7ed3"
+              }
+            ],
+            "partialCount": 0
+          },
+          "visualEvidence": {
+            "regions": [
+              {
+                "cursor": {
+                  "documentId": "screen-949a8f5e-eed5-4877-ac59-09ebafcad678",
+                  "revision": "r1.r1#5",
+                  "digest": "c31f4b1dd2dc406af4ab8eeb90b041da7552f5199445868c24513a4c59a36a2d",
+                  "epoch": "7c0c8780-09a3-4038-ae3c-ba51d6db7731"
+                },
+                "capturedAt": "2026-10-27T11:07:15.512Z",
+                "viewport": {
+                  "width": 1120,
+                  "height": 561,
+                  "scrollLeft": 0,
+                  "scrollTop": 0,
+                  "devicePixelRatio": 1.25
+                },
+                "image": {
+                  "width": 1069,
+                  "height": 545,
+                  "sourceWidth": 1069,
+                  "sourceHeight": 2713,
+                  "offsetLeft": 0,
+                  "offsetTop": 0,
+                  "cropped": true
+                },
+                "preview": {
+                  "mode": "design",
+                  "fingerprint": "f3847dd8d56bf75ca5616d844d4a32699625411c09a220c8914c023bc770ef8e"
+                },
+                "imageDigest": "6d44dee7d58d76fa8b9673809e0a1f7227e96f03c9242b44aaccc4741f5a8912",
+                "currentSource": false
+              },
+              {
+                "cursor": {
+                  "documentId": "screen-949a8f5e-eed5-4877-ac59-09ebafcad678",
+                  "revision": "r1.r1#6",
+                  "digest": "cb3b17e2d6a0ef6a75657dacb6250e66a44a0346c4850670d608706524176c10",
+                  "epoch": "7c0c8780-09a3-4038-ae3c-ba51d6db7731"
+                },
+                "capturedAt": "2026-10-27T11:09:27.412Z",
+                "viewport": {
+                  "width": 1120,
+                  "height": 561,
+                  "scrollLeft": 0,
+                  "scrollTop": 0,
+                  "devicePixelRatio": 1.25
+                },
+                "image": {
+                  "width": 1069,
+                  "height": 545,
+                  "sourceWidth": 1069,
+                  "sourceHeight": 2713,
+                  "offsetLeft": 0,
+                  "offsetTop": 0,
+                  "cropped": true
+                },
+                "preview": {
+                  "mode": "design",
+                  "fingerprint": "cf0abfcd6703534cc35e95e17f236d0321671ec8e72d81dcc200ee40312a3ab3"
+                },
+                "imageDigest": "77d24573d9d3cecef918ce52364d0572343c755d61f314d49dc55cc5f5cd1fe1",
+                "currentSource": false
+              }
+            ],
+            "currentSourceObservations": 0,
+            "scope": "Captured regions only; source freshness does not establish current runtime/viewport freshness or offscreen/interaction coverage.",
+            "interactionsVerified": false
+          },
+          "evidence": "Host receipt-derived totals include all acknowledged transactions, including cleanup. Outside-tool time is waiting/generation/transport/host overhead, not measured provider latency. Captured regions do not establish full-page or interaction coverage."
+        }
+      },
+      "notices": []
+    },
+    {
+      "index": 19,
+      "title": "Read screen",
+      "input": {
+        "section": "source",
+        "offset": 0,
+        "limit": 12,
+        "nodeId": "navWomenMenu"
+      },
+      "result": {
+        "expectedRevision": "r1.r1#7",
+        "cursor": {
+          "documentId": "screen-949a8f5e-eed5-4877-ac59-09ebafcad678",
+          "revision": "r1.r1#7",
+          "digest": "635e2deac4635de83918797275ab4640a0b340f95bce12f29452c3800136f8e8",
+          "epoch": "7c0c8780-09a3-4038-ae3c-ba51d6db7731"
+        },
+        "section": "source",
+        "nodeId": "navWomenMenu",
+        "sourceJson": "{\"kind\":\"component\",\"id\":\"navWomenMenu\",\"definitionId\":\"vict.catalog.dropdown-menu\",\"revision\":\"1\",\"props\":{\"open\":{\"type\":\"ref\",\"path\":\"state.womenMenuOpen\"},\"label\":{\"type\":\"literal\",\"value\":\"Women\"}},\"outputs\":{\"openChange\":{\"setState\":{\"key\":\"womenMenuOpen\"}}},\"slots\":{\"items\":{\"name\":\"items\",\"children\":[\"navWomenItem1\",\"navWomenItem2\",\"navWomenItem3\"]},\"trigger\":{\"name\":\"trigger\",\"children\":[\"navWomenTrigger\"]}},\"localStyle\":[{\"property\":\"color\",\"value\":{\"type\":\"text\",\"value\":\"#c7ccd6\"}},{\"property\":\"cursor\",\"value\":{\"type\":\"text\",\"value\":\"pointer\"}},{\"property\":\"font-size\",\"value\":{\"type\":\"text\",\"value\":\"14px\"}},{\"property\":\"font-weight\",\"value\":{\"type\":\"text\",\"value\":\"600\"}},{\"property\":\"background-color\",\"value\":{\"type\":\"text\",\"value\":\"transparent\"}},{\"property\":\"border\",\"value\":{\"type\":\"text\",\"value\":\"none\"}},{\"property\":\"padding\",\"value\":{\"type\":\"text\",\"value\":\"0px\"}}]}",
+        "totalCharacters": 892,
+        "offset": 0,
+        "nextOffset": null,
+        "turnProgress": {
+          "applied": 4,
+          "metrics": {
+            "toolCalls": 19,
+            "completedCalls": 17,
+            "refusedCalls": 2,
+            "recoveryAttempts": 1,
+            "toolElapsedMs": 55135,
+            "providerRequests": 12,
+            "visionRequests": 3,
+            "acknowledgementMs": 836,
+            "confirmedEdits": 4,
+            "usage": {
+              "inputTokens": 389900,
+              "outputTokens": 13888,
+              "totalTokens": 403788
+            },
+            "firstEditMs": 195219.17069999967,
+            "categories": {
+              "knowledge": 3,
+              "source": 8,
+              "edit": 4,
+              "observe": 4,
+              "other": 0
+            },
+            "elapsedMs": 461304,
+            "toolActiveMs": 55087,
+            "outsideToolMs": 406217,
+            "modelSteps": null,
+            "cost": null
+          },
+          "retainedKnowledge": {
+            "scope": "Complete contract bodies delivered in this turn only; reuse still requires their content to remain available in model context. Source facts are never cached knowledge.",
+            "complete": [
+              {
+                "key": "vict.catalog.dropdown-menu.item@1",
+                "digest": "dfe53b4dc86347a9964366f991f47abc203e1b5c5b2e172d29dc3316f63dfbb6",
+                "bodyIdentity": "studio-contract-body@2:examples:dfe53b4dc86347a9964366f991f47abc203e1b5c5b2e172d29dc3316f63dfbb6"
+              },
+              {
+                "key": "vict.catalog.dropdown-menu@1",
+                "digest": "99cde36abc18b7255b40c778b3bab7bdb300a96cdf332c7538eaf467b1f09249",
+                "bodyIdentity": "studio-contract-body@2:examples:99cde36abc18b7255b40c778b3bab7bdb300a96cdf332c7538eaf467b1f09249"
+              },
+              {
+                "key": "vict.catalog.dropdown-menu.sub@1",
+                "digest": "91b300b5e07dfe944c31f166f2ee40cb562cb4abbb55487432755221405e7ed3",
+                "bodyIdentity": "studio-contract-body@2:examples:91b300b5e07dfe944c31f166f2ee40cb562cb4abbb55487432755221405e7ed3"
+              }
+            ],
+            "partialCount": 0
+          },
+          "visualEvidence": {
+            "regions": [
+              {
+                "cursor": {
+                  "documentId": "screen-949a8f5e-eed5-4877-ac59-09ebafcad678",
+                  "revision": "r1.r1#5",
+                  "digest": "c31f4b1dd2dc406af4ab8eeb90b041da7552f5199445868c24513a4c59a36a2d",
+                  "epoch": "7c0c8780-09a3-4038-ae3c-ba51d6db7731"
+                },
+                "capturedAt": "2026-10-27T11:07:15.512Z",
+                "viewport": {
+                  "width": 1120,
+                  "height": 561,
+                  "scrollLeft": 0,
+                  "scrollTop": 0,
+                  "devicePixelRatio": 1.25
+                },
+                "image": {
+                  "width": 1069,
+                  "height": 545,
+                  "sourceWidth": 1069,
+                  "sourceHeight": 2713,
+                  "offsetLeft": 0,
+                  "offsetTop": 0,
+                  "cropped": true
+                },
+                "preview": {
+                  "mode": "design",
+                  "fingerprint": "f3847dd8d56bf75ca5616d844d4a32699625411c09a220c8914c023bc770ef8e"
+                },
+                "imageDigest": "6d44dee7d58d76fa8b9673809e0a1f7227e96f03c9242b44aaccc4741f5a8912",
+                "currentSource": false
+              },
+              {
+                "cursor": {
+                  "documentId": "screen-949a8f5e-eed5-4877-ac59-09ebafcad678",
+                  "revision": "r1.r1#6",
+                  "digest": "cb3b17e2d6a0ef6a75657dacb6250e66a44a0346c4850670d608706524176c10",
+                  "epoch": "7c0c8780-09a3-4038-ae3c-ba51d6db7731"
+                },
+                "capturedAt": "2026-10-27T11:09:27.412Z",
+                "viewport": {
+                  "width": 1120,
+                  "height": 561,
+                  "scrollLeft": 0,
+                  "scrollTop": 0,
+                  "devicePixelRatio": 1.25
+                },
+                "image": {
+                  "width": 1069,
+                  "height": 545,
+                  "sourceWidth": 1069,
+                  "sourceHeight": 2713,
+                  "offsetLeft": 0,
+                  "offsetTop": 0,
+                  "cropped": true
+                },
+                "preview": {
+                  "mode": "design",
+                  "fingerprint": "cf0abfcd6703534cc35e95e17f236d0321671ec8e72d81dcc200ee40312a3ab3"
+                },
+                "imageDigest": "77d24573d9d3cecef918ce52364d0572343c755d61f314d49dc55cc5f5cd1fe1",
+                "currentSource": false
+              }
+            ],
+            "currentSourceObservations": 0,
+            "scope": "Captured regions only; source freshness does not establish current runtime/viewport freshness or offscreen/interaction coverage.",
+            "interactionsVerified": false
+          },
+          "evidence": "Host receipt-derived totals include all acknowledged transactions, including cleanup. Outside-tool time is waiting/generation/transport/host overhead, not measured provider latency. Captured regions do not establish full-page or interaction coverage."
+        }
+      },
+      "notices": []
+    }
+  ],
+  "triggers": [
+    {
+      "bounds": {
+        "height": 32,
+        "width": 45.20000076293945,
+        "x": 649.5125122070312,
+        "y": 123.5999984741211
+      },
+      "className": "uv-c74457cf-navMenMenu",
+      "computed": {
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "0px none rgb(199, 204, 214)",
+        "color": "rgb(199, 204, 214)",
+        "font": "600 14px / 20.3px system-ui, sans-serif",
+        "opacity": "1",
+        "padding": "0px"
+      },
+      "node": "navMenMenu",
+      "part": "root",
+      "role": null,
+      "style": "",
+      "tag": "BUTTON",
+      "text": "Men ▾"
+    },
+    {
+      "bounds": {
+        "height": 32,
+        "width": 66.1875,
+        "x": 722.7125244140625,
+        "y": 123.5999984741211
+      },
+      "className": "uv-c74457cf-navWomenMenu",
+      "computed": {
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "0px none rgb(199, 204, 214)",
+        "color": "rgb(199, 204, 214)",
+        "font": "600 14px / 20.3px system-ui, sans-serif",
+        "opacity": "1",
+        "padding": "0px"
+      },
+      "node": "navWomenMenu",
+      "part": "root",
+      "role": null,
+      "style": "",
+      "tag": "BUTTON",
+      "text": "Women ▾"
+    }
+  ]
+}
