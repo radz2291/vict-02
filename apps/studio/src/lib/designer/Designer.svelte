@@ -1,5 +1,7 @@
 <script lang="ts">
   import './disclosures.css';
+  import {exclusiveWorkspacePanels} from './workspace-panels.js';
+  import {compatiblePreviewValues} from './preview-state.js';
   import { onMount, tick, untrack } from 'svelte';
   import { beforeNavigate } from '$app/navigation';
   import { ControlScope } from '@victframework/ui-svelte';
@@ -30,7 +32,7 @@
   import WorkspaceModes from './WorkspaceModes.svelte';
   import TryScenarios from './TryScenarios.svelte';
   import type { TestScenario } from './test-scenarios.js';
-  import { readableName, studioNodeLabels } from './presentation.js';
+  import { readableName, studioNodeLabels,studioStateLabels,studioActionLabels,studioDisplayName } from './presentation.js';
   import WorkspaceContextMenu from './WorkspaceContextMenu.svelte';
   import { sourceCapabilities, type WorkspaceContext } from './workspace-context.js';
   import { projectStructure, structureId, structureMove, type StructureEditRequest, type StructureHandoff } from './structure.js';
@@ -79,7 +81,7 @@
       if (request.destination === 'design' && request.occurrence) { await locateOnCanvas(request.occurrence); return; }
       if (request.destination === 'inspector' && request.occurrence) { changeMode('design'); if(source&&resolveOccurrence(request.occurrence,source).node?.kind==='text'){await locateOnCanvas(request.occurrence);return;} selectOccurrence(request.occurrence, true); paletteFocus=Symbol('edit-handoff'); }
     }
-    notice = request.destination === 'actions' ? `Declared action ${request.key ?? ''} · simulated execution is available in Interact.` : `Opened ${request.destination} for the selected source.`;
+    notice = request.destination === 'actions' ? `${studioDisplayName('action',request.key??'')} · simulated execution is available in Interact.` : `Opened ${request.destination} for the selected source.`;
     await tick();
     const target = request.destination === 'layers' ? '[data-document-section=layers]' : request.destination === 'data' || request.destination === 'actions' ? `[data-document-section=${request.destination}]` : request.destination === 'inspector' ? '.selection-palette' : '.design-frame .uv-canvas';
     globalThis.document.querySelector<HTMLElement>(target)?.focus({ preventScroll: true });
@@ -88,10 +90,11 @@
   let agentEpoch = $state(crypto.randomUUID());
   let chatOpen = $state(false);
   let chatWidth = $state(280);
+  let drawerWidth = $state(320);
   async function toggleChat(){showPanel('chat',!chatOpen);await tick();(chatOpen?globalThis.document.querySelector<HTMLElement>('.agent-panel textarea'):viewButton)?.focus({preventScroll:true});}
   type AuxiliaryPanel='chat'|'document'|'testing';
   let availableWidth=$state(0);
-  const compactWorkspace=$derived(availableWidth>0 && availableWidth<=1000);
+  const compactWorkspace=$derived(exclusiveWorkspacePanels(availableWidth,chatWidth,drawerWidth));
   let lastPanel:AuxiliaryPanel='document';
   let viewButton=$state<HTMLButtonElement|null>(null);
   let structureFocusId=$state<string>();
@@ -151,7 +154,7 @@
   }
   async function tryCanvas() {
     if(textDraftDirty || sourceDraftDirty || renamingScreen)return;
-    // Mode entry can reset the run; retain deliberately prepared temporary values.
+    // Keep deliberately prepared temporary values while opening the interactive canvas.
     const retained={...runtimeValues},test=activeTest,denied=simulation.denied,failNext=simulation.failNext;
     changeMode('interact');runtimeValues=retained;activeTest=test;simulation.denied=denied;simulation.failNext=failNext;
     testingOpen=false;drawerOpen=false;
@@ -281,7 +284,6 @@
   let layerProvenance=$state<{occurrence:string;detail:string}>();
   let drawerContext=$state<'document'|'selection'>('document');
   const detailsOpen=$derived(drawerOpen && !testingOpen && drawerContext==='selection');
-  let drawerWidth = $state(320);
   const effectiveDrawerWidth = $derived(drawerWidth);
   const structureOpen=$derived(workspaceView==='structure');
   let detailsPage = $state<'properties'|'relationships'|'technical'|'none'>('properties');
@@ -370,9 +372,7 @@
     if(event.key==='Escape' && !event.defaultPrevented){event.preventDefault();event.stopPropagation();closeDrawer();return;}
 
   }
-  const editorLabels = $derived({ actions: { 'demo.submit': 'Submit (simulated)' }, nodes: source ? studioNodeLabels(source) : {screen:'Screen'},
-    state: { message: 'Message', accepted: 'Agreement', dialogOpen: 'Dialog open', busy: 'Submitting', actionError: 'Action error', actionResult: 'Action result' },
-    actionInputs: { message: 'Message', accepted: 'Agreement' } });
+  const editorLabels=$derived({actions:studioActionLabels,nodes:source?studioNodeLabels(source):{screen:'Screen'},state:studioStateLabels,actionInputs:{message:'Message',accepted:'Agreement'}});
   function selectOccurrence(occurrence: string, revealTools = true) {
     if (textDraftDirty || sourceDraftDirty) { notice = 'Apply or cancel your edit first.'; return; }
     if(revealTools) workspaceView='design';
@@ -404,7 +404,7 @@
     const node = source && resolveOccurrence(occurrence, source).node;
     return node?.kind === 'component' || (node?.kind === 'element' && ['input', 'textarea'].includes(node.tag)) ? 'Content' : 'Style';
   }
-  function changeMode(next: 'design' | 'interact') { if (mode!==next && (textDraftDirty || sourceDraftDirty || renamingScreen)) { notice = 'Apply or cancel your draft first.'; return; } if (mode !== next) { compositionFocus=undefined; mode = next; resetRuntime(); } workspaceView=next; notice = next === 'design' ? 'Design mode · select and edit without running behavior.' : 'Interact mode · simulated behavior, no live effects.'; }
+  function changeMode(next: 'design' | 'interact') { if (mode!==next && (textDraftDirty || sourceDraftDirty || renamingScreen)) { notice = 'Apply or cancel your draft first.'; return; } if (mode !== next) { mode = next; } workspaceView=next; notice = next === 'design' ? 'Design mode · select and edit without running behavior.' : 'Interact mode · simulated behavior, no live effects.'; }
   let createDialog: HTMLDialogElement;
   let nameInput: HTMLInputElement;
   let screenTitle = $state('My first screen');
@@ -438,7 +438,17 @@
     } }, dataAdapter: { adapter, context: actor => ({ permissions: actor.permissions, effect: 'write', actor: actor.actorId }) } });
     runtimeValues = {}; resetSignal = Symbol('reset'); activity = [];
   }
-  $effect(()=>{void authoredRevision;untrack(()=>{if(activeTest)resetRuntime();});});
+  let runtimeRevision='';
+  // Fence in-flight simulation before render, retaining only values valid for the new source.
+  $effect.pre(()=>{const revision=authoredRevision;if(!revision)return;untrack(()=>{
+    if(runtimeRevision&&runtimeRevision!==revision&&source){
+      const compatible=compatiblePreviewValues(source,runtimeValues),retained=compatible.values;
+      const removed=compatible.removed.length,test=activeTest,denied=simulation.denied,failNext=simulation.failNext;
+      resetRuntime();runtimeValues=retained;
+      if(!removed){activeTest=test;simulation.denied=denied;simulation.failNext=failNext;}else notice=`${removed} temporary ${removed===1?'value was':'values were'} reset because the document changed. Your saved starting values are unchanged.`;
+    }
+    runtimeRevision=revision;
+  });});
   function openSession(next: EditorBridge) {
     agentEpoch = crypto.randomUUID();
     compositionFocus=undefined;detailId=undefined;structureFocusId=structureId(next.document.id,'node',next.document.root);
@@ -602,8 +612,6 @@
       if (apply({ requestId: crypto.randomUUID(), reason: 'Apply canonical source', commands: [{ op: 'replaceDocument', document }] },true)) { sourceDraftDirty = false; compositionFocus=undefined; const root=nodeItem(source,`${source.id}|${source.root}`);if(root)updateSelection([root]); }
     } catch { issues = [{ code: 'STUDIO_JSON_INVALID', message: 'Enter valid canonical UI document JSON.' }]; }
   }
-  // Authored revisions invalidate any in-flight simulation without adding history.
-  $effect.pre(() => { if (authoredRevision) untrack(resetRuntime); });
 </script>
 
 <svelte:window onkeydowncapture={event=>{
@@ -723,7 +731,7 @@
           <AuthoringGuidance document={source} />
           <label class="sr-only" for="canonical-source">Canonical UI document</label><textarea id="canonical-source" class="source-editor" disabled={textDraftDirty} wrap="off" spellcheck="false" bind:value={sourceDraft} oninput={() => sourceDraftDirty = true}></textarea>
           <div class="source-actions"><button type="button" disabled={!sourceDraftDirty || textDraftDirty} onclick={applySource}>Apply source</button><button type="button" disabled={!sourceDraftDirty} onclick={() => { sourceDraftDirty = false; sourceDraft = JSON.stringify(source, null, 2); sourceDraftRevision = snapshot?.revision ?? ''; issues = []; }}>Discard draft</button><button type="button" onclick={exportSource}>Export</button></div>
-          <details class="studio-disclosure application-attachment"><summary>Advanced</summary><h3>Generated application definition</h3><p>Generated by Studio to connect this screen to VICT.</p><pre class="source-preview">{JSON.stringify(screenApplication(source), null, 2)}</pre></details>
+          <details class="studio-disclosure application-attachment"><summary>Document information</summary><p>Saved revision <code>{snapshot?.storedRevision}</code></p><p>Application version <code>{compilation?.ok?compilation.plan.applicationVersion:'Compilation pending'}</code></p><h3>Generated application definition</h3><p>Generated by Studio to connect this screen to VICT.</p><pre class="source-preview">{JSON.stringify(screenApplication(source), null, 2)}</pre></details>
         {/snippet}
       </DocumentPanels>{/snippet}
       {#snippet selectionContent()}<WorkspaceSelectionDetails onSelectionIntent={selectRelated} renderedOccurrences={currentOccurrences} selection={workspaceSelection} onInspect={item=>updateSelection([item])} onRemove={item=>updateSelection([item],'toggle')} context={structureContext} document={source} {layerProvenance} blocked={textDraftDirty || sourceDraftDirty || renamingScreen} bind:page={detailsPage} onClose={()=>{if(workspaceSelection.items.length)clearWorkspaceSelection();else closeDetails();}} onSelect={selectDetail} onNavigate={structureNavigate} />{/snippet}
@@ -733,7 +741,7 @@
   </div>
   </div>
   {/if}
-  <footer data-studio-typography class="studio-type-scope design-status workspace-status"><span role="status">{notice}</span><span title={compilation?.ok ? compilation.plan.applicationVersion : 'Application compilation pending'}>{compilation?.ok ? `@3 · ${compilation.plan.applicationVersion.slice(0, 15)}…` : 'Application source pending'}</span></footer>
+  <footer data-studio-typography class="studio-type-scope design-status workspace-status"><span role="status">{notice}</span></footer>
   {#if issues.length}<div class="design-errors" role="alert">{#each issues as issue}<p>{issue.code}: {issue.message}</p>{/each}</div>{/if}
   {#if compilation && !compilation.ok}<div class="design-errors" role="alert">{#each [...compilation.issues, ...(compilation.uiIssues ?? [])] as issue}<p>{issue.code}: {issue.message}</p>{/each}</div>{/if}
   <dialog data-studio-typography class="studio-type-scope create-screen-dialog" bind:this={createDialog} onclose={() => renameButton?.focus()}><form onsubmit={event => { event.preventDefault(); if (!screenTitle.trim()) return; createScreen(screenTitle.trim()); createDialog.close(); }}><p class="panel-eyebrow">A BLANK CANVAS</p><h2>Create a screen</h2><p>Start small. Add content, connect behavior, and run what you save.</p><label>Screen name<input bind:this={nameInput} bind:value={screenTitle} maxlength="80" required /></label><div><button type="button" onclick={() => createDialog.close()}>Cancel</button><button class="primary" type="submit">Create screen</button></div></form></dialog>

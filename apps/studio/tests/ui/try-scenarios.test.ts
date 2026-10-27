@@ -16,7 +16,7 @@ it('explains unsupported screens without offering guessed scenarios, hides raw v
   const closeButton=document.querySelector<HTMLButtonElement>('[aria-label="Close testing"]')!;
   expect(document.activeElement).toBe(closeButton);
   closeButton.dispatchEvent(new KeyboardEvent('keydown',{key:'Tab',shiftKey:true,bubbles:true,cancelable:true}));await settle();
-  expect(document.activeElement?.textContent).toBe('Advanced');
+  expect(document.activeElement?.textContent).toBe('Test values');
   document.activeElement!.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true,cancelable:true}));expect(close).toHaveBeenCalledOnce();
 });
 it('shows relevant sample choices, invokes the selected scenario and gives boolean state controls distinct names',async()=>{

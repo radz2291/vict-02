@@ -1,6 +1,6 @@
 import type { UiDocument, UiExpression } from '@victframework/ui';
-import { readableName } from './presentation.js';
-export const structureStateName = readableName;
+import { readableName,studioDisplayName } from './presentation.js';
+export const structureStateName = (id:string)=>studioDisplayName('state',id);
 
 /** Describes declarations only. No expression evaluation or runtime-state inference. */
 export function expressionDescription(expression: UiExpression): string {
@@ -49,7 +49,7 @@ function structuralFacts(document: UiDocument, sourceId: string): StructureBehav
 export function structureBehavior(document: UiDocument, sourceId: string): StructureBehaviorFact[] {
   const source=document.nodes[sourceId];
   if(!source)return [];
-  const actionName=(id:string)=>id==='demo.submit'?'Submit (simulated)':readableName(id);
+  const actionName=(id:string)=>studioDisplayName('action',id);
   const events=(source.interactions??[]).map(interaction=>({
     name:interaction.on==='click'?'When clicked':interaction.on==='change'?'When changed':'When submitted',
     value:interaction.action==='setState'?`Updates ${structureStateName(interaction.key)} from the ${source.kind==='element'&&source.tag==='input'&&source.attributes?.type==='checkbox'?'checked':'entered'} value; fallback ${expressionDescription(interaction.value)}`:interaction.action==='navigate'?`Requests navigation to ${readableName(interaction.routeId)}`:`Requests ${actionName(interaction.actionId)}`,

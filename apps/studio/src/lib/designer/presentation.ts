@@ -36,3 +36,19 @@ export function studioNodeLabels(document: UiDocument): Record<string, string> {
   }
   return labels;
 }
+
+export const studioStateLabels:Readonly<Record<string,string>>={message:'Message',accepted:'Agreement',dialogOpen:'Dialog open',busy:'Submitting',actionError:'Action error',actionResult:'Action result'};
+export const studioActionLabels:Readonly<Record<string,string>>={'demo.submit':'Submit'};
+export function studioDisplayName(kind:string,id:string):string {
+ return (kind==='state'?studioStateLabels[id]:kind==='action'?studioActionLabels[id]:undefined)??readableName(id);
+}
+/** Generated style names describe their actual owner and pseudo-state, never an ID suffix. */
+export function studioStyleName(document:UiDocument,id:string):string {
+ const style=document.styleSources[id];
+ if(!style||!id.startsWith('src.'))return readableName(id);
+ const owners=Object.values(document.nodes).filter(node=>node.styleSources?.includes(id));
+ if(!owners.length)return readableName(id);
+ const names=studioNodeLabels(document),owner=owners.length===1?names[owners[0]!.id]??'Object':'Shared';
+ const state=style.pseudo?readableName(style.pseudo):style.conditionId?readableName(style.conditionId):'Base';
+ return `${owner} · ${state} style`;
+}

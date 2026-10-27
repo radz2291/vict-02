@@ -84,3 +84,7 @@
 /* Content identity keeps a small hierarchy, independent of control selection. */
 .studio-type-scope[data-studio-typography] :is(.action-card h3,.data-editor-heading h2,.data-row strong,.details-relationships button strong) {font:var(--studio-font-ui);font-weight:var(--studio-weight-content)}
 .studio-type-scope[data-studio-typography] .action-card .simulation-badge {font:var(--studio-font-meta)}
+
+/* Disclosure chrome shares the same quiet header role, including advanced tools. */
+.studio-type-scope[data-studio-typography] :is(.studio-disclosure > summary,.floating-selection .uv-inspector details > summary){font:var(--studio-font-ui);font-weight:var(--studio-weight-label)}
+.studio-type-scope[data-studio-typography] .studio-disclosure[open] > summary{font-weight:var(--studio-weight-selected)}

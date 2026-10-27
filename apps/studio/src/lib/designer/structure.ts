@@ -14,7 +14,7 @@ import {
   type TransactionDraft,
 } from '@victframework/ui-editor';
 import type { Node, Edge } from '@victframework/ui-flow-svelte';
-import { studioNodeLabels } from './presentation.js';
+import { studioNodeLabels,studioDisplayName,studioStyleName } from './presentation.js';
 import { structureBehavior, structureStateName } from './structure-behavior.js';
 import {
   projectRelations,
@@ -295,7 +295,7 @@ export function projectStructure(
         type: 'source',
         position: { x: 0, y: 0 },
         width: 224,
-        data: { label, kind, ...data },
+        data: { label, kind, ...data, ...(['state','action'].includes(kind)?{label:studioDisplayName(kind,id)}:kind==='style'?{label:studioStyleName(document,data.registryId??id)}:{}) },
         ariaLabel: `${data.kindLabel ?? friendly(kind)}: ${label}${data.sourceId ? `, source ${data.sourceId}` : ''}`,
         deletable: false,
       };
@@ -576,6 +576,16 @@ export function connectedStructure(
     edges: graph.edges.filter((edge) => bounded.has(edge.source) && bounded.has(edge.target)),
   };
 }
+/** Union of direct neighbourhoods; every requested item survives the display bound. */
+export function connectedSelectionStructure(graph:StructureGraph,ids:readonly string[],options:Parameters<typeof connectedStructure>[2]={}):StructureGraph {
+ const roots=[...new Set(ids)].filter(id=>graph.nodes.some(node=>node.id===id));
+ const visible=new Set(roots);
+ for(const id of roots)for(const node of connectedStructure(graph,id,{...options,limit:Infinity}).nodes)visible.add(node.id);
+ const ordered=[...roots,...[...visible].filter(id=>!roots.includes(id))];
+ const bounded=new Set(ordered.slice(0,Math.max(roots.length,options.limit??25)));
+ return {nodes:graph.nodes.filter(node=>bounded.has(node.id)),edges:graph.edges.filter(edge=>bounded.has(edge.source)&&bounded.has(edge.target))};
+}
+
 /** Collapse and layers are view projections. They do not alter canonical ownership. */
 export function filterStructure(
   graph: StructureGraph,

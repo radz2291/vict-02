@@ -31,7 +31,7 @@
     <div class="test-actions"><button type="button" disabled={blocked} onclick={onTry}>Try on canvas</button><button type="button" disabled={blocked} onclick={onReset}>Reset test</button></div>
     <p class="reset-hint">Reset returns temporary values to the screen’s starting values and clears simulated failures.</p>
     {#if activity.length}<details class="studio-disclosure"><summary>Recent activity ({activity.length})</summary>{#each activity as entry}<p>{entry}</p>{/each}</details>{/if}
-    <details class="studio-disclosure"><summary>Advanced</summary><details class="studio-disclosure state-values"><summary>State values</summary><fieldset disabled={blocked}><StateValuesPanel localState={document.localState} stateValues={values} {onChange} /></fieldset></details></details>
+    <details class="studio-disclosure"><summary>Test values</summary><fieldset disabled={blocked}><StateValuesPanel localState={document.localState} stateValues={values} {onChange} /></fieldset></details>
   </div>
 </section>
 <style>
@@ -39,6 +39,6 @@
   .panel-header{display:flex;align-items:center;justify-content:space-between;height:38px;box-sizing:border-box;padding:5px 8px;border-bottom:1px solid var(--vict-color-border);flex:none}
   button{font:inherit;color:inherit;background:var(--vict-color-surface,#fff);border:1px solid var(--vict-color-border);border-radius:5px;padding:6px 9px;cursor:pointer}header button{width:28px;height:28px;border:0;padding:0;font-size:18px}
   .testing-body{padding:12px;overflow:auto;min-height:0}.testing-intro{margin:0 0 14px;color:var(--vict-color-textMuted)}.scenario-list{display:grid;gap:8px}.scenario-choice{text-align:left;display:grid;gap:4px;padding:10px}.scenario-choice span{font-size:11px;color:var(--vict-color-textMuted)}.scenario-choice[aria-pressed=true]{border-color:var(--vict-color-accent);background:var(--vict-control-selected)}
-  .test-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}.reset-hint{color:var(--vict-color-textMuted);font-size:11px;margin:8px 0 16px}details{padding:0}summary{cursor:pointer}.state-values{margin-top:8px}:focus-visible{outline:2px solid var(--vict-color-focusRing);outline-offset:-2px}:disabled{opacity:.5;cursor:default}
+  .test-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}.reset-hint{color:var(--vict-color-textMuted);font-size:11px;margin:8px 0 16px}details{padding:0}summary{cursor:pointer}:focus-visible{outline:2px solid var(--vict-color-focusRing);outline-offset:-2px}:disabled{opacity:.5;cursor:default}
   fieldset{border:0;padding:0;margin:8px 0 0;min-width:0}
 </style>

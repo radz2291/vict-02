@@ -162,8 +162,8 @@ body:has(.finished-screen) {
 .drawer-resizer .resizer:not(:hover):not(.dragging) {background:var(--vict-color-surface);}
 .drawer-resizer .resizer > span {background:var(--vict-color-border);}
 /* Ancestors keep their guide path, without a second selected-looking row. */
-.document-drawer .uv-layers .is-ancestor > [role=treeitem]:not(:hover) {background:transparent;}
-.document-drawer .uv-layers .is-ancestor > [role=treeitem] .name,
+.document-drawer .uv-layers .is-ancestor > [role=treeitem]:not([aria-selected=true]):not(:hover) {background:transparent;}
+.document-drawer .uv-layers .is-ancestor > [role=treeitem]:not([aria-selected=true]) .name,
 .document-drawer .uv-layers .is-ancestor > .disclosure {color:inherit;}
 .sidebar-tabs {
   display: flex;

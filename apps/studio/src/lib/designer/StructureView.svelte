@@ -12,7 +12,7 @@
   import './studio-cards.css';
   import type { UiDocument, UiExtensionDescriptor } from '@victframework/ui';
   import { type InsertRecipe } from '@victframework/ui-editor';
-  import { projectStructure, filterStructure, connectedStructure, compactStructure, structureNodePresentation, structureFacts, structureId, parseStructureId, structureMove, type StructureNodeData, type StructureEditRequest, type StructureHandoff, type StructureContext } from './structure.js';
+  import { projectStructure, filterStructure, connectedSelectionStructure, compactStructure, structureNodePresentation, structureFacts, structureId, parseStructureId, structureMove, type StructureNodeData, type StructureEditRequest, type StructureHandoff, type StructureContext } from './structure.js';
   import { Menubar } from '@victframework/ui-svelte/catalog/menubar';
   import WorkspaceMenu from './WorkspaceMenu.svelte';
   import WorkspaceContextMenu from './WorkspaceContextMenu.svelte';
@@ -83,13 +83,14 @@
   let focusedId = $state<string>();
   let graphView=$state('connections');
   let connectionFocus=$state<string>();
+  let selectionFocus=$state<string[]>([]);
   let showOtherUsers = $state(false);
   let connectionLimit = $state(25);
   let expandedGroups = $state<Set<string>>(new Set());
   let graphSelection:string|undefined;
   $effect(()=>{
-    const focus=focusSelection;void graph.edges;
-    if(focus)untrack(()=>{connectionFocus=focus;openAncestorPath(focus);});
+    const focus=focusSelection;void document.id;
+    if(focus)untrack(()=>{connectionFocus=focus;selectionFocus=[];openAncestorPath(focus);});
   });
   let collapsed = $state<Set<string>>(new Set());
   let direction = $state<LayoutDirection>('RIGHT');
@@ -118,20 +119,21 @@
   const facts = $derived(inspected ? structureFacts(document, inspected) : []);
   const filtered = $derived(filterStructure(graph, { search, focusId: focusedId, collapsed, bindings: showBindings, definitions: showDefinitions, inventory }));
   const scopeId = $derived(connectionFocus ?? structureId(document.id,'node',selectedNodeId ?? document.root));
+  const scopeIds=$derived(selectionFocus.length?selectionFocus:[scopeId]);
   const scopeNode = $derived(graph.nodes.find(node=>node.id===scopeId));
-  const scopeLabel = $derived(scopeNode ? structureNodePresentation(document,scopeNode.data).fullLabel : 'Screen');
+  const scopeLabel = $derived(selectionFocus.length>1?`${selectionFocus.length} objects`:scopeNode ? structureNodePresentation(document,scopeNode.data).fullLabel : 'Screen');
   const visibleGraph = $derived(showTextNodes || search ? filtered : compactStructure(filtered, document));
   // Keep the explicit focus visible even if its category is currently hidden.
-  const eligibleGraph = $derived(scopeNode && !visibleGraph.nodes.some(node=>node.id===scopeId) ? {...visibleGraph,nodes:[...visibleGraph.nodes,scopeNode]} : visibleGraph);
-  const directConnections = $derived(connectedStructure(eligibleGraph,scopeId,{limit:Infinity,expanded:expandedGroups}));
-  const extendedConnections = $derived(connectedStructure(eligibleGraph,scopeId,{related:true,limit:Infinity,expanded:expandedGroups}));
-  const otherUsers = $derived(extendedConnections.nodes.length-directConnections.nodes.length);
-  const connectionGraph=$derived(connectedStructure(eligibleGraph,scopeId,{related:showOtherUsers,limit:connectionLimit,expanded:expandedGroups}));
+  const eligibleGraph=$derived({...visibleGraph,nodes:[...visibleGraph.nodes,...graph.nodes.filter(node=>scopeIds.includes(node.id)&&!visibleGraph.nodes.some(visible=>visible.id===node.id))]});
+  const directConnections=$derived(connectedSelectionStructure(eligibleGraph,scopeIds,{limit:Infinity,expanded:expandedGroups}));
+  const extendedConnections=$derived(connectedSelectionStructure(eligibleGraph,scopeIds,{related:true,limit:Infinity,expanded:expandedGroups}));
+  const otherUsers=$derived(extendedConnections.nodes.length-directConnections.nodes.length);
+  const connectionGraph=$derived(connectedSelectionStructure(eligibleGraph,scopeIds,{related:showOtherUsers,limit:connectionLimit,expanded:expandedGroups}));
   const availableConnections = $derived(showOtherUsers ? extendedConnections.nodes.length : directConnections.nodes.length);
   const projected = $derived(graphView==='connections' && !search ? connectionGraph : visibleGraph);
   const availableItems = $derived(graphView==='connections' && !search ? availableConnections : graph.nodes.length);
   const rawConnections = $derived(graph.edges.some(edge=>edge.source===scopeId || edge.target===scopeId));
-  $effect(()=>{void scopeId;showOtherUsers=false;connectionLimit=25;expandedGroups=new Set();});
+  $effect(()=>{void scopeIds;showOtherUsers=false;connectionLimit=25;expandedGroups=new Set();});
   const nodeTypes = { source: StructuredSourceNode };
   const edgeTypes = { routed: StructureEdge };
   const fence = new LayoutFence();
@@ -153,6 +155,7 @@
     viewport = saved?.viewport ?? { x: 24, y: 24, zoom: .85 };
     collapsed = saved?.collapsed ?? new Set(graph.nodes.filter(node => node.data.occurrence && (node.data.childCount ?? 0) > (presentation === 'drawer' ? 1 : 3) && node.data.sourceId !== document.root).map(node => node.id));
     inspectedId = saved?.inspectedId ?? (selectedNodeId ? structureId(id, 'node', selectedNodeId) : structureId(id, 'node', document.root));
+    selectionFocus=[];
     connectionFocus=focusSelection ?? saved?.connectionFocus ?? structureId(id,'node',selectedNodeId ?? document.root);
     direction = saved?.direction ?? 'RIGHT'; search = saved?.search ?? ''; focusedId = saved?.focusedId;
     inventory=saved?.inventory??false;showBindings = saved?.bindings ?? true; showDefinitions = saved?.definitions ?? false; allowMoves = false;
@@ -216,7 +219,7 @@
       if (!fence.current(ticket)) return;
       const positions = new Map(result.nodes.map(node => [node.id, node.position]));
       nodes = nodes.map(node => ({ ...node, position: positions.get(node.id) ?? node.position }));
-      edges = result.edges;
+      edges = result.edges.map(edge=>({...edge,selected:untrack(()=>chosenItems.some(item=>item.kind==='edge'&&item.id===edge.id))}));
       layoutNote = result.reason ? 'Using a simpler layout for this large view. Focus on an item or collapse groups for a clearer view.' : '';
       layoutStatus = '';
     }).catch(() => { if (fence.current(ticket)) layoutStatus = 'Layout unavailable. Existing positions retained; retry Arrange.'; });
@@ -230,8 +233,8 @@
   let framedConnections='';
   $effect(()=>{
     if(!active || search || graphView!=='connections' || layoutStatus || !nodes.length || nodes.some(node=>!node.measured?.width))return;
-    const key=`${document.id}|${connectionFocus}`;
-    if(key!==framedConnections){framedConnections=key;locate();}
+    const key=`${document.id}|${scopeIds.join('|')}`;
+    if(key!==framedConnections){framedConnections=key;locate(selectionFocus);}
   });
   function locate(ids: string[] = []) { navigationIds = ids; navigationRequest = {}; }
   function select(node: Node<StructureNodeData>,event:{ctrlKey?:boolean;metaKey?:boolean}={}) {
@@ -243,13 +246,20 @@
   }
   async function reveal(node: Node<StructureNodeData>) {
     if (blocked) { onNotice('Apply or cancel your draft before changing selection.'); return; }
-    search = ''; focusedId = undefined;connectionFocus=node.id;graphView='connections';
+    search = ''; focusedId = undefined;selectionFocus=[];connectionFocus=node.id;graphView='connections';
     const next=new Set(collapsed);let current=node.id;const seen=new Set<string>();
     while(!seen.has(current)){seen.add(current);const parent=graph.edges.find(edge=>edge.data?.kind==='containment'&&edge.target===current)?.source;if(!parent)break;next.delete(parent);current=parent;}collapsed=next;
     if (node.data.kind !== 'node') { showBindings = true; showDefinitions = true; }
     else if (document.nodes[node.data.sourceId ?? '']?.kind === 'text') showTextNodes = true;
     if (node.data.definitionSource) showDefinitions=true;
     select(node); await tick(); locate([node.id]);
+  }
+  function focusChosen(){
+    if(blocked||!chosenItems.length)return;
+    const ids=[...new Set(chosenItems.flatMap(item=>item.kind==='node'?[item.id]:graph.edges.filter(edge=>edge.id===item.id).flatMap(edge=>[edge.source,edge.target])))];
+    search='';focusedId=undefined;showBindings=true;showDefinitions=true;showTextNodes=true;
+    for(const id of ids)openAncestorPath(id);
+    selectionFocus=ids;graphView='connections';locate(ids);
   }
   function closeInspection(restoreFocus = true) {
     inspectionOpen = false; allowMoves = false; moveSource = ''; moveTarget = '';
@@ -349,7 +359,7 @@
         </Menubar.RadioGroup>
         <Menubar.CheckboxItem bind:checked={inventory} closeOnSelect={false} onSelect={()=>{graphView='hierarchy';focusedId=undefined;}}>All declarations<span aria-hidden="true">{inventory?'✓':''}</span></Menubar.CheckboxItem><Menubar.Separator />
         <Menubar.Item disabled={!framingIds.length} onSelect={() => locate(framingIds)}>Frame selection</Menubar.Item>
-        <Menubar.Item disabled={!inspected || blocked} onSelect={() => { if (inspected) void reveal(inspected); }}>Focus on selection</Menubar.Item>
+        <Menubar.Item disabled={!chosenItems.length || blocked} onSelect={focusChosen}>Focus on selection</Menubar.Item>
         <Menubar.Item onSelect={() => { graphView='hierarchy';focusedId = undefined; search = ''; }}>Show whole screen</Menubar.Item>
         <Menubar.Item onSelect={() => openInspection('find')}>Find source item</Menubar.Item>
         <Menubar.Separator />
@@ -392,7 +402,7 @@
   </div>
   {#if graphView==='connections' && !search}
     <div class="structure-scope-actions" aria-label="Connection scope">
-      {#if inspected && inspectedId!==scopeId}<button type="button" disabled={blocked} onclick={()=>{if(inspected)void reveal(inspected);}}>Focus on selection</button>{/if}
+      {#if chosenItems.length && (visibleChosen.length<chosenItems.length || !selectionFocus.length)}<button type="button" disabled={blocked} onclick={focusChosen}>Focus on selection</button>{/if}
       {#if otherUsers>0}<button type="button" aria-pressed={showOtherUsers} onclick={()=>{showOtherUsers=!showOtherUsers;connectionLimit=25;}}>{showOtherUsers?'Hide other users':`Other users (${otherUsers})`}</button>{/if}
       {#if availableConnections>connectionLimit}<button type="button" onclick={()=>connectionLimit+=24}>Show {Math.min(24,availableConnections-connectionLimit)} more</button>{/if}
     </div>

@@ -62,7 +62,7 @@ it('distinguishes equally named label and input members with quiet types',async(
  const source=await start(true);await pointer(document.querySelector('.design-frame label')!);await pointer(document.querySelector('.design-frame input')!,true);
  await layers();document.querySelector<HTMLButtonElement>('[data-context=selection]')!.click();await settle();
  const members=[...document.querySelectorAll('.selection-items .inspect-item')];expect(members).toHaveLength(2);
- expect(members.map(item=>item.querySelector('.item-type')?.textContent)).toEqual(['Label','Input']);expect(members.every(item=>item.textContent?.includes('Name'))).toBe(true);
+ expect(members.map(item=>item.querySelector('.identity-kind')?.textContent)).toEqual(['Label','Input']);expect(members.every(item=>item.textContent?.includes('Name'))).toBe(true);
  expect(screenStore(localStorage,source.id).rawLoad()).toMatchObject({document:source});
 });
 it('previews focused points without selecting, and supports one Ctrl keyboard toggle per activation',async()=>{

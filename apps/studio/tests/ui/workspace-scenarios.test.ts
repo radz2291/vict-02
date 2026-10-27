@@ -29,7 +29,7 @@ function choose(name:string){[...document.querySelectorAll<HTMLButtonElement>('.
 it('offers plain scenarios outside Document, resets each test, preserves source and restores Document context on close',async()=>{
  const source=await start();button('Document').click();await settle();
  expect([...document.querySelectorAll('.document-section-header')].map(button=>button.textContent)).toEqual(['Layers','Data','Actions','Source']);
- expect(document.querySelector('[role=tablist]')).toBeNull();
+ expect(document.querySelector('[role=tablist][aria-label="Panel context"]')).not.toBeNull();
  await testing();expect(document.querySelector('.testing-drawer')).not.toBeNull();choose('Loading');await settle();
  expect(button('Submit example').hasAttribute('disabled')).toBe(true);
  choose('Long content');await settle();expect(button('Submit example').hasAttribute('disabled')).toBe(false);
@@ -60,6 +60,6 @@ it('lets the new Loading seed win over cleanup from a pending action',async()=>{
 it('does not apply canvas delete/duplicate shortcuts from side-panel controls and keeps resizing preferences',async()=>{
  await start();const heading=document.querySelector<HTMLElement>('.design-frame h1')!;heading.dispatchEvent(new PointerEvent('pointerdown',{button:0,bubbles:true}));await settle();
  button('Document').click();await settle();
- const close=button('Close document');close.dispatchEvent(new KeyboardEvent('keydown',{key:'Delete',bubbles:true,cancelable:true}));await settle();expect(document.querySelector('.design-frame h1')).not.toBeNull();
+ const close=button('Close panel');close.dispatchEvent(new KeyboardEvent('keydown',{key:'Delete',bubbles:true,cancelable:true}));await settle();expect(document.querySelector('.design-frame h1')).not.toBeNull();
  const chatSize=document.querySelector<HTMLElement>('[aria-label="Chat width"]')!;chatSize.dispatchEvent(new KeyboardEvent('keydown',{key:'Home',bubbles:true,cancelable:true}));await settle();expect(JSON.parse(localStorage.getItem('vict.studio.workspace-sizes')!).chat).toBe(240);
 });
