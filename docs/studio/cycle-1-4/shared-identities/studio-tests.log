@@ -21,7 +21,7 @@ https://svelte.dev/e/a11y_no_static_element_interactions
 https://svelte.dev/e/a11y_click_events_have_key_events
 11:17:39 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle14-selection-panel/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:379:4 `<span>` with a click handler must have an ARIA role
 https://svelte.dev/e/a11y_no_static_element_interactions
-AggregateError: 
+AggregateError:
     at internalConnectMultiple (node:net:1139:18)
     at afterConnectMultiple (node:net:1712:7) {
   code: 'ECONNREFUSED',
@@ -48,7 +48,7 @@ AggregateError:
 }
  ❯ tests/ui/text-selection-location.test.ts (1 test | 1 failed) 1278ms
    × keeps the text selected through Relationships and Locate while marking and explaining its containing label 1275ms
-AggregateError: 
+AggregateError:
     at internalConnectMultiple (node:net:1139:18)
     at afterConnectMultiple (node:net:1712:7) {
   code: 'ECONNREFUSED',
@@ -73,7 +73,7 @@ AggregateError:
     }
   ]
 }
-AggregateError: 
+AggregateError:
     at internalConnectMultiple (node:net:1139:18)
     at afterConnectMultiple (node:net:1712:7) {
   code: 'ECONNREFUSED',
@@ -98,7 +98,7 @@ AggregateError:
     }
   ]
 }
-AggregateError: 
+AggregateError:
     at internalConnectMultiple (node:net:1139:18)
     at afterConnectMultiple (node:net:1712:7) {
   code: 'ECONNREFUSED',
@@ -123,7 +123,7 @@ AggregateError:
     }
   ]
 }
-AggregateError: 
+AggregateError:
     at internalConnectMultiple (node:net:1139:18)
     at afterConnectMultiple (node:net:1712:7) {
   code: 'ECONNREFUSED',
