@@ -1,0 +1,47 @@
+{
+  "before": {
+    "footers": [
+      "↑ ↓ navigate · → expand · ← collapse · Enter select",
+      "Design mode · select and edit without running behavior."
+    ],
+    "justify": "normal",
+    "picker": {
+      "left": 235.5500030517578,
+      "right": 1014.6750030517578
+    },
+    "rect": {
+      "left": 235.5500030517578,
+      "right": 402.8500061035156
+    },
+    "scope": "Hierarchy · 27 shown",
+    "title": "Document and Selection review"
+  },
+  "after": {
+    "footers": [
+      "↑ ↓ navigate · → expand · ← collapse · Enter select",
+      "Loaded the saved screen."
+    ],
+    "justify": "flex-end",
+    "operatorLeft": 1026.675048828125,
+    "overflow": "ellipsis",
+    "picker": {
+      "left": 235.5500030517578,
+      "right": 1014.6750030517578
+    },
+    "rect": {
+      "left": 847.375,
+      "right": 1014.6750030517578
+    },
+    "scope": "Hierarchy · 2 shown · 1 selected",
+    "title": "Document and Selection review"
+  },
+  "rightAligned": true,
+  "oldOwnerUnchanged": true,
+  "final": {
+    "footers": [
+      "↑ ↓ navigate · → expand · ← collapse · Enter select",
+      "Loaded the saved screen."
+    ],
+    "scope": "Hierarchy · 27 shown"
+  }
+}

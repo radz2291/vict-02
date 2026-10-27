@@ -1,0 +1,27 @@
+{
+  "owner": {
+    "footers": [
+      "↑ ↓ navigate · → expand · ← collapse · Enter select",
+      "Duplicate selection · unsaved"
+    ],
+    "query": "",
+    "scope": "Focus: Row 2 · 4 shown· 1 selected"
+  },
+  "trial": {
+    "footers": [
+      "↑ ↓ navigate · → expand · ← collapse · Enter select",
+      "Design mode · select and edit without running behavior."
+    ],
+    "justify": "normal",
+    "picker": {
+      "left": 235.5500030517578,
+      "right": 1014.6750030517578
+    },
+    "rect": {
+      "left": 235.5500030517578,
+      "right": 402.8500061035156
+    },
+    "scope": "Hierarchy · 27 shown",
+    "title": "Document and Selection review"
+  }
+}
