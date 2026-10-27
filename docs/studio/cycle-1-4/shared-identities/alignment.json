@@ -1,0 +1,18 @@
+[
+  {
+    "context": "Text inside Heading · Create your workspace",
+    "contextY": 139.8000030517578,
+    "icon": "text",
+    "iconCenter": 128.8000030517578,
+    "name": "Create your workspace",
+    "nameCenter": 128.8000030517578
+  },
+  {
+    "context": "Heading",
+    "contextY": 311.20001220703125,
+    "icon": "heading",
+    "iconCenter": 300.20001220703125,
+    "name": "Create your workspace",
+    "nameCenter": 300.20001220703125
+  }
+]

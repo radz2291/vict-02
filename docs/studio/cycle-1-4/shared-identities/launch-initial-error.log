@@ -1,0 +1,22 @@
+node:fs:442
+    return binding.readFileUtf8(path, stringToFlags(options.flag));
+                   ^
+
+Error: ENOENT: no such file or directory, open 'C:\Users\RZ1\.codex\worktrees\studio-cycle14-selection-panel\260831-VCT-02\docs\studio\cycle-1-4\shared-identities\production-seal.json'
+    at readFileSync (node:fs:442:20)
+    at file:///C:/Users/RZ1/.codex/worktrees/studio-cycle14-selection-panel/260831-VCT-02/docs/studio/cycle-1-4/shared-identities/seal-production.mjs:30:25
+    at ModuleJob.run (node:internal/modules/esm/module_job:271:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:547:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle14-selection-panel\\260831-VCT-02\\docs\\studio\\cycle-1-4\\shared-identities\\production-seal.json'
+}
+
+Node.js v22.13.1
+Exception: C:\Users\RZ1\.codex\worktrees\studio-cycle14-selection-panel\260831-VCT-02\docs\studio\cycle-1-4\shared-identities\launch-review.ps1:8
+Line |
+   8 |  if($LASTEXITCODE -ne 0){throw 'Build seal verification failed.'}
+     |                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     | Build seal verification failed.

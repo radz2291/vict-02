@@ -1,0 +1,107 @@
+[
+  {
+    "icon": "container",
+    "key": "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|screen",
+    "name": "Document and Selection review"
+  },
+  {
+    "icon": "container",
+    "key": "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbCard",
+    "name": "Section"
+  },
+  {
+    "icon": "heading",
+    "key": "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbTitle",
+    "name": "Create your workspace"
+  },
+  {
+    "icon": "text",
+    "key": "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbSubtitle",
+    "name": "Set up your workspace in under a minute — just the essentials."
+  },
+  {
+    "icon": "text",
+    "key": "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbNameLabel",
+    "name": "Label · Full name"
+  },
+  {
+    "icon": "input",
+    "key": "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbNameInput",
+    "name": "Full name"
+  },
+  {
+    "icon": "text",
+    "key": "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbEmailLabel",
+    "name": "Label · Work email"
+  },
+  {
+    "icon": "input",
+    "key": "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbEmailInput",
+    "name": "Work email"
+  },
+  {
+    "icon": "text",
+    "key": "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbRoleLabel",
+    "name": "Label · Role"
+  },
+  {
+    "icon": "select",
+    "key": "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbRoleSelect",
+    "name": "Role"
+  },
+  {
+    "icon": "select",
+    "key": "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbRolePlaceholder",
+    "name": "Option · Select your role…"
+  },
+  {
+    "icon": "select",
+    "key": "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbRoleOptProduct",
+    "name": "Option · Product"
+  },
+  {
+    "icon": "select",
+    "key": "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbRoleOptDesign",
+    "name": "Option · Design"
+  },
+  {
+    "icon": "select",
+    "key": "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbRoleOptEngineering",
+    "name": "Option · Engineering"
+  },
+  {
+    "icon": "select",
+    "key": "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbRoleOptMarketing",
+    "name": "Option · Marketing"
+  },
+  {
+    "icon": "select",
+    "key": "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbRoleOptSales",
+    "name": "Option · Sales"
+  },
+  {
+    "icon": "container",
+    "key": "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbNotifRow",
+    "name": "Row"
+  },
+  {
+    "icon": "checkbox",
+    "key": "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbNotifInput",
+    "name": "Email me product updates"
+  },
+  {
+    "icon": "text",
+    "key": "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbNotifLabel",
+    "name": "Label · Email me product updates"
+  },
+  {
+    "icon": "component",
+    "key": "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbSubmit",
+    "name": "Create account"
+  },
+  {
+    "icon": "text",
+    "key": "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbFeedback",
+    "name": "Your details stay on this screen — nothing is sent."
+  }
+]

@@ -1,0 +1,26 @@
+[
+  {
+    "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22screen%22%5D",
+    "beforeHeight": 122,
+    "afterHeight": 122,
+    "width": 224
+  },
+  {
+    "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbCard%22%5D",
+    "beforeHeight": 122,
+    "afterHeight": 122,
+    "width": 224
+  },
+  {
+    "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbTitle%22%5D",
+    "beforeHeight": 98,
+    "afterHeight": 98,
+    "width": 224
+  },
+  {
+    "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbTitle-text%22%5D",
+    "beforeHeight": null,
+    "afterHeight": 98,
+    "width": 224
+  }
+]

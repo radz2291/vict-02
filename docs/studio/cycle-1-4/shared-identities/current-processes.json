@@ -1,0 +1,14 @@
+[
+  {
+    "ProcessId": 99692,
+    "ParentProcessId": 78392,
+    "Name": "pwsh.exe",
+    "CommandLine": "\"C:\\Users\\RZ1\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\native\\powershell\\pwsh.exe\" -NoProfile -File docs/studio/cycle-1-4/shared-identities/launch-review.ps1"
+  },
+  {
+    "ProcessId": 91208,
+    "ParentProcessId": 98028,
+    "Name": "node.exe",
+    "CommandLine": "\"C:\\Program Files\\nodejs\\node.exe\" build"
+  }
+]

@@ -1,0 +1,39 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/studio-cycle14-selection-panel/260831-VCT-02
+
+11:18:49 am [vite-plugin-svelte] packages/ui-svelte/src/document/DocumentHost.svelte:105:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+11:18:49 am [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:309:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+11:18:49 am [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:309:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+11:18:49 am [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:379:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+11:18:49 am [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:379:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+ ❯ |renderer| packages/ui-editor/test/inspector-layers-ux.svelte.test.ts (6 tests | 1 failed) 1319ms
+     × hides redirected text rows without merging labels or losing content search 205ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |renderer| packages/ui-editor/test/inspector-layers-ux.svelte.test.ts > Inspector / Layers UX semantic regressions > hides redirected text rows without merging labels or losing content search
+AssertionError: expected '  Heading ' to be 'Heading' // Object.is equality
+
+Expected: "Heading"
+Received: "  Heading "
+
+ ❯ packages/ui-editor/test/inspector-layers-ux.svelte.test.ts:60:59
+     58|       flushSync();
+     59|       const heading = target.querySelector('[data-key="ux|title"]')!;
+     60|       expect(heading.querySelector('.name')?.textContent).toBe('Headin…
+       |                                                           ^
+     61|       expect(heading.getAttribute('aria-expanded')).toBeNull();
+     62|       expect(heading.querySelector('.child-count')).toBeNull();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  1 failed | 9 passed (10)
+   Start at  11:18:26
+   Duration  29.87s (transform 42.39s, setup 0ms, import 52.66s, tests 1.73s, environment 3.13s)

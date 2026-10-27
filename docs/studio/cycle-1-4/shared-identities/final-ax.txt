@@ -1,0 +1,127 @@
+Browser tab: 11, Title: "Designer — VICT Studio", URL: "http://127.0.0.22:5616/design".
+0 AXWebArea Designer — VICT Studio, URL: 127.0.0.22:5616/design
+	1 container
+		2 container
+			3 link Description: VICT Studio, Value: 127.0.0.22:5616/design
+			4 menu bar Description: Studio menus, ID: bits-c3
+				5 (collapsed) File, ID: bits-c5, Secondary Actions: Expand
+				6 (collapsed) Edit, ID: bits-c7, Secondary Actions: Expand
+				7 (collapsed) View, ID: bits-c9, Secondary Actions: Expand
+				8 (collapsed) Preview, ID: bits-c11, Secondary Actions: Expand
+			24 text Document and Selection review
+			9 link Description: Operator tools, Value: 127.0.0.22:5616/
+		80 container
+			81 container Workspace mode
+				82 checkbox Design, Value: 0
+				83 checkbox Interact, Value: 0
+				84 checkbox Structure, Value: 1
+			85 container Structure workspace
+				86 container Source structure
+					87 search text field (settable) Description: Search structure, Value: Create your workspace
+					88 menu bar Description: Structure menus, ID: bits-c23
+						89 (collapsed) View, ID: bits-c25, Secondary Actions: Expand
+						90 (collapsed) Object, ID: bits-c40, Secondary Actions: Expand
+					91 text Declared
+					92 text Search results · includes hidden items
+					93 text 1 selected
+					94 text 4 of 55 items
+					95 button (expanded) Description: Selection panel, Secondary Actions: Collapse
+					248 container
+						249 container
+							250 image
+							251 image
+								252 container Screen -> Section: Contains; /nodes/screen/children/0
+							253 image
+								254 container Section -> Create your workspace: Contains; /nodes/onbCard/children/0
+							255 image
+								256 container Create your workspace -> Text · Create your workspace: Contains; /nodes/onbTitle/children/0
+							257 container Container: Screen, source screen
+								258 container
+									259 text Container
+									260 text Screen
+									261 button (expanded) Description: Collapse Screen, Secondary Actions: Collapse
+									262 text 1 direct child
+									263 content list Incoming connections
+									264 content list Outgoing connections
+										265 container Outgoing Contains · 1 declared reference
+											266 text Contains
+											267 checkbox Description: Select outgoing Contains connections for Screen, Help: Contains · 1 visible references; 0 selected; Ctrl-click to add or remove, Value: 0
+							268 container Section: Section, source onbCard
+								269 container
+									270 text Section
+									271 button (expanded) Description: Collapse Section, Secondary Actions: Collapse
+									272 text 11 direct children
+									273 content list Incoming connections
+										274 container Incoming Contains · 1 declared reference
+											275 text Contains
+											276 checkbox Description: Select incoming Contains connections for Section, Help: Contains · 1 visible references; 0 selected; Ctrl-click to add or remove, Value: 0
+									277 content list Outgoing connections
+										278 container Outgoing Contains · 1 declared reference
+											279 text Contains
+											280 checkbox Description: Select outgoing Contains connections for Section, Help: Contains · 1 visible references; 0 selected; Ctrl-click to add or remove, Value: 0
+							281 container Heading: Create your workspace, source onbTitle
+								282 container
+									283 text Heading
+									284 text Create your workspace
+									285 button (expanded) Description: Collapse Create your workspace, Secondary Actions: Collapse
+									286 content list Incoming connections
+										287 container Incoming Contains · 1 declared reference
+											288 text Contains
+											289 checkbox Description: Select incoming Contains connections for Create your workspace, Help: Contains · 1 visible references; 0 selected; Ctrl-click to add or remove, Value: 0
+									290 content list Outgoing connections
+										291 container Outgoing Contains · 1 declared reference
+											292 text Contains
+											293 checkbox Description: Select outgoing Contains connections for Create your workspace, Help: Contains · 1 visible references; 0 selected; Ctrl-click to add or remove, Value: 0
+							294 container Text: Create your workspace, source onbTitle-text
+								295 container
+									296 text Text
+									297 text Create your workspace
+									298 content list Incoming connections
+										299 container Incoming Contains · 1 declared reference
+											300 text Contains
+											301 checkbox Description: Select incoming Contains connections for Create your workspace, Help: Contains · 1 visible references; 0 selected; Ctrl-click to add or remove, Value: 0
+									302 content list Outgoing connections
+						303 link Description: Svelte Flow attribution, Value: svelteflow.dev/?utm_source=attribution
+						304 image
+						305 container Control Panel
+							306 button Zoom In
+								307 image
+							308 button Zoom Out
+								309 image
+							310 button Fit View
+								311 image
+						312 text Zoom in for easier reading.
+						313 button Frame selection
+			160 splitter Description: Document drawer width, Value: 315
+			161 container Description: Document and Selection, ID: document-drawer
+				162 container
+					163 tab group Panel context
+						164 tab (selectable, settable, boolean) Document, Value: 0, ID: c26-document-tab
+						165 tab (selected, settable, boolean) Selection, Value: 1, ID: c26-selection-tab
+					166 button Description: Close panel, Help: Close panel (Escape)
+				231 container Description: Selection, ID: c26-selection
+					232 container Source inspection details
+						233 container
+							234 text Heading Create your workspace
+						235 container Selection overview
+							236 button (collapsed) Description: Overview, Secondary Actions: Expand
+						237 container Selection relationships
+							238 button (expanded) Description: Relationships, Help: 2 declared relationships, Secondary Actions: Collapse
+								239 text Relationships
+								240 text 2
+							241 container c28-relationships
+								314 button Description: Inspect Contains connection from Section · Section to Heading · Create your workspace, Help: Document declaration The source directly contains the destination in the declared structure. /nodes/onbCard/children/0
+								315 button Description: Section · Section, Help: Section · Section · %5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbCard%22%5D
+									316 text Section
+								317 button Description: Inspect Contains connection from Heading · Create your workspace to Text · Create your workspace, Help: Document declaration The source directly contains the destination in the declared structure. /nodes/onbTitle/children/0
+								318 button Description: Text · Create your workspace, Help: Text · Create your workspace · %5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbTitle-text%22%5D
+									319 text Create your workspace
+									320 text Text inside Heading
+						246 container Selection technical information
+							247 button (collapsed) Description: Technical information, Secondary Actions: Expand
+		77 container
+			78 text Loaded the saved screen.
+			79 text @3 · v1_fe0ac678e805…
+		23 text Designer — VICT Studio
+
+The focused UI element is 310 button Fit View

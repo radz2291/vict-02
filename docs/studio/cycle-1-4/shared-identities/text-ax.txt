@@ -1,0 +1,11 @@
+Browser tab: 11, Title: "Designer — VICT Studio", URL: "http://127.0.0.22:5616/design".
+The following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 267-270
+~							170 text Text Create your workspace Text inside Heading · Create your workspace
+~							192 button (expanded) Description: Relationships, Help: 1 declared relationships, Secondary Actions: Collapse
+~								194 text 1
+~								264 button Description: Inspect Contains connection from Heading · Create your workspace to Text · Create your workspace, Help: Document declaration The source directly contains the destination in the declared structure. /nodes/onbTitle/children/0
+~								265 button Description: Heading · Create your workspace, Help: Heading · Create your workspace · %5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbTitle%22%5D
+~									266 text Create your workspace
++									267 text Heading
+The focused UI element is 0 AXWebArea Designer — VICT Studio, URL: 127.0.0.22:5616/design

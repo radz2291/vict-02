@@ -251,3 +251,39 @@ The right identity reads “Text / Work email / Text inside Label · Work email�
 [Actual evidence](cycle-1-4/text-selection-location/actual-review.json), [owner trial screenshot](cycle-1-4/text-selection-location/owner-trial.png), [exact text provenance](cycle-1-4/text-selection-location/technical-ax.txt), [final seal](cycle-1-4/text-selection-location/production-seal.json). Initial failed tests and corrections are retained in the same directory. Owner trial is left signed in on Design with the Work email text selected, its containing label highlighted, and the explanatory Overview open.
 
 Try [Studio](http://127.0.0.22:5616/design). The existing canvas click policy still selects a simple containing element; the new visual proxy specifically preserves an exact text selection made through the source/relationship surfaces. Non-text source objects do not acquire invented canvas boxes. Owned repeated-key/hidden/default-consumer boundaries and cleanup are regression-tested; no claim is made that every portal, composition, CSS visibility configuration or external host has received independent browser testing. Generic consumers must explicitly opt into this presentation; their selection authority is unchanged. Next allowed action: owner testing and independent assessment. Owner acceptance, Cycle 1.4 finalization and Stage 9 closure remain pending. No main merge, release or deployment.
+
+
+## 2026-10-27 — owner-authorized shared icons and source identity composition
+
+Authority: following the Structure / Selection / Layers screenshot review, the owner approved the proposed cleanup with “OK do it.” This is a bounded presentation amendment. Starting clean local/remote branch `codex/studio-cycle-1-4-text-selection-location` at `4cad97bd10865f116e68ac06164ca80427eebadd`; `origin/main` remains `d7401bef6e48330796c74ec00c86db9622d48cdf`. Isolated branch `codex/studio-cycle-1-4-shared-identities`; product candidate `48b92ba8280deb138637f08577676d8d5973ab62`.
+
+Allowed paths: reusable `packages/ui-editor` identity/icon presentation, Studio designer adapters and related styles/tests, this report, evidence under `cycle-1-4/shared-identities`, and Stage9 handoff/state checkpoints. No canonical schema, compiler, renderer runtime, provider/effect boundary, storage, authoring command, selection intent, floating Format, graph edge semantics or shared Flow default changes. No main merge, package release or deployment.
+
+### Changes and architecture
+
+- `source-icon.ts` owns typed icon keys and normalized SVG paths. `SourceIcon.svelte` owns size/stroke/semantic colour rendering. Source kind, native tag and literal input type determine the icon; translated display strings and component-ID suffixes do not. A source-less Layers consumer uses declared render-instruction kind/tag. Registered components remain opaque component diamonds, with the redundant trailing component diamond removed.
+- `SourceIdentity.svelte` owns icon/name/context composition, with row, card and fixed-node variants. The icon shares the name row; kind is above, context below in the name column. Structure dimensions/line heights are retained; neither selection nor zoom alters icon classification.
+- Layers, Structure nodes, relationship endpoints and the Selection identity header consume these shared primitives. The old Studio-specific SVG component and duplicated classifiers/styles are removed. The dependency flows from Studio to reusable editor; the editor imports no Studio code.
+- Structure adapts graph-only state/action/catalog/route/style/token/asset/condition/reference identities to the shared key vocabulary. It reads authored nodes for Heading vs Text; the owner's screenshots represented distinct Heading and Text child identities, which remain distinct.
+- Duplicate names show human context first (e.g. “Text inside Heading”). True remaining ambiguity retains exact source IDs; encoded graph IDs remain in endpoint tooltips and exact facts remain in Technical information. Modifier/keyboard selection and draft guards are unchanged.
+
+### Verification and retained observations
+
+Evidence: [shared-identities](cycle-1-4/shared-identities/).
+
+Initial Studio batch: 19 passed, one failed solely on the removed view-specific `.selection-text-location` selector. The selector now addresses the shared context element. Initial editor batch: nine passed, one failed on insignificant markup whitespace; the assertion now trims visible text. Initial new-test run found the default collapsed heading text row was not visible; the test now expands it through the existing keyboard action. A fixture rewrite briefly used Windows default text decoding and corrupted a middle-dot/arrow test locator; the fixture was restored from exact committed UTF-8 bytes, then only the intended selector was changed. Initial logs and subsequent repair logs are retained. These were test setup/assertion issues; no product behavior was weakened to satisfy them.
+
+Passing affected checks comprise 23 distinct Studio tests across the initial unaffected batch and targeted rechecks, plus 10 distinct editor tests. The three new cases demonstrate cross-view semantic consistency, exact Text child modifier selection without source mutation, native/structural/unknown component fallback, and shared metadata composition. Latest targeted reruns cover final fallback and component-row changes. Editor and Studio TypeScript pass. Svelte check: zero errors, five inherited warnings in `ui-svelte` (no new warnings). Optional localhost:3000 connection refusals appear in Designer test logs; the assertions pass and no live provider/effect execution is claimed.
+
+Production build/seal and actual browser evidence are recorded below after completion. This builder candidate does not claim an independent gate verdict, owner acceptance, Cycle1.4 finalization or Stage9 closure.
+
+
+### Final shared-identity delivery — ready for owner trial
+
+Product `48b92ba8280deb138637f08577676d8d5973ab62`: production build PASS; seal verifies 779 committed source inputs and 500 output files. Current signed-in preview: <http://127.0.0.22:5616/design>. Exact evidence is under [shared-identities](cycle-1-4/shared-identities/), including `production-seal.json`, `alignment.json`, `layers.json`, `dimensions.json`, `heading.png`, `layers.png`, `owner-trial.png` and AX snapshots. The first launcher ran before the build seal was written, correctly refused to start, and is retained as `launch-initial*.log`; after the build finished and seal verified, the replacement launcher started normally. No seal bypass was used.
+
+Actual browser review confirms H for `onbTitle` in Structure, Selection header/relationship endpoint and Layers; T for the distinct `onbTitle-text` child, and native Input icons in Layers. Name/icon centres coincide exactly at y128.8 in the selected Text header with metadata at y139.8, and at y300.2 in the Heading relationship endpoint with context underneath. The three comparable original/updated nodes preserve 224px world width and world heights 122, 122 and 98px respectively. The newly revealed Text child is 224×98px; it was hidden in the earlier compact graph and is not falsely claimed as a before/after sample. Search/expand/Fit View and zoom were used only as ephemeral review controls.
+
+The saved screen remains revision3, digest `v1_fe0ac678e80522e8c9b9a004c95ba6f59c9d3261bd0e4fd54fe1bd47a0a54152`. No Apply, Save, agent turn or effect was invoked. The existing tab is signed in and left at Heading relationships, with the H/T comparison visible. Other tabs were preserved.
+
+Builder checks PASS / READY FOR OWNER TRIAL. Independent gate and owner acceptance remain pending. Next allowed action: owner trial or independent assessment of this exact candidate; no main merge, publication, deployment, finalization or Stage9 closure is authorized by this delivery.
