@@ -307,6 +307,37 @@ Primary references for the proposed baseline: [W3C Reflow](https://www.w3.org/WA
 
 Recommended sequence after separate authorization: establish application viewport/overlay ownership; provide a correctly composed drawer/navigation/state-intent contract; verify one genuinely adaptive working app end-to-end; then broaden across forms/data/media/chat/graph families and real-device input scenarios. Preserve the failed drawer evidence and existing limited successful width/state behavior. No product repair is authorized or delivered by this report.
 
+## Studio panel consistency - final chrome and entry-point review
+
+2026-10-27 owner requests a final overall comparison of left/right panel close controls and side resize handles, and questions keeping Chat/Document in View now that the mode bar has drawer icons. Clean local/remote baseline `a661aed71f1db4b06635cd6429e65124cd935b74`; same report branch/main/product. [Measurements and reversible checks](cycle-1-4/agent-output-review/panel-consistency.json), [Chat panel](cycle-1-4/agent-output-review/panels-chat.png), [Document/Selection panel](cycle-1-4/agent-output-review/panels-document.png). No implementation requested or performed.
+
+Reviewer temporarily opened/closed panels, resized each by16px with pointer and keyboard, inspected View and restored original state: Chat open at282px; right panel hidden at315px with Document context; source and composer draft unchanged. At this1058px window the existing compact policy permits only one auxiliary panel, so the screenshots show separate states, not simultaneous panels. That continuity policy is intentional and is not a new defect. No source edit, Save/reload/restart or provider request.
+
+### AR-26 - Shared panel behaviors exist, but chrome and dismissal drift (P2, confirmed)
+
+| Treatment | Left Chat | Right Document/Selection |
+| --- | --- | --- |
+| Header |38px, padded plain title row |40px, two full-width context tabs |
+| Close control |28x28px rounded button; actual glyph font12px |32x39.2px full-height cell; actual glyph font18px |
+| Close label/title |Hide chat |Close panel / Close panel (Escape) |
+| Idle resize strip |6px, #f4f6f9 |6px, white |
+| Grip |2x28px, #cbd4e4 |2x28px, #dbe0e8 |
+| Escape from focused resize handle |Chat remains open |Right panel closes; focus returns to right icon |
+
+Both handles already use [the same PanelResizer](../../packages/ui-editor/src/PanelResizer.svelte), with clamping, pointer capture, focusable separator/value semantics, Arrow keys and Home/End support in source. Actual pointer and Arrow checks pass: Chat282→298→282; right315→331→315. Right uses the correct reversed direction. This is not evidence for replacing working resize mechanics. Its differing240–400 and280–460width limits can be legitimate content constraints; they need not be forced identical.
+
+The visual divergence comes from separate [Designer chrome styles](../../apps/studio/src/lib/designer/designer.css) and right-only white-strip overrides. Chat's inline header and [WorkspaceDetails](../../apps/studio/src/lib/designer/WorkspaceDetails.svelte)'s tab header also own separate close-button CSS. Actual typography cascade leaves different × sizes even though both nominally specify a close glyph. Content differences are legitimate: Chat needs a title; Document/Selection needs the agreed context tabs. They should share a frame, not be flattened into identical content. The captured right close cell was hovered/focused after opening; its tinted background is not claimed as its permanent idle colour.
+
+Proposal: one reusable panel-chrome/header primitive with title or tab content, common height/baseline, one close-icon component, same hit area, hover/focus/disabled states, labels and spacing. A concrete quiet target is a40px header aligned with the mode bar and a32px close button containing a16px shared SVG icon, preserving the accepted tabs. Apply shared tokens to both existing resize handles: white idle surface, subtle common grip, stronger hover/drag/focus feedback and unchanged keyboard/pointer mechanics. Avoid broad typography overrides that leak into authored content. Closing hides a panel and retains drafts/history/run state; reopening restores its context/width. Keep focus on the primary panel control when opening (composer or active context tab rather than automatically the close button) and return it to the invoking control/fallback side icon when hiding. Define a consistent Escape policy for panel chrome/resizers while letting inner menus, editors and dialogs consume Escape first; do not discard a draft or stop an agent merely to hide Chat.
+
+### AR-27 - View repeats the new mode-bar panel toggles (P3, confirmed; removal proposed)
+
+Current View contains checked Chat and Document items plus canvas-size choices. There is **no separate Selection menu item**: Document controls the shared Document/Selection panel. [WorkspaceModes](../../apps/studio/src/lib/designer/WorkspaceModes.svelte) already provides persistent left/right toggle buttons with accessible names, show/hide tooltips and aria-expanded. These cover the same panel visibility choices, although current focus behavior differs by entry point.
+
+Agree with the owner's simplification: remove only Chat and Document from the visible View menu; retain Fit/Tablet/Phone and other genuinely view-related commands. Keep mode-bar side icons as the stable panel entry points and header × as local hide controls. Preserve programmatic open/inspect actions, compact-layout exclusivity, current context, drafts, width state and keyboard access. Use stable panel IDs/aria-controls and consistent labels on both icons; removing duplicate menu rows must not remove the underlying shared showPanel functionality. This is a proposed final polish, **not a completed removal**.
+
+Proposed acceptance: compare both headers/close icons and idle/hover/drag/focus handles at normal/high display scaling; exercise pointer/keyboard resizing and bounds, close/reopen, appropriate Escape and focus return, compact/wide layouts and mode switches. Verify Chat draft/history/active work and Document/Selection context survive hiding, and both mode-bar icons remain discoverable and keyboard operable after menu cleanup. Current bounded resize/state-preservation checks are positive evidence, not a fresh overall Stage9/independent gate verdict.
+
 ## Holistic resolution proposal - not authorized for implementation
 
 A general workflow should be Find target -> Inspect effective capabilities/context -> Prepare valid change -> Apply atomically -> Verify affected surfaces/states -> Report outcome or next required action.
@@ -328,4 +359,4 @@ This can make capabilities, failure reporting and verification more reliable acr
 
 ## Disposition and next allowed action
 
-All AR-01 through AR-25 are **OPEN / REPORT ONLY**. No product fix, new capability, provider run, source save or preview restart was performed. Existing owner work is preserved. Validation for this documentation/evidence change is `git diff --check` and source-path/evidence checks; no product build or new product test run is warranted. Next allowed action: owner reviews/prioritizes this proposal and explicitly authorizes any bounded implementation; independent verification follows an actual candidate, not this report. No main merge, release, deployment, Stage9 closure or owner acceptance.
+All AR-01 through AR-27 are **OPEN / REPORT ONLY**. No product fix, new capability, provider run, source save or preview restart was performed. Existing owner work is preserved. Validation for this documentation/evidence change is `git diff --check` and source-path/evidence checks; no product build or new product test run is warranted. Next allowed action: owner reviews/prioritizes this proposal and explicitly authorizes any bounded implementation; independent verification follows an actual candidate, not this report. No main merge, release, deployment, Stage9 closure or owner acceptance.

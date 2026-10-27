@@ -1,0 +1,459 @@
+{
+  "schema": "vict.studio-panel-consistency-review@1",
+  "observedAt": "2026-10-27T13:00:06.359Z",
+  "reportBaseline": "a661aed71f1db4b06635cd6429e65124cd935b74",
+  "previewProduct": "e5bc3cd36aae5e7d2934aa03f293fb49c8ce1006",
+  "method": "Rendered DOM/computed chrome styles plus reversible panel open/hide, pointer and keyboard resizing, Escape checks and View menu inspection. Source, draft, widths, right context and original open/hidden state restored; no authoring edits, Save, reload/restart or provider run.",
+  "baseline": {
+    "chatOpen": true,
+    "context": "Document",
+    "leftWidth": "282",
+    "rightOpen": false,
+    "rightWidth": "315"
+  },
+  "left": {
+    "elements": [
+      {
+        "bounds": {
+          "height": 38,
+          "width": 282,
+          "x": 0,
+          "y": 44
+        },
+        "css": {
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "",
+          "borderRadius": "0px",
+          "cursor": "auto",
+          "display": "flex",
+          "font": "12px / 18px system-ui, \"Segoe UI\", sans-serif",
+          "fontWeight": "400",
+          "padding": "5px 8px"
+        },
+        "label": null,
+        "max": null,
+        "min": null,
+        "role": null,
+        "selector": "panel-header chat-heading",
+        "tag": "HEADER",
+        "text": "Chat×",
+        "title": null,
+        "value": null
+      },
+      {
+        "bounds": {
+          "height": 18,
+          "width": 24.399999618530273,
+          "x": 8,
+          "y": 53.60000228881836
+        },
+        "css": {
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "0px none rgb(32, 35, 43)",
+          "borderRadius": "0px",
+          "cursor": "auto",
+          "display": "block",
+          "font": "12px / 18px system-ui, \"Segoe UI\", sans-serif",
+          "fontWeight": "400",
+          "padding": "0px"
+        },
+        "label": null,
+        "max": null,
+        "min": null,
+        "role": null,
+        "selector": "",
+        "tag": "STRONG",
+        "text": "Chat",
+        "title": null,
+        "value": null
+      },
+      {
+        "bounds": {
+          "height": 28,
+          "width": 28,
+          "x": 245.1999969482422,
+          "y": 48.60000228881836
+        },
+        "css": {
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "0px none rgb(89, 98, 118)",
+          "borderRadius": "5px",
+          "cursor": "pointer",
+          "display": "block",
+          "font": "12px / 18px system-ui, \"Segoe UI\", sans-serif",
+          "fontWeight": "400",
+          "padding": "1px 6px"
+        },
+        "label": "Hide chat",
+        "max": null,
+        "min": null,
+        "role": null,
+        "selector": "",
+        "tag": "BUTTON",
+        "text": "×",
+        "title": "Hide chat",
+        "value": null
+      },
+      {
+        "bounds": {
+          "height": 599.2000122070312,
+          "width": 6,
+          "x": 282,
+          "y": 44
+        },
+        "css": {
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "0px none rgb(32, 35, 43)",
+          "borderRadius": "0px",
+          "cursor": "auto",
+          "display": "flex",
+          "font": "12px / 17.4px system-ui, \"Segoe UI\", sans-serif",
+          "fontWeight": "400",
+          "padding": "0px"
+        },
+        "label": null,
+        "max": null,
+        "min": null,
+        "role": null,
+        "selector": "chat-resizer",
+        "tag": "DIV",
+        "text": "",
+        "title": null,
+        "value": null
+      },
+      {
+        "bounds": {
+          "height": 599.2000122070312,
+          "width": 6,
+          "x": 282,
+          "y": 44
+        },
+        "css": {
+          "background": "rgb(244, 246, 249)",
+          "border": "0px none rgb(32, 35, 43)",
+          "borderRadius": "0px",
+          "cursor": "col-resize",
+          "display": "flex",
+          "font": "12px / 17.4px system-ui, \"Segoe UI\", sans-serif",
+          "fontWeight": "400",
+          "padding": "0px"
+        },
+        "label": "Chat width",
+        "max": "400",
+        "min": "240",
+        "role": "separator",
+        "selector": "resizer svelte-p7fznp",
+        "tag": "DIV",
+        "text": "",
+        "title": null,
+        "value": "282"
+      },
+      {
+        "bounds": {
+          "height": 28,
+          "width": 2,
+          "x": 284,
+          "y": 329.6000061035156
+        },
+        "css": {
+          "background": "rgb(203, 212, 228)",
+          "border": "0px none rgb(32, 35, 43)",
+          "borderRadius": "4px",
+          "cursor": "col-resize",
+          "display": "block",
+          "font": "12px / 17.4px system-ui, \"Segoe UI\", sans-serif",
+          "fontWeight": "400",
+          "padding": "0px"
+        },
+        "label": null,
+        "max": null,
+        "min": null,
+        "role": null,
+        "selector": "svelte-p7fznp",
+        "tag": "SPAN",
+        "text": "",
+        "title": null,
+        "value": null
+      },
+      {
+        "bounds": {
+          "height": 38,
+          "width": 750.4000244140625,
+          "x": 298,
+          "y": 44
+        },
+        "css": {
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "0px none rgb(32, 35, 43)",
+          "borderRadius": "0px",
+          "cursor": "auto",
+          "display": "grid",
+          "font": "12px / 18px system-ui, \"Segoe UI\", sans-serif",
+          "fontWeight": "400",
+          "padding": "0px"
+        },
+        "label": null,
+        "max": null,
+        "min": null,
+        "role": null,
+        "selector": "workspace-mode-bar svelte-762fh8",
+        "tag": "DIV",
+        "text": " DesignInteractStructure ",
+        "title": null,
+        "value": null
+      }
+    ]
+  },
+  "right": {
+    "chatHidden": true,
+    "elements": [
+      {
+        "bounds": {
+          "height": 599.2000122070312,
+          "width": 6,
+          "x": 737.4000244140625,
+          "y": 44
+        },
+        "css": {
+          "background": "rgb(255, 255, 255)",
+          "border": "0px none rgb(32, 35, 43)",
+          "borderRadius": "0px",
+          "cursor": "auto",
+          "display": "grid",
+          "font": "12px / 17.4px system-ui, \"Segoe UI\", sans-serif",
+          "fontWeight": "400",
+          "padding": "0px"
+        },
+        "label": null,
+        "max": null,
+        "min": null,
+        "role": null,
+        "selector": "drawer-resizer",
+        "tag": "DIV",
+        "text": "",
+        "title": null,
+        "value": null
+      },
+      {
+        "bounds": {
+          "height": 599.2000122070312,
+          "width": 6,
+          "x": 737.4000244140625,
+          "y": 44
+        },
+        "css": {
+          "background": "rgb(255, 255, 255)",
+          "border": "0px none rgb(32, 35, 43)",
+          "borderRadius": "0px",
+          "cursor": "col-resize",
+          "display": "flex",
+          "font": "12px / 17.4px system-ui, \"Segoe UI\", sans-serif",
+          "fontWeight": "400",
+          "padding": "0px"
+        },
+        "label": "Document drawer width",
+        "max": "460",
+        "min": "280",
+        "role": "separator",
+        "selector": "resizer svelte-p7fznp",
+        "tag": "DIV",
+        "text": "",
+        "title": null,
+        "value": "315"
+      },
+      {
+        "bounds": {
+          "height": 28,
+          "width": 2,
+          "x": 739.4000244140625,
+          "y": 329.6000061035156
+        },
+        "css": {
+          "background": "rgb(219, 224, 232)",
+          "border": "0px none rgb(32, 35, 43)",
+          "borderRadius": "4px",
+          "cursor": "col-resize",
+          "display": "block",
+          "font": "12px / 17.4px system-ui, \"Segoe UI\", sans-serif",
+          "fontWeight": "400",
+          "padding": "0px"
+        },
+        "label": null,
+        "max": null,
+        "min": null,
+        "role": null,
+        "selector": "svelte-p7fznp",
+        "tag": "SPAN",
+        "text": "",
+        "title": null,
+        "value": null
+      },
+      {
+        "bounds": {
+          "height": 40,
+          "width": 314.20001220703125,
+          "x": 744.2000122070312,
+          "y": 44
+        },
+        "css": {
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "",
+          "borderRadius": "0px",
+          "cursor": "auto",
+          "display": "flex",
+          "font": "12px / 18px system-ui, \"Segoe UI\", sans-serif",
+          "fontWeight": "400",
+          "padding": "0px"
+        },
+        "label": null,
+        "max": null,
+        "min": null,
+        "role": null,
+        "selector": "details-header svelte-1v8drua",
+        "tag": "HEADER",
+        "text": "DocumentSelection ×",
+        "title": null,
+        "value": null
+      },
+      {
+        "bounds": {
+          "height": 39.20000076293945,
+          "width": 141.10000610351562,
+          "x": 744.2000122070312,
+          "y": 44
+        },
+        "css": {
+          "background": "rgb(255, 255, 255)",
+          "border": "",
+          "borderRadius": "0px",
+          "cursor": "pointer",
+          "display": "block",
+          "font": "500 12px / 18px system-ui, \"Segoe UI\", sans-serif",
+          "fontWeight": "500",
+          "padding": "0px 12px"
+        },
+        "label": null,
+        "max": null,
+        "min": null,
+        "role": "tab",
+        "selector": "svelte-1v8drua",
+        "tag": "BUTTON",
+        "text": "Document",
+        "title": null,
+        "value": null
+      },
+      {
+        "bounds": {
+          "height": 39.20000076293945,
+          "width": 141.10000610351562,
+          "x": 885.2999877929688,
+          "y": 44
+        },
+        "css": {
+          "background": "rgb(250, 250, 250)",
+          "border": "",
+          "borderRadius": "0px",
+          "cursor": "pointer",
+          "display": "block",
+          "font": "12px / 18px system-ui, \"Segoe UI\", sans-serif",
+          "fontWeight": "400",
+          "padding": "0px 12px"
+        },
+        "label": null,
+        "max": null,
+        "min": null,
+        "role": "tab",
+        "selector": "svelte-1v8drua",
+        "tag": "BUTTON",
+        "text": "Selection",
+        "title": null,
+        "value": null
+      },
+      {
+        "bounds": {
+          "height": 39.20000076293945,
+          "width": 32,
+          "x": 1026.4000244140625,
+          "y": 44
+        },
+        "css": {
+          "background": "rgb(237, 240, 250)",
+          "border": "0px none rgb(32, 35, 43)",
+          "borderRadius": "0px",
+          "cursor": "pointer",
+          "display": "grid",
+          "font": "18px / 18px system-ui, \"Segoe UI\", sans-serif",
+          "fontWeight": "400",
+          "padding": "0px"
+        },
+        "label": "Close panel",
+        "max": null,
+        "min": null,
+        "role": null,
+        "selector": "close-document svelte-1v8drua",
+        "tag": "BUTTON",
+        "text": "×",
+        "title": "Close panel (Escape)",
+        "value": null
+      }
+    ]
+  },
+  "checks": {
+    "rightKeyboardLeft": 331,
+    "rightKeyboardRightRestore": 315,
+    "rightPointerLeft": 331,
+    "rightPointerRestore": 315,
+    "leftPointerRight": 298,
+    "leftPointerRestore": 282,
+    "leftKeyboardRight": 298,
+    "leftKeyboardLeftRestore": 282,
+    "chatEscapeFromSeparator": {
+      "focus": "Chat width",
+      "hidden": false
+    },
+    "documentEscapeFromSeparator": {
+      "hidden": true,
+      "focus": "Toggle Document and Selection drawer"
+    },
+    "chatCloseButton": {
+      "focus": "Toggle Chat drawer",
+      "hidden": true
+    },
+    "draftPreserved": true,
+    "sourceUnchanged": true
+  },
+  "viewMenu": [
+    {
+      "checked": "true",
+      "role": "menuitemcheckbox",
+      "text": "Chat✓"
+    },
+    {
+      "checked": "false",
+      "role": "menuitemcheckbox",
+      "text": "Document"
+    },
+    {
+      "checked": "true",
+      "role": "menuitemradio",
+      "text": "Fit canvas✓"
+    },
+    {
+      "checked": "false",
+      "role": "menuitemradio",
+      "text": "Tablet · 768"
+    },
+    {
+      "checked": "false",
+      "role": "menuitemradio",
+      "text": "Phone · 390"
+    }
+  ],
+  "restored": {
+    "chatOpen": true,
+    "context": "Document",
+    "leftWidth": "282",
+    "rightOpen": false,
+    "rightWidth": "315"
+  }
+}
