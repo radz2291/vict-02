@@ -1,0 +1,37 @@
+{
+  "empty": {
+    "disabled": true,
+    "opacity": "0.4",
+    "scope": "Screen · 2 shown",
+    "width": 52.5,
+    "x": 262.9125061035156,
+    "y": 90.5999984741211
+  },
+  "node": {
+    "disabled": false,
+    "scope": "Screen · 2 shown · 1 selected",
+    "width": 52.5,
+    "x": 262.9125061035156,
+    "y": 90.5999984741211
+  },
+  "connection": {
+    "disabled": false,
+    "scope": "Screen · 2 shown · 1 selected"
+  },
+  "ownerUnchanged": true,
+  "ownerAfter": {
+    "footers": [
+      "↑ ↓ navigate · → expand · ← collapse · Enter select",
+      "Duplicate selection · unsaved"
+    ],
+    "notices": [
+      "",
+      " Ready",
+      "",
+      "Duplicate selection · unsaved"
+    ],
+    "query": "",
+    "scope": "Focus: Row 2 · 4 shown· 1 selected",
+    "tail": "tion\nContains\nEmail me product updates\nCheckbox · copy-49eea289-a13f-40d7-a553-8389df929dd6\nContains\nEmail me product updates\nLabel · copy-a795fd97-0575-4a46-992c-197d9f1f189b\nTechnical information\nDuplicate selection · unsaved\nDesigner — VICT Studio"
+  }
+}
