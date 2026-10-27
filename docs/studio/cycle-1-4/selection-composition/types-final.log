@@ -1,0 +1,5 @@
+tests/ui/selection-composition.test.ts(17,32): error TS2542: Index signature in type 'Readonly<Record<string, UiNode>>' only permits reading.
+tests/ui/selection-composition.test.ts(41,32): error TS2542: Index signature in type 'Readonly<Record<string, UiNode>>' only permits reading.
+tests/ui/selection-composition.test.ts(41,142): error TS2542: Index signature in type 'Readonly<Record<string, UiNode>>' only permits reading.
+tests/ui/selection-composition.test.ts(41,253): error TS2322: Type '{ localStyle: { property: string; value: { type: "text"; value: string; }; }[]; attributes: { placeholder: string; }; styleSources?: readonly string[] | undefined; interactions?: readonly UiInteraction[] | undefined; ... 4 more ...; children: readonly string[]; } | ... 5 more ... | { ...; }' is not assignable to type 'UiNode'.
+  Object literal may only specify known properties, and 'attributes' does not exist in type 'UiNodeCommon & { readonly kind: "text"; readonly id: string; readonly content: UiTextContent; }'.

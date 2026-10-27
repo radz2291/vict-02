@@ -1,0 +1,39 @@
+{
+  "footer": "Loaded the saved screen.",
+  "header": {
+    "height": 200,
+    "width": 314.20001220703125
+  },
+  "icons": 2,
+  "identity": "2 nodes Checkbox  Email me product updates ×Text  Your details stay on this screen — nothing is sent. Text inside Paragraph · Your details stay on this screen — nothing is sent.× ",
+  "members": 2,
+  "membership": {
+    "client": 149,
+    "scroll": 149
+  },
+  "overviewStories": 0,
+  "relationships": "    Email me product updates Checkbox Inside   Row  Reads fromUpdatesFallback from   Updates Opt In  3 references   Your details stay on this screen — nothing is sent. Text Inside   Your details stay on this screen — nothing is sent. Paragraph   ",
+  "sections": [
+    {
+      "expanded": "true",
+      "name": "Relationships",
+      "top": 284,
+      "weight": "500"
+    },
+    {
+      "expanded": "false",
+      "name": "Technical information",
+      "top": 607.2000122070312,
+      "weight": "400"
+    }
+  ],
+  "selectedRows": [
+    "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbNotifInput"
+  ],
+  "sourceApplyDisabled": true,
+  "technical": "TypeMixedEmail me product updatesscreen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbNotifInputYour details stay on this screen — nothing is sent.screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbFeedbackStatic",
+  "viewport": {
+    "height": 668,
+    "width": 1015
+  }
+}

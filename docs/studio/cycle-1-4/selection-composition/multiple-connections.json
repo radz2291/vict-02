@@ -1,0 +1,44 @@
+{
+  "footer": "Loaded the saved screen.",
+  "header": {
+    "height": 223.6750030517578,
+    "width": 314.20001220703125
+  },
+  "icons": 4,
+  "identity": "2 connections Connection  Email me product updates Updates  Updates Opt In ×Connection  Email me product updates Reads from  Updates Opt In × ",
+  "members": 2,
+  "membership": {
+    "client": 173,
+    "scroll": 189
+  },
+  "overview": "Defined inDocument",
+  "overviewStories": 0,
+  "relationships": "    Email me product updates Checkbox Reads fromUpdates   Updates Opt In  2 references  ",
+  "sections": [
+    {
+      "expanded": "false",
+      "name": "Overview",
+      "top": 307.6750183105469,
+      "weight": "400"
+    },
+    {
+      "expanded": "true",
+      "name": "Relationships",
+      "top": 343.6750183105469,
+      "weight": "500"
+    },
+    {
+      "expanded": "false",
+      "name": "Technical information",
+      "top": 607.2000122070312,
+      "weight": "400"
+    }
+  ],
+  "selectedRows": [],
+  "sourceApplyDisabled": true,
+  "technical": "Checkbox · Email me product updates · Updates · State · Updates Opt In/nodes/onbNotifInput/interactions/0Relationship: UpdatesDocument declarationThe source declares an update to the destination state.Checkbox · Email me product updates · Reads from · State · Updates Opt In/nodes/onbNotifInput/attributes/checkedRelationship: ValueDocument declarationThe source supplies a value read by the destination.",
+  "viewport": {
+    "height": 668,
+    "width": 1015
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "footer": "Loaded the saved screen.",
+  "header": {
+    "height": 110.4000015258789,
+    "width": 314.20001220703125
+  },
+  "icons": 2,
+  "identity": " Connection  Email me product updates Updates  Updates Opt In  ",
+  "members": 0,
+  "membership": {
+    "client": 86,
+    "scroll": 86
+  },
+  "overview": "Defined inDocument",
+  "overviewStories": 0,
+  "relationships": "    Email me product updates Checkbox Updates   Updates Opt In    ",
+  "sections": [
+    {
+      "expanded": "true",
+      "name": "Overview",
+      "top": 194.40000915527344,
+      "weight": "500"
+    },
+    {
+      "expanded": "false",
+      "name": "Relationships",
+      "top": 571.2000122070312,
+      "weight": "400"
+    },
+    {
+      "expanded": "false",
+      "name": "Technical information",
+      "top": 607.2000122070312,
+      "weight": "400"
+    }
+  ],
+  "selectedRows": [],
+  "sourceApplyDisabled": true,
+  "technical": "Checkbox · Email me product updates · Updates · State · Updates Opt In/nodes/onbNotifInput/interactions/0Relationship: UpdatesDocument declarationThe source declares an update to the destination state.",
+  "viewport": {
+    "height": 668,
+    "width": 1015
+  }
+}

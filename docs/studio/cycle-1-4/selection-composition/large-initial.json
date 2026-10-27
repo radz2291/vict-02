@@ -1,0 +1,43 @@
+{
+  "footer": "Loaded the saved screen.",
+  "header": {
+    "height": 223.6750030517578,
+    "width": 314.20001220703125
+  },
+  "icons": 3,
+  "identity": "5 nodes Input  Full name ×Input  Work email ×Select  Role × Show all 5",
+  "members": 3,
+  "membership": {
+    "client": 143,
+    "scroll": 173
+  },
+  "overviewStories": 0,
+  "relationships": "    Full name Input Inside   Section  Styled by   Full name · Focus style  Styled by   Full name · Base style  Reads fromUpdatesFallback from   Full Name  3 references   Work email Input Inside   Section  Styled by   Work email · Focus style  Styled by   Work email · Base style  Reads fromUpdatesFallback from   Work Email  3 references   Role Select Inside   Section  Contains   Select your role… Option Contains   Product Option Contains   Design Option Contains   Engineering Option Contains   Marketing Option Contains   Sales Option Styled by   Role · Focus style  Styled by   Role · Base style  Reads fromUpdatesFallback from   Role State 3 references   Create account Component Inside   Section  Uses   Button  Declares output   Press     Email me product updates Checkbox Inside   Row  Reads fromUpdatesFallback from   Updates Opt In  3 references  ",
+  "sections": [
+    {
+      "expanded": "true",
+      "name": "Relationships",
+      "top": 307.6750183105469,
+      "weight": "500"
+    },
+    {
+      "expanded": "false",
+      "name": "Technical information",
+      "top": 607.2000122070312,
+      "weight": "400"
+    }
+  ],
+  "selectedRows": [
+    "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbNameInput",
+    "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbEmailInput",
+    "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbRoleSelect",
+    "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbNotifInput",
+    "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbSubmit"
+  ],
+  "sourceApplyDisabled": true,
+  "technical": "TypeMixedFull namescreen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbNameInputWork emailscreen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbEmailInputRolescreen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbRoleSelectEmail me product updatesscreen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbNotifInputCreate accountscreen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbSubmit",
+  "viewport": {
+    "height": 668,
+    "width": 1015
+  }
+}

@@ -1,0 +1,370 @@
+{
+  "candidate": "681b31f899bcd4706d182b90cba818e74ffd29c1",
+  "url": "http://127.0.0.22:5616/design",
+  "viewport": {
+    "height": 668,
+    "width": 1015
+  },
+  "single": {
+    "footer": "Loaded the saved screen.",
+    "header": {
+      "height": 72.4000015258789,
+      "width": 313.3999938964844
+    },
+    "icons": 1,
+    "identity": " Checkbox  Email me product updates  ",
+    "members": 0,
+    "membership": {
+      "client": 48,
+      "scroll": 48
+    },
+    "overview": "  Edit on canvas ↗   Height16pxWidth16px",
+    "overviewStories": 0,
+    "relationships": "   Inside   Row  Reads fromUpdatesFallback from   Updates Opt In  3 references  ",
+    "sections": [
+      {
+        "expanded": "true",
+        "name": "Overview",
+        "top": 156.40000915527344,
+        "weight": "500"
+      },
+      {
+        "expanded": "false",
+        "name": "Relationships",
+        "top": 571.2000122070312,
+        "weight": "400"
+      },
+      {
+        "expanded": "false",
+        "name": "Technical information",
+        "top": 607.2000122070312,
+        "weight": "400"
+      }
+    ],
+    "selectedRows": [
+      "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbNotifInput"
+    ],
+    "sourceApplyDisabled": true,
+    "technical": "Source nodeonbNotifInputOccurrencescreen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbNotifInputkindelementidonbNotifInputtaginputattributes.idonbNotifInputattributes.typecheckboxattributes.checked.typerefattributes.checked.pathstate.updatesOptInlocalStyle.0.propertyaccent-colorlocalStyle.0.value.typetextlocalStyle.0.value.value#3b66f5localStyle.1.propertyflexlocalStyle.1.value.typetextlocalStyle.1.value.valuenonelocalStyle.2.propertyheightlocalStyle.2.value.typetextlocalStyle.2.value.value16pxlocalStyle.3.propertymarginlocalStyle.3.value.typetextlocalStyle.3.value.value0localStyle.4.propertywidthlocalStyle.4.value.typetextlocalStyle.4.value.value16pxinteractions.0.onchangeinteractions.0.actionsetStateinteractions.0.keyupdatesOptIninteractions.0.value.typerefinteractions.0.value.pathstate.updatesOptIn",
+    "viewport": {
+      "height": 668,
+      "width": 1015
+    }
+  },
+  "multiple": {
+    "footer": "Loaded the saved screen.",
+    "header": {
+      "height": 200,
+      "width": 314.20001220703125
+    },
+    "icons": 2,
+    "identity": "2 nodes Text  Your details stay on this screen — nothing is sent. Text inside Paragraph · Your details stay on this screen — nothing is sent.×Checkbox  Email me product updates × ",
+    "members": 2,
+    "membership": {
+      "client": 149,
+      "scroll": 149
+    },
+    "overviewStories": 0,
+    "relationships": "    Email me product updates Checkbox Inside   Row  Reads fromUpdatesFallback from   Updates Opt In  3 references   Your details stay on this screen — nothing is sent. Text Inside   Your details stay on this screen — nothing is sent. Paragraph   ",
+    "sections": [
+      {
+        "expanded": "true",
+        "name": "Relationships",
+        "top": 284,
+        "weight": "500"
+      },
+      {
+        "expanded": "false",
+        "name": "Technical information",
+        "top": 607.2000122070312,
+        "weight": "400"
+      }
+    ],
+    "selectedRows": [
+      "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbNotifInput"
+    ],
+    "sourceApplyDisabled": true,
+    "technical": "TypeMixedYour details stay on this screen — nothing is sent.screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbFeedbackStaticEmail me product updatesscreen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbNotifInput",
+    "viewport": {
+      "height": 668,
+      "width": 1015
+    }
+  },
+  "connection": {
+    "footer": "Loaded the saved screen.",
+    "header": {
+      "height": 110.4000015258789,
+      "width": 314.20001220703125
+    },
+    "icons": 2,
+    "identity": " Connection  Email me product updates Updates  Updates Opt In  ",
+    "members": 0,
+    "membership": {
+      "client": 86,
+      "scroll": 86
+    },
+    "overview": "Defined inDocument",
+    "overviewStories": 0,
+    "relationships": "    Email me product updates Checkbox Updates   Updates Opt In    ",
+    "sections": [
+      {
+        "expanded": "true",
+        "name": "Overview",
+        "top": 194.40000915527344,
+        "weight": "500"
+      },
+      {
+        "expanded": "false",
+        "name": "Relationships",
+        "top": 571.2000122070312,
+        "weight": "400"
+      },
+      {
+        "expanded": "false",
+        "name": "Technical information",
+        "top": 607.2000122070312,
+        "weight": "400"
+      }
+    ],
+    "selectedRows": [],
+    "sourceApplyDisabled": true,
+    "technical": "Checkbox · Email me product updates · Updates · State · Updates Opt In/nodes/onbNotifInput/interactions/0Relationship: UpdatesDocument declarationThe source declares an update to the destination state.",
+    "viewport": {
+      "height": 668,
+      "width": 1015
+    }
+  },
+  "mixed": {
+    "footer": "Loaded the saved screen.",
+    "header": {
+      "height": 202,
+      "width": 314.20001220703125
+    },
+    "icons": 3,
+    "identity": "1 node · 1 connection Connection  Email me product updates Updates  Updates Opt In ×Checkbox  Email me product updates × ",
+    "members": 2,
+    "membership": {
+      "client": 151,
+      "scroll": 151
+    },
+    "overviewStories": 0,
+    "relationships": " Selected connections   Email me product updates Checkbox Updates   Updates Opt In  Related connections   Email me product updates Checkbox Inside   Row  Reads fromFallback from   Updates Opt In  2 references  ",
+    "sections": [
+      {
+        "expanded": "true",
+        "name": "Relationships",
+        "top": 286,
+        "weight": "500"
+      },
+      {
+        "expanded": "false",
+        "name": "Technical information",
+        "top": 607.2000122070312,
+        "weight": "400"
+      }
+    ],
+    "selectedRows": [
+      "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbNotifInput"
+    ],
+    "sourceApplyDisabled": true,
+    "technical": "Checkbox · Email me product updates · Updates · State · Updates Opt In/nodes/onbNotifInput/interactions/0Relationship: UpdatesDocument declarationThe source declares an update to the destination state.Email me product updatesscreen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbNotifInput",
+    "viewport": {
+      "height": 668,
+      "width": 1015
+    }
+  },
+  "connections": {
+    "footer": "Loaded the saved screen.",
+    "header": {
+      "height": 223.6750030517578,
+      "width": 314.20001220703125
+    },
+    "icons": 4,
+    "identity": "2 connections Connection  Email me product updates Updates  Updates Opt In ×Connection  Email me product updates Reads from  Updates Opt In × ",
+    "members": 2,
+    "membership": {
+      "client": 173,
+      "scroll": 189
+    },
+    "overview": "Defined inDocument",
+    "overviewStories": 0,
+    "relationships": "    Email me product updates Checkbox Reads fromUpdates   Updates Opt In  2 references  ",
+    "sections": [
+      {
+        "expanded": "false",
+        "name": "Overview",
+        "top": 307.6750183105469,
+        "weight": "400"
+      },
+      {
+        "expanded": "true",
+        "name": "Relationships",
+        "top": 343.6750183105469,
+        "weight": "500"
+      },
+      {
+        "expanded": "false",
+        "name": "Technical information",
+        "top": 607.2000122070312,
+        "weight": "400"
+      }
+    ],
+    "selectedRows": [],
+    "sourceApplyDisabled": true,
+    "technical": "Checkbox · Email me product updates · Updates · State · Updates Opt In/nodes/onbNotifInput/interactions/0Relationship: UpdatesDocument declarationThe source declares an update to the destination state.Checkbox · Email me product updates · Reads from · State · Updates Opt In/nodes/onbNotifInput/attributes/checkedRelationship: ValueDocument declarationThe source supplies a value read by the destination.",
+    "viewport": {
+      "height": 668,
+      "width": 1015
+    }
+  },
+  "largeBefore": {
+    "footer": "Loaded the saved screen.",
+    "header": {
+      "height": 223.6750030517578,
+      "width": 314.20001220703125
+    },
+    "icons": 3,
+    "identity": "5 nodes Input  Full name ×Input  Work email ×Select  Role × Show all 5",
+    "members": 3,
+    "membership": {
+      "client": 143,
+      "scroll": 173
+    },
+    "overviewStories": 0,
+    "relationships": "    Full name Input Inside   Section  Styled by   Full name · Focus style  Styled by   Full name · Base style  Reads fromUpdatesFallback from   Full Name  3 references   Work email Input Inside   Section  Styled by   Work email · Focus style  Styled by   Work email · Base style  Reads fromUpdatesFallback from   Work Email  3 references   Role Select Inside   Section  Contains   Select your role… Option Contains   Product Option Contains   Design Option Contains   Engineering Option Contains   Marketing Option Contains   Sales Option Styled by   Role · Focus style  Styled by   Role · Base style  Reads fromUpdatesFallback from   Role State 3 references   Create account Component Inside   Section  Uses   Button  Declares output   Press     Email me product updates Checkbox Inside   Row  Reads fromUpdatesFallback from   Updates Opt In  3 references  ",
+    "sections": [
+      {
+        "expanded": "true",
+        "name": "Relationships",
+        "top": 307.6750183105469,
+        "weight": "500"
+      },
+      {
+        "expanded": "false",
+        "name": "Technical information",
+        "top": 607.2000122070312,
+        "weight": "400"
+      }
+    ],
+    "selectedRows": [
+      "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbNameInput",
+      "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbEmailInput",
+      "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbRoleSelect",
+      "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbNotifInput",
+      "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbSubmit"
+    ],
+    "sourceApplyDisabled": true,
+    "technical": "TypeMixedFull namescreen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbNameInputWork emailscreen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbEmailInputRolescreen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbRoleSelectEmail me product updatesscreen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbNotifInputCreate accountscreen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbSubmit",
+    "viewport": {
+      "height": 668,
+      "width": 1015
+    }
+  },
+  "largeAfter": {
+    "footer": "Loaded the saved screen.",
+    "header": {
+      "height": 223.6750030517578,
+      "width": 314.20001220703125
+    },
+    "icons": 5,
+    "identity": "5 nodes Input  Full name ×Input  Work email ×Select  Role ×Checkbox  Email me product updates ×Component  Create account × Show fewer",
+    "members": 5,
+    "membership": {
+      "client": 143,
+      "scroll": 292
+    },
+    "overviewStories": 0,
+    "relationships": "    Full name Input Inside   Section  Styled by   Full name · Focus style  Styled by   Full name · Base style  Reads fromUpdatesFallback from   Full Name  3 references   Work email Input Inside   Section  Styled by   Work email · Focus style  Styled by   Work email · Base style  Reads fromUpdatesFallback from   Work Email  3 references   Role Select Inside   Section  Contains   Select your role… Option Contains   Product Option Contains   Design Option Contains   Engineering Option Contains   Marketing Option Contains   Sales Option Styled by   Role · Focus style  Styled by   Role · Base style  Reads fromUpdatesFallback from   Role State 3 references   Create account Component Inside   Section  Uses   Button  Declares output   Press     Email me product updates Checkbox Inside   Row  Reads fromUpdatesFallback from   Updates Opt In  3 references  ",
+    "sections": [
+      {
+        "expanded": "true",
+        "name": "Relationships",
+        "top": 307.6750183105469,
+        "weight": "500"
+      },
+      {
+        "expanded": "false",
+        "name": "Technical information",
+        "top": 607.2000122070312,
+        "weight": "400"
+      }
+    ],
+    "selectedRows": [
+      "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbNameInput",
+      "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbEmailInput",
+      "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbRoleSelect",
+      "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbNotifInput",
+      "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbSubmit"
+    ],
+    "sourceApplyDisabled": true,
+    "technical": "TypeMixedFull namescreen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbNameInputWork emailscreen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbEmailInputRolescreen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbRoleSelectEmail me product updatesscreen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbNotifInputCreate accountscreen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbSubmit",
+    "viewport": {
+      "height": 668,
+      "width": 1015
+    }
+  },
+  "source": {
+    "applyDisabled": true,
+    "metadata": [
+      "Saved revision r1.r1",
+      "Application version v1_fe0ac678e80522e8c9b9a004c95ba6f59c9d3261bd0e4fd54fe1bd47a0a54152",
+      "Generated by Studio to connect this screen to VICT."
+    ],
+    "sourceRevision": "r1.r1"
+  },
+  "final": {
+    "footer": "Loaded the saved screen.",
+    "header": {
+      "height": 200,
+      "width": 314.20001220703125
+    },
+    "icons": 2,
+    "identity": "2 nodes Checkbox  Email me product updates ×Text  Your details stay on this screen — nothing is sent. Text inside Paragraph · Your details stay on this screen — nothing is sent.× ",
+    "members": 2,
+    "membership": {
+      "client": 149,
+      "scroll": 149
+    },
+    "overviewStories": 0,
+    "relationships": "    Email me product updates Checkbox Inside   Row  Reads fromUpdatesFallback from   Updates Opt In  3 references   Your details stay on this screen — nothing is sent. Text Inside   Your details stay on this screen — nothing is sent. Paragraph   ",
+    "sections": [
+      {
+        "expanded": "true",
+        "name": "Relationships",
+        "top": 284,
+        "weight": "500"
+      },
+      {
+        "expanded": "false",
+        "name": "Technical information",
+        "top": 607.2000122070312,
+        "weight": "400"
+      }
+    ],
+    "selectedRows": [
+      "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbNotifInput"
+    ],
+    "sourceApplyDisabled": true,
+    "technical": "TypeMixedEmail me product updatesscreen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbNotifInputYour details stay on this screen — nothing is sent.screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbFeedbackStatic",
+    "viewport": {
+      "height": 668,
+      "width": 1015
+    }
+  },
+  "actionsExercised": [
+    "Single object properties and persistent identity",
+    "Exact Text selection through relationship endpoint",
+    "Ctrl additive selection",
+    "Single/multiple selected connection stories",
+    "Mixed selected-vs-related stories",
+    "Show all5 at fixed223.675px header height",
+    "Inspect individual member",
+    "Remove individual member",
+    "Document information read without source edits"
+  ],
+  "limits": [
+    "Builder-operated browser trial; independent gate and owner acceptance pending.",
+    "Two pre-existing graph-focus expectations remain failed in the exploratory batch; graph code is unchanged.",
+    "No live provider turn, form action, source Apply or Save."
+  ]
+}

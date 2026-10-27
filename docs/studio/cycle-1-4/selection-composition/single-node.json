@@ -1,0 +1,46 @@
+{
+  "footer": "Loaded the saved screen.",
+  "header": {
+    "height": 72.4000015258789,
+    "width": 313.3999938964844
+  },
+  "icons": 1,
+  "identity": " Checkbox  Email me product updates  ",
+  "members": 0,
+  "membership": {
+    "client": 48,
+    "scroll": 48
+  },
+  "overview": "  Edit on canvas ↗   Height16pxWidth16px",
+  "overviewStories": 0,
+  "relationships": "   Inside   Row  Reads fromUpdatesFallback from   Updates Opt In  3 references  ",
+  "sections": [
+    {
+      "expanded": "true",
+      "name": "Overview",
+      "top": 156.40000915527344,
+      "weight": "500"
+    },
+    {
+      "expanded": "false",
+      "name": "Relationships",
+      "top": 571.2000122070312,
+      "weight": "400"
+    },
+    {
+      "expanded": "false",
+      "name": "Technical information",
+      "top": 607.2000122070312,
+      "weight": "400"
+    }
+  ],
+  "selectedRows": [
+    "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbNotifInput"
+  ],
+  "sourceApplyDisabled": true,
+  "technical": "Source nodeonbNotifInputOccurrencescreen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbNotifInputkindelementidonbNotifInputtaginputattributes.idonbNotifInputattributes.typecheckboxattributes.checked.typerefattributes.checked.pathstate.updatesOptInlocalStyle.0.propertyaccent-colorlocalStyle.0.value.typetextlocalStyle.0.value.value#3b66f5localStyle.1.propertyflexlocalStyle.1.value.typetextlocalStyle.1.value.valuenonelocalStyle.2.propertyheightlocalStyle.2.value.typetextlocalStyle.2.value.value16pxlocalStyle.3.propertymarginlocalStyle.3.value.typetextlocalStyle.3.value.value0localStyle.4.propertywidthlocalStyle.4.value.typetextlocalStyle.4.value.value16pxinteractions.0.onchangeinteractions.0.actionsetStateinteractions.0.keyupdatesOptIninteractions.0.value.typerefinteractions.0.value.pathstate.updatesOptIn",
+  "viewport": {
+    "height": 668,
+    "width": 1015
+  }
+}

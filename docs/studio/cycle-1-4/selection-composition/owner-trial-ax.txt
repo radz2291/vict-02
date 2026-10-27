@@ -1,0 +1,94 @@
+Browser tab: 11, Title: "Designer — VICT Studio", URL: "http://127.0.0.22:5616/design".
+1 AXWebArea Designer — VICT Studio, URL: 127.0.0.22:5616/design
+	2 container
+		3 container
+			4 link Description: VICT Studio, Value: 127.0.0.22:5616/design
+			5 menu bar Description: Studio menus, ID: bits-c3
+				6 (collapsed) File, ID: bits-c5, Secondary Actions: Expand
+				7 (collapsed) Edit, ID: bits-c7, Secondary Actions: Expand
+				8 (collapsed) View, ID: bits-c9, Secondary Actions: Expand
+				9 (collapsed) Preview, ID: bits-c11, Secondary Actions: Expand
+			25 text Document and Selection review
+			10 link Description: Operator tools, Value: 127.0.0.22:5616/
+		53 container
+			54 container Workspace mode
+				55 checkbox Design, Value: 1
+				56 checkbox Interact, Value: 0
+				57 checkbox Structure, Value: 0
+			58 container Screen canvas
+				59 container Document and Selection review
+					60 container
+						61 heading Create your workspace, Value: 1
+							62 text Create your workspace
+						63 text Set up your workspace in under a minute — just the essentials. Full name
+						64 text field (settable) Full name, ID: onbNameInput
+						65 text Work email
+						66 text field (settable) Work email
+						67 text Role
+						68 pop up button (collapsed, settable) Role, Value: Select your role…, ID: onbRoleSelect, Secondary Actions: Expand
+							69 menu
+								70 (selected) Select your role…
+								71 Product
+								72 Design
+								73 Engineering
+								74 Marketing
+								75 Sales
+						76 checkbox (settable, integer) Description: Email me product updates, Value: 1, ID: onbNotifInput
+						77 text Email me product updates
+						78 button Create account
+						79 text Your details stay on this screen — nothing is sent.
+			80 splitter Description: Document drawer width, Value: 315
+			81 container Description: Document and Selection, ID: document-drawer
+				82 container
+					83 tab group Panel context
+						84 tab (selectable, settable, boolean) Document, Value: 0, ID: c26-document-tab
+						85 tab (selected, settable, boolean) Selection, Value: 1, ID: c26-selection-tab
+					86 button Description: Close panel, Help: Close panel (Escape)
+				87 container Description: Selection, ID: c26-selection
+					88 container Selection details
+						89 container Selected items
+							90 text 2 nodes
+							91 content list
+								92 container
+									93 button Checkbox Email me product updates, Help: Inspect Email me product updates
+										94 text Checkbox
+										95 text Email me product updates
+									96 button Remove Checkbox Email me product updates from selection
+								133 container
+									134 button Help: Inspect Your details stay on this screen — nothing is sent., Text Your details stay on this screen — nothing is sent. Text inside Paragraph · Your details stay on this screen — nothing is sent.
+										135 text Text
+										136 text Your details stay on this screen — nothing is sent.
+										137 text Text inside Paragraph · Your details stay on this screen — nothing is sent.
+									138 button Remove Text Your details stay on this screen — nothing is sent. from selection
+						102 container Selection relationships
+							103 button (expanded) Description: Relationships, Help: 5 declared relationships, Secondary Actions: Collapse
+								104 text Relationships
+								105 text 5
+							106 container c62-relationships
+								118 container
+									119 button Description: Checkbox · Email me product updates, Help: Checkbox · Email me product updates · %5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbNotifInput%22%5D
+										120 text Email me product updates
+										121 text Checkbox
+									122 button Description: Inspect Contains connection from Container · Row to Checkbox · Email me product updates, Help: Document declaration The source directly contains the destination in the declared structure. /nodes/onbNotifRow/children/0
+									123 button Description: Container · Row, Help: Container · Row · %5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbNotifRow%22%5D
+										124 text Row
+									125 button Description: Inspect Value connection from State · Updates Opt In to Checkbox · Email me product updates, Help: Document declaration The source supplies a value read by the destination. /nodes/onbNotifInput/attributes/checked
+									126 button Description: Inspect Updates connection from Checkbox · Email me product updates to State · Updates Opt In, Help: Document declaration The source declares an update to the destination state. When changed: Updates Updates Opt In from the checked value; fallback Updates Opt In /nodes/onbNotifInput/interactions/0
+									127 button Description: Inspect Fallback connection from State · Updates Opt In to Checkbox · Email me product updates, Help: Document declaration The source supplies a declared fallback value or content for the destination. When changed: Updates Updates Opt In from the checked value; fallback Updates Opt In /nodes/onbNotifInput/interactions/0/value
+									128 button Description: State · Updates Opt In, Help: State · Updates Opt In · %5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22state%22%2C%22updatesOptIn%22%5D
+										129 text Updates Opt In
+									130 text 3 references
+								139 container
+									140 button Description: Text · Your details stay on this screen — nothing is sent., Help: Text · Your details stay on this screen — nothing is sent. · %5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbFeedbackStatic%22%5D
+										141 text Your details stay on this screen — nothing is sent.
+										142 text Text
+									143 button Description: Inspect Contains connection from Paragraph · Your details stay on this screen — nothing is sent. to Text · Your details stay on this screen — nothing is sent., Help: Document declaration The source directly contains the destination in the declared structure. /nodes/onbFeedback/children/0
+									144 button Description: Paragraph · Your details stay on this screen — nothing is sent., Help: Paragraph · Your details stay on this screen — nothing is sent. · %5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbFeedback%22%5D
+										145 text Your details stay on this screen — nothing is sent.
+										146 text Paragraph
+						131 container Selection technical information
+							132 button (collapsed) Description: Technical information, Secondary Actions: Expand
+		52 text Loaded the saved screen.
+		24 text Designer — VICT Studio
+
+The focused UI element is 1 AXWebArea Designer — VICT Studio, URL: 127.0.0.22:5616/design
