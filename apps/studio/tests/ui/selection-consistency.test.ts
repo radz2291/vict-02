@@ -45,7 +45,7 @@ it('distinguishes same-name scoped properties in a multiple selection list',asyn
 it('single and multiple inspection share section structure and relationship navigation',async()=>{
  const source=bindingFixture(),graph=projectStructure(source),node=graph.nodes.find(node=>node.data.sourceId==='field')!,edge=graph.edges.find(edge=>edge.source===node.id||edge.target===node.id)!;
  await panel(source,[{kind:'node',id:node.id}], 'relationships');const single={expandedSections:document.querySelectorAll('.source-details section.expanded').length,navigationButtons:document.querySelectorAll('.details-relationships button').length};
- await panel(source,[{kind:'node',id:node.id},{kind:'edge',id:edge.id}], 'relationships');const multiple={navigationButtons:document.querySelectorAll('.connection-card button').length,cards:document.querySelectorAll('.connection-card').length};
+ await panel(source,[{kind:'node',id:node.id},{kind:'edge',id:edge.id}], 'relationships');const multiple={navigationButtons:document.querySelectorAll('.connection-row button').length,cards:document.querySelectorAll('.connection-row').length};
  expect(single.navigationButtons).toBeGreaterThan(0);expect(multiple.cards).toBeGreaterThan(0);expect(multiple.navigationButtons).toBeGreaterThan(0);expect(document.querySelector('.selection-sections')).not.toBeNull();
 });
 it('Layers follows an exact rendered repeat row with the same scope as Design',async()=>{

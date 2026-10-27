@@ -3,6 +3,7 @@
   import './studio-cards.css';
   import SelectionSections from './SelectionSections.svelte';
   import SelectionRelationships from './SelectionRelationships.svelte';
+  import {relationshipCount} from './selection-relationships.js';
   import {selectionIdentity,sourceOverview} from './selection-presentation.js';
   import {connectionGroup} from './structure-trace.js';
   import type {WorkspaceItem} from './workspace-selection.js';
@@ -62,7 +63,7 @@
 <section data-studio-typography class="studio-type-scope source-details" aria-label="Source inspection details" bind:this={root}>
   <header>{#if !embedded}<span>Inspect</span>{/if}<div class="selection-identity-card">{#if selected && (structureNodePresentation(document,selected.data).kindLabel ?? readableName(selected.data.kind)).toLowerCase()!==label.toLowerCase()}<span>{structureNodePresentation(document,selected.data).kindLabel ?? readableName(selected.data.kind)}</span>{/if}<strong title={fullLabel}>{label}</strong>{#if identity.scope}<small>{identity.scope}</small>{/if}</div>{#if !embedded}<button type="button" aria-label="Close inspection details" onclick={onClose}>×</button>{/if}</header>
   {#if !selected}<p class="empty-selection">Select an item on the canvas, in Layers or in the graph.</p>
-  {:else}<SelectionSections bind:page>
+  {:else}<SelectionSections bind:page relationshipsCount={relationshipCount(graph,[item])}>
     {#snippet overview()}
       {#if identity.availability}<p class="selection-availability">{identity.availability}</p>{/if}
       {#if selected.data.occurrence}<button type="button" class="details-handoff" disabled={blocked} onclick={() => navigate('inspector')}>Edit on canvas ↗</button>{/if}

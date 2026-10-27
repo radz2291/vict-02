@@ -8,6 +8,7 @@
  import './disclosures.css';
  import SelectionSections from './SelectionSections.svelte';
  import SelectionRelationships from './SelectionRelationships.svelte';
+ import {relationshipCount} from './selection-relationships.js';
  import {selectionIdentity,sourceOverview} from './selection-presentation.js';
  import {connectionGroup} from './structure-trace.js';
  import type {SelectionOperation} from '@victframework/ui-editor';
@@ -57,7 +58,7 @@
   <header><span>{items.length?title:'No selection'}</span></header>
   {#if !items.length}<p class="empty">Select nodes, layers or connections. Ctrl-click adds to your selection.</p>
   {:else}
-   <SelectionSections bind:page>
+   <SelectionSections bind:page relationshipsCount={relationshipCount(graph,items)}>
     {#snippet overview()}
     {#if single?.kind==='edge' && connections[0]}{@const edge=connections[0]}<dl><div><dt>Relationship</dt><dd>{relationLabel(edge)}</dd></div><div><dt>From</dt><dd>{nodeName(edge.source)}</dd></div><div><dt>To</dt><dd>{nodeName(edge.target)}</dd></div><div><dt>Origin</dt><dd>{edge.data?.origin==='host'?'Host connection':'Document declaration'}</dd></div><div><dt>Meaning</dt><dd>{edge.data?.description??relationMeaning(edge)}</dd></div></dl><p class="quiet">Declared direction; this does not indicate a live execution.</p>{/if}
     {#if shared.length}<dl aria-label="Shared properties">{#each shared as fact}<div><dt>{fact.name}</dt><dd title={fact.value}>{fact.value}</dd></div>{/each}</dl><p class="quiet">Read-only comparison. Mixed means the selected items differ.</p>{/if}
