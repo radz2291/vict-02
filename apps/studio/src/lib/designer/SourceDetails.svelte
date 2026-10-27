@@ -1,7 +1,8 @@
 <script lang="ts">
   import './disclosures.css';
   import './studio-cards.css';
-  import SelectionSections from './SelectionSections.svelte';
+  import SelectionPanel from './SelectionPanel.svelte';
+  import SelectionHeading from './SelectionHeading.svelte';
   import SelectionRelationships from './SelectionRelationships.svelte';
   import {relationshipCount} from './selection-relationships.js';
   import {selectionIdentity,sourceOverview} from './selection-presentation.js';
@@ -10,8 +11,8 @@
   import type {SelectionOperation} from '@victframework/ui-editor';
   import { onMount } from 'svelte';
   import type { UiDocument } from '@victframework/ui';
-  import { projectStructure, structureFacts, structureNodePresentation, parseStructureId, type StructureHandoff, type StructureContext } from './structure.js';
-  import { SourceIdentity,resolveOccurrence } from '@victframework/ui-editor';
+  import { projectStructure, structureFacts, parseStructureId, type StructureHandoff, type StructureContext } from './structure.js';
+  import { resolveOccurrence } from '@victframework/ui-editor';
 
   let { document, context={}, selectedId, selectedOccurrence, layerProvenance, blocked = false, containFocus = false, embedded=false, page = $bindable('properties'), onClose, onSelect, onNavigate, onSelectionIntent, renderedOccurrences }: {
     document: UiDocument; context?:StructureContext; selectedId?: string; selectedOccurrence?:string; layerProvenance?:{occurrence:string;detail:string}; embedded?:boolean; blocked?: boolean; containFocus?: boolean; page?: 'properties' | 'relationships' | 'technical' | 'none';
@@ -20,11 +21,9 @@
   } = $props();
   const graph = $derived(projectStructure(document,context));
   const selected = $derived(graph.nodes.find(node => node.id === selectedId));
-  const label = $derived(selected ? structureNodePresentation(document, selected.data).label : 'No selection');
-  const fullLabel = $derived(selected ? structureNodePresentation(document, selected.data).fullLabel : 'No selection');
   const facts = $derived(selected ? structureFacts(document, selected,context) : []);
   const item=$derived({kind:'node' as const,id:selectedId??'',...(selectedOccurrence?{occurrence:selectedOccurrence}:{})});
-  const identity=$derived(selectionIdentity(document,graph,item,renderedOccurrences));
+  const selectedIdentity=$derived(selectionIdentity(document,graph,item,renderedOccurrences));
   const summary=$derived(selected?sourceOverview(document,graph,selected.id,context):[]);
   function selectRelated(item:WorkspaceItem,operation:SelectionOperation){if(onSelectionIntent)onSelectionIntent(item.kind==='edge'?connectionGroup(graph.edges,item.id).map(edge=>({kind:'edge' as const,id:edge.id})):[item],operation);else if(item.kind==='node')onSelect(item.id);}
   const provenance=$derived.by(()=>{
@@ -60,26 +59,27 @@
   }
 </script>
 <section data-studio-typography class="studio-type-scope source-details" aria-label="Source inspection details" bind:this={root}>
-  <header>{#if !embedded}<span>Inspect</span>{/if}<div class="selection-identity-card"><SourceIdentity icon={identity.iconKey} name={label} title={fullLabel} kindLabel={selected&&identity.type.toLowerCase()!==label.toLowerCase()?identity.type:undefined} context={[identity.scope,identity.textLocation].filter(Boolean).join(' · ')||undefined} variant="card"/></div>{#if !embedded}<button type="button" aria-label="Close inspection details" onclick={onClose}>×</button>{/if}</header>
+  {#if !embedded}<div class="inspection-caption"><span>Inspect</span><button type="button" aria-label="Close inspection details" onclick={onClose}>×</button></div>{/if}
   {#if !selected}<p class="empty-selection">Select an item on the canvas, in Layers or in the graph.</p>
-  {:else}<SelectionSections bind:page relationshipsCount={relationshipCount(graph,[item])}>
+  {:else}<SelectionPanel bind:page hasOverview={!!(summary.length||selected.data.occurrence||selected.data.kind==='state'||selected.data.kind==='action'||selectedIdentity.availability)} relationshipsCount={relationshipCount(graph,[item])}>
+    {#snippet identity()}<SelectionHeading {document} {graph} items={[item]} {blocked} {renderedOccurrences}/>{/snippet}
     {#snippet overview()}
-      {#if identity.availability}<p class="selection-availability">{identity.availability}</p>{/if}
-      {#if identity.textLocation}<p class="text-location-explanation">The canvas uses the containing element for the highlight. The text remains selected.</p>{/if}
-      {#if selected.data.occurrence}<button type="button" class="details-handoff" disabled={blocked} onclick={() => navigate('inspector')}>{identity.type==='Text'?'Locate text on canvas ↗':'Edit on canvas ↗'}</button>{/if}
+      {#if selectedIdentity.availability}<p class="selection-availability">{selectedIdentity.availability}</p>{/if}
+      {#if selectedIdentity.textLocation}<p class="text-location-explanation">The canvas uses the containing element for the highlight. The text remains selected.</p>{/if}
+      {#if selected.data.occurrence}<button type="button" class="details-handoff" disabled={blocked} onclick={() => navigate('inspector')}>{selectedIdentity.type==='Text'?'Locate text on canvas ↗':'Edit on canvas ↗'}</button>{/if}
       {#if selected.data.kind === 'state'}<button type="button" class="details-handoff" disabled={blocked} onclick={() => navigate('data')}>Edit in Data ↗</button>{/if}
       {#if selected.data.kind === 'action'}<button type="button" class="details-handoff" disabled={blocked} onclick={() => navigate('actions')}>Open Actions ↗</button>{/if}
       <dl class="useful-facts">{#each summary as fact}<div><dt>{fact.name}</dt><dd>{fact.value}</dd></div>{/each}</dl>
     {/snippet}
     {#snippet relationships()}<SelectionRelationships {document} {graph} items={[item]} {blocked} onIntent={selectRelated}/>{/snippet}
     {#snippet technical()}<dl>{#each [...provenance,...facts] as fact}<div><dt>{fact.path}</dt><dd>{fact.value}</dd></div>{/each}</dl>{/snippet}
-  </SelectionSections>{/if}
+  </SelectionPanel>{/if}
 </section>
 <style>
   .source-details { box-sizing:border-box; display:flex; flex-direction:column; flex:none; height:100%; min-height:0; min-width:0; border-left:1px solid var(--vict-color-border,#e1e6ee); background:var(--vict-color-surface,#fff); color:var(--vict-color-text,#26334b); font:var(--studio-font-ui,12px/1.45 system-ui,sans-serif); overflow:hidden; }
-  header { display:flex; align-items:center; gap:6px; padding:12px;box-sizing:border-box;flex:none;border-bottom:1px solid var(--vict-color-border,#e1e6ee); }
+  .inspection-caption { display:flex; align-items:center; gap:6px; padding:12px;box-sizing:border-box;flex:none;border-bottom:1px solid var(--vict-color-border,#e1e6ee); }
   button:not(.studio-section-header) { font:inherit; color:inherit; cursor:pointer; border:1px solid var(--vict-color-border,#dce2eb); border-radius:5px; background:var(--vict-color-surface,#fff); padding:5px 8px; }
-  header button { width:28px; height:28px; border:0; padding:0; }
+  .inspection-caption button { width:28px; height:28px; border:0; padding:0; }
   .empty-selection{padding:10px}.selection-availability{font:var(--studio-font-meta);color:var(--vict-color-textMuted)}
   .text-location-explanation{margin:0 0 8px;font:var(--studio-font-meta);color:var(--vict-color-textMuted)}
   .details-handoff { margin-bottom:8px; }

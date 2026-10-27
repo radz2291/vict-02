@@ -3,7 +3,7 @@
  import {SourceIdentity,selectionOperation,type SelectionOperation} from '@victframework/ui-editor';
  import {parseStructureId,type StructureGraph} from './structure.js';
  import type {WorkspaceItem} from './workspace-selection.js';
- import {selectionIdentity} from './selection-presentation.js';
+ import {selectionIdentity,relationshipEventNote} from './selection-presentation.js';
  import {relationLabel,relationMeaning,connectionKind,connectionKinds} from './structure-connections.js';
  import {relationshipGroups,relationshipPhrase,selectionRelationshipStories} from './selection-relationships.js';
  let {document,graph,items,blocked=false,onIntent}:{document:UiDocument;graph:StructureGraph;items:readonly WorkspaceItem[];blocked?:boolean;onIntent:(item:WorkspaceItem,operation:SelectionOperation)=>void}=$props();
@@ -40,7 +40,7 @@
 {/snippet}
 {#snippet roleControl(group:typeof groups[number],phrase:string)}
  {@const edge=group.edge}{@const from=identities.get(edge.source)}{@const to=identities.get(edge.target)}
- <button class="connection-role" type="button" disabled={blocked} title={[edge.data?.origin==='host'?'Host connection':'Document declaration',edge.data?.description??relationMeaning(edge),...group.paths].join('\n')} aria-label={`Inspect ${relationLabel(edge)} connection from ${from?.qualified??edge.source} to ${to?.qualified??edge.target}`} onclick={event=>select({kind:'edge',id:edge.id},event)} onkeydown={event=>keyboard(event,{kind:'edge',id:edge.id})}>
+ <button class="connection-role" type="button" disabled={blocked} title={[edge.data?.origin==='host'?'Host connection':'Document declaration',edge.data?.description??relationMeaning(edge),relationshipEventNote(document,graph,edge),...group.paths].filter(Boolean).join('\n')} aria-label={`Inspect ${relationLabel(edge)} connection from ${from?.qualified??edge.source} to ${to?.qualified??edge.target}`} onclick={event=>select({kind:'edge',id:edge.id},event)} onkeydown={event=>keyboard(event,{kind:'edge',id:edge.id})}>
   <span class="relation-dot" aria-hidden="true" style:background={connectionKinds[connectionKind(edge)].color}></span>{phrase}{#if group.paths.length>1}<small title="Declared references">({group.paths.length})</small>{/if}
  </button>
 {/snippet}

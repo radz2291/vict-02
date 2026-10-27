@@ -47,9 +47,9 @@ it('keeps owner/origin/reference distinctions and honest totals when paging a la
  const stories=selectionRelationshipStories(many,items,50);expect(stories).toHaveLength(1);expect(stories[0]).toMatchObject({count:51,shown:50});expect(stories[0]!.relations).toHaveLength(50);expect(relationshipGroups(many,items)).toHaveLength(51);
  expect(selectionRelationshipStories(many,items,100)[0]!.relations.flatMap(r=>r.paths)).toHaveLength(51);
 });
-it('uses the same story in single-edge Overview and Relationships and keeps provenance in Technical information',async()=>{
+it('keeps connection identity above distinct Overview and Relationships with exact technical provenance',async()=>{
  const {source,read}=seed(),intent=vi.fn();app=mount(Details,{target:document.body,props:{document:source,selection:{documentId:source.id,items:[{kind:'edge',id:read.id}]},onClose:vi.fn(),onSelect:vi.fn(),onNavigate:vi.fn(),onInspect:vi.fn(),onRemove:vi.fn(),onSelectionIntent:intent}});await settle();
- const overview=document.querySelector('[aria-label="Selection overview"] .relationship-story')!;expect(overview.textContent).toContain('Reads from');expect(overview.textContent).not.toContain('From');
+ const overview=document.querySelector('[aria-label="Selection overview"]')!;expect(overview.textContent).toContain('Defined in');expect(overview.querySelector('.relationship-story')).toBeNull();expect(document.querySelector('.selection-heading')?.textContent).toContain('Reads from');
  expect(document.querySelector('[aria-label="Selection technical information"]')?.textContent).toContain(read.data!.path);
  expect(document.querySelector('[aria-label="Selection technical information"]')?.textContent).toContain('Document declaration');
 });
