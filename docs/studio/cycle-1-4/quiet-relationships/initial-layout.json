@@ -1,0 +1,74 @@
+{
+  "candidate": "09cefe5d5e56cf35b271a3c3679f96ddb3e35ea2",
+  "metrics": {
+    "body": [
+      {
+        "height": 331,
+        "scrollHeight": 331
+      }
+    ],
+    "header": "Relationships4",
+    "headings": [
+      "Incoming",
+      "Outgoing"
+    ],
+    "rows": [
+      {
+        "height": 34,
+        "text": "Invokes ←Press  "
+      },
+      {
+        "height": 34.79999923706055,
+        "text": "Pending →Busy Host "
+      },
+      {
+        "height": 34.79999923706055,
+        "text": "Error →Action Error Host "
+      },
+      {
+        "height": 34,
+        "text": "Result →Action Result Host "
+      }
+    ],
+    "selectedSourceControls": 0
+  },
+  "headers": {
+    "bodies": [
+      {
+        "height": 331,
+        "overflow": "auto",
+        "scrollHeight": 331
+      }
+    ],
+    "headers": [
+      {
+        "expanded": "false",
+        "height": 50.79999923706055,
+        "text": "Overview",
+        "y": 159.40000915527344
+      },
+      {
+        "expanded": "true",
+        "height": 50.79999923706055,
+        "text": "Relationships4",
+        "y": 210.1999969482422
+      },
+      {
+        "expanded": "false",
+        "height": 50.79999923706055,
+        "text": "Technical information",
+        "y": 592.4000244140625
+      }
+    ],
+    "root": {
+      "display": "flex",
+      "height": 559.2000122070312,
+      "overflow": "hidden"
+    },
+    "selectedTab": "true",
+    "viewport": {
+      "height": 668,
+      "width": 1010
+    }
+  }
+}

@@ -1,0 +1,223 @@
+{
+  "candidate": "30464db78c05972ffce2d7a1dc6c5aebe68064a1",
+  "initial": {
+    "cards": [
+      {
+        "height": 100.5999984741211,
+        "width": 274.20001220703125
+      },
+      {
+        "height": 84.5999984741211,
+        "width": 274.20001220703125
+      },
+      {
+        "height": 84.5999984741211,
+        "width": 274.20001220703125
+      },
+      {
+        "height": 84.5999984741211,
+        "width": 274.20001220703125
+      }
+    ],
+    "footer": "↑ ↓ navigate · → expand · ← collapse · Enter select",
+    "text": "4 declared relationships; related items are not automatically selected. InvokesDocument declaration Output · Component onbSubmitPress→ActionDemo submitPendingHost connection ActionDemo submit→StateBusyErrorHost connection ActionDemo submit→StateAction ErrorResultHost connection ActionDemo submit→StateAction Result  "
+  },
+  "headers": {
+    "bodies": [
+      {
+        "height": 376,
+        "overflow": "auto",
+        "scrollHeight": 376
+      }
+    ],
+    "headers": [
+      {
+        "expanded": "false",
+        "height": 36,
+        "text": "Overview",
+        "y": 159.40000915527344
+      },
+      {
+        "expanded": "true",
+        "height": 36,
+        "text": "Relationships4",
+        "y": 195.40000915527344
+      },
+      {
+        "expanded": "false",
+        "height": 36,
+        "text": "Technical information",
+        "y": 607.2000122070312
+      }
+    ],
+    "root": {
+      "display": "flex",
+      "height": 559.2000122070312,
+      "overflow": "hidden"
+    },
+    "selectedTab": "true",
+    "viewport": {
+      "height": 668,
+      "width": 1010
+    }
+  },
+  "rows": [
+    {
+      "height": 34,
+      "text": "Invokes ←Press  "
+    },
+    {
+      "height": 34.79999923706055,
+      "text": "Pending →Busy Host "
+    },
+    {
+      "height": 34.79999923706055,
+      "text": "Error →Action Error Host "
+    },
+    {
+      "height": 34,
+      "text": "Result →Action Result Host "
+    }
+  ],
+  "roleTitle": "Host connection\nThe host maps the source action pending state to the destination state.\n/actionState/demo.submit/pending",
+  "mixedAfterRole": {
+    "nodes": 1,
+    "edges": 1
+  },
+  "mixedAfterEndpoint": {
+    "nodes": 2,
+    "edges": 1
+  },
+  "plainEndpoint": [
+    {
+      "dimmed": false,
+      "height": 122,
+      "highlighted": true,
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22state%22%2C%22busy%22%5D",
+      "label": "State: Busy",
+      "selected": true,
+      "transform": "translate(322.4px, 21.5px)",
+      "width": 224
+    }
+  ],
+  "final": {
+    "canvas": [],
+    "captions": 0,
+    "edges": [
+      {
+        "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522output%2522%252C%2522%255B%255C%2522%255B%255C%255C%255C%2522output%255C%255C%255C%2522%252Cnull%252C%255B%255D%252C%255C%255C%255C%2522onbSubmit%255C%255C%255C%2522%252C%255C%255C%255C%2522press%255C%255C%255C%2522%255D%255C%2522%252C%255C%2522%2524output%255C%2522%255D%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522action%2522%252C%2522demo.submit%2522%255D%22%2C%22invokes%22%2C%22%2Fnodes%2FonbSubmit%2Foutputs%2Fpress%2FinvokeAction%22%5D",
+        "label": "Press -> Demo submit: Invokes; /nodes/onbSubmit/outputs/press/invokeAction",
+        "path": "M238.7004686759389 286.6004078732446L258.7004686759389 286.6004078732446L 274.20023170578327,286.6004078732446Q 279.20023170578327,286.6004078732446 279.20023170578327,281.6004078732446L 279.20023170578327,277.10034223479744Q 279.20023170578327,272.10034223479744 284.20023170578327,272.10034223479744L299.6999947356277 272.10034223479744L319.6999947356277 272.10034223479744",
+        "selected": false
+      },
+      {
+        "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522action%2522%252C%2522demo.submit%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522busy%2522%255D%22%2C%22pending%22%2C%22%2FactionState%2Fdemo.submit%2Fpending%22%5D",
+        "label": "Demo submit -> Busy: Pending; /actionState/demo.submit/pending",
+        "path": "M549.1006388530523 296.1003921806457L569.1006388530523 296.1003921806457L 584.6003185670182,296.1003921806457Q 589.6003185670182,296.1003921806457 589.6003185670182,291.1003921806457L 589.6003185670182,121.60029442183564Q 589.6003185670182,116.60029442183564 594.6003185670182,116.60029442183564L610.0999982809842 116.60029442183564L630.0999982809842 116.60029442183564",
+        "selected": false
+      },
+      {
+        "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522action%2522%252C%2522demo.submit%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522actionError%2522%255D%22%2C%22error%22%2C%22%2FactionState%2Fdemo.submit%2Ferror%22%5D",
+        "label": "Demo submit -> Action Error: Error; /actionState/demo.submit/error",
+        "path": "M549.1006388530523 272.10034223479744L569.1006388530523 272.10034223479744L 584.6002476598876,272.10034223479744Q 589.6002476598876,272.10034223479744 589.6002476598876,277.10034223479744L 589.6002476598876,281.60023769613116Q 589.6002476598876,286.60023769613116 594.6002476598876,286.60023769613116L610.099856466723 286.60023769613116L630.099856466723 286.60023769613116",
+        "selected": false
+      },
+      {
+        "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522action%2522%252C%2522demo.submit%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522actionResult%2522%255D%22%2C%22result%22%2C%22%2FactionState%2Fdemo.submit%2Fresult%22%5D",
+        "label": "Demo submit -> Action Result: Result; /actionState/demo.submit/result",
+        "path": "M549.1006388530523 320.100442126494L569.1006388530523 320.100442126494L 584.6002476598876,320.100442126494Q 589.6002476598876,320.100442126494 589.6002476598876,325.100442126494L 589.6002476598876,451.6003511475401Q 589.6002476598876,456.6003511475401 594.6002476598876,456.6003511475401L610.099856466723 456.6003511475401L630.099856466723 456.6003511475401",
+        "selected": false
+      }
+    ],
+    "footer": "Loaded the saved screen.@3 · v1_fe0ac678e805…",
+    "highlightedRows": [
+      {
+        "node": "State: Busy",
+        "port": "in-pending"
+      },
+      {
+        "node": "State: Action Error",
+        "port": "in-error"
+      },
+      {
+        "node": "State: Action Result",
+        "port": "in-result"
+      },
+      {
+        "node": "Output: Press",
+        "port": "out-invokes"
+      },
+      {
+        "node": "Action: Demo submit",
+        "port": "in-invokes"
+      },
+      {
+        "node": "Action: Demo submit",
+        "port": "out-error"
+      },
+      {
+        "node": "Action: Demo submit",
+        "port": "out-pending"
+      },
+      {
+        "node": "Action: Demo submit",
+        "port": "out-result"
+      }
+    ],
+    "layers": [],
+    "nodes": [
+      {
+        "dimmed": false,
+        "height": 122,
+        "highlighted": true,
+        "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22state%22%2C%22busy%22%5D",
+        "label": "State: Busy",
+        "selected": false,
+        "transform": "translate(632.8px, 12px)",
+        "width": 224
+      },
+      {
+        "dimmed": false,
+        "height": 122,
+        "highlighted": true,
+        "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22state%22%2C%22actionError%22%5D",
+        "label": "State: Action Error",
+        "selected": false,
+        "transform": "translate(632.8px, 182px)",
+        "width": 224
+      },
+      {
+        "dimmed": false,
+        "height": 122,
+        "highlighted": true,
+        "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22state%22%2C%22actionResult%22%5D",
+        "label": "State: Action Result",
+        "selected": false,
+        "transform": "translate(632.8px, 352px)",
+        "width": 224
+      },
+      {
+        "dimmed": false,
+        "height": 122,
+        "highlighted": true,
+        "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22output%22%2C%22%5B%5C%22%5B%5C%5C%5C%22output%5C%5C%5C%22%2Cnull%2C%5B%5D%2C%5C%5C%5C%22onbSubmit%5C%5C%5C%22%2C%5C%5C%5C%22press%5C%5C%5C%22%5D%5C%22%2C%5C%22%24output%5C%22%5D%22%5D",
+        "label": "Output: Press",
+        "selected": false,
+        "transform": "translate(12px, 182px)",
+        "width": 224
+      },
+      {
+        "dimmed": false,
+        "height": 189,
+        "highlighted": true,
+        "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22action%22%2C%22demo.submit%22%5D",
+        "label": "Action: Demo submit",
+        "selected": true,
+        "transform": "translate(322.4px, 148.5px)",
+        "width": 224
+      }
+    ],
+    "panel": "ActionDemo submit Overview   Open Actions ↗ TypeActionSupportExternalMeaningConfigured host connectionRelationships4Incoming Invokes ←Press  Outgoing Pending →Busy Host Error →Action Error Host Result →Action Result Host   Technical informationiddemo.submitboundaryExternalconnections.pendingbusyconnections.erroractionErrorconnections.resultactionResult",
+    "tools": 0
+  }
+}

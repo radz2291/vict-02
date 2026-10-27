@@ -1,0 +1,22 @@
+{
+  "cards": [
+    {
+      "height": 100.5999984741211,
+      "width": 274.20001220703125
+    },
+    {
+      "height": 84.5999984741211,
+      "width": 274.20001220703125
+    },
+    {
+      "height": 84.5999984741211,
+      "width": 274.20001220703125
+    },
+    {
+      "height": 84.5999984741211,
+      "width": 274.20001220703125
+    }
+  ],
+  "footer": "↑ ↓ navigate · → expand · ← collapse · Enter select",
+  "text": "4 declared relationships; related items are not automatically selected. InvokesDocument declaration Output · Component onbSubmitPress→ActionDemo submitPendingHost connection ActionDemo submit→StateBusyErrorHost connection ActionDemo submit→StateAction ErrorResultHost connection ActionDemo submit→StateAction Result  "
+}
