@@ -1,0 +1,15 @@
+{
+  "chat": {
+    "canvasWidth": 724.4000244140625,
+    "chatHidden": false,
+    "documentHidden": true,
+    "width": 1010
+  },
+  "document": {
+    "canvasWidth": 689.4000244140625,
+    "chatHidden": true,
+    "documentHidden": false,
+    "selection": "2 nodes · 1 connection",
+    "width": 1010
+  }
+}

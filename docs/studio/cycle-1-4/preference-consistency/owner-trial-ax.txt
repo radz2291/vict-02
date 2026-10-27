@@ -1,0 +1,350 @@
+Browser tab: 11, Title: "Designer — VICT Studio", URL: "http://127.0.0.22:5616/design".
+1 AXWebArea Designer — VICT Studio, URL: 127.0.0.22:5616/design
+	2 container
+		3 container
+			4 link Description: VICT Studio, Value: 127.0.0.22:5616/design
+			5 menu bar Description: Studio menus, ID: bits-c3
+				6 (collapsed) File, ID: bits-c5, Secondary Actions: Expand
+				7 (collapsed) Edit, ID: bits-c7, Secondary Actions: Expand
+				8 (collapsed) View, ID: bits-c9, Secondary Actions: Expand
+				9 (collapsed) Preview, ID: bits-c11, Secondary Actions: Expand
+			25 text Document and Selection review
+		53 container
+			54 container Workspace mode
+				55 checkbox Design, Value: 0
+				56 checkbox Interact, Value: 0
+				57 checkbox Structure, Value: 1
+			164 container Structure workspace
+				165 container Source structure
+					166 search text field (settable) Search structure
+					167 menu bar Description: Structure menus, ID: bits-c23
+						168 (collapsed) View, ID: bits-c25, Secondary Actions: Expand
+					169 text Declared
+					170 text Focus: 3 objects
+					171 text 3 selected
+					172 text 16 items
+					173 button (expanded) Description: Selection panel, Secondary Actions: Collapse
+					174 container Connection scope
+					220 container
+						221 container
+							222 image
+							223 image
+								224 container Screen -> Section: Contains; /nodes/screen/children/0
+							225 image
+								226 container Section -> Create your workspace: Contains; /nodes/onbCard/children/0
+							227 image
+								228 container Section -> Set up your workspace in under a minute — just the essentials.: Contains; /nodes/onbCard/children/1
+							229 image
+								230 container Section -> Label · Full name: Contains; /nodes/onbCard/children/2
+							231 image
+								232 container Section -> Full name: Contains; /nodes/onbCard/children/3
+							233 image
+								234 container Section -> Label · Work email: Contains; /nodes/onbCard/children/4
+							235 image
+								236 container Section -> Work email: Contains; /nodes/onbCard/children/5
+							237 image
+								238 container Section -> Label · Role: Contains; /nodes/onbCard/children/6
+							239 image
+								240 container Section -> Role: Contains; /nodes/onbCard/children/7
+							241 image
+								242 container Section -> Row: Contains; /nodes/onbCard/children/8
+							243 image
+								244 container Section -> Create account: Contains; /nodes/onbCard/children/9
+							245 image
+								246 container Section -> Your details stay on this screen — nothing is sent.: Contains; /nodes/onbCard/children/10
+							247 image
+								248 container Full name · Focus style -> Full name: Styles; /nodes/onbNameInput/styleSources/0
+							249 image
+								250 container Full name · Base style -> Full name: Styles; /nodes/onbNameInput/styleSources/1
+							251 image
+								252 container Full Name -> Full name: Value; /nodes/onbNameInput/attributes/value
+							253 image
+								254 container Full name -> Full Name: Updates; /nodes/onbNameInput/interactions/0
+							255 image
+								256 container Full Name -> Full name: Fallback; /nodes/onbNameInput/interactions/0/value
+							257 container Container: Screen, source screen
+								258 container
+									259 text Container
+									260 text Screen
+									261 button (expanded) Description: Collapse Screen, Secondary Actions: Collapse
+									262 text 1 direct child
+									263 content list Incoming connections
+									264 content list Outgoing connections
+										265 container Outgoing Contains · 1 declared reference
+											266 text Contains
+											267 checkbox Description: Select outgoing Contains connections for Screen, Help: Contains · 1 visible references; 0 selected; Ctrl-click to add or remove, Value: 0
+							268 container Section: Section, source onbCard
+								269 container
+									270 text Section
+									271 button (collapsed) Description: Expand Section, Secondary Actions: Expand
+									272 text 11 direct children
+									273 content list Incoming connections
+										274 container Incoming Contains · 1 declared reference
+											275 text Contains
+											276 checkbox Description: Select incoming Contains connections for Section, Help: Contains · 1 visible references; 0 selected; Ctrl-click to add or remove, Value: 0
+									277 content list Outgoing connections
+										278 container Outgoing Contains · 11 declared references
+											279 text Contains · 11
+											280 checkbox Description: Select outgoing Contains connections for Section, Help: Contains · 11 visible references; 0 selected; Ctrl-click to add or remove, Value: 0
+							281 container Heading: Create your workspace, source onbTitle
+								282 container
+									283 text Heading
+									284 text Create your workspace
+									285 button (collapsed) Description: Expand Create your workspace, Secondary Actions: Expand
+									286 content list Incoming connections
+										287 container Incoming Contains · 1 declared reference
+											288 text Contains
+											289 checkbox Description: Select incoming Contains connections for Create your workspace, Help: Contains · 1 visible references; 0 selected; Ctrl-click to add or remove, Value: 0
+									290 content list Outgoing connections
+							291 container Paragraph: Set up your workspace in under a minute — just the essentials., source onbSubtitle
+								292 container
+									293 text Paragraph
+									294 text Set up your workspace in under a minute — just the essentials.
+									295 button (collapsed) Description: Expand Set up your workspace in under a minute — just the essentials., Secondary Actions: Expand
+									296 content list Incoming connections
+										297 container Incoming Contains · 1 declared reference
+											298 text Contains
+											299 checkbox Help: Contains · 1 visible references; 0 selected; Ctrl-click to add or remove, Value: 0, Description: Select incoming Contains connections for Set up your workspace in under a minute — just the essentials.
+									300 content list Outgoing connections
+							301 container Label: Full name, source onbNameLabel
+								302 container
+									303 text Label
+									304 text Full name
+									305 button (collapsed) Description: Expand Full name, Secondary Actions: Expand
+									306 content list Incoming connections
+										307 container Incoming Contains · 1 declared reference
+											308 text Contains
+											309 checkbox Description: Select incoming Contains connections for Full name, Help: Contains · 1 visible references; 0 selected; Ctrl-click to add or remove, Value: 0
+									310 content list Outgoing connections
+							311 container Input: Full name, source onbNameInput
+								312 container
+									313 text Input
+									314 text Full name
+									315 content list Incoming connections
+										316 container Incoming Contains · 1 declared reference
+											317 text Contains
+											318 checkbox Description: Select incoming Contains connections for Full name, Help: Contains · 1 visible references; 0 selected; Ctrl-click to add or remove, Value: 0
+										319 container Incoming Fallback · 1 declared reference
+											320 text Fallback
+											321 checkbox Description: Select incoming Fallback connections for Full name, Help: Fallback · 1 visible references; 0 selected; Ctrl-click to add or remove, Value: 0
+										322 container Incoming Styles · 2 declared references
+											323 text Styles · 2
+											324 checkbox Description: Select incoming Styles connections for Full name, Help: Styles · 2 visible references; 0 selected; Ctrl-click to add or remove, Value: 0
+										325 container Incoming Value · 1 declared reference
+											326 text Value
+											327 checkbox Description: Select incoming Value connections for Full name, Help: Value · 1 visible references; 0 selected; Ctrl-click to add or remove, Value: 0
+									328 content list Outgoing connections
+										329 container Outgoing Updates · 1 declared reference
+											330 text Updates
+											331 checkbox Description: Select outgoing Updates connections for Full name, Help: Updates · 1 visible references; 1 selected; Ctrl-click to add or remove, Value: 1
+							332 container Label: Work email, source onbEmailLabel
+								333 container
+									334 text Label
+									335 text Work email
+									336 button (collapsed) Description: Expand Work email, Secondary Actions: Expand
+									337 content list Incoming connections
+										338 container Incoming Contains · 1 declared reference
+											339 text Contains
+											340 checkbox Description: Select incoming Contains connections for Work email, Help: Contains · 1 visible references; 0 selected; Ctrl-click to add or remove, Value: 0
+									341 content list Outgoing connections
+							342 container Input: Work email, source onbEmailInput
+								343 container
+									344 text Input
+									345 text Work email
+									346 content list Incoming connections
+										347 container Incoming Contains · 1 declared reference
+											348 text Contains
+											349 checkbox Description: Select incoming Contains connections for Work email, Help: Contains · 1 visible references; 0 selected; Ctrl-click to add or remove, Value: 0
+									350 content list Outgoing connections
+							351 container Label: Role, source onbRoleLabel
+								352 container
+									353 text Label
+									354 text Role
+									355 button (collapsed) Description: Expand Role, Secondary Actions: Expand
+									356 content list Incoming connections
+										357 container Incoming Contains · 1 declared reference
+											358 text Contains
+											359 checkbox Description: Select incoming Contains connections for Role, Help: Contains · 1 visible references; 0 selected; Ctrl-click to add or remove, Value: 0
+									360 content list Outgoing connections
+							361 container Select: Role, source onbRoleSelect
+								362 container
+									363 text Select
+									364 text Role
+									365 button (collapsed) Description: Expand Role, Secondary Actions: Expand
+									366 text 12 items inside
+									367 content list Incoming connections
+										368 container Incoming Contains · 1 declared reference
+											369 text Contains
+											370 checkbox Description: Select incoming Contains connections for Role, Help: Contains · 1 visible references; 0 selected; Ctrl-click to add or remove, Value: 0
+									371 content list Outgoing connections
+							372 container Container: Row, source onbNotifRow
+								373 container
+									374 text Container
+									375 text Row
+									376 button (collapsed) Description: Expand Row, Secondary Actions: Expand
+									377 text 3 items inside
+									378 content list Incoming connections
+										379 container Incoming Contains · 1 declared reference
+											380 text Contains
+											381 checkbox Description: Select incoming Contains connections for Row, Help: Contains · 1 visible references; 0 selected; Ctrl-click to add or remove, Value: 0
+									382 content list Outgoing connections
+							383 container Component: Create account, source onbSubmit
+								384 container
+									385 text Component
+									386 text Create account
+									387 text Button
+									388 content list Incoming connections
+										389 container Incoming Contains · 1 declared reference
+											390 text Contains
+											391 checkbox Description: Select incoming Contains connections for Create account, Help: Contains · 1 visible references; 0 selected; Ctrl-click to add or remove, Value: 0
+									392 content list Outgoing connections
+							393 container Paragraph: Your details stay on this screen — nothing is sent., source onbFeedback
+								394 container
+									395 text Paragraph
+									396 text Your details stay on this screen — nothing is sent.
+									397 button (collapsed) Description: Expand Your details stay on this screen — nothing is sent., Secondary Actions: Expand
+									398 content list Incoming connections
+										399 container Incoming Contains · 1 declared reference
+											400 text Contains
+											401 checkbox Description: Select incoming Contains connections for Your details stay on this screen — nothing is sent., Help: Contains · 1 visible references; 0 selected; Ctrl-click to add or remove, Value: 0
+									402 content list Outgoing connections
+							403 container State: Full Name
+								404 container
+									405 text State
+									406 text Full Name
+									407 text Text · starts empty
+									408 content list Incoming connections
+										409 container Incoming Updates · 1 declared reference
+											410 text Updates
+											411 checkbox Description: Select incoming Updates connections for Full Name, Help: Updates · 1 visible references; 1 selected; Ctrl-click to add or remove, Value: 1
+									412 content list Outgoing connections
+										413 container Outgoing Fallback · 1 declared reference
+											414 text Fallback
+											415 checkbox Description: Select outgoing Fallback connections for Full Name, Help: Fallback · 1 visible references; 0 selected; Ctrl-click to add or remove, Value: 0
+										416 container Outgoing Value · 1 declared reference
+											417 text Value
+											418 checkbox Description: Select outgoing Value connections for Full Name, Help: Value · 1 visible references; 0 selected; Ctrl-click to add or remove, Value: 0
+							419 container Style: Full name · Focus style
+								420 container
+									421 text Style
+									422 text Full name · Focus style
+									423 content list Incoming connections
+									424 content list Outgoing connections
+										425 container Outgoing Styles · 1 declared reference
+											426 text Styles
+											427 checkbox Description: Select outgoing Styles connections for Full name · Focus style, Help: Styles · 1 visible references; 0 selected; Ctrl-click to add or remove, Value: 0
+							428 container Style: Full name · Base style
+								429 container
+									430 text Style
+									431 text Full name · Base style
+									432 content list Incoming connections
+									433 content list Outgoing connections
+										434 container Outgoing Styles · 1 declared reference
+											435 text Styles
+											436 checkbox Description: Select outgoing Styles connections for Full name · Base style, Help: Styles · 1 visible references; 0 selected; Ctrl-click to add or remove, Value: 0
+						437 link Description: Svelte Flow attribution, Value: svelteflow.dev/?utm_source=attribution
+						438 image
+						439 image Mini Map
+						440 container Control Panel
+							441 button Zoom In
+								442 image
+							443 button Zoom Out
+								444 image
+							445 button Fit View
+								446 image
+						448 text Zoom in for easier reading.
+						447 button Frame selection
+			81 container Description: Document and Selection, ID: document-drawer
+				82 container
+					83 tab group Panel context
+						84 tab (selectable, settable, boolean) Document, Value: 0, ID: c26-document-tab
+						85 tab (selected, settable, boolean) Selection, Value: 1, ID: c26-selection-tab
+					86 button Description: Close panel, Help: Close panel (Escape)
+				87 container Description: Selection, ID: c26-selection
+					88 container Selection details
+						89 text 2 nodes · 1 connection
+						90 container Selection overview
+							91 button (collapsed) Description: Overview, Secondary Actions: Expand
+						92 container Selection relationships
+							93 button (expanded) Description: Relationships, Help: 17 declared relationships, Secondary Actions: Collapse
+								94 text Relationships
+								95 text 17
+							449 container c50-relationships
+								450 container Selected connections
+									451 text Selected connections
+									452 button Description: Input · Full name, Help: Input · Full name · %5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbNameInput%22%5D
+										453 text Full name
+										454 text Input
+									455 button Description: Inspect Updates connection from Input · Full name to State · Full Name, Help: Document declaration The source declares an update to the destination state. /nodes/onbNameInput/interactions/0
+									456 button Description: State · Full Name, Help: State · Full Name · %5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22state%22%2C%22fullName%22%5D
+										457 text Full Name
+								458 container Related connections
+									459 text Related connections
+									460 button Description: Section · Section, Help: Section · Section · %5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbCard%22%5D
+										461 text Section
+										462 text Section
+									463 button Description: Inspect Contains connection from Container · Screen to Section · Section, Help: Document declaration The source directly contains the destination in the declared structure. /nodes/screen/children/0
+									464 button Description: Container · Screen, Help: Container · Screen · %5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22screen%22%5D
+										465 text Screen
+									466 button Description: Inspect Contains connection from Section · Section to Heading · Create your workspace, Help: Document declaration The source directly contains the destination in the declared structure. /nodes/onbCard/children/0
+									467 button Description: Heading · Create your workspace, Help: Heading · Create your workspace · %5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbTitle%22%5D
+										468 text Create your workspace
+										469 text Heading
+									470 button Description: Inspect Contains connection from Section · Section to Paragraph · Set up your workspace in under a minute — just the essentials., Help: Document declaration The source directly contains the destination in the declared structure. /nodes/onbCard/children/1
+									471 button Description: Paragraph · Set up your workspace in under a minute — just the essentials., Help: Paragraph · Set up your workspace in under a minute — just the essentials. · %5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbSubtitle%22%5D
+										472 text Set up your workspace in under a minute — just the essentials.
+										473 text Paragraph
+									474 button Description: Inspect Contains connection from Section · Section to Label · Full name, Help: Document declaration The source directly contains the destination in the declared structure. /nodes/onbCard/children/2
+									475 button Description: Label · Full name, Help: Label · Full name · %5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbNameLabel%22%5D
+										476 text Full name
+										477 text Label
+									478 button Description: Inspect Contains connection from Section · Section to Input · Full name, Help: Document declaration The source directly contains the destination in the declared structure. /nodes/onbCard/children/3
+									479 button Description: Input · Full name, Help: Input · Full name · %5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbNameInput%22%5D
+										480 text Full name
+										481 text Input
+									482 button Description: Inspect Contains connection from Section · Section to Label · Work email, Help: Document declaration The source directly contains the destination in the declared structure. /nodes/onbCard/children/4
+									483 button Description: Label · Work email, Help: Label · Work email · %5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbEmailLabel%22%5D
+										484 text Work email
+										485 text Label
+									486 button Description: Inspect Contains connection from Section · Section to Input · Work email, Help: Document declaration The source directly contains the destination in the declared structure. /nodes/onbCard/children/5
+									487 button Description: Input · Work email, Help: Input · Work email · %5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbEmailInput%22%5D
+										488 text Work email
+										489 text Input
+									490 button Description: Inspect Contains connection from Section · Section to Label · Role, Help: Document declaration The source directly contains the destination in the declared structure. /nodes/onbCard/children/6
+									491 button Description: Label · Role, Help: Label · Role · %5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbRoleLabel%22%5D
+										492 text Role
+										493 text Label
+									494 button Description: Inspect Contains connection from Section · Section to Select · Role, Help: Document declaration The source directly contains the destination in the declared structure. /nodes/onbCard/children/7
+									495 button Description: Select · Role, Help: Select · Role · %5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbRoleSelect%22%5D
+										496 text Role
+										497 text Select
+									498 button Description: Inspect Contains connection from Section · Section to Container · Row, Help: Document declaration The source directly contains the destination in the declared structure. /nodes/onbCard/children/8
+									499 button Description: Container · Row, Help: Container · Row · %5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbNotifRow%22%5D
+										500 text Row
+									501 button Description: Inspect Contains connection from Section · Section to Component · Create account, Help: Document declaration The source directly contains the destination in the declared structure. /nodes/onbCard/children/9
+									502 button Description: Component · Create account, Help: Component · Create account · %5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbSubmit%22%5D
+										503 text Create account
+									504 button Description: Inspect Contains connection from Section · Section to Paragraph · Your details stay on this screen — nothing is sent., Help: Document declaration The source directly contains the destination in the declared structure. /nodes/onbCard/children/10
+									505 button Description: Paragraph · Your details stay on this screen — nothing is sent., Help: Paragraph · Your details stay on this screen — nothing is sent. · %5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbFeedback%22%5D
+										506 text Your details stay on this screen — nothing is sent.
+										507 text Paragraph
+								508 container Related connections
+									509 button Description: Input · Full name, Help: Input · Full name · %5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbNameInput%22%5D
+										510 text Full name
+										511 text Input
+									512 button Description: Inspect Styles connection from Style · Full name · Focus style to Input · Full name, Help: Document declaration The source contributes declared styling to the destination. /nodes/onbNameInput/styleSources/0
+									513 button Description: Style · Full name · Focus style, Help: Style · Full name · Focus style · %5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22style%22%2C%22src.onbNameInput.always.focus%22%5D
+										514 text Full name · Focus style
+									515 button Description: Inspect Styles connection from Style · Full name · Base style to Input · Full name, Help: Document declaration The source contributes declared styling to the destination. /nodes/onbNameInput/styleSources/1
+									516 button Description: Style · Full name · Base style, Help: Style · Full name · Base style · %5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22style%22%2C%22src.onbNameInput.always.plain%22%5D
+										517 text Full name · Base style
+									518 button Description: Inspect Value connection from State · Full Name to Input · Full name, Help: Document declaration The source supplies a value read by the destination. /nodes/onbNameInput/attributes/value
+									519 button Description: Inspect Fallback connection from State · Full Name to Input · Full name, Help: Document declaration The source supplies a declared fallback value or content for the destination. /nodes/onbNameInput/interactions/0/value
+									520 button Description: State · Full Name, Help: State · Full Name · %5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22state%22%2C%22fullName%22%5D
+										521 text Full Name
+									522 text 2 references
+						162 container Selection technical information
+							163 button (collapsed) Description: Technical information, Secondary Actions: Expand
+		24 text Designer — VICT Studio
+
+The focused UI element is 93 button (expanded) Description: Relationships, Help: 17 declared relationships, Secondary Actions: Collapse

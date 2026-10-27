@@ -1,0 +1,108 @@
+Loading svelte-check in workspace: c:\Users\RZ1\.codex\worktrees\studio-cycle14-selection-panel\260831-VCT-02\apps\studio
+Getting Svelte diagnostics...
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-selection-panel\260831-VCT-02\apps\studio\..\..\packages\ui-svelte\src\document\RenderNode.svelte:309:3
+Warn: Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events (svelte)
+{:else if instruction.kind === 'text'}
+  <span
+    class="uv-text"
+    data-ui-owner={ownerId}
+    data-ui-node={instruction.nodeId}
+    data-ui-occ={occ}
+    style="display: contents"
+    onclick={(event) => {
+      if (selectOccurrence !== undefined) {
+        event.stopPropagation();
+        selectOccurrence(occ);
+      }
+    }}
+  >
+    {#if instruction.content.type === 'literal'}
+      {instruction.content.value}
+    {:else}
+      {String(resolveValue({ type: 'expression', expression: instruction.content.expression }, scope) ?? '')}
+    {/if}
+  </span>
+{:else if (instruction.kind === 'component' || instruction.kind === 'extension') && componentValues.invalidNames.length}
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-selection-panel\260831-VCT-02\apps\studio\..\..\packages\ui-svelte\src\document\RenderNode.svelte:309:3
+Warn: `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions (svelte)
+{:else if instruction.kind === 'text'}
+  <span
+    class="uv-text"
+    data-ui-owner={ownerId}
+    data-ui-node={instruction.nodeId}
+    data-ui-occ={occ}
+    style="display: contents"
+    onclick={(event) => {
+      if (selectOccurrence !== undefined) {
+        event.stopPropagation();
+        selectOccurrence(occ);
+      }
+    }}
+  >
+    {#if instruction.content.type === 'literal'}
+      {instruction.content.value}
+    {:else}
+      {String(resolveValue({ type: 'expression', expression: instruction.content.expression }, scope) ?? '')}
+    {/if}
+  </span>
+{:else if (instruction.kind === 'component' || instruction.kind === 'extension') && componentValues.invalidNames.length}
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-selection-panel\260831-VCT-02\apps\studio\..\..\packages\ui-svelte\src\document\RenderNode.svelte:379:5
+Warn: Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events (svelte)
+    {@const Implementation = extension.component}
+    <span style="display: contents" data-extension-id={instruction.extensionId} data-ui-owner={ownerId} data-ui-occ={occ} data-ui-node={instruction.nodeId}
+      onclick={event => { event.stopPropagation(); selectOccurrence?.(occ); }}>
+      <Implementation props={extensionProps} occurrenceKey={occ} nodeId={instruction.nodeId} {presentation} />
+    </span>
+  {:else}
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-selection-panel\260831-VCT-02\apps\studio\..\..\packages\ui-svelte\src\document\RenderNode.svelte:379:5
+Warn: `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions (svelte)
+    {@const Implementation = extension.component}
+    <span style="display: contents" data-extension-id={instruction.extensionId} data-ui-owner={ownerId} data-ui-occ={occ} data-ui-node={instruction.nodeId}
+      onclick={event => { event.stopPropagation(); selectOccurrence?.(occ); }}>
+      <Implementation props={extensionProps} occurrenceKey={occ} nodeId={instruction.nodeId} {presentation} />
+    </span>
+  {:else}
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-selection-panel\260831-VCT-02\apps\studio\..\..\packages\ui-svelte\src\document\DocumentHost.svelte:105:31
+Warn: This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+  let acceptedSupplied: Record<string, UiValue> = {};
+  let lastDocumentId = $state(plan.documentId);
+  let lastSignal: symbol | undefined = $state<symbol | undefined>(undefined);
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-selection-panel\260831-VCT-02\apps\studio\src\lib\designer\WorkspaceSelectionDetails.svelte:76:9
+Warn: Unused CSS selector "small"
+https://svelte.dev/e/css_unused_selector (svelte)
+ dl{margin:0}dl>div{display:grid;grid-template-columns:minmax(64px,1fr) minmax(0,2fr);gap:10px;padding:7px 0;border-bottom:1px solid var(--vict-color-border)}dt{color:var(--vict-color-textMuted)}dd{margin:0;overflow-wrap:anywhere;max-height:120px;overflow:auto}
+ .quiet,small{color:var(--vict-color-textMuted);font:var(--studio-font-meta)}.selection-items{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:6px}.selection-items li{display:flex;border:1px solid var(--vict-color-border);border-radius:5px}
+ .inspect-item{flex:1;min-width:0;padding:8px;text-align:left;overflow-wrap:anywhere}.remove-item{width:28px;flex:none}
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-selection-panel\260831-VCT-02\apps\studio\src\lib\designer\TryScenarios.svelte:42:189
+Warn: Unused CSS selector ".state-values"
+https://svelte.dev/e/css_unused_selector (svelte)
+  .testing-body{padding:12px;overflow:auto;min-height:0}.testing-intro{margin:0 0 14px;color:var(--vict-color-textMuted)}.scenario-list{display:grid;gap:8px}.scenario-choice{text-align:left;display:grid;gap:4px;padding:10px}.scenario-choice span{font-size:11px;color:var(--vict-color-textMuted)}.scenario-choice[aria-pressed=true]{border-color:var(--vict-color-accent);background:var(--vict-control-selected)}
+  .test-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}.reset-hint{color:var(--vict-color-textMuted);font-size:11px;margin:8px 0 16px}details{padding:0}summary{cursor:pointer}.state-values{margin-top:8px}:focus-visible{outline:2px solid var(--vict-color-focusRing);outline-offset:-2px}:disabled{opacity:.5;cursor:default}
+  fieldset{border:0;padding:0;margin:8px 0 0;min-width:0}
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-selection-panel\260831-VCT-02\apps\studio\src\lib\designer\Designer.svelte:95:85
+Error: Block-scoped variable 'drawerWidth' used before its declaration. (ts)
+  let availableWidth=$state(0);
+  const compactWorkspace=$derived(exclusiveWorkspacePanels(availableWidth,chatWidth,drawerWidth));
+  let lastPanel:AuxiliaryPanel='document';
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle14-selection-panel\260831-VCT-02\apps\studio\src\lib\designer\Designer.svelte:95:85
+Error: Variable 'drawerWidth' is used before being assigned. (ts)
+  let availableWidth=$state(0);
+  const compactWorkspace=$derived(exclusiveWorkspacePanels(availableWidth,chatWidth,drawerWidth));
+  let lastPanel:AuxiliaryPanel='document';
+
+====================================
+svelte-check found 2 errors and 7 warnings in 5 files

@@ -1,0 +1,26 @@
+{
+  "layers": [
+    "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbCard",
+    "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbNameInput"
+  ],
+  "members": [
+    {
+      "icon": "container",
+      "inspect": "BUTTON",
+      "name": "Section  Section ",
+      "remove": "Remove Section Section from selection"
+    },
+    {
+      "icon": "input",
+      "inspect": "BUTTON",
+      "name": "Input  Full name ",
+      "remove": "Remove Input Full name from selection"
+    },
+    {
+      "icon": "reference",
+      "inspect": "BUTTON",
+      "name": "Connection  Input · Full name · Updates · State · Full Name ",
+      "remove": "Remove Connection Input · Full name · Updates · State · Full Name from selection"
+    }
+  ]
+}

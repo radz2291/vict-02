@@ -1,0 +1,15 @@
+{
+  "before": null,
+  "retained": {
+    "selection": "2 nodes · 1 connection",
+    "value": "Preview continuity check"
+  },
+  "reset": "",
+  "disclosures": [
+    {
+      "depth": 1,
+      "summary": "Test values",
+      "weight": "400"
+    }
+  ]
+}

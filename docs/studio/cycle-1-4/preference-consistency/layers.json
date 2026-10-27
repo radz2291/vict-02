@@ -1,0 +1,20 @@
+[
+  {
+    "background": "rgba(0, 0, 0, 0)",
+    "fontWeight": "400",
+    "key": "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|screen",
+    "selected": "false"
+  },
+  {
+    "background": "rgb(237, 241, 255)",
+    "fontWeight": "500",
+    "key": "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbCard",
+    "selected": "true"
+  },
+  {
+    "background": "rgb(237, 241, 255)",
+    "fontWeight": "500",
+    "key": "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbNameInput",
+    "selected": "true"
+  }
+]
