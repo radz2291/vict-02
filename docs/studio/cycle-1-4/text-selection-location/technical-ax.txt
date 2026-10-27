@@ -1,0 +1,25 @@
+Browser tab: 11, Title: "Designer — VICT Studio", URL: "http://127.0.0.22:5616/design".
+The following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 107-119
+~							73 button (collapsed) Description: Overview, Secondary Actions: Expand
+~							86 button (expanded) Description: Technical information, Secondary Actions: Collapse
++							142 definition list
++								143 container Source node
++									144 text Source node
++								145 text onbEmailLabel-text
++								146 container Occurrence
++									147 text Occurrence
++								148 text screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbEmailLabel-text
++								149 container kind
++									150 text kind
++								151 text text
++								152 container id
++									153 text id
++								154 text onbEmailLabel-text
++								155 container content.type
++									156 text content.type
++								157 text literal
++								158 container content.value
++									159 text content.value
++								160 text Work email
+The focused UI element is 86 button (expanded) Description: Technical information, Secondary Actions: Collapse

@@ -1,0 +1,30 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/studio-cycle14-selection-panel/260831-VCT-02
+
+10:53:39 am [vite-plugin-svelte] packages/ui-svelte/src/document/DocumentHost.svelte:105:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+10:53:40 am [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:309:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+10:53:40 am [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:309:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+10:53:40 am [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:379:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+10:53:40 am [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:379:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+ ❯ |renderer| packages/ui-editor/test/text-selection-target.svelte.test.ts (2 tests | 1 failed) 102ms
+   × opts into a label marker while retaining the exact text occurrence, then clears it without source edits 68ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |renderer| packages/ui-editor/test/text-selection-target.svelte.test.ts > opts into a label marker while retaining the exact text occurrence, then clears it without source edits
+AssertionError: <!----><div class="uv-canvas-error" role="alert">The working document does not compile: <ul><li>UI_DOC_UNKNOWN_SCHEMA: Unsupported UI document schema.</li></ul></div>: expected null not to be null
+ ❯ packages/ui-editor/test/text-selection-target.svelte.test.ts:14:175
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 1 passed (2)
+   Start at  10:53:25
+   Duration  18.21s (transform 13.76s, setup 0ms, import 16.74s, tests 102ms, environment 928ms)

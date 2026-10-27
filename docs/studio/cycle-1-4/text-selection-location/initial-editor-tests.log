@@ -1,0 +1,56 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/studio-cycle14-selection-panel/260831-VCT-02
+
+10:49:39 am [vite-plugin-svelte] packages/ui-svelte/src/document/DocumentHost.svelte:105:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+10:49:39 am [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:309:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+10:49:39 am [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:309:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+10:49:39 am [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:379:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+10:49:39 am [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:379:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+ ❯ |renderer| packages/ui-editor/test/text-selection-target.svelte.test.ts (2 tests | 2 failed) 112ms
+   × opts into a label marker while retaining the exact text occurrence, then clears it without source edits 83ms
+   × keeps default exact targets, exact repeated keys, primary precedence and owner/hidden boundaries 26ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |renderer| packages/ui-editor/test/text-selection-target.svelte.test.ts > opts into a label marker while retaining the exact text occurrence, then clears it without source edits
+TypeError: Object.defineProperty called on non-object
+ ❯ visible packages/ui-editor/test/text-selection-target.svelte.test.ts:10:45
+
+ ❯ packages/ui-editor/test/text-selection-target.svelte.test.ts:14:140
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  |renderer| packages/ui-editor/test/text-selection-target.svelte.test.ts > keeps default exact targets, exact repeated keys, primary precedence and owner/hidden boundaries
+AssertionError: expected <span data-ui-owner="a" …(2)></span> to be <label data-ui-owner="a" …(1)>…(1)</label> // Object.is equality
+
+- Expected
++ Received
+
+- <label
+-   data-ui-occ="text-location|label|row-b"
+-   data-ui-owner="a"
+- >
+  <span
+    data-ui-occ="text-location|text|row-b"
+    data-ui-owner="a"
+    style="display:contents"
+  >
+    B
+  </span>
+- </label>
+
+ ❯ packages/ui-editor/test/text-selection-target.svelte.test.ts:22:138
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed | 3 passed (4)
+      Tests  2 failed | 11 passed (13)
+   Start at  10:49:21
+   Duration  23.54s (transform 46.69s, setup 0ms, import 76.58s, tests 1.55s, environment 7.11s)

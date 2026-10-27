@@ -1,0 +1,89 @@
+{
+  "candidate": "4d8ab1a44091d9ea37c3e31628d8c3d3117b5af7",
+  "actual": {
+    "explanation": "The canvas uses the containing element for the highlight. The text remains selected.",
+    "heading": "TextWork emailText inside Label · Work email",
+    "markers": [
+      {
+        "bounds": {
+          "height": 18.125,
+          "width": 410.3999938964844
+        },
+        "node": "onbEmailLabel",
+        "occurrence": "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbEmailLabel",
+        "outline": "rgb(43, 108, 255) solid 1.6px",
+        "proxyFor": "[\"screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbEmailLabel-text\"]"
+      }
+    ],
+    "textOccurrences": [
+      {
+        "occurrence": "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbEmailLabel-text",
+        "selected": false
+      }
+    ]
+  },
+  "technicalContent": "Overview\nRelationships\n1\nTechnical information\nSource node\nonbEmailLabel-text\nOccurrence\nscreen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbEmailLabel-text\nkind\ntext\nid\nonbEmailLabel-text\ncontent.type\nliteral\ncontent.value\nWork email",
+  "panel": {
+    "bodies": [
+      {
+        "height": 357,
+        "overflow": "auto",
+        "scrollHeight": 357
+      }
+    ],
+    "headers": [
+      {
+        "expanded": "true",
+        "height": 36,
+        "text": "Overview",
+        "y": 178.40000915527344
+      },
+      {
+        "expanded": "false",
+        "height": 36,
+        "text": "Relationships1",
+        "y": 571.2000122070312
+      },
+      {
+        "expanded": "false",
+        "height": 36,
+        "text": "Technical information",
+        "y": 607.2000122070312
+      }
+    ],
+    "root": {
+      "display": "flex",
+      "height": 559.2000122070312,
+      "overflow": "hidden"
+    },
+    "selectedTab": "true",
+    "viewport": {
+      "height": 668,
+      "width": 1010
+    }
+  },
+  "final": {
+    "canvas": [
+      "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbEmailLabel"
+    ],
+    "captions": 0,
+    "edges": [],
+    "footer": "Text inside Label · Work email. The text remains selected; the containing element is highlighted.@3 · v1_fe0ac678e805…",
+    "highlightedRows": [],
+    "layers": [],
+    "nodes": [
+      {
+        "dimmed": false,
+        "height": 0,
+        "highlighted": true,
+        "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbEmailLabel-text%22%5D",
+        "label": "Text: Work email, source onbEmailLabel-text",
+        "selected": true,
+        "transform": "translate(12px, 12px)",
+        "width": 0
+      }
+    ],
+    "panel": "TextWork emailText inside Label · Work email Overview The canvas uses the containing element for the highlight. The text remains selected. Locate text on canvas ↗   TypeTextContentWork emailInsideWork emailRelationships1Inside Work emailonbEmailLabel   Technical informationSource nodeonbEmailLabel-textOccurrencescreen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbEmailLabel-textkindtextidonbEmailLabel-textcontent.typeliteralcontent.valueWork email",
+    "tools": 0
+  }
+}

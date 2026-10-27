@@ -1,0 +1,19 @@
+Browser tab: 11, Title: "Designer — VICT Studio", URL: "http://127.0.0.22:5616/design".
+The following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 142-160
+~							73 button (expanded) Description: Overview, Secondary Actions: Collapse
++							142 container c28-properties
++								143 text The canvas uses the containing element for the highlight. The text remains selected.
++								144 button Locate text on canvas ↗
++								145 definition list
++									146 container Type
++										147 text Type
++									148 text Text
++									149 container Content
++										150 text Content
++									151 text Work email
++									152 container Inside
++										153 text Inside
++									154 text Work email
+~							86 button (collapsed) Description: Technical information, Secondary Actions: Expand
+The focused UI element is 73 button (expanded) Description: Overview, Secondary Actions: Collapse
