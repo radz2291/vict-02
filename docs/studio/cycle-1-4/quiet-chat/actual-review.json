@@ -1,0 +1,35 @@
+{
+  "studio": {
+    "activeTurn": false,
+    "chatText": "Describe a screen, or select an element to edit it.\n\nScroll to end\nSend\nReady\n···",
+    "draft": "",
+    "footers": [
+      "STRIDE.\n\nShoes built for the way you move. Portland, OR since 2012.\n\nShipping\nReturns\nContact us\n© 2025 STRIDE Footwear Co. All rights reserved.",
+      "↑ ↓ navigate · → expand · ← collapse · Enter select",
+      "Loaded the saved screen."
+    ],
+    "ready": " Ready",
+    "selectedBanner": false,
+    "title": "Shoes Landing Page"
+  },
+  "showcase": {
+    "input": "Input  {\n  \"query\": \"nodes\",\n  \"offset\": 0\n}",
+    "label": "Quiet Chat · SIMULATED",
+    "order": [
+      "text",
+      "activity",
+      "text"
+    ],
+    "result": "Result  {\n  \"ok\": true,\n  \"nodes\": [\"Heading\", \"Email input\"]\n}",
+    "toolOpen": "true"
+  },
+  "unsavedOwnerUnchanged": true,
+  "unsavedAfter": {
+    "footers": [
+      "↑ ↓ navigate · → expand · ← collapse · Enter select",
+      "Duplicate selection · unsaved"
+    ],
+    "scope": "Focus: Row 2 · 4 shown· 1 selected"
+  },
+  "limits": "Chat Input/Result visually exercised with explicitly simulated showcase. Real governed tool evidence exercised through deterministic pinned-Mastra integration tests, not a live authoring turn in owner screen."
+}

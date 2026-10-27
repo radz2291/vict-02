@@ -1,0 +1,81 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/studio-cycle14-selection-panel/260831-VCT-02/apps/studio
+
+5:00:57 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle14-selection-panel/260831-VCT-02/packages/ui-svelte/src/document/DocumentHost.svelte:105:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+5:00:57 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle14-selection-panel/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:309:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+5:00:57 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle14-selection-panel/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:309:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+5:00:57 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle14-selection-panel/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:379:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+5:00:57 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle14-selection-panel/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:379:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+ ❯ tests/ui/quiet-chat.test.ts (3 tests | 1 failed) 2967ms
+   × keeps actual text and correlated tool exchanges in order, with mechanical metadata only in Chat details 473ms
+ ❯ tests/ui/agent-handoff.test.ts (5 tests | 1 failed) 1183ms
+   × keeps an applied batch undoable and ignores late proposals/completion after Stop 253ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/ui/agent-handoff.test.ts > keeps an applied batch undoable and ignores late proposals/completion after Stop
+AssertionError: expected ' Stopped' to contain '1 applied edit'
+
+Expected: "1 applied edit"
+Received: " Stopped"
+
+ ❯ tests/ui/agent-handoff.test.ts:137:64
+    135|   expect(app.bridge.document.nodes['late-heading']).toBeUndefined();
+    136|   expect(document.querySelector('.agent-status')?.textContent).toConta…
+    137|   expect(document.querySelector('.agent-status')?.textContent).toConta…
+       |                                                                ^
+    138|   expect(app.bridge.undo().ok).toBe(true);
+    139|   expect(app.bridge.document.nodes['first-heading']).toBeUndefined();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/ui/quiet-chat.test.ts > keeps actual text and correlated tool exchanges in order, with mechanical metadata only in Chat details
+AssertionError: expected <section …(2)>…(2)</section> to be null
+
+- Expected:
+null
+
++ Received:
+<section
+  aria-label="Tool input"
+  class="svelte-1nzpbkv"
+>
+  <h4
+    class="svelte-1nzpbkv"
+  >
+    Input
+  </h4>
+   
+  <!---->
+  <!---->
+   
+  <pre
+    class="svelte-1nzpbkv"
+  >
+    {"query":"source"}
+  </pre>
+  <!---->
+  <!---->
+</section>
+
+ ❯ tests/ui/quiet-chat.test.ts:33:145
+     31|  expect(feed.textContent).not.toMatch(/Progress summary|Confirmed prog…
+     32|  const a=feed.querySelector<HTMLElement>('[data-event-id="attempt-stud…
+     33|  expect(a.textContent).toContain('failed');expect(b.textContent).toCon…
+       |                                                                                                                                                 ^
+     34|  a.querySelector<HTMLButtonElement>('button')!.click();b.querySelector…
+     35|  await vi.waitFor(()=>expect(a.querySelector('[aria-label="Tool result…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed | 1 passed (3)
+      Tests  2 failed | 7 passed (9)
+   Start at  17:00:32
+   Duration  51.82s (transform 27.55s, setup 0ms, import 42.41s, tests 5.26s, environment 2.80s)
+
