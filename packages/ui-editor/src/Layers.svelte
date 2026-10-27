@@ -9,8 +9,8 @@
   import { compositionName, moveRelative, type CompositionPlacement } from './composition.js';
   import type { TransactionDraft } from './commands.js';
   import {compositionSlots,type CompositionFocus} from './composition-focus.js';
-  let { plan, document, selectedOccurrence, selectedOccurrences, onSelectionIntent, onSelect, ariaLabel = 'Layers', labels = {}, scope, onApply, componentDescriptors = [], onOpenComposition, compact = false, hideTextContent = false, showSelectionDetails = true, onInspect }: {
-    plan: UiRenderPlan; document?: UiDocument; selectedOccurrence?: string; selectedOccurrences?:readonly string[]; onSelectionIntent?:(intent:OccurrenceSelectionIntent)=>void; onSelect?: (occurrence: string) => void;
+  let { plan, document, selectedOccurrence, selectedOccurrences, selectedSourceIds = [], onSelectionIntent, onSelect, ariaLabel = 'Layers', labels = {}, scope, onApply, componentDescriptors = [], onOpenComposition, compact = false, hideTextContent = false, showSelectionDetails = true, onInspect }: {
+    plan: UiRenderPlan; document?: UiDocument; selectedOccurrence?: string; selectedOccurrences?:readonly string[]; selectedSourceIds?:readonly string[]; onSelectionIntent?:(intent:OccurrenceSelectionIntent)=>void; onSelect?: (occurrence: string) => void;
     ariaLabel?: string; labels?: EditorLabels; scope?: DocumentScope;
     onApply?: (draft: TransactionDraft) => boolean; componentDescriptors?: readonly import('@victframework/ui').UiExtensionDescriptor[];
     onOpenComposition?:(focus:CompositionFocus)=>void;
@@ -21,10 +21,10 @@
     /** Hosts may place provenance in a shared selection panel instead. */
     showSelectionDetails?: boolean;
     /** With a host inspector, rows select their authored owner and activate on double click. */
-    onInspect?: (occurrence:string, sourceNodeId:string, provenance:string)=>void;
+    onInspect?: (occurrence:string, sourceNodeId:string, provenance:string,sourceOnly?:boolean)=>void;
   } = $props();
-  interface Entry { hiddenText?: boolean; key: string; nodeId: string; label: string; detail: string; parent?: string; depth: number; children: boolean; component: boolean; compact: boolean; selectable: boolean; composition?:CompositionFocus; }
-  const selectedKeys=$derived(new Set(selectedOccurrences??(selectedOccurrence?[selectedOccurrence]:[])));
+  interface Entry { sourceOnly?:boolean; hiddenText?: boolean; key: string; nodeId: string; label: string; detail: string; parent?: string; depth: number; children: boolean; component: boolean; compact: boolean; selectable: boolean; composition?:CompositionFocus; }
+  const selectedKeys=$derived(new Set([...(selectedOccurrences??(selectedOccurrence?[selectedOccurrence]:[])),...selectedSourceIds.map(id=>`${plan.documentId}|${id}`)]));
   let rangeAnchor=$state<string>();
   $effect(()=>{void plan.documentId;rangeAnchor=undefined;});
   let expanded = $state(new Set<string>());
@@ -71,7 +71,7 @@
         sourceNode?.kind==='element' && sourceNode.children.length===1 &&
         !resolveOccurrence(key,document).instancePath.some(step=>document.componentDefinitions[step.definitionId]));
       const start = out.length;
-      out.push({ hiddenText, key, nodeId: i.nodeId, label, depth, parent, children: false, component: i.kind === 'component' || i.kind === 'extension', compact: i.kind === 'component' || i.kind === 'extension' || (i.kind === 'element' && i.children.every(c => c.kind === 'text')), selectable: !template && !['component', 'repeat', 'conditional', 'slot'].includes(i.kind), detail: `${i.nodeId}${i.kind === 'component' ? ` · definition ${i.definitionId} @ ${i.definitionRevision}` : ''}${keys.length ? ` · record ${keys.join(' / ')}` : ''}${template ? ' · template (runtime scope unavailable)' : ''}` });
+      out.push({ sourceOnly:template, hiddenText, key, nodeId: i.nodeId, label, depth, parent, children: false, component: i.kind === 'component' || i.kind === 'extension', compact: i.kind === 'component' || i.kind === 'extension' || (i.kind === 'element' && i.children.every(c => c.kind === 'text')), selectable: !template && !['component', 'repeat', 'conditional', 'slot'].includes(i.kind), detail: `${i.nodeId}${i.kind === 'component' ? ` · definition ${i.definitionId} @ ${i.definitionRevision}` : ''}${keys.length ? ` · record ${keys.join(' / ')}` : ''}${template ? ' · Source template (not a rendered row)' : ''}` });
       const child = (instruction: UiRenderInstruction, childValues = values, childKeys = keys, childFills = fills, isTemplate = template, childFillScope = fillScope) => walk(instruction, depth + 1, childKeys, key, childValues, childFills, isTemplate, childFillScope);
       if (i.kind === 'element' || i.kind === 'unsupported') i.children.filter(c=>!hiddenText || c.kind!=='text').forEach(c => child(c));
       if (i.kind === 'extension') {
@@ -201,9 +201,12 @@
       const target=selectionKey(entry);
       const order=[...new Set(entries.map(selectionKey))];
       const range=!!event?.shiftKey;
-      const occurrences=range?occurrenceRange(order,rangeAnchor,target):[target];
+      const keys=range?occurrenceRange(order,rangeAnchor,target):[target];
+      const chosen=keys.map(key=>entries.find(item=>selectionKey(item)===key)!).filter(Boolean);
+      const occurrences=chosen.filter(item=>!item.sourceOnly).map(selectionKey);
+      const sourceNodeIds=chosen.filter(item=>item.sourceOnly).map(item=>item.nodeId);
       if(!range)rangeAnchor=target;
-      onSelectionIntent({occurrences,operation:range?(event?.ctrlKey||event?.metaKey?'add':'replace'):selectionOperation(event??{}),primary:target});return;
+      onSelectionIntent({occurrences,...(sourceNodeIds.length?{sourceNodeIds}:{}),...(entry.sourceOnly?{primarySourceId:entry.nodeId}:{}),operation:range?(event?.ctrlKey||event?.metaKey?'add':'replace'):selectionOperation(event??{}),primary:target});return;
     } if(onInspect){onSelect?.(selectionKey(entry));return;} if(entry.composition)onOpenComposition?.(entry.composition); else if (entry.selectable) onSelect?.(entry.key); else if (entry.children && !query) toggle(entry); }
   function keyboard(event: KeyboardEvent, entry: Entry) {
     const index = entries.findIndex(e => e.key === entry.key);
@@ -216,7 +219,7 @@
     if (event.key === 'ArrowLeft') { if (!query && entry.children && isOpen(entry)) toggle(entry); else next = entry.parent; }
     if (['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) event.preventDefault();
     if(onSelectionIntent && ['Enter',' '].includes(event.key)){event.preventDefault();select(entry,event);}
-    if(next){if(onSelectionIntent && event.shiftKey && ['ArrowUp','ArrowDown','Home','End'].includes(event.key)){const nextEntry=entries.find(item=>item.key===next);if(nextEntry)select(nextEntry,event);}void focus(next);}
+    if(next){if(onSelectionIntent && event.shiftKey && ['ArrowUp','ArrowDown','Home','End'].includes(event.key)){if(!rangeAnchor)rangeAnchor=selectionKey(entry);const nextEntry=entries.find(item=>item.key===next);if(nextEntry)select(nextEntry,event);}void focus(next);}
   }
 </script>
 <nav class="uv-layers" class:compact aria-label={ariaLabel} bind:this={root}>
@@ -226,7 +229,7 @@
       <li role="none" class:is-parent={entry.children && (!entry.compact || entry.component)} class:is-ancestor={selectedAncestors.has(entry.key)} class:is-selected={selectedKeys.has(entry.key)} style:padding-left={`${entry.depth * 16}px`}>
         <span class="tree-guides" aria-hidden="true">{#each treeGuides.get(entry.key) ?? [] as guide}{#if guide.continues || guide.end}<span class="tree-guide" class:branch={guide.end} class:last={!guide.continues} style:left={`${guide.level*16+10}px`}></span>{/if}{/each}</span>
         {#if entry.children}<button class="disclosure" type="button" tabindex="-1" disabled={!!query} aria-label={`${query || isOpen(entry) ? 'Collapse' : 'Expand'} ${entry.label}`} onclick={() => toggle(entry)}><svg viewBox="0 0 16 16" aria-hidden="true" class:expanded={!!query || isOpen(entry)}><path d="m6 4 4 4-4 4" /></svg></button>{:else}<span class="spacer"></span>{/if}
-        <button type="button" role="treeitem" data-key={entry.key} data-drop={dropKey === entry.key ? dropPosition : undefined} aria-level={entry.depth + 1} aria-expanded={entry.children ? !!query || isOpen(entry) : undefined} aria-selected={selectedKeys.has(entry.key)} tabindex={entry.key === tabStop ? 0 : -1} title={`${entry.label} · ${entry.detail}`} onclick={event => select(entry,event)} ondblclick={() => onInspect?.(selectionKey(entry),entry.nodeId,entry.detail)} onkeydown={e => keyboard(e, entry)} onfocus={() => focusKey = entry.key}
+        <button type="button" role="treeitem" data-key={entry.key} data-drop={dropKey === entry.key ? dropPosition : undefined} aria-level={entry.depth + 1} aria-expanded={entry.children ? !!query || isOpen(entry) : undefined} aria-selected={selectedKeys.has(entry.key)} tabindex={entry.key === tabStop ? 0 : -1} title={`${entry.label} · ${entry.detail}`} onclick={event => select(entry,event)} ondblclick={() => onInspect?.(selectionKey(entry),entry.nodeId,entry.detail,entry.sourceOnly)} onkeydown={e => keyboard(e, entry)} onfocus={() => focusKey = entry.key}
           draggable={!!onApply && direct(entry) && !query} ondragstart={event => { if (!direct(entry)) { event.preventDefault(); return; } draggedId = entry.nodeId; if (event.dataTransfer) { event.dataTransfer.effectAllowed = 'move'; event.dataTransfer.setData('text/plain', entry.nodeId); } }}
           ondragover={event => dragOver(event, entry)} ondrop={event => drop(event, entry)} ondragleave={() => { dropKey = ''; }} ondragend={() => { draggedId = ''; dropKey = ''; moveMessage = ''; }}>
           <span class="icon" aria-hidden="true"><svg viewBox="0 0 16 16"><path d={iconPath(entry)} /></svg></span><span class="name" title={visibleLabel(entry)}>{visibleLabel(entry)}</span>{#if entry.children && !query && !isOpen(entry)}<span class="child-count" title="Direct children" aria-label={`${childCounts.get(entry.key) ?? 0} direct ${childCounts.get(entry.key) === 1 ? 'child' : 'children'}`}>{childCounts.get(entry.key)}</span>{/if}{#if entry.component}<span class="badge" title="Component" aria-label="Component">◇</span>{/if}

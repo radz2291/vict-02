@@ -66,6 +66,8 @@
     readonly selectedOccurrences?: readonly string[];
     readonly onSelectionIntent?: (intent:OccurrenceSelectionIntent)=>void;
     readonly onClearSelection?: ()=>void;
+    /** Mounted occurrences owned by this canvas, including portals; no source mutation. */
+    readonly onOccurrencesChange?:(documentId:string,occurrences:readonly string[])=>void;
     readonly onSelect: (occurrence: string) => void;
     readonly dispatch: (actionId: string, input?: unknown) => Promise<unknown>;
     readonly navigate: (routeId: string, params?: Readonly<Record<string, unknown>>) => void;
@@ -104,7 +106,7 @@
     view = {},
     record = {},
     selectedOccurrence,
-    selectedOccurrences, onSelectionIntent, onClearSelection,
+    selectedOccurrences, onSelectionIntent, onClearSelection, onOccurrencesChange,
     onSelect,
     dispatch,
     navigate,
@@ -227,6 +229,7 @@
     for (const event of events) globalThis.document.addEventListener(event, intercept, true);
     return () => { for (const event of events) globalThis.document.removeEventListener(event, intercept, true); };
   });
+  let publishedOccurrences='';
   $effect(() => {
     const occurrences = selectionOccurrences;
     void compiled;
@@ -243,6 +246,9 @@
         ...canvasEl.querySelectorAll<HTMLElement>('[data-ui-occ]'),
         ...globalThis.document.querySelectorAll<HTMLElement>('[data-ui-owner]'),
       ])].filter(element => element.dataset.uiOwner === owner);
+      const membership=[...new Set(targets.map(element=>element.dataset.uiOcc).filter((key):key is string=>!!key))].sort();
+      const signature=JSON.stringify([document.id,membership]);
+      if(signature!==publishedOccurrences){publishedOccurrences=signature;onOccurrencesChange?.(document.id,membership);}
       for (const element of targets) element.removeAttribute('data-ui-selected');
       marked=occurrences.flatMap(occurrence=>{const matching=targets.filter(element=>element.dataset.uiOcc===occurrence);const primary=matching.find(element=>element.hasAttribute('data-ui-primary'))??matching[0];return primary?[primary]:[];});
       for(const element of marked)element.setAttribute('data-ui-selected','');

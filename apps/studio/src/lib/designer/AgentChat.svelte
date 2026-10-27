@@ -1,4 +1,5 @@
 <script lang="ts">
+  import type {SelectionSet} from './selection-context.js';
   import { onDestroy, onMount } from 'svelte';
   import AgentTurnEvidence from './AgentTurnEvidence.svelte';
   import { Conversation, conversationMessages, appendConversationEvent, type ConversationEvent, type ConversationActivity } from '@victframework/ui-ai-svelte';
@@ -12,7 +13,7 @@
   interface Props {
     screenLabel:string;
     selectionLabel:string;
-    getContext:()=>{document:UiDocument;cursor:AgentCursor;selection?:string}|undefined;
+    getContext:()=>{document:UiDocument;cursor:AgentCursor;selection?:string;selectionSet?:SelectionSet}|undefined;
     applyProposal:(proposal:AgentProposal)=>EditReceipt;
     blocked:boolean;
     getCapture?:(cursor:AgentCursor)=>Promise<CaptureResult>;
@@ -213,6 +214,7 @@
 </script>
 
 <aside data-studio-typography class="studio-type-scope agent-chat" aria-label="Chat" bind:this={panel}>
+  {#if selectionLabel && selectionLabel!=='None'}<p class="agent-selection" title={selectionLabel} aria-live="polite">Selected: {selectionLabel}</p>{/if}
   <Conversation messages={presentedMessages} {busy}
     emptyMessage="Describe a screen, or select an element to edit it."
     inputLabel="Message" inputPlaceholder="Ask for a change…"
@@ -227,7 +229,6 @@
         <Popover.Content class="studio-chat-details" customAnchor={detailsAnchor ?? null} side="top" align="end" sideOffset={4} collisionPadding={8} collisionBoundary={detailsBoundary ?? panel ?? null} aria-label="Chat details">
           <div class="details-heading"><h3>Chat details</h3><Popover.Close aria-label="Close chat details">×</Popover.Close></div>
           <p class="details-model">{model || 'VICT / Mastra'}</p>
-          {#if selectionLabel && selectionLabel!=='None' && selectionLabel!=='Screen' && selectionLabel!==screenLabel}<p>Selected: {selectionLabel}</p>{/if}
           <p>{status}</p>
           {#if !ready}<p>Set the server’s model and provider key, then restart Studio. Credentials stay on the server.</p>{/if}
           <button type="button" class="details-reconnect" disabled={busy} onclick={()=>void configure()}>Reconnect agent</button>
@@ -241,6 +242,7 @@
 
 <style>
   .agent-chat{display:flex;flex-direction:column;min-height:0;min-width:0;width:320px;border-right:1px solid var(--vict-color-border);background:var(--vict-color-surface);color:var(--vict-color-text);overflow:hidden;font-size:12px}
+  .agent-selection{margin:0;padding:6px 12px;color:var(--vict-color-textMuted);font:var(--studio-font-meta);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:none}
   .agent-footer{display:flex;flex:none;align-items:center;justify-content:space-between;padding:3px 12px 6px;gap:8px}
   :global(.agent-details-trigger){flex:none;height:28px;border:1px solid transparent;border-radius:5px;background:transparent;color:var(--vict-color-textMuted);cursor:pointer;padding:3px 8px;width:28px;font-size:20px;line-height:1}
   :global(.agent-details-trigger:hover),:global(.agent-details-trigger[data-state="open"]){background:var(--vict-rhea-muted)}

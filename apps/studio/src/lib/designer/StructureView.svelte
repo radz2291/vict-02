@@ -34,6 +34,8 @@
   let localSelection=$state<WorkspaceSelection>({documentId:'',items:[]});
   const currentSelection=$derived(selection??localSelection);
   const chosenItems=$derived(currentSelection.items);
+  const chosenNodes=$derived(chosenItems.filter(item=>item.kind==='node'));
+  const chosenSources=$derived(new Set(chosenNodes.map(item=>item.id)).size);
   let hoveredEdges=$state<string[]>([]);
   let focusedEdges=$state<string[]>([]);
   const visibleChosen=$derived(chosenItems.filter(item=>item.kind==='node'?nodes.some(node=>node.id===item.id):edges.some(edge=>edge.id===item.id)));
@@ -56,6 +58,7 @@
   setContext<StructureTraceContext>(structureTraceContext,{
     current:()=>tracedConnection,
     blocked:()=>blocked,
+    pointState:(node,port)=>{const members=portConnections(edges,node,port);return {total:members.length,selected:members.filter(edge=>chosenItems.some(item=>item.kind==='edge'&&item.id===edge.id)).length};},
     isPortSelected:(node,port)=>{const members=portConnections(edges,node,port);return members.length>0&&members.every(edge=>chosenItems.some(item=>item.kind==='edge'&&item.id===edge.id));},
     hoverPort:(node,port)=>{hoveredEdges=port?portConnections(edges,node,port).map(edge=>edge.id):[];},
     selectPort:(node,port,event)=>requestSelection(portConnections(edges,node,port).map(edge=>({kind:'edge' as const,id:edge.id})),selectionOperation(event)),
@@ -383,7 +386,7 @@
     </Menubar.Root>
     <span class="declaration-label" title={`Source declarations; ${inventory?'all registries':'used dependencies'}; visibility filters still apply. This is not live execution.`}>Declared</span>
     {#if search}<span class="scope-label" title="Search includes hidden items and their parent paths. Relationship visibility settings still apply.">Search results · includes hidden items</span>{:else if graphView==='connections'}<span class="scope-label" title={`Focused on ${scopeLabel}`}>Focus: {scopeLabel}</span>{/if}
-    {#if chosenItems.length}<span class="scope-label" aria-live="polite">{chosenItems.length} selected{chosenItems.some(item=>item.kind==='node'?!nodes.some(node=>node.id===item.id):!edges.some(edge=>edge.id===item.id))?' · some outside view':''}</span>{/if}
+    {#if chosenItems.length}<span class="scope-label" aria-live="polite">{chosenItems.length} selected{chosenNodes.length>chosenSources?` · ${chosenNodes.length} node selections / ${chosenSources} source${chosenSources===1?'':'s'}`:''}{chosenItems.some(item=>item.kind==='node'?!nodes.some(node=>node.id===item.id):!edges.some(edge=>edge.id===item.id))?' · some outside view':''}</span>{/if}
     <span class="structure-count" aria-live="polite" title={graphView==='connections' && !search?'Nearby items after visibility settings':'All declared items; visibility settings, collapsed groups and compact text may hide some'}>{nodes.length < availableItems ? `${nodes.length} of ${availableItems}` : nodes.length} items</span>
     <button type="button" class="inspection-toggle" aria-label={inspectionLabel==='Inspect'?'Inspect structure':'Selection panel'} aria-expanded={onInspect ? inspectionExpanded : inspectionOpen} aria-controls={onInspect ? undefined : 'structure-inspection'} bind:this={inspectionButton} onclick={() => { if (onInspect && inspectionExpanded && onCloseInspect) onCloseInspect(); else if (onInspect) onInspect(inspectedId, 'properties'); else if (inspectionOpen) closeInspection(); else openInspection(inspected ? 'properties' : 'find'); }}>{inspectionLabel}</button>
   </div>

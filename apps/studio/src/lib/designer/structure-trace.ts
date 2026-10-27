@@ -6,6 +6,7 @@ export type StructureHighlight={nodes:ReadonlySet<string>;edges:ReadonlySet<stri
 export type StructureTraceContext={
  current:()=>StructureHighlight|undefined;
  blocked?:()=>boolean;
+ pointState?:(node:string,port:string)=>{selected:number;total:number};
  isPortSelected?:(node:string,port:string)=>boolean;
  hoverPort?:(node:string,port:string|undefined)=>void;
  selectPort?:(node:string,port:string,event:Pick<MouseEvent,'ctrlKey'|'metaKey'>)=>void;

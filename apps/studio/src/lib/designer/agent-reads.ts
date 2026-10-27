@@ -1,9 +1,10 @@
 /** Bounded discovery. No read embeds the full document or catalog. */
+import {selectionContext,type SelectionSet} from './selection-context.js';
 import { z } from 'zod';
 import { authoringIndex, authoringContractBundle, type UiDocument, type UiNode } from '@victframework/ui';
 import { resolveOccurrence, compositionChildren } from '@victframework/ui-editor';
 import { screenRecipes, recipeHostRequirements } from './recipes.js';
-import { actionInputs, designerCatalogs } from './application.js';
+import { actionInputs, designerCatalogs, catalogDescriptors, screenActionState } from './application.js';
 import type { AgentCursor } from './agent-edits.js';
 import { authoringContract, installedAuthoringRegistry } from './authoring.js';
 import { studioPreviewHost } from './preview-host.js';
@@ -108,7 +109,7 @@ export interface AgentReadResult {
   selection?: { occurrence?: string; nodeId: string; repeated: boolean } | null;
   [key:string]: unknown;
 }
-export function agentContext(document: UiDocument, cursor: AgentCursor, selection?: string, input: unknown = {}): AgentReadResult {
+export function agentContext(document: UiDocument, cursor: AgentCursor, selection?: string, input: unknown = {}, selectedSet?:SelectionSet): AgentReadResult {
   const parsed = agentReadSchema.safeParse(input);
   if (!parsed.success) return { ok:false,code:'STUDIO_AGENT_READ_QUERY',message:'Use section, offset and limit (1–20). source requires nodeId; component requires recipe; stateKey pages a state declaration; registry needs its registry name and optional key.',diagnostics:parsed.error.issues.slice(0,4).map(issue => ({path:issue.path.join('.'),message:issue.message})) };
   const query = parsed.data;
@@ -185,6 +186,7 @@ export function agentContext(document: UiDocument, cursor: AgentCursor, selectio
     const occurrence = selection ? resolveOccurrence(selection,document) : undefined;
     result = { ...base,document:{schema:document.schema,id:document.id,revision:document.revision,root:document.root,nodeCount:nodes.length,stateCount:Object.keys(document.localState).length},
       selection:occurrence ? { occurrence:selection,nodeId:occurrence.sourceNodeId,repeated:!!occurrence.repeatKeys.length } : null,
+      ...(selectedSet?{selectionSet:selectionContext(document,selectedSet,{descriptors:catalogDescriptors,actionState:screenActionState,actionIds:designerCatalogs.actionIds,routeIds:designerCatalogs.routeIds})}:{}),
       roots:nodes.filter(node => node.id === document.root).map(nodeSummary),
       previewHost:studioPreviewHost,
       knowledge:{registryDigest:installedAuthoringRegistry.digest,contracts:installedAuthoringRegistry.contracts.length,families:new Set(installedAuthoringRegistry.contracts.map(item=>item.family)).size,ready:installedAuthoringRegistry.ok,

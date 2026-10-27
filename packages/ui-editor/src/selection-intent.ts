@@ -4,6 +4,9 @@ export type OccurrenceSelectionIntent = {
   occurrences: readonly string[];
   operation: SelectionOperation;
   primary: string;
+  /** Declaration-only rows are not live occurrences. */
+  sourceNodeIds?:readonly string[];
+  primarySourceId?:string;
 };
 export function selectionOperation(event: {ctrlKey?:boolean;metaKey?:boolean}): SelectionOperation {
   return event.ctrlKey || event.metaKey ? 'toggle' : 'replace';

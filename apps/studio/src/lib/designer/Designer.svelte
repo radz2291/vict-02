@@ -21,6 +21,8 @@
   import StructureView from './StructureView.svelte';
   import WorkspaceSelectionDetails from './WorkspaceSelectionDetails.svelte';
   import {changeSelection,pruneSelection,nodeItem,itemKey,primaryItem,singleOccurrence,type WorkspaceSelection,type WorkspaceItem} from './workspace-selection.js';
+  import {selectionSet} from './selection-context.js';
+  import {selectionIdentity} from './selection-presentation.js';
   import type {OccurrenceSelectionIntent,SelectionOperation} from '@victframework/ui-editor';
   import DataEditorHeader from './DataEditorHeader.svelte';
   import WorkspaceDetails from './WorkspaceDetails.svelte';
@@ -170,6 +172,11 @@
   let workspaceSelection=$state<WorkspaceSelection>({documentId:'',items:[]});
   const savedSelections=new Map<string,WorkspaceSelection>();
   const workspaceGraph=$derived(source?projectStructure(source,structureContext):{nodes:[],edges:[]});
+  let renderedDocument=$state('');
+  let renderedOccurrences=$state<readonly string[]>([]);
+  const currentOccurrences=$derived(renderedDocument===source?.id?renderedOccurrences:undefined);
+  const selectedSourceIds=$derived(workspaceSelection.items.flatMap(item=>item.kind==='node'&&!item.occurrence?workspaceGraph.nodes.find(node=>node.id===item.id)?.data.sourceId??[]:[]));
+  const selectionLabel=$derived(source&&workspaceSelection.items.length===1?selectionIdentity(source!,workspaceGraph,workspaceSelection.items[0]!).qualified:workspaceSelection.items.length?`${workspaceSelection.items.length} selected items`:'None');
   const selectedOccurrences=$derived(workspaceSelection.items.flatMap(item=>item.kind==='node'&&item.occurrence?[item.occurrence]:[]));
   const selected = $derived(singleOccurrence(workspaceSelection));
   $effect(()=>{
@@ -188,10 +195,12 @@
     paletteRequested=false;layerProvenance=undefined;
   }
   function clearWorkspaceSelection(){updateSelection([]);}
+  function selectRelated(items:readonly WorkspaceItem[],operation:SelectionOperation){if(!source||textDraftDirty||sourceDraftDirty||renamingScreen){notice='Apply or cancel your draft before changing selection.';return;}updateSelection(items,operation);if(operation==='replace'&&items.length===1&&items[0]?.kind==='node')structureFocusId=items[0].id;}
   function layerSelection(intent:OccurrenceSelectionIntent){
     if(!source)return;if(textDraftDirty||sourceDraftDirty||renamingScreen){notice='Apply or cancel your draft before changing selection.';return;}
     const items=intent.occurrences.flatMap(occurrence=>{const item=nodeItem(source,occurrence);return item?[item]:[];});
-    updateSelection(items,intent.operation,nodeItem(source,intent.primary));
+    items.push(...(intent.sourceNodeIds??[]).filter(id=>!!source.nodes[id]).map(id=>({kind:'node' as const,id:structureId(source.id,'node',id)})));
+    updateSelection(items,intent.operation,intent.primarySourceId?{kind:'node',id:structureId(source.id,'node',intent.primarySourceId)}:nodeItem(source,intent.primary));
   }
   function normalizedOccurrence(occurrence:string){
     if(!source)return occurrence;const report=resolveOccurrence(occurrence,source);
@@ -657,7 +666,7 @@
     </div>
   {/snippet}
   <div class="agent-workspace" class:chat-open={chatOpen} bind:clientWidth={availableWidth}>
-  <div data-studio-typography class="studio-type-scope agent-panel" hidden={!chatOpen} style:--chat-width={`${chatWidth}px`}><header class="panel-header chat-heading"><strong>Chat</strong><button type="button" aria-label="Hide chat" title="Hide chat" onclick={()=>void toggleChat()}>×</button></header><AgentChat screenLabel={screenName(source)} selectionLabel={selectedNode ? compositionName(source, selectedNode.id) : "None"} blocked={textDraftDirty || sourceDraftDirty || renamingScreen} getContext={() => bridge ? {document:bridge.document, cursor:documentCursor(bridge.document,bridge.getSnapshot().revision,agentEpoch), ...(selected ? {selection:selected} : {})} : undefined} getCapture={cursor => captureDesignerPreview(canvasScroll?.querySelector<HTMLElement>('.design-frame') ?? undefined,cursor,()=>bridge ? {cursor:documentCursor(bridge.document,bridge.getSnapshot().revision,agentEpoch),mode,state:{runtimeValues,simulation:{denied:simulation.denied,failNext:simulation.failNext}},selection:selected,composition:compositionFocus ? `${compositionFocus.nodeId}/${compositionFocus.slotName}` : undefined,structureOpen} : undefined,canvasScroll)} applyProposal={receiveAgentProposal} /></div>
+  <div data-studio-typography class="studio-type-scope agent-panel" hidden={!chatOpen} style:--chat-width={`${chatWidth}px`}><header class="panel-header chat-heading"><strong>Chat</strong><button type="button" aria-label="Hide chat" title="Hide chat" onclick={()=>void toggleChat()}>×</button></header><AgentChat screenLabel={screenName(source)} selectionLabel={selectionLabel} blocked={textDraftDirty || sourceDraftDirty || renamingScreen} getContext={() => bridge ? {document:bridge.document, cursor:documentCursor(bridge.document,bridge.getSnapshot().revision,agentEpoch), ...(selected ? {selection:selected} : {}),selectionSet:selectionSet(workspaceSelection)} : undefined} getCapture={cursor => captureDesignerPreview(canvasScroll?.querySelector<HTMLElement>('.design-frame') ?? undefined,cursor,()=>bridge ? {cursor:documentCursor(bridge.document,bridge.getSnapshot().revision,agentEpoch),mode,state:{runtimeValues,simulation:{denied:simulation.denied,failNext:simulation.failNext}},selection:selected,composition:compositionFocus ? `${compositionFocus.nodeId}/${compositionFocus.slotName}` : undefined,structureOpen} : undefined,canvasScroll)} applyProposal={receiveAgentProposal} /></div>
   <div class="chat-resizer" hidden={!chatOpen}><PanelResizer label="Chat width" value={chatWidth} min={240} max={400} onChange={(value:number)=>chatWidth=value} /></div>
   <div class="design-workspace" bind:this={workspaceElement} bind:clientWidth={workspaceWidth} class:drawer-open={rightOpen} class:has-object-tools={mode === 'design' && !!selectedNode && paletteRequested} style:--drawer-width={`${effectiveDrawerWidth}px`}>
     <WorkspaceContextMenu scope={workspaceElement} enabled={workspaceView === 'design'} resolve={canvasContext} owns={ownsCanvasTarget} />
@@ -673,6 +682,7 @@
             {selectionToolsReveal} selectionToolsPinned={textDraftDirty}
             selectionToolsPlacement="below"
             onEditTextRequest={editSelectedText}
+            onOccurrencesChange={(id:string,occurrences:readonly string[])=>{if(id===source?.id){renderedDocument=id;renderedOccurrences=occurrences;}}}
             interactionMode={mode} selectedOccurrences={mode==='design'?selectedOccurrences:[]} onSelectionIntent={canvasSelection} onClearSelection={clearWorkspaceSelection} selectedOccurrence={mode === 'design' ? selected : undefined} onSelect={mode === 'design' ? selectOccurrence : () => {}} {dispatch} navigate={() => { notice = 'This application contains one screen.'; }}
             stateValues={runtimeValues} onStateChange={(key: string, value: UiValue) => runtimeValues = { ...runtimeValues, [key]: value }} {resetSignal}
             actionState={screenActionState} onPlan={(next: UiRenderPlan) => { plan = next; }}
@@ -689,7 +699,7 @@
     <aside id="document-drawer" hidden={!drawerOpen || testingOpen} data-studio-typography class="studio-type-scope document-drawer" aria-label="Document and Selection" onkeydown={documentKeys}>
       <WorkspaceDetails bind:context={drawerContext} onClose={closeDrawer}>
       {#snippet documentContent()}<DocumentPanels bind:active={documentPanel}>
-        {#snippet layersContent()}{#if plan}<Layers selectedOccurrences={selectedOccurrences} onSelectionIntent={layerSelection} compact hideTextContent showSelectionDetails={false} labels={editorLabels} {plan} document={source} selectedOccurrence={selected} onSelect={selectFromStructure} onInspect={(occurrence:string,nodeId:string,detail:string)=>{if(textDraftDirty || sourceDraftDirty || renamingScreen)return;selectFromStructure(occurrence);layerProvenance={occurrence,detail};inspectSource(structureId(source.id,'node',nodeId));}} onOpenComposition={navigateComposition} componentDescriptors={catalogDescriptors} />{/if}{/snippet}
+        {#snippet layersContent()}{#if plan}<Layers scope={{state:runtimeValues,tokens:Object.fromEntries(Object.entries(source.tokens).map(([key,value])=>[key,value.value]))}} {selectedSourceIds} selectedOccurrences={selectedOccurrences} onSelectionIntent={layerSelection} compact hideTextContent showSelectionDetails={false} labels={editorLabels} {plan} document={source} selectedOccurrence={selected} onSelect={selectFromStructure} onInspect={(occurrence:string,nodeId:string,detail:string,sourceOnly?:boolean)=>{if(textDraftDirty || sourceDraftDirty || renamingScreen)return;if(sourceOnly){updateSelection([{kind:'node',id:structureId(source.id,'node',nodeId)}]);}else{selectFromStructure(occurrence);layerProvenance={occurrence,detail};}inspectSource(structureId(source.id,'node',nodeId));}} onOpenComposition={navigateComposition} componentDescriptors={catalogDescriptors} />{/if}{/snippet}
         {#snippet dataContent()}
           {#if selectedData && source.localState[selectedData]}
             {#key selectedData}<fieldset class="editor-guard" disabled={sourceDraftDirty || propertyDraftDirty}><StateInitialEditor compact document={source} expression={{type:'ref',path:`state.${selectedData}`}} labels={editorLabels} onApply={apply} onDirtyChange={(dirty:boolean)=>dataDraftDirty=dirty}>{#snippet toolbar({apply:applyValue,dirty}:{apply:()=>void;dirty:boolean})}<DataEditorHeader name={dataName(selectedData!)} type={dataType(source.localState[selectedData!]!.type)} {dirty} onBack={()=>openData()} onApply={applyValue} />{/snippet}</StateInitialEditor></fieldset>{/key}
@@ -710,7 +720,7 @@
           <details class="studio-disclosure application-attachment"><summary>Advanced</summary><h3>Generated application definition</h3><p>Generated by Studio to connect this screen to VICT.</p><pre class="source-preview">{JSON.stringify(screenApplication(source), null, 2)}</pre></details>
         {/snippet}
       </DocumentPanels>{/snippet}
-      {#snippet selectionContent()}<WorkspaceSelectionDetails selection={workspaceSelection} onInspect={item=>updateSelection([item])} onRemove={item=>updateSelection([item],'toggle')} context={structureContext} document={source} {layerProvenance} blocked={textDraftDirty || sourceDraftDirty || renamingScreen} bind:page={detailsPage} onClose={()=>{if(workspaceSelection.items.length)clearWorkspaceSelection();else closeDetails();}} onSelect={selectDetail} onNavigate={structureNavigate} />{/snippet}
+      {#snippet selectionContent()}<WorkspaceSelectionDetails onSelectionIntent={selectRelated} renderedOccurrences={currentOccurrences} selection={workspaceSelection} onInspect={item=>updateSelection([item])} onRemove={item=>updateSelection([item],'toggle')} context={structureContext} document={source} {layerProvenance} blocked={textDraftDirty || sourceDraftDirty || renamingScreen} bind:page={detailsPage} onClose={()=>{if(workspaceSelection.items.length)clearWorkspaceSelection();else closeDetails();}} onSelect={selectDetail} onNavigate={structureNavigate} />{/snippet}
       </WorkspaceDetails>
     </aside>
     {#if testingOpen}<aside class="testing-drawer" aria-label="Testing"><TryScenarios document={source} active={activeTest?.id} values={runtimeValues} {activity} blocked={textDraftDirty || sourceDraftDirty || renamingScreen} onChoose={chooseTest} onReset={resetRuntime} onTry={()=>void tryCanvas()} onClose={closeTesting} onChange={changeTestValue} /></aside>{/if}

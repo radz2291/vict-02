@@ -35,7 +35,8 @@ import {
   type AgentProposal,
   type EditReceipt,
 } from '$lib/designer/agent-edits.js';
-import { screenIssues } from '$lib/designer/application.js';
+import {selectionSetSchema,validSelectionSet} from '$lib/designer/selection-context.js';
+import { screenIssues, catalogDescriptors, screenActionState, designerCatalogs } from '$lib/designer/application.js';
 import { studioPreviewHostGuidance } from '$lib/designer/preview-host.js';
 import type { UiDocument } from '@victframework/ui';
 import { createVisualObserver } from './designer-visual.js';
@@ -112,6 +113,7 @@ const startSchema = z
       })
       .strict(),
     selection: z.string().max(500).optional(),
+    selectionSet: selectionSetSchema.optional(),
     history: z
       .array(
         z
@@ -148,6 +150,7 @@ export function validateAgentStart(input: unknown) {
         'UI_DOC_STALE_REVISION',
         'The source does not match the captured revision and digest.',
       );
+    if(parsed.data.selectionSet&&!validSelectionSet(document,parsed.data.selectionSet,{descriptors:catalogDescriptors,actionState:screenActionState,actionIds:designerCatalogs.actionIds,routeIds:designerCatalogs.routeIds}))return failure('STUDIO_AGENT_SELECTION','Selection references do not match this source. Select the items again before sending.');
     return { ok: true as const, value: { ...parsed.data, document, cursor } };
   } catch {
     return failure('STUDIO_AGENT_SOURCE', 'The screen could not be validated.');
@@ -377,7 +380,7 @@ async function execute(
         metrics.classify(callId,readCategory(discovery.section));
         if(discovery.section === 'coverage')for(const recipe of discovery.requested ?? [])requestedRecipes.add(recipe);
         const safeInput=discovery.section==='contracts'?{...discovery,knownDigests:knowledge.reusable(discovery.knownDigests,discovery.knownBodyIdentities)}:discovery;
-        const facts = agentContext(document,cursor,start.selection,safeInput);
+        const facts = agentContext(document,cursor,start.selection,safeInput,start.selectionSet);
         if(discovery.section==='contracts')knowledge.retain(facts);
         const result=discovery.section==='overview' && lastValidation ? {...facts,lastValidation} : facts;
         const refused=result.ok === false;
@@ -618,7 +621,7 @@ async function execute(
     const input = JSON.stringify({
       request: start.prompt,
       untrusted_history: start.history,
-      untrusted_screen: agentContext(document, cursor, start.selection),
+      untrusted_screen: agentContext(document, cursor, start.selection,{},start.selectionSet),
     });
     const started = await composition.turnService.startTurn(actor, {
       threadId: `vict-studio-${run.runId}`,
