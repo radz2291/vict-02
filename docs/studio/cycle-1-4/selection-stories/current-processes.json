@@ -1,0 +1,20 @@
+[
+  {
+    "ProcessId": 492,
+    "ParentProcessId": 105984,
+    "Name": "pwsh.exe",
+    "CommandLine": "\"C:\\Users\\RZ1\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\native\\powershell\\pwsh.exe\" -NoProfile -File docs/studio/cycle-1-4/selection-stories/launch-review.ps1"
+  },
+  {
+    "ProcessId": 98984,
+    "ParentProcessId": 492,
+    "Name": "node.exe",
+    "CommandLine": "\"C:\\Program Files\\nodejs\\node.exe\" apps/studio/scripts/launch-agent.mjs"
+  },
+  {
+    "ProcessId": 107268,
+    "ParentProcessId": 98984,
+    "Name": "node.exe",
+    "CommandLine": "\"C:\\Program Files\\nodejs\\node.exe\" build"
+  }
+]

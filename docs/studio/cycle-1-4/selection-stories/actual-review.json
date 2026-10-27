@@ -1,0 +1,43 @@
+{
+  "count": "Relationships8",
+  "footer": "Loaded the saved screen.@3 · v1_fe0ac678e805…",
+  "header": "2 nodes",
+  "rolePaths": [
+    {
+      "label": "Inside",
+      "title": "Document declaration\nThe source directly contains the destination in the declared structure.\n/nodes/onbCard/children/0"
+    },
+    {
+      "label": "Contains",
+      "title": "Document declaration\nThe source directly contains the destination in the declared structure.\n/nodes/onbTitle/children/0"
+    },
+    {
+      "label": "Inside",
+      "title": "Document declaration\nThe source directly contains the destination in the declared structure.\n/nodes/onbCard/children/3"
+    },
+    {
+      "label": "Styled by",
+      "title": "Document declaration\nThe source contributes declared styling to the destination.\n/nodes/onbNameInput/styleSources/0"
+    },
+    {
+      "label": "Styled by",
+      "title": "Document declaration\nThe source contributes declared styling to the destination.\n/nodes/onbNameInput/styleSources/1"
+    },
+    {
+      "label": "Reads from",
+      "title": "Document declaration\nThe source supplies a value read by the destination.\n/nodes/onbNameInput/attributes/value"
+    },
+    {
+      "label": "Updates",
+      "title": "Document declaration\nThe source declares an update to the destination state.\n/nodes/onbNameInput/interactions/0"
+    },
+    {
+      "label": "Fallback from",
+      "title": "Document declaration\nThe source supplies a declared fallback value or content for the destination.\n/nodes/onbNameInput/interactions/0/value"
+    }
+  ],
+  "subjects": [
+    "Create your workspace\nHeading",
+    "Full name\nInput"
+  ]
+}

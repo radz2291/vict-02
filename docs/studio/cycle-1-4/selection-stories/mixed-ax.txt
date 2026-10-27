@@ -1,0 +1,38 @@
+Browser tab: 11, Title: "Designer — VICT Studio", URL: "http://127.0.0.22:5616/design".
+The following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 145-151
++						154 (collapsed) Object, ID: bits-c56, Secondary Actions: Expand
+~					131 text 2 selected · some outside view
++						155 button Focus on selection
+~						138 text 1 node · 1 connection
+~							142 button (expanded) Description: Relationships, Help: 6 declared relationships, Secondary Actions: Collapse
+~								144 text 6
++							156 container c54-relationships
++								157 container Selected connections
++									158 text Selected connections
++									159 button Description: Input · Full name, Help: Input · Full name · %5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbNameInput%22%5D
++										160 text Full name
++										161 text Input
++									162 button Description: Inspect Value connection from State · Full Name to Input · Full name, Help: Document declaration The source supplies a value read by the destination. /nodes/onbNameInput/attributes/value
++									163 button Description: State · Full Name, Help: State · Full Name · %5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22state%22%2C%22fullName%22%5D
++										164 text Full Name
++								165 container Related connections
++									166 text Related connections
++									167 button Description: Input · Full name, Help: Input · Full name · %5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbNameInput%22%5D
++										168 text Full name
++										169 text Input
++									170 button Description: Inspect Contains connection from Section · Section to Input · Full name, Help: Document declaration The source directly contains the destination in the declared structure. /nodes/onbCard/children/3
++									171 button Description: Section · Section, Help: Section · Section · %5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbCard%22%5D
++										172 text Section
++									173 button Description: Inspect Styles connection from Style · Src onb Name Input always focus to Input · Full name, Help: Document declaration The source contributes declared styling to the destination. /nodes/onbNameInput/styleSources/0
++									174 button Description: Style · Src onb Name Input always focus, Help: Style · Src onb Name Input always focus · %5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22style%22%2C%22src.onbNameInput.always.focus%22%5D
++										175 text Src onb Name Input always focus
++									176 button Description: Inspect Styles connection from Style · Src onb Name Input always plain to Input · Full name, Help: Document declaration The source contributes declared styling to the destination. /nodes/onbNameInput/styleSources/1
++									177 button Description: Style · Src onb Name Input always plain, Help: Style · Src onb Name Input always plain · %5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22style%22%2C%22src.onbNameInput.always.plain%22%5D
++										178 text Src onb Name Input always plain
++									179 button Description: Inspect Updates connection from Input · Full name to State · Full Name, Help: Document declaration The source declares an update to the destination state. /nodes/onbNameInput/interactions/0
++									180 button Description: Inspect Fallback connection from State · Full Name to Input · Full name, Help: Document declaration The source supplies a declared fallback value or content for the destination. /nodes/onbNameInput/interactions/0/value
++									181 button Description: State · Full Name, Help: State · Full Name · %5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22state%22%2C%22fullName%22%5D
++										182 text Full Name
++									183 text 2 references
+The focused UI element is 159 button Description: Input · Full name, Help: Input · Full name · %5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbNameInput%22%5D

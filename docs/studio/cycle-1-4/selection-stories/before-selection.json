@@ -1,0 +1,10 @@
+[
+  {
+    "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbTitle%22%5D",
+    "label": "Heading: Create your workspace, source onbTitle"
+  },
+  {
+    "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbNameInput%22%5D",
+    "label": "Input: Full name, source onbNameInput"
+  }
+]

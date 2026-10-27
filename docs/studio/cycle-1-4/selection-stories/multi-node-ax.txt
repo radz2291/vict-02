@@ -1,0 +1,52 @@
+Browser tab: 11, Title: "Designer — VICT Studio", URL: "http://127.0.0.22:5616/design".
+The following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 68-125
++						130 (collapsed) Object, ID: bits-c45, Secondary Actions: Expand
++					131 text 2 selected · some outside view
+~					24 button (expanded) Description: Selection panel, Secondary Actions: Collapse
++						132 button Focus on selection
+~						65 tab (selectable, settable, boolean) Document, Value: 0, ID: c26-document-tab
+~						66 tab (selected, settable, boolean) Selection, Value: 1, ID: c26-selection-tab
++				133 container Description: Selection, ID: c26-selection
++					134 container Selection details
++						135 text 2 nodes
++						136 container Selection overview
++							137 button (collapsed) Description: Overview, Secondary Actions: Expand
++						138 container Selection relationships
++							139 button (expanded) Description: Relationships, Help: 8 declared relationships, Secondary Actions: Collapse
++								140 text Relationships
++								141 text 8
++							142 container c48-relationships
++								143 container
++									144 button Description: Heading · Create your workspace, Help: Heading · Create your workspace · %5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbTitle%22%5D
++										145 text Create your workspace
++										146 text Heading
++									147 button Description: Inspect Contains connection from Section · Section to Heading · Create your workspace, Help: Document declaration The source directly contains the destination in the declared structure. /nodes/onbCard/children/0
++									148 button Description: Section · Section, Help: Section · Section · %5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbCard%22%5D
++										149 text Section
++									150 button Description: Inspect Contains connection from Heading · Create your workspace to Text · Create your workspace, Help: Document declaration The source directly contains the destination in the declared structure. /nodes/onbTitle/children/0
++									151 button Description: Text · Create your workspace, Help: Text · Create your workspace · %5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbTitle-text%22%5D
++										152 text Create your workspace
++										153 text Text inside Heading
++								154 container
++									155 button Description: Input · Full name, Help: Input · Full name · %5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbNameInput%22%5D
++										156 text Full name
++										157 text Input
++									158 button Description: Inspect Contains connection from Section · Section to Input · Full name, Help: Document declaration The source directly contains the destination in the declared structure. /nodes/onbCard/children/3
++									159 button Description: Section · Section, Help: Section · Section · %5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbCard%22%5D
++										160 text Section
++									161 button Description: Inspect Styles connection from Style · Src onb Name Input always focus to Input · Full name, Help: Document declaration The source contributes declared styling to the destination. /nodes/onbNameInput/styleSources/0
++									162 button Description: Style · Src onb Name Input always focus, Help: Style · Src onb Name Input always focus · %5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22style%22%2C%22src.onbNameInput.always.focus%22%5D
++										163 text Src onb Name Input always focus
++									164 button Description: Inspect Styles connection from Style · Src onb Name Input always plain to Input · Full name, Help: Document declaration The source contributes declared styling to the destination. /nodes/onbNameInput/styleSources/1
++									165 button Description: Style · Src onb Name Input always plain, Help: Style · Src onb Name Input always plain · %5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22style%22%2C%22src.onbNameInput.always.plain%22%5D
++										166 text Src onb Name Input always plain
++									167 button Description: Inspect Value connection from State · Full Name to Input · Full name, Help: Document declaration The source supplies a value read by the destination. /nodes/onbNameInput/attributes/value
++									168 button Description: Inspect Updates connection from Input · Full name to State · Full Name, Help: Document declaration The source declares an update to the destination state. /nodes/onbNameInput/interactions/0
++									169 button Description: Inspect Fallback connection from State · Full Name to Input · Full name, Help: Document declaration The source supplies a declared fallback value or content for the destination. /nodes/onbNameInput/interactions/0/value
++									170 button Description: State · Full Name, Help: State · Full Name · %5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22state%22%2C%22fullName%22%5D
++										171 text Full Name
++									172 text 3 references
++						173 container Selection technical information
++							174 button (collapsed) Description: Technical information, Secondary Actions: Expand
+The focused UI element is 139 button (expanded) Description: Relationships, Help: 8 declared relationships, Secondary Actions: Collapse

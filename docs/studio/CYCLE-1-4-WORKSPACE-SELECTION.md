@@ -287,3 +287,47 @@ Actual browser review confirms H for `onbTitle` in Structure, Selection header/r
 The saved screen remains revision3, digest `v1_fe0ac678e80522e8c9b9a004c95ba6f59c9d3261bd0e4fd54fe1bd47a0a54152`. No Apply, Save, agent turn or effect was invoked. The existing tab is signed in and left at Heading relationships, with the H/T comparison visible. Other tabs were preserved.
 
 Builder checks PASS / READY FOR OWNER TRIAL. Independent gate and owner acceptance remain pending. Next allowed action: owner trial or independent assessment of this exact candidate; no main merge, publication, deployment, finalization or Stage9 closure is authorized by this delivery.
+
+
+## 2026-10-27 — owner-authorized stories for every selection shape
+
+Authority: the owner identified that multiple nodes, not only edges, still used the technical fallback and requested “Can you solve this, make it clean architecture.” This implements the accepted edge/mixed story proposal and the explicit multiple-node amendment. Clean local/remote baseline `7afea4a48ba8fcbbacd7ec679e4d9431179b43f9` on `codex/studio-cycle-1-4-shared-identities`; origin/main unchanged at `d7401bef6e48330796c74ec00c86db9622d48cdf`. Isolated branch `codex/studio-cycle-1-4-selection-stories`; product candidate `98cbb5f2b4fc49be1ffa5d1a78c486d2c2735ec5`.
+
+Allowed paths: Studio relationship presenters/components, their affected tests, this report, dedicated `cycle-1-4/selection-stories` evidence and Stage9 checkpoint summaries. No canonical/source schema, graph construction/edge direction, runtime, provider/effect, storage, history, editing commands, selection intent, shared editor/Flow default or floating Format authority change.
+
+### Shared model and presentation
+
+`selection-relationships.ts` is the sole story grouping/perspective presenter for single-node, multiple-node, edge-only and mixed selections. Existing typed wording covers all23 roles in both perspectives; no generated prose or inferred execution is introduced. A selected node supplies the perspective when only one endpoint is selected. Otherwise read/value/fallback/style dependencies are described from the consuming endpoint; other roles use their declared source perspective. Thus an edge-only input/state pair says “Reads from” and “Updates” under the input, while preserving the actual state-to-input read edge direction.
+
+Each source declaration appears once in the selected union. Story keys include subject, other object and explicit selection status. Underlying groups preserve role, owner, description, origin and every path. Selected connections are presented first. Mixed selections distinguish Selected connections from Related connections; a contextual relationship is never silently added to the selection. Multiple selected occurrences sharing a source are explained as source-shared declarations rather than fabricated per-row edges.
+
+`SelectionRelationships.svelte` renders the shared stories and the existing shared SourceIdentity primitives for all shapes. Single-node cards retain their established quiet composition. Multiple nodes have object headings with the same relationship cards. Edge-only selections show both objects with human wording instead of arrow rows. Pagination remains bounded at50 relationship groups and retains full per-object reference counts. Modifier/keyboard navigation, node/edge inspection, draft guards and provenance tooltips remain.
+
+Single-edge Overview reuses that same story component. Multi-selection Overview retains shared-property comparison and exact member Inspect/Remove controls; edge member names now use the same semantic wording instead of arrow syntax. Canonical role, path, origin and declared meaning remain in Technical information.
+
+### Checks and retained failures
+
+Initial regression batch:22 passed and two failed. One count assertion included both the visible Overview and hidden Relationships copies after deliberate component reuse; it now scopes to Overview. The other failure caught the missing canonical word “Value” in Technical information after the narrative rename; canonical role is now explicitly retained there alongside path/origin/meaning. Failed logs remain in `regressions.log`. The corrected22-case batch in `recheck.log` passes; the eight initially unaffected cases in quiet-relationships/shared-identities also pass. This covers30 distinct affected cases in total, including six new targeted scenarios. New cases challenge multi-node union deduplication, selected read/update scope, mixed explicit/context distinction,50/51 paging with owner/origin separation, consistent single-edge Overview and repeated-source explanation with disabled controls.
+
+Studio TypeScript passes. Svelte check reports zero errors / five inherited ui-svelte warnings. Designer tests retain optional localhost:3000 connection-refused stderr while assertions pass; no live provider/effect execution is claimed. An initial shell logging invocation used a Studio-relative path from the root and did not run TypeScript; the correctly located types.log/types-final.log commands then passed. No check failure is relabelled as a pass.
+
+Build/seal and actual browser trial evidence follow below. Independent gate, owner acceptance, Cycle1.4 finalization and Stage9 closure remain pending.
+
+
+### Final all-selection story delivery — ready for owner trial
+
+Product `98cbb5f2b4fc49be1ffa5d1a78c486d2c2735ec5`: production build PASS, seal verifies779 committed input files and500 output files. [Signed-in Studio](http://127.0.0.22:5616/design) is running this candidate. [Evidence directory](cycle-1-4/selection-stories/) includes build/seal, tests, source-shape assertions, actual screenshots and AX snapshots.
+
+Actual CUA demonstrates:
+
+- Two nodes (Heading `onbTitle` and Input `onbNameInput`) show two object headings with8 total declared relationships. Source-owned Text remains distinct. Each of the8 exact paths is retained in role-control tooltips (`actual-review.json`, `multi-node.png`, `owner-trial.png`).
+- One read edge shows Full name / Input → Reads from → Full Name in Overview, with no From/To table (`single-edge.png`).
+- Two selected read/update edges form one object pair with Reads from + Updates and2 references. Fallback is absent because it was not selected (`multi-edge.json`, `multi-edge.png`).
+- A node plus read edge clearly separates Selected connections (Reads from) from Related connections (containment, styles, update and fallback), without duplicating the selected read (`mixed.png`). Ctrl+Enter endpoint/role actions and the exact member Remove control were exercised.
+- The original two-node selection is restored through Layers. The graph remains focused on primary Input, so the Heading is outside that graph scope; the existing outside-view indicator is truthful. The full relationship union remains visible in Selection. This task does not change graph scope or camera behavior.
+
+Retained browser observations: pointer activation/graph expand attempts returned to a different primary selection, and an Updates port was not available in the current focused graph. No unavailable target was forced. The trial continued through visible Layers and keyboard endpoint/role controls, proving the requested shapes without depending on off-scope graph sockets. Invoking Focus on selection returned to primary Input; the owner two-node selection was restored afterward. These observations are limitations of the graph-control trial, not evidence that unavailable sockets passed.
+
+The saved document remains revision3 with digest `v1_fe0ac678e80522e8c9b9a004c95ba6f59c9d3261bd0e4fd54fe1bd47a0a54152`. No Apply, Save, agent turn, provider call or effect was invoked. Other owner tabs are preserved.
+
+Builder checks PASS / READY FOR OWNER TRIAL. Independent gate and owner acceptance remain pending. Next allowed action: owner trial of Ctrl-selected nodes, selected edge pairs and mixed sets, or independent assessment of this exact candidate. No finalization, Stage9 closure, main merge, package release or deployment follows from this builder delivery.

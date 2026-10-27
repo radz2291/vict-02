@@ -1,0 +1,18 @@
+Browser tab: 11, Title: "Designer — VICT Studio", URL: "http://127.0.0.22:5616/design".
+The following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 154-169
+~					131 text 2 selected · some outside view
+~						138 text 2 connections
+~							140 button (collapsed) Description: Overview, Secondary Actions: Expand
+~							142 button (expanded) Description: Relationships, Help: 2 declared relationships, Secondary Actions: Collapse
+~								144 text 2
++							154 container
++								155 button Description: Input · Full name, Help: Input · Full name · %5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbNameInput%22%5D
++									156 text Full name
++									157 text Input
++								158 button Description: Inspect Value connection from State · Full Name to Input · Full name, Help: Document declaration The source supplies a value read by the destination. /nodes/onbNameInput/attributes/value
++								159 button Description: Inspect Updates connection from Input · Full name to State · Full Name, Help: Document declaration The source declares an update to the destination state. /nodes/onbNameInput/interactions/0
++								160 button Description: State · Full Name, Help: State · Full Name · %5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22state%22%2C%22fullName%22%5D
++									161 text Full Name
++								162 text 2 references
+The focused UI element is 142 button (expanded) Description: Relationships, Help: 2 declared relationships, Secondary Actions: Collapse
