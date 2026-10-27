@@ -1,0 +1,182 @@
+{
+  "candidate": "3f1272d71d9f42b03da4625173a6ee45ab90bb1d",
+  "fullNameCards": [
+    {
+      "height": 65.5999984741211,
+      "phrases": [
+        "Inside"
+      ],
+      "target": "Section · Section",
+      "text": "Inside Section "
+    },
+    {
+      "height": 65.5999984741211,
+      "phrases": [
+        "Styled by"
+      ],
+      "target": "Style · Src onb Name Input always focus",
+      "text": "Styled by Src onb Name Input always focus "
+    },
+    {
+      "height": 65.5999984741211,
+      "phrases": [
+        "Styled by"
+      ],
+      "target": "Style · Src onb Name Input always plain",
+      "text": "Styled by Src onb Name Input always plain "
+    },
+    {
+      "height": 83.5999984741211,
+      "phrases": [
+        "Reads from",
+        "Updates",
+        "Fallback from"
+      ],
+      "target": "State · Full Name",
+      "text": "Reads fromUpdatesFallback from Full Name 3 references"
+    }
+  ],
+  "fullNamePanel": {
+    "bodies": [
+      {
+        "height": 376,
+        "overflow": "auto",
+        "scrollHeight": 376
+      }
+    ],
+    "headers": [
+      {
+        "expanded": "false",
+        "height": 36,
+        "text": "Overview",
+        "y": 159.40000915527344
+      },
+      {
+        "expanded": "true",
+        "height": 36,
+        "text": "Relationships6",
+        "y": 195.40000915527344
+      },
+      {
+        "expanded": "false",
+        "height": 36,
+        "text": "Technical information",
+        "y": 607.2000122070312
+      }
+    ],
+    "root": {
+      "display": "flex",
+      "height": 559.2000122070312,
+      "overflow": "hidden"
+    },
+    "selectedTab": "true",
+    "viewport": {
+      "height": 668,
+      "width": 1010
+    }
+  },
+  "roleTitle": "Document declaration\nThe source supplies a value read by the destination.\n/nodes/onbEmailInput/attributes/value",
+  "observedModifierSet": {
+    "nodes": [
+      {
+        "dimmed": false,
+        "height": 146,
+        "highlighted": true,
+        "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22state%22%2C%22workEmail%22%5D",
+        "label": "State: Work Email",
+        "selected": true,
+        "transform": "translate(22px, 12px)",
+        "width": 224
+      }
+    ],
+    "edges": [
+      {
+        "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522workEmail%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbEmailInput%2522%255D%22%2C%22value%22%2C%22%2Fnodes%2FonbEmailInput%2Fattributes%2Fvalue%22%5D",
+        "label": "Work Email -> Work email: Value; /nodes/onbEmailInput/attributes/value",
+        "path": "M248.6998099324876 140.5997961855138L268.6998099324876 140.5997961855138L 284.19989973286135,140.5997961855138Q 289.19989973286135,140.5997961855138 289.19989973286135,135.5997961855138L 289.19989973286135,133.59995148130065Q 289.19989973286135,128.59995148130065 294.19989973286135,128.59995148130065L309.69998953323505 128.59995148130065L329.69998953323505 128.59995148130065",
+        "selected": true
+      }
+    ]
+  },
+  "interactionLimit": "Owner continued changing selections during review. Stale Full name and later Work email endpoint locators timed out; no forced interaction or full endpoint-click proof is claimed. Automated modifier/draft/provenance checks passed.",
+  "lastObserved": {
+    "canvas": [
+      "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbEmailInput"
+    ],
+    "captions": 0,
+    "edges": [
+      {
+        "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522workEmail%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbEmailInput%2522%255D%22%2C%22value%22%2C%22%2Fnodes%2FonbEmailInput%2Fattributes%2Fvalue%22%5D",
+        "label": "Work Email -> Work email: Value; /nodes/onbEmailInput/attributes/value",
+        "path": "M248.6998099324876 140.5997961855138L268.6998099324876 140.5997961855138L 284.19989973286135,140.5997961855138Q 289.19989973286135,140.5997961855138 289.19989973286135,135.5997961855138L 289.19989973286135,133.59995148130065Q 289.19989973286135,128.59995148130065 294.19989973286135,128.59995148130065L309.69998953323505 128.59995148130065L329.69998953323505 128.59995148130065",
+        "selected": false
+      },
+      {
+        "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbEmailInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522workEmail%2522%255D%22%2C%22updates%22%2C%22%2Fnodes%2FonbEmailInput%2Finteractions%2F0%22%5D",
+        "label": "Work email -> Work Email: Updates; /nodes/onbEmailInput/interactions/0",
+        "path": "M 559.0999364421069,104.599938097595 L 579.0999364421069,104.599938097595 L 579.0999364421069,170 L -0.7000526366380555,170 L -0.7000526366380555,116.59982497168127 L 19.299947363361944,116.59982497168127",
+        "selected": false
+      },
+      {
+        "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522workEmail%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbEmailInput%2522%255D%22%2C%22fallback%22%2C%22%2Fnodes%2FonbEmailInput%2Finteractions%2F0%2Fvalue%22%5D",
+        "label": "Work Email -> Work email: Fallback; /nodes/onbEmailInput/interactions/0/value",
+        "path": "M248.6998099324876 116.59982497168127L268.6998099324876 116.59982497168127L 284.19989973286135,116.59982497168127Q 289.19989973286135,116.59982497168127 289.19989973286135,111.59982497168127L 289.19989973286135,109.599938097595Q 289.19989973286135,104.599938097595 294.19989973286135,104.599938097595L309.69998953323505 104.599938097595L329.69998953323505 104.599938097595",
+        "selected": false
+      }
+    ],
+    "footer": "Loaded the saved screen.@3 · v1_fe0ac678e805…",
+    "highlightedRows": [
+      {
+        "node": "Input: Work email, source onbEmailInput",
+        "port": "in-fallback"
+      },
+      {
+        "node": "Input: Work email, source onbEmailInput",
+        "port": "in-value"
+      },
+      {
+        "node": "Input: Work email, source onbEmailInput",
+        "port": "out-updates"
+      },
+      {
+        "node": "State: Work Email",
+        "port": "in-updates"
+      },
+      {
+        "node": "State: Work Email",
+        "port": "out-fallback"
+      },
+      {
+        "node": "State: Work Email",
+        "port": "out-value"
+      }
+    ],
+    "layers": [
+      "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbEmailInput"
+    ],
+    "nodes": [
+      {
+        "dimmed": false,
+        "height": 122,
+        "highlighted": true,
+        "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbEmailInput%22%5D",
+        "label": "Input: Work email, source onbEmailInput",
+        "selected": true,
+        "transform": "translate(332.4px, 24px)",
+        "width": 224
+      },
+      {
+        "dimmed": false,
+        "height": 146,
+        "highlighted": true,
+        "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22state%22%2C%22workEmail%22%5D",
+        "label": "State: Work Email",
+        "selected": false,
+        "transform": "translate(22px, 12px)",
+        "width": 224
+      }
+    ],
+    "panel": "InputWork email Overview Edit on canvas ↗   TypeInputChildren0When changedUpdates Work Email from the entered value; fallback Work EmailBackground#ffffffText color#101828Text size14pxPadding10px 12pxWidth100%InsideSectionRelationships6Inside Section Styled by Src onb Email Input always focus Styled by Src onb Email Input always plain Reads fromUpdatesFallback from Work Email 3 references  Technical informationSource nodeonbEmailInputOccurrencescreen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbEmailInputkindelementidonbEmailInputtaginputattributes.autocompleteemailattributes.idonbEmailInputattributes.placeholderyou@company.comattributes.typeemailattributes.value.typerefattributes.value.pathstate.workEmaillocalStyle.0.propertybackground-colorlocalStyle.0.value.typetextlocalStyle.0.value.value#fffffflocalStyle.1.propertyborder-radiuslocalStyle.1.value.typetextlocalStyle.1.value.value10pxlocalStyle.2.propertybox-sizinglocalStyle.2.value.typetextlocalStyle.2.value.valueborder-boxlocalStyle.3.propertycolorlocalStyle.3.value.typetextlocalStyle.3.value.value#101828localStyle.4.propertyfont-sizelocalStyle.4.value.typetextlocalStyle.4.value.value14pxlocalStyle.5.propertyoutlinelocalStyle.5.value.typetextlocalStyle.5.value.valuenonelocalStyle.6.propertypaddinglocalStyle.6.value.typetextlocalStyle.6.value.value10px 12pxlocalStyle.7.propertywidthlocalStyle.7.value.typetextlocalStyle.7.value.value100%interactions.0.onchangeinteractions.0.actionsetStateinteractions.0.keyworkEmailinteractions.0.value.typerefinteractions.0.value.pathstate.workEmailstyleSources.0src.onbEmailInput.always.focusstyleSources.1src.onbEmailInput.always.plain",
+    "tools": 0
+  }
+}

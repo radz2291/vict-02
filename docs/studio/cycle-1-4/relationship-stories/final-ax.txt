@@ -1,0 +1,32 @@
+Browser tab: 11, Title: "Designer — VICT Studio", URL: "http://127.0.0.22:5616/design".
+The following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 265-290
++						265 (collapsed) Object, ID: bits-c48, Secondary Actions: Expand
+~					24 text 1 selected
++						266 button Focus on selection
+~											245 checkbox Description: Select incoming Value connections for Work email, Help: Value · 1 visible references; 0 selected; Ctrl-click to add or remove, Value: 0
+~											264 checkbox Description: Select outgoing Value connections for Work Email, Help: Value · 1 visible references; 0 selected; Ctrl-click to add or remove, Value: 0
++					267 container Source inspection details
++						268 container
++							269 text Input Work email
++						270 container Selection overview
++							271 button (collapsed) Description: Overview, Secondary Actions: Expand
++						272 container Selection relationships
++							273 button (expanded) Description: Relationships, Help: 6 declared relationships, Secondary Actions: Collapse
++								274 text Relationships
++								275 text 6
++							276 container c49-relationships
++								277 button Description: Inspect Contains connection from Section · Section to Input · Work email, Help: Document declaration The source directly contains the destination in the declared structure. /nodes/onbCard/children/5
++								278 button Section · Section
++								279 button Description: Inspect Styles connection from Style · Src onb Email Input always focus to Input · Work email, Help: Document declaration The source contributes declared styling to the destination. /nodes/onbEmailInput/styleSources/0
++								280 button Style · Src onb Email Input always focus
++								281 button Description: Inspect Styles connection from Style · Src onb Email Input always plain to Input · Work email, Help: Document declaration The source contributes declared styling to the destination. /nodes/onbEmailInput/styleSources/1
++								282 button Style · Src onb Email Input always plain
++								283 button Description: Inspect Value connection from State · Work Email to Input · Work email, Help: Document declaration The source supplies a value read by the destination. /nodes/onbEmailInput/attributes/value
++								284 button Description: Inspect Updates connection from Input · Work email to State · Work Email, Help: Document declaration The source declares an update to the destination state. /nodes/onbEmailInput/interactions/0
++								285 button Description: Inspect Fallback connection from State · Work Email to Input · Work email, Help: Document declaration The source supplies a declared fallback value or content for the destination. /nodes/onbEmailInput/interactions/0/value
++								286 button State · Work Email
++								287 text 3 references
++						288 container Selection technical information
++							289 button (collapsed) Description: Technical information, Secondary Actions: Expand
+The focused UI element is 225 container Input: Work email, source onbEmailInput
