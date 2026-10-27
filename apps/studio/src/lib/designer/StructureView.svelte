@@ -19,8 +19,7 @@
   import WorkspaceToolIcon from './WorkspaceToolIcon.svelte';
   import {structureMatches} from './structure.js';
   import {retainStructurePositions} from './structure-placement.js';
-  import WorkspaceContextMenu from './WorkspaceContextMenu.svelte';
-  import { sourceCapabilities, type WorkspaceContext, type WorkspaceCommand } from './workspace-context.js';
+  import type { WorkspaceCommand } from './workspace-context.js';
 
   let { document, context={}, selection, onSelectionIntent, revision, selectedNodeId, focusSelection, blocked = false, active = true, presentation = 'workspace', descriptors = [], recipes = [], onSelect, onDeselect, onMove, onNotice, onNavigate, onDismiss, onInspect, onCloseInspect, onInspectSelection, inspectionExpanded = false, inspectionSelection, inspectionLabel='Inspect', objectCommands }: {
     selection?:WorkspaceSelection;onSelectionIntent?:(items:readonly WorkspaceItem[],operation:SelectionOperation)=>void;
@@ -102,6 +101,7 @@
   let direction = $state<LayoutDirection>('RIGHT');
   let layoutVersion = $state(0);
   let layoutStatus = $state('');
+  let layoutError = $state(false);
   let layoutNote = $state('');
   let navigationRequest = $state<object>();
   let navigationIds = $state<string[]>([]);
@@ -123,6 +123,10 @@
   const compactGraph = $derived(compactStructure(graph, document));
   const groupGraph = $derived(showTextNodes || searching ? graph : compactGraph);
   const inspected = $derived(graph.nodes.find(node => node.id === inspectedId));
+  // Source edits are single-object commands. Aggregate inspection preserves the
+  // full typed selection; it never silently edits only the primary member.
+  const objectTarget=$derived(chosenItems.length===1&&chosenItems[0]?.kind==='node'?graph.nodes.find(node=>node.id===chosenItems[0]?.id):chosenItems.length?undefined:inspected);
+  const inheritedObjectCommands=$derived(objectTarget?.data.occurrence&&objectCommands?objectCommands(objectTarget.data.occurrence).filter(command=>!['inspect','locate','edit'].includes(command.id??'')):[]);
   const framingIds=$derived([...new Set(chosenItems.flatMap(item=>item.kind==='node'?[item.id]:edges.filter(edge=>edge.id===item.id).flatMap(edge=>[edge.source,edge.target])).filter(id=>nodes.some(node=>node.id===id)))]);
   const related = $derived(graph.edges.filter(edge => (edge.source === inspectedId || edge.target === inspectedId) && edge.data?.kind !== 'containment'));
   const facts = $derived(inspected ? structureFacts(document, inspected) : []);
@@ -143,7 +147,8 @@
   const availableItems = $derived(graphView==='connections' && !searching ? availableConnections : graph.nodes.length);
   const searchMatches=$derived(graph.nodes.filter(node=>structureMatches(node,search)).length);
   const selectionOutside=$derived(chosenItems.some(item=>item.kind==='node'?!nodes.some(node=>node.id===item.id):!edges.some(edge=>edge.id===item.id)));
-  const toolbarStatus=$derived(searching?`Search · ${searchMatches} ${searchMatches===1?'match':'matches'} · ${nodes.length} shown`:`${graphView==='connections'?`Focus: ${scopeLabel}`:'Hierarchy'} · ${nodes.length<availableItems && graphView==='connections'?`${nodes.length} of ${availableItems}`:nodes.length} shown`);
+  const toolbarStatus=$derived(searching?`Search · ${searchMatches} ${searchMatches===1?'match':'matches'} · ${nodes.length} shown`:`${graphView==='connections'?scopeLabel:'Hierarchy'} · ${nodes.length<availableItems && graphView==='connections'?`${nodes.length} of ${availableItems}`:nodes.length} shown`);
+  const canvasStatus=$derived(toolbarStatus+(chosenItems.length?` · ${chosenItems.length} selected${selectionOutside?' (outside view)':''}`:''));
   const rawConnections = $derived(graph.edges.some(edge=>scopeIds.includes(edge.source) || scopeIds.includes(edge.target)));
   $effect(()=>{void scopeIds;showOtherUsers=false;connectionLimit=25;expandedGroups=new Set();});
   const nodeTypes = { source: StructuredSourceNode };
@@ -232,7 +237,7 @@
     const orientation = direction;
     const key=`${document.id}|${orientation}|${layoutVersion}`;
     const rearrange=key!==arrangedKey;
-    layoutStatus = 'Arranging source…';
+    layoutError=false;layoutStatus = 'Arranging source…';
     void layoutGraph(currentNodes, currentEdges, { engine: 'elk', direction: orientation }).then(result => {
       if (!fence.current(ticket)) return;
       const placed=rearrange?result.nodes:retainStructurePositions(result.nodes,knownPositions,orientation);
@@ -245,7 +250,7 @@
       edges = result.edges.map(edge=>({...edge,selected:untrack(()=>chosenItems.some(item=>item.kind==='edge'&&item.id===edge.id))}));
       layoutNote = result.reason ? 'Using a simpler layout for this large view. Focus on an item or collapse groups for a clearer view.' : '';
       layoutStatus = '';
-    }).catch(() => { if (fence.current(ticket)) layoutStatus = 'Layout unavailable. Existing positions retained; retry Arrange.'; });
+    }).catch(() => { if (fence.current(ticket)) {layoutError=true;layoutStatus = 'Layout unavailable. Existing positions retained; retry Arrange.';} });
     return () => fence.cancel();
   });
   onDestroy(() => { remember(); fence.cancel(); });
@@ -290,7 +295,7 @@
   }
   function openInspection(page: typeof inspectionPage = 'properties') {
     inspectionReturn=globalThis.document.activeElement instanceof HTMLElement?globalThis.document.activeElement:undefined;
-    if (onInspect && (page === 'properties' || page === 'relationships')) { onInspect(inspectedId,page); return; }
+    if (onInspect && (page === 'properties' || page === 'relationships')) { onInspect(objectTarget?.id,page); return; }
     allowMoves = page === 'move'; inspectionPage = page; inspectionOpen = true;
   }
   function deselect() {
@@ -354,25 +359,9 @@
   }
   const moveSources = $derived(graph.nodes.filter(node => node.data.occurrence && node.data.sourceId !== document.root));
   const targetOptions = $derived(graph.nodes.filter(node => !!moveSource && valid({ source: moveSource, target: node.id, sourceHandle: 'content', targetHandle: 'container' })));
-  function resolveContext(target:Element):WorkspaceContext|undefined {
-    if (!target.closest('.structure-canvas')) return;
-    const id = target.closest<HTMLElement>('.svelte-flow__node')?.dataset.id;
-    const node = graph.nodes.find(entry=>entry.id===id);
-    if (!node) return;
-    const direct = node.data.occurrence && sourceCapabilities(document,node.data.occurrence).direct;
-    const commands:WorkspaceCommand[] = node.data.occurrence && objectCommands ? objectCommands(node.data.occurrence) : [
-      {label:'Inspect', disabled:blocked, run:()=>openInspection('properties')},
-      ...(direct ? [{label:'Edit on canvas', disabled:blocked, run:()=>navigate('inspector')}, {label:'Locate on canvas',disabled:blocked,run:()=>navigate('design')}] : []),
-    ];
-    commands.push({label:'Inspect relationships',disabled:blocked,run:()=>openInspection('relationships')});
-    if (node.data.childCount) commands.push({label:groupClosed(node.id)?'Expand group':'Collapse group',run:()=>collapse(node.id)});
-    if (direct) commands.push({label:'Move inside…',disabled:blocked || node.data.sourceId===document.root,run:beginMove});
-    return {label:'Structure item commands', prepare:()=>select(node), commands};
-  }
 </script>
 <svelte:window onkeydown={escape} onkeydowncapture={graphEscape} />
 <section data-studio-typography class="studio-type-scope structure-view" class:drawer-presentation={presentation === 'drawer'} class:inspection-open={inspectionOpen && !utilityOpen} aria-label="Source structure" bind:this={structureElement}>
-  <WorkspaceContextMenu scope={structureElement} enabled={active} resolve={resolveContext} />
   <div class="structure-tools">
     <input type="search" aria-label="Search structure" placeholder="Search structure" bind:this={searchInput} bind:value={search} onkeydown={event=>{if(event.key==='Escape'&&search){event.preventDefault();event.stopPropagation();search='';}}} />
     <Menubar.Root class="workspace-menus" aria-label="Structure menus" bind:value={activeMenu} loop>
@@ -401,26 +390,29 @@
           </Menubar.RadioGroup>
         </WorkspaceSubmenu>
       </WorkspaceMenu>
-      {#if inspected}
+      {#if chosenItems.length || inspected}
         <WorkspaceMenu label="Object" value="structure-object" {activeMenu}>
           <Menubar.Item disabled={blocked} onSelect={()=>openInspection('properties')}>Inspect</Menubar.Item>
-          {#if inspected.data.childCount}<Menubar.Item onSelect={() => collapse(inspected.id)}>{groupClosed(inspected.id) ? 'Expand group' : 'Collapse group'}</Menubar.Item>{/if}
-          {#if inspected.data.occurrence}
-            <Menubar.Item disabled={blocked} onSelect={() => navigate('inspector')}>Edit on canvas</Menubar.Item>
+          <Menubar.Item disabled={blocked} onSelect={() => openInspection('relationships')}>Relationships</Menubar.Item>
+          {#if objectTarget?.data.occurrence}
             <Menubar.Item disabled={blocked} onSelect={() => navigate('layers')}>Reveal in Layers</Menubar.Item>
             <Menubar.Item disabled={blocked} onSelect={() => navigate('design')}>{presentation === 'drawer' ? 'Locate on canvas' : 'Show in Design'}</Menubar.Item>
-            <Menubar.Separator />
-            <Menubar.Item disabled={blocked || inspected.data.sourceId === document.root} onSelect={beginMove}>Move inside…</Menubar.Item>
           {/if}
-          {#if inspected.data.kind === 'state'}<Menubar.Item disabled={blocked} onSelect={() => navigate('data')}>Edit in Data</Menubar.Item>{/if}
-          {#if inspected.data.kind === 'action'}<Menubar.Item disabled={blocked} onSelect={() => navigate('actions')}>Open Actions</Menubar.Item>{/if}
-          <Menubar.Item onSelect={() => openInspection('relationships')}>Inspect relationships</Menubar.Item>
+          {#if objectTarget?.data.childCount}<Menubar.Separator /><Menubar.Item onSelect={() => {if(objectTarget)collapse(objectTarget.id);}}>{groupClosed(objectTarget.id) ? 'Expand group' : 'Collapse group'}</Menubar.Item>{/if}
+          {#if objectTarget?.data.occurrence}
+            <Menubar.Separator />
+            <Menubar.Item disabled={blocked} onSelect={() => navigate('inspector')}>Edit on canvas</Menubar.Item>
+            <Menubar.Item disabled={blocked || objectTarget.data.sourceId === document.root} onSelect={beginMove}>Move inside…</Menubar.Item>
+            {#each inheritedObjectCommands as command}
+              {#if command.separator}<Menubar.Separator />{/if}
+              <Menubar.Item disabled={blocked || command.disabled} onSelect={()=>command.run()}>{command.label}</Menubar.Item>
+            {/each}
+          {/if}
+          {#if objectTarget?.data.kind === 'state'}<Menubar.Item disabled={blocked} onSelect={() => navigate('data')}>Edit in Data</Menubar.Item>{/if}
+          {#if objectTarget?.data.kind === 'action'}<Menubar.Item disabled={blocked} onSelect={() => navigate('actions')}>Open Actions</Menubar.Item>{/if}
         </WorkspaceMenu>
       {/if}
     </Menubar.Root>
-    <span class="structure-count" aria-live="polite" title={`${toolbarStatus}. Source declarations, not live execution. Visibility settings apply.${searching?' Search includes hidden text and ancestor paths. Clear search to return to the previous view.':''}${chosenItems.length?` ${chosenItems.length} selected; ${chosenSources} distinct node sources.${selectionOutside?' Some selected items are outside this view.':''}`:''}`}>
-      {toolbarStatus}{#if chosenItems.length} · {chosenItems.length} selected{#if selectionOutside} (outside view){/if}{/if}
-    </span>
     <div class="structure-quick-tools" role="group" aria-label="Structure quick actions">
       <button type="button" class="workspace-icon-button" aria-label="Fit all" title="Fit all displayed items" disabled={!nodes.length} onclick={()=>locate()}><WorkspaceToolIcon name="fit-all"/></button>
       <button type="button" class="workspace-icon-button" aria-label="Fit selection" title="Fit selection — camera only" disabled={!framingIds.length} onclick={()=>locate(framingIds)}><WorkspaceToolIcon name="fit-selection"/></button>
@@ -437,6 +429,7 @@
   {#if allowMoves && !utilityOpen}<div class="structure-scope-actions" aria-label="Move inside"><span>Connect content to a container.</span><button type="button" onclick={()=>openInspection('move')}>Choose container</button><button type="button" onclick={()=>closeInspection()}>Cancel move</button></div>{/if}
   <div class="structure-body">
     <div class="structure-canvas" onfocusin={focusConnection} onfocusout={()=>{focusedEdges=[];}} inert={presentation === 'drawer' && inspectionOpen && !utilityOpen}>
+      <p class="structure-count" class:layout-error={layoutError} aria-live="polite" title={`${canvasStatus}. Source declarations, not live execution. Visibility settings apply.${searching?' Search includes hidden text and ancestor paths. Clear search to return to the previous view.':''}${chosenItems.length?` ${chosenSources} distinct node sources.`:''}`}>{canvasStatus}{layoutStatus?` · ${layoutStatus}`:''}</p>
       <FlowCanvas bind:nodes bind:edges bind:viewport {nodeTypes} {edgeTypes} minZoom={.35} maxZoom={2} colorMode="light" showControls={false} showMiniMap={nodes.length > 12}
         nodesConnectable={allowMoves && !blocked} elementsSelectable={!blocked} deleteKey={null} multiSelectionKey={null} selectionKey={null} autoPanOnNodeFocus={false} isValidConnection={valid}
         onnodeclick={({ node,event }) => select(node as Node<StructureNodeData>,event)}
@@ -453,7 +446,6 @@
         <FlowNavigation request={navigationRequest} ids={navigationIds} />
       </FlowCanvas>
       {#if graphView==='connections' && !searching && connectionGraph.edges.length===0}<p class="connection-empty">{rawConnections ? 'Connections are hidden by visibility settings or collapsed groups.' : 'This item has no declared connections.'}</p>{/if}
-      {#if layoutStatus}<p class="structure-status" role="status">{layoutStatus}</p>{/if}
       {#if layoutNote && !layoutStatus}<p class="structure-layout-note" role="status">{layoutNote}</p>{/if}
 
       {#if !nodes.length}<div class="structure-empty"><p>No matching items</p><button type="button" onclick={() => { search = ''; focusedId = undefined; }}>Clear search</button></div>{/if}
@@ -512,16 +504,16 @@
   .drawer-presentation .structure-body { position: relative; }
   .drawer-presentation.inspection-open .structure-canvas { visibility: hidden; }
   .drawer-presentation .structure-details { position: absolute; inset: 0; width: 100%; min-width: 0; max-height: none; flex-basis: auto; border: 0; }
-  @container structure-panel (max-width: 540px) {
+  @container structure-panel (max-width: 420px) {
     .structure-tools { flex-wrap: wrap; }
-    .structure-tools input { flex-basis: 100%; max-width: none; }
   }
   .structure-tools { display: flex; align-items: center; gap: 6px; padding: 6px 10px; min-height: 40px; flex-shrink: 0; border-bottom: 1px solid #e1e6ee; }
   button, select, input[type=search] { box-sizing: border-box; max-width: 100%; border: 1px solid #dce2eb; border-radius: 5px; background: white; color: inherit; padding: 6px 8px; font: inherit; }
   button { cursor: pointer; } button:hover { background: #edf1ff; } button:disabled { opacity: .5; cursor: default; }
   button:focus-visible, select:focus-visible, input:focus-visible { outline: 2px solid #6366f1; outline-offset: 2px; }
-  input[type=search] { flex: 1; min-width: 100px; max-width: 340px; }
-  .structure-count { margin-left:auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--vict-color-textMuted);font:var(--studio-font-meta); }
+  input[type=search] { flex: 0 1 200px; min-width: 100px; max-width: 220px; }
+  .structure-count {position:absolute;top:8px;left:10px;max-width:calc(100% - 20px);z-index:5;margin:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--vict-color-textMuted);font:var(--studio-font-meta);pointer-events:none;user-select:none;}
+  .structure-count.layout-error{white-space:normal;}
   .structure-quick-tools{display:flex;align-items:center;gap:2px;flex-shrink:0;margin-left:auto}
   .tool-divider{height:14px;border-left:1px solid var(--vict-color-border);margin:0 4px}
   .structure-utility{width:min(380px,calc(100vw - 32px));max-height:80dvh;overflow:auto;margin:auto;padding:12px;border:1px solid var(--vict-color-border);border-radius:6px;background:var(--vict-color-surface);color:var(--vict-color-text);font:var(--studio-font-ui)}
@@ -539,7 +531,6 @@
   .structure-canvas :global(.svelte-flow__minimap) { width: 110px; height: 72px; }
   .structure-canvas :global(.svelte-flow__edge.selected .svelte-flow__edge-path) { stroke-width: 2.5px; }
   .structure-empty { position: absolute; top: 35%; left: 10%; right: 10%; text-align: center; color: #64748b; }
-  .structure-status { position: absolute; top: 8px; left: 10px; right: 10px; margin: 0; color: #65748d; pointer-events: none; font-size: 11px; }
   .structure-details { display: flex; flex-direction: column; width: min(320px, 44%); min-width: 240px; min-height: 0; flex-shrink: 0; border-left: 1px solid #e1e6ee; background: white; overflow: hidden; }
   .inspection-heading { display: flex; align-items: center; gap: 8px; padding: 10px 12px 6px; flex-shrink: 0; }
   .inspection-heading strong { flex: 1; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }

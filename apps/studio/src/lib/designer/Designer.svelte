@@ -308,26 +308,26 @@
     structureFocusId=id;
     if (item?.data.occurrence) selectStructureNode(item.data.occurrence);
   }
-  function objectContext(occurrence: string): WorkspaceContext | undefined {
+  function objectContext(occurrence: string, normalizeText=true): WorkspaceContext | undefined {
     if (!source) return;
     const initial = sourceCapabilities(source, occurrence);
     const ownerId = initial.direct && initial.report?.node?.kind === 'text' ? compositionParent(source, initial.report.sourceNodeId)?.nodeId : undefined;
     const owner = ownerId ? source.nodes[ownerId] : undefined;
-    if (owner?.kind === 'element' && owner.children.length === 1) occurrence = authoredOccurrence(source,owner.id) ?? occurrence;
+    if (normalizeText && owner?.kind === 'element' && owner.children.length === 1) occurrence = authoredOccurrence(source,owner.id) ?? occurrence;
     const capability = sourceCapabilities(source, occurrence);
     if (!capability.report?.node) return;
     const blocked = textDraftDirty || sourceDraftDirty || renamingScreen;
     const target = () => { if (!blocked) selectStructureNode(occurrence); };
     const act = (action:()=>void) => { target(); if (!blocked && capability.direct) action(); };
     return { label:'Object commands', prepare:target, commands:[
-      {label:'Inspect', disabled:blocked, run:()=>inspectSource(structureId(source!.id,'node',capability.report!.sourceNodeId))},
-      {label:'Locate on canvas', disabled:blocked, run:()=>void locateOnCanvas(occurrence)},
-      {label:'Edit on canvas', disabled:blocked || !capability.direct, run:()=>act(()=>{changeMode('design');selectOccurrence(occurrence,true);paletteFocus=Symbol('edit-handoff');})},
-      {label:'Duplicate', separator:true, disabled:blocked || !capability.removable, run:()=>act(duplicateSelection)},
-      {label:'Delete', disabled:blocked || !capability.removable, run:()=>act(removeSelection)},
-      {label:'Move earlier', separator:true, disabled:blocked || !capability.earlier, run:()=>act(()=>reorderSelection(-1))},
-      {label:'Move later', disabled:blocked || !capability.later, run:()=>act(()=>reorderSelection(1))},
-      {label:'Arrange…', disabled:blocked || !capability.direct, run:()=>act(()=>{ changeMode('design'); selectOccurrence(occurrence,true); palettePage='arrange'; })},
+      {id:'inspect',label:'Inspect', disabled:blocked, run:()=>inspectSource(structureId(source!.id,'node',capability.report!.sourceNodeId))},
+      {id:'locate',label:'Locate on canvas', disabled:blocked, run:()=>void locateOnCanvas(occurrence)},
+      {id:'edit',label:'Edit on canvas', disabled:blocked || !capability.direct, run:()=>act(()=>{changeMode('design');selectOccurrence(occurrence,true);paletteFocus=Symbol('edit-handoff');})},
+      {id:'duplicate',label:'Duplicate', separator:true, disabled:blocked || !capability.removable, run:()=>act(duplicateSelection)},
+      {id:'delete',label:'Delete', disabled:blocked || !capability.removable, run:()=>act(removeSelection)},
+      {id:'earlier',label:'Move earlier', separator:true, disabled:blocked || !capability.earlier, run:()=>act(()=>reorderSelection(-1))},
+      {id:'later',label:'Move later', disabled:blocked || !capability.later, run:()=>act(()=>reorderSelection(1))},
+      {id:'arrange-canvas',label:'Arrange on canvas…', disabled:blocked || !capability.direct, run:()=>act(()=>{ changeMode('design'); selectOccurrence(occurrence,true); palettePage='arrange'; })},
     ] };
   }
   function canvasContext(target:Element):WorkspaceContext|undefined {
@@ -705,7 +705,7 @@
         </div>
       </div>
       <section class="structure-workspace" aria-label="Structure workspace" hidden={!structureOpen} inert={!structureOpen}>
-        <StructureView selection={workspaceSelection} onSelectionIntent={updateSelection} context={structureContext} focusSelection={structureFocusId} presentation="drawer" active={structureOpen} document={source} revision={snapshot?.revision ?? ''} selectedNodeId={selectedNode?.id} descriptors={catalogDescriptors} recipes={screenRecipes} blocked={textDraftDirty || sourceDraftDirty || renamingScreen} onSelect={(occurrence:string)=>selectStructureNode(occurrence,true)} onDeselect={clearWorkspaceSelection} onMove={moveFromStructure} onNotice={message => notice = message} onNavigate={structureNavigate} onDismiss={dismissStructure} onInspect={inspectSource} onCloseInspect={closeDetails} inspectionSelection={detailId} inspectionExpanded={detailsOpen} inspectionLabel="Selection" objectCommands={occurrence=>objectContext(occurrence)?.commands ?? []} />
+        <StructureView selection={workspaceSelection} onSelectionIntent={updateSelection} context={structureContext} focusSelection={structureFocusId} presentation="drawer" active={structureOpen} document={source} revision={snapshot?.revision ?? ''} selectedNodeId={selectedNode?.id} descriptors={catalogDescriptors} recipes={screenRecipes} blocked={textDraftDirty || sourceDraftDirty || renamingScreen} onSelect={(occurrence:string)=>selectStructureNode(occurrence,true)} onDeselect={clearWorkspaceSelection} onMove={moveFromStructure} onNotice={message => notice = message} onNavigate={structureNavigate} onDismiss={dismissStructure} onInspect={inspectSource} onCloseInspect={closeDetails} inspectionSelection={detailId} inspectionExpanded={detailsOpen} inspectionLabel="Selection" objectCommands={occurrence=>objectContext(occurrence,false)?.commands ?? []} />
       </section>
     </main>
     <div class="drawer-resizer" hidden={!rightOpen}><PanelResizer label="Document drawer width" value={effectiveDrawerWidth} min={280} max={460} reverse onChange={(value: number) => drawerWidth = value} /></div>

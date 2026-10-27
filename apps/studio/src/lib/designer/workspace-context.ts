@@ -1,7 +1,7 @@
 import type { UiDocument } from '@victframework/ui';
 import { compositionParent, resolveOccurrence } from '@victframework/ui-editor';
 
-export type WorkspaceCommand = { label: string; run: () => void; disabled?: boolean; separator?: boolean };
+export type WorkspaceCommand = { id?: string; label: string; run: () => void; disabled?: boolean; separator?: boolean };
 export type WorkspaceContext = { label: string; prepare?: () => void; commands: WorkspaceCommand[] };
 
 /** A repeated/definition occurrence is inspectable, not authority to edit its source. */

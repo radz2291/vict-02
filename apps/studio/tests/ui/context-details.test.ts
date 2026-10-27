@@ -15,6 +15,7 @@ let editor: ReturnType<typeof mount> | undefined;
 afterEach(async()=>{if(editor)await unmount(editor);editor=undefined;document.body.innerHTML='';localStorage.clear();});
 const button=(name:string)=>workspaceControl(name)!;
 async function settle(){flushSync();await tick();await tick();}
+async function objectItem(name:string){const trigger=[...document.querySelectorAll<HTMLElement>('.structure-tools [role=menubar]>button')].find(node=>node.textContent==='Object')!;trigger.dispatchEvent(new KeyboardEvent('keydown',{key:'ArrowDown',bubbles:true,cancelable:true}));await settle();[...document.querySelectorAll<HTMLElement>('[role=menu] [role=menuitem]')].find(node=>node.textContent?.trim()===name)!.click();await settle();}
 async function start(){
   const seed=newScreen('Context details','context-details');
   const source:UiDocument={...seed,revision:'r1.r1',nodes:{
@@ -70,11 +71,10 @@ it('keeps shared inspection in right Selection across canvas and graph while pre
   button('Structure').click();await settle();await wholeHierarchy();const graph=document.querySelector('.svelte-flow')!;
   expect(document.querySelector('.structure-workspace .source-details')).toBeNull();expect(document.querySelector('#document-drawer .source-details')).not.toBeNull();
   scroll.scrollTop=83;scroll.scrollLeft=14;
-  const node=document.querySelector<HTMLElement>(`[data-id="${structureId(source.id,'node','second')}"]`)!;await secondary(node);
-  [...document.querySelectorAll<HTMLElement>('[role="menu"][data-state="open"] [role="menuitem"]')].find(node=>node.textContent?.trim()==='Inspect')!.click();await settle();
+  const node=document.querySelector<HTMLElement>(`[data-id="${structureId(source.id,'node','second')}"]`)!;node.click();await settle();await objectItem('Inspect');
   expect(document.querySelector('.source-details header strong')?.textContent).toBe('Second heading');expect(scroll.scrollTop).toBe(83);expect(scroll.scrollLeft).toBe(14);expect(document.querySelector('.design-frame')).toBe(frame);
   button('Close panel').click();await settle();button('Design').click();await settle();button('Structure').click();await settle();expect(document.querySelector('.svelte-flow')).toBe(graph);
-  button('Selection panel').click();await settle();button('Edit on canvas ↗').click();await settle();expect(document.querySelector('[aria-label="Floating selection tools"]')).not.toBeNull();expect(document.querySelector<HTMLElement>('.canvas-scroll')!.inert).toBe(false);
+  button('Toggle Document and Selection drawer').click();await settle();button('Edit on canvas ↗').click();await settle();expect(document.querySelector('[aria-label="Floating selection tools"]')).not.toBeNull();expect(document.querySelector<HTMLElement>('.canvas-scroll')!.inert).toBe(false);
 });
 it('keeps ambiguous repeated/definition occurrences inspectable without granting source edits',()=>{
   const document=newScreen('Capabilities','capabilities');
@@ -113,9 +113,7 @@ it('explicitly hands Structure editing from Interact to visible Design floating 
   const source=await start();button('Interact').click();await settle();button('Document').click();await settle();button('Structure').click();await settle();
   await wholeHierarchy();
   const node=[...document.querySelectorAll<HTMLElement>('.svelte-flow__node')].find(node=>node.dataset.id===structureId(source.id,'node','second'))!;
-  await secondary(node);
-  const edit=[...document.querySelectorAll<HTMLElement>('[role="menu"][data-state="open"] [role="menuitem"]')].find(node=>node.textContent?.trim()==='Edit on canvas')!;
-  edit.click();await settle();
+  node.click();await settle();await objectItem('Edit on canvas');
   expect(button('Design').getAttribute('aria-pressed')).toBe('true');
   expect(document.querySelector('[aria-label="Floating selection tools"]')).not.toBeNull();
 });
