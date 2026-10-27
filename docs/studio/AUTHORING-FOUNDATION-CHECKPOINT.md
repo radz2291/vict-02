@@ -38,6 +38,14 @@ These are overlapping bounded batches, not an additive whole-suite total. New so
 
 The viewport is a real browser viewport, not a touch-device simulator. Pixel capture still refuses nested scrolled descendants. It now also refuses a scrolled viewport containing fixed/sticky descendants because that raster composition has not been validated; no misleading image is returned. Targeted owned node/part facts and scope/freshness checks are separate from successful pixel evidence. Open-overlay capture, nested scrolling, browser gestures, media loading/playback, multiple-document isolation and real-device behavior still need integrated challenge. These limits prevent blanket closure of related findings.
 
+## Independent candidate challenge and repair continuation
+
+Independent review pinned clean local candidate `41a7bdb47037701d2d7735419f721264d14cb6e4`. TypeScript and26 bounded integration/discovery/observation-only cases passed. The candidate verdict was **FAIL pending repair; milestone closure HELD**, because Studio's retained runtime graph string could hide a later agent graph patch after a manual edit. The passing reference consumer had omitted the real host's stateValues channel. This failed candidate/verdict is retained.
+
+The manager repaired source-revision transitions to rebase only graph runtime mirrors from canonical source while retaining unrelated temporary state. Invalid/oversized manual graph emissions now restore the source graph with an explicit refusal rather than become silently ephemeral. New host-boundary regressions cover graph rebasing and nested clip visibility. The independent viewport reviewer also found that paint/layout containment changed ordinary fixed positioning, blank iframe canvas lacked its context menu, and targeted visibility omitted clipping ancestors. The continuation removes the altered fixed containing block, includes the application scope in the menu resolver, and computes conservative clipping visibility with explicit unsupported clip-path status. Drawer geometry is anchored to the visible owned viewport without changing the authored fixed-position contract.
+
+Affected continuation checks: host-state + representative integration + visual client/server/independent suites **27/27 PASS**; reusable pattern consumers **19/19 PASS**; Studio Svelte diagnostics **0 errors/5 inherited warnings**. These checks precede the continuation's local commit and are not an independent repaired-candidate gate. Production rebuild, actual browser proof of these final repairs and exact-commit independent recheck remain pending. No actual-agent output or device claim is inferred.
+
 ## Denied graph extension — stopped
 
 Exact target files under this candidate:

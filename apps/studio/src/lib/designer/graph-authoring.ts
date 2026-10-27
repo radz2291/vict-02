@@ -1,4 +1,4 @@
-import type {UiDocument,UiNode} from '@victframework/ui';
+import type {UiDocument,UiNode,UiValue} from '@victframework/ui';
 import {parseGraph,applyGraphPatch} from '@victframework/ui-flow-svelte';
 
 /** Only an explicitly bidirectional graph binding grants authoring persistence.
@@ -12,6 +12,17 @@ export function authoredGraphBinding(node:UiNode|undefined):string|undefined {
 }
 export function graphStateKeys(document:UiDocument):string[] {
   return [...new Set(Object.values(document.nodes).flatMap(node=>{const key=authoredGraphBinding(node);return key?[key]:[];}))];
+}
+/** A canonical source change owns graph values. Preserve other simulation state,
+ * but never let a prior runtime mirror hide a later manual or agent graph edit. */
+export function rebaseGraphRuntime(document:UiDocument,values:Readonly<Record<string,UiValue>>):Record<string,UiValue> {
+  const next={...values};
+  for(const key of graphStateKeys(document)){
+    const declaration=document.localState[key];
+    if(declaration?.type==='string')next[key]=declaration.initial;
+    else delete next[key];
+  }
+  return next;
 }
 export function graphStateDocument(document:UiDocument,key:string,value:unknown):UiDocument|undefined {
   if(!graphStateKeys(document).includes(key)||document.localState[key]?.type!=='string'||typeof value!=='string'||value.length>180000||!parseGraph(value).ok)return;

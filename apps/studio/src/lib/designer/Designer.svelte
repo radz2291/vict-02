@@ -92,7 +92,7 @@
     globalThis.document.querySelector<HTMLElement>(target)?.focus({ preventScroll: true });
   }
   import {foundationExample,type FoundationExample} from './foundation-examples.js';
-  import {graphStateKeys,graphStateDocument} from './graph-authoring.js';
+  import {graphStateKeys,graphStateDocument,rebaseGraphRuntime} from './graph-authoring.js';
   import { documentCursor, applyAgentProposal, type AgentProposal } from './agent-edits.js';
   let agentEpoch = $state(crypto.randomUUID());
   let chatOpen = $state(false);
@@ -352,7 +352,7 @@
     ] };
   }
   function canvasContext(target:Element):WorkspaceContext|undefined {
-    if (!source || workspaceView !== 'design' || (!canvasScroll?.contains(target) && !ownsCanvasTarget(target))) return;
+    if (!source || workspaceView !== 'design' || (!canvasScroll?.contains(target) && !applicationContent?.contains(target) && !ownsCanvasTarget(target))) return;
     if (target.closest('.selection-palette,[data-ui-selection-tools]')) return;
     const occurrence = target.closest<HTMLElement>('[data-ui-occ]')?.dataset.uiOcc;
     if (occurrence && resolveOccurrence(occurrence,source).sourceNodeId !== source.root) return objectContext(occurrence);
@@ -463,7 +463,7 @@
   // Fence in-flight simulation before render, retaining only values valid for the new source.
   $effect.pre(()=>{const revision=authoredRevision;if(!revision)return;untrack(()=>{
     if(runtimeRevision&&runtimeRevision!==revision&&source){
-      const compatible=compatiblePreviewValues(source,runtimeValues),retained=compatible.values;
+      const compatible=compatiblePreviewValues(source,runtimeValues),retained=rebaseGraphRuntime(source,compatible.values);
       const removed=compatible.removed.length,test=activeTest,denied=simulation.denied,failNext=simulation.failNext;
       resetRuntime();runtimeValues=retained;
       if(!removed){activeTest=test;simulation.denied=denied;simulation.failNext=failNext;}else notice=`${removed} temporary ${removed===1?'value was':'values were'} reset because the document changed. Your saved starting values are unchanged.`;
@@ -535,7 +535,7 @@
     }
     return result.ok;
   }
-  function runtimeStateChanged(key:string,value:UiValue){if(!source)return;const next=graphStateDocument(source,key,value);if(next&&next!==source){if(!apply({requestId:crypto.randomUUID(),reason:'Edit graph',commands:[{op:'replaceDocument',document:next}]}))return;}runtimeValues={...runtimeValues,[key]:value};}
+  function runtimeStateChanged(key:string,value:UiValue){if(!source)return;const next=graphStateDocument(source,key,value);if(graphStateKeys(source).includes(key)&&!next){const retained={...runtimeValues,[key]:source.localState[key]!.initial};resetRuntime();runtimeValues=retained;notice='Graph edit refused by the source boundary. The previous graph was restored.';return;}if(next&&next!==source){if(!apply({requestId:crypto.randomUUID(),reason:'Edit graph',commands:[{op:'replaceDocument',document:next}]}))return;}runtimeValues={...runtimeValues,[key]:value};}
   function syncGraphRuntime(){if(!bridge)return;const next={...runtimeValues};for(const key of graphStateKeys(bridge.document))next[key]=bridge.document.localState[key]!.initial;runtimeValues=next;}
   function undo() { if (!bridge) return; if (textDraftDirty || sourceDraftDirty) { notice = 'Apply or cancel your draft first.'; return; } const result = bridge.undo();if(result.ok)syncGraphRuntime(); issues = result.ok ? [] : result.issues; notice = result.ok ? 'Undid the last authored change.' : 'Nothing to undo.'; }
   function redo() { if (!bridge) return; if (textDraftDirty || sourceDraftDirty) { notice = 'Apply or cancel your draft first.'; return; } const result = bridge.redo();if(result.ok)syncGraphRuntime(); issues = result.ok ? [] : result.issues; notice = result.ok ? 'Redid the authored change.' : 'Nothing to redo.'; }
@@ -705,7 +705,7 @@
     </div>
   {/snippet}
   <div class="agent-workspace" class:chat-open={chatOpen} bind:clientWidth={availableWidth}>
-  <div id="studio-chat-panel" data-studio-typography class="studio-type-scope agent-panel" hidden={!chatOpen} style:--chat-width={`${chatWidth}px`}><WorkspacePanelHeader label="Chat" onClose={()=>void toggleChat()}><strong class="chat-heading">Chat</strong></WorkspacePanelHeader><AgentChat screenLabel={screenName(source)} selectionLabel={selectionLabel} blocked={textDraftDirty || sourceDraftDirty || renamingScreen} getContext={() => bridge ? {document:bridge.document, cursor:documentCursor(bridge.document,bridge.getSnapshot().revision,agentEpoch), ...(selected ? {selection:selected} : {}),selectionSet:selectionSet(workspaceSelection),workspace:workspaceFacts()} : undefined} getCapture={(cursor,target) => captureDesignerPreview(applicationContent?.querySelector<HTMLElement>('.uv-canvas'),cursor,()=>bridge ? {cursor:documentCursor(bridge.document,bridge.getSnapshot().revision,agentEpoch),mode,state:{runtimeValues,simulation:{denied:simulation.denied,failNext:simulation.failNext}},selection:selected,composition:compositionFocus ? `${compositionFocus.nodeId}/${compositionFocus.slotName}` : undefined,structureOpen,workspaceView} : undefined,applicationContent,target)} applyProposal={receiveAgentProposal} /></div>
+  <div id="studio-chat-panel" data-studio-typography class="studio-type-scope agent-panel" hidden={!chatOpen} style:--chat-width={`${chatWidth}px`}><WorkspacePanelHeader label="Chat" onClose={()=>void toggleChat()}><strong class="chat-heading">Chat</strong></WorkspacePanelHeader><AgentChat screenLabel={screenName(source)} selectionLabel={selectionLabel} blocked={textDraftDirty || sourceDraftDirty || renamingScreen} getContext={() => bridge ? {document:bridge.document, cursor:documentCursor(bridge.document,bridge.getSnapshot().revision,agentEpoch), ...(selected ? {selection:selected} : {}),selectionSet:selectionSet(workspaceSelection),workspace:workspaceFacts()} : undefined} getCapture={(cursor,target) => captureDesignerPreview(applicationContent?.querySelector<HTMLElement>('.uv-canvas')??undefined,cursor,()=>bridge ? {cursor:documentCursor(bridge.document,bridge.getSnapshot().revision,agentEpoch),mode,state:{runtimeValues,simulation:{denied:simulation.denied,failNext:simulation.failNext}},selection:selected,composition:compositionFocus ? `${compositionFocus.nodeId}/${compositionFocus.slotName}` : undefined,structureOpen,workspaceView} : undefined,applicationContent,target)} applyProposal={receiveAgentProposal} /></div>
   <div class="chat-resizer" hidden={!chatOpen}><PanelResizer label="Chat width" value={chatWidth} min={240} max={400} onChange={(value:number)=>chatWidth=value} /></div>
   <div class="design-workspace" bind:this={workspaceElement} bind:clientWidth={workspaceWidth} class:drawer-open={rightOpen} class:has-object-tools={mode === 'design' && !!selectedNode && paletteRequested} style:--drawer-width={`${effectiveDrawerWidth}px`}>
     <WorkspaceContextMenu scope={workspaceElement} applicationScope={applicationContent} enabled={workspaceView === 'design'} resolve={canvasContext} owns={ownsCanvasTarget} />

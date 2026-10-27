@@ -5,6 +5,7 @@
   import { lockViewport, trapFocus } from './focus.js';
   let { props, io, presentation }: UiSvelteComponentProps = $props();
   let panel = $state<HTMLElement>();
+  let layer = $state<HTMLElement>();
   let trigger = $state<HTMLButtonElement>();
   const open = $derived(props.open === true);
   const title = $derived(String(props.title ?? 'Menu'));
@@ -21,6 +22,11 @@
     void tick().then(() => { if (!cancelled && panel) { release = lockViewport(panel); panel.focus(); } });
     return () => { cancelled = true; release(); if (original instanceof HTMLElement && original.isConnected) original.focus(); else trigger?.focus(); };
   });
+  $effect(()=>{
+    if(!open||!layer)return;const element=layer,viewport=element.closest<HTMLElement>('[data-ui-application-viewport]');if(!viewport)return;
+    const align=()=>{const parent=element.offsetParent as HTMLElement|null;const box=viewport.getBoundingClientRect(),base=parent?.getBoundingClientRect()??new DOMRect();Object.assign(element.style,{inset:'auto',left:`${box.left-base.left+(parent?.scrollLeft??0)}px`,top:`${box.top-base.top+(parent?.scrollTop??0)}px`,width:`${viewport.clientWidth}px`,height:`${viewport.clientHeight}px`});};
+    const resize=new ResizeObserver(align);resize.observe(viewport);align();return()=>resize.disconnect();
+  });
   function keyboard(event: KeyboardEvent) {
     if (event.defaultPrevented) return;
     if (event.key === 'Escape' && props.dismissible !== false) { event.preventDefault(); event.stopPropagation(); close(); }
@@ -35,7 +41,7 @@
     </button>
   {/if}
   {#if open}
-    <div {...patternTarget(presentation,'backdrop','vict-drawer-layer')} data-ui-pattern-overlay="drawer" onclick={(event) => { if (event.target === event.currentTarget && props.dismissible !== false) close(); }} role="presentation">
+    <div {...patternTarget(presentation,'backdrop','vict-drawer-layer')} data-ui-pattern-overlay="drawer" bind:this={layer} onclick={(event) => { if (event.target === event.currentTarget && props.dismissible !== false) close(); }} role="presentation">
       <section {...patternTarget(presentation,'panel','vict-drawer-panel')} bind:this={panel} id={panelId} data-side={side} style:--drawer-size={`${width}px`} role="dialog" aria-modal="true" aria-label={title} tabindex="-1" onkeydown={keyboard}>
         <header {...presentation?.target('header')}><h2>{title}</h2><button type="button" aria-label="Close drawer" onclick={close}>×</button></header>
         <div {...patternTarget(presentation,'body','vict-drawer-body')}>{@render io?.slots?.body?.()}</div>

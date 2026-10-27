@@ -1,4 +1,5 @@
 import { captureRenderedElement } from '@victframework/ui-ai-svelte';
+import {previewVisibility} from './preview-visibility.js';
 import type { AgentCursor } from './agent-edits.js';
 import { captureEvidence, type CaptureEvidence } from './capture-evidence.js';
 
@@ -12,11 +13,11 @@ export interface CaptureMetadata {
 }
 export type CaptureResult = { ok: true; blob: Blob; metadata: CaptureMetadata } | { ok: false; code: string; message: string; diagnostics?: CaptureEvidence };
 export interface CaptureTarget {nodeId:string;part?:string}
-export interface PreviewFacts {workspaceView:string;viewportModel:'isolated-viewport'|'hosted-container';ownedOverlays:number;targets:{nodeId:string;part:string;bounds:number[];visible:boolean;styles:Record<string,string>}[]}
+export interface PreviewFacts {workspaceView:string;viewportModel:'isolated-viewport'|'hosted-container';ownedOverlays:number;targets:{nodeId:string;part:string;bounds:number[];visible:boolean;visibilityReason?:string;styles:Record<string,string>}[]}
 export function previewFacts(frame:HTMLElement,target?:CaptureTarget,workspaceView='design'):PreviewFacts {
  const doc=frame.ownerDocument;const owners=new Set([...frame.querySelectorAll<HTMLElement>('[data-ui-owner-root]')].map(el=>el.dataset.uiOwnerRoot));
  const matches=[...doc.querySelectorAll<HTMLElement>('[data-ui-owner][data-ui-node]')].filter(el=>owners.has(el.dataset.uiOwner)&&(!target||el.dataset.uiNode===target.nodeId&&(!target.part||el.dataset.uiPart===target.part)));
- const view=doc.defaultView;const targets=matches.slice(0,6).map(el=>{const r=el.getBoundingClientRect(),style=(view??window).getComputedStyle(el);return {nodeId:el.dataset.uiNode??'',part:el.dataset.uiPart??'root',bounds:[r.x,r.y,r.width,r.height].map(n=>Math.round(n*100)/100),visible:!!el.getClientRects().length&&r.width>0&&r.height>0&&r.bottom>0&&r.right>0&&r.top<(view?.innerHeight??0)&&r.left<(view?.innerWidth??0)&&style.display!=='none'&&style.visibility!=='hidden',styles:Object.fromEntries(['color','background-color','position','top','padding-top','overflow','font-size','z-index'].map(key=>[key,style.getPropertyValue(key).slice(0,100)]))};});
+ const view=doc.defaultView;const targets=matches.slice(0,6).map(el=>{const r=el.getBoundingClientRect(),style=(view??window).getComputedStyle(el);const visibility=previewVisibility(el);return {nodeId:el.dataset.uiNode??'',part:el.dataset.uiPart??'root',bounds:[r.x,r.y,r.width,r.height].map(n=>Math.round(n*100)/100),visible:visibility.visible,visibilityReason:visibility.reason,styles:Object.fromEntries(['color','background-color','position','top','padding-top','overflow','font-size','z-index'].map(key=>[key,style.getPropertyValue(key).slice(0,100)]))};});
  return {workspaceView,viewportModel:doc.defaultView?.frameElement?'isolated-viewport':'hosted-container',ownedOverlays:matches.filter(el=>el.dataset.uiPart==='content'||el.dataset.uiPart==='panel'||el.getAttribute('role')==='dialog'||el.getAttribute('role')==='menu').length,targets};
 }
 export interface CaptureState {
@@ -97,7 +98,7 @@ export async function captureDesignerPreview(
   if (!element || before.structureOpen)
     return refuse('STUDIO_CAPTURE_NOT_VISIBLE','Reveal the Design or Interact preview, then retry observation without replaying edits.','visibility',!element?'frame-missing':'preview-covered');
   const facts=previewFacts(element,target,before.workspaceView??before.mode);
-  if(target&&!facts.targets.some(item=>item.visible))return refuse('STUDIO_CAPTURE_NOT_VISIBLE','The requested owned node or part is outside the visible application viewport. Reveal it and retry observation only.','visibility','target-not-visible');
+  if(target&&!facts.targets.some(item=>item.visible))return refuse('STUDIO_CAPTURE_NOT_VISIBLE','The requested owned node or part is not demonstrably visible in the current application viewport. Reveal it and retry observation only.','visibility','target-not-visible');
   const viewportTarget = viewportElement ?? element;
   const geometry = () => [element, viewportTarget].map(target => { const bounds = target.getBoundingClientRect(); return [bounds.x,bounds.y,bounds.width,bounds.height].join(','); }).join('|');
   const geometryToken = geometry();
