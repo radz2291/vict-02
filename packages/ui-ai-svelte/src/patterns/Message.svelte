@@ -22,6 +22,8 @@
   <Message.Content {...presentation?.target('content')} class={`gap-2 ${presentation?.target('content').class ?? ''}`}>
     {#if role === 'user'}
       <Bubble.Root align="end" variant="muted"><Bubble.Content {...presentation?.target('bubble')}>{#if presentation?.target('text')['data-ui-part']}<span {...presentation.target('text')}>{text}</span>{:else}{text}{/if}</Bubble.Content></Bubble.Root>
+    {:else if presentation?.target('bubble')['data-ui-part']}
+      <div {...presentation.target('bubble')}><div {...presentation.target('text')}><Markdown content={text}/></div></div>
     {:else if presentation?.target('text')['data-ui-part']}<div {...presentation.target('text')}><Markdown content={text}/></div>{:else}<Markdown content={text}/>{/if}
     {#if onCopy || onEdit || onRetry || onFeedback}
       <Message.Footer class={role === 'user' ? undefined : 'px-0'}>

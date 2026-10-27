@@ -1,6 +1,6 @@
 // @vitest-environment happy-dom
 import { describe, expect, it, vi } from 'vitest';
-import { newScreen, screenApplication } from '../src/lib/designer/application.js';
+import { newScreen, screenApplication, screenIssues } from '../src/lib/designer/application.js';
 import { prepareSourceImport, SOURCE_IMPORT_LIMITS } from '../src/lib/designer/source-import.js';
 import {
   memoryAssetStore,
@@ -8,8 +8,9 @@ import {
   exportMediaArchive,
   MAX_ASSET_BYTES,
 } from '@victframework/ui-media-svelte/assets';
-import type { UiDocument } from '@victframework/ui';
+import type { UiDocument, UiExpression } from '@victframework/ui';
 import { foundationExample } from '../src/lib/designer/foundation-examples.js';
+import { validateGraph } from '@victframework/ui-flow-svelte';
 
 const png = Uint8Array.from(
   atob(
@@ -184,6 +185,228 @@ describe('one-screen local source import preparation', () => {
       },
     };
     expect(await prepareSourceImport(bundle(document))).toMatchObject({ ok: true, assets: [] });
+  });
+  it.each(['family', 'instance'] as const)(
+    'requires and round-trips managed bytes for a custom graph %s icon source',
+    async (location) => {
+      const svg = new TextEncoder().encode(
+        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M2 2h20v20H2z" fill="#14b8a6"/></svg>',
+      );
+      const iconAsset = await importMediaAsset(
+        {
+          name: 'custom-graph-mark.svg',
+          type: 'image/svg+xml',
+          async arrayBuffer() {
+            return svg.slice().buffer;
+          },
+        },
+        'Offline custom graph icon portability fixture',
+      );
+      const original = foundationExample('graph');
+      const graph = JSON.parse(String(original.localState.graph.initial));
+      const icon = {
+        pack: 'custom',
+        name: 'portable-mark',
+        revision: '1',
+        source: iconAsset.reference,
+      };
+      if (location === 'family') graph.nodeTypes[0].icon = icon;
+      else graph.nodes[0].icon = icon;
+      expect(validateGraph(graph).ok).toBe(true);
+      const document: UiDocument = {
+        ...original,
+        localState: {
+          ...original.localState,
+          graph: { ...original.localState.graph, initial: JSON.stringify(graph) },
+        },
+      };
+      expect(document.assets).toEqual({});
+      expect(await prepareSourceImport(bundle(document))).toMatchObject({
+        ok: false,
+        code: 'STUDIO_IMPORT_MEDIA_MISSING',
+      });
+      const stored = memoryAssetStore();
+      await stored.put(iconAsset);
+      const prepared = await prepareSourceImport(
+        bundle(document, { mediaArchive: JSON.parse(await exportMediaArchive(stored)) }),
+      );
+      expect(prepared.ok).toBe(true);
+      if (!prepared.ok) throw Error(prepared.message);
+      expect(prepared.document).toEqual(document);
+      expect(prepared.assets).toHaveLength(1);
+      expect(prepared.assets[0]?.reference).toBe(iconAsset.reference);
+      expect(prepared.assets[0]?.bytes).toEqual(svg);
+      const fresh = memoryAssetStore();
+      for (const asset of prepared.assets) await fresh.put(asset);
+      expect((await fresh.get(iconAsset.reference))?.bytes).toEqual(svg);
+    },
+  );
+  it.each(['literal', 'state'] as const)(
+    'requires archived bytes from an inactive conditional media branch using a %s value',
+    async (mode) => {
+      const asset = await supplied(),
+        original = source();
+      const document: UiDocument = {
+        ...original,
+        localState: {
+          ...original.localState,
+          portrait: { key: 'portrait', type: 'string', initial: asset.reference },
+        },
+        nodes: {
+          ...original.nodes,
+          screen: {
+            ...original.nodes.screen,
+            children: ['portrait-image'],
+          } as UiDocument['nodes'][string],
+          'portrait-image': {
+            kind: 'component',
+            id: 'portrait-image',
+            definitionId: 'vict.media.image',
+            revision: '1',
+            props: {
+              source: {
+                type: 'conditionalValue',
+                when: { type: 'literal', value: true },
+                then: { type: 'literal', value: '/fallback.png' },
+                otherwise:
+                  mode === 'state'
+                    ? { type: 'ref', path: 'state.portrait' }
+                    : { type: 'literal', value: asset.reference },
+              },
+              alt: { type: 'literal', value: 'Portrait' },
+            },
+          },
+        },
+      };
+      expect(screenIssues(document)).toEqual([]);
+      expect(await prepareSourceImport(bundle(document))).toMatchObject({
+        ok: false,
+        code: 'STUDIO_IMPORT_MEDIA_MISSING',
+      });
+      const store = memoryAssetStore();
+      await store.put(asset);
+      const prepared = await prepareSourceImport(
+        bundle(document, { mediaArchive: JSON.parse(await exportMediaArchive(store)) }),
+      );
+      expect(prepared.ok).toBe(true);
+      if (!prepared.ok) throw Error(prepared.message);
+      expect(prepared.assets[0]?.bytes).toEqual(png);
+    },
+  );
+  it('inventories exact managed literals inside computed media without executing or promising computed output', async () => {
+    const asset = await supplied(),
+      original = source();
+    const document: UiDocument = {
+      ...original,
+      nodes: {
+        ...original.nodes,
+        screen: {
+          ...original.nodes.screen,
+          children: ['computed-image'],
+        } as UiDocument['nodes'][string],
+        'computed-image': {
+          kind: 'component',
+          id: 'computed-image',
+          definitionId: 'vict.media.image',
+          revision: '1',
+          props: {
+            source: {
+              type: 'op',
+              name: 'concat',
+              args: [{ type: 'literal', value: asset.reference }],
+            },
+          },
+        },
+      },
+    };
+    expect(screenIssues(document)).toEqual([]);
+    expect(await prepareSourceImport(bundle(document))).toMatchObject({
+      ok: false,
+      code: 'STUDIO_IMPORT_MEDIA_MISSING',
+    });
+    const store = memoryAssetStore();
+    await store.put(asset);
+    expect(
+      await prepareSourceImport(
+        bundle(document, { mediaArchive: JSON.parse(await exportMediaArchive(store)) }),
+      ),
+    ).toMatchObject({ ok: false, code: 'STUDIO_IMPORT_MEDIA_DYNAMIC' });
+  });
+  it('refuses unprovable reference construction rather than treating fragments as malformed full references', async () => {
+    const original = source();
+    const expression: UiExpression = {
+      type: 'op',
+      name: 'concat',
+      args: [
+        { type: 'literal', value: 'asset:sha256:' },
+        { type: 'ref', path: 'state.digest' },
+      ],
+    };
+    const document: UiDocument = {
+      ...original,
+      localState: {
+        ...original.localState,
+        digest: { key: 'digest', type: 'string', initial: 'a'.repeat(64) },
+      },
+      nodes: {
+        ...original.nodes,
+        screen: {
+          ...original.nodes.screen,
+          children: ['constructed-image'],
+        } as UiDocument['nodes'][string],
+        'constructed-image': {
+          kind: 'component',
+          id: 'constructed-image',
+          definitionId: 'vict.media.image',
+          revision: '1',
+          props: { source: expression },
+        },
+      },
+    };
+    expect(screenIssues(document)).toEqual([]);
+    expect(await prepareSourceImport(bundle(document))).toMatchObject({
+      ok: false,
+      code: 'STUDIO_IMPORT_MEDIA_DYNAMIC',
+    });
+  });
+  it('inventories every statically supplied graph branch rather than only the active graph', async () => {
+    const asset = await supplied(),
+      original = foundationExample('graph');
+    const graph = JSON.parse(String(original.localState.graph.initial));
+    graph.nodeTypes[0].fields.push({
+      id: 'conditional-preview',
+      label: 'Image',
+      kind: 'image',
+      default: asset.reference,
+    });
+    expect(validateGraph(graph).ok).toBe(true);
+    const graphNode = Object.values(original.nodes).find(
+      (node) => node.kind === 'component' && node.definitionId === 'vict.flow.editor',
+    );
+    if (!graphNode || graphNode.kind !== 'component') throw Error('Graph fixture missing editor.');
+    const document: UiDocument = {
+      ...original,
+      nodes: {
+        ...original.nodes,
+        [graphNode.id]: {
+          ...graphNode,
+          props: {
+            ...graphNode.props,
+            graph: {
+              type: 'conditionalValue',
+              when: { type: 'literal', value: true },
+              then: { type: 'ref', path: 'state.graph' },
+              otherwise: { type: 'literal', value: JSON.stringify(graph) },
+            },
+          },
+        },
+      },
+    };
+    expect(screenIssues(document)).toEqual([]);
+    expect(await prepareSourceImport(bundle(document))).toMatchObject({
+      ok: false,
+      code: 'STUDIO_IMPORT_MEDIA_MISSING',
+    });
   });
   it('refuses multi-document, unsupported envelope, malformed JSON and invalid canonical source', async () => {
     const document = source();

@@ -2,12 +2,12 @@ import type { UiApplicationTheme, UiThemeRole } from './document.js';
 
 /** Implementation-linked semantic aliases shared by catalog controls and AI presentation. */
 export const UI_THEME_VARIABLES: Readonly<Record<UiThemeRole, readonly string[]>> = {
-  surface: ['--vict-color-bg', '--vict-color-surface', '--background', '--card', '--popover', '--input'],
-  text: ['--vict-color-text', '--foreground', '--card-foreground', '--popover-foreground'],
+  surface: ['--vict-theme-surface', '--vict-color-bg', '--vict-color-surface', '--background', '--card', '--popover', '--input'],
+  text: ['--vict-theme-text', '--vict-color-text', '--foreground', '--card-foreground', '--popover-foreground'],
   textMuted: ['--vict-color-textMuted', '--muted-foreground'],
   border: ['--vict-color-border', '--border'],
-  accent: ['--vict-color-accent', '--primary'],
-  accentText: ['--vict-color-accentContrast', '--primary-foreground'],
+  accent: ['--vict-theme-accent', '--vict-color-accent', '--primary'],
+  accentText: ['--vict-theme-accent-text', '--vict-color-accentContrast', '--primary-foreground'],
   highlight: ['--vict-theme-highlight', '--accent', '--muted'],
   highlightText: ['--vict-theme-highlight-text', '--accent-foreground'],
   focusRing: ['--vict-color-focusRing', '--ring'],

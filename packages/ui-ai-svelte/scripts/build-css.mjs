@@ -47,14 +47,14 @@ for (const [from, to] of animationNames)
 const base = `/* VICT-owned scope for pinned shadcn-svelte Rhea; no global preflight. */
 .vict-ai {
   --radius: .625rem;
-  --background: var(--vict-ai-background, #fff); --foreground: var(--vict-ai-foreground, #20232b);
+  --background: var(--vict-theme-surface, var(--vict-ai-background, #fff)); --foreground: var(--vict-theme-text, var(--vict-ai-foreground, #20232b));
   --card: var(--background); --card-foreground: var(--foreground);
   --popover: var(--background); --popover-foreground: var(--foreground);
-  --primary: var(--vict-ai-primary, #3046a5); --primary-foreground: #fff;
-  --secondary: #f1f3f7; --secondary-foreground: #252a39;
-  --muted: #f1f3f7; --muted-foreground: #596276;
-  --accent: #edf0fa; --accent-foreground: #25356d;
-  --destructive: #ad243c; --border: #dbe0e8; --input: #e4e8f0; --ring: #7689cf;
+  --primary: var(--vict-theme-accent, var(--vict-ai-primary, #3046a5)); --primary-foreground: var(--vict-theme-accent-text, var(--vict-color-accentContrast, #fff));
+  --secondary: var(--vict-theme-highlight, #f1f3f7); --secondary-foreground: var(--vict-theme-highlight-text, #252a39);
+  --muted: var(--vict-theme-highlight, #f1f3f7); --muted-foreground: var(--vict-color-textMuted, #596276);
+  --accent: var(--vict-theme-highlight, #edf0fa); --accent-foreground: var(--vict-theme-highlight-text, #25356d);
+  --destructive: #ad243c; --border: var(--vict-color-border, #dbe0e8); --input: var(--vict-theme-surface, #e4e8f0); --ring: var(--vict-color-focusRing, #7689cf);
   color:var(--foreground); font-family:var(--vict-ai-font,system-ui,sans-serif); font-size:14px; line-height:1.5;
 }
 .vict-ai.vict-ai *, .vict-ai.vict-ai *::before, .vict-ai.vict-ai *::after {box-sizing:border-box;border:0 solid var(--border);}

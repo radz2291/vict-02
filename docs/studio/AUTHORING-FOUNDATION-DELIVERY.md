@@ -6,7 +6,7 @@ Status: IMPLEMENTATION AUTHORIZED / IN PROGRESS. No finding is closed by this pl
 
 ## Authority and baseline
 
-On 2026-10-27 the owner authorized full authoring-foundation implementation and ordinary repair/verification through a review-ready candidate, superseding the earlier report-only boundary. The delegated instruction preserves all AR-01–29 and later amendments, including the Langflow-style rich-node target, mobile readiness, media, icons and vectors. Final owner acceptance remains separate. No merge, publication, deployment, paid provider run, security/credential change, deletion of owner work or push is authorized.
+On 2026-10-27 the owner authorized full authoring-foundation implementation and ordinary repair/verification through a review-ready candidate, superseding the earlier report-only boundary. The delegated instruction preserves all AR-01-29 and later amendments, including the Langflow-style rich-node target, mobile readiness, media, icons and vectors. Final owner acceptance remains separate. Only the existing Z.ai Coding Plan subscription route is authorized for actual-agent runs. No merge, publication, deployment, metered provider run, security/credential change, deletion of owner work or push is authorized.
 
 Source review: `CYCLE-1-4-AGENT-OUTPUT-REVIEW.md`, complete with amendments, and `../handoff/VICT-STAGE-09-STUDIO-HANDOFF.md`. Latest original local task: `01a167b2-9bcb-7d81-9f56-629bbb5f80c6` (Build Stage 9 Cycle 1.3). The cloud discussion supplies product intent; the original review and failed observations remain evidence, not implementation acceptance.
 
@@ -56,7 +56,7 @@ E includes working textarea, list, number, slider, select/toggle/button node bod
 
 ## Integrated exit
 
-Owner clarification on 2026-10-27: actual Studio-agent output validation is mandatory for related findings. Offline model fixtures, direct edit calls, hand-authored examples and source review are supporting evidence only. Retain actual prompts, tool/action records, final authored source, observed behavior and truthful final messages. Compare retained baseline failures where applicable without unnecessarily repeating valid runs. No live provider run or budget is authorized by this clarification; there is no inherited budget from another project.
+Owner clarification on 2026-10-27: actual Studio-agent output validation is mandatory for related findings. Offline model fixtures, direct edit calls, hand-authored examples and source review are supporting evidence only. Retain actual prompts, tool/action records, final authored source, observed behavior and truthful final messages. Compare retained baseline failures where applicable without unnecessarily repeating valid runs. Later owner permission authorizes the existing Z.ai yearly Coding Plan route; there is no inherited metered budget from another project.
 
 First build offline reusable fixtures through agent-facing capabilities, then run separately approved actual-agent validation for three representative applications: themed responsive app, AI/chat app and rich node editor. Prove reusable-package consumers as well as Studio. For each exercise manual/agent coexistence, stale/invalid refusal, Stop/recovery, undo/redo, save/reopen and Run. Test open overlays, actual assets, keyboard/focus, compact/wide layouts and multiple-document isolation. Mobile keyboard/safe-area/touch/device claims remain NOT DEMONSTRATED until exercised on actual available devices.
 

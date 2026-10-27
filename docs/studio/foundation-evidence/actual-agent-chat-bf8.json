@@ -1,0 +1,75 @@
+{
+  "kind": "actual Studio UI agent trial",
+  "candidateBuild": "bf8f806f8b6752b630932f2426d151e182f43365",
+  "origin": "http://127.0.0.25:5625",
+  "model": "zai/glm-5.3-flash",
+  "providerRoute": "existing Z.ai yearly Coding Plan / api/coding/paas/v4",
+  "status": "terminal: authored artifact saved; styling acceptance failed",
+  "runId": "04f3d1a3-9185-49b6-97cd-75d7ff2e9637",
+  "prompt": "Build a compact chat app named Foundation Chat using the actual registered AI/chat components. Show three clearly labelled user/assistant messages and an editable composer with a send action wired to supported local state or output handling. No remote service integration is needed. Apply a coherent teal application theme; explicitly style the real message bubble and prompt-field parts, not only an outer wrapper. Discover compact contracts first and fetch only needed continuation pages. Keep the app responsive and its canonical source editable. Observe the rendered result before finishing. State concisely what was applied, visually observed and still untested; do not claim provider processing or interaction testing you did not perform.",
+  "observedSubmission": "User prompt present in Studio transcript; Send changed to Stop; Connecting to the VICT / Mastra agent status displayed",
+  "confirmedEditsAtSubmission": 0,
+  "observedInProgress": {
+    "reportedRevision": "r1#8",
+    "actions": "Actual reads discovered AI revision-2 contracts, corrected revision-1 recipe seed composition, recovered from a bindText-to-wrapper refusal, wired controlled composer state and send output, applied theme and part styles; first image observation succeeded and triggered contrast correction",
+    "nativeDomEvidence": [
+      {
+        "node": "msg-u1",
+        "part": "bubble",
+        "background": "rgb(241, 243, 247)",
+        "color": "rgb(255, 255, 255)",
+        "padding": "10px 12px"
+      },
+      {
+        "node": "msg-u2",
+        "part": "bubble",
+        "background": "rgb(241, 243, 247)",
+        "color": "rgb(255, 255, 255)",
+        "padding": "10px 12px"
+      },
+      {
+        "node": "composer",
+        "part": "field",
+        "background": "rgba(0, 0, 0, 0)",
+        "color": "rgb(19, 78, 74)",
+        "padding": "8px 10px"
+      }
+    ],
+    "missingTarget": "Only the two user bubbles appeared under data-ui-part=bubble; no assistant bubble target was present",
+    "nativeScreenshot": "CUA screenshot retained in task transcript shows low-contrast pale user pills and borderless assistant content",
+    "verdict": "FAILED styling observation retained; terminal run now confirmed"
+  },
+  "agentImageObservation": "Six successful actual-agent observations at r1#7, #8, #9, #10, #11 and #12, each 944x528",
+  "independentInteractionProof": "CUA native browser: switched to Interact, filled iframe Message with Foundation local send proof, pressed Enter; matching status paragraph appeared. Composer retained value, no provider call. Screenshot retained in task transcript.",
+  "scope": "Built bf8 application; ongoing source-only importer/capture repairs are not included in this build",
+  "completionEvidence": {
+    "localTurnId": "fbccc992-c80f-4eb9-9196-41926cdbbdf4",
+    "engineTurnId": "turn-6df3db84-356f-4491-8814-13825c9d6c70",
+    "documentId": "screen-50b0cf34-130d-463c-bd31-af29f534844f",
+    "epoch": "11a45364-222a-47ee-aaeb-a62eaf4640c0",
+    "finalRevision": "r1#12",
+    "digest": "63542cd3e0fc4f4988eaa2a0fe1201bba4a073165ab73b68d84a8712fa632265",
+    "confirmedEdits": 12,
+    "toolCalls": 30,
+    "refusedCalls": 2,
+    "authoringModelRequests": 27,
+    "imageRequests": 6,
+    "reportedAuthoringInputTokens": 1569497,
+    "reportedAuthoringOutputTokens": 36923,
+    "elapsedSeconds": 966.1,
+    "lastObservationUtc": "2026-10-27T22:09:05.46Z",
+    "quotaMessageObserved": false,
+    "saveEvidence": "Studio File > Save confirmed Saved Foundation Chat revision r1.r1 after interrupted export; source remained complete and editable",
+    "exportOutcome": "uncertain: browser download wait interrupted after 1320 seconds; not repeated",
+    "finalReply": "Applied real revision-2 components, controlled composer and send state, theme and part styles; disclosed faint user bubbles, pinned skin interference, and untested interaction/mobile/provider processing",
+    "acceptance": "FAILED visual styling; truthful failure disclosure; not a milestone pass"
+  },
+  "repairedArtifactNativeCheck": {
+    "source": "Saved actual-agent document reopened unchanged via File > Open screen after server rebuild",
+    "build": "Integrated repaired uncommitted tree above bf8; build exit0 log Temp/vict-foundation-integrated-repair-build.log. Later generic ABI/capture soundness amendments require another build.",
+    "userBubble": "rgb(13,148,136), white text, padding8px12px",
+    "assistantBubble": "target present; rgb(240,253,250), text rgb(19,78,74), border0.8px at current browser scale",
+    "screenshot": "CUA native screenshot in task transcript visibly confirms repaired pills and assistant outline",
+    "actualAgentFollowup": "COMPLETED: run9a3e992a-59a7-402a-8953-970f6947062e, engine turn-5e35f182-7590-4d51-8ca6-73767289436e; source r1.r1#0 unchanged, digest7015ff5f4cbd9b95a63510c286d00ea7869c5a83f730ab8855813f0123a15dc3, epoch f12f87fe-cd9a-4221-89a7-369d0f5ead8f; single successful944x528 image observation2026-10-27T22:51:44.518Z, confirmed same image bytes after inference, zero edits;2authoring requests/1image request,22775input374output reportedtokens,26.9seconds. Actual agent saw solid dark-teal user bubbles with readable white text and visible assistant outline. Disclosed disabled Send low prominence and No messages sent yet caption; no interaction/mobile claim. Scoped appearance improvement PASS; not accessibility certification or full milestone closure."
+  }
+}

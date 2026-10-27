@@ -38,14 +38,14 @@
    chosen portal scope; this sheet never changes a portal target or geometry. */
 .vict-rhea .vict-ai {
   --radius: .625rem;
-  --secondary: var(--vict-rhea-muted);
-  --secondary-foreground: var(--vict-color-text);
-  --muted: var(--vict-rhea-muted);
+  --secondary: var(--vict-theme-highlight, var(--vict-rhea-muted));
+  --secondary-foreground: var(--vict-theme-highlight-text, var(--vict-color-text));
+  --muted: var(--vict-theme-highlight, var(--vict-rhea-muted));
   --muted-foreground: var(--vict-color-textMuted);
-  --accent: var(--vict-control-selected);
-  --accent-foreground: var(--vict-color-accent);
+  --accent: var(--vict-theme-highlight, var(--vict-control-selected));
+  --accent-foreground: var(--vict-theme-highlight-text, var(--vict-color-accent));
   --border: var(--vict-color-border);
-  --input: #e4e8f0;
+  --input: var(--vict-theme-surface, #e4e8f0);
   --ring: var(--vict-color-focusRing);
   --destructive: var(--vict-color-danger);
 }

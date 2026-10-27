@@ -46,63 +46,109 @@ const semanticJson = (value: unknown): string =>
 /** Inventory asset-bearing props, their local-state bindings, graph media fields
  * and canonical declarations. Human-readable text is not an asset dependency.
  * Looking only at document.assets would miss directly authored managed media. */
-function managedReferences(document: UiDocument): Set<string> {
+function managedReferences(document: UiDocument): {
+  references: Set<string>;
+  unverified: string[];
+} {
   const references = new Set<string>();
+  const unverified = new Set<string>();
+  let visited = 0;
   const mediaReference = (value: unknown): void => {
     if (typeof value !== 'string' || !value.startsWith('asset:')) return;
     if (!/^asset:sha256:[a-f0-9]{64}$/.test(value))
       throw Error('The source contains an invalid managed asset reference.');
     references.add(value);
   };
-  const expressionValue = (value: unknown): unknown => {
-    if (!object(value)) return value;
-    if (value.type === 'literal') return value.value;
-    if (value.type === 'ref' && typeof value.path === 'string' && value.path.startsWith('state.'))
-      return document.localState[value.path.slice(6)]?.initial;
-    return undefined;
+  // Traverse possible outputs, never evaluate predicates or registered operations.
+  // Only references reached from media-bearing props inspect saved state/tokens.
+  const expressionValues = (value: unknown, location: string, depth = 0): unknown[] => {
+    if (++visited > 16_384 || depth > 64) {
+      unverified.add(`${location} (inventory bound)`);
+      return [];
+    }
+    if (!object(value)) return [value];
+    if (value.type === 'literal') return [value.value];
+    if (value.type === 'ref' && typeof value.path === 'string') {
+      if (
+        value.path.startsWith('state.') &&
+        Object.hasOwn(document.localState, value.path.slice(6))
+      ) {
+        const initial = document.localState[value.path.slice(6)]!.initial;
+        return Array.isArray(initial) ? [...initial] : [initial];
+      }
+      if (value.path.startsWith('token.') && Object.hasOwn(document.tokens, value.path.slice(6)))
+        return [document.tokens[value.path.slice(6)]!.value];
+      unverified.add(location);
+      return [];
+    }
+    if (value.type === 'conditionalValue')
+      return [
+        ...expressionValues(value.then, location, depth + 1),
+        ...expressionValues(value.otherwise, location, depth + 1),
+      ];
+    if (value.type === 'op' && Array.isArray(value.args)) {
+      unverified.add(location);
+      // Exact managed literals remain dependencies. Prefix fragments such as
+      // 'asset:sha256:' are computed input, not malformed complete references.
+      return value.args
+        .flatMap((arg) => expressionValues(arg, location, depth + 1))
+        .filter(
+          (candidate) =>
+            typeof candidate !== 'string' ||
+            !candidate.startsWith('asset:') ||
+            /^asset:sha256:[a-f0-9]{64}$/.test(candidate),
+        );
+    }
+    unverified.add(location);
+    return [];
   };
   for (const node of Object.values(document.nodes)) {
     if (node.kind === 'element' && node.tag === 'img')
-      mediaReference(expressionValue(node.attributes?.src));
+      expressionValues(node.attributes?.src, `${node.id}.src`).forEach(mediaReference);
     if (node.kind !== 'component') continue;
     for (const key of ['source', 'src', 'poster', 'captions'])
-      mediaReference(expressionValue(node.props?.[key]));
+      expressionValues(node.props?.[key], `${node.id}.${key}`).forEach(mediaReference);
     if (node.definitionId !== 'vict.flow.editor') continue;
-    const serialized = expressionValue(node.props?.graph);
-    if (typeof serialized !== 'string') continue;
-    let model: unknown;
-    try {
-      model = JSON.parse(serialized);
-    } catch {
-      continue;
-    }
-    if (
-      !object(model) ||
-      model.schema !== 'vict.flow-graph@1' ||
-      !Array.isArray(model.nodeTypes) ||
-      !Array.isArray(model.nodes)
-    )
-      continue;
-    const fields = new Map<string, Record<string, unknown>[]>();
-    for (const type of model.nodeTypes) {
-      if (!object(type) || typeof type.id !== 'string' || !Array.isArray(type.fields)) continue;
-      const mediaFields = type.fields.filter(
-        (field: unknown): field is Record<string, unknown> =>
-          object(field) && ['image', 'video', 'icon', 'vector'].includes(String(field.kind)),
-      );
-      fields.set(type.id, mediaFields);
-      for (const field of mediaFields) {
-        mediaReference(field.default);
-        if (object(field.media)) {
-          mediaReference(field.media.poster);
-          mediaReference(field.media.captions);
+    for (const serialized of expressionValues(node.props?.graph, `${node.id}.graph`)) {
+      if (typeof serialized !== 'string') continue;
+      let model: unknown;
+      try {
+        model = JSON.parse(serialized);
+      } catch {
+        continue;
+      }
+      if (
+        !object(model) ||
+        model.schema !== 'vict.flow-graph@1' ||
+        !Array.isArray(model.nodeTypes) ||
+        !Array.isArray(model.nodes)
+      )
+        continue;
+      const fields = new Map<string, Record<string, unknown>[]>();
+      for (const type of model.nodeTypes) {
+        if (!object(type)) continue;
+        if (object(type.icon)) mediaReference(type.icon.source);
+        if (typeof type.id !== 'string' || !Array.isArray(type.fields)) continue;
+        const mediaFields = type.fields.filter(
+          (field: unknown): field is Record<string, unknown> =>
+            object(field) && ['image', 'video', 'icon', 'vector'].includes(String(field.kind)),
+        );
+        fields.set(type.id, mediaFields);
+        for (const field of mediaFields) {
+          mediaReference(field.default);
+          if (object(field.media)) {
+            mediaReference(field.media.poster);
+            mediaReference(field.media.captions);
+          }
         }
       }
-    }
-    for (const member of model.nodes) {
-      if (!object(member) || typeof member.type !== 'string' || !object(member.values)) continue;
-      for (const field of fields.get(member.type) ?? [])
-        if (typeof field.id === 'string') mediaReference(member.values[field.id]);
+      for (const member of model.nodes) {
+        if (!object(member)) continue;
+        if (object(member.icon)) mediaReference(member.icon.source);
+        if (typeof member.type !== 'string' || !object(member.values)) continue;
+        for (const field of fields.get(member.type) ?? [])
+          if (typeof field.id === 'string') mediaReference(member.values[field.id]);
+      }
     }
   }
   for (const asset of Object.values(document.assets))
@@ -114,7 +160,7 @@ function managedReferences(document: UiDocument): Set<string> {
         );
       references.add(`asset:sha256:${digest}`);
     }
-  return references;
+  return { references, unverified: [...unverified] };
 }
 
 export async function prepareSourceImport(text: string): Promise<SourceImportResult> {
@@ -192,8 +238,11 @@ export async function prepareSourceImport(text: string): Promise<SourceImportRes
     );
   }
   let required: Set<string>;
+  let unverified: readonly string[];
   try {
-    required = managedReferences(document);
+    const inventory = managedReferences(document);
+    required = inventory.references;
+    unverified = inventory.unverified;
   } catch (error) {
     return fail(
       'STUDIO_IMPORT_ASSET_REFERENCE',
@@ -258,6 +307,11 @@ export async function prepareSourceImport(text: string): Promise<SourceImportRes
     return fail(
       'STUDIO_IMPORT_MEDIA_MISSING',
       `${missing.length} managed media reference${missing.length === 1 ? ' has' : 's have'} no validated bytes in this export. Include a media archive before importing.`,
+    );
+  if (unverified.length)
+    return fail(
+      'STUDIO_IMPORT_MEDIA_DYNAMIC',
+      `Saved bytes cannot prove computed or runtime media outputs at ${unverified.slice(0, 4).join(', ')}. This importer supports literal sources, saved state/token values and their conditional branches; future constructed URLs require a supported media resolver.`,
     );
   return { ok: true, document: structuredClone(document), assets, originalDocumentId: document.id };
 }

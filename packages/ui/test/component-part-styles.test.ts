@@ -39,13 +39,25 @@ describe('explicit semantic component part presentation',()=>{
   });
 });
 describe('versioned application theme',()=>{
+  it('emits explicit semantic markers only for authored roles',()=>{
+    const plain=compileUiDocument(source(),catalogs.elements,[descriptor]);expect(plain.ok).toBe(true);if(!plain.ok)return;
+    expect(plain.plan.style.rules.flatMap(rule=>rule.declarations).some(declaration=>declaration.property.startsWith('--vict-theme-'))).toBe(false);
+    const themed=compileUiDocument({...source(),theme:{schema:'vict.ui-theme@1',roles:{text:'#123456',accent:'#234567',accentText:'#fafafa'}}},catalogs.elements,[descriptor]);expect(themed.ok).toBe(true);if(!themed.ok)return;
+    const declarations=themed.plan.style.rules.find(rule=>rule.selector===':root')?.declarations;
+    expect(declarations).toEqual(expect.arrayContaining([
+      {property:'--vict-theme-text',value:{type:'literal',value:'#123456'}},
+      {property:'--vict-theme-accent',value:{type:'literal',value:'#234567'}},
+      {property:'--vict-theme-accent-text',value:{type:'literal',value:'#fafafa'}},
+    ]));
+    expect(declarations?.some(declaration=>declaration.property==='--vict-theme-surface')).toBe(false);
+  });
   it('compiles coherent semantic aliases on scoped roots and changes canonical identity',()=>{
     const before=source();
     const result=applyUiEdit({document:before,revision:'1'},{requestId:'theme',expectedDocumentRevision:'1',commands:[{op:'setThemeRole',role:'surface',value:'#182030'},{op:'setThemeRole',role:'text',value:'#fafafa'}]},catalogs);
     expect(result.ok).toBe(true);if(!result.ok)return;
     const compiled=compileUiDocument(result.document,catalogs.elements,[descriptor]);expect(compiled.ok).toBe(true);if(!compiled.ok)return;
     const roles=compiled.plan.style.rules.find(rule=>rule.selector===':root')?.declarations;
-    expect(roles).toEqual(expect.arrayContaining([{property:'--vict-color-surface',value:{type:'literal',value:'#182030'}},{property:'--background',value:{type:'literal',value:'#182030'}},{property:'--foreground',value:{type:'literal',value:'#fafafa'}}]));
+    expect(roles).toEqual(expect.arrayContaining([{property:'--vict-theme-surface',value:{type:'literal',value:'#182030'}},{property:'--vict-color-surface',value:{type:'literal',value:'#182030'}},{property:'--background',value:{type:'literal',value:'#182030'}},{property:'--foreground',value:{type:'literal',value:'#fafafa'}}]));
     expect(canonicalUiDocument(result.document).contentDigest).not.toBe(canonicalUiDocument(before).contentDigest);
   });
   it('refuses unknown roles, executable markup and malformed schema',()=>{

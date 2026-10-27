@@ -1,0 +1,27 @@
+{
+  "scope": "Independent scoped repair review above bf8f806; integrated exact-commit gate remains pending",
+  "reviewer": "independent_import",
+  "importer": {
+    "verdict": "PASS",
+    "tests": "Independent fresh focused source-import suite17/17 exit0,50.49s; sandbox cacheEPERM retained, approved rerun succeeded",
+    "sourceSha256": "60A81CEA430126065CB769358AE43184B342BB5FCB306AF34741DA13056BA5C2",
+    "testSha256": "1A045AC7DB2D53420DD89DCB87B2A01C2C72A22926E6690AFA574106CCC6CACD",
+    "boundary": "Static graph family/instance icon sources and conditional branches inventoried; unprovable generated/runtime URLs refuse, no expression execution"
+  },
+  "capture": {
+    "initialVerdict": "HOLD",
+    "findings": ["Lifted overlays reversed equal-z ordinary sibling paint order", "Static viewport made relative changed absolute containing blocks", "Quoted comma font-family could evade unsupported-webfont guard"],
+    "repairVerdict": "Scoped PASS after independent final source review",
+    "sourceSha256": "DCDB0DDE72B9BA436E76C0742497913F2F3B297F0BDA85513B127B15E269B5FE",
+    "tests": "Builder33/33 plus source TypeScript; reviewer inspected results and source, did not rerun unchanged tests",
+    "limits": "Conservative explicit refusals retained. Native positive alignment proof precedes final guard-only amendments; affected final native recheck and integrated build pending. Not comprehensive capture closure."
+  },
+  "styles": {
+    "initialFinding": "Literal root target priority promotion missed generic primary presentation targets",
+    "repairVerdict": "Scoped PASS: styleTargets[0] promotion preserves canonical per-node source/local ordering",
+    "sourceSha256": "E38A1C685677D4574A8433A7F7E1B4DFFD66C223FD1198AAE124A510CB8EAFFC",
+    "tests": "Builder8 renderer cases plus7 core theme cases, TypeScript and CSS build; independent reviewed source/logs",
+    "native": "Six browser cases confirmed defaults, custom aliases, explicit theme and explicit parts. Saved actual-agent chat repaired appearance confirmed by native browser and actual-agent single image observation."
+  },
+  "closure": "No independent integrated gate verdict, device verification or owner acceptance inferred. Historical failed observations retained."
+}
