@@ -2,6 +2,8 @@
 
 Status: IMPLEMENTATION AUTHORIZED / IN PROGRESS. No finding is closed by this plan.
 
+2026-10-27 later owner authority: the exact three-file graph `unsetField`/`setCyclePolicy` extension is specifically approved, and actual Studio-agent trials may use the existing Z.ai yearly Coding Plan subscription route only. Its five-hour quota limitation is a stop boundary. Standard metered API, OpenAI fallback, topups/new subscriptions and new persistent credential/access provisioning are not authorized. This supersedes earlier provider-budget-pending statements below. No Git push/merge/publication/deployment permission was granted.
+
 ## Authority and baseline
 
 On 2026-10-27 the owner authorized full authoring-foundation implementation and ordinary repair/verification through a review-ready candidate, superseding the earlier report-only boundary. The delegated instruction preserves all AR-01–29 and later amendments, including the Langflow-style rich-node target, mobile readiness, media, icons and vectors. Final owner acceptance remains separate. No merge, publication, deployment, paid provider run, security/credential change, deletion of owner work or push is authorized.

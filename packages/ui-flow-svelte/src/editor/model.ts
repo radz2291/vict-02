@@ -471,11 +471,13 @@ export function connectionIssue(graph: GraphDocument, edge: GraphEdge): GraphIss
   return undefined;
 }
 export type GraphOperation =
+  | { type: 'setCyclePolicy'; allowCycles: boolean }
   | { type: 'defineNodeType'; definition: GraphNodeType; replace?: boolean }
   | { type: 'removeNodeType'; nodeType: string }
   | { type: 'addNode'; nodeType: string; id?: string; position?: { x: number; y: number } }
   | { type: 'moveNodes'; positions: Record<string, { x: number; y: number }> }
   | { type: 'setField'; nodeId: string; fieldId: string; value: GraphValue }
+  | { type: 'unsetField'; nodeId: string; fieldId: string }
   | { type: 'setLabel'; nodeId: string; label: string }
   | { type: 'setIcon'; nodeId: string; icon: GraphIconReference | null }
   | { type: 'collapse'; nodeId: string; collapsed: boolean }
@@ -502,11 +504,13 @@ export function parseGraphOperations(input: unknown): GraphOperationsResult {
       ],
     };
   const allowed: Record<string, string[]> = {
+    setCyclePolicy:['type','allowCycles'],
     defineNodeType: ['type', 'definition', 'replace'],
     removeNodeType: ['type', 'nodeType'],
     addNode: ['type', 'nodeType', 'id', 'position'],
     moveNodes: ['type', 'positions'],
     setField: ['type', 'nodeId', 'fieldId', 'value'],
+    unsetField:['type','nodeId','fieldId'],
     setLabel: ['type', 'nodeId', 'label'],
     setIcon: ['type', 'nodeId', 'icon'],
     collapse: ['type', 'nodeId', 'collapsed'],
@@ -559,6 +563,7 @@ export function parseGraphOperations(input: unknown): GraphOperationsResult {
       issue(`${path}.positions`, 'Supply a bounded nonempty map of node IDs to finite x/y.');
     if (entry.type === 'setField' && !valueOk(entry.value))
       issue(`${path}.value`, 'Supply a supported bounded field value.');
+    if(entry.type==='setCyclePolicy'&&typeof entry.allowCycles!=='boolean')issue(`${path}.allowCycles`,'Supply a boolean cycle-policy choice.');
     if (entry.type === 'setLabel' && !text(entry.label))
       issue(`${path}.label`, 'Supply a nonempty bounded label.');
     if (entry.type === 'collapse' && typeof entry.collapsed !== 'boolean')
@@ -685,6 +690,7 @@ export function applyGraphOperations(
       const requireNode = (id: string) =>
         next.nodes.find((node) => node.id === id) ?? error(`Unknown node ${id}.`);
       switch (operation.type) {
+        case 'setCyclePolicy':next.allowCycles=operation.allowCycles;break;
         case 'defineNodeType': {
           const index = next.nodeTypes.findIndex((type) => type.id === operation.definition.id);
           if (index >= 0 && !operation.replace)
@@ -733,6 +739,7 @@ export function applyGraphOperations(
           node.values[field.id] = clone(operation.value);
           break;
         }
+        case 'unsetField':delete requireNode(operation.nodeId).values[operation.fieldId];break;
         case 'setLabel':
           requireNode(operation.nodeId).label = operation.label;
           break;

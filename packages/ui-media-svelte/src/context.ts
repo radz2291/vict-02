@@ -4,6 +4,7 @@ import type { IconRegistry } from './icons.js';
 export const MEDIA_HOST = Symbol.for('vict.ui-media.host@1');
 export type EmbedProvider = 'youtube' | 'vimeo';
 export interface MediaHost {
+  readonly namespace: string;
   readonly assets: MediaAssetStore;
   readonly icons: IconRegistry;
   readonly embedProviders: readonly EmbedProvider[];

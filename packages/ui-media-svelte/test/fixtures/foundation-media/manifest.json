@@ -1,0 +1,12 @@
+{
+  "schema": "vict.synthetic-media-fixtures@1",
+  "provenance": "Generated locally with installed FFmpeg 8.1.1 lavfi sources; original synthetic SVG/VTT. No downloads, user media or provider calls.",
+  "files": [
+    {"name":"synthetic-image.png","mime":"image/png","size":7350,"reference":"asset:sha256:5c3afc101e908624396dd99b1c37503f41b8b2accd68a320d9ac75cc57af6978","width":320,"height":180},
+    {"name":"synthetic-poster.png","mime":"image/png","size":678,"reference":"asset:sha256:9a2af942bb0fe1ab83336c068f3e8646ca8247ab31aa26dcc7ed52b45b2ca74c","width":320,"height":180},
+    {"name":"synthetic-video.mp4","mime":"video/mp4","size":82613,"reference":"asset:sha256:a5a10026aa8b9b33a76e9b58d89b9fd190557759ac672f5de8be231211027cd1","width":320,"height":180,"durationSeconds":2,"videoCodec":"h264","audioCodec":"aac","audio":"Synthetic 440 Hz sine"},
+    {"name":"synthetic-captions.vtt","mime":"text/vtt","size":136,"reference":"asset:sha256:2537c65d6abd5d910b304a7380daf7dbf3151064fc83f71c2ed9acfa981145fd","cues":2},
+    {"name":"synthetic-brand.svg","mime":"image/svg+xml","size":524,"reference":"asset:sha256:c468e614c6163875d52c38698c04472603524bbe6f7188e44366a3f80c517614","viewBox":"0 0 120 120","features":["gradient","clipPath","multiple brand colours"]},
+    {"name":"synthetic-invalid.mp4","expected":"Reject on upload: declared video/mp4 extension with plain-text bytes; do not add to the media inventory."}
+  ]
+}

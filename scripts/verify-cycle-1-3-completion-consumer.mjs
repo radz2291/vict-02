@@ -9,7 +9,8 @@ const npm=process.platform==='win32'?'npm.cmd':'npm';
 function run(args,cwd){return execFileSync(npm,args,{cwd,encoding:'utf8',shell:process.platform==='win32',maxBuffer:8*1024*1024});}
 const artifacts=join(destination,'artifacts');mkdirSync(artifacts);
 const packs=[];
-for(const name of ['ui-ai-svelte','ui-flow-svelte']){
+// Flow imports managed media at runtime; vendor that candidate dependency too.
+for(const name of ['ui-media-svelte','ui-ai-svelte','ui-flow-svelte']){
   const result=JSON.parse(run(['pack','--json','--pack-destination',artifacts],join(root,'packages',name)))[0];
   const path=join(artifacts,result.filename);packs.push({name:`@victframework/${name}`,path,sha256:createHash('sha256').update(readFileSync(path)).digest('hex')});
 }

@@ -1,4 +1,6 @@
 import { ModelRouterLanguageModel } from '@mastra/core/llm';
+import { classifyProviderLimit } from './provider-limit.js';
+import { providerLimitCode,type ProviderLimitEvidence } from '$lib/designer/provider-limit.js';
 
 interface StreamPart {
   readonly type: string;
@@ -11,6 +13,7 @@ interface StreamPart {
 interface StreamResult {
   readonly stream: ReadableStream<StreamPart>;
 }
+const dataProperty=(value:unknown,key:string):unknown=>{if(!value||typeof value!=='object')return;try{const descriptor=Object.getOwnPropertyDescriptor(value,key);return descriptor&&'value'in descriptor?descriptor.value:undefined;}catch{return;}};
 /** Host model seam, following the existing Quellight deadline composition.
  * The real router/SDK still performs inference. This only contains thrown and
  * rejected provider failures, stalled streams and cancellation. No retry. */
@@ -18,8 +21,9 @@ export function boundedProviderModel<T extends object>(
   model: T,
   signal: AbortSignal,
   deadlineAt: number,
-  onFailure?: (code: string) => void,
+  onFailure?: (code: string, evidence?:ProviderLimitEvidence) => void,
   observe?: (event: { kind: 'request' } | { kind: 'usage'; usage: unknown }) => void,
+  providerContext?:{provider?:'zai'},
 ): T {
   const source = model as T & { doStream: (options: unknown) => Promise<StreamResult> };
   const original = source.doStream.bind(model);
@@ -49,12 +53,13 @@ export function boundedProviderModel<T extends object>(
           if (timer) clearTimeout(timer);
           signal.removeEventListener('abort', abort);
         };
-        const fail = (code = 'STUDIO_AGENT_PROVIDER_FAILED') => {
+        const fail = (code = 'STUDIO_AGENT_PROVIDER_FAILED', evidence?:ProviderLimitEvidence) => {
           if (closed) return;
           closed = true;
           cleanup();
-          const safeCode = signal.aborted ? 'STUDIO_AGENT_CANCELLED' : code;
-          onFailure?.(safeCode);
+          const expired=Date.now()>=deadlineAt;
+          const safeCode = signal.aborted ? 'STUDIO_AGENT_CANCELLED' : expired?'STUDIO_AGENT_PROVIDER_FAILED':code;
+          if(evidence&&!signal.aborted&&!expired)onFailure?.(safeCode,evidence);else onFailure?.(safeCode);
           upstreamAbort.abort();
           try {
             if (!streamStarted) {
@@ -68,6 +73,7 @@ export function boundedProviderModel<T extends object>(
           }
           void reader?.cancel().catch(() => undefined);
         };
+        const providerFailure=(error:unknown)=>{const evidence=classifyProviderLimit(error,providerContext?.provider);fail(evidence?providerLimitCode(evidence.kind):'STUDIO_AGENT_PROVIDER_FAILED',evidence);};
         abort = () => fail();
         signal.addEventListener('abort', abort, { once: true });
         timer = setTimeout(fail, Math.max(0, deadlineAt - Date.now()));
@@ -98,7 +104,7 @@ export function boundedProviderModel<T extends object>(
               }
               // Error objects never cross from provider code into framework logs.
               if (next.value.type === 'error') {
-                fail();
+                providerFailure(dataProperty(next.value,'error'));
                 break;
               }
               // Never let the framework repair/execute a partial JSON edit.
@@ -111,11 +117,13 @@ export function boundedProviderModel<T extends object>(
                   break;
                 }
               }
-              const finishReason = next.value.finishReason;
+              const finishReason = dataProperty(next.value,'finishReason');
+              const unified=dataProperty(finishReason,'unified');
+              if(next.value.type==='finish'&&(finishReason==='error'||unified==='error')){providerFailure(dataProperty(next.value,'error'));break;}
               if (
                 next.value.type === 'finish' &&
                 (finishReason === 'length' ||
-                  (typeof finishReason === 'object' && finishReason?.unified === 'length'))
+                  unified === 'length')
               ) {
                 fail('STUDIO_AGENT_OUTPUT_LIMIT');
                 break;
@@ -124,8 +132,8 @@ export function boundedProviderModel<T extends object>(
               if (next.value.type === 'stream-start') streamStarted = true;
               controller.enqueue(next.value);
             }
-          } catch {
-            fail();
+          } catch (error) {
+            providerFailure(error);
           } finally {
             if (closed) cleanup();
             try {

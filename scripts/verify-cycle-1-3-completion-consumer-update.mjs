@@ -12,7 +12,8 @@ const sha=execFileSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8'}).tr
 const artifacts=join(initial.destination,`completion-${sha.slice(0,12)}`);mkdirSync(artifacts,{recursive:true});
 const manifest=JSON.parse(readFileSync(join(consumer,'package.json'),'utf8'));
 const packs=[];
-for(const name of ['ui-ai-svelte','ui-flow-svelte']){
+// Flow imports managed media at runtime; vendor that candidate dependency too.
+for(const name of ['ui-media-svelte','ui-ai-svelte','ui-flow-svelte']){
   const packed=JSON.parse(run(['pack','--json','--pack-destination',artifacts],join(root,'packages',name)))[0];
   const path=join(artifacts,packed.filename);manifest.dependencies[`@victframework/${name}`]=`file:${path.replaceAll('\\','/')}`;
   packs.push({name,path,sha256:createHash('sha256').update(readFileSync(path)).digest('hex')});

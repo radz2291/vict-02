@@ -1,4 +1,5 @@
-export interface ToolFailure { tool: string; code: string; phase?: string; reason?: string }
+import type { ProviderLimitEvidence } from './provider-limit.js';
+export interface ToolFailure { tool: string; code: string; phase?: string; reason?: string;providerLimit?:ProviderLimitEvidence }
 export interface TurnMetrics {
   partial?: true;
   elapsedMs: number;

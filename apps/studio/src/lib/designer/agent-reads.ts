@@ -11,11 +11,12 @@ import { studioPreviewHost } from './preview-host.js';
 import { effectiveNodeCapabilities, scopedSourceNodes, sourceNodeSearchText, sourceChildren } from './agent-discovery.js';
 import { preflightShapeDiagnostics } from './agent-preflight.js';
 import { suppliedIconManifest, searchIconManifest } from '@victframework/ui-media-svelte/manifest';
+import {canonicalAssetMediaFacts,MEDIA_SOURCE_GUIDANCE,agentMediaInventorySchema,type AgentMediaInventory} from './media-assets.js';
 const registries=['componentDefinitions','styleSources','tokens','conditions','assets'] as const;
-const readSections=['overview','nodes','source','sources','capabilities','preflight','icons','palette','component','state','registry','actions','coverage','families','catalog','contracts','elements'] as const;
+const readSections=['overview','nodes','source','sources','capabilities','preflight','icons','media','palette','component','state','registry','actions','coverage','families','catalog','contracts','elements'] as const;
 /** Keep the legacy envelope, but refuse fields the selected section would ignore. */
 const sectionFields:Record<typeof readSections[number],readonly string[]>={
-  overview:[],nodes:['nodeId','scope','query'],source:['nodeId'],sources:['nodeIds'],capabilities:['nodeId'],preflight:['edit'],icons:['query','key'],
+  overview:[],nodes:['nodeId','scope','query'],source:['nodeId'],sources:['nodeIds'],capabilities:['nodeId'],preflight:['edit'],icons:['query','key'],media:['query','key'],
   palette:['query'],component:['recipe'],state:['stateKey'],registry:['registry','key','query'],actions:[],coverage:['requested'],
   families:['query'],catalog:['query','family','category','tag'],contracts:['components','knownDigests','includeExamples','expectedBodyIdentities','knownBodyIdentities'],elements:['tag','query'],
 };
@@ -41,6 +42,7 @@ export const agentReadSchema = z.object({
   if(query.section==='registry'&&query.key&&query.query)ctx.addIssue({code:'custom',path:['query'],message:'query filters the registry inventory; it cannot be combined with an exact key.'});
   if(query.section==='elements'&&query.tag&&query.query)ctx.addIssue({code:'custom',path:['query'],message:'query filters the element inventory; it cannot be combined with an exact tag.'});
   if(query.section==='icons'&&query.key&&query.query)ctx.addIssue({code:'custom',path:['query'],message:'query searches supplied icons; it cannot be combined with an exact icon key.'});
+  if(query.section==='media'&&query.key&&query.query)ctx.addIssue({code:'custom',path:['query'],message:'query searches host-reported media; it cannot be combined with an exact asset reference key.'});
 });
 export const agentReadPresentation = { type:'object',additionalProperties:false,properties:{
   section:{type:'string',enum:[...readSections]},
@@ -128,7 +130,7 @@ export interface AgentReadResult {
   selection?: { occurrence?: string; nodeId: string; repeated: boolean } | null;
   [key:string]: unknown;
 }
-export function agentContext(document: UiDocument, cursor: AgentCursor, selection?: string, input: unknown = {}, selectedSet?:SelectionSet): AgentReadResult {
+export function agentContext(document: UiDocument, cursor: AgentCursor, selection?: string, input: unknown = {}, selectedSet?:SelectionSet, mediaInventory?:AgentMediaInventory): AgentReadResult {
   const parsed = agentReadSchema.safeParse(input);
   if (!parsed.success) return { ok:false,code:'STUDIO_AGENT_READ_QUERY',message:'Use section, offset and limit (1–20). source requires nodeId; component requires recipe; stateKey pages a state declaration; registry needs its registry name and optional key.',diagnostics:parsed.error.issues.slice(0,4).map(issue => ({path:issue.path.join('.'),message:issue.message})) };
   const query = parsed.data;
@@ -137,7 +139,15 @@ export function agentContext(document: UiDocument, cursor: AgentCursor, selectio
   const textPage=(value:unknown)=>{const source=JSON.stringify(value);const length=Math.min(query.limit*300,6000);return {sourceJson:source.slice(query.offset,query.offset+length),totalCharacters:source.length,offset:query.offset,nextOffset:query.offset+length<source.length ? query.offset+length : null};};
   let result: Record<string, unknown>;
   const nodes = Object.values(document.nodes);
-  if(query.section==='icons') {
+  if(query.section==='media'){
+    if(!mediaInventory)return {...base,ok:false,code:'STUDIO_AGENT_MEDIA_UNAVAILABLE',message:'The host has not supplied current application media metadata. Reveal the media library and refresh its inventory; no absence or loading conclusion follows.'};
+    const checked=agentMediaInventorySchema.safeParse(mediaInventory);
+    if(!checked.success||checked.data.documentId!==document.id)return {...base,ok:false,code:'STUDIO_AGENT_MEDIA_CONTEXT',message:'Media metadata is invalid or belongs to another document. Refresh the current application inventory; no other document data was returned.'};
+    const inventory=checked.data,metadata={documentId:inventory.documentId,listedAt:inventory.listedAt,scope:'current-application-asset-store',evidence:'Host-reported metadata at listedAt. This is not current byte retrieval, decoded media, playback, caption, or visual-observation proof.',snapshotItems:inventory.items.length,storeTotal:inventory.total,truncated:inventory.truncated};
+    if(query.key){const asset=inventory.items.find(item=>item.reference===query.key);if(!asset)return {...base,ok:false,code:'STUDIO_AGENT_MEDIA_NOT_FOUND',inventory:metadata,message:inventory.truncated?'This exact reference is absent from the supplied bounded snapshot; the store inventory is truncated, so absence from the store is not established.':'This exact reference was absent at the host listing time. Refresh after supplying an asset.'};result={...base,inventory:metadata,asset,guidance:MEDIA_SOURCE_GUIDANCE};}
+    else{const filtered=inventory.items.filter(asset=>!query.query||`${asset.name} ${asset.mime} ${asset.reference}`.toLowerCase().includes(query.query.toLowerCase()));result={...base,inventory:metadata,...page(filtered),guidance:MEDIA_SOURCE_GUIDANCE};}
+  }
+  else if(query.section==='icons') {
     const identity=(item:typeof suppliedIconManifest[number])=>`${item.pack}/${item.name}@${item.revision}`;
     if(query.key){
       const item=suppliedIconManifest.find(item=>identity(item)===query.key);
@@ -230,8 +240,8 @@ export function agentContext(document: UiDocument, cursor: AgentCursor, selectio
   } else if(query.section === 'registry'){
     if(!query.registry)return {...base,ok:false,code:'STUDIO_AGENT_READ_QUERY',message:'registry requires one of: '+registries.join(', ')};
     const registry=document[query.registry];
-    if(query.key){if(!Object.hasOwn(registry,query.key))return {...base,ok:false,code:'STUDIO_AGENT_REGISTRY_KEY_NOT_FOUND',message:'Use an existing key from this registry inventory.'};result={...base,registry:query.registry,key:query.key,...textPage((registry as Readonly<Record<string,unknown>>)[query.key])};}
-    else result={...base,registry:query.registry,...page(Object.entries(registry).filter(([key])=>!query.query||key.toLowerCase().includes(query.query.toLowerCase())).map(([key,value])=>({key,sourcePreview:truncate(JSON.stringify(value),600)})))};
+    if(query.key){if(!Object.hasOwn(registry,query.key))return {...base,ok:false,code:'STUDIO_AGENT_REGISTRY_KEY_NOT_FOUND',message:'Use an existing key from this registry inventory.'};result={...base,registry:query.registry,key:query.key,...textPage((registry as Readonly<Record<string,unknown>>)[query.key]),...(query.registry==='assets'?{media:canonicalAssetMediaFacts(document.assets[query.key]!),guidance:MEDIA_SOURCE_GUIDANCE}:{})};}
+    else result={...base,registry:query.registry,...page(Object.entries(registry).filter(([key])=>!query.query||key.toLowerCase().includes(query.query.toLowerCase())).map(([key,value])=>({key,sourcePreview:truncate(JSON.stringify(value),600),...(query.registry==='assets'?canonicalAssetMediaFacts(document.assets[key]!):{})}))),...(query.registry==='assets'?{guidance:MEDIA_SOURCE_GUIDANCE}:{})};
   }
   else if (query.section === 'actions') result = { ...base,actions:designerCatalogs.actionIds,actionInputs };
   else if (query.section === 'coverage') { const coverage = agentCoverage(document,query.requested); const {missing,...counts} = coverage; result = { ...base,...counts,...page(missing) }; }
@@ -242,7 +252,7 @@ export function agentContext(document: UiDocument, cursor: AgentCursor, selectio
       ...(selectedSet?{selectionSet:selectionContext(document,selectedSet,{descriptors:catalogDescriptors,actionState:screenActionState,actionIds:designerCatalogs.actionIds,routeIds:designerCatalogs.routeIds})}:{}),
       roots:nodes.filter(node => node.id === document.root).map(nodeSummary),
       previewHost:studioPreviewHost,
-      knowledge:{registryDigest:installedAuthoringRegistry.digest,contracts:installedAuthoringRegistry.contracts.length,families:new Set(installedAuthoringRegistry.contracts.map(item=>item.family)).size,ready:installedAuthoringRegistry.ok,suppliedIconCount:suppliedIconManifest.length,icons:'Read icons with query/offset/limit or exact key for installed pack/name/revision and provenance; glyphs are never embedded in initial context.',
+      knowledge:{registryDigest:installedAuthoringRegistry.digest,contracts:installedAuthoringRegistry.contracts.length,families:new Set(installedAuthoringRegistry.contracts.map(item=>item.family)).size,ready:installedAuthoringRegistry.ok,suppliedIconCount:suppliedIconManifest.length,icons:'Read icons with query/offset/limit or exact key for installed pack/name/revision and provenance; glyphs are never embedded in initial context.',media:'Read media with query/offset/limit or exact asset reference key for host-reported name/MIME/size/digest at its document-bound listedAt time. Read registry assets for canonical digest/external declarations separately. No bytes/provenance enter this inventory; metadata is not load/playback proof.',
         discovery:'families → catalog with family/category/query → contracts with selected components and knownDigests. Native tags use elements; recipes use palette. Knowledge freshness is separate from this source cursor.'},
       discovery:'Read nodes with optional nodeId (defaults to that source subtree), scope:self|subtree and semantic query; no nodeId means the full inventory. Inactive branches/templates are source, not proof of visibility; shared component definitions are not expanded implicitly. Read capabilities with nodeId before proposing part/state edits. Read source with nodeId or sources with up to8 nodeIds for lossless JSON text pages at this exact cursor. Read preflight with edit:{expectedRevision,reason,operations} to validate the same canonical transaction without applying it. Section-specific irrelevant fields are refused. State initialJson is a preview; state/stateKey and registry/registry/key provide lossless entry pages. Component/recipe and catalog/contracts provide exact identities and composition; coverage is source presence only. All inventory limits remain <=20.',
       editing:'Use add with a palette recipe as an accelerator, or insert kind element/text/component through the registered canonical path. Component insertion requires exact componentId/revision from catalog/contracts and explicit slotName for slot children. Native tags come from elements. declareState accepts string/number/boolean/isoDate/isoTime/stringList/numberList with a matching canonical initial value. bindText targets an actual text node; bindAttribute targets a native attribute. bind/connect use exact component props/outputs. style accepts text/token/binding values and optional conditionId/pseudo; declareToken and declareCondition add registered presentation data. defineStyleSource and attachStyleSource/detachStyleSource reuse ordered rules; replace:true explicitly updates a shared source. removeStyleSource requires no remaining references. Local styles retain precedence. Heading levels1..6 are native headings. Compatible same-batch construction is supported; final semantic/renderer checks are atomic. Read the current source after a refusal; never replay acknowledged edits merely to retry observation. Source presence, actual appearance and exercised behavior are distinct.',

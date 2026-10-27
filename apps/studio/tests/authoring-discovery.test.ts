@@ -7,6 +7,8 @@ import { documentCursor, prepareAgentEdit } from '../src/lib/designer/agent-edit
 import { agentContext, agentReadPresentation } from '../src/lib/designer/agent-reads.js';
 import { scopedSourceNodes } from '../src/lib/designer/agent-discovery.js';
 import { preflightShapeDiagnostics } from '../src/lib/designer/agent-preflight.js';
+import {validateVector} from '@victframework/ui-media-svelte/vectors';
+import {agentMediaInventorySnapshot} from '../src/lib/designer/media-assets.js';
 
 function fixture():UiDocument {
   const document=newScreen('Scoped source','scoped');
@@ -25,6 +27,37 @@ const read=(document:UiDocument,input:unknown)=>agentContext(document,cursor(doc
 const itemIds=(result:ReturnType<typeof read>)=>(result.items as {id:string}[]).map(node=>node.id);
 
 describe('implementation-linked scoped authoring discovery',()=>{
+  it('searches exact host-reported media metadata by document/list time without inventing a load verdict',()=>{
+    const document=fixture(),digest='c'.repeat(64),otherDigest='d'.repeat(64);
+    const snapshot=agentMediaInventorySnapshot(document.id,[{schema:'vict.media-asset@1',reference:`asset:sha256:${digest}`,digest,name:'pattern.png',mime:'image/png',size:7350,createdAt:'2026-10-27T00:00:00.000Z'},{schema:'vict.media-asset@1',reference:`asset:sha256:${otherDigest}`,digest:otherDigest,name:'clip.mp4',mime:'video/mp4',size:82613,createdAt:'2026-10-27T00:00:00.000Z'}],'2026-10-27T01:00:00.000Z');
+    const get=(query:unknown,inventory=snapshot)=>agentContext(document,cursor(document),undefined,query,undefined,inventory);
+    expect(get({section:'media',limit:1})).toMatchObject({items:[{name:'pattern.png',mime:'image/png'}],nextOffset:1,inventory:{documentId:document.id,listedAt:snapshot.listedAt,storeTotal:2,truncated:false}});
+    expect(get({section:'media',query:'video/mp4'}).items).toMatchObject([{name:'clip.mp4',size:82613}]);
+    expect(get({section:'media',key:`asset:sha256:${digest}`})).toMatchObject({asset:{reference:`asset:sha256:${digest}`,mime:'image/png'}});
+    expect(get({section:'media'},{...snapshot,documentId:'other-document'})).toMatchObject({ok:false,code:'STUDIO_AGENT_MEDIA_CONTEXT'});
+    expect(read(document,{section:'media'})).toMatchObject({ok:false,code:'STUDIO_AGENT_MEDIA_UNAVAILABLE'});
+    expect(get({section:'media',key:'missing',query:'png'})).toMatchObject({ok:false,code:'STUDIO_AGENT_READ_QUERY'});
+    expect(get({section:'media',key:'missing'})).toMatchObject({ok:false,code:'STUDIO_AGENT_MEDIA_NOT_FOUND'});
+  });
+  it('delivers a complete valid multi-colour vector grammar and seed through bounded contract pages',()=>{
+    const document=fixture();let offset=0,bodyIdentity:string|undefined,json='';
+    for(let attempt=0;attempt<20;attempt++){
+      const result=read(document,{section:'contracts',components:[{id:'vict.media.vector',revision:'1'}],includeExamples:true,limit:20,offset,...(offset?{expectedBodyIdentities:{'vict.media.vector@1':bodyIdentity}}:{})});
+      const item=(result.items as {id:string;contractJson:string;nextOffset:number|null;bodyIdentity:string}[]).find(item=>item.id==='vict.media.vector')!;
+      expect(item).toBeTruthy();json+=item.contractJson;bodyIdentity=item.bodyIdentity;if(item.nextOffset===null)break;offset=item.nextOffset;
+    }
+    const contract=JSON.parse(json),node=contract.seed.nodes[0],graphic=validateVector(JSON.parse(node.props.data.value));
+    expect(graphic.nodes.length).toBeGreaterThan(1);expect(JSON.stringify(graphic)).toContain('#ff3d81');
+    expect(contract.guidance.join(' ')).toContain('Complete small valid multi-colour example:');expect(contract.guidance.join(' ')).toContain('linearGradient');expect(contract.examples.length).toBeGreaterThan(0);
+  });
+  it('includes exact managed source references in asset discovery while leaving missing MIME facts explicit',()=>{
+    const original=fixture(),digest='b'.repeat(64),document={...original,assets:{'poster.png-abcdef':{id:'poster.png-abcdef',kind:'digest' as const,digest}}};
+    const inventory=read(document,{section:'registry',registry:'assets'});
+    expect(inventory.items).toMatchObject([{key:'poster.png-abcdef',sourceReference:`asset:sha256:${digest}`,mime:null,availability:'not-checked'}]);
+    const exact=read(document,{section:'registry',registry:'assets',key:'poster.png-abcdef'});
+    expect(exact.media).toMatchObject({sourceReference:`asset:sha256:${digest}`,mime:null});
+    expect(JSON.parse(exact.sourceJson as string)).toEqual(document.assets['poster.png-abcdef']);
+  });
   it('honors subtree scoping before paging and search instead of returning the global root',()=>{
     const document=fixture();
     const first=read(document,{section:'nodes',nodeId:'support',limit:2});

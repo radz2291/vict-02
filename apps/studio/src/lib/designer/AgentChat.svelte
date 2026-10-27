@@ -1,5 +1,6 @@
 <script lang="ts">
   import type {SelectionSet} from './selection-context.js';
+  import type {AgentMediaInventory} from './media-assets.js';
   import { onDestroy, onMount } from 'svelte';
   import AgentTurnEvidence from './AgentTurnEvidence.svelte';
   import { Conversation, conversationMessages, appendConversationEvent, type ConversationEvent, type ConversationActivity, type SendAccepted, type ConversationToolPayload } from '@victframework/ui-ai-svelte';
@@ -11,11 +12,12 @@
   import { uploadVisualCapture, type CaptureResult } from './visual-observation.js';
   import { createToolEvidenceConsumer, STUDIO_TOOL_EVIDENCE_SCHEMA, TOOL_ARCHIVE_SCHEMA, isToolArchiveReference, type ToolArchiveReference } from './tool-evidence.js';
   import { retainTurn, sameTurnSource, TURN_RECORD_TTL_MS, type RetainedTurn } from './turn-records.js';
+  import { isProviderLimitEvidence,providerLimitMessage,type ProviderLimitEvidence } from './provider-limit.js';
   import { createTurnMetrics, phaseFailureStatus, type ToolFailure, type TurnMetrics, type ObservedRegion } from './agent-progress.js';
   interface Props {
     screenLabel:string;
     selectionLabel:string;
-    getContext:()=>{document:UiDocument;cursor:AgentCursor;selection?:string;selectionSet?:SelectionSet;workspace?:AgentWorkspaceFacts}|undefined;
+    getContext:()=>{document:UiDocument;cursor:AgentCursor;selection?:string;selectionSet?:SelectionSet;workspace?:AgentWorkspaceFacts;mediaInventory?:AgentMediaInventory}|undefined;
     applyProposal:(proposal:AgentProposal)=>EditReceipt;
     blocked:boolean;
     getCapture?:(cursor:AgentCursor,target?:AgentCaptureTarget)=>Promise<CaptureResult>;
@@ -34,6 +36,7 @@
   let evidence=$state('');
   let lastMetrics=$state<TurnMetrics>();
   let lastRegions=$state<(ObservedRegion & {currentSource:boolean})[]>([]);
+  let lastProviderLimit=$state<ProviderLimitEvidence>();
   let retainedTurns=$state<RetainedTurn[]>([]);
   let selectedTurn=$state('latest');
   let archiveReferences=$state<ToolArchiveReference[]>([]);
@@ -50,6 +53,7 @@
   const detailReceipts=$derived(selectedRecord?.receipts??(selectedTurn==='latest'?receipts:{}));
   const detailEvidence=$derived(selectedRecord?.evidence??(selectedTurn==='latest'?evidence:''));
   const detailArchives=$derived(selectedRecord?.archives??(selectedTurn==='latest'?archiveReferences:[]));
+  const detailProviderLimit=$derived(selectedRecord?.providerLimit??(selectedTurn==='latest'?lastProviderLimit:undefined));
   let disposed=false;
   let panel=$state<HTMLElement>();
   let detailsBoundary=$state<HTMLElement>();
@@ -98,7 +102,7 @@
     detailsBoundary=panel?.querySelector<HTMLElement>('.vict-conversation') ?? undefined;
     detailsAnchor=panel?.querySelector<HTMLFormElement>('.vict-conversation-input') ?? undefined;
     void configure();
-    const expiry=setInterval(()=>{retainedTurns=retainedTurns.filter(item=>item.expiresAt>Date.now());if(selectedTurn!=='latest'&&!retainedTurns.some(item=>item.id===selectedTurn))selectedTurn='latest';if(!busy&&!retainedTurns.length){lastMetrics=undefined;lastRegions=[];progress=[];diagnostics={};receipts={};evidence='';archiveReferences=[];archivePages={};}},30_000);
+    const expiry=setInterval(()=>{retainedTurns=retainedTurns.filter(item=>item.expiresAt>Date.now());if(selectedTurn!=='latest'&&!retainedTurns.some(item=>item.id===selectedTurn))selectedTurn='latest';if(!busy&&!retainedTurns.length){lastMetrics=undefined;lastRegions=[];lastProviderLimit=undefined;progress=[];diagnostics={};receipts={};evidence='';archiveReferences=[];archivePages={};}},30_000);
     return ()=>clearInterval(expiry);
   });
   function toolLabel(tool:string){return tool==='studio_screen_read'?'Read screen':tool==='studio_screen_edit'?'Edit screen':tool==='studio_screen_observe'?'Observe preview':tool;}
@@ -165,7 +169,7 @@
     function finishPending(detail:string,cancelled=false){settle((timelines[messageId]??[]).filter(item=>item.kind==='activity'&&(item.activity.state==='running'||item.activity.state==='pending')).map(item=>item.id),cancelled?'cancelled':'failed',detail);}
     timelines={...timelines,[messageId]:[]};
     const turn:LocalTurn={identity:crypto.randomUUID(),source:{...context.cursor},task:continuation?.task??text,startedAt:Date.now(),controller:new AbortController(),runId:'',runIdentity:'',applied:0,cancelled:false,metrics:createTurnMetrics()};activeTurn=turn;
-    busy=true;failed=false;selectedTurn='latest';archiveReferences=[];progress=[];diagnostics={};receipts={};evidence='';lastMetrics=undefined;lastRegions=[];let done=false;let sent=false;let lastRefusal='';let separateReply=false;
+    busy=true;failed=false;selectedTurn='latest';archiveReferences=[];progress=[];diagnostics={};receipts={};evidence='';lastMetrics=undefined;lastRegions=[];lastProviderLimit=undefined;let done=false;let sent=false;let lastRefusal='';let separateReply=false;
     note('Connecting…');
     try{
       const response=await fetch('/api/designer-agent',{method:'POST',headers:headers(),signal:turn.controller.signal,body:requestBody});
@@ -251,6 +255,8 @@ ${event.details}`};
               status=event.status==='completed'?(lastRefusal?`${lastRefusal} ${applied?`${applied} earlier edits remain undoable.`:''}`:`${applied} edit${applied===1?'':'s'} applied`):event.status==='cancelled'?`Stopped · ${applied} applied edits remain undoable.`:failedStatus(event.code,applied,event.toolFailures??[]);
               lastMetrics=event.metrics;
               lastRegions=event.visualEvidence?.regions??[];
+              lastProviderLimit=event.status!=='cancelled'&&event.code!=='STUDIO_AGENT_TIME_LIMIT'&&isProviderLimitEvidence(event.providerLimit)?event.providerLimit:undefined;
+              if(event.status==='failed'&&lastProviderLimit)status=`${providerLimitMessage(lastProviderLimit)} ${appliedEffects(applied)}`;
               if(continuation&&event.status==='completed'&&!lastRefusal)status=event.sourceEvidence?.appearanceObserved?'Observation complete.':'Observation ended; appearance remains unverified.';
               evidence=[event.turnId?`VICT turn ${event.turnId} · profile ${event.profileVersion}`:'',event.code??''].filter(Boolean).join(' · ');
               const boundary=`${appliedEffects(applied)}${event.confirmedRevision?` Confirmed revision ${event.confirmedRevision}.`:''}`;
@@ -279,7 +285,7 @@ ${event.details}`};
         finishPending(turn.cancelled?'Stopped before this attempt was confirmed.':'The connection ended before this attempt was confirmed.',turn.cancelled);
       }
       return sent?true:{ok:false,message:turn.cancelled?'Stopped before the request was admitted. Your draft is still here.':agentFailureMessage(error instanceof Error?error.message:undefined)??status};
-    }finally{if(!sent){messages=messages.slice(0,responseIndex-1);const retained={...timelines};delete retained[messageId];timelines=retained;}turn.toolEvidence?.close();if(!done){cancelTransport(turn);lastMetrics={...turn.metrics.snapshot(),partial:true};}if(sent){const endedAt=Date.now();retainedTurns=retainTurn(retainedTurns,{id:turn.identity,runId:turn.runIdentity,engineTurnId:turn.engineTurnId,task:turn.task,...(continuation?{mode:'observe-only' as const}:{}),startedAt:turn.startedAt,endedAt,expiresAt:endedAt+TURN_RECORD_TTL_MS,status:turn.cancelled?'cancelled':turn.terminal??'interrupted',code:turn.code,source:turn.source,confirmedRevision:turn.confirmedRevision,applied:turn.applied,metrics:lastMetrics,regions:lastRegions,progress,diagnostics,receipts,evidence,archives:archiveReferences,finalSource:confirmedTurnSource(turn)});}if(activeTurn===turn){activeTurn=undefined;busy=false;}}
+    }finally{if(!sent){messages=messages.slice(0,responseIndex-1);const retained={...timelines};delete retained[messageId];timelines=retained;}turn.toolEvidence?.close();if(!done){cancelTransport(turn);lastMetrics={...turn.metrics.snapshot(),partial:true};}if(sent){const endedAt=Date.now();retainedTurns=retainTurn(retainedTurns,{id:turn.identity,runId:turn.runIdentity,engineTurnId:turn.engineTurnId,task:turn.task,...(continuation?{mode:'observe-only' as const}:{}),startedAt:turn.startedAt,endedAt,expiresAt:endedAt+TURN_RECORD_TTL_MS,status:turn.cancelled?'cancelled':turn.terminal??'interrupted',code:turn.code,source:turn.source,confirmedRevision:turn.confirmedRevision,applied:turn.applied,metrics:lastMetrics,regions:lastRegions,progress,diagnostics,receipts,evidence,archives:archiveReferences,finalSource:confirmedTurnSource(turn),providerLimit:lastProviderLimit});}if(activeTurn===turn){activeTurn=undefined;busy=false;}}
   }
 </script>
 
@@ -307,6 +313,7 @@ ${event.details}`};
           {#if !ready}<p>Set the server’s model and provider key, then restart Studio. Credentials stay on the server.</p>{/if}
           <button type="button" class="details-reconnect" disabled={busy} onclick={()=>void configure()}>Reconnect agent</button>
           <AgentTurnEvidence metrics={detailMetrics} regions={detailRegions} />
+          {#if detailProviderLimit}<h4>Provider limit</h4><p>{providerLimitMessage(detailProviderLimit)}</p><pre class="details-record">{JSON.stringify(detailProviderLimit,null,2)}</pre><p>Only structured provider status and unambiguous timing are retained. No raw provider error, response body, headers or credentials are shown.</p>{/if}
           {#if detailProgress.length}<h4>Progress summaries</h4><p>Connection, validation and completion metadata. The conversation contains actual assistant messages and tool calls.</p><ol>{#each detailProgress as message}<li>{message}</li>{/each}</ol>{/if}
           {#if Object.keys(detailDiagnostics).length}<h4>Input schema diagnostics</h4>{#each Object.entries(detailDiagnostics) as [id,detail]}<pre class="details-record" data-diagnostic-id={id}>{detail}</pre>{/each}{/if}
           {#if Object.keys(detailReceipts).length}<h4>Tool receipts</h4>{#each Object.entries(detailReceipts) as [id,call]}<div data-tool-receipt={id}><p>{call.title}</p><ol>{#each call.stages as stage}<li>{stage.title} · {stage.state}{#if stage.detail}<pre class="details-record">{stage.detail}</pre>{/if}</li>{/each}</ol></div>{/each}{/if}

@@ -1,0 +1,42 @@
+{
+  "kind": "actual Studio UI agent trial; interrupted by test-manager session interference",
+  "date": "2026-10-27",
+  "candidateBuild": "1ee6f67e45f12e59aca613a0524b684bb8babb0e",
+  "origin": "http://127.0.0.23:5622",
+  "model": "zai/glm-5.3-flash",
+  "runId": "e0563546-184e-4696-bf7a-7885323dfc81",
+  "localTurnRecordId": "8e3c09e4-5983-463f-8f0f-257e4972a9f2",
+  "engineTurnId": null,
+  "usage": "Partial browser measurements only; server completion receipt/provider request and token usage unavailable",
+  "endpointClass": "existing Coding Plan subscription / api/coding/paas/v4",
+  "prompt": "Build a compact responsive field-notes app named Foundation Field Notes. Use reusable registered components: adaptive navigation, a real drawer, a filtered list of three trips, a genuine carousel, a first-visit acknowledgement, one supplied icon and a custom multicolour vector. Apply a coherent teal/light application theme and style a component part explicitly. Use discovery and preflight to find real contracts; do not fake controls with decorative text. Inspect the actual rendered viewport and any open overlay before finishing. Preserve editable canonical source and report exactly what was applied, observed, and still untested. Keep this task bounded; do not add remote services.",
+  "initialSource": {
+    "documentId": "screen-89c3ff61-003f-4e91-a5ab-007771bcf60a",
+    "revision": "r1#0",
+    "digest": "d85b208b49ebd4b9f434c813cb4f2b287ff58cff0f4f5c820a9845940e9103b2",
+    "nodeCount": 1
+  },
+  "observedActions": [
+    "Read families, current nodes and state through actual studio_screen_read",
+    "Two malformed overview/registry queries refused: registry is not used by section overview",
+    "Agent corrected to section registry and continued without edits",
+    "Read application-pattern and media catalogs, style sources, tokens and compact condition",
+    "Read all eight selected contract bodies with continuation pages",
+    "Empty compass/map icon searches led to paging actual installed 59-icon manifest",
+    "Agent searched vector schema guidance; no source change had been applied"
+  ],
+  "lastPublicAssistantText": "All eight contract bodies are now complete. The first icon page shows basic UI glyphs; I need the rest of the manifest to pick field-notes icons, and I'll check for any registered vict.vector schema reference for the vector graphic data format.",
+  "termination": {
+    "action": "UI Stop, then isolated server process stopped",
+    "observedStatus": "Stopped",
+    "reason": "Manager signed into another port on the same hostname, replacing the hostname-scoped session cookie. Subsequent ownership-bound requests could not be trusted as a valid test.",
+    "providerQuotaFailureObserved": false
+  },
+  "confirmedEdits": 0,
+  "finalAuthoredArtifact": null,
+  "finalAssistantCompletion": null,
+  "appearanceObservedByAgent": false,
+  "interactionsVerified": false,
+  "evidenceLimit": "Partial transcript and DOM tool receipts observed through supported browser controls; this file is a concise reconstruction, not a lossless exchange archive. Session-bound originals were not bypassed or copied after cookie interference.",
+  "verdict": "INTERRUPTED; no agent-output success or milestone closure claim"
+}

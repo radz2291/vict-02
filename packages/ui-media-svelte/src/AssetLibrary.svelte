@@ -1,14 +1,33 @@
 <script lang="ts">
   import type {UiSvelteComponentProps} from '@victframework/ui-svelte';
-  import {importMediaAsset,importMediaArchive,exportMediaArchive,type MediaAssetMetadata} from './assets.js';import {mediaHost} from './context.js';
+  import {importMediaAsset,importMediaArchive,exportMediaArchive,type MediaAssetMetadata,type MediaAssetStore} from './assets.js';import {mediaHost} from './context.js';
   let {props,io,presentation}:UiSvelteComponentProps=$props();const host=mediaHost();let assets=$state<readonly MediaAssetMetadata[]>([]),error=$state(''),busy=$state(false),message=$state('');
   const target=$derived(presentation?.target('root'));
-  const refresh=async()=>{if(host)assets=await host.assets.list();};
-  $effect(()=>{refresh().catch(reason=>{error=reason instanceof Error?reason.message:'Media library unavailable.';});});
-  async function upload(event:Event){const files=(event.currentTarget as HTMLInputElement).files;if(!host||!files?.length)return;busy=true;error='';message='';try{for(const file of Array.from(files)){const asset=await importMediaAsset(file,'Owner-supplied local file');await host.assets.put(asset);io?.emit('selectedAsset',asset.reference);}await refresh();host.changed?.();message=`Imported ${files.length} asset${files.length===1?'':'s'}.`;}catch(reason){error=reason instanceof Error?reason.message:'Upload failed.';}finally{busy=false;(event.target as HTMLInputElement).value='';}}
-  async function importArchive(event:Event){const file=(event.currentTarget as HTMLInputElement).files?.[0];if(!host||!file)return;busy=true;error='';try{const imported=await importMediaArchive(host.assets,await file.text());await refresh();host.changed?.();message=`Imported ${imported.length} managed assets.`;}catch(reason){error=reason instanceof Error?reason.message:'Archive import failed.';}finally{busy=false;(event.target as HTMLInputElement).value='';}}
-  async function exportArchive(){if(!host)return;busy=true;error='';try{const text=await exportMediaArchive(host.assets);const url=URL.createObjectURL(new Blob([text],{type:'application/json'}));const link=document.createElement('a');link.href=url;link.download='vict-media-archive.json';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);message='Media archive exported. Keep it with the application source when moving browsers or origins.';}catch(reason){error=reason instanceof Error?reason.message:'Archive export failed.';}finally{busy=false;}}
-  async function remove(asset:MediaAssetMetadata){if(!host)return;busy=true;error='';try{await host.assets.remove(asset.reference);await refresh();host.changed?.();message=`Removed ${asset.name}. Any authored references to it now require re-import.`;}catch(reason){error=reason instanceof Error?reason.message:'Asset removal failed.';}finally{busy=false;}}
+  const refresh=async(store=host?.assets,namespace=host?.namespace)=>{if(store){const list=await store.list();if(host?.namespace===namespace)assets=list;}};
+  let listedNamespace:string|undefined;
+  $effect(()=>{const store=host?.assets,namespace=host?.namespace;let disposed=false;if(listedNamespace!==namespace){listedNamespace=namespace;assets=[];error='';message='';}if(store)store.list().then(list=>{if(!disposed&&host?.namespace===namespace)assets=list;}).catch(reason=>{if(!disposed&&host?.namespace===namespace)error=reason instanceof Error?reason.message:'Media library unavailable.';});return()=>{disposed=true;};});
+  async function finishImport(store:MediaAssetStore,namespace:string,written:number,result:string,failure=''){
+    if(!host||host.namespace!==namespace)return;
+    message=result;error=failure;
+    try{const list=await store.list();if(host.namespace===namespace)assets=list;}catch{if(host.namespace===namespace)error=[failure,'Stored media could not be refreshed. Reopen the library to inspect it.'].filter(Boolean).join(' ');}
+    if(written>0&&host.namespace===namespace){try{host.changed?.();}catch{error=[error,'The host could not be notified; stored bytes remain.'].filter(Boolean).join(' ');}}
+  }
+  async function upload(event:Event){
+    const input=event.currentTarget as HTMLInputElement,files=Array.from(input.files??[]);if(!host||!files.length)return;
+    const store=host.assets,namespace=host.namespace;let written=0,failure='';busy=true;error='';message='';
+    try{for(const file of files){const asset=await importMediaAsset(file,'Owner-supplied local file');await store.put(asset);written++;if(host.namespace===namespace)io?.emit('selectedAsset',asset.reference);}}
+    catch(reason){failure=reason instanceof Error?reason.message:'Upload failed.';}
+    finally{await finishImport(store,namespace,written,failure?`Imported ${written} of ${files.length} assets before upload stopped. Earlier stored assets are preserved.`:`Imported ${written} asset${written===1?'':'s'}.` ,failure);busy=false;input.value='';}
+  }
+  async function importArchive(event:Event){
+    const input=event.currentTarget as HTMLInputElement,file=input.files?.[0];if(!host||!file)return;
+    const store=host.assets,namespace=host.namespace;let written=0,failure='';busy=true;error='';message='';
+    const tracked:MediaAssetStore={get:ref=>store.get(ref),list:()=>store.list(),remove:ref=>store.remove(ref),async put(asset){await store.put(asset);written++;}};
+    try{await importMediaArchive(tracked,await file.text());}catch(reason){failure=reason instanceof Error?reason.message:'Archive import failed.';}
+    finally{await finishImport(store,namespace,written,failure?`Imported ${written} managed asset${written===1?'':'s'} before archive import stopped. Earlier stored assets are preserved.`:`Imported ${written} managed assets.`,failure);busy=false;input.value='';}
+  }
+  async function exportArchive(){if(!host)return;const store=host.assets,namespace=host.namespace;busy=true;error='';try{const text=await exportMediaArchive(store);const url=URL.createObjectURL(new Blob([text],{type:'application/json'}));const link=document.createElement('a');link.href=url;link.download='vict-media-archive.json';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);if(host.namespace===namespace)message='Media archive exported. Keep it with the application source when moving browsers or origins.';}catch(reason){if(host.namespace===namespace)error=reason instanceof Error?reason.message:'Archive export failed.';}finally{busy=false;}}
+  async function remove(asset:MediaAssetMetadata){if(!host)return;const store=host.assets,namespace=host.namespace;busy=true;error='';try{await store.remove(asset.reference);await refresh(store,namespace);if(host.namespace===namespace){host.changed?.();message=`Removed ${asset.name}. Any authored references to it now require re-import.`;}}catch(reason){if(host.namespace===namespace)error=reason instanceof Error?reason.message:'Asset removal failed.';}finally{busy=false;}}
 </script>
 <section {...target} class={`${target?.class??''} vict-media-library`} aria-label={String(props.label??'Media library')}>
   {#if !host}<p role="alert">Media library requires an application asset host with an explicit storage namespace.</p>{:else}

@@ -29,6 +29,11 @@ export function boundedHistoryText(text: string): string {
 }
 
 export function agentFailureMessage(code: string | undefined): string | undefined {
+  if(code==='STUDIO_AGENT_PROVIDER_RATE_LIMIT')return 'The provider reported a request rate limit. Check Chat details for any supplied retry time.';
+  if(code==='STUDIO_AGENT_PROVIDER_QUOTA')return 'The provider reported a usage quota limit. Check Chat details for any supplied reset time.';
+  if(code==='STUDIO_AGENT_PROVIDER_SUBSCRIPTION')return 'The provider reported a subscription or resource access limit. No provider switch was made.';
+  if(code==='STUDIO_AGENT_PROVIDER_OVERLOAD')return 'The provider reported temporary overload. No automatic retry was made.';
+  if(code==='STUDIO_AGENT_PROVIDER_LIMIT')return 'The provider reported a limit, but its type is unspecified. Check Chat details for supplied timing.';
   if (code === 'STUDIO_AGENT_OBSERVATION_ONLY') return 'This observation continuation cannot apply edits. No source changes were made by this continuation.';
   if (code === 'STUDIO_CAPTURE_OBSERVATION_REQUIRED') return 'The agent did not obtain a fresh image observation. Appearance remains unverified; retry observation without repeating edits.';
   if (code === 'STUDIO_CAPTURE_MODEL_UNSUPPORTED') return 'Image support is unverified for the configured model. Check the existing supported model configuration before retrying observation.';

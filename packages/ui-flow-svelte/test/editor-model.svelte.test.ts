@@ -50,6 +50,7 @@ export const graphFixture = (): GraphDocument => ({
   edges: [{ id: 'ab', source: 'a', sourcePort: 'out', target: 'b', targetPort: 'in' }],
 });
 describe('rich graph transaction and persistence contract', () => {
+  it('requires explicit reconciliation of dynamic fields and cycle policy',()=>{const graph=graphFixture(),definition={...graph.nodeTypes[0]!,fields:graph.nodeTypes[0]!.fields.filter(field=>field.id!=='prompt')};expect(applyGraphOperations(graph,[{type:'defineNodeType',definition,replace:true}]).ok).toBe(false);const accepted=applyGraphOperations(graph,[{type:'unsetField',nodeId:'a',fieldId:'prompt'},{type:'defineNodeType',definition,replace:true}]);expect(accepted.ok).toBe(true);const cyclic=applyGraphOperations(graph,[{type:'setCyclePolicy',allowCycles:true},{type:'connect',edge:{source:'b',sourcePort:'out',target:'a',targetPort:'in'}}]);expect(cyclic.ok).toBe(true);if(cyclic.ok)expect(applyGraphOperations(cyclic.graph,[{type:'setCyclePolicy',allowCycles:false}]).ok).toBe(false);});
   it('refuses non-JSON or oversized snapshots before returning a graph that cannot reopen', () => {
     const graph = graphFixture();
     graph.nodes = Array.from({ length: 200 }, (_, index) => ({

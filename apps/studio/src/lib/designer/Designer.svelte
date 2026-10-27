@@ -5,6 +5,9 @@
   import { onMount, tick, untrack, setContext } from 'svelte';
   import { beforeNavigate } from '$app/navigation';
   import {AssetProvider,MediaAssetLibrary,indexedDbAssetStore,exportMediaArchive} from '@victframework/ui-media-svelte';
+  import {prepareMediaAttachment,agentMediaInventorySnapshot,type AgentMediaInventory,type MediaAttachmentField} from './media-assets.js';
+  import {prepareSourceImport} from './source-import.js';
+  import type {MediaAssetMetadata} from '@victframework/ui-media-svelte/assets';
   import {ApplicationViewport} from '@victframework/ui-svelte/viewport';
   import { ControlScope } from '@victframework/ui-svelte';
   import { Composer, EditorBridge, EditorCanvas, Inspector, Layers, PanelResizer, StateInitialEditor, SelectionPalette, setAttribute, canvasSelectionTarget, resolveOccurrence, compositionParent, compositionName, literalTextTarget, duplicateSubtree, type TransactionDraft } from '@victframework/ui-editor';
@@ -92,7 +95,8 @@
     globalThis.document.querySelector<HTMLElement>(target)?.focus({ preventScroll: true });
   }
   import {foundationExample,type FoundationExample} from './foundation-examples.js';
-  import {graphStateKeys,graphStateDocument,rebaseGraphRuntime} from './graph-authoring.js';
+  import {graphStateKeys,rebaseGraphRuntime} from './graph-authoring.js';
+  import {graphRuntimeChanged} from './graph-runtime.js';
   import { documentCursor, applyAgentProposal, type AgentProposal } from './agent-edits.js';
   let agentEpoch = $state(crypto.randomUUID());
   let chatOpen = $state(false);
@@ -184,9 +188,61 @@
   const authoredRevision = $derived(snapshot?.revision);
   const source = $derived.by(() => { void version; return bridge?.document; });
   const assetStore=$derived(source?indexedDbAssetStore(`vict.studio.assets.${source.id}`):undefined);
+  let mediaInventory=$state<AgentMediaInventory>();
+  let mediaListingDocument='';
+  async function refreshMediaMetadata(id:string){try{const list=await indexedDbAssetStore(`vict.studio.assets.${id}`).list();if(source?.id===id)mediaInventory=agentMediaInventorySnapshot(id,list);}catch{if(source?.id===id)mediaInventory=undefined;}}
+  $effect(()=>{const id=source?.id;if(id)untrack(()=>{if(mediaListingDocument!==id){mediaListingDocument=id;mediaInventory=undefined;void refreshMediaMetadata(id);}});});
+  let pendingMedia=$state<{documentId:string;asset:MediaAssetMetadata}>();
+  let mediaField=$state<MediaAttachmentField>('source');
+  let attachingMedia=$state(false);
+  let importingSource=$state(false);
+  let sourceFileInput:HTMLInputElement;
+  async function importSource(event:Event){
+    const input=event.currentTarget as HTMLInputElement,file=input.files?.[0];
+    if(!file||importingSource)return;
+    if(textDraftDirty||sourceDraftDirty||renamingScreen){notice='Apply or cancel the current draft before importing.';input.value='';return;}
+    const previousDocumentId=source?.id,previousRevision=bridge?.getSnapshot().revision;
+    importingSource=true;
+    try{
+      if(file.size>96*1024*1024){notice='This source bundle exceeds the 96 MiB import limit.';return;}
+      const prepared=await prepareSourceImport(await file.text());
+      if(!prepared.ok){notice=prepared.message;return;}
+      if(source?.id!==previousDocumentId||bridge?.getSnapshot().revision!==previousRevision||textDraftDirty||sourceDraftDirty||renamingScreen){notice='The current screen changed during import. Choose the bundle again.';return;}
+      const document={...prepared.document,id:`screen-${crypto.randomUUID()}`},store=indexedDbAssetStore(`vict.studio.assets.${document.id}`);
+      for(const asset of prepared.assets)await store.put(asset);
+      if(source?.id!==previousDocumentId||bridge?.getSnapshot().revision!==previousRevision||textDraftDirty||sourceDraftDirty||renamingScreen){notice='The current screen changed during import. No screen was replaced; choose the bundle again.';return;}
+      const problems=screenIssues(document);if(problems.length){issues=problems;return;}
+      const next=new EditorBridge({catalogs:designerCatalogs,validateDocument:screenPlacementIssues,store:screenStore(localStorage,document.id),initial:{document,storedRevision:'r1'}});
+      sessions.set(document.id,next);library=[...library,{id:document.id,name:screenName(document)}];openSession(next);drawerOpen=false;pendingMedia=undefined;
+      notice=`Imported as a new unsaved screen with ${prepared.assets.length} media assets. Save to retain the source.`;
+    }catch{notice='Import could not finish. Your current screen is preserved; no existing screen or media namespace was overwritten.';}
+    finally{importingSource=false;input.value='';}
+  }
+  async function chooseMedia(reference:UiValue|undefined){
+    if(typeof reference!=='string'||!source||!assetStore)return;
+    const documentId=source.id,store=assetStore;
+    try{const asset=await store.get(reference);if(!asset||source?.id!==documentId)return;const {bytes:_,...metadata}=asset;pendingMedia={documentId,asset:metadata};}
+    catch{notice='The selected media is unavailable in this screen.';}
+  }
+  async function attachMedia(){
+    if(!source||!bridge||!assetStore||!pendingMedia||attachingMedia)return;
+    const documentId=source.id,revision=bridge.getSnapshot().revision,selectionToken=JSON.stringify(workspaceSelection),choice=pendingMedia,store=assetStore,field=mediaField;
+    if(choice.documentId!==documentId){notice='Choose media from the current screen library.';return;}
+    attachingMedia=true;
+    try{
+      const stored=await store.get(choice.asset.reference);
+      if(!stored){notice='These media bytes are unavailable. Re-import the asset first.';return;}
+      if(!source||!bridge||source.id!==documentId||bridge.getSnapshot().revision!==revision||JSON.stringify(workspaceSelection)!==selectionToken){notice='The screen or selection changed. Review it and use the asset again.';return;}
+      const {bytes:_,...asset}=stored;
+      const prepared=prepareMediaAttachment({document:source,documentRevision:revision,expectedDocumentId:documentId,expectedRevision:revision,selection:{nodeIds:selectedNode?[selectedNode.id]:[],total:workspaceSelection.items.length},asset,field,blocked:textDraftDirty||sourceDraftDirty||renamingScreen,requestId:crypto.randomUUID()});
+      if(!prepared.ok){notice=prepared.message;return;}
+      if(apply(prepared.draft))notice=`Media attached as ${field}. Save to retain this source reference; loading and playback still need checking.`;
+    }catch{notice='The media could not be attached. The current source is preserved.';}
+    finally{attachingMedia=false;}
+  }
   const graphPresentation=new Map<string,GraphPresentationState>();
   setContext(Symbol.for('vict.flow.editor-host@1'),{presentationFor:({occurrenceKey}:{occurrenceKey:string})=>{const key=`${source?.id}/${occurrenceKey}`;return {get:()=>graphPresentation.get(key),set:(state:GraphPresentationState)=>{graphPresentation.set(key,JSON.parse(JSON.stringify(state)));}};},historyFor:({nodeId}:{nodeId:string})=>source?.nodes[nodeId]?.kind==='component'&&source.nodes[nodeId].definitionId==='vict.flow.editor'?{canUndo:()=>!!snapshot?.canUndo,canRedo:()=>!!snapshot?.canRedo,undo,redo}:undefined});
-  async function syncAssetInventory(){if(!source||!assetStore)return;const id=source.id,store=assetStore;try{const list=await store.list();if(!source||source.id!==id)return;const assets={...source.assets};for(const asset of list){const key=`${asset.name.replace(/[^a-zA-Z0-9_.-]/g,'-').slice(0,60)||'asset'}-${asset.digest.slice(0,12)}`;assets[key]={id:key,kind:'digest',digest:asset.digest};}if(JSON.stringify(assets)!==JSON.stringify(source.assets))apply({requestId:crypto.randomUUID(),reason:'Register supplied media',commands:[{op:'replaceDocument',document:{...source,assets}}]});}catch{notice='Media inventory could not be registered. Stored bytes remain available in Media.';}}
+  async function syncAssetInventory(){if(!source||!assetStore)return;const id=source.id,store=assetStore;try{const list=await store.list();if(!source||source.id!==id)return;mediaInventory=agentMediaInventorySnapshot(id,list);const assets={...source.assets};for(const asset of list){const key=`${asset.name.replace(/[^a-zA-Z0-9_.-]/g,'-').slice(0,60)||'asset'}-${asset.digest.slice(0,12)}`;assets[key]={id:key,kind:'digest',digest:asset.digest};}if(JSON.stringify(assets)!==JSON.stringify(source.assets))apply({requestId:crypto.randomUUID(),reason:'Register supplied media',commands:[{op:'replaceDocument',document:{...source,assets}}]});}catch{notice='Media inventory could not be registered. Stored bytes remain available in Media.';}}
   const compilation = $derived(source ? compileScreen(source) : undefined);
   const structureContext=$derived({descriptors:catalogDescriptors,actionState:screenActionState,actionIds:designerCatalogs.actionIds,routeIds:designerCatalogs.routeIds,plan:compilation?.ok?Object.values(compilation.plan.documentPlans??{}).find(item=>item.documentId===source?.id):undefined});
   let workspaceSelection=$state<WorkspaceSelection>({documentId:'',items:[]});
@@ -535,7 +591,13 @@
     }
     return result.ok;
   }
-  function runtimeStateChanged(key:string,value:UiValue){if(!source)return;const next=graphStateDocument(source,key,value);if(graphStateKeys(source).includes(key)&&!next){const retained={...runtimeValues,[key]:source.localState[key]!.initial};resetRuntime();runtimeValues=retained;notice='Graph edit refused by the source boundary. The previous graph was restored.';return;}if(next&&next!==source){if(!apply({requestId:crypto.randomUUID(),reason:'Edit graph',commands:[{op:'replaceDocument',document:next}]}))return;}runtimeValues={...runtimeValues,[key]:value};}
+  function runtimeStateChanged(key:string,value:UiValue){if(!source)return;graphRuntimeChanged(source,key,value,{
+    values:runtimeValues,
+    applyGraph:next=>apply({requestId:crypto.randomUUID(),reason:'Edit graph',commands:[{op:'replaceDocument',document:next}]}),
+    reset:()=>{resetSignal=Symbol('graph-refusal');},
+    supply:values=>{runtimeValues=values;},
+    invalid:()=>{notice='Graph edit refused by the source boundary. The previous graph was restored.';},
+  });}
   function syncGraphRuntime(){if(!bridge)return;const next={...runtimeValues};for(const key of graphStateKeys(bridge.document))next[key]=bridge.document.localState[key]!.initial;runtimeValues=next;}
   function undo() { if (!bridge) return; if (textDraftDirty || sourceDraftDirty) { notice = 'Apply or cancel your draft first.'; return; } const result = bridge.undo();if(result.ok)syncGraphRuntime(); issues = result.ok ? [] : result.issues; notice = result.ok ? 'Undid the last authored change.' : 'Nothing to undo.'; }
   function redo() { if (!bridge) return; if (textDraftDirty || sourceDraftDirty) { notice = 'Apply or cancel your draft first.'; return; } const result = bridge.redo();if(result.ok)syncGraphRuntime(); issues = result.ok ? [] : result.issues; notice = result.ok ? 'Redid the authored change.' : 'Nothing to redo.'; }
@@ -640,6 +702,8 @@
   }
 </script>
 
+<input hidden type="file" accept="application/json,.json" aria-label="Import saved application source" bind:this={sourceFileInput} onchange={event=>void importSource(event)} />
+
 <svelte:window onkeydowncapture={event=>{
   if(event.key==='Escape'&&!structureOpen&&!activeMenu&&isWorkspaceElement(event.target)&&event.target.closest('.design-frame .uv-canvas,[role=tree]')&&!event.target.closest('input,textarea,[contenteditable=true]')&&workspaceSelection.items.length&&!textDraftDirty&&!sourceDraftDirty){event.preventDefault();event.stopPropagation();clearWorkspaceSelection();return;}
   if(!structureOpen || activeMenu || !(isWorkspaceElement(event.target)) || event.target.closest('[role="menu"]'))return;
@@ -655,6 +719,7 @@
     <WorkspaceBrand />
     <Menubar.Root class="studio-menus workspace-menus" aria-label="Studio menus" bind:value={activeMenu} loop>
       <WorkspaceMenu label="File" value="file" {activeMenu} bind:trigger={renameButton}>
+        <Menubar.Item disabled={importingSource||textDraftDirty||sourceDraftDirty||renamingScreen} onSelect={()=>sourceFileInput.click()}>Import application bundle…</Menubar.Item>
         <Menubar.Item disabled={textDraftDirty || sourceDraftDirty} onSelect={()=>void beginCreate()}>New screen</Menubar.Item>
         <Menubar.Sub>
           <Menubar.SubTrigger disabled={!library.length || textDraftDirty || sourceDraftDirty}>Open screen<span aria-hidden="true">›</span></Menubar.SubTrigger>
@@ -705,7 +770,7 @@
     </div>
   {/snippet}
   <div class="agent-workspace" class:chat-open={chatOpen} bind:clientWidth={availableWidth}>
-  <div id="studio-chat-panel" data-studio-typography class="studio-type-scope agent-panel" hidden={!chatOpen} style:--chat-width={`${chatWidth}px`}><WorkspacePanelHeader label="Chat" onClose={()=>void toggleChat()}><strong class="chat-heading">Chat</strong></WorkspacePanelHeader><AgentChat screenLabel={screenName(source)} selectionLabel={selectionLabel} blocked={textDraftDirty || sourceDraftDirty || renamingScreen} getContext={() => bridge ? {document:bridge.document, cursor:documentCursor(bridge.document,bridge.getSnapshot().revision,agentEpoch), ...(selected ? {selection:selected} : {}),selectionSet:selectionSet(workspaceSelection),workspace:workspaceFacts()} : undefined} getCapture={(cursor,target) => captureDesignerPreview(applicationContent?.querySelector<HTMLElement>('.uv-canvas')??undefined,cursor,()=>bridge ? {cursor:documentCursor(bridge.document,bridge.getSnapshot().revision,agentEpoch),mode,state:{runtimeValues,simulation:{denied:simulation.denied,failNext:simulation.failNext}},selection:selected,composition:compositionFocus ? `${compositionFocus.nodeId}/${compositionFocus.slotName}` : undefined,structureOpen,workspaceView} : undefined,applicationContent,target)} applyProposal={receiveAgentProposal} /></div>
+  <div id="studio-chat-panel" data-studio-typography class="studio-type-scope agent-panel" hidden={!chatOpen} style:--chat-width={`${chatWidth}px`}><WorkspacePanelHeader label="Chat" onClose={()=>void toggleChat()}><strong class="chat-heading">Chat</strong></WorkspacePanelHeader><AgentChat screenLabel={screenName(source)} selectionLabel={selectionLabel} blocked={textDraftDirty || sourceDraftDirty || renamingScreen} getContext={() => bridge ? {document:bridge.document, cursor:documentCursor(bridge.document,bridge.getSnapshot().revision,agentEpoch), ...(selected ? {selection:selected} : {}),selectionSet:selectionSet(workspaceSelection),workspace:workspaceFacts(),...(mediaInventory?.documentId===bridge.document.id?{mediaInventory}:{})} : undefined} getCapture={(cursor,target) => captureDesignerPreview(applicationContent?.querySelector<HTMLElement>('.uv-canvas')??undefined,cursor,()=>bridge ? {cursor:documentCursor(bridge.document,bridge.getSnapshot().revision,agentEpoch),mode,state:{runtimeValues,simulation:{denied:simulation.denied,failNext:simulation.failNext}},selection:selected,composition:compositionFocus ? `${compositionFocus.nodeId}/${compositionFocus.slotName}` : undefined,structureOpen,workspaceView} : undefined,applicationContent,target)} applyProposal={receiveAgentProposal} /></div>
   <div class="chat-resizer" hidden={!chatOpen}><PanelResizer label="Chat width" value={chatWidth} min={240} max={400} onChange={(value:number)=>chatWidth=value} /></div>
   <div class="design-workspace" bind:this={workspaceElement} bind:clientWidth={workspaceWidth} class:drawer-open={rightOpen} class:has-object-tools={mode === 'design' && !!selectedNode && paletteRequested} style:--drawer-width={`${effectiveDrawerWidth}px`}>
     <WorkspaceContextMenu scope={workspaceElement} applicationScope={applicationContent} enabled={workspaceView === 'design'} resolve={canvasContext} owns={ownsCanvasTarget} />
@@ -744,7 +809,9 @@
       {#snippet documentContent()}<DocumentPanels bind:active={documentPanel}>
         {#snippet layersContent()}{#if plan}<Layers scope={{state:runtimeValues,tokens:Object.fromEntries(Object.entries(source.tokens).map(([key,value])=>[key,value.value]))}} {selectedSourceIds} selectedOccurrences={selectedOccurrences} onSelectionIntent={layerSelection} compact hideTextContent showSelectionDetails={false} labels={editorLabels} {plan} document={source} selectedOccurrence={selected} onSelect={selectFromStructure} onInspect={(occurrence:string,nodeId:string,detail:string,sourceOnly?:boolean)=>{if(textDraftDirty || sourceDraftDirty || renamingScreen)return;if(sourceOnly){updateSelection([{kind:'node',id:structureId(source.id,'node',nodeId)}]);}else{selectFromStructure(occurrence);layerProvenance={occurrence,detail};}inspectSource(structureId(source.id,'node',nodeId));}} onOpenComposition={navigateComposition} componentDescriptors={catalogDescriptors} />{/if}{/snippet}
         {#snippet dataContent()}
-          <details class="media-panel"><summary>Media and graphics</summary><AssetProvider namespace={`vict.studio.assets.${source.id}`} store={assetStore} onchange={()=>void syncAssetInventory()}><MediaAssetLibrary props={{label:"Supplied media"}} nodeId="studio-media-library" occurrenceKey="studio-media-library" /></AssetProvider></details>
+          <details class="media-panel"><summary>Media and graphics</summary><AssetProvider namespace={`vict.studio.assets.${source.id}`} store={assetStore} onchange={()=>void syncAssetInventory()}><MediaAssetLibrary props={{label:"Supplied media"}} io={{emit:(name,value)=>{if(name==='selectedAsset')void chooseMedia(value);}}} nodeId="studio-media-library" occurrenceKey="studio-media-library" /></AssetProvider>
+            {#if pendingMedia?.documentId===source.id}<p>Chosen asset: <strong>{pendingMedia.asset.name}</strong> · {pendingMedia.asset.mime}</p><label>Attach as <select bind:value={mediaField}><option value="source">Media source</option><option value="poster">Video poster</option><option value="captions">Video captions</option></select></label><p>Use replaces this property on the selected media component. For vector or custom icon sources, it clears the previous inline graphic.</p><button type="button" disabled={attachingMedia||textDraftDirty||sourceDraftDirty||renamingScreen||!selectedNode||workspaceSelection.items.length!==1} onclick={()=>void attachMedia()}>Use on selected media</button>{/if}
+          </details>
           {#if selectedData && source.localState[selectedData]}
             {#key selectedData}<fieldset class="editor-guard" disabled={sourceDraftDirty || propertyDraftDirty}><StateInitialEditor compact document={source} expression={{type:'ref',path:`state.${selectedData}`}} labels={editorLabels} onApply={apply} onDirtyChange={(dirty:boolean)=>dataDraftDirty=dirty}>{#snippet toolbar({apply:applyValue,dirty}:{apply:()=>void;dirty:boolean})}<DataEditorHeader name={dataName(selectedData!)} type={dataType(source.localState[selectedData!]!.type)} {dirty} onBack={()=>openData()} onApply={applyValue} />{/snippet}</StateInitialEditor></fieldset>{/key}
           {:else}

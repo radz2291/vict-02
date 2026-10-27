@@ -46,7 +46,9 @@ The manager repaired source-revision transitions to rebase only graph runtime mi
 
 Affected continuation checks: host-state + representative integration + visual client/server/independent suites **27/27 PASS**; reusable pattern consumers **19/19 PASS**; Studio Svelte diagnostics **0 errors/5 inherited warnings**. These checks precede the continuation's local commit and are not an independent repaired-candidate gate. Production rebuild, actual browser proof of these final repairs and exact-commit independent recheck remain pending. No actual-agent output or device claim is inferred.
 
-## Denied graph extension — stopped
+## Denied graph extension - retained history, subsequently authorized
+
+2026-10-27 continuation: the owner specifically approved the exact three-file extension in this temporary checkout. One retry succeeded. `unsetField` and `setCyclePolicy` are now implemented; 28 model/consumer/legacy tests pass, Svelte reports zero errors/five inherited warnings, and diff whitespace checks pass. No automatic deletion or default-policy change occurs. The original denial below is retained as history and no longer describes the current patch status.
 
 Exact target files under this candidate:
 
@@ -63,7 +65,13 @@ Exact automatic approval review response:
 
 Outcome: DENIED / KNOWN NOT EXECUTED / NO PARTIAL CHANGES. No retry or alternate writer after that rejection. Both operations remain absent. The parent is coordinating specific owner confirmation; repeating broad approval is not treated as a resolution.
 
-## Actual-agent gate — unrun
+## Actual-agent gate - subscription-only execution authorized
+
+2026-10-27 continuation supersedes the proposed standard-API budget below. The owner authorized the existing Z.ai yearly Coding Plan subscription route only, with its five-hour quota limit. Standard metered API and OpenAI fallback remain forbidden; no dollar budget is needed or inferred. Existing launcher configuration was checked without displaying secrets: both referenced files exist and provider `zai-key1` resolves to HTTPS `api.z.ai/api/coding/paas/v4` without userinfo/query. The existing launcher loads credentials into process memory, without persisting or copying them, on isolated `http://127.0.0.23:5622`. The first actual Studio UI responsive-app request has been submitted; its outcome is pending. This server was built from `1ee6f67` before the separately authorized graph extension and later reviewer repairs; do not attribute those later changes to this run.
+
+Pause and retain actual reset evidence on quota/rate limitation. Do not switch provider, buy credits, create credentials, or expand sensitive access. Any credential entry/copy requiring new persistent access needs separate secure per-action authorization. The previous setup/cost discussion below remains historical, not a current blocker.
+
+First real-agent trial was interrupted by the test manager: signing into a second preview on the same hostname but different port replaced the hostname-scoped session cookie. Stop was exercised in the original UI (which displayed Stopped), and its isolated server was stopped. No authored edits or final artifact existed. Retained visible evidence shows real discovery of all eight selected component contracts, bounded contract continuation, icon manifest paging and recovery from two schema-refused reads; no output-improvement verdict follows. This is a test-setup failure, not a provider quota or product-output failure. Subsequent manual and live sessions must use distinct hostnames, not merely distinct ports. Never recover by copying session cookies or bypassing ownership checks.
 
 The isolated process has no OpenAI or Z.ai credential in its environment and no model/base URL override. Its code fallback is `openai/gpt-4.1-mini`; that is not a verified reproduction of the prior Z.ai review setup and is not selected as a silent substitute. No key values were read or logged. Prior review code/evidence identifies Z.ai GLM-5.3-Flash as the intended visual-capable configuration; current account billing/plan/credential reuse remains unconfirmed.
 
@@ -80,4 +88,13 @@ Official Z.ai standard API rates checked2026-10-27: GLM-5.3-Flash input$0.15/1M,
 
 ## Next allowed work
 
-Continue unpaid affected checks, candidate review and safe repairs outside the denied extension. Finish exact-commit independent integrated verification after the source checkpoint. Resolve the specific denied operation, provider/budget/credential reuse and real-device evidence requirements before related closure claims. All AR IDs remain OPEN pending their full acceptance evidence; foundation requirements have not moved to Milestone2. No push/merge/publication/deployment/Stage9 closure follows from this record.
+### Current continuation evidence (not closure)
+
+- Specifically authorized graph operations: 28 focused cases passed. Independent graph-runtime challenge passed seven selected cases on a recorded dirty snapshot; subsequent refusal-reset callback now changes only the renderer generation token, preserving scenario/activity state. Real `DocumentHost` refusal regression and related integration checks pass.
+- A second independent visibility challenge found rounded-corner and fractional client-metric false positives. Those failures remain retained; conservative inner/outer bounds and rounded safe-region repair pass 16 focused cases. Uncertain edge/corner intersections are explicitly unverified. Fresh independent review remains required.
+- Media attachment now uses explicit selection/type/draft/revision fences and real stored bytes. Agent media metadata uses a strict bounded host snapshot, scoped by document and listing time, never bytes or inferred decode/playback. Portable source import validates the exported application and stages media in memory before creating a new namespace; importer ten cases pass. Current root integration batch is 24/24 passing; TypeScript passed.
+- Provider limit handling now preserves only closed quota/rate/subscription/overload facts and explicit retry/reset timing; forty offline cases pass. No actual quota event has been observed.
+- Scratch-only capture comparison at `127.0.0.24:5624` used a pinned public clone-hook library. Native browser screenshots showed the negative control's row/marker mismatch and one projected rectangular nested-scroll/sticky/fixed case closely aligned (zero source DOM mutations, 18,169 JPEG bytes, 1,374 ms). This is limited visual evidence, not pixel equivalence. No production capture/dependency changes were adopted; both scrolled-state guards remain. Exploration was frozen to prioritize actual-agent trials.
+- First workspace rebuild exposed a strict-index error in a new media test fixture. The failed build is retained. Automatic review initially denied two test-fixture corrections by interpreting the manager's build-coordination freeze as an edit ban; the manager explicitly lifted its own freeze for those exact tests. One retry succeeded. Final fixture checks and rebuild remain pending at this entry.
+
+Continue the corrected dependency-ordered workspace and Studio builds, then actual-agent trials through the approved existing Coding Plan route on an isolated hostname. The specific graph approval and existing-launcher access are resolved. The test-only retry passed its final three library and three metadata-admission cases, including the strict-index correction; the first build remains retained as a failure. Public discovery narration was too technical in the interrupted real run, so revised instructions keep read queues/pagination/schema details in tool evidence; effectiveness still requires another actual run. Finish exact-commit independent integrated verification and the browser/device evidence requirements before related closure claims. All AR IDs remain OPEN pending their full acceptance evidence; foundation requirements have not moved to Milestone2. No push/merge/publication/deployment/Stage9 closure follows from this record.

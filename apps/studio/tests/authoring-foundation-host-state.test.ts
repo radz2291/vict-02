@@ -20,6 +20,7 @@ describe('canonical graph and owned preview host boundaries',()=>{
   it('refuses a target fully clipped by a nested scroll container even when inside the browser viewport',()=>{
     const parent=document.createElement('div'),target=document.createElement('button');parent.style.overflow='hidden';parent.append(target);document.body.append(parent);
     vi.spyOn(parent,'getBoundingClientRect').mockReturnValue(new DOMRect(0,0,100,100));
+    for(const key of ['offsetWidth','offsetHeight','clientWidth','clientHeight'])Object.defineProperty(parent,key,{configurable:true,value:100});
     vi.spyOn(target,'getBoundingClientRect').mockReturnValue(new DOMRect(10,130,40,30));
     vi.spyOn(target,'getClientRects').mockReturnValue([new DOMRect(10,130,40,30)] as unknown as DOMRectList);
     expect(previewVisibility(target)).toEqual({visible:false,reason:'clipped'});
@@ -27,6 +28,7 @@ describe('canonical graph and owned preview host boundaries',()=>{
   it('distinguishes partial intersection from hidden and unsupported shape clipping',()=>{
     const parent=document.createElement('div'),target=document.createElement('button');parent.style.overflow='auto';parent.append(target);document.body.append(parent);
     vi.spyOn(parent,'getBoundingClientRect').mockReturnValue(new DOMRect(0,0,100,100));
+    for(const key of ['offsetWidth','offsetHeight','clientWidth','clientHeight'])Object.defineProperty(parent,key,{configurable:true,value:100});
     vi.spyOn(target,'getBoundingClientRect').mockReturnValue(new DOMRect(10,80,40,30));
     vi.spyOn(target,'getClientRects').mockReturnValue([new DOMRect(10,80,40,30)] as unknown as DOMRectList);
     expect(previewVisibility(target)).toEqual({visible:true,reason:'visible'});
