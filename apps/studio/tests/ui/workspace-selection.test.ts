@@ -38,7 +38,7 @@ it('selects a visible layer range and toggles only the requested member',async()
 it('inspects socket-selected connections and a mixed Ctrl-node set without captions or source edits',async()=>{
  const source=await start();await pointer(document.querySelector('.design-frame input')!);button('Structure').click();await settle();
  button('Select incoming Value connections for Name').click();await settle();button('Selection panel').click();await settle();
- expect(document.querySelector('.workspace-selection-details header')?.textContent).toContain('Connection');expect(document.querySelector('[aria-label="Selection technical information"]')?.textContent).toContain('Value');expect(document.querySelector('[aria-label="Selection overview"]')?.textContent).toContain('Defined in');expect(document.querySelectorAll('.studio-edge-caption')).toHaveLength(0);
+ expect(document.querySelector('.workspace-selection-details header')).toBeNull();expect(document.querySelector('[aria-label="Selection technical information"]')?.textContent).toContain('Value');expect(document.querySelector('[aria-label="Selection overview"]')).toBeNull();expect(document.querySelectorAll('.studio-edge-caption')).toHaveLength(0);
  button('Select outgoing Updates connections for Name').dispatchEvent(new MouseEvent('click',{bubbles:true,ctrlKey:true}));await settle();
  const field=document.querySelector<HTMLElement>(`.structure-workspace [data-id="${structureId(source.id,'node','field')}"]`)!;
  field.dispatchEvent(new MouseEvent('click',{bubbles:true,ctrlKey:true}));await settle();expect(document.querySelector('.workspace-selection-details header')?.textContent).toContain('1 node · 2 connections');

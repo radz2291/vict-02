@@ -53,16 +53,16 @@ export function sourceOverview(document:UiDocument,graph:StructureGraph,id:strin
  return result.filter(fact=>!['Type','Scope','Inside'].includes(fact.name));
 }
 
-/** The persistent identity header uses the same model for objects and connections. */
+/** Names for object identities and exact technical connection member controls. */
 export function selectionMember(document:UiDocument,graph:StructureGraph,item:WorkspaceItem,rendered?:readonly string[]){
  const identity=selectionIdentity(document,graph,item,rendered);
  const context=[identity.scope,identity.textLocation,identity.availability].filter(Boolean).join(' · ');
- if(item.kind==='node')return {...identity,context,endpoints:undefined};
+ if(item.kind==='node')return {...identity,context};
  const edge=graph.edges.find(edge=>edge.id===item.id);
- if(!edge)return {...identity,name:'Unavailable connection',iconKey:'reference' as const,context,endpoints:undefined};
+ if(!edge)return {...identity,name:'Unavailable connection',iconKey:'reference' as const,context};
  const subjectId=relationshipSubject(edge),otherId=subjectId===edge.source?edge.target:edge.source;
  const subject=selectionIdentity(document,graph,{kind:'node',id:subjectId}),other=selectionIdentity(document,graph,{kind:'node',id:otherId}),phrase=relationshipPhrase(edge,subjectId);
- return {...identity,name:`${subject.qualified} · ${phrase} · ${other.qualified}`,iconKey:'reference' as const,context,endpoints:{subject,other,phrase}};
+ return {...identity,name:`${subject.qualified} · ${phrase} · ${other.qualified}`,iconKey:'reference' as const,context};
 }
 function encodeComparison(value:unknown):string {
  if(value===undefined)return 'Not set';if(value===null)return 'null';
@@ -92,12 +92,6 @@ export function selectionComparison(document:UiDocument,graph:StructureGraph,ite
 }
 export function selectionOverview(document:UiDocument,graph:StructureGraph,items:readonly WorkspaceItem[],context:StructureContext={}){
  if(items.length===1&&items[0]?.kind==='node')return sourceOverview(document,graph,items[0].id,context);
- if(items.length&&items.every(item=>item.kind==='edge')){
-  const edges=items.flatMap(item=>{const edge=graph.edges.find(edge=>edge.id===item.id);return edge?[edge]:[];});
-  if(edges.length!==items.length)return [];
-  const origins=new Set(edges.map(edge=>edge.data?.origin==='host'?'Studio host':'Document'));
-  return origins.size===1?[{name:'Defined in',value:[...origins][0]!}]:[];
- }
  // Object-only comparisons must never imply that contextual edge endpoints were selected.
  if(items.some(item=>item.kind==='edge'))return [];
  const facts=items.map(item=>sourceOverview(document,graph,item.id,context));
