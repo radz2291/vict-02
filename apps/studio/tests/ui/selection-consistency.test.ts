@@ -33,7 +33,7 @@ it('all projected single entity categories and connection roles retain inspectio
  for(const source of fixtures){const graph=projectStructure(source,context);for(const node of graph.nodes){const sourceNode=node.data.sourceId?source.nodes[node.data.sourceId]:undefined;const category=sourceNode?`${node.data.kind}/${sourceNode.kind}/${node.data.kindLabel}`:node.data.kind;if(!kinds.has(category))kinds.set(category,{source,node});}for(const edge of graph.edges)if(edge.data?.role&&!roles.has(edge.data.role))roles.set(edge.data.role,{source,edge});}
  const inspected=[];
  for(const [kind,{source,node}]of kinds){const before=JSON.stringify(source);await panel(source,[{kind:'node',id:node.id}], 'properties',context);const header=document.querySelector('.source-details header')?.textContent;expect(header).toBeTruthy();expect(header).not.toContain('No selection');expect(document.querySelectorAll('.selection-sections .studio-section-header')).toHaveLength(3);expect(JSON.stringify(source)).toBe(before);inspected.push({kind,header,overview:document.querySelector('.useful-facts')?.textContent});}
- for(const [role,{source,edge}]of roles){await panel(source,[{kind:'edge',id:edge.id}], 'properties',context);expect(document.querySelector('.workspace-selection-details dl')?.textContent).toContain('Meaning');}
+ for(const [role,{source,edge}]of roles){await panel(source,[{kind:'edge',id:edge.id}], 'properties',context);expect(document.querySelector('.workspace-selection-details .relationship-story .connection-role')?.getAttribute('title')).toContain(edge.data.path);expect(document.querySelectorAll('.workspace-selection-details [aria-label="Selection overview"] .endpoint')).toHaveLength(2);}
 
 });
 it('distinguishes same-name scoped properties in a multiple selection list',async()=>{
@@ -45,7 +45,7 @@ it('distinguishes same-name scoped properties in a multiple selection list',asyn
 it('single and multiple inspection share section structure and relationship navigation',async()=>{
  const source=bindingFixture(),graph=projectStructure(source),node=graph.nodes.find(node=>node.data.sourceId==='field')!,edge=graph.edges.find(edge=>edge.source===node.id||edge.target===node.id)!;
  await panel(source,[{kind:'node',id:node.id}], 'relationships');const single={expandedSections:document.querySelectorAll('.source-details section.expanded').length,navigationButtons:document.querySelectorAll('.details-relationships button').length};
- await panel(source,[{kind:'node',id:node.id},{kind:'edge',id:edge.id}], 'relationships');const multiple={navigationButtons:document.querySelectorAll('.connection-row button').length,cards:document.querySelectorAll('.connection-row').length};
+ await panel(source,[{kind:'node',id:node.id},{kind:'edge',id:edge.id}], 'relationships');const multiple={navigationButtons:document.querySelectorAll('.relationship-story button').length,cards:document.querySelectorAll('.relationship-story').length};
  expect(single.navigationButtons).toBeGreaterThan(0);expect(multiple.cards).toBeGreaterThan(0);expect(multiple.navigationButtons).toBeGreaterThan(0);expect(document.querySelector('.selection-sections')).not.toBeNull();
 });
 it('Layers follows an exact rendered repeat row with the same scope as Design',async()=>{

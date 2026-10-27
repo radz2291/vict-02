@@ -1,14 +1,13 @@
 <script lang="ts">
  import type {UiDocument} from '@victframework/ui';
- import {relationMeaning} from './structure-connections.js';
+ import {relationMeaning,relationLabel} from './structure-connections.js';
  import SourceDetails from './SourceDetails.svelte';
  import {projectStructure,parseStructureId,structureNodePresentation,type StructureContext,type StructureHandoff} from './structure.js';
- import {relationLabel} from './structure-connections.js';
  import {itemKey,type WorkspaceSelection,type WorkspaceItem} from './workspace-selection.js';
  import './disclosures.css';
  import SelectionSections from './SelectionSections.svelte';
  import SelectionRelationships from './SelectionRelationships.svelte';
- import {relationshipCount} from './selection-relationships.js';
+ import {relationshipCount,relationshipSubject,relationshipPhrase} from './selection-relationships.js';
  import {selectionIdentity,sourceOverview} from './selection-presentation.js';
  import {connectionGroup} from './structure-trace.js';
  import type {SelectionOperation} from '@victframework/ui-editor';
@@ -27,7 +26,7 @@
  $effect(()=>{const element=root;if(!element)return;const escape=(event:KeyboardEvent)=>{if(event.key==='Escape'){event.preventDefault();event.stopPropagation();onClose();}};element.addEventListener('keydown',escape);return()=>element.removeEventListener('keydown',escape);});
  function nodeName(key:string){return selectionIdentity(document,graph,{kind:'node',id:key}).qualified;}
  function itemType(item:WorkspaceItem){return selectionIdentity(document,graph,item).type;}
- function itemName(item:WorkspaceItem){if(item.kind==='edge'){const edge=graph.edges.find(edge=>edge.id===item.id);return edge?`${nodeName(edge.source)} → ${relationLabel(edge)} → ${nodeName(edge.target)}`:'Unavailable connection';}return selectionIdentity(document,graph,item).name;}
+ function itemName(item:WorkspaceItem){if(item.kind==='edge'){const edge=graph.edges.find(edge=>edge.id===item.id);if(!edge)return 'Unavailable connection';const subject=relationshipSubject(edge),target=subject===edge.source?edge.target:edge.source;return `${nodeName(subject)} · ${relationshipPhrase(edge,subject)} · ${nodeName(target)}`;}return selectionIdentity(document,graph,item).name;}
  function identity(item:WorkspaceItem){const identity=selectionIdentity(document,graph,item,renderedOccurrences);return [identity.scope,identity.textLocation,identity.availability].filter(Boolean).join(' · ');}
  function selectRelated(item:WorkspaceItem,operation:SelectionOperation){if(onSelectionIntent)onSelectionIntent(item.kind==='edge'?connectionGroup(graph.edges,item.id).map(edge=>({kind:'edge' as const,id:edge.id})):[item],operation);else if(item.kind==='node')onSelect(item.id);else onInspect(item);}
  function encode(value:unknown):string {if(value===undefined)return 'Not set';if(value===null)return 'null';if(Array.isArray(value))return '['+value.map(encode).join(', ')+']';if(typeof value==='object')return '{'+Object.entries(value as Record<string,unknown>).sort(([a],[b])=>a.localeCompare(b)).map(([key,value])=>JSON.stringify(key)+': '+encode(value)).join(', ')+'}';return typeof value==='string'?value:String(value);}
@@ -60,12 +59,12 @@
   {:else}
    <SelectionSections bind:page relationshipsCount={relationshipCount(graph,items)}>
     {#snippet overview()}
-    {#if single?.kind==='edge' && connections[0]}{@const edge=connections[0]}<dl><div><dt>Relationship</dt><dd>{relationLabel(edge)}</dd></div><div><dt>From</dt><dd>{nodeName(edge.source)}</dd></div><div><dt>To</dt><dd>{nodeName(edge.target)}</dd></div><div><dt>Origin</dt><dd>{edge.data?.origin==='host'?'Host connection':'Document declaration'}</dd></div><div><dt>Meaning</dt><dd>{edge.data?.description??relationMeaning(edge)}</dd></div></dl><p class="quiet">Declared direction; this does not indicate a live execution.</p>{/if}
+    {#if single?.kind==='edge' && connections[0]}<SelectionRelationships {document} {graph} {items} {blocked} onIntent={selectRelated}/><p class="quiet">Declared relationship.</p>{/if}
     {#if shared.length}<dl aria-label="Shared properties">{#each shared as fact}<div><dt>{fact.name}</dt><dd title={fact.value}>{fact.value}</dd></div>{/each}</dl><p class="quiet">Read-only comparison. Mixed means the selected items differ.</p>{/if}
     {#if !single}<ul class="selection-items" aria-label="Selected items">{#each items as item (itemKey(item))}<li><button class="inspect-item" type="button" disabled={blocked} title={identity(item)} onclick={()=>onInspect(item)}><small class="item-type">{itemType(item)}</small>{itemName(item)}{#if identity(item)}<small>{identity(item)}</small>{/if}</button><button class="remove-item" type="button" disabled={blocked} aria-label={`Remove ${itemType(item)} ${itemName(item)} from selection`} onclick={()=>onRemove(item)}>×</button></li>{/each}</ul>{/if}
     {/snippet}
     {#snippet relationships()}<SelectionRelationships {document} {graph} {items} {blocked} onIntent={selectRelated}/>{/snippet}
-    {#snippet technical()}<dl>{#each items as item (itemKey(item))}<div><dt>{itemName(item)}</dt><dd><code>{item.kind==='node'?item.occurrence??item.id:graph.edges.find(edge=>edge.id===item.id)?.data?.path}</code></dd></div>{/each}</dl>{/snippet}
+    {#snippet technical()}<dl>{#each items as item (itemKey(item))}<div><dt>{itemName(item)}</dt><dd><code>{item.kind==='node'?item.occurrence??item.id:graph.edges.find(edge=>edge.id===item.id)?.data?.path}</code>{#if item.kind==='edge'}{@const edge=connections.find(edge=>edge.id===item.id)}{#if edge}<p>Relationship: {relationLabel(edge)}</p><p>{edge.data?.origin==='host'?'Host connection':'Document declaration'}</p><p>{edge.data?.description??relationMeaning(edge)}</p>{/if}{/if}</dd></div>{/each}</dl>{/snippet}
    </SelectionSections>
   {/if}
  </section>

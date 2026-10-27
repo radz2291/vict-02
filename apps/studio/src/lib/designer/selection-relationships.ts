@@ -3,16 +3,18 @@ import type {RelationRole} from './structure-semantics.js';
 import {relationLabel} from './structure-connections.js';
 import type {WorkspaceItem} from './workspace-selection.js';
 
-type Group = {edge:StructureGraph['edges'][number];paths:string[]};
+export type RelationshipGroup = {edge:StructureGraph['edges'][number];paths:string[];selected:boolean};
+type Group = RelationshipGroup;
 /** Keep distinct owner/origin relationships and every exact declaration path. */
 export function relationshipGroups(graph:StructureGraph,items:readonly WorkspaceItem[]):Group[]{
  const groups=new Map<string,Group>();
+ const selectedEdges=new Set(items.filter(item=>item.kind==='edge').map(item=>item.id));
  for(const edge of graph.edges){
   if(!items.some(item=>item.kind==='edge'?item.id===edge.id:item.id===edge.source||item.id===edge.target))continue;
-  const key=JSON.stringify([edge.source,edge.target,edge.data?.role,edge.data?.description,edge.data?.origin,edge.data?.owner]);
+  const key=JSON.stringify([edge.source,edge.target,edge.data?.role,edge.data?.description,edge.data?.origin,edge.data?.owner,selectedEdges.has(edge.id)]);
   const existing=groups.get(key);
   if(existing)existing.paths.push(edge.data?.path??'');
-  else groups.set(key,{edge,paths:[edge.data?.path??'']});
+  else groups.set(key,{edge,paths:[edge.data?.path??''],selected:selectedEdges.has(edge.id)});
  }
  return [...groups.values()];
 }
@@ -35,15 +37,33 @@ const relationshipPhrases:Record<RelationRole,readonly [string,string]>={
 export function relationshipPhrase(edge:Group['edge'],selectedId:string):string{
  return edge.data?.role?relationshipPhrases[edge.data.role][edge.source===selectedId?1:0]:relationLabel(edge);
 }
-/** Page underlying relationship groups, while preserving full per-object reference counts. */
-export function relationshipStories(groups:readonly Group[],selectedId:string,limit=50){
- const stories=new Map<string,{targetId:string;relations:Group[];count:number;shown:number}>();
+const readingRoles:ReadonlySet<RelationRole>=new Set(['value','payload','fallback','items','key','condition','styles']);
+/** Prefer the object doing the reading; other roles describe the declared source. */
+export function relationshipSubject(edge:Group['edge'],selectedNodes:ReadonlySet<string>=new Set()):string {
+ const from=selectedNodes.has(edge.source),to=selectedNodes.has(edge.target);
+ if(from!==to)return from?edge.source:edge.target;
+ return edge.data?.role&&readingRoles.has(edge.data.role)?edge.target:edge.source;
+}
+export type RelationshipStory={subjectId:string;targetId:string;selected:boolean;relations:Group[];count:number;shown:number};
+/** One paging/grouping policy for every selection shape; each declaration occurs once. */
+function groupStories(groups:readonly Group[],subject:(edge:Group['edge'])=>string,limit:number):RelationshipStory[]{
+ const stories=new Map<string,RelationshipStory>();
  groups.forEach((group,index)=>{
-  const targetId=group.edge.source===selectedId?group.edge.target:group.edge.source;
-  const story=stories.get(targetId)??{targetId,relations:[],count:0,shown:0};
+  const subjectId=subject(group.edge),targetId=group.edge.source===subjectId?group.edge.target:group.edge.source;
+  const key=JSON.stringify([subjectId,targetId,group.selected]);
+  const story=stories.get(key)??{subjectId,targetId,selected:group.selected,relations:[],count:0,shown:0};
   story.count+=group.paths.length;
   if(index<limit){story.relations.push(group);story.shown+=group.paths.length;}
-  stories.set(targetId,story);
+  stories.set(key,story);
  });
  return [...stories.values()].filter(story=>story.relations.length);
+}
+/** Single-object adapter retains the established compact story treatment. */
+export function relationshipStories(groups:readonly Group[],selectedId:string,limit=50){
+ return groupStories(groups,()=>selectedId,limit);
+}
+export function selectionRelationshipStories(graph:StructureGraph,items:readonly WorkspaceItem[],limit=50){
+ const selectedNodes=new Set(items.filter(item=>item.kind==='node').map(item=>item.id));
+ const groups=relationshipGroups(graph,items).sort((a,b)=>Number(b.selected)-Number(a.selected));
+ return groupStories(groups,edge=>relationshipSubject(edge,selectedNodes),limit);
 }
