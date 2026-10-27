@@ -1,0 +1,923 @@
+{
+  "schema": "vict.studio-node-capability-review@1",
+  "observedAt": "2026-10-27T11:08:55.094Z",
+  "previewProduct": "e5bc3cd36aae5e7d2934aa03f293fb49c8ce1006",
+  "reportBaseline": "c18decffd2fb89aa5da3a2fc2accb626a4ed2d8e",
+  "method": "Read-only rendered Source textarea and Flow DOM. No drag replay, edits, save, reload, mode change or provider run performed.",
+  "controls": [
+    {
+      "definitionId": "vict.catalog.slider",
+      "id": "kn_blur",
+      "outputs": {
+        "valueChange": {
+          "setState": {
+            "key": "ks_blur"
+          }
+        }
+      },
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "size"
+        },
+        "max": {
+          "type": "literal",
+          "value": 100
+        },
+        "min": {
+          "type": "literal",
+          "value": 0
+        },
+        "step": {
+          "type": "literal",
+          "value": 1
+        },
+        "value": {
+          "path": "state.ks_blur",
+          "type": "ref"
+        }
+      }
+    },
+    {
+      "definitionId": "vict.catalog.slider",
+      "id": "kn_black",
+      "outputs": {
+        "valueChange": {
+          "setState": {
+            "key": "ks_black"
+          }
+        }
+      },
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "blackpoint"
+        },
+        "max": {
+          "type": "literal",
+          "value": 1
+        },
+        "min": {
+          "type": "literal",
+          "value": -1
+        },
+        "step": {
+          "type": "literal",
+          "value": 0.05
+        },
+        "value": {
+          "path": "state.ks_black",
+          "type": "ref"
+        }
+      }
+    },
+    {
+      "definitionId": "vict.catalog.slider",
+      "id": "kn_white",
+      "outputs": {
+        "valueChange": {
+          "setState": {
+            "key": "ks_white"
+          }
+        }
+      },
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "whitepoint"
+        },
+        "max": {
+          "type": "literal",
+          "value": 2
+        },
+        "min": {
+          "type": "literal",
+          "value": 0
+        },
+        "step": {
+          "type": "literal",
+          "value": 0.05
+        },
+        "value": {
+          "path": "state.ks_white",
+          "type": "ref"
+        }
+      }
+    },
+    {
+      "definitionId": "vict.catalog.slider",
+      "id": "kn_rot",
+      "outputs": {
+        "valueChange": {
+          "setState": {
+            "key": "ks_rot"
+          }
+        }
+      },
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "rotate"
+        },
+        "max": {
+          "type": "literal",
+          "value": 360
+        },
+        "min": {
+          "type": "literal",
+          "value": 0
+        },
+        "step": {
+          "type": "literal",
+          "value": 1
+        },
+        "value": {
+          "path": "state.ks_rot",
+          "type": "ref"
+        }
+      }
+    },
+    {
+      "definitionId": "vict.catalog.checkbox",
+      "id": "kn_invert",
+      "outputs": {},
+      "props": {
+        "checked": {
+          "path": "state.merge_invert",
+          "type": "ref"
+        },
+        "label": {
+          "type": "literal",
+          "value": "invert mask"
+        }
+      }
+    }
+  ],
+  "diagnostics": [],
+  "documentId": "screen-3bde3458-f229-493c-8af1-20df6da29100",
+  "edges": [
+    {
+      "id": "fe_1",
+      "outputs": {},
+      "props": {
+        "id": {
+          "type": "literal",
+          "value": "e-read1-shuffle1"
+        },
+        "source": {
+          "type": "literal",
+          "value": "read1"
+        },
+        "target": {
+          "type": "literal",
+          "value": "shuffle1"
+        }
+      }
+    },
+    {
+      "id": "fe_2",
+      "outputs": {},
+      "props": {
+        "id": {
+          "type": "literal",
+          "value": "e-shuffle1-grade1"
+        },
+        "source": {
+          "type": "literal",
+          "value": "shuffle1"
+        },
+        "target": {
+          "type": "literal",
+          "value": "grade1"
+        }
+      }
+    },
+    {
+      "id": "fe_3",
+      "outputs": {},
+      "props": {
+        "id": {
+          "type": "literal",
+          "value": "e-grade1-blur1"
+        },
+        "source": {
+          "type": "literal",
+          "value": "grade1"
+        },
+        "target": {
+          "type": "literal",
+          "value": "blur1"
+        }
+      }
+    },
+    {
+      "id": "fe_4",
+      "outputs": {},
+      "props": {
+        "id": {
+          "type": "literal",
+          "value": "e-blur1-merge1-a"
+        },
+        "label": {
+          "type": "literal",
+          "value": "A"
+        },
+        "source": {
+          "type": "literal",
+          "value": "blur1"
+        },
+        "target": {
+          "type": "literal",
+          "value": "merge1"
+        }
+      }
+    },
+    {
+      "id": "fe_5",
+      "outputs": {},
+      "props": {
+        "id": {
+          "type": "literal",
+          "value": "e-roto1-merge1-mask"
+        },
+        "label": {
+          "type": "literal",
+          "value": "mask"
+        },
+        "source": {
+          "type": "literal",
+          "value": "roto1"
+        },
+        "target": {
+          "type": "literal",
+          "value": "merge1"
+        }
+      }
+    },
+    {
+      "id": "fe_6",
+      "outputs": {},
+      "props": {
+        "id": {
+          "type": "literal",
+          "value": "e-keyer1-merge1-b"
+        },
+        "label": {
+          "type": "literal",
+          "value": "B"
+        },
+        "source": {
+          "type": "literal",
+          "value": "keyer1"
+        },
+        "target": {
+          "type": "literal",
+          "value": "merge1"
+        }
+      }
+    },
+    {
+      "id": "fe_7",
+      "outputs": {},
+      "props": {
+        "id": {
+          "type": "literal",
+          "value": "e-merge1-merge2-a"
+        },
+        "label": {
+          "type": "literal",
+          "value": "A"
+        },
+        "source": {
+          "type": "literal",
+          "value": "merge1"
+        },
+        "target": {
+          "type": "literal",
+          "value": "merge2"
+        }
+      }
+    },
+    {
+      "id": "fe_8",
+      "outputs": {},
+      "props": {
+        "id": {
+          "type": "literal",
+          "value": "e-grade2-merge2-b"
+        },
+        "label": {
+          "type": "literal",
+          "value": "B"
+        },
+        "source": {
+          "type": "literal",
+          "value": "grade2"
+        },
+        "target": {
+          "type": "literal",
+          "value": "merge2"
+        }
+      }
+    },
+    {
+      "id": "fe_9",
+      "outputs": {},
+      "props": {
+        "id": {
+          "type": "literal",
+          "value": "e-roto1-merge2-mask"
+        },
+        "label": {
+          "type": "literal",
+          "value": "mask"
+        },
+        "source": {
+          "type": "literal",
+          "value": "roto1"
+        },
+        "target": {
+          "type": "literal",
+          "value": "merge2"
+        }
+      }
+    },
+    {
+      "id": "fe_10",
+      "outputs": {},
+      "props": {
+        "id": {
+          "type": "literal",
+          "value": "e-merge2-transform1"
+        },
+        "source": {
+          "type": "literal",
+          "value": "merge2"
+        },
+        "target": {
+          "type": "literal",
+          "value": "transform1"
+        }
+      }
+    },
+    {
+      "id": "fe_11",
+      "outputs": {},
+      "props": {
+        "id": {
+          "type": "literal",
+          "value": "e-transform1-write1"
+        },
+        "source": {
+          "type": "literal",
+          "value": "transform1"
+        },
+        "target": {
+          "type": "literal",
+          "value": "write1"
+        }
+      }
+    }
+  ],
+  "graph": {
+    "definitionId": "vict.flow.canvas",
+    "id": "graph",
+    "kind": "component",
+    "localStyle": [
+      {
+        "property": "flex",
+        "value": {
+          "type": "text",
+          "value": "1 1 auto"
+        }
+      },
+      {
+        "property": "min-height",
+        "value": {
+          "type": "text",
+          "value": "0px"
+        }
+      }
+    ],
+    "props": {
+      "background": {
+        "type": "literal",
+        "value": true
+      },
+      "controls": {
+        "type": "literal",
+        "value": true
+      },
+      "height": {
+        "type": "literal",
+        "value": 520
+      },
+      "label": {
+        "type": "literal",
+        "value": "Node Graph1"
+      },
+      "minimap": {
+        "type": "literal",
+        "value": true
+      }
+    },
+    "revision": "1",
+    "slots": {
+      "edges": {
+        "children": [
+          "fe_1",
+          "fe_2",
+          "fe_3",
+          "fe_4",
+          "fe_5",
+          "fe_6",
+          "fe_7",
+          "fe_8",
+          "fe_9",
+          "fe_10",
+          "fe_11"
+        ],
+        "name": "edges"
+      },
+      "nodes": {
+        "children": [
+          "fn_read1",
+          "fn_shuffle1",
+          "fn_grade1",
+          "fn_blur1",
+          "fn_roto1",
+          "fn_read2",
+          "fn_keyer1",
+          "fn_const1",
+          "fn_grade2",
+          "fn_merge1",
+          "fn_merge2",
+          "fn_transform1",
+          "fn_write1"
+        ],
+        "name": "nodes"
+      }
+    }
+  },
+  "localState": {
+    "accepted": {
+      "initial": false,
+      "key": "accepted",
+      "type": "boolean"
+    },
+    "actionError": {
+      "initial": "",
+      "key": "actionError",
+      "type": "string"
+    },
+    "actionResult": {
+      "initial": "",
+      "key": "actionResult",
+      "type": "string"
+    },
+    "blur_size": {
+      "initial": 12,
+      "key": "blur_size",
+      "type": "number"
+    },
+    "busy": {
+      "initial": false,
+      "key": "busy",
+      "type": "boolean"
+    },
+    "dialogOpen": {
+      "initial": false,
+      "key": "dialogOpen",
+      "type": "boolean"
+    },
+    "grade_black": {
+      "initial": 0,
+      "key": "grade_black",
+      "type": "number"
+    },
+    "grade_white": {
+      "initial": 1,
+      "key": "grade_white",
+      "type": "number"
+    },
+    "ks_black": {
+      "initial": [
+        0
+      ],
+      "key": "ks_black",
+      "type": "numberList"
+    },
+    "ks_blur": {
+      "initial": [
+        12
+      ],
+      "key": "ks_blur",
+      "type": "numberList"
+    },
+    "ks_rot": {
+      "initial": [
+        0
+      ],
+      "key": "ks_rot",
+      "type": "numberList"
+    },
+    "ks_white": {
+      "initial": [
+        1
+      ],
+      "key": "ks_white",
+      "type": "numberList"
+    },
+    "merge_invert": {
+      "initial": false,
+      "key": "merge_invert",
+      "type": "boolean"
+    },
+    "message": {
+      "initial": "Hello from my screen",
+      "key": "message",
+      "type": "string"
+    },
+    "transform_rotate": {
+      "initial": 0,
+      "key": "transform_rotate",
+      "type": "number"
+    }
+  },
+  "nodeDom": [
+    {
+      "className": "svelte-flow__node svelte-flow__node-authored selectable",
+      "id": "read1",
+      "transform": "translate(20px, 40px)"
+    },
+    {
+      "className": "svelte-flow__node svelte-flow__node-authored selectable selected",
+      "id": "shuffle1",
+      "transform": "translate(240px, 30px)"
+    },
+    {
+      "className": "svelte-flow__node svelte-flow__node-authored selectable",
+      "id": "grade1",
+      "transform": "translate(420px, 20px)"
+    },
+    {
+      "className": "svelte-flow__node svelte-flow__node-authored selectable",
+      "id": "blur1",
+      "transform": "translate(600px, 20px)"
+    },
+    {
+      "className": "svelte-flow__node svelte-flow__node-authored selectable",
+      "id": "roto1",
+      "transform": "translate(600px, 200px)"
+    },
+    {
+      "className": "svelte-flow__node svelte-flow__node-authored selectable",
+      "id": "read2",
+      "transform": "translate(20px, 240px)"
+    },
+    {
+      "className": "svelte-flow__node svelte-flow__node-authored selectable",
+      "id": "keyer1",
+      "transform": "translate(240px, 240px)"
+    },
+    {
+      "className": "svelte-flow__node svelte-flow__node-authored selectable",
+      "id": "const1",
+      "transform": "translate(20px, 430px)"
+    },
+    {
+      "className": "svelte-flow__node svelte-flow__node-authored selectable",
+      "id": "grade2",
+      "transform": "translate(240px, 430px)"
+    },
+    {
+      "className": "svelte-flow__node svelte-flow__node-authored selectable",
+      "id": "merge1",
+      "transform": "translate(830px, 100px)"
+    },
+    {
+      "className": "svelte-flow__node svelte-flow__node-authored selectable",
+      "id": "merge2",
+      "transform": "translate(1070px, 220px)"
+    },
+    {
+      "className": "svelte-flow__node svelte-flow__node-authored selectable",
+      "id": "transform1",
+      "transform": "translate(1310px, 110px)"
+    },
+    {
+      "className": "svelte-flow__node svelte-flow__node-authored selectable",
+      "id": "write1",
+      "transform": "translate(1540px, 110px)"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "fn_read1",
+      "outputs": {},
+      "props": {
+        "id": {
+          "type": "literal",
+          "value": "read1"
+        },
+        "label": {
+          "type": "literal",
+          "value": "Read1 · beauty_####.exr"
+        },
+        "x": {
+          "type": "literal",
+          "value": 20
+        },
+        "y": {
+          "type": "literal",
+          "value": 40
+        }
+      }
+    },
+    {
+      "id": "fn_shuffle1",
+      "outputs": {},
+      "props": {
+        "id": {
+          "type": "literal",
+          "value": "shuffle1"
+        },
+        "label": {
+          "type": "literal",
+          "value": "Shuffle1 · rgba"
+        },
+        "x": {
+          "type": "literal",
+          "value": 240
+        },
+        "y": {
+          "type": "literal",
+          "value": 30
+        }
+      }
+    },
+    {
+      "id": "fn_grade1",
+      "outputs": {},
+      "props": {
+        "id": {
+          "type": "literal",
+          "value": "grade1"
+        },
+        "label": {
+          "type": "literal",
+          "value": "Grade1 · linear"
+        },
+        "x": {
+          "type": "literal",
+          "value": 420
+        },
+        "y": {
+          "type": "literal",
+          "value": 20
+        }
+      }
+    },
+    {
+      "id": "fn_blur1",
+      "outputs": {},
+      "props": {
+        "id": {
+          "type": "literal",
+          "value": "blur1"
+        },
+        "label": {
+          "type": "literal",
+          "value": "Blur1 · gaussian"
+        },
+        "x": {
+          "type": "literal",
+          "value": 600
+        },
+        "y": {
+          "type": "literal",
+          "value": 20
+        }
+      }
+    },
+    {
+      "id": "fn_roto1",
+      "outputs": {},
+      "props": {
+        "id": {
+          "type": "literal",
+          "value": "roto1"
+        },
+        "label": {
+          "type": "literal",
+          "value": "Roto1 · bezier"
+        },
+        "x": {
+          "type": "literal",
+          "value": 600
+        },
+        "y": {
+          "type": "literal",
+          "value": 200
+        }
+      }
+    },
+    {
+      "id": "fn_read2",
+      "outputs": {},
+      "props": {
+        "id": {
+          "type": "literal",
+          "value": "read2"
+        },
+        "label": {
+          "type": "literal",
+          "value": "Read2 · backplate_####.exr"
+        },
+        "x": {
+          "type": "literal",
+          "value": 20
+        },
+        "y": {
+          "type": "literal",
+          "value": 240
+        }
+      }
+    },
+    {
+      "id": "fn_keyer1",
+      "outputs": {},
+      "props": {
+        "id": {
+          "type": "literal",
+          "value": "keyer1"
+        },
+        "label": {
+          "type": "literal",
+          "value": "Keyer1 · IBKColour"
+        },
+        "x": {
+          "type": "literal",
+          "value": 240
+        },
+        "y": {
+          "type": "literal",
+          "value": 240
+        }
+      }
+    },
+    {
+      "id": "fn_const1",
+      "outputs": {},
+      "props": {
+        "id": {
+          "type": "literal",
+          "value": "const1"
+        },
+        "label": {
+          "type": "literal",
+          "value": "Constant1 · sky_bg"
+        },
+        "x": {
+          "type": "literal",
+          "value": 20
+        },
+        "y": {
+          "type": "literal",
+          "value": 430
+        }
+      }
+    },
+    {
+      "id": "fn_grade2",
+      "outputs": {},
+      "props": {
+        "id": {
+          "type": "literal",
+          "value": "grade2"
+        },
+        "label": {
+          "type": "literal",
+          "value": "Grade2 · lift"
+        },
+        "x": {
+          "type": "literal",
+          "value": 240
+        },
+        "y": {
+          "type": "literal",
+          "value": 430
+        }
+      }
+    },
+    {
+      "id": "fn_merge1",
+      "outputs": {},
+      "props": {
+        "id": {
+          "type": "literal",
+          "value": "merge1"
+        },
+        "label": {
+          "type": "literal",
+          "value": "Merge1 · over"
+        },
+        "x": {
+          "type": "literal",
+          "value": 830
+        },
+        "y": {
+          "type": "literal",
+          "value": 100
+        }
+      }
+    },
+    {
+      "id": "fn_merge2",
+      "outputs": {},
+      "props": {
+        "id": {
+          "type": "literal",
+          "value": "merge2"
+        },
+        "label": {
+          "type": "literal",
+          "value": "Merge2 · screen"
+        },
+        "x": {
+          "type": "literal",
+          "value": 1070
+        },
+        "y": {
+          "type": "literal",
+          "value": 220
+        }
+      }
+    },
+    {
+      "id": "fn_transform1",
+      "outputs": {},
+      "props": {
+        "id": {
+          "type": "literal",
+          "value": "transform1"
+        },
+        "label": {
+          "type": "literal",
+          "value": "Transform1"
+        },
+        "x": {
+          "type": "literal",
+          "value": 1310
+        },
+        "y": {
+          "type": "literal",
+          "value": 110
+        }
+      }
+    },
+    {
+      "id": "fn_write1",
+      "outputs": {},
+      "props": {
+        "id": {
+          "type": "literal",
+          "value": "write1"
+        },
+        "label": {
+          "type": "literal",
+          "value": "Write1 · comp_v010.exr"
+        },
+        "x": {
+          "type": "literal",
+          "value": 1540
+        },
+        "y": {
+          "type": "literal",
+          "value": 110
+        }
+      }
+    }
+  ],
+  "propertyHeadings": [
+    {
+      "id": "grpblur-text",
+      "text": "Blur1"
+    },
+    {
+      "id": "grpgrade-text",
+      "text": "Grade1"
+    },
+    {
+      "id": "grptrans-text",
+      "text": "Transform1"
+    },
+    {
+      "id": "grpmerge-text",
+      "text": "Merge2"
+    }
+  ],
+  "revision": "r1",
+  "surfaceWidth": 222.1999969482422,
+  "viewportStyle": "transform: translate(4.27209px, 65.2331px) scale(0.50698);"
+}
