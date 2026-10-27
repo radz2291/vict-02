@@ -4,9 +4,9 @@
   const target = $derived(presentation?.target('root'));
 </script>
 <section {...target} class={`${target?.class ?? ''} vict-ai`} aria-label={String(props.label ?? 'Conversation')}>
-  <div class="vict-authored-conversation">
-    <div class="vict-authored-messages" role="log" aria-label="Messages" aria-live="polite">{@render io?.slots?.messages?.()}</div>
-    <div class="vict-authored-composer">{@render io?.slots?.composer?.()}</div>
+  <div {...presentation?.target('surface')} class={`vict-authored-conversation ${presentation?.target('surface').class ?? ''}`}>
+    <div {...presentation?.target('messages')} class={`vict-authored-messages ${presentation?.target('messages').class ?? ''}`} role="log" aria-label="Messages" aria-live="polite">{@render io?.slots?.messages?.()}</div>
+    <div {...presentation?.target('composer')} class={`vict-authored-composer ${presentation?.target('composer').class ?? ''}`}>{@render io?.slots?.composer?.()}</div>
   </div>
 </section>
 <style>

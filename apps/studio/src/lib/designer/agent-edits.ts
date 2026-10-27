@@ -1,5 +1,7 @@
 /** Cycle 1.1: a bounded palette vocabulary compiled to the manual editor's transactions. */
 import { z } from 'zod';
+import {patchAuthoredGraph} from './graph-authoring.js';
+import {preflightShapeDiagnostics} from './agent-preflight.js';
 import {
   applyUiEdit,
   canonicalUiDocument,
@@ -81,7 +83,9 @@ export const agentOperationSchema = z.discriminatedUnion('op', [
   z.object({op:z.literal('attachStyleSource'),nodeId:id,sourceId:id,index:z.number().int().min(0).max(1000).optional()}).strict(),
   z.object({op:z.literal('detachStyleSource'),nodeId:id,sourceId:id}).strict(),
   z.object({op:z.literal('removeStyleSource'),id}).strict(),
-  z.object({op:z.literal('style'),nodeId:id,property:z.string().min(1).max(80),
+  z.object({op:z.literal('editGraph'),nodeId:id,expectedGraphRevision:z.number().int().min(0),changes:z.array(z.unknown()).min(1).max(40)}).strict(),
+  z.object({op:z.literal('theme'),role:z.enum(['surface','text','textMuted','border','accent','accentText','highlight','highlightText','focusRing','disabledSurface','disabledText','elevation']),value:z.string().max(500).optional()}).strict(),
+  z.object({op:z.literal('style'),nodeId:id,part:id.optional(),property:z.string().min(1).max(80),
     value:z.union([z.object({type:z.literal('text'),value:z.string().max(500)}).strict(),z.object({type:z.literal('token'),id}).strict(),z.object({type:z.literal('binding'),expression}).strict()]).optional(),
     conditionId:id.optional(),pseudo:z.enum(['hover','focus','active','disabled']).optional()}).strict(),
   z.object({ op: z.literal('wireInput'), nodeId: id, key: id.refine(value => /^[a-zA-Z0-9_-]+$/.test(value), 'Use a simple local state key.'), initial: scalar.optional() }).strict(),
@@ -104,7 +108,7 @@ export const agentEditSchema = z
 /** Shared safe refusal guidance for browser preparation and provider contract validation. */
 export function agentEditDiagnostics(error:z.ZodError,input?:unknown) {
  const operations=input && typeof input==='object' && Array.isArray((input as {operations?:unknown}).operations) ? (input as {operations:unknown[]}).operations : [];
- const shape:Record<string,string>={insert:'insert(kind:element|text|component,nodeId,parentId,tag?|componentId+revision|text/expression?,slotName?,index?)',bindText:'bindText(nodeId,expression?)',bindAttribute:'bindAttribute(nodeId,name,expression?)',style:'style(nodeId,property,value?:text|token|binding,conditionId?,pseudo?)',declareToken:'declareToken(id,value)',declareCondition:'declareCondition(id,kind:media|container,query,name?)',add:'add(recipe,nodeId,parentId,slotName?,index?,text?,headingLevel?,attributes?,props?,styles?)',modify:'modify(nodeId,text?,headingLevel?,attributes?,props?,styles?)',move:'move(nodeId,newParentId,slotName?,index?)',remove:'remove(nodeId)',bind:'bind(nodeId,prop,expression?)',connect:'connect(nodeId,output,binding?)',declareState:'declareState(key,type:string|number|boolean|isoDate|isoTime|stringList|numberList,initial:matchingValue)',wireInput:'wireInput(nodeId,key,initial?)'};
+ const shape:Record<string,string>={insert:'insert(kind:element|text|component,nodeId,parentId,tag?|componentId+revision|text/expression?,slotName?,index?)',bindText:'bindText(nodeId,expression?)',bindAttribute:'bindAttribute(nodeId,name,expression?)',style:'style(nodeId,part?,property,value?:text|token|binding,conditionId?,pseudo?)',declareToken:'declareToken(id,value)',declareCondition:'declareCondition(id,kind:media|container,query,name?)',add:'add(recipe,nodeId,parentId,slotName?,index?,text?,headingLevel?,attributes?,props?,styles?)',modify:'modify(nodeId,text?,headingLevel?,attributes?,props?,styles?)',move:'move(nodeId,newParentId,slotName?,index?)',remove:'remove(nodeId)',bind:'bind(nodeId,prop,expression?)',connect:'connect(nodeId,output,binding?)',declareState:'declareState(key,type:string|number|boolean|isoDate|isoTime|stringList|numberList,initial:matchingValue)',wireInput:'wireInput(nodeId,key,initial?)'};
  Object.assign(shape,{defineStyleSource:'defineStyleSource(id,declarations:[{property,value:text|token|binding}],conditionId?,pseudo?,replace?:boolean)',attachStyleSource:'attachStyleSource(nodeId,sourceId,index?)',detachStyleSource:'detachStyleSource(nodeId,sourceId)',removeStyleSource:'removeStyleSource(id)'});
  return error.issues.slice(0,8).map(issue=>{
   const operation=typeof issue.path[1]==='number' ? issue.path[1] : undefined;
@@ -165,11 +169,11 @@ export function canonicalEditFailure(issues:readonly {code:string;message:string
   const diagnostics=leaves.map(({issue,commandIndex,envelopeCode})=>{
     const details:Record<string,unknown>={...(target?{nodeId:target.nodeId,property:target.property}:{})};
     for(const key of ['documentId','nodeId','parentId','definitionId','extensionId','prop','property','output','stateKey','expected','actual','target','slot','slotName','hostCode','styleSourceId','reference']) {
-      const item=issue[key];if(typeof item==='string')details[key]=item.slice(0,300);else if(typeof item==='number'||typeof item==='boolean')details[key]=item;
+      const item=issue[key]??(issue.detail&&typeof issue.detail==='object'?(issue.detail as Record<string,unknown>)[key]:undefined);if(typeof item==='string')details[key]=item.slice(0,300);else if(typeof item==='number'||typeof item==='boolean')details[key]=item;
     }
     if(typeof details.nodeId==='string')details.sourcePath=`nodes.${details.nodeId}`;
     return {...details,...(operation===undefined?{}:{operation}),...(commandIndex===undefined?{}:{commandIndex}),...(envelopeCode?{envelopeCode}:{}),code:issue.code,
-      path:typeof issue.path==='string'?issue.path.slice(0,500):typeof issue.nodeId==='string'?`nodes.${issue.nodeId}`:operation===undefined?'document':`operations.${operation}`,
+      path:typeof issue.path==='string'?issue.path.slice(0,500):typeof details.nodeId==='string'?`nodes.${details.nodeId}`:operation===undefined?'document':`operations.${operation}`,
       message:issue.message.slice(0,700)};
   });
   return {...failure('STUDIO_AGENT_VALIDATION',`${operation===undefined?'Edit':`Operation ${operation}`} rejected: `+diagnostics.map(issue=>`${issue.code}: ${issue.message}`).join('; ').slice(0,1800)),diagnostics,...(truncated?{diagnosticsTruncated:true}:{})};
@@ -205,6 +209,8 @@ export function prepareAgentEdit(
       'STUDIO_AGENT_REVISION_MISMATCH',
       `The edit supplied the wrong working revision. Read the screen and copy expectedRevision exactly: ${JSON.stringify(cursor.revision)}. document.revision is source metadata, not the editing revision. This request applied no edits.`,
     );
+  const shapeDiagnostics=preflightShapeDiagnostics(input);
+  if(shapeDiagnostics.length)return {...failure('STUDIO_AGENT_INVALID_EDIT','The insertion is missing required fields. No edits applied.'),diagnostics:shapeDiagnostics};
   let working = document;
   const commands: UiEditCommand[] = [];
   let activeOperation:number|undefined;
@@ -284,8 +290,11 @@ export function prepareAgentEdit(
         const condition=operation.kind==='media'?{id:operation.id,kind:'media' as const,query:operation.query}:{id:operation.id,kind:'container' as const,query:operation.query,name:operation.name!};
         next.push({op:'replaceDocument',document:{...working,conditions:{...working.conditions,[operation.id]:condition}}});
       }
+      if(operation.op==='editGraph'){const patched=patchAuthoredGraph(working,operation.nodeId,operation.changes,operation.expectedGraphRevision);if(!patched.ok)return failure('STUDIO_AGENT_GRAPH_INVALID',patched.message);next.push({op:'replaceDocument',document:patched.document});}
+      if(operation.op==='theme')next.push({op:'setThemeRole',role:operation.role,value:operation.value});
       if(operation.op==='style'){
-        if(operation.conditionId||operation.pseudo) {
+        if(operation.part)next.push({op:'setPartStyleDeclaration',nodeId:operation.nodeId,part:operation.part,property:operation.property,value:operation.value,conditionId:operation.conditionId,pseudo:operation.pseudo});
+        else if(operation.conditionId||operation.pseudo) {
           next.push(...allowConditionalStyles(requestId,working,operation.nodeId,operation.conditionId,operation.pseudo).commands);
           next.push(...setConditionalStyle({requestId,nodeId:operation.nodeId,property:operation.property,value:operation.value,conditionId:operation.conditionId,pseudo:operation.pseudo}).commands);
         } else next.push(...setBaseStyle(working,{requestId,nodeId:operation.nodeId,property:operation.property,value:operation.value}).commands);
@@ -420,7 +429,7 @@ export function prepareAgentEdit(
       ...(compiled.ok ? Object.values(compiled.plan.documentPlans ?? {}).flatMap(plan =>
         plan.diagnostics.filter(issue => issue.severity === 'error')) : []),
     ];
-    if (issues.length) return canonicalEditFailure(issues);
+    if (issues.length){const refused=canonicalEditFailure(issues);return {...refused,diagnostics:refused.diagnostics?.map(diagnostic=>{const nodeId=diagnostic.nodeId;const operation=typeof nodeId==='string'?parsed.data.operations.findIndex(item=>'nodeId' in item&&item.nodeId===nodeId):-1;return {...diagnostic,...(operation>=0?{operation}:{})};})};}
     if (JSON.stringify(working).length > 200_000 || Object.keys(working.nodes).length > 500)
       return failure('STUDIO_AGENT_LIMIT', 'This screen exceeds the Cycle 1.1 editing limit.');
     return {

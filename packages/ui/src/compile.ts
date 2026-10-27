@@ -33,6 +33,7 @@ import { checkExpression, checkExpressionTarget, repeatExpressionFields, type Ui
 import { sha256 } from './sha256.js';
 import { isUiValueOfType } from './values.js';
 import { validateUiDocument } from './validate.js';
+import { uiThemeDeclarations } from './theme.js';
 
 /** The component-ABI marker (amendment §3.2): declared as an events capability. */
 export const UI_COMPONENT_ABI = 'vict.ui-component-abi@1' as const;
@@ -138,6 +139,8 @@ export type UiRenderInstruction =
       readonly classes?: readonly string[];
       readonly styleRuleIds?: readonly string[];
       readonly styleTargets?: readonly string[];
+      readonly partClasses?: Readonly<Record<string, string>>;
+      readonly partStyleRuleIds?: Readonly<Record<string, readonly string[]>>;
       readonly outputDecls?: readonly UiOutputDecl[];
       /** Descriptor property errors refuse only this occurrence at render. */
       readonly rejectedProps?: readonly string[];
@@ -299,13 +302,13 @@ export function compileUiDocument(
     `uv-${docHash}-${nodeId.replace(/[^A-Za-z0-9_-]/g, '_')}`;
 
   // ---- token defaults layer ----------------------------------------------
-  const tokenDeclarations = Object.entries(
+  const tokenDeclarations = [...Object.entries(
     (document.tokens ?? {}) as Record<string, { value: string }>,
   ).map(([tokenId, token]) => ({
     // CSS custom-property-safe name (declared token ids may contain dots)
     property: `--ui-token-${tokenId.replace(/[^A-Za-z0-9_-]/g, '_')}`,
     value: { type: 'literal', value: token.value } as UiResolvedValue,
-  }));
+  })), ...uiThemeDeclarations(document.theme)];
   if (tokenDeclarations.length > 0) {
     rules.push({
       ruleId: `${docHash}-tokens`,
@@ -546,7 +549,26 @@ export function compileUiDocument(
           }
           const localId = compileStyleDeclarations(node.localStyle, `${classFor(nodeId)}-l`, scope.inDefinition ? 'componentBase' : 'local', `.${classFor(nodeId)}`);
           if (localId !== undefined) styleRuleIds.push(localId);
-          return { ...compiledExtension.instruction, classes: [...(node.classes ?? []), classFor(nodeId)], styleRuleIds, styleTargets: descriptor.styleTargets ?? [] };
+          const partClasses: Record<string, string> = {};
+          const partStyleRuleIds: Record<string, string[]> = {};
+          for (const [part, style] of Object.entries(node.partStyles ?? {})) {
+            if (!descriptor.styleTargets?.includes(part)) {
+              issues.push(uiDiagnostic('UI_DOC_INVALID_LITERAL', `Component '${descriptor.id}' declares no style part '${part}'.`, { documentId, nodeId, part, feature: 'component-part' }));
+              continue;
+            }
+            const partClass = `${classFor(nodeId)}-part-${sha256(part).slice(0, 10)}`;
+            partClasses[part] = partClass;
+            const ids: string[] = [];
+            for (const sourceId of style.styleSources ?? []) {
+              const source = document.styleSources[sourceId];
+              const id = compileStyleDeclarations(source?.declarations, `${partClass}-s${ids.length}`, scope.inDefinition ? 'componentBase' : 'source', `.${partClass}`, { conditionId: source?.conditionId, pseudo: source?.pseudo });
+              if (id !== undefined) ids.push(id);
+            }
+            const id = compileStyleDeclarations(style.localStyle, `${partClass}-l`, scope.inDefinition ? 'componentBase' : 'local', `.${partClass}`);
+            if (id !== undefined) ids.push(id);
+            partStyleRuleIds[part] = ids;
+          }
+          return { ...compiledExtension.instruction, classes: [...(node.classes ?? []), classFor(nodeId)], styleRuleIds, styleTargets: descriptor.styleTargets ?? [], ...(Object.keys(partClasses).length ? {partClasses,partStyleRuleIds} : {}) };
         }
         definitionExpansionGuard += 1;
         if (definitionExpansionGuard > 256) {
@@ -713,7 +735,7 @@ export function compileUiDocument(
 
   // Expansion bounds are a structural refusal even if reached only after
   // resolution. They must not be confused with descriptor diagnostics.
-  const expansionErrors = issues.filter(issue => issue.code === 'UI_DOC_CYCLE');
+  const expansionErrors = issues.filter(issue => issue.code === 'UI_DOC_CYCLE' || issue.feature === 'component-part');
   if (hasErrors(expansionErrors)) return { ok: false, issues: expansionErrors };
 
   // Validation above owns structural refusal. Descriptor checks below that

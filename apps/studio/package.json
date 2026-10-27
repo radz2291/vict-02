@@ -31,7 +31,9 @@
     "@mastra/memory": "1.28.2",
     "@mastra/observability": "1.17.5",
     "@victframework/ui-ai-svelte": "0.4.0-rc.1",
-    "@victframework/ui-flow-svelte": "0.4.0-rc.1"
+    "@victframework/ui-flow-svelte": "0.4.0-rc.1",
+    "@victframework/ui-media-svelte": "0.4.0-rc.1",
+    "@victframework/ui-patterns-svelte": "0.4.0-rc.1"
   },
   "devDependencies": {
     "@sveltejs/adapter-node": "^5.2.12",

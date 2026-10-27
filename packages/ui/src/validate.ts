@@ -20,7 +20,7 @@ import type {
   UiNode,
   UiOutputBinding,
 } from './document.js';
-import { UI_DOCUMENT_SCHEMA } from './document.js';
+import { UI_DOCUMENT_SCHEMA, UI_THEME_SCHEMA, UI_THEME_ROLES } from './document.js';
 import { hasErrors, uiDiagnostic, type UiDiagnostic } from './diagnostics.js';
 import { isUiValueOfType, isUiValueType } from './values.js';
 import { checkExpression, checkExpressionTarget, repeatExpressionFields, type UiScopeInfo } from './expressions.js';
@@ -103,6 +103,15 @@ export function validateUiDocument(input: unknown, catalogs: UiCatalogs): readon
   }
 
   const docRecord = document as unknown as Record<string, unknown>;
+  if (document.theme !== undefined) {
+    const theme = document.theme;
+    if (!isPlainObject(theme) || theme.schema !== UI_THEME_SCHEMA || !isPlainObject(theme.roles) || Object.keys(theme).some(key => !['schema', 'roles'].includes(key))) {
+      issues.push(uiDiagnostic('UI_DOC_INVALID_LITERAL', 'Theme requires vict.ui-theme@1 and a semantic roles record.', {documentId:document.id,nodeId:document.root}));
+    } else for (const [role, value] of Object.entries(theme.roles)) {
+      if (!(UI_THEME_ROLES as readonly string[]).includes(role) || typeof value !== 'string' || !value.trim() || value.length > 2048 || /[;{}<>]|url\s*\(/i.test(value))
+        issues.push(uiDiagnostic('UI_DOC_INVALID_LITERAL', `Theme role '${role}' requires a bounded inert CSS value.`, {documentId:document.id,nodeId:document.root,property:role}));
+    }
+  }
   const nodes = registryOf(docRecord, 'nodes') as Record<string, UiNode>;
   const definitions = registryOf(docRecord, 'componentDefinitions') as Record<
     string,
@@ -918,6 +927,32 @@ function validatePresentation(ctx: ValidateContext, node: UiNode, scope: UiScope
   const docRecord = document as unknown as Record<string, unknown>;
   const documentId = String(document.id);
   const styleSources = registryOf(docRecord, 'styleSources');
+  if (node.partStyles !== undefined) {
+    if (node.kind !== 'component' || !isPlainObject(node.partStyles) || registryOf(docRecord,'componentDefinitions')[node.definitionId] !== undefined) {
+      issues.push(uiDiagnostic('UI_DOC_INVALID_LITERAL', 'Part styles require a component and a named parts record.', {documentId,nodeId:node.id}));
+    } else for (const [part, style] of Object.entries(node.partStyles)) {
+      if (!/^[A-Za-z][A-Za-z0-9_-]{0,79}$/.test(part) || !isPlainObject(style) || Object.keys(style).some(key => !['localStyle','styleSources'].includes(key)) || (style.localStyle !== undefined && !Array.isArray(style.localStyle)) || (style.styleSources !== undefined && !Array.isArray(style.styleSources))) {
+        issues.push(uiDiagnostic('UI_DOC_INVALID_LITERAL', `Invalid presentation for part '${part}'.`, {documentId,nodeId:node.id,part}));
+        continue;
+      }
+      for (const declaration of style.localStyle ?? []) {
+        if (!isPlainObject(declaration)) { issues.push(uiDiagnostic('UI_DOC_INVALID_LITERAL', 'Part declaration must be an object.', {documentId,nodeId:node.id,part})); continue; }
+        const value = declaration.value;
+        if (!isPlainObject(value) || !((value.type === 'text' && typeof value.value === 'string') || (value.type === 'token' && typeof value.id === 'string') || (value.type === 'binding' && isPlainObject(value.expression)))) {
+          issues.push(uiDiagnostic('UI_DOC_INVALID_LITERAL', `Part '${part}' requires a typed style value.`, {documentId,nodeId:node.id,part})); continue;
+        }
+        validateStyleDeclaration(ctx, declaration, node.id, node.id, registryOf(docRecord,'tokens'));
+        if (isPlainObject(declaration.value) && declaration.value.type === 'binding') issues.push(...checkExpression(declaration.value.expression as UiExpression,catalogs,scope,documentId,node.id));
+      }
+      for (const sourceId of style.styleSources ?? []) {
+        if (typeof sourceId !== 'string' || styleSources[sourceId] === undefined) issues.push(uiDiagnostic('UI_DOC_REFERENCE_DANGLING', `Part '${part}' references an unknown style source.`, {documentId,nodeId:node.id,reference:`styleSource:${String(sourceId)}`}));
+        const source = styleSources[String(sourceId)];
+        if (isPlainObject(source) && Array.isArray(source.declarations)) for (const declaration of source.declarations) {
+          if (isPlainObject(declaration) && isPlainObject(declaration.value) && declaration.value.type==='binding') issues.push(...checkExpression(declaration.value.expression as UiExpression,catalogs,scope,documentId,node.id));
+        }
+      }
+    }
+  }
   const validateSourceBindings = (sourceId: string): void => {
     const source = styleSources[sourceId];
     if (isPlainObject(source) && Array.isArray(source.declarations)) {

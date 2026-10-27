@@ -72,7 +72,7 @@ export default defineConfig({
       {
         test: {
           name: 'renderer',
-          server: { deps: { inline: ['bits-ui', 'runed', '@internationalized/date', '@xyflow/svelte'] } },
+          server: { deps: { inline: ['bits-ui', 'runed', '@internationalized/date', '@xyflow/svelte', '@lucide/svelte'] } },
           // The permanent Svelte renderer implementation (ui-svelte — the
           // sole renderer package since the facade retirement) plus the
           // editor's svelte-component tests (U2 tooling surfaces).

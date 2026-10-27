@@ -5,15 +5,26 @@ import { authoringIndex, authoringContractBundle, type UiDocument, type UiNode }
 import { resolveOccurrence, compositionChildren } from '@victframework/ui-editor';
 import { screenRecipes, recipeHostRequirements } from './recipes.js';
 import { actionInputs, designerCatalogs, catalogDescriptors, screenActionState } from './application.js';
-import type { AgentCursor } from './agent-edits.js';
+import { prepareAgentEdit, type AgentCursor } from './agent-edits.js';
 import { authoringContract, installedAuthoringRegistry } from './authoring.js';
 import { studioPreviewHost } from './preview-host.js';
+import { effectiveNodeCapabilities, scopedSourceNodes, sourceNodeSearchText, sourceChildren } from './agent-discovery.js';
+import { preflightShapeDiagnostics } from './agent-preflight.js';
+import { suppliedIconManifest, searchIconManifest } from '@victframework/ui-media-svelte/manifest';
 const registries=['componentDefinitions','styleSources','tokens','conditions','assets'] as const;
+const readSections=['overview','nodes','source','sources','capabilities','preflight','icons','palette','component','state','registry','actions','coverage','families','catalog','contracts','elements'] as const;
+/** Keep the legacy envelope, but refuse fields the selected section would ignore. */
+const sectionFields:Record<typeof readSections[number],readonly string[]>={
+  overview:[],nodes:['nodeId','scope','query'],source:['nodeId'],sources:['nodeIds'],capabilities:['nodeId'],preflight:['edit'],icons:['query','key'],
+  palette:['query'],component:['recipe'],state:['stateKey'],registry:['registry','key','query'],actions:[],coverage:['requested'],
+  families:['query'],catalog:['query','family','category','tag'],contracts:['components','knownDigests','includeExamples','expectedBodyIdentities','knownBodyIdentities'],elements:['tag','query'],
+};
 export const agentReadSchema = z.object({
-  section: z.enum(['overview','nodes','source','palette','component','state','registry','actions','coverage','families','catalog','contracts','elements']).default('overview'),
+  section: z.enum(readSections).default('overview'),
   offset: z.number().int().min(0).max(200000).default(0),
   limit: z.number().int().min(1).max(20).default(12),
-  nodeId: z.string().max(160).optional(), recipe: z.string().max(160).optional(),
+  nodeId: z.string().min(1).max(160).optional(), recipe: z.string().min(1).max(160).optional(),
+  scope:z.enum(['self','subtree']).optional(),nodeIds:z.array(z.string().min(1).max(160)).min(1).max(8).optional(),edit:z.unknown().optional(),
   stateKey:z.string().min(1).max(160).optional(),
   registry:z.enum(registries).optional(),key:z.string().min(1).max(500).optional(),
   query: z.string().max(100).optional(), requested: z.array(z.string().max(160)).max(30).optional(),
@@ -23,12 +34,20 @@ export const agentReadSchema = z.object({
   includeExamples:z.boolean().optional(),
   expectedBodyIdentities:z.record(z.string().max(270),z.string().max(300)).refine(value=>Object.keys(value).length<=30,'At most 30 body identities.').optional(),
   knownBodyIdentities:z.record(z.string().max(270),z.string().max(300)).refine(value=>Object.keys(value).length<=30,'At most 30 body identities.').optional(),
-}).strict();
+}).strict().superRefine((query,ctx)=>{
+  const allowed=new Set(['section','offset','limit',...sectionFields[query.section]]);
+  for(const key of Object.keys(query))if(!allowed.has(key)&&query[key as keyof typeof query]!==undefined)ctx.addIssue({code:'custom',path:[key],message:`${key} is not used by section ${query.section}. Allowed section fields: ${sectionFields[query.section].join(', ')||'none'}.`});
+  if(query.section==='nodes'&&query.scope&&!query.nodeId)ctx.addIssue({code:'custom',path:['scope'],message:'scope requires nodeId; omit both to search the full source inventory.'});
+  if(query.section==='registry'&&query.key&&query.query)ctx.addIssue({code:'custom',path:['query'],message:'query filters the registry inventory; it cannot be combined with an exact key.'});
+  if(query.section==='elements'&&query.tag&&query.query)ctx.addIssue({code:'custom',path:['query'],message:'query filters the element inventory; it cannot be combined with an exact tag.'});
+  if(query.section==='icons'&&query.key&&query.query)ctx.addIssue({code:'custom',path:['query'],message:'query searches supplied icons; it cannot be combined with an exact icon key.'});
+});
 export const agentReadPresentation = { type:'object',additionalProperties:false,properties:{
-  section:{type:'string',enum:['overview','nodes','source','palette','component','state','registry','actions','coverage','families','catalog','contracts','elements']},
+  section:{type:'string',enum:[...readSections]},
   offset:{type:'integer',minimum:0},limit:{type:'integer',minimum:1,maximum:20},
   stateKey:{type:'string'},registry:{type:'string',enum:[...registries]},key:{type:'string'},
   nodeId:{type:'string'},recipe:{type:'string'},query:{type:'string'},requested:{type:'array',maxItems:30,items:{type:'string'}},
+  scope:{type:'string',enum:['self','subtree']},nodeIds:{type:'array',minItems:1,maxItems:8,items:{type:'string'}},edit:{type:'object',description:'For section preflight only: the exact studio_screen_edit payload. Validates without applying or returning an applicable proposal.'},
   family:{type:'string'},category:{type:'string'},tag:{type:'string'},
   components:{type:'array',minItems:1,maxItems:12,items:{type:'object',additionalProperties:false,required:['id'],properties:{id:{type:'string'},revision:{type:'string'}}}},
   knownDigests:{type:'object',maxProperties:30,additionalProperties:{type:'string'}},
@@ -89,7 +108,7 @@ export function agentCoverage(document: UiDocument, requested?: readonly string[
 }
 function nodeSummary(node: UiNode) {
   return { id:node.id,kind:node.kind,...(node.kind === 'element' ? {tag:node.tag} : node.kind === 'component' ? {definitionId:node.definitionId} : {}),
-    children:compositionChildren(node).slice(0,20), childCount:compositionChildren(node).length,
+    children:sourceChildren(node).slice(0,20), childCount:sourceChildren(node).length,
     sourcePreview:truncate(JSON.stringify(node),600) };
 }
 /** Keep all bridge limits intact, including recursive node count, depth and string length. */
@@ -118,7 +137,18 @@ export function agentContext(document: UiDocument, cursor: AgentCursor, selectio
   const textPage=(value:unknown)=>{const source=JSON.stringify(value);const length=Math.min(query.limit*300,6000);return {sourceJson:source.slice(query.offset,query.offset+length),totalCharacters:source.length,offset:query.offset,nextOffset:query.offset+length<source.length ? query.offset+length : null};};
   let result: Record<string, unknown>;
   const nodes = Object.values(document.nodes);
-  if(query.section==='families') {
+  if(query.section==='icons') {
+    const identity=(item:typeof suppliedIconManifest[number])=>`${item.pack}/${item.name}@${item.revision}`;
+    if(query.key){
+      const item=suppliedIconManifest.find(item=>identity(item)===query.key);
+      if(!item)return {...base,ok:false,code:'STUDIO_AGENT_ICON_NOT_FOUND',message:'No installed supplied icon has this exact key. Search icons with query; do not guess icon identities or infer media absence from an empty document asset registry.'};
+      result={...base,icon:{key:identity(item),...item},source:'installed-supplied-icon-manifest',guidance:'Use this exact pack/name/revision through the registered icon authoring contract. Custom icon/vector assets are separately declared; this manifest does not enumerate them.'};
+    }else{
+      const found=searchIconManifest(query.query??'',query.offset,query.limit);
+      result={...base,...found,offset:query.offset,totalInstalled:suppliedIconManifest.length,source:'installed-supplied-icon-manifest',items:found.items.map(item=>({key:identity(item),...item})),guidance:'Bounded installed metadata only; exact key selects one icon. Search tags/aliases, then read its registered icon component contract. Document assets and custom icons are separate inventories; an empty assets registry does not mean images or icons are unsupported.'};
+    }
+  }
+  else if(query.section==='families') {
     const groups=new Map<string,{family:string;count:number;authorable:number;categories:string[];packages:string[]}>();
     for(const item of installedAuthoringRegistry.contracts) {
       const group=groups.get(item.family)??{family:item.family,count:0,authorable:0,categories:[],packages:[]};
@@ -156,7 +186,30 @@ export function agentContext(document: UiDocument, cursor: AgentCursor, selectio
     const catalog=designerCatalogs.elements;
     result=query.tag?{...base,element:catalog.elements.find(item=>item.tag===query.tag)??null,globalAttributes:catalog.globalAttributes,
       guidance:'Insert a registered native tag; use bindText on an actual text node and bindAttribute for native refs. Leaf elements cannot contain child text. Attributes and interactions still pass canonical validation.'}:{...base,...page(catalog.elements.filter(item=>!query.query||item.tag.includes(query.query)).map(item=>({tag:item.tag,leaf:item.leaf===true}))),guidance:'Read elements with tag for its attributes; native tags are not component descriptors.'};
-  } else if (query.section === 'nodes') result = { ...base,...page(nodes.filter(node => !query.query || JSON.stringify(nodeSummary(node)).toLowerCase().includes(query.query.toLowerCase())).map(nodeSummary)) };
+  } else if (query.section === 'nodes') {
+    if(query.nodeId&&!Object.hasOwn(document.nodes,query.nodeId))return {...base,ok:false,code:'STUDIO_AGENT_NODE_NOT_FOUND',message:'nodes nodeId must be an existing source identity; no global fallback was performed.'};
+    const scope=query.nodeId?query.scope??'subtree':'document';
+    const scoped=scopedSourceNodes(document,query.nodeId,scope);
+    result={...base,scope:{kind:scope,nodeId:query.nodeId??null,includesInactiveSource:true,expandsComponentDefinitions:false},...page(scoped.filter(node=>!query.query||sourceNodeSearchText(node).includes(query.query.toLowerCase())).map(nodeSummary))};
+  }
+  else if(query.section==='capabilities') {
+    const node=query.nodeId&&Object.hasOwn(document.nodes,query.nodeId)?document.nodes[query.nodeId]:undefined;
+    if(!node)return {...base,ok:false,code:'STUDIO_AGENT_NODE_NOT_FOUND',message:'capabilities requires an existing nodeId.'};
+    result={...base,nodeId:node.id,...effectiveNodeCapabilities(node)};
+  }
+  else if(query.section==='preflight') {
+    if(query.edit===undefined)return {...base,ok:false,code:'STUDIO_AGENT_READ_QUERY',message:'preflight requires edit: the complete proposed edit payload, including expectedRevision, reason and operations.'};
+    const validation=prepareAgentEdit(document,cursor,query.edit,'preflight-only');
+    const shape=!validation.ok&&['STUDIO_AGENT_INVALID_EDIT','STUDIO_AGENT_ELEMENT','STUDIO_AGENT_COMPONENT_NOT_FOUND'].includes(validation.code)?preflightShapeDiagnostics(query.edit):[];
+    result=validation.ok?{...base,ok:true,applied:false,resultDigest:validation.digest,commandCount:validation.draft.commands.length,message:'Valid against this exact source cursor. No transaction was applied or reserved; submit the same payload through studio_screen_edit and expect fresh revision validation.'}:{...base,...validation,...(shape.length?{diagnostics:shape}:{}),applied:false};
+  }
+  else if(query.section==='sources') {
+    if(!query.nodeIds)return {...base,ok:false,code:'STUDIO_AGENT_READ_QUERY',message:'sources requires nodeIds (1-8 exact identities). Each item has independent lossless JSON pages; retain the same nodeIds for continuation.'};
+    const ids=[...new Set(query.nodeIds)];const missing=ids.filter(id=>!Object.hasOwn(document.nodes,id));
+    if(missing.length)return {...base,ok:false,code:'STUDIO_AGENT_NODE_NOT_FOUND',missing,message:'Every bundled source identity must exist; no partial bundle or global fallback was returned.'};
+    const length=Math.max(1,Math.floor(Math.min(query.limit*300,6000)/ids.length));
+    result={...base,items:ids.map(id=>{const source=JSON.stringify(document.nodes[id]);return {nodeId:id,sourceJson:source.slice(query.offset,query.offset+length),totalCharacters:source.length,offset:query.offset,nextOffset:query.offset+length<source.length?query.offset+length:null};}),paging:'Lossless text pages for each named source at this exact cursor. Completed shorter items remain complete on later shared-offset pages. Stop only when every nextOffset is null.'};
+  }
   else if (query.section === 'source') {
     const node = query.nodeId && Object.hasOwn(document.nodes,query.nodeId) ? document.nodes[query.nodeId] : undefined;
     if (!node) return { ...base,ok:false,code:'STUDIO_AGENT_NODE_NOT_FOUND',message:'source requires an existing nodeId from nodes discovery.' };
@@ -189,9 +242,9 @@ export function agentContext(document: UiDocument, cursor: AgentCursor, selectio
       ...(selectedSet?{selectionSet:selectionContext(document,selectedSet,{descriptors:catalogDescriptors,actionState:screenActionState,actionIds:designerCatalogs.actionIds,routeIds:designerCatalogs.routeIds})}:{}),
       roots:nodes.filter(node => node.id === document.root).map(nodeSummary),
       previewHost:studioPreviewHost,
-      knowledge:{registryDigest:installedAuthoringRegistry.digest,contracts:installedAuthoringRegistry.contracts.length,families:new Set(installedAuthoringRegistry.contracts.map(item=>item.family)).size,ready:installedAuthoringRegistry.ok,
+      knowledge:{registryDigest:installedAuthoringRegistry.digest,contracts:installedAuthoringRegistry.contracts.length,families:new Set(installedAuthoringRegistry.contracts.map(item=>item.family)).size,ready:installedAuthoringRegistry.ok,suppliedIconCount:suppliedIconManifest.length,icons:'Read icons with query/offset/limit or exact key for installed pack/name/revision and provenance; glyphs are never embedded in initial context.',
         discovery:'families → catalog with family/category/query → contracts with selected components and knownDigests. Native tags use elements; recipes use palette. Knowledge freshness is separate from this source cursor.'},
-      discovery:'Read nodes/palette/state with offset and limit <=20. State initialJson is a preview; read state with stateKey for lossless declaration JSON pages. Registry lists componentDefinitions/styleSources/tokens/conditions/assets; provide registry and optional key to page a whole entry as lossless JSON text. Read component with recipe for exact props/outputs/slots. Read source with nodeId for lossless JSON text pages (nextOffset is character offset). Read coverage with requested recipe IDs for source presence only.',
+      discovery:'Read nodes with optional nodeId (defaults to that source subtree), scope:self|subtree and semantic query; no nodeId means the full inventory. Inactive branches/templates are source, not proof of visibility; shared component definitions are not expanded implicitly. Read capabilities with nodeId before proposing part/state edits. Read source with nodeId or sources with up to8 nodeIds for lossless JSON text pages at this exact cursor. Read preflight with edit:{expectedRevision,reason,operations} to validate the same canonical transaction without applying it. Section-specific irrelevant fields are refused. State initialJson is a preview; state/stateKey and registry/registry/key provide lossless entry pages. Component/recipe and catalog/contracts provide exact identities and composition; coverage is source presence only. All inventory limits remain <=20.',
       editing:'Use add with a palette recipe as an accelerator, or insert kind element/text/component through the registered canonical path. Component insertion requires exact componentId/revision from catalog/contracts and explicit slotName for slot children. Native tags come from elements. declareState accepts string/number/boolean/isoDate/isoTime/stringList/numberList with a matching canonical initial value. bindText targets an actual text node; bindAttribute targets a native attribute. bind/connect use exact component props/outputs. style accepts text/token/binding values and optional conditionId/pseudo; declareToken and declareCondition add registered presentation data. defineStyleSource and attachStyleSource/detachStyleSource reuse ordered rules; replace:true explicitly updates a shared source. removeStyleSource requires no remaining references. Local styles retain precedence. Heading levels1..6 are native headings. Compatible same-batch construction is supported; final semantic/renderer checks are atomic. Read the current source after a refusal; never replay acknowledged edits merely to retry observation. Source presence, actual appearance and exercised behavior are distinct.',
       limits:{nodes:500,documentCharacters:200000,readPage:20},
     };

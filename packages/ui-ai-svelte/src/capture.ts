@@ -22,7 +22,7 @@ export class RenderedCaptureError extends Error {
 export async function captureRenderedElement(element: HTMLElement, viewport?: HTMLElement): Promise<RenderedCapture> {
   if (!element.isConnected || element.getClientRects().length === 0)
     throw new RenderedCaptureError('STUDIO_CAPTURE_NOT_VISIBLE', !element.isConnected ? 'frame-disconnected' : 'frame-no-layout');
-  await document.fonts.ready;
+  await element.ownerDocument.fonts.ready;
   const rect = element.getBoundingClientRect();
   if (rect.width < 1 || rect.height < 1) throw new RenderedCaptureError('STUDIO_CAPTURE_NOT_VISIBLE', 'frame-zero-size');
   const sourceWidth = Math.ceil(rect.width);
@@ -33,6 +33,8 @@ export async function captureRenderedElement(element: HTMLElement, viewport?: HT
   const width = Math.min(Math.ceil(Math.min(rect.right, clipping.right) - Math.max(rect.left, clipping.left)), RENDER_CAPTURE_LIMITS.width);
   const height = Math.min(Math.ceil(Math.min(rect.bottom, clipping.bottom) - Math.max(rect.top, clipping.top)), RENDER_CAPTURE_LIMITS.height);
   if (width < 1 || height < 1) throw new RenderedCaptureError('STUDIO_CAPTURE_NOT_VISIBLE', 'frame-outside-viewport');
+  if(viewport && (viewport.scrollTop!==0||viewport.scrollLeft!==0) && [...element.querySelectorAll<HTMLElement>('*')].some(node=>['fixed','sticky'].includes(getComputedStyle(node).position)))
+    throw new RenderedCaptureError('STUDIO_CAPTURE_POSITIONED_SCROLL','positioned-scroll-composition-unverified');
   // html-to-image does not preserve scrolled descendant offsets. Refuse such
   // a state instead of supplying a misleading top-of-content image.
   if (element.scrollTop !== 0 || element.scrollLeft !== 0 || Array.from(element.querySelectorAll<HTMLElement>('*')).some(node => node.scrollTop !== 0 || node.scrollLeft !== 0))
@@ -54,7 +56,7 @@ export async function captureRenderedElement(element: HTMLElement, viewport?: HT
     // that non-rendered image fetches the page HTML and fails image decoding.
     // Omit only images outside layout; visible images and SVG defs stay intact.
     filter: node => {
-      if (!(node instanceof HTMLImageElement)) return true;
+      if ((node as Element).tagName!=='IMG') return true;
       for (let current: Element | null = node; current; current = current.parentElement)
         if (getComputedStyle(current).display === 'none') return false;
       return true;

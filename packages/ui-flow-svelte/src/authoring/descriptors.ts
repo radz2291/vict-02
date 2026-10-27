@@ -44,8 +44,44 @@ export const flowEdgeDescriptor: UiExtensionDescriptor = {
   ],
   slots: [],
 };
+/** Separate identity preserves the original read-only diagram contract. */
+export const flowEditorDescriptor: UiExtensionDescriptor = {
+  ...base,
+  id: 'vict.flow.editor',
+  props: [
+    {
+      name: 'graph',
+      type: 'string',
+      default: '{"schema":"vict.flow-graph@1","revision":0,"nodeTypes":[],"nodes":[],"edges":[]}',
+    },
+    { name: 'label', type: 'string', default: 'Node editor' },
+    { name: 'height', type: 'number', default: 600 },
+    { name: 'readOnly', type: 'boolean', default: false },
+  ],
+  outputs: [
+    {
+      name: 'graphChange',
+      payload: 'string',
+      description:
+        'Validated vict.flow-graph@1 JSON after one complete transaction. Bind graph and this output to the same declared string state; the host decides durable canonical save/history.',
+    },
+    {
+      name: 'selectionChange',
+      payload: 'string',
+      description:
+        'Transient selected application graph node/edge IDs as JSON. Never canonical UI occurrence IDs.',
+    },
+  ],
+  slots: [],
+  inspectionLimits: [
+    'Graph JSON is a bounded versioned model, not executable code. A host persistence/history bridge is required for canonical source saves.',
+    'Node families declare supported field kinds and typed ports. Connecting cards does not execute a workflow.',
+    'System clipboard is not accessed: the visible portable selection buffer supports copy/paste.',
+  ],
+};
 export const flowAuthoringDescriptors = [
   flowCanvasDescriptor,
   flowNodeDescriptor,
   flowEdgeDescriptor,
+  flowEditorDescriptor,
 ] as const;

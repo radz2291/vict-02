@@ -7,9 +7,18 @@ export interface CaptureMetadata {
   capturedAt: string;
   viewport: { width: number; height: number; scrollLeft: number; scrollTop: number; devicePixelRatio: number };
   image: { width: number; height: number; sourceWidth: number; sourceHeight: number; offsetLeft: number; offsetTop: number; cropped: boolean };
+  evidence?:PreviewFacts;
   preview: { mode: 'design' | 'interact'; fingerprint: string; selection?: string; composition?: string };
 }
 export type CaptureResult = { ok: true; blob: Blob; metadata: CaptureMetadata } | { ok: false; code: string; message: string; diagnostics?: CaptureEvidence };
+export interface CaptureTarget {nodeId:string;part?:string}
+export interface PreviewFacts {workspaceView:string;viewportModel:'isolated-viewport'|'hosted-container';ownedOverlays:number;targets:{nodeId:string;part:string;bounds:number[];visible:boolean;styles:Record<string,string>}[]}
+export function previewFacts(frame:HTMLElement,target?:CaptureTarget,workspaceView='design'):PreviewFacts {
+ const doc=frame.ownerDocument;const owners=new Set([...frame.querySelectorAll<HTMLElement>('[data-ui-owner-root]')].map(el=>el.dataset.uiOwnerRoot));
+ const matches=[...doc.querySelectorAll<HTMLElement>('[data-ui-owner][data-ui-node]')].filter(el=>owners.has(el.dataset.uiOwner)&&(!target||el.dataset.uiNode===target.nodeId&&(!target.part||el.dataset.uiPart===target.part)));
+ const view=doc.defaultView;const targets=matches.slice(0,6).map(el=>{const r=el.getBoundingClientRect(),style=(view??window).getComputedStyle(el);return {nodeId:el.dataset.uiNode??'',part:el.dataset.uiPart??'root',bounds:[r.x,r.y,r.width,r.height].map(n=>Math.round(n*100)/100),visible:!!el.getClientRects().length&&r.width>0&&r.height>0&&r.bottom>0&&r.right>0&&r.top<(view?.innerHeight??0)&&r.left<(view?.innerWidth??0)&&style.display!=='none'&&style.visibility!=='hidden',styles:Object.fromEntries(['color','background-color','position','top','padding-top','overflow','font-size','z-index'].map(key=>[key,style.getPropertyValue(key).slice(0,100)]))};});
+ return {workspaceView,viewportModel:doc.defaultView?.frameElement?'isolated-viewport':'hosted-container',ownedOverlays:matches.filter(el=>el.dataset.uiPart==='content'||el.dataset.uiPart==='panel'||el.getAttribute('role')==='dialog'||el.getAttribute('role')==='menu').length,targets};
+}
 export interface CaptureState {
   cursor: AgentCursor;
   mode: 'design' | 'interact';
@@ -17,12 +26,14 @@ export interface CaptureState {
   selection?: string;
   composition?: string;
   structureOpen?: boolean;
+  workspaceView?:'design'|'interact'|'structure';
 }
 const equalCursor = (a: AgentCursor, b: AgentCursor) => JSON.stringify(a) === JSON.stringify(b);
 
 /** DocumentHost ownership is per rendered instance. Studio/Inspector overlays
  * have another owner (or none), even when they use the same control library. */
 function previewCaptureGuard(frame: HTMLElement) {
+  const view=frame.ownerDocument.defaultView??window;
   const ownerIds = () => new Set([...(frame.matches('[data-ui-owner-root]') ? [frame] : []), ...frame.querySelectorAll<HTMLElement>('[data-ui-owner-root]')].map(root => root.dataset.uiOwnerRoot).filter((value): value is string => !!value));
   const owners = ownerIds();
   const belongs = (node: Element) => owners.has(node.getAttribute('data-ui-owner') ?? '');
@@ -30,7 +41,7 @@ function previewCaptureGuard(frame: HTMLElement) {
   const visible = (node: HTMLElement) => {
     if (!node.isConnected || !node.getClientRects().length) return false;
     const rect = node.getBoundingClientRect();
-    if (rect.width <= 0 || rect.height <= 0 || rect.right <= 0 || rect.bottom <= 0 || rect.left >= window.innerWidth || rect.top >= window.innerHeight) return false;
+    if (rect.width <= 0 || rect.height <= 0 || rect.right <= 0 || rect.bottom <= 0 || rect.left >= view.innerWidth || rect.top >= view.innerHeight) return false;
     for (let current: HTMLElement | null = node; current; current = current.parentElement) {
       const style = getComputedStyle(current);
       if (style.display === 'none' || style.visibility === 'hidden' || style.visibility === 'collapse' || style.opacity === '0') return false;
@@ -46,13 +57,15 @@ function previewCaptureGuard(frame: HTMLElement) {
       tag: node.tagName, attributes: Array.from(node.attributes, attribute => [attribute.name, attribute.value]),
       focused: node === frame.ownerDocument.activeElement || node.contains(frame.ownerDocument.activeElement), hovered: node.matches(':hover'),
       text: node.childElementCount === 0 ? node.textContent : undefined, scrollLeft: node.scrollLeft, scrollTop: node.scrollTop,
-      value: node instanceof HTMLInputElement || node instanceof HTMLTextAreaElement || node instanceof HTMLSelectElement ? node.value : undefined,
-      inputChecked: node instanceof HTMLInputElement ? node.checked : undefined,
+      value: ['INPUT','TEXTAREA','SELECT'].includes(node.tagName) ? (node as HTMLInputElement).value : undefined,
+      inputChecked: node.tagName==='INPUT' ? (node as HTMLInputElement).checked : undefined,
+      bounds:[node.getBoundingClientRect().x,node.getBoundingClientRect().y,node.getBoundingClientRect().width,node.getBoundingClientRect().height],
+      renderedStyle:['color','background-color','position','top','display','visibility','padding-top'].map(key=>getComputedStyle(node).getPropertyValue(key)),
     })),
   });
   let changed = false;
   function touchesPreview(node: Node, descendants = false): boolean {
-    const element = node instanceof Element ? node : node.parentElement;
+    const element = node.nodeType===1 ? node as Element : node.parentElement;
     if (!element) return false;
     if (frame.contains(element) || belongs(element)) return true;
     if (element.closest('[data-ui-owner]') && belongs(element.closest('[data-ui-owner]')!)) return true;
@@ -73,6 +86,7 @@ export async function captureDesignerPreview(
   expected: AgentCursor,
   getState: () => CaptureState | undefined,
   viewportElement?: HTMLElement,
+  target?:CaptureTarget,
 ): Promise<CaptureResult> {
   const before = getState();
   const bounds = (target: HTMLElement | undefined) => { if(!target)return undefined;const r=target.getBoundingClientRect();return [r.x,r.y,r.width,r.height]; };
@@ -82,11 +96,13 @@ export async function captureDesignerPreview(
     return refuse('STUDIO_CAPTURE_STALE','The source changed. Read the current screen before requesting another image.','source','cursor-mismatch',['source']);
   if (!element || before.structureOpen)
     return refuse('STUDIO_CAPTURE_NOT_VISIBLE','Reveal the Design or Interact preview, then retry observation without replaying edits.','visibility',!element?'frame-missing':'preview-covered');
+  const facts=previewFacts(element,target,before.workspaceView??before.mode);
+  if(target&&!facts.targets.some(item=>item.visible))return refuse('STUDIO_CAPTURE_NOT_VISIBLE','The requested owned node or part is outside the visible application viewport. Reveal it and retry observation only.','visibility','target-not-visible');
   const viewportTarget = viewportElement ?? element;
   const geometry = () => [element, viewportTarget].map(target => { const bounds = target.getBoundingClientRect(); return [bounds.x,bounds.y,bounds.width,bounds.height].join(','); }).join('|');
   const geometryToken = geometry();
   const rect = viewportTarget.getBoundingClientRect();
-  const viewport = { width: Math.ceil(rect.width), height: Math.ceil(rect.height), scrollLeft: viewportTarget.scrollLeft, scrollTop: viewportTarget.scrollTop, devicePixelRatio: window.devicePixelRatio };
+  const viewport = { width: Math.ceil(rect.width), height: Math.ceil(rect.height), scrollLeft: viewportTarget.scrollLeft, scrollTop: viewportTarget.scrollTop, devicePixelRatio: element.ownerDocument.defaultView?.devicePixelRatio??window.devicePixelRatio };
   const stateToken = JSON.stringify(before);
   const guard = previewCaptureGuard(element);
   const changedFences=(renderedToken:string)=>{const changes:string[]=[];if(JSON.stringify(getState())!==stateToken)changes.push('source-or-preview');if(geometry()!==geometryToken)changes.push('geometry');if(viewportTarget.scrollLeft!==viewport.scrollLeft||viewportTarget.scrollTop!==viewport.scrollTop)changes.push('scroll');if(guard.changed())changes.push('dom-mutation');if(guard.signature()!==renderedToken)changes.push('rendered-controls');return changes;};
@@ -103,7 +119,7 @@ export async function captureDesignerPreview(
     if (JSON.stringify(getState()) !== stateToken || geometry() !== geometryToken || viewportTarget.scrollLeft !== viewport.scrollLeft || viewportTarget.scrollTop !== viewport.scrollTop || guard.changed() || guard.signature() !== renderedStateToken) return refuse('STUDIO_CAPTURE_STALE','The preview changed while associating image metadata. Retry observation.','metadata','preview-changed',changedFences(renderedStateToken));
     const fingerprint = Array.from(new Uint8Array(hash), byte => byte.toString(16).padStart(2, '0')).join('');
     const { blob, ...image } = capture;
-    return { ok: true, blob, metadata: { cursor: before.cursor, capturedAt: new Date().toISOString(), viewport, image,
+    return { ok: true, blob, metadata: { cursor: before.cursor, capturedAt: new Date().toISOString(), viewport, image,evidence:facts,
       preview: { mode: before.mode, fingerprint, ...(before.selection ? { selection: before.selection } : {}), ...(before.composition ? { composition: before.composition } : {}) } } };
   } catch (error) {
     const code=error instanceof Error && /^STUDIO_CAPTURE_[A-Z_]+$/.test(error.message)?error.message:'STUDIO_CAPTURE_FAILED';

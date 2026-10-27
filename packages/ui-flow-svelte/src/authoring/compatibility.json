@@ -1,5 +1,11 @@
 [
   {
+    "id": "vict.flow.editor",
+    "revision": "1",
+    "descriptorDigest": "4bde44952e151817c720a92aacafdcbaa7b1f5b66dc555474afa7e99ada1228f",
+    "capabilitiesDigest": "3c5521ae2e68a82bfc56bbc47ca23ce1a29be1de4776dbe771e809ba806176cc"
+  },
+  {
     "id": "vict.flow.canvas",
     "revision": "1",
     "descriptorDigest": "b1284730404b3e8fa92250352f6794e726d4cf24ea7b725ef47f6d18a75c075e",

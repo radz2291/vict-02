@@ -2,6 +2,13 @@
 export const AGENT_REQUEST_BYTES = 1_200_000;
 export const AGENT_STREAM_BYTES = 2_000_000;
 export const AGENT_FRAME_CHARACTERS = 300_000;
+export interface AgentCaptureTarget {nodeId:string;part?:string}
+export interface AgentWorkspaceFacts {
+  workspaceView:'design'|'interact'|'structure'; mode:'design'|'interact'; observable:boolean;
+  reason?:'preview-covered'|'frame-missing'|'no-layout';
+  viewport:{model:'isolated-viewport'|'hosted-container';width:number;height:number;devicePixelRatio:number;scrollLeft:number;scrollTop:number};
+  composition?:string;
+}
 
 /** A browser rasterizer may never settle. Stop must release the conversation immediately. */
 export function withTurnAbort<T>(operation:()=>Promise<T>, signal:AbortSignal, timeoutMs=20_000):Promise<T>{
@@ -22,6 +29,9 @@ export function boundedHistoryText(text: string): string {
 }
 
 export function agentFailureMessage(code: string | undefined): string | undefined {
+  if (code === 'STUDIO_AGENT_OBSERVATION_ONLY') return 'This observation continuation cannot apply edits. No source changes were made by this continuation.';
+  if (code === 'STUDIO_CAPTURE_OBSERVATION_REQUIRED') return 'The agent did not obtain a fresh image observation. Appearance remains unverified; retry observation without repeating edits.';
+  if (code === 'STUDIO_CAPTURE_MODEL_UNSUPPORTED') return 'Image support is unverified for the configured model. Check the existing supported model configuration before retrying observation.';
   if (code === 'STUDIO_AGENT_REQUEST_LIMIT') return 'This request exceeds the UTF-8 size limit. Shorten the prompt or history, or reduce the screen before retrying.';
   if (code === 'STUDIO_AGENT_STREAM_LIMIT') return 'The turn reached the transport size limit. Continue in a new request from the current screen.';
   if (code === 'STUDIO_AGENT_SOURCE_LIMIT') return 'This screen exceeds the advertised source limits. Reduce its size before retrying.';

@@ -295,13 +295,21 @@ export interface UiComponentTargetAttributes {
   readonly onpointerdowncapture?: (event: PointerEvent) => void;
 }
 export interface UiComponentPresentation {
+  /** Actual rendering document, including an explicitly hosted iframe viewport. */
+  readonly ownerDocument?: Document;
   /** Ephemeral inline surface, accepted only by explicitly capable adapters. */
   readonly compositionSlot?: string;
   /** Canonical document scope placed on an ancestor of portaled parts. */
   readonly scopeClass?: string;
-  /** The first declared style target owns instance styles; other targets expose inspection. */
+  /** Legacy instance styles target the first part; explicit partStyles target each declared part. */
   readonly target: (name: string) => UiComponentTargetAttributes;
 }
+
+/** Optional host-owned overlay outlet. Omission preserves standalone body portals. */
+export const UI_PORTAL_TARGET = Symbol.for('vict.ui.portal-target@1');
+export type UiPortalTarget = () => HTMLElement | undefined;
+export const UI_APPLICATION_DOCUMENT = Symbol.for('vict.ui.application-document@1');
+export type UiApplicationDocument = () => Document | undefined;
 
 /** Execution status is ephemeral presentation state, separate from authored bindings. */
 export interface UiComponentActionStatus {

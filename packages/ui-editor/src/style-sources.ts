@@ -89,6 +89,7 @@ export function removeStyleSource(input: SourceInput): TransactionDraft {
   sourceFor(input.document, input.sourceId);
   const references = [
     ...Object.values(input.document.nodes).filter(node => node.styleSources?.includes(input.sourceId)).map(node => `node:${node.id}`),
+    ...Object.values(input.document.nodes).flatMap(node=>Object.entries(node.partStyles??{}).filter(([,part])=>part.styleSources?.includes(input.sourceId)).map(([part])=>`node:${node.id}.part:${part}`)),
     ...Object.values(input.document.componentDefinitions).filter(definition => definition.baseStyle === input.sourceId).map(definition => `definition:${definition.id}.baseStyle`),
   ];
   if (references.length) throw new StyleSourceEditError(`Style source is still referenced by ${references.slice(0, 8).join(', ')}${references.length > 8 ? ', …' : ''}.`, 'sourceId', input);

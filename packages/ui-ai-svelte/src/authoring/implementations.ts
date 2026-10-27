@@ -2,7 +2,8 @@ import type { UiSvelteComponentImplementation } from '@victframework/ui-svelte';
 import Conversation from './Conversation.svelte';
 import Message from './Message.svelte';
 import PromptInput from './PromptInput.svelte';
-export const aiAuthoringImplementations: readonly UiSvelteComponentImplementation[] = [
+import { aiConversationDescriptorV2, aiMessageDescriptorV2, aiPromptInputDescriptorV2 } from './descriptors.js';
+const legacyImplementations: readonly UiSvelteComponentImplementation[] = [
   {
     extensionId: 'vict.ai.conversation',
     revision: '1',
@@ -30,4 +31,11 @@ export const aiAuthoringImplementations: readonly UiSvelteComponentImplementatio
     slots: [],
     component: PromptInput,
   },
+];
+export const aiAuthoringImplementations: readonly UiSvelteComponentImplementation[] = [
+  ...legacyImplementations,
+  ...[aiConversationDescriptorV2, aiMessageDescriptorV2, aiPromptInputDescriptorV2].map(descriptor => ({
+    ...legacyImplementations.find(item => item.extensionId === descriptor.id)!,
+    revision: descriptor.revision, styleTargets: descriptor.styleTargets,
+  })),
 ];

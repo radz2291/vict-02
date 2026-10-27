@@ -7,6 +7,7 @@
 
 <div {...target} class={`${target?.class ?? ''} vict-ai`}>
   <PromptInput
+    {presentation}
     bind:value={() => String(props.value ?? ''), (next: string) => io?.emit('valueChange', next)}
     label={String(props.label ?? 'Message')}
     placeholder={String(props.placeholder ?? 'Write a message…')}

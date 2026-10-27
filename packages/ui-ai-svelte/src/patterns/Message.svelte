@@ -9,7 +9,9 @@
   import * as Bubble from '../upstream/ui/bubble/index.js';
   import MessageAction from '../MessageAction.svelte';
   import Markdown from '../upstream/markdown/markdown.svelte';
-  let { role, text, onCopy, copied = false, onEdit, onRetry, feedback = null, onFeedback }: {
+  import type { UiComponentPresentation } from '@victframework/ui-svelte';
+  let { role, text, onCopy, copied = false, onEdit, onRetry, feedback = null, onFeedback, presentation }: {
+    presentation?: UiComponentPresentation;
     role: 'user' | 'assistant'; text: string; onCopy?: () => void; copied?: boolean;
     onEdit?: () => void; onRetry?: () => void; feedback?: 'like' | 'dislike' | null;
     onFeedback?: (value: 'like' | 'dislike' | null) => void;
@@ -17,10 +19,10 @@
 </script>
 
 <Message.Root align={role === 'user' ? 'end' : 'start'}>
-  <Message.Content class="gap-2">
+  <Message.Content {...presentation?.target('content')} class={`gap-2 ${presentation?.target('content').class ?? ''}`}>
     {#if role === 'user'}
-      <Bubble.Root align="end" variant="muted"><Bubble.Content>{text}</Bubble.Content></Bubble.Root>
-    {:else}<Markdown content={text}/>{/if}
+      <Bubble.Root align="end" variant="muted"><Bubble.Content {...presentation?.target('bubble')}>{#if presentation?.target('text')['data-ui-part']}<span {...presentation.target('text')}>{text}</span>{:else}{text}{/if}</Bubble.Content></Bubble.Root>
+    {:else if presentation?.target('text')['data-ui-part']}<div {...presentation.target('text')}><Markdown content={text}/></div>{:else}<Markdown content={text}/>{/if}
     {#if onCopy || onEdit || onRetry || onFeedback}
       <Message.Footer class={role === 'user' ? undefined : 'px-0'}>
         {#if onCopy}

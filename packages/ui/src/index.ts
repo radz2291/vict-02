@@ -407,6 +407,9 @@ export type {
   UiVariantConditionRef,
 } from './document.js';
 export { copyUiValue, isUiValueOfType, isUiValueType, uiValueEmptyFor } from './values.js';
+export { UI_THEME_SCHEMA, UI_THEME_ROLES } from './document.js';
+export type { UiApplicationTheme, UiThemeRole, UiPartStyle } from './document.js';
+export { UI_THEME_VARIABLES, uiThemeDeclarations } from './theme.js';
 export type { UiValue } from './values.js';
 export { CanonicalUiError } from './canonical-error.js';
 export {

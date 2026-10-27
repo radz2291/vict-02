@@ -5,7 +5,11 @@ export default defineConfig({
   plugins: [sveltekit()],
   optimizeDeps: {
     exclude: [
+      'elkjs',
+      'elkjs/lib/elk.bundled.js',
       '@victframework/ui',
+      '@victframework/ui-media-svelte',
+      '@victframework/ui-patterns-svelte',
       '@victframework/ui-ai-svelte',
       '@victframework/ui-flow-svelte',
       '@victframework/ui-svelte',

@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { onMount, tick } from 'svelte';
+  import { tick } from 'svelte';
   import { ContextMenu } from '@victframework/ui-svelte/catalog/context-menu';
   import { nativeContextTarget, type WorkspaceContext } from './workspace-context.js';
-  let { scope, resolve, enabled = true, owns }: {
-    scope?: HTMLElement; resolve: (target: Element) => WorkspaceContext | undefined; enabled?: boolean; owns?:(target:Element)=>boolean;
+  let { scope, applicationScope, resolve, enabled = true, owns }: {
+    scope?: HTMLElement; applicationScope?:HTMLElement; resolve: (target: Element) => WorkspaceContext | undefined; enabled?: boolean; owns?:(target:Element)=>boolean;
   } = $props();
   let open = $state(false);
   let context = $state<WorkspaceContext>();
@@ -11,7 +11,7 @@
   let returnTarget: HTMLElement | undefined;
   function eligible(event: Event) {
     const target = event.target;
-    return enabled && target instanceof Element && (scope?.contains(target) || owns?.(target)) && !target.closest('.workspace-menu,.floating-selection,.structure-details,.source-details') ? target : undefined;
+    return enabled && !!target && (target as Node).nodeType===1 && (scope?.contains(target as Element) || applicationScope?.contains(target as Element) || owns?.(target as Element)) && !(target as Element).closest('.workspace-menu,.floating-selection,.structure-details,.source-details') ? target as Element : undefined;
   }
   function invoke(target: Element, x: number, y: number) {
     if (nativeContextTarget(target)) return false;
@@ -25,7 +25,9 @@
     trigger?.dispatchEvent(new MouseEvent('contextmenu', { clientX: x, clientY: y, bubbles: true, cancelable: true }));
     return true;
   }
-  onMount(() => {
+  $effect(() => {
+    const windows=[...new Set([window,applicationScope?.ownerDocument.defaultView].filter((value):value is NonNullable<typeof value>=>!!value))];
+    const translate=(target:Element,x:number,y:number)=>{const frame=target.ownerDocument.defaultView?.frameElement;const rect=frame?.getBoundingClientRect();return {x:x+(rect?.left??0),y:y+(rect?.top??0)};};
     const pointer = (event: PointerEvent) => {
       const target = eligible(event);
       if (!target || event.button !== 2 || !resolve(target)) return;
@@ -35,7 +37,8 @@
     };
     const menu = (event: MouseEvent) => {
       const target = eligible(event);
-      if (target && invoke(target, event.clientX, event.clientY)) { event.preventDefault(); event.stopImmediatePropagation(); }
+      const point=target?translate(target,event.clientX,event.clientY):undefined;
+      if (target && point && invoke(target, point.x, point.y)) { event.preventDefault(); event.stopImmediatePropagation(); }
     };
     const keyboard = (event: KeyboardEvent) => {
       if (!(event.key === 'ContextMenu' || (event.shiftKey && event.key === 'F10'))) return;
@@ -43,15 +46,16 @@
       if (!target) return;
       if (nativeContextTarget(target)) { event.stopImmediatePropagation(); return; }
       const box = target.getBoundingClientRect();
-      if (invoke(target, box.left + Math.min(20, box.width), box.top + Math.min(24, box.height))) { event.preventDefault(); event.stopImmediatePropagation(); }
+      const point=translate(target,box.left + Math.min(20, box.width),box.top + Math.min(24, box.height));
+      if (invoke(target,point.x,point.y)) { event.preventDefault(); event.stopImmediatePropagation(); }
     };
-    window.addEventListener('pointerdown', pointer, true);
-    window.addEventListener('pointerup', pointer, true);
-    window.addEventListener('contextmenu', menu, true);
-    window.addEventListener('keydown', keyboard, true);
+    for(const window of windows){window.addEventListener('pointerdown', pointer as EventListener, true);
+    window.addEventListener('pointerup', pointer as EventListener, true);
+    window.addEventListener('contextmenu', menu as EventListener, true);
+    window.addEventListener('keydown', keyboard as EventListener, true);}
     return () => {
-      window.removeEventListener('pointerdown', pointer, true); window.removeEventListener('pointerup', pointer, true);
-      window.removeEventListener('contextmenu', menu, true); window.removeEventListener('keydown', keyboard, true);
+      for(const window of windows){window.removeEventListener('pointerdown', pointer as EventListener, true); window.removeEventListener('pointerup', pointer as EventListener, true);
+      window.removeEventListener('contextmenu', menu as EventListener, true); window.removeEventListener('keydown', keyboard as EventListener, true);}
     };
   });
   async function restoreFocus(event: Event) {

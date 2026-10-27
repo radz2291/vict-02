@@ -470,3 +470,9 @@ body:has(.studio-designer[data-workspace-view="structure"]) .floating-selection{
 @media(max-width:600px){.studio-designer .operator-link{display:none}.studio-designer .studio-menus>button{padding:5px 6px;font-size:11px}.studio-designer .screen-picker .current-screen{font-size:11px}}
 
 .editor-guard{border:0;padding:0;margin:0;min-width:0}
+
+/* Both drawers share the existing resize mechanics and quiet chrome. */
+.chat-heading{display:flex;align-items:center;padding:0 10px;font-weight:500;}
+.chat-resizer,.drawer-resizer{background:white;}
+.chat-resizer .resizer:not(:hover):not(.dragging),.drawer-resizer .resizer:not(:hover):not(.dragging){background:white;}
+.chat-resizer .resizer>span,.drawer-resizer .resizer>span{background:var(--vict-color-border);}

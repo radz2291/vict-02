@@ -120,7 +120,9 @@ async function settle() {
 describe('authored Flow narrow feasibility', () => {
   it('owns exact implementation registrations and valid canonical composition examples', () => {
     expect(
-      createUiAuthoringRegistry([flowAuthoringPackage], flowAuthoringImplementations, { requireCompatibility: true }).issues,
+      createUiAuthoringRegistry([flowAuthoringPackage], flowAuthoringImplementations, {
+        requireCompatibility: true,
+      }).issues,
     ).toEqual([]);
     for (const registration of flowAuthoringPackage.registrations)
       for (const seed of registration.examples ?? []) {
@@ -128,6 +130,7 @@ describe('authored Flow narrow feasibility', () => {
           ...source(),
           root: seed.root,
           nodes: Object.fromEntries(seed.nodes.map((node) => [node.id, node])),
+          localState: seed.localState ?? {},
         };
         expect(
           compileUiDocument(doc, defaultSemanticElementCatalog(), flowAuthoringDescriptors).ok,

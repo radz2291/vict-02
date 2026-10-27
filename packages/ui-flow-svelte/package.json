@@ -26,6 +26,7 @@
     "build": "svelte-check --tsconfig ./tsconfig.json"
   },
   "dependencies": {
+    "@victframework/ui-media-svelte": "0.4.0-rc.1",
     "@dagrejs/dagre": "1.1.5",
     "@xyflow/svelte": "1.7.0",
     "elkjs": "0.11.0"

@@ -3,13 +3,13 @@
   let {view='design',onChange,leftOpen=false,rightOpen=false,onToggleLeft,onToggleRight}:{view?:'design'|'interact'|'structure';onChange:(view:'design'|'interact'|'structure')=>void;leftOpen?:boolean;rightOpen?:boolean;onToggleLeft?:()=>void;onToggleRight?:()=>void}=$props();
 </script>
 <div class="workspace-mode-bar">
-{#if onToggleLeft}<button type="button" class="workspace-icon-button drawer-toggle left-drawer-toggle" aria-label="Toggle Chat drawer" title={leftOpen?'Hide Chat':'Show Chat'} aria-expanded={leftOpen} onclick={onToggleLeft}><WorkspaceToolIcon name="left-panel"/></button>{/if}
+{#if onToggleLeft}<button type="button" class="workspace-icon-button drawer-toggle left-drawer-toggle" aria-label="Toggle Chat drawer" title={leftOpen?'Hide Chat':'Show Chat'} aria-controls="studio-chat-panel" aria-expanded={leftOpen} onclick={onToggleLeft}><WorkspaceToolIcon name="left-panel"/></button>{/if}
 <div class="canvas-modes" role="group" aria-label="Workspace mode">
   {#each ['design','interact','structure'] as const as choice}
     <button type="button" aria-pressed={view===choice} onclick={()=>onChange(choice)}>{choice[0].toUpperCase()+choice.slice(1)}</button>
   {/each}
 </div>
-{#if onToggleRight}<button type="button" class="workspace-icon-button drawer-toggle right-drawer-toggle" aria-label="Toggle Document and Selection drawer" title={rightOpen?'Hide Document and Selection':'Show Document and Selection'} aria-expanded={rightOpen} onclick={onToggleRight}><WorkspaceToolIcon name="right-panel"/></button>{/if}
+{#if onToggleRight}<button type="button" class="workspace-icon-button drawer-toggle right-drawer-toggle" aria-label="Toggle Document and Selection drawer" title={rightOpen?'Hide Document and Selection':'Show Document and Selection'} aria-controls="document-drawer" aria-expanded={rightOpen} onclick={onToggleRight}><WorkspaceToolIcon name="right-panel"/></button>{/if}
 </div>
 <style>
   .workspace-mode-bar{display:grid;grid-template-columns:minmax(28px,1fr) auto minmax(28px,1fr);align-items:center;gap:8px;width:100%;min-width:0}

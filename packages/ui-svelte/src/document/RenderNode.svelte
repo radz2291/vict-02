@@ -31,7 +31,8 @@
     type DocumentScope,
     type DocumentSlotFrame,
   } from './logic.js';
-  import { onDestroy, untrack } from 'svelte';
+  import { onDestroy, untrack, getContext } from 'svelte';
+  import { UI_APPLICATION_DOCUMENT, type UiApplicationDocument } from './extensions.js';
   import SlotSnippets from './SlotSnippets.svelte';
   import Self from './RenderNode.svelte';
   import { interactiveSlotLabels } from './slot-labels.js';
@@ -93,6 +94,7 @@
     extraClass,
     extraStyle,
   }: Props = $props();
+  const applicationDocument = getContext<UiApplicationDocument | undefined>(UI_APPLICATION_DOCUMENT);
 
   // Observer callbacks belong to the host. Reading/writing its activity
   // state must not become a dependency of a renderer effect or derived.
@@ -175,12 +177,12 @@
   const presentation = $derived.by(() => {
     const owner = instruction;
     const root = rootClassFor(plan);
-    return { scopeClass: root, compositionSlot: componentSurface?.occurrenceKey === occ && extension?.ok && extension.kind === 'component' && extension.compositionSlots?.includes(componentSurface.slotName) ? componentSurface.slotName : undefined, target(name: string) {
+    return { ownerDocument: applicationDocument?.(), scopeClass: root, compositionSlot: componentSurface?.occurrenceKey === occ && extension?.ok && extension.kind === 'component' && extension.compositionSlots?.includes(componentSurface.slotName) ? componentSurface.slotName : undefined, target(name: string) {
       if (owner.kind !== 'extension' || !owner.styleTargets?.includes(name)) return { class: '' };
       const primary = name === owner.styleTargets[0];
       return {
-        class: [...(primary ? owner.classes ?? [] : []), ...(primary && extraClass ? [extraClass] : [])].join(' '),
-        style: primary ? [bindingStyleVariables(owner.styleRuleIds ?? [], plan, scope), extraStyle ?? ''].join(' ') : undefined,
+        class: [...(primary ? owner.classes ?? [] : []), ...(owner.partClasses?.[name] ? [owner.partClasses[name]] : []), ...(primary && extraClass ? [extraClass] : [])].join(' '),
+        style: [primary ? bindingStyleVariables(owner.styleRuleIds ?? [], plan, scope) : '', bindingStyleVariables(owner.partStyleRuleIds?.[name] ?? [], plan, scope), primary ? extraStyle ?? '' : ''].filter(Boolean).join(' ') || undefined,
         'data-ui-owner': ownerId, 'data-ui-primary': primary ? '' : undefined,
         'data-ui-node': owner.nodeId, 'data-ui-occ': occ, 'data-ui-part': name,
         onpointerdowncapture: selectTarget,

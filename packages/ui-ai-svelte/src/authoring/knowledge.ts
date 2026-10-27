@@ -3,9 +3,11 @@ import {
   aiConversationDescriptor,
   aiMessageDescriptor,
   aiPromptInputDescriptor,
+  aiConversationDescriptorV2, aiMessageDescriptorV2, aiPromptInputDescriptorV2,
 } from './descriptors.js';
 import { specialistPublicExports } from './public-exports.js';
 import compatibility from './compatibility.json' with { type: 'json' };
+import presentationCompatibility from './compatibility-v2.json' with { type: 'json' };
 
 const prompt: UiAuthoringFragment = {
   root: 'prompt',
@@ -55,7 +57,7 @@ const conversation: UiAuthoringFragment = {
   localState: prompt.localState,
 };
 
-export const aiAuthoringPackage: UiAuthoringPackage = {
+const legacyPackage: UiAuthoringPackage = {
   compatibility,
   schema: 'vict.ui-authoring@1',
   packageName: '@victframework/ui-ai-svelte',
@@ -134,12 +136,39 @@ export const aiAuthoringPackage: UiAuthoringPackage = {
           : 'host-only',
       reason: name.startsWith('./authoring:')
         ? 'Descriptor, implementation or knowledge install data. Only exact registered descriptor identities are authored.'
+        : ['ConversationToolPayload','SendAccepted'].includes(name)
+          ? 'Public host Conversation transport/payload TypeScript type; not an authorable component or execution capability.'
         : 'Public code composition/type/helper API, not an automatically installed VICT authoring adapter.',
     })),
     ...['./patterns', './components/*', './markdown'].map((name) => ({
       name,
       disposition: 'host-only',
       reason: 'Public code composition subpath; not automatically authorable.',
+    })),
+  ],
+};
+
+const presentationDescriptors = [aiConversationDescriptorV2, aiMessageDescriptorV2, aiPromptInputDescriptorV2];
+function presentationFragment(fragment: UiAuthoringFragment | undefined): UiAuthoringFragment | undefined {
+  if (!fragment) return undefined;
+  return {...fragment,nodes:fragment.nodes.map(node=>node.kind==='component'&&presentationDescriptors.some(descriptor=>descriptor.id===node.definitionId)?{...node,revision:'2'}:node)};
+}
+export const aiAuthoringPackage: UiAuthoringPackage = {
+  ...legacyPackage,
+  compatibility: [...compatibility, ...presentationCompatibility],
+  registrations: [
+    ...legacyPackage.registrations,
+    ...legacyPackage.registrations.map(registration => ({
+      ...registration,
+      descriptor: presentationDescriptors.find(descriptor=>descriptor.id===registration.descriptor.id)!,
+      dependencies: registration.dependencies?.map(dependency=>({...dependency,revision:'2'})),
+      seed: presentationFragment(registration.seed),
+      examples: registration.examples?.map(example=>presentationFragment(example)!),
+      guidance: [...registration.guidance ?? [],
+        'Revision 2 exposes real semantic parts. Use canonical partStyles or setPartStyleDeclaration with a declared target, property and typed value; root-only styles retain revision 1 behavior.',
+        'Application theme uses document.theme schema vict.ui-theme@1 and semantic roles, inherited by owned popup surfaces independently of Studio chrome. Parts can attach shared conditional/pseudo-state style sources.',
+        `Editable surfaces: ${presentationDescriptors.find(descriptor=>descriptor.id===registration.descriptor.id)!.styleTargets!.join(', ')}.`,
+      ],
     })),
   ],
 };

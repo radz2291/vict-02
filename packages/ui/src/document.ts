@@ -104,6 +104,21 @@ export interface UiStyleDeclaration {
   readonly value: UiStyleValue;
 }
 
+/** Independently addressable component part presentation (opt-in, additive). */
+export interface UiPartStyle {
+  readonly styleSources?: readonly StyleSourceId[];
+  readonly localStyle?: readonly UiStyleDeclaration[];
+}
+
+export const UI_THEME_SCHEMA = 'vict.ui-theme@1' as const;
+export const UI_THEME_ROLES = ['surface', 'text', 'textMuted', 'border', 'accent', 'accentText', 'highlight', 'highlightText', 'focusRing', 'disabledSurface', 'disabledText', 'elevation'] as const;
+export type UiThemeRole = typeof UI_THEME_ROLES[number];
+/** App-owned semantic presentation, inherited by every owned portal. */
+export interface UiApplicationTheme {
+  readonly schema: typeof UI_THEME_SCHEMA;
+  readonly roles: Readonly<Partial<Record<UiThemeRole, string>>>;
+}
+
 /** Pseudo states supported on style rules (element/primitive permitting). */
 export type UiPseudoState = 'hover' | 'focus' | 'active' | 'disabled';
 
@@ -228,6 +243,8 @@ export interface UiSlotFill {
 
 /** Common optional presentation/behavior fields shared by all node kinds. */
 export interface UiNodeCommon {
+  /** Registered component parts only; keys are descriptor-owned semantic names. */
+  readonly partStyles?: Readonly<Record<string, UiPartStyle>>;
   /** Attached reusable style sources, in authoring order (later wins). */
   readonly styleSources?: readonly StyleSourceId[];
   /** Instance-local style declarations (innermost cascade layer). */
@@ -303,6 +320,7 @@ export type UiNode = UiNodeCommon &
 
 /** The `vict.ui-document@1` document. */
 export interface UiDocument {
+  readonly theme?: UiApplicationTheme;
   readonly schema: typeof UI_DOCUMENT_SCHEMA;
   /** Stable document id (`documentId`). */
   readonly id: string;

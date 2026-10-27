@@ -20,9 +20,12 @@ import type {
   UiStyleSource,
   UiStyleDeclaration,
   UiStyleValue,
+  UiPartStyle,
+  UiApplicationTheme,
+  UiThemeRole,
   UiTextContent,
 } from './document.js';
-import { UI_DOCUMENT_SCHEMA } from './document.js';
+import { UI_DOCUMENT_SCHEMA, UI_THEME_ROLES } from './document.js';
 import { uiDiagnostic, type UiDiagnostic } from './diagnostics.js';
 import { compileUiDocument, isUiComponentPlanDiagnostic } from './compile.js';
 import { validateUiDocument } from './validate.js';
@@ -75,6 +78,20 @@ export interface UiEditCommandSetStyleDeclaration {
   readonly nodeId: string;
   readonly property: string;
   readonly value?: UiStyleValue;
+}
+export interface UiEditCommandSetPartStyleDeclaration {
+  readonly op: 'setPartStyleDeclaration';
+  readonly nodeId: string;
+  readonly part: string;
+  readonly property: string;
+  readonly value?: UiStyleValue;
+  readonly conditionId?: string;
+  readonly pseudo?: 'hover' | 'focus' | 'active' | 'disabled';
+}
+export interface UiEditCommandSetThemeRole {
+  readonly op: 'setThemeRole';
+  readonly role: UiThemeRole;
+  readonly value?: string;
 }
 export interface UiEditCommandSetConditionState {
   readonly op: 'setConditionState';
@@ -149,6 +166,8 @@ export type UiEditCommand =
   | UiEditCommandSetProperty
   | UiEditCommandSetAttribute
   | UiEditCommandSetStyleDeclaration
+  | UiEditCommandSetPartStyleDeclaration
+  | UiEditCommandSetThemeRole
   | UiEditCommandSetConditionalStyle
   | UiEditCommandSetConditionState
   | UiEditCommandBindExpression
@@ -226,6 +245,7 @@ export function applyUiEdit(
   const working = cloneDocument(snapshot.document);
   // Normalize registries to mutable records.
   const doc = working as unknown as {
+    theme?: UiApplicationTheme;
     nodes: Record<string, UiNode>;
     componentDefinitions: Record<string, UiComponentDefinition>;
     styleSources: Record<
@@ -444,6 +464,47 @@ export function applyUiEdit(
         if (command.value === undefined) delete attributes[command.name];
         else attributes[command.name] = command.value;
         doc.nodes[node.id] = { ...node, attributes };
+        return;
+      }
+      case 'setThemeRole': {
+        if (!(UI_THEME_ROLES as readonly unknown[]).includes(command.role)) { fail('Unknown application theme role.'); return; }
+        const roles = {...doc.theme?.roles};
+        const role = command.role as UiThemeRole;
+        if (command.value === undefined) delete roles[role];
+        else roles[role] = command.value;
+        if (Object.keys(roles).length) doc.theme = {schema:'vict.ui-theme@1',roles};
+        else delete doc.theme;
+        return;
+      }
+      case 'setPartStyleDeclaration': {
+        const node = doc.nodes[command.nodeId];
+        if (!node || node.kind !== 'component') { fail('Part styling requires a registered component node.'); return; }
+        const descriptor = effectiveUiDescriptor(node, catalogs?.extensions ?? []);
+        if (!descriptor?.styleTargets?.includes(command.part)) { fail(`Component does not advertise editable part '${command.part}'.`); return; }
+        if (command.conditionId !== undefined && !doc.conditions[command.conditionId]) { fail(`Unknown condition '${command.conditionId}'.`); return; }
+        const partStyles: Record<string,UiPartStyle> = {...node.partStyles};
+        const style = partStyles[command.part] ?? {};
+        let declarations: UiStyleDeclaration[];
+        const gated = command.conditionId !== undefined || command.pseudo !== undefined;
+        const sourceId = `src.part.${node.id}.${command.part}.${command.conditionId ?? 'always'}.${command.pseudo ?? 'plain'}`;
+        if (gated) declarations = [...(doc.styleSources[sourceId]?.declarations ?? [])];
+        else declarations = [...(style.localStyle ?? [])];
+        const index = declarations.findIndex(declaration=>declaration.property===command.property);
+        if (command.value === undefined) { if(index>=0)declarations.splice(index,1); }
+        else if(index>=0)declarations[index]={property:command.property,value:command.value};
+        else declarations.push({property:command.property,value:command.value});
+        if(gated) {
+          const sources = new Set(style.styleSources ?? []);
+          if(declarations.length) {
+            doc.styleSources[sourceId]={id:sourceId,declarations,...(command.conditionId ? {conditionId:command.conditionId}:{}),...(command.pseudo ? {pseudo:command.pseudo}:{})};
+            sources.add(sourceId);
+          } else {delete doc.styleSources[sourceId];sources.delete(sourceId);}
+          partStyles[command.part]={...style,styleSources:[...sources]};
+        } else partStyles[command.part]={...style,localStyle:declarations};
+        if(!partStyles[command.part]?.localStyle?.length&&!partStyles[command.part]?.styleSources?.length)delete partStyles[command.part];
+        const {partStyles:oldParts,...rest}=node;
+        void oldParts;
+        doc.nodes[node.id]={...rest,...(Object.keys(partStyles).length?{partStyles}:{})};
         return;
       }
       case 'setStyleDeclaration': {

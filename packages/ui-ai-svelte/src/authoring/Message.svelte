@@ -5,5 +5,5 @@
   const target = $derived(presentation?.target('root'));
 </script>
 <div {...target} class={`${target?.class ?? ''} vict-ai`}>
-  <Message role={props.role === 'user' ? 'user' : 'assistant'} text={String(props.text ?? '')} />
+  <Message role={props.role === 'user' ? 'user' : 'assistant'} text={String(props.text ?? '')} {presentation} />
 </div>

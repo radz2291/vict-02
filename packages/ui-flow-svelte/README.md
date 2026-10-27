@@ -55,6 +55,76 @@ slow ELK work. There is no unrestricted large-ELK option. Node positions and
 collapse/focus state remain consumer presentation data. These helpers do not
 interpret VICT bindings, mutate documents or implement workflow execution.
 
+## Rich application graphs
+
+`GraphEditor` and the separately registered `vict.flow.editor@1` add an editable
+graph contract. Existing `vict.flow.canvas/node/edge@1` contracts remain read-only.
+Install the exported `flowAuthoringDescriptors`, `flowAuthoringImplementations`
+and `flowAuthoringPackage` together; discovery and rendering use the same identity.
+The package includes a valid rich-editor authoring seed with declared graph state.
+
+The `graph` prop is JSON with schema `vict.flow-graph@1`, a numeric revision,
+node families, nodes and edges. Families declare fields and named typed ports;
+nodes retain their parameter values, positions and collapsed bodies. Fields
+include native text/textarea/list/number/preview and the registered VICT catalog
+slider, switch, select and button controls. Family definitions are data, so each
+application can supply different node families without adding framework patches.
+This finite field vocabulary does not permit arbitrary executable component code.
+Buttons increment an explicit local intent count; application effects require a
+separately declared application integration.
+
+Image, video, icon and vector field kinds reuse `@victframework/ui-media-svelte`.
+Their string values are managed asset references, supported supplied media sources,
+exact icon names or inert vector JSON as appropriate. Optional field `media` metadata
+supplies alt text, poster/captions/language and icon pack/revision/decorative choices.
+The inspector can edit these references; loading/failure remains the media component's
+real state. Node families and node instances accept stable `icon:{pack,name,revision,
+source?,data?}` identities; an instance overrides its family. Custom SVG/vector marks
+preserve multicolour branding. All instances use the nearest explicit `MEDIA_HOST`;
+the graph stores references, never binary bytes or temporary blob URLs.
+
+The editor supports header-only node dragging, background pan, multi-selection,
+port tracing, selection inspection, fit/focus/search, measured Dagre arrangement,
+add/duplicate/delete, explicit connection editing/reconnection, typed port checks,
+and a visible portable copy/paste buffer. Controls isolate drag/pan/wheel gestures.
+The inspector supplies keyboard-accessible connection and coordinate controls.
+Copy/paste does not request access to the system clipboard. Camera and selection
+are transient; positions, parameters, topology and collapsed state are in the graph.
+
+Connect `graphChange:string` to the same declared string state used by `graph`.
+The output is a validated complete snapshot. A static literal still allows local
+editing but cannot persist itself. The host must explicitly commit output into its
+canonical document/history/save protocol. `GRAPH_EDITOR_HOST` optionally supplies
+`historyFor({nodeId,occurrenceKey})` with `canUndo/canRedo/undo/redo` methods; the
+authored toolbar and keyboard then use that shared host history. Standalone
+consumers without this context use bounded local `GraphSession` undo/redo.
+The host's optional `presentationFor({nodeId,occurrenceKey})` controller supplies
+`get/set` of `{viewport:{x,y,zoom},selection:{nodes,edges}}`. Keep this transient
+store outside canonical-plan remounts, keyed by screen/document and occurrence;
+the editor restores camera/selection and drops removed IDs. Restored cameras
+disable initial auto-fit. These writes do not emit graph changes or weaken
+renderer generation fences. Keyboard listeners use the owned document, so
+iframe-mounted editors receive commands without affecting a sibling editor.
+
+`parseGraphOperations(unknown)` validates 1–50 strict operations.
+`applyGraphPatch(serializedGraph, operations, expectedRevision)` returns a
+discriminated result and, on success, `graph` plus serialized `source`.
+Agents can use `defineNodeType`, `addNode`, `setField`, `moveNodes`, `connect`,
+`reconnect`, `replacePorts`, `remove`, `duplicate` and `paste` without replacing
+one oversized string. Family replacement and invalid-edge removal require explicit
+intent. Stale, invalid or domain-refused changes never partially apply.
+
+The model bounds one graph to 1000 nodes, 4000 edges, 128 families and 128 fields/
+ports per family. These are validation budgets, not a demonstrated performance
+guarantee. Validation checks IDs, endpoints, direction, port type, multiplicity,
+field kinds/options/bounds and cycle policy (cycles are rejected by default).
+`GraphSession` additionally accepts a host domain-validator callback.
+
+Import both Flow styles and the installed VICT catalog styles. Save/reopen,
+canonical shared history, actual pointer/touch behavior and complete application
+integration must be verified in the consuming host; package model/DOM tests alone
+do not establish those product claims or parity with every Langflow feature.
+
 Comparison and retained slow observation:
 `docs/studio/cycle-1-3/completion/structure/layout-comparison*.json` in the source
 repository. Studio reduces complexity first through containment layers, collapse,

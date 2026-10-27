@@ -11,7 +11,8 @@
    */
   import type { UiRenderPlan, UiLocalStateDecl, UiExtensionDescriptor, UiValue } from '@victframework/ui';
   import { isUiValueOfType, copyUiValue, actionFeedback } from '@victframework/ui';
-  import { untrack, onDestroy } from 'svelte';
+  import { untrack, onDestroy, setContext, getContext } from 'svelte';
+  import { UI_PORTAL_TARGET, type UiPortalTarget } from './extensions.js';
   import type {
     UiSvelteComponentImplementation,
     UiSvelteExtensionImplementation,
@@ -20,6 +21,8 @@
   import { rootClassFor, styleRulesToCss, type DocumentScope } from './logic.js';
 
   interface Props {
+    /** Explicit application overlay outlet; no authored source can target Studio chrome. */
+    readonly portalTarget?: HTMLElement;
     readonly plan: UiRenderPlan;
     /** Exact occurrence requesting an adapter-owned inline surface. Never authored. */
     readonly componentSurface?: { readonly occurrenceKey: string; readonly slotName: string };
@@ -55,6 +58,7 @@
   }
 
   let {
+    portalTarget,
     plan,
     componentSurface,
     extensionDescriptors = [],
@@ -74,6 +78,8 @@
     as = 'div',
     ariaLabel,
   }: Props = $props();
+  const inheritedPortalTarget = getContext<UiPortalTarget | undefined>(UI_PORTAL_TARGET);
+  setContext<UiPortalTarget>(UI_PORTAL_TARGET, () => portalTarget ?? inheritedPortalTarget?.());
 
   // A new token expires every retained emission on plan replacement or reset,
   // including a replacement whose canonical source digest is unchanged.

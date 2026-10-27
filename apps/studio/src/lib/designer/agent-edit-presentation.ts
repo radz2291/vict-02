@@ -29,7 +29,9 @@ const operationDefinitions = {
  attachStyleSource:opSchema('attachStyleSource',['nodeId','sourceId'],{nodeId:identifier,sourceId:identifier,index:{type:'integer',minimum:0,maximum:1000}}),
  detachStyleSource:opSchema('detachStyleSource',['nodeId','sourceId'],{nodeId:identifier,sourceId:identifier}),
  removeStyleSource:opSchema('removeStyleSource',['id'],{id:identifier}),
- style:opSchema('style',['nodeId','property'],{nodeId:identifier,property:{type:'string',minLength:1,maxLength:80},value:{$ref:'#/$defs/styleValue'},conditionId:identifier,pseudo:{enum:['hover','focus','active','disabled']}}),
+ editGraph:opSchema('editGraph',['nodeId','expectedGraphRevision','changes'],{nodeId:identifier,expectedGraphRevision:{type:'integer',minimum:0},changes:{type:'array',minItems:1,maxItems:40,items:{type:'object',required:['type'],additionalProperties:true}}}),
+ theme:opSchema('theme',['role'],{role:{enum:['surface','text','textMuted','border','accent','accentText','highlight','highlightText','focusRing','disabledSurface','disabledText','elevation']},value:{type:'string',maxLength:500}}),
+ style:opSchema('style',['nodeId','property'],{nodeId:identifier,part:identifier,property:{type:'string',minLength:1,maxLength:80},value:{$ref:'#/$defs/styleValue'},conditionId:identifier,pseudo:{enum:['hover','focus','active','disabled']}}),
  wireInput:opSchema('wireInput',['nodeId','key'],{nodeId:identifier,key:{$ref:'#/$defs/stateKey'},initial:scalar}),
 };
 // Flat guidance respects the existing bridge's depth-8 presentation bound.
@@ -86,7 +88,7 @@ export const editPresentation = {
           key: { ...string, description: 'declareState or wireInput only: simple unique local state key.' },
           type: { enum: ['string','number','boolean','isoDate','isoTime','stringList','numberList'] }, initial: {$ref:'#/$defs/propValue'},
           kind:{enum:['element','text','component','media','container']},tag:string,componentId:identifier,revision:identifier,
-          id:identifier,name:identifier,query:string,property:string,value:{anyOf:[{$ref:'#/$defs/styleValue'},{type:'string',minLength:1,maxLength:500}]},conditionId:identifier,pseudo:{enum:['hover','focus','active','disabled']},
+          id:identifier,name:identifier,query:string,part:identifier,role:{enum:['surface','text','textMuted','border','accent','accentText','highlight','highlightText','focusRing','disabledSurface','disabledText','elevation']},property:string,value:{anyOf:[{$ref:'#/$defs/styleValue'},{type:'string',minLength:1,maxLength:500}]},conditionId:identifier,pseudo:{enum:['hover','focus','active','disabled']},
           declarations:{$ref:'#/$defs/styleDeclarations'},replace:{type:'boolean'},sourceId:identifier,
           replacePlaceholder: { type: 'boolean', description: 'add only: false explicitly preserves seeded slot children; default replaces an unchanged seed.' },
           recipe: {
@@ -95,7 +97,7 @@ export const editPresentation = {
             // The equivalent anchored pattern retains the complete finite vocabulary.
             pattern: `^(?:${screenRecipes.map(recipe => recipe.id.replaceAll('.', '\\.')).join('|')})$`,
           },
-          nodeId: string,
+          nodeId: string,expectedGraphRevision:{type:'integer',minimum:0},changes:{type:'array',minItems:1,maxItems:40,items:{type:'object',required:['type'],additionalProperties:true}},
           parentId: string,
           newParentId: string,
           slotName: string,

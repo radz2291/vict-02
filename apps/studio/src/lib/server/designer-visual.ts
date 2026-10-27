@@ -3,12 +3,12 @@ import { z } from 'zod';
 import { defineContract } from '@victframework/contracts';
 import type { CapabilityDefinition } from '@victframework/sdk';
 import type { AgentCursor } from '$lib/designer/agent-edits.js';
-import type { CaptureMetadata } from '$lib/designer/visual-observation.js';
+import type { CaptureMetadata, CaptureTarget } from '$lib/designer/visual-observation.js';
 import { boundedProviderModel, studioProviderModel } from './designer-model.js';
 import { captureEvidence, type CaptureEvidence } from '$lib/designer/capture-evidence.js';
 
 export const VISUAL_LIMITS = Object.freeze({ bytes: 524_288, metadata: 8192, width: 1600, height: 1200, pendingMs: 25_000, modelMs: 120_000 });
-export interface CaptureRequestEvent { type: 'capture-request'; captureId: string; cursor: AgentCursor }
+export interface CaptureRequestEvent { type: 'capture-request'; captureId: string; cursor: AgentCursor;target?:CaptureTarget }
 type Failure = { ok: false; code: string; message: string; diagnostics?: CaptureEvidence; recovery?: { action: string; editsReplayed: false; captureAttempts: number } };
 type Capture = { ok: true; bytes: Uint8Array; metadata: CaptureMetadata };
 interface PendingCapture { owner: string; cursor: AgentCursor; settle: (capture: Capture | Failure) => void }
@@ -20,6 +20,7 @@ const metadataSchema = z.object({
   cursor: cursorSchema, capturedAt: z.string().datetime(),
   viewport: z.object({ width: size, height: size, scrollLeft: z.number().finite().min(0), scrollTop: z.number().finite().min(0), devicePixelRatio: z.number().min(0.1).max(20) }).strict(),
   image: z.object({ width: size.max(VISUAL_LIMITS.width), height: size.max(VISUAL_LIMITS.height), sourceWidth: size, sourceHeight: size, offsetLeft: z.number().int().min(0).max(100_000), offsetTop: z.number().int().min(0).max(100_000), cropped: z.boolean() }).strict(),
+  evidence:z.object({workspaceView:z.string().max(20),viewportModel:z.enum(['isolated-viewport','hosted-container']),ownedOverlays:z.number().int().min(0).max(10000),targets:z.array(z.object({nodeId:z.string().max(160),part:z.string().max(160),bounds:z.array(z.number().finite()).length(4),visible:z.boolean(),styles:z.record(z.string().max(80),z.string().max(100)).refine(value=>Object.keys(value).length<=12)}).strict()).max(6)}).strict().optional(),
   preview: z.object({ mode: z.enum(['design', 'interact']), fingerprint: z.string().regex(/^[0-9a-f]{64}$/), selection: z.string().max(500).optional(), composition: z.string().max(500).optional() }).strict(),
 }).strict();
 const sameCursor = (left: AgentCursor, right: AgentCursor) => left.documentId === right.documentId && left.revision === right.revision && left.digest === right.digest && left.epoch === right.epoch;
@@ -99,7 +100,7 @@ export function createVisualObserver(options: VisualObserverOptions) {
     }
     ids.clear();
   };
-  const requestCapture = (cursor: AgentCursor): Promise<Capture | Failure> => {
+  const requestCapture = (cursor: AgentCursor,target?:CaptureTarget): Promise<Capture | Failure> => {
     if (signal.aborted) return Promise.resolve(fail('STUDIO_CAPTURE_CANCELLED', 'Observation stopped.'));
     const id = randomUUID(); ids.add(id);
     return new Promise<Capture | Failure>(resolve => {
@@ -108,26 +109,27 @@ export function createVisualObserver(options: VisualObserverOptions) {
       const timer = setTimeout(() => finish(fail('STUDIO_CAPTURE_TIMEOUT', 'The browser did not provide a rendered image. Open Design or Interact and retry.')), VISUAL_LIMITS.pendingMs);
       pending.set(id, { owner: options.owner, cursor, settle: finish });
       signal.addEventListener('abort', stop, { once: true });
-      options.emit({ type: 'capture-request', captureId: id, cursor });
+      options.emit({ type: 'capture-request', captureId: id, cursor,...(target?{target}:{}) });
     });
   };
-  const schema = z.object({ focus: z.string().trim().min(1).max(500) }).strict();
-  const input = defineContract({ id: 'studio.agent.observe-input', revision: '1',
-    descriptiveJsonSchema: { type: 'object', properties: { focus: { type: 'string', minLength: 1, maxLength: 500, description: 'What visible appearance should be inspected, e.g. clipping, spacing, headings. This does not exercise interactions.' } }, required: ['focus'], additionalProperties: false },
+  const schema = z.object({ focus: z.string().trim().min(1).max(500),nodeId:z.string().min(1).max(160).optional(),part:z.string().min(1).max(160).optional() }).strict().refine(value=>!value.part||!!value.nodeId,'part requires nodeId');
+  const input = defineContract({ id: 'studio.agent.observe-input', revision: '2',
+    descriptiveJsonSchema: { type: 'object', properties: {nodeId:{type:'string',maxLength:160},part:{type:'string',maxLength:160}, focus: { type: 'string', minLength: 1, maxLength: 500, description: 'What visible appearance should be inspected, e.g. clipping, spacing, headings. This does not exercise interactions.' } }, required: ['focus'], additionalProperties: false },
     parse: value => { const parsed = schema.safeParse(value); return parsed.success ? { ok: true, value: parsed.data } : { ok: false, issues: [{ code: 'invalid', message: 'Provide focus: a nonempty string of at most 500 characters.', path: 'focus' }] }; },
   });
   const output = defineContract<unknown>({ id: 'studio.agent.observe-result', revision: '1', parse: value => ({ ok: true, value }) });
-  const capability: CapabilityDefinition = { id: 'studio.screen.observe', revision: '1', effect: 'read', input, output,
+  const capability: CapabilityDefinition = { id: 'studio.screen.observe', revision: '2', effect: 'read', input, output,
     description: 'Capture the actual visible rendered preview and ask the SAME configured vision model to inspect appearance. Returns image provenance and concise observed appearance, never proof of bindings/actions. Images use a separate bounded binary path. Request after edits before visual-completion claims. A cropped image covers only its stated viewport. Image equality validates the first and confirming captures within this observation only. Across separate observations, a new revision/fingerprint can legitimately have identical pixels; that does not prove a stale raster.',
     invoke: async raw => {
       if (signal.aborted) return fail('STUDIO_CAPTURE_CANCELLED', 'Observation stopped.');
       const supported = visualModelSupport(options.model);
       if (!supported.supported && !options.modelFactory) return fail('STUDIO_CAPTURE_MODEL_UNSUPPORTED', supported.message);
       const cursor = { ...options.getCursor() };
-      let capture = await requestCapture(cursor);let captureAttempts=1;
+      const requested=raw as {nodeId?:string;part?:string};const target=requested.nodeId?{nodeId:requested.nodeId,...(requested.part?{part:requested.part}:{})}:undefined;
+      let capture = await requestCapture(cursor,target);let captureAttempts=1;
       // Retry only a transient raster/metadata stale refusal once. Source,
       // visibility, portal and owner/draft changes require explicit recovery.
-      if(!capture.ok&&capture.code==='STUDIO_CAPTURE_STALE'&&['raster','metadata'].includes(capture.diagnostics?.phase??'')&&!signal.aborted&&sameCursor(cursor,options.getCursor())){captureAttempts++;capture=await requestCapture(cursor);}
+      if(!capture.ok&&capture.code==='STUDIO_CAPTURE_STALE'&&['raster','metadata'].includes(capture.diagnostics?.phase??'')&&!signal.aborted&&sameCursor(cursor,options.getCursor())){captureAttempts++;capture=await requestCapture(cursor,target);}
       if (!capture.ok) return {...capture,recovery:{action:capture.code==='STUDIO_CAPTURE_NOT_VISIBLE'?'Reveal the current Design or Interact preview, then request observation only.':capture.code==='STUDIO_CAPTURE_PORTAL_UNSUPPORTED'?'Close the preview popup, then request observation only.':'Read current source and retry observation only after the preview settles.',editsReplayed:false,captureAttempts}};
       if (signal.aborted || !sameCursor(cursor, options.getCursor())) return fail('STUDIO_CAPTURE_STALE', 'Source changed after capture; request another observation.',{phase:'pre-inference',reason:'source-changed',expectedRevision:cursor.revision,actualRevision:options.getCursor().revision,changed:['source']});
       try {
@@ -151,7 +153,7 @@ export function createVisualObserver(options: VisualObserverOptions) {
         // The model call can take time while the user interacts. Reuse the
         // bounded browser channel to verify current runtime/portal/viewport
         // state, without sending a second image to the provider.
-        const confirmed = await requestCapture(cursor);
+        const confirmed = await requestCapture(cursor,target);
         if (signal.aborted) return fail('STUDIO_CAPTURE_CANCELLED', 'Observation stopped.');
         if (!confirmed.ok) return fail('STUDIO_CAPTURE_STALE', `The preview could not be revalidated after image inference (${confirmed.code}). Request a fresh observation; the previous image cannot verify the current preview.`,{...confirmed.diagnostics,phase:'revalidation',reason:'confirmation-refused'});
         if (!sameCursor(cursor, options.getCursor()) || capture.metadata.preview.fingerprint !== confirmed.metadata.preview.fingerprint || JSON.stringify(capture.metadata.preview) !== JSON.stringify(confirmed.metadata.preview) || JSON.stringify(capture.metadata.viewport) !== JSON.stringify(confirmed.metadata.viewport) || JSON.stringify(capture.metadata.image) !== JSON.stringify(confirmed.metadata.image))

@@ -7,7 +7,7 @@
   let dismissed = $state(false);
   // Keep fixed tools outside authored container-query/transform containing blocks.
   function portal(element: HTMLElement) {
-    globalThis.document.body.append(element);
+    canvas.ownerDocument.body.append(element);
     return { destroy() { element.remove(); } };
   }
   $effect(() => { occurrence; revealSignal; dismissed = false; });
@@ -20,7 +20,7 @@
       frame = 0;
       if (disposed || !palette) return;
       const owner = root.querySelector<HTMLElement>('[data-ui-owner-root]')?.dataset.uiOwnerRoot;
-      const owned = [...globalThis.document.querySelectorAll<HTMLElement>('[data-ui-occ]')].filter(el => el.dataset.uiOwner === owner);
+      const owned = [...root.ownerDocument.querySelectorAll<HTMLElement>('[data-ui-occ]')].filter(el => el.dataset.uiOwner === owner);
       let target: HTMLElement | undefined;
       // Closed slot contents can have source selection without a rendered occurrence.
       // Anchor their tools to the nearest visible owner without changing source selection.
@@ -33,7 +33,7 @@
       if (!owner || !target) { placement = undefined; return; }
       if (observed !== target) { if (observed) observer.unobserve(observed); observer.observe(target); observed = target; }
       const box = target.getBoundingClientRect();
-      let left = 8, right = innerWidth - 8, top = 8, bottom = innerHeight - 8;
+      let left = 8, right = (root.ownerDocument.defaultView?.innerWidth ?? innerWidth) - 8, top = 8, bottom = (root.ownerDocument.defaultView?.innerHeight ?? innerHeight) - 8;
       // Keep tools inside the visible editing surface, including independently scrolling panes.
       let scroller: HTMLElement | undefined;
       for (let ancestor = root.parentElement; ancestor; ancestor = ancestor.parentElement) {
@@ -50,7 +50,7 @@
       const height = body && Number.isFinite(cap) ? Math.max(actualHeight, cap + actualHeight - body.getBoundingClientRect().height) : actualHeight;
       const candidate = floatingPlacement(box, { left, right, top, bottom }, height, preference, untrack(()=>placement));
       const overlaps = candidate && box.left < candidate.left+candidate.width && box.right > candidate.left && box.top < candidate.top+height && box.bottom > candidate.top;
-      const dock = innerWidth <= 600 || overlaps;
+      const dock = (root.ownerDocument.defaultView?.innerWidth ?? innerWidth) <= 600 || overlaps;
       const next = dock ? { left:Math.max(left,Math.min(box.left,right-Math.min(480,right-left))), top:Math.max(top,bottom-height), width:Math.min(480,right-left) } : candidate;
       // When no free above/below region exists, use a stable bottom lane and
       // reveal the selected object in the remaining canvas. Large containers
@@ -64,27 +64,28 @@
     }
     function schedule() { if (!frame && !disposed) frame = requestAnimationFrame(measure); }
     const mutations = new MutationObserver(schedule);
-    mutations.observe(globalThis.document.body, { childList: true, characterData: true, attributes: true, attributeFilter: ['class', 'style'], subtree: true });
+    mutations.observe(root.ownerDocument.body, { childList: true, characterData: true, attributes: true, attributeFilter: ['class', 'style'], subtree: true });
     observer.observe(root); if (palette) observer.observe(palette);
-    globalThis.addEventListener('scroll', schedule, true);
-    globalThis.addEventListener('resize', schedule);
+    root.ownerDocument.defaultView?.addEventListener('scroll', schedule, true);
+    root.ownerDocument.defaultView?.addEventListener('resize', schedule);
     void tick().then(schedule);
-    return () => { disposed = true; cancelAnimationFrame(frame); mutations.disconnect(); observer.disconnect(); globalThis.removeEventListener('scroll', schedule, true); globalThis.removeEventListener('resize', schedule); };
+    return () => { disposed = true; cancelAnimationFrame(frame); mutations.disconnect(); observer.disconnect(); root.ownerDocument.defaultView?.removeEventListener('scroll', schedule, true); root.ownerDocument.defaultView?.removeEventListener('resize', schedule); };
   });
   function keyboard(event: KeyboardEvent) {
-    const editable = event.target instanceof HTMLElement && (event.target.matches('input,textarea,select') || event.target.isContentEditable);
+    const target=event.target as HTMLElement|null; const editable=!!target && target.nodeType===1 && (target.matches('input,textarea,select') || target.isContentEditable);
     if (event.key === 'F10' && !editable) { event.preventDefault(); dismissed = false; void tick().then(() => (palette?.querySelector<HTMLElement>('[role=tab][tabindex="0"]') ?? palette?.querySelector<HTMLElement>('button:not(:disabled):not([data-ui-dismiss]),input,select'))?.focus()); }
     if (!pinned && !dismissed && !event.defaultPrevented && event.key === 'Escape') { event.preventDefault(); event.stopPropagation(); dismissed = true; canvas.focus({ preventScroll: true }); }
   }
   function pointer(event: PointerEvent) {
-    const target = event.target instanceof Element ? event.target : undefined;
+    const target=event.target && (event.target as Node).nodeType===1 ? event.target as Element : undefined;
     if (target && palette?.contains(target)) return;
     const owner = canvas.querySelector<HTMLElement>('[data-ui-owner-root]')?.dataset.uiOwnerRoot;
     if (pinned) return;
     dismissed = !owner || target?.closest<HTMLElement>('[data-ui-owner]')?.dataset.uiOwner !== owner;
   }
+  $effect(()=>{const doc=canvas.ownerDocument;doc.addEventListener('keydown',keyboard);doc.addEventListener('pointerdown',pointer,true);return()=>{doc.removeEventListener('keydown',keyboard);doc.removeEventListener('pointerdown',pointer,true);};});
 </script>
-<svelte:window onkeydown={keyboard} onpointerdowncapture={pointer} />
+
 <div class="floating-selection" use:portal bind:this={palette} aria-label="Floating selection tools" style:left={`${placement?.left ?? 0}px`} style:top={`${placement?.top ?? 0}px`} style:width={`${placement?.width ?? 480}px`} style:visibility={placement && !dismissed ? 'visible' : 'hidden'}>
   <button data-ui-dismiss type="button" class="dismiss" aria-label="Hide tools" title="Hide tools · Escape. F10 restores them." disabled={pinned} onclick={()=>{dismissed=true;canvas.focus({preventScroll:true});}}>×</button>
   {@render children()}

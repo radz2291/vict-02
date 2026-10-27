@@ -2,7 +2,17 @@ import type { UiSvelteComponentImplementation } from '@victframework/ui-svelte';
 import FlowCanvas from './FlowCanvas.svelte';
 import FlowNode from './FlowNodeDeclaration.svelte';
 import FlowEdge from './FlowEdgeDeclaration.svelte';
+import FlowEditor from './FlowEditor.svelte';
 export const flowAuthoringImplementations: readonly UiSvelteComponentImplementation[] = [
+  {
+    extensionId: 'vict.flow.editor',
+    revision: '1',
+    rendererImplementationId: 'vict.svelte.flow.authoring',
+    abi: 'vict.ui-component-abi@1',
+    styleTargets: ['root'],
+    slots: [],
+    component: FlowEditor,
+  },
   {
     extensionId: 'vict.flow.canvas',
     revision: '1',

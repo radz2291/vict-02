@@ -1,0 +1,38 @@
+[
+  {
+    "id": "vict.media.image",
+    "revision": "1",
+    "descriptorDigest": "25dc94a2a4a6931621ac82019b1ad50a7fcd540a0e51f9f3e4f2151821eb794a",
+    "capabilitiesDigest": "93689c3cf1ed4dc7c974f76c8c3e72b98d7d347d8dc216f45bdf9f7e51722805"
+  },
+  {
+    "id": "vict.media.video",
+    "revision": "1",
+    "descriptorDigest": "0d50fd4282b89c624f7b3fdf6321c5462026a2717e1c2fd5d64da2df41f70c73",
+    "capabilitiesDigest": "5cbf47037a42c28e40bfab3a071aa7504105cfda947e544de9424f31f73608d6"
+  },
+  {
+    "id": "vict.media.embed",
+    "revision": "1",
+    "descriptorDigest": "941e6bb9fdc9d2014ed05283d4ea4d32cf496f453769c29c134880d30ca5ce59",
+    "capabilitiesDigest": "9d9d21e587478468c49827f761ff5e7d0218f20f95446405396a6aca0febea66"
+  },
+  {
+    "id": "vict.media.icon",
+    "revision": "1",
+    "descriptorDigest": "da26eb663adac5ca5698720682578f40852b97ddff1c16da030bf99c91dcfc1f",
+    "capabilitiesDigest": "cf763cddb61e8f0f8ed2263cb26d2a5bf22bbb290315ea56f0eca45f529608ab"
+  },
+  {
+    "id": "vict.media.vector",
+    "revision": "1",
+    "descriptorDigest": "e2c8362ff0505ebfb63e058ae25d4be516351c61c01b91e90eafd0039960da42",
+    "capabilitiesDigest": "b966d15d01eda34c90bf8c37a8a1d7d2666842455e937cf72dafc051eb302cea"
+  },
+  {
+    "id": "vict.media.asset-library",
+    "revision": "1",
+    "descriptorDigest": "2884e403b516131e045069d4ebad313e3073ddaec7d02092c10f46f90d42e787",
+    "capabilitiesDigest": "682d8861b01290162ddd00d4537cc606f7d9a35a04d4416c17a231b7764356cc"
+  }
+]

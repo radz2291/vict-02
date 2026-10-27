@@ -59,8 +59,13 @@ export const aiPromptInputDescriptor: UiExtensionDescriptor = {
     'Controlled scalar value. Host-authored output bindings decide state and actions. No attachment, provider or execution API.',
   ],
 };
-export const aiAuthoringDescriptors = [
+export const legacyAiAuthoringDescriptors = [
   aiConversationDescriptor,
   aiMessageDescriptor,
   aiPromptInputDescriptor,
 ] as const;
+/** Revision 1 remains byte-compatible; new authoring explicitly selects revision 2. */
+export const aiConversationDescriptorV2: UiExtensionDescriptor = { ...aiConversationDescriptor, revision: '2', styleTargets: ['root', 'surface', 'messages', 'composer'] };
+export const aiMessageDescriptorV2: UiExtensionDescriptor = { ...aiMessageDescriptor, revision: '2', styleTargets: ['root', 'content', 'bubble', 'text'] };
+export const aiPromptInputDescriptorV2: UiExtensionDescriptor = { ...aiPromptInputDescriptor, revision: '2', styleTargets: ['root', 'surface', 'field', 'actions', 'send', 'stop'] };
+export const aiAuthoringDescriptors = [...legacyAiAuthoringDescriptors, aiConversationDescriptorV2, aiMessageDescriptorV2, aiPromptInputDescriptorV2] as const;

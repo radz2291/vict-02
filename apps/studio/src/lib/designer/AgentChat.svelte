@@ -7,17 +7,18 @@
   import { Popover } from '@victframework/ui-svelte/primitives';
   import type { UiConversationMessage, UiDocument } from '@victframework/ui';
   import type { AgentCursor, AgentProposal, EditFailure, EditReceipt } from './agent-edits.js';
-  import { AGENT_REQUEST_BYTES, AGENT_STREAM_BYTES, AGENT_FRAME_CHARACTERS, boundedHistoryText, agentFailureMessage, withTurnAbort } from './agent-transport.js';
+  import { AGENT_REQUEST_BYTES, AGENT_STREAM_BYTES, AGENT_FRAME_CHARACTERS, boundedHistoryText, agentFailureMessage, withTurnAbort, type AgentWorkspaceFacts, type AgentCaptureTarget } from './agent-transport.js';
   import { uploadVisualCapture, type CaptureResult } from './visual-observation.js';
-  import { createToolEvidenceConsumer, STUDIO_TOOL_EVIDENCE_SCHEMA } from './tool-evidence.js';
+  import { createToolEvidenceConsumer, STUDIO_TOOL_EVIDENCE_SCHEMA, TOOL_ARCHIVE_SCHEMA, isToolArchiveReference, type ToolArchiveReference } from './tool-evidence.js';
+  import { retainTurn, sameTurnSource, TURN_RECORD_TTL_MS, type RetainedTurn } from './turn-records.js';
   import { createTurnMetrics, phaseFailureStatus, type ToolFailure, type TurnMetrics, type ObservedRegion } from './agent-progress.js';
   interface Props {
     screenLabel:string;
     selectionLabel:string;
-    getContext:()=>{document:UiDocument;cursor:AgentCursor;selection?:string;selectionSet?:SelectionSet}|undefined;
+    getContext:()=>{document:UiDocument;cursor:AgentCursor;selection?:string;selectionSet?:SelectionSet;workspace?:AgentWorkspaceFacts}|undefined;
     applyProposal:(proposal:AgentProposal)=>EditReceipt;
     blocked:boolean;
-    getCapture?:(cursor:AgentCursor)=>Promise<CaptureResult>;
+    getCapture?:(cursor:AgentCursor,target?:AgentCaptureTarget)=>Promise<CaptureResult>;
   }
   let {screenLabel,selectionLabel,getContext,applyProposal,blocked,getCapture}:Props=$props();
   let messages=$state<UiConversationMessage[]>([]);
@@ -28,17 +29,67 @@
   const presentedMessages=$derived(conversationMessages(messages).map(message=>({...message,...(timelines[message.id] ? {events:timelines[message.id]} : {})})));
   let status=$state('Checking agent configuration…');
   let model=$state('');let ready=$state(false);let busy=$state(false);let csrf='';
-  interface LocalTurn {controller:AbortController;runId:string;applied:number;cancelled:boolean;refusal?:EditFailure;toolEvidence?:ReturnType<typeof createToolEvidenceConsumer>;metrics:ReturnType<typeof createTurnMetrics>;}
+  interface LocalTurn {identity:string;source:AgentCursor;task:string;startedAt:number;engineTurnId?:string;confirmedRevision?:string;terminal?:RetainedTurn['status'];code?:string;controller:AbortController;runId:string;runIdentity:string;applied:number;cancelled:boolean;refusal?:EditFailure;toolEvidence?:ReturnType<typeof createToolEvidenceConsumer>;metrics:ReturnType<typeof createTurnMetrics>;}
   let activeTurn:LocalTurn|undefined;
   let evidence=$state('');
   let lastMetrics=$state<TurnMetrics>();
   let lastRegions=$state<(ObservedRegion & {currentSource:boolean})[]>([]);
+  let retainedTurns=$state<RetainedTurn[]>([]);
+  let selectedTurn=$state('latest');
+  let archiveReferences=$state<ToolArchiveReference[]>([]);
+  let archivePages=$state<Record<string,{text:string;nextOffset:number|null;offset:number;message?:string}>>({});
+  let recovery=$state<{cursor:AgentCursor;task:string;reason:string;target?:AgentCaptureTarget}|undefined>();
+  let recovering=$state(false);
+  let recoveryImage=$state<string>();
+  let recoveryNote=$state('');
+  const selectedRecord=$derived(retainedTurns.find(item=>item.id===selectedTurn&&item.expiresAt>Date.now()));
+  const detailMetrics=$derived(selectedRecord?.metrics??(selectedTurn==='latest'?lastMetrics:undefined));
+  const detailRegions=$derived(selectedRecord?.regions??(selectedTurn==='latest'?lastRegions:[]));
+  const detailProgress=$derived(selectedRecord?.progress??(selectedTurn==='latest'?progress:[]));
+  const detailDiagnostics=$derived(selectedRecord?.diagnostics??(selectedTurn==='latest'?diagnostics:{}));
+  const detailReceipts=$derived(selectedRecord?.receipts??(selectedTurn==='latest'?receipts:{}));
+  const detailEvidence=$derived(selectedRecord?.evidence??(selectedTurn==='latest'?evidence:''));
+  const detailArchives=$derived(selectedRecord?.archives??(selectedTurn==='latest'?archiveReferences:[]));
   let disposed=false;
   let panel=$state<HTMLElement>();
   let detailsBoundary=$state<HTMLElement>();
   let detailsAnchor=$state<HTMLFormElement>();
   let failed=$state(false);
   function note(message:string){progress=[...progress.slice(-99),message];status=message;}
+  function confirmedTurnSource(turn:LocalTurn){const current=getContext()?.cursor;return current&&current.documentId===turn.source.documentId&&current.epoch===turn.source.epoch&&current.revision===turn.confirmedRevision?{...current}:undefined;}
+  async function loadArchive(reference:ToolArchiveReference,offset=0){
+    if(reference.expiresAt<=Date.now()){archivePages={...archivePages,[reference.id]:{text:'',offset:0,nextOffset:null,message:'Evidence expired. No tool was rerun.'}};return;}
+    try{
+      const response=await fetch(`/api/designer-agent/evidence?id=${encodeURIComponent(reference.id)}&offset=${offset}&limit=6000`,{cache:'no-store'});
+      const page=await response.json();
+      if(!response.ok||page.runId!==reference.runId||page.callId!==reference.callId||page.phase!==reference.phase||typeof page.text!=='string'||page.text.length>6000)throw new Error('Evidence is unavailable, expired or outside this session. No tool was rerun.');
+      const retained=Object.entries(archivePages).slice(-63);
+      archivePages={...Object.fromEntries(retained),[reference.id]:{text:page.text,offset:page.offset,nextOffset:page.nextOffset}};
+    }catch{archivePages={...archivePages,[reference.id]:{text:'',offset:0,nextOffset:null,message:'Evidence is unavailable, expired or outside this session. No tool was rerun.'}};}
+  }
+  async function retryCapture(){
+    if(!recovery||busy||recovering||blocked)return;
+    if(recoveryImage){URL.revokeObjectURL(recoveryImage);recoveryImage=undefined;}
+    const target=recovery,context=getContext();
+    if(!context||!sameTurnSource(context.cursor,target.cursor)){recoveryNote='The source changed. Start from the current screen; earlier edits were not repeated.';return;}
+    if(!getCapture){recoveryNote='Reveal the preview before retrying. No capture or edit was made.';return;}
+    recovering=true;recoveryNote='Capturing the current preview without edits.';
+    try{
+      const result=await withTurnAbort(()=>getCapture!(target.cursor,target.target),new AbortController().signal);
+      if(!sameTurnSource(getContext()?.cursor??context.cursor,target.cursor)){recoveryNote='The source changed during capture. No edit was made.';return;}
+      if(!result.ok){recoveryNote=result.message;return;}
+      if(recoveryImage)URL.revokeObjectURL(recoveryImage);
+      recoveryImage=URL.createObjectURL(result.blob);
+      recoveryNote=`Captured ${result.metadata.image.width}x${result.metadata.image.height} at ${result.metadata.capturedAt} for your inspection. No model observation or interaction test occurred; earlier edits were not repeated.`;
+      failed=false;status='Preview captured for inspection.';
+    }catch{recoveryNote='Capture could not finish. No edit was made.';}finally{recovering=false;}
+  }
+  async function retryObservation(){
+    if(!recovery||busy||recovering||blocked)return;
+    const target=recovery;
+    const response=await send('Retry the visual observation for the retained task. Inspect current appearance and report limits without changing source.',undefined,{task:target.task,cursor:target.cursor,target:target.target});
+    if(response&&typeof response==='object'&&!response.ok){recoveryNote=response.message??'Observation could not start.';failed=true;status=recoveryNote;}
+  }
   async function configure(){
     try{const response=await fetch('/api/designer-agent',{cache:'no-store'});const data=await response.json();if(!response.ok)throw new Error();csrf=data.csrf;model=data.model;ready=data.ready;failed=!ready;status=ready?'Ready':'Configure a server-side model and provider key to connect.';}
     catch{ready=false;failed=true;status='Agent connection unavailable. Sign in again or reconnect in Chat details.';}
@@ -47,6 +98,8 @@
     detailsBoundary=panel?.querySelector<HTMLElement>('.vict-conversation') ?? undefined;
     detailsAnchor=panel?.querySelector<HTMLFormElement>('.vict-conversation-input') ?? undefined;
     void configure();
+    const expiry=setInterval(()=>{retainedTurns=retainedTurns.filter(item=>item.expiresAt>Date.now());if(selectedTurn!=='latest'&&!retainedTurns.some(item=>item.id===selectedTurn))selectedTurn='latest';if(!busy&&!retainedTurns.length){lastMetrics=undefined;lastRegions=[];progress=[];diagnostics={};receipts={};evidence='';archiveReferences=[];archivePages={};}},30_000);
+    return ()=>clearInterval(expiry);
   });
   function toolLabel(tool:string){return tool==='studio_screen_read'?'Read screen':tool==='studio_screen_edit'?'Edit screen':tool==='studio_screen_observe'?'Observe preview':tool;}
   const headers=()=>({'content-type':'application/json','x-vict-csrf':csrf});
@@ -62,7 +115,7 @@
     lastMetrics={...turn.metrics.snapshot(),partial:true};
     if(!disposed){failed=false;note(`Stopped. ${appliedEffects(turn.applied)}`);}
   }
-  onDestroy(()=>{disposed=true;void stop();});
+  onDestroy(()=>{disposed=true;void stop();if(recoveryImage)URL.revokeObjectURL(recoveryImage);});
   function failedStatus(code:string|undefined,applied:number,failures:ToolFailure[]=[]){
     const effects=appliedEffects(applied);
     const boundedFailure=agentFailureMessage(code);if(boundedFailure)return `${boundedFailure} ${effects}`;
@@ -76,14 +129,16 @@
     if(code==='STUDIO_AGENT_DRAFT')return `Apply or cancel the current draft, then send a new request. ${effects}`;
     return `${code==='STUDIO_AGENT_PROVIDER_FAILED'?'The provider could not complete this turn. Check the connection and retry.':'The agent stopped before finishing. Check Chat details and retry.'} ${effects}`;
   }
-  async function send(text:string,accepted?:SendAccepted){
+  async function send(text:string,accepted?:SendAccepted,continuation?:{task:string;cursor:AgentCursor;target?:AgentCaptureTarget}){
     if(busy)return {ok:false,message:'Wait for this turn or stop it first.'};
     if(text.length>6000)return {ok:false,message:'Keep requests within 6,000 characters. Your draft is still here.'};
     if(blocked)return {ok:false,message:'Apply or cancel your property, data, rename or source draft first.'};
     if(!ready){await configure();if(!ready)return {ok:false,message:'The agent needs a server-side provider configuration. Your request is still here.'};}
     const context=getContext();if(!context)return {ok:false,message:'Open a valid screen before sending.'};
+    if(continuation&&!sameTurnSource(context.cursor,continuation.cursor))return {ok:false,message:'The source changed. Start from the current screen; earlier edits were not repeated.'};
+    if(continuation&&context.workspace?.observable===false)return {ok:false,message:'Reveal the Design or Interact preview before retrying observation. No model request was made.'};
     const history=messages.slice(-12).map(({participant,text})=>({participant:participant==='user'?'user':'assistant',text:boundedHistoryText(text)}));
-    const requestBody=JSON.stringify({...context,prompt:text,history,toolEvidenceSchema:STUDIO_TOOL_EVIDENCE_SCHEMA});
+    const requestBody=JSON.stringify({...context,prompt:text,history,toolEvidenceSchema:STUDIO_TOOL_EVIDENCE_SCHEMA,toolEvidenceArchiveSchema:TOOL_ARCHIVE_SCHEMA,...(continuation?{mode:'observe-only',observationTask:continuation.task,observationTarget:continuation.target}:{})});
     if(new TextEncoder().encode(requestBody).byteLength>AGENT_REQUEST_BYTES)return {ok:false,message:agentFailureMessage('STUDIO_AGENT_REQUEST_LIMIT')};
     messages=[...messages,{author:'You',participant:'user',text},{author:'Assistant',participant:'assistant',text:''}];
     const responseIndex=messages.length-1;
@@ -109,8 +164,8 @@
     }
     function finishPending(detail:string,cancelled=false){settle((timelines[messageId]??[]).filter(item=>item.kind==='activity'&&(item.activity.state==='running'||item.activity.state==='pending')).map(item=>item.id),cancelled?'cancelled':'failed',detail);}
     timelines={...timelines,[messageId]:[]};
-    const turn:LocalTurn={controller:new AbortController(),runId:'',applied:0,cancelled:false,metrics:createTurnMetrics()};activeTurn=turn;
-    busy=true;failed=false;progress=[];diagnostics={};receipts={};evidence='';lastMetrics=undefined;lastRegions=[];let done=false;let sent=false;let lastRefusal='';let separateReply=false;
+    const turn:LocalTurn={identity:crypto.randomUUID(),source:{...context.cursor},task:continuation?.task??text,startedAt:Date.now(),controller:new AbortController(),runId:'',runIdentity:'',applied:0,cancelled:false,metrics:createTurnMetrics()};activeTurn=turn;
+    busy=true;failed=false;selectedTurn='latest';archiveReferences=[];progress=[];diagnostics={};receipts={};evidence='';lastMetrics=undefined;lastRegions=[];let done=false;let sent=false;let lastRefusal='';let separateReply=false;
     note('Connecting…');
     try{
       const response=await fetch('/api/designer-agent',{method:'POST',headers:headers(),signal:turn.controller.signal,body:requestBody});
@@ -129,7 +184,8 @@
             if(turn.controller.signal.aborted)throw new Error('stopped');
             const line=buffer.slice(0,newline);buffer=buffer.slice(newline+1);if(!line.trim()||done)continue;
             const event=JSON.parse(line);
-            if(event.type==='started'&&!sent){sent=true;turn.runId=event.runId;model=event.model;turn.toolEvidence=createToolEvidenceConsumer(event.runId);accepted?.();note('Reading screen…');}
+            if(event.type==='started'&&!sent){sent=true;turn.runId=event.runId;turn.runIdentity=event.runId;model=event.model;turn.toolEvidence=createToolEvidenceConsumer(event.runId);accepted?.();note('Reading screen…');}
+            if(event.type==='tool-evidence-archive'&&isToolArchiveReference(event)&&event.runId===turn.runIdentity&&!archiveReferences.some(item=>item.id===event.id))archiveReferences=[...archiveReferences,event].slice(-256);
             if(event.type==='tool-evidence'){
               const frame=turn.toolEvidence?.accept(event);
               if(frame){
@@ -157,9 +213,10 @@ ${event.details}`};
             }
             if(event.type==='capture-request'){
               let captured:CaptureResult;
-              try{captured=getCapture?await withTurnAbort(()=>getCapture!(event.cursor),turn.controller.signal):{ok:false,code:'STUDIO_CAPTURE_UNAVAILABLE',message:'The rendered preview is unavailable.'};}
+              try{captured=getCapture?await withTurnAbort(()=>getCapture!(event.cursor,event.target),turn.controller.signal):{ok:false,code:'STUDIO_CAPTURE_UNAVAILABLE',message:'The rendered preview is unavailable.'};}
               catch(error){if(turn.controller.signal.aborted)throw error;captured={ok:false,code:error instanceof Error&&error.message==='STUDIO_CAPTURE_TIMEOUT'?'STUDIO_CAPTURE_TIMEOUT':'STUDIO_CAPTURE_FAILED',message:'The browser could not complete capture. No visual observation was made.',diagnostics:{phase:'raster',reason:error instanceof Error&&error.message==='STUDIO_CAPTURE_TIMEOUT'?'capture-timeout':'capture-failed',expectedRevision:event.cursor.revision}};}
               if(turn.controller.signal.aborted)throw new Error('stopped');
+              if(!captured.ok)recovery={cursor:{...event.cursor},task:turn.task,reason:captured.message,...(event.target?{target:event.target}:{})};else recovery=undefined;
               await uploadVisualCapture(event.captureId,csrf,captured,turn.controller.signal);separateReply=true;
             }
             if(event.type==='text'){
@@ -170,6 +227,7 @@ ${event.details}`};
               separateReply=false;
             }
             if(event.type==='proposal'){
+              if(continuation){turn.code='STUDIO_AGENT_OBSERVATION_ONLY';turn.terminal='failed';cancelTransport(turn);throw new Error('STUDIO_AGENT_OBSERVATION_ONLY');}
               const receipt=applyProposal(event.proposal);
               const proposalAttempt=`studio_screen_edit:${event.callId??event.proposal.proposalId}`;
               stage(proposalAttempt,`browser-${event.proposal.proposalId}`,receipt.ok?'Browser committed edit':`Browser refused edit · ${receipt.code}`,receipt.ok?'pending':'failed',receipt.ok?`${event.proposal.edit.reason}\nCommitted to the screen. Undo is available.`:receipt.message);
@@ -185,6 +243,7 @@ ${event.details}`};
             }
             if(event.type==='edit-result'){lastRefusal=event.result.ok?'':event.result.message;note(event.result.ok?`${event.reason} · applied`:event.result.message);separateReply=true;}
             if(event.type==='done'){
+              turn.terminal=event.status;turn.code=event.code;turn.engineTurnId=event.turnId;turn.confirmedRevision=event.confirmedRevision;
               finishPending('This turn ended without a result for this attempt. Only acknowledged receipts establish applied edits.',event.status==='cancelled');
               turn.toolEvidence?.close();done=true;turn.applied=Math.max(turn.applied,event.applied??0);
               const applied=turn.applied;
@@ -192,6 +251,7 @@ ${event.details}`};
               status=event.status==='completed'?(lastRefusal?`${lastRefusal} ${applied?`${applied} earlier edits remain undoable.`:''}`:`${applied} edit${applied===1?'':'s'} applied`):event.status==='cancelled'?`Stopped · ${applied} applied edits remain undoable.`:failedStatus(event.code,applied,event.toolFailures??[]);
               lastMetrics=event.metrics;
               lastRegions=event.visualEvidence?.regions??[];
+              if(continuation&&event.status==='completed'&&!lastRefusal)status=event.sourceEvidence?.appearanceObserved?'Observation complete.':'Observation ended; appearance remains unverified.';
               evidence=[event.turnId?`VICT turn ${event.turnId} · profile ${event.profileVersion}`:'',event.code??''].filter(Boolean).join(' · ');
               const boundary=`${appliedEffects(applied)}${event.confirmedRevision?` Confirmed revision ${event.confirmedRevision}.`:''}`;
               const terminal=event.termination?` Engine termination: ${event.termination.status}${event.termination.code?` (${event.termination.code})`:''}.`:'';
@@ -219,7 +279,7 @@ ${event.details}`};
         finishPending(turn.cancelled?'Stopped before this attempt was confirmed.':'The connection ended before this attempt was confirmed.',turn.cancelled);
       }
       return sent?true:{ok:false,message:turn.cancelled?'Stopped before the request was admitted. Your draft is still here.':agentFailureMessage(error instanceof Error?error.message:undefined)??status};
-    }finally{if(!sent){messages=messages.slice(0,responseIndex-1);const retained={...timelines};delete retained[messageId];timelines=retained;}turn.toolEvidence?.close();if(!done){cancelTransport(turn);lastMetrics={...turn.metrics.snapshot(),partial:true};}if(activeTurn===turn){activeTurn=undefined;busy=false;}}
+    }finally{if(!sent){messages=messages.slice(0,responseIndex-1);const retained={...timelines};delete retained[messageId];timelines=retained;}turn.toolEvidence?.close();if(!done){cancelTransport(turn);lastMetrics={...turn.metrics.snapshot(),partial:true};}if(sent){const endedAt=Date.now();retainedTurns=retainTurn(retainedTurns,{id:turn.identity,runId:turn.runIdentity,engineTurnId:turn.engineTurnId,task:turn.task,...(continuation?{mode:'observe-only' as const}:{}),startedAt:turn.startedAt,endedAt,expiresAt:endedAt+TURN_RECORD_TTL_MS,status:turn.cancelled?'cancelled':turn.terminal??'interrupted',code:turn.code,source:turn.source,confirmedRevision:turn.confirmedRevision,applied:turn.applied,metrics:lastMetrics,regions:lastRegions,progress,diagnostics,receipts,evidence,archives:archiveReferences,finalSource:confirmedTurnSource(turn)});}if(activeTurn===turn){activeTurn=undefined;busy=false;}}
   }
 </script>
 
@@ -233,20 +293,26 @@ ${event.details}`};
       <span class="status-dot" class:status-dot--busy={busy} aria-hidden="true"></span>
       <span>{blocked?'Apply or cancel the current draft first.':busy&&!failed?'Working…':failed||!ready?status:status.startsWith('Stopped')?'Stopped':'Ready'}</span>
     </div>
+      {#if recovery}<button type="button" class="capture-retry" disabled={busy||recovering||blocked} onclick={()=>void retryObservation()}>Retry observation</button>{/if}
       <Popover.Root>
         <Popover.Trigger class="agent-details-trigger" aria-label="Chat details" title="Chat details">···</Popover.Trigger>
         <Popover.Content class="studio-chat-details" customAnchor={detailsAnchor ?? null} side="top" align="end" sideOffset={4} collisionPadding={8} collisionBoundary={detailsBoundary ?? panel ?? null} aria-label="Chat details">
           <div class="details-heading"><h3>Chat details</h3><Popover.Close aria-label="Close chat details">×</Popover.Close></div>
           <p class="details-model">{model || 'VICT / Mastra'}</p>
+          {#if retainedTurns.length}<label class="turn-history-label">Turn details <select aria-label="Inspect turn" value={selectedTurn} onchange={(event)=>selectedTurn=event.currentTarget.value}><option value="latest">Latest activity</option>{#each retainedTurns as record}<option value={record.id}>{new Date(record.startedAt).toLocaleTimeString()} · {record.status} · {record.task.slice(0,60)}</option>{/each}</select></label><p>Up to 24 turns retained for 30 minutes in this tab. Reloading clears local history; server evidence also expires or disappears on restart/capacity eviction.</p>{/if}
+          {#if selectedRecord}<h4>Recorded turn</h4><p>{selectedRecord.status} · {selectedRecord.applied} confirmed edits</p><p class="details-record">Run {selectedRecord.runId}{selectedRecord.engineTurnId?` · VICT turn ${selectedRecord.engineTurnId}`:''}<br />Source {selectedRecord.source.revision} → {selectedRecord.confirmedRevision??'terminal revision unavailable'}</p>{#if selectedRecord.expiresAt<=Date.now()}<p>Local record expired. Earlier transcript messages remain; this evidence is no longer available.</p>{/if}{/if}
+          {#if selectedRecord}<details><summary>Source boundaries</summary><pre class="details-record">{JSON.stringify({start:selectedRecord.source,confirmedRevision:selectedRecord.confirmedRevision,final:selectedRecord.finalSource??'Exact terminal cursor unavailable'},null,2)}</pre></details>{/if}
           {#if selectionLabel && selectionLabel!=='None'}<p>Selected: {selectionLabel}</p>{/if}
-          <p>{status}</p>
+          <p>{selectedRecord?`${selectedRecord.status}${selectedRecord.code?` · ${selectedRecord.code}`:''}`:status}</p>
           {#if !ready}<p>Set the server’s model and provider key, then restart Studio. Credentials stay on the server.</p>{/if}
           <button type="button" class="details-reconnect" disabled={busy} onclick={()=>void configure()}>Reconnect agent</button>
-          <AgentTurnEvidence metrics={lastMetrics} regions={lastRegions} />
-          {#if progress.length}<h4>Progress summaries</h4><p>Connection, validation and completion metadata. The conversation contains actual assistant messages and tool calls.</p><ol>{#each progress as message}<li>{message}</li>{/each}</ol>{/if}
-          {#if Object.keys(diagnostics).length}<h4>Input schema diagnostics</h4>{#each Object.entries(diagnostics) as [id,detail]}<pre class="details-record" data-diagnostic-id={id}>{detail}</pre>{/each}{/if}
-          {#if Object.keys(receipts).length}<h4>Tool receipts</h4>{#each Object.entries(receipts) as [id,call]}<div data-tool-receipt={id}><p>{call.title}</p><ol>{#each call.stages as stage}<li>{stage.title} · {stage.state}{#if stage.detail}<pre class="details-record">{stage.detail}</pre>{/if}</li>{/each}</ol></div>{/each}{/if}
-          {#if evidence}<h4>Connection record</h4><p class="details-record">{evidence}</p>{/if}
+          <AgentTurnEvidence metrics={detailMetrics} regions={detailRegions} />
+          {#if detailProgress.length}<h4>Progress summaries</h4><p>Connection, validation and completion metadata. The conversation contains actual assistant messages and tool calls.</p><ol>{#each detailProgress as message}<li>{message}</li>{/each}</ol>{/if}
+          {#if Object.keys(detailDiagnostics).length}<h4>Input schema diagnostics</h4>{#each Object.entries(detailDiagnostics) as [id,detail]}<pre class="details-record" data-diagnostic-id={id}>{detail}</pre>{/each}{/if}
+          {#if Object.keys(detailReceipts).length}<h4>Tool receipts</h4>{#each Object.entries(detailReceipts) as [id,call]}<div data-tool-receipt={id}><p>{call.title}</p><ol>{#each call.stages as stage}<li>{stage.title} · {stage.state}{#if stage.detail}<pre class="details-record">{stage.detail}</pre>{/if}</li>{/each}</ol></div>{/each}{/if}
+          {#if detailArchives.length}<h4>Sanitized exchanges</h4><p>Compact previews remain in the conversation. Open a retained original page here; this never invokes a tool again.</p>{#each detailArchives as reference}<div data-evidence-archive={reference.id}><p>{toolLabel(reference.tool)} · {reference.phase}{reference.redacted?' · redacted':''}{reference.truncated?' · bounded original is partial':''}</p><button type="button" class="details-reconnect" onclick={()=>void loadArchive(reference)}>Open first page</button>{#if archivePages[reference.id]}{@const page=archivePages[reference.id]!}{#if page.message}<p>{page.message}</p>{:else}<p>Characters {page.offset}–{page.offset+page.text.length} of {reference.totalCharacters}</p><pre class="details-record">{page.text}</pre>{#if page.nextOffset!==null}<button type="button" class="details-reconnect" onclick={()=>void loadArchive(reference,page.nextOffset!)}>Next page</button>{/if}{/if}{/if}</div>{/each}{/if}
+          {#if detailEvidence}<h4>Connection record</h4><p class="details-record">{detailEvidence}</p>{/if}
+          {#if recovery}<h4>Preview recovery</h4><p>Task: {recovery.task}</p><p>{recovery.reason}</p><button type="button" class="details-reconnect capture-only-retry" disabled={busy||recovering||blocked} onclick={()=>void retryCapture()}>Capture for my inspection</button><button type="button" class="details-reconnect agent-observation-retry" disabled={busy||recovering||blocked} onclick={()=>void retryObservation()}>Retry observation with agent</button>{#if recoveryNote}<p role="status">{recoveryNote}</p>{/if}{#if recoveryImage}<img class="recovery-preview" src={recoveryImage} alt="Recovered preview capture for owner inspection; no interaction verification" />{/if}{/if}
         </Popover.Content>
       </Popover.Root>
   </div>
@@ -255,6 +321,8 @@ ${event.details}`};
 <style>
   .agent-chat{display:flex;flex-direction:column;min-height:0;min-width:0;width:320px;border-right:1px solid var(--vict-color-border);background:var(--vict-color-surface);color:var(--vict-color-text);overflow:hidden;font-size:12px}
   .agent-footer{display:flex;flex:none;align-items:center;justify-content:space-between;padding:3px 12px 6px;gap:8px}
+  .capture-retry{flex:none;border:0;background:transparent;color:var(--vict-color-accent);font:inherit;font-size:10px;cursor:pointer;padding:4px}.capture-retry:disabled{opacity:.5;cursor:default}
+  .agent-chat :global(.recovery-preview){display:block;max-width:100%;height:auto}.agent-chat :global(.turn-history-label select){display:block;width:100%;font:inherit;color:inherit;background:var(--vict-color-surface)}
   :global(.agent-details-trigger){flex:none;height:28px;border:1px solid transparent;border-radius:5px;background:transparent;color:var(--vict-color-textMuted);cursor:pointer;padding:3px 8px;width:28px;font-size:20px;line-height:1}
   :global(.agent-details-trigger:hover),:global(.agent-details-trigger[data-state="open"]){background:var(--vict-rhea-muted)}
   :global(.agent-details-trigger:focus-visible),.agent-chat :global(.details-reconnect:focus-visible),.agent-chat :global(.details-heading button:focus-visible){outline:2px solid var(--vict-color-focusRing);outline-offset:2px}

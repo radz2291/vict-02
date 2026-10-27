@@ -45,7 +45,7 @@ describe('specialist public export admission inventory', () => {
         .sort();
       expect(actual).toEqual(expected);
       expect(new Set(actual).size).toBe(actual.length);
-      expect(pkg.registrations).toHaveLength(3);
+      expect(pkg.registrations).toHaveLength(family === 'flow' ? 4 : 3);
       expect(pkg.exportDispositions.every((item) => item.disposition && item.reason)).toBe(true);
     }, 20000);
 });

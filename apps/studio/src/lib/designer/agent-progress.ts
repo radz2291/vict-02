@@ -51,7 +51,7 @@ export function createTurnMetrics(now: () => number = () => performance.now()) {
   };
 }
 export type ToolCategory='knowledge'|'source'|'edit'|'observe'|'other';
-export const readCategory=(section:string):ToolCategory=>['families','catalog','contracts','elements','palette','component'].includes(section)?'knowledge':'source';
+export const readCategory=(section:string):ToolCategory=>['families','catalog','contracts','elements','palette','component','icons'].includes(section)?'knowledge':'source';
 const toolCategory=(tool:string):ToolCategory=>tool==='studio_screen_read'?'source':tool==='studio_screen_edit'?'edit':tool==='studio_screen_observe'?'observe':'other';
 
 import type { AgentCursor } from './agent-edits.js';

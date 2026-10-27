@@ -2,6 +2,14 @@
 export const STUDIO_TOOL_EVIDENCE_SCHEMA = 'vict.studio-tool-evidence@1' as const;
 export const TOOL_EVIDENCE_PAYLOAD_BYTES = 8_000;
 export const TOOL_EVIDENCE_RUN_BYTES = 160_000;
+export const TOOL_ARCHIVE_SCHEMA = 'vict.studio-tool-archive@1' as const;
+export interface ToolArchiveReference { type: 'tool-evidence-archive'; schema: typeof TOOL_ARCHIVE_SCHEMA; runId: string; callId: string; tool: EvidenceTool; phase: 'input' | 'result'; id: string; expiresAt: number; totalCharacters: number; redacted: boolean; truncated: boolean }
+const archiveFields = new Set(['type','schema','runId','callId','tool','phase','id','expiresAt','totalCharacters','redacted','truncated']);
+export function isToolArchiveReference(value: unknown): value is ToolArchiveReference {
+  if (!plain(value) || Object.keys(value).some(key=>!archiveFields.has(key))) return false;
+  const v = value as unknown as ToolArchiveReference;
+  return v.type === 'tool-evidence-archive' && v.schema === TOOL_ARCHIVE_SCHEMA && typeof v.id === 'string' && /^[0-9a-f-]{36}$/.test(v.id) && typeof v.runId === 'string' && id.test(v.runId) && typeof v.callId === 'string' && id.test(v.callId) && ['studio_screen_read', 'studio_screen_edit', 'studio_screen_observe'].includes(v.tool) && ['input', 'result'].includes(v.phase) && Number.isSafeInteger(v.expiresAt) && Number.isSafeInteger(v.totalCharacters) && v.totalCharacters >= 0 && v.totalCharacters <= 256_000 && typeof v.redacted === 'boolean' && typeof v.truncated === 'boolean';
+}
 export type EvidenceTool = 'studio_screen_read' | 'studio_screen_edit' | 'studio_screen_observe';
 export interface StudioToolEvidence {
   readonly type: 'tool-evidence';

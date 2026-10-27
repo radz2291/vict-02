@@ -130,26 +130,30 @@ export function editableStyle(
   property: string,
   condition?: string,
   pseudo?: string,
+  part?: string,
 ): UiStyleValue | undefined {
   const node = document.nodes[nodeId];
   if (!node) return undefined;
+  const style = part ? node.partStyles?.[part] : node;
+  if (!style) return undefined;
+  const sourcePrefix = part ? `src.part.${nodeId}.${part}` : `src.${nodeId}`;
   if (!condition && !pseudo)
     return (
-      node.localStyle?.find((d) => d.property === property)?.value ??
-      document.styleSources[`src.${nodeId}.always.plain`]?.declarations.find(
+      style.localStyle?.find((d) => d.property === property)?.value ??
+      document.styleSources[`${sourcePrefix}.always.plain`]?.declarations.find(
         (d) => d.property === property,
       )?.value
     );
   return document.styleSources[
-    `src.${nodeId}.${condition ?? 'always'}.${pseudo ?? 'plain'}`
+    `${sourcePrefix}.${condition ?? 'always'}.${pseudo ?? 'plain'}`
   ]?.declarations.find((d) => d.property === property)?.value;
 }
 
 /** Source candidates, not a computed cascade verdict. Conditions stay explicit. */
-export function sourceStyles(document: UiDocument, nodeId: string, property: string): string[] {
+export function sourceStyles(document: UiDocument, nodeId: string, property: string, part?: string): string[] {
   const node = document.nodes[nodeId];
   if (!node) return [];
-  return (node.styleSources ?? []).flatMap((id) => {
+  return ((part ? node.partStyles?.[part]?.styleSources : node.styleSources) ?? []).flatMap((id) => {
     const source = document.styleSources[id];
     const value = source?.declarations.find((d) => d.property === property)?.value;
     return value
