@@ -11,8 +11,7 @@
   import { onMount } from 'svelte';
   import type { UiDocument } from '@victframework/ui';
   import { projectStructure, structureFacts, structureNodePresentation, parseStructureId, type StructureHandoff, type StructureContext } from './structure.js';
-  import { resolveOccurrence } from '@victframework/ui-editor';
-  import { readableName } from './presentation.js';
+  import { SourceIdentity,resolveOccurrence } from '@victframework/ui-editor';
 
   let { document, context={}, selectedId, selectedOccurrence, layerProvenance, blocked = false, containFocus = false, embedded=false, page = $bindable('properties'), onClose, onSelect, onNavigate, onSelectionIntent, renderedOccurrences }: {
     document: UiDocument; context?:StructureContext; selectedId?: string; selectedOccurrence?:string; layerProvenance?:{occurrence:string;detail:string}; embedded?:boolean; blocked?: boolean; containFocus?: boolean; page?: 'properties' | 'relationships' | 'technical' | 'none';
@@ -61,7 +60,7 @@
   }
 </script>
 <section data-studio-typography class="studio-type-scope source-details" aria-label="Source inspection details" bind:this={root}>
-  <header>{#if !embedded}<span>Inspect</span>{/if}<div class="selection-identity-card">{#if selected && (structureNodePresentation(document,selected.data).kindLabel ?? readableName(selected.data.kind)).toLowerCase()!==label.toLowerCase()}<span>{structureNodePresentation(document,selected.data).kindLabel ?? readableName(selected.data.kind)}</span>{/if}<strong title={fullLabel}>{label}</strong>{#if identity.scope}<small>{identity.scope}</small>{/if}{#if identity.textLocation}<small class="selection-text-location">{identity.textLocation}</small>{/if}</div>{#if !embedded}<button type="button" aria-label="Close inspection details" onclick={onClose}>×</button>{/if}</header>
+  <header>{#if !embedded}<span>Inspect</span>{/if}<div class="selection-identity-card"><SourceIdentity icon={identity.iconKey} name={label} title={fullLabel} kindLabel={selected&&identity.type.toLowerCase()!==label.toLowerCase()?identity.type:undefined} context={[identity.scope,identity.textLocation].filter(Boolean).join(' · ')||undefined} variant="card"/></div>{#if !embedded}<button type="button" aria-label="Close inspection details" onclick={onClose}>×</button>{/if}</header>
   {#if !selected}<p class="empty-selection">Select an item on the canvas, in Layers or in the graph.</p>
   {:else}<SelectionSections bind:page relationshipsCount={relationshipCount(graph,[item])}>
     {#snippet overview()}
@@ -79,11 +78,10 @@
 <style>
   .source-details { box-sizing:border-box; display:flex; flex-direction:column; flex:none; height:100%; min-height:0; min-width:0; border-left:1px solid var(--vict-color-border,#e1e6ee); background:var(--vict-color-surface,#fff); color:var(--vict-color-text,#26334b); font:var(--studio-font-ui,12px/1.45 system-ui,sans-serif); overflow:hidden; }
   header { display:flex; align-items:center; gap:6px; padding:12px;box-sizing:border-box;flex:none;border-bottom:1px solid var(--vict-color-border,#e1e6ee); }
-  header strong { flex:1; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-weight:600; }
   button:not(.studio-section-header) { font:inherit; color:inherit; cursor:pointer; border:1px solid var(--vict-color-border,#dce2eb); border-radius:5px; background:var(--vict-color-surface,#fff); padding:5px 8px; }
   header button { width:28px; height:28px; border:0; padding:0; }
-  .empty-selection{padding:10px}.selection-identity-card small,.selection-availability{font:var(--studio-font-meta);color:var(--vict-color-textMuted)}
-  .selection-text-location{display:block;white-space:normal}.text-location-explanation{margin:0 0 8px;font:var(--studio-font-meta);color:var(--vict-color-textMuted)}
+  .empty-selection{padding:10px}.selection-availability{font:var(--studio-font-meta);color:var(--vict-color-textMuted)}
+  .text-location-explanation{margin:0 0 8px;font:var(--studio-font-meta);color:var(--vict-color-textMuted)}
   .details-handoff { margin-bottom:8px; }
   dt { font:11px/1.45 ui-monospace,monospace; overflow-wrap:anywhere; }
   dl { margin:0; } dl>div { display:grid; grid-template-columns:minmax(80px,1fr) minmax(0,1.25fr); gap:10px; padding:6px 0; border-top:1px solid var(--vict-color-border,#eef1f6); } dd { margin:0; overflow-wrap:anywhere; }

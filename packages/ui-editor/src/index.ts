@@ -73,3 +73,7 @@ export {selectionOperation, occurrenceRange} from './selection-intent.js';
 export type {SelectionOperation, OccurrenceSelectionIntent} from './selection-intent.js';
 
 export {canvasSelectionTarget} from './canvas-selection-target.js';
+export {sourceIcon,sourceIconPaths} from './source-icon.js';
+export type {SourceIconKey} from './source-icon.js';
+export {default as SourceIcon} from './SourceIcon.svelte';
+export {default as SourceIdentity} from './SourceIdentity.svelte';

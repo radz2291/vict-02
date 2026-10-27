@@ -57,7 +57,7 @@ describe('Inspector / Layers UX semantic regressions', () => {
     try {
       flushSync();
       const heading = target.querySelector('[data-key="ux|title"]')!;
-      expect(heading.querySelector('.name')?.textContent).toBe('Heading');
+      expect(heading.querySelector('.name')?.textContent?.trim()).toBe('Heading');
       expect(heading.getAttribute('aria-expanded')).toBeNull();
       expect(heading.querySelector('.child-count')).toBeNull();
       const search = target.querySelector<HTMLInputElement>('[aria-label="Search layers"]')!;

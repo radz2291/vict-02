@@ -20,11 +20,12 @@ export function selectionIdentity(document:UiDocument,graph:StructureGraph,item:
  const scope=[...new Set(path)].join(' · ');
  const availability=item.kind==='node'&&item.occurrence&&rendered&&!rendered.includes(item.occurrence)?'Not currently rendered':item.kind==='node'&&!item.occurrence&&node?.data.kind==='node'?'Source declaration':undefined;
  let textLocation:string|undefined;
+ let textContext:string|undefined;
  if(node?.data.sourceId&&document.nodes[node.data.sourceId]?.kind==='text'){
   const parent=compositionParent(document,node.data.sourceId),owner=parent?graph.nodes.find(node=>node.data.sourceId===parent.nodeId):undefined;
-  if(parent&&document.nodes[parent.nodeId]?.kind==='element'&&owner){const presentation=structureNodePresentation(document,owner.data);textLocation=`Text inside ${presentation.kindLabel??'Element'} · ${presentation.fullLabel??presentation.label}`;}
+  if(parent&&document.nodes[parent.nodeId]?.kind==='element'&&owner){const presentation=structureNodePresentation(document,owner.data);textContext=`Text inside ${presentation.kindLabel??'Element'}`;textLocation=`${textContext} · ${presentation.fullLabel??presentation.label}`;}
  }
- return {name,type,scope,availability,textLocation,qualified:[type,name,scope].filter(Boolean).join(' · ')};
+ return {name,type,scope,availability,textLocation,textContext,iconKey:presentation?.iconKey??'container' as const,qualified:[type,name,scope].filter(Boolean).join(' · ')};
 }
 export function sourceOverview(document:UiDocument,graph:StructureGraph,id:string,context:StructureContext={}){
  const selected=graph.nodes.find(node=>node.id===id);if(!selected)return [];

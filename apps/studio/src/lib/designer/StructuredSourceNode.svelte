@@ -1,7 +1,7 @@
 <script lang="ts">
   import {getContext,tick,untrack} from 'svelte';
   import {Handle,Position,useUpdateNodeInternals,type NodeProps} from '@victframework/ui-flow-svelte';
-  import StructureTypeIcon from './StructureTypeIcon.svelte';
+  import {SourceIdentity,type SourceIconKey} from '@victframework/ui-editor';
   import type {StructurePort} from './structure-connections.js';
   import {structureTraceContext,portKey,type StructureTraceContext} from './structure-trace.js';
   let {id,data,selected}:NodeProps=$props();
@@ -20,8 +20,7 @@
 </script>
 <div class="vict-source-node structured-source-node" class:selected class:traced class:trace-dim={!!trace && !traced} data-kind={String(data.kind)}>
   <header class="structured-node-header">
-    <span class="structured-node-icon" data-family={String(data.kind)}><StructureTypeIcon kind={String(data.kind==='node' && data.kindLabel==='Text'?'text':data.kind)}/></span>
-    <div class="structured-node-identity">{#if String(data.kindLabel ?? data.kind).toLowerCase()!==String(data.label).toLowerCase()}<span class="vict-source-kind">{data.kindLabel ?? data.kind}</span>{/if}<strong title={String(data.fullLabel ?? data.label)}>{data.label}</strong></div>
+    <div class="structured-node-identity"><SourceIdentity icon={(data.iconKey??'container') as SourceIconKey} name={String(data.label)} title={String(data.fullLabel??data.label)} kindLabel={String(data.kindLabel??data.kind).toLowerCase()!==String(data.label).toLowerCase()?String(data.kindLabel??data.kind):undefined} variant="node"/></div>
     {#if toggleGroup}<button type="button" class="node-group-toggle nodrag nopan" aria-label={`${data.collapsed?'Expand':'Collapse'} ${data.label}`} aria-expanded={!data.collapsed} onkeydown={event=>{if(event.key==='Enter'||event.key===' ')event.stopPropagation();}} onclick={event=>{event.stopPropagation();toggleGroup();}}>{data.collapsed?'›':'⌄'}</button>{/if}
   </header>
   {#if data.summary || data.collapsedCount || data.support || issues.length}<div class="structured-node-facts"><span class="vict-source-summary" title={String(data.summary ?? '')}>{data.collapsedCount?`${data.collapsedCount} items inside`:data.summary}</span>{#if data.support || issues.length}<span class="vict-source-summary" title={issues.join('\n')}>{data.support ?? 'Warning'}</span>{/if}</div>{/if}
@@ -50,9 +49,7 @@
 <style>
   .structured-source-node{position:relative;box-sizing:border-box;width:224px;min-height:76px;display:flex;flex-direction:column}
   .structured-node-header{display:flex;align-items:flex-start;gap:8px;padding:8px;min-height:62px}
-  .structured-node-icon{color:#64748b;padding-top:2px;flex:none}.structured-node-icon[data-family=state]{color:#0f766e}.structured-node-icon[data-family=action]{color:#7c3aed}.structured-node-icon[data-family=catalog],.structured-node-icon[data-family=definition]{color:#3566a4}.structured-node-icon[data-family=route]{color:#0369a1}
-  .structured-node-identity{display:flex;flex-direction:column;gap:3px;flex:1;min-width:0}
-  strong{display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere;min-height:20px;line-height:20px}
+  .structured-node-identity{flex:1;min-width:0}
   .node-group-toggle{border:0;background:transparent;color:var(--vict-color-textMuted);font:18px/20px system-ui;cursor:pointer;padding:0;width:20px;height:20px;border-radius:3px;flex:none}
   .node-group-toggle:hover{background:var(--vict-control-selected)}.node-group-toggle:focus-visible{outline:2px solid var(--vict-color-focusRing)}
   .structured-node-facts{padding:0 8px 8px;display:flex;flex-direction:column;gap:3px}

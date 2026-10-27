@@ -6,6 +6,8 @@ import {
 } from '@victframework/ui';
 import {
   authoredOccurrence,
+  sourceIcon,
+  type SourceIconKey,
   moveRelative,
   canInsertRecipe,
   type InsertRecipe,
@@ -49,6 +51,7 @@ export type StructureNodeData = {
   definitionSource?: boolean;
   kind: string;
   kindLabel?: string;
+  iconKey?: SourceIconKey;
   childCount?: number;
   collapsedCount?: number;
   moveSource?: boolean;
@@ -106,6 +109,12 @@ export function compactStructure(graph: StructureGraph, document: UiDocument): S
     nodes: graph.nodes.filter((node) => !hidden.has(node.id)),
     edges: graph.edges.filter((edge) => !hidden.has(edge.source) && !hidden.has(edge.target)),
   };
+}
+
+/** Graph-only identities adapt to the shared editor icon vocabulary. */
+function structureIcon(kind:string):SourceIconKey {
+ const keys:Readonly<Record<string,SourceIconKey>>={state:'state',action:'action',catalog:'catalog',definition:'catalog',route:'route',reference:'reference',style:'style',token:'token',condition:'conditional',asset:'asset',prop:'reference',output:'reference',item:'reference',overlay:'portal'};
+ return keys[kind]??'container';
 }
 
 /** Concise presentation only; the full canonical facts remain in inspection. */
@@ -181,6 +190,7 @@ export function structureNodePresentation(
   if (summary && normalize(summary).toLowerCase() === label.toLowerCase()) summary = undefined;
   return {
     ...data,
+    iconKey: source ? sourceIcon(source) : structureIcon(data.kind),
     fullLabel: label,
     label: label.length > 76 ? `${label.slice(0, 75).trimEnd()}…` : label,
     kindLabel: kind,
