@@ -83,3 +83,8 @@ Preferred user value: a concise account of the approach, progress, decisions and
 4. Deliver ordered, correlated incremental updates and a final completion state; Stop, retries, refusals, disconnects and late events cannot attach content to another turn or fabricate success.
 5. Provide focused positive/negative tests for supported/unsupported events, bounded/redacted payloads, compatibility and cancellation. Supply exact candidate SHA, checks, retained failures and UI integration instructions to the root; an independent verifier supplies the eventual verdict.
 6. Root UI can render one quiet expandable approach/activity area in chronological conversation, default collapsed, without repeating summaries or hiding actionable errors. UI presentation approval/integration does not by itself close this cross-layer finding.
+
+
+### Dispatch record
+
+Separate internal implementation agent `/root/agent_explanations` has been started, pinned to report commit `65f92bb4e3b39f0b74013bce97293b4325528912`, branch `codex/studio-cycle-1-4-agent-explanations`, isolated checkout `C:/Users/RZ1/.codex/worktrees/studio-cycle14-agent-explanations/260831-VCT-02`. Its task is the compatible stream/adapter/backend candidate and a new `CYCLE-1-4-AGENT-EXPLANATIONS.md` integration/evidence report. Root retains AgentChat/Conversation presentation and integration. No external organization was contacted. Status at dispatch: implementation in progress, no candidate/checks/verdict yet. This report-only dispatch does not restart the preview or claim AE-THINK-01 is fixed. Documentation validation: `git diff --check`; no code tests or production rebuild warranted for these documentation-only changes.
