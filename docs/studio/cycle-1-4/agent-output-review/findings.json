@@ -1,0 +1,175 @@
+{
+  "reviewDate": "2026-10-27",
+  "baseline": "cf7c7fb7861aac32401866c0fe27854b806bcac8",
+  "product": "e5bc3cd36aae5e7d2934aa03f293fb49c8ce1006",
+  "firstTurn": {
+    "request": "Polish the authored chat window to fit the landing-page theme",
+    "toolCalls": 18,
+    "sourceReads": 10,
+    "contractReads": 1,
+    "editCalls": 4,
+    "confirmedTransactions": 3,
+    "observations": 3,
+    "firstEditMs": 255057.2868,
+    "contractComplete": true,
+    "traceResultsWithTruncationNotice": 11,
+    "observationCrop": {
+      "width": 648,
+      "height": 561,
+      "offsetTop": 2089,
+      "sourceHeight": 3315
+    },
+    "renderedFacts": {
+      "conversationInnerBackground": "rgb(255, 255, 255)",
+      "userBubbleInnerBackground": "rgb(241, 243, 247)",
+      "userBubbleInnerText": "rgb(246, 245, 242)",
+      "rootOnlyStyleTargets": true
+    }
+  },
+  "sourceReadFacts": [
+    {
+      "turn": 2,
+      "reads": [
+        {
+          "nodeId": "footer",
+          "revision": "r1.r1#3",
+          "digest": "b7e98e26f5f5cdb67f708ee85f0ebcfae0f18e3e73bc62855a57e754c51f5f32",
+          "nextOffset": null
+        },
+        {
+          "nodeId": "nav",
+          "revision": "r1.r1#3",
+          "digest": "b7e98e26f5f5cdb67f708ee85f0ebcfae0f18e3e73bc62855a57e754c51f5f32",
+          "nextOffset": null
+        },
+        {
+          "nodeId": "screen",
+          "revision": "r1.r1#3",
+          "digest": "b7e98e26f5f5cdb67f708ee85f0ebcfae0f18e3e73bc62855a57e754c51f5f32",
+          "nextOffset": null
+        }
+      ]
+    },
+    {
+      "turn": 3,
+      "reads": [
+        {
+          "nodeId": "nav",
+          "revision": "r1.r1#3",
+          "digest": "b7e98e26f5f5cdb67f708ee85f0ebcfae0f18e3e73bc62855a57e754c51f5f32",
+          "nextOffset": null
+        },
+        {
+          "nodeId": "screen",
+          "revision": "r1.r1#3",
+          "digest": "b7e98e26f5f5cdb67f708ee85f0ebcfae0f18e3e73bc62855a57e754c51f5f32",
+          "nextOffset": null
+        },
+        {
+          "nodeId": "hero",
+          "revision": "r1.r1#3",
+          "digest": "b7e98e26f5f5cdb67f708ee85f0ebcfae0f18e3e73bc62855a57e754c51f5f32",
+          "nextOffset": null
+        }
+      ]
+    }
+  ],
+  "thirdTurn": {
+    "diagnostics": {
+      "phase": "visibility",
+      "reason": "preview-covered",
+      "expectedRevision": "r1.r1#3",
+      "actualRevision": "r1.r1#3",
+      "mode": "design",
+      "covered": true,
+      "connected": true,
+      "layout": false,
+      "frame": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "frameBefore": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "viewport": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "viewportBefore": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "scroll": [
+        0,
+        0
+      ]
+    },
+    "recovery": {
+      "action": "Reveal the current Design or Interact preview, then request observation only.",
+      "editsReplayed": false,
+      "captureAttempts": 1
+    },
+    "metrics": {
+      "toolCalls": 4,
+      "completedCalls": 3,
+      "refusedCalls": 1,
+      "recoveryAttempts": 0,
+      "toolElapsedMs": 73,
+      "providerRequests": 2,
+      "visionRequests": 0,
+      "acknowledgementMs": 0,
+      "confirmedEdits": 0,
+      "usage": {
+        "inputTokens": 22182,
+        "outputTokens": 5675,
+        "totalTokens": 27857
+      },
+      "categories": {
+        "knowledge": 0,
+        "source": 3,
+        "edit": 0,
+        "observe": 1,
+        "other": 0
+      },
+      "elapsedMs": 184126,
+      "toolActiveMs": 63,
+      "outsideToolMs": 184063,
+      "modelSteps": null,
+      "cost": null
+    }
+  },
+  "headerGeometry": {
+    "documentRootTop": -1189.2000732421875,
+    "gap": 16,
+    "nav": {
+      "height": 82.4000015258789,
+      "insetTop": "0px",
+      "marginTop": "0px",
+      "position": "sticky",
+      "top": 98.8000030517578
+    },
+    "viewport": {
+      "paddingTop": "16px",
+      "scrollTop": 1288,
+      "top": 82.80000305175781
+    },
+    "workspace": [
+      "Design"
+    ]
+  },
+  "limits": [
+    "Second-turn terminal status is not recoverable from the current per-turn transcript; no cancellation/crash is inferred.",
+    "Historical capture refusal is not a false positive merely because Design is visible now.",
+    "Trace truncation is a UI evidence projection limit; it does not prove the model received a partial contract. The visible contracts response said complete:true.",
+    "No product edit, Save, Undo, provider request, mode change or scrolling was performed in this report investigation."
+  ]
+}

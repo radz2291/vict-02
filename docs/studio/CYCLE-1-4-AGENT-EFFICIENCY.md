@@ -93,3 +93,8 @@ Separate internal implementation agent `/root/agent_explanations` has been start
 ### AE-THINK-01 implementation update - integrated builder candidate
 
 Agency delivery `cea4986034f2162ea399281a78952fd346fe8a2a` is integrated into [quiet Chat candidate/evidence](CYCLE-1-4-QUIET-CHAT.md), exact product `e5bc3cd36aae5e7d2934aa03f293fb49c8ce1006`. The controlled configured-GLM probe now confirms reasoning event emission; only metadata counts/types were retained, superseding the earlier unknown-provider status. Frozen VICT@1/private reasoning exclusion is preserved. Existing public assistant text plus negotiated actual sanitized tool Input/Result is the implemented owner-facing route; no fabricated thinking or raw private reasoning is exposed. Builder verification and signed-in trial are ready. AE-THINK-01 is implementation-candidate complete for the agreed public-observation scope; independent verdict and owner acceptance remain pending, so it is not independently closed. The root's quiet Chat integration and agency's backend responsibilities stayed isolated until explicit integration.
+
+
+## 2026-10-27 - Later owner-run output and diagnostic findings
+
+[Dedicated report AR-01 through AR-12](CYCLE-1-4-AGENT-OUTPUT-REVIEW.md) records the actual authored-chat theming run and subsequent footer/header correction. These are OPEN/report-only, with implementation expressly withheld by the owner. They do not invalidate the earlier Input/Result transport checks, nor does that transport candidate close later component-style/host-viewport/agent-method failures. The measured Design gap is host padding, while the earlier hidden-preview capture refusal was valid for its recorded state. No product changes were made for this investigation.
