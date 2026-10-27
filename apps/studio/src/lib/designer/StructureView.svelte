@@ -15,6 +15,10 @@
   import { projectStructure, filterStructure, connectedSelectionStructure, compactStructure, structureNodePresentation, structureFacts, structureId, parseStructureId, structureMove, type StructureNodeData, type StructureEditRequest, type StructureHandoff, type StructureContext } from './structure.js';
   import { Menubar } from '@victframework/ui-svelte/catalog/menubar';
   import WorkspaceMenu from './WorkspaceMenu.svelte';
+  import WorkspaceSubmenu from './WorkspaceSubmenu.svelte';
+  import WorkspaceToolIcon from './WorkspaceToolIcon.svelte';
+  import {structureMatches} from './structure.js';
+  import {retainStructurePositions} from './structure-placement.js';
   import WorkspaceContextMenu from './WorkspaceContextMenu.svelte';
   import { sourceCapabilities, type WorkspaceContext, type WorkspaceCommand } from './workspace-context.js';
 
@@ -77,6 +81,8 @@
   let allowMoves = $state(false);
   let inspectedId = $state<string>();
   let search = $state('');
+  const searching=$derived(!!search.trim());
+  let searchInput:HTMLInputElement;
   let showBindings = $state(true);
   let inventory = $state(false);
   let showDefinitions = $state(false);
@@ -105,14 +111,17 @@
   let inspectionOpen = $state(false);
   let inspectionPage = $state<'properties' | 'relationships' | 'find' | 'move'>('properties');
   let showTextNodes = $state(false);
-  let inspectionButton: HTMLButtonElement;
+  let inspectionReturn:HTMLElement|undefined;
+  let utilityDialog:HTMLDialogElement;
+  const utilityOpen=$derived(inspectionOpen && (inspectionPage==='find'||inspectionPage==='move'));
+  $effect(()=>{if(!utilityDialog)return;if(utilityOpen && !utilityDialog.open)utilityDialog.showModal();else if(!utilityOpen && utilityDialog.open)utilityDialog.close();});
   let structureElement = $state<HTMLElement>();
   $effect(()=>{const element=structureElement;if(!element)return;const inspect=(event:MouseEvent)=>{if(!blocked&&event.target instanceof Element&&event.target.closest('.svelte-flow__edge,.svelte-flow__node')&&!event.target.closest('.port-control'))onInspect?.();};element.addEventListener('dblclick',inspect);return()=>element.removeEventListener('dblclick',inspect);});
   const fittedDocuments = new Set<string>();
   const graph = $derived(projectStructure(document,{descriptors,...context}));
   $effect(()=>{if(!selection && inspectionSelection && graph.nodes.some(node=>node.id===inspectionSelection))inspectedId=inspectionSelection;});
   const compactGraph = $derived(compactStructure(graph, document));
-  const groupGraph = $derived(showTextNodes || search ? graph : compactGraph);
+  const groupGraph = $derived(showTextNodes || searching ? graph : compactGraph);
   const inspected = $derived(graph.nodes.find(node => node.id === inspectedId));
   const framingIds=$derived([...new Set(chosenItems.flatMap(item=>item.kind==='node'?[item.id]:edges.filter(edge=>edge.id===item.id).flatMap(edge=>[edge.source,edge.target])).filter(id=>nodes.some(node=>node.id===id)))]);
   const related = $derived(graph.edges.filter(edge => (edge.source === inspectedId || edge.target === inspectedId) && edge.data?.kind !== 'containment'));
@@ -120,9 +129,9 @@
   const filtered = $derived(filterStructure(graph, { search, focusId: focusedId, collapsed, bindings: showBindings, definitions: showDefinitions, inventory }));
   const scopeId = $derived(connectionFocus ?? structureId(document.id,'node',selectedNodeId ?? document.root));
   const scopeIds=$derived(selectionFocus.length?selectionFocus:[scopeId]);
-  const scopeNode = $derived(graph.nodes.find(node=>node.id===scopeId));
+  const scopeNode = $derived(graph.nodes.find(node=>node.id===scopeIds[0]));
   const scopeLabel = $derived(selectionFocus.length>1?`${selectionFocus.length} objects`:scopeNode ? structureNodePresentation(document,scopeNode.data).fullLabel : 'Screen');
-  const visibleGraph = $derived(showTextNodes || search ? filtered : compactStructure(filtered, document));
+  const visibleGraph = $derived(showTextNodes || searching ? filtered : compactStructure(filtered, document));
   // Keep the explicit focus visible even if its category is currently hidden.
   const eligibleGraph=$derived({...visibleGraph,nodes:[...visibleGraph.nodes,...graph.nodes.filter(node=>scopeIds.includes(node.id)&&!visibleGraph.nodes.some(visible=>visible.id===node.id))]});
   const directConnections=$derived(connectedSelectionStructure(eligibleGraph,scopeIds,{limit:Infinity,expanded:expandedGroups}));
@@ -130,19 +139,24 @@
   const otherUsers=$derived(extendedConnections.nodes.length-directConnections.nodes.length);
   const connectionGraph=$derived(connectedSelectionStructure(eligibleGraph,scopeIds,{related:showOtherUsers,limit:connectionLimit,expanded:expandedGroups}));
   const availableConnections = $derived(showOtherUsers ? extendedConnections.nodes.length : directConnections.nodes.length);
-  const projected = $derived(graphView==='connections' && !search ? connectionGraph : visibleGraph);
-  const availableItems = $derived(graphView==='connections' && !search ? availableConnections : graph.nodes.length);
-  const rawConnections = $derived(graph.edges.some(edge=>edge.source===scopeId || edge.target===scopeId));
+  const projected = $derived(graphView==='connections' && !searching ? connectionGraph : visibleGraph);
+  const availableItems = $derived(graphView==='connections' && !searching ? availableConnections : graph.nodes.length);
+  const searchMatches=$derived(graph.nodes.filter(node=>structureMatches(node,search)).length);
+  const selectionOutside=$derived(chosenItems.some(item=>item.kind==='node'?!nodes.some(node=>node.id===item.id):!edges.some(edge=>edge.id===item.id)));
+  const toolbarStatus=$derived(searching?`Search · ${searchMatches} ${searchMatches===1?'match':'matches'} · ${nodes.length} shown`:`${graphView==='connections'?`Focus: ${scopeLabel}`:'Hierarchy'} · ${nodes.length<availableItems && graphView==='connections'?`${nodes.length} of ${availableItems}`:nodes.length} shown`);
+  const rawConnections = $derived(graph.edges.some(edge=>scopeIds.includes(edge.source) || scopeIds.includes(edge.target)));
   $effect(()=>{void scopeIds;showOtherUsers=false;connectionLimit=25;expandedGroups=new Set();});
   const nodeTypes = { source: StructuredSourceNode };
   const edgeTypes = { routed: StructureEdge };
   const fence = new LayoutFence();
   let connectionStart: { documentId: string; revision: string } | undefined;
   let layoutDocument = '';
+  let arrangedKey='';
+  let knownPositions=new Map<string,{x:number;y:number}>();
   const presentations = new Map<string, { viewport: Viewport; positions: Map<string, { x: number; y: number }>; collapsed: Set<string>; inspectedId?: string; connectionFocus?:string; direction: LayoutDirection; search: string; focusedId?: string; bindings: boolean; definitions: boolean; inventory:boolean; text: boolean; inspection: boolean; page: typeof inspectionPage }>();
   function remember() {
     if (!layoutDocument) return;
-    presentations.set(layoutDocument, { viewport: { ...viewport }, positions: new Map(nodes.map(node => [node.id, { ...node.position }])), collapsed: new Set(collapsed), inspectedId, connectionFocus, direction, search, focusedId, bindings: showBindings, definitions: showDefinitions, inventory, text: showTextNodes, inspection: inspectionOpen, page: inspectionPage === 'move' ? 'properties' : inspectionPage });
+    presentations.set(layoutDocument, { viewport: { ...viewport }, positions: new Map([...knownPositions,...nodes.map(node => [node.id, { ...node.position }] as const)]), collapsed: new Set(collapsed), inspectedId, connectionFocus, direction, search, focusedId, bindings: showBindings, definitions: showDefinitions, inventory, text: showTextNodes, inspection: inspectionOpen && !utilityOpen, page: 'properties' });
   }
   $effect(() => {
     const id = document.id;
@@ -152,6 +166,7 @@
     untrack(remember);
     layoutDocument = id;
     const saved = presentations.get(id);
+    knownPositions=new Map(saved?.positions);arrangedKey=saved?`${id}|${saved.direction}|${layoutVersion}`:'';
     viewport = saved?.viewport ?? { x: 24, y: 24, zoom: .85 };
     collapsed = saved?.collapsed ?? new Set(graph.nodes.filter(node => node.data.occurrence && (node.data.childCount ?? 0) > (presentation === 'drawer' ? 1 : 3) && node.data.sourceId !== document.root).map(node => node.id));
     inspectedId = saved?.inspectedId ?? (selectedNodeId ? structureId(id, 'node', selectedNodeId) : structureId(id, 'node', document.root));
@@ -194,12 +209,13 @@
     const orientation = direction;
     const editable = allowMoves && !blocked;
     const previous = untrack(() => new Map(nodes.map(node => [node.id, node])));
+    for(const node of previous.values())knownPositions.set(node.id,{...node.position});
     const remembered = untrack(() => presentations.get(document.id)?.positions);
     nodes = currentGraph.nodes.map(node => {
       const old = previous.get(node.id);
       const source = node.data.sourceId && document.nodes[node.data.sourceId];
       const target = !!node.data.occurrence && !!source && ((source.kind === 'element' && ['main', 'section', 'div', 'article', 'aside', 'header', 'footer', 'nav', 'form', 'fieldset', 'ul', 'ol', 'li'].includes(source.tag)) || (source.kind === 'component' && (descriptors.find(entry => entry.id === source.definitionId)?.slots?.length ?? 0) === 1));
-      return { ...node, position: old?.position ?? remembered?.get(node.id) ?? node.position, measured: old?.measured, selectable:false,selected:untrack(()=>chosenItems.some(item=>item.kind==='node'&&item.id===node.id)),
+      return { ...node, position: old?.position ?? knownPositions.get(node.id) ?? remembered?.get(node.id) ?? node.position, measured: old?.measured, selectable:false,selected:untrack(()=>chosenItems.some(item=>item.kind==='node'&&item.id===node.id)),
         data: { ...structureNodePresentation(document, node.data), ports:structurePorts(currentGraph,node.id), direction: orientation, moveSource: editable && !!node.data.occurrence && node.data.sourceId !== document.root, moveTarget: editable && target,
           collapsed: groupClosed(node.id), onToggleGroup: groupGraph.edges.some(edge => edge.source === node.id && edge.data?.kind === 'containment') ? () => collapse(node.id) : undefined } };
     });
@@ -214,10 +230,17 @@
     const currentNodes = untrack(() => nodes.map(node => ({ ...node, data: { ...node.data } })));
     const currentEdges = untrack(() => [...edges]);
     const orientation = direction;
+    const key=`${document.id}|${orientation}|${layoutVersion}`;
+    const rearrange=key!==arrangedKey;
     layoutStatus = 'Arranging source…';
     void layoutGraph(currentNodes, currentEdges, { engine: 'elk', direction: orientation }).then(result => {
       if (!fence.current(ticket)) return;
-      const positions = new Map(result.nodes.map(node => [node.id, node.position]));
+      const placed=rearrange?result.nodes:retainStructurePositions(result.nodes,knownPositions,orientation);
+      const positions = new Map(placed.map(node => [node.id, node.position]));
+      if(currentNodes.every(node=>node.measured?.width && node.measured?.height)){
+        arrangedKey=key;
+        for(const [id,point] of positions)knownPositions.set(id,{...point});
+      }
       nodes = nodes.map(node => ({ ...node, position: positions.get(node.id) ?? node.position }));
       edges = result.edges.map(edge=>({...edge,selected:untrack(()=>chosenItems.some(item=>item.kind==='edge'&&item.id===edge.id))}));
       layoutNote = result.reason ? 'Using a simpler layout for this large view. Focus on an item or collapse groups for a clearer view.' : '';
@@ -232,7 +255,7 @@
   });
   let framedConnections='';
   $effect(()=>{
-    if(!active || search || graphView!=='connections' || layoutStatus || !nodes.length || nodes.some(node=>!node.measured?.width))return;
+    if(!active || searching || graphView!=='connections' || layoutStatus || !nodes.length || nodes.some(node=>!node.measured?.width))return;
     const key=`${document.id}|${scopeIds.join('|')}`;
     if(key!==framedConnections){framedConnections=key;locate(selectionFocus);}
   });
@@ -263,9 +286,10 @@
   }
   function closeInspection(restoreFocus = true) {
     inspectionOpen = false; allowMoves = false; moveSource = ''; moveTarget = '';
-    if (restoreFocus) inspectionButton?.focus({ preventScroll: true });
+    if (restoreFocus) (inspectionReturn?.isConnected?inspectionReturn:searchInput)?.focus({ preventScroll: true });
   }
   function openInspection(page: typeof inspectionPage = 'properties') {
+    inspectionReturn=globalThis.document.activeElement instanceof HTMLElement?globalThis.document.activeElement:undefined;
     if (onInspect && (page === 'properties' || page === 'relationships')) { onInspect(inspectedId,page); return; }
     allowMoves = page === 'move'; inspectionPage = page; inspectionOpen = true;
   }
@@ -301,7 +325,7 @@
     moveTarget = ''; openInspection('move');
   }
   function commitMove(request: StructureEditRequest) {
-    if (onMove(request)) { allowMoves = false; inspectionPage = 'properties'; moveSource = ''; moveTarget = ''; }
+    if (onMove(request)) { closeInspection();onInspect?.(inspectedId,'properties'); }
   }
   function escape(event: KeyboardEvent) {
     if (!active || event.defaultPrevented || event.key !== 'Escape' || activeMenu) return;
@@ -318,7 +342,7 @@
   function valid(connection: Connection | Edge): boolean {
     return allowMoves && !blocked && connection.sourceHandle==='content' && connection.targetHandle==='container' && structureMove(document, revision, { documentId: document.id, revision, source: connection.source, target: connection.target }, false, descriptors, recipes).ok;
   }
-  function groupClosed(id:string) {return collapsed.has(id) || (graphView==='connections' && !search && id!==scopeId && !expandedGroups.has(id));}
+  function groupClosed(id:string) {return collapsed.has(id) || (graphView==='connections' && !searching && !scopeIds.includes(id) && !expandedGroups.has(id));}
   function collapse(id: string) {
     const next = new Set(collapsed),expanded=new Set(expandedGroups);
     if(groupClosed(id)){next.delete(id);expanded.add(id);}else{next.add(id);expanded.delete(id);}
@@ -347,39 +371,39 @@
   }
 </script>
 <svelte:window onkeydown={escape} onkeydowncapture={graphEscape} />
-<section data-studio-typography class="studio-type-scope structure-view" class:drawer-presentation={presentation === 'drawer'} class:inspection-open={inspectionOpen} aria-label="Source structure" bind:this={structureElement}>
+<section data-studio-typography class="studio-type-scope structure-view" class:drawer-presentation={presentation === 'drawer'} class:inspection-open={inspectionOpen && !utilityOpen} aria-label="Source structure" bind:this={structureElement}>
   <WorkspaceContextMenu scope={structureElement} enabled={active} resolve={resolveContext} />
   <div class="structure-tools">
-    <input type="search" aria-label="Search structure" placeholder="Search structure" bind:value={search} />
+    <input type="search" aria-label="Search structure" placeholder="Search structure" bind:this={searchInput} bind:value={search} onkeydown={event=>{if(event.key==='Escape'&&search){event.preventDefault();event.stopPropagation();search='';}}} />
     <Menubar.Root class="workspace-menus" aria-label="Structure menus" bind:value={activeMenu} loop>
       <WorkspaceMenu label="View" value="structure-view" {activeMenu}>
-        <Menubar.RadioGroup bind:value={graphView} aria-label="Structure view">
-          <Menubar.RadioItem value="connections" closeOnSelect>Focused connections<span aria-hidden="true">{graphView==='connections'?'✓':''}</span></Menubar.RadioItem>
-          <Menubar.RadioItem value="hierarchy" closeOnSelect onSelect={()=>{focusedId=undefined;search='';}}>Whole hierarchy<span aria-hidden="true">{graphView==='hierarchy'?'✓':''}</span></Menubar.RadioItem>
+        <Menubar.RadioGroup value={searching?'search':graphView} onValueChange={value=>{graphView=value;search='';focusedId=undefined;}} aria-label="Structure view">
+          <Menubar.RadioItem value="connections" closeOnSelect>Focused connections<span aria-hidden="true">{!searching&&graphView==='connections'?'✓':''}</span></Menubar.RadioItem>
+          <Menubar.RadioItem value="hierarchy" closeOnSelect>Whole hierarchy<span aria-hidden="true">{!searching&&graphView==='hierarchy'?'✓':''}</span></Menubar.RadioItem>
         </Menubar.RadioGroup>
-        <Menubar.CheckboxItem bind:checked={inventory} closeOnSelect={false} onSelect={()=>{graphView='hierarchy';focusedId=undefined;}}>All declarations<span aria-hidden="true">{inventory?'✓':''}</span></Menubar.CheckboxItem><Menubar.Separator />
-        <Menubar.Item disabled={!framingIds.length} onSelect={() => locate(framingIds)}>Frame selection</Menubar.Item>
-        <Menubar.Item disabled={!chosenItems.length || blocked} onSelect={focusChosen}>Focus on selection</Menubar.Item>
-        <Menubar.Item onSelect={() => { graphView='hierarchy';focusedId = undefined; search = ''; }}>Show whole screen</Menubar.Item>
+        <Menubar.Separator />
+        <Menubar.Item disabled={!chosenItems.length || blocked} onSelect={focusChosen}>Explore selection</Menubar.Item>
+        <Menubar.Item onSelect={()=>{void tick().then(()=>searchInput?.focus());}}>Search structure</Menubar.Item>
         <Menubar.Item onSelect={() => openInspection('find')}>Find source item</Menubar.Item>
         <Menubar.Separator />
-        <Menubar.Item onSelect={() => layoutVersion++}>Arrange nodes</Menubar.Item>
-        <Menubar.Item onSelect={() => { collapsed = new Set(); expandedGroups=new Set(graph.nodes.filter(node=>node.data.childCount).map(node=>node.id)); }}>Expand all groups</Menubar.Item>
-        <Menubar.Group><Menubar.GroupHeading class="menu-caption">Layout</Menubar.GroupHeading>
-          <Menubar.RadioGroup bind:value={direction} aria-label="Structure layout direction">
-            <Menubar.RadioItem value="RIGHT" closeOnSelect>Left to right</Menubar.RadioItem>
-            <Menubar.RadioItem value="DOWN" closeOnSelect>Top to bottom</Menubar.RadioItem>
-          </Menubar.RadioGroup>
-        </Menubar.Group>
-        <Menubar.Separator />
-        <Menubar.Group><Menubar.GroupHeading class="menu-caption">Relationships</Menubar.GroupHeading>
+        <WorkspaceSubmenu label="Show">
           <Menubar.CheckboxItem bind:checked={showBindings} closeOnSelect={false}>Dependencies<span aria-hidden="true">{showBindings ? '✓' : ''}</span></Menubar.CheckboxItem>
-          <Menubar.CheckboxItem bind:checked={showDefinitions} closeOnSelect={false}>Component definitions<span aria-hidden="true">{showDefinitions ? '✓' : ''}</span></Menubar.CheckboxItem>
-          <Menubar.CheckboxItem bind:checked={showTextNodes} closeOnSelect={false}>Show text nodes<span aria-hidden="true">{showTextNodes ? '✓' : ''}</span></Menubar.CheckboxItem>
-        </Menubar.Group>
+          <Menubar.CheckboxItem bind:checked={showDefinitions} closeOnSelect={false}>Definitions and catalog<span aria-hidden="true">{showDefinitions ? '✓' : ''}</span></Menubar.CheckboxItem>
+          <Menubar.CheckboxItem bind:checked={showTextNodes} closeOnSelect={false}>Text nodes<span aria-hidden="true">{showTextNodes ? '✓' : ''}</span></Menubar.CheckboxItem>
+          <Menubar.Separator />
+          <Menubar.CheckboxItem bind:checked={inventory} disabled={graphView!=='hierarchy'||searching} title="Include unused items in hierarchy; visibility filters still apply" closeOnSelect={false}>Include unused items<span aria-hidden="true">{inventory?'✓':''}</span></Menubar.CheckboxItem>
+          <Menubar.Item onSelect={() => { collapsed = new Set(); expandedGroups=new Set(graph.nodes.filter(node=>node.data.childCount).map(node=>node.id)); }}>Expand all groups</Menubar.Item>
+        </WorkspaceSubmenu>
+        <WorkspaceSubmenu label="Layout">
+          <Menubar.RadioGroup bind:value={direction} aria-label="Structure layout direction">
+            <Menubar.RadioItem value="RIGHT" closeOnSelect>Left to right<span aria-hidden="true">{direction==='RIGHT'?'✓':''}</span></Menubar.RadioItem>
+            <Menubar.RadioItem value="DOWN" closeOnSelect>Top to bottom<span aria-hidden="true">{direction==='DOWN'?'✓':''}</span></Menubar.RadioItem>
+          </Menubar.RadioGroup>
+        </WorkspaceSubmenu>
       </WorkspaceMenu>
       {#if inspected}
         <WorkspaceMenu label="Object" value="structure-object" {activeMenu}>
+          <Menubar.Item disabled={blocked} onSelect={()=>openInspection('properties')}>Inspect</Menubar.Item>
           {#if inspected.data.childCount}<Menubar.Item onSelect={() => collapse(inspected.id)}>{groupClosed(inspected.id) ? 'Expand group' : 'Collapse group'}</Menubar.Item>{/if}
           {#if inspected.data.occurrence}
             <Menubar.Item disabled={blocked} onSelect={() => navigate('inspector')}>Edit on canvas</Menubar.Item>
@@ -394,21 +418,25 @@
         </WorkspaceMenu>
       {/if}
     </Menubar.Root>
-    <span class="declaration-label" title={`Source declarations; ${inventory?'all registries':'used dependencies'}; visibility filters still apply. This is not live execution.`}>Declared</span>
-    {#if search}<span class="scope-label" title="Search includes hidden items and their parent paths. Relationship visibility settings still apply.">Search results · includes hidden items</span>{:else if graphView==='connections'}<span class="scope-label" title={`Focused on ${scopeLabel}`}>Focus: {scopeLabel}</span>{/if}
-    {#if chosenItems.length}<span class="scope-label" aria-live="polite">{chosenItems.length} selected{chosenNodes.length>chosenSources?` · ${chosenNodes.length} node selections / ${chosenSources} source${chosenSources===1?'':'s'}`:''}{chosenItems.some(item=>item.kind==='node'?!nodes.some(node=>node.id===item.id):!edges.some(edge=>edge.id===item.id))?' · some outside view':''}</span>{/if}
-    <span class="structure-count" aria-live="polite" title={graphView==='connections' && !search?'Nearby items after visibility settings':'All declared items; visibility settings, collapsed groups and compact text may hide some'}>{nodes.length < availableItems ? `${nodes.length} of ${availableItems}` : nodes.length} items</span>
-    <button type="button" class="inspection-toggle" aria-label={inspectionLabel==='Inspect'?'Inspect structure':'Selection panel'} aria-expanded={onInspect ? inspectionExpanded : inspectionOpen} aria-controls={onInspect ? undefined : 'structure-inspection'} bind:this={inspectionButton} onclick={() => { if (onInspect && inspectionExpanded && onCloseInspect) onCloseInspect(); else if (onInspect) onInspect(inspectedId, 'properties'); else if (inspectionOpen) closeInspection(); else openInspection(inspected ? 'properties' : 'find'); }}>{inspectionLabel}</button>
+    <span class="structure-count" aria-live="polite" title={`${toolbarStatus}. Source declarations, not live execution. Visibility settings apply.${searching?' Search includes hidden text and ancestor paths. Clear search to return to the previous view.':''}${chosenItems.length?` ${chosenItems.length} selected; ${chosenSources} distinct node sources.${selectionOutside?' Some selected items are outside this view.':''}`:''}`}>
+      {toolbarStatus}{#if chosenItems.length} · {chosenItems.length} selected{#if selectionOutside} (outside view){/if}{/if}
+    </span>
+    <div class="structure-quick-tools" role="group" aria-label="Structure quick actions">
+      <button type="button" class="workspace-icon-button" aria-label="Fit all" title="Fit all displayed items" disabled={!nodes.length} onclick={()=>locate()}><WorkspaceToolIcon name="fit-all"/></button>
+      <button type="button" class="workspace-icon-button" aria-label="Fit selection" title="Fit selection — camera only" disabled={!framingIds.length} onclick={()=>locate(framingIds)}><WorkspaceToolIcon name="fit-selection"/></button>
+      <span class="tool-divider" aria-hidden="true"></span>
+      <button type="button" class="workspace-icon-button" aria-label="Arrange nodes" title="Arrange displayed nodes" disabled={!nodes.length||!!layoutStatus} onclick={()=>layoutVersion++}><WorkspaceToolIcon name="arrange"/></button>
+    </div>
   </div>
-  {#if graphView==='connections' && !search}
+  {#if graphView==='connections' && !searching && (otherUsers>0 || availableConnections>connectionLimit)}
     <div class="structure-scope-actions" aria-label="Connection scope">
-      {#if chosenItems.length && (visibleChosen.length<chosenItems.length || !selectionFocus.length)}<button type="button" disabled={blocked} onclick={focusChosen}>Focus on selection</button>{/if}
-      {#if otherUsers>0}<button type="button" aria-pressed={showOtherUsers} onclick={()=>{showOtherUsers=!showOtherUsers;connectionLimit=25;}}>{showOtherUsers?'Hide other users':`Other users (${otherUsers})`}</button>{/if}
+      {#if otherUsers>0}<button type="button" aria-pressed={showOtherUsers} onclick={()=>{showOtherUsers=!showOtherUsers;connectionLimit=25;}}>{showOtherUsers?'Hide other connected objects':`Other connected objects (${otherUsers})`}</button>{/if}
       {#if availableConnections>connectionLimit}<button type="button" onclick={()=>connectionLimit+=24}>Show {Math.min(24,availableConnections-connectionLimit)} more</button>{/if}
     </div>
   {/if}
+  {#if allowMoves && !utilityOpen}<div class="structure-scope-actions" aria-label="Move inside"><span>Connect content to a container.</span><button type="button" onclick={()=>openInspection('move')}>Choose container</button><button type="button" onclick={()=>closeInspection()}>Cancel move</button></div>{/if}
   <div class="structure-body">
-    <div class="structure-canvas" onfocusin={focusConnection} onfocusout={()=>{focusedEdges=[];}} inert={presentation === 'drawer' && inspectionOpen}>
+    <div class="structure-canvas" onfocusin={focusConnection} onfocusout={()=>{focusedEdges=[];}} inert={presentation === 'drawer' && inspectionOpen && !utilityOpen}>
       <FlowCanvas bind:nodes bind:edges bind:viewport {nodeTypes} {edgeTypes} minZoom={.35} maxZoom={2} colorMode="light" showControls={false} showMiniMap={nodes.length > 12}
         nodesConnectable={allowMoves && !blocked} elementsSelectable={!blocked} deleteKey={null} multiSelectionKey={null} selectionKey={null} autoPanOnNodeFocus={false} isValidConnection={valid}
         onnodeclick={({ node,event }) => select(node as Node<StructureNodeData>,event)}
@@ -421,38 +449,25 @@
         onnodedragstart={() => fence.cancel()}
         onconnectstart={() => { connectionStart = { documentId: document.id, revision }; }}
         onclickconnectstart={() => { connectionStart = { documentId: document.id, revision }; }} onconnect={connect}>
-        <Controls showLock={false} />
+        <Controls showLock={false} showFitView={false} />
         <FlowNavigation request={navigationRequest} ids={navigationIds} />
       </FlowCanvas>
-      {#if graphView==='connections' && !search && connectionGraph.edges.length===0}<p class="connection-empty">{rawConnections ? 'Connections are hidden by visibility settings or collapsed groups.' : 'This item has no declared connections.'}</p>{/if}
+      {#if graphView==='connections' && !searching && connectionGraph.edges.length===0}<p class="connection-empty">{rawConnections ? 'Connections are hidden by visibility settings or collapsed groups.' : 'This item has no declared connections.'}</p>{/if}
       {#if layoutStatus}<p class="structure-status" role="status">{layoutStatus}</p>{/if}
       {#if layoutNote && !layoutStatus}<p class="structure-layout-note" role="status">{layoutNote}</p>{/if}
-      {#if viewport.zoom<.65 && !layoutStatus && nodes.length}<div class="structure-scale-hint">Zoom in for easier reading.<button type="button" disabled={!framingIds.length} onclick={()=>locate(framingIds)}>Frame selection</button></div>{/if}
+
       {#if !nodes.length}<div class="structure-empty"><p>No matching items</p><button type="button" onclick={() => { search = ''; focusedId = undefined; }}>Clear search</button></div>{/if}
     </div>
-    {#if inspectionOpen}
+    {#if inspectionOpen && !utilityOpen}
       <aside class="structure-details" id="structure-inspection" aria-label="Structure inspection">
         <div class="inspection-heading"><strong title={inspected?.data.fullLabel ?? inspected?.data.label}>{inspected ? structureNodePresentation(document, inspected.data).label : 'Find source item'}</strong><button type="button" aria-label="Close inspection" onclick={() => closeInspection()}>×</button></div>
-        {#if inspectionPage === 'move'}
-          <div class="structure-moves">
-            <h3>Move inside</h3>
-            <label>Content<select aria-label="Content to move" value={moveSource} onchange={event => { moveSource = event.currentTarget.value; moveTarget = ''; }}><option value="">Choose content</option>{#each moveSources as node (node.id)}<option value={node.id}>{structureNodePresentation(document, node.data).label} · {node.data.sourceId}</option>{/each}</select></label>
-            <label>Container<select aria-label="Move destination" value={moveTarget} onchange={event => moveTarget = event.currentTarget.value}><option value="">Choose container</option>{#each targetOptions as node (node.id)}<option value={node.id}>{structureNodePresentation(document, node.data).label} · {node.data.sourceId}</option>{/each}</select></label>
-            <div class="move-actions"><button type="button" disabled={blocked || !moveSource || !targetOptions.some(node => node.id === moveTarget)} onclick={() => commitMove({ documentId: document.id, revision, source: moveSource, target: moveTarget })}>Move</button><button type="button" onclick={() => { allowMoves = false; inspectionPage = 'properties'; }}>Cancel</button></div>
-            <p class="inspection-hint">Moves content in the document. Undo restores its previous place.</p>
-          </div>
-        {:else}
           <div class="inspection-pages" aria-label="Inspection view">
             <button type="button" aria-pressed={inspectionPage === 'properties'} onclick={() => inspectionPage = 'properties'}>Details</button>
             <button type="button" aria-pressed={inspectionPage === 'relationships'} onclick={() => inspectionPage = 'relationships'}>Relationships</button>
-            <button type="button" aria-pressed={inspectionPage === 'find'} onclick={() => inspectionPage = 'find'}>Find</button>
           </div>
           <div class="inspection-content">
-            {#if inspectionPage === 'find'}
-              <label class="source-finder">Source item<select aria-label="Structure source selection" value={inspectedId ?? ''} onchange={event => { const node = graph.nodes.find(entry => entry.id === event.currentTarget.value); if (node) void reveal(node); }}><option value="">Select an item</option>{#each graph.nodes as node (node.id)}<option value={node.id}>{structureNodePresentation(document, node.data).label} · {node.data.sourceId ?? parseStructureId(node.id)?.[2]}</option>{/each}</select></label>
-              <p class="inspection-hint">Includes hidden items and source references.</p>
-            {:else if !inspected}
-              <p class="inspection-hint">Select an item on the graph, or use Find.</p>
+            {#if !inspected}
+              <p class="inspection-hint">Select an item on the graph.</p>
             {:else if inspectionPage === 'properties'}
               <div class="inspection-identity"><span>{inspected.data.kindLabel ?? inspected.data.kind}</span><code>{inspected.data.sourceId ?? parseStructureId(inspected.id)?.[2]}</code></div>
               {#if inspected.data.occurrence}<button class="edit-handoff" type="button" disabled={blocked} onclick={() => navigate('inspector')}>Edit on canvas</button>{/if}
@@ -464,15 +479,29 @@
               {#if !related.length}<p class="inspection-hint">No declared relationships.</p>{:else}<button type="button" onclick={() => { if (inspected) void reveal(inspected); }}>Show on graph</button>{/if}
             {/if}
           </div>
-        {/if}
       </aside>
     {/if}
   </div>
+
+  <dialog class="structure-utility" bind:this={utilityDialog} aria-label={inspectionPage==='move'?'Move inside':'Find source item'} oncancel={event=>{event.preventDefault();closeInspection();}} onclose={()=>{if(utilityOpen&&!utilityDialog.open)closeInspection();}}>
+    <header><span>{inspectionPage==='move'?'Move inside':'Find source item'}</span><button type="button" aria-label="Close source tool" onclick={()=>closeInspection()}>×</button></header>
+    {#if inspectionPage==='move'}
+          <div class="structure-moves">
+            <h3>Move inside</h3>
+            <label>Content<select aria-label="Content to move" value={moveSource} onchange={event => { moveSource = event.currentTarget.value; moveTarget = ''; }}><option value="">Choose content</option>{#each moveSources as node (node.id)}<option value={node.id}>{structureNodePresentation(document, node.data).label} · {node.data.sourceId}</option>{/each}</select></label>
+            <label>Container<select aria-label="Move destination" value={moveTarget} onchange={event => moveTarget = event.currentTarget.value}><option value="">Choose container</option>{#each targetOptions as node (node.id)}<option value={node.id}>{structureNodePresentation(document, node.data).label} · {node.data.sourceId}</option>{/each}</select></label>
+            <div class="move-actions"><button type="button" disabled={blocked || !moveSource || !targetOptions.some(node => node.id === moveTarget)} onclick={() => commitMove({ documentId: document.id, revision, source: moveSource, target: moveTarget })}>Move</button><button type="button" onclick={() => closeInspection()}>Cancel</button></div>
+            <button type="button" disabled={blocked} onclick={()=>{inspectionOpen=false;}}>Choose on graph</button>
+            <p class="inspection-hint">Moves content in the document. Undo restores its previous place.</p>
+          </div>
+
+    {:else}
+      <label class="source-finder">Source item<select aria-label="Structure source selection" disabled={blocked} value={inspectedId ?? ''} onchange={event=>{const node=graph.nodes.find(entry=>entry.id===event.currentTarget.value);if(node&&!blocked){closeInspection(false);void reveal(node).then(()=>onInspect?.(node.id,'properties'));}}}><option value="">Select an item</option>{#each graph.nodes as node (node.id)}<option value={node.id}>{structureNodePresentation(document,node.data).label} · {node.data.sourceId ?? parseStructureId(node.id)?.[2]}</option>{/each}</select></label>
+    {/if}
+  </dialog>
 </section>
 
 <style>
-  .declaration-label{font:var(--studio-font-meta);color:var(--vict-color-textMuted)}
-  .scope-label { max-width:220px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   .structure-scope-actions { display:flex; align-items:center; gap:8px; padding:0 10px; flex-wrap:wrap; }
   .structure-scope-actions:has(button) { padding-top:4px; padding-bottom:4px; border-bottom:1px solid var(--vict-color-border); }
   .structure-scope-actions button { background:transparent; border:1px solid var(--vict-color-border); border-radius:4px; padding:3px 7px; font:inherit; color:var(--vict-color-textMuted); cursor:pointer; }
@@ -492,12 +521,20 @@
   button { cursor: pointer; } button:hover { background: #edf1ff; } button:disabled { opacity: .5; cursor: default; }
   button:focus-visible, select:focus-visible, input:focus-visible { outline: 2px solid #6366f1; outline-offset: 2px; }
   input[type=search] { flex: 1; min-width: 100px; max-width: 340px; }
-  .structure-count { margin-left: auto; color: #65748d; white-space: nowrap; }
-  .inspection-toggle { background: transparent; border-color: transparent; } .inspection-toggle[aria-expanded=true] { color: #405abd; background: #edf1ff; }
-  .scope-label{font-size:11px;color:var(--vict-color-textMuted);white-space:nowrap}.connection-empty{position:absolute;bottom:8px;left:52px;right:10px;margin:0;font-size:11px;color:var(--vict-color-textMuted);pointer-events:none}
+  .structure-count { margin-left:auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--vict-color-textMuted);font:var(--studio-font-meta); }
+  .structure-quick-tools{display:flex;align-items:center;gap:2px;flex-shrink:0;margin-left:auto}
+  .tool-divider{height:14px;border-left:1px solid var(--vict-color-border);margin:0 4px}
+  .structure-utility{width:min(380px,calc(100vw - 32px));max-height:80dvh;overflow:auto;margin:auto;padding:12px;border:1px solid var(--vict-color-border);border-radius:6px;background:var(--vict-color-surface);color:var(--vict-color-text);font:var(--studio-font-ui)}
+  .structure-utility::backdrop{background:#25334f20}
+  .structure-utility header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+  .structure-utility header button{border:0;background:transparent;padding:2px 6px}
+  .structure-utility .structure-moves{padding:0}
+  .structure-utility .structure-moves h3{display:none}
+  .source-finder{display:flex;flex-direction:column;gap:6px}
+
+  .connection-empty{position:absolute;bottom:8px;left:52px;right:10px;margin:0;font-size:11px;color:var(--vict-color-textMuted);pointer-events:none}
   .structure-body { display: flex; flex: 1; min-height: 0; overflow: hidden; }
   .structure-canvas { position: relative; flex: 1; min-width: 0; min-height: 0; }
-  .structure-scale-hint{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:8px;background:var(--vict-color-surface);padding:4px 8px;border:1px solid var(--vict-color-border);border-radius:5px;font:var(--studio-font-meta);white-space:nowrap;max-width:calc(100% - 110px)}.structure-scale-hint button{font:inherit;padding:2px 4px}
   .structure-canvas :global(.svelte-flow) { --xy-background-color: #f8fafc; --xy-minimap-background-color: #fff; --xy-controls-button-background-color: #fff; }
   .structure-canvas :global(.svelte-flow__minimap) { width: 110px; height: 72px; }
   .structure-canvas :global(.svelte-flow__edge.selected .svelte-flow__edge-path) { stroke-width: 2.5px; }

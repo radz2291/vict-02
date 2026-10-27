@@ -587,6 +587,12 @@ export function connectedSelectionStructure(graph:StructureGraph,ids:readonly st
 }
 
 /** Collapse and layers are view projections. They do not alter canonical ownership. */
+/** Shared by projection and toolbar: counts exact matches, never their context. */
+export function structureMatches(node: Node<StructureNodeData>, search: string): boolean {
+  const query=search.trim().toLowerCase();
+  return !!query && `${node.data.fullLabel ?? node.data.label} ${node.data.kindLabel} ${node.data.summary} ${node.data.sourceId ?? parseStructureId(node.id)?.[2]}`.toLowerCase().includes(query);
+}
+
 export function filterStructure(
   graph: StructureGraph,
   options: StructureFilter = {},
@@ -611,11 +617,7 @@ export function filterStructure(
   if (query) {
     visible = new Set(
       graph.nodes
-        .filter((node) =>
-          `${node.data.fullLabel ?? node.data.label} ${node.data.kindLabel} ${node.data.summary} ${node.data.sourceId ?? parseStructureId(node.id)?.[2]}`
-            .toLowerCase()
-            .includes(query),
-        )
+        .filter((node) => structureMatches(node, query))
         .map((node) => node.id),
     );
     // Show the path to each match without expanding the rest of the tree.
@@ -653,7 +655,7 @@ export function filterStructure(
       (edge.data?.kind === 'binding' ? options.bindings : options.definitions),
   );
   // Follow data providers in either direction, never pull in unrelated consumers.
-  if (options.inventory)
+  if (options.inventory && !query)
     for (const node of graph.nodes)
       if (
         node.data.kind !== 'node' &&

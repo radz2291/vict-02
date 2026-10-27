@@ -91,7 +91,7 @@
   let chatOpen = $state(false);
   let chatWidth = $state(280);
   let drawerWidth = $state(320);
-  async function toggleChat(){showPanel('chat',!chatOpen);await tick();(chatOpen?globalThis.document.querySelector<HTMLElement>('.agent-panel textarea'):viewButton)?.focus({preventScroll:true});}
+  async function toggleChat(){showPanel('chat',!chatOpen);await tick();(chatOpen?globalThis.document.querySelector<HTMLElement>('.agent-panel textarea'):workspaceElement?.querySelector<HTMLElement>('.left-drawer-toggle')??viewButton)?.focus({preventScroll:true});}
   type AuxiliaryPanel='chat'|'document'|'testing';
   let availableWidth=$state(0);
   const compactWorkspace=$derived(exclusiveWorkspacePanels(availableWidth,chatWidth,drawerWidth));
@@ -297,7 +297,7 @@
     void tick().then(()=>{const target=workspaceElement?.querySelector<HTMLElement>('#document-drawer [role=tab][data-context=selection]');target?.scrollIntoView({block:'nearest'});target?.focus({preventScroll:true});});
   }
   function closeDetails() { showPanel('document',false); void tick().then(()=>{
-    const target = inspectionReturn?.isConnected && !inspectionReturn.closest('[hidden],[inert]') ? inspectionReturn : workspaceElement?.querySelector<HTMLElement>('.inspection-toggle');
+    const target = inspectionReturn?.isConnected && !inspectionReturn.closest('[hidden],[inert]') ? inspectionReturn : workspaceElement?.querySelector<HTMLElement>('.right-drawer-toggle');
     target?.scrollIntoView({block:'nearest'});target?.focus({ preventScroll:true });
   }); }
   function selectDetail(id:string) {
@@ -367,7 +367,7 @@
     if(event.key==='Escape') {event.preventDefault();event.stopPropagation();renamingScreen=false;void tick().then(()=>renameButton?.focus());}
     if(event.key==='Enter') {event.preventDefault();finishRename();void tick().then(()=>renameButton?.focus());}
   }
-  function closeDrawer() {showPanel('document',false);void tick().then(()=>viewButton?.focus({preventScroll:true}));}
+  function closeDrawer() {showPanel('document',false);void tick().then(()=>(workspaceElement?.querySelector<HTMLElement>('.right-drawer-toggle')??viewButton)?.focus({preventScroll:true}));}
   function documentKeys(event: KeyboardEvent) {
     if(event.key==='Escape' && !event.defaultPrevented){event.preventDefault();event.stopPropagation();closeDrawer();return;}
 
@@ -685,7 +685,7 @@
   <div class="design-workspace" bind:this={workspaceElement} bind:clientWidth={workspaceWidth} class:drawer-open={rightOpen} class:has-object-tools={mode === 'design' && !!selectedNode && paletteRequested} style:--drawer-width={`${effectiveDrawerWidth}px`}>
     <WorkspaceContextMenu scope={workspaceElement} enabled={workspaceView === 'design'} resolve={canvasContext} owns={ownsCanvasTarget} />
     <main class="design-stage">
-      <div data-studio-typography class="studio-type-scope canvas-toolbar workspace-tools"><WorkspaceModes view={workspaceView} onChange={changeView}/>{#if compositionFocus && !structureOpen}<div class="composition-back"><CompositionNavigator compact document={source} focus={compositionFocus} descriptors={catalogDescriptors} disabled={textDraftDirty || sourceDraftDirty} onNavigate={navigateComposition} /></div>{/if}{#if activeTest && !structureOpen}<div class="canvas-test-tools"><button type="button" class="test-indicator" aria-label={`Testing: ${activeTest.label}`} onclick={()=>void openTesting()}>Testing: {activeTest.label}</button><button type="button" title="Return to starting values and clear simulated failures" onclick={resetRuntime}>Reset test</button></div>{/if}</div>
+      <div data-studio-typography class="studio-type-scope canvas-toolbar workspace-tools"><WorkspaceModes view={workspaceView} onChange={changeView} leftOpen={chatOpen} rightOpen={drawerOpen && !testingOpen} onToggleLeft={()=>void toggleChat()} onToggleRight={()=>void toggleDocument()}/>{#if compositionFocus && !structureOpen}<div class="composition-back"><CompositionNavigator compact document={source} focus={compositionFocus} descriptors={catalogDescriptors} disabled={textDraftDirty || sourceDraftDirty} onNavigate={navigateComposition} /></div>{/if}{#if activeTest && !structureOpen}<div class="canvas-test-tools"><button type="button" class="test-indicator" aria-label={`Testing: ${activeTest.label}`} onclick={()=>void openTesting()}>Testing: {activeTest.label}</button><button type="button" title="Return to starting values and clear simulated failures" onclick={resetRuntime}>Reset test</button></div>{/if}</div>
 
 
       <div class="canvas-scroll workspace-scroll" hidden={structureOpen} inert={structureOpen} bind:this={canvasScroll}>

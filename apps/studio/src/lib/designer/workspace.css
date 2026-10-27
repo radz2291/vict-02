@@ -13,6 +13,9 @@
 }
 .workspace-header > * {flex-shrink:0;}
 .workspace-tools {display:flex;justify-content:space-between;align-items:center;gap:6px;height:38px;flex-shrink:0;padding:0 10px;border-bottom:1px solid var(--vict-color-border);font-size:11px;}
+.studio-type-scope .workspace-icon-button {display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;width:28px;height:28px;padding:0;border:0;border-radius:4px;background:transparent;color:var(--vict-color-textMuted);cursor:pointer;}
+.studio-type-scope .workspace-icon-button:hover {background:var(--vict-control-selected);color:var(--vict-color-text);}
+.studio-type-scope .workspace-icon-button:disabled {opacity:.4;cursor:default;}
 .workspace-scroll {overflow:auto;scrollbar-gutter:stable;flex:1;min-height:0;padding:16px 18px 30px;background-image:radial-gradient(#d5dce6 .65px,transparent .65px);background-size:12px 12px;}
 .workspace-screen {
   width:100%;margin:0 auto;position:relative;background:white;
