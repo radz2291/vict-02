@@ -390,28 +390,26 @@
           </Menubar.RadioGroup>
         </WorkspaceSubmenu>
       </WorkspaceMenu>
-      {#if chosenItems.length || inspected}
-        <WorkspaceMenu label="Object" value="structure-object" {activeMenu}>
-          <Menubar.Item disabled={blocked} onSelect={()=>openInspection('properties')}>Inspect</Menubar.Item>
-          <Menubar.Item disabled={blocked} onSelect={() => openInspection('relationships')}>Relationships</Menubar.Item>
-          {#if objectTarget?.data.occurrence}
-            <Menubar.Item disabled={blocked} onSelect={() => navigate('layers')}>Reveal in Layers</Menubar.Item>
-            <Menubar.Item disabled={blocked} onSelect={() => navigate('design')}>{presentation === 'drawer' ? 'Locate on canvas' : 'Show in Design'}</Menubar.Item>
-          {/if}
-          {#if objectTarget?.data.childCount}<Menubar.Separator /><Menubar.Item onSelect={() => {if(objectTarget)collapse(objectTarget.id);}}>{groupClosed(objectTarget.id) ? 'Expand group' : 'Collapse group'}</Menubar.Item>{/if}
-          {#if objectTarget?.data.occurrence}
-            <Menubar.Separator />
-            <Menubar.Item disabled={blocked} onSelect={() => navigate('inspector')}>Edit on canvas</Menubar.Item>
-            <Menubar.Item disabled={blocked || objectTarget.data.sourceId === document.root} onSelect={beginMove}>Move inside…</Menubar.Item>
-            {#each inheritedObjectCommands as command}
-              {#if command.separator}<Menubar.Separator />{/if}
-              <Menubar.Item disabled={blocked || command.disabled} onSelect={()=>command.run()}>{command.label}</Menubar.Item>
-            {/each}
-          {/if}
-          {#if objectTarget?.data.kind === 'state'}<Menubar.Item disabled={blocked} onSelect={() => navigate('data')}>Edit in Data</Menubar.Item>{/if}
-          {#if objectTarget?.data.kind === 'action'}<Menubar.Item disabled={blocked} onSelect={() => navigate('actions')}>Open Actions</Menubar.Item>{/if}
-        </WorkspaceMenu>
-      {/if}
+      <WorkspaceMenu label="Object" value="structure-object" {activeMenu} disabled={!chosenItems.length}>
+        <Menubar.Item disabled={blocked} onSelect={()=>openInspection('properties')}>Inspect</Menubar.Item>
+        <Menubar.Item disabled={blocked} onSelect={() => openInspection('relationships')}>Relationships</Menubar.Item>
+        {#if objectTarget?.data.occurrence}
+          <Menubar.Item disabled={blocked} onSelect={() => navigate('layers')}>Reveal in Layers</Menubar.Item>
+          <Menubar.Item disabled={blocked} onSelect={() => navigate('design')}>{presentation === 'drawer' ? 'Locate on canvas' : 'Show in Design'}</Menubar.Item>
+        {/if}
+        {#if objectTarget?.data.childCount}<Menubar.Separator /><Menubar.Item onSelect={() => {if(objectTarget)collapse(objectTarget.id);}}>{groupClosed(objectTarget.id) ? 'Expand group' : 'Collapse group'}</Menubar.Item>{/if}
+        {#if objectTarget?.data.occurrence}
+          <Menubar.Separator />
+          <Menubar.Item disabled={blocked} onSelect={() => navigate('inspector')}>Edit on canvas</Menubar.Item>
+          <Menubar.Item disabled={blocked || objectTarget.data.sourceId === document.root} onSelect={beginMove}>Move inside…</Menubar.Item>
+          {#each inheritedObjectCommands as command}
+            {#if command.separator}<Menubar.Separator />{/if}
+            <Menubar.Item disabled={blocked || command.disabled} onSelect={()=>command.run()}>{command.label}</Menubar.Item>
+          {/each}
+        {/if}
+        {#if objectTarget?.data.kind === 'state'}<Menubar.Item disabled={blocked} onSelect={() => navigate('data')}>Edit in Data</Menubar.Item>{/if}
+        {#if objectTarget?.data.kind === 'action'}<Menubar.Item disabled={blocked} onSelect={() => navigate('actions')}>Open Actions</Menubar.Item>{/if}
+      </WorkspaceMenu>
     </Menubar.Root>
     <div class="structure-quick-tools" role="group" aria-label="Structure quick actions">
       <button type="button" class="workspace-icon-button" aria-label="Fit all" title="Fit all displayed items" disabled={!nodes.length} onclick={()=>locate()}><WorkspaceToolIcon name="fit-all"/></button>

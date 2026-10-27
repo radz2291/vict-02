@@ -1,8 +1,9 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
   import { Menubar } from '@victframework/ui-svelte/catalog/menubar';
-  let { label, value, activeMenu, trigger=$bindable(null), children }: {
+  let { label, value, activeMenu, disabled=false, trigger=$bindable(null), children }: {
     label:string; value:string; activeMenu:string;
+    disabled?:boolean;
     trigger?:HTMLButtonElement|null; children:Snippet;
   }=$props();
   function restoreFocus(event:Event) {
@@ -12,7 +13,7 @@
   }
 </script>
 <Menubar.Menu {value}>
-  <Menubar.Trigger bind:ref={trigger}>{label}</Menubar.Trigger>
+  <Menubar.Trigger bind:ref={trigger} {disabled}>{label}</Menubar.Trigger>
   <Menubar.Portal><Menubar.Content data-studio-typography class="studio-type-scope workspace-menu" sideOffset={6} collisionPadding={8} onCloseAutoFocus={restoreFocus}>
     {@render children()}
   </Menubar.Content></Menubar.Portal>

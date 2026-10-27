@@ -17,6 +17,16 @@ async function item(name:string){control(name).click();await settle();}
 async function closeMenu(){document.querySelector<HTMLElement>('[role=menu]')?.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true,cancelable:true}));await settle();}
 function nodes(){return [...document.querySelectorAll<HTMLElement>('.svelte-flow__node')].map(node=>node.dataset.id);}
 async function start(extra:Record<string,unknown>={}){const source=clarityFixture();app=mount(StructureView,{target:document.body,props:{document:source,revision:'r1',onSelect:vi.fn(),onMove:vi.fn(()=>false),onNotice:vi.fn(),...extra}});await settle();return source;}
+it('keeps Object mounted but disabled until nodes or connections are selected',async()=>{
+ const source=await start(),object=control('Object') as HTMLButtonElement;
+ expect(object.disabled).toBe(true);object.click();await menu('Object');expect(document.querySelector('[role=menu]')).toBeNull();
+ document.querySelector<HTMLElement>(`[data-id="${structureId(source.id,'node','field-0')}"]`)!.click();await settle();
+ expect(control('Object')).toBe(object);expect(object.disabled).toBe(false);await menu('Object');expect(control('Inspect')).toBeDefined();await closeMenu();
+ document.querySelector<HTMLElement>('.svelte-flow__pane')!.click();await settle();expect(control('Object')).toBe(object);expect(object.disabled).toBe(true);
+ control('Select outgoing Contains connections for Screen').click();await settle();expect(control('Object')).toBe(object);expect(object.disabled).toBe(false);
+ await menu('Object');expect(control('Relationships')).toBeDefined();await closeMenu();
+ document.querySelector<HTMLElement>('.svelte-flow__pane')!.click();await settle();expect(control('Object')).toBe(object);expect(object.disabled).toBe(true);
+});
 it('keeps quick camera actions independent from scope and selection, with one fit-all home',async()=>{
  const source=await start(),before=nodes();expect(control('Fit selection').hasAttribute('disabled')).toBe(true);
  document.querySelector<HTMLElement>(`[data-id="${structureId(source.id,'node','field-0')}"]`)!.click();await settle();
