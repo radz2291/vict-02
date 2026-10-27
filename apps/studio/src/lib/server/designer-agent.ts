@@ -42,12 +42,15 @@ import type { UiDocument } from '@victframework/ui';
 import { createVisualObserver } from './designer-visual.js';
 import { boundedProviderModel, studioProviderModel } from './designer-model.js';
 import { createTurnMetrics, createObservationLedger, createContractKnowledge, readCategory, type ToolFailure, type TurnMetrics } from '$lib/designer/agent-progress.js';
+import { STUDIO_TOOL_EVIDENCE_SCHEMA, type StudioToolEvidence, type EvidenceTool } from '$lib/designer/tool-evidence.js';
+import { createToolEvidenceProducer } from './tool-evidence.js';
 
 /** Server-owned contracts are reinstalled in a fresh registry for each turn.
  * Identity-required pagination is a new host protocol, not an in-place @1 change. */
 export const STUDIO_AGENT_PROTOCOL={readCapabilityRevision:'2',readInputRevision:'3',instructionsRevision:'3',profileRevision:'2'} as const;
 
 export type StudioAgentEvent =
+  | StudioToolEvidence
   | { type: 'tool-event'; id: string; sequence: number; elapsedMs?: number; kind: 'tool-start' | 'observation' | 'validation-refused' | 'proposed' | 'committed' | 'tool-failed'; tool: string; callId?: string; summary: string; details?: string }
   | { type: 'schema-diagnostic'; id: string; scope: 'contract-validation'; tool: string; evaluations: number; firstElapsedMs: number; lastElapsedMs: number; details: string }
   | { type: 'capture-request'; captureId: string; cursor: AgentCursor }
@@ -114,6 +117,7 @@ const startSchema = z
       .strict(),
     selection: z.string().max(500).optional(),
     selectionSet: selectionSetSchema.optional(),
+    toolEvidenceSchema: z.literal(STUDIO_TOOL_EVIDENCE_SCHEMA).optional(),
     history: z
       .array(
         z
@@ -287,6 +291,9 @@ async function execute(
   let appearanceObserved=false;
   let lastEditFailure: string | undefined;
   let lastValidation: {ok:false;code:string;message:string;diagnostics?:unknown} | undefined;
+  const evidence = createToolEvidenceProducer(run.runId, start.toolEvidenceSchema === STUDIO_TOOL_EVIDENCE_SCHEMA,
+    event => { if (!run.aborted && !run.fenced) emit(event); },
+    Object.entries(process.env).filter(([key]) => /KEY|TOKEN|PASSWORD|SECRET|CREDENTIAL/i.test(key)).map(([, value]) => value ?? ''));
   let toolSequence = 0;
   const schemaDiagnostics=new Map<string,{id:string;evaluations:number;firstElapsedMs:number}>();
   const schemaDiagnostic=(tool:string,details:unknown)=>{
@@ -596,10 +603,20 @@ async function execute(
         resolveCapability: (id, revision) =>
           capabilities.find((cap) => cap.id === id && cap.revision === revision),
         invoke: async (cap, input, context) => {
-          const result=await cap.invoke(input, context as never);
+          const tool = ({ 'studio.screen.read': 'studio_screen_read', 'studio.screen.edit': 'studio_screen_edit', 'studio.screen.observe': 'studio_screen_observe' } as Record<string, EvidenceTool>)[cap.id];
+          const callId = invocationCallId(context);
+          if (tool) evidence.send(tool, callId, 'input', input);
+          let result: unknown;
+          try { result = await cap.invoke(input, context as never); }
+          catch (error) {
+            if (tool) evidence.send(tool, callId, 'result', undefined, 'failed', 'not-returned');
+            throw error;
+          }
           // Refusals also carry current host measurements; they never count as
           // applied writes or remove the canonical refusal/fresh-context fence.
-          return result&&typeof result==='object'?{...result,turnProgress:measuredProgress()}:result;
+          const delivered = result&&typeof result==='object'?{...result,turnProgress:measuredProgress()}:result;
+          if (tool) evidence.send(tool, callId, 'result', delivered, result && typeof result === 'object' && (result as { ok?: unknown }).ok === false ? 'refused' : 'completed');
+          return delivered;
         },
         recordInvocationIntent: (input) =>
           composition!.turnService.recordToolInvocationIntent(input),
@@ -654,6 +671,10 @@ async function execute(
         // Successful capability bodies clear their own refusal boundary. A completed
         // transport with {ok:false} is still an unresolved read/observation.
         if (event.kind === 'tool.failed') {
+          if (['studio_screen_read', 'studio_screen_edit', 'studio_screen_observe'].includes(event.toolName)) {
+            evidence.send(event.toolName as EvidenceTool, event.toolCallId, 'input', undefined, undefined, 'before-invocation');
+            evidence.send(event.toolName as EvidenceTool, event.toolCallId, 'result', undefined, 'failed', 'not-returned');
+          }
           unresolvedTools.add(event.toolName);
           trace('tool-failed',event.toolName,`Tool failed (${event.code}); prior commits remain`,{code:event.code},event.toolCallId);
           emit({
@@ -727,6 +748,7 @@ async function execute(
       ...progressBoundary(),
     });
   } finally {
+    evidence.close();
     run.controller.signal.removeEventListener('abort', providerFailed);
     if (timeout) clearTimeout(timeout);
     run.pending?.resolve(failure('STUDIO_AGENT_STOPPED', 'The agent stopped.'));
