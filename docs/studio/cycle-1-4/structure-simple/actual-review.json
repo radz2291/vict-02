@@ -1,0 +1,149 @@
+{
+  "candidate": "d264084b280b826617b006b1f72feb1f8bd5551a",
+  "geometry": {
+    "canvas": {
+      "bottom": 695.2000045776367,
+      "height": 568,
+      "left": 0,
+      "right": 1280,
+      "top": 127.20000457763672,
+      "width": 1280,
+      "x": 0,
+      "y": 127.20000457763672
+    },
+    "search": {
+      "bottom": 120.40000343322754,
+      "height": 31.600000381469727,
+      "left": 10,
+      "right": 210,
+      "top": 88.80000305175781,
+      "width": 200,
+      "x": 10,
+      "y": 88.80000305175781
+    },
+    "status": {
+      "bottom": 151.1999969482422,
+      "height": 16,
+      "left": 10,
+      "right": 148.5749969482422,
+      "top": 135.1999969482422,
+      "width": 138.5749969482422,
+      "x": 10,
+      "y": 135.1999969482422
+    },
+    "statusInToolbar": false,
+    "statusParent": "structure-canvas svelte-17c90px",
+    "statusStyle": {
+      "background": "rgba(0, 0, 0, 0)",
+      "font": "11px / 16px system-ui, \"Segoe UI\", sans-serif",
+      "pointerEvents": "none"
+    }
+  },
+  "commands": [
+    {
+      "disabled": "false",
+      "label": "Inspect"
+    },
+    {
+      "disabled": "false",
+      "label": "Relationships"
+    },
+    {
+      "disabled": "false",
+      "label": "Reveal in Layers"
+    },
+    {
+      "disabled": "false",
+      "label": "Locate on canvas"
+    },
+    {
+      "disabled": "false",
+      "label": "Edit on canvas"
+    },
+    {
+      "disabled": "false",
+      "label": "Move inside…"
+    },
+    {
+      "disabled": "false",
+      "label": "Duplicate"
+    },
+    {
+      "disabled": "false",
+      "label": "Delete"
+    },
+    {
+      "disabled": "false",
+      "label": "Move earlier"
+    },
+    {
+      "disabled": "false",
+      "label": "Move later"
+    },
+    {
+      "disabled": "false",
+      "label": "Arrange on canvas…"
+    }
+  ],
+  "multiBefore": {
+    "selected": [
+      "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbEmailInput%22%5D",
+      "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22state%22%2C%22workEmail%22%5D"
+    ],
+    "status": "Work email · 5 shown · 2 selected"
+  },
+  "multiAfter": {
+    "customMenu": false,
+    "selected": [],
+    "status": "Work email · 5 shown"
+  },
+  "rightClickOnlyBefore": {
+    "selected": [
+      "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbEmailInput%22%5D",
+      "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22state%22%2C%22workEmail%22%5D"
+    ],
+    "status": "Work email · 5 shown · 2 selected"
+  },
+  "rightClickOnlyAfter": {
+    "customMenu": false,
+    "selected": [
+      "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbEmailInput%22%5D",
+      "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22state%22%2C%22workEmail%22%5D"
+    ],
+    "status": "Work email · 5 shown · 2 selected"
+  },
+  "aggregateCommands": [
+    "Inspect",
+    "Relationships"
+  ],
+  "pointBefore": {
+    "selectedPoints": [
+      "Select outgoing Updates connections for Work email",
+      "Select incoming Updates connections for Work Email"
+    ],
+    "status": "Work email · 5 shown · 1 selected"
+  },
+  "pointAfter": {
+    "customMenu": false,
+    "selectedPoints": [
+      "Select outgoing Updates connections for Work email",
+      "Select incoming Updates connections for Work Email"
+    ],
+    "status": "Work email · 5 shown · 1 selected"
+  },
+  "final": {
+    "notice": "Loaded the saved screen.",
+    "saved": "✓ Saved",
+    "selected": [
+      "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbEmailInput%22%5D"
+    ],
+    "status": "Work email · 5 shown · 1 selected",
+    "toolbar": " View  Object     "
+  },
+  "ownerAfter": {
+    "mode": "Structure",
+    "notice": "Duplicate selection · unsaved",
+    "search": "",
+    "status": "Focus: Row 2 · 4 shown"
+  }
+}
