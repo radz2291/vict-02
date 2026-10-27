@@ -1,0 +1,158 @@
+{
+  "candidate": "8a54a258446814fae841578e42134f4bd06ddf30",
+  "drawerMemory": {
+    "active": "true",
+    "left": "false",
+    "right": "true"
+  },
+  "positionsBeforeSearch": [
+    {
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22screen%22%5D",
+      "position": "width: 224px; z-index: 1000; transform: translate(12px, 12px); visibility: visible; touch-action: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+    },
+    {
+      "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbCard%22%5D",
+      "position": "width: 224px; z-index: 0; transform: translate(322.4px, 12px); visibility: visible; touch-action: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+    }
+  ],
+  "search": {
+    "positions": [
+      {
+        "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22screen%22%5D",
+        "position": "width: 224px; z-index: 1000; transform: translate(12px, 12px); visibility: visible; touch-action: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+      },
+      {
+        "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbCard%22%5D",
+        "position": "width: 224px; z-index: 0; transform: translate(322.4px, 12px); visibility: visible; touch-action: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+      },
+      {
+        "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbEmailLabel%22%5D",
+        "position": "width: 224px; z-index: 0; transform: translate(632.8px, 24px); visibility: visible; touch-action: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+      },
+      {
+        "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbEmailLabel-text%22%5D",
+        "position": "width: 224px; z-index: 0; transform: translate(943.2px, 24px); visibility: visible; touch-action: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+      },
+      {
+        "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbEmailInput%22%5D",
+        "position": "width: 224px; z-index: 0; transform: translate(632.8px, 170px); visibility: visible; touch-action: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+      },
+      {
+        "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22state%22%2C%22workEmail%22%5D",
+        "position": "width: 224px; z-index: 0; transform: translate(322.4px, 182px); visibility: visible; touch-action: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+      },
+      {
+        "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22style%22%2C%22src.onbEmailInput.always.focus%22%5D",
+        "position": "width: 224px; z-index: 0; transform: translate(322.4px, 376px); visibility: visible; touch-action: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+      },
+      {
+        "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22style%22%2C%22src.onbEmailInput.always.plain%22%5D",
+        "position": "width: 224px; z-index: 0; transform: translate(322.4px, 522px); visibility: visible; touch-action: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+      }
+    ],
+    "status": "Search · 6 matches · 8 shown· 1 selected"
+  },
+  "afterSearch": {
+    "positions": [
+      {
+        "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22screen%22%5D",
+        "position": "width: 224px; z-index: 1000; transform: translate(12px, 12px); visibility: visible; touch-action: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+      },
+      {
+        "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbCard%22%5D",
+        "position": "width: 224px; z-index: 0; transform: translate(322.4px, 12px); visibility: visible; touch-action: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+      }
+    ],
+    "status": "Focus: Screen · 2 shown· 1 selected"
+  },
+  "finder": {
+    "dialogOpen": false,
+    "duplicateInspector": false,
+    "identity": " Text  Work email Text inside Label · Work email ",
+    "selected": "true",
+    "status": "Focus: Work email · 2 shown· 1 selected"
+  },
+  "geometry": {
+    "bar": {
+      "bottom": 82,
+      "height": 38,
+      "left": 370,
+      "right": 949,
+      "top": 44,
+      "width": 579,
+      "x": 370,
+      "y": 44
+    },
+    "left": {
+      "bottom": 77,
+      "height": 28,
+      "left": 370,
+      "right": 398,
+      "top": 49,
+      "width": 28,
+      "x": 370,
+      "y": 49
+    },
+    "modes": {
+      "bottom": 79,
+      "height": 32,
+      "left": 568.2750244140625,
+      "right": 750.7125244140625,
+      "top": 47,
+      "width": 182.4375,
+      "x": 568.2750244140625,
+      "y": 47
+    },
+    "right": {
+      "bottom": 77,
+      "height": 28,
+      "left": 921,
+      "right": 949,
+      "top": 49,
+      "width": 28,
+      "x": 921,
+      "y": 49
+    },
+    "toolbar": {
+      "bottom": 127.20000457763672,
+      "height": 44.400001525878906,
+      "left": 360,
+      "right": 959,
+      "top": 82.80000305175781,
+      "width": 599,
+      "x": 360,
+      "y": 82.80000305175781
+    },
+    "toolbarScroll": 599,
+    "viewport": {
+      "height": 720,
+      "width": 1280
+    }
+  },
+  "source": {
+    "applyDisabled": true,
+    "id": "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b",
+    "revision": "r1.r1"
+  },
+  "final": {
+    "buttons": [
+      {
+        "disabled": false,
+        "name": "Fit all"
+      },
+      {
+        "disabled": false,
+        "name": "Fit selection"
+      },
+      {
+        "disabled": false,
+        "name": "Arrange nodes"
+      }
+    ],
+    "selectedNodes": [
+      "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbEmailLabel-text%22%5D"
+    ],
+    "sourceApplyDisabled": true,
+    "status": "Search · 6 matches · 8 shown· 1 selected"
+  }
+}

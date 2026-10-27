@@ -1,0 +1,445 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/studio-cycle14-selection-panel/260831-VCT-02/apps/studio
+
+2:05:23 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle14-selection-panel/260831-VCT-02/packages/ui-svelte/src/document/DocumentHost.svelte:105:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+2:05:23 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle14-selection-panel/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:309:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+2:05:23 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle14-selection-panel/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:309:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+2:05:23 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle14-selection-panel/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:379:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+2:05:23 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle14-selection-panel/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:379:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+stderr | tests/ui/structure-clarity.test.ts > separates inspect, explicit focus and camera-only framing
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure-clarity.test.ts > separates inspect, explicit focus and camera-only framing
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure-clarity.test.ts > separates inspect, explicit focus and camera-only framing
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure-clarity.test.ts > separates inspect, explicit focus and camera-only framing
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure-clarity.test.ts > separates inspect, explicit focus and camera-only framing
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure-clarity.test.ts > separates inspect, explicit focus and camera-only framing
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure-clarity.test.ts > separates inspect, explicit focus and camera-only framing
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure-clarity.test.ts > separates inspect, explicit focus and camera-only framing
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure-clarity.test.ts > separates inspect, explicit focus and camera-only framing
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure-clarity.test.ts > separates inspect, explicit focus and camera-only framing
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure-clarity.test.ts > honours collapse in both views and text visibility in a focused heading
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure-clarity.test.ts > honours collapse in both views and text visibility in a focused heading
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure-clarity.test.ts > honours collapse in both views and text visibility in a focused heading
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure-clarity.test.ts > honours collapse in both views and text visibility in a focused heading
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure-clarity.test.ts > honours collapse in both views and text visibility in a focused heading
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure-clarity.test.ts > honours collapse in both views and text visibility in a focused heading
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure-clarity.test.ts > honours collapse in both views and text visibility in a focused heading
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure-clarity.test.ts > honours collapse in both views and text visibility in a focused heading
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure-clarity.test.ts > honours collapse in both views and text visibility in a focused heading
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure-clarity.test.ts > honours collapse in both views and text visibility in a focused heading
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure-clarity.test.ts > honours collapse in both views and text visibility in a focused heading
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure-clarity.test.ts > honours collapse in both views and text visibility in a focused heading
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure-clarity.test.ts > honours collapse in both views and text visibility in a focused heading
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+ ✓ tests/ui/structure-clarity.test.ts > separates inspect, explicit focus and camera-only framing 701ms
+stderr | tests/ui/structure-clarity.test.ts > pages large direct connections and resets the batch on explicit focus
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure-clarity.test.ts > pages large direct connections and resets the batch on explicit focus
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+ ✓ tests/ui/structure-clarity.test.ts > honours collapse in both views and text visibility in a focused heading 827ms
+ ✓ tests/ui/structure-clarity.test.ts > pages large direct connections and resets the batch on explicit focus 1019ms
+ ✓ tests/ui/structure-clarity.test.ts > explains declared conditional behaviour and exposes distinct branch meanings in Selection 60ms
+stderr | tests/ui/structure-toolbar.test.ts > keeps quick camera actions independent from scope and selection, with one fit-all home
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure-toolbar.test.ts > counts exact search matches separately from supporting context and returns to the prior scope on Escape
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure-toolbar.test.ts > counts exact search matches separately from supporting context and returns to the prior scope on Escape
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+ ✓ tests/ui/structure-toolbar.test.ts > keeps quick camera actions independent from scope and selection, with one fit-all home 832ms
+stderr | tests/ui/structure-toolbar.test.ts > keeps inventory in hierarchy without changing modes, and checks the active layout direction
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure-toolbar.test.ts > keeps inventory in hierarchy without changing modes, and checks the active layout direction
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure-toolbar.test.ts > keeps inventory in hierarchy without changing modes, and checks the active layout direction
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure-toolbar.test.ts > keeps inventory in hierarchy without changing modes, and checks the active layout direction
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure-toolbar.test.ts > keeps inventory in hierarchy without changing modes, and checks the active layout direction
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure-toolbar.test.ts > keeps inventory in hierarchy without changing modes, and checks the active layout direction
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure-toolbar.test.ts > keeps inventory in hierarchy without changing modes, and checks the active layout direction
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure-toolbar.test.ts > keeps inventory in hierarchy without changing modes, and checks the active layout direction
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure-toolbar.test.ts > keeps inventory in hierarchy without changing modes, and checks the active layout direction
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure-toolbar.test.ts > keeps inventory in hierarchy without changing modes, and checks the active layout direction
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure-toolbar.test.ts > keeps inventory in hierarchy without changing modes, and checks the active layout direction
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure-toolbar.test.ts > keeps inventory in hierarchy without changing modes, and checks the active layout direction
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure-toolbar.test.ts > keeps inventory in hierarchy without changing modes, and checks the active layout direction
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+ ✓ tests/ui/structure-toolbar.test.ts > counts exact search matches separately from supporting context and returns to the prior scope on Escape 478ms
+stderr | tests/ui/structure-toolbar.test.ts > finds exact hidden source items through the shared Selection handoff without opening a second inspector
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+ ✓ tests/ui/structure-toolbar.test.ts > keeps inventory in hierarchy without changing modes, and checks the active layout direction 1040ms
+stderr | tests/ui/structure-toolbar.test.ts > preserves draft refusal when finding an item
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+ ✓ tests/ui/structure-toolbar.test.ts > finds exact hidden source items through the shared Selection handoff without opening a second inspector 306ms
+ ✓ tests/ui/structure-toolbar.test.ts > preserves draft refusal when finding an item 235ms
+AggregateError: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1712:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 3000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 3000
+    }
+  ]
+}
+ ✓ tests/ui/structure-toolbar.test.ts > uses stable mode-bar drawer controls across modes and remembers the right drawer tab and drafts 971ms
+stderr | tests/ui/structure-workspace.test.ts > makes Structure the third primary view, with one visible work surface and no View-menu or bottom-dock launcher
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure-workspace.test.ts > makes Structure the third primary view, with one visible work surface and no View-menu or bottom-dock launcher
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+ ✓ tests/ui/structure-workspace.test.ts > makes Structure the third primary view, with one visible work surface and no View-menu or bottom-dock launcher 1384ms
+ ✓ tests/ui/structure-workspace.test.ts > does not restart Interact values or mutate saved source when visiting Structure 576ms
+stderr | tests/ui/structure-workspace.test.ts > retains and protects a pending Source draft while visiting Structure and returning to its canvas mode
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure-workspace.test.ts > retains and protects a pending Source draft while visiting Structure and returning to its canvas mode
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+ ✓ tests/ui/structure-workspace.test.ts > retains a pending floating text draft through Structure and restores the same editor on returning to Design 741ms
+ ✓ tests/ui/structure-workspace.test.ts > retains and protects a pending Source draft while visiting Structure and returning to its canvas mode 645ms
+AggregateError: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1712:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 3000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 3000
+    }
+  ]
+}
+AggregateError: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1712:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 3000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 3000
+    }
+  ]
+}
+AggregateError: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1712:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 3000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 3000
+    }
+  ]
+}
+AggregateError: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1712:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 3000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 3000
+    }
+  ]
+}
+AggregateError: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1712:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 3000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 3000
+    }
+  ]
+}
+ ✓ tests/ui/structure-workspace.test.ts > keeps retained floating-tool shortcuts from claiming Structure keyboard focus or Escape 649ms
+ ✓ tests/ui/selection-stories.test.ts > gives multiple nodes separate object stories and represents shared selected-node connections once 28ms
+ ✓ tests/ui/selection-stories.test.ts > tells the read and update story from the input perspective for selected edges without adding other declarations 159ms
+ ✓ tests/ui/selection-stories.test.ts > distinguishes selected connections from node context without duplicating a declaration in a mixed selection 45ms
+ ✓ tests/ui/selection-stories.test.ts > keeps owner/origin/reference distinctions and honest totals when paging a large multi-node selection 7ms
+ ✓ tests/ui/selection-stories.test.ts > keeps connection stories in Relationships with exact technical provenance 72ms
+ ✓ tests/ui/selection-stories.test.ts > explains source-shared repeat relationships and respects blocked relationship controls 30ms
+ ✓ tests/ui/shared-identities.test.ts > uses one source icon in Layers, Structure and Selection without merging Heading and Text identities 208ms
+ ✓ tests/ui/shared-identities.test.ts > classifies authored controls and structural kinds without name or ID suffix heuristics 3ms
+ ✓ tests/ui/shared-identities.test.ts > places metadata under the name in the shared identity without making it part of the icon row 5ms
+ ✓ tests/structure-connection-trace.test.ts > routes a backward connection outside tall endpoint cards and nearby blockers 35ms
+2:06:43 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle14-selection-panel/260831-VCT-02/packages/ui-svelte/src/document/DocumentHost.svelte:105:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+2:06:43 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle14-selection-panel/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:309:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+2:06:43 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle14-selection-panel/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:309:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+2:06:43 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle14-selection-panel/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:379:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+2:06:43 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle14-selection-panel/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:379:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+ ✓ tests/structure-connections.test.ts > shows direct input data without automatically adding other consumers 26ms
+ ✓ tests/structure-connections.test.ts > shows direct container children without expanding their actions or unrelated siblings 7ms
+ ✓ tests/structure-connections.test.ts > keeps a static item connected to its declared parent and rejects an unknown selection 7ms
+ ✓ tests/structure-placement.test.ts > retains existing world positions and places new cards without overlap (RIGHT) 9ms
+ ✓ tests/structure-placement.test.ts > retains existing world positions and places new cards without overlap (DOWN) 1ms
+ ✓ tests/structure-placement.test.ts > restores a hidden node to its previous location when it returns 1ms
+
+ Test Files  8 passed (8)
+      Tests  31 passed (31)
+   Start at  14:05:04
+   Duration  114.48s (transform 53.22s, setup 0ms, import 88.35s, tests 11.14s, environment 7.57s)
+

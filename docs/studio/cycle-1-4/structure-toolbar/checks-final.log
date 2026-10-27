@@ -1,0 +1,185 @@
+npm warn Unknown cli config "--maxWorkers". This will stop working in the next major version of npm.
+npm warn Unknown cli config "--reporter". This will stop working in the next major version of npm.
+
+> vict-studio@0.1.0 test
+> vitest run tests/ui/structure-toolbar.test.ts tests/ui/structure-clarity.test.ts tests/ui/structure-workspace.test.ts tests/structure-placement.test.ts tests/structure-connections.test.ts tests/structure-connection-trace.test.ts tests/ui/selection-stories.test.ts tests/ui/shared-identities.test.ts
+
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/studio-cycle14-selection-panel/260831-VCT-02/apps/studio
+
+2:04:39 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle14-selection-panel/260831-VCT-02/packages/ui-svelte/src/document/DocumentHost.svelte:105:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+2:04:39 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle14-selection-panel/260831-VCT-02/packages/ui-svelte/src/document/DocumentHost.svelte:105:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+2:04:39 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle14-selection-panel/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:309:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+2:04:39 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle14-selection-panel/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:309:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+2:04:39 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle14-selection-panel/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:379:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+2:04:39 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle14-selection-panel/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:379:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+2:04:40 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle14-selection-panel/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:309:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+2:04:40 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle14-selection-panel/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:309:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+2:04:40 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle14-selection-panel/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:379:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+2:04:40 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle14-selection-panel/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:379:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+AggregateError: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1712:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 3000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 3000
+    }
+  ]
+}
+AggregateError: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1712:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 3000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 3000
+    }
+  ]
+}
+AggregateError: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1712:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 3000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 3000
+    }
+  ]
+}
+AggregateError: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1712:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 3000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 3000
+    }
+  ]
+}
+AggregateError: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1712:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 3000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 3000
+    }
+  ]
+}
+AggregateError: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1712:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 3000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 3000
+    }
+  ]
+}
+
+ Test Files  8 passed (8)
+      Tests  31 passed (31)
+   Start at  14:04:12
+   Duration  56.24s (transform 166.39s, setup 0ms, import 254.36s, tests 13.28s, environment 12.22s)
+
