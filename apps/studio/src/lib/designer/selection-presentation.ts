@@ -1,5 +1,5 @@
 import type {UiDocument} from '@victframework/ui';
-import {resolveOccurrence} from '@victframework/ui-editor';
+import {resolveOccurrence,compositionParent} from '@victframework/ui-editor';
 import {parseStructureId,structureId,structureNodePresentation,type StructureGraph,type StructureContext} from './structure.js';
 import type {WorkspaceItem} from './workspace-selection.js';
 import {structureBehavior} from './structure-behavior.js';
@@ -19,7 +19,12 @@ export function selectionIdentity(document:UiDocument,graph:StructureGraph,item:
  }
  const scope=[...new Set(path)].join(' · ');
  const availability=item.kind==='node'&&item.occurrence&&rendered&&!rendered.includes(item.occurrence)?'Not currently rendered':item.kind==='node'&&!item.occurrence&&node?.data.kind==='node'?'Source declaration':undefined;
- return {name,type,scope,availability,qualified:[type,name,scope].filter(Boolean).join(' · ')};
+ let textLocation:string|undefined;
+ if(node?.data.sourceId&&document.nodes[node.data.sourceId]?.kind==='text'){
+  const parent=compositionParent(document,node.data.sourceId),owner=parent?graph.nodes.find(node=>node.data.sourceId===parent.nodeId):undefined;
+  if(parent&&document.nodes[parent.nodeId]?.kind==='element'&&owner){const presentation=structureNodePresentation(document,owner.data);textLocation=`Text inside ${presentation.kindLabel??'Element'} · ${presentation.fullLabel??presentation.label}`;}
+ }
+ return {name,type,scope,availability,textLocation,qualified:[type,name,scope].filter(Boolean).join(' · ')};
 }
 export function sourceOverview(document:UiDocument,graph:StructureGraph,id:string,context:StructureContext={}){
  const selected=graph.nodes.find(node=>node.id===id);if(!selected)return [];

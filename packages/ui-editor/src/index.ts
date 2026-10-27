@@ -71,3 +71,5 @@ export { defineStyleSource, attachStyleSource, detachStyleSource, removeStyleSou
 
 export {selectionOperation, occurrenceRange} from './selection-intent.js';
 export type {SelectionOperation, OccurrenceSelectionIntent} from './selection-intent.js';
+
+export {canvasSelectionTarget} from './canvas-selection-target.js';

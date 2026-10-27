@@ -9,6 +9,7 @@
    */
   import { tick, untrack, type Snippet } from 'svelte';
   import FloatingSelection from './FloatingSelection.svelte';
+  import {canvasSelectionTarget} from './canvas-selection-target.js';
   import {selectionOperation,type OccurrenceSelectionIntent} from './selection-intent.js';
   import { literalTextTarget, editLiteralText } from './selection-tools.js';
   import { resolveOccurrence } from './occurrence.js';
@@ -64,6 +65,10 @@
     readonly record?: Readonly<Record<string, unknown>>;
     readonly selectedOccurrence?: string;
     readonly selectedOccurrences?: readonly string[];
+    /** Opt-in visual container marker for exact text selections; does not change selection identity. */
+    readonly textSelectionContainerHighlight?:boolean;
+    /** Host visibility changes can refresh a visual marker after the canvas is revealed. */
+    readonly selectionHighlightSignal?:unknown;
     readonly onSelectionIntent?: (intent:OccurrenceSelectionIntent)=>void;
     readonly onClearSelection?: ()=>void;
     /** Mounted occurrences owned by this canvas, including portals; no source mutation. */
@@ -106,7 +111,7 @@
     view = {},
     record = {},
     selectedOccurrence,
-    selectedOccurrences, onSelectionIntent, onClearSelection, onOccurrencesChange,
+    selectedOccurrences, textSelectionContainerHighlight=false, selectionHighlightSignal, onSelectionIntent, onClearSelection, onOccurrencesChange,
     onSelect,
     dispatch,
     navigate,
@@ -232,6 +237,7 @@
   let publishedOccurrences='';
   $effect(() => {
     const occurrences = selectionOccurrences;
+    void selectionHighlightSignal;
     void compiled;
     let cancelled = false;
     let observer: MutationObserver | undefined;
@@ -249,9 +255,11 @@
       const membership=[...new Set(targets.map(element=>element.dataset.uiOcc).filter((key):key is string=>!!key))].sort();
       const signature=JSON.stringify([document.id,membership]);
       if(signature!==publishedOccurrences){publishedOccurrences=signature;onOccurrencesChange?.(document.id,membership);}
-      for (const element of targets) element.removeAttribute('data-ui-selected');
-      marked=occurrences.flatMap(occurrence=>{const matching=targets.filter(element=>element.dataset.uiOcc===occurrence);const primary=matching.find(element=>element.hasAttribute('data-ui-primary'))??matching[0];return primary?[primary]:[];});
-      for(const element of marked)element.setAttribute('data-ui-selected','');
+      for (const element of targets){element.removeAttribute('data-ui-selected');element.removeAttribute('data-ui-selection-proxy-for');}
+      const markers=new Map<HTMLElement,string[]>();
+      for(const occurrence of occurrences){const target=canvasSelectionTarget(document,occurrence,targets,textSelectionContainerHighlight);if(target)markers.set(target,[...(markers.get(target)??[]),occurrence]);}
+      marked=[...markers.keys()];
+      for(const [element,keys] of markers){element.setAttribute('data-ui-selected','');const proxies=keys.filter(key=>key!==element.dataset.uiOcc);if(proxies.length)element.setAttribute('data-ui-selection-proxy-for',JSON.stringify(proxies));}
     };
     void tick().then(() => {
       if (cancelled || canvasEl === undefined) return;
@@ -262,7 +270,7 @@
       observer.observe(globalThis.document.body, { childList: true, subtree: true });
       observer.observe(canvasEl, { childList: true, subtree: true });
     });
-    return () => { cancelled = true; observer?.disconnect(); for(const element of marked)element.removeAttribute('data-ui-selected'); };
+    return () => { cancelled = true; observer?.disconnect(); for(const element of marked){element.removeAttribute('data-ui-selected');element.removeAttribute('data-ui-selection-proxy-for');} };
   });
 
   const canvasClasses = $derived(

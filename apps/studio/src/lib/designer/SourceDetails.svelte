@@ -61,12 +61,13 @@
   }
 </script>
 <section data-studio-typography class="studio-type-scope source-details" aria-label="Source inspection details" bind:this={root}>
-  <header>{#if !embedded}<span>Inspect</span>{/if}<div class="selection-identity-card">{#if selected && (structureNodePresentation(document,selected.data).kindLabel ?? readableName(selected.data.kind)).toLowerCase()!==label.toLowerCase()}<span>{structureNodePresentation(document,selected.data).kindLabel ?? readableName(selected.data.kind)}</span>{/if}<strong title={fullLabel}>{label}</strong>{#if identity.scope}<small>{identity.scope}</small>{/if}</div>{#if !embedded}<button type="button" aria-label="Close inspection details" onclick={onClose}>×</button>{/if}</header>
+  <header>{#if !embedded}<span>Inspect</span>{/if}<div class="selection-identity-card">{#if selected && (structureNodePresentation(document,selected.data).kindLabel ?? readableName(selected.data.kind)).toLowerCase()!==label.toLowerCase()}<span>{structureNodePresentation(document,selected.data).kindLabel ?? readableName(selected.data.kind)}</span>{/if}<strong title={fullLabel}>{label}</strong>{#if identity.scope}<small>{identity.scope}</small>{/if}{#if identity.textLocation}<small class="selection-text-location">{identity.textLocation}</small>{/if}</div>{#if !embedded}<button type="button" aria-label="Close inspection details" onclick={onClose}>×</button>{/if}</header>
   {#if !selected}<p class="empty-selection">Select an item on the canvas, in Layers or in the graph.</p>
   {:else}<SelectionSections bind:page relationshipsCount={relationshipCount(graph,[item])}>
     {#snippet overview()}
       {#if identity.availability}<p class="selection-availability">{identity.availability}</p>{/if}
-      {#if selected.data.occurrence}<button type="button" class="details-handoff" disabled={blocked} onclick={() => navigate('inspector')}>Edit on canvas ↗</button>{/if}
+      {#if identity.textLocation}<p class="text-location-explanation">The canvas uses the containing element for the highlight. The text remains selected.</p>{/if}
+      {#if selected.data.occurrence}<button type="button" class="details-handoff" disabled={blocked} onclick={() => navigate('inspector')}>{identity.type==='Text'?'Locate text on canvas ↗':'Edit on canvas ↗'}</button>{/if}
       {#if selected.data.kind === 'state'}<button type="button" class="details-handoff" disabled={blocked} onclick={() => navigate('data')}>Edit in Data ↗</button>{/if}
       {#if selected.data.kind === 'action'}<button type="button" class="details-handoff" disabled={blocked} onclick={() => navigate('actions')}>Open Actions ↗</button>{/if}
       <dl class="useful-facts">{#each summary as fact}<div><dt>{fact.name}</dt><dd>{fact.value}</dd></div>{/each}</dl>
@@ -82,6 +83,7 @@
   button:not(.studio-section-header) { font:inherit; color:inherit; cursor:pointer; border:1px solid var(--vict-color-border,#dce2eb); border-radius:5px; background:var(--vict-color-surface,#fff); padding:5px 8px; }
   header button { width:28px; height:28px; border:0; padding:0; }
   .empty-selection{padding:10px}.selection-identity-card small,.selection-availability{font:var(--studio-font-meta);color:var(--vict-color-textMuted)}
+  .selection-text-location{display:block;white-space:normal}.text-location-explanation{margin:0 0 8px;font:var(--studio-font-meta);color:var(--vict-color-textMuted)}
   .details-handoff { margin-bottom:8px; }
   dt { font:11px/1.45 ui-monospace,monospace; overflow-wrap:anywhere; }
   dl { margin:0; } dl>div { display:grid; grid-template-columns:minmax(80px,1fr) minmax(0,1.25fr); gap:10px; padding:6px 0; border-top:1px solid var(--vict-color-border,#eef1f6); } dd { margin:0; overflow-wrap:anywhere; }

@@ -3,7 +3,7 @@
   import { onMount, tick, untrack } from 'svelte';
   import { beforeNavigate } from '$app/navigation';
   import { ControlScope } from '@victframework/ui-svelte';
-  import { Composer, EditorBridge, EditorCanvas, Inspector, Layers, PanelResizer, StateInitialEditor, SelectionPalette, setAttribute, resolveOccurrence, compositionParent, compositionName, literalTextTarget, duplicateSubtree, type TransactionDraft } from '@victframework/ui-editor';
+  import { Composer, EditorBridge, EditorCanvas, Inspector, Layers, PanelResizer, StateInitialEditor, SelectionPalette, setAttribute, canvasSelectionTarget, resolveOccurrence, compositionParent, compositionName, literalTextTarget, duplicateSubtree, type TransactionDraft } from '@victframework/ui-editor';
   import { createPreviewSession } from '@victframework/ui-preview';
   import { CompositionNavigator, authoredOccurrence, compositionSlots, compositionMembers, compositionTrail, firstCompositionSlot, type CompositionFocus } from '@victframework/ui-editor';
   import type { UiDocument, UiRenderPlan, UiValue } from '@victframework/ui';
@@ -48,7 +48,11 @@
   async function locateOnCanvas(occurrence: string) {
     if (!source || textDraftDirty || sourceDraftDirty || renamingScreen) return;
     workspaceView=mode; await tick();
-    const find = () => [...(canvasScroll?.querySelectorAll<HTMLElement>('[data-ui-occ]') ?? [])].find(element => element.dataset.uiOcc === occurrence && element.getClientRects().length);
+    const find = () => {
+      const owner=canvasScroll?.querySelector<HTMLElement>('[data-ui-owner-root]')?.dataset.uiOwnerRoot;if(!owner)return undefined;
+      const elements=[...globalThis.document.querySelectorAll<HTMLElement>('[data-ui-occ]')].filter(element=>element.dataset.uiOwner===owner);
+      const target=canvasSelectionTarget(source!,occurrence,elements,true);return target&&[...target.getClientRects()].some(rect=>rect.width>0&&rect.height>0)?target:undefined;
+    };
     if (!find()) {
       if (mode === 'interact') { notice = 'This source is hidden in Interact. Switch to Design, then Locate on canvas to inspect its composition.'; return; }
       const report = resolveOccurrence(occurrence, source);
@@ -58,7 +62,9 @@
     }
     const target = find();
     if (target) { target.scrollIntoView({ block: 'nearest', inline: 'nearest' }); target.focus({ preventScroll: true }); }
-    notice = target ? 'Located on canvas.' : 'This source has no visible canvas element. Open its composition to inspect it.';
+    const text=resolveOccurrence(occurrence,source).node?.kind==='text';
+    const location=selectionIdentity(source,workspaceGraph,nodeItem(source,occurrence)??{kind:'node',id:''}).textLocation;
+    notice=target?(text&&target.dataset.uiOcc!==occurrence?`${location??'Text inside its containing element'}. The text remains selected; the containing element is highlighted.`:'Located on canvas.'):(text?'This text is not currently visible on the canvas.':'This source has no visible canvas element. Open its composition to inspect it.');
   }
   async function structureNavigate(request: StructureHandoff) {
     if (textDraftDirty || sourceDraftDirty || renamingScreen) { notice = 'Apply or cancel your draft first.'; return; }
@@ -71,7 +77,7 @@
       documentPanel='layers';drawerContext='document';showPanel('document');testingOpen=false;
     } else {
       if (request.destination === 'design' && request.occurrence) { await locateOnCanvas(request.occurrence); return; }
-      if (request.destination === 'inspector' && request.occurrence) { changeMode('design'); selectOccurrence(request.occurrence, true); paletteFocus=Symbol('edit-handoff'); }
+      if (request.destination === 'inspector' && request.occurrence) { changeMode('design'); if(source&&resolveOccurrence(request.occurrence,source).node?.kind==='text'){await locateOnCanvas(request.occurrence);return;} selectOccurrence(request.occurrence, true); paletteFocus=Symbol('edit-handoff'); }
     }
     notice = request.destination === 'actions' ? `Declared action ${request.key ?? ''} · simulated execution is available in Interact.` : `Opened ${request.destination} for the selected source.`;
     await tick();
@@ -683,7 +689,7 @@
             selectionToolsPlacement="below"
             onEditTextRequest={editSelectedText}
             onOccurrencesChange={(id:string,occurrences:readonly string[])=>{if(id===source?.id){renderedDocument=id;renderedOccurrences=occurrences;}}}
-            interactionMode={mode} selectedOccurrences={mode==='design'?selectedOccurrences:[]} onSelectionIntent={canvasSelection} onClearSelection={clearWorkspaceSelection} selectedOccurrence={mode === 'design' ? selected : undefined} onSelect={mode === 'design' ? selectOccurrence : () => {}} {dispatch} navigate={() => { notice = 'This application contains one screen.'; }}
+            textSelectionContainerHighlight selectionHighlightSignal={workspaceView} interactionMode={mode} selectedOccurrences={mode==='design'?selectedOccurrences:[]} onSelectionIntent={canvasSelection} onClearSelection={clearWorkspaceSelection} selectedOccurrence={mode === 'design' ? selected : undefined} onSelect={mode === 'design' ? selectOccurrence : () => {}} {dispatch} navigate={() => { notice = 'This application contains one screen.'; }}
             stateValues={runtimeValues} onStateChange={(key: string, value: UiValue) => runtimeValues = { ...runtimeValues, [key]: value }} {resetSignal}
             actionState={screenActionState} onPlan={(next: UiRenderPlan) => { plan = next; }}
             onRenderDiagnostic={(diagnostic: { code: string; message: string }) => { issues = [...issues.slice(-4), diagnostic]; }} ariaLabel="Screen canvas" />
