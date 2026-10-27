@@ -1,0 +1,209 @@
+Browser tab: 11, Title: "Designer — VICT Studio", URL: "http://127.0.0.22:5616/design".
+1 AXWebArea Designer — VICT Studio, URL: 127.0.0.22:5616/design
+	2 container
+		3 container
+			4 link Description: VICT Studio, Value: 127.0.0.22:5616/design
+			5 menu bar Description: Studio menus, ID: bits-c3
+				6 (collapsed) File, ID: bits-c5, Secondary Actions: Expand
+				7 (collapsed) Edit, ID: bits-c7, Secondary Actions: Expand
+				8 (collapsed) View, ID: bits-c9, Secondary Actions: Expand
+				9 (collapsed) Preview, ID: bits-c11, Secondary Actions: Expand
+			10 text Document and Selection review
+			11 link Description: Operator tools, Value: 127.0.0.22:5616/
+		48 container
+			49 container Workspace mode
+				50 checkbox Design, Value: 0
+				51 checkbox Interact, Value: 0
+				52 checkbox Structure, Value: 1
+			82 container Structure workspace
+				83 container Source structure
+					84 search text field (settable) Search structure
+					85 menu bar Description: Structure menus, ID: bits-c23
+						86 (collapsed) View, ID: bits-c25, Secondary Actions: Expand
+					87 text Declared
+					88 text Focus: 4 objects
+					89 text 2 selected
+					90 text 9 items
+					91 button (expanded) Description: Selection panel, Secondary Actions: Collapse
+					92 container Connection scope
+						152 checkbox Other users (3), Value: 0
+					153 container
+						154 container
+							155 image
+							156 image
+								157 container Section -> Work email: Contains; /nodes/onbCard/children/5
+							158 image
+								159 container Section -> Create account: Contains; /nodes/onbCard/children/9
+							160 image
+								161 container Work email · Focus style -> Work email: Styles; /nodes/onbEmailInput/styleSources/0
+							162 image
+								163 container Work email · Base style -> Work email: Styles; /nodes/onbEmailInput/styleSources/1
+							164 image
+								165 container Work Email -> Work email: Value; /nodes/onbEmailInput/attributes/value
+							166 image
+								167 container Work email -> Work Email: Updates; /nodes/onbEmailInput/interactions/0
+							168 image
+								169 container Work Email -> Work email: Fallback; /nodes/onbEmailInput/interactions/0/value
+							170 image
+								171 container Create account -> Button: Uses; /nodes/onbSubmit/definitionId
+							172 image
+								173 container Create account -> Press: Emits; /nodes/onbSubmit/outputs/press
+							174 image
+								175 container Press -> Submit: Invokes; /nodes/onbSubmit/outputs/press/invokeAction
+							176 container Section: Section, source onbCard
+								177 container
+									178 text Section
+									179 button (collapsed) Description: Expand Section, Secondary Actions: Expand
+									180 text 11 direct children
+									181 content list Incoming connections
+									182 content list Outgoing connections
+										183 container Outgoing Contains · 2 declared references
+											184 text Contains · 2
+											185 checkbox Description: Select outgoing Contains connections for Section, Help: Contains · 2 visible references; 0 selected; Ctrl-click to add or remove, Value: 0
+							186 container Input: Work email, source onbEmailInput
+								187 container
+									188 text Input
+									189 text Work email
+									190 content list Incoming connections
+										191 container Incoming Contains · 1 declared reference
+											192 text Contains
+											193 checkbox Description: Select incoming Contains connections for Work email, Help: Contains · 1 visible references; 0 selected; Ctrl-click to add or remove, Value: 0
+										194 container Incoming Fallback · 1 declared reference
+											195 text Fallback
+											196 checkbox Description: Select incoming Fallback connections for Work email, Help: Fallback · 1 visible references; 0 selected; Ctrl-click to add or remove, Value: 0
+										197 container Incoming Styles · 2 declared references
+											198 text Styles · 2
+											199 checkbox Description: Select incoming Styles connections for Work email, Help: Styles · 2 visible references; 0 selected; Ctrl-click to add or remove, Value: 0
+										200 container Incoming Value · 1 declared reference
+											201 text Value
+											202 checkbox Description: Select incoming Value connections for Work email, Help: Value · 1 visible references; 0 selected; Ctrl-click to add or remove, Value: 0
+									203 content list Outgoing connections
+										204 container Outgoing Updates · 1 declared reference
+											205 text Updates
+											206 checkbox Description: Select outgoing Updates connections for Work email, Help: Updates · 1 visible references; 1 selected; Ctrl-click to add or remove, Value: 1
+							207 container Component: Create account, source onbSubmit
+								208 container
+									209 text Component
+									210 text Create account
+									211 text Button
+									212 content list Incoming connections
+										213 container Incoming Contains · 1 declared reference
+											214 text Contains
+											215 checkbox Description: Select incoming Contains connections for Create account, Help: Contains · 1 visible references; 0 selected; Ctrl-click to add or remove, Value: 0
+									216 content list Outgoing connections
+										217 container Outgoing Emits · 1 declared reference
+											218 text Emits
+											219 checkbox Description: Select outgoing Emits connections for Create account, Help: Emits · 1 visible references; 1 selected; Ctrl-click to add or remove, Value: 1
+										220 container Outgoing Uses · 1 declared reference
+											221 text Uses
+											222 checkbox Description: Select outgoing Uses connections for Create account, Help: Uses · 1 visible references; 0 selected; Ctrl-click to add or remove, Value: 0
+							223 container State: Work Email
+								224 container
+									225 text State
+									226 text Work Email
+									227 text Text · starts empty
+									228 content list Incoming connections
+										229 container Incoming Updates · 1 declared reference
+											230 text Updates
+											231 checkbox Description: Select incoming Updates connections for Work Email, Help: Updates · 1 visible references; 1 selected; Ctrl-click to add or remove, Value: 1
+									232 content list Outgoing connections
+										233 container Outgoing Fallback · 1 declared reference
+											234 text Fallback
+											235 checkbox Description: Select outgoing Fallback connections for Work Email, Help: Fallback · 1 visible references; 0 selected; Ctrl-click to add or remove, Value: 0
+										236 container Outgoing Value · 1 declared reference
+											237 text Value
+											238 checkbox Description: Select outgoing Value connections for Work Email, Help: Value · 1 visible references; 0 selected; Ctrl-click to add or remove, Value: 0
+							239 container Style: Work email · Focus style
+								240 container
+									241 text Style
+									242 text Work email · Focus style
+									243 content list Incoming connections
+									244 content list Outgoing connections
+										245 container Outgoing Styles · 1 declared reference
+											246 text Styles
+											247 checkbox Description: Select outgoing Styles connections for Work email · Focus style, Help: Styles · 1 visible references; 0 selected; Ctrl-click to add or remove, Value: 0
+							248 container Style: Work email · Base style
+								249 container
+									250 text Style
+									251 text Work email · Base style
+									252 content list Incoming connections
+									253 content list Outgoing connections
+										254 container Outgoing Styles · 1 declared reference
+											255 text Styles
+											256 checkbox Description: Select outgoing Styles connections for Work email · Base style, Help: Styles · 1 visible references; 0 selected; Ctrl-click to add or remove, Value: 0
+							257 container Library: Button
+								258 container
+									259 text Library
+									260 text Button
+									261 text Revision 1 External
+									262 content list Incoming connections
+										263 container Incoming Uses · 1 declared reference
+											264 text Uses
+											265 checkbox Description: Select incoming Uses connections for Button, Help: Uses · 1 visible references; 0 selected; Ctrl-click to add or remove, Value: 0
+									266 content list Outgoing connections
+							267 container Output: Press
+								268 container
+									269 text Output
+									270 text Press
+									271 text Component onbSubmit
+									272 content list Incoming connections
+										273 container Incoming Emits · 1 declared reference
+											274 text Emits
+											275 checkbox Description: Select incoming Emits connections for Press, Help: Emits · 1 visible references; 1 selected; Ctrl-click to add or remove, Value: 1
+									276 content list Outgoing connections
+										277 container Outgoing Invokes · 1 declared reference
+											278 text Invokes
+											279 checkbox Description: Select outgoing Invokes connections for Press, Help: Invokes · 1 visible references; 0 selected; Ctrl-click to add or remove, Value: 0
+							280 container Action: Submit
+								281 container
+									282 text Action
+									283 text Submit
+									284 text Configured host connection External
+									285 content list Incoming connections
+										286 container Incoming Invokes · 1 declared reference
+											287 text Invokes
+											288 checkbox Description: Select incoming Invokes connections for Submit, Help: Invokes · 1 visible references; 0 selected; Ctrl-click to add or remove, Value: 0
+									289 content list Outgoing connections
+						290 link Description: Svelte Flow attribution, Value: svelteflow.dev/?utm_source=attribution
+						291 image
+						292 container Control Panel
+							293 button Zoom In
+								294 image
+							295 button Zoom Out
+								296 image
+							297 button Fit View
+								298 image
+			75 splitter Description: Document drawer width, Value: 315
+			76 container Description: Document and Selection, ID: document-drawer
+				77 container
+					78 tab group Panel context
+						79 tab (selectable, settable, boolean) Document, Value: 0, ID: c26-document-tab
+						80 tab (selected, settable, boolean) Selection, Value: 1, ID: c26-selection-tab
+					81 button Description: Close panel, Help: Close panel (Escape)
+				129 container Description: Selection, ID: c26-selection
+					130 container Selection details
+						131 container Selection relationships
+							132 button (expanded) Description: Relationships, Help: 2 declared relationships, Secondary Actions: Collapse
+								133 text Relationships
+								134 text 2
+							135 container c50-relationships
+								136 container
+									137 button Description: Input · Work email, Help: Input · Work email · %5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbEmailInput%22%5D
+										138 text Work email
+										139 text Input
+									140 button Description: Inspect Updates connection from Input · Work email to State · Work Email, Help: Document declaration The source declares an update to the destination state. When changed: Updates Work Email from the entered value; fallback Work Email /nodes/onbEmailInput/interactions/0
+									141 button Description: State · Work Email, Help: State · Work Email · %5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22state%22%2C%22workEmail%22%5D
+										142 text Work Email
+								143 container
+									144 button Description: Component · Create account, Help: Component · Create account · %5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbSubmit%22%5D
+										145 text Create account
+										146 text Component
+									147 button Description: Inspect Emits connection from Component · Create account to Output · Press · Component onbSubmit, Help: Document declaration The source component declares the destination output. On Press: Requests Submit /nodes/onbSubmit/outputs/press
+									148 button Description: Output · Press · Component onbSubmit, Help: Output · Press · Component onbSubmit · %5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22output%22%2C%22%5B%5C%22%5B%5C%5C%5C%22output%5C%5C%5C%22%2Cnull%2C%5B%5D%2C%5C%5C%5C%22onbSubmit%5C%5C%5C%22%2C%5C%5C%5C%22press%5C%5C%5C%22%5D%5C%22%2C%5C%22%24output%5C%22%5D%22%5D
+										149 text Press
+						150 container Selection technical information
+							151 button (collapsed) Description: Technical information, Secondary Actions: Expand
+		39 text Loaded the saved screen.
+		47 text Designer — VICT Studio
+
+The focused UI element is 1 AXWebArea Designer — VICT Studio, URL: 127.0.0.22:5616/design

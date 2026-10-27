@@ -1,0 +1,243 @@
+{
+  "candidate": "a75df4be6231e3bad5c34cacbf0ad12cbc9c1bf8",
+  "url": "http://127.0.0.22:5616/design",
+  "before": {
+    "identity": "2 connections Connection  Work email Updates  Work Email ×Connection  Create account Declares output  Press Component onbSubmit× ",
+    "mode": "Structure",
+    "relationships": "    Work email Input Updates   Work Email     Create account Component Declares output   Press    ",
+    "sections": [
+      {
+        "expanded": "false",
+        "name": "Overview"
+      },
+      {
+        "expanded": "false",
+        "name": "Relationships"
+      },
+      {
+        "expanded": "false",
+        "name": "Technical information"
+      }
+    ],
+    "viewport": {
+      "height": 668,
+      "width": 1015
+    }
+  },
+  "beforePaths": [
+    "/nodes/onbEmailInput/interactions/0",
+    "/nodes/onbSubmit/outputs/press"
+  ],
+  "single": {
+    "applyDisabled": true,
+    "connectionCards": 0,
+    "identityPresent": false,
+    "overviewPresent": false,
+    "paths": [
+      "/nodes/onbEmailInput/interactions/0"
+    ],
+    "relationshipText": "    Work email Input Updates   Work Email    ",
+    "sections": [
+      {
+        "expanded": "true",
+        "name": "Relationships",
+        "top": 84
+      },
+      {
+        "expanded": "false",
+        "name": "Technical information",
+        "top": 607.2000122070312
+      }
+    ],
+    "selectedGraphEdges": 0,
+    "selectedGraphNodes": 0,
+    "technicalControls": []
+  },
+  "mixed": {
+    "applyDisabled": true,
+    "connectionCards": 0,
+    "identity": "1 node · 1 connection Component  Create account × ",
+    "identityPresent": true,
+    "overviewPresent": false,
+    "paths": [
+      "/nodes/onbEmailInput/interactions/0",
+      "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbSubmit"
+    ],
+    "relationshipText": " Selected connections   Work email Input Updates   Work Email  Related connections   Create account Component Inside   Section  Uses   Button  Declares output   Press    ",
+    "sections": [
+      {
+        "expanded": "true",
+        "name": "Relationships",
+        "top": 188.40000915527344
+      },
+      {
+        "expanded": "false",
+        "name": "Technical information",
+        "top": 607.2000122070312
+      }
+    ],
+    "selectedGraphEdges": 0,
+    "selectedGraphNodes": 0,
+    "technicalControls": [
+      {
+        "disabled": false,
+        "name": "Inspect selected connection Input · Work email · Updates · State · Work Email"
+      },
+      {
+        "disabled": false,
+        "name": "Remove Connection Input · Work email · Updates · State · Work Email from selection"
+      }
+    ]
+  },
+  "multiple": {
+    "applyDisabled": true,
+    "connectionCards": 0,
+    "identityPresent": false,
+    "overviewPresent": false,
+    "paths": [
+      "/nodes/onbEmailInput/interactions/0",
+      "/nodes/onbSubmit/outputs/press"
+    ],
+    "relationshipText": "    Work email Input Updates   Work Email     Create account Component Declares output   Press    ",
+    "sections": [
+      {
+        "expanded": "true",
+        "name": "Relationships",
+        "top": 84
+      },
+      {
+        "expanded": "false",
+        "name": "Technical information",
+        "top": 607.2000122070312
+      }
+    ],
+    "selectedGraphEdges": 0,
+    "selectedGraphNodes": 0,
+    "technicalControls": [
+      {
+        "disabled": false,
+        "name": "Inspect selected connection Input · Work email · Updates · State · Work Email"
+      },
+      {
+        "disabled": false,
+        "name": "Remove Connection Input · Work email · Updates · State · Work Email from selection"
+      },
+      {
+        "disabled": false,
+        "name": "Inspect selected connection Component · Create account · Declares output · Output · Press · Component onbSubmit"
+      },
+      {
+        "disabled": false,
+        "name": "Remove Connection Component · Create account · Declares output · Output · Press · Component onbSubmit from selection"
+      }
+    ]
+  },
+  "technicalRemove": {
+    "applyDisabled": true,
+    "connectionCards": 0,
+    "identityPresent": false,
+    "overviewPresent": false,
+    "paths": [
+      "/nodes/onbEmailInput/interactions/0"
+    ],
+    "relationshipText": "    Work email Input Updates   Work Email    ",
+    "sections": [
+      {
+        "expanded": "false",
+        "name": "Relationships",
+        "top": 84
+      },
+      {
+        "expanded": "true",
+        "name": "Technical information",
+        "top": 120
+      }
+    ],
+    "selectedGraphEdges": 0,
+    "selectedGraphNodes": 0,
+    "technicalControls": []
+  },
+  "technicalInspect": {
+    "applyDisabled": true,
+    "connectionCards": 0,
+    "identityPresent": false,
+    "overviewPresent": false,
+    "paths": [
+      "/nodes/onbEmailInput/interactions/0"
+    ],
+    "relationshipText": "    Work email Input Updates   Work Email    ",
+    "sections": [
+      {
+        "expanded": "false",
+        "name": "Relationships",
+        "top": 84
+      },
+      {
+        "expanded": "true",
+        "name": "Technical information",
+        "top": 120
+      }
+    ],
+    "selectedGraphEdges": 0,
+    "selectedGraphNodes": 0,
+    "technicalControls": []
+  },
+  "source": {
+    "applyDisabled": true,
+    "metadata": [
+      "Saved revision r1.r1",
+      "Application version v1_fe0ac678e80522e8c9b9a004c95ba6f59c9d3261bd0e4fd54fe1bd47a0a54152",
+      "Generated by Studio to connect this screen to VICT."
+    ],
+    "sourceRevision": "r1.r1"
+  },
+  "final": {
+    "applyDisabled": true,
+    "connectionCards": 0,
+    "identityPresent": false,
+    "overviewPresent": false,
+    "paths": [
+      "/nodes/onbEmailInput/interactions/0",
+      "/nodes/onbSubmit/outputs/press"
+    ],
+    "relationshipText": "    Work email Input Updates   Work Email     Create account Component Declares output   Press    ",
+    "sections": [
+      {
+        "expanded": "true",
+        "name": "Relationships",
+        "top": 84
+      },
+      {
+        "expanded": "false",
+        "name": "Technical information",
+        "top": 607.2000122070312
+      }
+    ],
+    "selectedGraphEdges": 2,
+    "selectedGraphNodes": 0,
+    "technicalControls": [
+      {
+        "disabled": false,
+        "name": "Inspect selected connection Input · Work email · Updates · State · Work Email"
+      },
+      {
+        "disabled": false,
+        "name": "Remove Connection Input · Work email · Updates · State · Work Email from selection"
+      },
+      {
+        "disabled": false,
+        "name": "Inspect selected connection Component · Create account · Declares output · Output · Press · Component onbSubmit"
+      },
+      {
+        "disabled": false,
+        "name": "Remove Connection Component · Create account · Declares output · Output · Press · Component onbSubmit from selection"
+      }
+    ]
+  },
+  "scope": "Connection chrome is absent from DOM; exact member controls remain in Technical information.",
+  "limits": [
+    "Builder-operated CUA; independent gate and owner acceptance pending.",
+    "Prior graph-focus findings remain unchanged/outside this amendment.",
+    "No provider turn, authored form action, source Apply or Save."
+  ]
+}

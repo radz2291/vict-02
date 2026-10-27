@@ -1,0 +1,43 @@
+{
+  "applyDisabled": true,
+  "connectionCards": 0,
+  "identityPresent": false,
+  "overviewPresent": false,
+  "paths": [
+    "/nodes/onbEmailInput/interactions/0",
+    "/nodes/onbSubmit/outputs/press"
+  ],
+  "relationshipText": "    Work email Input Updates   Work Email     Create account Component Declares output   Press    ",
+  "sections": [
+    {
+      "expanded": "true",
+      "name": "Relationships",
+      "top": 84
+    },
+    {
+      "expanded": "false",
+      "name": "Technical information",
+      "top": 607.2000122070312
+    }
+  ],
+  "selectedGraphEdges": 0,
+  "selectedGraphNodes": 0,
+  "technicalControls": [
+    {
+      "disabled": false,
+      "name": "Inspect selected connection Input · Work email · Updates · State · Work Email"
+    },
+    {
+      "disabled": false,
+      "name": "Remove Connection Input · Work email · Updates · State · Work Email from selection"
+    },
+    {
+      "disabled": false,
+      "name": "Inspect selected connection Component · Create account · Declares output · Output · Press · Component onbSubmit"
+    },
+    {
+      "disabled": false,
+      "name": "Remove Connection Component · Create account · Declares output · Output · Press · Component onbSubmit from selection"
+    }
+  ]
+}

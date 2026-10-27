@@ -1,0 +1,36 @@
+{
+  "applyDisabled": true,
+  "connectionCards": 0,
+  "identity": "1 node · 1 connection Component  Create account × ",
+  "identityPresent": true,
+  "overviewPresent": false,
+  "paths": [
+    "/nodes/onbEmailInput/interactions/0",
+    "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbSubmit"
+  ],
+  "relationshipText": " Selected connections   Work email Input Updates   Work Email  Related connections   Create account Component Inside   Section  Uses   Button  Declares output   Press    ",
+  "sections": [
+    {
+      "expanded": "true",
+      "name": "Relationships",
+      "top": 188.40000915527344
+    },
+    {
+      "expanded": "false",
+      "name": "Technical information",
+      "top": 607.2000122070312
+    }
+  ],
+  "selectedGraphEdges": 0,
+  "selectedGraphNodes": 0,
+  "technicalControls": [
+    {
+      "disabled": false,
+      "name": "Inspect selected connection Input · Work email · Updates · State · Work Email"
+    },
+    {
+      "disabled": false,
+      "name": "Remove Connection Input · Work email · Updates · State · Work Email from selection"
+    }
+  ]
+}

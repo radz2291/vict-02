@@ -1,0 +1,25 @@
+{
+  "applyDisabled": true,
+  "connectionCards": 0,
+  "identityPresent": false,
+  "overviewPresent": false,
+  "paths": [
+    "/nodes/onbEmailInput/interactions/0"
+  ],
+  "relationshipText": "    Work email Input Updates   Work Email    ",
+  "sections": [
+    {
+      "expanded": "false",
+      "name": "Relationships",
+      "top": 84
+    },
+    {
+      "expanded": "true",
+      "name": "Technical information",
+      "top": 120
+    }
+  ],
+  "selectedGraphEdges": 0,
+  "selectedGraphNodes": 0,
+  "technicalControls": []
+}
