@@ -8,11 +8,20 @@ export interface ConversationMessage {
   /** Ordered host observations and text. When present this replaces the legacy activity grouping. */
   events?: readonly ConversationEvent[];
 }
+/** Sanitized host-supplied tool evidence. This is presentation, never execution authority. */
+export interface ConversationToolPayload {
+  text: string;
+  redacted?: boolean;
+  truncated?: boolean;
+  unavailable?: boolean;
+}
 export interface ConversationActivity {
   id: string;
   title: string;
   state: 'pending' | 'running' | 'completed' | 'failed' | 'cancelled';
   detail?: string;
+  input?: ConversationToolPayload;
+  result?: ConversationToolPayload;
   /** Ordered public receipts for one actual tool attempt. No private reasoning. */
   stages?: readonly { id: string; title: string; state: ConversationActivity['state']; detail?: string }[];
 }
@@ -39,6 +48,8 @@ export function appendConversationEvent(
   return events;
 }
 export type SendResult = boolean | { ok: boolean; message?: string };
+/** Called once the host admits the request, before its streamed response finishes. */
+export type SendAccepted = () => void;
 
 /** Adapt VICT's stable participant/text presentation shape without importing its runtime. */
 export function conversationMessages(messages: readonly {

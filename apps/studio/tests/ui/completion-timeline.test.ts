@@ -88,6 +88,7 @@ it('labels subset coverage as an agent-declared manifest rather than global comp
   mounted=mount(AgentChat,{target:document.body,props:{screenLabel:'Coverage',selectionLabel:'Screen',blocked:false,getContext:()=>({document:source,cursor}),applyProposal:()=>{throw Error('No proposal');}}});
   await vi.waitFor(()=>expect(document.body.textContent).toContain('Ready'));
   const input=document.querySelector<HTMLTextAreaElement>('textarea')!;input.value='Inventory requested controls';input.dispatchEvent(new Event('input',{bubbles:true}));flushSync();document.querySelector('form')!.dispatchEvent(new Event('submit',{bubbles:true,cancelable:true}));
+  document.querySelector<HTMLButtonElement>('[aria-label="Chat details"]')!.click();flushSync();
   await vi.waitFor(()=>expect(document.body.textContent).toContain('1-item agent-declared manifest'));
   expect(document.body.textContent).toContain('3/78 registered definitions present');
   expect(document.body.textContent).not.toContain('2/78 registered definitions present');
@@ -117,6 +118,7 @@ it.each([false,true])('projects actual mixed general, AI and Flow coverage with 
   mounted=mount(AgentChat,{target:document.body,props:{screenLabel:'Mixed coverage',selectionLabel:'Screen',blocked:false,getContext:()=>({document:source,cursor}),applyProposal:()=>{throw Error('No proposal');}}});
   await vi.waitFor(()=>expect(document.body.textContent).toContain('Ready'));
   const input=document.querySelector<HTMLTextAreaElement>('textarea')!;input.value='Review source coverage';input.dispatchEvent(new Event('input',{bubbles:true}));flushSync();document.querySelector('form')!.dispatchEvent(new Event('submit',{bubbles:true,cancelable:true}));
+  document.querySelector<HTMLButtonElement>('[aria-label="Chat details"]')!.click();flushSync();
   await vi.waitFor(()=>expect(document.body.textContent).toContain(`3/${facts.available} registered definitions present`));
   expect(document.body.textContent).toContain(`${facts.missing.length} missing from the ${facts.requested}-item ${subset?'agent-declared manifest':'coverage scope'}`);
   expect(document.body.textContent).not.toContain(`1/${facts.available} registered definitions present`);
@@ -141,9 +143,10 @@ it('settles parallel reads only by their matching call identity',async()=>{
   await vi.waitFor(()=>expect(document.querySelector('[data-event-id="attempt-studio_screen_read:unassociated"]')).not.toBeNull());
   expect(document.querySelector('[data-event-id="attempt-studio_screen_read:a"]')?.textContent).toContain('running');
   expect(document.querySelector('[data-event-id="attempt-studio_screen_read:b"]')?.textContent).toContain('running');
-  expect(document.querySelectorAll('[data-event-id="schema-diagnostic-parse-note"]')).toHaveLength(1);
-  const diagnostic=document.querySelector('[data-event-id="schema-diagnostic-parse-note"]')!;
-  diagnostic.querySelector<HTMLButtonElement>('button')!.click();flushSync();
+  expect(document.querySelectorAll('[data-event-id^="schema-diagnostic-"]')).toHaveLength(0);
+  document.querySelector<HTMLButtonElement>('[aria-label="Chat details"]')!.click();flushSync();
+  await vi.waitFor(()=>expect(document.querySelector('[data-diagnostic-id="parse-note"]')).not.toBeNull());
+  const diagnostic=document.querySelector('[data-diagnostic-id="parse-note"]')!;
   await vi.waitFor(()=>expect(diagnostic.textContent).toContain('2 parser evaluations'));
   expect(diagnostic.textContent).toContain('not tool calls');expect(diagnostic.querySelector('[aria-label="Attempt receipts"]')).toBeNull();
   expect(document.querySelector('[data-event-id="attempt-studio_screen_read:a"]')?.textContent).toContain('running');

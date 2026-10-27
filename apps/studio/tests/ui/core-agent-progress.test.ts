@@ -30,12 +30,13 @@ it('groups chronological lifecycle receipts by actual call, retains failed attem
  expect(status).toContain('6 applied edits remain undoable');expect(status).not.toContain('complete an edit');
  const activities=[...document.querySelectorAll<HTMLElement>('[data-event-kind="activity"]')];
  expect(activities).toHaveLength(3);
- expect(activities[0]!.textContent).toContain('Read query refused safely');expect(activities[1]!.textContent).toContain('Read current source facts');
+ expect(activities[0]!.textContent).toContain('Read screen');expect(activities[1]!.textContent).toContain('Read screen');
  activities[0]!.querySelector<HTMLButtonElement>('button')!.click();flushSync();
  await vi.waitFor(()=>expect(activities[0]!.textContent).toContain('STUDIO_AGENT_COMPONENT_NOT_FOUND'));
- expect(activities[0]!.querySelectorAll('ol[aria-label="Attempt receipts"] li')).toHaveLength(2);
- expect(document.body.textContent).toContain('current appearance unverified');expect(document.body.textContent).toContain('interactions unverified');
+ expect(activities[0]!.querySelector('[aria-label="Attempt receipts"]')).toBeNull();
  document.querySelector<HTMLButtonElement>('[aria-label="Chat details"]')!.click();flushSync();
  await vi.waitFor(()=>expect(document.body.textContent).toContain('3 tool calls'));
+ expect(document.body.textContent).toContain('current appearance unverified');expect(document.body.textContent).toContain('interactions unverified');
+ expect(document.querySelector('[data-tool-receipt="attempt-studio_screen_read:read-1"]')?.querySelectorAll('li')).toHaveLength(2);
  expect(document.body.textContent).toContain('Token usage unavailable');expect(document.body.textContent).toContain('Exact model steps and cost unavailable');
 });

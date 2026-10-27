@@ -38,3 +38,6 @@ and dependency closure do not replace the entire general shadcn-svelte catalog.
 Backend-dependent actions require actual host callbacks. Repository Cycle1.3
 audits retain reference/before/after evidence and the independent gate verdict;
 source provenance alone never establishes visual acceptance.
+
+
+Conversation tool exchanges use one shared renderer for chronological and legacy activities. Optional host-supplied `input` and `result` payloads show separate sections inside a reader-controlled, initially collapsed disclosure, with explicit redacted/truncated/unavailable labels. These are presentation data and grant no tool authority. Legacy stages/detail remain supported. Hosts may call the optional second `onSend` argument once the request is admitted; this clears only the submitted composer draft, without waiting for the complete response or erasing a subsequently typed draft. Legacy send callbacks retain completion-time clearing. Default transcript compaction stays compatible; Studio deliberately retains every admitted entry inside its existing bounded transport.

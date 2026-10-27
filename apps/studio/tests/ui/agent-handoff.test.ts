@@ -134,7 +134,8 @@ it('keeps an applied batch undoable and ignores late proposals/completion after 
   expect(app.apply).toHaveBeenCalledTimes(1);
   expect(app.bridge.document.nodes['late-heading']).toBeUndefined();
   expect(document.querySelector('.agent-status')?.textContent).toContain('Stopped');
-  expect(document.querySelector('.agent-status')?.textContent).toContain('1 applied edit');
+  document.querySelector<HTMLButtonElement>('[aria-label="Chat details"]')!.click();await tick();
+  await vi.waitFor(()=>expect(document.body.textContent).toContain('1 applied edit remains undoable.'));
   expect(app.bridge.undo().ok).toBe(true);
   expect(app.bridge.document.nodes['first-heading']).toBeUndefined();
 });

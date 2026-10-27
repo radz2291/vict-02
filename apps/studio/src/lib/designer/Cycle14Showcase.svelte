@@ -1,5 +1,6 @@
 <script lang="ts">
   import './disclosures.css';
+  import QuietChatShowcase from './QuietChatShowcase.svelte';
   import WorkspacePanelsShowcase from "./WorkspacePanelsShowcase.svelte";
   import { ControlScope, DocumentHost } from '@victframework/ui-svelte';
   import { Popover } from '@victframework/ui-svelte/primitives';
@@ -58,6 +59,7 @@
         </Popover.Content>
       </Popover.Root>
     </section>
+    <QuietChatShowcase/>
     <WorkspacePanelsShowcase />
     <div class="interaction-guide"><h3>Try the workspace changes</h3><ol><li>In Design, right-click an object or the empty canvas. Try Shift+F10 on a focused target.</li><li>Use View to open Chat or Document. Both panels start closed. Choose Design, Interact or Structure in the workspace mode bar. Document on the right contains Layers, Data, Actions and Source, with only one section expanded. Structure opens on selected connections; Whole hierarchy is optional. The right panel switches between Document and Selection. Selection contains read-only Details, Relationships and Edit on canvas. Compact windows show one auxiliary panel at a time.</li><li>Switch between Design, Interact and Structure. Structure uses the main work area, using the same Document / Selection panel on the right. Canvas, graph context, drafts and Interact values are retained when visiting Structure.</li></ol><p class="muted">The examples below share the actual workspace components, including readable inspection and optional Try scenarios with Advanced state values. Standalone Chat hide/show and resizing are available in the Studio designer. The workspace panel fixture above uses the same Document accordion and Structure inspection components; the recipe gallery below retains its own disposable editor controls. Interact preserves native application menus. Actual Chat measurements and bounded visual regions come from real receipts; the evidence example above and simulated timelines remain labelled.</p></div>
   </section>

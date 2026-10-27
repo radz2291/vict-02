@@ -66,12 +66,13 @@ it('keeps real same-pass malformed calls distinct while combining repeated parse
  expect(events.some(event=>event.type==='proposal')).toBe(false);expect(JSON.stringify(source)).toBe(before);
  expect(events.at(-1)).toMatchObject({type:'done',status:'failed',applied:0,metrics:{toolCalls:3,refusedCalls:2,completedCalls:1}});
  await vi.waitFor(()=>expect(document.querySelectorAll('[data-event-id^="attempt-"]')).toHaveLength(3));
- const diagnostic=document.querySelector<HTMLElement>('[data-event-id^="schema-diagnostic-"]')!;
- expect(document.querySelectorAll('[data-event-id^="schema-diagnostic-"]')).toHaveLength(1);expect(diagnostic.textContent).toContain('not a tool attempt');
- diagnostic.querySelector<HTMLButtonElement>('button')!.click();flushSync();
+ expect(document.querySelectorAll('[data-event-id^="schema-diagnostic-"]')).toHaveLength(0);
+ document.querySelector<HTMLButtonElement>('[aria-label="Chat details"]')!.click();flushSync();
+ await vi.waitFor(()=>expect(document.querySelector('[data-diagnostic-id]')).not.toBeNull());
+ const diagnostic=document.querySelector<HTMLElement>('[data-diagnostic-id]')!;
+ expect(document.querySelectorAll('[data-diagnostic-id]')).toHaveLength(1);expect(diagnostic.textContent).toContain('not tool calls');
  await vi.waitFor(()=>expect(diagnostic.textContent).toContain(`${diagnostics.length} parser evaluations`));
  expect(diagnostic.textContent).toContain('operations.0.expression');expect(diagnostic.textContent).toContain('Expected exactly');
  expect(diagnostic.querySelector('[aria-label="Attempt receipts"]')).toBeNull();
- document.querySelector<HTMLButtonElement>('[aria-label="Chat details"]')!.click();flushSync();
  await vi.waitFor(()=>expect(document.body.textContent).toContain('3 tool calls'));expect(document.body.textContent).toContain('2 refused');
 },120000);

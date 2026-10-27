@@ -2,19 +2,15 @@
   import { onDestroy, tick, type Snippet } from 'svelte';
   import CopyIcon from '@lucide/svelte/icons/copy';
   import CheckIcon from '@lucide/svelte/icons/check';
-  import CircleCheckIcon from '@lucide/svelte/icons/circle-check';
-  import CircleXIcon from '@lucide/svelte/icons/circle-x';
-  import CircleDashedIcon from '@lucide/svelte/icons/circle-dashed';
-  import LoaderCircleIcon from '@lucide/svelte/icons/loader-circle';
   import RotateCwIcon from '@lucide/svelte/icons/rotate-cw';
   import * as Message from './upstream/ui/message/index.js';
   import * as Bubble from './upstream/ui/bubble/index.js';
   import PromptInput from './patterns/PromptInput.svelte';
   import * as MessageScroller from './upstream/ui/message-scroller/index.js';
-  import * as Trace from './upstream/ui/trace/index.js';
+  import ConversationToolCall from './ConversationToolCall.svelte';
   import MessageAction from './MessageAction.svelte';
   import Markdown from './upstream/markdown/markdown.svelte';
-  import type { ConversationMessage, SendResult } from './adapters.js';
+  import type { ConversationMessage, SendResult, SendAccepted } from './adapters.js';
 
   let { messages, busy = false, onSend, onStop, emptyMessage = 'How can I help?',
     inputLabel = 'Message', inputPlaceholder = 'Write a message…', footer,
@@ -22,7 +18,7 @@
   }: {
     messages: readonly ConversationMessage[];
     busy?: boolean;
-    onSend: (text: string) => Promise<SendResult>;
+    onSend: (text: string, accepted?: SendAccepted) => Promise<SendResult>;
     onStop?: () => void;
     emptyMessage?: string;
     inputLabel?: string;
@@ -47,12 +43,18 @@
     if (!text || pending) return;
     sending = true; error = '';
     const hadFocus = form?.contains(document.activeElement);
+    let accepted = false;
+    const admit = () => {
+      if (accepted) return;
+      accepted = true;
+      if (draft.trim() === text) draft = '';
+    };
     try {
-      const result = await onSend(text);
+      const result = await onSend(text, admit);
       const ok = typeof result === 'boolean' ? result : result.ok;
-      if (ok && draft.trim() === text) draft = '';
+      if (ok && !accepted && draft.trim() === text) draft = '';
       if (!ok) error = (typeof result === 'object' && result.message) || 'Message not sent. Your draft is still here.';
-    } catch { error = 'Message not sent. Your draft is still here. Try again.'; }
+    } catch { error = accepted ? 'The response was interrupted. Your sent message remains in the conversation.' : 'Message not sent. Your draft is still here. Try again.'; }
     finally {
       sending = false;
       await tick();
@@ -105,21 +107,7 @@
                             {#if event.kind === 'text'}
                               <div class="vict-ai-markdown"><Markdown content={event.text}/></div>
                             {:else if event.kind === 'activity'}
-                              <Trace.Root><Trace.Collapsible>
-                                <Trace.CollapsibleTrigger><Trace.Line status={event.activity.state === 'failed' ? 'error' : event.activity.state === 'completed' || event.activity.state === 'cancelled' ? undefined : event.activity.state}>
-                                  <Trace.Icon>{#if event.activity.state === 'running'}<LoaderCircleIcon class="animate-spin"/>{:else if event.activity.state === 'completed'}<CircleCheckIcon/>{:else if event.activity.state === 'failed'}<CircleXIcon/>{:else}<CircleDashedIcon/>{/if}</Trace.Icon>
-                                  <Trace.Title>{event.activity.title}</Trace.Title><span class="vict-ai-sr">{event.activity.state}</span>
-                                </Trace.Line></Trace.CollapsibleTrigger>
-                                <Trace.CollapsibleContent>
-                                  {#if event.activity.stages?.length}
-                                    <ol class="vict-ai-attempt-stages" aria-label="Attempt receipts">
-                                      {#each event.activity.stages as stage (stage.id)}
-                                        <li><span>{stage.title} · {stage.state}</span>{#if stage.detail}<pre class="vict-ai-event-detail">{stage.detail}</pre>{/if}</li>
-                                      {/each}
-                                    </ol>
-                                  {:else}<pre class="vict-ai-event-detail">{event.activity.detail ?? event.activity.title}</pre>{/if}
-                                </Trace.CollapsibleContent>
-                              </Trace.Collapsible></Trace.Root>
+                              <ConversationToolCall activity={event.activity}/>
                             {:else}
                               <p class="vict-ai-event-summary">{event.text}</p>
                             {/if}
@@ -128,22 +116,11 @@
                       </div>
                     {:else}
                     {#if message.activity?.length}
-                      <Trace.Root aria-label="Tool activity">
+                      <div aria-label="Tool activity">
                         {#each message.activity as activity (activity.id)}
-                          <Trace.Collapsible>
-                            <Trace.CollapsibleTrigger><Trace.Line status={activity.state === 'completed' || activity.state === 'cancelled' ? undefined : activity.state === 'failed' ? 'error' : activity.state}>
-                              <Trace.Icon>
-                                {#if activity.state === 'running'}<LoaderCircleIcon class="animate-spin"/>
-                                {:else if activity.state === 'completed'}<CircleCheckIcon/>
-                                {:else if activity.state === 'failed'}<CircleXIcon/>
-                                {:else}<CircleDashedIcon/>{/if}
-                              </Trace.Icon>
-                              <Trace.Title>{activity.title}</Trace.Title><span class="vict-ai-sr">{activity.state}</span>
-                            </Trace.Line></Trace.CollapsibleTrigger>
-                            <Trace.CollapsibleContent>{activity.detail ?? activity.title}</Trace.CollapsibleContent>
-                          </Trace.Collapsible>
+                          <ConversationToolCall {activity}/>
                         {/each}
-                      </Trace.Root>
+                      </div>
                     {/if}
                     <div class="vict-ai-markdown"><Markdown content={message.text}/></div>
                     {/if}
@@ -183,8 +160,6 @@
   .vict-ai-markdown{min-width:0;overflow-wrap:anywhere}
   .vict-ai-timeline{display:flex;flex-direction:column;gap:10px;min-width:0;width:100%}
   .vict-ai-event-summary{font-size:12px;color:var(--muted-foreground,#64748b);margin:0;overflow-wrap:anywhere}
-  .vict-ai-event-detail{white-space:pre-wrap;font:12px/1.5 system-ui,sans-serif;overflow-wrap:anywhere;margin:0;max-height:240px;overflow:auto}
-  .vict-ai-attempt-stages{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:10px;max-height:320px;overflow:auto;font-size:12px}
   .vict-ai-markdown :global(pre){max-width:100%;overflow:auto}
   .vict-ai-empty{color:var(--muted-foreground,#64748b);margin:auto;text-align:center;padding:20px}
   .vict-ai-error{color:var(--destructive,#b42318);font-size:12px;margin:6px 0}
