@@ -1,0 +1,20 @@
+Browser tab: 11, Title: "Designer — VICT Studio", URL: "http://127.0.0.22:5616/design".
+The following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+~							514 button (expanded) Overview, Secondary Actions: Collapse
++							519 content list Selected items
++								520 container
++									521 button Input Full name
++										522 text Input
++										523 text Full name
++									524 button Remove Input Full name from selection
++								525 container
++									526 button Connection Style · Src onb Name Input always focus → Styles → Input · Full name
++										527 text Connection
++										528 text Style · Src onb Name Input always focus → Styles → Input · Full name
++									529 button Remove Connection Style · Src onb Name Input always focus → Styles → Input · Full name from selection
++								530 container
++									531 button Connection Style · Src onb Name Input always plain → Styles → Input · Full name
++										532 text Connection
++										533 text Style · Src onb Name Input always plain → Styles → Input · Full name
++									534 button Remove Connection Style · Src onb Name Input always plain → Styles → Input · Full name from selection
+The focused UI element is 514 button (expanded) Overview, Secondary Actions: Collapse

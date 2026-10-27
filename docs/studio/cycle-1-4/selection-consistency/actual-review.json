@@ -1,0 +1,327 @@
+{
+  "candidate": "bda3569bcb327e05d9a37cb5dc69cb5c07b77241",
+  "partialPoint": "mixed",
+  "completePoint": "true",
+  "selectedEdges": 2,
+  "relationshipKeyboardMixed": {
+    "nodes": 1,
+    "edges": 2
+  },
+  "multiPanelActual": {
+    "bodies": [
+      {
+        "height": 408,
+        "overflow": "auto",
+        "scrollHeight": 408
+      }
+    ],
+    "headers": [
+      {
+        "expanded": "false",
+        "height": 36,
+        "text": "Overview",
+        "y": 126.8000030517578
+      },
+      {
+        "expanded": "true",
+        "height": 36,
+        "text": "Relationships",
+        "y": 162.8000030517578
+      },
+      {
+        "expanded": "false",
+        "height": 36,
+        "text": "Technical information",
+        "y": 607.2000122070312
+      }
+    ],
+    "root": {
+      "display": "flex",
+      "height": 559.2000122070312,
+      "overflow": "hidden"
+    },
+    "selectedTab": "true",
+    "viewport": {
+      "height": 668,
+      "width": 1010
+    }
+  },
+  "technicalPanelActual": {
+    "bodies": [
+      {
+        "height": 408,
+        "overflow": "auto",
+        "scrollHeight": 408
+      }
+    ],
+    "headers": [
+      {
+        "expanded": "false",
+        "height": 36,
+        "text": "Overview",
+        "y": 126.8000030517578
+      },
+      {
+        "expanded": "false",
+        "height": 36,
+        "text": "Relationships",
+        "y": 162.8000030517578
+      },
+      {
+        "expanded": "true",
+        "height": 36,
+        "text": "Technical information",
+        "y": 198.8000030517578
+      }
+    ],
+    "root": {
+      "display": "flex",
+      "height": 559.2000122070312,
+      "overflow": "hidden"
+    },
+    "selectedTab": "true",
+    "viewport": {
+      "height": 668,
+      "width": 1010
+    }
+  },
+  "stylePanelActual": {
+    "bodies": [
+      {
+        "height": 376,
+        "overflow": "auto",
+        "scrollHeight": 376
+      }
+    ],
+    "headers": [
+      {
+        "expanded": "true",
+        "height": 36,
+        "text": "Overview",
+        "y": 159.40000915527344
+      },
+      {
+        "expanded": "false",
+        "height": 36,
+        "text": "Relationships",
+        "y": 571.2000122070312
+      },
+      {
+        "expanded": "false",
+        "height": 36,
+        "text": "Technical information",
+        "y": 607.2000122070312
+      }
+    ],
+    "root": {
+      "display": "flex",
+      "height": 559.2000122070312,
+      "overflow": "hidden"
+    },
+    "selectedTab": "true",
+    "viewport": {
+      "height": 668,
+      "width": 1010
+    }
+  },
+  "chatCueActual": "Selected: 3 selected items",
+  "layerRangeActual": [
+    {
+      "key": "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbNameInput",
+      "label": "Full name"
+    },
+    {
+      "key": "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbEmailLabel",
+      "label": "Label · Work email"
+    }
+  ],
+  "selectionGeometryStable": true,
+  "zoomGeometryStable": true,
+  "finalMetrics": {
+    "bodies": [
+      {
+        "height": 408,
+        "overflow": "auto",
+        "scrollHeight": 408
+      }
+    ],
+    "headers": [
+      {
+        "expanded": "true",
+        "height": 36,
+        "text": "Overview",
+        "y": 126.8000030517578
+      },
+      {
+        "expanded": "false",
+        "height": 36,
+        "text": "Relationships",
+        "y": 571.2000122070312
+      },
+      {
+        "expanded": "false",
+        "height": 36,
+        "text": "Technical information",
+        "y": 607.2000122070312
+      }
+    ],
+    "root": {
+      "display": "flex",
+      "height": 559.2000122070312,
+      "overflow": "hidden"
+    },
+    "selectedTab": "true",
+    "viewport": {
+      "height": 668,
+      "width": 1010
+    }
+  },
+  "final": {
+    "canvas": [
+      "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbNameInput"
+    ],
+    "captions": 0,
+    "edges": [
+      {
+        "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbCard%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22contains%22%2C%22%2Fnodes%2FonbCard%2Fchildren%2F3%22%5D",
+        "label": "Section -> Full name: Contains; /nodes/onbCard/children/3",
+        "path": "M248.7000676935369 116.60004771839488L268.7000676935369 116.60004771839488L 284.2000749067827,116.60004771839488Q 289.2000749067827,116.60004771839488 289.2000749067827,121.60004771839488L 289.2000749067827,245.59994229403407Q 289.2000749067827,250.59994229403407 294.2000749067827,250.59994229403407L309.7000821200284 250.59994229403407L329.7000821200284 250.59994229403407",
+        "selected": false
+      },
+      {
+        "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522style%2522%252C%2522src.onbNameInput.always.focus%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22styles%22%2C%22%2Fnodes%2FonbNameInput%2FstyleSources%2F0%22%5D",
+        "label": "Src onb Name Input always focus -> Full name: Styles; /nodes/onbNameInput/styleSources/0",
+        "path": "M248.7000676935369 456.6000255237926L268.7000676935369 456.6000255237926L 284.2000749067827,456.6000255237926Q 289.2000749067827,456.6000255237926 289.2000749067827,451.6000255237926L 289.2000749067827,303.5999866832386Q 289.2000749067827,298.5999866832386 294.2000749067827,298.5999866832386L309.7000821200284 298.5999866832386L329.7000821200284 298.5999866832386",
+        "selected": true
+      },
+      {
+        "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522style%2522%252C%2522src.onbNameInput.always.plain%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22styles%22%2C%22%2Fnodes%2FonbNameInput%2FstyleSources%2F1%22%5D",
+        "label": "Src onb Name Input always plain -> Full name: Styles; /nodes/onbNameInput/styleSources/1",
+        "path": "M248.7000676935369 602.5999977805398L268.7000676935369 602.5999977805398L 284.2000749067827,602.5999977805398Q 289.2000749067827,602.5999977805398 289.2000749067827,597.5999977805398L 289.2000749067827,303.5999866832386Q 289.2000749067827,298.5999866832386 294.2000749067827,298.5999866832386L309.7000821200284 298.5999866832386L329.7000821200284 298.5999866832386",
+        "selected": true
+      },
+      {
+        "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522fullName%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22value%22%2C%22%2Fnodes%2FonbNameInput%2Fattributes%2Fvalue%22%5D",
+        "label": "Full Name -> Full name: Value; /nodes/onbNameInput/attributes/value",
+        "path": "M248.7000676935369 310.5999866832386L268.7000676935369 310.5999866832386L 284.2000749067827,310.5999866832386Q 289.2000749067827,310.5999866832386 289.2000749067827,315.5999866832386L 289.2000749067827,317.6000088778409Q 289.2000749067827,322.6000088778409 294.2000749067827,322.6000088778409L309.7000821200284 322.6000088778409L329.7000821200284 322.6000088778409",
+        "selected": false
+      },
+      {
+        "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522fullName%2522%255D%22%2C%22updates%22%2C%22%2Fnodes%2FonbNameInput%2Finteractions%2F0%22%5D",
+        "label": "Full name -> Full Name: Updates; /nodes/onbNameInput/interactions/0",
+        "path": "M 559.1000260786576,250.59994229403407 L 579.1000260786576,250.59994229403407 L 579.1000260786576,352 L -0.7000011097301133,352 L -0.7000011097301133,286.600019975142 L 19.299998890269887,286.600019975142",
+        "selected": false
+      },
+      {
+        "id": "%5B%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522state%2522%252C%2522fullName%2522%255D%22%2C%22%255B%2522screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%2522%252C%2522node%2522%252C%2522onbNameInput%2522%255D%22%2C%22fallback%22%2C%22%2Fnodes%2FonbNameInput%2Finteractions%2F0%2Fvalue%22%5D",
+        "label": "Full Name -> Full name: Fallback; /nodes/onbNameInput/interactions/0/value",
+        "path": "M248.7000676935369 286.600019975142L268.7000676935369 286.600019975142L 284.2000749067827,286.600019975142Q 289.2000749067827,286.600019975142 289.2000749067827,281.600019975142L 289.2000749067827,279.600019975142Q 289.2000749067827,274.600019975142 294.2000749067827,274.600019975142L309.7000821200284 274.600019975142L329.7000821200284 274.600019975142",
+        "selected": false
+      }
+    ],
+    "footer": "Loaded the saved screen.@3 · v1_fe0ac678e805…",
+    "highlightedRows": [
+      {
+        "node": "Section: Section, source onbCard",
+        "port": "out-contains"
+      },
+      {
+        "node": "Input: Full name, source onbNameInput",
+        "port": "in-contains"
+      },
+      {
+        "node": "Input: Full name, source onbNameInput",
+        "port": "in-fallback"
+      },
+      {
+        "node": "Input: Full name, source onbNameInput",
+        "port": "in-styles"
+      },
+      {
+        "node": "Input: Full name, source onbNameInput",
+        "port": "in-value"
+      },
+      {
+        "node": "Input: Full name, source onbNameInput",
+        "port": "out-updates"
+      },
+      {
+        "node": "State: Full Name",
+        "port": "in-updates"
+      },
+      {
+        "node": "State: Full Name",
+        "port": "out-fallback"
+      },
+      {
+        "node": "State: Full Name",
+        "port": "out-value"
+      },
+      {
+        "node": "Style: Src onb Name Input always focus",
+        "port": "out-styles"
+      },
+      {
+        "node": "Style: Src onb Name Input always plain",
+        "port": "out-styles"
+      }
+    ],
+    "layers": [
+      "screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbNameInput"
+    ],
+    "nodes": [
+      {
+        "dimmed": false,
+        "height": 122,
+        "highlighted": true,
+        "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbCard%22%5D",
+        "label": "Section: Section, source onbCard",
+        "selected": false,
+        "transform": "translate(22px, 12px)",
+        "width": 224
+      },
+      {
+        "dimmed": false,
+        "height": 170,
+        "highlighted": true,
+        "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22node%22%2C%22onbNameInput%22%5D",
+        "label": "Input: Full name, source onbNameInput",
+        "selected": true,
+        "transform": "translate(332.4px, 170px)",
+        "width": 224
+      },
+      {
+        "dimmed": false,
+        "height": 146,
+        "highlighted": true,
+        "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22state%22%2C%22fullName%22%5D",
+        "label": "State: Full Name",
+        "selected": false,
+        "transform": "translate(22px, 182px)",
+        "width": 224
+      },
+      {
+        "dimmed": false,
+        "height": 98,
+        "highlighted": true,
+        "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22style%22%2C%22src.onbNameInput.always.focus%22%5D",
+        "label": "Style: Src onb Name Input always focus",
+        "selected": false,
+        "transform": "translate(22px, 376px)",
+        "width": 224
+      },
+      {
+        "dimmed": false,
+        "height": 98,
+        "highlighted": true,
+        "id": "%5B%22screen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b%22%2C%22style%22%2C%22src.onbNameInput.always.plain%22%5D",
+        "label": "Style: Src onb Name Input always plain",
+        "selected": false,
+        "transform": "translate(22px, 522px)",
+        "width": 224
+      }
+    ],
+    "panel": "1 node · 2 connections Overview  InputFull name×ConnectionStyle · Src onb Name Input always focus → Styles → Input · Full name×ConnectionStyle · Src onb Name Input always plain → Styles → Input · Full name×Relationships6 declared relationships; related items are not automatically selected. ContainsDocument declaration SectionSection→InputFull nameStylesDocument declaration StyleSrc onb Name Input always focus→InputFull nameStylesDocument declaration StyleSrc onb Name Input always plain→InputFull nameValueDocument declaration StateFull Name→InputFull nameUpdatesDocument declaration InputFull name→StateFull NameFallbackDocument declaration StateFull Name→InputFull name  Technical informationFull namescreen-9e31c267-f5d7-4ef3-bc72-71c6681b3f8b|onbNameInputStyle · Src onb Name Input always focus → Styles → Input · Full name/nodes/onbNameInput/styleSources/0Style · Src onb Name Input always plain → Styles → Input · Full name/nodes/onbNameInput/styleSources/1",
+    "tools": 0
+  }
+}

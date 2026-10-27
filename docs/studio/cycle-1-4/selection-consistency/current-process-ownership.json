@@ -1,0 +1,17 @@
+[
+  {
+    "ProcessId": 80664,
+    "ParentProcessId": 100764,
+    "CommandLine": "\"C:\\Program Files\\nodejs\\node.exe\" build"
+  },
+  {
+    "ProcessId": 100764,
+    "ParentProcessId": 97376,
+    "CommandLine": "\"C:\\Program Files\\nodejs\\node.exe\" apps/studio/scripts/launch-agent.mjs"
+  },
+  {
+    "ProcessId": 97376,
+    "ParentProcessId": 66036,
+    "CommandLine": "\"C:\\Users\\RZ1\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\native\\powershell\\pwsh.exe\" -NoProfile -File docs/studio/cycle-1-4/selection-consistency/launch-review.ps1"
+  }
+]
