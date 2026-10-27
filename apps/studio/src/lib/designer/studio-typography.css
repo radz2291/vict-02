@@ -86,5 +86,6 @@
 .studio-type-scope[data-studio-typography] .action-card .simulation-badge {font:var(--studio-font-meta)}
 
 /* Disclosure chrome shares the same quiet header role, including advanced tools. */
-.studio-type-scope[data-studio-typography] :is(.studio-disclosure > summary,.floating-selection .uv-inspector details > summary){font:var(--studio-font-ui);font-weight:var(--studio-weight-label)}
+.studio-type-scope[data-studio-typography] .studio-disclosure > summary,
+.studio-type-scope[data-studio-typography] .floating-selection .uv-inspector details > summary{font:var(--studio-font-ui);font-weight:var(--studio-weight-label)}
 .studio-type-scope[data-studio-typography] .studio-disclosure[open] > summary{font-weight:var(--studio-weight-selected)}

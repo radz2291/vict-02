@@ -414,6 +414,7 @@ body:has(.finished-screen) {
 .application-attachment {flex:none;font-size:11px;color:var(--vict-color-textMuted);}
 .application-attachment h3 {font-size:12px;font-weight:600;margin:12px 0 6px;color:var(--vict-color-text);}
 .application-attachment p {line-height:1.5;margin:0 0 10px;}
+.application-attachment p code {overflow-wrap:anywhere;}
 .application-attachment .source-preview {max-height:240px;overflow:auto;}
 .document-drawer :focus-visible {outline:2px solid var(--vict-color-accent);outline-offset:-1px;}
 
