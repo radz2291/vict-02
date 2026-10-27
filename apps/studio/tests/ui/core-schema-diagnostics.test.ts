@@ -6,6 +6,7 @@ import AgentChat from '../../src/lib/designer/AgentChat.svelte';
 import CoreAuthoringShowcase from '../../src/lib/designer/CoreAuthoringShowcase.svelte';
 import { newScreen } from '../../src/lib/designer/application.js';
 import { agentContext,documentCursor } from '../../src/lib/designer/agent-edits.js';
+import { STUDIO_TOOL_EVIDENCE_SCHEMA } from '../../src/lib/designer/tool-evidence.js';
 import { openAgentRun,validateAgentStart,type StudioAgentEvent } from '../../src/lib/server/designer-agent.js';
 
 let mounted:ReturnType<typeof mount>|undefined;
@@ -22,7 +23,7 @@ it('includes the separately labeled expandable diagnostic in the simulated publi
 it('keeps real same-pass malformed calls distinct while combining repeated parser diagnostics outside attempts (pinned offline executor through actual chat)',async()=>{
  const source=newScreen('Schema projection','schema-projection');const before=JSON.stringify(source);
  const cursor=documentCursor(source,'r1#0',crypto.randomUUID());const prompt='Check invalid fields without changing source';
- const validated=validateAgentStart({document:source,cursor,prompt,history:[]});if(!validated.ok)throw Error(validated.message);
+ const validated=validateAgentStart({document:source,cursor,prompt,history:[],toolEvidenceSchema:STUDIO_TOOL_EVIDENCE_SCHEMA});if(!validated.ok)throw Error(validated.message);
  const input=JSON.stringify({request:prompt,untrusted_history:[],untrusted_screen:agentContext(source,cursor)});
  const bad={expectedRevision:cursor.revision,reason:'Malformed expression probe',operations:[{op:'bind',nodeId:'screen',prop:'checked',expression:true}]};
  const modelResults:unknown[]=[];
@@ -63,6 +64,7 @@ it('keeps real same-pass malformed calls distinct while combining repeated parse
  expect(diagnostics.at(-1)?.evaluations).toBe(diagnostics.length);
  expect(diagnostics.at(-1)!.lastElapsedMs).toBeGreaterThanOrEqual(diagnostics[0]!.firstElapsedMs);
  expect(JSON.stringify(modelResults)).toContain('lastValidation');expect(JSON.stringify(modelResults)).toContain('operations.0.expression');
+ const exchanges=events.filter(event=>event.type==='tool-evidence');expect(exchanges).toHaveLength(6);expect(exchanges.filter(event=>event.phase==='input'&&event.availability==='unavailable')).toHaveLength(2);expect(exchanges.some(event=>event.phase==='result'&&event.status==='completed'&&event.payload?.text.includes('turnProgress'))).toBe(true);
  expect(events.some(event=>event.type==='proposal')).toBe(false);expect(JSON.stringify(source)).toBe(before);
  expect(events.at(-1)).toMatchObject({type:'done',status:'failed',applied:0,metrics:{toolCalls:3,refusedCalls:2,completedCalls:1}});
  await vi.waitFor(()=>expect(document.querySelectorAll('[data-event-id^="attempt-"]')).toHaveLength(3));

@@ -50,3 +50,14 @@ it('renders the shared evidence UI in a clearly simulated public Popover, includ
  expect(content().textContent).not.toContain('Reported authoring usage:');
  expect(content().textContent).not.toContain('Observed regions');
 });
+
+
+it('shows the quiet chronological Chat example with expandable Input and Result, honestly marked simulated',async()=>{
+ instance=mount(Cycle14Showcase,{target:document.body});flushSync();
+ const demo=document.querySelector<HTMLElement>('[aria-label="Quiet Chat presentation example"]')!;
+ expect(demo.textContent).toContain('SIMULATED');expect(demo.textContent).toContain('not a real agent turn');
+ expect([...demo.querySelectorAll('[data-event-kind]')].map(n=>n.getAttribute('data-event-kind'))).toEqual(['text','activity','text']);
+ const trigger=demo.querySelector<HTMLButtonElement>('[data-event-kind="activity"] button')!;expect(trigger.getAttribute('aria-expanded')).toBe('false');trigger.click();flushSync();
+ await vi.waitFor(()=>expect(trigger.getAttribute('aria-expanded')).toBe('true'));
+ expect(demo.querySelector('[aria-label="Tool input"]')?.textContent).toContain('"query": "nodes"');expect(demo.querySelector('[aria-label="Tool result"]')?.textContent).toContain('"ok": true');
+});
