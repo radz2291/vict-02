@@ -1,0 +1,14 @@
+Browser tab: 2, Title: "Foundation Responsive Desk — VICT", URL: "http://127.0.0.25:5626/run-screen?screen=screen-9bace222-383d-4579-a0ea-bd7a7112f1bd&width=823".
+The following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 59-71
+~								26 tab (selectable, settable, boolean) Projects, Value: 0, ID: bits-c24
+~								27 tab (selected, settable, boolean) Notes, Value: 1, ID: bits-c25
+~							53 container Description: Notes, ID: bits-c30
+~								54 container Notes section
+~									55 heading Notes, Value: 2
+~										56 text Notes
+~									57 text Project note draft
+~									58 text field (settable) Project note draft, Value: Saved Run draft — preserved through section switch, ID: notesField-control
++									59 text Kept as a local draft while you work; nothing is submitted.
++									60 text Your draft stays while you switch sections, open the details drawer or resize the preview. Manual context marker: desk-owner-keep-20261028.
+The focused UI element is 20 button Notes

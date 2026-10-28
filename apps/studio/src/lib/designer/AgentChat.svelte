@@ -20,6 +20,7 @@
   import { Conversation, conversationMessages, appendConversationEvent, type ConversationMessage, type ConversationEvent, type ConversationActivity, type SendAccepted, type ConversationToolPayload } from '@victframework/ui-ai-svelte';
   import '@victframework/ui-ai-svelte/styles.css';
   import { Popover } from '@victframework/ui-svelte/primitives';
+  import { Button } from '@victframework/ui-svelte/catalog/button';
   import type { UiConversationMessage, UiDocument } from '@victframework/ui';
   import type { AgentCursor, AgentProposal, EditFailure, EditReceipt } from './agent-edits.js';
   import { AGENT_REQUEST_BYTES, AGENT_STREAM_BYTES, AGENT_FRAME_CHARACTERS, boundedHistoryText, agentFailureMessage, withTurnAbort, type AgentWorkspaceFacts, type AgentCaptureTarget } from './agent-transport.js';
@@ -322,27 +323,29 @@ ${event.details}`};
       <span class="status-dot" class:status-dot--busy={busy} aria-hidden="true"></span>
       <span>{blocked?'Apply or cancel the current draft first.':busy&&!failed?'Working…':failed||!ready?status:status.startsWith('Stopped')?'Stopped':'Ready'}</span>
     </div>
-      {#if recovery}<button type="button" class="capture-retry" disabled={busy||recovering||blocked} onclick={()=>void retryObservation()}>Retry observation</button>{/if}
+      {#if recovery}<Button.Root type="button" class="vict-btn vict-btn--quiet capture-retry" disabled={busy||recovering||blocked} onclick={()=>void retryObservation()}>Retry observation</Button.Root>{/if}
       <Popover.Root>
-        <Popover.Trigger class="agent-details-trigger" aria-label="Chat details" title="Chat details">···</Popover.Trigger>
+        <Popover.Trigger class="vict-btn vict-btn--quiet studio-icon-control agent-details-trigger" aria-label="Chat details" title="Chat details">···</Popover.Trigger>
         <Popover.Content class="studio-chat-details" customAnchor={detailsAnchor ?? null} side="top" align="end" sideOffset={4} collisionPadding={8} collisionBoundary={detailsBoundary ?? panel ?? null} aria-label="Chat details">
-          <div class="details-heading"><h3>Chat details</h3><Popover.Close aria-label="Close chat details">×</Popover.Close></div>
+          <div class="details-heading"><h3>Chat details</h3><Popover.Close class="vict-btn vict-btn--quiet studio-icon-control" aria-label="Close chat details">×</Popover.Close></div>
           <p class="details-model">{model || 'VICT / Mastra'}</p>
-          {#if retainedTurns.length}<label class="turn-history-label">Turn details <select aria-label="Inspect turn" value={selectedTurn} onchange={(event)=>selectedTurn=event.currentTarget.value}><option value="latest">Latest activity</option>{#each retainedTurns as record}<option value={record.id}>{new Date(record.startedAt).toLocaleTimeString()} · {record.status} · {record.task.slice(0,60)}</option>{/each}</select></label><p>Up to 24 turns retained for 30 minutes in this tab. Reloading clears local history; server evidence also expires or disappears on restart/capacity eviction.</p>{/if}
+          <!-- Preserve exact history options: the standalone Select adds an empty choice.
+               This native field uses its canonical VICT input/select presentation recipe. -->
+          {#if retainedTurns.length}<label class="turn-history-label">Turn details <select class="vict-input vict-select" aria-label="Inspect turn" value={selectedTurn} onchange={(event)=>selectedTurn=event.currentTarget.value}><option value="latest">Latest activity</option>{#each retainedTurns as record}<option value={record.id}>{new Date(record.startedAt).toLocaleTimeString()} · {record.status} · {record.task.slice(0,60)}</option>{/each}</select></label><p>Up to 24 turns retained for 30 minutes in this tab. Reloading clears local history; server evidence also expires or disappears on restart/capacity eviction.</p>{/if}
           {#if selectedRecord}<h4>Recorded turn</h4><p>{selectedRecord.status} · {selectedRecord.applied} confirmed edits</p><p class="details-record">Run {selectedRecord.runId}{selectedRecord.engineTurnId?` · VICT turn ${selectedRecord.engineTurnId}`:''}<br />Source {selectedRecord.source.revision} → {selectedRecord.confirmedRevision??'terminal revision unavailable'}</p>{#if selectedRecord.expiresAt<=Date.now()}<p>Local record expired. Earlier transcript messages remain; this evidence is no longer available.</p>{/if}{/if}
           {#if selectedRecord}<details><summary>Source boundaries</summary><pre class="details-record">{JSON.stringify({start:selectedRecord.source,confirmedRevision:selectedRecord.confirmedRevision,final:selectedRecord.finalSource??'Exact terminal cursor unavailable'},null,2)}</pre></details>{/if}
           {#if selectionLabel && selectionLabel!=='None'}<p>Selected: {selectionLabel}</p>{/if}
           <p>{selectedRecord?`${selectedRecord.status}${selectedRecord.code?` · ${selectedRecord.code}`:''}`:status}</p>
           {#if !ready}<p>Set the server’s model and provider key, then restart Studio. Credentials stay on the server.</p>{/if}
-          <button type="button" class="details-reconnect" disabled={busy} onclick={()=>void configure()}>Reconnect agent</button>
+          <Button.Root type="button" class="vict-btn vict-btn--secondary details-reconnect" disabled={busy} onclick={()=>void configure()}>Reconnect agent</Button.Root>
           <AgentTurnEvidence metrics={detailMetrics} regions={detailRegions} />
           {#if detailProviderLimit}<h4>Provider limit</h4><p>{providerLimitMessage(detailProviderLimit)}</p><pre class="details-record">{JSON.stringify(detailProviderLimit,null,2)}</pre><p>Only structured provider status and unambiguous timing are retained. No raw provider error, response body, headers or credentials are shown.</p>{/if}
           {#if detailProgress.length}<h4>Progress summaries</h4><p>Connection, validation and completion metadata. The conversation contains actual assistant messages and tool calls.</p><ol>{#each detailProgress as message}<li>{message}</li>{/each}</ol>{/if}
           {#if Object.keys(detailDiagnostics).length}<h4>Input schema diagnostics</h4>{#each Object.entries(detailDiagnostics) as [id,detail]}<pre class="details-record" data-diagnostic-id={id}>{detail}</pre>{/each}{/if}
           {#if Object.keys(detailReceipts).length}<h4>Tool receipts</h4>{#each Object.entries(detailReceipts) as [id,call]}<div data-tool-receipt={id}><p>{call.title}</p><ol>{#each call.stages as stage}<li>{stage.title} · {stage.state}{#if stage.detail}<pre class="details-record">{stage.detail}</pre>{/if}</li>{/each}</ol></div>{/each}{/if}
-          {#if detailArchives.length}<h4>Sanitized exchanges</h4><p>Compact previews remain in the conversation. Open a retained original page here; this never invokes a tool again.</p>{#each detailArchives as reference}<div data-evidence-archive={reference.id}><p>{toolLabel(reference.tool)} · {reference.phase}{reference.redacted?' · redacted':''}{reference.truncated?' · bounded original is partial':''}</p><button type="button" class="details-reconnect" onclick={()=>void loadArchive(reference)}>Open first page</button>{#if archivePages[reference.id]}{@const page=archivePages[reference.id]!}{#if page.message}<p>{page.message}</p>{:else}<p>Characters {page.offset}–{page.offset+page.text.length} of {reference.totalCharacters}</p><pre class="details-record">{page.text}</pre>{#if page.nextOffset!==null}<button type="button" class="details-reconnect" onclick={()=>void loadArchive(reference,page.nextOffset!)}>Next page</button>{/if}{/if}{/if}</div>{/each}{/if}
+          {#if detailArchives.length}<h4>Sanitized exchanges</h4><p>Compact previews remain in the conversation. Open a retained original page here; this never invokes a tool again.</p>{#each detailArchives as reference}<div data-evidence-archive={reference.id}><p>{toolLabel(reference.tool)} · {reference.phase}{reference.redacted?' · redacted':''}{reference.truncated?' · bounded original is partial':''}</p><Button.Root type="button" class="vict-btn vict-btn--secondary details-reconnect" onclick={()=>void loadArchive(reference)}>Open first page</Button.Root>{#if archivePages[reference.id]}{@const page=archivePages[reference.id]!}{#if page.message}<p>{page.message}</p>{:else}<p>Characters {page.offset}–{page.offset+page.text.length} of {reference.totalCharacters}</p><pre class="details-record">{page.text}</pre>{#if page.nextOffset!==null}<Button.Root type="button" class="vict-btn vict-btn--secondary details-reconnect" onclick={()=>void loadArchive(reference,page.nextOffset!)}>Next page</Button.Root>{/if}{/if}{/if}</div>{/each}{/if}
           {#if detailEvidence}<h4>Connection record</h4><p class="details-record">{detailEvidence}</p>{/if}
-          {#if recovery}<h4>Preview recovery</h4><p>Task: {recovery.task}</p><p>{recovery.reason}</p><button type="button" class="details-reconnect capture-only-retry" disabled={busy||recovering||blocked} onclick={()=>void retryCapture()}>Capture for my inspection</button><button type="button" class="details-reconnect agent-observation-retry" disabled={busy||recovering||blocked} onclick={()=>void retryObservation()}>Retry observation with agent</button>{#if recoveryNote}<p role="status">{recoveryNote}</p>{/if}{#if recoveryImage}<img class="recovery-preview" src={recoveryImage} alt="Recovered preview capture for owner inspection; no interaction verification" />{/if}{/if}
+          {#if recovery}<h4>Preview recovery</h4><p>Task: {recovery.task}</p><p>{recovery.reason}</p><Button.Root type="button" class="vict-btn vict-btn--secondary details-reconnect capture-only-retry" disabled={busy||recovering||blocked} onclick={()=>void retryCapture()}>Capture for my inspection</Button.Root><Button.Root type="button" class="vict-btn vict-btn--secondary details-reconnect agent-observation-retry" disabled={busy||recovering||blocked} onclick={()=>void retryObservation()}>Retry observation with agent</Button.Root>{#if recoveryNote}<p role="status">{recoveryNote}</p>{/if}{#if recoveryImage}<img class="recovery-preview" src={recoveryImage} alt="Recovered preview capture for owner inspection; no interaction verification" />{/if}{/if}
         </Popover.Content>
       </Popover.Root>
   </div>
@@ -351,11 +354,9 @@ ${event.details}`};
 <style>
   .agent-chat{display:flex;flex-direction:column;min-height:0;min-width:0;width:320px;border-right:1px solid var(--vict-color-border);background:var(--vict-color-surface);color:var(--vict-color-text);overflow:hidden;font-size:12px}
   .agent-footer{display:flex;flex:none;align-items:center;justify-content:space-between;padding:3px 12px 6px;gap:8px}
-  .capture-retry{flex:none;border:0;background:transparent;color:var(--vict-color-accent);font:inherit;font-size:10px;cursor:pointer;padding:4px}.capture-retry:disabled{opacity:.5;cursor:default}
-  .agent-chat :global(.recovery-preview){display:block;max-width:100%;height:auto}.agent-chat :global(.turn-history-label select){display:block;width:100%;font:inherit;color:inherit;background:var(--vict-color-surface)}
-  :global(.agent-details-trigger){flex:none;height:28px;border:1px solid transparent;border-radius:5px;background:transparent;color:var(--vict-color-textMuted);cursor:pointer;padding:3px 8px;width:28px;font-size:20px;line-height:1}
-  :global(.agent-details-trigger:hover),:global(.agent-details-trigger[data-state="open"]){background:var(--vict-rhea-muted)}
-  :global(.agent-details-trigger:focus-visible),.agent-chat :global(.details-reconnect:focus-visible),.agent-chat :global(.details-heading button:focus-visible){outline:2px solid var(--vict-color-focusRing);outline-offset:2px}
+  .agent-chat :global(.capture-retry){flex:none}
+  .agent-chat :global(.recovery-preview){display:block;max-width:100%;height:auto}.agent-chat :global(.turn-history-label select){display:block;width:100%}
+  .agent-chat :global(.agent-details-trigger){flex:none}
   .agent-chat :global(.vict-ai-conversation){flex:1;min-height:0;height:auto}
   .agent-status{flex:1;min-width:0;display:flex;align-items:flex-start;gap:6px;margin:0;color:var(--vict-color-textMuted);font-size:10px;line-height:1.5;min-height:15px;overflow-wrap:anywhere}
   .agent-status>span:last-child{display:-webkit-box;line-clamp:2;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
@@ -367,9 +368,7 @@ ${event.details}`};
   .agent-chat :global(.studio-chat-details p){margin:6px 0;color:inherit}
   .agent-chat :global(.studio-chat-details .details-model){font-size:10px;color:var(--vict-color-textMuted)}
   .agent-chat :global(.details-heading){display:flex;align-items:center;justify-content:space-between}
-  .agent-chat :global(.details-heading button){border:0;background:transparent;color:var(--vict-color-textMuted);font-size:18px;cursor:pointer;line-height:1;padding:2px 4px}
-  .agent-chat :global(.details-reconnect){border:1px solid var(--vict-color-border);border-radius:5px;background:var(--vict-color-surface);color:var(--vict-color-accent);padding:5px 8px;font:inherit;cursor:pointer;margin-top:5px}
-  .agent-chat :global(.details-reconnect:disabled){opacity:.5;cursor:default}
+  .agent-chat :global(.details-reconnect){margin-top:var(--studio-space-1)}
   .agent-chat :global(.studio-chat-details ol){padding-left:17px;margin:0}.agent-chat :global(.studio-chat-details li){margin:5px 0}
   .agent-chat :global(.studio-chat-details .details-record){font:10px/1.6 ui-monospace,monospace;color:var(--vict-color-textMuted);white-space:pre-wrap;overflow-wrap:anywhere}
   @media(max-width:760px){.agent-chat{width:100%;height:320px;max-height:46vh;border-right:0;border-bottom:1px solid var(--vict-color-border);flex-shrink:0}.agent-chat :global(.vict-conversation-textarea){min-height:52px;max-height:76px}}

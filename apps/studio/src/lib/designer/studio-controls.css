@@ -18,6 +18,12 @@
 .studio-type-scope[data-studio-typography] :is(.vict-control-help, small) {
   font: var(--studio-font-meta);
 }
+.studio-type-scope[data-studio-typography] .studio-icon-control {
+  width: var(--studio-icon-control-size);
+  height: var(--studio-icon-control-size);
+  min-width: var(--studio-icon-control-size);
+  padding: 0;
+}
 .studio-type-scope[data-studio-typography] .studio-control-stack {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
