@@ -1,0 +1,21 @@
+
+ RUN  v3.2.7 C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/apps/studio
+
+12:37:00 am [vite-plugin-svelte] C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+12:37:01 am [vite-plugin-svelte] C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/packages/ui-svelte/src/document/RenderNode.svelte:311:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+12:37:01 am [vite-plugin-svelte] C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/packages/ui-svelte/src/document/RenderNode.svelte:311:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+12:37:01 am [vite-plugin-svelte] C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/packages/ui-svelte/src/document/RenderNode.svelte:381:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+12:37:01 am [vite-plugin-svelte] C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/packages/ui-svelte/src/document/RenderNode.svelte:381:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+ Γ£ô tests/designer-cycle14-efficiency.test.ts (6 tests | 5 skipped) 1935ms
+   Γ£ô enforces completed knowledge and delivers measured progress through the actual pinned executor (offline model, no provider/design quality claim)  1933ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed | 5 skipped (6)
+   Start at  00:36:46
+   Duration  36.67s (transform 19.74s, setup 0ms, collect 33.56s, tests 1.94s, environment 0ms, prepare 512ms)
+

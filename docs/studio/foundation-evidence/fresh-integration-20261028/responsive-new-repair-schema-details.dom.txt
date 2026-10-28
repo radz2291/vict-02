@@ -1,0 +1,440 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Foundation Responsive Desk"
+  - generic: ✓ Saved
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- banner:
+  - strong: Chat
+  - button "Hide Chat":
+- complementary "Chat":
+  - region "Conversation":
+    - region "Messages — Message":
+      - log:
+        - generic: You
+        - generic: "Repair only the current Foundation Responsive Desk saved r1.r2; preserve all other screens and existing behavior. This follows a real manual edit: preserve the exact text marker desk-owner-keep-20261028 in notesHint-text, the notesDraft state identity and current draft. Native tests found these concrete issues: root clientWidth375/scrollWidth391 at narrow preset; header navigation has zero intrinsic container width and a fixed44px trigger that clips its label; local padding/font declarations mask compact conditional styles; Notes bypasses the public Rhea input recipe; All uses an em-dash search sentinel rather than an empty query; Replay welcome merely switches reset keys. Fix these using existing public contracts and semantic theme roles/declared parts. Use the rhea-input recipe and supported wireInput with existing notesDraft, and rhea-native-select with options All empty string, Draft draft, Ready ready; bind a string query to filtered-list query/queryChange. Give navigation meaningful available width (a separate full-width header row is acceptable), remove masking local paint/spacing declarations in favor of ordered base/compact sources and actual theme roles, keep the paper palette. FirstVisit revision2 is now installed: inspect its exact contract, migrate welcomeVisit to revision2 with allowReset true using the existing campaign and stable resetKey r1, remove the misleading reset toggle/hint, and preserve reopen behavior. Keep the carousel, supplied InlineCitation, working Drawer and project selection. Use current source/cursor, not stale transcript expectations. Observe the current Notes/manual marker before edits and the final visible state; no synthetic runtime testing claims. Keep updates to short user outcomes, put tool/schema mechanics only in details, and finish in at most two short sentences distinguishing applied changes from untested interactions. If a tool refuses, recover within actual supported contracts, never invent authority or clear storage."
+        - button "Copy message":
+        - generic: Assistant
+        - generic "Conversation timeline":
+          - paragraph: I'll start by mapping the current document structure, state, and available recipes before making any changes.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph:
+            - text: "First page mapped:"
+            - code: screen → topbar(brandTitle, deskNav)
+            - text: ","
+            - code: welcomeVisit
+            - text: ","
+            - code: deskTabs → Projects/Notes panels
+            - text: . I already see
+            - code: projectFilter
+            - text: initial
+            - code: "\" \""
+            - text: (a sentinel, not empty). Continuing the inventory and locating the pattern/recipe identities I need.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph:
+            - text: "The full shape is emerging: em-dash"
+            - code: filterAll
+            - text: value
+            - code: "\"—\""
+            - text: +
+            - code: filterValue
+            - text: initial
+            - code: "\"—\""
+            - text: ", a bare native"
+            - code: notesInput
+            - text: ","
+            - code: welcomeVisit
+            - text: on first-visit rev 1 with a body that likely toggles
+            - code: welcomeReset
+            - text: . Now I need the remaining nodes, full source of the header/notes subtrees, the exact contracts, and current style sources/conditions/tokens.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph:
+            - text: I now have the full picture of components, conditions (
+            - code: compact
+            - text: = container studio-screen max-600px), the three compact style sources, and the em-dash sentinels (
+            - code: filterAll
+            - text: value
+            - code: "\"—\""
+            - text: ","
+            - code: filterValue
+            - text: initial
+            - code: "\"—\""
+            - text: ) plus the
+            - code: welcomeResetGroup
+            - text: /
+            - code: resetHint
+            - text: "pair that just flips reset keys. Next: continuation source pages, the two Rhea recipe compositions, capabilities for nodes I'll restyle/rewire, and the welcomeBody padding source."
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen failed" [expanded]:
+            - generic: Read screen
+            - generic: failed
+          - region "Tool input":
+            - heading "Input" [level=4]
+            - paragraph: "Unavailable: the call failed before validated invocation."
+          - region "Tool result":
+            - heading "Result" [level=4]
+            - paragraph: "Unavailable: no settled result was returned."
+          - button "Read screen failed":
+            - generic: Read screen
+            - generic: failed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+    - button "Scroll to latest message":
+      - generic: Scroll to end
+    - textbox "Message":
+      - /placeholder: Ask for a change…
+    - button "Stop":
+      - generic: Stop
+    - status
+  - status "Tool refused (VICT_TOOL_FAILED). Previously applied edits remain available.":
+    - generic: Working…
+  - button "Chat details" [expanded]: ···
+  - generic "Chat details":
+    - heading "Chat details" [level=3]
+    - button "Close chat details" [active]: ×
+    - paragraph: zai/glm-5.3-flash
+    - paragraph: "Selected: Container · Screen"
+    - paragraph: Tool refused (VICT_TOOL_FAILED). Previously applied edits remain available.
+    - button "Reconnect agent" [disabled]
+    - heading "Progress summaries" [level=4]
+    - paragraph: Connection, validation and completion metadata. The conversation contains actual assistant messages and tool calls.
+    - list:
+      - listitem: Connecting…
+      - listitem: Reading screen…
+      - listitem: Connecting to the VICT / Mastra agent…
+      - listitem: Agent is working on your request…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Tool refused (VICT_TOOL_FAILED). Previously applied edits remain available.
+      - listitem: Tool refused (VICT_TOOL_FAILED). Previously applied edits remain available.
+    - heading "Input schema diagnostics" [level=4]
+    - generic: "4 parser evaluations; these are not tool calls. No call identity is inferred. First observed 343420 ms; last observed 343422 ms since turn start. {\"code\":\"STUDIO_AGENT_READ_QUERY\",\"diagnostics\":[{\"path\":\"key\",\"message\":\"key is not used by section component. Allowed section fields: recipe.\"}]}"
+    - heading "Tool receipts" [level=4]
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 20762 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 20784 ms since turn start {\"expectedRevision\":\"r1.r2#0\",\"cursor\":{\"documentId\":\"screen-9bace222-383d-4579-a0ea-bd7a7112f1bd\",\"revision\":\"r1.r2#0\",\"digest\":\"53d17642bcc146677e967625b4db1fe2dd50c47752438187a90950a0808f0c84\",\"epoch\":\"94e156a5-29a9-4cbe-9f09-7dc206175c0b\"},\"section\":\"nodes\",\"scope\":{\"kind\":\"document\",\"nodeId\":null,\"includesInactiveSource\":true,\"expandsComponentDefinitions\":false},\"items\":[{\"id\":\"screen\",\"kind\":\"element\",\"tag\":\"main\",\"children\":[\"topbar\",\"welcomeVisit\",\"deskTabs\"],\"childCount\":3,\"sourcePreview\":\"{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"screen\\\",\\\"tag\\\":\\\"main\\\",\\\"attributes\\\":{\\\"aria-label\\\":\\\"Foundation Responsive Desk\\\"},\\\"children\\\":[\\\"topbar\\\",\\\"welcomeVisit\\\",\\\"deskTabs\\\"],\\\"localStyle\\\":[{\\\"property\\\":\\\"display\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"flex\\\"}},{\\\"property\\\":\\\"flex-direction\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"column\\\"}},{\\\"property\\\":\\\"gap\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"16px\\\"}},{\\\"property\\\":\\\"padding\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"28px\\\"}},{\\\"property\\\":\\\"min-height\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"560px\\\"}},{\\\"property\\\":\\\"font-family\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"system-ui, sans-serif\\\"}},{\\\"property\\\":\\\"margin-inline\\\",\\\"value… [truncated; use source pages]\"},{\"id\":\"topbar\",\"kind\":\"element\",\"tag\":\"header\",\"children\":[\"brandTitle\",\"deskNav\"],\"childCount\":2,\"sourcePreview\":\"{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"topbar\\\",\\\"tag\\\":\\\"header\\\",\\\"children\\\":[\\\"brandTitle\\\",\\\"deskNav\\\"],\\\"attributes\\\":{\\\"aria-label\\\":\\\"Desk header\\\"},\\\"localStyle\\\":[{\\\"property\\\":\\\"align-items\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"center\\\"}},{\\\"property\\\":\\\"border-bottom\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"1px solid #ddd5c7\\\"}},{\\\"property\\\":\\\"display\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"flex\\\"}},{\\\"property\\\":\\\"flex-wrap\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"wrap\\\"}},{\\\"property\\\":\\\"gap\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"12px\\\"}},{\\\"property\\\":\\\"justify-content\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"space-between\\\"}},{\\\"property\\\":\\\"padding-bottom\\\",\\\"value\\\":{\\\"type\\\":\\\"tex… [truncated; use source pages]\"},{\"id\":\"brandTitle\",\"kind\":\"element\",\"tag\":\"h1\",\"children\":[\"brandTitle-text\"],\"childCount\":1,\"sourcePreview\":\"{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"brandTitle\\\",\\\"tag\\\":\\\"h1\\\",\\\"children\\\":[\\\"brandTitle-text\\\"],\\\"localStyle\\\":[{\\\"property\\\":\\\"font-size\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"24px\\\"}},{\\\"property\\\":\\\"font-weight\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"600\\\"}},{\\\"property\\\":\\\"line-height\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"1.2\\\"}},{\\\"property\\\":\\\"margin\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"0\\\"}},{\\\"property\\\":\\\"letter-spacing\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"-0.01em\\\"}}],\\\"styleSources\\\":[\\\"src.brandTitle.compact.plain\\\"]}\"},{\"id\":\"brandTitle-text\",\"kind\":\"text\",\"children\":[],\"childCount\":0,\"sourcePreview\":\"{\\\"kind\\\":\\\"text\\\",\\\"id\\\":\\\"brandTitle-text\\\",\\\"content\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"Foundation Responsive Desk\\\"}}\"},{\"id\":\"deskNav\",\"kind\":\"component\",\"definitionId\":\"vict.pattern.navigation\",\"children\":[],\"childCount\":0,\"sourcePreview\":\"{\\\"kind\\\":\\\"component\\\",\\\"id\\\":\\\"deskNav\\\",\\\"definitionId\\\":\\\"vict.pattern.navigation\\\",\\\"revision\\\":\\\"2\\\",\\\"slots\\\":{},\\\"props\\\":{\\\"icons\\\":{\\\"type\\\":\\\"ref\\\",\\\"path\\\":\\\"state.catalog_deskNav_icons\\\"},\\\"items\\\":{\\\"type\\\":\\\"ref\\\",\\\"path\\\":\\\"state.catalog_deskNav_items\\\"},\\\"label\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"Desk navigation\\\"},\\\"menuIcon\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"menu\\\"},\\\"menuLabel\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"Desk menu\\\"},\\\"values\\\":{\\\"type\\\":\\\"ref\\\",\\\"path\\\":\\\"state.catalog_deskNav_values\\\"},\\\"selected\\\":{\\\"type\\\":\\\"ref\\\",\\\"path\\\":\\\"state.activeSection\\\"}},\\\"outputs\\\":{\\\"activate\\\":{\\\"setState\\\":{\\\"key\\\":\\\"activeSection\\\"}}},\\\"partStyles\\\":{\\\"trigger\\\":{\\\"localStyle\\\":[{\\\"p… [truncated; use source pages]\"},{\"id\":\"deskTabs\",\"kind\":\"component\" [Details truncated for the bounded trace. Read current source for complete facts.]"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 20763 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 20790 ms since turn start {\"expectedRevision\":\"r1.r2#0\",\"cursor\":{\"documentId\":\"screen-9bace222-383d-4579-a0ea-bd7a7112f1bd\",\"revision\":\"r1.r2#0\",\"digest\":\"53d17642bcc146677e967625b4db1fe2dd50c47752438187a90950a0808f0c84\",\"epoch\":\"94e156a5-29a9-4cbe-9f09-7dc206175c0b\"},\"section\":\"state\",\"items\":[{\"key\":\"message\",\"type\":\"string\",\"initialJson\":\"\\\"Hello from my screen\\\"\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"},{\"key\":\"accepted\",\"type\":\"boolean\",\"initialJson\":\"false\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"},{\"key\":\"dialogOpen\",\"type\":\"boolean\",\"initialJson\":\"false\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"},{\"key\":\"busy\",\"type\":\"boolean\",\"initialJson\":\"false\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"},{\"key\":\"actionError\",\"type\":\"string\",\"initialJson\":\"\\\"\\\"\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"},{\"key\":\"actionResult\",\"type\":\"string\",\"initialJson\":\"\\\"\\\"\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"},{\"key\":\"activeSection\",\"type\":\"string\",\"initialJson\":\"\\\"projects\\\"\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"},{\"key\":\"projectFilter\",\"type\":\"string\",\"initialJson\":\"\\\" \\\"\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"},{\"key\":\"selectedProject\",\"type\":\"string\",\"initialJson\":\"\\\"\\\"\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"},{\"key\":\"drawerOpen\",\"type\":\"boolean\",\"initialJson\":\"false\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"},{\"key\":\"notesDraft\",\"type\":\"string\",\"initialJson\":\"\\\"\\\"\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"},{\"key\":\"tipIndex\",\"type\":\"number\",\"initialJson\":\"0\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"}],\"total\":19,\"offset\":0,\"nextOffset\":12}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 20764 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 20803 ms since turn start {\"expectedRevision\":\"r1.r2#0\",\"cursor\":{\"documentId\":\"screen-9bace222-383d-4579-a0ea-bd7a7112f1bd\",\"revision\":\"r1.r2#0\",\"digest\":\"53d17642bcc146677e967625b4db1fe2dd50c47752438187a90950a0808f0c84\",\"epoch\":\"94e156a5-29a9-4cbe-9f09-7dc206175c0b\"},\"section\":\"palette\",\"items\":[{\"id\":\"section\",\"label\":\"Section\",\"description\":\"A vertical container for nested content\",\"preparation\":{\"rootKind\":\"element\",\"seedClasses\":[],\"seedStyles\":[{\"property\":\"display\",\"value\":{\"type\":\"text\",\"value\":\"flex\"}},{\"property\":\"flex-direction\",\"value\":{\"type\":\"text\",\"value\":\"column\"}},{\"property\":\"gap\",\"value\":{\"type\":\"text\",\"value\":\"16px\"}},{\"property\":\"padding\",\"value\":{\"type\":\"text\",\"value\":\"24px\"}},{\"property\":\"min-height\",\"value\":{\"type\":\"text\",\"value\":\"100px\"}},{\"property\":\"background-color\",\"value\":{\"type\":\"text\",\"value\":\"#f5f7fb\"}},{\"property\":\"border-radius\",\"value\":{\"type\":\"text\",\"value\":\"12px\"}}],\"styledNodeCount\":1,\"initialStateKeys\":[],\"definitionIds\":[],\"hostRequirements\":[],\"patternHostRequirements\":[],\"guidance\":\"Seed local styles remain in the authored source and override shared style sources. Review padding, minimum size, background and color before adding; replace/remove explicitly or use generic insert for an unstyled native element. Read component/recipe for full source.\"}},{\"id\":\"row\",\"label\":\"Row\",\"description\":\"Arrange children side by side, with wrapping\",\"preparation\":{\"rootKind\":\"element\",\"seedClasses\":[],\"seedStyles\":[{\"property\":\"display\",\"value\":{\"type\":\"text\",\"value\":\"flex\"}},{\"property\":\"flex-wrap\",\"value\":{\"type\":\"text\",\"value\":\"wrap\"}},{\"property\":\"gap\",\"value\":{\"type\":\"text\",\"value\":\"16px\"}},{\"property\":\"align-items\",\"value\":{\"type\":\"text\",\"value\":\"center\"}},{\"property\":\"min-height\",\"value\":{\"type\":\"text\",\"value\":\"60px\"}}],\"styledNodeCount\":1,\"initialStateKeys\":[],\"definitionIds\":[],\"hostRequirements\":[],\"patternHostRequirements\":[],\"guidance\":\"Seed local styles remain in the authored source and override shared style sources. Review padding, minimum size, background and color before adding; replace/remove explicitly or use generic insert for an unstyled native element. Read component/recipe for full source.\"}},{\"id\":\"heading\",\"label\":\"Heading\",\"description\":\"A clear title for your screen\",\"preparation\":{\"rootKind\":\"element\",\"seedClasses\":[],\"seedStyles\":[{\"property\":\"font-size\",\"value\":{\"type\":\"text\",\"value\":\"32px\"}},{\"property\":\"font-weight\",\"value\":{\"type\":\"text\",\"value\":\"600\"}},{\"property\":\"line-height\",\"value\":{\"type\":\"text\",\"value\":\"1.2\"}},{\"property\":\"margin\",\"value\":{\"type\":\"text\",\"value\":\"0\"}}],\"styledNodeCount\":1,\"initialStateKeys\":[],\"definitionIds\":[],\"hostRequirements\":[],\"patternHostRequirements\":[],\"guidance\":\"Seed local styles remain in the authored source and override shared style sources. Review padding, minimum size, background and color before adding; replace/remove explicitly or use generic insert for an unstyled native element. Read component/recipe for full source.\"}},{\"id\":\"text\",\"label\":\"Text\",\"description\":\"Supporting copy or a state-bound value\",\"preparation\":{\"rootKind\":\"element\",\"seedClasses\":[],\"seedStyles\":[{\"property\":\"font-size\",\"value\":{\"type\":\"text\",\"value\":\"16px\"}},{\"property\":\"line-height\",\"value\":{\"type\":\"text\",\"value\":\"1.6\"}},{\"property\":\"margin\",\"value\":{\"type\":\"text\",\"value\":\"0\"}},{\"property\":\"color\",\"value\":{\"type\":\"text\",\"value\":\"#647187\"}}],\"styledNodeCount\":1,\"initialStateKeys\":[],\"definitionIds\":[],\"hostRequirements\":[],\"patternHostRequirements\":[],\"guidance\":\"Seed local styles remain in the authored source and override shared style sources. Review padding, minimum size, background and color before adding; replace/remove explicitly or use generic insert for an unstyled native element. Read component/recipe for full source.\"}},{\"id\":\"input\",\"label\":\"Text input\",\"description\":\"Accessible text input with independent local state and change binding\",\"preparation\":{\"rootKind\":\"element [Details truncated for the bounded trace. Read current source for complete facts.]"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 59036 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 59046 ms since turn start {\"expectedRevision\":\"r1.r2#0\",\"cursor\":{\"documentId\":\"screen-9bace222-383d-4579-a0ea-bd7a7112f1bd\",\"revision\":\"r1.r2#0\",\"digest\":\"53d17642bcc146677e967625b4db1fe2dd50c47752438187a90950a0808f0c84\",\"epoch\":\"94e156a5-29a9-4cbe-9f09-7dc206175c0b\"},\"section\":\"nodes\",\"scope\":{\"kind\":\"document\",\"nodeId\":null,\"includesInactiveSource\":true,\"expandsComponentDefinitions\":false},\"items\":[{\"id\":\"projectsHeading\",\"kind\":\"element\",\"tag\":\"h2\",\"children\":[\"projectsHeading-text\"],\"childCount\":1,\"sourcePreview\":\"{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"projectsHeading\\\",\\\"tag\\\":\\\"h2\\\",\\\"children\\\":[\\\"projectsHeading-text\\\"],\\\"localStyle\\\":[{\\\"property\\\":\\\"font-size\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"19px\\\"}},{\\\"property\\\":\\\"font-weight\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"600\\\"}},{\\\"property\\\":\\\"line-height\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"1.2\\\"}},{\\\"property\\\":\\\"margin\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"0\\\"}}]}\"},{\"id\":\"projectsHeading-text\",\"kind\":\"text\",\"children\":[],\"childCount\":0,\"sourcePreview\":\"{\\\"kind\\\":\\\"text\\\",\\\"id\\\":\\\"projectsHeading-text\\\",\\\"content\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"Projects\\\"}}\"},{\"id\":\"filterGroup\",\"kind\":\"component\",\"definitionId\":\"vict.catalog.toggle-group\",\"children\":[\"filterAll\",\"filterDraft\",\"filterReady\"],\"childCount\":3,\"sourcePreview\":\"{\\\"kind\\\":\\\"component\\\",\\\"id\\\":\\\"filterGroup\\\",\\\"definitionId\\\":\\\"vict.catalog.toggle-group\\\",\\\"revision\\\":\\\"1\\\",\\\"slots\\\":{\\\"items\\\":{\\\"name\\\":\\\"items\\\",\\\"children\\\":[\\\"filterAll\\\",\\\"filterDraft\\\",\\\"filterReady\\\"]}},\\\"props\\\":{\\\"label\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"Filter projects by status\\\"},\\\"value\\\":{\\\"type\\\":\\\"ref\\\",\\\"path\\\":\\\"state.filterValue\\\"}},\\\"outputs\\\":{\\\"valueChange\\\":{\\\"setState\\\":{\\\"key\\\":\\\"filterValue\\\"}}}}\"},{\"id\":\"filterAll\",\"kind\":\"component\",\"definitionId\":\"vict.catalog.toggle-group-item\",\"children\":[],\"childCount\":0,\"sourcePreview\":\"{\\\"kind\\\":\\\"component\\\",\\\"id\\\":\\\"filterAll\\\",\\\"definitionId\\\":\\\"vict.catalog.toggle-group-item\\\",\\\"revision\\\":\\\"1\\\",\\\"slots\\\":{},\\\"props\\\":{\\\"label\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"All\\\"},\\\"value\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"—\\\"}}}\"},{\"id\":\"filterDraft\",\"kind\":\"component\",\"definitionId\":\"vict.catalog.toggle-group-item\",\"children\":[],\"childCount\":0,\"sourcePreview\":\"{\\\"kind\\\":\\\"component\\\",\\\"id\\\":\\\"filterDraft\\\",\\\"definitionId\\\":\\\"vict.catalog.toggle-group-item\\\",\\\"revision\\\":\\\"1\\\",\\\"slots\\\":{},\\\"props\\\":{\\\"label\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"Draft\\\"},\\\"value\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"draft\\\"}}}\"},{\"id\":\"filterReady\",\"kind\":\"component\",\"definitionId\":\"vict.catalog.toggle-group-item\",\"children\":[],\"childCount\":0,\"sourcePreview\":\"{\\\"kind\\\":\\\"component\\\",\\\"id\\\":\\\"filterReady\\\",\\\"definitionId\\\":\\\"vict.catalog.toggle-group-item\\\",\\\"revision\\\":\\\"1\\\",\\\"slots\\\":{},\\\"props\\\":{\\\"label\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"Ready\\\"},\\\"value\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"ready\\\"}}}\"},{\"id\":\"projectList\",\"kind\":\"component\",\"definitionId\":\"vict.pattern.filtered-list\",\"children\":[],\"childCount\":0,\"sourcePreview\":\"{\\\"kind\\\":\\\"component\\\",\\\"id\\\":\\\"projectList\\\",\\\"definitionId\\\":\\\"vict.pattern.filtered-list\\\",\\\"revision\\\":\\\"2\\\",\\\"slots\\\":{},\\\"props\\\":{\\\"emptyLabel\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"No projects match this filter\\\"},\\\"items\\\":{\\\"type\\\":\\\"ref\\\",\\\"path\\\":\\\"state.catalog_projectList_items\\\"},\\\"label\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"Projects\\\"},\\\"searchLabel\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"Search projects\\\"},\\\"query\\\":{\\\"type\\\":\\\"ref\\\",\\\"path\\\":\\\"state.filterValue\\\"}},\\\"outputs\\\":{\\\"queryChange\\\":{\\\"setState\\\":{\\\"key\\\":\\\"filterValue\\\"}},\\\"itemActivate\\\":{\\\"setState\\\":{\\\"key\\\":\\\"selectedProject\\\"}}}}\"},{\"id\":\"projectDrawer\",\"kind\":\"component\",\"definitionId\":\"vict.pattern.drawer\",\"children\":[\"drawerBody\"],\"childCount\":1,\"sourcePreview\":\"{\\\"kind\\\":\\\"component\\\",\\\"id\\\":\\\"projectDrawer\\\",\\\"definitionId\\\":\\\"vict.pattern.drawer\\\",\\\"revision\\\":\\\"1\\\",\\\"slots\\\":{\\\"body\\\":{\\\"name\\\": [Details truncated for the bounded trace. Read current source for complete facts.]"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 59036 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 59052 ms since turn start {\"expectedRevision\":\"r1.r2#0\",\"cursor\":{\"documentId\":\"screen-9bace222-383d-4579-a0ea-bd7a7112f1bd\",\"revision\":\"r1.r2#0\",\"digest\":\"53d17642bcc146677e967625b4db1fe2dd50c47752438187a90950a0808f0c84\",\"epoch\":\"94e156a5-29a9-4cbe-9f09-7dc206175c0b\"},\"section\":\"state\",\"items\":[{\"key\":\"welcomeReset\",\"type\":\"string\",\"initialJson\":\"\\\"r1\\\"\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"},{\"key\":\"catalog_deskNav_icons\",\"type\":\"stringList\",\"initialJson\":\"[\\\"folder\\\",\\\"pencil\\\"]\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"},{\"key\":\"catalog_deskNav_items\",\"type\":\"stringList\",\"initialJson\":\"[\\\"Projects\\\",\\\"Notes\\\"]\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"},{\"key\":\"catalog_deskNav_values\",\"type\":\"stringList\",\"initialJson\":\"[\\\"projects\\\",\\\"notes\\\"]\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"},{\"key\":\"catalog_projectList_items\",\"type\":\"stringList\",\"initialJson\":\"[\\\"Aster — Draft\\\",\\\"Birch — Ready\\\",\\\"Cedar — Draft\\\"]\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"},{\"key\":\"filterValue\",\"type\":\"string\",\"initialJson\":\"\\\"—\\\"\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"},{\"key\":\"catalog_tipsCarousel_slides\",\"type\":\"stringList\",\"initialJson\":\"[\\\"Tip 1 · Filter projects with All, Draft or Ready — the list updates instantly.\\\",\\\"Tip 2 · Pick a project, then open its details in the drawer; your note draft is safe.\\\",\\\"Tip 3 · Resize the preview: the navigation adapts and nothing overflows at 390px.\\\"]\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"}],\"total\":19,\"offset\":12,\"nextOffset\":null}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 59037 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 59055 ms since turn start {\"expectedRevision\":\"r1.r2#0\",\"cursor\":{\"documentId\":\"screen-9bace222-383d-4579-a0ea-bd7a7112f1bd\",\"revision\":\"r1.r2#0\",\"digest\":\"53d17642bcc146677e967625b4db1fe2dd50c47752438187a90950a0808f0c84\",\"epoch\":\"94e156a5-29a9-4cbe-9f09-7dc206175c0b\"},\"section\":\"catalog\",\"registryDigest\":\"f0bcb9c0e6cfa7a627d1bfd809d68913ae9f9ed07a9ea625ce2cee5a68461273\",\"items\":[],\"total\":0,\"offset\":0,\"nextOffset\":null}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 59038 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 59060 ms since turn start {\"expectedRevision\":\"r1.r2#0\",\"cursor\":{\"documentId\":\"screen-9bace222-383d-4579-a0ea-bd7a7112f1bd\",\"revision\":\"r1.r2#0\",\"digest\":\"53d17642bcc146677e967625b4db1fe2dd50c47752438187a90950a0808f0c84\",\"epoch\":\"94e156a5-29a9-4cbe-9f09-7dc206175c0b\"},\"section\":\"palette\",\"items\":[{\"id\":\"rhea-textarea\",\"label\":\"Text area · Rhea\",\"description\":\"Associated native label, typed local value and canonical change binding. No form transport. Uses the public Rhea stylesheet.\",\"preparation\":{\"rootKind\":\"element\",\"seedClasses\":[\"vict-rhea\",\"vict-rhea-field\"],\"seedStyles\":[],\"styledNodeCount\":0,\"initialStateKeys\":[\"rhea_example_value\"],\"definitionIds\":[],\"hostRequirements\":[],\"patternHostRequirements\":[\"Import @victframework/ui-svelte/rhea.css in the rendering host.\",\"Submission, authorization and persistence require declared host actions.\"],\"guidance\":\"Seed local styles remain in the authored source and override shared style sources. Review padding, minimum size, background and color before adding; replace/remove explicitly or use generic insert for an unstyled native element. Read component/recipe for full source.\"}},{\"id\":\"rhea-native-select\",\"label\":\"Native select · Rhea\",\"description\":\"Associated native label, typed local value and canonical change binding. No form transport. Uses the public Rhea stylesheet.\",\"preparation\":{\"rootKind\":\"element\",\"seedClasses\":[\"vict-rhea\",\"vict-rhea-field\"],\"seedStyles\":[],\"styledNodeCount\":0,\"initialStateKeys\":[\"rhea_example_value\"],\"definitionIds\":[],\"hostRequirements\":[],\"patternHostRequirements\":[\"Import @victframework/ui-svelte/rhea.css in the rendering host.\",\"Submission, authorization and persistence require declared host actions.\"],\"guidance\":\"Seed local styles remain in the authored source and override shared style sources. Review padding, minimum size, background and color before adding; replace/remove explicitly or use generic insert for an unstyled native element. Read component/recipe for full source.\"}},{\"id\":\"rhea-kbd\",\"label\":\"Keyboard hint · Rhea\",\"description\":\"A native kbd label; this does not register a shortcut. Uses the public Rhea stylesheet.\",\"preparation\":{\"rootKind\":\"element\",\"seedClasses\":[\"vict-rhea\",\"vict-rhea-kbd\"],\"seedStyles\":[],\"styledNodeCount\":0,\"initialStateKeys\":[],\"definitionIds\":[],\"hostRequirements\":[],\"patternHostRequirements\":[\"Import @victframework/ui-svelte/rhea.css in the rendering host.\",\"Only advertise shortcuts actually implemented by the host.\"],\"guidance\":\"Seed local styles remain in the authored source and override shared style sources. Review padding, minimum size, background and color before adding; replace/remove explicitly or use generic insert for an unstyled native element. Read component/recipe for full source.\"}},{\"id\":\"rhea-skeleton\",\"label\":\"Skeleton · Rhea\",\"description\":\"A decorative loading placeholder; drive visibility from real loading state. Uses the public Rhea stylesheet.\",\"preparation\":{\"rootKind\":\"element\",\"seedClasses\":[\"vict-rhea\",\"vict-rhea-skeleton\"],\"seedStyles\":[],\"styledNodeCount\":0,\"initialStateKeys\":[],\"definitionIds\":[],\"hostRequirements\":[],\"patternHostRequirements\":[\"Import @victframework/ui-svelte/rhea.css in the rendering host.\"],\"guidance\":\"Seed local styles remain in the authored source and override shared style sources. Review padding, minimum size, background and color before adding; replace/remove explicitly or use generic insert for an unstyled native element. Read component/recipe for full source.\"}},{\"id\":\"rhea-spinner\",\"label\":\"Spinner · Rhea\",\"description\":\"An accessible local status indicator with reduced-motion support; no fabricated task progress. Uses the public Rhea stylesheet.\",\"preparation\":{\"rootKind\":\"element\",\"seedClasses\":[\"vict-rhea\",\"vict-rhea-spinner\"],\"seedStyles\":[],\"styledNodeCount\":0,\"initialStateKeys\":[],\"definitionIds\":[],\"hostRequirements\":[],\"patternHostRequirements\":[\"Import @victframework/ui-sve [Details truncated for the bounded trace. Read current source for complete facts.]"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 133942 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 133956 ms since turn start {\"expectedRevision\":\"r1.r2#0\",\"cursor\":{\"documentId\":\"screen-9bace222-383d-4579-a0ea-bd7a7112f1bd\",\"revision\":\"r1.r2#0\",\"digest\":\"53d17642bcc146677e967625b4db1fe2dd50c47752438187a90950a0808f0c84\",\"epoch\":\"94e156a5-29a9-4cbe-9f09-7dc206175c0b\"},\"section\":\"nodes\",\"scope\":{\"kind\":\"document\",\"nodeId\":null,\"includesInactiveSource\":true,\"expandsComponentDefinitions\":false},\"items\":[{\"id\":\"welcomeBody\",\"kind\":\"element\",\"tag\":\"section\",\"children\":[\"welcomeHeading\",\"welcomeIntro\",\"tipsCarousel\",\"citationRow\",\"welcomeResetGroup\",\"resetHint\"],\"childCount\":6,\"sourcePreview\":\"{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"welcomeBody\\\",\\\"tag\\\":\\\"section\\\",\\\"children\\\":[\\\"welcomeHeading\\\",\\\"welcomeIntro\\\",\\\"tipsCarousel\\\",\\\"citationRow\\\",\\\"welcomeResetGroup\\\",\\\"resetHint\\\"],\\\"localStyle\\\":[{\\\"property\\\":\\\"background\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"#fffdf7\\\"}},{\\\"property\\\":\\\"border\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"1px solid #ddd5c7\\\"}},{\\\"property\\\":\\\"border-radius\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"12px\\\"}},{\\\"property\\\":\\\"display\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"flex\\\"}},{\\\"property\\\":\\\"flex-direction\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"column\\\"}},{\\\"property\\\":\\\"gap\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"12px\\\"}},{\\\"property\\\":\\\"padding\\\",\\\"val… [truncated; use source pages]\"},{\"id\":\"welcomeHeading\",\"kind\":\"element\",\"tag\":\"h2\",\"children\":[\"welcomeHeading-text\"],\"childCount\":1,\"sourcePreview\":\"{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"welcomeHeading\\\",\\\"tag\\\":\\\"h2\\\",\\\"children\\\":[\\\"welcomeHeading-text\\\"],\\\"localStyle\\\":[{\\\"property\\\":\\\"font-size\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"18px\\\"}},{\\\"property\\\":\\\"font-weight\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"600\\\"}},{\\\"property\\\":\\\"line-height\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"1.2\\\"}},{\\\"property\\\":\\\"margin\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"0\\\"}}]}\"},{\"id\":\"welcomeHeading-text\",\"kind\":\"text\",\"children\":[],\"childCount\":0,\"sourcePreview\":\"{\\\"kind\\\":\\\"text\\\",\\\"id\\\":\\\"welcomeHeading-text\\\",\\\"content\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"Welcome to your desk\\\"}}\"},{\"id\":\"welcomeIntro\",\"kind\":\"element\",\"tag\":\"p\",\"children\":[\"welcomeIntro-text\"],\"childCount\":1,\"sourcePreview\":\"{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"welcomeIntro\\\",\\\"tag\\\":\\\"p\\\",\\\"children\\\":[\\\"welcomeIntro-text\\\"],\\\"localStyle\\\":[{\\\"property\\\":\\\"font-size\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"16px\\\"}},{\\\"property\\\":\\\"line-height\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"1.6\\\"}},{\\\"property\\\":\\\"margin\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"0\\\"}},{\\\"property\\\":\\\"color\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"#5f6b80\\\"}}]}\"},{\"id\":\"welcomeIntro-text\",\"kind\":\"text\",\"children\":[],\"childCount\":0,\"sourcePreview\":\"{\\\"kind\\\":\\\"text\\\",\\\"id\\\":\\\"welcomeIntro-text\\\",\\\"content\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"A small working desk — switch Projects and Notes, filter by status, keep your note draft. Three quick tips:\\\"}}\"},{\"id\":\"tipsCarousel\",\"kind\":\"component\",\"definitionId\":\"vict.pattern.carousel\",\"children\":[],\"childCount\":0,\"sourcePreview\":\"{\\\"kind\\\":\\\"component\\\",\\\"id\\\":\\\"tipsCarousel\\\",\\\"definitionId\\\":\\\"vict.pattern.carousel\\\",\\\"revision\\\":\\\"2\\\",\\\"slots\\\":{},\\\"props\\\":{\\\"label\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"Three tips for this desk\\\"},\\\"loop\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":false},\\\"slides\\\":{\\\"type\\\":\\\"ref\\\",\\\"path\\\":\\\"state.catalog_tipsCarousel_slides\\\"},\\\"index\\\":{\\\"type\\\":\\\"ref\\\",\\\"path\\\":\\\"state.tipIndex\\\"}},\\\"outputs\\\":{\\\"indexChange\\\":{\\\"setState\\\":{\\\"key\\\":\\\"tipIndex\\\"}}}}\"},{\"id\":\"citationRow\",\"kind\":\"element\",\"tag\":\"div\",\"children\":[\"citationLabel\",\"designCitation\"],\"childCount\":2,\"sourcePreview\":\"{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"citationRow\\\",\\\"tag\\\":\\\"div\\\",\\\"children\\\":[\\\"citationLabel\\\",\\\"designCitation\\\"],\\\"localStyle\\\":[{\\\"property\\\":\\\"align-items\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"center\\\"}},{\\\"property\\\":\\\"display\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\" [Details truncated for the bounded trace. Read current source for complete facts.]"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 133943 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 133963 ms since turn start {\"expectedRevision\":\"r1.r2#0\",\"cursor\":{\"documentId\":\"screen-9bace222-383d-4579-a0ea-bd7a7112f1bd\",\"revision\":\"r1.r2#0\",\"digest\":\"53d17642bcc146677e967625b4db1fe2dd50c47752438187a90950a0808f0c84\",\"epoch\":\"94e156a5-29a9-4cbe-9f09-7dc206175c0b\"},\"section\":\"sources\",\"items\":[{\"nodeId\":\"screen\",\"sourceJson\":\"{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"screen\\\",\\\"tag\\\":\\\"main\\\",\\\"attributes\\\":{\\\"aria-label\\\":\\\"Foundation Responsive Desk\\\"},\\\"children\\\":[\\\"topbar\\\",\\\"welcomeVisit\\\",\\\"deskTabs\\\"],\\\"localStyle\\\":[{\\\"property\\\":\\\"display\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"flex\\\"}},{\\\"property\\\":\\\"flex-direction\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"column\\\"}},{\\\"property\\\":\\\"gap\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"16px\\\"}},{\\\"property\\\":\\\"padding\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"28px\\\"}},{\\\"property\\\":\\\"min-height\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"560px\\\"}},{\\\"property\\\":\\\"font-family\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"system-ui, sans-serif\\\"}},{\\\"property\\\":\\\"margin-inline\\\",\\\"value\",\"totalCharacters\":882,\"offset\":0,\"nextOffset\":600},{\"nodeId\":\"topbar\",\"sourceJson\":\"{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"topbar\\\",\\\"tag\\\":\\\"header\\\",\\\"children\\\":[\\\"brandTitle\\\",\\\"deskNav\\\"],\\\"attributes\\\":{\\\"aria-label\\\":\\\"Desk header\\\"},\\\"localStyle\\\":[{\\\"property\\\":\\\"align-items\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"center\\\"}},{\\\"property\\\":\\\"border-bottom\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"1px solid #ddd5c7\\\"}},{\\\"property\\\":\\\"display\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"flex\\\"}},{\\\"property\\\":\\\"flex-wrap\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"wrap\\\"}},{\\\"property\\\":\\\"gap\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"12px\\\"}},{\\\"property\\\":\\\"justify-content\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"space-between\\\"}},{\\\"property\\\":\\\"padding-bottom\\\",\\\"value\\\":{\\\"type\\\":\\\"tex\",\"totalCharacters\":621,\"offset\":0,\"nextOffset\":600},{\"nodeId\":\"brandTitle\",\"sourceJson\":\"{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"brandTitle\\\",\\\"tag\\\":\\\"h1\\\",\\\"children\\\":[\\\"brandTitle-text\\\"],\\\"localStyle\\\":[{\\\"property\\\":\\\"font-size\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"24px\\\"}},{\\\"property\\\":\\\"font-weight\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"600\\\"}},{\\\"property\\\":\\\"line-height\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"1.2\\\"}},{\\\"property\\\":\\\"margin\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"0\\\"}},{\\\"property\\\":\\\"letter-spacing\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"-0.01em\\\"}}],\\\"styleSources\\\":[\\\"src.brandTitle.compact.plain\\\"]}\",\"totalCharacters\":465,\"offset\":0,\"nextOffset\":null},{\"nodeId\":\"deskNav\",\"sourceJson\":\"{\\\"kind\\\":\\\"component\\\",\\\"id\\\":\\\"deskNav\\\",\\\"definitionId\\\":\\\"vict.pattern.navigation\\\",\\\"revision\\\":\\\"2\\\",\\\"slots\\\":{},\\\"props\\\":{\\\"icons\\\":{\\\"type\\\":\\\"ref\\\",\\\"path\\\":\\\"state.catalog_deskNav_icons\\\"},\\\"items\\\":{\\\"type\\\":\\\"ref\\\",\\\"path\\\":\\\"state.catalog_deskNav_items\\\"},\\\"label\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"Desk navigation\\\"},\\\"menuIcon\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"menu\\\"},\\\"menuLabel\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"Desk menu\\\"},\\\"values\\\":{\\\"type\\\":\\\"ref\\\",\\\"path\\\":\\\"state.catalog_deskNav_values\\\"},\\\"selected\\\":{\\\"type\\\":\\\"ref\\\",\\\"path\\\":\\\"state.activeSection\\\"}},\\\"outputs\\\":{\\\"activate\\\":{\\\"setState\\\":{\\\"key\\\":\\\"activeSection\\\"}}},\\\"partStyles\\\":{\\\"trigger\\\":{\\\"localStyle\\\":[{\\\"p\",\"totalCharacters\":721,\"offset\":0,\"nextOffset\":600},{\"nodeId\":\"notesSection\",\"sourceJson\":\"{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"notesSection\\\",\\\"tag\\\":\\\"section\\\",\\\"children\\\":[\\\"notesHeading\\\",\\\"noteLabel\\\",\\\"notesInput\\\",\\\"notesHint\\\"],\\\"attributes\\\":{\\\"aria-label\\\":\\\"Notes section\\\"},\\\"localStyle\\\":[{\\\"property\\\":\\\"display\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"flex\\\"}},{\\\"property\\\":\\\"flex-direction\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"column\\\"}},{\\\"property\\\":\\\"gap\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"12px\\\"}}]}\",\"totalCharacters\":369,\"offset\":0,\"nextOffset\":null},{\"nodeId\":\"notesInput\",\"sourceJson\":\"{\\\"kin [Details truncated for the bounded trace. Read current source for complete facts.]"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 133944 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 133970 ms since turn start {\"expectedRevision\":\"r1.r2#0\",\"cursor\":{\"documentId\":\"screen-9bace222-383d-4579-a0ea-bd7a7112f1bd\",\"revision\":\"r1.r2#0\",\"digest\":\"53d17642bcc146677e967625b4db1fe2dd50c47752438187a90950a0808f0c84\",\"epoch\":\"94e156a5-29a9-4cbe-9f09-7dc206175c0b\"},\"section\":\"contracts\",\"ok\":true,\"complete\":false,\"registryDigest\":\"f0bcb9c0e6cfa7a627d1bfd809d68913ae9f9ed07a9ea625ce2cee5a68461273\",\"items\":[{\"id\":\"vict.pattern.first-visit\",\"revision\":\"2\",\"digest\":\"926e2d07019f5843432fe6bfc244e28cc68354b045a1e458180c93dc58a23be6\",\"bodyIdentity\":\"studio-contract-body@2:guidance:926e2d07019f5843432fe6bfc244e28cc68354b045a1e458180c93dc58a23be6\",\"contractJson\":\"{\\\"descriptor\\\":{\\\"revision\\\":\\\"2\\\",\\\"abi\\\":\\\"vict.ui-component-abi@1\\\",\\\"events\\\":[\\\"vict.ui-component-abi@1\\\"],\\\"rendererImplementationId\\\":\\\"vict.svelte.patterns\\\",\\\"id\\\":\\\"vict.pattern.first-visit\\\",\\\"props\\\":[{\\\"name\\\":\\\"applicationId\\\",\\\"type\\\":\\\"string\\\",\\\"default\\\":\\\"\\\"},{\\\"name\\\":\\\"campaignId\\\",\\\"type\\\":\\\"string\\\",\\\"default\\\":\\\"\\\"},{\\\"name\\\":\\\"resetKey\\\",\\\"type\\\":\\\"string\\\",\\\"default\\\":\\\"\\\"},{\\\"name\\\":\\\"scope\\\",\\\"type\\\":\\\"string\\\",\\\"default\\\":\\\"browser\\\"},{\\\"name\\\":\\\"dismissed\\\",\\\"type\\\":\\\"boolean\\\",\\\"default\\\":false},{\\\"name\\\":\\\"dismissLabel\\\",\\\"type\\\":\\\"string\\\",\\\"default\\\":\\\"Dismiss\\\"},{\\\"name\\\":\\\"allowReopen\\\",\\\"type\\\":\\\"boolean\\\",\\\"default\\\":false},{\\\"name\\\":\\\"reopenLabel\\\",\\\"type\\\":\\\"string\\\",\\\"default\\\":\\\"Show offer\\\"},{\\\"name\\\":\\\"allowReset\\\",\\\"type\\\":\\\"boolean\\\",\\\"default\\\":false},{\\\"name\\\":\\\"resetLabel\\\",\\\"type\\\":\\\"string\\\",\\\"default\\\":\\\"Reset welcome\\\"}],\\\"outputs\\\":[{\\\"name\\\":\\\"showChange\\\",\\\"payload\\\":\\\"boolean\\\"},{\\\"name\\\":\\\"memoryStatus\\\",\\\"payload\\\":\\\"string\\\"},{\\\"name\\\":\\\"dismissedChange\\\",\\\"payload\\\":\\\"boolean\\\"}],\\\"slots\\\":[\\\"body\\\"],\\\"styleTargets\\\":[\\\"root\\\",\\\"body\\\",\\\"dismiss\\\",\\\"reset\\\"],\\\"inspectionLimits\\\":[\\\"First unacknowledged visit per application/campaign/reset key. Dismissal is persisted in origin-scoped localStorage by default or sessionStorage when scope=session. Storage failure is reported; persistence is never claimed when unavailable. No cross-device visitor identity.\\\",\\\"Optional reset removes only the current application/campaign/resetKey entry in the selected storage scope. The reset control remains after dismissal. Successful reset shows content and emits dismissedChange=false and showChange=true. Storage failure reports unavailable without claiming a successful reset.\\\"]},\\\"label\\\":\\\"First-visit campaign\\\",\\\"purpose\\\":\\\"Explicit per-application/campaign acknowledgement with durable browser or session memory and declared visibility output.\\\",\\\"guidance\\\":[\\\"applicationId and campaignId are required app-owned identities. Default scope=browser persists acknowledgement in this origin until the app changes resetKey or explicitly clears the campaign with the public helper. scope=session lasts in sessionStorage. No cross-device identity or browser-wide identity is implied.\\\",\\\"First visit means first unacknowledged visit; dismissal writes memory. allowReopen=false inserts no incidental re-open launcher. Opt in deliberately if desired.\\\",\\\"Body is content, not a modal by itself. Use showChange to control an actual drawer/dialog if a popup is intended. Its close action can set dismissed=true to acknowledge this campaign; the built-in Dismiss emits dismissedChange=true. memoryStatus reports ready/unavailable/invalid; unavailable storage means persistence cannot be promised. Test reload/new session/reset/storage denial independently.\\\",\\\"Revision 2 optionally enables allowReset and resetLabel. Its shared reset button stays available after dismissal and removes only this applicationId/campaignId/resetKey entry in the selected scope. Reset shows the body and emits dismissedChange=false and showChange=true; bind dismissedChange back to dismissed when controlling it. It does not clear any other application or campaign memory. Reset failures report unavailable and do [Details truncated for the bounded trace. Read current source for complete facts.]"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 133945 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 133974 ms since turn start {\"expectedRevision\":\"r1.r2#0\",\"cursor\":{\"documentId\":\"screen-9bace222-383d-4579-a0ea-bd7a7112f1bd\",\"revision\":\"r1.r2#0\",\"digest\":\"53d17642bcc146677e967625b4db1fe2dd50c47752438187a90950a0808f0c84\",\"epoch\":\"94e156a5-29a9-4cbe-9f09-7dc206175c0b\"},\"section\":\"registry\",\"registry\":\"styleSources\",\"items\":[{\"key\":\"src.screen.compact.plain\",\"sourcePreview\":\"{\\\"id\\\":\\\"src.screen.compact.plain\\\",\\\"declarations\\\":[{\\\"property\\\":\\\"padding\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"16px\\\"}}],\\\"conditionId\\\":\\\"compact\\\"}\"},{\"key\":\"src.brandTitle.compact.plain\",\"sourcePreview\":\"{\\\"id\\\":\\\"src.brandTitle.compact.plain\\\",\\\"declarations\\\":[{\\\"property\\\":\\\"font-size\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"20px\\\"}}],\\\"conditionId\\\":\\\"compact\\\"}\"},{\"key\":\"src.welcomeBody.compact.plain\",\"sourcePreview\":\"{\\\"id\\\":\\\"src.welcomeBody.compact.plain\\\",\\\"declarations\\\":[{\\\"property\\\":\\\"padding\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"14px\\\"}}],\\\"conditionId\\\":\\\"compact\\\"}\"}],\"total\":3,\"offset\":0,\"nextOffset\":null}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 133946 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 133977 ms since turn start {\"expectedRevision\":\"r1.r2#0\",\"cursor\":{\"documentId\":\"screen-9bace222-383d-4579-a0ea-bd7a7112f1bd\",\"revision\":\"r1.r2#0\",\"digest\":\"53d17642bcc146677e967625b4db1fe2dd50c47752438187a90950a0808f0c84\",\"epoch\":\"94e156a5-29a9-4cbe-9f09-7dc206175c0b\"},\"section\":\"registry\",\"registry\":\"conditions\",\"items\":[{\"key\":\"compact\",\"sourcePreview\":\"{\\\"id\\\":\\\"compact\\\",\\\"kind\\\":\\\"container\\\",\\\"name\\\":\\\"studio-screen\\\",\\\"query\\\":\\\"(max-width: 600px)\\\"}\"}],\"total\":1,\"offset\":0,\"nextOffset\":null}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 133946 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 133979 ms since turn start {\"expectedRevision\":\"r1.r2#0\",\"cursor\":{\"documentId\":\"screen-9bace222-383d-4579-a0ea-bd7a7112f1bd\",\"revision\":\"r1.r2#0\",\"digest\":\"53d17642bcc146677e967625b4db1fe2dd50c47752438187a90950a0808f0c84\",\"epoch\":\"94e156a5-29a9-4cbe-9f09-7dc206175c0b\"},\"section\":\"registry\",\"registry\":\"tokens\",\"items\":[],\"total\":0,\"offset\":0,\"nextOffset\":null}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 343405 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 343426 ms since turn start {\"expectedRevision\":\"r1.r2#0\",\"cursor\":{\"documentId\":\"screen-9bace222-383d-4579-a0ea-bd7a7112f1bd\",\"revision\":\"r1.r2#0\",\"digest\":\"53d17642bcc146677e967625b4db1fe2dd50c47752438187a90950a0808f0c84\",\"epoch\":\"94e156a5-29a9-4cbe-9f09-7dc206175c0b\"},\"section\":\"sources\",\"items\":[{\"nodeId\":\"screen\",\"sourceJson\":\"\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"auto\\\"}},{\\\"property\\\":\\\"max-width\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"1080px\\\"}},{\\\"property\\\":\\\"background-color\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"#f7f5f0\\\"}},{\\\"property\\\":\\\"color\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"#243047\\\"}}],\\\"styleSources\\\":[\\\"src.screen.compact.plain\\\"]}\",\"totalCharacters\":882,\"offset\":600,\"nextOffset\":null},{\"nodeId\":\"topbar\",\"sourceJson\":\"t\\\",\\\"value\\\":\\\"10px\\\"}}]}\",\"totalCharacters\":621,\"offset\":600,\"nextOffset\":null},{\"nodeId\":\"deskNav\",\"sourceJson\":\"roperty\\\":\\\"height\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"40px\\\"}},{\\\"property\\\":\\\"width\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"44px\\\"}}]}}}\",\"totalCharacters\":721,\"offset\":600,\"nextOffset\":null},{\"nodeId\":\"notesInput\",\"sourceJson\":\",{\\\"property\\\":\\\"padding\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"10px 12px\\\"}},{\\\"property\\\":\\\"width\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"100%\\\"}}],\\\"interactions\\\":[{\\\"on\\\":\\\"change\\\",\\\"action\\\":\\\"setState\\\",\\\"key\\\":\\\"notesDraft\\\",\\\"value\\\":{\\\"type\\\":\\\"ref\\\",\\\"path\\\":\\\"state.notesDraft\\\"}}]}\",\"totalCharacters\":850,\"offset\":600,\"nextOffset\":null}],\"paging\":\"Lossless text pages for each named source at this exact cursor. Completed shorter items remain complete on later shared-offset pages. Stop only when every nextOffset is null.\"}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 343405 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 343429 ms since turn start {\"expectedRevision\":\"r1.r2#0\",\"cursor\":{\"documentId\":\"screen-9bace222-383d-4579-a0ea-bd7a7112f1bd\",\"revision\":\"r1.r2#0\",\"digest\":\"53d17642bcc146677e967625b4db1fe2dd50c47752438187a90950a0808f0c84\",\"epoch\":\"94e156a5-29a9-4cbe-9f09-7dc206175c0b\"},\"section\":\"sources\",\"items\":[{\"nodeId\":\"welcomeBody\",\"sourceJson\":\"{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"welcomeBody\\\",\\\"tag\\\":\\\"section\\\",\\\"children\\\":[\\\"welcomeHeading\\\",\\\"welcomeIntro\\\",\\\"tipsCarousel\\\",\\\"citationRow\\\",\\\"welcomeResetGroup\\\",\\\"resetHint\\\"],\\\"localStyle\\\":[{\\\"property\\\":\\\"background\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"#fffdf7\\\"}},{\\\"property\\\":\\\"border\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"1px solid #ddd5c7\\\"}},{\\\"property\\\":\\\"border-radius\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"12px\\\"}},{\\\"property\\\":\\\"display\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"flex\\\"}},{\\\"property\\\":\\\"flex-direction\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"column\\\"}},{\\\"property\\\":\\\"gap\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"12px\\\"}},{\\\"property\\\":\\\"padding\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"18px\\\"}}],\\\"styleSources\\\":[\\\"src.welcomeBody.compact.plain\\\"]}\",\"totalCharacters\":686,\"offset\":0,\"nextOffset\":null}],\"paging\":\"Lossless text pages for each named source at this exact cursor. Completed shorter items remain complete on later shared-offset pages. Stop only when every nextOffset is null.\"}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 343406 ms since turn start
+      - text: Tool failed (VICT_TOOL_FAILED); prior commits remain · failed
+      - generic: "tool-failed studio_screen_read 343442 ms since turn start {\"code\":\"VICT_TOOL_FAILED\"}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 343407 ms since turn start
+      - text: Tool failed (VICT_TOOL_FAILED); prior commits remain · failed
+      - generic: "tool-failed studio_screen_read 343443 ms since turn start {\"code\":\"VICT_TOOL_FAILED\"}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 343407 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 343431 ms since turn start {\"expectedRevision\":\"r1.r2#0\",\"cursor\":{\"documentId\":\"screen-9bace222-383d-4579-a0ea-bd7a7112f1bd\",\"revision\":\"r1.r2#0\",\"digest\":\"53d17642bcc146677e967625b4db1fe2dd50c47752438187a90950a0808f0c84\",\"epoch\":\"94e156a5-29a9-4cbe-9f09-7dc206175c0b\"},\"section\":\"capabilities\",\"nodeId\":\"deskNav\",\"kind\":\"component\",\"available\":true,\"definitionId\":\"vict.pattern.navigation\",\"revision\":\"2\",\"contractDigest\":\"f6adfe2c78452f3fe7d87ecc59987ea36c6fbfb0113ea1e931eac2e419cd18d2\",\"eligibility\":{\"kind\":\"standalone\"},\"props\":[{\"name\":\"label\",\"type\":\"string\"},{\"name\":\"menuLabel\",\"type\":\"string\"},{\"name\":\"items\",\"type\":\"stringList\"},{\"name\":\"values\",\"type\":\"stringList\"},{\"name\":\"selected\",\"type\":\"string\"},{\"name\":\"iconPack\",\"type\":\"string\"},{\"name\":\"iconRevision\",\"type\":\"string\"},{\"name\":\"menuIcon\",\"type\":\"string\"},{\"name\":\"icons\",\"type\":\"stringList\"}],\"outputs\":[{\"name\":\"activate\",\"payload\":\"string\"}],\"slots\":[\"triggerIcon\"],\"requiredSlots\":[],\"presentation\":{\"declaredParts\":[\"root\",\"trigger\",\"items\",\"item\",\"triggerIcon\",\"itemIcon\"],\"partStyle\":{\"supported\":true,\"operation\":\"style\",\"partField\":\"part\",\"targets\":[\"root\",\"trigger\",\"items\",\"item\",\"triggerIcon\",\"itemIcon\"],\"states\":[\"base\",\"hover\",\"focus\",\"active\",\"disabled\"],\"conditions\":true,\"guidance\":\"Select an exact declared semantic part. Styling affects only that owned implementation surface; preflight checks this source and installed renderer contract.\"},\"legacyStyle\":{\"operation\":\"style\",\"part\":null,\"conditional\":false,\"guidance\":\"Without part, base styling reaches the primary presentation target. Legacy conditional styling requires an element; use an explicit component part instead.\"}},\"compositionRules\":[],\"validation\":\"Use read preflight with the complete edit. Capability metadata does not prove observed appearance or exercised interaction.\"}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 343408 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 343434 ms since turn start {\"expectedRevision\":\"r1.r2#0\",\"cursor\":{\"documentId\":\"screen-9bace222-383d-4579-a0ea-bd7a7112f1bd\",\"revision\":\"r1.r2#0\",\"digest\":\"53d17642bcc146677e967625b4db1fe2dd50c47752438187a90950a0808f0c84\",\"epoch\":\"94e156a5-29a9-4cbe-9f09-7dc206175c0b\"},\"section\":\"capabilities\",\"nodeId\":\"welcomeVisit\",\"kind\":\"component\",\"available\":true,\"definitionId\":\"vict.pattern.first-visit\",\"revision\":\"1\",\"contractDigest\":\"31c6730d2ad291ee3520060ed18c9a92bff20330a662b865abd9467c39b51887\",\"eligibility\":{\"kind\":\"standalone\"},\"props\":[{\"name\":\"applicationId\",\"type\":\"string\"},{\"name\":\"campaignId\",\"type\":\"string\"},{\"name\":\"resetKey\",\"type\":\"string\"},{\"name\":\"scope\",\"type\":\"string\"},{\"name\":\"dismissed\",\"type\":\"boolean\"},{\"name\":\"dismissLabel\",\"type\":\"string\"},{\"name\":\"allowReopen\",\"type\":\"boolean\"},{\"name\":\"reopenLabel\",\"type\":\"string\"}],\"outputs\":[{\"name\":\"showChange\",\"payload\":\"boolean\"},{\"name\":\"memoryStatus\",\"payload\":\"string\"},{\"name\":\"dismissedChange\",\"payload\":\"boolean\"}],\"slots\":[\"body\"],\"requiredSlots\":[],\"presentation\":{\"declaredParts\":[\"root\",\"body\",\"dismiss\"],\"partStyle\":{\"supported\":true,\"operation\":\"style\",\"partField\":\"part\",\"targets\":[\"root\",\"body\",\"dismiss\"],\"states\":[\"base\",\"hover\",\"focus\",\"active\",\"disabled\"],\"conditions\":true,\"guidance\":\"Select an exact declared semantic part. Styling affects only that owned implementation surface; preflight checks this source and installed renderer contract.\"},\"legacyStyle\":{\"operation\":\"style\",\"part\":null,\"conditional\":false,\"guidance\":\"Without part, base styling reaches the primary presentation target. Legacy conditional styling requires an element; use an explicit component part instead.\"}},\"compositionRules\":[],\"validation\":\"Use read preflight with the complete edit. Capability metadata does not prove observed appearance or exercised interaction.\"}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 343409 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 343436 ms since turn start {\"expectedRevision\":\"r1.r2#0\",\"cursor\":{\"documentId\":\"screen-9bace222-383d-4579-a0ea-bd7a7112f1bd\",\"revision\":\"r1.r2#0\",\"digest\":\"53d17642bcc146677e967625b4db1fe2dd50c47752438187a90950a0808f0c84\",\"epoch\":\"94e156a5-29a9-4cbe-9f09-7dc206175c0b\"},\"section\":\"capabilities\",\"nodeId\":\"projectList\",\"kind\":\"component\",\"available\":true,\"definitionId\":\"vict.pattern.filtered-list\",\"revision\":\"2\",\"contractDigest\":\"b2e34b5eadc8ec7b7ecd2c093507e7c155cc6c87cd14447a414e97b72b1de496\",\"eligibility\":{\"kind\":\"standalone\"},\"props\":[{\"name\":\"label\",\"type\":\"string\"},{\"name\":\"searchLabel\",\"type\":\"string\"},{\"name\":\"emptyLabel\",\"type\":\"string\"},{\"name\":\"items\",\"type\":\"stringList\"},{\"name\":\"query\",\"type\":\"string\"},{\"name\":\"iconPack\",\"type\":\"string\"},{\"name\":\"iconRevision\",\"type\":\"string\"},{\"name\":\"searchIcon\",\"type\":\"string\"}],\"outputs\":[{\"name\":\"queryChange\",\"payload\":\"string\"},{\"name\":\"itemActivate\",\"payload\":\"string\"}],\"slots\":[\"searchIcon\"],\"requiredSlots\":[],\"presentation\":{\"declaredParts\":[\"root\",\"search\",\"items\",\"item\",\"searchIcon\"],\"partStyle\":{\"supported\":true,\"operation\":\"style\",\"partField\":\"part\",\"targets\":[\"root\",\"search\",\"items\",\"item\",\"searchIcon\"],\"states\":[\"base\",\"hover\",\"focus\",\"active\",\"disabled\"],\"conditions\":true,\"guidance\":\"Select an exact declared semantic part. Styling affects only that owned implementation surface; preflight checks this source and installed renderer contract.\"},\"legacyStyle\":{\"operation\":\"style\",\"part\":null,\"conditional\":false,\"guidance\":\"Without part, base styling reaches the primary presentation target. Legacy conditional styling requires an element; use an explicit component part instead.\"}},\"compositionRules\":[{\"kind\":\"controlledPair\",\"prop\":\"query\",\"output\":\"queryChange\",\"required\":true}],\"validation\":\"Use read preflight with the complete edit. Capability metadata does not prove observed appearance or exercised interaction.\"}"
+    - heading "Sanitized exchanges" [level=4]
+    - paragraph: Compact previews remain in the conversation. Open a retained original page here; this never invokes a tool again.
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result · bounded original is partial
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result · bounded original is partial
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result · bounded original is partial
+    - button "Open first page"
+- separator "Chat width"
+- main:
+  - button "Toggle Chat drawer" [expanded]:
+  - group "Workspace mode":
+    - button "Design"
+    - button "Interact" [pressed]
+    - button "Structure"
+  - button "Toggle Document and Selection drawer":
+  - iframe:
+    - generic "Screen canvas":
+      - main "Foundation Responsive Desk":
+        - generic "Desk header":
+          - heading "Foundation Responsive Desk" [level=1]:
+            - generic: Foundation Responsive Desk
+          - navigation "Desk navigation":
+            - button "Desk menu":
+              - generic: Desk menu
+        - heading "Welcome to your desk" [level=2]:
+          - generic: Welcome to your desk
+        - paragraph:
+          - generic: "A small working desk — switch Projects and Notes, filter by status, keep your note draft. Three quick tips:"
+        - region "Three tips for this desk":
+          - group "Slides":
+            - group "1 of 3":
+              - paragraph: Tip 1 · Filter projects with All, Draft or Ready — the list updates instantly.
+          - button "Previous slide" [disabled]:
+            - generic: Previous
+          - generic: 1 / 3
+          - button "Next slide":
+            - generic: Next
+          - generic "Choose slide":
+            - button "Go to slide 1": "1"
+            - button "Go to slide 2": "2"
+            - button "Go to slide 3": "3"
+        - paragraph:
+          - generic: "Design reference:"
+        - button "example.com"
+        - generic: Welcome campaign reset
+        - group "Welcome campaign reset":
+          - radio "Keep hidden" [checked]
+          - radio "Replay welcome"
+        - paragraph:
+          - generic: Replay welcome only re-shows campaign foundation-responsive-20261028-r1 for this app; no other app or global storage is cleared.
+        - button "Got it"
+        - tablist "Desk sections":
+          - tab "Projects"
+          - tab "Notes" [selected]
+        - tabpanel "Notes":
+          - region "Notes section":
+            - heading "Notes" [level=2]:
+              - generic: Notes
+            - generic: Project note draft
+            - textbox "Project note draft":
+              - /placeholder: Jot a note about the selected project…
+              - text: Retained desk draft — native verification
+            - paragraph:
+              - generic: "Your draft stays while you switch sections, open the details drawer or resize the preview. Manual context marker: desk-owner-keep-20261028."
+- contentinfo:
+  - status: Interact mode · simulated behavior, no live effects.
+- generic: Designer — VICT Studio

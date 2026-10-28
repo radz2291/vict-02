@@ -1,0 +1,207 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Foundation Responsive Desk"
+  - generic: ✓ Saved
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- banner:
+  - strong: Chat
+  - button "Hide Chat":
+- complementary "Chat":
+  - region "Conversation":
+    - region "Messages — Message":
+      - log:
+        - generic: You
+        - generic: "Repair only the current Foundation Responsive Desk saved r1.r2; preserve all other screens and existing behavior. This follows a real manual edit: preserve the exact text marker desk-owner-keep-20261028 in notesHint-text, the notesDraft state identity and current draft. Native tests found these concrete issues: root clientWidth375/scrollWidth391 at narrow preset; header navigation has zero intrinsic container width and a fixed44px trigger that clips its label; local padding/font declarations mask compact conditional styles; Notes bypasses the public Rhea input recipe; All uses an em-dash search sentinel rather than an empty query; Replay welcome merely switches reset keys. Fix these using existing public contracts and semantic theme roles/declared parts. Use the rhea-input recipe and supported wireInput with existing notesDraft, and rhea-native-select with options All empty string, Draft draft, Ready ready; bind a string query to filtered-list query/queryChange. Give navigation meaningful available width (a separate full-width header row is acceptable), remove masking local paint/spacing declarations in favor of ordered base/compact sources and actual theme roles, keep the paper palette. FirstVisit revision2 is now installed: inspect its exact contract, migrate welcomeVisit to revision2 with allowReset true using the existing campaign and stable resetKey r1, remove the misleading reset toggle/hint, and preserve reopen behavior. Keep the carousel, supplied InlineCitation, working Drawer and project selection. Use current source/cursor, not stale transcript expectations. Observe the current Notes/manual marker before edits and the final visible state; no synthetic runtime testing claims. Keep updates to short user outcomes, put tool/schema mechanics only in details, and finish in at most two short sentences distinguishing applied changes from untested interactions. If a tool refuses, recover within actual supported contracts, never invent authority or clear storage."
+        - button "Copy message":
+        - generic: Assistant
+        - generic "Conversation timeline":
+          - paragraph: I'll start by mapping the current document structure, state, and available recipes before making any changes.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph:
+            - text: "First page mapped:"
+            - code: screen → topbar(brandTitle, deskNav)
+            - text: ","
+            - code: welcomeVisit
+            - text: ","
+            - code: deskTabs → Projects/Notes panels
+            - text: . I already see
+            - code: projectFilter
+            - text: initial
+            - code: "\" \""
+            - text: (a sentinel, not empty). Continuing the inventory and locating the pattern/recipe identities I need.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph:
+            - text: "The full shape is emerging: em-dash"
+            - code: filterAll
+            - text: value
+            - code: "\"—\""
+            - text: +
+            - code: filterValue
+            - text: initial
+            - code: "\"—\""
+            - text: ", a bare native"
+            - code: notesInput
+            - text: ","
+            - code: welcomeVisit
+            - text: on first-visit rev 1 with a body that likely toggles
+            - code: welcomeReset
+            - text: . Now I need the remaining nodes, full source of the header/notes subtrees, the exact contracts, and current style sources/conditions/tokens.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph:
+            - text: I now have the full picture of components, conditions (
+            - code: compact
+            - text: = container studio-screen max-600px), the three compact style sources, and the em-dash sentinels (
+            - code: filterAll
+            - text: value
+            - code: "\"—\""
+            - text: ","
+            - code: filterValue
+            - text: initial
+            - code: "\"—\""
+            - text: ) plus the
+            - code: welcomeResetGroup
+            - text: /
+            - code: resetHint
+            - text: "pair that just flips reset keys. Next: continuation source pages, the two Rhea recipe compositions, capabilities for nodes I'll restyle/rewire, and the welcomeBody padding source."
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen failed" [expanded] [active]:
+            - generic: Read screen
+            - generic: failed
+          - region "Tool input":
+            - heading "Input" [level=4]
+            - paragraph: "Unavailable: the call failed before validated invocation."
+          - region "Tool result":
+            - heading "Result" [level=4]
+            - paragraph: "Unavailable: no settled result was returned."
+          - button "Read screen failed":
+            - generic: Read screen
+            - generic: failed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+    - button "Scroll to latest message":
+      - generic: Scroll to end
+    - textbox "Message":
+      - /placeholder: Ask for a change…
+    - button "Stop":
+      - generic: Stop
+    - status
+  - status "Tool refused (VICT_TOOL_FAILED). Previously applied edits remain available.":
+    - generic: Working…
+  - button "Chat details": ···
+- separator "Chat width"
+- main:
+  - button "Toggle Chat drawer" [expanded]:
+  - group "Workspace mode":
+    - button "Design"
+    - button "Interact" [pressed]
+    - button "Structure"
+  - button "Toggle Document and Selection drawer":
+  - iframe:
+    - generic "Screen canvas":
+      - main "Foundation Responsive Desk":
+        - generic "Desk header":
+          - heading "Foundation Responsive Desk" [level=1]:
+            - generic: Foundation Responsive Desk
+          - navigation "Desk navigation":
+            - button "Desk menu":
+              - generic: Desk menu
+        - heading "Welcome to your desk" [level=2]:
+          - generic: Welcome to your desk
+        - paragraph:
+          - generic: "A small working desk — switch Projects and Notes, filter by status, keep your note draft. Three quick tips:"
+        - region "Three tips for this desk":
+          - group "Slides":
+            - group "1 of 3":
+              - paragraph: Tip 1 · Filter projects with All, Draft or Ready — the list updates instantly.
+          - button "Previous slide" [disabled]:
+            - generic: Previous
+          - generic: 1 / 3
+          - button "Next slide":
+            - generic: Next
+          - generic "Choose slide":
+            - button "Go to slide 1": "1"
+            - button "Go to slide 2": "2"
+            - button "Go to slide 3": "3"
+        - paragraph:
+          - generic: "Design reference:"
+        - button "example.com"
+        - generic: Welcome campaign reset
+        - group "Welcome campaign reset":
+          - radio "Keep hidden" [checked]
+          - radio "Replay welcome"
+        - paragraph:
+          - generic: Replay welcome only re-shows campaign foundation-responsive-20261028-r1 for this app; no other app or global storage is cleared.
+        - button "Got it"
+        - tablist "Desk sections":
+          - tab "Projects"
+          - tab "Notes" [selected]
+        - tabpanel "Notes":
+          - region "Notes section":
+            - heading "Notes" [level=2]:
+              - generic: Notes
+            - generic: Project note draft
+            - textbox "Project note draft":
+              - /placeholder: Jot a note about the selected project…
+              - text: Retained desk draft — native verification
+            - paragraph:
+              - generic: "Your draft stays while you switch sections, open the details drawer or resize the preview. Manual context marker: desk-owner-keep-20261028."
+- contentinfo:
+  - status: Interact mode · simulated behavior, no live effects.
+- generic: Designer — VICT Studio
