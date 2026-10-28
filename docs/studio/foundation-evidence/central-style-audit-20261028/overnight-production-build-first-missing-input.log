@@ -1,0 +1,79 @@
+
+> vict-studio@0.1.0 build
+> svelte-kit sync && vite build
+
+vite v6.4.3 building SSR bundle for production...
+transforming...
+11:01:04 pm [vite-plugin-svelte] src/routes/changesets/+page.svelte:26:24 This reference only captures the initial value of `data`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+24:   } = $props();
+25: 
+26:   const targetChoices = data?.targets ?? [];
+                                ^
+27:   const changesetRows = data?.changesets ?? [];
+28:   const defaultTarget = targetChoices[0]?.id ?? 'local';
+11:01:04 pm [vite-plugin-svelte] src/routes/changesets/+page.svelte:27:24 This reference only captures the initial value of `data`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+25: 
+26:   const targetChoices = data?.targets ?? [];
+27:   const changesetRows = data?.changesets ?? [];
+                                ^
+28:   const defaultTarget = targetChoices[0]?.id ?? 'local';
+29:   let selectedTarget = $state(defaultTarget);
+11:01:05 pm [vite-plugin-svelte] src/routes/confirmations/+page.svelte:22:24 This reference only captures the initial value of `data`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+20:   let { data, form }: { data: { targets: readonly { id: string; label: string }[] }; form: Record<string, unknown> | null } = $props();
+21: 
+22:   const targetChoices = data?.targets ?? [];
+                                ^
+23:   const defaultTarget = targetChoices.find((entry) => entry.id.startsWith('g2-mutator'))?.id ?? targetChoices[0]?.id ?? 'local';
+24:   let selectedTarget = $state(defaultTarget);
+11:01:08 pm [vite-plugin-svelte] C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+109:   let stateBag: Record<string, unknown> = $state(initialValues());
+110:   let acceptedSupplied: Record<string, UiValue> = {};
+111:   let lastDocumentId = $state(plan.documentId);
+                                       ^
+112:   let lastSignal: symbol | undefined = $state<symbol | undefined>(undefined);
+113: 
+11:01:08 pm [vite-plugin-svelte] C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/packages/ui-svelte/src/document/RenderNode.svelte:311:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+309:   {/if}
+310: {:else if instruction.kind === 'text'}
+311:   <span
+            ^
+312:     class="uv-text"
+313:     data-ui-owner={ownerId}
+11:01:08 pm [vite-plugin-svelte] C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/packages/ui-svelte/src/document/RenderNode.svelte:311:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+309:   {/if}
+310: {:else if instruction.kind === 'text'}
+311:   <span
+            ^
+312:     class="uv-text"
+313:     data-ui-owner={ownerId}
+11:01:08 pm [vite-plugin-svelte] C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/packages/ui-svelte/src/document/RenderNode.svelte:381:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+379:   {:else if extension?.ok}
+380:     {@const Implementation = extension.component}
+381:     <span style="display: contents" data-extension-id={instruction.extensionId} data-ui-owner={ownerId} data-ui-occ={occ} data-ui-node={instruction.nodeId}
+                ^
+382:       onclick={event => { event.stopPropagation(); selectOccurrence?.(occ); }}>
+383:       <Implementation props={extensionProps} occurrenceKey={occ} nodeId={instruction.nodeId} {presentation} />
+11:01:08 pm [vite-plugin-svelte] C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/packages/ui-svelte/src/document/RenderNode.svelte:381:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+379:   {:else if extension?.ok}
+380:     {@const Implementation = extension.component}
+381:     <span style="display: contents" data-extension-id={instruction.extensionId} data-ui-owner={ownerId} data-ui-occ={occ} data-ui-node={instruction.nodeId}
+                ^
+382:       onclick={event => { event.stopPropagation(); selectOccurrence?.(occ); }}>
+383:       <Implementation props={extensionProps} occurrenceKey={occ} nodeId={instruction.nodeId} {presentation} />
+Γ£ô 297 modules transformed.
+Γ£ù Build failed in 4.36s
+error during build:
+Could not resolve "../../../../../docs/studio/CYCLE-1-4-CATALOG-MIGRATION.json" from "src/lib/designer/Cycle14Showcase.svelte"
+file: C:/Users/RZ1/AppData/Local/Temp/vict-hovercard-build-712f6ef/apps/studio/src/lib/designer/Cycle14Showcase.svelte
+    at getRollupError (file:///C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/rollup/dist/es/shared/parseAst.js:317:41)
+    at error (file:///C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/rollup/dist/es/shared/parseAst.js:313:42)
+    at ModuleLoader.handleInvalidResolvedId (file:///C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/rollup/dist/es/shared/node-entry.js:22002:24)
+    at file:///C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/rollup/dist/es/shared/node-entry.js:21962:26

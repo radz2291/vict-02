@@ -1,0 +1,1218 @@
+{
+  "HelperSHA256": "9e136a88c0ac7cf8b35143cb5d966aaf464f251f3a9274012bbc501ceefd18ed",
+  "SourceHead": "712f6ef6ea9e4c344d86a01f1630ccf750e61214",
+  "InputWorkingTreeClean": false,
+  "WorkspaceWorkingTreeClean": false,
+  "StageRoot": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-stage-review-20261028-231011",
+  "ManifestInputsVerified": 280,
+  "RequiredJSON": "docs/studio/CYCLE-1-4-CATALOG-MIGRATION.json",
+  "DependencyJunctions": [
+    {
+      "Path": "node_modules",
+      "Target": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-authoring-foundation\\node_modules",
+      "LinkType": "Junction"
+    },
+    {
+      "Path": "apps/studio/node_modules",
+      "Target": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-authoring-foundation\\apps\\studio\\node_modules",
+      "LinkType": "Junction"
+    }
+  ],
+  "Checks": [
+    {
+      "Name": "ValidateOnly succeeds",
+      "Passed": true
+    },
+    {
+      "Name": "ValidateOnly creates no stage",
+      "Passed": true
+    },
+    {
+      "Name": "Manifest exact source HEAD",
+      "Passed": true
+    },
+    {
+      "Name": "Manifest copied-input dirty flag exact",
+      "Passed": true
+    },
+    {
+      "Name": "Manifest linked-workspace dirty flag exact",
+      "Passed": true
+    },
+    {
+      "Name": "ValidateOnly reports exact dirty flags",
+      "Passed": true
+    },
+    {
+      "Name": "All manifest inputs unique",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/.gitignore",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/README.md",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/package.json",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/scripts/LOCAL-STUDIO-LAUNCH.md",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/scripts/demo-target-s902.mjs",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/scripts/demo-target.mjs",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/scripts/launch-agent.mjs",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/scripts/s902-journey.mjs",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/scripts/start-local-existing-config.ps1",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/app.d.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/app.html",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/favicon.svg",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/hooks.server.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/application/definition.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/application/index.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/changesets/changesets.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/components/ConfirmationReview.svelte",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/components/TargetConnectionStatus.svelte",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/components/registry.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/confirmation/confirmation.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/AgentChat.svelte",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/AgentTurnEvidence.svelte",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/AuthoringGuidance.svelte",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/CompletionShowcase.svelte",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/CoreAuthoringShowcase.svelte",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/Cycle14Showcase.svelte",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/DataEditorHeader.svelte",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/Designer.svelte",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/DocumentPanels.svelte",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/QuietChatShowcase.svelte",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/SelectionHeading.svelte",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/SelectionPanel.svelte",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/SelectionRelationships.svelte",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/SelectionSections.svelte",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/SharedStyleShowcase.svelte",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/SourceDetails.svelte",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/StructureDock.svelte",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/StructureEdge.svelte",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/StructureInspection.svelte",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/StructureView.svelte",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/StructuredSourceNode.svelte",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/StudioShowcase.svelte",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/TryScenarios.svelte",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/WorkspaceBrand.svelte",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/WorkspaceContextMenu.svelte",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/WorkspaceDetails.svelte",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/WorkspaceMenu.svelte",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/WorkspaceModes.svelte",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/WorkspacePanelHeader.svelte",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/WorkspacePanelsShowcase.svelte",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/WorkspaceSelectionDetails.svelte",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/WorkspaceSubmenu.svelte",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/WorkspaceToolIcon.svelte",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/agent-discovery.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/agent-edit-presentation.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/agent-edits.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/agent-preflight.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/agent-progress.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/agent-reads.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/agent-transport.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/application.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/authoring.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/capture-evidence.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/designer.css",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/disclosures.css",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/execution.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/foundation-examples.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/graph-authoring.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/graph-runtime.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/media-assets.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/placement.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/presentation.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/preview-host.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/preview-state.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/preview-visibility.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/provider-limit.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/recipes.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/selection-context.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/selection-presentation.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/selection-relationships.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/showcase.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/source-import.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/storage.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/structure-behavior.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/structure-connections.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/structure-edge-geometry.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/structure-placement.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/structure-semantics.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/structure-trace.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/structure.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/studio-cards.css",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/studio-controls.css",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/studio-theme.css",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/studio-typography.css",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/test-scenarios.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/tool-evidence.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/turn-records.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/visual-observation.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/workspace-context.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/workspace-panels.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/workspace-selection.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/designer/workspace.css",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/server/adapter.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/server/agent-task-context.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/server/app-server.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/server/changeset-transport.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/server/confirmation-transport.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/server/designer-agent-http.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/server/designer-agent.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/server/designer-model.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/server/designer-visual.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/server/provider-limit.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/server/quellight-transport.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/server/session.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/server/targets.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/server/tool-evidence-archive.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/server/tool-evidence.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/server/vict-client.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/lib/shared/contract.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/routes/[...vict]/+page.server.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/routes/[...vict]/+page.svelte",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/routes/api/designer-agent/+server.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/routes/api/designer-agent/ack/+server.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/routes/api/designer-agent/capture/[captureId]/+server.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/routes/api/designer-agent/evidence/+server.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/routes/changesets/+page.server.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/routes/changesets/+page.svelte",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/routes/confirmations/+page.server.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/routes/confirmations/+page.svelte",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/routes/design/+page.svelte",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/routes/design/+page.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/routes/login/+page.server.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/routes/login/+page.svelte",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/routes/product/+page.server.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/routes/product/+page.svelte",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/routes/run-screen/+page.svelte",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/routes/run-screen/+page.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/routes/runs/[runId]/+page.server.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/routes/runs/[runId]/+page.svelte",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/routes/runs/[runId]/run-detail-reads.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/src/routes/showcase/+page.svelte",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/svelte.config.js",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/adapter.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/ai-authoring-exposure.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/ai-exposure-independent.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/app-definition.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/authoring-discovery.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/authoring-foundation-continuity.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/authoring-foundation-evidence-route.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/authoring-foundation-host-state.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/authoring-foundation-integration.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/authoring-foundation-observation-only.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/authoring-foundation-task-context-integration.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/boundary.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/capture-scroll-browser/frame.html",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/capture-scroll-browser/index.html",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/capture-scroll-browser/main.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/capture-scroll-browser/vite.config.mjs",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/changeset-contract.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/confirmation-contract.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/designer-agent-cleanup.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/designer-agent-completion.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/designer-agent-live-completion.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/designer-agent-live-final.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/designer-agent-mastra.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/designer-agent-stream.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/designer-agent.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/designer-completion-independent.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/designer-context-placement.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/designer-core-authoring.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/designer-coverage.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/designer-cycle14-efficiency.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/designer-final-source-evidence.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/designer-independent-verification.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/designer-model.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/designer-preflight-independent.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/designer-reliability.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/designer-required-slot-verification.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/designer-required-slots.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/designer-schema-completion.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/designer-schema-independent.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/designer-tool-evidence.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/designer-transport-independent.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/designer-visual-client.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/designer-visual-independent.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/designer-visual.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/designer.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/fixtures/FoundationConsumer.svelte",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/fixtures/structure-clarity.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/fixtures/structure-semantics.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/graph-capture-browser/App.svelte",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/graph-capture-browser/index.html",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/graph-capture-browser/main.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/graph-capture-browser/vite.config.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/graph-runtime-refusal.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/media-assets.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/media-start-transport.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/preview-visibility.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/provider-limit-integration.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/provider-limit.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/quellight-transport.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/run-detail.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/selection-context.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/showcase.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/source-import.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/structure-clarity.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/structure-completion.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/structure-connection-trace.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/structure-connections.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/structure-edge-trial.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/structure-node-anatomy.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/structure-placement.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/structure-presentation.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/structure-search.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/structure-semantics.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/structure.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/target-selection.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/targets.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/test-scenarios.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/ui/agent-chat.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/ui/agent-handoff.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/ui/authoring-foundation-turn-history.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/ui/capture-filter-independent.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/ui/chat-controls.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/ui/chat-message.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/ui/clean-workspace.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/ui/completion-independent-fields.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/ui/completion-independent-stop-capture.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/ui/completion-legacy-triggers.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/ui/completion-timeline.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/ui/composition.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/ui/confirmation.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/ui/context-details.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/ui/core-agent-progress.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/ui/core-authoring-guidance.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/ui/core-capture-evidence.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/ui/core-schema-diagnostics.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/ui/cycle14-agent-evidence-showcase.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/ui/designer-capture-images.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/ui/designer-capture-portals.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/ui/designer-context-surfaces.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/ui/designer-runtime.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/ui/fixtures/OrientationHandle.svelte",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/ui/fixtures/SourceOrientation.svelte",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/ui/panel-placements.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/ui/panel-polish.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/ui/preference-consistency.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/ui/provider-limit-status.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/ui/quiet-chat.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/ui/quiet-relationships.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/ui/render.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/ui/saved-run.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/ui/selection-composition.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/ui/selection-consistency.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/ui/selection-panel.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/ui/selection-stories.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/ui/shared-identities.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/ui/structure-binding-runtime.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/ui/structure-clarity.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/ui/structure-node-connections.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/ui/structure-orientation.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/ui/structure-portals.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/ui/structure-toolbar.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/ui/structure-workspace.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/ui/structure.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/ui/studio-menu.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/ui/text-selection-location.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/ui/try-scenarios.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/ui/workspace-scenarios.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/ui/workspace-selection.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/visual/Fixture.svelte",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/visual/index.html",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/visual/main.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/visual/vite.config.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tests/workspace-selection.test.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tsconfig.designer.json",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/tsconfig.json",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/vite.config.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: apps/studio/vitest.config.ts",
+      "Passed": true
+    },
+    {
+      "Name": "Exact input bytes: docs/studio/CYCLE-1-4-CATALOG-MIGRATION.json",
+      "Passed": true
+    },
+    {
+      "Name": "Required catalog JSON exactly once",
+      "Passed": true
+    },
+    {
+      "Name": "Prepared count matches manifest",
+      "Passed": true
+    },
+    {
+      "Name": "Exact dependency junction: node_modules",
+      "Passed": true
+    },
+    {
+      "Name": "Manifest dependency junction: node_modules",
+      "Passed": true
+    },
+    {
+      "Name": "Exact dependency junction: apps/studio/node_modules",
+      "Passed": true
+    },
+    {
+      "Name": "Manifest dependency junction: apps/studio/node_modules",
+      "Passed": true
+    },
+    {
+      "Name": "Missing required JSON fails before Git/dependency/stage work",
+      "Passed": true
+    },
+    {
+      "Name": "Inside-checkout stage refused without creation",
+      "Passed": true
+    },
+    {
+      "Name": "Existing stage refused and contents preserved",
+      "Passed": true
+    }
+  ],
+  "MissingInputError": "Missing required Studio build input: docs/studio/CYCLE-1-4-CATALOG-MIGRATION.json",
+  "InsideCheckoutError": "Use a fresh staging directory outside the checkout.",
+  "ExistingStageError": "Refusing to overwrite an existing staging directory.",
+  "NoBuild": true,
+  "NoServiceAction": true,
+  "InitialSandboxAttempt": {
+    "Outcome": "Access denied creating first dependency junction; no compiler or service action",
+    "PartialStage": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-stage-review-20261028-230832",
+    "Preserved": true
+  },
+  "Verdict": "PASS for declared staging/preflight/manifest/refusal behavior; linked dependencies are not hermetically frozen; no build validation performed by this verifier"
+}

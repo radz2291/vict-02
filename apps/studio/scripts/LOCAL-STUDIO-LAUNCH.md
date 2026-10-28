@@ -17,6 +17,26 @@ parent before an authorized stop; the start helper deliberately refuses an occup
 address and never stops processes itself. Builds replace their output, so use a
 separate staging tree to validate first when preserving live output is required.
 
+Prepare that tree with the checked-in helper rather than copying `apps/studio`
+alone. Studio also imports `docs/studio/CYCLE-1-4-CATALOG-MIGRATION.json`.
+The helper preflights that declared JSON input, installed dependencies and tracked
+Studio files before creating anything; it refuses an existing stage, verifies
+copied hashes, writes `studio-build-inputs.json`, and links installed dependencies.
+It does not copy credentials, install packages, build, or change the live service.
+The manifest reports working-tree cleanliness and dependency link targets. Those
+links use the checkout's workspace sources; they are not a frozen dependency copy.
+Keep the reviewed source stable while building and associate its hashes separately.
+
+```powershell
+$studioStage = Join-Path $env:LOCALAPPDATA 'Temp/vict-studio-build-candidate'
+.\apps\studio\scripts\prepare-build-stage.ps1 -StageRoot $studioStage -ValidateOnly
+.\apps\studio\scripts\prepare-build-stage.ps1 -StageRoot $studioStage
+npm run build --prefix (Join-Path $studioStage 'apps/studio')
+```
+
+Use a fresh stage name for each candidate. Keep failed build logs and include
+required-input/manifest checks when associating a staged build with its source.
+
 Validate and launch:
 
 ```powershell
