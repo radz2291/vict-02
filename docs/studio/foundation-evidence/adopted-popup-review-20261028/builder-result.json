@@ -1,0 +1,42 @@
+{
+  "role": "Builder candidate; not independent gate verdict",
+  "baseSHA": "59212b031d49163f7e1ebc40088f6a8ab2ae1b1e",
+  "ownedSource": "packages/ui-svelte/src/owned-popup.ts",
+  "ownedTest": "packages/ui-svelte/test/owned-popup-adopted.test.ts",
+  "sourceSHA256": "ab26dde712321d4ea6d2e6828df68f46ccf8f0e017ada0a7e9ced2c668876451",
+  "testSHA256": "f6dc745fd7ee055aca4c779b45e526e9de2c521a6a825b1aa8ff7406bf455e55",
+  "red": {
+    "Failed": 5,
+    "Collected": 5,
+    "Log": "red-writable-cache.log"
+  },
+  "green": {
+    "Failed": 0,
+    "Passed": 30,
+    "Files": 4,
+    "Log": "green-targeted.log"
+  },
+  "targetedTypecheck": {
+    "ExitCode": 0,
+    "Log": "types-targeted.log"
+  },
+  "fixtureLimit": "Happy DOM shares constructors across windows; genuine DOM adoption plus explicit destination-constructor separation models native browser prototype behavior",
+  "change": "Borrow destination DOM Element.matches as cross-realm brand check; require XHTMLnamespace for HTMLsurfaces; keep generalElement eventtargets for SVGicons",
+  "unchanged": [
+    "owned-menu.ts",
+    "approved shared owner hub",
+    "canonical source ownership",
+    "source lifetime observers",
+    "disabled/hidden/inert/disclosure fences",
+    "nested owner and same-document admission",
+    "Floating UI positioning"
+  ],
+  "unperformed": [
+    "Native browser",
+    "Provider",
+    "Server",
+    "Build",
+    "Dist writes",
+    "Independent final candidate challenge"
+  ]
+}

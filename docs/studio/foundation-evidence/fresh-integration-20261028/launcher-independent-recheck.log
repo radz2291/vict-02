@@ -1,0 +1,31 @@
+{
+  "candidateSHA": "59212b031d49163f7e1ebc40088f6a8ab2ae1b1e",
+  "Verdict": "PASS - bounded launcher repair recheck",
+  "ParseErrors": 0,
+  "EndpointPredicateCases": 9,
+  "OccupiedPredicateCases": 6,
+  "QuotedAbsolutePathWithSpaces": true,
+  "ValidateOnlyFromDifferentWorkingDirectory": {
+    "Configuration": "existing normal loader",
+    "Model": "zai/glm-5.3-flash",
+    "Address": "http://127.0.0.25:5626",
+    "CodingPlanEndpoint": true,
+    "ServerStarted": false
+  },
+  "ClosedFindings": [
+    "LAUNCH-01",
+    "LAUNCH-02",
+    "LAUNCH-03"
+  ],
+  "SourceHashes": {
+    "apps/studio/scripts/LOCAL-STUDIO-LAUNCH.md": "b04041c13a0a3d49612d921c6bfb49a212941f8ca42caaba741a10de8be7f338",
+    "apps/studio/scripts/start-local-existing-config.ps1": "5fb4d04b0440697006dca7e5124063f6e6c944d3302bf641ed66904cc32047b2"
+  },
+  "Limits": [
+    "No actual launcher start or stop",
+    "No actual listener inventory; occupied cases use inert fixtures and the source predicate",
+    "No browser, provider or network request",
+    "No product source edits",
+    "Previous failed review retained"
+  ]
+}

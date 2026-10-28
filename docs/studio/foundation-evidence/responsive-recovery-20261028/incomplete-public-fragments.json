@@ -1,0 +1,608 @@
+{
+  "kind": "INCOMPLETE public original fragments; not importable or a replacement app",
+  "artifact": "docs/studio/foundation-evidence/actual-agent-responsive-recovery-public.json",
+  "nodes": [
+    {
+      "partIndex": 1,
+      "revision": "r1#8",
+      "nodeId": "screen",
+      "node": {
+        "kind": "element",
+        "id": "screen",
+        "tag": "main",
+        "attributes": {
+          "aria-label": "Foundation Responsive"
+        },
+        "children": [
+          "dash-welcome",
+          "dash-header",
+          "dash-nav",
+          "dash-grid"
+        ],
+        "localStyle": [
+          {
+            "property": "display",
+            "value": {
+              "type": "text",
+              "value": "flex"
+            }
+          },
+          {
+            "property": "flex-direction",
+            "value": {
+              "type": "text",
+              "value": "column"
+            }
+          },
+          {
+            "property": "gap",
+            "value": {
+              "type": "text",
+              "value": "20px"
+            }
+          },
+          {
+            "property": "padding",
+            "value": {
+              "type": "text",
+              "value": "40px"
+            }
+          },
+          {
+            "property": "min-height",
+            "value": {
+              "type": "text",
+              "value": "560px"
+            }
+          },
+          {
+            "property": "background-color",
+            "value": {
+              "type": "text",
+              "value": "#f0fdfa"
+            }
+          },
+          {
+            "property": "color",
+            "value": {
+              "type": "text",
+              "value": "#134e4a"
+            }
+          },
+          {
+            "property": "font-family",
+            "value": {
+              "type": "text",
+              "value": "system-ui, sans-serif"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "partIndex": 6,
+      "revision": "r1#8",
+      "nodeId": "dash-grid",
+      "node": {
+        "kind": "element",
+        "id": "dash-grid",
+        "tag": "section",
+        "attributes": {
+          "aria-label": "Section"
+        },
+        "children": [
+          "card-projects",
+          "card-milestones"
+        ],
+        "localStyle": [
+          {
+            "property": "display",
+            "value": {
+              "type": "text",
+              "value": "grid"
+            }
+          },
+          {
+            "property": "flex-direction",
+            "value": {
+              "type": "text",
+              "value": "column"
+            }
+          },
+          {
+            "property": "gap",
+            "value": {
+              "type": "text",
+              "value": "20px"
+            }
+          },
+          {
+            "property": "padding",
+            "value": {
+              "type": "text",
+              "value": "24px"
+            }
+          },
+          {
+            "property": "min-height",
+            "value": {
+              "type": "text",
+              "value": "100px"
+            }
+          },
+          {
+            "property": "background-color",
+            "value": {
+              "type": "text",
+              "value": "#f5f7fb"
+            }
+          },
+          {
+            "property": "border-radius",
+            "value": {
+              "type": "text",
+              "value": "12px"
+            }
+          },
+          {
+            "property": "align-items",
+            "value": {
+              "type": "text",
+              "value": "start"
+            }
+          },
+          {
+            "property": "grid-template-columns",
+            "value": {
+              "type": "text",
+              "value": "1.15fr 1fr"
+            }
+          },
+          {
+            "property": "width",
+            "value": {
+              "type": "text",
+              "value": "100%"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "partIndex": 6,
+      "revision": "r1#8",
+      "nodeId": "dash-nav",
+      "node": {
+        "kind": "component",
+        "id": "dash-nav",
+        "definitionId": "vict.pattern.navigation",
+        "revision": "1",
+        "props": {
+          "items": {
+            "type": "ref",
+            "path": "state.navItems"
+          },
+          "selected": {
+            "type": "ref",
+            "path": "state.navSection"
+          },
+          "label": {
+            "type": "literal",
+            "value": "Dashboard sections"
+          },
+          "menuLabel": {
+            "type": "literal",
+            "value": "Sections"
+          }
+        },
+        "outputs": {
+          "activate": {
+            "setState": {
+              "key": "navSection"
+            }
+          }
+        },
+        "slots": {}
+      }
+    },
+    {
+      "partIndex": 10,
+      "revision": "r1#8",
+      "nodeId": "card-projects",
+      "node": {
+        "kind": "element",
+        "id": "card-projects",
+        "tag": "section",
+        "attributes": {
+          "aria-label": "Section"
+        },
+        "children": [
+          "dash-projects"
+        ],
+        "localStyle": [
+          {
+            "property": "display",
+            "value": {
+              "type": "text",
+              "value": "flex"
+            }
+          },
+          {
+            "property": "flex-direction",
+            "value": {
+              "type": "text",
+              "value": "column"
+            }
+          },
+          {
+            "property": "gap",
+            "value": {
+              "type": "text",
+              "value": "12px"
+            }
+          },
+          {
+            "property": "padding",
+            "value": {
+              "type": "text",
+              "value": "18px"
+            }
+          },
+          {
+            "property": "min-height",
+            "value": {
+              "type": "text",
+              "value": "100px"
+            }
+          },
+          {
+            "property": "background-color",
+            "value": {
+              "type": "text",
+              "value": "#f5f7fb"
+            }
+          },
+          {
+            "property": "border-radius",
+            "value": {
+              "type": "text",
+              "value": "14px"
+            }
+          },
+          {
+            "property": "background",
+            "value": {
+              "type": "text",
+              "value": "#ffffff"
+            }
+          },
+          {
+            "property": "border",
+            "value": {
+              "type": "text",
+              "value": "1px solid #99f6e4"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "partIndex": 10,
+      "revision": "r1#8",
+      "nodeId": "card-milestones",
+      "node": {
+        "kind": "element",
+        "id": "card-milestones",
+        "tag": "section",
+        "attributes": {
+          "aria-label": "Section"
+        },
+        "children": [],
+        "localStyle": [
+          {
+            "property": "display",
+            "value": {
+              "type": "text",
+              "value": "flex"
+            }
+          },
+          {
+            "property": "flex-direction",
+            "value": {
+              "type": "text",
+              "value": "column"
+            }
+          },
+          {
+            "property": "gap",
+            "value": {
+              "type": "text",
+              "value": "12px"
+            }
+          },
+          {
+            "property": "padding",
+            "value": {
+              "type": "text",
+              "value": "18px"
+            }
+          },
+          {
+            "property": "min-height",
+            "value": {
+              "type": "text",
+              "value": "100px"
+            }
+          },
+          {
+            "property": "background-color",
+            "value": {
+              "type": "text",
+              "value": "#f5f7fb"
+            }
+          },
+          {
+            "property": "border-radius",
+            "value": {
+              "type": "text",
+              "value": "14px"
+            }
+          },
+          {
+            "property": "background",
+            "value": {
+              "type": "text",
+              "value": "#ffffff"
+            }
+          },
+          {
+            "property": "border",
+            "value": {
+              "type": "text",
+              "value": "1px solid #99f6e4"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "partIndex": 16,
+      "revision": "r1#10",
+      "nodeId": "dash-carousel",
+      "node": {
+        "kind": "component",
+        "id": "dash-carousel",
+        "definitionId": "vict.pattern.carousel",
+        "revision": "1",
+        "props": {
+          "slides": {
+            "type": "ref",
+            "path": "state.milestoneSlides"
+          },
+          "index": {
+            "type": "ref",
+            "path": "state.carouselIndex"
+          },
+          "label": {
+            "type": "literal",
+            "value": "Milestones"
+          }
+        },
+        "outputs": {
+          "indexChange": {
+            "setState": {
+              "key": "carouselIndex"
+            }
+          }
+        },
+        "slots": {}
+      }
+    },
+    {
+      "partIndex": 16,
+      "revision": "r1#10",
+      "nodeId": "dash-vector",
+      "node": {
+        "id": "dash-vector",
+        "kind": "component",
+        "definitionId": "vict.media.vector",
+        "revision": "1",
+        "props": {
+          "data": {
+            "type": "literal",
+            "value": "{\"schema\":\"vict.vector@1\",\"viewBox\":\"0 0 120 80\",\"nodes\":[{\"tag\":\"rect\",\"attributes\":{\"width\":120,\"height\":80,\"rx\":12,\"fill\":\"#ccfbf1\"}},{\"tag\":\"circle\",\"attributes\":{\"cx\":40,\"cy\":40,\"r\":20,\"fill\":\"#0f766e\"}},{\"tag\":\"path\",\"attributes\":{\"d\":\"M66 62 L86 20 L106 62 Z\",\"fill\":\"#134e4a\"}}]}"
+          },
+          "label": {
+            "type": "literal",
+            "value": "Three-colour geometric mark"
+          },
+          "decorative": {
+            "type": "literal",
+            "value": true
+          }
+        },
+        "slots": {}
+      }
+    },
+    {
+      "partIndex": 16,
+      "revision": "r1#10",
+      "nodeId": "note-selected",
+      "node": {
+        "kind": "element",
+        "id": "note-selected",
+        "tag": "p",
+        "children": [
+          "note-label",
+          "note-value"
+        ]
+      }
+    }
+  ],
+  "confirmedContinuationEdits": [
+    {
+      "partIndex": 12,
+      "args": {
+        "expectedRevision": "r1#8",
+        "operations": [
+          {
+            "headingLevel": 3,
+            "index": 0,
+            "nodeId": "head-projects",
+            "op": "add",
+            "parentId": "card-projects",
+            "recipe": "heading",
+            "text": "Projects"
+          },
+          {
+            "headingLevel": 3,
+            "index": 0,
+            "nodeId": "head-milestones",
+            "op": "add",
+            "parentId": "card-milestones",
+            "recipe": "heading",
+            "text": "Milestones"
+          },
+          {
+            "nodeId": "dash-carousel",
+            "op": "add",
+            "parentId": "card-milestones",
+            "props": {
+              "label": "Milestones"
+            },
+            "recipe": "vict.pattern.carousel"
+          },
+          {
+            "expression": {
+              "path": "state.milestoneSlides",
+              "type": "ref"
+            },
+            "nodeId": "dash-carousel",
+            "op": "bind",
+            "prop": "slides"
+          },
+          {
+            "expression": {
+              "path": "state.carouselIndex",
+              "type": "ref"
+            },
+            "nodeId": "dash-carousel",
+            "op": "bind",
+            "prop": "index"
+          },
+          {
+            "binding": {
+              "setState": {
+                "key": "carouselIndex"
+              }
+            },
+            "nodeId": "dash-carousel",
+            "op": "connect",
+            "output": "indexChange"
+          },
+          {
+            "nodeId": "dash-vector",
+            "op": "add",
+            "parentId": "card-milestones",
+            "props": {
+              "data": "{\"schema\":\"vict.vector@1\",\"viewBox\":\"0 0 120 80\",\"nodes\":[{\"tag\":\"rect\",\"attributes\":{\"width\":120,\"height\":80,\"rx\":12,\"fill\":\"#ccfbf1\"}},{\"tag\":\"circle\",\"attributes\":{\"cx\":40,\"cy\":40,\"r\":20,\"fill\":\"#0f766e\"}},{\"tag\":\"path\",\"attributes\":{\"d\":\"M66 62 L86 20 L106 62 Z\",\"fill\":\"#134e4a\"}}]}",
+              "decorative": true
+            },
+            "recipe": "vict.media.vector"
+          }
+        ],
+        "reason": "Complete milestone card: headings, controlled three-slide carousel, inert vector"
+      },
+      "result": {
+        "ok": true,
+        "expectedRevision": "r1#9",
+        "revision": "r1#9",
+        "digest": "ea890e105a51ee564c578d04192457c48fceacd06e12fdb0eadbc2de5b859f3e",
+        "applied": 1
+      }
+    },
+    {
+      "partIndex": 14,
+      "args": {
+        "expectedRevision": "r1#9",
+        "operations": [
+          {
+            "kind": "element",
+            "nodeId": "note-selected",
+            "op": "insert",
+            "parentId": "card-projects",
+            "tag": "p"
+          },
+          {
+            "kind": "text",
+            "nodeId": "note-label",
+            "op": "insert",
+            "parentId": "note-selected",
+            "text": "Selected project: "
+          },
+          {
+            "kind": "text",
+            "nodeId": "note-value",
+            "op": "insert",
+            "parentId": "note-selected",
+            "text": "none"
+          },
+          {
+            "expression": {
+              "path": "state.selectedProject",
+              "type": "ref"
+            },
+            "nodeId": "note-value",
+            "op": "bindText"
+          },
+          {
+            "nodeId": "head-projects",
+            "op": "style",
+            "property": "margin",
+            "value": {
+              "type": "text",
+              "value": "0"
+            }
+          },
+          {
+            "nodeId": "head-milestones",
+            "op": "style",
+            "property": "margin",
+            "value": {
+              "type": "text",
+              "value": "0"
+            }
+          },
+          {
+            "conditionId": "cond-narrow",
+            "nodeId": "dash-grid",
+            "op": "style",
+            "property": "grid-template-columns",
+            "value": {
+              "type": "text",
+              "value": "1fr"
+            }
+          },
+          {
+            "conditionId": "cond-narrow",
+            "nodeId": "screen",
+            "op": "style",
+            "property": "padding",
+            "value": {
+              "type": "text",
+              "value": "16px"
+            }
+          }
+        ],
+        "reason": "Selection note bound to selectedProject, heading margins, narrow single-column layout"
+      },
+      "result": {
+        "ok": true,
+        "expectedRevision": "r1#10",
+        "revision": "r1#10",
+        "digest": "37698b22ad89d2624a172eae32447e5124e2d37e09799550c7e11c1bdbca01dd",
+        "applied": 2
+      }
+    }
+  ]
+}

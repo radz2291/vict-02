@@ -780,7 +780,7 @@
 
       <div class="canvas-scroll workspace-scroll" hidden={structureOpen} inert={structureOpen} bind:this={canvasScroll} bind:clientHeight={canvasHeight}>
         <div class="design-frame workspace-screen" bind:clientWidth={canvasWidth} style:max-width={width === 'fluid' ? 'none' : `${width}px`}>
-          <ApplicationViewport bind:content={applicationContent} height={viewportHeightOverride??Math.max(240,canvasHeight-32)} onDimensions={value=>applicationDimensions=value} onKeydown={shortcuts}>
+          <ApplicationViewport containerName="studio-screen" bind:content={applicationContent} height={viewportHeightOverride??Math.max(240,canvasHeight-32)} onDimensions={value=>applicationDimensions=value} onKeydown={shortcuts}>
           <AssetProvider namespace={`vict.studio.assets.${source.id}`} store={assetStore} onchange={()=>void syncAssetInventory()} embedProviders={['youtube','vimeo']}>
           <EditorCanvas document={source} catalogs={designerCatalogs} extensions={catalogDescriptors} extensionImplementations={catalogImplementations}
             {compositionFocus} onOpenComposition={openComposition}

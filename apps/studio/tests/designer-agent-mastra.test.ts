@@ -698,7 +698,7 @@ it('delivers capture-comparison scope, complete-body digest reuse and Studio hos
  expect(delivered).toContain('A catalog/index digest alone is not cached contract knowledge');
  expect(delivered).toContain('ancestor inline-size container named studio-screen');
  expect(delivered).toContain('canonical root has no container declaration');
- expect(delivered).toContain('Media conditions use the outer browser viewport and do not follow preview presets');
+ expect(delivered).toContain('Media conditions use the application iframe viewport and also follow preview presets');
  expect(delivered).toContain('other consumers must explicitly establish a compatible host');
  expect(delivered).toContain('never replay committed edits to retry verification');
 });

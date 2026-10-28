@@ -1,0 +1,20 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation
+
+TypeError: Cannot read properties of null (reading 'contentDocument')
+    at start (C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/packages/ui-svelte/src/viewport/ApplicationViewport.svelte:18:23)
+    at HTMLIFrameElement.load (C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/packages/ui-svelte/src/viewport/ApplicationViewport.svelte:43:65)
+    at C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/svelte/src/internal/client/dom/elements/events.js:67:21
+    at without_reactive_context (C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/svelte/src/internal/client/dom/elements/bindings/shared.js:45:10)
+    at HTMLIFrameElement.target_handler (C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/svelte/src/internal/client/dom/elements/events.js:66:35)
+    at HTMLIFrameElement.#callDispatchEventListeners (file:///C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/happy-dom/lib/event/EventTarget.js:254:34)
+    at HTMLIFrameElement.dispatchEvent (file:///C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/happy-dom/lib/event/EventTarget.js:117:41)
+    at HTMLIFrameElement.#goThroughDispatchEventPhases (file:///C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/happy-dom/lib/event/EventTarget.js:177:38)
+    at HTMLIFrameElement.dispatchEvent (file:///C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/happy-dom/lib/event/EventTarget.js:113:47)
+    at file:///C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/happy-dom/lib/nodes/html-iframe-element/HTMLIFrameElement.js:349:30
+
+ Test Files  1 passed (1)
+      Tests  1 passed (1)
+   Start at  19:26:25
+   Duration  3.65s (transform 1.16s, setup 0ms, import 1.49s, tests 60ms, environment 1.58s)
+

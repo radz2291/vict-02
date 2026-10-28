@@ -63,10 +63,10 @@ describe('shared registered authoring integration',()=>{
     const bridge=setup();
     const overview=agentContext(bridge.document,documentCursor(bridge.document,bridge.getSnapshot().revision,'host-facts'));
     expect(overview.previewHost).toEqual(studioPreviewHost);
-    const css=readFileSync(new URL('../src/lib/designer/workspace.css',import.meta.url),'utf8');
-    const hostRule=css.match(/\.workspace-screen\s*\{([^}]+)\}/)?.[1];
-    expect(hostRule).toBeDefined();
-    expect(hostRule).toMatch(new RegExp(`container:\\s*${studioPreviewHost.container.name}\\s*/\\s*${studioPreviewHost.container.type}\\s*;`));
+    const innerHost=readFileSync(new URL('../../../packages/ui-svelte/src/viewport/ViewportContent.svelte',import.meta.url),'utf8');
+    expect(innerHost).toContain('data-application-content');
+    expect(innerHost).toContain('style:container-name={containerName || undefined}');
+    expect(innerHost).toContain("style:container-type={containerName ? 'inline-size' : undefined}");
     for(const [path,cssImport] of [
       ['../src/lib/designer/Designer.svelte',"import './workspace.css'"],
       ['../src/routes/run-screen/+page.svelte',"import '$lib/designer/workspace.css'"],
@@ -74,9 +74,10 @@ describe('shared registered authoring integration',()=>{
       const source=readFileSync(new URL(path,import.meta.url),'utf8');
       expect(source).toContain(cssImport);
       expect(source).toMatch(/class="[^\"]*workspace-screen"[^>]*style:max-width=\{width/);
+      expect(source).toContain(`<ApplicationViewport containerName="${studioPreviewHost.container.name}"`);
     }
     expect(bridge.document.conditions.compact).toMatchObject({kind:'container',name:studioPreviewHost.container.name});
-    expect(studioPreviewHost.mediaQueries).toContain('outer browser viewport');
+    expect(studioPreviewHost.mediaQueries).toContain('application iframe viewport');
     expect(studioPreviewHost.portability).toContain('not a portable document guarantee');
   });
   it('reuses and replaces ordered shared styles through the agent, canonical history and persistence',()=>{

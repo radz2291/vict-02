@@ -1,0 +1,17 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation
+
+ Γ¥» |renderer| packages/ui-svelte/test/owned-popup-adopted.test.ts (0 test)
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ» Failed Suites 1 ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»
+
+ FAIL  |renderer| packages/ui-svelte/test/owned-popup-adopted.test.ts [ packages/ui-svelte/test/owned-popup-adopted.test.ts ]
+Error: EPERM: operation not permitted, rename 'C:\Users\RZ1\AppData\Local\Packages\sandbox.{85595959-2793-448e-a721-8d8f4f6bbc1c}\AC\Temp\zZwqZqKTrRBgxXt5cZG9N\client\.tmp-1793188115154-we9lqd2utm9' -> 'C:\Users\RZ1\AppData\Local\Packages\sandbox.{85595959-2793-448e-a721-8d8f4f6bbc1c}\AC\Temp\zZwqZqKTrRBgxXt5cZG9N\client\5d974c0ffd62b2e15b0dbefbb4d34e5ab3b87e02'
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[1/1]ΓÄ»
+
+
+ Test Files  1 failed (1)
+      Tests  no tests
+   Start at  19:48:33
+   Duration  2.10s (transform 0ms, setup 0ms, import 0ms, tests 0ms, environment 1.58s)
+

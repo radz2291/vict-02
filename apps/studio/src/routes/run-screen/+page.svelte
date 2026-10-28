@@ -81,7 +81,7 @@
   <div class="workspace-scroll">
     {#if source}<AuthoringGuidance document={source} />{/if}
     {#if failure}<p class="failure" role="alert">{failure}</p>
-    {:else if source && plan}<main class="finished-frame workspace-screen" style:max-width={width==='fluid'?'none':`${width==='match'?matchedWidth:width}px`}><ApplicationViewport height={Math.max(240,viewportHeight-150)}><AssetProvider namespace={`vict.studio.assets.${source.id}`} embedProviders={['youtube','vimeo']}><DocumentHost {plan} extensionDescriptors={catalogDescriptors} extensionImplementations={catalogImplementations} localState={source.localState} actionState={screenActionState} {resetSignal} {dispatch} navigate={() => {}} ariaLabel={screenName(source)} /></AssetProvider></ApplicationViewport></main>
+    {:else if source && plan}<main class="finished-frame workspace-screen" style:max-width={width==='fluid'?'none':`${width==='match'?matchedWidth:width}px`}><ApplicationViewport containerName="studio-screen" height={Math.max(240,viewportHeight-150)}><AssetProvider namespace={`vict.studio.assets.${source.id}`} embedProviders={['youtube','vimeo']}><DocumentHost {plan} extensionDescriptors={catalogDescriptors} extensionImplementations={catalogImplementations} localState={source.localState} actionState={screenActionState} {resetSignal} {dispatch} navigate={() => {}} ariaLabel={screenName(source)} /></AssetProvider></ApplicationViewport></main>
     {:else if compiled && !compiled.ok}<p class="failure" role="alert">Saved application compilation failed.</p>{/if}
   </div>
   <div class="workspace-simulation run-simulation">Simulated execution <span>Local preview · no live effects</span></div>

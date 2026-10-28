@@ -1,0 +1,112 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Foundation AI Review"
+  - generic: ✓ Saved
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- banner:
+  - strong: Chat
+  - button "Hide Chat":
+- complementary "Chat":
+  - region "Conversation":
+    - region "Messages — Message":
+      - log:
+        - generic: You
+        - generic: "Build this current separate screen as a compact responsive Foundation AI Review using the actual newly exposed public VICT AI contracts and semantic theme tokens. Preserve every other saved screen. Discover exact contracts before edits; use short quiet outcome narration and a concise final of Applied / Observed / Untested. Supplied public verification facts: the retained Foundation Graph imported successfully; its prior Input text is \"Manual coexistence after reboot\" and Output name \"Verified coexistence\"; a port-capacity violation was safely refused; deletion, reconnection and creation were exercised; Save/reload and Run showed both values intact. Present these supplied facts only, without inventing execution traces or private reasoning. Compose real public steps/process, a public reasoning summary (\"Review confirmed graph behavior and preserve the prior manual edits.\"), a tool receipt/result with completed status for saved graph Run, supplied source link https://github.com/radz2291/vict-02, an attachment descriptor for graph-current-saved-source.json (presentation only), and an action surface with typed local output binding and a visible result. Include standalone safe Markdown with a short verification note, a controlled draft composer, and one owned dropdown/hovercard or disclosure to exercise. Use newly exposed registered patterns rather than handmade imitation cards. This is presentation and typed intent only: no provider/tool execution, approval authority, extra network calls or private chain of thought. Use compact data within tool limits, validate coherent batches; one final current image observation, truthfully report any crop or untested behavior. Do not attempt undo, do not repeat already confirmed graph edits. No external media fetch needed."
+        - button "Copy message":
+        - generic: Assistant
+        - generic "Conversation timeline":
+          - paragraph: I'll start by discovering the newly exposed AI contract families and the current token/state facts on this screen, then compose the review layout from exact contracts.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph:
+            - text: Families show the new
+            - code: ai
+            - text: family (28 components across chat/public-activity/actions) and the token registry is empty, so semantic roles via
+            - code: theme
+            - text: will carry the palette. Now the AI catalog.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: The public-activity and actions pages are in. Now the chat page (for the tool receipt and composer), then one contract bundle.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: One more catalog page for the remaining public-activity entries (the tool receipt), then the full contract bundle.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: Contract bundle time — requesting the ten exact contracts for this composition with examples.
+          - button "Read screen failed":
+            - generic: Read screen
+            - generic: failed
+          - paragraph: Contracts are streaming in — plan/task/reasoning/sources/markdown/tool/prompt-input bodies continue past offset 3600, confirmation is complete, and the generic disclosure recipes need palette composition instead. Fetching the continuations and the dropdown palette together.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph:
+            - text: All seven AI contract bodies are now fully assembled in context, and the dropdown is a palette recipe whose parts slot into
+            - code: items
+            - text: . One bounded definition read for the dropdown parts, then I'll start composing.
+          - button "Read screen failed":
+            - generic: Read screen
+            - generic: failed
+          - paragraph: Retrying the definition read with the component section instead.
+          - button "Read screen failed":
+            - generic: Read screen
+            - generic: failed
+          - paragraph: Section/registry combos are refusing — I'll get the exact dropdown definition identity from the general catalog instead.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: Exact identities found — reading those two contracts with examples.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+    - button "Scroll to latest message":
+      - generic: Scroll to end
+    - textbox "Message":
+      - /placeholder: Ask for a change…
+    - button "Stop":
+      - generic: Stop
+    - status
+  - status "Reading current source facts…":
+    - generic: Working…
+  - button "Chat details" [active]: ···
+- separator "Chat width"
+- main:
+  - button "Toggle Chat drawer" [expanded]:
+  - group "Workspace mode":
+    - button "Design" [pressed]
+    - button "Interact"
+    - button "Structure"
+  - button "Toggle Document and Selection drawer":
+  - iframe:
+    - generic "Screen canvas":
+      - main "Foundation AI Review"
+  - generic: ＋
+  - heading "What will you make?" [level=1]
+  - paragraph: Select this screen to open its tools, then choose Insert.
+- contentinfo:
+  - status: Loaded the saved screen.

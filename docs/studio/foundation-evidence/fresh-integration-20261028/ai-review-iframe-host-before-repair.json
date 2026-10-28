@@ -1,0 +1,44 @@
+{
+  "ancestors": [
+    {
+      "cls": "uv-a3b3ddb3-screen",
+      "containerName": "none",
+      "containerType": "normal",
+      "tag": "MAIN"
+    },
+    {
+      "cls": "uv-root-screen-5f9b8630-744e-403d-8f84-56dff55de6f1-r1_r1",
+      "containerName": "none",
+      "containerType": "normal",
+      "tag": "DIV"
+    },
+    {
+      "cls": "uv-canvas uv-canvas-has-selection svelte-1q2ovr8 uv-canvas-design",
+      "containerName": "none",
+      "containerType": "normal",
+      "tag": "DIV"
+    },
+    {
+      "cls": "vict-rhea vict-controls svelte-1rr4c2n",
+      "containerName": "none",
+      "containerType": "normal",
+      "tag": "DIV"
+    },
+    {
+      "cls": "",
+      "containerName": "none",
+      "containerType": "normal",
+      "tag": "BODY"
+    },
+    {
+      "cls": "",
+      "containerName": "none",
+      "containerType": "normal",
+      "tag": "HTML"
+    }
+  ],
+  "viewport": {
+    "height": 528,
+    "width": 822
+  }
+}

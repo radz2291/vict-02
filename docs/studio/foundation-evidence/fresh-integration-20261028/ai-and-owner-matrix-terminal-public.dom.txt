@@ -1,0 +1,380 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Foundation AI Review"
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- banner:
+  - strong: Chat
+  - button "Hide Chat":
+- complementary "Chat":
+  - region "Conversation":
+    - region "Messages — Message":
+      - log:
+        - generic: You
+        - generic: "Build this current separate screen as a compact responsive Foundation AI Review using the actual newly exposed public VICT AI contracts and semantic theme tokens. Preserve every other saved screen. Discover exact contracts before edits; use short quiet outcome narration and a concise final of Applied / Observed / Untested. Supplied public verification facts: the retained Foundation Graph imported successfully; its prior Input text is \"Manual coexistence after reboot\" and Output name \"Verified coexistence\"; a port-capacity violation was safely refused; deletion, reconnection and creation were exercised; Save/reload and Run showed both values intact. Present these supplied facts only, without inventing execution traces or private reasoning. Compose real public steps/process, a public reasoning summary (\"Review confirmed graph behavior and preserve the prior manual edits.\"), a tool receipt/result with completed status for saved graph Run, supplied source link https://github.com/radz2291/vict-02, an attachment descriptor for graph-current-saved-source.json (presentation only), and an action surface with typed local output binding and a visible result. Include standalone safe Markdown with a short verification note, a controlled draft composer, and one owned dropdown/hovercard or disclosure to exercise. Use newly exposed registered patterns rather than handmade imitation cards. This is presentation and typed intent only: no provider/tool execution, approval authority, extra network calls or private chain of thought. Use compact data within tool limits, validate coherent batches; one final current image observation, truthfully report any crop or untested behavior. Do not attempt undo, do not repeat already confirmed graph edits. No external media fetch needed."
+        - button "Copy message":
+        - generic: Assistant
+        - generic "Conversation timeline":
+          - paragraph: I'll start by discovering the newly exposed AI contract families and the current token/state facts on this screen, then compose the review layout from exact contracts.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph:
+            - text: Families show the new
+            - code: ai
+            - text: family (28 components across chat/public-activity/actions) and the token registry is empty, so semantic roles via
+            - code: theme
+            - text: will carry the palette. Now the AI catalog.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: The public-activity and actions pages are in. Now the chat page (for the tool receipt and composer), then one contract bundle.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: One more catalog page for the remaining public-activity entries (the tool receipt), then the full contract bundle.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: Contract bundle time — requesting the ten exact contracts for this composition with examples.
+          - button "Read screen failed":
+            - generic: Read screen
+            - generic: failed
+          - paragraph: Contracts are streaming in — plan/task/reasoning/sources/markdown/tool/prompt-input bodies continue past offset 3600, confirmation is complete, and the generic disclosure recipes need palette composition instead. Fetching the continuations and the dropdown palette together.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph:
+            - text: All seven AI contract bodies are now fully assembled in context, and the dropdown is a palette recipe whose parts slot into
+            - code: items
+            - text: . One bounded definition read for the dropdown parts, then I'll start composing.
+          - button "Read screen failed":
+            - generic: Read screen
+            - generic: failed
+          - paragraph: Retrying the definition read with the component section instead.
+          - button "Read screen failed":
+            - generic: Read screen
+            - generic: failed
+          - paragraph: Section/registry combos are refusing — I'll get the exact dropdown definition identity from the general catalog instead.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: Exact identities found — reading those two contracts with examples.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: "Contracts and palette are fully in hand (plan/task/reasoning/sources/markdown/tool/prompt-input r3 bodies + both dropdown parts, all complete). Building now — first batch: semantic theme roles, a compact container condition, and the compact screen frame."
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - paragraph: Frame confirmed. Adding typed local state and the first content sections (heading, public steps, summary, tool receipt).
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - paragraph: Sections confirmed. Now the steps data, sources, markdown note, wired composer, and the confirmation surface.
+          - button "Edit screen failed":
+            - generic: Edit screen
+            - generic: failed
+          - paragraph: Validation caught a malformed property on the markdown add — fixing and resending the clean batch.
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - paragraph: "Core patterns confirmed. Next: the decision binding, sources card, and the visible typed-result row."
+          - button "Edit screen failed":
+            - generic: Edit screen
+            - generic: failed
+          - paragraph: The recipe text creates an element, not a bindable text node — the batch was refused atomically. Rebuilding with true text-node inserts for the two bound values.
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - paragraph: "Result row placed. Final construction batch: bind the visible values, add the owned dropdown with three checks, and the compact-width responsive styles."
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - paragraph: All batches confirmed. Inspecting the composed source tree for bindings, dropdown seed handling, and leftovers before the visual check.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: First page looks right. Continuing the node pages to verify composer outputs and the dropdown seed handling.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: Tree is clean — dropdown seed placeholder was replaced correctly and both text bindings are real. Two small polish ops, then the visual check.
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - paragraph: Construction complete. One final image observation of the current preview.
+          - button "Observe preview completed":
+            - generic: Observe preview
+            - generic: completed
+          - paragraph:
+            - text: "The capture caught a real defect: the tool receipt's"
+            - code: status
+            - text: prop only accepts
+            - code: pending|running|error
+            - text: ", so \"completed\" renders a validation line."
+            - code: "state: \"completed\""
+            - text: carries the completion — fixing the invalid prop.
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - paragraph: Fix confirmed in source. One confirming capture of the tool-receipt region.
+          - button "Observe preview completed":
+            - generic: Observe preview
+            - generic: completed
+          - paragraph:
+            - strong: Applied
+            - text: (7 acknowledged edit batches on this separate screen
+            - code: screen-5f9b…
+            - text: ; no other saved screen touched; expectedRevision now
+            - code: r1.r1#7
+            - text: "):"
+          - list:
+            - text: Semantic theme roles set (surface/text/textMuted/border/accent/accentText) plus a compact
+            - code: studio-screen
+            - text: container condition (≤760px → padding 16px, gap 12px).
+            - text: "Registered AI patterns only, no imitation cards:"
+            - code: vict.ai.task
+            - text: "(six public steps: import → Input"
+            - code: Manual coexistence after reboot
+            - text: → Output
+            - code: Verified coexistence
+            - text: → safe port-capacity refusal → deletion/reconnection/creation exercised → Save/reload + Run intact),
+            - code: vict.ai.reasoning
+            - text: ("Review confirmed graph behavior and preserve the prior manual edits."),
+            - code: vict.ai.tool
+            - text: receipt (Run saved graph, state
+            - code: completed
+            - text: ", input/output pills),"
+            - code: vict.ai.sources
+            - text: (
+            - link "https://github.com/radz2291/vict-02":
+              - /url: https://github.com/radz2291/vict-02
+            - text: ),
+            - code: vict.ai.markdown
+            - text: verification note,
+            - code: vict.ai.prompt-input
+            - text: r3 composer (controlled
+            - code: draft
+            - text: ↔
+            - code: valueChange
+            - text: ","
+            - code: send
+            - text: →
+            - code: submitted
+            - text: ", attachment descriptor"
+            - code: graph-current-saved-source.json
+            - text: metadata only, attach/remove disabled),
+            - code: vict.ai.confirmation
+            - text: action surface (
+            - code: canDecide
+            - text: ","
+            - code: decision
+            - text: → boolean
+            - code: confirmed
+            - text: ), and an owned
+            - code: dropdown-menu
+            - text: "\"Verification checks\" with three items."
+            - text: "Visible typed results: text nodes bound to"
+            - code: state.confirmed
+            - text: (boolean) and
+            - code: state.submitted
+            - text: (string). One batch was refused (text binding needs a real text node) and was rebuilt atomically; the tool
+            - code: status
+            - text: prop was corrected to empty after the contract vocabulary (
+            - code: pending|running|error
+            - text: ) surfaced a validation line — completion stays on
+            - code: state:"completed"
+            - text: . Save remains yours to do.
+          - paragraph:
+            - strong: Observed
+            - text: "(two cropped captures, both at the current scrolled viewport 823×528): consistent theme, reasoning summary, \"Used 1 sources\" with the vict-02 link, markdown note with both values, attachment chip, composer; after the fix, no validation error remains and the receipt shows its output pill. Heading, task steps, confirmation, result row and dropdown sit above/below the crop — verified in source, not in pixels."
+          - paragraph:
+            - strong: Untested
+            - text: ": no click/type tools here, so dropdown open/item selection, composer send, and the decide button are unexercised (bindings are confirmed in source only); responsive ≤760px styles and Run-mode behavior weren't captured. Presentation and typed local intent only — no provider execution, approvals, or network calls were performed."
+        - button "Copy message":
+        - generic: You
+        - generic: try to style all of them, and page,, maybe matrix kinda theme
+        - button "Copy message":
+        - generic: Assistant
+        - generic "Conversation timeline":
+          - paragraph: Matrix restyle it is — dark terminal green for the page and every pattern on it. First I'll pull the current per-node styles and style-source registry so the new theme overrides exactly the right declarations.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: "Panels and registry are clear: two shared sources on the screen root (compact + base padding), all eleven top-level nodes mapped, labels use a muted slate color I'll flip to phosphor green. Grabbing the last three nodes (the dropdown items), then the theme batches start."
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: "Full inventory confirmed — all eight patterns, the bound result row, and three dropdown items will get the phosphor treatment. Batch 1: rewrite the semantic theme roles to the Matrix palette (the pattern internals all read these tokens)."
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - paragraph:
+            - text: "First palette batch landed. Batch 2: the remaining roles (focus ring, disabled, elevation) plus the shared"
+            - code: matrix-panel
+            - text: rule and the page root — near-black base, faint radial glow, and 3px CRT scanlines.
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - paragraph: "Root and theme are set. Batch 3: attach the phosphor panel rule to all eight pattern nodes — task, reasoning, sources, tool receipt, note, composer, confirmation, and the dropdown."
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - paragraph: "Panels are on. Batch 4: the result row becomes a dashed terminal readout, and the heading gets a phosphor glow while the subtitle flips from slate to muted green; root padding/color tuned for the dark canvas."
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - paragraph: "Nearly there. Batch 5: subtitle becomes an uppercase terminal kicker, and a shared hover rule gives the interactive panels (composer, confirmation, dropdown) a green bloom on hover."
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - paragraph:
+            - text: All five styling batches confirmed at revision
+            - code: r1.r1#12
+            - text: . Now the visual check of the current preview region — scanlines, phosphor panels, and monospace recolor.
+          - button "Observe preview completed":
+            - generic: Observe preview
+            - generic: completed
+          - paragraph: Matrix restyle applied and verified on the top region — here's the honest split.
+          - paragraph:
+            - strong: Applied
+            - text: (5 confirmed edit batches, revision now
+            - code: r1.r1#12
+            - text: ", this screen only):"
+          - list:
+            - strong: Theme
+            - text: ": all 12 semantic roles flipped to a phosphor terminal palette — near-black green surface"
+            - code: "#060d07"
+            - text: ", text"
+            - code: "#3dff70"
+            - text: ", muted"
+            - code: "#7fcf9b"
+            - text: ", borders"
+            - code: "#1c4a2c"
+            - text: ", accent"
+            - code: "#00ff41"
+            - text: ", plus green highlight, focus ring, disabled, and a dark elevation shadow. Every pattern's internals read these tokens, so they all recolor together."
+            - strong: Page root
+            - text: ": dark"
+            - code: "#040805"
+            - text: base with a soft radial green glow, 3px CRT scanlines via repeating gradient, monospace stack, phosphor text color, 22px padding. The compact ≤760px responsive rule from before is untouched.
+            - strong: All 11 nodes styled
+            - text: ": a shared"
+            - code: matrix-panel
+            - text: rule (translucent green fill, 1px green border, rounded, soft shadow, monospace) attached to task, reasoning, sources, tool receipt, note, composer, confirmation, dropdown and the result row; result row additionally gets a dashed
+            - code: "#2fae5c"
+            - text: border for a terminal-readout look; heading gets a green text-shadow glow; subtitle becomes a 12px uppercase wide-tracked kicker; a
+            - code: matrix-hover
+            - text: rule adds a green bloom + border brighten on hover for composer, confirmation, and dropdown.
+          - paragraph:
+            - strong: Observed
+            - text: "(one capture, top of page at 823×528, scroll 0): scanline banding visible over near-black, heading glowing bright green monospace, uppercase dimmer-green subtitle, and the task + reasoning panels showing translucent green fills with thin green borders and rounded corners — no leftover light-theme artifacts in frame. Host-measured styles confirm root"
+            - code: rgb(4,8,5)
+            - text: /
+            - code: rgb(61,255,112)
+            - text: ", subtitle 12px, task panel"
+            - code: rgba(0,255,65,0.04)
+            - text: . The sources, tool, note, composer, confirmation, result row and dropdown sit below the crop — confirmed in source/acknowledgements, not in pixels.
+          - paragraph:
+            - strong: Untested
+            - text: ": hover bloom (no hover tool here), dropdown open/item styling, and the ≤760px compact layout weren't captured. Save remains yours to do."
+        - button "Copy message":
+    - button "Scroll to latest message":
+      - generic: Scroll to end
+    - textbox "Message":
+      - /placeholder: Ask for a change…
+    - button "Send" [disabled]:
+      - generic: Send
+    - status
+  - status "5 edits applied":
+    - generic: Ready
+  - button "Chat details": ···
+- main:
+  - button "Toggle Chat drawer" [expanded]:
+  - group "Workspace mode":
+    - button "Design"
+    - button "Interact" [pressed]
+    - button "Structure"
+  - button "Toggle Document and Selection drawer":
+  - iframe:
+    - generic "Screen canvas":
+      - main "Foundation AI Review":
+        - heading "Foundation AI Review" [level=1]:
+          - generic: Foundation AI Review
+        - paragraph:
+          - generic: Compact review of the retained Foundation Graph — supplied public facts, presentation and typed intent only.
+        - button "Review process (public steps)" [expanded]:
+          - generic: Review process (public steps)
+        - paragraph: Supplied verification facts only — no execution on this screen.
+        - generic: Retained Foundation Graph imported
+        - button "Prior Input text intact":
+          - generic: Prior Input text intact
+        - button "Prior Output name intact":
+          - generic: Prior Output name intact
+        - generic: Port-capacity violation safely refused
+        - generic: Deletion, reconnection and creation exercised
+        - generic: Save/reload and Run confirmed both values intact
+        - button "Public summary" [expanded]:
+          - generic: Public summary
+        - paragraph: Review confirmed graph behavior and preserve the prior manual edits.
+        - button "Used 1 sources" [expanded]:
+          - generic: Used 1 sources
+        - link "vict-02 — supplied source link (opens in a new tab)":
+          - /url: https://github.com/radz2291/vict-02
+          - text: vict-02 — supplied source link
+          - generic: (opens in a new tab)
+        - button "Tool receipt — Run saved graph" [expanded]:
+          - generic: Tool receipt — Run saved graph
+        - code: Verified coexistence
+        - paragraph:
+          - strong: Verification note
+          - text: "— Saved graph Run completed with both retained values intact: Input"
+          - code: Manual coexistence after reboot
+          - text: ", Output"
+          - code: Verified coexistence
+          - text: .
+        - paragraph: This screen presents supplied public facts only; it performs no provider, tool or network execution.
+        - generic: graph-current-saved-source.json
+        - button "Remove graph-current-saved-source.json" [disabled]:
+        - textbox "Draft note":
+          - /placeholder: Compose a short verification note…
+          - text: hello
+        - button "Send":
+          - generic: Send
+        - generic: Record review decision
+        - paragraph: Typed local boolean intent only — no approval authority and no provider execution.
+        - button "Deny"
+        - button "Approve"
+        - paragraph:
+          - generic: "Decision recorded (typed boolean):"
+        - generic: "false"
+        - paragraph:
+          - generic: "Composer sent draft:"
+        - generic: hello
+        - button "Verification checks"
+- contentinfo:
+  - status: Saved Foundation AI Review · revision r1.r2

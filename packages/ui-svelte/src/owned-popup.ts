@@ -33,10 +33,24 @@ interface Layer extends OwnedPopupLayer { options: OwnedPopupLayerOptions; dispo
 interface Hub { layers: Layer[]; removeListeners: () => void }
 const hubs = new WeakMap<HTMLElement, Hub>();
 
-/** Actual rendering, not a document-global popup class or current realm instanceof. */
+/** DOM adoption changes ownerDocument, not an element's creation prototype.
+ * Borrow the destination's DOM method for its cross-realm Element brand check;
+ * destination-realm instanceof incorrectly rejects parent-created iframe UI. */
+function isElementNode(item: unknown): item is Element {
+  if (!item || typeof item !== 'object') return false;
+  const Constructor = (item as Element).ownerDocument?.defaultView?.Element;
+  if (!Constructor) return false;
+  try { return Constructor.prototype.matches.call(item, '*'); }
+  catch { return false; }
+}
+
+function isHtmlElement(item: unknown): item is HTMLElement {
+  return isElementNode(item) && item.namespaceURI === 'http://www.w3.org/1999/xhtml';
+}
+
+/** Actual HTML rendering, independent of its creation or destination realm. */
 export function isOwnedElementRendered(item: Element): item is HTMLElement {
-  const Constructor = item.ownerDocument.defaultView?.HTMLElement;
-  if (!Constructor || !(item instanceof Constructor) || !item.isConnected || item.matches(':disabled,[aria-disabled="true"]')) return false;
+  if (!isHtmlElement(item) || !item.isConnected || item.matches(':disabled,[aria-disabled="true"]')) return false;
   for (let ancestor: Element | null = item; ancestor; ancestor = ancestor.parentElement) {
     if (ancestor.tagName === 'FIELDSET' && ancestor.hasAttribute('disabled')) {
       const legend = Array.from(ancestor.children).find(child => child.tagName === 'LEGEND');
@@ -55,8 +69,7 @@ export function isOwnedElementRendered(item: Element): item is HTMLElement {
 /** Logical source lifetime follows CatalogPortal's policy: aria-hidden alone
  * can be imposed by a document modal and does not make its own popup disappear. */
 export function isOwnedPopupSourceVisible(item: Element): item is HTMLElement {
-  const Constructor = item.ownerDocument.defaultView?.HTMLElement;
-  if (!Constructor || !(item instanceof Constructor) || !item.isConnected) return false;
+  if (!isHtmlElement(item) || !item.isConnected) return false;
   for (let ancestor: Element | null = item; ancestor; ancestor = ancestor.parentElement) {
     if (ancestor !== item && ancestor.tagName === 'DETAILS' && !ancestor.hasAttribute('open')) {
       const summary: Element | undefined = Array.from(ancestor.children).find(child => child.tagName === 'SUMMARY');
@@ -202,9 +215,8 @@ export function registerOwnedPopupLayer(options: OwnedPopupLayerOptions): OwnedP
   if (!hub) {
     const created: Hub = {layers: [], removeListeners: () => {}};
     const dispatch = (name: 'onKeydown'|'onFocusIn'|'onPointerDown'|'onClick', event: Event) => {
-      const Constructor = owner.ownerDocument.defaultView?.Element;
       const originalTarget = event.target;
-      if (!Constructor || !(originalTarget instanceof Constructor) || !isOwnedPopupTarget(owner, originalTarget)) return;
+      if (!isElementNode(originalTarget) || !isOwnedPopupTarget(owner, originalTarget)) return;
       let target: Element = originalTarget;
       const visited = new Set<Layer>();
       while (!event.defaultPrevented) {
@@ -289,8 +301,7 @@ export function ownedPopupBranches(owner: HTMLElement, panel: HTMLElement, expli
       const candidates = new Set<HTMLElement>();
       for (const id of references) {
         const node = document.getElementById(id);
-        const Constructor = document.defaultView?.HTMLElement;
-        if (!Constructor || !(node instanceof Constructor)) continue;
+        if (!isHtmlElement(node)) continue;
         candidates.add(node);
         // Select may expose the active option instead of aria-controls.
         const popup=node.closest<HTMLElement>('[role="listbox"],[role="menu"],[role="tree"],[role="grid"]');

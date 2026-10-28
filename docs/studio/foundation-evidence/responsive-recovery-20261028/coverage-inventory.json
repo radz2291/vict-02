@@ -1,0 +1,82 @@
+{
+  "kind": "Static responsive and persistence inventory; no new runtime verdict",
+  "inspectedCommit": "59212b031d49163f7e1ebc40088f6a8ab2ae1b1e",
+  "sourceFiles": [
+    {
+      "path": "apps/studio/src/lib/designer/preview-host.ts",
+      "committedGitBlob": "83ebcd267b5dc6bebf37e5339695f95d3f4c9c85"
+    },
+    {
+      "path": "apps/studio/src/lib/designer/agent-reads.ts",
+      "committedGitBlob": "45679d9de06c19d08909f8d4346d4e39b0bec515"
+    },
+    {
+      "path": "apps/studio/src/lib/designer/Designer.svelte",
+      "committedGitBlob": "43faec980bd4f62ca2a598b4b310b737306d1d2a"
+    },
+    {
+      "path": "apps/studio/src/lib/designer/storage.ts",
+      "committedGitBlob": "de4da880855b62258b8207db5940c407c61038f1"
+    },
+    {
+      "path": "apps/studio/src/lib/designer/workspace.css",
+      "committedGitBlob": "5e44dfca4b18c161067b4c9d76b5f28fb14958ef"
+    },
+    {
+      "path": "packages/ui-svelte/src/viewport/ApplicationViewport.svelte",
+      "committedGitBlob": "8c6a376f02d3580bd31d846046bc64aec96c052f"
+    },
+    {
+      "path": "packages/ui-svelte/src/viewport/ViewportContent.svelte",
+      "committedGitBlob": "28ae1161b508dc0fefaeb4c9f48c6768c121fbce"
+    },
+    {
+      "path": "packages/ui-patterns-svelte/src/FirstVisit.svelte",
+      "committedGitBlob": "76103356e24d61a17a21b71634ac006a641df957"
+    },
+    {
+      "path": "packages/ui-patterns-svelte/src/state.ts",
+      "committedGitBlob": "411d43c0b41f97c087880ffc7a8fd5100ffb20ae"
+    },
+    {
+      "path": "packages/ui-patterns-svelte/src/Carousel.svelte",
+      "committedGitBlob": "b93f67e73eb73b2a61c0f45a2da134ed1a3e5efb"
+    },
+    {
+      "path": "packages/ui-patterns-svelte/src/Navigation.svelte",
+      "committedGitBlob": "4bf13db1978d1ae6cecd92b215275e089485d9c3"
+    },
+    {
+      "path": "packages/ui-patterns-svelte/test/patterns.test.ts",
+      "committedGitBlob": "ce1ceb27f8acfd88290cf8c4f501c8285449a2c2"
+    }
+  ],
+  "retainedChecks": {
+    "patternsFailed": 0,
+    "patterns": 45,
+    "qualification": "Supporting checks reused; no change in patterns/viewport source from saved product ba7b2a5 to inspected59212b0; actual-app/device evidence still separate",
+    "path": "docs/studio/foundation-evidence/owned-popup-review-20261028/final-verification.json"
+  },
+  "findings": [
+    {
+      "status": "UNRECOVERED",
+      "id": "RR-01",
+      "missing": "At least16of21initialnodebodies, initial6confirmedoperationbatches, completeinitialthemeandregistries",
+      "finalReceiptDigest": "37698b22ad89d2624a172eae32447e5124e2d37e09799550c7e11c1bdbca01dd"
+    },
+    {
+      "status": "Static gap; root runtime measurement confirmed; root owns repair",
+      "id": "RR-02",
+      "scope": "Namedstudio-screencontaineroutsideactualiframe; oldhostmetadata/guidance stillstatesouterviewportsemantics"
+    }
+  ],
+  "deviceEvidence": {
+    "physicalDeviceEstablished": false,
+    "softKeyboard": false,
+    "physicalTouch": false,
+    "desktopSimulationIsNotDeviceProof": true,
+    "safeArea": false,
+    "orientationOnDevice": false
+  },
+  "laneMutations": "Only new responsive-recovery evidence files; no product/Git/browser/provider/server mutation"
+}

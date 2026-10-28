@@ -1,0 +1,199 @@
+{
+  "kind": "Bounded retained-public-artifact recovery inventory; not a recovered UiDocument",
+  "inspectedHead": "59212b031d49163f7e1ebc40088f6a8ab2ae1b1e",
+  "artifact": "docs/studio/foundation-evidence/actual-agent-responsive-recovery-public.json",
+  "artifactSha256": "2264a456347146abfc4f7a606f13ec8b62c50da201e9ff01db19697a6c4f24c0",
+  "sourceIdentity": {
+    "schema": "vict.ui-document@1",
+    "id": "screen-5936ae38-4559-469f-be93-a33806f740b2",
+    "revision": "r1",
+    "root": "screen",
+    "nodeCount": 21,
+    "stateCount": 23
+  },
+  "completeInitialNodeBodies": [
+    {
+      "nodeId": "screen",
+      "partIndex": 1,
+      "sourceJsonSha256": "11bd31728707549eb25c7a4da1242c8042165de2c5368143742bd561c7b4a77d"
+    },
+    {
+      "nodeId": "dash-grid",
+      "partIndex": 6,
+      "sourceJsonSha256": "3deb01a6e13df958b568da2c59aad3f3c503a7f2b7f812eb0a52203e50d870a2"
+    },
+    {
+      "nodeId": "dash-nav",
+      "partIndex": 6,
+      "sourceJsonSha256": "f963c6565728f16c67a1418b0ad462da4aeabb2d0407f47d87e878a7979a2356"
+    },
+    {
+      "nodeId": "card-projects",
+      "partIndex": 10,
+      "sourceJsonSha256": "9959fb29b331edb5492a02b78b59f0ed9d26d331bc1fa2660dde2fea0aec8f15"
+    },
+    {
+      "nodeId": "card-milestones",
+      "partIndex": 10,
+      "sourceJsonSha256": "dffb931226b94aabc1f9be8e278c3c0defc98b5107bf2f3b5a2e46760f5965d3"
+    }
+  ],
+  "initialNodeBodiesPresent": 5,
+  "initialNodeBodiesRequired": 21,
+  "initialNodeBodiesAbsentAtLeast": 16,
+  "knownUnresolvedInitialChildReferences": [
+    "dash-header",
+    "dash-projects",
+    "dash-welcome"
+  ],
+  "statePreviewCount": 23,
+  "parseableInitialJsonPreviews": 23,
+  "stateKeys": [
+    "message",
+    "accepted",
+    "dialogOpen",
+    "busy",
+    "actionError",
+    "actionResult",
+    "navSection",
+    "projectQuery",
+    "selectedProject",
+    "drawerOpen",
+    "carouselIndex",
+    "headerAction",
+    "catalog_dash-new-button_lastAction",
+    "catalog_dash-drawer_drawerOpen",
+    "navItems",
+    "navIcons",
+    "catalog_dash-nav_navItems",
+    "catalog_dash-nav_navSelection",
+    "projectItems",
+    "milestoneSlides",
+    "catalog_dash-projects_listItems",
+    "catalog_dash-projects_listQuery",
+    "catalog_dash-projects_selectedItem"
+  ],
+  "conditionPreviewKeys": [
+    "compact",
+    "cond-narrow"
+  ],
+  "confirmedContinuationBatches": [
+    {
+      "partIndex": 12,
+      "expectedRevision": "r1#9",
+      "operationCount": 7,
+      "ok": true,
+      "revision": "r1#9",
+      "digest": "ea890e105a51ee564c578d04192457c48fceacd06e12fdb0eadbc2de5b859f3e",
+      "applied": 1
+    },
+    {
+      "partIndex": 14,
+      "expectedRevision": "r1#10",
+      "operationCount": 8,
+      "ok": true,
+      "revision": "r1#10",
+      "digest": "37698b22ad89d2624a172eae32447e5124e2d37e09799550c7e11c1bdbca01dd",
+      "applied": 2
+    }
+  ],
+  "finalCursor": {
+    "documentId": "screen-5936ae38-4559-469f-be93-a33806f740b2",
+    "revision": "r1#10",
+    "digest": "37698b22ad89d2624a172eae32447e5124e2d37e09799550c7e11c1bdbca01dd",
+    "epoch": "24c47533-ac48-4dc3-b0f5-309ffe8d43f8"
+  },
+  "receiptConsistency": {
+    "summaryDigestMatchesLastReceipt": true,
+    "observationDigestMatchesLastReceipt": true
+  },
+  "observedCrop": {
+    "width": 928,
+    "height": 580,
+    "sourceWidth": 928,
+    "sourceHeight": 970,
+    "offsetLeft": 0,
+    "offsetTop": 0,
+    "cropped": true
+  },
+  "originalFirstSixConfirmedBatchInputsPresent": false,
+  "exactPublicDatastorePathCited": false,
+  "missingCanonicalFields": [
+    "16 or more initial node bodies",
+    "complete initial theme",
+    "complete styleSources/tokens/assets/componentDefinitions registries",
+    "initial six confirmed batch inputs if reconstruction is attempted"
+  ],
+  "verdict": "UNRECOVERED: insufficient original canonical input to compute or verify the final digest",
+  "noBrowserProviderServerOrPrivateReasoningAccess": true,
+  "toolInventory": [
+    {
+      "partIndex": 1,
+      "name": "studio_screen_read",
+      "section": "source",
+      "expectedRevision": "r1#8"
+    },
+    {
+      "partIndex": 2,
+      "name": "studio_screen_read",
+      "section": "state",
+      "expectedRevision": "r1#8"
+    },
+    {
+      "partIndex": 3,
+      "name": "studio_screen_read",
+      "section": "registry",
+      "expectedRevision": "r1#8"
+    },
+    {
+      "partIndex": 4,
+      "name": "studio_screen_read",
+      "section": "contracts",
+      "expectedRevision": "r1#8"
+    },
+    {
+      "partIndex": 6,
+      "name": "studio_screen_read",
+      "section": "sources",
+      "expectedRevision": "r1#8"
+    },
+    {
+      "partIndex": 7,
+      "name": "studio_screen_read",
+      "section": "state",
+      "expectedRevision": "r1#8"
+    },
+    {
+      "partIndex": 8,
+      "name": "studio_screen_read",
+      "section": "contracts",
+      "expectedRevision": "r1#8"
+    },
+    {
+      "partIndex": 10,
+      "name": "studio_screen_read",
+      "section": "sources",
+      "expectedRevision": "r1#8"
+    },
+    {
+      "partIndex": 12,
+      "name": "studio_screen_edit",
+      "expectedRevision": "r1#9"
+    },
+    {
+      "partIndex": 14,
+      "name": "studio_screen_edit",
+      "expectedRevision": "r1#10"
+    },
+    {
+      "partIndex": 16,
+      "name": "studio_screen_read",
+      "section": "sources",
+      "expectedRevision": "r1#10"
+    },
+    {
+      "partIndex": 18,
+      "name": "studio_screen_observe"
+    }
+  ]
+}
