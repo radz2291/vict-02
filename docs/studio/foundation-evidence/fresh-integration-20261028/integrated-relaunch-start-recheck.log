@@ -1,0 +1,7 @@
+
+LauncherPid   : 14908
+Address       : http://127.0.0.25:5626
+Model         : zai/glm-5.3-flash
+Configuration : existing launch-agent.mjs loader
+Verification  : Check the listener and supported internal browser; a PID alone is not reachability proof.
+

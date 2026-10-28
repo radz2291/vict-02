@@ -1,0 +1,81 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Foundation AI Review"
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- main:
+  - button "Toggle Chat drawer":
+  - group "Workspace mode":
+    - button "Design"
+    - button "Interact" [pressed]
+    - button "Structure"
+  - button "Toggle Document and Selection drawer":
+  - iframe [active]:
+    - generic "Screen canvas":
+      - main "Foundation AI Review":
+        - heading "Foundation AI Review" [level=1]:
+          - generic: Foundation AI Review
+        - paragraph:
+          - generic: Compact review of the retained Foundation Graph — supplied public facts, presentation and typed intent only.
+        - button "Review process (public steps)" [expanded]:
+          - generic: Review process (public steps)
+        - paragraph: Supplied verification facts only — no execution on this screen.
+        - generic: Retained Foundation Graph imported
+        - button "Prior Input text intact":
+          - generic: Prior Input text intact
+        - button "Prior Output name intact":
+          - generic: Prior Output name intact
+        - generic: Port-capacity violation safely refused
+        - generic: Deletion, reconnection and creation exercised
+        - generic: Save/reload and Run confirmed both values intact
+        - button "Public summary" [expanded]:
+          - generic: Public summary
+        - paragraph: Review confirmed graph behavior and preserve the prior manual edits.
+        - button "Used 1 sources" [expanded]:
+          - generic: Used 1 sources
+        - link "vict-02 — supplied source link (opens in a new tab)":
+          - /url: https://github.com/radz2291/vict-02
+          - text: vict-02 — supplied source link
+          - generic: (opens in a new tab)
+        - button "Tool receipt — Run saved graph" [expanded]:
+          - generic: Tool receipt — Run saved graph
+        - code: Verified coexistence
+        - paragraph:
+          - strong: Verification note
+          - text: "— Saved graph Run completed with both retained values intact: Input"
+          - code: Manual coexistence after reboot
+          - text: ", Output"
+          - code: Verified coexistence
+          - text: .
+        - paragraph: This screen presents supplied public facts only; it performs no provider, tool or network execution.
+        - generic: graph-current-saved-source.json
+        - button "Remove graph-current-saved-source.json" [disabled]:
+        - textbox "Draft note":
+          - /placeholder: Compose a short verification note…
+        - button "Send" [disabled]:
+          - generic: Send
+        - generic: Record review decision
+        - paragraph: Typed local boolean intent only — no approval authority and no provider execution.
+        - button "Deny"
+        - button "Approve"
+        - paragraph:
+          - generic: "Decision recorded (typed boolean):"
+        - generic: "false"
+        - paragraph:
+          - generic: "Composer sent draft:"
+        - button "Verification checks" [expanded]
+    - menu "Verification checks":
+      - menuitem "Import — retained Foundation Graph" [active]
+      - menuitem "Values — Input and Output intact"
+      - menuitem "Source — vict-02 repository"
+- contentinfo:
+  - status: Interact mode · simulated behavior, no live effects.
+- generic: Designer — VICT Studio

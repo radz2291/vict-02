@@ -1,0 +1,18 @@
+{
+  "candidateSHA": "2e457b6b4f2f8bebddbf142e6391273c54369d13",
+  "verdict": "PASS - bounded one-line launcher node resolution fix",
+  "sourceSHA256": "d2f97f1bb2f31e9d632737f2dbf4c4a9cb1a2d9ea0498793e81dc12bef64fac7",
+  "extractedExpression": "(Get-Command node -CommandType Application -ErrorAction Stop | Select-Object -First 1).Source",
+  "actualApplicationResultCount": 3,
+  "actualSelectedType": "System.String",
+  "actualFirstPathSelected": true,
+  "mockedMultipleResultsFirstScalarSelected": true,
+  "preFixMockedMultipleResultType": "System.Object[]",
+  "preFixMockedMultipleResultCount": 2,
+  "limitations": [
+    "Expression-only execution; launcher not invoked",
+    "No process start/stop, listener inventory, browser, provider or network calls",
+    "Prior candidate review excludes this uncommitted helper amendment",
+    "Actual approved relaunch outcome belongs to root evidence"
+  ]
+}

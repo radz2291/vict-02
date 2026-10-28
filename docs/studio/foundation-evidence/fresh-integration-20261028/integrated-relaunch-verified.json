@@ -1,0 +1,15 @@
+{
+  "candidate": "2e457b6b4f2f8bebddbf142e6391273c54369d13",
+  "launcherPid": 14908,
+  "childPid": 7444,
+  "childParent": 14908,
+  "address": "127.0.0.25:5626",
+  "launcherMatches": true,
+  "childMatches": true,
+  "installedIndexHash": "0A90AE30BF1F20AE26F20BAEAEF7B9BCEEA4EB298CE7B23074F1C53C930B0899",
+  "stagedIndexHash": "0A90AE30BF1F20AE26F20BAEAEF7B9BCEEA4EB298CE7B23074F1C53C930B0899",
+  "errorLogBytes": 0,
+  "verifiedAtUtc": "2026-10-28T12:16:57.6404502Z",
+  "browser": "Root supported IAB normal login and saved Matrix reopened; native dropdown pointer/keyboard/Escape passes separately recorded",
+  "note": "Helper scalar executable-path fix reviewed separately; no credential values recorded"
+}

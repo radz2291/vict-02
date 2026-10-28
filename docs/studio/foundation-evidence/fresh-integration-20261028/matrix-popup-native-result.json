@@ -1,0 +1,21 @@
+{
+  "loadedCandidate": "2e457b6b4f2f8bebddbf142e6391273c54369d13",
+  "pointerOpen": true,
+  "arrowDownOpen": true,
+  "firstItemFocused": true,
+  "escapeClosedAndReturnedTriggerFocus": true,
+  "observedMenu": {
+    "background": "rgb(6, 13, 7)",
+    "color": "rgb(61, 255, 112)",
+    "withinVictControls": true,
+    "owner": "c38",
+    "width": 259.9750061035156,
+    "height": 112.5999984741211
+  },
+  "host": {
+    "containerName": "studio-screen",
+    "containerType": "inline-size",
+    "width": 819.2000122070312
+  },
+  "limits": "Single actual authored dropdown, not nested/multiple app or physical-device coverage."
+}

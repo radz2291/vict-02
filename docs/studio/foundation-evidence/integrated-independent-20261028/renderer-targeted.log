@@ -1,0 +1,9 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation
+
+
+ Test Files  2 passed (2)
+      Tests  6 passed (6)
+   Start at  20:09:42
+   Duration  5.79s (transform 2.14s, setup 0ms, import 2.76s, tests 225ms, environment 5.25s)
+

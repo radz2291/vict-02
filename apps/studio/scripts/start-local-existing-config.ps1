@@ -31,7 +31,7 @@ if ($ValidateOnly) {
 $occupied = @(Get-NetTCPConnection -State Listen -ErrorAction Stop |
   Where-Object { $_.LocalPort -eq 5626 -and $_.LocalAddress -in @('127.0.0.25', '0.0.0.0', '::', '::ffff:127.0.0.25') })
 if ($occupied.Count) { throw 'Studio address is already listening. Preserve it and verify ownership before any stop.' }
-$node = (Get-Command node -CommandType Application -ErrorAction Stop).Source
+$node = (Get-Command node -CommandType Application -ErrorAction Stop | Select-Object -First 1).Source
 $env:HOST = '127.0.0.25'
 $env:PORT = '5626'
 $env:ORIGIN = 'http://127.0.0.25:5626'
