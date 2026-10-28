@@ -3,8 +3,10 @@
   import * as InputGroup from '../upstream/ui/input-group/index.js';
   import ChevronDown from '@lucide/svelte/icons/chevron-down';
   import type { ModelOption } from './types.js';
+  import { getContext } from 'svelte';
+  import { UI_PORTAL_TARGET, type UiPortalTarget, type UiComponentPresentation } from '@victframework/ui-svelte';
 
-  let { models, model, efforts = [], effort = '', onModelChange, onEffortChange, inline = false }: {
+  let { models, model, efforts = [], effort = '', onModelChange, onEffortChange, inline = false, presentation }: {
     models: readonly ModelOption[];
     model: string;
     efforts?: readonly ModelOption[];
@@ -13,7 +15,12 @@
     onEffortChange?: (id: string) => void;
     /** Flatten layout into an InputGroup footer so individual controls can wrap. */
     inline?: boolean;
+    /** Optional canonical authoring scope; does not grant provider authority. */
+    presentation?: UiComponentPresentation;
   } = $props();
+  const portalTarget = getContext<UiPortalTarget | undefined>(UI_PORTAL_TARGET);
+  let root = $state<HTMLDivElement>();
+  const ownedPortal = $derived(presentation ? {to:portalTarget?.() ?? root,scopeClass:presentation.scopeClass} : undefined);
   const modelLabel = $derived(models.find(item => item.id === model)?.label ?? model);
   const effortLabel = $derived(efforts.find(item => item.id === effort)?.label ?? effort);
   const groups = $derived.by(() => {
@@ -28,17 +35,17 @@
   });
 </script>
 
-<div class={inline ? 'contents' : 'flex flex-wrap items-center gap-2'}>
+<div bind:this={root} class={`${inline ? 'contents' : 'flex flex-wrap items-center gap-2'} ${presentation?.scopeClass??''}`}>
   <DropdownMenu.Root>
     <DropdownMenu.Trigger disabled={!onModelChange}>
       {#snippet child({ props })}
-        <InputGroup.Button {...props} size="sm" variant="outline" aria-label={`Model: ${modelLabel}`}>
+        <InputGroup.Button {...props} {...presentation?.target('model-trigger')} size="sm" variant="outline" aria-label={`Model: ${modelLabel}`}>
           {modelLabel}
           <ChevronDown />
         </InputGroup.Button>
       {/snippet}
     </DropdownMenu.Trigger>
-    <DropdownMenu.Content align="start" class="w-48">
+    <DropdownMenu.Content {...presentation?.target('model-menu')} portalProps={ownedPortal} align="start" class={`w-48 ${presentation?.target('model-menu').class??''}`}>
       <DropdownMenu.RadioGroup value={model} onValueChange={onModelChange}>
         {#each groups as group, index (group.label)}
           {#if index > 0}<DropdownMenu.Separator />{/if}
@@ -56,14 +63,14 @@
     <DropdownMenu.Root>
       <DropdownMenu.Trigger disabled={!onEffortChange}>
         {#snippet child({ props })}
-          <InputGroup.Button {...props} size="sm" variant="outline" aria-label={`Effort: ${effortLabel}`}>
+          <InputGroup.Button {...props} {...presentation?.target('effort-trigger')} size="sm" variant="outline" aria-label={`Effort: ${effortLabel}`}>
             <span class="text-muted-foreground">Effort</span>
             {effortLabel}
             <ChevronDown />
           </InputGroup.Button>
         {/snippet}
       </DropdownMenu.Trigger>
-      <DropdownMenu.Content align="start" class="w-36">
+      <DropdownMenu.Content {...presentation?.target('effort-menu')} portalProps={ownedPortal} align="start" class={`w-36 ${presentation?.target('effort-menu').class??''}`}>
         <DropdownMenu.Group>
           <DropdownMenu.Label>Effort</DropdownMenu.Label>
           <DropdownMenu.RadioGroup value={effort} onValueChange={onEffortChange}>

@@ -11,19 +11,24 @@
   import MessageAction from './MessageAction.svelte';
   import Markdown from './upstream/markdown/markdown.svelte';
   import type { ConversationMessage, SendResult, SendAccepted } from './adapters.js';
+  import type { UiComponentPresentation } from '@victframework/ui-svelte';
 
   let { messages, busy = false, onSend, onStop, emptyMessage = 'How can I help?',
     inputLabel = 'Message', inputPlaceholder = 'Write a message…', footer,
-    title, description, onReset,
+    title, description, onReset, composer, presentation,
   }: {
     messages: readonly ConversationMessage[];
     busy?: boolean;
-    onSend: (text: string, accepted?: SendAccepted) => Promise<SendResult>;
+    onSend?: (text: string, accepted?: SendAccepted) => Promise<SendResult>;
     onStop?: () => void;
     emptyMessage?: string;
     inputLabel?: string;
     inputPlaceholder?: string;
     footer?: Snippet;
+    /** Optional app-authored controlled composer; transport stays with its host. */
+    composer?: Snippet;
+    /** Optional canonical parts and popup scope for authored transcripts. */
+    presentation?: UiComponentPresentation;
     title?: string;
     description?: string;
     onReset?: () => void;
@@ -37,10 +42,11 @@
   let form = $state<HTMLFormElement>();
   let input = $state<HTMLTextAreaElement | null>(null);
   const pending = $derived(busy || sending);
+  const composerPresentation = $derived(presentation ? {...presentation,target:(name:string)=>presentation!.target(({surface:'composer-surface',field:'composer-field',actions:'composer-actions'} as Record<string,string>)[name] ?? name)} : undefined);
   onDestroy(() => clearTimeout(copyReset));
 
   async function submit(text: string) {
-    if (!text || pending) return;
+    if (!text || pending || !onSend) return;
     sending = true; error = '';
     const hadFocus = form?.contains(document.activeElement);
     let accepted = false;
@@ -75,59 +81,63 @@
   }
 </script>
 
+{#snippet composerBody()}
+  {#if composer}{@render composer()}{:else}<PromptInput presentation={composerPresentation} bind:value={draft} bind:form bind:input label={inputLabel} placeholder={inputPlaceholder} busy={pending} onSend={onSend ? (text) => void submit(text) : undefined} {onStop}/>{/if}
+{/snippet}
+
 <!-- Composition derived from the pinned shadcn-svelte AI Chat/Prompt Input/Tool patterns.
      VICT owns only callbacks and honest lifecycle state; there is no tutorial transport. -->
-<section class="vict-ai vict-ai-conversation" aria-label="Conversation">
+<section {...presentation?.target('surface')} class={`vict-ai vict-ai-conversation ${presentation?.target('surface').class ?? ''}`} aria-label="Conversation">
   {#if title || description || onReset}
-    <div class="flex items-start justify-between gap-4 px-6 pb-2 pt-6">
+    <div {...presentation?.target('header')} class={`flex items-start justify-between gap-4 px-6 pb-2 pt-6 ${presentation?.target('header').class ?? ''}`}>
       <div class="flex flex-col gap-1">
-        {#if title}<div class="font-medium">{title}</div>{/if}
-        {#if description}<div class="text-sm text-muted-foreground">{description}</div>{/if}
+        {#if title}<div {...presentation?.target('heading')} class={`font-medium ${presentation?.target('heading').class ?? ''}`}>{title}</div>{/if}
+        {#if description}<div {...presentation?.target('description')} class={`text-sm text-muted-foreground ${presentation?.target('description').class ?? ''}`}>{description}</div>{/if}
       </div>
-      {#if onReset && !busy}<MessageAction label="Reset conversation" onclick={onReset}><RotateCwIcon aria-hidden="true"/></MessageAction>{/if}
+      {#if onReset && !busy}<MessageAction {presentation} part="reset" label="Reset conversation" onclick={onReset}><RotateCwIcon aria-hidden="true"/></MessageAction>{/if}
     </div>
   {/if}
   <MessageScroller.Provider>
     <MessageScroller.Root class="vict-ai-feed-root">
       <MessageScroller.Viewport class="vict-conversation" data-testid="conversation-feed" role="region" aria-label={`Messages — ${inputLabel}`} tabindex={0}>
-        <MessageScroller.Content class="vict-ai-messages" aria-busy={busy}>
+        <MessageScroller.Content {...presentation?.target('messages')} class={`vict-ai-messages ${presentation?.target('messages').class ?? ''}`} aria-busy={busy}>
           {#if !messages.length}<p class="vict-ai-empty">{emptyMessage}</p>{/if}
           {#each messages as message (message.id)}
             <MessageScroller.Item messageId={message.id} scrollAnchor={message.role === 'user'}>
-              <Message.Root align={message.role === 'user' ? 'end' : 'start'} data-testid="conversation-message" data-participant={message.role}>
-                <Message.Content class="gap-2">
+              <Message.Root {...presentation?.target('message')} align={message.role === 'user' ? 'end' : 'start'} data-testid="conversation-message" data-participant={message.role}>
+                <Message.Content {...presentation?.target('message-content')} class={`gap-2 ${presentation?.target('message-content').class ?? ''}`}>
                   <span class="vict-ai-sr">{message.author ?? (message.role === 'user' ? 'You' : 'Assistant')}</span>
                   {#if message.role === 'user'}
-                    <Bubble.Root align="end" variant="muted"><Bubble.Content><span class="vict-ai-user-text">{message.text}</span></Bubble.Content></Bubble.Root>
+                    <Bubble.Root align="end" variant="muted"><Bubble.Content><span {...presentation?.target('message-text')} class={`vict-ai-user-text ${presentation?.target('message-text').class ?? ''}`}>{message.text}</span></Bubble.Content></Bubble.Root>
                   {:else}
                     {#if message.events}
-                      <div class="vict-ai-timeline" aria-label="Conversation timeline">
+                      <div {...presentation?.target('timeline')} class={`vict-ai-timeline ${presentation?.target('timeline').class ?? ''}`} aria-label="Conversation timeline">
                         {#each message.events as event (event.id)}
                           <div data-event-kind={event.kind} data-event-id={event.id}>
                             {#if event.kind === 'text'}
-                              <div class="vict-ai-markdown"><Markdown content={event.text}/></div>
+                              <div {...presentation?.target('message-text')} class={`vict-ai-markdown ${presentation?.target('message-text').class ?? ''}`}><Markdown content={event.text}/></div>
                             {:else if event.kind === 'activity'}
-                              <ConversationToolCall activity={event.activity}/>
+                              <div {...presentation?.target('activity')}><ConversationToolCall activity={event.activity}/></div>
                             {:else}
-                              <p class="vict-ai-event-summary">{event.text}</p>
+                              <p {...presentation?.target('event-summary')} class={`vict-ai-event-summary ${presentation?.target('event-summary').class ?? ''}`}>{event.text}</p>
                             {/if}
                           </div>
                         {/each}
                       </div>
                     {:else}
                     {#if message.activity?.length}
-                      <div aria-label="Tool activity">
+                      <div {...presentation?.target('timeline')} aria-label="Tool activity">
                         {#each message.activity as activity (activity.id)}
-                          <ConversationToolCall {activity}/>
+                          <div {...presentation?.target('activity')}><ConversationToolCall {activity}/></div>
                         {/each}
                       </div>
                     {/if}
-                    <div class="vict-ai-markdown"><Markdown content={message.text}/></div>
+                    <div {...presentation?.target('message-text')} class={`vict-ai-markdown ${presentation?.target('message-text').class ?? ''}`}><Markdown content={message.text}/></div>
                     {/if}
                   {/if}
                   {#if message.text && !(busy && message === messages.at(-1))}
                     <Message.Footer class={message.role === 'user' ? undefined : 'px-0'}>
-                      <MessageAction label="Copy message" hint={copiedMessageId === message.id ? 'Copied' : 'Copy message'}
+                      <MessageAction {presentation} part="copy" label="Copy message" hint={copiedMessageId === message.id ? 'Copied' : 'Copy message'}
                         action="copy" copied={copiedMessageId === message.id} onclick={() => void copy(message)}>
                         {#if copiedMessageId === message.id}<CheckIcon aria-hidden="true"/>{:else}<CopyIcon aria-hidden="true"/>{/if}
                       </MessageAction>
@@ -142,10 +152,10 @@
       <MessageScroller.Button aria-label="Scroll to latest message" />
     </MessageScroller.Root>
   </MessageScroller.Provider>
-  <PromptInput bind:value={draft} bind:form bind:input label={inputLabel} placeholder={inputPlaceholder} busy={pending} onSend={(text) => void submit(text)} {onStop}/>
+  {#if presentation}<div {...presentation.target('composer')} style={`flex:none;min-width:0;${presentation.target('composer').style ?? ''}`}>{@render composerBody()}</div>{:else}{@render composerBody()}{/if}
   {#if error}<p class="vict-ai-error" role="alert">{error}</p>{/if}
-  {#if footer}{@render footer()}{/if}
-  <span class="vict-ai-sr" role="status">{copyStatus}</span>
+  {#if footer}{#if presentation}<div {...presentation.target('footer')}>{@render footer()}</div>{:else}{@render footer()}{/if}{/if}
+  <span {...presentation?.target('status')} class={`vict-ai-sr ${presentation?.target('status').class ?? ''}`} role="status">{copyStatus}</span>
 </section>
 
 <style>

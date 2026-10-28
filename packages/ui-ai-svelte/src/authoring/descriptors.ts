@@ -1,4 +1,7 @@
 import type { UiExtensionDescriptor } from '@victframework/ui';
+import { publicPatternDescriptors } from './public-patterns.js';
+import { actionPatternDescriptors } from './action-patterns.js';
+import { extendedChatDescriptors } from './chat-extended.js';
 const base = {
   revision: '1',
   abi: 'vict.ui-component-abi@1',
@@ -68,4 +71,4 @@ export const legacyAiAuthoringDescriptors = [
 export const aiConversationDescriptorV2: UiExtensionDescriptor = { ...aiConversationDescriptor, revision: '2', styleTargets: ['root', 'surface', 'messages', 'composer'] };
 export const aiMessageDescriptorV2: UiExtensionDescriptor = { ...aiMessageDescriptor, revision: '2', styleTargets: ['root', 'content', 'bubble', 'text'] };
 export const aiPromptInputDescriptorV2: UiExtensionDescriptor = { ...aiPromptInputDescriptor, revision: '2', styleTargets: ['root', 'surface', 'field', 'actions', 'send', 'stop'] };
-export const aiAuthoringDescriptors = [...legacyAiAuthoringDescriptors, aiConversationDescriptorV2, aiMessageDescriptorV2, aiPromptInputDescriptorV2] as const;
+export const aiAuthoringDescriptors = [...legacyAiAuthoringDescriptors, aiConversationDescriptorV2, aiMessageDescriptorV2, aiPromptInputDescriptorV2, ...publicPatternDescriptors, ...actionPatternDescriptors, ...extendedChatDescriptors] as const;

@@ -8,6 +8,9 @@ import {
 import { specialistPublicExports } from './public-exports.js';
 import compatibility from './compatibility.json' with { type: 'json' };
 import presentationCompatibility from './compatibility-v2.json' with { type: 'json' };
+import { publicPatternRegistrations, publicPatternCompatibility } from './public-patterns.js';
+import { actionPatternRegistrations, actionPatternCompatibility } from './action-patterns.js';
+import { extendedChatRegistrations, extendedChatCompatibility } from './chat-extended.js';
 
 const prompt: UiAuthoringFragment = {
   root: 'prompt',
@@ -116,36 +119,8 @@ const legacyPackage: UiAuthoringPackage = {
       examples: [prompt],
     },
   ],
-  exportDispositions: [
-    {
-      name: './authoring',
-      disposition: 'registered',
-      reason: 'Only the three exact ABI adapters above are authored through this entry.',
-    },
-    ...specialistPublicExports.map((name) => ({
-      name,
-      disposition: name.startsWith('./authoring:')
-        ? 'registration-api'
-        : [
-              'captureRenderedElement',
-              'RENDER_CAPTURE_LIMITS',
-              'conversationMessages',
-              'appendConversationEvent',
-            ].includes(name)
-          ? 'excluded'
-          : 'host-only',
-      reason: name.startsWith('./authoring:')
-        ? 'Descriptor, implementation or knowledge install data. Only exact registered descriptor identities are authored.'
-        : ['ConversationToolPayload','SendAccepted'].includes(name)
-          ? 'Public host Conversation transport/payload TypeScript type; not an authorable component or execution capability.'
-        : 'Public code composition/type/helper API, not an automatically installed VICT authoring adapter.',
-    })),
-    ...['./patterns', './components/*', './markdown'].map((name) => ({
-      name,
-      disposition: 'host-only',
-      reason: 'Public code composition subpath; not automatically authorable.',
-    })),
-  ],
+  // The final package supplies the complete AI-EX01 export dispositions below.
+  exportDispositions: [],
 };
 
 const presentationDescriptors = [aiConversationDescriptorV2, aiMessageDescriptorV2, aiPromptInputDescriptorV2];
@@ -153,9 +128,45 @@ function presentationFragment(fragment: UiAuthoringFragment | undefined): UiAuth
   if (!fragment) return undefined;
   return {...fragment,nodes:fragment.nodes.map(node=>node.kind==='component'&&presentationDescriptors.some(descriptor=>descriptor.id===node.definitionId)?{...node,revision:'2'}:node)};
 }
+
+/** AI-EX01 maps intended public compositions to real registered identities.
+ * Low-level building blocks and transport types are not duplicate components. */
+const publicCompositionIds: Readonly<Record<string, string>> = {
+  ChainOfThought: 'vict.ai.chain-of-thought', Chat: 'vict.ai.transcript',
+  Checkpoint: 'vict.ai.checkpoint', Confirmation: 'vict.ai.confirmation',
+  Context: 'vict.ai.context', FileTree: 'vict.ai.file-tree',
+  InlineCitation: 'vict.ai.inline-citation', Message: 'vict.ai.message',
+  ModelSelector: 'vict.ai.model-selector', Plan: 'vict.ai.plan',
+  PromptInput: 'vict.ai.prompt-input', Queue: 'vict.ai.queue',
+  Reasoning: 'vict.ai.reasoning', Sources: 'vict.ai.sources',
+  StackTrace: 'vict.ai.stack-trace', Subagent: 'vict.ai.subagent',
+  Suggestion: 'vict.ai.suggestion', Task: 'vict.ai.task', Terminal: 'vict.ai.terminal',
+  TestResults: 'vict.ai.test-results', Tool: 'vict.ai.tool',
+};
+const exposureDispositions: UiAuthoringPackage['exportDispositions'] = [
+  {name:'./authoring',disposition:'registered',reason:'Exact versioned descriptors, implementations, seeds and contracts install all intended public AI pattern compositions through one manual/agent registry.'},
+  ...specialistPublicExports.map(name => {
+    const patternName=name.startsWith('./patterns:')?name.slice('./patterns:'.length):undefined;
+    const id=patternName?publicCompositionIds[patternName]:name==='Conversation'?'vict.ai.transcript':name==='Markdown'?'vict.ai.markdown':undefined;
+    if(id)return {name,disposition:'registered',reason:`Public composition is authorable through ${id}; descriptor revisions, parts, data validation and typed outputs are explicit. Host actions remain requests, not execution authority.`};
+    if(name.startsWith('./authoring:'))return {name,disposition:'registration-api',reason:'Package installation API; exact component identities are delivered by the installed registry.'};
+    if(['Patterns','./patterns','./patterns:aiElementPatterns'].includes(name))return {name,disposition:'registered-compositions',reason:'The twenty-one intended public pattern compositions have explicit installed adapters; the namespace/list is not itself an insertable component.'};
+    if(['PatternShowcase','PrimitiveShowcase','./patterns:PatternShowcase'].includes(name))return {name,disposition:'fixture-only',reason:'Demonstration gallery, not a reusable authored application or proof of backend behavior.'};
+    if(['captureRenderedElement','RENDER_CAPTURE_LIMITS','RenderedCapture'].includes(name))return {name,disposition:'observation-infrastructure',reason:'Bounded capture API/type supports observation; it is not an authored visual component.'};
+    if(['conversationMessages','appendConversationEvent','ConversationActivity','ConversationEvent','ConversationMessage','ConversationToolPayload','SendAccepted','SendResult'].includes(name)||['./patterns:AIElementPattern','./patterns:Step','./patterns:Citation','./patterns:FileNode','./patterns:ModelOption'].includes(name))return {name,disposition:'host-data-api',reason:'Serializable presentation/transport type or bounded helper; intended visual capabilities are exposed through registered compositions without adding transport authority.'};
+    return {name,disposition:'composition-primitive',reason:'Pinned low-level UI building block reused by registered AI patterns or the shared VICT catalog; a duplicate standalone authoring identity is not required for this internal composition surface.'};
+  }),
+  {name:'./components/*',disposition:'composition-primitive',reason:'Public low-level component subpaths support the registered compositions; they do not each introduce another authoring identity.'},
+  {name:'./markdown',disposition:'registered',reason:'Public safe standalone Markdown is authorable through vict.ai.markdown@1, reusing the existing renderer without introducing authored script execution.'},
+];
+const withHostBounds = (registration: UiAuthoringPackage['registrations'][number]): UiAuthoringPackage['registrations'][number] => ({
+  ...registration,
+  guidance: [...registration.guidance ?? [], 'The adapter data-schema limit and the host authoring-tool delivery limit are separate. Respect the current tool string/body bounds; never truncate supplied records or issue independently invalid partial JSON writes.'],
+});
 export const aiAuthoringPackage: UiAuthoringPackage = {
   ...legacyPackage,
-  compatibility: [...compatibility, ...presentationCompatibility],
+  exportDispositions: exposureDispositions,
+  compatibility: [...compatibility, ...presentationCompatibility, ...publicPatternCompatibility, ...actionPatternCompatibility, ...extendedChatCompatibility],
   registrations: [
     ...legacyPackage.registrations,
     ...legacyPackage.registrations.map(registration => ({
@@ -170,5 +181,8 @@ export const aiAuthoringPackage: UiAuthoringPackage = {
         `Editable surfaces: ${presentationDescriptors.find(descriptor=>descriptor.id===registration.descriptor.id)!.styleTargets!.join(', ')}.`,
       ],
     })),
+    ...publicPatternRegistrations.map(withHostBounds),
+    ...actionPatternRegistrations.map(withHostBounds),
+    ...extendedChatRegistrations.map(withHostBounds),
   ],
 };

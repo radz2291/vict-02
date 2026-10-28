@@ -1,5 +1,14 @@
 # Presentation fidelity and host adaptations
 
+AI-EX01 owner amendment (2026-10-28) requires these public compositions to be
+reachable through canonical manual and agent authoring, not only code imports
+and the gallery. Thin adapters reuse these existing patterns; they must forward
+declared parts to actual rendered surfaces and retain owned hovercard/menu
+behavior inside the application viewport. Generic outer wrappers, registered
+exports and passing schema checks alone do not establish visual conformance.
+Existing revision 1/2 contracts remain pinned. New authoring output names are
+typed requests; host-controlled status and results remain authoritative.
+
 Reference: official shadcn-svelte AI Elements at
 `b10f153250b18abfccf49a06e1c4c68945edffa5`, Rhea styled registry.
 `upstream-manifest.json` records each pattern's docs and example-source hashes.

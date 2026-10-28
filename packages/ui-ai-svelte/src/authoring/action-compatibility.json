@@ -1,0 +1,26 @@
+[
+  {
+    "id": "vict.ai.checkpoint",
+    "revision": "1",
+    "descriptorDigest": "3cab7848303b678a86b21a7102ef2e57684b4cd13e138bce18e035df9c1245e1",
+    "capabilitiesDigest": "d5317f8f8fbba8815fe8a8109978f76ee1473f51e15501e21f2cc4cb01d0eea6"
+  },
+  {
+    "id": "vict.ai.confirmation",
+    "revision": "1",
+    "descriptorDigest": "502979d6bc8e4a5cc783089395eb0fddea1df8a58d6da55c18f8d5f54c72ee63",
+    "capabilitiesDigest": "329927b6225d8b7b20d719dbbf7b8a20b809221ba79acd818d3a530633880d20"
+  },
+  {
+    "id": "vict.ai.suggestion",
+    "revision": "1",
+    "descriptorDigest": "5490baadc8cc0dadf4c8dae0bb5413cfb53cfd39b28880a994ff8ad74c7f3689",
+    "capabilitiesDigest": "8ab0ea51c41acc3bb9cd8220c3dd06f9f231b12b2cfe037241976588cecf473b"
+  },
+  {
+    "id": "vict.ai.model-selector",
+    "revision": "1",
+    "descriptorDigest": "ddd8a632349e0b6ca0fd09d80f237ca9637984c70e8819412ee6a281f763a3ac",
+    "capabilitiesDigest": "8c2de63f6739c6ab95253aea77c15825c2b0e809bd0b20257dbc5c3e79de953a"
+  }
+]

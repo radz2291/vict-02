@@ -3,6 +3,9 @@ import Conversation from './Conversation.svelte';
 import Message from './Message.svelte';
 import PromptInput from './PromptInput.svelte';
 import { aiConversationDescriptorV2, aiMessageDescriptorV2, aiPromptInputDescriptorV2 } from './descriptors.js';
+import { publicPatternImplementations } from './public-patterns.js';
+import { actionPatternImplementations } from './action-patterns.js';
+import { extendedChatImplementations } from './chat-extended.js';
 const legacyImplementations: readonly UiSvelteComponentImplementation[] = [
   {
     extensionId: 'vict.ai.conversation',
@@ -38,4 +41,7 @@ export const aiAuthoringImplementations: readonly UiSvelteComponentImplementatio
     ...legacyImplementations.find(item => item.extensionId === descriptor.id)!,
     revision: descriptor.revision, styleTargets: descriptor.styleTargets,
   })),
+  ...publicPatternImplementations,
+  ...actionPatternImplementations,
+  ...extendedChatImplementations,
 ];

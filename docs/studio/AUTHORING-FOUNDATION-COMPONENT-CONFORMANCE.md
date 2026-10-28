@@ -50,3 +50,9 @@ Subsequent verification at7108865: combined Studio TypeScript and production bui
 After the independent FAIL, only ordinary panel-style/selection repairs proceeded: the isolation suite now has3PASS/3FAIL (previously1PASS/5FAIL), existing25patterns regressions pass, and types report0errors/5inheritedwarnings. The three unresolved ownership cases remain executable red tests. The shared owned-content versus pinned upstream scope decision remains pending with the owner; no workaround or implicit exception is introduced.
 
 See [graph provenance](AUTHORING-FOUNDATION-GRAPH-PROVENANCE.md), [finding acceptance ledger](AUTHORING-FOUNDATION-ACCEPTANCE.md), [delivery map](AUTHORING-FOUNDATION-DELIVERY.md) and retained evidence. CF-01 is an explicit additional closure requirement; AR-01–29 remain in scope.
+
+## Owner-approved continuation and AI exposure criterion
+
+At 2026-10-28 03:03 UTC the owner approved the reusable shared app-owned dialog adapter, retaining compatible public Bits parts and the ordinary document-modal path. The architectural choice is resolved; implementation, independent review and browser proof remain distinct gates. Prior failed tests and pending-choice statements above are retained historical observations.
+
+AI-EX01, requested at 03:37–03:38 UTC, additionally requires all intended reusable existing AI/chat capabilities to be authorable through both Studio manual and agent routes. The bounded inventory and justified internal-only exclusions live in AUTHORING-FOUNDATION-AI-EXPOSURE.md. Existing public components must be reused; provider execution, private reasoning, implicit approval or a new processing engine are not granted by exposing their presentation and typed intents. Completion requires validated props/data, meaningful parts, owned portal/theme scope, retained revision pins, manual/discovery/edit registration and meaningful actual-authoring proof.

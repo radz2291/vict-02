@@ -26,18 +26,18 @@
       <div {...presentation.target('bubble')}><div {...presentation.target('text')}><Markdown content={text}/></div></div>
     {:else if presentation?.target('text')['data-ui-part']}<div {...presentation.target('text')}><Markdown content={text}/></div>{:else}<Markdown content={text}/>{/if}
     {#if onCopy || onEdit || onRetry || onFeedback}
-      <Message.Footer class={role === 'user' ? undefined : 'px-0'}>
+      <Message.Footer {...presentation?.target('actions')} class={`${role === 'user' ? '' : 'px-0'} ${presentation?.target('actions').class ?? ''}`}>
         {#if onCopy}
-          <MessageAction label="Copy message" hint={copied ? 'Copied' : 'Copy message'} action="copy" {copied} onclick={onCopy}>
+          <MessageAction {presentation} part="copy" label="Copy message" hint={copied ? 'Copied' : 'Copy message'} action="copy" {copied} onclick={onCopy}>
             {#if copied}<CheckIcon aria-hidden="true"/>{:else}<CopyIcon aria-hidden="true"/>{/if}
           </MessageAction>
         {/if}
-        {#if role === 'user' && onEdit}<MessageAction label="Edit message" onclick={onEdit}><PencilIcon aria-hidden="true"/></MessageAction>{/if}
+        {#if role === 'user' && onEdit}<MessageAction {presentation} part="edit" label="Edit message" onclick={onEdit}><PencilIcon aria-hidden="true"/></MessageAction>{/if}
         {#if role === 'assistant' && onFeedback}
-          <MessageAction label="Good response" pressed={feedback === 'like'} onclick={() => onFeedback?.(feedback === 'like' ? null : 'like')}><ThumbsUpIcon class={feedback === 'like' ? 'fill-current' : undefined} aria-hidden="true"/></MessageAction>
-          <MessageAction label="Bad response" pressed={feedback === 'dislike'} onclick={() => onFeedback?.(feedback === 'dislike' ? null : 'dislike')}><ThumbsDownIcon class={feedback === 'dislike' ? 'fill-current' : undefined} aria-hidden="true"/></MessageAction>
+          <MessageAction {presentation} part="feedback-like" label="Good response" pressed={feedback === 'like'} onclick={() => onFeedback?.(feedback === 'like' ? null : 'like')}><ThumbsUpIcon class={feedback === 'like' ? 'fill-current' : undefined} aria-hidden="true"/></MessageAction>
+          <MessageAction {presentation} part="feedback-dislike" label="Bad response" pressed={feedback === 'dislike'} onclick={() => onFeedback?.(feedback === 'dislike' ? null : 'dislike')}><ThumbsDownIcon class={feedback === 'dislike' ? 'fill-current' : undefined} aria-hidden="true"/></MessageAction>
         {/if}
-        {#if role === 'assistant' && onRetry}<MessageAction label="Retry response" onclick={onRetry}><RefreshCcwIcon aria-hidden="true"/></MessageAction>{/if}
+        {#if role === 'assistant' && onRetry}<MessageAction {presentation} part="retry" label="Retry response" onclick={onRetry}><RefreshCcwIcon aria-hidden="true"/></MessageAction>{/if}
       </Message.Footer>
     {/if}
   </Message.Content>

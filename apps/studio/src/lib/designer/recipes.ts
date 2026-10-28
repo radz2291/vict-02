@@ -1,6 +1,6 @@
 import { authoringRecipe, type InsertRecipe } from '@victframework/ui-editor';
 import type { UiNode } from '@victframework/ui';
-import { installedAuthoringRegistry } from './authoring.js';
+import { authoringContract, installedAuthoringRegistry } from './authoring.js';
 import { rheaNativePatterns } from '@victframework/ui-svelte/rhea';
 const styles = (values: Record<string, string>) =>
   Object.entries(values).map(([property, value]) => ({
@@ -131,7 +131,9 @@ export const screenRecipes: readonly InsertRecipe[] = [...basicRecipes, ...rheaN
   description: `${pattern.description} Uses the public Rhea stylesheet.`,
   create: (id: string) => pattern.create(id).nodes,
   initialState: (id: string) => pattern.create(id).localState ?? {},
-})), ...installedAuthoringRegistry.contracts.flatMap(registration => {
+})), ...installedAuthoringRegistry.contracts.filter(registration =>
+  authoringContract(registration.descriptor.id)?.descriptor.revision === registration.descriptor.revision,
+).flatMap(registration => {
   const recipe=authoringRecipe(registration); return recipe?[recipe]:[];
 })];
 

@@ -1,9 +1,11 @@
 <script lang="ts">
+  import type { UiComponentPresentation } from '@victframework/ui-svelte';
   import TerminalIcon from '@lucide/svelte/icons/terminal';
   import * as Trace from '../upstream/ui/trace/index.js';
   import * as CodeBlock from '../upstream/ui/code-block/index.js';
 
-  let { command, output, status, exitCode, open }: {
+  let { presentation, command, output, status, exitCode, open }: {
+    presentation?: UiComponentPresentation;
     command: string;
     output: string;
     status?: 'running' | 'pending' | 'error';
@@ -19,18 +21,18 @@
 </script>
 
 {#snippet summary()}
-  <Trace.Line status={traceStatus}>
-    <Trace.Icon><TerminalIcon /></Trace.Icon>
-    <Trace.Title>{title}</Trace.Title>
+  <Trace.Line {...presentation?.target('row')} status={traceStatus}>
+    <Trace.Icon {...presentation?.target('icon')}><TerminalIcon /></Trace.Icon>
+    <Trace.Title {...presentation?.target('title')}>{title}</Trace.Title>
   </Trace.Line>
 {/snippet}
 
 <Trace.Root>
   {#if output.length > 0}
     <Trace.Collapsible open={readerOpen ?? open ?? (failed || status === 'running')} onOpenChange={(value) => readerOpen = value}>
-      <Trace.CollapsibleTrigger>{@render summary()}</Trace.CollapsibleTrigger>
-      <Trace.CollapsibleContent>
-        <CodeBlock.Root size="sm"><CodeBlock.Content code={output} wrap class="max-h-64" /></CodeBlock.Root>
+      <Trace.CollapsibleTrigger {...presentation?.target('disclosure')}>{@render summary()}</Trace.CollapsibleTrigger>
+      <Trace.CollapsibleContent {...presentation?.target('body')}>
+        <CodeBlock.Root size="sm"><CodeBlock.Content {...presentation?.target('code')} code={output} wrap class={`max-h-64 ${presentation?.target('code').class ?? ''}`} /></CodeBlock.Root>
       </Trace.CollapsibleContent>
     </Trace.Collapsible>
   {:else}

@@ -25,10 +25,10 @@
 <form class="vict-conversation-input" bind:this={form} onsubmit={submit} aria-busy={busy}>
   <InputGroup.Root {...presentation?.target('surface')} class={`vict-ai-composer ${presentation?.target('surface').class ?? ''}`}>
     {#if attachments.length}
-      <InputGroup.Addon align="block-start"><Attachment.Group>
+      <InputGroup.Addon align="block-start"><Attachment.Group {...presentation?.target('attachments')}>
         {#each attachments as file (file.id)}
-          <Attachment.Root size="sm"><Attachment.Media><FileTextIcon/></Attachment.Media><Attachment.Content><Attachment.Title>{file.name}</Attachment.Title></Attachment.Content>
-            <Attachment.Actions><Attachment.Action aria-label={`Remove ${file.name}`} disabled={!onRemoveAttachment} onclick={() => onRemoveAttachment?.(file.id)}><XIcon/></Attachment.Action></Attachment.Actions>
+          <Attachment.Root {...presentation?.target('attachment')} size="sm"><Attachment.Media><FileTextIcon/></Attachment.Media><Attachment.Content><Attachment.Title>{file.name}</Attachment.Title></Attachment.Content>
+            <Attachment.Actions><Attachment.Action {...presentation?.target('attachment-remove')} aria-label={`Remove ${file.name}`} disabled={!onRemoveAttachment} onclick={() => onRemoveAttachment?.(file.id)}><XIcon/></Attachment.Action></Attachment.Actions>
           </Attachment.Root>
         {/each}
       </Attachment.Group></InputGroup.Addon>
@@ -37,8 +37,8 @@
       data-testid="conversation-input" rows={2} maxlength={6000} title="Enter to send. Shift+Enter for a new line."
       onkeydown={(event) => { if (event.key === 'Enter' && !event.shiftKey && !event.isComposing) { event.preventDefault(); if (!busy) form?.requestSubmit(); } }}/>
     <InputGroup.Addon {...presentation?.target('actions')} align="block-end" class={`vict-conversation-input-row flex-wrap ${presentation?.target('actions').class ?? ''}`}>
-      {#if onAttach}<InputGroup.Button type="button" size="icon-sm" variant="outline" class="rounded-full" aria-label="Attach files" onclick={onAttach}><PlusIcon aria-hidden="true"/></InputGroup.Button>{/if}
-      {@render footer?.()}
+      {#if onAttach}<InputGroup.Button {...presentation?.target('attach')} type="button" size="icon-sm" variant="outline" class={`rounded-full ${presentation?.target('attach').class ?? ''}`} aria-label="Attach files" onclick={onAttach}><PlusIcon aria-hidden="true"/></InputGroup.Button>{/if}
+      {#if footer}<span {...presentation?.target('footer')}>{@render footer()}</span>{/if}
       {#if busy && onStop}<InputGroup.Button {...presentation?.target('stop')} type="button" size="icon-sm" variant="default" class={`ml-auto rounded-full ${presentation?.target('stop').class ?? ''}`} data-testid="conversation-stop" aria-label="Stop" onclick={onStop}><SquareIcon aria-hidden="true"/><span class="sr-only">Stop</span></InputGroup.Button>
       {:else}<InputGroup.Button {...presentation?.target('send')} type="submit" size="icon-sm" variant="default" class={`ml-auto rounded-full ${presentation?.target('send').class ?? ''}`} data-testid="conversation-send" aria-label="Send" disabled={busy || !onSend || !value.trim()}><ArrowUpIcon aria-hidden="true"/><span class="sr-only">Send</span></InputGroup.Button>{/if}
     </InputGroup.Addon>

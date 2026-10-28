@@ -1,4 +1,5 @@
 <script lang="ts">
+  import type { UiComponentPresentation } from '@victframework/ui-svelte';
   import Terminal from '@lucide/svelte/icons/terminal';
   import CircleX from '@lucide/svelte/icons/circle-x';
   import FileCode from '@lucide/svelte/icons/file-code';
@@ -6,7 +7,8 @@
   import * as Trace from '../upstream/ui/trace/index.js';
 
   type Frame = { text: string; name?: string; file?: string; line?: number; column?: number; internal: boolean };
-  let { title, frames, open = true, summaryIcon = 'terminal', onFrameSelect }: {
+  let { presentation, title, frames, open = true, summaryIcon = 'terminal', onFrameSelect }: {
+    presentation?: UiComponentPresentation;
     title?: string;
     frames: string;
     open?: boolean;
@@ -27,31 +29,31 @@
 </script>
 
 {#snippet frameLine(frame: Frame)}
-  <Trace.Line>
-    <Trace.Icon><FileCode /></Trace.Icon>
-    <Trace.Title>{frame.file ? `${frame.name} in ${frame.file}:${frame.line}` : frame.text}</Trace.Title>
+  <Trace.Line {...presentation?.target('row')}>
+    <Trace.Icon {...presentation?.target('icon')}><FileCode /></Trace.Icon>
+    <Trace.Title {...presentation?.target('title')}>{frame.file ? `${frame.name} in ${frame.file}:${frame.line}` : frame.text}</Trace.Title>
   </Trace.Line>
 {/snippet}
 
 <Trace.Root>
   <Trace.Collapsible open={readerOpen ?? open} onOpenChange={(value) => readerOpen = value}>
-    <Trace.CollapsibleTrigger>
-      <Trace.Line status="error"><Trace.Icon>{#if summaryIcon === 'error'}<CircleX />{:else}<Terminal />{/if}</Trace.Icon><Trace.Title>{title ?? `Failed: ${stack.error}`}</Trace.Title></Trace.Line>
+    <Trace.CollapsibleTrigger {...presentation?.target('disclosure')}>
+      <Trace.Line {...presentation?.target('row')} status="error"><Trace.Icon {...presentation?.target('icon')}>{#if summaryIcon === 'error'}<CircleX />{:else}<Terminal />{/if}</Trace.Icon><Trace.Title {...presentation?.target('title')}>{title ?? `Failed: ${stack.error}`}</Trace.Title></Trace.Line>
     </Trace.CollapsibleTrigger>
-    <Trace.CollapsibleContent class="flex flex-col gap-2">
-      <p class="font-mono text-xs text-destructive">{stack.error}</p>
+    <Trace.CollapsibleContent {...presentation?.target('body')} class={`flex flex-col gap-2 ${presentation?.target('body').class ?? ''}`}>
+      <p {...presentation?.target('error')} class={`font-mono text-xs text-destructive ${presentation?.target('error').class ?? ''}`}>{stack.error}</p>
       <Trace.Root>
         {#each stack.app as frame, index (index)}
           {#if onFrameSelect && frame.file}
-            <button type="button" onclick={() => onFrameSelect?.(frame)}>{@render frameLine(frame)}</button>
+            <button {...presentation?.target('frame-action')} type="button" onclick={() => onFrameSelect?.(frame)}>{@render frameLine(frame)}</button>
           {:else}{@render frameLine(frame)}{/if}
         {/each}
         {#if stack.internal.length > 0}
           <Trace.Collapsible>
-            <Trace.CollapsibleTrigger>
-              <Trace.Line><Trace.Icon><Layers /></Trace.Icon><Trace.Title>{stack.internal.length} framework frames</Trace.Title></Trace.Line>
+            <Trace.CollapsibleTrigger {...presentation?.target('disclosure')}>
+              <Trace.Line {...presentation?.target('row')}><Trace.Icon {...presentation?.target('icon')}><Layers /></Trace.Icon><Trace.Title {...presentation?.target('title')}>{stack.internal.length} framework frames</Trace.Title></Trace.Line>
             </Trace.CollapsibleTrigger>
-            <Trace.CollapsibleContent>
+            <Trace.CollapsibleContent {...presentation?.target('body')}>
               <ol class="flex flex-col gap-1 overflow-x-auto rounded-md bg-muted p-3 font-mono text-xs">
                 {#each stack.internal as frame, index (index)}<li class="whitespace-nowrap">{frame.text}</li>{/each}
               </ol>

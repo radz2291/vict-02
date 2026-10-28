@@ -1,0 +1,35 @@
+import {afterEach,expect,it,vi} from 'vitest';
+import {flushSync,mount,tick,unmount} from 'svelte';
+import Owner from './ActionModelOwner.svelte';
+let instances:ReturnType<typeof mount>[]=[];
+const settle=async()=>{flushSync();await tick();flushSync();};
+afterEach(async()=>{for(const instance of instances)await unmount(instance);instances=[];document.body.innerHTML='';});
+it('mounts actual model menu in its exact app outlet and preserves controlled selection',async()=>{
+  const a=document.createElement('div'),b=document.createElement('div');document.body.append(a,b);
+  instances=[mount(Owner,{target:a,props:{owner:'a'}}),mount(Owner,{target:b,props:{owner:'b'}})];await settle();
+  const trigger=a.querySelector<HTMLButtonElement>('[data-ui-part="model-trigger"]')!;
+  trigger.focus();trigger.dispatchEvent(new KeyboardEvent('keydown',{key:'Enter',bubbles:true,cancelable:true}));await settle();
+  await vi.waitFor(()=>expect(a.querySelector('[role="menu"]')).not.toBeNull());
+  const menu=a.querySelector<HTMLElement>('[role="menu"]')!;
+  expect(a.querySelector('[data-owner-outlet="a"]')!.contains(menu)).toBe(true);
+  expect(menu.dataset.uiOwner).toBe('a');expect(menu.dataset.uiOcc).toBe('model-a');
+  expect(menu.closest('.owner-theme')).not.toBeNull();
+  expect(b.querySelector('[role="menu"]')).toBeNull();
+  const two=[...menu.querySelectorAll<HTMLElement>('[role="menuitemradio"]')].find(item=>item.textContent?.includes('Two'))!;
+  two.click();await settle();
+  await vi.waitFor(()=>expect(a.querySelector('output')?.textContent).toBe('two'));
+  expect(b.querySelector('output')?.textContent).toBe('one');
+  expect(document.body.style.userSelect).toBe('');
+});
+it('does not steal focus or Escape from a different application while the model menu is open',async()=>{
+  const a=document.createElement('div'),b=document.createElement('div');document.body.append(a,b);
+  instances=[mount(Owner,{target:a,props:{owner:'a'}}),mount(Owner,{target:b,props:{owner:'b'}})];await settle();
+  const trigger=a.querySelector<HTMLButtonElement>('[data-ui-part="model-trigger"]')!;
+  trigger.focus();trigger.dispatchEvent(new KeyboardEvent('keydown',{key:'Enter',bubbles:true,cancelable:true}));await settle();
+  await vi.waitFor(()=>expect(a.querySelector('[role="menu"]')).not.toBeNull());
+  const other=b.querySelector<HTMLButtonElement>('[data-outside-model]')!;other.focus();await settle();
+  expect(document.activeElement).toBe(other);
+  const escape=new KeyboardEvent('keydown',{key:'Escape',bubbles:true,cancelable:true});other.dispatchEvent(escape);await settle();
+  expect.soft(escape.defaultPrevented).toBe(false);
+  expect.soft(document.activeElement).toBe(other);
+});

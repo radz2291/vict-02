@@ -38,3 +38,11 @@ Implementation checkpoint: `234b8b83223ce2a05ccde7b0a6d2788e5620de4d`, isolated 
 - Responsive dashboard:deliberate Stop preserved six confirmed edits. Shared Undo changed21to17nodes; Redo restored exact canonical text. The continuation completed two acknowledged batches to`r1#10` and one cropped observation, recovered from public local backend records after interruption. Current browser-held final source, interactions, Save/reopen and narrow/device checks remain pending; no provider run was repeated.
 
 See [checkpoint](AUTHORING-FOUNDATION-CHECKPOINT.md), [delivery map](AUTHORING-FOUNDATION-DELIVERY.md), and `foundation-evidence/` for source, identities, measurements, failed observations and scoped independent reviews. Source implementation, test pass, native observation, actual-agent proof, physical-device proof, independent integrated verdict and owner acceptance are separate statuses.
+
+## Current continuation criteria — 2026-10-28
+
+The shared app-owned dialog adapter was explicitly approved at 03:03 UTC. CF-D01/03 remain unresolved until the repaired implementation passes independent challenge; prior public-Bits-only failures remain retained. New source-level isolation tests include nested application owners, iframe documents and real catalog Select portals. Their offline results do not establish browser behavior.
+
+AI-EX01 is an additional completion criterion: all intended reusable existing AI/chat presentation capabilities must have actual Studio manual recipes and agent discovery/edit/render contracts, with exact revision compatibility, declared parts and typed host intents. Public summaries/process receipts may populate reasoning UI; private chain-of-thought is neither obtained nor invented. See AUTHORING-FOUNDATION-AI-EXPOSURE.md. New adapters are implementation in progress and have no new actual-agent proof yet.
+
+The internal-browser observation of http://127.0.0.25:5625/design was explicitly denied by the origin permission gate in this continuation (recorded at 03:50:16 UTC; exact action event timestamp unavailable). Browser attempts stopped. This is distinct from runtime/kernel failures and the older denied additional Undo operation. A PC restart is not treated as authorization. Source tests/review can continue; new integrated/browser/actual-agent proof requiring this origin is blocked, not passed.

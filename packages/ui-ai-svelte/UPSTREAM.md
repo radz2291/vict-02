@@ -88,6 +88,16 @@ consumer checks are separately required by Cycle 1.3.
    presentation-fidelity pass. Each pattern now records immutable example hashes.
    See `PRESENTATION.md` for retained host adaptations and secondary variants;
    export counts and provenance alone do not prove visual fidelity.
+9. Authoring exposure adds optional `scopeClass` to the existing local HoverCard,
+   Tooltip and DropdownMenu portal wrappers. Their existing `.vict-ai` display-contents
+   ancestor also carries the canonical document scope when supplied. Public
+   Context/InlineCitation/ModelSelector patterns forward actual popup-part
+   attributes and the established VICT `UI_PORTAL_TARGET` outlet (or explicit
+   owning document fallback). This is a local wrapper adaptation, not a change
+   to the installed Bits package or upstream source. Manifest source hashes are
+   preserved; only the three exact adapted wrapper hashes change. Scoped DOM
+   mounting checks do not prove browser behavior or solve document-wide Escape
+   arbitration in the pinned DropdownMenu primitive; that failure remains open.
 
 ## CSS consumption and isolation
 

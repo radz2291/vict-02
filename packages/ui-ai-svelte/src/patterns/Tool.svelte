@@ -1,11 +1,13 @@
 <script lang="ts">
+  import type { UiComponentPresentation } from '@victframework/ui-svelte';
   import Terminal from '@lucide/svelte/icons/terminal';
   import ChevronRight from '@lucide/svelte/icons/chevron-right';
   import * as Trace from '../upstream/ui/trace/index.js';
   import * as CodeBlock from '../upstream/ui/code-block/index.js';
   import Confirmation from './Confirmation.svelte';
 
-  let { title, input, output, status, state: toolState, error, open, details = false, approval, onOpenOutput }: {
+  let { presentation, title, input, output, status, state: toolState, error, open, details = false, approval, onOpenOutput }: {
+    presentation?: UiComponentPresentation;
     title: string;
     input?: string;
     output?: string;
@@ -31,33 +33,33 @@
 </script>
 
 {#snippet summary()}
-  <Trace.Line status={traceStatus}>
-    <Trace.Icon><Terminal /></Trace.Icon>
-    <Trace.Title>{title}</Trace.Title>
+  <Trace.Line {...presentation?.target('row')} status={traceStatus}>
+    <Trace.Icon {...presentation?.target('icon')}><Terminal /></Trace.Icon>
+    <Trace.Title {...presentation?.target('title')}>{title}</Trace.Title>
     {#if onOpenOutput && hasContent}<ChevronRight class="size-4 shrink-0" />{/if}
   </Trace.Line>
 {/snippet}
 
 {#if approval}
-  <Confirmation title={approval.title} description={approval.description ?? ''} onDecision={approval.onDecision} />
+  <Confirmation {presentation} title={approval.title} description={approval.description ?? ''} onDecision={approval.onDecision} />
 {:else}
   <Trace.Root>
     {#if hasContent && onOpenOutput}
-      <button type="button" onclick={onOpenOutput}>{@render summary()}</button>
+      <button {...presentation?.target('output-action')} type="button" onclick={onOpenOutput}>{@render summary()}</button>
     {:else if hasContent}
       <Trace.Collapsible open={readerOpen ?? open ?? traceStatus === 'error'} onOpenChange={(value) => readerOpen = value}>
-        <Trace.CollapsibleTrigger>{@render summary()}</Trace.CollapsibleTrigger>
-        <Trace.CollapsibleContent class="flex flex-col gap-3">
+        <Trace.CollapsibleTrigger {...presentation?.target('disclosure')}>{@render summary()}</Trace.CollapsibleTrigger>
+        <Trace.CollapsibleContent {...presentation?.target('body')} class={`flex flex-col gap-3 ${presentation?.target('body').class ?? ''}`}>
           {#if details && input !== undefined}
             <Trace.Collapsible>
-              <Trace.CollapsibleTrigger><Trace.Line><Trace.Title>Input</Trace.Title></Trace.Line></Trace.CollapsibleTrigger>
-              <Trace.CollapsibleContent>
-                <CodeBlock.Root size="sm"><CodeBlock.Content code={input} wrap class="max-h-64" /></CodeBlock.Root>
+              <Trace.CollapsibleTrigger {...presentation?.target('disclosure')}><Trace.Line {...presentation?.target('row')}><Trace.Title {...presentation?.target('title')}>Input</Trace.Title></Trace.Line></Trace.CollapsibleTrigger>
+              <Trace.CollapsibleContent {...presentation?.target('body')}>
+                <CodeBlock.Root size="sm"><CodeBlock.Content {...presentation?.target('code')} code={input} wrap class={`max-h-64 ${presentation?.target('code').class ?? ''}`} /></CodeBlock.Root>
               </Trace.CollapsibleContent>
             </Trace.Collapsible>
           {/if}
           {#if content !== undefined}
-            <CodeBlock.Root size="sm"><CodeBlock.Content code={content} wrap class="max-h-64" /></CodeBlock.Root>
+            <CodeBlock.Root size="sm"><CodeBlock.Content {...presentation?.target('code')} code={content} wrap class={`max-h-64 ${presentation?.target('code').class ?? ''}`} /></CodeBlock.Root>
           {/if}
         </Trace.CollapsibleContent>
       </Trace.Collapsible>

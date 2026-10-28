@@ -1,11 +1,13 @@
 <script lang="ts">
+  import type { UiComponentPresentation } from '@victframework/ui-svelte';
   import * as Trace from '../upstream/ui/trace/index.js';
   import Globe from '@lucide/svelte/icons/globe';
   import ArrowUpRight from '@lucide/svelte/icons/arrow-up-right';
   import { safeExternalUrl } from '../upstream/markdown/safe-url.js';
   import type { Citation } from './types.js';
 
-  let { sources, open = $bindable(true) }: {
+  let { presentation, sources, open = $bindable(true) }: {
+    presentation?: UiComponentPresentation;
     sources: readonly Citation[];
     open?: boolean;
   } = $props();
@@ -20,28 +22,28 @@
 
 <Trace.Root>
   <Trace.Collapsible bind:open>
-    <Trace.CollapsibleTrigger>
-      <Trace.Line>
-        <Trace.Icon><Globe /></Trace.Icon>
-        <Trace.Title>Used {unique.length} sources</Trace.Title>
+    <Trace.CollapsibleTrigger {...presentation?.target('disclosure')}>
+      <Trace.Line {...presentation?.target('row')}>
+        <Trace.Icon {...presentation?.target('icon')}><Globe /></Trace.Icon>
+        <Trace.Title {...presentation?.target('title')}>Used {unique.length} sources</Trace.Title>
       </Trace.Line>
     </Trace.CollapsibleTrigger>
-    <Trace.CollapsibleContent>
+    <Trace.CollapsibleContent {...presentation?.target('body')}>
       <Trace.Root>
         {#each unique as source (source.id)}
           {@const href = safeExternalUrl(source.url)}
           {#if href}
-            <a {href} target="_blank" rel="noopener noreferrer">
-              <Trace.Line>
-                <Trace.Title>
+            <a {...presentation?.target('source')} {href} target="_blank" rel="noopener noreferrer">
+              <Trace.Line {...presentation?.target('row')}>
+                <Trace.Title {...presentation?.target('title')}>
                   {title(source, href)}
                   <span class="sr-only"> (opens in a new tab)</span>
                 </Trace.Title>
-                <Trace.Icon><ArrowUpRight /></Trace.Icon>
+                <Trace.Icon {...presentation?.target('icon')}><ArrowUpRight /></Trace.Icon>
               </Trace.Line>
             </a>
           {:else}
-            <Trace.Line><Trace.Title>{title(source, href)}</Trace.Title></Trace.Line>
+            <Trace.Line {...presentation?.target('row')}><Trace.Title {...presentation?.target('title')}>{title(source, href)}</Trace.Title></Trace.Line>
           {/if}
         {/each}
       </Trace.Root>

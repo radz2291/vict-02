@@ -1,5 +1,24 @@
 # Complete official AI Elements family
 
+## AI-EX01 authoring amendment — 2026-10-28
+
+The owner requires all twenty-one intended public patterns and the built public
+standalone Markdown renderer through the same
+manual Studio and agent authoring registry. The historical fixture/host-only
+dispositions in the table below describe the earlier baseline, not satisfaction
+of this new requirement. Package authoring now integrates dedicated passive,
+action and extended-chat adapter modules, with exact identities, finite data
+schemas, seeds, typed intent outputs, real parts and compatibility pins. New
+Message/PromptInput revisions preserve revision 1/2 contracts; a distinct
+`vict.ai.transcript` identity adapts the public structured Conversation.
+
+Registration and scoped checks are separate from actual authoring proof.
+See `docs/studio/AUTHORING-FOUNDATION-AI-EXPOSURE.md` in the repository for
+the capability map, justified low-level exclusions and pending integrated
+verification. Existing actual-agent Chat evidence proves only its recorded
+three adapters and appearance repair. No new backend, provider processing,
+approval authority or access to private reasoning follows from these adapters.
+
 Baseline: official shadcn-svelte commit
 `b10f153250b18abfccf49a06e1c4c68945edffa5`, Rhea style, October 2026 family.
 All 21 patterns below have reusable exports and a fixture in `PatternShowcase`.

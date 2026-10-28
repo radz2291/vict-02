@@ -415,7 +415,7 @@
       "source": "docs/static/registry/styles/rhea/hover-card.json#hover-card/hover-card-portal.svelte",
       "destination": "src/upstream/ui/hover-card/hover-card-portal.svelte",
       "sourceSha256": "4bc8e49f3936fff222eab5f65724130dba5be7cd69ae5dd8e1a62cc86e1f8dca",
-      "adaptedSha256": "1957f8eda5f7694443d2f23c1210c4bc2b66f60d4ec250b5da8f2a7d8a2f7f95"
+      "adaptedSha256": "755c2d938ffa056787fd9fa2feb249c23755a39f81ddea8248f501f326051dfe"
     },
     {
       "source": "docs/static/registry/styles/rhea/hover-card.json#hover-card/hover-card-trigger.svelte",
@@ -487,7 +487,7 @@
       "source": "docs/static/registry/styles/rhea/tooltip.json#tooltip/tooltip-portal.svelte",
       "destination": "src/upstream/ui/tooltip/tooltip-portal.svelte",
       "sourceSha256": "d38e62fa30732ba5ea79df440badb59331d22c13a19fdc1ad777857f6039b648",
-      "adaptedSha256": "c9bf12724499fbcaaee414fe9b096490841908e9a0c685d6683df5b141a1edab"
+      "adaptedSha256": "1e01d05c9757d9ae16cf9c1e26bcf749a42078e7424d886f6abe38d02aba1083"
     },
     {
       "source": "docs/static/registry/styles/rhea/tooltip.json#tooltip/tooltip-provider.svelte",
@@ -553,7 +553,7 @@
       "source": "docs/static/registry/styles/rhea/dropdown-menu.json#dropdown-menu/dropdown-menu-portal.svelte",
       "destination": "src/upstream/ui/dropdown-menu/dropdown-menu-portal.svelte",
       "sourceSha256": "38f6abf9c1d47d2ab4912556d05845ec9ba1ee6825405adb5f8831d6a30ac08b",
-      "adaptedSha256": "df61eddb2b3825bc079f7c96ff24edf3f37566fc24eef124a7e095abe7149435"
+      "adaptedSha256": "ad38e8f312067fecdea02e81f0e0c6d9b30c0674fe33347814a28bbd92a57941"
     },
     {
       "source": "docs/static/registry/styles/rhea/dropdown-menu.json#dropdown-menu/dropdown-menu-radio-group.svelte",
