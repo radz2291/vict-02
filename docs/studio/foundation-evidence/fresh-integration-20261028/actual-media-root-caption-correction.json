@@ -1,0 +1,12 @@
+{
+  "reason": "Caption claimed successful load was confirmed by a status line that actually only displayed failure:none. Corrected one caption; native decode evidence remains separate.",
+  "before": {
+    "type": "literal",
+    "value": "Uploaded synthetic-image.png — actual load confirmed by the status line below"
+  },
+  "after": {
+    "type": "literal",
+    "value": "Uploaded synthetic-image.png — supplied local image"
+  },
+  "method": "Supported canonical Source editor; validator Apply source; actual-agent source retained separately."
+}

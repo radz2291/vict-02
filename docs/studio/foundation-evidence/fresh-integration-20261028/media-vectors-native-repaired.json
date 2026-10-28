@@ -1,0 +1,74 @@
+[
+  {
+    "ids": [
+      "vict-63_33_37_31-brand",
+      "vict-63_33_37_31-round"
+    ],
+    "label": "Foundation brand mark (instance A)",
+    "paints": [
+      {
+        "clip": "url(#vict-63_33_37_31-round)",
+        "fill": null,
+        "stroke": null
+      },
+      {
+        "clip": null,
+        "fill": "url(#vict-63_33_37_31-brand)",
+        "stroke": null
+      },
+      {
+        "clip": null,
+        "fill": "#ffffff",
+        "stroke": null
+      }
+    ]
+  },
+  {
+    "ids": [
+      "vict-63_33_37_32-brand",
+      "vict-63_33_37_32-round"
+    ],
+    "label": "Foundation brand mark (instance B)",
+    "paints": [
+      {
+        "clip": "url(#vict-63_33_37_32-round)",
+        "fill": null,
+        "stroke": null
+      },
+      {
+        "clip": null,
+        "fill": "url(#vict-63_33_37_32-brand)",
+        "stroke": null
+      },
+      {
+        "clip": null,
+        "fill": "#ffffff",
+        "stroke": null
+      }
+    ]
+  },
+  {
+    "ids": [
+      "vict-63_33_37_33-brand",
+      "vict-63_33_37_33-round"
+    ],
+    "label": "Foundation custom icon",
+    "paints": [
+      {
+        "clip": "url(#vict-63_33_37_33-round)",
+        "fill": null,
+        "stroke": null
+      },
+      {
+        "clip": null,
+        "fill": "url(#vict-63_33_37_33-brand)",
+        "stroke": null
+      },
+      {
+        "clip": null,
+        "fill": "#ffffff",
+        "stroke": null
+      }
+    ]
+  }
+]

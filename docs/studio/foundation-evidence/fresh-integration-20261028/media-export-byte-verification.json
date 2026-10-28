@@ -1,0 +1,42 @@
+[
+  {
+    "name": "synthetic-captions.vtt",
+    "bytes": 136,
+    "declaredSize": 136,
+    "digestMatches": true,
+    "fixtureMatches": true,
+    "referenceMatches": true
+  },
+  {
+    "name": "synthetic-image.png",
+    "bytes": 7350,
+    "declaredSize": 7350,
+    "digestMatches": true,
+    "fixtureMatches": true,
+    "referenceMatches": true
+  },
+  {
+    "name": "synthetic-poster.png",
+    "bytes": 678,
+    "declaredSize": 678,
+    "digestMatches": true,
+    "fixtureMatches": true,
+    "referenceMatches": true
+  },
+  {
+    "name": "synthetic-video.mp4",
+    "bytes": 82613,
+    "declaredSize": 82613,
+    "digestMatches": true,
+    "fixtureMatches": true,
+    "referenceMatches": true
+  },
+  {
+    "name": "synthetic-brand.svg",
+    "bytes": 524,
+    "declaredSize": 524,
+    "digestMatches": true,
+    "fixtureMatches": true,
+    "referenceMatches": true
+  }
+]

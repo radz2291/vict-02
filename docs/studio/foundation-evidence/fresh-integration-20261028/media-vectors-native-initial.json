@@ -1,0 +1,71 @@
+[
+  {
+    "color": "rgb(36, 48, 71)",
+    "ids": [],
+    "label": "Foundation brand mark (instance A)",
+    "paints": [
+      {
+        "clip": null,
+        "fill": "#143d52",
+        "stroke": null
+      },
+      {
+        "clip": null,
+        "fill": "#ff3d81",
+        "stroke": null
+      },
+      {
+        "clip": null,
+        "fill": "#27d3b5",
+        "stroke": null
+      }
+    ]
+  },
+  {
+    "color": "rgb(36, 48, 71)",
+    "ids": [],
+    "label": "Foundation brand mark (instance B)",
+    "paints": [
+      {
+        "clip": null,
+        "fill": "#143d52",
+        "stroke": null
+      },
+      {
+        "clip": null,
+        "fill": "#ff3d81",
+        "stroke": null
+      },
+      {
+        "clip": null,
+        "fill": "#27d3b5",
+        "stroke": null
+      }
+    ]
+  },
+  {
+    "color": "rgb(36, 48, 71)",
+    "ids": [
+      "vict-63_32_39_30-brand",
+      "vict-63_32_39_30-round"
+    ],
+    "label": "Foundation custom icon",
+    "paints": [
+      {
+        "clip": "url(#vict-63_32_39_30-round)",
+        "fill": null,
+        "stroke": null
+      },
+      {
+        "clip": null,
+        "fill": "url(#vict-63_32_39_30-brand)",
+        "stroke": null
+      },
+      {
+        "clip": null,
+        "fill": "#ffffff",
+        "stroke": null
+      }
+    ]
+  }
+]

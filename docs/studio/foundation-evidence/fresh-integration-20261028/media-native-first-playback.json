@@ -1,0 +1,17 @@
+{
+  "playbackStart": {
+    "duration": 2,
+    "ended": false,
+    "paused": false,
+    "readyState": 4,
+    "time": 0
+  },
+  "playbackLater": {
+    "duration": 2,
+    "ended": false,
+    "paused": false,
+    "readyState": 4,
+    "time": 0
+  },
+  "trigger": "Native video keyboard Space; no script play or time mutation."
+}

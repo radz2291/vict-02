@@ -1,0 +1,39 @@
+{
+  "image": {
+    "complete": true,
+    "height": 180,
+    "width": 320
+  },
+  "video": {
+    "duration": 2,
+    "error": null,
+    "height": 180,
+    "paused": true,
+    "readyState": 4,
+    "time": 0,
+    "width": 320
+  },
+  "vectors": [
+    {
+      "ids": [
+        "vict-63_39_30-brand",
+        "vict-63_39_30-round"
+      ],
+      "label": "Foundation brand mark (instance A)"
+    },
+    {
+      "ids": [
+        "vict-63_39_31-brand",
+        "vict-63_39_31-round"
+      ],
+      "label": "Foundation brand mark (instance B)"
+    },
+    {
+      "ids": [
+        "vict-63_39_32-brand",
+        "vict-63_39_32-round"
+      ],
+      "label": "Foundation custom icon"
+    }
+  ]
+}

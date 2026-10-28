@@ -1,0 +1,18 @@
+{
+  "before": {
+    "iconColor": "rgb(74, 58, 255)",
+    "token": "#4a3aff",
+    "themeAccent": "#4a3aff"
+  },
+  "after": {
+    "icon": {
+      "color": "rgb(0, 128, 96)",
+      "stroke": null
+    },
+    "brand": [
+      "#ff3d81",
+      "#27d3b5"
+    ]
+  },
+  "method": "Normal canonical Source editor, changed only token brand-accent and matching theme accent on separate imported copy."
+}

@@ -1,0 +1,48 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File" [active]
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Foundation Media Live"
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- main:
+  - button "Toggle Chat drawer":
+  - group "Workspace mode":
+    - button "Design"
+    - button "Interact" [pressed]
+    - button "Structure"
+  - button "Toggle Document and Selection drawer":
+  - iframe:
+    - generic "Screen canvas":
+      - main "Foundation Media Live":
+        - heading "Foundation Media Live" [level=2]:
+          - generic: Foundation Media Live
+        - paragraph:
+          - generic: Compact gallery built from the five uploaded namespace assets.
+        - figure "Uploaded synthetic-image.png — supplied local image":
+          - img "Synthetic preview still for the Foundation Media Live gallery"
+          - generic: Uploaded synthetic-image.png — supplied local image
+        - paragraph:
+          - generic: "Image failure: none"
+        - figure "Uploaded synthetic-video.mp4 with poster and English WebVTT captions":
+          - generic "Foundation live demo video"
+          - generic: Uploaded synthetic-video.mp4 with poster and English WebVTT captions
+        - paragraph:
+          - generic: "Video failure: none"
+        - img "Foundation brand mark (instance A)"
+        - img "Foundation brand mark (instance B)"
+        - img "Foundation custom icon":
+        - img "Search foundation media":
+        - paragraph:
+          - generic: "Video playback flag (set by the playing event; idle until exercised):"
+        - paragraph:
+          - generic: "true"
+- contentinfo:
+  - status: 1 managed media reference has no validated bytes in this export. Include a media archive before importing.
+- generic: Designer — VICT Studio

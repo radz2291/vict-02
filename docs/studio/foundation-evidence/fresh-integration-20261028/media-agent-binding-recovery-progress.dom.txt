@@ -1,0 +1,135 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Foundation Media Live"
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- banner:
+  - strong: Chat
+  - button "Hide Chat":
+- complementary "Chat":
+  - region "Conversation":
+    - region "Messages — Message":
+      - log:
+        - generic: You
+        - generic: "Build a compact Foundation Media Live gallery in THIS separate blank screen using the five assets already uploaded in the current application namespace. Read real media inventory and authoring contracts; use actual digest refs, no external images/dataURLs/blob identities. Use shared VICT media patterns: image with meaningful alt, native video with supplied MP4 source, poster and English VTT captions and controls, two supplied-brand SVG vector instances to verify per-occurrence gradient/clip IDs, one custom icon using supplied SVG source, plus a theme-colored lucide/search@1.27.0 icon with accessible name. Keep brand multicolour paint intact. Simple responsive column with semantic VICT theme; every media surface fits narrow390px. Bind video playing/ended/failed and image loaded/failed outputs to visible honest local status if supported. Do not invent successful playback or network claims. No remote embeds on this screen, no app deletion, no provider/security changes. Preserve uploaded registry and existing root identity/history. Use supplied bytes and current shared patterns only, and observe current render. Keep narration brief, final Applied/Observed/Untested with five short lines maximum; root will run actual native playback and portable save/export/import tests."
+        - button "Copy message":
+        - generic: Assistant
+        - generic "Conversation timeline":
+          - paragraph: "I'll build the Foundation Media Live gallery on this blank screen: first reading the real uploaded media inventory, registry asset digests, icon registry, and section families, then authoring against exact media contracts."
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph:
+            - text: "Media inventory confirmed: five digest assets (captions VTT, image PNG, poster PNG, video MP4, brand SVG) and the lucide/"
+            - 'generic "Blocked URL: mailto:search@1.27.0"': search@1.27.0 [blocked]
+            - text: icon key. Now reading the media catalog and the registered icon component entry to get exact contract identities.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: "Media family confirmed: image, video, vector, icon contracts at revision 1. Reading all four contract bodies with examples."
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: Image and video contracts are complete; vector and icon bodies are partial at offset 3600. Fetching both continuations with their exact body identities.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: All four media contracts are complete. Now validating the first construction batch (heading, states, image, video, status texts) with a side-effect-free preflight before applying.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: Preflight is clean. Applying the construction batch now.
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - paragraph: Hero applied (r1#2). Observing the visible top region now to check early appearance before wiring bindings.
+          - button "Observe preview completed":
+            - generic: Observe preview
+            - generic: completed
+          - paragraph: Hero renders correctly — image shows full color with no broken placeholder. Wiring event outputs to the honest status states now.
+          - button "Edit screen failed":
+            - generic: Edit screen
+            - generic: failed
+          - paragraph: The bindText needs the inner text node, not the wrapper. Reading the two status subtrees to get exact child text node IDs.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: Confirmed inner text nodes. Reapplying the binding batch with corrected targets.
+          - button "Edit screen failed":
+            - generic: Edit screen
+            - generic: failed
+          - paragraph: The ref path syntax needs the canonical form. Reading the state registry to see how declared state resolves.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: States exist (total now 8). Reading the exact imageStatus declaration to get its canonical reference form.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph:
+            - text: The declaration exists; the ref path likely needs a scope prefix. Validating the corrected batch with path
+            - code: state.imageStatus
+            - text: via preflight first.
+    - button "Scroll to latest message":
+      - generic: Scroll to end
+    - textbox "Message":
+      - /placeholder: Ask for a change…
+    - button "Stop":
+      - generic: Stop
+    - status
+  - status "Reading current source facts…":
+    - generic: Working…
+  - button "Chat details" [active]: ···
+- main:
+  - button "Toggle Chat drawer" [expanded]:
+  - group "Workspace mode":
+    - button "Design" [pressed]
+    - button "Interact"
+    - button "Structure"
+  - button "Toggle Document and Selection drawer":
+  - iframe:
+    - generic "Screen canvas":
+      - main "Foundation Media Live":
+        - heading "Foundation Media Live" [level=2]:
+          - generic: Foundation Media Live
+        - paragraph:
+          - generic: Compact gallery built from the five uploaded namespace assets.
+        - figure "Uploaded synthetic-image.png — actual load confirmed by the status line below":
+          - img "Synthetic preview still for the Foundation Media Live gallery"
+          - generic: Uploaded synthetic-image.png — actual load confirmed by the status line below
+        - paragraph:
+          - generic: "Image status: waiting"
+        - figure "Uploaded synthetic-video.mp4 with poster and English WebVTT captions":
+          - generic "Foundation live demo video"
+          - generic: Uploaded synthetic-video.mp4 with poster and English WebVTT captions
+        - paragraph:
+          - generic: "Video status: idle (no playback yet)"
+- contentinfo:
+  - status: "Construct Foundation Media Live hero: semantic heading, intro, honest status states, digest-referenced image and video with poster, English captions, controls. · agent edit · unsaved"
+- generic: Designer — VICT Studio

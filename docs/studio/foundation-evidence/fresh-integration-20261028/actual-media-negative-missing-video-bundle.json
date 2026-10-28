@@ -1,0 +1,1000 @@
+{
+  "application": {
+    "schema": "vict.application@3",
+    "id": "studio.screen-077aa3bb-5b16-4528-8999-f27beee7d2e3",
+    "revision": "1",
+    "name": "Foundation Media Live",
+    "compatibility": {
+      "applicationSchema": "vict.application@3"
+    },
+    "routes": [
+      {
+        "id": "screen",
+        "path": "/",
+        "screenId": "screen"
+      }
+    ],
+    "screens": [
+      {
+        "id": "screen",
+        "title": "Foundation Media Live",
+        "uiDocument": {
+          "documentId": "screen-077aa3bb-5b16-4528-8999-f27beee7d2e3",
+          "revision": "r1.r2"
+        }
+      }
+    ],
+    "actions": [
+      {
+        "kind": "mutation",
+        "id": "demo.submit",
+        "revision": "1",
+        "resourceId": "studio.demo",
+        "resourceRevision": "1",
+        "op": "submit",
+        "inputContractId": "studio.demo-input",
+        "inputContractRevision": "1",
+        "outputContractId": "studio.demo-output",
+        "outputContractRevision": "1"
+      }
+    ],
+    "resources": [
+      {
+        "resourceId": "studio.demo",
+        "revision": "1"
+      }
+    ],
+    "views": [],
+    "forms": [],
+    "components": []
+  },
+  "uiDocuments": [
+    {
+      "document": {
+        "schema": "vict.ui-document@1",
+        "id": "screen-077aa3bb-5b16-4528-8999-f27beee7d2e3",
+        "revision": "r1.r2",
+        "root": "screen",
+        "nodes": {
+          "screen": {
+            "kind": "element",
+            "id": "screen",
+            "tag": "main",
+            "attributes": {
+              "aria-label": "Foundation Media Live"
+            },
+            "children": [
+              "gallery-title",
+              "gallery-intro",
+              "gallery-image",
+              "image-status",
+              "gallery-video",
+              "video-status",
+              "vector-row",
+              "icon-row",
+              "playback-label",
+              "playback-value"
+            ],
+            "localStyle": [
+              {
+                "property": "display",
+                "value": {
+                  "type": "text",
+                  "value": "flex"
+                }
+              },
+              {
+                "property": "flex-direction",
+                "value": {
+                  "type": "text",
+                  "value": "column"
+                }
+              },
+              {
+                "property": "gap",
+                "value": {
+                  "type": "text",
+                  "value": "20px"
+                }
+              },
+              {
+                "property": "padding",
+                "value": {
+                  "type": "text",
+                  "value": "40px"
+                }
+              },
+              {
+                "property": "min-height",
+                "value": {
+                  "type": "text",
+                  "value": "560px"
+                }
+              },
+              {
+                "property": "background-color",
+                "value": {
+                  "type": "text",
+                  "value": "#ffffff"
+                }
+              },
+              {
+                "property": "color",
+                "value": {
+                  "type": "text",
+                  "value": "#243047"
+                }
+              },
+              {
+                "property": "font-family",
+                "value": {
+                  "type": "text",
+                  "value": "system-ui, sans-serif"
+                }
+              }
+            ]
+          },
+          "gallery-title": {
+            "kind": "element",
+            "id": "gallery-title",
+            "tag": "h2",
+            "children": [
+              "gallery-title-text"
+            ],
+            "localStyle": [
+              {
+                "property": "font-size",
+                "value": {
+                  "type": "text",
+                  "value": "32px"
+                }
+              },
+              {
+                "property": "font-weight",
+                "value": {
+                  "type": "text",
+                  "value": "600"
+                }
+              },
+              {
+                "property": "line-height",
+                "value": {
+                  "type": "text",
+                  "value": "1.2"
+                }
+              },
+              {
+                "property": "margin",
+                "value": {
+                  "type": "text",
+                  "value": "0"
+                }
+              }
+            ]
+          },
+          "gallery-title-text": {
+            "kind": "text",
+            "id": "gallery-title-text",
+            "content": {
+              "type": "literal",
+              "value": "Foundation Media Live"
+            }
+          },
+          "gallery-intro": {
+            "kind": "element",
+            "id": "gallery-intro",
+            "tag": "p",
+            "children": [
+              "gallery-intro-text"
+            ],
+            "localStyle": [
+              {
+                "property": "font-size",
+                "value": {
+                  "type": "text",
+                  "value": "14px"
+                }
+              },
+              {
+                "property": "line-height",
+                "value": {
+                  "type": "text",
+                  "value": "1.6"
+                }
+              },
+              {
+                "property": "margin",
+                "value": {
+                  "type": "text",
+                  "value": "0"
+                }
+              },
+              {
+                "property": "color",
+                "value": {
+                  "type": "text",
+                  "value": "#5b6b85"
+                }
+              }
+            ]
+          },
+          "gallery-intro-text": {
+            "kind": "text",
+            "id": "gallery-intro-text",
+            "content": {
+              "type": "literal",
+              "value": "Compact gallery built from the five uploaded namespace assets."
+            }
+          },
+          "gallery-image": {
+            "id": "gallery-image",
+            "kind": "component",
+            "definitionId": "vict.media.image",
+            "revision": "1",
+            "props": {
+              "alt": {
+                "type": "literal",
+                "value": "Synthetic preview still for the Foundation Media Live gallery"
+              },
+              "aspectRatio": {
+                "type": "literal",
+                "value": "16/9"
+              },
+              "caption": {
+                "type": "literal",
+                "value": "Uploaded synthetic-image.png — supplied local image"
+              },
+              "eager": {
+                "type": "literal",
+                "value": true
+              },
+              "fit": {
+                "type": "literal",
+                "value": "cover"
+              },
+              "source": {
+                "type": "literal",
+                "value": "asset:sha256:5c3afc101e908624396dd99b1c37503f41b8b2accd68a320d9ac75cc57af6978"
+              }
+            },
+            "slots": {},
+            "localStyle": [
+              {
+                "property": "border",
+                "value": {
+                  "type": "text",
+                  "value": "1px solid #e3e8f0"
+                }
+              },
+              {
+                "property": "border-radius",
+                "value": {
+                  "type": "text",
+                  "value": "12px"
+                }
+              },
+              {
+                "property": "max-width",
+                "value": {
+                  "type": "text",
+                  "value": "100%"
+                }
+              },
+              {
+                "property": "width",
+                "value": {
+                  "type": "text",
+                  "value": "100%"
+                }
+              }
+            ],
+            "outputs": {
+              "failed": {
+                "setState": {
+                  "key": "imageError",
+                  "value": {
+                    "type": "literal",
+                    "value": "Image failed to load"
+                  }
+                }
+              }
+            }
+          },
+          "image-status": {
+            "kind": "element",
+            "id": "image-status",
+            "tag": "p",
+            "children": [
+              "image-status-text"
+            ],
+            "localStyle": [
+              {
+                "property": "font-size",
+                "value": {
+                  "type": "text",
+                  "value": "13px"
+                }
+              },
+              {
+                "property": "line-height",
+                "value": {
+                  "type": "text",
+                  "value": "1.6"
+                }
+              },
+              {
+                "property": "margin",
+                "value": {
+                  "type": "text",
+                  "value": "0"
+                }
+              },
+              {
+                "property": "color",
+                "value": {
+                  "type": "text",
+                  "value": "#5b6b85"
+                }
+              }
+            ]
+          },
+          "image-status-text": {
+            "kind": "text",
+            "id": "image-status-text",
+            "content": {
+              "type": "expression",
+              "expression": {
+                "type": "ref",
+                "path": "state.imageError"
+              }
+            }
+          },
+          "gallery-video": {
+            "id": "gallery-video",
+            "kind": "component",
+            "definitionId": "vict.media.video",
+            "revision": "1",
+            "props": {
+              "caption": {
+                "type": "literal",
+                "value": "Uploaded synthetic-video.mp4 with poster and English WebVTT captions"
+              },
+              "captions": {
+                "type": "literal",
+                "value": "asset:sha256:2537c65d6abd5d910b304a7380daf7dbf3151064fc83f71c2ed9acfa981145fd"
+              },
+              "captionLabel": {
+                "type": "literal",
+                "value": "English captions"
+              },
+              "label": {
+                "type": "literal",
+                "value": "Foundation live demo video"
+              },
+              "language": {
+                "type": "literal",
+                "value": "en"
+              },
+              "poster": {
+                "type": "literal",
+                "value": "asset:sha256:9a2af942bb0fe1ab83336c068f3e8646ca8247ab31aa26dcc7ed52b45b2ca74c"
+              },
+              "source": {
+                "type": "literal",
+                "value": "asset:sha256:a5a10026aa8b9b33a76e9b58d89b9fd190557759ac672f5de8be231211027cd1"
+              }
+            },
+            "slots": {},
+            "localStyle": [
+              {
+                "property": "background-color",
+                "value": {
+                  "type": "text",
+                  "value": "#000000"
+                }
+              },
+              {
+                "property": "border-radius",
+                "value": {
+                  "type": "text",
+                  "value": "12px"
+                }
+              },
+              {
+                "property": "max-width",
+                "value": {
+                  "type": "text",
+                  "value": "100%"
+                }
+              },
+              {
+                "property": "width",
+                "value": {
+                  "type": "text",
+                  "value": "100%"
+                }
+              }
+            ],
+            "outputs": {
+              "failed": {
+                "setState": {
+                  "key": "videoError",
+                  "value": {
+                    "type": "literal",
+                    "value": "Video failed to load or play"
+                  }
+                }
+              },
+              "playing": {
+                "setState": {
+                  "key": "videoPlaying",
+                  "value": {
+                    "type": "literal",
+                    "value": true
+                  }
+                }
+              }
+            }
+          },
+          "video-status": {
+            "kind": "element",
+            "id": "video-status",
+            "tag": "p",
+            "children": [
+              "video-status-text"
+            ],
+            "localStyle": [
+              {
+                "property": "font-size",
+                "value": {
+                  "type": "text",
+                  "value": "13px"
+                }
+              },
+              {
+                "property": "line-height",
+                "value": {
+                  "type": "text",
+                  "value": "1.6"
+                }
+              },
+              {
+                "property": "margin",
+                "value": {
+                  "type": "text",
+                  "value": "0"
+                }
+              },
+              {
+                "property": "color",
+                "value": {
+                  "type": "text",
+                  "value": "#5b6b85"
+                }
+              }
+            ]
+          },
+          "video-status-text": {
+            "kind": "text",
+            "id": "video-status-text",
+            "content": {
+              "type": "expression",
+              "expression": {
+                "type": "ref",
+                "path": "state.videoError"
+              }
+            }
+          },
+          "vector-row": {
+            "kind": "element",
+            "id": "vector-row",
+            "tag": "div",
+            "children": [
+              "brand-vector-1",
+              "brand-vector-2"
+            ],
+            "localStyle": [
+              {
+                "property": "display",
+                "value": {
+                  "type": "text",
+                  "value": "flex"
+                }
+              },
+              {
+                "property": "flex-wrap",
+                "value": {
+                  "type": "text",
+                  "value": "wrap"
+                }
+              },
+              {
+                "property": "gap",
+                "value": {
+                  "type": "text",
+                  "value": "12px"
+                }
+              },
+              {
+                "property": "align-items",
+                "value": {
+                  "type": "text",
+                  "value": "center"
+                }
+              },
+              {
+                "property": "min-height",
+                "value": {
+                  "type": "text",
+                  "value": "60px"
+                }
+              }
+            ]
+          },
+          "icon-row": {
+            "kind": "element",
+            "id": "icon-row",
+            "tag": "div",
+            "children": [
+              "custom-brand-icon",
+              "search-icon"
+            ],
+            "localStyle": [
+              {
+                "property": "display",
+                "value": {
+                  "type": "text",
+                  "value": "flex"
+                }
+              },
+              {
+                "property": "flex-wrap",
+                "value": {
+                  "type": "text",
+                  "value": "wrap"
+                }
+              },
+              {
+                "property": "gap",
+                "value": {
+                  "type": "text",
+                  "value": "16px"
+                }
+              },
+              {
+                "property": "align-items",
+                "value": {
+                  "type": "text",
+                  "value": "center"
+                }
+              },
+              {
+                "property": "min-height",
+                "value": {
+                  "type": "text",
+                  "value": "60px"
+                }
+              }
+            ]
+          },
+          "search-icon": {
+            "id": "search-icon",
+            "kind": "component",
+            "definitionId": "vict.media.icon",
+            "revision": "1",
+            "props": {
+              "name": {
+                "type": "literal",
+                "value": "search"
+              },
+              "decorative": {
+                "type": "literal",
+                "value": false
+              },
+              "label": {
+                "type": "literal",
+                "value": "Search foundation media"
+              },
+              "pack": {
+                "type": "literal",
+                "value": "lucide"
+              },
+              "revision": {
+                "type": "literal",
+                "value": "1.27.0"
+              },
+              "size": {
+                "type": "literal",
+                "value": 24
+              }
+            },
+            "slots": {},
+            "localStyle": [
+              {
+                "property": "color",
+                "value": {
+                  "type": "token",
+                  "id": "brand-accent"
+                }
+              }
+            ]
+          },
+          "playback-label": {
+            "kind": "element",
+            "id": "playback-label",
+            "tag": "p",
+            "children": [
+              "playback-label-text"
+            ],
+            "localStyle": [
+              {
+                "property": "font-size",
+                "value": {
+                  "type": "text",
+                  "value": "13px"
+                }
+              },
+              {
+                "property": "line-height",
+                "value": {
+                  "type": "text",
+                  "value": "1.6"
+                }
+              },
+              {
+                "property": "margin",
+                "value": {
+                  "type": "text",
+                  "value": "0"
+                }
+              },
+              {
+                "property": "color",
+                "value": {
+                  "type": "text",
+                  "value": "#5b6b85"
+                }
+              }
+            ]
+          },
+          "playback-label-text": {
+            "kind": "text",
+            "id": "playback-label-text",
+            "content": {
+              "type": "literal",
+              "value": "Video playback flag (set by the playing event; idle until exercised):"
+            }
+          },
+          "playback-value": {
+            "kind": "element",
+            "id": "playback-value",
+            "tag": "p",
+            "children": [
+              "playback-value-text"
+            ],
+            "localStyle": [
+              {
+                "property": "font-size",
+                "value": {
+                  "type": "text",
+                  "value": "13px"
+                }
+              },
+              {
+                "property": "line-height",
+                "value": {
+                  "type": "text",
+                  "value": "1.6"
+                }
+              },
+              {
+                "property": "margin",
+                "value": {
+                  "type": "text",
+                  "value": "0"
+                }
+              },
+              {
+                "property": "color",
+                "value": {
+                  "type": "text",
+                  "value": "#243047"
+                }
+              },
+              {
+                "property": "font-weight",
+                "value": {
+                  "type": "text",
+                  "value": "600"
+                }
+              }
+            ]
+          },
+          "playback-value-text": {
+            "kind": "text",
+            "id": "playback-value-text",
+            "content": {
+              "type": "expression",
+              "expression": {
+                "type": "ref",
+                "path": "state.videoPlaying"
+              }
+            }
+          },
+          "brand-vector-1": {
+            "kind": "component",
+            "id": "brand-vector-1",
+            "definitionId": "vict.media.vector",
+            "revision": "1",
+            "slots": {},
+            "props": {
+              "decorative": {
+                "type": "literal",
+                "value": false
+              },
+              "label": {
+                "type": "literal",
+                "value": "Foundation brand mark (instance A)"
+              },
+              "source": {
+                "type": "literal",
+                "value": "asset:sha256:c468e614c6163875d52c38698c04472603524bbe6f7188e44366a3f80c517614"
+              }
+            },
+            "localStyle": [
+              {
+                "property": "border-radius",
+                "value": {
+                  "type": "text",
+                  "value": "8px"
+                }
+              },
+              {
+                "property": "height",
+                "value": {
+                  "type": "text",
+                  "value": "90px"
+                }
+              },
+              {
+                "property": "width",
+                "value": {
+                  "type": "text",
+                  "value": "140px"
+                }
+              }
+            ]
+          },
+          "brand-vector-2": {
+            "kind": "component",
+            "id": "brand-vector-2",
+            "definitionId": "vict.media.vector",
+            "revision": "1",
+            "slots": {},
+            "props": {
+              "decorative": {
+                "type": "literal",
+                "value": false
+              },
+              "label": {
+                "type": "literal",
+                "value": "Foundation brand mark (instance B)"
+              },
+              "source": {
+                "type": "literal",
+                "value": "asset:sha256:c468e614c6163875d52c38698c04472603524bbe6f7188e44366a3f80c517614"
+              }
+            },
+            "localStyle": [
+              {
+                "property": "border-radius",
+                "value": {
+                  "type": "text",
+                  "value": "8px"
+                }
+              },
+              {
+                "property": "height",
+                "value": {
+                  "type": "text",
+                  "value": "90px"
+                }
+              },
+              {
+                "property": "width",
+                "value": {
+                  "type": "text",
+                  "value": "140px"
+                }
+              }
+            ]
+          },
+          "custom-brand-icon": {
+            "kind": "component",
+            "id": "custom-brand-icon",
+            "definitionId": "vict.media.icon",
+            "revision": "1",
+            "slots": {},
+            "props": {
+              "decorative": {
+                "type": "literal",
+                "value": false
+              },
+              "label": {
+                "type": "literal",
+                "value": "Foundation custom icon"
+              },
+              "size": {
+                "type": "literal",
+                "value": 36
+              },
+              "source": {
+                "type": "literal",
+                "value": "asset:sha256:c468e614c6163875d52c38698c04472603524bbe6f7188e44366a3f80c517614"
+              }
+            }
+          }
+        },
+        "componentDefinitions": {},
+        "styleSources": {},
+        "assets": {
+          "synthetic-captions.vtt-2537c65d6abd": {
+            "id": "synthetic-captions.vtt-2537c65d6abd",
+            "kind": "digest",
+            "digest": "2537c65d6abd5d910b304a7380daf7dbf3151064fc83f71c2ed9acfa981145fd"
+          },
+          "synthetic-image.png-5c3afc101e90": {
+            "id": "synthetic-image.png-5c3afc101e90",
+            "kind": "digest",
+            "digest": "5c3afc101e908624396dd99b1c37503f41b8b2accd68a320d9ac75cc57af6978"
+          },
+          "synthetic-poster.png-9a2af942bb0f": {
+            "id": "synthetic-poster.png-9a2af942bb0f",
+            "kind": "digest",
+            "digest": "9a2af942bb0fe1ab83336c068f3e8646ca8247ab31aa26dcc7ed52b45b2ca74c"
+          },
+          "synthetic-video.mp4-a5a10026aa8b": {
+            "id": "synthetic-video.mp4-a5a10026aa8b",
+            "kind": "digest",
+            "digest": "a5a10026aa8b9b33a76e9b58d89b9fd190557759ac672f5de8be231211027cd1"
+          },
+          "synthetic-brand.svg-c468e614c616": {
+            "id": "synthetic-brand.svg-c468e614c616",
+            "kind": "digest",
+            "digest": "c468e614c6163875d52c38698c04472603524bbe6f7188e44366a3f80c517614"
+          }
+        },
+        "tokens": {
+          "brand-accent": {
+            "id": "brand-accent",
+            "value": "#4a3aff"
+          }
+        },
+        "conditions": {
+          "compact": {
+            "id": "compact",
+            "kind": "container",
+            "name": "studio-screen",
+            "query": "(max-width: 600px)"
+          }
+        },
+        "localState": {
+          "message": {
+            "key": "message",
+            "type": "string",
+            "initial": "Hello from my screen"
+          },
+          "accepted": {
+            "key": "accepted",
+            "type": "boolean",
+            "initial": false
+          },
+          "dialogOpen": {
+            "key": "dialogOpen",
+            "type": "boolean",
+            "initial": false
+          },
+          "busy": {
+            "key": "busy",
+            "type": "boolean",
+            "initial": false
+          },
+          "actionError": {
+            "key": "actionError",
+            "type": "string",
+            "initial": ""
+          },
+          "actionResult": {
+            "key": "actionResult",
+            "type": "string",
+            "initial": ""
+          },
+          "imageStatus": {
+            "key": "imageStatus",
+            "type": "string",
+            "initial": "Image status: waiting"
+          },
+          "videoStatus": {
+            "key": "videoStatus",
+            "type": "string",
+            "initial": "Video status: idle (no playback yet)"
+          },
+          "imageError": {
+            "key": "imageError",
+            "type": "string",
+            "initial": "Image failure: none"
+          },
+          "videoError": {
+            "key": "videoError",
+            "type": "string",
+            "initial": "Video failure: none"
+          },
+          "videoPlaying": {
+            "key": "videoPlaying",
+            "type": "boolean",
+            "initial": false
+          }
+        },
+        "theme": {
+          "schema": "vict.ui-theme@1",
+          "roles": {
+            "surface": "#ffffff",
+            "text": "#243047",
+            "textMuted": "#5b6b85",
+            "border": "#e3e8f0",
+            "accent": "#4a3aff"
+          }
+        }
+      }
+    }
+  ],
+  "mediaArchive": {
+    "schema": "vict.media-archive@1",
+    "assets": [
+      {
+        "schema": "vict.media-asset@1",
+        "reference": "asset:sha256:2537c65d6abd5d910b304a7380daf7dbf3151064fc83f71c2ed9acfa981145fd",
+        "digest": "2537c65d6abd5d910b304a7380daf7dbf3151064fc83f71c2ed9acfa981145fd",
+        "name": "synthetic-captions.vtt",
+        "mime": "text/vtt",
+        "size": 136,
+        "createdAt": "2026-10-28T12:24:22.045Z",
+        "provenance": "Owner-supplied local file",
+        "base64": "V0VCVlRUCgowMDowMDowMC4wMDAgLS0+IDAwOjAwOjAwLjkwMApTeW50aGV0aWMgZml4dHVyZTogZmlyc3QgY2FwdGlvbgoKMDA6MDA6MDAuOTAwIC0tPiAwMDowMDowMi4wMDAKU3ludGhldGljIGZpeHR1cmU6IHNlY29uZCBjYXB0aW9uCg=="
+      },
+      {
+        "schema": "vict.media-asset@1",
+        "reference": "asset:sha256:5c3afc101e908624396dd99b1c37503f41b8b2accd68a320d9ac75cc57af6978",
+        "digest": "5c3afc101e908624396dd99b1c37503f41b8b2accd68a320d9ac75cc57af6978",
+        "name": "synthetic-image.png",
+        "mime": "image/png",
+        "size": 7350,
+        "createdAt": "2026-10-28T12:24:21.971Z",
+        "provenance": "Owner-supplied local file",
+        "base64": "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"
+      },
+      {
+        "schema": "vict.media-asset@1",
+        "reference": "asset:sha256:9a2af942bb0fe1ab83336c068f3e8646ca8247ab31aa26dcc7ed52b45b2ca74c",
+        "digest": "9a2af942bb0fe1ab83336c068f3e8646ca8247ab31aa26dcc7ed52b45b2ca74c",
+        "name": "synthetic-poster.png",
+        "mime": "image/png",
+        "size": 678,
+        "createdAt": "2026-10-28T12:24:22.023Z",
+        "provenance": "Owner-supplied local file",
+        "base64": "iVBORw0KGgoAAAANSUhEUgAAAUAAAAC0CAIAAABqhmJGAAAACXBIWXMAAAABAAAAAQBPJcTWAAACWElEQVR4nO3awQ3CMBAAwSBFSgH80gtFUEYqSofpIT9aQMgRWpgp4OzP6h727f54TkDT/O0LAJ8TMIQJGMIEDGEChjABQ5iAIUzAECZgCBMwhAkYwgQMYQKGMAFDmIAhTMAQJmAIEzCECRjCBAxhAoYwAUOYgCFsWMDHvowaBT9v3c4hc2xgCBMwhAkYwgQMYQKGMAFDmIAhbK68d0HRcfH/CBsYwgQMYQKGMAFDmIAhTMAQJmAIEzCECRjCBAxhAoYwAUOYgCFMwBAmYAgTMIQJGMIEDGEChjABQ5iAIUzAECZgCBMwhAkYwgQMYQKGMAFDmIAhTMAQJmAIEzCECRjCBAxhAoYwAUOYgCFMwBAmYAgTMIQJGMIEDGEChjABQ5iAIUzAECZgCBMwhAkYwgQMYQKGMAFDmIAhTMAQJmAIEzCECRjCBAxhAoYwAUOYgCFMwBAmYAgTMIQJGMIEDGEChjABQ5iAIUzAECZgCBMwhAkYwgQMYQKGMAFDmIAhTMAQJmAIEzCECRjCBAxhAoYwAUOYgCFMwBAmYAgTMIQJGMIEDGEChjABQ5iAIUzAECZgCBMwhAkYwgQMYQKGMAFDmIAhTMAQJmAIEzCECRjCBAxhAoYwAUOYgCFMwBAmYAgTMIQJGMIEDGEChrDLAz725eoj4G/ZwBAmYAgTMIQJGMIEDGEChjABQ9iwgNftHDUKeJMNDGEChjABQ5iAIUzAECZgCBMwhAkYwgQMYQKGMAFDmIAhTMAQJmAIEzCECRjCBAxhAoYwAUOYgCFMwBAmYAgTMExdL2FVDG9CFCyuAAAAAElFTkSuQmCC"
+      },
+      {
+        "schema": "vict.media-asset@1",
+        "reference": "asset:sha256:c468e614c6163875d52c38698c04472603524bbe6f7188e44366a3f80c517614",
+        "digest": "c468e614c6163875d52c38698c04472603524bbe6f7188e44366a3f80c517614",
+        "name": "synthetic-brand.svg",
+        "mime": "image/svg+xml",
+        "size": 524,
+        "createdAt": "2026-10-28T12:24:22.059Z",
+        "provenance": "Owner-supplied local file",
+        "base64": "PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMjAgMTIwIj4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iYnJhbmQiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjZmYzZDgxIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzI3ZDNiNSIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDxjbGlwUGF0aCBpZD0icm91bmQiPjxjaXJjbGUgY3g9IjYwIiBjeT0iNjAiIHI9IjU0Ii8+PC9jbGlwUGF0aD4KICA8L2RlZnM+CiAgPGcgY2xpcC1wYXRoPSJ1cmwoI3JvdW5kKSI+CiAgICA8cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgZmlsbD0idXJsKCNicmFuZCkiLz4KICAgIDxwYXRoIGQ9Ik0yMiAzNSBMNjAgOTYgTDk4IDM1IEw3OCAzNSBMNjAgNjUgTDQyIDM1IFoiIGZpbGw9IiNmZmZmZmYiLz4KICA8L2c+Cjwvc3ZnPgo="
+      }
+    ]
+  }
+}

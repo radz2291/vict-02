@@ -1,0 +1,174 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Foundation Media Live"
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- banner:
+  - strong: Chat
+  - button "Hide Chat":
+- complementary "Chat":
+  - region "Conversation":
+    - region "Messages — Message":
+      - log:
+        - generic: You
+        - generic: "Build a compact Foundation Media Live gallery in THIS separate blank screen using the five assets already uploaded in the current application namespace. Read real media inventory and authoring contracts; use actual digest refs, no external images/dataURLs/blob identities. Use shared VICT media patterns: image with meaningful alt, native video with supplied MP4 source, poster and English VTT captions and controls, two supplied-brand SVG vector instances to verify per-occurrence gradient/clip IDs, one custom icon using supplied SVG source, plus a theme-colored lucide/search@1.27.0 icon with accessible name. Keep brand multicolour paint intact. Simple responsive column with semantic VICT theme; every media surface fits narrow390px. Bind video playing/ended/failed and image loaded/failed outputs to visible honest local status if supported. Do not invent successful playback or network claims. No remote embeds on this screen, no app deletion, no provider/security changes. Preserve uploaded registry and existing root identity/history. Use supplied bytes and current shared patterns only, and observe current render. Keep narration brief, final Applied/Observed/Untested with five short lines maximum; root will run actual native playback and portable save/export/import tests."
+        - button "Copy message":
+        - generic: Assistant
+        - generic "Conversation timeline":
+          - paragraph: "I'll build the Foundation Media Live gallery on this blank screen: first reading the real uploaded media inventory, registry asset digests, icon registry, and section families, then authoring against exact media contracts."
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph:
+            - text: "Media inventory confirmed: five digest assets (captions VTT, image PNG, poster PNG, video MP4, brand SVG) and the lucide/"
+            - 'generic "Blocked URL: mailto:search@1.27.0"': search@1.27.0 [blocked]
+            - text: icon key. Now reading the media catalog and the registered icon component entry to get exact contract identities.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: "Media family confirmed: image, video, vector, icon contracts at revision 1. Reading all four contract bodies with examples."
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+    - button "Scroll to latest message":
+      - generic: Scroll to end
+    - textbox "Message":
+      - /placeholder: Ask for a change…
+    - button "Stop":
+      - generic: Stop
+    - status
+  - status "Reading current source facts…":
+    - generic: Working…
+  - button "Chat details" [expanded]: ···
+  - generic "Chat details":
+    - heading "Chat details" [level=3]
+    - button "Close chat details": ×
+    - paragraph: zai/glm-5.3-flash
+    - paragraph: "Selected: Element · Screen"
+    - paragraph: Reading current source facts…
+    - button "Reconnect agent" [disabled]
+    - heading "Progress summaries" [level=4]
+    - paragraph: Connection, validation and completion metadata. The conversation contains actual assistant messages and tool calls.
+    - list:
+      - listitem: Connecting…
+      - listitem: Reading screen…
+      - listitem: Connecting to the VICT / Mastra agent…
+      - listitem: Agent is working on your request…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+    - heading "Tool receipts" [level=4]
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 145902 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 145918 ms since turn start {\"expectedRevision\":\"r1#1\",\"cursor\":{\"documentId\":\"screen-077aa3bb-5b16-4528-8999-f27beee7d2e3\",\"revision\":\"r1#1\",\"digest\":\"d120a330b31abd82890ef5286ed13762518548e6929deb6827d50d571fbbbfb8\",\"epoch\":\"e593c7bc-9116-4902-8d3d-8834e2ee26fb\"},\"section\":\"media\",\"inventory\":{\"documentId\":\"screen-077aa3bb-5b16-4528-8999-f27beee7d2e3\",\"listedAt\":\"2026-10-28T12:24:22.069Z\",\"scope\":\"current-application-asset-store\",\"evidence\":\"Host-reported metadata at listedAt. This is not current byte retrieval, decoded media, playback, caption, or visual-observation proof.\",\"snapshotItems\":5,\"storeTotal\":5,\"truncated\":false},\"items\":[{\"reference\":\"asset:sha256:2537c65d6abd5d910b304a7380daf7dbf3151064fc83f71c2ed9acfa981145fd\",\"digest\":\"2537c65d6abd5d910b304a7380daf7dbf3151064fc83f71c2ed9acfa981145fd\",\"name\":\"synthetic-captions.vtt\",\"mime\":\"text/vtt\",\"size\":136},{\"reference\":\"asset:sha256:5c3afc101e908624396dd99b1c37503f41b8b2accd68a320d9ac75cc57af6978\",\"digest\":\"5c3afc101e908624396dd99b1c37503f41b8b2accd68a320d9ac75cc57af6978\",\"name\":\"synthetic-image.png\",\"mime\":\"image/png\",\"size\":7350},{\"reference\":\"asset:sha256:9a2af942bb0fe1ab83336c068f3e8646ca8247ab31aa26dcc7ed52b45b2ca74c\",\"digest\":\"9a2af942bb0fe1ab83336c068f3e8646ca8247ab31aa26dcc7ed52b45b2ca74c\",\"name\":\"synthetic-poster.png\",\"mime\":\"image/png\",\"size\":678},{\"reference\":\"asset:sha256:a5a10026aa8b9b33a76e9b58d89b9fd190557759ac672f5de8be231211027cd1\",\"digest\":\"a5a10026aa8b9b33a76e9b58d89b9fd190557759ac672f5de8be231211027cd1\",\"name\":\"synthetic-video.mp4\",\"mime\":\"video/mp4\",\"size\":82613},{\"reference\":\"asset:sha256:c468e614c6163875d52c38698c04472603524bbe6f7188e44366a3f80c517614\",\"digest\":\"c468e614c6163875d52c38698c04472603524bbe6f7188e44366a3f80c517614\",\"name\":\"synthetic-brand.svg\",\"mime\":\"image/svg+xml\",\"size\":524}],\"total\":5,\"offset\":0,\"nextOffset\":null,\"guidance\":\"For a canonical digest asset, use source=\\\"asset:sha256:<full 64-character digest>\\\" on vict.media.image/video/vector/icon. External assets use their declared href. The registry does not prove bytes are present and does not declare MIME, dimensions or playback. Confirm those in the owner-supplied media library; do not infer absent media support from an empty registry. Video poster takes an image reference; captions takes WebVTT; vector/custom icon source requires a managed inert SVG. Editable vector/icon data is a separate JSON prop and takes precedence over source.\"}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 145903 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 145922 ms since turn start {\"expectedRevision\":\"r1#1\",\"cursor\":{\"documentId\":\"screen-077aa3bb-5b16-4528-8999-f27beee7d2e3\",\"revision\":\"r1#1\",\"digest\":\"d120a330b31abd82890ef5286ed13762518548e6929deb6827d50d571fbbbfb8\",\"epoch\":\"e593c7bc-9116-4902-8d3d-8834e2ee26fb\"},\"section\":\"registry\",\"registry\":\"assets\",\"items\":[{\"key\":\"synthetic-captions.vtt-2537c65d6abd\",\"sourcePreview\":\"{\\\"id\\\":\\\"synthetic-captions.vtt-2537c65d6abd\\\",\\\"kind\\\":\\\"digest\\\",\\\"digest\\\":\\\"2537c65d6abd5d910b304a7380daf7dbf3151064fc83f71c2ed9acfa981145fd\\\"}\",\"sourceReference\":\"asset:sha256:2537c65d6abd5d910b304a7380daf7dbf3151064fc83f71c2ed9acfa981145fd\",\"mediaReferenceSupported\":true,\"availability\":\"not-checked\",\"mime\":null,\"metadata\":\"Canonical asset references do not contain MIME, dimensions, duration or stored-byte availability.\"},{\"key\":\"synthetic-image.png-5c3afc101e90\",\"sourcePreview\":\"{\\\"id\\\":\\\"synthetic-image.png-5c3afc101e90\\\",\\\"kind\\\":\\\"digest\\\",\\\"digest\\\":\\\"5c3afc101e908624396dd99b1c37503f41b8b2accd68a320d9ac75cc57af6978\\\"}\",\"sourceReference\":\"asset:sha256:5c3afc101e908624396dd99b1c37503f41b8b2accd68a320d9ac75cc57af6978\",\"mediaReferenceSupported\":true,\"availability\":\"not-checked\",\"mime\":null,\"metadata\":\"Canonical asset references do not contain MIME, dimensions, duration or stored-byte availability.\"},{\"key\":\"synthetic-poster.png-9a2af942bb0f\",\"sourcePreview\":\"{\\\"id\\\":\\\"synthetic-poster.png-9a2af942bb0f\\\",\\\"kind\\\":\\\"digest\\\",\\\"digest\\\":\\\"9a2af942bb0fe1ab83336c068f3e8646ca8247ab31aa26dcc7ed52b45b2ca74c\\\"}\",\"sourceReference\":\"asset:sha256:9a2af942bb0fe1ab83336c068f3e8646ca8247ab31aa26dcc7ed52b45b2ca74c\",\"mediaReferenceSupported\":true,\"availability\":\"not-checked\",\"mime\":null,\"metadata\":\"Canonical asset references do not contain MIME, dimensions, duration or stored-byte availability.\"},{\"key\":\"synthetic-video.mp4-a5a10026aa8b\",\"sourcePreview\":\"{\\\"id\\\":\\\"synthetic-video.mp4-a5a10026aa8b\\\",\\\"kind\\\":\\\"digest\\\",\\\"digest\\\":\\\"a5a10026aa8b9b33a76e9b58d89b9fd190557759ac672f5de8be231211027cd1\\\"}\",\"sourceReference\":\"asset:sha256:a5a10026aa8b9b33a76e9b58d89b9fd190557759ac672f5de8be231211027cd1\",\"mediaReferenceSupported\":true,\"availability\":\"not-checked\",\"mime\":null,\"metadata\":\"Canonical asset references do not contain MIME, dimensions, duration or stored-byte availability.\"},{\"key\":\"synthetic-brand.svg-c468e614c616\",\"sourcePreview\":\"{\\\"id\\\":\\\"synthetic-brand.svg-c468e614c616\\\",\\\"kind\\\":\\\"digest\\\",\\\"digest\\\":\\\"c468e614c6163875d52c38698c04472603524bbe6f7188e44366a3f80c517614\\\"}\",\"sourceReference\":\"asset:sha256:c468e614c6163875d52c38698c04472603524bbe6f7188e44366a3f80c517614\",\"mediaReferenceSupported\":true,\"availability\":\"not-checked\",\"mime\":null,\"metadata\":\"Canonical asset references do not contain MIME, dimensions, duration or stored-byte availability.\"}],\"total\":5,\"offset\":0,\"nextOffset\":null,\"guidance\":\"For a canonical digest asset, use source=\\\"asset:sha256:<full 64-character digest>\\\" on vict.media.image/video/vector/icon. External assets use their declared href. The registry does not prove bytes are present and does not declare MIME, dimensions or playback. Confirm those in the owner-supplied media library; do not infer absent media support from an empty registry. Video poster takes an image reference; captions takes WebVTT; vector/custom icon source requires a managed inert SVG. Editable vector/icon data is a separate JSON prop and takes precedence over source.\"}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 145903 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 145929 ms since turn start {\"expectedRevision\":\"r1#1\",\"cursor\":{\"documentId\":\"screen-077aa3bb-5b16-4528-8999-f27beee7d2e3\",\"revision\":\"r1#1\",\"digest\":\"d120a330b31abd82890ef5286ed13762518548e6929deb6827d50d571fbbbfb8\",\"epoch\":\"e593c7bc-9116-4902-8d3d-8834e2ee26fb\"},\"section\":\"icons\",\"items\":[{\"key\":\"lucide/search@1.27.0\",\"pack\":\"lucide\",\"name\":\"search\",\"revision\":\"1.27.0\",\"label\":\"Search\",\"tags\":[\"find\",\"magnify\"],\"license\":\"ISC\",\"provenance\":\"@lucide/svelte@1.27.0\"}],\"total\":1,\"nextOffset\":null,\"offset\":0,\"totalInstalled\":59,\"source\":\"installed-supplied-icon-manifest\",\"guidance\":\"Bounded installed metadata only; exact key selects one icon. Search tags/aliases, then read its registered icon component contract. Document assets and custom icons are separate inventories; an empty assets registry does not mean images or icons are unsupported.\"}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 145904 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 145932 ms since turn start {\"expectedRevision\":\"r1#1\",\"cursor\":{\"documentId\":\"screen-077aa3bb-5b16-4528-8999-f27beee7d2e3\",\"revision\":\"r1#1\",\"digest\":\"d120a330b31abd82890ef5286ed13762518548e6929deb6827d50d571fbbbfb8\",\"epoch\":\"e593c7bc-9116-4902-8d3d-8834e2ee26fb\"},\"section\":\"families\",\"registryDigest\":\"f8dda06f0bb1dc58262ed326a2e3ff4a656f2a90cb268c91d14daa77e5e16465\",\"items\":[{\"family\":\"general\",\"count\":80,\"authorable\":78,\"categories\":[\"presentation\",\"input\",\"disclosure\",\"navigation\",\"date-time\"],\"packages\":[\"@victframework/ui-svelte\"]},{\"family\":\"ai\",\"count\":28,\"authorable\":28,\"categories\":[\"chat\",\"public-activity\",\"actions\"],\"packages\":[\"@victframework/ui-ai-svelte\"]},{\"family\":\"flow\",\"count\":5,\"authorable\":5,\"categories\":[\"graph-editor\",\"diagram\",\"diagram-part\"],\"packages\":[\"@victframework/ui-flow-svelte\"]},{\"family\":\"media\",\"count\":6,\"authorable\":6,\"categories\":[\"image\",\"video\",\"embed\",\"icon\",\"vector\",\"assets\"],\"packages\":[\"@victframework/ui-media-svelte\"]},{\"family\":\"application-patterns\",\"count\":9,\"authorable\":9,\"categories\":[\"interactive\"],\"packages\":[\"@victframework/ui-patterns-svelte\"]}],\"total\":5,\"offset\":0,\"nextOffset\":null}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 163329 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 163351 ms since turn start {\"expectedRevision\":\"r1#1\",\"cursor\":{\"documentId\":\"screen-077aa3bb-5b16-4528-8999-f27beee7d2e3\",\"revision\":\"r1#1\",\"digest\":\"d120a330b31abd82890ef5286ed13762518548e6929deb6827d50d571fbbbfb8\",\"epoch\":\"e593c7bc-9116-4902-8d3d-8834e2ee26fb\"},\"section\":\"catalog\",\"registryDigest\":\"f8dda06f0bb1dc58262ed326a2e3ff4a656f2a90cb268c91d14daa77e5e16465\",\"items\":[{\"id\":\"vict.media.asset-library\",\"revision\":\"1\",\"label\":\"Media library\",\"family\":\"media\",\"category\":\"assets\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"91cdf5f28b1c00faed43291d0fc098f0c0e562e36b814c6150fd22158d314648\",\"packageName\":\"@victframework/ui-media-svelte\"},{\"id\":\"vict.media.embed\",\"revision\":\"1\",\"label\":\"Provider video embed\",\"family\":\"media\",\"category\":\"embed\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"6f199e3ccfc16468e93e114ca08a6660d8cd9da61e803089e878c06e42904f24\",\"packageName\":\"@victframework/ui-media-svelte\"},{\"id\":\"vict.media.icon\",\"revision\":\"1\",\"label\":\"Supplied or custom icon\",\"family\":\"media\",\"category\":\"icon\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"f18f8834af6db6bb0e34b2847cd1d32a0321c54a55a8f1bcfb2f5b0334303330\",\"packageName\":\"@victframework/ui-media-svelte\"},{\"id\":\"vict.media.image\",\"revision\":\"1\",\"label\":\"Image\",\"family\":\"media\",\"category\":\"image\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"08cc84a36356449be8f4d0c998fdb07cb06cf7ff4a9d011514ea4cb97466d9a3\",\"packageName\":\"@victframework/ui-media-svelte\"},{\"id\":\"vict.media.vector\",\"revision\":\"1\",\"label\":\"Editable vector graphic\",\"family\":\"media\",\"category\":\"vector\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"622767b68e0b537d56a27e7fc1d6e1b703db7561bd3e275f135af2a32d1939dd\",\"packageName\":\"@victframework/ui-media-svelte\"},{\"id\":\"vict.media.video\",\"revision\":\"1\",\"label\":\"Video player\",\"family\":\"media\",\"category\":\"video\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"47fb52a1b450a600068a3db6c5844559aa40da7f98802bb820b33beb33cedf64\",\"packageName\":\"@victframework/ui-media-svelte\"}],\"total\":6,\"offset\":0,\"nextOffset\":null}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 163329 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 163355 ms since turn start {\"expectedRevision\":\"r1#1\",\"cursor\":{\"documentId\":\"screen-077aa3bb-5b16-4528-8999-f27beee7d2e3\",\"revision\":\"r1#1\",\"digest\":\"d120a330b31abd82890ef5286ed13762518548e6929deb6827d50d571fbbbfb8\",\"epoch\":\"e593c7bc-9116-4902-8d3d-8834e2ee26fb\"},\"section\":\"catalog\",\"registryDigest\":\"f8dda06f0bb1dc58262ed326a2e3ff4a656f2a90cb268c91d14daa77e5e16465\",\"items\":[],\"total\":0,\"offset\":0,\"nextOffset\":null}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 172604 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 172611 ms since turn start {\"expectedRevision\":\"r1#1\",\"cursor\":{\"documentId\":\"screen-077aa3bb-5b16-4528-8999-f27beee7d2e3\",\"revision\":\"r1#1\",\"digest\":\"d120a330b31abd82890ef5286ed13762518548e6929deb6827d50d571fbbbfb8\",\"epoch\":\"e593c7bc-9116-4902-8d3d-8834e2ee26fb\"},\"section\":\"contracts\",\"ok\":true,\"complete\":false,\"registryDigest\":\"f8dda06f0bb1dc58262ed326a2e3ff4a656f2a90cb268c91d14daa77e5e16465\",\"items\":[{\"id\":\"vict.media.image\",\"revision\":\"1\",\"digest\":\"08cc84a36356449be8f4d0c998fdb07cb06cf7ff4a9d011514ea4cb97466d9a3\",\"bodyIdentity\":\"studio-contract-body@2:examples:08cc84a36356449be8f4d0c998fdb07cb06cf7ff4a9d011514ea4cb97466d9a3\",\"contractJson\":\"{\\\"descriptor\\\":{\\\"revision\\\":\\\"1\\\",\\\"abi\\\":\\\"vict.ui-component-abi@1\\\",\\\"events\\\":[\\\"vict.ui-component-abi@1\\\"],\\\"rendererImplementationId\\\":\\\"vict.svelte.media.authoring\\\",\\\"slots\\\":[],\\\"id\\\":\\\"vict.media.image\\\",\\\"styleTargets\\\":[\\\"root\\\",\\\"image\\\",\\\"caption\\\"],\\\"props\\\":[{\\\"name\\\":\\\"source\\\",\\\"type\\\":\\\"string\\\",\\\"default\\\":\\\"\\\"},{\\\"name\\\":\\\"alt\\\",\\\"type\\\":\\\"string\\\",\\\"default\\\":\\\"\\\"},{\\\"name\\\":\\\"fit\\\",\\\"type\\\":\\\"string\\\",\\\"default\\\":\\\"cover\\\"},{\\\"name\\\":\\\"aspectRatio\\\",\\\"type\\\":\\\"string\\\",\\\"default\\\":\\\"auto\\\"},{\\\"name\\\":\\\"caption\\\",\\\"type\\\":\\\"string\\\",\\\"default\\\":\\\"\\\"},{\\\"name\\\":\\\"eager\\\",\\\"type\\\":\\\"boolean\\\",\\\"default\\\":false}],\\\"outputs\\\":[{\\\"name\\\":\\\"loaded\\\",\\\"payload\\\":\\\"void\\\"},{\\\"name\\\":\\\"failed\\\",\\\"payload\\\":\\\"string\\\"}],\\\"inspectionLimits\\\":[\\\"Managed references require an asset host; external supplied URLs load in the browser. Actual image loading is distinct from source presence.\\\"]},\\\"label\\\":\\\"Image\\\",\\\"family\\\":\\\"media\\\",\\\"category\\\":\\\"image\\\",\\\"purpose\\\":\\\"Image through a reusable registered media capability.\\\",\\\"eligibility\\\":{\\\"kind\\\":\\\"standalone\\\"},\\\"rules\\\":[],\\\"guidance\\\":[\\\"Managed references require an asset host; external supplied URLs load in the browser. Actual image loading is distinct from source presence.\\\",\\\"Media source props use an exact supplied HTTP(S) URL, same-origin absolute path, or asset:sha256:<full 64-character digest> from registry assets. The closed canonical registry does not declare MIME or prove bytes exist. Check real owner-supplied metadata; video source needs video, poster needs image, captions needs WebVTT, and vector/custom icon source needs a managed inert SVG. Do not invent image assets or assume an empty registry prevents URL images.\\\",\\\"Root and listed semantic parts are explicit style targets. Keep application labels, focus and button behavior when composing icons. Use canonical props/bindings; source presence alone is not loading/playback or interaction proof.\\\"],\\\"seed\\\":{\\\"root\\\":\\\"media\\\",\\\"nodes\\\":[{\\\"id\\\":\\\"media\\\",\\\"kind\\\":\\\"component\\\",\\\"definitionId\\\":\\\"vict.media.image\\\",\\\"revision\\\":\\\"1\\\"}]},\\\"packageName\\\":\\\"@victframework/ui-media-svelte\\\",\\\"packageVersion\\\":\\\"0.4.0-rc.1\\\",\\\"capabilities\\\":{\\\"extensionId\\\":\\\"vict.media.image\\\",\\\"revision\\\":\\\"1\\\",\\\"rendererImplementationId\\\":\\\"vict.svelte.media.authoring\\\",\\\"abi\\\":\\\"vict.ui-component-abi@1\\\",\\\"slots\\\":[],\\\"required\\\":[],\\\"styleTargets\\\":[\\\"root\\\",\\\"image\\\",\\\"caption\\\"],\\\"requiresParentContext\\\":false,\\\"compositionSlots\\\":[]},\\\"descriptorDigest\\\":\\\"25dc94a2a4a6931621ac82019b1ad50a7fcd540a0e51f9f3e4f2151821eb794a\\\",\\\"digest\\\":\\\"08cc84a36356449be8f4d0c998fdb07cb06cf7ff4a9d011514ea4cb97466d9a3\\\",\\\"preparation\\\":{\\\"seedStyles\\\":[],\\\"hostRequirements\\\":[],\\\"dependencies\\\":[],\\\"seedStylePrecedence\\\":\\\"Local styles override shared style sources; explicitly replace/remove undesired seed declarations before construction.\\\"}}\",\"totalCharacters\":2643,\"offset\":0,\"nextOffset\":null,\"bodyComplete\":true},{\"id\":\"vict.media.video\",\"revision\":\"1\",\"digest\":\"47fb52a1b450a600068a3db6c5844559aa40da7f98802bb820b33beb33cedf64\",\"bodyIdentity\":\"studio-contract-body@2:examples:47fb52a1b450a600068a3db6c5844559aa40da7f98802bb820b33beb33cedf64\",\"contractJson\":\"{\\\"descriptor\\\":{\\\"revision\\\":\\\"1\\\",\\\"abi\\\":\\\"vict.ui-component-ab [Details truncated for the bounded trace. Read current source for complete facts.]"
+    - heading "Sanitized exchanges" [level=4]
+    - paragraph: Compact previews remain in the conversation. Open a retained original page here; this never invokes a tool again.
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page" [active]
+    - paragraph: Characters 0–4258 of 4258
+    - generic: "{ \"expectedRevision\": \"r1#1\", \"cursor\": { \"documentId\": \"screen-077aa3bb-5b16-4528-8999-f27beee7d2e3\", \"revision\": \"r1#1\", \"digest\": \"d120a330b31abd82890ef5286ed13762518548e6929deb6827d50d571fbbbfb8\", \"epoch\": \"e593c7bc-9116-4902-8d3d-8834e2ee26fb\" }, \"section\": \"media\", \"inventory\": { \"documentId\": \"screen-077aa3bb-5b16-4528-8999-f27beee7d2e3\", \"listedAt\": \"2026-10-28T12:24:22.069Z\", \"scope\": \"current-application-asset-store\", \"evidence\": \"Host-reported metadata at listedAt. This is not current byte retrieval, decoded media, playback, caption, or visual-observation proof.\", \"snapshotItems\": 5, \"storeTotal\": 5, \"truncated\": false }, \"items\": [ { \"reference\": \"asset:sha256:2537c65d6abd5d910b304a7380daf7dbf3151064fc83f71c2ed9acfa981145fd\", \"digest\": \"2537c65d6abd5d910b304a7380daf7dbf3151064fc83f71c2ed9acfa981145fd\", \"name\": \"synthetic-captions.vtt\", \"mime\": \"text/vtt\", \"size\": 136 }, { \"reference\": \"asset:sha256:5c3afc101e908624396dd99b1c37503f41b8b2accd68a320d9ac75cc57af6978\", \"digest\": \"5c3afc101e908624396dd99b1c37503f41b8b2accd68a320d9ac75cc57af6978\", \"name\": \"synthetic-image.png\", \"mime\": \"image/png\", \"size\": 7350 }, { \"reference\": \"asset:sha256:9a2af942bb0fe1ab83336c068f3e8646ca8247ab31aa26dcc7ed52b45b2ca74c\", \"digest\": \"9a2af942bb0fe1ab83336c068f3e8646ca8247ab31aa26dcc7ed52b45b2ca74c\", \"name\": \"synthetic-poster.png\", \"mime\": \"image/png\", \"size\": 678 }, { \"reference\": \"asset:sha256:a5a10026aa8b9b33a76e9b58d89b9fd190557759ac672f5de8be231211027cd1\", \"digest\": \"a5a10026aa8b9b33a76e9b58d89b9fd190557759ac672f5de8be231211027cd1\", \"name\": \"synthetic-video.mp4\", \"mime\": \"video/mp4\", \"size\": 82613 }, { \"reference\": \"asset:sha256:c468e614c6163875d52c38698c04472603524bbe6f7188e44366a3f80c517614\", \"digest\": \"c468e614c6163875d52c38698c04472603524bbe6f7188e44366a3f80c517614\", \"name\": \"synthetic-brand.svg\", \"mime\": \"image/svg+xml\", \"size\": 524 } ], \"total\": 5, \"offset\": 0, \"nextOffset\": null, \"guidance\": \"For a canonical digest asset, use source=\\\"asset:sha256:<full 64-character digest>\\\" on vict.media.image/video/vector/icon. External assets use their declared href. The registry does not prove bytes are present and does not declare MIME, dimensions or playback. Confirm those in the owner-supplied media library; do not infer absent media support from an empty registry. Video poster takes an image reference; captions takes WebVTT; vector/custom icon source requires a managed inert SVG. Editable vector/icon data is a separate JSON prop and takes precedence over source.\", \"turnProgress\": { \"applied\": 0, \"metrics\": { \"toolCalls\": 4, \"completedCalls\": 1, \"refusedCalls\": 0, \"recoveryAttempts\": 0, \"toolElapsedMs\": 16, \"providerRequests\": 1, \"visionRequests\": 0, \"acknowledgementMs\": 0, \"confirmedEdits\": 0, \"usage\": { \"inputTokens\": 10461, \"outputTokens\": 5177, \"totalTokens\": 15638 }, \"categories\": { \"knowledge\": 0, \"source\": 4, \"edit\": 0, \"observe\": 0, \"other\": 0 }, \"elapsedMs\": 145918, \"toolActiveMs\": 16, \"outsideToolMs\": 145902, \"modelSteps\": null, \"cost\": null }, \"retainedKnowledge\": { \"scope\": \"Complete contract bodies delivered in this turn only; reuse still requires their content to remain available in model context. Source facts are never cached knowledge.\", \"complete\": [], \"partialCount\": 0 }, \"visualEvidence\": { \"regions\": [], \"currentSourceObservations\": 0, \"scope\": \"Captured regions only; source freshness does not establish current runtime/viewport freshness or offscreen/interaction coverage.\", \"interactionsVerified\": false }, \"evidence\": \"Host receipt-derived totals include all acknowledged transactions, including cleanup. Outside-tool time is waiting/generation/transport/host overhead, not measured provider latency. Captured regions do not establish full-page or interaction coverage.\" } }"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+- main:
+  - button "Toggle Chat drawer" [expanded]:
+  - group "Workspace mode":
+    - button "Design" [pressed]
+    - button "Interact"
+    - button "Structure"
+  - button "Toggle Document and Selection drawer":
+  - iframe:
+    - generic "Screen canvas":
+      - main "Foundation Media Live"
+  - generic: ＋
+  - heading "What will you make?" [level=1]
+  - paragraph: Select this screen to open its tools, then choose Insert.
+- contentinfo:
+  - status: Register supplied media · unsaved
+- generic: Designer — VICT Studio

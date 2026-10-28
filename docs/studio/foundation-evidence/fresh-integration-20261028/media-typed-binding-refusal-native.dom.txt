@@ -1,0 +1,145 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Foundation Media Live"
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- banner:
+  - strong: Chat
+  - button "Hide Chat":
+- complementary "Chat":
+  - region "Conversation":
+    - region "Messages — Message":
+      - log:
+        - generic: You
+        - generic: "Build a compact Foundation Media Live gallery in THIS separate blank screen using the five assets already uploaded in the current application namespace. Read real media inventory and authoring contracts; use actual digest refs, no external images/dataURLs/blob identities. Use shared VICT media patterns: image with meaningful alt, native video with supplied MP4 source, poster and English VTT captions and controls, two supplied-brand SVG vector instances to verify per-occurrence gradient/clip IDs, one custom icon using supplied SVG source, plus a theme-colored lucide/search@1.27.0 icon with accessible name. Keep brand multicolour paint intact. Simple responsive column with semantic VICT theme; every media surface fits narrow390px. Bind video playing/ended/failed and image loaded/failed outputs to visible honest local status if supported. Do not invent successful playback or network claims. No remote embeds on this screen, no app deletion, no provider/security changes. Preserve uploaded registry and existing root identity/history. Use supplied bytes and current shared patterns only, and observe current render. Keep narration brief, final Applied/Observed/Untested with five short lines maximum; root will run actual native playback and portable save/export/import tests."
+        - button "Copy message":
+        - generic: Assistant
+        - generic "Conversation timeline":
+          - paragraph: "I'll build the Foundation Media Live gallery on this blank screen: first reading the real uploaded media inventory, registry asset digests, icon registry, and section families, then authoring against exact media contracts."
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph:
+            - text: "Media inventory confirmed: five digest assets (captions VTT, image PNG, poster PNG, video MP4, brand SVG) and the lucide/"
+            - 'generic "Blocked URL: mailto:search@1.27.0"': search@1.27.0 [blocked]
+            - text: icon key. Now reading the media catalog and the registered icon component entry to get exact contract identities.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: "Media family confirmed: image, video, vector, icon contracts at revision 1. Reading all four contract bodies with examples."
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: Image and video contracts are complete; vector and icon bodies are partial at offset 3600. Fetching both continuations with their exact body identities.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: All four media contracts are complete. Now validating the first construction batch (heading, states, image, video, status texts) with a side-effect-free preflight before applying.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: Preflight is clean. Applying the construction batch now.
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - paragraph: Hero applied (r1#2). Observing the visible top region now to check early appearance before wiring bindings.
+          - button "Observe preview completed":
+            - generic: Observe preview
+            - generic: completed
+          - paragraph: Hero renders correctly — image shows full color with no broken placeholder. Wiring event outputs to the honest status states now.
+          - button "Edit screen failed":
+            - generic: Edit screen
+            - generic: failed
+          - paragraph: The bindText needs the inner text node, not the wrapper. Reading the two status subtrees to get exact child text node IDs.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: Confirmed inner text nodes. Reapplying the binding batch with corrected targets.
+          - button "Edit screen failed":
+            - generic: Edit screen
+            - generic: failed
+          - paragraph: The ref path syntax needs the canonical form. Reading the state registry to see how declared state resolves.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: States exist (total now 8). Reading the exact imageStatus declaration to get its canonical reference form.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph:
+            - text: The declaration exists; the ref path likely needs a scope prefix. Validating the corrected batch with path
+            - code: state.imageStatus
+            - text: via preflight first.
+          - button "Read screen failed" [expanded] [active]:
+            - generic: Read screen
+            - generic: failed
+          - region "Tool input":
+            - heading "Input" [level=4]
+            - generic: "{ \"section\": \"preflight\", \"offset\": 0, \"limit\": 12, \"edit\": { \"expectedRevision\": \"r1#2\", \"operations\": [ { \"binding\": { \"setState\": { \"key\": \"imageStatus\", \"value\": { \"type\": \"literal\", \"value\": \"Image status: loaded\" } } }, \"nodeId\": \"gallery-image\", \"op\": \"connect\", \"output\": \"loaded\" }, { \"binding\": { \"setState\": { \"key\": \"imageStatus\", \"value\": { \"type\": \"literal\", \"value\": \"Image status: failed\" } } }, \"nodeId\": \"gallery-image\", \"op\": \"connect\", \"output\": \"failed\" }, { \"binding\": { \"setState\": { \"key\": \"videoStatus\", \"value\": { \"type\": \"literal\", \"value\": \"Video status: playing\" } } }, \"nodeId\": \"gallery-video\", \"op\": \"connect\", \"output\": \"playing\" }, { \"binding\": { \"setState\": { \"key\": \"videoStatus\", \"value\": { \"type\": \"literal\", \"value\": \"Video status: ended\" } } }, \"nodeId\": \"gallery-video\", \"op\": \"connect\", \"output\": \"ended\" }, { \"binding\": { \"setState\": { \"key\": \"videoStatus\", \"value\": { \"type\": \"literal\", \"value\": \"Video status: failed\" } } }, \"nodeId\": \"gallery-video\", \"op\": \"connect\", \"output\": \"failed\" }, { \"expression\": { \"path\": \"state.imageStatus\", \"type\": \"ref\" }, \"nodeId\": \"image-status-text\", \"op\": \"bindText\" }, { \"expression\": { \"path\": \"state.videoStatus\", \"type\": \"ref\" }, \"nodeId\": \"video-status-text\", \"op\": \"bindText\" }, { \"nodeId\": \"vector-row\", \"op\": \"add\", \"parentId\": \"screen\", \"recipe\": \"row\", \"styles\": { \"align-items\": \"center\", \"display\": \"flex\", \"flex-wrap\": \"wrap\", \"gap\": \"12px\" } } ], \"reason\": \"Bind media outputs to honest status text using state-scoped refs, plus brand vector row.\" } }"
+          - region "Tool result":
+            - heading "Result" [level=4]
+            - paragraph: Content truncated
+            - generic: "{ \"expectedRevision\": \"r1#2\", \"cursor\": { \"documentId\": \"screen-077aa3bb-5b16-4528-8999-f27beee7d2e3\", \"revision\": \"r1#2\", \"digest\": \"7d78b218f383eba37f92c96b6fe2db9d93599c1564edbc4a9c06e3c190519438\", \"epoch\": \"e593c7bc-9116-4902-8d3d-8834e2ee26fb\" }, \"section\": \"preflight\", \"ok\": false, \"code\": \"STUDIO_AGENT_VALIDATION\", \"message\": \"Edit rejected: UI_COMPONENT_BINDING_INCOMPATIBLE: Output 'loaded' payload void is incompatible with state 'imageStatus' type string.; UI_COMPONENT_BINDING_INCOMPATIBLE: Output 'playing' payload boolean is incompatible with state 'videoStatus' type string.; UI_COMPONENT_BINDING_INCOMPATIBLE: Output 'ended' payload void is incompatible with state 'videoStatus' type string.\", \"diagnostics\": [ { \"documentId\": \"screen-077aa3bb-5b16-4528-8999-f27beee7d2e3\", \"nodeId\": \"gallery-image\", \"output\": \"loaded\", \"stateKey\": \"imageStatus\", \"sourcePath\": \"nodes.gallery-image\", \"code\": \"UI_COMPONENT_BINDING_INCOMPATIBLE\", \"path\": \"nodes.gallery-image\", \"message\": \"Output 'loaded' payload void is incompatible with state 'imageStatus' type string.\", \"operation\": 0 }, { \"documentId\": \"screen-077aa3bb-5b16-4528-8999-f27beee7d2e3\", \"nodeId\": \"gallery-video\", \"output\": \"playing\", \"stateKey\": \"videoStatus\", \"sourcePath\": \"nodes.gallery-video\", \"code\": \"UI_COMPONENT_BINDING_INCOMPATIBLE\", \"path\": \"nodes.gallery-video\", \"message\": \"Output 'playing' payload boolean is incompatible with state 'videoStatus' type string.\", \"operation\": 2 }, { \"documentId\": \"screen-077aa3bb-5b16-4528-8999-f27beee7d2e3\", \"nodeId\": \"gallery-video\", \"output\": \"ended\", \"stateKey\": \"videoStatus\", \"sourcePath\": \"nodes.gallery-video\", \"code\": \"UI_COMPONENT_BINDING_INCOMPATIBLE\", \"path\": \"nodes.gallery-video\", \"message\": \"Output 'ended' payload void is incompatible with state 'videoStatus' type string.\", \"operation\": 2 } ], \"applied\": false, \"turnProgress\": { \"applied\": 1, \"metrics\": { \"toolCalls\": 19, \"completedCalls\": 16, \"refusedCalls\": 3, \"recoveryAttempts\": 1, \"toolElapsedMs\": 29707, \"providerRequests\": 13, \"visionRequests\": 1, \"acknowledgementMs\": 33, \"confirmedEdits\": 1, \"usage\": { \"inputTokens\": 488694, \"outputTokens\": 16559, \"totalTokens\": 505253 }, \"firstEditMs\": 348368.9236, \"categories\": { \"knowledge\": 7, \"source\": 8, \"edit\": 3, \"observe\": 1, \"other\": 0 }, \"elapsedMs\": 465345, \"toolActiveMs\": 29608, \"outsideToolMs\": 435737, \"modelSteps\": null, \"cost\": null }, \"retainedKnowledge\": { \"scope\": \"Complete contract bodies delivered in this turn only; reuse still requires their content to remain available in model context. Source facts are never cached knowledge.\", \"complete\": [ { \"key\": \"vict.media.image@1\", \"digest\": \"08cc84a36356449be8f4d0c998fdb07cb06cf7ff4a9d011514ea4cb97466d9a3\", \"bodyIdentity\": \"studio-contract-body@2:examples:08cc84a36356449be8f4d0c998fdb07cb06cf7ff4a9d011514ea4cb97466d9a3\" }, { \"key\": \"vict.media.video@1\", \"digest\": \"47fb52a1b450a600068a3db6c5844559aa40da7f98802bb820b33beb33cedf64\", \"bodyIdentity\": \"studio-contract-body@2:examples:47fb52a1b450a600068a3db6c5844559aa40da7f98802bb820b33beb33cedf64\" }, { \"key\": \"vict.media.vector@1\", \"digest\": \"622767b68e0b537d56a27e7fc1d6e1b703db7561bd3e275f135af2a32d1939dd\", \"bodyIdentity\": \"studio-contract-body@2:examples:622767b68e0b537d56a27e7fc1d6e1b703db7561bd3e275f135af2a32d1939dd\" }, { \"key\": \"vict.media.icon@1\", \"digest\": \"f18f8834af6db6bb0e34b2847cd1d32a0321c54a55a8f1bcfb2f5b0334303330\", \"bodyIdentity\": \"studio-contract-body@2:examples:f18f8834af6db6bb0e34b2847cd1d32a0321c54a55a8f1bcfb2f5b0334303330\" } ], \"partialCount\": 0 }, \"visualEvidence\": { \"regions\": [ { \"cursor\": { \"documentId\": \"screen-077aa3bb-5b16-4528-8999-f27beee7d2e3\", \"revision\": \"r1#2\", \"digest\": \"7d78b218f383eba37f92c96b6fe2db9d93599c1564edbc4a9c06e3c190519438\", \"epoch\": \"e593c7bc-9116-4902-8d3d-8834e2ee26fb\" }, \"capturedAt\": \"2026-10-28T12:31:44.751Z\", \"viewport\": { \"width\": 820, \"height\": 296, \"scrollLeft\": 0, \"scrollTop\": 0, \"devicePixelRatio\": 1.25 }, \"image\": { \"width\": 804, \"height\": 296, \"sourceWidth\": 804, \"sourceHeight\": 1151, \"offsetLeft\": 0, \"offsetTop\": 0, \"cropped\": true }, \"evidence\": { \"workspaceView\": \"design\", \"viewportModel\": \"isolated-viewport\", \"ownedOverlays\": 0, \"targets\": [ { \"nodeId\": \"screen\", \"part\": \"root\", \"bounds\": [ 0, 0, 804, 1150.35 ], \"visible\": true, \"visibilityReason\": \"visible\", \"styles\": { \"color\": \"rgb(36, 48, 71)\", \"background-color\": \"rgb(255, 255, 255)\", \"position\": \"static\", \"top\": \"auto\", \"padding-top\": \"40px\", \"overflow\": \"visible\", \"font-size\": \"14px\", \"z-index\": \"auto\" } }, { \"nodeId\": \"gallery-title\", \"part\": \"root\", \"bounds\": [ 40, 40, 724, 38.4 ], \"visible\": true, \"visibilityReason\": \"visible\", \"styles\": { \"color\": \"rgb(36, 48, 71)\", \"background-color\": \"rgba(0, 0, 0, 0)\", \"position\": \"static\", \"top\": \"auto\", \"padding-top\": \"0px\", \"overflow\": \"visible\", \"font-size\": \"32px\", \"z-index\": \"auto\" } }, { \"nodeId\": \"gallery-title-text\", \"part\": \"root\", \"bounds\": [ 0, 0, 0, 0 ], \"visible\": false, \"visibilityReason\": \"hidden\", \"styles\": { \"color\": \"rgb(36, 48, 71)\", \"background-color\": \"rgba(0, 0, 0, 0)\", \"position\": \"static\", \"top\": \"auto\", \"padding-top\": \"0px\", \"overflow\": \"visible\", \"font-size\": \"32px\", \"z-index\": \"auto\" } }, { \"nodeId\": \"gallery-intro\", \"part\": \"root\", \"bounds\": [ 40, 98.4, 724, 22.4 ], \"visible\": true, \"visibilityReason\": \"visible\", \"styles\": { \"color\": \"rgb(91, 107, 133)\", \"background-color\": \"rgba(0, 0, 0, 0)\", \"position\": \"static\", \"top\": \"auto\", \"padding-top\": \"0px\", \"overflow\": \"visible\", \"font-size\": \"14px\", \"z-index\": \"auto\" } }, { \""
+    - button "Scroll to latest message":
+      - generic: Scroll to end
+    - textbox "Message":
+      - /placeholder: Ask for a change…
+    - button "Stop":
+      - generic: Stop
+    - status
+  - status "Reading current source facts…":
+    - generic: Working…
+  - button "Chat details": ···
+- main:
+  - button "Toggle Chat drawer" [expanded]:
+  - group "Workspace mode":
+    - button "Design" [pressed]
+    - button "Interact"
+    - button "Structure"
+  - button "Toggle Document and Selection drawer":
+  - iframe:
+    - generic "Screen canvas":
+      - main "Foundation Media Live":
+        - heading "Foundation Media Live" [level=2]:
+          - generic: Foundation Media Live
+        - paragraph:
+          - generic: Compact gallery built from the five uploaded namespace assets.
+        - figure "Uploaded synthetic-image.png — actual load confirmed by the status line below":
+          - img "Synthetic preview still for the Foundation Media Live gallery"
+          - generic: Uploaded synthetic-image.png — actual load confirmed by the status line below
+        - paragraph:
+          - generic: "Image status: waiting"
+        - figure "Uploaded synthetic-video.mp4 with poster and English WebVTT captions":
+          - generic "Foundation live demo video"
+          - generic: Uploaded synthetic-video.mp4 with poster and English WebVTT captions
+        - paragraph:
+          - generic: "Video status: idle (no playback yet)"
+- contentinfo:
+  - status: "Construct Foundation Media Live hero: semantic heading, intro, honest status states, digest-referenced image and video with poster, English captions, controls. · agent edit · unsaved"
+- generic: Designer — VICT Studio

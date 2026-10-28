@@ -1,0 +1,19 @@
+{
+  "image": {
+    "complete": true,
+    "currentSrcScheme": "blob",
+    "naturalHeight": 180,
+    "naturalWidth": 320
+  },
+  "video": {
+    "controls": true,
+    "duration": 2,
+    "paused": true,
+    "posterScheme": "blob",
+    "readyState": 4,
+    "trackCount": 1,
+    "videoHeight": 180,
+    "videoWidth": 320
+  },
+  "scope": "During actual agent construction; metadata/decode only, no playback or caption-render claim."
+}

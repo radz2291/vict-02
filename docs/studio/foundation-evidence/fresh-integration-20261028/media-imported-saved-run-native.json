@@ -1,0 +1,23 @@
+{
+  "iconColor": "rgb(0, 128, 96)",
+  "image": {
+    "complete": true,
+    "height": 180,
+    "width": 320
+  },
+  "video": {
+    "duration": 2,
+    "error": null,
+    "readyState": 4
+  },
+  "svg": {
+    "ids": [
+      "vict-63_32_31-brand",
+      "vict-63_32_31-round"
+    ],
+    "stops": [
+      "#ff3d81",
+      "#27d3b5"
+    ]
+  }
+}
