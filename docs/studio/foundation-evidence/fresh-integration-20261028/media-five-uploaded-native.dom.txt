@@ -1,0 +1,110 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Foundation Media Live"
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- main:
+  - button "Toggle Chat drawer":
+  - group "Workspace mode":
+    - button "Design" [pressed]
+    - button "Interact"
+    - button "Structure"
+  - button "Toggle Document and Selection drawer" [expanded]:
+  - iframe:
+    - generic "Screen canvas":
+      - main "Foundation Media Live"
+  - generic: ＋
+  - heading "What will you make?" [level=1]
+  - paragraph: Select this screen to open its tools, then choose Insert.
+- complementary "Document and Selection":
+  - tablist "Panel context":
+    - tab "Document" [selected]
+    - tab "Selection"
+  - button "Hide Document and Selection":
+  - tabpanel "Document":
+    - region "Document layers":
+      - button "Layers"
+    - region "Document data":
+      - button "Data" [expanded]
+      - generic "Media and graphics"
+      - region "Supplied media":
+        - text: Supply media
+        - button "Supply media"
+        - text: Import media archive
+        - button "Import media archive"
+        - button "Export media archive"
+        - paragraph: Media stays in this browser and application namespace. Export an archive to carry its bytes with saved source.
+        - status: Imported 5 assets.
+        - list:
+          - button "synthetic-captions.vtt"
+          - generic: text/vtt · 1 KB
+          - button "Remove stored asset synthetic-captions.vtt"
+          - button "synthetic-image.png"
+          - generic: image/png · 8 KB
+          - button "Remove stored asset synthetic-image.png"
+          - button "synthetic-poster.png"
+          - generic: image/png · 1 KB
+          - button "Remove stored asset synthetic-poster.png"
+          - button "synthetic-video.mp4"
+          - generic: video/mp4 · 81 KB
+          - button "Remove stored asset synthetic-video.mp4"
+          - button "synthetic-brand.svg"
+          - generic: image/svg+xml · 1 KB
+          - button "Remove stored asset synthetic-brand.svg"
+      - paragraph:
+        - text: "Chosen asset:"
+        - strong: synthetic-brand.svg
+        - text: · image/svg+xml
+      - text: Attach as
+      - combobox "Attach as":
+        - option "Media source" [selected]
+        - option "Video poster"
+        - option "Video captions"
+      - paragraph: Use replaces this property on the selected media component. For vector or custom icon sources, it clears the previous inline graphic.
+      - button "Use on selected media"
+      - generic: Saved starting values
+      - button "Message Text Hello from my screen":
+        - strong: Message
+        - generic: Text
+        - generic: Hello from my screen
+        - generic: ›
+      - button "Agreement Yes / No No":
+        - strong: Agreement
+        - generic: Yes / No
+        - generic: "No"
+        - generic: ›
+      - button "Dialog open Yes / No No":
+        - strong: Dialog open
+        - generic: Yes / No
+        - generic: "No"
+        - generic: ›
+      - button "Submitting Yes / No No":
+        - strong: Submitting
+        - generic: Yes / No
+        - generic: "No"
+        - generic: ›
+      - button "Action error Text Empty":
+        - strong: Action error
+        - generic: Text
+        - generic: Empty
+        - generic: ›
+      - button "Action result Text Empty":
+        - strong: Action result
+        - generic: Text
+        - generic: Empty
+        - generic: ›
+    - region "Document actions":
+      - button "Actions"
+    - region "Document source":
+      - button "Source"
+- contentinfo:
+  - status: Register supplied media · unsaved
+- generic: Designer — VICT Studio

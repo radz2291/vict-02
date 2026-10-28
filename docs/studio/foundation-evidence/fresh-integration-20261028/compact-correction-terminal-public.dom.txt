@@ -1,0 +1,171 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Foundation AI Review"
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- banner:
+  - strong: Chat
+  - button "Hide Chat":
+- complementary "Chat":
+  - region "Conversation":
+    - region "Messages — Message":
+      - log:
+        - generic: You
+        - generic: "Make one bounded responsive repair to this existing Foundation AI Review screen. Preserve ALL owner Matrix colors, scanlines, text, controls, outputs, public facts, histories and wide appearance. Read current source and contracts first. The host now establishes container-name studio-screen inside the actual application iframe in Design/Interact/Run. Existing cond-compact wrongly names compact, and conditional padding/gap are masked by later unconditional padding22 and local gap14. Correct the responsive declarations through the supported authoring tools: above760px keep padding22px/gap14px; at or below760px use padding16px/gap12px on the root through the named studio-screen container. Ensure local declarations do not mask the conditional and style-source ordering is correct; use new condition/source identities if contracts require, preserve earlier registries/history. Do not recreate the app or alter styling beyond these spacing rules. Do not claim width tests unless actually observed. Keep progress concise and final to Applied / Observed / Untested, maximum five short lines. No private reasoning, no provider/security/tool-authority changes."
+        - button "Copy message":
+        - generic: Assistant
+        - generic "Conversation timeline":
+          - paragraph:
+            - text: I'll repair the Foundation AI Review screen's responsive spacing through the named
+            - code: studio-screen
+            - text: container, starting by reading the current root source and the condition/style-source registries.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph:
+            - text: "The reads confirm the exact defects:"
+            - code: cond-compact
+            - text: targets container name
+            - code: compact
+            - text: (which doesn't exist — the host container is
+            - code: studio-screen
+            - text: ), the conditional source is attached
+            - emphasis: before
+            - text: the unconditional
+            - code: always.plain
+            - text: padding source, and a local
+            - code: "gap: 14px"
+            - text: on the root masks the conditional
+            - code: "gap: 12px"
+            - text: ". I'll repair all three in one atomic transaction: declare a correct"
+            - code: studio-screen
+            - text: container condition, repoint the compact source to it, add an unmasked base gap source, remove the masking local gap, and reorder so the conditional source wins last.
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - paragraph:
+            - text: The repair applied and was acknowledged at
+            - code: r1.r2#1
+            - text: . Now verifying the final root source (unmasked gap, correct source order) and observing the current visible region to confirm the wide layout and Matrix styling are intact.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Observe preview completed":
+            - generic: Observe preview
+            - generic: completed
+          - paragraph:
+            - strong: Applied
+            - text: — One atomic edit at
+            - code: r1.r2#1
+            - text: ": new"
+            - code: cond-screen-compact
+            - text: condition on container
+            - code: studio-screen
+            - text: (max-width 760px); compact source repointed to it (16px/12px); base gap 14px moved to
+            - code: src.screen.root-base.plain
+            - text: ; masking local
+            - code: gap
+            - text: removed; source order now
+            - code: always → root-base → cond-compact
+            - text: so the conditional wins. All Matrix colors, scanlines, text, controls, children and earlier registries preserved; old condition/source left intact.
+          - paragraph:
+            - strong: Observed
+            - text: "— At the current ~820px preview: root shows measured"
+            - code: "padding-top: 22px"
+            - text: ", colors"
+            - code: "#3dff70"
+            - text: /
+            - code: "#040805"
+            - text: and even spacing with no layout clipping in the captured region.
+          - paragraph:
+            - strong: Untested
+            - text: — ≤760px behavior (16px/12px) not exercised; no width-resize test was run, and exact gap rendering wasn't measured.
+        - button "Copy message":
+    - button "Scroll to latest message":
+      - generic: Scroll to end
+    - textbox "Message":
+      - /placeholder: Ask for a change…
+    - button "Send" [disabled]:
+      - generic: Send
+    - status
+  - status "1 edit applied":
+    - generic: Ready
+  - button "Chat details" [active]: ···
+- main:
+  - button "Toggle Chat drawer" [expanded]:
+  - group "Workspace mode":
+    - button "Design"
+    - button "Interact" [pressed]
+    - button "Structure"
+  - button "Toggle Document and Selection drawer":
+  - iframe:
+    - generic "Screen canvas":
+      - main "Foundation AI Review":
+        - heading "Foundation AI Review" [level=1]:
+          - generic: Foundation AI Review
+        - paragraph:
+          - generic: Compact review of the retained Foundation Graph — supplied public facts, presentation and typed intent only.
+        - button "Review process (public steps)" [expanded]:
+          - generic: Review process (public steps)
+        - paragraph: Supplied verification facts only — no execution on this screen.
+        - generic: Retained Foundation Graph imported
+        - button "Prior Input text intact":
+          - generic: Prior Input text intact
+        - button "Prior Output name intact":
+          - generic: Prior Output name intact
+        - generic: Port-capacity violation safely refused
+        - generic: Deletion, reconnection and creation exercised
+        - generic: Save/reload and Run confirmed both values intact
+        - button "Public summary" [expanded]:
+          - generic: Public summary
+        - paragraph: Review confirmed graph behavior and preserve the prior manual edits.
+        - button "Used 1 sources" [expanded]:
+          - generic: Used 1 sources
+        - link "vict-02 — supplied source link (opens in a new tab)":
+          - /url: https://github.com/radz2291/vict-02
+          - text: vict-02 — supplied source link
+          - generic: (opens in a new tab)
+        - button "Tool receipt — Run saved graph" [expanded]:
+          - generic: Tool receipt — Run saved graph
+        - code: Verified coexistence
+        - paragraph:
+          - strong: Verification note
+          - text: "— Saved graph Run completed with both retained values intact: Input"
+          - code: Manual coexistence after reboot
+          - text: ", Output"
+          - code: Verified coexistence
+          - text: .
+        - paragraph: This screen presents supplied public facts only; it performs no provider, tool or network execution.
+        - generic: graph-current-saved-source.json
+        - button "Remove graph-current-saved-source.json" [disabled]:
+        - textbox "Draft note":
+          - /placeholder: Compose a short verification note…
+        - button "Send" [disabled]:
+          - generic: Send
+        - generic: Record review decision
+        - paragraph: Typed local boolean intent only — no approval authority and no provider execution.
+        - button "Deny"
+        - button "Approve"
+        - paragraph:
+          - generic: "Decision recorded (typed boolean):"
+        - generic: "false"
+        - paragraph:
+          - generic: "Composer sent draft:"
+        - button "Verification checks"
+- contentinfo:
+  - status: "Fix responsive root spacing: cond-compact named nonexistent container compact; add studio-screen condition, unmask local gap, order conditional source last · agent edit · unsaved"
+- generic: Designer — VICT Studio

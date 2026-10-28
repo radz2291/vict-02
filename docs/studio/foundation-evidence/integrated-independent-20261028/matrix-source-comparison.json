@@ -1,0 +1,29 @@
+{
+  "BeforeRevision": "r1.r2",
+  "AfterRevision": "r1.r3",
+  "SameDocument": true,
+  "BeforeNodes": 23,
+  "AfterNodes": 23,
+  "ChangedNodes": [
+    "screen"
+  ],
+  "ChangedExistingStyleSources": [
+    "src.screen.cond-compact.plain"
+  ],
+  "AddedSources": [
+    "src.screen.root-base.plain"
+  ],
+  "ChangedOldConditions": [],
+  "AddedConditions": [
+    "cond-screen-compact"
+  ],
+  "RootSourceOrder": [
+    "src.screen.always.plain",
+    "src.screen.root-base.plain",
+    "src.screen.cond-compact.plain"
+  ],
+  "SourceHashes": {
+    "r1r2": "2b5da17848674cfd85095062322c6b5943a7fc33fc0aa59df37f9bf2f45626b5",
+    "r1r3": "303160d30f01e376304508d05fb1fd879e6d52612a3e93020c87b268b02c87bd"
+  }
+}

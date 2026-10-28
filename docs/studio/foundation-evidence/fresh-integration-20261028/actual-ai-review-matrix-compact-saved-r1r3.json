@@ -1,0 +1,908 @@
+{
+  "schema": "vict.ui-document@1",
+  "id": "screen-5f9b8630-744e-403d-8f84-56dff55de6f1",
+  "revision": "r1.r3",
+  "root": "screen",
+  "nodes": {
+    "screen": {
+      "kind": "element",
+      "id": "screen",
+      "tag": "main",
+      "attributes": {
+        "aria-label": "Foundation AI Review"
+      },
+      "children": [
+        "review-heading",
+        "review-subtitle",
+        "ai-task",
+        "ai-reasoning",
+        "ai-sources",
+        "ai-tool",
+        "ai-note",
+        "composer",
+        "confirm-surface",
+        "result-row",
+        "verify-menu"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "560px"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#040805"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#3dff70"
+          }
+        },
+        {
+          "property": "font-family",
+          "value": {
+            "type": "text",
+            "value": "ui-monospace, \"Cascadia Mono\", Menlo, Consolas, monospace"
+          }
+        },
+        {
+          "property": "background-image",
+          "value": {
+            "type": "text",
+            "value": "radial-gradient(900px 420px at 50% -8%, rgba(0, 255, 65, 0.10), transparent 62%), repeating-linear-gradient(0deg, rgba(0, 255, 65, 0.03) 0px, rgba(0, 255, 65, 0.03) 1px, transparent 1px, transparent 3px)"
+          }
+        }
+      ],
+      "styleSources": [
+        "src.screen.always.plain",
+        "src.screen.root-base.plain",
+        "src.screen.cond-compact.plain"
+      ]
+    },
+    "review-heading": {
+      "kind": "element",
+      "id": "review-heading",
+      "tag": "h1",
+      "children": [
+        "review-heading-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "32px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.2"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "text-shadow",
+          "value": {
+            "type": "text",
+            "value": "0 0 12px rgba(0, 255, 65, 0.55)"
+          }
+        },
+        {
+          "property": "letter-spacing",
+          "value": {
+            "type": "text",
+            "value": "0.5px"
+          }
+        }
+      ]
+    },
+    "review-heading-text": {
+      "kind": "text",
+      "id": "review-heading-text",
+      "content": {
+        "type": "literal",
+        "value": "Foundation AI Review"
+      }
+    },
+    "review-subtitle": {
+      "kind": "element",
+      "id": "review-subtitle",
+      "tag": "p",
+      "children": [
+        "review-subtitle-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.6"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#7fcf9b"
+          }
+        },
+        {
+          "property": "text-transform",
+          "value": {
+            "type": "text",
+            "value": "uppercase"
+          }
+        },
+        {
+          "property": "letter-spacing",
+          "value": {
+            "type": "text",
+            "value": "2px"
+          }
+        }
+      ]
+    },
+    "review-subtitle-text": {
+      "kind": "text",
+      "id": "review-subtitle-text",
+      "content": {
+        "type": "literal",
+        "value": "Compact review of the retained Foundation Graph — supplied public facts, presentation and typed intent only."
+      }
+    },
+    "ai-task": {
+      "kind": "component",
+      "id": "ai-task",
+      "definitionId": "vict.ai.task",
+      "revision": "1",
+      "props": {
+        "title": {
+          "type": "literal",
+          "value": "Review process (public steps)"
+        },
+        "description": {
+          "type": "literal",
+          "value": "Supplied verification facts only — no execution on this screen."
+        },
+        "open": {
+          "type": "literal",
+          "value": true
+        },
+        "data": {
+          "type": "literal",
+          "value": "{\"version\":1,\"steps\":[{\"id\":\"g-import\",\"title\":\"Retained Foundation Graph imported\",\"status\":\"done\"},{\"id\":\"g-input\",\"title\":\"Prior Input text intact\",\"detail\":\"Manual coexistence after reboot\",\"status\":\"done\"},{\"id\":\"g-output\",\"title\":\"Prior Output name intact\",\"detail\":\"Verified coexistence\",\"status\":\"done\"},{\"id\":\"g-port\",\"title\":\"Port-capacity violation safely refused\",\"status\":\"done\"},{\"id\":\"g-edits\",\"title\":\"Deletion, reconnection and creation exercised\",\"status\":\"done\"},{\"id\":\"g-run\",\"title\":\"Save/reload and Run confirmed both values intact\",\"status\":\"done\"}]}"
+        }
+      },
+      "slots": {},
+      "styleSources": [
+        "matrix-panel"
+      ]
+    },
+    "ai-reasoning": {
+      "kind": "component",
+      "id": "ai-reasoning",
+      "definitionId": "vict.ai.reasoning",
+      "revision": "1",
+      "props": {
+        "title": {
+          "type": "literal",
+          "value": "Public summary"
+        },
+        "text": {
+          "type": "literal",
+          "value": "Review confirmed graph behavior and preserve the prior manual edits."
+        },
+        "open": {
+          "type": "literal",
+          "value": true
+        },
+        "running": {
+          "type": "literal",
+          "value": false
+        },
+        "showIcon": {
+          "type": "literal",
+          "value": true
+        }
+      },
+      "slots": {},
+      "styleSources": [
+        "matrix-panel"
+      ]
+    },
+    "ai-tool": {
+      "kind": "component",
+      "id": "ai-tool",
+      "definitionId": "vict.ai.tool",
+      "revision": "1",
+      "props": {
+        "title": {
+          "type": "literal",
+          "value": "Tool receipt — Run saved graph"
+        },
+        "input": {
+          "type": "literal",
+          "value": "Manual coexistence after reboot"
+        },
+        "output": {
+          "type": "literal",
+          "value": "Verified coexistence"
+        },
+        "status": {
+          "type": "literal",
+          "value": ""
+        },
+        "state": {
+          "type": "literal",
+          "value": "completed"
+        },
+        "open": {
+          "type": "literal",
+          "value": true
+        }
+      },
+      "slots": {},
+      "styleSources": [
+        "matrix-panel"
+      ]
+    },
+    "ai-note": {
+      "kind": "component",
+      "id": "ai-note",
+      "definitionId": "vict.ai.markdown",
+      "revision": "1",
+      "props": {
+        "text": {
+          "type": "literal",
+          "value": "**Verification note** — Saved graph Run completed with both retained values intact: Input `Manual coexistence after reboot`, Output `Verified coexistence`.\n\nThis screen presents supplied public facts only; it performs no provider, tool or network execution."
+        }
+      },
+      "slots": {},
+      "styleSources": [
+        "matrix-panel"
+      ]
+    },
+    "composer": {
+      "kind": "component",
+      "id": "composer",
+      "definitionId": "vict.ai.prompt-input",
+      "revision": "3",
+      "props": {
+        "value": {
+          "type": "ref",
+          "path": "state.draft"
+        },
+        "label": {
+          "type": "literal",
+          "value": "Draft note"
+        },
+        "placeholder": {
+          "type": "literal",
+          "value": "Compose a short verification note…"
+        },
+        "sendEnabled": {
+          "type": "literal",
+          "value": true
+        },
+        "busy": {
+          "type": "literal",
+          "value": false
+        },
+        "data": {
+          "type": "literal",
+          "value": "{\"version\":1,\"attachments\":[{\"id\":\"graph-source\",\"name\":\"graph-current-saved-source.json\"}]}"
+        },
+        "attachEnabled": {
+          "type": "literal",
+          "value": false
+        },
+        "stopEnabled": {
+          "type": "literal",
+          "value": false
+        },
+        "removeAttachmentEnabled": {
+          "type": "literal",
+          "value": false
+        }
+      },
+      "outputs": {
+        "valueChange": {
+          "setState": {
+            "key": "draft"
+          }
+        },
+        "send": {
+          "setState": {
+            "key": "submitted"
+          }
+        }
+      },
+      "slots": {},
+      "styleSources": [
+        "matrix-panel",
+        "matrix-hover"
+      ]
+    },
+    "confirm-surface": {
+      "kind": "component",
+      "id": "confirm-surface",
+      "definitionId": "vict.ai.confirmation",
+      "revision": "1",
+      "props": {
+        "title": {
+          "type": "literal",
+          "value": "Record review decision"
+        },
+        "description": {
+          "type": "literal",
+          "value": "Typed local boolean intent only — no approval authority and no provider execution."
+        },
+        "state": {
+          "type": "literal",
+          "value": "requested"
+        },
+        "pending": {
+          "type": "literal",
+          "value": false
+        },
+        "canDecide": {
+          "type": "literal",
+          "value": true
+        }
+      },
+      "slots": {},
+      "outputs": {
+        "decision": {
+          "setState": {
+            "key": "confirmed"
+          }
+        }
+      },
+      "styleSources": [
+        "matrix-panel",
+        "matrix-hover"
+      ]
+    },
+    "ai-sources": {
+      "kind": "component",
+      "id": "ai-sources",
+      "definitionId": "vict.ai.sources",
+      "revision": "1",
+      "props": {
+        "open": {
+          "type": "literal",
+          "value": true
+        },
+        "data": {
+          "type": "literal",
+          "value": "{\"version\":1,\"sources\":[{\"id\":\"repo\",\"title\":\"vict-02 — supplied source link\",\"url\":\"https://github.com/radz2291/vict-02\",\"excerpt\":\"Public repository link supplied for this review.\"}]}"
+        }
+      },
+      "slots": {},
+      "styleSources": [
+        "matrix-panel"
+      ]
+    },
+    "result-row": {
+      "kind": "element",
+      "id": "result-row",
+      "tag": "div",
+      "children": [
+        "decision-label",
+        "decision-value",
+        "sent-label",
+        "sent-value"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-wrap",
+          "value": {
+            "type": "text",
+            "value": "wrap"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "8px 18px"
+          }
+        },
+        {
+          "property": "align-items",
+          "value": {
+            "type": "text",
+            "value": "baseline"
+          }
+        },
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "1px dashed #2fae5c"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "10px 14px"
+          }
+        }
+      ],
+      "styleSources": [
+        "matrix-panel"
+      ]
+    },
+    "decision-label": {
+      "kind": "element",
+      "id": "decision-label",
+      "tag": "p",
+      "children": [
+        "decision-label-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "13px"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.6"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#5b6b83"
+          }
+        }
+      ]
+    },
+    "decision-label-text": {
+      "kind": "text",
+      "id": "decision-label-text",
+      "content": {
+        "type": "literal",
+        "value": "Decision recorded (typed boolean):"
+      }
+    },
+    "decision-value": {
+      "kind": "text",
+      "id": "decision-value",
+      "content": {
+        "type": "expression",
+        "expression": {
+          "type": "ref",
+          "path": "state.confirmed"
+        }
+      }
+    },
+    "sent-label": {
+      "kind": "element",
+      "id": "sent-label",
+      "tag": "p",
+      "children": [
+        "sent-label-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "13px"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.6"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#5b6b83"
+          }
+        }
+      ]
+    },
+    "sent-label-text": {
+      "kind": "text",
+      "id": "sent-label-text",
+      "content": {
+        "type": "literal",
+        "value": "Composer sent draft:"
+      }
+    },
+    "sent-value": {
+      "kind": "text",
+      "id": "sent-value",
+      "content": {
+        "type": "expression",
+        "expression": {
+          "type": "ref",
+          "path": "state.submitted"
+        }
+      }
+    },
+    "verify-menu": {
+      "kind": "component",
+      "id": "verify-menu",
+      "definitionId": "vict.catalog.dropdown-menu",
+      "revision": "1",
+      "props": {
+        "open": {
+          "type": "ref",
+          "path": "state.catalog_verify-menu_root_open"
+        },
+        "label": {
+          "type": "literal",
+          "value": "Verification checks"
+        }
+      },
+      "outputs": {
+        "openChange": {
+          "setState": {
+            "key": "catalog_verify-menu_root_open"
+          }
+        }
+      },
+      "slots": {
+        "items": {
+          "name": "items",
+          "children": [
+            "menu-item-1",
+            "menu-item-2",
+            "menu-item-3"
+          ]
+        }
+      },
+      "styleSources": [
+        "matrix-panel",
+        "matrix-hover"
+      ]
+    },
+    "menu-item-1": {
+      "kind": "component",
+      "id": "menu-item-1",
+      "definitionId": "vict.catalog.dropdown-menu.item",
+      "revision": "1",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Import — retained Foundation Graph"
+        },
+        "value": {
+          "type": "literal",
+          "value": "import"
+        }
+      },
+      "slots": {}
+    },
+    "menu-item-2": {
+      "kind": "component",
+      "id": "menu-item-2",
+      "definitionId": "vict.catalog.dropdown-menu.item",
+      "revision": "1",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Values — Input and Output intact"
+        },
+        "value": {
+          "type": "literal",
+          "value": "values"
+        }
+      },
+      "slots": {}
+    },
+    "menu-item-3": {
+      "kind": "component",
+      "id": "menu-item-3",
+      "definitionId": "vict.catalog.dropdown-menu.item",
+      "revision": "1",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Source — vict-02 repository"
+        },
+        "value": {
+          "type": "literal",
+          "value": "source"
+        }
+      },
+      "slots": {}
+    }
+  },
+  "componentDefinitions": {},
+  "styleSources": {
+    "src.screen.cond-compact.plain": {
+      "id": "src.screen.cond-compact.plain",
+      "declarations": [
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "16px"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        }
+      ],
+      "conditionId": "cond-screen-compact"
+    },
+    "src.screen.always.plain": {
+      "id": "src.screen.always.plain",
+      "declarations": [
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "22px"
+          }
+        }
+      ]
+    },
+    "matrix-panel": {
+      "id": "matrix-panel",
+      "declarations": [
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "rgba(0, 255, 65, 0.04)"
+          }
+        },
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "1px solid #1c4a2c"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "10px"
+          }
+        },
+        {
+          "property": "box-shadow",
+          "value": {
+            "type": "text",
+            "value": "0 0 0 1px rgba(0, 255, 65, 0.05), 0 10px 24px rgba(0, 0, 0, 0.35)"
+          }
+        },
+        {
+          "property": "font-family",
+          "value": {
+            "type": "text",
+            "value": "ui-monospace, \"Cascadia Mono\", Menlo, Consolas, monospace"
+          }
+        }
+      ]
+    },
+    "matrix-hover": {
+      "id": "matrix-hover",
+      "declarations": [
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "rgba(0, 255, 65, 0.09)"
+          }
+        },
+        {
+          "property": "border-color",
+          "value": {
+            "type": "text",
+            "value": "#2fae5c"
+          }
+        },
+        {
+          "property": "box-shadow",
+          "value": {
+            "type": "text",
+            "value": "0 0 18px rgba(0, 255, 65, 0.18)"
+          }
+        }
+      ],
+      "pseudo": "hover"
+    },
+    "src.screen.root-base.plain": {
+      "id": "src.screen.root-base.plain",
+      "declarations": [
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        }
+      ]
+    }
+  },
+  "assets": {},
+  "tokens": {},
+  "conditions": {
+    "compact": {
+      "id": "compact",
+      "kind": "container",
+      "name": "studio-screen",
+      "query": "(max-width: 600px)"
+    },
+    "cond-compact": {
+      "id": "cond-compact",
+      "kind": "container",
+      "query": "(max-width: 760px)",
+      "name": "compact"
+    },
+    "cond-screen-compact": {
+      "id": "cond-screen-compact",
+      "kind": "container",
+      "query": "(max-width: 760px)",
+      "name": "studio-screen"
+    }
+  },
+  "localState": {
+    "message": {
+      "key": "message",
+      "type": "string",
+      "initial": "Hello from my screen"
+    },
+    "accepted": {
+      "key": "accepted",
+      "type": "boolean",
+      "initial": false
+    },
+    "dialogOpen": {
+      "key": "dialogOpen",
+      "type": "boolean",
+      "initial": false
+    },
+    "busy": {
+      "key": "busy",
+      "type": "boolean",
+      "initial": false
+    },
+    "actionError": {
+      "key": "actionError",
+      "type": "string",
+      "initial": ""
+    },
+    "actionResult": {
+      "key": "actionResult",
+      "type": "string",
+      "initial": ""
+    },
+    "draft": {
+      "key": "draft",
+      "type": "string",
+      "initial": ""
+    },
+    "submitted": {
+      "key": "submitted",
+      "type": "string",
+      "initial": ""
+    },
+    "confirmed": {
+      "key": "confirmed",
+      "type": "boolean",
+      "initial": false
+    },
+    "catalog_composer_message": {
+      "key": "catalog_composer_message",
+      "type": "string",
+      "initial": ""
+    },
+    "catalog_verify-menu_root_open": {
+      "key": "catalog_verify-menu_root_open",
+      "type": "boolean",
+      "initial": false
+    }
+  },
+  "theme": {
+    "schema": "vict.ui-theme@1",
+    "roles": {
+      "surface": "#060d07",
+      "text": "#3dff70",
+      "textMuted": "#7fcf9b",
+      "border": "#1c4a2c",
+      "accent": "#00ff41",
+      "accentText": "#02180a",
+      "highlight": "rgba(0, 255, 65, 0.10)",
+      "highlightText": "#b8ffd1",
+      "focusRing": "#00ff41",
+      "disabledSurface": "#0a140c",
+      "disabledText": "#35573f",
+      "elevation": "0 10px 30px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(0, 255, 65, 0.08)"
+    }
+  }
+}
