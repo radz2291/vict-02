@@ -52,7 +52,7 @@ import { isProviderLimitEvidence,type ProviderLimitEvidence } from '$lib/designe
 
 /** Server-owned contracts are reinstalled in a fresh registry for each turn.
  * Identity-required pagination is a new host protocol, not an in-place @1 change. */
-export const STUDIO_AGENT_PROTOCOL={readCapabilityRevision:'4',readInputRevision:'5',editCapabilityRevision:'2',editInputRevision:'2',instructionsRevision:'7',profileRevision:'7',startInputRevision:'3',observationInstructionsRevision:'4',observationProfileRevision:'5'} as const;
+export const STUDIO_AGENT_PROTOCOL={readCapabilityRevision:'5',readInputRevision:'5',editCapabilityRevision:'2',editInputRevision:'2',instructionsRevision:'7',profileRevision:'8',startInputRevision:'3',observationInstructionsRevision:'4',observationProfileRevision:'6'} as const;
 
 export type StudioAgentEvent =
   | StudioToolEvidence
@@ -416,7 +416,7 @@ async function execute(
       input: readInput,
       output,
       description:
-        'Read bounded current facts and registered authoring knowledge. Overview; families/catalog filtered by family/category/query; contracts with components:[{id,revision?}], knownDigests and optional includeExamples; elements/tag. Follow nextOffset JSON text pages and dependency continuations. Existing nodes/palette/state/source/registry/actions/coverage remain; inventory is source presence only.',
+        'Read bounded current facts and registered authoring knowledge. Overview; families/catalog filtered by family/category/query; contracts with components:[{id,revision?}], knownDigests and optional includeExamples; elements/tag. Follow nextOffset JSON text pages and dependency continuations. Recipes: discover with {"section":"palette","query":"rhea-input"} or {"section":"palette","query":"rhea-native-select"}, then read {"section":"component","recipe":"rhea-input"} or {"section":"component","recipe":"rhea-native-select"}. Use key only for registry/icons/media; source requires an existing document nodeId, never a recipe identity. Existing nodes/palette/state/source/registry/actions/coverage remain; inventory is source presence only.',
       invoke: async (input,context) => {
         const discovery = agentReadSchema.parse(input),callId=invocationCallId(context);
         metrics.classify(callId,readCategory(discovery.section));
