@@ -25,6 +25,9 @@ describe('owned drawer integration boundary',()=>{
   });
   it('loops Tab and Shift+Tab inside the owner and closes on owned Escape',async()=>{
     const {target,dialog,trigger}=await setup();
+    expect(dialog.getAttribute('aria-modal')).toBeNull();
+    expect(trigger.getAttribute('aria-controls')).toBe(dialog.id);
+    expect(document.getElementById(dialog.getAttribute('aria-labelledby')!)?.textContent).toBe('Owned drawer');
     const first=dialog.querySelector<HTMLButtonElement>('[data-dialog-close]')!,last=dialog.querySelector<HTMLInputElement>('input')!;
     last.focus();const forward=new KeyboardEvent('keydown',{key:'Tab',bubbles:true,cancelable:true});last.dispatchEvent(forward);await settle();
     expect(forward.defaultPrevented).toBe(true);expect(document.activeElement).toBe(first);

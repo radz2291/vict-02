@@ -1,0 +1,23 @@
+import {afterEach,expect,it,vi} from 'vitest';
+import {flushSync,mount,tick,unmount} from 'svelte';
+import {ownedDialogBranches} from '@victframework/ui-svelte';
+import Harness from './DrawerPortalHarness.svelte';
+let instance:ReturnType<typeof mount>|undefined;
+const settle=async()=>{flushSync();await tick();flushSync();};
+afterEach(async()=>{if(instance)await unmount(instance);instance=undefined;document.body.innerHTML='';});
+it('keeps a real registered Bits select popup in its owned dialog and closes the popup before the dialog',async()=>{
+  const target=document.createElement('div');document.body.append(target);instance=mount(Harness,{target});await settle();
+  const trigger=target.querySelector<HTMLButtonElement>('[data-dialog-trigger]')!;trigger.focus();trigger.click();await settle();
+  const panel=target.querySelector<HTMLElement>('[data-owned-dialog-content]')!,owner=target.querySelector<HTMLElement>('[data-ui-application-viewport]')!;
+  const select=panel.querySelector<HTMLButtonElement>('[data-select-trigger]')!;select.focus();select.dispatchEvent(new KeyboardEvent('keydown',{key:'Enter',bubbles:true,cancelable:true}));await settle();
+  await vi.waitFor(()=>expect(owner.querySelector('[data-select-content]')).not.toBeNull());
+  const popup=owner.querySelector<HTMLElement>('[data-select-content]')!;
+  expect(panel.contains(popup)).toBe(false);
+  await vi.waitFor(()=>expect(ownedDialogBranches(owner,panel),JSON.stringify({trigger:select.outerHTML,popup:popup.outerHTML,visibility:getComputedStyle(popup).visibility,display:getComputedStyle(popup).display})).toContain(popup));
+  const option=popup.querySelector<HTMLElement>('[data-select-item]')!;option.focus();await settle();expect(document.activeElement).toBe(option);
+  option.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true,cancelable:true}));await settle();
+  await vi.waitFor(()=>expect(owner.querySelector('[data-select-content]')).toBeNull());
+  expect(owner.querySelector('[data-owned-dialog-content]')).toBe(panel);
+  select.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true,cancelable:true}));await settle();
+  expect(owner.querySelector('[data-owned-dialog-content]')).toBeNull();expect(document.activeElement).toBe(trigger);
+});

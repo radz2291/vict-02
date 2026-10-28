@@ -87,3 +87,5 @@ export { b5CatalogImplementations } from './catalog/components/b5-implementation
 export { catalogDescriptors, catalogImplementations } from './catalog/components/catalog.js';
 export { catalogAuthoringPackage, catalogAuthoringRegistrations } from './catalog/components/authoring.js';
 export { withAuthoringRules, runtimeAuthoringIssues } from './document/authoring-runtime.js';
+export {default as OwnedDialogContent} from './OwnedDialogContent.svelte';
+export {createOwnedDialogBehavior,ownedDialogBranches,isOwnedFocusable,restoreOwnedFocus,loopOwnedDialogFocus,lockOwnedDialogViewport,type OwnedDialogOptions} from './owned-dialog.js';

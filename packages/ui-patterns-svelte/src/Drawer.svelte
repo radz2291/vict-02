@@ -1,20 +1,18 @@
 <script lang="ts">
   import {patternTarget} from './target.js';
   import {Dialog} from '@victframework/ui-svelte/catalog/dialog';
-  import type {UiSvelteComponentProps} from '@victframework/ui-svelte';
-  import {lockViewport,restoreFocus} from './focus.js';
+  import {OwnedDialogContent,type UiSvelteComponentProps} from '@victframework/ui-svelte';
   let {props,io,presentation}:UiSvelteComponentProps=$props();
-  let panel=$state<HTMLElement|null>(null);
+  let panel=$state<HTMLDivElement|null>(null);
   let layer=$state<HTMLElement>();
   let trigger=$state<HTMLButtonElement|null>(null);
-  let previousFocus:Element|null=null;
   let open=$derived(props.open===true);
   const title=$derived(String(props.title??'Menu').trim()||'Menu');
   const triggerLabel=$derived(String(props.triggerLabel??'Open menu').trim()||'Open menu');
   const side=$derived(['left','right','top','bottom'].includes(String(props.side))?String(props.side):'left');
   const size=$derived(typeof props.size==='number'&&Number.isFinite(props.size)?Math.max(160,Math.min(1000,props.size)):320);
   const panelId=$props.id();
-  $effect(()=>{if(open&&panel)return lockViewport(panel);});
+  const titleId=`${panelId}-title`;
   $effect(()=>{
     if(!open||!layer)return;
     const element=layer,viewport=element.closest<HTMLElement>('[data-ui-application-viewport]');
@@ -26,15 +24,6 @@
     };
     const resize=new ResizeObserver(align);resize.observe(viewport);align();return()=>resize.disconnect();
   });
-  function focusOpen(event:Event){
-    event.preventDefault();previousFocus=panel?.ownerDocument.activeElement??null;
-    panel?.focus({preventScroll:true});
-  }
-  function focusClose(event:Event){event.preventDefault();restoreFocus(previousFocus,trigger);}
-  function outside(event:PointerEvent){
-    // Dismiss only inside this application; another application's input is not a close action.
-    if(props.dismissible===false||!layer?.contains(event.target as Node))event.preventDefault();
-  }
   const panelStyle=$derived(`position:absolute;transform:none;padding:0;margin:0;max-width:100%;max-height:100%;min-width:0;${side==='left'?`inset:0 auto 0 0;width:${size}px;height:100%;`:side==='right'?`inset:0 0 0 auto;width:${size}px;height:100%;`:side==='top'?`inset:0 0 auto 0;width:100%;height:${size}px;`:`inset:auto 0 0 0;width:100%;height:${size}px;`}`);
   // Keep renderer-owned dynamic binding variables alongside sheet geometry.
   const composedPanelStyle=$derived(`${presentation?.target('panel').style??''};${panelStyle}`);
@@ -43,18 +32,22 @@
 <span {...patternTarget(presentation,'root','vict-drawer-root')}>
   <Dialog.Root bind:open onOpenChange={next=>io?.emit('openChange',next)}>
     {#if props.showTrigger!==false}
-      <Dialog.Trigger {...patternTarget(presentation,'trigger','vict-btn vict-btn--secondary')} bind:ref={trigger} aria-label={triggerLabel} aria-controls={panelId}>
-        {#if io?.slots?.trigger}{@render io.slots.trigger()}{:else}{triggerLabel}{/if}
+      <Dialog.Trigger {...patternTarget(presentation,'trigger','vict-btn vict-btn--secondary')} bind:ref={trigger} aria-label={triggerLabel}>
+        {#snippet child({props:triggerAttributes})}
+          <button {...triggerAttributes} aria-controls={open?panelId:undefined}>
+            {#if io?.slots?.trigger}{@render io.slots.trigger()}{:else}{triggerLabel}{/if}
+          </button>
+        {/snippet}
       </Dialog.Trigger>
     {/if}
     {#if open}
-      <div class="vict-drawer-layer" data-ui-pattern-overlay="drawer" bind:this={layer} role="presentation" onclick={event=>{if(event.target===event.currentTarget&&props.dismissible!==false)io?.emit('openChange',false);}}>
-        <Dialog.Overlay {...patternTarget(presentation,'backdrop','vict-drawer-backdrop')} onclick={()=>{if(props.dismissible!==false)io?.emit('openChange',false);}}/>
-        <Dialog.Content {...patternTarget(presentation,'panel','vict-drawer-panel')} bind:ref={panel} id={panelId} data-side={side} style={composedPanelStyle} aria-label={title} preventScroll={false} preventOverflowTextSelection={false} onOpenAutoFocus={focusOpen} onCloseAutoFocus={focusClose} onEscapeKeydown={event=>{if(props.dismissible===false)event.preventDefault();}} onInteractOutside={outside}>
-          <header {...presentation?.target('header')}><Dialog.Title>{title}</Dialog.Title><Dialog.Close class="vict-btn vict-btn--secondary" aria-label="Close drawer">×</Dialog.Close></header>
+      <div class="vict-drawer-layer" data-ui-pattern-overlay="drawer" bind:this={layer}>
+        <Dialog.Overlay {...patternTarget(presentation,'backdrop','vict-drawer-backdrop')}/>
+        <OwnedDialogContent {...patternTarget(presentation,'panel','vict-drawer-panel')} bind:ref={panel} {trigger} id={panelId} data-side={side} style={composedPanelStyle} aria-label={title} aria-labelledby={titleId} dismissible={props.dismissible!==false} lockScroll onRequestClose={()=>io?.emit('openChange',false)}>
+          <header {...presentation?.target('header')}><Dialog.Title id={titleId}>{title}</Dialog.Title><Dialog.Close class="vict-btn vict-btn--secondary" aria-label="Close drawer">×</Dialog.Close></header>
           <div {...patternTarget(presentation,'body','vict-drawer-body')}>{@render io?.slots?.body?.()}</div>
           {#if io?.slots?.footer}<footer {...presentation?.target('footer')}>{@render io.slots.footer()}</footer>{/if}
-        </Dialog.Content>
+        </OwnedDialogContent>
       </div>
     {/if}
   </Dialog.Root>
