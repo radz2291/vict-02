@@ -1,0 +1,12 @@
+{
+  "sourceCandidate": "11d035c2243c58df526853ac218e86cb7770db54",
+  "launcherPid": 3356,
+  "childPid": 8012,
+  "parentMatches": true,
+  "launcherMatches": true,
+  "childMatches": true,
+  "address": "127.0.0.25:5626",
+  "errorLogBytes": 0,
+  "verifiedAtUtc": "2026-10-28T13:46:11.8800546Z",
+  "browser": "Existing IAB tab1 bind denied by Browser Use URL policy for its stale data error page. No native conformance pass."
+}

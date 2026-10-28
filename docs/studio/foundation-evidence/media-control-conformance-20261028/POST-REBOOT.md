@@ -1,0 +1,15 @@
+# Post-reboot retained candidate installation
+
+Checkpoint verified clean at e64c2f7f6b4fd14612a0e4de34a6e4581a1dd5c0. Reviewed product source remains11d035c2243c58df526853ac218e86cb7770db54.132staged app source files match checkout; reviewed CSS hash is b3e9a5ee26a5f1a37f79eb16c29796c2f4f0203b42c19ed2116a2d2bf897a5d6. Retained build has306files and both final Select min-height/border-radius rules. Full retained manifest is post-reboot-retained-build.json. No duplicate build or tests were run.
+
+Current listener discovery found none on127.0.0.25:5626 or covering wildcard binds. Existing normal configuration validation passed without printing credential values. A narrowly approved outside command rechecked no listener, verified exact absolute source/build/backup paths, moved the previously installed build into the new backup `vict-controls-build-1ffdd12/pre-post-reboot-installed-build`, copied the verified candidate and ran the existing supported helper. It used no old PID-bound script or process stopping.
+
+New launcher3356andchild8012 were verified from the actual listener and parent relationship. Both commands match the intended normal launch-agent.mjs/build pair. Listening log is present and error log0bytes at verification.306installed files match staging exactly (post-reboot-installed-build.json). No host/port/firewall/proxy/sandbox policy/provider/credentials were changed. No actual provider request was made.
+
+## Exact browser blocker
+
+Owner confirmed reboot and authorized internal browser connection. Supported `cua.getState()` succeeded and inventoried IAB tab1 with reported HTTP design URL and title This site can't be reached, before the new service started. After service startup, one supported `cua.getTab('1',{browser:'iab'})` action was **denied** by Browser Use URL policy for the stale page's `data:text/html` URL. No app click/login/navigation executed through that call. This is an authority denial for reading/binding that existing error document, not the earlier technical focus-emulation timeout, and not evidence that the newly started HTTP service refused a browser request.
+
+The exact action stopped. No new tab/task/port/alternate browser/raw CDP/curl/other-agent route was used to avoid it. Enabled-tool discovery did not expose a callable browser URL-permission approval action. The user was asked to reload the existing internal-browser tab to http://127.0.0.25:5626/design and report login/app visibility. A changed real HTTP document would be relevant new evidence for one supported bind; no retry was performed while the stale denial remained.
+
+Actual Document Media panel after screenshots, chooser/long-name/density/theme/focus/Select checks and independent visual verdict are **pending/HELD**. No screenshot or browser reachability pass is invented from startup logs, source tests or the build manifest. Matrix and saved media screens/source/assets were not changed during installation. Existing session login after server restart may be required normally.
