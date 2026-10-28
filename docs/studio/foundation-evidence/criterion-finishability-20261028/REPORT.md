@@ -1,0 +1,86 @@
+# Criterion reconciliation and finishable work
+
+Read-only independent evidence reconciliation, 2026-10-28. Product source checkpoint reviewed: `26010ca22e1be3c14450f756be50225f6b7928aa`; root is concurrently preparing a bounded AgentChat control repair. No product changes, tests, browser, provider or server operations were performed for this report. This report does not supply owner acceptance or replace a final exact-candidate integrated review.
+
+The acceptance wording is the 29-row table in [the delivery map](../../AUTHORING-FOUNDATION-DELIVERY.md), together with [CF-01](../../AUTHORING-FOUNDATION-COMPONENT-CONFORMANCE.md) and [AI-EX01](../../AUTHORING-FOUNDATION-AI-EXPOSURE.md). Historical `0/29`, unavailable-browser and missing-new-AI-lineage paragraphs are not current implementation counts. Source/tests, native observations, actual-agent evidence and owner acceptance remain distinct.
+
+## Counts and changes from the previous reconciliation
+
+The earlier independent count was ten demonstrated criteria, nineteen partial and two reporting failures across 31. Three later retained demonstrations support advancement at the stated criterion scope:
+
+- **AR-08:** `actual-alternate-view-availability-terminal.dom.txt` records the actual agent reporting Structure/interact/preview-covered/0x0 before visual planning, zero edits, exact Design/Interact reveal action and no invented appearance. The actual native workspace is Structure. Existing availability/freshness fence checks are supporting evidence.
+- **AR-10:** complete manual-marker saved source and the actual correction's complete saved r1.r3 both retain `desk-owner-keep-20261028` and the same `notesDraft` state identity. `RESPONSIVE-NEW-TRIAL.md` and repair terminal/native records distinguish the actual current-source correction from a replacement app, and retain the live value through input replacement/navigation/resizing. This joins earlier actor/revision/digest context-fence checks; it does not claim durable chat storage.
+- **AR-12:** `actual-public-ai-popup-observation-source-unchanged.json` records saved r1.r2, 62 nodes, identical source and disabled Apply after the real strict Retry observation route. The retained terminal records one successful observation, zero edits, current availability and the original failed raster. The resulting image's incomplete popup coverage is a separate AR-04/17 failure, not edit replay or a failed continuation fence.
+
+**Demonstrated IDs: AR-01, 02, 03, 06, 08, 10, 11, 12, 16, 18, 19, 21 and 27 (13).** This is scoped technical demonstration, not universal capability correctness or acceptance.
+
+Two views of the count are needed while activation is pending:
+
+| Evidence target | Demonstrated | Partial / repaired awaiting native | Affected criteria with retained unclosed failure | Total |
+| --- | ---: | ---: | ---: | ---: |
+| Currently loaded `5bf2311` behavior | 13 | 14 | 4 | 31 |
+| Reviewed `26010ca` candidate, before its native challenge | 13 | 16 | 2 | 31 |
+
+Loaded failure IDs are **AR-04/17** (one shared capture-extent defect affecting two criteria) plus **AR-05/09** (reporting quality). The candidate has an independently challenged bounded capture repair, so AR-04/17 are repaired-awaiting-native rather than passed. No additional independent bug count is implied. Once root verifies activation and full supported popup extent, reconcile these two rows against that new evidence rather than continuing to report a defect in an obsolete bundle. The AgentChat shared-control follow-up is also unloaded at this review boundary.
+
+AR-05 retains excessive mechanical narration/long finals. The source candidate moves complete unchanged public activity/tool records into an inspectable shared disclosure and projects receipt-derived progress, but no live model-quality pass follows. One bounded live trial after loading is proportionate; repeated identical prompt-only trials are not.
+
+AR-09 retains actual false verification claims (initial responsive no-overflow versus measured 375/391, and caption failure:none treated as successful load). Corrected 53-node source and imported captions repair the artifacts without making those older statements true. Later truthful clipping/availability/unobserved-state disclosures are substantial positive evidence. Do not describe the corrected responsive artifact as still overflowing or the current public-AI correction as making the older false claim.
+
+**All 31 owner acceptances remain open.** Physical-device and other external limits below are not proof that implementations are absent.
+
+## Exact next proof by criterion
+
+“Demonstrated” below means the stated core behavior has matching retained evidence; root should reuse it instead of rerunning it solely for a count. “Finishable” is an authorized, bounded remaining source/native/evidence task, not a guarantee that no new defect will be found.
+
+| Criterion | Current state | Smallest useful remaining action / limit |
+| --- | --- | --- |
+| AR-01 | Demonstrated | Reuse actual Conversation/Message/composer part repair and Matrix appearance/Run; include current source association in final integrated review. |
+| AR-02 | Demonstrated | Reuse scoped actual reads/pages/refusals and exact source retention. Report actual read/refusal efficiency honestly; no new provider run merely to obtain fewer calls. |
+| AR-03 | Demonstrated | Reuse atomic valid/invalid batch and exact capability admission evidence. |
+| AR-04 | Loaded failure; candidate repaired-awaiting-native | After activation, capture the genuinely open ModelSelector part, compare native target bottom and raster extent, inspect image and scope, retain limits. Left/up-before-root paint must still refuse explicitly; do not generalize to arbitrary transforms/masks/shadows. |
+| AR-05 | Retained failure; host presentation repair awaiting native | One bounded actual request can verify concise host progress/default details, keyboard/focus/copy/complete transcript and truthful terminal projection. A verbose terminal remains a quality gap even if its intermediate trace is correctly collapsed. |
+| AR-06 | Demonstrated | Reuse same-page actual original pages, real expiry, authentication/source tests and no-replay receipt identity. No hidden-state expiry simulation. |
+| AR-07 | Partial; finishable | Record comparable Design/Interact/saved Run application viewport versus outer mat, scroll owner and supported fixed/sticky/clipped geometry. Current dimensions alone do not prove these contracts. Pair with the popup/consumer checks where practical. |
+| AR-08 | Demonstrated | Reuse actual Structure availability/refusal and supplied measured facts. |
+| AR-09 | Retained reporting failure | Final review must compare source, native measurements, images and claimed outcomes. Keep earlier false claims and current truthful disclosures distinct; avoid a blanket current truthfulness pass from one honest turn. |
+| AR-10 | Demonstrated | Reuse actual current-source correction preserving manual marker/runtime identity plus existing context-fence checks; no provider repeat needed. |
+| AR-11 | Demonstrated | Reuse distinct historical construction/correction IDs, boundaries, metrics, real expiry and observation coverage. Reload correctly clears local chat/history. |
+| AR-12 | Demonstrated | Reuse actual strict one-observation zero-edit retry and identical saved canonical source. Coverage improvement belongs to AR-04/17. |
+| AR-13 | Partial; finishable breadth | Reuse actual manual/agent graph coexistence, typed connection/reconnect/save/reopen/Run and earlier Undo/Redo. Remaining native breadth includes independent movement/camera/selection, larger mixed-size model and multiple canvases. Do not repeat the separately denied extra Undo. |
+| AR-14 | Partial; finishable breadth | Reuse actual named typed ports, parameters and domain refusals. Verify remaining intended textarea/list/number/slider/select/toggle/button node/control and mixed-port model behavior against the rich-editor delivery list, without claiming a processing engine. |
+| AR-15 | Partial; finishable | Existing physical consumer build is supporting evidence; exercise the real rich editor/reusable primitive path in an installed consumer, if included, and verify discovery/authoring remains public rather than Studio-only. Responsive/Matrix/media consumer replay does not by itself prove the graph path. |
+| AR-16 | Demonstrated at retained scope | Reuse Matrix popup palette, actual part style/theme propagation and consumer light/dark records. Broader family/sibling/nested ownership still contributes to CF-01/AR-17. |
+| AR-17 | Loaded failure; candidate repaired-awaiting-native | Pair the repaired open-popup actual observation with native deliberate keyboard behavior, owned surface metadata and exclusion of Studio/unrelated owners. Reuse existing independent cross-owner/nested regression evidence; a new fixture is not actual authoring proof. |
+| AR-18 | Demonstrated | Actual corrected responsive app performs empty-query All/Draft/Ready filtering, real navigation and outputs. New saved Run r1.r3 also filters Draft to two rows and retains a Run-local Notes draft through section switches. |
+| AR-19 | Demonstrated | Reuse actual refused paired/slot/property shapes followed by acknowledged valid multi-item batches and exact diagnostics. |
+| AR-20 | Partial; finishable plus device boundary | Actual same-key first-visit dismiss/reopen/reset/reload and real carousel previous/next/keyboard/desktop drag pass. Exercise A/B foreign campaign isolation in the independent installed consumer. Physical touch gestures remain unproved unless an actual device is available. |
+| AR-21 | Demonstrated | Reuse actual open popup/focus/dismissal and responsive welcome/gallery/carousel state; deliberate reopen/reset buttons make launcher intent explicit. Full capture extent remains separately AR-17. |
+| AR-22 | Partial; finishable plus external boundary | Installed-consumer image/video/caption/SVG replay, normal management/removal/mixed selection/error recovery and actual allowlisted remote embed load/failure remain useful. Existing real chooser/signature refusal/video playback/captions/five-byte-match export/import/Run are not to be rerun without cause. Remote network/provider availability may block a specific embed; disclose exact outcome without changing policy. Heard audio is unproved. |
+| AR-23 | Partial; finishable | Exercise standalone installed-consumer Drawer with focus/Tab/Escape/scroll ownership, supplementing existing authored iframe Drawer, early focus isolation and normal Escape/trigger return. Add nested/multiple-owner challenge only to cover a real remaining boundary; no new per-app engine. |
+| AR-24 | Partial; finishable plus device boundary | Pair current true iframe dimensions/media queries/orientation/custom sizes with fixed/portal/scroll evidence across views/Run. Phone375/375, Tablet753/753 and rotated513/513 are desktop hosted-container facts. Physical keyboard/safe-area/touch remain separate. |
+| AR-25 | Partial; device boundary remains | Actual responsive useful actions/filter/navigation, accessible Rhea inputs, manual-context preservation, resize retention and saved Run are positive. Physical-device mobile readiness is not established by those desktop checks; do not silently omit accepted mobile scope. |
+| AR-26 | Partial; finishable | Existing native Chat Escape/toggle focus/400px width/exact unsent draft reopen, Source draft/Discard and Media layout are positive. During the single authorized next live task, hide/reopen panel while active and confirm work/context preservation; inspect loaded shared header/resize/theme/focus and new Chat controls. |
+| AR-27 | Demonstrated | Reuse removal of duplicate View rows, current mode-bar toggle use and keyboard Space reopen/Escape behavior. |
+| AR-28 | Partial; finishable | Verify actual versioned icon registry/search and custom component icon slot, accessible naming, semantic recolor versus preserved multicolour paint and installed-consumer replay. Existing actual managed icon/source/Run/export evidence covers part of this; no new generated icon needed. |
+| AR-29 | Partial; finishable | Verify an actual supported inert geometry edit plus installed-consumer replay/resize/per-occurrence IDs. Existing managed vector bytes, unique gradient/clip IDs and brand paints are positive; same-origin reimport is not cross-origin portability. |
+| CF-01 | Partial; finishable current delta | Complete exact-source whole-Studio central style/component review and loaded new Chat controls, then installed-consumer theme/scope/keyboard and owned capture. Focused Media pass is not all-Studio conformance. Classify inherited skins separately, preserve meaningful exceptions/provenance, and do not infer compliance from imports. |
+| AI-EX01 | Partial; finishable meaningful configuration | Actual authoring now reaches all23 intended identities across the retained apps, with corrected62-node source and labeled public supplied demonstrations. Finish matching manual configuration/parts/controlled typed bindings and owned interactions at representative scope; fixed literal open state or intentionally disabled Checkpoint is not proof of a working controlled binding/restore. Registry28 contracts/legacy pins and offline examples remain supporting compatibility evidence, not live manual proof of every revision. |
+
+## Efficient sequence for the remaining hours
+
+1. Activate the independently reviewed combined candidate once ready, preserving the current service until build/config/hash checks pass. Mount the already-built physical consumer additively before this launch if the existing static server requires startup enumeration. No package rebuild is needed for Studio-only control styling.
+2. One bounded actual open-popup observation can simultaneously test repaired image coverage, truthful host progress/details, full public-record inspection and active-work panel preservation. Keep canonical source unchanged and model/provider choices local-demo-only. Stop repeated quiet-output prompts if final quality still fails.
+3. Exercise the installed consumer's exact saved responsive/Matrix/media replay and separate clearly labeled A/B FirstVisit/hovercard/Drawer probes; record their proof type honestly. This can close reusable standalone isolation/theme/persistence gaps, but cannot replace actual-agent authoring.
+4. Use remaining native time for the specific graph/manual-AI/icon/vector/embed cases above. Reuse passed graph/media/panel tests; no new broad suites or unrelated demo apps are required.
+5. Final exact-source holistic review updates counts, associates installed hashes, retains failed evidence, resets the temporary viewport override and produces a clean local checkpoint plus owner review steps.
+
+## Genuine limits and final wording
+
+- **Original responsive source is unrecovered historical data.** The new47-to53-node actual-agent app is complete NEW capability evidence, not reconstruction or recovery of the lost final source. Do not spend more provider calls trying to relabel new source as old.
+- **Physical device/keyboard/safe-area/touch and heard audio** require actual corresponding observation. No such device/hearing evidence was established in this review. Desktop responsive controls do not supply it.
+- **Remote embeds** are finishable if the existing permitted provider/network works; a denial/unavailable upstream is an exact external limitation. No new provider, arbitrary iframe policy, security change or alternate browser is authorized to manufacture a pass.
+- **AR-05/09 reporting quality** may remain partial/unclosed even when source defects and objective controls are repaired. Final delivery must say exactly which outcomes were applied, observed and exercised, and preserve earlier false/verbose statements.
+- **Owner review/acceptance** remains a final human action, not an external technical blocker to completing all authorized preparation. Local commit/build/review success is not permission to push, publish, merge or deploy.
+
+Evidence anchors are under [fresh integration](../fresh-integration-20261028/), [current independent controls/capture review](../current-control-independent-20261028/REPORT.md), [whole-Studio style review](../holistic-style-review-20261028/REPORT.md), and the physical-consumer report `../packed-consumer-vict-installed-consumer-26010ca.json`. Root's concurrent new native results can supersede the explicitly pending rows above; this read-only snapshot must not be presented as the later final verdict.

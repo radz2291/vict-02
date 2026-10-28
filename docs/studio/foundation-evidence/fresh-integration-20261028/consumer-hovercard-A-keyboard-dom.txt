@@ -1,0 +1,13 @@
+Browser tab: 2, Title: "Installed VICT consumer replay", URL: "http://127.0.0.25:5626/foundation-proof-26010ca/index.html".
+The following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 70-72
+~				66 button (expanded) Details A, Secondary Actions: Collapse
+~				69 text Card A: open; ordinary actions: 0
++				84 container
++					85 text Independent local campaign A. Reset affects only this named campaign key.
++					86 button Dismiss welcome A
++					87 button Reset welcome A
++				88 container Description: Supplied interactive details A, ID: c1-hover-card
++					89 text Supplied public consumer test data.
++					90 link Description: Local proof link A, Value: 127.0.0.25:5626/foundation-proof-26010ca/index.html#local-proof
+The focused UI element is 90 link Description: Local proof link A, URL: 127.0.0.25:5626/foundation-proof-26010ca/index.html#local-proof

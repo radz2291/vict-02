@@ -1,0 +1,8 @@
+Browser tab: 2, Title: "Installed VICT consumer replay", URL: "http://127.0.0.25:5626/foundation-proof-26010ca/index.html".
+The following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 88-92
+~				77 button (collapsed) Details B, Secondary Actions: Expand
+~				80 text Card B: closed; ordinary actions: 0
+~				87 button Reopen welcome B
++				88 button Reset welcome B
+The focused UI element is 77 button (collapsed) Details B, Secondary Actions: Expand

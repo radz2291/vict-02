@@ -1,0 +1,12 @@
+Browser tab: 2, Title: "Installed VICT consumer replay", URL: "http://127.0.0.25:5626/foundation-proof-26010ca/index.html".
+The following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+~									56 pop up button (expanded) Description: Open project details, ID: bits-c12, Secondary Actions: Collapse
++									90 container
++										91 container Project details, ID: c11
++											92 container
++												93 heading Project details, Value: 2, ID: c11-title
++													94 text Project details
++												95 button Description: Close drawer, ID: bits-c16
++											96 container
++												97 text Status and next steps for the selected project. Aster — Draft
+The focused UI element is 91 container Project details, ID: c11

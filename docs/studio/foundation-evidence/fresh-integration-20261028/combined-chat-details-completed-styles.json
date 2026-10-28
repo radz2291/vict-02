@@ -1,0 +1,55 @@
+{
+  "controls": [
+    {
+      "disabled": false,
+      "font": "12px / 18px system-ui, \"Segoe UI\", sans-serif",
+      "height": "32px",
+      "label": "Close chat details",
+      "radius": "4px",
+      "text": "×"
+    },
+    {
+      "disabled": false,
+      "font": "12px system-ui, \"Segoe UI\", sans-serif",
+      "height": "28px",
+      "label": "Inspect turn",
+      "options": [
+        {
+          "text": "Latest activity",
+          "value": "latest"
+        },
+        {
+          "text": "2:32:04 AM · completed · Observe only the currently open authored model-selector popu",
+          "value": "b1664ee3-903a-4fee-8f7f-0c373c6f984d"
+        }
+      ],
+      "radius": "4px",
+      "text": "Latest activity2:32:04 AM · completed · Observe only the currently open authored"
+    },
+    {
+      "disabled": false,
+      "font": "12px / 18px system-ui, \"Segoe UI\", sans-serif",
+      "height": "28px",
+      "label": null,
+      "radius": "4px",
+      "text": "Reconnect agent"
+    },
+    {
+      "disabled": false,
+      "font": "12px / 18px system-ui, \"Segoe UI\", sans-serif",
+      "height": "28px",
+      "label": null,
+      "radius": "4px",
+      "text": "Open first page"
+    },
+    {
+      "disabled": false,
+      "font": "12px / 18px system-ui, \"Segoe UI\", sans-serif",
+      "height": "28px",
+      "label": null,
+      "radius": "4px",
+      "text": "Open first page"
+    }
+  ],
+  "scope": true
+}

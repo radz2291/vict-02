@@ -1,0 +1,77 @@
+{
+  "ok": true,
+  "evidence": "observed-appearance",
+  "observation": "Direct observations: The open menu (white, rounded, at the lower-left) shows both demo entries fully readable — \"Desk preview (local only)\" and the checked \"Desk preview alt (local only)\", each wrapping to two lines. Alignment looks consistent; no left/right clipping.\n\nAt the bottom, no footer/summary row text is discernible below the second entry. The menu's lower edge sits flush against the image's bottom border (~y 843), so any bottom row appears cut off or outside the captured frame. Inference: the menu's declared overflow (\"hidden auto\") and its 112px height suggest content may scroll internally, so a footer could be hidden below the fold — I cannot confirm this without interacting.\n\nThe menu also overlays underlying page text; that's expected overlay behavior.",
+  "metadata": {
+    "cursor": {
+      "documentId": "screen-a775512c-f14a-4c5b-ab16-d054d5f92d7c",
+      "revision": "r1.r2#0",
+      "digest": "eb66d42fd5ebc2fe158c62d6f9a29bd282116e1f56a6f01a3f9990555a38d2e1",
+      "epoch": "f7bc98ff-b95d-4855-a9b2-df610a7bfbe3"
+    },
+    "capturedAt": "2026-10-28T18:32:12.847Z",
+    "viewport": {
+      "width": 824,
+      "height": 912,
+      "scrollLeft": 0,
+      "scrollTop": 0,
+      "devicePixelRatio": 1.0000000149011612
+    },
+    "image": {
+      "width": 824,
+      "height": 843,
+      "sourceWidth": 824,
+      "sourceHeight": 843,
+      "offsetLeft": 0,
+      "offsetTop": 0,
+      "cropped": false
+    },
+    "evidence": {
+      "workspaceView": "interact",
+      "viewportModel": "isolated-viewport",
+      "ownedOverlays": 1,
+      "targets": [
+        {
+          "nodeId": "comp-model",
+          "part": "model-menu",
+          "bounds": [
+            54.8,
+            730.6,
+            192,
+            112
+          ],
+          "visible": true,
+          "visibilityReason": "visible",
+          "styles": {
+            "color": "rgb(36, 48, 71)",
+            "background-color": "rgb(255, 255, 255)",
+            "position": "fixed",
+            "top": "730.6px",
+            "padding-top": "4px",
+            "overflow": "hidden auto",
+            "font-size": "14px",
+            "z-index": "60"
+          }
+        }
+      ]
+    },
+    "preview": {
+      "mode": "interact",
+      "fingerprint": "d5ddc06cd93e8e0d48d128d82e15ff5413681be692212039c86e010bd245ec3e",
+      "selection": "screen-a775512c-f14a-4c5b-ab16-d054d5f92d7c|screen"
+    }
+  },
+  "revalidatedAt": "2026-10-28T18:32:43.562Z",
+  "validation": "same-source-preview-viewport-and-image-bytes-after-inference",
+  "imageDigest": "15381c63ebf137f7c7c411f64e3b270c793c0525a6ab0ef2d427b401da234a0d",
+  "confirmedImageDigest": "15381c63ebf137f7c7c411f64e3b270c793c0525a6ab0ef2d427b401da234a0d",
+  "imageComparison": "sha256-identical",
+  "imageComparisonScope": "within-this-observation-before-and-after-inference",
+  "fingerprintMeaning": "Source and preview state identity, not a pixel digest. Separate successful observations may have different fingerprints and identical pixels.",
+  "captureAttempts": 2,
+  "captureRecoveryAttempts": 0,
+  "bytes": 64039,
+  "model": "zai/glm-5.3-flash",
+  "interactionVerified": false,
+  "limitation": "Only the captured preview frame region and stated preview state were inspected. Equal image bytes across separate observations do not prove stale capture or a rasterizer defect; a source edit may have no effect in this crop. Owned overlays within the captured preview frame may be included. Preview-owned portals outside that frame refuse capture; unrelated Studio chrome is outside this image. Overlay counts are semantic surface hints, not an exhaustive popup inventory. Source relationships and interaction outcomes require separate checks."
+}

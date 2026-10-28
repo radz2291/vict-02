@@ -1,0 +1,7 @@
+{
+  "before": "actual-public-ai-metadata-repaired-saved-r1r2.json",
+  "after": "combined-live-after-source.json",
+  "canonicalObjectEqual": true,
+  "actualToolCalls": 1,
+  "actualEdits": 0
+}

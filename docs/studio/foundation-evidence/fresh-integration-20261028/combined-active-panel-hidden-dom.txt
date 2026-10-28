@@ -1,0 +1,6 @@
+Browser tab: 2, Title: "Designer — VICT Studio", URL: "http://127.0.0.25:5626/design".
+The following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 85-91, 93-94, 97-98, 133-138, 140-194
+~			13 button (collapsed) Description: Toggle Chat drawer, Help: Show Chat, Secondary Actions: Expand
++									133 text ✓
+The focused UI element is 13 button (collapsed) Description: Toggle Chat drawer, Help: Show Chat, Secondary Actions: Expand

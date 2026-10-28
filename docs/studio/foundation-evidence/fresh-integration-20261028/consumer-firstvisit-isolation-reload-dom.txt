@@ -1,0 +1,9 @@
+Browser tab: 2, Title: "Installed VICT consumer replay", URL: "http://127.0.0.25:5626/foundation-proof-26010ca/index.html".
+The following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 84-87
++				70 text Independent local campaign A. Reset affects only this named campaign key.
++				71 button Dismiss welcome A
++				81 button Reopen welcome B
++				82 button Reset welcome B
+~				83 text Welcome B: hidden; memory ready
+The focused UI element is 1 AXWebArea Installed VICT consumer replay, URL: 127.0.0.25:5626/foundation-proof-26010ca/index.html

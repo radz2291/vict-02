@@ -1,0 +1,160 @@
+Browser tab: 2, Title: "Designer — VICT Studio", URL: "http://127.0.0.25:5626/design".
+1 AXWebArea Designer — VICT Studio, URL: 127.0.0.25:5626/design
+	2 container
+		3 container
+			4 link Description: VICT Studio, Value: 127.0.0.25:5626/design
+			5 menu bar Description: Studio menus, ID: bits-c3
+				6 (collapsed) File, ID: bits-c5, Secondary Actions: Expand
+				7 (collapsed) Edit, ID: bits-c7, Secondary Actions: Expand
+				8 (collapsed) View, ID: bits-c9, Secondary Actions: Expand
+				9 (collapsed) Preview, ID: bits-c11, Secondary Actions: Expand
+			10 text Foundation Public Run Review ✓ Saved
+			11 link Description: Operator tools, Value: 127.0.0.25:5626/
+		133 container studio-chat-panel
+			134 container
+				135 text Chat
+				136 button Description: Hide Chat, Help: Hide Chat (Escape)
+			137 container Chat
+				138 container Conversation
+					165 container Messages — Message
+						166 container
+							167 text You
+							168 text Observe only the currently open authored model-selector popup on this saved screen: node comp-model, declared part model-menu. Make exactly one targeted observation. Do not edit source, click, close the menu, choose a model or change runtime/provider state. Report whether both local-demo entries and the full bottom row are visible, with clipping and scope limits stated truthfully. These are supplied local preview options, not actual provider selection. Keep the final to two short sentences; public tool details remain inspectable separately.
+							169 button Description: Copy message, ID: bits-c128
+							170 text Assistant
+							171 text 0 edits applied
+							172 button (collapsed) Public activity and tool details, ID: bits-c130, Secondary Actions: Expand
+							173 container Terminal response
+								174 text Both local-demo entries ("Desk preview (local only)" and the checked "Desk preview alt (local only)") are fully visible with no left/right clipping, but the bottom row is not: the menu's fixed 112px container (overflow hidden/auto) ends flush at the capture's bottom edge, so the footer is either clipped or scrolled out and I can't confirm it without interacting. No edits or clicks were made — this single observation covers only the captured crop at comp-model's model-menu, and the entries are supplied local preview options, not real provider selection.
+							175 button Description: Copy message, ID: bits-c146
+					157 container
+						158 text entry area (settable) Description: Message, Help: Enter to send. Shift+Enter for a new line.
+						159 button (disabled) Send
+					176 text Message copied.
+				160 container 0 edits applied
+					161 text Ready
+				162 pop up button (expanded) Description: Chat details, ID: bits-c20, Secondary Actions: Collapse
+				177 container Description: Chat details, ID: bits-c21
+					178 heading Chat details, Value: 3
+						179 text Chat details
+					180 button Description: Close chat details, ID: bits-c148
+					181 text zai/glm-5.3-flash
+					182 container
+						183 text Turn details
+						184 pop up button (collapsed, settable) Description: Inspect turn, Value: Latest activity, Secondary Actions: Expand
+							185 menu
+								186 (selected) Latest activity
+								187 2:32:04 AM · completed · Observe only the currently open authored model-selector popu
+					188 text Up to 24 turns retained for 30 minutes in this tab. Reloading clears local history; server evidence also expires or disappears on restart/capacity eviction.
+					189 text Selected: Container · Screen
+					190 text 0 edits applied
+					191 button Reconnect agent
+					192 heading Turn measurements, Value: 4
+						193 text Turn measurements
+					194 text 1 tool calls · 0 refused · 0 calls after refusal · 47.2 s elapsed.
+					195 text 2 authoring model requests · 1 image requests. No confirmed edit.
+					196 text Reported authoring usage: 23261 input / 442 output tokens.
+					197 text 0 receipt-derived edits including cleanup.
+					198 text 0 knowledge reads · 0 source reads · 0 edit calls · 1 observation calls.
+					199 text Settled tool durations summed: 32.0 s; tool-active interval union: 32.0 s; outside-tool time: 15.1 s.
+					200 text Outside-tool time includes waiting, generation, transport and host overhead; exact provider latency is unavailable.
+					201 text Exact model steps and cost unavailable. Concurrent tool durations do not add up to wall time.
+					202 heading Observed regions, Value: 4
+						203 text Observed regions
+					204 text r1.r2#0 · matched final source of this turn · 824×843 at (0, 0) within 824×843; interact; 2026-10-28T18:32:12.847Z.
+					205 text Region labels compare with the completed turn's final source; they do not track later source, runtime or viewport changes. Only these captured regions were inspected. Offscreen content and interactions remain unverified.
+					206 heading Progress summaries, Value: 4
+						207 text Progress summaries
+					208 text Connection, validation and completion metadata. The conversation contains actual assistant messages and tool calls.
+					209 content list
+						210 container
+							211 AXListMarker 1. 
+							212 text Connecting…
+						213 container
+							214 AXListMarker 2. 
+							215 text Reading screen…
+						216 container
+							217 AXListMarker 3. 
+							218 text Connecting to the VICT / Mastra agent…
+						219 container
+							220 AXListMarker 4. 
+							221 text Agent is working on your request…
+						222 container
+							223 AXListMarker 5. 
+							224 text Capturing and observing the rendered preview…
+						225 container
+							226 AXListMarker 6. 
+							227 text No edits were applied. Confirmed revision r1.r2#0. Engine termination: completed. Source coverage: 17/117 registered definitions present. 100 missing from the 117-item coverage scope. Missing IDs are paged through coverage reads. This inventory does not establish the full requested intent, interactions or visual completion. Source: 62 nodes, 14 state declarations; a bounded preview image was observed; interactions unverified by this agent. Captured region: 824×843 at (0, 0) within 824×843; interact at 2026-10-28T18:32:12.847Z. This does not verify offscreen content or current runtime state.
+					228 heading Tool receipts, Value: 4
+						229 text Tool receipts
+					230 text Observe preview
+					231 content list
+						232 container
+							233 AXListMarker 1. 
+							234 text Observe preview started · running tool-start
+studio_screen_observe
+6504 ms since turn start
+						235 container
+							236 AXListMarker 2. 
+							237 text Observed actual rendered appearance · completed observation
+studio_screen_observe
+38553 ms since turn start
+{"ok":true,"evidence":"observed-appearance","observation":"Direct observations: The open menu (white, rounded, at the lower-left) shows both demo entries fully readable — \"Desk preview (local only)\" and the checked \"Desk preview alt (local only)\", each wrapping to two lines. Alignment looks consistent; no left/right clipping.\n\nAt the bottom, no footer/summary row text is discernible below the second entry. The menu's lower edge sits flush against the image's bottom border (~y 843), so any bottom row appears cut off or outside the captured frame. Inference: the menu's declared overflow (\"hidden auto\") and its 112px height suggest content may scroll internally, so a footer could be hidden below the fold — I cannot confirm this without interacting.\n\nThe menu also overlays underlying page text; that's expected overlay behavior.","metadata":{"cursor":{"documentId":"screen-a775512c-f14a-4c5b-ab16-d054d5f92d7c","revision":"r1.r2#0","digest":"eb66d42fd5ebc2fe158c62d6f9a29bd282116e1f56a6f01a3f9990555a38d2e1","epoch":"f7bc98ff-b95d-4855-a9b2-df610a7bfbe3"},"capturedAt":"2026-10-28T18:32:12.847Z","viewport":{"width":824,"height":912,"scrollLeft":0,"scrollTop":0,"devicePixelRatio":1.0000000149011612},"image":{"width":824,"height":843,"sourceWidth":824,"sourceHeight":843,"offsetLeft":0,"offsetTop":0,"cropped":false},"evidence":{"workspaceView":"interact","viewportModel":"isolated-viewport","ownedOverlays":1,"targets":[{"nodeId":"comp-model","part":"model-menu","bounds":[54.8,730.6,192,112],"visible":true,"visibilityReason":"visible","styles":{"color":"rgb(36, 48, 71)","background-color":"rgb(255, 255, 255)","position":"fixed","top":"730.6px","padding-top":"4px","overflow":"hidden auto","font-size":"14px","z-index":"60"}}]},"preview":{"mode":"interact","fingerprint":"d5ddc06cd93e8e0d48d128d82e15ff5413681be692212039c86e010bd245ec3e","selection":"screen-a775512c-f14a-4c5b-ab16-d054d5f92d7c|screen"}},"revalidatedAt":"2026-10-28T18:32:43.562Z","validation":"same-source-preview-viewport-and-image-bytes-after-inference","imageDigest":"15381c63ebf137f7c7c411f64e3b270c793c0525a6ab0ef2d427b401da234a0d","confirmedImageDigest":"15381c63ebf137f7c7c411f64e3b270c793c0525a6ab0ef2d427b401da234a0d","imageComparison":"sha256-identical","imageComparisonScope":"within-this-observation-before-and-after-inference","fingerprintMeaning":"Source and preview state identity, not a pixel digest. Separate successful observations may have different fingerprints and identical pixels.","captureAttempts":2,"captureRecoveryAttempts":0,"bytes":64039,"model":"zai/glm-5.3-flash","interactionVerified":false,"limitation":"Only the captured preview frame region and stated preview state were inspected. Equal image bytes across separate observations do not prove stale capture or a rasterizer defect; a source edit may have no effect in this crop. Owned overlays within the captured preview frame may be included. Preview-owned portals outside that frame refuse capture; unrelated Studio chrome is outside this image. Overlay counts are semantic surface hints, not an exhaustive popup inventory. Source relationships and interaction outcomes require separate checks."}
+					238 heading Sanitized exchanges, Value: 4
+						239 text Sanitized exchanges
+					240 text Compact previews remain in the conversation. Open a retained original page here; this never invokes a tool again.
+					241 text Observe preview · input
+					242 button Open first page
+					243 text Observe preview · result · bounded original is partial
+					244 button Open first page
+					245 heading Connection record, Value: 4
+						246 text Connection record
+					247 text VICT turn turn-e90d21a4-5d66-4402-809f-d5d0202f76ca · profile v1_ad446303f24a2495f602057ffb6bac241fa4cfd10f4fdfcaa8fc31d0f52e2596
+		163 splitter Description: Chat width, Value: 400
+		12 container
+			13 button (expanded) Description: Toggle Chat drawer, Help: Hide Chat, Secondary Actions: Collapse
+			14 container Workspace mode
+				15 checkbox Design, Value: 0
+				16 checkbox Interact, Value: 1
+				17 checkbox Structure, Value: 0
+			18 button (collapsed) Description: Toggle Document and Selection drawer, Help: Show Document and Selection, Secondary Actions: Expand
+			19 container Application viewport
+				20 AXWebArea about:blank
+					99 container
+						100 container Screen canvas
+							101 container Foundation Public Run Review
+								102 heading Description: Review desk heading, Value: 1
+									103 text Foundation Public Run Review
+								104 text Demo review desk — thirteen public VICT AI compositions. Every record here is simulated demonstration data; nothing is executed.
+								105 container bits-c71
+									106 tab group Description: Review sections, ID: bits-c72
+										107 tab (selectable, settable, boolean) Overview, Value: 0, ID: bits-c73
+										108 tab (selectable, settable, boolean) Diagnostics, Value: 0, ID: bits-c74
+										109 tab (selected, settable, boolean) Context, Value: 1, ID: bits-c75
+									110 container Description: Context, ID: bits-c125
+										111 heading Demo context usage — demonstration budget, not actual token/provider usage, Value: 3
+											112 text Demo context usage — demonstration budget, not actual token/provider usage
+										113 button (collapsed) 42% context, Secondary Actions: Expand
+										114 heading Example files (demo), Value: 3
+											115 text Example files (demo)
+										116 button review.ts
+										117 button README.md
+										118 text Local intent — selected file (demo):
+										125 text src/review.ts
+										119 text Demo checkpoint — local restore intent only
+										120 text Restore stays intent-only here: no host restore binding exists, so nothing is restored and no history changes.
+										121 button Populate local draft: apply the compact correction to the review desk layout (demo)
+										122 text Local intent — draft populated by the suggestion (demo):
+										126 text Populate local draft: apply the compact correction to the review desk layout (demo)
+										123 pop up button (expanded) Description: Model: Desk preview alt (local only), ID: c127-model-trigger, Secondary Actions: Collapse
+										124 text Model selection is a local preview choice only — it never changes or contacts the real provider.
+						127 menu Model: Desk preview alt (local only), ID: c127-model-menu
+							128 container
+								129 Desk preview (local only), Value: 0
+								130 ✓ Desk preview alt (local only), Value: 1
+									164 text ✓
+									132 text Desk preview alt (local only)
+		57 text Interact mode · simulated behavior, no live effects.
+		84 text Designer — VICT Studio
+
+The focused UI element is 180 button Description: Close chat details, ID: bits-c148

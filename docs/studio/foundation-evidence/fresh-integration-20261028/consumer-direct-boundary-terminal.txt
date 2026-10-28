@@ -1,0 +1,23 @@
+Direct shared boundaries
+
+Separate controlled consumers of OwnedHoverCard and the FirstVisit reset capability. These use isolated proof campaign keys.
+
+Independent application A
+Details A Next ordinary action A Show controlled details A
+
+Card A: closed; ordinary actions: 0
+
+Independent local campaign A. Reset affects only this named campaign key.
+
+Dismiss welcome A Reset welcome A
+
+Welcome A: shown; memory ready
+
+Independent application B
+Details B Next ordinary action B Show controlled details B
+
+Card B: closed; ordinary actions: 0
+
+Reopen welcome B Reset welcome B
+
+Welcome B: hidden; memory ready

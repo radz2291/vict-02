@@ -1,0 +1,12 @@
+Browser tab: 2, Title: "Designer — VICT Studio", URL: "http://127.0.0.25:5626/design".
+The following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 139
++							143 container bits-c129
++								144 button (expanded) Public activity and tool details, ID: bits-c130, Secondary Actions: Collapse
++								145 container Conversation timeline
++									146 text I'll make one targeted observation of the open model-menu part on comp-model, without touching the source.
++									147 button (collapsed) Observe preview running, ID: bits-c137, Secondary Actions: Expand
++										148 text Observe preview
++										149 text running
+~				141 container Capturing and observing the rendered preview…
+The focused UI element is 144 button (expanded) Public activity and tool details, ID: bits-c130, Secondary Actions: Collapse

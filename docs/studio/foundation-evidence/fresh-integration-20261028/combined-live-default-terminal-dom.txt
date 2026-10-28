@@ -1,0 +1,15 @@
+Browser tab: 2, Title: "Designer — VICT Studio", URL: "http://127.0.0.25:5626/design".
+The following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 168-184
+~					165 container Messages — Message
+~						166 container
+~							167 text You
++							168 text Observe only the currently open authored model-selector popup on this saved screen: node comp-model, declared part model-menu. Make exactly one targeted observation. Do not edit source, click, close the menu, choose a model or change runtime/provider state. Report whether both local-demo entries and the full bottom row are visible, with clipping and scope limits stated truthfully. These are supplied local preview options, not actual provider selection. Keep the final to two short sentences; public tool details remain inspectable separately.
++							169 button Description: Copy message, ID: bits-c128
++							170 text Assistant
++							171 text 0 edits applied
++							172 button (collapsed) Public activity and tool details, ID: bits-c130, Secondary Actions: Expand
++							173 container Terminal response
++								174 text Both local-demo entries ("Desk preview (local only)" and the checked "Desk preview alt (local only)") are fully visible with no left/right clipping, but the bottom row is not: the menu's fixed 112px container (overflow hidden/auto) ends flush at the capture's bottom edge, so the footer is either clipped or scrolled out and I can't confirm it without interacting. No edits or clicks were made — this single observation covers only the captured crop at comp-model's model-menu, and the entries are supplied local preview options, not real provider selection.
++							175 button Description: Copy message, ID: bits-c146
+The focused UI element is 172 button (collapsed) Public activity and tool details, ID: bits-c130, Secondary Actions: Expand

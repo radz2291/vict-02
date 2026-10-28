@@ -115,7 +115,10 @@
     catch{ready=false;failed=true;status='Agent connection unavailable. Sign in again or reconnect in Chat details.';}
   }
   onMount(()=>{
-    detailsBoundary=panel?.querySelector<HTMLElement>('.vict-conversation') ?? undefined;
+    // The docked narrow conversation may have only a few pixels above its
+    // composer. Keep inline theme ancestry, but let the fixed Bits surface
+    // use the enclosing Studio viewport rather than that clipped panel slice.
+    detailsBoundary=panel?.closest<HTMLElement>('.studio-workspace') ?? panel;
     detailsAnchor=panel?.querySelector<HTMLFormElement>('.vict-conversation-input') ?? undefined;
     void configure();
     const expiry=setInterval(()=>{retainedTurns=retainedTurns.filter(item=>item.expiresAt>Date.now());if(selectedTurn!=='latest'&&!retainedTurns.some(item=>item.id===selectedTurn))selectedTurn='latest';if(!busy&&!retainedTurns.length){lastMetrics=undefined;lastRegions=[];lastProviderLimit=undefined;progress=[];diagnostics={};receipts={};evidence='';archiveReferences=[];archivePages={};}},30_000);

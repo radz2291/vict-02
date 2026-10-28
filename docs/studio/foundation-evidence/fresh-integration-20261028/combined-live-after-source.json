@@ -1,0 +1,2070 @@
+{
+  "schema": "vict.ui-document@1",
+  "id": "screen-a775512c-f14a-4c5b-ab16-d054d5f92d7c",
+  "revision": "r1.r2",
+  "root": "screen",
+  "nodes": {
+    "screen": {
+      "kind": "element",
+      "id": "screen",
+      "tag": "main",
+      "attributes": {
+        "aria-label": "Foundation Public Run Review"
+      },
+      "children": [
+        "desk-h1",
+        "desk-intro",
+        "tabs-desk"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "20px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "40px"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "560px"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#ffffff"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#243047"
+          }
+        },
+        {
+          "property": "font-family",
+          "value": {
+            "type": "text",
+            "value": "system-ui, sans-serif"
+          }
+        }
+      ]
+    },
+    "desk-h1": {
+      "kind": "element",
+      "id": "desk-h1",
+      "tag": "h1",
+      "children": [
+        "desk-h1-text"
+      ],
+      "attributes": {
+        "aria-label": "Review desk heading"
+      },
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "22px"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        }
+      ]
+    },
+    "desk-h1-text": {
+      "kind": "text",
+      "id": "desk-h1-text",
+      "content": {
+        "type": "literal",
+        "value": "Foundation Public Run Review"
+      }
+    },
+    "desk-intro": {
+      "kind": "element",
+      "id": "desk-intro",
+      "tag": "p",
+      "children": [
+        "desk-intro-text"
+      ],
+      "localStyle": [
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#5f6f8f"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "13px"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        }
+      ]
+    },
+    "desk-intro-text": {
+      "kind": "text",
+      "id": "desk-intro-text",
+      "content": {
+        "type": "literal",
+        "value": "Demo review desk — thirteen public VICT AI compositions. Every record here is simulated demonstration data; nothing is executed."
+      }
+    },
+    "tabs-desk": {
+      "kind": "component",
+      "id": "tabs-desk",
+      "definitionId": "vict.catalog.tabs",
+      "revision": "1",
+      "props": {
+        "value": {
+          "type": "ref",
+          "path": "state.activeTab"
+        },
+        "label": {
+          "type": "literal",
+          "value": "Review sections"
+        }
+      },
+      "outputs": {
+        "valueChange": {
+          "setState": {
+            "key": "activeTab"
+          }
+        }
+      },
+      "slots": {
+        "tabs": {
+          "name": "tabs",
+          "children": [
+            "trig-overview",
+            "trig-diagnostics",
+            "trig-context"
+          ]
+        },
+        "panels": {
+          "name": "panels",
+          "children": [
+            "panel-overview",
+            "panel-diagnostics",
+            "panel-context"
+          ]
+        }
+      },
+      "partStyles": {
+        "list": {
+          "localStyle": [
+            {
+              "property": "display",
+              "value": {
+                "type": "text",
+                "value": "flex"
+              }
+            },
+            {
+              "property": "flex-wrap",
+              "value": {
+                "type": "text",
+                "value": "wrap"
+              }
+            },
+            {
+              "property": "gap",
+              "value": {
+                "type": "text",
+                "value": "8px"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "trig-overview": {
+      "kind": "component",
+      "id": "trig-overview",
+      "definitionId": "vict.catalog.tabs-trigger",
+      "revision": "1",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Overview"
+        },
+        "value": {
+          "type": "literal",
+          "value": "overview"
+        }
+      },
+      "slots": {}
+    },
+    "trig-diagnostics": {
+      "kind": "component",
+      "id": "trig-diagnostics",
+      "definitionId": "vict.catalog.tabs-trigger",
+      "revision": "1",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Diagnostics"
+        },
+        "value": {
+          "type": "literal",
+          "value": "diagnostics"
+        }
+      },
+      "slots": {}
+    },
+    "trig-context": {
+      "kind": "component",
+      "id": "trig-context",
+      "definitionId": "vict.catalog.tabs-trigger",
+      "revision": "1",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Context"
+        },
+        "value": {
+          "type": "literal",
+          "value": "context"
+        }
+      },
+      "slots": {}
+    },
+    "panel-overview": {
+      "kind": "component",
+      "id": "panel-overview",
+      "definitionId": "vict.catalog.tabs-panel",
+      "revision": "1",
+      "props": {
+        "value": {
+          "type": "literal",
+          "value": "overview"
+        }
+      },
+      "slots": {
+        "content": {
+          "name": "content",
+          "children": [
+            "stack-ov"
+          ]
+        }
+      }
+    },
+    "panel-diagnostics": {
+      "kind": "component",
+      "id": "panel-diagnostics",
+      "definitionId": "vict.catalog.tabs-panel",
+      "revision": "1",
+      "props": {
+        "value": {
+          "type": "literal",
+          "value": "diagnostics"
+        }
+      },
+      "slots": {
+        "content": {
+          "name": "content",
+          "children": [
+            "stack-diag"
+          ]
+        }
+      }
+    },
+    "panel-context": {
+      "kind": "component",
+      "id": "panel-context",
+      "definitionId": "vict.catalog.tabs-panel",
+      "revision": "1",
+      "props": {
+        "value": {
+          "type": "literal",
+          "value": "context"
+        }
+      },
+      "slots": {
+        "content": {
+          "name": "content",
+          "children": [
+            "stack-ctx"
+          ]
+        }
+      }
+    },
+    "stack-ov": {
+      "kind": "element",
+      "id": "stack-ov",
+      "tag": "div",
+      "children": [
+        "card-t1",
+        "card-t2",
+        "card-t3",
+        "card-t4"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        }
+      ]
+    },
+    "stack-diag": {
+      "kind": "element",
+      "id": "stack-diag",
+      "tag": "div",
+      "children": [
+        "card-diag1",
+        "card-diag2",
+        "card-diag3",
+        "card-diag4",
+        "card-diag5"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        }
+      ]
+    },
+    "stack-ctx": {
+      "kind": "element",
+      "id": "stack-ctx",
+      "tag": "div",
+      "children": [
+        "card-ctx1",
+        "card-ctx2",
+        "card-ctx3",
+        "card-ctx4"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        }
+      ]
+    },
+    "card-t1": {
+      "kind": "element",
+      "id": "card-t1",
+      "tag": "div",
+      "children": [
+        "comp-transcript"
+      ],
+      "localStyle": [
+        {
+          "property": "background",
+          "value": {
+            "type": "text",
+            "value": "#ffffff"
+          }
+        },
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "1px solid #dce2ef"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "10px"
+          }
+        },
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "10px"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0 0 12px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        }
+      ]
+    },
+    "comp-transcript": {
+      "kind": "component",
+      "id": "comp-transcript",
+      "definitionId": "vict.ai.transcript",
+      "revision": "1",
+      "props": {
+        "data": {
+          "type": "literal",
+          "value": "{\"version\":1,\"messages\":[{\"id\":\"demo-user-1\",\"role\":\"user\",\"text\":\"Sample request: can you review the layout of the review desk? (demo data)\"},{\"id\":\"demo-assistant-1\",\"role\":\"assistant\",\"text\":\"Sample reply: one compact correction is ready. (demo data)\"}]}"
+        },
+        "description": {
+          "type": "literal",
+          "value": "Simulated messages only — no provider was contacted."
+        },
+        "title": {
+          "type": "literal",
+          "value": "Demo transcript (sample)"
+        }
+      },
+      "slots": {
+        "composer": {
+          "name": "composer",
+          "children": [
+            "comp-transcript-composer"
+          ]
+        }
+      }
+    },
+    "comp-transcript-composer": {
+      "kind": "component",
+      "id": "comp-transcript-composer",
+      "definitionId": "vict.ai.prompt-input",
+      "revision": "3",
+      "props": {
+        "value": {
+          "type": "ref",
+          "path": "state.catalog_comp-transcript_message"
+        }
+      },
+      "outputs": {
+        "valueChange": {
+          "setState": {
+            "key": "catalog_comp-transcript_message"
+          }
+        }
+      },
+      "slots": {}
+    },
+    "card-t2": {
+      "kind": "element",
+      "id": "card-t2",
+      "tag": "div",
+      "children": [
+        "comp-cot"
+      ],
+      "localStyle": [
+        {
+          "property": "background",
+          "value": {
+            "type": "text",
+            "value": "#ffffff"
+          }
+        },
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "1px solid #dce2ef"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "10px"
+          }
+        },
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "10px"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0 0 12px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        }
+      ]
+    },
+    "comp-cot": {
+      "kind": "component",
+      "id": "comp-cot",
+      "definitionId": "vict.ai.chain-of-thought",
+      "revision": "1",
+      "props": {
+        "data": {
+          "type": "literal",
+          "value": "{\"version\":1,\"steps\":[{\"id\":\"demo-summary-1\",\"title\":\"Public summary\",\"detail\":\"Checked the supplied component contracts and preserved the manual marker.\",\"status\":\"done\",\"open\":true}]}"
+        },
+        "description": {
+          "type": "literal",
+          "value": "Demo data — only the supplied public summary is rendered."
+        },
+        "title": {
+          "type": "literal",
+          "value": "Public summary (demo)"
+        }
+      },
+      "slots": {}
+    },
+    "card-t3": {
+      "kind": "element",
+      "id": "card-t3",
+      "tag": "div",
+      "children": [
+        "comp-plan"
+      ],
+      "localStyle": [
+        {
+          "property": "background",
+          "value": {
+            "type": "text",
+            "value": "#ffffff"
+          }
+        },
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "1px solid #dce2ef"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "10px"
+          }
+        },
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "10px"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0 0 12px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        }
+      ]
+    },
+    "comp-plan": {
+      "kind": "component",
+      "id": "comp-plan",
+      "definitionId": "vict.ai.plan",
+      "revision": "1",
+      "props": {
+        "data": {
+          "type": "literal",
+          "value": "{\"version\":1,\"steps\":[{\"id\":\"demo-plan-review\",\"title\":\"Review completed\",\"detail\":\"Sample layout review marked complete (demo).\",\"status\":\"done\",\"open\":true},{\"id\":\"demo-plan-device\",\"title\":\"Device verification pending\",\"detail\":\"Example follow-up, intentionally not run (demo).\",\"status\":\"pending\",\"open\":false}]}"
+        },
+        "description": {
+          "type": "literal",
+          "value": "Simulated plan — nothing was executed."
+        },
+        "title": {
+          "type": "literal",
+          "value": "Demo plan (sample)"
+        }
+      },
+      "slots": {}
+    },
+    "card-t4": {
+      "kind": "element",
+      "id": "card-t4",
+      "tag": "div",
+      "children": [
+        "comp-queue"
+      ],
+      "localStyle": [
+        {
+          "property": "background",
+          "value": {
+            "type": "text",
+            "value": "#ffffff"
+          }
+        },
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "1px solid #dce2ef"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "10px"
+          }
+        },
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "10px"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0 0 12px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        }
+      ]
+    },
+    "comp-queue": {
+      "kind": "component",
+      "id": "comp-queue",
+      "definitionId": "vict.ai.queue",
+      "revision": "1",
+      "props": {
+        "completedOpen": {
+          "type": "literal",
+          "value": false
+        },
+        "data": {
+          "type": "literal",
+          "value": "{\"version\":1,\"steps\":[{\"id\":\"demo-queue-review\",\"title\":\"Pending review: review desk layout (sample)\",\"detail\":\"Waiting in the demo queue.\",\"status\":\"pending\",\"open\":true}]}"
+        }
+      },
+      "slots": {}
+    },
+    "card-diag1": {
+      "kind": "element",
+      "id": "card-diag1",
+      "tag": "div",
+      "children": [
+        "h3-term",
+        "comp-terminal"
+      ],
+      "localStyle": [
+        {
+          "property": "background",
+          "value": {
+            "type": "text",
+            "value": "#ffffff"
+          }
+        },
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "1px solid #dce2ef"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "10px"
+          }
+        },
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "10px"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0 0 12px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        }
+      ]
+    },
+    "h3-term": {
+      "kind": "element",
+      "id": "h3-term",
+      "tag": "h3",
+      "children": [
+        "h3-term-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        }
+      ]
+    },
+    "h3-term-text": {
+      "kind": "text",
+      "id": "h3-term-text",
+      "content": {
+        "type": "literal",
+        "value": "Demo terminal — no shell was run"
+      }
+    },
+    "comp-terminal": {
+      "kind": "component",
+      "id": "comp-terminal",
+      "definitionId": "vict.ai.terminal",
+      "revision": "1",
+      "props": {
+        "command": {
+          "type": "literal",
+          "value": "$ npm run review:layout -- --demo"
+        },
+        "exitCode": {
+          "type": "literal",
+          "value": 0
+        },
+        "open": {
+          "type": "literal",
+          "value": true
+        },
+        "output": {
+          "type": "literal",
+          "value": "demo-only output — no shell, tool or command was executed\n> reviewing example layout\n> 1 sample layout checked (demo data)"
+        },
+        "status": {
+          "type": "literal",
+          "value": ""
+        }
+      },
+      "slots": {}
+    },
+    "card-diag2": {
+      "kind": "element",
+      "id": "card-diag2",
+      "tag": "div",
+      "children": [
+        "comp-tests"
+      ],
+      "localStyle": [
+        {
+          "property": "background",
+          "value": {
+            "type": "text",
+            "value": "#ffffff"
+          }
+        },
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "1px solid #dce2ef"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "10px"
+          }
+        },
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "10px"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0 0 12px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        }
+      ]
+    },
+    "comp-tests": {
+      "kind": "component",
+      "id": "comp-tests",
+      "definitionId": "vict.ai.test-results",
+      "revision": "1",
+      "props": {
+        "data": {
+          "type": "literal",
+          "value": "{\"version\":1,\"testSuites\":[{\"id\":\"demo-suite\",\"name\":\"Sample suite (demo data)\",\"tests\":[{\"id\":\"demo-test-1\",\"name\":\"example layout renders sample cards\",\"status\":\"passed\"},{\"id\":\"demo-test-2\",\"name\":\"compact correction applies (sample)\",\"status\":\"passed\"},{\"id\":\"demo-test-device\",\"name\":\"device check\",\"status\":\"skipped\"}]}]}"
+        },
+        "title": {
+          "type": "literal",
+          "value": "Example tests (demo) — two sample passes, device check not run"
+        }
+      },
+      "slots": {}
+    },
+    "card-diag3": {
+      "kind": "element",
+      "id": "card-diag3",
+      "tag": "div",
+      "children": [
+        "comp-stack",
+        "note-frame-label",
+        "note-frame-text"
+      ],
+      "localStyle": [
+        {
+          "property": "background",
+          "value": {
+            "type": "text",
+            "value": "#ffffff"
+          }
+        },
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "1px solid #dce2ef"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "10px"
+          }
+        },
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "10px"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0 0 12px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        }
+      ]
+    },
+    "comp-stack": {
+      "kind": "component",
+      "id": "comp-stack",
+      "definitionId": "vict.ai.stack-trace",
+      "revision": "1",
+      "props": {
+        "allowSelect": {
+          "type": "literal",
+          "value": true
+        },
+        "frames": {
+          "type": "literal",
+          "value": "TypeError: sample review handler is not a function (synthetic demo)\n    at reviewLayout (src/review.ts:12:9)\n    at runReviewDesk (src/review.ts:24:5)"
+        },
+        "open": {
+          "type": "literal",
+          "value": true
+        },
+        "title": {
+          "type": "literal",
+          "value": "Synthetic TypeError (demo — not a real error)"
+        }
+      },
+      "slots": {},
+      "outputs": {
+        "frameSelect": {
+          "setState": {
+            "key": "frameNote"
+          }
+        }
+      }
+    },
+    "note-frame-label": {
+      "kind": "element",
+      "id": "note-frame-label",
+      "tag": "small",
+      "children": [
+        "note-frame-label-text"
+      ],
+      "localStyle": [
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#5f6f8f"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        }
+      ]
+    },
+    "note-frame-label-text": {
+      "kind": "text",
+      "id": "note-frame-label-text",
+      "content": {
+        "type": "literal",
+        "value": "Local intent — frame select disclosure (demo):"
+      }
+    },
+    "note-frame-text": {
+      "kind": "text",
+      "id": "note-frame-text",
+      "content": {
+        "type": "expression",
+        "expression": {
+          "type": "ref",
+          "path": "state.frameNote"
+        }
+      }
+    },
+    "card-diag4": {
+      "kind": "element",
+      "id": "card-diag4",
+      "tag": "div",
+      "children": [
+        "comp-sub1"
+      ],
+      "localStyle": [
+        {
+          "property": "background",
+          "value": {
+            "type": "text",
+            "value": "#ffffff"
+          }
+        },
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "1px solid #dce2ef"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "10px"
+          }
+        },
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "10px"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0 0 12px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        }
+      ]
+    },
+    "comp-sub1": {
+      "kind": "component",
+      "id": "comp-sub1",
+      "definitionId": "vict.ai.subagent",
+      "revision": "1",
+      "props": {
+        "description": {
+          "type": "literal",
+          "value": "Demonstration subagent card — no child run was launched."
+        },
+        "model": {
+          "type": "literal",
+          "value": "demo-local"
+        },
+        "result": {
+          "type": "literal",
+          "value": "Sample layout observations recorded (demo)."
+        },
+        "state": {
+          "type": "literal",
+          "value": "completed"
+        },
+        "title": {
+          "type": "literal",
+          "value": "Sample role: layout reviewer (demo)"
+        }
+      },
+      "slots": {}
+    },
+    "card-diag5": {
+      "kind": "element",
+      "id": "card-diag5",
+      "tag": "div",
+      "children": [
+        "comp-sub2"
+      ],
+      "localStyle": [
+        {
+          "property": "background",
+          "value": {
+            "type": "text",
+            "value": "#ffffff"
+          }
+        },
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "1px solid #dce2ef"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "10px"
+          }
+        },
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "10px"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0 0 12px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        }
+      ]
+    },
+    "comp-sub2": {
+      "kind": "component",
+      "id": "comp-sub2",
+      "definitionId": "vict.ai.subagent",
+      "revision": "1",
+      "props": {
+        "description": {
+          "type": "literal",
+          "value": "Demonstration subagent card — no child run was launched."
+        },
+        "model": {
+          "type": "literal",
+          "value": "demo-local"
+        },
+        "state": {
+          "type": "literal",
+          "value": "pending"
+        },
+        "title": {
+          "type": "literal",
+          "value": "Sample role: accessibility checker (demo)"
+        }
+      },
+      "slots": {}
+    },
+    "card-ctx1": {
+      "kind": "element",
+      "id": "card-ctx1",
+      "tag": "div",
+      "children": [
+        "h3-ctx",
+        "comp-context"
+      ],
+      "localStyle": [
+        {
+          "property": "background",
+          "value": {
+            "type": "text",
+            "value": "#ffffff"
+          }
+        },
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "1px solid #dce2ef"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "10px"
+          }
+        },
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "10px"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0 0 12px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        }
+      ]
+    },
+    "h3-ctx": {
+      "kind": "element",
+      "id": "h3-ctx",
+      "tag": "h3",
+      "children": [
+        "h3-ctx-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        }
+      ]
+    },
+    "h3-ctx-text": {
+      "kind": "text",
+      "id": "h3-ctx-text",
+      "content": {
+        "type": "literal",
+        "value": "Demo context usage — demonstration budget, not actual token/provider usage"
+      }
+    },
+    "comp-context": {
+      "kind": "component",
+      "id": "comp-context",
+      "definitionId": "vict.ai.context",
+      "revision": "1",
+      "props": {
+        "data": {
+          "type": "literal",
+          "value": "{\"version\":1,\"breakdown\":[{\"label\":\"Sample transcript records\",\"value\":16},{\"label\":\"Example test cases\",\"value\":12},{\"label\":\"Synthetic stack frames\",\"value\":8},{\"label\":\"Example files listed\",\"value\":6}]}\n"
+        },
+        "limit": {
+          "type": "literal",
+          "value": 100
+        },
+        "used": {
+          "type": "literal",
+          "value": 42
+        }
+      },
+      "slots": {}
+    },
+    "card-ctx2": {
+      "kind": "element",
+      "id": "card-ctx2",
+      "tag": "div",
+      "children": [
+        "h3-ft",
+        "comp-filetree",
+        "note-file-label",
+        "note-file-text"
+      ],
+      "localStyle": [
+        {
+          "property": "background",
+          "value": {
+            "type": "text",
+            "value": "#ffffff"
+          }
+        },
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "1px solid #dce2ef"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "10px"
+          }
+        },
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "10px"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0 0 12px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        }
+      ]
+    },
+    "h3-ft": {
+      "kind": "element",
+      "id": "h3-ft",
+      "tag": "h3",
+      "children": [
+        "h3-ft-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        }
+      ]
+    },
+    "h3-ft-text": {
+      "kind": "text",
+      "id": "h3-ft-text",
+      "content": {
+        "type": "literal",
+        "value": "Example files (demo)"
+      }
+    },
+    "comp-filetree": {
+      "kind": "component",
+      "id": "comp-filetree",
+      "definitionId": "vict.ai.file-tree",
+      "revision": "1",
+      "props": {
+        "allowSelect": {
+          "type": "literal",
+          "value": true
+        },
+        "data": {
+          "type": "literal",
+          "value": "{\"version\":1,\"nodes\":[{\"path\":\"src/review.ts\",\"name\":\"review.ts\"},{\"path\":\"README.md\",\"name\":\"README.md\"}]}"
+        },
+        "selected": {
+          "type": "literal",
+          "value": ""
+        }
+      },
+      "slots": {},
+      "outputs": {
+        "select": {
+          "setState": {
+            "key": "fileChoice"
+          }
+        }
+      }
+    },
+    "note-file-label": {
+      "kind": "element",
+      "id": "note-file-label",
+      "tag": "small",
+      "children": [
+        "note-file-label-text"
+      ],
+      "localStyle": [
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#5f6f8f"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        }
+      ]
+    },
+    "note-file-label-text": {
+      "kind": "text",
+      "id": "note-file-label-text",
+      "content": {
+        "type": "literal",
+        "value": "Local intent — selected file (demo):"
+      }
+    },
+    "note-file-text": {
+      "kind": "text",
+      "id": "note-file-text",
+      "content": {
+        "type": "expression",
+        "expression": {
+          "type": "ref",
+          "path": "state.fileChoice"
+        }
+      }
+    },
+    "card-ctx3": {
+      "kind": "element",
+      "id": "card-ctx3",
+      "tag": "div",
+      "children": [
+        "comp-checkpoint",
+        "note-restore-label"
+      ],
+      "localStyle": [
+        {
+          "property": "background",
+          "value": {
+            "type": "text",
+            "value": "#ffffff"
+          }
+        },
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "1px solid #dce2ef"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "10px"
+          }
+        },
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "10px"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0 0 12px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        }
+      ]
+    },
+    "comp-checkpoint": {
+      "kind": "component",
+      "id": "comp-checkpoint",
+      "definitionId": "vict.ai.checkpoint",
+      "revision": "1",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Demo checkpoint — local restore intent only"
+        },
+        "canRestore": {
+          "type": "literal",
+          "value": false
+        }
+      },
+      "slots": {}
+    },
+    "note-restore-label": {
+      "kind": "element",
+      "id": "note-restore-label",
+      "tag": "small",
+      "children": [
+        "note-restore-label-text"
+      ],
+      "localStyle": [
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#5f6f8f"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        }
+      ]
+    },
+    "note-restore-label-text": {
+      "kind": "text",
+      "id": "note-restore-label-text",
+      "content": {
+        "type": "literal",
+        "value": "Restore stays intent-only here: no host restore binding exists, so nothing is restored and no history changes."
+      }
+    },
+    "card-ctx4": {
+      "kind": "element",
+      "id": "card-ctx4",
+      "tag": "div",
+      "children": [
+        "comp-suggestion",
+        "note-draft-label",
+        "note-draft-text",
+        "comp-model",
+        "note-model"
+      ],
+      "localStyle": [
+        {
+          "property": "background",
+          "value": {
+            "type": "text",
+            "value": "#ffffff"
+          }
+        },
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "1px solid #dce2ef"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "10px"
+          }
+        },
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "10px"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0 0 12px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        }
+      ]
+    },
+    "comp-suggestion": {
+      "kind": "component",
+      "id": "comp-suggestion",
+      "definitionId": "vict.ai.suggestion",
+      "revision": "1",
+      "props": {
+        "text": {
+          "type": "literal",
+          "value": "Populate local draft: apply the compact correction to the review desk layout (demo)"
+        },
+        "allowActions": {
+          "type": "literal",
+          "value": true
+        }
+      },
+      "slots": {},
+      "outputs": {
+        "select": {
+          "setState": {
+            "key": "draft"
+          }
+        }
+      }
+    },
+    "note-draft-label": {
+      "kind": "element",
+      "id": "note-draft-label",
+      "tag": "small",
+      "children": [
+        "note-draft-label-text"
+      ],
+      "localStyle": [
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#5f6f8f"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        }
+      ]
+    },
+    "note-draft-label-text": {
+      "kind": "text",
+      "id": "note-draft-label-text",
+      "content": {
+        "type": "literal",
+        "value": "Local intent — draft populated by the suggestion (demo):"
+      }
+    },
+    "note-draft-text": {
+      "kind": "text",
+      "id": "note-draft-text",
+      "content": {
+        "type": "expression",
+        "expression": {
+          "type": "ref",
+          "path": "state.draft"
+        }
+      }
+    },
+    "comp-model": {
+      "kind": "component",
+      "id": "comp-model",
+      "definitionId": "vict.ai.model-selector",
+      "revision": "1",
+      "props": {
+        "data": {
+          "type": "literal",
+          "value": "{\"version\":1,\"models\":[{\"id\":\"desk-preview\",\"label\":\"Desk preview (local only)\"},{\"id\":\"desk-preview-alt\",\"label\":\"Desk preview alt (local only)\"}],\"efforts\":[]}"
+        },
+        "model": {
+          "type": "ref",
+          "path": "state.modelChoice"
+        },
+        "effort": {
+          "type": "literal",
+          "value": ""
+        },
+        "inline": {
+          "type": "literal",
+          "value": false
+        },
+        "allowActions": {
+          "type": "literal",
+          "value": true
+        }
+      },
+      "slots": {},
+      "outputs": {
+        "modelChange": {
+          "setState": {
+            "key": "modelChoice"
+          }
+        }
+      }
+    },
+    "note-model": {
+      "kind": "element",
+      "id": "note-model",
+      "tag": "small",
+      "children": [
+        "note-model-text"
+      ],
+      "localStyle": [
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#5f6f8f"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        }
+      ]
+    },
+    "note-model-text": {
+      "kind": "text",
+      "id": "note-model-text",
+      "content": {
+        "type": "literal",
+        "value": "Model selection is a local preview choice only — it never changes or contacts the real provider."
+      }
+    }
+  },
+  "componentDefinitions": {},
+  "styleSources": {},
+  "assets": {},
+  "tokens": {},
+  "conditions": {
+    "compact": {
+      "id": "compact",
+      "kind": "container",
+      "name": "studio-screen",
+      "query": "(max-width: 600px)"
+    }
+  },
+  "localState": {
+    "message": {
+      "key": "message",
+      "type": "string",
+      "initial": "Hello from my screen"
+    },
+    "accepted": {
+      "key": "accepted",
+      "type": "boolean",
+      "initial": false
+    },
+    "dialogOpen": {
+      "key": "dialogOpen",
+      "type": "boolean",
+      "initial": false
+    },
+    "busy": {
+      "key": "busy",
+      "type": "boolean",
+      "initial": false
+    },
+    "actionError": {
+      "key": "actionError",
+      "type": "string",
+      "initial": ""
+    },
+    "actionResult": {
+      "key": "actionResult",
+      "type": "string",
+      "initial": ""
+    },
+    "activeTab": {
+      "key": "activeTab",
+      "type": "string",
+      "initial": "overview"
+    },
+    "draft": {
+      "key": "draft",
+      "type": "string",
+      "initial": ""
+    },
+    "modelChoice": {
+      "key": "modelChoice",
+      "type": "string",
+      "initial": "desk-preview"
+    },
+    "fileChoice": {
+      "key": "fileChoice",
+      "type": "string",
+      "initial": ""
+    },
+    "frameNote": {
+      "key": "frameNote",
+      "type": "string",
+      "initial": ""
+    },
+    "restoreNote": {
+      "key": "restoreNote",
+      "type": "string",
+      "initial": ""
+    },
+    "catalog_tabs-desk_root_value": {
+      "key": "catalog_tabs-desk_root_value",
+      "type": "string",
+      "initial": "tabs-desk-tabs-1"
+    },
+    "catalog_comp-transcript_message": {
+      "key": "catalog_comp-transcript_message",
+      "type": "string",
+      "initial": ""
+    }
+  },
+  "theme": {
+    "schema": "vict.ui-theme@1",
+    "roles": {
+      "surface": "#ffffff",
+      "text": "#243047",
+      "textMuted": "#5f6f8f",
+      "border": "#d9dfec",
+      "accent": "#3b5bdb",
+      "accentText": "#ffffff",
+      "highlight": "#eef2fb",
+      "focusRing": "#3b5bdb"
+    }
+  }
+}

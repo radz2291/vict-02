@@ -1,0 +1,3 @@
+I'll make one targeted observation of the open model-menu part on comp-model, without touching the source.
+
+Both local-demo entries ("Desk preview (local only)" and the checked "Desk preview alt (local only)") are fully visible with no left/right clipping, but the bottom row is not: the menu's fixed 112px container (overflow hidden/auto) ends flush at the capture's bottom edge, so the footer is either clipped or scrolled out and I can't confirm it without interacting. No edits or clicks were made — this single observation covers only the captured crop at comp-model's model-menu, and the entries are supplied local preview options, not real provider selection.
