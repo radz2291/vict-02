@@ -39,6 +39,21 @@ async function supplied() {
 }
 
 describe('one-screen local source import preparation', () => {
+  it('carries managed carousel image bytes through the same portable dependency closure', async () => {
+    const asset=await supplied(),store=memoryAssetStore();await store.put(asset);
+    const original=source();
+    const document:UiDocument={...original,localState:{...original.localState,slides:{key:'slides',type:'stringList',initial:[asset.reference]},slideIndex:{key:'slideIndex',type:'number',initial:0}},nodes:{...original.nodes,
+      screen:{...original.nodes.screen,children:['gallery']} as UiDocument['nodes'][string],
+      gallery:{kind:'component',id:'gallery',definitionId:'vict.pattern.carousel',revision:'1',props:{images:{type:'literal',value:true},slides:{type:'ref',path:'state.slides'},index:{type:'ref',path:'state.slideIndex'}},outputs:{indexChange:{setState:{key:'slideIndex'}}}}}};
+    const missing=await prepareSourceImport(bundle(document));
+    expect(missing,JSON.stringify(missing)).toMatchObject({ok:false,code:'STUDIO_IMPORT_MEDIA_MISSING'});
+    const prepared=await prepareSourceImport(bundle(document,{mediaArchive:JSON.parse(await exportMediaArchive(store))}));
+    expect(prepared.ok).toBe(true);if(!prepared.ok)throw Error(prepared.message);
+    expect(prepared.assets.map(item=>item.reference)).toEqual([asset.reference]);
+    const gallery=document.nodes.gallery;if(!gallery||gallery.kind!=='component')throw Error('Fixture gallery must be a component.');
+    const textOnly={...document,nodes:{...document.nodes,gallery:{...gallery,props:{...gallery.props,images:{type:'literal',value:false}}}}} as UiDocument;
+    expect(await prepareSourceImport(bundle(textOnly))).toMatchObject({ok:true,assets:[]});
+  });
   it('returns an explicit refusal for deeply nested input instead of throwing through the UI', async () => {
     const deeplyNested = '['.repeat(10000) + '0' + ']'.repeat(10000);
     const json = JSON.stringify(source());

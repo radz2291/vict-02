@@ -24,6 +24,7 @@ import {
   slideIndex,
 } from '../src/state.js';
 import { lockViewport } from '../src/focus.js';
+import {memoryAssetStore,importMediaAsset,type MediaAssetStore} from '../../ui-media-svelte/src/assets.js';
 import Consumer from './Consumer.svelte';
 
 let instances: ReturnType<typeof mount>[] = [];
@@ -55,10 +56,10 @@ function seed(id: string, revision = '1') {
     (item) => item.descriptor.id === id && item.descriptor.revision === revision,
   )!.seed!;
 }
-async function render(id: string, documentSource = source(seed(id))) {
+async function render(id: string, documentSource = source(seed(id)), store?:MediaAssetStore) {
   const target = document.createElement('div');
   document.body.append(target);
-  instances.push(mount(Consumer, { target, props: { source: documentSource } }));
+  instances.push(mount(Consumer, { target, props: { source: documentSource, store } }));
   flushSync();
   await tick();
   return target;
@@ -71,6 +72,58 @@ async function click(button: HTMLElement) {
 }
 
 describe('registered application patterns', () => {
+  it('uses shared catalog button roots while preserving declared carousel slide styling',async()=>{
+    const doc=source(seed('vict.pattern.carousel'));
+    const root=doc.nodes[doc.root]!;
+    if(root.kind!=='component')throw Error('Expected carousel');
+    const documentSource:UiDocument={...doc,nodes:{...doc.nodes,[root.id]:{...root,partStyles:{slide:{localStyle:[{property:'background-color',value:{type:'text',value:'rgb(7, 61, 47)'}}]}}}}};
+    const target=await render('vict.pattern.carousel',documentSource);
+    const slide=target.querySelector<HTMLElement>('.vict-carousel-slide')!;
+    expect(getComputedStyle(slide).backgroundColor).toBe('rgb(7, 61, 47)');
+    expect(target.querySelector('[aria-label="Next slide"]')?.hasAttribute('data-button-root')).toBe(true);
+    expect(target.querySelector('[aria-label="Next slide"]')?.classList.contains('vict-btn')).toBe(true);
+  });
+  it('resolves managed carousel image bytes through the application asset host',async()=>{
+    const asset=await importMediaAsset(new File([new Uint8Array([137,80,78,71,13,10,26,10])],'slide.png',{type:'image/png'}));
+    const store=memoryAssetStore();await store.put(asset);
+    const lookup=vi.spyOn(store,'get');
+    vi.spyOn(URL,'createObjectURL').mockReturnValue('blob:verified-carousel-image');
+    const doc=source(seed('vict.pattern.carousel'));
+    const root=doc.nodes[doc.root]!;
+    if(root.kind!=='component')throw Error('Expected carousel');
+    const documentSource:UiDocument={...doc,nodes:{...doc.nodes,[root.id]:{...root,props:{...root.props,images:{type:'literal',value:true}}}},localState:{...doc.localState,slides:{key:'slides',type:'stringList',initial:[asset.reference]}}};
+    const target=await render('vict.pattern.carousel',documentSource,store);
+    await vi.waitFor(()=>expect(target.querySelector('img')?.getAttribute('src')).toBe('blob:verified-carousel-image'));
+    expect(lookup).toHaveBeenCalledWith(asset.reference);
+    expect(target.querySelector('[data-media-state]')).not.toBeNull();
+    expect(target.querySelector('[role=alert]')).toBeNull();
+  });
+  it('keeps non-dismissible sheets open on Escape and styles the actual shared backdrop part',async()=>{
+    const doc=source(seed('vict.pattern.drawer')),root=doc.nodes[doc.root]!;
+    if(root.kind!=='component')throw Error('Expected drawer');
+    const documentSource:UiDocument={...doc,nodes:{...doc.nodes,[root.id]:{...root,props:{...root.props,dismissible:{type:'literal',value:false}},partStyles:{backdrop:{localStyle:[{property:'background-color',value:{type:'text',value:'rgb(8, 25, 43)'}}]}}}}};
+    const target=await render('vict.pattern.drawer',documentSource);
+    await click(target.querySelector('button')!);
+    const dialog=target.querySelector<HTMLElement>('[role=dialog]')!;
+    expect(target.querySelector('[data-dialog-content]')).toBe(dialog);
+    expect(getComputedStyle(target.querySelector('[data-dialog-overlay]')!).backgroundColor).toBe('rgb(8, 25, 43)');
+    dialog.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true,cancelable:true}));
+    flushSync();await tick();expect(target.querySelector('[role=dialog]')).toBe(dialog);
+    await click(dialog.querySelector('[aria-label="Close drawer"]')!);
+    expect(target.querySelector('[role=dialog]')).toBeNull();
+  });
+  it('preserves an external focus target when a controlled sheet deliberately has no trigger',async()=>{
+    const external=document.createElement('button');external.textContent='External opener';document.body.append(external);external.focus();
+    const doc=source(seed('vict.pattern.drawer')),root=doc.nodes[doc.root]!;
+    if(root.kind!=='component')throw Error('Expected drawer');
+    const documentSource:UiDocument={...doc,nodes:{...doc.nodes,[root.id]:{...root,props:{...root.props,showTrigger:{type:'literal',value:false}}}},localState:{...doc.localState,drawerOpen:{key:'drawerOpen',type:'boolean',initial:true}}};
+    const target=await render('vict.pattern.drawer',documentSource);
+    expect(target.querySelector('[data-dialog-trigger]')).toBeNull();
+    const dialog=target.querySelector<HTMLElement>('[role=dialog]')!;
+    expect(document.activeElement).toBe(dialog);
+    await click(dialog.querySelector('[aria-label="Close drawer"]')!);
+    expect(target.querySelector('[role=dialog]')).toBeNull();expect(document.activeElement).toBe(external);
+  });
   it('discovers exact contracts and compiles every real authoring seed', () => {
     const registry = createUiAuthoringRegistry(
       [patternAuthoringPackage, mediaAuthoringPackage],
@@ -133,6 +186,13 @@ describe('registered application patterns', () => {
     await click(target.querySelector('[aria-label="Previous slide"]')!);
     expect(visible()).toEqual(['First slide']);
     const viewport = target.querySelector<HTMLElement>('[aria-label=Slides]')!;
+    const imageDrag = new Event('dragstart', {bubbles:true,cancelable:true});
+    viewport.dispatchEvent(imageDrag);
+    expect(imageDrag.defaultPrevented).toBe(true);
+    viewport.dispatchEvent(new MouseEvent('pointerdown',{clientX:200,clientY:30,bubbles:true}));
+    viewport.dispatchEvent(new Event('pointercancel',{bubbles:true}));
+    viewport.dispatchEvent(new MouseEvent('pointerup',{clientX:80,clientY:34,bubbles:true}));
+    flushSync();await tick();expect(visible()).toEqual(['First slide']);
     viewport.dispatchEvent(
       new MouseEvent('pointerdown', { clientX: 200, clientY: 30, bubbles: true }),
     );

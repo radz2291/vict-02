@@ -1,5 +1,6 @@
 <script lang="ts">
   import { untrack } from 'svelte';
+  import { Button, Select, type UiComponentPresentation } from '@victframework/ui-svelte';
   import {
     SvelteFlow,
     Background,
@@ -32,6 +33,7 @@
   } from './model.js';
   let {
     graph,
+    presentation,
     label = 'Node editor',
     height = 600,
     readOnly = false,
@@ -42,6 +44,7 @@
     onselectionchange,
   }: {
     graph: string;
+    presentation?: UiComponentPresentation;
     label?: string;
     height?: number;
     readOnly?: boolean;
@@ -51,6 +54,7 @@
     ongraphchange?: (value: string) => void;
     onselectionchange?: (selection: GraphSelection) => void;
   } = $props();
+  const controlId = $props.id();
   let session = new GraphSession(emptyGraph());
   const restored=untrack(()=>viewState?.get());
   const restoredViewport=restored?.viewport;
@@ -188,6 +192,7 @@
       deletable: false,
       data: {
         node,
+        presentation,
         family: graphType(current, node),
         ports: graphPorts(current, node),
         readOnly,
@@ -381,17 +386,17 @@
   }
 </script>
 
-<section bind:this={rootElement} class="vict-graph-editor" aria-label={label} data-graph-revision={current.revision} data-graph-viewport={`${viewport.x},${viewport.y},${viewport.zoom}`}>
-  <div class="graph-toolbar" role="toolbar" aria-label="Graph tools">
-    <label>Node family<select aria-label="Node family" bind:value={palette} disabled={readOnly}><option value="">Choose family</option>{#each current.nodeTypes as type}<option value={type.id}>{type.label}</option>{/each}</select></label><button type="button" onclick={add} disabled={readOnly||!palette}>Add node</button>
-    <button type="button" onclick={undo} disabled={readOnly||!undoAvailable}>Undo</button><button type="button" onclick={redo} disabled={readOnly||!redoAvailable}>Redo</button>
-    <button type="button" onclick={copy} disabled={!selection.nodes.length}>Copy</button><button type="button" onclick={()=>apply([{type:'paste',clipboard}])} disabled={readOnly||!clipboard}>Paste</button><button type="button" onclick={()=>apply([{type:'duplicate',selection}])} disabled={readOnly||!selection.nodes.length}>Duplicate</button><button type="button" onclick={()=>apply([{type:'remove',selection}])} disabled={readOnly||!(selection.nodes.length||selection.edges.length)}>Delete selected</button>
-    <button type="button" onclick={()=>focus()}>Fit all</button><button type="button" onclick={()=>focus(selection.nodes)} disabled={!selection.nodes.length}>Focus selection</button><button type="button" onclick={layout} disabled={readOnly||arranging||!nodes.length}>{arranging?'Arranging…':'Arrange'}</button>
-    <label>Find nodes<input aria-label="Find nodes" type="search" bind:value={query} /></label>{#if query}<span>{matches.length} matches</span><button type="button" onclick={()=>focus(matches.map(node=>node.id))} disabled={!matches.length}>Focus matches</button>{/if}
+<section {...presentation?.target('root')} bind:this={rootElement} class={`vict-graph-editor ${presentation?.target('root').class ?? ''}`} aria-label={label} data-graph-revision={current.revision} data-graph-viewport={`${viewport.x},${viewport.y},${viewport.zoom}`}>
+  <div {...presentation?.target('toolbar')} class={`graph-toolbar ${presentation?.target('toolbar').class ?? ''}`} role="group" aria-label="Graph tools">
+    <label for={`${controlId}-family`}>Node family<Select id={`${controlId}-family`} name="node-family" value={palette} options={current.nodeTypes.map(type=>({value:type.id,label:type.label}))} disabled={readOnly} onChange={value=>palette=value}/></label><Button variant="secondary" label="Add node" onclick={add} disabled={readOnly||!palette}/>
+    <Button variant="secondary" label="Undo" onclick={undo} disabled={readOnly||!undoAvailable}/><Button variant="secondary" label="Redo" onclick={redo} disabled={readOnly||!redoAvailable}/>
+    <Button variant="secondary" label="Copy" onclick={copy} disabled={!selection.nodes.length}/><Button variant="secondary" label="Paste" onclick={()=>apply([{type:'paste',clipboard}])} disabled={readOnly||!clipboard}/><Button variant="secondary" label="Duplicate" onclick={()=>apply([{type:'duplicate',selection}])} disabled={readOnly||!selection.nodes.length}/><Button variant="secondary" label="Delete selected" onclick={()=>apply([{type:'remove',selection}])} disabled={readOnly||!(selection.nodes.length||selection.edges.length)}/>
+    <Button variant="secondary" label="Fit all" onclick={()=>focus()}/><Button variant="secondary" label="Focus selection" onclick={()=>focus(selection.nodes)} disabled={!selection.nodes.length}/><Button variant="secondary" label={arranging?'Arranging.':'Arrange'} onclick={layout} disabled={readOnly||arranging||!nodes.length}/>
+    <label>Find nodes<input class="vict-input" aria-label="Find nodes" type="search" bind:value={query} /></label>{#if query}<span>{matches.length} matches</span><Button variant="secondary" label="Focus matches" onclick={()=>focus(matches.map(node=>node.id))} disabled={!matches.length}/>{/if}
   </div>
   {#if error}<p role="alert" class="graph-error">{error}</p>{/if}
   <div class="graph-workspace">
-    <div class="graph-canvas" style:height={`${Math.max(240,Math.min(height,2000))}px`}>
+    <div {...presentation?.target('canvas')} class={`graph-canvas ${presentation?.target('canvas').class ?? ''}`} style:height={`${Math.max(240,Math.min(height,2000))}px`}>
       <SvelteFlow bind:nodes bind:edges bind:viewport {nodeTypes} nodesDraggable={!readOnly} nodesConnectable={!readOnly} deleteKey={null} fitView={false} minZoom={0.15} maxZoom={2} multiSelectionKey={['Control','Meta','Shift']} selectionKey="Shift" panOnDrag={true}
         onselectionchange={({nodes:selectedNodes,edges:selectedEdges})=>select({nodes:selectedNodes.map(node=>node.id),edges:selectedEdges.map(edge=>edge.id)})}
         onnodedragstart={()=>{dragging=true;dragCancelled=false;dragRevision=current.revision;layoutFence.cancel();}}
@@ -402,24 +407,25 @@
         <Background /><Controls showLock={false}/><MiniMap pannable zoomable/><FlowNavigation request={fit} ids={fitIds} initialFit={fitInitially&&initialized} initialNodeIds={current.nodes.map(node=>node.id)} onInitialFit={()=>{cameraReady=true;}}/>
       </SvelteFlow>
     </div>
-    <aside class="graph-inspector" aria-label="Graph selection">
+    <aside {...presentation?.target('inspector')} class={`graph-inspector ${presentation?.target('inspector').class ?? ''}`} aria-label="Graph selection">
       <h3>Selection</h3><p>{selection.nodes.length} nodes · {selection.edges.length} connections</p>
-      {#if selectedNode}<label>Node name<input value={selectedNode.label} disabled={readOnly} onchange={event=>apply([{type:'setLabel',nodeId:selectedNode.id,label:event.currentTarget.value}])}/></label><GraphFields owner={`${selectedNode.id}/inspector`} fields={graphType(current,selectedNode).fields} values={selectedNode.values} {readOnly} advanced onchange={(fieldId,value)=>apply([{type:'setField',nodeId:selectedNode.id,fieldId,value}])}/>{:else if selection.nodes.length}<ul>{#each current.nodes.filter(node=>selection.nodes.includes(node.id)) as node}<li>{node.label}</li>{/each}</ul>{/if}
-      {#if selectedNode}<div class="node-position"><label>Node X<input type="number" value={selectedNode.position.x} disabled={readOnly} onchange={event=>apply([{type:'moveNodes',positions:{[selectedNode.id]:{x:event.currentTarget.valueAsNumber,y:selectedNode.position.y}}}])}/></label><label>Node Y<input type="number" value={selectedNode.position.y} disabled={readOnly} onchange={event=>apply([{type:'moveNodes',positions:{[selectedNode.id]:{x:selectedNode.position.x,y:event.currentTarget.valueAsNumber}}}])}/></label></div>{/if}
+      {#if selectedNode}<label>Node name<input class="vict-input" value={selectedNode.label} disabled={readOnly} onchange={event=>apply([{type:'setLabel',nodeId:selectedNode.id,label:event.currentTarget.value}])}/></label><GraphFields {presentation} owner={`${selectedNode.id}/inspector`} fields={graphType(current,selectedNode).fields} values={selectedNode.values} {readOnly} advanced onchange={(fieldId,value)=>apply([{type:'setField',nodeId:selectedNode.id,fieldId,value}])}/>{:else if selection.nodes.length}<ul>{#each current.nodes.filter(node=>selection.nodes.includes(node.id)) as node}<li>{node.label}</li>{/each}</ul>{/if}
+      {#if selectedNode}<div class="node-position"><label>Node X<input class="vict-input" type="number" value={selectedNode.position.x} disabled={readOnly} onchange={event=>apply([{type:'moveNodes',positions:{[selectedNode.id]:{x:event.currentTarget.valueAsNumber,y:selectedNode.position.y}}}])}/></label><label>Node Y<input class="vict-input" type="number" value={selectedNode.position.y} disabled={readOnly} onchange={event=>apply([{type:'moveNodes',positions:{[selectedNode.id]:{x:selectedNode.position.x,y:event.currentTarget.valueAsNumber}}}])}/></label></div>{/if}
       {#each selectedEdges as edge}<p>{edge.source} / {edge.sourcePort} → {edge.target} / {edge.targetPort}</p>{/each}
       <details><summary>Connect or reconnect</summary>
-        <label>Existing connection<select bind:value={edgeChoice} disabled={readOnly}><option value="">New connection</option>{#each current.edges as edge}<option value={edge.id}>{edge.id}</option>{/each}</select></label>
-        <label>Source node<select bind:value={sourceNode} disabled={readOnly}><option value="">Choose node</option>{#each current.nodes as node}<option value={node.id}>{node.label}</option>{/each}</select></label>
-        <label>Output port<select bind:value={sourcePort} disabled={readOnly}><option value="">Choose output</option>{#each current.nodes.filter(node=>node.id===sourceNode).flatMap(node=>graphPorts(current,node)).filter(port=>port.direction==='output') as port}<option value={port.id}>{port.label} ({port.type})</option>{/each}</select></label>
-        <label>Target node<select bind:value={targetNode} disabled={readOnly}><option value="">Choose node</option>{#each current.nodes as node}<option value={node.id}>{node.label}</option>{/each}</select></label>
-        <label>Input port<select bind:value={targetPort} disabled={readOnly}><option value="">Choose input</option>{#each current.nodes.filter(node=>node.id===targetNode).flatMap(node=>graphPorts(current,node)).filter(port=>port.direction==='input') as port}<option value={port.id}>{port.label} ({port.type})</option>{/each}</select></label>
-        <button type="button" disabled={readOnly||!sourceNode||!sourcePort||!targetNode||!targetPort} onclick={manualConnection}>{edgeChoice?'Reconnect':'Connect'}</button>
+        <label for={`${controlId}-edge`}>Existing connection<Select id={`${controlId}-edge`} name="existing-connection" value={edgeChoice} options={current.edges.map(edge=>({value:edge.id,label:edge.id}))} disabled={readOnly} onChange={value=>edgeChoice=value}/></label>
+        <label for={`${controlId}-source`}>Source node<Select id={`${controlId}-source`} name="source-node" value={sourceNode} options={current.nodes.map(node=>({value:node.id,label:node.label}))} disabled={readOnly} onChange={value=>sourceNode=value}/></label>
+        <label for={`${controlId}-output`}>Output port<Select id={`${controlId}-output`} name="output-port" value={sourcePort} options={current.nodes.filter(node=>node.id===sourceNode).flatMap(node=>graphPorts(current,node)).filter(port=>port.direction==='output').map(port=>({value:port.id,label:`${port.label} (${port.type})`}))} disabled={readOnly} onChange={value=>sourcePort=value}/></label>
+        <label for={`${controlId}-target`}>Target node<Select id={`${controlId}-target`} name="target-node" value={targetNode} options={current.nodes.map(node=>({value:node.id,label:node.label}))} disabled={readOnly} onChange={value=>targetNode=value}/></label>
+        <label for={`${controlId}-input`}>Input port<Select id={`${controlId}-input`} name="input-port" value={targetPort} options={current.nodes.filter(node=>node.id===targetNode).flatMap(node=>graphPorts(current,node)).filter(port=>port.direction==='input').map(port=>({value:port.id,label:`${port.label} (${port.type})`}))} disabled={readOnly} onChange={value=>targetPort=value}/></label>
+        <Button variant="secondary" label={edgeChoice?'Reconnect':'Connect'} disabled={readOnly||!sourceNode||!sourcePort||!targetNode||!targetPort} onclick={manualConnection}/>
       </details>
-      <details><summary>Graph clipboard</summary><label>Portable graph selection<textarea aria-label="Graph clipboard" rows="4" bind:value={clipboard}></textarea></label><p>Copy uses this editor's bounded selection buffer. Paste a compatible graph selection here; no system clipboard permission is requested.</p></details>
+      <details><summary>Graph clipboard</summary><label>Portable graph selection<textarea class="vict-textarea" aria-label="Graph clipboard" rows="4" bind:value={clipboard}></textarea></label><p>Copy uses this editor's bounded selection buffer. Paste a compatible graph selection here; no system clipboard permission is requested.</p></details>
     </aside>
   </div>
 </section>
 <style>
-  .vict-graph-editor{container-type:inline-size}
-  .vict-graph-editor{font:13px/1.45 system-ui;color:var(--vict-flow-text,#172033);border:1px solid var(--vict-flow-border,#cbd5e1);border-radius:8px;background:var(--vict-flow-node,#fff);overflow:hidden;min-width:0}.graph-toolbar{display:flex;align-items:flex-end;gap:6px;flex-wrap:wrap;padding:10px;border-bottom:1px solid var(--vict-flow-border,#cbd5e1)}button,select,input,textarea{font:inherit;color:inherit}button{padding:6px 9px;min-height:32px;background:var(--vict-flow-node,#fff);border:1px solid var(--vict-flow-border,#cbd5e1);border-radius:4px;cursor:pointer}button:disabled{opacity:.45;cursor:default}button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--vict-flow-focus,#4f46e5);outline-offset:2px}label{display:grid;gap:3px;font-size:11px}input,select,textarea{box-sizing:border-box;max-width:100%;min-width:0;border:1px solid var(--vict-flow-border,#cbd5e1);border-radius:4px;background:var(--vict-flow-input,#fff);padding:5px}.graph-workspace{display:flex;min-width:0}.graph-canvas{flex:1;min-width:200px}.graph-inspector{box-sizing:border-box;width:250px;min-width:200px;max-height:650px;overflow:auto;border-left:1px solid var(--vict-flow-border,#cbd5e1);padding:12px;display:flex;flex-direction:column;gap:10px}h3,p{margin:0}h3{font-size:13px}details{border-top:1px solid var(--vict-flow-border,#cbd5e1);padding-top:8px}summary{cursor:pointer;font-weight:500}details label{margin-top:8px}.graph-error{padding:8px 12px;color:#991b1b;background:#fef2f2}@container (max-width:650px){.graph-workspace{flex-direction:column}.graph-inspector{width:100%;max-height:260px;border-left:0;border-top:1px solid var(--vict-flow-border,#cbd5e1)}}
+  .vict-graph-editor{container-type:inline-size;font:var(--vict-font-sizeBase,14px)/1.5 var(--vict-font-family,system-ui);color:var(--vict-flow-text,var(--vict-color-text,#203239));border:1px solid var(--vict-flow-border,var(--vict-color-border,#dce5e5));border-radius:var(--vict-radius-base,10px);background:var(--vict-flow-node,var(--vict-color-surface,#fff));overflow:hidden;min-width:0}
+  .graph-toolbar{display:flex;align-items:flex-end;gap:var(--vict-space-1,4px);flex-wrap:wrap;padding:var(--vict-space-2,8px);border-bottom:1px solid var(--vict-flow-border,var(--vict-color-border,#dce5e5))}
+  label{display:grid;gap:var(--vict-space-1,4px);font-size:12px}.graph-workspace{display:flex;min-width:0}.graph-canvas{flex:1;min-width:200px}.graph-inspector{box-sizing:border-box;width:250px;min-width:200px;max-height:650px;overflow:auto;border-left:1px solid var(--vict-flow-border,var(--vict-color-border,#dce5e5));padding:var(--vict-space-3,12px);display:flex;flex-direction:column;gap:var(--vict-space-2,8px)}h3,p{margin:0}h3{font-size:var(--vict-font-sizeBase,14px)}details{border-top:1px solid var(--vict-flow-border,var(--vict-color-border,#dce5e5));padding-top:var(--vict-space-2,8px)}summary{cursor:pointer;font-weight:500}details label{margin-top:var(--vict-space-2,8px)}.graph-error{padding:8px 12px;color:var(--vict-color-danger,#b03143);background:var(--vict-color-surface,#fff)}@container (max-width:650px){.graph-workspace{flex-direction:column}.graph-inspector{width:100%;max-height:260px;border-left:0;border-top:1px solid var(--vict-flow-border,var(--vict-color-border,#dce5e5))}}
 </style>

@@ -108,6 +108,11 @@ function managedReferences(document: UiDocument): {
     if (node.kind !== 'component') continue;
     for (const key of ['source', 'src', 'poster', 'captions'])
       expressionValues(node.props?.[key], `${node.id}.${key}`).forEach(mediaReference);
+    if (node.definitionId === 'vict.pattern.carousel' &&
+      expressionValues(node.props?.images, `${node.id}.images`).some(value => value === true)) {
+      for (const value of expressionValues(node.props?.slides, `${node.id}.slides`))
+        (Array.isArray(value) ? value : [value]).forEach(mediaReference);
+    }
     if (node.definitionId !== 'vict.flow.editor') continue;
     for (const serialized of expressionValues(node.props?.graph, `${node.id}.graph`)) {
       if (typeof serialized !== 'string') continue;

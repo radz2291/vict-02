@@ -1,6 +1,7 @@
 /** Explicit pinned public export inventory. Export changes require a disposition review. */
 export const specialistPublicExports = [
   './authoring:flowEditorDescriptor',
+  './authoring:flowEditorDescriptorV2',
   'GraphEditor',
   'GraphSession',
   'GraphValidationError',

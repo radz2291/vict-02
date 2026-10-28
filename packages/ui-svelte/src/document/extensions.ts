@@ -285,6 +285,9 @@ export function resolveSvelteExtension(
 export interface UiComponentTargetAttributes {
   readonly class: string;
   readonly style?: string;
+  /** Adapter-owned accessible naming, including labels for specialist fields. */
+  readonly 'aria-label'?: string;
+  readonly 'aria-labelledby'?: string;
   readonly 'data-ui-owner'?: string;
   readonly 'data-ui-primary'?: string;
   readonly 'data-ui-node'?: string;

@@ -6,7 +6,7 @@
     "noEmit": true,
     "paths": {
       "@victframework/ui": ["../ui/src/index.ts"],
-      "@victframework/ui-svelte": ["../ui-svelte/src/document/extensions.ts"],
+      "@victframework/ui-svelte": ["../ui-svelte/src/index.ts"],
       "@victframework/ui-media-svelte": ["../ui-media-svelte/src/index.ts"]
     }
   },

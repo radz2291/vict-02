@@ -19,6 +19,6 @@ export default defineConfig({
       },
     },
     include: ['packages/ui-media-svelte/test/**/*.test.ts'],
-    server: { deps: { inline: ['@lucide/svelte'] } },
+    server: { deps: { inline: ['bits-ui', 'runed', '@internationalized/date', '@lucide/svelte'] } },
   },
 });

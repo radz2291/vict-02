@@ -33,13 +33,13 @@ try{
   writeFileSync(join(consumer,'src/main.ts'),`import {mount} from 'svelte';import App from './App.svelte';mount(App,{target:document.getElementById('app')!});`);
   writeFileSync(join(consumer,'src/App.svelte'),`<script lang="ts">
 import {compileUiDocument,defaultSemanticElementCatalog} from '@victframework/ui';
-import {DocumentHost} from '@victframework/ui-svelte';
+import {DocumentHost,ControlScope} from '@victframework/ui-svelte';
 import {aiAuthoringDescriptors,aiAuthoringImplementations} from '@victframework/ui-ai-svelte/authoring';
 import {GraphEditor,emptyGraph,serializeGraph} from '@victframework/ui-flow-svelte';
 import {flowAuthoringDescriptors,flowAuthoringImplementations} from '@victframework/ui-flow-svelte/authoring';
 import {patternAuthoringDescriptors,patternAuthoringImplementations} from '@victframework/ui-patterns-svelte/authoring';
 import {mediaAuthoringDescriptors,mediaAuthoringImplementations,mediaVectorExample,AssetProvider} from '@victframework/ui-media-svelte';
-import '@victframework/ui-svelte/styles.css';import '@victframework/ui-svelte/rhea.css';import '@victframework/ui-ai-svelte/styles.css';import '@victframework/ui-flow-svelte/styles.css';
+import '@victframework/ui-svelte/styles.css';import '@victframework/ui-svelte/catalog.css';import '@victframework/ui-ai-svelte/styles.css';import '@victframework/ui-flow-svelte/styles.css';import '@victframework/ui-svelte/rhea.css';
 const descriptors=[...aiAuthoringDescriptors,...flowAuthoringDescriptors,...patternAuthoringDescriptors,...mediaAuthoringDescriptors];
 const implementations=[...aiAuthoringImplementations,...flowAuthoringImplementations,...patternAuthoringImplementations,...mediaAuthoringImplementations];
 const literal=(value:unknown)=>({type:'literal',value});
@@ -48,11 +48,14 @@ const source={schema:'vict.ui-document@1',id:'packed-foundation',revision:'1',ro
 Object.assign(source.localState,{drawerOpen:{key:'drawerOpen',type:'boolean',initial:false},slideIndex:{key:'slideIndex',type:'number',initial:0}});
 Object.assign(source.nodes.drawer,{props:{...source.nodes.drawer.props,open:{type:'ref',path:'state.drawerOpen'}},outputs:{openChange:{setState:{key:'drawerOpen'}}}});
 Object.assign(source.nodes.gallery,{props:{...source.nodes.gallery.props,index:{type:'ref',path:'state.slideIndex'}},outputs:{indexChange:{setState:{key:'slideIndex'}}}});
+Object.assign(source.localState,{registeredGraph:{key:'registeredGraph',type:'string',initial:graph}});
+Object.assign(source.nodes,{registeredGraph:{kind:'component',id:'registeredGraph',definitionId:'vict.flow.editor',revision:'2',props:{graph:{type:'ref',path:'state.registeredGraph'},label:literal('Registered packed graph'),height:literal(480)},outputs:{graphChange:{setState:{key:'registeredGraph'}}},partStyles:{toolbar:{localStyle:[{property:'background-color',value:{type:'text',value:'#edf0fa'}}]}}}});
+source.nodes.root.children.push('registeredGraph');
 const compiled=compileUiDocument(source as any,defaultSemanticElementCatalog(),descriptors);
 if(!compiled.ok)throw Error(JSON.stringify(compiled));
 </script>
 <h1>Foundation packed consumer</h1><p>Supporting authored fixture. No provider or interaction verification is claimed by its build.</p>
-<AssetProvider namespace="foundation-packed-proof"><div class="vict-rhea" style="position:relative;overflow:hidden" data-ui-application-viewport><DocumentHost plan={compiled.plan} localState={source.localState} extensionDescriptors={descriptors} extensionImplementations={implementations} dispatch={async()=>undefined} navigate={()=>{}} /></div><GraphEditor {graph} ongraphchange={value=>graph=value} label="Packed rich graph" height={480}/></AssetProvider>
+<ControlScope class="vict-rhea"><AssetProvider namespace="foundation-packed-proof"><div style="position:relative;overflow:hidden" data-ui-application-viewport><DocumentHost plan={compiled.plan} localState={source.localState} extensionDescriptors={descriptors} extensionImplementations={implementations} dispatch={async()=>undefined} navigate={()=>{}} /></div><GraphEditor {graph} ongraphchange={value=>graph=value} label="Packed rich graph" height={480}/></AssetProvider></ControlScope>
 <style>:global(body){font-family:system-ui;margin:24px}h1{font-size:24px}</style>`);
   writeFileSync(join(destination,'install.log'),run(['install','--ignore-scripts','--no-audit','--no-fund'],consumer));
   const comparisons=[];

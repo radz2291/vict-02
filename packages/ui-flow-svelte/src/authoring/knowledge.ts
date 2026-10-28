@@ -4,9 +4,11 @@ import {
   flowNodeDescriptor,
   flowEdgeDescriptor,
   flowEditorDescriptor,
+  flowEditorDescriptorV2,
 } from './descriptors.js';
 import { specialistPublicExports } from './public-exports.js';
 import compatibility from './compatibility.json' with { type: 'json' };
+import presentationCompatibility from './compatibility-v2.json' with { type: 'json' };
 
 const richEditor: UiAuthoringFragment = {
   root: 'editor',
@@ -132,7 +134,7 @@ const canvas: UiAuthoringFragment = {
     },
   ],
 };
-export const flowAuthoringPackage: UiAuthoringPackage = {
+const legacyPackage: UiAuthoringPackage = {
   compatibility,
   schema: 'vict.ui-authoring@1',
   packageName: '@victframework/ui-flow-svelte',
@@ -264,4 +266,24 @@ export const flowAuthoringPackage: UiAuthoringPackage = {
         : 'Public code composition/type/helper API; graph arrays, callbacks and Studio structure adapters are not automatically authorable.',
     })),
   ],
+};
+
+const editorRegistration = legacyPackage.registrations.find(item => item.descriptor.id === 'vict.flow.editor')!;
+function editorPresentationFragment(fragment: UiAuthoringFragment | undefined): UiAuthoringFragment | undefined {
+  if (!fragment) return undefined;
+  return { ...fragment, nodes: fragment.nodes.map(node => node.kind === 'component' && node.definitionId === 'vict.flow.editor' ? { ...node, revision: '2' } : node) };
+}
+export const flowAuthoringPackage: UiAuthoringPackage = {
+  ...legacyPackage,
+  compatibility: [...compatibility, ...presentationCompatibility],
+  registrations: [...legacyPackage.registrations, {
+    ...editorRegistration,
+    descriptor: flowEditorDescriptorV2,
+    seed: editorPresentationFragment(editorRegistration.seed),
+    examples: editorRegistration.examples?.map(fragment => editorPresentationFragment(fragment)!),
+    guidance: [...editorRegistration.guidance ?? [],
+      'Revision 2 exposes actual root, toolbar, canvas, inspector, node, node-header, node-body, field, field-content and port surfaces through canonical partStyles. A part repeated across graph nodes styles all matching graph surfaces; graph IDs are not additional UI source nodes.',
+      'Graph geometry remains SvelteFlow. Ordinary controls reuse public VICT Button/Select and shared native field presentation; select/switch/slider actions use the registered catalog. Load public foundation and catalog CSS before Rhea, inside an explicit ControlScope. Node shell defaults inherit VICT semantic tokens; explicit --vict-flow-* overrides remain supported.',
+    ],
+  }],
 };

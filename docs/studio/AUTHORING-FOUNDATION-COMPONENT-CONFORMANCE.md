@@ -1,0 +1,46 @@
+# Reusable component architecture conformance
+
+Owner requirement, 2026-10-28: apply the established VICT architecture to every new or changed reusable component, not only the graph. This amends the active foundation delivery criteria; it is not acceptance of the candidate. Root AGENTS.md links this check. No push/publication or formal Stage9 closure follows.
+
+## Required check CF-01
+
+Before a component can pass foundation acceptance, record its actual rendering path and verify:
+
+1. Existing public VICT controls/catalog wrappers and intended shadcn/Bits interaction machinery are reused where their capability is already covered. A dependency declaration, lookalike class or hand-written screenshot is insufficient. Shared presentation recipes are appropriate for native fields where no matching standalone interaction primitive exists; preserve their existing semantics.
+2. Specialist geometry, native media and inert SVG use the established registered renderer/asset contracts. Document why a custom surface is needed; do not substitute a library indiscriminately. Material divergence or duplicate interaction infrastructure requires correction or an explicit owner-approved exception.
+3. Semantic tokens/theme, public CSS order, scoped catalog ancestry and owned portals work in Studio's isolated iframe, a normal installed consumer and capture. Studio-only CSS or defaults do not prove consumer behavior.
+4. Canonical registration/implementation/compatibility, props/slots/outputs, part targets and discovery agree. Part classes and ownership survive composition, including repeated/portaled parts. Source/history/save remain authoritative.
+5. Runtime, accessible naming/keyboard/focus/disabled/error states and responsive behavior match the claimed capability. Applicable managed assets and references survive save/reopen/Run and portable export/import.
+6. Evidence distinguishes source review, focused tests, browser observation, actual-agent output, device checks and independent verdict. Required actual-agent or device evidence cannot be substituted with fixtures. No exception is approved by the implementing agent.
+
+## Current component matrix
+
+This is a live bounded audit of the foundation delta from review9b0cb3e. FAIL/HELD means work remains; functional evidence is retained at its original limits. Independent graph/pattern/media reviews identified the findings below. Ordinary repair is authorized by the owner's implementation scope.
+
+| Components | Actual provenance / appropriate custom surface | Findings and correction state | Acceptance |
+| --- | --- | --- | --- |
+| ApplicationViewport / ViewportContent | Same compiled Svelte renderer in a real iframe; stylesheet copy and owned portal context | Actual iframe lacked `.vict-controls` DOM ancestry. Root class repaired; current build/browser recheck pending. No new portal or canonical authority. | HELD |
+| Rich graph editor, node shells and fields | SvelteFlow canvas/handles/edges/minimap; catalog select/switch/slider/button genuinely used | Native toolbar/inspector/fields and separate theme defaults need shared control/recipe integration; Mode label association and editable internal parts incomplete. Bounded builder repairing; custom canvas geometry retained. | FAIL pending repairs |
+| Read-only FlowCanvas / visible node/edge helpers | Existing SvelteFlow topology and layout remain valid specialist rendering | Check shared semantic token defaults and preserve earlier accepted read-only identities. No wholesale engine replacement. | HELD |
+| Drawer | Controlled registered pattern, in-viewport owned sheet | Duplicated modal/focus behavior and cross-realm focus bug. Reuse public Bits dialog through the existing owned viewport boundary; preserve viewport-only scroll lock. Builder repairing; no global body portal/lock expansion. | FAIL pending repairs |
+| Carousel | Registered slides/index/swipe pattern; no equivalent existing carousel established | Lost slide part class, native action presentation and raw image missing managed resolution. Reuse shared controls and MediaImage; include managed slide dependency closure in portable import. Builder/root repairs in progress. | FAIL pending repairs |
+| Navigation / FilteredList / FirstVisit | Declarative navigation/filter outputs and explicit application/campaign persistence | Composition is justified; ordinary controls/fields must use shared presentation. Builder repairing. Actual first-visit/filter/mobile evidence still required. | HELD |
+| ActionButton | Canonical action binding plus icon/label parts | Parallel native button duplicates shared capability. Compose public VICT catalog button with shared recipe and preserve authored slots/parts. Builder repairing. | FAIL pending repairs |
+| Image / Video / Embed | Native img/video/titled iframe behind registered ABI, stable asset references and explicit provider policy | Appropriate native primitives; no reason to replace with Bits. Browser upload/decode/playback/captions and portability still require evidence. Missing auxiliary video assets currently produce explicit refusal. | HELD |
+| Icon / Vector / VectorGraphic / VectorNode | Actual pinned Lucide or shared validated inert SVG with per-occurrence IDs | Custom SVG justified. Managed vector bypassed common verified-byte read; shared resolver repair implemented, focused regression pending. Theme/brand and namespace browser replay still required. | HELD |
+| AssetProvider / asset store / AssetLibrary | Explicit namespace and digest-addressed IndexedDB/archive contract | Native file input justified (no equivalent existing file field); export/select/remove actions changed to public VICT Button/shared file-field recipe. Toolbar generated part class preserved. Tests/browser pending. | HELD |
+| Changed AI Conversation / Message / PromptInput | Existing pinned upstream shadcn InputGroup/Attachment/message patterns, through registered VICT wrappers | Part-class forwarding and new assistant/user targets retain existing revision pins. Earlier actual-agent appearance repair evidence valid. Recheck current scoped iframe/theme and CSS for full conformance. | HELD |
+| Changed editor canvas / floating tools / Inspector | Existing reusable editor controls; owner-document mapping and canonical part editing additions | Delta primarily realm/ownership/part edit integration, not a new visual library. Inspect new controls against existing editor recipes and preserve drafts/Escape/history. Current integrated check pending. | HELD |
+| CatalogPortal / DocumentHost / RenderNode | Existing registered renderer, explicit ownership and part/theme bridge | Preserve canonical typed contract and owner isolation. New component parts must propagate through this shared mechanism rather than private selectors. Current overlay/capture challenge pending. | HELD |
+
+No owner-approved architecture exceptions are recorded. Native media/SVG/file-input and SvelteFlow geometry above are documented uses of the architecture, not permission to fork shared ordinary controls. No component receives full conformance merely because its source compiles or an offline test passes.
+
+## Bounded repair checkpoint
+
+The graph and patterns builders have finished. Graph now uses shared Button/Select/field recipes and semantic defaults; revision2 declares ten real parts while revision1's pin is byte-identical. Focused19 cases and public-export inventory pass; Svelte reports0errors/5inherited warnings. Pattern actions compose the public catalog Button primitive, Drawer uses actual public catalog Dialog parts with global scroll lock disabled, and Carousel preserves part classes/uses managed MediaImage. Focused25 cases and Svelte0errors/5inherited warnings pass, including the retained focus regression and subsequent repair.
+
+Root media repairs use public VICT Button/shared file presentation and preserve toolbar part classes. Managed SVG now uses the same verified-byte read as other media; custom-store wrong-reference/digest cases refuse. Media package23checks passed, and the affected consumer rerun with the additional canonical toolbar-paint regression passed6cases (overlapping;24unique package cases). Carousel dependency inventory passed the18-case Studio import suite with a complete paired binding. Earlier missing Bits test transform and invalid unpaired fixture failures remain in their separate logs.
+
+The installed-consumer generator also lacked full catalog CSS/ControlScope; it now supplies both and exercises registered editor@2 parts in addition to the standalone graph. Its new packed build is pending. Combined Studio types/build, current native/actual-agent re-observation and fresh independent candidate challenge are pending. The matrix's earlier repair-in-progress language describes the audit checkpoint, not final current-source acceptance. Unchanged legacy read-only Flow helpers are not a demand to rewrite previously accepted components; challenge only conformance of the new integration and any demonstrated regression.
+
+See [graph provenance](AUTHORING-FOUNDATION-GRAPH-PROVENANCE.md), [finding acceptance ledger](AUTHORING-FOUNDATION-ACCEPTANCE.md), [delivery map](AUTHORING-FOUNDATION-DELIVERY.md) and retained evidence. CF-01 is an explicit additional closure requirement; AR-01–29 remain in scope.

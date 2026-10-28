@@ -63,6 +63,35 @@ Install the exported `flowAuthoringDescriptors`, `flowAuthoringImplementations`
 and `flowAuthoringPackage` together; discovery and rendering use the same identity.
 The package includes a valid rich-editor authoring seed with declared graph state.
 
+`vict.flow.editor@2` adds governed presentation parts: `root`, `toolbar`,
+`canvas`, `inspector`, `node`, `node-header`, `node-body`, `field`,
+`field-content` and `port`. These are real renderer surfaces, including repeated
+graph cards/fields; they do not create competing canonical UI nodes. Use
+canonical `partStyles` to author them. Existing `vict.flow.editor@1` retains its
+root-only contract and exact compatibility pin. Both revisions use the same
+graph schema, canonical history bridge and state/persistence behavior.
+
+The graph keeps SvelteFlow geometry, handles and minimap. Ordinary actions and
+connection selectors reuse public VICT `Button` and `Select`; native text,
+number, list and textarea editors use the shared `vict-input` / `vict-textarea`
+presentation recipes while preserving commit-on-change/blur rather than a
+history entry per keystroke. Slider, switch and node select controls remain the
+registered catalog implementations. A node select's real trigger is labelled
+through its presentation attributes without amending the catalog's frozen @1
+prop contract. The action row is an accessible group; it does not claim a
+roving-tabindex toolbar contract.
+
+Consumers load `@victframework/ui-svelte/styles.css`, then `catalog.css`, and
+optionally `rhea.css`, and mount the graph in the shared `ControlScope` (with
+`class="vict-rhea"` when using Rhea). A standalone consumer must retain its
+scope around owned popups as well as triggers. The Studio isolated viewport
+supplies the same scope inside its iframe; an outer-page ancestor cannot
+supply CSS scope across that document boundary. Graph shell defaults inherit
+shared semantic colors, typography, spacing, radius and focus tokens; explicit
+`--vict-flow-node`, `--vict-flow-text`, `--vict-flow-border` and
+`--vict-flow-focus` overrides remain available. Native graph fields also retain
+the explicit `--vict-flow-input` background override over their shared recipe.
+
 The `graph` prop is JSON with schema `vict.flow-graph@1`, a numeric revision,
 node families, nodes and edges. Families declare fields and named typed ports;
 nodes retain their parameter values, positions and collapsed bodies. Fields

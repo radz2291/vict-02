@@ -1,0 +1,25 @@
+{
+  "status": "builder scoped checks PASS; integrated acceptance HELD",
+  "testedFiles": {
+    "src/ActionButton.svelte": "404BAF44EE4F0701F772386A721E58A897CAC5B7BA1DFF0E671F6C0119CE976C",
+    "src/Carousel.svelte": "59BF9C0F0A394139A4D1A6F8D163BFB6363D67791089A71FD853A1813F033853",
+    "src/Drawer.svelte": "4457B384F6FF7DFD490E76AF0EC9FAFF105500A2B770D8A182ED11059E36E3FA",
+    "src/FilteredList.svelte": "5BBFAC7FEF2F0AD5855894784EBF3B14733A3828750A1F9A9E8B91C9E3B43AA2",
+    "src/FirstVisit.svelte": "6897E4284DA7448DABBDD79CE28E1A8697F0831D703F5F69CB6582BA2FEBC08A",
+    "src/Navigation.svelte": "BEACB69D10A69D7360CF740CED89FC954779F67691689C22E3CE4EFDB48249CA",
+    "src/focus.ts": "560DE62CC1B8B68642C3E2C0C745425EECD62F9BE421C77DE88CEE6692238F77"
+  },
+  "tests": {
+    "files": 2,
+    "log": "Temp/vict-patterns-conformance-sealed.log",
+    "passed": 25
+  },
+  "types": {
+    "log": "Temp/vict-patterns-conformance-sealed-types.log",
+    "inheritedWarnings": 5,
+    "errors": 0
+  },
+  "browser": "not performed by this builder",
+  "provider": "not invoked",
+  "independent": "pending"
+}

@@ -1,4 +1,5 @@
 import type { UiExtensionDescriptor } from '@victframework/ui';
+import { graphEditorParts } from '../editor/presentation.js';
 const base = {
   revision: '1',
   abi: 'vict.ui-component-abi@1',
@@ -79,9 +80,12 @@ export const flowEditorDescriptor: UiExtensionDescriptor = {
     'System clipboard is not accessed: the visible portable selection buffer supports copy/paste.',
   ],
 };
+/** Explicit parts are a new contract; the retained root-only @1 is unchanged. */
+export const flowEditorDescriptorV2: UiExtensionDescriptor = { ...flowEditorDescriptor, revision: '2', styleTargets: graphEditorParts };
 export const flowAuthoringDescriptors = [
   flowCanvasDescriptor,
   flowNodeDescriptor,
   flowEdgeDescriptor,
   flowEditorDescriptor,
+  flowEditorDescriptorV2,
 ] as const;

@@ -11,7 +11,7 @@ import { mediaAuthoringPackage } from '../src/authoring.js';
 import { mediaAuthoringDescriptors } from '../src/descriptors.js';
 import { mediaAuthoringImplementations } from '../src/implementations.js';
 import { createIconRegistry, importCustomIconPack } from '../src/icons.js';
-import { memoryAssetStore } from '../src/assets.js';
+import { memoryAssetStore, importMediaAsset } from '../src/assets.js';
 import { embedUrl } from '../src/context.js';
 import Consumer from './Consumer.svelte';
 const node = (
@@ -49,6 +49,29 @@ const settle = async () => {
   flushSync();
 };
 describe('registered media consumer', () => {
+  it('retains canonical toolbar part paint and uses the public VICT action control', async () => {
+    const library={...node('library','vict.media.asset-library',{label:'Supplied assets'}),partStyles:{toolbar:{localStyle:[{property:'padding-top',value:{type:'text' as const,value:'17px'}}]}}};
+    const target=document.createElement('div');document.body.append(target);
+    const instance=mount(Consumer,{target,props:{source:doc([library]),store:memoryAssetStore()}});await settle();
+    const toolbar=target.querySelector<HTMLElement>('[data-ui-part="toolbar"]');
+    expect(toolbar).not.toBeNull();expect(getComputedStyle(toolbar!).paddingTop).toBe('17px');
+    expect(toolbar?.querySelector('button.vict-btn')?.textContent).toBe('Export media archive');
+    await unmount(instance);target.remove();
+  });
+  it('renders a verified managed SVG and refuses substituted bytes from a custom store', async () => {
+    const svg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#ff00ff"/></svg>';
+    const asset=await importMediaAsset(new File([svg],'brand.svg',{type:'image/svg+xml'}));
+    for (const tampered of [false,true]) {
+      const bytes=new TextEncoder().encode(svg.replace('#ff00ff','#00ff00'));
+      const store={...memoryAssetStore(),get:async()=>tampered?{...asset,bytes}:asset};
+      const target=document.createElement('div');document.body.append(target);
+      const instance=mount(Consumer,{target,props:{source:doc([node('brand','vict.media.vector',{source:asset.reference,label:'Managed brand'})]),store}});
+      await settle();
+      if(tampered){expect(target.querySelector('[role=alert]')?.textContent).toContain('digest/size');expect(target.querySelector('svg')).toBeNull();}
+      else{expect(target.querySelector('svg')?.getAttribute('aria-label')).toBe('Managed brand');expect(target.querySelector('circle')?.getAttribute('fill')).toBe('#ff00ff');}
+      await unmount(instance);target.remove();
+    }
+  });
   it('pins actual descriptors/capabilities and compiles every agent-facing seed', () => {
     expect(
       createUiAuthoringRegistry([mediaAuthoringPackage], mediaAuthoringImplementations, {

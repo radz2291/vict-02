@@ -15,6 +15,4 @@
       : undefined,
   );
 </script>
-<div {...presentation?.target('root')}>
-  <GraphEditor graph={String(props.graph??'')} label={String(props.label??'Node editor')} height={typeof props.height==='number'?props.height:600} readOnly={props.readOnly===true} {history} {validate} {viewState} ongraphchange={value=>io?.emit('graphChange',value)} onselectionchange={value=>io?.emit('selectionChange',JSON.stringify(value))}/>
-</div>
+<GraphEditor {presentation} graph={String(props.graph??'')} label={String(props.label??'Node editor')} height={typeof props.height==='number'?props.height:600} readOnly={props.readOnly===true} {history} {validate} {viewState} ongraphchange={value=>io?.emit('graphChange',value)} onselectionchange={value=>io?.emit('selectionChange',JSON.stringify(value))}/>

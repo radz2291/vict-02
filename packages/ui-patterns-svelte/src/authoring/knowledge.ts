@@ -41,7 +41,7 @@ const snippets: Record<
     purpose:
       'Real controlled slide navigation with previous/next, indicators, keyboard buttons and horizontal pointer swipe.',
     guidance: [
-      'Bind index and indexChange to the same numeric local state. slides is a stringList of image URLs when images=true, otherwise text. labels supplies image alternative text.',
+      'Bind index and indexChange to the same numeric local state. slides is a stringList of managed asset references or supported image URLs when images=true, otherwise text. labels supplies image alternative text. Image slides use the shared media resolver and require the same application asset host as other managed images.',
       'Default no auto-rotation and no looping. Swipe changes slides only when clearly horizontal; vertical scroll stays native. Empty slides show an honest empty state.',
       'A carousel is distinct from tabs. Test first/last boundaries, swipe, keyboard activation, alt text and responsive sizing.',
     ],

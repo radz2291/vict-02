@@ -179,20 +179,22 @@ export interface ResolvedMediaAsset {
   readonly mime?: string;
   readonly release: () => void;
 }
+/** One verified managed-byte boundary shared by raster, video and inert vector consumers. */
+export async function readManagedMediaAsset(source: string, store?: MediaAssetStore): Promise<MediaAsset> {
+  if (!/^asset:sha256:[a-f0-9]{64}$/.test(source)) throw Error('Invalid managed asset reference.');
+  if (!store) throw Error('Managed media needs the application asset host.');
+  const asset = await store.get(source);
+  if (!asset) throw Error('Asset bytes are unavailable. Import its media archive or select a supplied asset.');
+  if (asset.reference !== source) throw Error('Managed asset does not match the requested reference.');
+  await verifyStoredAsset(asset);
+  return asset;
+}
 export async function resolveMediaAsset(
   source: string,
   store?: MediaAssetStore,
 ): Promise<ResolvedMediaAsset> {
   if (source.startsWith('asset:')) {
-    if (!/^asset:sha256:[a-f0-9]{64}$/.test(source))
-      throw Error('Invalid managed asset reference.');
-    if (!store) throw Error('Managed media needs the application asset host.');
-    const asset = await store.get(source);
-    if (!asset)
-      throw Error(
-        'Asset bytes are unavailable. Import its media archive or select a supplied asset.',
-      );
-    await verifyStoredAsset(asset);
+    const asset = await readManagedMediaAsset(source, store);
     const url = URL.createObjectURL(
       new Blob([asset.bytes.slice().buffer as ArrayBuffer], { type: asset.mime }),
     );
