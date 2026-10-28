@@ -1,0 +1,59 @@
+
+ RUN  v3.2.7 C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/apps/studio
+
+6:29:10 pm [vite-plugin-svelte] C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+6:29:10 pm [vite-plugin-svelte] C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/packages/ui-svelte/src/document/RenderNode.svelte:311:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+6:29:10 pm [vite-plugin-svelte] C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/packages/ui-svelte/src/document/RenderNode.svelte:311:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+6:29:10 pm [vite-plugin-svelte] C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/packages/ui-svelte/src/document/RenderNode.svelte:381:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+6:29:10 pm [vite-plugin-svelte] C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/packages/ui-svelte/src/document/RenderNode.svelte:381:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+stdout | ../../docs/studio/foundation-evidence/fresh-integration-20261028/string-amendment-independent.test.ts > independently challenges the direct presentation-string amendment through current source
+{
+  "candidateSHA": "20fb566221a13eb7c68653f299f45c6222666c69",
+  "amendmentSHA": "7152a897cb6b61f8fa32a2db9c60b99ca1f24cab",
+  "verdict": "PASS - direct string amendment; inherited presentation finding retained",
+  "recipeCount": 133,
+  "regexCharacters": 2180,
+  "editSerializedBytes": 17850,
+  "positiveCatalogProbes": 133,
+  "rejectedUnknownCatalogProbes": 679,
+  "validLongLeafCases": 5,
+  "exactAggregateBoundary": {
+    "pass": 32768,
+    "refuse": 32769
+  },
+  "earlyHugeLeafStringifyCalls": 0,
+  "proxyTrapCalls": 0,
+  "getterCalls": 0,
+  "immutableProviderFacingCapture": true,
+  "authoritativeParseCalls": 2,
+  "capabilityInvokeCalls": 0,
+  "adapterRevision": "4",
+  "inheritedPresentationFindings": [],
+  "sourceHashes": {
+    "packages/mastra/src/presentation.ts": "307b37008ed75073472ff3186bdf6a63d4ea9ab398f6e46cf038d3f23b33d7a0",
+    "packages/mastra/src/compatibility.ts": "58f521eb4459fe76f8d97791a20b16accb43af2c16990097ece9306fadd252b5",
+    "apps/studio/src/lib/designer/agent-edit-presentation.ts": "97cf8f502686d4c090ab1bfe4e174cafecdf081fcfa637ffc122418131c89507",
+    "docs/report/VICT-PRESENTATION-STRING-BOUND-AMENDMENT-20261028.md": "be72477336fe2a1144d15bc9f8f2f3946e7b4cff08fbae6353b5bdc71889cf91"
+  },
+  "limits": [
+    "No live agent or provider request",
+    "No browser/server/build/dist action",
+    "Existing long catalog source restored byte-for-byte",
+    "Inherited trailing-LF schema guidance match is not argument authority and predates amendment",
+    "Integrated acceptance remains HELD"
+  ]
+}
+
+ Γ£ô ../../docs/studio/foundation-evidence/fresh-integration-20261028/string-amendment-independent.test.ts (1 test) 691ms
+   Γ£ô independently challenges the direct presentation-string amendment through current source  689ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed (1)
+   Start at  18:28:48
+   Duration  46.78s (transform 27.05s, setup 0ms, collect 44.91s, tests 691ms, environment 0ms, prepare 370ms)
+

@@ -1,0 +1,36 @@
+{
+  "candidateSHA": "20fb566221a13eb7c68653f299f45c6222666c69",
+  "amendmentSHA": "7152a897cb6b61f8fa32a2db9c60b99ca1f24cab",
+  "verdict": "PASS - scoped direct presentation-string amendment",
+  "recipeCount": 133,
+  "regexCharacters": 2180,
+  "editSerializedBytes": 17850,
+  "positiveCatalogProbes": 133,
+  "rejectedUnknownCatalogProbes": 679,
+  "validLongLeafCases": 5,
+  "exactAggregateBoundary": {
+    "pass": 32768,
+    "refuse": 32769
+  },
+  "earlyHugeLeafStringifyCalls": 0,
+  "proxyTrapCalls": 0,
+  "getterCalls": 0,
+  "immutableProviderFacingCapture": true,
+  "authoritativeParseCalls": 2,
+  "capabilityInvokeCalls": 0,
+  "adapterRevision": "4",
+  "inheritedPresentationFindings": [],
+  "sourceHashes": {
+    "packages/mastra/src/presentation.ts": "307b37008ed75073472ff3186bdf6a63d4ea9ab398f6e46cf038d3f23b33d7a0",
+    "packages/mastra/src/compatibility.ts": "58f521eb4459fe76f8d97791a20b16accb43af2c16990097ece9306fadd252b5",
+    "apps/studio/src/lib/designer/agent-edit-presentation.ts": "97cf8f502686d4c090ab1bfe4e174cafecdf081fcfa637ffc122418131c89507",
+    "docs/report/VICT-PRESENTATION-STRING-BOUND-AMENDMENT-20261028.md": "be72477336fe2a1144d15bc9f8f2f3946e7b4cff08fbae6353b5bdc71889cf91"
+  },
+  "limits": [
+    "No live agent or provider request",
+    "No browser/server/build/dist action",
+    "Existing long catalog source restored byte-for-byte",
+    "All133 trailing-line-feed probes rejected; no inherited presentation finding observed",
+    "Integrated acceptance remains HELD"
+  ]
+}
