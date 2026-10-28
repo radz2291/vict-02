@@ -1,0 +1,29 @@
+{
+  "schema": "vict.foundation-browser-access@1",
+  "recordedAt": "2026-10-28T04:25:30Z",
+  "exactDenialEventTimestamp": null,
+  "savedCheckpoint": "536e5fcfd527e2976ed8984ca697e6e07f6be6a8",
+  "authority": "Owner at04:22UTC approved one supported internal-browser access retry after PC restart. No bypass or other browser authorized.",
+  "preflight": {
+    "workingTree": "clean",
+    "productionBuildPresent": true,
+    "port5625InitiallyListening": false,
+    "server": "Existing launcher restarted; exec session46276 reported Listening on http://127.0.0.25:5625",
+    "provider": "Existing Z.ai Coding Plan endpoint and existing auth-file boundary verified; no key printed, copied or configured persistently; no provider call.",
+    "internalTabLookup": "Exact /design tab not found; documented same-browser inventory returned empty. This was normal tab absence, not a runtime crash or origin approval.",
+    "internalTabInventory": []
+  },
+  "deniedAction": "resumedStudio = await cua.createBrowserTab('iab','http://127.0.0.25:5625/design',{visible:false})",
+  "targetOrigin": "http://127.0.0.25:5625",
+  "targetPage": "http://127.0.0.25:5625/design",
+  "status": "DENIED by saved permission or managed policy; no page content returned",
+  "reason": "A saved user permission setting blocks this action. Browser use could not acquire authority to trigger network egress. The origin approval gate did not grant access. A saved permission or managed policy denies access.",
+  "outcomePrecision": "Navigation was blocked before page access. Whether a blank tab was created is not verified; no further browser operation was used to inspect or retry it.",
+  "afterDenial": "All browser attempts stopped. No alternate browser, desktop inspection, CDP, indirect page fetch, permission change or runtime reset. A PC restart is not treated as origin authorization.",
+  "otherBoundaries": {
+    "menuTooltipExtension": "Still pending owner approval; no implementation.",
+    "olderUndoDenial": "Separate and stopped; no retry.",
+    "codeChecks": "Prior valid evidence reused; no duplicate tests/build/provider runs.",
+    "publication": "No push, merge, publication, deployment or security change."
+  }
+}
