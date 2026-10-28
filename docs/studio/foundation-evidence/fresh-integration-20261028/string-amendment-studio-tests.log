@@ -1,0 +1,39 @@
+
+ RUN  v3.2.7 C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/apps/studio
+
+6:24:35 pm [vite-plugin-svelte] C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+6:24:35 pm [vite-plugin-svelte] C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/packages/ui-svelte/src/document/RenderNode.svelte:311:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+6:24:35 pm [vite-plugin-svelte] C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/packages/ui-svelte/src/document/RenderNode.svelte:311:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+6:24:35 pm [vite-plugin-svelte] C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/packages/ui-svelte/src/document/RenderNode.svelte:381:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+6:24:35 pm [vite-plugin-svelte] C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/packages/ui-svelte/src/document/RenderNode.svelte:381:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+ Γ£ô tests/designer-agent-mastra.test.ts (20 tests) 32126ms
+   Γ£ô Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > does not mistake a successfully invoked but refused edit for recovery  2163ms
+   Γ£ô Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > gives GLM its full published output allowance without a thinking override (offline seam)  1732ms
+   Γ£ô Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > reports an unrecovered tool failure truthfully, with prior effects=false  1716ms
+   Γ£ô Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > reports an unrecovered tool failure truthfully, with prior effects=true  1782ms
+   Γ£ô Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > contains length provider output with zero proposals and truthful terminal code  1385ms
+   Γ£ô Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > contains partial provider output with zero proposals and truthful terminal code  1399ms
+   Γ£ô Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > allows a successful ordinary answer without edits  1605ms
+   Γ£ô Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > recovers a wrong source-version argument on an existing saved screen in the same governed turn  1733ms
+   Γ£ô Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > keeps a genuine browser revision refusal fenced even after a model re-read and retry  1768ms
+   Γ£ô Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > runs governed read and edit tools; acknowledges only after EditorBridge commit; streams completion  1710ms
+   Γ£ô Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > sanitizes a genuine Mastra model failure after an acknowledged edit and preserves Undo  1385ms
+   Γ£ô Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > cancels a proposal before acknowledgement with zero edits and no cross-session cancellation  1754ms
+   Γ£ô Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > admits the next turn at terminal delivery while private cleanup is still pending  1977ms
+   Γ£ô reports a host deadline separately from explicit Stop without waiting for production wall time (offline deadline seam)  1379ms
+   Γ£ô labels agent-declared subset coverage separately from the complete catalog inventory (offline fixture)  1770ms
+   Γ£ô makes bounded precise pre-invocation refusal guidance available to the model on the next overview read  1796ms
+   Γ£ô keeps actual malformed read parsing outside tool attempts and lets the corrected read recover its own boundary (offline)  1681ms
+   Γ£ô delivers an actual canonical style-reference cause to the model and subsequent overview without proposing an edit (offline)  1698ms
+   Γ£ô delivers capture-comparison scope, complete-body digest reuse and Studio host rules to the actual pinned executor model prompt (offline)  1666ms
+
+ Test Files  1 passed (1)
+      Tests  20 passed (20)
+   Start at  18:24:13
+   Duration  83.00s (transform 29.77s, setup 0ms, collect 49.27s, tests 32.13s, environment 1ms, prepare 792ms)
+

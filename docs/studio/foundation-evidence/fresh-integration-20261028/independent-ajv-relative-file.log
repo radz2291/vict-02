@@ -1,0 +1,69 @@
+
+ RUN  v3.2.7 C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/apps/studio
+
+6:19:05 pm [vite-plugin-svelte] C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+6:19:05 pm [vite-plugin-svelte] C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/packages/ui-svelte/src/document/RenderNode.svelte:311:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+6:19:05 pm [vite-plugin-svelte] C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/packages/ui-svelte/src/document/RenderNode.svelte:311:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+6:19:05 pm [vite-plugin-svelte] C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/packages/ui-svelte/src/document/RenderNode.svelte:381:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+6:19:05 pm [vite-plugin-svelte] C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/packages/ui-svelte/src/document/RenderNode.svelte:381:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+stdout | ../../docs/studio/foundation-evidence/fresh-integration-20261028/independent-schema-check.ts > independently validates the exact expanded recipe vocabulary with AJV and frozen capture
+{
+  "candidateSHA": "42e36ced00499009bfb3dd36a8295470304911ac",
+  "verdict": "PASS - scoped frozen presentation and exact vocabulary repair",
+  "actualRecipeCount": 133,
+  "enumChunkLengths": [
+    64,
+    64,
+    5
+  ],
+  "positiveSchemaProbes": 266,
+  "negativeSchemaProbes": 1366,
+  "editDimensions": {
+    "maxDepth": 8,
+    "maxFieldsPerObject": 45,
+    "maxArrayLength": 64,
+    "maxStringLength": 141,
+    "totalBytes": 15711
+  },
+  "readDimensions": {
+    "maxDepth": 6,
+    "maxFieldsPerObject": 21,
+    "maxArrayLength": 18,
+    "maxStringLength": 129,
+    "totalBytes": 1598
+  },
+  "frozenBoundsAndAdmissionUnchanged": [
+    "packages/mastra/src/presentation.ts",
+    "apps/studio/src/lib/designer/agent-edits.ts",
+    "apps/studio/src/lib/designer/agent-reads.ts"
+  ],
+  "sourceHashes": {
+    "apps/studio/src/lib/designer/agent-edit-presentation.ts": "ccd84d449e169afd43d340abe1a00b62bdba55289fd95340ba0b8b22009bcd3b",
+    "apps/studio/tests/designer-agent-mastra.test.ts": "d08fac317c2d5985461fded19ff9b9b4be67fa6d6df857a3f2208991dac30bad",
+    "packages/mastra/src/presentation.ts": "ee7cff72d192c3fcaf9d3e80d7c04984f050119feb0812149c0bf53c6fa2a157",
+    "apps/studio/src/lib/designer/agent-edits.ts": "327df4e5703f88daad955595c7e88a3e1c5350e58455cbd45ba231ff28487723",
+    "apps/studio/src/lib/designer/agent-reads.ts": "4decb13b12afac0e3949939de0548ea1394e121dacf1390024e099972bb44c7c"
+  },
+  "graphEvidenceReview": "Saved canonical source and Run DOM retain 3 nodes, 2 connections, uppercase mode and both prior manual input/output values. This review reads retained evidence only; no independent browser observation is claimed.",
+  "limits": [
+    "No live provider or actual-agent retry",
+    "Running old production build not restarted or rebuilt",
+    "No browser, server or network action",
+    "Integrated foundation verdict remains HELD",
+    "No source repair authored by verifier"
+  ]
+}
+
+ Γ£ô ../../docs/studio/foundation-evidence/fresh-integration-20261028/independent-schema-check.ts (1 test) 552ms
+   Γ£ô independently validates the exact expanded recipe vocabulary with AJV and frozen capture  550ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed (1)
+   Start at  18:18:46
+   Duration  39.85s (transform 22.35s, setup 0ms, collect 38.36s, tests 552ms, environment 0ms, prepare 336ms)
+

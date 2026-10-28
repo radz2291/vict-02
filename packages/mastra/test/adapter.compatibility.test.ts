@@ -49,7 +49,7 @@ describe('adapter compatibility marker (MSTR-002)', () => {
   });
 
   it('a pinned version change changes the profile version through the marker', () => {
-    function profileWith(coreVersion: string) {
+    function profileWith(coreVersion: string, adapterRevision: string = MASTRA_ADAPTER_COMPATIBILITY.revision) {
       return defineAgentProfile({
         schema: AGENT_PROFILE_SCHEMA,
         id: 'agent.compat',
@@ -66,16 +66,22 @@ describe('adapter compatibility marker (MSTR-002)', () => {
         memoryPolicy: { id: 'mp', revision: '1' },
         adapter: {
           id: '@victframework/mastra',
-          revision: MASTRA_ADAPTER_COMPATIBILITY.revision,
+          revision: adapterRevision,
           runtimePackages: { '@mastra/core': coreVersion },
         },
       });
     }
     const a = compileAgentProfile(profileWith('1.64.0'));
     const b = compileAgentProfile(profileWith('9.9.9'));
+    const previous = compileAgentProfile(profileWith('1.64.0', '3'));
     expect(a.ok && b.ok).toBe(true);
     if (a.ok && b.ok) {
       expect(a.value.agentProfileVersion).not.toBe(b.value.agentProfileVersion);
+    }
+    expect(MASTRA_ADAPTER_COMPATIBILITY.revision).toBe('4');
+    expect(previous.ok).toBe(true);
+    if (a.ok && previous.ok) {
+      expect(a.value.agentProfileVersion).not.toBe(previous.value.agentProfileVersion);
     }
   });
 });

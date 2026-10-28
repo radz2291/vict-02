@@ -1,0 +1,10 @@
+Candidate: 42e36ced00499009bfb3dd36a8295470304911ac
+Verifier: fresh setup_verifier (no product source changes)
+Command (cwd apps/studio): npx vitest run tests/designer-agent-mastra.test.ts -t "fits the frozen provider presentation bounds"
+Exit code: 0
+Test Files 1 passed (1)
+Tests 1 passed | 19 skipped (20)
+Start at 18:13:39
+Duration 42.60s (transform25.05s, collect41.19s, tests11ms)
+Five inherited Svelte warnings emitted from DocumentHost.svelte and RenderNode.svelte.
+No full20 suite rerun; no browser/server/provider invocation.

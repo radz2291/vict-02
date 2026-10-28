@@ -1,0 +1,30 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation
+
+ Γ¥» |mastra| packages/mastra/test/tool-bridge.audit-remediation.test.ts (31 tests | 1 failed) 351ms
+     ├ù the adapter compatibility marker is revision 3 (model-visible surface change recorded) 13ms
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ» Failed Tests 1 ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»
+
+ FAIL  |mastra| packages/mastra/test/tool-bridge.audit-remediation.test.ts > adjacent cleanup: the captured output schema rides the REAL outputSchema wrapper > the adapter compatibility marker is revision 3 (model-visible surface change recorded)
+AssertionError: expected '4' to be '3' // Object.is equality
+
+Expected: "3"
+Received: "4"
+
+ Γ¥» packages/mastra/test/tool-bridge.audit-remediation.test.ts:1026:51
+    1024|
+    1025|   it('the adapter compatibility marker is revision 3 (model-visible suΓÇª
+    1026|     expect(MASTRA_ADAPTER_COMPATIBILITY.revision).toBe('3');
+       |                                                   ^
+    1027|   });
+    1028| });
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[1/1]ΓÄ»
+
+
+ Test Files  1 failed | 2 passed (3)
+      Tests  1 failed | 46 passed (47)
+   Start at  18:23:53
+   Duration  5.82s (transform 2.83s, setup 0ms, import 11.21s, tests 458ms, environment 1ms)
+

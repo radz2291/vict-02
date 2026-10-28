@@ -1,0 +1,25 @@
+
+ RUN  v3.2.7 C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/apps/studio
+
+ Γ£ô tests/quellight-transport.test.ts (10 tests) 66ms
+ Γ£ô tests/changeset-contract.test.ts (12 tests) 39ms
+ Γ¥» tests/run-detail.test.ts (12 tests | 6 failed) 152ms
+   ├ù S9-02 run-detail reads (G1-shaped canned target) > reads the REDACTED generic record verbatim (no protected bytes by construction) 66ms
+     ΓåÆ expected 'unreachable' to be 'ok' // Object.is equality
+   ├ù S9-02 run-detail reads (G1-shaped canned target) > maps the target envelope error (VICT_RUN_MISSING) truthfully 28ms
+     ΓåÆ expected { kind: 'unreachable' } to deeply equal { kind: 'envelope-error', ΓÇª(2) }
+   ├ù S9-02 run-detail reads (G1-shaped canned target) > reads ordered events and durable waits with the configured queries 7ms
+     ΓåÆ expected 'unreachable' to be 'ok' // Object.is equality
+   ├ù S9-02 run-detail reads (G1-shaped canned target) > run.detail: the DISTINCT detail credential is used; scope denial surfaces the target code; no state change 15ms
+     ΓåÆ expected { kind: 'unreachable' } to deeply equal { kind: 'envelope-error', ΓÇª(2) }
+   Γ£ô S9-02 run-detail reads (G1-shaped canned target) > without a provisioned run.detail grant the protected read is truthfully unavailable (no silent downgrade) 2ms
+   ├ù S9-02 run-detail reads (G1-shaped canned target) > audit read uses the composed subject filter 9ms
+     ΓåÆ expected 'unreachable' to be 'ok' // Object.is equality
+   Γ£ô S9-02 run-detail reads (G1-shaped canned target) > invalid identifiers fail closed BEFORE any fetch 5ms
+   ├ù S9-02 run-detail reads (G1-shaped canned target) > pagination read surfaces total/hasMore verbatim (S9-02 negative-set reader) 5ms
+     ΓåÆ expected 'unreachable' to be 'ok' // Object.is equality
+   Γ£ô S9-02 run-detail reads (G1-shaped canned target) > unreachable target yields a truthful unreachable outcome 6ms
+   Γ£ô S9-02 dual-read compare (stale-revision design) > detects the record moving between the two generic reads 2ms
+   Γ£ô S9-02 dual-read compare (stale-revision design) > reports no movement when both reads agree and never invents a merged state 2ms
+   Γ£ô S9-02 dual-read compare (stale-revision design) > version compare carries the identity/version fields of both reads 1ms
+ Γ£ô tests/designer-visual.test.ts (12 tests) 206ms

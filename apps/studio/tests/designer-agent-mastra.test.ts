@@ -63,16 +63,11 @@ describe('Studio composes existing real pinned Mastra executor (offline model; n
   it('fits the frozen provider presentation bounds without dropping expanded recipes', () => {
     expect(() => capturePresentationSchema(editPresentation, 'expanded Studio edit')).not.toThrow();
     expect(() => capturePresentationSchema(agentReadPresentation, 'Studio read')).not.toThrow();
-    const addProperties = editPresentation.$defs.add.properties as Record<string, unknown>;
-    expect(addProperties.recipe).toEqual({ $ref: '#/$defs/recipe' });
-    expect(editPresentation.properties.operations.items.properties.recipe).toEqual({ $ref: '#/$defs/recipe' });
-    const chunks = editPresentation.$defs.recipe.anyOf;
-    expect(chunks.every(chunk => chunk.enum.length > 0 && chunk.enum.length <= 64)).toBe(true);
-    const names = chunks.flatMap(chunk => chunk.enum);
-    expect(names).toEqual(screenRecipes.map(recipe => recipe.id));
-    expect(new Set(names).size).toBe(names.length);
-    expect(names).not.toContain('unregistered');
-    expect(names).not.toContain('dropdown-menuXitem');
+    expect(editPresentation.properties.operations.items.properties.recipe.pattern.length).toBeGreaterThan(2048);
+    const pattern = new RegExp(editPresentation.properties.operations.items.properties.recipe.pattern);
+    for (const recipe of screenRecipes) expect(pattern.test(recipe.id), recipe.id).toBe(true);
+    expect(pattern.test('unregistered')).toBe(false);
+    expect(pattern.test('dropdown-menuXitem')).toBe(false);
   });
   it('does not mistake a successfully invoked but refused edit for recovery', async () => {
     const { bridge, start, input } = context();
@@ -302,7 +297,7 @@ describe('Studio composes existing real pinned Mastra executor (offline model; n
                     recipe: 'heading',
                     nodeId: 'quellight',
                     parentId: 'screen',
-                    text: 'Quellight — your AI workspace',
+                    text: 'Quellight ΓÇö your AI workspace',
                   },
                 ],
               },

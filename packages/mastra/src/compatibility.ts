@@ -34,8 +34,12 @@ export const MASTRA_ADAPTER_ID = '@victframework/mastra';
  * capture rejects proxies natively (zero trap execution), symbol-keyed and
  * non-enumerable fields explicitly, and the total presentation bound is
  * measured as true serialized UTF-8 bytes.
+ *
+ * Revision 4 (2026-10-28 string-bound amendment): presentation strings may
+ * exceed 2048 characters within the unchanged serialized UTF-8 budget.
+ * An early aggregate-budget impossibility check still bounds leaf allocation.
  */
-export const MASTRA_ADAPTER_REVISION = '3';
+export const MASTRA_ADAPTER_REVISION = '4';
 
 /** Exact pinned Mastra package versions used by this adapter. */
 export const MASTRA_PINNED_VERSIONS = {

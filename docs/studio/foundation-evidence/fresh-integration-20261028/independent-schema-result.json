@@ -1,0 +1,46 @@
+{
+  "candidateSHA": "42e36ced00499009bfb3dd36a8295470304911ac",
+  "verdict": "PASS - scoped frozen presentation and exact vocabulary repair",
+  "actualRecipeCount": 133,
+  "enumChunkLengths": [
+    64,
+    64,
+    5
+  ],
+  "positiveSchemaProbes": 266,
+  "negativeSchemaProbes": 1366,
+  "editDimensions": {
+    "maxDepth": 8,
+    "maxFieldsPerObject": 45,
+    "maxArrayLength": 64,
+    "maxStringLength": 141,
+    "totalBytes": 15711
+  },
+  "readDimensions": {
+    "maxDepth": 6,
+    "maxFieldsPerObject": 21,
+    "maxArrayLength": 18,
+    "maxStringLength": 129,
+    "totalBytes": 1598
+  },
+  "frozenBoundsAndAdmissionUnchanged": [
+    "packages/mastra/src/presentation.ts",
+    "apps/studio/src/lib/designer/agent-edits.ts",
+    "apps/studio/src/lib/designer/agent-reads.ts"
+  ],
+  "sourceHashes": {
+    "apps/studio/src/lib/designer/agent-edit-presentation.ts": "ccd84d449e169afd43d340abe1a00b62bdba55289fd95340ba0b8b22009bcd3b",
+    "apps/studio/tests/designer-agent-mastra.test.ts": "d08fac317c2d5985461fded19ff9b9b4be67fa6d6df857a3f2208991dac30bad",
+    "packages/mastra/src/presentation.ts": "ee7cff72d192c3fcaf9d3e80d7c04984f050119feb0812149c0bf53c6fa2a157",
+    "apps/studio/src/lib/designer/agent-edits.ts": "327df4e5703f88daad955595c7e88a3e1c5350e58455cbd45ba231ff28487723",
+    "apps/studio/src/lib/designer/agent-reads.ts": "4decb13b12afac0e3949939de0548ea1394e121dacf1390024e099972bb44c7c"
+  },
+  "graphEvidenceReview": "Saved canonical source and Run DOM retain 3 nodes, 2 connections, uppercase mode and both prior manual input/output values. This review reads retained evidence only; no independent browser observation is claimed.",
+  "limits": [
+    "No live provider or actual-agent retry",
+    "Running old production build not restarted or rebuilt",
+    "No browser, server or network action",
+    "Integrated foundation verdict remains HELD",
+    "No source repair authored by verifier"
+  ]
+}

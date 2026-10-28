@@ -1,0 +1,57 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Foundation AI Review"
+  - generic: ✓ Saved
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- banner:
+  - strong: Chat
+  - button "Hide Chat":
+- complementary "Chat":
+  - region "Conversation":
+    - region "Messages — Message":
+      - log:
+        - generic: You
+        - generic: "Build this current separate screen as a compact responsive Foundation AI Review using the actual newly exposed public VICT AI contracts and semantic theme tokens. Preserve every other saved screen. Discover exact contracts before edits; use short quiet outcome narration and a concise final of Applied / Observed / Untested. Supplied public verification facts: the retained Foundation Graph imported successfully; its prior Input text is \"Manual coexistence after reboot\" and Output name \"Verified coexistence\"; a port-capacity violation was safely refused; deletion, reconnection and creation were exercised; Save/reload and Run showed both values intact. Present these supplied facts only, without inventing execution traces or private reasoning. Compose real public steps/process, a public reasoning summary (\"Review confirmed graph behavior and preserve the prior manual edits.\"), a tool receipt/result with completed status for saved graph Run, supplied source link https://github.com/radz2291/vict-02, an attachment descriptor for graph-current-saved-source.json (presentation only), and an action surface with typed local output binding and a visible result. Include standalone safe Markdown with a short verification note, a controlled draft composer, and one owned dropdown/hovercard or disclosure to exercise. Use newly exposed registered patterns rather than handmade imitation cards. This is presentation and typed intent only: no provider/tool execution, approval authority, extra network calls or private chain of thought. Use compact data within tool limits, validate coherent batches; one final current image observation, truthfully report any crop or untested behavior. Do not attempt undo, do not repeat already confirmed graph edits. No external media fetch needed."
+        - button "Copy message":
+        - generic: Assistant
+        - generic "Conversation timeline":
+          - button "studio_agent failed":
+            - generic: studio_agent
+            - generic: failed
+    - button "Scroll to latest message":
+      - generic: Scroll to end
+    - textbox "Message" [active]:
+      - /placeholder: Ask for a change…
+      - text: Panel preservation probe — do not send.
+    - button "Send":
+      - generic: Send
+    - status
+  - status "The agent could not start with its current configuration. Check Chat details and the server configuration before retrying. No edits were applied.":
+    - generic: The agent could not start with its current configuration. Check Chat details and the server configuration before retrying. No edits were applied.
+  - button "Chat details": ···
+- separator "Chat width"
+- main:
+  - button "Toggle Chat drawer" [expanded]:
+  - group "Workspace mode":
+    - button "Design" [pressed]
+    - button "Interact"
+    - button "Structure"
+  - button "Toggle Document and Selection drawer":
+  - iframe:
+    - generic "Screen canvas":
+      - main "Foundation AI Review"
+  - generic: ＋
+  - heading "What will you make?" [level=1]
+  - paragraph: Select this screen to open its tools, then choose Insert.
+- contentinfo:
+  - status: Saved Foundation AI Review · revision r1.r1
+- generic: Designer — VICT Studio

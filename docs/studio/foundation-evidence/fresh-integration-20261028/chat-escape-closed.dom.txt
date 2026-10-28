@@ -1,0 +1,30 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Foundation AI Review"
+  - generic: ✓ Saved
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- main:
+  - button "Toggle Chat drawer" [active]:
+  - group "Workspace mode":
+    - button "Design" [pressed]
+    - button "Interact"
+    - button "Structure"
+  - button "Toggle Document and Selection drawer":
+  - iframe:
+    - generic "Screen canvas":
+      - main "Foundation AI Review"
+  - generic: ＋
+  - heading "What will you make?" [level=1]
+  - paragraph: Select this screen to open its tools, then choose Insert.
+- contentinfo:
+  - status: Saved Foundation AI Review · revision r1.r1
+- generic: Designer — VICT Studio

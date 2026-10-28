@@ -310,6 +310,27 @@ async function executeTool(tool: unknown, input: unknown): Promise<unknown> {
 // ---- The permanent provider-facing schema proof ----------------------------
 
 describe('B-1: the real tool object exposes the captured model-facing schema', () => {
+  it('presents schema strings above 2048 characters unchanged within the total budget', async () => {
+    const longText = 'public schema guidance '.repeat(150);
+    expect(longText.length).toBeGreaterThan(2048);
+    const declared = { ...PROPOSAL_INPUT_SCHEMA, description: longText };
+    const input = defineContract({
+      id: 'cap.proposal.long-presentation', revision: '1',
+      descriptiveJsonSchema: declared, parse: proposalInputContract.parse,
+    });
+    const capability = makeProposalCapability({ input });
+    const { deps, effectCount } = await makeFixture(capability);
+    const tool = bridgeCapabilityToolToMastra(ACTIVATION, capability, deps);
+    const captured = providerFacingInputSchema(tool) as typeof declared;
+    expect(captured.description).toBe(longText);
+    declared.description = 'changed after construction';
+    expect(captured.description).toBe(longText);
+    expect(Object.isFrozen(captured)).toBe(true);
+    const invalid = await executeTool(tool, {}) as Record<string, unknown>;
+    expect(JSON.stringify(invalid)).toMatch(/vict-contract-rejected|VICT_CAPABILITY_INPUT_CONTRACT_REJECTED/);
+    expect(effectCount()).toBe(0);
+  });
+
   it('the provider-facing declaration contains the exact nested proposal schema', async () => {
     const { deps } = await makeFixture(makeProposalCapability());
     const tool = bridgeCapabilityToolToMastra(ACTIVATION, makeProposalCapability(), deps);
@@ -449,7 +470,7 @@ describe('B-1: invalid presentation metadata fails closed at tool construction',
     // Overbound string.
     expect(() =>
       capturePresentationSchema(
-        { text: 'x'.repeat(PRESENTATION_BOUNDS.maxStringLength + 1) },
+        { text: 'x'.repeat(PRESENTATION_BOUNDS.maxTotalBytes + 1) },
         label,
       ),
     ).toThrowError(VictPresentationError);
