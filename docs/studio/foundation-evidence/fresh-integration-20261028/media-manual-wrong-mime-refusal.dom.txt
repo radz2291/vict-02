@@ -1,0 +1,194 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Foundation Media Live"
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- main:
+  - button "Toggle Chat drawer":
+  - group "Workspace mode":
+    - button "Design" [pressed]
+    - button "Interact"
+    - button "Structure"
+  - button "Toggle Document and Selection drawer" [expanded]:
+  - iframe:
+    - generic "Screen canvas":
+      - main "Foundation Media Live":
+        - heading "Foundation Media Live" [level=2]:
+          - generic: Foundation Media Live
+        - paragraph:
+          - generic: Compact gallery built from the five uploaded namespace assets.
+        - figure "Uploaded synthetic-image.png — supplied local image":
+          - img "Synthetic preview still for the Foundation Media Live gallery"
+          - generic: Uploaded synthetic-image.png — supplied local image
+        - paragraph:
+          - generic: "Image failure: none"
+        - figure "Uploaded synthetic-video.mp4 with poster and English WebVTT captions":
+          - generic "Foundation live demo video"
+          - generic: Uploaded synthetic-video.mp4 with poster and English WebVTT captions
+        - paragraph:
+          - generic: "Video failure: none"
+        - img "Foundation brand mark (instance A)"
+        - img "Foundation brand mark (instance B)"
+        - img "Foundation custom icon":
+        - img "Search foundation media":
+        - paragraph:
+          - generic: "Video playback flag (set by the playing event; idle until exercised):"
+        - paragraph:
+          - generic: "false"
+    - generic "Floating selection tools":
+      - button "Hide tools": ×
+      - generic "Tools for Synthetic preview still for the Foundation Media Live gallery":
+        - tablist "Tool pages":
+          - tab "Format tools" [expanded] [selected]: Format
+          - tab "Insert tools": Insert
+          - tab "Arrange tools": Arrange
+          - tab "Connect tools": Connect
+        - generic "Synthetic preview still for the Foundation Media Live gallery"
+        - tabpanel "Format tools":
+          - complementary "Object properties":
+            - text: Component surface
+            - combobox "Component part":
+              - option "Default surface (root)" [selected]
+              - option "Root"
+              - option "Image"
+              - option "Caption"
+            - paragraph: Default styling keeps existing component behavior. Choose a named surface to edit it independently.
+            - tablist "Format categories":
+              - tab "Properties" [expanded] [selected]
+              - tab "Text"
+              - tab "Fill"
+              - tab "Spacing"
+              - tab "Layout"
+              - tab "Rules"
+            - tabpanel "Properties":
+              - tablist "Component property pages":
+                - tab "Source" [expanded] [selected]
+                - tab "Alt"
+                - tab "Fit"
+                - tab "Aspect Ratio"
+                - tab "Caption"
+                - tab "Eager"
+              - tabpanel "Source":
+                - text: Source
+                - combobox "source source":
+                  - option "Default"
+                  - option "Fixed value" [selected]
+                  - option "State / expression"
+                - textbox "source value": asset:sha256:5c3afc101e908624396dd99b1c37503f41b8b2accd68a320d9ac75cc57af6978
+                - button "Apply value"
+- complementary "Document and Selection":
+  - tablist "Panel context":
+    - tab "Document" [selected]
+    - tab "Selection"
+  - button "Hide Document and Selection":
+  - tabpanel "Document":
+    - region "Document layers":
+      - button "Layers"
+    - region "Document data":
+      - button "Data" [expanded]
+      - generic "Media and graphics"
+      - region "Supplied media":
+        - text: Supply media
+        - button "Supply media"
+        - text: Import media archive
+        - button "Import media archive"
+        - button "Export media archive"
+        - paragraph: Media stays in this browser and application namespace. Export an archive to carry its bytes with saved source.
+        - list:
+          - button "synthetic-captions.vtt"
+          - generic: text/vtt · 1 KB
+          - button "Remove stored asset synthetic-captions.vtt"
+          - button "synthetic-image.png"
+          - generic: image/png · 8 KB
+          - button "Remove stored asset synthetic-image.png"
+          - button "synthetic-poster.png"
+          - generic: image/png · 1 KB
+          - button "Remove stored asset synthetic-poster.png"
+          - button "synthetic-video.mp4"
+          - generic: video/mp4 · 81 KB
+          - button "Remove stored asset synthetic-video.mp4"
+          - button "synthetic-brand.svg"
+          - generic: image/svg+xml · 1 KB
+          - button "Remove stored asset synthetic-brand.svg"
+      - paragraph:
+        - text: "Chosen asset:"
+        - strong: synthetic-video.mp4
+        - text: · video/mp4
+      - text: Attach as
+      - combobox "Attach as":
+        - option "Media source" [selected]
+        - option "Video poster"
+        - option "Video captions"
+      - paragraph: Use replaces this property on the selected media component. For vector or custom icon sources, it clears the previous inline graphic.
+      - button "Use on selected media"
+      - generic: Saved starting values
+      - button "Message Text Hello from my screen":
+        - strong: Message
+        - generic: Text
+        - generic: Hello from my screen
+        - generic: ›
+      - button "Agreement Yes / No No":
+        - strong: Agreement
+        - generic: Yes / No
+        - generic: "No"
+        - generic: ›
+      - button "Dialog open Yes / No No":
+        - strong: Dialog open
+        - generic: Yes / No
+        - generic: "No"
+        - generic: ›
+      - button "Submitting Yes / No No":
+        - strong: Submitting
+        - generic: Yes / No
+        - generic: "No"
+        - generic: ›
+      - button "Action error Text Empty":
+        - strong: Action error
+        - generic: Text
+        - generic: Empty
+        - generic: ›
+      - button "Action result Text Empty":
+        - strong: Action result
+        - generic: Text
+        - generic: Empty
+        - generic: ›
+      - 'button "Image Status Text Image status: waiting"':
+        - strong: Image Status
+        - generic: Text
+        - generic: "Image status: waiting"
+        - generic: ›
+      - 'button "Video Status Text Video status: idle (no playback yet)"':
+        - strong: Video Status
+        - generic: Text
+        - generic: "Video status: idle (no playback yet)"
+        - generic: ›
+      - 'button "Image Error Text Image failure: none"':
+        - strong: Image Error
+        - generic: Text
+        - generic: "Image failure: none"
+        - generic: ›
+      - 'button "Video Error Text Video failure: none"':
+        - strong: Video Error
+        - generic: Text
+        - generic: "Video failure: none"
+        - generic: ›
+      - button "Video Playing Yes / No No":
+        - strong: Video Playing
+        - generic: Yes / No
+        - generic: "No"
+        - generic: ›
+    - region "Document actions":
+      - button "Actions"
+    - region "Document source":
+      - button "Source"
+- contentinfo:
+  - status: The selected video/mp4 asset cannot be used as source on vict.media.image.
+- generic: Designer — VICT Studio

@@ -1,0 +1,17 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/apps/studio
+
+ Γ¥» tests/ui/panel-polish.test.ts (0 test)
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ» Failed Suites 1 ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»
+
+ FAIL  tests/ui/panel-polish.test.ts [ tests/ui/panel-polish.test.ts ]
+Error: EPERM: operation not permitted, rename 'C:\Users\RZ1\AppData\Local\Packages\sandbox.{b1df0232-9397-45bb-870d-01dd5af0a6ca}\AC\Temp\VfMu_v7LgxPcHCX2X2B7C\client\.tmp-1793193074421-gpmrehtg4mi' -> 'C:\Users\RZ1\AppData\Local\Packages\sandbox.{b1df0232-9397-45bb-870d-01dd5af0a6ca}\AC\Temp\VfMu_v7LgxPcHCX2X2B7C\client\d843a23cda68e4e6c1ee941e24ade5f2d53d2130'
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[1/1]ΓÄ»
+
+
+ Test Files  1 failed (1)
+      Tests  no tests
+   Start at  21:11:12
+   Duration  1.92s (transform 0ms, setup 0ms, import 0ms, tests 0ms, environment 1.39s)
+

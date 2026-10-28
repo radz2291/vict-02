@@ -1,13 +1,12 @@
 import { expect } from 'vitest';
-import { tick,flushSync } from 'svelte';
+import { tick } from 'svelte';
 
-/** Exercise the real View menu now that panel launchers are deliberately absent. */
+/** Exercise the current persistent panel launchers in the mode bar. */
 export function workspaceControl(name:string):HTMLElement|undefined {
   const panel=['Chat','Document'].includes(name)?name:name==='Show chat'?'Chat':undefined;
   if(panel){
-    const view=[...document.querySelectorAll<HTMLElement>('.studio-menus > button')].find(node=>node.textContent==='View');
-    if(view?.getAttribute('aria-expanded')!=='true'){view?.dispatchEvent(new KeyboardEvent('keydown',{key:'ArrowDown',bubbles:true,cancelable:true}));flushSync();}
-    return document.querySelector<HTMLElement>(`[role="menuitemcheckbox"][aria-label="${panel}"]`)??undefined;
+    const label=panel==='Chat'?'Toggle Chat drawer':'Toggle Document and Selection drawer';
+    return document.querySelector<HTMLElement>(`button[aria-label="${label}"]`)??undefined;
   }
   return [...document.querySelectorAll<HTMLElement>('button,[role="menuitem"]')].find(node=>node.getAttribute('aria-label')===name||node.textContent?.trim()===name);
 }

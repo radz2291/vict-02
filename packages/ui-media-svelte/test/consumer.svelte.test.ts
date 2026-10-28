@@ -55,7 +55,7 @@ describe('registered media consumer', () => {
     const instance=mount(Consumer,{target,props:{source:doc([library]),store:memoryAssetStore()}});await settle();
     const toolbar=target.querySelector<HTMLElement>('[data-ui-part="toolbar"]');
     expect(toolbar).not.toBeNull();expect(getComputedStyle(toolbar!).paddingTop).toBe('17px');
-    expect(toolbar?.querySelector('button.vict-btn')?.textContent).toBe('Export media archive');
+    expect(Array.from(toolbar!.querySelectorAll('button.vict-btn'),button=>button.textContent)).toEqual(['Supply media','Import media archive','Export media archive']);
     await unmount(instance);target.remove();
   });
   it('renders a verified managed SVG and refuses substituted bytes from a custom store', async () => {

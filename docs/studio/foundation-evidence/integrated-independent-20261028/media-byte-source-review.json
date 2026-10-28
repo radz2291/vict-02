@@ -1,0 +1,75 @@
+{
+  "candidateSHA": "1c8f35086ab864af85e63cef81b20657eaed4067",
+  "byteMembers": [
+    {
+      "name": "synthetic-captions.vtt",
+      "size": 136,
+      "sha256": "2537c65d6abd5d910b304a7380daf7dbf3151064fc83f71c2ed9acfa981145fd",
+      "declaredDigestMatches": true,
+      "referenceMatches": true,
+      "fixtureExactByteEquality": true
+    },
+    {
+      "name": "synthetic-image.png",
+      "size": 7350,
+      "sha256": "5c3afc101e908624396dd99b1c37503f41b8b2accd68a320d9ac75cc57af6978",
+      "declaredDigestMatches": true,
+      "referenceMatches": true,
+      "fixtureExactByteEquality": true
+    },
+    {
+      "name": "synthetic-poster.png",
+      "size": 678,
+      "sha256": "9a2af942bb0fe1ab83336c068f3e8646ca8247ab31aa26dcc7ed52b45b2ca74c",
+      "declaredDigestMatches": true,
+      "referenceMatches": true,
+      "fixtureExactByteEquality": true
+    },
+    {
+      "name": "synthetic-video.mp4",
+      "size": 82613,
+      "sha256": "a5a10026aa8b9b33a76e9b58d89b9fd190557759ac672f5de8be231211027cd1",
+      "declaredDigestMatches": true,
+      "referenceMatches": true,
+      "fixtureExactByteEquality": true
+    },
+    {
+      "name": "synthetic-brand.svg",
+      "size": 524,
+      "sha256": "c468e614c6163875d52c38698c04472603524bbe6f7188e44366a3f80c517614",
+      "declaredDigestMatches": true,
+      "referenceMatches": true,
+      "fixtureExactByteEquality": true
+    }
+  ],
+  "agentNodeCount": 21,
+  "agentToFinalChangedTopKeys": [
+    "revision",
+    "nodes"
+  ],
+  "agentToFinalChangedNodes": [
+    "gallery-image"
+  ],
+  "finalToExportDocumentChangedKeys": [],
+  "finalToImportedChangedKeys": [
+    "id",
+    "revision"
+  ],
+  "importedId": "screen-52ba8d8a-5f78-46ed-a7c0-60d21aa105fd",
+  "importedToAccentChangedKeys": [
+    "revision",
+    "tokens",
+    "theme"
+  ],
+  "importedToAccentChangedNodes": [],
+  "negativeMissingReferences": [
+    "asset:sha256:a5a10026aa8b9b33a76e9b58d89b9fd190557759ac672f5de8be231211027cd1"
+  ],
+  "negativeOtherTopLevelDifferences": [],
+  "nativeRepairedVectorIdCount": 6,
+  "nativeRepairedVectorUniqueIdCount": 6,
+  "limits": [
+    "Read existing files only; no browser/provider/server/build/source operations",
+    "Native metadata/PNG observations were retained by root, not independently replayed"
+  ]
+}

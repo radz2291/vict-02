@@ -1,0 +1,28 @@
+{
+  "head": "1c8f35086ab864af85e63cef81b20657eaed4067",
+  "role": "Read-only independent source/style audit; candidate repair is concurrent",
+  "reviewedPaths": {
+    "packages/ui-svelte/src/Button.svelte": "3be03f1613a7af2279bf9da227df757b59a8a3fac2a04f1469bf21f844b6ba6d",
+    "packages/ui-svelte/src/styles.css": "2703ae4e847e2f5f80532fa4df56834638184180edcc156ec88d7994ec39c745",
+    "apps/studio/src/lib/designer/designer.css": "89f10eeb6ac555b62431b2b2e7446ea2e02f79bc37a5c37b78bf08bb10aef4f7",
+    "packages/ui-svelte/src/catalog.css": "b1e4be220d1c0f8d58ba209dffb3358e9849d60a336c28ca8864c669c73b2e14",
+    "packages/ui-svelte/src/catalog/components/CatalogButton.svelte": "c7b862e3d9ab87995a9949d6d9ea37ed738ff36602f7594c2ad7113972a893ec",
+    "apps/studio/src/lib/designer/studio-theme.css": "327f44d40b4f0fecc097f580e72250c51ce315a16bd4cbe4bb6dab6cd3d293d0",
+    "packages/ui-svelte/src/rhea.css": "24f1d5849bf98f23f2789f5ac722947ecf4ea89c0f6e5eb944772f8fac8d3423",
+    "apps/studio/src/lib/designer/DataEditorHeader.svelte": "9b732a7dfde798ebe3c351f16a1d0495798c53476e9ea816cf751e231168c9e2",
+    "apps/studio/src/lib/designer/Designer.svelte": "41c6cdcef7e527d5bb3a98da600e41d58c9000a10f5ea64e52d472c7487a6a81",
+    "apps/studio/src/lib/designer/WorkspacePanelHeader.svelte": "707f75ee72b3b3794138a7c1c7caa49e5af1f5e22b2106ddd7947416f3440122",
+    "packages/ui-svelte/src/catalog/button.ts": "074628e5cfe25756fcbabf116783133aeb46ef2675d2fa49ea59ddca810dd40d",
+    "apps/studio/src/lib/designer/studio-typography.css": "c59aefa99952662cff27ffd69ac4feb7ed4513b45c0e4331bac7ee3110939051",
+    "packages/ui-media-svelte/src/AssetLibrary.svelte": "8efa2622aef77e559b351872b162f0bca37f80f371f266496f0750fbfd3a4557"
+  },
+  "visualReference": "fresh-integration-20261028/document-media-panel-conformance-before.png",
+  "scope": "Media library, media attachment, Source actions and related current panel control styling",
+  "noActions": [
+    "No product source edits",
+    "No browser/provider/server",
+    "No builds",
+    "No stage commit"
+  ],
+  "verdict": "FAIL at observed pre-repair snapshot; final candidate and native style verification required"
+}

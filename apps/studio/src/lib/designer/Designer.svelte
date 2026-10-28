@@ -9,7 +9,8 @@
   import {prepareSourceImport} from './source-import.js';
   import type {MediaAssetMetadata} from '@victframework/ui-media-svelte/assets';
   import {ApplicationViewport} from '@victframework/ui-svelte/viewport';
-  import { ControlScope } from '@victframework/ui-svelte';
+  import { ControlScope, Select as VictSelect } from '@victframework/ui-svelte';
+  import { Button as StudioButton } from '@victframework/ui-svelte/catalog/button';
   import { Composer, EditorBridge, EditorCanvas, Inspector, Layers, PanelResizer, StateInitialEditor, SelectionPalette, setAttribute, canvasSelectionTarget, resolveOccurrence, compositionParent, compositionName, literalTextTarget, duplicateSubtree, type TransactionDraft } from '@victframework/ui-editor';
   import { createPreviewSession } from '@victframework/ui-preview';
   import { CompositionNavigator, authoredOccurrence, compositionSlots, compositionMembers, compositionTrail, firstCompositionSlot, type CompositionFocus } from '@victframework/ui-editor';
@@ -178,6 +179,7 @@
   import '@victframework/ui-svelte/rhea.css';
   import './studio-theme.css';
   import './studio-typography.css';
+  import './studio-controls.css';
 
   let bridge = $state<EditorBridge>();
   let version = $state(0);
@@ -193,7 +195,7 @@
   async function refreshMediaMetadata(id:string){try{const list=await indexedDbAssetStore(`vict.studio.assets.${id}`).list();if(source?.id===id)mediaInventory=agentMediaInventorySnapshot(id,list);}catch{if(source?.id===id)mediaInventory=undefined;}}
   $effect(()=>{const id=source?.id;if(id)untrack(()=>{if(mediaListingDocument!==id){mediaListingDocument=id;mediaInventory=undefined;void refreshMediaMetadata(id);}});});
   let pendingMedia=$state<{documentId:string;asset:MediaAssetMetadata}>();
-  let mediaField=$state<MediaAttachmentField>('source');
+  let mediaField=$state<MediaAttachmentField|''>('source');
   let attachingMedia=$state(false);
   let importingSource=$state(false);
   let sourceFileInput:HTMLInputElement;
@@ -225,7 +227,7 @@
     catch{notice='The selected media is unavailable in this screen.';}
   }
   async function attachMedia(){
-    if(!source||!bridge||!assetStore||!pendingMedia||attachingMedia)return;
+    if(!source||!bridge||!assetStore||!pendingMedia||attachingMedia||!mediaField)return;
     const documentId=source.id,revision=bridge.getSnapshot().revision,selectionToken=JSON.stringify(workspaceSelection),choice=pendingMedia,store=assetStore,field=mediaField;
     if(choice.documentId!==documentId){notice='Choose media from the current screen library.';return;}
     attachingMedia=true;
@@ -809,8 +811,8 @@
       {#snippet documentContent()}<DocumentPanels bind:active={documentPanel}>
         {#snippet layersContent()}{#if plan}<Layers scope={{state:runtimeValues,tokens:Object.fromEntries(Object.entries(source.tokens).map(([key,value])=>[key,value.value]))}} {selectedSourceIds} selectedOccurrences={selectedOccurrences} onSelectionIntent={layerSelection} compact hideTextContent showSelectionDetails={false} labels={editorLabels} {plan} document={source} selectedOccurrence={selected} onSelect={selectFromStructure} onInspect={(occurrence:string,nodeId:string,detail:string,sourceOnly?:boolean)=>{if(textDraftDirty || sourceDraftDirty || renamingScreen)return;if(sourceOnly){updateSelection([{kind:'node',id:structureId(source.id,'node',nodeId)}]);}else{selectFromStructure(occurrence);layerProvenance={occurrence,detail};}inspectSource(structureId(source.id,'node',nodeId));}} onOpenComposition={navigateComposition} componentDescriptors={catalogDescriptors} />{/if}{/snippet}
         {#snippet dataContent()}
-          <details class="media-panel"><summary>Media and graphics</summary><AssetProvider namespace={`vict.studio.assets.${source.id}`} store={assetStore} onchange={()=>void syncAssetInventory()}><MediaAssetLibrary props={{label:"Supplied media"}} io={{emit:(name,value)=>{if(name==='selectedAsset')void chooseMedia(value);}}} nodeId="studio-media-library" occurrenceKey="studio-media-library" /></AssetProvider>
-            {#if pendingMedia?.documentId===source.id}<p>Chosen asset: <strong>{pendingMedia.asset.name}</strong> · {pendingMedia.asset.mime}</p><label>Attach as <select bind:value={mediaField}><option value="source">Media source</option><option value="poster">Video poster</option><option value="captions">Video captions</option></select></label><p>Use replaces this property on the selected media component. For vector or custom icon sources, it clears the previous inline graphic.</p><button type="button" disabled={attachingMedia||textDraftDirty||sourceDraftDirty||renamingScreen||!selectedNode||workspaceSelection.items.length!==1} onclick={()=>void attachMedia()}>Use on selected media</button>{/if}
+          <details class="media-panel studio-disclosure"><summary>Media and graphics</summary><AssetProvider namespace={`vict.studio.assets.${source.id}`} store={assetStore} onchange={()=>void syncAssetInventory()}><MediaAssetLibrary props={{label:"Supplied media"}} io={{emit:(name,value)=>{if(name==='selectedAsset')void chooseMedia(value);}}} nodeId="studio-media-library" occurrenceKey="studio-media-library" /></AssetProvider>
+            {#if pendingMedia?.documentId===source.id}<div class="studio-control-stack"><p>Chosen asset: <strong class="studio-control-filename" title={pendingMedia.asset.name}>{pendingMedia.asset.name}</strong> · {pendingMedia.asset.mime}</p><label for={`media-attachment-field-${source.id}`}>Attach as</label><VictSelect id={`media-attachment-field-${source.id}`} name="media-attachment-field" value={mediaField} options={[{value:"source",label:"Media source"},{value:"poster",label:"Video poster"},{value:"captions",label:"Video captions"}]} onChange={value=>{if(value===""||value==="source"||value==="poster"||value==="captions")mediaField=value;}}/><p class="vict-control-help">Use replaces this property on the selected media component. For vector or custom icon sources, it clears the previous inline graphic.</p><StudioButton.Root type="button" class="vict-btn vict-btn--secondary" disabled={!mediaField||attachingMedia||textDraftDirty||sourceDraftDirty||renamingScreen||!selectedNode||workspaceSelection.items.length!==1} onclick={()=>void attachMedia()}>Use on selected media</StudioButton.Root></div>{/if}
           </details>
           {#if selectedData && source.localState[selectedData]}
             {#key selectedData}<fieldset class="editor-guard" disabled={sourceDraftDirty || propertyDraftDirty}><StateInitialEditor compact document={source} expression={{type:'ref',path:`state.${selectedData}`}} labels={editorLabels} onApply={apply} onDirtyChange={(dirty:boolean)=>dataDraftDirty=dirty}>{#snippet toolbar({apply:applyValue,dirty}:{apply:()=>void;dirty:boolean})}<DataEditorHeader name={dataName(selectedData!)} type={dataType(source.localState[selectedData!]!.type)} {dirty} onBack={()=>openData()} onApply={applyValue} />{/snippet}</StateInitialEditor></fieldset>{/key}
@@ -827,7 +829,7 @@
         {#snippet sourceContent()}
           <AuthoringGuidance document={source} />
           <label class="sr-only" for="canonical-source">Canonical UI document</label><textarea id="canonical-source" class="source-editor" disabled={textDraftDirty} wrap="off" spellcheck="false" bind:value={sourceDraft} oninput={() => sourceDraftDirty = true}></textarea>
-          <div class="source-actions"><button type="button" disabled={!sourceDraftDirty || textDraftDirty} onclick={applySource}>Apply source</button><button type="button" disabled={!sourceDraftDirty} onclick={() => { sourceDraftDirty = false; sourceDraft = JSON.stringify(source, null, 2); sourceDraftRevision = snapshot?.revision ?? ''; issues = []; }}>Discard draft</button><button type="button" onclick={exportSource}>Export</button></div>
+          <div class="source-actions"><StudioButton.Root type="button" class="vict-btn vict-btn--secondary" disabled={!sourceDraftDirty || textDraftDirty} onclick={applySource}>Apply source</StudioButton.Root><StudioButton.Root type="button" class="vict-btn vict-btn--quiet" disabled={!sourceDraftDirty} onclick={() => { sourceDraftDirty = false; sourceDraft = JSON.stringify(source, null, 2); sourceDraftRevision = snapshot?.revision ?? ''; issues = []; }}>Discard draft</StudioButton.Root><StudioButton.Root type="button" class="vict-btn vict-btn--secondary" onclick={exportSource}>Export</StudioButton.Root></div>
           <details class="studio-disclosure application-attachment"><summary>Document information</summary><p>Saved revision <code>{snapshot?.storedRevision}</code></p><p>Application version <code>{compilation?.ok?compilation.plan.applicationVersion:'Compilation pending'}</code></p><h3>Generated application definition</h3><p>Generated by Studio to connect this screen to VICT.</p><pre class="source-preview">{JSON.stringify(screenApplication(source), null, 2)}</pre></details>
         {/snippet}
       </DocumentPanels>{/snippet}

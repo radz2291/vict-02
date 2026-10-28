@@ -1,8 +1,10 @@
 <script lang="ts">
-  import {Button,type UiSvelteComponentProps} from '@victframework/ui-svelte';
+  import {Button,Feedback,type UiSvelteComponentProps} from '@victframework/ui-svelte';
+  import {Button as CatalogButton} from '@victframework/ui-svelte/catalog/button';
   import {importMediaAsset,importMediaArchive,exportMediaArchive,type MediaAssetMetadata,type MediaAssetStore} from './assets.js';import {mediaHost} from './context.js';
   let {props,io,presentation}:UiSvelteComponentProps=$props();const host=mediaHost();let assets=$state<readonly MediaAssetMetadata[]>([]),error=$state(''),busy=$state(false),message=$state('');
   const target=$derived(presentation?.target('root'));
+  let supplyInput=$state<HTMLInputElement>(),archiveInput=$state<HTMLInputElement>();
   const refresh=async(store=host?.assets,namespace=host?.namespace)=>{if(store){const list=await store.list();if(host?.namespace===namespace)assets=list;}};
   let listedNamespace:string|undefined;
   $effect(()=>{const store=host?.assets,namespace=host?.namespace;let disposed=false;if(listedNamespace!==namespace){listedNamespace=namespace;assets=[];error='';message='';}if(store)store.list().then(list=>{if(!disposed&&host?.namespace===namespace)assets=list;}).catch(reason=>{if(!disposed&&host?.namespace===namespace)error=reason instanceof Error?reason.message:'Media library unavailable.';});return()=>{disposed=true;};});
@@ -30,16 +32,26 @@
   async function remove(asset:MediaAssetMetadata){if(!host)return;const store=host.assets,namespace=host.namespace;busy=true;error='';try{await store.remove(asset.reference);await refresh(store,namespace);if(host.namespace===namespace){host.changed?.();message=`Removed ${asset.name}. Any authored references to it now require re-import.`;}}catch(reason){if(host.namespace===namespace)error=reason instanceof Error?reason.message:'Asset removal failed.';}finally{busy=false;}}
 </script>
 <section {...target} class={`${target?.class??''} vict-media-library`} aria-label={String(props.label??'Media library')}>
-  {#if !host}<p role="alert">Media library requires an application asset host with an explicit storage namespace.</p>{:else}
+  {#if !host}<Feedback kind="error" message="Media library requires an application asset host with an explicit storage namespace."/>{:else}
   <div {...presentation?.target('toolbar')} class={`${presentation?.target('toolbar').class??''} media-toolbar`}>
-    <label>Supply media<input class="vict-input" type="file" accept="image/png,image/jpeg,image/gif,image/webp,image/avif,image/svg+xml,video/mp4,video/webm,video/ogg,text/vtt" multiple disabled={busy} onchange={upload}/></label>
-    <label>Import media archive<input class="vict-input" type="file" accept="application/json" disabled={busy} onchange={importArchive}/></label>
+    <input bind:this={supplyInput} hidden aria-label="Supply media" type="file" accept="image/png,image/jpeg,image/gif,image/webp,image/avif,image/svg+xml,video/mp4,video/webm,video/ogg,text/vtt" multiple disabled={busy} onchange={upload}/>
+    <Button label="Supply media" variant="secondary" onclick={()=>supplyInput?.click()} disabled={busy}/>
+    <input bind:this={archiveInput} hidden aria-label="Import media archive" type="file" accept="application/json" disabled={busy} onchange={importArchive}/>
+    <Button label="Import media archive" variant="secondary" onclick={()=>archiveInput?.click()} disabled={busy}/>
     <Button label="Export media archive" variant="secondary" onclick={exportArchive} disabled={busy||assets.length===0}/>
   </div>
-  <p class="storage-note">Media stays in this browser and application namespace. Export an archive to carry its bytes with saved source.</p>
-  {#if error}<p role="alert">{error}</p>{/if}{#if message}<p role="status">{message}</p>{/if}
-  {#if assets.length===0}<p>No supplied assets yet.</p>{:else}<ul {...presentation?.target('list')}>
-    {#each assets as asset (asset.reference)}<li><div class="media-asset-choice"><Button label={asset.name} variant="secondary" disabled={busy} onclick={()=>io?.emit('selectedAsset',asset.reference)}/><small>{asset.mime} · {Math.ceil(asset.size/1024)} KB</small></div><Button label={`Remove stored asset ${asset.name}`} variant="secondary" disabled={busy} onclick={()=>remove(asset)}/></li>{/each}
+  <p class="vict-control-help">Media stays in this browser and application namespace. Export an archive to carry its bytes with saved source.</p>
+  {#if error}<Feedback kind="error" message={error}/>{/if}{#if message}<Feedback kind="status" {message}/>{/if}
+  {#if assets.length===0}<Feedback kind="empty" message="No supplied assets yet."/>{:else}<ul {...presentation?.target('list')}>
+    {#each assets as asset (asset.reference)}<li><div class="media-asset-choice"><CatalogButton.Root class="vict-btn vict-btn--quiet media-asset-select" type="button" title={asset.name} disabled={busy} onclick={()=>io?.emit('selectedAsset',asset.reference)}>{asset.name}</CatalogButton.Root><small class="vict-control-help">{asset.mime} · {Math.ceil(asset.size/1024)} KB</small></div><CatalogButton.Root class="vict-btn vict-btn--quiet media-asset-remove" type="button" aria-label={`Remove stored asset ${asset.name}`} disabled={busy} onclick={()=>remove(asset)}>Remove</CatalogButton.Root></li>{/each}
   </ul>{/if}{/if}
 </section>
-<style>.vict-media-library{min-width:0}.media-toolbar{display:flex;flex-wrap:wrap;gap:.75rem}.media-toolbar label{display:flex;flex-direction:column;gap:.25rem;font-size:.875em}.vict-media-library input{max-width:100%}.storage-note{font-size:.8em;opacity:.75}.vict-media-library ul{list-style:none;padding:0;display:grid;gap:.5rem}.vict-media-library li{display:flex;gap:.5rem;align-items:center;justify-content:space-between}.media-asset-choice{min-width:0;overflow-wrap:anywhere}.vict-media-library small{display:block}</style>
+<style>
+  .vict-media-library{min-width:0;color:var(--vict-color-text)}
+  .media-toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:var(--vict-space-2)}
+  .vict-media-library ul{list-style:none;padding:0;display:grid;gap:var(--vict-space-3)}
+  .vict-media-library li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:var(--vict-space-2);align-items:start}
+  .media-asset-choice{min-width:0}
+  .media-asset-choice :global(.media-asset-select){display:block;width:100%;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:start}
+  .vict-media-library small{display:block;margin-top:var(--vict-space-1);overflow-wrap:break-word}
+</style>

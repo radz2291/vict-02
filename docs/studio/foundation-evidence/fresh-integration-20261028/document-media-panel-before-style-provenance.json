@@ -1,0 +1,36 @@
+{
+  "remove": {
+    "class": "vict-btn  vict-btn--secondary",
+    "font": "500 14px / 18px system-ui, \"Segoe UI\", sans-serif",
+    "fontSize": "14px",
+    "height": 49.60000228881836,
+    "minHeight": "32px",
+    "overflowWrap": "anywhere",
+    "padding": "6px 12px",
+    "radius": "16px",
+    "width": 175.8874969482422
+  },
+  "filename": {
+    "class": "vict-btn  vict-btn--secondary",
+    "font": "500 14px / 18px system-ui, \"Segoe UI\", sans-serif",
+    "height": 67.5999984741211,
+    "radius": "16px",
+    "width": 96.1125030517578
+  },
+  "fileInput": {
+    "class": "vict-input svelte-12rkbbj",
+    "display": "block",
+    "font": "10.5px / 18px system-ui, \"Segoe UI\", sans-serif",
+    "height": 32,
+    "radius": "16px",
+    "tag": "INPUT",
+    "type": "file"
+  },
+  "host": {
+    "class": " vict-media-library svelte-12rkbbj",
+    "controlScope": "vict-controls vict-rhea",
+    "font": "12px / 18px system-ui, \"Segoe UI\", sans-serif",
+    "parentScope": "studio-type-scope document-drawer",
+    "textColor": "rgb(32, 35, 43)"
+  }
+}

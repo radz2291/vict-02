@@ -16,11 +16,11 @@ body:has(.finished-screen) {
 .studio-designer .run-button {
   cursor: pointer;
 }
-.studio-designer button:disabled {
+.studio-designer button:disabled:not(.vict-btn):not([data-button-root]) {
   cursor: default;
   opacity: 0.4;
 }
-.studio-designer :focus-visible {
+.studio-designer :focus-visible:not(.vict-btn):not([data-button-root]):not(.vict-select) {
   outline: 2px solid var(--vict-color-accent);
   outline-offset: 2px;
 }
@@ -242,16 +242,9 @@ body:has(.finished-screen) {
 }
 .source-actions {
   display: flex;
-  gap: 6px;
-  margin: 10px 0 16px;
-}
-.source-actions button {
-  padding: 6px;
-  border: 1px solid var(--vict-color-border);
-  border-radius: 5px;
-  font-size: 11px;
-  background: white;
-  color: var(--vict-color-text);
+  flex-wrap: wrap;
+  gap: var(--studio-space-2);
+  margin: var(--studio-space-2) 0 var(--studio-space-4);
 }
 .source-preview {
   font:
@@ -417,7 +410,7 @@ body:has(.finished-screen) {
 .application-attachment p {line-height:1.5;margin:0 0 10px;}
 .application-attachment p code {overflow-wrap:anywhere;}
 .application-attachment .source-preview {max-height:240px;overflow:auto;}
-.document-drawer :focus-visible {outline:2px solid var(--vict-color-accent);outline-offset:-1px;}
+.document-drawer :focus-visible:not(.vict-btn):not([data-button-root]):not(.vict-select) {outline:2px solid var(--vict-color-accent);outline-offset:-1px;}
 
 .screen-picker .screen-name-edit {width:180px;min-width:0;font:12px 'Segoe UI',system-ui,sans-serif;padding:4px 6px;border:1px solid var(--vict-color-accent);border-radius:4px;background:white;color:var(--vict-color-text);}
 .open-screen-menu {max-height:min(320px,calc(100dvh - 16px));}

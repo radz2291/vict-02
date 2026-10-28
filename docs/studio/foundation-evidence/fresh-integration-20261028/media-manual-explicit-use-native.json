@@ -1,0 +1,7 @@
+{
+  "attachedPoster": "asset:sha256:9a2af942bb0fe1ab83336c068f3e8646ca8247ab31aa26dcc7ed52b45b2ca74c",
+  "restoredImage": "asset:sha256:5c3afc101e908624396dd99b1c37503f41b8b2accd68a320d9ac75cc57af6978",
+  "expectedOriginal": "asset:sha256:5c3afc101e908624396dd99b1c37503f41b8b2accd68a320d9ac75cc57af6978",
+  "restored": true,
+  "method": "Explicit library Use on selected media, first valid alternate image then original image. No Undo."
+}

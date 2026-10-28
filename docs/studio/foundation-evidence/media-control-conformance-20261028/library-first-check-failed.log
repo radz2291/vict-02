@@ -1,0 +1,44 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation
+
+9:04:10 pm [vite-plugin-svelte] packages/ui-media-svelte/src/AssetLibrary.svelte:6:6 `supplyInput` is updated, but is not declared with `$state(...)`. Changing its value will not correctly trigger updates
+https://svelte.dev/e/non_reactive_update
+9:04:10 pm [vite-plugin-svelte] packages/ui-media-svelte/src/AssetLibrary.svelte:6:35 `archiveInput` is updated, but is not declared with `$state(...)`. Changing its value will not correctly trigger updates
+https://svelte.dev/e/non_reactive_update
+9:04:17 pm [vite-plugin-svelte] packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+9:04:18 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:311:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+9:04:18 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:311:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+9:04:18 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:381:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+9:04:18 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:381:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+ Γ¥» packages/ui-media-svelte/test/library.svelte.test.ts (4 tests | 1 failed) 782ms
+     ├ù opens each native picker through its named public control and retains specific removal naming 126ms
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ» Failed Tests 1 ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»
+
+ FAIL  packages/ui-media-svelte/test/library.svelte.test.ts > media library partial-write recovery > opens each native picker through its named public control and retains specific removal naming
+AssertionError: expected ' Supply media  Import media archive EΓÇª' to contain 'Removed long-descriptive-captions-filΓÇª'
+
+Expected: "Removed long-descriptive-captions-file.png"
+Received: " Supply media  Import media archive Export media archive Media stays in this browser and application namespace. Export an archive to carry its bytes with saved source.  No supplied assets yet."
+
+ Γ¥» packages/ui-media-svelte/test/library.svelte.test.ts:21:31
+     19|    expect(remove?.textContent).toBe('Remove');expect(target.querySelecΓÇª
+     20|    remove!.click();await vi.waitFor(async()=>expect(await store.list()ΓÇª
+     21|    expect(target.textContent).toContain('Removed long-descriptive-captΓÇª
+       |                               ^
+     22|  });
+     23|  it('does not display or notify a different application after a pendinΓÇª
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[1/1]ΓÄ»
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  1 failed | 9 passed (10)
+   Start at  21:04:06
+   Duration  15.20s (transform 19.37s, setup 0ms, import 24.95s, tests 1.16s, environment 2.97s)
+
