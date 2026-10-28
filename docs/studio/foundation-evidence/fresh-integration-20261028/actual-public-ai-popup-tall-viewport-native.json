@@ -1,0 +1,15 @@
+{
+  "purpose": "Responsive portal ownership/recovery at a tall browser viewport; no source or runtime model selection changed.",
+  "open": true,
+  "rect": {
+    "height": 112,
+    "width": 192,
+    "x": 54.79999923706055,
+    "y": 730.6000366210938
+  },
+  "scrollTop": 0,
+  "viewport": {
+    "height": 911,
+    "width": 823
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "contextAfterView": {
+    "model": "Desk preview alt (local only)",
+    "text": "Foundation Public Run Review\n\nDemo review desk — thirteen public VICT AI compositions. Every record here is simulated demonstration data; nothing is executed.\n\nOverview\nDiagnostics\nContext\nDemo context usage — demonstration budget, not actual token/provider usage\n42% context\nExample files (demo)\nreview.ts\nREADME.md\nLocal intent — selected file (demo):\nsrc/review.ts\nDemo checkpoint — local restore intent only\nRestore stays intent-only here: no host restore binding exists, so nothing is restored and no history changes.\nPopulate local draft: apply the compact correction to the review desk layout (demo)\nLocal intent — draft populated by the suggestion (demo):\nPopulate local draft: apply the compact correction to the review desk layout (demo)\nDesk preview alt (local only)\nModel selection is a local preview choice only — it never changes or contacts the real provider."
+  },
+  "panelClosed": {
+    "messageVisible": false,
+    "toggleFocus": true
+  },
+  "panelWidthBefore": "400",
+  "reopenedPanel": {
+    "draft": "Unsent panel draft — keep this context",
+    "messageFocus": true,
+    "width": "400"
+  }
+}

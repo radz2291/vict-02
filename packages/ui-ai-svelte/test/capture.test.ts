@@ -91,6 +91,79 @@ it('keeps output pixel and JPEG byte budgets unchanged by internal layout scalin
   expect(test.encode.mock.calls.map(call => call[2])).toEqual([0.85, 0.65]);
 });
 
+it('captures subtree popup paint below a shorter flow root without including viewport siblings or reflowing the root', async () => {
+  const test=fixture(new DOMRect(0,0,824,820),new DOMRect(0,0,824,912),'width:824px;height:820px;overflow:visible');
+  const popup=document.createElement('div');popup.setAttribute('role','menu');popup.dataset.uiOwner='preview';popup.textContent='First model / Second model';popup.style.position='fixed';
+  test.frame.dataset.uiOwnerRoot='preview';test.frame.append(popup);
+  vi.spyOn(popup,'getBoundingClientRect').mockReturnValue(new DOMRect(54.8,730.6,192,112));
+  vi.spyOn(popup,'getClientRects').mockReturnValue([popup.getBoundingClientRect()] as unknown as DOMRectList);
+  const foreign=document.createElement('div');foreign.dataset.uiOwner='other';foreign.textContent='Unrelated Studio menu';document.body.append(foreign);
+  vi.spyOn(foreign,'getBoundingClientRect').mockReturnValue(new DOMRect(0,0,1600,1200));
+  const before=test.frame.outerHTML,capture=await captureRenderedElement(test.frame,test.viewport);
+  expect(capture).toMatchObject({width:824,height:843,sourceWidth:824,sourceHeight:843,offsetTop:0,cropped:false});
+  expect(capture.height).toBeGreaterThanOrEqual(730.6+112);
+  const xml=test.raster();expect(xml.querySelector('[role="menu"]')?.textContent).toBe(popup.textContent);
+  expect(xml.documentElement.textContent).not.toContain('Unrelated Studio menu');
+  const cloneRoot=xml.querySelector('foreignObject')!.firstElementChild!.firstElementChild as HTMLElement;
+  expect(cloneRoot.style.height).toBe('820px');expect(test.frame.outerHTML).toBe(before);
+});
+
+it('keeps actual viewport clipping explicit when popup paint extends past its visible bottom',async()=>{
+  const test=fixture(new DOMRect(0,0,824,820),new DOMRect(0,0,824,912),'width:824px;height:820px;overflow:visible');
+  const popup=document.createElement('div');popup.style.position='fixed';test.frame.append(popup);
+  vi.spyOn(popup,'getBoundingClientRect').mockReturnValue(new DOMRect(40,850,192,112));
+  vi.spyOn(popup,'getClientRects').mockReturnValue([popup.getBoundingClientRect()] as unknown as DOMRectList);
+  const capture=await captureRenderedElement(test.frame,test.viewport);
+  expect(capture).toMatchObject({height:912,sourceHeight:962,cropped:true});
+});
+
+it.each([[10.25,10.5],[10.25,70.5],[70.25,10.5]])('explicitly refuses visible popup paint before an inset root origin at %s,%s',async(left,top)=>{
+  const test=fixture(new DOMRect(50.25,50.5,100,100),new DOMRect(0,0,300,300),'width:100px;height:100px;overflow:visible');
+  test.frame.dataset.uiOwnerRoot='preview';const popup=document.createElement('div');popup.dataset.uiOwner='preview';popup.style.position='absolute';test.frame.append(popup);
+  const rect=new DOMRect(left,top,80,80);vi.spyOn(popup,'getBoundingClientRect').mockReturnValue(rect);vi.spyOn(popup,'getClientRects').mockReturnValue([rect] as unknown as DOMRectList);
+  const before=test.frame.outerHTML;
+  await expect(captureRenderedElement(test.frame,test.viewport)).rejects.toMatchObject({message:'STUDIO_CAPTURE_PAINT_UNSUPPORTED',captureReason:'paint-before-root-origin'});
+  expect(test.frame.outerHTML).toBe(before);expect(toSvg).not.toHaveBeenCalled();expect(test.encode).not.toHaveBeenCalled();
+});
+
+it('does not refuse negative-root paint which is actually clipped outside the supplied viewport',async()=>{
+  const test=fixture(new DOMRect(50.25,50.5,100,100),new DOMRect(50.25,50.5,300,300),'width:100px;height:100px;overflow:visible');
+  const popup=document.createElement('div');popup.style.position='absolute';test.frame.append(popup);
+  const rect=new DOMRect(10.25,10.5,80,80);vi.spyOn(popup,'getBoundingClientRect').mockReturnValue(rect);vi.spyOn(popup,'getClientRects').mockReturnValue([rect] as unknown as DOMRectList);
+  expect(await captureRenderedElement(test.frame,test.viewport)).toMatchObject({width:100,height:100,offsetLeft:0,offsetTop:0,cropped:false});
+});
+
+it.each(['display:none','visibility:hidden','opacity:0','outside-viewport','foreign-owner'])('does not inflate the paint extent for %s',async condition=>{
+  const test=fixture(new DOMRect(0,0,824,820),new DOMRect(0,0,824,912),'width:824px;height:820px;overflow:visible');
+  test.frame.dataset.uiOwnerRoot='preview';
+  const popup=document.createElement('div');popup.dataset.uiOwner=condition==='foreign-owner'?'other':'preview';
+  popup.style.cssText=`position:absolute;${condition.includes(':')?condition:''}`;test.frame.append(popup);
+  const rect=new DOMRect(40,condition==='outside-viewport'?1000:730.6,192,112);
+  vi.spyOn(popup,'getBoundingClientRect').mockReturnValue(rect);vi.spyOn(popup,'getClientRects').mockReturnValue([rect] as unknown as DOMRectList);
+  expect(await captureRenderedElement(test.frame,test.viewport)).toMatchObject({height:820,sourceHeight:820,cropped:false});
+});
+
+it('honors a clipping ancestor and ignores detached overflow without altering source layout',async()=>{
+  const test=fixture(new DOMRect(0,0,824,820),new DOMRect(0,0,824,912),'width:824px;height:820px;overflow:visible');
+  const clip=document.createElement('div');clip.style.overflow='hidden';const popup=document.createElement('div');popup.style.position='absolute';clip.append(popup);test.frame.append(clip);
+  const clipRect=new DOMRect(40,700,192,80),popupRect=new DOMRect(40,730.6,192,112);
+  vi.spyOn(clip,'getBoundingClientRect').mockReturnValue(clipRect);vi.spyOn(clip,'getClientRects').mockReturnValue([clipRect] as unknown as DOMRectList);
+  vi.spyOn(popup,'getBoundingClientRect').mockReturnValue(popupRect);vi.spyOn(popup,'getClientRects').mockReturnValue([popupRect] as unknown as DOMRectList);
+  const detached=popup.cloneNode(true) as HTMLElement;vi.spyOn(detached,'getBoundingClientRect').mockReturnValue(new DOMRect(0,0,5000,5000));
+  expect(await captureRenderedElement(test.frame,test.viewport)).toMatchObject({height:820,sourceHeight:820,cropped:false});
+  expect(detached.isConnected).toBe(false);
+});
+
+it('retains pixel and encoded byte limits for a measured popup overflow extent',async()=>{
+  const test=fixture(new DOMRect(0,0,824,820),new DOMRect(0,0,824,1800),'width:824px;height:820px;overflow:visible');
+  const popup=document.createElement('div');popup.style.position='absolute';test.frame.append(popup);
+  const rect=new DOMRect(40,1100,192,400);vi.spyOn(popup,'getBoundingClientRect').mockReturnValue(rect);vi.spyOn(popup,'getClientRects').mockReturnValue([rect] as unknown as DOMRectList);
+  test.encode.mockImplementation((callback,_type,quality)=>callback(new Blob([new Uint8Array(quality===0.85?RENDER_CAPTURE_LIMITS.bytes+1:123)],{type:'image/jpeg'})));
+  const capture=await captureRenderedElement(test.frame,test.viewport);
+  expect(capture).toMatchObject({height:1200,sourceHeight:1500,cropped:true});expect(capture.blob.size).toBe(123);
+  expect(test.encode.mock.calls.map(call=>call[2])).toEqual([0.85,0.65]);
+});
+
 it('preserves computed SVG descendant paint instead of a stylesheet-painted MiniMap mask becoming black', async () => {
   const test = fixture(new DOMRect(0, 0, 640, 480)),
     style = document.createElement('style');

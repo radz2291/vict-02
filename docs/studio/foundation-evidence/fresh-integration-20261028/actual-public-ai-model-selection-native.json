@@ -1,0 +1,9 @@
+{
+  "altFocused": true,
+  "modelSelection": {
+    "expanded": "false",
+    "focused": true,
+    "label": "Desk preview alt (local only)"
+  },
+  "scope": "Authored local state only; no provider operation was requested."
+}

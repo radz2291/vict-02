@@ -1,0 +1,36 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation
+
+stdout | docs/studio/foundation-evidence/current-control-independent-20261028/capture-extent-independent.test.ts > does not claim uncropped success while omitting same-owner visible paint above/left of an inset capture root
+{"blob":"blob","width":100,"height":100,"sourceWidth":100,"sourceHeight":100,"offsetLeft":0,"offsetTop":0,"cropped":false}
+
+ Γ¥» docs/studio/foundation-evidence/current-control-independent-20261028/capture-extent-independent.test.ts (2 tests | 1 failed) 33ms
+   ├ù does not claim uncropped success while omitting same-owner visible paint above/left of an inset capture root 26ms
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ» Failed Tests 1 ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»
+
+ FAIL  docs/studio/foundation-evidence/current-control-independent-20261028/capture-extent-independent.test.ts > does not claim uncropped success while omitting same-owner visible paint above/left of an inset capture root
+AssertionError: expected 'Visible left/up overflow must be captΓÇª' to match /UNSUPPORTED/
+
+- Expected:
+/UNSUPPORTED/
+
++ Received:
+"Visible left/up overflow must be captured, marked partial, or explicitly refused: expected false to be true // Object.is equality"
+
+ Γ¥» docs/studio/foundation-evidence/current-control-independent-20261028/capture-extent-independent.test.ts:24:49
+     22|   console.log(JSON.stringify(captured,(_key,value)=>value instanceof BΓÇª
+     23|   expect(captured.cropped||(captured.width>=140&&captured.height>=140)ΓÇª
+     24|  }catch(error){expect((error as Error).message).toMatch(/UNSUPPORTED/)ΓÇª
+       |                                                 ^
+     25|  expect(root.outerHTML).toBe(before);
+     26| });
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[1/1]ΓÄ»
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 1 passed (2)
+   Start at  02:04:47
+   Duration  1.73s (transform 93ms, setup 0ms, import 130ms, tests 33ms, environment 1.24s)
+

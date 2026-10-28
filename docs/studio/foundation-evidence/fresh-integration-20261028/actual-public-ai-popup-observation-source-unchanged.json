@@ -1,0 +1,7 @@
+{
+  "sourceIdentical": true,
+  "revision": "r1.r2",
+  "nodes": 62,
+  "applyDisabled": true,
+  "strictRetry": "actual Retry observation UI; one successful observe, zero acknowledged edits; capture partial popup extent retained as defect"
+}

@@ -1,0 +1,36 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation
+
+stdout | docs/studio/foundation-evidence/current-control-independent-20261028/capture-extent-independent.test.ts > does not claim uncropped success while omitting same-owner visible paint above/left of an inset capture root
+{"blob":"blob","width":100,"height":100,"sourceWidth":100,"sourceHeight":100,"offsetLeft":0,"offsetTop":0,"cropped":false}
+
+ Γ¥» docs/studio/foundation-evidence/current-control-independent-20261028/capture-extent-independent.test.ts (2 tests | 1 failed) 33ms
+   ├ù does not claim uncropped success while omitting same-owner visible paint above/left of an inset capture root 27ms
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ» Failed Tests 1 ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»
+
+ FAIL  docs/studio/foundation-evidence/current-control-independent-20261028/capture-extent-independent.test.ts > does not claim uncropped success while omitting same-owner visible paint above/left of an inset capture root
+AssertionError: Visible left/up overflow must be captured, marked partial, or explicitly refused: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ Γ¥» docs/studio/foundation-evidence/current-control-independent-20261028/capture-extent-independent.test.ts:25:156
+     23|  if(captured){
+     24|   console.log(JSON.stringify(captured,(_key,value)=>value instanceof BΓÇª
+     25|   expect(captured.cropped||(captured.width>=140&&captured.height>=140)ΓÇª
+       |                                                                                                                                                            ^
+     26|  }
+     27|  expect(root.outerHTML).toBe(before);
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[1/1]ΓÄ»
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 1 passed (2)
+   Start at  02:06:05
+   Duration  1.72s (transform 92ms, setup 0ms, import 128ms, tests 33ms, environment 1.24s)
+

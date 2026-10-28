@@ -82,6 +82,42 @@ function preserveSvgDescendantPaint(source: HTMLElement, serialized: Element): v
   }
 }
 
+/** A flow border box is not the paint boundary of its in-subtree popup outlet.
+ * Measure only connected, visible source descendants which intersect the actual
+ * viewport. Keep ancestor clipping and owner scope; never clone viewport siblings.
+ * The original root CSS dimensions remain unchanged in the serialized layout. */
+function subtreePaintExtent(element: HTMLElement, descendants: readonly HTMLElement[], viewport: DOMRect) {
+  const rect=element.getBoundingClientRect(), view=element.ownerDocument.defaultView!;
+  let right=rect.right,bottom=rect.bottom;
+  const owners=new Set([...(element.matches('[data-ui-owner-root]')?[element]:[]),...element.querySelectorAll<HTMLElement>('[data-ui-owner-root]')].map(node=>node.dataset.uiOwnerRoot).filter(Boolean));
+  for(const node of descendants){
+    if(!node.isConnected||!node.getClientRects().length)continue;
+    const owner=node.closest('[data-ui-owner]')?.getAttribute('data-ui-owner');
+    if(owners.size&&owner&&!owners.has(owner))continue;
+    const paint=node.getBoundingClientRect();
+    if(paint.width<=0||paint.height<=0)continue;
+    let left=paint.left,top=paint.top,edge=paint.right,base=paint.bottom,visible=true;
+    for(let ancestor:HTMLElement|null=node;ancestor;ancestor=ancestor.parentElement){
+      const style=view.getComputedStyle(ancestor);
+      if(style.display==='none'||['hidden','collapse'].includes(style.visibility)||style.opacity==='0'){visible=false;break;}
+      if(ancestor!==node){
+        const clip=ancestor.getBoundingClientRect();
+        if(/^(hidden|clip|auto|scroll)$/.test(style.overflowX||style.overflow)){left=Math.max(left,clip.left);edge=Math.min(edge,clip.right);}
+        if(/^(hidden|clip|auto|scroll)$/.test(style.overflowY||style.overflow)){top=Math.max(top,clip.top);base=Math.min(base,clip.bottom);}
+      }
+      if(ancestor===element)break;
+    }
+    if(!visible||Math.min(edge,viewport.right)<=Math.max(left,viewport.left)||Math.min(base,viewport.bottom)<=Math.max(top,viewport.top))continue;
+    // This raster path retains the real root as its image origin. Visible
+    // paint before that origin needs a different coordinate projection; do not
+    // omit it and claim an uncropped observation, or expand this path's ABI.
+    if(Math.max(left,viewport.left)<rect.left||Math.max(top,viewport.top)<rect.top)
+      throw new RenderedCaptureError('STUDIO_CAPTURE_PAINT_UNSUPPORTED','paint-before-root-origin');
+    right=Math.max(right,edge);bottom=Math.max(bottom,base);
+  }
+  return {right,bottom};
+}
+
 /** Rasterizes the existing, styled DOM; it does not render a source-document substitute.
  * The caller identifies the actual preview element and fences changing preview state.
  * Browser rasterization can refuse unsupported fonts/images rather than inventing pixels. */
@@ -98,16 +134,16 @@ export async function captureRenderedElement(
   const rect = element.getBoundingClientRect();
   if (rect.width < 1 || rect.height < 1)
     throw new RenderedCaptureError('STUDIO_CAPTURE_NOT_VISIBLE', 'frame-zero-size');
-  const sourceWidth = Math.ceil(rect.width);
-  const sourceHeight = Math.ceil(rect.height);
+  let sourceWidth = Math.ceil(rect.width);
+  let sourceHeight = Math.ceil(rect.height);
   const clipping = viewport?.getBoundingClientRect() ?? rect;
   const offsetLeft = Math.max(0, Math.ceil(clipping.left - rect.left));
   const offsetTop = Math.max(0, Math.ceil(clipping.top - rect.top));
-  const width = Math.min(
+  let width = Math.min(
     Math.ceil(Math.min(rect.right, clipping.right) - Math.max(rect.left, clipping.left)),
     RENDER_CAPTURE_LIMITS.width,
   );
-  const height = Math.min(
+  let height = Math.min(
     Math.ceil(Math.min(rect.bottom, clipping.bottom) - Math.max(rect.top, clipping.top)),
     RENDER_CAPTURE_LIMITS.height,
   );
@@ -137,6 +173,13 @@ export async function captureRenderedElement(
       offsetTop,
       cropped: width < sourceWidth || height < sourceHeight,
     };
+  }
+  if(viewport){
+    const extent=subtreePaintExtent(element,descendants,clipping);
+    sourceWidth=Math.ceil(extent.right-rect.left);
+    sourceHeight=Math.ceil(extent.bottom-rect.top);
+    width=Math.min(Math.ceil(Math.min(extent.right,clipping.right)-Math.max(rect.left,clipping.left)),RENDER_CAPTURE_LIMITS.width);
+    height=Math.min(Math.ceil(Math.min(extent.bottom,clipping.bottom)-Math.max(rect.top,clipping.top)),RENDER_CAPTURE_LIMITS.height);
   }
   const { toSvg } = await import('html-to-image');
   const renderedStyle = getComputedStyle(element);
