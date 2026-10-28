@@ -10,6 +10,8 @@
 .studio-type-scope[data-studio-typography] :is(.vict-btn, [data-button-root], .vict-select) {
   --vict-control-height: var(--studio-control-height);
   --vict-radius-base: var(--studio-control-radius);
+  min-height: var(--studio-control-height);
+  border-radius: var(--studio-control-radius);
   font: var(--studio-font-ui);
   padding: var(--studio-space-1) var(--studio-space-2);
 }
