@@ -1,0 +1,170 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Foundation Public Run Review"
+  - generic: ✓ Saved
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- banner:
+  - strong: Chat
+  - button "Hide Chat":
+- complementary "Chat":
+  - region "Conversation":
+    - region "Messages — Message":
+      - log:
+        - generic: You
+        - generic: Inspect the open local model menu once at node comp-model, part model-menu. Make no edits, clicks or scrolling. Is a bottom row or footer clipped? Treat that as a question, not proof that a footer exists. Distinguish measured capture facts, AI interpretation and behavior not tested. Keep the final brief.
+        - button "Copy message":
+        - generic: Assistant
+        - generic "Host evidence summary":
+          - paragraph: Host evidence summary
+          - status: The turn did not finish successfully. No source changes were applied. Appearance checks did not finish. Behavior was not tested by this agent.
+        - button "Original AI assessment and tool details" [expanded]:
+          - text: Original AI assessment and tool details
+        - paragraph: Original AI assessment — claims not independently verified. Tool receipts separately record confirmed effects and capture limits.
+        - generic "Conversation timeline":
+          - paragraph: I'll verify the node exists in source and capture the menu's visible state in one observation pass, without editing or scrolling.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Observe preview failed":
+            - generic: Observe preview
+            - generic: failed
+          - paragraph:
+            - text: "The requested observation could not be completed: the capture was refused (STUDIO_CAPTURE_SCROLL_UNSUPPORTED, raster phase \"scroll-complex-paint\", no image produced), so there are no visual or AI-assessment facts — footer existence and clipping are"
+            - strong: notEstablished
+            - text: .
+          - paragraph:
+            - strong: "Measured source facts:"
+            - text: comp-model is a
+            - code: vict.ai.model-selector
+            - text: (rev 1) with two local models in its data and a bound
+            - code: state.modelChoice
+            - text: ; nothing here establishes rendered appearance.
+            - strong: "Not tested:"
+            - text: no clicks or scrolls were performed (per your constraint and tool limits), so the menu's open state and its bottom row/footer remain unverified. If you scroll the menu into view or let the preview settle, I can retry this single observation.
+        - button "Copy message":
+    - button "Scroll to latest message":
+      - generic: Scroll to end
+    - textbox "Message":
+      - /placeholder: Ask for a change…
+    - button "Send" [disabled]:
+      - generic: Send
+    - status
+  - status "Visual verification failed (STUDIO_CAPTURE_SCROLL_UNSUPPORTED · raster). Continue by observing the current preview; confirmed edits must not be repeated. No edits were applied.":
+    - generic: Visual verification failed (STUDIO_CAPTURE_SCROLL_UNSUPPORTED · raster). Continue by observing the current preview; confirmed edits must not be repeated. No edits were applied.
+  - button "Retry observation"
+  - button "Chat details" [expanded]: ···
+  - generic "Chat details":
+    - heading "Chat details" [level=3]
+    - button "Close chat details" [active]: ×
+    - paragraph: zai/glm-5.3-flash
+    - text: Turn details
+    - combobox "Inspect turn":
+      - option "Latest activity" [selected]
+      - option "4:14:14 AM · failed · Inspect the open local model menu once at node comp-model, p"
+    - paragraph: Up to 24 turns retained for 30 minutes in this tab. Reloading clears local history; server evidence also expires or disappears on restart/capacity eviction.
+    - paragraph: "Selected: Container · Screen"
+    - paragraph: Visual verification failed (STUDIO_CAPTURE_SCROLL_UNSUPPORTED · raster). Continue by observing the current preview; confirmed edits must not be repeated. No edits were applied.
+    - button "Reconnect agent"
+    - heading "Turn measurements" [level=4]
+    - paragraph: 2 tool calls · 1 refused · 0 calls after refusal · 38.0 s elapsed.
+    - paragraph: 2 authoring model requests · 0 image requests. No confirmed edit.
+    - paragraph: "Reported authoring usage: 23362 input / 1545 output tokens."
+    - paragraph: 0 receipt-derived edits including cleanup.
+    - paragraph: 0 knowledge reads · 1 source reads · 0 edit calls · 1 observation calls.
+    - paragraph: "Settled tool durations summed: 0.1 s; tool-active interval union: 0.1 s; outside-tool time: 37.9 s."
+    - paragraph: Outside-tool time includes waiting, generation, transport and host overhead; exact provider latency is unavailable.
+    - paragraph: Exact model steps and cost unavailable. Concurrent tool durations do not add up to wall time.
+    - heading "Progress summaries" [level=4]
+    - paragraph: Connection, validation and completion metadata. The conversation contains actual assistant messages and tool calls.
+    - list:
+      - listitem: Connecting…
+      - listitem: Reading screen…
+      - listitem: Connecting to the VICT / Mastra agent…
+      - listitem: Agent is working on your request…
+      - listitem: Reading current source facts…
+      - listitem: Capturing and observing the rendered preview…
+      - listitem: "No edits were applied. Confirmed revision r1.r2#0. Engine termination: completed. Unresolved tools: studio_screen_observe. Source coverage: 17/117 registered definitions present. 100 missing from the 117-item coverage scope. Missing IDs are paged through coverage reads. This inventory does not establish the full requested intent, interactions or visual completion. Source: 62 nodes, 14 state declarations; current appearance unverified; interactions unverified by this agent."
+    - heading "Tool receipts" [level=4]
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 15266 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 15284 ms since turn start {\"expectedRevision\":\"r1.r2#0\",\"cursor\":{\"documentId\":\"screen-a775512c-f14a-4c5b-ab16-d054d5f92d7c\",\"revision\":\"r1.r2#0\",\"digest\":\"eb66d42fd5ebc2fe158c62d6f9a29bd282116e1f56a6f01a3f9990555a38d2e1\",\"epoch\":\"3050d6a3-fcf6-4946-bc3a-8cbb73652acf\"},\"section\":\"nodes\",\"scope\":{\"kind\":\"subtree\",\"nodeId\":\"comp-model\",\"includesInactiveSource\":true,\"expandsComponentDefinitions\":false},\"items\":[{\"id\":\"comp-model\",\"kind\":\"component\",\"definitionId\":\"vict.ai.model-selector\",\"children\":[],\"childCount\":0,\"sourcePreview\":\"{\\\"kind\\\":\\\"component\\\",\\\"id\\\":\\\"comp-model\\\",\\\"definitionId\\\":\\\"vict.ai.model-selector\\\",\\\"revision\\\":\\\"1\\\",\\\"props\\\":{\\\"data\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"{\\\\\\\"version\\\\\\\":1,\\\\\\\"models\\\\\\\":[{\\\\\\\"id\\\\\\\":\\\\\\\"desk-preview\\\\\\\",\\\\\\\"label\\\\\\\":\\\\\\\"Desk preview (local only)\\\\\\\"},{\\\\\\\"id\\\\\\\":\\\\\\\"desk-preview-alt\\\\\\\",\\\\\\\"label\\\\\\\":\\\\\\\"Desk preview alt (local only)\\\\\\\"}],\\\\\\\"efforts\\\\\\\":[]}\\\"},\\\"model\\\":{\\\"type\\\":\\\"ref\\\",\\\"path\\\":\\\"state.modelChoice\\\"},\\\"effort\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"\\\"},\\\"inline\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":false},\\\"allowActions\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":true}},\\\"slots\\\":{},\\\"outputs\\\":{\\\"modelChange\\\":{\\\"setState\\\":{\\\"key\\\":\\\"modelChoice\\\"}}}}\"}],\"total\":1,\"offset\":0,\"nextOffset\":null}"
+    - paragraph: Observe preview
+    - list:
+      - text: Observe preview started · running
+      - generic: tool-start studio_screen_observe 15267 ms since turn start
+      - text: Visual observation unavailable · failed
+      - generic: "validation-refused studio_screen_observe 15373 ms since turn start {\"ok\":false,\"code\":\"STUDIO_CAPTURE_SCROLL_UNSUPPORTED\",\"message\":\"The browser could not provide a current rendered image. No visual observation was made.\",\"diagnostics\":{\"phase\":\"raster\",\"reason\":\"scroll-complex-paint\",\"expectedRevision\":\"r1.r2#0\",\"actualRevision\":\"r1.r2#0\",\"mode\":\"interact\",\"covered\":false,\"connected\":true,\"layout\":true,\"frame\":[0,-247.1999969482422,652,775.4000244140625],\"frameBefore\":[0,-247.1999969482422,652,775.4000244140625],\"viewport\":[0,0,667.2000122070312,528],\"viewportBefore\":[0,0,667.2000122070312,528],\"scroll\":[0,247.1999969482422]},\"recovery\":{\"action\":\"Read current source and retry observation only after the preview settles.\",\"editsReplayed\":false,\"captureAttempts\":1}}"
+    - heading "Sanitized exchanges" [level=4]
+    - paragraph: Compact previews remain in the conversation. Open a retained original page here; this never invokes a tool again.
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Observe preview · input
+    - button "Open first page"
+    - paragraph: Observe preview · result
+    - button "Open first page"
+    - heading "Connection record" [level=4]
+    - paragraph: VICT turn turn-c7468ebf-25f7-4590-af29-83ca30a1214d · profile v1_f5b7658259437452b342d759ab07c5a0cf9ba4cf0c039dd77fe9a38ce97667c7 · STUDIO_AGENT_TOOL_FAILED
+    - heading "Preview recovery" [level=4]
+    - paragraph: "Task: Inspect the open local model menu once at node comp-model, part model-menu. Make no edits, clicks or scrolling. Is a bottom row or footer clipped? Treat that as a question, not proof that a footer exists. Distinguish measured capture facts, AI interpretation and behavior not tested. Keep the final brief."
+    - paragraph: The browser could not capture this rendered preview. No visual observation was made.
+    - button "Capture for my inspection"
+    - button "Retry observation with agent"
+- separator "Chat width"
+- main:
+  - button "Toggle Chat drawer" [expanded]:
+  - group "Workspace mode":
+    - button "Design"
+    - button "Interact" [pressed]
+    - button "Structure"
+  - button "Toggle Document and Selection drawer":
+  - iframe:
+    - generic "Screen canvas":
+      - main "Foundation Public Run Review":
+        - heading "Review desk heading" [level=1]:
+          - generic: Foundation Public Run Review
+        - paragraph:
+          - generic: Demo review desk — thirteen public VICT AI compositions. Every record here is simulated demonstration data; nothing is executed.
+        - tablist "Review sections":
+          - tab "Overview"
+          - tab "Diagnostics"
+          - tab "Context" [selected]
+        - tabpanel "Context":
+          - heading "Demo context usage — demonstration budget, not actual token/provider usage" [level=3]:
+            - generic: Demo context usage — demonstration budget, not actual token/provider usage
+          - button "42% context"
+          - heading "Example files (demo)" [level=3]:
+            - generic: Example files (demo)
+          - button "review.ts":
+            - text: review.ts
+          - button "README.md":
+            - text: README.md
+          - generic: "Local intent — selected file (demo):"
+          - generic: Demo checkpoint — local restore intent only
+          - generic: "Restore stays intent-only here: no host restore binding exists, so nothing is restored and no history changes."
+          - 'button "Populate local draft: apply the compact correction to the review desk layout (demo)"'
+          - generic: "Local intent — draft populated by the suggestion (demo):"
+          - 'button "Model: Desk preview (local only)" [expanded]':
+            - text: Desk preview (local only)
+          - generic: Model selection is a local preview choice only — it never changes or contacts the real provider.
+    - 'menu "Model: Desk preview (local only)"':
+      - menuitemradio "✓ Desk preview (local only)" [checked]:
+        - text: ✓
+        - text: Desk preview (local only)
+      - menuitemradio "Desk preview alt (local only)": Desk preview alt (local only)
+- contentinfo:
+  - status: Interact mode · simulated behavior, no live effects.
+- generic: Designer — VICT Studio

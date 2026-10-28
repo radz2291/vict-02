@@ -1,0 +1,21 @@
+{
+  "SourceCandidate": "a99aea00dd75d8ced3104bc399257a343517e7b3",
+  "InputCount": 285,
+  "StagedInputHashMismatches": 0,
+  "CoreOutputFiles": 306,
+  "BuildExitCode": 0,
+  "DesignerErrors": 0,
+  "DesignerInheritedWarnings": 5,
+  "FocusedChecks": {
+    "MountedConversation": 7,
+    "ExistingEfficiency": 6,
+    "Visual": 27,
+    "Outcome": 5
+  },
+  "PriorSetupFailures": [
+    "Sandbox dependency junction creation denied before compilation; approved per-command staging succeeded in fresh retained stage.",
+    "Initial Kit sync binary path pointed into app node_modules; corrected to existing root dependency path before compilation.",
+    "New mounted fixture compared rendered Markdown trailing space verbatim; fixture corrected, original data/copy unchanged."
+  ],
+  "LiveProof": "Initial scroll-complex-paint capture refusal:0edits/0images. Supported reveal then one observation-only recovery:1observe/0refusals/0edits,2authoring+1image,60.1seconds. Exact source unchanged, normal viewport restored; no active request."
+}

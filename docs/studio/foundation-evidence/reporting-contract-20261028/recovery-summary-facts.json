@@ -1,0 +1,22 @@
+[
+  {
+    "rect": [
+      12,
+      -18.350000381469727,
+      365.6000061035156,
+      78
+    ],
+    "text": "Host evidence summaryThe turn did not finish successfully. No source changes were applied. Appearance checks did not finish. Behavior was not tested by this agent.",
+    "words": 25
+  },
+  {
+    "rect": [
+      12,
+      317.5,
+      365.6000061035156,
+      78
+    ],
+    "text": "Host evidence summaryNo source changes were applied. A preview image matching the final source was assessed by AI; its claims remain unverified. Behavior was not tested by this agent.",
+    "words": 29
+  }
+]

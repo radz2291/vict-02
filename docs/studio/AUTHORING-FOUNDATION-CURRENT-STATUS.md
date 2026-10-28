@@ -1,6 +1,18 @@
 # Authoring foundation current status
 
-## Review-ready checkpoint — product 56b2853, 2026-10-28
+## Morning-review continuation — product a99aea00
+
+**Current independent reconciliation: 30 demonstrated / 1 partial (AR-25) / 0 current failed criteria across31. All31 owner acceptances remain open; the full foundation gate remains HELD.** Product `a99aea00dd75d8ced3104bc399257a343517e7b3` repairs the two reporting failures retained in the earlier checkpoint below. [Independent source and actual-provider review](foundation-evidence/reporting-contract-20261028/INDEPENDENT.md), [exact current evidence](foundation-evidence/reporting-contract-20261028/LIVE-REPORT.md).
+
+AR-05 now has concise, explicitly labeled **Host evidence summary** output derived only from acknowledged effects and capture/source identity. The unchanged original AI response and technical receipts remain in the shared **Original AI assessment and tool details** disclosure and copy unchanged. The original model response can still be verbose; it is not rewritten or silently passed as concise prose. AR-09 now separates stable image measurements from explicitly unverified structured model interpretation, uncertainty and `notEstablished`. Invalid assessment structure fails without a successful fallback. This is a reporting/provenance contract, not a semantic oracle or erasure of historical failures.
+
+Actual Z.ai subscription proof retains a real initial capture refusal as unsuccessful, with no image or edit. After supported temporary viewport reveal cleared the actual scroll condition, one observation-only recovery completed:1observation/0refusals/0edits,2authoring requests+1image request,60.1seconds. Its668×799 capture and confirming image match, the footer remains explicitly not established, and interactions remain untested. The complete62-node saved r1.r2 canonical source is byte-for-byte unchanged, Apply source disabled. Normal1124×668 browser viewport is restored; Designer remains open with the tested server running.
+
+The reviewed production build and type check pass (0errors/5inherited warnings); targeted visual27, mounted shared conversation7, outcome5 and existing efficiency6 cases pass. All285staged inputs match, and all328installed core/consumer outputs match. The22-file consumer remains explicitly frozen at56b2853; its earlier744physical-package matches and native proof are reused for unchanged authored paths, not relabeled as a new package build. No provider/security configuration, capture guard or authoring/history authority changed.
+
+Only **AR-25 physical-device keyboard/safe-area/touch observation** remains partial. Heard audio is still unproved, and the original responsive full source remains unrecovered; the complete NEW responsive evidence is not historical recovery. Owner Matrix styling and all apps remain preserved. No provider/build/write operation is active at the final checkpoint; no push/merge/publication/deployment occurred. Owner review is the next action.
+
+## Earlier review-ready checkpoint — product 56b2853, 2026-10-28
 
 **Independent technical reconciliation: 28 demonstrated / 1 partial / 2 retained reporting failures across 31 criteria. All 31 owner acceptances remain open; the full foundation gate is HELD.** Product bytes are frozen at `56b2853d2dbb7a04bba5cc9aa89671cbf0eb38a3` on `codex/authoring-foundation`. Later evidence commits do not change those bytes. [Independent exact-criterion verdict](foundation-evidence/criterion-finishability-20261028/REPORT.md).
 

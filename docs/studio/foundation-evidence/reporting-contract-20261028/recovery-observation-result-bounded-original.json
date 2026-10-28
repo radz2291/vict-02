@@ -1,0 +1,150 @@
+{
+  "ok": true,
+  "evidence": "stable-capture-with-model-assessment",
+  "modelAssessment": {
+    "visibleFindings": [
+      "Open dropdown menu at bottom-left shows two items: 'Desk preview (local only)' with checkmarks and 'Desk preview alt (local only)'.",
+      "The menu extends to the image's bottom edge (~y798); the second item sits flush against the crop boundary and remains readable.",
+      "No footer or content is visible beneath the dropdown menu."
+    ],
+    "uncertainty": [
+      "The menu's bottom border/padding appears flush with the crop edge; minor clipping of the last item's lower padding cannot be ruled out.",
+      "Whether the menu scrolls or has additional items beyond the two visible cannot be confirmed from the static image."
+    ],
+    "notEstablished": [
+      "No footer is discernible in the image; existence of a page footer is not established.",
+      "Presence of further menu rows or scroll state is not established.",
+      "Interaction behavior (selection, menu close) is not established by a still image."
+    ],
+    "evidenceBasis": "model-interpretation-of-captured-image",
+    "semanticClaimsVerified": false
+  },
+  "originalModelText": "{\"visibleFindings\": [\"Open dropdown menu at bottom-left shows two items: 'Desk preview (local only)' with checkmarks and 'Desk preview alt (local only)'.\", \"The menu extends to the image's bottom edge (~y798); the second item sits flush against the crop boundary and remains readable.\", \"No footer or content is visible beneath the dropdown menu.\"], \"uncertainty\": [\"The menu's bottom border/padding appears flush with the crop edge; minor clipping of the last item's lower padding cannot be ruled out.\", \"Whether the menu scrolls or has additional items beyond the two visible cannot be confirmed from the static image.\"], \"notEstablished\": [\"No footer is discernible in the image; existence of a page footer is not established.\", \"Presence of further menu rows or scroll state is not established.\", \"Interaction behavior (selection, menu close) is not established by a still image.\"]}",
+  "semanticClaimsVerified": false,
+  "metadata": {
+    "cursor": {
+      "documentId": "screen-a775512c-f14a-4c5b-ab16-d054d5f92d7c",
+      "revision": "r1.r2#0",
+      "digest": "eb66d42fd5ebc2fe158c62d6f9a29bd282116e1f56a6f01a3f9990555a38d2e1",
+      "epoch": "3050d6a3-fcf6-4946-bc3a-8cbb73652acf"
+    },
+    "capturedAt": "2026-10-28T20:17:20.456Z",
+    "viewport": {
+      "width": 668,
+      "height": 912,
+      "scrollLeft": 0,
+      "scrollTop": 0,
+      "devicePixelRatio": 1.0000000149011612
+    },
+    "image": {
+      "width": 668,
+      "height": 799,
+      "sourceWidth": 668,
+      "sourceHeight": 799,
+      "offsetLeft": 0,
+      "offsetTop": 0,
+      "cropped": false
+    },
+    "evidence": {
+      "workspaceView": "interact",
+      "viewportModel": "isolated-viewport",
+      "ownedOverlays": 1,
+      "targets": [
+        {
+          "nodeId": "comp-model",
+          "part": "model-menu",
+          "bounds": [
+            54.8,
+            686.6,
+            192,
+            112
+          ],
+          "visible": true,
+          "visibilityReason": "visible",
+          "styles": {
+            "color": "rgb(36, 48, 71)",
+            "background-color": "rgb(255, 255, 255)",
+            "position": "fixed",
+            "top": "686.6px",
+            "padding-top": "4px",
+            "overflow": "hidden auto",
+            "font-size": "14px",
+            "z-index": "60"
+          }
+        }
+      ]
+    },
+    "preview": {
+      "mode": "interact",
+      "fingerprint": "bc1497166cf9b22c9f84f5011897c20c36b48e1f2c1a96d79dea9cbc3b98cdf2",
+      "selection": "screen-a775512c-f14a-4c5b-ab16-d054d5f92d7c|screen"
+    }
+  },
+  "revalidatedAt": "2026-10-28T20:17:36.015Z",
+  "validation": "same-source-preview-viewport-and-image-bytes-after-inference",
+  "imageDigest": "09205a8f73b02e3fcb8263c1731db7edef395096def33fbb100f504388093ba9",
+  "confirmedImageDigest": "09205a8f73b02e3fcb8263c1731db7edef395096def33fbb100f504388093ba9",
+  "imageComparison": "sha256-identical",
+  "imageComparisonScope": "within-this-observation-before-and-after-inference",
+  "fingerprintMeaning": "Source and preview state identity, not a pixel digest. Separate successful observations may have different fingerprints and identical pixels.",
+  "captureAttempts": 2,
+  "captureRecoveryAttempts": 0,
+  "bytes": 56220,
+  "model": "zai/glm-5.3-flash",
+  "interactionVerified": false,
+  "limitation": "Host validation establishes capture identity and freshness, not the truth of modelAssessment. Every category, including visibleFindings, is model-declared and may contain unsupported claims. Focus wording does not establish element existence. Only the captured frame region/state was supplied; source relationships, unseen content and interaction outcomes require separate checks. Equal image bytes across separate observations do not prove stale capture or a rasterizer defect. Owned overlays within the frame may be included; outside portals refuse capture and Studio chrome is excluded. Overlay counts are hints, not an exhaustive inventory.",
+  "turnProgress": {
+    "applied": 0,
+    "metrics": {
+      "toolCalls": 1,
+      "completedCalls": 1,
+      "refusedCalls": 0,
+      "recoveryAttempts": 0,
+      "toolElapsedMs": 16886,
+      "providerRequests": 1,
+      "visionRequests": 1,
+      "acknowledgementMs": 0,
+      "confirmedEdits": 0,
+      "usage": {
+        "inputTokens": 6321,
+        "outputTokens": 525,
+        "totalTokens": 6846
+      },
+      "categories": {
+        "knowledge": 0,
+        "source": 0,
+        "edit": 0,
+        "observe": 1,
+        "other": 0
+      },
+      "elapsedMs": 31719,
+      "toolActiveMs": 16886,
+      "outsideToolMs": 14833,
+      "modelSteps": null,
+      "cost": null
+    },
+    "retainedKnowledge": {
+      "scope": "Complete contract bodies delivered in this turn only; reuse still requires their content to remain available in model context. Source facts are never cached knowledge.",
+      "complete": [],
+      "partialCount": 0
+    },
+    "visualEvidence": {
+      "regions": [
+        {
+          "cursor": "[repeated reference]",
+          "capturedAt": "2026-10-28T20:17:20.456Z",
+          "viewport": "[repeated reference]",
+          "image": "[repeated reference]",
+          "evidence": "[repeated reference]",
+          "preview": "[repeated reference]",
+          "imageDigest": "09205a8f73b02e3fcb8263c1731db7edef395096def33fbb100f504388093ba9",
+          "currentSource": true
+        }
+      ],
+      "currentSourceObservations": 1,
+      "scope": "Captured regions only; source freshness does not establish current runtime/viewport freshness or offscreen/interaction coverage.",
+      "interactionsVerified": false
+    },
+    "evidence": "Host receipt-derived totals include all acknowledged transactions, including cleanup. Outside-tool time is waiting/generation/transport/host overhead, not measured provider latency. Captured regions do not establish full-page or interaction coverage."
+  }
+}

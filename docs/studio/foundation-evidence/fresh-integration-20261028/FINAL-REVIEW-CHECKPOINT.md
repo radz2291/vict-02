@@ -1,5 +1,7 @@
 # Final owner-review checkpoint — 2026-10-28
 
+Later continuation: producta99aea00dd75d8ced3104bc399257a343517e7b3 is reviewed, built and loaded with an independently demonstrated reporting repair. Current count is30demonstrated/1partialAR-25/0currentfailed; all31owner acceptances remain open/fullgateHELD. [Latest evidence/checkpoint](../reporting-contract-20261028/LIVE-REPORT.md), [independent loaded verdict](../reporting-contract-20261028/INDEPENDENT.md). The original4f1c7aa checkpoint below remains preserved; it is not the final reporting candidate.
+
 Branch `codex/authoring-foundation`; frozen product `56b2853d2dbb7a04bba5cc9aa89671cbf0eb38a3`. This checkpoint and associated evidence change no product bytes. Cached origin/main remains `d7401bef6e48330796c74ec00c86db9622d48cdf`; no push/merge/publication/deployment occurred.
 
 **Independent final result:28 demonstrated /1partial AR-25 /2retained reporting failures AR-05+AR-09, across31. All31owner acceptances remain open; the complete foundation acceptance gate is HELD.** [Exact criterion review](../criterion-finishability-20261028/REPORT.md), [current authoritative status](../../AUTHORING-FOUNDATION-CURRENT-STATUS.md).

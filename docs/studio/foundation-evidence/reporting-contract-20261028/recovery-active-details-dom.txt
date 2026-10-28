@@ -1,0 +1,98 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Foundation Public Run Review"
+  - generic: ✓ Saved
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- banner:
+  - strong: Chat
+  - button "Hide Chat":
+- complementary "Chat":
+  - region "Conversation":
+    - region "Messages — Message":
+      - log:
+        - generic: You
+        - generic: Inspect the open local model menu once at node comp-model, part model-menu. Make no edits, clicks or scrolling. Is a bottom row or footer clipped? Treat that as a question, not proof that a footer exists. Distinguish measured capture facts, AI interpretation and behavior not tested. Keep the final brief.
+        - button "Copy message":
+        - generic: Assistant
+        - generic "Host evidence summary":
+          - paragraph: Host evidence summary
+          - status: The turn did not finish successfully. No source changes were applied. Appearance checks did not finish. Behavior was not tested by this agent.
+        - button "Original AI assessment and tool details":
+          - text: Original AI assessment and tool details
+        - button "Copy message":
+        - generic: You
+        - generic: Retry the visual observation for the retained task. Inspect current appearance and report limits without changing source.
+        - button "Copy message":
+        - generic: Assistant
+        - status: Working. Public notes and tool receipts are available in details.
+        - button "Public activity and tool details" [expanded] [active]:
+          - text: Public activity and tool details
+        - generic "Conversation timeline":
+          - paragraph: Retrying the single observation at comp-model, part model-menu — no edits, clicks, or scrolling; the footer question stays a question.
+          - button "Observe preview completed":
+            - generic: Observe preview
+            - generic: completed
+    - button "Scroll to latest message":
+      - generic: Scroll to end
+    - textbox "Message":
+      - /placeholder: Ask for a change…
+    - button "Stop":
+      - generic: Stop
+    - status
+  - status "Capturing and observing the rendered preview…":
+    - generic: Working…
+  - button "Chat details": ···
+- separator "Chat width"
+- main:
+  - button "Toggle Chat drawer" [expanded]:
+  - group "Workspace mode":
+    - button "Design"
+    - button "Interact" [pressed]
+    - button "Structure"
+  - button "Toggle Document and Selection drawer":
+  - iframe:
+    - generic "Screen canvas":
+      - main "Foundation Public Run Review":
+        - heading "Review desk heading" [level=1]:
+          - generic: Foundation Public Run Review
+        - paragraph:
+          - generic: Demo review desk — thirteen public VICT AI compositions. Every record here is simulated demonstration data; nothing is executed.
+        - tablist "Review sections":
+          - tab "Overview"
+          - tab "Diagnostics"
+          - tab "Context" [selected]
+        - tabpanel "Context":
+          - heading "Demo context usage — demonstration budget, not actual token/provider usage" [level=3]:
+            - generic: Demo context usage — demonstration budget, not actual token/provider usage
+          - button "42% context"
+          - heading "Example files (demo)" [level=3]:
+            - generic: Example files (demo)
+          - button "review.ts":
+            - text: review.ts
+          - button "README.md":
+            - text: README.md
+          - generic: "Local intent — selected file (demo):"
+          - generic: Demo checkpoint — local restore intent only
+          - generic: "Restore stays intent-only here: no host restore binding exists, so nothing is restored and no history changes."
+          - 'button "Populate local draft: apply the compact correction to the review desk layout (demo)"'
+          - generic: "Local intent — draft populated by the suggestion (demo):"
+          - 'button "Model: Desk preview (local only)" [expanded]':
+            - text: Desk preview (local only)
+          - generic: Model selection is a local preview choice only — it never changes or contacts the real provider.
+    - 'menu "Model: Desk preview (local only)"':
+      - menuitemradio "✓ Desk preview (local only)" [checked]:
+        - text: ✓
+        - text: Desk preview (local only)
+      - menuitemradio "Desk preview alt (local only)": Desk preview alt (local only)
+- contentinfo:
+  - status: Interact mode · simulated behavior, no live effects.
+- generic: Designer — VICT Studio

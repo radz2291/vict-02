@@ -1,0 +1,7 @@
+Retrying the single observation at comp-model, part model-menu — no edits, clicks, or scrolling; the footer question stays a question.
+
+Retry succeeded — the capture went through with no scroll, so this time there is real evidence.
+
+- **Measured:** host puts the `model-menu` box at 192×112, fixed at top 686.6px (bottom ≈798.6px), fully inside the 799px-tall frame and the 912px viewport, white background, `overflow: hidden auto`; image identity confirmed sha256-identical.
+- **AI interpretation (unverified):** two readable rows — "Desk preview (local only)" (checked) and "Desk preview alt (local only)" — with the last flush to the crop edge; minor clipping of its lower padding can't be ruled out, and **no footer is discernible — footer existence remains notEstablished**.
+- **Not tested:** no clicks or scrolling occurred (per your constraint), so menu scrollability, any rows beyond the two visible, and selection/close behavior are unverified.

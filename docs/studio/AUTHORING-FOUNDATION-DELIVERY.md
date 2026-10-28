@@ -1,6 +1,12 @@
 # Authoring foundation — delivery and acceptance map
 
-## Current review checkpoint — product 56b2853, 2026-10-28
+## Current morning-review checkpoint — product a99aea00
+
+**30 demonstrated / 1 partial (AR-25) / 0 current failed criteria across31. All31 owner acceptances remain open; full foundation gate HELD.** Product `a99aea00dd75d8ced3104bc399257a343517e7b3` is independently reviewed, built, loaded and exercised through actual Z.ai subscription proof. AR-05 now has concise receipt-derived default Host evidence summary with unchanged originals/technical details inspectable. AR-09 separates source effects, stable capture measurements, explicitly unverified structured AI interpretation and untested behavior; an actual failed capture is preserved as failed and one visibility-based observation-only recovery succeeds without edits. These are scoped reporting-contract demonstrations, not universal model truth or censorship of the longer original response.
+
+[Current status](AUTHORING-FOUNDATION-CURRENT-STATUS.md), [independent loaded verdict](foundation-evidence/reporting-contract-20261028/INDEPENDENT.md), [exact live report](foundation-evidence/reporting-contract-20261028/LIVE-REPORT.md). Saved source is unchanged; normal viewport restored and tested same-config service running. AR-25 actual mobile keyboard/safe-area/touch remains partial. Heard audio and lost original responsive source remain disclosed limits. Historical reporting failures and earlier counts below are preserved. No push/merge/publication/deployment or owner acceptance follows.
+
+## Earlier review checkpoint — product 56b2853, 2026-10-28
 
 The current independent exact-criterion verdict is **28 demonstrated / 1 partial (AR-25) / 2 retained reporting failures (AR-05 and AR-09), across 31**. CF-01 is demonstrated at the delivered foundation-delta scope; AI-EX01 has matching manual and actual-agent lineage for all23 intended identities. **All31 owner acceptances remain open; the full foundation gate remains HELD.** Product code is frozen at `56b2853d2dbb7a04bba5cc9aa89671cbf0eb38a3`; subsequent evidence-only checkpoints do not imply a different loaded product. [Current status and exact remaining limits](AUTHORING-FOUNDATION-CURRENT-STATUS.md), [independent final verdict](foundation-evidence/criterion-finishability-20261028/REPORT.md).
 

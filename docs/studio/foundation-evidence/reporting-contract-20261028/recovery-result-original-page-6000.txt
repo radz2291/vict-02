@@ -1,0 +1,24 @@
+Source facts are never cached knowledge.",
+      "complete": [],
+      "partialCount": 0
+    },
+    "visualEvidence": {
+      "regions": [
+        {
+          "cursor": "[repeated reference]",
+          "capturedAt": "2026-10-28T20:17:20.456Z",
+          "viewport": "[repeated reference]",
+          "image": "[repeated reference]",
+          "evidence": "[repeated reference]",
+          "preview": "[repeated reference]",
+          "imageDigest": "09205a8f73b02e3fcb8263c1731db7edef395096def33fbb100f504388093ba9",
+          "currentSource": true
+        }
+      ],
+      "currentSourceObservations": 1,
+      "scope": "Captured regions only; source freshness does not establish current runtime/viewport freshness or offscreen/interaction coverage.",
+      "interactionsVerified": false
+    },
+    "evidence": "Host receipt-derived totals include all acknowledged transactions, including cleanup. Outside-tool time is waiting/generation/transport/host overhead, not measured provider latency. Captured regions do not establish full-page or interaction coverage."
+  }
+}

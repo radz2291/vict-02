@@ -1,0 +1,1 @@
+Inspect the open local model menu once at node comp-model, part model-menu. Make no edits, clicks or scrolling. Is a bottom row or footer clipped? Treat that as a question, not proof that a footer exists. Distinguish measured capture facts, AI interpretation and behavior not tested. Keep the final brief.
