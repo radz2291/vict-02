@@ -89,3 +89,8 @@ export { catalogAuthoringPackage, catalogAuthoringRegistrations } from './catalo
 export { withAuthoringRules, runtimeAuthoringIssues } from './document/authoring-runtime.js';
 export {default as OwnedDialogContent} from './OwnedDialogContent.svelte';
 export {createOwnedDialogBehavior,ownedDialogBranches,isOwnedFocusable,restoreOwnedFocus,loopOwnedDialogFocus,lockOwnedDialogViewport,type OwnedDialogOptions} from './owned-dialog.js';
+export {registerOwnedPopupLayer,resolveOwnedPopupOwner,isOwnedPopupTarget,hasCompetingOwnedPopupOwner,isOwnedElementRendered,isOwnedPopupSourceVisible,isOwnedPopupSourceAvailable,isOwnedPopupSourceTarget,ownedDocumentHasFocus,observeOwnedPopupSource,ownedPopupBranches,positionOwnedPopup,type OwnedPopupLayer,type OwnedPopupLayerOptions,type OwnedPopupKind,type OwnedPopupEventResult,type OwnedPopupEventContext,type OwnedPopupPositionOptions,type OwnedPopupSourceOptions} from './owned-popup.js';
+export {default as OwnedTooltip} from './OwnedTooltip.svelte';
+export {createOwnedTooltipBehavior,type OwnedTooltipOptions} from './owned-tooltip.js';
+export {default as OwnedMenuContent} from './OwnedMenuContent.svelte';
+export {OWNED_MENU_CONTEXT,createOwnedMenuContext,createOwnedMenuBehavior,ownedMenuItems,focusOwnedMenuItem,ownedMenuTriggerKey,restoreOwnedMenuFocus,type OwnedMenuContext,type OwnedMenuCloseReason} from './owned-menu.js';

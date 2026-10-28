@@ -1,0 +1,149 @@
+{
+  "schema": "vict.owned-popup-baseline-attribution@1",
+  "baselineCommit": "5e4b98ddb04599bb6c1548b745d6a4260a643ff3",
+  "recordedAt": "2026-10-28T05:16:03.340Z",
+  "fixture": "C:/Users/RZ1/AppData/Local/Temp/vict-popup-baseline-5e-a68436e9/baseline",
+  "archiveSha256": "75cfda443b1a4db2068e9a041d01aceb50cf00ffcae66931abafe179509e229b",
+  "config": {
+    "path": "C:/Users/RZ1/AppData/Local/Temp/vict-popup-baseline-5e-a68436e9/baseline/vitest.baseline.config.mjs",
+    "sha256": "2cb168f9113d7a433cbe3310887c981c1089f69a197b60af6a881a3d4767609d",
+    "primitiveInlining": "Same root-approved @shadcn-svelte/primitives inline correction",
+    "dependencies": "Existing same installed third-party dependencies via explicit resolution; no filesystem junction was created.",
+    "cwd": "Baseline fixture; absolute existing Vitest CLI",
+    "workspacePolicy": "Every @victframework import resolves fail-closed to archived baseline sources; relative source imports stay inside archive."
+  },
+  "frameworkResolutions": {
+    "@victframework/ui": "C:/Users/RZ1/AppData/Local/Temp/vict-popup-baseline-5e-a68436e9/baseline/packages/ui/src/index.ts",
+    "@victframework/ui-svelte": "C:/Users/RZ1/AppData/Local/Temp/vict-popup-baseline-5e-a68436e9/baseline/packages/ui-svelte/src/index.ts",
+    "@victframework/application/renderer": "C:/Users/RZ1/AppData/Local/Temp/vict-popup-baseline-5e-a68436e9/baseline/packages/application/src/renderer.ts",
+    "@victframework/ui-editor": "C:/Users/RZ1/AppData/Local/Temp/vict-popup-baseline-5e-a68436e9/baseline/packages/ui-editor/src/index.ts"
+  },
+  "baselineFilesMatchedGitBlob": {
+    "packages/ui-svelte/test/probe-authoring-coverage.test.ts": "2b1e089d82f6c63dda3027370dac4a33e20eb1ee23cf93d7a40cc2abc9d79821",
+    "packages/ui-svelte/test/rhea-native.test.ts": "7d3fb75d1dda5bc9d286bb486e440f600ac13d3152fc02c08be808a6eec81ea9",
+    "packages/ui-svelte/test/component-part-presentation.test.ts": "aa9a73096ca6357d2c5580cee2a2b5765cc0ade5260059d2d78b5c54b8f64477",
+    "packages/ui-svelte/src/catalog/components/B4Menubar.svelte": "59d4afb8639e6228adcced5ddfa3bec8bddcf25eaae8abd0654d60ab68a5b5e5",
+    "packages/ui-svelte/src/index.ts": "768fee24a7833e6fd148cbd296587cc267c86d49b62997c3e6bccab0b6093759",
+    "packages/ui/src/index.ts": "074fa245a3fb75d30d029bed0ce0a57f2d3d68586d721a3fc1d33631b5c6019c",
+    "packages/ui-editor/src/index.ts": "c14beec41e6e4a1560d84b4fb7fe35f9a6c8103c5e0babc97e06ac99d573ea45",
+    "packages/application/src/renderer.ts": "59a1a988287277b2f2d1a2f75306d3c2e3764401d03d98eaaa7e41eb9339dcf9",
+    "packages/ui-ai-svelte/src/authoring/descriptors.ts": "3c57266bdde2d2c3e3026161101fae7dc6e0a526c4b7cdc22f24c5e2e75aedfe",
+    "packages/ui-ai-svelte/src/authoring/implementations.ts": "de7c3db37f7cedf704e3f0897c6beb9cf70ee4f3762161d341355d3910e410da",
+    "packages/ui-ai-svelte/src/authoring/knowledge.ts": "acd0d97a85d386c79addf49ad3988641c40a136d38ada0e72a66ff43b9db924f",
+    "packages/ui-svelte/src/rhea.css": "24f1d5849bf98f23f2789f5ac722947ecf4ea89c0f6e5eb944772f8fac8d3423",
+    "packages/ui-svelte/rhea-upstream-manifest.json": "467d79263afb0545e321ba945f6cc1e2edde47c6e57d199e18c12a26836ef9fe",
+    "docs/studio/CYCLE-1-4-CATALOG-MIGRATION.json": "be5daf70df3f0fbf2554ef8c831e7557d724e42646e6971cab5da765a2942250",
+    "tsconfig.base.json": "7faa0b0682c2bb90e74ccc819c579c9662eb2cfebcee3871c92d1ec0942aef75",
+    "tsconfig.json": "c4e0e2ceae8ab6262eb10c4b8f57e7649424e229d7cbbcc7e30e21b62280f618"
+  },
+  "checks": {
+    "initialExecutableThreeFiles": {
+      "exitCode": 1,
+      "passed": 82,
+      "failed": 22,
+      "total": 104,
+      "fixtureFailure": "One missing migration JSON in bounded archive; corrected from exact baseline Git blob."
+    },
+    "affectedRheaRecheck": {
+      "exitCode": 1,
+      "passed": 20,
+      "failed": 1,
+      "total": 21,
+      "correctedFixture": true
+    },
+    "nonOverlappingCompleteBaseline": {
+      "passed": 83,
+      "failed": 21,
+      "total": 104,
+      "scope": "Combined disjoint results: probe56/19, part7/1, corrected Rhea20/1; not a fresh combined rerun."
+    }
+  },
+  "attribution": {
+    "probe": {
+      "baselinePassed": 56,
+      "baselineFailed": 19,
+      "currentFailed": 19,
+      "exactSameFamilySet": true,
+      "families": [
+        "vict.catalog.accordion-item (label)",
+        "vict.catalog.combobox-item (label)",
+        "vict.catalog.command (label)",
+        "vict.catalog.command.group (label)",
+        "vict.catalog.command.item (label)",
+        "vict.catalog.menubar.checkbox-item (label)",
+        "vict.catalog.menubar.group (label)",
+        "vict.catalog.menubar.item (label)",
+        "vict.catalog.menubar.menu (label)",
+        "vict.catalog.menubar.radio-group (value)",
+        "vict.catalog.menubar.radio-item (label)",
+        "vict.catalog.menubar.sub (label)",
+        "vict.catalog.navigation-menu (value)",
+        "vict.catalog.navigation-menu.item (label)",
+        "vict.catalog.navigation-menu.link (label)",
+        "vict.catalog.select-item (label)",
+        "vict.catalog.tabs (label)",
+        "vict.catalog.tabs-trigger (label)",
+        "vict.catalog.toggle-group-item (label)"
+      ],
+      "verdict": "Predates current popup extension; not waived or accepted."
+    },
+    "rhea": {
+      "baselineMismatch": true,
+      "oldManifestHash": "9d9a9ef5fee7a219f968b68bb5646645f6ff36d148865b68ce6a4b78b16fb310",
+      "actualAt84ddAnd5e": "24f1d5849bf98f23f2789f5ac722947ecf4ea89c0f6e5eb944772f8fac8d3423",
+      "cause": "Prior84dd862 theme alias adaptation changed six declarations without local manifest bookkeeping. Independent git raw hashes/diff agree; root handles provenance-only repair."
+    },
+    "partPresentation": {
+      "baselinePassed": 7,
+      "baselineFailed": 1,
+      "reason": "After correct primitive inlining, legacy assertion expects all revision1 contracts count3 but baseline already has23 intended identities; old compatibility pins remain valid. This failure predates popup extension and was hidden by initial collection setup error.",
+      "scope": "No assertion or product repair by verifier."
+    },
+    "newCatalogBodySnapshot": "Not attributed by this baseline; absent baseline feature test. Root/catalog builder investigates possible asynchronous unowned Bits cleanup; no unsupported preexisting label."
+  },
+  "denial": {
+    "action": "New-Item -ItemType Junction baseline/node_modules to existing dependencies",
+    "status": "DENIED Access is denied",
+    "response": "Stopped; no retry or alternate junction. Parent approved explicit resolver route with no filesystem link.",
+    "finalFilesystemInspection": "baseline/node_modules is an ordinary Directory with empty LinkType/Target and only .vite/.vite-temp compiler caches; no dependency junction/symlink exists."
+  },
+  "logs": {
+    "vict-popup-baseline-5e-renderer-source-final.log": {
+      "path": "C:/Users/RZ1/AppData/Local/Temp/vict-popup-baseline-5e-renderer-source-final.log",
+      "sha256": "a4f47894b4be56e7ad9ec5f256ec69a5dcfb44f8c015e5a0c6887792e4c9a717"
+    },
+    "vict-popup-baseline-5e-rhea-complete.log": {
+      "path": "C:/Users/RZ1/AppData/Local/Temp/vict-popup-baseline-5e-rhea-complete.log",
+      "sha256": "7aa97fe2ee28e30bbbb496016045921f01ade025322e683b1d6ecaa4d399f0af"
+    },
+    "vict-owned-popup-final-renderer-tests.log": {
+      "path": "C:/Users/RZ1/AppData/Local/Temp/vict-owned-popup-final-renderer-tests.log",
+      "sha256": "45c809e4141415a9057869695f22722bf627fdf0babe09e7809f00bbd00e56ea"
+    },
+    "vict-popup-baseline-5e-renderer.log": {
+      "path": "C:/Users/RZ1/AppData/Local/Temp/vict-popup-baseline-5e-renderer.log",
+      "sha256": "60e5994bfa4d6493df119a3392abe3e23439213b20c521ce4cfc1915313418e2"
+    },
+    "vict-popup-baseline-5e-renderer-configured.log": {
+      "path": "C:/Users/RZ1/AppData/Local/Temp/vict-popup-baseline-5e-renderer-configured.log",
+      "sha256": "f449440411eb5335fbc10b226cede3736c442807585f8523ba4dd0c147dbc14c"
+    },
+    "vict-popup-baseline-5e-renderer-resolved.log": {
+      "path": "C:/Users/RZ1/AppData/Local/Temp/vict-popup-baseline-5e-renderer-resolved.log",
+      "sha256": "7c071346e258f28fc42023d2c6a6c947b3129031c57e326a313a57a049335c6d"
+    },
+    "vict-popup-baseline-5e-renderer-source.log": {
+      "path": "C:/Users/RZ1/AppData/Local/Temp/vict-popup-baseline-5e-renderer-source.log",
+      "sha256": "7c071346e258f28fc42023d2c6a6c947b3129031c57e326a313a57a049335c6d"
+    }
+  },
+  "limitations": [
+    "Baseline itself fails; inherited does not mean waived.",
+    "This is source/offline attribution only; browser/Undo denials remain stopped.",
+    "Full milestone acceptance remains held; no provider, publication, commit, or current product edit by verifier."
+  ],
+  "affectedRheaFrameworkResolutions": {
+    "@victframework/ui": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-popup-baseline-5e-a68436e9\\baseline\\packages\\ui\\src\\index.ts"
+  },
+  "resolutionEvidence": "The four-entry map was read through the tool immediately after the full three-file run. The subsequent Rhea-only process overwrote resolved-workspaces.json with its one-entry map; both scopes are distinguished here. The config fails closed for every @victframework import and all mapped source files match baseline Git blobs."
+}

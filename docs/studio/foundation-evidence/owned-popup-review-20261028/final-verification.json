@@ -1,0 +1,117 @@
+{
+  "schema": "vict.foundation-popup-final-verification@1",
+  "recordedAt": "2026-10-28T05:40:34.218Z",
+  "status": "CODE-READY WORKING TREE; LOCAL GIT CHECKPOINT DENIED; INTEGRATED ACCEPTANCE HELD",
+  "branch": "codex/authoring-foundation",
+  "lastSavedGitCommit": "5e4b98ddb04599bb6c1548b745d6a4260a643ff3",
+  "checkout": "C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation",
+  "workingTreeDirty": true,
+  "frozenProductionAndDependencyHashesMatched": 27,
+  "sourceManifest": "docs/studio/foundation-evidence/owned-popup-review-20261028/independent-associated-source.json",
+  "checks": {
+    "renderer": {
+      "passed": 346,
+      "failed": 0,
+      "skipped": 1,
+      "total": 347,
+      "exitCode": 0,
+      "skipNames": []
+    },
+    "ai": {
+      "passed": 64,
+      "failed": 0,
+      "exitCode": 0
+    },
+    "patterns": {
+      "passed": 45,
+      "failed": 0,
+      "exitCode": 0
+    },
+    "independentPopup": {
+      "passed": 12,
+      "failed": 0,
+      "exitCode": 0,
+      "scope": "Frozen production snapshot with reviewed type-only runtime-equivalent association; overlaps renderer cases."
+    },
+    "studioTypes": {
+      "exitCode": 0
+    },
+    "designerSvelte": {
+      "errors": 0,
+      "inheritedWarnings": 5,
+      "exitCode": 0
+    },
+    "aiCss": {
+      "exitCode": 0
+    },
+    "studioProduction": {
+      "exitCode": 0,
+      "firstAttempt": "Retained EPERM creating generated server output directory; normal approved filesystem-access retry passed without permission changes."
+    },
+    "packedConsumer": {
+      "exitCode": 0,
+      "packages": 9,
+      "installedBytesMatched": true,
+      "evidence": "docs/studio/foundation-evidence/packed-consumer-vict-foundation-consumer-hLsCWA.json",
+      "source": "Uncommitted working bytes identified by package/file hashes; sourceBase is the prior Git ancestor.",
+      "coverage": "Registered ModelSelector and shared OwnedTooltip are included in the public consumer fixture; build does not execute native UI interactions."
+    }
+  },
+  "logs": {
+    "renderer": {
+      "path": "C:/Users/RZ1/AppData/Local/Temp/vict-owned-popup-sealed-renderer-tests.log",
+      "sha256": "21807db0d8333325b3fe02aaca2e73c550c01ac2e74bbbfdce894966e3913738"
+    },
+    "ai": {
+      "path": "C:/Users/RZ1/AppData/Local/Temp/vict-owned-popup-final-ai-tests.log",
+      "sha256": "9bb614ff48a9fa4337a5e480419986f219c57efea2b2b835a6ba690197eeed19"
+    },
+    "patterns": {
+      "path": "C:/Users/RZ1/AppData/Local/Temp/vict-owned-popup-final-pattern-tests.log",
+      "sha256": "8ace97eed5cc4457bfa588a2f7cbd9b6f7f2635d16f807f64aae63dfd09b8bdf"
+    },
+    "designer": {
+      "path": "C:/Users/RZ1/AppData/Local/Temp/vict-owned-popup-sealed-designer-types.log",
+      "sha256": "2c7650c8349ffa50daf342df0900456df50c5c4f6de10c597903be42c0b7738f"
+    },
+    "studioTypes": {
+      "path": "C:/Users/RZ1/AppData/Local/Temp/vict-owned-popup-sealed-studio-types.log",
+      "sha256": "3b60fb077fa856d3551b84840f7c025e869ecdb01add9d0e01d3d7cc22953619"
+    },
+    "studioBuild": {
+      "path": "C:/Users/RZ1/AppData/Local/Temp/vict-owned-popup-studio-build-recheck.log",
+      "sha256": "2bced6f43b31a2d3c3c28947bad376cc8ac41e355b7629c5be1af807d06f9216"
+    },
+    "cssBuild": {
+      "path": "C:/Users/RZ1/AppData/Local/Temp/vict-owned-popup-final-css-build.log",
+      "sha256": "f926f4651aa83700323ae085f96685214c7059d43098fed40c65ae1e13cf8770"
+    },
+    "consumer": {
+      "path": "C:/Users/RZ1/AppData/Local/Temp/vict-owned-popup-final-packed-consumer.log",
+      "sha256": "2de6af022996ed1a9eff7e8d7525229289582812577fe736279ef52359e9ec3a"
+    }
+  },
+  "blocked": {
+    "localCommit": {
+      "status": "DENIED / known not executed",
+      "evidence": "docs/studio/foundation-evidence/owned-popup-review-20261028/local-commit-denial.json",
+      "reason": "Automatic review could not establish the architecture approval prerequisite in its trusted record; no git add/commit ran. No retry or alternate writer."
+    },
+    "browser": {
+      "status": "DENIED by saved permission/managed policy",
+      "origin": "http://127.0.0.25:5625",
+      "retriedDuringThisExtension": false
+    },
+    "undo": "Older separate additional Undo verification remains stopped.",
+    "liveVerification": "New actual Studio-agent/browser/device and remaining integrated media/responsive/persistence checks unrun.",
+    "otherPopupFamilies": "Select, Popover and interactive hovercards are not blanket-certified by this bounded menu/tooltip repair."
+  },
+  "formalClosure": {
+    "originalFindingsClosed": 0,
+    "total": 29,
+    "componentConformance": "OPEN",
+    "aiExposureIntegratedAcceptance": "OPEN",
+    "ownerAcceptance": false
+  },
+  "restrictions": "No push/merge/publication/deployment/security setting change, browser retry, model/provider switch, purchase or new provider run."
+}

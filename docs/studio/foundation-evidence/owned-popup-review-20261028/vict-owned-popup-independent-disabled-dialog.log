@@ -1,0 +1,42 @@
+
+Algorithm : SHA256
+Hash      : AEEBD83F459884092A8861DE4F0844C1318EBEEB7963C9ACC1EC56493BB33ABC
+Path      : C:\Users\RZ1\AppData\Local\Temp\vict-authoring-foundation\packages\ui-svelte\src\owned-popup.ts
+
+Algorithm : SHA256
+Hash      : 6106A87166051E67388B04164FD09ABDF87A0033F84220DA42684E5198995ED5
+Path      : C:\Users\RZ1\AppData\Local\Temp\vict-authoring-foundation\packages\ui-svelte\src\owned-dialog.ts
+
+
+ RUN  v4.1.11 C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation
+
+ Γ¥» |renderer| packages/ui-svelte/test/owned-popup-independent.test.ts (10 tests | 1 failed | 9 skipped) 97ms
+     ├ù keeps an already-open dialog operable when its launcher becomes disabled 92ms
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ» Failed Tests 1 ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»
+
+ FAIL  |renderer| packages/ui-svelte/test/owned-popup-independent.test.ts > independent shared owned-popup challenge > keeps an already-open dialog operable when its launcher becomes disabled
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ Γ¥» packages/ui-svelte/test/owned-popup-independent.test.ts:59:52
+     57|   it('keeps an already-open dialog operable when its launcher becomes ΓÇª
+     58|     const d=dialog();d.trigger.disabled=true;d.first.focus();
+     59|     expect(key(d.first,'Escape').defaultPrevented).toBe(true);
+       |                                                    ^
+     60|   });
+     61|   it('keeps dialog focus containment under an open menu while admittinΓÇª
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[1/1]ΓÄ»
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 9 skipped (10)
+   Start at  12:45:57
+   Duration  24.44s (transform 16.35s, setup 0ms, import 19.44s, tests 97ms, environment 4.16s)
+

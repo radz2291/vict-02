@@ -1,0 +1,84 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation
+
+1:11:08 pm [vite-plugin-svelte] packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+1:11:08 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:311:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+1:11:08 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:311:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+1:11:08 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:381:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+1:11:08 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:381:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+ Γ¥» |renderer| packages/ui-svelte/test/probe-authoring-coverage.test.ts (75 tests | 2 failed) 1380ms
+     ├ù authoring round-trip: vict.catalog.appshell (title) 18ms
+     ├ù authoring round-trip: vict.catalog.tabs-panel (value) 7ms
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ» Failed Tests 2 ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»
+
+ FAIL  |renderer| packages/ui-svelte/test/probe-authoring-coverage.test.ts > authoring coverage: every catalog family through the Inspector data path > authoring round-trip: vict.catalog.appshell (title)
+AssertionError: vict.catalog.appshell: valid canonical composition has no renderer diagnostic: expected [ { ΓÇª(3) } ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   {
++     "code": "UI_COMPONENT_SLOT_REQUIRED",
++     "detail": {
++       "extensionId": "vict.catalog.appshell",
++       "nodeId": "fixture",
++       "revision": "1",
++     },
++     "message": "The required slot 'content' has no fill.",
++   },
++ ]
+
+ Γ¥» packages/ui-svelte/test/probe-authoring-coverage.test.ts:242:103
+    240|       ).toBe(true);
+    241|       const { target, diagnostics } = render(edited.plan as never, sesΓÇª
+    242|       expect(diagnostics, `${descriptor.id}: valid canonical compositiΓÇª
+       |                                                                                                       ^
+    243|       const rendered = (target.textContent ?? '').replace(/\s+/g, ' ');
+    244|       expect(
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[1/2]ΓÄ»
+
+ FAIL  |renderer| packages/ui-svelte/test/probe-authoring-coverage.test.ts > authoring coverage: every catalog family through the Inspector data path > authoring round-trip: vict.catalog.tabs-panel (value)
+AssertionError: vict.catalog.tabs-panel: valid canonical composition has no renderer diagnostic: expected [ { ΓÇª(3) } ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   {
++     "code": "UI_AUTHORING_RUNTIME_IDENTITY",
++     "detail": {
++       "leftSlot": "tabs",
++       "nodeId": "fixture",
++       "occurrenceKey": "probe.authoring.vict.catalog.tabs-panel|fixture",
++       "rightSlot": "panels",
++     },
++     "message": "Rendered paired part identities do not match.",
++   },
++ ]
+
+ Γ¥» packages/ui-svelte/test/probe-authoring-coverage.test.ts:242:103
+    240|       ).toBe(true);
+    241|       const { target, diagnostics } = render(edited.plan as never, sesΓÇª
+    242|       expect(diagnostics, `${descriptor.id}: valid canonical compositiΓÇª
+       |                                                                                                       ^
+    243|       const rendered = (target.textContent ?? '').replace(/\s+/g, ' ');
+    244|       expect(
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[2/2]ΓÄ»
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 73 passed (75)
+   Start at  13:10:59
+   Duration  14.52s (transform 9.93s, setup 0ms, import 12.22s, tests 1.38s, environment 651ms)
+

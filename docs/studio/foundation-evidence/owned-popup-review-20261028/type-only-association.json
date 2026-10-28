@@ -1,0 +1,9 @@
+{
+  "schema": "vict.foundation-type-only-association@1",
+  "path": "packages/ui-svelte/src/owned-popup.ts",
+  "independentlyTestedRawSha256": "3866231a20fa13334d43d1f67d2bb7cdc19a44c9ee19291d8f2c8d20105f610f",
+  "currentRawSha256": "d0b823fde3200d18e6f52081d6e66c39b35c19796bd634617ada4f82ac1464a7",
+  "emittedRuntimeSha256": "d2473945f5bb44d8e5be96c71d498a6ccb93b008476cd1a2f67b5330b286932c",
+  "runtimeEquivalent": true,
+  "change": "Two explicit Element | undefined annotations resolve TypeScript6 inference; no executable change."
+}

@@ -9,10 +9,11 @@ const destination=mkdtempSync(join(tmpdir(),'vict-foundation-consumer-'));
 const consumer=join(destination,'consumer'),artifacts=join(destination,'artifacts');
 mkdirSync(consumer);mkdirSync(artifacts);mkdirSync(join(consumer,'src'));
 const sha=execFileSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8'}).trim();
+const sourceStatus=execFileSync('git',['status','--porcelain'],{cwd:root,encoding:'utf8'}).trim();
 const npm=process.platform==='win32'?'npm.cmd':'npm';
 const run=(args,cwd)=>execFileSync(npm,args,{cwd,encoding:'utf8',shell:process.platform==='win32',maxBuffer:16*1024*1024});
 const hash=bytes=>createHash('sha256').update(bytes).digest('hex');
-const report={schema:'vict.foundation-packed-consumer@1',status:'started',sourceBase:sha,destination,consumer,scope:'Supporting fresh packed-consumer compile/build proof; no browser, interaction, physical-device or actual-agent claim.',packs:[]};
+const report={schema:'vict.foundation-packed-consumer@1',status:'started',sourceBase:sha,sourceWorkingTree:{dirty:sourceStatus.length>0,statusSha256:hash(sourceStatus),note:sourceStatus?'Packed file hashes identify the tested working bytes; sourceBase is their Git ancestor, not a claim that all changes are committed.':'Source checkout was clean before this run created its evidence report.'},destination,consumer,scope:'Supporting fresh packed-consumer compile/build proof; no browser, interaction, physical-device or actual-agent claim.',packs:[]};
 const reportPath=resolve(root,'docs/studio/foundation-evidence',`packed-consumer-${destination.split(/[/\\]/).at(-1)}.json`);
 const save=()=>writeFileSync(reportPath,JSON.stringify(report,null,2));
 save();
@@ -33,7 +34,8 @@ try{
   writeFileSync(join(consumer,'src/main.ts'),`import {mount} from 'svelte';import App from './App.svelte';mount(App,{target:document.getElementById('app')!});`);
   writeFileSync(join(consumer,'src/App.svelte'),`<script lang="ts">
 import {compileUiDocument,defaultSemanticElementCatalog} from '@victframework/ui';
-import {DocumentHost,ControlScope} from '@victframework/ui-svelte';
+import {DocumentHost,ControlScope,OwnedTooltip} from '@victframework/ui-svelte';
+import {Button} from '@victframework/ui-svelte/catalog/button';
 import {aiAuthoringDescriptors,aiAuthoringImplementations} from '@victframework/ui-ai-svelte/authoring';
 import {GraphEditor,emptyGraph,serializeGraph} from '@victframework/ui-flow-svelte';
 import {flowAuthoringDescriptors,flowAuthoringImplementations} from '@victframework/ui-flow-svelte/authoring';
@@ -51,11 +53,15 @@ Object.assign(source.nodes.gallery,{props:{...source.nodes.gallery.props,index:{
 Object.assign(source.localState,{registeredGraph:{key:'registeredGraph',type:'string',initial:graph}});
 Object.assign(source.nodes,{registeredGraph:{kind:'component',id:'registeredGraph',definitionId:'vict.flow.editor',revision:'2',props:{graph:{type:'ref',path:'state.registeredGraph'},label:literal('Registered packed graph'),height:literal(480)},outputs:{graphChange:{setState:{key:'registeredGraph'}}},partStyles:{toolbar:{localStyle:[{property:'background-color',value:{type:'text',value:'#edf0fa'}}]}}}});
 source.nodes.root.children.push('registeredGraph');
+Object.assign(source.localState,{packedModel:{key:'packedModel',type:'string',initial:'one'}});
+Object.assign(source.nodes,{ownedModel:{kind:'component',id:'ownedModel',definitionId:'vict.ai.model-selector',revision:'1',props:{model:{type:'ref',path:'state.packedModel'},allowActions:literal(true),data:literal(JSON.stringify({version:1,models:[{id:'one',label:'One'},{id:'two',label:'Two'}],efforts:[]}))},outputs:{modelChange:{setState:{key:'packedModel'}}}}});
+source.nodes.root.children.push('ownedModel');
 const compiled=compileUiDocument(source as any,defaultSemanticElementCatalog(),descriptors);
 if(!compiled.ok)throw Error(JSON.stringify(compiled));
 </script>
 <h1>Foundation packed consumer</h1><p>Supporting authored fixture. No provider or interaction verification is claimed by its build.</p>
-<ControlScope class="vict-rhea"><AssetProvider namespace="foundation-packed-proof"><div style="position:relative;overflow:hidden" data-ui-application-viewport><DocumentHost plan={compiled.plan} localState={source.localState} extensionDescriptors={descriptors} extensionImplementations={implementations} dispatch={async()=>undefined} navigate={()=>{}} /></div><GraphEditor {graph} ongraphchange={value=>graph=value} label="Packed rich graph" height={480}/></AssetProvider></ControlScope>
+{#snippet tooltipTrigger(attributes)}<Button.Root {...attributes} class="vict-btn vict-btn--secondary">Owned tooltip trigger</Button.Root>{/snippet}
+<ControlScope class="vict-rhea"><AssetProvider namespace="foundation-packed-proof"><div style="position:relative;overflow:hidden" data-ui-application-viewport><DocumentHost plan={compiled.plan} localState={source.localState} extensionDescriptors={descriptors} extensionImplementations={implementations} dispatch={async()=>undefined} navigate={()=>{}} /><OwnedTooltip trigger={tooltipTrigger}>A supplied tooltip in this application.</OwnedTooltip></div><GraphEditor {graph} ongraphchange={value=>graph=value} label="Packed rich graph" height={480}/></AssetProvider></ControlScope>
 <style>:global(body){font-family:system-ui;margin:24px}h1{font-size:24px}</style>`);
   writeFileSync(join(destination,'install.log'),run(['install','--ignore-scripts','--no-audit','--no-fund'],consumer));
   const comparisons=[];

@@ -1,0 +1,11 @@
+{
+  "schema": "vict.foundation-provenance-attribution@1",
+  "path": "packages/ui-svelte/src/rhea.css",
+  "previousSource": "9b0cb3e29c1bfdf13cb6d8721a1b4ac928ace535",
+  "previousSha256": "9d9a9ef5fee7a219f968b68bb5646645f6ff36d148865b68ce6a4b78b16fb310",
+  "currentSha256": "24f1d5849bf98f23f2789f5ac722947ecf4ea89c0f6e5eb944772f8fac8d3423",
+  "unchangedSinceBaseline": "5e4b98ddb04599bb6c1548b745d6a4260a643ff3",
+  "introducedBy": "84dd8621525225e699681025a9f5c92c2a4ee348",
+  "reason": "Earlier foundation theme aliases prefer --vict-theme-highlight, --vict-theme-highlight-text and --vict-theme-surface with existing semantic fallbacks. Current popup changes do not alter this stylesheet. Manifest was not updated with that earlier source change.",
+  "strictTestChanged": false
+}

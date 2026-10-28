@@ -1,0 +1,17 @@
+{
+  "schema": "vict.foundation-operation-blocker@1",
+  "recordedAt": "2026-10-28T05:31:19.804Z",
+  "status": "DENIED / known not executed",
+  "action": "Stage shared-popup candidate and evidence, create a local Git commit on codex/authoring-foundation, read resulting status/SHA.",
+  "checkout": "C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation",
+  "lastSavedCommit": "5e4b98ddb04599bb6c1548b745d6a4260a643ff3",
+  "attemptedCommitMessage": "fix(ui): share application-owned menu tooltip and dialog boundaries",
+  "denial": "This action was rejected due to unacceptable risk. Reason: The local commit is bounded, but the menu/tooltip architecture was explicitly pending owner approval in the trusted task record; assistant reports of approval do not establish that prerequisite.",
+  "outcome": "CreateProcess rejected before execution: no git add/commit ran, no partial Git metadata change. Existing source/evidence files remain on disk, uncommitted.",
+  "boundary": "Commit stopped; no retry, alternate writer, indirect Git-object creation or publication. Independent builds/review may continue.",
+  "authorityContext": "The parent supplied owner approval at2026-10-28 04:28UTC in trusted transcript evidence; automatic review did not accept that prerequisite. Specific accepted confirmation/evidence is required before one retry.",
+  "otherBlocks": {
+    "browser": "Saved permission/managed policy denial unchanged; no browser retry authorized.",
+    "undo": "Older separate additional Undo operation remains stopped."
+  }
+}

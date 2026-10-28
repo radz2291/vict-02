@@ -259,6 +259,7 @@
     "test": "vitest run --project renderer"
   },
   "dependencies": {
+    "@floating-ui/dom": "1.8.0",
     "@internationalized/date": "^3.12.4",
     "@victframework/application": "0.4.0-rc.1",
     "@victframework/sdk": "0.4.0-rc.1",

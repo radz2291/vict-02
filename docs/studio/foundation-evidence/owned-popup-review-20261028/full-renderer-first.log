@@ -1,0 +1,467 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation
+
+12:56:00 pm [vite-plugin-svelte] packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+12:56:00 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:311:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+12:56:00 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:311:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+12:56:00 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:381:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+12:56:00 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:381:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+ Γ¥» |renderer| packages/ui-svelte/test/probe-authoring-coverage.test.ts (75 tests | 19 failed) 2922ms
+     ├ù authoring round-trip: vict.catalog.select-item (label) 45ms
+     ├ù authoring round-trip: vict.catalog.combobox-item (label) 10ms
+     ├ù authoring round-trip: vict.catalog.toggle-group-item (label) 27ms
+     ├ù authoring round-trip: vict.catalog.accordion-item (label) 14ms
+     ├ù authoring round-trip: vict.catalog.menubar.menu (label) 7ms
+     ├ù authoring round-trip: vict.catalog.menubar.item (label) 9ms
+     ├ù authoring round-trip: vict.catalog.menubar.sub (label) 7ms
+     ├ù authoring round-trip: vict.catalog.menubar.checkbox-item (label) 11ms
+     ├ù authoring round-trip: vict.catalog.menubar.radio-group (value) 9ms
+     ├ù authoring round-trip: vict.catalog.menubar.radio-item (label) 10ms
+     ├ù authoring round-trip: vict.catalog.menubar.group (label) 13ms
+     ├ù authoring round-trip: vict.catalog.command (label) 7ms
+     ├ù authoring round-trip: vict.catalog.command.item (label) 10ms
+     ├ù authoring round-trip: vict.catalog.command.group (label) 8ms
+     ├ù authoring round-trip: vict.catalog.navigation-menu (value) 10ms
+     ├ù authoring round-trip: vict.catalog.navigation-menu.item (label) 10ms
+     ├ù authoring round-trip: vict.catalog.navigation-menu.link (label) 13ms
+     ├ù authoring round-trip: vict.catalog.tabs (label) 9ms
+     ├ù authoring round-trip: vict.catalog.tabs-trigger (label) 11ms
+ Γ¥» |renderer| packages/ui-svelte/test/component-part-presentation.test.ts (0 test)
+ Γ¥» |renderer| packages/ui-svelte/test/owned-catalog-menus.test.ts (8 tests | 1 failed) 1425ms
+     ├ù fails closed into the owned path during initial owner resolution rather than mounting global Content 150ms
+12:56:49 pm [vite-plugin-svelte] packages/ui-svelte/test/DateClearFixture.svelte:22:21 This reference only captures the initial value of `initial`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+12:56:49 pm [vite-plugin-svelte] packages/ui-svelte/test/DateClearFixture.svelte:23:19 This reference only captures the initial value of `initial`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+12:56:57 pm [vite-plugin-svelte] packages/ui-svelte/test/TimePrimitiveFixture.svelte:8:48 This reference only captures the initial value of `value`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+12:57:05 pm [vite-plugin-svelte] packages/ui-svelte/test/CatalogCheckboxFixture.svelte:27:0 Buttons and links should either contain text or have an `aria-label`, `aria-labelledby` or `title` attribute
+https://svelte.dev/e/a11y_consider_explicit_label
+12:57:05 pm [vite-plugin-svelte] packages/ui-svelte/test/CatalogCheckboxFixture.svelte:32:0 Buttons and links should either contain text or have an `aria-label`, `aria-labelledby` or `title` attribute
+https://svelte.dev/e/a11y_consider_explicit_label
+ Γ¥» |renderer| packages/ui-svelte/test/rhea-native.test.ts (21 tests | 1 failed) 352ms
+     ├ù pins exact shipped local source and license bytes, including LF policy 22ms
+12:57:51 pm [vite-plugin-svelte] packages/ui-svelte/test/RangeStateFixture.svelte:23:8 This reference only captures the initial value of `documentId`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ» Failed Suites 1 ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»
+
+ FAIL  |renderer| packages/ui-svelte/test/component-part-presentation.test.ts [ packages/ui-svelte/test/component-part-presentation.test.ts ]
+TypeError: Unknown file extension ".svelte" for C:\Users\RZ1\AppData\Local\Temp\vict-authoring-foundation\node_modules\@shadcn-svelte\primitives\dist\message-scroller\components\message-scroller.svelte
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[1/22]ΓÄ»
+
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ» Failed Tests 21 ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»
+
+ FAIL  |renderer| packages/ui-svelte/test/owned-catalog-menus.test.ts > catalog menus use the shared owned boundary > fails closed into the owned path during initial owner resolution rather than mounting global Content
+AssertionError: expected { overflow: '', userSelect: '', ΓÇª(2) } to deeply equal { overflow: 'hidden', ΓÇª(3) }
+
+- Expected
++ Received
+
+  {
+    "hidden": null,
+    "inert": false,
+-   "overflow": "hidden",
++   "overflow": "",
+    "userSelect": "",
+  }
+
+ Γ¥» packages/ui-svelte/test/owned-catalog-menus.test.ts:33:174
+     31|     const host=mountDoc({root:'root',nodes:dropdown([leaf('item','VisiΓÇª
+     32|     expect(host.querySelector('[data-owned-menu-content]')).not.toBeNuΓÇª
+     33|     expect({overflow:document.body.style.overflow,userSelect:document.ΓÇª
+       |                                                                                                                                                                              ^
+     34|   });
+     35|   it('renders an actual owned menu with native keyboard navigation, seΓÇª
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[2/22]ΓÄ»
+
+ FAIL  |renderer| packages/ui-svelte/test/probe-authoring-coverage.test.ts > authoring coverage: every catalog family through the Inspector data path > authoring round-trip: vict.catalog.select-item (label)
+AssertionError: vict.catalog.select-item: composes through its documented slots (no unavailable surface): expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ Γ¥» packages/ui-svelte/test/probe-authoring-coverage.test.ts:408:9
+    406|         /unavailable/i.test(rendered),
+    407|         `${descriptor.id}: composes through its documented slots (no uΓÇª
+    408|       ).toBe(false);
+       |         ^
+    409|       const planText = JSON.stringify(edited.plan);
+    410|       expect(
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[3/22]ΓÄ»
+
+ FAIL  |renderer| packages/ui-svelte/test/probe-authoring-coverage.test.ts > authoring coverage: every catalog family through the Inspector data path > authoring round-trip: vict.catalog.combobox-item (label)
+AssertionError: vict.catalog.combobox-item: composes through its documented slots (no unavailable surface): expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ Γ¥» packages/ui-svelte/test/probe-authoring-coverage.test.ts:408:9
+    406|         /unavailable/i.test(rendered),
+    407|         `${descriptor.id}: composes through its documented slots (no uΓÇª
+    408|       ).toBe(false);
+       |         ^
+    409|       const planText = JSON.stringify(edited.plan);
+    410|       expect(
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[4/22]ΓÄ»
+
+ FAIL  |renderer| packages/ui-svelte/test/probe-authoring-coverage.test.ts > authoring coverage: every catalog family through the Inspector data path > authoring round-trip: vict.catalog.toggle-group-item (label)
+AssertionError: vict.catalog.toggle-group-item: composes through its documented slots (no unavailable surface): expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ Γ¥» packages/ui-svelte/test/probe-authoring-coverage.test.ts:408:9
+    406|         /unavailable/i.test(rendered),
+    407|         `${descriptor.id}: composes through its documented slots (no uΓÇª
+    408|       ).toBe(false);
+       |         ^
+    409|       const planText = JSON.stringify(edited.plan);
+    410|       expect(
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[5/22]ΓÄ»
+
+ FAIL  |renderer| packages/ui-svelte/test/probe-authoring-coverage.test.ts > authoring coverage: every catalog family through the Inspector data path > authoring round-trip: vict.catalog.accordion-item (label)
+AssertionError: vict.catalog.accordion-item: composes through its documented slots (no unavailable surface): expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ Γ¥» packages/ui-svelte/test/probe-authoring-coverage.test.ts:408:9
+    406|         /unavailable/i.test(rendered),
+    407|         `${descriptor.id}: composes through its documented slots (no uΓÇª
+    408|       ).toBe(false);
+       |         ^
+    409|       const planText = JSON.stringify(edited.plan);
+    410|       expect(
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[6/22]ΓÄ»
+
+ FAIL  |renderer| packages/ui-svelte/test/probe-authoring-coverage.test.ts > authoring coverage: every catalog family through the Inspector data path > authoring round-trip: vict.catalog.menubar.menu (label)
+AssertionError: vict.catalog.menubar.menu: composes through its documented slots (no unavailable surface): expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ Γ¥» packages/ui-svelte/test/probe-authoring-coverage.test.ts:408:9
+    406|         /unavailable/i.test(rendered),
+    407|         `${descriptor.id}: composes through its documented slots (no uΓÇª
+    408|       ).toBe(false);
+       |         ^
+    409|       const planText = JSON.stringify(edited.plan);
+    410|       expect(
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[7/22]ΓÄ»
+
+ FAIL  |renderer| packages/ui-svelte/test/probe-authoring-coverage.test.ts > authoring coverage: every catalog family through the Inspector data path > authoring round-trip: vict.catalog.menubar.item (label)
+AssertionError: vict.catalog.menubar.item: composes through its documented slots (no unavailable surface): expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ Γ¥» packages/ui-svelte/test/probe-authoring-coverage.test.ts:408:9
+    406|         /unavailable/i.test(rendered),
+    407|         `${descriptor.id}: composes through its documented slots (no uΓÇª
+    408|       ).toBe(false);
+       |         ^
+    409|       const planText = JSON.stringify(edited.plan);
+    410|       expect(
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[8/22]ΓÄ»
+
+ FAIL  |renderer| packages/ui-svelte/test/probe-authoring-coverage.test.ts > authoring coverage: every catalog family through the Inspector data path > authoring round-trip: vict.catalog.menubar.sub (label)
+AssertionError: vict.catalog.menubar.sub: composes through its documented slots (no unavailable surface): expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ Γ¥» packages/ui-svelte/test/probe-authoring-coverage.test.ts:408:9
+    406|         /unavailable/i.test(rendered),
+    407|         `${descriptor.id}: composes through its documented slots (no uΓÇª
+    408|       ).toBe(false);
+       |         ^
+    409|       const planText = JSON.stringify(edited.plan);
+    410|       expect(
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[9/22]ΓÄ»
+
+ FAIL  |renderer| packages/ui-svelte/test/probe-authoring-coverage.test.ts > authoring coverage: every catalog family through the Inspector data path > authoring round-trip: vict.catalog.menubar.checkbox-item (label)
+AssertionError: vict.catalog.menubar.checkbox-item: composes through its documented slots (no unavailable surface): expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ Γ¥» packages/ui-svelte/test/probe-authoring-coverage.test.ts:408:9
+    406|         /unavailable/i.test(rendered),
+    407|         `${descriptor.id}: composes through its documented slots (no uΓÇª
+    408|       ).toBe(false);
+       |         ^
+    409|       const planText = JSON.stringify(edited.plan);
+    410|       expect(
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[10/22]ΓÄ»
+
+ FAIL  |renderer| packages/ui-svelte/test/probe-authoring-coverage.test.ts > authoring coverage: every catalog family through the Inspector data path > authoring round-trip: vict.catalog.menubar.radio-group (value)
+AssertionError: vict.catalog.menubar.radio-group: composes through its documented slots (no unavailable surface): expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ Γ¥» packages/ui-svelte/test/probe-authoring-coverage.test.ts:408:9
+    406|         /unavailable/i.test(rendered),
+    407|         `${descriptor.id}: composes through its documented slots (no uΓÇª
+    408|       ).toBe(false);
+       |         ^
+    409|       const planText = JSON.stringify(edited.plan);
+    410|       expect(
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[11/22]ΓÄ»
+
+ FAIL  |renderer| packages/ui-svelte/test/probe-authoring-coverage.test.ts > authoring coverage: every catalog family through the Inspector data path > authoring round-trip: vict.catalog.menubar.radio-item (label)
+AssertionError: vict.catalog.menubar.radio-item: composes through its documented slots (no unavailable surface): expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ Γ¥» packages/ui-svelte/test/probe-authoring-coverage.test.ts:408:9
+    406|         /unavailable/i.test(rendered),
+    407|         `${descriptor.id}: composes through its documented slots (no uΓÇª
+    408|       ).toBe(false);
+       |         ^
+    409|       const planText = JSON.stringify(edited.plan);
+    410|       expect(
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[12/22]ΓÄ»
+
+ FAIL  |renderer| packages/ui-svelte/test/probe-authoring-coverage.test.ts > authoring coverage: every catalog family through the Inspector data path > authoring round-trip: vict.catalog.menubar.group (label)
+AssertionError: vict.catalog.menubar.group: composes through its documented slots (no unavailable surface): expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ Γ¥» packages/ui-svelte/test/probe-authoring-coverage.test.ts:408:9
+    406|         /unavailable/i.test(rendered),
+    407|         `${descriptor.id}: composes through its documented slots (no uΓÇª
+    408|       ).toBe(false);
+       |         ^
+    409|       const planText = JSON.stringify(edited.plan);
+    410|       expect(
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[13/22]ΓÄ»
+
+ FAIL  |renderer| packages/ui-svelte/test/probe-authoring-coverage.test.ts > authoring coverage: every catalog family through the Inspector data path > authoring round-trip: vict.catalog.command (label)
+AssertionError: vict.catalog.command: composes through its documented slots (no unavailable surface): expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ Γ¥» packages/ui-svelte/test/probe-authoring-coverage.test.ts:408:9
+    406|         /unavailable/i.test(rendered),
+    407|         `${descriptor.id}: composes through its documented slots (no uΓÇª
+    408|       ).toBe(false);
+       |         ^
+    409|       const planText = JSON.stringify(edited.plan);
+    410|       expect(
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[14/22]ΓÄ»
+
+ FAIL  |renderer| packages/ui-svelte/test/probe-authoring-coverage.test.ts > authoring coverage: every catalog family through the Inspector data path > authoring round-trip: vict.catalog.command.item (label)
+AssertionError: vict.catalog.command.item: composes through its documented slots (no unavailable surface): expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ Γ¥» packages/ui-svelte/test/probe-authoring-coverage.test.ts:408:9
+    406|         /unavailable/i.test(rendered),
+    407|         `${descriptor.id}: composes through its documented slots (no uΓÇª
+    408|       ).toBe(false);
+       |         ^
+    409|       const planText = JSON.stringify(edited.plan);
+    410|       expect(
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[15/22]ΓÄ»
+
+ FAIL  |renderer| packages/ui-svelte/test/probe-authoring-coverage.test.ts > authoring coverage: every catalog family through the Inspector data path > authoring round-trip: vict.catalog.command.group (label)
+AssertionError: vict.catalog.command.group: composes through its documented slots (no unavailable surface): expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ Γ¥» packages/ui-svelte/test/probe-authoring-coverage.test.ts:408:9
+    406|         /unavailable/i.test(rendered),
+    407|         `${descriptor.id}: composes through its documented slots (no uΓÇª
+    408|       ).toBe(false);
+       |         ^
+    409|       const planText = JSON.stringify(edited.plan);
+    410|       expect(
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[16/22]ΓÄ»
+
+ FAIL  |renderer| packages/ui-svelte/test/probe-authoring-coverage.test.ts > authoring coverage: every catalog family through the Inspector data path > authoring round-trip: vict.catalog.navigation-menu (value)
+AssertionError: vict.catalog.navigation-menu: composes through its documented slots (no unavailable surface): expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ Γ¥» packages/ui-svelte/test/probe-authoring-coverage.test.ts:408:9
+    406|         /unavailable/i.test(rendered),
+    407|         `${descriptor.id}: composes through its documented slots (no uΓÇª
+    408|       ).toBe(false);
+       |         ^
+    409|       const planText = JSON.stringify(edited.plan);
+    410|       expect(
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[17/22]ΓÄ»
+
+ FAIL  |renderer| packages/ui-svelte/test/probe-authoring-coverage.test.ts > authoring coverage: every catalog family through the Inspector data path > authoring round-trip: vict.catalog.navigation-menu.item (label)
+AssertionError: vict.catalog.navigation-menu.item: composes through its documented slots (no unavailable surface): expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ Γ¥» packages/ui-svelte/test/probe-authoring-coverage.test.ts:408:9
+    406|         /unavailable/i.test(rendered),
+    407|         `${descriptor.id}: composes through its documented slots (no uΓÇª
+    408|       ).toBe(false);
+       |         ^
+    409|       const planText = JSON.stringify(edited.plan);
+    410|       expect(
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[18/22]ΓÄ»
+
+ FAIL  |renderer| packages/ui-svelte/test/probe-authoring-coverage.test.ts > authoring coverage: every catalog family through the Inspector data path > authoring round-trip: vict.catalog.navigation-menu.link (label)
+AssertionError: vict.catalog.navigation-menu.link: composes through its documented slots (no unavailable surface): expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ Γ¥» packages/ui-svelte/test/probe-authoring-coverage.test.ts:408:9
+    406|         /unavailable/i.test(rendered),
+    407|         `${descriptor.id}: composes through its documented slots (no uΓÇª
+    408|       ).toBe(false);
+       |         ^
+    409|       const planText = JSON.stringify(edited.plan);
+    410|       expect(
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[19/22]ΓÄ»
+
+ FAIL  |renderer| packages/ui-svelte/test/probe-authoring-coverage.test.ts > authoring coverage: every catalog family through the Inspector data path > authoring round-trip: vict.catalog.tabs (label)
+AssertionError: vict.catalog.tabs: authored label reaches the canvas: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ Γ¥» packages/ui-svelte/test/probe-authoring-coverage.test.ts:429:11
+    427|           rendered.includes(String(edit.next)) || ariaEcho,
+    428|           `${descriptor.id}: authored ${edit.name} reaches the canvas`,
+    429|         ).toBe(true);
+       |           ^
+    430|       }
+    431|     });
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[20/22]ΓÄ»
+
+ FAIL  |renderer| packages/ui-svelte/test/probe-authoring-coverage.test.ts > authoring coverage: every catalog family through the Inspector data path > authoring round-trip: vict.catalog.tabs-trigger (label)
+AssertionError: vict.catalog.tabs-trigger: composes through its documented slots (no unavailable surface): expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ Γ¥» packages/ui-svelte/test/probe-authoring-coverage.test.ts:408:9
+    406|         /unavailable/i.test(rendered),
+    407|         `${descriptor.id}: composes through its documented slots (no uΓÇª
+    408|       ).toBe(false);
+       |         ^
+    409|       const planText = JSON.stringify(edited.plan);
+    410|       expect(
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[21/22]ΓÄ»
+
+ FAIL  |renderer| packages/ui-svelte/test/rhea-native.test.ts > Rhea canonical native compositions > pins exact shipped local source and license bytes, including LF policy
+AssertionError: src/rhea.css: expected '24f1d5849bf98f23f2789f5ac722947ecf4eaΓÇª' to be '9d9a9ef5fee7a219f968b68bb5646645f6ff3ΓÇª' // Object.is equality
+
+Expected: "9d9a9ef5fee7a219f968b68bb5646645f6ff36d148865b68ce6a4b78b16fb310"
+Received: "24f1d5849bf98f23f2789f5ac722947ecf4ea89c0f6e5eb944772f8fac8d3423"
+
+ Γ¥» packages/ui-svelte/test/rhea-native.test.ts:26:75
+     24|       const bytes = readFileSync(`packages/ui-svelte/${file.path}`);
+     25|       expect(bytes.includes(Buffer.from('\r\n')), file.path).toBe(falsΓÇª
+     26|       expect(createHash('sha256').update(bytes).digest('hex'), file.paΓÇª
+       |                                                                           ^
+     27|     }
+     28|   });
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[22/22]ΓÄ»
+
+
+ Test Files  4 failed | 43 passed (47)
+      Tests  21 failed | 317 passed | 1 skipped (339)
+   Start at  12:55:41
+   Duration  143.96s (transform 44.99s, setup 0ms, import 132.69s, tests 19.65s, environment 98.99s)
+

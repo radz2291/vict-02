@@ -1,0 +1,19 @@
+{
+  "schema": "vict.foundation-resume@1",
+  "recordedAt": "2026-10-28T07:55:22.5832302Z",
+  "sourceHashesMatched": 27,
+  "priorHead": "5e4b98ddb04599bb6c1548b745d6a4260a643ff3",
+  "browser": {
+    "action": "cua.getTab exact URL using iab",
+    "target": "http://127.0.0.25:5625/design",
+    "status": "DENIED",
+    "reason": "A saved user permission setting blocks this action. The origin approval gate did not grant access. A saved permission or managed policy denies access.",
+    "attempts": 1,
+    "workaroundUsed": false
+  },
+  "processInspection": {
+    "listeningPortsObserved": [],
+    "cimInventory": "DENIED: Access to a CIM resource was not available to the client."
+  },
+  "tests": "Retained passing checks reused; all 27 production/dependency hashes match. No source edits or new provider calls."
+}

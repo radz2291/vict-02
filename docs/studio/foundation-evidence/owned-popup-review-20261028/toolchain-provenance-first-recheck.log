@@ -1,0 +1,43 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation
+
+1:11:42 pm [vite-plugin-svelte] packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+1:11:43 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:311:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+1:11:43 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:311:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+1:11:43 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:381:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+1:11:43 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:381:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+ Γ¥» |renderer| packages/ui-svelte/test/component-part-presentation.test.ts (8 tests | 1 failed) 589ms
+     ├ù retains exact revision 1 pins and adds versioned implementation-linked revision 2 parts 52ms
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ» Failed Tests 1 ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»
+
+ FAIL  |renderer| packages/ui-svelte/test/component-part-presentation.test.ts > real AI part presentation and compatible contracts > retains exact revision 1 pins and adds versioned implementation-linked revision 2 parts
+AssertionError: expected [ ΓÇª(23) ] to have a length of 3 but got 23
+
+- Expected
++ Received
+
+- 3
++ 23
+
+ Γ¥» packages/ui-svelte/test/component-part-presentation.test.ts:84:77
+     82|     const registry=createUiAuthoringRegistry([aiAuthoringPackage],aiAuΓÇª
+     83|     expect(registry.issues).toEqual([]);
+     84|     expect(registry.contracts.filter(item=>item.descriptor.revision===ΓÇª
+       |                                                                             ^
+     85|     expect(registry.contracts.filter(item=>item.descriptor.revision===ΓÇª
+     86|   });
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[1/1]ΓÄ»
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  1 failed | 28 passed (29)
+   Start at  13:11:38
+   Duration  21.08s (transform 24.65s, setup 0ms, import 31.88s, tests 934ms, environment 3.58s)
+

@@ -1,0 +1,44 @@
+
+Algorithm : SHA256
+Hash      : 0006ACF25D2EF77A4888DB111EAABA484A26D5FA16C050A7A89AD1C81708229D
+Path      : C:\Users\RZ1\AppData\Local\Temp\vict-authoring-foundation\packages\ui-svelte\src\owned-popup.ts
+
+Algorithm : SHA256
+Hash      : 32749F38333DC5CAEBF8A4B412405842AEA1CA91942C61C892434228D101FB2D
+Path      : C:\Users\RZ1\AppData\Local\Temp\vict-authoring-foundation\packages\ui-svelte\src\owned-menu.ts
+
+
+ RUN  v4.1.11 C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation
+
+ Γ¥» |renderer| packages/ui-svelte/test/owned-popup-independent.test.ts (11 tests | 1 failed | 10 skipped) 42ms
+     ├ù does not restore focus out of a nested canonical application during imperative menu close 39ms
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ» Failed Tests 1 ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»
+
+ FAIL  |renderer| packages/ui-svelte/test/owned-popup-independent.test.ts > independent shared owned-popup challenge > does not restore focus out of a nested canonical application during imperative menu close
+AssertionError: expected <button ΓÇª(1)></button> to be <input></input> // Object.is equality
+
+- Expected
++ Received
+
+- <input />
++ <button
++   data-ui-owner="imperative-a"
++ />
+
+ Γ¥» packages/ui-svelte/test/owned-popup-independent.test.ts:122:74
+    120|     const closed=vi.fn();const context=createOwnedMenuContext({triggerΓÇª
+    121|     input.focus();context.close('programmatic');
+    122|     expect(closed).toHaveBeenCalledOnce();expect(document.activeElemenΓÇª
+       |                                                                          ^
+    123|   });
+    124| });
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[1/1]ΓÄ»
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 10 skipped (11)
+   Start at  12:47:57
+   Duration  12.13s (transform 8.33s, setup 0ms, import 10.17s, tests 42ms, environment 1.49s)
+

@@ -1,0 +1,74 @@
+
+Algorithm : SHA256
+Hash      : F411EB8DD9E21A1BC80F3B161E66B9227523AFD4486DD3FF6BAA22AB9B8F9471
+Path      : C:\Users\RZ1\AppData\Local\Temp\vict-authoring-foundation\packages\ui-svelte\src\catalog\components\B4Menubar.svelte
+
+
+ RUN  v4.1.11 C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation
+
+12:50:11 pm [vite-plugin-svelte] packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+12:50:12 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:311:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+12:50:12 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:311:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+12:50:12 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:381:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+12:50:12 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:381:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+ Γ¥» |renderer| packages/ui-svelte/test/owned-popup-independent.test.ts (12 tests | 1 failed | 11 skipped) 167ms
+     ├ù skips a retained hidden menubar trigger and repairs the visible roving Tab stop 164ms
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ» Failed Tests 1 ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»
+
+ FAIL  |renderer| packages/ui-svelte/test/owned-popup-independent.test.ts > independent shared owned-popup challenge > skips a retained hidden menubar trigger and repairs the visible roving Tab stop
+AssertionError: expected <button ΓÇª(16)></button> to be <button ΓÇª(15)></button> // Object.is equality
+
+- Expected
++ Received
+
+  <button
+    aria-expanded="false"
+    aria-haspopup="menu"
+-   class="uv-462437ac-three"
+-   data-menu-value="three"
++   class="uv-462437ac-two"
++   data-menu-value="two"
+    data-menubar-trigger="true"
+    data-owned-menubar-trigger="true"
+-   data-ui-node="three"
+-   data-ui-occ="probe.catalog|three|bar@vict.catalog.menubar"
++   data-ui-node="two"
++   data-ui-occ="probe.catalog|two|bar@vict.catalog.menubar"
+    data-ui-owner="c1"
+    data-ui-part="root"
+    data-ui-primary=""
+-   id="c4-trigger"
++   hidden=""
++   id="c3-trigger"
+    role="menuitem"
+-   tabindex="-1"
++   tabindex="0"
+    type="button"
+  >
+-   three
++   two
+    <!---->
+  </button>
+
+ Γ¥» packages/ui-svelte/test/owned-popup-independent.test.ts:136:88
+    134|     const triggers=[...host.querySelectorAll<HTMLButtonElement>('[dataΓÇª
+    135|     triggers[1]!.hidden=true;await new Promise(resolve=>setTimeout(resΓÇª
+    136|     triggers[0]!.focus();key(triggers[0]!,'ArrowRight');expect(documenΓÇª
+       |                                                                                        ^
+    137|     triggers[0]!.hidden=true;await new Promise(resolve=>setTimeout(resΓÇª
+    138|     expect(triggers[2]!.tabIndex).toBe(0);
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[1/1]ΓÄ»
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 11 skipped (12)
+   Start at  12:49:59
+   Duration  15.23s (transform 10.54s, setup 0ms, import 12.85s, tests 167ms, environment 1.73s)
+

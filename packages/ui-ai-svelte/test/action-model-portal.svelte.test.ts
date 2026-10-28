@@ -14,8 +14,12 @@ it('mounts actual model menu in its exact app outlet and preserves controlled se
   expect(a.querySelector('[data-owner-outlet="a"]')!.contains(menu)).toBe(true);
   expect(menu.dataset.uiOwner).toBe('a');expect(menu.dataset.uiOcc).toBe('model-a');
   expect(menu.closest('.owner-theme')).not.toBeNull();
+  expect(menu.closest('.vict-ai')).not.toBeNull();expect(menu.classList.contains('rounded-2xl')).toBe(true);expect(menu.dataset.ownedMenuSurface).toBe('custom');
   expect(b.querySelector('[role="menu"]')).toBeNull();
+  const selected=menu.querySelector<HTMLElement>('[role="menuitemradio"][aria-checked="true"]')!;
+  expect(selected.dataset.state).toBe('checked');expect(selected.querySelector('[data-slot="dropdown-menu-radio-item-indicator"] svg')).not.toBeNull();
   const two=[...menu.querySelectorAll<HTMLElement>('[role="menuitemradio"]')].find(item=>item.textContent?.includes('Two'))!;
+  expect(two.dataset.state).toBe('unchecked');expect(two.querySelector('[data-slot="dropdown-menu-radio-item-indicator"] svg')).toBeNull();
   two.click();await settle();
   await vi.waitFor(()=>expect(a.querySelector('output')?.textContent).toBe('two'));
   expect(b.querySelector('output')?.textContent).toBe('one');
@@ -32,4 +36,27 @@ it('does not steal focus or Escape from a different application while the model 
   const escape=new KeyboardEvent('keydown',{key:'Escape',bubbles:true,cancelable:true});other.dispatchEvent(escape);await settle();
   expect.soft(escape.defaultPrevented).toBe(false);
   expect.soft(document.activeElement).toBe(other);
+});
+it('preserves actual model keyboard edges, selection and owned focus return',async()=>{
+  const host=document.createElement('div');document.body.append(host);
+  instances=[mount(Owner,{target:host,props:{owner:'keys'}})];await settle();
+  const trigger=host.querySelector<HTMLButtonElement>('[data-ui-part="model-trigger"]')!;
+  trigger.focus();trigger.dispatchEvent(new KeyboardEvent('keydown',{key:'ArrowUp',bubbles:true,cancelable:true}));await settle();
+  const menu=host.querySelector<HTMLElement>('[role="menu"]')!;
+  expect(menu.getAttribute('aria-labelledby')).toBe(trigger.id);
+  const items=[...menu.querySelectorAll<HTMLElement>('[role="menuitemradio"]')];
+  expect(document.activeElement).toBe(items[1]);
+  items[1]!.dispatchEvent(new KeyboardEvent('keydown',{key:'Home',bubbles:true,cancelable:true}));expect(document.activeElement).toBe(items[0]);
+  items[0]!.dispatchEvent(new KeyboardEvent('keydown',{key:'End',bubbles:true,cancelable:true}));expect(document.activeElement).toBe(items[1]);
+  items[1]!.dispatchEvent(new KeyboardEvent('keydown',{key:' ',bubbles:true,cancelable:true}));await settle();
+  expect(host.querySelector('output')?.textContent).toBe('two');expect(host.querySelector('[role="menu"]')).toBeNull();expect(document.activeElement).toBe(trigger);
+});
+it('removes an open menu when its actual source becomes hidden',async()=>{
+  const host=document.createElement('div');document.body.append(host);
+  instances=[mount(Owner,{target:host,props:{owner:'visibility'}})];await settle();
+  const trigger=host.querySelector<HTMLButtonElement>('[data-ui-part="model-trigger"]')!;
+  trigger.focus();trigger.dispatchEvent(new KeyboardEvent('keydown',{key:'Enter',bubbles:true,cancelable:true}));await settle();
+  expect(host.querySelector('[role="menu"]')).not.toBeNull();
+  trigger.hidden=true;await settle();await vi.waitFor(()=>expect(host.querySelector('[role="menu"]')).toBeNull());
+  trigger.hidden=false;await settle();expect(host.querySelector('[role="menu"]')).toBeNull();
 });

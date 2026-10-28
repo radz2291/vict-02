@@ -81,8 +81,16 @@ describe('real AI part presentation and compatible contracts',()=>{
   it('retains exact revision 1 pins and adds versioned implementation-linked revision 2 parts',()=>{
     const registry=createUiAuthoringRegistry([aiAuthoringPackage],aiAuthoringImplementations,{requireCompatibility:true});
     expect(registry.issues).toEqual([]);
-    expect(registry.contracts.filter(item=>item.descriptor.revision==='1')).toHaveLength(3);
-    expect(registry.contracts.filter(item=>item.descriptor.revision==='2')).toHaveLength(3);
+    // New public AI families may start at revision 1. Historical compatibility
+    // belongs to these exact identities, not the global revision count.
+    const historicalIds=['vict.ai.conversation','vict.ai.message','vict.ai.prompt-input'];
+    const historical=registry.contracts.filter(item=>historicalIds.includes(item.descriptor.id)&&['1','2'].includes(item.descriptor.revision));
+    expect(historical).toHaveLength(6);
+    for(const revision of ['1','2'])
+      expect(historical.filter(item=>item.descriptor.revision===revision).map(item=>item.descriptor.id).sort()).toEqual([...historicalIds].sort());
+    for(const item of historical.filter(item=>item.descriptor.revision==='1'))
+      expect(item.descriptor.styleTargets).toEqual(['root']);
+    expect(registry.contracts.filter(item=>historicalIds.includes(item.descriptor.id)&&item.descriptor.revision==='3').map(item=>item.descriptor.id).sort()).toEqual(['vict.ai.message','vict.ai.prompt-input']);
   });
   it('places authored classes on actual conversation, bubble, textarea and action surfaces',async()=>{
     const doc=authored();

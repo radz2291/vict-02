@@ -1,6 +1,6 @@
 # Shared popup ownership decision
 
-Status: proposed architectural continuation, not implementation authorization or an approved exception.
+Status: shared VICT-owned menu/tooltip direction APPROVED by the owner at 2026-10-28 04:28 UTC; implementation and independent verification IN PROGRESS. No browser access, publication or acceptance is implied. The original proposal and failed observations below are retained.
 
 The owner-approved shared dialog repair is saved and independently checked at `15695678492fe0850a5c7b29a131d2578a24ce7f`. Subsequent AI exposure at `b793b0b9843094be71d3ab2a418ebcff24ab7862` reused existing public patterns and exposed two additional executable ownership failures:
 
@@ -22,3 +22,11 @@ Apply the shared correction through reusable catalog/pattern boundaries, includi
 ## Acceptance evidence
 
 Retain the two red tests, then demonstrate sibling/nested applications, iframe focus chains, nested layers, source hide/unmount, keyboard/selection, dismissal/restoration and real part/theme propagation. Rebuild the standalone consumer and Studio. Independently challenge the exact candidate; then perform authorized browser and actual Studio-agent checks. Offline passing tests cannot replace those observations or physical-device proof. All29original findings, CF-01 and AI-EX01 remain open until their own evidence and owner acceptance are established.
+
+## Owner approval — 2026-10-28 04:28 UTC
+
+The owner approved the recommended reusable VICT-owned menu/tooltip extension after the maintenance, accessibility and compatibility trade-offs were explained. Implementation proceeds from clean checkpoint5e4b98ddb04599bb6c1548b745d6a4260a643ff3. Preserve standard document-scoped behavior, existing saved contracts/pins and actual shared styling; no component-specific bypass or Bits fork. Core owner/layer arbitration, menu semantics, tooltip semantics and existing catalog integration have separate builder ownership and require independent challenge.
+
+The implementation reuses the installed and already locked public @floating-ui/dom1.8.0 for shared positioning, now declared as a direct ui-svelte dependency without changing its locked resolution or other versions. This avoids a separate geometry engine. This routine dependency declaration does not imply visual correctness; real browser/agent/device proof remains unrun.
+
+Browser origin access remains denied by a saved permission or managed policy. This architecture approval does not authorize another browser attempt, permission change, reset or alternate browser. The older additional Undo denial also remains separately stopped. No push/publication/merge/deployment or new provider/model/purchase is authorized.
