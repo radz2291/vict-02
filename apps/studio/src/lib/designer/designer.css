@@ -159,9 +159,7 @@ body:has(.finished-screen) {
   overflow: hidden;
 }
 .document-drawer[hidden], .sidebar-body[hidden], .drawer-resizer[hidden] { display: none !important; }
-.drawer-resizer {display:grid;background:var(--vict-color-surface);}
-.drawer-resizer .resizer:not(:hover):not(.dragging) {background:var(--vict-color-surface);}
-.drawer-resizer .resizer > span {background:var(--vict-color-border);}
+.drawer-resizer {display:grid;}
 /* Ancestors keep their guide path, without a second selected-looking row. */
 .document-drawer .uv-layers .is-ancestor > [role=treeitem]:not([aria-selected=true]):not(:hover) {background:transparent;}
 .document-drawer .uv-layers .is-ancestor > [role=treeitem]:not([aria-selected=true]) .name,
@@ -466,6 +464,5 @@ body:has(.studio-designer[data-workspace-view="structure"]) .floating-selection{
 
 /* Both drawers share the existing resize mechanics and quiet chrome. */
 .chat-heading{display:flex;align-items:center;padding:0 10px;font-weight:500;}
-.chat-resizer,.drawer-resizer{background:white;}
-.chat-resizer .resizer:not(:hover):not(.dragging),.drawer-resizer .resizer:not(:hover):not(.dragging){background:white;}
-.chat-resizer .resizer>span,.drawer-resizer .resizer>span{background:var(--vict-color-border);}
+.chat-resizer,.drawer-resizer{background:var(--vict-color-surface);}
+.chat-resizer .resizer:not(:hover):not(.dragging),.drawer-resizer .resizer:not(:hover):not(.dragging){background:var(--vict-color-surface);}

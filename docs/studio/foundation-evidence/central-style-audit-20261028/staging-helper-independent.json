@@ -1214,5 +1214,13 @@
     "PartialStage": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-stage-review-20261028-230832",
     "Preserved": true
   },
-  "Verdict": "PASS for declared staging/preflight/manifest/refusal behavior; linked dependencies are not hermetically frozen; no build validation performed by this verifier"
+  "Verdict": "PASS for declared staging/preflight/manifest/refusal behavior; linked dependencies are not hermetically frozen; no build validation performed by this verifier",
+  "SealedCommit": "09d506859ea89bc37f3c100a07f1928d8d1734b3",
+  "SealedAssociation": {
+    "HelperBlobSHA256": "9e136a88c0ac7cf8b35143cb5d966aaf464f251f3a9274012bbc501ceefd18ed",
+    "ExactReviewedBytes": true,
+    "GitDiffClean": true,
+    "Method": "Read-only git diff and SHA256 of git-show blob versus reviewed working file; no retests",
+    "Note": "SourceHead and dirty flags above describe the actual earlier preparation run, not a new run at the sealed commit"
+  }
 }

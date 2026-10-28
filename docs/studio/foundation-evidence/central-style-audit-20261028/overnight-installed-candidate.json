@@ -1,0 +1,30 @@
+{
+  "runtimeSourceCandidate": "712f6ef6ea9e4c344d86a01f1630ccf750e61214",
+  "checkout": "09d506859ea89bc37f3c100a07f1928d8d1734b3",
+  "stoppedVerifiedChild": 8012,
+  "stoppedVerifiedLauncher": 3356,
+  "backup": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-hovercard-build-712f6ef\\pre-install-live-build-20261028T151440547Z",
+  "outputFiles": 306,
+  "outputMismatches": 0,
+  "started": {
+    "LauncherPid": 3988,
+    "Address": "http://127.0.0.25:5626",
+    "Model": "zai/glm-5.3-flash",
+    "Configuration": "existing launch-agent.mjs loader",
+    "Verification": "Check the listener and supported internal browser; a PID alone is not reachability proof."
+  },
+  "browserVerification": {
+    "normalExistingLogin": true,
+    "designerReached": true,
+    "savedConsumerSourceUnchanged": true,
+    "consumerArchiveRestoreAndReloadBothRows": true,
+    "priorAssetDiscrepancy": "cause unknown; retained before evidence"
+  },
+  "verifiedListener": {
+    "childPid": 19444,
+    "launcherPid": 3988,
+    "address": "127.0.0.25:5626",
+    "errorLogBytes": 0
+  },
+  "providerRequestsDuringInstall": 0
+}

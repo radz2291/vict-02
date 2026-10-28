@@ -1,0 +1,251 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Foundation Responsive Desk"
+  - generic: ● Unsaved changes
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- banner:
+  - strong: Chat
+  - button "Hide Chat":
+- complementary "Chat":
+  - region "Conversation":
+    - region "Messages — Message":
+      - log:
+        - generic: You
+        - generic: "Build this NEW screen, Foundation Responsive Desk, as a polished, small working project desk using registered VICT controls and application patterns. This is new capability evidence, not recovery of the old lost responsive app. Preserve every other screen. Required working behavior: - Navigation between Projects and Notes must really change the shown section. Use an appropriate registered navigation/dropdown pattern. - Projects contains Aster (Draft), Birch (Ready), Cedar (Draft). An All/Draft/Ready filter must change the visible projects, not just its label. - Notes has an accessible controlled draft input. Keep its draft while switching sections, opening/closing a details drawer and resizing the app. - Use the registered controlled Drawer/Sheet for project details, with intentional trigger/close controls and proper owned focus/dismissal/scroll behavior. - Add a genuine three-tip carousel with Previous/Next, accessible slide information and supported gestures. Use it in a welcome/onboarding surface if the public contracts permit. - Welcome has explicit app/campaign-scoped first-visit persistence (campaign foundation-responsive-20261028-r1), an intentional reopen launcher, and an explicit scoped reset action. Do not clear global storage or affect other apps. - Include an InlineCitation using these supplied demonstration fields: title “Foundation design notes”, URL https://example.com/design-notes, excerpt “Supplied demonstration citation for this authoring challenge; no retrieval was performed.” Its owned hovercard must remain keyboard usable. Use a coherent semantic theme and declared component parts, readable density, a wide layout that adapts to the actual studio-screen container and a narrow 390px layout without horizontal overflow. Reuse existing public VICT controls/patterns and their actual contracts; specialist layout may be authored. Do not replace behavior with decoration or per-app interaction workarounds. If a required combination is unavailable, state the exact gap and preserve valid work. Read relevant scoped contracts/source, preflight complete atomic batches where useful, and retain supplied examples only when they match this request. Observe a meaningful visible section early and the final currently visible state; don't change source just to obtain a capture. You have no runtime click/gesture testing tools, so leave those checks explicitly unverified. No fabricated execution, provider usage, private reasoning or authority. Keep public updates to occasional one-sentence outcomes; leave schema/contract/tool mechanics in details. Final: at most three short sentences covering applied result, actually observed appearance and untested behavior. Do not claim full completion of untested interactions."
+        - button "Copy message":
+        - generic: Assistant
+        - generic "Conversation timeline":
+          - paragraph: "I'll build the Foundation Responsive Desk on the current empty screen. Starting discovery: reading section families, existing state keys, and condition/token registries to plan the construction."
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph:
+            - text: "Families found:"
+            - code: application-patterns
+            - text: (9 interactive patterns) and
+            - code: ai
+            - text: for the citation; one existing
+            - code: compact
+            - text: container condition (studio-screen, ≤600px) I can reuse; seed states are demo-only so I'll declare fresh keys. Reading the pattern catalogs now.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: "All required patterns exist: navigation@2, filtered-list@2, drawer@1, carousel@2, first-visit@1, plus inline-citation@1 and media.icon@1. Reading their full contracts with examples (latest revisions only)."
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: Contracts are partial pages; following all continuations with their body identities, plus discovering supplied icons for the nav in parallel.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph:
+            - text: All seven contracts are complete. Navigation emits a string
+            - code: activate
+            - text: ; I need to confirm how panels/controls consume selection state, so I'm reading the actions registry, native elements, and the button/tabs/toggle-group/select/label component contracts.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph:
+            - text: The demo action is irrelevant and native recipes have no outputs — the interactive controls live in the
+            - code: general
+            - text: family catalog. Locating the button/tabs/select/toggle components there.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: Now reading the full contracts for tabs, button, toggle-group (+items) and select (+items) — the last dependency bundle before construction.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph:
+            - text: Contracts are nearly complete — tabs/select/toggle-group have controlled
+            - code: value
+            - text: /
+            - code: valueChange
+            - text: pairs, which lets the adaptive navigation and tabs share one
+            - code: activeSection
+            - text: state so nav genuinely switches panels. Finishing the three partial bodies and verifying icon names before building.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph:
+            - text: All contracts and icons confirmed (
+            - code: folder
+            - text: ","
+            - code: pencil
+            - text: ","
+            - code: menu
+            - text: ", chevrons). Design: adaptive navigation + tabs sharing one"
+            - code: activeSection
+            - text: state; toggle-group + filtered-list sharing
+            - code: projectFilter
+            - text: ; drawer on
+            - code: drawerOpen
+            - text: ; first-visit with
+            - code: resetKey
+            - text: binding for the scoped reset. Preflighting the header/navigation/tabs wiring batch before applying.
+          - button "Read screen failed":
+            - generic: Read screen
+            - generic: failed
+          - paragraph: Preflight caught the atomic tabs requirement (trigger/panel slots must fill in-batch) — restructured the batches so each provider completes atomically. Applying the semantic theme first.
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - paragraph: Theme applied. Declaring the seven canonical state keys next.
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - paragraph: States declared. Building the header with the adaptive navigation wired to shared section state.
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - paragraph: Header and navigation are in. Now the tabs section-switcher, completed atomically with triggers, panels and the Projects panel content.
+          - button "Edit screen failed":
+            - generic: Edit screen
+            - generic: failed
+          - paragraph: The Notes panel also needs its content in the same atomic batch — re-emitting the tabs batch with both panel fills (binding follows next batch, since tabs' controlled pair isn't hard-required).
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - paragraph: Tabs are in. Wiring tabs to section state and building the Projects filter group.
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - paragraph: Filter group wired. Adding the Ready option, the filtered project list and the controlled drawer.
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - paragraph: Projects core is in. Completing the drawer body/footer with an explicit close control and refining the root layout.
+          - button "Edit screen failed":
+            - generic: Edit screen
+            - generic: failed
+          - paragraph:
+            - code: bindText
+            - text: must target a real text node — using a direct text-node insert instead of the paragraph recipe for the bound line.
+          - button "Edit screen failed":
+            - generic: Edit screen
+            - generic: failed
+          - paragraph:
+            - text: The host refuses
+            - code: void
+            - text: "-payload button presses driving boolean state — so the drawer keeps its owned trigger/dismissal controls (documented gap to report), and I'll drive the campaign reset with a string-output toggle-group instead. Completing the drawer body and responsive root styles."
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - paragraph: The Projects section is now complete in source — observing its actual rendered appearance early, as requested.
+          - button "Observe preview running":
+            - generic: Observe preview
+            - generic: running
+    - button "Scroll to latest message":
+      - generic: Scroll to end
+    - textbox "Message" [active]:
+      - /placeholder: Ask for a change…
+    - button "Stop":
+      - generic: Stop
+    - status
+  - status "Capturing and observing the rendered preview…":
+    - generic: Working…
+  - button "Chat details": ···
+- separator "Chat width"
+- main:
+  - button "Toggle Chat drawer" [expanded]:
+  - group "Workspace mode":
+    - button "Design" [pressed]
+    - button "Interact"
+    - button "Structure"
+  - button "Toggle Document and Selection drawer":
+  - iframe:
+    - generic "Screen canvas":
+      - main "Foundation Responsive Desk":
+        - generic "Desk header":
+          - heading "Foundation Responsive Desk" [level=1]:
+            - generic: Foundation Responsive Desk
+          - navigation "Desk navigation":
+            - button "Desk menu":
+              - generic: Desk menu
+        - tablist "Desk sections":
+          - tab "Projects" [selected]
+          - tab "Notes"
+        - tabpanel "Projects":
+          - region "Projects section":
+            - heading "Projects" [level=2]:
+              - generic: Projects
+            - generic: Filter projects by status
+            - group "Filter projects by status":
+              - radio "All"
+              - radio "Draft"
+              - radio "Ready" [checked]
+            - region "Projects":
+              - generic: Search projects
+              - searchbox "Search projects": ready
+              - status: 1 result
+              - list:
+                - button "Birch — Ready"
+            - button "Open project details"
+- contentinfo:
+  - status: Drawer body with bound selection text and responsive root adjustments · agent edit · unsaved

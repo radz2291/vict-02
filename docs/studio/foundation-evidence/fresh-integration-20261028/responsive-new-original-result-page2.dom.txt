@@ -1,0 +1,416 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Foundation Responsive Desk"
+  - generic: ○ New screen
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- banner:
+  - strong: Chat
+  - button "Hide Chat":
+- complementary "Chat":
+  - region "Conversation":
+    - region "Messages — Message":
+      - log:
+        - generic: You
+        - generic: "Build this NEW screen, Foundation Responsive Desk, as a polished, small working project desk using registered VICT controls and application patterns. This is new capability evidence, not recovery of the old lost responsive app. Preserve every other screen. Required working behavior: - Navigation between Projects and Notes must really change the shown section. Use an appropriate registered navigation/dropdown pattern. - Projects contains Aster (Draft), Birch (Ready), Cedar (Draft). An All/Draft/Ready filter must change the visible projects, not just its label. - Notes has an accessible controlled draft input. Keep its draft while switching sections, opening/closing a details drawer and resizing the app. - Use the registered controlled Drawer/Sheet for project details, with intentional trigger/close controls and proper owned focus/dismissal/scroll behavior. - Add a genuine three-tip carousel with Previous/Next, accessible slide information and supported gestures. Use it in a welcome/onboarding surface if the public contracts permit. - Welcome has explicit app/campaign-scoped first-visit persistence (campaign foundation-responsive-20261028-r1), an intentional reopen launcher, and an explicit scoped reset action. Do not clear global storage or affect other apps. - Include an InlineCitation using these supplied demonstration fields: title “Foundation design notes”, URL https://example.com/design-notes, excerpt “Supplied demonstration citation for this authoring challenge; no retrieval was performed.” Its owned hovercard must remain keyboard usable. Use a coherent semantic theme and declared component parts, readable density, a wide layout that adapts to the actual studio-screen container and a narrow 390px layout without horizontal overflow. Reuse existing public VICT controls/patterns and their actual contracts; specialist layout may be authored. Do not replace behavior with decoration or per-app interaction workarounds. If a required combination is unavailable, state the exact gap and preserve valid work. Read relevant scoped contracts/source, preflight complete atomic batches where useful, and retain supplied examples only when they match this request. Observe a meaningful visible section early and the final currently visible state; don't change source just to obtain a capture. You have no runtime click/gesture testing tools, so leave those checks explicitly unverified. No fabricated execution, provider usage, private reasoning or authority. Keep public updates to occasional one-sentence outcomes; leave schema/contract/tool mechanics in details. Final: at most three short sentences covering applied result, actually observed appearance and untested behavior. Do not claim full completion of untested interactions."
+        - button "Copy message":
+        - generic: Assistant
+        - generic "Conversation timeline":
+          - paragraph: "I'll build the Foundation Responsive Desk on the current empty screen. Starting discovery: reading section families, existing state keys, and condition/token registries to plan the construction."
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph:
+            - text: "Families found:"
+            - code: application-patterns
+            - text: (9 interactive patterns) and
+            - code: ai
+            - text: for the citation; one existing
+            - code: compact
+            - text: container condition (studio-screen, ≤600px) I can reuse; seed states are demo-only so I'll declare fresh keys. Reading the pattern catalogs now.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: "All required patterns exist: navigation@2, filtered-list@2, drawer@1, carousel@2, first-visit@1, plus inline-citation@1 and media.icon@1. Reading their full contracts with examples (latest revisions only)."
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: Contracts are partial pages; following all continuations with their body identities, plus discovering supplied icons for the nav in parallel.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph:
+            - text: All seven contracts are complete. Navigation emits a string
+            - code: activate
+            - text: ; I need to confirm how panels/controls consume selection state, so I'm reading the actions registry, native elements, and the button/tabs/toggle-group/select/label component contracts.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph:
+            - text: The demo action is irrelevant and native recipes have no outputs — the interactive controls live in the
+            - code: general
+            - text: family catalog. Locating the button/tabs/select/toggle components there.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: Now reading the full contracts for tabs, button, toggle-group (+items) and select (+items) — the last dependency bundle before construction.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+    - button "Scroll to latest message":
+      - generic: Scroll to end
+    - textbox "Message":
+      - /placeholder: Ask for a change…
+    - button "Stop":
+      - generic: Stop
+    - status
+  - status "Reading current source facts…":
+    - generic: Working…
+  - button "Chat details" [expanded]: ···
+  - generic "Chat details":
+    - heading "Chat details" [level=3]
+    - button "Close chat details": ×
+    - paragraph: zai/glm-5.3-flash
+    - paragraph: "Selected: Element · Screen"
+    - paragraph: Reading current source facts…
+    - button "Reconnect agent" [disabled]
+    - heading "Progress summaries" [level=4]
+    - paragraph: Connection, validation and completion metadata. The conversation contains actual assistant messages and tool calls.
+    - list:
+      - listitem: Connecting…
+      - listitem: Reading screen…
+      - listitem: Connecting to the VICT / Mastra agent…
+      - listitem: Agent is working on your request…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+    - heading "Tool receipts" [level=4]
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 66872 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 66895 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-9bace222-383d-4579-a0ea-bd7a7112f1bd\",\"revision\":\"r1#0\",\"digest\":\"6b6e4aae444c458405e8f1b0160a1cfc1bfe2462dd9c05f1707b88689149f9dc\",\"epoch\":\"7b318c74-a9cc-4242-b7fc-080cb4fe9239\"},\"section\":\"families\",\"registryDigest\":\"f8dda06f0bb1dc58262ed326a2e3ff4a656f2a90cb268c91d14daa77e5e16465\",\"items\":[{\"family\":\"general\",\"count\":80,\"authorable\":78,\"categories\":[\"presentation\",\"input\",\"disclosure\",\"navigation\",\"date-time\"],\"packages\":[\"@victframework/ui-svelte\"]},{\"family\":\"ai\",\"count\":28,\"authorable\":28,\"categories\":[\"chat\",\"public-activity\",\"actions\"],\"packages\":[\"@victframework/ui-ai-svelte\"]},{\"family\":\"flow\",\"count\":5,\"authorable\":5,\"categories\":[\"graph-editor\",\"diagram\",\"diagram-part\"],\"packages\":[\"@victframework/ui-flow-svelte\"]},{\"family\":\"media\",\"count\":6,\"authorable\":6,\"categories\":[\"image\",\"video\",\"embed\",\"icon\",\"vector\",\"assets\"],\"packages\":[\"@victframework/ui-media-svelte\"]},{\"family\":\"application-patterns\",\"count\":9,\"authorable\":9,\"categories\":[\"interactive\"],\"packages\":[\"@victframework/ui-patterns-svelte\"]}],\"total\":5,\"offset\":0,\"nextOffset\":null}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 66873 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 66899 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-9bace222-383d-4579-a0ea-bd7a7112f1bd\",\"revision\":\"r1#0\",\"digest\":\"6b6e4aae444c458405e8f1b0160a1cfc1bfe2462dd9c05f1707b88689149f9dc\",\"epoch\":\"7b318c74-a9cc-4242-b7fc-080cb4fe9239\"},\"section\":\"state\",\"items\":[{\"key\":\"message\",\"type\":\"string\",\"initialJson\":\"\\\"Hello from my screen\\\"\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"},{\"key\":\"accepted\",\"type\":\"boolean\",\"initialJson\":\"false\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"},{\"key\":\"dialogOpen\",\"type\":\"boolean\",\"initialJson\":\"false\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"},{\"key\":\"busy\",\"type\":\"boolean\",\"initialJson\":\"false\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"},{\"key\":\"actionError\",\"type\":\"string\",\"initialJson\":\"\\\"\\\"\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"},{\"key\":\"actionResult\",\"type\":\"string\",\"initialJson\":\"\\\"\\\"\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"}],\"total\":6,\"offset\":0,\"nextOffset\":null}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 66874 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 66902 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-9bace222-383d-4579-a0ea-bd7a7112f1bd\",\"revision\":\"r1#0\",\"digest\":\"6b6e4aae444c458405e8f1b0160a1cfc1bfe2462dd9c05f1707b88689149f9dc\",\"epoch\":\"7b318c74-a9cc-4242-b7fc-080cb4fe9239\"},\"section\":\"registry\",\"registry\":\"conditions\",\"items\":[{\"key\":\"compact\",\"sourcePreview\":\"{\\\"id\\\":\\\"compact\\\",\\\"kind\\\":\\\"container\\\",\\\"name\\\":\\\"studio-screen\\\",\\\"query\\\":\\\"(max-width: 600px)\\\"}\"}],\"total\":1,\"offset\":0,\"nextOffset\":null}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 66875 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 66904 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-9bace222-383d-4579-a0ea-bd7a7112f1bd\",\"revision\":\"r1#0\",\"digest\":\"6b6e4aae444c458405e8f1b0160a1cfc1bfe2462dd9c05f1707b88689149f9dc\",\"epoch\":\"7b318c74-a9cc-4242-b7fc-080cb4fe9239\"},\"section\":\"registry\",\"registry\":\"tokens\",\"items\":[],\"total\":0,\"offset\":0,\"nextOffset\":null}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 93272 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 93294 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-9bace222-383d-4579-a0ea-bd7a7112f1bd\",\"revision\":\"r1#0\",\"digest\":\"6b6e4aae444c458405e8f1b0160a1cfc1bfe2462dd9c05f1707b88689149f9dc\",\"epoch\":\"7b318c74-a9cc-4242-b7fc-080cb4fe9239\"},\"section\":\"catalog\",\"registryDigest\":\"f8dda06f0bb1dc58262ed326a2e3ff4a656f2a90cb268c91d14daa77e5e16465\",\"items\":[{\"id\":\"vict.pattern.action-button\",\"revision\":\"1\",\"label\":\"Action button with icons\",\"family\":\"application-patterns\",\"category\":\"interactive\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"2e434179fed20a3bf045e6ba6ba42aebcc8db494b58bf615082e0be67f331b9c\",\"packageName\":\"@victframework/ui-patterns-svelte\"},{\"id\":\"vict.pattern.carousel\",\"revision\":\"1\",\"label\":\"Carousel\",\"family\":\"application-patterns\",\"category\":\"interactive\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"ea2bfcbde56908b7183ceddcd0610799105c189524aff1e5a7ffea5a94e8e433\",\"packageName\":\"@victframework/ui-patterns-svelte\"},{\"id\":\"vict.pattern.carousel\",\"revision\":\"2\",\"label\":\"Carousel\",\"family\":\"application-patterns\",\"category\":\"interactive\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"a4cdfcfd51f3ecd4807beb787a7d97b584b488b48e87b0d4484de9763da344f9\",\"packageName\":\"@victframework/ui-patterns-svelte\"},{\"id\":\"vict.pattern.drawer\",\"revision\":\"1\",\"label\":\"Drawer / sheet\",\"family\":\"application-patterns\",\"category\":\"interactive\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"659b4d7851b5fec2b07c9726a329ce2e19ab0ecd8afd2d50d8d3547a6ed96ecd\",\"packageName\":\"@victframework/ui-patterns-svelte\"},{\"id\":\"vict.pattern.filtered-list\",\"revision\":\"1\",\"label\":\"Filtered list\",\"family\":\"application-patterns\",\"category\":\"interactive\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"ba790264bb2eb499bc04c48ef121124fd4e7854e6e3023f95e462d88e9bffc4d\",\"packageName\":\"@victframework/ui-patterns-svelte\"},{\"id\":\"vict.pattern.filtered-list\",\"revision\":\"2\",\"label\":\"Filtered list\",\"family\":\"application-patterns\",\"category\":\"interactive\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"b2e34b5eadc8ec7b7ecd2c093507e7c155cc6c87cd14447a414e97b72b1de496\",\"packageName\":\"@victframework/ui-patterns-svelte\"},{\"id\":\"vict.pattern.first-visit\",\"revision\":\"1\",\"label\":\"First-visit campaign\",\"family\":\"application-patterns\",\"category\":\"interactive\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"31c6730d2ad291ee3520060ed18c9a92bff20330a662b865abd9467c39b51887\",\"packageName\":\"@victframework/ui-patterns-svelte\"},{\"id\":\"vict.pattern.navigation\",\"revision\":\"1\",\"label\":\"Adaptive navigation\",\"family\":\"application-patterns\",\"category\":\"interactive\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"ec4165d5716193ea0fd3d7b2dce83c4e6a28d4a3c80aeda7c249eb41221d65a5\",\"packageName\":\"@victframework/ui-patterns-svelte\"},{\"id\":\"vict.pattern.navigation\",\"revision\":\"2\",\"label\":\"Adaptive navigation\",\"family\":\"application-patterns\",\"category\":\"interactive\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"f6adfe2c78452f3fe7d87ecc59987ea36c6fbfb0113ea1e931eac2e419cd18d2\",\"packageName\":\"@victframework/ui-patterns-svelte\"}],\"total\":9,\"offset\":0,\"nextOffset\":null}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 93273 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 93296 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-9bace222-383d-4579-a0ea-bd7a7112f1bd\",\"revision\":\"r1#0\",\"digest\":\"6b6e4aae444c458405e8f1b0160a1cfc1bfe2462dd9c05f1707b88689149f9dc\",\"epoch\":\"7b318c74-a9cc-4242-b7fc-080cb4fe9239\"},\"section\":\"catalog\",\"registryDigest\":\"f8dda06f0bb1dc58262ed326a2e3ff4a656f2a90cb268c91d14daa77e5e16465\",\"items\":[{\"id\":\"vict.ai.inline-citation\",\"revision\":\"1\",\"label\":\"Inline Citation\",\"family\":\"ai\",\"category\":\"public-activity\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"f62205c9dd51542920f3dd76bc878b2559579e4789ae68538e6f106c2552aca5\",\"packageName\":\"@victframework/ui-ai-svelte\"}],\"total\":1,\"offset\":0,\"nextOffset\":null}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 93274 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 93298 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-9bace222-383d-4579-a0ea-bd7a7112f1bd\",\"revision\":\"r1#0\",\"digest\":\"6b6e4aae444c458405e8f1b0160a1cfc1bfe2462dd9c05f1707b88689149f9dc\",\"epoch\":\"7b318c74-a9cc-4242-b7fc-080cb4fe9239\"},\"section\":\"catalog\",\"registryDigest\":\"f8dda06f0bb1dc58262ed326a2e3ff4a656f2a90cb268c91d14daa77e5e16465\",\"items\":[{\"id\":\"vict.media.icon\",\"revision\":\"1\",\"label\":\"Supplied or custom icon\",\"family\":\"media\",\"category\":\"icon\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"f18f8834af6db6bb0e34b2847cd1d32a0321c54a55a8f1bcfb2f5b0334303330\",\"packageName\":\"@victframework/ui-media-svelte\"}],\"total\":1,\"offset\":0,\"nextOffset\":null}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 104928 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 104935 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-9bace222-383d-4579-a0ea-bd7a7112f1bd\",\"revision\":\"r1#0\",\"digest\":\"6b6e4aae444c458405e8f1b0160a1cfc1bfe2462dd9c05f1707b88689149f9dc\",\"epoch\":\"7b318c74-a9cc-4242-b7fc-080cb4fe9239\"},\"section\":\"contracts\",\"ok\":true,\"complete\":false,\"registryDigest\":\"f8dda06f0bb1dc58262ed326a2e3ff4a656f2a90cb268c91d14daa77e5e16465\",\"items\":[{\"id\":\"vict.media.icon\",\"revision\":\"1\",\"digest\":\"f18f8834af6db6bb0e34b2847cd1d32a0321c54a55a8f1bcfb2f5b0334303330\",\"bodyIdentity\":\"studio-contract-body@2:examples:f18f8834af6db6bb0e34b2847cd1d32a0321c54a55a8f1bcfb2f5b0334303330\",\"contractJson\":\"{\\\"descriptor\\\":{\\\"revision\\\":\\\"1\\\",\\\"abi\\\":\\\"vict.ui-component-abi@1\\\",\\\"events\\\":[\\\"vict.ui-component-abi@1\\\"],\\\"rendererImplementationId\\\":\\\"vict.svelte.media.authoring\\\",\\\"slots\\\":[],\\\"id\\\":\\\"vict.media.icon\\\",\\\"styleTargets\\\":[\\\"root\\\"],\\\"props\\\":[{\\\"name\\\":\\\"pack\\\",\\\"type\\\":\\\"string\\\",\\\"default\\\":\\\"lucide\\\"},{\\\"name\\\":\\\"name\\\",\\\"type\\\":\\\"string\\\",\\\"default\\\":\\\"circle-help\\\"},{\\\"name\\\":\\\"revision\\\",\\\"type\\\":\\\"string\\\",\\\"default\\\":\\\"1.27.0\\\"},{\\\"name\\\":\\\"size\\\",\\\"type\\\":\\\"number\\\",\\\"default\\\":20},{\\\"name\\\":\\\"strokeWidth\\\",\\\"type\\\":\\\"number\\\",\\\"default\\\":1.75},{\\\"name\\\":\\\"decorative\\\",\\\"type\\\":\\\"boolean\\\",\\\"default\\\":true},{\\\"name\\\":\\\"label\\\",\\\"type\\\":\\\"string\\\",\\\"default\\\":\\\"\\\"},{\\\"name\\\":\\\"source\\\",\\\"type\\\":\\\"string\\\",\\\"default\\\":\\\"\\\"},{\\\"name\\\":\\\"data\\\",\\\"type\\\":\\\"string\\\",\\\"default\\\":\\\"\\\"}],\\\"outputs\\\":[],\\\"inspectionLimits\\\":[\\\"A bounded supplied Lucide manifest is installed; discover exact pack/name/revision. Custom icons accept a managed inert SVG source or vict.vector@1 JSON data. Decorative icons need a separately labelled control; meaningful icons require label.\\\"]},\\\"label\\\":\\\"Supplied or custom icon\\\",\\\"family\\\":\\\"media\\\",\\\"category\\\":\\\"icon\\\",\\\"purpose\\\":\\\"Supplied or custom icon through a reusable registered media capability.\\\",\\\"eligibility\\\":{\\\"kind\\\":\\\"standalone\\\"},\\\"rules\\\":[],\\\"guidance\\\":[\\\"A bounded supplied Lucide manifest is installed; discover exact pack/name/revision. Custom icons accept a managed inert SVG source or vict.vector@1 JSON data. Decorative icons need a separately labelled control; meaningful icons require label.\\\",\\\"Media source props use an exact supplied HTTP(S) URL, same-origin absolute path, or asset:sha256:<full 64-character digest> from registry assets. The closed canonical registry does not declare MIME or prove bytes exist. Check real owner-supplied metadata; video source needs video, poster needs image, captions needs WebVTT, and vector/custom icon source needs a managed inert SVG. Do not invent image assets or assume an empty registry prevents URL images.\\\",\\\"data is a JSON string, not SVG markup. Complete small valid multi-colour example: {\\\\\\\"schema\\\\\\\":\\\\\\\"vict.vector@1\\\\\\\",\\\\\\\"viewBox\\\\\\\":\\\\\\\"0 0 120 80\\\\\\\",\\\\\\\"nodes\\\\\\\":[{\\\\\\\"tag\\\\\\\":\\\\\\\"rect\\\\\\\",\\\\\\\"attributes\\\\\\\":{\\\\\\\"width\\\\\\\":120,\\\\\\\"height\\\\\\\":80,\\\\\\\"rx\\\\\\\":12,\\\\\\\"fill\\\\\\\":\\\\\\\"#143d52\\\\\\\"}},{\\\\\\\"tag\\\\\\\":\\\\\\\"circle\\\\\\\",\\\\\\\"attributes\\\\\\\":{\\\\\\\"cx\\\\\\\":42,\\\\\\\"cy\\\\\\\":40,\\\\\\\"r\\\\\\\":25,\\\\\\\"fill\\\\\\\":\\\\\\\"#ff3d81\\\\\\\"}},{\\\\\\\"tag\\\\\\\":\\\\\\\"path\\\\\\\",\\\\\\\"attributes\\\\\\\":{\\\\\\\"d\\\\\\\":\\\\\\\"M55 65 L80 15 L105 65 Z\\\\\\\",\\\\\\\"fill\\\\\\\":\\\\\\\"#27d3b5\\\\\\\"}}]}\\\",\\\"Grammar: {schema:\\\\\\\"vict.vector@1\\\\\\\",viewBox:\\\\\\\"minX minY positiveWidth positiveHeight\\\\\\\",nodes:[{tag,attributes?:{name:string|finiteNumber},children?:[node]}]}. Tags: g,path,rect,circle,ellipse,line,polyline,polygon,defs,linearGradient,radialGradient,stop,clipPath,mask. Use d for path geometry; rect x/y/width/height/rx/ry; circle cx/cy/r; ellipse cx/cy/rx/ry; line x1/y1/x2/y2; polygon/polyline points. groups accept children and transform. Fill/stroke/opacity and stroke-width/linecap/linejoin are explicit attributes; currentColor follows the surrounding theme, explicit brand colours remain unchanged.\\\",\\\"Gradients/clips/masks: place definitions inside a defs node, declare un [Details truncated for the bounded trace. Read current source for complete facts.]"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 137642 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 137651 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-9bace222-383d-4579-a0ea-bd7a7112f1bd\",\"revision\":\"r1#0\",\"digest\":\"6b6e4aae444c458405e8f1b0160a1cfc1bfe2462dd9c05f1707b88689149f9dc\",\"epoch\":\"7b318c74-a9cc-4242-b7fc-080cb4fe9239\"},\"section\":\"contracts\",\"ok\":true,\"complete\":false,\"registryDigest\":\"f8dda06f0bb1dc58262ed326a2e3ff4a656f2a90cb268c91d14daa77e5e16465\",\"items\":[{\"id\":\"vict.media.icon\",\"revision\":\"1\",\"digest\":\"f18f8834af6db6bb0e34b2847cd1d32a0321c54a55a8f1bcfb2f5b0334303330\",\"bodyIdentity\":\"studio-contract-body@2:examples:f18f8834af6db6bb0e34b2847cd1d32a0321c54a55a8f1bcfb2f5b0334303330\",\"contractJson\":\"ne is not loading/playback or interaction proof.\\\"],\\\"seed\\\":{\\\"root\\\":\\\"media\\\",\\\"nodes\\\":[{\\\"id\\\":\\\"media\\\",\\\"kind\\\":\\\"component\\\",\\\"definitionId\\\":\\\"vict.media.icon\\\",\\\"revision\\\":\\\"1\\\",\\\"props\\\":{\\\"name\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"search\\\"}}}]},\\\"examples\\\":[{\\\"root\\\":\\\"vector-example\\\",\\\"nodes\\\":[{\\\"id\\\":\\\"vector-example\\\",\\\"kind\\\":\\\"component\\\",\\\"definitionId\\\":\\\"vict.media.icon\\\",\\\"revision\\\":\\\"1\\\",\\\"props\\\":{\\\"data\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"{\\\\\\\"schema\\\\\\\":\\\\\\\"vict.vector@1\\\\\\\",\\\\\\\"viewBox\\\\\\\":\\\\\\\"0 0 120 80\\\\\\\",\\\\\\\"nodes\\\\\\\":[{\\\\\\\"tag\\\\\\\":\\\\\\\"rect\\\\\\\",\\\\\\\"attributes\\\\\\\":{\\\\\\\"width\\\\\\\":120,\\\\\\\"height\\\\\\\":80,\\\\\\\"rx\\\\\\\":12,\\\\\\\"fill\\\\\\\":\\\\\\\"#143d52\\\\\\\"}},{\\\\\\\"tag\\\\\\\":\\\\\\\"circle\\\\\\\",\\\\\\\"attributes\\\\\\\":{\\\\\\\"cx\\\\\\\":42,\\\\\\\"cy\\\\\\\":40,\\\\\\\"r\\\\\\\":25,\\\\\\\"fill\\\\\\\":\\\\\\\"#ff3d81\\\\\\\"}},{\\\\\\\"tag\\\\\\\":\\\\\\\"path\\\\\\\",\\\\\\\"attributes\\\\\\\":{\\\\\\\"d\\\\\\\":\\\\\\\"M55 65 L80 15 L105 65 Z\\\\\\\",\\\\\\\"fill\\\\\\\":\\\\\\\"#27d3b5\\\\\\\"}}]}\\\"},\\\"label\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"Three-colour geometric mark\\\"},\\\"decorative\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":false}}}]}],\\\"packageName\\\":\\\"@victframework/ui-media-svelte\\\",\\\"packageVersion\\\":\\\"0.4.0-rc.1\\\",\\\"capabilities\\\":{\\\"extensionId\\\":\\\"vict.media.icon\\\",\\\"revision\\\":\\\"1\\\",\\\"rendererImplementationId\\\":\\\"vict.svelte.media.authoring\\\",\\\"abi\\\":\\\"vict.ui-component-abi@1\\\",\\\"slots\\\":[],\\\"required\\\":[],\\\"styleTargets\\\":[\\\"root\\\"],\\\"requiresParentContext\\\":false,\\\"compositionSlots\\\":[]},\\\"descriptorDigest\\\":\\\"da26eb663adac5ca5698720682578f40852b97ddff1c16da030bf99c91dcfc1f\\\",\\\"digest\\\":\\\"f18f8834af6db6bb0e34b2847cd1d32a0321c54a55a8f1bcfb2f5b0334303330\\\",\\\"preparation\\\":{\\\"seedStyles\\\":[],\\\"hostRequirements\\\":[],\\\"dependencies\\\":[],\\\"seedStylePrecedence\\\":\\\"Local styles override shared style sources; explicitly replace/remove undesired seed declarations before construction.\\\"}}\",\"totalCharacters\":5169,\"offset\":3600,\"nextOffset\":null,\"bodyComplete\":false},{\"id\":\"vict.pattern.navigation\",\"revision\":\"2\",\"digest\":\"f6adfe2c78452f3fe7d87ecc59987ea36c6fbfb0113ea1e931eac2e419cd18d2\",\"bodyIdentity\":\"studio-contract-body@2:examples:f6adfe2c78452f3fe7d87ecc59987ea36c6fbfb0113ea1e931eac2e419cd18d2\",\"contractJson\":\":[],\\\"styleTargets\\\":[\\\"root\\\",\\\"trigger\\\",\\\"items\\\",\\\"item\\\",\\\"triggerIcon\\\",\\\"itemIcon\\\"],\\\"requiresParentContext\\\":false,\\\"compositionSlots\\\":[]},\\\"descriptorDigest\\\":\\\"b85a45c77b4c292b749900d6046aa16582920b1d48b6db95968af5f043e45e76\\\",\\\"digest\\\":\\\"f6adfe2c78452f3fe7d87ecc59987ea36c6fbfb0113ea1e931eac2e419cd18d2\\\",\\\"preparation\\\":{\\\"seedStyles\\\":[],\\\"hostRequirements\\\":[],\\\"dependencies\\\":[{\\\"id\\\":\\\"vict.media.icon\\\",\\\"revision\\\":\\\"1\\\"}],\\\"seedStylePrecedence\\\":\\\"Local styles override shared style sources; explicitly replace/remove undesired seed declarations before construction.\\\"}}\",\"totalCharacters\":4147,\"offset\":3600,\"nextOffset\":null,\"bodyComplete\":false},{\"id\":\"vict.pattern.filtered-list\",\"revision\":\"2\",\"digest\":\"b2e34b5eadc8ec7b7ecd2c093507e7c155cc6c87cd14447a414e97b72b1de496\",\"bodyIdentity\":\"studio-contract-body@2:examples:b2e34b5eadc8ec7b7ecd2c093507e7c155cc6c87cd14447a414e97b72b1de496\",\"contractJson\":\"evision\\\":\\\"1\\\"}],\\\"seedStylePrecedence\\\":\\\"Local styles override shared style sources; explicitly replace/remove undesired seed declarations before construction.\\\"}}\",\"totalCharacters\" [Details truncated for the bounded trace. Read current source for complete facts.]"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 137643 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 137655 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-9bace222-383d-4579-a0ea-bd7a7112f1bd\",\"revision\":\"r1#0\",\"digest\":\"6b6e4aae444c458405e8f1b0160a1cfc1bfe2462dd9c05f1707b88689149f9dc\",\"epoch\":\"7b318c74-a9cc-4242-b7fc-080cb4fe9239\"},\"section\":\"icons\",\"items\":[{\"key\":\"lucide/folder@1.27.0\",\"pack\":\"lucide\",\"name\":\"folder\",\"revision\":\"1.27.0\",\"label\":\"Folder\",\"tags\":[],\"license\":\"ISC\",\"provenance\":\"@lucide/svelte@1.27.0\"}],\"total\":1,\"nextOffset\":null,\"offset\":0,\"totalInstalled\":59,\"source\":\"installed-supplied-icon-manifest\",\"guidance\":\"Bounded installed metadata only; exact key selects one icon. Search tags/aliases, then read its registered icon component contract. Document assets and custom icons are separate inventories; an empty assets registry does not mean images or icons are unsupported.\"}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 137644 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 137657 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-9bace222-383d-4579-a0ea-bd7a7112f1bd\",\"revision\":\"r1#0\",\"digest\":\"6b6e4aae444c458405e8f1b0160a1cfc1bfe2462dd9c05f1707b88689149f9dc\",\"epoch\":\"7b318c74-a9cc-4242-b7fc-080cb4fe9239\"},\"section\":\"icons\",\"items\":[],\"total\":0,\"nextOffset\":null,\"offset\":0,\"totalInstalled\":59,\"source\":\"installed-supplied-icon-manifest\",\"guidance\":\"Bounded installed metadata only; exact key selects one icon. Search tags/aliases, then read its registered icon component contract. Document assets and custom icons are separate inventories; an empty assets registry does not mean images or icons are unsupported.\"}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 428991 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 429005 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-9bace222-383d-4579-a0ea-bd7a7112f1bd\",\"revision\":\"r1#0\",\"digest\":\"6b6e4aae444c458405e8f1b0160a1cfc1bfe2462dd9c05f1707b88689149f9dc\",\"epoch\":\"7b318c74-a9cc-4242-b7fc-080cb4fe9239\"},\"section\":\"actions\",\"actions\":[\"demo.submit\"],\"actionInputs\":{\"demo.submit\":{\"message\":\"string\",\"accepted\":\"boolean\"}}}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 428992 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 429007 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-9bace222-383d-4579-a0ea-bd7a7112f1bd\",\"revision\":\"r1#0\",\"digest\":\"6b6e4aae444c458405e8f1b0160a1cfc1bfe2462dd9c05f1707b88689149f9dc\",\"epoch\":\"7b318c74-a9cc-4242-b7fc-080cb4fe9239\"},\"section\":\"elements\",\"items\":[{\"tag\":\"div\",\"leaf\":false},{\"tag\":\"section\",\"leaf\":false},{\"tag\":\"header\",\"leaf\":false},{\"tag\":\"footer\",\"leaf\":false},{\"tag\":\"main\",\"leaf\":false},{\"tag\":\"nav\",\"leaf\":false},{\"tag\":\"article\",\"leaf\":false},{\"tag\":\"aside\",\"leaf\":false},{\"tag\":\"h1\",\"leaf\":false},{\"tag\":\"h2\",\"leaf\":false},{\"tag\":\"h3\",\"leaf\":false},{\"tag\":\"h4\",\"leaf\":false}],\"total\":41,\"offset\":0,\"nextOffset\":12,\"guidance\":\"Read elements with tag for its attributes; native tags are not component descriptors.\"}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 428992 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 429011 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-9bace222-383d-4579-a0ea-bd7a7112f1bd\",\"revision\":\"r1#0\",\"digest\":\"6b6e4aae444c458405e8f1b0160a1cfc1bfe2462dd9c05f1707b88689149f9dc\",\"epoch\":\"7b318c74-a9cc-4242-b7fc-080cb4fe9239\"},\"section\":\"registry\",\"registry\":\"componentDefinitions\",\"items\":[],\"total\":0,\"offset\":0,\"nextOffset\":null}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 428993 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 429013 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-9bace222-383d-4579-a0ea-bd7a7112f1bd\",\"revision\":\"r1#0\",\"digest\":\"6b6e4aae444c458405e8f1b0160a1cfc1bfe2462dd9c05f1707b88689149f9dc\",\"epoch\":\"7b318c74-a9cc-4242-b7fc-080cb4fe9239\"},\"section\":\"registry\",\"registry\":\"componentDefinitions\",\"items\":[],\"total\":0,\"offset\":0,\"nextOffset\":null}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 428993 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 429016 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-9bace222-383d-4579-a0ea-bd7a7112f1bd\",\"revision\":\"r1#0\",\"digest\":\"6b6e4aae444c458405e8f1b0160a1cfc1bfe2462dd9c05f1707b88689149f9dc\",\"epoch\":\"7b318c74-a9cc-4242-b7fc-080cb4fe9239\"},\"section\":\"registry\",\"registry\":\"componentDefinitions\",\"items\":[],\"total\":0,\"offset\":0,\"nextOffset\":null}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 428994 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 429018 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-9bace222-383d-4579-a0ea-bd7a7112f1bd\",\"revision\":\"r1#0\",\"digest\":\"6b6e4aae444c458405e8f1b0160a1cfc1bfe2462dd9c05f1707b88689149f9dc\",\"epoch\":\"7b318c74-a9cc-4242-b7fc-080cb4fe9239\"},\"section\":\"registry\",\"registry\":\"componentDefinitions\",\"items\":[],\"total\":0,\"offset\":0,\"nextOffset\":null}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 428994 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 429021 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-9bace222-383d-4579-a0ea-bd7a7112f1bd\",\"revision\":\"r1#0\",\"digest\":\"6b6e4aae444c458405e8f1b0160a1cfc1bfe2462dd9c05f1707b88689149f9dc\",\"epoch\":\"7b318c74-a9cc-4242-b7fc-080cb4fe9239\"},\"section\":\"registry\",\"registry\":\"componentDefinitions\",\"items\":[],\"total\":0,\"offset\":0,\"nextOffset\":null}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 449709 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 449717 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-9bace222-383d-4579-a0ea-bd7a7112f1bd\",\"revision\":\"r1#0\",\"digest\":\"6b6e4aae444c458405e8f1b0160a1cfc1bfe2462dd9c05f1707b88689149f9dc\",\"epoch\":\"7b318c74-a9cc-4242-b7fc-080cb4fe9239\"},\"section\":\"catalog\",\"registryDigest\":\"f8dda06f0bb1dc58262ed326a2e3ff4a656f2a90cb268c91d14daa77e5e16465\",\"items\":[{\"id\":\"vict.catalog.button\",\"revision\":\"1\",\"label\":\"Button\",\"family\":\"general\",\"category\":\"presentation\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"cc715b1bdbfce5d03ec87d1e38715e362fc0bcc95d0ef00c256ef1bfa6b372c8\",\"packageName\":\"@victframework/ui-svelte\"},{\"id\":\"vict.catalog.toolbar-button\",\"revision\":\"1\",\"label\":\"Toolbar Button\",\"family\":\"general\",\"category\":\"presentation\",\"eligibility\":{\"kind\":\"part\"},\"digest\":\"2dba1f5369101322aa80d8fb882275e0440b085092456ce479e6f1d5702d8d26\",\"packageName\":\"@victframework/ui-svelte\"}],\"total\":2,\"offset\":0,\"nextOffset\":null}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 449710 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 449719 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-9bace222-383d-4579-a0ea-bd7a7112f1bd\",\"revision\":\"r1#0\",\"digest\":\"6b6e4aae444c458405e8f1b0160a1cfc1bfe2462dd9c05f1707b88689149f9dc\",\"epoch\":\"7b318c74-a9cc-4242-b7fc-080cb4fe9239\"},\"section\":\"catalog\",\"registryDigest\":\"f8dda06f0bb1dc58262ed326a2e3ff4a656f2a90cb268c91d14daa77e5e16465\",\"items\":[{\"id\":\"vict.catalog.tabs-panel\",\"revision\":\"1\",\"label\":\"Tabs Panel\",\"family\":\"general\",\"category\":\"navigation\",\"eligibility\":{\"kind\":\"part\"},\"digest\":\"8c5b6a62ae0edeba7b10d4c905a8fe1b3b3744439c719e7d14656e8c0ead733e\",\"packageName\":\"@victframework/ui-svelte\"},{\"id\":\"vict.catalog.tabs-trigger\",\"revision\":\"1\",\"label\":\"Tabs Trigger\",\"family\":\"general\",\"category\":\"navigation\",\"eligibility\":{\"kind\":\"part\"},\"digest\":\"8a5e193e3c9096c81715f4586fba8a0a2d59db57869d38a1c40c5e9292a6daa2\",\"packageName\":\"@victframework/ui-svelte\"},{\"id\":\"vict.catalog.tabs\",\"revision\":\"1\",\"label\":\"Tabs\",\"family\":\"general\",\"category\":\"navigation\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"d2d6bbaf19200a37d24e10ce3010946e5ca5ee055278b1df4442a539a041428a\",\"packageName\":\"@victframework/ui-svelte\"}],\"total\":3,\"offset\":0,\"nextOffset\":null}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 449711 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 449722 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-9bace222-383d-4579-a0ea-bd7a7112f1bd\",\"revision\":\"r1#0\",\"digest\":\"6b6e4aae444c458405e8f1b0160a1cfc1bfe2462dd9c05f1707b88689149f9dc\",\"epoch\":\"7b318c74-a9cc-4242-b7fc-080cb4fe9239\"},\"section\":\"catalog\",\"registryDigest\":\"f8dda06f0bb1dc58262ed326a2e3ff4a656f2a90cb268c91d14daa77e5e16465\",\"items\":[{\"id\":\"vict.catalog.select-item\",\"revision\":\"1\",\"label\":\"Select Item\",\"family\":\"general\",\"category\":\"input\",\"eligibility\":{\"kind\":\"part\"},\"digest\":\"115c1e28de9a5cb359fe55b5aa5ffe25f1dd9073c846e5ad53bdc54d8a8d5c89\",\"packageName\":\"@victframework/ui-svelte\"},{\"id\":\"vict.catalog.select-multiple\",\"revision\":\"1\",\"label\":\"Select Multiple\",\"family\":\"general\",\"category\":\"input\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"a9fe78af0f5b93903b8804c01802ccad02780c3016921bd61005fe546016b608\",\"packageName\":\"@victframework/ui-svelte\"},{\"id\":\"vict.catalog.select\",\"revision\":\"1\",\"label\":\"Select\",\"family\":\"general\",\"category\":\"input\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"0bc249f5ec87e33b73d49ea5a8e7ea040e0bc8d8d05b0ce4b4f7f738c8543820\",\"packageName\":\"@victframework/ui-svelte\"}],\"total\":3,\"offset\":0,\"nextOffset\":null}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 449711 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 449724 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-9bace222-383d-4579-a0ea-bd7a7112f1bd\",\"revision\":\"r1#0\",\"digest\":\"6b6e4aae444c458405e8f1b0160a1cfc1bfe2462dd9c05f1707b88689149f9dc\",\"epoch\":\"7b318c74-a9cc-4242-b7fc-080cb4fe9239\"},\"section\":\"catalog\",\"registryDigest\":\"f8dda06f0bb1dc58262ed326a2e3ff4a656f2a90cb268c91d14daa77e5e16465\",\"items\":[{\"id\":\"vict.catalog.toggle-group-item\",\"revision\":\"1\",\"label\":\"Toggle Group Item\",\"family\":\"general\",\"category\":\"input\",\"eligibility\":{\"kind\":\"part\"},\"digest\":\"fc560bce0db50c639eb3c2506cf3c1a92d0dfb7e1f5d6e60d56d52bdb9317899\",\"packageName\":\"@victframework/ui-svelte\"},{\"id\":\"vict.catalog.toggle-group-multiple\",\"revision\":\"1\",\"label\":\"Toggle Group Multiple\",\"family\":\"general\",\"category\":\"input\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"1bfd0e0ad1e7bc63c9655fba86ba051d4ce0f5fba6212f9907e41d31abe75ab2\",\"packageName\":\"@victframework/ui-svelte\"},{\"id\":\"vict.catalog.toggle-group\",\"revision\":\"1\",\"label\":\"Toggle Group\",\"family\":\"general\",\"category\":\"input\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"1273eecf0e0827ea33ffd139804bb3bca4c1679a166eec7d9152485607ed68cd\",\"packageName\":\"@victframework/ui-svelte\"},{\"id\":\"vict.catalog.toggle\",\"revision\":\"1\",\"label\":\"Toggle\",\"family\":\"general\",\"category\":\"input\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"588011dd47147b0277ee5789678c02f9f33b1e438ae639f33d151b7b24abe9a9\",\"packageName\":\"@victframework/ui-svelte\"}],\"total\":4,\"offset\":0,\"nextOffset\":null}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 460682 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 460688 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-9bace222-383d-4579-a0ea-bd7a7112f1bd\",\"revision\":\"r1#0\",\"digest\":\"6b6e4aae444c458405e8f1b0160a1cfc1bfe2462dd9c05f1707b88689149f9dc\",\"epoch\":\"7b318c74-a9cc-4242-b7fc-080cb4fe9239\"},\"section\":\"contracts\",\"ok\":true,\"complete\":false,\"registryDigest\":\"f8dda06f0bb1dc58262ed326a2e3ff4a656f2a90cb268c91d14daa77e5e16465\",\"items\":[{\"id\":\"vict.catalog.tabs-trigger\",\"revision\":\"1\",\"digest\":\"8a5e193e3c9096c81715f4586fba8a0a2d59db57869d38a1c40c5e9292a6daa2\",\"bodyIdentity\":\"studio-contract-body@2:examples:8a5e193e3c9096c81715f4586fba8a0a2d59db57869d38a1c40c5e9292a6daa2\",\"contractJson\":\"{\\\"descriptor\\\":{\\\"revision\\\":\\\"1\\\",\\\"abi\\\":\\\"vict.ui-component-abi@1\\\",\\\"events\\\":[\\\"vict.ui-component-abi@1\\\"],\\\"rendererImplementationId\\\":\\\"vict.svelte.catalog\\\",\\\"id\\\":\\\"vict.catalog.tabs-trigger\\\",\\\"props\\\":[{\\\"name\\\":\\\"value\\\",\\\"type\\\":\\\"string\\\",\\\"default\\\":\\\"\\\"},{\\\"name\\\":\\\"label\\\",\\\"type\\\":\\\"string\\\",\\\"default\\\":\\\"\\\"},{\\\"name\\\":\\\"disabled\\\",\\\"type\\\":\\\"boolean\\\",\\\"default\\\":false}],\\\"outputs\\\":[],\\\"slots\\\":[\\\"content\\\"],\\\"styleTargets\\\":[\\\"root\\\"]},\\\"label\\\":\\\"Tabs Trigger\\\",\\\"family\\\":\\\"general\\\",\\\"category\\\":\\\"navigation\\\",\\\"purpose\\\":\\\"Tabs Trigger · part for its compatible provider slot\\\",\\\"eligibility\\\":{\\\"kind\\\":\\\"part\\\"},\\\"dependencies\\\":[],\\\"rules\\\":[{\\\"kind\\\":\\\"ancestorSlot\\\",\\\"placements\\\":[{\\\"definitionId\\\":\\\"vict.catalog.tabs\\\",\\\"revision\\\":\\\"1\\\",\\\"slotName\\\":\\\"tabs\\\"}]},{\\\"kind\\\":\\\"labelOwnership\\\",\\\"mode\\\":\\\"component\\\",\\\"property\\\":\\\"label\\\"},{\\\"kind\\\":\\\"uniqueValue\\\",\\\"property\\\":\\\"value\\\",\\\"providerIds\\\":[\\\"vict.catalog.tabs\\\"],\\\"slots\\\":[\\\"tabs\\\"],\\\"nonempty\\\":true}],\\\"guidance\\\":[\\\"Use exact declared props, slots, output payloads and style targets.\\\",\\\"Source composition does not prove observed behavior or completion.\\\",\\\"Context-owned parts keep their compatible provider/slot; wrappers do not grant a new context.\\\",\\\"The component owns its accessible label; avoid adding a duplicate external label.\\\"],\\\"seed\\\":{\\\"root\\\":\\\"root\\\",\\\"nodes\\\":[{\\\"kind\\\":\\\"component\\\",\\\"id\\\":\\\"root\\\",\\\"definitionId\\\":\\\"vict.catalog.tabs-trigger\\\",\\\"revision\\\":\\\"1\\\",\\\"props\\\":{\\\"label\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"Tabs Trigger\\\"},\\\"value\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"first\\\"}}}],\\\"localState\\\":{},\\\"identities\\\":[{\\\"nodeId\\\":\\\"root\\\",\\\"property\\\":\\\"value\\\",\\\"sourceNodeId\\\":\\\"root\\\"}]},\\\"examples\\\":[{\\\"root\\\":\\\"root\\\",\\\"nodes\\\":[{\\\"kind\\\":\\\"component\\\",\\\"id\\\":\\\"root\\\",\\\"definitionId\\\":\\\"vict.catalog.tabs\\\",\\\"revision\\\":\\\"1\\\",\\\"props\\\":{\\\"value\\\":{\\\"type\\\":\\\"ref\\\",\\\"path\\\":\\\"state.root_value\\\"},\\\"label\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"Tabs\\\"}},\\\"outputs\\\":{\\\"valueChange\\\":{\\\"setState\\\":{\\\"key\\\":\\\"root_value\\\"}}},\\\"slots\\\":{\\\"tabs\\\":{\\\"name\\\":\\\"tabs\\\",\\\"children\\\":[\\\"root-tabs-1\\\"]},\\\"panels\\\":{\\\"name\\\":\\\"panels\\\",\\\"children\\\":[\\\"root-panels-1\\\"]}}},{\\\"kind\\\":\\\"component\\\",\\\"id\\\":\\\"root-tabs-1\\\",\\\"definitionId\\\":\\\"vict.catalog.tabs-trigger\\\",\\\"revision\\\":\\\"1\\\",\\\"props\\\":{\\\"label\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"Tabs Trigger\\\"},\\\"value\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"first\\\"}}},{\\\"kind\\\":\\\"component\\\",\\\"id\\\":\\\"root-panels-1\\\",\\\"definitionId\\\":\\\"vict.catalog.tabs-panel\\\",\\\"revision\\\":\\\"1\\\",\\\"props\\\":{\\\"value\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"first\\\"}},\\\"slots\\\":{\\\"content\\\":{\\\"name\\\":\\\"content\\\",\\\"children\\\":[\\\"root-panels-1-content-1\\\"]}}},{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"root-panels-1-content-1\\\",\\\"tag\\\":\\\"p\\\",\\\"children\\\":[\\\"root-panels-1-content-1-text\\\"]},{\\\"kind\\\":\\\"text\\\",\\\"id\\\":\\\"root-panels-1-content-1-text\\\",\\\"content\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"Tab content\\\"}}],\\\"localState\\\":{\\\"root_value\\\":{\\\"key\\\":\\\"root_value\\\",\\\"type\\\":\\\"string\\\",\\\"initial\\\":\\\"first\\\"}},\\\"identities\\\":[{\\\"nodeId\\\":\\\"root-tabs-1\\\",\\\"property\\\":\\\"value\\\",\\\"sourceNodeId\\\":\\\"root-tabs-1\\\"},{\\\"nodeId\\\":\\\"root-panels-1\\\",\\\"property\\\":\\\"value\\\",\\\"sourceNodeId\\\":\\\"root-tabs-1\\\"},{\\\"stateKey\\\":\\\"root_val [Details truncated for the bounded trace. Read current source for complete facts.]"
+    - heading "Sanitized exchanges" [level=4]
+    - paragraph: Compact previews remain in the conversation. Open a retained original page here; this never invokes a tool again.
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Characters 0–697 of 697
+    - generic: "{ \"section\": \"contracts\", \"offset\": 0, \"limit\": 12, \"components\": [ { \"id\": \"vict.catalog.tabs\", \"revision\": \"1\" }, { \"id\": \"vict.catalog.tabs-trigger\", \"revision\": \"1\" }, { \"id\": \"vict.catalog.tabs-panel\", \"revision\": \"1\" }, { \"id\": \"vict.catalog.button\", \"revision\": \"1\" }, { \"id\": \"vict.catalog.toggle-group\", \"revision\": \"1\" }, { \"id\": \"vict.catalog.toggle-group-item\", \"revision\": \"1\" }, { \"id\": \"vict.catalog.select\", \"revision\": \"1\" }, { \"id\": \"vict.catalog.select-item\", \"revision\": \"1\" } ], \"includeExamples\": true }"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Characters 6000–12000 of 39212
+    - generic: "vict.catalog.tabs\\\"],\\\"slots\\\":[\\\"panels\\\"],\\\"nonempty\\\":true}],\\\"guidance\\\":[\\\"Use exact declared props, slots, output payloads and style targets.\\\",\\\"Source composition does not prove observed behavior or completion.\\\",\\\"Context-owned parts keep their compatible provider/slot; wrappers do not grant a new context.\\\"],\\\"seed\\\":{\\\"root\\\":\\\"root\\\",\\\"nodes\\\":[{\\\"kind\\\":\\\"component\\\",\\\"id\\\":\\\"root\\\",\\\"definitionId\\\":\\\"vict.catalog.tabs-panel\\\",\\\"revision\\\":\\\"1\\\",\\\"props\\\":{\\\"value\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"first\\\"}},\\\"slots\\\":{\\\"content\\\":{\\\"name\\\":\\\"content\\\",\\\"children\\\":[\\\"root-content-1\\\"]}}},{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"root-content-1\\\",\\\"tag\\\":\\\"p\\\",\\\"children\\\":[\\\"root-content-1-text\\\"]},{\\\"kind\\\":\\\"text\\\",\\\"id\\\":\\\"root-content-1-text\\\",\\\"content\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"Tab content\\\"}}],\\\"localState\\\":{},\\\"identities\\\":[{\\\"nodeId\\\":\\\"root\\\",\\\"property\\\":\\\"value\\\",\\\"sourceNodeId\\\":\\\"root\\\"}]},\\\"examples\\\":[{\\\"root\\\":\\\"root\\\",\\\"nodes\\\":[{\\\"kind\\\":\\\"component\\\",\\\"id\\\":\\\"root\\\",\\\"definitionId\\\":\\\"vict.catalog.tabs\\\",\\\"revision\\\":\\\"1\\\",\\\"props\\\":{\\\"value\\\":{\\\"type\\\":\\\"ref\\\",\\\"path\\\":\\\"state.root_value\\\"},\\\"label\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"Tabs\\\"}},\\\"outputs\\\":{\\\"valueChange\\\":{\\\"setState\\\":{\\\"key\\\":\\\"root_value\\\"}}},\\\"slots\\\":{\\\"tabs\\\":{\\\"name\\\":\\\"tabs\\\",\\\"children\\\":[\\\"root-tabs-1\\\"]},\\\"panels\\\":{\\\"name\\\":\\\"panels\\\",\\\"children\\\":[\\\"root-panels-1\\\"]}}},{\\\"kind\\\":\\\"component\\\",\\\"id\\\":\\\"root-tabs-1\\\",\\\"definitionId\\\":\\\"vict.catalog.tabs-trigger\\\",\\\"revision\\\":\\\"1\\\",\\\"props\\\":{\\\"label\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"First tab\\\"},\\\"value\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"first\\\"}}},{\\\"kind\\\":\\\"component\\\",\\\"id\\\":\\\"root-panels-1\\\",\\\"definitionId\\\":\\\"vict.catalog.tabs-panel\\\",\\\"revision\\\":\\\"1\\\",\\\"props\\\":{\\\"value\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"first\\\"}},\\\"slots\\\":{\\\"content\\\":{\\\"name\\\":\\\"content\\\",\\\"children\\\":[\\\"root-panels-1-content-1\\\"]}}},{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"root-panels-1-content-1\\\",\\\"tag\\\":\\\"p\\\",\\\"children\\\":[\\\"root-panels-1-content-1-text\\\"]},{\\\"kind\\\":\\\"text\\\",\\\"id\\\":\\\"root-panels-1-content-1-text\\\",\\\"content\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"Tab content\\\"}}],\\\"localState\\\":{\\\"root_value\\\":{\\\"key\\\":\\\"root_value\\\",\\\"type\\\":\\\"string\\\",\\\"initial\\\":\\\"first\\\"}},\\\"identities\\\":[{\\\"nodeId\\\":\\\"root-tabs-1\\\",\\\"property\\\":\\\"value\\\",\\\"sourceNodeId\\\":\\\"root-tabs-1\\\"},{\\\"nodeId\\\":\\\"root-panels-1\\\",\\\"property\\\":\\\"value\\\",\\\"sourceNodeId\\\":\\\"root-tabs-1\\\"},{\\\"stateKey\\\":\\\"root_value\\\",\\\"sourceNodeId\\\":\\\"root-tabs-1\\\"}]}],\\\"legacyCompatibility\\\":true,\\\"packageName\\\":\\\"@victframework/ui-svelte\\\",\\\"packageVersion\\\":\\\"0.4.0-rc.1\\\",\\\"capabilities\\\":{\\\"extensionId\\\":\\\"vict.catalog.tabs-panel\\\",\\\"revision\\\":\\\"1\\\",\\\"rendererImplementationId\\\":\\\"vict.svelte.catalog\\\",\\\"abi\\\":\\\"vict.ui-component-abi@1\\\",\\\"slots\\\":[\\\"content\\\"],\\\"required\\\":[\\\"content\\\"],\\\"styleTargets\\\":[\\\"root\\\"],\\\"requiresParentContext\\\":false,\\\"compositionSlots\\\":[]},\\\"descriptorDigest\\\":\\\"32b6842f134b9b6f87b6dbfc0974ffe7304c9cd99f24a45752d5c34062b7d449\\\",\\\"digest\\\":\\\"8c5b6a62ae0edeba7b10d4c905a8fe1b3b3744439c719e7d14656e8c0ead733e\\\",\\\"preparation\\\":{\\\"seedStyles\\\":[],\\\"hostRequirements\\\":[],\\\"dependencies\\\":[],\\\"seedStylePrecedence\\\":\\\"Local styles override shared style sources; explicitly replace/remove undesired seed declarations before construction.\\\"}}\", \"totalCharacters\": 3545, \"offset\": 0, \"nextOffset\": null, \"bodyComplete\": true }, { \"id\": \"vict.catalog.tabs\", \"revision\": \"1\", \"digest\": \"d2d6bbaf19200a37d24e10ce3010946e5ca5ee055278b1df4442a539a041428a\", \"bodyIdentity\": \"studio-contract-body@2:examples:d2d6bbaf19200a37d24e10ce3010946e5ca5ee055278b1df4442a539a041428a\", \"contractJson\": \"{\\\"descriptor\\\":{\\\"revision\\\":\\\"1\\\",\\\"abi\\\":\\\"vict.ui-component-abi@1\\\",\\\"events\\\":[\\\"vict.ui-component-abi@1\\\"],\\\"rendererImplementationId\\\":\\\"vict.svelte.catalog\\\",\\\"id\\\":\\\"vict.catalog.tabs\\\",\\\"props\\\":[{\\\"name\\\":\\\"value\\\",\\\"type\\\":\\\"string\\\",\\\"default\\\":\\\"\\\"},{\\\"name\\\":\\\"label\\\",\\\"type\\\":\\\"string\\\",\\\"default\\\":\\\"Sections\\\"},{\\\"name\\\":\\\"orientation\\\",\\\"type\\\":\\\"string\\\",\\\"default\\\":\\\"horizontal\\\"},{\\\"name\\\":\\\"activationMode\\\",\\\"type\\\":\\\"string\\\",\\\"default\\\":\\\"automatic\\\"},{\\\"name\\\":\\\"loop\\\",\\\"type\\\":\\\"boolean\\\",\\\"default\\\":false},{\\\"name\\\":\\\"disabled\\\",\\\"type\\\":\\\"boolean\\\",\\\"default\\\":false}],\\\"outputs\\\":[{\\\"name\\\":\\\"valueChange\\\",\\\"payload\\\":\\\"string\\\"}],\\\"slots\\\":[\\\"tabs\\\",\\\"panels\\\"],\\\"styleTargets\\\":[\\\"root\\\",\\\"list\\\"]},\\\"label\\\":\\\"Tabs\\\",\\\"family\\\":\\\"general\\\",\\\"category\\\":\\\"navigation\\\",\\\"purpose\\\":\\\"Tabs · editable properties, declared slots and outputs\\\",\\\"eligibility\\\":{\\\"kind\\\":\\\"standalone\\\"},\\\"dependencies\\\":[{\\\"id\\\":\\\"vict.catalog.tabs-trigger\\\",\\\"revision\\\":\\\"1\\\"},{\\\"id\\\":\\\"vict.catalog.tabs-panel\\\",\\\"revision\\\":\\\"1\\\"}],\\\"rules\\\":[{\\\"kind\\\":\\\"controlledPair\\\",\\\"prop\\\":\\\"value\\\",\\\"output\\\":\\\"valueChange\\\"},{\\\"kind\\\":\\\"labelOwnership\\\",\\\"mode\\\":\\\"component\\\",\\\"property\\\":\\\"label\\\"},{\\\"kind\\\":\\\"requiredParts\\\",\\\"slot\\\":\\\"tabs\\\",\\\"definitionIds\\\":[\\\"vict.catalog.tabs-trigger\\\"]},{\\\"kind\\\":\\\"requiredParts\\\",\\\"slot\\\":\\\"panels\\\",\\\"definitionIds\\\":[\\\"vict.catalog.tabs-panel\\\"]},{\\\"kind\\\":\\\"pairedValues\\\",\\\"left\\\":{\\\"slot\\\":\\\"tabs\\\",\\\"definitionIds\\\":[\\\"vict.catalog.tabs-trigger\\\"],\\\"property\\\":\\\"value\\\"},\\\"right\\\":{\\\"slot\\\":\\\"panels\\\",\\\"definitionIds\\\":[\\\"vict.catalog.tabs-panel\\\"],\\\"property\\\":\\\"value\\\"}}],\\\"guidance\\\":[\\\"Use exact declared props, slots, output payloads and style targets.\\\",\\\"Source composition does not prove observed behavior or completion.\\\",\\\"The component owns its accessible label; avoid adding a duplicate external label.\\\"],\\\"seed\\\":{\\\"root\\\":\\\"root\\\",\\\"nodes\\\":[{\\\"kind\\\":\\\"component\\\",\\\"id\\\":\\\"root\\\",\\\"definitionId\\\":\\\"vict.catalog.tabs\\\",\\\"revision\\\":\\\"1\\\",\\\"props\\\":{\\\"value\\\":{\\\"type\\\":\\\"ref\\\",\\\"path\\\":\\\"state.root_value\\\"},\\\"label\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"Tabs\\\"}},\\\"outputs\\\":{\\\"valueChange\\\":{\\\"setState\\\":{\\\"key\\\":\\\"root_value\\\"}}},\\\"slots\\\":{\\\"tabs\\\":{\\\"name\\\":\\\"tabs\\\",\\\"children\\\":[\\\"root-t"
+    - button "Next page" [active]
+- separator "Chat width"
+- main:
+  - button "Toggle Chat drawer" [expanded]:
+  - group "Workspace mode":
+    - button "Design" [pressed]
+    - button "Interact"
+    - button "Structure"
+  - button "Toggle Document and Selection drawer":
+  - iframe:
+    - generic "Screen canvas":
+      - main "Foundation Responsive Desk"
+  - generic: ＋
+  - heading "What will you make?" [level=1]
+  - paragraph: Select this screen to open its tools, then choose Insert.
+- contentinfo:
+  - status: New screen · not saved yet.
