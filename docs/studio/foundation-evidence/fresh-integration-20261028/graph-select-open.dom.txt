@@ -1,0 +1,128 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Foundation Graph"
+  - generic: ○ New screen
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- main:
+  - button "Toggle Chat drawer":
+  - group "Workspace mode":
+    - button "Design"
+    - button "Interact" [pressed]
+    - button "Structure"
+  - button "Toggle Document and Selection drawer":
+  - iframe [active]:
+    - generic "Screen canvas":
+      - main "Foundation Graph":
+        - region "Foundation flow":
+          - group "Graph tools":
+            - text: Node family
+            - combobox "Node family":
+              - option "Choose an option" [selected]
+              - option "Input source"
+              - option "Processor"
+              - option "Output sink"
+            - button "Add node" [disabled]
+            - button "Undo" [disabled]
+            - button "Redo" [disabled]
+            - button "Copy"
+            - button "Paste" [disabled]
+            - button "Duplicate"
+            - button "Delete selected"
+            - button "Fit all"
+            - button "Focus selection"
+            - button "Arrange"
+            - text: Find nodes
+            - searchbox "Find nodes"
+          - application:
+            - article "Input":
+              - strong: Input
+              - generic: Input source
+              - button "Collapse Input" [expanded]: "-"
+              - 'button "output Text: text"'
+              - button "Trace Input Text connections": Text
+              - generic: text
+              - generic: Input text
+              - textbox "Input text": Manual coexistence after reboot
+            - article "Processor":
+              - strong: Processor
+              - generic: Processor
+              - button "Collapse Processor" [expanded]: "-"
+              - 'button "input Text: text"'
+              - button "Trace Processor Text connections": Text
+              - generic: text
+              - 'button "output Result: text"'
+              - button "Trace Processor Result connections": Result
+              - generic: text
+              - generic: Mode
+              - button "Mode" [expanded] [active]:
+                - generic: trim
+              - generic: Factor
+              - spinbutton "Factor": "2"
+              - generic "Enabled":
+                - switch "Enabled"
+                - generic: Enabled
+            - article "Output":
+              - strong: Output
+              - generic: Output sink
+              - button "Collapse Output" [expanded]: "-"
+              - 'button "input Result: text"'
+              - button "Trace Output Result connections": Result
+              - generic: text
+              - generic: Output name
+              - textbox "Output name": Verified coexistence
+            - link "Svelte Flow attribution":
+              - /url: https://svelteflow.dev?utm_source=attribution
+              - text: Svelte Flow
+            - generic "Control Panel":
+              - button "Zoom In":
+              - button "Zoom Out":
+              - button "Fit View":
+            - img "Mini Map"
+          - complementary "Graph selection":
+            - heading "Selection" [level=3]
+            - paragraph: 1 nodes · 0 connections
+            - text: Node name
+            - textbox "Node name": Processor
+            - generic: Mode
+            - button "Mode":
+              - generic: trim
+            - generic: Factor
+            - spinbutton "Factor": "2"
+            - generic "Enabled":
+              - switch "Enabled"
+              - generic: Enabled
+            - text: Node X
+            - spinbutton "Node X": "340"
+            - text: Node Y
+            - spinbutton "Node Y": "30"
+            - generic "Connect or reconnect"
+            - option "Choose an option" [selected]
+            - option "edge-input-processor"
+            - option "edge-processor-output"
+            - option "Choose an option" [selected]
+            - option "Input"
+            - option "Processor"
+            - option "Output"
+            - option "Choose an option" [selected]
+            - option "Choose an option" [selected]
+            - option "Input"
+            - option "Processor"
+            - option "Output"
+            - option "Choose an option" [selected]
+            - generic "Graph clipboard"
+    - listbox:
+      - option "✓ trim" [selected]
+      - option "uppercase"
+      - option "lowercase"
+- contentinfo:
+  - status: Interact mode · simulated behavior, no live effects.
+- generic: Designer — VICT Studio

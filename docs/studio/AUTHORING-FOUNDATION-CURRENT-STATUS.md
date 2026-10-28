@@ -1,5 +1,7 @@
 # Authoring foundation current status
 
+Fresh continuation, 2026-10-28: supported internal browser access to `127.0.0.25:5626`, login and Designer now work. The externally repaired server remains untouched. The retained actual-agent graph was imported through the supported UI as a separate screen; real parameter/connection edits, capacity refusal, Save/reload and Run preserved prior manual values. A new actual AI authoring trial failed before generation with `STUDIO_AGENT_SETUP_FAILED` / `VictPresentationError` and zero model requests/edits. A targeted existing test reproduced an oversized recipe presentation regex; a bounded exact-enum representation repairs source without changing frozen safety limits. Full offline governed-agent tests pass 20/20; live trial remains blocked until the repair is loaded through the supported server handoff. See [fresh observations, repair checks and limits](foundation-evidence/fresh-integration-20261028/REPORT.md). The older browser-denied/server-unverified sections below are historical. Integrated acceptance remains HELD; no finding closure advances.
+
 Read-only reconciliation on 2026-10-28. Product candidate: `ba7b2a5b4f3db6bdc3a424bd297714745580248e`; subsequent checkpoint documentation: `1c02803c9dbb185f0299447df0771769b22ba95d`. This rollup supersedes historical pending-choice and executable-failure wording in the older chronological ledgers; it does not erase those observations or close findings.
 
 ## What is complete and what is held

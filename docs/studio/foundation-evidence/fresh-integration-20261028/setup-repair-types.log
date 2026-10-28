@@ -1,0 +1,1 @@
+tests/designer-agent-mastra.test.ts(66,50): error TS2339: Property 'recipe' does not exist on type '{ op: { const: string; }; }'.

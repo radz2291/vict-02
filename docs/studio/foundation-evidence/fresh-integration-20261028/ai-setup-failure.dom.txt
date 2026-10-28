@@ -1,0 +1,91 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Foundation AI Review"
+  - generic: ○ New screen
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- banner:
+  - strong: Chat
+  - button "Hide Chat":
+- complementary "Chat":
+  - region "Conversation":
+    - region "Messages — Message":
+      - log:
+        - generic: You
+        - generic: "Build this current separate screen as a compact responsive Foundation AI Review using the actual newly exposed public VICT AI contracts and semantic theme tokens. Preserve every other saved screen. Discover exact contracts before edits; use short quiet outcome narration and a concise final of Applied / Observed / Untested. Supplied public verification facts: the retained Foundation Graph imported successfully; its prior Input text is \"Manual coexistence after reboot\" and Output name \"Verified coexistence\"; a port-capacity violation was safely refused; deletion, reconnection and creation were exercised; Save/reload and Run showed both values intact. Present these supplied facts only, without inventing execution traces or private reasoning. Compose real public steps/process, a public reasoning summary (\"Review confirmed graph behavior and preserve the prior manual edits.\"), a tool receipt/result with completed status for saved graph Run, supplied source link https://github.com/radz2291/vict-02, an attachment descriptor for graph-current-saved-source.json (presentation only), and an action surface with typed local output binding and a visible result. Include standalone safe Markdown with a short verification note, a controlled draft composer, and one owned dropdown/hovercard or disclosure to exercise. Use newly exposed registered patterns rather than handmade imitation cards. This is presentation and typed intent only: no provider/tool execution, approval authority, extra network calls or private chain of thought. Use compact data within tool limits, validate coherent batches; one final current image observation, truthfully report any crop or untested behavior. Do not attempt undo, do not repeat already confirmed graph edits. No external media fetch needed."
+        - button "Copy message":
+        - generic: Assistant
+        - generic "Conversation timeline":
+          - button "studio_agent failed":
+            - generic: studio_agent
+            - generic: failed
+    - button "Scroll to latest message":
+      - generic: Scroll to end
+    - textbox "Message":
+      - /placeholder: Ask for a change…
+    - button "Send" [disabled]:
+      - generic: Send
+    - status
+  - status "The agent could not start with its current configuration. Check Chat details and the server configuration before retrying. No edits were applied.":
+    - generic: The agent could not start with its current configuration. Check Chat details and the server configuration before retrying. No edits were applied.
+  - button "Chat details" [expanded]: ···
+  - generic "Chat details":
+    - heading "Chat details" [level=3]
+    - button "Close chat details" [active]: ×
+    - paragraph: zai/glm-5.3-flash
+    - text: Turn details
+    - combobox "Inspect turn":
+      - option "Latest activity" [selected]
+      - option "6:04:32 PM · failed · Build this current separate screen as a compact responsive F"
+    - paragraph: Up to 24 turns retained for 30 minutes in this tab. Reloading clears local history; server evidence also expires or disappears on restart/capacity eviction.
+    - paragraph: "Selected: Element · Screen"
+    - paragraph: The agent could not start with its current configuration. Check Chat details and the server configuration before retrying. No edits were applied.
+    - button "Reconnect agent"
+    - heading "Turn measurements" [level=4]
+    - paragraph: 0 tool calls · 0 refused · 0 calls after refusal · 0.1 s elapsed.
+    - paragraph: 0 authoring model requests · 0 image requests. No confirmed edit.
+    - paragraph: Token usage unavailable.
+    - paragraph: 0 receipt-derived edits including cleanup.
+    - paragraph: 0 knowledge reads · 0 source reads · 0 edit calls · 0 observation calls.
+    - paragraph: "Settled tool durations summed: 0.0 s; tool-active interval union: 0.0 s; outside-tool time: 0.1 s."
+    - paragraph: Outside-tool time includes waiting, generation, transport and host overhead; exact provider latency is unavailable.
+    - paragraph: Exact model steps and cost unavailable. Concurrent tool durations do not add up to wall time.
+    - heading "Progress summaries" [level=4]
+    - paragraph: Connection, validation and completion metadata. The conversation contains actual assistant messages and tool calls.
+    - list:
+      - listitem: Connecting…
+      - listitem: Reading screen…
+      - listitem: Connecting to the VICT / Mastra agent…
+      - listitem: "No edits were applied. Confirmed revision r1#0. Engine termination: failed (STUDIO_AGENT_SETUP_FAILED). Source coverage: 0/117 registered definitions present. 117 missing from the 117-item coverage scope. Missing IDs are paged through coverage reads. This inventory does not establish the full requested intent, interactions or visual completion. Source: 1 nodes, 6 state declarations; current appearance unverified; interactions unverified by this agent."
+    - heading "Tool receipts" [level=4]
+    - paragraph: studio_agent
+    - list:
+      - text: Agent setup or capability configuration failed · failed
+      - generic: "tool-failed studio_agent 128 ms since turn start {\"code\":\"STUDIO_AGENT_SETUP_FAILED\",\"errorType\":\"VictPresentationError\"}"
+    - heading "Connection record" [level=4]
+    - paragraph: STUDIO_AGENT_SETUP_FAILED
+- separator "Chat width"
+- main:
+  - button "Toggle Chat drawer" [expanded]:
+  - group "Workspace mode":
+    - button "Design" [pressed]
+    - button "Interact"
+    - button "Structure"
+  - button "Toggle Document and Selection drawer":
+  - iframe:
+    - generic "Screen canvas":
+      - main "Foundation AI Review"
+  - generic: ＋
+  - heading "What will you make?" [level=1]
+  - paragraph: Select this screen to open its tools, then choose Insert.
+- contentinfo:
+  - status: New screen · not saved yet.
+- generic: Designer — VICT Studio

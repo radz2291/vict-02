@@ -1,0 +1,52 @@
+{
+  "ancestors": [
+    {
+      "cls": "",
+      "owner": null,
+      "tag": "DIV"
+    },
+    {
+      "cls": "",
+      "owner": null,
+      "tag": "DIV"
+    },
+    {
+      "cls": "uv-root-screen-f7ecb7ef-06b5-408b-8904-80531ce7a8aa-r1_r3",
+      "owner": null,
+      "tag": "DIV"
+    },
+    {
+      "cls": "uv-canvas svelte-1q2ovr8",
+      "owner": null,
+      "tag": "DIV"
+    },
+    {
+      "cls": "vict-rhea vict-controls svelte-1rr4c2n",
+      "owner": null,
+      "tag": "DIV"
+    },
+    {
+      "cls": "",
+      "owner": null,
+      "tag": "BODY"
+    },
+    {
+      "cls": "",
+      "owner": null,
+      "tag": "HTML"
+    }
+  ],
+  "background": "rgb(255, 255, 255)",
+  "color": "rgb(32, 35, 43)",
+  "rect": {
+    "bottom": 519.5999984741211,
+    "height": 112.5999984741211,
+    "left": 441,
+    "right": 679.4250030517578,
+    "top": 407,
+    "width": 238.4250030517578,
+    "x": 441,
+    "y": 407
+  },
+  "role": "listbox"
+}

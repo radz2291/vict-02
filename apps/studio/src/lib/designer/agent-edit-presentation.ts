@@ -9,12 +9,21 @@ const contentProperties = {
  text:{type:'string',maxLength:4000},headingLevel:{type:'integer',minimum:1,maximum:6},
  attributes:{$ref:'#/$defs/attributes'},props:{$ref:'#/$defs/props'},styles:{$ref:'#/$defs/styles'},
 };
-const recipePattern = `^(?:${screenRecipes.map(recipe => recipe.id.replaceAll('.', '\\.')).join('|')})$`;
+// Keep the exact finite vocabulary inside the bridge's frozen bounds. A single
+// enum exceeds 64 entries, and the expanded regex exceeded 2048 characters.
+// References avoid repeating that vocabulary in the operation guidance below.
+const recipeNames = screenRecipes.map(recipe => recipe.id);
+const recipeVocabulary = {
+  anyOf: Array.from({ length: Math.ceil(recipeNames.length / 64) }, (_, index) => ({
+    type: 'string', enum: recipeNames.slice(index * 64, (index + 1) * 64),
+  })),
+};
+const recipe = { $ref: '#/$defs/recipe' };
 const opSchema = (op: string, required: string[], properties: Record<string,unknown>) => ({ type:'object',additionalProperties:false,required:['op',...required],properties:{op:{const:op},...properties} });
 const positionProperties = {slotName:identifier,index:{type:'integer',minimum:0,maximum:1000}};
 const operationDefinitions = {
  insert:opSchema('insert',['kind','nodeId','parentId'],{kind:{enum:['element','text','component']},nodeId:identifier,parentId:identifier,...positionProperties,tag:{type:'string',minLength:1,maxLength:60},componentId:identifier,revision:identifier,expression:{$ref:'#/$defs/expression'},...contentProperties}),
- add:opSchema('add',['recipe','nodeId','parentId'],{recipe:{type:'string',pattern:recipePattern},nodeId:identifier,parentId:identifier,...positionProperties,replacePlaceholder:{type:'boolean'},...contentProperties}),
+ add:opSchema('add',['recipe','nodeId','parentId'],{recipe,nodeId:identifier,parentId:identifier,...positionProperties,replacePlaceholder:{type:'boolean'},...contentProperties}),
  modify:opSchema('modify',['nodeId'],{nodeId:identifier,...contentProperties}),
  move:opSchema('move',['nodeId','newParentId'],{nodeId:identifier,newParentId:identifier,...positionProperties}),
  remove:opSchema('remove',['nodeId'],{nodeId:identifier}),
@@ -38,6 +47,7 @@ const operationDefinitions = {
 // Zod's discriminated closed operation union remains authoritative.
 export const editPresentation = {
   $defs: {
+    recipe: recipeVocabulary,
     ...operationDefinitions,
     operation: { oneOf:Object.keys(operationDefinitions).map(op=>({$ref:`#/$defs/${op}`})) },
     identifier:{type:'string',minLength:1,maxLength:160,pattern:'^[a-zA-Z0-9_.:-]+$',not:{enum:['__proto__','constructor','prototype']}},
@@ -91,12 +101,7 @@ export const editPresentation = {
           id:identifier,name:identifier,query:string,part:identifier,role:{enum:['surface','text','textMuted','border','accent','accentText','highlight','highlightText','focusRing','disabledSurface','disabledText','elevation']},property:string,value:{anyOf:[{$ref:'#/$defs/styleValue'},{type:'string',minLength:1,maxLength:500}]},conditionId:identifier,pseudo:{enum:['hover','focus','active','disabled']},
           declarations:{$ref:'#/$defs/styleDeclarations'},replace:{type:'boolean'},sourceId:identifier,
           replacePlaceholder: { type: 'boolean', description: 'add only: false explicitly preserves seeded slot children; default replaces an unchanged seed.' },
-          recipe: {
-            type: 'string',
-            // A single enum would exceed the bridge's frozen 64-item bound.
-            // The equivalent anchored pattern retains the complete finite vocabulary.
-            pattern: `^(?:${screenRecipes.map(recipe => recipe.id.replaceAll('.', '\\.')).join('|')})$`,
-          },
+          recipe,
           nodeId: string,expectedGraphRevision:{type:'integer',minimum:0},changes:{type:'array',minItems:1,maxItems:40,items:{type:'object',required:['type'],additionalProperties:true}},
           parentId: string,
           newParentId: string,

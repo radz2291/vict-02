@@ -1,0 +1,101 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Run menus":
+    - menuitem "File"
+    - menuitem "View"
+    - menuitem "Run"
+  - generic: Foundation Graph
+- main:
+  - iframe:
+    - generic "Foundation Graph":
+      - main "Foundation Graph":
+        - region "Foundation flow":
+          - group "Graph tools":
+            - text: Node family
+            - combobox "Node family":
+              - option "Choose an option" [selected]
+              - option "Input source"
+              - option "Processor"
+              - option "Output sink"
+            - button "Add node" [disabled]
+            - button "Undo" [disabled]
+            - button "Redo" [disabled]
+            - button "Copy" [disabled]
+            - button "Paste" [disabled]
+            - button "Duplicate" [disabled]
+            - button "Delete selected" [disabled]
+            - button "Fit all"
+            - button "Focus selection" [disabled]
+            - button "Arrange"
+            - text: Find nodes
+            - searchbox "Find nodes"
+          - application:
+            - article "Input":
+              - strong: Input
+              - generic: Input source
+              - button "Collapse Input" [expanded]: "-"
+              - 'button "output Text: text"'
+              - button "Trace Input Text connections": Text
+              - generic: text
+              - generic: Input text
+              - textbox "Input text": Manual coexistence after reboot
+            - article "Processor":
+              - strong: Processor
+              - generic: Processor
+              - button "Collapse Processor" [expanded]: "-"
+              - 'button "input Text: text"'
+              - button "Trace Processor Text connections": Text
+              - generic: text
+              - 'button "output Result: text"'
+              - button "Trace Processor Result connections": Result
+              - generic: text
+              - generic: Mode
+              - button "Mode":
+                - generic: uppercase
+              - generic: Factor
+              - spinbutton "Factor": "2"
+              - generic "Enabled":
+                - switch "Enabled"
+                - generic: Enabled
+            - article "Output":
+              - strong: Output
+              - generic: Output sink
+              - button "Collapse Output" [expanded]: "-"
+              - 'button "input Result: text"'
+              - button "Trace Output Result connections": Result
+              - generic: text
+              - generic: Output name
+              - textbox "Output name": Verified coexistence
+            - link "Svelte Flow attribution":
+              - /url: https://svelteflow.dev?utm_source=attribution
+              - text: Svelte Flow
+            - generic "Control Panel":
+              - button "Zoom In":
+              - button "Zoom Out":
+              - button "Fit View":
+            - img "Mini Map"
+          - complementary "Graph selection":
+            - heading "Selection" [level=3]
+            - paragraph: 0 nodes · 0 connections
+            - generic "Connect or reconnect"
+            - option "Choose an option" [selected]
+            - option "edge-input-processor"
+            - option "edge-1"
+            - option "Choose an option" [selected]
+            - option "Input"
+            - option "Processor"
+            - option "Output"
+            - option "Choose an option" [selected]
+            - option "Choose an option" [selected]
+            - option "Input"
+            - option "Processor"
+            - option "Output"
+            - option "Choose an option" [selected]
+            - generic "Graph clipboard"
+- text: Simulated execution
+- generic: Local preview · no live effects
+- contentinfo:
+  - status: Saved application · r1.r1
+  - generic "v1_bc1ddf7b091d1dbc32d886e7864bad60d4a2731dc7086332a4d13b50c7c2f6a4": "@3 · v1_bc1ddf7b091d…"
