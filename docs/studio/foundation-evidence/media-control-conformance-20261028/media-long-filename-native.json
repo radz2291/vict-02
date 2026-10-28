@@ -1,0 +1,25 @@
+{
+  "filename": {
+    "clientWidth": 210,
+    "height": 28,
+    "scrollWidth": 596,
+    "text": "foundation-supplied-image-with-a-deliberately-long-filename-for-layout-and-accessible-title-verification.png",
+    "textOverflow": "ellipsis",
+    "title": "foundation-supplied-image-with-a-deliberately-long-filename-for-layout-and-accessible-title-verification.png",
+    "whiteSpace": "nowrap",
+    "width": 211.90000915527344
+  },
+  "chosen": {
+    "clientWidth": 280,
+    "scrollWidth": 622,
+    "text": "foundation-supplied-image-with-a-deliberately-long-filename-for-layout-and-accessible-title-verification.png",
+    "textOverflow": "ellipsis",
+    "title": "foundation-supplied-image-with-a-deliberately-long-filename-for-layout-and-accessible-title-verification.png",
+    "width": 280
+  },
+  "panel": {
+    "clientWidth": 319,
+    "scrollWidth": 319,
+    "width": 320
+  }
+}

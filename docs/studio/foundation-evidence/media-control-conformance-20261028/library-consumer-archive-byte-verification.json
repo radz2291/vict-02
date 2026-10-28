@@ -1,0 +1,18 @@
+[
+  {
+    "name": "foundation-supplied-image-with-a-deliberately-long-filename-for-layout-and-accessible-title-verification.png",
+    "bytes": 7350,
+    "declaredSize": 7350,
+    "digestMatches": true,
+    "referenceMatches": true,
+    "fixtureMatches": true
+  },
+  {
+    "name": "synthetic-poster.png",
+    "bytes": 678,
+    "declaredSize": 678,
+    "digestMatches": true,
+    "referenceMatches": true,
+    "fixtureMatches": true
+  }
+]

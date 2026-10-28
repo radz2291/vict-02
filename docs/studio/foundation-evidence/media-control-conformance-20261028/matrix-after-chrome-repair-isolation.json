@@ -1,0 +1,17 @@
+{
+  "root": {
+    "background": "rgb(4, 8, 5)",
+    "color": "rgb(61, 255, 112)",
+    "font": "14px / 21px ui-monospace, \"Cascadia Mono\", Menlo, Consolas, monospace",
+    "gap": "14px",
+    "padding": "22px",
+    "studioAncestor": false
+  },
+  "trigger": {
+    "color": "rgb(61, 255, 112)",
+    "font": "500 14px / 21px ui-monospace, \"Cascadia Mono\", Menlo, Consolas, monospace",
+    "minHeight": "32px",
+    "radius": "10px",
+    "studioAncestor": false
+  }
+}

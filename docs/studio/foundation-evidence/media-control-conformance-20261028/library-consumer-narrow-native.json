@@ -1,0 +1,14 @@
+{
+  "main": {
+    "clientWidth": 390,
+    "scrollWidth": 390,
+    "width": 390.3999938964844
+  },
+  "filename": {
+    "height": 44,
+    "textOverflow": "ellipsis",
+    "title": "foundation-supplied-image-with-a-deliberately-long-filename-for-layout-and-accessible-title-verification.png",
+    "whiteSpace": "nowrap",
+    "width": 273.8125
+  }
+}

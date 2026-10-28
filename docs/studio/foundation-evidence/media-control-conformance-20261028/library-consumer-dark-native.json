@@ -1,0 +1,21 @@
+{
+  "supply": {
+    "background": "rgb(17, 24, 39)",
+    "border": "rgb(71, 85, 105)",
+    "color": "rgb(249, 250, 251)",
+    "font": "500 14px / 18px system-ui, sans-serif",
+    "height": 32,
+    "radius": "16px",
+    "studioAncestor": false
+  },
+  "help": {
+    "color": "rgb(203, 213, 225)",
+    "font": "13px / 19.5px system-ui, sans-serif"
+  },
+  "main": {
+    "background": "rgb(17, 24, 39)",
+    "clientWidth": 1229,
+    "color": "rgb(249, 250, 251)",
+    "scrollWidth": 1229
+  }
+}

@@ -1,0 +1,45 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View" [active]
+    - menuitem "Preview"
+  - generic "Foundation Library Consumer"
+  - generic: ● Unsaved changes
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- main:
+  - button "Toggle Chat drawer":
+  - group "Workspace mode":
+    - button "Design"
+    - button "Interact" [pressed]
+    - button "Structure"
+  - button "Toggle Document and Selection drawer":
+  - iframe:
+    - generic "Screen canvas":
+      - main "Foundation Library Consumer":
+        - heading "Media library consumer" [level=2]:
+          - generic: Media library consumer
+        - region "Consumer media library":
+          - button "Supply media"
+          - button "Import media archive"
+          - button "Export media archive"
+          - paragraph: Media stays in this browser and application namespace. Export an archive to carry its bytes with saved source.
+          - list:
+            - button "foundation-supplied-image-with-a-deliberately-long-filename-for-layout-and-accessible-title-verification.png"
+            - generic: image/png · 8 KB
+            - button "Remove stored asset foundation-supplied-image-with-a-deliberately-long-filename-for-layout-and-accessible-title-verification.png": Remove
+            - button "synthetic-poster.png"
+            - generic: image/png · 1 KB
+            - button "Remove stored asset synthetic-poster.png": Remove
+        - paragraph:
+          - generic: "Selected managed reference:"
+        - paragraph:
+          - generic: asset:sha256:5c3afc101e908624396dd99b1c37503f41b8b2accd68a320d9ac75cc57af6978
+- contentinfo:
+  - status: Register supplied media · unsaved
+- generic: Designer — VICT Studio

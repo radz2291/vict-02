@@ -1,0 +1,237 @@
+{
+  "schema": "vict.ui-document@1",
+  "id": "screen-eff5501d-f0d5-4318-8e24-b9d3fc5a1d71",
+  "revision": "r1.r2",
+  "root": "screen",
+  "nodes": {
+    "screen": {
+      "kind": "element",
+      "id": "screen",
+      "tag": "main",
+      "attributes": {
+        "aria-label": "Foundation Library Consumer"
+      },
+      "children": [
+        "consumer-heading",
+        "consumer-library",
+        "selected-label",
+        "selected-value"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "20px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "16px"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "100dvh"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "var(--vict-color-surface)"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "var(--vict-color-text)"
+          }
+        },
+        {
+          "property": "font-family",
+          "value": {
+            "type": "text",
+            "value": "system-ui, sans-serif"
+          }
+        }
+      ]
+    },
+    "consumer-heading": {
+      "kind": "element",
+      "id": "consumer-heading",
+      "tag": "h2",
+      "children": [
+        "consumer-title"
+      ]
+    },
+    "consumer-title": {
+      "kind": "text",
+      "id": "consumer-title",
+      "content": {
+        "type": "literal",
+        "value": "Media library consumer"
+      }
+    },
+    "consumer-library": {
+      "kind": "component",
+      "id": "consumer-library",
+      "definitionId": "vict.media.asset-library",
+      "revision": "1",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Consumer media library"
+        }
+      },
+      "outputs": {
+        "selectedAsset": {
+          "setState": {
+            "key": "pickedAsset"
+          }
+        }
+      },
+      "slots": {}
+    },
+    "selected-label": {
+      "kind": "element",
+      "id": "selected-label",
+      "tag": "p",
+      "children": [
+        "selected-label-text"
+      ]
+    },
+    "selected-label-text": {
+      "kind": "text",
+      "id": "selected-label-text",
+      "content": {
+        "type": "literal",
+        "value": "Selected managed reference:"
+      }
+    },
+    "selected-value": {
+      "kind": "element",
+      "id": "selected-value",
+      "tag": "p",
+      "children": [
+        "selected-value-text"
+      ],
+      "localStyle": [
+        {
+          "property": "overflow-wrap",
+          "value": {
+            "type": "text",
+            "value": "anywhere"
+          }
+        }
+      ]
+    },
+    "selected-value-text": {
+      "kind": "text",
+      "id": "selected-value-text",
+      "content": {
+        "type": "expression",
+        "expression": {
+          "type": "ref",
+          "path": "state.pickedAsset"
+        }
+      }
+    }
+  },
+  "componentDefinitions": {},
+  "styleSources": {},
+  "assets": {
+    "foundation-supplied-image-with-a-deliberately-long-filename--5c3afc101e90": {
+      "id": "foundation-supplied-image-with-a-deliberately-long-filename--5c3afc101e90",
+      "kind": "digest",
+      "digest": "5c3afc101e908624396dd99b1c37503f41b8b2accd68a320d9ac75cc57af6978"
+    },
+    "synthetic-poster.png-9a2af942bb0f": {
+      "id": "synthetic-poster.png-9a2af942bb0f",
+      "kind": "digest",
+      "digest": "9a2af942bb0fe1ab83336c068f3e8646ca8247ab31aa26dcc7ed52b45b2ca74c"
+    }
+  },
+  "tokens": {},
+  "conditions": {
+    "compact": {
+      "id": "compact",
+      "kind": "container",
+      "name": "studio-screen",
+      "query": "(max-width: 600px)"
+    }
+  },
+  "localState": {
+    "message": {
+      "key": "message",
+      "type": "string",
+      "initial": "Hello from my screen"
+    },
+    "accepted": {
+      "key": "accepted",
+      "type": "boolean",
+      "initial": false
+    },
+    "dialogOpen": {
+      "key": "dialogOpen",
+      "type": "boolean",
+      "initial": false
+    },
+    "busy": {
+      "key": "busy",
+      "type": "boolean",
+      "initial": false
+    },
+    "actionError": {
+      "key": "actionError",
+      "type": "string",
+      "initial": ""
+    },
+    "actionResult": {
+      "key": "actionResult",
+      "type": "string",
+      "initial": ""
+    },
+    "pickedAsset": {
+      "key": "pickedAsset",
+      "type": "string",
+      "initial": ""
+    }
+  },
+  "theme": {
+    "schema": "vict.ui-theme@1",
+    "roles": {
+      "surface": "#ffffff",
+      "text": "#0f172a",
+      "textMuted": "#475569",
+      "border": "#cbd5e1",
+      "accent": "#0369a1",
+      "accentText": "#ffffff",
+      "highlight": "#e0f2fe",
+      "highlightText": "#0c4a6e",
+      "focusRing": "#0284c7",
+      "disabledSurface": "#f1f5f9",
+      "disabledText": "#64748b",
+      "elevation": "0 10px 24px rgba(15,23,42,0.12)"
+    }
+  }
+}

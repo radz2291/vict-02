@@ -1,0 +1,19 @@
+{
+  "selectBefore": {
+    "font": "12px system-ui, \"Segoe UI\", sans-serif",
+    "height": 28,
+    "minHeight": "28px",
+    "radius": "4px",
+    "value": "source"
+  },
+  "blankSelect": {
+    "value": "",
+    "useEnabled": false
+  },
+  "useEnabled": true,
+  "sourceAfter": "asset:sha256:5c3afc101e908624396dd99b1c37503f41b8b2accd68a320d9ac75cc57af6978",
+  "notice": [
+    "Imported 1 asset.",
+    "Media attached as source. Save to retain this source reference; loading and playback still need checking."
+  ]
+}

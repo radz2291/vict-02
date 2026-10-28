@@ -1,0 +1,16 @@
+{
+  "narrowPanel": {
+    "clientWidth": 279,
+    "scrollWidth": 279,
+    "width": 280
+  },
+  "narrowName": {
+    "clientWidth": 170,
+    "height": 28,
+    "scrollWidth": 596,
+    "textOverflow": "ellipsis",
+    "title": "foundation-supplied-image-with-a-deliberately-long-filename-for-layout-and-accessible-title-verification.png",
+    "whiteSpace": "nowrap",
+    "width": 171.90000915527344
+  }
+}
