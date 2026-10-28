@@ -1,0 +1,13 @@
+{
+  "candidate": "9b2f793721a31babf2596603c6328a355f118131",
+  "forcedBackgroundNotesFocus": {
+    "active": "<div class=\"vict-drawer-panel uv-27b057e1-projectDrawer-part-320e00e73a\" data-ui-owner=\"c38\" data-ui-node=\"projectDrawer\" data-ui-occ=\"screen-9bace222-383d-4579-a0ea-bd7a7112f1bd|projectDrawer|deskTabs@vict.catalog.tabs|panelProjects@vict.catalog.tabs-panel\" data-ui-part=\"panel\" data-side=\"right\" aria-label=\"Project details\" aria-labelledby=\"c50-title\" id=\"c50\" role=\"dialog\" tabindex=\"-1\" data-dia",
+    "connected": true,
+    "containsFocus": true,
+    "selectedTabs": [
+      "Projects"
+    ]
+  },
+  "driver": "Notes press action failed to focus blocked background; no repeated action",
+  "independentProbe": "25 cases pass"
+}

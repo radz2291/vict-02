@@ -1,0 +1,31 @@
+{
+  "SourceCandidate": "9b2f793721a31babf2596603c6328a355f118131",
+  "OutputFiles": 306,
+  "InstalledHashMismatches": 0,
+  "Backup": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-studio-build-9b2f793\\pre-install-live-build-20261028T162736983Z",
+  "StoppedChild": 19444,
+  "StoppedLauncher": 3988,
+  "Started": {
+    "LauncherPid": 16212,
+    "Address": "http://127.0.0.25:5626",
+    "Model": "zai/glm-5.3-flash",
+    "Configuration": "existing launch-agent.mjs loader",
+    "Verification": "Check the listener and supported internal browser; a PID alone is not reachability proof."
+  },
+  "ProviderRequestsDuringInstall": 0,
+  "BrowserVerification": {
+    "ExistingNormalLogin": true,
+    "DesignerReached": true,
+    "SavedManualMarkerRetained": true,
+    "ForcedBackgroundTabFocusBlocked": true,
+    "ProjectsDrawerRetainsFocus": true,
+    "ErrorLogBytes": 0
+  },
+  "BuildEvidence": {
+    "Stage": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-studio-build-9b2f793",
+    "ManifestSHA256": "db5e62dbd6770d97656d5401eeab6a9d5424816bc517250a99312961660972fc",
+    "SourceInputSHA256": "ab2fc44bc96f1fe6e1cc06abfb7dbcff1e61493f357d9f9ed9184ff227357e6d",
+    "SandboxBuildExit": 1,
+    "ApprovedBuildExit": 0
+  }
+}

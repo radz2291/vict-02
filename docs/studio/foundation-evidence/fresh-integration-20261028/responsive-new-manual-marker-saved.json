@@ -1,0 +1,1604 @@
+{
+  "schema": "vict.ui-document@1",
+  "id": "screen-9bace222-383d-4579-a0ea-bd7a7112f1bd",
+  "revision": "r1.r2",
+  "root": "screen",
+  "nodes": {
+    "screen": {
+      "kind": "element",
+      "id": "screen",
+      "tag": "main",
+      "attributes": {
+        "aria-label": "Foundation Responsive Desk"
+      },
+      "children": [
+        "topbar",
+        "welcomeVisit",
+        "deskTabs"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "16px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "28px"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "560px"
+          }
+        },
+        {
+          "property": "font-family",
+          "value": {
+            "type": "text",
+            "value": "system-ui, sans-serif"
+          }
+        },
+        {
+          "property": "margin-inline",
+          "value": {
+            "type": "text",
+            "value": "auto"
+          }
+        },
+        {
+          "property": "max-width",
+          "value": {
+            "type": "text",
+            "value": "1080px"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#f7f5f0"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#243047"
+          }
+        }
+      ],
+      "styleSources": [
+        "src.screen.compact.plain"
+      ]
+    },
+    "topbar": {
+      "kind": "element",
+      "id": "topbar",
+      "tag": "header",
+      "children": [
+        "brandTitle",
+        "deskNav"
+      ],
+      "attributes": {
+        "aria-label": "Desk header"
+      },
+      "localStyle": [
+        {
+          "property": "align-items",
+          "value": {
+            "type": "text",
+            "value": "center"
+          }
+        },
+        {
+          "property": "border-bottom",
+          "value": {
+            "type": "text",
+            "value": "1px solid #ddd5c7"
+          }
+        },
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-wrap",
+          "value": {
+            "type": "text",
+            "value": "wrap"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "justify-content",
+          "value": {
+            "type": "text",
+            "value": "space-between"
+          }
+        },
+        {
+          "property": "padding-bottom",
+          "value": {
+            "type": "text",
+            "value": "10px"
+          }
+        }
+      ]
+    },
+    "brandTitle": {
+      "kind": "element",
+      "id": "brandTitle",
+      "tag": "h1",
+      "children": [
+        "brandTitle-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "24px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.2"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "letter-spacing",
+          "value": {
+            "type": "text",
+            "value": "-0.01em"
+          }
+        }
+      ],
+      "styleSources": [
+        "src.brandTitle.compact.plain"
+      ]
+    },
+    "brandTitle-text": {
+      "kind": "text",
+      "id": "brandTitle-text",
+      "content": {
+        "type": "literal",
+        "value": "Foundation Responsive Desk"
+      }
+    },
+    "deskNav": {
+      "kind": "component",
+      "id": "deskNav",
+      "definitionId": "vict.pattern.navigation",
+      "revision": "2",
+      "slots": {},
+      "props": {
+        "icons": {
+          "type": "ref",
+          "path": "state.catalog_deskNav_icons"
+        },
+        "items": {
+          "type": "ref",
+          "path": "state.catalog_deskNav_items"
+        },
+        "label": {
+          "type": "literal",
+          "value": "Desk navigation"
+        },
+        "menuIcon": {
+          "type": "literal",
+          "value": "menu"
+        },
+        "menuLabel": {
+          "type": "literal",
+          "value": "Desk menu"
+        },
+        "values": {
+          "type": "ref",
+          "path": "state.catalog_deskNav_values"
+        },
+        "selected": {
+          "type": "ref",
+          "path": "state.activeSection"
+        }
+      },
+      "outputs": {
+        "activate": {
+          "setState": {
+            "key": "activeSection"
+          }
+        }
+      },
+      "partStyles": {
+        "trigger": {
+          "localStyle": [
+            {
+              "property": "height",
+              "value": {
+                "type": "text",
+                "value": "40px"
+              }
+            },
+            {
+              "property": "width",
+              "value": {
+                "type": "text",
+                "value": "44px"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "deskTabs": {
+      "kind": "component",
+      "id": "deskTabs",
+      "definitionId": "vict.catalog.tabs",
+      "revision": "1",
+      "slots": {
+        "tabs": {
+          "name": "tabs",
+          "children": [
+            "triggerProjects",
+            "triggerNotes"
+          ]
+        },
+        "panels": {
+          "name": "panels",
+          "children": [
+            "panelProjects",
+            "panelNotes"
+          ]
+        }
+      },
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Desk sections"
+        },
+        "value": {
+          "type": "ref",
+          "path": "state.activeSection"
+        }
+      },
+      "outputs": {
+        "valueChange": {
+          "setState": {
+            "key": "activeSection"
+          }
+        }
+      }
+    },
+    "triggerProjects": {
+      "kind": "component",
+      "id": "triggerProjects",
+      "definitionId": "vict.catalog.tabs-trigger",
+      "revision": "1",
+      "slots": {},
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Projects"
+        },
+        "value": {
+          "type": "literal",
+          "value": "projects"
+        }
+      }
+    },
+    "triggerNotes": {
+      "kind": "component",
+      "id": "triggerNotes",
+      "definitionId": "vict.catalog.tabs-trigger",
+      "revision": "1",
+      "slots": {},
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Notes"
+        },
+        "value": {
+          "type": "literal",
+          "value": "notes"
+        }
+      }
+    },
+    "panelProjects": {
+      "kind": "component",
+      "id": "panelProjects",
+      "definitionId": "vict.catalog.tabs-panel",
+      "revision": "1",
+      "slots": {
+        "content": {
+          "name": "content",
+          "children": [
+            "projectsSection"
+          ]
+        }
+      },
+      "props": {
+        "value": {
+          "type": "literal",
+          "value": "projects"
+        }
+      }
+    },
+    "panelNotes": {
+      "kind": "component",
+      "id": "panelNotes",
+      "definitionId": "vict.catalog.tabs-panel",
+      "revision": "1",
+      "slots": {
+        "content": {
+          "name": "content",
+          "children": [
+            "notesSection"
+          ]
+        }
+      },
+      "props": {
+        "value": {
+          "type": "literal",
+          "value": "notes"
+        }
+      }
+    },
+    "projectsSection": {
+      "kind": "element",
+      "id": "projectsSection",
+      "tag": "section",
+      "children": [
+        "projectsHeading",
+        "filterGroup",
+        "projectList",
+        "projectDrawer"
+      ],
+      "attributes": {
+        "aria-label": "Projects section"
+      },
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        }
+      ]
+    },
+    "notesSection": {
+      "kind": "element",
+      "id": "notesSection",
+      "tag": "section",
+      "children": [
+        "notesHeading",
+        "noteLabel",
+        "notesInput",
+        "notesHint"
+      ],
+      "attributes": {
+        "aria-label": "Notes section"
+      },
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        }
+      ]
+    },
+    "projectsHeading": {
+      "kind": "element",
+      "id": "projectsHeading",
+      "tag": "h2",
+      "children": [
+        "projectsHeading-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "19px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.2"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        }
+      ]
+    },
+    "projectsHeading-text": {
+      "kind": "text",
+      "id": "projectsHeading-text",
+      "content": {
+        "type": "literal",
+        "value": "Projects"
+      }
+    },
+    "filterGroup": {
+      "kind": "component",
+      "id": "filterGroup",
+      "definitionId": "vict.catalog.toggle-group",
+      "revision": "1",
+      "slots": {
+        "items": {
+          "name": "items",
+          "children": [
+            "filterAll",
+            "filterDraft",
+            "filterReady"
+          ]
+        }
+      },
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Filter projects by status"
+        },
+        "value": {
+          "type": "ref",
+          "path": "state.filterValue"
+        }
+      },
+      "outputs": {
+        "valueChange": {
+          "setState": {
+            "key": "filterValue"
+          }
+        }
+      }
+    },
+    "filterAll": {
+      "kind": "component",
+      "id": "filterAll",
+      "definitionId": "vict.catalog.toggle-group-item",
+      "revision": "1",
+      "slots": {},
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "All"
+        },
+        "value": {
+          "type": "literal",
+          "value": "—"
+        }
+      }
+    },
+    "filterDraft": {
+      "kind": "component",
+      "id": "filterDraft",
+      "definitionId": "vict.catalog.toggle-group-item",
+      "revision": "1",
+      "slots": {},
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Draft"
+        },
+        "value": {
+          "type": "literal",
+          "value": "draft"
+        }
+      }
+    },
+    "filterReady": {
+      "kind": "component",
+      "id": "filterReady",
+      "definitionId": "vict.catalog.toggle-group-item",
+      "revision": "1",
+      "slots": {},
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Ready"
+        },
+        "value": {
+          "type": "literal",
+          "value": "ready"
+        }
+      }
+    },
+    "projectList": {
+      "kind": "component",
+      "id": "projectList",
+      "definitionId": "vict.pattern.filtered-list",
+      "revision": "2",
+      "slots": {},
+      "props": {
+        "emptyLabel": {
+          "type": "literal",
+          "value": "No projects match this filter"
+        },
+        "items": {
+          "type": "ref",
+          "path": "state.catalog_projectList_items"
+        },
+        "label": {
+          "type": "literal",
+          "value": "Projects"
+        },
+        "searchLabel": {
+          "type": "literal",
+          "value": "Search projects"
+        },
+        "query": {
+          "type": "ref",
+          "path": "state.filterValue"
+        }
+      },
+      "outputs": {
+        "queryChange": {
+          "setState": {
+            "key": "filterValue"
+          }
+        },
+        "itemActivate": {
+          "setState": {
+            "key": "selectedProject"
+          }
+        }
+      }
+    },
+    "projectDrawer": {
+      "kind": "component",
+      "id": "projectDrawer",
+      "definitionId": "vict.pattern.drawer",
+      "revision": "1",
+      "slots": {
+        "body": {
+          "name": "body",
+          "children": [
+            "drawerBody"
+          ]
+        }
+      },
+      "props": {
+        "dismissible": {
+          "type": "literal",
+          "value": true
+        },
+        "side": {
+          "type": "literal",
+          "value": "right"
+        },
+        "size": {
+          "type": "literal",
+          "value": 340
+        },
+        "title": {
+          "type": "literal",
+          "value": "Project details"
+        },
+        "triggerLabel": {
+          "type": "literal",
+          "value": "Open project details"
+        },
+        "open": {
+          "type": "ref",
+          "path": "state.drawerOpen"
+        }
+      },
+      "outputs": {
+        "openChange": {
+          "setState": {
+            "key": "drawerOpen"
+          }
+        }
+      },
+      "partStyles": {
+        "panel": {
+          "localStyle": [
+            {
+              "property": "max-width",
+              "value": {
+                "type": "text",
+                "value": "calc(100% - 40px)"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "drawerBody": {
+      "kind": "element",
+      "id": "drawerBody",
+      "tag": "section",
+      "children": [
+        "drawerHint",
+        "drawerSelectedValueText"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "10px"
+          }
+        }
+      ]
+    },
+    "drawerHint": {
+      "kind": "element",
+      "id": "drawerHint",
+      "tag": "p",
+      "children": [
+        "drawerHint-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "16px"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.6"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#5f6b80"
+          }
+        }
+      ]
+    },
+    "drawerHint-text": {
+      "kind": "text",
+      "id": "drawerHint-text",
+      "content": {
+        "type": "literal",
+        "value": "Status and next steps for the selected project."
+      }
+    },
+    "drawerSelectedValueText": {
+      "kind": "text",
+      "id": "drawerSelectedValueText",
+      "content": {
+        "type": "expression",
+        "expression": {
+          "type": "ref",
+          "path": "state.selectedProject"
+        }
+      }
+    },
+    "notesHeading": {
+      "kind": "element",
+      "id": "notesHeading",
+      "tag": "h2",
+      "children": [
+        "notesHeading-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "19px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.2"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        }
+      ]
+    },
+    "notesHeading-text": {
+      "kind": "text",
+      "id": "notesHeading-text",
+      "content": {
+        "type": "literal",
+        "value": "Notes"
+      }
+    },
+    "noteLabel": {
+      "kind": "element",
+      "id": "noteLabel",
+      "tag": "label",
+      "children": [
+        "noteLabelText"
+      ],
+      "attributes": {
+        "for": "notesInput"
+      },
+      "localStyle": [
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        }
+      ]
+    },
+    "noteLabelText": {
+      "kind": "text",
+      "id": "noteLabelText",
+      "content": {
+        "type": "literal",
+        "value": "Project note draft"
+      }
+    },
+    "notesInput": {
+      "kind": "element",
+      "id": "notesInput",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Project note draft",
+        "id": "notesInput",
+        "placeholder": "Jot a note about the selected project…",
+        "type": "text",
+        "value": {
+          "type": "ref",
+          "path": "state.notesDraft"
+        }
+      },
+      "localStyle": [
+        {
+          "property": "background",
+          "value": {
+            "type": "text",
+            "value": "#ffffff"
+          }
+        },
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "1px solid #ddd5c7"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "8px"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        },
+        {
+          "property": "max-width",
+          "value": {
+            "type": "text",
+            "value": "460px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "10px 12px"
+          }
+        },
+        {
+          "property": "width",
+          "value": {
+            "type": "text",
+            "value": "100%"
+          }
+        }
+      ],
+      "interactions": [
+        {
+          "on": "change",
+          "action": "setState",
+          "key": "notesDraft",
+          "value": {
+            "type": "ref",
+            "path": "state.notesDraft"
+          }
+        }
+      ]
+    },
+    "notesHint": {
+      "kind": "element",
+      "id": "notesHint",
+      "tag": "p",
+      "children": [
+        "notesHint-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "16px"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.6"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#5f6b80"
+          }
+        }
+      ]
+    },
+    "notesHint-text": {
+      "kind": "text",
+      "id": "notesHint-text",
+      "content": {
+        "type": "literal",
+        "value": "Your draft stays while you switch sections, open the details drawer or resize the preview. Manual context marker: desk-owner-keep-20261028."
+      }
+    },
+    "welcomeVisit": {
+      "kind": "component",
+      "id": "welcomeVisit",
+      "definitionId": "vict.pattern.first-visit",
+      "revision": "1",
+      "slots": {
+        "body": {
+          "name": "body",
+          "children": [
+            "welcomeBody"
+          ]
+        }
+      },
+      "props": {
+        "allowReopen": {
+          "type": "literal",
+          "value": true
+        },
+        "applicationId": {
+          "type": "literal",
+          "value": "foundation-responsive-desk"
+        },
+        "campaignId": {
+          "type": "literal",
+          "value": "foundation-responsive-20261028-r1"
+        },
+        "dismissLabel": {
+          "type": "literal",
+          "value": "Got it"
+        },
+        "reopenLabel": {
+          "type": "literal",
+          "value": "Reopen welcome"
+        },
+        "resetKey": {
+          "type": "ref",
+          "path": "state.welcomeReset"
+        }
+      }
+    },
+    "welcomeBody": {
+      "kind": "element",
+      "id": "welcomeBody",
+      "tag": "section",
+      "children": [
+        "welcomeHeading",
+        "welcomeIntro",
+        "tipsCarousel",
+        "citationRow",
+        "welcomeResetGroup",
+        "resetHint"
+      ],
+      "localStyle": [
+        {
+          "property": "background",
+          "value": {
+            "type": "text",
+            "value": "#fffdf7"
+          }
+        },
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "1px solid #ddd5c7"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "18px"
+          }
+        }
+      ],
+      "styleSources": [
+        "src.welcomeBody.compact.plain"
+      ]
+    },
+    "welcomeHeading": {
+      "kind": "element",
+      "id": "welcomeHeading",
+      "tag": "h2",
+      "children": [
+        "welcomeHeading-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "18px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.2"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        }
+      ]
+    },
+    "welcomeHeading-text": {
+      "kind": "text",
+      "id": "welcomeHeading-text",
+      "content": {
+        "type": "literal",
+        "value": "Welcome to your desk"
+      }
+    },
+    "welcomeIntro": {
+      "kind": "element",
+      "id": "welcomeIntro",
+      "tag": "p",
+      "children": [
+        "welcomeIntro-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "16px"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.6"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#5f6b80"
+          }
+        }
+      ]
+    },
+    "welcomeIntro-text": {
+      "kind": "text",
+      "id": "welcomeIntro-text",
+      "content": {
+        "type": "literal",
+        "value": "A small working desk — switch Projects and Notes, filter by status, keep your note draft. Three quick tips:"
+      }
+    },
+    "tipsCarousel": {
+      "kind": "component",
+      "id": "tipsCarousel",
+      "definitionId": "vict.pattern.carousel",
+      "revision": "2",
+      "slots": {},
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Three tips for this desk"
+        },
+        "loop": {
+          "type": "literal",
+          "value": false
+        },
+        "slides": {
+          "type": "ref",
+          "path": "state.catalog_tipsCarousel_slides"
+        },
+        "index": {
+          "type": "ref",
+          "path": "state.tipIndex"
+        }
+      },
+      "outputs": {
+        "indexChange": {
+          "setState": {
+            "key": "tipIndex"
+          }
+        }
+      }
+    },
+    "citationRow": {
+      "kind": "element",
+      "id": "citationRow",
+      "tag": "div",
+      "children": [
+        "citationLabel",
+        "designCitation"
+      ],
+      "localStyle": [
+        {
+          "property": "align-items",
+          "value": {
+            "type": "text",
+            "value": "center"
+          }
+        },
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-wrap",
+          "value": {
+            "type": "text",
+            "value": "wrap"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "8px"
+          }
+        }
+      ]
+    },
+    "citationLabel": {
+      "kind": "element",
+      "id": "citationLabel",
+      "tag": "p",
+      "children": [
+        "citationLabel-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "16px"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.6"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#5f6b80"
+          }
+        }
+      ]
+    },
+    "citationLabel-text": {
+      "kind": "text",
+      "id": "citationLabel-text",
+      "content": {
+        "type": "literal",
+        "value": "Design reference:"
+      }
+    },
+    "designCitation": {
+      "kind": "component",
+      "id": "designCitation",
+      "definitionId": "vict.ai.inline-citation",
+      "revision": "1",
+      "slots": {},
+      "props": {
+        "data": {
+          "type": "literal",
+          "value": "{\"version\":1,\"source\":{\"id\":\"design-notes\",\"title\":\"Foundation design notes\",\"url\":\"https://example.com/design-notes\",\"excerpt\":\"Supplied demonstration citation for this authoring challenge; no retrieval was performed.\"}}"
+        }
+      }
+    },
+    "welcomeResetGroup": {
+      "kind": "component",
+      "id": "welcomeResetGroup",
+      "definitionId": "vict.catalog.toggle-group",
+      "revision": "1",
+      "slots": {
+        "items": {
+          "name": "items",
+          "children": [
+            "resetKeepHidden",
+            "resetReplay"
+          ]
+        }
+      },
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Welcome campaign reset"
+        },
+        "value": {
+          "type": "ref",
+          "path": "state.welcomeReset"
+        }
+      },
+      "outputs": {
+        "valueChange": {
+          "setState": {
+            "key": "welcomeReset"
+          }
+        }
+      }
+    },
+    "resetKeepHidden": {
+      "kind": "component",
+      "id": "resetKeepHidden",
+      "definitionId": "vict.catalog.toggle-group-item",
+      "revision": "1",
+      "slots": {},
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Keep hidden"
+        },
+        "value": {
+          "type": "literal",
+          "value": "r1"
+        }
+      }
+    },
+    "resetReplay": {
+      "kind": "component",
+      "id": "resetReplay",
+      "definitionId": "vict.catalog.toggle-group-item",
+      "revision": "1",
+      "slots": {},
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Replay welcome"
+        },
+        "value": {
+          "type": "literal",
+          "value": "r2"
+        }
+      }
+    },
+    "resetHint": {
+      "kind": "element",
+      "id": "resetHint",
+      "tag": "p",
+      "children": [
+        "resetHint-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "13px"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.6"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#5f6b80"
+          }
+        }
+      ]
+    },
+    "resetHint-text": {
+      "kind": "text",
+      "id": "resetHint-text",
+      "content": {
+        "type": "literal",
+        "value": "Replay welcome only re-shows campaign foundation-responsive-20261028-r1 for this app; no other app or global storage is cleared."
+      }
+    }
+  },
+  "componentDefinitions": {},
+  "styleSources": {
+    "src.screen.compact.plain": {
+      "id": "src.screen.compact.plain",
+      "declarations": [
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "16px"
+          }
+        }
+      ],
+      "conditionId": "compact"
+    },
+    "src.brandTitle.compact.plain": {
+      "id": "src.brandTitle.compact.plain",
+      "declarations": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "20px"
+          }
+        }
+      ],
+      "conditionId": "compact"
+    },
+    "src.welcomeBody.compact.plain": {
+      "id": "src.welcomeBody.compact.plain",
+      "declarations": [
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        }
+      ],
+      "conditionId": "compact"
+    }
+  },
+  "assets": {},
+  "tokens": {},
+  "conditions": {
+    "compact": {
+      "id": "compact",
+      "kind": "container",
+      "name": "studio-screen",
+      "query": "(max-width: 600px)"
+    }
+  },
+  "localState": {
+    "message": {
+      "key": "message",
+      "type": "string",
+      "initial": "Hello from my screen"
+    },
+    "accepted": {
+      "key": "accepted",
+      "type": "boolean",
+      "initial": false
+    },
+    "dialogOpen": {
+      "key": "dialogOpen",
+      "type": "boolean",
+      "initial": false
+    },
+    "busy": {
+      "key": "busy",
+      "type": "boolean",
+      "initial": false
+    },
+    "actionError": {
+      "key": "actionError",
+      "type": "string",
+      "initial": ""
+    },
+    "actionResult": {
+      "key": "actionResult",
+      "type": "string",
+      "initial": ""
+    },
+    "activeSection": {
+      "key": "activeSection",
+      "type": "string",
+      "initial": "projects"
+    },
+    "projectFilter": {
+      "key": "projectFilter",
+      "type": "string",
+      "initial": " "
+    },
+    "selectedProject": {
+      "key": "selectedProject",
+      "type": "string",
+      "initial": ""
+    },
+    "drawerOpen": {
+      "key": "drawerOpen",
+      "type": "boolean",
+      "initial": false
+    },
+    "notesDraft": {
+      "key": "notesDraft",
+      "type": "string",
+      "initial": ""
+    },
+    "tipIndex": {
+      "key": "tipIndex",
+      "type": "number",
+      "initial": 0
+    },
+    "welcomeReset": {
+      "key": "welcomeReset",
+      "type": "string",
+      "initial": "r1"
+    },
+    "catalog_deskNav_icons": {
+      "key": "catalog_deskNav_icons",
+      "type": "stringList",
+      "initial": [
+        "folder",
+        "pencil"
+      ]
+    },
+    "catalog_deskNav_items": {
+      "key": "catalog_deskNav_items",
+      "type": "stringList",
+      "initial": [
+        "Projects",
+        "Notes"
+      ]
+    },
+    "catalog_deskNav_values": {
+      "key": "catalog_deskNav_values",
+      "type": "stringList",
+      "initial": [
+        "projects",
+        "notes"
+      ]
+    },
+    "catalog_projectList_items": {
+      "key": "catalog_projectList_items",
+      "type": "stringList",
+      "initial": [
+        "Aster — Draft",
+        "Birch — Ready",
+        "Cedar — Draft"
+      ]
+    },
+    "filterValue": {
+      "key": "filterValue",
+      "type": "string",
+      "initial": "—"
+    },
+    "catalog_tipsCarousel_slides": {
+      "key": "catalog_tipsCarousel_slides",
+      "type": "stringList",
+      "initial": [
+        "Tip 1 · Filter projects with All, Draft or Ready — the list updates instantly.",
+        "Tip 2 · Pick a project, then open its details in the drawer; your note draft is safe.",
+        "Tip 3 · Resize the preview: the navigation adapts and nothing overflows at 390px."
+      ]
+    }
+  },
+  "theme": {
+    "schema": "vict.ui-theme@1",
+    "roles": {
+      "surface": "#f7f5f0",
+      "text": "#243047",
+      "textMuted": "#5f6b80",
+      "border": "#ddd5c7",
+      "accent": "#4f46e5",
+      "accentText": "#ffffff",
+      "highlight": "#fdf1d6",
+      "highlightText": "#713f12"
+    }
+  }
+}
