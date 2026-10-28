@@ -1,0 +1,411 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/packages/ui-ai-svelte
+
+10:37:29 pm [vite-plugin-svelte] packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+10:37:30 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:311:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+10:37:30 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:311:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+10:37:30 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:381:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+10:37:30 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:381:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+ Γ¥» test/passive-hovercard-isolation.svelte.test.ts (8 tests | 6 failed) 4980ms
+     ├ù does not consume sibling Escape, steal sibling focus or dismiss its unrelated popup 168ms
+     ├ù removes the open popup when its actual source becomes hidden 1072ms
+     ├ù removes the open popup when its actual source is detached 1079ms
+     ├ù does not consume sibling Escape, steal sibling focus or dismiss its unrelated popup 66ms
+     ├ù removes the open popup when its actual source becomes hidden 1070ms
+     ├ù removes the open popup when its actual source is detached 1081ms
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ» Failed Tests 6 ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»
+
+ FAIL  test/passive-hovercard-isolation.svelte.test.ts > AI hovercard ownership, citation=false > does not consume sibling Escape, steal sibling focus or dismiss its unrelated popup
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ Γ¥» test/passive-hovercard-isolation.svelte.test.ts:36:42
+     34|     const escape = new KeyboardEvent('keydown', {key: 'Escape', bubbleΓÇª
+     35|     outside.dispatchEvent(escape); await settle();
+     36|     expect.soft(escape.defaultPrevented).toBe(false);
+       |                                          ^
+     37|     expect.soft(document.activeElement).toBe(outside);
+     38|     expect.soft(app.querySelector('[data-ui-part="popup"]')).not.toBeNΓÇª
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[1/6]ΓÄ»
+
+ FAIL  test/passive-hovercard-isolation.svelte.test.ts > AI hovercard ownership, citation=false > removes the open popup when its actual source becomes hidden
+AssertionError: expected <div forcemount="false" ΓÇª(12)>ΓÇª(3)</div> to be null
+
+- Expected:
+null
+
++ Received:
+<div
+  class="data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/5 dark:ring-foreground/10 bg-popover text-popover-foreground rounded-3xl p-4 text-sm shadow-lg ring-1 duration-100 z-50 origin-(--bits-link-preview-content-transform-origin) outline-hidden flex w-64 flex-col gap-3 subject-popup"
+  data-align="center"
+  data-link-preview-content=""
+  data-side="bottom"
+  data-slot="hover-card-content"
+  data-state="open"
+  data-ui-occ="activity"
+  data-ui-owner="subject"
+  data-ui-part="popup"
+  forcemount="false"
+  id="bits-c11"
+  style="pointer-events: auto; --bits-link-preview-content-transform-origin: var(--bits-floating-transform-origin); --bits-link-preview-content-available-width: var(--bits-floating-available-width); --bits-link-preview-content-available-height: var(--bits-floating-available-height); --bits-link-preview-anchor-width: var(--bits-floating-anchor-width); --bits-link-preview-anchor-height: var(--bits-floating-anchor-height); --public-popup: 1;"
+  tabindex="-1"
+>
+  <div
+    class="flex items-center justify-between gap-3 text-sm"
+  >
+    <span
+      class="font-medium subject-title"
+      data-ui-occ="activity"
+      data-ui-owner="subject"
+      data-ui-part="title"
+    >
+      Context
+    </span>
+     
+    <span
+      class="text-muted-foreground subject-usage"
+      data-ui-occ="activity"
+      data-ui-owner="subject"
+      data-ui-part="usage"
+    >
+      3 / 10
+    </span>
+  </div>
+   
+  <!---->
+  <!---->
+  <div
+    aria-label="Context used"
+    aria-valuemax="100"
+    aria-valuemin="0"
+    aria-valuenow="30"
+    class="bg-muted h-2 rounded-2xl relative flex w-full items-center overflow-x-hidden subject-progress"
+    data-max="100"
+    data-min="0"
+    data-progress-root=""
+    data-slot="progress"
+    data-state="loading"
+    data-ui-occ="activity"
+    data-ui-owner="subject"
+    data-ui-part="progress"
+    data-value="30"
+    role="progressbar"
+  >
+    <div
+      class="bg-primary size-full flex-1 transition-all"
+      data-slot="progress-indicator"
+      style="transform: translateX(-70%);"
+    />
+    <!---->
+  </div>
+  
+  
+  <!---->
+   
+  <div
+    class="flex flex-col gap-1 text-sm"
+  >
+    <div
+      class="flex justify-between gap-3 subject-breakdown-row"
+      data-ui-occ="activity"
+      data-ui-owner="subject"
+      data-ui-part="breakdown-row"
+    >
+      <span
+        class="text-muted-foreground"
+      >
+        Messages
+      </span>
+       
+      <span>
+        3
+      </span>
+    </div>
+    
+  </div>
+  <!---->
+  <!---->
+</div>
+
+ Γ¥» test/passive-hovercard-isolation.svelte.test.ts:50:80
+     48|     const {app, trigger} = await fixture(citation);
+     49|     trigger.hidden = true; await settle();
+     50|     await vi.waitFor(() => expect(app.querySelector('[data-ui-part="poΓÇª
+       |                                                                                ^
+     51|     trigger.hidden = false; await settle();
+     52|     expect(app.querySelector('[data-ui-part="popup"]')).toBeNull();
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[2/6]ΓÄ»
+
+ FAIL  test/passive-hovercard-isolation.svelte.test.ts > AI hovercard ownership, citation=false > removes the open popup when its actual source is detached
+AssertionError: expected <div forcemount="false" ΓÇª(12)>ΓÇª(3)</div> to be null
+
+- Expected:
+null
+
++ Received:
+<div
+  class="data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/5 dark:ring-foreground/10 bg-popover text-popover-foreground rounded-3xl p-4 text-sm shadow-lg ring-1 duration-100 z-50 origin-(--bits-link-preview-content-transform-origin) outline-hidden flex w-64 flex-col gap-3 subject-popup"
+  data-align="center"
+  data-link-preview-content=""
+  data-side="bottom"
+  data-slot="hover-card-content"
+  data-state="open"
+  data-ui-occ="activity"
+  data-ui-owner="subject"
+  data-ui-part="popup"
+  forcemount="false"
+  id="bits-c15"
+  style="pointer-events: auto; --bits-link-preview-content-transform-origin: var(--bits-floating-transform-origin); --bits-link-preview-content-available-width: var(--bits-floating-available-width); --bits-link-preview-content-available-height: var(--bits-floating-available-height); --bits-link-preview-anchor-width: var(--bits-floating-anchor-width); --bits-link-preview-anchor-height: var(--bits-floating-anchor-height); --public-popup: 1;"
+  tabindex="-1"
+>
+  <div
+    class="flex items-center justify-between gap-3 text-sm"
+  >
+    <span
+      class="font-medium subject-title"
+      data-ui-occ="activity"
+      data-ui-owner="subject"
+      data-ui-part="title"
+    >
+      Context
+    </span>
+     
+    <span
+      class="text-muted-foreground subject-usage"
+      data-ui-occ="activity"
+      data-ui-owner="subject"
+      data-ui-part="usage"
+    >
+      3 / 10
+    </span>
+  </div>
+   
+  <!---->
+  <!---->
+  <div
+    aria-label="Context used"
+    aria-valuemax="100"
+    aria-valuemin="0"
+    aria-valuenow="30"
+    class="bg-muted h-2 rounded-2xl relative flex w-full items-center overflow-x-hidden subject-progress"
+    data-max="100"
+    data-min="0"
+    data-progress-root=""
+    data-slot="progress"
+    data-state="loading"
+    data-ui-occ="activity"
+    data-ui-owner="subject"
+    data-ui-part="progress"
+    data-value="30"
+    role="progressbar"
+  >
+    <div
+      class="bg-primary size-full flex-1 transition-all"
+      data-slot="progress-indicator"
+      style="transform: translateX(-70%);"
+    />
+    <!---->
+  </div>
+  
+  
+  <!---->
+   
+  <div
+    class="flex flex-col gap-1 text-sm"
+  >
+    <div
+      class="flex justify-between gap-3 subject-breakdown-row"
+      data-ui-occ="activity"
+      data-ui-owner="subject"
+      data-ui-part="breakdown-row"
+    >
+      <span
+        class="text-muted-foreground"
+      >
+        Messages
+      </span>
+       
+      <span>
+        3
+      </span>
+    </div>
+    
+  </div>
+  <!---->
+  <!---->
+</div>
+
+ Γ¥» test/passive-hovercard-isolation.svelte.test.ts:57:80
+     55|     const {app, trigger} = await fixture(citation);
+     56|     trigger.remove(); await settle();
+     57|     await vi.waitFor(() => expect(app.querySelector('[data-ui-part="poΓÇª
+       |                                                                                ^
+     58|   });
+     59| });
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[3/6]ΓÄ»
+
+ FAIL  test/passive-hovercard-isolation.svelte.test.ts > AI hovercard ownership, citation=true > does not consume sibling Escape, steal sibling focus or dismiss its unrelated popup
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ Γ¥» test/passive-hovercard-isolation.svelte.test.ts:36:42
+     34|     const escape = new KeyboardEvent('keydown', {key: 'Escape', bubbleΓÇª
+     35|     outside.dispatchEvent(escape); await settle();
+     36|     expect.soft(escape.defaultPrevented).toBe(false);
+       |                                          ^
+     37|     expect.soft(document.activeElement).toBe(outside);
+     38|     expect.soft(app.querySelector('[data-ui-part="popup"]')).not.toBeNΓÇª
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[4/6]ΓÄ»
+
+ FAIL  test/passive-hovercard-isolation.svelte.test.ts > AI hovercard ownership, citation=true > removes the open popup when its actual source becomes hidden
+AssertionError: expected <div forcemount="false" ΓÇª(12)>ΓÇª(2)</div> to be null
+
+- Expected:
+null
+
++ Received:
+<div
+  class="data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/5 dark:ring-foreground/10 bg-popover text-popover-foreground rounded-3xl p-4 text-sm shadow-lg ring-1 duration-100 z-50 origin-(--bits-link-preview-content-transform-origin) outline-hidden flex w-64 flex-col gap-1 subject-popup"
+  data-align="center"
+  data-link-preview-content=""
+  data-side="bottom"
+  data-slot="hover-card-content"
+  data-state="open"
+  data-ui-occ="activity"
+  data-ui-owner="subject"
+  data-ui-part="popup"
+  forcemount="false"
+  id="bits-c25"
+  style="pointer-events: auto; --bits-link-preview-content-transform-origin: var(--bits-floating-transform-origin); --bits-link-preview-content-available-width: var(--bits-floating-available-width); --bits-link-preview-content-available-height: var(--bits-floating-available-height); --bits-link-preview-anchor-width: var(--bits-floating-anchor-width); --bits-link-preview-anchor-height: var(--bits-floating-anchor-height); --public-popup: 1;"
+  tabindex="-1"
+>
+  <div
+    class="font-medium subject-title"
+    data-ui-occ="activity"
+    data-ui-owner="subject"
+    data-ui-part="title"
+  >
+    Supplied citation
+  </div>
+   
+  <!---->
+   
+  <a
+    class="text-xs text-muted-foreground underline-offset-4 hover:underline subject-source"
+    data-ui-occ="activity"
+    data-ui-owner="subject"
+    data-ui-part="source"
+    href="https://example.com/"
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    example.com 
+    <span
+      class="sr-only"
+    >
+      (opens in a new tab)
+    </span>
+  </a>
+  <!---->
+  <!---->
+</div>
+
+ Γ¥» test/passive-hovercard-isolation.svelte.test.ts:50:80
+     48|     const {app, trigger} = await fixture(citation);
+     49|     trigger.hidden = true; await settle();
+     50|     await vi.waitFor(() => expect(app.querySelector('[data-ui-part="poΓÇª
+       |                                                                                ^
+     51|     trigger.hidden = false; await settle();
+     52|     expect(app.querySelector('[data-ui-part="popup"]')).toBeNull();
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[5/6]ΓÄ»
+
+ FAIL  test/passive-hovercard-isolation.svelte.test.ts > AI hovercard ownership, citation=true > removes the open popup when its actual source is detached
+AssertionError: expected <div forcemount="false" ΓÇª(12)>ΓÇª(2)</div> to be null
+
+- Expected:
+null
+
++ Received:
+<div
+  class="data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/5 dark:ring-foreground/10 bg-popover text-popover-foreground rounded-3xl p-4 text-sm shadow-lg ring-1 duration-100 z-50 origin-(--bits-link-preview-content-transform-origin) outline-hidden flex w-64 flex-col gap-1 subject-popup"
+  data-align="center"
+  data-link-preview-content=""
+  data-side="bottom"
+  data-slot="hover-card-content"
+  data-state="open"
+  data-ui-occ="activity"
+  data-ui-owner="subject"
+  data-ui-part="popup"
+  forcemount="false"
+  id="bits-c28"
+  style="pointer-events: auto; --bits-link-preview-content-transform-origin: var(--bits-floating-transform-origin); --bits-link-preview-content-available-width: var(--bits-floating-available-width); --bits-link-preview-content-available-height: var(--bits-floating-available-height); --bits-link-preview-anchor-width: var(--bits-floating-anchor-width); --bits-link-preview-anchor-height: var(--bits-floating-anchor-height); --public-popup: 1;"
+  tabindex="-1"
+>
+  <div
+    class="font-medium subject-title"
+    data-ui-occ="activity"
+    data-ui-owner="subject"
+    data-ui-part="title"
+  >
+    Supplied citation
+  </div>
+   
+  <!---->
+   
+  <a
+    class="text-xs text-muted-foreground underline-offset-4 hover:underline subject-source"
+    data-ui-occ="activity"
+    data-ui-owner="subject"
+    data-ui-part="source"
+    href="https://example.com/"
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    example.com 
+    <span
+      class="sr-only"
+    >
+      (opens in a new tab)
+    </span>
+  </a>
+  <!---->
+  <!---->
+</div>
+
+
+ Test Files  1 failed (1)
+      Tests  6 failed | 2 passed (8)
+   Start at  22:37:10
+   Duration  27.86s (transform 18.52s, setup 0ms, import 21.09s, tests 4.98s, environment 1.41s)
+
+ Γ¥» test/passive-hovercard-isolation.svelte.test.ts:57:80
+     55|     const {app, trigger} = await fixture(citation);
+     56|     trigger.remove(); await settle();
+     57|     await vi.waitFor(() => expect(app.querySelector('[data-ui-part="poΓÇª
+       |                                                                                ^
+     58|   });
+     59| });
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[6/6]ΓÄ»
+

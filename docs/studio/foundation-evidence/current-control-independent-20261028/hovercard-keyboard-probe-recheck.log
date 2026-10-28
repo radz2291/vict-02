@@ -1,0 +1,34 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation
+
+10:47:30 pm [vite-plugin-svelte] packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+10:47:31 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:311:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+10:47:31 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:311:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+10:47:31 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:381:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+10:47:31 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:381:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+stdout | docs/studio/foundation-evidence/current-control-independent-20261028/hovercard-keyboard-probe.svelte.test.ts > demonstrates keyboard reachability when an ordinary focusable follows an owned citation
+{"tabPrevented":false,"activeNext":true,"linkConnected":false,"popupStillPresent":false}
+
+ Γ¥» docs/studio/foundation-evidence/current-control-independent-20261028/hovercard-keyboard-probe.svelte.test.ts (1 test | 1 failed) 265ms
+   ├ù demonstrates keyboard reachability when an ordinary focusable follows an owned citation 264ms
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ» Failed Tests 1 ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»
+
+ FAIL  docs/studio/foundation-evidence/current-control-independent-20261028/hovercard-keyboard-probe.svelte.test.ts > demonstrates keyboard reachability when an ordinary focusable follows an owned citation
+AssertionError: An open interactive citation must remain keyboard reachable, or provide a keyboard entry action: expected null not to be null
+ Γ¥» docs/studio/foundation-evidence/current-control-independent-20261028/hovercard-keyboard-probe.svelte.test.ts:25:159
+
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[1/1]ΓÄ»
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed (1)
+   Start at  22:47:20
+   Duration  14.11s (transform 9.81s, setup 0ms, import 12.04s, tests 265ms, environment 1.42s)
+

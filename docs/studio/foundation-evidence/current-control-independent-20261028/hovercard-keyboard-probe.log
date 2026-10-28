@@ -1,0 +1,8 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/packages/ui-ai-svelte
+
+No test files found, exiting with code 1
+
+include: C:\Users\RZ1\AppData\Local\Temp\vict-authoring-foundation\docs\studio\foundation-evidence\current-control-independent-20261028\hovercard-keyboard-probe.svelte.test.ts
+exclude:  test/capture*.test.ts
+

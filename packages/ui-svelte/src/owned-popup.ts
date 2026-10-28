@@ -1,6 +1,6 @@
 import {autoUpdate, computePosition, flip, offset, shift, type Placement, type VirtualElement} from '@floating-ui/dom';
 
-export type OwnedPopupKind = 'dialog' | 'menu' | 'tooltip';
+export type OwnedPopupKind = 'dialog' | 'menu' | 'tooltip' | 'hovercard';
 export type OwnedPopupEventResult = void | 'continue';
 export interface OwnedPopupEventContext { readonly target: Element }
 export interface OwnedPopupLayerOptions {

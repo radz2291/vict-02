@@ -1,0 +1,51 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation
+
+ Γ¥» |renderer| packages/ui-svelte/test/owned-dialog-adopted.test.ts (6 tests | 2 failed) 78ms
+     ├ù contains focus within the dialog when a same-app outside control receives focus 16ms
+     ├ù dismisses a pointer activation outside the panel in the same owner 7ms
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ» Failed Tests 2 ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»
+
+ FAIL  |renderer| packages/ui-svelte/test/owned-dialog-adopted.test.ts > owned dialog parent-created adopted targets, distinct realm=true > contains focus within the dialog when a same-app outside control receives focus
+AssertionError: expected <button></button> to be <button></button> // Object.is equality
+
+- Expected
++ Received
+
+  <button>
+-   Dialog action
++   Outside dialog, same application
+  </button>
+
+ Γ¥» packages/ui-svelte/test/owned-dialog-adopted.test.ts:40:35
+     38|     if (distinctRealm) expect(f.inside instanceof f.view.Element).toBeΓÇª
+     39|     f.outside.focus();
+     40|     expect(f.child.activeElement).toBe(f.inside);
+       |                                   ^
+     41|   });
+     42|   it('dismisses a pointer activation outside the panel in the same ownΓÇª
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[1/2]ΓÄ»
+
+ FAIL  |renderer| packages/ui-svelte/test/owned-dialog-adopted.test.ts > owned dialog parent-created adopted targets, distinct realm=true > dismisses a pointer activation outside the panel in the same owner
+AssertionError: expected "vi.fn()" to be called once with arguments: [ 'outside' ]
+
+Number of calls: 0
+
+ Γ¥» packages/ui-svelte/test/owned-dialog-adopted.test.ts:46:23
+     44|     f.outside.dispatchEvent(new f.view.PointerEvent('pointerdown', {buΓÇª
+     45|     f.outside.dispatchEvent(new f.view.MouseEvent('click', {bubbles: tΓÇª
+     46|     expect(f.dismiss).toHaveBeenCalledExactlyOnceWith('outside');
+       |                       ^
+     47|   });
+     48|   it('keeps owner-local Escape dismissal through the shared hub', () =ΓÇª
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[2/2]ΓÄ»
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 4 passed (6)
+   Start at  22:48:40
+   Duration  2.08s (transform 115ms, setup 0ms, import 170ms, tests 78ms, environment 1.42s)
+

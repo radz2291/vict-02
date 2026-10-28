@@ -23,13 +23,13 @@ export function restoreOwnedFocus(original: Element | null, fallback?: HTMLEleme
   target?.focus({preventScroll: true});
 }
 
-export function loopOwnedDialogFocus(event: KeyboardEvent, panel: HTMLElement, branches: readonly HTMLElement[] = [], owner = panel.closest<HTMLElement>('[data-ui-application-viewport]')): void {
-  if (event.key !== 'Tab' || event.defaultPrevented) return;
+/** Canonical native tab order shared by owned dialogs and interactive popups. */
+export function ownedFocusableOrder(panel: HTMLElement, branches: readonly HTMLElement[] = [], owner = panel.closest<HTMLElement>('[data-ui-application-viewport]')): HTMLElement[] {
   const roots = [panel, ...branches];
   const sourceOwnerId = panel.dataset.uiOwner ?? panel.closest('[data-ui-owner-root]')?.getAttribute('data-ui-owner-root') ?? undefined;
   const eligible = [...new Set(roots.flatMap(root => Array.from(root.querySelectorAll<HTMLElement>(focusable))))]
     .filter(item => isOwnedFocusable(item) && (!item.hasAttribute('tabindex') || item.tabIndex >= 0) && (!owner || !hasCompetingOwner(owner, item, sourceOwnerId)));
-  const items = eligible.filter(item => {
+  return eligible.filter(item => {
       if (item.tagName !== 'INPUT') return true;
       const radio = item as HTMLInputElement;
       if (radio.type !== 'radio' || !radio.name) return true;
@@ -44,6 +44,12 @@ export function loopOwnedDialogFocus(event: KeyboardEvent, panel: HTMLElement, b
     .map((item,index)=>({item,index}))
     .sort((a,b)=>(a.item.tabIndex>0?a.item.tabIndex:Infinity)-(b.item.tabIndex>0?b.item.tabIndex:Infinity)||a.index-b.index)
     .map(({item})=>item);
+}
+
+export function loopOwnedDialogFocus(event: KeyboardEvent, panel: HTMLElement, branches: readonly HTMLElement[] = [], owner = panel.closest<HTMLElement>('[data-ui-application-viewport]')): void {
+  if (event.key !== 'Tab' || event.defaultPrevented) return;
+  const roots = [panel, ...branches];
+  const items = ownedFocusableOrder(panel, branches, owner);
   const first = items[0], last = items[items.length - 1], active = panel.ownerDocument.activeElement;
   if (!first || !last) { event.preventDefault(); panel.focus({preventScroll: true}); return; }
   if (event.shiftKey && (active === first || !roots.some(root => root.contains(active)))) {
@@ -74,7 +80,14 @@ export function createOwnedDialogBehavior(options: OwnedDialogOptions): () => vo
   let roots: HTMLElement[] = [panel];
   const currentRoots = () => (roots = [panel, ...ownedPopupBranches(owner, panel, options.getBranches?.())]);
   const top = () => !disposed && layer.isTopForRestore();
-  const element = (target: EventTarget | null) => { const Constructor = document.defaultView?.Element; return Constructor && target instanceof Constructor ? target : undefined; };
+  const element = (target: EventTarget | null): Element | undefined => {
+    const Constructor = document.defaultView?.Element;
+    if (!Constructor || !target) return undefined;
+    // Adoption retains the creation prototype. Borrow the destination DOM
+    // method for its Element brand check, as the shared owner hub does.
+    try { Constructor.prototype.matches.call(target, '*'); return target as Element; }
+    catch { return undefined; }
+  };
   const isOwnerTarget = (target: Element) => {
     if (!owner.contains(target)) return false;
     return !hasCompetingOwner(owner, target, sourceOwnerId);

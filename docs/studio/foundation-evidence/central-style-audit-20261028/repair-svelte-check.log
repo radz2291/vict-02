@@ -1,0 +1,8 @@
+1793198729604 START "c:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-authoring-foundation"
+1793198729610 WARNING "packages\\ui-svelte\\src\\document\\RenderNode.svelte" 311:3 "Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type=\"button\">` or `<a>` might be more appropriate\nhttps://svelte.dev/e/a11y_click_events_have_key_events"
+1793198729611 WARNING "packages\\ui-svelte\\src\\document\\RenderNode.svelte" 311:3 "`<span>` with a click handler must have an ARIA role\nhttps://svelte.dev/e/a11y_no_static_element_interactions"
+1793198729611 WARNING "packages\\ui-svelte\\src\\document\\RenderNode.svelte" 381:5 "Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type=\"button\">` or `<a>` might be more appropriate\nhttps://svelte.dev/e/a11y_click_events_have_key_events"
+1793198729611 WARNING "packages\\ui-svelte\\src\\document\\RenderNode.svelte" 381:5 "`<span>` with a click handler must have an ARIA role\nhttps://svelte.dev/e/a11y_no_static_element_interactions"
+1793198729611 WARNING "packages\\ui-svelte\\src\\document\\DocumentHost.svelte" 111:31 "This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?\nhttps://svelte.dev/e/state_referenced_locally"
+1793198729612 WARNING "..\\vict-hovercard-probe-20261028\\hovercard-tsconfig.json" 1:1 "Cannot find type definition file for 'node'.\n  The file is in the program because:\n    Entry point of type library 'node' specified in compilerOptions"
+1793198729612 COMPLETED 774 FILES 0 ERRORS 6 WARNINGS 3 FILES_WITH_PROBLEMS

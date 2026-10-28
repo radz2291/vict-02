@@ -13,3 +13,5 @@ export {
   Trigger as HoverCardTrigger,
   Portal as HoverCardPortal,
 };
+
+export {hoverCardContentClass} from './hover-card-style.js';

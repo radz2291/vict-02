@@ -1,0 +1,53 @@
+{
+  "baseHEAD": "43f7ae84d64ae5816155b5be932998a77b6577f5",
+  "verdict": "PASS - scoped source and independent offline keyboard probes",
+  "independentTests": 3,
+  "testLog": "hovercard-keyboard-frozen-final.log",
+  "sourceHashes": {
+    "packages/ui-svelte/src/OwnedHoverCard.svelte": {
+      "lfSHA256": "b792a13434b63b08672f8bde6393c21d21db8ebf59621037e747ccc34399ec5f",
+      "rawSHA256": "b792a13434b63b08672f8bde6393c21d21db8ebf59621037e747ccc34399ec5f"
+    },
+    "packages/ui-svelte/src/owned-tooltip.ts": {
+      "lfSHA256": "e6050ae5619fe9bfda5ca128dedf9f07d24a9f7232d2f1fd974b58d41491f14d",
+      "rawSHA256": "e6050ae5619fe9bfda5ca128dedf9f07d24a9f7232d2f1fd974b58d41491f14d"
+    },
+    "packages/ui-svelte/src/owned-dialog.ts": {
+      "lfSHA256": "33b3a5bbe6355a0cb41791ccc56e5d642d7a123ec5998b6b2fd75312a6f3d58b",
+      "rawSHA256": "1e6587e0c1f77a18d6974e3a1f978e0ae511badebe82bc0b6a75aea3d162961d"
+    },
+    "packages/ui-svelte/src/owned-popup.ts": {
+      "lfSHA256": "e1de0fb1a1e3c05a91f01e3572fb3104cd3cda611461d29a6c7d19fa3be752a6",
+      "rawSHA256": "92acee4ec4f53d5f7f5bd722c97c865091802f67345aceaec87110b7a38fc52c"
+    },
+    "packages/ui-svelte/src/index.ts": {
+      "lfSHA256": "f40580ac0c301db35a0ef2acce483ad344eb495075fe75508be01b9aa684fd19",
+      "rawSHA256": "42bcdecdc9a91c0e3d9bbb274a93539d05bc7a9f39a98270ea5bcba51dda851c"
+    },
+    "packages/ui-ai-svelte/src/patterns/Context.svelte": {
+      "lfSHA256": "ace1fa8013a9c2bc81d055732f5341e43eada101978b8af07ddabbebd61b0960",
+      "rawSHA256": "ace1fa8013a9c2bc81d055732f5341e43eada101978b8af07ddabbebd61b0960"
+    },
+    "packages/ui-ai-svelte/src/patterns/InlineCitation.svelte": {
+      "lfSHA256": "c0b9f11c092c7b3dce4a9be490a1f60b001bbc834a7bb62c33678668244d37a3",
+      "rawSHA256": "c0b9f11c092c7b3dce4a9be490a1f60b001bbc834a7bb62c33678668244d37a3"
+    },
+    "packages/ui-ai-svelte/src/upstream/ui/hover-card/hover-card-content.svelte": {
+      "lfSHA256": "baf692349b0c8419a6f3d12355ac6c9c3698388dcd65b7e3556a60d0b67c6113",
+      "rawSHA256": "baf692349b0c8419a6f3d12355ac6c9c3698388dcd65b7e3556a60d0b67c6113"
+    },
+    "packages/ui-ai-svelte/src/upstream/ui/hover-card/hover-card-style.ts": {
+      "lfSHA256": "0c15e89a153ac5c9c55e86a3e37a703b7f10ac877d0f498965f1bab171a1d23b",
+      "rawSHA256": "0c15e89a153ac5c9c55e86a3e37a703b7f10ac877d0f498965f1bab171a1d23b"
+    },
+    "packages/ui-ai-svelte/src/upstream/ui/hover-card/index.ts": {
+      "lfSHA256": "fb18c1895d7c1dad3f4ec17c58c671d912e66656f7331ab813e32aeb2749a21b",
+      "rawSHA256": "481fac38862fd303610d2a16e5bf0aaa9ade9e5b154e06b22963c72f2a6bc1bd"
+    }
+  },
+  "limits": [
+    "Working snapshot until sealed commit association",
+    "Happy DOM synthetic key events/default focus transfer model, not native browser evidence",
+    "Source review, no provider/server/build/browser actions"
+  ]
+}

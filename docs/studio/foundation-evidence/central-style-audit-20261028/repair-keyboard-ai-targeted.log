@@ -1,0 +1,87 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/packages/ui-ai-svelte
+
+10:50:37 pm [vite-plugin-svelte] packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+10:50:38 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:311:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+10:50:38 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:311:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+10:50:38 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:381:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+10:50:38 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:381:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+ Γ¥» test/passive-hovercard-isolation.svelte.test.ts (12 tests | 1 failed) 1281ms
+   ├ù provides logical Tab entry, reverse entry and exit before the next ordinary app action 211ms
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ» Failed Tests 1 ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»
+
+ FAIL  test/passive-hovercard-isolation.svelte.test.ts > provides logical Tab entry, reverse entry and exit before the next ordinary app action
+AssertionError: expected <body><div>ΓÇª(1)</div>
+ΓÇª(1)</body> to be <button></button> // Object.is equality
+
+- Expected
++ Received
+
++ <body>
++   <div>
++     <div
++       data-owner="subject"
++       data-ui-application-viewport=""
++     >
++       <!---->
++       <span
++         style="display:contents"
++       >
++         <!---->
++         <button
++           aria-expanded="false"
++           class="focus-visible:border-ring focus-visible:ring-ring/30 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-2xl border border-transparent bg-clip-padding font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 bg-secondary text-secondary-foreground hover:bg-[color-mix(in_oklch,var(--secondary),var(--foreground)_5%)] aria-expanded:bg-secondary aria-expanded:text-secondary-foreground h-6 gap-1 px-2.5 text-xs has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2 [&_svg:not([class*='size-'])]:size-3 subject-trigger"
++           data-hover-card-trigger=""
++           data-owned-hover-card-trigger="c5"
++           data-slot="button"
++           data-state="closed"
++           data-ui-occ="activity"
++           data-ui-owner="subject"
++           data-ui-part="trigger"
++           type="button"
++         >
++           example.com
++           <!---->
++         </button>
++         
++         <!---->
++       </span>
++        
++       <!---->
++       
++       <!---->
++     </div>
++     
++   </div>
++   <div
++     data-ui-application-viewport=""
++   >
+      <button>
+-   Next ordinary action
++       Sibling action
+      </button>
++   </div>
++ </body>
+
+ Γ¥» test/passive-hovercard-isolation.svelte.test.ts:64:76
+     62|   const exit = new KeyboardEvent('keydown', {key: 'Tab', bubbles: trueΓÇª
+     63|   link.dispatchEvent(exit); await settle();
+     64|   expect(exit.defaultPrevented).toBe(true); expect(document.activeElemΓÇª
+       |                                                                            ^
+     65|   await vi.waitFor(() => expect(app.querySelector('[data-ui-part="popuΓÇª
+     66| });
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[1/1]ΓÄ»
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  1 failed | 15 passed (16)
+   Start at  22:50:24
+   Duration  18.06s (transform 23.33s, setup 0ms, import 28.88s, tests 1.83s, environment 3.70s)
+

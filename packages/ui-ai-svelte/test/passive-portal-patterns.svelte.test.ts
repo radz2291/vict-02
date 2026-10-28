@@ -16,6 +16,7 @@ describe('actual AI hovercard application portals', () => {
     const popup = owner.querySelector<HTMLElement>('[data-ui-part="popup"]');
     expect(popup).not.toBeNull();
     expect(popup?.closest('.scope-a')).not.toBeNull();
+    expect(popup?.closest('.vict-ai')).not.toBeNull();
     expect(popup?.getAttribute('data-ui-owner')).toBe('a');
     expect(popup?.style.getPropertyValue('--public-popup')).toBe('1');
     expect(document.body.querySelectorAll('[data-ui-part="popup"]')).toHaveLength(1);
