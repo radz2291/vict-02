@@ -1,5 +1,7 @@
 # Authoring foundation acceptance ledger
 
+Current consolidated verdict: [all-finding evidence and remaining-proof rollup](AUTHORING-FOUNDATION-CURRENT-STATUS.md). Later approved shared-popup repairs and saved candidate supersede the historical unresolved-failure wording below; original failed observations remain retained.
+
 Review status: IN PROGRESS. All AR findings retain open owner acceptance. This ledger separates implemented candidates and scoped evidence from complete foundation closure; no requirement moves to Milestone 2.
 
 2026-10-28 post-reboot checkpoint: browser control recovered and the same saved actual-agent graph was tested. Manual text committed canonically on blur; a bounded actual Studio-agent follow-up preserved it, applied exactly one output-title edit and observed the repaired light-gray MiniMap. Shared graph Undo reversed that agent batch while retaining the manual input; Redo restored it; File Save confirmed revision`r1.r3`. [Exact receipts and source lineage](foundation-evidence/actual-agent-graph-coexistence.json). The saved-screen menu contains Chat and Graph only; complete final Responsive source remains unrecovered. No lost source is inferred from its public transcript.

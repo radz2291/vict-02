@@ -1,5 +1,7 @@
 # Reusable component architecture conformance
 
+For current implementation versus live-proof status, see the [consolidated CF-01 and finding rollup](AUTHORING-FOUNDATION-CURRENT-STATUS.md). Matrix repair-in-progress and pending-choice statements below describe earlier audit checkpoints; the approved shared popup repair now passes scoped checks, with integrated acceptance still held.
+
 Owner requirement, 2026-10-28: apply the established VICT architecture to every new or changed reusable component, not only the graph. This amends the active foundation delivery criteria; it is not acceptance of the candidate. Root AGENTS.md links this check. No push/publication or formal Stage9 closure follows.
 
 ## Required check CF-01

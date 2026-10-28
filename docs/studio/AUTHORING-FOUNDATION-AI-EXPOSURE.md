@@ -1,5 +1,7 @@
 # AI authoring exposure — AI-EX01
 
+Current saved-candidate and remaining-proof status is summarized in the [consolidated AI-EX01 rollup](AUTHORING-FOUNDATION-CURRENT-STATUS.md). Earlier executable popup failures below are retained history and were repaired by the latest approved shared boundary; new actual-authoring acceptance remains open.
+
 Owner amendment, 2026-10-28: the existing public AI patterns must be usable through both manual Studio authoring and the Studio agent. Public exports alone, a gallery, and the historical blanket `host-only` disposition do not meet this criterion. This is authoring-foundation scope, alongside CF-01; it is not deferred to Milestone 2. Provider engines and private reasoning remain outside this amendment.
 
 Status: IMPLEMENTATION CHECKPOINT / EXPOSURE CHECKS PASS / SHARED MENU-TOOLTIP REPAIR SCOPED PASS / INTEGRATED AND OWNER ACCEPTANCE OPEN. This record is a capability map; the linked independent evidence supplies only its scoped verdict. The initial audit reviewed `d733980b1894b2309d26bd3f408a3e2b7da5e823`: only Conversation, Message and PromptInput revisions 1/2 were registered. Their earlier actual-agent chat evidence remains valid within its recorded scope.
