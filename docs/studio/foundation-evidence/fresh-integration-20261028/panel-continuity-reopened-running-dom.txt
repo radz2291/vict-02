@@ -1,0 +1,26 @@
+Browser tab: 2, Title: "Designer — VICT Studio", URL: "http://127.0.0.25:5626/design".
+The following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
++		87 container studio-chat-panel
++			88 container
++				89 text Chat
++				90 button Description: Hide Chat, Help: Hide Chat (Escape)
++			91 container Chat
++				92 container Conversation
++					93 container
++						94 container Messages — Message
++							95 container
++								96 text You
++								97 text Read-only panel continuity check: make one scoped overview read of the CURRENT saved application and report its document name, saved revision, node count and declared local state names. Do not edit source, observe pixels, change views/runtime, execute any tool outside this read or imply execution of the supplied demo records. This is a source inspection only.
++								98 button Description: Copy message, ID: bits-c101
++								99 text Assistant
++								100 text Working. Public notes and tool receipts are available in details.
++								101 button (collapsed) Public activity and tool details, ID: bits-c103, Secondary Actions: Expand
++						102 button Scroll to latest message
++					103 container
++						104 text entry area (settable) Description: Message, Help: Enter to send. Shift+Enter for a new line.
++						105 button Stop
++				106 container Agent is working on your request…
++					107 text Working…
++				108 pop up button (collapsed) Description: Chat details, ID: bits-c20, Secondary Actions: Expand
+~			35 button (expanded) Description: Toggle Chat drawer, Help: Hide Chat, Secondary Actions: Collapse
+The focused UI element is 104 text entry area (settable) Description: Message, Help: Enter to send. Shift+Enter for a new line.

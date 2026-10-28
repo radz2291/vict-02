@@ -1,0 +1,671 @@
+{
+  "schema": "vict.ui-document@1",
+  "id": "screen-2959a5a6-7a04-4eaa-aa97-19ad9f0a7193",
+  "revision": "r1",
+  "root": "screen",
+  "nodes": {
+    "screen": {
+      "kind": "element",
+      "id": "screen",
+      "tag": "main",
+      "attributes": {
+        "aria-label": "Foundation Manual Contracts"
+      },
+      "children": [
+        "vict.ai.conversation-2c628416",
+        "vict.ai.reasoning-4108ef47",
+        "vict.ai.chain-of-thought-ffd34921",
+        "vict.ai.tool-d6ea6406",
+        "vict.ai.plan-b3cdf6e6",
+        "vict.ai.task-afe5d59b",
+        "vict.ai.queue-a04fe58a",
+        "vict.ai.terminal-d44e19ef",
+        "vict.ai.test-results-3b83e578",
+        "vict.ai.stack-trace-73c2d0c6",
+        "vict.ai.subagent-2099c4fc",
+        "vict.ai.context-0e96e974",
+        "vict.ai.sources-8d26cee0",
+        "vict.ai.inline-citation-52f324e5",
+        "vict.ai.file-tree-4e24a51e",
+        "vict.ai.markdown-b05f5165",
+        "vict.ai.checkpoint-17b428ee",
+        "vict.ai.confirmation-44426469",
+        "vict.ai.suggestion-9c125641",
+        "vict.ai.model-selector-943a4758",
+        "vict.ai.message-ca77ea22",
+        "vict.ai.prompt-input-b40c9d31",
+        "vict.ai.transcript-1ad38959",
+        "vict.pattern.drawer-11bff054",
+        "vict.pattern.action-button-e0c455b4",
+        "vict.media.vector-f635fc7a",
+        "vict.media.icon-0100a084",
+        "vict.media.embed-a86e20a9",
+        "vict.flow.editor-ec91a30c"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "20px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "40px"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "560px"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#ffffff"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#243047"
+          }
+        },
+        {
+          "property": "font-family",
+          "value": {
+            "type": "text",
+            "value": "system-ui, sans-serif"
+          }
+        }
+      ]
+    },
+    "vict.ai.conversation-2c628416": {
+      "kind": "component",
+      "id": "vict.ai.conversation-2c628416",
+      "definitionId": "vict.ai.conversation",
+      "revision": "2",
+      "slots": {
+        "messages": {
+          "name": "messages",
+          "children": [
+            "vict.ai.conversation-2c628416-message"
+          ]
+        },
+        "composer": {
+          "name": "composer",
+          "children": [
+            "vict.ai.conversation-2c628416-prompt"
+          ]
+        }
+      },
+      "props": {}
+    },
+    "vict.ai.conversation-2c628416-message": {
+      "kind": "component",
+      "id": "vict.ai.conversation-2c628416-message",
+      "definitionId": "vict.ai.message",
+      "revision": "2",
+      "props": {
+        "role": {
+          "type": "literal",
+          "value": "assistant"
+        },
+        "text": {
+          "type": "literal",
+          "value": "How can I help?"
+        }
+      },
+      "slots": {}
+    },
+    "vict.ai.conversation-2c628416-prompt": {
+      "kind": "component",
+      "id": "vict.ai.conversation-2c628416-prompt",
+      "definitionId": "vict.ai.prompt-input",
+      "revision": "2",
+      "props": {
+        "value": {
+          "type": "ref",
+          "path": "state.catalog_vict_ai_conversation-2c628416_message"
+        }
+      },
+      "outputs": {
+        "valueChange": {
+          "setState": {
+            "key": "catalog_vict_ai_conversation-2c628416_message"
+          }
+        }
+      },
+      "slots": {}
+    },
+    "vict.ai.reasoning-4108ef47": {
+      "kind": "component",
+      "id": "vict.ai.reasoning-4108ef47",
+      "definitionId": "vict.ai.reasoning",
+      "revision": "1",
+      "props": {},
+      "slots": {}
+    },
+    "vict.ai.chain-of-thought-ffd34921": {
+      "kind": "component",
+      "id": "vict.ai.chain-of-thought-ffd34921",
+      "definitionId": "vict.ai.chain-of-thought",
+      "revision": "1",
+      "props": {},
+      "slots": {}
+    },
+    "vict.ai.tool-d6ea6406": {
+      "kind": "component",
+      "id": "vict.ai.tool-d6ea6406",
+      "definitionId": "vict.ai.tool",
+      "revision": "1",
+      "props": {},
+      "slots": {}
+    },
+    "vict.ai.plan-b3cdf6e6": {
+      "kind": "component",
+      "id": "vict.ai.plan-b3cdf6e6",
+      "definitionId": "vict.ai.plan",
+      "revision": "1",
+      "props": {},
+      "slots": {}
+    },
+    "vict.ai.task-afe5d59b": {
+      "kind": "component",
+      "id": "vict.ai.task-afe5d59b",
+      "definitionId": "vict.ai.task",
+      "revision": "1",
+      "props": {},
+      "slots": {}
+    },
+    "vict.ai.queue-a04fe58a": {
+      "kind": "component",
+      "id": "vict.ai.queue-a04fe58a",
+      "definitionId": "vict.ai.queue",
+      "revision": "1",
+      "props": {},
+      "slots": {}
+    },
+    "vict.ai.terminal-d44e19ef": {
+      "kind": "component",
+      "id": "vict.ai.terminal-d44e19ef",
+      "definitionId": "vict.ai.terminal",
+      "revision": "1",
+      "props": {},
+      "slots": {}
+    },
+    "vict.ai.test-results-3b83e578": {
+      "kind": "component",
+      "id": "vict.ai.test-results-3b83e578",
+      "definitionId": "vict.ai.test-results",
+      "revision": "1",
+      "props": {},
+      "slots": {}
+    },
+    "vict.ai.stack-trace-73c2d0c6": {
+      "kind": "component",
+      "id": "vict.ai.stack-trace-73c2d0c6",
+      "definitionId": "vict.ai.stack-trace",
+      "revision": "1",
+      "props": {},
+      "slots": {}
+    },
+    "vict.ai.subagent-2099c4fc": {
+      "kind": "component",
+      "id": "vict.ai.subagent-2099c4fc",
+      "definitionId": "vict.ai.subagent",
+      "revision": "1",
+      "props": {},
+      "slots": {}
+    },
+    "vict.ai.context-0e96e974": {
+      "kind": "component",
+      "id": "vict.ai.context-0e96e974",
+      "definitionId": "vict.ai.context",
+      "revision": "1",
+      "props": {},
+      "slots": {}
+    },
+    "vict.ai.sources-8d26cee0": {
+      "kind": "component",
+      "id": "vict.ai.sources-8d26cee0",
+      "definitionId": "vict.ai.sources",
+      "revision": "1",
+      "props": {},
+      "slots": {}
+    },
+    "vict.ai.inline-citation-52f324e5": {
+      "kind": "component",
+      "id": "vict.ai.inline-citation-52f324e5",
+      "definitionId": "vict.ai.inline-citation",
+      "revision": "1",
+      "props": {},
+      "slots": {}
+    },
+    "vict.ai.file-tree-4e24a51e": {
+      "kind": "component",
+      "id": "vict.ai.file-tree-4e24a51e",
+      "definitionId": "vict.ai.file-tree",
+      "revision": "1",
+      "props": {},
+      "slots": {}
+    },
+    "vict.ai.markdown-b05f5165": {
+      "kind": "component",
+      "id": "vict.ai.markdown-b05f5165",
+      "definitionId": "vict.ai.markdown",
+      "revision": "1",
+      "props": {},
+      "slots": {}
+    },
+    "vict.ai.checkpoint-17b428ee": {
+      "kind": "component",
+      "id": "vict.ai.checkpoint-17b428ee",
+      "definitionId": "vict.ai.checkpoint",
+      "revision": "1",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Checkpoint"
+        },
+        "canRestore": {
+          "type": "literal",
+          "value": false
+        }
+      },
+      "slots": {}
+    },
+    "vict.ai.confirmation-44426469": {
+      "kind": "component",
+      "id": "vict.ai.confirmation-44426469",
+      "definitionId": "vict.ai.confirmation",
+      "revision": "1",
+      "props": {
+        "title": {
+          "type": "literal",
+          "value": "Confirm operation"
+        },
+        "description": {
+          "type": "literal",
+          "value": ""
+        },
+        "state": {
+          "type": "literal",
+          "value": "requested"
+        },
+        "pending": {
+          "type": "literal",
+          "value": false
+        },
+        "canDecide": {
+          "type": "literal",
+          "value": false
+        }
+      },
+      "slots": {}
+    },
+    "vict.ai.suggestion-9c125641": {
+      "kind": "component",
+      "id": "vict.ai.suggestion-9c125641",
+      "definitionId": "vict.ai.suggestion",
+      "revision": "1",
+      "props": {
+        "text": {
+          "type": "literal",
+          "value": "Suggested prompt"
+        },
+        "allowActions": {
+          "type": "literal",
+          "value": false
+        }
+      },
+      "slots": {}
+    },
+    "vict.ai.model-selector-943a4758": {
+      "kind": "component",
+      "id": "vict.ai.model-selector-943a4758",
+      "definitionId": "vict.ai.model-selector",
+      "revision": "1",
+      "props": {
+        "data": {
+          "type": "literal",
+          "value": "{\"version\":1,\"models\":[{\"id\":\"supplied-model\",\"label\":\"Supplied model\"}],\"efforts\":[]}"
+        },
+        "model": {
+          "type": "literal",
+          "value": "supplied-model"
+        },
+        "effort": {
+          "type": "literal",
+          "value": ""
+        },
+        "inline": {
+          "type": "literal",
+          "value": false
+        },
+        "allowActions": {
+          "type": "literal",
+          "value": false
+        }
+      },
+      "slots": {}
+    },
+    "vict.ai.message-ca77ea22": {
+      "kind": "component",
+      "id": "vict.ai.message-ca77ea22",
+      "definitionId": "vict.ai.message",
+      "revision": "3",
+      "props": {
+        "text": {
+          "type": "literal",
+          "value": "A supplied assistant response."
+        }
+      },
+      "slots": {}
+    },
+    "vict.ai.prompt-input-b40c9d31": {
+      "kind": "component",
+      "id": "vict.ai.prompt-input-b40c9d31",
+      "definitionId": "vict.ai.prompt-input",
+      "revision": "3",
+      "props": {
+        "value": {
+          "type": "ref",
+          "path": "state.catalog_vict_ai_prompt-input-b40c9d31_message"
+        }
+      },
+      "outputs": {
+        "valueChange": {
+          "setState": {
+            "key": "catalog_vict_ai_prompt-input-b40c9d31_message"
+          }
+        }
+      },
+      "slots": {}
+    },
+    "vict.ai.transcript-1ad38959": {
+      "kind": "component",
+      "id": "vict.ai.transcript-1ad38959",
+      "definitionId": "vict.ai.transcript",
+      "revision": "1",
+      "props": {
+        "data": {
+          "type": "literal",
+          "value": "{\"version\":1,\"messages\":[{\"id\":\"welcome\",\"role\":\"assistant\",\"text\":\"A supplied public transcript.\",\"events\":[{\"id\":\"public-step\",\"kind\":\"activity\",\"activity\":{\"id\":\"read\",\"title\":\"Read project source\",\"state\":\"completed\",\"result\":{\"text\":\"Supplied public receipt\"}}},{\"id\":\"answer\",\"kind\":\"text\",\"text\":\"A supplied public transcript.\"}]}]}"
+        }
+      },
+      "slots": {
+        "composer": {
+          "name": "composer",
+          "children": [
+            "vict.ai.transcript-1ad38959-composer"
+          ]
+        }
+      }
+    },
+    "vict.ai.transcript-1ad38959-composer": {
+      "kind": "component",
+      "id": "vict.ai.transcript-1ad38959-composer",
+      "definitionId": "vict.ai.prompt-input",
+      "revision": "3",
+      "props": {
+        "value": {
+          "type": "ref",
+          "path": "state.catalog_vict_ai_transcript-1ad38959_message"
+        }
+      },
+      "outputs": {
+        "valueChange": {
+          "setState": {
+            "key": "catalog_vict_ai_transcript-1ad38959_message"
+          }
+        }
+      },
+      "slots": {}
+    },
+    "vict.pattern.drawer-11bff054": {
+      "kind": "component",
+      "id": "vict.pattern.drawer-11bff054",
+      "definitionId": "vict.pattern.drawer",
+      "revision": "1",
+      "props": {
+        "open": {
+          "type": "ref",
+          "path": "state.catalog_vict_pattern_drawer-11bff054_drawerOpen"
+        }
+      },
+      "outputs": {
+        "openChange": {
+          "setState": {
+            "key": "catalog_vict_pattern_drawer-11bff054_drawerOpen"
+          }
+        }
+      },
+      "slots": {
+        "body": {
+          "name": "body",
+          "children": [
+            "vict.pattern.drawer-11bff054-body"
+          ]
+        }
+      }
+    },
+    "vict.pattern.drawer-11bff054-body": {
+      "kind": "element",
+      "id": "vict.pattern.drawer-11bff054-body",
+      "tag": "p",
+      "children": [
+        "vict.pattern.drawer-11bff054-text"
+      ]
+    },
+    "vict.pattern.drawer-11bff054-text": {
+      "kind": "text",
+      "id": "vict.pattern.drawer-11bff054-text",
+      "content": {
+        "type": "literal",
+        "value": "Drawer content"
+      }
+    },
+    "vict.pattern.action-button-e0c455b4": {
+      "kind": "component",
+      "id": "vict.pattern.action-button-e0c455b4",
+      "definitionId": "vict.pattern.action-button",
+      "revision": "1",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Send message"
+        },
+        "value": {
+          "type": "literal",
+          "value": "send"
+        }
+      },
+      "slots": {
+        "icon": {
+          "name": "icon",
+          "children": [
+            "vict.pattern.action-button-e0c455b4-actionIcon"
+          ]
+        }
+      },
+      "outputs": {
+        "activate": {
+          "setState": {
+            "key": "catalog_vict_pattern_action-button-e0c455b4_lastAction"
+          }
+        }
+      }
+    },
+    "vict.pattern.action-button-e0c455b4-actionIcon": {
+      "kind": "component",
+      "id": "vict.pattern.action-button-e0c455b4-actionIcon",
+      "definitionId": "vict.media.icon",
+      "revision": "1",
+      "props": {
+        "name": {
+          "type": "literal",
+          "value": "send"
+        },
+        "decorative": {
+          "type": "literal",
+          "value": true
+        }
+      },
+      "slots": {}
+    },
+    "vict.media.vector-f635fc7a": {
+      "id": "vict.media.vector-f635fc7a",
+      "kind": "component",
+      "definitionId": "vict.media.vector",
+      "revision": "1",
+      "props": {
+        "data": {
+          "type": "literal",
+          "value": "{\"schema\":\"vict.vector@1\",\"viewBox\":\"0 0 120 80\",\"nodes\":[{\"tag\":\"rect\",\"attributes\":{\"width\":120,\"height\":80,\"rx\":12,\"fill\":\"#143d52\"}},{\"tag\":\"circle\",\"attributes\":{\"cx\":42,\"cy\":40,\"r\":25,\"fill\":\"#ff3d81\"}},{\"tag\":\"path\",\"attributes\":{\"d\":\"M55 65 L80 15 L105 65 Z\",\"fill\":\"#27d3b5\"}}]}"
+        },
+        "label": {
+          "type": "literal",
+          "value": "Three-colour geometric mark"
+        }
+      },
+      "slots": {}
+    },
+    "vict.media.icon-0100a084": {
+      "id": "vict.media.icon-0100a084",
+      "kind": "component",
+      "definitionId": "vict.media.icon",
+      "revision": "1",
+      "props": {
+        "name": {
+          "type": "literal",
+          "value": "search"
+        }
+      },
+      "slots": {}
+    },
+    "vict.media.embed-a86e20a9": {
+      "id": "vict.media.embed-a86e20a9",
+      "kind": "component",
+      "definitionId": "vict.media.embed",
+      "revision": "1",
+      "props": {},
+      "slots": {}
+    },
+    "vict.flow.editor-ec91a30c": {
+      "kind": "component",
+      "id": "vict.flow.editor-ec91a30c",
+      "definitionId": "vict.flow.editor",
+      "revision": "2",
+      "props": {
+        "graph": {
+          "type": "ref",
+          "path": "state.catalog_vict_flow_editor-ec91a30c_graph"
+        }
+      },
+      "outputs": {
+        "graphChange": {
+          "setState": {
+            "key": "catalog_vict_flow_editor-ec91a30c_graph"
+          }
+        }
+      },
+      "slots": {}
+    }
+  },
+  "componentDefinitions": {},
+  "styleSources": {},
+  "assets": {},
+  "tokens": {},
+  "conditions": {
+    "compact": {
+      "id": "compact",
+      "kind": "container",
+      "name": "studio-screen",
+      "query": "(max-width: 600px)"
+    }
+  },
+  "localState": {
+    "message": {
+      "key": "message",
+      "type": "string",
+      "initial": "Hello from my screen"
+    },
+    "accepted": {
+      "key": "accepted",
+      "type": "boolean",
+      "initial": false
+    },
+    "dialogOpen": {
+      "key": "dialogOpen",
+      "type": "boolean",
+      "initial": false
+    },
+    "busy": {
+      "key": "busy",
+      "type": "boolean",
+      "initial": false
+    },
+    "actionError": {
+      "key": "actionError",
+      "type": "string",
+      "initial": ""
+    },
+    "actionResult": {
+      "key": "actionResult",
+      "type": "string",
+      "initial": ""
+    },
+    "catalog_vict_ai_conversation-2c628416_message": {
+      "key": "catalog_vict_ai_conversation-2c628416_message",
+      "type": "string",
+      "initial": ""
+    },
+    "catalog_vict_ai_prompt-input-b40c9d31_message": {
+      "key": "catalog_vict_ai_prompt-input-b40c9d31_message",
+      "type": "string",
+      "initial": ""
+    },
+    "catalog_vict_ai_transcript-1ad38959_message": {
+      "key": "catalog_vict_ai_transcript-1ad38959_message",
+      "type": "string",
+      "initial": ""
+    },
+    "catalog_vict_pattern_drawer-11bff054_drawerOpen": {
+      "key": "catalog_vict_pattern_drawer-11bff054_drawerOpen",
+      "type": "boolean",
+      "initial": false
+    },
+    "catalog_vict_pattern_action-button-e0c455b4_lastAction": {
+      "key": "catalog_vict_pattern_action-button-e0c455b4_lastAction",
+      "type": "string",
+      "initial": ""
+    },
+    "catalog_vict_flow_editor-ec91a30c_graph": {
+      "key": "catalog_vict_flow_editor-ec91a30c_graph",
+      "type": "string",
+      "initial": "{\"schema\":\"vict.flow-graph@1\",\"revision\":0,\"nodeTypes\":[{\"id\":\"text-step\",\"label\":\"Text step\",\"fields\":[{\"id\":\"prompt\",\"label\":\"Prompt\",\"kind\":\"textarea\",\"default\":\"\"},{\"id\":\"notes\",\"label\":\"Notes\",\"kind\":\"list\",\"default\":[]},{\"id\":\"weight\",\"label\":\"Weight\",\"kind\":\"slider\",\"default\":1,\"min\":0,\"max\":10}],\"ports\":[{\"id\":\"text-in\",\"label\":\"Text input\",\"direction\":\"input\",\"type\":\"text\",\"maxConnections\":1},{\"id\":\"text-out\",\"label\":\"Text output\",\"direction\":\"output\",\"type\":\"text\"}]}],\"nodes\":[{\"id\":\"first\",\"type\":\"text-step\",\"label\":\"First step\",\"position\":{\"x\":0,\"y\":0},\"values\":{\"prompt\":\"Edit a real node parameter\",\"notes\":[\"Independent movement\",\"Typed ports\"]}},{\"id\":\"second\",\"type\":\"text-step\",\"label\":\"Second step\",\"position\":{\"x\":380,\"y\":0},\"values\":{}}],\"edges\":[{\"id\":\"first-second\",\"source\":\"first\",\"sourcePort\":\"text-out\",\"target\":\"second\",\"targetPort\":\"text-in\"}]}"
+    }
+  }
+}

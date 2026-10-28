@@ -1,0 +1,45 @@
+{
+  "first": "Conversation",
+  "initial": [
+    {
+      "recipe": "Reasoning",
+      "status": "6 menu\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t97 (selected) Default\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t98 Fixed value\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t99 State / expression\n\t\t\t\t\t\t\t\t\t\t\t\t\t100 text Default: Public summary\n\t\t28 text Added to your screen. Double-click text to edit.\n\t\t29 text Designer — VICT Studio\n\nThe focused UI element is 31 AXWebArea about:blank"
+    },
+    {
+      "recipe": "Chain Of Thought",
+      "status": "\t\t\t\t\t\t\t\t\t\t\t105 (selected) Default\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t106 Fixed value\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t107 State / expression\n\t\t\t\t\t\t\t\t\t\t\t\t\t108 text Default: Public execution steps\n\t\t28 text Added to your screen. Double-click text to edit.\n\t\t29 text Designer — VICT Studio\n\nThe focused UI element is 31 AXWebArea about:blank"
+    },
+    {
+      "recipe": "Tool",
+      "status": "117 menu\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t118 (selected) Default\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t119 Fixed value\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t120 State / expression\n\t\t\t\t\t\t\t\t\t\t\t\t\t121 text Default: Tool call\n\t\t28 text Added to your screen. Double-click text to edit.\n\t\t29 text Designer — VICT Studio\n\nThe focused UI element is 31 AXWebArea about:blank"
+    },
+    {
+      "recipe": "Plan",
+      "status": " Description: title source, Value: Default, Secondary Actions: Expand\n+\t\t\t\t\t\t\t\t\t\t\t\t\t\t107 menu\n+\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t108 (selected) Default\n+\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t109 Fixed value\n+\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t110 State / expression\n+\t\t\t\t\t\t\t\t\t\t\t\t\t111 text Default: Proposed work\nThe focused UI element is 31 AXWebArea about:blank"
+    },
+    {
+      "recipe": "Task",
+      "status": "cription: title source, Value: Default, Secondary Actions: Expand\n+\t\t\t\t\t\t\t\t\t\t\t\t\t\t108 menu\n+\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t109 (selected) Default\n+\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t110 Fixed value\n+\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t111 State / expression\n+\t\t\t\t\t\t\t\t\t\t\t\t\t112 text Default: Observed activity\nThe focused UI element is 31 AXWebArea about:blank"
+    }
+  ],
+  "alsoInserted": "Queue",
+  "remaining": [
+    "Terminal",
+    "Test Results",
+    "Stack Trace",
+    "Subagent",
+    "Context",
+    "Sources",
+    "Inline Citation",
+    "File Tree",
+    "Markdown",
+    "Checkpoint",
+    "Confirmation",
+    "Suggestion",
+    "Model selector",
+    "Chat message with actions",
+    "Prompt input with attachments",
+    "Chat transcript"
+  ],
+  "method": "Actual Insert recipe clicks; persistent Layers root/Selection Edit on canvas used for empty or offscreen records."
+}

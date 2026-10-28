@@ -1,0 +1,39 @@
+{
+  "before": {
+    "currentTime": 0,
+    "duration": 2,
+    "error": null,
+    "paused": true,
+    "readyState": 4,
+    "sources": [
+      {
+        "kind": "captions",
+        "srcKind": "blob",
+        "tag": "TRACK",
+        "type": null
+      }
+    ],
+    "tracks": [
+      {
+        "kind": "captions",
+        "label": "English captions",
+        "mode": "showing"
+      }
+    ]
+  },
+  "after": {
+    "currentTime": 0,
+    "duration": 2,
+    "error": null,
+    "paused": false,
+    "readyState": 4,
+    "tracks": [
+      {
+        "cues": null,
+        "kind": "captions",
+        "label": "English captions",
+        "mode": "showing"
+      }
+    ]
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "manualVectorNative": {
+    "label": "Manually edited three-colour geometry, circle radius18 translated4",
+    "shapes": [
+      {
+        "computedFill": "rgb(20, 61, 82)",
+        "fill": "#143d52",
+        "r": null,
+        "tag": "rect",
+        "transform": null
+      },
+      {
+        "computedFill": "rgb(255, 61, 129)",
+        "fill": "#ff3d81",
+        "r": "18",
+        "tag": "circle",
+        "transform": "translate(4 0)"
+      },
+      {
+        "computedFill": "rgb(39, 211, 181)",
+        "fill": "#27d3b5",
+        "r": null,
+        "tag": "path",
+        "transform": null
+      }
+    ],
+    "viewBox": "0 0 120 80"
+  },
+  "customIconNative": {
+    "ariaHidden": "true",
+    "fills": [
+      "rgb(20, 61, 82)",
+      "rgb(255, 61, 129)",
+      "rgb(39, 211, 181)"
+    ],
+    "role": null,
+    "viewBox": "0 0 120 80"
+  },
+  "actionValue": "manual-local-action",
+  "suppliedIcon": {
+    "label": "Manual supplied search icon",
+    "rect": [
+      977.6000366210938,
+      24
+    ],
+    "role": "img",
+    "stroke": "none",
+    "viewBox": null
+  }
+}

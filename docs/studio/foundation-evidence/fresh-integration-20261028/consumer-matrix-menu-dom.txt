@@ -1,0 +1,48 @@
+Browser tab: 2, Title: "Installed VICT consumer replay", URL: "http://127.0.0.25:5626/foundation-proof-26010ca/index.html".
+The following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 91-129
++				132 container
++					133 container Matrix 23 retained source replay
++						134 container Foundation AI Review
++							135 heading Foundation AI Review, Value: 1
++								136 text Foundation AI Review
++							137 text COMPACT REVIEW OF THE RETAINED FOUNDATION GRAPH — SUPPLIED PUBLIC FACTS, PRESENTATION AND TYPED INTENT ONLY.
++							138 container bits-c18
++								139 button (expanded) Review process (public steps), ID: bits-c19, Secondary Actions: Collapse
++								140 container bits-c20
++									141 text Supplied verification facts only — no execution on this screen.
++									142 text Retained Foundation Graph imported
++									143 button (collapsed) Prior Input text intact, ID: bits-c22, Secondary Actions: Expand
++									144 button (collapsed) Prior Output name intact, ID: bits-c25, Secondary Actions: Expand
++									145 text Port-capacity violation safely refused Deletion, reconnection and creation exercised Save/reload and Run confirmed both values intact
++							146 container bits-c27
++								147 button (expanded) Public summary, ID: bits-c28, Secondary Actions: Collapse
++								148 text Review confirmed graph behavior and preserve the prior manual edits.
++							149 container bits-c33
++								150 button (expanded) Used 1 sources, ID: bits-c34, Secondary Actions: Collapse
++								151 link Description: vict-02 — supplied source link (opens in a new tab), Value: github.com/radz2291/vict-02
++							152 container bits-c36
++								153 button (expanded) Tool receipt — Run saved graph, ID: bits-c37, Secondary Actions: Collapse
++								154 text Verified coexistence
++							155 container
++								156 text Verification note  — Saved graph Run completed with both retained values intact: Input  Manual coexistence after reboot , Output  Verified coexistence .
++							157 text This screen presents supplied public facts only; it performs no provider, tool or network execution.
++							158 container
++								159 container
++									160 text graph-current-saved-source.json
++									161 button (disabled) Remove graph-current-saved-source.json
++								162 text entry area (settable) Description: Draft note, Help: Enter to send. Shift+Enter for a new line.
++								163 button (disabled) Send
++							164 text Record review decision
++							165 text Typed local boolean intent only — no approval authority and no provider execution.
++							166 button Deny
++							167 button Approve
++							168 text Decision recorded (typed boolean):
++							169 text false
++							170 text Composer sent draft:
++							171 pop up button (expanded) Verification checks, ID: c50-trigger, Secondary Actions: Collapse
++					172 menu Verification checks, ID: c50
++						173 Import — retained Foundation Graph
++						174 Values — Input and Output intact
++						175 Source — vict-02 repository
+The focused UI element is 173 Import — retained Foundation Graph

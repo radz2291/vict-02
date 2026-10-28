@@ -1,0 +1,127 @@
+Browser tab: 2, Title: "Designer — VICT Studio", URL: "http://127.0.0.25:5626/design".
+1 AXWebArea Designer — VICT Studio, URL: 127.0.0.25:5626/design
+	2 container
+		3 container
+			4 link Description: VICT Studio, Value: 127.0.0.25:5626/design
+			5 menu bar Description: Studio menus, ID: bits-c3
+				6 (collapsed) File, ID: bits-c5, Secondary Actions: Expand
+				7 (collapsed) Edit, ID: bits-c7, Secondary Actions: Expand
+				8 (collapsed) View, ID: bits-c9, Secondary Actions: Expand
+				9 (collapsed) Preview, ID: bits-c11, Secondary Actions: Expand
+			10 text Foundation Public Run Review
+		87 container studio-chat-panel
+			88 container
+				89 text Chat
+				90 button Description: Hide Chat, Help: Hide Chat (Escape)
+			91 container Chat
+				92 container Conversation
+					93 container
+						94 container Messages — Message
+							95 container
+								96 text You
+								97 text Read-only panel continuity check: make one scoped overview read of the CURRENT saved application and report its document name, saved revision, node count and declared local state names. Do not edit source, observe pixels, change views/runtime, execute any tool outside this read or imply execution of the supplied demo records. This is a source inspection only.
+								98 button Description: Copy message, ID: bits-c101
+								99 text Assistant
+								100 text 0 edits applied
+								109 container bits-c102
+									110 button (expanded) Public activity and tool details, ID: bits-c103, Secondary Actions: Collapse
+									111 container Conversation timeline
+										112 container
+											113 text Continuity check on the current document: the supplied overview already carries the saved facts (id  screen-a775512c-f14a-4c5b-ab16-d054d5f92d7c , revision  r1.r2  at cursor  r1.r2#0 , 62 nodes, 14 state entries), so I'll make one bounded read of the state section to capture the declared state names rather than duplicate the overview.
+										114 button (collapsed) Read screen completed, ID: bits-c116, Secondary Actions: Expand
+											115 text Read screen
+											116 text completed
+										117 text Read-only check complete — one source-section read, no edits, no observation, nothing executed.
+										118 content list
+											119 container
+												120 AXListMarker • 
+												121 text Document: screen-a775512c-f14a-4c5b-ab16-d054d5f92d7c  (root  screen , labeled "Screen")
+											122 container
+												123 AXListMarker • 
+												124 text Saved revision: r1.r2  (cursor  r1.r2#0 , digest  eb66d42f… , epoch  b5b7d036… )
+											125 container
+												126 AXListMarker • 
+												127 text Node count:  62
+											128 container
+												129 AXListMarker • 
+												130 text Declared local state (14): message ,  accepted ,  dialogOpen ,  busy ,  actionError ,  actionResult ,  activeTab ,  draft ,  modelChoice ,  fileChoice ,  frameNote ,  restoreNote ,  catalog_tabs-desk_root_value ,  catalog_comp-transcript_message
+										131 text Continuity is consistent: the fresh state page returned the same cursor/digest as the supplied overview, so the panel is reading the same saved document with no drift. State entries are declared-source facts only; no demo records were run and bindings/behavior were not exercised.
+								132 container Terminal response
+									133 text Read-only check complete — one source-section read, no edits, no observation, nothing executed.
+									134 content list
+										135 container
+											136 AXListMarker • 
+											137 text Document: screen-a775512c-f14a-4c5b-ab16-d054d5f92d7c  (root  screen , labeled "Screen")
+										138 container
+											139 AXListMarker • 
+											140 text Saved revision: r1.r2  (cursor  r1.r2#0 , digest  eb66d42f… , epoch  b5b7d036… )
+										141 container
+											142 AXListMarker • 
+											143 text Node count:  62
+										144 container
+											145 AXListMarker • 
+											146 text Declared local state (14): message ,  accepted ,  dialogOpen ,  busy ,  actionError ,  actionResult ,  activeTab ,  draft ,  modelChoice ,  fileChoice ,  frameNote ,  restoreNote ,  catalog_tabs-desk_root_value ,  catalog_comp-transcript_message
+									147 text Continuity is consistent: the fresh state page returned the same cursor/digest as the supplied overview, so the panel is reading the same saved document with no drift. State entries are declared-source facts only; no demo records were run and bindings/behavior were not exercised.
+								148 button Description: Copy message, ID: bits-c248
+						102 button Scroll to latest message
+					103 container
+						104 text entry area (settable) Description: Message, Help: Enter to send. Shift+Enter for a new line.
+						149 button (disabled) Send
+				106 container 0 edits applied
+					107 text Ready
+				108 pop up button (collapsed) Description: Chat details, ID: bits-c20, Secondary Actions: Expand
+		34 container
+			35 button (expanded) Description: Toggle Chat drawer, Help: Hide Chat, Secondary Actions: Collapse
+			36 container Workspace mode
+				37 checkbox Design, Value: 1
+				38 checkbox Interact, Value: 0
+				39 checkbox Structure, Value: 0
+			40 button (collapsed) Description: Toggle Document and Selection drawer, Help: Show Document and Selection, Secondary Actions: Expand
+			41 container Application viewport
+				42 AXWebArea about:blank
+					43 container Screen canvas
+						44 container Foundation Public Run Review
+							45 heading Description: Review desk heading, Value: 1
+								46 text Foundation Public Run Review
+							47 text Demo review desk — thirteen public VICT AI compositions. Every record here is simulated demonstration data; nothing is executed.
+							48 container bits-c39
+								49 tab group Description: Review sections, ID: bits-c40
+									50 tab (selected, settable, boolean) Overview, Value: 1, ID: bits-c41
+									51 tab (selectable, settable, boolean) Diagnostics, Value: 0, ID: bits-c42
+									52 tab (selectable, settable, boolean) Context, Value: 0, ID: bits-c43
+								53 container Description: Overview, ID: bits-c44
+									54 container Conversation
+										55 text Demo transcript (sample)
+										56 text Simulated messages only — no provider was contacted.
+										57 container Messages — Message
+											58 container
+												59 text You
+												60 text Sample request: can you review the layout of the review desk? (demo data)
+												61 button Copy message
+												62 text Assistant
+												63 text Sample reply: one compact correction is ready. (demo data)
+												64 button Copy message
+										65 container
+											66 text entry area (settable) Description: Message, Help: Enter to send. Shift+Enter for a new line.
+											67 button (disabled) Send
+									68 container bits-c50
+										69 button (expanded) Public summary (demo), ID: bits-c51, Secondary Actions: Collapse
+										70 container bits-c52
+											71 text Demo data — only the supplied public summary is rendered.
+											72 container bits-c53
+												73 button (expanded) Public summary, ID: bits-c54, Secondary Actions: Collapse
+												74 text Checked the supplied component contracts and preserved the manual marker.
+									75 container bits-c56
+										76 button (expanded) Demo plan (sample) 1 of 2 done, ID: bits-c57, Secondary Actions: Collapse
+											77 text Demo plan (sample)
+											78 text 1 of 2 done
+										79 container bits-c58
+											80 text Simulated plan — nothing was executed.
+											81 button (collapsed) Review completed, ID: bits-c60, Secondary Actions: Expand
+											82 button (collapsed) Device verification pending, ID: bits-c63, Secondary Actions: Expand
+									83 container bits-c65
+										84 button (expanded) 1 to do, ID: bits-c66, Secondary Actions: Collapse
+										85 button (collapsed) Pending review: review desk layout (sample), ID: bits-c69, Secondary Actions: Expand
+		86 text Designer — VICT Studio
+
+The focused UI element is 110 button (expanded) Public activity and tool details, ID: bits-c103, Secondary Actions: Collapse

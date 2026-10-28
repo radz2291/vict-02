@@ -1,0 +1,89 @@
+Browser tab: 2, Title: "Designer — VICT Studio", URL: "http://127.0.0.25:5626/design".
+1 AXWebArea Designer — VICT Studio, URL: 127.0.0.25:5626/design
+	2 container
+		3 container
+			4 link Description: VICT Studio, Value: 127.0.0.25:5626/design
+			5 menu bar Description: Studio menus, ID: bits-c3
+				6 (collapsed) File, ID: bits-c5, Secondary Actions: Expand
+				7 (collapsed) Edit, ID: bits-c7, Secondary Actions: Expand
+				8 (collapsed) View, ID: bits-c9, Secondary Actions: Expand
+				9 (collapsed) Preview, ID: bits-c11, Secondary Actions: Expand
+			10 text Foundation Public Run Review
+		11 container studio-chat-panel
+			12 container
+				13 text Chat
+				14 button Description: Hide Chat, Help: Hide Chat (Escape)
+			15 container Chat
+				16 container Conversation
+					17 container
+						18 container Messages — Message
+							19 text Describe a screen, or select an element to edit it.
+						20 button Scroll to latest message
+					21 container
+						22 text entry area (settable) Description: Message, Help: Enter to send. Shift+Enter for a new line.
+						23 button (disabled) Send
+				24 text Ready
+				25 pop up button (expanded) Description: Chat details, ID: bits-c20, Secondary Actions: Collapse
+				26 container Description: Chat details, ID: bits-c21
+					27 heading Chat details, Value: 3
+						28 text Chat details
+					29 button Description: Close chat details, ID: bits-c100
+					30 text zai/glm-5.3-flash
+					31 text Selected: Container · Screen
+					32 text Ready
+					33 button Reconnect agent
+		34 container
+			35 button (expanded) Description: Toggle Chat drawer, Help: Hide Chat, Secondary Actions: Collapse
+			36 container Workspace mode
+				37 checkbox Design, Value: 1
+				38 checkbox Interact, Value: 0
+				39 checkbox Structure, Value: 0
+			40 button (collapsed) Description: Toggle Document and Selection drawer, Help: Show Document and Selection, Secondary Actions: Expand
+			41 container Application viewport
+				42 AXWebArea about:blank
+					43 container Screen canvas
+						44 container Foundation Public Run Review
+							45 heading Description: Review desk heading, Value: 1
+								46 text Foundation Public Run Review
+							47 text Demo review desk — thirteen public VICT AI compositions. Every record here is simulated demonstration data; nothing is executed.
+							48 container bits-c39
+								49 tab group Description: Review sections, ID: bits-c40
+									50 tab (selected, settable, boolean) Overview, Value: 1, ID: bits-c41
+									51 tab (selectable, settable, boolean) Diagnostics, Value: 0, ID: bits-c42
+									52 tab (selectable, settable, boolean) Context, Value: 0, ID: bits-c43
+								53 container Description: Overview, ID: bits-c44
+									54 container Conversation
+										55 text Demo transcript (sample)
+										56 text Simulated messages only — no provider was contacted.
+										57 container Messages — Message
+											58 container
+												59 text You
+												60 text Sample request: can you review the layout of the review desk? (demo data)
+												61 button Copy message
+												62 text Assistant
+												63 text Sample reply: one compact correction is ready. (demo data)
+												64 button Copy message
+										65 container
+											66 text entry area (settable) Description: Message, Help: Enter to send. Shift+Enter for a new line.
+											67 button (disabled) Send
+									68 container bits-c50
+										69 button (expanded) Public summary (demo), ID: bits-c51, Secondary Actions: Collapse
+										70 container bits-c52
+											71 text Demo data — only the supplied public summary is rendered.
+											72 container bits-c53
+												73 button (expanded) Public summary, ID: bits-c54, Secondary Actions: Collapse
+												74 text Checked the supplied component contracts and preserved the manual marker.
+									75 container bits-c56
+										76 button (expanded) Demo plan (sample) 1 of 2 done, ID: bits-c57, Secondary Actions: Collapse
+											77 text Demo plan (sample)
+											78 text 1 of 2 done
+										79 container bits-c58
+											80 text Simulated plan — nothing was executed.
+											81 button (collapsed) Review completed, ID: bits-c60, Secondary Actions: Expand
+											82 button (collapsed) Device verification pending, ID: bits-c63, Secondary Actions: Expand
+									83 container bits-c65
+										84 button (expanded) 1 to do, ID: bits-c66, Secondary Actions: Collapse
+										85 button (collapsed) Pending review: review desk layout (sample), ID: bits-c69, Secondary Actions: Expand
+		86 text Designer — VICT Studio
+
+The focused UI element is 29 button Description: Close chat details, ID: bits-c100

@@ -346,8 +346,12 @@
       return;
     }
     const view=rootElement?.ownerDocument.defaultView;
-    if(!view||!(event.target instanceof view.HTMLElement))return;
-    const target = event.target;
+    const candidate=event.target as Element|null;
+    if(!view||!candidate||candidate.nodeType!==1||candidate.namespaceURI!=='http://www.w3.org/1999/xhtml')return;
+    // Adoption changes ownerDocument but retains the creation prototype. Use
+    // the same DOM brand check as owned popups rather than destination instanceof.
+    try {if(!view.Element.prototype.matches.call(candidate,'*'))return;}catch{return;}
+    const target = candidate as HTMLElement;
     if (
       !rootElement?.contains(target) ||
       target.closest(

@@ -9,14 +9,17 @@
   }=$props();
   const contexts=getAllContexts();
   let frame:HTMLIFrameElement;
-  let start:()=>void=()=>{};
+  let start:(loaded?:boolean)=>void=()=>{};
   onMount(()=>{
     let child:ReturnType<typeof mount>|undefined,styles:MutationObserver|undefined,resize:ResizeObserver|undefined;
     let activeDocument:Document|undefined,disposed=false;
     function clean(){styles?.disconnect();resize?.disconnect();if(child)void unmount(child);child=undefined;content=undefined;}
-    start=()=>{
+    start=(loaded=false)=>{
       if(disposed)return;
-      const doc=frame?.contentDocument;if(!doc||doc===activeDocument)return;
+      const doc=frame?.contentDocument;
+      // Ignore the transient initial about:blank document and a shell still
+      // parsing. A real load event or an already-complete srcdoc is ready.
+      if(!doc||doc.URL!=='about:srcdoc'||(!loaded&&doc.readyState!=='complete')||!doc.body||doc===activeDocument)return;
       clean();activeDocument=doc;
       // This is the same compiled Svelte renderer, mounted in an actual browser
       // viewport. No authored JavaScript, source-to-code regeneration or iframe
@@ -41,5 +44,8 @@
     start();return ()=>{disposed=true;start=()=>{};clean();};
   });
 </script>
-<iframe bind:this={frame} {title} src="about:blank" onload={()=>start()} style:height={`${Math.max(160,Math.min(8192,height))}px`} data-application-viewport="isolated"></iframe>
+<!-- Fixed inert host shell only: authored content still comes from the same
+     compiled renderer. srcdoc retains the embedding document's URL context
+     for nested resources without adding authored HTML, scripts or permissions. -->
+<iframe bind:this={frame} {title} srcdoc="<!doctype html><html><head></head><body></body></html>" onload={()=>start(true)} style:height={`${Math.max(160,Math.min(8192,height))}px`} data-application-viewport="isolated"></iframe>
 <style>iframe{display:block;width:100%;border:0;background:white;min-width:0;}</style>

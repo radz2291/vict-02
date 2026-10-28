@@ -1,0 +1,67 @@
+{
+  "consumerMediaFinal": {
+    "currentTime": 2,
+    "duration": 2,
+    "ended": true,
+    "error": null,
+    "paused": true,
+    "readyState": 4,
+    "trackElements": [
+      {
+        "label": "English captions",
+        "readyState": 2
+      }
+    ],
+    "tracks": [
+      {
+        "cues": null,
+        "kind": "captions",
+        "label": "English captions",
+        "mode": "showing"
+      }
+    ]
+  },
+  "consumerImages": [
+    {
+      "complete": true,
+      "fill": "rgb(0, 0, 0)",
+      "label": "Synthetic preview still for the Foundation Media Live gallery",
+      "localIds": [],
+      "naturalWidth": 320,
+      "tag": "IMG"
+    },
+    {
+      "fill": "rgb(0, 0, 0)",
+      "label": "Foundation brand mark (instance A)",
+      "localIds": [
+        "vict-63_35_32-brand",
+        "vict-63_35_32-round"
+      ],
+      "tag": "svg"
+    },
+    {
+      "fill": "rgb(0, 0, 0)",
+      "label": "Foundation brand mark (instance B)",
+      "localIds": [
+        "vict-63_35_33-brand",
+        "vict-63_35_33-round"
+      ],
+      "tag": "svg"
+    },
+    {
+      "fill": "rgb(0, 0, 0)",
+      "label": null,
+      "localIds": [
+        "vict-63_35_34-brand",
+        "vict-63_35_34-round"
+      ],
+      "tag": "svg"
+    },
+    {
+      "fill": "none",
+      "label": null,
+      "localIds": [],
+      "tag": "svg"
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "drawerOwnerBefore2": [
+    {
+      "cls": "vict-rhea vict-controls svelte-1rr4c2n",
+      "height": 528,
+      "overflow": "hidden",
+      "scrollHeight": 6807,
+      "tag": "DIV",
+      "top": 3071.199951171875
+    },
+    {
+      "cls": "vict-drawer-body svelte-1m9f44o",
+      "height": 434,
+      "overflow": "auto",
+      "scrollHeight": 3404,
+      "tag": "DIV",
+      "top": 668
+    }
+  ],
+  "drawerOwnerAfter2": [
+    {
+      "cls": "vict-rhea vict-controls svelte-1rr4c2n",
+      "height": 528,
+      "overflow": "hidden",
+      "scrollHeight": 6807,
+      "tag": "DIV",
+      "top": 3071.199951171875
+    },
+    {
+      "cls": "vict-drawer-body svelte-1m9f44o",
+      "height": 434,
+      "overflow": "auto",
+      "scrollHeight": 3404,
+      "tag": "DIV",
+      "top": 1336
+    }
+  ],
+  "drawerOwnerRestored": [
+    {
+      "cls": "vict-rhea vict-controls svelte-1rr4c2n",
+      "height": 528,
+      "overflow": "auto",
+      "scrollHeight": 6788,
+      "tag": "DIV",
+      "top": 3071.199951171875
+    }
+  ],
+  "manualDrawerFocusReturned": true
+}

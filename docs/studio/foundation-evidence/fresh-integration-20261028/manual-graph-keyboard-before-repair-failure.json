@@ -1,0 +1,22 @@
+{
+  "before": {
+    "x": 0,
+    "y": 0
+  },
+  "after": {
+    "x": 0,
+    "y": 0
+  },
+  "graphBUnchanged": true,
+  "nativeNode": {
+    "className": "svelte-flow__node svelte-flow__node-rich draggable connectable selectable nopan selected",
+    "style": "z-index: 1000; transform: translate(5px, 20px); visibility: visible; touch-action: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);",
+    "tabindex": "0"
+  },
+  "selectionAndAnnouncement": "alue\nManual step 7\nText step\n-\nText input\ntext\nText output\ntext\nPrompt\nNotes\nManual graph breadth\nDifferent content height\nNo processing engine execution\nWeight\n1\nManual step 8\nCompact note\n-\nText input\ntext\nText output\ntext\nValue\nManual step 9\nText step\n-\nText input\ntext\nText output\ntext\nPrompt\nNotes\nManual graph breadth\nDifferent content height\nNo processing engine execution\nWeight\n1\nManual step 10\nCompact note\n-\nText input\ntext\nText output\ntext\nValue\nManual step 11\nText step\n-\nText input\ntext\nText output\ntext\nPrompt\nNotes\nManual graph breadth\nDifferent content height\nNo processing engine execution\nWeight\n1\nManual step 12\nCompact note\n-\nText input\ntext\nText output\ntext\nValue\nSvelte Flow\nMoved selected node down. New position, x: 5, y: 0\nSelection\n\n1 nodes · 0 connections\n\nNode name\nPrompt\nNotes\nIndependent movement\nTyped ports\nWeight\n1\nNode X\nNode Y\nConnect or reconnect\nGraph clipboard",
+  "actualKeys": [
+    "ArrowRight",
+    "Shift+ArrowDown"
+  ],
+  "result": "Canonical bound positions unchanged; XYflow announcement alone is not a persistence pass."
+}

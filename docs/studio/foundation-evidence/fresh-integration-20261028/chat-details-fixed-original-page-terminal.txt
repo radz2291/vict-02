@@ -1,0 +1,216 @@
+Chat details
+×
+
+zai/glm-5.3-flash
+
+Turn details
+Latest activity
+2:42:19 AM · completed · Read-only panel continuity check: make one scoped overview r
+
+Up to 24 turns retained for 30 minutes in this tab. Reloading clears local history; server evidence also expires or disappears on restart/capacity eviction.
+
+Selected: Container · Screen
+
+0 edits applied
+
+Reconnect agent
+Turn measurements
+
+1 tool calls · 0 refused · 0 calls after refusal · 62.2 s elapsed.
+
+2 authoring model requests · 0 image requests. No confirmed edit.
+
+Reported authoring usage: 24496 input / 2646 output tokens.
+
+0 receipt-derived edits including cleanup.
+
+0 knowledge reads · 1 source reads · 0 edit calls · 0 observation calls.
+
+Settled tool durations summed: 0.0 s; tool-active interval union: 0.0 s; outside-tool time: 62.1 s.
+
+Outside-tool time includes waiting, generation, transport and host overhead; exact provider latency is unavailable.
+
+Exact model steps and cost unavailable. Concurrent tool durations do not add up to wall time.
+
+Progress summaries
+
+Connection, validation and completion metadata. The conversation contains actual assistant messages and tool calls.
+
+Connecting…
+Reading screen…
+Connecting to the VICT / Mastra agent…
+Agent is working on your request…
+Reading current source facts…
+No edits were applied. Confirmed revision r1.r2#0. Engine termination: completed. Source coverage: 17/117 registered definitions present. 100 missing from the 117-item coverage scope. Missing IDs are paged through coverage reads. This inventory does not establish the full requested intent, interactions or visual completion. Source: 62 nodes, 14 state declarations; current appearance unverified; interactions unverified by this agent.
+Tool receipts
+
+Read screen
+
+Read screen started · running
+tool-start
+studio_screen_read
+55424 ms since turn start
+Read current source facts · completed
+observation
+studio_screen_read
+55444 ms since turn start
+{"expectedRevision":"r1.r2#0","cursor":{"documentId":"screen-a775512c-f14a-4c5b-ab16-d054d5f92d7c","revision":"r1.r2#0","digest":"eb66d42fd5ebc2fe158c62d6f9a29bd282116e1f56a6f01a3f9990555a38d2e1","epoch":"b5b7d036-49a0-48e6-b0bb-0ac3586b7328"},"section":"state","items":[{"key":"message","type":"string","initialJson":"\"Hello from my screen\"","fullSource":"Read state with stateKey for lossless declaration JSON pages."},{"key":"accepted","type":"boolean","initialJson":"false","fullSource":"Read state with stateKey for lossless declaration JSON pages."},{"key":"dialogOpen","type":"boolean","initialJson":"false","fullSource":"Read state with stateKey for lossless declaration JSON pages."},{"key":"busy","type":"boolean","initialJson":"false","fullSource":"Read state with stateKey for lossless declaration JSON pages."},{"key":"actionError","type":"string","initialJson":"\"\"","fullSource":"Read state with stateKey for lossless declaration JSON pages."},{"key":"actionResult","type":"string","initialJson":"\"\"","fullSource":"Read state with stateKey for lossless declaration JSON pages."},{"key":"activeTab","type":"string","initialJson":"\"overview\"","fullSource":"Read state with stateKey for lossless declaration JSON pages."},{"key":"draft","type":"string","initialJson":"\"\"","fullSource":"Read state with stateKey for lossless declaration JSON pages."},{"key":"modelChoice","type":"string","initialJson":"\"desk-preview\"","fullSource":"Read state with stateKey for lossless declaration JSON pages."},{"key":"fileChoice","type":"string","initialJson":"\"\"","fullSource":"Read state with stateKey for lossless declaration JSON pages."},{"key":"frameNote","type":"string","initialJson":"\"\"","fullSource":"Read state with stateKey for lossless declaration JSON pages."},{"key":"restoreNote","type":"string","initialJson":"\"\"","fullSource":"Read state with stateKey for lossless declaration JSON pages."},{"key":"catalog_tabs-desk_root_value","type":"string","initialJson":"\"tabs-desk-tabs-1\"","fullSource":"Read state with stateKey for lossless declaration JSON pages."},{"key":"catalog_comp-transcript_message","type":"string","initialJson":"\"\"","fullSource":"Read state with stateKey for lossless declaration JSON pages."}],"total":14,"offset":0,"nextOffset":null}
+Sanitized exchanges
+
+Compact previews remain in the conversation. Open a retained original page here; this never invokes a tool again.
+
+Read screen · input
+
+Open first page
+
+Read screen · result
+
+Open first page
+
+Characters 0–4433 of 4433
+
+{
+  "expectedRevision": "r1.r2#0",
+  "cursor": {
+    "documentId": "screen-a775512c-f14a-4c5b-ab16-d054d5f92d7c",
+    "revision": "r1.r2#0",
+    "digest": "eb66d42fd5ebc2fe158c62d6f9a29bd282116e1f56a6f01a3f9990555a38d2e1",
+    "epoch": "b5b7d036-49a0-48e6-b0bb-0ac3586b7328"
+  },
+  "section": "state",
+  "items": [
+    {
+      "key": "message",
+      "type": "string",
+      "initialJson": "\"Hello from my screen\"",
+      "fullSource": "Read state with stateKey for lossless declaration JSON pages."
+    },
+    {
+      "key": "accepted",
+      "type": "boolean",
+      "initialJson": "false",
+      "fullSource": "Read state with stateKey for lossless declaration JSON pages."
+    },
+    {
+      "key": "dialogOpen",
+      "type": "boolean",
+      "initialJson": "false",
+      "fullSource": "Read state with stateKey for lossless declaration JSON pages."
+    },
+    {
+      "key": "busy",
+      "type": "boolean",
+      "initialJson": "false",
+      "fullSource": "Read state with stateKey for lossless declaration JSON pages."
+    },
+    {
+      "key": "actionError",
+      "type": "string",
+      "initialJson": "\"\"",
+      "fullSource": "Read state with stateKey for lossless declaration JSON pages."
+    },
+    {
+      "key": "actionResult",
+      "type": "string",
+      "initialJson": "\"\"",
+      "fullSource": "Read state with stateKey for lossless declaration JSON pages."
+    },
+    {
+      "key": "activeTab",
+      "type": "string",
+      "initialJson": "\"overview\"",
+      "fullSource": "Read state with stateKey for lossless declaration JSON pages."
+    },
+    {
+      "key": "draft",
+      "type": "string",
+      "initialJson": "\"\"",
+      "fullSource": "Read state with stateKey for lossless declaration JSON pages."
+    },
+    {
+      "key": "modelChoice",
+      "type": "string",
+      "initialJson": "\"desk-preview\"",
+      "fullSource": "Read state with stateKey for lossless declaration JSON pages."
+    },
+    {
+      "key": "fileChoice",
+      "type": "string",
+      "initialJson": "\"\"",
+      "fullSource": "Read state with stateKey for lossless declaration JSON pages."
+    },
+    {
+      "key": "frameNote",
+      "type": "string",
+      "initialJson": "\"\"",
+      "fullSource": "Read state with stateKey for lossless declaration JSON pages."
+    },
+    {
+      "key": "restoreNote",
+      "type": "string",
+      "initialJson": "\"\"",
+      "fullSource": "Read state with stateKey for lossless declaration JSON pages."
+    },
+    {
+      "key": "catalog_tabs-desk_root_value",
+      "type": "string",
+      "initialJson": "\"tabs-desk-tabs-1\"",
+      "fullSource": "Read state with stateKey for lossless declaration JSON pages."
+    },
+    {
+      "key": "catalog_comp-transcript_message",
+      "type": "string",
+      "initialJson": "\"\"",
+      "fullSource": "Read state with stateKey for lossless declaration JSON pages."
+    }
+  ],
+  "total": 14,
+  "offset": 0,
+  "nextOffset": null,
+  "turnProgress": {
+    "applied": 0,
+    "metrics": {
+      "toolCalls": 1,
+      "completedCalls": 1,
+      "refusedCalls": 0,
+      "recoveryAttempts": 0,
+      "toolElapsedMs": 20,
+      "providerRequests": 1,
+      "visionRequests": 0,
+      "acknowledgementMs": 0,
+      "confirmedEdits": 0,
+      "usage": {
+        "inputTokens": 10656,
+        "outputTokens": 2319,
+        "totalTokens": 12975
+      },
+      "categories": {
+        "knowledge": 0,
+        "source": 1,
+        "edit": 0,
+        "observe": 0,
+        "other": 0
+      },
+      "elapsedMs": 55444,
+      "toolActiveMs": 20,
+      "outsideToolMs": 55424,
+      "modelSteps": null,
+      "cost": null
+    },
+    "retainedKnowledge": {
+      "scope": "Complete contract bodies delivered in this turn only; reuse still requires their content to remain available in model context. Source facts are never cached knowledge.",
+      "complete": [],
+      "partialCount": 0
+    },
+    "visualEvidence": {
+      "regions": [],
+      "currentSourceObservations": 0,
+      "scope": "Captured regions only; source freshness does not establish current runtime/viewport freshness or offscreen/interaction coverage.",
+      "interactionsVerified": false
+    },
+    "evidence": "Host receipt-derived totals include all acknowledged transactions, including cleanup. Outside-tool time is waiting/generation/transport/host overhead, not measured provider latency. Captured regions do not establish full-page or interaction coverage."
+  }
+}
+Connection record
+
+VICT turn turn-3f7083c8-4e37-47f5-bbe1-0e0c92ca62d0 · profile v1_ad446303f24a2495f602057ffb6bac241fa4cfd10f4fdfcaa8fc31d0f52e2596

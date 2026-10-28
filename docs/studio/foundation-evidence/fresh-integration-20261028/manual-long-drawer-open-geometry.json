@@ -1,0 +1,31 @@
+{
+  "drawerBackgroundBefore": {
+    "bodyTop": 0,
+    "clientHeight": 528,
+    "documentTop": 0,
+    "overflow": "auto",
+    "scrollHeight": 528
+  },
+  "longDrawerGeometry": {
+    "appBodyOverflow": "auto",
+    "body": {
+      "overflow": "auto",
+      "rect": [
+        733.7999877929688,
+        93.5999984741211,
+        323,
+        434
+      ],
+      "scrollHeight": 3404,
+      "scrollTop": 0
+    },
+    "documentTop": 0,
+    "focusedInside": true,
+    "panel": [
+      733,
+      0,
+      340,
+      528
+    ]
+  }
+}

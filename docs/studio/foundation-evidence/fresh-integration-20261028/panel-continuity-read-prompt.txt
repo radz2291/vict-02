@@ -1,0 +1,1 @@
+Read-only panel continuity check: make one scoped overview read of the CURRENT saved application and report its document name, saved revision, node count and declared local state names. Do not edit source, observe pixels, change views/runtime, execute any tool outside this read or imply execution of the supplied demo records. This is a source inspection only.

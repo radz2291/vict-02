@@ -1,0 +1,65 @@
+[
+  {
+    "nodeId": "vict.ai.reasoning-4108ef47",
+    "buttonName": "Manual supplied public summary",
+    "before": "true",
+    "after": "false",
+    "reopened": "true"
+  },
+  {
+    "nodeId": "vict.ai.plan-b3cdf6e6",
+    "buttonName": "Demo plan (sample) 1 of 2 done",
+    "before": "true",
+    "after": "false",
+    "reopened": "true"
+  },
+  {
+    "nodeId": "vict.ai.task-afe5d59b",
+    "buttonName": "Review process (public steps)",
+    "before": "true",
+    "after": "false",
+    "reopened": "true"
+  },
+  {
+    "nodeId": "vict.ai.queue-a04fe58a",
+    "buttonName": "1 to do",
+    "before": "true",
+    "after": "false",
+    "reopened": "true"
+  },
+  {
+    "nodeId": "vict.ai.terminal-d44e19ef",
+    "buttonName": "Ran $ npm run review:layout -- --demo",
+    "before": "true",
+    "after": "false",
+    "reopened": "true"
+  },
+  {
+    "nodeId": "vict.ai.chain-of-thought-ffd34921",
+    "buttonName": "Public summary (demo)",
+    "before": "true",
+    "after": "false",
+    "reopened": "true"
+  },
+  {
+    "nodeId": "vict.ai.subagent-2099c4fc",
+    "buttonName": "Sample role: layout reviewer (demo)",
+    "before": "true",
+    "after": "false",
+    "reopened": "true"
+  },
+  {
+    "nodeId": "vict.ai.test-results-3b83e578",
+    "buttonName": "Example tests (demo) — two sample passes, device check not run",
+    "before": "true",
+    "after": "false",
+    "reopened": "true"
+  },
+  {
+    "nodeId": "vict.ai.sources-8d26cee0",
+    "buttonName": "Used 1 sources",
+    "before": "true",
+    "after": "false",
+    "reopened": "true"
+  }
+]

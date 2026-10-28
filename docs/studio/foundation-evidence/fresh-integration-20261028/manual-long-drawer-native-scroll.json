@@ -1,0 +1,22 @@
+{
+  "drawerScrollOwnersBefore": [
+    {
+      "cls": "vict-drawer-body svelte-1m9f44o",
+      "height": 434,
+      "part": "body",
+      "scrollHeight": 3404,
+      "tag": "DIV",
+      "top": 0
+    }
+  ],
+  "drawerScrollOwnersAfter": [
+    {
+      "cls": "vict-drawer-body svelte-1m9f44o",
+      "height": 434,
+      "part": "body",
+      "scrollHeight": 3404,
+      "tag": "DIV",
+      "top": 668
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+Browser tab: 2, Title: "Designer — VICT Studio", URL: "http://127.0.0.25:5626/design".
+The following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 19, 23-24
++							87 container
++								88 text You
++								89 text Read-only panel continuity check: make one scoped overview read of the CURRENT saved application and report its document name, saved revision, node count and declared local state names. Do not edit source, observe pixels, change views/runtime, execute any tool outside this read or imply execution of the supplied demo records. This is a source inspection only.
++								90 button Description: Copy message, ID: bits-c101
++								91 text Assistant
++								92 text Working. Public notes and tool receipts are available in details.
++								93 button (collapsed) Public activity and tool details, ID: bits-c103, Secondary Actions: Expand
+~						22 text entry area (settable) Description: Message, Help: Enter to send. Shift+Enter for a new line., Value: Read-only panel continuity check: make one scoped overview read of the CURRENT saved application and report its document name, saved revision, node count and declared local state names. Do not edit source, observe pixels, change views/runtime, execute any tool outside this read or imply execution of the supplied demo records. This is a source inspection only.
++						94 button Stop
++				95 container Connecting…
++					96 text Working…
+The focused UI element is 22 text entry area (settable) Description: Message, Help: Enter to send. Shift+Enter for a new line., Value: Read-only panel continuity check: make one scoped overview read of the CURRENT saved application and report its document name, saved revision, node count and declared local state names. Do not edit source, observe pixels, change views/runtime, execute any tool outside this read or imply execution of the supplied demo records. This is a source inspection only.

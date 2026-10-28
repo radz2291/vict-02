@@ -1,0 +1,44 @@
+Browser tab: 2, Title: "Installed VICT consumer replay", URL: "http://127.0.0.25:5626/foundation-proof-26010ca/index.html".
+The following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 136-175
+~				132 container Matrix 23 retained source replay
+~					133 container Foundation AI Review
+~						134 heading Foundation AI Review, Value: 1
+~							135 text Foundation AI Review
++						136 text COMPACT REVIEW OF THE RETAINED FOUNDATION GRAPH — SUPPLIED PUBLIC FACTS, PRESENTATION AND TYPED INTENT ONLY.
++						137 container bits-c18
++							138 button (expanded) Review process (public steps), ID: bits-c19, Secondary Actions: Collapse
++							139 container bits-c20
++								140 text Supplied verification facts only — no execution on this screen.
++								141 text Retained Foundation Graph imported
++								142 button (collapsed) Prior Input text intact, ID: bits-c22, Secondary Actions: Expand
++								143 button (collapsed) Prior Output name intact, ID: bits-c25, Secondary Actions: Expand
++								144 text Port-capacity violation safely refused Deletion, reconnection and creation exercised Save/reload and Run confirmed both values intact
++						145 container bits-c27
++							146 button (expanded) Public summary, ID: bits-c28, Secondary Actions: Collapse
++							147 text Review confirmed graph behavior and preserve the prior manual edits.
++						148 container bits-c33
++							149 button (expanded) Used 1 sources, ID: bits-c34, Secondary Actions: Collapse
++							150 link Description: vict-02 — supplied source link (opens in a new tab), Value: github.com/radz2291/vict-02
++						151 container bits-c36
++							152 button (expanded) Tool receipt — Run saved graph, ID: bits-c37, Secondary Actions: Collapse
++							153 text Verified coexistence
++						154 container
++							155 text Verification note  — Saved graph Run completed with both retained values intact: Input  Manual coexistence after reboot , Output  Verified coexistence .
++						156 text This screen presents supplied public facts only; it performs no provider, tool or network execution.
++						157 container
++							158 container
++								159 text graph-current-saved-source.json
++								160 button (disabled) Remove graph-current-saved-source.json
++							161 text entry area (settable) Description: Draft note, Help: Enter to send. Shift+Enter for a new line., Value: Consumer local note
++							162 button Send
++						163 text Record review decision
++						164 text Typed local boolean intent only — no approval authority and no provider execution.
++						165 button Deny
++						166 button Approve
++						167 text Decision recorded (typed boolean):
++						168 text true
++						169 text Composer sent draft:
++						170 text Consumer local note
++						171 pop up button (collapsed) Verification checks, ID: c50-trigger, Secondary Actions: Expand
+The focused UI element is 162 button Send

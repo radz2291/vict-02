@@ -1,0 +1,14 @@
+{
+  "manualFile": "src/review.ts",
+  "manualFrame": "{\"text\":\"at reviewLayout (src/review.ts:12:9)\",\"name\":\"reviewLayout\",\"file\":\"src/review.ts\",\"line\":12,\"column\":9,\"internal\":false}",
+  "manualDraft": "Manual suggestion: keep this as a local draft",
+  "manualSent": "Manual suggestion: keep this as a local draft",
+  "manualAccepted": "true",
+  "manualToolDecision": "true",
+  "manualModelChoice": "desk-preview-alt",
+  "manualEffortChoice": "detailed",
+  "manualFeedback": "like",
+  "manualRemovedAttachment": "manual-record",
+  "composerRetained": "Manual suggestion: keep this as a local draft",
+  "attachmentStillPresent": true
+}

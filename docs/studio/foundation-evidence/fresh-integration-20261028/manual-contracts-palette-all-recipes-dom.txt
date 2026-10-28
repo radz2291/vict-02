@@ -1,0 +1,341 @@
+Browser tab: 2, Title: "Designer — VICT Studio", URL: "http://127.0.0.25:5626/design".
+1 AXWebArea Designer — VICT Studio, URL: 127.0.0.25:5626/design
+	2 container
+		3 container
+			4 link Description: VICT Studio, Value: 127.0.0.25:5626/design
+			5 menu bar Description: Studio menus, ID: bits-c3
+				6 (collapsed) File, ID: bits-c5, Secondary Actions: Expand
+				7 (collapsed) Edit, ID: bits-c7, Secondary Actions: Expand
+				8 (collapsed) View, ID: bits-c9, Secondary Actions: Expand
+				9 (collapsed) Preview, ID: bits-c11, Secondary Actions: Expand
+			10 text Foundation Manual Contracts ○ New screen
+			11 link Description: Operator tools, Value: 127.0.0.25:5626/
+		12 container
+			13 button (collapsed) Description: Toggle Chat drawer, Help: Show Chat, Secondary Actions: Expand
+			14 container Workspace mode
+				15 checkbox Design, Value: 1
+				16 checkbox Interact, Value: 0
+				17 checkbox Structure, Value: 0
+			18 button (collapsed) Description: Toggle Document and Selection drawer, Help: Show Document and Selection, Secondary Actions: Expand
+			19 container
+				20 container Application viewport
+					21 AXWebArea about:blank
+						30 container
+							31 container Screen canvas
+								32 container Foundation Manual Contracts
+							33 container Floating selection tools
+								34 button Description: Hide tools, Help: Hide tools · Escape. F10 restores them.
+								35 container Tools for Foundation Manual Contracts
+									36 tab group Tool pages
+										37 tab (selectable, collapsed, settable, boolean) Description: Format tools, Value: 0, ID: c262-format, Secondary Actions: Expand
+										38 tab (selected, expanded, settable, boolean) Description: Insert tools, Value: 1, ID: c262-insert, Secondary Actions: Collapse
+										39 tab (selectable, collapsed, settable, boolean) Description: Arrange tools, Value: 0, ID: c262-arrange, Secondary Actions: Expand
+										40 tab (selectable, collapsed, settable, boolean) Description: Connect tools, Value: 0, ID: c262-connect, Secondary Actions: Expand
+									41 text Foundation Manual Contracts
+									42 container Description: Insert tools, ID: c262-panel
+										43 container Compose screen
+											44 pop up button (collapsed, settable) Description: Insertion destination, Value: Inside Screen, Secondary Actions: Expand
+												45 menu
+													46 Choose where to add…
+													47 (selected) Inside Screen
+											48 search text field (settable) Search elements
+											49 tab group Insert content pages
+												50 tab (selected, expanded, settable, boolean) New element, Value: 1, ID: c266-0, Secondary Actions: Collapse
+												51 tab (selectable, collapsed, settable, boolean) Reuse (0), Value: 0, ID: c266-1, Secondary Actions: Expand
+											52 container Description: New element, ID: c266-panel
+												53 button + Section, Help: A vertical container for nested content
+													54 text +
+													55 text Section
+												56 button + Row, Help: Arrange children side by side, with wrapping
+													57 text +
+													58 text Row
+												59 button + Heading, Help: A clear title for your screen
+													60 text +
+													61 text Heading
+												62 button + Text, Help: Supporting copy or a state-bound value
+													63 text +
+													64 text Text
+												65 button + Text input, Help: Accessible text input with independent local state and change binding
+													66 text +
+													67 text Text input
+												68 button + Alert · Rhea, Help: A semantic inline status with title and description; no toast host. Uses the public Rhea stylesheet.
+													69 text +
+													70 text Alert · Rhea
+												71 button + Breadcrumb · Rhea, Help: Labelled native navigation and current-page semantics; destinations remain host-owned. Uses the public Rhea stylesheet.
+													72 text +
+													73 text Breadcrumb · Rhea
+												74 button + Button group · Rhea, Help: A labelled group of ordinary buttons; connect each through declared canonical interactions. Uses the public Rhea stylesheet.
+													75 text +
+													76 text Button group · Rhea
+												77 button + Card · Rhea, Help: A reusable semantic article with editable title and body; no fixed marketing template. Uses the public Rhea stylesheet.
+													78 text +
+													79 text Card · Rhea
+												80 button + Empty state · Rhea, Help: A restrained empty-content message; add an action only when the product has one. Uses the public Rhea stylesheet.
+													81 text +
+													82 text Empty state · Rhea
+												83 button + Field · Rhea, Help: Associated native label, typed local value and canonical change binding. No form transport. Uses the public Rhea stylesheet.
+													84 text +
+													85 text Field · Rhea
+												86 button + Input · Rhea, Help: Associated native label, typed local value and canonical change binding. No form transport. Uses the public Rhea stylesheet.
+													87 text +
+													88 text Input · Rhea
+												89 button + Text area · Rhea, Help: Associated native label, typed local value and canonical change binding. No form transport. Uses the public Rhea stylesheet.
+													90 text +
+													91 text Text area · Rhea
+												92 button + Native select · Rhea, Help: Associated native label, typed local value and canonical change binding. No form transport. Uses the public Rhea stylesheet.
+													93 text +
+													94 text Native select · Rhea
+												95 button + Keyboard hint · Rhea, Help: A native kbd label; this does not register a shortcut. Uses the public Rhea stylesheet.
+													96 text +
+													97 text Keyboard hint · Rhea
+												98 button + Skeleton · Rhea, Help: A decorative loading placeholder; drive visibility from real loading state. Uses the public Rhea stylesheet.
+													99 text +
+													100 text Skeleton · Rhea
+												101 button + Spinner · Rhea, Help: An accessible local status indicator with reduced-motion support; no fabricated task progress. Uses the public Rhea stylesheet.
+													102 text +
+													103 text Spinner · Rhea
+												104 button + Table · Rhea, Help: Native semantic table with headers and caption; not a sorting/filtering data-grid adapter. Uses the public Rhea stylesheet.
+													105 text +
+													106 text Table · Rhea
+												107 button + Button, Help: Button · editable properties, declared slots and outputs
+													108 text +
+													109 text Button
+												110 button + Checkbox, Help: Checkbox · editable properties, declared slots and outputs
+													111 text +
+													112 text Checkbox
+												113 button + Select, Help: Select · editable properties, declared slots and outputs
+													114 text +
+													115 text Select
+												116 button + Dialog, Help: Dialog · editable properties, declared slots and outputs
+													117 text +
+													118 text Dialog
+												119 button + Switch, Help: Switch · editable properties, declared slots and outputs
+													120 text +
+													121 text Switch
+												122 button + Toggle, Help: Toggle · editable properties, declared slots and outputs
+													123 text +
+													124 text Toggle
+												125 button + Select Multiple, Help: Select Multiple · editable properties, declared slots and outputs
+													126 text +
+													127 text Select Multiple
+												128 button + Combobox, Help: Combobox · editable properties, declared slots and outputs
+													129 text +
+													130 text Combobox
+												131 button + Combobox Multiple, Help: Combobox Multiple · editable properties, declared slots and outputs
+													132 text +
+													133 text Combobox Multiple
+												134 button + Toggle Group, Help: Toggle Group · editable properties, declared slots and outputs
+													135 text +
+													136 text Toggle Group
+												137 button + Toggle Group Multiple, Help: Toggle Group Multiple · editable properties, declared slots and outputs
+													138 text +
+													139 text Toggle Group Multiple
+												140 button + Accordion, Help: Accordion · editable properties, declared slots and outputs
+													141 text +
+													142 text Accordion
+												143 button + Accordion Multiple, Help: Accordion Multiple · editable properties, declared slots and outputs
+													144 text +
+													145 text Accordion Multiple
+												146 button + Slider, Help: Slider · editable properties, declared slots and outputs
+													147 text +
+													148 text Slider
+												149 button + Meter, Help: Meter · editable properties, declared slots and outputs
+													150 text +
+													151 text Meter
+												152 button + Progress, Help: Progress · editable properties, declared slots and outputs
+													153 text +
+													154 text Progress
+												155 button + Pagination, Help: Pagination · editable properties, declared slots and outputs
+													156 text +
+													157 text Pagination
+												158 button + Date Field, Help: Date Field · editable properties, declared slots and outputs
+													159 text +
+													160 text Date Field
+												161 button + Date Picker, Help: Date Picker · editable properties, declared slots and outputs
+													162 text +
+													163 text Date Picker
+												164 button + Calendar, Help: Calendar · editable properties, declared slots and outputs
+													165 text +
+													166 text Calendar
+												167 button + Time Field, Help: Time Field · editable properties, declared slots and outputs
+													168 text +
+													169 text Time Field
+												170 button + Date Range Field, Help: Date Range Field · editable properties, declared slots and outputs
+													171 text +
+													172 text Date Range Field
+												173 button + Date Range Picker, Help: Date Range Picker · editable properties, declared slots and outputs
+													174 text +
+													175 text Date Range Picker
+												176 button + Range Calendar, Help: Range Calendar · editable properties, declared slots and outputs
+													177 text +
+													178 text Range Calendar
+												179 button + Dropdown Menu, Help: Dropdown Menu · editable properties, declared slots and outputs
+													180 text +
+													181 text Dropdown Menu
+												182 button + Context Menu, Help: Context Menu · editable properties, declared slots and outputs
+													183 text +
+													184 text Context Menu
+												185 button + Menubar, Help: Menubar · editable properties, declared slots and outputs
+													186 text +
+													187 text Menubar
+												188 button + Command, Help: Command · editable properties, declared slots and outputs
+													189 text +
+													190 text Command
+												191 button + Navigation Menu, Help: Navigation Menu · editable properties, declared slots and outputs
+													192 text +
+													193 text Navigation Menu
+												194 button + Avatar, Help: Avatar · editable properties, declared slots and outputs
+													195 text +
+													196 text Avatar
+												197 button + Aspect Ratio, Help: Aspect Ratio · editable properties, declared slots and outputs
+													198 text +
+													199 text Aspect Ratio
+												200 button + Separator, Help: Separator · editable properties, declared slots and outputs
+													201 text +
+													202 text Separator
+												203 button + Label, Help: Label · editable properties, declared slots and outputs
+													204 text +
+													205 text Label
+												206 button + Scroll Area, Help: Scroll Area · editable properties, declared slots and outputs
+													207 text +
+													208 text Scroll Area
+												209 button + Toolbar, Help: Toolbar · editable properties, declared slots and outputs
+													210 text +
+													211 text Toolbar
+												212 button + Link Preview, Help: Link Preview · editable properties, declared slots and outputs
+													213 text +
+													214 text Link Preview
+												215 button + Tooltip, Help: Tooltip · editable properties, declared slots and outputs
+													216 text +
+													217 text Tooltip
+												218 button + Popover, Help: Popover · editable properties, declared slots and outputs
+													219 text +
+													220 text Popover
+												221 button + Alert Dialog, Help: Alert Dialog · editable properties, declared slots and outputs
+													222 text +
+													223 text Alert Dialog
+												224 button + Tabs, Help: Tabs · editable properties, declared slots and outputs
+													225 text +
+													226 text Tabs
+												227 button + Collapsible, Help: Collapsible · editable properties, declared slots and outputs
+													228 text +
+													229 text Collapsible
+												230 button + Conversation, Help: Compose authored messages and a prompt input in a conversation presentation.
+													231 text +
+													232 text Conversation
+												233 button + Reasoning, Help: Render supplied reasoning using the existing public VICT AI pattern; no execution authority.
+													234 text +
+													235 text Reasoning
+												236 button + Chain Of Thought, Help: Render supplied chain-of-thought using the existing public VICT AI pattern; no execution authority.
+													237 text +
+													238 text Chain Of Thought
+												239 button + Tool, Help: Render supplied tool using the existing public VICT AI pattern; no execution authority.
+													240 text +
+													241 text Tool
+												242 button + Plan, Help: Render supplied plan using the existing public VICT AI pattern; no execution authority.
+													243 text +
+													244 text Plan
+												245 button + Task, Help: Render supplied task using the existing public VICT AI pattern; no execution authority.
+													246 text +
+													247 text Task
+												248 button + Queue, Help: Render supplied queue using the existing public VICT AI pattern; no execution authority.
+													249 text +
+													250 text Queue
+												251 button + Terminal, Help: Render supplied terminal using the existing public VICT AI pattern; no execution authority.
+													252 text +
+													253 text Terminal
+												254 button + Test Results, Help: Render supplied test-results using the existing public VICT AI pattern; no execution authority.
+													255 text +
+													256 text Test Results
+												257 button + Stack Trace, Help: Render supplied stack-trace using the existing public VICT AI pattern; no execution authority.
+													258 text +
+													259 text Stack Trace
+												260 button + Subagent, Help: Render supplied subagent using the existing public VICT AI pattern; no execution authority.
+													261 text +
+													262 text Subagent
+												263 button + Context, Help: Render supplied context using the existing public VICT AI pattern; no execution authority.
+													264 text +
+													265 text Context
+												266 button + Sources, Help: Render supplied sources using the existing public VICT AI pattern; no execution authority.
+													267 text +
+													268 text Sources
+												269 button + Inline Citation, Help: Render supplied inline-citation using the existing public VICT AI pattern; no execution authority.
+													270 text +
+													271 text Inline Citation
+												272 button + File Tree, Help: Render supplied file-tree using the existing public VICT AI pattern; no execution authority.
+													273 text +
+													274 text File Tree
+												275 button + Markdown, Help: Render supplied markdown using the existing public VICT AI pattern; no execution authority.
+													276 text +
+													277 text Markdown
+												278 button + Checkpoint, Help: Restore request only; host validates and advances history.
+													279 text +
+													280 text Checkpoint
+												281 button + Confirmation, Help: Boolean decision request only. Host owns approval validation and state transitions.
+													282 text +
+													283 text Confirmation
+												284 button + Suggestion, Help: Supplied suggestion selected; connect to controlled composer state.
+													285 text +
+													286 text Suggestion
+												287 button + Model selector, Help: Supplied model id selection request; server validates actual provider use. Supplied effort id selection request.
+													288 text +
+													289 text Model selector
+												290 button + Chat message with actions, Help: Present a controlled message with explicit host action requests.
+													291 text +
+													292 text Chat message with actions
+												293 button + Prompt input with attachments, Help: Compose text and supplied attachment metadata with typed host requests.
+													294 text +
+													295 text Prompt input with attachments
+												296 button + Chat transcript, Help: Present complete supplied chat messages and public execution events using the existing Conversation.
+													297 text +
+													298 text Chat transcript
+												299 button + Flow canvas, Help: Read-only authored topology and positions with ephemeral pan, zoom and selection.
+													300 text +
+													301 text Flow canvas
+												302 button + Rich node editor, Help: Editable application graph with rich fields, named typed ports, independent movement, selection, inspection and transactional undo/redo.
+													303 text +
+													304 text Rich node editor
+												305 button + Image, Help: Image through a reusable registered media capability.
+													306 text +
+													307 text Image
+												308 button + Video player, Help: Video player through a reusable registered media capability.
+													309 text +
+													310 text Video player
+												311 button + Provider video embed, Help: Provider video embed through a reusable registered media capability.
+													312 text +
+													313 text Provider video embed
+												314 button + Supplied or custom icon, Help: Supplied or custom icon through a reusable registered media capability.
+													315 text +
+													316 text Supplied or custom icon
+												317 button + Editable vector graphic, Help: Editable vector graphic through a reusable registered media capability.
+													318 text +
+													319 text Editable vector graphic
+												320 button + Media library, Help: Media library through a reusable registered media capability.
+													321 text +
+													322 text Media library
+												323 button + Drawer / sheet, Help: Controlled in-application overlay with authored trigger, body and footer; focus and dismissal stay inside its application viewport.
+													324 text +
+													325 text Drawer / sheet
+												326 button + Adaptive navigation, Help: Real accessible navigation controls that collapse by container width and emit selected route/action identities.
+													327 text +
+													328 text Adaptive navigation
+												329 button + Carousel, Help: Real controlled slide navigation with previous/next, indicators, keyboard buttons and horizontal pointer swipe.
+													330 text +
+													331 text Carousel
+												332 button + Filtered list, Help: Search input actually filters application-provided labels and emits useful selection output.
+													333 text +
+													334 text Filtered list
+												335 button + Action button with icons, Help: A real accessible button with composable supplied/custom icon slots and typed application activation.
+													336 text +
+													337 text Action button with icons
+												338 button + First-visit campaign, Help: Explicit per-application/campaign acknowledgement with durable browser or session memory and declared visibility output.
+													339 text +
+													340 text First-visit campaign
+				24 text ＋
+				25 heading What will you make?, Value: 1
+					26 text What will you make?
+				27 text Select this screen to open its tools, then choose Insert.
+		28 text New screen · not saved yet.
+		29 text Designer — VICT Studio
+
+The focused UI element is 38 tab (selected, expanded, settable, boolean) Description: Insert tools, Value: 1, ID: c262-insert, Secondary Actions: Collapse

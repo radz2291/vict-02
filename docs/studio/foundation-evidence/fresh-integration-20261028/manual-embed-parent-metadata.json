@@ -1,0 +1,11 @@
+{
+  "provenance": "NASA official shortlink https://go.nasa.gov/3GjCppi resolves to https://www.youtube.com/watch?v=fNSmLNWyojA&linkId=195042119; verified with web open.",
+  "frames": [
+    {
+      "allow": "fullscreen; picture-in-picture",
+      "sandbox": null,
+      "src": "https://www.youtube-nocookie.com/embed/fNSmLNWyojA",
+      "title": "NASA official public video — external embed check"
+    }
+  ]
+}

@@ -1,0 +1,74 @@
+Browser tab: 2, Title: "Installed VICT consumer replay", URL: "http://127.0.0.25:5626/foundation-proof-26010ca/index.html".
+1 AXWebArea Installed VICT consumer replay, URL: 127.0.0.25:5626/foundation-proof-26010ca/index.html
+	2 container
+		3 heading Installed VICT consumer replay, Value: 1
+			4 text Installed VICT consumer replay
+		5 text Retained canonical sources through physically installed public packages. Local state and typed outputs run here; external actions, provider calls and navigation do not. This is consumer verification, not new authoring evidence.
+		6 container Retained source selection
+			7 checkbox Responsive 53, Value: 1
+			8 checkbox Matrix 23, Value: 0
+			9 checkbox Media 21, Value: 0
+		10 text Application container width (clamped to available space)
+		11 pop up button (collapsed, settable) Application container width (clamped to available space), Value: 768 px hosted container, ID: consumer-width, Secondary Actions: Expand
+			12 menu
+				13 Choose an option
+				14 Fit available width
+				15 390 px hosted container
+				16 (selected) 768 px hosted container
+				17 1058 px hosted container
+		18 text Source: screen-9bace222-383d-4579-a0ea-bd7a7112f1bd / r1.r3; 53 retained nodes. The exact responsive source retains its original campaign identity on this same origin. Use the isolated controls below for independent campaign tests.
+		19 container Responsive 53 installed application
+			20 AXWebArea about:blank
+				21 container Responsive 53 retained source replay
+					22 container Foundation Responsive Desk
+						23 container Desk header
+							24 heading Foundation Responsive Desk, Value: 1
+								25 text Foundation Responsive Desk
+							26 container Desk navigation
+								98 content list c4
+									99 button Projects
+									100 button Notes
+						30 container
+							31 button Reopen welcome
+							32 button Reset welcome
+						33 container bits-c5
+							34 tab group Description: Desk sections, ID: bits-c6
+								35 tab (selectable, settable, boolean) Projects, Value: 0, ID: bits-c7
+								36 tab (selected, settable, boolean) Notes, Value: 1, ID: bits-c8
+							101 container Description: Notes, ID: bits-c13
+								102 container Notes section
+									103 heading Notes, Value: 2
+										104 text Notes
+									105 text Project note draft
+									106 text field (settable) Project note draft, Value: Installed consumer draft — keep through width and navigation, ID: notesField-control
+									107 text Kept as a local draft while you work; nothing is submitted.
+									108 text Your draft stays while you switch sections, open the details drawer or resize the preview. Manual context marker: desk-owner-keep-20261028.
+		57 button (collapsed) Local state/output receipts, Secondary Actions: Expand
+			58 text Local state/output receipts
+		59 container Direct shared boundary verification
+			60 heading Direct shared boundaries, Value: 2
+				61 text Direct shared boundaries
+			62 text Separate controlled consumers of OwnedHoverCard and the FirstVisit reset capability. These use isolated proof campaign keys.
+			63 container
+				64 heading Independent application A, Value: 3
+					65 text Independent application A
+				66 button (collapsed) Details A, Secondary Actions: Expand
+				67 button Next ordinary action A
+				68 button Show controlled details A
+				69 text Card A: closed; ordinary actions: 0
+				84 text Independent local campaign A. Reset affects only this named campaign key.
+				85 button Dismiss welcome A
+				86 button Reset welcome A
+				73 text Welcome A: shown; memory ready
+			74 container
+				75 heading Independent application B, Value: 3
+					76 text Independent application B
+				77 button (collapsed) Details B, Secondary Actions: Expand
+				78 button Next ordinary action B
+				79 button Show controlled details B
+				80 text Card B: closed; ordinary actions: 0
+				87 button Reopen welcome B
+				88 button Reset welcome B
+				83 text Welcome B: hidden; memory ready
+
+The focused UI element is 100 button Notes
