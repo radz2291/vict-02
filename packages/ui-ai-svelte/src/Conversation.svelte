@@ -130,16 +130,21 @@
                   {:else}
                     {#if message.events}
                       {#if message.hostTurn}
-                        <p class="vict-ai-event-summary" role="status">{message.hostTurn.statusText}</p>
+                        {#if message.hostTurn.evidenceSummary}
+                          <div aria-label="Host evidence summary"><p class="vict-ai-event-summary">Host evidence summary</p><p role="status">{message.hostTurn.evidenceSummary}</p></div>
+                        {:else}<p class="vict-ai-event-summary" role="status">{message.hostTurn.statusText}</p>{/if}
                         <Trace.Root><Trace.Collapsible open={activityOpen[message.id] ?? false} onOpenChange={(open) => activityOpen = {...activityOpen, [message.id]: open}}>
-                          <Trace.CollapsibleTrigger>Public activity and tool details</Trace.CollapsibleTrigger>
-                          <!-- Keep the complete transcript mounted across lifecycle transitions.
-                               Final text is also projected below; focused transcript links never move. -->
+                          <Trace.CollapsibleTrigger>{message.hostTurn.evidenceSummary ? 'Original AI assessment and tool details' : 'Public activity and tool details'}</Trace.CollapsibleTrigger>
+                          <!-- Keep originals mounted through lifecycle transitions. A host
+                               summary never changes model text or focused transcript links. -->
                           <Trace.CollapsibleContent forceMount hidden={!activityOpen[message.id]}>
+                            {#if message.hostTurn.evidenceSummary}<p class="vict-ai-event-summary">Original AI assessment — claims not independently verified. Tool receipts separately record confirmed effects and capture limits.</p>{/if}
                             {@render publicTimeline(message)}
                           </Trace.CollapsibleContent>
                         </Trace.Collapsible></Trace.Root>
-                        {#if message.hostTurn.state === 'completed'}
+                        {#if message.hostTurn.evidenceSummary}
+                          {#if message.hostTurn.state === 'completed' && !message.hostTurn.finalTextEventIds.length}<p class="vict-ai-event-summary">No terminal AI response received.</p>{/if}
+                        {:else if message.hostTurn.state === 'completed'}
                           {@const finalEvents = message.events.filter(event => event.kind === 'text' && event.text.trim().length > 0 && message.hostTurn!.finalTextEventIds.includes(event.id))}
                           {#if finalEvents.length}
                             <div aria-label="Terminal response">{#each finalEvents as event (event.id)}{#if event.kind === 'text'}<div {...presentation?.target('message-text')} class={`vict-ai-markdown ${presentation?.target('message-text').class ?? ''}`}><Markdown content={event.text}/></div>{/if}{/each}</div>

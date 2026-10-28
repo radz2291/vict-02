@@ -15,6 +15,9 @@ export interface ConversationMessage {
     state: 'running' | 'completed' | 'failed' | 'cancelled' | 'interrupted';
     statusText: string;
     finalTextEventIds: readonly string[];
+    /** Optional receipt-derived host report, never a paraphrase or validation
+     * of model prose. Original text stays unchanged in inspectable details. */
+    evidenceSummary?: string;
   };
 }
 /** Sanitized host-supplied tool evidence. This is presentation, never execution authority. */

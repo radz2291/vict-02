@@ -17,6 +17,24 @@ function message(state:NonNullable<ConversationMessage['hostTurn']>['state']='ru
 }
 async function setup(messages:ConversationMessage[]){const target=document.createElement('div');document.body.append(target);instance=mount(HostConversationHarness,{target,props:{messages}});await settle();return target;}
 describe('host lifecycle presentation without transcript loss',()=>{
+  it('keeps unsupported verbose model claims intact in labeled details, never in the host evidence summary',async()=>{
+    const original=message('completed');
+    const unsupported='The footer is clipped. Saved and tested everything. '.repeat(120).trim();
+    original.text=unsupported;original.events=[{id:'final',kind:'text',text:unsupported}];
+    original.hostTurn!.evidenceSummary='No source changes were applied. No image assessment matches the final source. Behavior was not tested by this agent.';
+    const host=await setup([original]);
+    expect(host.querySelector('[aria-label="Host evidence summary"]')?.textContent).toContain('No source changes');
+    expect(host.querySelector('[aria-label="Host evidence summary"]')?.textContent).not.toContain('footer');
+    expect(host.querySelector('[aria-label="Terminal response"]')).toBeNull();
+    const details=host.querySelector<HTMLElement>('[data-slot="trace-collapsible-content"]')!;
+    expect(details.hidden).toBe(true);expect(details.textContent).toContain('claims not independently verified');
+    expect(details.querySelector('[data-event-id="final"]')?.textContent).toBe(unsupported);
+    host.querySelector<HTMLButtonElement>('[data-slot="trace-collapsible-trigger"]')!.click();await settle();
+    expect(details.hidden).toBe(false);
+    const writeText=vi.fn().mockResolvedValue(undefined);Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText}});
+    host.querySelector<HTMLButtonElement>('[aria-label="Copy message"]')!.click();await settle();expect(writeText).toHaveBeenCalledWith(unsupported);
+    expect(()=>parseTranscriptData(JSON.stringify({version:1,messages:[original]}))).toThrow('Unknown data field');
+  });
   it('keeps the public default expanded and rejects lifecycle metadata in canonical authored data',async()=>{
     const original=message();delete original.hostTurn;const host=await setup([original]);
     expect(host.querySelector('[data-slot="trace-collapsible-trigger"]')?.textContent).toContain('Read source');

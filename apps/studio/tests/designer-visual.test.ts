@@ -10,6 +10,7 @@ const bytes = new Uint8Array([0xff,0xd8,0xff,0xc0,0,11,8,0,1,0,1,1,1,0x11,0,0xff
 const cursor = { documentId: 'screen-visual', revision: 'r1', digest: 'v1_fixture', epoch: 'be5d20ea-a11d-49cc-98ef-ef062f089e81' };
 const metadata = () => ({ cursor, capturedAt: new Date().toISOString(), viewport: { width: 1, height: 1, scrollLeft: 0, scrollTop: 0, devicePixelRatio: 1 }, image: { width: 1, height: 1, sourceWidth: 1, sourceHeight: 1, offsetLeft: 0, offsetTop: 0, cropped: false }, preview: { mode: 'design', fingerprint: 'a'.repeat(64) } });
 const context = {} as CapabilityContext;
+const assessmentText=(finding:string)=>JSON.stringify({visibleFindings:[finding],uncertainty:[],notEstablished:['Interaction behavior was not tested.']});
 
 describe('bounded visual observation boundary', () => {
   it('recognizes the exact documented flash model without treating plain GLM as vision', () => {
@@ -38,7 +39,7 @@ describe('bounded visual observation boundary', () => {
   it('passes image bytes to the selected model while returning only bounded observation/provenance', async () => {
     let request!: CaptureRequestEvent; let modelPrompt: unknown; let captures = 0; let confirm!: (event: CaptureRequestEvent) => void;
     const confirmation = new Promise<CaptureRequestEvent>(resolve => { confirm = resolve; });
-    const observer = createVisualObserver({ owner: 'session-a', runId: 'run', model: 'zai/glm-5.3-flash', getCursor: () => cursor, signal: new AbortController().signal, emit: event => { request = event; if (++captures === 2) confirm(event); }, modelFactory: () => ({ doStream: async (options: unknown) => { modelPrompt = options; return { stream: new ReadableStream({ start(controller) { controller.enqueue({ type: 'text-delta', delta: 'Observed a white square. Interactions are untested.' }); controller.enqueue({ type: 'finish' }); controller.close(); } }) }; } }) });
+    const observer = createVisualObserver({ owner: 'session-a', runId: 'run', model: 'zai/glm-5.3-flash', getCursor: () => cursor, signal: new AbortController().signal, emit: event => { request = event; if (++captures === 2) confirm(event); }, modelFactory: () => ({ doStream: async (options: unknown) => { modelPrompt = options; return { stream: new ReadableStream({ start(controller) { controller.enqueue({ type: 'text-delta', delta: assessmentText('A white square is visible.') }); controller.enqueue({ type: 'finish' }); controller.close(); } }) }; } }) });
     const result = Promise.resolve(observer.capability.invoke({ focus: 'Appearance' }, context));
     const firstCaptureId = request.captureId;
     expect(acceptVisualCapture('other-session', request.captureId, metadata(), bytes)).toMatchObject({ ok: false, code: 'STUDIO_CAPTURE_UNAVAILABLE' });
@@ -49,7 +50,8 @@ describe('bounded visual observation boundary', () => {
     const current = await confirmation;
     expect(acceptVisualCapture('session-a', current.captureId, metadata(), bytes)).toEqual({ ok: true });
     const observed = await result as { imageDigest: string; confirmedImageDigest: string };
-    expect(observed).toMatchObject({ ok: true, evidence: 'observed-appearance', interactionVerified: false, simulatedModel: true, model: 'zai/glm-5.3-flash', validation: 'same-source-preview-viewport-and-image-bytes-after-inference', imageComparison: 'sha256-identical' });
+    expect(observed).toMatchObject({ ok: true, evidence: 'stable-capture-with-model-assessment', semanticClaimsVerified:false, modelAssessment:{visibleFindings:['A white square is visible.'],evidenceBasis:'model-interpretation-of-captured-image',semanticClaimsVerified:false}, originalModelText:assessmentText('A white square is visible.'), interactionVerified: false, simulatedModel: true, model: 'zai/glm-5.3-flash', validation: 'same-source-preview-viewport-and-image-bytes-after-inference', imageComparison: 'sha256-identical' });
+    expect(observed).not.toHaveProperty('observation');
     expect(observed.imageDigest).toMatch(/^[0-9a-f]{64}$/);
     expect(observed.confirmedImageDigest).toBe(observed.imageDigest);
     expect(captures).toBe(2);
@@ -71,11 +73,51 @@ describe('bounded visual observation boundary', () => {
     expect(result).not.toHaveProperty('observation');
     expect(captures).toBe(2); expect(modelCalls).toBe(1); observer.dispose();
   });
+  it('keeps speculative model claims unverified and exact original text separate from host image validation',async()=>{
+    const original=' \n'+JSON.stringify({visibleFindings:['Two menu entries appear readable.'],uncertainty:['A footer might be hidden.'],notEstablished:['The existence of a footer is not established.']})+'\n ';
+    let prompt='';let captures=0;
+    const observer=createVisualObserver({owner:'assessment-provenance',runId:'run',model:'zai/glm-5.3-flash',getCursor:()=>cursor,signal:new AbortController().signal,
+      emit:event=>{captures++;expect(acceptVisualCapture('assessment-provenance',event.captureId,metadata(),bytes)).toEqual({ok:true});},
+      modelFactory:()=>({doStream:async(options:{prompt:unknown})=>{prompt=JSON.stringify(options.prompt);return {stream:new ReadableStream({start(controller){controller.enqueue({type:'text-delta',delta:original});controller.enqueue({type:'finish'});controller.close();}})};}}),
+    });
+    try{
+      const result=await observer.capability.invoke({focus:'Is the full footer clipped?'},context);
+      expect(result).toMatchObject({ok:true,evidence:'stable-capture-with-model-assessment',semanticClaimsVerified:false,originalModelText:original,
+        modelAssessment:{visibleFindings:['Two menu entries appear readable.'],uncertainty:['A footer might be hidden.'],notEstablished:['The existence of a footer is not established.'],semanticClaimsVerified:false,evidenceBasis:'model-interpretation-of-captured-image'},
+        interactionVerified:false,validation:'same-source-preview-viewport-and-image-bytes-after-inference'});
+      expect(result).not.toHaveProperty('observation');expect(captures).toBe(2);
+      expect(prompt).toContain('does NOT establish');expect(prompt).toContain('not evidence that mentioned elements exist');
+      expect(observer.capability.revision).toBe('3');expect(observer.capability.output.revision).toBe('2');
+    }finally{observer.dispose();}
+  });
+  it.each([
+    ['plain speculative prose','The footer is clipped.'],
+    ['markdown wrapper','```json\n'+assessmentText('Visible menu')+'\n```'],
+    ['extra verified claim',JSON.stringify({visibleFindings:['Menu'],uncertainty:[],notEstablished:['Interactions'],verified:true})],
+    ['missing limit',JSON.stringify({visibleFindings:['Menu'],uncertainty:[],notEstablished:[]})],
+    ['oversized list',JSON.stringify({visibleFindings:['A','B','C','D'],uncertainty:[],notEstablished:['Interactions']})],
+    ['oversized field',JSON.stringify({visibleFindings:['a'.repeat(301)],uncertainty:[],notEstablished:['Interactions']})],
+  ])('refuses %s without accepting an assessment or losing original public text',async(_label,original)=>{
+    let captures=0;
+    const observer=createVisualObserver({owner:'invalid-assessment',runId:'run',model:'zai/glm-5.3-flash',getCursor:()=>cursor,signal:new AbortController().signal,
+      emit:event=>{captures++;acceptVisualCapture('invalid-assessment',event.captureId,metadata(),bytes);},
+      modelFactory:()=>({doStream:async()=>({stream:new ReadableStream({start(controller){controller.enqueue({type:'text-delta',delta:original});controller.enqueue({type:'finish'});controller.close();}})})}),
+    });
+    try{const result=await observer.capability.invoke({focus:'Footer'},context);expect(result).toMatchObject({ok:false,code:'STUDIO_CAPTURE_ASSESSMENT_INVALID',originalModelText:original,semanticClaimsVerified:false});expect(result).not.toHaveProperty('modelAssessment');expect(result).not.toHaveProperty('observation');expect(captures).toBe(2);}finally{observer.dispose();}
+  });
+  it('retains the declared bounded prefix and explicit truncation when the original model response exceeds6000characters',async()=>{
+    const original='x'.repeat(6001);let captures=0;
+    const observer=createVisualObserver({owner:'large-assessment',runId:'run',model:'zai/glm-5.3-flash',getCursor:()=>cursor,signal:new AbortController().signal,
+      emit:event=>{captures++;acceptVisualCapture('large-assessment',event.captureId,metadata(),bytes);},
+      modelFactory:()=>({doStream:async()=>({stream:new ReadableStream({start(controller){controller.enqueue({type:'text-delta',delta:original});controller.enqueue({type:'finish'});controller.close();}})})}),
+    });
+    try{const result=await observer.capability.invoke({focus:'Appearance'},context);expect(result).toMatchObject({ok:false,code:'STUDIO_CAPTURE_OBSERVATION_LIMIT',originalModelText:'x'.repeat(6000),originalModelTextTruncated:true,semanticClaimsVerified:false});expect(result).not.toHaveProperty('modelAssessment');expect(captures).toBe(1);}finally{observer.dispose();}
+  });
   it('accepts identical pixels across separate source revisions while labeling equality as within each observation only', async () => {
     let current = { ...cursor }; let fingerprint = 'a'.repeat(64); let captures = 0; let modelCalls = 0;
     const observer = createVisualObserver({ owner: 'separate-observations', runId: 'run', model: 'zai/glm-5.3-flash', getCursor: () => current, signal: new AbortController().signal,
       emit: event => { captures++; const image = { ...metadata(), cursor: { ...current }, preview: { mode: 'design', fingerprint } }; expect(acceptVisualCapture('separate-observations', event.captureId, image, bytes)).toEqual({ ok: true }); },
-      modelFactory: () => ({ doStream: async () => { modelCalls++; return { stream: new ReadableStream({ start(controller) { controller.enqueue({ type: 'text-delta', delta: 'The visible fixture has no pixel change. Interactions are untested.' }); controller.enqueue({ type: 'finish' }); controller.close(); } }) }; } }),
+      modelFactory: () => ({ doStream: async () => { modelCalls++; return { stream: new ReadableStream({ start(controller) { controller.enqueue({ type: 'text-delta', delta: assessmentText('The visible fixture has no pixel change.') }); controller.enqueue({ type: 'finish' }); controller.close(); } }) }; } }),
     });
     const first = await observer.capability.invoke({ focus: 'Initial appearance' }, context) as { ok: boolean; imageDigest: string; metadata: { cursor: { revision: string }; preview: { fingerprint: string } } };
     // A wrapper style or offscreen edit can change source/fingerprint without

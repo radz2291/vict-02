@@ -14,6 +14,7 @@
 
 <script lang="ts">
   import type {SelectionSet} from './selection-context.js';
+  import { agentOutcomeSummary, hasMatchingOutcomeCapture } from './agent-outcome.js';
   import type {AgentMediaInventory} from './media-assets.js';
   import { onDestroy, onMount } from 'svelte';
   import AgentTurnEvidence from './AgentTurnEvidence.svelte';
@@ -167,7 +168,7 @@
     const responseIndex=messages.length-1;
     const messageId=`message-${responseIndex}`;let serial=0;
     const responseBoundary=createResponseBoundary();
-    const presentTurn=(state:NonNullable<ConversationMessage['hostTurn']>['state'],statusText:string,finalTextEventIds:readonly string[]=[])=>{hostTurns={...hostTurns,[messageId]:{state,statusText,finalTextEventIds}};};
+    const presentTurn=(state:NonNullable<ConversationMessage['hostTurn']>['state'],statusText:string,finalTextEventIds:readonly string[]=[],evidenceSummary?:string)=>{hostTurns={...hostTurns,[messageId]:{state,statusText,finalTextEventIds,...(evidenceSummary?{evidenceSummary}:{})}};};
     presentTurn('running','Working. Public notes and tool receipts are available in details.');
     const append=(event:ConversationEvent)=>{timelines={...timelines,[messageId]:appendConversationEvent(timelines[messageId]??[],event,Number.POSITIVE_INFINITY)};};
     const payloads=new Map<string,Partial<Pick<ConversationActivity,'input'|'result'>>>();
@@ -282,8 +283,10 @@ ${event.details}`};
               lastRegions=event.visualEvidence?.regions??[];
               lastProviderLimit=event.status!=='cancelled'&&event.code!=='STUDIO_AGENT_TIME_LIMIT'&&isProviderLimitEvidence(event.providerLimit)?event.providerLimit:undefined;
               if(event.status==='failed'&&lastProviderLimit)status=`${providerLimitMessage(lastProviderLimit)} ${appliedEffects(applied)}`;
-              if(continuation&&event.status==='completed'&&!lastRefusal)status=event.sourceEvidence?.appearanceObserved?'Observation complete.':'Observation ended; appearance remains unverified.';
-              presentTurn(failed?'failed':event.status,status,responseBoundary.finish(event.status==='completed'&&!failed));
+              if(continuation&&event.status==='completed'&&!lastRefusal)status=event.sourceEvidence?.appearanceObserved?'Image assessment returned; claims unverified.':'Observation ended; appearance remains unverified.';
+              const matchingCapture=hasMatchingOutcomeCapture(lastRegions,getContext()?.cursor);
+              const outcome=agentOutcomeSummary({state:failed?'failed':event.status,applied,matchingCapture,observationFailed:Boolean(event.toolFailures?.some((item:ToolFailure)=>item.tool==='studio_screen_observe'))});
+              presentTurn(failed?'failed':event.status,status,responseBoundary.finish(event.status==='completed'&&!failed),outcome);
               evidence=[event.turnId?`VICT turn ${event.turnId} · profile ${event.profileVersion}`:'',event.code??''].filter(Boolean).join(' · ');
               const boundary=`${appliedEffects(applied)}${event.confirmedRevision?` Confirmed revision ${event.confirmedRevision}.`:''}`;
               const terminal=event.termination?` Engine termination: ${event.termination.status}${event.termination.code?` (${event.termination.code})`:''}.`:'';
@@ -292,7 +295,7 @@ ${event.details}`};
               const coverage=event.coverage?` Source coverage: ${registeredAuthored===undefined?'Registered-definition inventory count unavailable':`${registeredAuthored}/${event.coverage.available} registered definitions present`}. ${event.coverage.missingCount??event.coverage.missing.length} missing from the ${event.coverage.requested??event.coverage.available}-item ${event.coverage.scope==='agent-declared-manifest'?'agent-declared manifest':'coverage scope'}.${event.coverage.moreMissing?' Missing IDs are paged through coverage reads.':''} This inventory does not establish the full requested intent, interactions or visual completion.`:'';
               const region=lastRegions.filter(item=>item.currentSource).at(-1);
               const regionFacts=region?` Captured region: ${region.image.width}×${region.image.height} at (${region.image.offsetLeft}, ${region.image.offsetTop}) within ${region.image.sourceWidth}×${region.image.sourceHeight}; ${region.preview.mode} at ${region.capturedAt}. This does not verify offscreen content or current runtime state.`:'';
-              const facts=event.sourceEvidence?` Source: ${event.sourceEvidence.nodeCount} nodes, ${event.sourceEvidence.stateCount} state declarations; ${event.sourceEvidence.appearanceObserved?'a bounded preview image was observed':'current appearance unverified'}; interactions unverified by this agent.`:'';
+              const facts=event.sourceEvidence?` Source: ${event.sourceEvidence.nodeCount} nodes, ${event.sourceEvidence.stateCount} state declarations; ${event.sourceEvidence.appearanceObserved?'a bounded preview image was assessed by AI; semantic claims unverified':'current appearance unverified'}; interactions unverified by this agent.`:'';
               progress=[...progress,`${boundary}${terminal}${unresolved}${coverage}${facts}${regionFacts}`];
 
             }
