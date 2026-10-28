@@ -1,0 +1,730 @@
+{
+  "initialA": {
+    "schema": "vict.flow-graph@1",
+    "revision": 4,
+    "nodeTypes": [
+      {
+        "id": "text-step",
+        "label": "Text step",
+        "fields": [
+          {
+            "id": "prompt",
+            "label": "Prompt",
+            "kind": "textarea",
+            "default": ""
+          },
+          {
+            "id": "notes",
+            "label": "Notes",
+            "kind": "list",
+            "default": []
+          },
+          {
+            "id": "weight",
+            "label": "Weight",
+            "kind": "slider",
+            "default": 1,
+            "min": 0,
+            "max": 10
+          }
+        ],
+        "ports": [
+          {
+            "id": "text-in",
+            "label": "Text input",
+            "direction": "input",
+            "type": "text",
+            "maxConnections": 1
+          },
+          {
+            "id": "text-out",
+            "label": "Text output",
+            "direction": "output",
+            "type": "text"
+          }
+        ]
+      },
+      {
+        "id": "compact",
+        "label": "Compact note",
+        "fields": [
+          {
+            "id": "value",
+            "label": "Value",
+            "kind": "text",
+            "default": ""
+          }
+        ],
+        "ports": [
+          {
+            "id": "text-in",
+            "label": "Text input",
+            "direction": "input",
+            "type": "text",
+            "maxConnections": 1
+          },
+          {
+            "id": "text-out",
+            "label": "Text output",
+            "direction": "output",
+            "type": "text"
+          }
+        ]
+      }
+    ],
+    "nodes": [
+      {
+        "id": "first",
+        "type": "text-step",
+        "label": "First step",
+        "position": {
+          "x": 10,
+          "y": 40
+        },
+        "values": {
+          "prompt": "Native fixed A parameter — B stays independent",
+          "notes": [
+            "Independent movement",
+            "Typed ports"
+          ]
+        }
+      },
+      {
+        "id": "second",
+        "type": "text-step",
+        "label": "Second step",
+        "position": {
+          "x": 380,
+          "y": 0
+        },
+        "values": {}
+      },
+      {
+        "id": "manual-3",
+        "type": "text-step",
+        "label": "Manual step 3",
+        "position": {
+          "x": 760,
+          "y": 0
+        },
+        "values": {
+          "prompt": "Supplied editable parameter 3",
+          "notes": [
+            "Manual graph breadth",
+            "Different content height",
+            "No processing engine execution"
+          ]
+        }
+      },
+      {
+        "id": "manual-4",
+        "type": "compact",
+        "label": "Manual step 4",
+        "position": {
+          "x": 0,
+          "y": 520
+        },
+        "values": {
+          "value": "Supplied compact value 4"
+        }
+      },
+      {
+        "id": "manual-5",
+        "type": "text-step",
+        "label": "Manual step 5",
+        "position": {
+          "x": 380,
+          "y": 520
+        },
+        "values": {
+          "prompt": "Supplied editable parameter 5",
+          "notes": [
+            "Manual graph breadth",
+            "Different content height",
+            "No processing engine execution"
+          ]
+        }
+      },
+      {
+        "id": "manual-6",
+        "type": "compact",
+        "label": "Manual step 6",
+        "position": {
+          "x": 760,
+          "y": 520
+        },
+        "values": {
+          "value": "Supplied compact value 6"
+        }
+      },
+      {
+        "id": "manual-7",
+        "type": "text-step",
+        "label": "Manual step 7",
+        "position": {
+          "x": 0,
+          "y": 1040
+        },
+        "values": {
+          "prompt": "Supplied editable parameter 7",
+          "notes": [
+            "Manual graph breadth",
+            "Different content height",
+            "No processing engine execution"
+          ]
+        }
+      },
+      {
+        "id": "manual-8",
+        "type": "compact",
+        "label": "Manual step 8",
+        "position": {
+          "x": 380,
+          "y": 1040
+        },
+        "values": {
+          "value": "Supplied compact value 8"
+        }
+      },
+      {
+        "id": "manual-9",
+        "type": "text-step",
+        "label": "Manual step 9",
+        "position": {
+          "x": 760,
+          "y": 1040
+        },
+        "values": {
+          "prompt": "Supplied editable parameter 9",
+          "notes": [
+            "Manual graph breadth",
+            "Different content height",
+            "No processing engine execution"
+          ]
+        }
+      },
+      {
+        "id": "manual-10",
+        "type": "compact",
+        "label": "Manual step 10",
+        "position": {
+          "x": 0,
+          "y": 1560
+        },
+        "values": {
+          "value": "Supplied compact value 10"
+        }
+      },
+      {
+        "id": "manual-11",
+        "type": "text-step",
+        "label": "Manual step 11",
+        "position": {
+          "x": 380,
+          "y": 1560
+        },
+        "values": {
+          "prompt": "Supplied editable parameter 11",
+          "notes": [
+            "Manual graph breadth",
+            "Different content height",
+            "No processing engine execution"
+          ]
+        }
+      },
+      {
+        "id": "manual-12",
+        "type": "compact",
+        "label": "Manual step 12",
+        "position": {
+          "x": 760,
+          "y": 1560
+        },
+        "values": {
+          "value": "Supplied compact value 12"
+        }
+      }
+    ],
+    "edges": [
+      {
+        "id": "first-second",
+        "source": "first",
+        "sourcePort": "text-out",
+        "target": "second",
+        "targetPort": "text-in"
+      }
+    ]
+  },
+  "initialB": {
+    "schema": "vict.flow-graph@1",
+    "revision": 1,
+    "nodeTypes": [
+      {
+        "id": "text-step",
+        "label": "Text step",
+        "fields": [
+          {
+            "id": "prompt",
+            "label": "Prompt",
+            "kind": "textarea",
+            "default": ""
+          },
+          {
+            "id": "notes",
+            "label": "Notes",
+            "kind": "list",
+            "default": []
+          },
+          {
+            "id": "weight",
+            "label": "Weight",
+            "kind": "slider",
+            "default": 1,
+            "min": 0,
+            "max": 10
+          }
+        ],
+        "ports": [
+          {
+            "id": "text-in",
+            "label": "Text input",
+            "direction": "input",
+            "type": "text",
+            "maxConnections": 1
+          },
+          {
+            "id": "text-out",
+            "label": "Text output",
+            "direction": "output",
+            "type": "text"
+          }
+        ]
+      },
+      {
+        "id": "compact",
+        "label": "Compact note",
+        "fields": [
+          {
+            "id": "value",
+            "label": "Value",
+            "kind": "text",
+            "default": ""
+          }
+        ],
+        "ports": [
+          {
+            "id": "text-in",
+            "label": "Text input",
+            "direction": "input",
+            "type": "text",
+            "maxConnections": 1
+          },
+          {
+            "id": "text-out",
+            "label": "Text output",
+            "direction": "output",
+            "type": "text"
+          }
+        ]
+      }
+    ],
+    "nodes": [
+      {
+        "id": "first",
+        "type": "compact",
+        "label": "Independent B first",
+        "position": {
+          "x": 0,
+          "y": 10
+        },
+        "values": {
+          "value": "B value must remain independent"
+        }
+      },
+      {
+        "id": "second",
+        "type": "text-step",
+        "label": "Independent B second",
+        "position": {
+          "x": 380,
+          "y": 0
+        },
+        "values": {}
+      }
+    ],
+    "edges": [
+      {
+        "id": "first-second",
+        "source": "first",
+        "sourcePort": "text-out",
+        "target": "second",
+        "targetPort": "text-in"
+      }
+    ]
+  },
+  "afterA": {
+    "schema": "vict.flow-graph@1",
+    "revision": 5,
+    "nodeTypes": [
+      {
+        "id": "text-step",
+        "label": "Text step",
+        "fields": [
+          {
+            "id": "prompt",
+            "label": "Prompt",
+            "kind": "textarea",
+            "default": ""
+          },
+          {
+            "id": "notes",
+            "label": "Notes",
+            "kind": "list",
+            "default": []
+          },
+          {
+            "id": "weight",
+            "label": "Weight",
+            "kind": "slider",
+            "default": 1,
+            "min": 0,
+            "max": 10
+          }
+        ],
+        "ports": [
+          {
+            "id": "text-in",
+            "label": "Text input",
+            "direction": "input",
+            "type": "text",
+            "maxConnections": 1
+          },
+          {
+            "id": "text-out",
+            "label": "Text output",
+            "direction": "output",
+            "type": "text"
+          }
+        ]
+      },
+      {
+        "id": "compact",
+        "label": "Compact note",
+        "fields": [
+          {
+            "id": "value",
+            "label": "Value",
+            "kind": "text",
+            "default": ""
+          }
+        ],
+        "ports": [
+          {
+            "id": "text-in",
+            "label": "Text input",
+            "direction": "input",
+            "type": "text",
+            "maxConnections": 1
+          },
+          {
+            "id": "text-out",
+            "label": "Text output",
+            "direction": "output",
+            "type": "text"
+          }
+        ]
+      }
+    ],
+    "nodes": [
+      {
+        "id": "first",
+        "type": "text-step",
+        "label": "First step",
+        "position": {
+          "x": 0,
+          "y": 40
+        },
+        "values": {
+          "prompt": "Native fixed A parameter — B stays independent",
+          "notes": [
+            "Independent movement",
+            "Typed ports"
+          ]
+        }
+      },
+      {
+        "id": "second",
+        "type": "text-step",
+        "label": "Second step",
+        "position": {
+          "x": 380,
+          "y": 0
+        },
+        "values": {}
+      },
+      {
+        "id": "manual-3",
+        "type": "text-step",
+        "label": "Manual step 3",
+        "position": {
+          "x": 760,
+          "y": 0
+        },
+        "values": {
+          "prompt": "Supplied editable parameter 3",
+          "notes": [
+            "Manual graph breadth",
+            "Different content height",
+            "No processing engine execution"
+          ]
+        }
+      },
+      {
+        "id": "manual-4",
+        "type": "compact",
+        "label": "Manual step 4",
+        "position": {
+          "x": 0,
+          "y": 520
+        },
+        "values": {
+          "value": "Supplied compact value 4"
+        }
+      },
+      {
+        "id": "manual-5",
+        "type": "text-step",
+        "label": "Manual step 5",
+        "position": {
+          "x": 380,
+          "y": 520
+        },
+        "values": {
+          "prompt": "Supplied editable parameter 5",
+          "notes": [
+            "Manual graph breadth",
+            "Different content height",
+            "No processing engine execution"
+          ]
+        }
+      },
+      {
+        "id": "manual-6",
+        "type": "compact",
+        "label": "Manual step 6",
+        "position": {
+          "x": 760,
+          "y": 520
+        },
+        "values": {
+          "value": "Supplied compact value 6"
+        }
+      },
+      {
+        "id": "manual-7",
+        "type": "text-step",
+        "label": "Manual step 7",
+        "position": {
+          "x": 0,
+          "y": 1040
+        },
+        "values": {
+          "prompt": "Supplied editable parameter 7",
+          "notes": [
+            "Manual graph breadth",
+            "Different content height",
+            "No processing engine execution"
+          ]
+        }
+      },
+      {
+        "id": "manual-8",
+        "type": "compact",
+        "label": "Manual step 8",
+        "position": {
+          "x": 380,
+          "y": 1040
+        },
+        "values": {
+          "value": "Supplied compact value 8"
+        }
+      },
+      {
+        "id": "manual-9",
+        "type": "text-step",
+        "label": "Manual step 9",
+        "position": {
+          "x": 760,
+          "y": 1040
+        },
+        "values": {
+          "prompt": "Supplied editable parameter 9",
+          "notes": [
+            "Manual graph breadth",
+            "Different content height",
+            "No processing engine execution"
+          ]
+        }
+      },
+      {
+        "id": "manual-10",
+        "type": "compact",
+        "label": "Manual step 10",
+        "position": {
+          "x": 0,
+          "y": 1560
+        },
+        "values": {
+          "value": "Supplied compact value 10"
+        }
+      },
+      {
+        "id": "manual-11",
+        "type": "text-step",
+        "label": "Manual step 11",
+        "position": {
+          "x": 380,
+          "y": 1560
+        },
+        "values": {
+          "prompt": "Supplied editable parameter 11",
+          "notes": [
+            "Manual graph breadth",
+            "Different content height",
+            "No processing engine execution"
+          ]
+        }
+      },
+      {
+        "id": "manual-12",
+        "type": "compact",
+        "label": "Manual step 12",
+        "position": {
+          "x": 760,
+          "y": 1560
+        },
+        "values": {
+          "value": "Supplied compact value 12"
+        }
+      }
+    ],
+    "edges": [
+      {
+        "id": "first-second",
+        "source": "first",
+        "sourcePort": "text-out",
+        "target": "second",
+        "targetPort": "text-in"
+      }
+    ]
+  },
+  "BUnchangedDuringA": true,
+  "afterB": {
+    "schema": "vict.flow-graph@1",
+    "revision": 2,
+    "nodeTypes": [
+      {
+        "id": "text-step",
+        "label": "Text step",
+        "fields": [
+          {
+            "id": "prompt",
+            "label": "Prompt",
+            "kind": "textarea",
+            "default": ""
+          },
+          {
+            "id": "notes",
+            "label": "Notes",
+            "kind": "list",
+            "default": []
+          },
+          {
+            "id": "weight",
+            "label": "Weight",
+            "kind": "slider",
+            "default": 1,
+            "min": 0,
+            "max": 10
+          }
+        ],
+        "ports": [
+          {
+            "id": "text-in",
+            "label": "Text input",
+            "direction": "input",
+            "type": "text",
+            "maxConnections": 1
+          },
+          {
+            "id": "text-out",
+            "label": "Text output",
+            "direction": "output",
+            "type": "text"
+          }
+        ]
+      },
+      {
+        "id": "compact",
+        "label": "Compact note",
+        "fields": [
+          {
+            "id": "value",
+            "label": "Value",
+            "kind": "text",
+            "default": ""
+          }
+        ],
+        "ports": [
+          {
+            "id": "text-in",
+            "label": "Text input",
+            "direction": "input",
+            "type": "text",
+            "maxConnections": 1
+          },
+          {
+            "id": "text-out",
+            "label": "Text output",
+            "direction": "output",
+            "type": "text"
+          }
+        ]
+      }
+    ],
+    "nodes": [
+      {
+        "id": "first",
+        "type": "compact",
+        "label": "Independent B first",
+        "position": {
+          "x": 0,
+          "y": 20
+        },
+        "values": {
+          "value": "B value must remain independent"
+        }
+      },
+      {
+        "id": "second",
+        "type": "text-step",
+        "label": "Independent B second",
+        "position": {
+          "x": 380,
+          "y": 0
+        },
+        "values": {}
+      }
+    ],
+    "edges": [
+      {
+        "id": "first-second",
+        "source": "first",
+        "sourcePort": "text-out",
+        "target": "second",
+        "targetPort": "text-in"
+      }
+    ]
+  },
+  "AUnchangedDuringB": true
+}

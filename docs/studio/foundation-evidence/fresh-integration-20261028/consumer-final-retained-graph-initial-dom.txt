@@ -1,0 +1,126 @@
+- main:
+  - heading "Installed VICT consumer replay" [level=1]
+  - paragraph: Retained canonical sources through physically installed public packages. Local state and typed outputs run here; external actions, provider calls and navigation do not. This is consumer verification, not new authoring evidence.
+  - navigation "Retained source selection":
+    - button "Responsive 53"
+    - button "Matrix 23"
+    - button "Media 21"
+    - button "Graph retained" [active] [pressed]
+    - button "Manual contracts"
+  - generic: Application container width (clamped to available space)
+  - combobox "Application container width (clamped to available space)":
+    - option "Choose an option"
+    - option "Fit available width" [selected]
+    - option "390 px hosted container"
+    - option "768 px hosted container"
+    - option "1058 px hosted container"
+  - paragraph: "Source: screen-f7ecb7ef-06b5-408b-8904-80531ce7a8aa / r1.r1; 2 retained nodes."
+  - paragraph: Actual-agent graph lineage retained from original r1.r3; native uppercase/reconnection/manual values saved in a separately imported r1.r1 namespace.
+  - iframe:
+    - generic "Graph retained retained source replay":
+      - main "Foundation Graph":
+        - region "Foundation flow":
+          - group "Graph tools":
+            - text: Node family
+            - combobox "Node family":
+              - option "Choose an option" [selected]
+              - option "Input source"
+              - option "Processor"
+              - option "Output sink"
+            - button "Add node" [disabled]
+            - button "Undo" [disabled]
+            - button "Redo" [disabled]
+            - button "Copy" [disabled]
+            - button "Paste" [disabled]
+            - button "Duplicate" [disabled]
+            - button "Delete selected" [disabled]
+            - button "Fit all"
+            - button "Focus selection" [disabled]
+            - button "Arrange"
+            - text: Find nodes
+            - searchbox "Find nodes"
+          - application:
+            - article "Input":
+              - strong: Input
+              - generic: Input source
+              - button "Collapse Input" [expanded]: "-"
+              - 'button "output Text: text"'
+              - button "Trace Input Text connections": Text
+              - generic: text
+              - generic: Input text
+              - textbox "Input text": Manual coexistence after reboot
+            - article "Processor":
+              - strong: Processor
+              - generic: Processor
+              - button "Collapse Processor" [expanded]: "-"
+              - 'button "input Text: text"'
+              - button "Trace Processor Text connections": Text
+              - generic: text
+              - 'button "output Result: text"'
+              - button "Trace Processor Result connections": Result
+              - generic: text
+              - generic: Mode
+              - button "Mode":
+                - generic: uppercase
+              - generic: Factor
+              - spinbutton "Factor": "2"
+              - generic "Enabled":
+                - switch "Enabled"
+                - generic: Enabled
+            - article "Output":
+              - strong: Output
+              - generic: Output sink
+              - button "Collapse Output" [expanded]: "-"
+              - 'button "input Result: text"'
+              - button "Trace Output Result connections": Result
+              - generic: text
+              - generic: Output name
+              - textbox "Output name": Verified coexistence
+            - link "Svelte Flow attribution":
+              - /url: https://svelteflow.dev?utm_source=attribution
+              - text: Svelte Flow
+            - generic "Control Panel":
+              - button "Zoom In":
+              - button "Zoom Out":
+              - button "Fit View":
+            - img "Mini Map"
+          - complementary "Graph selection":
+            - heading "Selection" [level=3]
+            - paragraph: 0 nodes · 0 connections
+            - generic "Connect or reconnect"
+            - option "Choose an option" [selected]
+            - option "edge-input-processor"
+            - option "edge-1"
+            - option "Choose an option" [selected]
+            - option "Input"
+            - option "Processor"
+            - option "Output"
+            - option "Choose an option" [selected]
+            - option "Choose an option" [selected]
+            - option "Input"
+            - option "Processor"
+            - option "Output"
+            - option "Choose an option" [selected]
+            - generic "Graph clipboard"
+  - status
+  - generic "Local state/output receipts"
+  - region "Direct shared boundary verification":
+    - heading "Direct shared boundaries" [level=2]
+    - paragraph: Separate controlled consumers of OwnedHoverCard and the FirstVisit reset capability. These use isolated proof campaign keys.
+    - heading "Independent application A" [level=3]
+    - button "Details A"
+    - button "Next ordinary action A"
+    - button "Show controlled details A"
+    - status: "Card A: closed; ordinary actions: 0"
+    - paragraph: Independent local campaign A. Reset affects only this named campaign key.
+    - button "Dismiss welcome A"
+    - button "Reset welcome A"
+    - paragraph: "Welcome A: shown; memory ready"
+    - heading "Independent application B" [level=3]
+    - button "Details B"
+    - button "Next ordinary action B"
+    - button "Show controlled details B"
+    - status: "Card B: closed; ordinary actions: 0"
+    - button "Reopen welcome B"
+    - button "Reset welcome B"
+    - paragraph: "Welcome B: hidden; memory ready"

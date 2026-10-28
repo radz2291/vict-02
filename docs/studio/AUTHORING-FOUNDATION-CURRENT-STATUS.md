@@ -1,6 +1,27 @@
 # Authoring foundation current status
 
-## Current continuation — loaded source 5bf2311, 2026-10-28
+## Review-ready checkpoint — product 56b2853, 2026-10-28
+
+**Independent technical reconciliation: 28 demonstrated / 1 partial / 2 retained reporting failures across 31 criteria. All 31 owner acceptances remain open; the full foundation gate is HELD.** Product bytes are frozen at `56b2853d2dbb7a04bba5cc9aa89671cbf0eb38a3` on `codex/authoring-foundation`. Later evidence commits do not change those bytes. [Independent exact-criterion verdict](foundation-evidence/criterion-finishability-20261028/REPORT.md).
+
+| Current status | Criteria | Evidence or precise limit |
+| --- | --- | --- |
+| Demonstrated | AR-01–04, AR-06–08, AR-10–24, AR-26–29, CF-01, AI-EX01 | Exact matching source, actual-agent/manual native, saved replay and physical-package consumer evidence are associated in the independent verdict. These are technical demonstrations, not owner acceptance. |
+| Partial | AR-25 | Useful responsive navigation/filtering/drafts, narrow/orientation containers and saved Run pass. Actual mobile virtual-keyboard, safe-area and touch observation remains unavailable. Repeating desktop widths cannot close this gap. |
+| Reporting failure | AR-05 | Shared host progress/details presentation is repaired; actual final narration remains too long and technical. No content is censored or rewritten to manufacture a pass. |
+| Reporting failure | AR-09 | The latest actual popup observation speculates about an unsupported footer. Earlier inaccurate claims remain retained. Source/native corrections do not establish reliable model reporting. |
+
+The final production core and consumer are installed through the approved same-address existing-config outside launcher at `http://127.0.0.25:5626`. **306 core + 22 consumer = 328 installed files; zero hash mismatches.** The physically installed nine-package consumer has 744 matching package files and no VICT workspace links. [Installation record](foundation-evidence/central-style-audit-20261028/final-consumer-installed-candidate.json), [final package/build manifest](foundation-evidence/packed-consumer-final-56b2853.json). Open the [final consumer](http://127.0.0.25:5626/foundation-proof-final-56b2853/index.html) for retained Responsive, Matrix, Media, Graph and Manual sources. No provider request ran during installation; normal provider/auth/security configuration is preserved.
+
+Final loaded fixes include shared Chat controls and a correctly bounded narrow Details card, owned capture extent, inert srcdoc viewport initialization and adopted-DOM graph keyboard admission. Focused red/green checks and independent source/architecture reviews pass. Actual native graph A/B movement and editable-input exclusion now pass; saved manual r1.r5 retains separate positions and parameters. The final physical consumer independently replays those states, movement, long-Drawer ownership, vector geometry and real local action output. The retained actual-agent graph also preserves its manual text while Factor/Enabled edits update canonical receipts. [Manual/native report](foundation-evidence/fresh-integration-20261028/MANUAL-CONTRACTS-LIVE.md).
+
+The remote allowlisted player now actually plays and pauses after the viewport repair; this does not claim heard audio. All 23 intended AI identities have real manual recipe and actual-agent lineage, with public supplied summaries/receipts and typed intents. Unbound host actions remain unavailable rather than fabricate provider, approval or history authority. Focused Document Media conformance and the broader delivered-delta central-style/component review pass; inherited Studio styling debt remains identified, not silently certified. [Independent style review](foundation-evidence/holistic-style-review-20261028/REPORT.md).
+
+The NEW 53-node responsive app is complete saved r1.r3 evidence, **not recovery of the lost original source**. Owner Matrix styling, original apps, imported media and historical failures remain preserved. No push, merge, publication, deployment or TORI expansion occurred. No provider/build/write operation remains active at this checkpoint. The next action is owner review of the three explicit open criteria and delivered evidence; no remaining routine check was identified by the independent reconciliation.
+
+## Historical continuation records (preserved)
+
+### Earlier continuation - loaded source 5bf2311, 2026-10-28
 
 Candidate **5bf2311c64dcf47e7f1df39524aa3c946d572556** is built and loaded through the approved same-address existing-config outside launcher. All 306 installed files match; normal IAB login and saved Designer reopening succeed, with an empty error log. This includes centralized designer/splitter CSS, shared early focus capture, FirstVisit revision 2 and the independently reviewed public-output/native-recipe guidance. Earlier checkpoints below remain historical.
 
@@ -24,7 +45,7 @@ Latest overnight state, 2026-10-28: a single documented local `cua_repl` session
 
 The recurring staging omission is repaired by `apps/studio/scripts/prepare-build-stage.ps1`: preflight declared catalog JSON/dependencies/tracked inputs, refuse existing/inside-checkout stages, verify copies and record input/workspace cleanliness plus dependency links. Independent helper PASS at SHA256 `9e136a88c0ac7cf8b35143cb5d966aaf464f251f3a9274012bbc501ceefd18ed` verifies280copied inputs, two junctions, no-write validation and missing-input refusal before stage creation. [Helper evidence](foundation-evidence/central-style-audit-20261028/staging-helper-independent.json); [production build record](foundation-evidence/central-style-audit-20261028/overnight-production-build.json). The existing tested production stage is `C:/Users/RZ1/AppData/Local/Temp/vict-hovercard-build-712f6ef`; the separate helper-review stage is unbuilt. No duplicate compiler run is needed for this script/runbook-only follow-up. Canonical user apps/Matrix/media source and historical failures remain preserved.
 
-## Current per-finding reconciliation — loaded source 5bf2311, 2026-10-28
+## Historical per-finding reconciliation - loaded source 5bf2311, 2026-10-28
 
 This table incorporates the current new responsive and installed focus-repair observations. Implementation and supporting checks exist across all29findings; complete acceptance evidence does not. **Owner acceptance remains open for every finding; this is not0/29implementation or live verification.** Loaded product candidate is5bf2311, including the reviewed prompt/read guidance. Earlier successful checks are reused unless a changed source or reproduced failure warrants a focused check.
 

@@ -1,0 +1,89 @@
+{
+  "interactMarkersBefore": {
+    "header": {
+      "ownerHeight": 528,
+      "ownerScrollHeight": 7071,
+      "ownerTop": 0,
+      "position": "sticky",
+      "rect": [
+        40,
+        81,
+        977.6000366210938,
+        37
+      ],
+      "viewport": [
+        1073,
+        528
+      ]
+    },
+    "footer": {
+      "bottomGap": 8,
+      "position": "fixed",
+      "rect": [
+        811.8875122070312,
+        491,
+        252.9125061035156,
+        29
+      ],
+      "rightGap": 8.199981689453125
+    }
+  },
+  "interactMarkersAfter": {
+    "header": {
+      "ownerHeight": 528,
+      "ownerScrollHeight": 7071,
+      "ownerTop": 639.2000122070312,
+      "position": "sticky",
+      "rect": [
+        40,
+        0,
+        977.6000366210938,
+        37
+      ],
+      "viewport": [
+        1073,
+        528
+      ]
+    },
+    "footer": {
+      "bottomGap": 8,
+      "position": "fixed",
+      "rect": [
+        811.8875122070312,
+        491,
+        252.9125061035156,
+        29
+      ],
+      "rightGap": 8.199981689453125
+    }
+  },
+  "designMarkers": {
+    "header": {
+      "ownerHeight": 528,
+      "ownerScrollHeight": 7071,
+      "ownerTop": 639.2000122070312,
+      "position": "sticky",
+      "rect": [
+        40,
+        0,
+        977.6000366210938,
+        37
+      ],
+      "viewport": [
+        1073,
+        528
+      ]
+    },
+    "footer": {
+      "bottomGap": 8,
+      "position": "fixed",
+      "rect": [
+        811.8875122070312,
+        491,
+        252.9125061035156,
+        29
+      ],
+      "rightGap": 8.199981689453125
+    }
+  }
+}

@@ -1,5 +1,13 @@
 # Reusable component architecture conformance
 
+## Current review checkpoint — product 56b2853, 2026-10-28
+
+The current independent exact-criterion verdict is **28 demonstrated / 1 partial (AR-25) / 2 retained reporting failures (AR-05 and AR-09), across 31**. CF-01 is demonstrated at the delivered foundation-delta scope; AI-EX01 has matching manual and actual-agent lineage for all23 intended identities. **All31 owner acceptances remain open; the full foundation gate remains HELD.** Product code is frozen at `56b2853d2dbb7a04bba5cc9aa89671cbf0eb38a3`; subsequent evidence-only checkpoints do not imply a different loaded product. [Current status and exact remaining limits](AUTHORING-FOUNDATION-CURRENT-STATUS.md), [independent final verdict](foundation-evidence/criterion-finishability-20261028/REPORT.md).
+
+The final same-config service is loaded, normal IAB control works, and all328 core/consumer installed files match. Final physical nine-package consumer evidence includes current separate graph movement/parameters, Drawer ownership, AI/vector/local controls and retained app replay. Actual remote playback/pause is observed; heard audio is not. NEW responsive source is retained, while historical original full source remains unrecovered. The remaining gaps are actual mobile keyboard/safe-area/touch and AI final-content/reporting quality. No owner acceptance, provider/history authority, push/merge/publication/deployment follows. Older pending or unavailable statements below are chronological evidence superseded only by matching newer records.
+
+## Earlier records (preserved)
+
 For current implementation versus live-proof status, see the [consolidated CF-01 and finding rollup](AUTHORING-FOUNDATION-CURRENT-STATUS.md). Matrix repair-in-progress and pending-choice statements below describe earlier audit checkpoints; the approved shared popup repair now passes scoped checks, with integrated acceptance still held.
 
 Owner requirement, 2026-10-28: apply the established VICT architecture to every new or changed reusable component, not only the graph. This amends the active foundation delivery criteria; it is not acceptance of the candidate. Root AGENTS.md links this check. No push/publication or formal Stage9 closure follows.

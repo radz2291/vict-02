@@ -1,0 +1,41 @@
+{
+  "consumerLongOpen": {
+    "body": {
+      "height": 546,
+      "rect": [
+        735.7999877929688,
+        93.5999984741211,
+        338.3999938964844,
+        545.6000366210938
+      ],
+      "scrollHeight": 3404,
+      "top": 0
+    },
+    "focusInside": true,
+    "owner": {
+      "height": 640,
+      "overflow": "hidden",
+      "top": 2856
+    },
+    "panel": [
+      735,
+      0,
+      340,
+      640
+    ]
+  },
+  "consumerLongAfter": {
+    "bodyHeight": 546,
+    "bodyScrollHeight": 3404,
+    "bodyTop": 668,
+    "ownerOverflow": "hidden",
+    "ownerTop": 2856
+  },
+  "outerBeforeDrawerScroll": 305.6000061035156,
+  "outerAfterDrawerScroll": 305.6000061035156,
+  "consumerDrawerRestored": {
+    "focused": true,
+    "ownerOverflow": "auto",
+    "ownerTop": 2856
+  }
+}

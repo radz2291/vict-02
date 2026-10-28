@@ -1,0 +1,19 @@
+{
+  "ytBefore": {
+    "currentTime": 0,
+    "duration": null,
+    "error": null,
+    "muted": false,
+    "paused": true,
+    "readyState": 0
+  },
+  "ytAfter": {
+    "currentTime": 0,
+    "duration": 97,
+    "error": null,
+    "muted": false,
+    "paused": false,
+    "readyState": 0
+  },
+  "activation": "Observed real Play video button activated through documented keyboard Space; no fractional mouse click retry or host setting change."
+}

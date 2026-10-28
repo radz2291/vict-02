@@ -1,5 +1,13 @@
 # Authoring foundation acceptance ledger
 
+## Current review checkpoint — product 56b2853, 2026-10-28
+
+The current independent exact-criterion verdict is **28 demonstrated / 1 partial (AR-25) / 2 retained reporting failures (AR-05 and AR-09), across 31**. CF-01 is demonstrated at the delivered foundation-delta scope; AI-EX01 has matching manual and actual-agent lineage for all23 intended identities. **All31 owner acceptances remain open; the full foundation gate remains HELD.** Product code is frozen at `56b2853d2dbb7a04bba5cc9aa89671cbf0eb38a3`; subsequent evidence-only checkpoints do not imply a different loaded product. [Current status and exact remaining limits](AUTHORING-FOUNDATION-CURRENT-STATUS.md), [independent final verdict](foundation-evidence/criterion-finishability-20261028/REPORT.md).
+
+The final same-config service is loaded, normal IAB control works, and all328 core/consumer installed files match. Final physical nine-package consumer evidence includes current separate graph movement/parameters, Drawer ownership, AI/vector/local controls and retained app replay. Actual remote playback/pause is observed; heard audio is not. NEW responsive source is retained, while historical original full source remains unrecovered. The remaining gaps are actual mobile keyboard/safe-area/touch and AI final-content/reporting quality. No owner acceptance, provider/history authority, push/merge/publication/deployment follows. Older pending or unavailable statements below are chronological evidence superseded only by matching newer records.
+
+## Earlier records (preserved)
+
 Current consolidated verdict: [all-finding evidence and remaining-proof rollup](AUTHORING-FOUNDATION-CURRENT-STATUS.md). Later approved shared-popup repairs and saved candidate supersede the historical unresolved-failure wording below; original failed observations remain retained.
 
 Current reconciliation after `eb9554e`, 2026-10-28: use the rollup's **Current per-finding reconciliation** for each AR-01–29, CF-01 and AI-EX01. Actual diagnostic recovery, graph connections/save/reopen/Run, media playback/portable replay, Matrix popup/compact behavior and focused Media central-style conformance now have retained live evidence and independent scoped reviews. Earlier “unrun”, browser/server blockers and “0/29” statements below are chronological checkpoints, not current implementation/verification counts. Owner acceptance remains open. The latest browser action failed technically with `browser.user is unavailable`; live work stopped without recovery loops, fallback or server changes. New responsive capability evidence remains pending and must never be described as recovery of the original source not found in inspected retained artifacts.

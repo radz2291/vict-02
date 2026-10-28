@@ -1,0 +1,82 @@
+{
+  "ytProgress": {
+    "currentTime": 20.866992,
+    "duration": 96.741,
+    "error": null,
+    "muted": false,
+    "paused": false,
+    "readyState": 4
+  },
+  "ytCurrentButtons": [
+    {
+      "aria": null,
+      "text": "Tap to unmute",
+      "title": null
+    },
+    {
+      "aria": "Play video",
+      "text": "",
+      "title": "Play video"
+    },
+    {
+      "aria": "Show player controls",
+      "text": "",
+      "title": null
+    },
+    {
+      "aria": null,
+      "text": "",
+      "title": null
+    },
+    {
+      "aria": "Mute",
+      "text": "",
+      "title": "Mute"
+    },
+    {
+      "aria": "Subtitles/CC turned on",
+      "text": "",
+      "title": "Subtitles/CC turned on"
+    },
+    {
+      "aria": "Playback Settings",
+      "text": "",
+      "title": null
+    },
+    {
+      "aria": "Rewind 10 seconds",
+      "text": "",
+      "title": null
+    },
+    {
+      "aria": "Pause video",
+      "text": "",
+      "title": null
+    },
+    {
+      "aria": "Fast forward 10 seconds",
+      "text": "",
+      "title": null
+    },
+    {
+      "aria": "Enter full screen",
+      "text": "",
+      "title": null
+    },
+    {
+      "aria": "Close",
+      "text": "",
+      "title": ""
+    },
+    {
+      "aria": "Copy link",
+      "text": "",
+      "title": ""
+    },
+    {
+      "aria": "More videos",
+      "text": "More videos",
+      "title": null
+    }
+  ]
+}

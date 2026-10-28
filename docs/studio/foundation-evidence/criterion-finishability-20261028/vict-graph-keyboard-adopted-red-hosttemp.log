@@ -1,0 +1,43 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation
+
+3:10:59 am [vite-plugin-svelte] packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+3:11:00 am [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:311:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+3:11:00 am [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:311:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+3:11:00 am [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:381:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+3:11:00 am [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:381:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+ Γ¥» packages/ui-flow-svelte/test/editor-adopted-keyboard.svelte.test.ts (3 tests | 1 failed) 927ms
+     ├ù commits 10/40 pixel movement to the graph, isolates another editor and retains local undo/redo 397ms
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ» Failed Tests 1 ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»
+
+ FAIL  packages/ui-flow-svelte/test/editor-adopted-keyboard.svelte.test.ts > adopted rich editor keyboard transactions > commits 10/40 pixel movement to the graph, isolates another editor and retains local undo/redo
+AssertionError: expected [] to have a length of 1 but got +0
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ Γ¥» packages/ui-flow-svelte/test/editor-adopted-keyboard.svelte.test.ts:43:22
+     41|     const f = await fixture();
+     42|     expect(key(f.node, 'ArrowRight').defaultPrevented).toBe(true); awaΓÇª
+     43|     expect(f.writes).toHaveLength(1); expect(position(f.writes[0]!)).tΓÇª
+       |                      ^
+     44|     key(f.node, 'ArrowDown', true); await settle();
+     45|     expect(f.writes).toHaveLength(2); expect(position(f.writes[1]!)).tΓÇª
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[1/1]ΓÄ»
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 2 passed (3)
+   Start at  03:10:48
+   Duration  17.72s (transform 12.16s, setup 0ms, import 15.15s, tests 927ms, environment 1.28s)
+

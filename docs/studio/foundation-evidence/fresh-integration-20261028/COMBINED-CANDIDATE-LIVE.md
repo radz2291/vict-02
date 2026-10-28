@@ -1,5 +1,11 @@
 # Combined candidate live challenge
 
+## Final association — product 56b2853
+
+Later product56b2853 is installed; the bf4914c observations below remain valid for unchanged capture/host code. Native final srcdoc viewport, repaired adopted-DOM graph movement, canonical manual Save r1.r5 and physical installed-consumer replay are recorded in [Manual/native outcomes](MANUAL-CONTRACTS-LIVE.md). Current installation has306core+22consumer files, all328hashes matching; nine physical packages have744matching files and no VICT workspace links. The core build was reused for the data-only final consumer refresh. No duplicate Studio build or provider call ran for that refresh.
+
+The final consumer is available at `http://127.0.0.25:5626/foundation-proof-final-56b2853/index.html`. Native separate graph movement/parameters, Drawer ownership and vector/local-action behavior pass. Existing Responsive/Matrix/Media/FirstVisit/hovercard consumer observations are reused at their recorded source scope. The [independent final verdict](../criterion-finishability-20261028/REPORT.md) is28demonstrated/1partial(AR25)/2reporting failures(AR05/09). All31owner acceptances remain open; full gate HELD. This final association does not erase verbose narration, unsupported footer speculation, unproved heard audio, missing physical-device observations or lost original responsive source.
+
 Loaded product bf4914c6e5b6e9f03894472c2100a44b442e32bf through the approved same-address existing-config launcher. Core306 plus additive standalone consumer22 files all match their manifests; normal IAB sign-in/Designer reopening succeed, error log empty. No provider request ran during installation. Original working build remains backed up. The first activation preflight stopped before mutation because a bracketed Svelte route was hashed as a wildcard; literal-path correction passed. No uncertain duplicate launch occurred.
 
 ## Actual capture and host presentation

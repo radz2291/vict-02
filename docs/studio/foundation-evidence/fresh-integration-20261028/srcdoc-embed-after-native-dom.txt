@@ -1,0 +1,21 @@
+Browser tab: 2, Title: "Designer — VICT Studio", URL: "http://127.0.0.25:5626/design".
+The following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 644-647
++							1103 container NASA official public video — external embed check
++								1104 AXWebArea Ride Along with Artemis Around the Moon (Official NASA Video) - YouTube, URL: youtube-nocookie.com/embed/fNSmLNWyojA
++									1105 container
++										1106 container Description: YouTube Video Player, ID: movie_player
++										1107 container
++											1108 button Play video
++											1109 button Description: Hide player controls, ID: player-controls-a11y-toggle
++											1110 container player-control-overlay
++												1111 container
++													1112 link Description: Ride Along with Artemis Around the Moon (Official NASA Video), Value: youtube.com/watch?v=fNSmLNWyojA
++													1113 link Description: NASA, Value: youtube-nocookie.com/channel/UCLA_DiR1FfKNvjuUpBHmylQ
++													1114 button
++													1115 container
++														1116 text NASA 15.1M subscribers
++												1117 container
++													1118 button Copy link
++													1119 link Description: Watch on YouTube, Value: youtube.com/watch?v=fNSmLNWyojA
+The focused UI element is 1119 link Description: Watch on YouTube, URL: youtube.com/watch?v=fNSmLNWyojA

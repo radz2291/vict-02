@@ -1,0 +1,17 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation
+
+ Γ¥» packages/ui-flow-svelte/test/editor-adopted-keyboard.svelte.test.ts (0 test)
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ» Failed Suites 1 ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»
+
+ FAIL  packages/ui-flow-svelte/test/editor-adopted-keyboard.svelte.test.ts [ packages/ui-flow-svelte/test/editor-adopted-keyboard.svelte.test.ts ]
+Error: EPERM: operation not permitted, rename 'C:\Users\RZ1\AppData\Local\Packages\sandbox.{9534644a-8947-49fb-a2fa-9d1aabd41d03}\AC\Temp\8wf9kAAT9LPnlyRy-HDsj\client\.tmp-1793214636494-042hokpms4n8' -> 'C:\Users\RZ1\AppData\Local\Packages\sandbox.{9534644a-8947-49fb-a2fa-9d1aabd41d03}\AC\Temp\8wf9kAAT9LPnlyRy-HDsj\client\bbc13c328ee05e1dfeb216fdaf162a59816e9872'
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[1/1]ΓÄ»
+
+
+ Test Files  1 failed (1)
+      Tests  no tests
+   Start at  03:10:34
+   Duration  1.75s (transform 0ms, setup 0ms, import 0ms, tests 0ms, environment 1.28s)
+

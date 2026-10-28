@@ -1,0 +1,25 @@
+{
+  "vector": {
+    "circle": [
+      {
+        "r": "18",
+        "transform": "translate(4 0)"
+      }
+    ],
+    "fills": [
+      "rgb(20, 61, 82)",
+      "rgb(255, 61, 129)",
+      "rgb(39, 211, 181)"
+    ],
+    "viewBox": "0 0 120 80"
+  },
+  "action": "manual-local-action",
+  "customIcon": {
+    "fills": [
+      "rgb(20, 61, 82)",
+      "rgb(255, 61, 129)",
+      "rgb(39, 211, 181)"
+    ],
+    "hidden": "true"
+  }
+}

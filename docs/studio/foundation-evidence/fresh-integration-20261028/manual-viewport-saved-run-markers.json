@@ -1,0 +1,61 @@
+{
+  "runMarkersBefore": {
+    "header": {
+      "ownerHeight": 518,
+      "ownerScrollHeight": 7013,
+      "ownerTop": 0,
+      "position": "sticky",
+      "rect": [
+        40,
+        81,
+        977.6000366210938,
+        37
+      ],
+      "viewport": [
+        1073,
+        518
+      ]
+    },
+    "footer": {
+      "bottomGap": 7.600006103515625,
+      "position": "fixed",
+      "rect": [
+        811.8875122070312,
+        481.3999938964844,
+        252.9125061035156,
+        29
+      ],
+      "rightGap": 8.199981689453125
+    }
+  },
+  "runMarkersAfter": {
+    "header": {
+      "ownerHeight": 518,
+      "ownerScrollHeight": 7013,
+      "ownerTop": 636,
+      "position": "sticky",
+      "rect": [
+        40,
+        0,
+        977.6000366210938,
+        37
+      ],
+      "viewport": [
+        1073,
+        518
+      ]
+    },
+    "footer": {
+      "bottomGap": 7.600006103515625,
+      "position": "fixed",
+      "rect": [
+        811.8875122070312,
+        481.3999938964844,
+        252.9125061035156,
+        29
+      ],
+      "rightGap": 8.199981689453125
+    }
+  },
+  "savedFooter": "rst\\\",\\\"position\\\":{\\\"x\\\":0,\\\"y\\\":0},\\\"values\\\":{\\\"value\\\":\\\"B value must remain independent\\\"}},{\\\"id\\\":\\\"second\\\",\\\"type\\\":\\\"text-step\\\",\\\"label\\\":\\\"Independent B second\\\",\\\"position\\\":{\\\"x\\\":380,\\\"y\\\":0},\\\"values\\\":{}}],\\\"edges\\\":[{\\\"id\\\":\\\"first-second\\\",\\\"source\\\":\\\"first\\\",\\\"sourcePort\\\":\\\"text-out\\\",\\\"target\\\":\\\"second\\\",\\\"targetPort\\\":\\\"text-in\\\"}]}\"\n        - generic \"Manual fixed viewport marker\":\n          - generic: Manual fixed marker — iframe viewport\n- text: Simulated execution\n- generic: Local preview · no live effects\n- contentinfo:\n  - status: Saved application · r1.r4\n  - generic \"v1_0ee16042885d04d670a9bb34887e7f79d3d01c41b286a011adc0e1d8dfc03579\": \"@3 · v1_0ee16042885d…\""
+}

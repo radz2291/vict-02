@@ -1,0 +1,1552 @@
+{
+  "schema": "vict.ui-document@1",
+  "id": "screen-2959a5a6-7a04-4eaa-aa97-19ad9f0a7193",
+  "revision": "r1.r4",
+  "root": "screen",
+  "nodes": {
+    "screen": {
+      "kind": "element",
+      "id": "screen",
+      "tag": "main",
+      "attributes": {
+        "aria-label": "Foundation Manual Contracts"
+      },
+      "children": [
+        "manual-proof-intro",
+        "manual-sticky-header",
+        "vict.ai.conversation-2c628416",
+        "vict.ai.reasoning-4108ef47",
+        "vict.ai.chain-of-thought-ffd34921",
+        "vict.ai.tool-d6ea6406",
+        "vict.ai.plan-b3cdf6e6",
+        "vict.ai.task-afe5d59b",
+        "vict.ai.queue-a04fe58a",
+        "vict.ai.terminal-d44e19ef",
+        "vict.ai.test-results-3b83e578",
+        "vict.ai.stack-trace-73c2d0c6",
+        "vict.ai.subagent-2099c4fc",
+        "vict.ai.context-0e96e974",
+        "vict.ai.sources-8d26cee0",
+        "vict.ai.inline-citation-52f324e5",
+        "vict.ai.file-tree-4e24a51e",
+        "vict.ai.markdown-b05f5165",
+        "vict.ai.checkpoint-17b428ee",
+        "vict.ai.confirmation-44426469",
+        "vict.ai.suggestion-9c125641",
+        "vict.ai.model-selector-943a4758",
+        "vict.ai.message-ca77ea22",
+        "vict.ai.prompt-input-b40c9d31",
+        "vict.ai.transcript-1ad38959",
+        "vict.pattern.drawer-11bff054",
+        "vict.pattern.action-button-e0c455b4",
+        "vict.media.vector-f635fc7a",
+        "vict.media.icon-0100a084",
+        "vict.media.embed-a86e20a9",
+        "vict.flow.editor-ec91a30c",
+        "manual-flow-second",
+        "manualFile-label",
+        "manualFile-value",
+        "manualFrame-label",
+        "manualFrame-value",
+        "manualDraft-label",
+        "manualDraft-value",
+        "manualSent-label",
+        "manualSent-value",
+        "manualAccepted-label",
+        "manualAccepted-value",
+        "manualToolDecision-label",
+        "manualToolDecision-value",
+        "manualModelChoice-label",
+        "manualModelChoice-value",
+        "manualEffortChoice-label",
+        "manualEffortChoice-value",
+        "manualFeedback-label",
+        "manualFeedback-value",
+        "manualRemovedAttachment-label",
+        "manualRemovedAttachment-value",
+        "manualGraphAValue",
+        "manualGraphBValue",
+        "manualActionValue",
+        "manual-fixed-footer"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "20px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "40px"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "560px"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#ffffff"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#243047"
+          }
+        },
+        {
+          "property": "font-family",
+          "value": {
+            "type": "text",
+            "value": "system-ui, sans-serif"
+          }
+        }
+      ]
+    },
+    "vict.ai.conversation-2c628416": {
+      "kind": "component",
+      "id": "vict.ai.conversation-2c628416",
+      "definitionId": "vict.ai.conversation",
+      "revision": "2",
+      "slots": {
+        "messages": {
+          "name": "messages",
+          "children": [
+            "vict.ai.conversation-2c628416-message"
+          ]
+        },
+        "composer": {
+          "name": "composer",
+          "children": [
+            "vict.ai.conversation-2c628416-prompt"
+          ]
+        }
+      },
+      "props": {}
+    },
+    "vict.ai.conversation-2c628416-message": {
+      "kind": "component",
+      "id": "vict.ai.conversation-2c628416-message",
+      "definitionId": "vict.ai.message",
+      "revision": "2",
+      "props": {
+        "role": {
+          "type": "literal",
+          "value": "assistant"
+        },
+        "text": {
+          "type": "literal",
+          "value": "How can I help?"
+        }
+      },
+      "slots": {}
+    },
+    "vict.ai.conversation-2c628416-prompt": {
+      "kind": "component",
+      "id": "vict.ai.conversation-2c628416-prompt",
+      "definitionId": "vict.ai.prompt-input",
+      "revision": "2",
+      "props": {
+        "value": {
+          "type": "ref",
+          "path": "state.catalog_vict_ai_conversation-2c628416_message"
+        }
+      },
+      "outputs": {
+        "valueChange": {
+          "setState": {
+            "key": "catalog_vict_ai_conversation-2c628416_message"
+          }
+        }
+      },
+      "slots": {}
+    },
+    "vict.ai.reasoning-4108ef47": {
+      "kind": "component",
+      "id": "vict.ai.reasoning-4108ef47",
+      "definitionId": "vict.ai.reasoning",
+      "revision": "1",
+      "props": {
+        "title": {
+          "type": "literal",
+          "value": "Manual supplied public summary"
+        },
+        "text": {
+          "type": "literal",
+          "value": "This public example was supplied for presentation testing. It contains no private reasoning."
+        },
+        "open": {
+          "type": "literal",
+          "value": true
+        },
+        "running": {
+          "type": "literal",
+          "value": false
+        },
+        "showIcon": {
+          "type": "literal",
+          "value": true
+        }
+      },
+      "slots": {}
+    },
+    "vict.ai.chain-of-thought-ffd34921": {
+      "kind": "component",
+      "id": "vict.ai.chain-of-thought-ffd34921",
+      "definitionId": "vict.ai.chain-of-thought",
+      "revision": "1",
+      "props": {
+        "data": {
+          "type": "literal",
+          "value": "{\"version\":1,\"steps\":[{\"id\":\"demo-summary-1\",\"title\":\"Public summary\",\"detail\":\"Checked the supplied component contracts and preserved the manual marker.\",\"status\":\"done\",\"open\":true}]}"
+        },
+        "description": {
+          "type": "literal",
+          "value": "Demo data — only the supplied public summary is rendered."
+        },
+        "title": {
+          "type": "literal",
+          "value": "Public summary (demo)"
+        }
+      },
+      "slots": {}
+    },
+    "vict.ai.tool-d6ea6406": {
+      "kind": "component",
+      "id": "vict.ai.tool-d6ea6406",
+      "definitionId": "vict.ai.tool",
+      "revision": "1",
+      "props": {
+        "title": {
+          "type": "literal",
+          "value": "Supplied manual tool receipt — no execution"
+        },
+        "input": {
+          "type": "literal",
+          "value": "Manual coexistence after reboot"
+        },
+        "output": {
+          "type": "literal",
+          "value": "Verified coexistence"
+        },
+        "status": {
+          "type": "literal",
+          "value": ""
+        },
+        "state": {
+          "type": "literal",
+          "value": "completed"
+        },
+        "open": {
+          "type": "literal",
+          "value": true
+        },
+        "allowDecision": {
+          "type": "literal",
+          "value": true
+        },
+        "approvalTitle": {
+          "type": "literal",
+          "value": "Record local tool decision only"
+        },
+        "approvalDescription": {
+          "type": "literal",
+          "value": "No approval authority or tool execution follows."
+        }
+      },
+      "slots": {},
+      "outputs": {
+        "decision": {
+          "setState": {
+            "key": "manualToolDecision"
+          }
+        }
+      }
+    },
+    "vict.ai.plan-b3cdf6e6": {
+      "kind": "component",
+      "id": "vict.ai.plan-b3cdf6e6",
+      "definitionId": "vict.ai.plan",
+      "revision": "1",
+      "props": {
+        "data": {
+          "type": "literal",
+          "value": "{\"version\":1,\"steps\":[{\"id\":\"demo-plan-review\",\"title\":\"Review completed\",\"detail\":\"Sample layout review marked complete (demo).\",\"status\":\"done\",\"open\":true},{\"id\":\"demo-plan-device\",\"title\":\"Device verification pending\",\"detail\":\"Example follow-up, intentionally not run (demo).\",\"status\":\"pending\",\"open\":false}]}"
+        },
+        "description": {
+          "type": "literal",
+          "value": "Simulated plan — nothing was executed."
+        },
+        "title": {
+          "type": "literal",
+          "value": "Demo plan (sample)"
+        }
+      },
+      "slots": {}
+    },
+    "vict.ai.task-afe5d59b": {
+      "kind": "component",
+      "id": "vict.ai.task-afe5d59b",
+      "definitionId": "vict.ai.task",
+      "revision": "1",
+      "props": {
+        "title": {
+          "type": "literal",
+          "value": "Review process (public steps)"
+        },
+        "description": {
+          "type": "literal",
+          "value": "Supplied verification facts only — no execution on this screen."
+        },
+        "open": {
+          "type": "literal",
+          "value": true
+        },
+        "data": {
+          "type": "literal",
+          "value": "{\"version\":1,\"steps\":[{\"id\":\"g-import\",\"title\":\"Retained Foundation Graph imported\",\"status\":\"done\"},{\"id\":\"g-input\",\"title\":\"Prior Input text intact\",\"detail\":\"Manual coexistence after reboot\",\"status\":\"done\"},{\"id\":\"g-output\",\"title\":\"Prior Output name intact\",\"detail\":\"Verified coexistence\",\"status\":\"done\"},{\"id\":\"g-port\",\"title\":\"Port-capacity violation safely refused\",\"status\":\"done\"},{\"id\":\"g-edits\",\"title\":\"Deletion, reconnection and creation exercised\",\"status\":\"done\"},{\"id\":\"g-run\",\"title\":\"Save/reload and Run confirmed both values intact\",\"status\":\"done\"}]}"
+        }
+      },
+      "slots": {}
+    },
+    "vict.ai.queue-a04fe58a": {
+      "kind": "component",
+      "id": "vict.ai.queue-a04fe58a",
+      "definitionId": "vict.ai.queue",
+      "revision": "1",
+      "props": {
+        "completedOpen": {
+          "type": "literal",
+          "value": false
+        },
+        "data": {
+          "type": "literal",
+          "value": "{\"version\":1,\"steps\":[{\"id\":\"demo-queue-review\",\"title\":\"Pending review: review desk layout (sample)\",\"detail\":\"Waiting in the demo queue.\",\"status\":\"pending\",\"open\":true}]}"
+        }
+      },
+      "slots": {}
+    },
+    "vict.ai.terminal-d44e19ef": {
+      "kind": "component",
+      "id": "vict.ai.terminal-d44e19ef",
+      "definitionId": "vict.ai.terminal",
+      "revision": "1",
+      "props": {
+        "command": {
+          "type": "literal",
+          "value": "$ npm run review:layout -- --demo"
+        },
+        "exitCode": {
+          "type": "literal",
+          "value": 0
+        },
+        "open": {
+          "type": "literal",
+          "value": true
+        },
+        "output": {
+          "type": "literal",
+          "value": "demo-only output — no shell, tool or command was executed\n> reviewing example layout\n> 1 sample layout checked (demo data)"
+        },
+        "status": {
+          "type": "literal",
+          "value": ""
+        }
+      },
+      "slots": {}
+    },
+    "vict.ai.test-results-3b83e578": {
+      "kind": "component",
+      "id": "vict.ai.test-results-3b83e578",
+      "definitionId": "vict.ai.test-results",
+      "revision": "1",
+      "props": {
+        "data": {
+          "type": "literal",
+          "value": "{\"version\":1,\"testSuites\":[{\"id\":\"demo-suite\",\"name\":\"Sample suite (demo data)\",\"tests\":[{\"id\":\"demo-test-1\",\"name\":\"example layout renders sample cards\",\"status\":\"passed\"},{\"id\":\"demo-test-2\",\"name\":\"compact correction applies (sample)\",\"status\":\"passed\"},{\"id\":\"demo-test-device\",\"name\":\"device check\",\"status\":\"skipped\"}]}]}"
+        },
+        "title": {
+          "type": "literal",
+          "value": "Example tests (demo) — two sample passes, device check not run"
+        }
+      },
+      "slots": {}
+    },
+    "vict.ai.stack-trace-73c2d0c6": {
+      "kind": "component",
+      "id": "vict.ai.stack-trace-73c2d0c6",
+      "definitionId": "vict.ai.stack-trace",
+      "revision": "1",
+      "props": {
+        "allowSelect": {
+          "type": "literal",
+          "value": true
+        },
+        "frames": {
+          "type": "literal",
+          "value": "TypeError: sample review handler is not a function (synthetic demo)\n    at reviewLayout (src/review.ts:12:9)\n    at runReviewDesk (src/review.ts:24:5)"
+        },
+        "open": {
+          "type": "literal",
+          "value": true
+        },
+        "title": {
+          "type": "literal",
+          "value": "Synthetic TypeError (demo — not a real error)"
+        }
+      },
+      "slots": {},
+      "outputs": {
+        "frameSelect": {
+          "setState": {
+            "key": "manualFrame"
+          }
+        }
+      }
+    },
+    "vict.ai.subagent-2099c4fc": {
+      "kind": "component",
+      "id": "vict.ai.subagent-2099c4fc",
+      "definitionId": "vict.ai.subagent",
+      "revision": "1",
+      "props": {
+        "description": {
+          "type": "literal",
+          "value": "Demonstration subagent card — no child run was launched."
+        },
+        "model": {
+          "type": "literal",
+          "value": "demo-local"
+        },
+        "result": {
+          "type": "literal",
+          "value": "Sample layout observations recorded (demo)."
+        },
+        "state": {
+          "type": "literal",
+          "value": "completed"
+        },
+        "title": {
+          "type": "literal",
+          "value": "Sample role: layout reviewer (demo)"
+        }
+      },
+      "slots": {}
+    },
+    "vict.ai.context-0e96e974": {
+      "kind": "component",
+      "id": "vict.ai.context-0e96e974",
+      "definitionId": "vict.ai.context",
+      "revision": "1",
+      "props": {
+        "data": {
+          "type": "literal",
+          "value": "{\"version\":1,\"breakdown\":[{\"label\":\"Sample transcript records\",\"value\":16},{\"label\":\"Example test cases\",\"value\":12},{\"label\":\"Synthetic stack frames\",\"value\":8},{\"label\":\"Example files listed\",\"value\":6}]}\n"
+        },
+        "limit": {
+          "type": "literal",
+          "value": 100
+        },
+        "used": {
+          "type": "literal",
+          "value": 42
+        }
+      },
+      "slots": {}
+    },
+    "vict.ai.sources-8d26cee0": {
+      "kind": "component",
+      "id": "vict.ai.sources-8d26cee0",
+      "definitionId": "vict.ai.sources",
+      "revision": "1",
+      "props": {
+        "open": {
+          "type": "literal",
+          "value": true
+        },
+        "data": {
+          "type": "literal",
+          "value": "{\"version\":1,\"sources\":[{\"id\":\"repo\",\"title\":\"vict-02 — supplied source link\",\"url\":\"https://github.com/radz2291/vict-02\",\"excerpt\":\"Public repository link supplied for this review.\"}]}"
+        }
+      },
+      "slots": {}
+    },
+    "vict.ai.inline-citation-52f324e5": {
+      "kind": "component",
+      "id": "vict.ai.inline-citation-52f324e5",
+      "definitionId": "vict.ai.inline-citation",
+      "revision": "1",
+      "props": {},
+      "slots": {}
+    },
+    "vict.ai.file-tree-4e24a51e": {
+      "kind": "component",
+      "id": "vict.ai.file-tree-4e24a51e",
+      "definitionId": "vict.ai.file-tree",
+      "revision": "1",
+      "props": {
+        "allowSelect": {
+          "type": "literal",
+          "value": true
+        },
+        "data": {
+          "type": "literal",
+          "value": "{\"version\":1,\"nodes\":[{\"path\":\"src/review.ts\",\"name\":\"review.ts\"},{\"path\":\"README.md\",\"name\":\"README.md\"}]}"
+        },
+        "selected": {
+          "type": "ref",
+          "path": "state.manualFile"
+        }
+      },
+      "slots": {},
+      "outputs": {
+        "select": {
+          "setState": {
+            "key": "manualFile"
+          }
+        }
+      }
+    },
+    "vict.ai.markdown-b05f5165": {
+      "kind": "component",
+      "id": "vict.ai.markdown-b05f5165",
+      "definitionId": "vict.ai.markdown",
+      "revision": "1",
+      "props": {
+        "text": {
+          "type": "literal",
+          "value": "**Verification note** — Saved graph Run completed with both retained values intact: Input `Manual coexistence after reboot`, Output `Verified coexistence`.\n\nThis screen presents supplied public facts only; it performs no provider, tool or network execution."
+        }
+      },
+      "slots": {}
+    },
+    "vict.ai.checkpoint-17b428ee": {
+      "kind": "component",
+      "id": "vict.ai.checkpoint-17b428ee",
+      "definitionId": "vict.ai.checkpoint",
+      "revision": "1",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Demo checkpoint — local restore intent only"
+        },
+        "canRestore": {
+          "type": "literal",
+          "value": false
+        }
+      },
+      "slots": {}
+    },
+    "vict.ai.confirmation-44426469": {
+      "kind": "component",
+      "id": "vict.ai.confirmation-44426469",
+      "definitionId": "vict.ai.confirmation",
+      "revision": "1",
+      "props": {
+        "title": {
+          "type": "literal",
+          "value": "Manual local decision — no approval authority"
+        },
+        "description": {
+          "type": "literal",
+          "value": "This only records a boolean in this proof app."
+        },
+        "state": {
+          "type": "literal",
+          "value": "requested"
+        },
+        "pending": {
+          "type": "literal",
+          "value": false
+        },
+        "canDecide": {
+          "type": "literal",
+          "value": true
+        }
+      },
+      "slots": {},
+      "outputs": {
+        "decision": {
+          "setState": {
+            "key": "manualAccepted"
+          }
+        }
+      }
+    },
+    "vict.ai.suggestion-9c125641": {
+      "kind": "component",
+      "id": "vict.ai.suggestion-9c125641",
+      "definitionId": "vict.ai.suggestion",
+      "revision": "1",
+      "props": {
+        "text": {
+          "type": "literal",
+          "value": "Manual suggestion: keep this as a local draft"
+        },
+        "allowActions": {
+          "type": "literal",
+          "value": true
+        }
+      },
+      "slots": {},
+      "outputs": {
+        "select": {
+          "setState": {
+            "key": "manualDraft"
+          }
+        }
+      }
+    },
+    "vict.ai.model-selector-943a4758": {
+      "kind": "component",
+      "id": "vict.ai.model-selector-943a4758",
+      "definitionId": "vict.ai.model-selector",
+      "revision": "1",
+      "props": {
+        "data": {
+          "type": "literal",
+          "value": "{\"version\":1,\"models\":[{\"id\":\"desk-preview\",\"label\":\"Desk preview (local only)\"},{\"id\":\"desk-preview-alt\",\"label\":\"Desk preview alt (local only)\"}],\"efforts\":[{\"id\":\"light\",\"label\":\"Local light effort (demo)\"},{\"id\":\"detailed\",\"label\":\"Local detailed effort (demo)\"}]}"
+        },
+        "model": {
+          "type": "ref",
+          "path": "state.manualModelChoice"
+        },
+        "effort": {
+          "type": "ref",
+          "path": "state.manualEffortChoice"
+        },
+        "inline": {
+          "type": "literal",
+          "value": false
+        },
+        "allowActions": {
+          "type": "literal",
+          "value": true
+        }
+      },
+      "slots": {},
+      "outputs": {
+        "modelChange": {
+          "setState": {
+            "key": "manualModelChoice"
+          }
+        },
+        "effortChange": {
+          "setState": {
+            "key": "manualEffortChoice"
+          }
+        }
+      }
+    },
+    "vict.ai.message-ca77ea22": {
+      "kind": "component",
+      "id": "vict.ai.message-ca77ea22",
+      "definitionId": "vict.ai.message",
+      "revision": "3",
+      "props": {
+        "role": {
+          "type": "literal",
+          "value": "assistant"
+        },
+        "text": {
+          "type": "literal",
+          "value": "Supplied manual example. Feedback is a local string intent; copy/edit/retry have no host binding and stay disabled."
+        },
+        "feedback": {
+          "type": "ref",
+          "path": "state.manualFeedback"
+        },
+        "feedbackEnabled": {
+          "type": "literal",
+          "value": true
+        },
+        "copyEnabled": {
+          "type": "literal",
+          "value": false
+        },
+        "editEnabled": {
+          "type": "literal",
+          "value": false
+        },
+        "retryEnabled": {
+          "type": "literal",
+          "value": false
+        }
+      },
+      "slots": {},
+      "outputs": {
+        "feedbackChange": {
+          "setState": {
+            "key": "manualFeedback"
+          }
+        }
+      }
+    },
+    "vict.ai.prompt-input-b40c9d31": {
+      "kind": "component",
+      "id": "vict.ai.prompt-input-b40c9d31",
+      "definitionId": "vict.ai.prompt-input",
+      "revision": "3",
+      "props": {
+        "value": {
+          "type": "ref",
+          "path": "state.manualDraft"
+        },
+        "label": {
+          "type": "literal",
+          "value": "Manual local composer"
+        },
+        "placeholder": {
+          "type": "literal",
+          "value": "No provider is connected here."
+        },
+        "sendEnabled": {
+          "type": "literal",
+          "value": true
+        },
+        "data": {
+          "type": "literal",
+          "value": "{\"version\":1,\"attachments\":[{\"id\":\"manual-record\",\"name\":\"supplied-demo-record.json\"}]}"
+        },
+        "removeAttachmentEnabled": {
+          "type": "literal",
+          "value": true
+        },
+        "attachEnabled": {
+          "type": "literal",
+          "value": false
+        },
+        "stopEnabled": {
+          "type": "literal",
+          "value": false
+        }
+      },
+      "outputs": {
+        "valueChange": {
+          "setState": {
+            "key": "manualDraft"
+          }
+        },
+        "send": {
+          "setState": {
+            "key": "manualSent"
+          }
+        },
+        "removeAttachment": {
+          "setState": {
+            "key": "manualRemovedAttachment"
+          }
+        }
+      },
+      "slots": {}
+    },
+    "vict.ai.transcript-1ad38959": {
+      "kind": "component",
+      "id": "vict.ai.transcript-1ad38959",
+      "definitionId": "vict.ai.transcript",
+      "revision": "1",
+      "props": {
+        "data": {
+          "type": "literal",
+          "value": "{\"version\":1,\"messages\":[{\"id\":\"demo-user-1\",\"role\":\"user\",\"text\":\"Sample request: can you review the layout of the review desk? (demo data)\"},{\"id\":\"demo-assistant-1\",\"role\":\"assistant\",\"text\":\"Sample reply: one compact correction is ready. (demo data)\"}]}"
+        },
+        "description": {
+          "type": "literal",
+          "value": "Simulated messages only — no provider was contacted."
+        },
+        "title": {
+          "type": "literal",
+          "value": "Demo transcript (sample)"
+        }
+      },
+      "slots": {
+        "composer": {
+          "name": "composer",
+          "children": [
+            "vict.ai.transcript-1ad38959-composer"
+          ]
+        }
+      }
+    },
+    "vict.ai.transcript-1ad38959-composer": {
+      "kind": "component",
+      "id": "vict.ai.transcript-1ad38959-composer",
+      "definitionId": "vict.ai.prompt-input",
+      "revision": "3",
+      "props": {
+        "value": {
+          "type": "ref",
+          "path": "state.catalog_vict_ai_transcript-1ad38959_message"
+        }
+      },
+      "outputs": {
+        "valueChange": {
+          "setState": {
+            "key": "catalog_vict_ai_transcript-1ad38959_message"
+          }
+        }
+      },
+      "slots": {}
+    },
+    "vict.pattern.drawer-11bff054": {
+      "kind": "component",
+      "id": "vict.pattern.drawer-11bff054",
+      "definitionId": "vict.pattern.drawer",
+      "revision": "1",
+      "props": {
+        "open": {
+          "type": "ref",
+          "path": "state.catalog_vict_pattern_drawer-11bff054_drawerOpen"
+        },
+        "title": {
+          "type": "literal",
+          "value": "Manual scroll ownership panel"
+        },
+        "triggerLabel": {
+          "type": "literal",
+          "value": "Open manual scroll panel"
+        },
+        "side": {
+          "type": "literal",
+          "value": "right"
+        },
+        "size": {
+          "type": "literal",
+          "value": 340
+        }
+      },
+      "outputs": {
+        "openChange": {
+          "setState": {
+            "key": "catalog_vict_pattern_drawer-11bff054_drawerOpen"
+          }
+        }
+      },
+      "slots": {
+        "body": {
+          "name": "body",
+          "children": [
+            "vict.pattern.drawer-11bff054-body"
+          ]
+        }
+      }
+    },
+    "vict.pattern.drawer-11bff054-body": {
+      "kind": "element",
+      "id": "vict.pattern.drawer-11bff054-body",
+      "tag": "p",
+      "children": [
+        "vict.pattern.drawer-11bff054-text"
+      ]
+    },
+    "vict.pattern.drawer-11bff054-text": {
+      "kind": "text",
+      "id": "vict.pattern.drawer-11bff054-text",
+      "content": {
+        "type": "literal",
+        "value": "Supplied line 1: only this sheet should scroll while its application background remains fixed. Supplied line 2: only this sheet should scroll while its application background remains fixed. Supplied line 3: only this sheet should scroll while its application background remains fixed. Supplied line 4: only this sheet should scroll while its application background remains fixed. Supplied line 5: only this sheet should scroll while its application background remains fixed. Supplied line 6: only this sheet should scroll while its application background remains fixed. Supplied line 7: only this sheet should scroll while its application background remains fixed. Supplied line 8: only this sheet should scroll while its application background remains fixed. Supplied line 9: only this sheet should scroll while its application background remains fixed. Supplied line 10: only this sheet should scroll while its application background remains fixed. Supplied line 11: only this sheet should scroll while its application background remains fixed. Supplied line 12: only this sheet should scroll while its application background remains fixed. Supplied line 13: only this sheet should scroll while its application background remains fixed. Supplied line 14: only this sheet should scroll while its application background remains fixed. Supplied line 15: only this sheet should scroll while its application background remains fixed. Supplied line 16: only this sheet should scroll while its application background remains fixed. Supplied line 17: only this sheet should scroll while its application background remains fixed. Supplied line 18: only this sheet should scroll while its application background remains fixed. Supplied line 19: only this sheet should scroll while its application background remains fixed. Supplied line 20: only this sheet should scroll while its application background remains fixed. Supplied line 21: only this sheet should scroll while its application background remains fixed. Supplied line 22: only this sheet should scroll while its application background remains fixed. Supplied line 23: only this sheet should scroll while its application background remains fixed. Supplied line 24: only this sheet should scroll while its application background remains fixed. Supplied line 25: only this sheet should scroll while its application background remains fixed. Supplied line 26: only this sheet should scroll while its application background remains fixed. Supplied line 27: only this sheet should scroll while its application background remains fixed. Supplied line 28: only this sheet should scroll while its application background remains fixed. Supplied line 29: only this sheet should scroll while its application background remains fixed. Supplied line 30: only this sheet should scroll while its application background remains fixed. Supplied line 31: only this sheet should scroll while its application background remains fixed. Supplied line 32: only this sheet should scroll while its application background remains fixed. Supplied line 33: only this sheet should scroll while its application background remains fixed. Supplied line 34: only this sheet should scroll while its application background remains fixed. Supplied line 35: only this sheet should scroll while its application background remains fixed. Supplied line 36: only this sheet should scroll while its application background remains fixed. Supplied line 37: only this sheet should scroll while its application background remains fixed. Supplied line 38: only this sheet should scroll while its application background remains fixed. Supplied line 39: only this sheet should scroll while its application background remains fixed. Supplied line 40: only this sheet should scroll while its application background remains fixed. Supplied line 41: only this sheet should scroll while its application background remains fixed. Supplied line 42: only this sheet should scroll while its application background remains fixed. Supplied line 43: only this sheet should scroll while its application background remains fixed. Supplied line 44: only this sheet should scroll while its application background remains fixed. Supplied line 45: only this sheet should scroll while its application background remains fixed. Supplied line 46: only this sheet should scroll while its application background remains fixed. Supplied line 47: only this sheet should scroll while its application background remains fixed. Supplied line 48: only this sheet should scroll while its application background remains fixed. Supplied line 49: only this sheet should scroll while its application background remains fixed. Supplied line 50: only this sheet should scroll while its application background remains fixed. Supplied line 51: only this sheet should scroll while its application background remains fixed. Supplied line 52: only this sheet should scroll while its application background remains fixed. Supplied line 53: only this sheet should scroll while its application background remains fixed. Supplied line 54: only this sheet should scroll while its application background remains fixed. Supplied line 55: only this sheet should scroll while its application background remains fixed. Supplied line 56: only this sheet should scroll while its application background remains fixed. Supplied line 57: only this sheet should scroll while its application background remains fixed. Supplied line 58: only this sheet should scroll while its application background remains fixed. Supplied line 59: only this sheet should scroll while its application background remains fixed. Supplied line 60: only this sheet should scroll while its application background remains fixed. Supplied line 61: only this sheet should scroll while its application background remains fixed. Supplied line 62: only this sheet should scroll while its application background remains fixed. Supplied line 63: only this sheet should scroll while its application background remains fixed. Supplied line 64: only this sheet should scroll while its application background remains fixed. Supplied line 65: only this sheet should scroll while its application background remains fixed. Supplied line 66: only this sheet should scroll while its application background remains fixed. Supplied line 67: only this sheet should scroll while its application background remains fixed. Supplied line 68: only this sheet should scroll while its application background remains fixed. Supplied line 69: only this sheet should scroll while its application background remains fixed. Supplied line 70: only this sheet should scroll while its application background remains fixed. Supplied line 71: only this sheet should scroll while its application background remains fixed. Supplied line 72: only this sheet should scroll while its application background remains fixed. Supplied line 73: only this sheet should scroll while its application background remains fixed. Supplied line 74: only this sheet should scroll while its application background remains fixed. Supplied line 75: only this sheet should scroll while its application background remains fixed. Supplied line 76: only this sheet should scroll while its application background remains fixed. Supplied line 77: only this sheet should scroll while its application background remains fixed. Supplied line 78: only this sheet should scroll while its application background remains fixed. Supplied line 79: only this sheet should scroll while its application background remains fixed. Supplied line 80: only this sheet should scroll while its application background remains fixed."
+      }
+    },
+    "vict.pattern.action-button-e0c455b4": {
+      "kind": "component",
+      "id": "vict.pattern.action-button-e0c455b4",
+      "definitionId": "vict.pattern.action-button",
+      "revision": "1",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Record manual local action"
+        },
+        "value": {
+          "type": "literal",
+          "value": "manual-local-action"
+        }
+      },
+      "slots": {
+        "icon": {
+          "name": "icon",
+          "children": [
+            "vict.pattern.action-button-e0c455b4-actionIcon"
+          ]
+        }
+      },
+      "outputs": {
+        "activate": {
+          "setState": {
+            "key": "catalog_vict_pattern_action-button-e0c455b4_lastAction"
+          }
+        }
+      }
+    },
+    "vict.pattern.action-button-e0c455b4-actionIcon": {
+      "kind": "component",
+      "id": "vict.pattern.action-button-e0c455b4-actionIcon",
+      "definitionId": "vict.media.icon",
+      "revision": "1",
+      "props": {
+        "data": {
+          "type": "literal",
+          "value": "{\"schema\":\"vict.vector@1\",\"viewBox\":\"0 0 120 80\",\"nodes\":[{\"tag\":\"rect\",\"attributes\":{\"width\":120,\"height\":80,\"rx\":12,\"fill\":\"#143d52\"}},{\"tag\":\"circle\",\"attributes\":{\"cx\":42,\"cy\":40,\"r\":18,\"fill\":\"#ff3d81\",\"transform\":\"translate(4 0)\"}},{\"tag\":\"path\",\"attributes\":{\"d\":\"M55 65 L80 15 L105 65 Z\",\"fill\":\"#27d3b5\"}}]}"
+        },
+        "decorative": {
+          "type": "literal",
+          "value": true
+        },
+        "size": {
+          "type": "literal",
+          "value": 24
+        }
+      },
+      "slots": {}
+    },
+    "vict.media.vector-f635fc7a": {
+      "id": "vict.media.vector-f635fc7a",
+      "kind": "component",
+      "definitionId": "vict.media.vector",
+      "revision": "1",
+      "props": {
+        "data": {
+          "type": "literal",
+          "value": "{\"schema\":\"vict.vector@1\",\"viewBox\":\"0 0 120 80\",\"nodes\":[{\"tag\":\"rect\",\"attributes\":{\"width\":120,\"height\":80,\"rx\":12,\"fill\":\"#143d52\"}},{\"tag\":\"circle\",\"attributes\":{\"cx\":42,\"cy\":40,\"r\":18,\"fill\":\"#ff3d81\",\"transform\":\"translate(4 0)\"}},{\"tag\":\"path\",\"attributes\":{\"d\":\"M55 65 L80 15 L105 65 Z\",\"fill\":\"#27d3b5\"}}]}"
+        },
+        "label": {
+          "type": "literal",
+          "value": "Manually edited three-colour geometry, circle radius18 translated4"
+        }
+      },
+      "slots": {}
+    },
+    "vict.media.icon-0100a084": {
+      "id": "vict.media.icon-0100a084",
+      "kind": "component",
+      "definitionId": "vict.media.icon",
+      "revision": "1",
+      "props": {
+        "name": {
+          "type": "literal",
+          "value": "search"
+        },
+        "pack": {
+          "type": "literal",
+          "value": "lucide"
+        },
+        "revision": {
+          "type": "literal",
+          "value": "1.27.0"
+        },
+        "label": {
+          "type": "literal",
+          "value": "Manual supplied search icon"
+        },
+        "decorative": {
+          "type": "literal",
+          "value": false
+        },
+        "size": {
+          "type": "literal",
+          "value": 24
+        },
+        "strokeWidth": {
+          "type": "literal",
+          "value": 2
+        }
+      },
+      "slots": {}
+    },
+    "vict.media.embed-a86e20a9": {
+      "id": "vict.media.embed-a86e20a9",
+      "kind": "component",
+      "definitionId": "vict.media.embed",
+      "revision": "1",
+      "props": {
+        "provider": {
+          "type": "literal",
+          "value": "youtube"
+        },
+        "videoId": {
+          "type": "literal",
+          "value": "fNSmLNWyojA"
+        },
+        "title": {
+          "type": "literal",
+          "value": "NASA official public video — external embed check"
+        }
+      },
+      "slots": {}
+    },
+    "vict.flow.editor-ec91a30c": {
+      "kind": "component",
+      "id": "vict.flow.editor-ec91a30c",
+      "definitionId": "vict.flow.editor",
+      "revision": "2",
+      "props": {
+        "graph": {
+          "type": "ref",
+          "path": "state.catalog_vict_flow_editor-ec91a30c_graph"
+        },
+        "label": {
+          "type": "literal",
+          "value": "Manual graph A — twelve nodes"
+        },
+        "height": {
+          "type": "literal",
+          "value": 600
+        }
+      },
+      "outputs": {
+        "graphChange": {
+          "setState": {
+            "key": "catalog_vict_flow_editor-ec91a30c_graph"
+          }
+        }
+      },
+      "slots": {}
+    },
+    "manual-proof-intro": {
+      "kind": "text",
+      "id": "manual-proof-intro",
+      "content": {
+        "type": "literal",
+        "value": "MANUAL PROOF — supplied demonstration records only. No commands, subagents, provider changes, approvals or history actions execute here."
+      }
+    },
+    "manualFile-label": {
+      "kind": "text",
+      "id": "manualFile-label",
+      "content": {
+        "type": "literal",
+        "value": "manualFile (local intent only):"
+      }
+    },
+    "manualFile-value": {
+      "kind": "text",
+      "id": "manualFile-value",
+      "content": {
+        "type": "expression",
+        "expression": {
+          "type": "ref",
+          "path": "state.manualFile"
+        }
+      }
+    },
+    "manualFrame-label": {
+      "kind": "text",
+      "id": "manualFrame-label",
+      "content": {
+        "type": "literal",
+        "value": "manualFrame (local intent only):"
+      }
+    },
+    "manualFrame-value": {
+      "kind": "text",
+      "id": "manualFrame-value",
+      "content": {
+        "type": "expression",
+        "expression": {
+          "type": "ref",
+          "path": "state.manualFrame"
+        }
+      }
+    },
+    "manualDraft-label": {
+      "kind": "text",
+      "id": "manualDraft-label",
+      "content": {
+        "type": "literal",
+        "value": "manualDraft (local intent only):"
+      }
+    },
+    "manualDraft-value": {
+      "kind": "text",
+      "id": "manualDraft-value",
+      "content": {
+        "type": "expression",
+        "expression": {
+          "type": "ref",
+          "path": "state.manualDraft"
+        }
+      }
+    },
+    "manualSent-label": {
+      "kind": "text",
+      "id": "manualSent-label",
+      "content": {
+        "type": "literal",
+        "value": "manualSent (local intent only):"
+      }
+    },
+    "manualSent-value": {
+      "kind": "text",
+      "id": "manualSent-value",
+      "content": {
+        "type": "expression",
+        "expression": {
+          "type": "ref",
+          "path": "state.manualSent"
+        }
+      }
+    },
+    "manualAccepted-label": {
+      "kind": "text",
+      "id": "manualAccepted-label",
+      "content": {
+        "type": "literal",
+        "value": "manualAccepted (local intent only):"
+      }
+    },
+    "manualAccepted-value": {
+      "kind": "text",
+      "id": "manualAccepted-value",
+      "content": {
+        "type": "expression",
+        "expression": {
+          "type": "ref",
+          "path": "state.manualAccepted"
+        }
+      }
+    },
+    "manualToolDecision-label": {
+      "kind": "text",
+      "id": "manualToolDecision-label",
+      "content": {
+        "type": "literal",
+        "value": "manualToolDecision (local intent only):"
+      }
+    },
+    "manualToolDecision-value": {
+      "kind": "text",
+      "id": "manualToolDecision-value",
+      "content": {
+        "type": "expression",
+        "expression": {
+          "type": "ref",
+          "path": "state.manualToolDecision"
+        }
+      }
+    },
+    "manualModelChoice-label": {
+      "kind": "text",
+      "id": "manualModelChoice-label",
+      "content": {
+        "type": "literal",
+        "value": "manualModelChoice (local intent only):"
+      }
+    },
+    "manualModelChoice-value": {
+      "kind": "text",
+      "id": "manualModelChoice-value",
+      "content": {
+        "type": "expression",
+        "expression": {
+          "type": "ref",
+          "path": "state.manualModelChoice"
+        }
+      }
+    },
+    "manualEffortChoice-label": {
+      "kind": "text",
+      "id": "manualEffortChoice-label",
+      "content": {
+        "type": "literal",
+        "value": "manualEffortChoice (local intent only):"
+      }
+    },
+    "manualEffortChoice-value": {
+      "kind": "text",
+      "id": "manualEffortChoice-value",
+      "content": {
+        "type": "expression",
+        "expression": {
+          "type": "ref",
+          "path": "state.manualEffortChoice"
+        }
+      }
+    },
+    "manualFeedback-label": {
+      "kind": "text",
+      "id": "manualFeedback-label",
+      "content": {
+        "type": "literal",
+        "value": "manualFeedback (local intent only):"
+      }
+    },
+    "manualFeedback-value": {
+      "kind": "text",
+      "id": "manualFeedback-value",
+      "content": {
+        "type": "expression",
+        "expression": {
+          "type": "ref",
+          "path": "state.manualFeedback"
+        }
+      }
+    },
+    "manualRemovedAttachment-label": {
+      "kind": "text",
+      "id": "manualRemovedAttachment-label",
+      "content": {
+        "type": "literal",
+        "value": "manualRemovedAttachment (local intent only):"
+      }
+    },
+    "manualRemovedAttachment-value": {
+      "kind": "text",
+      "id": "manualRemovedAttachment-value",
+      "content": {
+        "type": "expression",
+        "expression": {
+          "type": "ref",
+          "path": "state.manualRemovedAttachment"
+        }
+      }
+    },
+    "manual-flow-second": {
+      "kind": "component",
+      "id": "manual-flow-second",
+      "definitionId": "vict.flow.editor",
+      "revision": "2",
+      "props": {
+        "graph": {
+          "type": "ref",
+          "path": "state.manualGraphB"
+        },
+        "label": {
+          "type": "literal",
+          "value": "Manual graph B — independent state"
+        },
+        "height": {
+          "type": "literal",
+          "value": 420
+        }
+      },
+      "outputs": {
+        "graphChange": {
+          "setState": {
+            "key": "manualGraphB"
+          }
+        }
+      },
+      "slots": {}
+    },
+    "manualGraphAValue": {
+      "kind": "text",
+      "id": "manualGraphAValue",
+      "content": {
+        "type": "expression",
+        "expression": {
+          "type": "ref",
+          "path": "state.catalog_vict_flow_editor-ec91a30c_graph"
+        }
+      }
+    },
+    "manualGraphBValue": {
+      "kind": "text",
+      "id": "manualGraphBValue",
+      "content": {
+        "type": "expression",
+        "expression": {
+          "type": "ref",
+          "path": "state.manualGraphB"
+        }
+      }
+    },
+    "manualActionValue": {
+      "kind": "text",
+      "id": "manualActionValue",
+      "content": {
+        "type": "expression",
+        "expression": {
+          "type": "ref",
+          "path": "state.catalog_vict_pattern_action-button-e0c455b4_lastAction"
+        }
+      }
+    },
+    "manual-sticky-header": {
+      "kind": "element",
+      "id": "manual-sticky-header",
+      "tag": "header",
+      "attributes": {
+        "aria-label": "Manual sticky viewport marker"
+      },
+      "children": [
+        "manual-sticky-text"
+      ],
+      "localStyle": [
+        {
+          "property": "position",
+          "value": {
+            "type": "text",
+            "value": "sticky"
+          }
+        },
+        {
+          "property": "top",
+          "value": {
+            "type": "text",
+            "value": "0px"
+          }
+        },
+        {
+          "property": "z-index",
+          "value": {
+            "type": "text",
+            "value": "2"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "8px"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "var(--vict-color-surface)"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "var(--vict-color-text)"
+          }
+        }
+      ]
+    },
+    "manual-sticky-text": {
+      "kind": "text",
+      "id": "manual-sticky-text",
+      "content": {
+        "type": "literal",
+        "value": "Manual sticky marker — application scroll owner"
+      }
+    },
+    "manual-fixed-footer": {
+      "kind": "element",
+      "id": "manual-fixed-footer",
+      "tag": "div",
+      "attributes": {
+        "aria-label": "Manual fixed viewport marker"
+      },
+      "children": [
+        "manual-fixed-text"
+      ],
+      "localStyle": [
+        {
+          "property": "position",
+          "value": {
+            "type": "text",
+            "value": "fixed"
+          }
+        },
+        {
+          "property": "bottom",
+          "value": {
+            "type": "text",
+            "value": "8px"
+          }
+        },
+        {
+          "property": "right",
+          "value": {
+            "type": "text",
+            "value": "8px"
+          }
+        },
+        {
+          "property": "z-index",
+          "value": {
+            "type": "text",
+            "value": "2"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "4px"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "var(--vict-color-surface)"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "var(--vict-color-text)"
+          }
+        }
+      ]
+    },
+    "manual-fixed-text": {
+      "kind": "text",
+      "id": "manual-fixed-text",
+      "content": {
+        "type": "literal",
+        "value": "Manual fixed marker — iframe viewport"
+      }
+    }
+  },
+  "componentDefinitions": {},
+  "styleSources": {},
+  "assets": {},
+  "tokens": {},
+  "conditions": {
+    "compact": {
+      "id": "compact",
+      "kind": "container",
+      "name": "studio-screen",
+      "query": "(max-width: 600px)"
+    }
+  },
+  "localState": {
+    "message": {
+      "key": "message",
+      "type": "string",
+      "initial": "Hello from my screen"
+    },
+    "accepted": {
+      "key": "accepted",
+      "type": "boolean",
+      "initial": false
+    },
+    "dialogOpen": {
+      "key": "dialogOpen",
+      "type": "boolean",
+      "initial": false
+    },
+    "busy": {
+      "key": "busy",
+      "type": "boolean",
+      "initial": false
+    },
+    "actionError": {
+      "key": "actionError",
+      "type": "string",
+      "initial": ""
+    },
+    "actionResult": {
+      "key": "actionResult",
+      "type": "string",
+      "initial": ""
+    },
+    "catalog_vict_ai_conversation-2c628416_message": {
+      "key": "catalog_vict_ai_conversation-2c628416_message",
+      "type": "string",
+      "initial": ""
+    },
+    "catalog_vict_ai_prompt-input-b40c9d31_message": {
+      "key": "catalog_vict_ai_prompt-input-b40c9d31_message",
+      "type": "string",
+      "initial": ""
+    },
+    "catalog_vict_ai_transcript-1ad38959_message": {
+      "key": "catalog_vict_ai_transcript-1ad38959_message",
+      "type": "string",
+      "initial": ""
+    },
+    "catalog_vict_pattern_drawer-11bff054_drawerOpen": {
+      "key": "catalog_vict_pattern_drawer-11bff054_drawerOpen",
+      "type": "boolean",
+      "initial": false
+    },
+    "catalog_vict_pattern_action-button-e0c455b4_lastAction": {
+      "key": "catalog_vict_pattern_action-button-e0c455b4_lastAction",
+      "type": "string",
+      "initial": ""
+    },
+    "catalog_vict_flow_editor-ec91a30c_graph": {
+      "key": "catalog_vict_flow_editor-ec91a30c_graph",
+      "type": "string",
+      "initial": "{\"schema\":\"vict.flow-graph@1\",\"revision\":1,\"nodeTypes\":[{\"id\":\"text-step\",\"label\":\"Text step\",\"fields\":[{\"id\":\"prompt\",\"label\":\"Prompt\",\"kind\":\"textarea\",\"default\":\"\"},{\"id\":\"notes\",\"label\":\"Notes\",\"kind\":\"list\",\"default\":[]},{\"id\":\"weight\",\"label\":\"Weight\",\"kind\":\"slider\",\"default\":1,\"min\":0,\"max\":10}],\"ports\":[{\"id\":\"text-in\",\"label\":\"Text input\",\"direction\":\"input\",\"type\":\"text\",\"maxConnections\":1},{\"id\":\"text-out\",\"label\":\"Text output\",\"direction\":\"output\",\"type\":\"text\"}]},{\"id\":\"compact\",\"label\":\"Compact note\",\"fields\":[{\"id\":\"value\",\"label\":\"Value\",\"kind\":\"text\",\"default\":\"\"}],\"ports\":[{\"id\":\"text-in\",\"label\":\"Text input\",\"direction\":\"input\",\"type\":\"text\",\"maxConnections\":1},{\"id\":\"text-out\",\"label\":\"Text output\",\"direction\":\"output\",\"type\":\"text\"}]}],\"nodes\":[{\"id\":\"first\",\"type\":\"text-step\",\"label\":\"First step\",\"position\":{\"x\":0,\"y\":0},\"values\":{\"prompt\":\"Manual A parameter; keep graph B independent\",\"notes\":[\"Independent movement\",\"Typed ports\"]}},{\"id\":\"second\",\"type\":\"text-step\",\"label\":\"Second step\",\"position\":{\"x\":380,\"y\":0},\"values\":{}},{\"id\":\"manual-3\",\"type\":\"text-step\",\"label\":\"Manual step 3\",\"position\":{\"x\":760,\"y\":0},\"values\":{\"prompt\":\"Supplied editable parameter 3\",\"notes\":[\"Manual graph breadth\",\"Different content height\",\"No processing engine execution\"]}},{\"id\":\"manual-4\",\"type\":\"compact\",\"label\":\"Manual step 4\",\"position\":{\"x\":0,\"y\":520},\"values\":{\"value\":\"Supplied compact value 4\"}},{\"id\":\"manual-5\",\"type\":\"text-step\",\"label\":\"Manual step 5\",\"position\":{\"x\":380,\"y\":520},\"values\":{\"prompt\":\"Supplied editable parameter 5\",\"notes\":[\"Manual graph breadth\",\"Different content height\",\"No processing engine execution\"]}},{\"id\":\"manual-6\",\"type\":\"compact\",\"label\":\"Manual step 6\",\"position\":{\"x\":760,\"y\":520},\"values\":{\"value\":\"Supplied compact value 6\"}},{\"id\":\"manual-7\",\"type\":\"text-step\",\"label\":\"Manual step 7\",\"position\":{\"x\":0,\"y\":1040},\"values\":{\"prompt\":\"Supplied editable parameter 7\",\"notes\":[\"Manual graph breadth\",\"Different content height\",\"No processing engine execution\"]}},{\"id\":\"manual-8\",\"type\":\"compact\",\"label\":\"Manual step 8\",\"position\":{\"x\":380,\"y\":1040},\"values\":{\"value\":\"Supplied compact value 8\"}},{\"id\":\"manual-9\",\"type\":\"text-step\",\"label\":\"Manual step 9\",\"position\":{\"x\":760,\"y\":1040},\"values\":{\"prompt\":\"Supplied editable parameter 9\",\"notes\":[\"Manual graph breadth\",\"Different content height\",\"No processing engine execution\"]}},{\"id\":\"manual-10\",\"type\":\"compact\",\"label\":\"Manual step 10\",\"position\":{\"x\":0,\"y\":1560},\"values\":{\"value\":\"Supplied compact value 10\"}},{\"id\":\"manual-11\",\"type\":\"text-step\",\"label\":\"Manual step 11\",\"position\":{\"x\":380,\"y\":1560},\"values\":{\"prompt\":\"Supplied editable parameter 11\",\"notes\":[\"Manual graph breadth\",\"Different content height\",\"No processing engine execution\"]}},{\"id\":\"manual-12\",\"type\":\"compact\",\"label\":\"Manual step 12\",\"position\":{\"x\":760,\"y\":1560},\"values\":{\"value\":\"Supplied compact value 12\"}}],\"edges\":[{\"id\":\"first-second\",\"source\":\"first\",\"sourcePort\":\"text-out\",\"target\":\"second\",\"targetPort\":\"text-in\"}]}"
+    },
+    "manualFile": {
+      "key": "manualFile",
+      "type": "string",
+      "initial": ""
+    },
+    "manualFrame": {
+      "key": "manualFrame",
+      "type": "string",
+      "initial": ""
+    },
+    "manualDraft": {
+      "key": "manualDraft",
+      "type": "string",
+      "initial": ""
+    },
+    "manualSent": {
+      "key": "manualSent",
+      "type": "string",
+      "initial": ""
+    },
+    "manualAccepted": {
+      "key": "manualAccepted",
+      "type": "boolean",
+      "initial": false
+    },
+    "manualToolDecision": {
+      "key": "manualToolDecision",
+      "type": "boolean",
+      "initial": false
+    },
+    "manualModelChoice": {
+      "key": "manualModelChoice",
+      "type": "string",
+      "initial": "desk-preview"
+    },
+    "manualEffortChoice": {
+      "key": "manualEffortChoice",
+      "type": "string",
+      "initial": "light"
+    },
+    "manualFeedback": {
+      "key": "manualFeedback",
+      "type": "string",
+      "initial": ""
+    },
+    "manualRemovedAttachment": {
+      "key": "manualRemovedAttachment",
+      "type": "string",
+      "initial": ""
+    },
+    "manualGraphB": {
+      "key": "manualGraphB",
+      "type": "string",
+      "initial": "{\"schema\":\"vict.flow-graph@1\",\"revision\":0,\"nodeTypes\":[{\"id\":\"text-step\",\"label\":\"Text step\",\"fields\":[{\"id\":\"prompt\",\"label\":\"Prompt\",\"kind\":\"textarea\",\"default\":\"\"},{\"id\":\"notes\",\"label\":\"Notes\",\"kind\":\"list\",\"default\":[]},{\"id\":\"weight\",\"label\":\"Weight\",\"kind\":\"slider\",\"default\":1,\"min\":0,\"max\":10}],\"ports\":[{\"id\":\"text-in\",\"label\":\"Text input\",\"direction\":\"input\",\"type\":\"text\",\"maxConnections\":1},{\"id\":\"text-out\",\"label\":\"Text output\",\"direction\":\"output\",\"type\":\"text\"}]},{\"id\":\"compact\",\"label\":\"Compact note\",\"fields\":[{\"id\":\"value\",\"label\":\"Value\",\"kind\":\"text\",\"default\":\"\"}],\"ports\":[{\"id\":\"text-in\",\"label\":\"Text input\",\"direction\":\"input\",\"type\":\"text\",\"maxConnections\":1},{\"id\":\"text-out\",\"label\":\"Text output\",\"direction\":\"output\",\"type\":\"text\"}]}],\"nodes\":[{\"id\":\"first\",\"type\":\"compact\",\"label\":\"Independent B first\",\"position\":{\"x\":0,\"y\":0},\"values\":{\"value\":\"B value must remain independent\"}},{\"id\":\"second\",\"type\":\"text-step\",\"label\":\"Independent B second\",\"position\":{\"x\":380,\"y\":0},\"values\":{}}],\"edges\":[{\"id\":\"first-second\",\"source\":\"first\",\"sourcePort\":\"text-out\",\"target\":\"second\",\"targetPort\":\"text-in\"}]}"
+    }
+  }
+}
