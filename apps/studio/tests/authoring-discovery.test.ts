@@ -152,6 +152,15 @@ describe('implementation-linked scoped authoring discovery',()=>{
 });
 
 describe('side-effect-free canonical preflight',()=>{
+  it('retains exact unknown-list-prop details from the shared admission boundary without applying an earlier valid prefix',()=>{
+    const document=fixture(),before=JSON.stringify(document);
+    const result=read(document,{section:'preflight',edit:{expectedRevision:cursor(document).revision,reason:'Actual responsive list refusal',operations:[
+      {op:'insert',kind:'element',nodeId:'prefix',parentId:'support',tag:'p',text:'Must remain unapplied'},
+      {op:'insert',kind:'component',nodeId:'main-nav',parentId:'support',componentId:'vict.pattern.navigation',revision:'1',props:{icons:['home']}},
+    ]}});
+    expect(result).toMatchObject({ok:false,applied:false,code:'STUDIO_AGENT_VALIDATION',diagnostics:[{operation:1,nodeId:'main-nav',prop:'icons',path:'operations.1.props.icons',code:'UI_COMPONENT_PROP_UNKNOWN',expected:'declared property',actual:'stringList',supportedProps:expect.arrayContaining(['items','values'])}]});
+    expect(JSON.stringify(document)).toBe(before);expect(result).not.toHaveProperty('draft');
+  });
   it('validates a complete batch with the actual edit compiler and exposes no applicable proposal',()=>{
     const document=fixture();const before=JSON.stringify(document);const edit={expectedRevision:cursor(document).revision,reason:'Add two siblings',operations:[
       {op:'insert',kind:'element',nodeId:'one',parentId:'support',tag:'p',text:'One'},

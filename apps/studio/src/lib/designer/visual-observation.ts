@@ -15,10 +15,17 @@ export type CaptureResult = { ok: true; blob: Blob; metadata: CaptureMetadata } 
 export interface CaptureTarget {nodeId:string;part?:string}
 export interface PreviewFacts {workspaceView:string;viewportModel:'isolated-viewport'|'hosted-container';ownedOverlays:number;targets:{nodeId:string;part:string;bounds:number[];visible:boolean;visibilityReason?:string;styles:Record<string,string>}[]}
 export function previewFacts(frame:HTMLElement,target?:CaptureTarget,workspaceView='design'):PreviewFacts {
- const doc=frame.ownerDocument;const owners=new Set([...frame.querySelectorAll<HTMLElement>('[data-ui-owner-root]')].map(el=>el.dataset.uiOwnerRoot));
- const matches=[...doc.querySelectorAll<HTMLElement>('[data-ui-owner][data-ui-node]')].filter(el=>owners.has(el.dataset.uiOwner)&&(!target||el.dataset.uiNode===target.nodeId&&(!target.part||el.dataset.uiPart===target.part)));
+ const doc=frame.ownerDocument;
+ const roots=[...(frame.matches('[data-ui-owner-root]')?[frame]:[]),...frame.querySelectorAll<HTMLElement>('[data-ui-owner-root]')];
+ const owners=new Set(roots.map(el=>el.dataset.uiOwnerRoot).filter((owner):owner is string=>!!owner));
+ const owned=[...doc.querySelectorAll<HTMLElement>('[data-ui-owner][data-ui-node]')].filter(el=>owners.has(el.dataset.uiOwner??''));
+ const matches=owned.filter(el=>!target||el.dataset.uiNode===target.nodeId&&(!target.part||el.dataset.uiPart===target.part));
  const view=doc.defaultView;const targets=matches.slice(0,6).map(el=>{const r=el.getBoundingClientRect(),style=(view??window).getComputedStyle(el);const visibility=previewVisibility(el);return {nodeId:el.dataset.uiNode??'',part:el.dataset.uiPart??'root',bounds:[r.x,r.y,r.width,r.height].map(n=>Math.round(n*100)/100),visible:visibility.visible,visibilityReason:visibility.reason,styles:Object.fromEntries(['color','background-color','position','top','padding-top','overflow','font-size','z-index'].map(key=>[key,style.getPropertyValue(key).slice(0,100)]))};});
- return {workspaceView,viewportModel:doc.defaultView?.frameElement?'isolated-viewport':'hosted-container',ownedOverlays:matches.filter(el=>el.dataset.uiPart==='content'||el.dataset.uiPart==='panel'||el.getAttribute('role')==='dialog'||el.getAttribute('role')==='menu').length,targets};
+ // A part named content/panel is not evidence of a popup (AI messages expose
+ // content too). Inventory actual visible semantic overlay surfaces for the
+ // whole owner, independently of the optional node/part measurement target.
+ const ownedOverlays=owned.filter(el=>/^(dialog|alertdialog|menu|listbox|tooltip)$/.test(el.getAttribute('role')??'')&&previewVisibility(el).visible).length;
+ return {workspaceView,viewportModel:doc.defaultView?.frameElement?'isolated-viewport':'hosted-container',ownedOverlays,targets};
 }
 export interface CaptureState {
   cursor: AgentCursor;

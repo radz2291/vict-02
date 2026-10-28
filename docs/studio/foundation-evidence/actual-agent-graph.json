@@ -1,0 +1,21 @@
+{
+  "kind": "Actual Studio UI agent authored rich graph",
+  "provider": "Existing Z.ai yearly Coding Plan only, zai/glm-5.3-flash; no quota message observed",
+  "build": "Integrated repair build above bf8; initial capture/parts/theme fixes present, later guard and generic primary-target amendments not built yet",
+  "runId": "72432aed-ebd8-4684-882c-9a322725bfb8",
+  "localTurnId": "95fe8074-fc44-4f52-97d8-a84d6e4846a7",
+  "engineTurnId": "turn-896f5675-fdd5-40f1-be25-cc64c680badd",
+  "documentId": "screen-c2303090-39a6-4568-97a7-90b09015b940",
+  "epoch": "e288475f-750f-473c-9ec0-83fcff9d753d",
+  "status": "completed; one receipt-confirmed edit; partial initial appearance; manual verification in progress",
+  "prompt": "On the open Foundation Graph screen, build a Langflow-style editor using the registered rich graph editor, not a static diagram. Discover only needed contracts. Include three independently positioned nodes: input with editable text, processor with select/number/boolean controls, and output. Give each named typed ports and connect input to processor to output with compatible types. Use supported manual selection/inspection, movement and connection editing backed by canonical graph source/shared history. Keep source editable and persistent. No service integration. Observe once and finish: distinguish applied source, observed appearance and untested interactions/persistence. Do not repeatedly polish styling.",
+  "sourceBoundary": "r1.r1#0 to r1.r1#1",
+  "sourceArtifact": "actual-agent-graph-source.json",
+  "sourceDigest": "7ab56b8cf05cb02e52e3e9ffb070c986135fa478007273480b23eb09ecbe0647",
+  "artifactVerification": "Copied from observed canonical textarea; canonicalUiDocument recomputed digest exactly equals terminal actual-agent source receipt",
+  "tools": {"total":10,"refused":0,"knowledgeReads":5,"sourceReads":3,"edits":1,"observations":1},
+  "reportedUsage": {"authoringRequests":8,"imageRequests":1,"authoringInputTokens":175005,"authoringOutputTokens":9656,"elapsedSeconds":232.7,"firstEditSeconds":162.9},
+  "observed": "One actual-agent image at2026-10-27T22:55:52.621Z,928x580 crop of928x682. Agent saw input card only, disclosed Processor/Output and connections visually unconfirmed and no interaction/persistence tests. Native screenshot also showed oversized initial Input; manual Fit all revealed all3cards and2edges. Initial library camera measurement race reproduced in source investigation; repair pending.",
+  "manualChecks": "Toggle unchecked reached canonical graph revision1 enabled=false. Text and number visually changed with fill/keyboard/blur but canonical values stayed original; not passed, investigation pending. No manual edit claimed as agent output.",
+  "closure": "No blanket graph-finding pass. Camera repair, committed controls, connections, shared manual/agent history, save/reopen and follow-up actual-agent view remain required."
+}

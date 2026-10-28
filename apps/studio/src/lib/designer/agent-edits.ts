@@ -383,14 +383,21 @@ export function prepareAgentEdit(
             const node = staged.document.nodes[operation.nodeId];
             const descriptor = nodeDescriptor(node);
             const prop = descriptor?.props.find(prop => prop.name === name);
-            if (!prop || (prop.type !== 'stringList' && prop.type !== 'numberList') || !isUiValueOfType(value, prop.type))
-              return failure('STUDIO_AGENT_VALIDATION', 'Use a homogeneous list matching the declared property type.');
+            const listKind=value.length===0?'emptyList':value.every(item=>typeof item==='string')?'stringList':'numberList';
+            const supportedProps=descriptor?.props.map(item=>item.name).slice(0,100)??[];
+            const listFailure=(code:string,message:string,expected:string,actual:string,details:Record<string,unknown>={}):EditFailure=>({
+              ...failure('STUDIO_AGENT_VALIDATION',`Operation ${operationIndex}: ${operation.nodeId}.${name}: ${message}`),
+              diagnostics:[{operation:operationIndex,nodeId:operation.nodeId,prop:name,path:`operations.${operationIndex}.props.${name}`,code,expected,actual,supportedProps,...details,message}],
+            });
+            if(!prop)return listFailure('UI_COMPONENT_PROP_UNKNOWN',`Property ${name} is not declared. Supported properties: ${supportedProps.join(', ')||'(none)'}. Lists are supported for declared stringList/numberList properties.`,'declared property',listKind);
+            if ((prop.type !== 'stringList' && prop.type !== 'numberList') || !isUiValueOfType(value, prop.type))
+              return listFailure('UI_COMPONENT_PROP_TYPE',`Expected ${prop.type}; received ${listKind}. Use a homogeneous list only for a matching declared list property.`,prop.type,listKind);
             const current = node?.kind === 'component' ? node.props?.[name] : undefined;
             const boundKey = current?.type === 'ref' && current.path.startsWith('state.') ? current.path.slice(6) : undefined;
             const key = boundKey && staged.document.localState[boundKey]?.type === prop.type ? boundKey
               : `catalog_${operation.nodeId.replace(/[^a-zA-Z0-9_-]/g, '_')}_${name}`;
             const existing = staged.document.localState[key];
-            if (existing && key !== boundKey) return failure('STUDIO_AGENT_VALIDATION', 'A local value already owns that identity; choose a different node ID.');
+            if (existing && key !== boundKey) return listFailure('UI_STATE_IDENTITY_COLLISION',`Local state ${key} already owns the generated identity; choose a different node ID or explicitly bind a declared compatible list state.`,prop.type,existing.type,{stateKey:key,valueKind:listKind});
             next.push({ op: 'replaceDocument', document: { ...staged.document, localState: {
               ...staged.document.localState, [key]: { key, type: prop.type, initial: value },
             } } });

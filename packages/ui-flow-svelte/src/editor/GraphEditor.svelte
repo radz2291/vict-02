@@ -56,6 +56,7 @@
   const restoredViewport=restored?.viewport;
   const validRestoredViewport=restoredViewport&&Number.isFinite(restoredViewport.x)&&Number.isFinite(restoredViewport.y)&&Number.isFinite(restoredViewport.zoom)&&restoredViewport.zoom>=.15&&restoredViewport.zoom<=2?{...restoredViewport}:undefined;
   const fitInitially=!validRestoredViewport;
+  let cameraReady=$state(!fitInitially);
   let initialized=$state(false);
   let rootElement: HTMLElement | undefined;
   let policyReadOnly = false;
@@ -112,7 +113,7 @@
     void current;
     return history ? history.canRedo() : canRedo;
   });
-  $effect(()=>{const store=viewState;const state:GraphPresentationState={viewport:{...viewport},selection:{nodes:[...selection.nodes],edges:[...selection.edges]}};if(initialized)untrack(()=>store?.set(state));});
+  $effect(()=>{const store=viewState;const state:GraphPresentationState={viewport:{...viewport},selection:{nodes:[...selection.nodes],edges:[...selection.edges]}};if(initialized&&cameraReady)untrack(()=>store?.set(state));});
   $effect(()=>{const document=rootElement?.ownerDocument;if(!document)return;document.addEventListener('keydown',keyboard,true);document.addEventListener('pointercancel',cancelDrag);return()=>{document.removeEventListener('keydown',keyboard,true);document.removeEventListener('pointercancel',cancelDrag);};});
   function undo() {
     if (readOnly) return;
@@ -391,14 +392,14 @@
   {#if error}<p role="alert" class="graph-error">{error}</p>{/if}
   <div class="graph-workspace">
     <div class="graph-canvas" style:height={`${Math.max(240,Math.min(height,2000))}px`}>
-      <SvelteFlow bind:nodes bind:edges bind:viewport {nodeTypes} nodesDraggable={!readOnly} nodesConnectable={!readOnly} deleteKey={null} fitView={fitInitially} minZoom={0.15} maxZoom={2} multiSelectionKey={['Control','Meta','Shift']} selectionKey="Shift" panOnDrag={true}
+      <SvelteFlow bind:nodes bind:edges bind:viewport {nodeTypes} nodesDraggable={!readOnly} nodesConnectable={!readOnly} deleteKey={null} fitView={false} minZoom={0.15} maxZoom={2} multiSelectionKey={['Control','Meta','Shift']} selectionKey="Shift" panOnDrag={true}
         onselectionchange={({nodes:selectedNodes,edges:selectedEdges})=>select({nodes:selectedNodes.map(node=>node.id),edges:selectedEdges.map(edge=>edge.id)})}
         onnodedragstart={()=>{dragging=true;dragCancelled=false;dragRevision=current.revision;layoutFence.cancel();}}
         onnodedragstop={({nodes:moved})=>{dragging=false;if(dragCancelled||current.revision!==dragRevision){sync();return;}apply([{type:'moveNodes',positions:Object.fromEntries(moved.map(node=>[node.id,{...node.position}]))}]);}}
         isValidConnection={candidate=>!readOnly&&!connectionIssue(current,{id:'pending',...connection(candidate)})}
         onbeforeconnect={candidate=>{apply([{type:'connect',edge:connection(candidate)}]);return false;}}
         onbeforereconnect={(next,old)=>{apply([{type:'reconnect',edgeId:old.id,connection:{source:next.source,sourcePort:next.sourceHandle??'',target:next.target,targetPort:next.targetHandle??''}}]);return false;}}>
-        <Background /><Controls showLock={false}/><MiniMap pannable zoomable/><FlowNavigation request={fit} ids={fitIds}/>
+        <Background /><Controls showLock={false}/><MiniMap pannable zoomable/><FlowNavigation request={fit} ids={fitIds} initialFit={fitInitially&&initialized} initialNodeIds={current.nodes.map(node=>node.id)} onInitialFit={()=>{cameraReady=true;}}/>
       </SvelteFlow>
     </div>
     <aside class="graph-inspector" aria-label="Graph selection">

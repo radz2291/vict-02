@@ -28,7 +28,10 @@ function fixture(rect: DOMRect, clipping?: DOMRect, rootStyle = 'width:640px;hei
     // copying the source computed styles. Exercise that real boundary here.
     Object.assign(clone.style, options.style);
     clone.setAttribute('xmlns', 'http://www.w3.org/1999/xhtml');
-    return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg"><foreignObject width="${Math.ceil(rect.width)}" height="${Math.ceil(rect.height)}">${clone.outerHTML}</foreignObject></svg>`)}`;
+    // The real html-to-image boundary uses XMLSerializer. outerHTML loses the
+    // SVG namespace when nested inside this XHTML foreignObject test wrapper.
+    const markup = new XMLSerializer().serializeToString(clone);
+    return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg"><foreignObject width="${Math.ceil(rect.width)}" height="${Math.ceil(rect.height)}">${markup}</foreignObject></svg>`)}`;
   });
   let rasterSvg = '';
   vi.stubGlobal('Image', class {
@@ -86,4 +89,81 @@ it('keeps output pixel and JPEG byte budgets unchanged by internal layout scalin
   expect(test.raster().documentElement.getAttribute('viewBox')).toBe('0 0 3200 2400');
   expect(test.context.fillRect).toHaveBeenCalledWith(0, 0, 1600, 1200);
   expect(test.encode.mock.calls.map(call => call[2])).toEqual([0.85, 0.65]);
+});
+
+it('preserves computed SVG descendant paint instead of a stylesheet-painted MiniMap mask becoming black', async () => {
+  const test = fixture(new DOMRect(0, 0, 640, 480)),
+    style = document.createElement('style');
+  style.textContent = '.capture-minimap-mask { fill: rgb(240, 240, 240); fill-rule: evenodd; stroke: rgb(120, 120, 120); }';
+  document.head.append(style);
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg'),
+    path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+  path.setAttribute('class', 'capture-minimap-mask');
+  path.setAttribute('d', 'M0,0h100v80h-100z M20,20h60v40h-60z');
+  svg.append(path);
+  test.frame.append(svg);
+  const before = test.frame.outerHTML;
+  try {
+    await captureRenderedElement(test.frame);
+    const clone = test.raster().querySelector('.capture-minimap-mask') as SVGElement;
+    expect(clone.style.getPropertyValue('fill')).toBe(getComputedStyle(path).fill);
+    expect(clone.style.getPropertyValue('fill-rule')).toBe(getComputedStyle(path).fillRule);
+    expect(clone.style.getPropertyValue('stroke')).toBe(getComputedStyle(path).stroke);
+    expect(test.frame.outerHTML).toBe(before);
+  } finally { style.remove(); }
+});
+
+it('refuses a serialized SVG subtree that no longer corresponds to the captured source', async () => {
+  const test = fixture(new DOMRect(0, 0, 640, 480));
+  test.frame.insertAdjacentHTML('beforeend', '<svg xmlns="http://www.w3.org/2000/svg"><path d="M0 0h10v10z" /></svg>');
+  const before = test.frame.outerHTML;
+  toSvg.mockResolvedValueOnce(`data:image/svg+xml;charset=utf-8,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg"><foreignObject><div xmlns="http://www.w3.org/1999/xhtml" /></foreignObject></svg>')}`);
+  await expect(captureRenderedElement(test.frame)).rejects.toMatchObject({
+    message: 'STUDIO_CAPTURE_SVG_UNSUPPORTED', captureReason: 'svg-clone-correspondence',
+  });
+  expect(test.frame.outerHTML).toBe(before);
+  expect(test.encode).not.toHaveBeenCalled();
+});
+
+it.each(['url("https://external.invalid/paint.svg#paint")', 'url("#missing-paint")', 'url("#foreign-paint")'])('refuses unverified SVG paint resources: %s', async fill => {
+  const test = fixture(new DOMRect(0, 0, 640, 480)),
+    svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg'),
+    path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+  path.style.fill = fill;
+  svg.append(path); test.frame.append(svg);
+  const foreignPaint = document.createElementNS('http://www.w3.org/2000/svg', 'linearGradient');
+  foreignPaint.id = 'foreign-paint'; document.body.append(foreignPaint);
+  const before = test.frame.outerHTML;
+  await expect(captureRenderedElement(test.frame)).rejects.toMatchObject({
+    message: 'STUDIO_CAPTURE_SVG_UNSUPPORTED', captureReason: 'svg-paint-resource-unverified',
+  });
+  expect(test.frame.outerHTML).toBe(before);
+  expect(test.encode).not.toHaveBeenCalled();
+});
+
+it('keeps verified source-owned SVG paint fragments local to the serialized image', async () => {
+  const test = fixture(new DOMRect(0, 0, 640, 480)),
+    svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg'),
+    gradient = document.createElementNS('http://www.w3.org/2000/svg', 'linearGradient'),
+    path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+  gradient.id = 'capture-paint';
+  path.style.fill = 'url("#capture-paint")';
+  svg.append(gradient, path); test.frame.append(svg);
+  const before = test.frame.outerHTML;
+  await captureRenderedElement(test.frame);
+  expect((test.raster().querySelector('path') as SVGElement).style.fill).toBe('url("#capture-paint")');
+  expect(test.frame.outerHTML).toBe(before);
+});
+
+it('refuses decoded fragment controls instead of emitting an invalid CSS URL string', async () => {
+  const test = fixture(new DOMRect(0, 0, 640, 480)),
+    svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg'),
+    gradient = document.createElementNS('http://www.w3.org/2000/svg', 'linearGradient'),
+    path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+  gradient.id = 'capture\npaint'; path.style.fill = 'url("#capture%0Apaint")';
+  svg.append(gradient, path); test.frame.append(svg);
+  await expect(captureRenderedElement(test.frame)).rejects.toMatchObject({
+    message: 'STUDIO_CAPTURE_SVG_UNSUPPORTED', captureReason: 'svg-paint-resource-unverified',
+  });
+  expect(test.encode).not.toHaveBeenCalled();
 });

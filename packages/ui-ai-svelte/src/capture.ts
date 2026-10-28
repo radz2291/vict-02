@@ -21,6 +21,67 @@ export class RenderedCaptureError extends Error {
   }
 }
 
+const SVG_PAINT_PROPERTIES = [
+  'fill', 'fill-opacity', 'fill-rule', 'stroke', 'stroke-opacity', 'stroke-width',
+  'stroke-dasharray', 'stroke-dashoffset', 'stroke-linecap', 'stroke-linejoin',
+  'stroke-miterlimit', 'clip-rule', 'opacity', 'color', 'visibility', 'display',
+  'paint-order', 'vector-effect', 'shape-rendering', 'text-rendering',
+  'color-interpolation', 'color-interpolation-filters', 'stop-color', 'stop-opacity',
+  'flood-color', 'flood-opacity', 'lighting-color', 'filter', 'clip-path',
+  'mask', 'mask-type', 'marker-start', 'marker-mid', 'marker-end',
+  'font-family', 'font-size', 'font-style', 'font-weight', 'font-stretch',
+  'font-variant', 'letter-spacing', 'word-spacing', 'text-anchor',
+  'dominant-baseline', 'alignment-baseline', 'text-decoration',
+] as const;
+
+/** html-to-image deep-clones an SVG but does not decorate its descendants.
+ * Resolve stylesheet paint on those real source elements into the detached
+ * SVG; otherwise a CSS-painted path (for example a MiniMap mask) defaults black.
+ * Geometry, source DOM and the capture engine remain unchanged. */
+function preserveSvgDescendantPaint(source: HTMLElement, serialized: Element): void {
+  const native = Array.from(source.querySelectorAll('svg')),
+    copies = Array.from(serialized.querySelectorAll('svg'));
+  if (native.length !== copies.length)
+    throw new RenderedCaptureError('STUDIO_CAPTURE_SVG_UNSUPPORTED', 'svg-clone-correspondence');
+  for (let index = 0; index < native.length; index++) {
+    const original = native[index]!, copy = copies[index]!,
+      children = Array.from(original.querySelectorAll('*')),
+      cloned = Array.from(copy.querySelectorAll('*'));
+    if (children.length !== cloned.length)
+      throw new RenderedCaptureError('STUDIO_CAPTURE_SVG_UNSUPPORTED', 'svg-clone-correspondence');
+    for (let childIndex = 0; childIndex < children.length; childIndex++) {
+      const node = children[childIndex]!, target = cloned[childIndex]!;
+      if (node.localName !== target.localName || node.namespaceURI !== target.namespaceURI)
+        throw new RenderedCaptureError('STUDIO_CAPTURE_SVG_UNSUPPORTED', 'svg-clone-correspondence');
+      if (node.namespaceURI !== 'http://www.w3.org/2000/svg') continue;
+      const style = source.ownerDocument.defaultView!.getComputedStyle(node);
+      for (const property of SVG_PAINT_PROPERTIES) {
+        let value = style.getPropertyValue(property);
+        if (!value) continue;
+        if (/url\(/i.test(value)) {
+          // A serialized data SVG has a new document URL. Preserve only an
+          // owned fragment; never invent or fetch a missing/external resource.
+          const match = /^url\(["']?([^"')]+)["']?\)$/i.exec(value);
+          let id: string | undefined;
+          try {
+            if (match) {
+              const url = new URL(match[1]!, source.ownerDocument.baseURI),
+                base = new URL(source.ownerDocument.baseURI);
+              if (url.origin === base.origin && url.pathname === base.pathname &&
+                  url.search === base.search && url.hash)
+                id = decodeURIComponent(url.hash.slice(1));
+            }
+          } catch { /* Refuse malformed or nonlocal references below. */ }
+          if (!id || /[\u0000-\u001f\u007f]/.test(id) || !source.contains(source.ownerDocument.getElementById(id)))
+            throw new RenderedCaptureError('STUDIO_CAPTURE_SVG_UNSUPPORTED', 'svg-paint-resource-unverified');
+          value = `url("#${id.replace(/\\/g, '\\\\').replace(/"/g, '\\"')}")`;
+        }
+        (target as SVGElement).style.setProperty(property, value);
+      }
+    }
+  }
+}
+
 /** Rasterizes the existing, styled DOM; it does not render a source-document substitute.
  * The caller identifies the actual preview element and fences changing preview state.
  * Browser rasterization can refuse unsupported fonts/images rather than inventing pixels. */
@@ -126,6 +187,7 @@ export async function captureRenderedElement(
   const layoutScale = 2;
   const foreignObject = svg.querySelector('foreignObject');
   if (!foreignObject) throw new Error('STUDIO_CAPTURE_FAILED');
+  preserveSvgDescendantPaint(element, foreignObject);
   const layout = xml.createElementNS('http://www.w3.org/1999/xhtml', 'div');
   layout.setAttribute(
     'style',

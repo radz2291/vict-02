@@ -36,6 +36,15 @@
             : '')
     );
   }
+  const pending = new Map<string, string>();
+  function commit(field: GraphField, next: GraphValue) {
+    if (readOnly || field.disabled) return;
+    const serialized = JSON.stringify(next);
+    if (serialized === JSON.stringify(value(field)) || pending.get(field.id) === serialized) return;
+    pending.set(field.id, serialized);
+    queueMicrotask(() => { if (pending.get(field.id) === serialized) pending.delete(field.id); });
+    onchange(field.id, next);
+  }
   function control(field: GraphField) {
     return registered.get(
       `vict.catalog.${field.kind === 'toggle' ? 'switch' : field.kind}`,
@@ -102,14 +111,14 @@
         {:else if field.kind==='video'}<MediaVideo nodeId={`${owner}/${field.id}`} occurrenceKey={`${owner}/${field.id}`} props={{source:String(value(field)),poster:field.media?.poster??'',captions:field.media?.captions??'',language:field.media?.language??'en',label:field.label}}/>
         {:else if field.kind==='icon'}<MediaIcon nodeId={`${owner}/${field.id}`} occurrenceKey={`${owner}/${field.id}`} props={{pack:field.media?.pack??'lucide',name:String(value(field)),revision:field.media?.revision??'1.27.0',source:String(value(field)).startsWith('asset:')?String(value(field)):'',data:String(value(field)).startsWith('{')?String(value(field)):'',decorative:field.media?.decorative??false,label:field.label,size:32}}/>
         {:else}<MediaVector nodeId={`${owner}/${field.id}`} occurrenceKey={`${owner}/${field.id}`} props={{source:String(value(field)).startsWith('asset:')?String(value(field)):'',data:String(value(field)).startsWith('asset:')?'':String(value(field)),label:field.label,decorative:field.media?.decorative??false}}/>{/if}
-        {#if advanced}<label><span>{field.kind==='icon'?'Icon name, managed reference or inert vector JSON':'Managed reference or supplied source'}</span><input value={String(value(field))} disabled={readOnly||field.disabled} onchange={event=>onchange(field.id,event.currentTarget.value)}/></label>{/if}
+        {#if advanced}<label><span>{field.kind==='icon'?'Icon name, managed reference or inert vector JSON':'Managed reference or supplied source'}</span><input value={String(value(field))} disabled={readOnly||field.disabled} onchange={event=>commit(field,event.currentTarget.value)} onblur={event=>commit(field,event.currentTarget.value)}/></label>{/if}
       {:else if field.kind==='list'}
-        <label><span>{field.label}</span><textarea rows="3" disabled={readOnly||field.disabled} value={(value(field) as string[]).join('\n')} onchange={event=>onchange(field.id,event.currentTarget.value.split('\n'))}></textarea></label>
+        <label><span>{field.label}</span><textarea rows="3" disabled={readOnly||field.disabled} value={(value(field) as string[]).join('\n')} onchange={event=>commit(field,event.currentTarget.value.split('\n'))} onblur={event=>commit(field,event.currentTarget.value.split('\n'))}></textarea></label>
         <ul>{#each (value(field) as string[]) as item}<li>{item}</li>{/each}</ul>
       {:else if field.kind==='textarea'}
-        <label><span>{field.label}</span><textarea rows="3" disabled={readOnly||field.disabled} value={String(value(field))} onchange={event=>onchange(field.id,event.currentTarget.value)}></textarea></label>
+        <label><span>{field.label}</span><textarea rows="3" disabled={readOnly||field.disabled} value={String(value(field))} onchange={event=>commit(field,event.currentTarget.value)} onblur={event=>commit(field,event.currentTarget.value)}></textarea></label>
       {:else}
-        <label><span>{field.label}</span><input type={field.kind==='number'?'number':'text'} disabled={readOnly||field.disabled} value={String(value(field))} min={field.min} max={field.max} step={field.step} onchange={event=>onchange(field.id,field.kind==='number'?event.currentTarget.valueAsNumber:event.currentTarget.value)} /></label>
+        <label><span>{field.label}</span><input type={field.kind==='number'?'number':'text'} disabled={readOnly||field.disabled} value={String(value(field))} min={field.min} max={field.max} step={field.step} onchange={event=>commit(field,field.kind==='number'?event.currentTarget.valueAsNumber:event.currentTarget.value)} onblur={event=>commit(field,field.kind==='number'?event.currentTarget.valueAsNumber:event.currentTarget.value)} /></label>
       {/if}
     </div>
   {/each}

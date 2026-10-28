@@ -1,6 +1,8 @@
 // @vitest-environment happy-dom
 import {afterEach,describe,expect,it,vi} from 'vitest';
 import {previewVisibility} from '../src/lib/designer/preview-visibility.js';
+vi.mock('@victframework/ui-ai-svelte',()=>({captureRenderedElement:vi.fn()}));
+import {previewFacts} from '../src/lib/designer/visual-observation.js';
 
 afterEach(()=>{document.body.replaceChildren();vi.restoreAllMocks();});
 function fixture(rect:DOMRect,metrics:{offsetWidth:number;offsetHeight:number;clientLeft:number;clientTop:number;clientWidth:number;clientHeight:number}){
@@ -12,6 +14,36 @@ function fixture(rect:DOMRect,metrics:{offsetWidth:number;offsetHeight:number;cl
   return {parent,target,place};
 }
 const metrics={offsetWidth:100,offsetHeight:100,clientLeft:10,clientTop:10,clientWidth:70,clientHeight:70};
+
+function ownedSurface(parent:HTMLElement,node:string,part:string,role?:string,owner='app'){
+  const surface=document.createElement('div');
+  surface.dataset.uiOwner=owner;surface.dataset.uiNode=node;surface.dataset.uiPart=part;
+  if(role)surface.setAttribute('role',role);
+  parent.append(surface);
+  const box=new DOMRect(20,20,100,60);
+  vi.spyOn(surface,'getBoundingClientRect').mockReturnValue(box);
+  vi.spyOn(surface,'getClientRects').mockReturnValue([box] as unknown as DOMRectList);
+  return surface;
+}
+
+describe('truthful owned overlay inventory',()=>{
+  it('does not mistake message content or ordinary panel parts for an open overlay',()=>{
+    const frame=document.createElement('div'),root=document.createElement('main');
+    root.dataset.uiOwnerRoot='app';frame.append(root);document.body.append(frame);
+    ownedSurface(root,'message-1','content');ownedSurface(root,'message-2','content');ownedSurface(root,'inspector','panel');
+    expect(previewFacts(frame).ownedOverlays).toBe(0);
+  });
+  it('counts visible owned semantic overlays independently of the requested target, excluding hidden and other owners',()=>{
+    const frame=document.createElement('main');frame.dataset.uiOwnerRoot='app';document.body.append(frame);
+    ownedSurface(frame,'message','content');
+    ownedSurface(document.body,'drawer','panel','dialog');
+    const hidden=ownedSurface(document.body,'closed','content','menu');hidden.style.display='none';
+    ownedSurface(document.body,'studio-menu','content','menu','studio');
+    const facts=previewFacts(frame,{nodeId:'message',part:'content'});
+    expect(facts.ownedOverlays).toBe(1);
+    expect(facts.targets.map(item=>item.nodeId)).toEqual(['message']);
+  });
+});
 describe('owned preview client-box clipping',()=>{
   it('does not count an ancestor border as visible overflow content',()=>{
     const {target,place}=fixture(new DOMRect(0,0,100,100),metrics);place(new DOMRect(2,30,6,10));

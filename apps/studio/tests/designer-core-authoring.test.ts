@@ -23,6 +23,41 @@ function edit(bridge:EditorBridge,operations:AgentEdit['operations']){
   if(!prepared.ok)throw Error(JSON.stringify(prepared));
   expect(applyAgentProposal(bridge,{proposalId,cursor,edit:request,resultDigest:prepared.digest},'epoch',false).ok).toBe(true);
 }
+
+describe('precise list-prop admission diagnostics',()=>{
+  const insertNav=(props:Record<string,string[]|number[]>)=>({op:'insert' as const,kind:'component' as const,nodeId:'main-nav',parentId:'screen',componentId:'vict.pattern.navigation',revision:'1',props});
+  it('identifies the actual unknown icons prop instead of implying all literal lists are unsupported',()=>{
+    // Actual responsive-agent trial tried icons on revision1, whose contract
+    // declares items/values but not icons. Its generic list refusal hid that fact.
+    const bridge=setup(),before=canonicalUiDocument(bridge.document).contentDigest;
+    const cursor=documentCursor(bridge.document,bridge.getSnapshot().revision,'list-diagnostic');
+    const result=prepareAgentEdit(bridge.document,cursor,{expectedRevision:cursor.revision,reason:'Actual responsive refusal regression',operations:[{op:'theme',role:'accent',value:'#0d9488'},insertNav({icons:['home','folder']})]},'unknown-icons');
+    expect(result).toMatchObject({ok:false,code:'STUDIO_AGENT_VALIDATION',diagnostics:[{operation:1,nodeId:'main-nav',prop:'icons',path:'operations.1.props.icons',code:'UI_COMPONENT_PROP_UNKNOWN',expected:'declared property',actual:'stringList',supportedProps:expect.arrayContaining(['items','values'])}]});
+    if(result.ok)throw Error('Unknown icons prop admitted');
+    expect(result.diagnostics![0].supportedProps).not.toContain('icons');
+    expect(canonicalUiDocument(bridge.document).contentDigest).toBe(before);
+    expect(result).not.toHaveProperty('document');
+  });
+  const listTypeCases:{props:Record<string,string[]|number[]>;prop:string;expected:string;actual:string}[]=[{props:{items:[1,2]},prop:'items',expected:'stringList',actual:'numberList'},{props:{label:['one']},prop:'label',expected:'string',actual:'stringList'}];
+  it.each(listTypeCases)('reports the declared type for a wrong list at $prop',({props,prop,expected,actual})=>{
+    const bridge=setup(),cursor=documentCursor(bridge.document,bridge.getSnapshot().revision,'list-type');
+    const result=prepareAgentEdit(bridge.document,cursor,{expectedRevision:cursor.revision,reason:'Wrong declared list type',operations:[insertNav(props)]},'wrong-list');
+    expect(result).toMatchObject({ok:false,diagnostics:[{operation:0,nodeId:'main-nav',prop,path:`operations.0.props.${prop}`,code:'UI_COMPONENT_PROP_TYPE',expected,actual}]});
+  });
+  it('identifies generated state-key collisions and retains valid automatic list state admission/reuse',()=>{
+    const bridge=setup(),cursor=documentCursor(bridge.document,bridge.getSnapshot().revision,'list-state');
+    const refused=prepareAgentEdit(bridge.document,cursor,{expectedRevision:cursor.revision,reason:'Occupied identity',operations:[{op:'declareState',key:'catalog_main-nav_items',type:'string',initial:'owner value'},insertNav({items:['One']})]},'list-collision');
+    expect(refused).toMatchObject({ok:false,diagnostics:[{operation:1,nodeId:'main-nav',prop:'items',path:'operations.1.props.items',code:'UI_STATE_IDENTITY_COLLISION',stateKey:'catalog_main-nav_items',expected:'stringList',actual:'string'}]});
+    const accepted=prepareAgentEdit(bridge.document,cursor,{expectedRevision:cursor.revision,reason:'Supported lists',operations:[insertNav({items:['One'],values:['one']})]},'list-positive');
+    expect(accepted.ok).toBe(true);if(!accepted.ok)throw Error(JSON.stringify(accepted));
+    expect(accepted.document.localState['catalog_main-nav_items']).toMatchObject({type:'stringList',initial:['One']});
+    const nextCursor=documentCursor(accepted.document,cursor.revision,'list-state');
+    const reused=prepareAgentEdit(accepted.document,nextCursor,{expectedRevision:nextCursor.revision,reason:'Reuse bound list state',operations:[{op:'modify',nodeId:'main-nav',props:{items:['One','Two']}}]},'list-reuse');
+    expect(reused.ok).toBe(true);if(!reused.ok)throw Error(JSON.stringify(reused));
+    expect(reused.document.localState['catalog_main-nav_items']).toMatchObject({type:'stringList',initial:['One','Two']});
+    expect(Object.keys(bridge.document.localState)).not.toContain('catalog_main-nav_items');
+  });
+});
 describe('shared registered authoring integration',()=>{
   it('exposes Studio responsive host facts consistent with the actual Design and Run wrappers',()=>{
     const bridge=setup();

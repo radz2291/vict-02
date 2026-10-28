@@ -3,9 +3,15 @@
   "scope": "Uncommitted repairs; real browser fixtures using production source and generated AI stylesheet. Supporting checks, not actual-agent output proof or device verification.",
   "capture": {
     "origin": "http://127.0.0.26:5626/",
-    "sourceHashSha256": "2EFD8B5BC78C5630CA19D4533639DB01B59326F8F6E25D25C127DED4A0689731",
+    "sourceHashSha256": "DCDB0DDE72B9BA436E76C0742497913F2F3B297F0BDA85513B127B15E269B5FE",
     "failedBeforeRepair": "Clone added horizontal and outer scrollbars absent in source. Failure retained in task screenshot; repaired through clone-only measured gutter normalization.",
-    "nativeContentComparison": ["nested scroll 95.2px", "outer scroll 110.4px with nested scroll 95.2px", "owned popup under outer scroll", "managed blob image and inert SVG at outer scroll355.2px", "horizontal clip with vertical visible overflow"],
+    "nativeContentComparison": [
+      "nested scroll 95.2px",
+      "outer scroll 110.4px with nested scroll 95.2px",
+      "owned popup under outer scroll",
+      "managed blob image and inert SVG at outer scroll355.2px",
+      "horizontal clip with vertical visible overflow"
+    ],
     "observed": "Content, sticky header, fixed action, clipped rows and popup aligned within stated target crop. Each reported sourceUnchanged=true and mutations=0. JPEG376x420; native target375.2x980 intersected actual390.4x420 viewport.",
     "limitations": "Native scrollbar paint intentionally omitted; measured gutter retained. This is content comparison, not pixel-identical browser chrome. Webfonts and unsupported geometry/media remain explicit refusals.",
     "negativeBrowserChecks": {
@@ -16,11 +22,19 @@
       "missing-resource": "scroll-image-unverified",
       "font": "scroll-webfont-unembedded"
     },
-    "negativeResult": "All returned STUDIO_CAPTURE_SCROLL_UNSUPPORTED, source unchanged, zero mutations. No image substituted."
+    "negativeResult": "All returned STUDIO_CAPTURE_SCROLL_UNSUPPORTED, source unchanged, zero mutations. No image substituted.",
+    "finalGuardRecheck": "After equal-z/static-root/font parsing amendments: actual production fixture rechecked nested95.2, popupouter110.4 and managedassetsouter355.2 successfully with zero mutations/unchangedsource; identical priorJPEG byte sizes and geometry. Rechecked all6 listednegative states: same explicit refusals, zero mutations. Guard edge reproductions are builderunit+independentsource reviewed, not additional nativecases."
   },
   "styles": {
     "origin": "http://127.0.0.27:5627/",
-    "cases": ["legacy default", "v2 default", "legacy custom AI aliases", "v2 custom AI aliases", "explicit theme", "explicit parts"],
+    "cases": [
+      "legacy default",
+      "v2 default",
+      "legacy custom AI aliases",
+      "v2 custom AI aliases",
+      "explicit theme",
+      "explicit parts"
+    ],
     "failedBeforeRepair": "Theme-only user text and Send fill inherited default aliases; explicit part case already painted correctly.",
     "afterRepair": "Defaults unchanged. Both custom-alias revisions preserve text rgb93,64,55 and Send rgb230,81,0. Explicit theme paints text rgb19,78,74 and Send rgb0,105,92. Authored parts paint user bubble rgb0,105,92 with white text, assistant rgb224,242,241 with border, field rgb255,253,231 and Send rgb0,105,92 with white text.",
     "boundary": "Actual-agent Foundation Chat source must still be reopened unchanged under integrated rebuilt Studio and compared; fixture does not replace that test."

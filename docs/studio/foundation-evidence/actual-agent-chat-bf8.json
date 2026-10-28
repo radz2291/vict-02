@@ -71,5 +71,6 @@
     "assistantBubble": "target present; rgb(240,253,250), text rgb(19,78,74), border0.8px at current browser scale",
     "screenshot": "CUA native screenshot in task transcript visibly confirms repaired pills and assistant outline",
     "actualAgentFollowup": "COMPLETED: run9a3e992a-59a7-402a-8953-970f6947062e, engine turn-5e35f182-7590-4d51-8ca6-73767289436e; source r1.r1#0 unchanged, digest7015ff5f4cbd9b95a63510c286d00ea7869c5a83f730ab8855813f0123a15dc3, epoch f12f87fe-cd9a-4221-89a7-369d0f5ead8f; single successful944x528 image observation2026-10-27T22:51:44.518Z, confirmed same image bytes after inference, zero edits;2authoring requests/1image request,22775input374output reportedtokens,26.9seconds. Actual agent saw solid dark-teal user bubbles with readable white text and visible assistant outline. Disclosed disabled Send low prominence and No messages sent yet caption; no interaction/mobile claim. Scoped appearance improvement PASS; not accessibility certification or full milestone closure."
-  }
+  },
+  "authoredSourceArtifact": "actual-agent-chat-source.json: copied from observed canonical textarea before Save; canonicalUiDocument independently recomputed63542cd3e0fc4f4988eaa2a0fe1201bba4a073165ab73b68d84a8712fa632265, exactly matching terminal actual-agent receipt. Saved version changes revision metadata only."
 }
