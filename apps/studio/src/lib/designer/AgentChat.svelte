@@ -1,9 +1,23 @@
+<script module lang="ts">
+  /** Studio stream bookkeeping, not prose classification or provider authority.
+   * Receipt updates replace old activity in place, so array position alone
+   * cannot establish whether text followed the last actual tool attempt. */
+  export function createResponseBoundary() {
+    let trailingTextIds: string[] = [];
+    return {
+      toolStarted() { trailingTextIds = []; },
+      text(id: string) { if (!trailingTextIds.includes(id)) trailingTextIds.push(id); },
+      finish(success: boolean) { return success ? [...trailingTextIds] : []; },
+    };
+  }
+</script>
+
 <script lang="ts">
   import type {SelectionSet} from './selection-context.js';
   import type {AgentMediaInventory} from './media-assets.js';
   import { onDestroy, onMount } from 'svelte';
   import AgentTurnEvidence from './AgentTurnEvidence.svelte';
-  import { Conversation, conversationMessages, appendConversationEvent, type ConversationEvent, type ConversationActivity, type SendAccepted, type ConversationToolPayload } from '@victframework/ui-ai-svelte';
+  import { Conversation, conversationMessages, appendConversationEvent, type ConversationMessage, type ConversationEvent, type ConversationActivity, type SendAccepted, type ConversationToolPayload } from '@victframework/ui-ai-svelte';
   import '@victframework/ui-ai-svelte/styles.css';
   import { Popover } from '@victframework/ui-svelte/primitives';
   import type { UiConversationMessage, UiDocument } from '@victframework/ui';
@@ -28,7 +42,8 @@
   let diagnostics=$state<Record<string,string>>({});
   let receipts=$state<Record<string,{title:string;stages:NonNullable<ConversationActivity['stages']>}>>({});
   let timelines=$state<Record<string, ConversationEvent[]>>({});
-  const presentedMessages=$derived(conversationMessages(messages).map(message=>({...message,...(timelines[message.id] ? {events:timelines[message.id]} : {})})));
+  let hostTurns=$state<Record<string,NonNullable<ConversationMessage['hostTurn']>>>({});
+  const presentedMessages=$derived(conversationMessages(messages).map(message=>({...message,...(timelines[message.id] ? {events:timelines[message.id]} : {}),...(hostTurns[message.id]?{hostTurn:hostTurns[message.id]}:{})})));
   let status=$state('Checking agent configuration…');
   let model=$state('');let ready=$state(false);let busy=$state(false);let csrf='';
   interface LocalTurn {identity:string;source:AgentCursor;task:string;startedAt:number;engineTurnId?:string;confirmedRevision?:string;terminal?:RetainedTurn['status'];code?:string;controller:AbortController;runId:string;runIdentity:string;applied:number;cancelled:boolean;refusal?:EditFailure;toolEvidence?:ReturnType<typeof createToolEvidenceConsumer>;metrics:ReturnType<typeof createTurnMetrics>;}
@@ -147,6 +162,9 @@
     messages=[...messages,{author:'You',participant:'user',text},{author:'Assistant',participant:'assistant',text:''}];
     const responseIndex=messages.length-1;
     const messageId=`message-${responseIndex}`;let serial=0;
+    const responseBoundary=createResponseBoundary();
+    const presentTurn=(state:NonNullable<ConversationMessage['hostTurn']>['state'],statusText:string,finalTextEventIds:readonly string[]=[])=>{hostTurns={...hostTurns,[messageId]:{state,statusText,finalTextEventIds}};};
+    presentTurn('running','Working. Public notes and tool receipts are available in details.');
     const append=(event:ConversationEvent)=>{timelines={...timelines,[messageId]:appendConversationEvent(timelines[messageId]??[],event,Number.POSITIVE_INFINITY)};};
     const payloads=new Map<string,Partial<Pick<ConversationActivity,'input'|'result'>>>();
     function stage(key:string,id:string,title:string,state:ConversationActivity['state'],detail?:string){
@@ -202,10 +220,12 @@
             }
             if(event.type==='progress')note(event.message);
             if(event.type==='schema-diagnostic'){
+              responseBoundary.toolStarted();separateReply=true;
               diagnostics={...diagnostics,[event.id]:`${event.evaluations} parser evaluations; these are not tool calls. No call identity is inferred. First observed ${event.firstElapsedMs} ms; last observed ${event.lastElapsedMs} ms since turn start.
 ${event.details}`};
             }
             if(event.type==='tool-event'){
+              if(event.kind==='tool-start'){responseBoundary.toolStarted();separateReply=true;}
               const attemptKey=`${event.tool}:${event.callId??event.id}`;
               const refused=event.kind==='validation-refused'||event.kind==='tool-failed';
               if(event.kind==='tool-start')turn.metrics.start(event.callId??event.id,event.tool);else if(event.callId&&(refused||event.kind==='observation'||event.kind==='committed'))turn.metrics.finish(event.callId,event.tool,!refused);
@@ -227,6 +247,7 @@ ${event.details}`};
               const previous=timelines[messageId]?.at(-1);
               const textEvent=previous?.kind==='text'&&!separateReply?{...previous,text:previous.text+event.delta}:{id:`text-${++serial}`,kind:'text' as const,text:event.delta};
               append(textEvent);
+              responseBoundary.text(textEvent.id);
               messages=messages.map((message,index)=>index===responseIndex?{...message,text:message.text+(separateReply&&message.text?'\n\n':'')+event.delta}:message);
               separateReply=false;
             }
@@ -236,7 +257,7 @@ ${event.details}`};
               const proposalAttempt=`studio_screen_edit:${event.callId??event.proposal.proposalId}`;
               stage(proposalAttempt,`browser-${event.proposal.proposalId}`,receipt.ok?'Browser committed edit':`Browser refused edit · ${receipt.code}`,receipt.ok?'pending':'failed',receipt.ok?`${event.proposal.edit.reason}\nCommitted to the screen. Undo is available.`:receipt.message);
               lastRefusal=receipt.ok?'':receipt.message;
-              if(receipt.ok){turn.applied++;turn.metrics.edit(0,event.proposal.proposalId);status='Applying edit…';}else {turn.refusal=receipt;failed=true;note(receipt.message);}
+              if(receipt.ok){turn.applied++;turn.metrics.edit(0,event.proposal.proposalId);status='Applying edit…';presentTurn('running',appliedEffects(turn.applied));}else {turn.refusal=receipt;failed=true;note(receipt.message);}
               separateReply=true;
               const ack=await fetch('/api/designer-agent/ack',{method:'POST',headers:headers(),signal:turn.controller.signal,body:JSON.stringify({runId:turn.runId,proposalId:event.proposal.proposalId,receipt})});
               // The host fences every browser refusal. Acknowledge it, then end
@@ -258,6 +279,7 @@ ${event.details}`};
               lastProviderLimit=event.status!=='cancelled'&&event.code!=='STUDIO_AGENT_TIME_LIMIT'&&isProviderLimitEvidence(event.providerLimit)?event.providerLimit:undefined;
               if(event.status==='failed'&&lastProviderLimit)status=`${providerLimitMessage(lastProviderLimit)} ${appliedEffects(applied)}`;
               if(continuation&&event.status==='completed'&&!lastRefusal)status=event.sourceEvidence?.appearanceObserved?'Observation complete.':'Observation ended; appearance remains unverified.';
+              presentTurn(failed?'failed':event.status,status,responseBoundary.finish(event.status==='completed'&&!failed));
               evidence=[event.turnId?`VICT turn ${event.turnId} · profile ${event.profileVersion}`:'',event.code??''].filter(Boolean).join(' · ');
               const boundary=`${appliedEffects(applied)}${event.confirmedRevision?` Confirmed revision ${event.confirmedRevision}.`:''}`;
               const terminal=event.termination?` Engine termination: ${event.termination.status}${event.termination.code?` (${event.termination.code})`:''}.`:'';
@@ -283,6 +305,7 @@ ${event.details}`};
         const diagnosed=agentFailureMessage(code);
         note(turn.cancelled?`Stopped. ${appliedEffects(turn.applied)}`:refusal?`${refusal.message}${refusal.message.includes('new request')?'':' Send a new request using the current screen.'}${turn.applied?` ${appliedEffects(turn.applied)}`:''}`:diagnosed?`${diagnosed} ${appliedEffects(turn.applied)}`:`Connection interrupted · ${turn.applied} edits applied locally. Inspect the canvas before retrying; Undo is available.`);
         finishPending(turn.cancelled?'Stopped before this attempt was confirmed.':'The connection ended before this attempt was confirmed.',turn.cancelled);
+        presentTurn(turn.cancelled?'cancelled':'interrupted',status);
       }
       return sent?true:{ok:false,message:turn.cancelled?'Stopped before the request was admitted. Your draft is still here.':agentFailureMessage(error instanceof Error?error.message:undefined)??status};
     }finally{if(!sent){messages=messages.slice(0,responseIndex-1);const retained={...timelines};delete retained[messageId];timelines=retained;}turn.toolEvidence?.close();if(!done){cancelTransport(turn);lastMetrics={...turn.metrics.snapshot(),partial:true};}if(sent){const endedAt=Date.now();retainedTurns=retainTurn(retainedTurns,{id:turn.identity,runId:turn.runIdentity,engineTurnId:turn.engineTurnId,task:turn.task,...(continuation?{mode:'observe-only' as const}:{}),startedAt:turn.startedAt,endedAt,expiresAt:endedAt+TURN_RECORD_TTL_MS,status:turn.cancelled?'cancelled':turn.terminal??'interrupted',code:turn.code,source:turn.source,confirmedRevision:turn.confirmedRevision,applied:turn.applied,metrics:lastMetrics,regions:lastRegions,progress,diagnostics,receipts,evidence,archives:archiveReferences,finalSource:confirmedTurnSource(turn),providerLimit:lastProviderLimit});}if(activeTurn===turn){activeTurn=undefined;busy=false;}}

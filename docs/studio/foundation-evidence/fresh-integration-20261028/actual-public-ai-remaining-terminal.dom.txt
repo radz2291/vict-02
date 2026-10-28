@@ -1,0 +1,271 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Foundation Public Run Review"
+  - generic: ● Unsaved changes
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- banner:
+  - strong: Chat
+  - button "Hide Chat":
+- complementary "Chat":
+  - region "Conversation":
+    - region "Messages — Message":
+      - log:
+        - generic: You
+        - generic: "Build this new Foundation Public Run Review as a coherent review desk using the thirteen remaining public VICT AI presentation compositions: Transcript, ChainOfThought, Plan, Queue, Terminal, TestResults, StackTrace, Subagent, Context, FileTree, Checkpoint, Suggestion and ModelSelector. This is explicit coverage of those thirteen registered identities, not a request to replace any existing screen. Discover exact current public contracts and declared parts; keep historical revisions intact. Use shared controls and semantic theme roles. Organize real working controlled tabs: Overview (Transcript, ChainOfThought, Plan, Queue), Diagnostics (Terminal, TestResults, StackTrace, Subagent), Context (Context, FileTree, Checkpoint, Suggestion, ModelSelector). Each section needs readable density, narrow container fit and useful disclosed local intent outputs where supported. All supplied content is DEMONSTRATION DATA, not actual execution: sample user asks to review a layout; sample assistant says one compact correction is ready; public summary says checked the supplied component contracts and preserved the manual marker; plan has review completed and device verification pending; queue has one pending review; terminal contains demo-only output; tests contain two example passes and one unrun device check; stack trace is a clearly labeled synthetic TypeError at src/review.ts:12; subagent cards are labeled sample roles; context lists those supplied records; file tree shows example src/review.ts and README.md; checkpoint means local restore intent only; suggestion may populate a local draft; model selection is a local preview choice only and must not change the real provider. Choose minimal valid data shapes from the actual adapters, and clearly label all simulated records. Never fabricate provider use, task execution, private reasoning, backend/history/approval authority or real test outcomes. ChainOfThought may render only the supplied public summary, never private chain of thought. Preserve every other saved app and owner styling. Observe one meaningful visible section early, then inspect final source coverage and observe the current visible section. You cannot runtime click/type/scroll, so do not claim those tests or offscreen coverage. Public updates: only short design outcomes or a blocker, no contract/schema/read narration. Final at most three SHORT sentences: applied outcome, actually observed appearance, and unverified interactions/missing scope. Do not claim complete coverage unless all thirteen exact compositions exist in retained valid source."
+        - button "Copy message":
+        - generic: Assistant
+        - generic "Conversation timeline":
+          - paragraph: "I'll build the review desk on the current empty screen: first a quick discovery of the thirteen AI compositions and the tabs recipe identities, then contracts, then staged edits."
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: The thirteen identities are registered; I have revisions for seven plus the tabs parts. Now I'll pull the remaining catalog page and the first contract bundle (including tabs) with examples.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen failed":
+            - generic: Read screen
+            - generic: failed
+          - paragraph: Six bodies are partial and tabs recipes need the component route. I'll page the continuations, read the remaining six contracts, and pull the tabs recipe contracts together.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: Contracts are largely in hand; I'll page the five remaining body tails and confirm registered native tags for layout elements.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: "Contracts complete. Now building: first the controlled state keys and semantic theme roles."
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - paragraph: State and two theme roles applied. Continuing with remaining theme roles and the header.
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - paragraph: Now the controlled tabs skeleton with three triggers and three panels.
+          - button "Edit screen failed":
+            - generic: Edit screen
+            - generic: failed
+          - paragraph: The tabs batch was rejected without a field detail. I'll preflight the same payload to locate the invalid operation.
+          - button "Read screen failed":
+            - generic: Read screen
+            - generic: failed
+          - paragraph: Found it — stray top-level "label" keys on the trigger adds. Retrying with labels only in props.
+          - button "Edit screen failed":
+            - generic: Edit screen
+            - generic: failed
+          - paragraph: The tabs seed wires valueChange to its own key; I'll connect it to activeTab in the same batch as the skeleton, then bind the controlled value next.
+          - button "Edit screen failed":
+            - generic: Edit screen
+            - generic: failed
+          - paragraph: "The controlled pair must move together: I'll add the tabs, then bind value and connect valueChange to activeTab in one transaction, plus the three triggers."
+          - button "Edit screen failed":
+            - generic: Edit screen
+            - generic: failed
+          - paragraph: Paired-identity check rejects retargeting the seed pair in one step. I'll lay down the plain skeleton first, then inspect the tabs' own state before wiring.
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - paragraph: Skeleton applied. Checking the tabs' seeded control state before wiring my activeTab intent.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: The tabs seed controls on key "catalog_tabs-desk_root_value" (initial "tabs-desk-tabs-1", matching no panel). I'll try re-declaring that exact key with an "overview" initial so the semantic values line up.
+          - button "Edit screen failed":
+            - generic: Edit screen
+            - generic: failed
+          - paragraph: "One more attempt now that the add is separately acknowledged: retarget value/valueChange together to activeTab in a binding-only transaction."
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - paragraph: "Tabs now controlled by activeTab (Overview initial). Building the Overview panel: transcript, public-summary chain-of-thought, plan, queue."
+          - button "Edit screen failed":
+            - generic: Edit screen
+            - generic: failed
+          - paragraph: Preflighting this batch to isolate the rejected operation.
+          - button "Read screen failed":
+            - generic: Read screen
+            - generic: failed
+          - paragraph: Component inserts need explicit revision. Retrying with revision "1".
+          - button "Edit screen failed":
+            - generic: Edit screen
+            - generic: failed
+          - paragraph: Generic rejection again; running preflight with revisions included to see the deeper contract error.
+          - button "Read screen failed":
+            - generic: Read screen
+            - generic: failed
+          - paragraph: The component-insert shape itself is being flagged. Probing a minimal queue insert to isolate whether props or the discriminator is the problem.
+          - button "Read screen failed":
+            - generic: Read screen
+            - generic: failed
+          - paragraph: The panel slot takes elements fine — components don't. I'll add plain stack divs inside each panel and host the components in those.
+          - button "Edit screen failed":
+            - generic: Edit screen
+            - generic: failed
+          - paragraph: Probing whether props on a component insert are the schema problem, using an existing element parent.
+          - button "Read screen failed":
+            - generic: Read screen
+            - generic: failed
+          - paragraph: Props aren't allowed on component inserts — components with props must go through the add/recipe path. Rebuilding the batch accordingly.
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - paragraph: Transcript and chain-of-thought are in. Finishing the Overview panel with plan and queue, then I'll observe the visible section.
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - paragraph: Overview panel is complete — observing the currently visible section now.
+          - button "Observe preview completed":
+            - generic: Observe preview
+            - generic: completed
+          - paragraph: "Observed: Overview renders correctly with clear demo labeling and no overflow. Building the Diagnostics panel now."
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - paragraph: "Diagnostics complete with frame-select disclosure wired. Now the Context panel: usage breakdown, file tree, then checkpoint, suggestion and model selector."
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - button "Edit screen failed":
+            - generic: Edit screen
+            - generic: failed
+          - paragraph: Malformed op on my side (connect merged into an insert). Reissuing with the connect as its own operation.
+          - button "Edit screen failed":
+            - generic: Edit screen
+            - generic: failed
+          - paragraph: "Void output needs a boolean target. Splitting: file disclosure, checkpoint with a boolean restore flag, and its disclosure label."
+          - button "Edit screen failed":
+            - generic: Edit screen
+            - generic: failed
+          - paragraph: Void outputs can't target local state at all — so the checkpoint stays canRestore:false with an explicit intent-only note. Retrying.
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - button "Edit screen failed":
+            - generic: Edit screen
+            - generic: failed
+          - paragraph: Stray "index" keys on the style ops — removing them.
+          - button "Edit screen failed":
+            - generic: Edit screen
+            - generic: failed
+          - button "Read screen failed":
+            - generic: Read screen
+            - generic: failed
+          - paragraph: "Style values need the typed wrapper. Final batch:"
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - paragraph: All thirteen compositions are placed. Verifying final source coverage of the AI identities, then observing the visible section.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: "All thirteen identities confirmed in source with their controlled bindings. Final observation of the visible section:"
+          - button "Observe preview completed":
+            - generic: Observe preview
+            - generic: completed
+          - paragraph: "Built the demo review desk on the open screen: all thirteen requested VICT AI compositions are present in valid source, organized in controlled tabs (Overview/Diagnostics/Context) with demo-labeled data, theme roles, and local intent bindings for file/stack-frame/suggestion/model selections (checkpoint stays intent-only, since void outputs can't bind local state). The visible Overview tab was observed rendering correctly — heading, active pill tab bar, transcript card with demo labels, no overflow. Tab switching and click-driven disclosures couldn't be exercised (no runtime interaction tools), and Diagnostics/Context panels plus offscreen content weren't visually verified."
+        - button "Copy message":
+    - button "Scroll to latest message":
+      - generic: Scroll to end
+    - textbox "Message":
+      - /placeholder: Ask for a change…
+    - button "Send" [disabled]:
+      - generic: Send
+    - status
+  - status "12 edits applied":
+    - generic: Ready
+  - button "Chat details" [active]: ···
+- separator "Chat width"
+- main:
+  - button "Toggle Chat drawer" [expanded]:
+  - group "Workspace mode":
+    - button "Design" [pressed]
+    - button "Interact"
+    - button "Structure"
+  - button "Toggle Document and Selection drawer":
+  - iframe:
+    - generic "Screen canvas":
+      - main "Foundation Public Run Review":
+        - heading "Review desk heading" [level=1]:
+          - generic: Foundation Public Run Review
+        - paragraph:
+          - generic: Demo review desk — thirteen public VICT AI compositions. Every record here is simulated demonstration data; nothing is executed.
+        - tablist "Review sections":
+          - tab "Overview" [selected]
+          - tab "Diagnostics"
+          - tab "Context"
+        - tabpanel "Overview":
+          - paragraph:
+            - generic: Tab content
+          - region "Conversation":
+            - generic: Demo transcript (sample)
+            - generic: Simulated messages only — no provider was contacted.
+            - region "Messages — Message":
+              - log:
+                - generic: You
+                - generic: "Sample request: can you review the layout of the review desk? (demo data)"
+                - button "Copy message":
+                - generic: Assistant
+                - paragraph: "Sample reply: one compact correction is ready. (demo data)"
+                - button "Copy message":
+            - button "Scroll to latest message":
+              - generic: Scroll to end
+            - textbox "Message":
+              - /placeholder: Write a message.
+            - button "Send" [disabled]:
+              - generic: Send
+            - status
+          - button "Public summary (demo)" [expanded]:
+            - generic: Public summary (demo)
+          - paragraph: Demo data — only the supplied public summary is rendered.
+          - button "Public summary" [expanded]:
+            - generic: Public summary
+          - paragraph: Checked the supplied component contracts and preserved the manual marker.
+          - button "Demo plan (sample) 1 of 2 done" [expanded]:
+            - generic: Demo plan (sample)
+            - generic: 1 of 2 done
+          - paragraph: Simulated plan — nothing was executed.
+          - button "Review completed":
+            - generic: Review completed
+          - button "Device verification pending":
+            - generic: Device verification pending
+          - button "1 to do" [expanded]:
+            - generic: 1 to do
+          - 'button "Pending review: review desk layout (sample)"':
+            - generic: "Pending review: review desk layout (sample)"
+- contentinfo:
+  - status: Complete model selector controlled pair, provider disclaimer, and tab list wrapping for narrow fit · agent edit · unsaved
+- generic: Designer — VICT Studio

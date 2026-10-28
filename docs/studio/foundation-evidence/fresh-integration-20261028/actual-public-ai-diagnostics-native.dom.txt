@@ -1,0 +1,58 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Foundation Public Run Review"
+  - generic: ✓ Saved
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- main:
+  - button "Toggle Chat drawer":
+  - group "Workspace mode":
+    - button "Design"
+    - button "Interact" [pressed]
+    - button "Structure"
+  - button "Toggle Document and Selection drawer":
+  - iframe [active]:
+    - generic "Screen canvas":
+      - main "Foundation Public Run Review":
+        - heading "Review desk heading" [level=1]:
+          - generic: Foundation Public Run Review
+        - paragraph:
+          - generic: Demo review desk — thirteen public VICT AI compositions. Every record here is simulated demonstration data; nothing is executed.
+        - tablist "Review sections":
+          - tab "Overview"
+          - tab "Diagnostics" [active] [selected]
+          - tab "Context"
+        - tabpanel "Diagnostics":
+          - paragraph:
+            - generic: Tab content
+          - heading "Demo terminal — no shell was run" [level=3]:
+            - generic: Demo terminal — no shell was run
+          - alert: "Invalid terminal presentation metadata: status: expected |pending|running|error"
+          - button "Example tests (demo) — two sample passes, device check not run" [expanded]:
+            - generic: Example tests (demo) — two sample passes, device check not run
+          - button "Sample suite (demo data), 3 tests, 1 skipped":
+            - generic: Sample suite (demo data), 3 tests, 1 skipped
+          - button "Synthetic TypeError (demo — not a real error)" [expanded]:
+            - generic: Synthetic TypeError (demo — not a real error)
+          - paragraph: "TypeError: sample review handler is not a function (synthetic demo)"
+          - button "reviewLayout in src/review.ts:12":
+            - generic: reviewLayout in src/review.ts:12
+          - button "runReviewDesk in src/review.ts:24":
+            - generic: runReviewDesk in src/review.ts:24
+          - generic: "Local intent — frame select disclosure (demo):"
+          - alert: "Invalid subagent presentation metadata: state: expected pending|running|completed|error|failed"
+          - 'button "Sample role: accessibility checker (demo)" [expanded]':
+            - generic: "Sample role: accessibility checker (demo)"
+          - generic: demo-local
+          - paragraph: Demonstration subagent card — no child run was launched.
+- contentinfo:
+  - status: Interact mode · simulated behavior, no live effects.
+- generic: Designer — VICT Studio

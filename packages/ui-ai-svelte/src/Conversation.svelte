@@ -8,6 +8,7 @@
   import PromptInput from './patterns/PromptInput.svelte';
   import * as MessageScroller from './upstream/ui/message-scroller/index.js';
   import ConversationToolCall from './ConversationToolCall.svelte';
+  import * as Trace from './upstream/ui/trace/index.js';
   import MessageAction from './MessageAction.svelte';
   import Markdown from './upstream/markdown/markdown.svelte';
   import type { ConversationMessage, SendResult, SendAccepted } from './adapters.js';
@@ -38,6 +39,7 @@
   let error = $state('');
   let copyStatus = $state('');
   let copiedMessageId = $state<string | null>(null);
+  let activityOpen = $state<Record<string, boolean>>({});
   let copyReset: ReturnType<typeof setTimeout> | undefined;
   let form = $state<HTMLFormElement>();
   let input = $state<HTMLTextAreaElement | null>(null);
@@ -81,6 +83,22 @@
   }
 </script>
 
+{#snippet publicTimeline(message: ConversationMessage)}
+  <div {...presentation?.target('timeline')} class={`vict-ai-timeline ${presentation?.target('timeline').class ?? ''}`} aria-label="Conversation timeline">
+    {#each message.events ?? [] as event (event.id)}
+      <div data-event-kind={event.kind} data-event-id={event.id}>
+        {#if event.kind === 'text'}
+          <div {...presentation?.target('message-text')} class={`vict-ai-markdown ${presentation?.target('message-text').class ?? ''}`}><Markdown content={event.text}/></div>
+        {:else if event.kind === 'activity'}
+          <div {...presentation?.target('activity')}><ConversationToolCall activity={event.activity}/></div>
+        {:else}
+          <p {...presentation?.target('event-summary')} class={`vict-ai-event-summary ${presentation?.target('event-summary').class ?? ''}`}>{event.text}</p>
+        {/if}
+      </div>
+    {/each}
+  </div>
+{/snippet}
+
 {#snippet composerBody()}
   {#if composer}{@render composer()}{:else}<PromptInput presentation={composerPresentation} bind:value={draft} bind:form bind:input label={inputLabel} placeholder={inputPlaceholder} busy={pending} onSend={onSend ? (text) => void submit(text) : undefined} {onStop}/>{/if}
 {/snippet}
@@ -111,19 +129,25 @@
                     <Bubble.Root align="end" variant="muted"><Bubble.Content><span {...presentation?.target('message-text')} class={`vict-ai-user-text ${presentation?.target('message-text').class ?? ''}`}>{message.text}</span></Bubble.Content></Bubble.Root>
                   {:else}
                     {#if message.events}
-                      <div {...presentation?.target('timeline')} class={`vict-ai-timeline ${presentation?.target('timeline').class ?? ''}`} aria-label="Conversation timeline">
-                        {#each message.events as event (event.id)}
-                          <div data-event-kind={event.kind} data-event-id={event.id}>
-                            {#if event.kind === 'text'}
-                              <div {...presentation?.target('message-text')} class={`vict-ai-markdown ${presentation?.target('message-text').class ?? ''}`}><Markdown content={event.text}/></div>
-                            {:else if event.kind === 'activity'}
-                              <div {...presentation?.target('activity')}><ConversationToolCall activity={event.activity}/></div>
-                            {:else}
-                              <p {...presentation?.target('event-summary')} class={`vict-ai-event-summary ${presentation?.target('event-summary').class ?? ''}`}>{event.text}</p>
-                            {/if}
-                          </div>
-                        {/each}
-                      </div>
+                      {#if message.hostTurn}
+                        <p class="vict-ai-event-summary" role="status">{message.hostTurn.statusText}</p>
+                        <Trace.Root><Trace.Collapsible open={activityOpen[message.id] ?? false} onOpenChange={(open) => activityOpen = {...activityOpen, [message.id]: open}}>
+                          <Trace.CollapsibleTrigger>Public activity and tool details</Trace.CollapsibleTrigger>
+                          <!-- Keep the complete transcript mounted across lifecycle transitions.
+                               Final text is also projected below; focused transcript links never move. -->
+                          <Trace.CollapsibleContent forceMount hidden={!activityOpen[message.id]}>
+                            {@render publicTimeline(message)}
+                          </Trace.CollapsibleContent>
+                        </Trace.Collapsible></Trace.Root>
+                        {#if message.hostTurn.state === 'completed'}
+                          {@const finalEvents = message.events.filter(event => event.kind === 'text' && event.text.trim().length > 0 && message.hostTurn!.finalTextEventIds.includes(event.id))}
+                          {#if finalEvents.length}
+                            <div aria-label="Terminal response">{#each finalEvents as event (event.id)}{#if event.kind === 'text'}<div {...presentation?.target('message-text')} class={`vict-ai-markdown ${presentation?.target('message-text').class ?? ''}`}><Markdown content={event.text}/></div>{/if}{/each}</div>
+                          {:else}<p class="vict-ai-event-summary">No final response received. Inspect the public activity and confirmed receipts.</p>{/if}
+                        {:else if message.hostTurn.state !== 'running'}
+                          <p class="vict-ai-event-summary">No successful final response. Public notes and tool receipts remain in details.</p>
+                        {/if}
+                      {:else}{@render publicTimeline(message)}{/if}
                     {:else}
                     {#if message.activity?.length}
                       <div {...presentation?.target('timeline')} aria-label="Tool activity">

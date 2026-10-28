@@ -1,0 +1,951 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Foundation Public Run Review"
+  - generic: ● Unsaved changes
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- banner:
+  - strong: Chat
+  - button "Hide Chat":
+- complementary "Chat":
+  - region "Conversation":
+    - region "Messages — Message":
+      - log:
+        - generic: You
+        - generic: "Build this new Foundation Public Run Review as a coherent review desk using the thirteen remaining public VICT AI presentation compositions: Transcript, ChainOfThought, Plan, Queue, Terminal, TestResults, StackTrace, Subagent, Context, FileTree, Checkpoint, Suggestion and ModelSelector. This is explicit coverage of those thirteen registered identities, not a request to replace any existing screen. Discover exact current public contracts and declared parts; keep historical revisions intact. Use shared controls and semantic theme roles. Organize real working controlled tabs: Overview (Transcript, ChainOfThought, Plan, Queue), Diagnostics (Terminal, TestResults, StackTrace, Subagent), Context (Context, FileTree, Checkpoint, Suggestion, ModelSelector). Each section needs readable density, narrow container fit and useful disclosed local intent outputs where supported. All supplied content is DEMONSTRATION DATA, not actual execution: sample user asks to review a layout; sample assistant says one compact correction is ready; public summary says checked the supplied component contracts and preserved the manual marker; plan has review completed and device verification pending; queue has one pending review; terminal contains demo-only output; tests contain two example passes and one unrun device check; stack trace is a clearly labeled synthetic TypeError at src/review.ts:12; subagent cards are labeled sample roles; context lists those supplied records; file tree shows example src/review.ts and README.md; checkpoint means local restore intent only; suggestion may populate a local draft; model selection is a local preview choice only and must not change the real provider. Choose minimal valid data shapes from the actual adapters, and clearly label all simulated records. Never fabricate provider use, task execution, private reasoning, backend/history/approval authority or real test outcomes. ChainOfThought may render only the supplied public summary, never private chain of thought. Preserve every other saved app and owner styling. Observe one meaningful visible section early, then inspect final source coverage and observe the current visible section. You cannot runtime click/type/scroll, so do not claim those tests or offscreen coverage. Public updates: only short design outcomes or a blocker, no contract/schema/read narration. Final at most three SHORT sentences: applied outcome, actually observed appearance, and unverified interactions/missing scope. Do not claim complete coverage unless all thirteen exact compositions exist in retained valid source."
+        - button "Copy message":
+        - generic: Assistant
+        - generic "Conversation timeline":
+          - paragraph: "I'll build the review desk on the current empty screen: first a quick discovery of the thirteen AI compositions and the tabs recipe identities, then contracts, then staged edits."
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: The thirteen identities are registered; I have revisions for seven plus the tabs parts. Now I'll pull the remaining catalog page and the first contract bundle (including tabs) with examples.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen failed":
+            - generic: Read screen
+            - generic: failed
+          - paragraph: Six bodies are partial and tabs recipes need the component route. I'll page the continuations, read the remaining six contracts, and pull the tabs recipe contracts together.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: Contracts are largely in hand; I'll page the five remaining body tails and confirm registered native tags for layout elements.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: "Contracts complete. Now building: first the controlled state keys and semantic theme roles."
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - paragraph: State and two theme roles applied. Continuing with remaining theme roles and the header.
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - paragraph: Now the controlled tabs skeleton with three triggers and three panels.
+          - button "Edit screen failed":
+            - generic: Edit screen
+            - generic: failed
+          - paragraph: The tabs batch was rejected without a field detail. I'll preflight the same payload to locate the invalid operation.
+          - button "Read screen failed":
+            - generic: Read screen
+            - generic: failed
+          - paragraph: Found it — stray top-level "label" keys on the trigger adds. Retrying with labels only in props.
+          - button "Edit screen failed":
+            - generic: Edit screen
+            - generic: failed
+          - paragraph: The tabs seed wires valueChange to its own key; I'll connect it to activeTab in the same batch as the skeleton, then bind the controlled value next.
+          - button "Edit screen failed":
+            - generic: Edit screen
+            - generic: failed
+          - paragraph: "The controlled pair must move together: I'll add the tabs, then bind value and connect valueChange to activeTab in one transaction, plus the three triggers."
+          - button "Edit screen failed":
+            - generic: Edit screen
+            - generic: failed
+          - paragraph: Paired-identity check rejects retargeting the seed pair in one step. I'll lay down the plain skeleton first, then inspect the tabs' own state before wiring.
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - paragraph: Skeleton applied. Checking the tabs' seeded control state before wiring my activeTab intent.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: The tabs seed controls on key "catalog_tabs-desk_root_value" (initial "tabs-desk-tabs-1", matching no panel). I'll try re-declaring that exact key with an "overview" initial so the semantic values line up.
+          - button "Edit screen failed":
+            - generic: Edit screen
+            - generic: failed
+          - paragraph: "One more attempt now that the add is separately acknowledged: retarget value/valueChange together to activeTab in a binding-only transaction."
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - paragraph: "Tabs now controlled by activeTab (Overview initial). Building the Overview panel: transcript, public-summary chain-of-thought, plan, queue."
+          - button "Edit screen failed":
+            - generic: Edit screen
+            - generic: failed
+          - paragraph: Preflighting this batch to isolate the rejected operation.
+          - button "Read screen failed":
+            - generic: Read screen
+            - generic: failed
+          - paragraph: Component inserts need explicit revision. Retrying with revision "1".
+          - button "Edit screen failed":
+            - generic: Edit screen
+            - generic: failed
+          - paragraph: Generic rejection again; running preflight with revisions included to see the deeper contract error.
+          - button "Read screen failed":
+            - generic: Read screen
+            - generic: failed
+          - paragraph: The component-insert shape itself is being flagged. Probing a minimal queue insert to isolate whether props or the discriminator is the problem.
+          - button "Read screen failed":
+            - generic: Read screen
+            - generic: failed
+          - paragraph: The panel slot takes elements fine — components don't. I'll add plain stack divs inside each panel and host the components in those.
+          - button "Edit screen failed":
+            - generic: Edit screen
+            - generic: failed
+          - paragraph: Probing whether props on a component insert are the schema problem, using an existing element parent.
+          - button "Read screen failed":
+            - generic: Read screen
+            - generic: failed
+          - paragraph: Props aren't allowed on component inserts — components with props must go through the add/recipe path. Rebuilding the batch accordingly.
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - paragraph: Transcript and chain-of-thought are in. Finishing the Overview panel with plan and queue, then I'll observe the visible section.
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - paragraph: Overview panel is complete — observing the currently visible section now.
+          - button "Observe preview completed":
+            - generic: Observe preview
+            - generic: completed
+          - paragraph: "Observed: Overview renders correctly with clear demo labeling and no overflow. Building the Diagnostics panel now."
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - paragraph: "Diagnostics complete with frame-select disclosure wired. Now the Context panel: usage breakdown, file tree, then checkpoint, suggestion and model selector."
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - button "Edit screen failed":
+            - generic: Edit screen
+            - generic: failed
+          - paragraph: Malformed op on my side (connect merged into an insert). Reissuing with the connect as its own operation.
+          - button "Edit screen failed":
+            - generic: Edit screen
+            - generic: failed
+          - paragraph: "Void output needs a boolean target. Splitting: file disclosure, checkpoint with a boolean restore flag, and its disclosure label."
+          - button "Edit screen failed":
+            - generic: Edit screen
+            - generic: failed
+          - paragraph: Void outputs can't target local state at all — so the checkpoint stays canRestore:false with an explicit intent-only note. Retrying.
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - button "Edit screen failed":
+            - generic: Edit screen
+            - generic: failed
+          - paragraph: Stray "index" keys on the style ops — removing them.
+          - button "Edit screen failed":
+            - generic: Edit screen
+            - generic: failed
+          - button "Read screen failed":
+            - generic: Read screen
+            - generic: failed
+          - paragraph: "Style values need the typed wrapper. Final batch:"
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - paragraph: All thirteen compositions are placed. Verifying final source coverage of the AI identities, then observing the visible section.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: "All thirteen identities confirmed in source with their controlled bindings. Final observation of the visible section:"
+          - button "Observe preview completed":
+            - generic: Observe preview
+            - generic: completed
+          - paragraph: "Built the demo review desk on the open screen: all thirteen requested VICT AI compositions are present in valid source, organized in controlled tabs (Overview/Diagnostics/Context) with demo-labeled data, theme roles, and local intent bindings for file/stack-frame/suggestion/model selections (checkpoint stays intent-only, since void outputs can't bind local state). The visible Overview tab was observed rendering correctly — heading, active pill tab bar, transcript card with demo labels, no overflow. Tab switching and click-driven disclosures couldn't be exercised (no runtime interaction tools), and Diagnostics/Context panels plus offscreen content weren't visually verified."
+        - button "Copy message":
+        - generic: You
+        - generic: "Correct only the current saved Foundation Public Run Review r1.r1. Native runtime inspection found three real metadata alerts in the unobserved tabs; preserve all thirteen compositions, controlled tabs, demo labels, local bindings and other screens. Use fresh current source/cursor and read only relevant scoped contracts/source. Exact fixes: comp-terminal.status is \"done\", but the actual terminal adapter allows empty string/pending/running/error; use neutral empty status with existing demo exitCode0/output. comp-sub1.state is \"done\"; use the actual supported completed state, keeping its explicit sample/no-child-run labels. comp-context.data breakdown values are strings; use finite numeric demo units16,12,8,6 for its four existing labeled groups (total42, existing used42/limit100 are FICTIONAL demonstration budget, not measured provider usage). Ensure nearby visible wording explicitly says demonstration budget, not actual token/provider usage. Remove only the three leftover seeded paragraph subtrees panel-overview-content-1, panel-diagnostics-content-1 and panel-context-content-1, each currently says Tab content. Do not recreate the app or replay successful earlier edits. Validate exact operation shapes; after any schema refusal read overview.lastValidation rather than guessing or repeatedly submitting the same malformed preflight. The current Context panel is visible, so observe its actual corrected rendering after edits. Do not claim native tests or Diagnostics appearance you cannot see. Updates only short user outcomes; final at most two short sentences identifying corrections and what remains unverified. No private reasoning, real execution/provider/history/restore authority or fabrication."
+        - button "Copy message":
+        - generic: Assistant
+        - generic "Conversation timeline":
+          - paragraph: I'll verify the exact current source of those five targets plus the three adapters' accepted data shapes, then apply the fixes in one batch.
+          - button "Read screen failed":
+            - generic: Read screen
+            - generic: failed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph:
+            - text: The contracts bundle confirms prop shapes (terminal status default "pending", subagent
+            - code: state
+            - text: ", context"
+            - code: data
+            - text: = version-1 JSON with
+            - code: "breakdown:[{label,value}]"
+            - text: ). The source read needed the
+            - code: sources
+            - text: section name — retrying for the six targets.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph:
+            - text: "Exact source confirmed: terminal"
+            - code: status:"done"
+            - text: ", subagent"
+            - code: state:"done"
+            - text: ", context breakdown with string values, and the three seed paragraphs. Now checking the Context panel subtree for nearby budget wording."
+          - button "Read screen failed":
+            - generic: Read screen
+            - generic: failed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph:
+            - text: "Found everything: the seed paragraphs sit in each panel's content slot, and the nearby wording is the Context heading"
+            - code: h3-ctx-text
+            - text: . Applying all corrections in one batch.
+          - button "Edit screen failed":
+            - generic: Edit screen
+            - generic: failed
+          - paragraph: Schema refusal without a field detail — reading the overview's lastValidation to pinpoint the invalid shape.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph:
+            - text: The diagnostics flag my own stray
+            - code: used
+            - text: /
+            - code: limit
+            - text: keys on the context modify (they're already correct in source and must stay untouched). Resubmitting cleanly.
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - paragraph: Batch acknowledged (r1.r1#14). Observing the visible Context panel to confirm the corrected rendering.
+          - button "Observe preview completed":
+            - generic: Observe preview
+            - generic: completed
+          - paragraph: The heading wording and seed-paragraph removal are visibly confirmed; the breakdown rows fall below the crop, so I'll verify the three corrected props in source.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph:
+            - text: "All four corrections applied in one acknowledged batch: terminal"
+            - code: status
+            - text: is now the neutral empty value, subagent
+            - code: state
+            - text: is "completed" (labels untouched), the Context breakdown uses numeric demo values 16/12/8/6 with heading wording "demonstration budget, not actual token/provider usage," and the three "Tab content" seed paragraphs are removed with all thirteen compositions and demo labels preserved. The visible Context panel was observed showing the new wording and no seed paragraph, but the numeric breakdown rows fall below the capture crop and the terminal/subagent fixes live in the unobserved Diagnostics tab — so their rendered appearance remains unverified, as do all interactions.
+        - button "Copy message":
+    - button "Scroll to latest message":
+      - generic: Scroll to end
+    - textbox "Message":
+      - /placeholder: Ask for a change…
+    - button "Send" [disabled]:
+      - generic: Send
+    - status
+  - status "1 edit applied":
+    - generic: Ready
+  - button "Chat details" [expanded]: ···
+  - generic "Chat details":
+    - heading "Chat details" [level=3]
+    - button "Close chat details" [active]: ×
+    - paragraph: zai/glm-5.3-flash
+    - text: Turn details
+    - combobox "Inspect turn":
+      - option "Latest activity"
+      - option "12:58:22 AM · completed · Build this new Foundation Public Run Review as a coherent re" [selected]
+      - option "1:24:18 AM · completed · Correct only the current saved Foundation Public Run Review"
+    - paragraph: Up to 24 turns retained for 30 minutes in this tab. Reloading clears local history; server evidence also expires or disappears on restart/capacity eviction.
+    - heading "Recorded turn" [level=4]
+    - paragraph: completed · 12 confirmed edits
+    - paragraph:
+      - text: Run 3bab8c8e-93f8-4e73-9520-6b175236b75f · VICT turn turn-2eb2717d-78b9-49d3-8f4e-42baed1a7e29
+      - text: Source r1#0 → r1#12
+    - generic "Source boundaries"
+    - paragraph: "Selected: Container · Screen"
+    - paragraph: completed
+    - button "Reconnect agent"
+    - heading "Turn measurements" [level=4]
+    - paragraph: 46 tool calls · 20 refused · 24 calls after refusal · 1122.1 s elapsed.
+    - paragraph: 40 authoring model requests · 2 image requests. First confirmed edit 409.3 s.
+    - paragraph: "Reported authoring usage: 3386306 input / 42807 output tokens."
+    - paragraph: 12 receipt-derived edits including cleanup.
+    - paragraph: 11 knowledge reads · 8 source reads · 25 edit calls · 2 observation calls.
+    - paragraph: "Settled tool durations summed: 31.4 s; tool-active interval union: 31.3 s; outside-tool time: 1090.8 s."
+    - paragraph: Outside-tool time includes waiting, generation, transport and host overhead; exact provider latency is unavailable.
+    - paragraph: Exact model steps and cost unavailable. Concurrent tool durations do not add up to wall time.
+    - heading "Observed regions" [level=4]
+    - paragraph: r1#6 · earlier source in this turn · 652×528 at (0, 0) within 652×1333; design; 2026-10-28T17:12:47.261Z.
+    - paragraph: r1#12 · matched final source of this turn · 652×528 at (0, 0) within 652×1333; design; 2026-10-28T17:16:42.951Z.
+    - paragraph: Region labels compare with the completed turn's final source; they do not track later source, runtime or viewport changes. Only these captured regions were inspected. Offscreen content and interactions remain unverified.
+    - heading "Progress summaries" [level=4]
+    - paragraph: Connection, validation and completion metadata. The conversation contains actual assistant messages and tool calls.
+    - list:
+      - listitem: Connecting…
+      - listitem: Reading screen…
+      - listitem: Connecting to the VICT / Mastra agent…
+      - listitem: Agent is working on your request…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Preparing and validating an edit…
+      - listitem: Declare controlled local state and semantic theme roles for the demo review desk · applied
+      - listitem: Preparing and validating an edit…
+      - listitem: Finish semantic theme roles and add the desk heading plus demo disclaimer · applied
+      - listitem: Preparing and validating an edit…
+      - listitem: Tool refused (VICT_TOOL_FAILED). Previously applied edits remain available.
+      - listitem: Reading current source facts…
+      - listitem: Preparing and validating an edit…
+      - listitem: "Edit rejected: UI_COMPONENT_BINDING_INCOMPATIBLE: 'value' and 'valueChange' address different state keys."
+      - listitem: Preparing and validating an edit…
+      - listitem: "Edit rejected: UI_COMPONENT_BINDING_INCOMPATIBLE: 'value' and 'valueChange' address different state keys."
+      - listitem: Preparing and validating an edit…
+      - listitem: "Edit rejected: UI_COMPONENT_BINDING_INCOMPATIBLE: Paired part identities must match."
+      - listitem: Preparing and validating an edit…
+      - listitem: Add tabs skeleton with three triggers and three panels using the recipe seed control state · applied
+      - listitem: Reading current source facts…
+      - listitem: Preparing and validating an edit…
+      - listitem: State already exists. Read state and bind its exact key; use a fresh key for an independent field.
+      - listitem: Preparing and validating an edit…
+      - listitem: Retarget the tabs controlled pair to the declared activeTab state for semantic tab keys · applied
+      - listitem: Preparing and validating an edit…
+      - listitem: Tool refused (VICT_TOOL_FAILED). Previously applied edits remain available.
+      - listitem: Reading current source facts…
+      - listitem: Preparing and validating an edit…
+      - listitem: Tool refused (VICT_TOOL_FAILED). Previously applied edits remain available.
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Preparing and validating an edit…
+      - listitem: Tool refused (VICT_TOOL_FAILED). Previously applied edits remain available.
+      - listitem: Reading current source facts…
+      - listitem: Preparing and validating an edit…
+      - listitem: Add panel stacks, Overview cards, transcript and chain-of-thought components · applied
+      - listitem: Preparing and validating an edit…
+      - listitem: Finish Overview panel with demo plan and queue cards · applied
+      - listitem: Capturing and observing the rendered preview…
+      - listitem: Preparing and validating an edit…
+      - listitem: "Add Diagnostics cards: demo terminal, example tests, synthetic stack trace with intent label · applied"
+      - listitem: Preparing and validating an edit…
+      - listitem: Wire stack-frame local intent disclosure and add two sample subagent cards · applied
+      - listitem: Preparing and validating an edit…
+      - listitem: "Add Context panel: demo usage breakdown and example file tree with local select disclosure · applied"
+      - listitem: Preparing and validating an edit…
+      - listitem: Tool refused (VICT_TOOL_FAILED). Previously applied edits remain available.
+      - listitem: Preparing and validating an edit…
+      - listitem: "Edit rejected: UI_COMPONENT_BINDING_INCOMPATIBLE: Output 'restore' payload void is incompatible with state 'restoreNote' type string."
+      - listitem: Preparing and validating an edit…
+      - listitem: "Edit rejected: UI_COMPONENT_BINDING_INCOMPATIBLE: Output 'restore' payload void is incompatible with state 'restoreFlag' type boolean."
+      - listitem: Preparing and validating an edit…
+      - listitem: Wire file select disclosure and add demo checkpoint as intent-only · applied
+      - listitem: Preparing and validating an edit…
+      - listitem: Add suggestion with local draft disclosure and controlled model selector · applied
+      - listitem: Preparing and validating an edit…
+      - listitem: Tool refused (VICT_TOOL_FAILED). Previously applied edits remain available.
+      - listitem: Preparing and validating an edit…
+      - listitem: Tool refused (VICT_TOOL_FAILED). Previously applied edits remain available.
+      - listitem: Reading current source facts…
+      - listitem: Preparing and validating an edit…
+      - listitem: Complete model selector controlled pair, provider disclaimer, and tab list wrapping for narrow fit · applied
+      - listitem: Reading current source facts…
+      - listitem: Capturing and observing the rendered preview…
+      - listitem: "12 applied edits remain undoable. Confirmed revision r1#12. Engine termination: completed. Source coverage: 17/117 registered definitions present. 100 missing from the 117-item coverage scope. Missing IDs are paged through coverage reads. This inventory does not establish the full requested intent, interactions or visual completion. Source: 68 nodes, 14 state declarations; a bounded preview image was observed; interactions unverified by this agent. Captured region: 652×528 at (0, 0) within 652×1333; design at 2026-10-28T17:16:42.951Z. This does not verify offscreen content or current runtime state."
+    - heading "Input schema diagnostics" [level=4]
+    - generic: "2 parser evaluations; these are not tool calls. No call identity is inferred. First observed 437770 ms; last observed 437771 ms since turn start. {\"ok\":false,\"code\":\"STUDIO_AGENT_INVALID_EDIT\",\"message\":\"Input contract validation reported invalid fields. These parser diagnostics are not assigned to a tool call. Correct the fields below; no edits applied.\",\"diagnostics\":[{\"operation\":2,\"path\":\"operations.2\",\"message\":\"Expected add(recipe,nodeId,parentId,slotName?,index?,text?,headingLevel?,attributes?,props?,styles?). Unrecognized key(s) in object: 'label'\"},{\"operation\":3,\"path\":\"operations.3\",\"message\":\"Expected add(recipe,nodeId,parentId,slotName?,index?,text?,headingLevel?,attributes?,props?,styles?). Unrecognized key(s) in object: 'label'\"},{\"operation\":4,\"path\":\"operations.4\",\"message\":\"Expected add(recipe,nodeId,parentId,slotName?,index?,text?,headingLevel?,attributes?,props?,styles?). Unrecognized key(s) in object: 'label'\"}]}"
+    - generic: "4 parser evaluations; these are not tool calls. No call identity is inferred. First observed 680553 ms; last observed 717398 ms since turn start. {\"ok\":false,\"code\":\"STUDIO_AGENT_INVALID_EDIT\",\"message\":\"Input contract validation reported invalid fields. These parser diagnostics are not assigned to a tool call. Correct the fields below; no edits applied.\",\"diagnostics\":[{\"operation\":1,\"path\":\"operations.1.kind\",\"message\":\"Expected insert(kind:element|text|component,nodeId,parentId,tag?|componentId+revision|text/expression?,slotName?,index?). Required\"},{\"operation\":3,\"path\":\"operations.3.kind\",\"message\":\"Expected insert(kind:element|text|component,nodeId,parentId,tag?|componentId+revision|text/expression?,slotName?,index?). Required\"},{\"operation\":5,\"path\":\"operations.5.kind\",\"message\":\"Expected insert(kind:element|text|component,nodeId,parentId,tag?|componentId+revision|text/expression?,slotName?,index?). Required\"},{\"operation\":7,\"path\":\"operations.7.kind\",\"message\":\"Expected insert(kind:element|text|component,nodeId,parentId,tag?|componentId+revision|text/expression?,slotName?,index?). Required\"}]}"
+    - generic: "2 parser evaluations; these are not tool calls. No call identity is inferred. First observed 819879 ms; last observed 819880 ms since turn start. {\"ok\":false,\"code\":\"STUDIO_AGENT_INVALID_EDIT\",\"message\":\"Input contract validation reported invalid fields. These parser diagnostics are not assigned to a tool call. Correct the fields below; no edits applied.\",\"diagnostics\":[{\"operation\":4,\"path\":\"operations.4.kind\",\"message\":\"Expected insert(kind:element|text|component,nodeId,parentId,tag?|componentId+revision|text/expression?,slotName?,index?). Required\"},{\"operation\":6,\"path\":\"operations.6.kind\",\"message\":\"Expected insert(kind:element|text|component,nodeId,parentId,tag?|componentId+revision|text/expression?,slotName?,index?). Required\"}]}"
+    - generic: "2 parser evaluations; these are not tool calls. No call identity is inferred. First observed 941112 ms; last observed 941113 ms since turn start. {\"ok\":false,\"code\":\"STUDIO_AGENT_INVALID_EDIT\",\"message\":\"Input contract validation reported invalid fields. These parser diagnostics are not assigned to a tool call. Correct the fields below; no edits applied.\",\"diagnostics\":[{\"operation\":4,\"path\":\"operations.4\",\"message\":\"Expected insert(kind:element|text|component,nodeId,parentId,tag?|componentId+revision|text/expression?,slotName?,index?). Unrecognized key(s) in object: 'binding'\"}]}"
+    - generic: "2 parser evaluations; these are not tool calls. No call identity is inferred. First observed 1023420 ms; last observed 1023420 ms since turn start. {\"ok\":false,\"code\":\"STUDIO_AGENT_INVALID_EDIT\",\"message\":\"Input contract validation reported invalid fields. These parser diagnostics are not assigned to a tool call. Correct the fields below; no edits applied.\",\"diagnostics\":[{\"operation\":2,\"path\":\"operations.2.value\",\"message\":\"Expected style(nodeId,part?,property,value?:text|token|binding,conditionId?,pseudo?). Invalid input\"},{\"operation\":2,\"path\":\"operations.2\",\"message\":\"Expected style(nodeId,part?,property,value?:text|token|binding,conditionId?,pseudo?). Unrecognized key(s) in object: 'index'\"},{\"operation\":3,\"path\":\"operations.3.value\",\"message\":\"Expected style(nodeId,part?,property,value?:text|token|binding,conditionId?,pseudo?). Invalid input\"},{\"operation\":3,\"path\":\"operations.3\",\"message\":\"Expected style(nodeId,part?,property,value?:text|token|binding,conditionId?,pseudo?). Unrecognized key(s) in object: 'index'\"},{\"operation\":4,\"path\":\"operations.4.value\",\"message\":\"Expected style(nodeId,part?,property,value?:text|token|binding,conditionId?,pseudo?). Invalid input\"},{\"operation\":4,\"path\":\"operations.4\",\"message\":\"Expected style(nodeId,part?,property,value?:text|token|binding,conditionId?,pseudo?). Unrecognized key(s) in object: 'index'\"}]}"
+    - generic: "2 parser evaluations; these are not tool calls. No call identity is inferred. First observed 1035189 ms; last observed 1035189 ms since turn start. {\"ok\":false,\"code\":\"STUDIO_AGENT_INVALID_EDIT\",\"message\":\"Input contract validation reported invalid fields. These parser diagnostics are not assigned to a tool call. Correct the fields below; no edits applied.\",\"diagnostics\":[{\"operation\":2,\"path\":\"operations.2.value\",\"message\":\"Expected style(nodeId,part?,property,value?:text|token|binding,conditionId?,pseudo?). Invalid input\"},{\"operation\":3,\"path\":\"operations.3.value\",\"message\":\"Expected style(nodeId,part?,property,value?:text|token|binding,conditionId?,pseudo?). Invalid input\"},{\"operation\":4,\"path\":\"operations.4.value\",\"message\":\"Expected style(nodeId,part?,property,value?:text|token|binding,conditionId?,pseudo?). Invalid input\"}]}"
+    - heading "Tool receipts" [level=4]
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 65745 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 65781 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-a775512c-f14a-4c5b-ab16-d054d5f92d7c\",\"revision\":\"r1#0\",\"digest\":\"0769fa337a790c4a12d335d5e49636ffdc35269d25ab5648de53c6351c3ebc42\",\"epoch\":\"171222dd-969e-4caa-8c0b-1dd8cd75fb13\"},\"section\":\"catalog\",\"registryDigest\":\"f0bcb9c0e6cfa7a627d1bfd809d68913ae9f9ed07a9ea625ce2cee5a68461273\",\"items\":[{\"id\":\"vict.ai.chain-of-thought\",\"revision\":\"1\",\"label\":\"Chain Of Thought\",\"family\":\"ai\",\"category\":\"public-activity\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"7531587a63782d3990dddec44a0b4299dd2b50b35d875a5a796cd3a69ffbe1f0\",\"packageName\":\"@victframework/ui-ai-svelte\"},{\"id\":\"vict.ai.checkpoint\",\"revision\":\"1\",\"label\":\"Checkpoint\",\"family\":\"ai\",\"category\":\"actions\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"21d0afb18d53dd2b14d0db3df1c44c1b9deb485f237120cd3af334081fc89d0e\",\"packageName\":\"@victframework/ui-ai-svelte\"},{\"id\":\"vict.ai.confirmation\",\"revision\":\"1\",\"label\":\"Confirmation\",\"family\":\"ai\",\"category\":\"actions\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"0b7c69d44c8eb7f1f7e25dc2a33ffb1a6c566d8918df13f91282c2479c1d5f26\",\"packageName\":\"@victframework/ui-ai-svelte\"},{\"id\":\"vict.ai.context\",\"revision\":\"1\",\"label\":\"Context\",\"family\":\"ai\",\"category\":\"public-activity\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"3ec3ed3c9d5faa363eb64cf9f18a64d0e08dd2bcde83f63ba6224644d82bac9e\",\"packageName\":\"@victframework/ui-ai-svelte\"},{\"id\":\"vict.ai.conversation\",\"revision\":\"1\",\"label\":\"Conversation\",\"family\":\"ai\",\"category\":\"chat\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"55962dbc6fc4384501cb7cc00410ecb71c5b747c8aa1c9c967f64facb3a1ca7f\",\"packageName\":\"@victframework/ui-ai-svelte\"},{\"id\":\"vict.ai.conversation\",\"revision\":\"2\",\"label\":\"Conversation\",\"family\":\"ai\",\"category\":\"chat\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"feaf498a98bb3787996dc82f8f05f75ae8fc711117634d6019d7c5dc4cdf9a77\",\"packageName\":\"@victframework/ui-ai-svelte\"},{\"id\":\"vict.ai.file-tree\",\"revision\":\"1\",\"label\":\"File Tree\",\"family\":\"ai\",\"category\":\"public-activity\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"c8e0c80679d4e79fde80f2de94c7e0ddc22c441adb77b37883080563e7534e2a\",\"packageName\":\"@victframework/ui-ai-svelte\"},{\"id\":\"vict.ai.inline-citation\",\"revision\":\"1\",\"label\":\"Inline Citation\",\"family\":\"ai\",\"category\":\"public-activity\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"f62205c9dd51542920f3dd76bc878b2559579e4789ae68538e6f106c2552aca5\",\"packageName\":\"@victframework/ui-ai-svelte\"},{\"id\":\"vict.ai.markdown\",\"revision\":\"1\",\"label\":\"Markdown\",\"family\":\"ai\",\"category\":\"public-activity\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"dc78b7db66a5f700c22b237498cf9ef6a289932a395b3828755d965cc64d6f57\",\"packageName\":\"@victframework/ui-ai-svelte\"},{\"id\":\"vict.ai.message\",\"revision\":\"1\",\"label\":\"Chat message\",\"family\":\"ai\",\"category\":\"chat\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"679df9e50d9eafd86d92172e72ecb00bc53bdbb4eb6cde3272139235c328913c\",\"packageName\":\"@victframework/ui-ai-svelte\"},{\"id\":\"vict.ai.message\",\"revision\":\"2\",\"label\":\"Chat message\",\"family\":\"ai\",\"category\":\"chat\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"597def3e3394ce1761641c8effb51447b36b419afa3d0568d6b635753de5c03d\",\"packageName\":\"@victframework/ui-ai-svelte\"},{\"id\":\"vict.ai.message\",\"revision\":\"3\",\"label\":\"Chat message with actions\",\"family\":\"ai\",\"category\":\"chat\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"714b55d8e3cb94bab997dc06397e0c88b8ccfdb2885e26cd669aef20aba8e774\",\"packageName\":\"@victframework/ui-ai-svelte\"},{\"id\":\"vict.ai.model-selector\",\"revision\":\"1\",\"label\":\"Model selector\",\"family\":\"ai\",\"category\":\"actions\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"b294fe758257e89d1d0cdbb92ba8589f2d21f9a66f37b3c877943fefb175b4d1\",\"packageName\":\"@victframework/ui-ai-svelte\"},{\"id\":\"vict.ai.plan\",\"revision\":\"1\",\"label\":\"Plan\",\"family\":\"ai\",\"category\":\"public-activity\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"43cc8298d0148d1ea5bf56aefb2a2 [Details truncated for the bounded trace. Read current source for complete facts.]"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 65746 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 65787 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-a775512c-f14a-4c5b-ab16-d054d5f92d7c\",\"revision\":\"r1#0\",\"digest\":\"0769fa337a790c4a12d335d5e49636ffdc35269d25ab5648de53c6351c3ebc42\",\"epoch\":\"171222dd-969e-4caa-8c0b-1dd8cd75fb13\"},\"section\":\"palette\",\"items\":[{\"id\":\"tabs\",\"label\":\"Tabs\",\"description\":\"Tabs · editable properties, declared slots and outputs\",\"preparation\":{\"rootKind\":\"component\",\"seedClasses\":[],\"seedStyles\":[],\"styledNodeCount\":0,\"initialStateKeys\":[\"catalog_example_root_value\"],\"definitionIds\":[\"vict.catalog.tabs\",\"vict.catalog.tabs-trigger\",\"vict.catalog.tabs-panel\"],\"hostRequirements\":[],\"patternHostRequirements\":[],\"guidance\":\"Seed local styles remain in the authored source and override shared style sources. Review padding, minimum size, background and color before adding; replace/remove explicitly or use generic insert for an unstyled native element. Read component/recipe for full source.\"}},{\"id\":\"tabs-trigger\",\"label\":\"Tabs Trigger\",\"description\":\"Tabs Trigger · part for its compatible provider slot\",\"placements\":[{\"definitionId\":\"vict.catalog.tabs\",\"slotName\":\"tabs\"}],\"preparation\":{\"rootKind\":\"component\",\"seedClasses\":[],\"seedStyles\":[],\"styledNodeCount\":0,\"initialStateKeys\":[],\"definitionIds\":[\"vict.catalog.tabs-trigger\"],\"hostRequirements\":[],\"patternHostRequirements\":[],\"guidance\":\"Seed local styles remain in the authored source and override shared style sources. Review padding, minimum size, background and color before adding; replace/remove explicitly or use generic insert for an unstyled native element. Read component/recipe for full source.\"}},{\"id\":\"tabs-panel\",\"label\":\"Tabs Panel\",\"description\":\"Tabs Panel · part for its compatible provider slot\",\"placements\":[{\"definitionId\":\"vict.catalog.tabs\",\"slotName\":\"panels\"}],\"preparation\":{\"rootKind\":\"component\",\"seedClasses\":[],\"seedStyles\":[],\"styledNodeCount\":0,\"initialStateKeys\":[],\"definitionIds\":[\"vict.catalog.tabs-panel\"],\"hostRequirements\":[],\"patternHostRequirements\":[],\"guidance\":\"Seed local styles remain in the authored source and override shared style sources. Review padding, minimum size, background and color before adding; replace/remove explicitly or use generic insert for an unstyled native element. Read component/recipe for full source.\"}}],\"total\":3,\"offset\":0,\"nextOffset\":null}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 122118 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 122124 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-a775512c-f14a-4c5b-ab16-d054d5f92d7c\",\"revision\":\"r1#0\",\"digest\":\"0769fa337a790c4a12d335d5e49636ffdc35269d25ab5648de53c6351c3ebc42\",\"epoch\":\"171222dd-969e-4caa-8c0b-1dd8cd75fb13\"},\"section\":\"catalog\",\"registryDigest\":\"f0bcb9c0e6cfa7a627d1bfd809d68913ae9f9ed07a9ea625ce2cee5a68461273\",\"items\":[{\"id\":\"vict.ai.stack-trace\",\"revision\":\"1\",\"label\":\"Stack Trace\",\"family\":\"ai\",\"category\":\"public-activity\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"12b6189ea8985efd8c25ede48848382f23de538d8358fcd4f9da462d4b12686a\",\"packageName\":\"@victframework/ui-ai-svelte\"},{\"id\":\"vict.ai.subagent\",\"revision\":\"1\",\"label\":\"Subagent\",\"family\":\"ai\",\"category\":\"public-activity\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"f93a130c590fc59e335f9ec9a15cb021dceb7cc9da1b5c63a256ae1beb92ae5d\",\"packageName\":\"@victframework/ui-ai-svelte\"},{\"id\":\"vict.ai.suggestion\",\"revision\":\"1\",\"label\":\"Suggestion\",\"family\":\"ai\",\"category\":\"actions\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"451d0d92cc73c611e0cbf88ca3a8ce812e36abdb4b9a7bc9140ea953ae5591e2\",\"packageName\":\"@victframework/ui-ai-svelte\"},{\"id\":\"vict.ai.task\",\"revision\":\"1\",\"label\":\"Task\",\"family\":\"ai\",\"category\":\"public-activity\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"607ed9464945b7c2c6221bd549e88cbdc45a7b5a042c6991e81f67a9f5dd92b1\",\"packageName\":\"@victframework/ui-ai-svelte\"},{\"id\":\"vict.ai.terminal\",\"revision\":\"1\",\"label\":\"Terminal\",\"family\":\"ai\",\"category\":\"public-activity\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"ba297333e3b1d8c73ee5e2705bab7d037d4de908fbf2dd89f04c409ee9166d22\",\"packageName\":\"@victframework/ui-ai-svelte\"},{\"id\":\"vict.ai.test-results\",\"revision\":\"1\",\"label\":\"Test Results\",\"family\":\"ai\",\"category\":\"public-activity\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"cb9634f0d2a6d9d38d218434be78ef4dba2344d41a982896897cc9622f7dd298\",\"packageName\":\"@victframework/ui-ai-svelte\"},{\"id\":\"vict.ai.tool\",\"revision\":\"1\",\"label\":\"Tool\",\"family\":\"ai\",\"category\":\"public-activity\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"d002a76b312e99c6a4f9e743fdd8972ceb29e2d5300aec0ec67136921e27807e\",\"packageName\":\"@victframework/ui-ai-svelte\"},{\"id\":\"vict.ai.transcript\",\"revision\":\"1\",\"label\":\"Chat transcript\",\"family\":\"ai\",\"category\":\"chat\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"ae542f7fa33a8a0c8d139a7a13d221e1f7c947664f053da8571311a8e9d90ac1\",\"packageName\":\"@victframework/ui-ai-svelte\"}],\"total\":28,\"offset\":20,\"nextOffset\":null}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 122118 ms since turn start
+      - text: Read query refused safely · failed
+      - generic: "validation-refused studio_screen_read 122131 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-a775512c-f14a-4c5b-ab16-d054d5f92d7c\",\"revision\":\"r1#0\",\"digest\":\"0769fa337a790c4a12d335d5e49636ffdc35269d25ab5648de53c6351c3ebc42\",\"epoch\":\"171222dd-969e-4caa-8c0b-1dd8cd75fb13\"},\"section\":\"contracts\",\"ok\":false,\"complete\":false,\"registryDigest\":\"f0bcb9c0e6cfa7a627d1bfd809d68913ae9f9ed07a9ea625ce2cee5a68461273\",\"items\":[{\"id\":\"vict.ai.chain-of-thought\",\"revision\":\"1\",\"digest\":\"7531587a63782d3990dddec44a0b4299dd2b50b35d875a5a796cd3a69ffbe1f0\",\"bodyIdentity\":\"studio-contract-body@2:examples:7531587a63782d3990dddec44a0b4299dd2b50b35d875a5a796cd3a69ffbe1f0\",\"contractJson\":\"{\\\"descriptor\\\":{\\\"id\\\":\\\"vict.ai.chain-of-thought\\\",\\\"revision\\\":\\\"1\\\",\\\"abi\\\":\\\"vict.ui-component-abi@1\\\",\\\"events\\\":[\\\"vict.ui-component-abi@1\\\"],\\\"rendererImplementationId\\\":\\\"vict.svelte.ai.authoring\\\",\\\"props\\\":[{\\\"name\\\":\\\"title\\\",\\\"type\\\":\\\"string\\\",\\\"default\\\":\\\"Public execution steps\\\"},{\\\"name\\\":\\\"description\\\",\\\"type\\\":\\\"string\\\",\\\"default\\\":\\\"\\\"},{\\\"name\\\":\\\"open\\\",\\\"type\\\":\\\"boolean\\\",\\\"default\\\":true},{\\\"name\\\":\\\"data\\\",\\\"type\\\":\\\"string\\\",\\\"default\\\":\\\"{\\\\\\\"version\\\\\\\":1,\\\\\\\"steps\\\\\\\":[]}\\\"}],\\\"slots\\\":[],\\\"outputs\\\":[],\\\"styleTargets\\\":[\\\"root\\\",\\\"content\\\",\\\"row\\\",\\\"title\\\",\\\"icon\\\",\\\"disclosure\\\",\\\"body\\\",\\\"code\\\",\\\"badge\\\",\\\"link\\\"],\\\"inspectionLimits\\\":[\\\"Presentation of supplied public data only. No provider, tool, shell, retrieval, subagent launch or execution authority.\\\",\\\"data is bounded strict version-1 JSON; unsupported keys, duplicate identities and malformed records show a visible validation error.\\\",\\\"Public summaries and explicit execution steps only; private chain-of-thought is never requested, inferred or fabricated.\\\",\\\"allowDecision, allowOpenOutput and allowSelect default false. Enable only when the corresponding typed intent output has an explicit host binding.\\\"]},\\\"label\\\":\\\"Chain Of Thought\\\",\\\"family\\\":\\\"ai\\\",\\\"category\\\":\\\"public-activity\\\",\\\"purpose\\\":\\\"Render supplied chain-of-thought using the existing public VICT AI pattern; no execution authority.\\\",\\\"eligibility\\\":{\\\"kind\\\":\\\"standalone\\\"},\\\"seed\\\":{\\\"root\\\":\\\"activity\\\",\\\"nodes\\\":[{\\\"kind\\\":\\\"component\\\",\\\"id\\\":\\\"activity\\\",\\\"definitionId\\\":\\\"vict.ai.chain-of-thought\\\",\\\"revision\\\":\\\"1\\\",\\\"props\\\":{}}]},\\\"examples\\\":[{\\\"root\\\":\\\"activity\\\",\\\"nodes\\\":[{\\\"kind\\\":\\\"component\\\",\\\"id\\\":\\\"activity\\\",\\\"definitionId\\\":\\\"vict.ai.chain-of-thought\\\",\\\"revision\\\":\\\"1\\\",\\\"props\\\":{}}]}],\\\"guidance\\\":[\\\"Presentation of supplied public data only. No provider, tool, shell, retrieval, subagent launch or execution authority.\\\",\\\"data is bounded strict version-1 JSON; unsupported keys, duplicate identities and malformed records show a visible validation error.\\\",\\\"Public summaries and explicit execution steps only; private chain-of-thought is never requested, inferred or fabricated.\\\",\\\"allowDecision, allowOpenOutput and allowSelect default false. Enable only when the corresponding typed intent output has an explicit host binding.\\\",\\\"Import @victframework/ui-ai-svelte/styles.css. Root/content are containment; row/title/icon/metadata/disclosure/body/code and specialist parts are forwarded to actual existing public pattern surfaces. Popup is the actual owned hovercard where present.\\\",\\\"Editable parts: root, content, row, title, icon, disclosure, body, code, badge, link. Repeated activity rows share declared semantic parts; they are not private upstream primitive identities.\\\",\\\"Configure data as a version-1 JSON string. Steps use {id,title,detail?,status?:pending|running|done|error,open?,code?,badges?,links?:[{title,url}]}; sources use {id,title,url,excerpt?}; file nodes use {path,name,children?}; testSuites use {id,name,tests:[{id,name,status:passed|failed|skipped,error?}]}. Context breakdown uses {label,value}.\\\",\\\"Data shape is pattern-specific: chain-of-thought/plan/task/queue => {version:1,steps:[]}; subagent also tools: [Details truncated for the bounded trace. Read current source for complete facts.]"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 163197 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 163208 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-a775512c-f14a-4c5b-ab16-d054d5f92d7c\",\"revision\":\"r1#0\",\"digest\":\"0769fa337a790c4a12d335d5e49636ffdc35269d25ab5648de53c6351c3ebc42\",\"epoch\":\"171222dd-969e-4caa-8c0b-1dd8cd75fb13\"},\"section\":\"contracts\",\"ok\":true,\"complete\":false,\"registryDigest\":\"f0bcb9c0e6cfa7a627d1bfd809d68913ae9f9ed07a9ea625ce2cee5a68461273\",\"items\":[{\"id\":\"vict.ai.chain-of-thought\",\"revision\":\"1\",\"digest\":\"7531587a63782d3990dddec44a0b4299dd2b50b35d875a5a796cd3a69ffbe1f0\",\"bodyIdentity\":\"studio-contract-body@2:examples:7531587a63782d3990dddec44a0b4299dd2b50b35d875a5a796cd3a69ffbe1f0\",\"contractJson\":\"the current tool string/body bounds; never truncate supplied records or issue independently invalid partial JSON writes.\\\"],\\\"packageName\\\":\\\"@victframework/ui-ai-svelte\\\",\\\"packageVersion\\\":\\\"0.4.0-rc.1\\\",\\\"capabilities\\\":{\\\"extensionId\\\":\\\"vict.ai.chain-of-thought\\\",\\\"revision\\\":\\\"1\\\",\\\"rendererImplementationId\\\":\\\"vict.svelte.ai.authoring\\\",\\\"abi\\\":\\\"vict.ui-component-abi@1\\\",\\\"slots\\\":[],\\\"required\\\":[],\\\"styleTargets\\\":[\\\"root\\\",\\\"content\\\",\\\"row\\\",\\\"title\\\",\\\"icon\\\",\\\"disclosure\\\",\\\"body\\\",\\\"code\\\",\\\"badge\\\",\\\"link\\\"],\\\"requiresParentContext\\\":false,\\\"compositionSlots\\\":[]},\\\"descriptorDigest\\\":\\\"8b5f59791f4eda0327b18137597b3080c5e92d7dd6202a1da0dd4fc502b75773\\\",\\\"digest\\\":\\\"7531587a63782d3990dddec44a0b4299dd2b50b35d875a5a796cd3a69ffbe1f0\\\",\\\"preparation\\\":{\\\"seedStyles\\\":[],\\\"hostRequirements\\\":[],\\\"dependencies\\\":[],\\\"seedStylePrecedence\\\":\\\"Local styles override shared style sources; explicitly replace/remove undesired seed declarations before construction.\\\"}}\",\"totalCharacters\":4507,\"offset\":3600,\"nextOffset\":null,\"bodyComplete\":false},{\"id\":\"vict.ai.context\",\"revision\":\"1\",\"digest\":\"3ec3ed3c9d5faa363eb64cf9f18a64d0e08dd2bcde83f63ba6224644d82bac9e\",\"bodyIdentity\":\"studio-contract-body@2:examples:3ec3ed3c9d5faa363eb64cf9f18a64d0e08dd2bcde83f63ba6224644d82bac9e\",\"contractJson\":\",\\\"packageName\\\":\\\"@victframework/ui-ai-svelte\\\",\\\"packageVersion\\\":\\\"0.4.0-rc.1\\\",\\\"capabilities\\\":{\\\"extensionId\\\":\\\"vict.ai.context\\\",\\\"revision\\\":\\\"1\\\",\\\"rendererImplementationId\\\":\\\"vict.svelte.ai.authoring\\\",\\\"abi\\\":\\\"vict.ui-component-abi@1\\\",\\\"slots\\\":[],\\\"required\\\":[],\\\"styleTargets\\\":[\\\"root\\\",\\\"content\\\",\\\"trigger\\\",\\\"popup\\\",\\\"title\\\",\\\"usage\\\",\\\"progress\\\",\\\"breakdown-row\\\"],\\\"requiresParentContext\\\":false,\\\"compositionSlots\\\":[]},\\\"descriptorDigest\\\":\\\"8b0ce258794c07adeb269c0b36324ce716f9dbd1f7516c30d487e9c693133568\\\",\\\"digest\\\":\\\"3ec3ed3c9d5faa363eb64cf9f18a64d0e08dd2bcde83f63ba6224644d82bac9e\\\",\\\"preparation\\\":{\\\"seedStyles\\\":[],\\\"hostRequirements\\\":[],\\\"dependencies\\\":[],\\\"seedStylePrecedence\\\":\\\"Local styles override shared style sources; explicitly replace/remove undesired seed declarations before construction.\\\"}}\",\"totalCharacters\":4374,\"offset\":3600,\"nextOffset\":null,\"bodyComplete\":false},{\"id\":\"vict.ai.file-tree\",\"revision\":\"1\",\"digest\":\"c8e0c80679d4e79fde80f2de94c7e0ddc22c441adb77b37883080563e7534e2a\",\"bodyIdentity\":\"studio-contract-body@2:examples:c8e0c80679d4e79fde80f2de94c7e0ddc22c441adb77b37883080563e7534e2a\",\"contractJson\":\"cate supplied records or issue independently invalid partial JSON writes.\\\"],\\\"packageName\\\":\\\"@victframework/ui-ai-svelte\\\",\\\"packageVersion\\\":\\\"0.4.0-rc.1\\\",\\\"capabilities\\\":{\\\"extensionId\\\":\\\"vict.ai.file-tree\\\",\\\"revision\\\":\\\"1\\\",\\\"rendererImplementationId\\\":\\\"vict.svelte.ai.authoring\\\",\\\"abi\\\":\\\"vict.ui-component-abi@1\\\",\\\"slots\\\":[],\\\"required\\\":[],\\\"styleTargets\\\":[\\\"root\\\",\\\"content\\\",\\\"folder\\\",\\\"file\\\",\\\"folder-body\\\"],\\\"requiresParentContext\\\":false,\\\"compositionSlots\\\":[]},\\\"descriptorDigest\\\":\\\"d425898b28d2dd024c75e9a02981fc98be4cc6e9a7b641dcd84b5457d396c789\\\",\\\"digest\\\":\\\"c8e0c80679d4e79fde80f2de94c7e0ddc22c441adb77b37883080563e7534e2a\\\",\\\"preparation\\\":{\\\"seedStyles\\\":[],\\\"hostRequirements\\\":[],\\\"dependencies\\\":[],\\\"seedStylePrecedence\\\":\\\"Local styles override [Details truncated for the bounded trace. Read current source for complete facts.]"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 163197 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 163214 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-a775512c-f14a-4c5b-ab16-d054d5f92d7c\",\"revision\":\"r1#0\",\"digest\":\"0769fa337a790c4a12d335d5e49636ffdc35269d25ab5648de53c6351c3ebc42\",\"epoch\":\"171222dd-969e-4caa-8c0b-1dd8cd75fb13\"},\"section\":\"contracts\",\"ok\":true,\"complete\":false,\"registryDigest\":\"f0bcb9c0e6cfa7a627d1bfd809d68913ae9f9ed07a9ea625ce2cee5a68461273\",\"items\":[{\"id\":\"vict.ai.prompt-input\",\"revision\":\"3\",\"digest\":\"afc0831189731b71e769d20aca8bdf39029080c6c3a44d7b59ef7fe98155339e\",\"bodyIdentity\":\"studio-contract-body@2:examples:afc0831189731b71e769d20aca8bdf39029080c6c3a44d7b59ef7fe98155339e\",\"contractJson\":\"{\\\"descriptor\\\":{\\\"abi\\\":\\\"vict.ui-component-abi@1\\\",\\\"events\\\":[\\\"vict.ui-component-abi@1\\\"],\\\"rendererImplementationId\\\":\\\"vict.svelte.ai.authoring\\\",\\\"slots\\\":[\\\"footer\\\"],\\\"id\\\":\\\"vict.ai.prompt-input\\\",\\\"revision\\\":\\\"3\\\",\\\"styleTargets\\\":[\\\"root\\\",\\\"surface\\\",\\\"field\\\",\\\"actions\\\",\\\"send\\\",\\\"stop\\\",\\\"attachments\\\",\\\"attachment\\\",\\\"attachment-remove\\\",\\\"attach\\\",\\\"footer\\\"],\\\"props\\\":[{\\\"name\\\":\\\"value\\\",\\\"type\\\":\\\"string\\\",\\\"default\\\":\\\"\\\"},{\\\"name\\\":\\\"busy\\\",\\\"type\\\":\\\"boolean\\\",\\\"default\\\":false},{\\\"name\\\":\\\"label\\\",\\\"type\\\":\\\"string\\\",\\\"default\\\":\\\"Message\\\"},{\\\"name\\\":\\\"placeholder\\\",\\\"type\\\":\\\"string\\\",\\\"default\\\":\\\"Write a message.\\\"},{\\\"name\\\":\\\"data\\\",\\\"type\\\":\\\"string\\\",\\\"default\\\":\\\"{\\\\\\\"version\\\\\\\":1,\\\\\\\"attachments\\\\\\\":[]}\\\"},{\\\"name\\\":\\\"sendEnabled\\\",\\\"type\\\":\\\"boolean\\\",\\\"default\\\":false},{\\\"name\\\":\\\"stopEnabled\\\",\\\"type\\\":\\\"boolean\\\",\\\"default\\\":false},{\\\"name\\\":\\\"attachEnabled\\\",\\\"type\\\":\\\"boolean\\\",\\\"default\\\":false},{\\\"name\\\":\\\"removeAttachmentEnabled\\\",\\\"type\\\":\\\"boolean\\\",\\\"default\\\":false}],\\\"outputs\\\":[{\\\"name\\\":\\\"valueChange\\\",\\\"payload\\\":\\\"string\\\",\\\"description\\\":\\\"Host-bound request only; does not grant execution, acceptance or completion authority.\\\"},{\\\"name\\\":\\\"send\\\",\\\"payload\\\":\\\"string\\\",\\\"description\\\":\\\"Host-bound request only; does not grant execution, acceptance or completion authority.\\\"},{\\\"name\\\":\\\"stop\\\",\\\"payload\\\":\\\"void\\\",\\\"description\\\":\\\"Host-bound request only; does not grant execution, acceptance or completion authority.\\\"},{\\\"name\\\":\\\"attach\\\",\\\"payload\\\":\\\"void\\\",\\\"description\\\":\\\"Host-bound request only; does not grant execution, acceptance or completion authority.\\\"},{\\\"name\\\":\\\"removeAttachment\\\",\\\"payload\\\":\\\"string\\\",\\\"description\\\":\\\"Host-bound request only; does not grant execution, acceptance or completion authority.\\\"}],\\\"inspectionLimits\\\":[\\\"data is strict bounded JSON {version:1,attachments:[{id,name}]}, maximum40 unique records,262144 characters. Metadata only; no file access/upload URLs. Bind value/valueChange; sending retains controlled text until the host confirms its action. Actions default disabled; attach requests a separately authorized host chooser. Footer is canonical authored composition.\\\"]},\\\"label\\\":\\\"Prompt input with attachments\\\",\\\"family\\\":\\\"ai\\\",\\\"category\\\":\\\"chat\\\",\\\"purpose\\\":\\\"Compose text and supplied attachment metadata with typed host requests.\\\",\\\"eligibility\\\":{\\\"kind\\\":\\\"standalone\\\"},\\\"dependencies\\\":[],\\\"rules\\\":[{\\\"kind\\\":\\\"controlledPair\\\",\\\"prop\\\":\\\"value\\\",\\\"output\\\":\\\"valueChange\\\"}],\\\"seed\\\":{\\\"root\\\":\\\"composer\\\",\\\"nodes\\\":[{\\\"kind\\\":\\\"component\\\",\\\"id\\\":\\\"composer\\\",\\\"definitionId\\\":\\\"vict.ai.prompt-input\\\",\\\"revision\\\":\\\"3\\\",\\\"props\\\":{\\\"value\\\":{\\\"type\\\":\\\"ref\\\",\\\"path\\\":\\\"state.message\\\"}},\\\"outputs\\\":{\\\"valueChange\\\":{\\\"setState\\\":{\\\"key\\\":\\\"message\\\"}}}}],\\\"localState\\\":{\\\"message\\\":{\\\"key\\\":\\\"message\\\",\\\"type\\\":\\\"string\\\",\\\"initial\\\":\\\"\\\"}}},\\\"examples\\\":[{\\\"root\\\":\\\"composer\\\",\\\"nodes\\\":[{\\\"kind\\\":\\\"component\\\",\\\"id\\\":\\\"composer\\\",\\\"definitionId\\\":\\\"vict.ai.prompt-input\\\",\\\"revision\\\":\\\"3\\\",\\\"props\\\":{\\\"value\\\":{\\\"type\\\":\\\"ref\\\",\\\"path\\\":\\\"state.message\\\"}},\\\"outputs\\\":{\\\"valueChange\\\":{\\\"setState\\\":{\\\"key\\\":\\\"message\\\"}}}}],\\\"localState\\\":{\\\"message\\\":{\\\"key\\\":\\\"message\\\",\\\"type\\\":\\\"string\\\",\\\"initia [Details truncated for the bounded trace. Read current source for complete facts.]"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 163198 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 163218 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-a775512c-f14a-4c5b-ab16-d054d5f92d7c\",\"revision\":\"r1#0\",\"digest\":\"0769fa337a790c4a12d335d5e49636ffdc35269d25ab5648de53c6351c3ebc42\",\"epoch\":\"171222dd-969e-4caa-8c0b-1dd8cd75fb13\"},\"section\":\"component\",\"id\":\"vict.catalog.tabs\",\"revision\":\"1\",\"digest\":\"d2d6bbaf19200a37d24e10ce3010946e5ca5ee055278b1df4442a539a041428a\",\"descriptorJson\":\"{\\\"revision\\\":\\\"1\\\",\\\"abi\\\":\\\"vict.ui-component-abi@1\\\",\\\"events\\\":[\\\"vict.ui-component-abi@1\\\"],\\\"rendererImplementationId\\\":\\\"vict.svelte.catalog\\\",\\\"id\\\":\\\"vict.catalog.tabs\\\",\\\"props\\\":[{\\\"name\\\":\\\"value\\\",\\\"type\\\":\\\"string\\\",\\\"default\\\":\\\"\\\"},{\\\"name\\\":\\\"label\\\",\\\"type\\\":\\\"string\\\",\\\"default\\\":\\\"Sections\\\"},{\\\"name\\\":\\\"orientation\\\",\\\"type\\\":\\\"string\\\",\\\"default\\\":\\\"horizontal\\\"},{\\\"name\\\":\\\"activationMode\\\",\\\"type\\\":\\\"string\\\",\\\"default\\\":\\\"automatic\\\"},{\\\"name\\\":\\\"loop\\\",\\\"type\\\":\\\"boolean\\\",\\\"default\\\":false},{\\\"name\\\":\\\"disabled\\\",\\\"type\\\":\\\"boolean\\\",\\\"default\\\":false}],\\\"outputs\\\":[{\\\"name\\\":\\\"valueChange\\\",\\\"payload\\\":\\\"string\\\"}],\\\"slots\\\":[\\\"tabs\\\",\\\"panels\\\"],\\\"styleTargets\\\":[\\\"root\\\",\\\"list\\\"]}\",\"totalCharacters\":608,\"offset\":0,\"nextOffset\":null,\"knowledge\":\"Read contracts with this exact id/revision for composition, dependencies, eligibility and semantic rules.\"}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 163199 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 163220 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-a775512c-f14a-4c5b-ab16-d054d5f92d7c\",\"revision\":\"r1#0\",\"digest\":\"0769fa337a790c4a12d335d5e49636ffdc35269d25ab5648de53c6351c3ebc42\",\"epoch\":\"171222dd-969e-4caa-8c0b-1dd8cd75fb13\"},\"section\":\"component\",\"id\":\"vict.catalog.tabs-trigger\",\"revision\":\"1\",\"digest\":\"8a5e193e3c9096c81715f4586fba8a0a2d59db57869d38a1c40c5e9292a6daa2\",\"descriptorJson\":\"{\\\"revision\\\":\\\"1\\\",\\\"abi\\\":\\\"vict.ui-component-abi@1\\\",\\\"events\\\":[\\\"vict.ui-component-abi@1\\\"],\\\"rendererImplementationId\\\":\\\"vict.svelte.catalog\\\",\\\"id\\\":\\\"vict.catalog.tabs-trigger\\\",\\\"props\\\":[{\\\"name\\\":\\\"value\\\",\\\"type\\\":\\\"string\\\",\\\"default\\\":\\\"\\\"},{\\\"name\\\":\\\"label\\\",\\\"type\\\":\\\"string\\\",\\\"default\\\":\\\"\\\"},{\\\"name\\\":\\\"disabled\\\",\\\"type\\\":\\\"boolean\\\",\\\"default\\\":false}],\\\"outputs\\\":[],\\\"slots\\\":[\\\"content\\\"],\\\"styleTargets\\\":[\\\"root\\\"]}\",\"totalCharacters\":379,\"offset\":0,\"nextOffset\":null,\"knowledge\":\"Read contracts with this exact id/revision for composition, dependencies, eligibility and semantic rules.\"}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 163199 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 163222 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-a775512c-f14a-4c5b-ab16-d054d5f92d7c\",\"revision\":\"r1#0\",\"digest\":\"0769fa337a790c4a12d335d5e49636ffdc35269d25ab5648de53c6351c3ebc42\",\"epoch\":\"171222dd-969e-4caa-8c0b-1dd8cd75fb13\"},\"section\":\"component\",\"id\":\"vict.catalog.tabs-panel\",\"revision\":\"1\",\"digest\":\"8c5b6a62ae0edeba7b10d4c905a8fe1b3b3744439c719e7d14656e8c0ead733e\",\"descriptorJson\":\"{\\\"revision\\\":\\\"1\\\",\\\"abi\\\":\\\"vict.ui-component-abi@1\\\",\\\"events\\\":[\\\"vict.ui-component-abi@1\\\"],\\\"rendererImplementationId\\\":\\\"vict.svelte.catalog\\\",\\\"id\\\":\\\"vict.catalog.tabs-panel\\\",\\\"props\\\":[{\\\"name\\\":\\\"value\\\",\\\"type\\\":\\\"string\\\",\\\"default\\\":\\\"\\\"}],\\\"outputs\\\":[],\\\"slots\\\":[\\\"content\\\"],\\\"styleTargets\\\":[\\\"root\\\"]}\",\"totalCharacters\":278,\"offset\":0,\"nextOffset\":null,\"knowledge\":\"Read contracts with this exact id/revision for composition, dependencies, eligibility and semantic rules.\"}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 369261 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 369274 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-a775512c-f14a-4c5b-ab16-d054d5f92d7c\",\"revision\":\"r1#0\",\"digest\":\"0769fa337a790c4a12d335d5e49636ffdc35269d25ab5648de53c6351c3ebc42\",\"epoch\":\"171222dd-969e-4caa-8c0b-1dd8cd75fb13\"},\"section\":\"contracts\",\"ok\":true,\"complete\":false,\"registryDigest\":\"f0bcb9c0e6cfa7a627d1bfd809d68913ae9f9ed07a9ea625ce2cee5a68461273\",\"items\":[{\"id\":\"vict.ai.transcript\",\"revision\":\"1\",\"digest\":\"ae542f7fa33a8a0c8d139a7a13d221e1f7c947664f053da8571311a8e9d90ac1\",\"bodyIdentity\":\"studio-contract-body@2:examples:ae542f7fa33a8a0c8d139a7a13d221e1f7c947664f053da8571311a8e9d90ac1\",\"contractJson\":\"\\\\\\\",\\\\\\\"state\\\\\\\":\\\\\\\"completed\\\\\\\",\\\\\\\"result\\\\\\\":{\\\\\\\"text\\\\\\\":\\\\\\\"Supplied public receipt\\\\\\\"}}},{\\\\\\\"id\\\\\\\":\\\\\\\"answer\\\\\\\",\\\\\\\"kind\\\\\\\":\\\\\\\"text\\\\\\\",\\\\\\\"text\\\\\\\":\\\\\\\"A supplied public transcript.\\\\\\\"}]}]}\\\"}},\\\"slots\\\":{\\\"composer\\\":{\\\"name\\\":\\\"composer\\\",\\\"children\\\":[\\\"composer\\\"]}}},{\\\"kind\\\":\\\"component\\\",\\\"id\\\":\\\"composer\\\",\\\"definitionId\\\":\\\"vict.ai.prompt-input\\\",\\\"revision\\\":\\\"3\\\",\\\"props\\\":{\\\"value\\\":{\\\"type\\\":\\\"ref\\\",\\\"path\\\":\\\"state.message\\\"}},\\\"outputs\\\":{\\\"valueChange\\\":{\\\"setState\\\":{\\\"key\\\":\\\"message\\\"}}}}],\\\"localState\\\":{\\\"message\\\":{\\\"key\\\":\\\"message\\\",\\\"type\\\":\\\"string\\\",\\\"initial\\\":\\\"\\\"}}}],\\\"guidance\\\":[\\\"Use existing VICT theme/ControlScope and @victframework/ui-ai-svelte/styles.css. Every action flag defaults false; enable only with a corresponding authorized output binding.\\\",\\\"Read-only host-supplied transcript through the public Conversation renderer. data is strict JSON {version:1,messages:[{id,role,text,author?,activity?,events?}]}, maximum120 messages,80 activities/message,240 events/message and262144 characters. Activities/stages are public execution receipts; summaries are provider-supported public summaries, never private chain of thought. Events support text,summary,activity,compaction; no generated trace. Composer slot accepts a separately controlled PromptInput; absent slot has disabled send, never fake transport success. Stop/reset are requests only. System-role rendering follows existing public Conversation behavior.\\\",\\\"Invalid structured data fails closed with a visible diagnostic. Unknown fields, duplicate IDs, oversized text and unsupported versions are rejected. Data never grants provider or execution access.\\\",\\\"The adapter data-schema limit and the host authoring-tool delivery limit are separate. Respect the current tool string/body bounds; never truncate supplied records or issue independently invalid partial JSON writes.\\\"],\\\"packageName\\\":\\\"@victframework/ui-ai-svelte\\\",\\\"packageVersion\\\":\\\"0.4.0-rc.1\\\",\\\"capabilities\\\":{\\\"extensionId\\\":\\\"vict.ai.transcript\\\",\\\"revision\\\":\\\"1\\\",\\\"rendererImplementationId\\\":\\\"vict.svelte.ai.authoring\\\",\\\"abi\\\":\\\"vict.ui-component-abi@1\\\",\\\"slots\\\":[\\\"composer\\\",\\\"footer\\\"],\\\"required\\\":[],\\\"styleTargets\\\":[\\\"root\\\",\\\"surface\\\",\\\"header\\\",\\\"heading\\\",\\\"description\\\",\\\"reset\\\",\\\"reset-tooltip\\\",\\\"messages\\\",\\\"message\\\",\\\"message-content\\\",\\\"message-text\\\",\\\"timeline\\\",\\\"activity\\\",\\\"event-summary\\\",\\\"copy\\\",\\\"copy-tooltip\\\",\\\"composer\\\",\\\"composer-surface\\\",\\\"composer-field\\\",\\\"composer-actions\\\",\\\"send\\\",\\\"stop\\\",\\\"footer\\\",\\\"status\\\"],\\\"requiresParentContext\\\":false,\\\"compositionSlots\\\":[]},\\\"descriptorDigest\\\":\\\"ce980503e72b69273f053a9b6892604345039e779f269ef8660d3e6e87fe75be\\\",\\\"digest\\\":\\\"ae542f7fa33a8a0c8d139a7a13d221e1f7c947664f053da8571311a8e9d90ac1\\\",\\\"preparation\\\":{\\\"seedStyles\\\":[],\\\"hostRequirements\\\":[],\\\"dependencies\\\":[{\\\"id\\\":\\\"vict.ai.prompt-input\\\",\\\"revision\\\":\\\"3\\\"}],\\\"seedStylePrecedence\\\":\\\"Local styles override shared style sources; explicitly replace/remove undesired seed declarations before construction.\\\"}}\",\"totalCharacters\":6432,\"offset\":3600,\"nextOffset\":null,\"bodyComplete\":false},{\"id\":\"vict.ai.terminal\",\"revision\":\"1\",\"digest\":\"ba297333e3b1d8c73ee5e2705bab7d037d4de908fbf2dd89f04c409ee9166d22\",\"bodyI [Details truncated for the bounded trace. Read current source for complete facts.]"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 369262 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 369277 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-a775512c-f14a-4c5b-ab16-d054d5f92d7c\",\"revision\":\"r1#0\",\"digest\":\"0769fa337a790c4a12d335d5e49636ffdc35269d25ab5648de53c6351c3ebc42\",\"epoch\":\"171222dd-969e-4caa-8c0b-1dd8cd75fb13\"},\"section\":\"elements\",\"items\":[{\"tag\":\"div\",\"leaf\":false},{\"tag\":\"section\",\"leaf\":false},{\"tag\":\"header\",\"leaf\":false},{\"tag\":\"footer\",\"leaf\":false},{\"tag\":\"main\",\"leaf\":false},{\"tag\":\"nav\",\"leaf\":false},{\"tag\":\"article\",\"leaf\":false},{\"tag\":\"aside\",\"leaf\":false},{\"tag\":\"h1\",\"leaf\":false},{\"tag\":\"h2\",\"leaf\":false},{\"tag\":\"h3\",\"leaf\":false},{\"tag\":\"h4\",\"leaf\":false},{\"tag\":\"h5\",\"leaf\":false},{\"tag\":\"h6\",\"leaf\":false},{\"tag\":\"p\",\"leaf\":false},{\"tag\":\"span\",\"leaf\":false},{\"tag\":\"strong\",\"leaf\":false},{\"tag\":\"em\",\"leaf\":false},{\"tag\":\"small\",\"leaf\":false},{\"tag\":\"kbd\",\"leaf\":false}],\"total\":41,\"offset\":0,\"nextOffset\":20,\"guidance\":\"Read elements with tag for its attributes; native tags are not component descriptors.\"}"
+    - paragraph: Edit screen
+    - list:
+      - text: Edit screen started · running
+      - generic: tool-start studio_screen_edit 409250 ms since turn start
+      - text: Proposed validated transaction; awaiting browser commit · pending
+      - generic: "proposed studio_screen_edit 409295 ms since turn start {\"proposalId\":\"94515de9-b74f-4034-8c72-1df4e1ed8066\",\"reason\":\"Declare controlled local state and semantic theme roles for the demo review desk\",\"revision\":\"r1#0\"}"
+      - text: Browser committed edit · pending
+      - generic: Declare controlled local state and semantic theme roles for the demo review desk Committed to the screen. Undo is available.
+      - text: Commit receipt acknowledged · completed
+      - generic: Declare controlled local state and semantic theme roles for the demo review desk
+      - text: Browser acknowledged committed transaction · completed
+      - generic: "committed studio_screen_edit 409339 ms since turn start {\"proposalId\":\"94515de9-b74f-4034-8c72-1df4e1ed8066\",\"ok\":true,\"revision\":\"r1#1\",\"digest\":\"1fd6b2035025e9ed43134d81f0c3e11a6946d7a0ed90c72632b7fae7fb28de96\",\"applied\":1,\"coverage\":{\"available\":117,\"authored\":0,\"catalogAuthored\":0,\"registeredAuthored\":0,\"reachableSourceNodes\":1,\"requested\":117,\"scope\":\"all-authorable-definitions\",\"missing\":[\"vict.catalog.button\",\"vict.catalog.checkbox\",\"vict.catalog.select\",\"vict.catalog.dialog\",\"vict.catalog.switch\",\"vict.catalog.toggle\",\"vict.catalog.select-multiple\",\"vict.catalog.select-item\",\"vict.catalog.combobox\",\"vict.catalog.combobox-multiple\",\"vict.catalog.combobox-item\",\"vict.catalog.toggle-group\",\"vict.catalog.toggle-group-multiple\",\"vict.catalog.toggle-group-item\",\"vict.catalog.accordion\",\"vict.catalog.accordion-multiple\",\"vict.catalog.accordion-item\",\"vict.catalog.slider\",\"vict.catalog.meter\",\"vict.catalog.progress\"],\"evidence\":\"Reachable declared source presence only, including inactive branches/templates. An agent-declared manifest is not proof of the user intent, observed appearance, exercised interaction or completion.\",\"missingCount\":117,\"moreMissing\":true}}"
+    - paragraph: Edit screen
+    - list:
+      - text: Edit screen started · running
+      - generic: tool-start studio_screen_edit 423571 ms since turn start
+      - text: Proposed validated transaction; awaiting browser commit · pending
+      - generic: "proposed studio_screen_edit 423600 ms since turn start {\"proposalId\":\"43ed8cd9-ec4e-4e7b-84b4-9173a10d8af5\",\"reason\":\"Finish semantic theme roles and add the desk heading plus demo disclaimer\",\"revision\":\"r1#1\"}"
+      - text: Browser committed edit · pending
+      - generic: Finish semantic theme roles and add the desk heading plus demo disclaimer Committed to the screen. Undo is available.
+      - text: Commit receipt acknowledged · completed
+      - generic: Finish semantic theme roles and add the desk heading plus demo disclaimer
+      - text: Browser acknowledged committed transaction · completed
+      - generic: "committed studio_screen_edit 423619 ms since turn start {\"proposalId\":\"43ed8cd9-ec4e-4e7b-84b4-9173a10d8af5\",\"ok\":true,\"revision\":\"r1#2\",\"digest\":\"77bb40e0e940dfeabe95485ac4edf2447e5c73abc578e239959ccd03f86859dd\",\"applied\":2,\"coverage\":{\"available\":117,\"authored\":0,\"catalogAuthored\":0,\"registeredAuthored\":0,\"reachableSourceNodes\":5,\"requested\":117,\"scope\":\"all-authorable-definitions\",\"missing\":[\"vict.catalog.button\",\"vict.catalog.checkbox\",\"vict.catalog.select\",\"vict.catalog.dialog\",\"vict.catalog.switch\",\"vict.catalog.toggle\",\"vict.catalog.select-multiple\",\"vict.catalog.select-item\",\"vict.catalog.combobox\",\"vict.catalog.combobox-multiple\",\"vict.catalog.combobox-item\",\"vict.catalog.toggle-group\",\"vict.catalog.toggle-group-multiple\",\"vict.catalog.toggle-group-item\",\"vict.catalog.accordion\",\"vict.catalog.accordion-multiple\",\"vict.catalog.accordion-item\",\"vict.catalog.slider\",\"vict.catalog.meter\",\"vict.catalog.progress\"],\"evidence\":\"Reachable declared source presence only, including inactive branches/templates. An agent-declared manifest is not proof of the user intent, observed appearance, exercised interaction or completion.\",\"missingCount\":117,\"moreMissing\":true}}"
+    - paragraph: Edit screen
+    - list:
+      - text: Edit screen started · running
+      - generic: tool-start studio_screen_edit 437764 ms since turn start
+      - text: Tool failed (VICT_TOOL_FAILED); prior commits remain · failed
+      - generic: "tool-failed studio_screen_edit 437773 ms since turn start {\"code\":\"VICT_TOOL_FAILED\"}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 466051 ms since turn start
+      - text: Read query refused safely · failed
+      - generic: "validation-refused studio_screen_read 466059 ms since turn start {\"expectedRevision\":\"r1#2\",\"cursor\":{\"documentId\":\"screen-a775512c-f14a-4c5b-ab16-d054d5f92d7c\",\"revision\":\"r1#2\",\"digest\":\"77bb40e0e940dfeabe95485ac4edf2447e5c73abc578e239959ccd03f86859dd\",\"epoch\":\"171222dd-969e-4caa-8c0b-1dd8cd75fb13\"},\"section\":\"preflight\",\"ok\":false,\"code\":\"STUDIO_AGENT_INVALID_EDIT\",\"message\":\"Use the exact operation fields. No edits applied.\",\"diagnostics\":[{\"operation\":2,\"path\":\"operations.2\",\"message\":\"Expected add(recipe,nodeId,parentId,slotName?,index?,text?,headingLevel?,attributes?,props?,styles?). Unrecognized key(s) in object: 'label'\"},{\"operation\":3,\"path\":\"operations.3\",\"message\":\"Expected add(recipe,nodeId,parentId,slotName?,index?,text?,headingLevel?,attributes?,props?,styles?). Unrecognized key(s) in object: 'label'\"},{\"operation\":4,\"path\":\"operations.4\",\"message\":\"Expected add(recipe,nodeId,parentId,slotName?,index?,text?,headingLevel?,attributes?,props?,styles?). Unrecognized key(s) in object: 'label'\"}],\"applied\":false}"
+    - paragraph: Edit screen
+    - list:
+      - text: Edit screen started · running
+      - generic: tool-start studio_screen_edit 476986 ms since turn start
+      - text: Edit refused before browser proposal · failed
+      - generic: "validation-refused studio_screen_edit 477033 ms since turn start {\"ok\":false,\"code\":\"STUDIO_AGENT_VALIDATION\",\"message\":\"Edit rejected: UI_COMPONENT_BINDING_INCOMPATIBLE: 'value' and 'valueChange' address different state keys.\",\"diagnostics\":[{\"documentId\":\"screen-a775512c-f14a-4c5b-ab16-d054d5f92d7c\",\"nodeId\":\"tabs-desk\",\"prop\":\"value\",\"output\":\"valueChange\",\"expected\":\"activeTab\",\"actual\":\"catalog_tabs-desk_root_value\",\"hostCode\":\"UI_AUTHORING_CONTROLLED_PAIR\",\"sourcePath\":\"nodes.tabs-desk\",\"code\":\"UI_COMPONENT_BINDING_INCOMPATIBLE\",\"path\":\"screen/tabs-desk\",\"message\":\"'value' and 'valueChange' address different state keys.\",\"operation\":0}]}"
+    - paragraph: Edit screen
+    - list:
+      - text: Edit screen started · running
+      - generic: tool-start studio_screen_edit 493211 ms since turn start
+      - text: Edit refused before browser proposal · failed
+      - generic: "validation-refused studio_screen_edit 493244 ms since turn start {\"ok\":false,\"code\":\"STUDIO_AGENT_VALIDATION\",\"message\":\"Edit rejected: UI_COMPONENT_BINDING_INCOMPATIBLE: 'value' and 'valueChange' address different state keys.\",\"diagnostics\":[{\"documentId\":\"screen-a775512c-f14a-4c5b-ab16-d054d5f92d7c\",\"nodeId\":\"tabs-desk\",\"prop\":\"value\",\"output\":\"valueChange\",\"expected\":\"catalog_tabs-desk_root_value\",\"actual\":\"activeTab\",\"hostCode\":\"UI_AUTHORING_CONTROLLED_PAIR\",\"sourcePath\":\"nodes.tabs-desk\",\"code\":\"UI_COMPONENT_BINDING_INCOMPATIBLE\",\"path\":\"screen/tabs-desk\",\"message\":\"'value' and 'valueChange' address different state keys.\",\"operation\":0}]}"
+    - paragraph: Edit screen
+    - list:
+      - text: Edit screen started · running
+      - generic: tool-start studio_screen_edit 513257 ms since turn start
+      - text: Edit refused before browser proposal · failed
+      - generic: "validation-refused studio_screen_edit 513280 ms since turn start {\"ok\":false,\"code\":\"STUDIO_AGENT_VALIDATION\",\"message\":\"Edit rejected: UI_COMPONENT_BINDING_INCOMPATIBLE: Paired part identities must match.\",\"diagnostics\":[{\"documentId\":\"screen-a775512c-f14a-4c5b-ab16-d054d5f92d7c\",\"nodeId\":\"tabs-desk\",\"hostCode\":\"UI_AUTHORING_PAIRED_VALUES\",\"sourcePath\":\"nodes.tabs-desk\",\"code\":\"UI_COMPONENT_BINDING_INCOMPATIBLE\",\"path\":\"screen/tabs-desk\",\"message\":\"Paired part identities must match.\",\"operation\":0}]}"
+    - paragraph: Edit screen
+    - list:
+      - text: Edit screen started · running
+      - generic: tool-start studio_screen_edit 569998 ms since turn start
+      - text: Proposed validated transaction; awaiting browser commit · pending
+      - generic: "proposed studio_screen_edit 570033 ms since turn start {\"proposalId\":\"db66ef04-38bd-47da-ab67-8062931e66dd\",\"reason\":\"Add tabs skeleton with three triggers and three panels using the recipe seed control state\",\"revision\":\"r1#2\"}"
+      - text: Browser committed edit · pending
+      - generic: Add tabs skeleton with three triggers and three panels using the recipe seed control state Committed to the screen. Undo is available.
+      - text: Commit receipt acknowledged · completed
+      - generic: Add tabs skeleton with three triggers and three panels using the recipe seed control state
+      - text: Browser acknowledged committed transaction · completed
+      - generic: "committed studio_screen_edit 570066 ms since turn start {\"proposalId\":\"db66ef04-38bd-47da-ab67-8062931e66dd\",\"ok\":true,\"revision\":\"r1#3\",\"digest\":\"347ecc41cce565882feb47e24c8da838d025b74b830c795388ebd2cc1be82bc6\",\"applied\":3,\"coverage\":{\"available\":117,\"authored\":3,\"catalogAuthored\":3,\"registeredAuthored\":3,\"reachableSourceNodes\":18,\"requested\":117,\"scope\":\"all-authorable-definitions\",\"missing\":[\"vict.catalog.button\",\"vict.catalog.checkbox\",\"vict.catalog.select\",\"vict.catalog.dialog\",\"vict.catalog.switch\",\"vict.catalog.toggle\",\"vict.catalog.select-multiple\",\"vict.catalog.select-item\",\"vict.catalog.combobox\",\"vict.catalog.combobox-multiple\",\"vict.catalog.combobox-item\",\"vict.catalog.toggle-group\",\"vict.catalog.toggle-group-multiple\",\"vict.catalog.toggle-group-item\",\"vict.catalog.accordion\",\"vict.catalog.accordion-multiple\",\"vict.catalog.accordion-item\",\"vict.catalog.slider\",\"vict.catalog.meter\",\"vict.catalog.progress\"],\"evidence\":\"Reachable declared source presence only, including inactive branches/templates. An agent-declared manifest is not proof of the user intent, observed appearance, exercised interaction or completion.\",\"missingCount\":114,\"moreMissing\":true}}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 577752 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 577757 ms since turn start {\"expectedRevision\":\"r1#3\",\"cursor\":{\"documentId\":\"screen-a775512c-f14a-4c5b-ab16-d054d5f92d7c\",\"revision\":\"r1#3\",\"digest\":\"347ecc41cce565882feb47e24c8da838d025b74b830c795388ebd2cc1be82bc6\",\"epoch\":\"171222dd-969e-4caa-8c0b-1dd8cd75fb13\"},\"section\":\"state\",\"items\":[{\"key\":\"message\",\"type\":\"string\",\"initialJson\":\"\\\"Hello from my screen\\\"\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"},{\"key\":\"accepted\",\"type\":\"boolean\",\"initialJson\":\"false\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"},{\"key\":\"dialogOpen\",\"type\":\"boolean\",\"initialJson\":\"false\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"},{\"key\":\"busy\",\"type\":\"boolean\",\"initialJson\":\"false\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"},{\"key\":\"actionError\",\"type\":\"string\",\"initialJson\":\"\\\"\\\"\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"},{\"key\":\"actionResult\",\"type\":\"string\",\"initialJson\":\"\\\"\\\"\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"},{\"key\":\"activeTab\",\"type\":\"string\",\"initialJson\":\"\\\"overview\\\"\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"},{\"key\":\"draft\",\"type\":\"string\",\"initialJson\":\"\\\"\\\"\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"},{\"key\":\"modelChoice\",\"type\":\"string\",\"initialJson\":\"\\\"desk-preview\\\"\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"},{\"key\":\"fileChoice\",\"type\":\"string\",\"initialJson\":\"\\\"\\\"\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"},{\"key\":\"frameNote\",\"type\":\"string\",\"initialJson\":\"\\\"\\\"\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"},{\"key\":\"restoreNote\",\"type\":\"string\",\"initialJson\":\"\\\"\\\"\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"},{\"key\":\"catalog_tabs-desk_root_value\",\"type\":\"string\",\"initialJson\":\"\\\"tabs-desk-tabs-1\\\"\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"}],\"total\":13,\"offset\":0,\"nextOffset\":null}"
+    - paragraph: Edit screen
+    - list:
+      - text: Edit screen started · running
+      - generic: tool-start studio_screen_edit 638293 ms since turn start
+      - text: Edit refused before browser proposal · failed
+      - generic: "validation-refused studio_screen_edit 638301 ms since turn start {\"ok\":false,\"code\":\"STUDIO_AGENT_STATE_EXISTS\",\"message\":\"State already exists. Read state and bind its exact key; use a fresh key for an independent field.\"}"
+    - paragraph: Edit screen
+    - list:
+      - text: Edit screen started · running
+      - generic: tool-start studio_screen_edit 653120 ms since turn start
+      - text: Proposed validated transaction; awaiting browser commit · pending
+      - generic: "proposed studio_screen_edit 653146 ms since turn start {\"proposalId\":\"6d934c4f-a906-439d-88b8-6497c400ada3\",\"reason\":\"Retarget the tabs controlled pair to the declared activeTab state for semantic tab keys\",\"revision\":\"r1#3\"}"
+      - text: Browser committed edit · pending
+      - generic: Retarget the tabs controlled pair to the declared activeTab state for semantic tab keys Committed to the screen. Undo is available.
+      - text: Commit receipt acknowledged · completed
+      - generic: Retarget the tabs controlled pair to the declared activeTab state for semantic tab keys
+      - text: Browser acknowledged committed transaction · completed
+      - generic: "committed studio_screen_edit 653179 ms since turn start {\"proposalId\":\"6d934c4f-a906-439d-88b8-6497c400ada3\",\"ok\":true,\"revision\":\"r1#4\",\"digest\":\"e0d5924fc058ce526200181608b4f28f997ef377b473e2e0b73a307e24a8dba3\",\"applied\":4,\"coverage\":{\"available\":117,\"authored\":3,\"catalogAuthored\":3,\"registeredAuthored\":3,\"reachableSourceNodes\":18,\"requested\":117,\"scope\":\"all-authorable-definitions\",\"missing\":[\"vict.catalog.button\",\"vict.catalog.checkbox\",\"vict.catalog.select\",\"vict.catalog.dialog\",\"vict.catalog.switch\",\"vict.catalog.toggle\",\"vict.catalog.select-multiple\",\"vict.catalog.select-item\",\"vict.catalog.combobox\",\"vict.catalog.combobox-multiple\",\"vict.catalog.combobox-item\",\"vict.catalog.toggle-group\",\"vict.catalog.toggle-group-multiple\",\"vict.catalog.toggle-group-item\",\"vict.catalog.accordion\",\"vict.catalog.accordion-multiple\",\"vict.catalog.accordion-item\",\"vict.catalog.slider\",\"vict.catalog.meter\",\"vict.catalog.progress\"],\"evidence\":\"Reachable declared source presence only, including inactive branches/templates. An agent-declared manifest is not proof of the user intent, observed appearance, exercised interaction or completion.\",\"missingCount\":114,\"moreMissing\":true}}"
+    - paragraph: Edit screen
+    - list:
+      - text: Edit screen started · running
+      - generic: tool-start studio_screen_edit 680549 ms since turn start
+      - text: Tool failed (VICT_TOOL_FAILED); prior commits remain · failed
+      - generic: "tool-failed studio_screen_edit 680555 ms since turn start {\"code\":\"VICT_TOOL_FAILED\"}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 700357 ms since turn start
+      - text: Read query refused safely · failed
+      - generic: "validation-refused studio_screen_read 700365 ms since turn start {\"expectedRevision\":\"r1#4\",\"cursor\":{\"documentId\":\"screen-a775512c-f14a-4c5b-ab16-d054d5f92d7c\",\"revision\":\"r1#4\",\"digest\":\"e0d5924fc058ce526200181608b4f28f997ef377b473e2e0b73a307e24a8dba3\",\"epoch\":\"171222dd-969e-4caa-8c0b-1dd8cd75fb13\"},\"section\":\"preflight\",\"ok\":false,\"code\":\"STUDIO_AGENT_INVALID_EDIT\",\"message\":\"Use the exact operation fields. No edits applied.\",\"diagnostics\":[{\"operation\":1,\"path\":\"operations.1.kind\",\"message\":\"Expected insert(kind:element|text|component,nodeId,parentId,tag?|componentId+revision|text/expression?,slotName?,index?). Required\"},{\"operation\":3,\"path\":\"operations.3.kind\",\"message\":\"Expected insert(kind:element|text|component,nodeId,parentId,tag?|componentId+revision|text/expression?,slotName?,index?). Required\"},{\"operation\":5,\"path\":\"operations.5.kind\",\"message\":\"Expected insert(kind:element|text|component,nodeId,parentId,tag?|componentId+revision|text/expression?,slotName?,index?). Required\"},{\"operation\":7,\"path\":\"operations.7.kind\",\"message\":\"Expected insert(kind:element|text|component,nodeId,parentId,tag?|componentId+revision|text/expression?,slotName?,index?). Required\"}],\"applied\":false}"
+    - paragraph: Edit screen
+    - list:
+      - text: Edit screen started · running
+      - generic: tool-start studio_screen_edit 717395 ms since turn start
+      - text: Tool failed (VICT_TOOL_FAILED); prior commits remain · failed
+      - generic: "tool-failed studio_screen_edit 717400 ms since turn start {\"code\":\"VICT_TOOL_FAILED\"}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 744526 ms since turn start
+      - text: Read query refused safely · failed
+      - generic: "validation-refused studio_screen_read 744532 ms since turn start {\"expectedRevision\":\"r1#4\",\"cursor\":{\"documentId\":\"screen-a775512c-f14a-4c5b-ab16-d054d5f92d7c\",\"revision\":\"r1#4\",\"digest\":\"e0d5924fc058ce526200181608b4f28f997ef377b473e2e0b73a307e24a8dba3\",\"epoch\":\"171222dd-969e-4caa-8c0b-1dd8cd75fb13\"},\"section\":\"preflight\",\"ok\":false,\"code\":\"STUDIO_AGENT_INVALID_EDIT\",\"message\":\"Use the exact operation fields. No edits applied.\",\"diagnostics\":[{\"operation\":1,\"path\":\"operations.1.kind\",\"message\":\"Expected insert(kind:element|text|component,nodeId,parentId,tag?|componentId+revision|text/expression?,slotName?,index?). Required\"},{\"operation\":3,\"path\":\"operations.3.kind\",\"message\":\"Expected insert(kind:element|text|component,nodeId,parentId,tag?|componentId+revision|text/expression?,slotName?,index?). Required\"},{\"operation\":5,\"path\":\"operations.5.kind\",\"message\":\"Expected insert(kind:element|text|component,nodeId,parentId,tag?|componentId+revision|text/expression?,slotName?,index?). Required\"},{\"operation\":7,\"path\":\"operations.7.kind\",\"message\":\"Expected insert(kind:element|text|component,nodeId,parentId,tag?|componentId+revision|text/expression?,slotName?,index?). Required\"}],\"applied\":false}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 767144 ms since turn start
+      - text: Read query refused safely · failed
+      - generic: "validation-refused studio_screen_read 767152 ms since turn start {\"expectedRevision\":\"r1#4\",\"cursor\":{\"documentId\":\"screen-a775512c-f14a-4c5b-ab16-d054d5f92d7c\",\"revision\":\"r1#4\",\"digest\":\"e0d5924fc058ce526200181608b4f28f997ef377b473e2e0b73a307e24a8dba3\",\"epoch\":\"171222dd-969e-4caa-8c0b-1dd8cd75fb13\"},\"section\":\"preflight\",\"ok\":false,\"code\":\"STUDIO_AGENT_VALIDATION\",\"message\":\"Operation 0 rejected: UI_EDIT_VALIDATION_FAILED: Insert parent 'panel-overview' cannot own children (component).\",\"diagnostics\":[{\"operation\":0,\"commandIndex\":0,\"code\":\"UI_EDIT_VALIDATION_FAILED\",\"path\":\"operations.0\",\"message\":\"Insert parent 'panel-overview' cannot own children (component).\"}],\"applied\":false}"
+    - paragraph: Edit screen
+    - list:
+      - text: Edit screen started · running
+      - generic: tool-start studio_screen_edit 819874 ms since turn start
+      - text: Tool failed (VICT_TOOL_FAILED); prior commits remain · failed
+      - generic: "tool-failed studio_screen_edit 819883 ms since turn start {\"code\":\"VICT_TOOL_FAILED\"}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 835549 ms since turn start
+      - text: Read query refused safely · failed
+      - generic: "validation-refused studio_screen_read 835556 ms since turn start {\"expectedRevision\":\"r1#4\",\"cursor\":{\"documentId\":\"screen-a775512c-f14a-4c5b-ab16-d054d5f92d7c\",\"revision\":\"r1#4\",\"digest\":\"e0d5924fc058ce526200181608b4f28f997ef377b473e2e0b73a307e24a8dba3\",\"epoch\":\"171222dd-969e-4caa-8c0b-1dd8cd75fb13\"},\"section\":\"preflight\",\"ok\":false,\"code\":\"STUDIO_AGENT_INVALID_EDIT\",\"message\":\"Use the exact operation fields. No edits applied.\",\"diagnostics\":[{\"operation\":0,\"path\":\"operations.0.kind\",\"message\":\"Expected insert(kind:element|text|component,nodeId,parentId,tag?|componentId+revision|text/expression?,slotName?,index?). Required\"}],\"applied\":false}"
+    - paragraph: Edit screen
+    - list:
+      - text: Edit screen started · running
+      - generic: tool-start studio_screen_edit 854393 ms since turn start
+      - text: Proposed validated transaction; awaiting browser commit · pending
+      - generic: "proposed studio_screen_edit 854435 ms since turn start {\"proposalId\":\"3d69e798-3169-456a-ab15-59b2a1658dd2\",\"reason\":\"Add panel stacks, Overview cards, transcript and chain-of-thought components\",\"revision\":\"r1#4\"}"
+      - text: Browser committed edit · pending
+      - generic: Add panel stacks, Overview cards, transcript and chain-of-thought components Committed to the screen. Undo is available.
+      - text: Commit receipt acknowledged · completed
+      - generic: Add panel stacks, Overview cards, transcript and chain-of-thought components
+      - text: Browser acknowledged committed transaction · completed
+      - generic: "committed studio_screen_edit 854473 ms since turn start {\"proposalId\":\"3d69e798-3169-456a-ab15-59b2a1658dd2\",\"ok\":true,\"revision\":\"r1#5\",\"digest\":\"e7f1e8224a8c3a600e79a47952e94c43ad3fd26dddb0ef251c680d7d2caa399a\",\"applied\":5,\"coverage\":{\"available\":117,\"authored\":6,\"catalogAuthored\":3,\"registeredAuthored\":6,\"reachableSourceNodes\":27,\"requested\":117,\"scope\":\"all-authorable-definitions\",\"missing\":[\"vict.catalog.button\",\"vict.catalog.checkbox\",\"vict.catalog.select\",\"vict.catalog.dialog\",\"vict.catalog.switch\",\"vict.catalog.toggle\",\"vict.catalog.select-multiple\",\"vict.catalog.select-item\",\"vict.catalog.combobox\",\"vict.catalog.combobox-multiple\",\"vict.catalog.combobox-item\",\"vict.catalog.toggle-group\",\"vict.catalog.toggle-group-multiple\",\"vict.catalog.toggle-group-item\",\"vict.catalog.accordion\",\"vict.catalog.accordion-multiple\",\"vict.catalog.accordion-item\",\"vict.catalog.slider\",\"vict.catalog.meter\",\"vict.catalog.progress\"],\"evidence\":\"Reachable declared source presence only, including inactive branches/templates. An agent-declared manifest is not proof of the user intent, observed appearance, exercised interaction or completion.\",\"missingCount\":111,\"moreMissing\":true}}"
+    - paragraph: Edit screen
+    - list:
+      - text: Edit screen started · running
+      - generic: tool-start studio_screen_edit 861322 ms since turn start
+      - text: Proposed validated transaction; awaiting browser commit · pending
+      - generic: "proposed studio_screen_edit 861347 ms since turn start {\"proposalId\":\"ab27d7c3-d087-4ab1-8293-2ffcaf2d23b7\",\"reason\":\"Finish Overview panel with demo plan and queue cards\",\"revision\":\"r1#5\"}"
+      - text: Browser committed edit · pending
+      - generic: Finish Overview panel with demo plan and queue cards Committed to the screen. Undo is available.
+      - text: Commit receipt acknowledged · completed
+      - generic: Finish Overview panel with demo plan and queue cards
+      - text: Browser acknowledged committed transaction · completed
+      - generic: "committed studio_screen_edit 861391 ms since turn start {\"proposalId\":\"ab27d7c3-d087-4ab1-8293-2ffcaf2d23b7\",\"ok\":true,\"revision\":\"r1#6\",\"digest\":\"4bb9c64acfa8b42c486298a616388b069a3be86731c2e2bc8eb7e4c86d4fe110\",\"applied\":6,\"coverage\":{\"available\":117,\"authored\":8,\"catalogAuthored\":3,\"registeredAuthored\":8,\"reachableSourceNodes\":30,\"requested\":117,\"scope\":\"all-authorable-definitions\",\"missing\":[\"vict.catalog.button\",\"vict.catalog.checkbox\",\"vict.catalog.select\",\"vict.catalog.dialog\",\"vict.catalog.switch\",\"vict.catalog.toggle\",\"vict.catalog.select-multiple\",\"vict.catalog.select-item\",\"vict.catalog.combobox\",\"vict.catalog.combobox-multiple\",\"vict.catalog.combobox-item\",\"vict.catalog.toggle-group\",\"vict.catalog.toggle-group-multiple\",\"vict.catalog.toggle-group-item\",\"vict.catalog.accordion\",\"vict.catalog.accordion-multiple\",\"vict.catalog.accordion-item\",\"vict.catalog.slider\",\"vict.catalog.meter\",\"vict.catalog.progress\"],\"evidence\":\"Reachable declared source presence only, including inactive branches/templates. An agent-declared manifest is not proof of the user intent, observed appearance, exercised interaction or completion.\",\"missingCount\":109,\"moreMissing\":true}}"
+    - paragraph: Observe preview
+    - list:
+      - text: Observe preview started · running
+      - generic: tool-start studio_screen_observe 864079 ms since turn start
+      - text: Observed actual rendered appearance · completed
+      - generic: "observation studio_screen_observe 880379 ms since turn start {\"ok\":true,\"evidence\":\"observed-appearance\",\"observation\":\"Visible in the cropped viewport: the \\\"Foundation Public Run Review\\\" heading, an intro noting simulated demo data, and a tab bar where \\\"Overview\\\" is the active white pill (Diagnostics, Context inactive) — all left-aligned with consistent ~40px margins and comfortable vertical spacing.\\n\\nA \\\"Tab content\\\" label sits above the transcript card. The card shows \\\"Demo transcript (sample)\\\", the note \\\"Simulated messages only — no provider was contacted.\\\", a right-aligned light-blue user bubble wrapping to two lines, and a partially visible reply line with copy icons. Demo labeling is clearly present.\\n\\nThe card and its content are clipped at the bottom edge by the crop; the chain-of-thought, plan, and queue cards fall below the viewport and are not observable. No horizontal overflow or text truncation is visible.\",\"metadata\":{\"cursor\":{\"documentId\":\"screen-a775512c-f14a-4c5b-ab16-d054d5f92d7c\",\"revision\":\"r1#6\",\"digest\":\"4bb9c64acfa8b42c486298a616388b069a3be86731c2e2bc8eb7e4c86d4fe110\",\"epoch\":\"171222dd-969e-4caa-8c0b-1dd8cd75fb13\"},\"capturedAt\":\"2026-10-28T17:12:47.261Z\",\"viewport\":{\"width\":668,\"height\":528,\"scrollLeft\":0,\"scrollTop\":0,\"devicePixelRatio\":1.25},\"image\":{\"width\":652,\"height\":528,\"sourceWidth\":652,\"sourceHeight\":1333,\"offsetLeft\":0,\"offsetTop\":0,\"cropped\":true},\"evidence\":{\"workspaceView\":\"design\",\"viewportModel\":\"isolated-viewport\",\"ownedOverlays\":0,\"targets\":[{\"nodeId\":\"screen\",\"part\":\"root\",\"bounds\":[0,0,652,1332.35],\"visible\":true,\"visibilityReason\":\"visible\",\"styles\":{\"color\":\"rgb(36, 48, 71)\",\"background-color\":\"rgb(255, 255, 255)\",\"position\":\"static\",\"top\":\"auto\",\"padding-top\":\"40px\",\"overflow\":\"visible\",\"font-size\":\"14px\",\"z-index\":\"auto\"}},{\"nodeId\":\"desk-h1\",\"part\":\"root\",\"bounds\":[40,40,572,33],\"visible\":true,\"visibilityReason\":\"visible\",\"styles\":{\"color\":\"rgb(36, 48, 71)\",\"background-color\":\"rgba(0, 0, 0, 0)\",\"position\":\"static\",\"top\":\"auto\",\"padding-top\":\"0px\",\"overflow\":\"visible\",\"font-size\":\"22px\",\"z-index\":\"auto\"}},{\"nodeId\":\"desk-h1-text\",\"part\":\"root\",\"bounds\":[0,0,0,0],\"visible\":false,\"visibilityReason\":\"hidden\",\"styles\":{\"color\":\"rgb(36, 48, 71)\",\"background-color\":\"rgba(0, 0, 0, 0)\",\"position\":\"static\",\"top\":\"auto\",\"padding-top\":\"0px\",\"overflow\":\"visible\",\"font-size\":\"22px\",\"z-index\":\"auto\"}},{\"nodeId\":\"desk-intro\",\"part\":\"root\",\"bounds\":[40,93,572,39],\"visible\":true,\"visibilityReason\":\"visible\",\"styles\":{\"color\":\"rgb(95, 111, 143)\",\"background-color\":\"rgba(0, 0, 0, 0)\",\"position\":\"static\",\"top\":\"auto\",\"padding-top\":\"0px\",\"overflow\":\"visible\",\"font-size\":\"13px\",\"z-index\":\"auto\"}},{\"nodeId\":\"desk-intro-text\",\"part\":\"root\",\"bounds\":[0,0,0,0],\"visible\":false,\"visibilityReason\":\"hidden\",\"styles\":{\"color\":\"rgb(95, 111, 143)\",\"background-color\":\"rgba(0, 0, 0, 0)\",\"position\":\"static\",\"top\":\"auto\",\"padding-top\":\"0px\",\"overflow\":\"visible\",\"font-size\":\"13px\",\"z-index\":\"auto\"}},{\"nodeId\":\"tabs-desk\",\"part\":\"root\",\"bounds\":[40,152,572,1140.35],\"visible\":true,\"visibilityReason\":\"visible\",\"styles\":{\"color\":\"rgb(36, 48, 71)\",\"background-color\":\"rgba(0, 0, 0, 0)\",\"position\":\"static\",\"top\":\"auto\",\"padding-top\":\"0px\",\"overflow\":\"visible\",\"font-size\":\"14px\",\"z-index\":\"auto\"}}]},\"preview\":{\"mode\":\"design\",\"fingerprint\":\"bf56597947d53f3618cb4bdd7133ddca04d3e7f280f02fa33e804682b3951741\",\"selection\":\"screen-a775512c-f14a-4c5b-ab16-d054d5f92d7c|screen\"}},\"revalidatedAt\":\"2026-10-28T17:13:03.000Z\",\"validation\":\"same-source-preview-viewport-and-image-bytes-after-inference\",\"imageDigest\":\"48e3e0daf69d6808bdfef10fd126819aaafbefc7cca5b4540a8830efae68c994\",\"confirmedImageDigest\":\"48e3e0daf69d6808bdfef10fd126819aaafbefc7cca5b4540a8830efae68c994\",\"imageComparison\":\"sha256-identical\",\"imageComparisonScope\":\"within-this-observation-before-and-after-inference\",\"fingerprintMeaning\":\"Source and preview state identity, not a pixel digest. Separate successful observations [Details truncated for the bounded trace. Read current source for complete facts.]"
+    - paragraph: Edit screen
+    - list:
+      - text: Edit screen started · running
+      - generic: tool-start studio_screen_edit 905880 ms since turn start
+      - text: Proposed validated transaction; awaiting browser commit · pending
+      - generic: "proposed studio_screen_edit 905934 ms since turn start {\"proposalId\":\"228932dd-b8d8-4ccd-9a4d-a081fc70ae1e\",\"reason\":\"Add Diagnostics cards: demo terminal, example tests, synthetic stack trace with intent label\",\"revision\":\"r1#6\"}"
+      - text: Browser committed edit · pending
+      - generic: "Add Diagnostics cards: demo terminal, example tests, synthetic stack trace with intent label Committed to the screen. Undo is available."
+      - text: Commit receipt acknowledged · completed
+      - generic: "Add Diagnostics cards: demo terminal, example tests, synthetic stack trace with intent label"
+      - text: Browser acknowledged committed transaction · completed
+      - generic: "committed studio_screen_edit 905984 ms since turn start {\"proposalId\":\"228932dd-b8d8-4ccd-9a4d-a081fc70ae1e\",\"ok\":true,\"revision\":\"r1#7\",\"digest\":\"1d1fa90e6275bf9fe9d3461bb36208d35fbfcce3b680e91723297053360dc7f2\",\"applied\":7,\"coverage\":{\"available\":117,\"authored\":11,\"catalogAuthored\":3,\"registeredAuthored\":11,\"reachableSourceNodes\":40,\"requested\":117,\"scope\":\"all-authorable-definitions\",\"missing\":[\"vict.catalog.button\",\"vict.catalog.checkbox\",\"vict.catalog.select\",\"vict.catalog.dialog\",\"vict.catalog.switch\",\"vict.catalog.toggle\",\"vict.catalog.select-multiple\",\"vict.catalog.select-item\",\"vict.catalog.combobox\",\"vict.catalog.combobox-multiple\",\"vict.catalog.combobox-item\",\"vict.catalog.toggle-group\",\"vict.catalog.toggle-group-multiple\",\"vict.catalog.toggle-group-item\",\"vict.catalog.accordion\",\"vict.catalog.accordion-multiple\",\"vict.catalog.accordion-item\",\"vict.catalog.slider\",\"vict.catalog.meter\",\"vict.catalog.progress\"],\"evidence\":\"Reachable declared source presence only, including inactive branches/templates. An agent-declared manifest is not proof of the user intent, observed appearance, exercised interaction or completion.\",\"missingCount\":106,\"moreMissing\":true}}"
+    - paragraph: Edit screen
+    - list:
+      - text: Edit screen started · running
+      - generic: tool-start studio_screen_edit 918361 ms since turn start
+      - text: Proposed validated transaction; awaiting browser commit · pending
+      - generic: "proposed studio_screen_edit 918408 ms since turn start {\"proposalId\":\"68f67e21-94fc-4f66-ab7f-bfe73177f092\",\"reason\":\"Wire stack-frame local intent disclosure and add two sample subagent cards\",\"revision\":\"r1#7\"}"
+      - text: Browser committed edit · pending
+      - generic: Wire stack-frame local intent disclosure and add two sample subagent cards Committed to the screen. Undo is available.
+      - text: Commit receipt acknowledged · completed
+      - generic: Wire stack-frame local intent disclosure and add two sample subagent cards
+      - text: Browser acknowledged committed transaction · completed
+      - generic: "committed studio_screen_edit 918459 ms since turn start {\"proposalId\":\"68f67e21-94fc-4f66-ab7f-bfe73177f092\",\"ok\":true,\"revision\":\"r1#8\",\"digest\":\"03325602363bc66fa024296c08312fc99292dcb3c2eb6f813b8d781624fd13d0\",\"applied\":8,\"coverage\":{\"available\":117,\"authored\":12,\"catalogAuthored\":3,\"registeredAuthored\":12,\"reachableSourceNodes\":45,\"requested\":117,\"scope\":\"all-authorable-definitions\",\"missing\":[\"vict.catalog.button\",\"vict.catalog.checkbox\",\"vict.catalog.select\",\"vict.catalog.dialog\",\"vict.catalog.switch\",\"vict.catalog.toggle\",\"vict.catalog.select-multiple\",\"vict.catalog.select-item\",\"vict.catalog.combobox\",\"vict.catalog.combobox-multiple\",\"vict.catalog.combobox-item\",\"vict.catalog.toggle-group\",\"vict.catalog.toggle-group-multiple\",\"vict.catalog.toggle-group-item\",\"vict.catalog.accordion\",\"vict.catalog.accordion-multiple\",\"vict.catalog.accordion-item\",\"vict.catalog.slider\",\"vict.catalog.meter\",\"vict.catalog.progress\"],\"evidence\":\"Reachable declared source presence only, including inactive branches/templates. An agent-declared manifest is not proof of the user intent, observed appearance, exercised interaction or completion.\",\"missingCount\":105,\"moreMissing\":true}}"
+    - paragraph: Edit screen
+    - list:
+      - text: Edit screen started · running
+      - generic: tool-start studio_screen_edit 931119 ms since turn start
+      - text: Proposed validated transaction; awaiting browser commit · pending
+      - generic: "proposed studio_screen_edit 931172 ms since turn start {\"proposalId\":\"e367190b-957f-41c8-ab71-a98f4d5dbaf5\",\"reason\":\"Add Context panel: demo usage breakdown and example file tree with local select disclosure\",\"revision\":\"r1#8\"}"
+      - text: Browser committed edit · pending
+      - generic: "Add Context panel: demo usage breakdown and example file tree with local select disclosure Committed to the screen. Undo is available."
+      - text: Commit receipt acknowledged · completed
+      - generic: "Add Context panel: demo usage breakdown and example file tree with local select disclosure"
+      - text: Browser acknowledged committed transaction · completed
+      - generic: "committed studio_screen_edit 931226 ms since turn start {\"proposalId\":\"e367190b-957f-41c8-ab71-a98f4d5dbaf5\",\"ok\":true,\"revision\":\"r1#9\",\"digest\":\"3e1b1f94334872faa42f7b9febf12355863023501ee1f061c1ce78f855c67354\",\"applied\":9,\"coverage\":{\"available\":117,\"authored\":14,\"catalogAuthored\":3,\"registeredAuthored\":14,\"reachableSourceNodes\":55,\"requested\":117,\"scope\":\"all-authorable-definitions\",\"missing\":[\"vict.catalog.button\",\"vict.catalog.checkbox\",\"vict.catalog.select\",\"vict.catalog.dialog\",\"vict.catalog.switch\",\"vict.catalog.toggle\",\"vict.catalog.select-multiple\",\"vict.catalog.select-item\",\"vict.catalog.combobox\",\"vict.catalog.combobox-multiple\",\"vict.catalog.combobox-item\",\"vict.catalog.toggle-group\",\"vict.catalog.toggle-group-multiple\",\"vict.catalog.toggle-group-item\",\"vict.catalog.accordion\",\"vict.catalog.accordion-multiple\",\"vict.catalog.accordion-item\",\"vict.catalog.slider\",\"vict.catalog.meter\",\"vict.catalog.progress\"],\"evidence\":\"Reachable declared source presence only, including inactive branches/templates. An agent-declared manifest is not proof of the user intent, observed appearance, exercised interaction or completion.\",\"missingCount\":103,\"moreMissing\":true}}"
+    - paragraph: Edit screen
+    - list:
+      - text: Edit screen started · running
+      - generic: tool-start studio_screen_edit 941107 ms since turn start
+      - text: Tool failed (VICT_TOOL_FAILED); prior commits remain · failed
+      - generic: "tool-failed studio_screen_edit 941116 ms since turn start {\"code\":\"VICT_TOOL_FAILED\"}"
+    - paragraph: Edit screen
+    - list:
+      - text: Edit screen started · running
+      - generic: tool-start studio_screen_edit 952308 ms since turn start
+      - text: Edit refused before browser proposal · failed
+      - generic: "validation-refused studio_screen_edit 952366 ms since turn start {\"ok\":false,\"code\":\"STUDIO_AGENT_VALIDATION\",\"message\":\"Edit rejected: UI_COMPONENT_BINDING_INCOMPATIBLE: Output 'restore' payload void is incompatible with state 'restoreNote' type string.\",\"diagnostics\":[{\"documentId\":\"screen-a775512c-f14a-4c5b-ab16-d054d5f92d7c\",\"nodeId\":\"comp-checkpoint\",\"output\":\"restore\",\"stateKey\":\"restoreNote\",\"sourcePath\":\"nodes.comp-checkpoint\",\"code\":\"UI_COMPONENT_BINDING_INCOMPATIBLE\",\"path\":\"nodes.comp-checkpoint\",\"message\":\"Output 'restore' payload void is incompatible with state 'restoreNote' type string.\",\"operation\":3}]}"
+    - paragraph: Edit screen
+    - list:
+      - text: Edit screen started · running
+      - generic: tool-start studio_screen_edit 981362 ms since turn start
+      - text: Edit refused before browser proposal · failed
+      - generic: "validation-refused studio_screen_edit 981411 ms since turn start {\"ok\":false,\"code\":\"STUDIO_AGENT_VALIDATION\",\"message\":\"Edit rejected: UI_COMPONENT_BINDING_INCOMPATIBLE: Output 'restore' payload void is incompatible with state 'restoreFlag' type boolean.\",\"diagnostics\":[{\"documentId\":\"screen-a775512c-f14a-4c5b-ab16-d054d5f92d7c\",\"nodeId\":\"comp-checkpoint\",\"output\":\"restore\",\"stateKey\":\"restoreFlag\",\"sourcePath\":\"nodes.comp-checkpoint\",\"code\":\"UI_COMPONENT_BINDING_INCOMPATIBLE\",\"path\":\"nodes.comp-checkpoint\",\"message\":\"Output 'restore' payload void is incompatible with state 'restoreFlag' type boolean.\",\"operation\":3}]}"
+    - paragraph: Edit screen
+    - list:
+      - text: Edit screen started · running
+      - generic: tool-start studio_screen_edit 999124 ms since turn start
+      - text: Proposed validated transaction; awaiting browser commit · pending
+      - generic: "proposed studio_screen_edit 999187 ms since turn start {\"proposalId\":\"bbfda192-c5c5-4a19-89e3-0116d5decd36\",\"reason\":\"Wire file select disclosure and add demo checkpoint as intent-only\",\"revision\":\"r1#9\"}"
+      - text: Browser committed edit · pending
+      - generic: Wire file select disclosure and add demo checkpoint as intent-only Committed to the screen. Undo is available.
+      - text: Commit receipt acknowledged · completed
+      - generic: Wire file select disclosure and add demo checkpoint as intent-only
+      - text: Browser acknowledged committed transaction · completed
+      - generic: "committed studio_screen_edit 999250 ms since turn start {\"proposalId\":\"bbfda192-c5c5-4a19-89e3-0116d5decd36\",\"ok\":true,\"revision\":\"r1#10\",\"digest\":\"ca5dec852f956a155708ab8fdac9406e25ccfb7386b0a360d078022aa9ac1f89\",\"applied\":10,\"coverage\":{\"available\":117,\"authored\":15,\"catalogAuthored\":3,\"registeredAuthored\":15,\"reachableSourceNodes\":60,\"requested\":117,\"scope\":\"all-authorable-definitions\",\"missing\":[\"vict.catalog.button\",\"vict.catalog.checkbox\",\"vict.catalog.select\",\"vict.catalog.dialog\",\"vict.catalog.switch\",\"vict.catalog.toggle\",\"vict.catalog.select-multiple\",\"vict.catalog.select-item\",\"vict.catalog.combobox\",\"vict.catalog.combobox-multiple\",\"vict.catalog.combobox-item\",\"vict.catalog.toggle-group\",\"vict.catalog.toggle-group-multiple\",\"vict.catalog.toggle-group-item\",\"vict.catalog.accordion\",\"vict.catalog.accordion-multiple\",\"vict.catalog.accordion-item\",\"vict.catalog.slider\",\"vict.catalog.meter\",\"vict.catalog.progress\"],\"evidence\":\"Reachable declared source presence only, including inactive branches/templates. An agent-declared manifest is not proof of the user intent, observed appearance, exercised interaction or completion.\",\"missingCount\":102,\"moreMissing\":true}}"
+    - paragraph: Edit screen
+    - list:
+      - text: Edit screen started · running
+      - generic: tool-start studio_screen_edit 1014055 ms since turn start
+      - text: Proposed validated transaction; awaiting browser commit · pending
+      - generic: "proposed studio_screen_edit 1014109 ms since turn start {\"proposalId\":\"1ea77944-029a-41fa-b7f6-98df7578cc5f\",\"reason\":\"Add suggestion with local draft disclosure and controlled model selector\",\"revision\":\"r1#10\"}"
+      - text: Browser committed edit · pending
+      - generic: Add suggestion with local draft disclosure and controlled model selector Committed to the screen. Undo is available.
+      - text: Commit receipt acknowledged · completed
+      - generic: Add suggestion with local draft disclosure and controlled model selector
+      - text: Browser acknowledged committed transaction · completed
+      - generic: "committed studio_screen_edit 1014176 ms since turn start {\"proposalId\":\"1ea77944-029a-41fa-b7f6-98df7578cc5f\",\"ok\":true,\"revision\":\"r1#11\",\"digest\":\"75975d0f782d8921e685e5e0012549d30864e2609c6c446340ec1f03c479a357\",\"applied\":11,\"coverage\":{\"available\":117,\"authored\":17,\"catalogAuthored\":3,\"registeredAuthored\":17,\"reachableSourceNodes\":66,\"requested\":117,\"scope\":\"all-authorable-definitions\",\"missing\":[\"vict.catalog.button\",\"vict.catalog.checkbox\",\"vict.catalog.select\",\"vict.catalog.dialog\",\"vict.catalog.switch\",\"vict.catalog.toggle\",\"vict.catalog.select-multiple\",\"vict.catalog.select-item\",\"vict.catalog.combobox\",\"vict.catalog.combobox-multiple\",\"vict.catalog.combobox-item\",\"vict.catalog.toggle-group\",\"vict.catalog.toggle-group-multiple\",\"vict.catalog.toggle-group-item\",\"vict.catalog.accordion\",\"vict.catalog.accordion-multiple\",\"vict.catalog.accordion-item\",\"vict.catalog.slider\",\"vict.catalog.meter\",\"vict.catalog.progress\"],\"evidence\":\"Reachable declared source presence only, including inactive branches/templates. An agent-declared manifest is not proof of the user intent, observed appearance, exercised interaction or completion.\",\"missingCount\":100,\"moreMissing\":true}}"
+    - paragraph: Edit screen
+    - list:
+      - text: Edit screen started · running
+      - generic: tool-start studio_screen_edit 1023415 ms since turn start
+      - text: Tool failed (VICT_TOOL_FAILED); prior commits remain · failed
+      - generic: "tool-failed studio_screen_edit 1023423 ms since turn start {\"code\":\"VICT_TOOL_FAILED\"}"
+    - paragraph: Edit screen
+    - list:
+      - text: Edit screen started · running
+      - generic: tool-start studio_screen_edit 1035185 ms since turn start
+      - text: Tool failed (VICT_TOOL_FAILED); prior commits remain · failed
+      - generic: "tool-failed studio_screen_edit 1035191 ms since turn start {\"code\":\"VICT_TOOL_FAILED\"}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 1046285 ms since turn start
+      - text: Read query refused safely · failed
+      - generic: "validation-refused studio_screen_read 1046290 ms since turn start {\"expectedRevision\":\"r1#11\",\"cursor\":{\"documentId\":\"screen-a775512c-f14a-4c5b-ab16-d054d5f92d7c\",\"revision\":\"r1#11\",\"digest\":\"75975d0f782d8921e685e5e0012549d30864e2609c6c446340ec1f03c479a357\",\"epoch\":\"171222dd-969e-4caa-8c0b-1dd8cd75fb13\"},\"section\":\"preflight\",\"ok\":false,\"code\":\"STUDIO_AGENT_INVALID_EDIT\",\"message\":\"Use the exact operation fields. No edits applied.\",\"diagnostics\":[{\"operation\":2,\"path\":\"operations.2.value\",\"message\":\"Expected style(nodeId,part?,property,value?:text|token|binding,conditionId?,pseudo?). Invalid input\"},{\"operation\":3,\"path\":\"operations.3.value\",\"message\":\"Expected style(nodeId,part?,property,value?:text|token|binding,conditionId?,pseudo?). Invalid input\"},{\"operation\":4,\"path\":\"operations.4.value\",\"message\":\"Expected style(nodeId,part?,property,value?:text|token|binding,conditionId?,pseudo?). Invalid input\"}],\"applied\":false}"
+    - paragraph: Edit screen
+    - list:
+      - text: Edit screen started · running
+      - generic: tool-start studio_screen_edit 1075849 ms since turn start
+      - text: Proposed validated transaction; awaiting browser commit · pending
+      - generic: "proposed studio_screen_edit 1075915 ms since turn start {\"proposalId\":\"632a60c4-f143-411b-862a-c70c0a5f19be\",\"reason\":\"Complete model selector controlled pair, provider disclaimer, and tab list wrapping for narrow fit\",\"revision\":\"r1#11\"}"
+      - text: Browser committed edit · pending
+      - generic: Complete model selector controlled pair, provider disclaimer, and tab list wrapping for narrow fit Committed to the screen. Undo is available.
+      - text: Commit receipt acknowledged · completed
+      - generic: Complete model selector controlled pair, provider disclaimer, and tab list wrapping for narrow fit
+      - text: Browser acknowledged committed transaction · completed
+      - generic: "committed studio_screen_edit 1075975 ms since turn start {\"proposalId\":\"632a60c4-f143-411b-862a-c70c0a5f19be\",\"ok\":true,\"revision\":\"r1#12\",\"digest\":\"02c1a4327a3337d79ae74072c3f50fcd70edcdac576962d9c8dcb6bd30400676\",\"applied\":12,\"coverage\":{\"available\":117,\"authored\":17,\"catalogAuthored\":3,\"registeredAuthored\":17,\"reachableSourceNodes\":68,\"requested\":117,\"scope\":\"all-authorable-definitions\",\"missing\":[\"vict.catalog.button\",\"vict.catalog.checkbox\",\"vict.catalog.select\",\"vict.catalog.dialog\",\"vict.catalog.switch\",\"vict.catalog.toggle\",\"vict.catalog.select-multiple\",\"vict.catalog.select-item\",\"vict.catalog.combobox\",\"vict.catalog.combobox-multiple\",\"vict.catalog.combobox-item\",\"vict.catalog.toggle-group\",\"vict.catalog.toggle-group-multiple\",\"vict.catalog.toggle-group-item\",\"vict.catalog.accordion\",\"vict.catalog.accordion-multiple\",\"vict.catalog.accordion-item\",\"vict.catalog.slider\",\"vict.catalog.meter\",\"vict.catalog.progress\"],\"evidence\":\"Reachable declared source presence only, including inactive branches/templates. An agent-declared manifest is not proof of the user intent, observed appearance, exercised interaction or completion.\",\"missingCount\":100,\"moreMissing\":true}}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 1088670 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 1088678 ms since turn start {\"expectedRevision\":\"r1#12\",\"cursor\":{\"documentId\":\"screen-a775512c-f14a-4c5b-ab16-d054d5f92d7c\",\"revision\":\"r1#12\",\"digest\":\"02c1a4327a3337d79ae74072c3f50fcd70edcdac576962d9c8dcb6bd30400676\",\"epoch\":\"171222dd-969e-4caa-8c0b-1dd8cd75fb13\"},\"section\":\"nodes\",\"scope\":{\"kind\":\"subtree\",\"nodeId\":\"screen\",\"includesInactiveSource\":true,\"expandsComponentDefinitions\":false},\"items\":[{\"id\":\"comp-transcript\",\"kind\":\"component\",\"definitionId\":\"vict.ai.transcript\",\"children\":[\"comp-transcript-composer\"],\"childCount\":1,\"sourcePreview\":\"{\\\"kind\\\":\\\"component\\\",\\\"id\\\":\\\"comp-transcript\\\",\\\"definitionId\\\":\\\"vict.ai.transcript\\\",\\\"revision\\\":\\\"1\\\",\\\"props\\\":{\\\"data\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"{\\\\\\\"version\\\\\\\":1,\\\\\\\"messages\\\\\\\":[{\\\\\\\"id\\\\\\\":\\\\\\\"demo-user-1\\\\\\\",\\\\\\\"role\\\\\\\":\\\\\\\"user\\\\\\\",\\\\\\\"text\\\\\\\":\\\\\\\"Sample request: can you review the layout of the review desk? (demo data)\\\\\\\"},{\\\\\\\"id\\\\\\\":\\\\\\\"demo-assistant-1\\\\\\\",\\\\\\\"role\\\\\\\":\\\\\\\"assistant\\\\\\\",\\\\\\\"text\\\\\\\":\\\\\\\"Sample reply: one compact correction is ready. (demo data)\\\\\\\"}]}\\\"},\\\"description\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"Simulated messages only — no provider was contacted.\\\"},\\\"title\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"Demo transcript (sample)\\\"}},\\\"slots\\\":{\\\"compos… [truncated; use source pages]\"},{\"id\":\"comp-transcript-composer\",\"kind\":\"component\",\"definitionId\":\"vict.ai.prompt-input\",\"children\":[],\"childCount\":0,\"sourcePreview\":\"{\\\"kind\\\":\\\"component\\\",\\\"id\\\":\\\"comp-transcript-composer\\\",\\\"definitionId\\\":\\\"vict.ai.prompt-input\\\",\\\"revision\\\":\\\"3\\\",\\\"props\\\":{\\\"value\\\":{\\\"type\\\":\\\"ref\\\",\\\"path\\\":\\\"state.catalog_comp-transcript_message\\\"}},\\\"outputs\\\":{\\\"valueChange\\\":{\\\"setState\\\":{\\\"key\\\":\\\"catalog_comp-transcript_message\\\"}}},\\\"slots\\\":{}}\"},{\"id\":\"comp-cot\",\"kind\":\"component\",\"definitionId\":\"vict.ai.chain-of-thought\",\"children\":[],\"childCount\":0,\"sourcePreview\":\"{\\\"kind\\\":\\\"component\\\",\\\"id\\\":\\\"comp-cot\\\",\\\"definitionId\\\":\\\"vict.ai.chain-of-thought\\\",\\\"revision\\\":\\\"1\\\",\\\"props\\\":{\\\"data\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"{\\\\\\\"version\\\\\\\":1,\\\\\\\"steps\\\\\\\":[{\\\\\\\"id\\\\\\\":\\\\\\\"demo-summary-1\\\\\\\",\\\\\\\"title\\\\\\\":\\\\\\\"Public summary\\\\\\\",\\\\\\\"detail\\\\\\\":\\\\\\\"Checked the supplied component contracts and preserved the manual marker.\\\\\\\",\\\\\\\"status\\\\\\\":\\\\\\\"done\\\\\\\",\\\\\\\"open\\\\\\\":true}]}\\\"},\\\"description\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"Demo data — only the supplied public summary is rendered.\\\"},\\\"title\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"Public summary (demo)\\\"}},\\\"slots\\\":{}}\"},{\"id\":\"comp-plan\",\"kind\":\"component\",\"definitionId\":\"vict.ai.plan\",\"children\":[],\"childCount\":0,\"sourcePreview\":\"{\\\"kind\\\":\\\"component\\\",\\\"id\\\":\\\"comp-plan\\\",\\\"definitionId\\\":\\\"vict.ai.plan\\\",\\\"revision\\\":\\\"1\\\",\\\"props\\\":{\\\"data\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"{\\\\\\\"version\\\\\\\":1,\\\\\\\"steps\\\\\\\":[{\\\\\\\"id\\\\\\\":\\\\\\\"demo-plan-review\\\\\\\",\\\\\\\"title\\\\\\\":\\\\\\\"Review completed\\\\\\\",\\\\\\\"detail\\\\\\\":\\\\\\\"Sample layout review marked complete (demo).\\\\\\\",\\\\\\\"status\\\\\\\":\\\\\\\"done\\\\\\\",\\\\\\\"open\\\\\\\":true},{\\\\\\\"id\\\\\\\":\\\\\\\"demo-plan-device\\\\\\\",\\\\\\\"title\\\\\\\":\\\\\\\"Device verification pending\\\\\\\",\\\\\\\"detail\\\\\\\":\\\\\\\"Example follow-up, intentionally not run (demo).\\\\\\\",\\\\\\\"status\\\\\\\":\\\\\\\"pending\\\\\\\",\\\\\\\"open\\\\\\\":false}]}\\\"},\\\"description\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"Simulated plan — nothing was executed.\\\"},\\\"title\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":… [truncated; use source pages]\"},{\"id\":\"comp-queue\",\"kind\":\"component\",\"definitionId\":\"vict.ai.queue\",\"children\":[],\"childCount\":0,\"sourcePreview\":\"{\\\"kind\\\":\\\"component\\\",\\\"id\\\":\\\"comp-queue\\\",\\\"definitionId\\\":\\\"vict.ai.queue\\\",\\\"revision\\\":\\\"1\\\",\\\"props\\\":{\\\"completedOpen\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":false},\\\"data\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"{\\\\\\\"version\\\\\\\":1,\\\\\\\"steps\\\\\\\":[{\\\\\\\"id\\\\\\\":\\\\\\\"demo-queue-review\\\\\\\",\\\\\\\"title\\\\\\\":\\\\\\\"Pending review: review desk layout (sample)\\\\\\\",\\\\\\\"detail\\\\\\\":\\\\\\\"Waiting in the demo queue.\\\\\\\",\\\\\\\"status\\\\\\\":\\\\\\\"pending\\\\\\\",\\\\\\\"open\\\\\\\":true [Details truncated for the bounded trace. Read current source for complete facts.]"
+    - paragraph: Observe preview
+    - list:
+      - text: Observe preview started · running
+      - generic: tool-start studio_screen_observe 1099215 ms since turn start
+      - text: Observed actual rendered appearance · completed
+      - generic: "observation studio_screen_observe 1112724 ms since turn start {\"ok\":true,\"evidence\":\"observed-appearance\",\"observation\":\"**Visible (direct observations):**\\n- Bold navy heading \\\"Foundation Public Run Review\\\" with gray intro text below; both fully readable.\\n- Pill-shaped tab bar shows three triggers: \\\"Overview\\\" rendered as an active dark-navy pill with white text; \\\"Diagnostics\\\" and \\\"Context\\\" appear as plain labels.\\n- \\\"Tab content\\\" label above a white bordered card containing \\\"Demo transcript (sample),\\\" the subline \\\"Simulated messages only — no provider was contacted.,\\\" a right-aligned pale-blue bubble (\\\"Sample request… (demo data)\\\"), a copy icon, and a left-aligned reply line \\\"Sample reply: one compact correction is ready. (demo data).\\\"\\n- Narrow single-column fit with generous, even padding; no horizontal overflow or overlap.\\n\\n**Clipping/limits:**\\n- The card is cut off at the bottom edge of the viewport; the reply area is only partially visible.\\n- Diagnostics/Context panel content is not observable, so tab switching cannot be verified.\",\"metadata\":{\"cursor\":{\"documentId\":\"screen-a775512c-f14a-4c5b-ab16-d054d5f92d7c\",\"revision\":\"r1#12\",\"digest\":\"02c1a4327a3337d79ae74072c3f50fcd70edcdac576962d9c8dcb6bd30400676\",\"epoch\":\"171222dd-969e-4caa-8c0b-1dd8cd75fb13\"},\"capturedAt\":\"2026-10-28T17:16:42.951Z\",\"viewport\":{\"width\":668,\"height\":528,\"scrollLeft\":0,\"scrollTop\":0,\"devicePixelRatio\":1.25},\"image\":{\"width\":652,\"height\":528,\"sourceWidth\":652,\"sourceHeight\":1333,\"offsetLeft\":0,\"offsetTop\":0,\"cropped\":true},\"evidence\":{\"workspaceView\":\"design\",\"viewportModel\":\"isolated-viewport\",\"ownedOverlays\":0,\"targets\":[{\"nodeId\":\"screen\",\"part\":\"root\",\"bounds\":[0,0,652,1332.35],\"visible\":true,\"visibilityReason\":\"visible\",\"styles\":{\"color\":\"rgb(36, 48, 71)\",\"background-color\":\"rgb(255, 255, 255)\",\"position\":\"static\",\"top\":\"auto\",\"padding-top\":\"40px\",\"overflow\":\"visible\",\"font-size\":\"14px\",\"z-index\":\"auto\"}},{\"nodeId\":\"desk-h1\",\"part\":\"root\",\"bounds\":[40,40,572,33],\"visible\":true,\"visibilityReason\":\"visible\",\"styles\":{\"color\":\"rgb(36, 48, 71)\",\"background-color\":\"rgba(0, 0, 0, 0)\",\"position\":\"static\",\"top\":\"auto\",\"padding-top\":\"0px\",\"overflow\":\"visible\",\"font-size\":\"22px\",\"z-index\":\"auto\"}},{\"nodeId\":\"desk-h1-text\",\"part\":\"root\",\"bounds\":[0,0,0,0],\"visible\":false,\"visibilityReason\":\"hidden\",\"styles\":{\"color\":\"rgb(36, 48, 71)\",\"background-color\":\"rgba(0, 0, 0, 0)\",\"position\":\"static\",\"top\":\"auto\",\"padding-top\":\"0px\",\"overflow\":\"visible\",\"font-size\":\"22px\",\"z-index\":\"auto\"}},{\"nodeId\":\"desk-intro\",\"part\":\"root\",\"bounds\":[40,93,572,39],\"visible\":true,\"visibilityReason\":\"visible\",\"styles\":{\"color\":\"rgb(95, 111, 143)\",\"background-color\":\"rgba(0, 0, 0, 0)\",\"position\":\"static\",\"top\":\"auto\",\"padding-top\":\"0px\",\"overflow\":\"visible\",\"font-size\":\"13px\",\"z-index\":\"auto\"}},{\"nodeId\":\"desk-intro-text\",\"part\":\"root\",\"bounds\":[0,0,0,0],\"visible\":false,\"visibilityReason\":\"hidden\",\"styles\":{\"color\":\"rgb(95, 111, 143)\",\"background-color\":\"rgba(0, 0, 0, 0)\",\"position\":\"static\",\"top\":\"auto\",\"padding-top\":\"0px\",\"overflow\":\"visible\",\"font-size\":\"13px\",\"z-index\":\"auto\"}},{\"nodeId\":\"tabs-desk\",\"part\":\"root\",\"bounds\":[40,152,572,1140.35],\"visible\":true,\"visibilityReason\":\"visible\",\"styles\":{\"color\":\"rgb(36, 48, 71)\",\"background-color\":\"rgba(0, 0, 0, 0)\",\"position\":\"static\",\"top\":\"auto\",\"padding-top\":\"0px\",\"overflow\":\"visible\",\"font-size\":\"14px\",\"z-index\":\"auto\"}}]},\"preview\":{\"mode\":\"design\",\"fingerprint\":\"c550671aa66e88b6614fc6d9089d276c46d6a2d5e4e6c780472bdb33f1d298a1\",\"selection\":\"screen-a775512c-f14a-4c5b-ab16-d054d5f92d7c|screen\"}},\"revalidatedAt\":\"2026-10-28T17:16:55.344Z\",\"validation\":\"same-source-preview-viewport-and-image-bytes-after-inference\",\"imageDigest\":\"ad1e4548151f582c2dd5a18db13aa8f0d9acf7c9c0ac653e17fe2e52f1f1ae0a\",\"confirmedImageDigest\":\"ad1e4548151f582c2dd5a18db13aa8f0d9acf7c9c0ac653e17fe2e52f1f1ae0a\",\"imageComparison\":\"sha256-identical\",\"imageComparisonScope\":\"within-this-observation-before-a [Details truncated for the bounded trace. Read current source for complete facts.]"
+    - heading "Sanitized exchanges" [level=4]
+    - paragraph: Compact previews remain in the conversation. Open a retained original page here; this never invokes a tool again.
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result · bounded original is partial
+    - button "Open first page"
+    - paragraph: Characters 6000–8908 of 8908
+    - generic: "evision\": \"3\", \"label\": \"Prompt input with attachments\", \"family\": \"ai\", \"category\": \"chat\", \"eligibility\": { \"kind\": \"standalone\" }, \"digest\": \"afc0831189731b71e769d20aca8bdf39029080c6c3a44d7b59ef7fe98155339e\", \"packageName\": \"@victframework/ui-ai-svelte\" }, { \"id\": \"vict.ai.queue\", \"revision\": \"1\", \"label\": \"Queue\", \"family\": \"ai\", \"category\": \"public-activity\", \"eligibility\": { \"kind\": \"standalone\" }, \"digest\": \"536e31b71608086a2a155871b9e541e39f43afc95fef834837699d76243dc636\", \"packageName\": \"@victframework/ui-ai-svelte\" }, { \"id\": \"vict.ai.reasoning\", \"revision\": \"1\", \"label\": \"Reasoning\", \"family\": \"ai\", \"category\": \"public-activity\", \"eligibility\": { \"kind\": \"standalone\" }, \"digest\": \"59658d30db7ed6cb24567e4f1174125cf8f18295346177f6da2dbae70c119d1f\", \"packageName\": \"@victframework/ui-ai-svelte\" }, { \"id\": \"vict.ai.sources\", \"revision\": \"1\", \"label\": \"Sources\", \"family\": \"ai\", \"category\": \"public-activity\", \"eligibility\": { \"kind\": \"standalone\" }, \"digest\": \"be04b9c1106b974131a13c8b4f7a96b18005c91ae3026ff88a05e565346447fb\", \"packageName\": \"@victframework/ui-ai-svelte\" } ], \"total\": 28, \"offset\": 0, \"nextOffset\": 20, \"turnProgress\": { \"applied\": 0, \"metrics\": { \"toolCalls\": 2, \"completedCalls\": 1, \"refusedCalls\": 0, \"recoveryAttempts\": 0, \"toolElapsedMs\": 36, \"providerRequests\": 1, \"visionRequests\": 0, \"acknowledgementMs\": 0, \"confirmedEdits\": 0, \"usage\": { \"inputTokens\": 11038, \"outputTokens\": 2475, \"totalTokens\": 13513 }, \"categories\": { \"knowledge\": 1, \"source\": 1, \"edit\": 0, \"observe\": 0, \"other\": 0 }, \"elapsedMs\": 65781, \"toolActiveMs\": 36, \"outsideToolMs\": 65745, \"modelSteps\": null, \"cost\": null }, \"retainedKnowledge\": { \"scope\": \"Complete contract bodies delivered in this turn only; reuse still requires their content to remain available in model context. Source facts are never cached knowledge.\", \"complete\": [], \"partialCount\": 0 }, \"visualEvidence\": { \"regions\": [], \"currentSourceObservations\": 0, \"scope\": \"Captured regions only; source freshness does not establish current runtime/viewport freshness or offscreen/interaction coverage.\", \"interactionsVerified\": false }, \"evidence\": \"Host receipt-derived totals include all acknowledged transactions, including cleanup. Outside-tool time is waiting/generation/transport/host overhead, not measured provider latency. Captured regions do not establish full-page or interaction coverage.\" } }"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Edit screen · input
+    - button "Open first page"
+    - paragraph: Edit screen · result
+    - button "Open first page"
+    - paragraph: Edit screen · input
+    - button "Open first page"
+    - paragraph: Edit screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Edit screen · input
+    - button "Open first page"
+    - paragraph: Edit screen · result
+    - button "Open first page"
+    - paragraph: Edit screen · input
+    - button "Open first page"
+    - paragraph: Edit screen · result
+    - button "Open first page"
+    - paragraph: Edit screen · input
+    - button "Open first page"
+    - paragraph: Edit screen · result
+    - button "Open first page"
+    - paragraph: Edit screen · input
+    - button "Open first page"
+    - paragraph: Edit screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Edit screen · input
+    - button "Open first page"
+    - paragraph: Edit screen · result
+    - button "Open first page"
+    - paragraph: Edit screen · input
+    - button "Open first page"
+    - paragraph: Edit screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Edit screen · input
+    - button "Open first page"
+    - paragraph: Edit screen · result
+    - button "Open first page"
+    - paragraph: Edit screen · input
+    - button "Open first page"
+    - paragraph: Edit screen · result
+    - button "Open first page"
+    - paragraph: Observe preview · input
+    - button "Open first page"
+    - paragraph: Observe preview · result · bounded original is partial
+    - button "Open first page"
+    - paragraph: Edit screen · input
+    - button "Open first page"
+    - paragraph: Edit screen · result
+    - button "Open first page"
+    - paragraph: Edit screen · input
+    - button "Open first page"
+    - paragraph: Edit screen · result
+    - button "Open first page"
+    - paragraph: Edit screen · input
+    - button "Open first page"
+    - paragraph: Edit screen · result
+    - button "Open first page"
+    - paragraph: Edit screen · input
+    - button "Open first page"
+    - paragraph: Edit screen · result
+    - button "Open first page"
+    - paragraph: Edit screen · input
+    - button "Open first page"
+    - paragraph: Edit screen · result
+    - button "Open first page"
+    - paragraph: Edit screen · input
+    - button "Open first page"
+    - paragraph: Edit screen · result
+    - button "Open first page"
+    - paragraph: Edit screen · input
+    - button "Open first page"
+    - paragraph: Edit screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Edit screen · input
+    - button "Open first page"
+    - paragraph: Edit screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Observe preview · input
+    - button "Open first page"
+    - paragraph: Observe preview · result · bounded original is partial
+    - button "Open first page"
+    - heading "Connection record" [level=4]
+    - paragraph: VICT turn turn-2eb2717d-78b9-49d3-8f4e-42baed1a7e29 · profile v1_ad446303f24a2495f602057ffb6bac241fa4cfd10f4fdfcaa8fc31d0f52e2596
+- separator "Chat width"
+- main:
+  - button "Toggle Chat drawer" [expanded]:
+  - group "Workspace mode":
+    - button "Design"
+    - button "Interact" [pressed]
+    - button "Structure"
+  - button "Toggle Document and Selection drawer":
+  - iframe:
+    - generic "Screen canvas":
+      - main "Foundation Public Run Review":
+        - heading "Review desk heading" [level=1]:
+          - generic: Foundation Public Run Review
+        - paragraph:
+          - generic: Demo review desk — thirteen public VICT AI compositions. Every record here is simulated demonstration data; nothing is executed.
+        - tablist "Review sections":
+          - tab "Overview"
+          - tab "Diagnostics"
+          - tab "Context" [selected]
+        - tabpanel "Context":
+          - heading "Demo context usage — demonstration budget, not actual token/provider usage" [level=3]:
+            - generic: Demo context usage — demonstration budget, not actual token/provider usage
+          - button "42% context"
+          - heading "Example files (demo)" [level=3]:
+            - generic: Example files (demo)
+          - button "review.ts":
+            - text: review.ts
+          - button "README.md":
+            - text: README.md
+          - generic: "Local intent — selected file (demo):"
+          - generic: Demo checkpoint — local restore intent only
+          - generic: "Restore stays intent-only here: no host restore binding exists, so nothing is restored and no history changes."
+          - 'button "Populate local draft: apply the compact correction to the review desk layout (demo)"'
+          - generic: "Local intent — draft populated by the suggestion (demo):"
+          - 'button "Model: Desk preview (local only)"':
+            - text: Desk preview (local only)
+          - generic: Model selection is a local preview choice only — it never changes or contacts the real provider.
+- contentinfo:
+  - status: Align terminal/subagent status with adapter enums, numeric context demo breakdown with explicit demonstration-budget wording, and remove three leftover seed paragraphs · agent edit · unsaved
+- generic: Designer — VICT Studio

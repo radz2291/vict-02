@@ -7,6 +7,15 @@ export interface ConversationMessage {
   activity?: readonly ConversationActivity[];
   /** Ordered host observations and text. When present this replaces the legacy activity grouping. */
   events?: readonly ConversationEvent[];
+  /** Host-only lifecycle projection, like busy/transport callbacks, not authored
+   * transcript data or a canonical prop. Hosts supply receipt-derived status and
+   * terminal text IDs from actual stream boundaries; prose is never classified.
+   * Omit to preserve the public authored transcript's expanded presentation. */
+  hostTurn?: {
+    state: 'running' | 'completed' | 'failed' | 'cancelled' | 'interrupted';
+    statusText: string;
+    finalTextEventIds: readonly string[];
+  };
 }
 /** Sanitized host-supplied tool evidence. This is presentation, never execution authority. */
 export interface ConversationToolPayload {

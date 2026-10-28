@@ -1,0 +1,55 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Foundation Public Run Review"
+  - generic: ✓ Saved
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- main:
+  - button "Toggle Chat drawer":
+  - group "Workspace mode":
+    - button "Design"
+    - button "Interact" [pressed]
+    - button "Structure"
+  - button "Toggle Document and Selection drawer":
+  - iframe [active]:
+    - generic "Screen canvas":
+      - main "Foundation Public Run Review":
+        - heading "Review desk heading" [level=1]:
+          - generic: Foundation Public Run Review
+        - paragraph:
+          - generic: Demo review desk — thirteen public VICT AI compositions. Every record here is simulated demonstration data; nothing is executed.
+        - tablist "Review sections":
+          - tab "Overview"
+          - tab "Diagnostics"
+          - tab "Context" [active] [selected]
+        - tabpanel "Context":
+          - paragraph:
+            - generic: Tab content
+          - heading "Demo context usage (sample records)" [level=3]:
+            - generic: Demo context usage (sample records)
+          - alert: "Invalid context presentation data: data.breakdown[0].value: expected finite nonnegative number"
+          - heading "Example files (demo)" [level=3]:
+            - generic: Example files (demo)
+          - button "review.ts":
+            - text: review.ts
+          - button "README.md":
+            - text: README.md
+          - generic: "Local intent — selected file (demo):"
+          - generic: Demo checkpoint — local restore intent only
+          - generic: "Restore stays intent-only here: no host restore binding exists, so nothing is restored and no history changes."
+          - 'button "Populate local draft: apply the compact correction to the review desk layout (demo)"'
+          - generic: "Local intent — draft populated by the suggestion (demo):"
+          - 'button "Model: Desk preview (local only)"':
+            - text: Desk preview (local only)
+          - generic: Model selection is a local preview choice only — it never changes or contacts the real provider.
+- contentinfo:
+  - status: Interact mode · simulated behavior, no live effects.
+- generic: Designer — VICT Studio
