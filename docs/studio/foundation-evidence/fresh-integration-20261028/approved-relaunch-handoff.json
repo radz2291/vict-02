@@ -1,0 +1,34 @@
+{
+  "candidate": "20fb566221a13eb7c68653f299f45c6222666c69",
+  "evidenceHeadAtStart": "77e29367cde4c61e4b6a976a569270f39aa843c2",
+  "ownerApproval": "2026-10-28 10:42 UTC: go; bounded same-address rebuild/relaunch",
+  "verifiedLauncherPid": 22564,
+  "verifiedChildPid": 20016,
+  "verifiedListener": "127.0.0.25:5626 owned by 20016",
+  "launcherParentPid": 3556,
+  "launcherParentQuery": "not present",
+  "environmentRequirement": "Original outside launch context/script with existing credential references; not supplied or found in inspected Temp-root/task-2 locations",
+  "credentialsReadOrPrinted": false,
+  "processesStopped": [],
+  "serverRestarted": false,
+  "globalPoliciesChanged": false,
+  "stagedMastraBuild": {
+    "result": "PASS",
+    "output": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-string-amendment-build-20fb566\\mastra-dist",
+    "command": "node node_modules/typescript/bin/tsc -p packages/mastra/tsconfig.json --outDir <staged>/mastra-dist --tsBuildInfoFile <staged>/mastra.tsbuildinfo",
+    "adapterRevision": "4",
+    "artifacts": [
+      {
+        "sha256": "cd2f7a5eae4bbea49105e3b9d381877df1c15646159e6acf78dd9f869784fe38",
+        "file": "presentation.js"
+      },
+      {
+        "sha256": "503448eeed52e791ec323995ca59fa6dfe9d1479cedfc2e9cca08f6ba100c3ac",
+        "file": "compatibility.js"
+      }
+    ]
+  },
+  "studioBuild": "Not run against live output; dependent on safe original-environment handoff",
+  "relaunchStatus": "BLOCKED: original launch environment cannot currently be safely reused",
+  "nextAction": "Outside launcher supplies/reuses original launch context, reverify pair before stop; then approved rebuild/relaunch at unchanged5626"
+}
