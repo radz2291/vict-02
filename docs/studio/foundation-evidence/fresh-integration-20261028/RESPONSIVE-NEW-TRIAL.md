@@ -9,3 +9,19 @@ Failed observations are preserved: forced background Notes focus activates autom
 The shared focus-capture repair has 25 independent cases passing. FirstVisit revision2 exposes the existing exact-key reset via a shared Button; seven builder lifecycle cases and one independent combined Studio registry probe pass, preserving revision1 and all nine older pins. Both repairs still require production load and native replay. The saved initial app must remain retained when the actual agent performs the bounded follow-up repair.
 
 Physical touch, mobile keyboard/safe area, heard audio and historical responsive full-source recovery remain unverified. Overall foundation acceptance remains held.
+
+## Actual correction and native replay
+
+The correction completed eight acknowledged edit batches, one failed edit,26successful reads, five failed reads and two successful observations. Original terminal text and complete53-node source are retained before save and at savedr1.r3. The exact manually added marker desk-owner-keep-20261028 survives, and the same notesDraft identity and live typed value survive replacement of the native field by the public Rhea input recipe. This is actual-agent continuation of the current manually edited source, not a rebuilt substitute.
+
+Native replay after correction:
+
+- Phone390 measures375client/375scroll width, root padding16px, heading20px and welcome-body padding14px. Wide root1058/1058 and navigation1001.6px; phone navigation343.2px. The prior horizontal overflow and zero-width navigation failure are corrected for these measured containers.
+- Actual Rhea Notes control has class vict-rhea-input and retains its draft. Tablet753/753, Phone375/375 and rotated hosted-container513/513 retain the same draft. These are desktop hosted-container measurements, not physical-device proof.
+- Real native select values draft/ready/empty produce two Draft rows, one Ready row and all three rows respectively; the filtered-list search query is actually empty for All. ArrowDown selects Draft with focus retained. Native option text/label and pixels are correct; the DOM snapshot's omitted option names did not establish a control defect. The diagnostic screenshot named native-select-label-before is not failed-label evidence.
+- Narrow navigation switches Notes/Projects. Selecting Aster then opening the real Drawer shows Aster details,340px wide/528px high with focus inside. Escape closes and returns trigger focus; returning to Notes retains the draft.
+- Same application foundation-responsive-desk/campaign foundation-responsive-20261028-r1/resetKey r1: dismissal hides content, deliberate reopen works, reload after dismissal remains hidden, three repeated reset/dismiss cycles show content, and reload after reset shows content. Reset stays available after dismissal. No private storage mutation or global clear was used.
+
+Foreign-key isolation, saved Run and broader nested/multiple-owner/capture checks remain distinct pending demonstrations. The final response on the old prompt is still technical and too long despite two sentences; it is not an AR-05 pass. The separately reviewed prompt/discovery candidate5bf2311 was subsequently built and loaded for a new actual public-AI trial; source-only review cannot establish its model compliance.
+
+Controlled browser reload clears the current in-page conversation/Details state; the complete terminal receipts were retained in this evidence directory before reload. Original-page expiry was not tested through an absent reference and is not claimed. A later same-page multi-turn/expiry challenge is still needed; no durable transcript or original-source recovery claim follows from the retained local evidence files.

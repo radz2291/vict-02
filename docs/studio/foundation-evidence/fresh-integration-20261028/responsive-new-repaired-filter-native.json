@@ -1,0 +1,29 @@
+[
+  {
+    "choice": "draft",
+    "selection": {
+      "label": "Draft",
+      "value": "draft"
+    },
+    "items": "Aster — Draft\nCedar — Draft",
+    "query": "draft"
+  },
+  {
+    "choice": "ready",
+    "selection": {
+      "label": "Ready",
+      "value": "ready"
+    },
+    "items": "Birch — Ready",
+    "query": "ready"
+  },
+  {
+    "choice": "",
+    "selection": {
+      "label": "All",
+      "value": ""
+    },
+    "items": "Aster — Draft\nBirch — Ready\nCedar — Draft",
+    "query": ""
+  }
+]

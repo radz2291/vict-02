@@ -1,0 +1,29 @@
+[
+  {
+    "preset": "Tablet · 768",
+    "root": {
+      "padding": "28px",
+      "scrollWidth": 753,
+      "width": 753
+    },
+    "draft": "Responsive draft kept through drawer and resize"
+  },
+  {
+    "preset": "Phone · 390",
+    "root": {
+      "padding": "16px",
+      "scrollWidth": 375,
+      "width": 375
+    },
+    "draft": "Responsive draft kept through drawer and resize"
+  },
+  {
+    "preset": "Phone rotated",
+    "root": {
+      "padding": "16px",
+      "scrollWidth": 513,
+      "width": 513
+    },
+    "draft": "Responsive draft kept through drawer and resize"
+  }
+]

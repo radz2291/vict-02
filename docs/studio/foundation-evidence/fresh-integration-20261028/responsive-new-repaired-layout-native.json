@@ -1,0 +1,33 @@
+{
+  "wide": {
+    "background": "rgb(247, 245, 240)",
+    "color": "rgb(36, 48, 71)",
+    "input": {
+      "border": "16px",
+      "class": "vict-input svelte-1pfyrxq",
+      "font": "14px",
+      "value": ""
+    },
+    "navWidth": 1001.6000366210938,
+    "padding": "28px",
+    "scrollWidth": 1058,
+    "width": 1058
+  },
+  "narrow": {
+    "bodyPadding": "14px",
+    "navWidth": 343.20001220703125,
+    "padding": "16px",
+    "rectWidth": 375.2000122070313,
+    "scrollWidth": 375,
+    "titleFont": "20px",
+    "width": 375
+  },
+  "notes": {
+    "class": "vict-rhea-input uv-27b057e1-notesField-control",
+    "font": "16px",
+    "radius": "16px",
+    "value": "Retained desk draft — native verification",
+    "width": 343.20001220703125
+  },
+  "wideInputNote": "Generic first input in wide record belongs inactive Projects/search; named Notes control measured separately."
+}

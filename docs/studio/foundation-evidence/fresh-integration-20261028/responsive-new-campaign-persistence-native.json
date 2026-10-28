@@ -1,0 +1,34 @@
+{
+  "applicationId": "foundation-responsive-desk",
+  "campaignId": "foundation-responsive-20261028-r1",
+  "resetKey": "r1",
+  "checks": [
+    {
+      "step": "dismiss",
+      "welcomeVisible": 0,
+      "reopenVisible": true,
+      "resetAvailable": true
+    },
+    {
+      "step": "reopen",
+      "welcomeVisible": 1
+    },
+    {
+      "step": "reload-after-dismiss",
+      "welcomeVisible": 0,
+      "reopenVisible": true
+    },
+    {
+      "step": "same-key-reset-0",
+      "welcomeVisible": 1
+    },
+    {
+      "step": "same-key-reset-1",
+      "welcomeVisible": 1
+    },
+    {
+      "step": "same-key-reset-2",
+      "welcomeVisible": 1
+    }
+  ]
+}

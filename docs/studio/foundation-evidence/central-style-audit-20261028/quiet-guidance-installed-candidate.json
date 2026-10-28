@@ -1,0 +1,25 @@
+{
+  "SourceCandidate": "5bf2311c64dcf47e7f1df39524aa3c946d572556",
+  "OutputFiles": 306,
+  "InstalledHashMismatches": 0,
+  "Backup": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-studio-build-5bf2311\\pre-install-live-build-20261028T165609648Z",
+  "StoppedChild": 2652,
+  "StoppedLauncher": 16212,
+  "Started": {
+    "LauncherPid": 19412,
+    "Address": "http://127.0.0.25:5626",
+    "Model": "zai/glm-5.3-flash",
+    "Configuration": "existing launch-agent.mjs loader",
+    "Verification": "Check the listener and supported internal browser; a PID alone is not reachability proof."
+  },
+  "ProviderRequestsDuringInstall": 0,
+  "OutputManifestSHA256": "71ef147e897db11bb38157d6e599fa2130019b23e169943ccb4e0015042a8a28",
+  "SourceManifestSHA256": "35074df05aeb6b3e039ca099702f09b58d4c4b02621ed5e5244eeb2449d84855",
+  "BrowserVerification": {
+    "NormalExistingLogin": true,
+    "DesignerReached": true,
+    "SavedResponsiveR1R3Reopened": true,
+    "DismissedWelcomePersisted": true,
+    "ErrorLogBytes": 0
+  }
+}
