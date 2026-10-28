@@ -36,6 +36,8 @@
     if(props.dismissible===false||!layer?.contains(event.target as Node))event.preventDefault();
   }
   const panelStyle=$derived(`position:absolute;transform:none;padding:0;margin:0;max-width:100%;max-height:100%;min-width:0;${side==='left'?`inset:0 auto 0 0;width:${size}px;height:100%;`:side==='right'?`inset:0 0 0 auto;width:${size}px;height:100%;`:side==='top'?`inset:0 0 auto 0;width:100%;height:${size}px;`:`inset:auto 0 0 0;width:100%;height:${size}px;`}`);
+  // Keep renderer-owned dynamic binding variables alongside sheet geometry.
+  const composedPanelStyle=$derived(`${presentation?.target('panel').style??''};${panelStyle}`);
 </script>
 
 <span {...patternTarget(presentation,'root','vict-drawer-root')}>
@@ -48,7 +50,7 @@
     {#if open}
       <div class="vict-drawer-layer" data-ui-pattern-overlay="drawer" bind:this={layer} role="presentation" onclick={event=>{if(event.target===event.currentTarget&&props.dismissible!==false)io?.emit('openChange',false);}}>
         <Dialog.Overlay {...patternTarget(presentation,'backdrop','vict-drawer-backdrop')} onclick={()=>{if(props.dismissible!==false)io?.emit('openChange',false);}}/>
-        <Dialog.Content {...patternTarget(presentation,'panel','vict-drawer-panel')} bind:ref={panel} id={panelId} data-side={side} style={panelStyle} aria-label={title} preventScroll={false} onOpenAutoFocus={focusOpen} onCloseAutoFocus={focusClose} onEscapeKeydown={event=>{if(props.dismissible===false)event.preventDefault();}} onInteractOutside={outside}>
+        <Dialog.Content {...patternTarget(presentation,'panel','vict-drawer-panel')} bind:ref={panel} id={panelId} data-side={side} style={composedPanelStyle} aria-label={title} preventScroll={false} preventOverflowTextSelection={false} onOpenAutoFocus={focusOpen} onCloseAutoFocus={focusClose} onEscapeKeydown={event=>{if(props.dismissible===false)event.preventDefault();}} onInteractOutside={outside}>
           <header {...presentation?.target('header')}><Dialog.Title>{title}</Dialog.Title><Dialog.Close class="vict-btn vict-btn--secondary" aria-label="Close drawer">×</Dialog.Close></header>
           <div {...patternTarget(presentation,'body','vict-drawer-body')}>{@render io?.slots?.body?.()}</div>
           {#if io?.slots?.footer}<footer {...presentation?.target('footer')}>{@render io.slots.footer()}</footer>{/if}

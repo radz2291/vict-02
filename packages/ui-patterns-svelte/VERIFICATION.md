@@ -39,3 +39,26 @@ Final focused checks:
 Retained current-run failures: initial sandbox test collection failed on a temporary-cache EPERM rename with zero tests collected; one permitted native rerun completed. Initial type check exposed the old type-only renderer alias when media began importing the actual public Button; corrected within the patterns type configuration. A new focus regression initially failed because Happy DOM did not account for a disabled ancestor fieldset; explicit standards-aligned fieldset/legend handling repaired it before final PASS. No assertion was removed or weakened.
 
 Remaining: integrated browser sheet geometry/stacking, current app/native capture, actual-agent output, screen-reader/touch-device behavior, package consumer rebuild and independent exact-candidate challenge. This builder does not grant architecture acceptance or owner acceptance.
+
+## 2026-10-28 independent ownership FAIL and bounded repair
+
+Independent challenge of `710886572750b00d7f716b8a93f547b88406d872` found that actual Bits Dialog Content is document-modal, while the authored Drawer promises an owned inline application boundary. The earlier 25 passing checks did not establish sibling-application isolation. **Complete Drawer conformance is FAIL; the architectural resolution is HELD for owner decision.**
+
+Six new direct component integration cases in `test/drawer-isolation.test.ts` use the same public Dialog implementation in two application viewports sharing one document. Before repair: **5 FAIL / 1 PASS**, `Temp/vict-patterns-drawer-isolation-before.log`. Two ordinary repairs were then applied: preserve the renderer's dynamic `target('panel').style` variables when adding sheet geometry, and set the documented `preventOverflowTextSelection=false` to prevent body user-select mutation. After those bounded repairs: **3 FAIL / 3 PASS**, `Temp/vict-patterns-drawer-isolation-after-bounded.log`.
+
+| Challenge | Before | After bounded repair |
+| --- | --- | --- |
+| Deliberate focus into sibling application remains there | FAIL | FAIL |
+| Sibling Escape is not cancelled and does not close this drawer | FAIL | FAIL |
+| Owned Tab / Shift+Tab and Escape continue to work | PASS | PASS |
+| Dynamic panel binding variables update while sheet geometry remains | FAIL | PASS |
+| Owned pointer input does not mutate body scroll/user-select | FAIL | PASS |
+| Programmatic close does not return focus away from the sibling application | FAIL | FAIL |
+
+The existing 25 cases still PASS in the separate focused regression run `Temp/vict-patterns-drawer-bounded-regressions.log`; this is not a green full package suite because the three required ownership failures are retained as executable failing tests. No assertion was skipped or weakened. Package typecheck remains zero errors/five inherited renderer warnings (`Temp/vict-patterns-drawer-bounded-types.log`). These are DOM harness results, not native browser, actual-agent, device or owner-acceptance evidence.
+
+Installed public API limits were inspected before attempting a shared-adapter implementation. `trapFocus=false` disables both the document focus capture and the library's Tab loop. `escapeKeydownBehavior='ignore'` does not disable the document Escape listener: installed `use-escape-layer.svelte.js` cancels the original event before checking the behavior. It therefore cannot be counted as untouched sibling Escape. No dependency code, private Bits imports, spoofed Root state, new shared adapter or shared index export was changed.
+
+The existing public `ui-svelte/Overlay.svelte` delegates to the same `Dialog.Content`; `OverlaySurface.svelte` traverses into that Overlay. `catalog/components/CatalogDialog.svelte` also delegates to the same Content in its runtime modal path. Reusing these unchanged carries the same global behavior. Its existing inline composition surface supplies presentation, not a complete owned focus/Escape contract.
+
+The owner decision is between (1) a small shared VICT owned-dialog mode that reuses established catalog presentation and public Bits Root/Trigger/Overlay/Title/Close, with an explicitly scoped content/focus/Tab/Escape adapter replacing Content only for that owned mode, or (2) a public upstream dependency extension for scope-aware Escape/focus-manager behavior while retaining actual Dialog.Content. The first is the smaller local correction; it still needs explicit content/ARIA wiring and independent ownership tests. The second retains more library internals but requires upstream/pinned dependency maintenance. Neither is implemented or implicitly accepted. Dependent production work is stopped pending the owner's choice.

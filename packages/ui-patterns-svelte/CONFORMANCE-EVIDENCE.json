@@ -1,5 +1,5 @@
 {
-  "status": "builder scoped checks PASS; integrated acceptance HELD",
+  "status": "Independent ownership FAIL at7108865; bounded ordinary repair only; architectural owner decision pending",
   "testedFiles": {
     "src/ActionButton.svelte": "404BAF44EE4F0701F772386A721E58A897CAC5B7BA1DFF0E671F6C0119CE976C",
     "src/Carousel.svelte": "59BF9C0F0A394139A4D1A6F8D163BFB6363D67791089A71FD853A1813F033853",
@@ -21,5 +21,43 @@
   },
   "browser": "not performed by this builder",
   "provider": "not invoked",
-  "independent": "pending"
+  "independent": "pending",
+  "priorBuilderStatus": "builder scoped checks PASS; integrated acceptance HELD",
+  "reviewedCandidateCommit": "710886572750b00d7f716b8a93f547b88406d872",
+  "ownershipChallenge": {
+    "before": {
+      "passed": 1,
+      "failed": 5,
+      "log": "Temp/vict-patterns-drawer-isolation-before.log"
+    },
+    "afterBoundedRepair": {
+      "passed": 3,
+      "failed": 3,
+      "log": "Temp/vict-patterns-drawer-isolation-after-bounded.log"
+    },
+    "remaining": [
+      "sibling focus capture",
+      "sibling Escape cancellation/close",
+      "programmatic close focus ownership"
+    ],
+    "ordinaryRepairs": [
+      "merge dynamic panel target style",
+      "preventOverflowTextSelection=false"
+    ],
+    "drawerSha256": "FE6DCBD9DEF42664B4A2BDB3A8D843440E00BE13C9F259AC4871BC4D7C644ADE",
+    "legacyRegression": {
+      "passed": 25,
+      "log": "Temp/vict-patterns-drawer-bounded-regressions.log"
+    },
+    "types": {
+      "inheritedWarnings": 5,
+      "errors": 0,
+      "log": "Temp/vict-patterns-drawer-bounded-types.log"
+    },
+    "fullPackageSuite": "FAIL: executable required ownership regressions retained",
+    "sharedAdapter": "not implemented; owner decision pending",
+    "dependencyChanges": "none",
+    "nativeBrowser": "not run",
+    "provider": "not invoked"
+  }
 }
