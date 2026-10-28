@@ -1,0 +1,64 @@
+{
+  "baseAtStart": "59212b031d49163f7e1ebc40088f6a8ab2ae1b1e",
+  "scope": "Owner/root-authorized bounded Embed lifecycle repair",
+  "verdict": "Builder targeted checks PASS; independent and browser proof pending",
+  "productEdits": [
+    "packages/ui-media-svelte/src/Embed.svelte"
+  ],
+  "testEdits": [
+    "packages/ui-media-svelte/test/EmbedHost.svelte",
+    "packages/ui-media-svelte/test/embed.svelte.test.ts"
+  ],
+  "descriptorOrPinChanged": false,
+  "parts": [
+    "root",
+    "frame"
+  ],
+  "preserved": [
+    "provider allowlist and URL builder",
+    "native titled lazy iframe",
+    "referrerpolicy/allow attributes",
+    "no execution authority",
+    "no cross-origin reads or fetch probes",
+    "no new Retry control"
+  ],
+  "newBehavior": [
+    "root aria-busy",
+    "initial status while awaiting frame load",
+    "measured10second delayed status without aborting request",
+    "native error alert and hidden failed frame",
+    "keyed source replacement plus event currentTarget/src fence",
+    "timer and active callback cleanup on load/error/source/policy/unmount"
+  ],
+  "checks": {
+    "types": "embed-svelte-types-recheck.log:0errors5inheritedwarnings",
+    "network": "Iframe page loading disabled by testconfig; no actual remote observation",
+    "existingPolicy": "embed-policy-regression.log:1passed5skipped",
+    "firstTypes": "embed-svelte-types.log:2test-only annotation errors; preserved and repaired",
+    "lifecycle": "embed-lifecycle-green-final.log:5passed",
+    "clockProbe": "embed-lifecycle-timer-probe.log:own delay had expired; simulated error added immediate HappyDOM task",
+    "original": "embed-lifecycle-red.log:4failed"
+  },
+  "sourceHashes": [
+    {
+      "path": "packages/ui-media-svelte/src/Embed.svelte",
+      "sha256": "44c0da9eca5df7cb07639f2b05035a6d3fe271909951e4b9a37876748276b74e"
+    },
+    {
+      "path": "packages/ui-media-svelte/test/EmbedHost.svelte",
+      "sha256": "563962f10b121f056493dbf993bbbbc3edc23b805802bb19339d46a665bd2ac0"
+    },
+    {
+      "path": "packages/ui-media-svelte/test/embed.svelte.test.ts",
+      "sha256": "6308adceb3ea95c3d0f1b083b6b73a7916a1e72715ff9dbfc0565e0cb351a120"
+    },
+    {
+      "path": "packages/ui-media-svelte/src/descriptors.ts",
+      "sha256": "d4c987263df1ebda0a24fdecda31da846a40b9a71fd04c846a998fc376de8523"
+    },
+    {
+      "path": "packages/ui-media-svelte/src/compatibility.json",
+      "sha256": "754cd1a1ca2d2b5e33fce44297a5d77c7c2f007c4148f5588fe9139e543ec3e3"
+    }
+  ]
+}

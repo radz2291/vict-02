@@ -1,0 +1,35 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation
+
+ Γ¥» packages/ui-media-svelte/test/assets.test.ts (16 tests | 1 failed | 15 skipped) 19ms
+     ├ù refuses unverifiable or substituted store bytes before exporting a portable archive 16ms
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ» Failed Tests 1 ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»
+
+ FAIL  packages/ui-media-svelte/test/assets.test.ts > verified managed reads shared by media renderers > refuses unverifiable or substituted store bytes before exporting a portable archive
+AssertionError: promise resolved "'{"schema":"vict.media-archive@1","assΓÇª'" instead of rejecting
+
+- Expected:
+Error {
+  "message": "rejected promise",
+}
+
++ Received:
+"{\"schema\":\"vict.media-archive@1\",\"assets\":[{\"schema\":\"vict.media-asset@1\",\"reference\":\"asset:sha256:f388f201d7953a74af99ae6fa6ea4cf831559769738b0a0a74c4adcd032c6fb7\",\"digest\":\"f388f201d7953a74af99ae6fa6ea4cf831559769738b0a0a74c4adcd032c6fb7\",\"name\":\"one.png\",\"mime\":\"image/png\",\"size\":68,\"createdAt\":\"2026-10-28T11:16:36.731Z\",\"base64\":\"iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+/nxoAAAAASUVORK5CYIM=\"}]}"
+
+ Γ¥» packages/ui-media-svelte/test/assets.test.ts:81:64
+     79|     const changed = asset.bytes.slice(); changed[changed.length - 1] =ΓÇª
+     80|     const corrupt = {...memoryAssetStore(), get: async () => ({...asseΓÇª
+     81|     await expect(exportMediaArchive(corrupt, [asset.reference])).rejecΓÇª
+       |                                                                ^
+     82|     const substituted = {...memoryAssetStore(), get: async () => assetΓÇª
+     83|     await expect(exportMediaArchive(substituted, ['asset:sha256:'+'0'.ΓÇª
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[1/1]ΓÄ»
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 15 skipped (16)
+   Start at  19:16:32
+   Duration  4.69s (transform 114ms, setup 0ms, import 177ms, tests 19ms, environment 3.86s)
+

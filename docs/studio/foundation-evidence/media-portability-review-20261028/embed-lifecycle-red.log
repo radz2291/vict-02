@@ -1,0 +1,134 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation
+
+DOMException [NotSupportedError]: Failed to load iframe page "https://www.youtube-nocookie.com/embed/abcdefghijk". Iframe page loading is disabled.
+    at HTMLIFrameElement.#loadPage (file:///C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/happy-dom/lib/nodes/html-iframe-element/HTMLIFrameElement.js:333:27)
+    at HTMLIFrameElement.[connectedToDocument] (file:///C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/happy-dom/lib/nodes/html-iframe-element/HTMLIFrameElement.js:230:23)
+    at HTMLIFrameElement.[connectedToNode] (file:///C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/happy-dom/lib/nodes/node/Node.js:801:53)
+    at HTMLDivElement.[connectedToNode] (file:///C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/happy-dom/lib/nodes/node/Node.js:793:58)
+    at HTMLDivElement.[insertBefore] (file:///C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/happy-dom/lib/nodes/node/Node.js:556:48)
+    at HTMLDivElement.[insertBefore] (file:///C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/happy-dom/lib/nodes/element/Element.js:1118:63)
+    at HTMLDivElement.[insertBefore] (file:///C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/happy-dom/lib/nodes/node/Node.js:515:50)
+    at HTMLDivElement.[insertBefore] (file:///C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/happy-dom/lib/nodes/element/Element.js:1118:63)
+    at HTMLDivElement.insertBefore (file:///C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/happy-dom/lib/nodes/node/Node.js:339:49)
+    at Function.before (file:///C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/happy-dom/lib/nodes/child-node/ChildNodeUtility.js:51:24)
+DOMException [NotSupportedError]: Failed to load iframe page "https://www.youtube-nocookie.com/embed/abcdefghijk". Iframe page loading is disabled.
+    at HTMLIFrameElement.#loadPage (file:///C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/happy-dom/lib/nodes/html-iframe-element/HTMLIFrameElement.js:333:27)
+    at HTMLIFrameElement.[connectedToDocument] (file:///C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/happy-dom/lib/nodes/html-iframe-element/HTMLIFrameElement.js:230:23)
+    at HTMLIFrameElement.[connectedToNode] (file:///C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/happy-dom/lib/nodes/node/Node.js:801:53)
+    at HTMLDivElement.[connectedToNode] (file:///C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/happy-dom/lib/nodes/node/Node.js:793:58)
+    at HTMLDivElement.[insertBefore] (file:///C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/happy-dom/lib/nodes/node/Node.js:556:48)
+    at HTMLDivElement.[insertBefore] (file:///C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/happy-dom/lib/nodes/element/Element.js:1118:63)
+    at HTMLDivElement.[insertBefore] (file:///C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/happy-dom/lib/nodes/node/Node.js:515:50)
+    at HTMLDivElement.[insertBefore] (file:///C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/happy-dom/lib/nodes/element/Element.js:1118:63)
+    at HTMLDivElement.insertBefore (file:///C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/happy-dom/lib/nodes/node/Node.js:339:49)
+    at Function.before (file:///C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/happy-dom/lib/nodes/child-node/ChildNodeUtility.js:51:24)
+DOMException [NotSupportedError]: Failed to load iframe page "https://www.youtube-nocookie.com/embed/abcdefghijk". Iframe page loading is disabled.
+    at HTMLIFrameElement.#loadPage (file:///C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/happy-dom/lib/nodes/html-iframe-element/HTMLIFrameElement.js:333:27)
+    at HTMLIFrameElement.[connectedToDocument] (file:///C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/happy-dom/lib/nodes/html-iframe-element/HTMLIFrameElement.js:230:23)
+    at HTMLIFrameElement.[connectedToNode] (file:///C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/happy-dom/lib/nodes/node/Node.js:801:53)
+    at HTMLDivElement.[connectedToNode] (file:///C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/happy-dom/lib/nodes/node/Node.js:793:58)
+    at HTMLDivElement.[insertBefore] (file:///C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/happy-dom/lib/nodes/node/Node.js:556:48)
+    at HTMLDivElement.[insertBefore] (file:///C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/happy-dom/lib/nodes/element/Element.js:1118:63)
+    at HTMLDivElement.[insertBefore] (file:///C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/happy-dom/lib/nodes/node/Node.js:515:50)
+    at HTMLDivElement.[insertBefore] (file:///C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/happy-dom/lib/nodes/element/Element.js:1118:63)
+    at HTMLDivElement.insertBefore (file:///C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/happy-dom/lib/nodes/node/Node.js:339:49)
+    at Function.before (file:///C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/happy-dom/lib/nodes/child-node/ChildNodeUtility.js:51:24)
+DOMException [NotSupportedError]: Failed to load iframe page "https://player.vimeo.com/video/123456". Iframe page loading is disabled.
+    at HTMLIFrameElement.#loadPage (file:///C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/happy-dom/lib/nodes/html-iframe-element/HTMLIFrameElement.js:333:27)
+    at HTMLIFrameElement.[onSetAttribute] (file:///C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/happy-dom/lib/nodes/html-iframe-element/HTMLIFrameElement.js:258:27)
+    at NamedNodeMap.[setNamedItem] (file:///C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/happy-dom/lib/nodes/element/NamedNodeMap.js:178:77)
+    at HTMLIFrameElement.setAttribute (file:///C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/happy-dom/lib/nodes/element/Element.js:594:73)
+    at set_attribute (C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/svelte/src/internal/client/dom/elements/attributes.js:194:11)
+    at set_attributes (C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/svelte/src/internal/client/dom/elements/attributes.js:470:5)
+    at C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/svelte/src/internal/client/dom/elements/attributes.js:515:18
+    at update_reaction (C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/svelte/src/internal/client/runtime.js:259:16)
+    at update_effect (C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/svelte/src/internal/client/runtime.js:490:18)
+    at Batch.#traverse (C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/svelte/src/internal/client/reactivity/batch.js:456:19)
+DOMException [NotSupportedError]: Failed to load iframe page "https://www.youtube-nocookie.com/embed/abcdefghijk". Iframe page loading is disabled.
+    at HTMLIFrameElement.#loadPage (file:///C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/happy-dom/lib/nodes/html-iframe-element/HTMLIFrameElement.js:333:27)
+    at HTMLIFrameElement.[connectedToDocument] (file:///C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/happy-dom/lib/nodes/html-iframe-element/HTMLIFrameElement.js:230:23)
+    at HTMLIFrameElement.[connectedToNode] (file:///C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/happy-dom/lib/nodes/node/Node.js:801:53)
+    at HTMLDivElement.[connectedToNode] (file:///C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/happy-dom/lib/nodes/node/Node.js:793:58)
+    at HTMLDivElement.[insertBefore] (file:///C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/happy-dom/lib/nodes/node/Node.js:556:48)
+    at HTMLDivElement.[insertBefore] (file:///C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/happy-dom/lib/nodes/element/Element.js:1118:63)
+    at HTMLDivElement.[insertBefore] (file:///C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/happy-dom/lib/nodes/node/Node.js:515:50)
+    at HTMLDivElement.[insertBefore] (file:///C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/happy-dom/lib/nodes/element/Element.js:1118:63)
+    at HTMLDivElement.insertBefore (file:///C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/happy-dom/lib/nodes/node/Node.js:339:49)
+    at Function.before (file:///C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/happy-dom/lib/nodes/child-node/ChildNodeUtility.js:51:24)
+ Γ¥» packages/ui-media-svelte/test/embed.svelte.test.ts (4 tests | 4 failed) 75ms
+     ├ù shows loading and clears it on a native load without claiming playback 36ms
+     ├ù reports a measured slow load and native failure without inventing a cause 8ms
+     ├ù resets for a new source and ignores the previous frame events/timer 22ms
+     ├ù cleans up on disabled policy and unmount, preserving the existing refusal 7ms
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ» Failed Tests 4 ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»
+
+ FAIL  packages/ui-media-svelte/test/embed.svelte.test.ts > native allowlisted embed lifecycle (offline events, not provider proof) > shows loading and clears it on a native load without claiming playback
+AssertionError: expected null to be 'true' // Object.is equality
+
+- Expected:
+"true"
+
++ Received:
+null
+
+ Γ¥» packages/ui-media-svelte/test/embed.svelte.test.ts:27:44
+     25|     expect(frame.getAttribute('loading')).toBe('lazy');
+     26|     expect(frame.getAttribute('referrerpolicy')).toBe('strict-origin-wΓÇª
+     27|     expect(root.getAttribute('aria-busy')).toBe('true');
+       |                                            ^
+     28|     expect(target.querySelector('[role=status]')?.textContent).toContaΓÇª
+     29|     frame.dispatchEvent(new Event('load')); flushSync();
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[1/4]ΓÄ»
+
+ FAIL  packages/ui-media-svelte/test/embed.svelte.test.ts > native allowlisted embed lifecycle (offline events, not provider proof) > reports a measured slow load and native failure without inventing a cause
+AssertionError: the given combination of arguments (undefined and string) is invalid for this assertion. You can use an array, a map, an object, a set, a string, or a weakset instead of a string
+ Γ¥» packages/ui-media-svelte/test/embed.svelte.test.ts:43:64
+     41|     const { target, root } = setup(), frame = target.querySelector('ifΓÇª
+     42|     vi.advanceTimersByTime(9_999); flushSync();
+     43|     expect(target.querySelector('[role=status]')?.textContent).toContaΓÇª
+       |                                                                ^
+     44|     vi.advanceTimersByTime(1); flushSync();
+     45|     expect(target.querySelector('[role=status]')?.textContent).toContaΓÇª
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[2/4]ΓÄ»
+
+ FAIL  packages/ui-media-svelte/test/embed.svelte.test.ts > native allowlisted embed lifecycle (offline events, not provider proof) > resets for a new source and ignores the previous frame events/timer
+AssertionError: expected <iframe ΓÇª(7)></iframe> not to be <iframe ΓÇª(7)></iframe> // Object.is equality
+ Γ¥» packages/ui-media-svelte/test/embed.svelte.test.ts:62:25
+     60|     instance.replaceSource('vimeo', '123456'); flushSync();
+     61|     const current = target.querySelector('iframe')!;
+     62|     expect(current).not.toBe(previous);
+       |                         ^
+     63|     expect(current.getAttribute('src')).toBe('https://player.vimeo.comΓÇª
+     64|     previous.dispatchEvent(new Event('load')); previous.dispatchEvent(ΓÇª
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[3/4]ΓÄ»
+
+ FAIL  packages/ui-media-svelte/test/embed.svelte.test.ts > native allowlisted embed lifecycle (offline events, not provider proof) > cleans up on disabled policy and unmount, preserving the existing refusal
+AssertionError: expected +0 to be 1 // Object.is equality
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ Γ¥» packages/ui-media-svelte/test/embed.svelte.test.ts:77:32
+     75|     vi.useFakeTimers();
+     76|     const { instance, target, root } = setup();
+     77|     expect(vi.getTimerCount()).toBe(1);
+       |                                ^
+     78|     instance.replaceProviders([]); flushSync();
+     79|     expect(target.querySelector('iframe')).toBeNull();
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[4/4]ΓÄ»
+
+
+ Test Files  1 failed (1)
+      Tests  4 failed (4)
+   Start at  19:37:09
+   Duration  4.21s (transform 1.87s, setup 0ms, import 2.41s, tests 75ms, environment 1.33s)
+

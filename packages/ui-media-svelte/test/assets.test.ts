@@ -74,6 +74,16 @@ describe('managed assets and portable bytes', () => {
   });
 });
 describe('verified managed reads shared by media renderers', () => {
+  it('refuses unverifiable or substituted store bytes before exporting a portable archive', async () => {
+    const asset = await importMediaAsset(file('one.png', 'image/png'));
+    const changed = asset.bytes.slice(); changed[changed.length - 1] = changed[changed.length - 1]! ^ 1;
+    const corrupt = {...memoryAssetStore(), get: async () => ({...asset, bytes:changed})};
+    await expect(exportMediaArchive(corrupt, [asset.reference])).rejects.toThrow('digest/size');
+    const substituted = {...memoryAssetStore(), get: async () => asset};
+    await expect(exportMediaArchive(substituted, ['asset:sha256:'+'0'.repeat(64)]))
+      .rejects.toThrow('requested reference');
+  });
+
   it('rejects a custom store returning another valid asset for the requested reference', async () => {
     const asset = await importMediaAsset(file('one.png', 'image/png'));
     const store = {...memoryAssetStore(), get: async () => asset};

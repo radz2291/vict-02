@@ -227,8 +227,7 @@ export async function exportMediaArchive(
   const assets = [];
   let size = 0;
   for (const ref of [...new Set(selected)]) {
-    const asset = await store.get(ref);
-    if (!asset) throw Error(`Missing asset: ${ref}`);
+    const asset = await readManagedMediaAsset(ref, store);
     size += asset.size;
     if (size > MAX_ASSET_BYTES) throw Error('Archive byte budget exceeds 64 MiB.');
     assets.push({ ...assetMetadata(asset), base64: encode(asset.bytes) });

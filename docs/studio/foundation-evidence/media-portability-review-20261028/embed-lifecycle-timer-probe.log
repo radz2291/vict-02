@@ -1,0 +1,48 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation
+
+DOMException [NotSupportedError]: Failed to load iframe page "https://www.youtube-nocookie.com/embed/abcdefghijk". Iframe page loading is disabled.
+    at HTMLIFrameElement.#loadPage (file:///C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/happy-dom/lib/nodes/html-iframe-element/HTMLIFrameElement.js:333:27)
+    at HTMLIFrameElement.[connectedToDocument] (file:///C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/happy-dom/lib/nodes/html-iframe-element/HTMLIFrameElement.js:230:23)
+    at HTMLIFrameElement.[connectedToNode] (file:///C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/happy-dom/lib/nodes/node/Node.js:801:53)
+    at HTMLDivElement.[connectedToNode] (file:///C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/happy-dom/lib/nodes/node/Node.js:793:58)
+    at HTMLDivElement.[insertBefore] (file:///C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/happy-dom/lib/nodes/node/Node.js:556:48)
+    at HTMLDivElement.[insertBefore] (file:///C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/happy-dom/lib/nodes/element/Element.js:1118:63)
+    at HTMLDivElement.[insertBefore] (file:///C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/happy-dom/lib/nodes/node/Node.js:515:50)
+    at HTMLDivElement.[insertBefore] (file:///C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/happy-dom/lib/nodes/element/Element.js:1118:63)
+    at HTMLDivElement.insertBefore (file:///C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/happy-dom/lib/nodes/node/Node.js:339:49)
+    at Function.before (file:///C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation/node_modules/happy-dom/lib/nodes/child-node/ChildNodeUtility.js:51:24)
+stdout | packages/ui-media-svelte/test/embed.svelte.test.ts > native allowlisted embed lifecycle (offline events, not provider proof) > reports a measured slow load and native failure without inventing a cause
+timer-before-error 0 [ undefined, 10000 ]
+timer-after-error 1 [ undefined, 10000, undefined ]
+
+ Γ¥» packages/ui-media-svelte/test/embed.svelte.test.ts (4 tests | 1 failed | 3 skipped) 53ms
+     ├ù reports a measured slow load and native failure without inventing a cause 51ms
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ» Failed Tests 1 ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»
+
+ FAIL  packages/ui-media-svelte/test/embed.svelte.test.ts > native allowlisted embed lifecycle (offline events, not provider proof) > reports a measured slow load and native failure without inventing a cause
+AssertionError: expected 1 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 1
+
+ Γ¥» packages/ui-media-svelte/test/embed.svelte.test.ts:54:32
+     52|     expect(target.querySelector('[role=alert]')?.textContent).toBe('EmΓÇª
+     53|     expect(root.getAttribute('aria-busy')).toBe('false');
+     54|     expect(vi.getTimerCount()).toBe(0);
+       |                                ^
+     55|     frame.dispatchEvent(new Event('load')); flushSync();
+     56|     expect(target.querySelector('[role=alert]')).not.toBeNull();
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[1/1]ΓÄ»
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 3 skipped (4)
+   Start at  19:41:56
+   Duration  4.39s (transform 2.06s, setup 0ms, import 2.63s, tests 53ms, environment 1.34s)
+

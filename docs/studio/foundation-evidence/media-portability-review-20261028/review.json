@@ -1,0 +1,64 @@
+{
+  "baseAtStart": "59212b031d49163f7e1ebc40088f6a8ab2ae1b1e",
+  "scope": "media/icons/vector/export/import source review and one bounded archive-export repair",
+  "finding": "M-EXP01",
+  "verdict": "Builder repair and targeted checks PASS; independent and browser acceptance pending",
+  "productEdits": [
+    "packages/ui-media-svelte/src/assets.ts",
+    "packages/ui-media-svelte/test/assets.test.ts"
+  ],
+  "red": "archive-export-red.log:1 failed,15 skipped; invalid archive resolved",
+  "green": "archive-export-green.log:16 passed",
+  "types": "media-types.log:exit0",
+  "browserProviderServerBuildInstallActions": false,
+  "sourceHashes": [
+    {
+      "path": "packages/ui-media-svelte/src/assets.ts",
+      "sha256": "c612b30916b10a78b38f35fd5840fc23a487f10262177f178e77eeebbc3673bf"
+    },
+    {
+      "path": "packages/ui-media-svelte/test/assets.test.ts",
+      "sha256": "4977b9ed1fca6551bbbd463da23bb6697222550b3bd67b77322b9f1d7e801d86"
+    },
+    {
+      "path": "packages/ui-media-svelte/src/AssetLibrary.svelte",
+      "sha256": "f6344d7b672c051038d1e75d7569956e15db26df43f8c7b025ff23c5a1059112"
+    },
+    {
+      "path": "packages/ui-media-svelte/src/Image.svelte",
+      "sha256": "5baaa6c989055819eea17722f6e994fdde7a62ba38e5ec2dbcf5d2227dade914"
+    },
+    {
+      "path": "packages/ui-media-svelte/src/Video.svelte",
+      "sha256": "b2f1b03cf9442cda208d1c0d781b63ee4fa9594a9501e1540002b336efa96cf7"
+    },
+    {
+      "path": "packages/ui-media-svelte/src/Embed.svelte",
+      "sha256": "a99e30f15b3b108f8d5d329a9520c1dc3bb91c6d1ab08bed22b8e84b265ce472"
+    },
+    {
+      "path": "packages/ui-media-svelte/src/Icon.svelte",
+      "sha256": "1d969a5b91e0acfb09198c76bb2c5f1087f759ebbc09e27d233a8c8524e58f6c"
+    },
+    {
+      "path": "packages/ui-media-svelte/src/Vector.svelte",
+      "sha256": "da68c0d65d9cbb40ea5759d2952e7440e3de9a38acdbf7e039083ea18e52e1e0"
+    },
+    {
+      "path": "packages/ui-media-svelte/src/VectorGraphic.svelte",
+      "sha256": "f0b6251ddf645ca96293506ca46b56c42fe3076d62ec7b88742bdd5298a41382"
+    },
+    {
+      "path": "packages/ui-media-svelte/src/vectors.ts",
+      "sha256": "32b0cf35e812cd5b0733660c6cfdc0fc81e7257d64fab62dce8e760454c343ab"
+    },
+    {
+      "path": "apps/studio/src/lib/designer/source-import.ts",
+      "sha256": "c4b05e65c02f38e3a819d8c32935961495f90aea857ba7b25599aceb63b209fd"
+    },
+    {
+      "path": "apps/studio/src/lib/designer/media-assets.ts",
+      "sha256": "11181194a286bc2b1fe64bcadab62103d36d1547cfa6822f30d23b65facb4d40"
+    }
+  ]
+}

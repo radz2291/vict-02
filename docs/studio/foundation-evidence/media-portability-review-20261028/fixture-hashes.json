@@ -1,0 +1,56 @@
+[
+  {
+    "name": "synthetic-image.png",
+    "bytes": 7350,
+    "sha256": "5c3afc101e908624396dd99b1c37503f41b8b2accd68a320d9ac75cc57af6978",
+    "manifestSize": 7350,
+    "manifestReference": "asset:sha256:5c3afc101e908624396dd99b1c37503f41b8b2accd68a320d9ac75cc57af6978",
+    "digestMatches": true,
+    "role": "Real local bytes; manifest describes synthetic content, not browser proof"
+  },
+  {
+    "name": "synthetic-poster.png",
+    "bytes": 678,
+    "sha256": "9a2af942bb0fe1ab83336c068f3e8646ca8247ab31aa26dcc7ed52b45b2ca74c",
+    "manifestSize": 678,
+    "manifestReference": "asset:sha256:9a2af942bb0fe1ab83336c068f3e8646ca8247ab31aa26dcc7ed52b45b2ca74c",
+    "digestMatches": true,
+    "role": "Real local bytes; manifest describes synthetic content, not browser proof"
+  },
+  {
+    "name": "synthetic-video.mp4",
+    "bytes": 82613,
+    "sha256": "a5a10026aa8b9b33a76e9b58d89b9fd190557759ac672f5de8be231211027cd1",
+    "manifestSize": 82613,
+    "manifestReference": "asset:sha256:a5a10026aa8b9b33a76e9b58d89b9fd190557759ac672f5de8be231211027cd1",
+    "digestMatches": true,
+    "role": "Real local bytes; manifest describes synthetic content, not browser proof"
+  },
+  {
+    "name": "synthetic-captions.vtt",
+    "bytes": 136,
+    "sha256": "2537c65d6abd5d910b304a7380daf7dbf3151064fc83f71c2ed9acfa981145fd",
+    "manifestSize": 136,
+    "manifestReference": "asset:sha256:2537c65d6abd5d910b304a7380daf7dbf3151064fc83f71c2ed9acfa981145fd",
+    "digestMatches": true,
+    "role": "Real local bytes; manifest describes synthetic content, not browser proof"
+  },
+  {
+    "name": "synthetic-brand.svg",
+    "bytes": 524,
+    "sha256": "c468e614c6163875d52c38698c04472603524bbe6f7188e44366a3f80c517614",
+    "manifestSize": 524,
+    "manifestReference": "asset:sha256:c468e614c6163875d52c38698c04472603524bbe6f7188e44366a3f80c517614",
+    "digestMatches": true,
+    "role": "Real local bytes; manifest describes synthetic content, not browser proof"
+  },
+  {
+    "name": "synthetic-invalid.mp4",
+    "bytes": 74,
+    "sha256": "b27aacd82d983d2dd1b4412b12f5e540d31097a4700423cb27d4a94f0644f619",
+    "manifestSize": null,
+    "manifestReference": null,
+    "digestMatches": null,
+    "role": "Reject on upload: declared video/mp4 extension with plain-text bytes; do not add to the media inventory."
+  }
+]
