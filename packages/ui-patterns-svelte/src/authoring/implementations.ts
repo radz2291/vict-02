@@ -16,6 +16,7 @@ const components = [
   Carousel,
   FilteredList,
   ActionButton,
+  FirstVisit,
 ];
 export const patternAuthoringImplementations: readonly UiSvelteComponentImplementation[] =
   patternAuthoringDescriptors.map((descriptor, index) => ({

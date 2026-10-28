@@ -32,6 +32,37 @@ function fixture(distinctCreationRealm: boolean) {
 }
 
 describe.each([false, true])('owned dialog parent-created adopted targets, distinct realm=%s', distinctRealm => {
+  it('prevents a background automatic-tab focus handler from activating and unmounting the dialog', () => {
+    const f = fixture(distinctRealm);
+    let activeTab = 'projects';
+    const order: string[] = [];
+    const insideFocus = vi.fn();
+    f.inside.addEventListener('focus', insideFocus);
+    // B5Tabs uses public Bits Tabs.Trigger. Its onfocus handler activates an
+    // automatic tab before focusin; this models that public handler's effect.
+    f.outside.addEventListener('focus', () => {
+      order.push('background-tab-focus');
+      activeTab = 'notes';
+      f.panel.remove();
+    });
+    f.outside.addEventListener('focusin', () => order.push('background-tab-focusin'));
+    f.outside.focus();
+    expect.soft(order).not.toContain('background-tab-focus');
+    expect.soft(activeTab).toBe('projects');
+    expect.soft(f.panel.isConnected).toBe(true);
+    expect(f.child.activeElement).toBe(f.inside);
+    expect(insideFocus).toHaveBeenCalledOnce();
+  });
+  it('does not block focus handlers or focus in a different canonical application', () => {
+    const f = fixture(distinctRealm);
+    const otherOwner = document.createElement('section'); otherOwner.dataset.uiOwnerRoot = 'b';
+    const other = document.createElement('button'); otherOwner.append(other); f.panel.parentElement!.append(otherOwner);
+    const focus = vi.fn(); other.addEventListener('focus', focus);
+    other.focus();
+    expect(focus).toHaveBeenCalledOnce();
+    expect(f.child.activeElement).toBe(other);
+    expect(f.panel.isConnected).toBe(true);
+  });
   it('contains focus within the dialog when a same-app outside control receives focus', () => {
     const f = fixture(distinctRealm);
     expect(f.inside.ownerDocument).toBe(f.child);

@@ -160,6 +160,20 @@ export const actionButtonDescriptor: UiExtensionDescriptor = {
     'Activation emits the declared string value; bind to real state or a declared application action. Label remains the accessible name for icon-only rendering. Icon slots accept noninteractive authored graphics, never nested buttons.',
   ],
 };
+export const firstVisitResetDescriptor: UiExtensionDescriptor = {
+  ...firstVisitDescriptor,
+  revision: '2',
+  props: [
+    ...firstVisitDescriptor.props,
+    { name: 'allowReset', type: 'boolean', default: false },
+    { name: 'resetLabel', type: 'string', default: 'Reset welcome' },
+  ],
+  styleTargets: [...firstVisitDescriptor.styleTargets!, 'reset'],
+  inspectionLimits: [
+    ...firstVisitDescriptor.inspectionLimits!,
+    'Optional reset removes only the current application/campaign/resetKey entry in the selected storage scope. The reset control remains after dismissal. Successful reset shows content and emits dismissedChange=false and showChange=true. Storage failure reports unavailable without claiming a successful reset.',
+  ],
+};
 export const patternAuthoringDescriptors = [
   drawerDescriptor,
   carouselDescriptor,
@@ -170,4 +184,5 @@ export const patternAuthoringDescriptors = [
   carouselIconDescriptor,
   filteredListIconDescriptor,
   actionButtonDescriptor,
+  firstVisitResetDescriptor,
 ] as const;

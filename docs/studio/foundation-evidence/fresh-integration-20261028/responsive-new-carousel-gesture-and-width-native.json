@@ -1,0 +1,12 @@
+{
+  "desktopPointerDragReachedSecond": true,
+  "dimensions": {
+    "boxSizing": "border-box",
+    "clientWidth": 375,
+    "padding": "28px",
+    "rectWidth": 375.2000122070313,
+    "scrollWidth": 391,
+    "viewport": null
+  },
+  "touchDevice": false
+}

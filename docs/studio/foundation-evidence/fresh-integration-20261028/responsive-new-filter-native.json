@@ -1,0 +1,17 @@
+[
+  {
+    "selection": "Draft",
+    "rows": "Aster — Draft\nCedar — Draft",
+    "query": "draft"
+  },
+  {
+    "selection": "Ready",
+    "rows": "Birch — Ready",
+    "query": "ready"
+  },
+  {
+    "selection": "All",
+    "rows": "Aster — Draft\nBirch — Ready\nCedar — Draft",
+    "query": "—"
+  }
+]

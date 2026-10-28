@@ -1,0 +1,19 @@
+{
+  "drawerOpened": {
+    "activeInside": true,
+    "activeLabel": "Project details",
+    "background": "rgb(247, 245, 240)",
+    "role": "dialog",
+    "selected": true,
+    "width": 340
+  },
+  "tabFocus": true,
+  "reverseFocus": true,
+  "forcedBackgroundFocus": {
+    "action": "Locator press Tab on the background automatic Notes tab",
+    "notesSelected": "true",
+    "drawerPresent": 0,
+    "notesDraft": "Retained desk draft — native verification"
+  },
+  "limit": "Normal Tab/reverse passed; forced background focus activated Notes and unmounted the dialog. No broad focus PASS claimed."
+}

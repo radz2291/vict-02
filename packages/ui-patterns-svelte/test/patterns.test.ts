@@ -26,6 +26,7 @@ import {
 import { lockViewport } from '../src/focus.js';
 import {memoryAssetStore,importMediaAsset,type MediaAssetStore} from '../../ui-media-svelte/src/assets.js';
 import Consumer from './Consumer.svelte';
+import FirstVisit from '../src/FirstVisit.svelte';
 
 let instances: ReturnType<typeof mount>[] = [];
 afterEach(async () => {
@@ -133,7 +134,7 @@ describe('registered application patterns', () => {
     expect(registry.issues).toEqual([]);
     expect(
       registry.contracts.filter((item) => item.family === 'application-patterns'),
-    ).toHaveLength(9);
+    ).toHaveLength(10);
     for (const registration of patternAuthoringPackage.registrations) {
       const result = compileUiDocument(
         source(registration.seed!),
@@ -242,6 +243,75 @@ describe('registered application patterns', () => {
     expect(campaignSeen(localStorage, campaignKey('my-application', 'welcome-v1', 'next'))).toBe(
       false,
     );
+  });
+  it('first-visit revision 2 resets the same campaign repeatedly across real remounts without clearing other memory', async () => {
+    const currentKey = campaignKey('my-application', 'welcome-v1', '');
+    const foreignKeys = [campaignKey('other-application', 'welcome-v1', ''), campaignKey('my-application', 'other-campaign', ''), campaignKey('my-application', 'welcome-v1', 'other-reset')];
+    for (const key of foreignKeys) dismissCampaign(localStorage, key);
+    const doc = source(seed('vict.pattern.first-visit', '2'));
+    let target = await render('vict.pattern.first-visit', doc);
+    for (let cycle = 0; cycle < 3; cycle++) {
+      expect(target.textContent).toContain('Welcome');
+      await click([...target.querySelectorAll('button')].find(button => button.textContent === 'Dismiss')!);
+      expect(target.textContent).not.toContain('Welcome');
+      expect(campaignSeen(localStorage, currentKey)).toBe(true);
+      await unmount(instances.pop()!);target.remove();
+      target = await render('vict.pattern.first-visit', doc);
+      expect(target.textContent).not.toContain('Welcome');
+      const reset = [...target.querySelectorAll('button')].find(button => button.textContent === 'Reset welcome')!;
+      expect(reset.hasAttribute('data-button-root')).toBe(true);
+      expect(reset.classList.contains('vict-btn')).toBe(true);
+      await click(reset);
+      expect(target.textContent).toContain('Welcome');
+      expect(localStorage.getItem(currentKey)).toBeNull();
+      for (const key of foreignKeys) expect(campaignSeen(localStorage, key)).toBe(true);
+      await unmount(instances.pop()!);target.remove();
+      target = await render('vict.pattern.first-visit', doc);
+      expect(target.textContent).toContain('Welcome');
+    }
+  });
+  it('first-visit reset respects session scope and reports failed removal honestly', async () => {
+    const doc = source(seed('vict.pattern.first-visit', '2'));
+    const root = doc.nodes[doc.root]!;
+    if (root.kind !== 'component') throw Error('Expected first-visit');
+    const key = campaignKey('my-application', 'welcome-v1', '');
+    dismissCampaign(localStorage, key);dismissCampaign(sessionStorage, key);
+    const target = await render('vict.pattern.first-visit', {...doc, nodes: {...doc.nodes, [root.id]: {...root, props: {...root.props, scope: {type: 'literal', value: 'session'}}}}});
+    const reset = [...target.querySelectorAll('button')].find(button => button.textContent === 'Reset welcome')!;
+    await click(reset);
+    expect(sessionStorage.getItem(key)).toBeNull();
+    expect(campaignSeen(localStorage, key)).toBe(true);
+    await click([...target.querySelectorAll('button')].find(button => button.textContent === 'Dismiss')!);
+    vi.spyOn(sessionStorage, 'removeItem').mockImplementation(() => {throw Error('Storage refused');});
+    await click(reset);
+    expect(target.textContent).not.toContain('Welcome');
+    expect(target.querySelector('[data-memory-status]')?.getAttribute('data-memory-status')).toBe('unavailable');
+    expect(target.querySelector('[role="alert"]')?.textContent).toContain('could not be reset');
+    expect(reset.disabled).toBe(true);
+    expect(campaignSeen(sessionStorage, key)).toBe(true);
+  });
+  it('first-visit revision 1 keeps reset absent and revision 2 remains opt-in', async () => {
+    const legacy = await render('vict.pattern.first-visit');
+    expect(legacy.querySelectorAll('button')).toHaveLength(1);
+    const doc = source(seed('vict.pattern.first-visit', '2'));
+    const root = doc.nodes[doc.root]!;
+    if(root.kind !== 'component') throw Error('Expected first-visit');
+    const target = await render('vict.pattern.first-visit', {...doc, nodes:{...doc.nodes,[root.id]:{...root,props:{...root.props,allowReset:{type:'literal',value:false}}}}});
+    expect(target.querySelectorAll('button')).toHaveLength(1);
+  });
+  it('first-visit reset emits acknowledgement and visibility only after successful scoped removal', async () => {
+    const target=document.createElement('div');document.body.append(target);
+    const emit=vi.fn();
+    instances.push(mount(FirstVisit,{target,props:{props:{applicationId:'reset-emissions',campaignId:'welcome',allowReset:true},occurrenceKey:'reset-test',nodeId:'reset-test',io:{emit}}}));
+    flushSync();await tick();
+    const button=(label:string)=>[...target.querySelectorAll('button')].find(item=>item.textContent===label)!;
+    await click(button('Dismiss'));emit.mockClear();
+    await click(button('Reset welcome'));
+    expect(emit.mock.calls).toEqual([['dismissedChange',false],['showChange',true]]);
+    await click(button('Dismiss'));emit.mockClear();
+    vi.spyOn(localStorage,'removeItem').mockImplementation(()=>{throw Error('Denied');});
+    await click(button('Reset welcome'));
+    expect(emit.mock.calls).toEqual([['memoryStatus','unavailable']]);
   });
   it('an explicitly composed popup can acknowledge first-visit memory through its dismissed prop', async () => {
     const documentSource = source(seed('vict.pattern.first-visit'));

@@ -1,0 +1,16 @@
+{
+  "escape": {
+    "closed": true,
+    "triggerFocused": true
+  },
+  "entry": {
+    "focused": true,
+    "href": "https://example.com/design-notes"
+  },
+  "exit": {
+    "activeRole": "radio",
+    "activeText": "Keep hidden",
+    "expanded": "false"
+  },
+  "note": "After Escape, Tab exits normally; leaving and re-entering trigger focus reopens. No external link navigation."
+}

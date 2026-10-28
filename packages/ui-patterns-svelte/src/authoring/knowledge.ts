@@ -220,6 +220,11 @@ function fragmentFor(descriptor: UiExtensionDescriptor): UiAuthoringFragment {
         : node,
     ),
   };
+  if (descriptor.id === 'vict.pattern.first-visit' && descriptor.revision === '2') {
+    return {...fragment, nodes: fragment.nodes.map(node => node.id === fragment.root && node.kind === 'component'
+      ? {...node, props: {...node.props, allowReset: {type: 'literal', value: true}, resetLabel: {type: 'literal', value: 'Reset welcome'}}}
+      : node)};
+  }
   if (descriptor.id !== 'vict.pattern.navigation' || descriptor.revision !== '2') return fragment;
   return {
     ...fragment,
@@ -251,7 +256,7 @@ export const patternAuthoringPackage: UiAuthoringPackage = {
     eligibility: { kind: 'standalone' as const },
     seed: fragmentFor(descriptor),
     examples: [fragmentFor(descriptor)],
-    ...(descriptor.revision === '2' || descriptor.id === 'vict.pattern.action-button'
+    ...((descriptor.revision === '2' && ['vict.pattern.navigation', 'vict.pattern.carousel', 'vict.pattern.filtered-list'].includes(descriptor.id)) || descriptor.id === 'vict.pattern.action-button'
       ? {
           dependencies: [{ id: 'vict.media.icon', revision: '1' }],
           guidance: [
@@ -260,6 +265,10 @@ export const patternAuthoringPackage: UiAuthoringPackage = {
           ],
         }
       : {}),
+    ...(descriptor.id === 'vict.pattern.first-visit' && descriptor.revision === '2' ? {
+      guidance: [...snippets[descriptor.id]!.guidance,
+        'Revision 2 optionally enables allowReset and resetLabel. Its shared reset button stays available after dismissal and removes only this applicationId/campaignId/resetKey entry in the selected scope. Reset shows the body and emits dismissedChange=false and showChange=true; bind dismissedChange back to dismissed when controlling it. It does not clear any other application or campaign memory. Reset failures report unavailable and do not claim success. Reopening alone does not reset memory. Repeat dismissal/reset/reload using the same identities to verify genuine first-visit persistence.'],
+    } : {}),
     rules:
       descriptor.id === 'vict.pattern.drawer'
         ? [{ kind: 'controlledPair' as const, prop: 'open', output: 'openChange', required: true }]

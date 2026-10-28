@@ -10,6 +10,9 @@ export interface OwnedPopupLayerOptions {
   getTrigger?: () => HTMLElement | null | undefined;
   getBranches?: () => readonly HTMLElement[];
   onKeydown?: (event: KeyboardEvent, context: OwnedPopupEventContext) => OwnedPopupEventResult;
+  /** Optional early focus guard. Existing focusin callbacks retain one call
+   * per focusin event and are never invoked for the separate focus event. */
+  onFocusCapture?: (event: FocusEvent, context: OwnedPopupEventContext) => OwnedPopupEventResult;
   onFocusIn?: (event: FocusEvent, context: OwnedPopupEventContext) => OwnedPopupEventResult;
   onPointerDown?: (event: PointerEvent, context: OwnedPopupEventContext) => OwnedPopupEventResult;
   onClick?: (event: MouseEvent, context: OwnedPopupEventContext) => OwnedPopupEventResult;
@@ -214,7 +217,7 @@ export function registerOwnedPopupLayer(options: OwnedPopupLayerOptions): OwnedP
   let hub = hubs.get(owner);
   if (!hub) {
     const created: Hub = {layers: [], removeListeners: () => {}};
-    const dispatch = (name: 'onKeydown'|'onFocusIn'|'onPointerDown'|'onClick', event: Event) => {
+    const dispatch = (name: 'onKeydown'|'onFocusCapture'|'onFocusIn'|'onPointerDown'|'onClick', event: Event) => {
       const originalTarget = event.target;
       if (!isElementNode(originalTarget) || !isOwnedPopupTarget(owner, originalTarget)) return;
       let target: Element = originalTarget;
@@ -235,15 +238,17 @@ export function registerOwnedPopupLayer(options: OwnedPopupLayerOptions): OwnedP
       }
     };
     const key = (event: KeyboardEvent) => dispatch('onKeydown', event);
+    const focusCapture = (event: FocusEvent) => dispatch('onFocusCapture', event);
     const focus = (event: FocusEvent) => dispatch('onFocusIn', event);
     const pointer = (event: PointerEvent) => dispatch('onPointerDown', event);
     const click = (event: MouseEvent) => dispatch('onClick', event);
     owner.addEventListener('keydown', key);
+    owner.addEventListener('focus', focusCapture, true);
     owner.addEventListener('focusin', focus, true);
     owner.addEventListener('pointerdown', pointer);
     owner.addEventListener('click', click);
     created.removeListeners = () => {
-      owner.removeEventListener('keydown', key); owner.removeEventListener('focusin', focus, true);
+      owner.removeEventListener('keydown', key); owner.removeEventListener('focus', focusCapture, true); owner.removeEventListener('focusin', focus, true);
       owner.removeEventListener('pointerdown', pointer); owner.removeEventListener('click', click);
     };
     hubs.set(owner, created); hub = created;

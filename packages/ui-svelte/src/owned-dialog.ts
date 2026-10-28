@@ -98,6 +98,9 @@ export function createOwnedDialogBehavior(options: OwnedDialogOptions): () => vo
     const target = element(event.target);
     if (redirecting || !target || !isOwnerTarget(target)) return;
     if (includes(target)) { lastFocused = target; return; }
+    // Focus itself precedes focusin. Stop the blocked outside target's handlers
+    // before recapture, so automatic tabs cannot activate and remove the dialog.
+    event.stopPropagation();
     const next = lastFocused && includes(lastFocused) && isOwnedFocusable(lastFocused) ? lastFocused : panel;
     redirecting = true; (next as HTMLElement).focus({preventScroll: true}); redirecting = false;
   };
@@ -119,7 +122,7 @@ export function createOwnedDialogBehavior(options: OwnedDialogOptions): () => vo
     if (event.defaultPrevented || !target || !isOwnerTarget(target) || includes(target) || (event.detail !== 0 && startedInside)) return;
     dismiss('outside');
   };
-  layer = registerOwnedPopupLayer({owner,panel,kind:'dialog',getTrigger:options.getTrigger,getBranches:options.getBranches,onFocusIn:focus,onKeydown:keydown,onPointerDown:pointerdown,onClick:click});
+  layer = registerOwnedPopupLayer({owner,panel,kind:'dialog',getTrigger:options.getTrigger,getBranches:options.getBranches,onFocusCapture:focus,onFocusIn:focus,onKeydown:keydown,onPointerDown:pointerdown,onClick:click});
   const originalFocus = document.activeElement;
   if (options.focusOnOpen !== false && documentOwnsFocus(document) && (!originalFocus || !hasCompetingOwner(owner, originalFocus, sourceOwnerId))) panel.focus({preventScroll: true});
   return () => {

@@ -1,5 +1,11 @@
 [
   {
+    "id": "vict.pattern.first-visit",
+    "revision": "2",
+    "descriptorDigest": "8a8673a322a31d3fc3f099aa8e73cb9a76980e3ce0901835f91edf6dc736c1fa",
+    "capabilitiesDigest": "b5904623ad220b19de860cd31716b96f0b7c55e4014275f338c01e81d637f6ad"
+  },
+  {
     "id": "vict.pattern.drawer",
     "revision": "1",
     "descriptorDigest": "5f72b32c1985e89d0e2eab28f4da388dfb115764131ab7b70fc04e9c85a516ac",

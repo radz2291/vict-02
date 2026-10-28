@@ -1,0 +1,87 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation
+
+ Γ¥» |renderer| packages/ui-svelte/test/owned-dialog-adopted.test.ts (8 tests | 2 failed) 86ms
+     ├ù prevents a background automatic-tab focus handler from activating and unmounting the dialog 37ms
+     ├ù prevents a background automatic-tab focus handler from activating and unmounting the dialog 8ms
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ» Failed Tests 2 ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»
+
+ FAIL  |renderer| packages/ui-svelte/test/owned-dialog-adopted.test.ts > owned dialog parent-created adopted targets, distinct realm=false > prevents a background automatic-tab focus handler from activating and unmounting the dialog
+ FAIL  |renderer| packages/ui-svelte/test/owned-dialog-adopted.test.ts > owned dialog parent-created adopted targets, distinct realm=true > prevents a background automatic-tab focus handler from activating and unmounting the dialog
+AssertionError: expected [ 'background-tab-focus', ΓÇª(1) ] to not include 'background-tab-focus'
+ Γ¥» packages/ui-svelte/test/owned-dialog-adopted.test.ts:48:28
+     46|     f.outside.addEventListener('focusin', () => order.push('backgroundΓÇª
+     47|     f.outside.focus();
+     48|     expect.soft(order).not.toContain('background-tab-focus');
+       |                            ^
+     49|     expect.soft(activeTab).toBe('projects');
+     50|     expect.soft(f.panel.isConnected).toBe(true);
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[1/8]ΓÄ»
+
+ FAIL  |renderer| packages/ui-svelte/test/owned-dialog-adopted.test.ts > owned dialog parent-created adopted targets, distinct realm=false > prevents a background automatic-tab focus handler from activating and unmounting the dialog
+ FAIL  |renderer| packages/ui-svelte/test/owned-dialog-adopted.test.ts > owned dialog parent-created adopted targets, distinct realm=true > prevents a background automatic-tab focus handler from activating and unmounting the dialog
+AssertionError: expected 'notes' to be 'projects' // Object.is equality
+
+Expected: "projects"
+Received: "notes"
+
+ Γ¥» packages/ui-svelte/test/owned-dialog-adopted.test.ts:49:28
+     47|     f.outside.focus();
+     48|     expect.soft(order).not.toContain('background-tab-focus');
+     49|     expect.soft(activeTab).toBe('projects');
+       |                            ^
+     50|     expect.soft(f.panel.isConnected).toBe(true);
+     51|     expect(f.child.activeElement).toBe(f.inside);
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[2/8]ΓÄ»
+
+ FAIL  |renderer| packages/ui-svelte/test/owned-dialog-adopted.test.ts > owned dialog parent-created adopted targets, distinct realm=false > prevents a background automatic-tab focus handler from activating and unmounting the dialog
+ FAIL  |renderer| packages/ui-svelte/test/owned-dialog-adopted.test.ts > owned dialog parent-created adopted targets, distinct realm=true > prevents a background automatic-tab focus handler from activating and unmounting the dialog
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ Γ¥» packages/ui-svelte/test/owned-dialog-adopted.test.ts:50:38
+     48|     expect.soft(order).not.toContain('background-tab-focus');
+     49|     expect.soft(activeTab).toBe('projects');
+     50|     expect.soft(f.panel.isConnected).toBe(true);
+       |                                      ^
+     51|     expect(f.child.activeElement).toBe(f.inside);
+     52|   });
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[3/8]ΓÄ»
+
+ FAIL  |renderer| packages/ui-svelte/test/owned-dialog-adopted.test.ts > owned dialog parent-created adopted targets, distinct realm=false > prevents a background automatic-tab focus handler from activating and unmounting the dialog
+ FAIL  |renderer| packages/ui-svelte/test/owned-dialog-adopted.test.ts > owned dialog parent-created adopted targets, distinct realm=true > prevents a background automatic-tab focus handler from activating and unmounting the dialog
+AssertionError: expected <button></button> to be <button></button> // Object.is equality
+
+- Expected
++ Received
+
+  <button>
+-   Dialog action
++   Outside dialog, same application
+  </button>
+
+ Γ¥» packages/ui-svelte/test/owned-dialog-adopted.test.ts:51:35
+     49|     expect.soft(activeTab).toBe('projects');
+     50|     expect.soft(f.panel.isConnected).toBe(true);
+     51|     expect(f.child.activeElement).toBe(f.inside);
+       |                                   ^
+     52|   });
+     53|   it('contains focus within the dialog when a same-app outside controlΓÇª
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[4/8]ΓÄ»
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 6 passed (8)
+   Start at  00:06:45
+   Duration  1.86s (transform 114ms, setup 0ms, import 162ms, tests 86ms, environment 1.23s)
+
