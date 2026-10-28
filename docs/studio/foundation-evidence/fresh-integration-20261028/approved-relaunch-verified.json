@@ -1,0 +1,29 @@
+{
+  "ownerApproval": "2026-10-28 10:42 UTC go; same address/config bounded rebuild/relaunch",
+  "implementation": "20fb566221a13eb7c68653f299f45c6222666c69",
+  "stoppedVerifiedPair": [
+    22564,
+    20016
+  ],
+  "newLauncher": 17168,
+  "newChild": 3688,
+  "childParentMatches": true,
+  "listener": "127.0.0.25:5626",
+  "errorLogBytes": 0,
+  "mastraLiveBuild": "PASS",
+  "studioLiveBuild": "PASS",
+  "stagedStudioBuild": "PASS with isolated Mastra alias",
+  "normalCredentialLoader": "existing launch-agent.mjs reading existing authorized .pi auth/model config; no credential copied/printed",
+  "globalPolicyChanges": false,
+  "browser": "Supported IAB new tab3 reached rebuilt Designer and restored saved Foundation AI Review; actual trial started and completed3reads at last observation",
+  "mastraArtifactHashes": [
+    {
+      "sha256": "cd2f7a5eae4bbea49105e3b9d381877df1c15646159e6acf78dd9f869784fe38",
+      "file": "presentation.js"
+    },
+    {
+      "sha256": "503448eeed52e791ec323995ca59fa6dfe9d1479cedfc2e9cca08f6ba100c3ac",
+      "file": "compatibility.js"
+    }
+  ]
+}

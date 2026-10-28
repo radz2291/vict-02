@@ -1,0 +1,53 @@
+{
+  "reviewedHEAD": "3c396ad9284b699e8121f39d2602ece26870455a",
+  "candidate": "Uncommitted two-file helper snapshot",
+  "verdict": "FAIL - bounded launcher review; ordinary repairs identified",
+  "parseErrors": 0,
+  "validateOnly": {
+    "ExitCode": 0,
+    "CodingPlanEndpoint": true,
+    "Address": "http://127.0.0.25:5626",
+    "ServerStarted": false,
+    "Model": "zai/glm-5.3-flash"
+  },
+  "findings": [
+    {
+      "demonstration": "Pure Uri/predicate evaluation only; no request",
+      "problem": "HTTPS api.z.ai:8443 with the Coding Plan path passes the endpoint predicate",
+      "severity": "medium",
+      "repair": "Require endpoint.Port to equal443 (explicit443 or defaultHTTPS)",
+      "id": "LAUNCH-01"
+    },
+    {
+      "problem": "Occupied-address check only matches127.0.0.25 and misses0.0.0.0 wildcard or potentially dual-stack:: listeners on5626",
+      "severity": "medium",
+      "repair": "Refuse applicable wildcard/same-address listeners, or conservatively any listener on5626; never stop them",
+      "id": "LAUNCH-02"
+    },
+    {
+      "problem": "Start-Process ArgumentList absolute launcherpath is unquoted, so Windows path whitespace can split the scriptargument",
+      "severity": "low",
+      "repair": "Quote the absolute launcher argument when composing Start-Process args",
+      "id": "LAUNCH-03"
+    }
+  ],
+  "observedSafeProperties": [
+    "ValidateOnly returns before listener inventory/environment/start actions",
+    "Credentials are not read or printed by the helper; only existing file references are passed",
+    "No stop/restart/firewall/isolation/security changes in helper",
+    "Root resolves three ancestors from PSScriptRoot to current repository",
+    "Fixed HOST PORT ORIGIN MODEL and selectedexisting CodingPlan model entry",
+    "Hidden child launch and retained timestamped log copies",
+    "Normal existing loader retains inherited ZAI_API_KEY precedence; docs describe defaults/inheritance"
+  ],
+  "sourceHashes": {
+    "apps/studio/scripts/start-local-existing-config.ps1": "7fc56870c3f90db600159ae724663d1a418943ceb12e2b2102ea8af059b0f328",
+    "apps/studio/scripts/LOCAL-STUDIO-LAUNCH.md": "b04041c13a0a3d49612d921c6bfb49a212941f8ca42caaba741a10de8be7f338"
+  },
+  "limits": [
+    "No process/listener inventory",
+    "No server start/restart/stop or browser/provider request",
+    "Occupied and whitespace issues statically reviewed, not live-start probes",
+    "Uncommitted snapshot; final repaired exactcommit review pending"
+  ]
+}

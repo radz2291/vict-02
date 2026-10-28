@@ -1,0 +1,39 @@
+{
+  "kind": "Normal supported launcher configuration reconciliation",
+  "source": "docs/studio/cycle-1-4/core/launch-review.ps1 and apps/studio/scripts/launch-agent.mjs",
+  "knownNonsecret": {
+    "HOST": "127.0.0.25",
+    "PORT": "5626",
+    "ORIGIN": "http://127.0.0.25:5626",
+    "STUDIO_AGENT_MODEL": "zai/glm-5.3-flash",
+    "STUDIO_AGENT_AUTH_FILE": "%USERPROFILE%/.pi/agent/auth.json",
+    "STUDIO_AGENT_MODELS_FILE": "%USERPROFILE%/.pi/agent/models.json",
+    "STUDIO_AGENT_PROVIDER_ENTRY": "zai-key1"
+  },
+  "normalLoader": {
+    "ZAI_API_KEY": "Resolved from existing auth.zai.key by launch-agent.mjs; not manually copied or printed",
+    "STUDIO_AGENT_BASE_URL": "Resolved from existing models.providers[zai-key1].baseUrl",
+    "BODY_SIZE_LIMIT": "Existing launcher default2M",
+    "humanSession": "Existing unchanged application default; no credential provisioning"
+  },
+  "presence": {
+    "inheritedProcessOrPersistentFlagsPresent": false,
+    "authFileExists": true,
+    "modelsFileExists": true,
+    "authProviderFieldNames": [
+      "type",
+      "key"
+    ],
+    "existingModelEntryFieldNames": [
+      "baseUrl",
+      "api",
+      "apiKey",
+      "models"
+    ],
+    "endpointIsAuthorizedCodingPlan": true,
+    "endpointHttpsWithoutEmbeddedCredentialsQueryOrFragment": true
+  },
+  "earlierBlocker": "Resolved: entire dead-parent environment is not necessary; retained normal launch recipe supplies required nonsecret file references",
+  "credentialValuesPrintedOrWritten": false,
+  "serverStoppedAtRecord": false
+}
