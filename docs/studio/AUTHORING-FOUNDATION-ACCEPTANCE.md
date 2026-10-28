@@ -2,6 +2,10 @@
 
 Current consolidated verdict: [all-finding evidence and remaining-proof rollup](AUTHORING-FOUNDATION-CURRENT-STATUS.md). Later approved shared-popup repairs and saved candidate supersede the historical unresolved-failure wording below; original failed observations remain retained.
 
+Current reconciliation after `eb9554e`, 2026-10-28: use the rollup's **Current per-finding reconciliation** for each AR-01–29, CF-01 and AI-EX01. Actual diagnostic recovery, graph connections/save/reopen/Run, media playback/portable replay, Matrix popup/compact behavior and focused Media central-style conformance now have retained live evidence and independent scoped reviews. Earlier “unrun”, browser/server blockers and “0/29” statements below are chronological checkpoints, not current implementation/verification counts. Owner acceptance remains open. The latest browser action failed technically with `browser.user is unavailable`; live work stopped without recovery loops, fallback or server changes. New responsive capability evidence remains pending and must never be described as recovery of the original source not found in inspected retained artifacts.
+
+## Retained chronological acceptance checkpoints
+
 Review status: IN PROGRESS. All AR findings retain open owner acceptance. This ledger separates implemented candidates and scoped evidence from complete foundation closure; no requirement moves to Milestone 2.
 
 2026-10-28 post-reboot checkpoint: browser control recovered and the same saved actual-agent graph was tested. Manual text committed canonically on blur; a bounded actual Studio-agent follow-up preserved it, applied exactly one output-title edit and observed the repaired light-gray MiniMap. Shared graph Undo reversed that agent batch while retaining the manual input; Redo restored it; File Save confirmed revision`r1.r3`. [Exact receipts and source lineage](foundation-evidence/actual-agent-graph-coexistence.json). The saved-screen menu contains Chat and Graph only; complete final Responsive source remains unrecovered. No lost source is inferred from its public transcript.
