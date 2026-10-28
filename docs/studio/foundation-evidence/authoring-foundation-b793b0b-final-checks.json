@@ -1,0 +1,105 @@
+{
+  "schema": "vict.foundation-final-checks@1",
+  "sourceCommit": "b793b0b9843094be71d3ab2a418ebcff24ab7862",
+  "recordedAt": "2026-10-28T04:15:30.520Z",
+  "status": "Implementation checkpoint verified within stated scopes; full foundation acceptance HELD",
+  "frozenProductHashesMatched": 59,
+  "checks": {
+    "studioTypes": {
+      "exitCode": 0
+    },
+    "designerSvelte": {
+      "exitCode": 0,
+      "errors": 0,
+      "warnings": 5
+    },
+    "aiCssBuild": {
+      "exitCode": 0
+    },
+    "studioProductionBuild": {
+      "exitCode": 0
+    },
+    "aiPackage": {
+      "exitCode": 1,
+      "passed": 60,
+      "failed": 2,
+      "files": 6
+    },
+    "independentStudioExposure": {
+      "exitCode": 0,
+      "passed": 2,
+      "failed": 0,
+      "definitionIds": 23,
+      "versionedContracts": 28
+    },
+    "packedConsumer": {
+      "exitCode": 0,
+      "evidence": "docs/studio/foundation-evidence/packed-consumer-vict-foundation-consumer-BQe5D2.json",
+      "packages": 9,
+      "installedBytesMatched": true,
+      "consumer": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-foundation-consumer-BQe5D2\\consumer",
+      "limitation": "Compile/build proof only; browser runtime and new actual-agent output unrun."
+    }
+  },
+  "logs": {
+    "studioTypes": {
+      "path": "C:/Users/RZ1/AppData/Local/Temp/vict-ai-final-studio-types.log",
+      "sha256": "3b60fb077fa856d3551b84840f7c025e869ecdb01add9d0e01d3d7cc22953619"
+    },
+    "designerTypes": {
+      "path": "C:/Users/RZ1/AppData/Local/Temp/vict-ai-final-designer-types.log",
+      "sha256": "2c7650c8349ffa50daf342df0900456df50c5c4f6de10c597903be42c0b7738f"
+    },
+    "aiPackage": {
+      "path": "C:/Users/RZ1/AppData/Local/Temp/vict-ai-final-package-tests.log",
+      "sha256": "ce4584269230b2dbfcc7df27d50111a686af0b223adcc38a3879a0ee0972e7de"
+    },
+    "aiCss": {
+      "path": "C:/Users/RZ1/AppData/Local/Temp/vict-ai-final-css-build.log",
+      "sha256": "91948672c25c94a70e14d06ce75a05d7621e4e9420cab01038517cdcbcb321d9"
+    },
+    "studioProduction": {
+      "path": "C:/Users/RZ1/AppData/Local/Temp/vict-ai-final-studio-build.log",
+      "sha256": "59d2b8b27b5e4fa28212560d9e8ec0e6dd4904bab9d0d7e97f9ce24a427d3364"
+    },
+    "packedConsumer": {
+      "path": "C:/Users/RZ1/AppData/Local/Temp/vict-ai-final-packed-consumer-offline.log",
+      "sha256": "e0efc88b48cc68869fbba291d49528091306b2b2a64d22ff3b2706d3a782f7cc"
+    },
+    "independentExposure": {
+      "path": "C:/Users/RZ1/AppData/Local/Temp/vict-ai-independent-exposure.log",
+      "sha256": "0971c4f9846d3eba84c7780bebc68e335c35559b1cdcd2594549309800eb40e9"
+    }
+  },
+  "retainedFailureEvidence": [
+    "docs/studio/foundation-evidence/independent-conformance-7108865.json",
+    "docs/studio/foundation-evidence/packed-consumer-vict-foundation-consumer-UUKnkc.json",
+    "packages/ui-ai-svelte/test/action-model-portal.svelte.test.ts",
+    "packages/ui-ai-svelte/test/chat-extension.svelte.test.ts"
+  ],
+  "blockers": {
+    "architecture": "CF-P01/P02: reusable menu/tooltip ownership correction needs direction; proposed shared boundary documented.",
+    "browser": {
+      "status": "DENIED",
+      "action": "await currentStudio.getAXState()",
+      "target": "internal in-app browser tab1 http://127.0.0.25:5625/design",
+      "reason": "Origin approval gate: user declined permission to observe page content.",
+      "recordedAt": "2026-10-28T03:50:16Z",
+      "exactEventTimestamp": null,
+      "retried": false,
+      "workaround": false
+    },
+    "undo": {
+      "status": "Separate prior additional Undo verification remains stopped; not retried."
+    },
+    "evidence": "New AI actual-agent/persistence proof, remaining integrated media/responsive/open-popup checks and physical-device proof remain unrun. Responsive r1#10 full canonical source remains unrecovered; retained public transcript is not complete source."
+  },
+  "formalFindingClosure": {
+    "closed": 0,
+    "total": 29,
+    "componentConformance": "OPEN",
+    "fullAiExposure": "OPEN",
+    "ownerAcceptance": false
+  },
+  "restrictions": "No push/merge/publication/deployment/security change or new provider/model/purchase. No new provider run."
+}

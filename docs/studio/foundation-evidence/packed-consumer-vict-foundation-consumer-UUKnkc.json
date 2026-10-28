@@ -1,0 +1,10 @@
+{
+  "schema": "vict.foundation-packed-consumer@1",
+  "status": "CANCELLED during dependency installation; no consumer verdict",
+  "sourceBase": "b793b0b9843094be71d3ab2a418ebcff24ab7862",
+  "destination": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-foundation-consumer-UUKnkc",
+  "consumer": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-foundation-consumer-UUKnkc\\consumer",
+  "scope": "Supporting fresh packed-consumer compile/build proof; no browser, interaction, physical-device or actual-agent claim.",
+  "packs": [],
+  "cancellationEvidence": "Manager interrupted exec session40869 after all nine tarballs were produced but dependency installation had no terminal result or node_modules progress. Session returned exit1. Original directory and artifacts retained; no provider run."
+}

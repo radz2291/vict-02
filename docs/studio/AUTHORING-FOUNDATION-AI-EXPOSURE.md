@@ -2,7 +2,7 @@
 
 Owner amendment, 2026-10-28: the existing public AI patterns must be usable through both manual Studio authoring and the Studio agent. Public exports alone, a gallery, and the historical blanket `host-only` disposition do not meet this criterion. This is authoring-foundation scope, alongside CF-01; it is not deferred to Milestone 2. Provider engines and private reasoning remain outside this amendment.
 
-Status: IMPLEMENTATION IN PROGRESS / VERIFICATION PENDING / OWNER ACCEPTANCE OPEN. This record is a capability map, not an independent verdict. The initial audit reviewed `d733980b1894b2309d26bd3f408a3e2b7da5e823`: only Conversation, Message and PromptInput revisions 1/2 were registered. Their earlier actual-agent chat evidence remains valid within its recorded scope.
+Status: IMPLEMENTATION CHECKPOINT SAVED / EXPOSURE CHECKS PASS / POPUP CONFORMANCE FAIL / OWNER ACCEPTANCE OPEN. This record is a capability map; the linked independent evidence supplies only its scoped verdict. The initial audit reviewed `d733980b1894b2309d26bd3f408a3e2b7da5e823`: only Conversation, Message and PromptInput revisions 1/2 were registered. Their earlier actual-agent chat evidence remains valid within its recorded scope.
 
 ## Shared delivery path
 
@@ -64,3 +64,5 @@ All 23 intended AI identities now have 28 versioned contracts, unique latest man
 New adapters forward actual semantic parts, use the existing public patterns/Conversation/Markdown, validate finite versioned data and expose controlled typed intents. Availability flags defaultfalse and require the host to bind outputs before enabling; no binding-introspection enforcement is claimed. Larger manual/host JSON limits do not remove the current4000-character agent edit limit. New actual Studio-agent/persistence/device proof remains unrun.
 
 Studio TypeScript passes; designer Svelte check has0errors/5inheritedwarnings. Portal wrapper provenance hashes match the exact normalized current files. Production build and fresh packed-consumer results follow separately. Full AI conformance remains FAIL/HELD pending a reusable owner-scoped menu/tooltip correction and integrated evidence. No private Bits patch, ModelSelector-specific interaction bypass or implicit owner acceptance was introduced. See foundation-evidence/ai-exposure-1569567-repair.json for frozen product hashes and distinct scopes.
+
+Exact source checkpoint: b793b0b9843094be71d3ab2a418ebcff24ab7862. Independent association verified all59frozen product hashes, clean product diff and unchanged historical pins; no duplicate tests were run merely to associate the commit. See foundation-evidence/ai-exposure-independent-b793b0b.json. The final Studio production build and AI CSS build both completed exit0. Build success does not erase the two retained popup failures or replace actual-agent/browser/device evidence.
