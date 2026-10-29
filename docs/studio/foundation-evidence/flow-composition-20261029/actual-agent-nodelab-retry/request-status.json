@@ -1,0 +1,29 @@
+{
+  "candidate": "27788de9f111042d04d83e7d603c6da2cccde8dc",
+  "tab": "8",
+  "requestSent": true,
+  "status": "cancelled through ordinary Stop after repeated discovery failures",
+  "elapsedMs": 91200,
+  "toolCalls": 13,
+  "refused": 9,
+  "callsAfterRefusal": 8,
+  "confirmedEdits": 0,
+  "observations": 0,
+  "modelRequests": "unavailable: no server completion receipt",
+  "handBuiltSource": false,
+  "diagnostics": [
+    {
+      "paths": [
+        "components",
+        "includeExamples"
+      ],
+      "rule": "invalid_type"
+    },
+    {
+      "paths": [
+        "offset"
+      ],
+      "rule": "invalid_type"
+    }
+  ]
+}

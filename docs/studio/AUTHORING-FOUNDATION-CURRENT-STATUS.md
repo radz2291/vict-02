@@ -1,3 +1,10 @@
+> 29 October actual-agent retry: normal sign-in was available in newer tab8.
+> One ordinary product request ran on a fresh screen and was stopped after91.2s:
+>13calls/9refusals/0edits/0observations. Contracts and pagination reads failed input
+> validation repeatedly. Original failure, exact diagnostics and partial browser
+> measurements are retained; no provider quota cause is inferred. Actual-agent
+> success remains open. See [retry report](foundation-evidence/flow-composition-20261029/actual-agent-nodelab-retry/RESULT.md).
+>
 > 29 October active candidate update: source27788de9 is installed (324 matching
 > outputs,60 historical proof files preserved). The new nine-package consumer
 > build matches757 installed package files. Actual pointer reconnection preserves
