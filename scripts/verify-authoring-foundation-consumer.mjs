@@ -37,7 +37,7 @@ import {compileUiDocument,defaultSemanticElementCatalog} from '@victframework/ui
 import {DocumentHost,ControlScope,OwnedTooltip} from '@victframework/ui-svelte';
 import {Button} from '@victframework/ui-svelte/catalog/button';
 import {aiAuthoringDescriptors,aiAuthoringImplementations} from '@victframework/ui-ai-svelte/authoring';
-import {GraphEditor,emptyGraph,serializeGraph} from '@victframework/ui-flow-svelte';
+import {GraphSurface,emptyGraph,serializeGraph} from '@victframework/ui-flow-svelte';
 import {flowAuthoringDescriptors,flowAuthoringImplementations} from '@victframework/ui-flow-svelte/authoring';
 import {patternAuthoringDescriptors,patternAuthoringImplementations} from '@victframework/ui-patterns-svelte/authoring';
 import {mediaAuthoringDescriptors,mediaAuthoringImplementations,mediaVectorExample,AssetProvider} from '@victframework/ui-media-svelte';
@@ -61,7 +61,7 @@ if(!compiled.ok)throw Error(JSON.stringify(compiled));
 </script>
 <h1>Foundation packed consumer</h1><p>Supporting authored fixture. No provider or interaction verification is claimed by its build.</p>
 {#snippet tooltipTrigger(attributes)}<Button.Root {...attributes} class="vict-btn vict-btn--secondary">Owned tooltip trigger</Button.Root>{/snippet}
-<ControlScope class="vict-rhea"><AssetProvider namespace="foundation-packed-proof"><div style="position:relative;overflow:hidden" data-ui-application-viewport><DocumentHost plan={compiled.plan} localState={source.localState} extensionDescriptors={descriptors} extensionImplementations={implementations} dispatch={async()=>undefined} navigate={()=>{}} /><OwnedTooltip trigger={tooltipTrigger}>A supplied tooltip in this application.</OwnedTooltip></div><GraphEditor {graph} ongraphchange={value=>graph=value} label="Packed rich graph" height={480}/></AssetProvider></ControlScope>
+<ControlScope class="vict-rhea"><AssetProvider namespace="foundation-packed-proof"><div style="position:relative;overflow:hidden" data-ui-application-viewport><DocumentHost plan={compiled.plan} localState={source.localState} extensionDescriptors={descriptors} extensionImplementations={implementations} dispatch={async()=>undefined} navigate={()=>{}} /><OwnedTooltip trigger={tooltipTrigger}>A supplied tooltip in this application.</OwnedTooltip></div><GraphSurface {graph} ongraphchange={value=>graph=value} label="Packed rich graph" height={480}/></AssetProvider></ControlScope>
 <style>:global(body){font-family:system-ui;margin:24px}h1{font-size:24px}</style>`);
   writeFileSync(join(destination,'install.log'),run(['install','--ignore-scripts','--no-audit','--no-fund'],consumer));
   const comparisons=[];

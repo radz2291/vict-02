@@ -55,107 +55,21 @@ slow ELK work. There is no unrestricted large-ELK option. Node positions and
 collapse/focus state remain consumer presentation data. These helpers do not
 interpret VICT bindings, mutate documents or implement workflow execution.
 
-## Rich application graphs
+## Graph compatibility and reusable mechanics
 
-`GraphEditor` and the separately registered `vict.flow.editor@1` add an editable
-graph contract. Existing `vict.flow.canvas/node/edge@1` contracts remain read-only.
-Install the exported `flowAuthoringDescriptors`, `flowAuthoringImplementations`
-and `flowAuthoringPackage` together; discovery and rendering use the same identity.
-The package includes a valid rich-editor authoring seed with declared graph state.
+The rejected bundled `GraphEditor` interface and its new-authoring recipe have
+been removed. `GraphSurface` preserves the graph canvas, node fields, typed
+connections, selection, keyboard history and the canonical graph-change bridge.
+It does not include a toolbar, family picker, selection inspector, connection
+form, clipboard panel, minimap or zoom control panel. Hosts choose their own UI.
+Graph model operations and layout utilities remain public and unchanged.
 
-`vict.flow.editor@2` adds governed presentation parts: `root`, `toolbar`,
-`canvas`, `inspector`, `node`, `node-header`, `node-body`, `field`,
-`field-content` and `port`. These are real renderer surfaces, including repeated
-graph cards/fields; they do not create competing canonical UI nodes. Use
-canonical `partStyles` to author them. Existing `vict.flow.editor@1` retains its
-root-only contract and exact compatibility pin. Both revisions use the same
-graph schema, canonical history bridge and state/persistence behavior.
+Saved `vict.flow.editor@1/@2` source still loads through compatibility renderers.
+Both registrations are excluded from new manual/agent insertion and contain no
+seed or examples. Their immutable descriptor pins remain intact; historical
+`toolbar` and `inspector` style targets are now inert and do not target other
+surfaces. Existing graph data and bindings are not migrated or deleted.
 
-The graph keeps SvelteFlow geometry, handles and minimap. Ordinary actions and
-connection selectors reuse public VICT `Button` and `Select`; native text,
-number, list and textarea editors use the shared `vict-input` / `vict-textarea`
-presentation recipes while preserving commit-on-change/blur rather than a
-history entry per keystroke. Slider, switch and node select controls remain the
-registered catalog implementations. A node select's real trigger is labelled
-through its presentation attributes without amending the catalog's frozen @1
-prop contract. The action row is an accessible group; it does not claim a
-roving-tabindex toolbar contract.
-
-Consumers load `@victframework/ui-svelte/styles.css`, then `catalog.css`, and
-optionally `rhea.css`, and mount the graph in the shared `ControlScope` (with
-`class="vict-rhea"` when using Rhea). A standalone consumer must retain its
-scope around owned popups as well as triggers. The Studio isolated viewport
-supplies the same scope inside its iframe; an outer-page ancestor cannot
-supply CSS scope across that document boundary. Graph shell defaults inherit
-shared semantic colors, typography, spacing, radius and focus tokens; explicit
-`--vict-flow-node`, `--vict-flow-text`, `--vict-flow-border` and
-`--vict-flow-focus` overrides remain available. Native graph fields also retain
-the explicit `--vict-flow-input` background override over their shared recipe.
-
-The `graph` prop is JSON with schema `vict.flow-graph@1`, a numeric revision,
-node families, nodes and edges. Families declare fields and named typed ports;
-nodes retain their parameter values, positions and collapsed bodies. Fields
-include native text/textarea/list/number/preview and the registered VICT catalog
-slider, switch, select and button controls. Family definitions are data, so each
-application can supply different node families without adding framework patches.
-This finite field vocabulary does not permit arbitrary executable component code.
-Buttons increment an explicit local intent count; application effects require a
-separately declared application integration.
-
-Image, video, icon and vector field kinds reuse `@victframework/ui-media-svelte`.
-Their string values are managed asset references, supported supplied media sources,
-exact icon names or inert vector JSON as appropriate. Optional field `media` metadata
-supplies alt text, poster/captions/language and icon pack/revision/decorative choices.
-The inspector can edit these references; loading/failure remains the media component's
-real state. Node families and node instances accept stable `icon:{pack,name,revision,
-source?,data?}` identities; an instance overrides its family. Custom SVG/vector marks
-preserve multicolour branding. All instances use the nearest explicit `MEDIA_HOST`;
-the graph stores references, never binary bytes or temporary blob URLs.
-
-The editor supports header-only node dragging, background pan, multi-selection,
-port tracing, selection inspection, fit/focus/search, measured Dagre arrangement,
-add/duplicate/delete, explicit connection editing/reconnection, typed port checks,
-and a visible portable copy/paste buffer. Controls isolate drag/pan/wheel gestures.
-The inspector supplies keyboard-accessible connection and coordinate controls.
-Copy/paste does not request access to the system clipboard. Camera and selection
-are transient; positions, parameters, topology and collapsed state are in the graph.
-
-Connect `graphChange:string` to the same declared string state used by `graph`.
-The output is a validated complete snapshot. A static literal still allows local
-editing but cannot persist itself. The host must explicitly commit output into its
-canonical document/history/save protocol. `GRAPH_EDITOR_HOST` optionally supplies
-`historyFor({nodeId,occurrenceKey})` with `canUndo/canRedo/undo/redo` methods; the
-authored toolbar and keyboard then use that shared host history. Standalone
-consumers without this context use bounded local `GraphSession` undo/redo.
-The host's optional `presentationFor({nodeId,occurrenceKey})` controller supplies
-`get/set` of `{viewport:{x,y,zoom},selection:{nodes,edges}}`. Keep this transient
-store outside canonical-plan remounts, keyed by screen/document and occurrence;
-the editor restores camera/selection and drops removed IDs. Restored cameras
-disable initial auto-fit. These writes do not emit graph changes or weaken
-renderer generation fences. Keyboard listeners use the owned document, so
-iframe-mounted editors receive commands without affecting a sibling editor.
-
-`parseGraphOperations(unknown)` validates 1–50 strict operations.
-`applyGraphPatch(serializedGraph, operations, expectedRevision)` returns a
-discriminated result and, on success, `graph` plus serialized `source`.
-Agents can use `defineNodeType`, `addNode`, `setField`, `moveNodes`, `connect`,
-`reconnect`, `replacePorts`, `remove`, `duplicate` and `paste` without replacing
-one oversized string. Family replacement and invalid-edge removal require explicit
-intent. Stale, invalid or domain-refused changes never partially apply.
-
-The model bounds one graph to 1000 nodes, 4000 edges, 128 families and 128 fields/
-ports per family. These are validation budgets, not a demonstrated performance
-guarantee. Validation checks IDs, endpoints, direction, port type, multiplicity,
-field kinds/options/bounds and cycle policy (cycles are rejected by default).
-`GraphSession` additionally accepts a host domain-validator callback.
-
-Import both Flow styles and the installed VICT catalog styles. Save/reopen,
-canonical shared history, actual pointer/touch behavior and complete application
-integration must be verified in the consuming host; package model/DOM tests alone
-do not establish those product claims or parity with every Langflow feature.
-
-Comparison and retained slow observation:
-`docs/studio/cycle-1-3/completion/structure/layout-comparison*.json` in the source
-repository. Studio reduces complexity first through containment layers, collapse,
-search and selected dependency neighborhoods. It does not render canonical
-containers as draggable compound subflow frames; collapse is a view projection.
+This compatibility surface is not the promised arbitrary node-body authoring
+architecture. That separate iteration remains under development; existing
+fixed field kinds do not demonstrate general project-defined node composition.

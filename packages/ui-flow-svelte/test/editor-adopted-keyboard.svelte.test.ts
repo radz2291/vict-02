@@ -1,6 +1,6 @@
 import {afterEach, describe, expect, it} from 'vitest';
 import {flushSync, mount, unmount} from 'svelte';
-import GraphEditor from '../src/editor/GraphEditor.svelte';
+import GraphSurface from '../src/editor/GraphSurface.svelte';
 import {parseGraph, serializeGraph} from '../src/editor/model.js';
 import {graphFixture} from './editor-fixture.js';
 
@@ -15,8 +15,8 @@ async function fixture(readOnly = false) {
   child.body.append(child.adoptNode(left), child.adoptNode(right));
   const writes: string[] = [], otherWrites: string[] = [];
   const viewState = {get: () => ({viewport: {x: 0, y: 0, zoom: 1}, selection: {nodes: ['a'], edges: []}}), set: () => {}};
-  const one = mount(GraphEditor, {target: left, props: {graph: serializeGraph(graphFixture()), readOnly, viewState, ongraphchange: value => writes.push(value)}});
-  const two = mount(GraphEditor, {target: right, props: {graph: serializeGraph(graphFixture()), viewState, ongraphchange: value => otherWrites.push(value)}});
+  const one = mount(GraphSurface, {target: left, props: {graph: serializeGraph(graphFixture()), readOnly, viewState, ongraphchange: value => writes.push(value)}});
+  const two = mount(GraphSurface, {target: right, props: {graph: serializeGraph(graphFixture()), viewState, ongraphchange: value => otherWrites.push(value)}});
   cleanup.push(() => unmount(two)); cleanup.push(() => unmount(one));
   await settle();
   // Happy DOM shares constructors. After actual adoption, model the browser's
@@ -44,12 +44,10 @@ describe('adopted rich editor keyboard transactions', () => {
     key(f.node, 'ArrowDown', true); await settle();
     expect(f.writes).toHaveLength(2); expect(position(f.writes[1]!)).toEqual({x: 10, y: 40});
     expect(f.otherWrites).toHaveLength(0);
-    const undo = f.left.querySelector<HTMLButtonElement>('button[aria-label="Undo graph"]');
-    const undoButton = undo ?? [...f.left.querySelectorAll('button')].find(button => button.textContent?.trim() === 'Undo')!;
-    expect(undoButton).toBeTruthy(); undoButton.click(); await settle();
+    f.node.dispatchEvent(new KeyboardEvent('keydown', {key:'z',ctrlKey:true,bubbles:true,cancelable:true})); await settle();
     expect(position(f.writes.at(-1)!)).toEqual({x: 10, y: 0});
-    const redoButton = [...f.left.querySelectorAll('button')].find(button => button.textContent?.trim() === 'Redo')!;
-    redoButton.click(); await settle(); expect(position(f.writes.at(-1)!)).toEqual({x: 10, y: 40});
+    f.node.dispatchEvent(new KeyboardEvent('keydown', {key:'z',ctrlKey:true,shiftKey:true,bubbles:true,cancelable:true}));
+    await settle(); expect(position(f.writes.at(-1)!)).toEqual({x: 10, y: 40});
     expect(f.otherWrites).toHaveLength(0);
   });
   it('keeps editable controls, pre-consumed keys and unowned targets outside graph movement', async () => {

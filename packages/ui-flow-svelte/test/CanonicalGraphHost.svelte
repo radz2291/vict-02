@@ -14,6 +14,7 @@
   function persist(key:string,value:unknown){if(key!=='graph'||typeof value!=='string')return;source={...source,revision:String(Number(source.revision)+1),localState:{...source.localState,graph:{key:'graph',type:'string',initial:value}}};}
   export function replace(next:UiDocument){source=next;}
   export function snapshot(){return source;}
+  export function presentationSnapshot(){return states.get('editor');}
 </script>
 <div data-source-revision={source.revision}>
   {#key source.revision}

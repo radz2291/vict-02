@@ -2,7 +2,7 @@
 export const specialistPublicExports = [
   './authoring:flowEditorDescriptor',
   './authoring:flowEditorDescriptorV2',
-  'GraphEditor',
+  'GraphSurface',
   'GraphSession',
   'GraphValidationError',
   'emptyGraph',

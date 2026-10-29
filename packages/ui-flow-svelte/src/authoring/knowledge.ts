@@ -10,79 +10,6 @@ import { specialistPublicExports } from './public-exports.js';
 import compatibility from './compatibility.json' with { type: 'json' };
 import presentationCompatibility from './compatibility-v2.json' with { type: 'json' };
 
-const richEditor: UiAuthoringFragment = {
-  root: 'editor',
-  localState: {
-    graph: {
-      key: 'graph',
-      type: 'string',
-      initial: JSON.stringify({
-        schema: 'vict.flow-graph@1',
-        revision: 0,
-        nodeTypes: [
-          {
-            id: 'text-step',
-            label: 'Text step',
-            fields: [
-              { id: 'prompt', label: 'Prompt', kind: 'textarea', default: '' },
-              { id: 'notes', label: 'Notes', kind: 'list', default: [] },
-              { id: 'weight', label: 'Weight', kind: 'slider', default: 1, min: 0, max: 10 },
-            ],
-            ports: [
-              {
-                id: 'text-in',
-                label: 'Text input',
-                direction: 'input',
-                type: 'text',
-                maxConnections: 1,
-              },
-              { id: 'text-out', label: 'Text output', direction: 'output', type: 'text' },
-            ],
-          },
-        ],
-        nodes: [
-          {
-            id: 'first',
-            type: 'text-step',
-            label: 'First step',
-            position: { x: 0, y: 0 },
-            values: {
-              prompt: 'Edit a real node parameter',
-              notes: ['Independent movement', 'Typed ports'],
-            },
-          },
-          {
-            id: 'second',
-            type: 'text-step',
-            label: 'Second step',
-            position: { x: 380, y: 0 },
-            values: {},
-          },
-        ],
-        edges: [
-          {
-            id: 'first-second',
-            source: 'first',
-            sourcePort: 'text-out',
-            target: 'second',
-            targetPort: 'text-in',
-          },
-        ],
-      }),
-    },
-  },
-  nodes: [
-    {
-      kind: 'component',
-      id: 'editor',
-      definitionId: 'vict.flow.editor',
-      revision: '1',
-      props: { graph: { type: 'ref', path: 'state.graph' } },
-      outputs: { graphChange: { setState: { key: 'graph' } } },
-    },
-  ],
-};
-
 const canvas: UiAuthoringFragment = {
   root: 'canvas',
   nodes: [
@@ -142,27 +69,15 @@ const legacyPackage: UiAuthoringPackage = {
   registrations: [
     {
       descriptor: flowEditorDescriptor,
-      label: 'Rich node editor',
+      label: 'Legacy graph compatibility',
       family: 'flow',
-      category: 'graph-editor',
-      purpose:
-        'Editable application graph with rich fields, named typed ports, independent movement, selection, inspection and transactional undo/redo.',
-      eligibility: { kind: 'standalone' },
-      seed: richEditor,
-      examples: [richEditor],
+      category: 'legacy-graph',
+      purpose: 'Read existing saved graphs without the removed bundled editor interface.',
+      eligibility: { kind: 'excluded', reason: 'The bundled editor was removed by owner decision. Retained only for existing source compatibility; do not insert it into new applications.' },
       guidance: [
-        'graph is a string containing vict.flow-graph@1 JSON: revision:number; nodeTypes:[{id,label,fields:[{id,label,kind,default?,min?,max?,step?,options?,advanced?,disabled?}],ports:[{id,label,direction:input|output,type,maxConnections?}]}]; nodes:[{id,type,label,position:{x,y},values:{fieldId:value},ports?,collapsed?}]; edges:[{id,source,sourcePort,target,targetPort}]; allowCycles?:boolean (default false).',
-        'Fields: text, textarea, list (string array), number, slider, select (options), toggle, button (local activation count), preview, image, video, icon, vector. Field values must match kinds, bounds and options. Slider/toggle/select/button reuse registered VICT catalog controls. Button count is a local UI intent; no application effect is executed.',
-        'Media fields reuse the registered ui-media-svelte components and nearest MEDIA_HOST; values are stable managed asset references or supported supplied sources. Optional media:{alt,poster,captions,language,pack,revision,decorative} supplies accessibility/playback/icon metadata. Icon values are exact registry names (default pack lucide, revision 1.27.0), managed custom SVG references or inert vict.vector@1 JSON. Vector values are inert JSON or managed SVG references. Unknown/missing resources retain visible errors; source does not prove loading/playback.',
-        'Node families and individual nodes may declare icon:{pack,name,revision,source?,data?}. Node icon overrides family icon; default is supplied lucide/sliders-horizontal@1.27.0. Custom managed/inert vector icons preserve brand colours through the shared media renderer. setIcon operation accepts an exact identity or null to restore family inheritance.',
-        'Bind graph to declared string local state and graphChange to that same key. Initial state contains complete valid graph JSON. The host must explicitly persist graphChange into its canonical edit/history/save bridge before claiming saved graph edits. A static graph literal receives local editing only.',
-        'Dragging the node header moves only that node; fields have nodrag/nopan/nowheel isolation. Background drag pans; Shift/Ctrl/Meta selection, fit/focus/search/arrange, collapse, add/delete/duplicate and copy/paste buffer are supported. Inspector has a keyboard-accessible connect/reconnect alternative.',
-        'Named typed output/input ports validate direction, compatible type, multiplicity, endpoints, duplicate edges and cycle policy. Dynamic node ports are explicit model overrides; remove incompatible edges explicitly in one valid transaction. No runtime effects or processing engine follow from a visual connection.',
-        'Use defineNodeType with explicit replace:true to revise a family, unsetField to explicitly remove obsolete instance values in the same transaction, replacePorts with explicit removeInvalidConnections when intended, and setCyclePolicy for the application cycle rule. Incompatible retained fields/connections refuse the entire batch.',
-        'Application graph IDs belong to this editor occurrence. Keep them separate from UI source/occurrence IDs. graphChange emits a full validated snapshot with monotonically advanced revision; selectionChange emits transient JSON node/edge IDs. Invalid external graph input displays an error and retains the previous valid graph.',
-        'Hosts may provide GRAPH_EDITOR_HOST (vict.flow.editor-host@1) with historyFor({nodeId,occurrenceKey}) returning canUndo/canRedo/undo/redo. With that context the authored toolbar and keyboard use the same host canonical history as agent edits; without it local GraphSession history is a standalone fallback.',
-        'The same host may provide presentationFor({nodeId,occurrenceKey}) with get/set of {viewport:{x,y,zoom},selection:{nodes,edges}}. Store it by screen/document and occurrence outside canonical-plan remounts. This retains camera and valid selection through manual/agent source commits without persisting hover/camera into canonical source; removed graph IDs are dropped.',
-        'Import @victframework/ui-flow-svelte/styles.css and the installed VICT catalog CSS. Test rich controls, real bindings, manual/agent coexistence, history and save/reopen/Run. Existing vict.flow.canvas@1 remains a read-only diagram.',
+        'Compatibility only: graph JSON, node controls, direct connections and canonical history remain readable. Toolbar, family picker, inspector, connection form and clipboard interface were removed.',
+        'Existing graphChange bindings and graph data are preserved. This identity is not a new-authoring recipe or a complete workflow application.',
+        'Historical toolbar/inspector part declarations remain accepted for source compatibility but have no rendered targets. They do not style another surface.',
       ],
     },
     {
@@ -256,7 +171,7 @@ const legacyPackage: UiAuthoringPackage = {
       name: './authoring',
       disposition: 'registered',
       reason:
-        'Exact scalar ABI diagram declarations and the versioned JSON application-graph editor are authored here.',
+        'Scalar ABI diagram declarations are authorable. Legacy graph descriptors remain installed only for saved-source compatibility.',
     },
     ...specialistPublicExports.map((name) => ({
       name,
@@ -269,21 +184,12 @@ const legacyPackage: UiAuthoringPackage = {
 };
 
 const editorRegistration = legacyPackage.registrations.find(item => item.descriptor.id === 'vict.flow.editor')!;
-function editorPresentationFragment(fragment: UiAuthoringFragment | undefined): UiAuthoringFragment | undefined {
-  if (!fragment) return undefined;
-  return { ...fragment, nodes: fragment.nodes.map(node => node.kind === 'component' && node.definitionId === 'vict.flow.editor' ? { ...node, revision: '2' } : node) };
-}
 export const flowAuthoringPackage: UiAuthoringPackage = {
   ...legacyPackage,
   compatibility: [...compatibility, ...presentationCompatibility],
   registrations: [...legacyPackage.registrations, {
     ...editorRegistration,
     descriptor: flowEditorDescriptorV2,
-    seed: editorPresentationFragment(editorRegistration.seed),
-    examples: editorRegistration.examples?.map(fragment => editorPresentationFragment(fragment)!),
-    guidance: [...editorRegistration.guidance ?? [],
-      'Revision 2 exposes actual root, toolbar, canvas, inspector, node, node-header, node-body, field, field-content and port surfaces through canonical partStyles. A part repeated across graph nodes styles all matching graph surfaces; graph IDs are not additional UI source nodes.',
-      'Graph geometry remains SvelteFlow. Ordinary controls reuse public VICT Button/Select and shared native field presentation; select/switch/slider actions use the registered catalog. Load public foundation and catalog CSS before Rhea, inside an explicit ControlScope. Node shell defaults inherit VICT semantic tokens; explicit --vict-flow-* overrides remain supported.',
-    ],
+    guidance: editorRegistration.guidance,
   }],
 };

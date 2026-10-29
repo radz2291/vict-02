@@ -1,5 +1,5 @@
 <script lang="ts">
-  import GraphEditor from '../../../../packages/ui-flow-svelte/src/editor/GraphEditor.svelte';
+  import GraphSurface from '../../../../packages/ui-flow-svelte/src/editor/GraphSurface.svelte';
   import { ControlScope } from '@victframework/ui-svelte';
   import source from '../../../../docs/studio/foundation-evidence/actual-agent-graph-source.json';
   import { captureRenderedElement } from '../../../../packages/ui-ai-svelte/src/capture.js';
@@ -36,7 +36,7 @@
 <button onclick={capture} disabled={busy}>Capture production graph DOM</button>
 <a href={image || undefined} download="actual-agent-graph-production.jpg" hidden={!image}>Download graph capture</a>
 <main>
-  <section><h2>Native actual graph</h2><div class="fixture" bind:this={host}><ControlScope class="vict-rhea"><GraphEditor {graph} height={480} label="Actual agent graph capture" ongraphchange={next=>{graph=next;}}/></ControlScope></div></section>
+  <section><h2>Native actual graph</h2><div class="fixture" bind:this={host}><ControlScope class="vict-rhea"><GraphSurface {graph} height={480} label="Actual agent graph capture" ongraphchange={next=>{graph=next;}}/></ControlScope></div></section>
   <section><h2>Production JPEG</h2>{#if image}<img src={image} alt="Production capture of the actual agent graph" />{/if}</section>
 </main>
 <pre role="status">{report}</pre>

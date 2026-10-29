@@ -1,19 +1,15 @@
 <script lang="ts">
   import { untrack } from 'svelte';
-  import { Button, Select, type UiComponentPresentation } from '@victframework/ui-svelte';
+  import { type UiComponentPresentation } from '@victframework/ui-svelte';
   import {
     SvelteFlow,
     Background,
-    Controls,
-    MiniMap,
     type Node,
     type Edge,
     type Connection,
   } from '@xyflow/svelte';
   import FlowNavigation from '../FlowNavigation.svelte';
-  import { layoutGraph, LayoutFence } from '../layout.js';
   import RichGraphNode from './RichGraphNode.svelte';
-  import GraphFields from './GraphFields.svelte';
   import type { GraphHistoryController,GraphPresentationController,GraphPresentationState } from './host.js';
   import {
     GraphSession,
@@ -54,7 +50,6 @@
     ongraphchange?: (value: string) => void;
     onselectionchange?: (selection: GraphSelection) => void;
   } = $props();
-  const controlId = $props.id();
   let session = new GraphSession(emptyGraph());
   const restored=untrack(()=>viewState?.get());
   const restoredViewport=restored?.viewport;
@@ -68,8 +63,6 @@
   let dragging = false,
     dragCancelled = false,
     dragRevision = 0;
-  let arranging = $state(false);
-  const layoutFence = new LayoutFence();
   let current = $state<GraphDocument>(emptyGraph()),
     nodes = $state<Node[]>([]),
     edges = $state<Edge[]>([]),
@@ -77,46 +70,9 @@
   let error = $state(''),
     incoming = '',
     emitted = '',
-    historyVersion = $state(0),
-    canUndo = $state(false),
-    canRedo = $state(false),
     clipboard = $state(''),
-    query = $state(''),
-    palette = $state(''),
-    fit = $state<object | undefined>(),
-    fitIds = $state<string[]>([]),
     viewport = $state(validRestoredViewport??{ x: 0, y: 0, zoom: 1 });
-  let sourceNode = $state(''),
-    sourcePort = $state(''),
-    targetNode = $state(''),
-    targetPort = $state(''),
-    edgeChoice = $state('');
   const nodeTypes = { rich: RichGraphNode };
-  const selectedNode = $derived(
-    selection.nodes.length === 1
-      ? current.nodes.find((node) => node.id === selection.nodes[0])
-      : undefined,
-  );
-  const selectedEdges = $derived(
-    current.edges.filter((edge) => selection.edges.includes(edge.id)),
-  );
-  const matches = $derived(
-    current.nodes.filter(
-      (node) =>
-        !query ||
-        `${node.label} ${node.type}`.toLowerCase().includes(query.toLowerCase()),
-    ),
-  );
-  const undoAvailable = $derived.by(() => {
-    void graph;
-    void current;
-    return history ? history.canUndo() : canUndo;
-  });
-  const redoAvailable = $derived.by(() => {
-    void graph;
-    void current;
-    return history ? history.canRedo() : canRedo;
-  });
   $effect(()=>{const store=viewState;const state:GraphPresentationState={viewport:{...viewport},selection:{nodes:[...selection.nodes],edges:[...selection.edges]}};if(initialized&&cameraReady)untrack(()=>store?.set(state));});
   $effect(()=>{const document=rootElement?.ownerDocument;if(!document)return;document.addEventListener('keydown',keyboard,true);document.addEventListener('pointercancel',cancelDrag);return()=>{document.removeEventListener('keydown',keyboard,true);document.removeEventListener('pointercancel',cancelDrag);};});
   function undo() {
@@ -180,7 +136,6 @@
     });
   });
   function sync() {
-    layoutFence.cancel();
     nodes = current.nodes.map((node) => ({
       id: node.id,
       type: 'rich',
@@ -213,9 +168,6 @@
       deletable: false,
       selected: selection.edges.includes(edge.id),
     }));
-    historyVersion++;
-    canUndo = session.canUndo;
-    canRedo = session.canRedo;
   }
   function accept(result: GraphResult) {
     if (!result.ok) {
@@ -260,55 +212,8 @@
       targetPort: value.targetHandle ?? '',
     };
   }
-  function add() {
-    if (!palette) return;
-    apply([
-      {
-        type: 'addNode',
-        nodeType: palette,
-        position: {
-          x: 40 - viewport.x / viewport.zoom,
-          y: 40 - viewport.y / viewport.zoom,
-        },
-      },
-    ]);
-  }
   function copy() {
     clipboard = copyGraphSelection(current, selection);
-  }
-  function focus(ids: string[] = []) {
-    fitIds = ids;
-    fit = {};
-  }
-  async function layout() {
-    if (readOnly || !nodes.length) return;
-    const revision = current.revision,
-      ticket = layoutFence.issue();
-    arranging = true;
-    try {
-      const result = await layoutGraph(
-        nodes.map((node) => ({
-          ...node,
-          width: 280,
-          height: node.measured?.height ?? 360,
-        })),
-        edges,
-        { engine: 'dagre', direction: 'RIGHT', spacing: 60 },
-      );
-      if (!layoutFence.current(ticket) || current.revision !== revision) return;
-      apply([
-        {
-          type: 'moveNodes',
-          positions: Object.fromEntries(
-            result.nodes.map((node) => [node.id, node.position]),
-          ),
-        },
-      ]);
-    } catch {
-      error = 'Graph arrangement failed; existing positions were retained.';
-    } finally {
-      arranging = false;
-    }
   }
   function tracePort(nodeId: string, portId: string) {
     const related = current.edges.filter(
@@ -324,19 +229,6 @@
     dragCancelled = true;
     dragging = false;
     sync();
-  }
-  function manualConnection() {
-    const link = {
-      source: sourceNode,
-      sourcePort,
-      target: targetNode,
-      targetPort,
-    };
-    apply(
-      edgeChoice
-        ? [{ type: 'reconnect', edgeId: edgeChoice, connection: link }]
-        : [{ type: 'connect', edge: link }],
-    );
   }
   function keyboard(event: KeyboardEvent) {
     if(event.defaultPrevented)return;
@@ -391,45 +283,21 @@
 </script>
 
 <section {...presentation?.target('root')} bind:this={rootElement} class={`vict-graph-editor ${presentation?.target('root').class ?? ''}`} aria-label={label} data-graph-revision={current.revision} data-graph-viewport={`${viewport.x},${viewport.y},${viewport.zoom}`}>
-  <div {...presentation?.target('toolbar')} class={`graph-toolbar ${presentation?.target('toolbar').class ?? ''}`} role="group" aria-label="Graph tools">
-    <label for={`${controlId}-family`}>Node family<Select id={`${controlId}-family`} name="node-family" value={palette} options={current.nodeTypes.map(type=>({value:type.id,label:type.label}))} disabled={readOnly} onChange={value=>palette=value}/></label><Button variant="secondary" label="Add node" onclick={add} disabled={readOnly||!palette}/>
-    <Button variant="secondary" label="Undo" onclick={undo} disabled={readOnly||!undoAvailable}/><Button variant="secondary" label="Redo" onclick={redo} disabled={readOnly||!redoAvailable}/>
-    <Button variant="secondary" label="Copy" onclick={copy} disabled={!selection.nodes.length}/><Button variant="secondary" label="Paste" onclick={()=>apply([{type:'paste',clipboard}])} disabled={readOnly||!clipboard}/><Button variant="secondary" label="Duplicate" onclick={()=>apply([{type:'duplicate',selection}])} disabled={readOnly||!selection.nodes.length}/><Button variant="secondary" label="Delete selected" onclick={()=>apply([{type:'remove',selection}])} disabled={readOnly||!(selection.nodes.length||selection.edges.length)}/>
-    <Button variant="secondary" label="Fit all" onclick={()=>focus()}/><Button variant="secondary" label="Focus selection" onclick={()=>focus(selection.nodes)} disabled={!selection.nodes.length}/><Button variant="secondary" label={arranging?'Arranging.':'Arrange'} onclick={layout} disabled={readOnly||arranging||!nodes.length}/>
-    <label>Find nodes<input class="vict-input" aria-label="Find nodes" type="search" bind:value={query} /></label>{#if query}<span>{matches.length} matches</span><Button variant="secondary" label="Focus matches" onclick={()=>focus(matches.map(node=>node.id))} disabled={!matches.length}/>{/if}
-  </div>
   {#if error}<p role="alert" class="graph-error">{error}</p>{/if}
-  <div class="graph-workspace">
     <div {...presentation?.target('canvas')} class={`graph-canvas ${presentation?.target('canvas').class ?? ''}`} style:height={`${Math.max(240,Math.min(height,2000))}px`}>
       <SvelteFlow bind:nodes bind:edges bind:viewport {nodeTypes} nodesDraggable={!readOnly} nodesConnectable={!readOnly} deleteKey={null} fitView={false} minZoom={0.15} maxZoom={2} multiSelectionKey={['Control','Meta','Shift']} selectionKey="Shift" panOnDrag={true}
         onselectionchange={({nodes:selectedNodes,edges:selectedEdges})=>select({nodes:selectedNodes.map(node=>node.id),edges:selectedEdges.map(edge=>edge.id)})}
-        onnodedragstart={()=>{dragging=true;dragCancelled=false;dragRevision=current.revision;layoutFence.cancel();}}
+        onnodedragstart={()=>{dragging=true;dragCancelled=false;dragRevision=current.revision;}}
         onnodedragstop={({nodes:moved})=>{dragging=false;if(dragCancelled||current.revision!==dragRevision){sync();return;}apply([{type:'moveNodes',positions:Object.fromEntries(moved.map(node=>[node.id,{...node.position}]))}]);}}
         isValidConnection={candidate=>!readOnly&&!connectionIssue(current,{id:'pending',...connection(candidate)})}
         onbeforeconnect={candidate=>{apply([{type:'connect',edge:connection(candidate)}]);return false;}}
         onbeforereconnect={(next,old)=>{apply([{type:'reconnect',edgeId:old.id,connection:{source:next.source,sourcePort:next.sourceHandle??'',target:next.target,targetPort:next.targetHandle??''}}]);return false;}}>
-        <Background /><Controls showLock={false}/><MiniMap pannable zoomable/><FlowNavigation request={fit} ids={fitIds} initialFit={fitInitially&&initialized} initialNodeIds={current.nodes.map(node=>node.id)} onInitialFit={()=>{cameraReady=true;}}/>
+        <Background /><FlowNavigation initialFit={fitInitially&&initialized} initialNodeIds={current.nodes.map(node=>node.id)} onInitialFit={()=>{cameraReady=true;}}/>
       </SvelteFlow>
     </div>
-    <aside {...presentation?.target('inspector')} class={`graph-inspector ${presentation?.target('inspector').class ?? ''}`} aria-label="Graph selection">
-      <h3>Selection</h3><p>{selection.nodes.length} nodes · {selection.edges.length} connections</p>
-      {#if selectedNode}<label>Node name<input class="vict-input" value={selectedNode.label} disabled={readOnly} onchange={event=>apply([{type:'setLabel',nodeId:selectedNode.id,label:event.currentTarget.value}])}/></label><GraphFields {presentation} owner={`${selectedNode.id}/inspector`} fields={graphType(current,selectedNode).fields} values={selectedNode.values} {readOnly} advanced onchange={(fieldId,value)=>apply([{type:'setField',nodeId:selectedNode.id,fieldId,value}])}/>{:else if selection.nodes.length}<ul>{#each current.nodes.filter(node=>selection.nodes.includes(node.id)) as node}<li>{node.label}</li>{/each}</ul>{/if}
-      {#if selectedNode}<div class="node-position"><label>Node X<input class="vict-input" type="number" value={selectedNode.position.x} disabled={readOnly} onchange={event=>apply([{type:'moveNodes',positions:{[selectedNode.id]:{x:event.currentTarget.valueAsNumber,y:selectedNode.position.y}}}])}/></label><label>Node Y<input class="vict-input" type="number" value={selectedNode.position.y} disabled={readOnly} onchange={event=>apply([{type:'moveNodes',positions:{[selectedNode.id]:{x:selectedNode.position.x,y:event.currentTarget.valueAsNumber}}}])}/></label></div>{/if}
-      {#each selectedEdges as edge}<p>{edge.source} / {edge.sourcePort} → {edge.target} / {edge.targetPort}</p>{/each}
-      <details><summary>Connect or reconnect</summary>
-        <label for={`${controlId}-edge`}>Existing connection<Select id={`${controlId}-edge`} name="existing-connection" value={edgeChoice} options={current.edges.map(edge=>({value:edge.id,label:edge.id}))} disabled={readOnly} onChange={value=>edgeChoice=value}/></label>
-        <label for={`${controlId}-source`}>Source node<Select id={`${controlId}-source`} name="source-node" value={sourceNode} options={current.nodes.map(node=>({value:node.id,label:node.label}))} disabled={readOnly} onChange={value=>sourceNode=value}/></label>
-        <label for={`${controlId}-output`}>Output port<Select id={`${controlId}-output`} name="output-port" value={sourcePort} options={current.nodes.filter(node=>node.id===sourceNode).flatMap(node=>graphPorts(current,node)).filter(port=>port.direction==='output').map(port=>({value:port.id,label:`${port.label} (${port.type})`}))} disabled={readOnly} onChange={value=>sourcePort=value}/></label>
-        <label for={`${controlId}-target`}>Target node<Select id={`${controlId}-target`} name="target-node" value={targetNode} options={current.nodes.map(node=>({value:node.id,label:node.label}))} disabled={readOnly} onChange={value=>targetNode=value}/></label>
-        <label for={`${controlId}-input`}>Input port<Select id={`${controlId}-input`} name="input-port" value={targetPort} options={current.nodes.filter(node=>node.id===targetNode).flatMap(node=>graphPorts(current,node)).filter(port=>port.direction==='input').map(port=>({value:port.id,label:`${port.label} (${port.type})`}))} disabled={readOnly} onChange={value=>targetPort=value}/></label>
-        <Button variant="secondary" label={edgeChoice?'Reconnect':'Connect'} disabled={readOnly||!sourceNode||!sourcePort||!targetNode||!targetPort} onclick={manualConnection}/>
-      </details>
-      <details><summary>Graph clipboard</summary><label>Portable graph selection<textarea class="vict-textarea" aria-label="Graph clipboard" rows="4" bind:value={clipboard}></textarea></label><p>Copy uses this editor's bounded selection buffer. Paste a compatible graph selection here; no system clipboard permission is requested.</p></details>
-    </aside>
-  </div>
 </section>
 <style>
-  .vict-graph-editor{container-type:inline-size;font:var(--vict-font-sizeBase,14px)/1.5 var(--vict-font-family,system-ui);color:var(--vict-flow-text,var(--vict-color-text,#203239));border:1px solid var(--vict-flow-border,var(--vict-color-border,#dce5e5));border-radius:var(--vict-radius-base,10px);background:var(--vict-flow-node,var(--vict-color-surface,#fff));overflow:hidden;min-width:0}
-  .graph-toolbar{display:flex;align-items:flex-end;gap:var(--vict-space-1,4px);flex-wrap:wrap;padding:var(--vict-space-2,8px);border-bottom:1px solid var(--vict-flow-border,var(--vict-color-border,#dce5e5))}
-  label{display:grid;gap:var(--vict-space-1,4px);font-size:12px}.graph-workspace{display:flex;min-width:0}.graph-canvas{flex:1;min-width:200px}.graph-inspector{box-sizing:border-box;width:250px;min-width:200px;max-height:650px;overflow:auto;border-left:1px solid var(--vict-flow-border,var(--vict-color-border,#dce5e5));padding:var(--vict-space-3,12px);display:flex;flex-direction:column;gap:var(--vict-space-2,8px)}h3,p{margin:0}h3{font-size:var(--vict-font-sizeBase,14px)}details{border-top:1px solid var(--vict-flow-border,var(--vict-color-border,#dce5e5));padding-top:var(--vict-space-2,8px)}summary{cursor:pointer;font-weight:500}details label{margin-top:var(--vict-space-2,8px)}.graph-error{padding:8px 12px;color:var(--vict-color-danger,#b03143);background:var(--vict-color-surface,#fff)}@container (max-width:650px){.graph-workspace{flex-direction:column}.graph-inspector{width:100%;max-height:260px;border-left:0;border-top:1px solid var(--vict-flow-border,var(--vict-color-border,#dce5e5))}}
+  .vict-graph-editor{font:var(--vict-font-sizeBase,14px)/1.5 var(--vict-font-family,system-ui);color:var(--vict-flow-text,var(--vict-color-text,#203239));min-width:0}
+  .graph-canvas{width:100%;min-width:0;background:var(--vict-flow-node,var(--vict-color-surface,#fff))}
+  .graph-error{padding:var(--vict-space-2,8px) var(--vict-space-3,12px);color:var(--vict-color-danger,#b03143);background:var(--vict-color-surface,#fff)}
 </style>

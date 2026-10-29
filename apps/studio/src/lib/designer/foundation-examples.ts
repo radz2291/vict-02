@@ -1,7 +1,7 @@
 /** Offline reference applications authored through the public Studio agent edit boundary.
  * These fixtures prove exposed contracts; they make no live-model, device or processing-engine claim. */
 import type { UiDocument } from '@victframework/ui';
-import { emptyGraph, serializeGraph } from '@victframework/ui-flow-svelte';
+import { emptyGraph, serializeGraph, applyGraphOperations } from '@victframework/ui-flow-svelte';
 import { newScreen } from './application.js';
 import { documentCursor, prepareAgentEdit, type AgentEdit } from './agent-edits.js';
 
@@ -372,38 +372,9 @@ export function chatFoundationExample(id = 'foundation-chat'): UiDocument {
     ],
   ]);
 }
+/** Historical saved-source fixture, not an available editor recipe or agent proof. */
 export function graphFoundationExample(id = 'foundation-graph'): UiDocument {
-  return authorFoundationBatches('Rich research graph', id, [
-    [
-      { op: 'declareState', key: 'graph', type: 'string', initial: serializeGraph(emptyGraph()) },
-      {
-        op: 'insert',
-        kind: 'component',
-        nodeId: 'graphEditor',
-        parentId: 'screen',
-        componentId: 'vict.flow.editor',
-        revision: '1',
-        props: { label: 'Research graph', height: 560 },
-      },
-      {
-        op: 'bind',
-        nodeId: 'graphEditor',
-        prop: 'graph',
-        expression: { type: 'ref', path: 'state.graph' },
-      },
-      {
-        op: 'connect',
-        nodeId: 'graphEditor',
-        output: 'graphChange',
-        binding: { setState: { key: 'graph' } },
-      },
-    ],
-    [
-      {
-        op: 'editGraph',
-        nodeId: 'graphEditor',
-        expectedGraphRevision: 0,
-        changes: [
+  const result = applyGraphOperations(emptyGraph(), [
           {
             type: 'defineNodeType',
             definition: {
@@ -451,10 +422,15 @@ export function graphFoundationExample(id = 'foundation-graph'): UiDocument {
               targetPort: 'in',
             },
           },
-        ],
-      },
-    ],
-  ]);
+        ]);
+  if (!result.ok) throw Error('Invalid retained legacy graph fixture');
+  const doc = newScreen('Legacy research graph', id);
+  return {...doc, nodes: {...doc.nodes,
+    screen: {...doc.nodes.screen, children: ['graphEditor']} as UiDocument['nodes'][string],
+    graphEditor: {kind:'component',id:'graphEditor',definitionId:'vict.flow.editor',revision:'1',
+      props:{graph:{type:'ref',path:'state.graph'},height:{type:'literal',value:560}},
+      outputs:{graphChange:{setState:{key:'graph'}}}},
+  }, localState:{...doc.localState,graph:{key:'graph',type:'string',initial:serializeGraph(result.graph)}}};
 }
 export function foundationExample(kind: FoundationExample, id?: string): UiDocument {
   return kind === 'responsive'

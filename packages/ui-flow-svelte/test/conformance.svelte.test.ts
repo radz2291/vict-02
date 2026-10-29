@@ -17,12 +17,18 @@ function source(revision: string): UiDocument {
     componentDefinitions:{},styleSources:{},tokens:{},conditions:{},assets:{}};
 }
 describe('graph shared component and versioned presentation conformance',()=>{
-  it('retains root-only editor@1 and admits exact new editor@2 knowledge without changing the old pin',()=>{
+  it('retains exact legacy contracts but excludes both revisions from new authoring without recipes',()=>{
     expect(flowEditorDescriptor.styleTargets).toEqual(['root']);
     expect(flowEditorDescriptorV2.styleTargets).toContain('node-body');
     expect(createUiAuthoringRegistry([flowAuthoringPackage],flowAuthoringImplementations,{requireCompatibility:true}).issues).toEqual([]);
-    const registration=flowAuthoringPackage.registrations.find(item=>item.descriptor.id==='vict.flow.editor'&&item.descriptor.revision==='2')!;
-    expect(registration.seed?.nodes.find(node=>node.kind==='component')?.revision).toBe('2');
+    const registrations=flowAuthoringPackage.registrations.filter(item=>item.descriptor.id==='vict.flow.editor');
+    expect(registrations.map(item=>item.descriptor.revision)).toEqual(['1','2']);
+    for(const registration of registrations){
+      expect(registration.eligibility.kind).toBe('excluded');
+      expect(registration.eligibility.reason).toBeTruthy();
+      expect(registration.seed).toBeUndefined();
+      expect(registration.examples).toBeUndefined();
+    }
   });
   for(const revision of ['1','2'])it(`renders editor@${revision} through the registered host with shared controls and real declared parts`,async()=>{
     const doc=source(revision),compiled=compileUiDocument(doc,defaultSemanticElementCatalog(),flowAuthoringDescriptors);
@@ -31,12 +37,15 @@ describe('graph shared component and versioned presentation conformance',()=>{
     const app=mount(DocumentHost,{target,props:{plan:compiled.plan,extensionDescriptors:flowAuthoringDescriptors,extensionImplementations:flowAuthoringImplementations,dispatch:async()=>undefined,navigate:()=>{}}});
     await settle();
     expect(target.querySelector('.vict-graph-editor[data-ui-part=root]')).not.toBeNull();
-    expect(target.querySelector('.graph-toolbar[role=group] .vict-btn')).not.toBeNull();
-    expect(target.querySelector('.graph-toolbar .vict-select')).not.toBeNull();
+    expect(target.querySelector('.graph-toolbar,.graph-inspector,[aria-label="Graph tools"],[aria-label="Graph selection"],.svelte-flow__controls,.svelte-flow__minimap')).toBeNull();
+    for(const label of ['Node family','Add node','Undo','Redo','Copy','Paste','Duplicate','Delete selected','Fit all','Focus selection','Arrange','Find nodes','Connect or reconnect','Graph clipboard']){
+      expect([...target.querySelectorAll('button,label,summary')].some(element=>element.textContent?.trim()===label),label).toBe(false);
+    }
     expect(target.querySelector('[data-graph-node=a] .vict-textarea')).not.toBeNull();
     expect(target.querySelector('[data-graph-node=a] [aria-label="Collapse First"].vict-btn')).not.toBeNull();
     if(revision==='2'){
-      for(const part of ['toolbar','canvas','inspector','node','node-header','node-body','field','port'])expect(target.querySelector(`[data-ui-part="${part}"]`),part).not.toBeNull();
+      for(const part of ['canvas','node','node-header','node-body','field','port'])expect(target.querySelector(`[data-ui-part="${part}"]`),part).not.toBeNull();
+      for(const part of ['toolbar','inspector'])expect(target.querySelector(`[data-ui-part="${part}"]`),part).toBeNull();
       const css=[...document.querySelectorAll('style')].map(node=>node.textContent).join('\n');
       expect(css).toContain('#123456');expect(css).toContain('18px');
     }else expect(target.querySelector('[data-ui-part="node-body"]')).toBeNull();

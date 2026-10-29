@@ -10,7 +10,7 @@ import { flowAuthoringDescriptors } from '../src/authoring/descriptors.js';
 import { flowAuthoringImplementations } from '../src/authoring/implementations.js';
 import { parseGraph, serializeGraph } from '../src/editor/model.js';
 import { graphFixture } from './editor-fixture.js';
-import GraphEditor from '../src/editor/GraphEditor.svelte';
+import GraphSurface from '../src/editor/GraphSurface.svelte';
 import CanonicalGraphHost from './CanonicalGraphHost.svelte';
 function source(): UiDocument {
   return {
@@ -57,7 +57,7 @@ describe('registered agent-authored rich graph consumer', () => {
       get: () => ({ viewport: { x: 0, y: 0, zoom: 1 }, selection: { nodes: ['a'], edges: [] } }),
       set: () => {},
     };
-    const one = mount(GraphEditor, {
+    const one = mount(GraphSurface, {
         target: left,
         props: {
           graph: serializeGraph(graphFixture()),
@@ -65,7 +65,7 @@ describe('registered agent-authored rich graph consumer', () => {
           ongraphchange: (value) => writes.push(value),
         },
       }),
-      two = mount(GraphEditor, {
+      two = mount(GraphSurface, {
         target: right,
         props: {
           graph: serializeGraph(graphFixture()),
@@ -107,9 +107,7 @@ describe('registered agent-authored rich graph consumer', () => {
     expect(target.querySelector('.vict-graph-editor')?.getAttribute('data-graph-viewport')).toBe(
       '120,80,0.7',
     );
-    expect(target.querySelector('.graph-inspector')?.textContent).toContain(
-      '1 nodes · 1 connections',
-    );
+    expect(instance.presentationSnapshot()?.selection).toEqual({nodes:['a'],edges:['ab']});
     const field = target.querySelector<HTMLTextAreaElement>(
       '[data-graph-node=a] [data-field=prompt] textarea',
     )!;
@@ -123,13 +121,14 @@ describe('registered agent-authored rich graph consumer', () => {
     expect(target.querySelector('.vict-graph-editor')?.getAttribute('data-graph-viewport')).toBe(
       '120,80,0.7',
     );
-    expect(target.querySelector('.graph-inspector')?.textContent).toContain(
-      '1 nodes · 1 connections',
-    );
+    expect(instance.presentationSnapshot()?.selection).toEqual({nodes:['a'],edges:['ab']});
     expect(
       target.querySelector<HTMLTextAreaElement>('[data-graph-node=a] [data-field=prompt] textarea')
         ?.value,
     ).toBe('persist and remount');
+    const persisted = parseGraph(instance.snapshot().localState!.graph!.initial as string);
+    expect(persisted.ok && persisted.graph.edges).toEqual(graphFixture().edges);
+    expect(persisted.ok && persisted.graph.nodes[0]!.values.prompt).toBe('persist and remount');
     const next = instance.snapshot(),
       initial = next.localState.graph?.initial;
     if (typeof initial !== 'string') throw Error('fixture');
@@ -143,9 +142,7 @@ describe('registered agent-authored rich graph consumer', () => {
       localState: { graph: { key: 'graph', type: 'string', initial: serializeGraph(graph.graph) } },
     });
     await settle();
-    expect(target.querySelector('.graph-inspector')?.textContent).toContain(
-      '0 nodes · 0 connections',
-    );
+    expect(instance.presentationSnapshot()?.selection).toEqual({nodes:[],edges:[]});
     await unmount(instance);
     target.remove();
   });
@@ -180,7 +177,7 @@ describe('registered agent-authored rich graph consumer', () => {
     );
     const target = document.createElement('div');
     document.body.append(target);
-    const instance = mount(GraphEditor, { target, props: { graph: serializeGraph(graph) } });
+    const instance = mount(GraphSurface, { target, props: { graph: serializeGraph(graph) } });
     await settle();
     expect(target.querySelectorAll('[data-graph-node=a] .vict-media-image')).toHaveLength(1);
     expect(target.querySelectorAll('[data-graph-node=a] .vict-media-video')).toHaveLength(1);
@@ -195,12 +192,12 @@ describe('registered agent-authored rich graph consumer', () => {
     await unmount(instance);
     target.remove();
   });
-  it('delegates toolbar history to an explicit canonical host instead of using a competing stack', async () => {
+  it('delegates keyboard history to an explicit canonical host instead of using a competing stack', async () => {
     let undos = 0,
       redos = 0;
     const target = document.createElement('div');
     document.body.append(target);
-    const instance = mount(GraphEditor, {
+    const instance = mount(GraphSurface, {
       target,
       props: {
         graph: serializeGraph(graphFixture()),
@@ -217,9 +214,9 @@ describe('registered agent-authored rich graph consumer', () => {
       },
     });
     await settle();
-    const buttons = [...target.querySelectorAll<HTMLButtonElement>('button')];
-    buttons.find((button) => button.textContent === 'Undo')!.click();
-    buttons.find((button) => button.textContent === 'Redo')!.click();
+    const node = target.querySelector('[data-id=a]')!;
+    node.dispatchEvent(new KeyboardEvent('keydown',{key:'z',ctrlKey:true,bubbles:true,cancelable:true}));
+    node.dispatchEvent(new KeyboardEvent('keydown',{key:'z',ctrlKey:true,shiftKey:true,bubbles:true,cancelable:true}));
     expect(undos).toBe(1);
     expect(redos).toBe(1);
     await unmount(instance);
@@ -252,6 +249,10 @@ describe('registered agent-authored rich graph consumer', () => {
     expect(target.querySelector('[data-graph-node=a] textarea')).not.toBeNull();
     expect(target.querySelector('[data-graph-node=a] [role=slider]')).not.toBeNull();
     expect(target.querySelector('[data-graph-node=a] [data-port=in]')).not.toBeNull();
+    expect(target.querySelector('.graph-toolbar,.graph-inspector,[aria-label="Graph tools"],[aria-label="Graph selection"]')).toBeNull();
+    for(const label of ['Node family','Add node','Undo','Redo','Copy','Paste','Duplicate','Delete selected','Fit all','Focus selection','Arrange','Find nodes','Connect or reconnect','Graph clipboard']) {
+      expect([...target.querySelectorAll('button,label,summary')].some(element=>element.textContent?.trim()===label),label).toBe(false);
+    }
     const field = target.querySelector<HTMLTextAreaElement>(
       '[data-graph-node=a] [data-field=prompt] textarea',
     )!;
@@ -269,10 +270,7 @@ describe('registered agent-authored rich graph consumer', () => {
       );
       expect(parsed.graph.edges).toEqual(graphFixture().edges);
     }
-    const undo = [...target.querySelectorAll<HTMLButtonElement>('button')].find(
-      (button) => button.textContent === 'Undo',
-    )!;
-    undo.click();
+    target.querySelector('[data-id=a]')!.dispatchEvent(new KeyboardEvent('keydown',{key:'z',ctrlKey:true,bubbles:true,cancelable:true}));
     await settle();
     const restored = parseGraph(writes.at(-1)!);
     expect(restored.ok && restored.graph.nodes[0]!.values.prompt).toBe('original');

@@ -731,7 +731,7 @@
             </Menubar.RadioGroup>
           </Menubar.SubContent></Menubar.Portal>
         </Menubar.Sub>
-        <WorkspaceSubmenu label="Examples"><Menubar.Item onSelect={()=>openExample('responsive')}>Responsive app</Menubar.Item><Menubar.Item onSelect={()=>openExample('chat')}>Chat app</Menubar.Item><Menubar.Item onSelect={()=>openExample('graph')}>Node editor</Menubar.Item></WorkspaceSubmenu>
+        <WorkspaceSubmenu label="Examples"><Menubar.Item onSelect={()=>openExample('responsive')}>Responsive app</Menubar.Item><Menubar.Item onSelect={()=>openExample('chat')}>Chat app</Menubar.Item></WorkspaceSubmenu>
         <Menubar.Item disabled={!source || textDraftDirty || sourceDraftDirty} onSelect={()=>void beginRename()}>Rename screen</Menubar.Item>
         <Menubar.Separator />
         <Menubar.Item aria-label="Save" disabled={!compilation?.ok || sourceDraftDirty || textDraftDirty} onSelect={()=>void save()}>Save <kbd>Ctrl+S</kbd></Menubar.Item>

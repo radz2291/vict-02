@@ -3,7 +3,7 @@
   import { getContext } from 'svelte';
   import { GRAPH_EDITOR_HOST, type GraphEditorHost } from '../editor/host.js';
   import type { GraphDocument } from '../editor/model.js';
-  import GraphEditor from '../editor/GraphEditor.svelte';
+  import GraphSurface from '../editor/GraphSurface.svelte';
   let { props, io, presentation, nodeId, occurrenceKey }: UiSvelteComponentProps =
     $props();
   const host = getContext<GraphEditorHost | undefined>(GRAPH_EDITOR_HOST);
@@ -15,4 +15,4 @@
       : undefined,
   );
 </script>
-<GraphEditor {presentation} graph={String(props.graph??'')} label={String(props.label??'Node editor')} height={typeof props.height==='number'?props.height:600} readOnly={props.readOnly===true} {history} {validate} {viewState} ongraphchange={value=>io?.emit('graphChange',value)} onselectionchange={value=>io?.emit('selectionChange',JSON.stringify(value))}/>
+<GraphSurface {presentation} graph={String(props.graph??'')} label={String(props.label??'Node editor')} height={typeof props.height==='number'?props.height:600} readOnly={props.readOnly===true} {history} {validate} {viewState} ongraphchange={value=>io?.emit('graphChange',value)} onselectionchange={value=>io?.emit('selectionChange',JSON.stringify(value))}/>
