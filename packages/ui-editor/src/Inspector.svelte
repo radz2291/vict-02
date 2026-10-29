@@ -4,7 +4,7 @@
   import { repeatExpressionFields } from '@victframework/ui';
   type UiPseudoState = 'hover' | 'focus' | 'active' | 'disabled';
   import { resolveOccurrence } from './occurrence.js';
-  import { connectInteraction, bindExpression, setAttribute, setConditionalStyle, setOutputBinding, setStyle, setBaseStyle, setTextLiteral, type TransactionDraft } from './commands.js';
+  import { findNodeSlotScope, connectInteraction, bindExpression, setAttribute, setConditionalStyle, setOutputBinding, setStyle, setBaseStyle, setTextLiteral, type TransactionDraft } from './commands.js';
   import { nodeLabel, sourceBreadcrumb, editableStyle, sourceStyles, styleText, styleGroups, type EditorLabels } from './inspector-ux.js';
   import ExpressionEditor from './ExpressionEditor.svelte';
   import InspectorControl from './InspectorControl.svelte';
@@ -134,7 +134,9 @@
     const matches = candidates.filter(entry => entry.revision === revision);
     return matches.length === 1 ? matches[0] : undefined;
   });
-  const stateKeysTyped = $derived(Object.entries(document.localState).map(([key, decl]) => ({ key, type: decl.type })));
+  const lexicalSlotScope=$derived(node?findNodeSlotScope(document,node.id):undefined);
+  const stateKeysTyped = $derived(Object.entries(lexicalSlotScope?lexicalSlotScope.state??{}:document.localState).map(([key, decl]) => ({ key, type: decl.type })));
+  function bindingSummary(binding:UiOutputBinding):string {return 'emit' in binding?`Scoped output: ${binding.emit.output}`:'invokeAction' in binding?labels.actions?.[binding.invokeAction.actionId]??binding.invokeAction.actionId:labels.state?.[binding.setState.key]??binding.setState.key;}
   function refs(type: string, payload?: string): string[] {
     const compatible = (actual: string) => actual === type || (type === 'array' && (actual === 'stringList' || actual === 'numberList'));
     const contains = (id: string, sought: string, seen = new Set<string>()): boolean => {
@@ -150,7 +152,9 @@
       return children.some(child => contains(child, sought, seen));
     };
     const definition = componentNode && Object.values(document.componentDefinitions).find(entry => contains(entry.root, componentNode.id));
-    const references = definition
+    const references = lexicalSlotScope
+      ? [...stateKeysTyped.filter(entry=>compatible(entry.type)).map(entry=>`state.${entry.key}`),...lexicalSlotScope.props.filter(prop=>compatible(prop.type)).map(prop=>`prop.${prop.name}`)]
+      : definition
       ? definition.props.filter(prop => compatible(prop.type)).map(prop => `prop.${prop.name}`)
       : [
         ...stateKeysTyped.filter(entry => compatible(entry.type)).map(entry => `state.${entry.key}`),
@@ -410,7 +414,7 @@
                   <label>Run action<select aria-label={`${output.name} action`} value={binding && 'invokeAction' in binding?binding.invokeAction.actionId:''} onchange={e=>applyActionBinding(output.name,e.currentTarget.value)}><option value="">Choose an action…</option>{#each knownActionIds as id}<option value={id}>{labels.actions?.[id] ?? id}</option>{/each}</select></label>
                 </div>
                 <p>{output.description ?? `Declared ${output.payload} event.`}</p>
-                {#if binding}<p class="connection-summary">→ {'invokeAction' in binding?labels.actions?.[binding.invokeAction.actionId] ?? binding.invokeAction.actionId:labels.state?.[binding.setState.key] ?? binding.setState.key}</p><button type="button" onclick={()=>clearBinding(output.name)}>Remove connection</button>{/if}
+                {#if binding}<p class="connection-summary">→ {bindingSummary(binding)}</p><button type="button" onclick={()=>clearBinding(output.name)}>Remove connection</button>{/if}
               {/if}
             {/snippet}
           </ToolPages>
@@ -425,7 +429,7 @@
                 <ToolPages pages={componentDescriptor.props.map(prop=>({id:prop.name,label:friendly(prop.name)}))} label="Component property pages" locked={textDraftDirty}>
                   {#snippet children(name)}
                     {@const prop=componentDescriptor.props.find(prop=>prop.name===name)}
-                    {#if prop}<fieldset class="content-boundary" disabled={shared && scope==='instance'}>{#key `${componentNode.id}:${name}`}<ExpressionEditor compact label={name} displayLabel={friendly(name)} {referenceLabels} type={prop.type} value={componentNode.props?.[name]} defaultValue={prop.default} references={refs(prop.type)} onDraftChange={textDraftChange} onCommit={expression=>applyProp(name,expression)}/>{#if prop.type==='stringList' || prop.type==='numberList'}<StateInitialEditor compact {document} expression={componentNode.props?.[name]} {labels} {onApply} onDirtyChange={textDraftChange}/>{/if}{/key}</fieldset>
+                    {#if prop}<fieldset class="content-boundary" disabled={shared && scope==='instance'}>{#key `${componentNode.id}:${name}`}<ExpressionEditor compact label={name} displayLabel={friendly(name)} {referenceLabels} type={prop.type} value={componentNode.props?.[name]} defaultValue={prop.default} references={refs(prop.type)} onDraftChange={textDraftChange} onCommit={expression=>applyProp(name,expression)}/>{#if prop.type==='stringList' || prop.type==='numberList'}{#if !lexicalSlotScope}<StateInitialEditor compact {document} expression={componentNode.props?.[name]} {labels} {onApply} onDirtyChange={textDraftChange}/>{:else}<p>Starting values belong to this scoped contract; edit its source declarations.</p>{/if}{/if}{/key}</fieldset>
                     {@const slot=slotOwnedLabelSlot(componentDescriptor.id,name,componentNode)}{#if slot}<p>The {slot} slot supplies the visible text. This property is its fallback. Edit that slot's text through Document → Structure.</p>{/if}
                     {:else}<p>This component exposes no properties. Add content through Insert and its declared slots.</p>{/if}
                   {/snippet}
@@ -485,7 +489,7 @@
             {#key `${componentNode.id}:${propDecl.name}`}
               <ExpressionEditor label={propDecl.name} displayLabel={friendly(propDecl.name)} {referenceLabels} type={propDecl.type} value={componentNode.props?.[propDecl.name]}
                 defaultValue={propDecl.default} references={refs(propDecl.type)} onCommit={expression => applyProp(propDecl.name, expression)} />
-              {#if !contextual}<StateInitialEditor {document} expression={componentNode.props?.[propDecl.name]} {labels} {onApply} />{/if}
+              {#if !contextual}{#if !lexicalSlotScope}<StateInitialEditor {document} expression={componentNode.props?.[propDecl.name]} {labels} {onApply} />{:else}<p>Starting values belong to this scoped contract; edit its source declarations.</p>{/if}{/if}
               {#if ownedBySlot}<p class="muted">Shown from the “{ownedBySlot}” slot content while that slot is filled; this value is the fallback text.</p>{/if}
             {/key}
           {/each}
@@ -524,7 +528,7 @@
             {@const binding = outputBindingRaw(output.name)}
             <div class="output-row">
               <strong>{outputTitle(output.name)}</strong>
-              {#if binding}<p class="connection-summary">→ {'invokeAction' in binding ? labels.actions?.[binding.invokeAction.actionId] ?? binding.invokeAction.actionId : labels.state?.[binding.setState.key] ?? binding.setState.key}</p>{/if}
+              {#if binding}<p class="connection-summary">→ {bindingSummary(binding)}</p>{/if}
               <details><summary>Event details</summary><p>{output.name} ({output.payload}) · {output.description ?? 'Declared component event.'}</p></details>
               {#if output.payload !== 'void'}
                 <label>Update state

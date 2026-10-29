@@ -6,6 +6,9 @@ import {
   applyUiEdit,
   canonicalUiDocument,
   isUiValueOfType,
+  slotScopeProblems,
+  type UiSlotScope,
+  type UiExpression,
   type UiNode,
   type UiDocument,
   type UiEditCommand,
@@ -45,10 +48,21 @@ const id = z
   .refine((value) => !['__proto__', 'constructor', 'prototype'].includes(value));
 const scalar = z.union([z.string().max(4000), z.number().finite(), z.boolean()]);
 const value = z.union([scalar, z.array(z.string().max(4000)).max(100), z.array(z.number().finite()).max(100)]);
-const expression = z.union([
-  z.object({ type: z.literal('literal'), value: scalar }).strict(),
-  z.object({ type: z.literal('ref'), path: z.string().min(1).max(300) }).strict(),
-]);
+const expressionTree: z.ZodType<UiExpression> = z.lazy(()=>z.union([
+  z.object({type:z.literal('literal'),value:z.union([scalar,z.null()])}).strict(),
+  z.object({type:z.literal('ref'),path:z.string().min(1).max(300)}).strict(),
+  z.object({type:z.literal('compare'),op:z.enum(['eq','ne','lt','lte','gt','gte']),left:expressionTree,right:expressionTree}).strict(),
+  z.object({type:z.literal('boolean'),op:z.enum(['and','or','not']),terms:z.array(expressionTree).min(1).max(20)}).strict(),
+  z.object({type:z.literal('conditionalValue'),when:expressionTree,then:expressionTree,otherwise:expressionTree}).strict(),
+  z.object({type:z.literal('op'),name:id,args:z.array(expressionTree).max(20)}).strict(),
+]));
+const expression=expressionTree.superRefine((root,ctx)=>{
+  let count=0;const stack:{value:UiExpression;depth:number}[]=[{value:root,depth:1}];
+  while(stack.length){const {value,depth}=stack.pop()!;if(++count>100||depth>8){ctx.addIssue({code:z.ZodIssueCode.custom,message:'Expressions are bounded to depth 8 and 100 nodes.'});break;}
+    const children=value.type==='compare'?[value.left,value.right]:value.type==='boolean'?value.terms:value.type==='conditionalValue'?[value.when,value.then,value.otherwise]:value.type==='op'?value.args:[];
+    for(const value of children)stack.push({value,depth:depth+1});
+  }
+});
 const content = {
   text: z.string().max(4000).optional(),
   headingLevel:z.number().int().min(1).max(6).optional(),
@@ -56,6 +70,15 @@ const content = {
   props: z.record(id, value).optional(),
   styles: z.record(z.string().min(1).max(80), z.string().max(500)).optional(),
 };
+const scopeName = z.string().min(1).max(160).regex(/^[A-Za-z_][A-Za-z0-9_-]*$/).refine(name=>!['__proto__','prototype','constructor'].includes(name));
+const valueType = z.enum(['string','number','boolean','isoDate','isoTime','stringList','numberList']);
+const slotScope = z.object({
+  schema:z.literal('vict.ui-slot-scope@1'),
+  props:z.array(z.object({name:scopeName,type:z.union([valueType,z.literal('array')]),default:value.optional()}).strict()).max(100),
+  state:z.record(scopeName,z.object({key:scopeName,type:valueType,initial:value,controlled:z.boolean().optional()}).strict()).optional(),
+  conditions:z.record(scopeName,expression).optional(),
+  outputs:z.array(z.object({name:scopeName,payload:z.union([valueType,z.literal('void')]),description:z.string().max(1000).optional()}).strict()).max(100).optional(),
+}).strict().superRefine((scope,ctx)=>{for(const message of slotScopeProblems(scope))ctx.addIssue({code:z.ZodIssueCode.custom,message});});
 const position = { slotName: id.optional(), index: z.number().int().min(0).max(1000).optional() };
 const styleValue=z.union([z.object({type:z.literal('text'),value:z.string().max(500)}).strict(),z.object({type:z.literal('token'),id}).strict(),z.object({type:z.literal('binding'),expression}).strict()]);
 const styleDeclarations=z.array(z.object({property:z.string().min(1).max(80),value:styleValue}).strict()).max(20);
@@ -83,6 +106,8 @@ export const agentOperationSchema = z.discriminatedUnion('op', [
   z.object({op:z.literal('attachStyleSource'),nodeId:id,sourceId:id,index:z.number().int().min(0).max(1000).optional()}).strict(),
   z.object({op:z.literal('detachStyleSource'),nodeId:id,sourceId:id}).strict(),
   z.object({op:z.literal('removeStyleSource'),id}).strict(),
+  z.object({op:z.literal('when'),nodeId:id,wrapperId:id,conditionId:id}).strict(),
+  z.object({op:z.literal('slotScope'),nodeId:id,slot:id,scope:slotScope.optional()}).strict(),
   z.object({op:z.literal('editGraph'),nodeId:id,expectedGraphRevision:z.number().int().min(0),changes:z.array(z.unknown()).min(1).max(40)}).strict(),
   z.object({op:z.literal('theme'),role:z.enum(['surface','text','textMuted','border','accent','accentText','highlight','highlightText','focusRing','disabledSurface','disabledText','elevation']),value:z.string().max(500).optional()}).strict(),
   z.object({op:z.literal('style'),nodeId:id,part:id.optional(),property:z.string().min(1).max(80),
@@ -94,6 +119,7 @@ export const agentOperationSchema = z.discriminatedUnion('op', [
   z.object({ op: z.literal('remove'), nodeId: id }).strict(),
   z.object({ op: z.literal('bind'), nodeId: id, prop: id, expression: expression.optional() }).strict(),
   z.object({ op: z.literal('connect'), nodeId: id, output: id, binding: z.union([
+    z.object({ emit:z.object({output:scopeName,value:expression.optional()}).strict() }).strict(),
     z.object({ setState: z.object({ key: id, value: expression.optional() }).strict() }).strict(),
     z.object({ invokeAction: z.object({ actionId: id, input: z.record(id, expression).optional() }).strict() }).strict(),
   ]).optional() }).strict(),
@@ -109,12 +135,12 @@ export const agentEditSchema = z
 export function agentEditDiagnostics(error:z.ZodError,input?:unknown) {
  const operations=input && typeof input==='object' && Array.isArray((input as {operations?:unknown}).operations) ? (input as {operations:unknown[]}).operations : [];
  const shape:Record<string,string>={insert:'insert(kind:element|text|component,nodeId,parentId,tag?|componentId+revision|text/expression?,slotName?,index?)',bindText:'bindText(nodeId,expression?)',bindAttribute:'bindAttribute(nodeId,name,expression?)',style:'style(nodeId,part?,property,value?:text|token|binding,conditionId?,pseudo?)',declareToken:'declareToken(id,value)',declareCondition:'declareCondition(id,kind:media|container,query,name?)',add:'add(recipe,nodeId,parentId,slotName?,index?,text?,headingLevel?,attributes?,props?,styles?)',modify:'modify(nodeId,text?,headingLevel?,attributes?,props?,styles?)',move:'move(nodeId,newParentId,slotName?,index?)',remove:'remove(nodeId)',bind:'bind(nodeId,prop,expression?)',connect:'connect(nodeId,output,binding?)',declareState:'declareState(key,type:string|number|boolean|isoDate|isoTime|stringList|numberList,initial:matchingValue)',wireInput:'wireInput(nodeId,key,initial?)'};
- Object.assign(shape,{defineStyleSource:'defineStyleSource(id,declarations:[{property,value:text|token|binding}],conditionId?,pseudo?,replace?:boolean)',attachStyleSource:'attachStyleSource(nodeId,sourceId,index?)',detachStyleSource:'detachStyleSource(nodeId,sourceId)',removeStyleSource:'removeStyleSource(id)'});
+ Object.assign(shape,{when:'when(nodeId,wrapperId,conditionId): wrap an existing subtree in a canonical conditional branch',slotScope:'slotScope(nodeId,slot,scope?:{schema:vict.ui-slot-scope@1,props:[{name,type,default?}],state?:{key:{key,type,initial,controlled?}},conditions?:{name:expression},outputs?:[{name,payload,description?}]})',defineStyleSource:'defineStyleSource(id,declarations:[{property,value:text|token|binding}],conditionId?,pseudo?,replace?:boolean)',attachStyleSource:'attachStyleSource(nodeId,sourceId,index?)',detachStyleSource:'detachStyleSource(nodeId,sourceId)',removeStyleSource:'removeStyleSource(id)'});
  return error.issues.slice(0,8).map(issue=>{
   const operation=typeof issue.path[1]==='number' ? issue.path[1] : undefined;
   const rawPath=issue.path.join('.');const path=rawPath.length>500 ? rawPath.slice(0,470)+'[path truncated]' : rawPath;let expected='';
-  if(path.includes('.expression'))expected='Expected exactly {type:"literal",value:scalar} OR {type:"ref",path:"state.key"}; no extra fields. Example: {"type":"ref","path":"state.accepted"}.';
-  else if(path.includes('.binding'))expected='Expected {setState:{key,value?:literalOrRef}} OR {invokeAction:{actionId,input?:{field:literalOrRef}}}; no extra fields. Example: {"setState":{"key":"accepted"}}.';
+  if(path.includes('.expression'))expected='Expected an existing pure expression: literal/ref/compare/boolean/conditionalValue/registered op; no executable strings or extra fields. Example: {"type":"ref","path":"state.accepted"}.';
+  else if(path.includes('.binding'))expected='Expected {setState:{key,value?:literalOrRef}} OR {emit:{output,value?:literalOrRef}} inside a scoped slot OR {invokeAction:{actionId,input?:{field:literalOrRef}}}; no extra fields. Example: {"setState":{"key":"accepted"}}.';
   else if(path.includes('.props'))expected='Expected a property record of scalar values or homogeneous string[]/number[] (max100). Example: {"options":["one","two"]}; mixed lists and object arrays are unsupported.';
   else if(path.endsWith('.initial'))expected='Expected a matching canonical scalar or homogeneous string[]/number[]; date/time strings must be valid ISO values.';
   else if(path.includes('.attributes'))expected='Expected string (max4000), finite number, or boolean. Native expressions use bindAttribute or wireInput.';
@@ -234,7 +260,7 @@ export function prepareAgentEdit(
           inserted=[{kind:'text',id:operation.nodeId,content:operation.expression?{type:'expression',expression:operation.expression}:{type:'literal',value:operation.text??''}}];
         } else {
           const contract=operation.componentId&&operation.revision?authoringContract(operation.componentId,operation.revision):undefined;
-          if(!installedAuthoringRegistry.ok||!contract)return failure('STUDIO_AGENT_COMPONENT_NOT_FOUND','Supply an exact installed componentId and revision from contracts discovery.');
+          if(!installedAuthoringRegistry.ok||!contract)return failure('STUDIO_AGENT_COMPONENT_NOT_FOUND',`Exact component ${operation.componentId??'(missing)'}@${operation.revision??'(missing)'} is not installed. Discover contracts and use their componentId/revision.`);
           if(!['standalone','part'].includes(contract.eligibility.kind))return failure('STUDIO_AGENT_COMPONENT_UNAVAILABLE',contract.eligibility.reason??'This registration needs unavailable host support.');
           if(operation.tag||operation.expression||operation.text!==undefined||operation.attributes||operation.headingLevel)return failure('STUDIO_AGENT_INSERT_SHAPE','Registered components take componentId/revision and declared props/slots, not native text/tag fields.');
           inserted=[{kind:'component',id:operation.nodeId,definitionId:contract.descriptor.id,revision:contract.descriptor.revision,props:{},slots:{}}];
@@ -289,6 +315,30 @@ export function prepareAgentEdit(
         if(operation.kind==='container'&&!operation.name)return failure('STUDIO_AGENT_CONDITION','Container conditions require a declared container name.');
         const condition=operation.kind==='media'?{id:operation.id,kind:'media' as const,query:operation.query}:{id:operation.id,kind:'container' as const,query:operation.query,name:operation.name!};
         next.push({op:'replaceDocument',document:{...working,conditions:{...working.conditions,[operation.id]:condition}}});
+      }
+      if(operation.op==='when'){
+        if(!working.nodes[operation.nodeId]||working.nodes[operation.wrapperId])return failure('STUDIO_AGENT_CONDITIONAL','Wrap an existing node using a fresh wrapperId.');
+        let owners=working.root===operation.nodeId?1:0;
+        const remap=(children:readonly string[])=>children.map(id=>{if(id===operation.nodeId){owners++;return operation.wrapperId;}return id;});
+        const nodes=Object.fromEntries(Object.entries(working.nodes).map(([id,node])=>{
+          if(node.kind==='element'||node.kind==='portal')return [id,{...node,children:remap(node.children)}];
+          if(node.kind==='component')return [id,{...node,slots:node.slots?Object.fromEntries(Object.entries(node.slots).map(([name,fill])=>[name,{...fill,children:remap(fill.children)}])):undefined}];
+          if(node.kind==='conditional')return [id,{...node,branches:node.branches.map(branch=>({...branch,children:remap(branch.children)}))}];
+          if(node.kind==='slot')return [id,{...node,fallback:node.fallback?remap(node.fallback):undefined}];
+          if(node.kind==='repeat'&&node.templateRoot===operation.nodeId){owners++;return [id,{...node,templateRoot:operation.wrapperId}];}
+          return [id,node];
+        }));
+        if(owners!==1)return failure('STUDIO_AGENT_CONDITIONAL','The wrapped subtree must have exactly one canonical parent (definition roots cannot be wrapped here).');
+        nodes[operation.wrapperId]={kind:'conditional',id:operation.wrapperId,branches:[{when:operation.conditionId,children:[operation.nodeId]}]};
+        next.push({op:'replaceDocument',document:{...working,root:working.root===operation.nodeId?operation.wrapperId:working.root,nodes}});
+      }
+      if(operation.op==='slotScope'){
+        const node=working.nodes[operation.nodeId];
+        const descriptor=nodeDescriptor(node);
+        if(node?.kind!=='component'||!descriptor?.scopedSlots?.includes(operation.slot))return failure('STUDIO_AGENT_SLOT_SCOPE','Only an exact registered scoped slot accepts this contract.');
+        const previous=node.slots?.[operation.slot]??{name:operation.slot,children:[]};
+        const {scope:_old,...fill}=previous;
+        next.push({op:'replaceDocument',document:{...working,nodes:{...working.nodes,[node.id]:{...node,slots:{...node.slots,[operation.slot]:{...fill,...(operation.scope?{scope:operation.scope as UiSlotScope}:{})}}}}}});
       }
       if(operation.op==='editGraph'){const patched=patchAuthoredGraph(working,operation.nodeId,operation.changes,operation.expectedGraphRevision);if(!patched.ok)return failure('STUDIO_AGENT_GRAPH_INVALID',patched.message);next.push({op:'replaceDocument',document:patched.document});}
       if(operation.op==='theme')next.push({op:'setThemeRole',role:operation.role,value:operation.value});

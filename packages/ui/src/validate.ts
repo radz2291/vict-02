@@ -1,3 +1,4 @@
+import { slotScopeProblems, scopedSlotLexicalScope } from './slot-scope.js';
 /**
  * `validateUiDocument` — structural, reference, scope and catalog
  * validation for one `vict.ui-document@1` document (API-SPEC §3).
@@ -174,15 +175,17 @@ export function validateUiDocument(input: unknown, catalogs: UiCatalogs): readon
         return [node.templateRoot];
       case 'slot':
         return node.fallback ?? [];
+      case 'conditional':
+        return node.branches.flatMap(branch=>branch.children);
       default:
         return [];
     }
   };
   const definitionSlotFillChildren = (
     node: UiNode,
-  ): readonly { slot: string; children: readonly string[] }[] =>
+  ): readonly { slot: string; children: readonly string[]; scope?: import('./document.js').UiSlotScope }[] =>
     node.kind === 'component' && node.slots !== undefined
-      ? Object.entries(node.slots).map(([slot, fill]) => ({ slot, children: fill.children }))
+      ? Object.entries(node.slots).map(([slot, fill]) => ({ slot, children: fill.children, scope: fill.scope }))
       : [];
 
   const visiting = new Set<string>();
@@ -192,6 +195,7 @@ export function validateUiDocument(input: unknown, catalogs: UiCatalogs): readon
     node: Extract<UiNode, { kind: 'repeat' }>,
     scope: UiScopeInfo,
   ): UiScopeInfo => ({
+    ...scope,
     repeatItems: {
       ...scope.repeatItems,
       [node.itemName]: repeatItemFields(ctx, node.collection),
@@ -231,7 +235,7 @@ export function validateUiDocument(input: unknown, catalogs: UiCatalogs): readon
       for (const childId of childRefsOf(node)) visit(childId, scope);
     }
     for (const fill of definitionSlotFillChildren(node)) {
-      for (const childId of fill.children) visit(childId, scope);
+      for (const childId of fill.children) visit(childId, fill.scope && !slotScopeProblems(fill.scope).length ? scopedSlotLexicalScope(scope,fill.scope) : scope);
     }
     path.pop();
     visiting.delete(nodeId);
@@ -281,7 +285,7 @@ export function validateUiDocument(input: unknown, catalogs: UiCatalogs): readon
       }
       if (node.kind === 'component' && node.slots !== undefined) {
         for (const fill of Object.values(node.slots)) {
-          for (const childId of fill.children) stack.push({ id: childId, scope: entry.scope });
+          for (const childId of fill.children) stack.push({ id: childId, scope: fill.scope && !slotScopeProblems(fill.scope).length ? scopedSlotLexicalScope(entry.scope,fill.scope) : entry.scope });
         }
       }
       visited.add(nodeId);
@@ -462,6 +466,7 @@ function collectNodeSubtree(
     if (node.kind === 'element' || node.kind === 'portal') stack.push(...node.children);
     if (node.kind === 'repeat') stack.push(node.templateRoot);
     if (node.kind === 'slot') stack.push(...(node.fallback ?? []));
+    if (node.kind === 'conditional')for(const branch of node.branches)stack.push(...branch.children);
     if (node.kind === 'component' && node.slots !== undefined) {
       for (const fill of Object.values(node.slots)) stack.push(...fill.children);
     }
@@ -479,6 +484,8 @@ function validateOutputBindings(
   node: Extract<UiNode, { kind: 'component' }>,
   scope: UiScopeInfo,
 ): void {
+  for(const fill of Object.values(node.slots??{}))if(fill.scope)for(const message of slotScopeProblems(fill.scope))ctx.issues.push(uiDiagnostic('UI_DOC_INVALID_LITERAL',message,{documentId:String(ctx.document.id),nodeId:node.id}));
+  for(const fill of Object.values(node.slots??{}))if(fill.scope&&!slotScopeProblems(fill.scope).length){const inner=scopedSlotLexicalScope(scope,fill.scope);for(const expression of Object.values(fill.scope.conditions??{}))ctx.issues.push(...checkExpressionTarget(expression,'boolean',ctx.catalogs,inner,String(ctx.document.id),node.id));}
   const outputs = node.outputs;
   if (outputs === undefined) return;
   const { catalogs, issues } = ctx;
@@ -499,7 +506,7 @@ function validateOutputBindings(
       );
     }
     if ('setState' in binding) {
-      const target = localState[binding.setState.key];
+      const target = scope.stateTypes ? (scope.stateTypes[binding.setState.key] ? {type:scope.stateTypes[binding.setState.key]} : undefined) : localState[binding.setState.key];
       if (target === undefined) {
         issues.push(
           uiDiagnostic(
@@ -514,6 +521,10 @@ function validateOutputBindings(
           ...checkExpression(binding.setState.value, catalogs, outputScope, documentId, node.id),
         );
       }
+    } else if ('emit' in binding) {
+      const output=scope.scopedOutputs?.find(decl=>decl.name===binding.emit.output);
+      if(!output)issues.push(uiDiagnostic('UI_COMPONENT_OUTPUT_UNKNOWN','emit requires a declared scoped output.',{documentId,nodeId:node.id,output:binding.emit.output}));
+      if(binding.emit.value!==undefined)issues.push(...checkExpression(binding.emit.value,catalogs,outputScope,documentId,node.id));
     } else if ('invokeAction' in binding) {
       if (
         catalogs.actionIds !== undefined &&
@@ -666,6 +677,7 @@ function validateNode(
       }
 
       for (const [slotName, fill] of Object.entries(node.slots ?? {})) {
+        if(fill.scope)issues.push(uiDiagnostic('UI_DOC_UNSUPPORTED_FEATURE','Scoped fills require an explicitly capable registered component.',{documentId,nodeId:node.id}));
         const declared = (definition as UiComponentDefinition).slots?.[slotName];
         if (declared === undefined) {
           issues.push(
@@ -729,6 +741,7 @@ function validateNode(
         );
       }
       const innerScope: UiScopeInfo = {
+        ...scope,
         repeatItems: {
           ...scope.repeatItems,
           [node.itemName]: repeatItemFields(ctx, node.collection),
@@ -743,6 +756,8 @@ function validateNode(
     case 'conditional': {
       for (const branch of node.branches) {
         if (branch.when !== undefined) {
+          const scopedExpression=scope.scopedConditions?.[branch.when];
+          if(scopedExpression){issues.push(...checkExpressionTarget(scopedExpression,'boolean',catalogs,scope,documentId,node.id));continue;}
           const condition = (registryOf(docRecord, 'conditions') as Record<string, unknown>)[
             branch.when
           ];
@@ -905,7 +920,7 @@ function validateInteraction(
     }
   } else if (interaction.action === 'setState') {
     const localState = registryOf(docRecord, 'localState');
-    if (localState[interaction.key] === undefined) {
+    if ((scope.stateTypes??localState)[interaction.key] === undefined) {
       issues.push(
         uiDiagnostic('UI_EXPR_UNKNOWN_REFERENCE', `setState targets undeclared state key.`, {
           documentId,

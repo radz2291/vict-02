@@ -21,6 +21,7 @@ export interface DocumentScope {
   readonly view?: Readonly<Record<string, unknown>>;
   readonly record?: Readonly<Record<string, unknown>>;
   readonly props?: Readonly<Record<string, unknown>>;
+  readonly scopedConditions?: Readonly<Record<string,UiExpression>>;
   readonly state: Readonly<Record<string, unknown>>;
   readonly tokens: Readonly<Record<string, string>>;
   readonly repeatItem?: {
@@ -112,6 +113,8 @@ export function evaluateCondition(
   conditions: ReturnType<typeof conditionsOf>,
   scope: DocumentScope,
 ): boolean {
+  const scoped=scope.scopedConditions?.[conditionId];
+  if(scoped)return Boolean(evaluateExpression(scoped,toScopeValues(scope)));
   const condition = conditions[conditionId];
   if (condition === undefined || condition.kind !== 'localState') return false;
   return Boolean(evaluateExpression(condition.when, toScopeValues(scope)));

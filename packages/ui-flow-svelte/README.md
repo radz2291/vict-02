@@ -55,6 +55,54 @@ slow ELK work. There is no unrestricted large-ELK option. Node positions and
 collapse/focus state remain consumer presentation data. These helpers do not
 interpret VICT bindings, mutate documents or implement workflow execution.
 
+## Application-owned graph composition
+
+`vict.flow.workspace@1` owns a validated graph and exposes two canonical scoped
+slots. `content` is the application's normal layout: place `vict.flow.viewport`
+and any controls wherever the application's journey requires them. `body` is a
+normal VICT subtree rendered per node. There is no generated editor shell,
+fixed node form or toolbar to hide. Graph operations are public and UI-neutral.
+
+Install `flowAuthoringDescriptors`, `flowAuthoringImplementations` and
+`flowAuthoringPackage` alongside the normal component catalog. Each scoped fill
+uses `vict.ui-slot-scope@1`; see `packages/ui-svelte/SCOPED-SLOTS.md`. Declare
+body props such as nodeId/nodeType/label, controlled parameter state, private UI
+state, meaningful typed outputs and lexical conditions. Normal subtrees can
+select a different composition per family. Stored local definitions retain their
+historical props-only interface and can supply reusable presentation with props.
+
+Graph field declarations validate parameter values; they no longer prescribe
+body controls or layout. Place `vict.flow.port@1` next to its relevant field or
+in a footer. The exact graph port ID owns direction/type/capacity; duplicated or
+missing anchors show diagnostics. Body dimensions are measured, including
+conditional port changes. Choose explicit `vict-graph-drag-handle` elements and
+keep inputs/scroll regions `nodrag nopan nowheel`.
+
+A newly registered ordinary VICT component can be authored inside a body without
+a flow-specific variant or allowlist. Its ordinary placement, required context,
+accessibility and overlay contracts still apply; this is not a claim that every
+fullscreen or host-dependent component fits every node. Theme/ControlScope and
+owned popup behavior come from the same public renderer used outside graphs.
+
+Body state changes transact against the owning node; declared body intents emit
+`nodeAction` with node identity and payload, never invented execution. Content
+intents `operation` (JSON public operation array), `undo` and `redo` apply only on
+actual events. Other content intents emit `applicationAction`. Host code may
+call `applyGraphOperations` without a viewport. Optional versioned graph commands
+support explicit occurrence-owned replay receipts; their bounded ledger fails
+closed and requires a deliberate host lifecycle, never silent eviction.
+
+Bind graph and graphChange to the same declared canonical string state. Studio
+uses the same graph model, scoped authoring/edit protocol, history and source
+import/export bridge. Independent workspaces isolate state; viewports namespace
+private body state while sharing their workspace's graph. No visual connection
+authorizes a provider, tool, application action or backend workflow.
+
+`test/composition-fixtures.ts` contains two contrasting **offline fixtures**;
+mounted tests cover ordinary registered and new project controls, local intents,
+state isolation, chosen operations/history and JSON roundtrip. They are not
+actual-agent, painted-wire, pointer-gesture or device evidence.
+
 ## Graph compatibility and reusable mechanics
 
 The rejected bundled `GraphEditor` interface and its new-authoring recipe have
@@ -70,6 +118,6 @@ seed or examples. Their immutable descriptor pins remain intact; historical
 `toolbar` and `inspector` style targets are now inert and do not target other
 surfaces. Existing graph data and bindings are not migrated or deleted.
 
-This compatibility surface is not the promised arbitrary node-body authoring
-architecture. That separate iteration remains under development; existing
-fixed field kinds do not demonstrate general project-defined node composition.
+This compatibility surface retains fixed historical field presentation. New node-body
+composition uses the workspace identities above; legacy sources are not silently
+converted to a different body architecture.

@@ -21,3 +21,25 @@ for (const tag of ['textarea', 'select']) it(`wires advertised native ${tag} thr
   const saved=canonicalUiDocument(bridge.document).contentDigest;
   expect(bridge.reopen().ok).toBe(true); expect(canonicalUiDocument(bridge.document).contentDigest).toBe(saved);
 });
+
+function scopedNativeDocument():UiDocument {
+  return {schema:'vict.ui-document@1',id:'scoped-native',revision:'1',root:'workspace',
+    nodes:{workspace:{kind:'component',id:'workspace',definitionId:'example.scoped',revision:'1',slots:{body:{name:'body',scope:{schema:'vict.ui-slot-scope@1',props:[],state:{value:{key:'value',type:'string',initial:'node value',controlled:true}}},children:['wrapper']}}},wrapper:{kind:'conditional',id:'wrapper',branches:[{children:['field']}]},field:{kind:'element',id:'field',tag:'textarea',children:[]}},
+    localState:{value:{key:'value',type:'string',initial:'root value'}},componentDefinitions:{},styleSources:{},conditions:{},tokens:{},assets:{}};
+}
+it('wires native fields to their nearest declared slot state without adding or changing root state',()=>{
+  const document=scopedNativeDocument(),before=canonicalUiDocument(document).contentDigest;
+  const draft=wireNativeInput({requestId:'scope-native',document,nodeId:'field',key:'value'});
+  expect(draft.commands.map(command=>command.op)).toEqual(['setAttribute','connectInteraction']);
+  expect(draft.commands).toMatchObject([{name:'value',value:{type:'ref',path:'state.value'}},{interaction:{on:'change',action:'setState',key:'value'}}]);
+  expect(document.localState.value.initial).toBe('root value');
+  expect(canonicalUiDocument(document).contentDigest).toBe(before);
+});
+it('refuses undeclared or mismatched scoped native state even when a matching root key exists',()=>{
+  const document=scopedNativeDocument(),workspace=document.nodes.workspace;
+  if(workspace.kind!=='component')throw Error('fixture');
+  const missing={...document,nodes:{...document.nodes,workspace:{...workspace,slots:{body:{...workspace.slots!.body,scope:{schema:'vict.ui-slot-scope@1' as const,props:[],state:{}}}}}}};
+  expect(()=>wireNativeInput({requestId:'missing-scope',document:missing,nodeId:'field',key:'value'})).toThrow('Declare this scoped state key');
+  const number={...document,nodes:{...document.nodes,workspace:{...workspace,slots:{body:{...workspace.slots!.body,scope:{schema:'vict.ui-slot-scope@1' as const,props:[],state:{value:{key:'value',type:'number' as const,initial:1}}}}}}}};
+  expect(()=>wireNativeInput({requestId:'wrong-scope',document:number,nodeId:'field',key:'value'})).toThrow('different type');
+});

@@ -1,3 +1,5 @@
+import compositionCompatibility from './compatibility-composition-v1.json' with { type: 'json' };
+import { graphCompositionRegistrations } from '../composition/knowledge.js';
 import type { UiAuthoringFragment, UiAuthoringPackage } from '@victframework/ui';
 import {
   flowCanvasDescriptor,
@@ -186,8 +188,8 @@ const legacyPackage: UiAuthoringPackage = {
 const editorRegistration = legacyPackage.registrations.find(item => item.descriptor.id === 'vict.flow.editor')!;
 export const flowAuthoringPackage: UiAuthoringPackage = {
   ...legacyPackage,
-  compatibility: [...compatibility, ...presentationCompatibility],
-  registrations: [...legacyPackage.registrations, {
+  compatibility: [...compatibility, ...presentationCompatibility,...compositionCompatibility],
+  registrations: [...graphCompositionRegistrations,...legacyPackage.registrations, {
     ...editorRegistration,
     descriptor: flowEditorDescriptorV2,
     guidance: editorRegistration.guidance,

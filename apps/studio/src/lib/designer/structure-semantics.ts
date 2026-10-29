@@ -4,6 +4,7 @@ import type {
   UiNode,
   UiRenderPlan,
   UiExtensionDescriptor,
+  UiSlotScope,
 } from '@victframework/ui';
 import type { UiActionStateConnection } from '@victframework/ui-svelte';
 import { conditionDescription, branchDescription } from './structure-behavior.js';
@@ -87,6 +88,7 @@ type Builder = {
   link: (from: string, to: string, spec: RelationSpec) => void;
 };
 type Scope = {
+  slot?:{owner:string;name:string;contract:UiSlotScope};
   definition?: string;
   repeats: readonly { id: string; name: string }[];
   output?: { node: string; name: string };
@@ -109,7 +111,7 @@ export function projectRelations(
 ): void {
   const scopes = new Map<string, Map<string, Scope>>();
   const scopeKey = (scope: Scope) =>
-    JSON.stringify([scope.definition ?? 'document', scope.repeats, scope.output]);
+    JSON.stringify([scope.definition ?? 'document', scope.repeats, scope.output,scope.slot?.owner,scope.slot?.name]);
   function visit(id: string, scope: Scope, ancestors = new Set<string>()) {
     const node = document.nodes[id];
     if (!node || ancestors.has(id)) return;
@@ -124,8 +126,8 @@ export function projectRelations(
         node.children.forEach((child) => visit(child, scope, next));
         break;
       case 'component':
-        Object.values(node.slots ?? {}).forEach((fill) =>
-          fill.children.forEach((child) => visit(child, scope, next)),
+        Object.entries(node.slots ?? {}).forEach(([name,fill]) =>
+          fill.children.forEach((child) => visit(child, fill.scope?{...scope,definition:undefined,slot:{owner:node.id,name,contract:fill.scope}}:scope, next)),
         );
         break;
       case 'repeat':
@@ -188,6 +190,16 @@ export function projectRelations(
     ]);
   function reference(path: string, scope: Scope): string {
     const [head, name, ...rest] = path.split('.');
+    if(scope.slot&&(head==='state'||head==='prop')&&name){
+      const {owner,name:slotName,contract}=scope.slot;
+      const declared=head==='state'?Object.hasOwn(contract.state??{},name):contract.props.some(prop=>prop.name===name);
+      return b.add(head==='state'?'state':'prop',JSON.stringify(['slot',owner,slotName,path]),display(name),{
+        kindLabel:head==='state'?'Scoped state':'Scoped prop',scope:`Slot ${owner}.${slotName}`,
+        summary:'Per keyed slot instance; not document state',
+        sourcePath:`/nodes/${segment(owner)}/slots/${segment(slotName)}/scope/${head==='state'?'state':'props'}/${segment(name)}`,
+        ...(!declared?{support:'Unknown' as const}:{}),
+      });
+    }
     if (head === 'state' && name && !rest.length && document.localState[name])
       return registry('state', name);
     if (head === 'token' && name && !rest.length) return registry('token', name);
@@ -305,11 +317,13 @@ export function projectRelations(
       }
     });
   }
-  function condition(id: string, scope: Scope) {
-    const source = document.conditions[id],
-      to = registry('condition', id);
-    if (source?.kind === 'localState')
-      expression(source.when, to, `/conditions/${segment(id)}/when`, 'condition', scope, to);
+  function condition(id: string, scope: Scope):string {
+    const scoped=scope.slot?.contract.conditions?.[id];
+    const source = document.conditions[id];
+    const to = scoped&&scope.slot?b.add('condition',JSON.stringify(['slot',scope.slot.owner,scope.slot.name,id]),display(id),{kindLabel:'Scoped condition',scope:`Slot ${scope.slot.owner}.${scope.slot.name}`,summary:'Evaluated per keyed slot instance',sourcePath:`/nodes/${segment(scope.slot.owner)}/slots/${segment(scope.slot.name)}/scope/conditions/${segment(id)}`}):registry('condition', id);
+    if(scoped)expression(scoped,to,`/nodes/${segment(scope.slot!.owner)}/slots/${segment(scope.slot!.name)}/scope/conditions/${segment(id)}`,'condition',scope,to);
+    else if (source?.kind === 'localState')expression(source.when, to, `/conditions/${segment(id)}/when`, 'condition', scope, to);
+    return to;
   }
   const styled = new Set<string>(),
     styledRegistry = new Set<string>();
@@ -387,7 +401,7 @@ export function projectRelations(
   for (const node of Object.values(document.nodes)) {
     const to = b.node(node.id),
       nodePath = `/nodes/${segment(node.id)}`,
-      contexts = [...(scopes.get(node.id)?.values() ?? [{ repeats: [] }])];
+      contexts:Scope[] = [...(scopes.get(node.id)?.values() ?? [{ repeats: [] }])];
     const child = (id: string, role: RelationRole, path: string, description?: string) =>
       b.link(to, b.node(id), { role, path, owner: to, description });
     switch (node.kind) {
@@ -517,8 +531,8 @@ export function projectRelations(
         case 'conditional':
           node.branches.forEach((branch, i) => {
             if (branch.when) {
-              condition(branch.when, scope);
-              b.link(registry('condition', branch.when), to, {
+              const target=condition(branch.when, scope);
+              b.link(target, to, {
                 role: 'condition',
                 path: `${nodePath}/branches/${i}/when`,
                 owner: to,
@@ -560,7 +574,7 @@ export function projectRelations(
         const path = `${nodePath}/interactions/${i}`;
         switch (interaction.action) {
           case 'setState':
-            b.link(to, registry('state', interaction.key), { role: 'updates', path, owner: to });
+            b.link(to, reference(`state.${interaction.key}`,scope), { role: 'updates', path, owner: to });
             expression(interaction.value, to, `${path}/value`, 'fallback', scope, to);
             break;
           case 'invokeAction':
@@ -602,7 +616,7 @@ export function projectRelations(
           );
           b.link(to, output, { role: 'emits', path, owner: to });
           if ('setState' in binding) {
-            b.link(output, registry('state', binding.setState.key), {
+            b.link(output, reference(`state.${binding.setState.key}`,scope), {
               role: 'updates',
               path: `${path}/setState`,
               owner: to,
@@ -613,7 +627,7 @@ export function projectRelations(
             )
               expression(
                 binding.setState.value,
-                registry('state', binding.setState.key),
+                reference(`state.${binding.setState.key}`,scope),
                 `${path}/setState/value`,
                 'payload',
                 outputScope,
@@ -627,7 +641,11 @@ export function projectRelations(
               outputScope,
               output,
             );
-          else unreachable(binding);
+          else if ('emit' in binding) {
+            const target=b.add('output',JSON.stringify([scope.slot?.owner,scope.slot?.name,path,'scoped',binding.emit.output]),display(binding.emit.output),{kindLabel:'Scoped output',scope:'Authored slot instance',summary:'Declared scoped intent; no backend execution',sourcePath:`${path}/emit`});
+            b.link(output,target,{role:'emits',path:`${path}/emit`,owner:to});
+            if(binding.emit.value)expression(binding.emit.value,target,`${path}/emit/value`,'payload',outputScope,to);
+          } else unreachable(binding);
         }
     }
   }

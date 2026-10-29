@@ -42,6 +42,7 @@ export interface UiAuthoringImplementationCapability {
   readonly abi?: string; readonly slots?: readonly string[]; readonly required?: readonly string[];
   readonly styleTargets?: readonly string[]; readonly requiresParentContext?: boolean;
   readonly compositionSlots?: readonly string[];
+  readonly scopedSlots?: readonly string[];
 }
 export interface UiAuthoringPackage {
   readonly schema: typeof UI_AUTHORING_SCHEMA;
@@ -79,7 +80,7 @@ function issue(hostCode: string, message: string, detail: Record<string, unknown
 const boundedInteger=(value:number|undefined,fallback:number,minimum:number,maximum:number)=>Math.min(maximum,Math.max(minimum,Math.floor(value!==undefined&&Number.isFinite(value)?value:fallback)));
 export function authoringImplementationCapabilities(input: UiAuthoringImplementationCapability): UiAuthoringImplementationCapability {
   return { extensionId:input.extensionId, revision:input.revision, rendererImplementationId:input.rendererImplementationId,
-    ...(input.abi === undefined ? {} : {abi:input.abi}), slots:[...(input.slots ?? [])], required:[...(input.required ?? [])],
+    ...(input.abi === undefined ? {} : {abi:input.abi}), ...(input.scopedSlots===undefined?{}:{scopedSlots:[...input.scopedSlots]}), slots:[...(input.slots ?? [])], required:[...(input.required ?? [])],
     styleTargets:[...(input.styleTargets ?? [])], requiresParentContext:input.requiresParentContext === true, compositionSlots:[...(input.compositionSlots ?? [])] };
 }
 export function createUiAuthoringRegistry(packages: readonly UiAuthoringPackage[], implementations: readonly UiAuthoringImplementationCapability[], options:{readonly requireCompatibility?:boolean}={}): UiAuthoringRegistry {
@@ -98,7 +99,7 @@ export function createUiAuthoringRegistry(packages: readonly UiAuthoringPackage[
     if (matches.length !== 1) issues.push(issue('UI_AUTHORING_IMPLEMENTATION',`Exactly one actual renderer registration is required for ${key}.`,{key}));
     const actual = matches[0] && authoringImplementationCapabilities(matches[0]);
     if (actual) {
-      if (r.descriptor.abi !== actual.abi || (r.descriptor.slots ?? []).some(slot => !actual.slots?.includes(slot)) || (r.descriptor.styleTargets ?? []).some(target => !actual.styleTargets?.includes(target)))
+      if (r.descriptor.abi !== actual.abi || (r.descriptor.slots ?? []).some(slot => !actual.slots?.includes(slot)) || (r.descriptor.scopedSlots??[]).some(slot=>!actual.scopedSlots?.includes(slot)||!r.descriptor.slots?.includes(slot)) || (actual.scopedSlots??[]).some(slot=>!actual.slots?.includes(slot)) || (r.descriptor.styleTargets ?? []).some(target => !actual.styleTargets?.includes(target)))
         issues.push(issue('UI_AUTHORING_CAPABILITIES',`Descriptor and renderer capabilities disagree for ${key}.`,{key}));
       if (actual.requiresParentContext && !r.rules?.some(rule => rule.kind === 'ancestorSlot')) issues.push(issue('UI_AUTHORING_CONTEXT',`Context-owned ${key} needs an ancestor-slot rule.`,{key}));
       if(actual.required?.some(slot=>!actual.slots?.includes(slot)||!r.descriptor.slots?.includes(slot)))issues.push(issue('UI_AUTHORING_CAPABILITIES',`Required renderer slots must be declared for ${key}.`,{key}));

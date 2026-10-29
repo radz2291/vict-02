@@ -113,7 +113,7 @@ function managedReferences(document: UiDocument): {
       for (const value of expressionValues(node.props?.slides, `${node.id}.slides`))
         (Array.isArray(value) ? value : [value]).forEach(mediaReference);
     }
-    if (node.definitionId !== 'vict.flow.editor') continue;
+    if (!['vict.flow.editor','vict.flow.workspace'].includes(node.definitionId)) continue;
     for (const serialized of expressionValues(node.props?.graph, `${node.id}.graph`)) {
       if (typeof serialized !== 'string') continue;
       let model: unknown;

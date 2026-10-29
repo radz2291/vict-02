@@ -15,6 +15,7 @@ import type {
   UiInteraction,
   UiNode,
   UiOutputBinding,
+  UiSlotScope,
   UiStyleValue,
   UiValue,
 } from '@victframework/ui';
@@ -302,6 +303,26 @@ export function rootIdOf(document: UiDocument): string {
 /** Connect a native field through the canonical attribute/change contracts.
  * A new key is independent; existing keys must already have the requested type.
  * Manual and agent authoring use this same transaction builder. */
+/** Source ownership determines lexical state; no renderer/domain-specific lookup. */
+export function findNodeSlotScope(document:UiDocument,nodeId:string):UiSlotScope|undefined {
+  const seen=new Set<string>();let current=nodeId;
+  while(!seen.has(current)){
+    seen.add(current);
+    const parents:{id:string;scope?:UiSlotScope}[]=[];
+    for(const node of Object.values(document.nodes)){
+      if((node.kind==='element'||node.kind==='portal')&&node.children.includes(current))parents.push({id:node.id});
+      else if(node.kind==='component')for(const fill of Object.values(node.slots??{})){if(fill.children.includes(current))parents.push({id:node.id,scope:fill.scope});}
+      else if(node.kind==='conditional'&&node.branches.some(branch=>branch.children.includes(current)))parents.push({id:node.id});
+      else if(node.kind==='repeat'&&node.templateRoot===current)parents.push({id:node.id});
+      else if(node.kind==='slot'&&node.fallback?.includes(current))parents.push({id:node.id});
+    }
+    if(!parents.length)return;
+    if(parents.length!==1)throw new Error('Native wiring requires unambiguous canonical ownership.');
+    if(parents[0]!.scope)return parents[0]!.scope;
+    current=parents[0]!.id;
+  }
+  throw new Error('Native wiring cannot cross cyclic canonical ownership.');
+}
 export function wireNativeInput(input: {
   requestId: string; document: UiDocument; nodeId: string; key: string;
   type?: 'string' | 'number' | 'boolean'; initial?: string | number | boolean;
@@ -317,10 +338,12 @@ export function wireNativeInput(input: {
   if (typeof initial !== type) throw new Error('Starting value must match the field type.');
   if (!/^[a-zA-Z0-9_-]+$/.test(input.key) || ['__proto__','prototype','constructor'].includes(input.key))
     throw new Error('Use a simple safe local state key.');
-  const existing = input.document.localState[input.key];
+  const scope=findNodeSlotScope(input.document,input.nodeId);
+  const existing = scope?scope.state?.[input.key]:input.document.localState[input.key];
+  if(scope&&!existing)throw new Error('Declare this scoped state key before wiring its native field. Root state is not visible inside a scoped fill.');
   if (existing && existing.type !== type) throw new Error('Existing state has a different type.');
   return { requestId: input.requestId, reason: 'Connect independent input state', commands: [
-    ...(!existing ? [{ op: 'replaceDocument' as const, document: { ...input.document,
+    ...(!existing && !scope ? [{ op: 'replaceDocument' as const, document: { ...input.document,
       localState: { ...input.document.localState, [input.key]: { key: input.key, type, initial } } } }] : []),
     { op: 'setAttribute', nodeId: node.id, name: type === 'boolean' ? 'checked' : 'value', value: { type: 'ref', path: `state.${input.key}` } },
     { op: 'connectInteraction', nodeId: node.id, interaction: { on: 'change', action: 'setState', key: input.key, value: { type: 'ref', path: `state.${input.key}` } } },

@@ -197,6 +197,7 @@ export interface UiOutputDecl {
  * (amendment §3.1 — the only additive node field).
  */
 export type UiOutputBinding =
+  | { readonly emit: { readonly output: string; readonly value?: UiExpression } }
   | {
       readonly setState: {
         readonly key: StateKey;
@@ -236,9 +237,20 @@ export interface UiComponentDefinition {
  * Slot filling authored at the INSTANCE site: children resolved in the
  * instance's document scope (never the definition's prop scope).
  */
+/** Explicit, versioned lexical instance scope for a renderer-owned repeated slot. */
+export interface UiSlotScope {
+  readonly schema: 'vict.ui-slot-scope@1';
+  /** Named expressions evaluated in this instance scope (conditional branches only). */
+  readonly conditions?: Readonly<Record<string,UiExpression>>;
+  readonly props: readonly UiPropDecl[];
+  readonly state?: Readonly<Record<string, UiLocalStateDecl & { readonly controlled?: boolean }>>;
+  readonly outputs?: readonly UiOutputDecl[];
+}
+
 export interface UiSlotFill {
   readonly name: string;
   readonly children: readonly NodeId[];
+  readonly scope?: UiSlotScope;
 }
 
 /** Common optional presentation/behavior fields shared by all node kinds. */

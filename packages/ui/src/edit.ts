@@ -24,6 +24,7 @@ import type {
   UiApplicationTheme,
   UiThemeRole,
   UiTextContent,
+  UiSlotFill,
 } from './document.js';
 import { UI_DOCUMENT_SCHEMA, UI_THEME_ROLES } from './document.js';
 import { uiDiagnostic, type UiDiagnostic } from './diagnostics.js';
@@ -699,11 +700,11 @@ export function applyUiEdit(
             return;
           }
         }
-        const slots: Record<string, { name: string; children: readonly string[] }> = {};
+        const slots: Record<string, UiSlotFill> = {};
         for (const [name, fill] of Object.entries(node.slots ?? {})) {
-          slots[name] = { name: fill.name, children: [...fill.children] };
+          slots[name] = { ...fill, children: [...fill.children] };
         }
-        slots[command.slotName] = { name: command.slotName, children: [...command.children] };
+        slots[command.slotName] = { ...node.slots?.[command.slotName], name: command.slotName, children: [...command.children] };
         doc.nodes[node.id] = { ...node, slots } as UiNode;
         return;
       }
@@ -829,7 +830,7 @@ function withOwnedChildren(node: UiNode, children: readonly string[], slotName?:
   if (node.kind === 'component' && slotName !== undefined)
     return {
       ...node,
-      slots: { ...node.slots, [slotName]: { name: slotName, children } },
+      slots: { ...node.slots, [slotName]: { ...node.slots?.[slotName], name: slotName, children } },
     };
   return { ...node, children } as UiNode;
 }
@@ -862,12 +863,12 @@ function detach(nodes: Record<string, UiNode>, nodeId: string): void {
       if (changed) nodes[node.id] = { ...node, branches };
     } else if (node.kind === 'component' && node.slots !== undefined) {
       let changed = false;
-      const slots: Record<string, { name: string; children: readonly string[] }> = {};
+      const slots: Record<string, UiSlotFill> = {};
       for (const [name, fill] of Object.entries(node.slots)) {
         if (fill.children.includes(nodeId)) {
           changed = true;
           slots[name] = {
-            name: fill.name,
+            ...fill,
             children: fill.children.filter((child) => child !== nodeId),
           };
         } else {

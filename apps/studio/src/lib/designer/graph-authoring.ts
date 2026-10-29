@@ -4,7 +4,7 @@ import {parseGraph,applyGraphPatch} from '@victframework/ui-flow-svelte';
 /** Only an explicitly bidirectional graph binding grants authoring persistence.
  * Other runtime state (search, chat drafts, simulated data) remains ephemeral. */
 export function authoredGraphBinding(node:UiNode|undefined):string|undefined {
-  if(node?.kind!=='component'||node.definitionId!=='vict.flow.editor')return;
+  if(node?.kind!=='component'||!['vict.flow.editor','vict.flow.workspace'].includes(node.definitionId))return;
   const read=node.props?.graph,write=node.outputs?.graphChange;
   if(read?.type!=='ref'||!read.path.startsWith('state.')||!write||!('setState' in write)||write.setState.value)return;
   const key=read.path.slice(6);
@@ -30,7 +30,7 @@ export function graphStateDocument(document:UiDocument,key:string,value:unknown)
   return {...document,localState:{...document.localState,[key]:{...document.localState[key]!,initial:value}}};
 }
 export function patchAuthoredGraph(document:UiDocument,nodeId:string,operations:unknown,revision:number):{ok:true;document:UiDocument}|{ok:false;message:string} {
-  const node=document.nodes[nodeId];if(node?.kind!=='component'||node.definitionId!=='vict.flow.editor')return {ok:false,message:'editGraph requires an authored rich graph editor.'};
+  const node=document.nodes[nodeId];if(node?.kind!=='component'||!['vict.flow.editor','vict.flow.workspace'].includes(node.definitionId))return {ok:false,message:'editGraph requires an authored graph workspace or retained graph component.'};
   const key=authoredGraphBinding(node);
   const prop=node.props?.graph;
   const source=key?document.localState[key]?.initial:prop?.type==='literal'?prop.value:undefined;

@@ -398,6 +398,7 @@ export type {
   UiPrimitiveType,
   UiPropDecl,
   UiSlotFill,
+  UiSlotScope,
   UiStyleDeclaration,
   UiStyleSource,
   UiStyleValue,
@@ -469,3 +470,5 @@ export * from './storage.js';
 export * from './local-storage-store.js';
 
 export { repeatExpressionFields } from './expressions.js';
+
+export { slotScopeProblems } from './slot-scope.js';

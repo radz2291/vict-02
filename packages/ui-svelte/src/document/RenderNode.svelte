@@ -11,7 +11,7 @@
     UiExtensionDescriptor,
     UiValue,
   } from '@victframework/ui';
-  import { isUiValueOfType, copyUiValue } from '@victframework/ui';
+  import { isUiValueOfType, copyUiValue, stableJson } from '@victframework/ui';
   import {
     resolveSvelteComponent,
     type UiSvelteComponentImplementation,
@@ -31,9 +31,12 @@
     type DocumentScope,
     type DocumentSlotFrame,
   } from './logic.js';
-  import { onDestroy, untrack, getContext } from 'svelte';
+  import { onDestroy, untrack, getContext, tick } from 'svelte';
   import { UI_APPLICATION_DOCUMENT, type UiApplicationDocument } from './extensions.js';
   import SlotSnippets from './SlotSnippets.svelte';
+  import ScopedSlotSnippets from './ScopedSlotSnippets.svelte';
+  import ScopedSlotInstance from './ScopedSlotInstance.svelte';
+  import type {UiScopedSlotFrame} from './extensions.js';
   import Self from './RenderNode.svelte';
   import { interactiveSlotLabels } from './slot-labels.js';
   import { runtimeAuthoringIssues } from './authoring-runtime.js';
@@ -63,6 +66,7 @@
     readonly dispatch: (actionId: string, input?: unknown) => Promise<unknown>;
     readonly navigate: (routeId: string, params?: Readonly<Record<string, unknown>>) => void;
     readonly setState: (key: string, value: unknown) => void;
+    readonly emitScoped?: (output:string,payload?:UiValue)=>void;
     readonly selectOccurrence?: (occurrence: string) => void;
     /** Render-time diagnostic channel (duplicate keys, component gates, …). */
     readonly reportDiagnostic?: (diagnostic: { readonly code: string; readonly message: string; readonly detail?: Readonly<Record<string, unknown>> }) => void;
@@ -89,6 +93,7 @@
     dispatch,
     navigate,
     setState,
+    emitScoped,
     selectOccurrence,
     reportDiagnostic,
     extraClass,
@@ -117,12 +122,12 @@
   // Capture authority separately from reactive props/state. Keyed repeat rows
   // keep callbacks with their logical record; replacing a record expires them.
   const effectiveGeneration = $derived.by(() => { if (generation !== undefined) return generation; void plan; return Symbol('plan'); });
-  interface OutputAuthority { instruction: UiRenderInstruction; generation: symbol; occurrence: string; record?: Readonly<Record<string, unknown>>; recordScope?: Readonly<Record<string, unknown>>; repeats?: DocumentScope['repeatItems']; }
+  interface OutputAuthority { instruction: UiRenderInstruction; generation: symbol; occurrence: string; props?: Readonly<Record<string,unknown>>; record?: Readonly<Record<string, unknown>>; recordScope?: Readonly<Record<string, unknown>>; repeats?: DocumentScope['repeatItems']; }
   let previousAuthority: OutputAuthority | undefined;
   const authority = $derived.by(() => {
-    const next = { instruction, generation: effectiveGeneration, occurrence: occ, record: scope.repeatItem?.value, recordScope: scope.record, repeats: scope.repeatItems };
+    const next = { instruction, generation: effectiveGeneration, occurrence: occ, props:scope.props, record: scope.repeatItem?.value, recordScope: scope.record, repeats: scope.repeatItems };
     if (previousAuthority?.instruction === next.instruction && previousAuthority.generation === next.generation &&
-      previousAuthority.occurrence === next.occurrence && previousAuthority.record === next.record && previousAuthority.recordScope === next.recordScope &&
+      previousAuthority.occurrence === next.occurrence && previousAuthority.props===next.props && previousAuthority.record === next.record && previousAuthority.recordScope === next.recordScope &&
       Object.keys(previousAuthority.repeats ?? {}).length === Object.keys(next.repeats ?? {}).length &&
       Object.entries(previousAuthority.repeats ?? {}).every(([name, value]) => next.repeats?.[name] === value)) return previousAuthority;
     previousAuthority = next;
@@ -159,6 +164,9 @@
       if ('setState' in binding) {
         const value = binding.setState.value === undefined ? delivered : resolveValue({ type: 'expression', expression: binding.setState.value }, bindingScope);
         setState(binding.setState.key, value);
+      } else if ('emit' in binding) {
+        const payload=binding.emit.value===undefined?delivered:resolveValue({type:'expression',expression:binding.emit.value},bindingScope);
+        emitScoped?.(binding.emit.output,payload as UiValue|undefined);
       } else {
         const input = Object.fromEntries(Object.entries(binding.invokeAction.input ?? {}).map(([name, expression]) =>
           [name, deliveredInput(expression, bindingScope)]));
@@ -222,8 +230,10 @@
     }
   }
 
-  function handleChange(event: Event): void {
+  async function handleChange(event: Event): Promise<void> {
     if (instruction.kind !== 'element') return;
+    const native=event.target as HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement|null;
+    let delivered=false;
     for (const interaction of instruction.interactions) {
       if (interaction.on !== 'change' || interaction.action !== 'setState') continue;
       const target = event.target as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement | null;
@@ -231,13 +241,29 @@
       const fallback = declared !== undefined ? resolveValue({ type: 'expression', expression: declared }, scope) : undefined;
       let value: unknown = fallback;
       if (target !== null) {
-        if (target instanceof HTMLInputElement && target.type === 'checkbox') value = target.checked;
-        else if (target instanceof HTMLInputElement && target.type === 'number') {
+        if (target.localName === 'input' && ['checkbox','radio'].includes((target as HTMLInputElement).type)) value = (target as HTMLInputElement).checked;
+        else if (target.localName === 'input' && (target as HTMLInputElement).type === 'number') {
           const parsed = Number(target.value);
           value = target.value === '' ? fallback : Number.isFinite(parsed) ? parsed : fallback;
         } else value = target.value;
       }
       setState(interaction.stateKey as string, value);
+      delivered=true;
+    }
+    if(!delivered||!native)return;
+    // A domain host may reject a controlled write while its canonical value
+    // remains unchanged. Svelte then has no changed attribute to flush back.
+    // Reconcile only expression-controlled native properties after the host's
+    // synchronous transaction/reactive update; keep untouched fields/cursors.
+    await tick();
+    if(!alive||!native.isConnected||instruction.kind!=='element'||native.getAttribute('data-ui-occ')!==occ)return;
+    const controlled=(name:string)=>instruction.kind==='element'&&instruction.attributes.some(attribute=>attribute.name===name&&attribute.value.type==='expression');
+    if(native.localName==='input'&&['checkbox','radio'].includes((native as HTMLInputElement).type)&&controlled('checked')){
+      const next=evaluatedAttributes.checked===true;
+      if((native as HTMLInputElement).checked!==next)(native as HTMLInputElement).checked=next;
+    }else if(['input','textarea','select'].includes(native.localName)&&controlled('value')){
+      const next=String(evaluatedAttributes.value??'');
+      if(native.value!==next)native.value=next;
     }
   }
 
@@ -299,7 +325,7 @@
         slotFrame={effectiveSlotFrame}
         {dispatch}
         {navigate}
-        {setState}
+        {setState} {emitScoped}
         {selectOccurrence}
         {reportDiagnostic}
         extraClass={undefined}
@@ -348,7 +374,7 @@
     slotFrame={{fills:instruction.slots,scope,parent:effectiveSlotFrame}}
     {dispatch}
     {navigate}
-    {setState}
+    {setState} {emitScoped}
     {selectOccurrence}
     {reportDiagnostic}
     extraClass={[...instruction.classes, extraClass ?? ''].join(' ')}
@@ -368,12 +394,29 @@
         {slotScope}
         {actionStatuses} {extensionDescriptors} {extensionImplementations}
           {scope} instancePath={[...instancePath, `${extensionInstruction.nodeId}@${extensionInstruction.extensionId}`]}
-          {repeatKeys} {slotFills} slotFrame={effectiveSlotFrame} {dispatch} {navigate} {setState} {selectOccurrence} {reportDiagnostic} />
+          {repeatKeys} {slotFills} slotFrame={effectiveSlotFrame} {dispatch} {navigate} {setState} {emitScoped} {selectOccurrence} {reportDiagnostic} />
       {/each}
     {/snippet}
-    <SlotSnippets fills={instruction.slots ?? {}} names={Object.keys(instruction.slots ?? {})} {renderFill}>
+    {#snippet renderScopedFill(instructions:readonly UiRenderInstruction[],declaration:import('@victframework/ui').UiSlotScope,frame:UiScopedSlotFrame)}
+      {#key `${frame.key}:${stableJson(declaration)}`}
+        <ScopedSlotInstance {declaration} {frame} generation={effectiveGeneration} report={(code,message)=>diagnose({code,message,detail:{nodeId:instruction.nodeId,occurrenceKey:occ}})}>
+          {#snippet children(props,state,write,emit)}
+            {#each instructions as child (child.occurrenceKey)}
+              <Self instruction={child} {plan} {generation} {componentSurface} {ownerId} {actionStatuses} {extensionDescriptors} {extensionImplementations}
+                scope={{...scope,props,state,scopedConditions:declaration.conditions}} instancePath={[...instancePath,`${extensionInstruction.nodeId}@${extensionInstruction.extensionId}`,`scope:${encodeURIComponent(frame.key)}`]}
+                repeatKeys={[...repeatKeys,`scope:${encodeURIComponent(frame.key)}`]} {slotFills} {slotScope} slotFrame={effectiveSlotFrame} {dispatch} {navigate} setState={write} emitScoped={emit} {selectOccurrence} {reportDiagnostic}/>
+            {/each}
+          {/snippet}
+        </ScopedSlotInstance>
+      {/key}
+    {/snippet}
+    <SlotSnippets fills={instruction.slots ?? {}} names={Object.keys(instruction.slots ?? {}).filter(name=>!instruction.slotScopes?.[name])} {renderFill}>
       {#snippet children(slots)}
-        <Implementation props={extensionProps} occurrenceKey={occ} nodeId={instruction.nodeId} {presentation} io={{ ...io, slots, slotLabels: interactiveSlotLabels(instruction.slots??{},scope) }} />
+        <ScopedSlotSnippets fills={instruction.slots??{}} scopes={instruction.slotScopes??{}} names={Object.keys(instruction.slotScopes??{})} renderFill={renderScopedFill}>
+          {#snippet children(scopedSlots)}
+            <Implementation props={extensionProps} occurrenceKey={occ} nodeId={instruction.nodeId} {presentation} io={{ ...io, slots, scopedSlots, slotLabels: interactiveSlotLabels(instruction.slots??{},scope) }} />
+          {/snippet}
+        </ScopedSlotSnippets>
       {/snippet}
     </SlotSnippets>
   {:else if extension?.ok}
@@ -409,7 +452,7 @@
         slotFrame={effectiveSlotFrame}
         {dispatch}
         {navigate}
-        {setState}
+        {setState} {emitScoped}
         {selectOccurrence}
         {reportDiagnostic}
       />
@@ -435,7 +478,7 @@
       slotFrame={effectiveSlotFrame}
       {dispatch}
       {navigate}
-      {setState}
+      {setState} {emitScoped}
       {selectOccurrence}
       {reportDiagnostic}
     />
@@ -460,7 +503,7 @@
         slotFills={{}}
         {dispatch}
         {navigate}
-        {setState}
+        {setState} {emitScoped}
         {selectOccurrence}
         {reportDiagnostic}
       />
@@ -483,7 +526,7 @@
         slotFrame={effectiveSlotFrame}
         {dispatch}
         {navigate}
-        {setState}
+        {setState} {emitScoped}
         {selectOccurrence}
         {reportDiagnostic}
       />
@@ -509,7 +552,7 @@
         slotFrame={effectiveSlotFrame}
         {dispatch}
         {navigate}
-        {setState}
+        {setState} {emitScoped}
         {selectOccurrence}
         {reportDiagnostic}
       />

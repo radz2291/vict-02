@@ -1,5 +1,8 @@
 /** Explicit pinned public export inventory. Export changes require a disposition review. */
 export const specialistPublicExports = [
+  './authoring:graphWorkspaceDescriptor','./authoring:graphViewportDescriptor','./authoring:graphPortDescriptor',
+  'GraphWorkspace','GraphViewport','GraphPortAnchor','GRAPH_WORKSPACE','GRAPH_BODY','GraphWorkspaceContext','GraphBodyContext',
+  'GraphCommand','GraphCommandParseResult','GraphCommandReceipt','GraphCommandResult','parseGraphCommand','applyGraphCommand',
   './authoring:flowEditorDescriptor',
   './authoring:flowEditorDescriptorV2',
   'GraphSurface',

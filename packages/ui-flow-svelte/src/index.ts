@@ -8,3 +8,9 @@ export { layoutGraph, nodeSize, chooseLayoutEngine, LayoutFence, type LayoutEngi
 export { default as GraphSurface } from './editor/GraphSurface.svelte';
 export * from './editor/model.js';
 export * from './editor/host.js';
+
+export { default as GraphWorkspace } from './composition/GraphWorkspace.svelte';
+export { default as GraphViewport } from './composition/GraphViewport.svelte';
+export { default as GraphPortAnchor } from './composition/GraphPort.svelte';
+export { GRAPH_WORKSPACE, GRAPH_BODY, type GraphWorkspaceContext, type GraphBodyContext } from './composition/context.js';
+export * from './editor/commands.js';

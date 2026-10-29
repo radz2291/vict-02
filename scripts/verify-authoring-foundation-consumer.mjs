@@ -31,19 +31,22 @@ try{
   writeFileSync(join(consumer,'package.json'),JSON.stringify({name:'vict-foundation-isolated-consumer',private:true,type:'module',scripts:{build:'vite build'},dependencies,devDependencies:{'@sveltejs/vite-plugin-svelte':'5.1.1',vite:'6.4.3',typescript:'6.0.3'}},null,2));
   writeFileSync(join(consumer,'index.html'),'<html><head><title>Foundation packed consumer</title></head><body><div id="app"></div><script type="module" src="/src/main.ts"></script></body></html>');
   writeFileSync(join(consumer,'vite.config.mjs'),`import {defineConfig} from 'vite';import {svelte} from '@sveltejs/vite-plugin-svelte';export default defineConfig({plugins:[svelte()],server:{host:'127.0.0.28',port:5628,strictPort:true}});`);
+  const compositionJson=execFileSync(process.execPath,['--import','tsx','--input-type=module','-e',"import {compositionDocument} from './packages/ui-flow-svelte/test/composition-fixtures.ts';process.stdout.write(JSON.stringify(['media','research'].map(kind=>compositionDocument(kind))));"],{cwd:root,encoding:'utf8',maxBuffer:2*1024*1024});
+  writeFileSync(join(consumer,'src/composition-sources.json'),compositionJson);
   writeFileSync(join(consumer,'src/main.ts'),`import {mount} from 'svelte';import App from './App.svelte';mount(App,{target:document.getElementById('app')!});`);
   writeFileSync(join(consumer,'src/App.svelte'),`<script lang="ts">
 import {compileUiDocument,defaultSemanticElementCatalog} from '@victframework/ui';
-import {DocumentHost,ControlScope,OwnedTooltip} from '@victframework/ui-svelte';
+import {DocumentHost,ControlScope,OwnedTooltip,catalogDescriptors,catalogImplementations} from '@victframework/ui-svelte';
 import {Button} from '@victframework/ui-svelte/catalog/button';
 import {aiAuthoringDescriptors,aiAuthoringImplementations} from '@victframework/ui-ai-svelte/authoring';
+import compositionSources from './composition-sources.json';
 import {GraphSurface,emptyGraph,serializeGraph} from '@victframework/ui-flow-svelte';
 import {flowAuthoringDescriptors,flowAuthoringImplementations} from '@victframework/ui-flow-svelte/authoring';
 import {patternAuthoringDescriptors,patternAuthoringImplementations} from '@victframework/ui-patterns-svelte/authoring';
 import {mediaAuthoringDescriptors,mediaAuthoringImplementations,mediaVectorExample,AssetProvider} from '@victframework/ui-media-svelte';
 import '@victframework/ui-svelte/styles.css';import '@victframework/ui-svelte/catalog.css';import '@victframework/ui-ai-svelte/styles.css';import '@victframework/ui-flow-svelte/styles.css';import '@victframework/ui-svelte/rhea.css';
-const descriptors=[...aiAuthoringDescriptors,...flowAuthoringDescriptors,...patternAuthoringDescriptors,...mediaAuthoringDescriptors];
-const implementations=[...aiAuthoringImplementations,...flowAuthoringImplementations,...patternAuthoringImplementations,...mediaAuthoringImplementations];
+const descriptors=[...catalogDescriptors,...aiAuthoringDescriptors,...flowAuthoringDescriptors,...patternAuthoringDescriptors,...mediaAuthoringDescriptors];
+const implementations=[...catalogImplementations,...aiAuthoringImplementations,...flowAuthoringImplementations,...patternAuthoringImplementations,...mediaAuthoringImplementations];
 const literal=(value:unknown)=>({type:'literal',value});
 let graph=$state(serializeGraph({...emptyGraph(),nodeTypes:[{id:'processor',label:'Processor',fields:[{id:'prompt',label:'Prompt',kind:'textarea',default:'Packed consumer'},{id:'enabled',label:'Enabled',kind:'toggle',default:true},{id:'amount',label:'Amount',kind:'number',default:2},{id:'mode',label:'Mode',kind:'select',default:'Fast',options:['Fast','Careful']}],ports:[{id:'in',label:'Text in',direction:'input',type:'text'},{id:'out',label:'Text out',direction:'output',type:'text'}]}],nodes:[{id:'node1',type:'processor',label:'Editable processor',position:{x:60,y:50},values:{}}]}));
 const source={schema:'vict.ui-document@1',id:'packed-foundation',revision:'1',root:'root',nodes:{root:{kind:'element',id:'root',tag:'main',children:['chat','drawer','gallery','icon','vector']},chat:{kind:'component',id:'chat',definitionId:'vict.ai.message',revision:'2',props:{role:literal('assistant'),text:literal('Packed public DocumentHost with explicit parts.')},partStyles:{bubble:{localStyle:[{property:'background-color',value:{type:'text',value:'#e0f2f1'}}]}}},drawer:{kind:'component',id:'drawer',definitionId:'vict.pattern.drawer',revision:'1',props:{title:literal('Packed drawer'),triggerLabel:literal('Open packed drawer')}},gallery:{kind:'component',id:'gallery',definitionId:'vict.pattern.carousel',revision:'1',props:{slides:literal(['One','Two','Three'])}},icon:{kind:'component',id:'icon',definitionId:'vict.media.icon',revision:'1',props:{name:literal('search'),decorative:literal(false),label:literal('Search icon')}},vector:{kind:'component',id:'vector',definitionId:'vict.media.vector',revision:'1',props:{data:literal(JSON.stringify(mediaVectorExample)),label:literal('Packed vector')}}},componentDefinitions:{},assets:{},styleSources:{},tokens:{},conditions:{},localState:{}};
@@ -58,10 +61,11 @@ Object.assign(source.nodes,{ownedModel:{kind:'component',id:'ownedModel',definit
 source.nodes.root.children.push('ownedModel');
 const compiled=compileUiDocument(source as any,defaultSemanticElementCatalog(),descriptors);
 if(!compiled.ok)throw Error(JSON.stringify(compiled));
+const compositionPlans=compositionSources.map(source=>{const result=compileUiDocument(source as any,defaultSemanticElementCatalog(),descriptors);if(!result.ok)throw Error(JSON.stringify(result));return {source,plan:result.plan};});
 </script>
 <h1>Foundation packed consumer</h1><p>Supporting authored fixture. No provider or interaction verification is claimed by its build.</p>
 {#snippet tooltipTrigger(attributes)}<Button.Root {...attributes} class="vict-btn vict-btn--secondary">Owned tooltip trigger</Button.Root>{/snippet}
-<ControlScope class="vict-rhea"><AssetProvider namespace="foundation-packed-proof"><div style="position:relative;overflow:hidden" data-ui-application-viewport><DocumentHost plan={compiled.plan} localState={source.localState} extensionDescriptors={descriptors} extensionImplementations={implementations} dispatch={async()=>undefined} navigate={()=>{}} /><OwnedTooltip trigger={tooltipTrigger}>A supplied tooltip in this application.</OwnedTooltip></div><GraphSurface {graph} ongraphchange={value=>graph=value} label="Packed rich graph" height={480}/></AssetProvider></ControlScope>
+<ControlScope class="vict-rhea"><AssetProvider namespace="foundation-packed-proof"><div style="position:relative;overflow:hidden" data-ui-application-viewport><DocumentHost plan={compiled.plan} localState={source.localState} extensionDescriptors={descriptors} extensionImplementations={implementations} dispatch={async()=>undefined} navigate={()=>{}} /><OwnedTooltip trigger={tooltipTrigger}>A supplied tooltip in this application.</OwnedTooltip></div><GraphSurface {graph} ongraphchange={value=>graph=value} label="Packed rich graph" height={480}/>{#each compositionPlans as entry}<h2>{entry.source.id}</h2><DocumentHost plan={entry.plan} localState={entry.source.localState} extensionDescriptors={descriptors} extensionImplementations={implementations} dispatch={async()=>undefined} navigate={()=>{}} />{/each}</AssetProvider></ControlScope>
 <style>:global(body){font-family:system-ui;margin:24px}h1{font-size:24px}</style>`);
   writeFileSync(join(destination,'install.log'),run(['install','--ignore-scripts','--no-audit','--no-fund'],consumer));
   const comparisons=[];
@@ -72,7 +76,7 @@ if(!compiled.ok)throw Error(JSON.stringify(compiled));
     comparisons.push({name:pack.name,installed,filesMatched:pack.files.filter(file=>file.path!=='package.json').length,manifestComparison:'excluded because npm normalizes package.json'});
   }
   report.installedByteComparison=comparisons;
-  report.fixtureFiles=['package.json','vite.config.mjs','index.html','src/main.ts','src/App.svelte'].map(path=>({path,sha256:hash(readFileSync(join(consumer,path)))}));
+  report.fixtureFiles=['package.json','vite.config.mjs','index.html','src/main.ts','src/App.svelte','src/composition-sources.json'].map(path=>({path,sha256:hash(readFileSync(join(consumer,path)))}));
   writeFileSync(join(destination,'build.log'),run(['run','build'],consumer));
   report.outputFiles=readdirSync(join(consumer,'dist/assets')).map(name=>({name,sha256:hash(readFileSync(join(consumer,'dist/assets',name)))}));
   report.status='PASS: fresh isolated packed consumer production build';

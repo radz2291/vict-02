@@ -40,10 +40,19 @@ export interface UiSvelteExtensionImplementation {
  * evaluated declared props. Delivery is declared-only and payload-typed;
  * the bridge copies array payloads before delivery (§10.1a ownership).
  */
+/** Code-only invocation frame: its data is validated against the canonical fill scope. */
+export interface UiScopedSlotFrame {
+  readonly key: string;
+  readonly props: Readonly<Record<string, unknown>>;
+  readonly state?: Readonly<Record<string, UiValue>>;
+  readonly onStateChange?: (key:string,value:UiValue)=>void;
+  readonly onOutput?: (output:string,payload?:UiValue)=>void;
+}
 export interface UiSvelteComponentIO {
   /** Emit a declared output. Only declared names are delivered. */
   readonly emit: (output: string, payload?: UiValue) => void;
   readonly slots?: Readonly<Record<string, Snippet>>;
+  readonly scopedSlots?: Readonly<Record<string, Snippet<[UiScopedSlotFrame]>>>;
   /** Safe label fallback for legacy interactive content nested inside a native trigger. */
   readonly slotLabels?: Readonly<Record<string, string>>;
   readonly action?: UiComponentActionStatus;
@@ -69,6 +78,7 @@ export interface UiSvelteComponentImplementation {
   readonly abi: typeof UI_COMPONENT_ABI;
   /** Descriptor slot names this implementation can render (capability). */
   readonly slots: readonly string[];
+  readonly scopedSlots?: readonly string[];
   /** Exposed presentation targets this implementation actually forwards. */
   readonly styleTargets?: readonly string[];
   /** Subset of `slots` the implementation contract requires to be filled. */
@@ -241,6 +251,8 @@ export function resolveSvelteComponent(
       );
     }
   }
+  for(const slotName of filledSlots)if(descriptor.scopedSlots?.includes(slotName)&&!instruction.slotScopes?.[slotName])return fail('UI_COMPONENT_SLOT_UNAVAILABLE',`Scoped slot '${slotName}' lacks its compiled scope contract.`);
+  for(const slotName of Object.keys(instruction.slotScopes??{}))if(!descriptor.scopedSlots?.includes(slotName)||!implementation.scopedSlots?.includes(slotName))return fail('UI_COMPONENT_SLOT_UNAVAILABLE',`The implementation cannot render scoped slot '${slotName}'.`);
   for (const slotName of implementation.required ?? []) {
     const fill = instruction.slots?.[slotName];
     if (fill === undefined || fill.length === 0) {
