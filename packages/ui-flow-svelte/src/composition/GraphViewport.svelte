@@ -2,7 +2,6 @@
   import { getContext, untrack } from 'svelte';
   import { SvelteFlow, Background, type Node, type Edge, type Connection } from '@xyflow/svelte';
   import type { UiSvelteComponentProps } from '@victframework/ui-svelte';
-  import { connectionIssue } from '../editor/model.js';
   import FlowNavigation from '../FlowNavigation.svelte';
   import ComposedGraphNode from './ComposedGraphNode.svelte';
   import { GRAPH_WORKSPACE, type GraphWorkspaceContext } from './context.js';
@@ -36,7 +35,7 @@
       onselectionchange={({nodes:n,edges:e})=>workspace.select({nodes:n.map(x=>x.id),edges:e.map(x=>x.id)})}
       onnodedragstart={()=>{dragging=true;dragCancelled=false;dragRevision=workspace.graph.revision;}}
       onnodedragstop={({nodes:moved})=>{dragging=false;if(dragCancelled){cancelDrag();return;}workspace.apply([{type:'moveNodes',positions:Object.fromEntries(moved.map(n=>[n.id,{...n.position}]))}],dragRevision);}}
-      isValidConnection={candidate=>!workspace.readOnly&&!connectionIssue(workspace.graph,{id:'pending',...connection(candidate)})}
+      isValidConnection={candidate=>!workspace.readOnly&&!workspace.connectionIssue({id:'pending',...connection(candidate)})}
       onbeforeconnect={candidate=>{workspace.apply([{type:'connect',edge:connection(candidate)}]);return false;}}
       onbeforereconnect={(next,old)=>{workspace.apply([{type:'reconnect',edgeId:old.id,connection:connection(next)}]);return false;}}>
       <Background/><FlowNavigation initialFit={!initial?.viewport&&workspace.graph.nodes.length>0} initialNodeIds={workspace.graph.nodes.map(n=>n.id)}/>

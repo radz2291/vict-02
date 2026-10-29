@@ -7,12 +7,13 @@ import { catalogDescriptors, catalogImplementations } from '../../ui-svelte/src/
 import { flowAuthoringDescriptors } from '../src/authoring/descriptors.js';
 import { flowAuthoringImplementations } from '../src/authoring/implementations.js';
 import { parseGraph } from '../src/editor/model.js';
-import { compositionDocument } from './composition-fixtures.js';
+import { compositionDocument,typedCompositionDocument } from './composition-fixtures.js';
 import CustomControl from './CompositionCustomControl.svelte';
 import CompositionHost from './CompositionHost.svelte';
 import { type GraphEditorHost } from '../src/editor/host.js';
 import { serializeGraph } from '../src/editor/model.js';
 import { compositionGraph } from './composition-fixtures.js';
+import {parseGraphV2} from '../src/editor/model-v2.js';
 
 const descriptors = [...catalogDescriptors, ...flowAuthoringDescriptors];
 const implementations = [...catalogImplementations, ...flowAuthoringImplementations];
@@ -60,6 +61,26 @@ async function hosted(source: UiDocument, host: GraphEditorHost) {
 }
 
 describe('canonical application-owned graph composition', () => {
+  it('persists a standard catalog slider numberList through scoped graph2 state without a flow-specific adapter',async()=>{
+    const source=typedCompositionDocument('media');
+    const initial=JSON.parse(String(source.localState.graph.initial));
+    const first=await open(source),isolated=await open({...source,id:'separate-typed-workspace'});
+    let saved:string;
+    try{
+      const thumb=first.target.querySelector<HTMLElement>('[data-graph-node="sampler"] [role="slider"]')!;
+      expect(thumb).toBeTruthy();expect(thumb.getAttribute('aria-valuenow')).toBe('24');
+      const position={...initial.nodes.find((node:{id:string})=>node.id==='sampler')!.position};
+      thumb.focus();thumb.dispatchEvent(new KeyboardEvent('keydown',{key:'ArrowRight',bubbles:true}));await settle();
+      saved=String(first.writes.findLast(([key])=>key==='graph')?.[1]);
+      const result=parseGraphV2(saved);if(!result.ok)throw Error(JSON.stringify(result));
+      expect(result.graph.nodes.find(node=>node.id==='sampler')!.values.weights).toEqual([25]);
+      expect(result.graph.nodes.find(node=>node.id==='sampler')!.position).toEqual(position);
+      expect(isolated.writes).toEqual([]);expect(isolated.target.querySelector('[role="slider"]')?.getAttribute('aria-valuenow')).toBe('24');
+      expect(first.diagnostics).toEqual([]);
+    }finally{await first.close();await isolated.close();}
+    const reopened=await open({...source,localState:{...source.localState,graph:{key:'graph',type:'string',initial:saved!}}});
+    try{expect(reopened.target.querySelector('[role="slider"]')?.getAttribute('aria-valuenow')).toBe('25');expect(reopened.diagnostics).toEqual([]);}finally{await reopened.close();}
+  });
   it('renders distinct prompt/settings/output subtrees and app-chosen controls without editor chrome', async () => {
     const view = await open(compositionDocument('media'));
     try {

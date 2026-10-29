@@ -1,6 +1,7 @@
 /** Cycle 1.1: a bounded palette vocabulary compiled to the manual editor's transactions. */
 import { z } from 'zod';
 import {patchAuthoredGraph} from './graph-authoring.js';
+import {graphEditShapeValid} from './graph-edit-schema.js';
 import {preflightShapeDiagnostics} from './agent-preflight.js';
 import {
   applyUiEdit,
@@ -38,7 +39,7 @@ import {
 import { screenRecipes } from './recipes.js';
 import { authoringContract, installedAuthoringRegistry, installedAuthoringHostCapabilities, nodeDescriptor } from './authoring.js';
 import { screenPlacementIssues } from './placement.js';
-import { designerCatalogs, screenIssues, compileScreen, actionInputs } from './application.js';
+import { designerCatalogs, screenIssues, compileScreen, actionInputs,catalogDescriptors } from './application.js';
 
 const id = z
   .string()
@@ -108,7 +109,7 @@ export const agentOperationSchema = z.discriminatedUnion('op', [
   z.object({op:z.literal('removeStyleSource'),id}).strict(),
   z.object({op:z.literal('when'),nodeId:id,wrapperId:id,conditionId:id}).strict(),
   z.object({op:z.literal('slotScope'),nodeId:id,slot:id,scope:slotScope.optional()}).strict(),
-  z.object({op:z.literal('editGraph'),nodeId:id,expectedGraphRevision:z.number().int().min(0),changes:z.array(z.unknown()).min(1).max(40)}).strict(),
+  z.object({op:z.literal('editGraph'),nodeId:id,expectedGraphRevision:z.number().int().min(0),changes:z.array(z.unknown()).min(1).max(40).refine(graphEditShapeValid,'Use the exact declared graph-operation shape for this workspace version; read registry dataContracts.')}).strict(),
   z.object({op:z.literal('theme'),role:z.enum(['surface','text','textMuted','border','accent','accentText','highlight','highlightText','focusRing','disabledSurface','disabledText','elevation']),value:z.string().max(500).optional()}).strict(),
   z.object({op:z.literal('style'),nodeId:id,part:id.optional(),property:z.string().min(1).max(80),
     value:z.union([z.object({type:z.literal('text'),value:z.string().max(500)}).strict(),z.object({type:z.literal('token'),id}).strict(),z.object({type:z.literal('binding'),expression}).strict()]).optional(),
@@ -272,14 +273,14 @@ export function prepareAgentEdit(
       }
       if (operation.op === 'add') {
         const recipe = screenRecipes.find((recipe) => recipe.id === operation.recipe)!;
-        if (!canInsertRecipe(recipe, working, { nodeId: operation.parentId, slotName: operation.slotName }))
+        if (!canInsertRecipe(recipe, working, { nodeId: operation.parentId, slotName: operation.slotName },catalogDescriptors))
           return failure('STUDIO_AGENT_COMPONENT_CONTEXT', 'This component part requires a compatible parent and declared slot. Read the recipe placements.');
         next.push(
           ...insertRecipe(requestId, recipe, working, operation.nodeId, {
             nodeId: operation.parentId,
             slotName: operation.slotName,
             index: operation.index,
-          }).commands,
+          },catalogDescriptors).commands,
         );
         if (operation.replacePlaceholder !== false && operation.slotName) {
           const parent = working.nodes[operation.parentId];
@@ -356,7 +357,7 @@ export function prepareAgentEdit(
       if (operation.op === 'move') {
         const node = working.nodes[operation.nodeId];
         const recipe = node?.kind === 'component' ? screenRecipes.find(recipe => recipe.id === node.definitionId.replace('vict.catalog.', '')) : undefined;
-        if (recipe && !canInsertRecipe(recipe, working, { nodeId: operation.newParentId, slotName: operation.slotName }))
+        if (recipe && !canInsertRecipe(recipe, working, { nodeId: operation.newParentId, slotName: operation.slotName },catalogDescriptors))
           return failure('STUDIO_AGENT_COMPONENT_CONTEXT', 'This component part cannot move outside its compatible parent slot.');
         next.push({
           op: 'move',

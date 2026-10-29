@@ -31,7 +31,7 @@ try{
   writeFileSync(join(consumer,'package.json'),JSON.stringify({name:'vict-foundation-isolated-consumer',private:true,type:'module',scripts:{build:'vite build'},dependencies,devDependencies:{'@sveltejs/vite-plugin-svelte':'5.1.1',vite:'6.4.3',typescript:'6.0.3'}},null,2));
   writeFileSync(join(consumer,'index.html'),'<html><head><title>Foundation packed consumer</title></head><body><div id="app"></div><script type="module" src="/src/main.ts"></script></body></html>');
   writeFileSync(join(consumer,'vite.config.mjs'),`import {defineConfig} from 'vite';import {svelte} from '@sveltejs/vite-plugin-svelte';export default defineConfig({base:'./',plugins:[svelte()]});`);
-  const compositionJson=execFileSync(process.execPath,['--import','tsx','--input-type=module','-e',"import {compositionDocument} from './packages/ui-flow-svelte/test/composition-fixtures.ts';process.stdout.write(JSON.stringify(['media','research'].map(kind=>compositionDocument(kind))));"],{cwd:root,encoding:'utf8',maxBuffer:2*1024*1024});
+  const compositionJson=execFileSync(process.execPath,['--import','tsx','--input-type=module','-e',"import {typedCompositionDocument} from './packages/ui-flow-svelte/test/composition-fixtures.ts';process.stdout.write(JSON.stringify(['media','research'].map(kind=>typedCompositionDocument(kind))));"],{cwd:root,encoding:'utf8',maxBuffer:2*1024*1024});
   writeFileSync(join(consumer,'src/composition-sources.json'),compositionJson);
   writeFileSync(join(consumer,'src/main.ts'),`import {mount} from 'svelte';import App from './App.svelte';mount(App,{target:document.getElementById('app')!});`);
   writeFileSync(join(consumer,'src/App.svelte'),`<script lang="ts">

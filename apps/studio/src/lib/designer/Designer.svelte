@@ -21,6 +21,7 @@
   import AuthoringGuidance from './AuthoringGuidance.svelte';
   import { screenStore, savedScreens } from './storage.js';
   import { screenRecipes } from './recipes.js';
+  import {installedAuthoringRegistry,installedAuthoringHostCapabilities} from './authoring.js';
   import { createScreenSimulation, screenDispatcher } from './execution.js';
   import { Menubar } from '@victframework/ui-svelte/catalog/menubar';
   import WorkspaceMenu from './WorkspaceMenu.svelte';
@@ -766,7 +767,7 @@
       {/snippet}
       {#snippet format()}{@render objectProperties(formatSection)}{/snippet}
       {#snippet connect()}{@render objectProperties('Behavior')}{/snippet}
-      {#snippet insert()}<Composer {compositionFocus} document={source} selectedNodeId={selectedNode?.id} recipes={screenRecipes} descriptors={catalogDescriptors} compact showArrange={false} onApply={apply} onInserted={(id: string) => { selectOccurrence(`${source.id}|${id}`); notice = 'Added to your screen. Double-click text to edit.'; }} />{/snippet}
+      {#snippet insert()}<Composer {compositionFocus} document={source} selectedNodeId={selectedNode?.id} recipes={screenRecipes} descriptors={catalogDescriptors} authoringRegistry={installedAuthoringRegistry} hostCapabilities={installedAuthoringHostCapabilities} compact showArrange={false} onApply={apply} onInserted={(id: string) => { selectOccurrence(`${source.id}|${id}`); notice = 'Added to your screen. Double-click text to edit.'; }} />{/snippet}
       {#snippet arrange()}<Composer document={source} selectedNodeId={selectedNode?.id} recipes={screenRecipes} descriptors={catalogDescriptors} compact showInsert={false} onApply={apply} onDuplicate={duplicateSelection} onDetached={(parentId: string)=>{selectOccurrence(`${source.id}|${parentId}`);notice='Content kept aside. Use Insert → Reuse to place it again.';}} />{#if !selectedNode || selectedNode.id === source.root}<p class="palette-hint">Select an element to move, duplicate or delete it.</p>{/if}{/snippet}
     </SelectionPalette>
     </div>

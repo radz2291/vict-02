@@ -1,12 +1,10 @@
 <script lang="ts">
   import { setContext, tick,onDestroy } from 'svelte';
   import { useUpdateNodeInternals, type NodeProps } from '@xyflow/svelte';
-  import type { GraphNode } from '../editor/model.js';
-  import { graphPorts } from '../editor/model.js';
-  import { GRAPH_BODY, type GraphBodyContext, type GraphWorkspaceContext } from './context.js';
+  import { GRAPH_BODY, type GraphBodyContext, type GraphWorkspaceContext, type GraphWorkspaceNode } from './context.js';
   let {id,data,selected}:NodeProps=$props();
   const workspace=$derived(data.workspace as GraphWorkspaceContext);
-  const node=$derived(data.node as GraphNode);
+  const node=$derived(data.node as GraphWorkspaceNode);
   let root:HTMLElement;
   let anchors=$state<Record<string, symbol[]>>({});
   const update=useUpdateNodeInternals();
@@ -15,7 +13,7 @@
   const remeasure=()=>{void tick().then(()=>{if(mounted)update(id);});};
   setContext<GraphBodyContext>(GRAPH_BODY,{
     get nodeId(){return id;},
-    get ports(){return graphPorts(workspace.graph,node);},
+    get ports(){return workspace.ports(node);},
     get readOnly(){return workspace.readOnly;},
     registerPort(id,token){anchors={...anchors,[id]:[...(anchors[id]??[]),token]};remeasure();return()=>{anchors={...anchors,[id]:(anchors[id]??[]).filter(item=>item!==token)};remeasure();};},
     uniquePort(id){return anchors[id]?.length===1;},

@@ -1,3 +1,11 @@
+> 29 October direct-agent update: the first NodeLab run failed after 21 calls,
+> three refusals and two shell/theme edits, leaving zero graph nodes/edges.
+> Its later unproductive continuation was stopped without edits. Original public
+> evidence is retained at local checkpoint a584f940; see [diagnosis](foundation-evidence/flow-composition-20261029/actual-agent-nodelab/DIAGNOSIS.md).
+> Typed graph/data-discovery/feedback repairs are being independently checked.
+> Mounted standard-slider typed persistence passes; this is supporting fixture
+> evidence, not a successful actual-agent app. AR13–15 remain reopened.
+>
 > 29 October follow-up: the owner rejected the bundled flow editor and reopened
 > AR13-15 after actual-app review. The prior 30/31 rollup below is historical and
 > does not close the new flow iteration. Removal checkpoint 2a25341f and software

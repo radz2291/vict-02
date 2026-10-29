@@ -1,4 +1,5 @@
 import { screenRecipes } from './recipes.js';
+import {graphEditDefinitions,graphEditChangesPresentation} from './graph-edit-schema.js';
 
 // JSON Schema describes the same closed subset validated again by Zod and the
 // canonical editor. All user text is data; this guidance never grants authority.
@@ -31,7 +32,7 @@ const operationDefinitions = {
  removeStyleSource:opSchema('removeStyleSource',['id'],{id:identifier}),
  when:opSchema('when',['nodeId','wrapperId','conditionId'],{nodeId:identifier,wrapperId:identifier,conditionId:identifier}),
  slotScope:opSchema('slotScope',['nodeId','slot'],{nodeId:identifier,slot:identifier,scope:{$ref:'#/$defs/slotScope'}}),
- editGraph:opSchema('editGraph',['nodeId','expectedGraphRevision','changes'],{nodeId:identifier,expectedGraphRevision:{type:'integer',minimum:0},changes:{type:'array',minItems:1,maxItems:40,items:{type:'object',required:['type'],additionalProperties:true}}}),
+ editGraph:opSchema('editGraph',['nodeId','expectedGraphRevision','changes'],{nodeId:identifier,expectedGraphRevision:{type:'integer',minimum:0},changes:{...graphEditChangesPresentation,description:'Exact workspace revision selects graph1 or graph2 semantics. Read registry dataContracts for the versioned graph and operation grammar.'}}),
  theme:opSchema('theme',['role'],{role:{enum:['surface','text','textMuted','border','accent','accentText','highlight','highlightText','focusRing','disabledSurface','disabledText','elevation']},value:{type:'string',maxLength:500}}),
  style:opSchema('style',['nodeId','property'],{nodeId:identifier,part:identifier,property:{type:'string',minLength:1,maxLength:80},value:{$ref:'#/$defs/styleValue'},conditionId:identifier,pseudo:{enum:['hover','focus','active','disabled']}}),
  wireInput:opSchema('wireInput',['nodeId','key'],{nodeId:identifier,key:{$ref:'#/$defs/stateKey'},initial:scalar}),
@@ -40,6 +41,7 @@ const operationDefinitions = {
 // Zod's discriminated closed operation union remains authoritative.
 export const editPresentation = {
   $defs: {
+    ...graphEditDefinitions,
     ...operationDefinitions,
     operation: { oneOf:Object.keys(operationDefinitions).map(op=>({$ref:`#/$defs/${op}`})) },
     identifier:{type:'string',minLength:1,maxLength:160,pattern:'^[a-zA-Z0-9_.:-]+$',not:{enum:['__proto__','constructor','prototype']}},
@@ -92,38 +94,7 @@ export const editPresentation = {
       type: 'array',
       minItems: 1,
       maxItems: 40,
-      items: {
-        $ref: '#/$defs/operation',
-        type: 'object',
-        additionalProperties: false,
-        required: ['op'],
-        properties: {
-          op: { enum: Object.keys(operationDefinitions) },
-          key: { ...string, description: 'declareState or wireInput only: simple unique local state key.' },
-          type: { enum: ['string','number','boolean','isoDate','isoTime','stringList','numberList'] }, initial: {$ref:'#/$defs/propValue'},
-          kind:{enum:['element','text','component','media','container']},tag:string,componentId:identifier,revision:identifier,
-          id:identifier,name:identifier,query:string,part:identifier,role:{enum:['surface','text','textMuted','border','accent','accentText','highlight','highlightText','focusRing','disabledSurface','disabledText','elevation']},property:string,value:{anyOf:[{$ref:'#/$defs/styleValue'},{type:'string',minLength:1,maxLength:500}]},conditionId:identifier,pseudo:{enum:['hover','focus','active','disabled']},
-          declarations:{$ref:'#/$defs/styleDeclarations'},replace:{type:'boolean'},sourceId:identifier,
-          replacePlaceholder: { type: 'boolean', description: 'add only: false explicitly preserves seeded slot children; default replaces an unchanged seed.' },
-          recipe: {
-            type: 'string',
-            // A single enum would exceed the bridge's frozen 64-item bound.
-            // The equivalent anchored pattern retains the complete finite vocabulary.
-            pattern: `^(?:${screenRecipes.map(recipe => recipe.id.replaceAll('.', '\\.')).join('|')})$`,
-          },
-          slot:identifier,scope:{$ref:'#/$defs/slotScope'},wrapperId:identifier,
-          nodeId: string,expectedGraphRevision:{type:'integer',minimum:0},changes:{type:'array',minItems:1,maxItems:40,items:{type:'object',required:['type'],additionalProperties:true}},
-          parentId: string,
-          newParentId: string,
-          slotName: string,
-          index: { type: 'integer', minimum: 0 },
-          prop: { ...string, description: 'bind only: declared component prop name.' },
-          expression: { $ref: '#/$defs/expression', description: 'bind only; omit to reset.' },
-          output: { ...string, description: 'connect only: declared component output name.' },
-          binding: { $ref: '#/$defs/binding', description: 'connect only; omit to disconnect. Matching output/state types required. Scoped emit routes only an explicitly declared lexical output.' },
-          ...contentProperties,
-        },
-      },
+      items: {$ref:'#/$defs/operation'},
     },
   },
 };

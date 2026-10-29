@@ -1,4 +1,5 @@
 import {describe,it,expect} from 'vitest';
+import {authoringDataContracts} from '../src/index.js';
 import {createUiAuthoringRegistry,authoringDigest,authoringImplementationCapabilities,authoringIndex,authoringContractBundle,authoringSemanticIssues,materializeAuthoringFragment,effectiveUiDescriptor,compileUiDocument,defaultSemanticElementCatalog,type UiAuthoringRegistration,type UiAuthoringPackage,type UiDocument,type UiNode} from '../src/index.js';
 const registration=(id:string,extra:Partial<UiAuthoringRegistration>={}):UiAuthoringRegistration=>({descriptor:{id,revision:'1',props:[{name:'value',type:'string',default:''}],slots:['items'],outputs:[],abi:'vict.ui-component-abi@1',events:['vict.ui-component-abi@1'],rendererImplementationId:'test'},label:id,family:'test',category:'input',purpose:'A test component',eligibility:{kind:'standalone'},...extra});
 const pkg=(registrations:readonly UiAuthoringRegistration[]):UiAuthoringPackage=>({schema:'vict.ui-authoring@1',packageName:'@test/components',packageVersion:'1',registrations,exportDispositions:[]});
@@ -6,6 +7,21 @@ const capabilities=(r:UiAuthoringRegistration)=>({extensionId:r.descriptor.id,re
 const registry=(registrations:readonly UiAuthoringRegistration[])=>createUiAuthoringRegistry([pkg(registrations)],registrations.map(capabilities));
 const document=(nodes:UiNode[]):UiDocument=>({schema:'vict.ui-document@1',id:'doc',revision:'r1',root:'root',nodes:Object.fromEntries([{kind:'element',id:'root',tag:'main',children:nodes.filter(node=>node.id==='host').map(node=>node.id)} as UiNode,...nodes].map(node=>[node.id,node])),componentDefinitions:{},styleSources:{},tokens:{},conditions:{},assets:{},localState:{}});
 describe('package authoring contracts',()=>{
+  it('indexes shared exact data grammars and refuses conflicting version identities',()=>{
+    const data={id:'example.document',revision:'1',schema:{type:'object',additionalProperties:false},examples:[{}]};
+    const first=registration('one',{dataContracts:[data]}),second=registration('two',{dataContracts:[data]});
+    const installed=registry([first,second]);expect(installed.ok).toBe(true);
+    expect(authoringDataContracts(installed)).toEqual([{...data,digest:authoringDigest(data)}]);
+    const changed=registry([first,{...second,dataContracts:[{...data,schema:{type:'array'}}]}]);
+    expect(changed.ok).toBe(false);
+    expect(changed.issues.some(issue=>issue.hostCode==='UI_AUTHORING_DATA_CONTRACT_CONFLICT')).toBe(true);
+    expect(registry([first]).contracts[0]!.digest).not.toBe(registry([{...first,dataContracts:[{...data,examples:[{value:1}]}]}]).contracts[0]!.digest);
+    const large=registry([registration('large',{dataContracts:[{...data,examples:['x'.repeat(50000)]}]})]);
+    const bundle=authoringContractBundle(large,{requested:[{id:'large'}],maxBytes:2000});
+    expect(bundle.complete).toBe(true);
+    expect(bundle.bytes).toBeLessThan(2000);
+    expect('contract' in bundle.items[0]!?bundle.items[0]!.contract.dataContracts?.[0]:undefined).toEqual({id:data.id,revision:'1',digest:authoringDigest({...data,examples:['x'.repeat(50000)]})});
+  });
   it('detects descriptor/renderer drift against retained compatibility bytes',()=>{
     const original=registration('field'),originalCapabilities=authoringImplementationCapabilities(capabilities(original));
     const pinned={...pkg([original]),compatibility:[{id:'field',revision:'1',descriptorDigest:authoringDigest(original.descriptor),capabilitiesDigest:authoringDigest(originalCapabilities)}]};

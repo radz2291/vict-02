@@ -16,3 +16,7 @@ export const graphViewportDescriptor:UiExtensionDescriptor={...common,id:'vict.f
 export const graphPortDescriptor:UiExtensionDescriptor={...common,id:'vict.flow.port',
   props:[{name:'id',type:'string'}],slots:['content'],outputs:[],
   inspectionLimits:['Place within an authored workspace body. Exact port ID resolves direction/type/capacity from the graph, not from styling.']};
+/** A new exact identity opts into generic typed parameters; @1 is never reinterpreted. */
+export const graphWorkspaceDescriptorV2:UiExtensionDescriptor={...graphWorkspaceDescriptor,revision:'2',inspectionLimits:[...graphWorkspaceDescriptor.inspectionLimits??[],'Accepts vict.flow-graph@2 only. Parameters use canonical VICT value types independently of node controls.']};
+export const graphViewportDescriptorV2:UiExtensionDescriptor={...graphViewportDescriptor,revision:'2'};
+export const graphPortDescriptorV2:UiExtensionDescriptor={...graphPortDescriptor,revision:'2'};

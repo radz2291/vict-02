@@ -38,7 +38,60 @@ async function supplied() {
   );
 }
 
+/** Canonical body composition, with media independent of graph parameter kinds. */
+function scopedMediaDocument(reference: string, controlled: boolean): UiDocument {
+  const original=source();
+  const graph={schema:'vict.flow-graph@2',revision:0,nodeTypes:[{id:'media',label:'Media',parameters:{picture:{type:'string',default:reference}},ports:[]}],nodes:[{id:'one',type:'media',label:'One',position:{x:0,y:0},values:{}}],edges:[]};
+  return {...original,localState:{...original.localState,graph:{key:'graph',type:'string',initial:JSON.stringify(graph)},picture:{key:'picture',type:'string',initial:'asset:sha256:'+'a'.repeat(64)}},nodes:{
+    ...original.nodes,screen:{...original.nodes.screen,children:['workspace']} as UiDocument['nodes'][string],
+    workspace:{kind:'component',id:'workspace',definitionId:'vict.flow.workspace',revision:'2',props:{graph:{type:'ref',path:'state.graph'}},slots:{
+      content:{name:'content',scope:{schema:'vict.ui-slot-scope@1',props:[]},children:['viewport']},
+      body:{name:'body',scope:{schema:'vict.ui-slot-scope@1',props:[{name:'nodeId',type:'string'}],state:{picture:{key:'picture',type:'string',initial:reference,controlled}},conditions:{showMedia:{type:'literal',value:false}}},children:['media-branch']},
+    }},
+    viewport:{kind:'component',id:'viewport',definitionId:'vict.flow.viewport',revision:'2'},
+    'media-branch':{kind:'conditional',id:'media-branch',branches:[{when:'showMedia',children:['media']},{children:['placeholder']}]},
+    placeholder:{kind:'text',id:'placeholder',content:{type:'literal',value:'Media branch is inactive'}},
+    media:{kind:'component',id:'media',definitionId:'vict.media.image',revision:'1',props:{source:{type:'ref',path:'state.picture'},alt:{type:'literal',value:'Scoped source'}}},
+  }};
+}
+
 describe('one-screen local source import preparation', () => {
+  it.each([false,true])('resolves lexical body state and graph parameters without falling back to document state (controlled=%s)',async controlled=>{
+    const asset=await supplied(),document=scopedMediaDocument(asset.reference,controlled),before=JSON.stringify(document);
+    expect(screenIssues(document)).toEqual([]);
+    expect(await prepareSourceImport(bundle(document))).toMatchObject({ok:false,code:'STUDIO_IMPORT_MEDIA_MISSING'});
+    const store=memoryAssetStore();await store.put(asset);
+    const prepared=await prepareSourceImport(bundle(document,{mediaArchive:JSON.parse(await exportMediaArchive(store))}));
+    expect(prepared.ok,JSON.stringify(prepared)).toBe(true);if(!prepared.ok)return;
+    expect(prepared.assets.map(item=>item.reference)).toEqual([asset.reference]);
+    expect(JSON.stringify(document)).toBe(before);
+    expect(prepared.document).toEqual(document);
+  });
+  it('inventories graph2 parameter defaults and overrides across all source families and inactive body branches',async()=>{
+    const asset=await supplied();let document=scopedMediaDocument('/fallback.png',true);
+    const graph=JSON.parse(String(document.localState.graph.initial));
+    graph.nodeTypes.push({id:'unused',label:'Unused source family',parameters:{picture:{type:'string',default:asset.reference}},ports:[]});
+    document={...document,localState:{...document.localState,graph:{...document.localState.graph,initial:JSON.stringify(graph)}}};
+    const media=document.nodes.media;if(media.kind!=='component')throw Error('Fixture');
+    document={...document,nodes:{...document.nodes,media:{...media,props:{...media.props,source:{type:'conditionalValue',when:{type:'literal',value:true},then:{type:'literal',value:'/fallback.png'},otherwise:{type:'ref',path:'state.picture'}}}}}};
+    expect(screenIssues(document)).toEqual([]);
+    expect(await prepareSourceImport(bundle(document))).toMatchObject({ok:false,code:'STUDIO_IMPORT_MEDIA_MISSING'});
+    // The same dependency remains required as a saved node override, with no
+    // image/video/widget annotation on the project parameter declaration.
+    graph.nodeTypes.pop();graph.nodes[0].values.picture=asset.reference;
+    document={...document,localState:{...document.localState,graph:{...document.localState.graph,initial:JSON.stringify(graph)}}};
+    expect(await prepareSourceImport(bundle(document))).toMatchObject({ok:false,code:'STUDIO_IMPORT_MEDIA_MISSING'});
+    const store=memoryAssetStore();await store.put(asset);
+    expect(await prepareSourceImport(bundle(document,{mediaArchive:JSON.parse(await exportMediaArchive(store))}))).toMatchObject({ok:true});
+  });
+  it('still refuses unknown renderer frame media even when a same-named document state and valid archive exist',async()=>{
+    const asset=await supplied();let document=scopedMediaDocument(asset.reference,true);
+    const media=document.nodes.media;if(media.kind!=='component')throw Error('Fixture');
+    document={...document,nodes:{...document.nodes,media:{...media,props:{...media.props,source:{type:'ref',path:'prop.nodeId'}}}},localState:{...document.localState,nodeId:{key:'nodeId',type:'string',initial:asset.reference}}};
+    expect(screenIssues(document)).toEqual([]);
+    const store=memoryAssetStore();await store.put(asset);
+    expect(await prepareSourceImport(bundle(document,{mediaArchive:JSON.parse(await exportMediaArchive(store))}))).toMatchObject({ok:false,code:'STUDIO_IMPORT_MEDIA_DYNAMIC'});
+  });
   it('carries managed carousel image bytes through the same portable dependency closure', async () => {
     const asset=await supplied(),store=memoryAssetStore();await store.put(asset);
     const original=source();

@@ -748,7 +748,7 @@ export function structureMove(
       : undefined;
   if (
     recipe &&
-    !canInsertRecipe(recipe, document, { nodeId: command.newParentId, slotName: command.slotName })
+    !canInsertRecipe(recipe, document, { nodeId: command.newParentId, slotName: command.slotName },descriptors)
   )
     return {
       ok: false,

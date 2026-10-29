@@ -6,7 +6,7 @@ import type { TransactionDraft } from './commands.js';
 export function authoringRecipe(registration:UiAuthoringRegistration):InsertRecipe|undefined {
   if(!registration.seed || !['standalone','part'].includes(registration.eligibility.kind))return undefined;
   const fragment=registration.seed;
-  const placements=registration.rules?.flatMap(rule=>rule.kind==='ancestorSlot'?rule.placements.map(({definitionId,slotName})=>({definitionId,slotName})):[]);
+  const placements=registration.rules?.flatMap(rule=>rule.kind==='ancestorSlot'?rule.placements.map(({definitionId,slotName,revision})=>({definitionId,slotName,...(revision?{revision}:{})})):[]);
   return {id:registration.descriptor.id.replace(/^vict\.catalog\./,''),label:registration.label,description:registration.purpose,
     ...(placements?.length?{placements}:{}),create:id=>materializeAuthoringFragment(fragment,id).nodes,
     initialState:id=>materializeAuthoringFragment(fragment,id).localState??{}};

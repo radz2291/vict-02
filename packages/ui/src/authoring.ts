@@ -13,6 +13,13 @@ export interface UiAuthoringFragment {
   readonly identities?: readonly { readonly nodeId?: string; readonly property?: string; readonly stateKey?: string; readonly sourceNodeId: string }[];
 }
 export interface UiAuthoringPlacement { readonly definitionId: string; readonly revision?: string; readonly slotName: string }
+/** Package-owned declarative data grammar; this metadata grants no execution authority. */
+export interface UiAuthoringDataContract {
+  readonly id: string;
+  readonly revision: string;
+  readonly schema: Readonly<Record<string, unknown>>;
+  readonly examples?: readonly unknown[];
+}
 export type UiAuthoringRule =
   | { readonly kind: 'ancestorSlot'; readonly placements: readonly UiAuthoringPlacement[] }
   | { readonly kind: 'requiredParts'; readonly slot: string; readonly definitionIds: readonly string[]; readonly minimum?: number }
@@ -31,6 +38,7 @@ export interface UiAuthoringRegistration {
   readonly dependencies?: readonly { readonly id: string; readonly revision: string }[];
   readonly rules?: readonly UiAuthoringRule[];
   readonly guidance?: readonly string[];
+  readonly dataContracts?: readonly UiAuthoringDataContract[];
   readonly seed?: UiAuthoringFragment;
   readonly examples?: readonly UiAuthoringFragment[];
   /** Only pre-existing component identities may retain unchanged historical violations. */
@@ -57,6 +65,15 @@ export interface UiAuthoringContract extends UiAuthoringRegistration {
   readonly capabilities: UiAuthoringImplementationCapability;
   readonly descriptorDigest: string; readonly digest: string;
 }
+export interface UiAuthoringDataContractReference {readonly id:string;readonly revision:string;readonly digest:string}
+export type UiAuthoringContractBody=Omit<UiAuthoringContract,'dataContracts'> & {readonly dataContracts?:readonly UiAuthoringDataContractReference[]};
+/** Component knowledge links data grammars; each complete grammar has its own paging budget. */
+export function authoringContractBody(contract:UiAuthoringContract):UiAuthoringContractBody {
+  const {dataContracts,...base}=contract;
+  if(!dataContracts)return base;
+  // Keep original property order, including dataContracts when present.
+  return {...contract,dataContracts:dataContracts.map(data=>({id:data.id,revision:data.revision,digest:authoringDigest(data)}))};
+}
 export interface UiAuthoringRegistry {
   readonly ok: boolean;
   readonly issues: readonly UiDiagnostic[];
@@ -68,6 +85,15 @@ export interface UiAuthoringRegistry {
 }
 export const authoringDigest = (value: unknown): string => canonicalUiDocument(value).contentDigest;
 export const authoringKey = (id: string, revision: string): string => `${id}@${revision}`;
+/** Deduplicated exact data identities; conflicting bodies make registry construction fail. */
+export function authoringDataContracts(registry: Pick<UiAuthoringRegistry,'contracts'>): readonly (UiAuthoringDataContract & {readonly digest:string})[] {
+  const entries=new Map<string,UiAuthoringDataContract & {digest:string}>();
+  for(const contract of registry.contracts)for(const data of contract.dataContracts??[]){
+    const key=authoringKey(data.id,data.revision);
+    if(!entries.has(key))entries.set(key,{...data,digest:authoringDigest(data)});
+  }
+  return [...entries.values()];
+}
 export function effectiveUiDescriptor(node: Pick<Extract<UiNode, {kind:'component'}>, 'definitionId' | 'revision'>, descriptors: readonly UiExtensionDescriptor[]): UiExtensionDescriptor | undefined {
   const matches = descriptors.filter(item => item.id === node.definitionId);
   const revision = node.revision ?? matches.at(-1)?.revision;
@@ -87,10 +113,19 @@ export function createUiAuthoringRegistry(packages: readonly UiAuthoringPackage[
   const issues: UiDiagnostic[] = [];
   const raw = packages.flatMap(pkg => pkg.registrations.map(registration => ({pkg,registration})));
   const keys = new Set<string>();
+  const dataIdentities=new Map<string,string>();
   for (const {pkg,registration:r} of raw) {
     const key = authoringKey(r.descriptor.id,r.descriptor.revision);
     if (keys.has(key)) issues.push(issue('UI_AUTHORING_DUPLICATE',`Duplicate exact authoring registration ${key}.`,{key}));
     keys.add(key);
+    for(const data of r.dataContracts??[]){
+      const identity=authoringKey(data.id,data.revision);
+      if(!data.id||!data.revision||!data.schema||Array.isArray(data.schema)||typeof data.schema!=='object')
+        issues.push(issue('UI_AUTHORING_DATA_CONTRACT',`Invalid declarative data contract on ${key}.`,{key}));
+      const bodyDigest=authoringDigest(data),prior=dataIdentities.get(identity);
+      if(prior&&prior!==bodyDigest)issues.push(issue('UI_AUTHORING_DATA_CONTRACT_CONFLICT',`Conflicting data contract ${identity}.`,{key,identity}));
+      dataIdentities.set(identity,bodyDigest);
+    }
     if (pkg.schema !== UI_AUTHORING_SCHEMA || !pkg.packageName || !pkg.packageVersion || !r.label || !r.family || !r.category || !r.purpose)
       issues.push(issue('UI_AUTHORING_METADATA',`Incomplete authoring package or registration ${key}.`,{key}));
     if (['host-required','excluded'].includes(r.eligibility.kind) && !r.eligibility.reason)
@@ -205,10 +240,10 @@ export function authoringContractBundle(registry:UiAuthoringRegistry, input:{req
   };
   input.requested.slice(0,30).forEach(item=>visit(item.id,item.revision,0));
   if(input.requested.length>30)problems.push('requested-item-budget');
-  const items:({id:string;revision:string;digest:string;unchanged:true}|{id:string;revision:string;digest:string;contract:UiAuthoringContract})[]=[];
+  const items:({id:string;revision:string;digest:string;unchanged:true}|{id:string;revision:string;digest:string;contract:UiAuthoringContractBody})[]=[];
   let bytes=0;
   for(const contract of ordered){const id=contract.descriptor.id,revision=contract.descriptor.revision,key=authoringKey(id,revision),digest=contract.digest;
-    const item=input.knownDigests?.[key]===digest?{id,revision,digest,unchanged:true as const}:{id,revision,digest,contract};
+    const item=input.knownDigests?.[key]===digest?{id,revision,digest,unchanged:true as const}:{id,revision,digest,contract:authoringContractBody(contract)};
     const size=new TextEncoder().encode(JSON.stringify(item)).length;
     if(items.length>=maxItems || bytes+size>maxBytes){pending.push(key);continue;}items.push(item);bytes+=size;
   }

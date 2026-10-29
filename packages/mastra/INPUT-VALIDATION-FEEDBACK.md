@@ -1,0 +1,13 @@
+# Safe pre-invocation repair feedback
+
+A capability host may opt in with `CapabilityBridgeDeps.inputValidationFeedback`, a static resolver by exact capability identity. Its policy declares known field names, fixed expected hints and a formatter. The formatter receives only a frozen projection of parser issue paths and allowlisted rule codes. It receives no arguments, parser objects, messages, received values or arbitrary expectations.
+
+The bridge validates the formatter result as a closed `{code:'VICT_TOOL_INPUT_INVALID',issues:[{path,rule,expected?}]}` value. At most five issues and eight path segments are admitted; path names must be predeclared and indexes bounded. Hints must exactly match predeclared host strings. Unknown fields, accessor properties, throwing formatters and unapproved hints fall back to `vict-contract-rejected`. The neutral contract remains the sole validation authority; hints do not grant invocation or approval authority.
+
+The result becomes a Standard Schema rejection message. This is a parser evaluation before capability invocation, not a tool receipt; it has no invented tool-call identity. Hosts must not attach it to a fabricated invocation.
+
+Adversarial testing exposed that the pinned upstream Tool wrapper appends supplied arguments to validation-error messages. For opted-in tools, an execution-local AsyncLocalStorage boundary records only that execution's input-schema rejection. If the governed execute callback was never entered, the returned validation failure is replaced with the closed safe message. The decision never matches an untrusted result shape. Once the governed callback is entered, capability outcomes remain unchanged, including legitimate domain objects with `error:true`. Independent/concurrent schema evaluations do not affect another execution, and the context is settled on return.
+
+Studio opts in for read/edit/observe and uses the same safe feedback in its public parser-evaluation details. Invalid read unions receive a fixed section-discriminant hint. Original provider failures that were not retained with validated arguments remain unclassified; this repair does not reconstruct or claim those missing arguments.
+
+Verification covers actual returned Tool execution with zero invocation/intent on rejection, concurrent valid and invalid calls, external schema evaluations, unchanged actual domain outcomes, hostile accessors, secret canaries, custom parser messages and formatter failures. Existing tools without the opt-in retain their historical feedback behavior.

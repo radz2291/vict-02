@@ -84,7 +84,7 @@ it('does not union visual regions across source identities or imply runtime, off
 
 it('enforces completed knowledge and delivers measured progress through the actual pinned executor (offline model, no provider/design quality claim)',async()=>{
  const selected=[{id:'vict.catalog.button',revision:'1'}];
- expect(STUDIO_AGENT_PROTOCOL).toEqual({readCapabilityRevision:'5',readInputRevision:'5',editCapabilityRevision:'3',editInputRevision:'3',instructionsRevision:'9',profileRevision:'10',startInputRevision:'3',observationInstructionsRevision:'5',observationProfileRevision:'7'});
+ expect(STUDIO_AGENT_PROTOCOL).toEqual({readCapabilityRevision:'6',readInputRevision:'6',editCapabilityRevision:'4',editInputRevision:'4',instructionsRevision:'10',profileRevision:'11',startInputRevision:'3',observationInstructionsRevision:'5',observationProfileRevision:'7'});
  const full=agentContext(source,cursor,undefined,{section:'contracts',components:selected,limit:20});
  const body=(full.items as Body[]).find(item=>item.id===selected[0].id)!;
  expect((body as Body&{bodyComplete:boolean}).bodyComplete).toBe(true);
@@ -102,7 +102,7 @@ it('enforces completed knowledge and delivers measured progress through the actu
  const results:Record<string,unknown>[]=[];
  function visit(value:unknown,depth=0):void{if(depth>18)return;if(typeof value==='string'&&/^(?:\{|\[)/.test(value)){try{visit(JSON.parse(value),depth+1);}catch{}return;}if(Array.isArray(value)){value.forEach(item=>visit(item,depth+1));return;}if(value&&typeof value==='object'){if('turnProgress'in value&&'items'in value)results.push(value as Record<string,unknown>);Object.values(value).forEach(item=>visit(item,depth+1));}}
  visit(prompts);
- expect(results.some(result=>(result.items as {bodyComplete?:boolean}[]).some(item=>item.bodyComplete))).toBe(true);
+ expect(results.some(result=>(result.items as {bodyComplete?:boolean}[]).some(item=>item.bodyComplete)),JSON.stringify({resultCount:results.length,toolEvents:events.filter(event=>event.type==='tool-event'),done:events.at(-1)})).toBe(true);
  expect(results.some(result=>(result.items as {unchanged?:boolean}[]).some(item=>item.unchanged))).toBe(true);
  expect(results.every(result=>!!result.turnProgress)).toBe(true);
  expect(results.some(result=>((result.turnProgress as {retainedKnowledge:{complete:unknown[]}}).retainedKnowledge.complete.length>0))).toBe(true);

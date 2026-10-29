@@ -1,7 +1,8 @@
 # Optional Svelte Flow UI
 
-This package is a specialist presentation dependency, independent of Studio,
-`@victframework/ui`, and application execution. It exports the pinned upstream
+This package is a specialist presentation dependency independent of Studio and
+application execution. Canonical composition depends on `ui-svelte` and `ui`;
+neither package depends on flow. It exports the pinned upstream
 Svelte Flow API: SvelteFlow, SvelteFlowProvider, Background, Controls,
 ControlButton, MiniMap, Handle, Panel, custom node/edge types, connection
 callbacks, useSvelteFlow, addEdge and path/layout utilities. `FlowCanvas` adds
@@ -104,6 +105,26 @@ state isolation, chosen operations/history and JSON roundtrip. They are not
 actual-agent, painted-wire, pointer-gesture or device evidence.
 
 ## Graph compatibility and reusable mechanics
+
+New typed composition pins `vict.flow.workspace@2`, `vict.flow.viewport@2` and
+`vict.flow.port@2`. Graph `@2` families declare `parameters: {key: {type, default,
+label?}}` using canonical VICT value types. A normal slider therefore binds a
+`numberList` parameter directly; no graph-specific control conversion is needed.
+Use `GraphWorkspaceV2`, `GraphSessionV2` and `applyGraphOperationsV2` in code hosts.
+The original workspace and unpinned identities continue to mean graph `@1`.
+
+Exact document and operation schemas are exported and discoverable in Studio
+through `registry: "dataContracts"` and keys `vict.flow-graph@2` /
+`vict.flow-operations@2`. Component contract pages link hash-labelled data
+contracts; complete schemas have independent lossless pages. Schema shape is not
+permission to execute effects, and domain/topology validation still applies.
+
+`migrateGraphV1ToV2` is explicit. It reports constraints/presentation metadata that
+cannot be represented and requires acknowledgement rather than silently dropping
+them. A legacy scalar slider stays scalar; its parameter type and authored body
+bindings must be deliberately changed together. No automatic migration occurs.
+Command `vict.flow-command@1` remains the retained graph `@1` protocol; typed hosts
+use the explicit `@2` operation/session APIs rather than passing new graphs to it.
 
 The rejected bundled `GraphEditor` interface and its new-authoring recipe have
 been removed. `GraphSurface` preserves the graph canvas, node fields, typed

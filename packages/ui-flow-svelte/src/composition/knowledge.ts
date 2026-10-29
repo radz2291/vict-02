@@ -1,7 +1,10 @@
 import type { UiAuthoringRegistration } from '@victframework/ui';
-import { graphWorkspaceDescriptor,graphViewportDescriptor,graphPortDescriptor } from './descriptors.js';
+import { graphWorkspaceDescriptor,graphViewportDescriptor,graphPortDescriptor,graphWorkspaceDescriptorV2,graphViewportDescriptorV2,graphPortDescriptorV2 } from './descriptors.js';
+import {graphDocumentSchemaV1,graphDocumentSchemaV2,graphOperationsSchemaV1,graphOperationsSchemaV2,graphDataExamples} from '../editor/graph-schemas.js';
+const dataV1=[{id:'vict.flow-graph',revision:'1',schema:{...graphDocumentSchemaV1},examples:[graphDataExamples.v1]},{id:'vict.flow-operations',revision:'1',schema:{...graphOperationsSchemaV1}}];
+const dataV2=[{id:'vict.flow-graph',revision:'2',schema:{...graphDocumentSchemaV2},examples:[graphDataExamples.v2,graphDataExamples.typedParameters]},{id:'vict.flow-operations',revision:'2',schema:{...graphOperationsSchemaV2}}];
 export const graphCompositionRegistrations:readonly UiAuthoringRegistration[]=[
-  {descriptor:graphWorkspaceDescriptor,label:'Composable graph workspace',family:'flow',category:'graph',purpose:'App-owned layout and canonical VICT node bodies with scoped parameters and declared local intents.',eligibility:{kind:'standalone'},
+  {descriptor:graphWorkspaceDescriptor,label:'Composable graph workspace (graph 1 compatibility)',family:'flow',category:'graph',purpose:'App-owned layout and canonical VICT node bodies for retained graph 1 fields.',eligibility:{kind:'standalone'},dataContracts:dataV1,
     guidance:[
       'This is a graph state/context owner, not a complete editor application. Insert ordinary app layout in scoped content; put vict.flow.viewport anywhere in that layout. There is no toolbar, inspector or default node form.',
       'graph is validated vict.flow-graph@1 JSON (same public model/operations as legacy graphs). Bind graph and graphChange to one declared string state for canonical persistence/history. Graph connections do not execute providers, tools or workflows.',
@@ -20,4 +23,20 @@ export const graphCompositionRegistrations:readonly UiAuthoringRegistration[]=[
   {descriptor:graphPortDescriptor,label:'Graph port anchor',family:'flow',category:'graph-part',purpose:'An exact typed graph port placed beside an authored field or in any chosen node row.',eligibility:{kind:'part'},dependencies:[{id:'vict.flow.workspace',revision:'1'}],
     rules:[{kind:'ancestorSlot',placements:[{definitionId:'vict.flow.workspace',revision:'1',slotName:'body'}]}],
     guidance:['Place inside workspace.body. id matches semantic graph port ID; optional content holds ordinary VICT controls/content. Dynamic missing ports show a diagnostic instead of a fabricated handle.']},
+];
+const workspaceV1=graphCompositionRegistrations[0]!;
+/** No editor application seed. Data grammar and canonical composition are independent. */
+export const graphCompositionRegistrationsV2:readonly UiAuthoringRegistration[]=[
+  {...workspaceV1,descriptor:graphWorkspaceDescriptorV2,label:'Composable graph workspace',purpose:'App-owned graph layout and canonical node bodies with project-defined typed parameters.',dataContracts:dataV2,
+    guidance:[
+      'Use this exact workspace@2 for new typed composition. graph accepts vict.flow-graph@2 only; @1 remains strict and is never migrated implicitly.',
+      'Read registry dataContracts with key vict.flow-graph@2 and vict.flow-operations@2 for exact losslessly paged data/operation grammar and examples. These are data contracts, not component identities or recipes. Semantic cross-reference, type, capacity, cycle and application-domain validation remains authoritative.',
+      ...workspaceV1.guidance!.filter(text=>!text.startsWith('graph is validated')&&!text.startsWith('Declare graph parameter keys')&&!text.startsWith('Use public graph operations')),
+      'Use applyGraphOperationsV2 / GraphSessionV2 in code consumers, or exact graph2 operations through content operation:string and Studio editGraph. Family definitions, parameter changes, topology and history are validated atomically at expectedRevision; operations never execute a backend. Read the versioned operation data contract instead of probing shapes.',
+      'nodeTypes[].parameters maps each project-defined key to {type,default,label?}. type is a canonical VICT value type (string,number,boolean,stringList,numberList,isoDate,isoTime), independent of which normal component edits it. Declare matching controlled body scope.state. A write applies setParameter to this node. No control-specific value conversion occurs. Parameter type/default and body state declaration must agree; unbound UI state stays private per occurrence.',
+      'Use vict.flow.viewport@2 in content and vict.flow.port@2 in body. Exact semantic port IDs remain independent of parameters; position them alongside any authored field or footer. Ordinary newly registered VICT controls require no flow allowlist or flow package edits; their normal placement/context requirements still apply.',
+      'Migration from graph@1 is explicit through migrateGraphV1ToV2. Scalar slider values remain scalar; changing to a numberList parameter also requires deliberate body binding/state changes. Unrepresentable legacy constraints and presentation metadata are reported and require explicit acknowledgement; no automatic migration is performed by Studio or the renderer.',
+    ]},
+  {descriptor:graphViewportDescriptorV2,label:'Graph viewport',family:'flow',category:'graph-part',purpose:'Application-placed canvas geometry for a typed workspace.',eligibility:{kind:'part'},dependencies:[{id:'vict.flow.workspace',revision:'2'}],rules:[{kind:'ancestorSlot',placements:[{definitionId:'vict.flow.workspace',revision:'2',slotName:'content'}]}],guidance:graphCompositionRegistrations[1]!.guidance},
+  {descriptor:graphPortDescriptorV2,label:'Graph port anchor',family:'flow',category:'graph-part',purpose:'An app-positioned semantic port in a typed node body.',eligibility:{kind:'part'},dependencies:[{id:'vict.flow.workspace',revision:'2'}],rules:[{kind:'ancestorSlot',placements:[{definitionId:'vict.flow.workspace',revision:'2',slotName:'body'}]}],guidance:graphCompositionRegistrations[2]!.guidance},
 ];

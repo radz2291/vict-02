@@ -63,8 +63,12 @@ describe('Studio composes existing real pinned Mastra executor (offline model; n
   it('fits the frozen provider presentation bounds without dropping expanded recipes', () => {
     expect(() => capturePresentationSchema(editPresentation, 'expanded Studio edit')).not.toThrow();
     expect(() => capturePresentationSchema(agentReadPresentation, 'Studio read')).not.toThrow();
-    expect(editPresentation.properties.operations.items.properties.recipe.pattern.length).toBeGreaterThan(2048);
-    const pattern = new RegExp(editPresentation.properties.operations.items.properties.recipe.pattern);
+    const editBytes=Buffer.byteLength(JSON.stringify(editPresentation),'utf8');
+    console.info(`Studio edit presentation: ${editBytes} bytes`);
+    expect(editBytes).toBeLessThanOrEqual(32768);
+    const recipePattern=(editPresentation.$defs.add.properties.recipe as {pattern:string}).pattern;
+    expect(recipePattern.length).toBeGreaterThan(2048);
+    const pattern = new RegExp(recipePattern);
     for (const recipe of screenRecipes) expect(pattern.test(recipe.id), recipe.id).toBe(true);
     expect(pattern.test('unregistered')).toBe(false);
     expect(pattern.test('dropdown-menuXitem')).toBe(false);

@@ -1,3 +1,4 @@
+import {captureInputValidationFeedbackPolicy,inputValidationFeedback,type InputValidationFeedbackResolver,type InputValidationFeedbackPolicy} from './input-validation-feedback.js';
 import { createTool } from '@mastra/core/tools';
 import { createHash, randomUUID } from 'node:crypto';
 import { AsyncLocalStorage } from 'node:async_hooks';
@@ -630,6 +631,8 @@ export type CapabilityInvoker = (
 
 /** The durable ports the bridge drives (neutral runtime/control ports). */
 export interface CapabilityBridgeDeps {
+  /** Optional static per-capability repair feedback; never invocation evidence. */
+  readonly inputValidationFeedback?: InputValidationFeedbackResolver;
   /** Resolve pinned capability definitions (immutable registration). */
   readonly resolveCapability: CapabilityResolver;
   /** The capability invocation boundary (authority-gated). */
@@ -919,6 +922,9 @@ export function bridgeCapabilityToolToMastra(
 ): unknown {
   const capabilityId = definition.id;
   const capabilityRevision = definition.revision;
+  let validationFeedback:InputValidationFeedbackPolicy|undefined;
+  try{validationFeedback=captureInputValidationFeedbackPolicy(deps.inputValidationFeedback?.(capabilityId,capabilityRevision));}catch{/* Trusted formatter configuration also fails closed without echoing errors. */}
+  const validationExecution=new AsyncLocalStorage<{rejection?:string;entered:boolean;settled:boolean}>();
   const effect = definition.effect as EffectClass;
   // VICT-M-1: the effective policy resolves the exact host quiet-write
   // entry (if any) BEFORE the approval gate exists; with no host policy
@@ -977,7 +983,7 @@ export function bridgeCapabilityToolToMastra(
   // shape, are rejected with ZERO effect BEFORE upstream preprocessing can
   // silently drop or act on them. `Contract.parse` remains the sole
   // authority; the guard only fails closed earlier.
-  return attachRawToolArgumentGuard(
+  const tool=attachRawToolArgumentGuard(
     createToolLoose({
       id: capabilityId,
       // Bounded, capability-declaration-derived metadata — never authority.
@@ -989,6 +995,8 @@ export function bridgeCapabilityToolToMastra(
         inputContract,
         capturedInputSchema,
         capturedOutputSchema,
+        validationFeedback,
+        message=>{const current=validationExecution.getStore();if(current&&!current.entered&&!current.settled)current.rejection=message;},
       ),
       // Audit-remediation O-1 cleanup: the captured OUTPUT schema is exposed
       // on the REAL outputSchema wrapper exactly as the frozen §3.3(4)
@@ -1009,6 +1017,7 @@ export function bridgeCapabilityToolToMastra(
           agent?: { toolCallId?: unknown };
         },
       ): Promise<unknown> => {
+        const validating=validationExecution.getStore();if(validating)validating.entered=true;
         // ---- 0. Turn scope (authenticated actor + turn identity) -----------
         const turn = readTurnScope();
         if (turn === undefined) {
@@ -1262,6 +1271,21 @@ export function bridgeCapabilityToolToMastra(
       },
     }),
   );
+  if(validationFeedback&&tool&&typeof tool==='object'){
+    const target=tool as {execute?:(...args:unknown[])=>unknown},execute=target.execute;
+    if(typeof execute==='function')target.execute=(...args:unknown[])=>validationExecution.run({entered:false,settled:false},async()=>{
+      const current=validationExecution.getStore()!;
+      try{
+        const result=await execute(...args);
+        // The upstream Tool wrapper appends raw provided arguments to its
+        // validation error. Only this execution's confirmed pre-invocation
+        // rejection is replaced; capability outcomes are never rewritten.
+        if(current.rejection&&!current.entered)return {error:true,message:current.rejection};
+        return result;
+      }catch(error){if(current.rejection&&!current.entered)return {error:true,message:current.rejection};throw error;}finally{current.settled=true;}
+    });
+  }
+  return tool;
 }
 
 /**
@@ -1278,6 +1302,8 @@ function standardSchemaFromContract(
   contract: { parse: (value: unknown) => unknown } | undefined,
   descriptiveInputSchema: unknown,
   descriptiveOutputSchema: unknown,
+  feedbackPolicy?: InputValidationFeedbackPolicy,
+  rejected?: (message:string)=>void,
 ): unknown {
   return {
     '~standard': {
@@ -1300,18 +1326,16 @@ function standardSchemaFromContract(
           if (contract === undefined) {
             return { value } as const;
           }
-          const result = contract.parse(value) as {
-            ok: boolean;
-            value?: unknown;
-            issues?: unknown;
-          };
-          if (result.ok) {
-            return { value: result.value } as const;
-          }
-          return { issues: [{ message: 'vict-contract-rejected' }] } as const;
+          const result = captureControlRecord(contract.parse(value));
+          const own=(key:string)=>{if(result.kind!=='captured')return undefined;const field=result.fields.get(key);return field?.kind==='data'?field.value:undefined;};
+          if (own('ok')===true) return { value: own('value') } as const;
+          const feedback=own('ok')===false?inputValidationFeedback(own('issues'),feedbackPolicy):undefined;
+          const message=feedback??'vict-contract-rejected';rejected?.(message);
+          return { issues: [{ message }] } as const;
         } catch {
           // A throwing contract parser is untrusted: its message and any
           // nested cause are never retained or surfaced.
+          rejected?.('vict-contract-rejected');
           return { issues: [{ message: 'vict-contract-rejected' }] } as const;
         }
       },

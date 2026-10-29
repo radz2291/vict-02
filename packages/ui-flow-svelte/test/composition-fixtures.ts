@@ -1,7 +1,24 @@
 import type { UiDocument, UiExpression, UiSlotScope } from '@victframework/ui';
 import { serializeGraph, type GraphDocument } from '../src/editor/model.js';
+import {migrateGraphV1ToV2} from '../src/editor/model-v2.js';
 
 type Node = UiDocument['nodes'][string];
+/** Supporting fixture only, never actual-agent authoring evidence. */
+export function typedCompositionDocument(kind:'media'|'research',id=`typed-${kind}`):UiDocument {
+  const source=compositionDocument(kind,id);
+  const migrated=migrateGraphV1ToV2(compositionGraph(kind),{acknowledgeUnmappedConstraints:true});
+  if(!migrated.ok)throw Error(JSON.stringify(migrated));
+  for(const node of Object.values(source.nodes))if(node.kind==='component'&&['vict.flow.workspace','vict.flow.viewport','vict.flow.port'].includes(node.definitionId))node.revision='2';
+  if(kind==='media'){
+    migrated.graph.nodeTypes.find(type=>type.id==='settings')!.parameters.weights={type:'numberList',default:[24]};
+    const workspace=source.nodes.workspace;if(workspace.kind!=='component')throw Error('Fixture workspace');
+    workspace.slots!.body!.scope!.state!.weights={key:'weights',type:'numberList',initial:[0],controlled:true};
+    const card=source.nodes['settings-card'];if(card.kind!=='element')throw Error('Fixture settings');card.children.push('weights-slider');
+    source.nodes['weights-slider']={kind:'component',id:'weights-slider',definitionId:'vict.catalog.slider',revision:'1',props:{label:{type:'literal',value:'Node weights'},value:{type:'ref',path:'state.weights'},min:{type:'literal',value:0},max:{type:'literal',value:100}},outputs:{valueChange:{setState:{key:'weights'}}},classes:['nodrag','nopan','nowheel']};
+  }
+  source.localState.graph={key:'graph',type:'string',initial:JSON.stringify(migrated.graph)};
+  return source;
+}
 const literal = (value: string | number | boolean): UiExpression => ({ type: 'literal', value });
 const ref = (path: string): UiExpression => ({ type: 'ref', path });
 const family = (name: string): UiExpression => ({ type: 'compare', op: 'eq', left: ref('prop.nodeType'), right: literal(name) });

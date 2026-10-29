@@ -1,6 +1,6 @@
 /** Validates a local one-screen export without mutating browser storage or owner sessions.
  * Media is decoded only into a disposable in-memory store, then returned for a fresh namespace. */
-import type { UiDocument } from '@victframework/ui';
+import type { UiDocument, UiNode, UiSlotScope } from '@victframework/ui';
 import {
   importMediaArchive,
   memoryAssetStore,
@@ -59,9 +59,12 @@ function managedReferences(document: UiDocument): {
       throw Error('The source contains an invalid managed asset reference.');
     references.add(value);
   };
+  type SourceBinding = unknown[] | {expression:unknown;scope:LexicalScope;location:string} | undefined;
+  type LexicalScope = { state: Record<string, SourceBinding>; props: Record<string, SourceBinding> };
+  const documentScope: LexicalScope = {state:Object.fromEntries(Object.entries(document.localState).map(([key,decl])=>[key,[decl.initial]])),props:{}};
   // Traverse possible outputs, never evaluate predicates or registered operations.
   // Only references reached from media-bearing props inspect saved state/tokens.
-  const expressionValues = (value: unknown, location: string, depth = 0): unknown[] => {
+  const expressionValues = (value: unknown, location: string, scope: LexicalScope = documentScope, depth = 0): unknown[] => {
     if (++visited > 16_384 || depth > 64) {
       unverified.add(`${location} (inventory bound)`);
       return [];
@@ -69,12 +72,14 @@ function managedReferences(document: UiDocument): {
     if (!object(value)) return [value];
     if (value.type === 'literal') return [value.value];
     if (value.type === 'ref' && typeof value.path === 'string') {
-      if (
-        value.path.startsWith('state.') &&
-        Object.hasOwn(document.localState, value.path.slice(6))
-      ) {
-        const initial = document.localState[value.path.slice(6)]!.initial;
-        return Array.isArray(initial) ? [...initial] : [initial];
+      for (const [prefix, values] of [['state.', scope.state], ['prop.', scope.props]] as const) {
+        if (!value.path.startsWith(prefix)) continue;
+        const key = value.path.slice(prefix.length);
+        const binding=values[key];
+        if (Object.hasOwn(values, key) && binding !== undefined)
+          return Array.isArray(binding)?binding:expressionValues(binding.expression,binding.location,binding.scope,depth+1);
+        unverified.add(location);
+        return [];
       }
       if (value.path.startsWith('token.') && Object.hasOwn(document.tokens, value.path.slice(6)))
         return [document.tokens[value.path.slice(6)]!.value];
@@ -83,15 +88,15 @@ function managedReferences(document: UiDocument): {
     }
     if (value.type === 'conditionalValue')
       return [
-        ...expressionValues(value.then, location, depth + 1),
-        ...expressionValues(value.otherwise, location, depth + 1),
+        ...expressionValues(value.then, location, scope, depth + 1),
+        ...expressionValues(value.otherwise, location, scope, depth + 1),
       ];
     if (value.type === 'op' && Array.isArray(value.args)) {
       unverified.add(location);
       // Exact managed literals remain dependencies. Prefix fragments such as
       // 'asset:sha256:' are computed input, not malformed complete references.
       return value.args
-        .flatMap((arg) => expressionValues(arg, location, depth + 1))
+        .flatMap((arg) => expressionValues(arg, location, scope, depth + 1))
         .filter(
           (candidate) =>
             typeof candidate !== 'string' ||
@@ -102,19 +107,79 @@ function managedReferences(document: UiDocument): {
     unverified.add(location);
     return [];
   };
-  for (const node of Object.values(document.nodes)) {
+  // Scope declarations are source ownership, not a report that a branch rendered.
+  // Enumerate all branches/families without evaluating app predicates or UI controls.
+  const scopes = new Map<string, LexicalScope[]>();
+  let traversal = 0;
+  const scopedFill = (declaration: UiSlotScope, owner: Extract<UiNode,{kind:'component'}>, name: string, parent: LexicalScope): LexicalScope => {
+    const state: LexicalScope['state'] = {};
+    const workspaceV2 = owner.definitionId === 'vict.flow.workspace' && owner.revision === '2' && name === 'body';
+    let models: Record<string,unknown>[] | undefined;
+    if (workspaceV2) {
+      const serialized = expressionValues(owner.props?.graph, `${owner.id}.graph`, parent);
+      models = [];
+      for (const candidate of serialized) {
+        try {
+          const model:unknown = typeof candidate === 'string' ? JSON.parse(candidate) : undefined;
+          if (!object(model) || model.schema !== 'vict.flow-graph@2' || !Array.isArray(model.nodeTypes) || !Array.isArray(model.nodes)) {models=undefined;break;}
+          models.push(model);
+        } catch {models=undefined;break;}
+      }
+      if (!serialized.length) models=undefined;
+    }
+    for (const [key,decl] of Object.entries(declaration.state??{})) {
+      if (!decl.controlled) {state[key]=[decl.initial];continue;}
+      // Generic unknown renderer-owned state must not masquerade as document state.
+      if (!workspaceV2 || !models) {state[key]=undefined;continue;}
+      const candidates:unknown[]=[decl.initial];
+      for (const model of models) {
+        const families = model.nodeTypes as unknown[];
+        for (const family of families) if(object(family)&&object(family.parameters)&&object(family.parameters[key])) candidates.push(family.parameters[key].default);
+        for (const member of model.nodes as unknown[]) if(object(member)&&object(member.values)&&Object.hasOwn(member.values,key)) candidates.push(member.values[key]);
+      }
+      state[key]=candidates;
+    }
+    // Frame props are renderer supplied. Their defaults do not prove all outputs.
+    return {state,props:Object.fromEntries(declaration.props.map(prop=>[prop.name,undefined]))};
+  };
+  const visit = (id:string, scope:LexicalScope, path:readonly string[]=[]):void => {
+    if (++traversal>16_384 || path.length>64 || path.includes(id)) {unverified.add(`${id} (source traversal bound)`);return;}
+    const node=document.nodes[id];if(!node)return;
+    const contexts=scopes.get(id)??[];if(contexts.includes(scope))return;contexts.push(scope);scopes.set(id,contexts);
+    const next=[...path,id];
+    if(node.kind==='element'||node.kind==='portal')node.children.forEach(child=>visit(child,scope,next));
+    else if(node.kind==='repeat')visit(node.templateRoot,scope,next);
+    else if(node.kind==='conditional')node.branches.forEach(branch=>branch.children.forEach(child=>visit(child,scope,next)));
+    else if(node.kind==='slot')node.fallback?.forEach(child=>visit(child,scope,next));
+    else if(node.kind==='component'){
+      for(const [name,fill] of Object.entries(node.slots??{})){
+        const childScope=fill.scope?scopedFill(fill.scope,node,name,scope):scope;
+        fill.children.forEach(child=>visit(child,childScope,next));
+      }
+      const definition=document.componentDefinitions[node.definitionId];
+      if(definition){
+        const props:LexicalScope['props']={};
+        for(const prop of definition.props??[])props[prop.name]=node.props?.[prop.name]===undefined?[prop.default]:{expression:node.props[prop.name],location:`${node.id}.${prop.name}`,scope};
+        visit(definition.root,{state:scope.state,props},next);
+      }
+    }
+  };
+  visit(document.root,documentScope);
+  // Retain dependency inventory of detached source, without treating it as live UI.
+  for(const id of Object.keys(document.nodes))if(!scopes.has(id))visit(id,documentScope);
+  for (const node of Object.values(document.nodes)) for(const scope of scopes.get(node.id)??[]) {
     if (node.kind === 'element' && node.tag === 'img')
-      expressionValues(node.attributes?.src, `${node.id}.src`).forEach(mediaReference);
+      expressionValues(node.attributes?.src, `${node.id}.src`, scope).forEach(mediaReference);
     if (node.kind !== 'component') continue;
     for (const key of ['source', 'src', 'poster', 'captions'])
-      expressionValues(node.props?.[key], `${node.id}.${key}`).forEach(mediaReference);
+      expressionValues(node.props?.[key], `${node.id}.${key}`, scope).forEach(mediaReference);
     if (node.definitionId === 'vict.pattern.carousel' &&
-      expressionValues(node.props?.images, `${node.id}.images`).some(value => value === true)) {
-      for (const value of expressionValues(node.props?.slides, `${node.id}.slides`))
+      expressionValues(node.props?.images, `${node.id}.images`, scope).some(value => value === true)) {
+      for (const value of expressionValues(node.props?.slides, `${node.id}.slides`, scope))
         (Array.isArray(value) ? value : [value]).forEach(mediaReference);
     }
     if (!['vict.flow.editor','vict.flow.workspace'].includes(node.definitionId)) continue;
-    for (const serialized of expressionValues(node.props?.graph, `${node.id}.graph`)) {
+    for (const serialized of expressionValues(node.props?.graph, `${node.id}.graph`, scope)) {
       if (typeof serialized !== 'string') continue;
       let model: unknown;
       try {

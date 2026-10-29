@@ -1,7 +1,7 @@
 /** Deterministic, disposable examples built through the same canonical recipe commands. */
 import { applyUiEdit, type UiDocument } from '@victframework/ui';
 import { insertRecipe, type CompositionFocus } from '@victframework/ui-editor';
-import { designerCatalogs, newScreen } from './application.js';
+import { designerCatalogs, newScreen,catalogDescriptors } from './application.js';
 import { screenRecipes } from './recipes.js';
 
 export const showcaseCatalog = screenRecipes.map(recipe => ({
@@ -34,7 +34,7 @@ export function createShowcaseFixture(recipeId: string): {
   }
   function insert(id: string, nodeId: string) {
     const entry = screenRecipes.find(candidate => candidate.id === id)!;
-    const draft = insertRecipe(`showcase-insert-${nodeId}`, entry, document, nodeId, { nodeId: parentId, slotName: parentSlot });
+    const draft = insertRecipe(`showcase-insert-${nodeId}`, entry, document, nodeId, { nodeId: parentId, slotName: parentSlot },catalogDescriptors);
     const result = applyUiEdit({ document, revision: 'fixture' }, { ...draft, expectedDocumentRevision: 'fixture' }, designerCatalogs);
     if (!result.ok) throw new Error(`Invalid showcase fixture ${id}: ${JSON.stringify(result.issues)}`);
     document = result.document;

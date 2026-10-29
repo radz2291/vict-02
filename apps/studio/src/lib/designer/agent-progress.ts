@@ -72,7 +72,23 @@ export function createContractKnowledge(){
   const bodies=new Map<string,{identity:string;digest:string;length:number;ranges:[number,number][]}>();
   const complete=(body:{length:number;ranges:[number,number][]})=>{let end=0;for(const [from,to] of [...body.ranges].sort((a,b)=>a[0]-b[0])){if(from>end)return false;end=Math.max(end,to);}return end>=body.length;};
   return {
-    retain(result:{ok?:unknown;items?:unknown}){if(result.ok===false||!Array.isArray(result.items))return;for(const raw of result.items){const item=raw as {id:string;revision:string;digest:string;bodyIdentity:string;contractJson?:string;offset?:number;totalCharacters?:number};if(typeof item.contractJson!=='string'||typeof item.offset!=='number'||typeof item.totalCharacters!=='number')continue;const key=`${item.id}@${item.revision}`;let body=bodies.get(key);if(!body||body.identity!==item.bodyIdentity){body={identity:item.bodyIdentity,digest:item.digest,length:item.totalCharacters,ranges:[]};bodies.set(key,body);}body.ranges.push([item.offset,item.offset+item.contractJson.length]);}},
+    retain(result:{ok?:unknown;registryReady?:unknown;items?:unknown}){
+      // A bundle can refuse one unknown identity while delivering valid pages for
+      // other installed contracts. Preserve each checked page, never a bundle-level
+      // success claim or an unresolved/invalidated item.
+      if(result.registryReady===false||!Array.isArray(result.items))return;
+      for(const raw of result.items){
+        if(!raw||typeof raw!=='object')continue;
+        const item=raw as {id?:unknown;revision?:unknown;digest?:unknown;bodyIdentity?:unknown;contractJson?:unknown;offset?:unknown;totalCharacters?:unknown;invalidated?:unknown};
+        if(typeof item.id!=='string'||!item.id||typeof item.revision!=='string'||!item.revision)continue;
+        const key=`${item.id}@${item.revision}`;
+        if(item.invalidated===true){bodies.delete(key);continue;}
+        if(typeof item.digest!=='string'||!item.digest||typeof item.bodyIdentity!=='string'||!item.bodyIdentity||typeof item.contractJson!=='string'||typeof item.offset!=='number'||!Number.isSafeInteger(item.offset)||item.offset<0||typeof item.totalCharacters!=='number'||!Number.isSafeInteger(item.totalCharacters)||item.totalCharacters<=0||item.offset+item.contractJson.length>item.totalCharacters)continue;
+        let body=bodies.get(key);
+        if(!body||body.identity!==item.bodyIdentity||body.digest!==item.digest||body.length!==item.totalCharacters){body={identity:item.bodyIdentity,digest:item.digest,length:item.totalCharacters,ranges:[]};bodies.set(key,body);}
+        body.ranges.push([item.offset,item.offset+item.contractJson.length]);
+      }
+    },
     reusable(digests:Record<string,string>={},identities?:Record<string,string>){return Object.fromEntries(Object.entries(digests).filter(([key,digest])=>{const body=bodies.get(key);return body&&body.digest===digest&&complete(body)&&(!identities?.[key]||identities[key]===body.identity);}));},
     snapshot(){return {scope:'Complete contract bodies delivered in this turn only; reuse still requires their content to remain available in model context. Source facts are never cached knowledge.',complete:[...bodies].filter(([,body])=>complete(body)).slice(0,30).map(([key,body])=>({key,digest:body.digest,bodyIdentity:body.identity})),partialCount:[...bodies.values()].filter(body=>!complete(body)).length};},
   };

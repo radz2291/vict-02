@@ -1,5 +1,8 @@
 /** Explicit pinned public export inventory. Export changes require a disposition review. */
 export const specialistPublicExports = [
+  'GraphWorkspaceV2',
+  './authoring:graphWorkspaceDescriptorV2','./authoring:graphViewportDescriptorV2','./authoring:graphPortDescriptorV2',
+  'GraphParameterV2','GraphNodeTypeV2','GraphNodeV2','GraphDocumentV2','GraphResultV2','GraphOperationV2','GraphOperationsResultV2','GraphPatchResultV2','GraphValidationErrorV2','emptyGraphV2','graphTypeV2','graphPortsV2','graphParameterValueV2','connectionIssueV2','validateGraphV2','parseGraphV2','serializeGraphV2','parseGraphOperationsV2','copyGraphSelectionV2','applyGraphOperationsV2','applyGraphPatchV2','GraphSessionV2','GraphMigrationNote','GraphMigrationResult','migrateGraphV1ToV2','GraphJsonSchema','legacyParameterValueTypes','graphDocumentSchemaV1','graphDocumentSchemaV2','graphClipboardSchemaV1','graphClipboardSchemaV2','graphOperationSchemasV1','graphOperationSchemasV2','graphOperationsSchemaV1','graphOperationsSchemaV2','graphDataExamples','graphStructuralProblems','GraphTopologyPort','GraphTopologyFamily','GraphTopologyNode','GraphTopologyEdge','GraphTopology','GraphTopologyIssue','portsForTopology','connectionIssueForTopology',
   './authoring:graphWorkspaceDescriptor','./authoring:graphViewportDescriptor','./authoring:graphPortDescriptor',
   'GraphWorkspace','GraphViewport','GraphPortAnchor','GRAPH_WORKSPACE','GRAPH_BODY','GraphWorkspaceContext','GraphBodyContext',
   'GraphCommand','GraphCommandParseResult','GraphCommandReceipt','GraphCommandResult','parseGraphCommand','applyGraphCommand',
