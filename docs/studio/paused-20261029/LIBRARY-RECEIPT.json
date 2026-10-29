@@ -1,0 +1,15 @@
+{
+  "status": "succeeded",
+  "operation": "create_library_file",
+  "library_file_id": "libfile_4887d9e702748191817749bf3572ebc0",
+  "file_id": "file_000000002da482118d88917fb012abef",
+  "file_name": "VICT-PAUSED-HANDOFF-20261029.md",
+  "path": "/VICT-PAUSED-HANDOFF-20261029.md",
+  "version": 0,
+  "size": 34321,
+  "mime": "text/markdown",
+  "type": "report",
+  "localIdentityMetadata": "not applied: Python os.setxattr unavailable on Windows",
+  "uploadedFiles": 1,
+  "screenshotsUploaded": 0
+}
