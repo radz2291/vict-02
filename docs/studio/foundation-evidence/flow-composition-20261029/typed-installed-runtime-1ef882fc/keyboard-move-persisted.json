@@ -1,0 +1,5 @@
+{
+  "sourceCandidate": "1ef882fcf6c5e6a660ba0ac20bf011689c9093c2",
+  "afterArrow": "z-index: 1000; transform: translate(5px, 0px); visibility: visible; touch-action: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);",
+  "afterCanonicalAction": "z-index: 1000; transform: translate(5px, 0px); visibility: visible; touch-action: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+}

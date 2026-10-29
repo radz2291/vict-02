@@ -81,3 +81,27 @@ contract. Exact presentation30765bytes and the offline executor fixture pass.
 Final flow and Studio checks have zero errors/five inherited warnings; UI and
 UI-editor builds pass. Independent source review found no blocker. These latest
 repairs still require production activation and live verification at this note.
+
+## Selected-edge reconnect geometry
+
+The1ef installed runtime verified keyboard and pointer persistence/history but
+exposed missing reconnect handles. Selected and pointer-clicked edges contained
+only their BaseEdge paths. The pinned upstream requires explicit reconnect
+anchors in a custom edge; a reconnectable flag alone does not render them.
+
+The bounded repair uses public BaseEdge/path/EdgeReconnectAnchor primitives,
+shown only for selected writable edges. These are pointer geometry, not fake
+keyboard buttons or a replacement editor panel. Applications can expose public
+operations through their chosen keyboard controls. Gesture ownership records
+source identity, revision and edge ID; capacity previews exclude the old edge,
+and final validation performs one canonical transaction while refusing the
+upstream duplicate mutation. New-connect previews cannot collide with a saved
+edge ID. Exact event pairing distinguishes a reconnect's paired start from a
+later fresh connection; Escape/end/unmount cancel owned state. Node groups now
+receive their canonical accessible labels without visual chrome.
+
+Seven focused model-backed/mounted checks pass, with zero flow type errors and
+five inherited warnings. Independent source challenge found no remaining blocker.
+Actual pointer reconnect still requires the newly activated candidate; no success
+is inferred from these tests. The direct authoring trial remains pending normal
+Studio sign-in, and no duplicate provider request has been sent.

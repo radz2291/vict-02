@@ -1,0 +1,168 @@
+Browser tab: 7, Title: "Foundation packed consumer", URL: "http://127.0.0.25:5626/foundation-flow-1ef882fc/index.html".
+1 AXWebArea Foundation packed consumer, URL: 127.0.0.25:5626/foundation-flow-1ef882fc/index.html
+	2 container app
+		3 heading Foundation packed consumer, Value: 1
+			4 text Foundation packed consumer
+		5 text Supporting authored fixture. No provider or interaction verification is claimed by its build.
+		6 container
+			7 text Packed public DocumentHost with explicit parts.
+			8 pop up button (collapsed) Description: Open packed drawer, ID: bits-c6, Secondary Actions: Expand
+			9 container Gallery
+				10 container Slides
+					11 container Description: 1 of 3, ID: c7-0
+						12 text One
+				13 button (disabled) Previous slide
+				14 text 1 / 3
+				15 button Next slide
+				16 container Choose slide
+					17 button Go to slide 1
+					18 button Go to slide 2
+					19 button Go to slide 3
+			20 image Search icon
+			21 image Packed vector
+			22 container Registered packed graph
+				23 container
+					24 container
+						25 image
+						26 container Editable processor
+							27 container
+								28 text Editable processor Processor
+								29 button (expanded) Description: Collapse Editable processor, Secondary Actions: Collapse
+							30 container
+								31 button input Text in: text
+								32 button Trace Editable processor Text in connections
+								33 text text
+							34 container
+								35 button output Text out: text
+								36 button Trace Editable processor Text out connections
+								37 text text
+							38 container
+								39 text Prompt
+								40 text entry area (settable) Prompt, Value: Packed consumer
+								41 container Enabled
+									42 switch Description: Enabled, Value: 1, ID: bits-c13
+									43 text Enabled
+								44 text Amount
+								45 stepper (settable, integer) Amount, Value: 2
+								46 text Mode
+								47 pop up button (collapsed) Description: Mode, ID: bits-c15, Secondary Actions: Expand
+					48 link Description: Svelte Flow attribution, Value: svelteflow.dev/?utm_source=attribution
+					49 image
+			50 pop up button (collapsed) Description: Model: One, ID: c8-model-trigger, Secondary Actions: Expand
+			51 button Owned tooltip trigger
+		52 container Packed rich graph
+			53 container
+				54 container
+					55 image
+					56 container Editable processor
+						57 container
+							58 text Editable processor Processor
+							59 button (expanded) Description: Collapse Editable processor, Secondary Actions: Collapse
+						60 container
+							61 button input Text in: text
+							62 button Trace Editable processor Text in connections
+							63 text text
+						64 container
+							65 button output Text out: text
+							66 button Trace Editable processor Text out connections
+							67 text text
+						68 container
+							69 text Prompt
+							70 text entry area (settable) Prompt, Value: Packed consumer
+							71 container Enabled
+								72 switch Description: Enabled, Value: 1, ID: bits-c16
+								73 text Enabled
+							74 text Amount
+							75 stepper (settable, integer) Amount, Value: 2
+							76 text Mode
+							77 pop up button (collapsed) Description: Mode, ID: bits-c18, Secondary Actions: Expand
+				78 link Description: Svelte Flow attribution, Value: svelteflow.dev/?utm_source=attribution
+				79 image
+		80 heading typed-media, Value: 2
+			81 text typed-media
+		82 container Shot planning
+			83 container Storyboard workspace
+				84 text Plan a sequence
+				85 container App chosen actions
+					86 button Name opening shot
+					87 button Undo local change
+				88 container Authored graph canvas
+					89 container
+						90 container
+							91 image
+							92 image
+								93 container Edge from prompt-a to sampler
+							94 image
+								95 container Edge from sampler to preview
+							96 container Opening shot
+								97 text Opening shot
+								98 container
+									99 button output Prompt: text
+									100 text entry area (settable) Description: Shot prompt, Value: Sunrise over the harbor
+								101 button Request shot review
+							102 container Closing shot
+								103 text Closing shot
+								104 container
+									105 button output Prompt: text
+									106 text entry area (settable) Description: Shot prompt, Value: Dusk on the mountain
+								107 button Request shot review
+							108 container Draft sampler
+								109 text Draft sampler
+								110 container
+									111 button input Prompt: text
+									112 text Prompt input
+								113 container
+									114 button output Frame: image
+									115 stepper (settable, integer) Description: Sampling steps, Value: 24
+								116 text Node weights
+								117 container Description: Node weights, ID: bits-c19
+									118 slider Description: Node weights 1, Value: 24, ID: bits-c21
+							119 container Review frame
+								120 text Review frame
+								121 container
+									122 button input Frame: image
+									123 switch Description: Show preview, Value: 1, ID: bits-c24
+									124 text Show preview
+								125 text Frame awaiting local review
+						126 link Description: Svelte Flow attribution, Value: svelteflow.dev/?utm_source=attribution
+						127 image
+		128 heading typed-research, Value: 2
+			129 text typed-research
+		130 container Evidence review
+			131 container Research notebook
+				132 text Check evidence before approving
+				133 container Authored graph canvas
+					134 container
+						135 container
+							136 image
+							178 image
+								179 container Edge from source-a to gate-a
+							180 container Named source
+								181 text Named source
+								182 text Keep the source address with the evidence.
+								183 text field (settable) Description: Evidence URL, Value: https://example.com/report
+								184 container
+									185 button output Evidence: evidence
+									186 text Send evidence to a review gate
+							146 container Editorial review
+								147 text Editorial review
+								148 container
+									149 button input Evidence: evidence
+									150 switch Description: Evidence reviewed, Value: 0, ID: bits-c26
+									151 text Evidence reviewed
+								152 stepper (settable, integer) Description: Confidence score, Value: 70
+								153 container
+									154 switch Description: Show review notes, Value: 0, ID: bits-c22
+									155 text Show review notes
+								156 container
+									157 button output Decision: decision
+									158 text Editorial decision
+								159 button Request editorial signoff
+						160 link Description: Svelte Flow attribution, Value: svelteflow.dev/?utm_source=attribution
+						177 text Moved selected node right. New position, x: 0, y: 0
+						161 image
+				162 container App chosen actions
+					163 button Name primary source
+					164 button Undo local change
+
+The focused UI element is 163 button Name primary source

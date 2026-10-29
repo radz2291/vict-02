@@ -1,0 +1,16 @@
+{
+  "sourceCandidate": "1ef882fcf6c5e6a660ba0ac20bf011689c9093c2",
+  "edge": {
+    "children": [
+      {
+        "className": "svelte-flow__edge-path",
+        "tag": "path"
+      },
+      {
+        "className": "svelte-flow__edge-interaction",
+        "tag": "path"
+      }
+    ],
+    "className": "svelte-flow__edge selected selectable"
+  }
+}

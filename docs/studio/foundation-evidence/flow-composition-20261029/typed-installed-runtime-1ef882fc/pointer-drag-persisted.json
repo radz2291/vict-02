@@ -1,0 +1,4 @@
+{
+  "afterDrag": "z-index: 1000; transform: translate(56.1943px, 313.206px); visibility: visible; touch-action: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);",
+  "afterCanonicalAction": "z-index: 1000; transform: translate(56.1943px, 313.206px); visibility: visible; touch-action: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+}
