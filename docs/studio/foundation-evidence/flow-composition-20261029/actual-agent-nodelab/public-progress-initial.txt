@@ -1,0 +1,56 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "empty"
+  - generic: ○ New screen
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- banner:
+  - strong: Chat
+  - button "Hide Chat":
+- complementary "Chat":
+  - region "Conversation":
+    - region "Messages — Message":
+      - log:
+        - generic: You
+        - generic: "Build a Langflow/ComfyUI-inspired node-based video planning app called NodeLab on this empty screen. I want genuinely different node bodies: a multiline prompt editor; model selection and numeric/slider settings; media input/reference with a preview; a branching/processing node; and output/status. Put usable inputs inside the nodes with field-associated typed connections, different suitable sizes/layouts, and a canvas where I can move and connect nodes. Use normal reusable VICT components and consistent theme. Choose a few compact interactions appropriate for this app; do not add a compulsory generic toolbar, inspector, connection form or clipboard panel. Make local parameter edits and meaningful local actions work and persist. Clearly label any simulated processing; do not call any image/video/generation backend or other paid service. Observe the rendered app and exercise whatever behavior your supported tools actually allow. Report exactly what worked, failed or remains unsupported/unverified, tied to receipts/captures. Do not claim real video execution or interactions you could not test."
+        - button "Copy message":
+        - generic: Assistant
+        - status: Working. Public notes and tool receipts are available in details.
+        - button "Public activity and tool details" [expanded]:
+          - text: Public activity and tool details
+        - generic "Conversation timeline"
+    - button "Scroll to latest message":
+      - generic: Scroll to end
+    - textbox "Message":
+      - /placeholder: Ask for a change…
+    - button "Stop":
+      - generic: Stop
+    - status
+  - status "Agent is working on your request…":
+    - generic: Working…
+  - button "Chat details" [active]: ···
+- separator "Chat width"
+- main:
+  - button "Toggle Chat drawer" [expanded]:
+  - group "Workspace mode":
+    - button "Design" [pressed]
+    - button "Interact"
+    - button "Structure"
+  - button "Toggle Document and Selection drawer":
+  - iframe:
+    - generic "Screen canvas":
+      - main "empty"
+  - generic: ＋
+  - heading "What will you make?" [level=1]
+  - paragraph: Select this screen to open its tools, then choose Insert.
+- contentinfo:
+  - status: New screen · not saved yet.
+- generic: Designer — VICT Studio

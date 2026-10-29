@@ -1,0 +1,45 @@
+{
+  "schema": "vict.flow.actual-agent-trial@1",
+  "sourceCandidate": "2149bd39ae9f7f26fa3a984dad726ae3b66c92e8",
+  "checkpoint": "985ac60de629720b71463f594b1d1bd88d2013e5",
+  "authenticated": true,
+  "requestSent": true,
+  "tab": "6",
+  "url": "http://127.0.0.25:5626/design",
+  "capturedUtc": "2026-10-29T03:51:04.065Z",
+  "status": "first run failed; later continuation cancelled through ordinary Stop; no provider request active",
+  "firstTurn": {
+    "id": "7f4b58a2-94ad-433e-b4ff-517ad0bf52e3",
+    "runId": "2925225e-afac-485f-b8bd-4a466e1337c5",
+    "code": "STUDIO_AGENT_PROVIDER_FAILED",
+    "elapsedMs": 1445100,
+    "toolCalls": 21,
+    "refusedCalls": 3,
+    "confirmedEdits": 2,
+    "modelRequests": 9,
+    "imageRequests": 0,
+    "inputTokens": 305361,
+    "outputTokens": 32309,
+    "finalSourceRevision": "r1#2",
+    "result": "Header, theme and empty graph state only; nine source nodes, zero graph families/nodes/edges. No graph behavior demonstrated."
+  },
+  "continuation": {
+    "id": "529f5712-9791-4cc8-b4d2-71f0e2b22681",
+    "request": "continue",
+    "requestSentByImplementationAgent": false,
+    "status": "cancelled",
+    "toolCalls": 12,
+    "refusedCalls": 1,
+    "confirmedEdits": 0,
+    "elapsedMs": 439300,
+    "evidenceLimit": "Browser partial measurements; final server completion receipt not received. Ordinary Stop confirmed no further edits."
+  },
+  "handBuiltSource": false,
+  "independentInteractions": "not started",
+  "limitations": [
+    "Some reads refused before validated invocation.",
+    "A mixed contract bundle was partial/refused; valid returned pages were not retained by aggregate knowledge tracking.",
+    "Retained original-page lookup subsequently reported Evidence expired. Available public conversation, progress, source, receipts and measurements are preserved; no tool was replayed.",
+    "Rendered result bodies can be UI-truncated; retained public transcript does not claim unseen raw content."
+  ]
+}
