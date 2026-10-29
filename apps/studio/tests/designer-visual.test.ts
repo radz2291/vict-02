@@ -87,7 +87,7 @@ describe('bounded visual observation boundary', () => {
         interactionVerified:false,validation:'same-source-preview-viewport-and-image-bytes-after-inference'});
       expect(result).not.toHaveProperty('observation');expect(captures).toBe(2);
       expect(prompt).toContain('does NOT establish');expect(prompt).toContain('not evidence that mentioned elements exist');
-      expect(observer.capability.revision).toBe('3');expect(observer.capability.output.revision).toBe('2');
+      expect(observer.capability.revision).toBe('3');expect(observer.capability.output).toBeDefined();expect(observer.capability.output?.revision).toBe('2');
     }finally{observer.dispose();}
   });
   it.each([

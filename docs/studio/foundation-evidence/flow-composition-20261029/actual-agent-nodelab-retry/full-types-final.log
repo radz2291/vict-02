@@ -1,0 +1,14 @@
+Command: npm run check --workspace=vict-studio
+Working directory: C:\Users\RZ1\AppData\Local\Temp\vict-authoring-foundation
+Execution sessions: 15450 and final exact-source 29496
+
+> vict-studio@0.1.0 check
+> svelte-kit sync && tsc --noEmit
+
+Result: both exited with code 0. No TypeScript errors emitted.
+The second check includes the corrected response-boundary fixture assertions.
+The preceding failed full check remains retained separately.
+Corrections were test-only: preserve AJV runtime options with precise typing;
+runtime-narrow the recipe schema; type the Svelte module-script named export;
+assert optional output presence; construct readonly graph fixtures immutably.
+No product behavior or assertion requirement was relaxed.

@@ -66,7 +66,10 @@ describe('Studio composes existing real pinned Mastra executor (offline model; n
     const editBytes=Buffer.byteLength(JSON.stringify(editPresentation),'utf8');
     console.info(`Studio edit presentation: ${editBytes} bytes`);
     expect(editBytes).toBeLessThanOrEqual(32768);
-    const recipePattern=(editPresentation.$defs.add.properties.recipe as {pattern:string}).pattern;
+    const addProperties:Record<string,unknown>=editPresentation.$defs.add.properties;
+    const recipeSchema=addProperties.recipe;
+    if(!recipeSchema||typeof recipeSchema!=='object'||!('pattern' in recipeSchema)||typeof recipeSchema.pattern!=='string')throw Error('Add operation must declare its exact recipe pattern.');
+    const recipePattern=recipeSchema.pattern;
     expect(recipePattern.length).toBeGreaterThan(2048);
     const pattern = new RegExp(recipePattern);
     for (const recipe of screenRecipes) expect(pattern.test(recipe.id), recipe.id).toBe(true);

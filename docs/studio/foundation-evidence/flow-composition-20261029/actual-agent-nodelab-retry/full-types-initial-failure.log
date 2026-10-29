@@ -1,0 +1,19 @@
+
+> vict-studio@0.1.0 check
+> svelte-kit sync && tsc --noEmit
+
+tests/agent-classes.test.ts(8,26): error TS2353: Object literal may only specify known properties, and 'strict' does not exist in type 'Options'.
+tests/agent-read-contract-repair.test.ts(10,26): error TS2353: Object literal may only specify known properties, and 'strict' does not exist in type 'Options'.
+tests/designer-agent-mastra.test.ts(69,64): error TS2339: Property 'recipe' does not exist on type '{ op: { const: string; }; }'.
+tests/designer-response-boundary.test.ts(4,19): error TS2614: Module '"*.svelte"' has no exported member 'createResponseBoundary'. Did you mean to use 'import createResponseBoundary from "*.svelte"' instead?
+tests/designer-visual.test.ts(90,61): error TS18048: 'observer.capability.output' is possibly 'undefined'.
+tests/flow-typed-authoring.test.ts(15,3): error TS2542: Index signature in type 'Readonly<Record<string, UiNode>>' only permits reading.
+tests/flow-typed-authoring.test.ts(16,3): error TS2542: Index signature in type 'Readonly<Record<string, UiLocalStateDecl>>' only permits reading.
+tests/flow-typed-authoring.test.ts(34,3): error TS2542: Index signature in type 'Readonly<Record<string, UiNode>>' only permits reading.
+npm error Lifecycle script `check` failed with error:
+npm error code 2
+npm error path C:\Users\RZ1\AppData\Local\Temp\vict-authoring-foundation\apps\studio
+npm error workspace vict-studio@0.1.0
+npm error location C:\Users\RZ1\AppData\Local\Temp\vict-authoring-foundation\apps\studio
+npm error command failed
+npm error command C:\WINDOWS\system32\cmd.exe /d /s /c svelte-kit sync && tsc --noEmit

@@ -1,0 +1,16 @@
+The initial affected six-file filtered run retained 24 passes and one stale
+mounted-fixture failure (33 filtered/skipped), recorded separately.
+Five passing files were unchanged after that run; their results are reused.
+
+Final focused command: npx vitest run tests/designer-response-boundary.test.ts
+Working directory: apps/studio
+Execution session: 80418
+Result: 1 file passed; all 3 tests passed; exit code 0.
+Duration: 79.56 seconds (572 ms tests; remaining time transforms/collection).
+The corrected mounted fixture passed with exact original text sequence, exact
+honest summary, closed disclosure and no false missing-terminal status.
+The same five inherited Svelte warnings were emitted; no new warnings added.
+
+Final exact-source full TypeScript check also passed (session 29496), retained
+in full-types-final.log. No additional test or provider runs are required by
+this bounded lane. No product behavior changed for these typing/fixture fixes.

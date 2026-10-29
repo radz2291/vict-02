@@ -5,7 +5,8 @@ import {newScreen} from '../src/lib/designer/application.js';
 import {agentEditSchema,documentCursor,prepareAgentEdit,type AgentEdit} from '../src/lib/designer/agent-edits.js';
 import {editPresentation} from '../src/lib/designer/agent-edit-presentation.js';
 import {effectiveNodeCapabilities} from '../src/lib/designer/agent-discovery.js';
-const presented=new Ajv({strict:false}).compile(editPresentation);
+const ajvOptions:NonNullable<ConstructorParameters<typeof Ajv>[0]>&{strict:boolean}={strict:false};
+const presented=new Ajv(ajvOptions).compile(editPresentation);
 function request(source:UiDocument,operations:AgentEdit['operations']){const cursor=documentCursor(source,source.revision,'classes-epoch');return prepareAgentEdit(source,cursor,{expectedRevision:cursor.revision,reason:'Canonical classes through ordinary authoring',operations},crypto.randomUUID());}
 describe('generic Studio class authoring',()=>{
  it('authors classes through insert/add/modify, preserves on omission and explicitly clears with []',()=>{

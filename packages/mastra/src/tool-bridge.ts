@@ -27,7 +27,7 @@ import {
   captureCapabilityDescription,
   capturePresentationSchema,
 } from './presentation.js';
-import { attachRawToolArgumentGuard } from './raw-argument-guard.js';
+import { attachRawToolArgumentGuard, inspectRawToolArguments } from './raw-argument-guard.js';
 
 /**
  * Stage 06B — the VICT capability-to-Mastra tool bridge (AI-005/006,
@@ -87,6 +87,19 @@ import { attachRawToolArgumentGuard } from './raw-argument-guard.js';
  *   colliding local invocation ids across store domains can never alias
  *   liveness.
  */
+
+/** Genuine bridge-owned validators, never discoverable/forgeable through model data. */
+const preInvocationInputGuards=new WeakMap<object,(input:unknown)=>{error:true;message:string}|undefined>();
+/** Supported Agent hook: rejects before the SDK builder formats/logs raw arguments. */
+export function capabilityInputValidationHooks(tools:Readonly<Record<string,unknown>>){
+ const guards=new Map<string,(input:unknown)=>{error:true;message:string}|undefined>();
+ for(const [name,tool] of Object.entries(tools)){if(tool&&typeof tool==='object'){const guard=preInvocationInputGuards.get(tool);if(guard)guards.set(name,guard);}}
+ if(!guards.size)return undefined;
+ return {beforeToolCall:({toolName,input}:{toolName:string;input:unknown})=>{
+   const rejected=guards.get(toolName)?.(input);
+   return rejected?{proceed:false as const,output:rejected}:undefined;
+ }};
+}
 
 /** Stable sanitized bridge failure codes returned to the model (never raw content). */
 export type CapabilityToolFailureCode =
@@ -973,6 +986,8 @@ export function bridgeCapabilityToolToMastra(
       : capturePresentationSchema(outputPresentation, `capability '${capabilityId}' output schema`);
   const clock = deps.clock ?? (() => Date.now());
   const createToolLoose = createTool as unknown as (options: unknown) => unknown;
+  const inputSchema=standardSchemaFromContract(inputContract,capturedInputSchema,capturedOutputSchema,validationFeedback,
+    message=>{const current=validationExecution.getStore();if(current&&!current.entered&&!current.settled)current.rejection=message;});
 
   // Audit-remediation B-4: the RAW-argument guard wraps the PUBLIC
   // `execute` of the tool object this bridge RETURNS — the earliest
@@ -991,13 +1006,7 @@ export function bridgeCapabilityToolToMastra(
         boundedDescription === undefined
           ? `VICT governed capability '${capabilityId}' (revision ${capabilityRevision}, effect '${effect}').`
           : `VICT governed capability '${capabilityId}' (revision ${capabilityRevision}, effect '${effect}'). ${boundedDescription}`,
-      inputSchema: standardSchemaFromContract(
-        inputContract,
-        capturedInputSchema,
-        capturedOutputSchema,
-        validationFeedback,
-        message=>{const current=validationExecution.getStore();if(current&&!current.entered&&!current.settled)current.rejection=message;},
-      ),
+      inputSchema,
       // Audit-remediation O-1 cleanup: the captured OUTPUT schema is exposed
       // on the REAL outputSchema wrapper exactly as the frozen §3.3(4)
       // specifies — `tool.outputSchema['~standard'].jsonSchema.output()`
@@ -1272,6 +1281,13 @@ export function bridgeCapabilityToolToMastra(
     }),
   );
   if(validationFeedback&&tool&&typeof tool==='object'){
+    preInvocationInputGuards.set(tool,input=>{
+      try{
+        inspectRawToolArguments(input);
+        const validation=(inputSchema as {'~standard':{validate:(value:unknown)=>{issues?:readonly {message:string}[]}}})['~standard'].validate(input);
+        return validation.issues?{error:true,message:validation.issues[0]?.message??'vict-contract-rejected'}:undefined;
+      }catch{return {error:true,message:'vict-contract-rejected'};}
+    });
     const target=tool as {execute?:(...args:unknown[])=>unknown},execute=target.execute;
     if(typeof execute==='function')target.execute=(...args:unknown[])=>validationExecution.run({entered:false,settled:false},async()=>{
       const current=validationExecution.getStore()!;

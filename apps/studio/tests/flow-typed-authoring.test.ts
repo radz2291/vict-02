@@ -4,17 +4,19 @@ import {newScreen} from '../src/lib/designer/application.js';
 import {authoredGraphVersion,graphStateDocument,patchAuthoredGraph} from '../src/lib/designer/graph-authoring.js';
 import {graphEditShapeValid} from '../src/lib/designer/graph-edit-schema.js';
 import {agentEditSchema} from '../src/lib/designer/agent-edits.js';
+import type {UiDocument} from '@victframework/ui';
 
-function source(){
+function source():UiDocument{
   const result=applyGraphOperationsV2(emptyGraphV2(),[
     {type:'defineNodeType',definition:{id:'settings',label:'Settings',parameters:{weights:{type:'numberList',default:[20]}},ports:[]}},
     {type:'addNode',nodeType:'settings',id:'one'},
   ]);
   if(!result.ok)throw Error(JSON.stringify(result));
   const document=newScreen('Typed authoring','typed-authoring');
-  document.nodes.workspace={kind:'component',id:'workspace',definitionId:'vict.flow.workspace',revision:'2',props:{graph:{type:'ref',path:'state.graph'}},outputs:{graphChange:{setState:{key:'graph'}}}};
-  document.localState.graph={key:'graph',type:'string',initial:JSON.stringify(result.graph)};
-  return document;
+  return {...document,
+   nodes:{...document.nodes,workspace:{kind:'component',id:'workspace',definitionId:'vict.flow.workspace',revision:'2',props:{graph:{type:'ref',path:'state.graph'}},outputs:{graphChange:{setState:{key:'graph'}}}}},
+   localState:{...document.localState,graph:{key:'graph',type:'string',initial:JSON.stringify(result.graph)}},
+  };
 }
 it('patches typed parameters through exact Studio source persistence and rejects the wrong graph grammar',()=>{
   const original=source(),before=JSON.stringify(original);
@@ -30,8 +32,8 @@ it('patches typed parameters through exact Studio source persistence and rejects
   expect(graphStateDocument(legacy,'graph',original.localState.graph.initial)).toBeUndefined();
 });
 it('guards read-only consumers of the same persistent graph state and closed public operation alternatives',()=>{
-  const original=source();
-  original.nodes.reader={kind:'component',id:'reader',definitionId:'vict.flow.workspace',revision:'1',props:{graph:{type:'ref',path:'state.graph'},readOnly:{type:'literal',value:true}}};
+  const initial=source();
+  const original:UiDocument={...initial,nodes:{...initial.nodes,reader:{kind:'component',id:'reader',definitionId:'vict.flow.workspace',revision:'1',props:{graph:{type:'ref',path:'state.graph'},readOnly:{type:'literal',value:true}}}}};
   expect(graphStateDocument(original,'graph',original.localState.graph.initial)).toBeUndefined();
   expect(graphEditShapeValid([{type:'setParameter',nodeId:'one',key:'weights',value:[30]}])).toBe(true);
   expect(graphEditShapeValid([{type:'defineNodeType',definition:{id:'x',label:'X',parameters:{title:{type:'string',default:''}},ports:[]}}])).toBe(true);

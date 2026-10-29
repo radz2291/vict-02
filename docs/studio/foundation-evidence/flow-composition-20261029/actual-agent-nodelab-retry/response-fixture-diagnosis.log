@@ -1,0 +1,16 @@
+Standalone investigation: npx vitest run tests/designer-response-boundary.test.ts
+Execution session: 3090. Result: 2 passed, 1 failed, duration 43.20 seconds.
+The mounted DOM showed the correct completed Host evidence summary and both
+exact original text events, retained in the closed details disclosure.
+
+Cause: fixture c32585cd expected the former aria-label="Terminal response" block.
+Later product change a99aea00 intentionally moved original AI assessments into
+details whenever a host evidenceSummary exists. Conversation.svelte renders the
+Terminal response block only in the alternative branch without that summary.
+This is an outdated fixture expectation, not demonstrated stream failure.
+
+Test-only correction asserts exact distinct progress/terminal original texts,
+the exact honest host summary, closed disclosure, no promoted Terminal response,
+and no false missing-terminal status. Pure terminal-boundary tests remain intact.
+The fixture done revision now matches its actual cursor revision.
+No product change, sleep increase or assertion relaxation was used.

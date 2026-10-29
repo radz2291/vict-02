@@ -1,0 +1,14 @@
+Command: npx vitest run tests/agent-classes.test.ts tests/agent-read-contract-repair.test.ts tests/flow-typed-authoring.test.ts tests/designer-response-boundary.test.ts tests/designer-visual.test.ts tests/designer-agent-mastra.test.ts -t "generic Studio class authoring|read presentation|package-owned|independently delivered|typed parameters|read-only consumers|actual stream response boundaries|fits the frozen provider|assessment|provenance"
+Working directory: apps/studio
+Execution session: 31246
+Result: 24 passed, 1 failed, 33 filtered/skipped; 5 files passed, 1 failed.
+Duration: 97.96 seconds.
+Unchanged inherited Svelte warnings: DocumentHost initial plan capture;
+RenderNode span click keyboard/role warnings (two locations).
+Edit presentation: 30765 bytes, below unchanged 32768-byte bound.
+
+Failure: designer-response-boundary.test.ts mounted stream fixture expected
+the Terminal response text "Actual terminal response; interactions unverified."
+but the element was absent. The two pure boundary tests passed.
+No product fix or relaxed assertion is implied by this retained failure.
+Standalone investigation follows separately.

@@ -19,7 +19,7 @@ import {
   sanitizeToolName,
   type HelperToolGateVerdict,
 } from './helper-tools.js';
-import { normalizeCapabilityToolResultEvent, sanitizeCapabilityToolName } from './tool-bridge.js';
+import { normalizeCapabilityToolResultEvent, sanitizeCapabilityToolName, capabilityInputValidationHooks } from './tool-bridge.js';
 import { isCapabilityToolFailureCode } from './tool-bridge.js';
 import { inspectControlField } from './control-envelope.js';
 import { VictMastraCompositionError, type MastraThreadCoordinator } from './memory.js';
@@ -490,6 +490,7 @@ export class MastraProductAgent implements ProductAgentPort {
       model: model as never,
       ...(Object.keys(tools).length > 0 ? { tools: tools as never } : {}),
       memory: this.#memory,
+      hooks: capabilityInputValidationHooks(tools),
     });
 
     if (this.#tracing.sampling.type !== 'never') {
