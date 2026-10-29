@@ -105,3 +105,15 @@ five inherited warnings. Independent source challenge found no remaining blocker
 Actual pointer reconnect still requires the newly activated candidate; no success
 is inferred from these tests. The direct authoring trial remains pending normal
 Studio sign-in, and no duplicate provider request has been sent.
+
+## Activation and installed pointer proof
+
+Source27788de9 is now active through the approved same-config launcher. All324
+installed outputs match and60 historical proof files remain. A fresh nine-package
+consumer has757 matching installed package files and a passing production build.
+Actual IAB pointer reconnect preserves edge identity, survives an app action and
+undoes correctly; an incompatible target preserves the original graph. See
+[installed runtime report](typed-installed-runtime-27788de9/RESULT.md). These are
+supporting fixtures. The direct Studio-agent retry has not started: isolated tab6
+is at the normal sign-in form, with a sign-in handoff pending. No provider/build
+operation remains active after activation; owner Chatwithme tab5 is untouched.

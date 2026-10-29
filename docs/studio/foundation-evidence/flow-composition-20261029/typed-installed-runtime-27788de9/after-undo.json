@@ -1,0 +1,17 @@
+{
+  "candidate": "27788de9f111042d04d83e7d603c6da2cccde8dc",
+  "edges": [
+    {
+      "id": "prompt-sampler",
+      "label": "Edge from prompt-a to sampler"
+    },
+    {
+      "id": "sampler-preview",
+      "label": "Edge from sampler to preview"
+    },
+    {
+      "id": "source-gate",
+      "label": "Edge from source-a to gate-a"
+    }
+  ]
+}

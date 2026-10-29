@@ -1,3 +1,12 @@
+> 29 October active candidate update: source27788de9 is installed (324 matching
+> outputs,60 historical proof files preserved). The new nine-package consumer
+> build matches757 installed package files. Actual pointer reconnection preserves
+> identity, survives an app action and undoes; incompatible-target attempts
+> preserve the graph. These are supporting fixtures, not actual-agent success.
+> The direct retry has not started: isolated Studio tab6 remains at normal login,
+> awaiting owner sign-in. No build/provider operation is active. See
+> [runtime report](foundation-evidence/flow-composition-20261029/typed-installed-runtime-27788de9/RESULT.md).
+>
 > 29 October direct-agent update: the first NodeLab run failed after 21 calls,
 > three refusals and two shell/theme edits, leaving zero graph nodes/edges.
 > Its later unproductive continuation was stopped without edits. Original public
