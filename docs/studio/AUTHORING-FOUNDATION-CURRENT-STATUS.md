@@ -1,3 +1,11 @@
+> **OWNER PAUSED / HELD,29October2026.** No further implementation, activation or
+> provider trials until the owner resumes. Read the [durable pause handoff](VICT-PAUSED-HANDOFF-20261029.md)
+> first. Product119c80bf is committed/reviewed/tested/production-built but **not
+> installed**; serving product remains27788de9. The actual-agent flow requirement
+> is not complete. Earlier30/31counts below are historical scoped evidence, not a
+> current integrated/owner acceptance verdict. Final handoff checkpoint is in the
+> owner's final response and paused-20261029/FINAL-CHECKPOINT.txt.
+>
 > 29 October actual-agent retry: normal sign-in was available in newer tab8.
 > One ordinary product request ran on a fresh screen and was stopped after91.2s:
 >13calls/9refusals/0edits/0observations. Contracts and pagination reads failed input

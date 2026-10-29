@@ -1,0 +1,30 @@
+{
+  "capturedUtc": "2026-10-29T07:20:06.452Z",
+  "ownerTab": {
+    "id": "5",
+    "screen": "Chatwithme",
+    "savedRevision": "r1.r1",
+    "mode": "Interact",
+    "unsentDraftFile": "Chatwithme-unsent-draft.txt",
+    "reloaded": false,
+    "edited": false,
+    "stopButtons": 0
+  },
+  "retryTab": {
+    "id": "8",
+    "screen": "NodeLab — direct agent retry",
+    "savedRevision": "r1.r1",
+    "mode": "Design",
+    "stopButtons": 0
+  },
+  "otherTabs": [
+    {
+      "id": "6",
+      "lastObserved": "normal Studio login"
+    },
+    {
+      "id": "7",
+      "url": "http://127.0.0.25:5626/foundation-flow-27788de9/index.html"
+    }
+  ]
+}

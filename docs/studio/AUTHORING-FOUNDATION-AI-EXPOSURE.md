@@ -1,5 +1,11 @@
 # AI authoring exposure — AI-EX01
 
+> Owner pause,29October2026: **PAUSED / HELD**. Earlier23-identity AI exposure
+> demonstrations remain scoped historical evidence; they do not establish the
+> newly reopened flow actual-agent requirement. Product119c80bf is built but not
+> installed; no further provider/activation work until owner resumption. Read
+> [the pause handoff](VICT-PAUSED-HANDOFF-20261029.md) before the historical counts.
+
 ## Current morning-review checkpoint — product a99aea00
 
 **30 demonstrated / 1 partial (AR-25) / 0 current failed criteria across31. All31 owner acceptances remain open; full foundation gate HELD.** Product `a99aea00dd75d8ced3104bc399257a343517e7b3` is independently reviewed, built, loaded and exercised through actual Z.ai subscription proof. AR-05 now has concise receipt-derived default Host evidence summary with unchanged originals/technical details inspectable. AR-09 separates source effects, stable capture measurements, explicitly unverified structured AI interpretation and untested behavior; an actual failed capture is preserved as failed and one visibility-based observation-only recovery succeeds without edits. These are scoped reporting-contract demonstrations, not universal model truth or censorship of the longer original response.
