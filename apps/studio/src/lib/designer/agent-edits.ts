@@ -7,6 +7,7 @@ import {
   applyUiEdit,
   canonicalUiDocument,
   isUiValueOfType,
+  UI_CLASS_LIST_LIMIT, isUiClassName,
   slotScopeProblems,
   type UiSlotScope,
   type UiExpression,
@@ -64,7 +65,9 @@ const expression=expressionTree.superRefine((root,ctx)=>{
     for(const value of children)stack.push({value,depth:depth+1});
   }
 });
+const classList=z.array(z.string().refine(isUiClassName,'Use one nonempty DOM token of at most 256 Unicode characters, without ASCII whitespace or NUL.')).max(UI_CLASS_LIST_LIMIT);
 const content = {
+  classes:classList.optional(),
   text: z.string().max(4000).optional(),
   headingLevel:z.number().int().min(1).max(6).optional(),
   attributes: z.record(id, scalar).optional(),
@@ -135,7 +138,7 @@ export const agentEditSchema = z
 /** Shared safe refusal guidance for browser preparation and provider contract validation. */
 export function agentEditDiagnostics(error:z.ZodError,input?:unknown) {
  const operations=input && typeof input==='object' && Array.isArray((input as {operations?:unknown}).operations) ? (input as {operations:unknown[]}).operations : [];
- const shape:Record<string,string>={insert:'insert(kind:element|text|component,nodeId,parentId,tag?|componentId+revision|text/expression?,slotName?,index?)',bindText:'bindText(nodeId,expression?)',bindAttribute:'bindAttribute(nodeId,name,expression?)',style:'style(nodeId,part?,property,value?:text|token|binding,conditionId?,pseudo?)',declareToken:'declareToken(id,value)',declareCondition:'declareCondition(id,kind:media|container,query,name?)',add:'add(recipe,nodeId,parentId,slotName?,index?,text?,headingLevel?,attributes?,props?,styles?)',modify:'modify(nodeId,text?,headingLevel?,attributes?,props?,styles?)',move:'move(nodeId,newParentId,slotName?,index?)',remove:'remove(nodeId)',bind:'bind(nodeId,prop,expression?)',connect:'connect(nodeId,output,binding?)',declareState:'declareState(key,type:string|number|boolean|isoDate|isoTime|stringList|numberList,initial:matchingValue)',wireInput:'wireInput(nodeId,key,initial?)'};
+ const shape:Record<string,string>={insert:'insert(kind:element|text|component,nodeId,parentId,tag?|componentId+revision|text/expression?,slotName?,index?)',bindText:'bindText(nodeId,expression?)',bindAttribute:'bindAttribute(nodeId,name,expression?)',style:'style(nodeId,part?,property,value?:text|token|binding,conditionId?,pseudo?)',declareToken:'declareToken(id,value)',declareCondition:'declareCondition(id,kind:media|container,query,name?)',add:'add(recipe,nodeId,parentId,slotName?,index?,text?,headingLevel?,attributes?,props?,styles?)',modify:'modify(nodeId,text?,headingLevel?,attributes?,props?,styles?,classes?)',move:'move(nodeId,newParentId,slotName?,index?)',remove:'remove(nodeId)',bind:'bind(nodeId,prop,expression?)',connect:'connect(nodeId,output,binding?)',declareState:'declareState(key,type:string|number|boolean|isoDate|isoTime|stringList|numberList,initial:matchingValue)',wireInput:'wireInput(nodeId,key,initial?)'};
  Object.assign(shape,{when:'when(nodeId,wrapperId,conditionId): wrap an existing subtree in a canonical conditional branch',slotScope:'slotScope(nodeId,slot,scope?:{schema:vict.ui-slot-scope@1,props:[{name,type,default?}],state?:{key:{key,type,initial,controlled?}},conditions?:{name:expression},outputs?:[{name,payload,description?}]})',defineStyleSource:'defineStyleSource(id,declarations:[{property,value:text|token|binding}],conditionId?,pseudo?,replace?:boolean)',attachStyleSource:'attachStyleSource(nodeId,sourceId,index?)',detachStyleSource:'detachStyleSource(nodeId,sourceId)',removeStyleSource:'removeStyleSource(id)'});
  return error.issues.slice(0,8).map(issue=>{
   const operation=typeof issue.path[1]==='number' ? issue.path[1] : undefined;
@@ -144,6 +147,7 @@ export function agentEditDiagnostics(error:z.ZodError,input?:unknown) {
   else if(path.includes('.binding'))expected='Expected {setState:{key,value?:literalOrRef}} OR {emit:{output,value?:literalOrRef}} inside a scoped slot OR {invokeAction:{actionId,input?:{field:literalOrRef}}}; no extra fields. Example: {"setState":{"key":"accepted"}}.';
   else if(path.includes('.props'))expected='Expected a property record of scalar values or homogeneous string[]/number[] (max100). Example: {"options":["one","two"]}; mixed lists and object arrays are unsupported.';
   else if(path.endsWith('.initial'))expected='Expected a matching canonical scalar or homogeneous string[]/number[]; date/time strings must be valid ISO values.';
+  else if(path.includes('.classes'))expected='Expected at most 100 class-name strings (1 to 256 characters each), with no ASCII whitespace or NUL. Use classes, not attributes.class; [] explicitly clears authored classes.';
   else if(path.includes('.attributes'))expected='Expected string (max4000), finite number, or boolean. Native expressions use bindAttribute or wireInput.';
   else if(path.includes('.declarations'))expected='Expected 0 to 20 ordered {property,value:{type:"text",value:string}|{type:"token",id}|{type:"binding",expression:literalOrRef}} declarations.';
   else if(operation!==undefined){const value=operations[operation];const op=value && typeof value==='object' ? (value as {op?:unknown}).op : undefined;expected=typeof op==='string' && shape[op] ? 'Expected '+shape[op]+'.' : 'Expected a declared registered insertion, source edit, typed-state, binding or presentation operation.';}
@@ -462,6 +466,7 @@ export function prepareAgentEdit(
             expression: { type: 'literal', value },
           });
         }
+        if(operation.classes!==undefined)next.push({op:'setClasses',nodeId:operation.nodeId,classes:operation.classes});
         for (const [property, value] of Object.entries(operation.styles ?? {}))
           next.push(...setBaseStyle(working,{requestId,nodeId:operation.nodeId,property,value:{type:'text',value}}).commands);
       }

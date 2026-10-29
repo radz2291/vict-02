@@ -26,6 +26,10 @@ export interface TransactionDraft {
   readonly commands: readonly UiEditCommand[];
 }
 
+/** Replace canonical class tokens without touching generated renderer ownership. */
+export function setClasses(input:{requestId:string;nodeId:string;classes:readonly string[]}):TransactionDraft {
+  return {requestId:input.requestId,reason:'Edit authored classes',commands:[{op:'setClasses',nodeId:input.nodeId,classes:input.classes}]};
+}
 /** Edit authored state through the existing atomic source replacement boundary. */
 export function setStateInitial(input: {
   requestId: string;

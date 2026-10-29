@@ -1,5 +1,37 @@
 # Activation and remaining live proof
 
+## Typed candidate 8b8e0de27c2f85747070fa85e789c7f7b6306ae1
+
+Independent source challenge found a suitable candidate at this exact clean SHA,
+using reported targeted tests without rerunning them. Source review is distinct
+from live usability. The initial production build failed creating a sandboxed
+output directory; the approved narrowly reviewed build passed. Both logs remain
+in `vict-flow-typed-8b8e0de2-stage-20261029`. An initial staging invocation used
+Windows PowerShell5 and failed before writing because its .NET lacked
+IsPathFullyQualified; the same helper succeeded in the existing PowerShell7 shell.
+No working server was stopped until all artifacts were ready.
+
+Activation freshly verified the current launcher/child, including creation times;
+it did not use historical PID scripts. The prepared replacement was hashed before
+stop. Installed324 candidate/static files match;22 historical proof files remain
+unchanged, with a complete old build backup and normal existing config loader.
+No global security/network/provider change or provider request occurred.
+
+Supported IAB reload reached the actual sign-in page at the unchanged origin,
+proving reachability. Restart expired the test session; owner sign-in is pending.
+Chatwithme stayed saved, Ready, with its original unsent draft and no reload.
+The original partial NodeLab was renamed **NodeLab — first trial (incomplete)**
+and saved before reload. Only its storage name was changed by root; its authored
+graph/body was not hand-repaired. Original pre-rename source remains retained.
+
+The new installed consumer is served and exercised separately; see
+[runtime result](typed-installed-runtime/RESULT.md). Its selected-keyboard move
+failed canonical persistence, so a bounded shared viewport correction is pending.
+The direct Studio-agent retry has not started and must wait for corrected
+activation plus normal sign-in. No completion or owner acceptance is inferred.
+
+## Earlier composition candidate
+
 Product candidate: 2149bd39ae9f7f26fa3a984dad726ae3b66c92e8.
 Owner explicitly approved restart after finishing Chatwithme. Its saved status,
 Ready agent state and unsent draft were observed; that tab was not reloaded or edited.

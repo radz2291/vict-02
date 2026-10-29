@@ -1,0 +1,70 @@
+{
+  "before": [
+    {
+      "id": "node1",
+      "transform": "transform: translate(60px, 50px)"
+    },
+    {
+      "id": "node1",
+      "transform": "transform: translate(60px, 50px)"
+    },
+    {
+      "id": "prompt-a",
+      "transform": "transform: translate(0px, 0px)"
+    },
+    {
+      "id": "prompt-b",
+      "transform": "transform: translate(0px, 280px)"
+    },
+    {
+      "id": "sampler",
+      "transform": "transform: translate(360px, 0px)"
+    },
+    {
+      "id": "preview",
+      "transform": "transform: translate(650px, 0px)"
+    },
+    {
+      "id": "source-a",
+      "transform": "transform: translate(0px, 0px)"
+    },
+    {
+      "id": "gate-a",
+      "transform": "transform: translate(400px, 0px)"
+    }
+  ],
+  "after": [
+    {
+      "id": "node1",
+      "transform": "transform: translate(60px, 50px)"
+    },
+    {
+      "id": "node1",
+      "transform": "transform: translate(60px, 50px)"
+    },
+    {
+      "id": "prompt-a",
+      "transform": "transform: translate(0px, 0px)"
+    },
+    {
+      "id": "prompt-b",
+      "transform": "transform: translate(0px, 280px)"
+    },
+    {
+      "id": "sampler",
+      "transform": "transform: translate(360px, 0px)"
+    },
+    {
+      "id": "preview",
+      "transform": "transform: translate(650px, 0px)"
+    },
+    {
+      "id": "source-a",
+      "transform": "transform: translate(0px, 0px)"
+    },
+    {
+      "id": "gate-a",
+      "transform": "transform: translate(400px, 0px)"
+    }
+  ]
+}

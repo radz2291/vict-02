@@ -1,3 +1,4 @@
+import { UI_CLASS_LIST_LIMIT,UI_CLASS_NAME_LIMIT,UI_CLASS_NAME_PATTERN } from '@victframework/ui';
 import { screenRecipes } from './recipes.js';
 import {graphEditDefinitions,graphEditChangesPresentation} from './graph-edit-schema.js';
 
@@ -7,6 +8,7 @@ const string = { type: 'string' };
 const scalar = { $ref:'#/$defs/scalar' };
 const identifier = { $ref:'#/$defs/identifier' };
 const contentProperties = {
+ classes:{$ref:'#/$defs/classList',description:'Canonical authored DOM class tokens. Omit to preserve; [] clears. Use this field rather than attributes.class, which the renderer overrides.'},
  text:{type:'string',maxLength:4000},headingLevel:{type:'integer',minimum:1,maximum:6},
  attributes:{$ref:'#/$defs/attributes'},props:{$ref:'#/$defs/props'},styles:{$ref:'#/$defs/styles'},
 };
@@ -50,6 +52,7 @@ export const editPresentation = {
     propValue:{anyOf:[{$ref:'#/$defs/scalar'},{$ref:'#/$defs/stringList'},{$ref:'#/$defs/numberList'}]},
     stringList:{type:'array',maxItems:100,items:{type:'string',maxLength:4000}},
     numberList:{type:'array',maxItems:100,items:{type:'number'}},
+    classList:{type:'array',maxItems:UI_CLASS_LIST_LIMIT,items:{type:'string',minLength:1,maxLength:UI_CLASS_NAME_LIMIT,pattern:UI_CLASS_NAME_PATTERN}},
     attributes:{type:'object',propertyNames:{$ref:'#/$defs/identifier'},additionalProperties:{$ref:'#/$defs/scalar'}},
     props:{type:'object',propertyNames:{$ref:'#/$defs/identifier'},additionalProperties:{$ref:'#/$defs/propValue'}},
     styles:{type:'object',propertyNames:{type:'string',minLength:1,maxLength:80},additionalProperties:{type:'string',maxLength:500}},

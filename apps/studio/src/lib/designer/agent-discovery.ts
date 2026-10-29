@@ -50,6 +50,7 @@ export function effectiveNodeCapabilities(node:UiNode) {
       slots:descriptor.slots??[],requiredSlots:contract.capabilities.required??[],
       presentation:{
         declaredParts:descriptor.styleTargets??[],
+        classes:{supported:!!descriptor.styleTargets?.length,operation:'modify',field:'classes',value:node.classes??[],mode:'replace',emptyClears:true,guidance:'Use canonical classes array for authored DOM tokens on the primary owned presentation target. Generated ownership classes remain. attributes.class does not replace this field.'},
         partStyle:{supported:!!descriptor.styleTargets?.length,operation:'style',partField:'part',targets:descriptor.styleTargets??[],states:['base','hover','focus','active','disabled'],conditions:true,
           guidance:'Select an exact declared semantic part. Styling affects only that owned implementation surface; preflight checks this source and installed renderer contract.'},
         legacyStyle:{operation:'style',part:null,conditional:false,guidance:'Without part, base styling reaches the primary presentation target. Legacy conditional styling requires an element; use an explicit component part instead.'},
@@ -58,7 +59,7 @@ export function effectiveNodeCapabilities(node:UiNode) {
       validation:'Use read preflight with the complete edit. Capability metadata does not prove observed appearance or exercised interaction.'};
   }
   if(node.kind==='element')return {kind:node.kind,available:true,tag:node.tag,
-    presentation:{style:{operation:'style',states:['base','hover','focus','active','disabled'],conditions:true,part:null}},
+    presentation:{classes:{supported:true,operation:'modify',field:'classes',value:node.classes??[],mode:'replace',emptyClears:true,guidance:'Use canonical classes, not attributes.class. Arbitrary project DOM tokens are supported; generated ownership classes are preserved.'},style:{operation:'style',states:['base','hover','focus','active','disabled'],conditions:true,part:null}},
     attributes:{operation:'bindAttribute',guidance:'Read elements with this tag for registered attributes; use literal modify attributes or a typed binding.'},
     children:{supported:designerCatalogs.elements.elements.find(item=>item.tag===node.tag)?.leaf!==true,guidance:'Native leaf elements refuse children; discover elements with tag before insertion.'},
     validation:'Property values, references, types and interactions still require canonical preflight.'};

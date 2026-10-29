@@ -1,0 +1,5 @@
+Browser tab: 7, Title: "Foundation packed consumer", URL: "http://127.0.0.25:5626/foundation-flow-8b8e0de2/index.html".
+The following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+~							95 container Opening shot
+~								96 text Opening shot
+The focused UI element is 86 button Undo local change

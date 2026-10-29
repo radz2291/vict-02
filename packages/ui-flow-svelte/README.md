@@ -85,6 +85,18 @@ accessibility and overlay contracts still apply; this is not a claim that every
 fullscreen or host-dependent component fits every node. Theme/ControlScope and
 owned popup behavior come from the same public renderer used outside graphs.
 
+Studio insert/add/modify operations expose canonical `classes` arrays, including
+chosen drag handles and input/scroll regions. Omission preserves authored tokens;
+`[]` clears them. `attributes.class` remains unavailable in the default semantic
+catalog. Code/manual tooling uses the same canonical `setClasses` command.
+
+Each viewport owns a public Svelte Flow provider. Accepted keyboard movement is
+committed through the same validated graph transaction/history as other geometry;
+deferred writes are fenced against source replacement, read-only changes and
+unmount. Body Arrow keys stay with controls and nested canvases after their own
+handlers run. Consumed graph commands stop at their owning viewport; unhandled
+Escape/Tab remain available to ordinary UI owners.
+
 Body state changes transact against the owning node; declared body intents emit
 `nodeAction` with node identity and payload, never invented execution. Content
 intents `operation` (JSON public operation array), `undo` and `redo` apply only on

@@ -14,6 +14,7 @@ import { type GraphEditorHost } from '../src/editor/host.js';
 import { serializeGraph } from '../src/editor/model.js';
 import { compositionGraph } from './composition-fixtures.js';
 import {parseGraphV2} from '../src/editor/model-v2.js';
+import {nestedCompositionDocument} from './composition-nested-fixture.js';
 
 const descriptors = [...catalogDescriptors, ...flowAuthoringDescriptors];
 const implementations = [...catalogImplementations, ...flowAuthoringImplementations];
@@ -59,8 +60,122 @@ async function hosted(source: UiDocument, host: GraphEditorHost) {
   await settle();
   return { target, writes, diagnostics, supply: app.supply, async close() { await unmount(app); target.remove(); } };
 }
+async function focusSelectedNode(target:Element,id:string){
+  const wrapper=target.querySelector<HTMLElement>(`.svelte-flow__node[data-id="${id}"]`)!;
+  wrapper.click();await settle();expect(wrapper.classList.contains('selected')).toBe(true);wrapper.focus();return wrapper;
+}
 
 describe('canonical application-owned graph composition', () => {
+  for(const version of [1,2] as const)it(`persists accepted node keyboard movement through relabel and undo in workspace${version}`,async()=>{
+    const source=version===1?compositionDocument('research'):typedCompositionDocument('research');
+    const initial=JSON.parse(String(source.localState.graph.initial));
+    const host:GraphEditorHost={historyFor:()=>undefined,presentationFor:()=>({get:()=>({viewport:{x:0,y:0,zoom:1},selection:{nodes:['source-a'],edges:[]}}),set:()=>{}})};
+    const view=await hosted(source,host);
+    const latest=()=>{const value=String(view.writes.findLast(([key])=>key==='graph')?.[1]);const result=version===1?parseGraph(value):parseGraphV2(value);if(!result.ok)throw Error(JSON.stringify({result,diagnostics:view.diagnostics}));return result.graph;};
+    try{
+      const wrapper=await focusSelectedNode(view.target,'source-a');
+      const event=new KeyboardEvent('keydown',{key:'ArrowRight',code:'ArrowRight',bubbles:true,cancelable:true});wrapper.dispatchEvent(event);await settle();
+      expect(event.defaultPrevented).toBe(true);
+      const moved=latest().nodes.find(node=>node.id==='source-a')!.position;
+      expect(moved.x).toBeGreaterThan(initial.nodes.find((node:{id:string})=>node.id==='source-a').position.x);
+      expect(view.writes.filter(([key])=>key==='graph')).toHaveLength(1);
+      click(view.target,'Name primary source');await settle();
+      expect(latest().nodes.find(node=>node.id==='source-a')?.position).toEqual(moved);
+      expect(latest().nodes.find(node=>node.id==='source-a')?.label).toBe('Named source');
+      click(view.target,'Undo local change');await settle();
+      expect(latest().nodes.find(node=>node.id==='source-a')?.position).toEqual(moved);
+      expect(latest().nodes.find(node=>node.id==='source-a')?.label).toBe('Primary source');
+      click(view.target,'Undo local change');await settle();
+      expect(latest().nodes.find(node=>node.id==='source-a')?.position).toEqual({x:0,y:0});
+      expect(view.diagnostics).toEqual([]);
+    }finally{await view.close();}
+  });
+
+  it('cancels a pending keyboard move after same-revision external source replacement',async()=>{
+    const source=typedCompositionDocument('research');
+    const host:GraphEditorHost={historyFor:()=>undefined,presentationFor:()=>({get:()=>({viewport:{x:0,y:0,zoom:1},selection:{nodes:['source-a'],edges:[]}}),set:()=>{}})};
+    const view=await hosted(source,host);
+    try{
+      const wrapper=await focusSelectedNode(view.target,'source-a');
+      const event=new KeyboardEvent('keydown',{key:'ArrowRight',code:'ArrowRight',bubbles:true,cancelable:true});wrapper.dispatchEvent(event);
+      expect(event.defaultPrevented).toBe(true);
+      const replacement=JSON.parse(String(source.localState.graph.initial));replacement.nodes.find((node:{id:string})=>node.id==='source-a').position={x:120,y:40};
+      view.supply('graph',JSON.stringify(replacement));await settle();
+      expect(view.writes.filter(([key])=>key==='graph')).toEqual([]);
+      click(view.target,'Name primary source');await settle();
+      const changed=parseGraphV2(String(view.writes.findLast(([key])=>key==='graph')?.[1]));if(!changed.ok)throw Error(JSON.stringify(changed));
+      expect(changed.graph.nodes.find(node=>node.id==='source-a')?.position).toEqual({x:120,y:40});
+    }finally{await view.close();}
+  });
+
+  it('cancels pending read-only keyboard movement and restores domain-refused geometry',async()=>{
+    const original=typedCompositionDocument('research'),workspace=original.nodes.workspace;if(workspace.kind!=='component')throw Error('Fixture');
+    const source:UiDocument={...original,nodes:{...original.nodes,workspace:{...workspace,props:{...workspace.props,readOnly:{type:'ref',path:'state.policyReadOnly'}}}},localState:{...original.localState,policyReadOnly:{key:'policyReadOnly',type:'boolean',initial:false}}};
+    const host:GraphEditorHost={historyFor:()=>undefined,presentationFor:()=>({get:()=>({viewport:{x:0,y:0,zoom:1},selection:{nodes:['source-a'],edges:[]}}),set:()=>{}}),validateV2:(_identity,graph)=>graph.nodes.find(node=>node.id==='source-a')?.position.x!==0?[{code:'PROJECT_POSITION',path:'nodes',message:'Project refused this geometry.'}]:[]};
+    const view=await hosted(source,host);
+    try{
+      const wrapper=await focusSelectedNode(view.target,'source-a'),before=wrapper.style.transform;
+      wrapper.dispatchEvent(new KeyboardEvent('keydown',{key:'ArrowRight',code:'ArrowRight',bubbles:true,cancelable:true}));view.supply('policyReadOnly',true);await settle();
+      expect(view.writes.filter(([key])=>key==='graph')).toEqual([]);expect(wrapper.style.transform).toBe(before);
+      view.supply('policyReadOnly',false);await settle();wrapper.focus();
+      wrapper.dispatchEvent(new KeyboardEvent('keydown',{key:'ArrowRight',code:'ArrowRight',bubbles:true,cancelable:true}));await settle();
+      expect(view.writes.filter(([key])=>key==='graph')).toEqual([]);expect(wrapper.style.transform).toBe(before);
+      expect(view.target.querySelector('[role="alert"]')?.textContent).toContain('Project refused');
+      click(view.target,'Name primary source');await settle();
+      const changed=parseGraphV2(String(view.writes.findLast(([key])=>key==='graph')?.[1]));if(!changed.ok)throw Error(JSON.stringify(changed));expect(changed.graph.nodes.find(node=>node.id==='source-a')?.position).toEqual({x:0,y:0});
+    }finally{await view.close();}
+  });
+
+  it('preserves selected node slider and button keyboard behavior without moving the graph',async()=>{
+    const original=typedCompositionDocument('media'),card=original.nodes['settings-card'];if(card.kind!=='element')throw Error('Fixture');
+    const source:UiDocument={...original,nodes:{
+      ...original.nodes,
+      'settings-card':{...card,children:[...card.children,'settings-action']},
+      'settings-action':{kind:'component',id:'settings-action',definitionId:'vict.catalog.button',revision:'1',
+        props:{label:{type:'literal',value:'Sampler action'}},
+        outputs:{press:{emit:{output:'review',value:{type:'literal',value:'assess-settings'}}}},
+      },
+    }};
+    const host:GraphEditorHost={historyFor:()=>undefined,presentationFor:()=>({get:()=>({viewport:{x:0,y:0,zoom:1},selection:{nodes:['sampler'],edges:[]}}),set:()=>{}})};
+    const view=await hosted(source,host);
+    try{
+      await focusSelectedNode(view.target,'sampler');
+      const node=view.target.querySelector<HTMLElement>('[data-graph-node="sampler"]')!,slider=node.querySelector<HTMLElement>('[role="slider"]')!;expect(node.classList.contains('nokey')).toBe(false);
+      slider.focus();slider.dispatchEvent(new KeyboardEvent('keydown',{key:'ArrowRight',code:'ArrowRight',bubbles:true,cancelable:true}));await settle();
+      let changed=parseGraphV2(String(view.writes.findLast(([key])=>key==='graph')?.[1]));if(!changed.ok)throw Error(JSON.stringify(changed));
+      expect(changed.graph.nodes.find(node=>node.id==='sampler')?.values.weights).toEqual([25]);expect(changed.graph.nodes.find(node=>node.id==='sampler')?.position).toEqual({x:360,y:0});
+      const writes=view.writes.filter(([key])=>key==='graph').length;
+      const button=[...node.querySelectorAll<HTMLButtonElement>('button')].find(button=>button.textContent==='Sampler action')!;button.focus();button.dispatchEvent(new KeyboardEvent('keydown',{key:'ArrowRight',code:'ArrowRight',bubbles:true,cancelable:true}));await settle();
+      expect(view.writes.filter(([key])=>key==='graph')).toHaveLength(writes);
+      const propagated:string[]=[];const observe=(event:KeyboardEvent)=>{propagated.push(event.key);};view.target.addEventListener('keydown',observe);
+      for(const key of ['Escape','Tab']){const event=new KeyboardEvent('keydown',{key,code:key,bubbles:true,cancelable:true});button.dispatchEvent(event);expect(event.defaultPrevented).toBe(false);}
+      view.target.removeEventListener('keydown',observe);expect(propagated).toEqual(['Escape','Tab']);
+      button.click();await settle();expect(JSON.parse(String(view.writes.findLast(([key])=>key==='intent')?.[1]))).toMatchObject({nodeId:'sampler',output:'review',payload:'assess-settings'});
+      expect(view.diagnostics).toEqual([]);
+    }finally{await view.close();}
+  });
+
+  it('owns nested graph keyboard move undo and deletion without mutating the outer node',async()=>{
+    const view=await open(nestedCompositionDocument());
+    const outerGraph=()=>{const result=parseGraphV2(String(view.writes.findLast(([key])=>key==='graph')?.[1]));if(!result.ok)throw Error(JSON.stringify(result));return result.graph;};
+    const innerGraph=()=>{const result=parseGraphV2(String(outerGraph().nodes[0]!.values.innerGraph));if(!result.ok)throw Error(JSON.stringify(result));return result.graph;};
+    try{
+      const inner=await focusSelectedNode(view.target,'source-a');await focusSelectedNode(view.target,'outer-node');
+      expect(inner.classList.contains('selected')).toBe(true);inner.focus();
+      const arrow=new KeyboardEvent('keydown',{key:'ArrowRight',code:'ArrowRight',bubbles:true,cancelable:true});inner.dispatchEvent(arrow);await settle();
+      expect(arrow.defaultPrevented).toBe(true);expect(innerGraph().nodes.find(node=>node.id==='source-a')!.position.x).toBeGreaterThan(0);
+      expect(outerGraph().nodes).toHaveLength(1);expect(outerGraph().nodes[0]!.position).toEqual({x:80,y:60});
+      expect(view.writes.filter(([key])=>key==='graph')).toHaveLength(1);
+      inner.focus();inner.dispatchEvent(new KeyboardEvent('keydown',{key:'z',code:'KeyZ',ctrlKey:true,bubbles:true,cancelable:true}));await settle();
+      expect(innerGraph().nodes.find(node=>node.id==='source-a')!.position).toEqual({x:0,y:0});expect(outerGraph().nodes[0]!.position).toEqual({x:80,y:60});
+      expect(view.writes.filter(([key])=>key==='graph')).toHaveLength(2);
+      const current=await focusSelectedNode(view.target,'source-a');current.dispatchEvent(new KeyboardEvent('keydown',{key:'Delete',code:'Delete',bubbles:true,cancelable:true}));await settle();
+      expect(innerGraph().nodes.map(node=>node.id)).toEqual(['gate-a']);expect(outerGraph().nodes).toHaveLength(1);expect(outerGraph().nodes[0]!.position).toEqual({x:80,y:60});
+      expect(view.writes.filter(([key])=>key==='graph')).toHaveLength(3);expect(view.writes.some(([key])=>key==='innerGraph')).toBe(false);
+      expect(view.diagnostics).toEqual([]);
+    }finally{await view.close();}
+  });
+
   it('persists a standard catalog slider numberList through scoped graph2 state without a flow-specific adapter',async()=>{
     const source=typedCompositionDocument('media');
     const initial=JSON.parse(String(source.localState.graph.initial));

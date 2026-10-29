@@ -472,3 +472,6 @@ export * from './local-storage-store.js';
 export { repeatExpressionFields } from './expressions.js';
 
 export { slotScopeProblems } from './slot-scope.js';
+
+export { UI_CLASS_LIST_LIMIT, UI_CLASS_NAME_LIMIT, UI_CLASS_NAME_PATTERN, isUiClassName, isUiClassList } from './edit.js';
+export type { UiEditCommandSetClasses } from './edit.js';

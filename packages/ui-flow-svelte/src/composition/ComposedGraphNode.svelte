@@ -1,16 +1,26 @@
 <script lang="ts">
   import { setContext, tick,onDestroy } from 'svelte';
+  import { on } from 'svelte/events';
   import { useUpdateNodeInternals, type NodeProps } from '@xyflow/svelte';
   import { GRAPH_BODY, type GraphBodyContext, type GraphWorkspaceContext, type GraphWorkspaceNode } from './context.js';
   let {id,data,selected}:NodeProps=$props();
   const workspace=$derived(data.workspace as GraphWorkspaceContext);
   const node=$derived(data.node as GraphWorkspaceNode);
-  let root:HTMLElement;
+  const activeNode=$derived(workspace.graph.nodes.find(node=>node.id===id));
+  let root=$state<HTMLElement>();
   let anchors=$state<Record<string, symbol[]>>({});
   const update=useUpdateNodeInternals();
   let mounted=true;
   onDestroy(()=>{mounted=false;});
   const remeasure=()=>{void tick().then(()=>{if(mounted)update(id);});};
+  $effect(()=>{
+    if(!root)return;
+    // Bubble after authored controls and nested viewports, before this node's
+    // outer XYFlow wrapper. Preserve their defaults and all non-arrow commands.
+    return on(root,'keydown',event=>{
+      if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(event.key))event.stopPropagation();
+    });
+  });
   setContext<GraphBodyContext>(GRAPH_BODY,{
     get nodeId(){return id;},
     get ports(){return workspace.ports(node);},
@@ -28,7 +38,7 @@
   });
 </script>
 <div bind:this={root} class:selected class="composed-graph-node" data-graph-node={id}>
-  {#if workspace.body}{@render workspace.body(workspace.frame(node,String(data.projectionKey??'default')))}{:else}<p role="alert">This graph needs an authored node body.</p>{/if}
+  {#if activeNode}{#if workspace.body}{@render workspace.body(workspace.frame(activeNode,String(data.projectionKey??'default')))}{:else}<p role="alert">This graph needs an authored node body.</p>{/if}{/if}
 </div>
 <style>
   .composed-graph-node{position:relative;color:var(--vict-color-text,inherit);min-width:0}

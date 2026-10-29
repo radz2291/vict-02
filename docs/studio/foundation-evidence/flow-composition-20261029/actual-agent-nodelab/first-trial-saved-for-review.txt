@@ -1,0 +1,14 @@
+Browser tab: 6, Title: "Designer — VICT Studio", URL: "http://127.0.0.25:5626/design".
+The following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 871-876
+~				5 (collapsed) File, ID: bits-c5, Secondary Actions: Expand
+~			870 text NodeLab — first trial (incomplete) ✓ Saved
++						887 container NodeLab — first trial (incomplete)
++							888 container Section
++								889 heading NodeLab, Value: 1
++									890 text NodeLab
++								891 text video planning · simulated renders
++								892 container Section
+~		41 text Saved NodeLab — first trial (incomplete) · revision r1.r1
+~			886 Reload saved version, Help: Reload the saved screen and reset the preview, ID: bits-c309
+The focused UI element is 5 (collapsed) File, ID: bits-c5, Secondary Actions: Expand

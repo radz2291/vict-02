@@ -53,6 +53,7 @@ export {
   removeNode,
   rootIdOf,
   setAttribute,
+  setClasses,
   setConditionalStyle,
   setOutputBinding,
   setStyle,

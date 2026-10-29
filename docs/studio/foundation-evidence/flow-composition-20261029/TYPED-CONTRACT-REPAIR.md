@@ -55,3 +55,29 @@ feedback are coherent. That review is not live provider or product acceptance.
 Production activation, installed consumer runtime and bounded actual-agent retry
 remain pending at this note.
 These supporting tests do not establish actual-agent usability or owner acceptance.
+
+## Follow-up to the installed keyboard failure
+
+The installed8b8e runtime exposed a real keyboard persistence failure, retained
+in typed-installed-runtime. The shared adapter now commits actual accepted public
+bound positions, with graph identity/revision/mount/read-only fences. A body
+bubble Arrow boundary preserves control and nested-canvas handlers. Each viewport
+has a public SvelteFlowProvider; deleted canonical nodes stop rendering stale
+projection frames. Six mounted cases pass: both graph versions/history, stale
+replacement/refusal, selected controls, and nested movement/undo/deletion. The
+initial root nokey proposal was rejected in independent review because it also
+disabled nested canvases; it is absent from the final implementation.
+
+A separate public-authoring gap prevented agents from declaring drag classes.
+Canonical classes already existed in source, but ordinary agent edits could not
+write them. A generic setClasses command and shared editor helper now expose
+that field; insert/add/modify accept classes, omission preserves and[]clears.
+The default catalog's existing attributes.class refusal stays unchanged. Eight
+focused transaction/renderer/agent tests pass, including Unicode DOM tokens and
+preservation of generated ownership classes. No flow class allowlist or renderer
+mutation is added. Read6/edit5/instructions11/profile12 pins identify the updated
+contract. Exact presentation30765bytes and the offline executor fixture pass.
+
+Final flow and Studio checks have zero errors/five inherited warnings; UI and
+UI-editor builds pass. Independent source review found no blocker. These latest
+repairs still require production activation and live verification at this note.
