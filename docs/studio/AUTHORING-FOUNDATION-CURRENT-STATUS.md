@@ -1,3 +1,11 @@
+> 29 October follow-up: the owner rejected the bundled flow editor and reopened
+> AR13-15 after actual-app review. The prior 30/31 rollup below is historical and
+> does not close the new flow iteration. Removal checkpoint 2a25341f and software
+> candidate 2149bd39 are implemented/offline-reviewed; live actual-agent, installed
+> runtime and fresh graph conformance proof remain pending. See
+> [flow iteration](FLOW-COMPOSITION-ITERATION.md) and
+> [activation evidence](foundation-evidence/flow-composition-20261029/ACTIVATION.md).
+
 # Authoring foundation current status
 
 ## Morning-review continuation — product a99aea00

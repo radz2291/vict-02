@@ -30,7 +30,7 @@ try{
   }
   writeFileSync(join(consumer,'package.json'),JSON.stringify({name:'vict-foundation-isolated-consumer',private:true,type:'module',scripts:{build:'vite build'},dependencies,devDependencies:{'@sveltejs/vite-plugin-svelte':'5.1.1',vite:'6.4.3',typescript:'6.0.3'}},null,2));
   writeFileSync(join(consumer,'index.html'),'<html><head><title>Foundation packed consumer</title></head><body><div id="app"></div><script type="module" src="/src/main.ts"></script></body></html>');
-  writeFileSync(join(consumer,'vite.config.mjs'),`import {defineConfig} from 'vite';import {svelte} from '@sveltejs/vite-plugin-svelte';export default defineConfig({plugins:[svelte()],server:{host:'127.0.0.28',port:5628,strictPort:true}});`);
+  writeFileSync(join(consumer,'vite.config.mjs'),`import {defineConfig} from 'vite';import {svelte} from '@sveltejs/vite-plugin-svelte';export default defineConfig({base:'./',plugins:[svelte()]});`);
   const compositionJson=execFileSync(process.execPath,['--import','tsx','--input-type=module','-e',"import {compositionDocument} from './packages/ui-flow-svelte/test/composition-fixtures.ts';process.stdout.write(JSON.stringify(['media','research'].map(kind=>compositionDocument(kind))));"],{cwd:root,encoding:'utf8',maxBuffer:2*1024*1024});
   writeFileSync(join(consumer,'src/composition-sources.json'),compositionJson);
   writeFileSync(join(consumer,'src/main.ts'),`import {mount} from 'svelte';import App from './App.svelte';mount(App,{target:document.getElementById('app')!});`);
@@ -67,7 +67,7 @@ const compositionPlans=compositionSources.map(source=>{const result=compileUiDoc
 {#snippet tooltipTrigger(attributes)}<Button.Root {...attributes} class="vict-btn vict-btn--secondary">Owned tooltip trigger</Button.Root>{/snippet}
 <ControlScope class="vict-rhea"><AssetProvider namespace="foundation-packed-proof"><div style="position:relative;overflow:hidden" data-ui-application-viewport><DocumentHost plan={compiled.plan} localState={source.localState} extensionDescriptors={descriptors} extensionImplementations={implementations} dispatch={async()=>undefined} navigate={()=>{}} /><OwnedTooltip trigger={tooltipTrigger}>A supplied tooltip in this application.</OwnedTooltip></div><GraphSurface {graph} ongraphchange={value=>graph=value} label="Packed rich graph" height={480}/>{#each compositionPlans as entry}<h2>{entry.source.id}</h2><DocumentHost plan={entry.plan} localState={entry.source.localState} extensionDescriptors={descriptors} extensionImplementations={implementations} dispatch={async()=>undefined} navigate={()=>{}} />{/each}</AssetProvider></ControlScope>
 <style>:global(body){font-family:system-ui;margin:24px}h1{font-size:24px}</style>`);
-  writeFileSync(join(destination,'install.log'),run(['install','--ignore-scripts','--no-audit','--no-fund'],consumer));
+  writeFileSync(join(destination,'install.log'),run(['install','--ignore-scripts','--no-audit','--no-fund','--prefer-offline','--fetch-retries=0','--fetch-timeout=30000'],consumer));
   const comparisons=[];
   for(const pack of report.packs){
     const installed=realpathSync(join(consumer,'node_modules',pack.name));
