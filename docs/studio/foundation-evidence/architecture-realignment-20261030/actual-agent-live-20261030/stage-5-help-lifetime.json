@@ -1,0 +1,28 @@
+{
+  "before": {
+    "menuCount": 1,
+    "helpExpanded": "true"
+  },
+  "afterAppSwitch": {
+    "app1Present": 1,
+    "oldAppPresent": 0,
+    "orphanHelpMenus": 0
+  },
+  "reopened": {
+    "menus": 0,
+    "helps": [
+      "false",
+      "false"
+    ],
+    "taskControls": [
+      "Redesign homepage hero checked",
+      "Prepare beta invite list"
+    ],
+    "statuses": [
+      "doing",
+      "doing"
+    ]
+  },
+  "reopenedSourceByteIdentical": true,
+  "scope": "Normal Studio app selection removes previous app main and popup from DOM; reopening starts Help closed. In-session app selection is followed separately by full browser reload of saved r1.r4."
+}

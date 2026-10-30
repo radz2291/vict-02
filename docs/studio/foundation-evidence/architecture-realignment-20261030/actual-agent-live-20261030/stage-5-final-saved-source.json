@@ -1,0 +1,1838 @@
+{
+  "schema": "vict.ui-document@1",
+  "id": "screen-b1d0036a-e404-448b-8f84-c92b2752220d",
+  "revision": "r1.r4",
+  "root": "screen",
+  "nodes": {
+    "screen": {
+      "kind": "element",
+      "id": "screen",
+      "tag": "main",
+      "attributes": {
+        "aria-label": "Project planner — nested ownership"
+      },
+      "children": [
+        "planner-header",
+        "planner-flow"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "20px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "40px"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "560px"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#e9f1fa"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#243047"
+          }
+        },
+        {
+          "property": "font-family",
+          "value": {
+            "type": "text",
+            "value": "system-ui, -apple-system, 'Segoe UI', sans-serif"
+          }
+        },
+        {
+          "property": "max-width",
+          "value": {
+            "type": "text",
+            "value": "960px"
+          }
+        }
+      ]
+    },
+    "planner-header": {
+      "kind": "element",
+      "id": "planner-header",
+      "tag": "section",
+      "attributes": {
+        "aria-label": "Project planner guide"
+      },
+      "children": [
+        "planner-title",
+        "planner-guide"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "8px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "24px"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "100px"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#f5f7fb"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        }
+      ]
+    },
+    "planner-title": {
+      "kind": "element",
+      "id": "planner-title",
+      "tag": "h1",
+      "children": [
+        "planner-title-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "32px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.2"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#2b4a78"
+          }
+        }
+      ]
+    },
+    "planner-title-text": {
+      "kind": "text",
+      "id": "planner-title-text",
+      "content": {
+        "type": "literal",
+        "value": "Project planner"
+      }
+    },
+    "planner-guide": {
+      "kind": "element",
+      "id": "planner-guide",
+      "tag": "p",
+      "children": [
+        "planner-guide-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.5"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#52657f"
+          }
+        }
+      ]
+    },
+    "planner-guide-text": {
+      "kind": "text",
+      "id": "planner-guide-text",
+      "content": {
+        "type": "literal",
+        "value": "How to use: select a task, then edit its already-visible title and status fields (Todo, Doing or Done). Use Studio's Save to keep your configured boards for next time — in a standalone preview without saving, changes are temporary. There is no database; your boards live only in this document."
+      }
+    },
+    "planner-flow": {
+      "kind": "element",
+      "id": "planner-flow",
+      "tag": "section",
+      "attributes": {
+        "aria-label": "Project graph workspace"
+      },
+      "children": [
+        "flow-workspace"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "16px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "24px"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "100px"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#f5f7fb"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        }
+      ]
+    },
+    "flow-workspace": {
+      "kind": "component",
+      "id": "flow-workspace",
+      "definitionId": "vict.flow.workspace",
+      "revision": "2",
+      "slots": {
+        "content": {
+          "name": "content",
+          "children": [
+            "flow-content"
+          ],
+          "scope": {
+            "schema": "vict.ui-slot-scope@1",
+            "props": [
+              {
+                "name": "nodeCount",
+                "type": "number"
+              }
+            ]
+          }
+        },
+        "body": {
+          "name": "body",
+          "children": [
+            "project-body-when"
+          ],
+          "scope": {
+            "schema": "vict.ui-slot-scope@1",
+            "props": [
+              {
+                "name": "nodeType",
+                "type": "string"
+              },
+              {
+                "name": "label",
+                "type": "string"
+              }
+            ],
+            "state": {
+              "graph": {
+                "key": "graph",
+                "type": "string",
+                "initial": "",
+                "controlled": true
+              },
+              "helpOpen": {
+                "key": "helpOpen",
+                "type": "boolean",
+                "initial": false
+              },
+              "title": {
+                "key": "title",
+                "type": "string",
+                "initial": "",
+                "controlled": true
+              }
+            },
+            "conditions": {
+              "isProject": {
+                "type": "compare",
+                "op": "eq",
+                "left": {
+                  "type": "ref",
+                  "path": "prop.nodeType"
+                },
+                "right": {
+                  "type": "literal",
+                  "value": "project"
+                }
+              }
+            }
+          }
+        }
+      },
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Project graph"
+        },
+        "graph": {
+          "type": "ref",
+          "path": "state.graph"
+        }
+      },
+      "outputs": {
+        "graphChange": {
+          "setState": {
+            "key": "graph"
+          }
+        }
+      }
+    },
+    "flow-content": {
+      "kind": "element",
+      "id": "flow-content",
+      "tag": "div",
+      "children": [
+        "flow-caption",
+        "flow-viewport"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-wrap",
+          "value": {
+            "type": "text",
+            "value": "wrap"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "align-items",
+          "value": {
+            "type": "text",
+            "value": "center"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "60px"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#eef4fb"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "16px"
+          }
+        }
+      ]
+    },
+    "flow-viewport": {
+      "kind": "component",
+      "id": "flow-viewport",
+      "definitionId": "vict.flow.viewport",
+      "revision": "2",
+      "slots": {},
+      "props": {
+        "height": {
+          "type": "literal",
+          "value": 480
+        },
+        "label": {
+          "type": "literal",
+          "value": "Project graph canvas"
+        }
+      }
+    },
+    "project-body": {
+      "kind": "element",
+      "id": "project-body",
+      "tag": "div",
+      "children": [
+        "project-head",
+        "project-title-label",
+        "project-tasks"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-wrap",
+          "value": {
+            "type": "text",
+            "value": "wrap"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        },
+        {
+          "property": "align-items",
+          "value": {
+            "type": "text",
+            "value": "center"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "120px"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        }
+      ],
+      "styleSources": [
+        "planner-card"
+      ]
+    },
+    "project-body-when": {
+      "kind": "conditional",
+      "id": "project-body-when",
+      "branches": [
+        {
+          "when": "isProject",
+          "children": [
+            "project-body"
+          ]
+        }
+      ]
+    },
+    "project-head": {
+      "kind": "element",
+      "id": "project-head",
+      "tag": "div",
+      "children": [
+        "project-heading",
+        "project-help"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-wrap",
+          "value": {
+            "type": "text",
+            "value": "wrap"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "align-items",
+          "value": {
+            "type": "text",
+            "value": "end"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "40px"
+          }
+        },
+        {
+          "property": "justify-content",
+          "value": {
+            "type": "text",
+            "value": "space-between"
+          }
+        }
+      ],
+      "classes": [
+        "vict-graph-drag-handle"
+      ]
+    },
+    "project-heading": {
+      "kind": "element",
+      "id": "project-heading",
+      "tag": "h2",
+      "children": [
+        "project-heading-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "20px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.2"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#2b4a78"
+          }
+        }
+      ]
+    },
+    "project-heading-text": {
+      "kind": "text",
+      "id": "project-heading-text",
+      "content": {
+        "type": "expression",
+        "expression": {
+          "type": "ref",
+          "path": "prop.label"
+        }
+      }
+    },
+    "project-title-label": {
+      "kind": "element",
+      "id": "project-title-label",
+      "tag": "label",
+      "children": [
+        "project-title-label-text",
+        "project-title-input"
+      ],
+      "localStyle": [
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#2b4a78"
+          }
+        },
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "13px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "6px"
+          }
+        }
+      ]
+    },
+    "project-title-label-text": {
+      "kind": "text",
+      "id": "project-title-label-text",
+      "content": {
+        "type": "literal",
+        "value": "Project title"
+      }
+    },
+    "project-title-input": {
+      "kind": "element",
+      "id": "project-title-input",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "placeholder": "Project title",
+        "type": "text",
+        "value": {
+          "type": "ref",
+          "path": "state.title"
+        }
+      },
+      "classes": [
+        "nodrag",
+        "nopan",
+        "nowheel"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "16px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        }
+      ],
+      "styleSources": [
+        "planner-field"
+      ],
+      "interactions": [
+        {
+          "on": "change",
+          "action": "setState",
+          "key": "title",
+          "value": {
+            "type": "ref",
+            "path": "state.title"
+          }
+        }
+      ]
+    },
+    "project-help": {
+      "kind": "component",
+      "id": "project-help",
+      "definitionId": "vict.catalog.dropdown-menu",
+      "revision": "1",
+      "slots": {
+        "items": {
+          "name": "items",
+          "children": [
+            "help-item-how",
+            "help-item-save"
+          ]
+        }
+      },
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Help"
+        },
+        "open": {
+          "type": "ref",
+          "path": "state.helpOpen"
+        }
+      },
+      "classes": [
+        "nodrag",
+        "nopan",
+        "nowheel"
+      ],
+      "outputs": {
+        "openChange": {
+          "setState": {
+            "key": "helpOpen"
+          }
+        }
+      }
+    },
+    "help-item-how": {
+      "kind": "component",
+      "id": "help-item-how",
+      "definitionId": "vict.catalog.dropdown-menu.item",
+      "revision": "1",
+      "slots": {},
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "How this panel works"
+        }
+      }
+    },
+    "help-item-save": {
+      "kind": "component",
+      "id": "help-item-save",
+      "definitionId": "vict.catalog.dropdown-menu.item",
+      "revision": "1",
+      "slots": {},
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Save behavior"
+        }
+      }
+    },
+    "project-tasks": {
+      "kind": "element",
+      "id": "project-tasks",
+      "tag": "div",
+      "children": [
+        "project-task-workspace"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-wrap",
+          "value": {
+            "type": "text",
+            "value": "wrap"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "8px"
+          }
+        },
+        {
+          "property": "align-items",
+          "value": {
+            "type": "text",
+            "value": "center"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "160px"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "align-self",
+          "value": {
+            "type": "text",
+            "value": "stretch"
+          }
+        }
+      ]
+    },
+    "project-task-workspace": {
+      "kind": "component",
+      "id": "project-task-workspace",
+      "definitionId": "vict.flow.workspace",
+      "revision": "2",
+      "slots": {
+        "content": {
+          "name": "content",
+          "children": [
+            "task-flow-content"
+          ],
+          "scope": {
+            "schema": "vict.ui-slot-scope@1",
+            "props": [
+              {
+                "name": "nodeCount",
+                "type": "number"
+              }
+            ]
+          }
+        },
+        "body": {
+          "name": "body",
+          "children": [
+            "task-body-when"
+          ],
+          "scope": {
+            "schema": "vict.ui-slot-scope@1",
+            "props": [
+              {
+                "name": "nodeType",
+                "type": "string"
+              },
+              {
+                "name": "label",
+                "type": "string"
+              }
+            ],
+            "state": {
+              "status": {
+                "key": "status",
+                "type": "string",
+                "initial": "",
+                "controlled": true
+              },
+              "title": {
+                "key": "title",
+                "type": "string",
+                "initial": "",
+                "controlled": true
+              }
+            },
+            "conditions": {
+              "isTask": {
+                "type": "compare",
+                "op": "eq",
+                "left": {
+                  "type": "ref",
+                  "path": "prop.nodeType"
+                },
+                "right": {
+                  "type": "literal",
+                  "value": "task"
+                }
+              }
+            }
+          }
+        }
+      },
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Task graph"
+        },
+        "graph": {
+          "type": "ref",
+          "path": "state.graph"
+        }
+      },
+      "outputs": {
+        "graphChange": {
+          "setState": {
+            "key": "graph"
+          }
+        }
+      },
+      "localStyle": [
+        {
+          "property": "width",
+          "value": {
+            "type": "text",
+            "value": "100%"
+          }
+        }
+      ]
+    },
+    "task-flow-content": {
+      "kind": "element",
+      "id": "task-flow-content",
+      "tag": "div",
+      "children": [
+        "task-flow-viewport"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-wrap",
+          "value": {
+            "type": "text",
+            "value": "wrap"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "10px"
+          }
+        },
+        {
+          "property": "align-items",
+          "value": {
+            "type": "text",
+            "value": "center"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "60px"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "width",
+          "value": {
+            "type": "text",
+            "value": "100%"
+          }
+        }
+      ]
+    },
+    "task-flow-viewport": {
+      "kind": "component",
+      "id": "task-flow-viewport",
+      "definitionId": "vict.flow.viewport",
+      "revision": "2",
+      "slots": {},
+      "props": {
+        "height": {
+          "type": "literal",
+          "value": 220
+        },
+        "label": {
+          "type": "literal",
+          "value": "Task graph canvas"
+        }
+      },
+      "localStyle": [
+        {
+          "property": "width",
+          "value": {
+            "type": "text",
+            "value": "100%"
+          }
+        }
+      ]
+    },
+    "task-body": {
+      "kind": "element",
+      "id": "task-body",
+      "tag": "div",
+      "children": [
+        "task-head",
+        "task-title-label",
+        "task-status-label"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-wrap",
+          "value": {
+            "type": "text",
+            "value": "wrap"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "align-items",
+          "value": {
+            "type": "text",
+            "value": "center"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "100px"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "min-width",
+          "value": {
+            "type": "text",
+            "value": "280px"
+          }
+        },
+        {
+          "property": "width",
+          "value": {
+            "type": "text",
+            "value": "100%"
+          }
+        }
+      ],
+      "styleSources": [
+        "planner-card"
+      ]
+    },
+    "task-body-when": {
+      "kind": "conditional",
+      "id": "task-body-when",
+      "branches": [
+        {
+          "when": "isTask",
+          "children": [
+            "task-body"
+          ]
+        }
+      ]
+    },
+    "task-head": {
+      "kind": "element",
+      "id": "task-head",
+      "tag": "div",
+      "children": [
+        "task-heading"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-wrap",
+          "value": {
+            "type": "text",
+            "value": "wrap"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "align-items",
+          "value": {
+            "type": "text",
+            "value": "center"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "32px"
+          }
+        }
+      ],
+      "classes": [
+        "vict-graph-drag-handle"
+      ]
+    },
+    "task-heading": {
+      "kind": "element",
+      "id": "task-heading",
+      "tag": "h3",
+      "children": [
+        "task-heading-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "15px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.2"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#2b4a78"
+          }
+        }
+      ]
+    },
+    "task-heading-text": {
+      "kind": "text",
+      "id": "task-heading-text",
+      "content": {
+        "type": "expression",
+        "expression": {
+          "type": "ref",
+          "path": "prop.label"
+        }
+      }
+    },
+    "task-title-label": {
+      "kind": "element",
+      "id": "task-title-label",
+      "tag": "label",
+      "children": [
+        "task-title-label-text",
+        "task-title-input"
+      ],
+      "localStyle": [
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#2b4a78"
+          }
+        },
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "13px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "6px"
+          }
+        }
+      ]
+    },
+    "task-title-label-text": {
+      "kind": "text",
+      "id": "task-title-label-text",
+      "content": {
+        "type": "literal",
+        "value": "Task title"
+      }
+    },
+    "task-title-input": {
+      "kind": "element",
+      "id": "task-title-input",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "placeholder": "Task title",
+        "type": "text",
+        "value": {
+          "type": "ref",
+          "path": "state.title"
+        }
+      },
+      "classes": [
+        "nodrag",
+        "nopan",
+        "nowheel"
+      ],
+      "styleSources": [
+        "planner-field"
+      ],
+      "interactions": [
+        {
+          "on": "change",
+          "action": "setState",
+          "key": "title",
+          "value": {
+            "type": "ref",
+            "path": "state.title"
+          }
+        }
+      ]
+    },
+    "task-status-label": {
+      "kind": "element",
+      "id": "task-status-label",
+      "tag": "label",
+      "children": [
+        "task-status-label-text",
+        "task-status"
+      ],
+      "localStyle": [
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#2b4a78"
+          }
+        },
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "13px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "6px"
+          }
+        },
+        {
+          "property": "max-width",
+          "value": {
+            "type": "text",
+            "value": "220px"
+          }
+        }
+      ]
+    },
+    "task-status-label-text": {
+      "kind": "text",
+      "id": "task-status-label-text",
+      "content": {
+        "type": "literal",
+        "value": "Status"
+      }
+    },
+    "task-status": {
+      "kind": "element",
+      "id": "task-status",
+      "tag": "select",
+      "children": [
+        "task-status-opt-todo",
+        "task-status-opt-doing",
+        "task-status-opt-done"
+      ],
+      "classes": [
+        "nodrag",
+        "nopan",
+        "nowheel"
+      ],
+      "styleSources": [
+        "planner-field"
+      ],
+      "attributes": {
+        "value": {
+          "type": "ref",
+          "path": "state.status"
+        }
+      },
+      "interactions": [
+        {
+          "on": "change",
+          "action": "setState",
+          "key": "status",
+          "value": {
+            "type": "ref",
+            "path": "state.status"
+          }
+        }
+      ]
+    },
+    "task-status-opt-todo": {
+      "kind": "element",
+      "id": "task-status-opt-todo",
+      "tag": "option",
+      "children": [
+        "task-status-opt-todo-text"
+      ],
+      "attributes": {
+        "value": "todo"
+      }
+    },
+    "task-status-opt-todo-text": {
+      "kind": "text",
+      "id": "task-status-opt-todo-text",
+      "content": {
+        "type": "literal",
+        "value": "Todo"
+      }
+    },
+    "task-status-opt-doing": {
+      "kind": "element",
+      "id": "task-status-opt-doing",
+      "tag": "option",
+      "children": [
+        "task-status-opt-doing-text"
+      ],
+      "attributes": {
+        "value": "doing"
+      }
+    },
+    "task-status-opt-doing-text": {
+      "kind": "text",
+      "id": "task-status-opt-doing-text",
+      "content": {
+        "type": "literal",
+        "value": "Doing"
+      }
+    },
+    "task-status-opt-done": {
+      "kind": "element",
+      "id": "task-status-opt-done",
+      "tag": "option",
+      "children": [
+        "task-status-opt-done-text"
+      ],
+      "attributes": {
+        "value": "done"
+      }
+    },
+    "task-status-opt-done-text": {
+      "kind": "text",
+      "id": "task-status-opt-done-text",
+      "content": {
+        "type": "literal",
+        "value": "Done"
+      }
+    },
+    "flow-caption": {
+      "kind": "element",
+      "id": "flow-caption",
+      "tag": "p",
+      "children": [
+        "flow-caption-prefix",
+        "flow-caption-value"
+      ],
+      "localStyle": [
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#52657f"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "13px"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        }
+      ]
+    },
+    "flow-caption-prefix": {
+      "kind": "text",
+      "id": "flow-caption-prefix",
+      "content": {
+        "type": "literal",
+        "value": "Projects in graph: "
+      }
+    },
+    "flow-caption-value": {
+      "kind": "text",
+      "id": "flow-caption-value",
+      "content": {
+        "type": "expression",
+        "expression": {
+          "type": "ref",
+          "path": "prop.nodeCount"
+        }
+      }
+    }
+  },
+  "componentDefinitions": {},
+  "styleSources": {
+    "planner-card": {
+      "id": "planner-card",
+      "declarations": [
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#ffffff"
+          }
+        },
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "1px solid #c7dbf2"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "20px"
+          }
+        },
+        {
+          "property": "box-shadow",
+          "value": {
+            "type": "text",
+            "value": "0 1px 3px rgba(46, 90, 144, 0.10)"
+          }
+        }
+      ]
+    },
+    "planner-field": {
+      "id": "planner-field",
+      "declarations": [
+        {
+          "property": "width",
+          "value": {
+            "type": "text",
+            "value": "100%"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "8px 10px"
+          }
+        },
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "1px solid #c7dbf2"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "8px"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#fbfdff"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#243047"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        }
+      ]
+    },
+    "planner-canvas": {
+      "id": "planner-canvas",
+      "declarations": [
+        {
+          "property": "background-color",
+          "value": {
+            "type": "token",
+            "id": "planner-canvas-bg"
+          }
+        },
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "1px dashed #b9d2ec"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "10px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        }
+      ]
+    }
+  },
+  "assets": {},
+  "tokens": {
+    "planner-accent": {
+      "id": "planner-accent",
+      "value": "#3e6cb5"
+    },
+    "planner-canvas-bg": {
+      "id": "planner-canvas-bg",
+      "value": "#f2f7fd"
+    }
+  },
+  "conditions": {
+    "compact": {
+      "id": "compact",
+      "kind": "container",
+      "name": "studio-screen",
+      "query": "(max-width: 600px)"
+    }
+  },
+  "localState": {
+    "message": {
+      "key": "message",
+      "type": "string",
+      "initial": "Hello from my screen"
+    },
+    "accepted": {
+      "key": "accepted",
+      "type": "boolean",
+      "initial": false
+    },
+    "dialogOpen": {
+      "key": "dialogOpen",
+      "type": "boolean",
+      "initial": false
+    },
+    "busy": {
+      "key": "busy",
+      "type": "boolean",
+      "initial": false
+    },
+    "actionError": {
+      "key": "actionError",
+      "type": "string",
+      "initial": ""
+    },
+    "actionResult": {
+      "key": "actionResult",
+      "type": "string",
+      "initial": ""
+    },
+    "p1Title": {
+      "key": "p1Title",
+      "type": "string",
+      "initial": "Website relaunch"
+    },
+    "p2Title": {
+      "key": "p2Title",
+      "type": "string",
+      "initial": "Mobile app beta"
+    },
+    "p1TaskTitle": {
+      "key": "p1TaskTitle",
+      "type": "string",
+      "initial": "Draft launch checklist"
+    },
+    "p2TaskTitle": {
+      "key": "p2TaskTitle",
+      "type": "string",
+      "initial": "Design onboarding flow"
+    },
+    "p1TaskStatus": {
+      "key": "p1TaskStatus",
+      "type": "string",
+      "initial": "doing"
+    },
+    "p2TaskStatus": {
+      "key": "p2TaskStatus",
+      "type": "string",
+      "initial": "todo"
+    },
+    "p1HelpOpen": {
+      "key": "p1HelpOpen",
+      "type": "boolean",
+      "initial": false
+    },
+    "p2HelpOpen": {
+      "key": "p2HelpOpen",
+      "type": "boolean",
+      "initial": false
+    },
+    "catalog_p1-help_root_open": {
+      "key": "catalog_p1-help_root_open",
+      "type": "boolean",
+      "initial": false
+    },
+    "catalog_p2-help_root_open": {
+      "key": "catalog_p2-help_root_open",
+      "type": "boolean",
+      "initial": false
+    },
+    "graph": {
+      "key": "graph",
+      "type": "string",
+      "initial": "{\"schema\":\"vict.flow-graph@2\",\"revision\":21,\"nodeTypes\":[{\"id\":\"project\",\"label\":\"Project\",\"parameters\":{\"graph\":{\"default\":\"\",\"type\":\"string\"},\"title\":{\"default\":\"\",\"type\":\"string\"}},\"ports\":[]},{\"id\":\"task\",\"label\":\"Task\",\"parameters\":{\"status\":{\"default\":\"\",\"type\":\"string\"},\"title\":{\"default\":\"\",\"type\":\"string\"}},\"ports\":[]}],\"nodes\":[{\"id\":\"p1\",\"type\":\"project\",\"label\":\"Website relaunch\",\"position\":{\"x\":40,\"y\":40},\"values\":{\"title\":\"Website relaunch\",\"graph\":\"{\\\"schema\\\":\\\"vict.flow-graph@2\\\",\\\"revision\\\":18,\\\"nodeTypes\\\":[{\\\"id\\\":\\\"task\\\",\\\"label\\\":\\\"Task\\\",\\\"parameters\\\":{\\\"status\\\":{\\\"default\\\":\\\"\\\",\\\"type\\\":\\\"string\\\"},\\\"title\\\":{\\\"default\\\":\\\"\\\",\\\"type\\\":\\\"string\\\"}},\\\"ports\\\":[]}],\\\"nodes\\\":[{\\\"id\\\":\\\"t1\\\",\\\"type\\\":\\\"task\\\",\\\"label\\\":\\\"Redesign homepage hero\\\",\\\"position\\\":{\\\"x\\\":66.66666666666666,\\\"y\\\":56.66666666666667},\\\"values\\\":{\\\"title\\\":\\\"Redesign homepage hero checked\\\",\\\"status\\\":\\\"doing\\\"}}],\\\"edges\\\":[]}\"}},{\"id\":\"p2\",\"type\":\"project\",\"label\":\"Mobile app beta\",\"position\":{\"x\":360,\"y\":40},\"values\":{\"title\":\"Mobile app beta\",\"graph\":\"{\\\"schema\\\":\\\"vict.flow-graph@2\\\",\\\"revision\\\":2,\\\"nodeTypes\\\":[{\\\"id\\\":\\\"task\\\",\\\"label\\\":\\\"Task\\\",\\\"parameters\\\":{\\\"status\\\":{\\\"default\\\":\\\"\\\",\\\"type\\\":\\\"string\\\"},\\\"title\\\":{\\\"default\\\":\\\"\\\",\\\"type\\\":\\\"string\\\"}},\\\"ports\\\":[]}],\\\"nodes\\\":[{\\\"id\\\":\\\"t1\\\",\\\"type\\\":\\\"task\\\",\\\"label\\\":\\\"Prepare beta invite list\\\",\\\"position\\\":{\\\"x\\\":40,\\\"y\\\":40},\\\"values\\\":{\\\"title\\\":\\\"Prepare beta invite list\\\",\\\"status\\\":\\\"doing\\\"}}],\\\"edges\\\":[]}\"}}],\"edges\":[]}"
+    }
+  },
+  "theme": {
+    "schema": "vict.ui-theme@1",
+    "roles": {
+      "surface": "#f4f8fc",
+      "text": "#24425f",
+      "textMuted": "#5a7290",
+      "border": "#c9dbee",
+      "accent": "#4a7fc1",
+      "accentText": "#ffffff",
+      "highlight": "#ddebf9",
+      "highlightText": "#24425f",
+      "focusRing": "#7aa7d9",
+      "disabledSurface": "#e8eef6",
+      "disabledText": "#9db1c6",
+      "elevation": "0 2px 6px rgba(36, 66, 95, 0.10)"
+    }
+  }
+}

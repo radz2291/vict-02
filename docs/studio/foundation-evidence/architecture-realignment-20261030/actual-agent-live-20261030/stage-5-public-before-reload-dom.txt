@@ -1,0 +1,61 @@
+- main:
+  - main "Project planner — nested ownership":
+    - region "Project planner guide":
+      - heading "Project planner" [level=1]:
+        - generic: Project planner
+      - paragraph:
+        - generic: "How to use: select a task, then edit its already-visible title and status fields (Todo, Doing or Done). Use Studio's Save to keep your configured boards for next time — in a standalone preview without saving, changes are temporary. There is no database; your boards live only in this document."
+    - region "Project graph workspace":
+      - region "Project graph":
+        - paragraph:
+          - generic: "Projects in graph:"
+          - generic: "2"
+        - application "Project graph canvas":
+          - application:
+            - group "Website relaunch":
+              - heading "Website relaunch" [level=2]:
+                - generic: Website relaunch
+              - button "Help" [active]
+              - generic: Project title
+              - textbox "Project title": Website relaunch
+              - region "Task graph":
+                - application "Task graph canvas":
+                  - application:
+                    - group "Redesign homepage hero":
+                      - heading "Redesign homepage hero" [level=3]:
+                        - generic: Redesign homepage hero
+                      - generic: Task title
+                      - textbox "Task title": Redesign homepage hero checked public
+                      - generic: Status
+                      - combobox "Status":
+                        - option
+                        - option
+                        - option [selected]
+                    - link "Svelte Flow attribution":
+                      - /url: https://svelteflow.dev?utm_source=attribution
+                      - text: Svelte Flow
+            - group "Mobile app beta":
+              - heading "Mobile app beta" [level=2]:
+                - generic: Mobile app beta
+              - button "Help"
+              - generic: Project title
+              - textbox "Project title": Mobile app beta
+              - region "Task graph":
+                - application "Task graph canvas":
+                  - application:
+                    - group "Prepare beta invite list":
+                      - heading "Prepare beta invite list" [level=3]:
+                        - generic: Prepare beta invite list
+                      - generic: Task title
+                      - textbox "Task title": Prepare beta invite list
+                      - generic: Status
+                      - combobox "Status":
+                        - option
+                        - option [selected]
+                        - option
+                    - link "Svelte Flow attribution":
+                      - /url: https://svelteflow.dev?utm_source=attribution
+                      - text: Svelte Flow
+            - link "Svelte Flow attribution":
+              - /url: https://svelteflow.dev?utm_source=attribution
+              - text: Svelte Flow

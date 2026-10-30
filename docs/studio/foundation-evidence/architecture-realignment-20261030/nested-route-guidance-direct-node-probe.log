@@ -1,0 +1,5 @@
+Parent diagnostic only; not a product test or metadata size result.
+Command attempted a direct Node22.13.1/tsx import of agent-edit-presentation.ts to print its JSON byte count.
+Exit1: ERR_UNKNOWN_FILE_EXTENSION, Unknown file extension .svelte for packages/ui-editor/src/EditorCanvas.svelte.
+The transitive module requires the configured Svelte/Vite test loader. No source or application state changed.
+The independent exact8d8 server-exported metadata check uses that supported loader and separately records32667UTF8bytes with successful frozen capture. The direct Node failure is preserved and is not substituted for that check.

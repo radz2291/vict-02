@@ -1,0 +1,1293 @@
+{
+  "SourceCommit": "8d8be402893a8942b985ad920b32b31807e2ad47",
+  "InputWorkingTreeClean": true,
+  "WorkspaceWorkingTreeClean": true,
+  "Repository": "C:\\Users\\RZ1\\.codex\\worktrees\\vict-architecture-realignment-20261030",
+  "Inputs": [
+    {
+      "Path": "apps/studio/.gitignore",
+      "SHA256": "f97f85b0e91f15c9a45517c5fc6404f218c97f101353ed64d8ad644539fcb92d"
+    },
+    {
+      "Path": "apps/studio/README.md",
+      "SHA256": "768e6a745eb744335d4b217b2bcecb41b962f9af285cab396648c1b0b521406a"
+    },
+    {
+      "Path": "apps/studio/package.json",
+      "SHA256": "bc6902b010e92872e6916bf9f6908e48161bfa992ce9bc5b590b710f85f24000"
+    },
+    {
+      "Path": "apps/studio/scripts/LOCAL-STUDIO-LAUNCH.md",
+      "SHA256": "7af98f28ded09830aca1e19d839cb21546375f2aec9daa7dccb131eac51277d5"
+    },
+    {
+      "Path": "apps/studio/scripts/demo-target-s902.mjs",
+      "SHA256": "e797ffa42e8f0ecc0c67d24b9286094f1592775842e85a963b72f8f92ef15a96"
+    },
+    {
+      "Path": "apps/studio/scripts/demo-target.mjs",
+      "SHA256": "e2b323cf965fa8314ee7ed900012031ec76f25dcd9e646dff5a39c402a695adb"
+    },
+    {
+      "Path": "apps/studio/scripts/launch-agent.mjs",
+      "SHA256": "df972cff336000d8a4cfd8d723a69e98cedd1190c28cf63b7107d27736c8b77c"
+    },
+    {
+      "Path": "apps/studio/scripts/prepare-build-stage.ps1",
+      "SHA256": "4a538a8d09b19fdcdb0fc6f3cb8fc51b579419cec4d5cd4d0f68d13018b65f88"
+    },
+    {
+      "Path": "apps/studio/scripts/s902-journey.mjs",
+      "SHA256": "9fc3f63685a82ed48032356ddd24ccc075f00acdfbe20d918e545b71f8bfae9a"
+    },
+    {
+      "Path": "apps/studio/scripts/start-local-existing-config.ps1",
+      "SHA256": "d2f97f1bb2f31e9d632737f2dbf4c4a9cb1a2d9ea0498793e81dc12bef64fac7"
+    },
+    {
+      "Path": "apps/studio/src/app.d.ts",
+      "SHA256": "afcef5603ced4bdd9ec0f91701c94604a4077ab0a90a593051b7da05de1ce0f8"
+    },
+    {
+      "Path": "apps/studio/src/app.html",
+      "SHA256": "3ff04fbb33dde51a446d5b81688b04cf82a2afc5b4eb3eefdb7e7439a1003c9e"
+    },
+    {
+      "Path": "apps/studio/src/favicon.svg",
+      "SHA256": "9a22bd68e5ad5069c969f5019333856d69f23f6accba3ab3fc5543eee40be81e"
+    },
+    {
+      "Path": "apps/studio/src/hooks.server.ts",
+      "SHA256": "4d50fc8d24666911d3132c596b861474c8536e5589293d9979b904007de03ad0"
+    },
+    {
+      "Path": "apps/studio/src/lib/application/definition.ts",
+      "SHA256": "a99326e07cb145c6687366cde9af910621644e81745f5932d59da2d667c897bb"
+    },
+    {
+      "Path": "apps/studio/src/lib/application/index.ts",
+      "SHA256": "ae681e70daf0ee90b46abe48e7014a868d7f05122040b35f34476d68bf1067e0"
+    },
+    {
+      "Path": "apps/studio/src/lib/changesets/changesets.ts",
+      "SHA256": "bca870d0b87f95bd1eb938c032c447dad2f16fde2ba72f9ff8d6e707a6d663d6"
+    },
+    {
+      "Path": "apps/studio/src/lib/components/ConfirmationReview.svelte",
+      "SHA256": "e70e16e738cee9de47be1e02f96f6cddd80c7e349c878b5b3d56e46f13c56b77"
+    },
+    {
+      "Path": "apps/studio/src/lib/components/TargetConnectionStatus.svelte",
+      "SHA256": "4e3b1747635d637f2dd767cb594d38ee1cc0e129b3d6910931c3b3bd1a8e88d4"
+    },
+    {
+      "Path": "apps/studio/src/lib/components/registry.ts",
+      "SHA256": "001f73191f5447a43166fc16dffa3e4d7957164430c932dd0105e6a60b40a168"
+    },
+    {
+      "Path": "apps/studio/src/lib/confirmation/confirmation.ts",
+      "SHA256": "e08269501f90c2970b4702fc316c4e5e84e0b986c9992c2b2ca72fd6b4e0f24b"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/AgentChat.svelte",
+      "SHA256": "9dff304002e23f55d48467ebec6bb894fc440426334f6d9c6388e00755412d7d"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/AgentTurnEvidence.svelte",
+      "SHA256": "c58dbc272198f72f0fe4861f123030ba160e521eae12dbf6fe3647cb934980f2"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/AuthoringGuidance.svelte",
+      "SHA256": "514b64c618566bf91b2f1a00d90f1e0a6116a92dae93f461cfd9330f4f6dddc8"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/CompletionShowcase.svelte",
+      "SHA256": "6f8939dde3fb3e1e08bc69ec7aea63943abd4a09d507c4860c45e60f2d4db87f"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/CoreAuthoringShowcase.svelte",
+      "SHA256": "e99840115b004295f7e8a748091676f1963e863b84c4576e65ac12e5874ccb1f"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/Cycle14Showcase.svelte",
+      "SHA256": "79ac1368a26a35f73c037a99b967f6de64cd5733dd801176f39fe7ab8b4e7ba4"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/DataEditorHeader.svelte",
+      "SHA256": "d55fda37381952c8ee7a0c5696f132f0d3aa1e475c6856d52dd8631a81e8a26c"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/Designer.svelte",
+      "SHA256": "6698056b408f6e586b11daf0e6fe88f433acf3f65b6f835b792fbb556ab4c395"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/DocumentPanels.svelte",
+      "SHA256": "a665d7216591cc6e84e343171abf4f3e0e86a0733da1a55916c5840475270684"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/QuietChatShowcase.svelte",
+      "SHA256": "c42bf49fb2ab61b5956aacf58cf7a6825b08cf90571028a95f959aced05969f6"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/SelectionHeading.svelte",
+      "SHA256": "1f154adb67ee95f2ee9ea747e7a7ae71521254fac2ba7a99dc087a1f97783c41"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/SelectionPanel.svelte",
+      "SHA256": "d1f03d3b8c97bc1557dfc68122dc109db267e19ba9fdddf8f62a94d76c6c1614"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/SelectionRelationships.svelte",
+      "SHA256": "3a5e70f5152e88b8c4aad454c1e5176a7c26dbbd63ce37d54fff7bf8a4b60996"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/SelectionSections.svelte",
+      "SHA256": "3b1217f842304ee88e86de0a4f0305c3dfe074bf04289286285a8678b8a48057"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/SharedStyleShowcase.svelte",
+      "SHA256": "a739b69c11a486aeae8250ef549491bcfbb6011aeaf45ffb1f497f8c2c7567b8"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/SourceDetails.svelte",
+      "SHA256": "b6bea2b7bec7f2f64f7e49e5cdc5a95e74646f5a61a75d4e16c257a19fb45549"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/StructureDock.svelte",
+      "SHA256": "121f47dba97fb59a959c74c3a9736ac56de259384d9d8f317f519cac207cc10f"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/StructureEdge.svelte",
+      "SHA256": "b3dd0e3a1fb0a17fc90e8686e1b464aa6895483d6df7bcccd1cc851109da9ed6"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/StructureInspection.svelte",
+      "SHA256": "c5b1ee0016927f5542459e9031b78f6274196e7697bd76cc51bbfca3f798b28e"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/StructureView.svelte",
+      "SHA256": "0aa1e673dc3fc26356522b604b5c4027bf95b012eafdba2582878691fb8d08e1"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/StructuredSourceNode.svelte",
+      "SHA256": "973efe1f4ed4cbbfaa01fbf1d6bdc737fadc707ad3d7fd01ff0d656d047d9c5e"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/StudioShowcase.svelte",
+      "SHA256": "5acd82e87647cb12aaa110ee71cc2ba687c7bcb9943831d058a5a7939dbadb81"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/TryScenarios.svelte",
+      "SHA256": "18649998c5f814a1a31df89d522084bf885d5ad9187003c543c1f7b299a4cf50"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/WorkspaceBrand.svelte",
+      "SHA256": "0d38c3a849254166f4e8eb4eff10b050119613880ae6f803769e7444696e9dec"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/WorkspaceContextMenu.svelte",
+      "SHA256": "edaae8e2e9edba1a808f8e5b83dfd220599d698de6f13fee9fde9930e28c1d7b"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/WorkspaceDetails.svelte",
+      "SHA256": "415ecd3db5f8e023a1a8248597fee611ef63b0a9c9257918e829e90119a2edf1"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/WorkspaceMenu.svelte",
+      "SHA256": "3dc2ae7432fac69c2d0dd2bc31017136dfa4f64b380da02376227635f4a349f2"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/WorkspaceModes.svelte",
+      "SHA256": "ff1a2a71b1212465ec0c3ed03a9cefe5d7a4606520eff0987ef07be166bb32ca"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/WorkspacePanelHeader.svelte",
+      "SHA256": "78b5c4217c28e8cdea837fdc93d4ef6045a7312441807316acd504bd9377b898"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/WorkspacePanelsShowcase.svelte",
+      "SHA256": "58feea411216eb2720d9fb2e5d76c484c71bb8dd4e73e66344e9d752d58a81eb"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/WorkspaceSelectionDetails.svelte",
+      "SHA256": "f59bb4383b44e5c17d919916bde093cbb124352e7e763eb50e66117f4e70c2a6"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/WorkspaceSubmenu.svelte",
+      "SHA256": "2ea8d157dab7521e32e8700f7a82e7caee67899d7b84c4828d790b61fcc155a0"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/WorkspaceToolIcon.svelte",
+      "SHA256": "192d8893a0d492568d07c5ae921fb06909d148c95e8dea9625109934e9f1031e"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/agent-discovery.ts",
+      "SHA256": "59e62f59030b07863f221d21cc5d71d0ff9ed86402a44ca9d03f3ab53d465841"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/agent-edit-presentation.ts",
+      "SHA256": "c17abbb81c82e0f982407847b624186d4d73bf441891e6dc5d224d0c33078d3c"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/agent-edits.ts",
+      "SHA256": "c2f7cecffae578beb930f7e4c55b1fc588ebbfe75cbca2e86473c7519795d460"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/agent-knowledge-read.ts",
+      "SHA256": "5562596f53831afade4a84c7c03ac7713bf917f65dcee1514937b40fa9e78af6"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/agent-outcome.ts",
+      "SHA256": "43227416ab1935b82416295aafaafc1539277e135c5071e65612211032c6c8c3"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/agent-preflight.ts",
+      "SHA256": "12166f51d851c0f2bdabb05ca58c9eb51891d3779a6ec421bd040c8d2fa4eed7"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/agent-progress.ts",
+      "SHA256": "f287163bdb8a2ae110c6192408120fc73cc47c3718c9a838adec8e8d53f093db"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/agent-reads.ts",
+      "SHA256": "455d2b14ae4d6082cb066bdf8a23eb7aecbc88f77814395f39a8747bfe5fe1f7"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/agent-transport.ts",
+      "SHA256": "3a0a5374f3d14c4040e14dda17d2ca6382b718329bba27123bb54aed45bcec02"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/application.ts",
+      "SHA256": "32795e4f46f3221aa5c650add1ed6c9d576e71d34ef50e109fd68d2f0ba18002"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/authoring.ts",
+      "SHA256": "775bd20f5ba7d30adacfdf0b2a862e993e7b3ee180e40194031aa7e3320eed1c"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/capture-evidence.ts",
+      "SHA256": "404ff5a908a4a9114d3ee1a7f8a18837aeefe3e5c5f30cc048bdbc69f5096011"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/designer.css",
+      "SHA256": "5562fc0ade37307f71d5c44890f7a84c1732e905fdaa4d128ffea8d9d9ab1b37"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/disclosures.css",
+      "SHA256": "31ac26638980b7c371db0bbad6570e7deb4b051d0435264e1181a8780a200aa2"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/execution.ts",
+      "SHA256": "d723ed97ee0a72ba3461b8661f1a3d2f3cf73ad20627e5d6960f4f44091eb9f6"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/foundation-examples.ts",
+      "SHA256": "eeb58f448dd2f54d193e0b4e0d5317e29ad86d507efe60ac33c8e5485d683727"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/graph-authoring.ts",
+      "SHA256": "4d001d71470f8f652d0d5da2054d28c9c6c70dc297dc858432c91e1dfa6c4688"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/graph-edit-schema.ts",
+      "SHA256": "29d1e086e294e7c08ab443f3d01fff937a3a3779761fd161c24fb50ae1771362"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/graph-history.ts",
+      "SHA256": "6f3cb5a82a4e08be1034b5910f65fed30f98fee6084ae6f96556677e035a24b3"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/graph-runtime.ts",
+      "SHA256": "f968d25bc491f9f26bd2e83383ba5a2e39ceb95df2ab9734c37fef4d23ceb6f5"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/media-assets.ts",
+      "SHA256": "11181194a286bc2b1fe64bcadab62103d36d1547cfa6822f30d23b65facb4d40"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/placement.ts",
+      "SHA256": "68bf56e9f264fb8c4b3f65a2689a8d7baf49f6db20c805cdbf30605d11b0d696"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/presentation.ts",
+      "SHA256": "6e2ca71e8eaa36397aa368b5d7ad4b80a3a4a8e644ebf7c28afc3b51afc1c8aa"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/preview-host.ts",
+      "SHA256": "43ec6bc6a3a93b0868907cf1040f7a173a10566467b45dd8a269bc66549b44d7"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/preview-state.ts",
+      "SHA256": "29fcc52a67a3cf5295160e5c6e9a90989ba9a845ed2653920978f533bf0e16b4"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/preview-visibility.ts",
+      "SHA256": "b4781ba82e5e4cc3ecc1461fc618b9c6421f50c945404d37531da2cf023ddce8"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/provider-limit.ts",
+      "SHA256": "1067b55801242244e71a803c82bd2c37ed1f25a05d0d630de1e1e6274178709b"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/recipes.ts",
+      "SHA256": "7017bf3ab4d08d6cc82c2a1cc4e85efb01b910af08d70319d18e8075ee7852cf"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/selection-context.ts",
+      "SHA256": "e654623835b482f26ea9c1efd834273cdae495c5cf44a5d866bd4aa35dd842ca"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/selection-presentation.ts",
+      "SHA256": "a03740c1fea8a76dcadf1e360a56c543d8fc9083033ad248c1fd894b759bc736"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/selection-relationships.ts",
+      "SHA256": "0c93ca413c749a06182429781601f212542b3341804430d63a5830b8e0ca520b"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/showcase.ts",
+      "SHA256": "c909dd5d91c788b05e44bacf4031aa5454cc9c4b0f1575ccc2c3e99b929be91f"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/source-import.ts",
+      "SHA256": "a1b44daa5921033ce7d788a51276f96b747351e85c8266515bc9b9b173ba606e"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/source-runtime-refresh.ts",
+      "SHA256": "8d1bfd7b3b9b2f78a4e4479fb50987322bc0c3530fb4d5692aab49e74eb4c4bb"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/storage.ts",
+      "SHA256": "b60edb2f71dee391effdeee8afb520bb1d0ff64304e5a2e3dcb3cbd0286a6dd3"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/structure-behavior.ts",
+      "SHA256": "8225eea16fa510ef63f1fbb86dc465b44a9eca03e319c8370d571796ac7a7ff4"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/structure-connections.ts",
+      "SHA256": "cf80225c4b0980ccdc4c73849650621cae41eea36bf43cb25459d7253275d3a9"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/structure-edge-geometry.ts",
+      "SHA256": "4b3bfb0b639c55b5a96efe5cdfbfe540d53bdbf236da70a761c46022d55b9e83"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/structure-placement.ts",
+      "SHA256": "764610662449585c9f803172aac17a5bff90170f55d99bbf8e0cb153c7091b58"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/structure-semantics.ts",
+      "SHA256": "e93b1482f3e7a74c5f97301bd55c0309b2718be3c37037a88b308f1ed4b03e0d"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/structure-trace.ts",
+      "SHA256": "a550c99df67011287a7ae91c9c543145ec8cef8cf14d04f9aa7264d5aedc32e5"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/structure.ts",
+      "SHA256": "1102455cae21c584848d487bf21f67931976cd50b1bffabe188cbd701a9938cb"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/studio-cards.css",
+      "SHA256": "66f12593d0e5a951c88042495f8387398ff06c2617271f19831e398329a2b61c"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/studio-controls.css",
+      "SHA256": "ab5c90dc0a83af41b7097428a85cb23651310acc5bddc33d7a1fbf2dc57895d3"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/studio-theme.css",
+      "SHA256": "327f44d40b4f0fecc097f580e72250c51ce315a16bd4cbe4bb6dab6cd3d293d0"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/studio-typography.css",
+      "SHA256": "c59aefa99952662cff27ffd69ac4feb7ed4513b45c0e4331bac7ee3110939051"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/test-scenarios.ts",
+      "SHA256": "2e6dfe7060e83b1d70118858c772e254a7afb9c36c802a9b545c7dbd40ea257b"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/tool-evidence.ts",
+      "SHA256": "62802433913ce7d2bff3561c41497f17455ef7f689929d39dc7bf8faa1b08027"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/turn-records.ts",
+      "SHA256": "c5384f40b0bf8c341daeca1695b09058c8589ef10844bbdad469ab58165f8cea"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/visual-observation.ts",
+      "SHA256": "2f6559bbb038ec575f32b6d1b8c4279910c48241536b328a437aab91efeac1e7"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/workspace-context.ts",
+      "SHA256": "7adc99b28b4015ef7ad1627ffbdbe471b9717694ba4c43e29c6be0b828b82e1c"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/workspace-panels.ts",
+      "SHA256": "58adb2a062294d6d4d623e0967dd1c2075aaa2df4f84af39d2fe108f247ba6b2"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/workspace-selection.ts",
+      "SHA256": "1e6f25b6ea0743b9c92a5c3e0e6f94380dc3b91153aff72e5d8a24480fa151ff"
+    },
+    {
+      "Path": "apps/studio/src/lib/designer/workspace.css",
+      "SHA256": "4df67f6d5391ad2cafa97b01975fd0fc1b34b519ecb3d5f4908a5f529de009d2"
+    },
+    {
+      "Path": "apps/studio/src/lib/server/adapter.ts",
+      "SHA256": "0070026c6bd23cfcb6cff08beee5209936f80397698d286845d7a3a0583bcb84"
+    },
+    {
+      "Path": "apps/studio/src/lib/server/agent-task-context.ts",
+      "SHA256": "9f62508d5d7c39c4cbe35dd3786aa7b1b2cf90230cf4ec85925f2f159e2c198c"
+    },
+    {
+      "Path": "apps/studio/src/lib/server/app-server.ts",
+      "SHA256": "f0c19342ff073a741c795b0888d3abf79f81490e52a3bb5350b63749d351c645"
+    },
+    {
+      "Path": "apps/studio/src/lib/server/changeset-transport.ts",
+      "SHA256": "aeb90f2c191c4e55b83ff1e089a9c3dc5f8e00aa777a92b639360c37c4d1f684"
+    },
+    {
+      "Path": "apps/studio/src/lib/server/confirmation-transport.ts",
+      "SHA256": "231bb060130cb8c31a500f61e405ccde784494e73d54dabb25ed9ab0704a2fed"
+    },
+    {
+      "Path": "apps/studio/src/lib/server/designer-agent-http.ts",
+      "SHA256": "06f4f1767fd2a2c324a613f862257b62d3c5c13c6ecd7ca6e327d35720c35b0b"
+    },
+    {
+      "Path": "apps/studio/src/lib/server/designer-agent.ts",
+      "SHA256": "51a54192ec4197824b90898533c5122692c60448cd8a520ea13b36833d339342"
+    },
+    {
+      "Path": "apps/studio/src/lib/server/designer-input-shape.ts",
+      "SHA256": "513139067a9d9e5da2995fd01d547560ad9d2332e8d5d0fab44abf1a0a91048b"
+    },
+    {
+      "Path": "apps/studio/src/lib/server/designer-model.ts",
+      "SHA256": "fd2ea84deebda9cc3c50933ceaf4b9a76895cf7bde5eef1e750f01902a243dfd"
+    },
+    {
+      "Path": "apps/studio/src/lib/server/designer-validation-feedback.ts",
+      "SHA256": "8d0be39981a68365edaf357f18c9c4062f93936d56b5c7622cb5860e93543c5a"
+    },
+    {
+      "Path": "apps/studio/src/lib/server/designer-visual.ts",
+      "SHA256": "041be2a0f72838f86fe629e30da33e33e37c7ea229bf93a56235d9a0debea5f4"
+    },
+    {
+      "Path": "apps/studio/src/lib/server/provider-limit.ts",
+      "SHA256": "078a7c60219169e92cfdd48459c3a6f6351076efe3469006162c57e80d6ad7e6"
+    },
+    {
+      "Path": "apps/studio/src/lib/server/quellight-transport.ts",
+      "SHA256": "a38b4a6fd73f9d7549eb6c89e3e4758f0daed8cb464437c81ff64bcc3ff50aee"
+    },
+    {
+      "Path": "apps/studio/src/lib/server/session.ts",
+      "SHA256": "0b28e8760293ee808e3076e68184b3061010b3b611cc1142060354e71baa8709"
+    },
+    {
+      "Path": "apps/studio/src/lib/server/targets.ts",
+      "SHA256": "72db2462445ffb3236f5283e91934fcc49b3d8b8355824b3be6eb73ab623d4e2"
+    },
+    {
+      "Path": "apps/studio/src/lib/server/tool-evidence-archive.ts",
+      "SHA256": "369b1b75fd089c7a8916e79702a443d2e1edad2ae7023efbfec5d44dff0f94f1"
+    },
+    {
+      "Path": "apps/studio/src/lib/server/tool-evidence.ts",
+      "SHA256": "724dbf8f5a00b62083d433d2ffaacd99b40cc87de42139ebaefbf9634b2ea553"
+    },
+    {
+      "Path": "apps/studio/src/lib/server/vict-client.ts",
+      "SHA256": "74a1154fcdc002ad9cb7f59223c83da268587ff36f89f15927f4b409af4f985f"
+    },
+    {
+      "Path": "apps/studio/src/lib/shared/contract.ts",
+      "SHA256": "ffe4de76d019915498ebe4a1cc2877bc88f850d26be2c9d79818a5277abb3d14"
+    },
+    {
+      "Path": "apps/studio/src/routes/[...vict]/+page.server.ts",
+      "SHA256": "475107519aefd9a096cfbac0c2f3522a6edeef47c7faec991d2d25ba5f77e2a8"
+    },
+    {
+      "Path": "apps/studio/src/routes/[...vict]/+page.svelte",
+      "SHA256": "e50003f5b25515678869583d43118e7fd3bca46be7c4067d5a63dc7031fbf6a0"
+    },
+    {
+      "Path": "apps/studio/src/routes/api/designer-agent/+server.ts",
+      "SHA256": "625fbd1ca826702f40bc9c8338f079c4e75c117f6a0598890b70d558ce447d72"
+    },
+    {
+      "Path": "apps/studio/src/routes/api/designer-agent/ack/+server.ts",
+      "SHA256": "e0b3773781c569623720358aedf41269d0f3fe30a8f220a3d064c914444a09b8"
+    },
+    {
+      "Path": "apps/studio/src/routes/api/designer-agent/capture/[captureId]/+server.ts",
+      "SHA256": "e1880898d45a88cba18280066dac148938e9613cedea2960f2fef8d4423ba89f"
+    },
+    {
+      "Path": "apps/studio/src/routes/api/designer-agent/evidence/+server.ts",
+      "SHA256": "a4fdabfcf674383b5be1a58f7814e22443b5683ee42d790a9aac476196957f8d"
+    },
+    {
+      "Path": "apps/studio/src/routes/changesets/+page.server.ts",
+      "SHA256": "9a63d036c1cc5fa137a36c80d7c9cbcf3a2fddb5793318baf0df62218e977b88"
+    },
+    {
+      "Path": "apps/studio/src/routes/changesets/+page.svelte",
+      "SHA256": "de3247d21307beb328b0c76b26dbfad3e0c0e81b0b10c4b4e7d9d1aaef488e26"
+    },
+    {
+      "Path": "apps/studio/src/routes/confirmations/+page.server.ts",
+      "SHA256": "9260b0af4dbf356afb166a5092d94cea3878a2dd67356ad7dc68110c5b73a82b"
+    },
+    {
+      "Path": "apps/studio/src/routes/confirmations/+page.svelte",
+      "SHA256": "109f7a4b8a6155b8c15bbe8e765cc6ec56bbfb827fc5e85eec0d5f09cd818fd8"
+    },
+    {
+      "Path": "apps/studio/src/routes/design/+page.svelte",
+      "SHA256": "aecfde85707af7c56297f93a372e2c3046797f5599fc3f8f76a8c8e4d64ae5a5"
+    },
+    {
+      "Path": "apps/studio/src/routes/design/+page.ts",
+      "SHA256": "a54a1e28428d8ca245301c73b7c46d31ad63772f13920b6305d64817d2f9f4e1"
+    },
+    {
+      "Path": "apps/studio/src/routes/login/+page.server.ts",
+      "SHA256": "ac4f2785c6de1d3404575eacd76736fce650606c52a4846ed8df976fbe9e351b"
+    },
+    {
+      "Path": "apps/studio/src/routes/login/+page.svelte",
+      "SHA256": "d82b9ad63c425853fd0fef01ae0435c8a41482ec6618d379d3333e07f473c9f5"
+    },
+    {
+      "Path": "apps/studio/src/routes/product/+page.server.ts",
+      "SHA256": "79e67a6e7731b9414eaedc25750442046558d5889a12fd362e655e71d09905bf"
+    },
+    {
+      "Path": "apps/studio/src/routes/product/+page.svelte",
+      "SHA256": "166a95912d516e85aafa593fce318d0b642086e6598da26168630265f4a05096"
+    },
+    {
+      "Path": "apps/studio/src/routes/run-screen/+page.svelte",
+      "SHA256": "fdcc82af4620d911bb064fc0bdff8a91a4ece3293c6eb7b357bbdfebf836764b"
+    },
+    {
+      "Path": "apps/studio/src/routes/run-screen/+page.ts",
+      "SHA256": "f21b64d615dfbac548e7298fe8d130dfc7e0e148ffb00d6945ac470da791e002"
+    },
+    {
+      "Path": "apps/studio/src/routes/runs/[runId]/+page.server.ts",
+      "SHA256": "b0dd79cde24b39f37754fe016fa38b5861abaac39c737a78590567f87e60100f"
+    },
+    {
+      "Path": "apps/studio/src/routes/runs/[runId]/+page.svelte",
+      "SHA256": "caa96c4f1447dedd40d0ef1996439ce916f9022d23389f937d5e6f68924c34f4"
+    },
+    {
+      "Path": "apps/studio/src/routes/runs/[runId]/run-detail-reads.ts",
+      "SHA256": "028279a450d83f8af1dff8b2f27156cb84be279a20d55cdc984b0b623f949e46"
+    },
+    {
+      "Path": "apps/studio/src/routes/showcase/+page.svelte",
+      "SHA256": "ffc96cfa378b8e19a3c634143d55002b58962fc09e355acf80f6b370b82f3d1e"
+    },
+    {
+      "Path": "apps/studio/svelte.config.js",
+      "SHA256": "9180a1181e78f42417857e083c0e3f0e103e29822319e70cf5aa9e8d93619a7e"
+    },
+    {
+      "Path": "apps/studio/tests/actual-nested-route-baseline.test.ts",
+      "SHA256": "a09607b45d8afb8eccf36042484d258988ba9c6bc6734f3a3212faa17eaea98f"
+    },
+    {
+      "Path": "apps/studio/tests/adapter.test.ts",
+      "SHA256": "91487f58bc8a9f453a4032239c357eb5bc97f682ae6cc9c3378e2a56d73f3200"
+    },
+    {
+      "Path": "apps/studio/tests/agent-classes.test.ts",
+      "SHA256": "db55208610e3e82517bc44d7eb90bca258af62334b934eb28f876bdcc46de438"
+    },
+    {
+      "Path": "apps/studio/tests/agent-edit-slot-scope-presentation.test.ts",
+      "SHA256": "f5ab6ee8f7738d060753ca306a59d046bc8b277c58f60b2ce0a93273de916f78"
+    },
+    {
+      "Path": "apps/studio/tests/agent-knowledge-read.test.ts",
+      "SHA256": "ca3bb49e9057ac9079bea76e2f7bd1bca732cadaa638c958776c73e59ff90455"
+    },
+    {
+      "Path": "apps/studio/tests/agent-outcome.test.ts",
+      "SHA256": "af332aa1c934ed18d138c7b7612d455e6db30b3496318129eccd2db6a13800ef"
+    },
+    {
+      "Path": "apps/studio/tests/agent-read-adapter-schema.test.ts",
+      "SHA256": "0525c1a3bf1ddc7acb5d222246355ea5dbe8b0f8df537cec02e713f4f1e91940"
+    },
+    {
+      "Path": "apps/studio/tests/agent-read-contract-repair.test.ts",
+      "SHA256": "e3fc6163dd597a8bdde8dfb6fa1a8d2e90bf08a645321a25a425082ed3c0fc95"
+    },
+    {
+      "Path": "apps/studio/tests/ai-authoring-exposure.test.ts",
+      "SHA256": "7900259b48587d04726af0d7ea9f2ba767ce492f164f4d54abd8d041b50d506c"
+    },
+    {
+      "Path": "apps/studio/tests/ai-exposure-independent.test.ts",
+      "SHA256": "5c48badeb6a475eabe4e19f228c5a82e94438d9427895710d6bff0f528d4556e"
+    },
+    {
+      "Path": "apps/studio/tests/app-definition.test.ts",
+      "SHA256": "3495eb384895885b7800b22237d8a20a77a0758c8ea1bea1419b0185d6a8b177"
+    },
+    {
+      "Path": "apps/studio/tests/authoring-discovery.test.ts",
+      "SHA256": "94de63ca40095f5bb454987b4c4d0698cd42d24ed6cf4533dc1b6feb6e3f1c3b"
+    },
+    {
+      "Path": "apps/studio/tests/authoring-foundation-continuity.test.ts",
+      "SHA256": "3bb696ad0ff40ff3eeaa30b4ffc46506cd48a2e7ebf6ac2e8546e5825ba69e00"
+    },
+    {
+      "Path": "apps/studio/tests/authoring-foundation-evidence-route.test.ts",
+      "SHA256": "d828ef06535c2c10b754af21059a8e313b1a45c9b57541d1a7c812deca1c3677"
+    },
+    {
+      "Path": "apps/studio/tests/authoring-foundation-host-state.test.ts",
+      "SHA256": "c9f7a691669f34b0d8e5e6105183844975d3442a0390611a5d074b998273ead7"
+    },
+    {
+      "Path": "apps/studio/tests/authoring-foundation-integration.test.ts",
+      "SHA256": "2d841bf0b5ff5e626b6d6544e9f75335f2425547ebf795dd520ebc1cb50e2fb0"
+    },
+    {
+      "Path": "apps/studio/tests/authoring-foundation-observation-only.test.ts",
+      "SHA256": "82f42545157c1a0ba6fe2c45bbc730712c462f058816542192ca283aa698dca4"
+    },
+    {
+      "Path": "apps/studio/tests/authoring-foundation-task-context-integration.test.ts",
+      "SHA256": "85a09c147d149d0c7e2af44a4e3a6ff909072edc2e2e0cbdabfc9fc7bcdc22e6"
+    },
+    {
+      "Path": "apps/studio/tests/boundary.test.ts",
+      "SHA256": "151895ec84b4cf3aad44bef3ad401d8f52eaa1bf6e53aeaab722e866b602ae30"
+    },
+    {
+      "Path": "apps/studio/tests/capture-scroll-browser/frame.html",
+      "SHA256": "1c86e11e77cf6fe168044808184ea034ec1ec357956b65a2ce26b3341ebc5cbe"
+    },
+    {
+      "Path": "apps/studio/tests/capture-scroll-browser/index.html",
+      "SHA256": "7fe7366d385d15abceac99f79c1edf2f7df424b12a7bfa8d508e32d7261f89f2"
+    },
+    {
+      "Path": "apps/studio/tests/capture-scroll-browser/main.ts",
+      "SHA256": "039f6659b49636de2425ca3597dba318d24d8c172610ee8f71af536d12fc2d2f"
+    },
+    {
+      "Path": "apps/studio/tests/capture-scroll-browser/vite.config.mjs",
+      "SHA256": "40a9e29da88653a2ee6a6678f60b5279dfef5a52943b6f92d35d235285bb36c7"
+    },
+    {
+      "Path": "apps/studio/tests/changeset-contract.test.ts",
+      "SHA256": "e797cc04ac7242778eb10febfd1f43b45fd277ac33d62a2dc4d785c235efd79d"
+    },
+    {
+      "Path": "apps/studio/tests/confirmation-contract.test.ts",
+      "SHA256": "330eaa2d6b3971ab959d04e98879765ed8fd8360ce65407fe6d1dd42f23ced8e"
+    },
+    {
+      "Path": "apps/studio/tests/designer-agent-cleanup.test.ts",
+      "SHA256": "2b2c1aa7e7e095e017be5b5fb47ef2932a7c9e0d95c546c75bea1c3c9e96b7c0"
+    },
+    {
+      "Path": "apps/studio/tests/designer-agent-completion.test.ts",
+      "SHA256": "9be1418e10bd0d2919e8b2b7aa1792f6e09d930628373a8e95a512dc9f6db678"
+    },
+    {
+      "Path": "apps/studio/tests/designer-agent-live-completion.test.ts",
+      "SHA256": "8b0e7cc9c7a9567b83e2cf18ffda68e1203200390524b316fd1a39de2901a05f"
+    },
+    {
+      "Path": "apps/studio/tests/designer-agent-live-final.test.ts",
+      "SHA256": "c5fa11c78b82cf2ac6454342b1480f7101688f46b6dc178a7d300eea503ac6fc"
+    },
+    {
+      "Path": "apps/studio/tests/designer-agent-mastra.test.ts",
+      "SHA256": "15900bf07050d628d6b31430e5b96358272dadb1c3d3c95c4c3e68302087bda2"
+    },
+    {
+      "Path": "apps/studio/tests/designer-agent-stream.test.ts",
+      "SHA256": "3ca9c0f0f1acebd216fa1561e4d43c26481764f09b9e9398f36eca44c1ead7b0"
+    },
+    {
+      "Path": "apps/studio/tests/designer-agent.test.ts",
+      "SHA256": "221fa0928d8e20738fb8f268d45f8b26507f23c2bef31889527e1495d33ee291"
+    },
+    {
+      "Path": "apps/studio/tests/designer-completion-independent.test.ts",
+      "SHA256": "661f606d129e63c63cf748bb4c316198033da69f4688c094b6ed57587a947f49"
+    },
+    {
+      "Path": "apps/studio/tests/designer-context-placement.test.ts",
+      "SHA256": "fc2be21c6766f27c12982a97e6ae33897957915ab24bd0ce93fba7cf756a6f9e"
+    },
+    {
+      "Path": "apps/studio/tests/designer-core-authoring.test.ts",
+      "SHA256": "769cbf51ff33581d9d35dd187a3a439bef3899f24ed9516cd22c0028198783c9"
+    },
+    {
+      "Path": "apps/studio/tests/designer-coverage.test.ts",
+      "SHA256": "81041aaacc7c758f88fa34017cba4b8f702b5d4c71da8f7d7940b9a4bb49d138"
+    },
+    {
+      "Path": "apps/studio/tests/designer-cycle14-efficiency.test.ts",
+      "SHA256": "e76a7f219866b076881ffcbdd07afd13894b7722090847322837f99550091abb"
+    },
+    {
+      "Path": "apps/studio/tests/designer-discovery-live-repair.test.ts",
+      "SHA256": "bbc6593c49272bc299324590244a2112bda5b703a26fc77546a73979a59618b3"
+    },
+    {
+      "Path": "apps/studio/tests/designer-final-source-evidence.test.ts",
+      "SHA256": "5e559d092482e9e56af90261ce4e4a5b3d2c81852bd815864f834ded7cc09168"
+    },
+    {
+      "Path": "apps/studio/tests/designer-independent-verification.test.ts",
+      "SHA256": "c08c1a0128fa43f64d40436266e7fd83e7d13d9806f24df7d84640f71037ec30"
+    },
+    {
+      "Path": "apps/studio/tests/designer-input-shape.test.ts",
+      "SHA256": "5d5cb4658d56e2bebfe6cb24c22472d976c52efaf44f233445d7f9b00906b58c"
+    },
+    {
+      "Path": "apps/studio/tests/designer-model.test.ts",
+      "SHA256": "c704a0704647d225cc553063b2e1a6f20d5492987a9d07a87846a7b416c5290d"
+    },
+    {
+      "Path": "apps/studio/tests/designer-preflight-independent.test.ts",
+      "SHA256": "76e262cf462428ca509bf2826e4a478d1fea1eafbf2dc69e1e86c6cbca549b9b"
+    },
+    {
+      "Path": "apps/studio/tests/designer-reliability.test.ts",
+      "SHA256": "0c90de751d25d6a62bd1ae68f2dc64461a4c5f24465ea5e8463006c450206847"
+    },
+    {
+      "Path": "apps/studio/tests/designer-required-slot-verification.test.ts",
+      "SHA256": "f28c5ddd4e41e40cd94fc6847206b445cc5886e47f5056a8793e76a16b960ee8"
+    },
+    {
+      "Path": "apps/studio/tests/designer-required-slots.test.ts",
+      "SHA256": "cd688c4ae6566533443cf1cc106bfc13ee985ef1d3f8c149401d53d406cc0492"
+    },
+    {
+      "Path": "apps/studio/tests/designer-response-boundary-independent.test.ts",
+      "SHA256": "72aa0dc33fc5411031d07bef4844c0f4454d3d172f9a2b2b8f01f82e74d3d5d7"
+    },
+    {
+      "Path": "apps/studio/tests/designer-response-boundary.test.ts",
+      "SHA256": "1cd296e50b8abbe72e60092dd2c2447546a110f3ba0792d3b17f8a13c1e1e0de"
+    },
+    {
+      "Path": "apps/studio/tests/designer-schema-completion.test.ts",
+      "SHA256": "234fec2d81979129abe156ea1b95b954a86354a73b5154b6a32ab8c70d4cc4a6"
+    },
+    {
+      "Path": "apps/studio/tests/designer-schema-independent.test.ts",
+      "SHA256": "32723a57f358f895c4b6f20965083461bd6bb6b9b21c404f1538d642ad49fdef"
+    },
+    {
+      "Path": "apps/studio/tests/designer-tool-evidence.test.ts",
+      "SHA256": "2cb61a84a963b43652bbd34889355460193d552d4c5e715903e0d7c979dadbde"
+    },
+    {
+      "Path": "apps/studio/tests/designer-transport-independent.test.ts",
+      "SHA256": "f348089b1610551850b04ca0cfb6323e9a569f1a10cd1c73f3a9b55b0f4460f4"
+    },
+    {
+      "Path": "apps/studio/tests/designer-validation-feedback.test.ts",
+      "SHA256": "52c6b15542aadc6932623742ebb519a2f7ce166600c5567d29fe965aa44e6fc8"
+    },
+    {
+      "Path": "apps/studio/tests/designer-visual-client.test.ts",
+      "SHA256": "eee205dc56ff0f43c1f5cc6dff0305cd7b277e1355ea3ca48f4919b08f882f0d"
+    },
+    {
+      "Path": "apps/studio/tests/designer-visual-independent.test.ts",
+      "SHA256": "4c9245816db640580cdfe72379f5888a10f440cace0944cf179e80110bdd8d64"
+    },
+    {
+      "Path": "apps/studio/tests/designer-visual.test.ts",
+      "SHA256": "0e8831c8b7d183c58a371713143e1fa839939f0368bb8e0e6040c542f2abc910"
+    },
+    {
+      "Path": "apps/studio/tests/designer.test.ts",
+      "SHA256": "385d5d33a095e9e3457c3d956c3540cd35eed2128b65f926726acc911cd0814e"
+    },
+    {
+      "Path": "apps/studio/tests/fixtures/FoundationConsumer.svelte",
+      "SHA256": "7bec8bed173ad5637611813b4ff987504ce4447a58aac3fba9d029407b396a81"
+    },
+    {
+      "Path": "apps/studio/tests/fixtures/HistoryEchoCanvas.svelte",
+      "SHA256": "50f934b66fcd795bd36a8a01fc3abe11b02f05902c09f89ec160828cd76c32aa"
+    },
+    {
+      "Path": "apps/studio/tests/fixtures/HistoryWorkspaceCommands.svelte",
+      "SHA256": "ba6ee403780b3d34547af559d3474c4d559340dc17860f8c7d3e2be7e1687e32"
+    },
+    {
+      "Path": "apps/studio/tests/fixtures/SourceEchoCanvas.svelte",
+      "SHA256": "e5e6ca359fdfbc4f129701bf8f120e5af560c0282ad64db0b9ad0ea62f14ee68"
+    },
+    {
+      "Path": "apps/studio/tests/fixtures/nested-route-actual-partial-source.json",
+      "SHA256": "b705984baa01bc83b28dd60e637d9de837a4c3c7911ff2e05e9b7505dfc60f78"
+    },
+    {
+      "Path": "apps/studio/tests/fixtures/pointer-history-actual-source.json",
+      "SHA256": "916d4dc04853bb42e2bc5486c550e739ac4118f9f79a54b365188263e30ac1d8"
+    },
+    {
+      "Path": "apps/studio/tests/fixtures/scoped-graph-source.json",
+      "SHA256": "372263764393dbac0d2dee1adbd4dd4c3e66917bc5c2dd49736757ead9267261"
+    },
+    {
+      "Path": "apps/studio/tests/fixtures/structure-clarity.ts",
+      "SHA256": "d1c55089147b31e086e492153601855154d85b0e4d507446e9aee6eb2e6035bd"
+    },
+    {
+      "Path": "apps/studio/tests/fixtures/structure-semantics.ts",
+      "SHA256": "7b0d654d97743fd340ea7959d24b3bab3e5857401eba152f06b9d83a79eef8df"
+    },
+    {
+      "Path": "apps/studio/tests/flow-typed-authoring.test.ts",
+      "SHA256": "b220ce382d6d5b6a80736becdcfc0ab4cfac53b9730f0234465465353fe81f74"
+    },
+    {
+      "Path": "apps/studio/tests/flow-workspace-authoring.test.ts",
+      "SHA256": "c8f4598c8139acd5af98c3233c97bd88bfd0814316dd00646ab6349790276182"
+    },
+    {
+      "Path": "apps/studio/tests/graph-capture-browser/App.svelte",
+      "SHA256": "cc629159c535cea467062f3d903413dd4a888808d9f28055ee40e82bdcac8ab8"
+    },
+    {
+      "Path": "apps/studio/tests/graph-capture-browser/index.html",
+      "SHA256": "71143cd1c7d10810812f1da52b2459dc04989c0a2ef7f13226d83b8f36e07f2f"
+    },
+    {
+      "Path": "apps/studio/tests/graph-capture-browser/main.ts",
+      "SHA256": "5d899ab170d1fffa57b660c2706be7309aa1d626b3d8a5fd17eaef1fb2163e5a"
+    },
+    {
+      "Path": "apps/studio/tests/graph-capture-browser/vite.config.ts",
+      "SHA256": "d90bdcb8b3a164a678c4075307681b90f7778f22b0837978c11ea3c72b04cde3"
+    },
+    {
+      "Path": "apps/studio/tests/graph-history-source-policy.test.ts",
+      "SHA256": "aa1a71a4c336a9f27f76fd531e6887d5331b864c6eaff9d53ebbdaa775eecdd7"
+    },
+    {
+      "Path": "apps/studio/tests/graph-runtime-refusal.test.ts",
+      "SHA256": "46af4577b6109dfcfba873b426a406322cb7fa56578c901306e95ee0dd1fae36"
+    },
+    {
+      "Path": "apps/studio/tests/graph-scoped-bridge.test.ts",
+      "SHA256": "44033ca0563c77df9c1803afb77f72625c108369c945122455935efe08912830"
+    },
+    {
+      "Path": "apps/studio/tests/graph-scoped-ownership.test.ts",
+      "SHA256": "39ec5817f028abb656e62c2915db4e9d668b649f8df6e6443e6c5c2cf52cdce6"
+    },
+    {
+      "Path": "apps/studio/tests/independent-scalar-knowledge-20261030.test.ts",
+      "SHA256": "1bbde9bfaf043379b6219cbf2b08569b9fb0dcec4b286c814d59d12a96987da9"
+    },
+    {
+      "Path": "apps/studio/tests/independent-schema-collision-20261030.test.ts",
+      "SHA256": "78777c863e7fe157e75f3d8f03525aefd775c9ac4ec9c617d64b4977c18e280e"
+    },
+    {
+      "Path": "apps/studio/tests/legacy-history-probe.test.ts",
+      "SHA256": "29c216e200867f2132400efec25443d8466f87e2c75c582c5ac068ce7d399a4c"
+    },
+    {
+      "Path": "apps/studio/tests/media-assets.test.ts",
+      "SHA256": "ce0e2d100c7101f97da26931e5797cb4eff68db07fe85893987ff7dba7bf92c2"
+    },
+    {
+      "Path": "apps/studio/tests/media-start-transport.test.ts",
+      "SHA256": "ed16e47452dd1bfd42ff5c43ea52969fecd058d4dce09dd6b772ccae19443219"
+    },
+    {
+      "Path": "apps/studio/tests/native-source-echo.test.ts",
+      "SHA256": "28b82e05636007a99a49379b037a1fa03ca5dabfbec45221d648b69842c884bc"
+    },
+    {
+      "Path": "apps/studio/tests/nested-route-guidance-schema.test.ts",
+      "SHA256": "b3670012ae5701123bc1a85171628d18dd0238944cd11f72d27fe61929a16813"
+    },
+    {
+      "Path": "apps/studio/tests/pointer-history-probe.test.ts",
+      "SHA256": "cd5782d68edfe0d9b3555d2908b6b262bd3aa1a93b7fbc998eeac22ebe5c97c2"
+    },
+    {
+      "Path": "apps/studio/tests/preview-visibility.test.ts",
+      "SHA256": "6fee1d58cf6226f8b9e4dd893a7388bd22b5cdb18fbebeaade0a4b5dff08b593"
+    },
+    {
+      "Path": "apps/studio/tests/provider-limit-integration.test.ts",
+      "SHA256": "e9d5fc25f5657fb1a85cb9ec3d1400de8ea67f98ad771a17ab2a22759d7e0084"
+    },
+    {
+      "Path": "apps/studio/tests/provider-limit.test.ts",
+      "SHA256": "498eac1efbd0c8e8e554632208b221cf8cc70453c4e59ee4869ac095899fb0a0"
+    },
+    {
+      "Path": "apps/studio/tests/quellight-transport.test.ts",
+      "SHA256": "7443e34cc27ec09d13cd6308d0f711ea00c4ef758fb7468e1e229d75ef32b8eb"
+    },
+    {
+      "Path": "apps/studio/tests/run-detail.test.ts",
+      "SHA256": "35238017746c3ce06fe444625ddfbca733c8e5bbf2fb9c27c3dae0fda6c4f204"
+    },
+    {
+      "Path": "apps/studio/tests/selection-context.test.ts",
+      "SHA256": "5b7648f296c93670e649c41e377defb204084eb33146b3cf5159897144852698"
+    },
+    {
+      "Path": "apps/studio/tests/showcase.test.ts",
+      "SHA256": "4f3061fc4e16738c4ad8a0bfdb1e568e76d0832f5ecfabd0ba5dd125e5339830"
+    },
+    {
+      "Path": "apps/studio/tests/source-import-depth.test.ts",
+      "SHA256": "6ded5bee930d3339702da16063ee6bbe4143d0d7c9c8d74a45b531c9631fe8bf"
+    },
+    {
+      "Path": "apps/studio/tests/source-import.test.ts",
+      "SHA256": "3d6b5b16c0db652a2969b686c44dd397cd6a4653e3b46185f5d6fdf7fd716a17"
+    },
+    {
+      "Path": "apps/studio/tests/structure-clarity.test.ts",
+      "SHA256": "62f062b51f4f4343dd9eb9bd88cf95bb6de3a0ac74ef68f07b29a93d3983302b"
+    },
+    {
+      "Path": "apps/studio/tests/structure-completion.test.ts",
+      "SHA256": "be6d1aeb00578c279f6a18c0ece44d47d9295af8bd6f349267dd59408e0bd462"
+    },
+    {
+      "Path": "apps/studio/tests/structure-connection-trace.test.ts",
+      "SHA256": "8c18d851fc630214899b1e612330f5cc60b0060e95e10e6290bdec675d1e790c"
+    },
+    {
+      "Path": "apps/studio/tests/structure-connections.test.ts",
+      "SHA256": "f54deed741801676d659ae11046929ae6d0e9ed5882366fc4aa5ca6a0abcee67"
+    },
+    {
+      "Path": "apps/studio/tests/structure-edge-trial.test.ts",
+      "SHA256": "e8d5c104f06a1944567a8fe62274a401603a1f798c35e6be6d2c2ca81f2ae214"
+    },
+    {
+      "Path": "apps/studio/tests/structure-node-anatomy.test.ts",
+      "SHA256": "da87e633b3ef07dd8b5b4dc9eaf10a7f73c7965bd5a561fa39cc72aecd94585b"
+    },
+    {
+      "Path": "apps/studio/tests/structure-placement.test.ts",
+      "SHA256": "ac349e2a780c46b3e36841d0c49e0b7d4d21cefd56d28f70c7524dd15e310ce5"
+    },
+    {
+      "Path": "apps/studio/tests/structure-presentation.test.ts",
+      "SHA256": "3780672121e220ee25150bedcde57cefe0242f2535fe5792a5d78c35c3da8725"
+    },
+    {
+      "Path": "apps/studio/tests/structure-search.test.ts",
+      "SHA256": "309848b4fa990653f01c6edae7ac0871c8409c70aa20d782efc6606e85c03ce1"
+    },
+    {
+      "Path": "apps/studio/tests/structure-semantics.test.ts",
+      "SHA256": "7f6b8b3d06fc2e1d48a2cc178bd81ab9be3c18ef3b385ad0637592bcd1bdd70a"
+    },
+    {
+      "Path": "apps/studio/tests/structure.test.ts",
+      "SHA256": "40015d81414af4e08d020a5f47a53690ee6b4bb8a23592e4f3cc1f748789b801"
+    },
+    {
+      "Path": "apps/studio/tests/target-selection.test.ts",
+      "SHA256": "f4d4cc255e587f8eaea8a95c6e4ebea02d922f76e1797bad6f17c3d205174892"
+    },
+    {
+      "Path": "apps/studio/tests/targets.test.ts",
+      "SHA256": "e20363ddef4acedb0ece39aa1f070b7dba65b2768e4a5fd90ce5064a2f91237a"
+    },
+    {
+      "Path": "apps/studio/tests/test-scenarios.test.ts",
+      "SHA256": "980680f62fd3008d3f71b5b0eb4b03b70dfe257d8a60c4ede4cc5af2e0141f0e"
+    },
+    {
+      "Path": "apps/studio/tests/ui/agent-chat.test.ts",
+      "SHA256": "e7c642f7f05ffb4352df552751ae8dfe37db9f208f1b96f010d0566861c96631"
+    },
+    {
+      "Path": "apps/studio/tests/ui/agent-handoff.test.ts",
+      "SHA256": "668e9ff1a884963e59ecf3fcc5faafc9d9bc54906c385be8b12b720181c6540a"
+    },
+    {
+      "Path": "apps/studio/tests/ui/authoring-foundation-turn-history.test.ts",
+      "SHA256": "73133918302eff5c1063d1faa3525059fd795e965c3ceabc2f1d79284433ce28"
+    },
+    {
+      "Path": "apps/studio/tests/ui/capture-filter-independent.test.ts",
+      "SHA256": "414c43b046c6ae2e7fc8f00d677ec6cbb78aa440cf98315d08ead632ee69f6bb"
+    },
+    {
+      "Path": "apps/studio/tests/ui/chat-controls.test.ts",
+      "SHA256": "ba50dc45b7588c9f846da26db4bf4e3be0246451e7e8ce23cff17382e48979ed"
+    },
+    {
+      "Path": "apps/studio/tests/ui/chat-message.test.ts",
+      "SHA256": "50e5e7522c1ae9dccb8a67996388132fa3c12b5cf4932a86a303f8380dbc4f18"
+    },
+    {
+      "Path": "apps/studio/tests/ui/clean-workspace.test.ts",
+      "SHA256": "27e21f4351aa7835b8f760d043149d60b7a6a28c15bba3d3b908c65c99b147ea"
+    },
+    {
+      "Path": "apps/studio/tests/ui/completion-independent-fields.test.ts",
+      "SHA256": "a066562da51577bdde1d4056cb89feec681157d6f2d78fbc174cf8fb60b46fb3"
+    },
+    {
+      "Path": "apps/studio/tests/ui/completion-independent-stop-capture.test.ts",
+      "SHA256": "373e290707ae7d63cd0a49f856c11f7a0f5f81858cd48de9b17bb7ddb0a5f3ee"
+    },
+    {
+      "Path": "apps/studio/tests/ui/completion-legacy-triggers.test.ts",
+      "SHA256": "ed7e885940ea0993dcf08703fbffe0322c3d4d9eb3b0cd3cbf30c8b7acf05257"
+    },
+    {
+      "Path": "apps/studio/tests/ui/completion-timeline.test.ts",
+      "SHA256": "ddddb92e565ab8f5e72e6bbc03f2807830b15c0bc0ff6b5f62c4ecac4d65d810"
+    },
+    {
+      "Path": "apps/studio/tests/ui/composition.test.ts",
+      "SHA256": "4fd54b2588819f560fc564111b28cec71efdc6944b160c0526671bc87270fc10"
+    },
+    {
+      "Path": "apps/studio/tests/ui/confirmation.test.ts",
+      "SHA256": "bb5e786d64a642d05a6949c046ada361c6e3478aca524e9d12e7298b2dce3574"
+    },
+    {
+      "Path": "apps/studio/tests/ui/context-details.test.ts",
+      "SHA256": "f8c162cba4434932389af93d63c3f0f701551bfeba6215f92564738b33ac01bf"
+    },
+    {
+      "Path": "apps/studio/tests/ui/core-agent-progress.test.ts",
+      "SHA256": "b6744e7db160c042dca03aca5d7027ac22dc2fb35aef966f10b509da907876ba"
+    },
+    {
+      "Path": "apps/studio/tests/ui/core-authoring-guidance.test.ts",
+      "SHA256": "c1d4c6b7231955d3a5b668a824e1ff18a0300d719902ae937cf0eaef1c3e660b"
+    },
+    {
+      "Path": "apps/studio/tests/ui/core-capture-evidence.test.ts",
+      "SHA256": "be4dd11fa5d681920794f475647082c476cb7f50bdca56c6f27190e2abac192c"
+    },
+    {
+      "Path": "apps/studio/tests/ui/core-schema-diagnostics.test.ts",
+      "SHA256": "9814b5b4eebf897dc1206b0e73df2b68d1639487f4a221d82a063cdf8323ab8f"
+    },
+    {
+      "Path": "apps/studio/tests/ui/cycle14-agent-evidence-showcase.test.ts",
+      "SHA256": "3ab487fdc9b159919e2f9d5e4944558c9aa6de5d979c1fd03e143becac037d11"
+    },
+    {
+      "Path": "apps/studio/tests/ui/designer-capture-images.test.ts",
+      "SHA256": "2d45a78ff0b7f99a7dabf27670b6888e47c1fed533a90364af299d2c7fcac148"
+    },
+    {
+      "Path": "apps/studio/tests/ui/designer-capture-portals.test.ts",
+      "SHA256": "33828e7c9992f6a432242bf6337381aa9f7d0e51409e138a9073e226c6377ec5"
+    },
+    {
+      "Path": "apps/studio/tests/ui/designer-context-surfaces.test.ts",
+      "SHA256": "11e5ae579ea9a62858a724e177ed9b14dc7116975e1ad656c96cd74c959e5473"
+    },
+    {
+      "Path": "apps/studio/tests/ui/designer-runtime.test.ts",
+      "SHA256": "c45796f74ac6e6827943a8ba79406f27e412aae7d2e582db10ad1151c9b160f7"
+    },
+    {
+      "Path": "apps/studio/tests/ui/fixtures/OrientationHandle.svelte",
+      "SHA256": "541fcc33cfa0f3eea7af3105b8b31be56080fc05bbc04ba790d30fe045045a70"
+    },
+    {
+      "Path": "apps/studio/tests/ui/fixtures/SourceOrientation.svelte",
+      "SHA256": "ad5c99d9fe6463e20c0f72e21c5cb2cfe3f9aa29abe0932d364838c524019e0e"
+    },
+    {
+      "Path": "apps/studio/tests/ui/panel-placements.test.ts",
+      "SHA256": "df6df6db032f9e7be16ec8d0c1e44ea52c7dfa0cec901e970849a75801c26124"
+    },
+    {
+      "Path": "apps/studio/tests/ui/panel-polish.test.ts",
+      "SHA256": "4fb661a72180b89fdee830d8c327b839d9d2c28bbb27ea294f2c74e0139c2f81"
+    },
+    {
+      "Path": "apps/studio/tests/ui/preference-consistency.test.ts",
+      "SHA256": "b0ea67fc7a9846286b37b2da13d58270ab178947d45b040b584bc22ec6f0c901"
+    },
+    {
+      "Path": "apps/studio/tests/ui/provider-limit-status.test.ts",
+      "SHA256": "6fb56bc6c593fa68ea60c2c42d006351fb6e2f1b8e80b49ce724ecb4a2ad711d"
+    },
+    {
+      "Path": "apps/studio/tests/ui/quiet-chat.test.ts",
+      "SHA256": "938631f5abc06bad4ea59256a2f88d99a59a195ab317c136126aa0095c483abf"
+    },
+    {
+      "Path": "apps/studio/tests/ui/quiet-relationships.test.ts",
+      "SHA256": "cb65680209a2b34e82f224d3ff73fc728d29dce057639542c53f9f8c92e5b39e"
+    },
+    {
+      "Path": "apps/studio/tests/ui/render.test.ts",
+      "SHA256": "4634e404470c490581cbaece2f2e717df6de71ee5b838a81f2715412ab29fe52"
+    },
+    {
+      "Path": "apps/studio/tests/ui/saved-run.test.ts",
+      "SHA256": "77490e82e28aed6ce12c8bdaa1814ec7329584c2f6870212787347e0ced7e21c"
+    },
+    {
+      "Path": "apps/studio/tests/ui/selection-composition.test.ts",
+      "SHA256": "2c5f2f68de0d935fe7a6e778f20a275fde57d48dfb52662d4c31876b4c533f8f"
+    },
+    {
+      "Path": "apps/studio/tests/ui/selection-consistency.test.ts",
+      "SHA256": "fcf650c9108b8bfe48f211de8f551c59b27e819418df4cb3a1c8ce31307550fc"
+    },
+    {
+      "Path": "apps/studio/tests/ui/selection-panel.test.ts",
+      "SHA256": "53ad7ffcea63e71e1a2c24cfd604ee603f11f5fce58d54571971592f15b41f9c"
+    },
+    {
+      "Path": "apps/studio/tests/ui/selection-stories.test.ts",
+      "SHA256": "6b5f2ca12e486658ec8f242d7a8d06b3b2f40228f95681877c7c5db3104da524"
+    },
+    {
+      "Path": "apps/studio/tests/ui/shared-identities.test.ts",
+      "SHA256": "305710a7aec16cbda160b29b8992f46b287b86594a7ab28d2cf5d2064965ab4f"
+    },
+    {
+      "Path": "apps/studio/tests/ui/structure-binding-runtime.test.ts",
+      "SHA256": "11cc0f7391b9f561912e25ff8bd586174c2e8c6febcb2c870d79af897dc08e6b"
+    },
+    {
+      "Path": "apps/studio/tests/ui/structure-clarity.test.ts",
+      "SHA256": "d4aec86f55db0158b9e61238164d5d5fef8b21146a7a928bda1a6c3728106981"
+    },
+    {
+      "Path": "apps/studio/tests/ui/structure-node-connections.test.ts",
+      "SHA256": "8929fac2cb0056afa3e51e6b5ef69730d51afd6d9ea399dd88265143cadccc8b"
+    },
+    {
+      "Path": "apps/studio/tests/ui/structure-orientation.test.ts",
+      "SHA256": "80558c558d6f10abcc50f586f71226fe514a2e9655ba183f7ac10006011b8059"
+    },
+    {
+      "Path": "apps/studio/tests/ui/structure-portals.test.ts",
+      "SHA256": "a1261b1e0686626ef4128120316db455e827337494db0bf0de204b1c7d1f5b47"
+    },
+    {
+      "Path": "apps/studio/tests/ui/structure-toolbar.test.ts",
+      "SHA256": "a29423f6ade5059d59c52ea30e263af3b99277ca9132b47e74c6dea0b04190c6"
+    },
+    {
+      "Path": "apps/studio/tests/ui/structure-workspace.test.ts",
+      "SHA256": "940109f6a879e1d8f0e5f5030298777410c20d2d3332c18fe2223aadf0b1df52"
+    },
+    {
+      "Path": "apps/studio/tests/ui/structure.test.ts",
+      "SHA256": "11df17145f41d4fe1c521016133b17306f78541b1d6c19abff5f8f82f79e0fb0"
+    },
+    {
+      "Path": "apps/studio/tests/ui/studio-menu.ts",
+      "SHA256": "bca77fbb14d0312dbadeaa23f478f93fdbcdd29d21ed39f83f3ae0d1c48ae440"
+    },
+    {
+      "Path": "apps/studio/tests/ui/text-selection-location.test.ts",
+      "SHA256": "335921120d1b371e188daf8ca0201466b1f43a1063e6aca69b6e1382b5b0136f"
+    },
+    {
+      "Path": "apps/studio/tests/ui/try-scenarios.test.ts",
+      "SHA256": "442792dea599bc74c596af5f0c57bee3d4c63bd5cbdea8a8bfcb37bd67e7199b"
+    },
+    {
+      "Path": "apps/studio/tests/ui/workspace-scenarios.test.ts",
+      "SHA256": "452cecd5a065b9b09a75eea7343130a7471ab1f5c321f807774cf35f14557476"
+    },
+    {
+      "Path": "apps/studio/tests/ui/workspace-selection.test.ts",
+      "SHA256": "ee17b01c82775a3eeeea2896f8993658ffe7edfe95975cc2a8f160ef865de551"
+    },
+    {
+      "Path": "apps/studio/tests/visual/Fixture.svelte",
+      "SHA256": "6a5e3ecbad27d9c9d1132471b5ef2e20482d036292c71defb496c371af0008cf"
+    },
+    {
+      "Path": "apps/studio/tests/visual/index.html",
+      "SHA256": "365e024c0539e969dcd783892354025c98b64968c1d370492c124ff64f741f2d"
+    },
+    {
+      "Path": "apps/studio/tests/visual/main.ts",
+      "SHA256": "4153bc802b81b2a18118de7cda1fbf722f16e55ae098098bc9f55bb7a6ac3d9b"
+    },
+    {
+      "Path": "apps/studio/tests/visual/vite.config.ts",
+      "SHA256": "5a261e2073b0f7df2cd89800d0046246e3b6bfe7172621400f09ea4e89415185"
+    },
+    {
+      "Path": "apps/studio/tests/workspace-selection.test.ts",
+      "SHA256": "e9c7c8eb84e80ef76e81254ec12a1b57854f68a78b9fbbe093c775f9f3cfa4e7"
+    },
+    {
+      "Path": "apps/studio/tsconfig.designer.json",
+      "SHA256": "65b341a5790d5efe55032a157e82b611629a422d657ac28c66b8a07839fa228a"
+    },
+    {
+      "Path": "apps/studio/tsconfig.json",
+      "SHA256": "0374d911148fdc6cd5eaf484a277ef6d685e71f1aec6d2812c412c97cf960e94"
+    },
+    {
+      "Path": "apps/studio/vite.config.ts",
+      "SHA256": "7e76d9ae78efd6fa07d57b56f70bdd07b00cc6c10b99e9669f3b12560456212e"
+    },
+    {
+      "Path": "apps/studio/vitest.config.ts",
+      "SHA256": "2a8840eaa3c7a4666eabd7e6420819de241ed3f5b8f6d68a41750ade59a7ccb9"
+    },
+    {
+      "Path": "docs/studio/CYCLE-1-4-CATALOG-MIGRATION.json",
+      "SHA256": "be5daf70df3f0fbf2554ef8c831e7557d724e42646e6971cab5da765a2942250"
+    }
+  ],
+  "RequiredInputs": [
+    "docs/studio/CYCLE-1-4-CATALOG-MIGRATION.json"
+  ],
+  "DependencyLinks": [
+    {
+      "Path": "node_modules",
+      "Target": "C:\\Users\\RZ1\\.codex\\worktrees\\vict-architecture-realignment-20261030\\node_modules"
+    },
+    {
+      "Path": "apps/studio/node_modules",
+      "Target": "C:\\Users\\RZ1\\.codex\\worktrees\\vict-architecture-realignment-20261030\\apps\\studio\\node_modules"
+    }
+  ]
+}

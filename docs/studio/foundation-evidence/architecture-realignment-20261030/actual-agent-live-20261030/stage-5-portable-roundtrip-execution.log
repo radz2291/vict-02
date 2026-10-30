@@ -1,0 +1,42 @@
+11:50:15 pm [vite-plugin-svelte] packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+109:   let stateBag: Record<string, unknown> = $state(initialValues());
+110:   let acceptedSupplied: Record<string, UiValue> = {};
+111:   let lastDocumentId = $state(plan.documentId);
+                                       ^
+112:   let lastSignal: symbol | undefined = $state<symbol | undefined>(undefined);
+113: 
+11:50:15 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+335:   {/if}
+336: {:else if instruction.kind === 'text'}
+337:   <span
+            ^
+338:     class="uv-text"
+339:     data-ui-owner={ownerId}
+11:50:15 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+335:   {/if}
+336: {:else if instruction.kind === 'text'}
+337:   <span
+            ^
+338:     class="uv-text"
+339:     data-ui-owner={ownerId}
+11:50:15 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+422:   {:else if extension?.ok}
+423:     {@const Implementation = extension.component}
+424:     <span style="display: contents" data-extension-id={instruction.extensionId} data-ui-owner={ownerId} data-ui-occ={occ} data-ui-node={instruction.nodeId}
+                ^
+425:       onclick={event => { event.stopPropagation(); selectOccurrence?.(occ); }}>
+426:       <Implementation props={extensionProps} occurrenceKey={occ} nodeId={instruction.nodeId} {presentation} />
+11:50:15 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+422:   {:else if extension?.ok}
+423:     {@const Implementation = extension.component}
+424:     <span style="display: contents" data-extension-id={instruction.extensionId} data-ui-owner={ownerId} data-ui-occ={occ} data-ui-node={instruction.nodeId}
+                ^
+425:       onclick={event => { event.stopPropagation(); selectOccurrence?.(occ); }}>
+426:       <Implementation props={extensionProps} occurrenceKey={occ} nodeId={instruction.nodeId} {presentation} />
+{"status":"PASS","reportPath":"C:\\Users\\RZ1\\.codex\\worktrees\\vict-architecture-realignment-20261030\\docs\\studio\\foundation-evidence\\architecture-realignment-20261030\\actual-agent-live-20261030\\stage-5-portable-roundtrip-report.json","checks":5,"id":"screen-b1d0036a-e404-448b-8f84-c92b2752220d","revision":"r1.r4"}
+{"temporary":"C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-stage-5-portable-Mnv36V","entry":"file:///C:/Users/RZ1/AppData/Local/Temp/vict-stage-5-portable-Mnv36V/roundtrip.ts"}

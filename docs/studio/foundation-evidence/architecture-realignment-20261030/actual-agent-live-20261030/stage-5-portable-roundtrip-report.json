@@ -1,0 +1,180 @@
+{
+  "status": "PASS",
+  "scope": "Actual saved Stage 5 supported application export through existing Studio importer/export attachment; offline only.",
+  "input": {
+    "path": "C:\\Users\\RZ1\\.codex\\worktrees\\vict-architecture-realignment-20261030\\docs\\studio\\foundation-evidence\\architecture-realignment-20261030\\actual-agent-live-20261030\\stage-5-final-supported-export.json",
+    "sha256": "ed2c4fe34d18950e0ec242f0a39cd45f92390c404bab8fc7362db9a5ac33d451",
+    "bytes": 53574
+  },
+  "canonicalSource": {
+    "path": "C:\\Users\\RZ1\\.codex\\worktrees\\vict-architecture-realignment-20261030\\docs\\studio\\foundation-evidence\\architecture-realignment-20261030\\actual-agent-live-20261030\\stage-5-final-saved-source.json",
+    "sha256": "47892d858aa7adcd20b2756fa95d926bc7f1288765d5f94367fb804a925fc2f3",
+    "id": "screen-b1d0036a-e404-448b-8f84-c92b2752220d",
+    "revision": "r1.r4"
+  },
+  "reexport": {
+    "sha256": "ed2c4fe34d18950e0ec242f0a39cd45f92390c404bab8fc7362db9a5ac33d451",
+    "byteIdentical": true,
+    "semanticEnvelopeEqual": true
+  },
+  "importedDocumentJsonSha256": "279611ef875e27a5678d5946499f1e2abbe11008170cc2c0570234c921f91146",
+  "checks": [
+    "Exact exported document deep-equals canonical saved Stage 5 source",
+    "Existing Studio importer admits original export without source changes or media",
+    "Authoritative screenApplication attachment matches original application definition",
+    "Authoritative export attachment and second existing-importer pass preserve complete source/envelope",
+    "Outer and independently resolved nested graph source strings, revisions, labels, typed parameters/ports, node values/positions and exact edge endpoints remain equal after both imports"
+  ],
+  "graphs": [
+    {
+      "path": "state:graph",
+      "depth": 0,
+      "sourceStringSha256": "3f8ed5ec14810d2fceec5f2a8cf2a48704f706523b0c3a0d45e9db33cca3f056",
+      "revision": 21,
+      "nodeTypes": [
+        {
+          "id": "project",
+          "label": "Project",
+          "parameters": {
+            "graph": {
+              "default": "",
+              "type": "string"
+            },
+            "title": {
+              "default": "",
+              "type": "string"
+            }
+          },
+          "ports": []
+        },
+        {
+          "id": "task",
+          "label": "Task",
+          "parameters": {
+            "status": {
+              "default": "",
+              "type": "string"
+            },
+            "title": {
+              "default": "",
+              "type": "string"
+            }
+          },
+          "ports": []
+        }
+      ],
+      "nodes": [
+        {
+          "id": "p1",
+          "type": "project",
+          "label": "Website relaunch",
+          "position": {
+            "x": 40,
+            "y": 40
+          },
+          "values": {
+            "title": "Website relaunch",
+            "graph": "{\"schema\":\"vict.flow-graph@2\",\"revision\":18,\"nodeTypes\":[{\"id\":\"task\",\"label\":\"Task\",\"parameters\":{\"status\":{\"default\":\"\",\"type\":\"string\"},\"title\":{\"default\":\"\",\"type\":\"string\"}},\"ports\":[]}],\"nodes\":[{\"id\":\"t1\",\"type\":\"task\",\"label\":\"Redesign homepage hero\",\"position\":{\"x\":66.66666666666666,\"y\":56.66666666666667},\"values\":{\"title\":\"Redesign homepage hero checked\",\"status\":\"doing\"}}],\"edges\":[]}"
+          }
+        },
+        {
+          "id": "p2",
+          "type": "project",
+          "label": "Mobile app beta",
+          "position": {
+            "x": 360,
+            "y": 40
+          },
+          "values": {
+            "title": "Mobile app beta",
+            "graph": "{\"schema\":\"vict.flow-graph@2\",\"revision\":2,\"nodeTypes\":[{\"id\":\"task\",\"label\":\"Task\",\"parameters\":{\"status\":{\"default\":\"\",\"type\":\"string\"},\"title\":{\"default\":\"\",\"type\":\"string\"}},\"ports\":[]}],\"nodes\":[{\"id\":\"t1\",\"type\":\"task\",\"label\":\"Prepare beta invite list\",\"position\":{\"x\":40,\"y\":40},\"values\":{\"title\":\"Prepare beta invite list\",\"status\":\"doing\"}}],\"edges\":[]}"
+          }
+        }
+      ],
+      "edges": []
+    },
+    {
+      "path": "state:graph/node:p1/parameter:graph",
+      "depth": 1,
+      "sourceStringSha256": "c48033e5ca710d4932f545258ac9676b47fd3d56be5502633651194da154c6d6",
+      "revision": 18,
+      "nodeTypes": [
+        {
+          "id": "task",
+          "label": "Task",
+          "parameters": {
+            "status": {
+              "default": "",
+              "type": "string"
+            },
+            "title": {
+              "default": "",
+              "type": "string"
+            }
+          },
+          "ports": []
+        }
+      ],
+      "nodes": [
+        {
+          "id": "t1",
+          "type": "task",
+          "label": "Redesign homepage hero",
+          "position": {
+            "x": 66.66666666666666,
+            "y": 56.66666666666667
+          },
+          "values": {
+            "title": "Redesign homepage hero checked",
+            "status": "doing"
+          }
+        }
+      ],
+      "edges": []
+    },
+    {
+      "path": "state:graph/node:p2/parameter:graph",
+      "depth": 1,
+      "sourceStringSha256": "762d881cabdb6a8cbe03cbb9d49af11e5ea6a66b52917f135c960c0ba6f6903d",
+      "revision": 2,
+      "nodeTypes": [
+        {
+          "id": "task",
+          "label": "Task",
+          "parameters": {
+            "status": {
+              "default": "",
+              "type": "string"
+            },
+            "title": {
+              "default": "",
+              "type": "string"
+            }
+          },
+          "ports": []
+        }
+      ],
+      "nodes": [
+        {
+          "id": "t1",
+          "type": "task",
+          "label": "Prepare beta invite list",
+          "position": {
+            "x": 40,
+            "y": 40
+          },
+          "values": {
+            "title": "Prepare beta invite list",
+            "status": "doing"
+          }
+        }
+      ],
+      "edges": []
+    }
+  ],
+  "limits": [
+    "No browser, physical device, server, backend, provider or owner acceptance proof.",
+    "Comparison baseline is exact final saved Stage 5 canonical source only; no earlier-runtime change attribution.",
+    "Studio importer uses current committed workspace code; separate static consumer uses recorded bYGiad public artifacts."
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "byteIdentical": true,
+  "revision": "r1.r4",
+  "taskControls": [
+    "Redesign homepage hero checked",
+    "Prepare beta invite list"
+  ],
+  "statuses": [
+    "doing",
+    "doing"
+  ],
+  "helps": [
+    "false",
+    "false"
+  ],
+  "menus": 0
+}

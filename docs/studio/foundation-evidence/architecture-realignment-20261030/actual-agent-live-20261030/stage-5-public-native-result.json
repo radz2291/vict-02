@@ -1,0 +1,69 @@
+{
+  "url": "http://127.0.0.25:5631/",
+  "reportSha256": "a1a1cc5c622ad903b34cf47b4a13edefbfe4e74200c6631fe3e264c7a88c367c",
+  "before": {
+    "titles": [
+      "Redesign homepage hero checked",
+      "Prepare beta invite list"
+    ],
+    "statuses": [
+      "doing",
+      "doing"
+    ]
+  },
+  "after": {
+    "titles": [
+      "Redesign homepage hero checked public",
+      "Prepare beta invite list"
+    ],
+    "statuses": [
+      "done",
+      "doing"
+    ]
+  },
+  "popup": {
+    "background": "rgb(244, 248, 252)",
+    "color": "rgb(36, 66, 95)",
+    "focused": "Project plannerHow to use: select a task, then edit its already-visible title and status fields (Todo, Doing or Done). Use Studio's Save to keep your configured boards for next time — in a standalone preview without saving, changes are temporary. There is no database; your boards live only in this document.  Projects in graph: 2      Website relaunchHelp Project title        Redesign homepage heroTask titleStatusTodoDoingDone    Svelte Flow Press enter or space to select a node. You can then use the arrow keys to move the node around. Press delete to remove it and escape to cancel. Press enter or space to select an edge. You can then press delete to remove it or escape to cancel.  Mobile app betaHelp Project title        Prepare beta invite listTask titleStatusTodoDoingDone    Svelte Flow Press enter or space to select a node. You can then use the arrow keys to move the node around. Press delete to remove it and escape to cancel. Press enter or space to select an edge. You can then press delete to remove it or escape to cancel.      Svelte Flow Press enter or space to select a node. You can then use the arrow keys to move the node around. Press delete to remove it and escape to cancel. Press enter or space to select an edge. You can then press delete to remove it or escape to cancel.  How this panel worksSave behavior",
+    "rect": {
+      "bottom": 461.0624923706054,
+      "height": 79.5999984741211,
+      "left": 385.2375183105469,
+      "right": 585.2375183105469,
+      "top": 381.4624938964844,
+      "width": 200,
+      "x": 385.2375183105469,
+      "y": 381.4624938964844
+    },
+    "viewport": {
+      "height": 720,
+      "width": 1280
+    }
+  },
+  "secondItemFocused": true,
+  "escapeFocusReturned": true,
+  "reloaded": {
+    "titles": [
+      "Redesign homepage hero checked",
+      "Prepare beta invite list"
+    ],
+    "statuses": [
+      "doing",
+      "doing"
+    ],
+    "helps": [
+      "false",
+      "false"
+    ],
+    "menus": 0
+  },
+  "scope": "Actual unchanged r1.r4 export on sealed public-artifact static consumer; runtime-only interaction, no Studio/backend/source persistence.",
+  "initialReloadRead": {
+    "titles": [],
+    "statuses": [],
+    "helps": [],
+    "menus": 0
+  },
+  "initialReloadReadLimit": "Immediate read preceded asynchronous exported document mount; settled DOM read below is the reload result.",
+  "popupInitialFocusAfterSettledSnapshot": true
+}

@@ -1,0 +1,138 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Project planner — nested ownership"
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- banner:
+  - strong: Chat
+  - button "Hide Chat":
+- complementary "Chat":
+  - region "Conversation":
+    - region "Messages — Message":
+      - log:
+        - generic: You
+        - generic: Finish this saved r1.r2 Project planner from fresh facts. The outer Project graph, shared Project body, inner workspace/body and private Help dropdown are already built; the two inner graphs are still empty after the stopped route guesses. First read the newly clarified workspace@2 guidance and exposed editGraph schema example. Use current source identities and revisions, not guesses or copied example numbers. Populate each inner graph with its own Task type matching the existing controlled title/status fields and one Task node; deliberately reuse the same task ID across the two Projects. Preserve the meaningful original project/task titles and Doing/Todo starting statuses. After every accepted nested edit, reread target, all containing graphs and document revision before the other Project. Do not replay accepted shell/body edits or replace the source editor document. Complete the functional graph increment first. Then apply a calm-blue system theme through theme roles (the current document has only arbitrary tokens/local styles), increase the outer viewport height to about480 so the full Project bodies are usable, and make the short guide plain language about editing tasks, choosing status, Studio Save of configured boards, temporary standalone preview changes and no database. Keep implicit labels, private per-Project Help state, typed source ownership and the absence of compulsory toolbar/inspector/family picker. Preflight unfamiliar operations; when a capture is clipped, report its bounds rather than moving source just for the image. Leave Save to me. Report briefly actual confirmed effects and untested behavior.
+        - button "Copy message":
+        - generic: Assistant
+        - status: Working. Public notes and tool receipts are available in details.
+        - button "Public activity and tool details" [expanded] [active]:
+          - text: Public activity and tool details
+        - generic "Conversation timeline":
+          - paragraph: I'll start by reading the graph data-contract registry and the project flow structure to get current identities.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph:
+            - text: "Found the structure: outer workspace"
+            - code: flow-workspace
+            - text: (vict.flow.workspace@2), shared Project body, and inner workspace
+            - code: project-task-workspace
+            - text: . Now I'll read the workspace@2 guidance, the graph-operations contract, the remaining subtree nodes, and the outer workspace source for graph identities.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph:
+            - text: I have the outer workspace source and both body structures. Now I'll continue the two knowledge pages to their end, and read the inner workspace source plus the
+            - code: graph
+            - text: document state that holds the outer graph.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph:
+            - text: "The picture is complete: outer graph (revision 1) holds Projects p1 \"Website relaunch\" and p2 \"Mobile app beta\", each with an empty nested graph (revision 0), and the shared inner workspace binds controlled"
+            - code: title
+            - text: /
+            - code: status
+            - text: . I'll preflight the first nested edit and read the header guide text in parallel.
+    - button "Scroll to latest message":
+      - generic: Scroll to end
+    - textbox "Message":
+      - /placeholder: Ask for a change…
+    - button "Stop":
+      - generic: Stop
+    - status
+  - status "Reading current source facts…":
+    - generic: Working…
+  - button "Chat details": ···
+- separator "Chat width"
+- main:
+  - button "Toggle Chat drawer" [expanded]:
+  - group "Workspace mode":
+    - button "Design" [pressed]
+    - button "Interact"
+    - button "Structure"
+  - button "Toggle Document and Selection drawer":
+  - iframe:
+    - generic "Screen canvas":
+      - main "Project planner — nested ownership":
+        - region "Project planner guide":
+          - heading "Project planner" [level=1]:
+            - generic: Project planner
+          - paragraph:
+            - generic: "Workflow: each project below is a node in one outer graph, and each project owns its task board as a graph in its own graph parameter. Project titles and each task's title and status are controlled source parameters — edits write back to the owning node. The Help menu state is private to each project panel and temporary. Studio Save preserves explicit source-bound graph configuration; private popup/presentation state and standalone preview changes are temporary — there is no database or backend."
+        - region "Project graph workspace":
+          - region "Project graph":
+            - paragraph:
+              - generic: "Projects in graph:"
+              - generic: "2"
+            - application "Project graph canvas":
+              - application:
+                - group "Website relaunch":
+                  - heading "Website relaunch" [level=2]:
+                    - generic: Website relaunch
+                  - button "Help"
+                  - generic: Project title
+                  - textbox "Project title": Website relaunch
+                  - region "Task graph":
+                    - application "Task graph canvas":
+                      - application:
+                        - link "Svelte Flow attribution":
+                          - /url: https://svelteflow.dev?utm_source=attribution
+                          - text: Svelte Flow
+                - group "Mobile app beta":
+                  - heading "Mobile app beta" [level=2]:
+                    - generic: Mobile app beta
+                  - button "Help"
+                  - generic: Project title
+                  - textbox "Project title": Mobile app beta
+                  - region "Task graph":
+                    - application "Task graph canvas":
+                      - application:
+                        - link "Svelte Flow attribution":
+                          - /url: https://svelteflow.dev?utm_source=attribution
+                          - text: Svelte Flow
+                - link "Svelte Flow attribution":
+                  - /url: https://svelteflow.dev?utm_source=attribution
+                  - text: Svelte Flow
+- contentinfo:
+  - status: Loaded the saved screen.
+- generic: Designer — VICT Studio

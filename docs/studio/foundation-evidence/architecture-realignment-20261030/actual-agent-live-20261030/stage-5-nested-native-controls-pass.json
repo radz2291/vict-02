@@ -1,0 +1,206 @@
+{
+  "candidate": "8d8be402893a8942b985ad920b32b31807e2ad47",
+  "baselineGraph": {
+    "schema": "vict.flow-graph@2",
+    "revision": 3,
+    "nodeTypes": [
+      {
+        "id": "project",
+        "label": "Project",
+        "parameters": {
+          "graph": {
+            "default": "",
+            "type": "string"
+          },
+          "title": {
+            "default": "",
+            "type": "string"
+          }
+        },
+        "ports": []
+      },
+      {
+        "id": "task",
+        "label": "Task",
+        "parameters": {
+          "status": {
+            "default": "",
+            "type": "string"
+          },
+          "title": {
+            "default": "",
+            "type": "string"
+          }
+        },
+        "ports": []
+      }
+    ],
+    "nodes": [
+      {
+        "id": "p1",
+        "type": "project",
+        "label": "Website relaunch",
+        "position": {
+          "x": 40,
+          "y": 40
+        },
+        "values": {
+          "title": "Website relaunch",
+          "graph": "{\"schema\":\"vict.flow-graph@2\",\"revision\":1,\"nodeTypes\":[{\"id\":\"task\",\"label\":\"Task\",\"parameters\":{\"status\":{\"default\":\"\",\"type\":\"string\"},\"title\":{\"default\":\"\",\"type\":\"string\"}},\"ports\":[]}],\"nodes\":[{\"id\":\"t1\",\"type\":\"task\",\"label\":\"Redesign homepage hero\",\"position\":{\"x\":40,\"y\":40},\"values\":{\"title\":\"Redesign homepage hero\",\"status\":\"doing\"}}],\"edges\":[]}"
+        }
+      },
+      {
+        "id": "p2",
+        "type": "project",
+        "label": "Mobile app beta",
+        "position": {
+          "x": 360,
+          "y": 40
+        },
+        "values": {
+          "title": "Mobile app beta",
+          "graph": "{\"schema\":\"vict.flow-graph@2\",\"revision\":1,\"nodeTypes\":[{\"id\":\"task\",\"label\":\"Task\",\"parameters\":{\"status\":{\"default\":\"\",\"type\":\"string\"},\"title\":{\"default\":\"\",\"type\":\"string\"}},\"ports\":[]}],\"nodes\":[{\"id\":\"t1\",\"type\":\"task\",\"label\":\"Prepare beta invite list\",\"position\":{\"x\":40,\"y\":40},\"values\":{\"title\":\"Prepare beta invite list\",\"status\":\"todo\"}}],\"edges\":[]}"
+        }
+      }
+    ],
+    "edges": []
+  },
+  "nestedLabelFocus": [
+    {
+      "focused": true,
+      "project": "p1",
+      "value": "Redesign homepage hero"
+    },
+    {
+      "focused": false,
+      "project": "p2",
+      "value": "Prepare beta invite list"
+    }
+  ],
+  "nestedAfterControlValues": [
+    {
+      "project": "p1",
+      "tag": "INPUT",
+      "value": "Website relaunch"
+    },
+    {
+      "project": "p1",
+      "tag": "INPUT",
+      "value": "Redesign homepage hero checked"
+    },
+    {
+      "project": "p1",
+      "tag": "SELECT",
+      "value": "done"
+    },
+    {
+      "project": "p2",
+      "tag": "INPUT",
+      "value": "Mobile app beta"
+    },
+    {
+      "project": "p2",
+      "tag": "INPUT",
+      "value": "Prepare beta invite list"
+    },
+    {
+      "project": "p2",
+      "tag": "SELECT",
+      "value": "todo"
+    }
+  ],
+  "nestedTextUndo": [
+    {
+      "caret": 22,
+      "focused": true,
+      "project": "p1",
+      "value": "Redesign homepage hero"
+    },
+    {
+      "caret": 24,
+      "focused": false,
+      "project": "p2",
+      "value": "Prepare beta invite list"
+    }
+  ],
+  "nestedTextRedo": [
+    {
+      "caret": 30,
+      "focused": true,
+      "project": "p1",
+      "value": "Redesign homepage hero checked"
+    },
+    {
+      "caret": 24,
+      "focused": false,
+      "project": "p2",
+      "value": "Prepare beta invite list"
+    }
+  ],
+  "afterGraph": {
+    "schema": "vict.flow-graph@2",
+    "revision": 16,
+    "nodeTypes": [
+      {
+        "id": "project",
+        "label": "Project",
+        "parameters": {
+          "graph": {
+            "default": "",
+            "type": "string"
+          },
+          "title": {
+            "default": "",
+            "type": "string"
+          }
+        },
+        "ports": []
+      },
+      {
+        "id": "task",
+        "label": "Task",
+        "parameters": {
+          "status": {
+            "default": "",
+            "type": "string"
+          },
+          "title": {
+            "default": "",
+            "type": "string"
+          }
+        },
+        "ports": []
+      }
+    ],
+    "nodes": [
+      {
+        "id": "p1",
+        "type": "project",
+        "label": "Website relaunch",
+        "position": {
+          "x": 40,
+          "y": 40
+        },
+        "values": {
+          "title": "Website relaunch",
+          "graph": "{\"schema\":\"vict.flow-graph@2\",\"revision\":14,\"nodeTypes\":[{\"id\":\"task\",\"label\":\"Task\",\"parameters\":{\"status\":{\"default\":\"\",\"type\":\"string\"},\"title\":{\"default\":\"\",\"type\":\"string\"}},\"ports\":[]}],\"nodes\":[{\"id\":\"t1\",\"type\":\"task\",\"label\":\"Redesign homepage hero\",\"position\":{\"x\":40,\"y\":40},\"values\":{\"title\":\"Redesign homepage hero checked\",\"status\":\"done\"}}],\"edges\":[]}"
+        }
+      },
+      {
+        "id": "p2",
+        "type": "project",
+        "label": "Mobile app beta",
+        "position": {
+          "x": 360,
+          "y": 40
+        },
+        "values": {
+          "title": "Mobile app beta",
+          "graph": "{\"schema\":\"vict.flow-graph@2\",\"revision\":1,\"nodeTypes\":[{\"id\":\"task\",\"label\":\"Task\",\"parameters\":{\"status\":{\"default\":\"\",\"type\":\"string\"},\"title\":{\"default\":\"\",\"type\":\"string\"}},\"ports\":[]}],\"nodes\":[{\"id\":\"t1\",\"type\":\"task\",\"label\":\"Prepare beta invite list\",\"position\":{\"x\":40,\"y\":40},\"values\":{\"title\":\"Prepare beta invite list\",\"status\":\"todo\"}}],\"edges\":[]}"
+        }
+      }
+    ],
+    "edges": []
+  },
+  "siblingSerializedGraphUnchanged": true
+}

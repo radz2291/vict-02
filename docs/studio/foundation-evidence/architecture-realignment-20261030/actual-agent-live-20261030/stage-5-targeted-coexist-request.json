@@ -1,0 +1,70 @@
+{
+  "prompt": "Make one targeted source change in this current Project planner: set the Task status inside Mobile app beta to Doing, using routed editGraph from fresh source facts. Both Projects reuse the same Task ID, so target only that containing Project occurrence. Preserve the first Project Website relaunch completely, including my manual task title ending checked, its current Doing status and moved Task position. Preserve every Project position, both titles and all other graph values/types/structure; do not rebuild or replace serialized graph JSON or shared body source. Also make the small guide copy truthful: replace the suggestion that clicking a Task opens a separate view with selecting a Task and editing its already-visible fields; retain the concise Save/temporary-preview/no-database policy. These are the only requested changes. Report the confirmed source effects and leave Save to me.",
+  "servingSource": "8d8be402893a8942b985ad920b32b31807e2ad47",
+  "beforeGraph": {
+    "schema": "vict.flow-graph@2",
+    "revision": 20,
+    "nodeTypes": [
+      {
+        "id": "project",
+        "label": "Project",
+        "parameters": {
+          "graph": {
+            "default": "",
+            "type": "string"
+          },
+          "title": {
+            "default": "",
+            "type": "string"
+          }
+        },
+        "ports": []
+      },
+      {
+        "id": "task",
+        "label": "Task",
+        "parameters": {
+          "status": {
+            "default": "",
+            "type": "string"
+          },
+          "title": {
+            "default": "",
+            "type": "string"
+          }
+        },
+        "ports": []
+      }
+    ],
+    "nodes": [
+      {
+        "id": "p1",
+        "type": "project",
+        "label": "Website relaunch",
+        "position": {
+          "x": 40,
+          "y": 40
+        },
+        "values": {
+          "title": "Website relaunch",
+          "graph": "{\"schema\":\"vict.flow-graph@2\",\"revision\":18,\"nodeTypes\":[{\"id\":\"task\",\"label\":\"Task\",\"parameters\":{\"status\":{\"default\":\"\",\"type\":\"string\"},\"title\":{\"default\":\"\",\"type\":\"string\"}},\"ports\":[]}],\"nodes\":[{\"id\":\"t1\",\"type\":\"task\",\"label\":\"Redesign homepage hero\",\"position\":{\"x\":66.66666666666666,\"y\":56.66666666666667},\"values\":{\"title\":\"Redesign homepage hero checked\",\"status\":\"doing\"}}],\"edges\":[]}"
+        }
+      },
+      {
+        "id": "p2",
+        "type": "project",
+        "label": "Mobile app beta",
+        "position": {
+          "x": 360,
+          "y": 40
+        },
+        "values": {
+          "title": "Mobile app beta",
+          "graph": "{\"schema\":\"vict.flow-graph@2\",\"revision\":1,\"nodeTypes\":[{\"id\":\"task\",\"label\":\"Task\",\"parameters\":{\"status\":{\"default\":\"\",\"type\":\"string\"},\"title\":{\"default\":\"\",\"type\":\"string\"}},\"ports\":[]}],\"nodes\":[{\"id\":\"t1\",\"type\":\"task\",\"label\":\"Prepare beta invite list\",\"position\":{\"x\":40,\"y\":40},\"values\":{\"title\":\"Prepare beta invite list\",\"status\":\"todo\"}}],\"edges\":[]}"
+        }
+      }
+    ],
+    "edges": []
+  },
+  "submittedAt": "2026-10-30T15:42:18.638Z"
+}
