@@ -43,7 +43,7 @@ const operationDefinitions = {
 // Zod's discriminated closed operation union remains authoritative.
 export const editPresentation = {
   $defs: {
-    graphOccurrenceRoute:{type:'array',minItems:1,maxItems:32,description:'Containing occurrences, outermost first, excluding target. Use fresh IDs/revisions. Re-read all graph/document revisions after accepted nested edits. Private runtime instances and controlled graph@1 nesting refuse.',items:{$ref:'#/$defs/graphOccurrenceStep'}},
+    graphOccurrenceRoute:{type:'array',minItems:1,maxItems:32,description:'Containing occurrences, outermost first, excluding target. Use fresh IDs/revisions. Re-read all graph/document revisions after accepted nested edits. Private runtime instances and graph@1 containing workspaces refuse.',items:{$ref:'#/$defs/graphOccurrenceStep'}},
     graphOccurrenceStep:{type:'object',additionalProperties:false,required:['workspaceNodeId','graphNodeId','expectedGraphRevision'],properties:{workspaceNodeId:{...identifier,description:'Containing workspace source node ID (outer-workspace).'},graphNodeId:{...identifier,description:'Graph-model node ID in that containing graph (project-a).'},expectedGraphRevision:{type:'integer',minimum:0,description:'Containing graph revision (7); target graph may be 2.'}}},
     ...graphEditDefinitions,
     ...operationDefinitions,
