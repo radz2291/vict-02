@@ -1,0 +1,103 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Architecture proof — 1 read and edit"
+  - generic: ● Unsaved changes
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- banner:
+  - strong: Chat
+  - button "Hide Chat":
+- complementary "Chat":
+  - region "Conversation":
+    - region "Messages — Message":
+      - log:
+        - generic: You
+        - generic: Read the current screen, then add a heading ‘Evidence desk’ and the sentence ‘Collect sources before making a decision.’ Keep it simple; no graph yet. Leave saving to me and report only what you actually changed.
+        - button "Copy message":
+        - generic: Assistant
+        - generic "Host evidence summary":
+          - paragraph: Host evidence summary
+          - status: Source changes were applied; saving is separate. A preview image matching the final source was assessed by AI; its claims remain unverified. Behavior was not tested by this agent.
+        - button "Original AI assessment and tool details":
+          - text: Original AI assessment and tool details
+        - button "Copy message":
+        - generic: You
+        - generic: Use the screen-read tool to read the current text subtree before editing. Then change only the sentence to ‘Review each source before making a decision.’ Preserve the heading and styling. Tell me whether the read succeeded and what changed. Do not save.
+        - button "Copy message":
+        - generic: Assistant
+        - generic "Host evidence summary":
+          - paragraph: Host evidence summary
+          - status: Source changes were applied; saving is separate. No image assessment matches the final source. Behavior was not tested by this agent.
+        - button "Original AI assessment and tool details" [expanded]:
+          - text: Original AI assessment and tool details
+        - paragraph: Original AI assessment — claims not independently verified. Tool receipts separately record confirmed effects and capture limits.
+        - generic "Conversation timeline":
+          - paragraph: I'll read the sentence's source subtree first to confirm its exact current text and styling.
+          - button "Read screen completed" [expanded]:
+            - generic: Read screen
+            - generic: completed
+          - region "Tool input":
+            - heading "Input" [level=4]
+            - generic: "{ \"section\": \"source\", \"offset\": 0, \"limit\": 12, \"nodeId\": \"text-evidence-sentence\" }"
+          - region "Tool result":
+            - heading "Result" [level=4]
+            - generic: "{ \"expectedRevision\": \"r1.r1#2\", \"cursor\": { \"documentId\": \"screen-04e2f64b-c456-4d18-a677-b4c573ffc671\", \"revision\": \"r1.r1#2\", \"digest\": \"e373dfc75f624b1764392f42696592d57554895f6411db7bb6251000f3f33b21\", \"epoch\": \"faae532c-f3a0-45ab-acbd-a3fa57d8f256\" }, \"section\": \"source\", \"nodeId\": \"text-evidence-sentence\", \"sourceJson\": \"{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"text-evidence-sentence\\\",\\\"tag\\\":\\\"p\\\",\\\"children\\\":[\\\"text-evidence-sentence-text\\\"],\\\"localStyle\\\":[{\\\"property\\\":\\\"font-size\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"16px\\\"}},{\\\"property\\\":\\\"line-height\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"1.6\\\"}},{\\\"property\\\":\\\"margin\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"0\\\"}},{\\\"property\\\":\\\"color\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"#647187\\\"}}]}\", \"totalCharacters\": 366, \"offset\": 0, \"nextOffset\": null, \"turnProgress\": { \"applied\": 0, \"metrics\": { \"toolCalls\": 1, \"completedCalls\": 1, \"refusedCalls\": 0, \"recoveryAttempts\": 0, \"toolElapsedMs\": 4, \"providerRequests\": 1, \"visionRequests\": 0, \"acknowledgementMs\": 0, \"confirmedEdits\": 0, \"usage\": { \"inputTokens\": 18735, \"outputTokens\": 651, \"totalTokens\": 19386 }, \"categories\": { \"knowledge\": 0, \"source\": 1, \"edit\": 0, \"observe\": 0, \"other\": 0 }, \"elapsedMs\": 16326, \"toolActiveMs\": 4, \"outsideToolMs\": 16322, \"modelSteps\": null, \"cost\": null }, \"retainedKnowledge\": { \"scope\": \"Complete contract bodies delivered in this turn only; reuse still requires their content to remain available in model context. Source facts are never cached knowledge.\", \"complete\": [], \"partialCount\": 0 }, \"visualEvidence\": { \"regions\": [], \"currentSourceObservations\": 0, \"scope\": \"Captured regions only; source freshness does not establish current runtime/viewport freshness or offscreen/interaction coverage.\", \"interactionsVerified\": false }, \"evidence\": \"Host receipt-derived totals include all acknowledged transactions, including cleanup. Outside-tool time is waiting/generation/transport/host overhead, not measured provider latency. Captured regions do not establish full-page or interaction coverage.\" } }"
+          - paragraph:
+            - text: The read succeeded — the sentence is a
+            - code: <p>
+            - text: (
+            - code: text-evidence-sentence
+            - text: ) with one child text node, styled 16px/#647187. I'll update only that text node.
+          - button "Edit screen completed" [expanded] [active]:
+            - generic: Edit screen
+            - generic: completed
+          - region "Tool input":
+            - heading "Input" [level=4]
+            - generic: "{ \"expectedRevision\": \"r1.r1#2\", \"reason\": \"Replace the sentence text only; heading and styling preserved per user request.\", \"operations\": [ { \"op\": \"modify\", \"nodeId\": \"text-evidence-sentence-text\", \"text\": \"Review each source before making a decision.\" } ] }"
+          - region "Tool result":
+            - heading "Result" [level=4]
+            - generic: "{ \"ok\": true, \"expectedRevision\": \"r1.r1#3\", \"revision\": \"r1.r1#3\", \"digest\": \"45eb99e18603882935ab93fda99d380faa72d54c797a1dfb9db830480e5fd9f4\", \"applied\": 1, \"coverage\": { \"available\": 119, \"authored\": 0, \"catalogAuthored\": 0, \"registeredAuthored\": 0, \"reachableSourceNodes\": 5, \"requested\": 119, \"scope\": \"all-authorable-definitions\", \"missing\": [ \"vict.catalog.button\", \"vict.catalog.checkbox\", \"vict.catalog.select\", \"vict.catalog.dialog\", \"vict.catalog.switch\", \"vict.catalog.toggle\", \"vict.catalog.select-multiple\", \"vict.catalog.select-item\", \"vict.catalog.combobox\", \"vict.catalog.combobox-multiple\", \"vict.catalog.combobox-item\", \"vict.catalog.toggle-group\", \"vict.catalog.toggle-group-multiple\", \"vict.catalog.toggle-group-item\", \"vict.catalog.accordion\", \"vict.catalog.accordion-multiple\", \"vict.catalog.accordion-item\", \"vict.catalog.slider\", \"vict.catalog.meter\", \"vict.catalog.progress\" ], \"evidence\": \"Reachable declared source presence only, including inactive branches/templates. An agent-declared manifest is not proof of the user intent, observed appearance, exercised interaction or completion.\", \"missingCount\": 119, \"moreMissing\": true }, \"verification\": \"source-only\", \"turnProgress\": { \"applied\": 1, \"metrics\": { \"toolCalls\": 2, \"completedCalls\": 2, \"refusedCalls\": 0, \"recoveryAttempts\": 0, \"toolElapsedMs\": 51, \"providerRequests\": 2, \"visionRequests\": 0, \"acknowledgementMs\": 23, \"confirmedEdits\": 1, \"usage\": { \"inputTokens\": 38652, \"outputTokens\": 1168, \"totalTokens\": 39820 }, \"firstEditMs\": 30058.453299999994, \"categories\": { \"knowledge\": 0, \"source\": 1, \"edit\": 1, \"observe\": 0, \"other\": 0 }, \"elapsedMs\": 30059, \"toolActiveMs\": 51, \"outsideToolMs\": 30008, \"modelSteps\": null, \"cost\": null }, \"retainedKnowledge\": { \"scope\": \"Complete contract bodies delivered in this turn only; reuse still requires their content to remain available in model context. Source facts are never cached knowledge.\", \"complete\": [], \"partialCount\": 0 }, \"visualEvidence\": { \"regions\": [], \"currentSourceObservations\": 0, \"scope\": \"Captured regions only; source freshness does not establish current runtime/viewport freshness or offscreen/interaction coverage.\", \"interactionsVerified\": false }, \"evidence\": \"Host receipt-derived totals include all acknowledged transactions, including cleanup. Outside-tool time is waiting/generation/transport/host overhead, not measured provider latency. Captured regions do not establish full-page or interaction coverage.\" } }"
+          - paragraph:
+            - text: "Yes, the read succeeded: the sentence is a"
+            - code: <p>
+            - text: (
+            - code: text-evidence-sentence
+            - text: ") with a single child text node, styled at 16px/1.6 line-height, color #647187."
+          - paragraph: I changed only that child text node to "Review each source before making a decision." — the heading "Evidence desk", the paragraph's styling, and everything else are untouched, and I did not save. The text replacement is confirmed in source (revision r1.r1#3); I didn't re-capture a screenshot, so the rendered look is presumed unchanged since no styles were altered.
+        - button "Copy message":
+    - button "Scroll to latest message":
+      - generic: Scroll to end
+    - textbox "Message":
+      - /placeholder: Ask for a change…
+    - button "Send" [disabled]:
+      - generic: Send
+    - status
+  - status "1 edit applied":
+    - generic: Ready
+  - button "Chat details": ···
+- separator "Chat width"
+- main:
+  - button "Toggle Chat drawer" [expanded]:
+  - group "Workspace mode":
+    - button "Design" [pressed]
+    - button "Interact"
+    - button "Structure"
+  - button "Toggle Document and Selection drawer":
+  - iframe:
+    - generic "Screen canvas":
+      - main "Architecture proof — 1 read and edit":
+        - heading "Evidence desk" [level=1]:
+          - generic: Evidence desk
+        - paragraph:
+          - generic: Review each source before making a decision.
+- contentinfo:
+  - status: Replace the sentence text only; heading and styling preserved per user request. · agent edit · unsaved
+- generic: Designer — VICT Studio

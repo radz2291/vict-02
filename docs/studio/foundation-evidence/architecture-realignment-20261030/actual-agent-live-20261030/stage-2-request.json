@@ -1,0 +1,7 @@
+{
+  "startedObservedUtc": "2026-10-30T10:48:50.114259+00:00",
+  "servingSource": "a61396cb3bf20e3f10d62a89a716feafdd91d6e3",
+  "screen": "Evidence desk \u2014 graph application",
+  "prompt": "Build a small Evidence desk application. For this first increment, include a normal page heading and short introduction, then an editable graph with exactly one rich \u2018Source note\u2019 node. Inside the node use ordinary registered VICT controls for an editable source URL and multiline notes, with meaningful labels and an evidence output port for the next step. Those controls must update the node\u2019s values without dragging it. Use a restrained warm theme and a readable node layout. Do not add a toolbar, family picker, inspector, connection form or backend execution. Discover the public contracts you need, build the small working slice first, and leave saving to me.",
+  "route": "Actual Studio Chat Send; no supplied document/fixture or hidden contract preload"
+}

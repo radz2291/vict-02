@@ -1,0 +1,4 @@
+{
+  "prompt": "Make exactly one read-only tool call: use section contracts to request the guidance contract for vict.flow.workspace revision 2, with components as a native JSON array containing {id:\"vict.flow.workspace\",revision:2}, and includeExamples as the native boolean false. Do not quote or stringify the array or boolean. Then stop and report whether that single call succeeded. Do not retry, edit, observe or save.",
+  "source": "b6cf440be33ca3c011889e8ecc91fc28f16f1175"
+}

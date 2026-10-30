@@ -1,0 +1,120 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Discovery diagnostics — read-only probe"
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- banner:
+  - strong: Chat
+  - button "Hide Chat":
+- complementary "Chat":
+  - region "Conversation":
+    - region "Messages — Message":
+      - log:
+        - generic: You
+        - generic: "Make exactly one read-only tool call: use section contracts to request the guidance contract for vict.flow.workspace revision 2, with components as a native JSON array containing {id:\"vict.flow.workspace\",revision:2}, and includeExamples as the native boolean false. Do not quote or stringify the array or boolean. Then stop and report whether that single call succeeded. Do not retry, edit, observe or save."
+        - button "Copy message":
+        - generic: Assistant
+        - generic "Host evidence summary":
+          - paragraph: Host evidence summary
+          - status: The turn did not finish successfully. No source changes were applied. No image assessment matches the final source. Behavior was not tested by this agent.
+        - button "Original AI assessment and tool details" [expanded]:
+          - text: Original AI assessment and tool details
+        - paragraph: Original AI assessment — claims not independently verified. Tool receipts separately record confirmed effects and capture limits.
+        - generic "Conversation timeline":
+          - button "Read screen failed" [expanded]:
+            - generic: Read screen
+            - generic: failed
+          - region "Tool input":
+            - heading "Input" [level=4]
+            - paragraph: "Unavailable: the call failed before validated invocation."
+          - region "Tool result":
+            - heading "Result" [level=4]
+            - paragraph: "Unavailable: no settled result was returned."
+          - paragraph:
+            - text: The single call was made and it did not succeed. The tool refused it with
+            - code: VICT_TOOL_INPUT_INVALID
+            - text: ":"
+            - code: components[0].revision
+            - text: must be a JSON string, not the number
+            - code: "2"
+            - text: (e.g.
+            - code: "\"2\""
+            - text: ). Per your instruction I did not retry, edit, observe, or save.
+        - button "Copy message":
+    - button "Scroll to latest message":
+      - generic: Scroll to end
+    - textbox "Message":
+      - /placeholder: Ask for a change…
+    - button "Send" [disabled]:
+      - generic: Send
+    - status
+  - status "Source inspection failed. Read the current source before continuing; confirmed edits must not be repeated. No edits were applied.":
+    - generic: Source inspection failed. Read the current source before continuing; confirmed edits must not be repeated. No edits were applied.
+  - button "Chat details" [expanded]: ···
+  - generic "Chat details":
+    - heading "Chat details" [level=3]
+    - button "Close chat details" [active]: ×
+    - paragraph: zai/glm-5.3-flash
+    - text: Turn details
+    - combobox "Inspect turn":
+      - option "Latest activity" [selected]
+      - 'option "7:22:39 PM · failed · Make exactly one read-only tool call: use section contracts"'
+    - paragraph: Up to 24 turns retained for 30 minutes in this tab. Reloading clears local history; server evidence also expires or disappears on restart/capacity eviction.
+    - paragraph: "Selected: Element · Screen"
+    - paragraph: Source inspection failed. Read the current source before continuing; confirmed edits must not be repeated. No edits were applied.
+    - button "Reconnect agent"
+    - heading "Turn measurements" [level=4]
+    - paragraph: 1 tool calls · 1 refused · 0 calls after refusal · 14.8 s elapsed.
+    - paragraph: 2 authoring model requests · 0 image requests. No confirmed edit.
+    - paragraph: "Reported authoring usage: 38190 input / 276 output tokens."
+    - paragraph: 0 receipt-derived edits including cleanup.
+    - paragraph: 0 knowledge reads · 1 source reads · 0 edit calls · 0 observation calls.
+    - paragraph: "Settled tool durations summed: 0.0 s; tool-active interval union: 0.0 s; outside-tool time: 14.8 s."
+    - paragraph: Outside-tool time includes waiting, generation, transport and host overhead; exact provider latency is unavailable.
+    - paragraph: Exact model steps and cost unavailable. Concurrent tool durations do not add up to wall time.
+    - heading "Progress summaries" [level=4]
+    - paragraph: Connection, validation and completion metadata. The conversation contains actual assistant messages and tool calls.
+    - list:
+      - listitem: Connecting…
+      - listitem: Reading screen…
+      - listitem: Connecting to the VICT / Mastra agent…
+      - listitem: Agent is working on your request…
+      - listitem: Reading current source facts…
+      - listitem: Tool refused (VICT_TOOL_FAILED). Previously applied edits remain available.
+      - listitem: "No edits were applied. Confirmed revision r1#0. Engine termination: completed. Unresolved tools: studio_screen_read. Source coverage: 0/119 registered definitions present. 119 missing from the 119-item coverage scope. Missing IDs are paged through coverage reads. This inventory does not establish the full requested intent, interactions or visual completion. Source: 1 nodes, 6 state declarations; current appearance unverified; interactions unverified by this agent."
+    - heading "Input schema diagnostics" [level=4]
+    - generic: "1 parser evaluations; these are not tool calls. No call identity is inferred. First observed 7426 ms; last observed 7426 ms since turn start. {\"code\":\"VICT_TOOL_INPUT_INVALID\",\"issues\":[{\"path\":[\"components\",0,\"revision\"],\"rule\":\"invalid_type\",\"expected\":\"Use a JSON string; omit optional fields rather than sending null.\"}],\"observedInputShape\":{\"schema\":\"studio.tool-input-shape@1\",\"rootType\":\"object\",\"fields\":[{\"path\":[\"components\",0,\"revision\"],\"observedType\":\"number\"}]}}"
+    - heading "Tool receipts" [level=4]
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 7414 ms since turn start
+      - text: Tool failed (VICT_TOOL_FAILED); prior commits remain · failed
+      - generic: "tool-failed studio_screen_read 7431 ms since turn start {\"code\":\"VICT_TOOL_FAILED\"}"
+    - heading "Connection record" [level=4]
+    - paragraph: VICT turn turn-21da3b6f-0f61-4d2c-8432-a273e42e5d1e · profile v1_1a5ab0f8291385fa837fb7b7f45ac428b8b5750c439caac6ebac782606cf5849 · STUDIO_AGENT_TOOL_FAILED
+- separator "Chat width"
+- main:
+  - button "Toggle Chat drawer" [expanded]:
+  - group "Workspace mode":
+    - button "Design" [pressed]
+    - button "Interact"
+    - button "Structure"
+  - button "Toggle Document and Selection drawer":
+  - iframe:
+    - generic "Screen canvas":
+      - main "Discovery diagnostics — read-only probe"
+  - generic: ＋
+  - heading "What will you make?" [level=1]
+  - paragraph: Select this screen to open its tools, then choose Insert.
+- contentinfo:
+  - status: New screen · not saved yet.
+- generic: Designer — VICT Studio

@@ -1,0 +1,11 @@
+{
+  "startedObservedUtc": "2026-10-30T10:42:03.763068+00:00",
+  "servingSource": "a61396cb3bf20e3f10d62a89a716feafdd91d6e3",
+  "screen": "Architecture proof \u2014 1 read and edit",
+  "prompt": "Read the current screen, then add a heading \u2018Evidence desk\u2019 and the sentence \u2018Collect sources before making a decision.\u2019 Keep it simple; no graph yet. Leave saving to me and report only what you actually changed.",
+  "path": "Actual Studio Chat Send in built-in IAB at established origin",
+  "provider": "Existing zai/glm-5.3-flash Coding Plan",
+  "hiddenPreload": false,
+  "codingAuthoredAppSource": false,
+  "stateAtDispatch": "Working; connecting through existing Mastra agent"
+}

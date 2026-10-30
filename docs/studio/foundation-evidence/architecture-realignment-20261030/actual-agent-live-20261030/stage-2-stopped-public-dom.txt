@@ -1,0 +1,329 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Evidence desk — graph application"
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- banner:
+  - strong: Chat
+  - button "Hide Chat":
+- complementary "Chat":
+  - region "Conversation":
+    - region "Messages — Message":
+      - log:
+        - generic: You
+        - generic: Build a small Evidence desk application. For this first increment, include a normal page heading and short introduction, then an editable graph with exactly one rich ‘Source note’ node. Inside the node use ordinary registered VICT controls for an editable source URL and multiline notes, with meaningful labels and an evidence output port for the next step. Those controls must update the node’s values without dragging it. Use a restrained warm theme and a readable node layout. Do not add a toolbar, family picker, inspector, connection form or backend execution. Discover the public contracts you need, build the small working slice first, and leave saving to me.
+        - button "Copy message":
+        - generic: Assistant
+        - status: Stopped. No edits were applied.
+        - button "Public activity and tool details" [expanded]:
+          - text: Public activity and tool details
+        - generic "Conversation timeline":
+          - paragraph: "I'll build this in the open document: discover the flow + control contracts, then construct the page, the one-node editable graph, and verify visually."
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen failed" [expanded]:
+            - generic: Read screen
+            - generic: failed
+          - region "Tool input":
+            - heading "Input" [level=4]
+            - paragraph: "Unavailable: the call failed before validated invocation."
+          - region "Tool result":
+            - heading "Result" [level=4]
+            - paragraph: "Unavailable: no settled result was returned."
+          - paragraph: Contracts call needs proper JSON; retrying it and paging the two data-contract bodies.
+          - button "Read screen failed":
+            - generic: Read screen
+            - generic: failed
+          - button "Read screen failed":
+            - generic: Read screen
+            - generic: failed
+          - button "Read screen failed":
+            - generic: Read screen
+            - generic: failed
+          - paragraph: Retrying with native JSON parameter values.
+          - button "Read screen failed":
+            - generic: Read screen
+            - generic: failed
+          - button "Read screen failed":
+            - generic: Read screen
+            - generic: failed
+          - button "Read screen failed":
+            - generic: Read screen
+            - generic: failed
+          - paragraph: The transport is stringifying complex parameters. Testing a minimal array call to isolate the encoding.
+          - button "Read screen failed":
+            - generic: Read screen
+            - generic: failed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: The recipe endpoint returned revision 1 descriptors; I need the exact @2 contracts and the remaining graph-grammar pages.
+          - button "Read screen failed":
+            - generic: Read screen
+            - generic: failed
+          - button "Read screen failed":
+            - generic: Read screen
+            - generic: failed
+        - paragraph: No successful final response. Public notes and tool receipts remain in details.
+        - button "Copy message":
+    - button "Scroll to latest message":
+      - generic: Scroll to end
+    - textbox "Message":
+      - /placeholder: Ask for a change…
+    - button "Send" [disabled]:
+      - generic: Send
+    - status
+  - status "Stopped. No edits were applied.":
+    - generic: Stopped
+  - button "Chat details" [expanded]: ···
+  - generic "Chat details":
+    - heading "Chat details" [level=3]
+    - button "Close chat details" [active]: ×
+    - paragraph: zai/glm-5.3-flash
+    - text: Turn details
+    - combobox "Inspect turn":
+      - option "Latest activity" [selected]
+      - option "6:47:56 PM · cancelled · Build a small Evidence desk application. For this first incr"
+    - paragraph: Up to 24 turns retained for 30 minutes in this tab. Reloading clears local history; server evidence also expires or disappears on restart/capacity eviction.
+    - paragraph: "Selected: Element · Screen"
+    - paragraph: Stopped. No edits were applied.
+    - button "Reconnect agent"
+    - heading "Turn measurements" [level=4]
+    - paragraph: 18 tool calls · 10 refused · 12 calls after refusal · 179.9 s elapsed.
+    - paragraph: Partial browser measurements; the server completion receipt was not received. Provider requests and token usage unavailable.
+    - paragraph: 0 receipt-derived edits including cleanup.
+    - paragraph: 0 knowledge reads · 18 source reads · 0 edit calls · 0 observation calls.
+    - paragraph: "Settled tool durations summed: 0.4 s; tool-active interval union: 0.1 s; outside-tool time: 179.8 s."
+    - paragraph: Outside-tool time includes waiting, generation, transport and host overhead; exact provider latency is unavailable.
+    - paragraph: Exact model steps and cost unavailable. Concurrent tool durations do not add up to wall time.
+    - heading "Progress summaries" [level=4]
+    - paragraph: Connection, validation and completion metadata. The conversation contains actual assistant messages and tool calls.
+    - list:
+      - listitem: Connecting…
+      - listitem: Reading screen…
+      - listitem: Connecting to the VICT / Mastra agent…
+      - listitem: Agent is working on your request…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Tool refused (VICT_TOOL_FAILED). Previously applied edits remain available.
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Tool refused (VICT_TOOL_FAILED). Previously applied edits remain available.
+      - listitem: Tool refused (VICT_TOOL_FAILED). Previously applied edits remain available.
+      - listitem: Tool refused (VICT_TOOL_FAILED). Previously applied edits remain available.
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Tool refused (VICT_TOOL_FAILED). Previously applied edits remain available.
+      - listitem: Tool refused (VICT_TOOL_FAILED). Previously applied edits remain available.
+      - listitem: Tool refused (VICT_TOOL_FAILED). Previously applied edits remain available.
+      - listitem: Reading current source facts…
+      - listitem: Tool refused (VICT_TOOL_FAILED). Previously applied edits remain available.
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Tool refused (VICT_TOOL_FAILED). Previously applied edits remain available.
+      - listitem: Stopped. No edits were applied.
+      - listitem: Stopped. No edits were applied.
+    - heading "Input schema diagnostics" [level=4]
+    - generic: "3 parser evaluations; these are not tool calls. No call identity is inferred. First observed 85111 ms; last observed 105284 ms since turn start. {\"code\":\"VICT_TOOL_INPUT_INVALID\",\"issues\":[{\"path\":[\"components\"],\"rule\":\"invalid_type\",\"expected\":\"Use a JSON array, not quoted JSON text; omit optional fields rather than sending null.\"},{\"path\":[\"includeExamples\"],\"rule\":\"invalid_type\",\"expected\":\"Use a JSON boolean true or false, without quotes; omit optional fields rather than sending null.\"}]}"
+    - generic: "4 parser evaluations; these are not tool calls. No call identity is inferred. First observed 96000 ms; last observed 105283 ms since turn start. {\"code\":\"VICT_TOOL_INPUT_INVALID\",\"issues\":[{\"path\":[\"offset\"],\"rule\":\"invalid_type\",\"expected\":\"Use a JSON integer number, without quotes; omit optional fields rather than sending null.\"},{\"path\":[\"expectedBodyIdentities\"],\"rule\":\"invalid_type\",\"expected\":\"Use a JSON object, not quoted JSON text; omit optional fields rather than sending null.\"}]}"
+    - generic: "1 parser evaluations; these are not tool calls. No call identity is inferred. First observed 121002 ms; last observed 121002 ms since turn start. {\"code\":\"VICT_TOOL_INPUT_INVALID\",\"issues\":[{\"path\":[\"components\"],\"rule\":\"invalid_type\",\"expected\":\"Use a JSON array, not quoted JSON text; omit optional fields rather than sending null.\"}]}"
+    - generic: "1 parser evaluations; these are not tool calls. No call identity is inferred. First observed 151309 ms; last observed 151309 ms since turn start. {\"code\":\"VICT_TOOL_INPUT_INVALID\",\"issues\":[{\"path\":[\"offset\"],\"rule\":\"invalid_type\",\"expected\":\"Use a JSON integer number, without quotes; omit optional fields rather than sending null.\"}]}"
+    - heading "Tool receipts" [level=4]
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 85102 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 85166 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-902f9d6b-da1d-403d-b802-5c330fe902fa\",\"revision\":\"r1#0\",\"digest\":\"097c697107b8e101d9f6186e748bec8f182327284e2ae738dafa99d7f97ad614\",\"epoch\":\"916193b8-86d6-40f8-97ab-489babd1169e\"},\"section\":\"catalog\",\"registryDigest\":\"6ba435e0ef83f67cd07d22eed8ea66c7aefc6c4f1433478dd0d4e584246f63f2\",\"items\":[{\"id\":\"vict.flow.canvas\",\"revision\":\"1\",\"label\":\"Flow canvas\",\"family\":\"flow\",\"category\":\"diagram\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"3bf1d1da07ec917d35bc1c1bcddf23eb172d4d9d9b42c82c85e22938d8638743\",\"packageName\":\"@victframework/ui-flow-svelte\"},{\"id\":\"vict.flow.edge\",\"revision\":\"1\",\"label\":\"Flow edge declaration\",\"family\":\"flow\",\"category\":\"diagram-part\",\"eligibility\":{\"kind\":\"part\"},\"digest\":\"62fad3846cdf76659b1d3d51b3fbfd506a8c74e704437d4e9634a68d9a7ddc8b\",\"packageName\":\"@victframework/ui-flow-svelte\"},{\"id\":\"vict.flow.editor\",\"revision\":\"1\",\"label\":\"Legacy graph compatibility\",\"family\":\"flow\",\"category\":\"legacy-graph\",\"eligibility\":{\"kind\":\"excluded\",\"reason\":\"The bundled editor was removed by owner decision. Retained only for existing source compatibility; do not insert it into new applications.\"},\"digest\":\"177a4f3fdbe0d2f11db4fdec7f7f56d307e78d16b0ba72bc90628c1adf405409\",\"packageName\":\"@victframework/ui-flow-svelte\"},{\"id\":\"vict.flow.editor\",\"revision\":\"2\",\"label\":\"Legacy graph compatibility\",\"family\":\"flow\",\"category\":\"legacy-graph\",\"eligibility\":{\"kind\":\"excluded\",\"reason\":\"The bundled editor was removed by owner decision. Retained only for existing source compatibility; do not insert it into new applications.\"},\"digest\":\"22f811c0955d5eee9437d3d13639a81a6758b109747ded5c8239c69d2e8067e7\",\"packageName\":\"@victframework/ui-flow-svelte\"},{\"id\":\"vict.flow.node\",\"revision\":\"1\",\"label\":\"Flow node declaration\",\"family\":\"flow\",\"category\":\"diagram-part\",\"eligibility\":{\"kind\":\"part\"},\"digest\":\"caa56fecde5ad7a22f0f4c369423b969edbb29044ae33743f88831420ec31c94\",\"packageName\":\"@victframework/ui-flow-svelte\"},{\"id\":\"vict.flow.port\",\"revision\":\"1\",\"label\":\"Graph port anchor\",\"family\":\"flow\",\"category\":\"graph-part\",\"eligibility\":{\"kind\":\"part\"},\"digest\":\"6ca3d7701dcbfcf683eb59be9af6e4e923592760265fb0546b3143bcc4f9bb0b\",\"packageName\":\"@victframework/ui-flow-svelte\"},{\"id\":\"vict.flow.port\",\"revision\":\"2\",\"label\":\"Graph port anchor\",\"family\":\"flow\",\"category\":\"graph-part\",\"eligibility\":{\"kind\":\"part\"},\"digest\":\"ac2a832dafe107cee425c7c2c4905c6c008c524dac7c03e7c8716f26e6194666\",\"packageName\":\"@victframework/ui-flow-svelte\"},{\"id\":\"vict.flow.viewport\",\"revision\":\"1\",\"label\":\"Graph viewport\",\"family\":\"flow\",\"category\":\"graph-part\",\"eligibility\":{\"kind\":\"part\"},\"digest\":\"637f692846617162b84564bde3bf07a1898061ff1b119d1a40cb4f13f3f47192\",\"packageName\":\"@victframework/ui-flow-svelte\"},{\"id\":\"vict.flow.viewport\",\"revision\":\"2\",\"label\":\"Graph viewport\",\"family\":\"flow\",\"category\":\"graph-part\",\"eligibility\":{\"kind\":\"part\"},\"digest\":\"6840020227bd941281ea4843c2c81a8a66b2e181cee7fe1bce9e0d853e091d9e\",\"packageName\":\"@victframework/ui-flow-svelte\"},{\"id\":\"vict.flow.workspace\",\"revision\":\"1\",\"label\":\"Composable graph workspace (graph 1 compatibility)\",\"family\":\"flow\",\"category\":\"graph\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"53d6961446cae06f6640faa79c2b56f4ad213aec9539ddfe092d5eae123681a8\",\"packageName\":\"@victframework/ui-flow-svelte\"},{\"id\":\"vict.flow.workspace\",\"revision\":\"2\",\"label\":\"Composable graph workspace\",\"family\":\"flow\",\"category\":\"graph\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"1b461fc593820c7f1b55a4a7ff04aea0b200147d483d8aaa99322deab74d49bf\",\"packageName\":\"@victframework/ui-flow-svelte\"}],\"total\":11,\"offset\":0,\"nextOffset\":null}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 85103 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 85171 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-902f9d6b-da1d-403d-b802-5c330fe902fa\",\"revision\":\"r1#0\",\"digest\":\"097c697107b8e101d9f6186e748bec8f182327284e2ae738dafa99d7f97ad614\",\"epoch\":\"916193b8-86d6-40f8-97ab-489babd1169e\"},\"section\":\"registry\",\"registry\":\"dataContracts\",\"key\":\"vict.flow-graph@2\",\"id\":\"vict.flow-graph\",\"revision\":\"2\",\"digest\":\"10a7de9050901401fb0badef539d3d5717d614665dd476fe7b2b09453c355329\",\"bodyIdentity\":\"studio-data-contract-body@1:10a7de9050901401fb0badef539d3d5717d614665dd476fe7b2b09453c355329\",\"registryDigest\":\"6ba435e0ef83f67cd07d22eed8ea66c7aefc6c4f1433478dd0d4e584246f63f2\",\"sourceJson\":\"{\\\"id\\\":\\\"vict.flow-graph\\\",\\\"revision\\\":\\\"2\\\",\\\"schema\\\":{\\\"$schema\\\":\\\"https://json-schema.org/draft/2020-12/schema\\\",\\\"$id\\\":\\\"urn:vict:flow-graph:2\\\",\\\"$comment\\\":\\\"Structural shape only. Unique IDs, declared parameter types/defaults, topology, capacity and cycle policy are validated by the corresponding graph model. Total serialized graph budget: one million characters.\\\",\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"schema\\\":{\\\"const\\\":\\\"vict.flow-graph@2\\\"},\\\"revision\\\":{\\\"type\\\":\\\"integer\\\",\\\"minimum\\\":0,\\\"maximum\\\":9007199254740991},\\\"nodeTypes\\\":{\\\"type\\\":\\\"array\\\",\\\"items\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"id\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"maxLength\\\":200,\\\"not\\\":{\\\"enum\\\":[\\\"__proto__\\\",\\\"prototype\\\",\\\"constructor\\\"]}},\\\"label\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"maxLength\\\":200},\\\"parameters\\\":{\\\"type\\\":\\\"object\\\",\\\"propertyNames\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"maxLength\\\":200,\\\"not\\\":{\\\"enum\\\":[\\\"__proto__\\\",\\\"prototype\\\",\\\"constructor\\\"]},\\\"pattern\\\":\\\"^[A-Za-z_][A-Za-z0-9_-]*$\\\"},\\\"maxProperties\\\":128,\\\"additionalProperties\\\":{\\\"oneOf\\\":[{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"type\\\":{\\\"const\\\":\\\"string\\\"},\\\"default\\\":{\\\"type\\\":\\\"string\\\"},\\\"label\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"maxLength\\\":200}},\\\"required\\\":[\\\"type\\\",\\\"default\\\"],\\\"additionalProperties\\\":false},{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"type\\\":{\\\"const\\\":\\\"number\\\"},\\\"default\\\":{\\\"type\\\":\\\"number\\\"},\\\"label\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"maxLength\\\":200}},\\\"required\\\":[\\\"type\\\",\\\"default\\\"],\\\"additionalProperties\\\":false},{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"type\\\":{\\\"const\\\":\\\"boolean\\\"},\\\"default\\\":{\\\"type\\\":\\\"boolean\\\"},\\\"label\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"maxLength\\\":200}},\\\"required\\\":[\\\"type\\\",\\\"default\\\"],\\\"additionalProperties\\\":false},{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"type\\\":{\\\"const\\\":\\\"stringList\\\"},\\\"default\\\":{\\\"type\\\":\\\"array\\\",\\\"items\\\":{\\\"type\\\":\\\"string\\\"}},\\\"label\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"maxLength\\\":200}},\\\"required\\\":[\\\"type\\\",\\\"default\\\"],\\\"additionalProperties\\\":false},{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"type\\\":{\\\"const\\\":\\\"numberList\\\"},\\\"default\\\":{\\\"type\\\":\\\"array\\\",\\\"items\\\":{\\\"type\\\":\\\"number\\\"}},\\\"label\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"maxLength\\\":200}},\\\"required\\\":[\\\"type\\\",\\\"default\\\"],\\\"additionalProperties\\\":false},{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"type\\\":{\\\"const\\\":\\\"isoDate\\\"},\\\"default\\\":{\\\"type\\\":\\\"string\\\",\\\"$comment\\\":\\\"Empty string or valid Gregorian YYYY-MM-DD, checked by canonical isUiValueOfType.\\\"},\\\"label\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"maxLength\\\":200}},\\\"required\\\":[\\\"type\\\",\\\"default\\\"],\\\"additionalProperties\\\":false},{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"type\\\":{\\\"const\\\":\\\"isoTime\\\"},\\\"default\\\":{\\\"type\\\":\\\"string\\\",\\\"$comment\\\":\\\"Empty string or valid HH:MM[:SS], checked by canonical isUiValueOfType.\\\"},\\\"label\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"maxLength\\\":200}},\\\"required\\\":[\\\"type\\\",\\\"default\\\"],\\\"additionalProperties\\\":false}]}},\\\"ports\\\":{\\\"type\\\":\\\"array\\\",\\\"items\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"id\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"maxLength\\\":200,\\\"not\\\":{\\\"enum\\\":[\\\"__proto__\\\",\\\"prototype\\\",\\\"constructor\\\"]}},\\\"label\\\":{\\\"type\\\":\\\"string\\\",\\\"minLen [Details truncated for the bounded trace. Read current source for complete facts.]"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 85103 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 85174 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-902f9d6b-da1d-403d-b802-5c330fe902fa\",\"revision\":\"r1#0\",\"digest\":\"097c697107b8e101d9f6186e748bec8f182327284e2ae738dafa99d7f97ad614\",\"epoch\":\"916193b8-86d6-40f8-97ab-489babd1169e\"},\"section\":\"registry\",\"registry\":\"dataContracts\",\"key\":\"vict.flow-operations@2\",\"id\":\"vict.flow-operations\",\"revision\":\"2\",\"digest\":\"26b0310710b12527a9a8a056bea7cb5b5ccd45e46ede22a87ddbb4b8a03dbde7\",\"bodyIdentity\":\"studio-data-contract-body@1:26b0310710b12527a9a8a056bea7cb5b5ccd45e46ede22a87ddbb4b8a03dbde7\",\"registryDigest\":\"6ba435e0ef83f67cd07d22eed8ea66c7aefc6c4f1433478dd0d4e584246f63f2\",\"sourceJson\":\"{\\\"id\\\":\\\"vict.flow-operations\\\",\\\"revision\\\":\\\"2\\\",\\\"schema\\\":{\\\"$schema\\\":\\\"https://json-schema.org/draft/2020-12/schema\\\",\\\"$id\\\":\\\"urn:vict:flow-operations:2\\\",\\\"type\\\":\\\"array\\\",\\\"items\\\":{\\\"oneOf\\\":[{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"type\\\":{\\\"const\\\":\\\"setCyclePolicy\\\"},\\\"allowCycles\\\":{\\\"type\\\":\\\"boolean\\\"}},\\\"required\\\":[\\\"type\\\",\\\"allowCycles\\\"],\\\"additionalProperties\\\":false},{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"type\\\":{\\\"const\\\":\\\"defineNodeType\\\"},\\\"definition\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"id\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"maxLength\\\":200,\\\"not\\\":{\\\"enum\\\":[\\\"__proto__\\\",\\\"prototype\\\",\\\"constructor\\\"]}},\\\"label\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"maxLength\\\":200},\\\"parameters\\\":{\\\"type\\\":\\\"object\\\",\\\"propertyNames\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"maxLength\\\":200,\\\"not\\\":{\\\"enum\\\":[\\\"__proto__\\\",\\\"prototype\\\",\\\"constructor\\\"]},\\\"pattern\\\":\\\"^[A-Za-z_][A-Za-z0-9_-]*$\\\"},\\\"maxProperties\\\":128,\\\"additionalProperties\\\":{\\\"oneOf\\\":[{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"type\\\":{\\\"const\\\":\\\"string\\\"},\\\"default\\\":{\\\"type\\\":\\\"string\\\"},\\\"label\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"maxLength\\\":200}},\\\"required\\\":[\\\"type\\\",\\\"default\\\"],\\\"additionalProperties\\\":false},{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"type\\\":{\\\"const\\\":\\\"number\\\"},\\\"default\\\":{\\\"type\\\":\\\"number\\\"},\\\"label\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"maxLength\\\":200}},\\\"required\\\":[\\\"type\\\",\\\"default\\\"],\\\"additionalProperties\\\":false},{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"type\\\":{\\\"const\\\":\\\"boolean\\\"},\\\"default\\\":{\\\"type\\\":\\\"boolean\\\"},\\\"label\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"maxLength\\\":200}},\\\"required\\\":[\\\"type\\\",\\\"default\\\"],\\\"additionalProperties\\\":false},{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"type\\\":{\\\"const\\\":\\\"stringList\\\"},\\\"default\\\":{\\\"type\\\":\\\"array\\\",\\\"items\\\":{\\\"type\\\":\\\"string\\\"}},\\\"label\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"maxLength\\\":200}},\\\"required\\\":[\\\"type\\\",\\\"default\\\"],\\\"additionalProperties\\\":false},{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"type\\\":{\\\"const\\\":\\\"numberList\\\"},\\\"default\\\":{\\\"type\\\":\\\"array\\\",\\\"items\\\":{\\\"type\\\":\\\"number\\\"}},\\\"label\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"maxLength\\\":200}},\\\"required\\\":[\\\"type\\\",\\\"default\\\"],\\\"additionalProperties\\\":false},{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"type\\\":{\\\"const\\\":\\\"isoDate\\\"},\\\"default\\\":{\\\"type\\\":\\\"string\\\",\\\"$comment\\\":\\\"Empty string or valid Gregorian YYYY-MM-DD, checked by canonical isUiValueOfType.\\\"},\\\"label\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"maxLength\\\":200}},\\\"required\\\":[\\\"type\\\",\\\"default\\\"],\\\"additionalProperties\\\":false},{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"type\\\":{\\\"const\\\":\\\"isoTime\\\"},\\\"default\\\":{\\\"type\\\":\\\"string\\\",\\\"$comment\\\":\\\"Empty string or valid HH:MM[:SS], checked by canonical isUiValueOfType.\\\"},\\\"label\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"maxLength\\\":200}},\\\"required\\\":[\\\"type\\\",\\\"default\\\"],\\\"additionalProperties\\\":false}]}},\\\"ports\\\":{\\\"type\\\":\\\"array\\\",\\\"items\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"id\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"maxLength\\\":200,\\\"not\\\":{\\\"enum\\\":[\\\"__proto__\\\",\\\"prototype\\\",\\\"constructor\\\"]}},\\\"label\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"maxLength\\\":200},\\\"direction\\\":{\\\"enum\\\":[\\\"input\\\",\\\"output\\\"]},\\\"type\\\":{\\\"t [Details truncated for the bounded trace. Read current source for complete facts.]"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 85104 ms since turn start
+      - text: Tool failed (VICT_TOOL_FAILED); prior commits remain · failed
+      - generic: "tool-failed studio_screen_read 85180 ms since turn start {\"code\":\"VICT_TOOL_FAILED\"}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 95995 ms since turn start
+      - text: Tool failed (VICT_TOOL_FAILED); prior commits remain · failed
+      - generic: "tool-failed studio_screen_read 96003 ms since turn start {\"code\":\"VICT_TOOL_FAILED\"}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 95995 ms since turn start
+      - text: Tool failed (VICT_TOOL_FAILED); prior commits remain · failed
+      - generic: "tool-failed studio_screen_read 96004 ms since turn start {\"code\":\"VICT_TOOL_FAILED\"}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 95996 ms since turn start
+      - text: Tool failed (VICT_TOOL_FAILED); prior commits remain · failed
+      - generic: "tool-failed studio_screen_read 96004 ms since turn start {\"code\":\"VICT_TOOL_FAILED\"}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 105279 ms since turn start
+      - text: Tool failed (VICT_TOOL_FAILED); prior commits remain · failed
+      - generic: "tool-failed studio_screen_read 105285 ms since turn start {\"code\":\"VICT_TOOL_FAILED\"}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 105279 ms since turn start
+      - text: Tool failed (VICT_TOOL_FAILED); prior commits remain · failed
+      - generic: "tool-failed studio_screen_read 105286 ms since turn start {\"code\":\"VICT_TOOL_FAILED\"}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 105280 ms since turn start
+      - text: Tool failed (VICT_TOOL_FAILED); prior commits remain · failed
+      - generic: "tool-failed studio_screen_read 105286 ms since turn start {\"code\":\"VICT_TOOL_FAILED\"}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 121000 ms since turn start
+      - text: Tool failed (VICT_TOOL_FAILED); prior commits remain · failed
+      - generic: "tool-failed studio_screen_read 121003 ms since turn start {\"code\":\"VICT_TOOL_FAILED\"}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 132820 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 132829 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-902f9d6b-da1d-403d-b802-5c330fe902fa\",\"revision\":\"r1#0\",\"digest\":\"097c697107b8e101d9f6186e748bec8f182327284e2ae738dafa99d7f97ad614\",\"epoch\":\"916193b8-86d6-40f8-97ab-489babd1169e\"},\"section\":\"component\",\"id\":\"vict.flow.workspace\",\"revision\":\"1\",\"digest\":\"53d6961446cae06f6640faa79c2b56f4ad213aec9539ddfe092d5eae123681a8\",\"descriptorJson\":\"{\\\"revision\\\":\\\"1\\\",\\\"abi\\\":\\\"vict.ui-component-abi@1\\\",\\\"events\\\":[\\\"vict.ui-component-abi@1\\\"],\\\"rendererImplementationId\\\":\\\"vict.svelte.flow.composition\\\",\\\"styleTargets\\\":[\\\"root\\\"],\\\"id\\\":\\\"vict.flow.workspace\\\",\\\"props\\\":[{\\\"name\\\":\\\"graph\\\",\\\"type\\\":\\\"string\\\"},{\\\"name\\\":\\\"label\\\",\\\"type\\\":\\\"string\\\",\\\"default\\\":\\\"Graph workspace\\\"},{\\\"name\\\":\\\"readOnly\\\",\\\"type\\\":\\\"boolean\\\",\\\"default\\\":false}],\\\"slots\\\":[\\\"content\\\",\\\"body\\\"],\\\"scopedSlots\\\":[\\\"content\\\",\\\"body\\\"],\\\"outputs\\\":[{\\\"name\\\":\\\"graphChange\\\",\\\"payload\\\":\\\"string\\\",\\\"description\\\":\\\"Validated graph snapshot; bind to the same canonical graph state.\\\"},{\\\"name\\\":\\\"selectionChange\\\",\\\"payload\\\":\\\"string\\\",\\\"description\\\":\\\"Transient node/edge selection IDs.\\\"},{\\\"name\\\":\\\"nodeAction\\\",\\\"payload\\\":\\\"string\\\",\\\"description\\\":\\\"Declared body intent with node ID, type, output and payload. No effect is executed.\\\"},{\\\"name\\\":\\\"applicationAction\\\",\\\"payload\\\":\\\"string\\\",\\\"description\\\":\\\"Declared content intent not handled as a graph transaction.\\\"},{\\\"name\\\":\\\"operationResult\\\",\\\"payload\\\":\\\"string\\\",\\\"description\\\":\\\"Validated graph transaction outcome.\\\"}],\\\"inspectionLimits\\\":[\\\"No editor chrome or execution engine. Authored content chooses controls and viewport; authored body chooses node presentation.\\\"]}\",\"totalCharacters\":1158,\"offset\":0,\"nextOffset\":null,\"knowledge\":\"Read contracts with this exact id/revision for composition, dependencies, eligibility and semantic rules.\"}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 132821 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 132831 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-902f9d6b-da1d-403d-b802-5c330fe902fa\",\"revision\":\"r1#0\",\"digest\":\"097c697107b8e101d9f6186e748bec8f182327284e2ae738dafa99d7f97ad614\",\"epoch\":\"916193b8-86d6-40f8-97ab-489babd1169e\"},\"section\":\"component\",\"id\":\"vict.flow.viewport\",\"revision\":\"1\",\"digest\":\"637f692846617162b84564bde3bf07a1898061ff1b119d1a40cb4f13f3f47192\",\"descriptorJson\":\"{\\\"revision\\\":\\\"1\\\",\\\"abi\\\":\\\"vict.ui-component-abi@1\\\",\\\"events\\\":[\\\"vict.ui-component-abi@1\\\"],\\\"rendererImplementationId\\\":\\\"vict.svelte.flow.composition\\\",\\\"styleTargets\\\":[\\\"root\\\"],\\\"id\\\":\\\"vict.flow.viewport\\\",\\\"props\\\":[{\\\"name\\\":\\\"height\\\",\\\"type\\\":\\\"number\\\",\\\"default\\\":480},{\\\"name\\\":\\\"label\\\",\\\"type\\\":\\\"string\\\",\\\"default\\\":\\\"Graph canvas\\\"}],\\\"slots\\\":[],\\\"outputs\\\":[],\\\"inspectionLimits\\\":[\\\"Requires the nearest workspace content. Geometry and direct connections only; no imposed toolbar or inspector.\\\"]}\",\"totalCharacters\":467,\"offset\":0,\"nextOffset\":null,\"knowledge\":\"Read contracts with this exact id/revision for composition, dependencies, eligibility and semantic rules.\"}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 132822 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 132833 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-902f9d6b-da1d-403d-b802-5c330fe902fa\",\"revision\":\"r1#0\",\"digest\":\"097c697107b8e101d9f6186e748bec8f182327284e2ae738dafa99d7f97ad614\",\"epoch\":\"916193b8-86d6-40f8-97ab-489babd1169e\"},\"section\":\"component\",\"id\":\"vict.flow.port\",\"revision\":\"1\",\"digest\":\"6ca3d7701dcbfcf683eb59be9af6e4e923592760265fb0546b3143bcc4f9bb0b\",\"descriptorJson\":\"{\\\"revision\\\":\\\"1\\\",\\\"abi\\\":\\\"vict.ui-component-abi@1\\\",\\\"events\\\":[\\\"vict.ui-component-abi@1\\\"],\\\"rendererImplementationId\\\":\\\"vict.svelte.flow.composition\\\",\\\"styleTargets\\\":[\\\"root\\\"],\\\"id\\\":\\\"vict.flow.port\\\",\\\"props\\\":[{\\\"name\\\":\\\"id\\\",\\\"type\\\":\\\"string\\\"}],\\\"slots\\\":[\\\"content\\\"],\\\"outputs\\\":[],\\\"inspectionLimits\\\":[\\\"Place within an authored workspace body. Exact port ID resolves direction/type/capacity from the graph, not from styling.\\\"]}\",\"totalCharacters\":407,\"offset\":0,\"nextOffset\":null,\"knowledge\":\"Read contracts with this exact id/revision for composition, dependencies, eligibility and semantic rules.\"}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 132822 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 132835 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-902f9d6b-da1d-403d-b802-5c330fe902fa\",\"revision\":\"r1#0\",\"digest\":\"097c697107b8e101d9f6186e748bec8f182327284e2ae738dafa99d7f97ad614\",\"epoch\":\"916193b8-86d6-40f8-97ab-489babd1169e\"},\"section\":\"component\",\"kind\":\"native-recipe\",\"recipe\":\"rhea-input\",\"description\":\"Associated native label, typed local value and canonical change binding. No form transport. Uses the public Rhea stylesheet.\",\"sourceJson\":\"{\\\"nodes\\\":[{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"example\\\",\\\"tag\\\":\\\"div\\\",\\\"children\\\":[\\\"example-label\\\",\\\"example-control\\\",\\\"example-help\\\"],\\\"classes\\\":[\\\"vict-rhea\\\",\\\"vict-rhea-field\\\"]},{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"example-label\\\",\\\"tag\\\":\\\"label\\\",\\\"children\\\":[\\\"example-label-text\\\"],\\\"attributes\\\":{\\\"for\\\":\\\"example-control\\\"}},{\\\"kind\\\":\\\"text\\\",\\\"id\\\":\\\"example-label-text\\\",\\\"content\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"Your name\\\"}},{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"example-control\\\",\\\"tag\\\":\\\"input\\\",\\\"children\\\":[],\\\"attributes\\\":{\\\"id\\\":\\\"example-control\\\",\\\"aria-describedby\\\":\\\"example-help\\\",\\\"type\\\":\\\"text\\\",\\\"value\\\":{\\\"type\\\":\\\"ref\\\",\\\"path\\\":\\\"state.rhea_example_value\\\"}},\\\"classes\\\":[\\\"vict-rhea-input\\\"],\\\"interactions\\\":[{\\\"on\\\":\\\"change\\\",\\\"action\\\":\\\"setState\\\",\\\"key\\\":\\\"rhea_example_value\\\",\\\"value\\\":{\\\"type\\\":\\\"ref\\\",\\\"path\\\":\\\"state.rhea_example_value\\\"}}]},{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"example-help\\\",\\\"tag\\\":\\\"small\\\",\\\"children\\\":[\\\"example-help-text\\\"]},{\\\"kind\\\":\\\"text\\\",\\\"id\\\":\\\"example-help-text\\\",\\\"content\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"Local preview value; connect a declared action to submit.\\\"}}],\\\"localState\\\":{\\\"rhea_example_value\\\":{\\\"key\\\":\\\"rhea_example_value\\\",\\\"type\\\":\\\"string\\\",\\\"initial\\\":\\\"\\\"}}}\",\"totalCharacters\":1077,\"offset\":0,\"nextOffset\":null,\"knowledge\":\"Native recipe source, not a component descriptor. Generic native insertion uses elements.\"}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 132823 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 132837 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-902f9d6b-da1d-403d-b802-5c330fe902fa\",\"revision\":\"r1#0\",\"digest\":\"097c697107b8e101d9f6186e748bec8f182327284e2ae738dafa99d7f97ad614\",\"epoch\":\"916193b8-86d6-40f8-97ab-489babd1169e\"},\"section\":\"component\",\"kind\":\"native-recipe\",\"recipe\":\"rhea-textarea\",\"description\":\"Associated native label, typed local value and canonical change binding. No form transport. Uses the public Rhea stylesheet.\",\"sourceJson\":\"{\\\"nodes\\\":[{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"example\\\",\\\"tag\\\":\\\"div\\\",\\\"children\\\":[\\\"example-label\\\",\\\"example-control\\\",\\\"example-help\\\"],\\\"classes\\\":[\\\"vict-rhea\\\",\\\"vict-rhea-field\\\"]},{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"example-label\\\",\\\"tag\\\":\\\"label\\\",\\\"children\\\":[\\\"example-label-text\\\"],\\\"attributes\\\":{\\\"for\\\":\\\"example-control\\\"}},{\\\"kind\\\":\\\"text\\\",\\\"id\\\":\\\"example-label-text\\\",\\\"content\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"Your name\\\"}},{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"example-control\\\",\\\"tag\\\":\\\"textarea\\\",\\\"children\\\":[],\\\"attributes\\\":{\\\"id\\\":\\\"example-control\\\",\\\"aria-describedby\\\":\\\"example-help\\\",\\\"value\\\":{\\\"type\\\":\\\"ref\\\",\\\"path\\\":\\\"state.rhea_example_value\\\"}},\\\"classes\\\":[\\\"vict-rhea-input\\\"],\\\"interactions\\\":[{\\\"on\\\":\\\"change\\\",\\\"action\\\":\\\"setState\\\",\\\"key\\\":\\\"rhea_example_value\\\",\\\"value\\\":{\\\"type\\\":\\\"ref\\\",\\\"path\\\":\\\"state.rhea_example_value\\\"}}]},{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"example-help\\\",\\\"tag\\\":\\\"small\\\",\\\"children\\\":[\\\"example-help-text\\\"]},{\\\"kind\\\":\\\"text\\\",\\\"id\\\":\\\"example-help-text\\\",\\\"content\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"Local preview value; connect a declared action to submit.\\\"}}],\\\"localState\\\":{\\\"rhea_example_value\\\":{\\\"key\\\":\\\"rhea_example_value\\\",\\\"type\\\":\\\"string\\\",\\\"initial\\\":\\\"\\\"}}}\",\"totalCharacters\":1066,\"offset\":0,\"nextOffset\":null,\"knowledge\":\"Native recipe source, not a component descriptor. Generic native insertion uses elements.\"}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 151305 ms since turn start
+      - text: Read query refused safely · failed
+      - generic: "validation-refused studio_screen_read 151310 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-902f9d6b-da1d-403d-b802-5c330fe902fa\",\"revision\":\"r1#0\",\"digest\":\"097c697107b8e101d9f6186e748bec8f182327284e2ae738dafa99d7f97ad614\",\"epoch\":\"916193b8-86d6-40f8-97ab-489babd1169e\"},\"section\":\"component\",\"ok\":false,\"code\":\"STUDIO_AGENT_COMPONENT_NOT_FOUND\",\"requested\":\"vict.flow.workspace@2\",\"message\":\"Exact component/recipe not found. Discover catalog or palette; native tags use elements.\"}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 151306 ms since turn start
+      - text: Tool failed (VICT_TOOL_FAILED); prior commits remain · failed
+      - generic: "tool-failed studio_screen_read 151313 ms since turn start {\"code\":\"VICT_TOOL_FAILED\"}"
+    - heading "Sanitized exchanges" [level=4]
+    - paragraph: Compact previews remain in the conversation. Open a retained original page here; this never invokes a tool again.
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result · bounded original is partial
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+- separator "Chat width"
+- main:
+  - button "Toggle Chat drawer" [expanded]:
+  - group "Workspace mode":
+    - button "Design" [pressed]
+    - button "Interact"
+    - button "Structure"
+  - button "Toggle Document and Selection drawer":
+  - iframe:
+    - generic "Screen canvas":
+      - main "Evidence desk — graph application"
+  - generic: ＋
+  - heading "What will you make?" [level=1]
+  - paragraph: Select this screen to open its tools, then choose Insert.
+- contentinfo:
+  - status: New screen · not saved yet.

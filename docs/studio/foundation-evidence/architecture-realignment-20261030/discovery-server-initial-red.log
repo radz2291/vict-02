@@ -1,0 +1,68 @@
+
+> vict-studio@0.1.0 test
+> vitest run tests/designer-discovery-live-repair.test.ts tests/designer-cycle14-efficiency.test.ts tests/designer-validation-feedback.test.ts tests/designer-input-shape.test.ts
+
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/apps/studio
+
+7:07:03 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+7:07:04 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+7:07:04 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+7:07:04 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+7:07:04 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+ ✓ tests/designer-input-shape.test.ts (6 tests) 25ms
+ ✓ tests/designer-validation-feedback.test.ts (5 tests) 25ms
+ ❯ tests/designer-discovery-live-repair.test.ts (2 tests | 2 failed) 38ms
+   × emits only value-free input types through the actual pinned executor before rejected reads invoke 20ms
+     → The request needs a bounded prompt and current screen.
+   × retains completed scalar component pages through cursor-only calls in the actual pinned executor 16ms
+     → The request needs a bounded prompt and current screen.
+ ✓ tests/designer-cycle14-efficiency.test.ts (6 tests) 1991ms
+   ✓ enforces completed knowledge and delivers measured progress through the actual pinned executor (offline model, no provider/design quality claim)  1923ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/designer-discovery-live-repair.test.ts > emits only value-free input types through the actual pinned executor before rejected reads invoke
+Error: The request needs a bounded prompt and current screen.
+ ❯ execute tests/designer-discovery-live-repair.test.ts:12:25
+     10| async function execute(owner: string, calls: {toolName:string;args:Rec…
+     11|   const parsed = validateAgentStart({prompt:'Exercise the declared dis…
+     12|   if (!parsed.ok) throw Error(parsed.message);
+       |                         ^
+     13|   const input = JSON.stringify({request:parsed.value.prompt,untrusted_…
+     14|   const model = createDeterministicOfflineModel({script:{[input]:{kind…
+ ❯ tests/designer-discovery-live-repair.test.ts:24:24
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/designer-discovery-live-repair.test.ts > retains completed scalar component pages through cursor-only calls in the actual pinned executor
+Error: The request needs a bounded prompt and current screen.
+ ❯ execute tests/designer-discovery-live-repair.test.ts:12:25
+     10| async function execute(owner: string, calls: {toolName:string;args:Rec…
+     11|   const parsed = validateAgentStart({prompt:'Exercise the declared dis…
+     12|   if (!parsed.ok) throw Error(parsed.message);
+       |                         ^
+     13|   const input = JSON.stringify({request:parsed.value.prompt,untrusted_…
+     14|   const model = createDeterministicOfflineModel({script:{[input]:{kind…
+ ❯ tests/designer-discovery-live-repair.test.ts:51:32
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed | 3 passed (4)
+      Tests  2 failed | 17 passed (19)
+   Start at  19:06:50
+   Duration  33.02s (transform 23.37s, setup 0ms, collect 114.25s, tests 2.08s, environment 2ms, prepare 965ms)
+
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path C:\Users\RZ1\.codex\worktrees\vict-architecture-realignment-20261030\apps\studio
+npm error workspace vict-studio@0.1.0
+npm error location C:\Users\RZ1\.codex\worktrees\vict-architecture-realignment-20261030\apps\studio
+npm error command failed
+npm error command C:\WINDOWS\system32\cmd.exe /d /s /c vitest run tests/designer-discovery-live-repair.test.ts tests/designer-cycle14-efficiency.test.ts tests/designer-validation-feedback.test.ts tests/designer-input-shape.test.ts

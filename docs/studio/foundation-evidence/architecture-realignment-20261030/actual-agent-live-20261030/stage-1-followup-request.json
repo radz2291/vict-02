@@ -1,0 +1,7 @@
+{
+  "observedUtc": "2026-10-30T10:43:55.118199+00:00",
+  "screen": "Architecture proof \u2014 1 read and edit",
+  "savedBeforeTurn": "r1.r1",
+  "prompt": "Use the screen-read tool to read the current text subtree before editing. Then change only the sentence to \u2018Review each source before making a decision.\u2019 Preserve the heading and styling. Tell me whether the read succeeded and what changed. Do not save.",
+  "reason": "First successful actual turn had one edit and observation but zero source-read calls; preserve that evidence distinction."
+}

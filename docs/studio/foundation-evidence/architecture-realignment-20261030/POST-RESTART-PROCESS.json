@@ -1,0 +1,7 @@
+{
+  "Pid": 17360,
+  "ParentPid": 6272,
+  "Created": "2026-10-30T18:39:43.033216+08:00",
+  "Command": "\"C:\\Program Files\\nodejs\\node.exe\" build",
+  "ParentCommand": "\"C:\\Program Files\\nodejs\\node.exe\" \"C:\\Users\\RZ1\\.codex\\worktrees\\vict-architecture-realignment-20261030\\apps\\studio\\scripts\\launch-agent.mjs\""
+}

@@ -1,0 +1,7 @@
+{
+  "startedObservedUtc": "2026-10-30T11:23:38.381Z",
+  "servingSource": "b6cf440be33ca3c011889e8ecc91fc28f16f1175",
+  "screen": "Evidence desk — rich-node retry",
+  "prompt": "Build a small Evidence desk application. For this first increment, include a normal page heading and short introduction, then an editable graph with exactly one rich ‘Source note’ node. Inside the node use ordinary registered VICT controls for an editable source URL and multiline notes, with meaningful labels and an evidence output port for the next step. Those controls must update the node’s values without dragging it. Use a restrained warm theme and a readable node layout. Do not add a toolbar, family picker, inspector, connection form or backend execution. Discover the public contracts you need, build the small working slice first, and leave saving to me.",
+  "route": "Actual Studio Chat Send; no supplied document/fixture or hidden contract preload"
+}

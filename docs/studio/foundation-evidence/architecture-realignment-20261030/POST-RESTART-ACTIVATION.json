@@ -1,0 +1,31 @@
+{
+  "observedUtc": "2026-10-30T10:39:41.798444+00:00",
+  "sourceCandidate": "a61396cb3bf20e3f10d62a89a716feafdd91d6e3",
+  "branchCheckpoint": "7674c0ef1be2c3297ac00e5ecfb67e224e9a1b28",
+  "originalBuildUnchanged": true,
+  "candidateCoreFilesMatched": 305,
+  "historicalProofFilesCopiedAndMatched": 60,
+  "browserInventory": "Working after owner restart; same built-in IAB browser2; no existing tabs",
+  "listenerBeforeLaunch": "No listener observed at127.0.0.25:5626",
+  "providerConfiguration": "Existing normal loader; zai/glm-5.3-flash Coding Plan; validated without secret output",
+  "phase": "Activated and authenticated native Designer reached",
+  "activatedUtc": "2026-10-30T10:41:01.556697+00:00",
+  "candidateCoreHashMismatches": [],
+  "savedScreenInventory": [
+    "Chatwithme",
+    "Foundation AI Review",
+    "Foundation Graph",
+    "Foundation Library Consumer",
+    "Foundation Manual Contracts",
+    "Foundation Media Live",
+    "Foundation Media Live",
+    "Foundation Public Run Review",
+    "Foundation Responsive Desk",
+    "NodeLab \u2014 direct agent retry",
+    "NodeLab \u2014 first trial (incomplete)"
+  ],
+  "selectedRestoredScreen": "NodeLab \u2014 direct agent retry / Saved",
+  "currentChatDraft": "Empty on visible Message control",
+  "agentState": "Ready; no active turn",
+  "providerCallsBeforeTrial": 0
+}

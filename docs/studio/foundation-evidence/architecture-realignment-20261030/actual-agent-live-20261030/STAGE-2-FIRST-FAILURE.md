@@ -1,0 +1,11 @@
+# Actual-agent rich-node trial — preserved failure
+
+Serving source: a61396cb3bf20e3f10d62a89a716feafdd91d6e3. Actual Studio Chat, existing Z.ai glm-5.3-flash Coding Plan, established built-in browser/origin. Fresh screen `screen-902f9d6b-da1d-403d-b802-5c330fe902fa`, named Evidence desk — graph application. Original brief is retained in stage-2-request.json. No source seed or hidden knowledge preload.
+
+Stopped after repeating discovery failures: public partial measurement showed 18 tool calls, 10 refusals, zero edits and 179.9 seconds. Cancellation did not produce a settled completion receipt; these are partial browser measurements, not provider request, token or cost totals. Eight reads completed: catalog/data first pages and legacy component recipes. Nine failures reported structural invalid_type issues; one exact-revision recipe alias was unavailable. Raw failed arguments were unavailable before validated invocation. The model claimed transport stringification; that cause remains unproved.
+
+The legacy scalar recipe returned revision 1 descriptors, while exact revision batch discovery required complex fields that this trial failed to supply correctly. Preserved public diagnostics identify components/includeExamples and offset/expectedBodyIdentities type failures without recovering raw arguments. The stopped blank trial was saved as r1.r1. No rich node was authored and this stage failed.
+
+Repair candidate b6cf440be33ca3c011889e8ecc91fc28f16f1175 adds strict generic scalar exact-revision knowledge paging, inline model-facing read definitions, and bounded safe observed-type diagnostics. No broad coercion, app seed, weakened validation or inferred transport fix. Independent offline review 0f033731e529dac48d6b6f96edcc2eda8129228c passes 40 relevant checks; build/typecheck/lint pass. Live repair effectiveness remains to be demonstrated on a fresh trial. Earlier failures remain evidence.
+
+See stage-2-stopped-public-dom.txt and stage-2-stopped.png for the actual public stopped state. Test-fixture mistakes and initial red logs from the repair remain separate from product failures. Physical Android keyboard, touch and safe-area checks remain pending; availability is confirmed, no device result is claimed.

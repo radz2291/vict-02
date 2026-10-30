@@ -5,7 +5,39 @@ Authoring Foundation delivery remains HELD. Not ready for owner acceptance.**
 The task remains in progress. No acceptance, milestone completion, Milestone 2
 start or Stage 9 closure is recorded.
 
+**Post-restart live continuation:** supported built-in IAB control works again.
+The exact verified candidate is now locally activated at the established origin,
+with the original build untouched and all 60 historical proof files hash-preserved.
+The actual Studio agent has completed a meaningful source read and precise edit,
+with native shared Undo/Redo, Save/export/reload proof. Rich-node/application
+stages are now in progress; that minimal success does not pass the full gate.
+
 ## Exact identities
+
+Latest live-discovery candidate: **b6cf440be33ca3c011889e8ecc91fc28f16f1175**.
+Independent qualified offline PASS: **0f033731e529dac48d6b6f96edcc2eda8129228c**
+([report](foundation-evidence/architecture-realignment-20261030/SCALAR-KNOWLEDGE-INDEPENDENT.md)),
+40 relevant tests, TypeScript and scoped lint pass. Separate staged production
+build passes. This candidate supersedes the a613 serving identity in the historical
+table below; [sealed activation](foundation-evidence/architecture-realignment-20261030/DISCOVERY-ACTIVATION.json)
+retains every core file hash plus all 60 historical proof files. The previous
+serving build is preserved whole for rollback. Normal existing sign-in and saved
+Designer restoration succeeded after activation.
+
+The first actual rich-node trial **failed** with 18 calls / 10 refusals / zero edits
+and was stopped, saved and retained ([failure](foundation-evidence/architecture-realignment-20261030/actual-agent-live-20261030/STAGE-2-FIRST-FAILURE.md)).
+The strict scalar exact-revision knowledge read repairs a concrete discovery
+usability gap; the original transport cause remains unproved. A subsequent
+one-call diagnostic correctly refused the parent's numeric revision 2 prompt
+(schema requires string "2"), returning only its number type and safe issue path.
+It made no edits. The original rich-node brief is now being retried on a fresh
+blank screen; no pass is claimed. Android phone/tablet availability is confirmed,
+with physical keyboard/touch/safe-area proof still pending.
+
+Current read capability/input revisions are 7, instructions 13, authoring profile
+14 and observer profile 8. Edit/input remains 6. Packages and saved schemas are
+unchanged by this Studio-only repair, so the independent public-artifact consumer
+proof remains bounded evidence for identical package bytes.
 
 | Item | Identity |
 | --- | --- |
@@ -18,9 +50,9 @@ start or Stage 9 closure is recorded.
 | Initial independent FAIL | `d64e47087d5dbc3a858c4750045b9d7e1a98f5ec`, reviewed product `46d20c3c8f3d3d617df2b6d18655fc7a31517e8e` |
 | Intermediate recheck / F3 retained | `c004f794d25fc55f5ff6b59cc9088eb5070b6e77`, reviewed product `3e2c7b9e4a52721e398afb23d3fa140efe31f689` |
 | Final independent source verdict | `4ef3199e87d8f9c04a4b1d584872920345b3917d`, branch `review/architecture-realignment-final-20261030`, exact candidate `a61396cb…` |
-| Final production build | Exit 0; 305 files, all hashes in [BUILD-FINAL.json](foundation-evidence/architecture-realignment-20261030/BUILD-FINAL.json); retained at `C:/Users/RZ1/AppData/Local/Temp/vict-realignment-a61396cb-build`; **uninstalled** |
+| Final production build | Exit 0; 305 core files, all hashes in [BUILD-FINAL.json](foundation-evidence/architecture-realignment-20261030/BUILD-FINAL.json); retained at `C:/Users/RZ1/AppData/Local/Temp/vict-realignment-a61396cb-build`; subsequently **activated locally**, with 60 preserved proof files; see [activation receipt](foundation-evidence/architecture-realignment-20261030/POST-RESTART-ACTIVATION.json) |
 | Public-artifact consumer | [F0YKQr report](foundation-evidence/architecture-realignment-20261030/vict-realignment-consumer-F0YKQr.json), tested package source `3e2c7b9e4a52721e398afb23d3fa140efe31f689`; package bytes unchanged through final source |
-| Serving product | `27788de9f111042d04d83e7d603c6da2cccde8dc`, original `127.0.0.25:5626` service; no activation/restart attempted |
+| Serving product | `a61396cb3bf20e3f10d62a89a716feafdd91d6e3`, `127.0.0.25:5626`, normal existing-config launcher; original `27788de9…` build preserved untouched |
 | Remote main / public pause branch | `d7401bef6e48330796c74ec00c86db9622d48cdf` / `1fa7c392401bfb6581aae30a1e6d33ba305c2662`, rechecked unchanged; **no push** |
 
 Later documentation/evidence commits do not change the product candidate above.
@@ -63,7 +95,7 @@ dependencies and appearance do not establish upstream interaction reuse.
 | A | Independently PASS for architecture reconciliation and all 31 requirement mappings. |
 | B | Source/mounted vertical-slice proof cleared within scope: ordinary controls, typed connected nodes, nested/repeated state, manual/public agent operations, history, save/reopen/import. Full native/actual-agent experience unawarded. |
 | C | Bounded source consistency repairs independently PASS; existing media/mobile/AI/style/icon/panel evidence retained. Whole-product conformance remains open. |
-| D | Independent public-artifact fixture proof PASS; actual Studio-agent stages 1–5 and materially different second real application **NOT RUN**. |
+| D | Independent public-artifact fixture proof PASS; actual stage 1 read/edit with save/history/reopen now demonstrated; rich-node stage 2 in progress. Stages 3–5 and different second real application remain unproved. |
 | E | Fresh independent bounded-source verdict PASS; integrated browser/device/actual-agent exit **HELD**, owner acceptance absent. |
 
 Final build, Studio TypeScript and changed-code ESLint all exit 0. Source repair
@@ -98,7 +130,7 @@ evidence, not a fresh whole-candidate live pass.
 | Requirement | Current supporting result / still required |
 | --- | --- |
 | AR01 | Retained styling/theme proof; current consumer declares tokens/theme; new native graph appearance unproved. |
-| AR02 | Strict discovery and trusted type hints pass offline; meaningful actual Studio-agent read/edit recovery still required. |
+| AR02 | Strict discovery/type hints pass offline; meaningful actual source read/edit now passes with zero refusals. Rich composition/discovery and recovery remain to prove. |
 | AR03 | Atomic/source/route/revision refusals pass; no validation weakening or coercion added. Live composition still required. |
 | AR04 | Retained bounded capture proof; no new actual graph/open-overlay observation. |
 | AR05 | Retained concise reporting boundary; final new actual-agent output quality unproved. |
@@ -122,7 +154,7 @@ evidence, not a fresh whole-candidate live pass.
 | AR23 | Approved drawer/popup ownership and scoped regressions retained; new native nested/standalone exercise remains. |
 | AR24 | Retained desktop dimensions/orientation evidence; desktop previews remain explicitly distinct from physical devices. |
 | AR25 | **PARTIAL**: actual-device virtual keyboard, safe-area and touch still unproved. |
-| AR26 | Existing panels/drafts proof retained; owner browser/apps/assets/drafts untouched, fresh complete browser backup unavailable. |
+| AR26 | Existing panels/drafts proof retained; owner apps/assets/drafts untouched. Saved inventory restored after restart; no fresh complete browser backup is claimed. |
 | AR27 | Existing View-row/mode-bar behavior retained, unchanged. |
 | AR28 | Registered icons/theme/portable evidence retained, unchanged. |
 | AR29 | Inert vector/ID/managed-asset evidence retained; importer negatives remain passing. |
@@ -146,24 +178,31 @@ installed bytes match all 324 core and 60 preserved proof files from serving
 `27788de9…`. Existing proof routes, Chatwithme/Matrix/Flow, failed NodeLab trials,
 managed assets, browser storage and unsent drafts were not edited or cleaned.
 This is preservation by non-mutation, **not a fresh complete browser backup**.
-Earlier 119c safety improvements are in the final inactive candidate; the old
-serving product has not been upgraded. Do not run new actual-agent proof against
-that old serving build as though the safe boundary were installed.
+After the owner restart there were no existing IAB tabs. The established origin
+restored the saved-screen inventory, including both failed NodeLab trials. The
+new source is now serving through its own continuation checkout; original build
+bytes and stored apps were not overwritten. Earlier 119c safety improvements are
+therefore present in the newly activated candidate. Actual proofs use fresh screens.
 
 ## Exact remaining owner/tool step and walkthrough
 
-The built-in browser controller fails before inventory with `failed to write
+The earlier built-in browser controller failed before inventory with `failed to write
 kernel assets: The system cannot find the path specified. (os error 3)`.
 Initial attempt, one documented session-reset retry, and one fresh attempt after
 an independently observed tool re-enable all failed identically. No tab access,
-alternate browser, raw protocol or security-policy bypass was used.
+alternate browser, raw protocol or security-policy bypass was used. The owner then
+restarted the PC and said continue. Fresh supported inventory succeeded; the
+candidate was hash-checked, all historical proof routes retained, normal existing
+provider configuration validated without secret output, and Studio launched at
+the same origin. Normal local-demo sign-in and saved Designer restoration pass.
 
-Restore the supported built-in IAB controller. Then the already authorized next
-work is: inspect/preserve current owner tabs, unsent drafts, saved apps and assets;
-freshly reconcile process/build identities; safely activate this exact retained
-candidate at the same origin with existing Z.ai configuration; sign in normally;
-execute actual Studio-agent stages 1–5 and native independent-consumer checks.
-No new provider/account/configuration or publication authority is implied.
+The current next work is to complete actual Studio-agent stages 2–5 and native
+independent-consumer checks. Stage 1 has an actual source-read/atomic-edit receipt,
+zero refusals in the explicit read/edit follow-up, shared native Undo/Redo,
+Save r1.r2, supported Export and browser reload with the saved text retained.
+See [actual stage-1 result](foundation-evidence/architecture-realignment-20261030/actual-agent-live-20261030/STAGE-1-RESULT.md).
+The owner confirmed a real phone/tablet is available for the later physical-device
+check. No new provider/account/configuration or publication authority is implied.
 
 Owner walkthrough after that safe activation should focus on:
 
