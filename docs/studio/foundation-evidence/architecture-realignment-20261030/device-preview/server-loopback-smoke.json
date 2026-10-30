@@ -1,0 +1,24 @@
+{
+  "status": "PASS",
+  "scope": "Only this test child listened temporarily on loopback. No LAN, Studio, firewall, browser or provider changes.",
+  "reportPath": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-export-device-preview-stage1-final-20261030\\preview-report.json",
+  "preparationReportSha256": "4fa3efa94dac093b42a6f012b2a3b04f60e6be03319e73a267512a751976b2b3",
+  "checks": [
+    "Actual prepared index bytes and response headers",
+    "Actual unchanged application export bytes",
+    "Actual sealed JavaScript and CSS bytes/content types",
+    "HEAD returns correct length and no body",
+    "Write and unsupported methods refused",
+    "No directory listing, report/source, admin/backend or unlisted file serving",
+    "Raw/encoded traversal, separators, malformed decoding, NUL, query and oversized paths refused",
+    "Unexpected Host refused",
+    "Wrong preparation-report hash refused before bind",
+    "Wildcard binding refused before bind",
+    "Public address binding refused before bind",
+    "Studio port refused before bind",
+    "Changed output bytes refused before bind",
+    "Junction/symlink escape refused before bind",
+    "Actual prepared output unchanged after smoke"
+  ],
+  "retainedFixture": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-preview-server-smoke-SvSkXY"
+}
