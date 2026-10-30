@@ -14,11 +14,16 @@ const hash = bytes => createHash('sha256').update(bytes).digest('hex');
 const npm = process.platform === 'win32' ? 'npm.cmd' : 'npm';
 const run = (args, cwd) => execFileSync(npm, args, { cwd, encoding: 'utf8', shell: process.platform === 'win32', maxBuffer: 32 * 1024 * 1024 });
 const names = ['contracts', 'ui', 'sdk', 'application', 'ui-svelte', 'ui-media-svelte', 'ui-flow-svelte'];
+// Explicit reuse requires a prior successful proof. Only the Flow package may
+// differ; every dependency's tracked tree and existing packed artifact bytes
+// must still equal that proof. Default invocation always runs the full ladder.
+const reuseIndex = process.argv.indexOf('--reuse-built-dependencies');
+const reusePath = reuseIndex < 0 ? undefined : process.argv[reuseIndex + 1];
 const status = git(['status', '--porcelain']);
 const report = {
   schema: 'vict.architecture-realignment-consumer@1', status: 'started', sourceCandidate: git(['rev-parse', 'HEAD']),
   workingTree: { dirty: !!status, statusSha256: hash(status), note: 'Exact packed source cleanliness checked separately; unrelated Studio/evidence changes are not packed.' },
-  destination, consumer, packs: [],
+  destination, consumer, packs: [], packageBuilds: [],
   scope: 'Coding-authored independent-consumer fixture: installed public artifacts, DOM interaction and production build. No actual-agent, browser, device, service or provider proof.',
 };
 const reportDirectory = resolve(root, 'docs/studio/foundation-evidence/architecture-realignment-20261030');
@@ -28,13 +33,33 @@ const save = () => writeFileSync(reportPath, JSON.stringify(report, null, 2));
 const put = (path, value) => writeFileSync(join(consumer, path), value);
 save();
 try {
+  if (reuseIndex >= 0 && (!reusePath || reusePath.startsWith('--'))) throw Error('--reuse-built-dependencies requires the path of a prior successful consumer report');
+  const previous = reusePath ? JSON.parse(readFileSync(resolve(root, reusePath), 'utf8')) : undefined;
+  if (previous && (previous.schema !== report.schema || !previous.status.startsWith('PASS:') || !previous.domTest?.passed || !previous.outputFiles?.length)) throw Error('Dependency reuse requires a successful DOM and production-build report');
+  if (previous) {
+    const sharedChanges = git(['diff', '--name-only', previous.sourceCandidate, report.sourceCandidate, '--', 'package.json', 'package-lock.json', 'tsconfig.base.json']);
+    if (sharedChanges) throw Error('Shared build inputs changed since dependency proof; use the default full ladder');
+    report.reusedDependencyEvidence = { reportPath: resolve(root, reusePath), reportSha256: hash(readFileSync(resolve(root, reusePath))), sourceCandidate: previous.sourceCandidate, note: 'Six unchanged dependency builds are reused; Flow is checked again. This is not a fresh build of those dependencies.' };
+  }
   // Compiled JS packages are built in dependency order; Svelte packages ship
   // their public .svelte/TS artifacts and undergo their published build check.
   for (const name of names) {
     const changes = git(['diff', '--name-only', 'HEAD', '--', `packages/${name}/src`, `packages/${name}/package.json`]);
     const untracked = git(['ls-files', '--others', '--exclude-standard', '--', `packages/${name}/src`]);
     if (changes || untracked) throw Error(`Commit packed source before proving exact candidate: ${name}`);
-    writeFileSync(join(destination, `build-${name}.log`), run(['run', 'build', '-w', `@victframework/${name}`], root));
+    if (previous && name !== 'ui-flow-svelte') {
+      const tree = git(['rev-parse', `${report.sourceCandidate}:packages/${name}`]);
+      const priorTree = git(['rev-parse', `${previous.sourceCandidate}:packages/${name}`]);
+      if (tree !== priorTree) throw Error(`Dependency tracked source changed since earlier proof: ${name}; use the default full ladder`);
+      const priorPack = previous.packs.find(pack => pack.name === `@victframework/${name}`);
+      if (!priorPack?.files?.length) throw Error(`Earlier report has no artifact inventory: ${name}`);
+      for (const file of priorPack.files) if (hash(readFileSync(join(root, 'packages', name, file.path))) !== file.sha256) throw Error(`Existing built artifact differs from earlier successful proof: ${name}/${file.path}`);
+      report.packageBuilds.push({ name: `@victframework/${name}`, mode: 'reused-earlier-successful-build', sourceTree: tree, previousSourceTree: priorTree, artifactFilesMatched: priorPack.files.length });
+      writeFileSync(join(destination, `build-${name}.log`), `REUSED earlier successful build.\nPrevious report: ${resolve(root, reusePath)}\nPrevious source: ${previous.sourceCandidate}\nCurrent and previous package source tree: ${tree}\nExisting artifact files matched: ${priorPack.files.length}\nNo new dependency build was run.\n`);
+    } else {
+      writeFileSync(join(destination, `build-${name}.log`), run(['run', 'build', '-w', `@victframework/${name}`], root));
+      report.packageBuilds.push({ name: `@victframework/${name}`, mode: 'fresh-build-check', sourceTree: git(['rev-parse', `${report.sourceCandidate}:packages/${name}`]) });
+    }
   }
   const dependencies = {};
   for (const name of names) {
@@ -42,7 +67,12 @@ try {
     const packed = JSON.parse(run(['pack', '--json', '--pack-destination', artifacts], join(root, 'packages', name)))[0];
     const path = join(artifacts, packed.filename);
     dependencies[manifest.name] = `file:${path.replaceAll('\\', '/')}`;
-    report.packs.push({ name: manifest.name, path, sha256: hash(readFileSync(path)), files: packed.files.map(file => ({ path: file.path, sha256: hash(readFileSync(join(root, 'packages', name, file.path))) })) });
+    const files = packed.files.map(file => ({ path: file.path, sha256: hash(readFileSync(join(root, 'packages', name, file.path))) }));
+    if (previous && name !== 'ui-flow-svelte') {
+      const oldFiles = previous.packs.find(pack => pack.name === manifest.name).files;
+      if (files.length !== oldFiles.length || files.some(file => !oldFiles.some(old => old.path === file.path && old.sha256 === file.sha256))) throw Error(`Fresh packed dependency inventory differs from reused build: ${name}`);
+    }
+    report.packs.push({ name: manifest.name, path, sha256: hash(readFileSync(path)), files });
   }
   const installedVersion = name => JSON.parse(readFileSync(join(root, 'node_modules', name, 'package.json'), 'utf8')).version;
   dependencies.svelte = installedVersion('svelte');
@@ -121,5 +151,7 @@ app=mount(DocumentHost,{target,props:{plan:compile(reopened),localState:reopened
   report.limitations = ['DOM simulation does not prove painted graph geometry, pointer connections, browser focus or physical-device behavior.', 'Coding-authored fixture is not an actual Studio-agent app or owner acceptance.', 'Source/default persistence is explicit consumer handling; no durable application adapter or backend effect is demonstrated.'];
   save(); console.log(JSON.stringify({ reportPath, status: report.status, destination, sourceCandidate: report.sourceCandidate, packs: report.packs.map(({ name, sha256 }) => ({ name, sha256 })) }, null, 2));
 } catch (error) {
+  if (error?.stdout) writeFileSync(join(destination, 'failed-command-stdout.log'), error.stdout);
+  if (error?.stderr) writeFileSync(join(destination, 'failed-command-stderr.log'), error.stderr);
   report.status = 'FAIL'; report.failure = String(error); save(); console.error(JSON.stringify({ reportPath, destination, error: String(error) }, null, 2)); process.exitCode = 1;
 }
