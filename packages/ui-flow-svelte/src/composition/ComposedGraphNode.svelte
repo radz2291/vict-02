@@ -22,6 +22,7 @@
     });
   });
   setContext<GraphBodyContext>(GRAPH_BODY,{
+    get occurrenceRoute(){const source=workspace.sourceIdentity;return source?[...source.occurrenceRoute,{workspaceNodeId:source.nodeId,graphNodeId:id,expectedGraphRevision:workspace.graph.revision}]:[];},
     get nodeId(){return id;},
     get ports(){return workspace.ports(node);},
     get readOnly(){return workspace.readOnly;},

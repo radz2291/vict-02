@@ -41,7 +41,9 @@ export type GraphSourceOwner = GraphStateOwner | { kind: 'literal'; nodeId: stri
 type LexicalOwner =
   | { kind: 'document' }
   | { kind: 'slot'; ownerNodeId: string; slotName: string; scope: UiSlotScope };
-export function graphLexicalOwners(document: UiDocument): Map<string, readonly LexicalOwner[]> {
+export function graphLexicalOwners(
+  document: UiDocument,
+): Map<string, readonly LexicalOwner[]> & { readonly complete: boolean } {
   const result = new Map<string, LexicalOwner[]>(),
     incoming = new Set<string>();
   const children = (node: UiNode): string[] => {
@@ -61,15 +63,22 @@ export function graphLexicalOwners(document: UiDocument): Map<string, readonly L
   for (const node of Object.values(document.nodes))
     for (const id of children(node)) incoming.add(id);
   const root: LexicalOwner = { kind: 'document' };
-  let visited = 0;
+  let visited = 0,
+    complete = true;
   const same = (a: LexicalOwner, b: LexicalOwner) =>
     a.kind === b.kind &&
     (a.kind === 'document' ||
       (b.kind === 'slot' && a.ownerNodeId === b.ownerNodeId && a.slotName === b.slotName));
   function visit(id: string, owner: LexicalOwner, path: readonly string[] = []): void {
-    if (++visited > 16384 || path.length > 64 || path.includes(id)) return;
+    if (++visited > 16384 || path.includes(id)) {
+      complete = false;
+      return;
+    }
     const node = document.nodes[id];
-    if (!node) return;
+    if (!node) {
+      complete = false;
+      return;
+    }
     const owners = result.get(id) ?? [];
     if (owners.some((value) => same(value, owner))) return;
     owners.push(owner);
@@ -92,7 +101,10 @@ export function graphLexicalOwners(document: UiDocument): Map<string, readonly L
   // document-owned simply because their node record precedes their parent.
   for (const id of Object.keys(document.nodes))
     if (!result.has(id) && !incoming.has(id)) visit(id, root);
-  return result;
+  // An incomplete traversal cannot establish uniqueness. Never retain the
+  // convenient shallow owner while a deeper conflicting occurrence is unknown.
+  if (!complete) result.clear();
+  return Object.assign(result, { complete });
 }
 function stateOwner(
   document: UiDocument,
@@ -198,6 +210,15 @@ export type GraphOccurrenceRoute = readonly {
 }[];
 type GraphFailure = { ok: false; message: string };
 type GraphSource = { source: string; write: (value: string) => UiDocument | undefined };
+/** The same exact source/occurrence resolver as editGraph, without a write. */
+export function inspectAuthoredGraphSource(
+  document: UiDocument,
+  nodeId: string,
+  route: GraphOccurrenceRoute = [],
+): { ok: true; source: string } | GraphFailure {
+  const owned = graphSource(document, nodeId, route);
+  return 'ok' in owned ? owned : { ok: true, source: owned.source };
+}
 function graphSource(
   document: UiDocument,
   nodeId: string,

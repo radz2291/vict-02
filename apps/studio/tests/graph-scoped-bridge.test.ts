@@ -11,7 +11,12 @@ import {
 } from '../src/lib/designer/application.js';
 import { screenPlacementIssues } from '../src/lib/designer/placement.js';
 import { screenStore } from '../src/lib/designer/storage.js';
-import { graphHistoryFor, graphUsesSourceHistory } from '../src/lib/designer/graph-history.js';
+import {
+  graphHistoryFor,
+  graphUsesSourceHistory,
+  graphAuthoringFor,
+} from '../src/lib/designer/graph-history.js';
+import type { GraphOccurrenceIdentity } from '@victframework/ui-flow-svelte';
 import { rebaseGraphRuntime } from '../src/lib/designer/graph-authoring.js';
 import { graphRuntimeChanged } from '../src/lib/designer/graph-runtime.js';
 import {
@@ -98,6 +103,9 @@ async function open(source: UiDocument) {
       },
     }),
   );
+  const authoringFor = vi.fn((identity: GraphOccurrenceIdentity) =>
+    graphAuthoringFor(bridge.document, identity, globalHistory),
+  );
   consumer = mount(FoundationConsumer, {
     target: document.body,
     props: {
@@ -107,10 +115,11 @@ async function open(source: UiDocument) {
         historyFor: (identity: { nodeId: string; occurrenceKey: string }) =>
           graphHistoryFor(bridge.document, identity.nodeId, globalHistory),
       },
+      occurrenceHost: { authoringFor },
     },
   });
   await settle();
-  return { bridge, write, sync, globalHistory };
+  return { bridge, write, sync, globalHistory, authoringFor };
 }
 function agentEdit(bridge: EditorBridge, operations: AgentEdit['operations']) {
   const cursor = documentCursor(bridge.document, bridge.getSnapshot().revision, 'scoped-bridge');
@@ -154,7 +163,11 @@ function keyboard(node: Element, key: string, ctrlKey = false) {
 it('persists nested manual and agent changes through Studio history, save/reopen and portable import', async () => {
   const source = nestedCompositionDocument(),
     view = await open(source);
-  expect(graphUsesSourceHistory(source, 'inner-workspace')).toBe(true);
+  expect(
+    graphUsesSourceHistory(source, 'inner-workspace', [
+      { workspaceNodeId: 'outer-workspace', graphNodeId: 'outer-node', expectedGraphRevision: 0 },
+    ]),
+  ).toBe(true);
   const field = document.querySelector<HTMLInputElement>('[aria-label="Evidence URL"]')!;
   expect(field).toBeTruthy();
   field.value = 'https://example.test/manual-evidence';
@@ -284,6 +297,16 @@ it('keeps repeated private graph occurrences temporary with local undo and no ca
     secondNode = second.querySelector<HTMLElement>('.svelte-flow__node[data-id="source-a"]')!;
   expect(firstNode.style.transform).toBe(secondNode.style.transform);
   expect(view.write).not.toHaveBeenCalled();
+  const input = document.querySelector<HTMLInputElement>('[aria-label="Evidence URL"]')!;
+  const nativeUndo = new KeyboardEvent('keydown', {
+    key: 'z',
+    code: 'KeyZ',
+    ctrlKey: true,
+    bubbles: true,
+    cancelable: true,
+  });
+  input.dispatchEvent(nativeUndo);
+  expect(nativeUndo.defaultPrevented).toBe(false);
   expect(canonicalUiDocument(view.bridge.document).contentDigest).toBe(before);
   expect(view.bridge.save().ok).toBe(true);
   const loaded = screenStore(localStorage, source.id).rawLoad();
@@ -319,4 +342,162 @@ it('keeps repeated private graph occurrences temporary with local undo and no ca
       (node) => node.textContent?.includes('Authored private initial'),
     ),
   ).toBe(false);
+});
+
+it('refuses nested source Undo and editing when a controlled declaration has no actual parent parameter', async () => {
+  const base = nestedCompositionDocument(),
+    workspace = base.nodes['outer-workspace'];
+  if (workspace.kind !== 'component') throw Error('fixture');
+  const graph = outer(base),
+    fallback = graph.nodeTypes[0].parameters.innerGraph.default;
+  graph.nodeTypes[0].parameters = {};
+  const source: UiDocument = {
+    ...base,
+    localState: { graph: { ...base.localState.graph, initial: JSON.stringify(graph) } },
+    nodes: {
+      ...base.nodes,
+      'outer-workspace': {
+        ...workspace,
+        slots: {
+          ...workspace.slots,
+          body: {
+            ...workspace.slots!.body,
+            scope: {
+              ...workspace.slots!.body.scope!,
+              state: {
+                innerGraph: {
+                  key: 'innerGraph',
+                  type: 'string',
+                  initial: fallback,
+                  controlled: true,
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  };
+  const view = await open(source);
+  agentEdit(view.bridge, [
+    {
+      op: 'editGraph',
+      nodeId: 'outer-workspace',
+      expectedGraphRevision: 0,
+      changes: [
+        { type: 'setLabel', nodeId: 'outer-node', label: 'Retain unrelated canonical edit' },
+      ],
+    },
+  ]);
+  view.sync();
+  await settle();
+  const before = canonicalUiDocument(view.bridge.document).contentDigest;
+  expect(view.bridge.getSnapshot().canUndo).toBe(true);
+  expect(
+    [...document.querySelectorAll('[role="alert"]')].some((node) =>
+      node.textContent?.includes('declared string parameter'),
+    ),
+  ).toBe(true);
+  const node = await selectedNode('source-a');
+  keyboard(node, 'ArrowRight');
+  await settle();
+  keyboard(node, 'z', true);
+  await settle();
+  expect(canonicalUiDocument(view.bridge.document).contentDigest).toBe(before);
+  expect(outer(view.bridge.document).nodes[0].label).toBe('Retain unrelated canonical edit');
+  expect(view.write).not.toHaveBeenCalled();
+  expect(
+    [...document.querySelectorAll<HTMLButtonElement>('button')].find(
+      (button) => button.textContent?.trim() === 'Name primary source',
+    )?.disabled,
+  ).toBe(true);
+  const input = document.querySelector<HTMLInputElement>('[aria-label="Evidence URL"]')!;
+  const nativeUndo = new KeyboardEvent('keydown', {
+    key: 'z',
+    code: 'KeyZ',
+    ctrlKey: true,
+    bubbles: true,
+    cancelable: true,
+  });
+  input.dispatchEvent(nativeUndo);
+  expect(nativeUndo.defaultPrevented).toBe(false);
+  const scoped = view.authoringFor.mock.calls.filter(
+    ([identity]) => identity.nodeId === 'inner-workspace',
+  );
+  expect(scoped.length).toBeGreaterThan(0);
+  expect(scoped.at(-1)![0].occurrenceRoute).toEqual([
+    { workspaceNodeId: 'outer-workspace', graphNodeId: 'outer-node', expectedGraphRevision: 1 },
+  ]);
+});
+
+it('keeps canonical graph ownership and persistence beyond 64 ordinary source wrappers', async () => {
+  const base = nestedCompositionDocument(),
+    nodes = { ...base.nodes };
+  for (let index = 0; index < 66; index++)
+    nodes[`deep-${index}`] = {
+      kind: 'element',
+      id: `deep-${index}`,
+      tag: 'div',
+      children: [index === 65 ? base.root : `deep-${index + 1}`],
+    };
+  const source = { ...base, root: 'deep-0', nodes },
+    view = await open(source);
+  expect(graphUsesSourceHistory(source, 'outer-workspace')).toBe(true);
+  const node = await selectedNode('outer-node');
+  keyboard(node, 'ArrowRight');
+  await settle();
+  expect(outer(view.bridge.document).nodes[0].position.x).toBeGreaterThan(80);
+  expect(view.bridge.getSnapshot().canUndo).toBe(true);
+  keyboard(await selectedNode('outer-node'), 'z', true);
+  await settle();
+  expect(outer(view.bridge.document).nodes[0].position).toEqual({ x: 80, y: 60 });
+});
+
+it('keeps controlled nested graphs usable after runtime-root parent revisions depart from authored literals', async () => {
+  const base = nestedCompositionDocument(),
+    workspace = base.nodes['outer-workspace'];
+  if (workspace.kind !== 'component') throw Error('fixture');
+  const source: UiDocument = {
+    ...base,
+    nodes: {
+      ...base.nodes,
+      'outer-workspace': {
+        ...workspace,
+        props: {
+          ...workspace.props,
+          graph: { type: 'literal', value: String(base.localState.graph.initial) },
+        },
+      },
+    },
+  };
+  const view = await open(source),
+    before = canonicalUiDocument(source).contentDigest;
+  keyboard(await selectedNode('outer-node'), 'ArrowRight');
+  await settle();
+  expect(view.bridge.getSnapshot().canUndo).toBe(false);
+  const field = document.querySelector<HTMLInputElement>('[aria-label="Evidence URL"]')!;
+  expect(field.disabled).toBe(false);
+  field.value = 'https://example.test/runtime-nested';
+  field.dispatchEvent(new Event('change', { bubbles: true }));
+  await settle();
+  expect(document.querySelector<HTMLInputElement>('[aria-label="Evidence URL"]')!.value).toBe(
+    'https://example.test/runtime-nested',
+  );
+  const calls = view.authoringFor.mock.calls.filter(
+    ([identity]) => identity.nodeId === 'inner-workspace',
+  );
+  expect(calls.some(([identity]) => identity.occurrenceRoute[0]?.expectedGraphRevision! > 0)).toBe(
+    true,
+  );
+  expect(
+    view.authoringFor.mock.results
+      .filter((_, index) => view.authoringFor.mock.calls[index]?.[0].nodeId === 'inner-workspace')
+      .every((result) => result.value.kind === 'runtime'),
+  ).toBe(true);
+  keyboard(await selectedNode('source-a'), 'z', true);
+  await settle();
+  expect(document.querySelector<HTMLInputElement>('[aria-label="Evidence URL"]')!.value).not.toBe(
+    'https://example.test/runtime-nested',
+  );
+  expect(canonicalUiDocument(view.bridge.document).contentDigest).toBe(before);
 });

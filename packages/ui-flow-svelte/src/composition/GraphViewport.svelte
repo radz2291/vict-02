@@ -51,12 +51,15 @@
     restorePositions();return true;
   }
   function keyboard(event:KeyboardEvent){
-    if(!workspace||workspace.readOnly)return;
+    const target=event.target as Element|null;
+    // Refused/read-only nested canvases still own their keyboard boundary.
+    // A command in one viewport must never invoke an enclosing graph's Undo.
+    if(!workspace||target?.nodeType!==1||target.closest('.graph-viewport')!==rootElement)return;
+    if(workspace.readOnly){if((event.ctrlKey||event.metaKey)&&['z','y'].includes(event.key.toLowerCase())){event.stopPropagation();if(!target.closest('input,textarea,select,[contenteditable=true]'))event.preventDefault();}return;}
     if(event.defaultPrevented&&['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(event.key)){void commitKeyboardMove(event);return;}
     if(event.key==='Escape'&&connectionGesture.cancel()){event.preventDefault();event.stopPropagation();return;}
     if(event.defaultPrevented)return;
     if(event.key==='Escape'&&dragging){event.preventDefault();event.stopPropagation();cancelDrag();return;}
-    const target=event.target as Element|null;
     if(target?.closest('input,textarea,select,button,[contenteditable=true],[role=slider],[role=combobox]'))return;
     if((event.ctrlKey||event.metaKey)&&event.key.toLowerCase()==='z'){event.preventDefault();event.stopPropagation();event.shiftKey?workspace.redo():workspace.undo();}
     else if(event.key==='Delete'&&workspace.selection.nodes.length+workspace.selection.edges.length){event.preventDefault();event.stopPropagation();workspace.apply([{type:'remove',selection:workspace.selection}]);}

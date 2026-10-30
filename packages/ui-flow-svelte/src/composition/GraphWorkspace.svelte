@@ -3,14 +3,20 @@
   import type { UiSvelteComponentProps } from '@victframework/ui-svelte';
   import type { GraphSelection } from '../editor/model.js';
   import {emptyWorkspaceGraph,parseWorkspaceGraph,createWorkspaceSession,workspaceParameters,workspacePorts,workspaceConnectionIssue,workspaceParameterOperation,type WorkspaceGraph,type WorkspaceResult,type WorkspaceModelVersion} from './workspace-model.js';
-  import { GRAPH_EDITOR_HOST, type GraphEditorHost } from '../editor/host.js';
-  import { GRAPH_WORKSPACE, type GraphWorkspaceContext } from './context.js';
+  import { GRAPH_EDITOR_HOST, GRAPH_EDITOR_HOST_V2, type GraphEditorHost,type GraphEditorHostV2,type GraphAuthoringDisposition } from '../editor/host.js';
+  import { GRAPH_WORKSPACE, GRAPH_BODY, type GraphBodyContext,type GraphWorkspaceContext } from './context.js';
   let {props,io,presentation,nodeId,occurrenceKey,modelVersion=1}:UiSvelteComponentProps & {modelVersion?:WorkspaceModelVersion}=$props();
   // Fixed by the exact registered implementation, never by serialized props.
   const version=untrack(()=>modelVersion);
-  const host=getContext<GraphEditorHost|undefined>(GRAPH_EDITOR_HOST);
-  const identity=$derived({nodeId,occurrenceKey});
-  const history=$derived(host?.historyFor(identity));
+  const legacyHost=getContext<GraphEditorHost|undefined>(GRAPH_EDITOR_HOST);
+  const occurrenceHost=getContext<GraphEditorHostV2|undefined>(GRAPH_EDITOR_HOST_V2);
+  const host=occurrenceHost??legacyHost;
+  const parentBody=getContext<GraphBodyContext|undefined>(GRAPH_BODY);
+  const identity=$derived({nodeId,occurrenceKey,occurrenceRoute:parentBody?.occurrenceRoute??[]});
+  const disposition=$derived.by(():GraphAuthoringDisposition|undefined=>{try{return occurrenceHost?.authoringFor(identity);}catch{return {kind:'refused',message:'Graph source ownership is unavailable; authoring is refused.'};}});
+  const authoringRefused=$derived(disposition?.kind==='refused');
+  const effectiveReadOnly=$derived(props.readOnly===true||authoringRefused);
+  const history=$derived(occurrenceHost?(disposition?.kind==='source'?disposition.history:undefined):legacyHost?.historyFor(identity));
   const view=$derived(host?.presentationFor?.(identity));
   function domainValidation(graph:WorkspaceGraph){return graph.schema==='vict.flow-graph@1'?host?.validate?.(identity,graph)??[]:host?.validateV2?.(identity,graph)??[];}
   let session=createWorkspaceSession(emptyWorkspaceGraph(version),false,domainValidation);
@@ -25,7 +31,7 @@
     for(const node of current.nodes)if(!generations.has(node.id))generations.set(node.id,Symbol(node.id));
     selection={nodes:selection.nodes.filter(id=>current.nodes.some(n=>n.id===id)),edges:selection.edges.filter(id=>current.edges.some(e=>e.id===id))};
   }
-  $effect(()=>{const source=String(props.graph??''),readOnly=props.readOnly===true;untrack(()=>{
+  $effect(()=>{const source=String(props.graph??''),readOnly=effectiveReadOnly;untrack(()=>{
     session.setReadOnly(readOnly);
     if(source===incoming)return;
     incoming=source;
@@ -49,7 +55,7 @@
     io?.emit('operationResult',JSON.stringify({ok:true,revision:current.revision}));
   }
   function apply(operations:unknown,expectedRevision=current.revision){
-    if(!valid||props.readOnly===true){error=valid?'Graph is read-only.':'Restore valid graph source before editing.';return;}
+    if(!valid||effectiveReadOnly){error=valid?'Graph is read-only.':'Restore valid graph source before editing.';return;}
     const result=session.apply(operations,expectedRevision);
     if(result.ok)for(const id of result.removedNodeIds??[])generations.delete(id);
     accept(result);
@@ -64,7 +70,8 @@
     else io?.emit('applicationAction',JSON.stringify({output:name,payload:payload??null}));
   }
   const workspace:GraphWorkspaceContext={
-    get graph(){return current;},get selection(){return selection;},get readOnly(){return props.readOnly===true||!valid;},
+    get sourceIdentity(){return identity;},
+    get graph(){return current;},get selection(){return selection;},get readOnly(){return effectiveReadOnly||!valid;},
     viewFor(projectionKey){return host?.presentationFor?.({nodeId,occurrenceKey:JSON.stringify([occurrenceKey,'viewport',projectionKey])})?.get();},get body(){return io?.scopedSlots?.body;},
     ports(node){return workspacePorts(current,node.id);},
     connectionIssue(edge){return workspaceConnectionIssue(current,edge);},
@@ -72,10 +79,10 @@
       const node=current.nodes.find(item=>item.id===reference.id)!;
       const generation=generations.get(node.id);
       const active=()=>generations.get(node.id)===generation&&current.nodes.some(n=>n.id===node.id);
-      return {key:JSON.stringify([projectionKey,node.id]),props:{nodeId:node.id,nodeType:node.type,label:node.label,selected:selection.nodes.includes(node.id),readOnly:props.readOnly===true||!valid,graphRevision:current.revision},
+      return {key:JSON.stringify([projectionKey,node.id]),props:{nodeId:node.id,nodeType:node.type,label:node.label,selected:selection.nodes.includes(node.id),readOnly:effectiveReadOnly||!valid,graphRevision:current.revision},
         state:workspaceParameters(current,node.id),
         onStateChange:(key,value)=>{if(active())apply([workspaceParameterOperation(current,node.id,key,value)]);},
-        onOutput:(name,payload)=>{if(active()&&valid&&props.readOnly!==true)io?.emit('nodeAction',JSON.stringify({nodeId:node.id,nodeType:node.type,output:name,payload:payload??null}));},
+        onOutput:(name,payload)=>{if(active()&&valid&&!effectiveReadOnly)io?.emit('nodeAction',JSON.stringify({nodeId:node.id,nodeType:node.type,output:name,payload:payload??null}));},
       };
     },apply,
     select(next){if(JSON.stringify(selection)===JSON.stringify(next))return;selection=next;io?.emit('selectionChange',JSON.stringify(next));},
@@ -83,12 +90,13 @@
       host?.presentationFor?.({nodeId,occurrenceKey:JSON.stringify([occurrenceKey,'viewport',projectionKey])})?.set({viewport,selection});
       view?.set({viewport:view.get()?.viewport??viewport,selection});
     },
-    undo(){if(props.readOnly===true||!valid)return;if(history){if(history.canUndo())history.undo();}else{const result=session.undo();if(result.ok)generations.clear();accept(result);}},
-    redo(){if(props.readOnly===true||!valid)return;if(history){if(history.canRedo())history.redo();}else{const result=session.redo();if(result.ok)generations.clear();accept(result);}},
+    undo(){if(effectiveReadOnly||!valid)return;if(history){if(history.canUndo())history.undo();}else{const result=session.undo();if(result.ok)generations.clear();accept(result);}},
+    redo(){if(effectiveReadOnly||!valid)return;if(history){if(history.canRedo())history.redo();}else{const result=session.redo();if(result.ok)generations.clear();accept(result);}},
   };
   setContext(GRAPH_WORKSPACE,workspace);
 </script>
 <section {...presentation?.target('root')} aria-label={String(props.label??'Graph workspace')}>
+  {#if disposition?.kind==='refused'}<p role="alert">{disposition.message}</p>{/if}
   {#if error}<p role="alert">{error}</p>{/if}
-  {#if io?.scopedSlots?.content}{@render io.scopedSlots.content({key:'application',props:{graphRevision:current.revision,nodeCount:current.nodes.length,edgeCount:current.edges.length,readOnly:props.readOnly===true||!valid},onOutput:output})}{:else}<p role="alert">This workspace needs authored content.</p>{/if}
+  {#if io?.scopedSlots?.content}{@render io.scopedSlots.content({key:'application',props:{graphRevision:current.revision,nodeCount:current.nodes.length,edgeCount:current.edges.length,readOnly:effectiveReadOnly||!valid},onOutput:output})}{:else}<p role="alert">This workspace needs authored content.</p>{/if}
 </section>
