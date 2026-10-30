@@ -1,0 +1,743 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Evidence desk — rich-node retry"
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- banner:
+  - strong: Chat
+  - button "Hide Chat":
+- complementary "Chat":
+  - region "Conversation":
+    - region "Messages — Message":
+      - log:
+        - generic: You
+        - generic: "Make exactly one read-only tool call: use section contracts to request the guidance contract for vict.flow.workspace revision 2, with components as a native JSON array containing {id:\"vict.flow.workspace\",revision:2}, and includeExamples as the native boolean false. Do not quote or stringify the array or boolean. Then stop and report whether that single call succeeded. Do not retry, edit, observe or save."
+        - button "Copy message":
+        - generic: Assistant
+        - generic "Host evidence summary":
+          - paragraph: Host evidence summary
+          - status: The turn did not finish successfully. No source changes were applied. No image assessment matches the final source. Behavior was not tested by this agent.
+        - button "Original AI assessment and tool details" [expanded]:
+          - text: Original AI assessment and tool details
+        - paragraph: Original AI assessment — claims not independently verified. Tool receipts separately record confirmed effects and capture limits.
+        - generic "Conversation timeline":
+          - button "Read screen failed" [expanded]:
+            - generic: Read screen
+            - generic: failed
+          - region "Tool input":
+            - heading "Input" [level=4]
+            - paragraph: "Unavailable: the call failed before validated invocation."
+          - region "Tool result":
+            - heading "Result" [level=4]
+            - paragraph: "Unavailable: no settled result was returned."
+          - paragraph:
+            - text: The single call was made and it did not succeed. The tool refused it with
+            - code: VICT_TOOL_INPUT_INVALID
+            - text: ":"
+            - code: components[0].revision
+            - text: must be a JSON string, not the number
+            - code: "2"
+            - text: (e.g.
+            - code: "\"2\""
+            - text: ). Per your instruction I did not retry, edit, observe, or save.
+        - button "Copy message":
+        - generic: You
+        - generic: Build a small Evidence desk application. For this first increment, include a normal page heading and short introduction, then an editable graph with exactly one rich ‘Source note’ node. Inside the node use ordinary registered VICT controls for an editable source URL and multiline notes, with meaningful labels and an evidence output port for the next step. Those controls must update the node’s values without dragging it. Use a restrained warm theme and a readable node layout. Do not add a toolbar, family picker, inspector, connection form or backend execution. Discover the public contracts you need, build the small working slice first, and leave saving to me.
+        - button "Copy message":
+        - generic: Assistant
+        - status: Stopped. 4 applied edits remain undoable.
+        - button "Public activity and tool details" [expanded]:
+          - text: Public activity and tool details
+        - generic "Conversation timeline":
+          - paragraph:
+            - text: I'll pull the exact
+            - code: vict.flow.workspace
+            - text: contract (with revision as a string this time), then build the heading, intro, and one rich node.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: Contract knowledge is in place. Now I need the exact viewport/port component contracts and the ordinary input/textarea control identities.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: The catalog didn't match recipe-style names. Let me search by plain control names and check the family taxonomy.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed" [expanded]:
+            - generic: Read screen
+            - generic: completed
+          - region "Tool input":
+            - heading "Input" [level=4]
+            - generic: "{ \"section\": \"palette\", \"offset\": 0, \"limit\": 12, \"query\": \"rhea-textarea\" }"
+          - region "Tool result":
+            - heading "Result" [level=4]
+            - generic: "{ \"expectedRevision\": \"r1#0\", \"cursor\": { \"documentId\": \"screen-d5c26246-953b-4a57-8e43-b78e8a56e9eb\", \"revision\": \"r1#0\", \"digest\": \"081a365743d2ed2dfa89a8672ac3f259eb1d4b355135acde49ebbe0977806f8e\", \"epoch\": \"fe7cb57b-e3fe-4654-a6d2-c576740ed361\" }, \"section\": \"palette\", \"items\": [ { \"kind\": \"recipe\", \"id\": \"rhea-textarea\", \"label\": \"Text area · Rhea\", \"description\": \"Associated native label, typed local value and canonical change binding. No form transport. Uses the public Rhea stylesheet.\", \"preparation\": { \"rootKind\": \"element\", \"seedClasses\": [ \"vict-rhea\", \"vict-rhea-field\" ], \"seedStyles\": [], \"styledNodeCount\": 0, \"initialStateKeys\": [ \"rhea_example_value\" ], \"definitionIds\": [], \"hostRequirements\": [], \"patternHostRequirements\": [ \"Import @victframework/ui-svelte/rhea.css in the rendering host.\", \"Submission, authorization and persistence require declared host actions.\" ], \"guidance\": \"Seed local styles remain in the authored source and override shared style sources. Review padding, minimum size, background and color before adding; replace/remove explicitly or use generic insert for an unstyled native element. Read component/recipe for full source.\" } } ], \"total\": 1, \"offset\": 0, \"nextOffset\": null, \"turnProgress\": { \"applied\": 0, \"metrics\": { \"toolCalls\": 17, \"completedCalls\": 17, \"refusedCalls\": 0, \"recoveryAttempts\": 0, \"toolElapsedMs\": 257, \"providerRequests\": 6, \"visionRequests\": 0, \"acknowledgementMs\": 0, \"confirmedEdits\": 0, \"usage\": { \"inputTokens\": 223978, \"outputTokens\": 12794, \"totalTokens\": 236772 }, \"categories\": { \"knowledge\": 17, \"source\": 0, \"edit\": 0, \"observe\": 0, \"other\": 0 }, \"elapsedMs\": 300128, \"toolActiveMs\": 119, \"outsideToolMs\": 300008, \"modelSteps\": null, \"cost\": null }, \"retainedKnowledge\": { \"scope\": \"Complete contract bodies delivered in this turn only; reuse still requires their content to remain available in model context. Source facts are never cached knowledge.\", \"complete\": [ { \"key\": \"vict.flow.workspace@2\", \"digest\": \"1b461fc593820c7f1b55a4a7ff04aea0b200147d483d8aaa99322deab74d49bf\", \"bodyIdentity\": \"studio-contract-body@2:examples:1b461fc593820c7f1b55a4a7ff04aea0b200147d483d8aaa99322deab74d49bf\" }, { \"key\": \"vict.flow.viewport@2\", \"digest\": \"6840020227bd941281ea4843c2c81a8a66b2e181cee7fe1bce9e0d853e091d9e\", \"bodyIdentity\": \"studio-contract-body@2:examples:6840020227bd941281ea4843c2c81a8a66b2e181cee7fe1bce9e0d853e091d9e\" }, { \"key\": \"vict.flow.port@2\", \"digest\": \"ac2a832dafe107cee425c7c2c4905c6c008c524dac7c03e7c8716f26e6194666\", \"bodyIdentity\": \"studio-contract-body@2:examples:ac2a832dafe107cee425c7c2c4905c6c008c524dac7c03e7c8716f26e6194666\" } ], \"partialCount\": 0 }, \"visualEvidence\": { \"regions\": [], \"currentSourceObservations\": 0, \"scope\": \"Captured regions only; source freshness does not establish current runtime/viewport freshness or offscreen/interaction coverage.\", \"interactionsVerified\": false }, \"evidence\": \"Host receipt-derived totals include all acknowledged transactions, including cleanup. Outside-tool time is waiting/generation/transport/host overhead, not measured provider latency. Captured regions do not establish full-page or interaction coverage.\" } }"
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: "Contracts are complete. Now I'll build the first batch: page structure, graph state, bound workspace, and warm theme."
+          - button "Edit screen failed" [expanded]:
+            - generic: Edit screen
+            - generic: failed
+          - region "Tool input":
+            - heading "Input" [level=4]
+            - generic: "{ \"expectedRevision\": \"r1#0\", \"reason\": \"Evidence desk slice: heading, intro, state-bound graph workspace, warm surface\", \"operations\": [ { \"op\": \"declareState\", \"key\": \"evidence-graph\", \"type\": \"string\", \"initial\": \"{\\\"schema\\\":\\\"vict.flow-graph@2\\\",\\\"revision\\\":0,\\\"nodeTypes\\\":[],\\\"nodes\\\":[],\\\"edges\\\":[]}\" }, { \"op\": \"modify\", \"nodeId\": \"screen\", \"styles\": { \"background-color\": \"#faf6ef\", \"color\": \"#3d3126\" } }, { \"op\": \"insert\", \"kind\": \"element\", \"nodeId\": \"desk-title\", \"parentId\": \"screen\", \"tag\": \"h1\", \"index\": 0, \"text\": \"Evidence desk\", \"styles\": { \"color\": \"#4a3520\", \"font-size\": \"1.55rem\", \"letter-spacing\": \"-0.01em\", \"margin\": \"0\" } }, { \"op\": \"insert\", \"kind\": \"element\", \"nodeId\": \"desk-intro\", \"parentId\": \"screen\", \"tag\": \"p\", \"index\": 1, \"text\": \"A compact evidence desk: one editable source-note node keeps a source URL and provenance notes together, ready to hand evidence to the next step.\", \"styles\": { \"color\": \"#7a6650\", \"font-size\": \"0.95rem\", \"line-height\": \"1.5\", \"margin\": \"0\", \"max-width\": \"620px\" } }, { \"op\": \"insert\", \"kind\": \"component\", \"nodeId\": \"desk-workspace\", \"parentId\": \"screen\", \"componentId\": \"vict.flow.workspace\", \"revision\": \"2\", \"index\": 2, \"props\": { \"label\": \"Evidence desk graph\" }, \"styles\": { \"flex\": \"1\", \"min-height\": \"0\" } }, { \"op\": \"bind\", \"nodeId\": \"desk-workspace\", \"prop\": \"graph\", \"expression\": { \"type\": \"ref\", \"path\": \"evidence-graph\" } }, { \"op\": \"connect\", \"nodeId\": \"desk-workspace\", \"output\": \"graphChange\", \"binding\": { \"setState\": { \"key\": \"evidence-graph\" } } }, { \"op\": \"theme\", \"role\": \"surface\", \"value\": \"#faf6ef\" } ] }"
+          - region "Tool result":
+            - heading "Result" [level=4]
+            - generic: "{ \"ok\": false, \"code\": \"STUDIO_AGENT_VALIDATION\", \"message\": \"Edit rejected: UI_EXPR_UNKNOWN_REFERENCE: Reference 'evidence-graph' does not resolve in this scope.\", \"diagnostics\": [ { \"documentId\": \"screen-d5c26246-953b-4a57-8e43-b78e8a56e9eb\", \"nodeId\": \"desk-workspace\", \"sourcePath\": \"nodes.desk-workspace\", \"code\": \"UI_EXPR_UNKNOWN_REFERENCE\", \"path\": \"evidence-graph\", \"message\": \"Reference 'evidence-graph' does not resolve in this scope.\", \"operation\": 4 } ], \"turnProgress\": { \"applied\": 0, \"metrics\": { \"toolCalls\": 20, \"completedCalls\": 19, \"refusedCalls\": 1, \"recoveryAttempts\": 0, \"toolElapsedMs\": 337, \"providerRequests\": 8, \"visionRequests\": 0, \"acknowledgementMs\": 0, \"confirmedEdits\": 0, \"usage\": { \"inputTokens\": 343197, \"outputTokens\": 25670, \"totalTokens\": 368867 }, \"categories\": { \"knowledge\": 19, \"source\": 0, \"edit\": 1, \"observe\": 0, \"other\": 0 }, \"elapsedMs\": 578666, \"toolActiveMs\": 191, \"outsideToolMs\": 578475, \"modelSteps\": null, \"cost\": null }, \"retainedKnowledge\": { \"scope\": \"Complete contract bodies delivered in this turn only; reuse still requires their content to remain available in model context. Source facts are never cached knowledge.\", \"complete\": [ { \"key\": \"vict.flow.workspace@2\", \"digest\": \"1b461fc593820c7f1b55a4a7ff04aea0b200147d483d8aaa99322deab74d49bf\", \"bodyIdentity\": \"studio-contract-body@2:examples:1b461fc593820c7f1b55a4a7ff04aea0b200147d483d8aaa99322deab74d49bf\" }, { \"key\": \"vict.flow.viewport@2\", \"digest\": \"6840020227bd941281ea4843c2c81a8a66b2e181cee7fe1bce9e0d853e091d9e\", \"bodyIdentity\": \"studio-contract-body@2:examples:6840020227bd941281ea4843c2c81a8a66b2e181cee7fe1bce9e0d853e091d9e\" }, { \"key\": \"vict.flow.port@2\", \"digest\": \"ac2a832dafe107cee425c7c2c4905c6c008c524dac7c03e7c8716f26e6194666\", \"bodyIdentity\": \"studio-contract-body@2:examples:ac2a832dafe107cee425c7c2c4905c6c008c524dac7c03e7c8716f26e6194666\" } ], \"partialCount\": 0 }, \"visualEvidence\": { \"regions\": [], \"currentSourceObservations\": 0, \"scope\": \"Captured regions only; source freshness does not establish current runtime/viewport freshness or offscreen/interaction coverage.\", \"interactionsVerified\": false }, \"evidence\": \"Host receipt-derived totals include all acknowledged transactions, including cleanup. Outside-tool time is waiting/generation/transport/host overhead, not measured provider latency. Captured regions do not establish full-page or interaction coverage.\" } }"
+          - paragraph:
+            - text: Ref path likely needs the
+            - code: state.
+            - text: namespace — correcting the bind expression.
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - paragraph: First batch applied (revision r1#1). Validating the novel scoped-slot shape via preflight before applying.
+          - button "Read screen failed" [expanded]:
+            - generic: Read screen
+            - generic: failed
+          - region "Tool input":
+            - heading "Input" [level=4]
+            - generic: "{ \"section\": \"preflight\", \"offset\": 0, \"limit\": 12, \"edit\": \"{\\\"expectedRevision\\\": \\\"r1#1\\\", \\\"operations\\\": [{\\\"op\\\": \\\"theme\\\", \\\"role\\\": \\\"text\\\", \\\"value\\\": \\\"#3d3126\\\"}, {\\\"op\\\": \\\"theme\\\", \\\"role\\\": \\\"textMuted\\\", \\\"value\\\": \\\"#7a6650\\\"}, {\\\"op\\\": \\\"theme\\\", \\\"role\\\": \\\"border\\\", \\\"value\\\": \\\"#e4d5bf\\\"}, {\\\"op\\\": \\\"theme\\\", \\\"role\\\": \\\"accent\\\", \\\"value\\\": \\\"#b45309\\\"}, {\\\"op\\\": \\\"theme\\\", \\\"role\\\": \\\"accentText\\\", \\\"value\\\": \\\"#fffaf2\\\"}, {\\\"op\\\": \\\"theme\\\", \\\"role\\\": \\\"focusRing\\\", \\\"value\\\": \\\"#d97706\\\"}, {\\\"props\\\": [], \\\"schema\\\": \\\"vict.ui-slot-scope@1\\\"}, {\\\"kind\\\": \\\"component\\\", \\\"componentId\\\": \\\"vict.flow.viewport\\\", \\\"nodeId\\\": \\\"desk-viewport\\\", \\\"op\\\": \\\"insert\\\", \\\"parentId\\\": \\\"desk-workspace\\\", \\\"props\\\": {\\\"height\\\": 420}, \\\"revision\\\": \\\"2\\\", \\\"slotName\\\": \\\"content\\\"}], \\\"reason\\\": \\\"Warm theme roles and workspace content slot with graph viewport\\\"}\" }"
+          - region "Tool result":
+            - heading "Result" [level=4]
+            - generic: "{ \"expectedRevision\": \"r1#1\", \"cursor\": { \"documentId\": \"screen-d5c26246-953b-4a57-8e43-b78e8a56e9eb\", \"revision\": \"r1#1\", \"digest\": \"e4f1b6aa8c2057fb34d9c0514eeb6341ddffe7e05e91c7d8dd4e668df3e72885\", \"epoch\": \"fe7cb57b-e3fe-4654-a6d2-c576740ed361\" }, \"section\": \"preflight\", \"ok\": false, \"code\": \"STUDIO_AGENT_INVALID_EDIT\", \"message\": \"Use the exact operation fields. No edits applied.\", \"diagnostics\": [ { \"path\": \"\", \"message\": \"Expected object, received string\" } ], \"applied\": false, \"turnProgress\": { \"applied\": 1, \"metrics\": { \"toolCalls\": 22, \"completedCalls\": 20, \"refusedCalls\": 2, \"recoveryAttempts\": 1, \"toolElapsedMs\": 437, \"providerRequests\": 10, \"visionRequests\": 0, \"acknowledgementMs\": 53, \"confirmedEdits\": 1, \"usage\": { \"inputTokens\": 489947, \"outputTokens\": 26869, \"totalTokens\": 516816 }, \"firstEditMs\": 595582.9346, \"categories\": { \"knowledge\": 19, \"source\": 1, \"edit\": 2, \"observe\": 0, \"other\": 0 }, \"elapsedMs\": 606832, \"toolActiveMs\": 291, \"outsideToolMs\": 606541, \"modelSteps\": null, \"cost\": null }, \"retainedKnowledge\": { \"scope\": \"Complete contract bodies delivered in this turn only; reuse still requires their content to remain available in model context. Source facts are never cached knowledge.\", \"complete\": [ { \"key\": \"vict.flow.workspace@2\", \"digest\": \"1b461fc593820c7f1b55a4a7ff04aea0b200147d483d8aaa99322deab74d49bf\", \"bodyIdentity\": \"studio-contract-body@2:examples:1b461fc593820c7f1b55a4a7ff04aea0b200147d483d8aaa99322deab74d49bf\" }, { \"key\": \"vict.flow.viewport@2\", \"digest\": \"6840020227bd941281ea4843c2c81a8a66b2e181cee7fe1bce9e0d853e091d9e\", \"bodyIdentity\": \"studio-contract-body@2:examples:6840020227bd941281ea4843c2c81a8a66b2e181cee7fe1bce9e0d853e091d9e\" }, { \"key\": \"vict.flow.port@2\", \"digest\": \"ac2a832dafe107cee425c7c2c4905c6c008c524dac7c03e7c8716f26e6194666\", \"bodyIdentity\": \"studio-contract-body@2:examples:ac2a832dafe107cee425c7c2c4905c6c008c524dac7c03e7c8716f26e6194666\" } ], \"partialCount\": 0 }, \"visualEvidence\": { \"regions\": [], \"currentSourceObservations\": 0, \"scope\": \"Captured regions only; source freshness does not establish current runtime/viewport freshness or offscreen/interaction coverage.\", \"interactionsVerified\": false }, \"evidence\": \"Host receipt-derived totals include all acknowledged transactions, including cleanup. Outside-tool time is waiting/generation/transport/host overhead, not measured provider latency. Captured regions do not establish full-page or interaction coverage.\" } }"
+          - button "Read screen failed":
+            - generic: Read screen
+            - generic: failed
+          - paragraph: Preflight can't receive the payload as an object here — applying batch 2 directly; a refusal would surface exact field diagnostics without applying.
+          - button "Edit screen failed":
+            - generic: Edit screen
+            - generic: failed
+          - button "Edit screen failed":
+            - generic: Edit screen
+            - generic: failed
+          - button "Edit screen failed":
+            - generic: Edit screen
+            - generic: failed
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - button "Edit screen failed":
+            - generic: Edit screen
+            - generic: failed
+          - button "Edit screen failed":
+            - generic: Edit screen
+            - generic: failed
+          - paragraph:
+            - text: The scope's
+            - code: state
+            - text: shape differs from the documented def — trying the array form.
+          - button "Edit screen failed":
+            - generic: Edit screen
+            - generic: failed
+          - button "Edit screen failed":
+            - generic: Edit screen
+            - generic: failed
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - paragraph: Body scope declared. Now the node card structure and URL field.
+          - button "Edit screen failed":
+            - generic: Edit screen
+            - generic: failed
+          - paragraph:
+            - text: Scope props need the
+            - code: props.
+            - text: namespace — retrying with
+            - code: props.label
+            - text: .
+          - button "Edit screen failed":
+            - generic: Edit screen
+            - generic: failed
+          - paragraph: Likely a same-batch resolution limit through the slot chain. Applying structure first, wiring bindings after.
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - button "Edit screen failed":
+            - generic: Edit screen
+            - generic: failed
+          - paragraph: Let me inspect how the scope declaration was stored — the source should reveal the reference grammar.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph:
+            - text: Scope stored correctly. Retrying
+            - code: props.label
+            - text: against committed source, and
+            - code: state.*
+            - text: likely resolves slot-scoped state first.
+          - button "Edit screen failed":
+            - generic: Edit screen
+            - generic: failed
+          - button "Edit screen failed":
+            - generic: Edit screen
+            - generic: failed
+        - paragraph: No successful final response. Public notes and tool receipts remain in details.
+        - button "Copy message":
+    - button "Scroll to latest message":
+      - generic: Scroll to end
+    - textbox "Message":
+      - /placeholder: Ask for a change…
+    - button "Send" [disabled]:
+      - generic: Send
+    - status
+  - status "Stopped. 4 applied edits remain undoable.":
+    - generic: Stopped
+  - button "Chat details" [expanded]: ···
+  - generic "Chat details":
+    - heading "Chat details" [level=3]
+    - button "Close chat details" [active]: ×
+    - paragraph: zai/glm-5.3-flash
+    - text: Turn details
+    - combobox "Inspect turn":
+      - option "Latest activity" [selected]
+      - 'option "7:22:39 PM · failed · Make exactly one read-only tool call: use section contracts"'
+      - option "7:23:38 PM · cancelled · Build a small Evidence desk application. For this first incr"
+    - paragraph: Up to 24 turns retained for 30 minutes in this tab. Reloading clears local history; server evidence also expires or disappears on restart/capacity eviction.
+    - paragraph: "Selected: Container · Screen"
+    - paragraph: Stopped. 4 applied edits remain undoable.
+    - button "Reconnect agent"
+    - heading "Turn measurements" [level=4]
+    - paragraph: 39 tool calls · 15 refused · 14 calls after refusal · 923.5 s elapsed.
+    - paragraph: Partial browser measurements; the server completion receipt was not received. Provider requests and token usage unavailable.
+    - paragraph: 4 receipt-derived edits including cleanup.
+    - paragraph: 0 knowledge reads · 22 source reads · 17 edit calls · 0 observation calls.
+    - paragraph: "Settled tool durations summed: 1.3 s; tool-active interval union: 1.1 s; outside-tool time: 922.4 s."
+    - paragraph: Outside-tool time includes waiting, generation, transport and host overhead; exact provider latency is unavailable.
+    - paragraph: Exact model steps and cost unavailable. Concurrent tool durations do not add up to wall time.
+    - heading "Progress summaries" [level=4]
+    - paragraph: Connection, validation and completion metadata. The conversation contains actual assistant messages and tool calls.
+    - list:
+      - listitem: Connecting…
+      - listitem: Reading screen…
+      - listitem: Connecting to the VICT / Mastra agent…
+      - listitem: Agent is working on your request…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Preparing and validating an edit…
+      - listitem: "Edit rejected: UI_EXPR_UNKNOWN_REFERENCE: Reference 'evidence-graph' does not resolve in this scope."
+      - listitem: Preparing and validating an edit…
+      - listitem: Evidence desk slice with corrected state-namespaced graph binding · applied
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Preparing and validating an edit…
+      - listitem: Tool refused (VICT_TOOL_FAILED). Previously applied edits remain available.
+      - listitem: Preparing and validating an edit…
+      - listitem: Tool refused (VICT_TOOL_FAILED). Previously applied edits remain available.
+      - listitem: Preparing and validating an edit…
+      - listitem: Tool refused (VICT_TOOL_FAILED). Previously applied edits remain available.
+      - listitem: Preparing and validating an edit…
+      - listitem: Warm theme roles and workspace content slot with graph viewport · applied
+      - listitem: Preparing and validating an edit…
+      - listitem: Tool refused (VICT_TOOL_FAILED). Previously applied edits remain available.
+      - listitem: Preparing and validating an edit…
+      - listitem: Tool refused (VICT_TOOL_FAILED). Previously applied edits remain available.
+      - listitem: Preparing and validating an edit…
+      - listitem: Tool refused (VICT_TOOL_FAILED). Previously applied edits remain available.
+      - listitem: Preparing and validating an edit…
+      - listitem: Tool refused (VICT_TOOL_FAILED). Previously applied edits remain available.
+      - listitem: Preparing and validating an edit…
+      - listitem: Declare body slot scope with frame props and controlled url/notes state · applied
+      - listitem: Preparing and validating an edit…
+      - listitem: "Operation 3 rejected: UI_EXPR_UNKNOWN_REFERENCE: Reference 'label' does not resolve in this scope."
+      - listitem: Preparing and validating an edit…
+      - listitem: "Operation 3 rejected: UI_EXPR_UNKNOWN_REFERENCE: Reference 'props.label' does not resolve in this scope."
+      - listitem: Preparing and validating an edit…
+      - listitem: "Source note card structure: header, bound-label placeholder, labeled URL input · applied"
+      - listitem: Preparing and validating an edit…
+      - listitem: "Operation 0 rejected: UI_EXPR_UNKNOWN_REFERENCE: Reference 'label' does not resolve in this scope."
+      - listitem: Reading current source facts…
+      - listitem: Preparing and validating an edit…
+      - listitem: "Operation 0 rejected: UI_EXPR_UNKNOWN_REFERENCE: Reference 'props.label' does not resolve in this scope."
+      - listitem: Preparing and validating an edit…
+      - listitem: "Operation 0 rejected: UI_EXPR_UNKNOWN_REFERENCE: Reference 'scope.label' does not resolve in this scope."
+      - listitem: Stopped. 4 applied edits remain undoable.
+      - listitem: Stopped. 4 applied edits remain undoable.
+    - heading "Input schema diagnostics" [level=4]
+    - generic: "1 parser evaluations; these are not tool calls. No call identity is inferred. First observed 640604 ms; last observed 640604 ms since turn start. {\"ok\":false,\"code\":\"STUDIO_AGENT_INVALID_EDIT\",\"message\":\"Input contract validation reported invalid fields. These parser diagnostics are not assigned to a tool call. Correct the fields below; no edits applied.\",\"diagnostics\":[{\"path\":[\"operations\",6,\"op\"],\"rule\":\"invalid\",\"expected\":\"Use the field type declared in this tool input schema.\"}],\"observedInputShape\":{\"schema\":\"studio.tool-input-shape@1\",\"rootType\":\"object\",\"fields\":[]}}"
+    - generic: "1 parser evaluations; these are not tool calls. No call identity is inferred. First observed 654848 ms; last observed 654848 ms since turn start. {\"ok\":false,\"code\":\"STUDIO_AGENT_INVALID_EDIT\",\"message\":\"Input contract validation reported invalid fields. These parser diagnostics are not assigned to a tool call. Correct the fields below; no edits applied.\",\"diagnostics\":[{\"path\":[\"operations\",6,\"nodeId\"],\"rule\":\"invalid_type\",\"expected\":\"Use the field type declared in this tool input schema.\"},{\"path\":[\"operations\",6,\"slot\"],\"rule\":\"invalid_type\",\"expected\":\"Use the field type declared in this tool input schema.\"},{\"path\":[\"operations\",6],\"rule\":\"unknown_field\",\"expected\":\"Use the field type declared in this tool input schema.\"}],\"observedInputShape\":{\"schema\":\"studio.tool-input-shape@1\",\"rootType\":\"object\",\"fields\":[{\"path\":[\"operations\",6,\"nodeId\"],\"observedType\":\"missing\"},{\"path\":[\"operations\",6,\"slot\"],\"observedType\":\"missing\"}]}}"
+    - generic: "1 parser evaluations; these are not tool calls. No call identity is inferred. First observed 673943 ms; last observed 673943 ms since turn start. {\"ok\":false,\"code\":\"STUDIO_AGENT_INVALID_EDIT\",\"message\":\"Input contract validation reported invalid fields. These parser diagnostics are not assigned to a tool call. Correct the fields below; no edits applied.\",\"diagnostics\":[{\"path\":[\"operations\",6],\"rule\":\"unknown_field\",\"expected\":\"Use the field type declared in this tool input schema.\"}],\"observedInputShape\":{\"schema\":\"studio.tool-input-shape@1\",\"rootType\":\"object\",\"fields\":[]}}"
+    - generic: "3 parser evaluations; these are not tool calls. No call identity is inferred. First observed 706263 ms; last observed 778962 ms since turn start. {\"ok\":false,\"code\":\"STUDIO_AGENT_INVALID_EDIT\",\"message\":\"Input contract validation reported invalid fields. These parser diagnostics are not assigned to a tool call. Correct the fields below; no edits applied.\",\"diagnostics\":[{\"path\":[\"operations\"],\"rule\":\"invalid_union\",\"expected\":\"Provide expectedRevision, reason and operations; use exact op names and the fields declared for that op.\"}],\"observedInputShape\":{\"schema\":\"studio.tool-input-shape@1\",\"rootType\":\"object\",\"fields\":[]}}"
+    - generic: "1 parser evaluations; these are not tool calls. No call identity is inferred. First observed 767487 ms; last observed 767487 ms since turn start. {\"ok\":false,\"code\":\"STUDIO_AGENT_INVALID_EDIT\",\"message\":\"Input contract validation reported invalid fields. These parser diagnostics are not assigned to a tool call. Correct the fields below; no edits applied.\",\"diagnostics\":[{\"path\":[\"operations\",0,\"scope\",\"state\"],\"rule\":\"invalid_type\",\"expected\":\"Use the field type declared in this tool input schema.\"}],\"observedInputShape\":{\"schema\":\"studio.tool-input-shape@1\",\"rootType\":\"object\",\"fields\":[{\"path\":[\"operations\",0,\"scope\",\"state\"],\"observedType\":\"array\"}]}}"
+    - heading "Tool receipts" [level=4]
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 165681 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 165696 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-d5c26246-953b-4a57-8e43-b78e8a56e9eb\",\"revision\":\"r1#0\",\"digest\":\"081a365743d2ed2dfa89a8672ac3f259eb1d4b355135acde49ebbe0977806f8e\",\"epoch\":\"fe7cb57b-e3fe-4654-a6d2-c576740ed361\"},\"section\":\"contracts\",\"registryReady\":true,\"ok\":true,\"complete\":false,\"registryDigest\":\"6ba435e0ef83f67cd07d22eed8ea66c7aefc6c4f1433478dd0d4e584246f63f2\",\"items\":[{\"id\":\"vict.flow.workspace\",\"revision\":\"2\",\"digest\":\"1b461fc593820c7f1b55a4a7ff04aea0b200147d483d8aaa99322deab74d49bf\",\"bodyIdentity\":\"studio-contract-body@2:examples:1b461fc593820c7f1b55a4a7ff04aea0b200147d483d8aaa99322deab74d49bf\",\"contractJson\":\"{\\\"descriptor\\\":{\\\"revision\\\":\\\"2\\\",\\\"abi\\\":\\\"vict.ui-component-abi@1\\\",\\\"events\\\":[\\\"vict.ui-component-abi@1\\\"],\\\"rendererImplementationId\\\":\\\"vict.svelte.flow.composition\\\",\\\"styleTargets\\\":[\\\"root\\\"],\\\"id\\\":\\\"vict.flow.workspace\\\",\\\"props\\\":[{\\\"name\\\":\\\"graph\\\",\\\"type\\\":\\\"string\\\"},{\\\"name\\\":\\\"label\\\",\\\"type\\\":\\\"string\\\",\\\"default\\\":\\\"Graph workspace\\\"},{\\\"name\\\":\\\"readOnly\\\",\\\"type\\\":\\\"boolean\\\",\\\"default\\\":false}],\\\"slots\\\":[\\\"content\\\",\\\"body\\\"],\\\"scopedSlots\\\":[\\\"content\\\",\\\"body\\\"],\\\"outputs\\\":[{\\\"name\\\":\\\"graphChange\\\",\\\"payload\\\":\\\"string\\\",\\\"description\\\":\\\"Validated graph snapshot; bind to the same canonical graph state.\\\"},{\\\"name\\\":\\\"selectionChange\\\",\\\"payload\\\":\\\"string\\\",\\\"description\\\":\\\"Transient node/edge selection IDs.\\\"},{\\\"name\\\":\\\"nodeAction\\\",\\\"payload\\\":\\\"string\\\",\\\"description\\\":\\\"Declared body intent with node ID, type, output and payload. No effect is executed.\\\"},{\\\"name\\\":\\\"applicationAction\\\",\\\"payload\\\":\\\"string\\\",\\\"description\\\":\\\"Declared content intent not handled as a graph transaction.\\\"},{\\\"name\\\":\\\"operationResult\\\",\\\"payload\\\":\\\"string\\\",\\\"description\\\":\\\"Validated graph transaction outcome.\\\"}],\\\"inspectionLimits\\\":[\\\"No editor chrome or execution engine. Authored content chooses controls and viewport; authored body chooses node presentation.\\\",\\\"Accepts vict.flow-graph@2 only. Parameters use canonical VICT value types independently of node controls.\\\"]},\\\"label\\\":\\\"Composable graph workspace\\\",\\\"family\\\":\\\"flow\\\",\\\"category\\\":\\\"graph\\\",\\\"purpose\\\":\\\"App-owned graph layout and canonical node bodies with project-defined typed parameters.\\\",\\\"eligibility\\\":{\\\"kind\\\":\\\"standalone\\\"},\\\"dataContracts\\\":[{\\\"id\\\":\\\"vict.flow-graph\\\",\\\"revision\\\":\\\"2\\\",\\\"digest\\\":\\\"10a7de9050901401fb0badef539d3d5717d614665dd476fe7b2b09453c355329\\\",\\\"registry\\\":\\\"dataContracts\\\",\\\"key\\\":\\\"vict.flow-graph@2\\\"},{\\\"id\\\":\\\"vict.flow-operations\\\",\\\"revision\\\":\\\"2\\\",\\\"digest\\\":\\\"26b0310710b12527a9a8a056bea7cb5b5ccd45e46ede22a87ddbb4b8a03dbde7\\\",\\\"registry\\\":\\\"dataContracts\\\",\\\"key\\\":\\\"vict.flow-operations@2\\\"}],\\\"guidance\\\":[\\\"Use this exact workspace@2 for new typed composition. graph accepts vict.flow-graph@2 only; @1 remains strict and is never migrated implicitly.\\\",\\\"Read registry dataContracts with key vict.flow-graph@2 and vict.flow-operations@2 for exact losslessly paged data/operation grammar and examples. These are data contracts, not component identities or recipes. Semantic cross-reference, type, capacity, cycle and application-domain validation remains authoritative.\\\",\\\"This is a graph state/context owner, not a complete editor application. Insert ordinary app layout in scoped content; put vict.flow.viewport anywhere in that layout. There is no toolbar, inspector or default node form.\\\",\\\"Persistence is explicit. In Studio authoring, graph:state.key plus graphChange:setState to the same key opts into edits of that lexical source owner and shared document history. Resolve the declaration in its containing slot scope before document state; equal state names in different scopes are distinct. An unbound graph or private runtime state is not automatically an edit of application defaults. Durable application data belongs to an explicit application resource/action adapter an [Details truncated for the bounded trace. Read current source for complete facts.]"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 199314 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 199322 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-d5c26246-953b-4a57-8e43-b78e8a56e9eb\",\"revision\":\"r1#0\",\"digest\":\"081a365743d2ed2dfa89a8672ac3f259eb1d4b355135acde49ebbe0977806f8e\",\"epoch\":\"fe7cb57b-e3fe-4654-a6d2-c576740ed361\"},\"section\":\"contracts\",\"registryReady\":true,\"ok\":true,\"complete\":false,\"registryDigest\":\"6ba435e0ef83f67cd07d22eed8ea66c7aefc6c4f1433478dd0d4e584246f63f2\",\"items\":[{\"id\":\"vict.flow.workspace\",\"revision\":\"2\",\"digest\":\"1b461fc593820c7f1b55a4a7ff04aea0b200147d483d8aaa99322deab74d49bf\",\"bodyIdentity\":\"studio-contract-body@2:examples:1b461fc593820c7f1b55a4a7ff04aea0b200147d483d8aaa99322deab74d49bf\",\"contractJson\":\"are outputs operation:string, undo:void or redo:void only where wanted. A normal control output binding emit:{output:\\\\\\\"operation\\\\\\\",value:{type:\\\\\\\"literal\\\\\\\",value:JSON.stringify(operationArray)}} applies one validated public graph transaction per actual event. Other declared content intents emit applicationAction without an effect.\\\",\\\"body is rendered once per graph node with stable nodeId key in the workspace occurrence. Frame props nodeId:string,nodeType:string,label:string,selected:boolean,readOnly:boolean,graphRevision:number. Declare only needed props. scope.conditions can branch normal canonical subtrees by prop.nodeType; no framework patch is needed for another family.\\\",\\\"A scoped source declaration is shared source, while its runtime values belong to an occurrence. For a nested graph controlled by a node parameter, author the identified containing graph node occurrence rather than overwriting its body template or a same-named document state. Repeated instances do not acquire independent source defaults merely because they render separately; ambiguous occurrence edits must be refused.\\\",\\\"Choose each node width/layout through normal authored styles. Mark only a desired header/handle element with class vict-graph-drag-handle. Put input/scroll regions in nodrag nopan nowheel classes. Shared controls preserve owned popup/focus/theming. No shell/header is inserted automatically.\\\",\\\"Place vict.flow.port in the normal body row next to its associated field, or in a footer. Its id must match an existing graphPorts ID; the model owns direction/type/capacity. Port identity is independent of the body source node identity. Dynamic replacePorts must explicitly reconcile invalid edges in one transaction.\\\",\\\"Select a writable connection to expose source/target drag anchors. Endpoint reconnection is a pointer gesture, preserves the edge ID, and validates type/capacity/cycles at the original source revision. These drag anchors are not keyboard buttons; apps may expose the same public reconnect operation through their own keyboard-accessible controls. No connection form is imposed.\\\",\\\"Test two node occurrences and two workspaces for isolation; save/reopen/export/import and installed consumers. Source or a screenshot does not prove controls, direct connections or backend execution. Historical vict.flow.editor remains excluded compatibility-only.\\\",\\\"Use applyGraphOperationsV2 / GraphSessionV2 in code consumers, or exact graph2 operations through content operation:string and Studio editGraph. Family definitions, parameter changes, topology and history are validated atomically at expectedRevision; operations never execute a backend. Read the versioned operation data contract instead of probing shapes.\\\",\\\"nodeTypes[].parameters maps each project-defined key to {type,default,label?}. type is a canonical VICT value type (string,number,boolean,stringList,numberList,isoDate,isoTime), independent of which normal component edits it. Declare matching controlled body scope.state. A write applies setParameter to this node. No control-specific value conversion occurs. Parameter type/default and body state declaration must agree; unbound UI state stays private per occurrence.\\\",\\\"Use vict.flow.viewport@2 [Details truncated for the bounded trace. Read current source for complete facts.]"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 199314 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 199326 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-d5c26246-953b-4a57-8e43-b78e8a56e9eb\",\"revision\":\"r1#0\",\"digest\":\"081a365743d2ed2dfa89a8672ac3f259eb1d4b355135acde49ebbe0977806f8e\",\"epoch\":\"fe7cb57b-e3fe-4654-a6d2-c576740ed361\"},\"section\":\"knowledge\",\"ok\":true,\"registryReady\":true,\"registryDigest\":\"6ba435e0ef83f67cd07d22eed8ea66c7aefc6c4f1433478dd0d4e584246f63f2\",\"kind\":\"data\",\"key\":\"vict.flow-graph@2\",\"projection\":\"examples\",\"nextCursor\":\"studio-knowledge-page@1:eyJraW5kIjoiZGF0YSIsImtleSI6InZpY3QuZmxvdy1ncmFwaEAyIiwicHJvamVjdGlvbiI6ImV4YW1wbGVzIiwiYm9keUlkZW50aXR5Ijoic3R1ZGlvLWRhdGEta25vd2xlZGdlLWJvZHlAMTpleGFtcGxlczoxMGE3ZGU5MDUwOTAxNDAxZmIwYmFkZWY1MzlkM2Q1NzE3ZDYxNDY2NWRkNDc2ZmU3YjJiMDk0NTNjMzU1MzI5Iiwib2Zmc2V0Ijo2MDAwfQ\",\"paging\":\"Copy nextCursor exactly as a JSON string; do not send offset, limit or identity maps. Stop on nextCursor:null. A selected body is complete only after assembling every page from its first page. Component dependencies are explicit references and must be read separately; no dependency body or app source was preloaded.\",\"id\":\"vict.flow-graph\",\"revision\":\"2\",\"digest\":\"10a7de9050901401fb0badef539d3d5717d614665dd476fe7b2b09453c355329\",\"bodyIdentity\":\"studio-data-knowledge-body@1:examples:10a7de9050901401fb0badef539d3d5717d614665dd476fe7b2b09453c355329\",\"offset\":0,\"totalCharacters\":6099,\"bodyComplete\":false,\"sourceJson\":\"{\\\"id\\\":\\\"vict.flow-graph\\\",\\\"revision\\\":\\\"2\\\",\\\"schema\\\":{\\\"$schema\\\":\\\"https://json-schema.org/draft/2020-12/schema\\\",\\\"$id\\\":\\\"urn:vict:flow-graph:2\\\",\\\"$comment\\\":\\\"Structural shape only. Unique IDs, declared parameter types/defaults, topology, capacity and cycle policy are validated by the corresponding graph model. Total serialized graph budget: one million characters.\\\",\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"schema\\\":{\\\"const\\\":\\\"vict.flow-graph@2\\\"},\\\"revision\\\":{\\\"type\\\":\\\"integer\\\",\\\"minimum\\\":0,\\\"maximum\\\":9007199254740991},\\\"nodeTypes\\\":{\\\"type\\\":\\\"array\\\",\\\"items\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"id\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"maxLength\\\":200,\\\"not\\\":{\\\"enum\\\":[\\\"__proto__\\\",\\\"prototype\\\",\\\"constructor\\\"]}},\\\"label\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"maxLength\\\":200},\\\"parameters\\\":{\\\"type\\\":\\\"object\\\",\\\"propertyNames\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"maxLength\\\":200,\\\"not\\\":{\\\"enum\\\":[\\\"__proto__\\\",\\\"prototype\\\",\\\"constructor\\\"]},\\\"pattern\\\":\\\"^[A-Za-z_][A-Za-z0-9_-]*$\\\"},\\\"maxProperties\\\":128,\\\"additionalProperties\\\":{\\\"oneOf\\\":[{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"type\\\":{\\\"const\\\":\\\"string\\\"},\\\"default\\\":{\\\"type\\\":\\\"string\\\"},\\\"label\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"maxLength\\\":200}},\\\"required\\\":[\\\"type\\\",\\\"default\\\"],\\\"additionalProperties\\\":false},{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"type\\\":{\\\"const\\\":\\\"number\\\"},\\\"default\\\":{\\\"type\\\":\\\"number\\\"},\\\"label\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"maxLength\\\":200}},\\\"required\\\":[\\\"type\\\",\\\"default\\\"],\\\"additionalProperties\\\":false},{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"type\\\":{\\\"const\\\":\\\"boolean\\\"},\\\"default\\\":{\\\"type\\\":\\\"boolean\\\"},\\\"label\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"maxLength\\\":200}},\\\"required\\\":[\\\"type\\\",\\\"default\\\"],\\\"additionalProperties\\\":false},{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"type\\\":{\\\"const\\\":\\\"stringList\\\"},\\\"default\\\":{\\\"type\\\":\\\"array\\\",\\\"items\\\":{\\\"type\\\":\\\"string\\\"}},\\\"label\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"maxLength\\\":200}},\\\"required\\\":[\\\"type\\\",\\\"default\\\"],\\\"additionalProperties\\\":false},{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"type\\\":{\\\"const\\\":\\\"numberList\\\"},\\\"default\\\":{\\\"type\\\":\\\"array\\\",\\\"items\\\":{\\\"type\\\":\\\"number\\\"}},\\\"label\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"maxLength\\\":200}},\\\"required\\\":[\\\"type\\\",\\\"default\\\"],\\\"additionalProperties\\\":false},{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"type\\\":{\\\"const\\\":\\\"isoDate\\\"},\\\"default\\\":{\\\"type\\\":\\\"string\\\",\\\"$comment\\\":\\\"Empty string or valid Gregorian YYYY-MM-DD, checked b [Details truncated for the bounded trace. Read current source for complete facts.]"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 199315 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 199330 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-d5c26246-953b-4a57-8e43-b78e8a56e9eb\",\"revision\":\"r1#0\",\"digest\":\"081a365743d2ed2dfa89a8672ac3f259eb1d4b355135acde49ebbe0977806f8e\",\"epoch\":\"fe7cb57b-e3fe-4654-a6d2-c576740ed361\"},\"section\":\"knowledge\",\"ok\":true,\"registryReady\":true,\"registryDigest\":\"6ba435e0ef83f67cd07d22eed8ea66c7aefc6c4f1433478dd0d4e584246f63f2\",\"kind\":\"data\",\"key\":\"vict.flow-operations@2\",\"projection\":\"examples\",\"nextCursor\":\"studio-knowledge-page@1:eyJraW5kIjoiZGF0YSIsImtleSI6InZpY3QuZmxvdy1vcGVyYXRpb25zQDIiLCJwcm9qZWN0aW9uIjoiZXhhbXBsZXMiLCJib2R5SWRlbnRpdHkiOiJzdHVkaW8tZGF0YS1rbm93bGVkZ2UtYm9keUAxOmV4YW1wbGVzOjI2YjAzMTA3MTBiMTI1MjdhOWE4YTA1NmJlYTdjYjViNWNjZDQ1ZTQ2ZWRlMjJhODdkZGJiNGI4YTAzZGJkZTciLCJvZmZzZXQiOjYwMDB9\",\"paging\":\"Copy nextCursor exactly as a JSON string; do not send offset, limit or identity maps. Stop on nextCursor:null. A selected body is complete only after assembling every page from its first page. Component dependencies are explicit references and must be read separately; no dependency body or app source was preloaded.\",\"id\":\"vict.flow-operations\",\"revision\":\"2\",\"digest\":\"26b0310710b12527a9a8a056bea7cb5b5ccd45e46ede22a87ddbb4b8a03dbde7\",\"bodyIdentity\":\"studio-data-knowledge-body@1:examples:26b0310710b12527a9a8a056bea7cb5b5ccd45e46ede22a87ddbb4b8a03dbde7\",\"offset\":0,\"totalCharacters\":9337,\"bodyComplete\":false,\"sourceJson\":\"{\\\"id\\\":\\\"vict.flow-operations\\\",\\\"revision\\\":\\\"2\\\",\\\"schema\\\":{\\\"$schema\\\":\\\"https://json-schema.org/draft/2020-12/schema\\\",\\\"$id\\\":\\\"urn:vict:flow-operations:2\\\",\\\"type\\\":\\\"array\\\",\\\"items\\\":{\\\"oneOf\\\":[{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"type\\\":{\\\"const\\\":\\\"setCyclePolicy\\\"},\\\"allowCycles\\\":{\\\"type\\\":\\\"boolean\\\"}},\\\"required\\\":[\\\"type\\\",\\\"allowCycles\\\"],\\\"additionalProperties\\\":false},{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"type\\\":{\\\"const\\\":\\\"defineNodeType\\\"},\\\"definition\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"id\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"maxLength\\\":200,\\\"not\\\":{\\\"enum\\\":[\\\"__proto__\\\",\\\"prototype\\\",\\\"constructor\\\"]}},\\\"label\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"maxLength\\\":200},\\\"parameters\\\":{\\\"type\\\":\\\"object\\\",\\\"propertyNames\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"maxLength\\\":200,\\\"not\\\":{\\\"enum\\\":[\\\"__proto__\\\",\\\"prototype\\\",\\\"constructor\\\"]},\\\"pattern\\\":\\\"^[A-Za-z_][A-Za-z0-9_-]*$\\\"},\\\"maxProperties\\\":128,\\\"additionalProperties\\\":{\\\"oneOf\\\":[{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"type\\\":{\\\"const\\\":\\\"string\\\"},\\\"default\\\":{\\\"type\\\":\\\"string\\\"},\\\"label\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"maxLength\\\":200}},\\\"required\\\":[\\\"type\\\",\\\"default\\\"],\\\"additionalProperties\\\":false},{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"type\\\":{\\\"const\\\":\\\"number\\\"},\\\"default\\\":{\\\"type\\\":\\\"number\\\"},\\\"label\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"maxLength\\\":200}},\\\"required\\\":[\\\"type\\\",\\\"default\\\"],\\\"additionalProperties\\\":false},{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"type\\\":{\\\"const\\\":\\\"boolean\\\"},\\\"default\\\":{\\\"type\\\":\\\"boolean\\\"},\\\"label\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"maxLength\\\":200}},\\\"required\\\":[\\\"type\\\",\\\"default\\\"],\\\"additionalProperties\\\":false},{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"type\\\":{\\\"const\\\":\\\"stringList\\\"},\\\"default\\\":{\\\"type\\\":\\\"array\\\",\\\"items\\\":{\\\"type\\\":\\\"string\\\"}},\\\"label\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"maxLength\\\":200}},\\\"required\\\":[\\\"type\\\",\\\"default\\\"],\\\"additionalProperties\\\":false},{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"type\\\":{\\\"const\\\":\\\"numberList\\\"},\\\"default\\\":{\\\"type\\\":\\\"array\\\",\\\"items\\\":{\\\"type\\\":\\\"number\\\"}},\\\"label\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"maxLength\\\":200}},\\\"required\\\":[\\\"type\\\",\\\"default\\\"],\\\"additionalProperties\\\":false},{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"type\\\":{\\\"const\\\":\\\"isoDate\\\"},\\\"default\\\":{\\\"type\\\":\\\"string\\\",\\\"$comment\\\":\\\"Empty string or valid Gregorian YYYY-MM-DD, checked by canonical isUiValueOfType.\\\"},\\\"label\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"m [Details truncated for the bounded trace. Read current source for complete facts.]"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 239715 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 239726 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-d5c26246-953b-4a57-8e43-b78e8a56e9eb\",\"revision\":\"r1#0\",\"digest\":\"081a365743d2ed2dfa89a8672ac3f259eb1d4b355135acde49ebbe0977806f8e\",\"epoch\":\"fe7cb57b-e3fe-4654-a6d2-c576740ed361\"},\"section\":\"contracts\",\"registryReady\":true,\"ok\":true,\"complete\":false,\"registryDigest\":\"6ba435e0ef83f67cd07d22eed8ea66c7aefc6c4f1433478dd0d4e584246f63f2\",\"items\":[{\"id\":\"vict.flow.workspace\",\"revision\":\"2\",\"digest\":\"1b461fc593820c7f1b55a4a7ff04aea0b200147d483d8aaa99322deab74d49bf\",\"bodyIdentity\":\"studio-contract-body@2:examples:1b461fc593820c7f1b55a4a7ff04aea0b200147d483d8aaa99322deab74d49bf\",\"contractJson\":\"r values remain scalar; changing to a numberList parameter also requires deliberate body binding/state changes. Unrepresentable legacy constraints and presentation metadata are reported and require explicit acknowledgement; no automatic migration is performed by Studio or the renderer.\\\"],\\\"packageName\\\":\\\"@victframework/ui-flow-svelte\\\",\\\"packageVersion\\\":\\\"0.4.0-rc.1\\\",\\\"capabilities\\\":{\\\"extensionId\\\":\\\"vict.flow.workspace\\\",\\\"revision\\\":\\\"2\\\",\\\"rendererImplementationId\\\":\\\"vict.svelte.flow.composition\\\",\\\"abi\\\":\\\"vict.ui-component-abi@1\\\",\\\"scopedSlots\\\":[\\\"content\\\",\\\"body\\\"],\\\"slots\\\":[\\\"content\\\",\\\"body\\\"],\\\"required\\\":[],\\\"styleTargets\\\":[\\\"root\\\"],\\\"requiresParentContext\\\":false,\\\"compositionSlots\\\":[]},\\\"descriptorDigest\\\":\\\"aad02fd2f4fafc2d7a4ca7fcbb7927e51aff3d0adffefa5d2262912aedac51d9\\\",\\\"digest\\\":\\\"1b461fc593820c7f1b55a4a7ff04aea0b200147d483d8aaa99322deab74d49bf\\\",\\\"preparation\\\":{\\\"seedStyles\\\":[],\\\"hostRequirements\\\":[],\\\"dependencies\\\":[],\\\"seedStylePrecedence\\\":\\\"Local styles override shared style sources; explicitly replace/remove undesired seed declarations before construction.\\\"}}\",\"totalCharacters\":8250,\"offset\":7200,\"nextOffset\":null,\"bodyComplete\":false}],\"pending\":[],\"problems\":[],\"projection\":\"contract-with-examples\",\"paging\":\"Bodies are lossless JSON text pages. Initial bundles include dependency bodies; continuations page only explicitly selected components, one body at its own nextOffset. Send expectedBodyIdentities:{\\\"id@revision\\\":bodyIdentity} with unchanged includeExamples. Changing projection invalidates partial pages. Retain digest/bodyIdentity only after assembling every character from offset 0 to totalCharacters. knownBodyIdentities proves projection when reusing examples; a guidance-only body does not contain examples. Pending/partial dependencies are not complete knowledge. Source facts never use knowledge-cache digests.\"}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 239716 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 239731 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-d5c26246-953b-4a57-8e43-b78e8a56e9eb\",\"revision\":\"r1#0\",\"digest\":\"081a365743d2ed2dfa89a8672ac3f259eb1d4b355135acde49ebbe0977806f8e\",\"epoch\":\"fe7cb57b-e3fe-4654-a6d2-c576740ed361\"},\"section\":\"knowledge\",\"ok\":true,\"registryReady\":true,\"registryDigest\":\"6ba435e0ef83f67cd07d22eed8ea66c7aefc6c4f1433478dd0d4e584246f63f2\",\"kind\":\"data\",\"key\":\"vict.flow-graph@2\",\"projection\":\"examples\",\"nextCursor\":null,\"paging\":\"Copy nextCursor exactly as a JSON string; do not send offset, limit or identity maps. Stop on nextCursor:null. A selected body is complete only after assembling every page from its first page. Component dependencies are explicit references and must be read separately; no dependency body or app source was preloaded.\",\"id\":\"vict.flow-graph\",\"revision\":\"2\",\"digest\":\"10a7de9050901401fb0badef539d3d5717d614665dd476fe7b2b09453c355329\",\"bodyIdentity\":\"studio-data-knowledge-body@1:examples:10a7de9050901401fb0badef539d3d5717d614665dd476fe7b2b09453c355329\",\"offset\":6000,\"totalCharacters\":6099,\"bodyComplete\":false,\"sourceJson\":\"\\\",\\\"type\\\":\\\"project-type\\\",\\\"label\\\":\\\"Project node\\\",\\\"position\\\":{\\\"x\\\":0,\\\"y\\\":0},\\\"values\\\":{}}],\\\"edges\\\":[]}]}\"}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 239717 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 239735 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-d5c26246-953b-4a57-8e43-b78e8a56e9eb\",\"revision\":\"r1#0\",\"digest\":\"081a365743d2ed2dfa89a8672ac3f259eb1d4b355135acde49ebbe0977806f8e\",\"epoch\":\"fe7cb57b-e3fe-4654-a6d2-c576740ed361\"},\"section\":\"knowledge\",\"ok\":true,\"registryReady\":true,\"registryDigest\":\"6ba435e0ef83f67cd07d22eed8ea66c7aefc6c4f1433478dd0d4e584246f63f2\",\"kind\":\"data\",\"key\":\"vict.flow-operations@2\",\"projection\":\"examples\",\"nextCursor\":null,\"paging\":\"Copy nextCursor exactly as a JSON string; do not send offset, limit or identity maps. Stop on nextCursor:null. A selected body is complete only after assembling every page from its first page. Component dependencies are explicit references and must be read separately; no dependency body or app source was preloaded.\",\"id\":\"vict.flow-operations\",\"revision\":\"2\",\"digest\":\"26b0310710b12527a9a8a056bea7cb5b5ccd45e46ede22a87ddbb4b8a03dbde7\",\"bodyIdentity\":\"studio-data-knowledge-body@1:examples:26b0310710b12527a9a8a056bea7cb5b5ccd45e46ede22a87ddbb4b8a03dbde7\",\"offset\":6000,\"totalCharacters\":9337,\"bodyComplete\":false,\"sourceJson\":\"\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"maxLength\\\":200,\\\"not\\\":{\\\"enum\\\":[\\\"__proto__\\\",\\\"prototype\\\",\\\"constructor\\\"]}}},\\\"required\\\":[\\\"source\\\",\\\"sourcePort\\\",\\\"target\\\",\\\"targetPort\\\"],\\\"additionalProperties\\\":false}},\\\"required\\\":[\\\"type\\\",\\\"edgeId\\\",\\\"connection\\\"],\\\"additionalProperties\\\":false},{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"type\\\":{\\\"const\\\":\\\"remove\\\"},\\\"selection\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"nodes\\\":{\\\"type\\\":\\\"array\\\",\\\"items\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"maxLength\\\":200,\\\"not\\\":{\\\"enum\\\":[\\\"__proto__\\\",\\\"prototype\\\",\\\"constructor\\\"]}},\\\"maxItems\\\":1000},\\\"edges\\\":{\\\"type\\\":\\\"array\\\",\\\"items\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"maxLength\\\":200,\\\"not\\\":{\\\"enum\\\":[\\\"__proto__\\\",\\\"prototype\\\",\\\"constructor\\\"]}},\\\"maxItems\\\":1000}},\\\"required\\\":[\\\"nodes\\\",\\\"edges\\\"],\\\"additionalProperties\\\":false}},\\\"required\\\":[\\\"type\\\",\\\"selection\\\"],\\\"additionalProperties\\\":false},{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"type\\\":{\\\"const\\\":\\\"duplicate\\\"},\\\"selection\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"nodes\\\":{\\\"type\\\":\\\"array\\\",\\\"items\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"maxLength\\\":200,\\\"not\\\":{\\\"enum\\\":[\\\"__proto__\\\",\\\"prototype\\\",\\\"constructor\\\"]}},\\\"maxItems\\\":1000},\\\"edges\\\":{\\\"type\\\":\\\"array\\\",\\\"items\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"maxLength\\\":200,\\\"not\\\":{\\\"enum\\\":[\\\"__proto__\\\",\\\"prototype\\\",\\\"constructor\\\"]}},\\\"maxItems\\\":1000}},\\\"required\\\":[\\\"nodes\\\",\\\"edges\\\"],\\\"additionalProperties\\\":false},\\\"offset\\\":{\\\"type\\\":\\\"number\\\",\\\"minimum\\\":-10000,\\\"maximum\\\":10000}},\\\"required\\\":[\\\"type\\\",\\\"selection\\\"],\\\"additionalProperties\\\":false},{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"type\\\":{\\\"const\\\":\\\"replacePorts\\\"},\\\"nodeId\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"maxLength\\\":200,\\\"not\\\":{\\\"enum\\\":[\\\"__proto__\\\",\\\"prototype\\\",\\\"constructor\\\"]}},\\\"ports\\\":{\\\"type\\\":\\\"array\\\",\\\"items\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"id\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"maxLength\\\":200,\\\"not\\\":{\\\"enum\\\":[\\\"__proto__\\\",\\\"prototype\\\",\\\"constructor\\\"]}},\\\"label\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"maxLength\\\":200},\\\"direction\\\":{\\\"enum\\\":[\\\"input\\\",\\\"output\\\"]},\\\"type\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"maxLength\\\":200},\\\"maxConnections\\\":{\\\"type\\\":\\\"integer\\\",\\\"minimum\\\":1}},\\\"required\\\":[\\\"id\\\",\\\"label\\\",\\\"direction\\\",\\\"type\\\"],\\\"additionalProperties\\\":false},\\\"maxItems\\\":128},\\\"removeInvalidConnections\\\":{\\\"type\\\":\\\"boolean\\\"}},\\\"required\\\":[\\\"type\\\",\\\"nodeId\\\",\\\"ports\\\"],\\\"additionalProperties\\\":false},{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"type\\\":{\\\"const\\\":\\\"paste\\\"},\\\"clipboard\\\":{\\\"type\\\":\\\"string\\\",\\\"maxLength\\\":1000000},\\\"offset\\\":{\\\"type\\\":\\\"number\\\",\\\"minimum\\\":-10000,\\\"maximum\\\":10000}},\\\"required\\\":[\\\"type\\\",\\\"clipboard\\\"],\\\"additionalProperties\\\":false},{\\\"type\\\":\\\"object\\\",\\\"properties\\\" [Details truncated for the bounded trace. Read current source for complete facts.]"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 276847 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 276856 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-d5c26246-953b-4a57-8e43-b78e8a56e9eb\",\"revision\":\"r1#0\",\"digest\":\"081a365743d2ed2dfa89a8672ac3f259eb1d4b355135acde49ebbe0977806f8e\",\"epoch\":\"fe7cb57b-e3fe-4654-a6d2-c576740ed361\"},\"section\":\"contracts\",\"registryReady\":true,\"ok\":true,\"complete\":false,\"registryDigest\":\"6ba435e0ef83f67cd07d22eed8ea66c7aefc6c4f1433478dd0d4e584246f63f2\",\"items\":[{\"id\":\"vict.flow.workspace\",\"revision\":\"2\",\"digest\":\"1b461fc593820c7f1b55a4a7ff04aea0b200147d483d8aaa99322deab74d49bf\",\"bodyIdentity\":\"studio-contract-body@2:examples:1b461fc593820c7f1b55a4a7ff04aea0b200147d483d8aaa99322deab74d49bf\",\"contractJson\":\"{\\\"descriptor\\\":{\\\"revision\\\":\\\"2\\\",\\\"abi\\\":\\\"vict.ui-component-abi@1\\\",\\\"events\\\":[\\\"vict.ui-component-abi@1\\\"],\\\"rendererImplementationId\\\":\\\"vict.svelte.flow.composition\\\",\\\"styleTargets\\\":[\\\"root\\\"],\\\"id\\\":\\\"vict.flow.workspace\\\",\\\"props\\\":[{\\\"name\\\":\\\"graph\\\",\\\"type\\\":\\\"string\\\"},{\\\"name\\\":\\\"label\\\",\\\"type\\\":\\\"string\\\",\\\"default\\\":\\\"Graph workspace\\\"},{\\\"name\\\":\\\"readOnly\\\",\\\"type\\\":\\\"boolean\\\",\\\"default\\\":false}],\\\"slots\\\":[\\\"content\\\",\\\"body\\\"],\\\"scopedSlots\\\":[\\\"content\\\",\\\"body\\\"],\\\"outputs\\\":[{\\\"name\\\":\\\"graphChange\\\",\\\"payload\\\":\\\"string\\\",\\\"description\\\":\\\"Validated graph snapshot; bind to the same canonical graph state.\\\"},{\\\"name\\\":\\\"selectionChange\\\",\\\"payload\\\":\\\"string\\\",\\\"description\\\":\\\"Transient node/edge selection IDs.\\\"},{\\\"name\\\":\\\"nodeAction\\\",\\\"payload\\\":\\\"string\\\",\\\"description\\\":\\\"Declared body intent with node ID, type, output and payload. No effect is executed.\\\"},{\\\"name\\\":\\\"applicationAction\\\",\\\"payload\\\":\\\"string\\\",\\\"description\\\":\\\"Declared content intent not handled as a graph transaction.\\\"},{\\\"name\\\":\\\"operationResult\\\",\\\"payload\\\":\\\"string\\\",\\\"description\\\":\\\"Validated graph transaction outcome.\\\"}],\\\"inspectionLimits\\\":[\\\"No editor chrome or execution engine. Authored content chooses controls and viewport; authored body chooses node presentation.\\\",\\\"Accepts vict.flow-graph@2 only. Parameters use canonical VICT value types independently of node controls.\\\"]},\\\"label\\\":\\\"Composable graph workspace\\\",\\\"family\\\":\\\"flow\\\",\\\"category\\\":\\\"graph\\\",\\\"purpose\\\":\\\"App-owned graph layout and canonical node bodies with project-defined typed parameters.\\\",\\\"eligibility\\\":{\\\"kind\\\":\\\"standalone\\\"},\\\"dataContracts\\\":[{\\\"id\\\":\\\"vict.flow-graph\\\",\\\"revision\\\":\\\"2\\\",\\\"digest\\\":\\\"10a7de9050901401fb0badef539d3d5717d614665dd476fe7b2b09453c355329\\\",\\\"registry\\\":\\\"dataContracts\\\",\\\"key\\\":\\\"vict.flow-graph@2\\\"},{\\\"id\\\":\\\"vict.flow-operations\\\",\\\"revision\\\":\\\"2\\\",\\\"digest\\\":\\\"26b0310710b12527a9a8a056bea7cb5b5ccd45e46ede22a87ddbb4b8a03dbde7\\\",\\\"registry\\\":\\\"dataContracts\\\",\\\"key\\\":\\\"vict.flow-operations@2\\\"}],\\\"guidance\\\":[\\\"Use this exact workspace@2 for new typed composition. graph accepts vict.flow-graph@2 only; @1 remains strict and is never migrated implicitly.\\\",\\\"Read registry dataContracts with key vict.flow-graph@2 and vict.flow-operations@2 for exact losslessly paged data/operation grammar and examples. These are data contracts, not component identities or recipes. Semantic cross-reference, type, capacity, cycle and application-domain validation remains authoritative.\\\",\\\"This is a graph state/context owner, not a complete editor application. Insert ordinary app layout in scoped content; put vict.flow.viewport anywhere in that layout. There is no toolbar, inspector or default node form.\\\",\\\"Persistence is explicit. In Studio authoring, graph:state.key plus graphChange:setState to the same key opts into edits of that lexical source owner and shared document history. Resolve the declaration in its containing slot scope before document state; equal state names in different scopes are distinct. An unbound graph or private runtime state is not automatically an edit of application defaults. Durable application data belongs to an explicit application resource/action adapter an [Details truncated for the bounded trace. Read current source for complete facts.]"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 276848 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 276861 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-d5c26246-953b-4a57-8e43-b78e8a56e9eb\",\"revision\":\"r1#0\",\"digest\":\"081a365743d2ed2dfa89a8672ac3f259eb1d4b355135acde49ebbe0977806f8e\",\"epoch\":\"fe7cb57b-e3fe-4654-a6d2-c576740ed361\"},\"section\":\"catalog\",\"registryDigest\":\"6ba435e0ef83f67cd07d22eed8ea66c7aefc6c4f1433478dd0d4e584246f63f2\",\"items\":[],\"total\":0,\"offset\":0,\"nextOffset\":null}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 276848 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 276863 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-d5c26246-953b-4a57-8e43-b78e8a56e9eb\",\"revision\":\"r1#0\",\"digest\":\"081a365743d2ed2dfa89a8672ac3f259eb1d4b355135acde49ebbe0977806f8e\",\"epoch\":\"fe7cb57b-e3fe-4654-a6d2-c576740ed361\"},\"section\":\"catalog\",\"registryDigest\":\"6ba435e0ef83f67cd07d22eed8ea66c7aefc6c4f1433478dd0d4e584246f63f2\",\"items\":[],\"total\":0,\"offset\":0,\"nextOffset\":null}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 286781 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 286803 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-d5c26246-953b-4a57-8e43-b78e8a56e9eb\",\"revision\":\"r1#0\",\"digest\":\"081a365743d2ed2dfa89a8672ac3f259eb1d4b355135acde49ebbe0977806f8e\",\"epoch\":\"fe7cb57b-e3fe-4654-a6d2-c576740ed361\"},\"section\":\"catalog\",\"registryDigest\":\"6ba435e0ef83f67cd07d22eed8ea66c7aefc6c4f1433478dd0d4e584246f63f2\",\"items\":[{\"id\":\"vict.ai.conversation\",\"revision\":\"1\",\"label\":\"Conversation\",\"family\":\"ai\",\"category\":\"chat\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"55962dbc6fc4384501cb7cc00410ecb71c5b747c8aa1c9c967f64facb3a1ca7f\",\"packageName\":\"@victframework/ui-ai-svelte\"},{\"id\":\"vict.ai.conversation\",\"revision\":\"2\",\"label\":\"Conversation\",\"family\":\"ai\",\"category\":\"chat\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"feaf498a98bb3787996dc82f8f05f75ae8fc711117634d6019d7c5dc4cdf9a77\",\"packageName\":\"@victframework/ui-ai-svelte\"},{\"id\":\"vict.ai.prompt-input\",\"revision\":\"1\",\"label\":\"Prompt input\",\"family\":\"ai\",\"category\":\"chat\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"012317a66d95ef8a3da8337344fea67877d73049ee58a0de4eaf22ee67cace64\",\"packageName\":\"@victframework/ui-ai-svelte\"},{\"id\":\"vict.ai.prompt-input\",\"revision\":\"2\",\"label\":\"Prompt input\",\"family\":\"ai\",\"category\":\"chat\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"d6fecd1122def3572d3a6c0e47d3d4627571f6b7dace275376f49edc650a11d2\",\"packageName\":\"@victframework/ui-ai-svelte\"},{\"id\":\"vict.ai.prompt-input\",\"revision\":\"3\",\"label\":\"Prompt input with attachments\",\"family\":\"ai\",\"category\":\"chat\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"afc0831189731b71e769d20aca8bdf39029080c6c3a44d7b59ef7fe98155339e\",\"packageName\":\"@victframework/ui-ai-svelte\"},{\"id\":\"vict.catalog.checkbox\",\"revision\":\"1\",\"label\":\"Checkbox\",\"family\":\"general\",\"category\":\"input\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"9a1034b3539bed47c9a35e1ebc1767d84cf739703e1c3df8af967659b07b13ac\",\"packageName\":\"@victframework/ui-svelte\"},{\"id\":\"vict.catalog.combobox-item\",\"revision\":\"1\",\"label\":\"Combobox Item\",\"family\":\"general\",\"category\":\"input\",\"eligibility\":{\"kind\":\"part\"},\"digest\":\"6e32c3dcfc2aa72c61fef130a4e1e4de666b140fdd1ebe739fcc138ff22c9bdb\",\"packageName\":\"@victframework/ui-svelte\"},{\"id\":\"vict.catalog.combobox-multiple\",\"revision\":\"1\",\"label\":\"Combobox Multiple\",\"family\":\"general\",\"category\":\"input\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"f27a54fd36e526a58786b7e068aff59c8f6d013340222f43476c102aa530fadb\",\"packageName\":\"@victframework/ui-svelte\"},{\"id\":\"vict.catalog.combobox\",\"revision\":\"1\",\"label\":\"Combobox\",\"family\":\"general\",\"category\":\"input\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"533130ecfabc5c3d6d0825df502efd69964aa56b9992495774e3f58f36db126f\",\"packageName\":\"@victframework/ui-svelte\"},{\"id\":\"vict.catalog.radio-group\",\"revision\":\"1\",\"label\":\"Radio Group\",\"family\":\"general\",\"category\":\"input\",\"eligibility\":{\"kind\":\"host-required\",\"reason\":\"Requires a structured-options host view.\"},\"digest\":\"d337e0c0388faa309c60b099459028a5821ad45efb3d8d5c203a395e0c9ee891\",\"packageName\":\"@victframework/ui-svelte\"},{\"id\":\"vict.catalog.select-item\",\"revision\":\"1\",\"label\":\"Select Item\",\"family\":\"general\",\"category\":\"input\",\"eligibility\":{\"kind\":\"part\"},\"digest\":\"115c1e28de9a5cb359fe55b5aa5ffe25f1dd9073c846e5ad53bdc54d8a8d5c89\",\"packageName\":\"@victframework/ui-svelte\"},{\"id\":\"vict.catalog.select-multiple\",\"revision\":\"1\",\"label\":\"Select Multiple\",\"family\":\"general\",\"category\":\"input\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"a9fe78af0f5b93903b8804c01802ccad02780c3016921bd61005fe546016b608\",\"packageName\":\"@victframework/ui-svelte\"}],\"total\":21,\"offset\":0,\"nextOffset\":12}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 286782 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 286807 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-d5c26246-953b-4a57-8e43-b78e8a56e9eb\",\"revision\":\"r1#0\",\"digest\":\"081a365743d2ed2dfa89a8672ac3f259eb1d4b355135acde49ebbe0977806f8e\",\"epoch\":\"fe7cb57b-e3fe-4654-a6d2-c576740ed361\"},\"section\":\"catalog\",\"registryDigest\":\"6ba435e0ef83f67cd07d22eed8ea66c7aefc6c4f1433478dd0d4e584246f63f2\",\"items\":[],\"total\":0,\"offset\":0,\"nextOffset\":null}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 286783 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 286809 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-d5c26246-953b-4a57-8e43-b78e8a56e9eb\",\"revision\":\"r1#0\",\"digest\":\"081a365743d2ed2dfa89a8672ac3f259eb1d4b355135acde49ebbe0977806f8e\",\"epoch\":\"fe7cb57b-e3fe-4654-a6d2-c576740ed361\"},\"section\":\"families\",\"registryDigest\":\"6ba435e0ef83f67cd07d22eed8ea66c7aefc6c4f1433478dd0d4e584246f63f2\",\"items\":[{\"family\":\"general\",\"count\":80,\"authorable\":78,\"categories\":[\"presentation\",\"input\",\"disclosure\",\"navigation\",\"date-time\"],\"packages\":[\"@victframework/ui-svelte\"]},{\"family\":\"ai\",\"count\":28,\"authorable\":28,\"categories\":[\"chat\",\"public-activity\",\"actions\"],\"packages\":[\"@victframework/ui-ai-svelte\"]},{\"family\":\"flow\",\"count\":11,\"authorable\":9,\"categories\":[\"graph\",\"graph-part\",\"legacy-graph\",\"diagram\",\"diagram-part\"],\"packages\":[\"@victframework/ui-flow-svelte\"]},{\"family\":\"media\",\"count\":6,\"authorable\":6,\"categories\":[\"image\",\"video\",\"embed\",\"icon\",\"vector\",\"assets\"],\"packages\":[\"@victframework/ui-media-svelte\"]},{\"family\":\"application-patterns\",\"count\":10,\"authorable\":10,\"categories\":[\"interactive\"],\"packages\":[\"@victframework/ui-patterns-svelte\"]}],\"total\":5,\"offset\":0,\"nextOffset\":null}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 300103 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 300109 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-d5c26246-953b-4a57-8e43-b78e8a56e9eb\",\"revision\":\"r1#0\",\"digest\":\"081a365743d2ed2dfa89a8672ac3f259eb1d4b355135acde49ebbe0977806f8e\",\"epoch\":\"fe7cb57b-e3fe-4654-a6d2-c576740ed361\"},\"section\":\"catalog\",\"registryDigest\":\"6ba435e0ef83f67cd07d22eed8ea66c7aefc6c4f1433478dd0d4e584246f63f2\",\"items\":[{\"id\":\"vict.catalog.select\",\"revision\":\"1\",\"label\":\"Select\",\"family\":\"general\",\"category\":\"input\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"0bc249f5ec87e33b73d49ea5a8e7ea040e0bc8d8d05b0ce4b4f7f738c8543820\",\"packageName\":\"@victframework/ui-svelte\"},{\"id\":\"vict.catalog.slider\",\"revision\":\"1\",\"label\":\"Slider\",\"family\":\"general\",\"category\":\"input\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"ea476696526e244f6ccf65add75f3b5c66a946ecfa761ef7a6f15b2745fb78ba\",\"packageName\":\"@victframework/ui-svelte\"},{\"id\":\"vict.catalog.switch\",\"revision\":\"1\",\"label\":\"Switch\",\"family\":\"general\",\"category\":\"input\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"d05f403b8336f0d21304f8c2dd7d6f5ab8c2125f4a5ff89616d456c7a8d8dfca\",\"packageName\":\"@victframework/ui-svelte\"},{\"id\":\"vict.catalog.toggle-group-item\",\"revision\":\"1\",\"label\":\"Toggle Group Item\",\"family\":\"general\",\"category\":\"input\",\"eligibility\":{\"kind\":\"part\"},\"digest\":\"fc560bce0db50c639eb3c2506cf3c1a92d0dfb7e1f5d6e60d56d52bdb9317899\",\"packageName\":\"@victframework/ui-svelte\"},{\"id\":\"vict.catalog.toggle-group-multiple\",\"revision\":\"1\",\"label\":\"Toggle Group Multiple\",\"family\":\"general\",\"category\":\"input\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"1bfd0e0ad1e7bc63c9655fba86ba051d4ce0f5fba6212f9907e41d31abe75ab2\",\"packageName\":\"@victframework/ui-svelte\"},{\"id\":\"vict.catalog.toggle-group\",\"revision\":\"1\",\"label\":\"Toggle Group\",\"family\":\"general\",\"category\":\"input\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"1273eecf0e0827ea33ffd139804bb3bca4c1679a166eec7d9152485607ed68cd\",\"packageName\":\"@victframework/ui-svelte\"},{\"id\":\"vict.catalog.toggle\",\"revision\":\"1\",\"label\":\"Toggle\",\"family\":\"general\",\"category\":\"input\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"588011dd47147b0277ee5789678c02f9f33b1e438ae639f33d151b7b24abe9a9\",\"packageName\":\"@victframework/ui-svelte\"},{\"id\":\"vict.pattern.filtered-list\",\"revision\":\"1\",\"label\":\"Filtered list\",\"family\":\"application-patterns\",\"category\":\"interactive\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"ba790264bb2eb499bc04c48ef121124fd4e7854e6e3023f95e462d88e9bffc4d\",\"packageName\":\"@victframework/ui-patterns-svelte\"},{\"id\":\"vict.pattern.filtered-list\",\"revision\":\"2\",\"label\":\"Filtered list\",\"family\":\"application-patterns\",\"category\":\"interactive\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"b2e34b5eadc8ec7b7ecd2c093507e7c155cc6c87cd14447a414e97b72b1de496\",\"packageName\":\"@victframework/ui-patterns-svelte\"}],\"total\":21,\"offset\":12,\"nextOffset\":null}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 300104 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 300111 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-d5c26246-953b-4a57-8e43-b78e8a56e9eb\",\"revision\":\"r1#0\",\"digest\":\"081a365743d2ed2dfa89a8672ac3f259eb1d4b355135acde49ebbe0977806f8e\",\"epoch\":\"fe7cb57b-e3fe-4654-a6d2-c576740ed361\"},\"section\":\"catalog\",\"registryDigest\":\"6ba435e0ef83f67cd07d22eed8ea66c7aefc6c4f1433478dd0d4e584246f63f2\",\"items\":[{\"id\":\"vict.catalog.date-field\",\"revision\":\"1\",\"label\":\"Date Field\",\"family\":\"general\",\"category\":\"date-time\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"9e44a86bb64c14e787f045a0ff7de816b3b73ac33d5ae11438bd241afe98527e\",\"packageName\":\"@victframework/ui-svelte\"},{\"id\":\"vict.catalog.date-range-field\",\"revision\":\"1\",\"label\":\"Date Range Field\",\"family\":\"general\",\"category\":\"date-time\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"87ce13acfd0931cf339690899ae629a297281f7267226c1f335af125002bcab7\",\"packageName\":\"@victframework/ui-svelte\"},{\"id\":\"vict.catalog.time-field\",\"revision\":\"1\",\"label\":\"Time Field\",\"family\":\"general\",\"category\":\"date-time\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"38a5476139498475deaad7fa59e648926376c5d14c02e93b9ff00616000130e8\",\"packageName\":\"@victframework/ui-svelte\"},{\"id\":\"vict.flow.port\",\"revision\":\"1\",\"label\":\"Graph port anchor\",\"family\":\"flow\",\"category\":\"graph-part\",\"eligibility\":{\"kind\":\"part\"},\"digest\":\"6ca3d7701dcbfcf683eb59be9af6e4e923592760265fb0546b3143bcc4f9bb0b\",\"packageName\":\"@victframework/ui-flow-svelte\"},{\"id\":\"vict.flow.workspace\",\"revision\":\"1\",\"label\":\"Composable graph workspace (graph 1 compatibility)\",\"family\":\"flow\",\"category\":\"graph\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"53d6961446cae06f6640faa79c2b56f4ad213aec9539ddfe092d5eae123681a8\",\"packageName\":\"@victframework/ui-flow-svelte\"}],\"total\":5,\"offset\":0,\"nextOffset\":null}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 300104 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 300120 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-d5c26246-953b-4a57-8e43-b78e8a56e9eb\",\"revision\":\"r1#0\",\"digest\":\"081a365743d2ed2dfa89a8672ac3f259eb1d4b355135acde49ebbe0977806f8e\",\"epoch\":\"fe7cb57b-e3fe-4654-a6d2-c576740ed361\"},\"section\":\"palette\",\"items\":[{\"kind\":\"recipe\",\"id\":\"rhea-input\",\"label\":\"Input · Rhea\",\"description\":\"Associated native label, typed local value and canonical change binding. No form transport. Uses the public Rhea stylesheet.\",\"preparation\":{\"rootKind\":\"element\",\"seedClasses\":[\"vict-rhea\",\"vict-rhea-field\"],\"seedStyles\":[],\"styledNodeCount\":0,\"initialStateKeys\":[\"rhea_example_value\"],\"definitionIds\":[],\"hostRequirements\":[],\"patternHostRequirements\":[\"Import @victframework/ui-svelte/rhea.css in the rendering host.\",\"Submission, authorization and persistence require declared host actions.\"],\"guidance\":\"Seed local styles remain in the authored source and override shared style sources. Review padding, minimum size, background and color before adding; replace/remove explicitly or use generic insert for an unstyled native element. Read component/recipe for full source.\"}}],\"total\":1,\"offset\":0,\"nextOffset\":null}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 300105 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 300127 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-d5c26246-953b-4a57-8e43-b78e8a56e9eb\",\"revision\":\"r1#0\",\"digest\":\"081a365743d2ed2dfa89a8672ac3f259eb1d4b355135acde49ebbe0977806f8e\",\"epoch\":\"fe7cb57b-e3fe-4654-a6d2-c576740ed361\"},\"section\":\"palette\",\"items\":[{\"kind\":\"recipe\",\"id\":\"rhea-textarea\",\"label\":\"Text area · Rhea\",\"description\":\"Associated native label, typed local value and canonical change binding. No form transport. Uses the public Rhea stylesheet.\",\"preparation\":{\"rootKind\":\"element\",\"seedClasses\":[\"vict-rhea\",\"vict-rhea-field\"],\"seedStyles\":[],\"styledNodeCount\":0,\"initialStateKeys\":[\"rhea_example_value\"],\"definitionIds\":[],\"hostRequirements\":[],\"patternHostRequirements\":[\"Import @victframework/ui-svelte/rhea.css in the rendering host.\",\"Submission, authorization and persistence require declared host actions.\"],\"guidance\":\"Seed local styles remain in the authored source and override shared style sources. Review padding, minimum size, background and color before adding; replace/remove explicitly or use generic insert for an unstyled native element. Read component/recipe for full source.\"}}],\"total\":1,\"offset\":0,\"nextOffset\":null}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 380261 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 380270 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-d5c26246-953b-4a57-8e43-b78e8a56e9eb\",\"revision\":\"r1#0\",\"digest\":\"081a365743d2ed2dfa89a8672ac3f259eb1d4b355135acde49ebbe0977806f8e\",\"epoch\":\"fe7cb57b-e3fe-4654-a6d2-c576740ed361\"},\"section\":\"component\",\"kind\":\"native-recipe\",\"recipe\":\"rhea-input\",\"description\":\"Associated native label, typed local value and canonical change binding. No form transport. Uses the public Rhea stylesheet.\",\"sourceJson\":\"{\\\"nodes\\\":[{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"example\\\",\\\"tag\\\":\\\"div\\\",\\\"children\\\":[\\\"example-label\\\",\\\"example-control\\\",\\\"example-help\\\"],\\\"classes\\\":[\\\"vict-rhea\\\",\\\"vict-rhea-field\\\"]},{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"example-label\\\",\\\"tag\\\":\\\"label\\\",\\\"children\\\":[\\\"example-label-text\\\"],\\\"attributes\\\":{\\\"for\\\":\\\"example-control\\\"}},{\\\"kind\\\":\\\"text\\\",\\\"id\\\":\\\"example-label-text\\\",\\\"content\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"Your name\\\"}},{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"example-control\\\",\\\"tag\\\":\\\"input\\\",\\\"children\\\":[],\\\"attributes\\\":{\\\"id\\\":\\\"example-control\\\",\\\"aria-describedby\\\":\\\"example-help\\\",\\\"type\\\":\\\"text\\\",\\\"value\\\":{\\\"type\\\":\\\"ref\\\",\\\"path\\\":\\\"state.rhea_example_value\\\"}},\\\"classes\\\":[\\\"vict-rhea-input\\\"],\\\"interactions\\\":[{\\\"on\\\":\\\"change\\\",\\\"action\\\":\\\"setState\\\",\\\"key\\\":\\\"rhea_example_value\\\",\\\"value\\\":{\\\"type\\\":\\\"ref\\\",\\\"path\\\":\\\"state.rhea_example_value\\\"}}]},{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"example-help\\\",\\\"tag\\\":\\\"small\\\",\\\"children\\\":[\\\"example-help-text\\\"]},{\\\"kind\\\":\\\"text\\\",\\\"id\\\":\\\"example-help-text\\\",\\\"content\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"Local preview value; connect a declared action to submit.\\\"}}],\\\"localState\\\":{\\\"rhea_example_value\\\":{\\\"key\\\":\\\"rhea_example_value\\\",\\\"type\\\":\\\"string\\\",\\\"initial\\\":\\\"\\\"}}}\",\"totalCharacters\":1077,\"offset\":0,\"nextOffset\":null,\"knowledge\":\"Native recipe source, not a component descriptor. Generic native insertion uses elements.\"}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 380262 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 380273 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-d5c26246-953b-4a57-8e43-b78e8a56e9eb\",\"revision\":\"r1#0\",\"digest\":\"081a365743d2ed2dfa89a8672ac3f259eb1d4b355135acde49ebbe0977806f8e\",\"epoch\":\"fe7cb57b-e3fe-4654-a6d2-c576740ed361\"},\"section\":\"component\",\"kind\":\"native-recipe\",\"recipe\":\"rhea-textarea\",\"description\":\"Associated native label, typed local value and canonical change binding. No form transport. Uses the public Rhea stylesheet.\",\"sourceJson\":\"{\\\"nodes\\\":[{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"example\\\",\\\"tag\\\":\\\"div\\\",\\\"children\\\":[\\\"example-label\\\",\\\"example-control\\\",\\\"example-help\\\"],\\\"classes\\\":[\\\"vict-rhea\\\",\\\"vict-rhea-field\\\"]},{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"example-label\\\",\\\"tag\\\":\\\"label\\\",\\\"children\\\":[\\\"example-label-text\\\"],\\\"attributes\\\":{\\\"for\\\":\\\"example-control\\\"}},{\\\"kind\\\":\\\"text\\\",\\\"id\\\":\\\"example-label-text\\\",\\\"content\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"Your name\\\"}},{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"example-control\\\",\\\"tag\\\":\\\"textarea\\\",\\\"children\\\":[],\\\"attributes\\\":{\\\"id\\\":\\\"example-control\\\",\\\"aria-describedby\\\":\\\"example-help\\\",\\\"value\\\":{\\\"type\\\":\\\"ref\\\",\\\"path\\\":\\\"state.rhea_example_value\\\"}},\\\"classes\\\":[\\\"vict-rhea-input\\\"],\\\"interactions\\\":[{\\\"on\\\":\\\"change\\\",\\\"action\\\":\\\"setState\\\",\\\"key\\\":\\\"rhea_example_value\\\",\\\"value\\\":{\\\"type\\\":\\\"ref\\\",\\\"path\\\":\\\"state.rhea_example_value\\\"}}]},{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"example-help\\\",\\\"tag\\\":\\\"small\\\",\\\"children\\\":[\\\"example-help-text\\\"]},{\\\"kind\\\":\\\"text\\\",\\\"id\\\":\\\"example-help-text\\\",\\\"content\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"Local preview value; connect a declared action to submit.\\\"}}],\\\"localState\\\":{\\\"rhea_example_value\\\":{\\\"key\\\":\\\"rhea_example_value\\\",\\\"type\\\":\\\"string\\\",\\\"initial\\\":\\\"\\\"}}}\",\"totalCharacters\":1066,\"offset\":0,\"nextOffset\":null,\"knowledge\":\"Native recipe source, not a component descriptor. Generic native insertion uses elements.\"}"
+    - paragraph: Edit screen
+    - list:
+      - text: Edit screen started · running
+      - generic: tool-start studio_screen_edit 578606 ms since turn start
+      - text: Edit refused before browser proposal · failed
+      - generic: "validation-refused studio_screen_edit 578666 ms since turn start {\"ok\":false,\"code\":\"STUDIO_AGENT_VALIDATION\",\"message\":\"Edit rejected: UI_EXPR_UNKNOWN_REFERENCE: Reference 'evidence-graph' does not resolve in this scope.\",\"diagnostics\":[{\"documentId\":\"screen-d5c26246-953b-4a57-8e43-b78e8a56e9eb\",\"nodeId\":\"desk-workspace\",\"sourcePath\":\"nodes.desk-workspace\",\"code\":\"UI_EXPR_UNKNOWN_REFERENCE\",\"path\":\"evidence-graph\",\"message\":\"Reference 'evidence-graph' does not resolve in this scope.\",\"operation\":4}]}"
+    - paragraph: Edit screen
+    - list:
+      - text: Edit screen started · running
+      - generic: tool-start studio_screen_edit 595489 ms since turn start
+      - text: Proposed validated transaction; awaiting browser commit · pending
+      - generic: "proposed studio_screen_edit 595530 ms since turn start {\"proposalId\":\"6650177c-3f04-4899-ae0b-ef2c6113d062\",\"reason\":\"Evidence desk slice with corrected state-namespaced graph binding\",\"revision\":\"r1#0\"}"
+      - text: Browser committed edit · pending
+      - generic: Evidence desk slice with corrected state-namespaced graph binding Committed to the screen. Undo is available.
+      - text: Commit receipt acknowledged · completed
+      - generic: Evidence desk slice with corrected state-namespaced graph binding
+      - text: Browser acknowledged committed transaction · completed
+      - generic: "committed studio_screen_edit 595584 ms since turn start {\"proposalId\":\"6650177c-3f04-4899-ae0b-ef2c6113d062\",\"ok\":true,\"revision\":\"r1#1\",\"digest\":\"e4f1b6aa8c2057fb34d9c0514eeb6341ddffe7e05e91c7d8dd4e668df3e72885\",\"applied\":1,\"coverage\":{\"available\":119,\"authored\":1,\"catalogAuthored\":0,\"registeredAuthored\":1,\"reachableSourceNodes\":6,\"requested\":119,\"scope\":\"all-authorable-definitions\",\"missing\":[\"vict.catalog.button\",\"vict.catalog.checkbox\",\"vict.catalog.select\",\"vict.catalog.dialog\",\"vict.catalog.switch\",\"vict.catalog.toggle\",\"vict.catalog.select-multiple\",\"vict.catalog.select-item\",\"vict.catalog.combobox\",\"vict.catalog.combobox-multiple\",\"vict.catalog.combobox-item\",\"vict.catalog.toggle-group\",\"vict.catalog.toggle-group-multiple\",\"vict.catalog.toggle-group-item\",\"vict.catalog.accordion\",\"vict.catalog.accordion-multiple\",\"vict.catalog.accordion-item\",\"vict.catalog.slider\",\"vict.catalog.meter\",\"vict.catalog.progress\"],\"evidence\":\"Reachable declared source presence only, including inactive branches/templates. An agent-declared manifest is not proof of the user intent, observed appearance, exercised interaction or completion.\",\"missingCount\":118,\"moreMissing\":true}}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 606827 ms since turn start
+      - text: Read query refused safely · failed
+      - generic: "validation-refused studio_screen_read 606832 ms since turn start {\"expectedRevision\":\"r1#1\",\"cursor\":{\"documentId\":\"screen-d5c26246-953b-4a57-8e43-b78e8a56e9eb\",\"revision\":\"r1#1\",\"digest\":\"e4f1b6aa8c2057fb34d9c0514eeb6341ddffe7e05e91c7d8dd4e668df3e72885\",\"epoch\":\"fe7cb57b-e3fe-4654-a6d2-c576740ed361\"},\"section\":\"preflight\",\"ok\":false,\"code\":\"STUDIO_AGENT_INVALID_EDIT\",\"message\":\"Use the exact operation fields. No edits applied.\",\"diagnostics\":[{\"path\":\"\",\"message\":\"Expected object, received string\"}],\"applied\":false}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 623756 ms since turn start
+      - text: Read query refused safely · failed
+      - generic: "validation-refused studio_screen_read 623760 ms since turn start {\"expectedRevision\":\"r1#1\",\"cursor\":{\"documentId\":\"screen-d5c26246-953b-4a57-8e43-b78e8a56e9eb\",\"revision\":\"r1#1\",\"digest\":\"e4f1b6aa8c2057fb34d9c0514eeb6341ddffe7e05e91c7d8dd4e668df3e72885\",\"epoch\":\"fe7cb57b-e3fe-4654-a6d2-c576740ed361\"},\"section\":\"preflight\",\"ok\":false,\"code\":\"STUDIO_AGENT_INVALID_EDIT\",\"message\":\"Use the exact operation fields. No edits applied.\",\"diagnostics\":[{\"path\":\"\",\"message\":\"Expected object, received string\"}],\"applied\":false}"
+    - paragraph: Edit screen
+    - list:
+      - text: Edit screen started · running
+      - generic: tool-start studio_screen_edit 640595 ms since turn start
+      - text: Tool failed (VICT_TOOL_FAILED); prior commits remain · failed
+      - generic: "tool-failed studio_screen_edit 640608 ms since turn start {\"code\":\"VICT_TOOL_FAILED\"}"
+    - paragraph: Edit screen
+    - list:
+      - text: Edit screen started · running
+      - generic: tool-start studio_screen_edit 654842 ms since turn start
+      - text: Tool failed (VICT_TOOL_FAILED); prior commits remain · failed
+      - generic: "tool-failed studio_screen_edit 654851 ms since turn start {\"code\":\"VICT_TOOL_FAILED\"}"
+    - paragraph: Edit screen
+    - list:
+      - text: Edit screen started · running
+      - generic: tool-start studio_screen_edit 673936 ms since turn start
+      - text: Tool failed (VICT_TOOL_FAILED); prior commits remain · failed
+      - generic: "tool-failed studio_screen_edit 673946 ms since turn start {\"code\":\"VICT_TOOL_FAILED\"}"
+    - paragraph: Edit screen
+    - list:
+      - text: Edit screen started · running
+      - generic: tool-start studio_screen_edit 686615 ms since turn start
+      - text: Proposed validated transaction; awaiting browser commit · pending
+      - generic: "proposed studio_screen_edit 686655 ms since turn start {\"proposalId\":\"deb8ea29-1ed4-4591-875d-f0d77effafc6\",\"reason\":\"Warm theme roles and workspace content slot with graph viewport\",\"revision\":\"r1#1\"}"
+      - text: Browser committed edit · pending
+      - generic: Warm theme roles and workspace content slot with graph viewport Committed to the screen. Undo is available.
+      - text: Commit receipt acknowledged · completed
+      - generic: Warm theme roles and workspace content slot with graph viewport
+      - text: Browser acknowledged committed transaction · completed
+      - generic: "committed studio_screen_edit 686692 ms since turn start {\"proposalId\":\"deb8ea29-1ed4-4591-875d-f0d77effafc6\",\"ok\":true,\"revision\":\"r1#2\",\"digest\":\"185a4d72ba39ad20cd97666fffca804aafc2f52df581cbdb0ee41cbe4d9db08e\",\"applied\":2,\"coverage\":{\"available\":119,\"authored\":2,\"catalogAuthored\":0,\"registeredAuthored\":2,\"reachableSourceNodes\":7,\"requested\":119,\"scope\":\"all-authorable-definitions\",\"missing\":[\"vict.catalog.button\",\"vict.catalog.checkbox\",\"vict.catalog.select\",\"vict.catalog.dialog\",\"vict.catalog.switch\",\"vict.catalog.toggle\",\"vict.catalog.select-multiple\",\"vict.catalog.select-item\",\"vict.catalog.combobox\",\"vict.catalog.combobox-multiple\",\"vict.catalog.combobox-item\",\"vict.catalog.toggle-group\",\"vict.catalog.toggle-group-multiple\",\"vict.catalog.toggle-group-item\",\"vict.catalog.accordion\",\"vict.catalog.accordion-multiple\",\"vict.catalog.accordion-item\",\"vict.catalog.slider\",\"vict.catalog.meter\",\"vict.catalog.progress\"],\"evidence\":\"Reachable declared source presence only, including inactive branches/templates. An agent-declared manifest is not proof of the user intent, observed appearance, exercised interaction or completion.\",\"missingCount\":117,\"moreMissing\":true}}"
+    - paragraph: Edit screen
+    - list:
+      - text: Edit screen started · running
+      - generic: tool-start studio_screen_edit 706258 ms since turn start
+      - text: Tool failed (VICT_TOOL_FAILED); prior commits remain · failed
+      - generic: "tool-failed studio_screen_edit 706265 ms since turn start {\"code\":\"VICT_TOOL_FAILED\"}"
+    - paragraph: Edit screen
+    - list:
+      - text: Edit screen started · running
+      - generic: tool-start studio_screen_edit 752988 ms since turn start
+      - text: Tool failed (VICT_TOOL_FAILED); prior commits remain · failed
+      - generic: "tool-failed studio_screen_edit 752994 ms since turn start {\"code\":\"VICT_TOOL_FAILED\"}"
+    - paragraph: Edit screen
+    - list:
+      - text: Edit screen started · running
+      - generic: tool-start studio_screen_edit 767483 ms since turn start
+      - text: Tool failed (VICT_TOOL_FAILED); prior commits remain · failed
+      - generic: "tool-failed studio_screen_edit 767488 ms since turn start {\"code\":\"VICT_TOOL_FAILED\"}"
+    - paragraph: Edit screen
+    - list:
+      - text: Edit screen started · running
+      - generic: tool-start studio_screen_edit 778958 ms since turn start
+      - text: Tool failed (VICT_TOOL_FAILED); prior commits remain · failed
+      - generic: "tool-failed studio_screen_edit 778964 ms since turn start {\"code\":\"VICT_TOOL_FAILED\"}"
+    - paragraph: Edit screen
+    - list:
+      - text: Edit screen started · running
+      - generic: tool-start studio_screen_edit 809219 ms since turn start
+      - text: Proposed validated transaction; awaiting browser commit · pending
+      - generic: "proposed studio_screen_edit 809252 ms since turn start {\"proposalId\":\"215c8307-d63f-4619-8294-14b484320c23\",\"reason\":\"Declare body slot scope with frame props and controlled url/notes state\",\"revision\":\"r1#2\"}"
+      - text: Browser committed edit · pending
+      - generic: Declare body slot scope with frame props and controlled url/notes state Committed to the screen. Undo is available.
+      - text: Commit receipt acknowledged · completed
+      - generic: Declare body slot scope with frame props and controlled url/notes state
+      - text: Browser acknowledged committed transaction · completed
+      - generic: "committed studio_screen_edit 809276 ms since turn start {\"proposalId\":\"215c8307-d63f-4619-8294-14b484320c23\",\"ok\":true,\"revision\":\"r1#3\",\"digest\":\"90d0ece56600857baf89fe0d0367f222671fa45de0a22b164293719b0f7f1cb4\",\"applied\":3,\"coverage\":{\"available\":119,\"authored\":2,\"catalogAuthored\":0,\"registeredAuthored\":2,\"reachableSourceNodes\":7,\"requested\":119,\"scope\":\"all-authorable-definitions\",\"missing\":[\"vict.catalog.button\",\"vict.catalog.checkbox\",\"vict.catalog.select\",\"vict.catalog.dialog\",\"vict.catalog.switch\",\"vict.catalog.toggle\",\"vict.catalog.select-multiple\",\"vict.catalog.select-item\",\"vict.catalog.combobox\",\"vict.catalog.combobox-multiple\",\"vict.catalog.combobox-item\",\"vict.catalog.toggle-group\",\"vict.catalog.toggle-group-multiple\",\"vict.catalog.toggle-group-item\",\"vict.catalog.accordion\",\"vict.catalog.accordion-multiple\",\"vict.catalog.accordion-item\",\"vict.catalog.slider\",\"vict.catalog.meter\",\"vict.catalog.progress\"],\"evidence\":\"Reachable declared source presence only, including inactive branches/templates. An agent-declared manifest is not proof of the user intent, observed appearance, exercised interaction or completion.\",\"missingCount\":117,\"moreMissing\":true}}"
+    - paragraph: Edit screen
+    - list:
+      - text: Edit screen started · running
+      - generic: tool-start studio_screen_edit 825573 ms since turn start
+      - text: Edit refused before browser proposal · failed
+      - generic: "validation-refused studio_screen_edit 825601 ms since turn start {\"ok\":false,\"code\":\"STUDIO_AGENT_VALIDATION\",\"message\":\"Operation 3 rejected: UI_EXPR_UNKNOWN_REFERENCE: Reference 'label' does not resolve in this scope.\",\"diagnostics\":[{\"documentId\":\"screen-d5c26246-953b-4a57-8e43-b78e8a56e9eb\",\"nodeId\":\"note-title-text\",\"sourcePath\":\"nodes.note-title-text\",\"operation\":3,\"commandIndex\":0,\"envelopeCode\":\"UI_EDIT_VALIDATION_FAILED\",\"code\":\"UI_EXPR_UNKNOWN_REFERENCE\",\"path\":\"label\",\"message\":\"Reference 'label' does not resolve in this scope.\"}]}"
+    - paragraph: Edit screen
+    - list:
+      - text: Edit screen started · running
+      - generic: tool-start studio_screen_edit 839404 ms since turn start
+      - text: Edit refused before browser proposal · failed
+      - generic: "validation-refused studio_screen_edit 839428 ms since turn start {\"ok\":false,\"code\":\"STUDIO_AGENT_VALIDATION\",\"message\":\"Operation 3 rejected: UI_EXPR_UNKNOWN_REFERENCE: Reference 'props.label' does not resolve in this scope.\",\"diagnostics\":[{\"documentId\":\"screen-d5c26246-953b-4a57-8e43-b78e8a56e9eb\",\"nodeId\":\"note-title-text\",\"sourcePath\":\"nodes.note-title-text\",\"operation\":3,\"commandIndex\":0,\"envelopeCode\":\"UI_EDIT_VALIDATION_FAILED\",\"code\":\"UI_EXPR_UNKNOWN_REFERENCE\",\"path\":\"props.label\",\"message\":\"Reference 'props.label' does not resolve in this scope.\"}]}"
+    - paragraph: Edit screen
+    - list:
+      - text: Edit screen started · running
+      - generic: tool-start studio_screen_edit 862575 ms since turn start
+      - text: Proposed validated transaction; awaiting browser commit · pending
+      - generic: "proposed studio_screen_edit 862627 ms since turn start {\"proposalId\":\"f1e2cb5b-14c6-4abc-bab8-c8b5c2e22526\",\"reason\":\"Source note card structure: header, bound-label placeholder, labeled URL input\",\"revision\":\"r1#3\"}"
+      - text: Browser committed edit · pending
+      - generic: "Source note card structure: header, bound-label placeholder, labeled URL input Committed to the screen. Undo is available."
+      - text: Commit receipt acknowledged · completed
+      - generic: "Source note card structure: header, bound-label placeholder, labeled URL input"
+      - text: Browser acknowledged committed transaction · completed
+      - generic: "committed studio_screen_edit 862657 ms since turn start {\"proposalId\":\"f1e2cb5b-14c6-4abc-bab8-c8b5c2e22526\",\"ok\":true,\"revision\":\"r1#4\",\"digest\":\"c5290f5bcce5d9a2488c0ccaf449a2c362b6bbe9585f7a3fb8ea184c9c672491\",\"applied\":4,\"coverage\":{\"available\":119,\"authored\":2,\"catalogAuthored\":0,\"registeredAuthored\":2,\"reachableSourceNodes\":14,\"requested\":119,\"scope\":\"all-authorable-definitions\",\"missing\":[\"vict.catalog.button\",\"vict.catalog.checkbox\",\"vict.catalog.select\",\"vict.catalog.dialog\",\"vict.catalog.switch\",\"vict.catalog.toggle\",\"vict.catalog.select-multiple\",\"vict.catalog.select-item\",\"vict.catalog.combobox\",\"vict.catalog.combobox-multiple\",\"vict.catalog.combobox-item\",\"vict.catalog.toggle-group\",\"vict.catalog.toggle-group-multiple\",\"vict.catalog.toggle-group-item\",\"vict.catalog.accordion\",\"vict.catalog.accordion-multiple\",\"vict.catalog.accordion-item\",\"vict.catalog.slider\",\"vict.catalog.meter\",\"vict.catalog.progress\"],\"evidence\":\"Reachable declared source presence only, including inactive branches/templates. An agent-declared manifest is not proof of the user intent, observed appearance, exercised interaction or completion.\",\"missingCount\":117,\"moreMissing\":true}}"
+    - paragraph: Edit screen
+    - list:
+      - text: Edit screen started · running
+      - generic: tool-start studio_screen_edit 868496 ms since turn start
+      - text: Edit refused before browser proposal · failed
+      - generic: "validation-refused studio_screen_edit 868504 ms since turn start {\"ok\":false,\"code\":\"STUDIO_AGENT_VALIDATION\",\"message\":\"Operation 0 rejected: UI_EXPR_UNKNOWN_REFERENCE: Reference 'label' does not resolve in this scope.\",\"diagnostics\":[{\"documentId\":\"screen-d5c26246-953b-4a57-8e43-b78e8a56e9eb\",\"nodeId\":\"note-title-text\",\"sourcePath\":\"nodes.note-title-text\",\"operation\":0,\"commandIndex\":0,\"envelopeCode\":\"UI_EDIT_VALIDATION_FAILED\",\"code\":\"UI_EXPR_UNKNOWN_REFERENCE\",\"path\":\"label\",\"message\":\"Reference 'label' does not resolve in this scope.\"}]}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 878114 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 878126 ms since turn start {\"expectedRevision\":\"r1#4\",\"cursor\":{\"documentId\":\"screen-d5c26246-953b-4a57-8e43-b78e8a56e9eb\",\"revision\":\"r1#4\",\"digest\":\"c5290f5bcce5d9a2488c0ccaf449a2c362b6bbe9585f7a3fb8ea184c9c672491\",\"epoch\":\"fe7cb57b-e3fe-4654-a6d2-c576740ed361\"},\"section\":\"source\",\"nodeId\":\"desk-workspace\",\"sourceJson\":\"{\\\"kind\\\":\\\"component\\\",\\\"id\\\":\\\"desk-workspace\\\",\\\"definitionId\\\":\\\"vict.flow.workspace\\\",\\\"revision\\\":\\\"2\\\",\\\"slots\\\":{\\\"content\\\":{\\\"name\\\":\\\"content\\\",\\\"children\\\":[\\\"desk-viewport\\\"],\\\"scope\\\":{\\\"schema\\\":\\\"vict.ui-slot-scope@1\\\",\\\"props\\\":[]}},\\\"body\\\":{\\\"name\\\":\\\"body\\\",\\\"children\\\":[\\\"note-body\\\"],\\\"scope\\\":{\\\"schema\\\":\\\"vict.ui-slot-scope@1\\\",\\\"props\\\":[{\\\"name\\\":\\\"nodeId\\\",\\\"type\\\":\\\"string\\\"},{\\\"name\\\":\\\"nodeType\\\",\\\"type\\\":\\\"string\\\"},{\\\"name\\\":\\\"label\\\",\\\"type\\\":\\\"string\\\"}],\\\"state\\\":{\\\"notes\\\":{\\\"key\\\":\\\"notes\\\",\\\"type\\\":\\\"string\\\",\\\"initial\\\":\\\"\\\",\\\"controlled\\\":true},\\\"url\\\":{\\\"key\\\":\\\"url\\\",\\\"type\\\":\\\"string\\\",\\\"initial\\\":\\\"\\\",\\\"controlled\\\":true}}}}},\\\"props\\\":{\\\"label\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"Evidence desk graph\\\"},\\\"graph\\\":{\\\"type\\\":\\\"ref\\\",\\\"path\\\":\\\"state.evidence-graph\\\"}},\\\"localStyle\\\":[{\\\"property\\\":\\\"flex\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"1\\\"}},{\\\"property\\\":\\\"min-height\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"0\\\"}}],\\\"outputs\\\":{\\\"graphChange\\\":{\\\"setState\\\":{\\\"key\\\":\\\"evidence-graph\\\"}}}}\",\"totalCharacters\":883,\"offset\":0,\"nextOffset\":null}"
+    - paragraph: Edit screen
+    - list:
+      - text: Edit screen started · running
+      - generic: tool-start studio_screen_edit 889454 ms since turn start
+      - text: Edit refused before browser proposal · failed
+      - generic: "validation-refused studio_screen_edit 889470 ms since turn start {\"ok\":false,\"code\":\"STUDIO_AGENT_VALIDATION\",\"message\":\"Operation 0 rejected: UI_EXPR_UNKNOWN_REFERENCE: Reference 'props.label' does not resolve in this scope.\",\"diagnostics\":[{\"documentId\":\"screen-d5c26246-953b-4a57-8e43-b78e8a56e9eb\",\"nodeId\":\"note-title-text\",\"sourcePath\":\"nodes.note-title-text\",\"operation\":0,\"commandIndex\":0,\"envelopeCode\":\"UI_EDIT_VALIDATION_FAILED\",\"code\":\"UI_EXPR_UNKNOWN_REFERENCE\",\"path\":\"props.label\",\"message\":\"Reference 'props.label' does not resolve in this scope.\"}]}"
+    - paragraph: Edit screen
+    - list:
+      - text: Edit screen started · running
+      - generic: tool-start studio_screen_edit 917907 ms since turn start
+      - text: Edit refused before browser proposal · failed
+      - generic: "validation-refused studio_screen_edit 917919 ms since turn start {\"ok\":false,\"code\":\"STUDIO_AGENT_VALIDATION\",\"message\":\"Operation 0 rejected: UI_EXPR_UNKNOWN_REFERENCE: Reference 'scope.label' does not resolve in this scope.\",\"diagnostics\":[{\"documentId\":\"screen-d5c26246-953b-4a57-8e43-b78e8a56e9eb\",\"nodeId\":\"note-title-text\",\"sourcePath\":\"nodes.note-title-text\",\"operation\":0,\"commandIndex\":0,\"envelopeCode\":\"UI_EDIT_VALIDATION_FAILED\",\"code\":\"UI_EXPR_UNKNOWN_REFERENCE\",\"path\":\"scope.label\",\"message\":\"Reference 'scope.label' does not resolve in this scope.\"}]}"
+    - heading "Sanitized exchanges" [level=4]
+    - paragraph: Compact previews remain in the conversation. Open a retained original page here; this never invokes a tool again.
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result · bounded original is partial
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Edit screen · input
+    - button "Open first page"
+    - paragraph: Edit screen · result
+    - button "Open first page"
+    - paragraph: Edit screen · input
+    - button "Open first page"
+    - paragraph: Edit screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Edit screen · input
+    - button "Open first page"
+    - paragraph: Edit screen · result
+    - button "Open first page"
+    - paragraph: Edit screen · input
+    - button "Open first page"
+    - paragraph: Edit screen · result
+    - button "Open first page"
+    - paragraph: Edit screen · input
+    - button "Open first page"
+    - paragraph: Edit screen · result
+    - button "Open first page"
+    - paragraph: Edit screen · input
+    - button "Open first page"
+    - paragraph: Edit screen · result
+    - button "Open first page"
+    - paragraph: Edit screen · input
+    - button "Open first page"
+    - paragraph: Edit screen · result
+    - button "Open first page"
+    - paragraph: Edit screen · input
+    - button "Open first page"
+    - paragraph: Edit screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Edit screen · input
+    - button "Open first page"
+    - paragraph: Edit screen · result
+    - button "Open first page"
+    - paragraph: Edit screen · input
+    - button "Open first page"
+    - paragraph: Edit screen · result
+    - button "Open first page"
+- separator "Chat width"
+- main:
+  - button "Toggle Chat drawer" [expanded]:
+  - group "Workspace mode":
+    - button "Design" [pressed]
+    - button "Interact"
+    - button "Structure"
+  - button "Toggle Document and Selection drawer":
+  - iframe:
+    - generic "Screen canvas":
+      - main "Evidence desk — rich-node retry":
+        - heading "Evidence desk" [level=1]:
+          - generic: Evidence desk
+        - paragraph:
+          - generic: "A compact evidence desk: one editable source-note node keeps a source URL and provenance notes together, ready to hand evidence to the next step."
+        - region "Evidence desk graph":
+          - application "Graph canvas":
+            - application:
+              - link "Svelte Flow attribution":
+                - /url: https://svelteflow.dev?utm_source=attribution
+                - text: Svelte Flow
+- contentinfo:
+  - status: "Source note card structure: header, bound-label placeholder, labeled URL input · agent edit · unsaved"
+- generic: Designer — VICT Studio

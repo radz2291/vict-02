@@ -1,0 +1,703 @@
+{
+  "application": {
+    "schema": "vict.application@3",
+    "id": "studio.screen-d5c26246-953b-4a57-8e43-b78e8a56e9eb",
+    "revision": "1",
+    "name": "Evidence desk — rich-node retry",
+    "compatibility": {
+      "applicationSchema": "vict.application@3"
+    },
+    "routes": [
+      {
+        "id": "screen",
+        "path": "/",
+        "screenId": "screen"
+      }
+    ],
+    "screens": [
+      {
+        "id": "screen",
+        "title": "Evidence desk — rich-node retry",
+        "uiDocument": {
+          "documentId": "screen-d5c26246-953b-4a57-8e43-b78e8a56e9eb",
+          "revision": "r1.r1"
+        }
+      }
+    ],
+    "actions": [
+      {
+        "kind": "mutation",
+        "id": "demo.submit",
+        "revision": "1",
+        "resourceId": "studio.demo",
+        "resourceRevision": "1",
+        "op": "submit",
+        "inputContractId": "studio.demo-input",
+        "inputContractRevision": "1",
+        "outputContractId": "studio.demo-output",
+        "outputContractRevision": "1"
+      }
+    ],
+    "resources": [
+      {
+        "resourceId": "studio.demo",
+        "revision": "1"
+      }
+    ],
+    "views": [],
+    "forms": [],
+    "components": []
+  },
+  "uiDocuments": [
+    {
+      "document": {
+        "schema": "vict.ui-document@1",
+        "id": "screen-d5c26246-953b-4a57-8e43-b78e8a56e9eb",
+        "revision": "r1.r1",
+        "root": "screen",
+        "nodes": {
+          "screen": {
+            "kind": "element",
+            "id": "screen",
+            "tag": "main",
+            "attributes": {
+              "aria-label": "Evidence desk — rich-node retry"
+            },
+            "children": [
+              "desk-title",
+              "desk-intro",
+              "desk-workspace"
+            ],
+            "localStyle": [
+              {
+                "property": "display",
+                "value": {
+                  "type": "text",
+                  "value": "flex"
+                }
+              },
+              {
+                "property": "flex-direction",
+                "value": {
+                  "type": "text",
+                  "value": "column"
+                }
+              },
+              {
+                "property": "gap",
+                "value": {
+                  "type": "text",
+                  "value": "20px"
+                }
+              },
+              {
+                "property": "padding",
+                "value": {
+                  "type": "text",
+                  "value": "40px"
+                }
+              },
+              {
+                "property": "min-height",
+                "value": {
+                  "type": "text",
+                  "value": "560px"
+                }
+              },
+              {
+                "property": "background-color",
+                "value": {
+                  "type": "text",
+                  "value": "#faf6ef"
+                }
+              },
+              {
+                "property": "color",
+                "value": {
+                  "type": "text",
+                  "value": "#3d3126"
+                }
+              },
+              {
+                "property": "font-family",
+                "value": {
+                  "type": "text",
+                  "value": "system-ui, sans-serif"
+                }
+              }
+            ]
+          },
+          "desk-title": {
+            "kind": "element",
+            "id": "desk-title",
+            "tag": "h1",
+            "children": [
+              "desk-title-text"
+            ],
+            "localStyle": [
+              {
+                "property": "color",
+                "value": {
+                  "type": "text",
+                  "value": "#4a3520"
+                }
+              },
+              {
+                "property": "font-size",
+                "value": {
+                  "type": "text",
+                  "value": "1.55rem"
+                }
+              },
+              {
+                "property": "letter-spacing",
+                "value": {
+                  "type": "text",
+                  "value": "-0.01em"
+                }
+              },
+              {
+                "property": "margin",
+                "value": {
+                  "type": "text",
+                  "value": "0"
+                }
+              }
+            ]
+          },
+          "desk-title-text": {
+            "kind": "text",
+            "id": "desk-title-text",
+            "content": {
+              "type": "literal",
+              "value": "Evidence desk"
+            }
+          },
+          "desk-intro": {
+            "kind": "element",
+            "id": "desk-intro",
+            "tag": "p",
+            "children": [
+              "desk-intro-text"
+            ],
+            "localStyle": [
+              {
+                "property": "color",
+                "value": {
+                  "type": "text",
+                  "value": "#7a6650"
+                }
+              },
+              {
+                "property": "font-size",
+                "value": {
+                  "type": "text",
+                  "value": "0.95rem"
+                }
+              },
+              {
+                "property": "line-height",
+                "value": {
+                  "type": "text",
+                  "value": "1.5"
+                }
+              },
+              {
+                "property": "margin",
+                "value": {
+                  "type": "text",
+                  "value": "0"
+                }
+              },
+              {
+                "property": "max-width",
+                "value": {
+                  "type": "text",
+                  "value": "620px"
+                }
+              }
+            ]
+          },
+          "desk-intro-text": {
+            "kind": "text",
+            "id": "desk-intro-text",
+            "content": {
+              "type": "literal",
+              "value": "A compact evidence desk: one editable source-note node keeps a source URL and provenance notes together, ready to hand evidence to the next step."
+            }
+          },
+          "desk-workspace": {
+            "kind": "component",
+            "id": "desk-workspace",
+            "definitionId": "vict.flow.workspace",
+            "revision": "2",
+            "slots": {
+              "content": {
+                "name": "content",
+                "children": [
+                  "desk-viewport"
+                ],
+                "scope": {
+                  "schema": "vict.ui-slot-scope@1",
+                  "props": []
+                }
+              },
+              "body": {
+                "name": "body",
+                "children": [
+                  "note-body"
+                ],
+                "scope": {
+                  "schema": "vict.ui-slot-scope@1",
+                  "props": [
+                    {
+                      "name": "nodeId",
+                      "type": "string"
+                    },
+                    {
+                      "name": "nodeType",
+                      "type": "string"
+                    },
+                    {
+                      "name": "label",
+                      "type": "string"
+                    }
+                  ],
+                  "state": {
+                    "notes": {
+                      "key": "notes",
+                      "type": "string",
+                      "initial": "",
+                      "controlled": true
+                    },
+                    "url": {
+                      "key": "url",
+                      "type": "string",
+                      "initial": "",
+                      "controlled": true
+                    }
+                  }
+                }
+              }
+            },
+            "props": {
+              "label": {
+                "type": "literal",
+                "value": "Evidence desk graph"
+              },
+              "graph": {
+                "type": "ref",
+                "path": "state.evidence-graph"
+              }
+            },
+            "localStyle": [
+              {
+                "property": "flex",
+                "value": {
+                  "type": "text",
+                  "value": "1"
+                }
+              },
+              {
+                "property": "min-height",
+                "value": {
+                  "type": "text",
+                  "value": "0"
+                }
+              }
+            ],
+            "outputs": {
+              "graphChange": {
+                "setState": {
+                  "key": "evidence-graph"
+                }
+              }
+            }
+          },
+          "desk-viewport": {
+            "kind": "component",
+            "id": "desk-viewport",
+            "definitionId": "vict.flow.viewport",
+            "revision": "2",
+            "slots": {},
+            "props": {
+              "height": {
+                "type": "literal",
+                "value": 420
+              }
+            }
+          },
+          "note-body": {
+            "kind": "element",
+            "id": "note-body",
+            "tag": "div",
+            "children": [
+              "note-header",
+              "url-field"
+            ],
+            "classes": [
+              "note-card"
+            ],
+            "localStyle": [
+              {
+                "property": "background",
+                "value": {
+                  "type": "text",
+                  "value": "#fffdf8"
+                }
+              },
+              {
+                "property": "border",
+                "value": {
+                  "type": "text",
+                  "value": "1px solid #e4d5bf"
+                }
+              },
+              {
+                "property": "border-radius",
+                "value": {
+                  "type": "text",
+                  "value": "10px"
+                }
+              },
+              {
+                "property": "box-shadow",
+                "value": {
+                  "type": "text",
+                  "value": "0 1px 3px rgba(90,64,32,0.14)"
+                }
+              },
+              {
+                "property": "color",
+                "value": {
+                  "type": "text",
+                  "value": "#3d3126"
+                }
+              },
+              {
+                "property": "display",
+                "value": {
+                  "type": "text",
+                  "value": "flex"
+                }
+              },
+              {
+                "property": "flex-direction",
+                "value": {
+                  "type": "text",
+                  "value": "column"
+                }
+              },
+              {
+                "property": "font-size",
+                "value": {
+                  "type": "text",
+                  "value": "13px"
+                }
+              },
+              {
+                "property": "gap",
+                "value": {
+                  "type": "text",
+                  "value": "10px"
+                }
+              },
+              {
+                "property": "padding",
+                "value": {
+                  "type": "text",
+                  "value": "12px"
+                }
+              },
+              {
+                "property": "width",
+                "value": {
+                  "type": "text",
+                  "value": "240px"
+                }
+              }
+            ]
+          },
+          "note-header": {
+            "kind": "element",
+            "id": "note-header",
+            "tag": "div",
+            "children": [
+              "note-title-text"
+            ],
+            "classes": [
+              "vict-graph-drag-handle",
+              "note-header"
+            ],
+            "localStyle": [
+              {
+                "property": "border-bottom",
+                "value": {
+                  "type": "text",
+                  "value": "1px solid #efe3d0"
+                }
+              },
+              {
+                "property": "color",
+                "value": {
+                  "type": "text",
+                  "value": "#4a3520"
+                }
+              },
+              {
+                "property": "cursor",
+                "value": {
+                  "type": "text",
+                  "value": "grab"
+                }
+              },
+              {
+                "property": "font-size",
+                "value": {
+                  "type": "text",
+                  "value": "13px"
+                }
+              },
+              {
+                "property": "font-weight",
+                "value": {
+                  "type": "text",
+                  "value": "700"
+                }
+              },
+              {
+                "property": "padding-bottom",
+                "value": {
+                  "type": "text",
+                  "value": "6px"
+                }
+              }
+            ]
+          },
+          "note-title-text": {
+            "kind": "text",
+            "id": "note-title-text",
+            "content": {
+              "type": "literal",
+              "value": "Source note"
+            }
+          },
+          "url-field": {
+            "kind": "element",
+            "id": "url-field",
+            "tag": "div",
+            "children": [
+              "url-label",
+              "url-control"
+            ],
+            "classes": [
+              "nodrag",
+              "nopan",
+              "nowheel",
+              "vict-rhea",
+              "vict-rhea-field"
+            ],
+            "localStyle": [
+              {
+                "property": "display",
+                "value": {
+                  "type": "text",
+                  "value": "flex"
+                }
+              },
+              {
+                "property": "flex-direction",
+                "value": {
+                  "type": "text",
+                  "value": "column"
+                }
+              },
+              {
+                "property": "gap",
+                "value": {
+                  "type": "text",
+                  "value": "4px"
+                }
+              }
+            ]
+          },
+          "url-label": {
+            "kind": "element",
+            "id": "url-label",
+            "tag": "label",
+            "children": [
+              "url-label-text"
+            ],
+            "attributes": {
+              "for": "url-control"
+            },
+            "localStyle": [
+              {
+                "property": "color",
+                "value": {
+                  "type": "text",
+                  "value": "#7a6650"
+                }
+              },
+              {
+                "property": "font-size",
+                "value": {
+                  "type": "text",
+                  "value": "12px"
+                }
+              },
+              {
+                "property": "font-weight",
+                "value": {
+                  "type": "text",
+                  "value": "600"
+                }
+              }
+            ]
+          },
+          "url-label-text": {
+            "kind": "text",
+            "id": "url-label-text",
+            "content": {
+              "type": "literal",
+              "value": "Source URL"
+            }
+          },
+          "url-control": {
+            "kind": "element",
+            "id": "url-control",
+            "tag": "input",
+            "children": [],
+            "attributes": {
+              "id": "url-control",
+              "type": "text"
+            },
+            "localStyle": [
+              {
+                "property": "background",
+                "value": {
+                  "type": "text",
+                  "value": "#ffffff"
+                }
+              },
+              {
+                "property": "border",
+                "value": {
+                  "type": "text",
+                  "value": "1px solid #e2d3bd"
+                }
+              },
+              {
+                "property": "border-radius",
+                "value": {
+                  "type": "text",
+                  "value": "6px"
+                }
+              },
+              {
+                "property": "box-sizing",
+                "value": {
+                  "type": "text",
+                  "value": "border-box"
+                }
+              },
+              {
+                "property": "color",
+                "value": {
+                  "type": "text",
+                  "value": "#3d3126"
+                }
+              },
+              {
+                "property": "font-size",
+                "value": {
+                  "type": "text",
+                  "value": "13px"
+                }
+              },
+              {
+                "property": "padding",
+                "value": {
+                  "type": "text",
+                  "value": "6px 8px"
+                }
+              },
+              {
+                "property": "width",
+                "value": {
+                  "type": "text",
+                  "value": "100%"
+                }
+              }
+            ]
+          }
+        },
+        "componentDefinitions": {},
+        "styleSources": {},
+        "assets": {},
+        "tokens": {},
+        "conditions": {
+          "compact": {
+            "id": "compact",
+            "kind": "container",
+            "name": "studio-screen",
+            "query": "(max-width: 600px)"
+          }
+        },
+        "localState": {
+          "message": {
+            "key": "message",
+            "type": "string",
+            "initial": "Hello from my screen"
+          },
+          "accepted": {
+            "key": "accepted",
+            "type": "boolean",
+            "initial": false
+          },
+          "dialogOpen": {
+            "key": "dialogOpen",
+            "type": "boolean",
+            "initial": false
+          },
+          "busy": {
+            "key": "busy",
+            "type": "boolean",
+            "initial": false
+          },
+          "actionError": {
+            "key": "actionError",
+            "type": "string",
+            "initial": ""
+          },
+          "actionResult": {
+            "key": "actionResult",
+            "type": "string",
+            "initial": ""
+          },
+          "evidence-graph": {
+            "key": "evidence-graph",
+            "type": "string",
+            "initial": "{\"schema\":\"vict.flow-graph@2\",\"revision\":0,\"nodeTypes\":[],\"nodes\":[],\"edges\":[]}"
+          }
+        },
+        "theme": {
+          "schema": "vict.ui-theme@1",
+          "roles": {
+            "surface": "#faf6ef",
+            "text": "#3d3126",
+            "textMuted": "#7a6650",
+            "border": "#e4d5bf",
+            "accent": "#b45309",
+            "accentText": "#fffaf2",
+            "focusRing": "#d97706"
+          }
+        }
+      }
+    }
+  ],
+  "mediaArchive": {
+    "schema": "vict.media-archive@1",
+    "assets": []
+  }
+}

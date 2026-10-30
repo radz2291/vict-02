@@ -1,0 +1,29 @@
+npm warn "apps/studio/vite.config.ts" is being parsed as a normal command line argument.
+npm warn Unknown cli config "--config". This will stop working in the next major version of npm.
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030
+
+No test files found, exiting with code 1
+
+filter: apps/studio/vite.config.ts, apps/studio/tests/agent-read-contract-repair.test.ts, apps/studio/tests/designer-cycle14-efficiency.test.ts, apps/studio/tests/authoring-discovery.test.ts
+
+|unit| 
+
+include: packages/*/test/**/*.test.ts, packs/*/test/**/*.test.ts, scripts/test/**/*.test.mjs
+exclude:  packages/ui-svelte/**, packages/mastra/**, packages/ui-editor/**/*.svelte.test.ts, packages/ui-ai-svelte/**/*.svelte.test.ts, packages/ui-flow-svelte/**/*.svelte.test.ts
+
+|mastra| 
+
+include: packages/mastra/test/**/*.test.ts
+exclude:  **/node_modules/**, **/dist/**, **/cypress/**, **/.{idea,git,cache,output,temp}/**, **/{karma,rollup,webpack,vite,vitest,jest,ava,babel,nyc,cypress,tsup,build,eslint,prettier}.config.*
+
+|renderer| 
+
+include: packages/ui-svelte/test/**/*.test.ts, packages/ui-editor/test/**/*.svelte.test.ts
+exclude:  **/node_modules/**, **/dist/**, **/cypress/**, **/.{idea,git,cache,output,temp}/**, **/{karma,rollup,webpack,vite,vitest,jest,ava,babel,nyc,cypress,tsup,build,eslint,prettier}.config.*
+
+|integration| 
+
+include: examples/**/*.test.ts
+exclude:  examples/application-proof/**, examples/reference-app/**, examples/ui-showcase/**, examples/ui-authoring-proof/**, examples/ui-design-proof/**, examples/u4-consumer/**
+

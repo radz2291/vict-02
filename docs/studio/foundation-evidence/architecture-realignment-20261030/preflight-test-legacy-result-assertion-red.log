@@ -1,0 +1,41 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/apps/studio
+
+7:38:27 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+7:38:27 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+7:38:27 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+7:38:27 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+7:38:27 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+ ❯ tests/agent-read-contract-repair.test.ts (11 tests | 1 failed) 238ms
+     × accepts native preflight objects and refuses reproduced JSON strings without parsing or mutation 87ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/agent-read-contract-repair.test.ts > read presentation and authoritative section contract > accepts native preflight objects and refuses reproduced JSON strings without parsing or mutation
+AssertionError: expected { expectedRevision: 'r1', …(5) } to match object { ok: false, applied: false }
+(9 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "applied": false,
+    "ok": false,
+  }
+
+ ❯ tests/agent-read-contract-repair.test.ts:22:231
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 2 passed (3)
+      Tests  1 failed | 32 passed (33)
+   Start at  19:38:11
+   Duration  38.89s (transform 64.26s, setup 0ms, import 103.21s, tests 2.83s, environment 2ms)
+
