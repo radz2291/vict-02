@@ -2,14 +2,9 @@
 
 **Current delivery:** [exact serving candidate, independent verdict, all 31
 current dispositions and remaining live gates](ARCHITECTURE-REALIGNMENT-CURRENT-DELIVERY.md).
-Current serving source is `b6cf440be33ca3c011889e8ecc91fc28f16f1175` with qualified
-independent offline PASS at `0f033731e529dac48d6b6f96edcc2eda8129228c`.
-Earlier source repairs passed at `a61396cb…`; their evidence remains preserved.
-Actual stage 1 source read/edit, Undo/Redo, Save/export/reload is demonstrated.
-The first rich-node trial failed (18 calls, 10 refusals, zero edits); the fresh
-retry intermediate checkpoint has four successful discovery reads, zero refusals
-and no edit yet. No rich-node success, owner acceptance or full delivery PASS follows.
-The owner confirmed physical-device availability; keyboard/safe-area/touch proof remains pending.
+The linked current-delivery record is the single operational source for serving/source/review
+identities, actual-trial outcomes and current remaining proof. Dated checkpoints below preserve
+what was observed at each point; they do not freeze the serving candidate or imply acceptance.
 
 Status: **RESUMED / IN PROGRESS; acceptance HELD**. Owner instruction received
 30 October 2026 authorizes gates A–E, local implementation/commits, independent
@@ -17,6 +12,35 @@ verification and safe local activation. It does not authorize a push, main merge
 publication, production deployment, Milestone 2 or Stage 9 closure. This record
 supersedes pause/current-status language only for the resumed scope. Historical
 decisions, failed trials and evidence remain intact.
+
+## Dated continuation checkpoints — 30 October 2026
+
+The earlier live-discovery checkpoint served `b6cf440be33ca3c011889e8ecc91fc28f16f1175`,
+with qualified independent offline PASS at `0f033731e529dac48d6b6f96edcc2eda8129228c`.
+Earlier source repairs passed at `a61396cb…`; their evidence remains preserved.
+Actual stage 1 demonstrated meaningful source read/edit, shared Undo/Redo and Save/export/reload.
+The first rich-node trial failed with 18 calls, 10 refusals and zero edits. An intermediate
+b6 retry snapshot recorded four successful discovery reads, zero refusals and no edit yet;
+valid batch arrays, revision strings and paging maps did not support a universal
+transport-stringification explanation. That snapshot was not a completed trial verdict.
+The b6 retry was subsequently stopped at 39 calls, 15 refusals, four edits and 923.5 seconds,
+then saved/exported at r1.r1. It did not achieve a rich-node pass. Both failures remain evidence.
+
+At the later preflight-repair checkpoint, source/serving candidate was
+`bfb34e2882781bc2dddd05f2b978b418cda12c49`, with qualified independent offline PASS at
+`d6d697e2ac050011168156299205a31e0637ebb3` (imported as `1f1e9d35`). Safe local activation
+was recorded in `PREFLIGHT-EXACT-ACTIVATION.json`: core files plus 60 historical and seven
+added public proof files were retained; normal sign-in and saved-app restoration succeeded.
+A corrected actual continuation had eight successful reads and no edit at that intermediate
+observation. This does not award actual rich-node success or supersede later trial outcomes
+in the current-delivery record.
+
+The public-artifact consumer subsequently received bounded native-browser proof of two-node
+Select value isolation and reload runtime reset. The unchanged actual stage-1 export also
+rendered through the generic renderer. These proofs do not establish a complete second actual
+application or the full foundation gate. The owner confirmed physical Android availability and
+requested wireless access; no LAN server had been started and no physical-device proof existed
+at this checkpoint. Keyboard/safe-area/touch evidence and all owner acceptances remain pending.
 
 ## Exact recovery baseline and continuing authority
 

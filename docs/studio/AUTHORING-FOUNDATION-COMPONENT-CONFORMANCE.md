@@ -1,21 +1,13 @@
 # Reusable component architecture conformance
 
-> **30 October 2026 — RESUMED / IN PROGRESS; complete foundation gate HELD.**
-> [Current delivery, exact identities and all 31 dispositions](ARCHITECTURE-REALIGNMENT-CURRENT-DELIVERY.md)
-> is the operational entry; [architecture and authority](ARCHITECTURE-REALIGNMENT-20261030.md)
-> govern the resumed gates A–E. Source `b6cf440be33ca3c011889e8ecc91fc28f16f1175`
-> is locally serving with qualified independent offline PASS at `0f033731e529dac48d6b6f96edcc2eda8129228c`.
-> Actual stage 1 demonstrated a meaningful source read/precise edit, shared Undo/Redo,
-> Save/export/reload. The first rich-node trial failed: 18 calls, 10 refusals, zero edits;
-> its evidence remains retained. The fresh retry's intermediate checkpoint has four
-> successful discovery reads, zero refusals and no edit yet; no rich-node pass is awarded.
-> Valid batch arrays, revision strings and paging maps were received in this retry;
-> a universal transport-stringification explanation is not supported.
-> The owner confirmed a physical phone/tablet is available; keyboard/safe-area/touch
-> proof remains pending. All 31 owner acceptances remain open. No push, main merge,
-> publication, production deployment, milestone closure or Stage 9 closure is authorized.
-> Older counts, service identities, blockers and in-progress operations below are
-> dated historical evidence, not current operational assertions or a fresh 31-criterion verdict.
+> **RESUMED / IN PROGRESS; complete foundation gate HELD.**
+> [Current delivery](ARCHITECTURE-REALIGNMENT-CURRENT-DELIVERY.md) is the single operational
+> record for exact source/serving/review identities, live-trial outcomes, all 31 dispositions
+> and remaining proof. [Architecture and authority](ARCHITECTURE-REALIGNMENT-20261030.md)
+> govern gates A–E and retain dated continuation checkpoints. Older counts, service identities,
+> blockers and in-progress operations below are historical evidence, not current assertions.
+> All 31 owner acceptances remain open. No push, main merge, publication, production
+> deployment, milestone closure or Stage 9 closure is authorized.
 
 > Historical owner pause,29October2026, superseded operationally by 30 October resumption: **PAUSED / HELD**. The new flow composition delta
 > remains partial at integrated/actual-agent scope. Historical conformance verdicts
