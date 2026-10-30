@@ -1,0 +1,110 @@
+{
+  "schema": "vict.export-device-preview@1",
+  "status": "PASS: unchanged actual export, public-artifact identity, compilation/renderer validation and static production build",
+  "sourceExport": {
+    "path": "C:\\Users\\RZ1\\.codex\\worktrees\\vict-architecture-realignment-20261030\\docs\\studio\\foundation-evidence\\architecture-realignment-20261030\\actual-agent-live-20261030\\stage-3-saved-supported-export.json",
+    "sha256": "fab481e4fe23a8d9d2ff15dcd5a1abf22f98623acece3047ebd06cb0141a8fbb",
+    "bytes": 52184,
+    "documentId": "screen-d5c26246-953b-4a57-8e43-b78e8a56e9eb"
+  },
+  "artifactInventory": {
+    "path": "C:\\Users\\RZ1\\.codex\\worktrees\\vict-architecture-realignment-20261030\\docs\\studio\\foundation-evidence\\architecture-realignment-20261030\\vict-realignment-consumer-WhcDEI.json",
+    "sha256": "41882b71708fc45bd38005d689abc7359e321ba69ac917afaeb4f4de3536e4d4",
+    "sourceCandidate": "72b7e09b1e6cbd5269578f3c3b1ccdf120a22c3b"
+  },
+  "destination": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-export-device-preview-two-stage-20261030",
+  "packs": [
+    {
+      "name": "@victframework/contracts",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-WhcDEI\\artifacts\\victframework-contracts-0.4.0-rc.1.tgz",
+      "sha256": "017c0587843869653f6bd723566dcaf39f2e89b2fb55bc923f35667be9d618de"
+    },
+    {
+      "name": "@victframework/ui",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-WhcDEI\\artifacts\\victframework-ui-0.4.0-rc.1.tgz",
+      "sha256": "f0b5f78254211d36c1cbb27427fdd580da9c0421f20411d59ce3518827433500"
+    },
+    {
+      "name": "@victframework/sdk",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-WhcDEI\\artifacts\\victframework-sdk-0.4.0-rc.1.tgz",
+      "sha256": "26ba8993f73f70071e57cec97471bf9c4bc4abde3137084be4fd4ee064f338f4"
+    },
+    {
+      "name": "@victframework/application",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-WhcDEI\\artifacts\\victframework-application-0.4.0-rc.1.tgz",
+      "sha256": "ea0fdde59f165379154517f4be4ca99e3c8790033862e4a56f6df5fdb09b5db7"
+    },
+    {
+      "name": "@victframework/ui-svelte",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-WhcDEI\\artifacts\\victframework-ui-svelte-0.4.0-rc.1.tgz",
+      "sha256": "9514c7d76529372b9bcf1373d1cd5e0863f9583f72df3dc9c41840fcd0aa28e2"
+    },
+    {
+      "name": "@victframework/ui-media-svelte",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-WhcDEI\\artifacts\\victframework-ui-media-svelte-0.4.0-rc.1.tgz",
+      "sha256": "234e78dd8f615622097b5166e5bd7f7646574d3663d3607b390d26ac8be11f22"
+    },
+    {
+      "name": "@victframework/ui-flow-svelte",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-WhcDEI\\artifacts\\victframework-ui-flow-svelte-0.4.0-rc.1.tgz",
+      "sha256": "516eb44dbad609c96ef5141bba9b1b9f7be63fbb98cd2bbe576402bc980ca09b"
+    }
+  ],
+  "limitations": [
+    "No device or browser pass; no server started.",
+    "No backend or provider execution; unsupported actions fail explicitly.",
+    "Only one-screen exports without managed media/source assets are supported.",
+    "Only catalog, Flow and Media public registrations are installed; other definitions refuse compilation.",
+    "Local state is session-only; no Studio storage, account, cookies or saved applications are shared.",
+    "LAN reachability/firewall permission and secure-context-dependent controls remain unproven."
+  ],
+  "installedIdentity": [
+    {
+      "name": "@victframework/contracts",
+      "filesMatched": 30
+    },
+    {
+      "name": "@victframework/ui",
+      "filesMatched": 69
+    },
+    {
+      "name": "@victframework/sdk",
+      "filesMatched": 27
+    },
+    {
+      "name": "@victframework/application",
+      "filesMatched": 33
+    },
+    {
+      "name": "@victframework/ui-svelte",
+      "filesMatched": 284
+    },
+    {
+      "name": "@victframework/ui-media-svelte",
+      "filesMatched": 20
+    },
+    {
+      "name": "@victframework/ui-flow-svelte",
+      "filesMatched": 47
+    }
+  ],
+  "validation": "{\"status\":\"PASS\",\"documentId\":\"screen-d5c26246-953b-4a57-8e43-b78e8a56e9eb\",\"planSchema\":\"vict.ui-render-plan@1\"}",
+  "outputFiles": [
+    {
+      "path": "application.json",
+      "sha256": "fab481e4fe23a8d9d2ff15dcd5a1abf22f98623acece3047ebd06cb0141a8fbb"
+    },
+    {
+      "path": "assets/index-DQVjL1uu.js",
+      "sha256": "98ccce41b105d525b8bcda2fe76f927421576c3f3982fa5bd67dbfc249ea4297"
+    },
+    {
+      "path": "assets/index-f7aOQPQD.css",
+      "sha256": "549219cae4b72e0232ba8d16baa40bb3269b3a75d3e9726a3b82d42629e01dd8"
+    },
+    {
+      "path": "index.html",
+      "sha256": "5298d8a96c4cde604a4f1ac9cf0472803dc4eab034c1f2a75b18211a8de82c30"
+    }
+  ]
+}

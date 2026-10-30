@@ -37,7 +37,12 @@ remains r1.r1; [failure and repair](foundation-evidence/architecture-realignment
 retain the slotScope schema collision, preflight string inputs, unsupported
 reference guesses and independently discovered exact-payload normalization defect.
 At that b6 checkpoint no rich-node pass was claimed. Android availability and wireless preference are confirmed; physical
-keyboard/touch/safe-area proof remains pending. No LAN listener has started.
+keyboard/touch/safe-area proof remains pending. A later sealed static preview of
+the actual r1.r5 two-node export is now listening at192.168.1.6:5630 for the
+owner's Android check. It exposes four verified frontend files only; Studio and
+agent/backend routes remain on their established loopback origin. Firewall and
+network profiles were not changed. Desktop loading passes; phone results remain
+pending. See device-preview/two-stage-preparation-report.json in the evidence directory.
 
 **Retained bfb live result:** the corrected agent completed three acknowledged edits and
 a final-source matching image assessment (26 calls, five refusals, 388.7 seconds).
@@ -52,8 +57,18 @@ still remount. Actual normal URL/notes typing, focus/caret, native Undo/Redo,
 keyboard node movement, shared source history and Save/export/reopen now pass
 ([bounded stage-2 result](foundation-evidence/architecture-realignment-20261030/actual-agent-live-20261030/STAGE-2-NATIVE-CONTINUITY-RESULT.md)).
 The actual agent corrected caption spacing while preserving manual values. Current
-saved actual app is r1.r4. Two connected stages are now being authored by the real
-agent; nested/repeated native proof, complete applications and device checks remain.
+saved actual app is r1.r5: the real agent added Review and a typed edge; manual
+Interact reference, notes and status changes preserve Source values and survive
+Save/export/reload ([stage-3 result](foundation-evidence/architecture-realignment-20261030/actual-agent-live-20261030/STAGE-3-TWO-NODE-RESULT.md)).
+Design deliberately selects source instead of typing. Complete-app expansion is
+in progress; its first stale-revision refusal applied no edit and is retained.
+Nested/repeated native proof, complete applications and device checks remain.
+
+One independent affected-regression pass on exact72 additionally passed44
+popup/focus/nesting renderer,15 media and8 Studio capture checks. It reuses the
+exact production/static receipts, preserving raw diagnostics and avoiding broad
+timestamp-only reruns ([report](foundation-evidence/architecture-realignment-20261030/actual-agent-live-20261030/NATIVE-CONTINUITY-AFFECTED-REGRESSIONS-INDEPENDENT.md),
+review0bce3856f940a7e1495a7b6dc2c2bd9ef6b3d23f).
 
 Current read capability/input revisions are 8, instructions 13, authoring profile
 15 and observer profile9. Edit capability/input is7. Saved schemas are unchanged.
@@ -220,7 +235,7 @@ candidate was hash-checked, all historical proof routes retained, normal existin
 provider configuration validated without secret output, and Studio launched at
 the same origin. Normal local-demo sign-in and saved Designer restoration pass.
 
-The current next work is to complete actual Studio-agent stages3–5, nested/repeated
+The current next work is to complete actual Studio-agent stages4–5, nested/repeated
 native source ownership and physical-device checks. Stage2 has actual control,
 native history and save/reopen proof plus refreshed public-consumer checks.
 Stage1 has an actual source-read/atomic-edit receipt,

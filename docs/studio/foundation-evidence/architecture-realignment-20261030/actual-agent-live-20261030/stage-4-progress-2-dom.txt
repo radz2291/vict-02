@@ -1,0 +1,152 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Evidence desk — rich-node retry"
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- banner:
+  - strong: Chat
+  - button "Hide Chat":
+- complementary "Chat":
+  - region "Conversation":
+    - region "Messages — Message":
+      - log:
+        - generic: You
+        - generic: "Complete this saved Evidence desk as a usable local evidence-review application. Preserve the existing manual URL/notes, Review reference/notes/status, Source note position and theme. Add a second independent Source note using the same reusable node body, connect both sources to Review with typed Evidence connections (discover and adjust only the necessary input limit). Make the heading/intro accurately describe the complete workflow and add a compact ordinary-UI guide explaining: record source URLs and provenance, review them, choose Pending/Accepted/Needs work, Save in Studio to preserve authored defaults; connections organize evidence and do not execute a backend. Make the graph view usable without compulsory toolbars, inspectors or family pickers. Use existing public VICT components/contracts and discover exact requirements; do not introduce backend/storage or global state substitutes. Functional completeness first; preflight unfamiliar shapes. Leave saving to me and report briefly what changed and what interaction remains untested."
+        - button "Copy message":
+        - generic: Assistant
+        - status: The screen changed while the agent was working. No edit was applied; send a new request using the current screen.
+        - button "Public activity and tool details" [expanded]:
+          - text: Public activity and tool details
+        - generic "Conversation timeline":
+          - paragraph: I'll start by reading the current workspace structure and source to understand what's preserved and what needs adding.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph:
+            - text: The workspace is a
+            - code: vict.flow.workspace@2
+            - text: with body slot nodes typed by conditions on
+            - code: prop.nodeType
+            - text: ", and graph state"
+            - code: evidence-graph
+            - text: . Let me read the remaining nodes, the graph state, and the data-contract registry.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph:
+            - text: The graph state
+            - code: evidence-graph
+            - text: (vict.flow-graph@2, revision 90) has one source note and one Review with an intake port limited to 1 connection. Now I'll read the graph/operations data contracts and the workspace/viewport component contracts.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph:
+            - text: The workspace/viewport contracts confirm no toolbar/inspector/family picker is imposed, and graph edits go through validated
+            - code: editGraph
+            - text: operations. Let me fetch the remaining contract pages and the current heading/intro text.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph:
+            - text: "I have everything needed: the Review type's"
+            - code: intake
+            - text: input port is capped at 1 connection (the only limit to adjust), and the body slot already renders one reusable card per node type. I'll preflight the graph transaction (raise intake limit to 2, add source-note-2, connect it) plus the heading/intro rewrites.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: Preflight is valid. Applying the graph transaction and heading/intro updates.
+          - button "Edit screen failed":
+            - generic: Edit screen
+            - generic: failed
+        - paragraph: No successful final response. Public notes and tool receipts remain in details.
+        - button "Copy message":
+    - button "Scroll to latest message":
+      - generic: Scroll to end
+    - textbox "Message":
+      - /placeholder: Ask for a change…
+    - button "Send" [disabled]:
+      - generic: Send
+    - status
+  - status "The screen changed while the agent was working. No edit was applied; send a new request using the current screen.":
+    - generic: The screen changed while the agent was working. No edit was applied; send a new request using the current screen.
+  - button "Chat details": ···
+- separator "Chat width"
+- main:
+  - button "Toggle Chat drawer" [expanded]:
+  - group "Workspace mode":
+    - button "Design"
+    - button "Interact" [pressed]
+    - button "Structure"
+  - button "Toggle Document and Selection drawer":
+  - iframe [active]:
+    - generic "Screen canvas":
+      - main "Evidence desk — rich-node retry":
+        - heading "Evidence desk" [level=1]:
+          - generic: Evidence desk
+        - paragraph:
+          - generic: "A compact evidence desk: one editable source-note node keeps a source URL and provenance notes together, ready to hand evidence to the next step."
+        - region "Evidence desk graph":
+          - application "Graph canvas":
+            - application:
+              - group "Source note" [active]:
+                - generic: Source note
+                - generic: Source URL
+                - textbox "Source URL": https://example.org/source-ax
+                - generic: Provenance notes
+                - textbox "Provenance notes":
+                  - /placeholder: Where did this evidence come from?
+                  - text: "Manual note: compare the original source. Keep uncertainty visible."
+                - 'button "output Evidence: evidence"'
+                - generic: Evidence out
+              - group "Review":
+                - generic: Review
+                - generic: Reference
+                - textbox "Reference": https://example.org/review-b
+                - generic: Review notes
+                - textbox "Review notes":
+                  - /placeholder: What did the review find?
+                  - text: "Independent review: check the claim."
+                - generic: Status
+                - combobox "Status":
+                  - option
+                  - option
+                  - option [selected]
+                - 'button "input Evidence in: evidence"'
+                - generic: Evidence in
+              - link "Svelte Flow attribution":
+                - /url: https://svelteflow.dev?utm_source=attribution
+                - text: Svelte Flow
+- contentinfo:
+  - status: The screen changed while the agent was working. No edit was applied; send a new request using the current screen.

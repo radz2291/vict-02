@@ -1,0 +1,16 @@
+{
+  "observedUtc": "2026-10-30T13:06:32.6236040Z",
+  "url": "http://192.168.1.6:5630/",
+  "pid": 17140,
+  "executable": "C:\\Program Files\\nodejs\\node.exe",
+  "commandLine": "\"C:\\Program Files\\nodejs\\node.exe\" scripts/serve-export-device-preview.mjs C:/Users/RZ1/AppData/Local/Temp/vict-export-device-preview-two-stage-20261030/dist C:/Users/RZ1/AppData/Local/Temp/vict-export-device-preview-two-stage-20261030/preview-report.json 23de1876436c871d6192ac02d39ab390a84849c37de9ddee5cc1ec3b927d464d 192.168.1.6 5630",
+  "reportSha256": "23de1876436c871d6192ac02d39ab390a84849c37de9ddee5cc1ec3b927d464d",
+  "sourceCandidate": "72b7e09b1e6cbd5269578f3c3b1ccdf120a22c3b",
+  "appRevision": "r1.r5",
+  "sealedFiles": 4,
+  "desktopIab": "loaded actual two-node export",
+  "physicalAndroid": "pending owner result",
+  "wifiProfile": "Public",
+  "firewall": "all profiles enabled; unchanged",
+  "scope": "Static exported frontend only. No Studio, agent, auth or backend routes. Session-only edits."
+}
