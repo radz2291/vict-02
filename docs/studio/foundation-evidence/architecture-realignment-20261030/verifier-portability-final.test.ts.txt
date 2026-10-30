@@ -1,0 +1,13 @@
+import {it,expect} from 'vitest';
+import sourceFixture from './fixtures/scoped-graph-source.json';
+import {prepareSourceImport} from '../src/lib/designer/source-import.js';
+import {screenApplication,screenIssues} from '../src/lib/designer/application.js';
+it('independent: deep canonical graph layouts retain the same portable source ownership',async()=>{
+ const source=JSON.parse(JSON.stringify(sourceFixture));
+ source.root='deep0';
+ for(let i=0;i<66;i++)source.nodes['deep'+i]={kind:'element',id:'deep'+i,tag:'div',children:[i===65?'outer-workspace':'deep'+(i+1)]};
+ expect(screenIssues(source)).toEqual([]);
+ const imported=await prepareSourceImport(JSON.stringify({application:screenApplication(source),uiDocuments:[{document:source}]}));
+ expect(imported.ok,JSON.stringify(imported.ok?{ok:true}:imported)).toBe(true);
+ if(imported.ok)expect(imported.document).toEqual(source);
+});

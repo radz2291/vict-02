@@ -1,0 +1,21 @@
+{
+  "ObservedUtc": "2026-10-30T10:24:27.4244307Z",
+  "SourceCandidate": "a61396cb3bf20e3f10d62a89a716feafdd91d6e3",
+  "ServingExpected": "27788de9f111042d04d83e7d603c6da2cccde8dc",
+  "Processes": [
+    {
+      "Address": "127.0.0.25",
+      "Port": 5626,
+      "Pid": 18644,
+      "ParentPid": 20092,
+      "Created": "2026-10-29T14:28:58.79167+08:00",
+      "Command": "\"C:\\Program Files\\nodejs\\node.exe\" build",
+      "ParentCommand": "\"C:\\Program Files\\nodejs\\node.exe\" \"C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-authoring-foundation\\apps\\studio\\scripts\\launch-agent.mjs\"",
+      "Restarted": false,
+      "InstalledCandidate": false
+    }
+  ],
+  "ByteReceipt": "SERVING-PRESERVATION.json",
+  "Browser": "Kernel assets missing before inventory; no input or storage access",
+  "ActualProviderCalls": 0
+}

@@ -1,5 +1,9 @@
 # Architecture realignment and authoring foundation continuation
 
+**Current delivery:** [exact final offline candidate, independent verdict, all 31
+current dispositions and remaining live gates](ARCHITECTURE-REALIGNMENT-CURRENT-DELIVERY.md).
+Bounded source repairs independently PASS at `a61396cb…`; full delivery remains HELD.
+
 Status: **RESUMED / IN PROGRESS; acceptance HELD**. Owner instruction received
 30 October 2026 authorizes gates A–E, local implementation/commits, independent
 verification and safe local activation. It does not authorize a push, main merge,
@@ -162,7 +166,7 @@ Independent challenge of that exact candidate confirmed two additional failures:
    runtime state. The verifier's earlier deep custom-definition fixture was
    independently rejected by canonical preflight and is **not** an exploitation.
 
-Bounded repair is in progress: public `vict.flow.editor-host@2` requests carry
+The bounded repair at that checkpoint introduced public `vict.flow.editor-host@2` requests carrying
 structured parent workspace/node/revision routes supplied by the public graph
 contexts. The Studio host uses the same source resolver as agent edits and returns
 explicit source/runtime/refused admission. It never parses opaque occurrence keys
@@ -181,3 +185,12 @@ after exact source/build-artifact equality checks.
 
 No browser/actual-agent/device result is awarded. The fresh serving-build recheck
 matches all 384 original files; the original checkout/process/data remain untouched.
+
+Final bounded-source disposition: independent verifier
+`4ef3199e87d8f9c04a4b1d584872920345b3917d` clears F1/F2 and the later F3
+deep-import false refusal at exact product `a61396cb3bf20e3f10d62a89a716feafdd91d6e3`.
+Final production build, TypeScript and changed-code lint pass; build is retained
+and uninstalled. Actual Studio-agent stages 1–5, native integrated/browser and
+physical-device proof remain unawarded, so the task/milestone remain open.
+The current-delivery record above is the handover entry; historical red records
+and first-candidate builds remain preserved.

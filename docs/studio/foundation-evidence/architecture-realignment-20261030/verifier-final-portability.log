@@ -1,0 +1,35 @@
+
+> vict-studio@0.1.0 test
+> vitest run tests/graph-independent-portability.test.ts tests/source-import.test.ts
+
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/apps/studio
+
+6:19:31 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+6:19:32 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+6:19:32 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+6:19:32 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+6:19:32 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+6:19:32 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+6:19:34 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+6:19:34 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+6:19:34 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+6:19:34 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+ ✓ tests/graph-independent-portability.test.ts (1 test) 115ms
+ ✓ tests/source-import.test.ts (22 tests) 486ms
+
+ Test Files  2 passed (2)
+      Tests  23 passed (23)
+   Start at  18:18:56
+   Duration  64.01s (transform 70.85s, setup 0ms, collect 118.47s, tests 601ms, environment 2.05s, prepare 896ms)
+
