@@ -1,0 +1,154 @@
+{
+  "status": "PASS",
+  "scope": "Actual saved Stage 4 supported application export through existing Studio importer/export attachment; offline only.",
+  "input": {
+    "path": "C:\\Users\\RZ1\\.codex\\worktrees\\vict-architecture-realignment-20261030\\docs\\studio\\foundation-evidence\\architecture-realignment-20261030\\actual-agent-live-20261030\\stage-4-saved-supported-export.json",
+    "sha256": "ff7d25f0d233b04589308e234235d85826969b08eaa3f490b2e53d5a226e3919",
+    "bytes": 56748
+  },
+  "canonicalSource": {
+    "path": "C:\\Users\\RZ1\\.codex\\worktrees\\vict-architecture-realignment-20261030\\docs\\studio\\foundation-evidence\\architecture-realignment-20261030\\actual-agent-live-20261030\\stage-4-saved-source.json",
+    "sha256": "ec711fc2f4bd252945dba94485059d09973aec9e669ce003ca9cad218096be32",
+    "id": "screen-d5c26246-953b-4a57-8e43-b78e8a56e9eb",
+    "revision": "r1.r6"
+  },
+  "reexport": {
+    "sha256": "ff7d25f0d233b04589308e234235d85826969b08eaa3f490b2e53d5a226e3919",
+    "byteIdentical": true,
+    "semanticEnvelopeEqual": true
+  },
+  "importedDocumentJsonSha256": "fbfa3949c1f87f51fb817cbc1ed5ce6cd4e0b40c67dee76abf48ed661c374705",
+  "checks": [
+    "Exact exported document deep-equals canonical saved Stage 4 source",
+    "Existing Studio importer admits original export without source changes or media",
+    "Authoritative screenApplication attachment matches original application definition",
+    "Authoritative export attachment and second existing-importer pass preserve complete source/envelope",
+    "Saved graph revisions, labels, node values, positions, node-type parameter/port types and exact edge endpoints deep-equal after roundtrip"
+  ],
+  "graphs": [
+    {
+      "stateKey": "evidence-graph",
+      "revision": 163,
+      "nodeTypes": [
+        {
+          "id": "source-note",
+          "label": "Source note",
+          "parameters": {
+            "notes": {
+              "default": "",
+              "label": "Provenance notes",
+              "type": "string"
+            },
+            "url": {
+              "default": "",
+              "label": "Source URL",
+              "type": "string"
+            }
+          },
+          "ports": [
+            {
+              "direction": "output",
+              "id": "evidence",
+              "label": "Evidence",
+              "maxConnections": 1,
+              "type": "evidence"
+            }
+          ]
+        },
+        {
+          "id": "review",
+          "label": "Review",
+          "parameters": {
+            "reviewNotes": {
+              "default": "",
+              "label": "Review notes",
+              "type": "string"
+            },
+            "reviewReference": {
+              "default": "",
+              "label": "Reference",
+              "type": "string"
+            },
+            "reviewStatus": {
+              "default": "pending",
+              "label": "Status",
+              "type": "string"
+            }
+          },
+          "ports": [
+            {
+              "direction": "input",
+              "id": "intake",
+              "label": "Evidence in",
+              "maxConnections": 2,
+              "type": "evidence"
+            }
+          ]
+        }
+      ],
+      "nodes": [
+        {
+          "id": "source-note-1",
+          "type": "source-note",
+          "label": "Source note",
+          "position": {
+            "x": 108.58303951389152,
+            "y": -87.44864848500723
+          },
+          "values": {
+            "url": "https://example.org/source-ax",
+            "notes": "Manual note: compare the original source.\nKeep uncertainty visible."
+          }
+        },
+        {
+          "id": "review-1",
+          "type": "review",
+          "label": "Review",
+          "position": {
+            "x": -230,
+            "y": 40
+          },
+          "values": {
+            "reviewReference": "https://example.org/review-b",
+            "reviewNotes": "Independent review: check the claim.",
+            "reviewStatus": "needs-work"
+          }
+        },
+        {
+          "id": "source-note-2",
+          "type": "source-note",
+          "label": "Source note",
+          "position": {
+            "x": 527.8139007098847,
+            "y": -24.5587760895105
+          },
+          "values": {
+            "notes": "Second source: independent provenance.",
+            "url": "https://example.org/source-b"
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "edge-source-review-1",
+          "source": "source-note-1",
+          "sourcePort": "evidence",
+          "target": "review-1",
+          "targetPort": "intake"
+        },
+        {
+          "source": "source-note-2",
+          "sourcePort": "evidence",
+          "target": "review-1",
+          "targetPort": "intake",
+          "id": "edge-1"
+        }
+      ]
+    }
+  ],
+  "limits": [
+    "No browser, physical device, server, backend, provider or owner acceptance proof.",
+    "Comparison baseline is saved Stage 4 canonical source only; no Stage 3 position-preservation claim.",
+    "Studio importer uses current committed workspace code; separate static consumer uses recorded WhcDEI public artifacts."
+  ]
+}
