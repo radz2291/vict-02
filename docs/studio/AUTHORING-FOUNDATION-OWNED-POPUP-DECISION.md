@@ -1,5 +1,60 @@
 # Shared popup ownership decision
 
+## Current architecture reconciliation — 30 October 2026
+
+The owner has resumed Architecture Realignment and Authoring Foundation
+Completion. This amendment supersedes the historical paused/in-progress status
+and browser-authorization statements below only within that new instruction. It
+preserves the approved 28 October choice, original failures and evidence limits.
+The inspected starting source is private checkpoint
+`4c40cc656328c50d16d28492ae5245bf509ccb6e`; no new integrated popup pass or owner
+acceptance is implied by this source review.
+
+| Boundary | Actual implementation and dependency owner | Disposition |
+| --- | --- | --- |
+| Application-owned input and lifetime | `ui-svelte/owned-popup.ts` owns actual owner/source/occurrence admission, owner-local layer arbitration, source visibility and same-document/embedding focus checks. `owned-dialog.ts`, `owned-menu.ts` and `owned-tooltip.ts` own their respective focus, keyboard, dismissal and hover semantics. | **Keep.** The retained CF-P01/P02 and dialog failures demonstrate why viewport portal placement alone cannot replace this behavior. This shared approved implementation is VICT behavior, not Bits Content behavior. |
+| Application-owned popup mounting and geometry | `OwnedMenuContent`, `OwnedTooltip` and `OwnedHoverCard` use public Bits `Portal`; `positionOwnedPopup` uses directly declared public `@floating-ui/dom@1.8.0` offset/flip/shift/auto-update. Drawer supplies its sheet geometry and uses `OwnedDialogContent`. | **Keep.** Upstream owns mounting and floating geometry where suitable. VICT supplies clipping/owner policy, stale-result cleanup and canonical style preservation; it does not copy a second floating engine. |
+| Drawer composition | `ui-patterns-svelte/Drawer.svelte` retains public Bits Dialog Root/Trigger/Overlay/Title/Close and shared catalog presentation around VICT owned content. Its dialog is modal within the application, with owner-only scroll/focus control and no document-wide `aria-modal=true` claim. | **Keep.** The hybrid deliberately replaces Content interaction scope while retaining compatible upstream parts. |
+| Menus and descriptive/interactive hints | B4 menu wrappers and AI ModelSelector reuse one owned-menu engine. B5Tooltip/MessageAction use OwnedTooltip. Context/InlineCitation use OwnedHoverCard; interactive citation links are not mislabeled as a tooltip. Ordinary triggers retain public controls and existing catalog/AI presentation. | **Keep.** No ModelSelector-specific keyboard engine or separate per-component focus manager is needed. |
+| Ordinary document-scoped composition | Unowned B4 menus, B5Tooltip, ModelSelector and relevant AI hovercards retain genuine public Bits interaction parts. Existing CatalogDialog@1 and application Overlay retain document-modal Bits Content. `ControlScope` supplies BitsConfig portal/locale defaults and catalog ancestry. | **Keep, with explicit limits.** Whole-document modality and application-local modality are different supported contracts. A CatalogPortal destination inside a viewport does not make Bits Content owner-local. Do not silently change existing saved dialog semantics. |
+| Canonical presentation | Renderer presentation targets carry exact owner/occurrence/part metadata, classes and dynamic variables. Portal wrappers preserve catalog/AI scope and semantic theme ancestry. Reusable packages depend on public packages, not private Studio imports. | **Keep.** Studio iframe and standalone consumers must load the same public styles and rendering path. |
+
+**Change now:** current documentation must describe those actual owners and the
+two intentional modes. Preserve serialized identities/pins, truthful upstream
+provenance and the original red evidence. Reuse Bits behavior for document-scoped
+controls where it satisfies the contract. Retained owner-local behavior requires
+the shared hub and regressions; neither a dependency declaration nor matching
+classes proves upstream interaction reuse.
+
+**Remove only if demonstrated superseded:** per-component replacements for the
+shared hub, private dependency patches, obsolete duplicate implementations or
+claims that an owned dropdown delegates its keyboard/focus behavior to Bits
+Content. This audit established no new source defect justifying removal of either
+supported mode or a new popup framework. Construction-policy differences between
+wrappers alone do not justify a refactor without a reproduced transition defect.
+
+Existing executable coverage includes `ui-svelte/test/owned-popup-{core,adopted,
+independent}.test.ts`, `owned-dialog-{adopted,focus-capture-independent}.test.ts`,
+`owned-menu.test.ts`, `owned-catalog-menus.test.ts`, `owned-tooltip.test.ts`, and
+AI `action-model-portal.svelte.test.ts`, `chat-extension.svelte.test.ts` and
+`passive-hovercard-isolation.svelte.test.ts`. These cover sibling/nested owners,
+iframe adoption, exact child-popup admission, menu/dialog Tab continuation,
+disabled/hidden/detached launchers, controlled selection, submenu navigation,
+description IDs and geometry/style cleanup. Source inspection is not a fresh
+test result; current execution results belong in the accompanying audit evidence.
+
+Remaining integrated proof is explicit: open popup appearance and clipping in
+the authored application/Studio iframe and installed consumer; keyboard/focus
+return across nested layers and sibling applications; current semantic theme and
+part propagation; and actual-agent authoring/save/reopen at the new graph scope.
+Select and Popover still use upstream interaction paths. An owned dialog's exact
+branch-admission test does not certify those children's independent Escape/focus
+policies. Challenge their actual owned usage separately before extending a
+conformance claim. Physical touch and assistive-technology/device checks remain
+distinct from desktop DOM fixtures and narrow preview observations.
+
+## Historical approved decision and implementation record
+
 Status: shared VICT-owned menu/tooltip direction APPROVED by the owner at 2026-10-28 04:28 UTC; implementation and independent verification IN PROGRESS. No browser access, publication or acceptance is implied. The original proposal and failed observations below are retained.
 
 The owner-approved shared dialog repair is saved and independently checked at `15695678492fe0850a5c7b29a131d2578a24ce7f`. Subsequent AI exposure at `b793b0b9843094be71d3ab2a418ebcff24ab7862` reused existing public patterns and exposed two additional executable ownership failures:

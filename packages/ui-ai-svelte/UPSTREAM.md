@@ -99,6 +99,33 @@ consumer checks are separately required by Cycle 1.3.
    mounting checks do not prove browser behavior or solve document-wide Escape
    arbitration in the pinned DropdownMenu primitive; that failure remains open.
 
+### Current owned-popup amendment — 30 October 2026
+
+Item 9 above preserves the initial adaptation and its then-open failure. The
+owner subsequently approved shared application-owned dialog behavior at
+2026-10-28 03:03 UTC and menu/tooltip behavior at 04:28 UTC. Current authored
+ModelSelector and MessageAction use public VICT `OwnedMenuContent` and
+`OwnedTooltip`; Context and InlineCitation use the interactive `OwnedHoverCard`.
+Those components share VICT owner/source/layer arbitration, keyboard/focus and
+source-lifetime behavior. Public Bits Portal mounts the floating content, and
+public Floating UI supplies positioning. Shared catalog/AI presentation and
+canonical part/theme scope remain. These are VICT interaction adaptations; they
+are not attributed to Bits Content or to the immutable upstream source payload.
+
+The ordinary unowned pattern branches retain public Bits interaction behavior.
+Both modes remain intentional: document-scoped behavior suits an ordinary coded
+consumer, while application-owned behavior isolates embedded applications and
+Studio controls. The retained CF-P01/P02 failures motivated the latter path and
+subsequent scoped regressions cover their repair. This does not certify every
+popup family or replace current native browser, actual-agent, standalone-consumer
+and physical-device proof. Select/Popover interaction policies need their own
+challenge rather than inference from dialog branch admission.
+
+The source hashes in the upstream manifest identify the original source payload;
+the historical wrapper statement above must not be read as an exhaustive list of
+later VICT composition changes. Current architecture and retained decision:
+`docs/studio/AUTHORING-FOUNDATION-OWNED-POPUP-DECISION.md` in the repository.
+
 ## CSS consumption and isolation
 
 Import `@victframework/ui-ai-svelte/styles.css` once. Default Conversation and
