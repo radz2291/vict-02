@@ -1,0 +1,1 @@
+import {defineConfig} from 'vitest/config';import {svelte} from '@sveltejs/vite-plugin-svelte';export default defineConfig({base:'./',plugins:[svelte()],resolve:{conditions:['browser']},test:{environment:'happy-dom',include:['src/**/*.test.ts']}});
