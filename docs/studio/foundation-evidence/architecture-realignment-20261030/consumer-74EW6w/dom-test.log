@@ -1,0 +1,13 @@
+
+> test
+> vitest run
+
+
+ RUN  v4.1.11 C:/Users/RZ1/AppData/Local/Temp/vict-realignment-consumer-74EW6w/consumer
+
+
+ Test Files  1 passed (1)
+      Tests  1 passed (1)
+   Start at  17:48:54
+   Duration  29.88s (transform 22.59s, setup 0ms, import 27.54s, tests 665ms, environment 1.26s)
+
