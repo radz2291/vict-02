@@ -1,0 +1,19 @@
+{
+  "observedAt": "2026-10-30T09:48:24.878128+00:00",
+  "expectedServingSource": "27788de9f111042d04d83e7d603c6da2cccde8dc",
+  "installedBuild": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-authoring-foundation\\apps\\studio\\build",
+  "checks": [
+    {
+      "manifest": "CoreManifest",
+      "files": 324,
+      "mismatches": []
+    },
+    {
+      "manifest": "PreservedManifest",
+      "files": 60,
+      "mismatches": []
+    }
+  ],
+  "changedServingProcess": false,
+  "browserPreservation": "Browser control unavailable before inventory. No tabs, drafts, saved apps or storage accessed or changed. No activation attempted."
+}
