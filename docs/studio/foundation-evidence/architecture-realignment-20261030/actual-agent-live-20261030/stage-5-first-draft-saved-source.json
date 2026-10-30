@@ -1,0 +1,1989 @@
+{
+  "schema": "vict.ui-document@1",
+  "id": "screen-b1d0036a-e404-448b-8f84-c92b2752220d",
+  "revision": "r1.r1",
+  "root": "screen",
+  "nodes": {
+    "screen": {
+      "kind": "element",
+      "id": "screen",
+      "tag": "main",
+      "attributes": {
+        "aria-label": "Project planner — nested ownership"
+      },
+      "children": [
+        "planner-header",
+        "p1-card",
+        "p2-card"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "20px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "40px"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "560px"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#e9f1fa"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#243047"
+          }
+        },
+        {
+          "property": "font-family",
+          "value": {
+            "type": "text",
+            "value": "system-ui, -apple-system, 'Segoe UI', sans-serif"
+          }
+        },
+        {
+          "property": "max-width",
+          "value": {
+            "type": "text",
+            "value": "960px"
+          }
+        }
+      ]
+    },
+    "planner-header": {
+      "kind": "element",
+      "id": "planner-header",
+      "tag": "section",
+      "attributes": {
+        "aria-label": "Project planner guide"
+      },
+      "children": [
+        "planner-title",
+        "planner-guide"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "8px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "24px"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "100px"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#f5f7fb"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        }
+      ]
+    },
+    "planner-title": {
+      "kind": "element",
+      "id": "planner-title",
+      "tag": "h1",
+      "children": [
+        "planner-title-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "32px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.2"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#2b4a78"
+          }
+        }
+      ]
+    },
+    "planner-title-text": {
+      "kind": "text",
+      "id": "planner-title-text",
+      "content": {
+        "type": "literal",
+        "value": "Project planner"
+      }
+    },
+    "planner-guide": {
+      "kind": "element",
+      "id": "planner-guide",
+      "tag": "p",
+      "children": [
+        "planner-guide-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.5"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#52657f"
+          }
+        }
+      ]
+    },
+    "planner-guide-text": {
+      "kind": "text",
+      "id": "planner-guide-text",
+      "content": {
+        "type": "literal",
+        "value": "Workflow: pick a project card below, edit its title and task inline, then move each task through Todo → Doing → Done. Every card owns its own controls and state; Save in Studio preserves your edits as the new starting defaults."
+      }
+    },
+    "p1-card": {
+      "kind": "element",
+      "id": "p1-card",
+      "tag": "section",
+      "attributes": {
+        "aria-label": "Section"
+      },
+      "children": [
+        "p1-head",
+        "p1-help",
+        "p1-canvas"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "16px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "24px"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "100px"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#f5f7fb"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        }
+      ],
+      "styleSources": [
+        "planner-card"
+      ]
+    },
+    "p1-head": {
+      "kind": "element",
+      "id": "p1-head",
+      "tag": "div",
+      "children": [
+        "p1-title-label"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-wrap",
+          "value": {
+            "type": "text",
+            "value": "wrap"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "align-items",
+          "value": {
+            "type": "text",
+            "value": "end"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "60px"
+          }
+        },
+        {
+          "property": "justify-content",
+          "value": {
+            "type": "text",
+            "value": "space-between"
+          }
+        }
+      ]
+    },
+    "p1-title-label": {
+      "kind": "element",
+      "id": "p1-title-label",
+      "tag": "label",
+      "children": [
+        "p1-title-label-text",
+        "p1-title-input"
+      ],
+      "localStyle": [
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#2b4a78"
+          }
+        },
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex",
+          "value": {
+            "type": "text",
+            "value": "1"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "13px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "6px"
+          }
+        }
+      ]
+    },
+    "p1-title-label-text": {
+      "kind": "text",
+      "id": "p1-title-label-text",
+      "content": {
+        "type": "literal",
+        "value": "Project title"
+      }
+    },
+    "p1-title-input": {
+      "kind": "element",
+      "id": "p1-title-input",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "placeholder": "Project title",
+        "type": "text",
+        "value": {
+          "type": "ref",
+          "path": "state.p1Title"
+        }
+      },
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "16px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        }
+      ],
+      "interactions": [
+        {
+          "on": "change",
+          "action": "setState",
+          "key": "p1Title",
+          "value": {
+            "type": "ref",
+            "path": "state.p1Title"
+          }
+        }
+      ],
+      "styleSources": [
+        "planner-field"
+      ]
+    },
+    "p1-canvas": {
+      "kind": "element",
+      "id": "p1-canvas",
+      "tag": "section",
+      "attributes": {
+        "aria-label": "Section"
+      },
+      "children": [
+        "p1-canvas-heading",
+        "p1-task"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "10px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "24px"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "100px"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#f5f7fb"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        }
+      ],
+      "styleSources": [
+        "planner-canvas"
+      ]
+    },
+    "p1-canvas-heading": {
+      "kind": "element",
+      "id": "p1-canvas-heading",
+      "tag": "h3",
+      "children": [
+        "p1-canvas-heading-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.2"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#3e6cb5"
+          }
+        },
+        {
+          "property": "letter-spacing",
+          "value": {
+            "type": "text",
+            "value": "0.02em"
+          }
+        },
+        {
+          "property": "text-transform",
+          "value": {
+            "type": "text",
+            "value": "uppercase"
+          }
+        }
+      ]
+    },
+    "p1-canvas-heading-text": {
+      "kind": "text",
+      "id": "p1-canvas-heading-text",
+      "content": {
+        "type": "literal",
+        "value": "Task canvas"
+      }
+    },
+    "p1-task": {
+      "kind": "element",
+      "id": "p1-task",
+      "tag": "section",
+      "attributes": {
+        "aria-label": "Section"
+      },
+      "children": [
+        "p1-task-title-label",
+        "p1-status-label"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "100px"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#f5f7fb"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        }
+      ],
+      "styleSources": [
+        "planner-card"
+      ]
+    },
+    "p1-task-title-label": {
+      "kind": "element",
+      "id": "p1-task-title-label",
+      "tag": "label",
+      "children": [
+        "p1-task-title-label-text",
+        "p1-task-title-input"
+      ],
+      "localStyle": [
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#2b4a78"
+          }
+        },
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "13px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "6px"
+          }
+        }
+      ]
+    },
+    "p1-task-title-label-text": {
+      "kind": "text",
+      "id": "p1-task-title-label-text",
+      "content": {
+        "type": "literal",
+        "value": "Task title"
+      }
+    },
+    "p1-task-title-input": {
+      "kind": "element",
+      "id": "p1-task-title-input",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "placeholder": "Task title",
+        "type": "text",
+        "value": {
+          "type": "ref",
+          "path": "state.p1TaskTitle"
+        }
+      },
+      "interactions": [
+        {
+          "on": "change",
+          "action": "setState",
+          "key": "p1TaskTitle",
+          "value": {
+            "type": "ref",
+            "path": "state.p1TaskTitle"
+          }
+        }
+      ],
+      "styleSources": [
+        "planner-field"
+      ]
+    },
+    "p1-status-label": {
+      "kind": "element",
+      "id": "p1-status-label",
+      "tag": "label",
+      "children": [
+        "p1-status-label-text",
+        "p1-status"
+      ],
+      "localStyle": [
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#2b4a78"
+          }
+        },
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "13px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "6px"
+          }
+        },
+        {
+          "property": "max-width",
+          "value": {
+            "type": "text",
+            "value": "220px"
+          }
+        }
+      ]
+    },
+    "p1-status-label-text": {
+      "kind": "text",
+      "id": "p1-status-label-text",
+      "content": {
+        "type": "literal",
+        "value": "Status"
+      }
+    },
+    "p1-status": {
+      "kind": "element",
+      "id": "p1-status",
+      "tag": "select",
+      "children": [
+        "p1-status-opt-todo",
+        "p1-status-opt-doing",
+        "p1-status-opt-done"
+      ],
+      "attributes": {
+        "value": {
+          "type": "ref",
+          "path": "state.p1TaskStatus"
+        }
+      },
+      "interactions": [
+        {
+          "on": "change",
+          "action": "setState",
+          "key": "p1TaskStatus",
+          "value": {
+            "type": "ref",
+            "path": "state.p1TaskStatus"
+          }
+        }
+      ],
+      "styleSources": [
+        "planner-field"
+      ]
+    },
+    "p1-status-opt-todo": {
+      "kind": "element",
+      "id": "p1-status-opt-todo",
+      "tag": "option",
+      "children": [
+        "p1-status-opt-todo-text"
+      ],
+      "attributes": {
+        "value": "todo"
+      }
+    },
+    "p1-status-opt-todo-text": {
+      "kind": "text",
+      "id": "p1-status-opt-todo-text",
+      "content": {
+        "type": "literal",
+        "value": "Todo"
+      }
+    },
+    "p1-status-opt-doing": {
+      "kind": "element",
+      "id": "p1-status-opt-doing",
+      "tag": "option",
+      "children": [
+        "p1-status-opt-doing-text"
+      ],
+      "attributes": {
+        "selected": {
+          "type": "literal",
+          "value": true
+        },
+        "value": "doing"
+      }
+    },
+    "p1-status-opt-doing-text": {
+      "kind": "text",
+      "id": "p1-status-opt-doing-text",
+      "content": {
+        "type": "literal",
+        "value": "Doing"
+      }
+    },
+    "p1-status-opt-done": {
+      "kind": "element",
+      "id": "p1-status-opt-done",
+      "tag": "option",
+      "children": [
+        "p1-status-opt-done-text"
+      ],
+      "attributes": {
+        "value": "done"
+      }
+    },
+    "p1-status-opt-done-text": {
+      "kind": "text",
+      "id": "p1-status-opt-done-text",
+      "content": {
+        "type": "literal",
+        "value": "Done"
+      }
+    },
+    "p1-help": {
+      "kind": "component",
+      "id": "p1-help",
+      "definitionId": "vict.catalog.dialog",
+      "revision": "1",
+      "props": {
+        "open": {
+          "type": "ref",
+          "path": "state.p1HelpOpen"
+        },
+        "title": {
+          "type": "literal",
+          "value": "Help"
+        }
+      },
+      "outputs": {
+        "openChange": {
+          "setState": {
+            "key": "p1HelpOpen"
+          }
+        }
+      },
+      "slots": {
+        "body": {
+          "name": "body",
+          "children": [
+            "p1-help-text"
+          ]
+        }
+      }
+    },
+    "p1-help-text": {
+      "kind": "element",
+      "id": "p1-help-text",
+      "tag": "p",
+      "children": [
+        "p1-help-text-node"
+      ],
+      "localStyle": [
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#52657f"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.5"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0 0 12px"
+          }
+        }
+      ]
+    },
+    "p1-help-text-node": {
+      "kind": "text",
+      "id": "p1-help-text-node",
+      "content": {
+        "type": "literal",
+        "value": "This card owns its own title and task canvas. Edit the project title, rename the task, and choose Todo, Doing or Done for its status. Changes here affect only this card — Save in Studio keeps them as the starting defaults."
+      }
+    },
+    "p2-card": {
+      "kind": "element",
+      "id": "p2-card",
+      "tag": "section",
+      "attributes": {
+        "aria-label": "Section"
+      },
+      "children": [
+        "p2-head",
+        "p2-help",
+        "p2-canvas"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "16px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "24px"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "100px"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#f5f7fb"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        }
+      ],
+      "styleSources": [
+        "planner-card"
+      ]
+    },
+    "p2-head": {
+      "kind": "element",
+      "id": "p2-head",
+      "tag": "div",
+      "children": [
+        "p2-title-label"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-wrap",
+          "value": {
+            "type": "text",
+            "value": "wrap"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "align-items",
+          "value": {
+            "type": "text",
+            "value": "end"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "60px"
+          }
+        },
+        {
+          "property": "justify-content",
+          "value": {
+            "type": "text",
+            "value": "space-between"
+          }
+        }
+      ]
+    },
+    "p2-title-label": {
+      "kind": "element",
+      "id": "p2-title-label",
+      "tag": "label",
+      "children": [
+        "p2-title-label-text",
+        "p2-title-input"
+      ],
+      "localStyle": [
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#2b4a78"
+          }
+        },
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex",
+          "value": {
+            "type": "text",
+            "value": "1"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "13px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "6px"
+          }
+        }
+      ]
+    },
+    "p2-title-label-text": {
+      "kind": "text",
+      "id": "p2-title-label-text",
+      "content": {
+        "type": "literal",
+        "value": "Project title"
+      }
+    },
+    "p2-title-input": {
+      "kind": "element",
+      "id": "p2-title-input",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "placeholder": "Project title",
+        "type": "text",
+        "value": {
+          "type": "ref",
+          "path": "state.p2Title"
+        }
+      },
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "16px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        }
+      ],
+      "interactions": [
+        {
+          "on": "change",
+          "action": "setState",
+          "key": "p2Title",
+          "value": {
+            "type": "ref",
+            "path": "state.p2Title"
+          }
+        }
+      ],
+      "styleSources": [
+        "planner-field"
+      ]
+    },
+    "p2-canvas": {
+      "kind": "element",
+      "id": "p2-canvas",
+      "tag": "section",
+      "attributes": {
+        "aria-label": "Section"
+      },
+      "children": [
+        "p2-canvas-heading",
+        "p2-task"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "10px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "24px"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "100px"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#f5f7fb"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        }
+      ],
+      "styleSources": [
+        "planner-canvas"
+      ]
+    },
+    "p2-canvas-heading": {
+      "kind": "element",
+      "id": "p2-canvas-heading",
+      "tag": "h3",
+      "children": [
+        "p2-canvas-heading-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.2"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#3e6cb5"
+          }
+        },
+        {
+          "property": "letter-spacing",
+          "value": {
+            "type": "text",
+            "value": "0.02em"
+          }
+        },
+        {
+          "property": "text-transform",
+          "value": {
+            "type": "text",
+            "value": "uppercase"
+          }
+        }
+      ]
+    },
+    "p2-canvas-heading-text": {
+      "kind": "text",
+      "id": "p2-canvas-heading-text",
+      "content": {
+        "type": "literal",
+        "value": "Task canvas"
+      }
+    },
+    "p2-task": {
+      "kind": "element",
+      "id": "p2-task",
+      "tag": "section",
+      "attributes": {
+        "aria-label": "Section"
+      },
+      "children": [
+        "p2-task-title-label",
+        "p2-status-label"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "100px"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#f5f7fb"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        }
+      ],
+      "styleSources": [
+        "planner-card"
+      ]
+    },
+    "p2-task-title-label": {
+      "kind": "element",
+      "id": "p2-task-title-label",
+      "tag": "label",
+      "children": [
+        "p2-task-title-label-text",
+        "p2-task-title-input"
+      ],
+      "localStyle": [
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#2b4a78"
+          }
+        },
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "13px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "6px"
+          }
+        }
+      ]
+    },
+    "p2-task-title-label-text": {
+      "kind": "text",
+      "id": "p2-task-title-label-text",
+      "content": {
+        "type": "literal",
+        "value": "Task title"
+      }
+    },
+    "p2-task-title-input": {
+      "kind": "element",
+      "id": "p2-task-title-input",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "placeholder": "Task title",
+        "type": "text",
+        "value": {
+          "type": "ref",
+          "path": "state.p2TaskTitle"
+        }
+      },
+      "interactions": [
+        {
+          "on": "change",
+          "action": "setState",
+          "key": "p2TaskTitle",
+          "value": {
+            "type": "ref",
+            "path": "state.p2TaskTitle"
+          }
+        }
+      ],
+      "styleSources": [
+        "planner-field"
+      ]
+    },
+    "p2-status-label": {
+      "kind": "element",
+      "id": "p2-status-label",
+      "tag": "label",
+      "children": [
+        "p2-status-label-text",
+        "p2-status"
+      ],
+      "localStyle": [
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#2b4a78"
+          }
+        },
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "13px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "6px"
+          }
+        },
+        {
+          "property": "max-width",
+          "value": {
+            "type": "text",
+            "value": "220px"
+          }
+        }
+      ]
+    },
+    "p2-status-label-text": {
+      "kind": "text",
+      "id": "p2-status-label-text",
+      "content": {
+        "type": "literal",
+        "value": "Status"
+      }
+    },
+    "p2-status": {
+      "kind": "element",
+      "id": "p2-status",
+      "tag": "select",
+      "children": [
+        "p2-status-opt-todo",
+        "p2-status-opt-doing",
+        "p2-status-opt-done"
+      ],
+      "attributes": {
+        "value": {
+          "type": "ref",
+          "path": "state.p2TaskStatus"
+        }
+      },
+      "interactions": [
+        {
+          "on": "change",
+          "action": "setState",
+          "key": "p2TaskStatus",
+          "value": {
+            "type": "ref",
+            "path": "state.p2TaskStatus"
+          }
+        }
+      ],
+      "styleSources": [
+        "planner-field"
+      ]
+    },
+    "p2-status-opt-todo": {
+      "kind": "element",
+      "id": "p2-status-opt-todo",
+      "tag": "option",
+      "children": [
+        "p2-status-opt-todo-text"
+      ],
+      "attributes": {
+        "selected": {
+          "type": "literal",
+          "value": true
+        },
+        "value": "todo"
+      }
+    },
+    "p2-status-opt-todo-text": {
+      "kind": "text",
+      "id": "p2-status-opt-todo-text",
+      "content": {
+        "type": "literal",
+        "value": "Todo"
+      }
+    },
+    "p2-status-opt-doing": {
+      "kind": "element",
+      "id": "p2-status-opt-doing",
+      "tag": "option",
+      "children": [
+        "p2-status-opt-doing-text"
+      ],
+      "attributes": {
+        "value": "doing"
+      }
+    },
+    "p2-status-opt-doing-text": {
+      "kind": "text",
+      "id": "p2-status-opt-doing-text",
+      "content": {
+        "type": "literal",
+        "value": "Doing"
+      }
+    },
+    "p2-status-opt-done": {
+      "kind": "element",
+      "id": "p2-status-opt-done",
+      "tag": "option",
+      "children": [
+        "p2-status-opt-done-text"
+      ],
+      "attributes": {
+        "value": "done"
+      }
+    },
+    "p2-status-opt-done-text": {
+      "kind": "text",
+      "id": "p2-status-opt-done-text",
+      "content": {
+        "type": "literal",
+        "value": "Done"
+      }
+    },
+    "p2-help": {
+      "kind": "component",
+      "id": "p2-help",
+      "definitionId": "vict.catalog.dialog",
+      "revision": "1",
+      "props": {
+        "open": {
+          "type": "ref",
+          "path": "state.p2HelpOpen"
+        },
+        "title": {
+          "type": "literal",
+          "value": "Help"
+        }
+      },
+      "outputs": {
+        "openChange": {
+          "setState": {
+            "key": "p2HelpOpen"
+          }
+        }
+      },
+      "slots": {
+        "body": {
+          "name": "body",
+          "children": [
+            "p2-help-text"
+          ]
+        }
+      }
+    },
+    "p2-help-text": {
+      "kind": "element",
+      "id": "p2-help-text",
+      "tag": "p",
+      "children": [
+        "p2-help-text-node"
+      ],
+      "localStyle": [
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#52657f"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.5"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0 0 12px"
+          }
+        }
+      ]
+    },
+    "p2-help-text-node": {
+      "kind": "text",
+      "id": "p2-help-text-node",
+      "content": {
+        "type": "literal",
+        "value": "This card owns its own title and task canvas. Edit the project title, rename the task, and choose Todo, Doing or Done for its status. Changes here affect only this card — Save in Studio keeps them as the starting defaults."
+      }
+    }
+  },
+  "componentDefinitions": {},
+  "styleSources": {
+    "planner-card": {
+      "id": "planner-card",
+      "declarations": [
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#ffffff"
+          }
+        },
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "1px solid #c7dbf2"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "20px"
+          }
+        },
+        {
+          "property": "box-shadow",
+          "value": {
+            "type": "text",
+            "value": "0 1px 3px rgba(46, 90, 144, 0.10)"
+          }
+        }
+      ]
+    },
+    "planner-field": {
+      "id": "planner-field",
+      "declarations": [
+        {
+          "property": "width",
+          "value": {
+            "type": "text",
+            "value": "100%"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "8px 10px"
+          }
+        },
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "1px solid #c7dbf2"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "8px"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#fbfdff"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#243047"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        }
+      ]
+    },
+    "planner-canvas": {
+      "id": "planner-canvas",
+      "declarations": [
+        {
+          "property": "background-color",
+          "value": {
+            "type": "token",
+            "id": "planner-canvas-bg"
+          }
+        },
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "1px dashed #b9d2ec"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "10px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        }
+      ]
+    }
+  },
+  "assets": {},
+  "tokens": {
+    "planner-accent": {
+      "id": "planner-accent",
+      "value": "#3e6cb5"
+    },
+    "planner-canvas-bg": {
+      "id": "planner-canvas-bg",
+      "value": "#f2f7fd"
+    }
+  },
+  "conditions": {
+    "compact": {
+      "id": "compact",
+      "kind": "container",
+      "name": "studio-screen",
+      "query": "(max-width: 600px)"
+    }
+  },
+  "localState": {
+    "message": {
+      "key": "message",
+      "type": "string",
+      "initial": "Hello from my screen"
+    },
+    "accepted": {
+      "key": "accepted",
+      "type": "boolean",
+      "initial": false
+    },
+    "dialogOpen": {
+      "key": "dialogOpen",
+      "type": "boolean",
+      "initial": false
+    },
+    "busy": {
+      "key": "busy",
+      "type": "boolean",
+      "initial": false
+    },
+    "actionError": {
+      "key": "actionError",
+      "type": "string",
+      "initial": ""
+    },
+    "actionResult": {
+      "key": "actionResult",
+      "type": "string",
+      "initial": ""
+    },
+    "p1Title": {
+      "key": "p1Title",
+      "type": "string",
+      "initial": "Website relaunch"
+    },
+    "p2Title": {
+      "key": "p2Title",
+      "type": "string",
+      "initial": "Mobile app beta"
+    },
+    "p1TaskTitle": {
+      "key": "p1TaskTitle",
+      "type": "string",
+      "initial": "Draft launch checklist"
+    },
+    "p2TaskTitle": {
+      "key": "p2TaskTitle",
+      "type": "string",
+      "initial": "Design onboarding flow"
+    },
+    "p1TaskStatus": {
+      "key": "p1TaskStatus",
+      "type": "string",
+      "initial": "doing"
+    },
+    "p2TaskStatus": {
+      "key": "p2TaskStatus",
+      "type": "string",
+      "initial": "todo"
+    },
+    "p1HelpOpen": {
+      "key": "p1HelpOpen",
+      "type": "boolean",
+      "initial": false
+    },
+    "p2HelpOpen": {
+      "key": "p2HelpOpen",
+      "type": "boolean",
+      "initial": false
+    },
+    "catalog_p1-help_root_open": {
+      "key": "catalog_p1-help_root_open",
+      "type": "boolean",
+      "initial": false
+    },
+    "catalog_p2-help_root_open": {
+      "key": "catalog_p2-help_root_open",
+      "type": "boolean",
+      "initial": false
+    }
+  }
+}

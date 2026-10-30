@@ -1,0 +1,60 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Project planner — nested ownership"
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- main:
+  - button "Toggle Chat drawer":
+  - group "Workspace mode":
+    - button "Design" [pressed]
+    - button "Interact"
+    - button "Structure"
+  - button "Toggle Document and Selection drawer":
+  - iframe:
+    - generic "Screen canvas":
+      - main "Project planner — nested ownership":
+        - region "Project planner guide":
+          - heading "Project planner" [level=1]:
+            - generic: Project planner
+          - paragraph:
+            - generic: "Workflow: pick a project card below, edit its title and task inline, then move each task through Todo → Doing → Done. Every card owns its own controls and state; Save in Studio preserves your edits as the new starting defaults."
+        - region "Section":
+          - generic: Project title
+          - textbox "Project title": Website relaunch
+          - button "Open Help"
+          - region "Section":
+            - heading "Task canvas" [level=3]:
+              - generic: Task canvas
+            - region "Section":
+              - generic: Task title
+              - textbox "Task title": Draft launch checklist
+              - generic: Status
+              - combobox "Status":
+                - option
+                - option [selected]
+                - option
+        - region "Section":
+          - generic: Project title
+          - textbox "Project title": Mobile app beta
+          - button "Open Help"
+          - region "Section":
+            - heading "Task canvas" [level=3]:
+              - generic: Task canvas
+            - region "Section":
+              - generic: Task title
+              - textbox "Task title": Design onboarding flow
+              - generic: Status
+              - combobox "Status":
+                - option [selected]
+                - option
+                - option
+- contentinfo:
+  - status: Loaded the saved screen.

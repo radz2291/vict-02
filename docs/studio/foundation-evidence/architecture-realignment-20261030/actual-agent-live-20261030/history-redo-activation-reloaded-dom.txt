@@ -1,0 +1,8 @@
+- main:
+  - heading "VICT Studio" [level=1]
+  - paragraph: Credentials are provisioned by the deployment administrator.
+  - generic: Operator label
+  - textbox "Operator label"
+  - generic: Secret
+  - textbox "Secret"
+  - button "Sign in"

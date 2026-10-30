@@ -1,0 +1,37 @@
+[
+  {
+    "focused": false,
+    "node": "source-note-1",
+    "value": "https://example.org/source-ax"
+  },
+  {
+    "focused": false,
+    "node": "source-note-1",
+    "value": "Manual note: compare the original source.\nKeep uncertainty visible."
+  },
+  {
+    "focused": false,
+    "node": "review-1",
+    "value": "https://example.org/review-b"
+  },
+  {
+    "focused": false,
+    "node": "review-1",
+    "value": "Independent review: check the claim."
+  },
+  {
+    "focused": false,
+    "node": "review-1",
+    "value": "needs-work"
+  },
+  {
+    "focused": false,
+    "node": "source-note-2",
+    "value": "https://example.org/source-b"
+  },
+  {
+    "focused": true,
+    "node": "source-note-2",
+    "value": "Second source: independent provenance. local"
+  }
+]

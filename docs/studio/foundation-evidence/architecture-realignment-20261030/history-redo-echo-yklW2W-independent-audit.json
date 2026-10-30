@@ -1,0 +1,2707 @@
+{
+  "status": "PASS",
+  "scope": "Read-only independent receipt/hash/source-byte recomputation. No package build, DOM rerun, browser, provider or server activation.",
+  "receipt": {
+    "path": "C:\\Users\\RZ1\\.codex\\worktrees\\vict-architecture-realignment-20261030\\docs\\studio\\foundation-evidence\\architecture-realignment-20261030\\vict-realignment-consumer-yklW2W.json",
+    "sha256": "33c5a9ab8497c96bb3dab7d4a5e4b7c6ce60542692991f21a043d84457c04733",
+    "sourceCandidate": "ab3296e6503a63b2587ed36a1e1a121179082396"
+  },
+  "counts": {
+    "packed-tar": 7,
+    "installed-artifact": 510,
+    "consumer-fixture": 8,
+    "production-output": 2,
+    "dom-log": 1
+  },
+  "sourceChecks": [
+    {
+      "path": "src/composition/GraphWorkspace.svelte",
+      "committedSource": "ab3296e6503a63b2587ed36a1e1a121179082396",
+      "sha256": "620bb6f704d8856432fc152aa6d13c17664bda3a5ed673fcef860e501e499315",
+      "packedAndInstalledByteIdentical": true,
+      "containsEmittedMarkerReset": true
+    },
+    {
+      "path": "src/editor/GraphSurface.svelte",
+      "committedSource": "ab3296e6503a63b2587ed36a1e1a121179082396",
+      "sha256": "dda4470be506a3c2b583c1ebde94ecd5c6e07ab9b654f3ff42e12782bedbc61f",
+      "packedAndInstalledByteIdentical": true,
+      "containsEmittedMarkerReset": true
+    }
+  ],
+  "buildModes": [
+    {
+      "name": "@victframework/contracts",
+      "mode": "reused-earlier-successful-build"
+    },
+    {
+      "name": "@victframework/ui",
+      "mode": "reused-earlier-successful-build"
+    },
+    {
+      "name": "@victframework/sdk",
+      "mode": "reused-earlier-successful-build"
+    },
+    {
+      "name": "@victframework/application",
+      "mode": "reused-earlier-successful-build"
+    },
+    {
+      "name": "@victframework/ui-svelte",
+      "mode": "fresh-build-check",
+      "reason": "tracked-package-tree-changed"
+    },
+    {
+      "name": "@victframework/ui-media-svelte",
+      "mode": "fresh-build-check",
+      "reason": "internal-dependency-rebuilt"
+    },
+    {
+      "name": "@victframework/ui-flow-svelte",
+      "mode": "fresh-build-check",
+      "reason": "tracked-package-tree-changed"
+    }
+  ],
+  "comparisons": [
+    {
+      "kind": "packed-tar",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\artifacts\\victframework-contracts-0.4.0-rc.1.tgz",
+      "sha256": "017c0587843869653f6bd723566dcaf39f2e89b2fb55bc923f35667be9d618de"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\contracts\\dist\\agent-stream.d.ts",
+      "sha256": "07ecb035588a9f9c523a689b2b24d54b7faab56bbba420f3c448d1a7ed0beccc"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\contracts\\dist\\agent-stream.js",
+      "sha256": "de18bc1f1dd6e7d44582c246dd8163309ef02392eb0dcaf5c1ad292b6d1a36e0"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\contracts\\dist\\agent-stream.js.map",
+      "sha256": "aacf617b1384662e4f4ab8e92fb5942b37cab67611c7805fa13911c3dee27c08"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\contracts\\dist\\define-contract.d.ts",
+      "sha256": "88a32e862a5fe37af92d8c3fb297aadfd938140a82f17f5fb1f5dd9cd965fae3"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\contracts\\dist\\define-contract.js",
+      "sha256": "c0fc360a27039b5cea87dd7bca40b566296d4b3eeda0f8413bb47fa1a854413b"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\contracts\\dist\\define-contract.js.map",
+      "sha256": "facfafd6065e39569fc38e079b13f548b66031cc45a69118a4ac91ee5d571215"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\contracts\\dist\\error.d.ts",
+      "sha256": "a190387fd065c9ef280de88bd754a7f2f26c74331f7d16744a5a0fc03a18d2bc"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\contracts\\dist\\error.js",
+      "sha256": "9aa1ef98878ca549c9596ae05bd0254c9f3f8153c694bb5910ab9801df5bc13c"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\contracts\\dist\\error.js.map",
+      "sha256": "708490a0a3ea5c6437ed74f5cd9457632ee3b03aa380ae9b6579102c9c06fc73"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\contracts\\dist\\errors.d.ts",
+      "sha256": "47a73de344b92f42b5e7a16129b339b20038c17b65f3890b007a05352c0abdfe"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\contracts\\dist\\errors.js",
+      "sha256": "32afe19f83f2ff3df1dcfd12143a3f3f3253adc3e0ddaf4fe7608fff7ed7d877"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\contracts\\dist\\errors.js.map",
+      "sha256": "6e7ca7cec2a814c915ef550451f7713d227c9adf8df7aef6ccf83b1412b0ccdc"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\contracts\\dist\\index.d.ts",
+      "sha256": "2859b96d0325f0d4a9b732fe1b1ceaf014e58d84e26db2d1a6c723e1b040e718"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\contracts\\dist\\index.js",
+      "sha256": "0308271d3a7a0c9c3a6b648d75d3ce3e7fd325ebae6c4d6807a787ff24ffdad1"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\contracts\\dist\\index.js.map",
+      "sha256": "71dcd024796149d99f3e214ee2c08c67241710e0cdb1dc5acb28c60aa4edb532"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\contracts\\dist\\issue-mapping.d.ts",
+      "sha256": "590dca4ccd33b45bfa7d093face697a59e133086d4b957eed91ee8ab963fe2eb"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\contracts\\dist\\issue-mapping.js",
+      "sha256": "7215cf822dd35ecd9b99ba05cae403eb659aec4387996d4287da2735a98c9ca3"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\contracts\\dist\\issue-mapping.js.map",
+      "sha256": "04b5867226850643dc53630b398a9b47ed0c9731f5d1c53097b45a6085b425ca"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\contracts\\dist\\neutral.d.ts",
+      "sha256": "8d24e32864546cdbe1c19ba2d73dae7a063653d5477ff096970dd32503ee2cb8"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\contracts\\dist\\neutral.js",
+      "sha256": "757e5a38576de88767c9b17103a4063dd35db63fea6ba7acd35df41fa0b6c8b3"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\contracts\\dist\\neutral.js.map",
+      "sha256": "4847cd5fe73de8752d1857583560686d035abdf416738bea6de63f93addc1e3a"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\contracts\\dist\\types.d.ts",
+      "sha256": "0d6c004d23454b19ee9505e6a4bd8669219a18dbefebd30eff0628028acb4c6c"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\contracts\\dist\\types.js",
+      "sha256": "17ed4f3e0fee700d1e33392e6920cb89ca06729102d04175b1e4535b4cc3677a"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\contracts\\dist\\types.js.map",
+      "sha256": "ee0c544565913c6ac5bec9d0e9c0ec291aec64bb990377767a12cebe3c85fc5f"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\contracts\\dist\\zod\\define-zod-contract.d.ts",
+      "sha256": "b03db050b52b1438a1c424d3010e4790433e6c57f8823569e4df7f8bfe11e6a3"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\contracts\\dist\\zod\\define-zod-contract.js",
+      "sha256": "ccfa23a089113e93665468e3be6a02f7540b9c4dad7039e91ac9c77c9ed0db7b"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\contracts\\dist\\zod\\define-zod-contract.js.map",
+      "sha256": "ce11d85b67929e9d0afff6f80d3bacb6546b59a5c20b780a1acf6a0efbd4c595"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\contracts\\dist\\zod\\index.d.ts",
+      "sha256": "b03791c7b32164cc7f1177a5977aed61d96223044cc38ea31ab327a7bfb4f1a2"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\contracts\\dist\\zod\\index.js",
+      "sha256": "7c7b1fdccdbfa5c8bc1ab8d72fa03aeacdd4b5cc50de72bf20d057b8ea6f5e63"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\contracts\\dist\\zod\\index.js.map",
+      "sha256": "95028d4e904bf785f9fb4685603ddd622380f68245f4a7e9ad5d9643f7103a13"
+    },
+    {
+      "kind": "packed-tar",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\artifacts\\victframework-ui-0.4.0-rc.1.tgz",
+      "sha256": "f0b5f78254211d36c1cbb27427fdd580da9c0421f20411d59ce3518827433500"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui\\dist\\authoring-semantics.d.ts",
+      "sha256": "802a1cac792ca7123dde82b4be50d1caaee942649ed7b5fb1d0f1c429dae531b"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui\\dist\\authoring-semantics.js",
+      "sha256": "baf54987261d31754b5892951705b76ff057cb67bb15eb75311796f0817cc759"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui\\dist\\authoring-semantics.js.map",
+      "sha256": "4702277e6481fd27d6377b8411c629a136e515fc65a97b46295f96269ccb1932"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui\\dist\\authoring.d.ts",
+      "sha256": "5c7d43fc58416369c7947ef0f058d5542362d946d3fa889fc0f527a13865f15a"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui\\dist\\authoring.js",
+      "sha256": "8e93b0032d636b17bcede1ec66507dd3534a781626cc07b2ebd66b03c1455bed"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui\\dist\\authoring.js.map",
+      "sha256": "8c8008160904570f9f9d04465c0563abf740bada74dc9e84878359689a832a10"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui\\dist\\canonical-error.d.ts",
+      "sha256": "99e922277e791b8f2ec02db3888d746958b302a991c385c92bd967e3465e8d4c"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui\\dist\\canonical-error.js",
+      "sha256": "af800eeeb2054935d70a250368e69d10733a9ca46df260cf174de063f2bb30a3"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui\\dist\\canonical-error.js.map",
+      "sha256": "ab752328e8704be891f2adb75e859e5290e2ccc32bff236e5951fcea615a345b"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui\\dist\\canonical.d.ts",
+      "sha256": "ebe78b0794d9351acad1347814a9a3679b6269ec610ab38c2b24bbb9e36a487d"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui\\dist\\canonical.js",
+      "sha256": "2a776f5be9296fae4c8340ab133068261bc09b65db1fcb0b83bc6dfef7a39469"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui\\dist\\canonical.js.map",
+      "sha256": "bdc8337523bbe4ae3e015c837251638a12742415f1e5082b55eb2c0f4e1f8e93"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui\\dist\\compile.d.ts",
+      "sha256": "9c53bf07e74ced7be33dae3c60b24449acbf649a87841b019fb0b3f01c8f087f"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui\\dist\\compile.js",
+      "sha256": "d10a329fbbf1c6c7fa76e2d49866e4bd582bcbafb2d59d47e8d81729189f60e2"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui\\dist\\compile.js.map",
+      "sha256": "306382802f8a4a3d28160656dd902dd6043e1ba9d1a98707befc857f13edacbe"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui\\dist\\composition.d.ts",
+      "sha256": "13364758216c226a93065188afb852da7dd5f15fecc3f8a2805d44dfc533dd47"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui\\dist\\composition.js",
+      "sha256": "c95698a11cfc77400906c538d5e41dc0861dc81538bd28a06cb1d073ba9b4098"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui\\dist\\composition.js.map",
+      "sha256": "fe360c5e49de6c67627fb14b8eb0acee7c21da3171da56ca7c12bb6c20e1fed5"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui\\dist\\diagnostics.d.ts",
+      "sha256": "ecda2dc64bcb65a324ca7ba71369cba3d89a8815341596eb9ce46e7aa500a700"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui\\dist\\diagnostics.js",
+      "sha256": "fc61b5653aa9e093f77a76ec35dde9b97ee9f85bceb97cdbecbd53da2ee5dc3f"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui\\dist\\diagnostics.js.map",
+      "sha256": "6fb2b9c6da97446f5785354d5aee910cd3fcec1c607772270f5c8349fa6914af"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui\\dist\\document.d.ts",
+      "sha256": "7048b45f86a3f988a4f2b731faee9c945a44e8237ac46e2c11111ba4aa536a15"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui\\dist\\document.js",
+      "sha256": "0047c65f20fcb9ddfb0ab08f34df2638dc484c16d345fdf83d789f39478ccdd1"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui\\dist\\document.js.map",
+      "sha256": "57bdf6f5568faaaf2175c2de1185fb068997bfe18635c2a9ee2a10341382bacb"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui\\dist\\edit.d.ts",
+      "sha256": "20fc8e58be0beb61906230c6912ca5738867d6ddccacc6a0882bb0e8d50cacc2"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui\\dist\\edit.js",
+      "sha256": "73700276103b4ae7e6832071a87bd4d4eeca41d4461d2c46c56f7d322df9b7ef"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui\\dist\\edit.js.map",
+      "sha256": "8497b3bb40eed8d2b3b6a5acab48bdcfabce3374e10b76c2c10fe2de97a11747"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui\\dist\\expressions.d.ts",
+      "sha256": "5d334d0ea1d0573a0c5355d7473cdc6cb715e0832d1f4f920ba508570fd81b28"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui\\dist\\expressions.js",
+      "sha256": "d0e0fda58a610d76d2c2d5e417fd194bfae9e48ddac8c7974f0c63b8686377db"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui\\dist\\expressions.js.map",
+      "sha256": "55f86c8f1887b3acfcc39f951b825eccdbd06eb45718434b002eb39f97ef148c"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui\\dist\\feedback.d.ts",
+      "sha256": "3457ba87c69c4267527695ae4c18a6cf69490e4eedf6de7c6b92d81a9f13403e"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui\\dist\\feedback.js",
+      "sha256": "761ab5f7c0d9592fac4f73448a6acf72637e3d4da5dcc18aa04353c329ac78ee"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui\\dist\\feedback.js.map",
+      "sha256": "e922c82e39a5c9f8d9b71cb98e747aee4e75ae38fc87139585b96d0b64cbb5a2"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui\\dist\\index.d.ts",
+      "sha256": "6a5b5b09b7c3497288bc6e81353edbedc922412ac8ef54ba90a2715dd411fa36"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui\\dist\\index.js",
+      "sha256": "5200dd5465ff7582a06d6d879d167f56546df654f3d253e939f498c091938732"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui\\dist\\index.js.map",
+      "sha256": "82ae9187aecc104a4c52f3a0c5c0862e38d678bc44d00c4edb9d3d349d39e2ad"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui\\dist\\local-storage-store.d.ts",
+      "sha256": "1b98f331463b6e0143c1b22f651c90b1194f5b62318fd260cd3017006f0df583"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui\\dist\\local-storage-store.js",
+      "sha256": "3ef7e8100da57113d7a7ceb942200e32a1a7a838d3cd4d5482be8baeb8b73538"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui\\dist\\local-storage-store.js.map",
+      "sha256": "bf4ee5faf6231b91387b6b0ba2733e35ba23cb8f3a709cc86a927a85f367b043"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui\\dist\\occurrence.d.ts",
+      "sha256": "ef9fd98c3c575a57d0b4abc94e60abf19d4c48e0c20490b7dfd07308f4b72b23"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui\\dist\\occurrence.js",
+      "sha256": "7b3e10ecb738207faec99caad6069420d66f5c34c4c7654ef1a8d6177a455093"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui\\dist\\occurrence.js.map",
+      "sha256": "a2fc34620559816ce45e56f16cb8545d94965aa205c5b0e288e7bcbbab2eae50"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui\\dist\\scenario.d.ts",
+      "sha256": "468a2c93010c0e8e8e2705f6f5e7f9e026ea0b0b3c286022308a1185aaac889c"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui\\dist\\scenario.js",
+      "sha256": "190b868313c258fed512bafc81c43804f75d5ba71370574da9e7a5c8bf447ff1"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui\\dist\\scenario.js.map",
+      "sha256": "eea6855d3ec04de953d8d8bbd8b3f782cc02df2ab2b9f8d1184b19ed7f350af8"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui\\dist\\semantic.d.ts",
+      "sha256": "90014e56efe7dbd4cdc831bebc618952986c3c7458b1042f0eebeb119475089a"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui\\dist\\semantic.js",
+      "sha256": "b9a4677747d8a5cb5a716319df3b9e3c24039369d6840581364bfd0dd8f6b37e"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui\\dist\\semantic.js.map",
+      "sha256": "1c33757c4e774dc6b603c3aea69df5010f075e1fab79f94aebef7bf007718de6"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui\\dist\\session.d.ts",
+      "sha256": "6b918bf3f29cceea250d5ea5063866f8f9405f80bba862de82d0cc3ab0dbb6a4"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui\\dist\\session.js",
+      "sha256": "713dd05a0399ad459eb767cbe74115dc48ba5724eab3b2940f8ced48a5883dd4"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui\\dist\\session.js.map",
+      "sha256": "51e8c3b6f5e20c52a81b71658755f94657c13d1d023b17432064799d885ff1dd"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui\\dist\\sha256.d.ts",
+      "sha256": "7d85afe71610b11eccf56c3481f2fe12cf6a847020c305b411f625b851a20e30"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui\\dist\\sha256.js",
+      "sha256": "e348daa7bbabd20ccd1b3bffff561f3fd12292b57e1c30d37d0eedd87d789d25"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui\\dist\\sha256.js.map",
+      "sha256": "5fb5eab78f8a29f224cc49e644e9d5c597ff37e6e4c254d6220c118d129db1dd"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui\\dist\\slot-scope.d.ts",
+      "sha256": "28822129a3dcaf495c5e6f535b8787b85db20fb84d1db4f90305a459e51d0adb"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui\\dist\\slot-scope.js",
+      "sha256": "75299b2464202041af19edcefff4bd980abd16c0ddd738e1fc5c8e2037ec6bd4"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui\\dist\\slot-scope.js.map",
+      "sha256": "921e2cd08a7219eb0639028021c8ded80af40b55a66d9dfc900d8f272c6733ac"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui\\dist\\storage.d.ts",
+      "sha256": "eb9753a4369e5563150995e68de6bbf19fec449120dc6205bde0fd4e64aa9516"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui\\dist\\storage.js",
+      "sha256": "aed4afbef764da20536803ef37fae7b44da7e85e08968cca1ef782c4e3843460"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui\\dist\\storage.js.map",
+      "sha256": "56f97a0b7c06e799a66e3e7b614191edb3c35825426f266832ae6ed6317ac8af"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui\\dist\\theme.d.ts",
+      "sha256": "394c2664a66efdaf57973d4080a0598855c791c95254d524ff1177dfd5d25af2"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui\\dist\\theme.js",
+      "sha256": "dd2ec173f5c89a7e5fa21b0e716a4c68f06b58aeb671aace49020ffcc735360b"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui\\dist\\theme.js.map",
+      "sha256": "d58897bb103431dd786e9219ae6da125b749643fb74fe2d9e5128228fca6ff9e"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui\\dist\\validate.d.ts",
+      "sha256": "64664c2be0574effab4389dd9326681cee1844528e51d4915a3d3f7a186cabd6"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui\\dist\\validate.js",
+      "sha256": "e4e0c3178cfbbe466baa51c58ddaec43f140ef08ee9cc8a36302760d2a461b58"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui\\dist\\validate.js.map",
+      "sha256": "f85bcd8a817f097b765a0725a76957e2266e240935fb068f3222f9da82e43956"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui\\dist\\values.d.ts",
+      "sha256": "36a467972253c880fc3540e1548993d274002800796725833fe00163191aaad2"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui\\dist\\values.js",
+      "sha256": "d4957a46073cc5590f379b927eadcf04f346b449220a0248dc6beaed3138d4a1"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui\\dist\\values.js.map",
+      "sha256": "8f823a19a3135ec14efbda7f9d7bb1a8c8307d226279b06bf1023468fcb70fe9"
+    },
+    {
+      "kind": "packed-tar",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\artifacts\\victframework-sdk-0.4.0-rc.1.tgz",
+      "sha256": "26ba8993f73f70071e57cec97471bf9c4bc4abde3137084be4fd4ee064f338f4"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\sdk\\dist\\agent.d.ts",
+      "sha256": "618b4f41d9e7d6d3fae268fc1700c7ee2e373e390354cc281f17a9d3384c0dea"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\sdk\\dist\\agent.js",
+      "sha256": "2530533b4723c4aeacb96940aa71e9d89a805dc45b1e186c0be683f2e85d12f1"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\sdk\\dist\\agent.js.map",
+      "sha256": "66cdd5aa77d00eb063b592c7f2da602af5f0324d5b8023c4373cee8ee9c33e94"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\sdk\\dist\\application-v3.d.ts",
+      "sha256": "bbb61fe43a2644d1d9851342ccb74dd3f8a123389ad4eaec44d6c712c9857801"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\sdk\\dist\\application-v3.js",
+      "sha256": "70fac5a39931e82f91c6050f5291eabe32bd526fe313a11d425384b1b1f6089b"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\sdk\\dist\\application-v3.js.map",
+      "sha256": "d7fc6a271ef1d8f046eb157317fccb638c3c1faae661025ba78e12c422a86379"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\sdk\\dist\\application.d.ts",
+      "sha256": "833f9eb923d202a851ecad0f9c11dcab8e8265c0acb23974b4a35a3052d71114"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\sdk\\dist\\application.js",
+      "sha256": "cd7040b75ff4c9650ad9eb54117b09e0ed4d8a3ab24a6fe14790822b9927fddf"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\sdk\\dist\\application.js.map",
+      "sha256": "4ecf7834b4b73108d591bbe0b2a740598b4ed37db2db3aedbafcca1235ac25cc"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\sdk\\dist\\authoring.d.ts",
+      "sha256": "cec7557a894c6af9e9b755f8e9d606c6ac7bb4f4bbf708473ace61184dc42d1c"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\sdk\\dist\\authoring.js",
+      "sha256": "ac1a6bdb81b6e24392458bf991b6ca2fe3dcb418e6922828c451ec9e73ccbd41"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\sdk\\dist\\authoring.js.map",
+      "sha256": "2da469c5084d626c7c7d8565ce3a8d7760c1a15b441875675e7ab2f7b4a1e51e"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\sdk\\dist\\capability.d.ts",
+      "sha256": "c23a524b724aa15abcb63c5a918567a8b194de28cbaecc51ba056135c0a270bb"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\sdk\\dist\\capability.js",
+      "sha256": "0b10ca04ae1947ab7cb961c1c951743e96b20be466c2c661e8089747d486175f"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\sdk\\dist\\capability.js.map",
+      "sha256": "d0dd302d6b51375ba70d0130a1f50da1452a7537c113901d1aac841fcc98ac93"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\sdk\\dist\\graph.d.ts",
+      "sha256": "cc402baa63eab09d60b1f980edf16814204b73d8e7cab40fb53757906d386da6"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\sdk\\dist\\graph.js",
+      "sha256": "7f91ccab7ee776c040112f657df88f2a1b238c85c0a7af15cba926c0befdf0f1"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\sdk\\dist\\graph.js.map",
+      "sha256": "5416baa89e9d30d794572ba1d6d31a7aa8a25ed320963349b34f9ec9d9a33d90"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\sdk\\dist\\index.d.ts",
+      "sha256": "a7431874079a6b1971c3203be2d6a8b0de0b9bd06cca6f4cfbec952fccb59f76"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\sdk\\dist\\index.js",
+      "sha256": "33923b1a5686ef04f5847f43f7af0d3e81fa139f00602a7dbe9c23f24fc5d717"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\sdk\\dist\\index.js.map",
+      "sha256": "32e82621b11e106f6328b9beada8a233cac3e263e602bbe04f71e110860e9259"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\sdk\\dist\\pack.d.ts",
+      "sha256": "35aced5649fe8f605fdb6c979f87a41872af95e1c75065d82601f9557281e58f"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\sdk\\dist\\pack.js",
+      "sha256": "714d738414f4bb225b22f0dd0c451838c929edd15b477a6b90c985977664a7a5"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\sdk\\dist\\pack.js.map",
+      "sha256": "1236c4472828d1a51fa6895864cb1732ee9fcee15081a42d76c75690ccb1af85"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\sdk\\dist\\zod.d.ts",
+      "sha256": "d1343933b6a4aaef0f6c74a34c342b97ee7c11b1b90f4f1dc44a93b5b18bdcbc"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\sdk\\dist\\zod.js",
+      "sha256": "771e8644453e9fbb170c959cb6a841757af60b0c5a116587b52720b43c7bb426"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\sdk\\dist\\zod.js.map",
+      "sha256": "35e4009b5ae43cfcdca326f94d49392045cc6fd0b0d58842142a49b78dd53149"
+    },
+    {
+      "kind": "packed-tar",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\artifacts\\victframework-application-0.4.0-rc.1.tgz",
+      "sha256": "ea0fdde59f165379154517f4be4ca99e3c8790033862e4a56f6df5fdb09b5db7"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\application\\dist\\compile.d.ts",
+      "sha256": "cd3fcb1a8d59eb3aff717ffd12a3136236b51d27c318b6add61ba01696063dde"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\application\\dist\\compile.js",
+      "sha256": "828ed8493e8bf6e7eb1fdaf5b70a3687097093f7756f91775bbca8a4d9264387"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\application\\dist\\compile.js.map",
+      "sha256": "478ab89d5c837536d18f0dd058407890f3242a2b7a9cbc189c34ee183af3fe32"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\application\\dist\\data-conformance.d.ts",
+      "sha256": "12051ba4611242898baeaf8f6ac19452380c7bd4f3ebae3e0122aabb7b05e331"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\application\\dist\\data-conformance.js",
+      "sha256": "9636164e3307e0160a880003827fff14677bef69991fad3fbb2625968f156551"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\application\\dist\\data-conformance.js.map",
+      "sha256": "afe4dd0cbe95d176f93f15c3447232d575ba27a43cdc1d2741f6e76a3c6eee90"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\application\\dist\\data.d.ts",
+      "sha256": "40b36b67c6b87a9b23a523b7caa75effb2a60db085a46cf63c4922fe1308b02a"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\application\\dist\\data.js",
+      "sha256": "965054e084d28f897183f5d37fd860d33bb77a0d54d6efffd8c6bd21d81c639d"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\application\\dist\\data.js.map",
+      "sha256": "59131d12ee14aa2b52c9bf9b5005299037bbba79e95d1060a01c8d445ac2f4d7"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\application\\dist\\index.d.ts",
+      "sha256": "19dedd1b1f13517cd5c3d7176c136e3b00034514fca47991c4399344c24bdd6b"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\application\\dist\\index.js",
+      "sha256": "72c88db211042a55a64d3547078806741035332ff22f4577a47e7fda57c6da06"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\application\\dist\\index.js.map",
+      "sha256": "35bf4f4a088cd6a28aae3184a9d47166ddbc4c38533f94a0c2ccc9f5f6ecfd4b"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\application\\dist\\release.d.ts",
+      "sha256": "f7288aafbe26ccf31deb467ce47429b87adb998b01a8d44fdbb2e8d971d9ce23"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\application\\dist\\release.js",
+      "sha256": "849d2acc1826d54511456ef3d24ee6db32c084279c7c526b3462d3fc1c454736"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\application\\dist\\release.js.map",
+      "sha256": "4e24196ae92ff85a88f376d11d5ed394774065561f4d8143425e9c38525914a0"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\application\\dist\\renderer-conformance.d.ts",
+      "sha256": "434463ac8de72577d293c8933d0a0d7ce3110e4cf5d549c67f5e62627d8ffa5e"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\application\\dist\\renderer-conformance.js",
+      "sha256": "5a3d0788aef3a585e59653036e70aa89ddd75dbccfbd1d9bf366bef77370fc17"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\application\\dist\\renderer-conformance.js.map",
+      "sha256": "5ccf2bcf26f11414cde77dcded670b7a6c5fe26806b92961b9560206be93c21b"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\application\\dist\\renderer.d.ts",
+      "sha256": "953418b13c9a0bd4fc808dbfe41a84a12914702fcc1fe388cc6409cbbd724bc8"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\application\\dist\\renderer.js",
+      "sha256": "f605f93f3ffd903323d818dff092063752f3b226b84d39cfc1c807c00f02f712"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\application\\dist\\renderer.js.map",
+      "sha256": "4bfb0f1372f80596f81a6e3e9acf75caf4c7baa418e43b84f8fd971796943f1e"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\application\\dist\\sha256.d.ts",
+      "sha256": "7d85afe71610b11eccf56c3481f2fe12cf6a847020c305b411f625b851a20e30"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\application\\dist\\sha256.js",
+      "sha256": "e348daa7bbabd20ccd1b3bffff561f3fd12292b57e1c30d37d0eedd87d789d25"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\application\\dist\\sha256.js.map",
+      "sha256": "5fb5eab78f8a29f224cc49e644e9d5c597ff37e6e4c254d6220c118d129db1dd"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\application\\dist\\testing.d.ts",
+      "sha256": "92eb75e6a60335727ce3dd2a6ae54c9add8c5b76772f7adbc2e6d12272a90ec3"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\application\\dist\\testing.js",
+      "sha256": "7b12ce4e326490e10cca147af4585211643b6536d28dbf4cfdb4188e17c269ed"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\application\\dist\\testing.js.map",
+      "sha256": "3e9628132a453b7cb1fd7ec61e64cbd019a5366ce2bbb8583bc3a9759fba4ab4"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\application\\dist\\ui-attach.d.ts",
+      "sha256": "005e3a5d2752d4849302d5b007718e3610dbc52d601a2b93865d055851f40dc7"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\application\\dist\\ui-attach.js",
+      "sha256": "35bda8dd7967519c38c089a103034d3caa02e2bf74d674def0adbbbf1b706ab6"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\application\\dist\\ui-attach.js.map",
+      "sha256": "63c96811cc2a33919a2d6879f2fe92cd6f6b3f578b71f6e83e52b2649f77abf8"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\application\\dist\\vocabulary.d.ts",
+      "sha256": "4cb8e3b6947d46529e45bd507d3c64aeb74dc806a24bd7829e01f94886908de4"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\application\\dist\\vocabulary.js",
+      "sha256": "f26d572f26c57b3f576133de1506435a6085179044f89cb5bb7a7e7ff2c8236b"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\application\\dist\\vocabulary.js.map",
+      "sha256": "fd1a863b77f5ecf726453d0911da91b87bf69a712960947b9abe5df0b7e816b2"
+    },
+    {
+      "kind": "packed-tar",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\artifacts\\victframework-ui-svelte-0.4.0-rc.1.tgz",
+      "sha256": "9514c7d76529372b9bcf1373d1cd5e0863f9583f72df3dc9c41840fcd0aa28e2"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\CATALOG-USAGE.md",
+      "sha256": "342fa732e43f9e824c84e777831a22afe7ad0eb856eb9597d0706ce56e2f3d5b"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\FOUNDATION-CATALOG.md",
+      "sha256": "80a16701b470f094b0d1ac16539b6b511ccb10e5919f851d9059c137eea5f2c9"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\LICENSE.rhea",
+      "sha256": "230594c9dedb06fb0759381a520b449c1b47b0f63b95fc88ef9d7e851e2540a9"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\RHEA.md",
+      "sha256": "4301414a83144ec9f2112093c8bfccae49e9ac4938eb6ed089a906b6ca4399d0"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\catalog-coverage.json",
+      "sha256": "04b2b954b3821bea463a4ea96945d268ecbc75744859afd703a6dd2734ae9b79"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\catalog\\accordion.d.ts",
+      "sha256": "fe9d4d16ac755135fdc3e46cb78fb061505c31fa62ddef980c9980d7f6cda617"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\catalog\\alert-dialog.d.ts",
+      "sha256": "9993e6c5118651320cc7793d5b92c2b3704e14898e784dd7e5214636e12c6f50"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\catalog\\aspect-ratio.d.ts",
+      "sha256": "80d7223ac3157ec13f7105ab6a3cc2d42409374b4a288cc4e823ed445455862c"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\catalog\\avatar.d.ts",
+      "sha256": "0353d3174f3ad7c3bb1d894501a6af80be5ba95ac9f45f56e41c8329b628b607"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\catalog\\button.d.ts",
+      "sha256": "074628e5cfe25756fcbabf116783133aeb46ef2675d2fa49ea59ddca810dd40d"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\catalog\\calendar.d.ts",
+      "sha256": "01c63bbf38e64d1a5d9791041213ec27d6545fe322b8bda0900f614496503f41"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\catalog\\checkbox.d.ts",
+      "sha256": "5f3d616163cfbfab9931c50d4996a674ec1517761a1db82cec2b768e13d9ff6b"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\catalog\\collapsible.d.ts",
+      "sha256": "0dd81f0e52384a385d467e40e57a2e14d1427fe8fdb8c35772a09b93ea99b4e2"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\catalog\\combobox.d.ts",
+      "sha256": "8a1bad9033cf9dcc9a1dd69b3819d87eea010684f67f213c07cc73ab6eb7ee7f"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\catalog\\command.d.ts",
+      "sha256": "dd2e9520033363b3dc27f146c9827644729ef8364c307fb12caa7ba511ec43f6"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\catalog\\components\\authoring.d.ts",
+      "sha256": "11b91e2f968da4a5c3dfe70a4e04d383cc241f74240263f0f43cd9d8b4ac144e"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\catalog\\components\\b2-descriptors.d.ts",
+      "sha256": "d8233bdda59c96def1dc4460dd7f21d266c6fd08434ac8a8ce97e541836d0209"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\catalog\\components\\b2-implementations.d.ts",
+      "sha256": "2818f4d8e1221b4a6c326da2ea2878aa3ef4c1eacf2281af01844a8a0d8b5286"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\catalog\\components\\B2ComboboxContext.d.ts",
+      "sha256": "bcc8e1b1d1affe390b0c359783f8658779ca8b121373ece47660cb09db372b00"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\catalog\\components\\b3-descriptors.d.ts",
+      "sha256": "3a85efc96387b1ff449ea28f7795453dd73bcbed79d7099e9f76eaddc86a7f84"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\catalog\\components\\b3-implementations.d.ts",
+      "sha256": "79c89200615e4754eb4a66d1ea05fe40e8e0a7973e39bd5e1ccf8fa3a8b08b51"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\catalog\\components\\b3-values.d.ts",
+      "sha256": "20a9f51319ca2cc3fed6af228f9611e4263b17f192b7917a631efe0aee8cf7bb"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\catalog\\components\\b4-descriptors.d.ts",
+      "sha256": "f0473040b2ee0ef6eaa4af9de97a8f355e2cd94996d668328c2b2ce8723e11fc"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\catalog\\components\\b4-implementations.d.ts",
+      "sha256": "a672de01b68f7795b8b9adbb727d68220246c56dd565badc54b555354e49ee1e"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\catalog\\components\\B4MenuContext.d.ts",
+      "sha256": "d3d34f37fef0c6ee1e99e2db8e108238f6def0475cdba1ff67d6504d8d173a38"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\catalog\\components\\b5-descriptors.d.ts",
+      "sha256": "b380147f3c410009a95396e5025430d55282af7a1f8ff3d51330cb9fb2ee5bc0"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\catalog\\components\\b5-implementations.d.ts",
+      "sha256": "d33b897da6464d7617ff04e2083df0a2c4074a79b65a3c95ff7b17e8864daee7"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\catalog\\components\\catalog.d.ts",
+      "sha256": "123958c965147987e56fa39ec8967a8f4e9f509db76be1b3891ce0715ad64fd7"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\catalog\\components\\descriptors.d.ts",
+      "sha256": "ab753a3b7fca69f8e287893121aad0f24fb0412e90ea621c786bb57cfc1a7353"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\catalog\\components\\focus-return.d.ts",
+      "sha256": "09fe7671305e5d97b1e38a8074da5e070ced5878783c9c8f5d3177153a0c58ed"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\catalog\\components\\implementations.d.ts",
+      "sha256": "421067403e29037f216337d6f434637329e1c60a5b72528d90bb4d3955c55b91"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\catalog\\components\\portal-layer.d.ts",
+      "sha256": "01b3613414c2418255723095d2a81e136ada36e5cfa4fa58afc218552c89cf49"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\catalog\\components\\range-state.svelte.d.ts",
+      "sha256": "6c65e1dab5b4010446f55ec0e9cff7a61374ad158e2626be9f639d61eaca057c"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\catalog\\context-menu.d.ts",
+      "sha256": "16097e3b970321a8ddf59040887f55517dbb0d0fcc63168a497a3d4072fb0dc4"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\catalog\\date-field.d.ts",
+      "sha256": "0c76fa790bd1fc290b8a632a3cca7eb34476234a75b7c4bc433a0e9264858b2c"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\catalog\\date-picker.d.ts",
+      "sha256": "aa48e6dcb235c5b94cf4b90e58cd9b607b7f799be4b2fbe681351a37f22dc6f1"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\catalog\\date-range-field.d.ts",
+      "sha256": "4c2386c7d605c157f19e400b2602924665f87fffff7b7aa929cfba927feef9b4"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\catalog\\date-range-picker.d.ts",
+      "sha256": "b07d396ec898f4de424a4782da2c901891a00b813f30fc719bb8ab290f22c02a"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\catalog\\dialog.d.ts",
+      "sha256": "c1fa56c1d901713c0bd7be6daa3f98c17653cad3609f95df11063160791cbc19"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\catalog\\dropdown-menu.d.ts",
+      "sha256": "bd3655ae372a9b8d4524f08a68b573a8d88c12cc129887bf42750ec92401362b"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\catalog\\label.d.ts",
+      "sha256": "0b2025d41091566c729c8b432a87be12634f73a426d2dfe3b9a09a915719651b"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\catalog\\link-preview.d.ts",
+      "sha256": "620294a37780a8a641e7cf8c97d554c53c85537dbca22fb2976f47034c6bc808"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\catalog\\menubar.d.ts",
+      "sha256": "c34bbe3a99e85af180126d7ef8a308b765685c5600febd4a197334ea179d99ea"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\catalog\\meter.d.ts",
+      "sha256": "487caa828240410f7eae1206669ec5db03d5b9a588ecdfb7a6dddb53d70c0f26"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\catalog\\navigation-menu.d.ts",
+      "sha256": "41953ba154e2d8d004a4867c341972dd7c2e6c650de898e76dc2f5db44feedc3"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\catalog\\pagination.d.ts",
+      "sha256": "2a53d104629b5e6cddfe6a13caadfa2e7776e42d9119e8d4e361ea587213da78"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\catalog\\popover.d.ts",
+      "sha256": "9dc364da9ffb434522567be01582bd798033f3f01ba70ba51027d96f9b86c48b"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\catalog\\progress.d.ts",
+      "sha256": "a84ce7c2b6c8f341dee5835a8dbcec06f82fb167f36dc48c3234a5b0d3284dae"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\catalog\\radio-group.d.ts",
+      "sha256": "ee8462339fb7ecef622228956ac4d19c0d1620463548632f4c3994a63ead6a13"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\catalog\\range-calendar.d.ts",
+      "sha256": "04484b94d4554e96edb54d1705cae4e33921e2728cb2fe118d65c80d316bea2c"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\catalog\\scroll-area.d.ts",
+      "sha256": "29d445799a953a657d9db13eb40b2eccb0b8cf90ab9ea1a109f72454334c2bad"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\catalog\\select.d.ts",
+      "sha256": "8ee4d5c638f72d372e56cb76e4232442ad7788d6280f3bef5a5afc4f6f8f8f43"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\catalog\\separator.d.ts",
+      "sha256": "ef20dd5231351745e1d9e790d9063c66069de5396e4d1d74caf37e2e37c1f270"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\catalog\\slider.d.ts",
+      "sha256": "6e9d193727253aaec63299b6b4aec710fffa81a097b6c18525447d071fd1e38d"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\catalog\\switch.d.ts",
+      "sha256": "9619be12ad63250c673577cfd6117d1ea15c01134752ef889bcf22832321b9f5"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\catalog\\tabs.d.ts",
+      "sha256": "e630e573790feb531c42caaf5b43715feedd48e51b7bc6b3a524a30cc7574063"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\catalog\\time-field-context.d.ts",
+      "sha256": "1d77b6706a8d99ed7835c7f4ad9c0540b2c52b0d1b055971a8b6573c825d23d4"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\catalog\\time-field-parts.d.ts",
+      "sha256": "6a157a1e9a300883175d8379513eb9af445cb745331afaa3974f0522d5aa3383"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\catalog\\time-field.d.ts",
+      "sha256": "a227eb4ca413d88a41d14481d0d98b1a0565cb48db34762bb75404164cc24418"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\catalog\\toggle-group.d.ts",
+      "sha256": "305230a4bdb6d60911d2e9accbf68aee817e6af92b934a5e7a215adc849e8071"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\catalog\\toggle.d.ts",
+      "sha256": "4afb63f4f2821a9a04d81b1485443e2ddf08e842c7080080e92bca8bed9b6532"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\catalog\\toolbar.d.ts",
+      "sha256": "33d640852e85f4974323fcd70658cb52cd051dab168f926b1ce9436111053a38"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\catalog\\tooltip.d.ts",
+      "sha256": "dc017a78538ed4ea770613c1e6d88d4874013acd7802a368ae64dfc3106a4e97"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\component-actions.d.ts",
+      "sha256": "ac386a39728b5913bef3360dc30ed0ea9782ffb7319d8c1094c908e878ec92a2"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\component-context.d.ts",
+      "sha256": "1db97c4f530753653da1562938424e7c5d62f00230091c67996c79ea2aefd1d2"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\controls.d.ts",
+      "sha256": "f51680928b8927f95819b2c63c06b3f774c6ea3543e4e7a2a72d60f2543bde97"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\dates.d.ts",
+      "sha256": "5a8bed3ffdb07ebcb73b74522090dbfcbfb6dfc404c80d0f1a12caeca3fc24f9"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\document\\authoring-runtime.d.ts",
+      "sha256": "2ebe3cbc842b4aed3cebb905e3b29fa85b8d0f3ea0dce3235a5d6236dab54eab"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\document\\extensions.d.ts",
+      "sha256": "97177fed09851c4498b1cb679157be4c3414202a06b61633d9db271ddf46cc01"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\document\\logic.d.ts",
+      "sha256": "14518dfddfa9f456c08b3d4b56dd7973a10ad41a9d63358324897a3976421c35"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\document\\slot-labels.d.ts",
+      "sha256": "93a9a6947f12f82b95a30219b13ff642812225e942fb27bd677f5575238a6e08"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\form-values.d.ts",
+      "sha256": "7d5c154f7883ec9ab0aef7df7921515f9fae79601751cee1715cb0192878af24"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\index.d.ts",
+      "sha256": "11ed09caed0f590aecf7513b840ea5b43f1aadf2a60dd905adccafdb1979fa8b"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\logic.d.ts",
+      "sha256": "c1becb7dff3e75ad8321bc1a0cbf9a3dbdc7e495259318c1260649a4691793c8"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\mount.svelte.d.ts",
+      "sha256": "913e500d0c162b8196938f0052303a5ab5129ccfb3c7a2ea5f9032fd6b9ddc22"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\owned-dialog.d.ts",
+      "sha256": "abce3337b7e8accbb5e6e5805ee677445f3aa5347662587e25a567e339b673b3"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\owned-menu.d.ts",
+      "sha256": "ece867578c97a86523ac90afde237a937875f236e6ba6d814959c92793405d53"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\owned-popup.d.ts",
+      "sha256": "3ed7e14e75fb48e99f9a79dd25dae72156ad3e87afa5a0e9854adc8795d1a122"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\owned-tooltip.d.ts",
+      "sha256": "0e006ce3cbdd68abc9eef223904754353b4fc44e4928f57e4aeca9a1ea1b6dd2"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\presentation.d.ts",
+      "sha256": "997fe5263cedf18dc21d6b03fef69825ffe15464adc922a57d61cfcaa6d71b49"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\primitives.d.ts",
+      "sha256": "cb9a2e46475bf2ea0232cc926b10be64576a13add0ba8b2e4484d8c481ff211d"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\renderer.d.ts",
+      "sha256": "33012da975cd6a5020088ef08064794aad22d09703f7245af48deff310388885"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\rhea.d.ts",
+      "sha256": "c634fe95782e99c64ca4dd036276ef9f0d6e18e3ebcba92d517646f20190e5a9"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\viewport\\context.d.ts",
+      "sha256": "72f1b8c71a295455594180aeef242010dc13c8e64b9aad9c106a4b39e2155eca"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\dist\\viewport\\index.d.ts",
+      "sha256": "6bc43bb14348d8a2a7a1cc7fd01b05d8b0d22c2d91f1f1e2c9bed26250f5fd6e"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\rhea-upstream-manifest.json",
+      "sha256": "c1120d66f69acdd1157433bf486f0ded551a70b7a464c73f64338ee39d582a58"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\ActionButton.svelte",
+      "sha256": "bac0a290c906dcbe7af4df8ac601105abfe6d3aaec371645aebef3b97696c496"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\ActionFeedback.svelte",
+      "sha256": "5cc4375a1eb0bb8b5a1728e9a6e55cf659678d8f15e6cdbf35c28e3fdbd9ca8a"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\AppShell.svelte",
+      "sha256": "5dd0b8b46070ef45538b4d2235536ad42e9d7dccda6a667c17d6f939d00abda3"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\Button.svelte",
+      "sha256": "3be03f1613a7af2279bf9da227df757b59a8a3fac2a04f1469bf21f844b6ba6d"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\CalendarGrid.svelte",
+      "sha256": "0bd265283e3b55706d989ad8d35fb6ce10b4d8cf9bfd2d1e101cfef999b6c24e"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog.css",
+      "sha256": "b1e4be220d1c0f8d58ba209dffb3358e9849d60a336c28ca8864c669c73b2e14"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\accordion.ts",
+      "sha256": "fe9d4d16ac755135fdc3e46cb78fb061505c31fa62ddef980c9980d7f6cda617"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\alert-dialog.ts",
+      "sha256": "9993e6c5118651320cc7793d5b92c2b3704e14898e784dd7e5214636e12c6f50"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\aspect-ratio.ts",
+      "sha256": "80d7223ac3157ec13f7105ab6a3cc2d42409374b4a288cc4e823ed445455862c"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\avatar.ts",
+      "sha256": "0353d3174f3ad7c3bb1d894501a6af80be5ba95ac9f45f56e41c8329b628b607"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\button.ts",
+      "sha256": "074628e5cfe25756fcbabf116783133aeb46ef2675d2fa49ea59ddca810dd40d"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\calendar.ts",
+      "sha256": "01c63bbf38e64d1a5d9791041213ec27d6545fe322b8bda0900f614496503f41"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\checkbox.ts",
+      "sha256": "5f3d616163cfbfab9931c50d4996a674ec1517761a1db82cec2b768e13d9ff6b"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\collapsible.ts",
+      "sha256": "0dd81f0e52384a385d467e40e57a2e14d1427fe8fdb8c35772a09b93ea99b4e2"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\combobox.ts",
+      "sha256": "8a1bad9033cf9dcc9a1dd69b3819d87eea010684f67f213c07cc73ab6eb7ee7f"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\command.ts",
+      "sha256": "dd2e9520033363b3dc27f146c9827644729ef8364c307fb12caa7ba511ec43f6"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\authoring-compatibility.json",
+      "sha256": "333b5327e45281bf12dfdbf28442dcb22dde2130d438a05c7df14e1c314d5af8"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\authoring.ts",
+      "sha256": "c6458492e6e3b98463aa6618b9b100af4d5fd89173b02b02bd0e3953ae6939e7"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\b2-descriptors.ts",
+      "sha256": "878d02f3f42fb19385e4186009ebcbe611a6153111e8edefc846f5621e11e61b"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\b2-implementations.ts",
+      "sha256": "e9c3d06ecb10a83061f04417081956691254913a0c0cbe0f1b7d8fe5c677898a"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\B2Accordion.svelte",
+      "sha256": "4bd3bc99d8d39f5bd830d3bf8f3b8306b6bf775d9656ff29b3b3fb6bff4c0edd"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\B2AccordionItem.svelte",
+      "sha256": "c10701d097422497a311177f4080c3c3096b5cc57e5127190bc45bf6739651e0"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\B2Combobox.svelte",
+      "sha256": "0c9429adc9d4855221db6a5f152bfdb06f3b5093233b1b3a7da1389dceb1648a"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\B2ComboboxContext.ts",
+      "sha256": "6a5d18ec30c08b907925f3ee7699d0492e967e0147bde8af1af7b7fa6507d4c9"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\B2ComboboxItem.svelte",
+      "sha256": "88d8ef39c9232c21a42d1d9eadd6dd0c721d4163df73b8aac5bcaee4377899da"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\B2Select.svelte",
+      "sha256": "62e64b9f3e07322f0a8cf5d0a8b31488311c6671a670a9b6717975b5a341671e"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\B2SelectItem.svelte",
+      "sha256": "821aea63001ba8ad96ea72229c653ff8d05e19881d65b68a9c37d42ed39caf6a"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\B2ToggleGroup.svelte",
+      "sha256": "7b39061a7b0fb8fd9bc2bf3f9458a4d27f09bf3bfd448282a5807fc0a9abe30a"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\B2ToggleGroupItem.svelte",
+      "sha256": "60c3cad8649cbe4421254994946226c5d8c2e92286b1475323c27c979f880bff"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\b3-descriptors.ts",
+      "sha256": "d4fd6166e0ef58c3210468d8583d27607c2926b555f23c0f58f3d8cfbc3f244f"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\b3-implementations.ts",
+      "sha256": "f7a2adecf85df99d86ef0c16053aa84d8b42fe2ba8af42327f6218d01c5d8701"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\b3-values.ts",
+      "sha256": "d82d58b914420ea8f3ac14b6c708b4a0b088aa9d2bb27f83ec643e90e76d76c0"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\b4-descriptors.ts",
+      "sha256": "08713ef250bcf9966236d19a3c0df99d5b3331cb25d4d3bbdee17138c677515a"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\b4-implementations.ts",
+      "sha256": "32eabccb337ac7f171bdc0b86d5f99b68880393f23234a38036f5b081eceb8d9"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\B4Command.svelte",
+      "sha256": "97c9e2bd0cad7165756771293b1d35bd990dc05998befcce0190edaac59c6a46"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\B4CommandGroup.svelte",
+      "sha256": "0bfb7f440a540be1cb9344f703bda5a4cf3d0b2b6804cf9925f411f8b070de1a"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\B4CommandItem.svelte",
+      "sha256": "e784c889c68fc4f3c924c7814a45171dc432b2d923cb7b077709a18605339f56"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\B4ContextMenu.svelte",
+      "sha256": "c6e7d88485d33ddf01ff63cce199b081301a52fe58dd4f5d8f9c65326696b99b"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\B4DropdownMenu.svelte",
+      "sha256": "23cd9aa31bc7c0a919e7df653f644628019e439e0a830149d04dba60ce286ee5"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\B4Menubar.svelte",
+      "sha256": "ddf29cd8bc63da6ba257c1643bcb2548537240210a76ed8b5e54ba07cfe3681e"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\B4MenubarMenu.svelte",
+      "sha256": "b300ed16e1cb1142c235987a55093d066ab53894f716f8ff84799297ef5ef25f"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\B4MenuCheckboxGroup.svelte",
+      "sha256": "e7c25020d9538128f6f3a2b68b7db6f2205c2153fdf2f9ba7e13ceacddd72b7e"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\B4MenuCheckboxItem.svelte",
+      "sha256": "5d39d333f47be2d49fc2ce4b2e970c274a3c5578aee073567312d7d788ff5105"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\B4MenuContext.ts",
+      "sha256": "d702d89a3c26637c81db45d1fc1d0caa0f27676ef34b58db05ba6348723cf329"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\B4MenuGroup.svelte",
+      "sha256": "ec1b6962e2557fd108f70e6cd572f22cd02de34e6eb21819b15d33e6ce075d90"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\B4MenuItem.svelte",
+      "sha256": "2a7abf9c9bdb5657f832c7285b108d0cca078d4c59b684f3c82f01068332b79a"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\B4MenuRadioGroup.svelte",
+      "sha256": "0b47d5f8163d83b25ae65cf255d7bf156ddcd52676bd5a6c676ad25ad9c26c62"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\B4MenuRadioItem.svelte",
+      "sha256": "39fac931ffcd38dfe68a3707291e84b7f4662cd9c4e7f6f51f582bafe8b99107"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\B4MenuSeparator.svelte",
+      "sha256": "319cdc906b60399edc2379bc7ff51798a467515cc0a3f3533c30892343290862"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\B4MenuSub.svelte",
+      "sha256": "2f7977d685e9de25944e06eb5105d3d3b51378c092b3cc9d8ad71abec3c78a44"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\B4NavigationMenu.svelte",
+      "sha256": "a93995421163bc98ff65aa18a31a9a63534cf530b3b4e026b947dab8c9fb7415"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\B4NavigationMenuItem.svelte",
+      "sha256": "3c069c7391aba27200dbf8e9a18647504d235a3031e004ca7550621ca7922365"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\B4NavigationMenuLink.svelte",
+      "sha256": "28658f8274986e846b56eac3a17f208afdbf419719cb152c2f3b9f3a0761d7f8"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\B4NavigationMenuSub.svelte",
+      "sha256": "917e9bf03d81ad055c202d8542fdb628eb3d5b09ad426f0056f56e6dbdd90b6b"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\b5-descriptors.ts",
+      "sha256": "be92743b57ec7b024bb3d9a5386e8890a95312da16523aed6ac76325ef0e9b0c"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\b5-implementations.ts",
+      "sha256": "1c6ddeefd590b210d6a1251c5d104415bca69afc4b4ac574cbe7c03f32fae95f"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\B5AlertDialog.svelte",
+      "sha256": "4ca8a3340596da31f8c1d81553147a083b061e41e2d2e6c7daef1a640b035ebb"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\B5AspectRatio.svelte",
+      "sha256": "abb7ee7527f29b9ff6250630fb608fc44237bdcb9e04e24152c16dbb082e80e0"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\B5Avatar.svelte",
+      "sha256": "5cb98cfcb63159c995d4fa152aab2f4ddb04ad1f78bf25f7e7715eee07489b7c"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\B5Collapsible.svelte",
+      "sha256": "6819a3ab49f59f4757ba8aba433b6400d194bcd57f138070ada6fe00bf6db8d7"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\B5Label.svelte",
+      "sha256": "d8dc43b1c564d2b8767294e22e45ffe2866689bf47706a0b0a315467fcb8e79d"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\B5LinkPreview.svelte",
+      "sha256": "4dcb6b0c62407e8afb1c2249856040c930750e0a1e56048808f97c523180048b"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\B5Popover.svelte",
+      "sha256": "4bab1755aa235d063fdae10fb8723f6d04d7b1020b535e23cc8a4683fe47f464"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\B5ScrollArea.svelte",
+      "sha256": "a61846f584a91bb9b36fec977200c0be9d127226517881968d1edcbc0bd3b4b9"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\B5Separator.svelte",
+      "sha256": "f5d2c6addbc24666f5a54cb42ec29448b911c7e970cf3ba5dfe60dbebf2adbbb"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\B5Tabs.svelte",
+      "sha256": "15389156c059519337117dbeae0df14b0e31e59fe1fa6869b9943e64e6efba77"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\B5TabsPanel.svelte",
+      "sha256": "11a08f16540ea18ef622e77938103475fd17839694deb6706c959f042ae3b0ad"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\B5TabsTrigger.svelte",
+      "sha256": "4fb2dbf892c83b06324d638e032b166b971053dab69a52f98431ac126b90d703"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\B5Toolbar.svelte",
+      "sha256": "568392ca34694779267ee2a0199dd2d9974b4c3bb9416431d02a9d079be74498"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\B5ToolbarButton.svelte",
+      "sha256": "e7cb7d73ce999f42ced4cd42da359af402130ca35cc15ebb4d39ff7dddbc770c"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\B5Tooltip.svelte",
+      "sha256": "c875d1e8e1679f33b5bd1ce5c9ade2e998914a705584030cd66b6029c4aeff4f"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\catalog.ts",
+      "sha256": "8feccf197e5e428ab5d9fca85600a7905c56c5f0c3d2890075469f3462d89d13"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\CatalogAppShell.svelte",
+      "sha256": "ef24782a95a3a0713f69882cbff28f9f29e242e8a74f88bfc2ef0ab78c9bb307"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\CatalogButton.svelte",
+      "sha256": "c7b862e3d9ab87995a9949d6d9ea37ed738ff36602f7594c2ad7113972a893ec"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\CatalogCalendar.svelte",
+      "sha256": "fa321ee4aa3f03bb85a415e3dfd8ec20266d51e2b408ed72faea9dda9291195c"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\CatalogCheckbox.svelte",
+      "sha256": "34044232a5361baf979d06f3ca673aa90ef7492d910e664f118e8ee0816fdc60"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\CatalogDateField.svelte",
+      "sha256": "dd6f0c71051053647e57170b69592926a4211454440b4e002d6519db08129159"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\CatalogDatePicker.svelte",
+      "sha256": "ec8661d72646db6ac2fef1a400a2928dab972676c337b85068330f51ba51ac2c"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\CatalogDateRangeField.svelte",
+      "sha256": "3bc79cbd4143046f76955e73224d371384777526f4c409a375152b6a2aa7e301"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\CatalogDateRangePicker.svelte",
+      "sha256": "835845386cd1bea9190e3d5ec3c5f248d6e9feeb08db32722089be501a9ce26a"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\CatalogDialog.svelte",
+      "sha256": "d3b911cee2a2044c706854deef8d0a91e7b28bdf89627a4cdb17ffef74a45570"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\CatalogMeter.svelte",
+      "sha256": "c3590f4328d524c24c1d12763cb0ea86ddfffaf89d1d81ee14f2cc0cbc414432"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\CatalogPagination.svelte",
+      "sha256": "201c0fd90761713229b449b0044ea04961b05edd155ddaa4fdc58d7af41d3d1a"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\CatalogPart.svelte",
+      "sha256": "ca8c95ff5faa117a785bcc3d8890c5e193fbdb0c85ad492fb528f5eb1f84154c"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\CatalogPortal.svelte",
+      "sha256": "144589b0cf3234fb4c63c07d44ebcf8e0ac7ae40172995bd2e647231bd3d9438"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\CatalogProgress.svelte",
+      "sha256": "201f26b146fa7862b40174c98b72fda17415c7b6012e5880f9bcde0a7e95f37a"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\CatalogRadioGroup.svelte",
+      "sha256": "81eaa60e397b6a5a14abab6ee86d9ea8b2858c40b6a91e58725916d253832569"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\CatalogRangeCalendar.svelte",
+      "sha256": "1a6bae5d573f2389a5f8360862a306684c3fd1afe09542b797d7b7b93ddd4a1e"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\CatalogRangeInputs.svelte",
+      "sha256": "7aafb0efec776e1f7e27a1ad850c3d5060e2f70d94f62ff023221364c17eb696"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\CatalogSelect.svelte",
+      "sha256": "b71f80d0e1ec63e57ff91e367989db4f1e33319c0a19ec5a83b4d7354d96d02c"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\CatalogSelectOption.svelte",
+      "sha256": "13ca090f801c47a25dab9b4fbf381c62dc8b197f3ba78ebff90d1bea75729257"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\CatalogSlider.svelte",
+      "sha256": "6fef69f7fcec1194a852c7d581d0c4d7310affa878d783ffef4ae27ef20aa5f0"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\CatalogSwitch.svelte",
+      "sha256": "5f302066d968dd027ac9f28a39d5dd7665545bc2334da1e085f60911acb3283b"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\CatalogTimeField.svelte",
+      "sha256": "e6dd24339e0c220b3927002bddea509deecab6110000048c336abc6577679e59"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\CatalogToggle.svelte",
+      "sha256": "56f1bfe9d20ca96174b3765ede650bd69194788978c3b23f8029777f2e5eb9a3"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\descriptors.ts",
+      "sha256": "03c83888488033130154f1d4f9faf9876d58c215771d94bea1212f05b5433af6"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\focus-return.ts",
+      "sha256": "d6f93aad94db8d24f06a86c0356a707436b207c6cf452bece3a80c8f536c9082"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\implementations.ts",
+      "sha256": "6a4e6e43c8ad0c64857b4b4670c8c90382033455cc0cc7764cbeef02c46fceda"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\portal-layer.ts",
+      "sha256": "ff547cf0869d9660912abbb60b10f2a3e6d46c828083f29e61eee05cfc89d12a"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\components\\range-state.svelte.ts",
+      "sha256": "0e5919efe53aabb9043f07581e877a247b7a83f1cb791be5c2c2e3d623f2c8ac"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\context-menu.ts",
+      "sha256": "16097e3b970321a8ddf59040887f55517dbb0d0fcc63168a497a3d4072fb0dc4"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\date-field.ts",
+      "sha256": "0c76fa790bd1fc290b8a632a3cca7eb34476234a75b7c4bc433a0e9264858b2c"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\date-picker.ts",
+      "sha256": "aa48e6dcb235c5b94cf4b90e58cd9b607b7f799be4b2fbe681351a37f22dc6f1"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\date-range-field.ts",
+      "sha256": "4c2386c7d605c157f19e400b2602924665f87fffff7b7aa929cfba927feef9b4"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\date-range-picker.ts",
+      "sha256": "b07d396ec898f4de424a4782da2c901891a00b813f30fc719bb8ab290f22c02a"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\dialog.ts",
+      "sha256": "c1fa56c1d901713c0bd7be6daa3f98c17653cad3609f95df11063160791cbc19"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\dropdown-menu.ts",
+      "sha256": "bd3655ae372a9b8d4524f08a68b573a8d88c12cc129887bf42750ec92401362b"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\label.ts",
+      "sha256": "0b2025d41091566c729c8b432a87be12634f73a426d2dfe3b9a09a915719651b"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\link-preview.ts",
+      "sha256": "620294a37780a8a641e7cf8c97d554c53c85537dbca22fb2976f47034c6bc808"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\menubar.ts",
+      "sha256": "c34bbe3a99e85af180126d7ef8a308b765685c5600febd4a197334ea179d99ea"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\meter.ts",
+      "sha256": "487caa828240410f7eae1206669ec5db03d5b9a588ecdfb7a6dddb53d70c0f26"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\navigation-menu.ts",
+      "sha256": "41953ba154e2d8d004a4867c341972dd7c2e6c650de898e76dc2f5db44feedc3"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\pagination.ts",
+      "sha256": "2a53d104629b5e6cddfe6a13caadfa2e7776e42d9119e8d4e361ea587213da78"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\popover.ts",
+      "sha256": "9dc364da9ffb434522567be01582bd798033f3f01ba70ba51027d96f9b86c48b"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\progress.ts",
+      "sha256": "a84ce7c2b6c8f341dee5835a8dbcec06f82fb167f36dc48c3234a5b0d3284dae"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\radio-group.ts",
+      "sha256": "ee8462339fb7ecef622228956ac4d19c0d1620463548632f4c3994a63ead6a13"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\range-calendar.ts",
+      "sha256": "04484b94d4554e96edb54d1705cae4e33921e2728cb2fe118d65c80d316bea2c"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\scroll-area.ts",
+      "sha256": "29d445799a953a657d9db13eb40b2eccb0b8cf90ab9ea1a109f72454334c2bad"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\select.ts",
+      "sha256": "8ee4d5c638f72d372e56cb76e4232442ad7788d6280f3bef5a5afc4f6f8f8f43"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\separator.ts",
+      "sha256": "ef20dd5231351745e1d9e790d9063c66069de5396e4d1d74caf37e2e37c1f270"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\slider.ts",
+      "sha256": "6e9d193727253aaec63299b6b4aec710fffa81a097b6c18525447d071fd1e38d"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\switch.ts",
+      "sha256": "9619be12ad63250c673577cfd6117d1ea15c01134752ef889bcf22832321b9f5"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\tabs.ts",
+      "sha256": "e630e573790feb531c42caaf5b43715feedd48e51b7bc6b3a524a30cc7574063"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\time-field-context.ts",
+      "sha256": "f34e9b126219333bfb75ea5364417e08e7f8c294310c49d78893070d9be70217"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\time-field-parts.ts",
+      "sha256": "98a49dd5d099c992c9311a99e9128965d6797451dcc2734a199b64bf8fec6b5b"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\time-field.ts",
+      "sha256": "a227eb4ca413d88a41d14481d0d98b1a0565cb48db34762bb75404164cc24418"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\TimeFieldInput.svelte",
+      "sha256": "c917ea82f23b89e4b6bdc3bf619e479b2c847f2c7c2bbb745af8deb5188169b9"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\TimeFieldRoot.svelte",
+      "sha256": "19c0610645e2ffb139552d7759ef83afbd24662cbabe277d8505ff9d81ed7e64"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\TimeFieldSegment.svelte",
+      "sha256": "885d9cefba049862c202ba0fe3b56f5cd775153714ea6bd1f5de7c465a628881"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\toggle-group.ts",
+      "sha256": "305230a4bdb6d60911d2e9accbf68aee817e6af92b934a5e7a215adc849e8071"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\toggle.ts",
+      "sha256": "4afb63f4f2821a9a04d81b1485443e2ddf08e842c7080080e92bca8bed9b6532"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\toolbar.ts",
+      "sha256": "33d640852e85f4974323fcd70658cb52cd051dab168f926b1ce9436111053a38"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\catalog\\tooltip.ts",
+      "sha256": "dc017a78538ed4ea770613c1e6d88d4874013acd7802a368ae64dfc3106a4e97"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\Chart.svelte",
+      "sha256": "f54d5d9a42e64c491cda18e79e6e8f8a97f8ebbda46690921448a611f2b01e9e"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\ChevronDown.svelte",
+      "sha256": "87af435ae5230b61ddfb012d528103ec15ecca8f0fbdc0689263a445eb69ce2f"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\component-actions.ts",
+      "sha256": "ac386a39728b5913bef3360dc30ed0ea9782ffb7319d8c1094c908e878ec92a2"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\component-context.ts",
+      "sha256": "4263fb9180469c7be09a0a9a44e895a75c42e83e1e2f37a282efd87753a9fea0"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\ComponentSlot.svelte",
+      "sha256": "bbf9450aabec59789cbd31b7080cd12d30dedf784643df09721f9cad4d7bc038"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\controls.ts",
+      "sha256": "f51680928b8927f95819b2c63c06b3f774c6ea3543e4e7a2a72d60f2543bde97"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\ControlScope.svelte",
+      "sha256": "ef20346519190e2cf57840d3e64b56882531c6f4cd82b40e54ce06996f7afbee"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\Conversation.svelte",
+      "sha256": "6f40c93d2c62979d1ace9ae8ba89104836d4d14eb2122dcf5182759f0cbeb870"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\Count.svelte",
+      "sha256": "0d3b5a85ca8c48dcf22b9beb2341e285f7ea02c015706e2e154dc03500d64c54"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\DataView.svelte",
+      "sha256": "95f81f25bc48c2b2d6905c058a071dc20f1ffa4c2305e0c8c956690f2661f885"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\dates.ts",
+      "sha256": "5e51dcb19090d0e9c829e7bc4ba64050d42e219477689b748b3d82e7ec5f1925"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\Detail.svelte",
+      "sha256": "a264c8fc205720db4005b8e56e69c466e99cc0df8c3aaf670fa9c0658a61cc9c"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\document\\authoring-runtime.ts",
+      "sha256": "38e72c69b44efa149546511417d393917cd53e76c3200ee23a066805c776b6b7"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\document\\DocumentHost.svelte",
+      "sha256": "4e466f67ca8ffe79182dee27e35c7f659635e057e0ba068b3dae519921aa642a"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\document\\extensions.ts",
+      "sha256": "3e99185d4bcd3f81531d2d796e979a981feb6d72483920f2393f1b4ced2e930e"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\document\\logic.ts",
+      "sha256": "33f84652af87f7c679f8a42f12e95781c9ea15cda07740aa2acb15c8dfb10905"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\document\\RenderNode.svelte",
+      "sha256": "a2c63f929d930c52a6ec52df22d6b12968841c4904ed1e6860e7cdb9bc11a95c"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\document\\ScopedSlotInstance.svelte",
+      "sha256": "284e6e76418cd6fca48298f4e40162e15124d8d108a901bd04623904e62ef5c7"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\document\\ScopedSlotSnippets.svelte",
+      "sha256": "ac12786f0f4cc19564363f6a87abca0e6369051e11e5a70c8ebb2a813bc45689"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\document\\slot-labels.ts",
+      "sha256": "b0e0df108618fbf6f6a9674267fd6ee13bad83ecbefba3014779f3d11ff02a6c"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\document\\SlotSnippets.svelte",
+      "sha256": "b4e7d94714638e60c9ca293183f281213f6d2464fa84d3c7f9d7768b19e1a510"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\Feedback.svelte",
+      "sha256": "4d5700368f0610deb9eacad0453db9ee917b399090addd54120c0691cbce7d26"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\form-values.ts",
+      "sha256": "6f254517c5831466bddc1fa30db6ef306bc2f935210edee25ec8f0363cc9a658"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\Form.svelte",
+      "sha256": "21b48b7f78574fb0bb26e48ff320f9413a6d3ae47c43569624d052f4c110ba6a"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\FormField.svelte",
+      "sha256": "749d4263d949e7e76f406155f161a7932c047fc504af3b5e8484272f57f201f6"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\FormSurface.svelte",
+      "sha256": "a5bd57ea18fa7fdf35eabed9894bf946a736e88498efd2f38fd24f568cccaf87"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\index.ts",
+      "sha256": "f40580ac0c301db35a0ef2acce483ad344eb495075fe75508be01b9aa684fd19"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\List.svelte",
+      "sha256": "2a45e87cb7f56a10e6aae0ac27fc4be0de1d5f5cc646dc61fd496d0ba1c475a6"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\logic.ts",
+      "sha256": "331ca81b1c1c8c88f2a42c7de8d68d41e33ff915120433c3cb847620770fd1a4"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\mount.svelte.ts",
+      "sha256": "8b40f5b40a6850cd1338beae2b6024c78803d86d6406108140f91a6998d4e3c8"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\Overlay.svelte",
+      "sha256": "805d0f5d4bb0cfc5eb4c2a472ac3dd91ad5a64981014af553b3f323116a07f72"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\OverlaySurface.svelte",
+      "sha256": "56492532c270d380d8904b20b098458be8b872215e0b6e9eb51384308460ba80"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\owned-dialog.md",
+      "sha256": "1c278dd13336a64bd315e0fe11fbaba2a668e44683d0be998335ae93087661d0"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\owned-dialog.ts",
+      "sha256": "f6589d87f5d5ebbf7df336465ab64beb50e2e81c0e399c9e32d8d3731382c872"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\owned-menu.md",
+      "sha256": "a5fbde729c200e5621da69f539e16c0fbe822f6bcac2b84fd1cbf0bb214f17a6"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\owned-menu.ts",
+      "sha256": "0739bf73b0fb45d4cf7b7ab293a902cfdcb5b08fa6e934b20934617fbf23aa02"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\owned-popup.md",
+      "sha256": "f3c9fddaf57e1c0211e1f781f16fd73d4c58a27887f64250ce8e9defe2706c30"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\owned-popup.ts",
+      "sha256": "bc176539480e949b6b47f0adebc7f2b0c99106051157e8f54b6c61687ac119c6"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\owned-tooltip.md",
+      "sha256": "e80ccf6493357f76a127a0908b0f1ea3e9cbed70ed08636702f3766c906325ff"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\owned-tooltip.ts",
+      "sha256": "e6050ae5619fe9bfda5ca128dedf9f07d24a9f7232d2f1fd974b58d41491f14d"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\OwnedDialogContent.svelte",
+      "sha256": "1dd108bb6e36b3a6dfb3c679cdbc619a191851dfd04c97f8efd1f080cb81105e"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\OwnedHoverCard.svelte",
+      "sha256": "b792a13434b63b08672f8bde6393c21d21db8ebf59621037e747ccc34399ec5f"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\OwnedMenuContent.svelte",
+      "sha256": "50a8fe98cda79daf34387c076cacb6fb662291ed1c35bcff059ff49da0b40878"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\OwnedTooltip.svelte",
+      "sha256": "b77510a00b53af99b2ddb636ed70c0457714c6a08add10c8d4e38c852ea1668a"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\Popover.svelte",
+      "sha256": "568fe1b7a9f49c46d5f79ce7addd644c155c3a95abaf4c47dea0c2984dde3c21"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\presentation.ts",
+      "sha256": "511acb29cf7ab3e7045586544568765574fd62c9af1860ca84130702b34190dc"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\primitives.ts",
+      "sha256": "c49c5cac1066d2a81828e6333e5f97591ddb2a65746a0786d6e2583056ff4c8b"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\RecordsTable.svelte",
+      "sha256": "f8fd8c7e7e6d8980e48014dd2e14b6ecd4dc4bf3ab43d3686cbc89410b121e1d"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\renderer.ts",
+      "sha256": "65aa115cd790365758c722d65ed711eee81715b09f1f8374e8420df4fc8b87d1"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\rhea.css",
+      "sha256": "24f1d5849bf98f23f2789f5ac722947ecf4ea89c0f6e5eb944772f8fac8d3423"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\rhea.ts",
+      "sha256": "4fa209f305a873a54ae64ff3cfe3d3d86150b90a13318c9658930281715e80a8"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\Select.svelte",
+      "sha256": "ebe2d40062eaeb8a3687ba82a269ced2cf426506fe3f537e8ab213ba88f2c61d"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\StatusBadge.svelte",
+      "sha256": "37d2c6052cc676ed3ec009fa9ac5dfda0990009c94e1461c7cba2c77b19ac1f1"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\styles.css",
+      "sha256": "2703ae4e847e2f5f80532fa4df56834638184180edcc156ec88d7994ec39c745"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\Surface.svelte",
+      "sha256": "78ec739d8640857450ed01a08f4d2bdd212e3f843316ee8dc299e3425fb090b4"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\svelte-shims.d.ts",
+      "sha256": "ef89a94b6e14949ba55639869ff96ea08b7557178139ee9b6adbaacd164e9351"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\TableAdapter.svelte",
+      "sha256": "2f9f2b15035ecf986c21f7fdc046669ccfd913fd4b3f1eb02463676bac60c5b1"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\Tabs.svelte",
+      "sha256": "7d6c989cb256fb79d86b4172f9620b5c4e87fb07e875d002932c71e815de3c5e"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\Text.svelte",
+      "sha256": "08501f957773c86c4b5093527f829d0d6a42ef9149aaad309513245266d0765b"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\Tooltip.svelte",
+      "sha256": "52d2c75623fbb85dea323dbf92fc757af92ac46e27f0d977ae1cf8ff2bf7fade"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\viewport\\ApplicationViewport.svelte",
+      "sha256": "98de2dd9258e884c9e454cd573ca11ba5904049a04b16cac0ea14d9b4536a86c"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\viewport\\context.ts",
+      "sha256": "567a0be139b89ae415a69ad95625a1b74ed87f2942bd8786dcd47561d6ccf65f"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\viewport\\index.ts",
+      "sha256": "4571efbdc5014cf57ba8a2ad93394df11bea95428de587cc566a263e858319a7"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\viewport\\ViewportContent.svelte",
+      "sha256": "1b83b1d2c8c95640b3b34d3c460410f9b00e64a1c6f4cdb97714db7cdad2807a"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-svelte\\src\\VitApp.svelte",
+      "sha256": "55650872e8de75643b882f9020418af373d4699fb457fd982c87a173d86d4c90"
+    },
+    {
+      "kind": "packed-tar",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\artifacts\\victframework-ui-media-svelte-0.4.0-rc.1.tgz",
+      "sha256": "234e78dd8f615622097b5166e5bd7f7646574d3663d3607b390d26ac8be11f22"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-media-svelte\\README.md",
+      "sha256": "da93dd8f7ab4e18b359d174ee71b3694a42e1b26d7d290c341722877f7b5faec"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-media-svelte\\src\\AssetLibrary.svelte",
+      "sha256": "bd0e4c361609a56fe3edc4e913b91e7a90634668e99103ae1c0727a19846421e"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-media-svelte\\src\\AssetProvider.svelte",
+      "sha256": "b67ab58b92c364e9c6308bd6039f1fa5496262e8d5191017bd589eec824d77e1"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-media-svelte\\src\\assets.ts",
+      "sha256": "c612b30916b10a78b38f35fd5840fc23a487f10262177f178e77eeebbc3673bf"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-media-svelte\\src\\authoring.ts",
+      "sha256": "f97ee62299f3096ad74653c2d433ce9c32719f51bb8c459214cff8616cf730b2"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-media-svelte\\src\\compatibility.json",
+      "sha256": "754cd1a1ca2d2b5e33fce44297a5d77c7c2f007c4148f5588fe9139e543ec3e3"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-media-svelte\\src\\context.ts",
+      "sha256": "fa8496b2cb8b0827e91abf9b4a1ddcc38836c9dead08d6982f037e567aa8e3f2"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-media-svelte\\src\\descriptors.ts",
+      "sha256": "d4c987263df1ebda0a24fdecda31da846a40b9a71fd04c846a998fc376de8523"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-media-svelte\\src\\Embed.svelte",
+      "sha256": "44c0da9eca5df7cb07639f2b05035a6d3fe271909951e4b9a37876748276b74e"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-media-svelte\\src\\icon-manifest.ts",
+      "sha256": "9db499efede48cc8ea5afaab634c2fb4598bbc19efb4d14a918ab885d20f21d7"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-media-svelte\\src\\Icon.svelte",
+      "sha256": "1d969a5b91e0acfb09198c76bb2c5f1087f759ebbc09e27d233a8c8524e58f6c"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-media-svelte\\src\\icons.ts",
+      "sha256": "d5046295918f3dca3cdba04317222d3d35b025ef000f325872d0b0069a117cd3"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-media-svelte\\src\\Image.svelte",
+      "sha256": "5baaa6c989055819eea17722f6e994fdde7a62ba38e5ec2dbcf5d2227dade914"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-media-svelte\\src\\implementations.ts",
+      "sha256": "3d1943525caf3f819760eba7e5b862a82860106094032d599f535b24e9ad753d"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-media-svelte\\src\\index.ts",
+      "sha256": "6b928e73c678274301c10523ad050481702d375c7e6026730643fad01a89bf0e"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-media-svelte\\src\\Vector.svelte",
+      "sha256": "da68c0d65d9cbb40ea5759d2952e7440e3de9a38acdbf7e039083ea18e52e1e0"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-media-svelte\\src\\VectorGraphic.svelte",
+      "sha256": "f0b6251ddf645ca96293506ca46b56c42fe3076d62ec7b88742bdd5298a41382"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-media-svelte\\src\\VectorNode.svelte",
+      "sha256": "440cc7992ab2267ed8369b1a90faeaf3492e851e4af84b6b10a3c533603821da"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-media-svelte\\src\\vectors.ts",
+      "sha256": "32b0cf35e812cd5b0733660c6cfdc0fc81e7257d64fab62dce8e760454c343ab"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-media-svelte\\src\\Video.svelte",
+      "sha256": "b2f1b03cf9442cda208d1c0d781b63ee4fa9594a9501e1540002b336efa96cf7"
+    },
+    {
+      "kind": "packed-tar",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\artifacts\\victframework-ui-flow-svelte-0.4.0-rc.1.tgz",
+      "sha256": "9005c7551e96ba9d087a832c828f6f154d8ff6f362359f1aa1cea9eb06c81ea3"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-flow-svelte\\README.md",
+      "sha256": "d222243de064cc59d7149ce97adcf3d8e51ee1cebd0811a7d6d3acc7f9b3cebc"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-flow-svelte\\UPSTREAM.md",
+      "sha256": "4076b8d0c3634eccb80019ed40aba4e3e4352eaca1b6ea50b4d2c8f04d1e911f"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-flow-svelte\\src\\authoring\\compatibility-composition-v1.json",
+      "sha256": "f1fe6d0c3bd4baf7030cdfacae99cfaaf4365b742e65f076552f04ced5068ef7"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-flow-svelte\\src\\authoring\\compatibility-composition-v2.json",
+      "sha256": "59aacaaf5e8b8ed05fe5b746a207b55817b775800fa22a56d6f0d9f9ddc39d97"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-flow-svelte\\src\\authoring\\compatibility-v2.json",
+      "sha256": "0f4bcbba8e9cb341de0b76be9f3f04194c9cc13e5305b66212a261342ee21f95"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-flow-svelte\\src\\authoring\\compatibility.json",
+      "sha256": "6e38eedae44b46699bb3db9616a9685dda3d00f17ed818fb0d7e683db4e5f4a6"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-flow-svelte\\src\\authoring\\context.ts",
+      "sha256": "60a5f431658d44a327f0235cd7813e520b1a1ff250f6eccb795000ba9429e88f"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-flow-svelte\\src\\authoring\\descriptors.ts",
+      "sha256": "4517f5d56b2aaeb724646c02595ae62163a9b22a5d38f1467733f967083e5f6f"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-flow-svelte\\src\\authoring\\FlowCanvas.svelte",
+      "sha256": "fed128177a707cd84be08061f3ba2ae07977910ea7cade86a121e9d3d6e19657"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-flow-svelte\\src\\authoring\\FlowEdgeDeclaration.svelte",
+      "sha256": "0485ce87a9d066cfdd3178bf1d77849d5ea7072c5e38f143767db588f99238ce"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-flow-svelte\\src\\authoring\\FlowEditor.svelte",
+      "sha256": "5e7c20a99371bd468fe4738886f1c674a681dbbbca1a9924ff5b0466a9caa228"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-flow-svelte\\src\\authoring\\FlowNodeDeclaration.svelte",
+      "sha256": "0c0d7990508f9d7d8d4e3a1cefb9aa5476a08185ea31f488239390f4d0bf8986"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-flow-svelte\\src\\authoring\\FlowVisibleEdge.svelte",
+      "sha256": "e31f4e4b38643bba758eba8d86e912dd3f332f7bda25903ca5574f2092b665f0"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-flow-svelte\\src\\authoring\\FlowVisibleNode.svelte",
+      "sha256": "c0c3ed9a624ea673510f133dc205d405dc68106bfbd3d9ff0b3771e6f14f6c8a"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-flow-svelte\\src\\authoring\\implementations.ts",
+      "sha256": "cae4f5913996349e99f4769086a2efec40c3055592c984c91babacb5729e4a5a"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-flow-svelte\\src\\authoring\\index.ts",
+      "sha256": "231e9b1064abbac2fade03b06fe0d3672deaa013e12ec1ce8ab8e5917b5bde44"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-flow-svelte\\src\\authoring\\knowledge.ts",
+      "sha256": "1defcdc37b18c22192b4313cff6a36130de043d1660b32b4f7fd92fdca252209"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-flow-svelte\\src\\authoring\\public-exports.ts",
+      "sha256": "536f0420954fcc3872188aa678ecc59a4bf5ac6d6ad1c6633a677645f8b8f9bc"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-flow-svelte\\src\\composition\\ComposedGraphEdge.svelte",
+      "sha256": "739a58f96f1cf1c8b12e01821c0df2b4738a583de95cb74dfaaa7140a26b73b7"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-flow-svelte\\src\\composition\\ComposedGraphNode.svelte",
+      "sha256": "fa7fabea24e5bcfc2b328715e50fe3d974d9554563a820854002ed9e0eb08e45"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-flow-svelte\\src\\composition\\connection-gesture.ts",
+      "sha256": "ee3253d0b2780c3157a0a779c1656783fc6daa7cad59359c055783e3609f5539"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-flow-svelte\\src\\composition\\context.ts",
+      "sha256": "32d5847a0883b47ebfe82a33a4f908c4ece29b76182bf24a270d98d7c6cb41fe"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-flow-svelte\\src\\composition\\descriptors.ts",
+      "sha256": "7307d84ff6875e9f55a294f90692c9eb004aa55e16b604c6fa72d1e79b650340"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-flow-svelte\\src\\composition\\GraphPort.svelte",
+      "sha256": "d1058e365f681fe4fc939ebcfc6f67d98703ab782d1930fc94d0ad8453c07276"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-flow-svelte\\src\\composition\\GraphViewport.svelte",
+      "sha256": "3a94fb853f4e9bc5bcea8b6473dd36ce6fdc83dc3f02611b26f2c169f3425e4c"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-flow-svelte\\src\\composition\\GraphWorkspace.svelte",
+      "sha256": "620bb6f704d8856432fc152aa6d13c17664bda3a5ed673fcef860e501e499315"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-flow-svelte\\src\\composition\\GraphWorkspaceV2.svelte",
+      "sha256": "6cba63223b3d25f5980f71d524a0d09cc027f076977312a69976b6b37eae2ec2"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-flow-svelte\\src\\composition\\knowledge.ts",
+      "sha256": "4b30feb34a0379fa37d60db5f5cf6cc9ee9820cd1acdb87f886c27fdf78d4628"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-flow-svelte\\src\\composition\\workspace-model.ts",
+      "sha256": "fcb9cbf309e6db93c8a697f340d27e88c9bd413283ce8f8efe4995c8dec148e9"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-flow-svelte\\src\\editor\\authoring-contract.ts",
+      "sha256": "ca7d4db0feccd127b4037c91d6b5a4101510bf8ae38aea63a207be791d17666f"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-flow-svelte\\src\\editor\\commands.ts",
+      "sha256": "8fb3793fd6d89e83ffa5ff53e2f7f2e8fb27db9db33ad60454aebbfa88a4a3c2"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-flow-svelte\\src\\editor\\graph-schemas.ts",
+      "sha256": "e4665a37c6ca35c6cbcc8ccddf88e259a2b2817e515695ded3bb4107cd1b00de"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-flow-svelte\\src\\editor\\GraphFields.svelte",
+      "sha256": "35f27afc54ea10cb4f1851c53dd4a2fe40748858de85a129bc5a24ba6251ee1a"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-flow-svelte\\src\\editor\\GraphSurface.svelte",
+      "sha256": "dda4470be506a3c2b583c1ebde94ecd5c6e07ab9b654f3ff42e12782bedbc61f"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-flow-svelte\\src\\editor\\host.ts",
+      "sha256": "f11839c3be822e91d0d8fe83c80a103a9d8e52ea61ef2a777869316e3e5967fa"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-flow-svelte\\src\\editor\\model-v2.ts",
+      "sha256": "9f7f8dd74d6bfcac174aae2893e0d59bff78ee7e712236cd8c29fa539d5cc7b8"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-flow-svelte\\src\\editor\\model.ts",
+      "sha256": "4e0c6979baadb78ae5211f75e6f77dbef2a2844db6848e6b2e768fc790f5c64a"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-flow-svelte\\src\\editor\\presentation.ts",
+      "sha256": "2ab22dd280dcc90893ad663e82f3aa7fd7806e07e064367a1d1e1ca8225ed772"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-flow-svelte\\src\\editor\\RichGraphNode.svelte",
+      "sha256": "aa3c371dc83e51bd7259b5f7bdda3925d6142ba70713eafa7364043043be39ef"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-flow-svelte\\src\\editor\\topology.ts",
+      "sha256": "be35865f877a6345f52920136cc7f44493b5768fcb3722c724310f6d9922895d"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-flow-svelte\\src\\FlowCanvas.svelte",
+      "sha256": "4d53a40775f29958eba6f2d48a9b3b6c1b58bab12d3fe66cc352fa45eeb4795e"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-flow-svelte\\src\\FlowNavigation.svelte",
+      "sha256": "ed210af6e44fbbc75bd8e0d47ef71982f64ec78066a1435ef6c387025e8391af"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-flow-svelte\\src\\index.ts",
+      "sha256": "05b43df3bac32b615d6c86bdc969744c07e3b1bdd65ca5c3fbd3ad2ff38b0f28"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-flow-svelte\\src\\layout.ts",
+      "sha256": "9500977cf5977021ab8bfd62e2d8acbe65db41383f033e73e201f8dc367a6158"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-flow-svelte\\src\\RoutedEdge.svelte",
+      "sha256": "8bc76b0efd4af537beac1ac3b2036a571588483d65270a0566ca40b62853ae7d"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-flow-svelte\\src\\SourceNode.svelte",
+      "sha256": "5614b327073ef4ef25cc991e9aef72729c532cea280abe10401834a84432a4e7"
+    },
+    {
+      "kind": "installed-artifact",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\node_modules\\@victframework\\ui-flow-svelte\\src\\styles.css",
+      "sha256": "dd92f3c1620d1eb3e2ecddc2a991c44c7bfa7a5a77ac5e8c33032b0842350346"
+    },
+    {
+      "kind": "consumer-fixture",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\package.json",
+      "sha256": "3e265566a6a97094e7147e584b2a034a15524d9a70cb8344840284334d4147a3"
+    },
+    {
+      "kind": "consumer-fixture",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\vite.config.mjs",
+      "sha256": "ff40f6a8359a0d1c55705bc48aabaa25f6067d1c4d4bfa682874d4338244c5a6"
+    },
+    {
+      "kind": "consumer-fixture",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\index.html",
+      "sha256": "1a54ccfd070b6659d3c22d4d6950381b048341c06b4510ea489922fc5daac202"
+    },
+    {
+      "kind": "consumer-fixture",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\src\\main.ts",
+      "sha256": "d5e794b7dbdaffc02fcb7057caf5694da38d5eb92309930fc54fbfe07e7d92f6"
+    },
+    {
+      "kind": "consumer-fixture",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\src\\App.svelte",
+      "sha256": "2e702ce8c2ba9b9d1b06a606e2219535fdc0a820b0f21a83664b0003b06d6fbc"
+    },
+    {
+      "kind": "consumer-fixture",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\src\\ReviewDecision.svelte",
+      "sha256": "2b40feb8bb4175a60ec868fff8e1d67aae8646035cd677bdcc11db2df4a11ce3"
+    },
+    {
+      "kind": "consumer-fixture",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\src\\fixture.ts",
+      "sha256": "9c87457ad882aa29c4f387f68fe1f19c69aed798abc7d599c10fa30aa1232f06"
+    },
+    {
+      "kind": "consumer-fixture",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\src\\consumer.test.ts",
+      "sha256": "8b18c367842effdec728c91ad44299508828cc93608e7ce55a9b5ee564ecdb61"
+    },
+    {
+      "kind": "production-output",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\dist\\assets\\index-AJU2uzQA.css",
+      "sha256": "eba71a17af728c2a3165b5213ace5718c19cdb03ee5d4674a296df8e8abb1745"
+    },
+    {
+      "kind": "production-output",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\consumer\\dist\\assets\\index-CIF3cdEf.js",
+      "sha256": "bdc6bd697428d75f3ea41d1749bcad554f81bccd35158c5f7948852468f5023a"
+    },
+    {
+      "kind": "dom-log",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-yklW2W\\dom-test.log",
+      "sha256": "729881b5f6d99a2c29d226a3019d7e5632892c7c8cb270d47cb19cbeed3cd537"
+    }
+  ]
+}

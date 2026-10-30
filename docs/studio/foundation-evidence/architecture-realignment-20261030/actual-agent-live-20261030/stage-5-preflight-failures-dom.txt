@@ -1,0 +1,126 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Project planner — nested ownership"
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- banner:
+  - strong: Chat
+  - button "Hide Chat":
+- complementary "Chat":
+  - region "Conversation":
+    - region "Messages — Message":
+      - log:
+        - generic: You
+        - generic: Build a separate complete local Project planner, materially different from Evidence desk. Use a calm blue theme and a short workflow guide. Show two Project cards using the same reusable body template. Each project has its own editable project title and its own embedded task canvas; each embedded canvas has a Task card with editable task title and meaningful Todo / Doing / Done status. Both projects should start with different useful sample titles, and their task canvases may reuse the same task identifiers because their ownership is independent. Reuse the same task-body composition too. These nested controls must edit only the containing project/task and Save in Studio should preserve the authored defaults; there is no backend or durable application database. Include a small ordinary registered Help popup in each Project card with instructions. Keep its focus, dismissal and theme owned by that project rather than the whole document. Use accessible labels that stay correct when the templates repeat or nest, such as ordinary implicit labels around native controls; avoid repeated global HTML ids. Make the app useful and readable, with enough room for its controls and embedded canvases. No compulsory toolbar, inspector, family picker, connection form or new runtime. Discover the existing public component/state/graph contracts and preflight unfamiliar shapes. Functional complete increment first; leave saving to me. Report briefly what was applied and which interactions remain untested.
+        - button "Copy message":
+        - generic: Assistant
+        - status: 2 applied edits remain undoable.
+        - button "Public activity and tool details" [expanded]:
+          - text: Public activity and tool details
+        - generic "Conversation timeline":
+          - paragraph: I'll inspect the prepared document state and discover the interactive components (dialog, input, select, button) needed for per-project ownership, then compose the planner in small validated batches.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: Existing state is unrelated demo seed ("message", "accepted", "dialogOpen", "busy", "actionError", "actionResult") — I'll declare fresh planner-scoped state instead of coupling to it. Now reading the exact contracts for dialog, select, and button.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph:
+            - text: "Contracts confirmed: dialog (open/openChange controlled pair, required"
+            - code: body
+            - text: slot), button (
+            - code: press
+            - text: output), select pattern with controlled value. Building now — first the planner-scoped state declarations.
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - paragraph: "State is in (now r1#1). Next: calm-blue theme tokens, screen restyle, header with the workflow guide, and the two shared style sources that both project/task bodies will reuse."
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - paragraph:
+            - text: "Theme and header applied. Now preflighting the unfamiliar shapes for the first project card: implicit-label wiring, button"
+            - code: press
+            - text: connect, dialog
+            - code: open
+            - text: /
+            - code: openChange
+            - text: control pair, slot insertion, and style-source attach on a native input.
+          - button "Read screen failed":
+            - generic: Read screen
+            - generic: failed
+          - paragraph:
+            - text: Preflight flagged the connect binding shape — the host wants
+            - code: "{setState:{...}}"
+            - text: directly as the binding. Correcting and re-validating.
+          - button "Read screen failed":
+            - generic: Read screen
+            - generic: failed
+          - paragraph:
+            - text: The binding should be the bare
+            - code: setState
+            - text: object. Re-validating with raw literal values.
+          - button "Read screen failed":
+            - generic: Read screen
+            - generic: failed
+          - paragraph:
+            - code: openChange
+            - text: payload wiring now validates; only the literal-valued setState bindings fail. Trying expression-form literal values.
+          - button "Read screen failed" [expanded] [active]:
+            - generic: Read screen
+            - generic: failed
+          - region "Tool input":
+            - heading "Input" [level=4]
+            - generic: "{ \"section\": \"preflight\", \"offset\": 0, \"limit\": 12, \"edit\": { \"expectedRevision\": \"r1#2\", \"operations\": [ { \"nodeId\": \"p1-help-btn\", \"op\": \"add\", \"parentId\": \"screen\", \"props\": { \"label\": \"Help\" }, \"recipe\": \"button\" }, { \"binding\": { \"setState\": { \"key\": \"p1HelpOpen\", \"value\": { \"type\": \"literal\", \"value\": true } } }, \"nodeId\": \"p1-help-btn\", \"op\": \"connect\", \"output\": \"press\" }, { \"nodeId\": \"p1-help-close\", \"op\": \"add\", \"parentId\": \"screen\", \"props\": { \"label\": \"Close\" }, \"recipe\": \"button\" }, { \"binding\": { \"setState\": { \"key\": \"p1HelpOpen\", \"value\": { \"type\": \"literal\", \"value\": false } } }, \"nodeId\": \"p1-help-close\", \"op\": \"connect\", \"output\": \"press\" } ], \"reason\": \"Isolate connect binding validation: bare setState with expression-form literal values on void press output.\" } }"
+          - region "Tool result":
+            - heading "Result" [level=4]
+            - generic: "{ \"expectedRevision\": \"r1#2\", \"cursor\": { \"documentId\": \"screen-b1d0036a-e404-448b-8f84-c92b2752220d\", \"revision\": \"r1#2\", \"digest\": \"6861fbef5f2e005a1b45f10ede9938fcb8c8322f400d784877a14205def5e067\", \"epoch\": \"0abc988c-68b0-4998-af04-6aad1141e40a\" }, \"section\": \"preflight\", \"ok\": false, \"code\": \"STUDIO_AGENT_VALIDATION\", \"message\": \"Edit rejected: UI_COMPONENT_BINDING_INCOMPATIBLE: Output 'press' payload void is incompatible with state 'p1HelpOpen' type boolean.; UI_COMPONENT_BINDING_INCOMPATIBLE: Output 'press' payload void is incompatible with state 'p1HelpOpen' type boolean.\", \"diagnostics\": [ { \"documentId\": \"screen-b1d0036a-e404-448b-8f84-c92b2752220d\", \"nodeId\": \"p1-help-btn\", \"output\": \"press\", \"stateKey\": \"p1HelpOpen\", \"sourcePath\": \"nodes.p1-help-btn\", \"code\": \"UI_COMPONENT_BINDING_INCOMPATIBLE\", \"path\": \"nodes.p1-help-btn\", \"message\": \"Output 'press' payload void is incompatible with state 'p1HelpOpen' type boolean.\", \"operation\": 0 }, { \"documentId\": \"screen-b1d0036a-e404-448b-8f84-c92b2752220d\", \"nodeId\": \"p1-help-close\", \"output\": \"press\", \"stateKey\": \"p1HelpOpen\", \"sourcePath\": \"nodes.p1-help-close\", \"code\": \"UI_COMPONENT_BINDING_INCOMPATIBLE\", \"path\": \"nodes.p1-help-close\", \"message\": \"Output 'press' payload void is incompatible with state 'p1HelpOpen' type boolean.\", \"operation\": 2 } ], \"applied\": false, \"turnProgress\": { \"applied\": 2, \"metrics\": { \"toolCalls\": 12, \"completedCalls\": 8, \"refusedCalls\": 4, \"recoveryAttempts\": 3, \"toolElapsedMs\": 261, \"providerRequests\": 8, \"visionRequests\": 0, \"acknowledgementMs\": 49, \"confirmedEdits\": 2, \"usage\": { \"inputTokens\": 349825, \"outputTokens\": 23398, \"totalTokens\": 373223 }, \"firstEditMs\": 425728.5939000002, \"categories\": { \"knowledge\": 5, \"source\": 5, \"edit\": 2, \"observe\": 0, \"other\": 0 }, \"elapsedMs\": 525366, \"toolActiveMs\": 203, \"outsideToolMs\": 525163, \"modelSteps\": null, \"cost\": null }, \"retainedKnowledge\": { \"scope\": \"Complete contract bodies delivered in this turn only; reuse still requires their content to remain available in model context. Source facts are never cached knowledge.\", \"complete\": [ { \"key\": \"vict.catalog.dialog@1\", \"digest\": \"bfbbb3088b16618c0084148ccda353849b987285abfbf24fb2141f0e578ed65c\", \"bodyIdentity\": \"studio-contract-body@2:examples:bfbbb3088b16618c0084148ccda353849b987285abfbf24fb2141f0e578ed65c\" }, { \"key\": \"vict.catalog.select-item@1\", \"digest\": \"115c1e28de9a5cb359fe55b5aa5ffe25f1dd9073c846e5ad53bdc54d8a8d5c89\", \"bodyIdentity\": \"studio-contract-body@2:examples:115c1e28de9a5cb359fe55b5aa5ffe25f1dd9073c846e5ad53bdc54d8a8d5c89\" }, { \"key\": \"vict.catalog.button@1\", \"digest\": \"cc715b1bdbfce5d03ec87d1e38715e362fc0bcc95d0ef00c256ef1bfa6b372c8\", \"bodyIdentity\": \"studio-contract-body@2:examples:cc715b1bdbfce5d03ec87d1e38715e362fc0bcc95d0ef00c256ef1bfa6b372c8\" } ], \"partialCount\": 1 }, \"visualEvidence\": { \"regions\": [], \"currentSourceObservations\": 0, \"scope\": \"Captured regions only; source freshness does not establish current runtime/viewport freshness or offscreen/interaction coverage.\", \"interactionsVerified\": false }, \"evidence\": \"Host receipt-derived totals include all acknowledged transactions, including cleanup. Outside-tool time is waiting/generation/transport/host overhead, not measured provider latency. Captured regions do not establish full-page or interaction coverage.\" } }"
+    - button "Scroll to latest message":
+      - generic: Scroll to end
+    - textbox "Message":
+      - /placeholder: Ask for a change…
+    - button "Stop":
+      - generic: Stop
+    - status
+  - status "Reading current source facts…":
+    - generic: Working…
+  - button "Chat details": ···
+- separator "Chat width"
+- main:
+  - button "Toggle Chat drawer" [expanded]:
+  - group "Workspace mode":
+    - button "Design" [pressed]
+    - button "Interact"
+    - button "Structure"
+  - button "Toggle Document and Selection drawer":
+  - iframe:
+    - generic "Screen canvas":
+      - main "Project planner — nested ownership":
+        - region "Project planner guide":
+          - heading "Project planner" [level=1]:
+            - generic: Project planner
+          - paragraph:
+            - generic: "Workflow: pick a project card below, edit its title and task inline, then move each task through Todo → Doing → Done. Every card owns its own controls and state; Save in Studio preserves your edits as the new starting defaults."
+- contentinfo:
+  - status: Calm blue theme tokens and screen restyle; header with short workflow guide; shared card and field style sources reused by both project bodies. · agent edit · unsaved

@@ -1,0 +1,30 @@
+[
+  {
+    "node": "source-note-1",
+    "value": "https://example.org/source-ax"
+  },
+  {
+    "node": "source-note-1",
+    "value": "Manual note: compare the original source.\nKeep uncertainty visible."
+  },
+  {
+    "node": "review-1",
+    "value": "https://example.org/review-b"
+  },
+  {
+    "node": "review-1",
+    "value": "Independent review: check the claim."
+  },
+  {
+    "node": "review-1",
+    "value": "needs-work"
+  },
+  {
+    "node": "source-note-2",
+    "value": "https://example.org/source-b"
+  },
+  {
+    "node": "source-note-2",
+    "value": "Second source: independent provenance."
+  }
+]

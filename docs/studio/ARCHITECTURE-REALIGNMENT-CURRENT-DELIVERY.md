@@ -14,8 +14,19 @@ stages are now in progress; that minimal success does not pass the full gate.
 
 ## Exact identities
 
-Current source/serving candidate: **72b7e09b1e6cbd5269578f3c3b1ccdf120a22c3b**.
-Fresh independent qualified offline PASS: **703f8dc4604e15b353e1ae90c216e126642de7ee**
+Current source/serving candidate: **ab3296e6503a63b2587ed36a1e1a121179082396**.
+Independent qualified offline PASS: **f6acd3742a602d2b3b6c795c6b81d253fb981c53**,
+19Flow/21Studio checks; stale emission-marker lifetime corrected in composable
+and legacy graph renderers. Native source/render Undo/Redo followed by another
+field edit, native text Undo and Save/export/reopen r1.r7 now pass
+([repair and native result](foundation-evidence/architecture-realignment-20261030/history-redo-echo-20261030/NATIVE-AND-ACTIVATION.md)).
+Current public consumer is yklW2W:7packs/510installed files,8fixtures/2assets and
+both repaired component bytes independently checked. Production build exit0;
+[activation](foundation-evidence/architecture-realignment-20261030/HISTORY-REDO-ACTIVATION.json)
+seals305core+74retained proof+7new proof files, zero mismatches. Prior72 build
+is preserved whole. Normal sign-in and saved-app restoration pass.
+
+Retained72 continuity independent review: **703f8dc4604e15b353e1ae90c216e126642de7ee**
 ([report](foundation-evidence/architecture-realignment-20261030/actual-agent-live-20261030/NATIVE-CONTINUITY-INDEPENDENT.md)),
 11 renderer and20 Studio checks pass (overlap with builder checks; no combined
 unique total). Builder renderer19/19, Studio8/8 and TypeScript pass. Separate
@@ -64,7 +75,7 @@ stage-3 saved actual app was r1.r5: the real agent added Review and a typed edge
 Interact reference, notes and status changes preserve Source values and survive
 Save/export/reload ([stage-3 result](foundation-evidence/architecture-realignment-20261030/actual-agent-live-20261030/STAGE-3-TWO-NODE-RESULT.md)).
 Design deliberately selects source instead of typing. The complete Evidence desk
-is now saved/exported/reopened at r1.r6 with two reusable Source notes, Review,
+was saved/exported/reopened at r1.r6 with two reusable Source notes, Review,
 two typed edges and the guide. Actual-agent implicit-label repair and native
 repeated typing/isolation, pointer movement, settled keyboard Undo/Redo and manual
 edge recreation/capacity refusal are recorded ([app1 result](foundation-evidence/architecture-realignment-20261030/actual-agent-live-20261030/STAGE-4-COMPLETE-APP-RESULT.md)).
@@ -72,16 +83,20 @@ The earlier stale refusal applied zero edits; earlier/inconclusive history and a
 unattributed first-node movement remain disclosed. Exact r1.r6 supported import/
 export roundtrip is byte-identical and public-artifact static preparation passes
 ([portable result](foundation-evidence/architecture-realignment-20261030/actual-agent-live-20261030/stage-4-portable-summary.md)).
-A separate blank Project planner is now being built by the actual agent to prove
-the materially different nested/repeated application. Nested native ownership,
+A separate actual-agent Project planner first draft is preserved at r1.r1. Its
+ordinary sections/document presentation state are not nested graph proof, and its
+Save guide was inaccurate; native reload confirms presentation state stays
+temporary. An explicit actual-agent graph continuation is in progress
+([first draft](foundation-evidence/architecture-realignment-20261030/actual-agent-live-20261030/STAGE-5-FIRST-DRAFT-RESULT.md)). Nested native ownership,
 affected in-node popup and final integrated verification remain. The separate
 owner-reported physical-device check below is complete at its stated scope.
 
-**New live history challenge:** canonical source recorded a redone move, but a
-later native edge edit emitted the old position. The source-only settled keyboard
-Undo/Redo proof does not resolve that runtime/session concern. A focused independent
-mounted reproduction is in progress; no full source/render history pass or final
-gate is awarded from the earlier snapshots. No source patch has yet been activated.
+**Resolved live history challenge:** canonical source at72 recorded a redone move,
+but a later edge edit emitted the old position. Independent red probes confirmed
+the obsolete emission-marker cause in both renderers. Current ab329 clears that
+marker on external source adoption; independent and native source/render/next-edit
+checks pass. Earlier source-only/inconclusive observations remain retained and are
+not relabeled. Full integrated exit still awaits the nested second application.
 
 One independent affected-regression pass on exact72 additionally passed44
 popup/focus/nesting renderer,15 media and8 Studio capture checks. It reuses the
@@ -100,15 +115,15 @@ actual exported node both render and accept ordinary controls outside Studio.
 | Continuation branch | `codex/architecture-realignment-20261030`, local only |
 | Checkout | `C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030` |
 | Original private checkpoint | `4c40cc656328c50d16d28492ae5245bf509ccb6e`, original checkout remains clean and untouched |
-| Current product/source candidate | `72b7e09b1e6cbd5269578f3c3b1ccdf120a22c3b` |
+| Current product/source candidate | `ab3296e6503a63b2587ed36a1e1a121179082396` |
 | Gate A reviewed documentation | `cf5056e5ea37b87931fe24baf53f800e2d7fd173` |
 | Gate A independent report | `327db5149881ffdd6ad2e35e3380b60b1ea901fe` |
 | Initial independent FAIL | `d64e47087d5dbc3a858c4750045b9d7e1a98f5ec`, reviewed product `46d20c3c8f3d3d617df2b6d18655fc7a31517e8e` |
 | Intermediate recheck / F3 retained | `c004f794d25fc55f5ff6b59cc9088eb5070b6e77`, reviewed product `3e2c7b9e4a52721e398afb23d3fa140efe31f689` |
-| Independent source verdicts | Prior a613: `4ef3199e…`; b6 discovery: `0f033731…`; bfb schema repair: `d6d697e2…`; current72 continuity: `703f8dc4604e15b353e1ae90c216e126642de7ee`, branch `review/native-continuity-20261030`. Earlier FAIL/red findings remain retained. |
-| Current production build | Exit0;305 core +67 retained +7 new proof files in [NATIVE-CONTINUITY-ACTIVATION.json](foundation-evidence/architecture-realignment-20261030/NATIVE-CONTINUITY-ACTIVATION.json). Previous bfb build retained at `C:/Users/RZ1/AppData/Local/Temp/vict-pre-continuity-bfb-20261030-build`; all earlier backups remain. |
-| Public-artifact consumer | [WhcDEI report](foundation-evidence/architecture-realignment-20261030/vict-realignment-consumer-WhcDEI.json), source72; independent seven tar/510 installed-file check at `edd1ad01…`. Previous F0YKQr proof retained at its earlier package scope. |
-| Serving product | `72b7e09b1e6cbd5269578f3c3b1ccdf120a22c3b`, `127.0.0.25:5626`, normal existing-config launcher; original and previous builds preserved |
+| Independent source verdicts | Prior a613 `4ef3199e…`, b6 `0f033731…`, bfb `d6d697e2…`,72 continuity `703f8dc4…`; current ab329 echo lifetime `f6acd3742a602d2b3b6c795c6b81d253fb981c53`, branch `review/history-redo-echo-20261030`. All earlier red findings retained. |
+| Current production build | Exit0;305core+74retained+7new proof files in [HISTORY-REDO-ACTIVATION.json](foundation-evidence/architecture-realignment-20261030/HISTORY-REDO-ACTIVATION.json). Previous72 build at `C:/Users/RZ1/AppData/Local/Temp/vict-pre-history-72b7-20261030-build`; earlier backups remain. |
+| Public-artifact consumer | [yklW2W report](foundation-evidence/architecture-realignment-20261030/vict-realignment-consumer-yklW2W.json), sourceab329, independent seven-tar/510-file/8-fixture/2-asset and exact repaired-source byte audit. WhcDEI/F0YKQr remain valid at earlier scopes. |
+| Serving product | `ab3296e6503a63b2587ed36a1e1a121179082396`, `127.0.0.25:5626`, normal existing-config launcher; original and previous builds preserved |
 | Remote main / public pause branch | `d7401bef6e48330796c74ec00c86db9622d48cdf` / `1fa7c392401bfb6581aae30a1e6d33ba305c2662`, rechecked unchanged; **no push** |
 
 Later documentation/evidence commits do not change the product candidate above.
@@ -197,7 +212,7 @@ evidence, not a fresh whole-candidate live pass.
 | AR10 | Actual agent changes preserved manual values; native repeated-control isolation and settled shared movement history pass. Nested native owners remain. |
 | AR11 | Actual stage1 and failed-trial receipts retain identities and bounded metrics; no invented provider latency or cost. Offline pinned-executor protocol passes. |
 | AR12 | Retained observation-only/no-replay proof; unchanged. |
-| AR13 | Actual one-node source/default controls, history, Save/export and reopen pass; nested/repeated native roundtrip remains. |
+| AR13 | Current ab329 source/render/next-edit history, repeated controls, r1.r7 Save/export/reopen and earlier byte-identical r1.r6 portable roundtrip pass; nested native roundtrip remains. |
 | AR14 | Complete actual Evidence desk has repeated ordinary controls, two typed connections, native edit/move/shared history, manual edge creation and capacity refusal; nested app remains. |
 | AR15 | Seven public artifacts/510 files and native consumer isolation/reset pass; actual complete app1 saved/reopened, app2 nested Project planner in progress. |
 | AR16 | Retained parts/theme scope; current native trigger/open-panel appearance remains unproved. |
@@ -232,7 +247,7 @@ controlled nested routes explicitly refuse; direct graph@1 remains supported.
 
 The original private checkout remains clean at the paused checkpoint. Its original
 324 core and 60 proof files remain preserved; current serving core bytes instead
-match the72 candidate receipt, plus67 retained and seven new proof files. Existing
+match theab329 candidate receipt, plus74retained and seven new proof files. Existing
 proof routes, Chatwithme/Matrix/Flow, failed NodeLab trials,
 managed assets, browser storage and unsent drafts were not edited or cleaned.
 This is preservation by non-mutation, **not a fresh complete browser backup**.
@@ -254,8 +269,9 @@ candidate was hash-checked, all historical proof routes retained, normal existin
 provider configuration validated without secret output, and Studio launched at
 the same origin. Normal local-demo sign-in and saved Designer restoration pass.
 
-The current next work is app1 portable validation, actual Studio-agent stage5 and
-nested native source ownership/popup verification. The Xiaomi Android/Chrome physical check is complete as
+The current next work is the actual Studio-agent stage5 nested continuation,
+native lexical ownership/popup/targeted-agent/history/portable proof and fresh
+integrated exit. App1 portable/current-public-native proof passes. The Xiaomi Android/Chrome physical check is complete as
 reported by the owner. Stage2 has actual control,
 native history and save/reopen proof plus refreshed public-consumer checks.
 Stage1 has an actual source-read/atomic-edit receipt,

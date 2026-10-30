@@ -1,0 +1,26 @@
+[
+  {
+    "tag": "INPUT",
+    "value": "Website relaunch"
+  },
+  {
+    "tag": "INPUT",
+    "value": "Draft launch checklist"
+  },
+  {
+    "tag": "SELECT",
+    "value": "done"
+  },
+  {
+    "tag": "INPUT",
+    "value": "Mobile app beta"
+  },
+  {
+    "tag": "INPUT",
+    "value": "Design onboarding flow"
+  },
+  {
+    "tag": "SELECT",
+    "value": "todo"
+  }
+]
