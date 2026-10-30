@@ -1,0 +1,6 @@
+- main:
+  - main "Architecture proof — 1 read and edit":
+    - heading "Evidence desk" [level=1]:
+      - generic: Evidence desk
+    - paragraph:
+      - generic: Review each source before making a decision.

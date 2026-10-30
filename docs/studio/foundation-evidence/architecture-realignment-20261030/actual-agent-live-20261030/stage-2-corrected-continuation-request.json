@@ -1,0 +1,7 @@
+{
+  "startedObservedUtc": "2026-10-30T11:51:16.011Z",
+  "servingSource": "bfb34e2882781bc2dddd05f2b978b418cda12c49",
+  "screen": "screen-d5c26246-953b-4a57-8e43-b78e8a56e9eb",
+  "savedRevision": "r1.r1",
+  "prompt": "Continue this Evidence desk application from its saved source. Read the existing workspace and node-body source before editing, preserve the heading, introduction, warm theme and confirmed structure, and complete the small working slice: exactly one rich Source note graph node with an editable source URL, multiline notes and a typed evidence output port. The controls must update that node’s values without dragging it. Keep its existing simple card title; finish the useful node before any decoration. Discover the exact public contracts you need, and use preflight for a new scoped edit shape. Do not add a toolbar, family picker, inspector, connection form or backend execution. Leave saving to me and report what actually works versus what remains unverified."
+}

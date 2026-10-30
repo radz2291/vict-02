@@ -14,15 +14,14 @@ stages are now in progress; that minimal success does not pass the full gate.
 
 ## Exact identities
 
-Latest live-discovery candidate: **b6cf440be33ca3c011889e8ecc91fc28f16f1175**.
-Independent qualified offline PASS: **0f033731e529dac48d6b6f96edcc2eda8129228c**
-([report](foundation-evidence/architecture-realignment-20261030/SCALAR-KNOWLEDGE-INDEPENDENT.md)),
-40 relevant tests, TypeScript and scoped lint pass. Separate staged production
-build passes. This candidate supersedes the a613 serving identity in the historical
-table below; [sealed activation](foundation-evidence/architecture-realignment-20261030/DISCOVERY-ACTIVATION.json)
-retains every core file hash plus all 60 historical proof files. The previous
-serving build is preserved whole for rollback. Normal existing sign-in and saved
-Designer restoration succeeded after activation.
+Current source/serving candidate: **bfb34e2882781bc2dddd05f2b978b418cda12c49**.
+Fresh independent qualified offline PASS: **d6d697e2ac050011168156299205a31e0637ebb3**
+([report](foundation-evidence/architecture-realignment-20261030/SCHEMA-COLLISION-INDEPENDENT.md)),
+20 focused final tests, TypeScript and scoped lint pass. Separate staged production
+build passes. [Sealed activation](foundation-evidence/architecture-realignment-20261030/PREFLIGHT-EXACT-ACTIVATION.json)
+records 305 core files, 60 historical proof files and seven added public proof
+files, zero hash mismatches. Prior b6 and a613 serving builds are preserved whole
+for rollback. Normal sign-in and saved Designer restoration succeeded.
 
 The first actual rich-node trial **failed** with 18 calls / 10 refusals / zero edits
 and was stopped, saved and retained ([failure](foundation-evidence/architecture-realignment-20261030/actual-agent-live-20261030/STAGE-2-FIRST-FAILURE.md)).
@@ -30,12 +29,18 @@ The strict scalar exact-revision knowledge read repairs a concrete discovery
 usability gap; the original transport cause remains unproved. A subsequent
 one-call diagnostic correctly refused the parent's numeric revision 2 prompt
 (schema requires string "2"), returning only its number type and safe issue path.
-It made no edits. The original rich-node brief is now being retried on a fresh
-blank screen; no pass is claimed. Android phone/tablet availability is confirmed,
-with physical keyboard/touch/safe-area proof still pending.
+It made no edits. The b6 rich-node retry progressed through real discovery and
+four acknowledged edits but was stopped incomplete after 39 calls / 15 refusals /
+923.5 seconds of partial browser measurement. The saved/exported partial source
+remains r1.r1; [failure and repair](foundation-evidence/architecture-realignment-20261030/actual-agent-live-20261030/STAGE-2-RETRY-RESULT.md)
+retain the slotScope schema collision, preflight string inputs, unsupported
+reference guesses and independently discovered exact-payload normalization defect.
+The corrected actual continuation now reads that saved source; no rich-node pass
+is claimed. Android availability and wireless preference are confirmed; physical
+keyboard/touch/safe-area proof remains pending. No LAN listener has started.
 
-Current read capability/input revisions are 7, instructions 13, authoring profile
-14 and observer profile 8. Edit/input remains 6. Packages and saved schemas are
+Current read capability/input revisions are 8, instructions 13, authoring profile
+15 and observer profile 9. Edit capability/input is 7. Packages and saved schemas are
 unchanged by this Studio-only repair, so the independent public-artifact consumer
 proof remains bounded evidence for identical package bytes.
 
@@ -44,15 +49,15 @@ proof remains bounded evidence for identical package bytes.
 | Continuation branch | `codex/architecture-realignment-20261030`, local only |
 | Checkout | `C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030` |
 | Original private checkpoint | `4c40cc656328c50d16d28492ae5245bf509ccb6e`, original checkout remains clean and untouched |
-| Current product/source candidate | `b6cf440be33ca3c011889e8ecc91fc28f16f1175` |
+| Current product/source candidate | `bfb34e2882781bc2dddd05f2b978b418cda12c49` |
 | Gate A reviewed documentation | `cf5056e5ea37b87931fe24baf53f800e2d7fd173` |
 | Gate A independent report | `327db5149881ffdd6ad2e35e3380b60b1ea901fe` |
 | Initial independent FAIL | `d64e47087d5dbc3a858c4750045b9d7e1a98f5ec`, reviewed product `46d20c3c8f3d3d617df2b6d18655fc7a31517e8e` |
 | Intermediate recheck / F3 retained | `c004f794d25fc55f5ff6b59cc9088eb5070b6e77`, reviewed product `3e2c7b9e4a52721e398afb23d3fa140efe31f689` |
-| Prior independent source verdict | `4ef3199e87d8f9c04a4b1d584872920345b3917d`, branch `review/architecture-realignment-final-20261030`, exact candidate `a61396cb…`; current discovery delta independently reviewed at `0f033731…` |
-| Current production build | Exit 0; sealed core and 60 preserved historical files in [DISCOVERY-ACTIVATION.json](foundation-evidence/architecture-realignment-20261030/DISCOVERY-ACTIVATION.json). Prior a613 build retained at `C:/Users/RZ1/AppData/Local/Temp/vict-pre-discovery-a613-20261030-build`; original build untouched. |
+| Independent source verdicts | Prior a613: `4ef3199e…`; b6 discovery: `0f033731…`; current bfb exact-preflight/schema repair: `d6d697e2ac050011168156299205a31e0637ebb3`, branch `review/schema-collision-verified-20261030`. Initial exact-payload finding at `32e822db…` remains retained. |
+| Current production build | Exit 0; 305 core +60 historical +7 new proof files in [PREFLIGHT-EXACT-ACTIVATION.json](foundation-evidence/architecture-realignment-20261030/PREFLIGHT-EXACT-ACTIVATION.json). Previous b6 build retained at `C:/Users/RZ1/AppData/Local/Temp/vict-pre-exact-b6cf-20261030-build`; prior a613 and original builds untouched. |
 | Public-artifact consumer | [F0YKQr report](foundation-evidence/architecture-realignment-20261030/vict-realignment-consumer-F0YKQr.json), tested package source `3e2c7b9e4a52721e398afb23d3fa140efe31f689`; package bytes unchanged through final source |
-| Serving product | `b6cf440be33ca3c011889e8ecc91fc28f16f1175`, `127.0.0.25:5626`, normal existing-config launcher; original `27788de9…` and previous a613 build preserved |
+| Serving product | `bfb34e2882781bc2dddd05f2b978b418cda12c49`, `127.0.0.25:5626`, normal existing-config launcher; original and previous builds preserved |
 | Remote main / public pause branch | `d7401bef6e48330796c74ec00c86db9622d48cdf` / `1fa7c392401bfb6581aae30a1e6d33ba305c2662`, rechecked unchanged; **no push** |
 
 Later documentation/evidence commits do not change the product candidate above.
@@ -142,11 +147,11 @@ evidence, not a fresh whole-candidate live pass.
 | AR11 | Actual stage1 and failed-trial receipts retain identities and bounded metrics; no invented provider latency or cost. Offline pinned-executor protocol passes. |
 | AR12 | Retained observation-only/no-replay proof; unchanged. |
 | AR13 | Ownership/history/persistence/import defects independently repaired; actual authored application/browser roundtrip remains. |
-| AR14 | Typed two-node/control fixture and ordinary registered components pass; useful actual-agent application remains. |
-| AR15 | Seven public artifacts/510 files and new registered control prove fixture reuse; two actual applications remain required. |
+| AR14 | Typed two-node/control fixture and ordinary registered components pass; native consumer Select isolation now exercised; useful actual-agent application remains. |
+| AR15 | Seven public artifacts/510 files, native browser control isolation/reset and new registered component prove bounded fixture reuse; two actual applications remain required. |
 | AR16 | Retained parts/theme scope; current native trigger/open-panel appearance remains unproved. |
 | AR17 | Shared popup regressions 63 renderer/27 AI pass at unchanged popup source hashes; in-node open/capture/native proof remains. |
-| AR18 | Meaningful ordinary control writes pass in bridge/consumer; representative actual application interactions remain. |
+| AR18 | Ordinary control writes pass in bridge and native packed consumer; representative actual application interactions remain. |
 | AR19 | Strict safe feedback, exact route failures and offline retry boundary pass; actual remote recovery remains. |
 | AR20 | Retained first-visit/carousel proof; actual physical gestures remain unproved. |
 | AR21 | Retained launch/open-state/gallery proof; no new native open-popup certification. |
@@ -167,8 +172,8 @@ New public code contracts are `vict.flow-authoring@1` and
 `vict.flow.editor-host@2`. Host@1 remains an explicit compatibility fallback;
 new source-backed hosts should migrate to structured @2 admission. Optional
 provenance fields preserve existing context implementers. The agent operation
-is capability/input@6 (from @5). Read capability/input@7, instructions@13,
-authoring profile@14 and observer profile@8 describe the current discovery repair.
+is capability/input@7 (from @6). Read capability/input@8, instructions@13,
+authoring profile@15 and observer profile@9 describe the current schema repair.
 Existing direct operation shapes remain valid. UI document, application and
 graph@1/@2 saved schemas are unchanged; there is no implicit migration.
 Controlled nested source routes support graph@2 node parameters. Legacy graph@1
@@ -176,7 +181,7 @@ controlled nested routes explicitly refuse; direct graph@1 remains supported.
 
 The original private checkout remains clean at the paused checkpoint. Its original
 324 core and 60 proof files remain preserved; current serving core bytes instead
-match the new b6 candidate receipt, plus all 60 historical proof files. Existing
+match the bfb candidate receipt, plus all 60 historical and seven new proof files. Existing
 proof routes, Chatwithme/Matrix/Flow, failed NodeLab trials,
 managed assets, browser storage and unsent drafts were not edited or cleaned.
 This is preservation by non-mutation, **not a fresh complete browser backup**.

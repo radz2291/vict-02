@@ -1,0 +1,22 @@
+- heading "Independent review-node fixture" [level=1]
+- paragraph: Public artifacts and normal registered controls; no execution backend.
+- region "Graph workspace":
+  - application "Graph canvas":
+    - application:
+      - group "First review":
+        - text: Decision
+        - combobox "Decision":
+          - option "Choose an option"
+          - option "Pending" [selected]
+          - option "Request revision"
+          - option "Approved"
+      - group "Second review":
+        - text: Decision
+        - combobox "Decision":
+          - option "Choose an option"
+          - option "Pending"
+          - option "Request revision" [selected]
+          - option "Approved"
+      - link "Svelte Flow attribution":
+        - /url: https://svelteflow.dev?utm_source=attribution
+        - text: Svelte Flow
