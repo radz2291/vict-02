@@ -1,0 +1,107 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030
+
+DOMException [NotSupportedError]: Failed to load iframe page "https://www.youtube-nocookie.com/embed/abcdefghijk". Iframe page loading is disabled.
+    at HTMLIFrameElement.#loadPage (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/html-iframe-element/HTMLIFrameElement.js:333:27)
+    at HTMLIFrameElement.[connectedToDocument] (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/html-iframe-element/HTMLIFrameElement.js:230:23)
+    at HTMLIFrameElement.[connectedToNode] (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/node/Node.js:801:53)
+    at HTMLDivElement.[connectedToNode] (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/node/Node.js:793:58)
+    at HTMLDivElement.[insertBefore] (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/node/Node.js:556:48)
+    at HTMLDivElement.[insertBefore] (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/element/Element.js:1118:63)
+    at HTMLDivElement.[insertBefore] (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/node/Node.js:515:50)
+    at HTMLDivElement.[insertBefore] (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/element/Element.js:1118:63)
+    at HTMLDivElement.insertBefore (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/node/Node.js:339:49)
+    at Function.before (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/child-node/ChildNodeUtility.js:51:24)
+DOMException [NotSupportedError]: Failed to load iframe page "https://www.youtube-nocookie.com/embed/abcdefghijk". Iframe page loading is disabled.
+    at HTMLIFrameElement.#loadPage (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/html-iframe-element/HTMLIFrameElement.js:333:27)
+    at HTMLIFrameElement.[connectedToDocument] (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/html-iframe-element/HTMLIFrameElement.js:230:23)
+    at HTMLIFrameElement.[connectedToNode] (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/node/Node.js:801:53)
+    at HTMLDivElement.[connectedToNode] (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/node/Node.js:793:58)
+    at HTMLDivElement.[insertBefore] (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/node/Node.js:556:48)
+    at HTMLDivElement.[insertBefore] (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/element/Element.js:1118:63)
+    at HTMLDivElement.[insertBefore] (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/node/Node.js:515:50)
+    at HTMLDivElement.[insertBefore] (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/element/Element.js:1118:63)
+    at HTMLDivElement.insertBefore (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/node/Node.js:339:49)
+    at Function.before (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/child-node/ChildNodeUtility.js:51:24)
+DOMException [NotSupportedError]: Failed to load iframe page "https://www.youtube-nocookie.com/embed/abcdefghijk". Iframe page loading is disabled.
+    at HTMLIFrameElement.#loadPage (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/html-iframe-element/HTMLIFrameElement.js:333:27)
+    at HTMLIFrameElement.[connectedToDocument] (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/html-iframe-element/HTMLIFrameElement.js:230:23)
+    at HTMLIFrameElement.[connectedToNode] (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/node/Node.js:801:53)
+    at HTMLDivElement.[connectedToNode] (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/node/Node.js:793:58)
+    at HTMLDivElement.[insertBefore] (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/node/Node.js:556:48)
+    at HTMLDivElement.[insertBefore] (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/element/Element.js:1118:63)
+    at HTMLDivElement.[insertBefore] (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/node/Node.js:515:50)
+    at HTMLDivElement.[insertBefore] (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/element/Element.js:1118:63)
+    at HTMLDivElement.insertBefore (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/node/Node.js:339:49)
+    at Function.before (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/child-node/ChildNodeUtility.js:51:24)
+DOMException [NotSupportedError]: Failed to load iframe page "https://player.vimeo.com/video/123456". Iframe page loading is disabled.
+    at HTMLIFrameElement.#loadPage (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/html-iframe-element/HTMLIFrameElement.js:333:27)
+    at HTMLIFrameElement.[connectedToDocument] (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/html-iframe-element/HTMLIFrameElement.js:230:23)
+    at HTMLIFrameElement.[connectedToNode] (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/node/Node.js:801:53)
+    at HTMLDivElement.[insertBefore] (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/node/Node.js:556:48)
+    at HTMLDivElement.[insertBefore] (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/element/Element.js:1118:63)
+    at HTMLDivElement.insertBefore (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/node/Node.js:339:49)
+    at Function.before (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/child-node/ChildNodeUtility.js:51:24)
+    at Comment.before (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/character-data/CharacterData.js:168:26)
+    at Module.append (C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/svelte/src/internal/client/dom/template.js:378:9)
+    at C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/packages/ui-media-svelte/src/Embed.svelte:197:28
+DOMException [NotSupportedError]: Failed to load iframe page "https://www.youtube-nocookie.com/embed/abcdefghijk". Iframe page loading is disabled.
+    at HTMLIFrameElement.#loadPage (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/html-iframe-element/HTMLIFrameElement.js:333:27)
+    at HTMLIFrameElement.[connectedToDocument] (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/html-iframe-element/HTMLIFrameElement.js:230:23)
+    at HTMLIFrameElement.[connectedToNode] (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/node/Node.js:801:53)
+    at HTMLDivElement.[connectedToNode] (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/node/Node.js:793:58)
+    at HTMLDivElement.[insertBefore] (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/node/Node.js:556:48)
+    at HTMLDivElement.[insertBefore] (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/element/Element.js:1118:63)
+    at HTMLDivElement.[insertBefore] (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/node/Node.js:515:50)
+    at HTMLDivElement.[insertBefore] (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/element/Element.js:1118:63)
+    at HTMLDivElement.insertBefore (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/node/Node.js:339:49)
+    at Function.before (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/child-node/ChildNodeUtility.js:51:24)
+DOMException [NotSupportedError]: Failed to load iframe page "https://player.vimeo.com/video/123456". Iframe page loading is disabled.
+    at HTMLIFrameElement.#loadPage (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/html-iframe-element/HTMLIFrameElement.js:333:27)
+    at HTMLIFrameElement.[connectedToDocument] (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/html-iframe-element/HTMLIFrameElement.js:230:23)
+    at HTMLIFrameElement.[connectedToNode] (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/node/Node.js:801:53)
+    at HTMLDivElement.[insertBefore] (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/node/Node.js:556:48)
+    at HTMLDivElement.[insertBefore] (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/element/Element.js:1118:63)
+    at HTMLDivElement.insertBefore (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/node/Node.js:339:49)
+    at Function.before (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/child-node/ChildNodeUtility.js:51:24)
+    at Comment.before (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/character-data/CharacterData.js:168:26)
+    at Module.append (C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/svelte/src/internal/client/dom/template.js:378:9)
+    at C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/packages/ui-media-svelte/src/Embed.svelte:197:28
+DOMException [NotSupportedError]: Failed to load iframe page "https://www.youtube-nocookie.com/embed/abcdefghijk". Iframe page loading is disabled.
+    at HTMLIFrameElement.#loadPage (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/html-iframe-element/HTMLIFrameElement.js:333:27)
+    at HTMLIFrameElement.[connectedToDocument] (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/html-iframe-element/HTMLIFrameElement.js:230:23)
+    at HTMLIFrameElement.[connectedToNode] (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/node/Node.js:801:53)
+    at HTMLDivElement.[connectedToNode] (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/node/Node.js:793:58)
+    at HTMLDivElement.[insertBefore] (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/node/Node.js:556:48)
+    at HTMLDivElement.[insertBefore] (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/element/Element.js:1118:63)
+    at HTMLDivElement.[insertBefore] (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/node/Node.js:515:50)
+    at HTMLDivElement.[insertBefore] (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/element/Element.js:1118:63)
+    at HTMLDivElement.insertBefore (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/node/Node.js:339:49)
+    at Function.before (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/child-node/ChildNodeUtility.js:51:24)
+DOMException [NotSupportedError]: Failed to load iframe page "https://www.youtube-nocookie.com/embed/abcdefghijk". Iframe page loading is disabled.
+    at HTMLIFrameElement.#loadPage (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/html-iframe-element/HTMLIFrameElement.js:333:27)
+    at HTMLIFrameElement.[connectedToDocument] (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/html-iframe-element/HTMLIFrameElement.js:230:23)
+    at HTMLIFrameElement.[connectedToNode] (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/node/Node.js:801:53)
+    at HTMLDivElement.[insertBefore] (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/node/Node.js:556:48)
+    at HTMLDivElement.[insertBefore] (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/element/Element.js:1118:63)
+    at HTMLDivElement.[insertBefore] (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/node/Node.js:515:50)
+    at HTMLDivElement.[insertBefore] (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/element/Element.js:1118:63)
+    at HTMLDivElement.insertBefore (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/node/Node.js:339:49)
+    at Function.before (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/child-node/ChildNodeUtility.js:51:24)
+    at Comment.before (file:///C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/node_modules/happy-dom/lib/nodes/character-data/CharacterData.js:168:26)
+9:01:39 pm [vite-plugin-svelte] packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+9:01:39 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+9:01:39 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+9:01:39 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+9:01:39 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+
+ Test Files  3 passed (3)
+      Tests  15 passed (15)
+   Start at  21:01:09
+   Duration  34.39s (transform 49.74s, setup 0ms, import 60.14s, tests 1.48s, environment 18.46s)
+
