@@ -1,7 +1,7 @@
 <script lang="ts">
   import './disclosures.css';
   import {exclusiveWorkspacePanels} from './workspace-panels.js';
-  import {compatiblePreviewValues} from './preview-state.js';
+  import {sourceRuntimeRefresh} from './source-runtime-refresh.js';
   import { onMount, tick, untrack, setContext } from 'svelte';
   import { beforeNavigate } from '$app/navigation';
   import {AssetProvider,MediaAssetLibrary,indexedDbAssetStore,exportMediaArchive} from '@victframework/ui-media-svelte';
@@ -511,7 +511,7 @@
     actors: [{ actorId: 'screen-demo', role: 'designer', permissions: ['studio.demo.write'] }],
     operations: [{ op: 'studio.demo:submit', implementation: 'simulated' }], resetBoundary: 'session' } as const;
   let preview = createPreviewSession({ scenario, dataAdapter: { adapter, context: actor => ({ permissions: actor.permissions, effect: 'write', actor: actor.actorId }) } });
-  function resetRuntime() {
+  function invalidateRuntime(resetRenderer=true) {
     testChoice++;
     adapter.reset(); preview.reset();
     simulation.denied=false;simulation.failNext=false;activeTest=undefined;
@@ -520,18 +520,21 @@
       application: { id: document ? `studio.${document.id}` : 'studio.screen', revision: '1' },
       documents: document ? { [document.id]: document.revision } : {},
     } }, dataAdapter: { adapter, context: actor => ({ permissions: actor.permissions, effect: 'write', actor: actor.actorId }) } });
-    runtimeValues = {}; resetSignal = Symbol('reset'); activity = [];
+    runtimeValues = {}; if(resetRenderer)resetSignal = Symbol('reset'); activity = [];
   }
+  function resetRuntime(){invalidateRuntime();}
   let runtimeRevision='';
+  let runtimeDocumentId='';
   // Fence in-flight simulation before render, retaining only values valid for the new source.
   $effect.pre(()=>{const revision=authoredRevision;if(!revision)return;untrack(()=>{
     if(runtimeRevision&&runtimeRevision!==revision&&source){
-      const compatible=compatiblePreviewValues(source,runtimeValues),retained=rebaseGraphRuntime(source,compatible.values);
-      const removed=compatible.removed.length,test=activeTest,denied=simulation.denied,failNext=simulation.failNext;
-      resetRuntime();runtimeValues=retained;
+      const refresh=sourceRuntimeRefresh(source,runtimeValues,runtimeDocumentId);
+      const removed=refresh.removed.length,test=activeTest,denied=simulation.denied,failNext=simulation.failNext;
+      invalidateRuntime(refresh.resetRenderer);runtimeValues=refresh.values;
       if(!removed){activeTest=test;simulation.denied=denied;simulation.failNext=failNext;}else notice=`${removed} temporary ${removed===1?'value was':'values were'} reset because the document changed. Your saved starting values are unchanged.`;
     }
     runtimeRevision=revision;
+    runtimeDocumentId=source?.id??'';
   });});
   function openSession(next: EditorBridge) {
     agentEpoch = crypto.randomUUID();
@@ -594,6 +597,7 @@
     const result = bridge.apply(draft);
     issues = result.ok ? [] : result.issues;
     if (result.ok) {
+      if(fromSource)resetRuntime();
       notice = `${draft.reason ?? 'Change applied'} · unsaved`;
     }
     return result.ok;

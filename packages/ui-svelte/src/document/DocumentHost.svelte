@@ -252,7 +252,10 @@
   data-ui-revision={plan.revision}
   aria-label={ariaLabel}
 >
-  {#key generation}
+  <!-- Authority still expires on every plan change. DOM identity changes only
+       for another document or an explicit reset, preserving live native input. -->
+  {#key plan.documentId}
+  {#key resetSignal}
     {#each plan.structure as instruction (instruction.occurrenceKey)}
       <RenderNode
         {instruction}
@@ -273,5 +276,6 @@
         reportDiagnostic={onRenderDiagnostic}
       />
     {/each}
+  {/key}
   {/key}
 </svelte:element>
