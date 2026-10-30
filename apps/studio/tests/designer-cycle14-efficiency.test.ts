@@ -100,7 +100,7 @@ it('enforces completed knowledge and delivers measured progress through the actu
  const opened=openAgentRun('cycle14-complete-knowledge',parsed.value,event=>events.push(event),{model:OFFLINE_MODEL_IDENTITY,modelFactory:()=>({...model,doStream:async(options:Parameters<typeof model.doStream>[0])=>{prompts.push(options.prompt);return model.doStream(options);}})});
  if(!opened.ok)throw Error(opened.code);await opened.finished;
  const results:Record<string,unknown>[]=[];
- function visit(value:unknown,depth=0):void{if(depth>18)return;if(typeof value==='string'&&/^(?:\{|\[)/.test(value)){try{visit(JSON.parse(value),depth+1);}catch{}return;}if(Array.isArray(value)){value.forEach(item=>visit(item,depth+1));return;}if(value&&typeof value==='object'){if('turnProgress'in value&&'items'in value)results.push(value as Record<string,unknown>);Object.values(value).forEach(item=>visit(item,depth+1));}}
+ function visit(value:unknown,depth=0):void{if(depth>18)return;if(typeof value==='string'&&/^(?:\{|\[)/.test(value)){try{visit(JSON.parse(value),depth+1);}catch{/* Non-JSON prompt leaves contain no nested tool result. */}return;}if(Array.isArray(value)){value.forEach(item=>visit(item,depth+1));return;}if(value&&typeof value==='object'){if('turnProgress'in value&&'items'in value)results.push(value as Record<string,unknown>);Object.values(value).forEach(item=>visit(item,depth+1));}}
  visit(prompts);
  expect(results.some(result=>(result.items as {bodyComplete?:boolean}[]).some(item=>item.bodyComplete)),JSON.stringify({resultCount:results.length,toolEvents:events.filter(event=>event.type==='tool-event'),done:events.at(-1)})).toBe(true);
  expect(results.some(result=>(result.items as {unchanged?:boolean}[]).some(item=>item.unchanged))).toBe(true);

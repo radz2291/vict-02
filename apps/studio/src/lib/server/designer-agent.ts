@@ -303,7 +303,6 @@ async function execute(
   let removeSubscription: (() => void) | undefined;
   let turnId: string | undefined;
   let profileVersion: string | undefined;
-  let timeout: ReturnType<typeof setTimeout> | undefined;
   let visualObserver: ReturnType<typeof createVisualObserver> | undefined;
   // GLM's published 128K output window includes reasoning. Preserve its
   // default thinking behavior and allow the complete multi-step turn to finish.
@@ -374,7 +373,7 @@ async function execute(
   });
   run.controller.signal.addEventListener('abort', providerFailed, { once: true });
   if (run.controller.signal.aborted) providerFailed();
-  timeout = setTimeout(() => cancelAgentRun(run.owner,run.runId,'deadline'), Math.max(0,deadlineAt-Date.now()));
+  const timeout = setTimeout(() => cancelAgentRun(run.owner,run.runId,'deadline'), Math.max(0,deadlineAt-Date.now()));
   try {
     emit({ type: 'progress', message: 'Connecting to the VICT / Mastra agent…' });
     directory = await mkdtemp(join(tmpdir(), 'vict-studio-agent-'));

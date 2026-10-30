@@ -33,14 +33,13 @@ import {
   compositionChildren,
   canInsertRecipe,
   literalTextTarget,
-  resolveOccurrence,
   type EditorBridge,
   type TransactionDraft,
 } from '@victframework/ui-editor';
 import { screenRecipes } from './recipes.js';
 import { authoringContract, installedAuthoringRegistry, installedAuthoringHostCapabilities, nodeDescriptor } from './authoring.js';
 import { screenPlacementIssues } from './placement.js';
-import { designerCatalogs, screenIssues, compileScreen, actionInputs,catalogDescriptors } from './application.js';
+import { designerCatalogs, screenIssues, compileScreen,catalogDescriptors } from './application.js';
 
 const id = z
   .string()
