@@ -27,7 +27,7 @@ Stage 9 acceptance or closure occurred in this lane.
 - Studio: **20/20**, five files, exit 0. From `apps/studio`:
   `npx vitest run tests/native-source-echo.test.ts tests/graph-scoped-bridge.test.ts tests/graph-runtime-refusal.test.ts tests/graph-history-source-policy.test.ts tests/graph-scoped-ownership.test.ts`.
   Raw evidence: `independent-native-continuity-studio.log`.
-- `git diff --check`: exit 0. Only independent probes and evidence are added;
+- Source/probe/report whitespace check: exit 0. The full staged check flags only final blank lines in four retained terminal logs; their raw content is preserved. Only independent probes and evidence are added;
   candidate product code is unchanged. Existing Svelte accessibility/initial-state
   and shortcut warnings remain visible in the raw logs.
 
