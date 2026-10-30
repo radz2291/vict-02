@@ -36,13 +36,16 @@ four acknowledged edits but was stopped incomplete after 39 calls / 15 refusals 
 remains r1.r1; [failure and repair](foundation-evidence/architecture-realignment-20261030/actual-agent-live-20261030/STAGE-2-RETRY-RESULT.md)
 retain the slotScope schema collision, preflight string inputs, unsupported
 reference guesses and independently discovered exact-payload normalization defect.
-At that b6 checkpoint no rich-node pass was claimed. Android availability and wireless preference are confirmed; physical
-keyboard/touch/safe-area proof remains pending. A later sealed static preview of
+At that b6 checkpoint no rich-node pass was claimed. Android availability and
+wireless preference were confirmed. A later sealed static preview of
 the actual r1.r5 two-node export is now listening at192.168.1.6:5630 for the
 owner's Android check. It exposes four verified frontend files only; Studio and
 agent/backend routes remain on their established loopback origin. Firewall and
-network profiles were not changed. Desktop loading passes; phone results remain
-pending. See device-preview/two-stage-preparation-report.json in the evidence directory.
+network profiles were not changed. Desktop loading passes. The owner confirmed
+Xiaomi Android/Chrome keyboard-open typing, dragging, panning and rotation with
+all controls reachable and no issue reported ([physical result](foundation-evidence/architecture-realignment-20261030/device-preview/ANDROID-OWNER-OBSERVATION.md)).
+This is owner-reported actual-device evidence, not agent emulation or a claim
+about all device/cutout geometries. Exact model/versions are unavailable.
 
 **Retained bfb live result:** the corrected agent completed three acknowledged edits and
 a final-source matching image assessment (26 calls, five refusals, 388.7 seconds).
@@ -190,7 +193,7 @@ evidence, not a fresh whole-candidate live pass.
 | AR22 | Existing 22 import/media safeguards plus deep roundtrip pass; retained upload/playback/asset evidence stands, heard audio unproved. |
 | AR23 | Approved drawer/popup ownership and scoped regressions retained; new native nested/standalone exercise remains. |
 | AR24 | Retained desktop dimensions/orientation evidence; desktop previews remain explicitly distinct from physical devices. |
-| AR25 | **PARTIAL**: actual-device virtual keyboard, safe-area and touch still unproved. |
+| AR25 | Owner-reported physical PASS on Xiaomi Android/Chrome: keyboard-open typing, dragging/panning and rotation with controls reachable, exact actual two-node static export. Model/versions/screenshots unavailable; no universal-device claim. |
 | AR26 | Existing panels/drafts proof retained; owner apps/assets/drafts untouched. Saved inventory restored after restart; no fresh complete browser backup is claimed. |
 | AR27 | Existing View-row/mode-bar behavior retained, unchanged. |
 | AR28 | Registered icons/theme/portable evidence retained, unchanged. |

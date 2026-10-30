@@ -1,0 +1,41 @@
+{
+  "earlierAttempts": "getByText on display:contents label spans returned no_visible_match; no action performed. Native label locator used for final observation.",
+  "controls": [
+    {
+      "focused": false,
+      "id": "url-control",
+      "node": "source-note-1",
+      "value": "https://example.org/source-ax"
+    },
+    {
+      "focused": true,
+      "id": "notes-control",
+      "node": "source-note-1",
+      "value": "Manual note: compare the original source.\nKeep uncertainty visible."
+    },
+    {
+      "focused": false,
+      "id": "review-reference",
+      "node": "review-1",
+      "value": "https://example.org/review-b"
+    },
+    {
+      "focused": false,
+      "id": "review-notes",
+      "node": "review-1",
+      "value": "Independent review: check the claim."
+    },
+    {
+      "focused": false,
+      "id": "url-control",
+      "node": "source-note-2",
+      "value": ""
+    },
+    {
+      "focused": false,
+      "id": "notes-control",
+      "node": "source-note-2",
+      "value": ""
+    }
+  ]
+}

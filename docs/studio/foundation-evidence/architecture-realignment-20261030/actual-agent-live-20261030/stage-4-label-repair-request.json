@@ -1,0 +1,3 @@
+{
+  "prompt": "Native testing found a repeated-template accessibility defect: Source note 2 reuses the literal HTML ids url-control and notes-control, so clicking its Provenance notes label focuses Source note 1. Source note 2 controls also lack their own accessible labels. Repair the reusable Source note body through existing authoring operations: use ordinary implicit native labels containing each associated input/textarea, remove unnecessary native id/for attributes, preserve canonical node IDs, values, styles and all graph topology/positions. This must stay correct when the same body is reused or nested; no renderer or Flow adapter changes. Preflight and leave Save to me. Do not change unrelated composition."
+}

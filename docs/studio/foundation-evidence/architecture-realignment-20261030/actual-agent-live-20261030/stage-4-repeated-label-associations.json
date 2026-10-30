@@ -1,0 +1,37 @@
+[
+  {
+    "node": "source-note-1",
+    "targetId": "url-control",
+    "text": "Source URL"
+  },
+  {
+    "node": "source-note-1",
+    "targetId": "notes-control",
+    "text": "Provenance notes"
+  },
+  {
+    "node": "review-1",
+    "targetId": "review-reference",
+    "text": "Reference"
+  },
+  {
+    "node": "review-1",
+    "targetId": "review-notes",
+    "text": "Review notes"
+  },
+  {
+    "node": "review-1",
+    "targetId": "review-status",
+    "text": "Status"
+  },
+  {
+    "node": "source-note-2",
+    "targetId": "url-control",
+    "text": "Source URL"
+  },
+  {
+    "node": "source-note-2",
+    "targetId": "notes-control",
+    "text": "Provenance notes"
+  }
+]

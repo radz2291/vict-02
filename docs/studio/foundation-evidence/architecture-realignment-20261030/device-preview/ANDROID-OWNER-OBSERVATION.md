@@ -1,0 +1,9 @@
+# Android owner observation
+
+Wireless route: http://192.168.1.6:5630/ . Exact preparation report SHA-25623de1876436c871d6192ac02d39ab390a84849c37de9ddee5cc1ec3b927d464d, actual saved two-node app export r1.r5, public artifacts from product72b7e09b1e6cbd5269578f3c3b1ccdf120a22c3b. This static preview uses the shared renderer without Studio/backend access. Desktop IAB loading was separately observed.
+
+Owner reported in this conversation on30October2026: “I checked on device those 2 nodes in canvas example has no issue to be interact on mobile”. This is the owner's actual Android observation, not an agent-emulated device or narrow desktop result. It establishes reported mobile canvas/control interaction with no issue observed. Root did not directly observe the physical screen.
+
+The follow-up explicitly asked which Android device/browser and whether the check included keyboard-open typing, canvas dragging/panning and rotation with controls reachable. The owner answered: “yes... xiaomi phone.. chrome browser inside android.. yes typing dragging panning works also rotating”.
+
+**Scoped owner-reported physical PASS:** Xiaomi Android phone, Chrome; keyboard-open typing, dragging, panning and rotation with controls reachable. The owner reported no issue. This closes the available physical keyboard/touch/screen-edge reachability check for this exact two-node shared-renderer preview. It does not establish every device, Android version, cutout geometry or all future applications, and root did not independently inspect the physical screen. Exact Xiaomi model, OS/browser versions and device screenshots were not supplied and are not invented. No firewall/network-profile/device/account changes were made. Preview edits are temporary and do not modify the Studio app. Full Foundation and owner acceptance remain separate.
