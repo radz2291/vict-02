@@ -1,8 +1,15 @@
 # Architecture realignment and authoring foundation continuation
 
-**Current delivery:** [exact final offline candidate, independent verdict, all 31
+**Current delivery:** [exact serving candidate, independent verdict, all 31
 current dispositions and remaining live gates](ARCHITECTURE-REALIGNMENT-CURRENT-DELIVERY.md).
-Bounded source repairs independently PASS at `a61396cb…`; full delivery remains HELD.
+Current serving source is `b6cf440be33ca3c011889e8ecc91fc28f16f1175` with qualified
+independent offline PASS at `0f033731e529dac48d6b6f96edcc2eda8129228c`.
+Earlier source repairs passed at `a61396cb…`; their evidence remains preserved.
+Actual stage 1 source read/edit, Undo/Redo, Save/export/reload is demonstrated.
+The first rich-node trial failed (18 calls, 10 refusals, zero edits); the fresh
+retry intermediate checkpoint has four successful discovery reads, zero refusals
+and no edit yet. No rich-node success, owner acceptance or full delivery PASS follows.
+The owner confirmed physical-device availability; keyboard/safe-area/touch proof remains pending.
 
 Status: **RESUMED / IN PROGRESS; acceptance HELD**. Owner instruction received
 30 October 2026 authorizes gates A–E, local implementation/commits, independent
@@ -11,7 +18,7 @@ publication, production deployment, Milestone 2 or Stage 9 closure. This record
 supersedes pause/current-status language only for the resumed scope. Historical
 decisions, failed trials and evidence remain intact.
 
-## Exact recovery and authority
+## Exact recovery baseline and continuing authority
 
 - Original clean checkout: `C:/Users/RZ1/AppData/Local/Temp/vict-authoring-foundation`,
   `codex/authoring-foundation`, `4c40cc656328c50d16d28492ae5245bf509ccb6e`.
@@ -24,7 +31,7 @@ decisions, failed trials and evidence remain intact.
   one pre-existing untracked builder-kit archive, preserved untouched.
 - Latest pre-resume product: `119c80bf5f989b30443a281948cee7e4ac0583e4`;
   historical serving product: `27788de9f111042d04d83e7d603c6da2cccde8dc`.
-  Fresh process inspection still finds the expected original launch-agent parent
+  At the pre-activation recovery checkpoint, process inspection found the expected original launch-agent parent
   and node-build listener at `127.0.0.25:5626`. This is ownership evidence only;
   fresh installed-byte comparison and browser preservation precede any activation.
 - Root historical gate-push rules are superseded by the owner's explicit local-only
@@ -131,11 +138,13 @@ consistency, explicit compatibility and regressions. D: actual Studio agent stag
 1–5 and independent built-artifact consumer. E: fresh exact-candidate verifier,
 bounded repairs/reverification and owner walkthrough. A report is not a gate verdict.
 
-Browser initialization currently fails before inventory with `failed to write
+Historical pre-restart blocker: browser initialization failed before inventory with `failed to write
 kernel assets: The system cannot find the path specified. (os error 3)`; one
-documented session reset and retry produces the same failure. No input, alternate
-browser, raw protocol or policy bypass was used. Browser/actual-agent proof remains
-unavailable until the supported path works. Offline work proceeds independently.
+documented session reset and retry produced the same failure. No input, alternate
+browser, raw protocol or policy bypass was used. Browser/actual-agent proof was
+unavailable at that checkpoint. The owner subsequently restarted the PC; supported
+IAB sign-in, Designer restoration and the actual stage-1 proof now pass. See current delivery
+for the activated b6 candidate and retained failure/retry evidence.
 
 The connected Work workspace inventory contains no VICT project/ticket; unrelated
 projects were left untouched. Existing repository task/milestone records are the
@@ -145,7 +154,7 @@ Candidate, exact tests, fresh verifier and any serving identity will be appended
 only after observation. Stop at verified and ready for owner acceptance, with any
 required missing criterion still explicitly gating until owner acceptance of a limit.
 
-## Independent gate and repair progression
+## Historical independent gate and repair progression through a613
 
 Gate A independently **PASS** at `cf5056e5ea37b87931fe24baf53f800e2d7fd173`,
 review report `327db5149881ffdd6ad2e35e3380b60b1ea901fe`. This awards only the
@@ -183,14 +192,16 @@ evidence. Because the host repair changes Flow, affected artifact proof must be
 repeated for the repaired package; unchanged dependency builds may be reused only
 after exact source/build-artifact equality checks.
 
-No browser/actual-agent/device result is awarded. The fresh serving-build recheck
-matches all 384 original files; the original checkout/process/data remain untouched.
+At this historical offline checkpoint no browser/actual-agent/device result was awarded. The serving-build recheck then
+matched all 384 original files; the original checkout/process/data remained untouched.
 
 Final bounded-source disposition: independent verifier
 `4ef3199e87d8f9c04a4b1d584872920345b3917d` clears F1/F2 and the later F3
 deep-import false refusal at exact product `a61396cb3bf20e3f10d62a89a716feafdd91d6e3`.
-Final production build, TypeScript and changed-code lint pass; build is retained
-and uninstalled. Actual Studio-agent stages 1–5, native integrated/browser and
-physical-device proof remain unawarded, so the task/milestone remain open.
+At that checkpoint the production build, TypeScript and changed-code lint passed;
+the build was retained and uninstalled, and actual stages 1–5/native/device proof
+were unawarded. The later activation and stage-1 success supersede those operational
+statements only; stage 2 remains unpassed and later integrated/device gates remain held.
+The task/milestone remain open.
 The current-delivery record above is the handover entry; historical red records
 and first-candidate builds remain preserved.

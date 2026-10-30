@@ -1,11 +1,25 @@
-> **OWNER PAUSED / HELD,29October2026.** No further implementation, activation or
+# Authoring foundation current status
 
-> **30 October 2026 — RESUMED / IN PROGRESS; acceptance HELD.** The owner
-> authorized architecture realignment and foundation completion through gates A–E.
-> [Current architecture, all 31 dispositions and exact baseline](ARCHITECTURE-REALIGNMENT-20261030.md)
-> supersede earlier pause and current-count language at the resumed scope. Historical
-> evidence and decisions below remain preserved. No push, merge, publication,
-> production deployment, milestone closure or Stage 9 closure is authorized.
+> **30 October 2026 — RESUMED / IN PROGRESS; complete foundation gate HELD.**
+> [Current delivery, exact identities and all 31 dispositions](ARCHITECTURE-REALIGNMENT-CURRENT-DELIVERY.md)
+> is the operational entry; [architecture and authority](ARCHITECTURE-REALIGNMENT-20261030.md)
+> govern the resumed gates A–E. Source `b6cf440be33ca3c011889e8ecc91fc28f16f1175`
+> is locally serving with qualified independent offline PASS at `0f033731e529dac48d6b6f96edcc2eda8129228c`.
+> Actual stage 1 demonstrated a meaningful source read/precise edit, shared Undo/Redo,
+> Save/export/reload. The first rich-node trial failed: 18 calls, 10 refusals, zero edits;
+> its evidence remains retained. The fresh retry's intermediate checkpoint has four
+> successful discovery reads, zero refusals and no edit yet; no rich-node pass is awarded.
+> Valid batch arrays, revision strings and paging maps were received in this retry;
+> a universal transport-stringification explanation is not supported.
+> The owner confirmed a physical phone/tablet is available; keyboard/safe-area/touch
+> proof remains pending. All 31 owner acceptances remain open. No push, main merge,
+> publication, production deployment, milestone closure or Stage 9 closure is authorized.
+> Older counts, service identities, blockers and in-progress operations below are
+> dated historical evidence, not current operational assertions or a fresh 31-criterion verdict.
+
+## Historical owner pause and 29 October checkpoints (superseded operationally)
+
+> **OWNER PAUSED / HELD,29October2026.** No further implementation, activation or
 > provider trials until the owner resumes. Read the [durable pause handoff](VICT-PAUSED-HANDOFF-20261029.md)
 > first. Product119c80bf is committed/reviewed/tested/production-built but **not
 > installed**; serving product remains27788de9. The actual-agent flow requirement
@@ -45,11 +59,9 @@
 > [flow iteration](FLOW-COMPOSITION-ITERATION.md) and
 > [activation evidence](foundation-evidence/flow-composition-20261029/ACTIVATION.md).
 
-# Authoring foundation current status
+## Historical 28 October morning review — product a99aea00
 
-## Morning-review continuation — product a99aea00
-
-**Current independent reconciliation: 30 demonstrated / 1 partial (AR-25) / 0 current failed criteria across31. All31 owner acceptances remain open; the full foundation gate remains HELD.** Product `a99aea00dd75d8ced3104bc399257a343517e7b3` repairs the two reporting failures retained in the earlier checkpoint below. [Independent source and actual-provider review](foundation-evidence/reporting-contract-20261028/INDEPENDENT.md), [exact current evidence](foundation-evidence/reporting-contract-20261028/LIVE-REPORT.md).
+**Historical a99aea00 independent reconciliation: 30 demonstrated / 1 partial (AR-25) / 0 failed criteria at that checkpoint across31. All31 owner acceptances remain open; the full foundation gate remains HELD.** Product `a99aea00dd75d8ced3104bc399257a343517e7b3` repairs the two reporting failures retained in the earlier checkpoint below. [Independent source and actual-provider review](foundation-evidence/reporting-contract-20261028/INDEPENDENT.md), [exact current evidence](foundation-evidence/reporting-contract-20261028/LIVE-REPORT.md).
 
 AR-05 now has concise, explicitly labeled **Host evidence summary** output derived only from acknowledged effects and capture/source identity. The unchanged original AI response and technical receipts remain in the shared **Original AI assessment and tool details** disclosure and copy unchanged. The original model response can still be verbose; it is not rewritten or silently passed as concise prose. AR-09 now separates stable image measurements from explicitly unverified structured model interpretation, uncertainty and `notEstablished`. Invalid assessment structure fails without a successful fallback. This is a reporting/provenance contract, not a semantic oracle or erasure of historical failures.
 
@@ -186,13 +198,13 @@ Fresh continuation, 2026-10-28: supported internal browser access to `127.0.0.25
 
 Read-only reconciliation on 2026-10-28. Product candidate: `ba7b2a5b4f3db6bdc3a424bd297714745580248e`; subsequent checkpoint documentation: `1c02803c9dbb185f0299447df0771769b22ba95d`. This rollup supersedes historical pending-choice and executable-failure wording in the older chronological ledgers; it does not erase those observations or close findings.
 
-## What is complete and what is held
+## Historical 28 October completion and held-proof rollup
 
 Implementation candidates exist for all eight delivery packages. The shared Dialog/Menu/Tooltip architecture choices were approved and implemented; their previously recorded ownership failures are repaired technically. Final retained checks pass: renderer 346/0/1 existing skip, AI 64/64, patterns 45/45, independent popup 12/12, Studio types, AI CSS, Studio production and fresh nine-package installed consumer with byte comparisons. These overlap and are not an additive milestone total. See [exact verification and source hashes](foundation-evidence/owned-popup-review-20261028/final-verification.json) and [independent source association](foundation-evidence/owned-popup-review-20261028/independent-associated-source.json). That verification report describes the pre-commit working snapshot; its source bytes were subsequently saved in the product candidate above.
 
 No new concrete source defect was established by this bounded ledger/evidence audit. No code change or duplicate full-suite run was justified. This is not an exhaustive proof of correctness. Native integration, actual-agent output, physical-device evidence and final owner acceptance remain distinct missing gates. Original formal closure remains 0/29.
 
-## Finding evidence and exact next proof
+## Historical 28 October finding evidence and then-required proof
 
 Paths below are relative to `docs/studio/foundation-evidence/` unless a source/test path is given. Retained actual-agent evidence proves only its stated historical artifact and observations, not all current-build behavior.
 
@@ -211,7 +223,7 @@ Paths below are relative to `docs/studio/foundation-evidence/` unless a source/t
 | AR-20, AR-21 | Carousel/first-visit primitives and retained earlier consumer navigation; shared popup mechanics now pass. | Actual authored carousel controls/gestures and explicit welcome persistence/reset scope, open-popup appearance and launcher behavior. Earlier fixture success cannot replace authored application proof. |
 | AR-22 | Managed bytes/archive references and image/video/caption/embed contracts; media checks and installed-consumer build retained. | Actual upload/decode, video playback/captions, embed failure/loading, save/reopen/Run and portable import/export with actual assets. Blank saved Media screen is not a pass. |
 | AR-23 | Owner-approved shared owned-dialog adapter; `independent-owned-dialog-d733980-repair.json`, final patterns 45/45 and current popup review. Earlier CF-D01/03 failures are repaired technically. | Current authored drawer focus/Escape/dismissal/scroll/appearance in preview and installed consumer, nested layers and multiple app instances. No current browser pass claimed. |
-| AR-24, AR-25 | Isolated viewport, custom/orientation model and adaptive primitives; scoped tests/builds retained. | Current responsive wide/narrow behavior plus actual-device keyboard/safe-area/touch proof. No physical device availability has been established; viewport emulation does not replace it. |
+| AR-24, AR-25 | Isolated viewport, custom/orientation model and adaptive primitives; scoped tests/builds retained. | Current responsive wide/narrow behavior plus actual-device keyboard/safe-area/touch proof. At that checkpoint no physical device availability had been established; the owner has since confirmed a phone/tablet is available, with physical proof still pending; viewport emulation does not replace it. |
 | AR-26, AR-27 | Shared panel chrome/close/resize/Escape and duplicate View-row removal; `apps/studio/tests/ui/panel-polish.test.ts` and earlier panel evidence. | Current-build draft/context preservation, mode-bar discoverability and compact-layout/panel interaction; independent integrated verdict. |
 | AR-28, AR-29 | Versioned icons, managed inert vectors, per-occurrence IDs and graph icon-source importer; independent importer checks and installed-package bytes/build. | Actual custom asset import/use, multicolour/theme styling, vector replay/namespace isolation and save/reopen/portable resolution in representative apps. |
 
@@ -223,7 +235,7 @@ Paths below are relative to `docs/studio/foundation-evidence/` unless a source/t
 | AI-EX01 full existing AI exposure | 23 definition IDs / 28 contracts, six unchanged historical contracts; unique latest manual recipes and exact agent contracts; [independent exposure review](foundation-evidence/ai-exposure-independent-b793b0b.json). Full AI 64/64 after shared popup repair. See [capability inventory and exclusions](AUTHORING-FOUNDATION-AI-EXPOSURE.md). | Actual Studio-agent composition of newly exposed public steps/reasoning summary, tool/results/status, sources, attachments and action surfaces, plus manual configuration, typed binding, styling/history/save/reopen. Standalone Markdown needs its own evidence. Public summaries/receipts only; no private reasoning, provider execution or implicit approval authority. Agent string edits retain the disclosed 4,000-character limit. |
 | Integrated independent review | Scoped independent challenges and exact source hash associations retained. | Fresh integrated verdict on the completed real representative apps, with missing/failed observations retained; owner acceptance remains separate. |
 
-## Current blockers and server correction
+## Historical origin-denial blocker and server-inspection correction
 
 The latest exact Studio-origin browser request was denied before network egress by the origin approval gate. Public YouTube observation succeeded separately; that proves public-site access only. No further browser/page fetch or alternate access is authorized by this rollup.
 

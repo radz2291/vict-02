@@ -1,23 +1,33 @@
 # Authoring foundation acceptance ledger
 
-> **30 October 2026 — RESUMED / IN PROGRESS; acceptance HELD.** The owner
-> authorized architecture realignment and foundation completion through gates A–E.
-> [Current architecture, all 31 dispositions and exact baseline](ARCHITECTURE-REALIGNMENT-20261030.md)
-> supersede earlier pause and current-count language at the resumed scope. Historical
-> evidence and decisions below remain preserved. No push, merge, publication,
-> production deployment, milestone closure or Stage 9 closure is authorized.
+> **30 October 2026 — RESUMED / IN PROGRESS; complete foundation gate HELD.**
+> [Current delivery, exact identities and all 31 dispositions](ARCHITECTURE-REALIGNMENT-CURRENT-DELIVERY.md)
+> is the operational entry; [architecture and authority](ARCHITECTURE-REALIGNMENT-20261030.md)
+> govern the resumed gates A–E. Source `b6cf440be33ca3c011889e8ecc91fc28f16f1175`
+> is locally serving with qualified independent offline PASS at `0f033731e529dac48d6b6f96edcc2eda8129228c`.
+> Actual stage 1 demonstrated a meaningful source read/precise edit, shared Undo/Redo,
+> Save/export/reload. The first rich-node trial failed: 18 calls, 10 refusals, zero edits;
+> its evidence remains retained. The fresh retry's intermediate checkpoint has four
+> successful discovery reads, zero refusals and no edit yet; no rich-node pass is awarded.
+> Valid batch arrays, revision strings and paging maps were received in this retry;
+> a universal transport-stringification explanation is not supported.
+> The owner confirmed a physical phone/tablet is available; keyboard/safe-area/touch
+> proof remains pending. All 31 owner acceptances remain open. No push, main merge,
+> publication, production deployment, milestone closure or Stage 9 closure is authorized.
+> Older counts, service identities, blockers and in-progress operations below are
+> dated historical evidence, not current operational assertions or a fresh 31-criterion verdict.
 
-## Current morning-review checkpoint — product a99aea00
+## Historical 28 October morning-review checkpoint — product a99aea00
 
-**30 demonstrated / 1 partial (AR-25) / 0 current failed criteria across31. All31 owner acceptances remain open; full foundation gate HELD.** Product `a99aea00dd75d8ced3104bc399257a343517e7b3` is independently reviewed, built, loaded and exercised through actual Z.ai subscription proof. AR-05 now has concise receipt-derived default Host evidence summary with unchanged originals/technical details inspectable. AR-09 separates source effects, stable capture measurements, explicitly unverified structured AI interpretation and untested behavior; an actual failed capture is preserved as failed and one visibility-based observation-only recovery succeeds without edits. These are scoped reporting-contract demonstrations, not universal model truth or censorship of the longer original response.
+**Historical a99aea00 scoped count: 30 demonstrated / 1 partial (AR-25) / 0 failed criteria at that checkpoint across31. All31 owner acceptances remain open; full foundation gate HELD.** Product `a99aea00dd75d8ced3104bc399257a343517e7b3` is independently reviewed, built, loaded and exercised through actual Z.ai subscription proof. AR-05 now has concise receipt-derived default Host evidence summary with unchanged originals/technical details inspectable. AR-09 separates source effects, stable capture measurements, explicitly unverified structured AI interpretation and untested behavior; an actual failed capture is preserved as failed and one visibility-based observation-only recovery succeeds without edits. These are scoped reporting-contract demonstrations, not universal model truth or censorship of the longer original response.
 
 [Current status](AUTHORING-FOUNDATION-CURRENT-STATUS.md), [independent loaded verdict](foundation-evidence/reporting-contract-20261028/INDEPENDENT.md), [exact live report](foundation-evidence/reporting-contract-20261028/LIVE-REPORT.md). Saved source is unchanged; normal viewport restored and tested same-config service running. AR-25 actual mobile keyboard/safe-area/touch remains partial. Heard audio and lost original responsive source remain disclosed limits. Historical reporting failures and earlier counts below are preserved. No push/merge/publication/deployment or owner acceptance follows.
 
 ## Earlier review checkpoint — product 56b2853, 2026-10-28
 
-The current independent exact-criterion verdict is **28 demonstrated / 1 partial (AR-25) / 2 retained reporting failures (AR-05 and AR-09), across 31**. CF-01 is demonstrated at the delivered foundation-delta scope; AI-EX01 has matching manual and actual-agent lineage for all23 intended identities. **All31 owner acceptances remain open; the full foundation gate remains HELD.** Product code is frozen at `56b2853d2dbb7a04bba5cc9aa89671cbf0eb38a3`; subsequent evidence-only checkpoints do not imply a different loaded product. [Current status and exact remaining limits](AUTHORING-FOUNDATION-CURRENT-STATUS.md), [independent final verdict](foundation-evidence/criterion-finishability-20261028/REPORT.md).
+At the historical 56b2853 checkpoint, the scoped independent exact-criterion verdict was **28 demonstrated / 1 partial (AR-25) / 2 retained reporting failures (AR-05 and AR-09), across 31**. CF-01 is demonstrated at the delivered foundation-delta scope; AI-EX01 has matching manual and actual-agent lineage for all23 intended identities. **All31 owner acceptances remain open; the full foundation gate remains HELD.** At that checkpoint product code was frozen at `56b2853d2dbb7a04bba5cc9aa89671cbf0eb38a3`; subsequent evidence-only checkpoints do not imply a different loaded product. [Current status and exact remaining limits](AUTHORING-FOUNDATION-CURRENT-STATUS.md), [independent final verdict](foundation-evidence/criterion-finishability-20261028/REPORT.md).
 
-The final same-config service is loaded, normal IAB control works, and all328 core/consumer installed files match. Final physical nine-package consumer evidence includes current separate graph movement/parameters, Drawer ownership, AI/vector/local controls and retained app replay. Actual remote playback/pause is observed; heard audio is not. NEW responsive source is retained, while historical original full source remains unrecovered. The remaining gaps are actual mobile keyboard/safe-area/touch and AI final-content/reporting quality. No owner acceptance, provider/history authority, push/merge/publication/deployment follows. Older pending or unavailable statements below are chronological evidence superseded only by matching newer records.
+At that historical checkpoint the same-config service was loaded, normal IAB control worked, and all328 core/consumer installed files matched. Final physical nine-package consumer evidence includes current separate graph movement/parameters, Drawer ownership, AI/vector/local controls and retained app replay. Actual remote playback/pause is observed; heard audio is not. NEW responsive source is retained, while historical original full source remains unrecovered. The remaining gaps are actual mobile keyboard/safe-area/touch and AI final-content/reporting quality. No owner acceptance, provider/history authority, push/merge/publication/deployment follows. Older pending or unavailable statements below are chronological evidence superseded only by matching newer records.
 
 ## Earlier records (preserved)
 
