@@ -84,7 +84,7 @@ it('does not union visual regions across source identities or imply runtime, off
 
 it('enforces completed knowledge and delivers measured progress through the actual pinned executor (offline model, no provider/design quality claim)',async()=>{
  const selected=[{id:'vict.catalog.button',revision:'1'}];
- expect(STUDIO_AGENT_PROTOCOL).toEqual({readCapabilityRevision:'6',readInputRevision:'6',editCapabilityRevision:'6',editInputRevision:'6',instructionsRevision:'12',profileRevision:'13',startInputRevision:'3',observationInstructionsRevision:'5',observationProfileRevision:'7'});
+ expect(STUDIO_AGENT_PROTOCOL).toEqual({readCapabilityRevision:'7',readInputRevision:'7',editCapabilityRevision:'6',editInputRevision:'6',instructionsRevision:'13',profileRevision:'14',startInputRevision:'3',observationInstructionsRevision:'5',observationProfileRevision:'8'});
  const full=agentContext(source,cursor,undefined,{section:'contracts',components:selected,limit:20});
  const body=(full.items as Body[]).find(item=>item.id===selected[0].id)!;
  expect((body as Body&{bodyComplete:boolean}).bodyComplete).toBe(true);
