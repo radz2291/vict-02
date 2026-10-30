@@ -16,7 +16,8 @@ const run = (args, cwd) => execFileSync(npm, args, { cwd, encoding: 'utf8', shel
 const names = ['contracts', 'ui', 'sdk', 'application', 'ui-svelte', 'ui-media-svelte', 'ui-flow-svelte'];
 // Explicit reuse requires a prior successful proof. Each package independently
 // qualifies only when its exact tracked tree and every existing packed artifact
-// byte still match that proof. All other packages receive a fresh build check.
+// byte still match that proof, and no internal dependency was freshly checked.
+// All other packages receive a fresh build check, propagated to dependants.
 // Default invocation always runs the full ladder.
 const reuseIndex = process.argv.indexOf('--reuse-built-dependencies');
 const reusePath = reuseIndex < 0 ? undefined : process.argv[reuseIndex + 1];
@@ -42,11 +43,33 @@ try {
     if (sharedChanges) throw Error('Shared build inputs changed since dependency proof; use the default full ladder');
     const dirtySharedInputs = git(['diff', '--name-only', 'HEAD', '--', 'package.json', 'package-lock.json', 'tsconfig.base.json']);
     if (dirtySharedInputs) throw Error('Commit shared build-input changes and use the default full ladder; uncommitted inputs cannot qualify for reuse');
-    report.reusedDependencyEvidence = { reportPath: resolve(root, reusePath), reportSha256: hash(readFileSync(resolve(root, reusePath))), sourceCandidate: previous.sourceCandidate, note: 'Per-package reuse requires equal tracked package trees and all earlier packed-file hashes. Changed source or artifacts receive a fresh build check. Reused evidence is not a new build.' };
+    report.reusedDependencyEvidence = { reportPath: resolve(root, reusePath), reportSha256: hash(readFileSync(resolve(root, reusePath))), sourceCandidate: previous.sourceCandidate, note: 'Per-package reuse requires equal tracked package trees, all earlier packed-file hashes and no rebuilt internal dependencies. Fresh checks propagate through installed dependency/peer/optional relationships. Reused evidence is not a new build.' };
   }
+  // The installed workspace manifests supply the actual internal dependency graph.
+  // Reject a stale installed graph rather than making decisions against it.
+  const dependencyKinds = ['dependencies', 'peerDependencies', 'optionalDependencies'];
+  const packageNames = new Set(names.map(name => `@victframework/${name}`));
+  const dependencyGraph = new Map(names.map(name => {
+    const manifest = JSON.parse(readFileSync(join(root, 'packages', name, 'package.json'), 'utf8'));
+    const installed = JSON.parse(readFileSync(join(root, 'node_modules', manifest.name, 'package.json'), 'utf8'));
+    const sortedEntries = value => JSON.stringify(Object.entries(value ?? {}).sort(([a], [b]) => a.localeCompare(b)));
+    if (installed.name !== manifest.name || dependencyKinds.some(kind => sortedEntries(installed[kind]) !== sortedEntries(manifest[kind]))) throw Error(`Installed dependency graph differs from workspace manifest: ${name}`);
+    const dependencies = [...new Set(dependencyKinds.flatMap(kind => Object.keys(installed[kind] ?? {})))].filter(dependency => packageNames.has(dependency));
+    return [manifest.name, dependencies.map(dependency => ({ name: dependency, kinds: dependencyKinds.filter(kind => Object.hasOwn(installed[kind] ?? {}, dependency)) }))];
+  }));
+  report.internalDependencyGraph = [...dependencyGraph].map(([name, dependencies]) => ({ name, dependencies }));
+  const buildOrder = [], visiting = new Set(), visited = new Set();
+  const visit = name => {
+    if (visiting.has(name)) throw Error(`Cyclic internal build dependency graph: ${name}`);
+    if (visited.has(name)) return;
+    visiting.add(name);
+    for (const dependency of dependencyGraph.get(name)) visit(dependency.name);
+    visiting.delete(name); visited.add(name); buildOrder.push(name.slice('@victframework/'.length));
+  };
+  for (const name of packageNames) visit(name);
   // Compiled JS packages are built in dependency order; Svelte packages ship
   // their public .svelte/TS artifacts and undergo their published build check.
-  for (const name of names) {
+  for (const name of buildOrder) {
     const changes = git(['diff', '--name-only', 'HEAD', '--', `packages/${name}`]);
     const untracked = git(['ls-files', '--others', '--exclude-standard', '--', `packages/${name}`]);
     if (changes || untracked) throw Error(`Commit packed source before proving exact candidate: ${name}`);
@@ -63,12 +86,14 @@ try {
         artifactMismatches.push(file.path);
       }
     }
-    if (previous && tree === priorTree && !artifactMismatches.length) {
+    const dependencyRebuilds = dependencyGraph.get(`@victframework/${name}`).filter(dependency => report.packageBuilds.some(build => build.name === dependency.name && build.mode === 'fresh-build-check')).map(dependency => dependency.name);
+    if (previous && tree === priorTree && !artifactMismatches.length && !dependencyRebuilds.length) {
       report.packageBuilds.push({ name: `@victframework/${name}`, mode: 'reused-earlier-successful-build', sourceTree: tree, previousSourceTree: priorTree, artifactFilesMatched: priorPack.files.length });
       writeFileSync(join(destination, `build-${name}.log`), `REUSED earlier successful build.\nPrevious report: ${resolve(root, reusePath)}\nPrevious source: ${previous.sourceCandidate}\nCurrent and previous package source tree: ${tree}\nExisting artifact files matched: ${priorPack.files.length}\nNo new dependency build was run.\n`);
     } else {
       writeFileSync(join(destination, `build-${name}.log`), run(['run', 'build', '-w', `@victframework/${name}`], root));
-      report.packageBuilds.push({ name: `@victframework/${name}`, mode: 'fresh-build-check', sourceTree: tree, ...(previous ? { previousSourceTree: priorTree } : {}), reason: !previous ? 'full-ladder-requested' : tree !== priorTree ? 'tracked-package-tree-changed' : 'existing-artifact-hashes-changed', ...(artifactMismatches.length ? { artifactMismatches } : {}) });
+      const reasons = !previous ? ['full-ladder-requested'] : [...(tree !== priorTree ? ['tracked-package-tree-changed'] : []), ...(artifactMismatches.length ? ['existing-artifact-hashes-changed'] : []), ...(dependencyRebuilds.length ? ['internal-dependency-rebuilt'] : [])];
+      report.packageBuilds.push({ name: `@victframework/${name}`, mode: 'fresh-build-check', sourceTree: tree, ...(previous ? { previousSourceTree: priorTree } : {}), reason: reasons[0], reasons, ...(artifactMismatches.length ? { artifactMismatches } : {}), ...(dependencyRebuilds.length ? { dependencyRebuilds } : {}) });
     }
   }
   const dependencies = {};

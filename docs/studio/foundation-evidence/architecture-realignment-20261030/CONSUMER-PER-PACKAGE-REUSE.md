@@ -41,3 +41,35 @@ That later receipt determines the actual reused/fresh counts and results. It is 
 coding-authored public-consumer fixture proof, never actual-agent, browser,
 physical-device, provider, or owner-acceptance evidence. No such checks or service,
 network, browser, or provider changes were performed for this helper revision.
+
+## Follow-up: propagate dependency rebuilds
+
+Independent review identified that equal local package trees/artifacts alone do not
+prove a downstream package's check remains applicable when an upstream internal
+API changes. The earlier paragraphs record the initial helper revision; the
+current helper additionally requires that no internal dependency was freshly
+checked. This is a generic reuse correction. The existing WhcDEI receipt for the
+bounded DocumentHost-only, unchanged-API delta is retained and not discarded.
+
+The current helper reads actual installed workspace package manifests, unions
+`dependencies`, `peerDependencies` and `optionalDependencies` edges among the seven
+packages, and verifies those installed manifest sections match the workspace
+manifests. Stale installed graphs refuse. Topological ordering ensures upstream
+checks are decided first; dependency cycles refuse instead of guessing an order.
+Any fresh dependency check forces the direct dependant's check fresh, propagating
+transitively even if the dependant's own tree and artifact hashes are unchanged.
+For the current graph, a fresh `ui-svelte` check also requires Media and then Flow
+checks. A fresh contracts/UI check conservatively propagates through SDK,
+application and the affected Svelte packages.
+
+Reports retain the graph and each dependency edge's declaring manifest sections.
+Fresh checks retain the existing primary `reason`, add complete `reasons` and
+explicit `dependencyRebuilds` names when applicable. Existing shared-input,
+dirty/untracked-source, artifact, fresh-packing and installed-identity fences
+remain. There are no timestamp-based invalidations.
+
+Validation of this follow-up: syntax and scoped whitespace checks passed. No
+consumer, package build or runtime was invoked because the parent's existing
+consumer and Studio build were active. The parent determines whether another
+consumer is needed after those runs finish; this change itself establishes no
+new consumer or actual-agent/device result.
