@@ -1,0 +1,20 @@
+{
+  "source": "public-artifact consumer F0YKQr",
+  "stage": "C:/Users/RZ1/AppData/Local/Temp/vict-native-consumer-F0YKQr-staged",
+  "served": false,
+  "reason": "Current agent turn is active; existing static server indexes files at launch, so no restart during that turn",
+  "files": [
+    {
+      "path": "index.html",
+      "sha256": "600f97893656d4eb65ea466c45b5d3a8a87cac9b1c06239a5975786829d7932d"
+    },
+    {
+      "path": "assets/index-8MK6UdWp.js",
+      "sha256": "045692865fb42ec96d69862b182ce2e3cf121bb950673a3cf6aad4fa3dba3b77"
+    },
+    {
+      "path": "assets/index-AJU2uzQA.css",
+      "sha256": "eba71a17af728c2a3165b5213ace5718c19cdb03ee5d4674a296df8e8abb1745"
+    }
+  ]
+}

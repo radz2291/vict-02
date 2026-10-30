@@ -44,15 +44,15 @@ proof remains bounded evidence for identical package bytes.
 | Continuation branch | `codex/architecture-realignment-20261030`, local only |
 | Checkout | `C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030` |
 | Original private checkpoint | `4c40cc656328c50d16d28492ae5245bf509ccb6e`, original checkout remains clean and untouched |
-| Final product/source candidate | `a61396cb3bf20e3f10d62a89a716feafdd91d6e3` |
+| Current product/source candidate | `b6cf440be33ca3c011889e8ecc91fc28f16f1175` |
 | Gate A reviewed documentation | `cf5056e5ea37b87931fe24baf53f800e2d7fd173` |
 | Gate A independent report | `327db5149881ffdd6ad2e35e3380b60b1ea901fe` |
 | Initial independent FAIL | `d64e47087d5dbc3a858c4750045b9d7e1a98f5ec`, reviewed product `46d20c3c8f3d3d617df2b6d18655fc7a31517e8e` |
 | Intermediate recheck / F3 retained | `c004f794d25fc55f5ff6b59cc9088eb5070b6e77`, reviewed product `3e2c7b9e4a52721e398afb23d3fa140efe31f689` |
-| Final independent source verdict | `4ef3199e87d8f9c04a4b1d584872920345b3917d`, branch `review/architecture-realignment-final-20261030`, exact candidate `a61396cb…` |
-| Final production build | Exit 0; 305 core files, all hashes in [BUILD-FINAL.json](foundation-evidence/architecture-realignment-20261030/BUILD-FINAL.json); retained at `C:/Users/RZ1/AppData/Local/Temp/vict-realignment-a61396cb-build`; subsequently **activated locally**, with 60 preserved proof files; see [activation receipt](foundation-evidence/architecture-realignment-20261030/POST-RESTART-ACTIVATION.json) |
+| Prior independent source verdict | `4ef3199e87d8f9c04a4b1d584872920345b3917d`, branch `review/architecture-realignment-final-20261030`, exact candidate `a61396cb…`; current discovery delta independently reviewed at `0f033731…` |
+| Current production build | Exit 0; sealed core and 60 preserved historical files in [DISCOVERY-ACTIVATION.json](foundation-evidence/architecture-realignment-20261030/DISCOVERY-ACTIVATION.json). Prior a613 build retained at `C:/Users/RZ1/AppData/Local/Temp/vict-pre-discovery-a613-20261030-build`; original build untouched. |
 | Public-artifact consumer | [F0YKQr report](foundation-evidence/architecture-realignment-20261030/vict-realignment-consumer-F0YKQr.json), tested package source `3e2c7b9e4a52721e398afb23d3fa140efe31f689`; package bytes unchanged through final source |
-| Serving product | `a61396cb3bf20e3f10d62a89a716feafdd91d6e3`, `127.0.0.25:5626`, normal existing-config launcher; original `27788de9…` build preserved untouched |
+| Serving product | `b6cf440be33ca3c011889e8ecc91fc28f16f1175`, `127.0.0.25:5626`, normal existing-config launcher; original `27788de9…` and previous a613 build preserved |
 | Remote main / public pause branch | `d7401bef6e48330796c74ec00c86db9622d48cdf` / `1fa7c392401bfb6581aae30a1e6d33ba305c2662`, rechecked unchanged; **no push** |
 
 Later documentation/evidence commits do not change the product candidate above.
@@ -136,10 +136,10 @@ evidence, not a fresh whole-candidate live pass.
 | AR05 | Retained concise reporting boundary; final new actual-agent output quality unproved. |
 | AR06 | Retained authenticated originals/expiry/no-replay evidence; unchanged. |
 | AR07 | Mounted nested viewport/control boundaries pass; native mat/scroll/geometry remains live-proof work. |
-| AR08 | Retained availability fences; current browser availability cannot be inspected. |
+| AR08 | Retained availability fences; supported IAB restored after owner restart, normal Designer and actual tool reads work. |
 | AR09 | Retained fact/measurement/hypothesis separation; all unavailable observations remain unproved. |
 | AR10 | Scoped source operations/history preserve manual values in mounted bridge; actual-agent coexistence remains. |
-| AR11 | Retained identities/metrics; offline pinned-executor protocol passes, no new real-provider metrics. |
+| AR11 | Actual stage1 and failed-trial receipts retain identities and bounded metrics; no invented provider latency or cost. Offline pinned-executor protocol passes. |
 | AR12 | Retained observation-only/no-replay proof; unchanged. |
 | AR13 | Ownership/history/persistence/import defects independently repaired; actual authored application/browser roundtrip remains. |
 | AR14 | Typed two-node/control fixture and ordinary registered components pass; useful actual-agent application remains. |
@@ -167,15 +167,17 @@ New public code contracts are `vict.flow-authoring@1` and
 `vict.flow.editor-host@2`. Host@1 remains an explicit compatibility fallback;
 new source-backed hosts should migrate to structured @2 admission. Optional
 provenance fields preserve existing context implementers. The agent operation
-is capability/input@6 (from @5), instructions@12 and authoring profile@13.
+is capability/input@6 (from @5). Read capability/input@7, instructions@13,
+authoring profile@14 and observer profile@8 describe the current discovery repair.
 Existing direct operation shapes remain valid. UI document, application and
 graph@1/@2 saved schemas are unchanged; there is no implicit migration.
 Controlled nested source routes support graph@2 node parameters. Legacy graph@1
 controlled nested routes explicitly refuse; direct graph@1 remains supported.
 
-The original private checkout remains clean at the paused checkpoint. Current
-installed bytes match all 324 core and 60 preserved proof files from serving
-`27788de9…`. Existing proof routes, Chatwithme/Matrix/Flow, failed NodeLab trials,
+The original private checkout remains clean at the paused checkpoint. Its original
+324 core and 60 proof files remain preserved; current serving core bytes instead
+match the new b6 candidate receipt, plus all 60 historical proof files. Existing
+proof routes, Chatwithme/Matrix/Flow, failed NodeLab trials,
 managed assets, browser storage and unsent drafts were not edited or cleaned.
 This is preservation by non-mutation, **not a fresh complete browser backup**.
 After the owner restart there were no existing IAB tabs. The established origin
