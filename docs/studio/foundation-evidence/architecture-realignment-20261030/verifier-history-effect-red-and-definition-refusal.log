@@ -1,0 +1,76 @@
+
+> vict-studio@0.1.0 test
+> vitest run tests/graph-independent-probes.test.ts
+
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/apps/studio
+
+5:57:39 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+5:57:39 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+5:57:39 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+5:57:39 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+5:57:39 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+stdout | tests/graph-independent-probes.test.ts > independent: lexical traversal bound must fail closed for shared definitions across deep scopes
+INDEPENDENT_DEPTH_RESULT {"ownership":{"kind":"document","key":"innerGraph"},"result":{"ok":false,"code":"STUDIO_AGENT_VALIDATION","message":"Edit rejected: UI_EXPR_SCOPE_VIOLATION: document-level state is not visible inside a definition registry (use typed props).; UI_EXPR_UNKNOWN_REFERENCE: Reference 'prop.readOnly' does not resolve in this scope.; UI_EXPR_SCOPE_VIOLATION: document-level state is not visible inside a definition registry (use typed props).; UI_EXPR_UNKNOWN_REFERENCE: Reference 'prop.readOnly' does not resolve in this scope.","diagnostics":[{"documentId":"nested-composition","nodeId":"inner-workspace","sourcePath":"nodes.inner-workspace","code":"UI_EXPR_SCOPE_VIOLATION","path":"nodes.inner-workspace","message":"document-level state is not visible inside a definition registry (use typed props).","operation":0},{"documentId":"nested-composition","nodeId":"inner-workspace","sourcePath":"nodes.inner-workspace","code":"UI_EXPR_UNKNOWN_REFERENCE","path":"prop.readOnly","message":"Reference 'prop.readOnly' does not resolve in this scope.","operation":0},{"documentId":"nested-composition","nodeId":"inner-workspace","sourcePath":"nodes.inner-workspace","code":"UI_EXPR_SCOPE_VIOLATION","path":"nodes.inner-workspace","message":"document-level state is not visible inside a definition registry (use typed props).","operation":0},{"documentId":"nested-composition","nodeId":"inner-workspace","sourcePath":"nodes.inner-workspace","code":"UI_EXPR_UNKNOWN_REFERENCE","path":"prop.readOnly","message":"Reference 'prop.readOnly' does not resolve in this scope.","operation":0}]}}
+
+ ❯ tests/graph-independent-probes.test.ts (4 tests | 2 failed) 4219ms
+   ✓ persists nested manual and agent changes through Studio history, save/reopen and portable import  1937ms
+   ✓ keeps repeated private graph occurrences temporary with local undo and no canonical or save promotion  1169ms
+   × independent: a controlled fallback without a graph parameter must not receive source history 1044ms
+     → expected 'Outer project node' to be 'Unrelated source edit must survive ne…' // Object.is equality
+   × independent: lexical traversal bound must fail closed for shared definitions across deep scopes 67ms
+     → expected { kind: 'document', key: 'innerGraph' } to be undefined
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/graph-independent-probes.test.ts > independent: a controlled fallback without a graph parameter must not receive source history
+AssertionError: expected 'Outer project node' to be 'Unrelated source edit must survive ne…' // Object.is equality
+
+Expected: "Unrelated source edit must survive nested Undo"
+Received: "Outer project node"
+
+ ❯ tests/graph-independent-probes.test.ts:344:54
+    342|   keyboard(await selectedNode('source-a'),'z',true);
+    343|   await settle();
+    344|   expect(outer(view.bridge.document).nodes[0].label).toBe('Unrelated s…
+       |                                                      ^
+    345| });
+    346| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/graph-independent-probes.test.ts > independent: lexical traversal bound must fail closed for shared definitions across deep scopes
+AssertionError: expected { kind: 'document', key: 'innerGraph' } to be undefined
+
+- Expected: 
+undefined
+
++ Received: 
+{
+  "key": "innerGraph",
+  "kind": "document",
+}
+
+ ❯ tests/graph-independent-probes.test.ts:363:58
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 2 passed (4)
+   Start at  17:57:26
+   Duration  34.82s (transform 19.27s, setup 0ms, collect 29.03s, tests 4.22s, environment 798ms, prepare 231ms)
+
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path C:\Users\RZ1\.codex\worktrees\vict-realignment-independent-20261030\apps\studio
+npm error workspace vict-studio@0.1.0
+npm error location C:\Users\RZ1\.codex\worktrees\vict-realignment-independent-20261030\apps\studio
+npm error command failed
+npm error command C:\WINDOWS\system32\cmd.exe /d /s /c vitest run tests/graph-independent-probes.test.ts

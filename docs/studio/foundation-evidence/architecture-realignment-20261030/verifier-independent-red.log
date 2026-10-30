@@ -1,0 +1,72 @@
+
+> vict-studio@0.1.0 test
+> vitest run tests/graph-independent-probes.test.ts
+
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/apps/studio
+
+6:00:33 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+6:00:33 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+6:00:33 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+6:00:33 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+6:00:33 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+stderr | tests/graph-independent-probes.test.ts > independent: traversal cutoff must not silently downgrade a deep authored document graph
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+ ❯ tests/graph-independent-probes.test.ts (4 tests | 2 failed) 4042ms
+   ✓ persists nested manual and agent changes through Studio history, save/reopen and portable import  1724ms
+   ✓ keeps repeated private graph occurrences temporary with local undo and no canonical or save promotion  938ms
+   × independent: a controlled fallback without a graph parameter must not receive source history 652ms
+     → expected 'Outer project node' to be 'Unrelated source edit must survive ne…' // Object.is equality
+   × independent: traversal cutoff must not silently downgrade a deep authored document graph 727ms
+     → expected 80 to be greater than 80
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/graph-independent-probes.test.ts > independent: a controlled fallback without a graph parameter must not receive source history
+AssertionError: expected 'Outer project node' to be 'Unrelated source edit must survive ne…' // Object.is equality
+
+Expected: "Unrelated source edit must survive nested Undo"
+Received: "Outer project node"
+
+ ❯ tests/graph-independent-probes.test.ts:344:54
+    342|   keyboard(await selectedNode('source-a'),'z',true);
+    343|   await settle();
+    344|   expect(outer(view.bridge.document).nodes[0].label).toBe('Unrelated s…
+       |                                                      ^
+    345| });
+    346| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/graph-independent-probes.test.ts > independent: traversal cutoff must not silently downgrade a deep authored document graph
+AssertionError: expected 80 to be greater than 80
+ ❯ tests/graph-independent-probes.test.ts:359:59
+    357|   expect(document.querySelector<HTMLElement>('.svelte-flow__node[data-…
+    358|   expect(view.write).toHaveBeenCalledOnce();
+    359|   expect(outer(view.bridge.document).nodes[0].position.x).toBeGreaterT…
+       |                                                           ^
+    360|   expect(view.bridge.getSnapshot().canUndo).toBe(true);
+    361| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 2 passed (4)
+   Start at  18:00:21
+   Duration  29.46s (transform 15.85s, setup 0ms, collect 23.94s, tests 4.04s, environment 785ms, prepare 173ms)
+
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path C:\Users\RZ1\.codex\worktrees\vict-realignment-independent-20261030\apps\studio
+npm error workspace vict-studio@0.1.0
+npm error location C:\Users\RZ1\.codex\worktrees\vict-realignment-independent-20261030\apps\studio
+npm error command failed
+npm error command C:\WINDOWS\system32\cmd.exe /d /s /c vitest run tests/graph-independent-probes.test.ts
