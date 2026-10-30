@@ -1,0 +1,184 @@
+{
+  "sourceCandidate": "72b7e09b1e6cbd5269578f3c3b1ccdf120a22c3b",
+  "helperCommit": "dd88007dff27cfef34eca34efbb31aa3698cd3b9",
+  "reportPath": "C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/docs/studio/foundation-evidence/architecture-realignment-20261030/vict-realignment-consumer-WhcDEI.json",
+  "reportSha256": "41882b71708fc45bd38005d689abc7359e321ba69ac917afaeb4f4de3536e4d4",
+  "scope": "Read-only artifact recomputation and pure extracted helper logic; no consumer/install/build/browser/native/device/owner pass.",
+  "packs": [
+    {
+      "name": "@victframework/contracts",
+      "tarballSha256": "017c0587843869653f6bd723566dcaf39f2e89b2fb55bc923f35667be9d618de",
+      "installedNonmanifestFilesMatched": 30
+    },
+    {
+      "name": "@victframework/ui",
+      "tarballSha256": "f0b5f78254211d36c1cbb27427fdd580da9c0421f20411d59ce3518827433500",
+      "installedNonmanifestFilesMatched": 69
+    },
+    {
+      "name": "@victframework/sdk",
+      "tarballSha256": "26ba8993f73f70071e57cec97471bf9c4bc4abde3137084be4fd4ee064f338f4",
+      "installedNonmanifestFilesMatched": 27
+    },
+    {
+      "name": "@victframework/application",
+      "tarballSha256": "ea0fdde59f165379154517f4be4ca99e3c8790033862e4a56f6df5fdb09b5db7",
+      "installedNonmanifestFilesMatched": 33
+    },
+    {
+      "name": "@victframework/ui-svelte",
+      "tarballSha256": "9514c7d76529372b9bcf1373d1cd5e0863f9583f72df3dc9c41840fcd0aa28e2",
+      "installedNonmanifestFilesMatched": 284
+    },
+    {
+      "name": "@victframework/ui-media-svelte",
+      "tarballSha256": "234e78dd8f615622097b5166e5bd7f7646574d3663d3607b390d26ac8be11f22",
+      "installedNonmanifestFilesMatched": 20
+    },
+    {
+      "name": "@victframework/ui-flow-svelte",
+      "tarballSha256": "516eb44dbad609c96ef5141bba9b1b9f7be63fbb98cd2bbe576402bc980ca09b",
+      "installedNonmanifestFilesMatched": 47
+    }
+  ],
+  "fixtureFiles": 8,
+  "outputFiles": 2,
+  "helper": {
+    "sourceSha256": "2226275656309490d8a67a9abd9ffd4425e92a2d0b55ff1cdcdbb63e9ec47889",
+    "internalDependencyGraph": [
+      {
+        "name": "@victframework/contracts",
+        "dependencies": []
+      },
+      {
+        "name": "@victframework/ui",
+        "dependencies": []
+      },
+      {
+        "name": "@victframework/sdk",
+        "dependencies": [
+          {
+            "name": "@victframework/contracts",
+            "kinds": [
+              "dependencies"
+            ]
+          },
+          {
+            "name": "@victframework/ui",
+            "kinds": [
+              "dependencies"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "@victframework/application",
+        "dependencies": [
+          {
+            "name": "@victframework/contracts",
+            "kinds": [
+              "dependencies"
+            ]
+          },
+          {
+            "name": "@victframework/sdk",
+            "kinds": [
+              "dependencies"
+            ]
+          },
+          {
+            "name": "@victframework/ui",
+            "kinds": [
+              "dependencies"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "@victframework/ui-svelte",
+        "dependencies": [
+          {
+            "name": "@victframework/application",
+            "kinds": [
+              "dependencies"
+            ]
+          },
+          {
+            "name": "@victframework/sdk",
+            "kinds": [
+              "dependencies"
+            ]
+          },
+          {
+            "name": "@victframework/ui",
+            "kinds": [
+              "dependencies"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "@victframework/ui-media-svelte",
+        "dependencies": [
+          {
+            "name": "@victframework/ui",
+            "kinds": [
+              "peerDependencies"
+            ]
+          },
+          {
+            "name": "@victframework/ui-svelte",
+            "kinds": [
+              "peerDependencies"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "@victframework/ui-flow-svelte",
+        "dependencies": [
+          {
+            "name": "@victframework/ui-media-svelte",
+            "kinds": [
+              "dependencies"
+            ]
+          },
+          {
+            "name": "@victframework/ui",
+            "kinds": [
+              "peerDependencies"
+            ]
+          },
+          {
+            "name": "@victframework/ui-svelte",
+            "kinds": [
+              "peerDependencies"
+            ]
+          }
+        ]
+      }
+    ],
+    "buildOrder": [
+      "contracts",
+      "ui",
+      "sdk",
+      "application",
+      "ui-svelte",
+      "ui-media-svelte",
+      "ui-flow-svelte"
+    ],
+    "freshFromRenderer": [
+      "@victframework/ui-svelte",
+      "@victframework/ui-media-svelte",
+      "@victframework/ui-flow-svelte"
+    ],
+    "syntheticChecks": [
+      "peer+optional transitive propagation",
+      "dependency-first order",
+      "cycle refusal",
+      "stale installed manifest refusal"
+    ]
+  },
+  "totalInstalledNonmanifestFilesMatched": 510,
+  "status": "PASS: seven tarball hashes, installed nonmanifest bytes, fixture/output hashes and extracted helper graph challenges"
+}
