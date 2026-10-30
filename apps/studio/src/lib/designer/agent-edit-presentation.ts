@@ -34,7 +34,7 @@ const operationDefinitions = {
  removeStyleSource:opSchema('removeStyleSource',['id'],{id:identifier}),
  when:opSchema('when',['nodeId','wrapperId','conditionId'],{nodeId:identifier,wrapperId:identifier,conditionId:identifier}),
  slotScope:opSchema('slotScope',['nodeId','slot'],{nodeId:identifier,slot:identifier,scope:{$ref:'#/$defs/slotScope'}}),
- editGraph:opSchema('editGraph',['nodeId','expectedGraphRevision','changes'],{nodeId:identifier,expectedGraphRevision:{type:'integer',minimum:0},changes:{...graphEditChangesPresentation,description:'Exact workspace revision selects graph1 or graph2 semantics. Read registry dataContracts for the versioned graph and operation grammar.'}}),
+ editGraph:opSchema('editGraph',['nodeId','expectedGraphRevision','changes'],{nodeId:identifier,expectedGraphRevision:{type:'integer',minimum:0},occurrenceRoute:{$ref:'#/$defs/graphOccurrenceRoute'},changes:{...graphEditChangesPresentation,description:'Exact workspace revision selects graph1 or graph2 semantics. Read registry dataContracts for the versioned graph and operation grammar. Controlled nested state requires an explicit outer-to-inner occurrenceRoute, including every containing graph revision.'}}),
  theme:opSchema('theme',['role'],{role:{enum:['surface','text','textMuted','border','accent','accentText','highlight','highlightText','focusRing','disabledSurface','disabledText','elevation']},value:{type:'string',maxLength:500}}),
  style:opSchema('style',['nodeId','property'],{nodeId:identifier,part:identifier,property:{type:'string',minLength:1,maxLength:80},value:{$ref:'#/$defs/styleValue'},conditionId:identifier,pseudo:{enum:['hover','focus','active','disabled']}}),
  wireInput:opSchema('wireInput',['nodeId','key'],{nodeId:identifier,key:{$ref:'#/$defs/stateKey'},initial:scalar}),
@@ -43,6 +43,8 @@ const operationDefinitions = {
 // Zod's discriminated closed operation union remains authoritative.
 export const editPresentation = {
   $defs: {
+    graphOccurrenceRoute:{type:'array',minItems:1,maxItems:32,description:'Exact outer-to-inner containing graph nodes; private scoped source defaults do not accept a route.',items:{$ref:'#/$defs/graphOccurrenceStep'}},
+    graphOccurrenceStep:{type:'object',additionalProperties:false,required:['workspaceNodeId','graphNodeId','expectedGraphRevision'],properties:{workspaceNodeId:identifier,graphNodeId:identifier,expectedGraphRevision:{type:'integer',minimum:0}}},
     ...graphEditDefinitions,
     ...operationDefinitions,
     operation: { oneOf:Object.keys(operationDefinitions).map(op=>({$ref:`#/$defs/${op}`})) },

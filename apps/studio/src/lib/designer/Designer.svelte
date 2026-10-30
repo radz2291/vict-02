@@ -97,7 +97,8 @@
     globalThis.document.querySelector<HTMLElement>(target)?.focus({ preventScroll: true });
   }
   import {foundationExample,type FoundationExample} from './foundation-examples.js';
-  import {graphStateKeys,rebaseGraphRuntime} from './graph-authoring.js';
+  import {rebaseGraphRuntime} from './graph-authoring.js';
+  import {graphHistoryFor} from './graph-history.js';
   import {graphRuntimeChanged} from './graph-runtime.js';
   import { documentCursor, applyAgentProposal, type AgentProposal } from './agent-edits.js';
   let agentEpoch = $state(crypto.randomUUID());
@@ -244,7 +245,7 @@
     finally{attachingMedia=false;}
   }
   const graphPresentation=new Map<string,GraphPresentationState>();
-  setContext(Symbol.for('vict.flow.editor-host@1'),{presentationFor:({occurrenceKey}:{occurrenceKey:string})=>{const key=`${source?.id}/${occurrenceKey}`;return {get:()=>graphPresentation.get(key),set:(state:GraphPresentationState)=>{graphPresentation.set(key,JSON.parse(JSON.stringify(state)));}};},historyFor:({nodeId}:{nodeId:string})=>source?.nodes[nodeId]?.kind==='component'&&['vict.flow.editor','vict.flow.workspace'].includes(source.nodes[nodeId].definitionId)?{canUndo:()=>!!snapshot?.canUndo,canRedo:()=>!!snapshot?.canRedo,undo,redo}:undefined});
+  setContext(Symbol.for('vict.flow.editor-host@1'),{presentationFor:({occurrenceKey}:{occurrenceKey:string})=>{const key=`${source?.id}/${occurrenceKey}`;return {get:()=>graphPresentation.get(key),set:(state:GraphPresentationState)=>{graphPresentation.set(key,JSON.parse(JSON.stringify(state)));}};},historyFor:({nodeId}:{nodeId:string})=>graphHistoryFor(source,nodeId,{canUndo:()=>!!snapshot?.canUndo,canRedo:()=>!!snapshot?.canRedo,undo,redo})});
   async function syncAssetInventory(){if(!source||!assetStore)return;const id=source.id,store=assetStore;try{const list=await store.list();if(!source||source.id!==id)return;mediaInventory=agentMediaInventorySnapshot(id,list);const assets={...source.assets};for(const asset of list){const key=`${asset.name.replace(/[^a-zA-Z0-9_.-]/g,'-').slice(0,60)||'asset'}-${asset.digest.slice(0,12)}`;assets[key]={id:key,kind:'digest',digest:asset.digest};}if(JSON.stringify(assets)!==JSON.stringify(source.assets))apply({requestId:crypto.randomUUID(),reason:'Register supplied media',commands:[{op:'replaceDocument',document:{...source,assets}}]});}catch{notice='Media inventory could not be registered. Stored bytes remain available in Media.';}}
   const compilation = $derived(source ? compileScreen(source) : undefined);
   const structureContext=$derived({descriptors:catalogDescriptors,actionState:screenActionState,actionIds:designerCatalogs.actionIds,routeIds:designerCatalogs.routeIds,plan:compilation?.ok?Object.values(compilation.plan.documentPlans??{}).find(item=>item.documentId===source?.id):undefined});
@@ -601,7 +602,7 @@
     supply:values=>{runtimeValues=values;},
     invalid:()=>{notice='Graph edit refused by the source boundary. The previous graph was restored.';},
   });}
-  function syncGraphRuntime(){if(!bridge)return;const next={...runtimeValues};for(const key of graphStateKeys(bridge.document))next[key]=bridge.document.localState[key]!.initial;runtimeValues=next;}
+  function syncGraphRuntime(){if(bridge)runtimeValues=rebaseGraphRuntime(bridge.document,runtimeValues);}
   function undo() { if (!bridge) return; if (textDraftDirty || sourceDraftDirty) { notice = 'Apply or cancel your draft first.'; return; } const result = bridge.undo();if(result.ok)syncGraphRuntime(); issues = result.ok ? [] : result.issues; notice = result.ok ? 'Undid the last authored change.' : 'Nothing to undo.'; }
   function redo() { if (!bridge) return; if (textDraftDirty || sourceDraftDirty) { notice = 'Apply or cancel your draft first.'; return; } const result = bridge.redo();if(result.ok)syncGraphRuntime(); issues = result.ok ? [] : result.issues; notice = result.ok ? 'Redid the authored change.' : 'Nothing to redo.'; }
   function save(): boolean {

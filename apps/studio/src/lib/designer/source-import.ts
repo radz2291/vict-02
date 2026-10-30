@@ -1,6 +1,7 @@
 /** Validates a local one-screen export without mutating browser storage or owner sessions.
  * Media is decoded only into a disposable in-memory store, then returned for a fresh namespace. */
 import type { UiDocument, UiNode, UiSlotScope } from '@victframework/ui';
+import { graphAuthoringContract } from '@victframework/ui-flow-svelte';
 import {
   importMediaArchive,
   memoryAssetStore,
@@ -113,7 +114,8 @@ function managedReferences(document: UiDocument): {
   let traversal = 0;
   const scopedFill = (declaration: UiSlotScope, owner: Extract<UiNode,{kind:'component'}>, name: string, parent: LexicalScope): LexicalScope => {
     const state: LexicalScope['state'] = {};
-    const workspaceV2 = owner.definitionId === 'vict.flow.workspace' && owner.revision === '2' && name === 'body';
+    const contract = graphAuthoringContract(owner.definitionId, owner.revision);
+    const workspaceV2 = contract?.modelVersion === 2 && contract.body?.slot === name;
     let models: Record<string,unknown>[] | undefined;
     if (workspaceV2) {
       const serialized = expressionValues(owner.props?.graph, `${owner.id}.graph`, parent);
@@ -178,7 +180,7 @@ function managedReferences(document: UiDocument): {
       for (const value of expressionValues(node.props?.slides, `${node.id}.slides`, scope))
         (Array.isArray(value) ? value : [value]).forEach(mediaReference);
     }
-    if (!['vict.flow.editor','vict.flow.workspace'].includes(node.definitionId)) continue;
+    if (!graphAuthoringContract(node.definitionId, node.revision)) continue;
     for (const serialized of expressionValues(node.props?.graph, `${node.id}.graph`, scope)) {
       if (typeof serialized !== 'string') continue;
       let model: unknown;

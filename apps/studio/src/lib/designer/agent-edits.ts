@@ -112,7 +112,7 @@ export const agentOperationSchema = z.discriminatedUnion('op', [
   z.object({op:z.literal('removeStyleSource'),id}).strict(),
   z.object({op:z.literal('when'),nodeId:id,wrapperId:id,conditionId:id}).strict(),
   z.object({op:z.literal('slotScope'),nodeId:id,slot:id,scope:slotScope.optional()}).strict(),
-  z.object({op:z.literal('editGraph'),nodeId:id,expectedGraphRevision:z.number().int().min(0),changes:z.array(z.unknown()).min(1).max(40).refine(graphEditShapeValid,'Use the exact declared graph-operation shape for this workspace version; read registry dataContracts.')}).strict(),
+  z.object({op:z.literal('editGraph'),nodeId:id,expectedGraphRevision:z.number().int().min(0),occurrenceRoute:z.array(z.object({workspaceNodeId:id,graphNodeId:id,expectedGraphRevision:z.number().int().min(0)}).strict()).min(1).max(32).optional(),changes:z.array(z.unknown()).min(1).max(40).refine(graphEditShapeValid,'Use the exact declared graph-operation shape for this workspace version; read registry dataContracts.')}).strict(),
   z.object({op:z.literal('theme'),role:z.enum(['surface','text','textMuted','border','accent','accentText','highlight','highlightText','focusRing','disabledSurface','disabledText','elevation']),value:z.string().max(500).optional()}).strict(),
   z.object({op:z.literal('style'),nodeId:id,part:id.optional(),property:z.string().min(1).max(80),
     value:z.union([z.object({type:z.literal('text'),value:z.string().max(500)}).strict(),z.object({type:z.literal('token'),id}).strict(),z.object({type:z.literal('binding'),expression}).strict()]).optional(),
@@ -345,7 +345,7 @@ export function prepareAgentEdit(
         const {scope:_old,...fill}=previous;
         next.push({op:'replaceDocument',document:{...working,nodes:{...working.nodes,[node.id]:{...node,slots:{...node.slots,[operation.slot]:{...fill,...(operation.scope?{scope:operation.scope as UiSlotScope}:{})}}}}}});
       }
-      if(operation.op==='editGraph'){const patched=patchAuthoredGraph(working,operation.nodeId,operation.changes,operation.expectedGraphRevision);if(!patched.ok)return failure('STUDIO_AGENT_GRAPH_INVALID',patched.message);next.push({op:'replaceDocument',document:patched.document});}
+      if(operation.op==='editGraph'){const patched=patchAuthoredGraph(working,operation.nodeId,operation.changes,operation.expectedGraphRevision,operation.occurrenceRoute);if(!patched.ok)return failure('STUDIO_AGENT_GRAPH_INVALID',patched.message);next.push({op:'replaceDocument',document:patched.document});}
       if(operation.op==='theme')next.push({op:'setThemeRole',role:operation.role,value:operation.value});
       if(operation.op==='style'){
         if(operation.part)next.push({op:'setPartStyleDeclaration',nodeId:operation.nodeId,part:operation.part,property:operation.property,value:operation.value,conditionId:operation.conditionId,pseudo:operation.pseudo});
