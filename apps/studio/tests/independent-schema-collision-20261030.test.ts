@@ -111,6 +111,9 @@ describe('independent exact schema collision review', () => {
     const edit = JSON.parse(JSON.stringify({ expectedRevision: cursor.revision, reason: 'Unknown JSON field must refuse', operations: [{ op: 'modify', nodeId: source.root, styles: { color: '#123456' } }] }).slice(0, -1) + ',"__proto__":{"canary":"inert"}}');
     expect(Object.hasOwn(edit, '__proto__')).toBe(true);
     expect(agentEditSchema.safeParse(edit).success).toBe(false);
+    const admitted = agentReadSchema.parse({ section: 'preflight', edit });
+    expect(admitted.edit).toBe(edit);
+    expect(Object.hasOwn(admitted.edit as object, '__proto__')).toBe(true);
     const before = JSON.stringify(source);
     expect(agentContext(source, cursor, undefined, { section: 'preflight', edit })).toMatchObject({ ok: false, applied: false });
     expect(JSON.stringify(source)).toBe(before);

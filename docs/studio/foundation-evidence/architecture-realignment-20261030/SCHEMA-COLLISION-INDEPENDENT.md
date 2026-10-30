@@ -1,12 +1,55 @@
 # Independent operation / preflight schema review
 
-Exact candidate: `814c00444cff8e63598145184b6a891dfecf6f34`.
-Isolated review branch: `review/schema-collision-20261030`.
+Latest exact candidate: `bfb34e2882781bc2dddd05f2b978b418cda12c49`.
+Isolated final review branch: `review/schema-collision-verified-20261030`.
+Original reviewed candidate: `814c00444cff8e63598145184b6a891dfecf6f34`;
+its red review branch `review/schema-collision-20261030` remains at
+`32e822db062428683b5127ffd3d284724c9448cf`.
 Recorded origin/main: `d7401bef6e48330796c74ec00c86db9622d48cdf`.
 Previous review branches preserved; no remote refresh or push. Current owner
 resumption authorizes local independent verification, not closure or publication.
 
-## Initial verdict: bounded repair required
+## Current verdict: qualified independent offline PASS
+
+SC1 is repaired and cleared on the latest exact candidate. The native object/null
+gate is now a non-transforming `z.unknown().superRefine` check. The independent
+probe verifies the admitted edit is the same original object, retains its own
+JSON `__proto__` field, and is then refused by strict nested edit validation.
+There is no JSON parsing, key filtering, type coercion or new edit authority.
+Native objects preflight normally; strings/primitives/arrays refuse. Missing/null
+retains the earlier nested refusal. Source stays unchanged on successful, stale,
+malformed and unknown-field outcomes; no proposal, draft or document is returned.
+
+The final exact candidate includes source repair `5ba04e8b56b7d905419dd73b6af80a861006a630`
+and the retained initial independent evidence/probes. Its product source matched
+the review tree exactly when aligned to the build candidate `bfb34e28…`; only a
+review-test assertion and this final report/logs were added by the verifier.
+
+Final focused checks:
+
+- `schema-collision-independent-final-tests.log`: **3 files / 20 tests PASS**, exit 0
+  (five independent probes, four slot-scope schema regressions, eleven read-contract
+  cases). These overlap earlier passing cases; counts are not additive.
+- `schema-collision-independent-final-typecheck.log`: Studio TypeScript, exit 0.
+- `schema-collision-independent-final-lint.log`: independent probe ESLint, exit 0.
+- `git diff --check`: clean. No product source edits by this verifier.
+
+All operation-union references retain their own `op` discriminant; every local
+JSON Pointer resolves, including the intentionally nested graph definitions. Both
+public presentation schemas fit the unchanged bridge capture bounds. The original
+slot-scope collision remains independently reproduced as a historical negative.
+Ref namespace help and version identities remain as recorded below. Five inherited
+Svelte warnings remain visible in test logs; no broad accessibility pass follows.
+
+No blocking finding remains within this bounded schema review. Next allowed action:
+finish/seal the corresponding staged production build, perform the owner-authorized
+reversible local activation, and resume the actual agent from confirmed saved source.
+Verify actual native preflight/slot composition; do not replay confirmed edits or
+replace the application with a verifier fixture. Live rich-node usability, two
+applications, browser/device behavior, owner acceptance and Foundation/Stage9 gates
+remain held. This review neither activates a product nor authorizes publication.
+
+## Retained initial verdict on 814c: bounded repair required
 
 The slotScope collision is repaired correctly. The operation-union reference now
 reaches the closed `{op,nodeId,slot,scope?}` wrapper, and its scope reference reaches
