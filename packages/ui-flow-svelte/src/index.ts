@@ -11,6 +11,7 @@ export * from './editor/model-v2.js';
 export * from './editor/graph-schemas.js';
 export * from './editor/topology.js';
 export * from './editor/host.js';
+export * from './editor/authoring-contract.js';
 
 export { default as GraphWorkspace } from './composition/GraphWorkspace.svelte';
 export { default as GraphWorkspaceV2 } from './composition/GraphWorkspaceV2.svelte';
