@@ -1,0 +1,23 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030
+
+8:16:40 pm [vite-plugin-svelte] packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+8:16:40 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+8:16:40 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+8:16:40 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+8:16:40 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+8:16:41 pm [vite-plugin-svelte] packages/ui-svelte/test/CatalogCheckboxFixture.svelte:27:0 Buttons and links should either contain text or have an `aria-label`, `aria-labelledby` or `title` attribute
+https://svelte.dev/e/a11y_consider_explicit_label
+8:16:41 pm [vite-plugin-svelte] packages/ui-svelte/test/CatalogCheckboxFixture.svelte:32:0 Buttons and links should either contain text or have an `aria-label`, `aria-labelledby` or `title` attribute
+https://svelte.dev/e/a11y_consider_explicit_label
+
+ Test Files  4 passed (4)
+      Tests  11 passed (11)
+   Start at  20:16:34
+   Duration  7.49s (transform 10.10s, setup 0ms, import 15.77s, tests 1.21s, environment 8.84s)
+
