@@ -1,0 +1,22 @@
+[
+  {
+    "id": "url-control",
+    "value": "https://example.org/source-ax"
+  },
+  {
+    "id": "notes-control",
+    "value": "Manual note: compare the original source.\nKeep uncertainty visible."
+  },
+  {
+    "id": "review-reference",
+    "value": "https://example.org/review-b"
+  },
+  {
+    "id": "review-notes",
+    "value": "Independent review: check the claim."
+  },
+  {
+    "id": "review-status",
+    "value": "needs-work"
+  }
+]

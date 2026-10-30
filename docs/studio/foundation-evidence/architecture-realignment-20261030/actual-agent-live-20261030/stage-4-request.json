@@ -1,0 +1,5 @@
+{
+  "prompt": "Complete this saved Evidence desk as a usable local evidence-review application. Preserve the existing manual URL/notes, Review reference/notes/status, Source note position and theme. Add a second independent Source note using the same reusable node body, connect both sources to Review with typed Evidence connections (discover and adjust only the necessary input limit). Make the heading/intro accurately describe the complete workflow and add a compact ordinary-UI guide explaining: record source URLs and provenance, review them, choose Pending/Accepted/Needs work, Save in Studio to preserve authored defaults; connections organize evidence and do not execute a backend. Make the graph view usable without compulsory toolbars, inspectors or family pickers. Use existing public VICT components/contracts and discover exact requirements; do not introduce backend/storage or global state substitutes. Functional completeness first; preflight unfamiliar shapes. Leave saving to me and report briefly what changed and what interaction remains untested.",
+  "servingSource": "72b7e09b1e6cbd5269578f3c3b1ccdf120a22c3b",
+  "baseSavedRevision": "r1.r5"
+}

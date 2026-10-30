@@ -1,0 +1,265 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Evidence desk — rich-node retry"
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- banner:
+  - strong: Chat
+  - button "Hide Chat":
+- complementary "Chat":
+  - region "Conversation":
+    - region "Messages — Message":
+      - log:
+        - generic: You
+        - generic: Extend this saved Evidence desk into a useful two-stage local review board. Preserve the existing Source note node, its manual URL and multiline notes, position, theme and clear evidence-port caption. Add one Review node with a typed evidence input and connect Source note → Review. Use a common readable card layout with each node’s own title, URL/reference field, multiline notes and a meaningful Pending / Accepted / Needs work status Select using ordinary registered VICT components. Each node’s controls must edit only its own values. Keep exactly two nodes, one typed connection, and clear port labels; avoid a toolbar, inspector, family picker, connection form or backend execution. Discover exact contracts, preflight novel shapes, build the functional increment first, and leave saving to me. Report briefly what was applied and what remains untested.
+        - button "Copy message":
+        - generic: Assistant
+        - generic "Host evidence summary":
+          - paragraph: Host evidence summary
+          - status: Source changes were applied; saving is separate. A preview image matching the final source was assessed by AI; its claims remain unverified. Behavior was not tested by this agent.
+        - button "Original AI assessment and tool details" [expanded] [active]:
+          - text: Original AI assessment and tool details
+        - paragraph: Original AI assessment — claims not independently verified. Tool receipts separately record confirmed effects and capture limits.
+        - generic "Conversation timeline":
+          - paragraph: I'll start by reading the current document structure to see the existing Source note node and its canvas, then discover the exact contracts.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: The document already has a flow workspace with a "Source note" body template. Now I need the remaining node, the current graph state, and the flow component contracts.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph:
+            - text: The graph is
+            - code: vict.flow-graph@2
+            - text: (revision 20) with one
+            - code: source-note
+            - text: node. Now I'll read the workspace contract with examples and the data-contract registry for the graph grammar.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph:
+            - text: The workspace contract confirms body branching by
+            - code: prop.nodeType
+            - text: via slot-scope conditions, and graph edits go through
+            - code: editGraph
+            - text: . Let me finish the contract pages and pull the exact body source to mirror the card style.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph:
+            - text: Contract is complete now. Let me get the remaining truncated style pages and confirm native
+            - code: select
+            - text: /
+            - code: option
+            - text: element support.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph:
+            - text: "I have everything I need. The plan: update the body slot scope (add review state keys +"
+            - code: nodeType
+            - text: conditions), edit the graph (define
+            - code: review
+            - text: type with an
+            - code: evidence
+            - text: "-typed input port, add node, connect), wrap both bodies in"
+            - code: when
+            - text: "conditions, and build the review card mirroring the source card. Preflighting the novel shape first:"
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: "Preflight is valid. Applying the core transaction now:"
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - paragraph: "Core structure applied (graph revision advanced, source body wrapped). Building the review card — skeleton, header, reference field:"
+          - button "Edit screen failed":
+            - generic: Edit screen
+            - generic: failed
+          - paragraph:
+            - text: Validation caught a stray
+            - code: type
+            - text: "attribute on the card div — removing it and retrying:"
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - paragraph: "Reference field bound. Continuing with the notes field and its wiring:"
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - paragraph: "Notes field wired to its own scoped state. Now the status Select with its three options:"
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - paragraph: "Status select done. Final batch: footer with the typed input port, its caption, and the nodeType condition wrap:"
+          - button "Edit screen failed":
+            - generic: Edit screen
+            - generic: failed
+          - paragraph: "Port props need plain scalar values — retrying:"
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - paragraph: "All five batches applied. Now verifying the graph contents and the visible result:"
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Observe preview completed":
+            - generic: Observe preview
+            - generic: completed
+          - paragraph: "Graph state is exactly right: two node types, two nodes, one typed edge, source values preserved (revision 21). The capture is ambiguous about the Review card, though — the crop cut the bottom and the assessment saw only one card. Let me verify the body structure in source and re-observe:"
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Observe preview completed":
+            - generic: Observe preview
+            - generic: completed
+          - paragraph: "Source structure is confirmed correct (both conditional bodies, ports, bindings). But both fresh captures report no Review card visible in the right half — I need to see the rest of the review subtree to rule out a structural break before adjusting anything:"
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: "The full review subtree is intact in source. Let me check whether wireInput landed on the right state scope and whether document state gained shadowing keys:"
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph:
+            - text: "All wiring is correct in source and no shadowing document states were created. The decisive check: capture the"
+            - code: review-body
+            - text: "element itself — host-measured bounds and visibility will tell me whether it renders at all:"
+          - button "Observe preview failed":
+            - generic: Observe preview
+            - generic: failed
+          - paragraph:
+            - text: "Host fact confirmed:"
+            - code: review-body
+            - text: is connected and laid out but
+            - strong: not visible
+            - text: ". One decisive measurement remains — the source card's actual rendered bounds will reveal whether the canvas is zoomed/panned (stale fit) or the review body renders empty:"
+          - button "Observe preview completed":
+            - generic: Observe preview
+            - generic: completed
+          - paragraph: "Host-measured bounds crack it: the source card renders at screen [377,232,264,281] — the canvas is zoomed (~1.1×) and panned, so the review card at graph x=360 sits just past the visible window's right edge (visible window ends at graph x≈328). I'll move the review node into the visible window, left of the fixed source card:"
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - paragraph: "Move applied. Re-observing the canvas:"
+          - button "Observe preview completed":
+            - generic: Observe preview
+            - generic: completed
+          - paragraph: "Both cards now render: the fresh capture shows the Review card with its Reference input, notes placeholder, Status select reading \"Pending\", the preserved Source note card, and a connector fragment between them."
+          - paragraph:
+            - strong: Applied
+            - text: "(6 acknowledged edit batches, current revision r1.r4#6): the body slot now branches per"
+            - code: nodeType
+            - text: ", and the graph holds two node types — the untouched Source note (URL, multiline notes, position, theme, \"Evidence out\" port preserved) and a new"
+            - code: review
+            - text: node with Reference / Review notes / Status (default
+            - code: pending
+            - text: ) parameters, a typed
+            - code: evidence→intake
+            - text: input port, and exactly one connection
+            - code: edge-source-review-1
+            - text: . Each card's controls bind only to its own node-scoped state (
+            - code: url
+            - text: /
+            - code: notes
+            - text: vs
+            - code: reviewReference
+            - text: /
+            - code: reviewNotes
+            - text: /
+            - code: reviewStatus
+            - text: ), mirroring the existing wiring pattern; no toolbar, inspector, or connection form was added.
+          - paragraph:
+            - strong: "Observed:"
+            - text: the design canvas's current pan/zoom (~1.1×) left room for the Review card only left of the Source note (I moved the new node to x=-230; the source node was not touched), and the capture's bottom crop hides the Review footer — so the "Evidence in" label and full connector path are source-verified but not visually confirmed.
+          - paragraph:
+            - strong: "Untested:"
+            - text: actual typing, status changes, and node/port dragging (I have no runtime interaction tools), and you haven't saved yet — value persistence into the graph will only show once a control is used.
+        - button "Copy message":
+    - button "Scroll to latest message":
+      - generic: Scroll to end
+    - textbox "Message":
+      - /placeholder: Ask for a change…
+    - button "Send" [disabled]:
+      - generic: Send
+    - status
+  - status "6 edits applied":
+    - generic: Ready
+  - button "Chat details": ···
+- separator "Chat width"
+- main:
+  - button "Toggle Chat drawer" [expanded]:
+  - group "Workspace mode":
+    - button "Design" [pressed]
+    - button "Interact"
+    - button "Structure"
+  - button "Toggle Document and Selection drawer":
+  - iframe:
+    - generic "Screen canvas":
+      - main "Evidence desk — rich-node retry":
+        - heading "Evidence desk" [level=1]:
+          - generic: Evidence desk
+        - paragraph:
+          - generic: "A compact evidence desk: one editable source-note node keeps a source URL and provenance notes together, ready to hand evidence to the next step."
+        - region "Evidence desk graph":
+          - application "Graph canvas":
+            - application:
+              - group "Source note":
+                - generic: Source note
+                - generic: Source URL
+                - textbox "Source URL": https://example.org/source-ax
+                - generic: Provenance notes
+                - textbox "Provenance notes":
+                  - /placeholder: Where did this evidence come from?
+                  - text: "Manual note: compare the original source. Keep uncertainty visible."
+                - 'button "output Evidence: evidence"'
+                - generic: Evidence out
+              - group "Review":
+                - generic: Review
+                - generic: Reference
+                - textbox "Reference"
+                - generic: Review notes
+                - textbox "Review notes":
+                  - /placeholder: What did the review find?
+                - generic: Status
+                - combobox "Status":
+                  - option [selected]
+                  - option
+                  - option
+                - 'button "input Evidence in: evidence"'
+                - generic: Evidence in
+              - link "Svelte Flow attribution":
+                - /url: https://svelteflow.dev?utm_source=attribution
+                - text: Svelte Flow
+- contentinfo:
+  - status: Place review node inside the currently visible canvas window, left of the preserved source card · agent edit · unsaved
