@@ -1,8 +1,9 @@
 # Architecture realignment — current delivery boundary
 
-30 October 2026. **Bounded offline repairs independently PASS; complete
-Authoring Foundation delivery remains HELD. Not ready for owner acceptance.**
-The task remains in progress. No acceptance, milestone completion, Milestone 2
+30 October 2026. **Fresh integrated Gate E QUALIFIED PASS — verified and ready
+for owner acceptance at the delivered Authoring Foundation scope.** All31 scoped
+requirements are demonstrated; no required demonstration remains unproved.
+All31 owner acceptances remain open. No acceptance, milestone completion, Milestone 2
 start or Stage 9 closure is recorded.
 
 **Post-restart live continuation:** supported built-in IAB control works again.
@@ -12,11 +13,19 @@ The actual Studio agent has completed stages1–5: meaningful read/edit, one ric
 node, two connected nodes, the complete Evidence desk and a materially different
 nested Project planner. Native scoped controls, targeted agent/manual coexistence,
 history, popup lifetime and Save/reopen now have matching evidence. The available
-Xiaomi Android physical check also passes at its recorded scope. Final integrated
-Gate E remains HELD pending the fresh verifier's phase2 assessment of the final
-snapshot; these demonstrations do not themselves award review readiness.
+Xiaomi Android physical check also passes at its recorded scope. Fresh independent
+Gate E reviewed the exact final snapshot and supplies the readiness verdict below;
+the builder's demonstrations alone do not award acceptance.
 
 ## Exact identities
+
+Frozen final evidence: **c86fa849fd3644506aa42d5cd21d63fea4a933d2**.
+Fresh independent verifier commit: **1924c6c2ddf79d26e489981468bf730d92982ec4**.
+[Final integrated verdict and31dispositions](foundation-evidence/architecture-realignment-20261030/integrated-exit-20261030/FINAL.md)
+records17fresh scoped checks, independent source/history/export/static/artifact
+recomputation and qualified readiness. Its evidence tiers distinguish integrator
+native actions, actual Studio-agent runs, independent checks and owner device report.
+The verdict is imported locally; later delivery text does not alter production inputs.
 
 Current source/serving candidate: **8d8be402893a8942b985ad920b32b31807e2ad47**.
 Independent metadata/guidance qualified PASS:
@@ -149,7 +158,7 @@ viewport-bounded geometry. Reload restores the exact exported titles/Doing statu
 values with Help closed, confirming session-only runtime changes. Early mount/
 focus reads are explicitly qualified by settled observations. This is separate
 actual-export replay, not relabeling the bYGiad fixture as agent authorship.
-Fresh integrated Gate E assessment is the remaining technical gate.
+Fresh integrated Gate E now independently associates this proof with all31criteria.
 
 **Resolved live history challenge:** canonical source at72 recorded a redone move,
 but a later edge edit emitted the old position. Independent red probes confirmed
@@ -157,7 +166,7 @@ the obsolete emission-marker cause in both renderers. Current ab329 clears that
 marker on external source adoption; independent and native source/render/next-edit
 checks pass. Earlier source-only/inconclusive observations remain retained and are
 not relabeled. The nested second application's native proof is now recorded
-above; the final integrated exit still awaits independent assessment.
+above; the fresh integrated exit independently confirms this delivered scope.
 
 One independent affected-regression pass on exact72 additionally passed44
 popup/focus/nesting renderer,15 media and8 Studio capture checks. It reuses the
@@ -226,20 +235,21 @@ dependencies and appearance do not establish upstream interaction reuse.
 | Gate | Current disposition |
 | --- | --- |
 | A | Independently PASS for architecture reconciliation and all 31 requirement mappings. |
-| B | Independent bounded source/mounted checks PASS; actual native vertical slice now includes ordinary controls, typed connections, nested/repeated lexical ownership, manual/targeted-agent coexistence, history and Save/reopen/portable source. Final integrated assessment remains separate. |
-| C | Bounded consistency repairs independently PASS; affected renderer/media/capture checks and retained mobile/AI/style/icon/panel evidence associated. Final whole-candidate conformance assessment pending. |
-| D | Actual stages1–5 demonstrated, including complete Evidence desk and nested Project planner. Independently audited built-artifact consumer and exact final App2 public compilation/build/native session-isolation/popup/reload replay pass. Final integrated assessment remains separate. |
-| E | **HELD** pending fresh integrated_exit_verifier phase2 on the final exact snapshot. Bounded source/native/device results do not award this verdict or owner acceptance. |
+| B | PASS — actual native vertical slice includes ordinary controls, typed connections, nested/repeated lexical ownership, manual/targeted-agent coexistence, history and Save/reopen/portable source; independently associated by fresh Gate E. |
+| C | PASS — bounded consistency repairs, affected renderer/media/capture checks and retained mobile/AI/style/icon/panel evidence independently associated by fresh Gate E. |
+| D | PASS — actual stages1–5, complete Evidence desk and nested Project planner; audited built-artifact consumer and exact App2 public compilation/build/native isolation/popup/reload replay independently associated. |
+| E | **QUALIFIED PASS — verified and ready for owner acceptance**, exact product8d8/evidencec86/verifier1924 identities above. All31 scoped requirements demonstrated; owner acceptance remains separate. |
 
 Final build, Studio TypeScript and changed-code ESLint all exit 0. Source repair
 checks include Studio 18/18, retained host@1 package composition 17/17, final
 import 23/23, protocol/pinned offline executor 6/6, and safe pre-invocation Agent
 boundary 2/2. Other affected read/authoring/refusal and discovery/import checks
 are retained at their exact candidate scope. These counts overlap; do not sum them.
-The final independent verifier reused byte-identical source/history paths already
+The earlier bounded offline verifier reused byte-identical source/history paths already
 reverified at `3e2c7b9e…` and reran the changed importer with its own exact deep
 roundtrip and all 22 existing import cases. See
-[independent final verdict](foundation-evidence/architecture-realignment-20261030/INDEPENDENT-FINAL.md).
+[earlier bounded offline verdict](foundation-evidence/architecture-realignment-20261030/INDEPENDENT-FINAL.md).
+The fresh integrated verdict above supersedes its whole-delivery boundary.
 
 The public consumer freshly installed seven tarballs and matched 510 installed
 nonmanifest files. Its ordinary registered Select control preserves two nodes'
@@ -258,11 +268,11 @@ there is no blanket accessibility or performance pass.
 ## All 31 current acceptance dispositions
 
 Every owner acceptance remains open. These are concrete evidence dispositions,
-not the pending final integrated verdict or a new numerical acceptance count.
+associated by the fresh final integrated verdict;31demonstrated is not31accepted.
 Retained evidence keeps its original scope; unavailable observations stay
 unavailable. The actual applications and current native checks are associated
-above, including exact public-static App2 replay; fresh phase2 assessment remains
-pending.
+above, including exact public-static App2 replay. The fresh independent final
+report provides the complete31-row DEMONSTRATED verdict and retained limits.
 
 | Requirement | Current supporting result / still required |
 | --- | --- |
@@ -295,8 +305,8 @@ pending.
 | AR27 | Existing View-row/mode-bar behavior retained, unchanged. |
 | AR28 | Registered icons/theme/portable evidence retained, unchanged. |
 | AR29 | Inert vector/ID/managed-asset evidence retained; importer negatives remain passing. |
-| CF01 | Independent source/package conformance plus actual ordinary controls, nested ownership, themed Help/native capture/lifetime, portable source and exact App2 public-static replay now recorded. Retained media/icon/vector/panel proof stands; final integrated assessment pending. |
-| AI-EX01 | Earlier23identity/28contract manual/actual-agent exposure retained. New actual Flow discovery, composition and exact targeted route demonstrated without provider/effect/history authority expansion; final integrated association pending. |
+| CF01 | DEMONSTRATED by fresh integrated review — source/package conformance, actual ordinary controls/nested ownership/themed Help/capture/lifetime/portable public replay and retained media/icon/vector/panel proof. |
+| AI-EX01 | DEMONSTRATED by fresh integrated review — retained23identity/28contract lineage plus actual Flow discovery/composition/targeted routes without provider/effect/history authority expansion. |
 
 ## Compatibility and preservation
 
@@ -342,11 +352,13 @@ The actual stages1–5, App2 native lexical ownership/targeted-agent/history/pop
 and Save/reopen evidence, and exact portable roundtrip are now recorded. The
 Xiaomi Android/Chrome check is complete at its owner-reported two-node scope.
 The final App2 public-static helper/build and native replay also pass with the
-unchanged exported bytes and explicit runtime-only policy. The remaining
-technical step is the fresh integrated_exit_verifier phase2 assessment against
-the final exact snapshot. Reuse unchanged valid evidence; no new authoring trial is requested
-merely for another timestamp. Gate E remains HELD until that assessment is
-recorded with its exact source/evidence identities and any findings reconciled.
+unchanged exported bytes and explicit runtime-only policy. Fresh independent
+phase2 on the exact snapshot is QUALIFIED PASS, with no required demonstration
+outstanding. No new authoring trial is requested merely for another timestamp.
+Next allowed action is owner review and explicit acceptance at this exact scope.
+Retained limits include owner-reported device scope, small nested default-fit text,
+capture crop/semantic limits, unproved heard audio and existing build warnings;
+none is silently promoted to universal device/accessibility/performance proof.
 
 The owner walkthrough should use the two preserved actual screens:
 
@@ -367,7 +379,7 @@ The owner walkthrough should use the two preserved actual screens:
    result with their stated limits. The mobile result belongs to the earlier
    exact two-node preview, not every later layout or every device.
 
-The final independent verdict and owner's separate acceptance determine the next
-boundary. The ticket and Authoring Foundation milestone remain open; acceptance,
+The final independent verdict is ready for the owner's separate acceptance.
+The ticket and Authoring Foundation milestone remain open; acceptance,
 Milestone2, push, main merge, package publication, production deployment and whole
 Stage9closure are not inferred from these results.
