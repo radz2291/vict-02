@@ -1,0 +1,23 @@
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/vict-pointer-history-probe-20261030/apps/studio
+
+10:26:00 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-pointer-history-probe-20261030/packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+10:26:00 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-pointer-history-probe-20261030/packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+10:26:00 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-pointer-history-probe-20261030/packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+10:26:00 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-pointer-history-probe-20261030/packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+10:26:00 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-pointer-history-probe-20261030/packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+stdout | tests/actual-nested-route-baseline.test.ts > accepts exact p1 and p2 routes on the preserved actual same-name graph source without sibling or source mutation
+{"sourceOwner":{"kind":"slot","ownerNodeId":"flow-workspace","slotName":"body","key":"graph","controlled":true},"p1":{"parentBefore":1,"parentAfter":2,"innerAfter":1,"p2Unchanged":true},"p2":{"parentBefore":2,"parentAfter":3,"innerAfter":1,"p1Unchanged":true}}
+
+ ✓ tests/actual-nested-route-baseline.test.ts (2 tests) 118ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  22:25:49
+   Duration  21.94s (transform 13.43s, setup 0ms, collect 21.11s, tests 118ms, environment 0ms, prepare 219ms)
+
