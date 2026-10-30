@@ -257,8 +257,8 @@
   overflow-wrap: anywhere;
 }
 .vict-controls :where([data-highlighted], [data-command-item][data-selected='true']) {
-  background: var(--vict-control-selected);
-  color: var(--vict-color-accent);
+  background: var(--vict-theme-highlight, var(--vict-control-selected));
+  color: var(--vict-theme-highlight-text, var(--vict-color-accent));
 }
 .vict-controls
   :where(

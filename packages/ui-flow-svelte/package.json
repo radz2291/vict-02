@@ -1,0 +1,40 @@
+{
+  "name": "@victframework/ui-flow-svelte",
+  "version": "0.4.0-rc.1",
+  "private": true,
+  "type": "module",
+  "description": "Optional Svelte Flow presentation components. No VICT application or execution semantics.",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "svelte": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./styles.css": "./src/styles.css",
+    "./authoring": {
+      "types": "./src/authoring/index.ts",
+      "svelte": "./src/authoring/index.ts",
+      "default": "./src/authoring/index.ts"
+    }
+  },
+  "files": [
+    "src",
+    "README.md",
+    "UPSTREAM.md"
+  ],
+  "scripts": {
+    "build": "svelte-check --tsconfig ./tsconfig.json"
+  },
+  "dependencies": {
+    "@victframework/ui-media-svelte": "0.4.0-rc.1",
+    "@dagrejs/dagre": "1.1.5",
+    "@xyflow/svelte": "1.7.0",
+    "elkjs": "0.11.0"
+  },
+  "peerDependencies": {
+    "@victframework/ui": "0.4.0-rc.1",
+    "@victframework/ui-svelte": "0.4.0-rc.1",
+    "svelte": "^5.25.0"
+  },
+  "license": "Apache-2.0"
+}

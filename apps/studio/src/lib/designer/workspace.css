@@ -2,29 +2,32 @@
    No editor dependency: authored styles still belong to DocumentHost's source. */
 .studio-workspace {
   display:flex;flex-direction:column;height:100dvh;overflow:hidden;
-  font:12px/1.45 'Segoe UI',system-ui,sans-serif;color:#263246;background:#f4f6f9;
+  font:12px/1.45 'Segoe UI',system-ui,sans-serif;color:var(--vict-color-text);background:var(--vict-color-bg);
 }
 .studio-workspace * {box-sizing:border-box;}
-.studio-workspace :focus-visible {outline:2px solid #5269bd;outline-offset:2px;}
+.studio-workspace :focus-visible {outline:2px solid var(--vict-color-accent);outline-offset:2px;}
 .workspace-header {
   min-height:44px;display:flex;align-items:center;gap:12px;padding:5px 10px;
   flex-wrap:nowrap;overflow-x:auto;white-space:nowrap;background:white;
-  border-bottom:1px solid #e1e6ee;flex-shrink:0;
+  border-bottom:1px solid var(--vict-color-border);flex-shrink:0;
 }
 .workspace-header > * {flex-shrink:0;}
-.workspace-tools {display:flex;justify-content:space-between;align-items:center;gap:6px;height:38px;flex-shrink:0;padding:0 10px;border-bottom:1px solid #e1e6ee;font-size:11px;}
+.workspace-tools {display:flex;justify-content:space-between;align-items:center;gap:6px;height:38px;flex-shrink:0;padding:0 10px;border-bottom:1px solid var(--vict-color-border);font-size:11px;}
+.studio-type-scope .workspace-icon-button {display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;width:28px;height:28px;padding:0;border:0;border-radius:4px;background:transparent;color:var(--vict-color-textMuted);cursor:pointer;}
+.studio-type-scope .workspace-icon-button:hover {background:var(--vict-control-selected);color:var(--vict-color-text);}
+.studio-type-scope .workspace-icon-button:disabled {opacity:.4;cursor:default;}
 .workspace-scroll {overflow:auto;scrollbar-gutter:stable;flex:1;min-height:0;padding:16px 18px 30px;background-image:radial-gradient(#d5dce6 .65px,transparent .65px);background-size:12px 12px;}
 .workspace-screen {
   width:100%;margin:0 auto;position:relative;background:white;
-  box-shadow:0 3px 18px #25334f0a,0 0 0 1px #dfe5ee;border-radius:2px;
+  box-shadow:0 3px 18px #25334f0a,0 0 0 1px var(--vict-color-border);border-radius:2px;
   container:studio-screen / inline-size;
   /* Keep application typography independent from surrounding toolbar styles. */
-  font:12px/1.45 'Segoe UI',system-ui,sans-serif;color:#263246;
+  font:12px/1.45 'Segoe UI',system-ui,sans-serif;color:var(--vict-color-text);
 }
-.workspace-simulation {background:white;border-top:1px solid #e1e6ee;max-height:40%;overflow:auto;flex-shrink:0;}
-.workspace-simulation > summary {padding:7px 10px;color:#687994;font-size:10px;cursor:pointer;}
-.workspace-simulation > summary span {float:right;color:#9ba6b8;}
-.workspace-status {min-height:24px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:4px 10px;background:white;border-top:1px solid #e1e6ee;color:#8190a5;font-size:10px;flex-shrink:0;}
+.workspace-simulation {background:white;border-top:1px solid var(--vict-color-border);max-height:40%;overflow:auto;flex-shrink:0;}
+.workspace-simulation > summary {padding:7px 10px;color:var(--vict-color-textMuted);font-size:10px;cursor:pointer;}
+.workspace-simulation > summary span {float:right;color:var(--vict-color-textMuted);}
+.workspace-status {min-height:24px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:4px 10px;background:white;border-top:1px solid var(--vict-color-border);color:var(--vict-color-textMuted);font-size:10px;flex-shrink:0;}
 .workspace-status > :last-child {font-family:ui-monospace,monospace;white-space:nowrap;}
 @media(max-width:760px) {
   .workspace-header {padding:4px 8px;gap:5px;}
@@ -33,15 +36,16 @@
 }
 
 .workspace-menus {display:flex;align-items:center;gap:2px;}
-.workspace-menus > button {min-height:0;height:auto;border:1px solid transparent;border-radius:4px;padding:5px 9px;background:transparent;color:#65748d;font:12px/1.45 'Segoe UI',system-ui,sans-serif;cursor:pointer;}
-.workspace-menus > button:hover,.workspace-menus > button[aria-expanded='true'] {background:#edf1ff;color:#405abd;}
-.workspace-menu {margin:0;padding:5px;width:max-content;max-width:min(320px,calc(100dvw - 16px));max-height:calc(100dvh - 60px);overflow:auto;border:1px solid #dce2eb;border-radius:6px;background:white;box-shadow:0 8px 24px #25334f20;color:#47566e;}
-.workspace-menu kbd {font:10px 'Segoe UI',system-ui,sans-serif;color:#8a96a8;}
-.menu-caption {font-size:10px;color:#8a96a8;margin:6px 10px;}
+.workspace-menus > button {min-height:0;height:auto;border:1px solid transparent;border-radius:4px;padding:5px 9px;background:transparent;color:var(--vict-color-textMuted);font:12px/1.45 'Segoe UI',system-ui,sans-serif;cursor:pointer;}
+.workspace-menus > button:not(:disabled):hover,.workspace-menus > button[aria-expanded='true'] {background:var(--vict-control-selected);color:var(--vict-color-accent);}
+.workspace-menus > button:disabled {opacity:.45;cursor:default;}
+.workspace-menu {margin:0;padding:5px;width:max-content;max-width:min(320px,calc(100dvw - 16px));max-height:calc(100dvh - 60px);overflow:auto;border:1px solid var(--vict-color-border);border-radius:6px;background:white;box-shadow:0 8px 24px #25334f20;color:var(--vict-color-text);}
+.workspace-menu kbd {font:10px 'Segoe UI',system-ui,sans-serif;color:var(--vict-color-textMuted);}
+.menu-caption {font-size:10px;color:var(--vict-color-textMuted);margin:6px 10px;}
 .workspace-menu {min-width:0;box-sizing:border-box;z-index:100;font:12px/1.45 'Segoe UI',system-ui,sans-serif;outline:none;}
 .workspace-menu [role^="menuitem"] {min-height:0;height:auto;text-align:left;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:8px 10px;border-radius:3px;cursor:pointer;outline:none;}
-.workspace-menu [data-highlighted] {background:#f0f3fa;}
-.workspace-menu [role="separator"] {border-top:1px solid #e8ebf1;margin:4px 5px;}
+.workspace-menu [data-highlighted] {background:var(--vict-control-selected);}
+.workspace-menu [role="separator"] {border-top:1px solid var(--vict-color-border);margin:4px 5px;}
 
 .workspace-menu [role^="menuitem"]::before {display:none;}
 .workspace-menu .menu-caption {padding:0;margin:6px 10px;font-size:10px;}
@@ -50,4 +54,4 @@
 
 /* Cascades line up their first row with the parent command. */
 .workspace-menu [role="menuitem"][aria-haspopup="menu"]::after {display:none;}
-.workspace-menu [role="menuitem"][aria-haspopup="menu"][data-state="open"] {background:#edf1ff;color:#405abd;}
+.workspace-menu [role="menuitem"][aria-haspopup="menu"][data-state="open"] {background:var(--vict-control-selected);color:var(--vict-color-accent);}

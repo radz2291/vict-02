@@ -10,8 +10,10 @@
 
 import {
   UiEditSession,
+  applyUiEdit,
   canonicalUiDocument,
   uiDiagnostic,
+  defaultSemanticElementCatalog,
   type UiDocument,
   type UiCatalogs,
   type UiEditSessionState,
@@ -19,9 +21,10 @@ import {
   type UiDiagnostic,
   type UiSaveOutcome,
 } from '@victframework/ui';
+import { interactiveSlotConflicts } from './interactive-slots.js';
 import type { TransactionDraft } from './commands.js';
 
-import type { DocumentStorePort, DocumentStoreLoadResult } from '@victframework/ui';
+import type { DocumentStorePort } from '@victframework/ui';
 export type { DocumentStorePort, DocumentStoreLoadResult } from '@victframework/ui';
 
 export interface EditorBridgeState {
@@ -37,6 +40,9 @@ export interface EditorBridgeState {
 export class EditorBridge {
   #session: UiEditSession;
   readonly #store: DocumentStorePort;
+  readonly #catalogs: UiCatalogs | undefined;
+  readonly #validateDocument: ((document: UiDocument, previous?: UiDocument) => readonly UiDiagnostic[]) | undefined;
+  #validatedRequests = new Set<string>();
   #selectedOccurrence: string | undefined = undefined;
   #listeners = new Set<() => void>();
   /**
@@ -52,9 +58,15 @@ export class EditorBridge {
     readonly catalogs?: UiCatalogs;
     readonly store: DocumentStorePort;
     readonly initial: { readonly document: UiDocument; readonly storedRevision: string };
+    /** Optional host renderer policy. Checked before canonical edits enter history. */
+    readonly validateDocument?: (document: UiDocument, previous?: UiDocument) => readonly UiDiagnostic[];
   }) {
+    const issues = (input.validateDocument?.(input.initial.document, input.initial.document) ?? []).filter(issue => issue.severity === 'error');
+    if (issues.length) throw new Error(issues.map(issue => `${issue.code}: ${issue.message}`).join('\n'));
     this.#session = UiEditSession.open({ ...input.initial, catalogs: input.catalogs });
     this.#store = input.store;
+    this.#catalogs = input.catalogs ?? { elements: defaultSemanticElementCatalog() };
+    this.#validateDocument = input.validateDocument;
   }
 
   subscribe = (listener: () => void): (() => void) => {
@@ -108,12 +120,32 @@ export class EditorBridge {
         ],
       };
     }
-    const outcome = this.#session.applyTransaction({
+    const transaction = {
       requestId: draft.requestId,
       expectedDocumentRevision: this.#session.workingRevision,
       ...(draft.reason !== undefined ? { reason: draft.reason } : {}),
       commands: draft.commands,
-    });
+    };
+    // Preserve old source compatibility while refusing newly introduced invalid HTML.
+    if (!this.#validatedRequests.has(draft.requestId)) {
+      const staged = applyUiEdit(this.#session.state().working, transaction, this.#catalogs);
+      if (staged.ok) {
+        const existing = new Set(interactiveSlotConflicts(this.document).map(issue => issue.id));
+        const added = interactiveSlotConflicts(staged.document).filter(issue => !existing.has(issue.id));
+        if (added.length) return { ok:false,issues:added.map(issue => uiDiagnostic('UI_EDIT_VALIDATION_FAILED',
+          `Slot '${issue.slot}' already supplies a button. Use text or noninteractive content instead of '${issue.nodeId}'.`,{nodeId:issue.nodeId,parentId:issue.parentId,slot:issue.slot})) };
+      }
+    }
+    // Replays go to the session's idempotency/conflict authority. Re-running an
+    // already-applied insert against the current document would wrongly reject it.
+    if (this.#validateDocument && !this.#validatedRequests.has(draft.requestId)) {
+      const staged = applyUiEdit(this.#session.state().working, transaction, this.#catalogs);
+      if (!staged.ok) return staged;
+      const issues = this.#validateDocument(staged.document, this.document).filter(issue => issue.severity === 'error');
+      if (issues.length) return { ok: false, issues };
+    }
+    const outcome = this.#session.applyTransaction(transaction);
+    if (outcome.ok) this.#validatedRequests.add(draft.requestId);
     this.#emit();
     return outcome;
   }
@@ -168,6 +200,8 @@ export class EditorBridge {
         readonly ok: false;
         readonly issues: readonly { readonly code: string; readonly message: string }[];
       } {
+    const issues = (this.#validateDocument?.(this.#session.document, this.#session.document) ?? []).filter(issue => issue.severity === 'error');
+    if (issues.length) return { ok: false, issues };
     const staged = this.#session.stageSave({
       expectedStoredRevision: this.#session.storedRevision,
     });
@@ -261,10 +295,13 @@ export class EditorBridge {
         ...(stored.storedRevision !== undefined ? { storedRevision: stored.storedRevision } : {}),
       };
     }
+    const issues = (this.#validateDocument?.(stored.document, stored.document) ?? []).filter(issue => issue.severity === 'error');
+    if (issues.length) return { ok: false, code: 'UI_STORE_INVALID', message: issues.map(issue => issue.message).join('\n') };
     this.#session = this.#session.reopen({
       document: stored.document,
       storedRevision: stored.storedRevision,
     });
+    this.#validatedRequests.clear();
     this.#selectedOccurrence = undefined;
     this.#emit();
     return { ok: true, storedRevision: stored.storedRevision };

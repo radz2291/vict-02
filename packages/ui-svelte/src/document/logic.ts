@@ -21,6 +21,7 @@ export interface DocumentScope {
   readonly view?: Readonly<Record<string, unknown>>;
   readonly record?: Readonly<Record<string, unknown>>;
   readonly props?: Readonly<Record<string, unknown>>;
+  readonly scopedConditions?: Readonly<Record<string,UiExpression>>;
   readonly state: Readonly<Record<string, unknown>>;
   readonly tokens: Readonly<Record<string, string>>;
   readonly repeatItem?: {
@@ -30,6 +31,12 @@ export interface DocumentScope {
   readonly repeatItems?: Readonly<Record<string, Readonly<Record<string, unknown>>>>;
   /** The emitted payload while resolving an output-binding template. */
   readonly output?: unknown;
+}
+/** Lexical caller frame for local-definition slots, preserved through extension slots. */
+export interface DocumentSlotFrame {
+  readonly fills: Readonly<Record<string, readonly UiRenderInstruction[]>>;
+  readonly scope: DocumentScope;
+  readonly parent?: DocumentSlotFrame;
 }
 
 export function toScopeValues(scope: DocumentScope): UiScopeValues {
@@ -106,6 +113,8 @@ export function evaluateCondition(
   conditions: ReturnType<typeof conditionsOf>,
   scope: DocumentScope,
 ): boolean {
+  const scoped=scope.scopedConditions?.[conditionId];
+  if(scoped)return Boolean(evaluateExpression(scoped,toScopeValues(scope)));
   const condition = conditions[conditionId];
   if (condition === undefined || condition.kind !== 'localState') return false;
   return Boolean(evaluateExpression(condition.when, toScopeValues(scope)));
@@ -139,6 +148,29 @@ const escapeCss = (selector: string): string => {
  * cascade: token → componentBase → componentVariant → source → local.
  */
 export function styleRulesToCss(plan: UiRenderPlan, rootClass: string): string {
+  // A declared part is an explicit authoring boundary inside an opaque
+  // implementation. Its authored declarations outrank implementation defaults,
+  // including descendant/variant selectors with greater specificity. Keep the
+  // canonical layer ordering below; priority does not reorder source/local rules.
+  const partRules = new Set<string>();
+  const collect = (instruction: UiRenderInstruction, inheritedRootRules: readonly string[] = []): void => {
+    if (instruction.kind === 'extension') {
+      for (const ids of Object.values(instruction.partStyleRuleIds ?? {})) for (const id of ids) partRules.add(id);
+      // The first advertised target is the primary ABI element; its name need
+      // not be "root". Normal node and primary-part styles land together.
+      // Promote both so local node rules still outrank source part rules.
+      const primaryTarget = instruction.styleTargets?.[0];
+      if (primaryTarget && instruction.partStyleRuleIds?.[primaryTarget]?.length) for (const id of [...inheritedRootRules, ...(instruction.styleRuleIds ?? [])]) partRules.add(id);
+      for (const children of Object.values(instruction.slots ?? {})) children.forEach(child => collect(child));
+    } else if (instruction.kind === 'component') {
+      collect(instruction.body, [...inheritedRootRules, ...instruction.styleRuleIds]);
+      for (const children of Object.values(instruction.slots)) children.forEach(child => collect(child));
+    } else if (instruction.kind === 'element' || instruction.kind === 'unsupported') instruction.children.forEach(child => collect(child));
+    else if (instruction.kind === 'repeat') collect(instruction.template);
+    else if (instruction.kind === 'conditional') instruction.branches.forEach(branch => branch.children.forEach(child => collect(child)));
+    else if (instruction.kind === 'slot') instruction.fallback.forEach(child => collect(child));
+  };
+  plan.structure.forEach(instruction => collect(instruction));
   const conditions = conditionsOf(plan);
   const layerOrder = plan.style.layers;
   const escapedRoot = escapeCss(rootClass);
@@ -154,16 +186,17 @@ export function styleRulesToCss(plan: UiRenderPlan, rootClass: string): string {
     const plain: string[] = [];
     for (const rule of sorted.filter((rule) => rule.layer === layer)) {
       const lines: string[] = [];
+      const priority = partRules.has(rule.ruleId) ? ' !important' : '';
       for (const [index, declaration] of rule.declarations.entries()) {
         if (declaration.value.type === 'literal') {
-          lines.push(`  ${declaration.property}: ${String(declaration.value.value)};`);
+          lines.push(`  ${declaration.property}: ${String(declaration.value.value)}${priority};`);
         } else if (declaration.value.type === 'token') {
           lines.push(
-            `  ${declaration.property}: var(--ui-token-${sanitizeTokenId(declaration.value.id)});`,
+            `  ${declaration.property}: var(--ui-token-${sanitizeTokenId(declaration.value.id)})${priority};`,
           );
         }
         if (declaration.value.type === 'expression')
-          lines.push(`  ${declaration.property}: var(${bindingVariable(rule.ruleId, index)});`);
+          lines.push(`  ${declaration.property}: var(${bindingVariable(rule.ruleId, index)})${priority};`);
       }
       const declarations = lines.join('\n');
       if (declarations === '') continue;

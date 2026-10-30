@@ -1,5 +1,7 @@
-import type { InsertRecipe } from '@victframework/ui-editor';
-import type { UiNode, UiExpression } from '@victframework/ui';
+import { authoringRecipe, type InsertRecipe } from '@victframework/ui-editor';
+import type { UiNode } from '@victframework/ui';
+import { authoringContract, installedAuthoringRegistry } from './authoring.js';
+import { rheaNativePatterns } from '@victframework/ui-svelte/rhea';
 const styles = (values: Record<string, string>) =>
   Object.entries(values).map(([property, value]) => ({
     property,
@@ -16,15 +18,7 @@ function textElement(
     { kind: 'text', id: `${id}-text`, content: { type: 'literal', value: text } },
   ];
 }
-function component(
-  id: string,
-  family: string,
-  props: Record<string, UiExpression>,
-): readonly UiNode[] {
-  return [{ kind: 'component', id, definitionId: `vict.catalog.${family}`, props }];
-}
-const literal = (value: string | boolean | number): UiExpression => ({ type: 'literal', value });
-export const screenRecipes: readonly InsertRecipe[] = [
+const basicRecipes: readonly InsertRecipe[] = [
   {
     id: 'section',
     label: 'Section',
@@ -95,7 +89,8 @@ export const screenRecipes: readonly InsertRecipe[] = [
   {
     id: 'input',
     label: 'Text input',
-    description: 'Accessible input connected to message state',
+    description: 'Accessible text input with independent local state and change binding',
+    initialState: id => { const key = `input_${id.replace(/[^a-zA-Z0-9_-]/g, '_')}`; return { [key]: { key, type: 'string', initial: '' } }; },
     create: (id) => [
       {
         kind: 'element',
@@ -106,14 +101,14 @@ export const screenRecipes: readonly InsertRecipe[] = [
           type: 'text',
           'aria-label': 'Message',
           placeholder: 'Your message',
-          value: { type: 'ref', path: 'state.message' },
+          value: { type: 'ref', path: `state.input_${id.replace(/[^a-zA-Z0-9_-]/g, '_')}` },
         },
         interactions: [
           {
             on: 'change',
             action: 'setState',
-            key: 'message',
-            value: { type: 'ref', path: 'state.message' },
+            key: `input_${id.replace(/[^a-zA-Z0-9_-]/g, '_')}`,
+            value: { type: 'ref', path: `state.input_${id.replace(/[^a-zA-Z0-9_-]/g, '_')}` },
           },
         ],
         localStyle: styles({
@@ -127,42 +122,23 @@ export const screenRecipes: readonly InsertRecipe[] = [
       },
     ],
   },
-  {
-    id: 'button',
-    label: 'Button',
-    description: 'Catalog · declared press action',
-    create: (id) =>
-      component(id, 'button', {
-        label: literal('Continue'),
-        loading: { type: 'ref', path: 'state.busy' },
-      }),
-  },
-  {
-    id: 'checkbox',
-    label: 'Checkbox',
-    description: 'Catalog · boolean value and output',
-    create: (id) =>
-      component(id, 'checkbox', { label: literal('I agree to continue'), checked: literal(false) }),
-  },
-  {
-    id: 'switch',
-    label: 'Switch',
-    description: 'Catalog · a labeled on/off control',
-    create: (id) =>
-      component(id, 'switch', { label: literal('Enable notifications'), checked: literal(false) }),
-  },
-  {
-    id: 'dialog',
-    label: 'Dialog',
-    description: 'Catalog · compose the body slot',
-    create: (id) =>
-      component(id, 'dialog', { title: literal('More details'), open: literal(false) }),
-  },
-  {
-    id: 'separator',
-    label: 'Separator',
-    description: 'Catalog · a quiet visual divider',
-    create: (id) =>
-      component(id, 'separator', { orientation: literal('horizontal'), decorative: literal(true) }),
-  },
 ];
+
+/** Recipes accelerate the same package-owned registered composition path. */
+export const screenRecipes: readonly InsertRecipe[] = [...basicRecipes, ...rheaNativePatterns.map(pattern => ({
+  id: `rhea-${pattern.id}`,
+  label: `${pattern.label} · Rhea`,
+  description: `${pattern.description} Uses the public Rhea stylesheet.`,
+  create: (id: string) => pattern.create(id).nodes,
+  initialState: (id: string) => pattern.create(id).localState ?? {},
+})), ...installedAuthoringRegistry.contracts.filter(registration =>
+  authoringContract(registration.descriptor.id)?.descriptor.revision === registration.descriptor.revision,
+).flatMap(registration => {
+  const recipe=authoringRecipe(registration); return recipe?[recipe]:[];
+})];
+
+/** Host requirements come from the same reusable pattern, never a prompt copy. */
+export function recipeHostRequirements(recipeId: string): readonly string[] {
+  const pattern = rheaNativePatterns.find(item => `rhea-${item.id}` === recipeId);
+  return pattern ? ['Import @victframework/ui-svelte/rhea.css in the rendering host.', ...pattern.hostRequirements] : [];
+}

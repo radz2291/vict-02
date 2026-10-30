@@ -1,4 +1,4 @@
-import type { UiDocument, UiNode, UiEditCommand, UiExtensionDescriptor } from '@victframework/ui';
+import { effectiveUiDescriptor, type UiDocument, type UiNode, type UiEditCommand, type UiExtensionDescriptor, type UiLocalStateDecl } from '@victframework/ui';
 import type { TransactionDraft } from './commands.js';
 import { nodeLabel, type EditorLabels } from './inspector-ux.js';
 
@@ -11,8 +11,48 @@ export interface InsertRecipe {
   readonly id: string;
   readonly label: string;
   readonly description: string;
+  /** Context-owned primitive parts may only be inserted into these declared slots. */
+  readonly placements?: readonly { readonly definitionId: string; readonly revision?: string; readonly slotName: string }[];
+  /** Typed local presentation values for this recipe's reference-bound controls. */
+  readonly initialState?: (id: string) => Readonly<Record<string, UiLocalStateDecl>>;
   /** Source nodes only, with the subtree root first. */
   readonly create: (id: string) => readonly UiNode[];
+}
+/** Shared UI/tool affordance guard; the canonical compiler still validates the result. */
+export function canInsertRecipe(recipe: InsertRecipe, document: UiDocument, target: CompositionTarget, descriptors: readonly UiExtensionDescriptor[] = []): boolean {
+  if (!recipe.placements) return true;
+  type Context={definitionId:string;revision?:string;slotName:string};
+  type Fill={children:readonly (string|symbol)[];scope:Readonly<Record<string,Fill>>};
+  const results:boolean[]=[];
+  const marker=Symbol('insertion');
+  function visit(id:string|symbol,context:readonly Context[],fills:Readonly<Record<string,Fill>>,ancestors:ReadonlySet<string>){
+    if(id===marker){const nearest=[...context].reverse().find(entry=>recipe.placements!.some(placement=>placement.definitionId===entry.definitionId));results.push(!!nearest&&recipe.placements!.some(placement=>placement.definitionId===nearest.definitionId&&(placement.revision===undefined||placement.revision===nearest.revision)&&placement.slotName===nearest.slotName));return;}
+    if(typeof id!=='string'||ancestors.has(id))return;const node=document.nodes[id];if(!node)return;const next=new Set([...ancestors,id]);
+    const children=(ids:readonly (string|symbol)[],nextContext=context,nextFills=fills)=>ids.forEach(child=>visit(child,nextContext,nextFills,next));
+    if(node.kind==='element'||node.kind==='portal')children(node.id===target.nodeId?[...node.children,marker]:node.children);
+    else if(node.kind==='component'){
+      const slots:Record<string,readonly (string|symbol)[]>=Object.fromEntries(Object.entries(node.slots??{}).map(([name,fill])=>[name,fill.children]));
+      if(node.id===target.nodeId&&target.slotName)slots[target.slotName]=[...(slots[target.slotName]??[]),marker];
+      const definition=document.componentDefinitions[node.definitionId];
+      if(definition){const substituted=Object.fromEntries(Object.entries(slots).map(([name,ids])=>[name,{children:ids,scope:fills}]));children([definition.root],context,substituted);}
+      else for(const [slotName,ids]of Object.entries(slots))children(ids,[...context,{definitionId:node.definitionId,revision:effectiveUiDescriptor(node,descriptors)?.revision??node.revision,slotName}]);
+    }else if(node.kind==='slot'){const fill=fills[node.name];if(fill?.children.length)children(fill.children,context,fill.scope);else children(node.fallback??[]);}
+    else if(node.kind==='conditional')node.branches.forEach(branch=>children(branch.children));
+    else if(node.kind==='repeat')children([node.templateRoot]);
+  }
+  visit(document.root,[],{},new Set());
+  return results.length>0&&results.every(Boolean);
+}
+/** Seed local presentation state and source nodes as one canonical transaction. */
+export function insertRecipe(requestId: string, recipe: InsertRecipe, document: UiDocument, nodeId: string, target: CompositionTarget, descriptors: readonly UiExtensionDescriptor[] = []): TransactionDraft {
+  if (!canInsertRecipe(recipe, document, target, descriptors)) throw new Error('This component requires a compatible parent slot.');
+  const state = recipe.initialState?.(nodeId) ?? {};
+  if (Object.keys(state).some(key => Object.hasOwn(document.localState, key))) throw new Error('Recipe state identity already exists.');
+  const tree = insertSubtree(requestId, recipe.create(nodeId), target);
+  return { ...tree, commands: [
+    ...(Object.keys(state).length ? [{ op: 'replaceDocument' as const, document: { ...document, localState: { ...document.localState, ...state } } }] : []),
+    ...tree.commands,
+  ] };
 }
 export function compositionChildren(node: UiNode): readonly string[] {
   return node.kind === 'element' || node.kind === 'portal'
@@ -64,7 +104,7 @@ export function compositionTargets(
           },
         ];
       if (node.kind === 'component')
-        return (descriptors.find((d) => d.id === node.definitionId)?.slots ?? []).map(
+        return (effectiveUiDescriptor(node,descriptors)?.slots ?? []).map(
           (slotName) => ({
             nodeId: node.id,
             slotName,
@@ -84,6 +124,17 @@ export function compositionName(
     (key) => nodeLabel(document, key, labels) === name,
   );
   return peers.length > 1 ? `${name} ${peers.indexOf(id) + 1}` : name;
+}
+/** Batched presentation labels with the same duplicate-name ordinals as compositionName. */
+export function compositionNames(document: UiDocument, labels: EditorLabels = {}): ReadonlyMap<string, string> {
+  const names = new Map(Object.keys(document.nodes).map(id => [id, nodeLabel(document, id, labels)]));
+  const totals = new Map<string, number>();
+  for (const name of names.values()) totals.set(name, (totals.get(name) ?? 0) + 1);
+  const ordinals = new Map<string, number>();
+  return new Map([...names].map(([id, name]) => {
+    const ordinal = (ordinals.get(name) ?? 0) + 1; ordinals.set(name, ordinal);
+    return [id, (totals.get(name) ?? 0) > 1 ? `${name} ${ordinal}` : name];
+  }));
 }
 export type CompositionPlacement = 'before' | 'inside' | 'after';
 /** Source-addressed tree moves; the edit engine still owns final cycle/closure validation. */

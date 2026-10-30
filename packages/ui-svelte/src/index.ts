@@ -85,3 +85,14 @@ export { b4CatalogImplementations } from './catalog/components/b4-implementation
 export { b5CatalogDescriptors } from './catalog/components/b5-descriptors.js';
 export { b5CatalogImplementations } from './catalog/components/b5-implementations.js';
 export { catalogDescriptors, catalogImplementations } from './catalog/components/catalog.js';
+export { catalogAuthoringPackage, catalogAuthoringRegistrations } from './catalog/components/authoring.js';
+export { withAuthoringRules, runtimeAuthoringIssues } from './document/authoring-runtime.js';
+export {default as OwnedDialogContent} from './OwnedDialogContent.svelte';
+export {createOwnedDialogBehavior,ownedDialogBranches,isOwnedFocusable,ownedFocusableOrder,restoreOwnedFocus,loopOwnedDialogFocus,lockOwnedDialogViewport,type OwnedDialogOptions} from './owned-dialog.js';
+export {registerOwnedPopupLayer,resolveOwnedPopupOwner,isOwnedPopupTarget,hasCompetingOwnedPopupOwner,isOwnedElementRendered,isOwnedPopupSourceVisible,isOwnedPopupSourceAvailable,isOwnedPopupSourceTarget,ownedDocumentHasFocus,observeOwnedPopupSource,ownedPopupBranches,positionOwnedPopup,type OwnedPopupLayer,type OwnedPopupLayerOptions,type OwnedPopupKind,type OwnedPopupEventResult,type OwnedPopupEventContext,type OwnedPopupPositionOptions,type OwnedPopupSourceOptions} from './owned-popup.js';
+export {default as OwnedTooltip} from './OwnedTooltip.svelte';
+export {default as OwnedHoverCard} from './OwnedHoverCard.svelte';
+export {createOwnedTooltipBehavior,type OwnedTooltipOptions} from './owned-tooltip.js';
+export {createOwnedHoverCardBehavior} from './owned-tooltip.js';
+export {default as OwnedMenuContent} from './OwnedMenuContent.svelte';
+export {OWNED_MENU_CONTEXT,createOwnedMenuContext,createOwnedMenuBehavior,ownedMenuItems,focusOwnedMenuItem,ownedMenuTriggerKey,restoreOwnedMenuFocus,type OwnedMenuContext,type OwnedMenuCloseReason} from './owned-menu.js';

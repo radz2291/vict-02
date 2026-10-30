@@ -23,7 +23,7 @@
   <span></span>
 </div>
 <style>
-  .resizer {cursor:col-resize;display:flex;justify-content:center;align-items:center;touch-action:none;background:#f4f6f9;outline-offset:-2px;}
-  span {width:2px;height:28px;border-radius:4px;background:#cbd4e4;}
-  .resizer:hover,.resizer.dragging {background:#e5ebfb;} .resizer:focus-visible{outline:2px solid #5269bd;}
+  .resizer {cursor:col-resize;display:flex;justify-content:center;align-items:center;touch-action:none;background:var(--vict-color-bg);outline-offset:-2px;}
+  span {width:2px;height:28px;border-radius:4px;background:var(--vict-color-border);}
+  .resizer:hover,.resizer.dragging {background:var(--vict-control-selected,var(--vict-color-surface));} .resizer:focus-visible{outline:2px solid var(--vict-color-focusRing);}
 </style>

@@ -1,30 +1,58 @@
 <script lang="ts">
-  import type { UiDocument, UiExtensionDescriptor } from '@victframework/ui';
-  import { compositionTargets, detachedContent, detachSlotContent, compositionParent, compositionName, insertSubtree, type InsertRecipe } from './composition.js';
+  import type { UiDocument, UiExtensionDescriptor, UiAuthoringRegistry } from '@victframework/ui';
+  import { canInsertRecipe, compositionTargets, detachedContent, detachSlotContent, compositionParent, compositionName, insertRecipe, type InsertRecipe } from './composition.js';
   import ToolPages from './ToolPages.svelte';
   import {compositionMembers,type CompositionFocus} from './composition-focus.js';
   import type { TransactionDraft } from './commands.js';
-  let { document, selectedNodeId, recipes, descriptors = [], showInsert = true, showArrange = true, compact = false, onApply, onInserted, onDuplicate, onDetached, compositionFocus }: {
+  import { insertRegisteredComponent } from './registered-authoring.js';
+  let { document, selectedNodeId, recipes, descriptors = [], authoringRegistry, hostCapabilities = [], showInsert = true, showArrange = true, compact = false, onApply, onInserted, onDuplicate, onDetached, compositionFocus }: {
     document: UiDocument; selectedNodeId?: string; recipes: readonly InsertRecipe[];
+    authoringRegistry?: UiAuthoringRegistry;
+    hostCapabilities?: readonly string[];
     descriptors?: readonly UiExtensionDescriptor[]; showInsert?: boolean; showArrange?: boolean; onApply: (draft: TransactionDraft) => boolean;
     onInserted?: (nodeId: string) => void;
     onDetached?: (parentId: string) => void;
     compositionFocus?: CompositionFocus;
     compact?: boolean; onDuplicate?: () => void;
   } = $props();
+  type RegisteredComponent = UiAuthoringRegistry['contracts'][number];
+  const effectiveDescriptors = $derived(descriptors.length ? descriptors : authoringRegistry?.descriptors ?? []);
   let reuseId = $state('');
   const reusable = $derived(detachedContent(document));
-  const reuseTargets = $derived(compositionTargets(document,descriptors,reuseId));
+  const reuseTargets = $derived(compositionTargets(document,effectiveDescriptors,reuseId));
+  let insertionError = $state('');
   let search = $state('');
   let destination = $state('');
   let moveDestination = $state('');
   let placement = $state<'inside' | 'before' | 'after'>('inside');
   const members=$derived(compositionFocus?compositionMembers(document,compositionFocus):undefined);
-  const targets = $derived(compositionTargets(document, descriptors).filter(target=>!compositionFocus || (target.nodeId===compositionFocus.nodeId?target.slotName===compositionFocus.slotName:members?.has(target.nodeId))));
-  const moveTargets = $derived(compositionTargets(document, descriptors, selectedNodeId));
+  const targets = $derived(compositionTargets(document, effectiveDescriptors).filter(target=>!compositionFocus || (target.nodeId===compositionFocus.nodeId?target.slotName===compositionFocus.slotName:members?.has(target.nodeId))));
+  const selectedRecipe = $derived.by(() => {
+    const node = selectedNodeId ? document.nodes[selectedNodeId] : undefined;
+    return node?.kind === 'component' ? recipes.find(recipe => recipe.create('placement-probe')[0]?.kind === 'component' &&
+      (recipe.create('placement-probe')[0] as { definitionId?: string }).definitionId === node.definitionId) : undefined;
+  });
+  const moveTargets = $derived(compositionTargets(document, effectiveDescriptors, selectedNodeId).filter(target => !selectedRecipe || canInsertRecipe(selectedRecipe, document, target, effectiveDescriptors)));
   const parent = $derived(selectedNodeId && selectedNodeId!==compositionFocus?.nodeId ? compositionParent(document, selectedNodeId) : undefined);
   const position = $derived(parent && selectedNodeId ? parent.children.indexOf(selectedNodeId) : -1);
   const key = (target: { nodeId: string; slotName?: string }) => JSON.stringify([target.nodeId, target.slotName ?? '']);
+  const insertionTarget = $derived(placement !== 'inside' && parent && selectedNodeId
+    ? { ...parent, index: parent.children.indexOf(selectedNodeId) + (placement === 'after' ? 1 : 0) }
+    : targets.find(t => key(t) === destination));
+  const availableRecipes = $derived(recipes.filter(recipe => insertionTarget
+    ? canInsertRecipe(recipe, document, insertionTarget, effectiveDescriptors)
+    : !recipe.placements?.length));
+  function componentPlacementAllowed(registration: RegisteredComponent, target = insertionTarget): boolean {
+    return (registration.rules ?? []).every(rule => rule.kind !== 'ancestorSlot' || !!target && canInsertRecipe({
+      id: registration.descriptor.id, label: registration.label, description: registration.purpose,
+      placements: rule.placements.map(({definitionId, slotName, revision}) => ({definitionId, slotName,...(revision?{revision}:{})})), create: () => [],
+    }, document, target, effectiveDescriptors));
+  }
+  const availableComponents = $derived(authoringRegistry?.ok ? authoringRegistry.contracts.filter(registration =>
+    !registration.seed && ['standalone', 'part'].includes(registration.eligibility.kind) &&
+    (registration.rules ?? []).every(rule => rule.kind !== 'hostRequirement' || hostCapabilities.includes(rule.capability)) &&
+    componentPlacementAllowed(registration),
+  ) : []);
   $effect(() => {
     const selectedTargets = targets.filter(t => t.nodeId === selectedNodeId);
     const selectedTarget = selectedTargets[0];
@@ -38,9 +66,21 @@
     const chosen = targets.find(t => key(t) === destination);
     const target = placement !== 'inside' && parent && selectedNodeId
       ? { ...parent, index: parent.children.indexOf(selectedNodeId) + (placement === 'after' ? 1 : 0) } : chosen;
-    if (!target) return;
+    if (!target || !canInsertRecipe(recipe, document, target, effectiveDescriptors)) return;
     const id = `${recipe.id}-${globalThis.crypto.randomUUID().slice(0, 8)}`;
-    if (onApply(insertSubtree(globalThis.crypto.randomUUID(), recipe.create(id), target))) onInserted?.(id);
+    if (onApply(insertRecipe(globalThis.crypto.randomUUID(), recipe, document, id, target, effectiveDescriptors))) onInserted?.(id);
+  }
+  function insertComponent(registration: RegisteredComponent) {
+    const registry = authoringRegistry, target = insertionTarget;
+    if (!registry?.ok || !target || !availableComponents.includes(registration) || !componentPlacementAllowed(registration, target)) return;
+    insertionError = '';
+    const id = `component-${crypto.randomUUID().slice(0, 8)}`;
+    try {
+      const draft = insertRegisteredComponent({ requestId: crypto.randomUUID(), registry, nodeId: id,
+        definitionId: registration.descriptor.id, revision: registration.descriptor.revision, target, hostCapabilities });
+      if (onApply(draft)) onInserted?.(id);
+      else insertionError = 'The component was not inserted because the application did not accept this change.';
+    } catch (error) { insertionError = error instanceof Error ? error.message : 'The component could not be inserted.'; }
   }
   function detachSelection() {
     if(!selectedNodeId || !parent) return;
@@ -92,10 +132,19 @@
   <label>Insert into<select aria-label="Insert into" bind:value={destination} disabled={placement !== 'inside'}>{#each targets as target (key(target))}<option value={key(target)}>{target.label}</option>{/each}</select></label>
   <input type="search" aria-label="Search elements" placeholder="Find an element or component…" bind:value={search} />
   {/if}
+  {#if compact}<input type="search" aria-label="Search elements" placeholder="Find an element or component…" bind:value={search} />{/if}
   <ToolPages pages={[{id:'new',label:'New element'},{id:'reuse',label:`Reuse (${reusable.length})`}]} label="Insert content pages">{#snippet children(page)}
-  {#if page==='new'}<div class="recipes">{#each recipes.filter(r => `${r.label} ${r.description}`.toLowerCase().includes(search.toLowerCase())) as recipe (recipe.id)}
+  {#if page==='new'}<div class="recipes">{#each availableRecipes.filter(r => `${r.label} ${r.description}`.toLowerCase().includes(search.toLowerCase())) as recipe (recipe.id)}
     <button class="recipe" type="button" disabled={placement === 'inside' ? !destination : !parent} onclick={() => insert(recipe)} title={recipe.description}><span class="plus">+</span><span><strong>{recipe.label}</strong>{#if !compact}<small>{recipe.description}</small>{/if}</span></button>
   {/each}</div>
+  {#if availableComponents.length}<h3>Registered components</h3><div class="recipes" role="group" aria-label="Registered components">
+    {#each availableComponents.filter(registration => `${registration.label} ${registration.purpose} ${registration.descriptor.id} ${registration.descriptor.revision}`.toLowerCase().includes(search.toLowerCase())) as registration (`${registration.descriptor.id}@${registration.descriptor.revision}`)}
+      <button class="recipe" type="button" data-authoring-kind="registered-component" data-definition-id={registration.descriptor.id} data-definition-revision={registration.descriptor.revision}
+        disabled={!insertionTarget} onclick={() => insertComponent(registration)} title={registration.purpose}
+        aria-label={`Insert ${registration.label} (${registration.descriptor.id}@${registration.descriptor.revision})`}><span class="plus">+</span><span><strong>{registration.label}</strong><small>{registration.descriptor.id}@{registration.descriptor.revision}</small></span></button>
+    {/each}
+  </div>{/if}
+  {#if insertionError}<p role="alert">{insertionError}</p>{/if}
   {:else}<div class="reuse"><label>Kept content<select aria-label="Kept content" value={reuseId} onchange={event=>reuseId=event.currentTarget.value}><option value="">Choose content…</option>{#each reusable as node}<option value={node.id}>{compositionName(document,node.id)}</option>{/each}</select></label><button type="button" disabled={!reuseId || (placement==='inside'?!reuseTargets.some(target=>key(target)===destination):!parent)} onclick={reuse}>Place content</button><p>Moves the same saved source, including its styles and connections. Undo returns it here.</p>{#if !reusable.length}<p>No detached content. Select a slot child and use Arrange → Keep aside.</p>{/if}</div>{/if}
   {/snippet}</ToolPages>
   {/if}

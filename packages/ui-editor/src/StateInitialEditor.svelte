@@ -1,9 +1,10 @@
 <script lang="ts">
   import { isUiValueOfType, type UiDocument, type UiExpression, type UiValue } from '@victframework/ui';
-  import { untrack, onDestroy } from 'svelte';
+  import { untrack, onDestroy, type Snippet } from 'svelte';
   import { setStateInitial, type TransactionDraft } from './commands.js';
   import type { EditorLabels } from './inspector-ux.js';
-  let { document, expression, labels = {}, onApply, compact = false, onDirtyChange }: {
+  let { document, expression, labels = {}, onApply, compact = false, onDirtyChange, toolbar }: {
+    toolbar?: Snippet<[{apply:()=>void;dirty:boolean}]>;
     document: UiDocument; expression?: UiExpression; labels?: EditorLabels; onApply: (draft: TransactionDraft) => boolean | void; compact?: boolean; onDirtyChange?: (dirty: boolean) => void;
   } = $props();
   const key = $derived(expression?.type === 'ref' && expression.path.startsWith('state.') ? expression.path.slice(6) : '');
@@ -37,6 +38,7 @@
 </script>
 {#if declaration}
   <div class="starting-value" class:compact>
+    {#if toolbar}{@render toolbar({apply,dirty})}{/if}
     <label>Starting value
       {#if declaration.type === 'boolean'}
         <select aria-label="Starting value" bind:value={raw}><option value="false">{compact ? 'No' : 'false'}</option><option value="true">{compact ? 'Yes' : 'true'}</option></select>
@@ -46,7 +48,7 @@
     </label>
     {#if declaration.type === 'stringList' || declaration.type === 'numberList'}<p>One value per line.</p>{/if}
     {#if !compact}<p>Saved with your screen. Shared by controls connected to {labels.state?.[key] ?? key}. Use Interact for temporary test input.</p>{/if}
-    <div class="value-actions"><button type="button" disabled={compact && !dirty} onclick={apply}>{compact ? 'Apply' : 'Apply starting value'}</button>{#if compact && dirty}<button type="button" onclick={cancel}>Cancel</button>{/if}</div>
+    <div class="value-actions">{#if !toolbar}<button type="button" disabled={compact && !dirty} onclick={apply}>{compact ? 'Apply' : 'Apply starting value'}</button>{/if}{#if compact && dirty}<button type="button" onclick={cancel}>Cancel</button>{/if}</div>
     {#if error}<p role="alert">{error}</p>{/if}
   </div>
 {/if}

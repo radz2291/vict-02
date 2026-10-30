@@ -1,0 +1,2 @@
+/* Explicit opt-in; upstream selectors are scoped to .svelte-flow and its parts. */
+@import '@xyflow/svelte/dist/style.css';

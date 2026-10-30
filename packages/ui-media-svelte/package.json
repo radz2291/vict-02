@@ -1,0 +1,52 @@
+{
+  "name": "@victframework/ui-media-svelte",
+  "version": "0.4.0-rc.1",
+  "type": "module",
+  "description": "Reusable managed media, supplied/custom icons and inert editable vectors for canonical VICT authoring.",
+  "license": "Apache-2.0 AND ISC",
+  "files": [
+    "src",
+    "README.md"
+  ],
+  "main": "./src/index.ts",
+  "svelte": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "svelte": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./authoring": {
+      "types": "./src/authoring.ts",
+      "svelte": "./src/authoring.ts",
+      "default": "./src/authoring.ts"
+    },
+    "./assets": {
+      "types": "./src/assets.ts",
+      "default": "./src/assets.ts"
+    },
+    "./manifest": {
+      "types": "./src/icon-manifest.ts",
+      "default": "./src/icon-manifest.ts"
+    },
+    "./vectors": {
+      "types": "./src/vectors.ts",
+      "default": "./src/vectors.ts"
+    }
+  },
+  "dependencies": {
+    "@lucide/svelte": "1.27.0"
+  },
+  "peerDependencies": {
+    "@victframework/ui": "0.4.0-rc.1",
+    "@victframework/ui-svelte": "0.4.0-rc.1",
+    "svelte": "^5.33.0"
+  },
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "scripts": {
+    "build": "svelte-check --tsconfig ./tsconfig.json"
+  }
+}

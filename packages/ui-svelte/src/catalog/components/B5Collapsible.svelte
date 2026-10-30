@@ -7,7 +7,7 @@
 
 <Collapsible.Root {...presentation?.target('root')} bind:open onOpenChange={(next) => io?.emit('openChange', next)} disabled={props.disabled === true}>
   <Collapsible.Trigger {...presentation?.target('trigger')}>
-    {#if io?.slots?.trigger}{@render io.slots.trigger()}{:else}{typeof props.label === 'string' ? props.label : 'Details'}{/if}
+    {#if io?.slotLabels?.trigger !== undefined}{io.slotLabels.trigger}{:else if io?.slots?.trigger}{@render io.slots.trigger()}{:else}{typeof props.label === 'string' ? props.label : 'Details'}{/if}
   </Collapsible.Trigger>
   <Collapsible.Content {...presentation?.target('content')}>{@render io?.slots?.content?.()}</Collapsible.Content>
 </Collapsible.Root>

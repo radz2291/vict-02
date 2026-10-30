@@ -100,17 +100,18 @@
 
 <section class="uv-state-panel" aria-label="Preview state">
   <h3>Preview state</h3>
-  <p class="hint">Seeds the canvas run. Editing here never changes document source.</p>
+  <p class="hint">Temporary test values. Your saved design stays unchanged.</p>
   {#each declarations as decl (decl.key)}
     <div class="state-row">
-      <label class="state-label">
+      <div class="state-label">
         <code>{decl.key}</code>
         <span class="state-type">{typeLabel(decl.type)}</span>
-      </label>
+      </div>
       {#if decl.type === 'boolean'}
         <label class="state-inline">
           <input
             type="checkbox"
+            aria-label={`${decl.key} value`}
             checked={values[decl.key] === true}
             onchange={(event) => scalarChange(decl, '', event.currentTarget.checked)}
           />

@@ -21,7 +21,7 @@ import { types } from 'node:util';
  *   objects, no hostile containers;
  * - prototype-named keys (`__proto__`, `constructor`, `prototype`) and
  *   keys outside the bounded safe-key vocabulary are rejected;
- * - bounded: depth, per-object field count, array length, string length,
+ * - bounded: depth, per-object field count, array length,
  *   total serialized size, and description length — any excess fails
  *   closed;
  * - the captured value is a DEEP IMMUTABLE SNAPSHOT (deep-frozen plain
@@ -59,12 +59,12 @@ export class VictPresentationError extends Error {
   }
 }
 
-/** The frozen capture bounds (frozen contract §4). */
+/** Capture bounds; presentation-string rule amended 2026-10-28.
+ * See docs/report/VICT-PRESENTATION-STRING-BOUND-AMENDMENT-20261028.md. */
 export const PRESENTATION_BOUNDS: Readonly<{
   readonly maxDepth: 8;
   readonly maxFieldsPerObject: 64;
   readonly maxArrayLength: 64;
-  readonly maxStringLength: 2048;
   readonly maxTotalBytes: 32768;
   readonly maxDescriptionChars: 1024;
   readonly keyPattern: RegExp;
@@ -72,7 +72,6 @@ export const PRESENTATION_BOUNDS: Readonly<{
   maxDepth: 8,
   maxFieldsPerObject: 64,
   maxArrayLength: 64,
-  maxStringLength: 2048,
   maxTotalBytes: 32768,
   maxDescriptionChars: 1024,
   // Bounded safe-key vocabulary for JSON-Schema property names; anything
@@ -100,10 +99,14 @@ function captureValue(value: unknown, label: string, depth: number): unknown {
   const valueType = typeof value;
   if (valueType === 'string') {
     const text = value as string;
-    if (text.length > PRESENTATION_BOUNDS.maxStringLength) {
+    // A separate 2048-character cutoff had no provider/protocol basis. Keep
+    // early allocation protection derived from the actual aggregate budget:
+    // JSON UTF-8 needs at least one byte per UTF-16 code unit, plus framing.
+    // Thus this leaf cannot possibly fit, before JSON.stringify allocates it.
+    if (text.length > PRESENTATION_BOUNDS.maxTotalBytes) {
       throw new VictPresentationError(
         'VICT_PRESENTATION_INVALID',
-        `${label}: a string exceeds the ${PRESENTATION_BOUNDS.maxStringLength}-character bound`,
+        `${label}: a string cannot fit the ${PRESENTATION_BOUNDS.maxTotalBytes}-byte serialized UTF-8 presentation budget`,
       );
     }
     return text;

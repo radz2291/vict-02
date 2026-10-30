@@ -1,0 +1,92 @@
+[
+  {
+    "id": "vict.ai.reasoning",
+    "revision": "1",
+    "descriptorDigest": "3e159323346b2b8c0ef97d259e758ed654ff48b0980c0d9128b51fff4163daa3",
+    "capabilitiesDigest": "83cea243b3d380f3c7dba1288afdf326103a748627fafb4bcd6fbaaef6c80bd6"
+  },
+  {
+    "id": "vict.ai.chain-of-thought",
+    "revision": "1",
+    "descriptorDigest": "8b5f59791f4eda0327b18137597b3080c5e92d7dd6202a1da0dd4fc502b75773",
+    "capabilitiesDigest": "52911eee1b5f952d8f0712d310c3899d7e37cbfbf36d3327d300cb4e3527ea2b"
+  },
+  {
+    "id": "vict.ai.tool",
+    "revision": "1",
+    "descriptorDigest": "ce15ecde3da02b1207b1900222543c70448e513ede114df53750d54135448f88",
+    "capabilitiesDigest": "1bf9c6c19a1f08a73d666c6611bbd39c640a89162038a3b00258fdf8f16dda87"
+  },
+  {
+    "id": "vict.ai.plan",
+    "revision": "1",
+    "descriptorDigest": "f6bf30611d743175db26849e58f57ac43e1eb804876d4a6fba3f8bc6293a0762",
+    "capabilitiesDigest": "aa811b8a0b7162ca691be6e9958e8522f0f41bf4b0c5061b2090d2186ef006a1"
+  },
+  {
+    "id": "vict.ai.task",
+    "revision": "1",
+    "descriptorDigest": "c4fcf4606b525eb868c19b326039cfb9528a740f5e1f9bf3b83f851d361abe42",
+    "capabilitiesDigest": "233cf5086638b5bab43f6a179d3138a6d01a458ab757e4e47231215cdf67fdca"
+  },
+  {
+    "id": "vict.ai.queue",
+    "revision": "1",
+    "descriptorDigest": "f111da01b12f329bcf8d0aa0e54dfd04832b115478dfe34090e2b6f8ae3ec153",
+    "capabilitiesDigest": "175eb5d02e442e852db01828a368585b2c21ae992f9392a3f768f47f0d16418a"
+  },
+  {
+    "id": "vict.ai.terminal",
+    "revision": "1",
+    "descriptorDigest": "50282e6c3b666a656cbb574ef62e9a2b29e1ba9e3de799bbad00e20e9affc531",
+    "capabilitiesDigest": "9b84efa67f483a9dfabf891aabadf313b31d8852ab11d3f74f403749414c738f"
+  },
+  {
+    "id": "vict.ai.test-results",
+    "revision": "1",
+    "descriptorDigest": "f713771e6efc2a3b9c78180163ca61e8c561acebd334dd6d9bc8555a932f5db1",
+    "capabilitiesDigest": "d691ecc9bd99aeb8a449b3d789e1a10ea1a7169b4cf8a107b78e57e10681e732"
+  },
+  {
+    "id": "vict.ai.stack-trace",
+    "revision": "1",
+    "descriptorDigest": "087e408eb796ed90297c65478ec8e9b65f50eaf97a6d90944e5f6d0e5691f2f8",
+    "capabilitiesDigest": "cad498e278fdf601fc96e8870ea99e8c729b451bb60d8f777719f4fc23bf046f"
+  },
+  {
+    "id": "vict.ai.subagent",
+    "revision": "1",
+    "descriptorDigest": "55ef924b6a59e3170512ef1f4454352916c804eafadd7d2bae7aa387d3d2f953",
+    "capabilitiesDigest": "6e9f174dad632822f053a3f6282e33561ab2aac5f1abf5d8264251d966c7c8ee"
+  },
+  {
+    "id": "vict.ai.context",
+    "revision": "1",
+    "descriptorDigest": "8b0ce258794c07adeb269c0b36324ce716f9dbd1f7516c30d487e9c693133568",
+    "capabilitiesDigest": "e7db3ae16e0017605eb0251a030be06eaa348730bdaaecb8d337ddb2ab15873f"
+  },
+  {
+    "id": "vict.ai.sources",
+    "revision": "1",
+    "descriptorDigest": "c1562608136bdc7ca87a913cb81bff35c607e4f552738f1de775f5f6f37bff60",
+    "capabilitiesDigest": "579c752d30e568c0250098eaa7faa8a71f88f09f923f05410cfb3854b2389c7e"
+  },
+  {
+    "id": "vict.ai.inline-citation",
+    "revision": "1",
+    "descriptorDigest": "efb5d7fc9e7bb28dc8d234c2ed177dea0a0af7031bda1ef1869f69c76b711bb6",
+    "capabilitiesDigest": "45b9ae9c485f41bf5807e13b22c133e43083f2b38a4fd373068426833683fc22"
+  },
+  {
+    "id": "vict.ai.file-tree",
+    "revision": "1",
+    "descriptorDigest": "d425898b28d2dd024c75e9a02981fc98be4cc6e9a7b641dcd84b5457d396c789",
+    "capabilitiesDigest": "63a4c8e0bf80882b3f01a84ce51843dc0584d94d1de025242fa2045775c24a05"
+  },
+  {
+    "id": "vict.ai.markdown",
+    "revision": "1",
+    "descriptorDigest": "f98174c32a888f60de0e48563f40a9971905e2a3224297be72f1b2e93d2dcf11",
+    "capabilitiesDigest": "2e8cc5a3f73eb40c20f41e05c6ef72e0f081f5e6477c8fc3654b69ad17302223"
+  }
+]

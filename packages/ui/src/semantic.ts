@@ -44,10 +44,16 @@ const ELEMENTS: readonly SemanticElementDef[] = [
   { tag: 'h2' },
   { tag: 'h3' },
   { tag: 'h4' },
+  { tag: 'h5' },
+  { tag: 'h6' },
   { tag: 'p' },
   { tag: 'span' },
   { tag: 'strong' },
   { tag: 'em' },
+  // Native presentation recipes retain actual browser semantics. These tags
+  // add no event, product action or host execution capability.
+  { tag: 'small' },
+  { tag: 'kbd' },
   // lists
   { tag: 'ul' },
   { tag: 'ol' },
@@ -80,13 +86,14 @@ const ELEMENTS: readonly SemanticElementDef[] = [
   },
   {
     tag: 'select',
-    attributes: ['name', 'required', 'disabled'],
+    attributes: ['name', 'value', 'required', 'disabled'],
   },
   { tag: 'option', attributes: ['value', 'selected', 'disabled'] },
   {
     tag: 'textarea',
     attributes: [
       'name',
+      'value',
       'placeholder',
       'rows',
       'required',
@@ -104,6 +111,7 @@ const ELEMENTS: readonly SemanticElementDef[] = [
   { tag: 'a', attributes: ['href', 'target', 'rel'] },
   // table (read-only display essentials)
   { tag: 'table' },
+  { tag: 'caption' },
   { tag: 'thead' },
   { tag: 'tbody' },
   { tag: 'tr' },

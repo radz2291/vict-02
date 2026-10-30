@@ -135,6 +135,8 @@ export interface UiSelectOption {
   readonly label: string;
 }
 export * from './composition.js';
+export * from './authoring.js';
+export * from './authoring-semantics.js';
 export * from './feedback.js';
 
 export interface UiFormField {
@@ -396,6 +398,7 @@ export type {
   UiPrimitiveType,
   UiPropDecl,
   UiSlotFill,
+  UiSlotScope,
   UiStyleDeclaration,
   UiStyleSource,
   UiStyleValue,
@@ -405,6 +408,9 @@ export type {
   UiVariantConditionRef,
 } from './document.js';
 export { copyUiValue, isUiValueOfType, isUiValueType, uiValueEmptyFor } from './values.js';
+export { UI_THEME_SCHEMA, UI_THEME_ROLES } from './document.js';
+export type { UiApplicationTheme, UiThemeRole, UiPartStyle } from './document.js';
+export { UI_THEME_VARIABLES, uiThemeDeclarations } from './theme.js';
 export type { UiValue } from './values.js';
 export { CanonicalUiError } from './canonical-error.js';
 export {
@@ -464,3 +470,8 @@ export * from './storage.js';
 export * from './local-storage-store.js';
 
 export { repeatExpressionFields } from './expressions.js';
+
+export { slotScopeProblems } from './slot-scope.js';
+
+export { UI_CLASS_LIST_LIMIT, UI_CLASS_NAME_LIMIT, UI_CLASS_NAME_PATTERN, isUiClassName, isUiClassList } from './edit.js';
+export type { UiEditCommandSetClasses } from './edit.js';

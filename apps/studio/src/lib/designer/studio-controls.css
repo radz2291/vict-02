@@ -1,0 +1,51 @@
+/* Studio chrome density over the shared VICT control recipes.
+   Paint, variants, disabled states and focus remain in catalog.css/Rhea.
+   The authored application iframe has no Studio typography scope. */
+.studio-type-scope[data-studio-typography] {
+  --studio-control-height: 28px;
+  --studio-control-radius: 4px;
+  --studio-icon-control-size: 32px;
+  --studio-panel-header-height: 40px;
+}
+.studio-type-scope[data-studio-typography] :is(.vict-btn, [data-button-root], .vict-select) {
+  --vict-control-height: var(--studio-control-height);
+  --vict-radius-base: var(--studio-control-radius);
+  min-height: var(--studio-control-height);
+  border-radius: var(--studio-control-radius);
+  font: var(--studio-font-ui);
+  padding: var(--studio-space-1) var(--studio-space-2);
+}
+.studio-type-scope[data-studio-typography] :is(.vict-control-help, small) {
+  font: var(--studio-font-meta);
+}
+.studio-type-scope[data-studio-typography] .studio-icon-control {
+  width: var(--studio-icon-control-size);
+  height: var(--studio-icon-control-size);
+  min-width: var(--studio-icon-control-size);
+  padding: 0;
+}
+.studio-type-scope[data-studio-typography] .studio-control-stack {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  min-width: 0;
+  gap: var(--studio-space-2);
+  margin-block: var(--studio-space-3);
+}
+.studio-type-scope[data-studio-typography] .studio-control-stack > p {
+  margin: 0;
+}
+.studio-type-scope[data-studio-typography] .studio-control-filename {
+  display: block;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+@media (pointer: coarse) {
+  .studio-type-scope[data-studio-typography] {
+    --studio-control-height: 44px;
+    --studio-icon-control-size: 44px;
+    --studio-panel-header-height: 44px;
+  }
+}

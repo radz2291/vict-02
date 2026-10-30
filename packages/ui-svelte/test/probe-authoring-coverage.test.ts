@@ -7,8 +7,8 @@
  * working revision, the editor-bridge contract) → the real UiEditSession
  * state machine (applyTransaction: idempotency, revision history) → document
  * compile → DocumentHost render — for EVERY descriptor in the catalog.
- * Composition-required families are seeded with minimal documented slot
- * children (child descriptors where they exist, plain elements otherwise);
+ * Composition-required families use the package-owned canonical example
+ * including its exact provider slots, paired identities and controlled state;
  * a family that still renders unavailable is an authoring-support defect.
  *
  * Assertions per family:
@@ -20,18 +20,19 @@
  */
 import { afterEach, describe, expect, it } from 'vitest';
 import { flushSync, mount, unmount } from 'svelte';
-import { UiEditSession } from '@victframework/ui';
-import type { UiDocument, UiExpression, UiNode, UiValue } from '@victframework/ui';
+import { UiEditSession, materializeAuthoringFragment } from '@victframework/ui';
+import type { UiDocument, UiNode } from '@victframework/ui';
 import { compileUiDocument, defaultSemanticElementCatalog } from '@victframework/ui';
 import { bindExpression } from '@victframework/ui-editor';
 import { catalogDescriptors, catalogImplementations } from '../src/catalog/components/catalog.js';
+import { catalogAuthoringRegistrations } from '../src/catalog/components/authoring.js';
 import type { UiExtensionDescriptor } from '@victframework/ui';
 import type { UiSvelteComponentImplementation } from '../src/document/extensions.js';
 import DocumentHost from '../src/document/DocumentHost.svelte';
 
 const cleanups: (() => void | Promise<void>)[] = [];
-afterEach(() => {
-  for (const cleanup of cleanups.splice(0)) void cleanup();
+afterEach(async () => {
+  for (const cleanup of cleanups.splice(0)) await cleanup();
 });
 
 const isDisplayProp = (name: string): boolean =>
@@ -52,183 +53,92 @@ const STRUCTURAL = new Set([
   'vict.catalog.menubar.separator',
 ]);
 
-function childDescriptorFor(parentId: string): UiExtensionDescriptor | undefined {
-  const kids = catalogDescriptors.filter((d) => d.id.startsWith(`${parentId}.`));
-  return kids.find((k) => /item|link$|menu$/.test(k.id)) ?? kids[0];
-}
-
-function textNode(id: string, value: string): UiNode {
-  return { kind: 'text', id, content: { type: 'literal', value } } as unknown as UiNode;
-}
-
-/** Which declared slot hosts a child of the given part suffix. */
-function slotForChild(slots: readonly string[], childSuffix: string): string {
-  const map: Record<string, string[]> = {
-    trigger: ['trigger'],
-    panel: ['panels', 'content', 'body'],
-    item: ['items', 'tools'],
-    menu: ['items', 'menus'],
-    link: ['items'],
-    group: ['items'],
-    sub: ['items'],
-  };
-  const candidates = map[childSuffix] ?? map[childSuffix.split('-').at(-1)!] ?? [];
-  for (const candidate of candidates) if (slots.includes(candidate)) return candidate;
-  return slots[0]!;
-}
-
-function scalarProps(
-  descriptor: UiExtensionDescriptor,
-  seedLabel?: string,
-): Record<string, UiExpression> {
-  const props: Record<string, UiExpression> = {};
-  for (const decl of descriptor.props) {
-    if (
-      decl.default !== undefined &&
-      (typeof decl.default === 'string' ||
-        typeof decl.default === 'number' ||
-        typeof decl.default === 'boolean')
-    ) {
-      props[decl.name] = { type: 'literal', value: decl.default };
+/** The exact package example owns provider context, required peers, identity
+ * remapping and state. Track the intended leaf rather than guessing ancestry
+ * from descriptor names or overwriting valid seeded values with empty defaults. */
+function docFor(descriptor: UiExtensionDescriptor): { document: UiDocument; targetId: string } {
+  const registration = catalogAuthoringRegistrations.find(item =>
+    item.descriptor.id === descriptor.id && item.descriptor.revision === descriptor.revision);
+  expect(registration, `${descriptor.id}: exact authoring registration`).toBeDefined();
+  const example = registration?.examples?.[0];
+  expect(example, `${descriptor.id}: documented canonical example`).toBeDefined();
+  if (!example) throw new Error(`Missing canonical authoring example: ${descriptor.id}@${descriptor.revision}`);
+  const fragment = materializeAuthoringFragment(example, 'fixture');
+  const targets = fragment.nodes.filter(node => node.kind === 'component' &&
+    node.definitionId === descriptor.id && node.revision === descriptor.revision);
+  expect(targets, `${descriptor.id}: one intended edited occurrence`).toHaveLength(1);
+  const targetId = targets[0]!.id;
+  const nodes: UiNode[] = [...fragment.nodes];
+  // Host-required examples intentionally omit host composition. Supply only
+  // declared required presentation slots here; this does not prove navigation.
+  if (registration?.eligibility.kind === 'host-required') {
+    const implementation = catalogImplementations.find(item => item.extensionId === descriptor.id &&
+      item.revision === descriptor.revision);
+    const index = nodes.findIndex(node => node.id === targetId);
+    const target = nodes[index]!;
+    if (target.kind !== 'component') throw new Error('Expected component fixture target');
+    const slots = { ...target.slots };
+    for (const slot of implementation?.required ?? []) {
+      if (slots[slot]?.children.length) continue;
+      const id = `test-host-${targetId}-${slot}`;
+      expect(nodes.some(node => node.id === id || node.id === `${id}-text`)).toBe(false);
+      nodes.push({ kind: 'element', id, tag: 'p', children: [`${id}-text`] },
+        { kind: 'text', id: `${id}-text`, content: { type: 'literal', value: 'Explicit test host content' } });
+      slots[slot] = { name: slot, children: [id] };
     }
+    nodes[index] = { ...target, slots };
   }
-  if (seedLabel !== undefined) {
-    const label = descriptor.props.find((p) => p.type === 'string' && isDisplayProp(p.name));
-    if (label) props[label.name] = { type: 'literal', value: seedLabel };
-  }
-  return props;
+  const document: UiDocument = {
+    schema: 'vict.ui-document@1', id: `probe.authoring.${descriptor.id}`, revision: '1', root: 'root',
+    nodes: Object.fromEntries([
+      { kind: 'element' as const, id: 'root', tag: 'div', children: [fragment.root] },
+      ...nodes,
+    ].map(node => [node.id, node])),
+    componentDefinitions: {}, styleSources: {}, tokens: {}, conditions: {}, assets: {},
+    localState: fragment.localState ?? {},
+  };
+  return { document, targetId };
 }
 
-/** Build one occurrence node tree for `definitionId`, nesting it inside its
- * ancestors when it is a part (vict.catalog.menubar.item lives inside
- * vict.catalog.menubar.menu inside vict.catalog.menubar). The LEAF carries
- * `props`; ancestors get scalar defaults. Non-leaf slots without a chained
- * child get the generic composition (child descriptor or plain elements). */
-function composeTree(
-  definitionId: string,
-  props: Record<string, UiExpression>,
-): { nodes: Record<string, UiNode>; occId: string } {
-  const chain: string[] = [definitionId];
-  // Part membership is NOT derivable from ids (the family and part share one
-  // id segment, e.g. vict.catalog.select-item): declare the composer parents.
-  const PART_PARENT: Record<string, string> = {
-    'vict.catalog.select-item': 'vict.catalog.select',
-    'vict.catalog.combobox-item': 'vict.catalog.combobox',
-    'vict.catalog.toggle-group-item': 'vict.catalog.toggle-group',
-    'vict.catalog.accordion-item': 'vict.catalog.accordion',
-    'vict.catalog.tabs-trigger': 'vict.catalog.tabs',
-    'vict.catalog.tabs-panel': 'vict.catalog.tabs',
-    'vict.catalog.toolbar-button': 'vict.catalog.toolbar',
-    'vict.catalog.menubar.radio-item': 'vict.catalog.menubar.radio-group',
-    'vict.catalog.navigation-menu.link': 'vict.catalog.navigation-menu.item',
-  };
-  const parent = PART_PARENT[definitionId];
-  if (parent) chain.unshift(parent);
-  // Menubar parts compose one level deeper (menubar > menubar.menu > part).
-  if (
-    definitionId.startsWith('vict.catalog.menubar.') &&
-    definitionId !== 'vict.catalog.menubar.menu'
-  ) {
-    chain.unshift('vict.catalog.menubar.menu');
-  }
-  for (;;) {
-    const head = chain[0]!.split('.').slice(0, -1).join('.');
-    if (head === 'vict.catalog' || !catalogDescriptors.some((d) => d.id === head)) break;
-    chain.unshift(head);
-  }
-  const nodes: Record<string, UiNode> = {};
-  let seq = 0;
-  const nextId = (base: string) => `${base}${(seq += 1)}`;
-
-  const build = (index: number): { id: string; node: UiNode } => {
-    const id = chain[index]!;
-    const descriptor = catalogDescriptors.find((d) => d.id === id)!;
-    const isLeaf = index === chain.length - 1;
-    const occId = isLeaf ? 'occ' : nextId('mid');
-    const node: Record<string, unknown> = {
-      kind: 'component',
-      id: occId,
-      definitionId: id,
-      props: isLeaf ? props : scalarProps(descriptor),
-    };
-    const slots = descriptor.slots ?? [];
-    if (slots.length > 0) {
-      const slotChildren: Record<string, string[]> = {};
-      let nested = false;
-      if (!isLeaf) {
-        const suffix = chain[index + 1]!.split('.').at(-1)!;
-        const slot = slotForChild(slots, suffix);
-        const child = build(index + 1);
-        nodes[child.id] = child.node;
-        slotChildren[slot] = [child.id];
-        nested = true;
-      }
-      for (const slot of slots) {
-        if (nested && slotChildren[slot]) continue;
-        const generic = childDescriptorFor(id);
-        if (generic && ['items', 'tools', 'fallback'].includes(slot)) {
-          const cid = nextId('c');
-          const childNode: Record<string, unknown> = {
-            kind: 'component',
-            id: cid,
-            definitionId: generic.id,
-            props: scalarProps(generic, 'Child entry'),
-          };
-          const grandSlots = (generic.slots ?? []).filter(
-            (gs) => gs === 'content' || gs === 'trigger',
-          );
-          if (grandSlots.length) {
-            const childSlotMap: Record<string, unknown> = {};
-            for (const gs of grandSlots) {
-              const tid = nextId('ct');
-              childSlotMap[gs] = { name: gs, children: [tid] };
-              nodes[tid] = textNode(tid, gs === 'trigger' ? 'Open' : 'Detail');
-            }
-            childNode.slots = childSlotMap;
-          }
-          nodes[cid] = childNode as unknown as UiNode;
-          slotChildren[slot] = [cid];
-        } else {
-          const eid = nextId('e');
-          const tid = nextId('et');
-          nodes[eid] = {
-            kind: 'element',
-            id: eid,
-            tag: slot === 'trigger' ? 'button' : 'div',
-            children: [tid],
-          } as unknown as UiNode;
-          nodes[tid] = textNode(tid, slot === 'trigger' ? 'Open' : 'Detail');
-          slotChildren[slot] = [eid];
+/** Editing a paired identity is one atomic source edit, including its actual
+ * matching peer. The package rule supplies the relationship, not an ID map. */
+function fixtureEdit(document: UiDocument, descriptor: UiExtensionDescriptor, targetId: string,
+  edit: { name: string; next: string | number | boolean }) {
+  const draft = bindExpression({ requestId: `probe.${descriptor.id}`, nodeId: targetId,
+    target: { kind: 'prop', name: edit.name }, expression: { type: 'literal', value: edit.next } });
+  const commands = [...draft.commands];
+  const paired: { nodeId: string; property: string }[] = [];
+  const target = document.nodes[targetId]!;
+  if (target.kind !== 'component') throw new Error('Expected component fixture target');
+  for (const provider of Object.values(document.nodes)) {
+    if (provider.kind !== 'component') continue;
+    const registration = catalogAuthoringRegistrations.find(item =>
+      item.descriptor.id === provider.definitionId && item.descriptor.revision === provider.revision);
+    for (const rule of registration?.rules ?? []) {
+      if (rule.kind !== 'pairedValues') continue;
+      for (const [side, other] of [[rule.left, rule.right], [rule.right, rule.left]] as const) {
+        if (side.property !== edit.name || !side.definitionIds.includes(descriptor.id) ||
+          !provider.slots?.[side.slot]?.children.includes(targetId)) continue;
+        const before = target.props?.[edit.name];
+        expect(before?.type, `${descriptor.id}: seeded paired identity is explicit`).toBe('literal');
+        const peers = (provider.slots?.[other.slot]?.children ?? []).filter(id => {
+          const peer = document.nodes[id];
+          const value = peer?.kind === 'component' ? peer.props?.[other.property] : undefined;
+          return peer?.kind === 'component' && other.definitionIds.includes(peer.definitionId) &&
+            value?.type === 'literal' && before?.type === 'literal' && value.value === before.value;
+        });
+        expect(peers.length, `${descriptor.id}: matching paired fixture peer`).toBeGreaterThan(0);
+        for (const nodeId of peers) {
+          if (paired.some(peer => peer.nodeId === nodeId && peer.property === other.property)) continue;
+          commands.push(...bindExpression({ requestId: `probe.peer.${nodeId}`, nodeId,
+            target: { kind: 'prop', name: other.property },
+            expression: { type: 'literal', value: edit.next } }).commands);
+          paired.push({ nodeId, property: other.property });
         }
       }
-      node.slots = Object.fromEntries(
-        Object.entries(slotChildren).map(([name, children]) => [name, { name, children }]),
-      );
     }
-    return { id: occId, node: node as unknown as UiNode };
-  };
-
-  const top = build(0);
-  nodes[top.id] = top.node;
-  nodes.root = { kind: 'element', id: 'root', tag: 'div', children: [top.id] } as unknown as UiNode;
-  return { nodes, occId: top.id };
-}
-
-function docFor(definitionId: string, props: Record<string, UiExpression>): UiDocument {
-  const { nodes } = composeTree(definitionId, props);
-  return {
-    schema: 'vict.ui-document@1',
-    id: `probe.authoring.${definitionId}`,
-    revision: '1',
-    root: 'root',
-    nodes,
-    componentDefinitions: {},
-    styleSources: {},
-    tokens: {},
-    conditions: {},
-    assets: {},
-    localState: {},
-  } as unknown as UiDocument;
+  }
+  return { draft: { ...draft, commands }, paired };
 }
 
 function pickEdit(
@@ -300,9 +210,10 @@ const METADATA_ECHO = new Set([
   'vict.catalog.tooltip',
 ]);
 
-function render(plan: never, localState: unknown): HTMLElement {
+function render(plan: never, localState: unknown): { target: HTMLElement; diagnostics: unknown[] } {
   const target = document.createElement('div');
   document.body.append(target);
+  const diagnostics: unknown[] = [];
   const instance = mount(DocumentHost, {
     target,
     props: {
@@ -315,11 +226,12 @@ function render(plan: never, localState: unknown): HTMLElement {
       view: {},
       dispatch: async () => ({ ok: true }),
       navigate: () => {},
+      onRenderDiagnostic: (diagnostic: unknown) => diagnostics.push(diagnostic),
     } as never,
   });
-  cleanups.push(() => unmount(instance));
+  cleanups.push(async () => { await unmount(instance); target.remove(); });
   flushSync();
-  return target;
+  return { target, diagnostics };
 }
 
 function compile(doc: UiDocument): { ok: boolean; plan?: never; issues?: unknown } {
@@ -349,20 +261,7 @@ describe('authoring coverage: every catalog family through the Inspector data pa
   for (const { descriptor, edit } of families) {
     if (!edit) continue;
     it(`authoring round-trip: ${descriptor.id} (${edit.name})`, () => {
-      const props: Record<string, UiExpression> = {};
-      for (const decl of descriptor.props) {
-        if (
-          decl.default !== undefined &&
-          (typeof decl.default === 'string' ||
-            typeof decl.default === 'number' ||
-            typeof decl.default === 'boolean')
-        ) {
-          props[decl.name] = { type: 'literal', value: decl.default };
-        }
-      }
-      if (isDisplayProp(edit.name))
-        props[edit.name] = { type: 'literal', value: `Seed ${descriptor.id}` };
-      const doc = docFor(descriptor.id, props);
+      const { document: doc, targetId } = docFor(descriptor);
 
       const seeded = compile(doc);
       expect(
@@ -373,13 +272,9 @@ describe('authoring coverage: every catalog family through the Inspector data pa
       // The real authoring state machine (Inspector → bindExpression → session),
       // with the editor-bridge contract (expected working revision).
       const session = UiEditSession.open({ document: doc, storedRevision: '1' });
+      const prepared = fixtureEdit(doc, descriptor, targetId, edit);
       const outcome = session.applyTransaction({
-        ...bindExpression({
-          requestId: `probe.${descriptor.id}`,
-          nodeId: 'occ',
-          target: { kind: 'prop', name: edit.name },
-          expression: { type: 'literal', value: edit.next },
-        }),
+        ...prepared.draft,
         expectedDocumentRevision: session.workingRevision,
       } as never);
       expect(
@@ -387,20 +282,26 @@ describe('authoring coverage: every catalog family through the Inspector data pa
         `transaction accepted: ${outcome.ok ? '' : JSON.stringify(outcome.issues)}`,
       ).toBe(true);
       expect(session.workingRevision === '1', 'working revision advanced').toBe(false);
-      const occurrence = session.document.nodes.occ as unknown as {
+      const occurrence = session.document.nodes[targetId] as unknown as {
         props: Record<string, { type: string; value: unknown }>;
-      }; // leaf is always 'occ'
+      }; // the exact materialized target, including context-owned parts
       expect(
         occurrence.props[edit.name]?.value,
         'edited document carries the authored literal',
       ).toEqual(edit.next);
+      for (const peer of prepared.paired) {
+        const node = session.document.nodes[peer.nodeId];
+        expect(node?.kind === 'component' ? node.props?.[peer.property] : undefined,
+          'paired identity changed in the same accepted transaction').toEqual({ type: 'literal', value: edit.next });
+      }
 
       const edited = compile(session.document);
       expect(
         edited.ok,
         `edited document compiles: ${edited.ok ? '' : JSON.stringify(edited.issues)}`,
       ).toBe(true);
-      const target = render(edited.plan as never, session.document.localState);
+      const { target, diagnostics } = render(edited.plan as never, session.document.localState);
+      expect(diagnostics, `${descriptor.id}: valid canonical composition has no renderer diagnostic`).toEqual([]);
       const rendered = (target.textContent ?? '').replace(/\s+/g, ' ');
       expect(
         /unavailable/i.test(rendered),

@@ -2,8 +2,12 @@
   "name": "@victframework/ui-svelte",
   "version": "0.4.0-rc.1",
   "type": "module",
-  "description": "The permanent Svelte renderer for Vict Application Plans: the canonical ApplicationRenderer (mount/update/unmount machinery, generic VitApp host, recursive surface traversal, table/form/overlay adapters, route + structural validation, presentation normalization, canonical form-value conversion) plus the shared presentation components and packaged styles. Framework-neutral packages never depend on Svelte — Svelte lives only in this renderer boundary.",
+  "description": "The permanent Svelte renderer for Vict Application Plans: the canonical ApplicationRenderer (mount/update/unmount machinery, generic VitApp host, recursive surface traversal, table/form/overlay adapters, route + structural validation, presentation normalization, canonical form-value conversion) plus the shared presentation components and packaged styles. Framework-neutral packages never depend on Svelte â€” Svelte lives only in this renderer boundary.",
   "exports": {
+    "./authoring": {
+      "types": "./src/catalog/components/authoring.ts",
+      "default": "./src/catalog/components/authoring.ts"
+    },
     ".": {
       "types": "./src/index.ts",
       "svelte": "./src/index.ts",
@@ -225,6 +229,16 @@
       "types": "./src/document/logic.ts",
       "svelte": "./src/document/logic.ts",
       "default": "./src/document/logic.ts"
+    },
+    "./rhea.css": "./src/rhea.css",
+    "./rhea": {
+      "types": "./src/rhea.ts",
+      "default": "./src/rhea.ts"
+    },
+    "./viewport": {
+      "types": "./src/viewport/index.ts",
+      "svelte": "./src/viewport/index.ts",
+      "default": "./src/viewport/index.ts"
     }
   },
   "main": "./src/index.ts",
@@ -235,13 +249,17 @@
     "dist",
     "FOUNDATION-CATALOG.md",
     "CATALOG-USAGE.md",
-    "catalog-coverage.json"
+    "catalog-coverage.json",
+    "RHEA.md",
+    "rhea-upstream-manifest.json",
+    "LICENSE.rhea"
   ],
   "scripts": {
     "build": "tsc -p tsconfig.json --emitDeclarationOnly --outDir dist",
     "test": "vitest run --project renderer"
   },
   "dependencies": {
+    "@floating-ui/dom": "1.8.0",
     "@internationalized/date": "^3.12.4",
     "@victframework/application": "0.4.0-rc.1",
     "@victframework/sdk": "0.4.0-rc.1",

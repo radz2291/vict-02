@@ -7,8 +7,9 @@ import { randomBytes } from 'node:crypto';
  * (env VICT_STUDIO_HUMAN_CREDENTIALS: JSON map label -> {secret}), with a
  * local-demo default. Sessions are in-memory (short-lived, restart-truthful).
  * The CSRF token is bound to the session and surfaced ONLY server-side
- * through `locals`; it never enters a cookie, a response body, or hydration
- * data.
+ * through `locals`. Cycle 1.1 additionally exposes only the CSRF nonce through
+ * the authenticated same-origin, no-store Designer agent bootstrap; it is not
+ * a session credential. The session id never enters a response body.
  */
 
 export const SESSION_COOKIE_NAME = 'vict_studio_session';

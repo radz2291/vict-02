@@ -1,0 +1,62 @@
+[
+  {
+    "id": "vict.pattern.first-visit",
+    "revision": "2",
+    "descriptorDigest": "8a8673a322a31d3fc3f099aa8e73cb9a76980e3ce0901835f91edf6dc736c1fa",
+    "capabilitiesDigest": "b5904623ad220b19de860cd31716b96f0b7c55e4014275f338c01e81d637f6ad"
+  },
+  {
+    "id": "vict.pattern.drawer",
+    "revision": "1",
+    "descriptorDigest": "5f72b32c1985e89d0e2eab28f4da388dfb115764131ab7b70fc04e9c85a516ac",
+    "capabilitiesDigest": "bcfe23602c57ebeeb2a4cbfaecf8ce9aa3a377087344dc61707763ff62555771"
+  },
+  {
+    "id": "vict.pattern.carousel",
+    "revision": "1",
+    "descriptorDigest": "fa217cc958ef2f408843b7f25940bcd84dae351fd703b1e89c73b1d06c8fd34c",
+    "capabilitiesDigest": "66a4d90ed93b2f81fc71b7138158adf15dc521eaf27d31b944c646a2c445ec13"
+  },
+  {
+    "id": "vict.pattern.navigation",
+    "revision": "1",
+    "descriptorDigest": "147a7621d89c5357e247952b110fccd974f5ae02e3b411b0cc0f02f2be4f276d",
+    "capabilitiesDigest": "e3b9bac0c4b285ed98703e9d12eb34a89646718cb38256b4292d9d38219021e4"
+  },
+  {
+    "id": "vict.pattern.filtered-list",
+    "revision": "1",
+    "descriptorDigest": "bf6d8ddb587b318b6edd748566d27d9c7ca3b8ca809005e5e6f52b0306e8452d",
+    "capabilitiesDigest": "4309d6b71b0a77e4fd8b504ece75adb1042fdff8cece2474d0f19b7f0e3645d2"
+  },
+  {
+    "id": "vict.pattern.first-visit",
+    "revision": "1",
+    "descriptorDigest": "2153dfe85c39ad6c59797dbf8e4a2c5a71c55582da33bab4f7ebd8e8225b5e8a",
+    "capabilitiesDigest": "9a8d26c8d8e10e1e098616314bb3d5295d52af3b4f4d2649012c4473c3aafda2"
+  },
+  {
+    "id": "vict.pattern.navigation",
+    "revision": "2",
+    "descriptorDigest": "b85a45c77b4c292b749900d6046aa16582920b1d48b6db95968af5f043e45e76",
+    "capabilitiesDigest": "2b83aea91d7eeb4e7064ec5a11e6d4faa1315bde0147720f4f368f32a2e170f0"
+  },
+  {
+    "id": "vict.pattern.carousel",
+    "revision": "2",
+    "descriptorDigest": "091a5e41d7e6cd0c831692e0e7086e525bf0725fd905237910396fcb5394902e",
+    "capabilitiesDigest": "56c6ba089e8809e41fe59ee4fe4996753436438e147bfb22c5568636170b550e"
+  },
+  {
+    "id": "vict.pattern.filtered-list",
+    "revision": "2",
+    "descriptorDigest": "eaa62c7e45d369d0e60ddc3ff6f333642a6571a5b895e785b934c6889f501774",
+    "capabilitiesDigest": "8f63b934da88f084b0910735ec3847a0bb4fc63ed28031629ff4a37a7b3ec20a"
+  },
+  {
+    "id": "vict.pattern.action-button",
+    "revision": "1",
+    "descriptorDigest": "b80b3e331426a5ab87c0686f70d3d26ec71f565b40683365e2ab678f19fec6c1",
+    "capabilitiesDigest": "8ce417ee3238ed776ccf01d08d701123c161167e3da70ccf5b30e8b3843193c4"
+  }
+]

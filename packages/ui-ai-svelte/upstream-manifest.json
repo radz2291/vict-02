@@ -1,0 +1,1167 @@
+{
+  "repository": "https://github.com/huntabyte/shadcn-svelte",
+  "commit": "b10f153250b18abfccf49a06e1c4c68945edffa5",
+  "release": "2026-10-14 AI Elements; source snapshot 2026-10-23",
+  "style": "rhea",
+  "registryItems": [
+    "trace",
+    "code-block",
+    "badge",
+    "message-scroller",
+    "message",
+    "bubble",
+    "input-group",
+    "marker",
+    "button",
+    "item",
+    "hover-card",
+    "progress",
+    "collapsible",
+    "tooltip",
+    "dropdown-menu",
+    "attachment",
+    "use-highlighted-code",
+    "input",
+    "textarea",
+    "separator",
+    "highlighter"
+  ],
+  "files": [
+    {
+      "source": "docs/static/registry/styles/rhea/trace.json#trace/index.ts",
+      "destination": "src/upstream/ui/trace/index.ts",
+      "sourceSha256": "dc19208aff0796b8247ecedabc5e0e497acde3ffffb1de8caf5c9116a6553e8a",
+      "adaptedSha256": "d62fcd5eb5498208c48f119d9515115b2174308e9982746e43efd2fcb13679a1"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/trace.json#trace/trace-collapsible-content.svelte",
+      "destination": "src/upstream/ui/trace/trace-collapsible-content.svelte",
+      "sourceSha256": "ead5fff813a19f2bdab9f8458619c316b640dca594954e0963ae2dca75cc563d",
+      "adaptedSha256": "fac9efdc872591ace279eeb7aa1ffbcb16f3d0bdee56d03c26d02174aa5c8285"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/trace.json#trace/trace-collapsible-trigger.svelte",
+      "destination": "src/upstream/ui/trace/trace-collapsible-trigger.svelte",
+      "sourceSha256": "8a12f5a189d4ec5081b59140f146c3976ae0566ff3f3adf4e42186a966d9e885",
+      "adaptedSha256": "03320568d55cf8d79526d7b7e58544caa13f3ad6752d0fdbb1faaefa47b7aa71"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/trace.json#trace/trace-collapsible.svelte",
+      "destination": "src/upstream/ui/trace/trace-collapsible.svelte",
+      "sourceSha256": "3401eb7b5c0fc579620ef381d63bed4efebc9fb1449633d8e4f7737cb356344e",
+      "adaptedSha256": "ee53090b24ca0a88eeeea0d9b024517ed8838f57612c92837e32e2492755795b"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/trace.json#trace/trace-description.svelte",
+      "destination": "src/upstream/ui/trace/trace-description.svelte",
+      "sourceSha256": "738f3ea757ce2c6090b6d71c3ba2a3ea6fb2008e2fe6c975ac0669a571122b87",
+      "adaptedSha256": "7b69731e3992cb11e0a5a2d73e97032d054ad32cb9d7ab569a8fa8370795f96e"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/trace.json#trace/trace-icon.svelte",
+      "destination": "src/upstream/ui/trace/trace-icon.svelte",
+      "sourceSha256": "97e9311ffcd6d7c90286425d63d7a3cb68db41f2e3e28cf3d476bb7825ddb983",
+      "adaptedSha256": "5d0c514bf9b7b0ebe423e595054997a85fd6198a9f69a210e3ae4cd771b9eddd"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/trace.json#trace/trace-line.svelte",
+      "destination": "src/upstream/ui/trace/trace-line.svelte",
+      "sourceSha256": "8beffa214751f050ab90c515cc17eab7d2813c3781f1fd59db99fe2ce3202b04",
+      "adaptedSha256": "bbf1c438f9eb974a99a3353c72bada48d74cb1f5d1a123e7d3c8035b1e7e8185"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/trace.json#trace/trace-title.svelte",
+      "destination": "src/upstream/ui/trace/trace-title.svelte",
+      "sourceSha256": "941154680f4a71777f810f5f3686014e732aface7fd989d8a660917ef953ef22",
+      "adaptedSha256": "0363dc680b6c807c5681801c28816bf12dce2024d1ce2c9f37be86fb51301c61"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/trace.json#trace/trace.svelte",
+      "destination": "src/upstream/ui/trace/trace.svelte",
+      "sourceSha256": "e86e0b26c9f3034a5ed375768b48d889ad96fe37650f1c306d2eff3c02cb5830",
+      "adaptedSha256": "44c7e1d01a7b9b68144df7366ca5836b835671d87e65c0ce8408e911ad4226ee"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/code-block.json#code-block/code-block-actions.svelte",
+      "destination": "src/upstream/ui/code-block/code-block-actions.svelte",
+      "sourceSha256": "4cd27c134ac914017edc8cf42fe77031c3f92ffe25ceacf34cdc15c07cb277d7",
+      "adaptedSha256": "3c2934a0bb869930cfd8345228f9d7280877b56bc8d57bd7cd58bde228edc27b"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/code-block.json#code-block/code-block-content.svelte",
+      "destination": "src/upstream/ui/code-block/code-block-content.svelte",
+      "sourceSha256": "53a8b74b2f82497b96d705223eb6bdb3f926fde40bdb93c78ab6991e66b64b33",
+      "adaptedSha256": "5554dfe9959734382e851c1b969f24d170c022b0c5cccb8288ece01fe8f50b93"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/code-block.json#code-block/code-block-copy-button.svelte",
+      "destination": "src/upstream/ui/code-block/code-block-copy-button.svelte",
+      "sourceSha256": "d67e6d528c8fc52cf62f6fa2f35d8228d129d288d2a6ed80e79526efb8b58fc7",
+      "adaptedSha256": "46b6d26e31cb374d50c5f80d63b77c39c286a3efb3224bcdcb8aac4acb549f12"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/code-block.json#code-block/code-block-footer.svelte",
+      "destination": "src/upstream/ui/code-block/code-block-footer.svelte",
+      "sourceSha256": "9659120064108b2e07b684d43c7955ec8018292c199f88811548afa30ebc1246",
+      "adaptedSha256": "9d2e5543ee3c76c284b77cfd7b8bde72076ea4f935d0f9b1049cdf56273d469a"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/code-block.json#code-block/code-block-header.svelte",
+      "destination": "src/upstream/ui/code-block/code-block-header.svelte",
+      "sourceSha256": "2ae03ec7e9d52bbb1c08f6c76c078b39ed788aaadbf991c34eac8acfe0d24d4c",
+      "adaptedSha256": "02dd9328f944e06bfe35657461ec13d092909646aadcf0e4e25566611218dfb9"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/code-block.json#code-block/code-block-line.svelte",
+      "destination": "src/upstream/ui/code-block/code-block-line.svelte",
+      "sourceSha256": "74cd5085fd0887c7719645296c7bf24ca9ac0103a845e17560c6404cc9056adf",
+      "adaptedSha256": "bc35381ef0b98bfcf2eac6888d515fa8e6f42df719390d7327ae701ff7f24027"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/code-block.json#code-block/code-block-title.svelte",
+      "destination": "src/upstream/ui/code-block/code-block-title.svelte",
+      "sourceSha256": "cf9dd4b910b0b028ff051cf25700c0510bbcfe4b6c3ac891f2379f0e0bbb1ef9",
+      "adaptedSha256": "d230515f7747b44fcd7f4f5c2d3a9f3a96394707fb761c8484f5367b8c98aafa"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/code-block.json#code-block/code-block.svelte",
+      "destination": "src/upstream/ui/code-block/code-block.svelte",
+      "sourceSha256": "cfa1d88b89b28b7c5ecd933289224190c2091e58bc702a52147f67a9aeaceaad",
+      "adaptedSha256": "b4635874442d8ffa6f80a53f8f1a88443a90ff7df0b1bb0e272ca77d34497a2e"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/code-block.json#code-block/index.ts",
+      "destination": "src/upstream/ui/code-block/index.ts",
+      "sourceSha256": "1a7e7af13524a63ebd7014e5099cd26ba31c391797b5f7cec1458bf023279451",
+      "adaptedSha256": "7b2712fc79b69210e811b7bb8563c32d6c58e807ac0d75a63968c3def1aec6d9"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/badge.json#badge/badge.svelte",
+      "destination": "src/upstream/ui/badge/badge.svelte",
+      "sourceSha256": "e6a8e8bf5dbca436fddd636373151a353e01052fe9c4874311b5cc6515164687",
+      "adaptedSha256": "6640870108305f8297793ffa22d1f0d445376542a406f46bd0e3b1c9987d45d0"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/badge.json#badge/index.ts",
+      "destination": "src/upstream/ui/badge/index.ts",
+      "sourceSha256": "1dc9eba432869188db370b8e984ca8ff97430c609746a8274a0edecc0d55b765",
+      "adaptedSha256": "edb3c18d9dc3edf1bf8c8ec4fbec2859e5d3807f609594c98fc44116c779a8a2"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/message-scroller.json#message-scroller/index.ts",
+      "destination": "src/upstream/ui/message-scroller/index.ts",
+      "sourceSha256": "87d61d1ec739c25e5c5058541044cccdff00026311761a97cb1a73cf1d4301b3",
+      "adaptedSha256": "3d030eea2326f4c8a749436bebb366e4518b49612bc5c6804688e0e13fc9a2c0"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/message-scroller.json#message-scroller/message-scroller-button.svelte",
+      "destination": "src/upstream/ui/message-scroller/message-scroller-button.svelte",
+      "sourceSha256": "f8c008bd0792451ebd832bf7ffbd7eb76c67eff6adf515f340af2d1ac26282cd",
+      "adaptedSha256": "12f97aaa5801ac4fbdf87c68be7bc3d225ff55d77f12797c1a1eecd107816310"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/message-scroller.json#message-scroller/message-scroller-content.svelte",
+      "destination": "src/upstream/ui/message-scroller/message-scroller-content.svelte",
+      "sourceSha256": "01fd0428f0d1680afe4f62927cef4197c2be8ff3eb5a7416209e98f1ebe412fa",
+      "adaptedSha256": "ca7874f5f76fb644cef12770b81a97669895f3cca31beeb37030f99b1bd960ec"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/message-scroller.json#message-scroller/message-scroller-item.svelte",
+      "destination": "src/upstream/ui/message-scroller/message-scroller-item.svelte",
+      "sourceSha256": "9992a7a3dd708bc68071bdf8b8961011cc11ddffa5b73a85660e53672201397c",
+      "adaptedSha256": "1d55e09bb80b556bf13a6b1462db7ee55fde89bede4dfda56d6513d80b590a31"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/message-scroller.json#message-scroller/message-scroller-provider.svelte",
+      "destination": "src/upstream/ui/message-scroller/message-scroller-provider.svelte",
+      "sourceSha256": "c26bd0bb1a729c227d6ca3630fb9e0acde98baa05398ce80cc7f162f599d927f",
+      "adaptedSha256": "c26bd0bb1a729c227d6ca3630fb9e0acde98baa05398ce80cc7f162f599d927f"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/message-scroller.json#message-scroller/message-scroller-viewport.svelte",
+      "destination": "src/upstream/ui/message-scroller/message-scroller-viewport.svelte",
+      "sourceSha256": "2c07ab3d8b609f42dfa9dd20cf5b0266a9d02e474a4486e805d460959fe43d79",
+      "adaptedSha256": "b77cd9fd2ee2a5bd06e44f59cb47b6f1d31e588f813eac94d5f99feb2d4f207f"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/message-scroller.json#message-scroller/message-scroller.svelte",
+      "destination": "src/upstream/ui/message-scroller/message-scroller.svelte",
+      "sourceSha256": "266eae02ad46fc8ed76dbbf683976d15aeae1fb428144edae7b1a69c67fa9ddc",
+      "adaptedSha256": "6812f7a3b7d1cc13466d407485b32d692accb2451ae27757a895fcb8539809fe"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/message.json#message/index.ts",
+      "destination": "src/upstream/ui/message/index.ts",
+      "sourceSha256": "205f411cf3616d705f621bcf5361b26ed01232ef6c9135aa708f2245601cde7e",
+      "adaptedSha256": "1639402caaf9d9b7673ed40d66afac8baa8354037dd9f2f2deed7bc441db18bf"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/message.json#message/message-avatar.svelte",
+      "destination": "src/upstream/ui/message/message-avatar.svelte",
+      "sourceSha256": "ecaab985065fb3ff27d4f1d425a5f03be1a87594238e2b1eea8006946d7368a4",
+      "adaptedSha256": "a881f390bf5ad0fcc1e5d872b749ab224cd6bd74058bc04d0cada14ec80f0720"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/message.json#message/message-content.svelte",
+      "destination": "src/upstream/ui/message/message-content.svelte",
+      "sourceSha256": "f035b5e5aedc2add2690b73593750740d1d63fd5d472bed3490eb51f0b22f020",
+      "adaptedSha256": "163a11f643b9bc81f8cd75287703eb1881d64e76e651b80f2cc743902e16d006"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/message.json#message/message-footer.svelte",
+      "destination": "src/upstream/ui/message/message-footer.svelte",
+      "sourceSha256": "d951a1a19e2eeaaf4d9ccda76edd24a9fcf79aaf3781ddca91fb15cf2a9e0fd5",
+      "adaptedSha256": "0027dd3c4df8201bf7d35127ad1f6726dbe754b0574dd9477b144d76ad793071"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/message.json#message/message-group.svelte",
+      "destination": "src/upstream/ui/message/message-group.svelte",
+      "sourceSha256": "867d08031081cd26ee9169c443dbb3b4b8e1281905a07b43473e160085e3477b",
+      "adaptedSha256": "401e16fcaf043c2866e6732b5a052dbf73eb2bd836a1d2dd0040089689057073"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/message.json#message/message-header.svelte",
+      "destination": "src/upstream/ui/message/message-header.svelte",
+      "sourceSha256": "81a883771223bd2da115b875eb5df810e960d7c80b321e8272dd95fc39037f21",
+      "adaptedSha256": "f0901db91afe8f0599557893576f8183170efc81cdcb9daab0594c332d579ce1"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/message.json#message/message.svelte",
+      "destination": "src/upstream/ui/message/message.svelte",
+      "sourceSha256": "8a28650ab09e71eecd939a5721f9268ed9fded11f35af253ef5cdd24f42bf104",
+      "adaptedSha256": "773d5f20e92b0a3cdc21aee8b92545499f635f03d501bc8f82a2ea8dca28f601"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/bubble.json#bubble/bubble-content.svelte",
+      "destination": "src/upstream/ui/bubble/bubble-content.svelte",
+      "sourceSha256": "861d8f781b67504f33072f5739100e84f5176523551ef978dad60e08fbfe0bc3",
+      "adaptedSha256": "68439d93c7d60dc3bd954751a91831291235fa7888fc434882ef3f28c63e73fc"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/bubble.json#bubble/bubble-group.svelte",
+      "destination": "src/upstream/ui/bubble/bubble-group.svelte",
+      "sourceSha256": "a06437b8c3dbbf97d535dd6fbed8773f9666498adac479f57fc6dc0d2c363abb",
+      "adaptedSha256": "2c68b92655cccec419ed4559d18d8a4f114bdf73e16a38d0ec83c581f945a355"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/bubble.json#bubble/bubble-reactions.svelte",
+      "destination": "src/upstream/ui/bubble/bubble-reactions.svelte",
+      "sourceSha256": "ad8c2e6166fb5a4c33291f88b672403e99ee0e8cb139d5b8adea8baacdd07557",
+      "adaptedSha256": "901362710cd7d038520b975c40509d788763a70550d9ce0235c0478e1e3afb36"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/bubble.json#bubble/bubble.svelte",
+      "destination": "src/upstream/ui/bubble/bubble.svelte",
+      "sourceSha256": "5001628c457a8e1341385842fb67c6654d860dd34476ae9badf177b02ef1e622",
+      "adaptedSha256": "7d61bf6907c4a6c8ed5773dfdf3190fb598da4d110f701b2e7385ac8f5069ab2"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/bubble.json#bubble/index.ts",
+      "destination": "src/upstream/ui/bubble/index.ts",
+      "sourceSha256": "2fb8af8da6dd467a9a49d6d60a1fe0c34547930703f2c80b5c4d236abb88bab0",
+      "adaptedSha256": "35786c17849cfadc60563995667fba6aad9008b804163860c721ed76a66110e2"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/input-group.json#input-group/index.ts",
+      "destination": "src/upstream/ui/input-group/index.ts",
+      "sourceSha256": "1dd120de081b76517fb92d58822cf8966457dd283ab34454e14225cfd66d8907",
+      "adaptedSha256": "2ce452d06c2c5de00b18a747bbf02c43c16af9c4ca68de7fb472735f4b33df89"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/input-group.json#input-group/input-group-addon.svelte",
+      "destination": "src/upstream/ui/input-group/input-group-addon.svelte",
+      "sourceSha256": "438e3d00f86d8a4860df4be9a912b32c6f3bce2a024ccd9cfa79add7ba495313",
+      "adaptedSha256": "c9c2507adb63c6acd4bab777f30f45a91910f6b66339641eb91f712f3b31748b"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/input-group.json#input-group/input-group-button.svelte",
+      "destination": "src/upstream/ui/input-group/input-group-button.svelte",
+      "sourceSha256": "77833f01f5c431522b6ed2f99e7f87cb5f30df21cc2fb16a1286e97d8ce6c9ad",
+      "adaptedSha256": "a84813bfd379675155032b755ed3a53e759457c4ab539c999e0804b335ad5622"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/input-group.json#input-group/input-group-input.svelte",
+      "destination": "src/upstream/ui/input-group/input-group-input.svelte",
+      "sourceSha256": "d2a2710a1c45c08b809e9103d6c4629aad56f339ad826e453920d20e41e3f626",
+      "adaptedSha256": "39d6071a473562092147fc8c70cf2d0a19e13d85ceec2c933bacab838dec2281"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/input-group.json#input-group/input-group-text.svelte",
+      "destination": "src/upstream/ui/input-group/input-group-text.svelte",
+      "sourceSha256": "6bb2b40ddde0123e1ff3ad8555e2d3af32d8a436c6bd2eafe79b37b7fbd50b11",
+      "adaptedSha256": "d0082501b1cca057304464b27b90fdc38fa61128ef94dc438cf5067747ab2d30"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/input-group.json#input-group/input-group-textarea.svelte",
+      "destination": "src/upstream/ui/input-group/input-group-textarea.svelte",
+      "sourceSha256": "a9cde3198323274a2bc3debb1cb6cd43808f5e2cf75d2b629bfe64d82c40485f",
+      "adaptedSha256": "ddcacca2e8259e004cf13668ff50bc3d27b4931f7035ecf0ae8b445f383c0e57"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/input-group.json#input-group/input-group.svelte",
+      "destination": "src/upstream/ui/input-group/input-group.svelte",
+      "sourceSha256": "f616877158be3a34f6232222c758f23c7b386cc78817d799c5fc114b8b7faa44",
+      "adaptedSha256": "d9a0da4f6cfc043c2c660c14b44c08ba06be5659557316ea54ae5261db522c64"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/marker.json#marker/index.ts",
+      "destination": "src/upstream/ui/marker/index.ts",
+      "sourceSha256": "3994e004651b8fe3b36e194e5b9720de636c2ff5c51f946b940313616971f325",
+      "adaptedSha256": "a69d70cd4335e49f16d5bf59f14f08dd5aae95dd75244596c9ff3038e03619f3"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/marker.json#marker/marker-content.svelte",
+      "destination": "src/upstream/ui/marker/marker-content.svelte",
+      "sourceSha256": "c4ae88a0ef689166fc48bc19dc3997a498419649a66a184c0c89df7dd8a6899f",
+      "adaptedSha256": "735269bef1874d858b0d7a903e5c86898ed4d9683ce377cb9497a549fa455a07"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/marker.json#marker/marker-icon.svelte",
+      "destination": "src/upstream/ui/marker/marker-icon.svelte",
+      "sourceSha256": "7f17676c07dc171c5b242e78cded977178ae5c2b59583cb2361c2840df9df5ae",
+      "adaptedSha256": "a46ea7dc2bc8519fae8c863dd3a2c042493bafadca3c1624126224ef74c07ade"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/marker.json#marker/marker.svelte",
+      "destination": "src/upstream/ui/marker/marker.svelte",
+      "sourceSha256": "094ae065c7b391287d9cddfe8e03d96b4f233c60a57f00663b8773d7cdfc5cae",
+      "adaptedSha256": "ddbdd94e60ec759dc6959d0dd88b1b60698756f734bc873d0761ce22899bac84"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/button.json#button/button.svelte",
+      "destination": "src/upstream/ui/button/button.svelte",
+      "sourceSha256": "2e5cb61e27b1e304ec5ecd241b44b119cbdfc0d4598a9beb87d27cb5fd6fd6b5",
+      "adaptedSha256": "acd34594a1e8b06ebd1faa87580e69dc411a3c2ef8e0be3680f9e4315a52083c"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/button.json#button/index.ts",
+      "destination": "src/upstream/ui/button/index.ts",
+      "sourceSha256": "0f6b6f040d92b4153821d3f9b4d6b9cbc567247e4fda913e64c1d0fcc4a2f386",
+      "adaptedSha256": "a804855290fe6157f8e49fb36e18a000781dde915e72e619cd59c8b7a4693297"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/item.json#item/index.ts",
+      "destination": "src/upstream/ui/item/index.ts",
+      "sourceSha256": "dc3f805dca04b1ad0a8e3f502a744988e4cb534313a9a0ca4499d0a1aef1e123",
+      "adaptedSha256": "c16c577f8b9208f449e2489843950038a99ae5e73999e1188401b762a715b355"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/item.json#item/item-actions.svelte",
+      "destination": "src/upstream/ui/item/item-actions.svelte",
+      "sourceSha256": "89f582c3317e4b7d2701b0bcd9f95c9c84aefc7b1d33b5f8c122ad4b2389ffb7",
+      "adaptedSha256": "1ed2d24b73b807c92695ab2e29eba686fca2b78be5f4cb6477fbbd766707cb31"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/item.json#item/item-content.svelte",
+      "destination": "src/upstream/ui/item/item-content.svelte",
+      "sourceSha256": "23ab1c760b45e062d84a0320319b706abc4cdb2278b20e8e68368556a287f571",
+      "adaptedSha256": "74f19d37b35315453f057e7c3b0fd63c94f4ea4c93fea2cb6c88d85dd010504a"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/item.json#item/item-description.svelte",
+      "destination": "src/upstream/ui/item/item-description.svelte",
+      "sourceSha256": "3e871d3587f7e54199ded27ee2397b914bec762bc78aacd0f8a9c02e9092e914",
+      "adaptedSha256": "fa9809e5ce405ab1c7a0d40da91c94695d2ceea99d7e97c5ba6c2a5bc790ed80"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/item.json#item/item-footer.svelte",
+      "destination": "src/upstream/ui/item/item-footer.svelte",
+      "sourceSha256": "4ae2a20ef796d82cfe9b386a455ab4ee4f1848c2e34f2fdce867a3a093101220",
+      "adaptedSha256": "d4b53b2ba3e596eb04c27659b9f77d5cdbb653f1bd4b12ad3f2bc3ad70315177"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/item.json#item/item-group.svelte",
+      "destination": "src/upstream/ui/item/item-group.svelte",
+      "sourceSha256": "9b8105569798640412dd7e4d3017b683d6b5fb65c0d857a6d0cd0874b9d3464a",
+      "adaptedSha256": "efebce64d552e5093bf073d9fcfe254f232f32e4e624a7ff7bd22bd64363b244"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/item.json#item/item-header.svelte",
+      "destination": "src/upstream/ui/item/item-header.svelte",
+      "sourceSha256": "b43210ad02bb2bd7c0e2fb8c0720b1ef2e38dc64a2886c32dc67704878c256c3",
+      "adaptedSha256": "8003888fcd3949607860dde4e723e737dfd1ecc827caa8b8bbd9e2fea1460d34"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/item.json#item/item-media.svelte",
+      "destination": "src/upstream/ui/item/item-media.svelte",
+      "sourceSha256": "aa10a3e3c34df768198dc93d6d0c688685e853be0b28d7ce4e19a60107bdac0b",
+      "adaptedSha256": "0bfca963988b9139bd8d02c1388ed0e4e9bd134d6f1c1943dfa84605bd4bb2ab"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/item.json#item/item-separator.svelte",
+      "destination": "src/upstream/ui/item/item-separator.svelte",
+      "sourceSha256": "23d8bae63c2767a386ab6d4415d068211d4ea382af5a6579ee548585b98ca963",
+      "adaptedSha256": "67a62edabedfd6d4744bf18988de779f89c1f08a78f459a6b1944550421620b2"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/item.json#item/item-title.svelte",
+      "destination": "src/upstream/ui/item/item-title.svelte",
+      "sourceSha256": "1c92839aaecbd8ae58ce9ca8dd4833e09179380ec5edc1bda4170f5c10aadeb9",
+      "adaptedSha256": "723a7f7d6ec4e62d68e29650c6af271635fd396e68375ef850af57966890aa68"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/item.json#item/item.svelte",
+      "destination": "src/upstream/ui/item/item.svelte",
+      "sourceSha256": "bf0ae1b0dfdc929f4769d4bd133a4858e8e480bd30e9966b4b4c53767c801459",
+      "adaptedSha256": "3d823ae0c20ffed8a6473f25c5a96723bf9afa8640f709923bce7f3bc974dc2c"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/hover-card.json#hover-card/hover-card-content.svelte",
+      "destination": "src/upstream/ui/hover-card/hover-card-content.svelte",
+      "sourceSha256": "e7527266911251686cd03198202fbbf89bafa183ff97ad96037ec52307cd8d51",
+      "adaptedSha256": "0f9e0ec375b43dd27a808fd21c409ea1fa83df8065e331c32c96e52d4a007717"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/hover-card.json#hover-card/hover-card-portal.svelte",
+      "destination": "src/upstream/ui/hover-card/hover-card-portal.svelte",
+      "sourceSha256": "4bc8e49f3936fff222eab5f65724130dba5be7cd69ae5dd8e1a62cc86e1f8dca",
+      "adaptedSha256": "755c2d938ffa056787fd9fa2feb249c23755a39f81ddea8248f501f326051dfe"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/hover-card.json#hover-card/hover-card-trigger.svelte",
+      "destination": "src/upstream/ui/hover-card/hover-card-trigger.svelte",
+      "sourceSha256": "83e114e2a0edefb11599fe749283713e0fb0c76ce81f23579ae16be349332fdd",
+      "adaptedSha256": "83e114e2a0edefb11599fe749283713e0fb0c76ce81f23579ae16be349332fdd"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/hover-card.json#hover-card/hover-card.svelte",
+      "destination": "src/upstream/ui/hover-card/hover-card.svelte",
+      "sourceSha256": "39946ce6ee8ed12a62f3e9cd2ae86408ae2843afb0546ee1313af7998a53a046",
+      "adaptedSha256": "39946ce6ee8ed12a62f3e9cd2ae86408ae2843afb0546ee1313af7998a53a046"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/hover-card.json#hover-card/index.ts",
+      "destination": "src/upstream/ui/hover-card/index.ts",
+      "sourceSha256": "bc5681b0719b54549f8ebe6624b468f7487752132f69f365d1a394d1176cb7c9",
+      "adaptedSha256": "56953d45f19712259d40170e4ed2700e47023b680915809a190110c44e2c8a88"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/progress.json#progress/index.ts",
+      "destination": "src/upstream/ui/progress/index.ts",
+      "sourceSha256": "047b1de9082bd67dde821e907845484557cfbac5525dd672434250420d61e6d6",
+      "adaptedSha256": "1273575e219e03eca136b481e4b2c924b81385dcec6952621032c179e880970b"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/progress.json#progress/progress.svelte",
+      "destination": "src/upstream/ui/progress/progress.svelte",
+      "sourceSha256": "2017c94d8acd97b4e460d6598ffbf6a966c6da0a92f6b439beb0678ab797ae2e",
+      "adaptedSha256": "42c232838aaff63376ff99a2814f606b24d44e589ea3c81b525a34e5088a5a43"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/collapsible.json#collapsible/collapsible-content.svelte",
+      "destination": "src/upstream/ui/collapsible/collapsible-content.svelte",
+      "sourceSha256": "8af85ac6ed50471ad32a4e90fb0c54b0fbe0b0700cd3fc5a91b85de70bf22554",
+      "adaptedSha256": "8af85ac6ed50471ad32a4e90fb0c54b0fbe0b0700cd3fc5a91b85de70bf22554"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/collapsible.json#collapsible/collapsible-trigger.svelte",
+      "destination": "src/upstream/ui/collapsible/collapsible-trigger.svelte",
+      "sourceSha256": "e74d7c62176b48d8f5a7282fd0491fbab4dcfb0f23690b6cfae3f3d08b630e3a",
+      "adaptedSha256": "e74d7c62176b48d8f5a7282fd0491fbab4dcfb0f23690b6cfae3f3d08b630e3a"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/collapsible.json#collapsible/collapsible.svelte",
+      "destination": "src/upstream/ui/collapsible/collapsible.svelte",
+      "sourceSha256": "1d48e117ac1b8fef1af070c56237a04e5ad1d4bafd4372852a0e9d10e9f4afc2",
+      "adaptedSha256": "1d48e117ac1b8fef1af070c56237a04e5ad1d4bafd4372852a0e9d10e9f4afc2"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/collapsible.json#collapsible/index.ts",
+      "destination": "src/upstream/ui/collapsible/index.ts",
+      "sourceSha256": "abeb5bef64eabc6e378338dddcecee0df56ab18ece8b1d08bd1ed6e740aff05e",
+      "adaptedSha256": "38b5467796bb85dfb38ccebc303f44762587c3b6520d2946e8e09c498d37f37b"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/tooltip.json#tooltip/index.ts",
+      "destination": "src/upstream/ui/tooltip/index.ts",
+      "sourceSha256": "a5924dc1196bf9f431af3ef3d9675ded3f30d38f9f3148118cb6f4cad433e0c4",
+      "adaptedSha256": "95e02f2232bc890cb7036d52a5a46994987f40e2ca5bdd5450bb5792cf6a508a"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/tooltip.json#tooltip/tooltip-content.svelte",
+      "destination": "src/upstream/ui/tooltip/tooltip-content.svelte",
+      "sourceSha256": "d95c49c3e392b7afcf427ef617a9585c4159da38a43ca710e3f8d853e6f25b84",
+      "adaptedSha256": "69a8531cd653c01bbe55653b9ac2e885011180a113e6ef3801bfc7b382291f6d"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/tooltip.json#tooltip/tooltip-portal.svelte",
+      "destination": "src/upstream/ui/tooltip/tooltip-portal.svelte",
+      "sourceSha256": "d38e62fa30732ba5ea79df440badb59331d22c13a19fdc1ad777857f6039b648",
+      "adaptedSha256": "1e01d05c9757d9ae16cf9c1e26bcf749a42078e7424d886f6abe38d02aba1083"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/tooltip.json#tooltip/tooltip-provider.svelte",
+      "destination": "src/upstream/ui/tooltip/tooltip-provider.svelte",
+      "sourceSha256": "3599daffb73460dc3377582b99fb04503cc1f3facd660f99db5e9c785c48367e",
+      "adaptedSha256": "3599daffb73460dc3377582b99fb04503cc1f3facd660f99db5e9c785c48367e"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/tooltip.json#tooltip/tooltip-trigger.svelte",
+      "destination": "src/upstream/ui/tooltip/tooltip-trigger.svelte",
+      "sourceSha256": "139ecd079c457f1318a8cfee9495143859a84fda92b0b811e893a738b46dddbd",
+      "adaptedSha256": "139ecd079c457f1318a8cfee9495143859a84fda92b0b811e893a738b46dddbd"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/tooltip.json#tooltip/tooltip.svelte",
+      "destination": "src/upstream/ui/tooltip/tooltip.svelte",
+      "sourceSha256": "a33d843a5e4e6e5fe426654f6742a453f44f4ff928e94a21d188d9035e4d02f8",
+      "adaptedSha256": "a33d843a5e4e6e5fe426654f6742a453f44f4ff928e94a21d188d9035e4d02f8"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/dropdown-menu.json#dropdown-menu/dropdown-menu-checkbox-group.svelte",
+      "destination": "src/upstream/ui/dropdown-menu/dropdown-menu-checkbox-group.svelte",
+      "sourceSha256": "96f8cf7d2ce72fd2fd4ff5e579067b1a32101abbbe5a20612aa00a69e5df205d",
+      "adaptedSha256": "96f8cf7d2ce72fd2fd4ff5e579067b1a32101abbbe5a20612aa00a69e5df205d"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/dropdown-menu.json#dropdown-menu/dropdown-menu-checkbox-item.svelte",
+      "destination": "src/upstream/ui/dropdown-menu/dropdown-menu-checkbox-item.svelte",
+      "sourceSha256": "45816a1276b14843f81439165e932f4f0b11fed80b8abff105db9fb09ae58a7d",
+      "adaptedSha256": "42e6f9d3c42995278f336a913cf45218237cdc16c9fd807788bece3e70402161"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/dropdown-menu.json#dropdown-menu/dropdown-menu-content.svelte",
+      "destination": "src/upstream/ui/dropdown-menu/dropdown-menu-content.svelte",
+      "sourceSha256": "c4c704b0aa0319979803560116b3904e69b71cccee3b539acc5f92b3e0f4ed90",
+      "adaptedSha256": "18b87b122f2899480a4350feba2f929c7234e23ccf417e03dd9ce9610221ec62"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/dropdown-menu.json#dropdown-menu/dropdown-menu-group-heading.svelte",
+      "destination": "src/upstream/ui/dropdown-menu/dropdown-menu-group-heading.svelte",
+      "sourceSha256": "a6f6df794e4c2fc01fef097c1f15934e33eaf3263ea530111f6291fef6826c57",
+      "adaptedSha256": "dbd70ff2c507b32e645d6906faf0f2ff28760b7b1cd7140b4e506cbc3822c8f9"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/dropdown-menu.json#dropdown-menu/dropdown-menu-group.svelte",
+      "destination": "src/upstream/ui/dropdown-menu/dropdown-menu-group.svelte",
+      "sourceSha256": "75f1eaeff2b3cf25f957d7f9137d3addb409815ec480e1a3bb4036bb82e8d60c",
+      "adaptedSha256": "75f1eaeff2b3cf25f957d7f9137d3addb409815ec480e1a3bb4036bb82e8d60c"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/dropdown-menu.json#dropdown-menu/dropdown-menu-item.svelte",
+      "destination": "src/upstream/ui/dropdown-menu/dropdown-menu-item.svelte",
+      "sourceSha256": "ee4634b0805f70ba7a20925dba0773c9ea39f02bd656251658999bf9915bf74a",
+      "adaptedSha256": "35df474f4c51ed05a1ea1dd706bbdc1548f0b05391a7e5c0a52c7048ff78f1f7"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/dropdown-menu.json#dropdown-menu/dropdown-menu-label.svelte",
+      "destination": "src/upstream/ui/dropdown-menu/dropdown-menu-label.svelte",
+      "sourceSha256": "26b0712559e499430d4eeac848597a8b207b63be0dd79a204395e4f3defd934b",
+      "adaptedSha256": "9d85eae46389409ffbe385b17d7c36c1416ba1d87d9930ada07e2f45976e2a61"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/dropdown-menu.json#dropdown-menu/dropdown-menu-portal.svelte",
+      "destination": "src/upstream/ui/dropdown-menu/dropdown-menu-portal.svelte",
+      "sourceSha256": "38f6abf9c1d47d2ab4912556d05845ec9ba1ee6825405adb5f8831d6a30ac08b",
+      "adaptedSha256": "ad38e8f312067fecdea02e81f0e0c6d9b30c0674fe33347814a28bbd92a57941"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/dropdown-menu.json#dropdown-menu/dropdown-menu-radio-group.svelte",
+      "destination": "src/upstream/ui/dropdown-menu/dropdown-menu-radio-group.svelte",
+      "sourceSha256": "ac025c63e0ade7c26cef7db98de2fe217208fe9387eb8bfaf97730ab3f013da2",
+      "adaptedSha256": "ac025c63e0ade7c26cef7db98de2fe217208fe9387eb8bfaf97730ab3f013da2"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/dropdown-menu.json#dropdown-menu/dropdown-menu-radio-item.svelte",
+      "destination": "src/upstream/ui/dropdown-menu/dropdown-menu-radio-item.svelte",
+      "sourceSha256": "c885c2e59eda460e79e4cf6b65cb06d846a075b6ec84f5cdefd8107e74799118",
+      "adaptedSha256": "6f94b73173fee6a88b9273a11f54f18b2d279fced193274e45899e0ad3c08eee"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/dropdown-menu.json#dropdown-menu/dropdown-menu-separator.svelte",
+      "destination": "src/upstream/ui/dropdown-menu/dropdown-menu-separator.svelte",
+      "sourceSha256": "269e33338dcd2617e69d7ac5c057ed9d76bd7f4e9c4cee70ce8819801a26cc3f",
+      "adaptedSha256": "1089fcd500b0613d64170c4a9d42fac63980a091200eb0996b0313e59aeac594"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/dropdown-menu.json#dropdown-menu/dropdown-menu-shortcut.svelte",
+      "destination": "src/upstream/ui/dropdown-menu/dropdown-menu-shortcut.svelte",
+      "sourceSha256": "23fee7839d3dbd9011b1ced66874659332b5d4952c50a62593572b4f3e7659dc",
+      "adaptedSha256": "87aef0a9a58478c2733e097f167dbc5a437c9fa1fc87eb17619e9bcd5ed6c38e"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/dropdown-menu.json#dropdown-menu/dropdown-menu-sub-content.svelte",
+      "destination": "src/upstream/ui/dropdown-menu/dropdown-menu-sub-content.svelte",
+      "sourceSha256": "dfcbbc4a659567e96361b77c73a3b53dcd33b52a08e77e437215ee132ff652e3",
+      "adaptedSha256": "32621c5c0aa2eeab8dc1b8b7c26f01435c1b055197403c22fc5cd7a57a5f37e0"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/dropdown-menu.json#dropdown-menu/dropdown-menu-sub-trigger.svelte",
+      "destination": "src/upstream/ui/dropdown-menu/dropdown-menu-sub-trigger.svelte",
+      "sourceSha256": "1dcee2a86b8a272ead6bda5075dd97a6929720c35442dfed15cf06f7533d4ca4",
+      "adaptedSha256": "4ea301fc5b0ecde9cf0319fad2b0d13d58a972bb502395604075fdcc5728e3c0"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/dropdown-menu.json#dropdown-menu/dropdown-menu-sub.svelte",
+      "destination": "src/upstream/ui/dropdown-menu/dropdown-menu-sub.svelte",
+      "sourceSha256": "1208155828183ef72dc8c96ff58c90fcd5584cce28d938a23545253013cfb9c5",
+      "adaptedSha256": "1208155828183ef72dc8c96ff58c90fcd5584cce28d938a23545253013cfb9c5"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/dropdown-menu.json#dropdown-menu/dropdown-menu-trigger.svelte",
+      "destination": "src/upstream/ui/dropdown-menu/dropdown-menu-trigger.svelte",
+      "sourceSha256": "bdad1ff46fd23466dec6d1212186e9ac4e34edf862987308821956c6b24f709c",
+      "adaptedSha256": "bdad1ff46fd23466dec6d1212186e9ac4e34edf862987308821956c6b24f709c"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/dropdown-menu.json#dropdown-menu/dropdown-menu.svelte",
+      "destination": "src/upstream/ui/dropdown-menu/dropdown-menu.svelte",
+      "sourceSha256": "d49b60f3d9832a870e5eed726d39f9c0e09abb2bc061deb1ef0dfec97aa319e5",
+      "adaptedSha256": "d49b60f3d9832a870e5eed726d39f9c0e09abb2bc061deb1ef0dfec97aa319e5"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/dropdown-menu.json#dropdown-menu/index.ts",
+      "destination": "src/upstream/ui/dropdown-menu/index.ts",
+      "sourceSha256": "843e6f031021c365665e0de10bb9862fa8dba12066336fbd3348fa0078028bcc",
+      "adaptedSha256": "56ab08e9e174285bb29687e36db82cda342ee3087e43f03c5a1887a328f7fc79"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/attachment.json#attachment/attachment-action.svelte",
+      "destination": "src/upstream/ui/attachment/attachment-action.svelte",
+      "sourceSha256": "aa251f50989e6f92bea7173ea74d5d99f7a2cc7704ac54e6d54307f0a6566a58",
+      "adaptedSha256": "7506b9ec35d0c7323517484704aee3e480e4f94ae4773e3cb4cedd787e883ce1"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/attachment.json#attachment/attachment-actions.svelte",
+      "destination": "src/upstream/ui/attachment/attachment-actions.svelte",
+      "sourceSha256": "75c7ee29688d704ca74a5a0ef6bf6bbe3e48a71420ace4a1a3294fd70ebc53f8",
+      "adaptedSha256": "5d16c7993aa354059951670912c91036c8741406d72a4a99c405fc8d10089195"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/attachment.json#attachment/attachment-content.svelte",
+      "destination": "src/upstream/ui/attachment/attachment-content.svelte",
+      "sourceSha256": "5fb5584c9797696743247cf5e6008c038d73962572b1c5bab5554de3f0835478",
+      "adaptedSha256": "69ad500f7a0a1441b2398276dc078975da0e27749bda4ee9c877bf760cd82fc4"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/attachment.json#attachment/attachment-description.svelte",
+      "destination": "src/upstream/ui/attachment/attachment-description.svelte",
+      "sourceSha256": "a4d7eb5a62462e9d09da85789b277cf3cfe4ee7e5fc3036c3116d5ecd91cf79d",
+      "adaptedSha256": "41fe7a9bb4536de9837012766f127a8374a5ab85d3dc726bc66fd1319b3376aa"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/attachment.json#attachment/attachment-group.svelte",
+      "destination": "src/upstream/ui/attachment/attachment-group.svelte",
+      "sourceSha256": "14f36f8fd045ad9bf65431165be369f1a8235e89025f89bda557ab8be717a524",
+      "adaptedSha256": "b3f5fe223fefb944c59d6e9aac68cf2091f92b866b885ed8cdb5e2e7408d2889"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/attachment.json#attachment/attachment-media.svelte",
+      "destination": "src/upstream/ui/attachment/attachment-media.svelte",
+      "sourceSha256": "89f9af425e5ec9defc370cceb0901bdd86dc8b289e683fda07b26009b3d3aa37",
+      "adaptedSha256": "d64b9bab2cb470cff7c79324d820cacb0c693d6076e4269eec79634b745dfa8c"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/attachment.json#attachment/attachment-title.svelte",
+      "destination": "src/upstream/ui/attachment/attachment-title.svelte",
+      "sourceSha256": "9b7bac396c9b32f9d9e817e238ef68e5f4347a1221428d45f0507d98d28aa75a",
+      "adaptedSha256": "d6276b60bdda2feb38d97674eba73bf6761eb0d5165b1f8d2b6410e32c183a68"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/attachment.json#attachment/attachment-trigger.svelte",
+      "destination": "src/upstream/ui/attachment/attachment-trigger.svelte",
+      "sourceSha256": "0757c6eb8218d126a0e62a4571f47c57d1f101367898d4878a09e90e33118b43",
+      "adaptedSha256": "f5390d3e2f1f3ef06fdb5b77e31aaf1be74942cb6c71b07a4c87510cc7b85ea0"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/attachment.json#attachment/attachment.svelte",
+      "destination": "src/upstream/ui/attachment/attachment.svelte",
+      "sourceSha256": "b5f7641d37bcad8022d002daf76a8387f402f0ee0ae52a5fda5d3d3399fe8d3f",
+      "adaptedSha256": "8dec2daec88491adf56daaa7323462afa1379a38e342578654e3e4d93811df57"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/attachment.json#attachment/index.ts",
+      "destination": "src/upstream/ui/attachment/index.ts",
+      "sourceSha256": "b6aa1a9339c9a6b2f3b30b219783907a01e3776aea138d74e4512a6faa6e8036",
+      "adaptedSha256": "adcbe923d100f0500a6afbd2b4d6cc04463668981b8cd252bfdb1e782bed4775"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/use-highlighted-code.json#use-highlighted-code.svelte.ts",
+      "destination": "src/upstream/hooks/use-highlighted-code.svelte.ts",
+      "sourceSha256": "90c8ab2011b743dc0de71c9a968a38d89ed339adb0fe497aa0e54e5c737b8631",
+      "adaptedSha256": "476272d2019ba8bf362c3c2b707d75fc33d634c8e54ce437d07da044d53ac20d"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/input.json#input/index.ts",
+      "destination": "src/upstream/ui/input/index.ts",
+      "sourceSha256": "4e0ad69d49a27194c7f3dfd0cdd5933ee13fc40cc13a77138b547d300701d390",
+      "adaptedSha256": "e6d3f8f01a1e85fc92845d2751414d66d8033fc912dda5e3e55016d59f9d626d"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/input.json#input/input.svelte",
+      "destination": "src/upstream/ui/input/input.svelte",
+      "sourceSha256": "e5e3f4e92908e9f3114aaa6610b769aa19b6e5ec6eec866ab9a28ccd51b01924",
+      "adaptedSha256": "7647830fd474b00459ee9d72d15fdc9ce666334e5cea582659a5fc038cbeba54"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/textarea.json#textarea/index.ts",
+      "destination": "src/upstream/ui/textarea/index.ts",
+      "sourceSha256": "3b5f25dfd5d1d9b5305f613f7544a7e39362cd4b0a9c3250414cd5ff02e45398",
+      "adaptedSha256": "10866bddd062cf939628d3748fc68885edf303c9501707a6a5e3412563afa629"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/textarea.json#textarea/textarea.svelte",
+      "destination": "src/upstream/ui/textarea/textarea.svelte",
+      "sourceSha256": "bd96eea0ca0120d833feaea3b93f810c23231662ab6a08e503fb335555adb6cc",
+      "adaptedSha256": "12c1ed168477a740515c217dada9a885721cd3bc74fb16c1d290ae85f937f946"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/separator.json#separator/index.ts",
+      "destination": "src/upstream/ui/separator/index.ts",
+      "sourceSha256": "beeaaaab286f1aeff1e43a8ef1c02a60de5e6349780d12af73e9646c6db98bf6",
+      "adaptedSha256": "364ee6d4eb25d5d67fe2768e9134481a0c9daa472a9ad1f25f0cc2338b7eb35b"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/separator.json#separator/separator.svelte",
+      "destination": "src/upstream/ui/separator/separator.svelte",
+      "sourceSha256": "4f1ace23e08adf96922cb1c47b6eb680e240082c2b72d91d68f8bc0599cf66f7",
+      "adaptedSha256": "91c42048b3fbdccf45cfbda4c8215959af459a8de50df35b0653f066799a11cc"
+    },
+    {
+      "source": "docs/static/registry/styles/rhea/highlighter.json#highlighter.ts",
+      "destination": "src/upstream/lib/highlighter.ts",
+      "sourceSha256": "7fed760c427ea9c216411e9c4d8b9ef9f6ba8439f750d157c9c0879650a29559",
+      "adaptedSha256": "1d053aae35cf88c24faa2444fd58699570b3c2223d19194e3d31b3f1c1fbe2c7"
+    },
+    {
+      "source": "docs/src/lib/components/markdown/markdown.svelte",
+      "destination": "src/upstream/markdown/markdown.svelte",
+      "sourceSha256": "7de24c19e1b5e6acd8140e033ac4cda4e2a571f7071df2dfbe7fc624e1b0fdc4",
+      "adaptedSha256": "29ca2cbd1ecfae13093b502c37f3568d0da9124f690b84c62bfb60f09415b9cc"
+    },
+    {
+      "source": "docs/src/lib/components/markdown/markdown-code-block.svelte",
+      "destination": "src/upstream/markdown/markdown-code-block.svelte",
+      "sourceSha256": "13d81aabb199836f42ff5e679d1ed87584e77d447b804d5dc81d995d447b3609",
+      "adaptedSha256": "5de9bb58d7142a908617f4b8768f20b3e006a2a09d09b064e3d064308b3b6009"
+    },
+    {
+      "source": "docs/src/lib/registry/lib/utils.ts",
+      "destination": "src/upstream/utils.ts",
+      "sourceSha256": "d56c48595cabedfe55b5233e04383a388eec79bd43a595bdbd36081a8342fd8c",
+      "adaptedSha256": "3d8ddc43e0debd7e16908dc64c70db597e6a0ecc6d61e4005cfb6d28d07b8f1a"
+    },
+    {
+      "source": "packages/cli/src/tailwind.css",
+      "destination": "src/upstream/tailwind.css",
+      "sourceSha256": "61ccaa3dd0ce0d87b8930d7dd0329481c96af3d8407de2db632dc0f28b262a78",
+      "adaptedSha256": "b0ebb12a1315598ef4ab53581d45b1836c9d283db8fe7b69cee31f4f1a2ce994"
+    },
+    {
+      "source": "LICENSE.md",
+      "destination": "LICENSE.upstream",
+      "sourceSha256": "230594c9dedb06fb0759381a520b449c1b47b0f63b95fc88ef9d7e851e2540a9",
+      "adaptedSha256": "230594c9dedb06fb0759381a520b449c1b47b0f63b95fc88ef9d7e851e2540a9"
+    }
+  ],
+  "derivedFiles": [
+    {
+      "destination": "src/upstream/ui/attachment/attachment-media.variants.ts",
+      "derivedFrom": "src/upstream/ui/attachment/attachment-media.svelte",
+      "sha256": "4046f3373c3b2c691d685ae1b896a3cb92094e7156a3fee51ceaf442664956ef"
+    },
+    {
+      "destination": "src/upstream/ui/attachment/attachment.variants.ts",
+      "derivedFrom": "src/upstream/ui/attachment/attachment.svelte",
+      "sha256": "0a5022c0148b68066f495396636ad45e86d6621d4988cd4cd35b5246ac8f4bad"
+    },
+    {
+      "destination": "src/upstream/ui/badge/badge.variants.ts",
+      "derivedFrom": "src/upstream/ui/badge/badge.svelte",
+      "sha256": "03d6b46ec9f4f9f17896f06278c92373d7b4d0446a31356cc91b86e42016fc08"
+    },
+    {
+      "destination": "src/upstream/ui/bubble/bubble-reactions.variants.ts",
+      "derivedFrom": "src/upstream/ui/bubble/bubble-reactions.svelte",
+      "sha256": "e44d92cc5ddfe42186c02208aa72ab3dce7b9457e219893d1fba0386e26ad873"
+    },
+    {
+      "destination": "src/upstream/ui/bubble/bubble.variants.ts",
+      "derivedFrom": "src/upstream/ui/bubble/bubble.svelte",
+      "sha256": "a9bc9ecffec22dd2b56315f6e0611930e334b8d576a80fe15c3cc4ca7b3d7eb8"
+    },
+    {
+      "destination": "src/upstream/ui/button/button.variants.ts",
+      "derivedFrom": "src/upstream/ui/button/button.svelte",
+      "sha256": "dba75da0acf0635205db85ee898951efd815c74c3a00a76c49c536938f12f2cd"
+    },
+    {
+      "destination": "src/upstream/ui/code-block/code-block-line.variants.ts",
+      "derivedFrom": "src/upstream/ui/code-block/code-block-line.svelte",
+      "sha256": "cf20b2b0007618da3d2be297ddc474acbe12a4d0797602f1cf754e34c6e4ec8c"
+    },
+    {
+      "destination": "src/upstream/ui/code-block/code-block.variants.ts",
+      "derivedFrom": "src/upstream/ui/code-block/code-block.svelte",
+      "sha256": "832eed0c9f475779572d0288cf1298fa448e63c13ee1584597c618fc27da952c"
+    },
+    {
+      "destination": "src/upstream/ui/input-group/input-group-addon.variants.ts",
+      "derivedFrom": "src/upstream/ui/input-group/input-group-addon.svelte",
+      "sha256": "df15ce4107111950c7edca1f74b6c90c10ba2f0578093757194cb689d2b757f8"
+    },
+    {
+      "destination": "src/upstream/ui/input-group/input-group-button.variants.ts",
+      "derivedFrom": "src/upstream/ui/input-group/input-group-button.svelte",
+      "sha256": "f0449b7b7ed9e490aa7659e1ce586a1701b64dabbea912896096da98ce45e9fd"
+    },
+    {
+      "destination": "src/upstream/ui/item/item-media.variants.ts",
+      "derivedFrom": "src/upstream/ui/item/item-media.svelte",
+      "sha256": "e605479066d226f05e2f50702da630f53782e2359abdf90c712a28548e00ce36"
+    },
+    {
+      "destination": "src/upstream/ui/item/item.variants.ts",
+      "derivedFrom": "src/upstream/ui/item/item.svelte",
+      "sha256": "97d44f5a29e60f15e9cb051c9379b27917872dde01a63812a5dff204ade7c357"
+    },
+    {
+      "destination": "src/upstream/ui/marker/marker.variants.ts",
+      "derivedFrom": "src/upstream/ui/marker/marker.svelte",
+      "sha256": "0e216ee5c9aa2ffce5c3957595dfc42a5f65f724d4662678cd878d2f57c00e75"
+    },
+    {
+      "destination": "src/upstream/ui/trace/trace-line.variants.ts",
+      "derivedFrom": "src/upstream/ui/trace/trace-line.svelte",
+      "sha256": "c614de6e5bec94c225c56d5d31c2031000c3d18dacebfa0efd3f223847503960"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "chain-of-thought",
+      "source": "docs/content/ai-elements/chain-of-thought.md",
+      "sourceSha256": "3e625bf8238f926453390c731ba01580e5f6a5b24bdeba224651899629e8e37e",
+      "disposition": "Pinned primary composition with typed host callbacks; explicit visual/secondary-variant adaptations in PRESENTATION.md; runtime gate separate from provenance",
+      "exampleReferences": [
+        {
+          "name": "chain-of-thought-demo",
+          "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/chain-of-thought-demo.svelte",
+          "sha256": "2c975b37722ceedfb1e2c0771d45b6524f1d4d14a86a8b60ea3ddb05994c531c"
+        }
+      ]
+    },
+    {
+      "id": "chat",
+      "source": "docs/content/ai-elements/chat.md",
+      "sourceSha256": "a419de860a2366ea668b15d1b34a7a4385954f94923a4d34f2f83486e18cb431",
+      "disposition": "Pinned primary composition with typed host callbacks; explicit visual/secondary-variant adaptations in PRESENTATION.md; runtime gate separate from provenance",
+      "exampleReferences": [
+        {
+          "name": "chat-demo",
+          "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/chat-demo.svelte",
+          "sha256": "15f460ff9dc19a10b32fda9678673f34c0ebaa88aa98bb9b1e29ba348fa06655"
+        }
+      ]
+    },
+    {
+      "id": "checkpoint",
+      "source": "docs/content/ai-elements/checkpoint.md",
+      "sourceSha256": "ed22b613efc1a988dee3411441a37eebdb4b4457dc4039521a3720df44f1e6b7",
+      "disposition": "Pinned primary composition with typed host callbacks; explicit visual/secondary-variant adaptations in PRESENTATION.md; runtime gate separate from provenance",
+      "exampleReferences": [
+        {
+          "name": "checkpoint-demo",
+          "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/checkpoint-demo.svelte",
+          "sha256": "b114d8fdec0145df027bfe22299759982522f1f01f526d0f21c655d9d804252c"
+        }
+      ]
+    },
+    {
+      "id": "confirmation",
+      "source": "docs/content/ai-elements/confirmation.md",
+      "sourceSha256": "0eb142c149ef94492c47f5f95ff1f2039cb524a0f1c849f25d1f858561b8313e",
+      "disposition": "Pinned primary composition with typed host callbacks; explicit visual/secondary-variant adaptations in PRESENTATION.md; runtime gate separate from provenance",
+      "exampleReferences": [
+        {
+          "name": "confirmation-demo",
+          "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/confirmation-demo.svelte",
+          "sha256": "7853a0b1f1307c30990084bc556044f8633cfe723324001439585219976cd5f9"
+        }
+      ]
+    },
+    {
+      "id": "context",
+      "source": "docs/content/ai-elements/context.md",
+      "sourceSha256": "681c62a49e2c1404c2381c63d222998e6cada1691f4943e713bfffab0535e294",
+      "disposition": "Pinned primary composition with typed host callbacks; explicit visual/secondary-variant adaptations in PRESENTATION.md; runtime gate separate from provenance",
+      "exampleReferences": [
+        {
+          "name": "context-demo",
+          "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/context-demo.svelte",
+          "sha256": "634aa22b734da964c10916b489e44224640bab1217da12b7efe27ed096e79bfd"
+        }
+      ]
+    },
+    {
+      "id": "file-tree",
+      "source": "docs/content/ai-elements/file-tree.md",
+      "sourceSha256": "e9fcd2dbd7d74ef556055e6a17ecf948b4c67c0a430b86abc61b77528a849dbb",
+      "disposition": "Pinned primary composition with typed host callbacks; explicit visual/secondary-variant adaptations in PRESENTATION.md; runtime gate separate from provenance",
+      "exampleReferences": [
+        {
+          "name": "file-tree-demo",
+          "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/file-tree-demo.svelte",
+          "sha256": "03665b3117f58bde3ec0489ad0961b6329be4f217e287da65edbb8466c31e956"
+        }
+      ]
+    },
+    {
+      "id": "inline-citation",
+      "source": "docs/content/ai-elements/inline-citation.md",
+      "sourceSha256": "58a615e47976fca592d5f9a2999c4842082a93e9fda5f98150cda9ea3da6ece0",
+      "disposition": "Pinned primary composition with typed host callbacks; explicit visual/secondary-variant adaptations in PRESENTATION.md; runtime gate separate from provenance",
+      "exampleReferences": [
+        {
+          "name": "inline-citation-demo",
+          "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/inline-citation-demo.svelte",
+          "sha256": "f368552cd48e38583cea6e26bd48a714478ee6efff22a634e0180f8ea4319e63"
+        }
+      ]
+    },
+    {
+      "id": "message",
+      "source": "docs/content/ai-elements/message.md",
+      "sourceSha256": "633474d1f09662bc6558197a08b8a737eeb05a28121ea15eda2d7189a5cfdbc8",
+      "disposition": "Pinned primary composition with typed host callbacks; explicit visual/secondary-variant adaptations in PRESENTATION.md; runtime gate separate from provenance",
+      "exampleReferences": [
+        {
+          "name": "message-pattern",
+          "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/message-pattern.svelte",
+          "sha256": "050f11512c7adc1ad02a5faeda8cd156125cd0e4b35a18e2039dd09edc1cd292"
+        }
+      ]
+    },
+    {
+      "id": "model-selector",
+      "source": "docs/content/ai-elements/model-selector.md",
+      "sourceSha256": "00842f32fcade6b7075d6a2e630c3c9068af5ba3ccdef846653fbb42216fd30c",
+      "disposition": "Pinned primary composition with typed host callbacks; explicit visual/secondary-variant adaptations in PRESENTATION.md; runtime gate separate from provenance",
+      "exampleReferences": [
+        {
+          "name": "model-selector-demo",
+          "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/model-selector-demo.svelte",
+          "sha256": "f1d6b9cd26933b64b6ed8f89a6c0d67ecc0b3935e996e3f97bd2e9acd95891b2"
+        }
+      ]
+    },
+    {
+      "id": "plan",
+      "source": "docs/content/ai-elements/plan.md",
+      "sourceSha256": "107bfa7a66544fb5981b9d76ead8e0b54dd44f1a8f97cd14b71548fcf5ca0719",
+      "disposition": "Pinned primary composition with typed host callbacks; explicit visual/secondary-variant adaptations in PRESENTATION.md; runtime gate separate from provenance",
+      "exampleReferences": [
+        {
+          "name": "plan-demo",
+          "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/plan-demo.svelte",
+          "sha256": "80a9100c2ece162d1438f9ec708bdc6d214bcc5c2ada32a9271b388f7761b5d3"
+        },
+        {
+          "name": "plan-description",
+          "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/plan-description.svelte",
+          "sha256": "3b6a75ba057cb49466d8f8966ca7a98f1a2560ce8023a171fa67d764b1135064"
+        }
+      ]
+    },
+    {
+      "id": "prompt-input",
+      "source": "docs/content/ai-elements/prompt-input.md",
+      "sourceSha256": "3ce8bb9a5a3ff58d025bf2ab875894197a4988613e509978ff118338ea33e06e",
+      "disposition": "Pinned primary composition with typed host callbacks; explicit visual/secondary-variant adaptations in PRESENTATION.md; runtime gate separate from provenance",
+      "exampleReferences": [
+        {
+          "name": "prompt-input-demo",
+          "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/prompt-input-demo.svelte",
+          "sha256": "57e19f26a2c3e79c13056825fb096d7632f97bf1e38268f8e4a3bec6f2cf753d"
+        }
+      ]
+    },
+    {
+      "id": "queue",
+      "source": "docs/content/ai-elements/queue.md",
+      "sourceSha256": "7963905a1a64218ec5c76d2ab8cd1707f536e5b8f9d7f9b3a63e6a43cbb3f3c9",
+      "disposition": "Pinned primary composition with typed host callbacks; explicit visual/secondary-variant adaptations in PRESENTATION.md; runtime gate separate from provenance",
+      "exampleReferences": [
+        {
+          "name": "queue-demo",
+          "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/queue-demo.svelte",
+          "sha256": "af0d9e4ba2a74e7757c456a80eaa5ce5e037546d3b41aa49dc9b6a7e15043b53"
+        },
+        {
+          "name": "queue-descriptions",
+          "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/queue-descriptions.svelte",
+          "sha256": "94e459f0e822cd35a2254de79cfdcce1a419d8bc8d64d337f15963996a0f4020"
+        }
+      ]
+    },
+    {
+      "id": "reasoning",
+      "source": "docs/content/ai-elements/reasoning.md",
+      "sourceSha256": "0f66f97f9e5594bdbe8a7388966d435338a5028c06a5f914eeaf5387ac5973eb",
+      "disposition": "Pinned primary composition with typed host callbacks; explicit visual/secondary-variant adaptations in PRESENTATION.md; runtime gate separate from provenance",
+      "exampleReferences": [
+        {
+          "name": "reasoning-demo",
+          "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/reasoning-demo.svelte",
+          "sha256": "654928198ca88632da0e34f939fc7abc0f613fa1c909619f68e642f6c9299687"
+        },
+        {
+          "name": "reasoning-duration",
+          "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/reasoning-duration.svelte",
+          "sha256": "b17978defdd5a52d72e27273c215251dd52a1771f1fb328485a6f4b5b26f3147"
+        }
+      ]
+    },
+    {
+      "id": "sources",
+      "source": "docs/content/ai-elements/sources.md",
+      "sourceSha256": "292392fd94a04a354dad4a010479dc44f806b00db40e3647034e0d25d116fdb1",
+      "disposition": "Pinned primary composition with typed host callbacks; explicit visual/secondary-variant adaptations in PRESENTATION.md; runtime gate separate from provenance",
+      "exampleReferences": [
+        {
+          "name": "sources-demo",
+          "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/sources-demo.svelte",
+          "sha256": "421232da5a66414b47fa70cfa4ead081b6f7f7d930ee116e927ea6a549336b63"
+        }
+      ]
+    },
+    {
+      "id": "stack-trace",
+      "source": "docs/content/ai-elements/stack-trace.md",
+      "sourceSha256": "e58e023928ec1ceb8f0e630e560e021702e2a6bb08cbe087124f3ab039cda99e",
+      "disposition": "Pinned primary composition with typed host callbacks; explicit visual/secondary-variant adaptations in PRESENTATION.md; runtime gate separate from provenance",
+      "exampleReferences": [
+        {
+          "name": "stack-trace-demo",
+          "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/stack-trace-demo.svelte",
+          "sha256": "9739a8bb43d3cc5b3fed037b0cbfdf994a9b93b034cc932243b2acd90c153486"
+        },
+        {
+          "name": "stack-trace-frames",
+          "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/stack-trace-frames.svelte",
+          "sha256": "1245f2350a7c4283236ac29b028ffd9c98c51b10fcc637f32ee91165df009efe"
+        }
+      ]
+    },
+    {
+      "id": "subagent",
+      "source": "docs/content/ai-elements/subagent.md",
+      "sourceSha256": "f667d89910f25b00ac78d1bb47de9243c8be40595d4677372b2adc59f93b7036",
+      "disposition": "Pinned primary composition with typed host callbacks; explicit visual/secondary-variant adaptations in PRESENTATION.md; runtime gate separate from provenance",
+      "exampleReferences": [
+        {
+          "name": "subagent-demo",
+          "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/subagent-demo.svelte",
+          "sha256": "0719f1867d38432e639d00bf9efa0fc791bb75aa36887b3c17631b54da0ceb5c"
+        },
+        {
+          "name": "subagent-running",
+          "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/subagent-running.svelte",
+          "sha256": "8b12104868bc0645c53661b0decb5cc97d5c40421d65bb385d1101d215dc67dd"
+        },
+        {
+          "name": "subagent-details",
+          "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/subagent-details.svelte",
+          "sha256": "5cdde4ab3cbff4e40fde9842a0d00c91c49135c9489ea4897aa369f70112e483"
+        }
+      ]
+    },
+    {
+      "id": "suggestion",
+      "source": "docs/content/ai-elements/suggestion.md",
+      "sourceSha256": "bc505977c2f7d6f970f957fee82a0adf60c3aaf11f3633ed97283bec0a4a5ea3",
+      "disposition": "Pinned primary composition with typed host callbacks; explicit visual/secondary-variant adaptations in PRESENTATION.md; runtime gate separate from provenance",
+      "exampleReferences": [
+        {
+          "name": "suggestion-demo",
+          "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/suggestion-demo.svelte",
+          "sha256": "54f0ab3b465411cba33de9c4cba6f4df00a6456ea0c19f391638e25a3827e56e"
+        }
+      ]
+    },
+    {
+      "id": "task",
+      "source": "docs/content/ai-elements/task.md",
+      "sourceSha256": "9c5fefc0fa0f848619d1fef6cbaea8525182bbfe72d955e16ac92e880c7cca01",
+      "disposition": "Pinned primary composition with typed host callbacks; explicit visual/secondary-variant adaptations in PRESENTATION.md; runtime gate separate from provenance",
+      "exampleReferences": [
+        {
+          "name": "task-demo",
+          "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/task-demo.svelte",
+          "sha256": "c6b7b71e0686aae636fc81b418b62e72a4402c8c5e5163c696917dfc66fd1835"
+        }
+      ]
+    },
+    {
+      "id": "terminal",
+      "source": "docs/content/ai-elements/terminal.md",
+      "sourceSha256": "2841dbb9ae1e394f3563031685f71d123369d70a45f9116964c20a0505b5ce7a",
+      "disposition": "Pinned primary composition with typed host callbacks; explicit visual/secondary-variant adaptations in PRESENTATION.md; runtime gate separate from provenance",
+      "exampleReferences": [
+        {
+          "name": "terminal-demo",
+          "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/terminal-demo.svelte",
+          "sha256": "61df16c2a8fdf24b8c226577d67268661c74a1c828ba5768b208ae1229e544a5"
+        },
+        {
+          "name": "terminal-error",
+          "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/terminal-error.svelte",
+          "sha256": "87d68842f6c09dbe3913f551535a538628290d2425db4d2831de992a688a895c"
+        }
+      ]
+    },
+    {
+      "id": "test-results",
+      "source": "docs/content/ai-elements/test-results.md",
+      "sourceSha256": "ac89f63e8aa2aa3bcd8885f7b89e45aea21e769ca6819a2a68350c07cabe641e",
+      "disposition": "Pinned primary composition with typed host callbacks; explicit visual/secondary-variant adaptations in PRESENTATION.md; runtime gate separate from provenance",
+      "exampleReferences": [
+        {
+          "name": "test-results-demo",
+          "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/test-results-demo.svelte",
+          "sha256": "d6545b47d38b3d468d9c01cb363fee5b8bc21ce6afda494c4dbe191aa97cf4a8"
+        },
+        {
+          "name": "test-results-suites",
+          "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/test-results-suites.svelte",
+          "sha256": "dfb626b68d9640f46812e96c9ceef29a1c3a5d0b6b5afc20032e4781976e2bb4"
+        }
+      ]
+    },
+    {
+      "id": "tool",
+      "source": "docs/content/ai-elements/tool.md",
+      "sourceSha256": "9446599d0c95ba69af12e480e9c2040077191aa6fa4f74870aec3b6e31b03f83",
+      "disposition": "Pinned primary composition with typed host callbacks; explicit visual/secondary-variant adaptations in PRESENTATION.md; runtime gate separate from provenance",
+      "exampleReferences": [
+        {
+          "name": "tool-demo",
+          "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/tool-demo.svelte",
+          "sha256": "cf1e54616bdcc98ca0b7c267b3f5cd8a9bbbc50156e0833347ec4f80c1e0571b"
+        },
+        {
+          "name": "tool-states",
+          "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/tool-states.svelte",
+          "sha256": "e09974958bd2a0b358692093ac6f3535359ee2ddb0f3e215780f1c66be9b6c89"
+        },
+        {
+          "name": "tool-sheet",
+          "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/tool-sheet.svelte",
+          "sha256": "7007326057ec74d0f5687133402c8946614e1bf7cd8892d8f0a11f20c59e786a"
+        },
+        {
+          "name": "tool-approval",
+          "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/tool-approval.svelte",
+          "sha256": "93a194b396904f5fa71f3b32d85bf220a9b5d561455e0f2bdba8bda7fe721c03"
+        }
+      ]
+    }
+  ],
+  "localSecurityFiles": [
+    {
+      "destination": "src/upstream/markdown/safe-url.ts",
+      "sha256": "4a30cd998c1f47103463f0f76efc78f8903f2f80e61c5566584639218baade12",
+      "purpose": "VICT-owned safe external URL policy"
+    }
+  ],
+  "hashNormalization": "SHA-256 of UTF-8 bytes with CRLF normalized to LF, matching Git text blobs"
+}

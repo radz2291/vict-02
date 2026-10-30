@@ -1,3 +1,4 @@
+import { slotScopeProblems, scopedSlotLexicalScope } from './slot-scope.js';
 /**
  * `compileUiDocument` — resolve one validated document into a
  * `vict.ui-render-plan@1` (API-SPEC §4): resolved structure instructions,
@@ -25,6 +26,7 @@ import type {
   UiStyleSource,
   UiStyleValue,
   UiValueType,
+  UiSlotScope,
 } from './document.js';
 import { UI_RENDER_PLAN_SCHEMA } from './document.js';
 import { canonicalUiDocument } from './canonical.js';
@@ -33,6 +35,7 @@ import { checkExpression, checkExpressionTarget, repeatExpressionFields, type Ui
 import { sha256 } from './sha256.js';
 import { isUiValueOfType } from './values.js';
 import { validateUiDocument } from './validate.js';
+import { uiThemeDeclarations } from './theme.js';
 
 /** The component-ABI marker (amendment §3.2): declared as an events capability. */
 export const UI_COMPONENT_ABI = 'vict.ui-component-abi@1' as const;
@@ -44,6 +47,8 @@ export interface UiExtensionDescriptor {
   readonly props: readonly UiPropDecl[];
   readonly events?: readonly string[];
   readonly slots?: readonly string[];
+  /** Explicit scoped-slot capability; new descriptor revisions opt in. */
+  readonly scopedSlots?: readonly string[];
   /**
    * Component-ABI marker (amendment §3.2): required for descriptors
    * declaring `outputs` or renderable slots, must equal the events marker.
@@ -138,6 +143,8 @@ export type UiRenderInstruction =
       readonly classes?: readonly string[];
       readonly styleRuleIds?: readonly string[];
       readonly styleTargets?: readonly string[];
+      readonly partClasses?: Readonly<Record<string, string>>;
+      readonly partStyleRuleIds?: Readonly<Record<string, readonly string[]>>;
       readonly outputDecls?: readonly UiOutputDecl[];
       /** Descriptor property errors refuse only this occurrence at render. */
       readonly rejectedProps?: readonly string[];
@@ -145,6 +152,7 @@ export type UiRenderInstruction =
       readonly outputBindings?: Readonly<Record<string, UiOutputBinding>>;
       /** Instance-scope slot fills (declared slots only). */
       readonly slots?: Readonly<Record<string, readonly UiRenderInstruction[]>>;
+      readonly slotScopes?: Readonly<Record<string, UiSlotScope>>;
     }
   | {
       readonly kind: 'repeat';
@@ -299,13 +307,13 @@ export function compileUiDocument(
     `uv-${docHash}-${nodeId.replace(/[^A-Za-z0-9_-]/g, '_')}`;
 
   // ---- token defaults layer ----------------------------------------------
-  const tokenDeclarations = Object.entries(
+  const tokenDeclarations = [...Object.entries(
     (document.tokens ?? {}) as Record<string, { value: string }>,
   ).map(([tokenId, token]) => ({
     // CSS custom-property-safe name (declared token ids may contain dots)
     property: `--ui-token-${tokenId.replace(/[^A-Za-z0-9_-]/g, '_')}`,
     value: { type: 'literal', value: token.value } as UiResolvedValue,
-  }));
+  })), ...uiThemeDeclarations(document.theme)];
   if (tokenDeclarations.length > 0) {
     rules.push({
       ruleId: `${docHash}-tokens`,
@@ -394,7 +402,7 @@ export function compileUiDocument(
 
   const compileNode = (
     nodeId: string,
-    scope: { inDefinition: boolean; instancePath: readonly string[]; repeatItems?: UiScopeInfo['repeatItems']; propTypes?: UiScopeInfo['propTypes'] },
+    scope: Omit<UiScopeInfo,'repeatItems'> & { readonly repeatItems?: UiScopeInfo['repeatItems']; instancePath: readonly string[] },
   ): UiRenderInstruction => {
     const node = nodes[nodeId];
     if (node === undefined) {
@@ -528,8 +536,8 @@ export function compileUiDocument(
             documentId,
             document,
             { ...catalogs, elements: semanticCatalog },
-            (childId) => compileNode(childId, { ...scope, instancePath: [...scope.instancePath, `${nodeId}@${node.definitionId}`] }),
-            { inDefinition: scope.inDefinition, repeatItems: scope.repeatItems ?? {}, propTypes: scope.propTypes },
+            (childId, slotScope) => compileNode(childId, { ...scope, ...slotScope, instancePath: [...scope.instancePath, `${nodeId}@${node.definitionId}`] }),
+            { ...scope, repeatItems: scope.repeatItems ?? {} },
           );
           issues.push(...compiledExtension.issues);
           extensionRefs.push({ extensionId: descriptor.id, revision: effectiveRevision });
@@ -546,7 +554,26 @@ export function compileUiDocument(
           }
           const localId = compileStyleDeclarations(node.localStyle, `${classFor(nodeId)}-l`, scope.inDefinition ? 'componentBase' : 'local', `.${classFor(nodeId)}`);
           if (localId !== undefined) styleRuleIds.push(localId);
-          return { ...compiledExtension.instruction, classes: [...(node.classes ?? []), classFor(nodeId)], styleRuleIds, styleTargets: descriptor.styleTargets ?? [] };
+          const partClasses: Record<string, string> = {};
+          const partStyleRuleIds: Record<string, string[]> = {};
+          for (const [part, style] of Object.entries(node.partStyles ?? {})) {
+            if (!descriptor.styleTargets?.includes(part)) {
+              issues.push(uiDiagnostic('UI_DOC_INVALID_LITERAL', `Component '${descriptor.id}' declares no style part '${part}'.`, { documentId, nodeId, part, feature: 'component-part' }));
+              continue;
+            }
+            const partClass = `${classFor(nodeId)}-part-${sha256(part).slice(0, 10)}`;
+            partClasses[part] = partClass;
+            const ids: string[] = [];
+            for (const sourceId of style.styleSources ?? []) {
+              const source = document.styleSources[sourceId];
+              const id = compileStyleDeclarations(source?.declarations, `${partClass}-s${ids.length}`, scope.inDefinition ? 'componentBase' : 'source', `.${partClass}`, { conditionId: source?.conditionId, pseudo: source?.pseudo });
+              if (id !== undefined) ids.push(id);
+            }
+            const id = compileStyleDeclarations(style.localStyle, `${partClass}-l`, scope.inDefinition ? 'componentBase' : 'local', `.${partClass}`);
+            if (id !== undefined) ids.push(id);
+            partStyleRuleIds[part] = ids;
+          }
+          return { ...compiledExtension.instruction, classes: [...(node.classes ?? []), classFor(nodeId)], styleRuleIds, styleTargets: descriptor.styleTargets ?? [], ...(Object.keys(partClasses).length ? {partClasses,partStyleRuleIds} : {}) };
         }
         definitionExpansionGuard += 1;
         if (definitionExpansionGuard > 256) {
@@ -713,7 +740,7 @@ export function compileUiDocument(
 
   // Expansion bounds are a structural refusal even if reached only after
   // resolution. They must not be confused with descriptor diagnostics.
-  const expansionErrors = issues.filter(issue => issue.code === 'UI_DOC_CYCLE');
+  const expansionErrors = issues.filter(issue => issue.code === 'UI_DOC_CYCLE' || issue.feature === 'component-part');
   if (hasErrors(expansionErrors)) return { ok: false, issues: expansionErrors };
 
   // Validation above owns structural refusal. Descriptor checks below that
@@ -773,10 +800,11 @@ function compileExtensionInstance(
   documentId: string,
   document: UiDocument,
   catalogs: UiCompileCatalogs,
-  compileChild: (childId: string) => UiRenderInstruction,
+  compileChild: (childId: string, scope?: UiScopeInfo) => UiRenderInstruction,
   lexicalScope: UiScopeInfo,
 ): CompileExtensionOutcome {
   const issues: UiDiagnostic[] = [];
+  catalogs = {...catalogs,stateTypes:lexicalScope.stateTypes??catalogs.stateTypes};
   const hasOutputs = (descriptor.outputs?.length ?? 0) > 0;
   const hasSlots = (descriptor.slots?.length ?? 0) > 0;
   const isComponentAbi = descriptor.abi !== undefined || hasOutputs || hasSlots;
@@ -844,7 +872,7 @@ function compileExtensionInstance(
       continue;
     }
     if ('setState' in binding) {
-      const stateDecl = (document.localState ?? {})[binding.setState.key];
+      const stateDecl = lexicalScope.stateTypes ? (lexicalScope.stateTypes[binding.setState.key] ? {type:lexicalScope.stateTypes[binding.setState.key]} : undefined) : (document.localState ?? {})[binding.setState.key];
       if (stateDecl === undefined) {
         issues.push(uiDiagnostic('UI_COMPONENT_BINDING_INCOMPATIBLE', 'Output binding targets undeclared state.',
           { documentId, nodeId: node.id, output: outputName, stateKey: binding.setState.key }));
@@ -880,6 +908,13 @@ function compileExtensionInstance(
           );
         }
       }
+    } else if ('emit' in binding) {
+      const target=lexicalScope.scopedOutputs?.find(output=>output.name===binding.emit.output);
+      if(!target)issues.push(uiDiagnostic('UI_COMPONENT_OUTPUT_UNKNOWN','emit requires a declared scoped output.',{documentId,nodeId:node.id,output:binding.emit.output}));
+      else if(binding.emit.value!==undefined){
+        if(target.payload==='void')issues.push(uiDiagnostic('UI_COMPONENT_BINDING_INCOMPATIBLE','Void scoped output cannot carry a value.',{documentId,nodeId:node.id}));
+        else issues.push(...checkBindingExpression(binding.emit.value,target.payload,decl.payload,catalogs,documentId,node.id,lexicalScope));
+      } else if(target.payload!==decl.payload)issues.push(uiDiagnostic('UI_COMPONENT_BINDING_INCOMPATIBLE','Scoped output payload type differs from source output.',{documentId,nodeId:node.id}));
     } else if ('invokeAction' in binding) {
       const inputTypes = catalogs.actionInputs?.[binding.invokeAction.actionId];
       for (const [inputName, expression] of Object.entries(binding.invokeAction.input ?? {})) {
@@ -936,6 +971,7 @@ function compileExtensionInstance(
 
   // --- slot fills: declared slots only (§3.7) -------------------------------
   const slots: Record<string, readonly UiRenderInstruction[]> = {};
+  const slotScopes: Record<string, UiSlotScope> = {};
   for (const [slotName, fill] of Object.entries(node.slots ?? {})) {
     if (!(descriptor.slots ?? []).includes(slotName)) {
       // Undeclared fills are REJECTED at compile (today's path silently
@@ -949,7 +985,13 @@ function compileExtensionInstance(
       );
       continue;
     }
-    slots[slotName] = fill.children.map(compileChild);
+    if(descriptor.scopedSlots?.includes(slotName)&&!fill.scope){issues.push(uiDiagnostic('UI_COMPONENT_BINDING_INCOMPATIBLE','Scoped slot fill requires an explicit versioned scope.',{documentId,nodeId:node.id,slot:slotName}));continue;}
+    if(fill.scope){
+      const problems=slotScopeProblems(fill.scope);
+      if(!descriptor.scopedSlots?.includes(slotName)||problems.length){issues.push(uiDiagnostic('UI_COMPONENT_BINDING_INCOMPATIBLE',problems[0]??'This slot does not declare scoped rendering capability.',{documentId,nodeId:node.id,slot:slotName}));continue;}
+      slotScopes[slotName]=fill.scope;
+      slots[slotName]=fill.children.map(childId=>compileChild(childId,scopedSlotLexicalScope(lexicalScope,fill.scope!)));
+    }else slots[slotName] = fill.children.map(childId=>compileChild(childId));
   }
 
   const instruction: Extract<UiRenderInstruction, { kind: 'extension' }> = {
@@ -964,6 +1006,7 @@ function compileExtensionInstance(
     ...(outputDecls !== undefined ? { outputDecls } : {}),
     ...(outputDecls !== undefined ? { outputBindings: acceptedBindings } : {}),
     ...(Object.keys(slots).length > 0 ? { slots } : {}),
+    ...(Object.keys(slotScopes).length > 0 ? { slotScopes } : {}),
   };
   return { instruction, issues };
 }

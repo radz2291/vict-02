@@ -1,0 +1,9 @@
+{
+  "name": "studio-ui-consumer",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": { "dev": "vite --host 127.0.0.1", "build": "vite build", "preview": "vite preview --host 127.0.0.1" },
+  "dependencies": { "@victframework/ui-ai-svelte": "0.4.0-rc.1", "@victframework/ui-flow-svelte": "0.4.0-rc.1", "svelte": "5.57.0" },
+  "devDependencies": { "@sveltejs/vite-plugin-svelte": "5.1.1", "vite": "6.4.3", "typescript": "6.0.3" }
+}

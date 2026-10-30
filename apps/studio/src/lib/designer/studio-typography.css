@@ -1,0 +1,91 @@
+/* Quiet Studio profile: opt in on chrome only, including portaled tool content.
+   No selectors enter authored canvas content; no colours, radii or shadows. */
+.studio-type-scope[data-studio-typography] {
+  --studio-font-family: system-ui, 'Segoe UI', sans-serif;
+  --studio-font-mono: ui-monospace, monospace;
+  --studio-font-ui: 400 12px/18px var(--studio-font-family);
+  --studio-font-reading: 400 13px/20px var(--studio-font-family);
+  --studio-font-meta: 400 11px/16px var(--studio-font-family);
+  --studio-font-code: 400 11px/16px var(--studio-font-mono);
+  --studio-font-title: 400 14px/20px var(--studio-font-family);
+  --studio-weight-label: 400;
+  --studio-weight-selected: 500;
+  --studio-weight-content: 500;
+  --studio-space-1: 4px;
+  --studio-space-2: 8px;
+  --studio-space-3: 12px;
+  --studio-space-4: 16px;
+  --studio-space-6: 24px;
+  --ui-editor-font: var(--studio-font-family);
+  font: var(--studio-font-ui);
+}
+/* A component's local fallback font cannot establish a second profile. */
+.studio-type-scope[data-studio-typography] :is(.palette,.uv-inspector,.composer,.uv-layers,.starting-value) {font:var(--studio-font-ui)}
+.studio-type-scope[data-studio-typography] :is(.uv-inspector,.composer,.starting-value) :is(input,textarea,select,button,label),
+.studio-type-scope[data-studio-typography] :is(.palette [role=tab],.canvas-modes button,.workspace-menus>button,.data-editor-toolbar button,.details-handoff,.data-row,.source-actions button,.scenario-choice,.test-actions button) {font:var(--studio-font-ui)}
+.studio-type-scope[data-studio-typography] :is(.studio-section-header,.document-section-header,.chat-heading strong,.panel-header strong,.section-heading h2,.uv-inspector h3,.composer h3,.application-attachment h3,.studio-chat-details h3,.studio-chat-details h4) {font:var(--studio-font-ui);font-weight:var(--studio-weight-label)}
+.studio-type-scope.source-details[data-studio-typography] header strong {font-weight:var(--studio-weight-content)}
+.studio-type-scope[data-studio-typography] :is(.save-state,.agent-status,.details-model,.scope-label,.connection-empty,.structure-status,.vict-source-kind,.vict-source-summary,.child-count,.uv-layers footer,.data-editor-heading>span,.data-row small,.data-preview,.panel-hint,.scenario-choice span,.reset-hint,.rule-context,.selection-name,.composition-link,.composer small,.keep-aside span) {font:var(--studio-font-meta)}
+.studio-type-scope.workspace-status[data-studio-typography] {font:var(--studio-font-meta)}
+.studio-type-scope[data-studio-typography] :is(.source-editor,.source-preview,.studio-chat-details .details-record,.uv-inspector pre,[aria-label='Selection technical information'] dl) {font:var(--studio-font-code)}
+.studio-type-scope[data-studio-typography] .useful-facts :is(dt,dd) {font:var(--studio-font-ui)}
+.studio-type-scope[data-studio-typography] .vict-source-node strong {font:var(--studio-font-ui);font-weight:var(--studio-weight-content)}
+.studio-type-scope[data-studio-typography] .vict-ai-conversation,
+.studio-type-scope[data-studio-typography] :is(.vict-ai-user-text,.vict-ai-markdown,.vict-ai-empty,.vict-conversation-textarea,.studio-reading-input) {font:var(--studio-font-reading)}
+.studio-type-scope[data-studio-typography] .vict-ai-markdown :is(p,li) {font:inherit}
+.studio-type-scope[data-studio-typography] .vict-ai-markdown :is(strong,b) {font-weight:600}
+.studio-type-scope[data-studio-typography] .vict-ai-markdown :is(pre,code) {font:var(--studio-font-code)}
+.studio-type-scope[data-studio-typography] :is(.vict-ai-event-summary,.vict-ai-event-detail,.vict-ai-attempt-stages) {font:var(--studio-font-ui)}
+.studio-type-scope[data-studio-typography] .current-screen {font-weight:var(--studio-weight-label)}
+.studio-type-scope.create-screen-dialog[data-studio-typography] h2 {font:var(--studio-font-title)}
+/* Spacing is role based. Tree indentation and graph geometry remain source-owned. */
+.studio-type-scope[data-studio-typography] :is(.details-body,.document-section-body,.testing-body,.palette-body,.studio-chat-details) {padding:var(--studio-space-3)}
+.studio-type-scope[data-studio-typography] .layers-body {padding:0}
+.studio-type-scope[data-studio-typography] .layers-body .uv-layers header {padding:var(--studio-space-2) var(--studio-space-3)}
+.studio-type-scope[data-studio-typography] .layers-body .uv-layers ul {padding-inline:var(--studio-space-2)}
+.studio-type-scope[data-studio-typography] :is(.studio-section-header,.document-section-header) {padding:var(--studio-space-2) var(--studio-space-3)}
+.studio-type-scope[data-studio-typography] :is(.data-editor-toolbar,.data-editor-heading,.details-header [role=tablist],.data-heading) {gap:var(--studio-space-2)}
+/* Tab cells stay contiguous: their existing divider is the separator. */
+.studio-type-scope[data-studio-typography] .details-header [role=tablist] {gap:0}
+.studio-type-scope[data-studio-typography] :is(.data-editor-toolbar,.data-editor-heading) {margin-bottom:var(--studio-space-4)}
+.studio-type-scope[data-studio-typography] .useful-facts>div {gap:var(--studio-space-2);padding-block:var(--studio-space-2)}
+.studio-type-scope[data-studio-typography] :is(.details-relationships,.test-actions,.value-actions,.compact-grid,.group-values,.action-inputs) {gap:var(--studio-space-2)}
+.studio-type-scope[data-studio-typography] :is(.uv-inspector,.composer) label {margin-block:var(--studio-space-2)}
+.studio-type-scope[data-studio-typography] :is(.uv-inspector,.composer,.starting-value) :is(input:not([type=checkbox]):not([type=radio]),select) {min-height:28px;padding:var(--studio-space-1) var(--studio-space-2)}
+.studio-type-scope[data-studio-typography] :is(.starting-value,.data-editor-toolbar) button {padding:var(--studio-space-1) var(--studio-space-2)}
+.studio-type-scope[data-studio-typography] .starting-value :is(input,select) {min-height:32px}
+.studio-type-scope[data-studio-typography] .starting-value textarea {padding:var(--studio-space-2)}
+.studio-type-scope[data-studio-typography] :is(.workspace-menus>button,.canvas-modes button) {padding:var(--studio-space-1) var(--studio-space-2)}
+.studio-type-scope.workspace-menu[data-studio-typography] [role^=menuitem] {font:var(--studio-font-ui);padding:var(--studio-space-2) var(--studio-space-3)}
+.studio-type-scope[data-studio-typography] .vict-ai-messages {gap:var(--studio-space-6);padding:var(--studio-space-4) var(--studio-space-3)}
+.studio-type-scope[data-studio-typography] .vict-conversation-textarea {padding:var(--studio-space-2) var(--studio-space-3)}
+.studio-type-scope[data-studio-typography] :is(.vict-ai-timeline,.vict-ai-attempt-stages) {gap:var(--studio-space-2)}
+.studio-type-scope[data-studio-typography] .vict-source-node {padding:var(--studio-space-3)}
+
+.studio-type-scope[data-studio-typography] :is(.composer strong,.composer h3) {font:var(--studio-font-ui);font-weight:var(--studio-weight-label);letter-spacing:normal;text-transform:none}
+.studio-type-scope[data-studio-typography] :is(.composer,.composer .recipes,.composer .arrange,.structure-tools) {gap:var(--studio-space-2)}
+.studio-type-scope[data-studio-typography] .composer .recipe {padding:var(--studio-space-2);gap:var(--studio-space-2)}
+.studio-type-scope[data-studio-typography] [data-slot=trace-title] {font:var(--studio-font-ui)}
+
+.studio-type-scope[data-studio-typography] .uv-layers .search input {font:var(--studio-font-ui);padding:var(--studio-space-1) var(--studio-space-2);min-height:32px}
+.studio-type-scope[data-studio-typography] .uv-inspector .details-identity {margin-bottom:var(--studio-space-2)}
+.studio-type-scope[data-studio-typography] .details-identity {margin-bottom:var(--studio-space-2)}
+
+/* Menus use ticks; active panel context and workspace mode retain a small weight step. */
+.studio-type-scope[data-studio-typography] .uv-layers .is-parent .name {font-weight:var(--studio-weight-label)}
+.studio-type-scope[data-studio-typography] .scenario-choice strong {font:inherit}
+.studio-type-scope[data-studio-typography] .action-card :is(p,.action-inputs>span) {font:var(--studio-font-ui)}
+.studio-type-scope[data-studio-typography] :is([role=tab][aria-selected=true],button[aria-pressed=true],.studio-section-header[aria-expanded=true],.document-section-header[aria-expanded=true],.scenario-choice[aria-pressed=true]) {font-weight:var(--studio-weight-selected)}
+.studio-type-scope[data-studio-typography] .uv-layers [role=treeitem][aria-selected=true] .name,
+.studio-type-scope[data-studio-typography] .vict-source-node.selected strong {font-weight:var(--studio-weight-selected)}
+
+.studio-type-scope[data-studio-typography] .structure-tools [role=menubar]>button {font:var(--studio-font-ui)}
+
+/* Content identity keeps a small hierarchy, independent of control selection. */
+.studio-type-scope[data-studio-typography] :is(.action-card h3,.data-editor-heading h2,.data-row strong,.details-relationships button strong) {font:var(--studio-font-ui);font-weight:var(--studio-weight-content)}
+.studio-type-scope[data-studio-typography] .action-card .simulation-badge {font:var(--studio-font-meta)}
+
+/* Disclosure chrome shares the same quiet header role, including advanced tools. */
+.studio-type-scope[data-studio-typography] .studio-disclosure > summary,
+.studio-type-scope[data-studio-typography] .floating-selection .uv-inspector details > summary{font:var(--studio-font-ui);font-weight:var(--studio-weight-label)}
+.studio-type-scope[data-studio-typography] .studio-disclosure[open] > summary{font-weight:var(--studio-weight-selected)}

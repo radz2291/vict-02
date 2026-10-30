@@ -1,0 +1,44 @@
+/** Explicit opt-in. Real selected provider; synthetic saved source only. */
+import { it,expect } from 'vitest';
+import { readFileSync,mkdirSync,writeFileSync,appendFileSync } from 'node:fs';
+import { join,resolve } from 'node:path';
+import { createHash } from 'node:crypto';
+import { execFileSync } from 'node:child_process';
+import type { UiDocument } from '@victframework/ui';
+import { EditorBridge } from '@victframework/ui-editor';
+import { designerCatalogs } from '../src/lib/designer/application.js';
+import { screenRecipes } from '../src/lib/designer/recipes.js';
+import { documentCursor,applyAgentProposal,agentCoverage } from '../src/lib/designer/agent-edits.js';
+import { validateAgentStart,openAgentRun,acknowledgeAgentEdit,cancelAgentRun,type StudioAgentEvent } from '../src/lib/server/designer-agent.js';
+import { refuseVisualCapture } from '../src/lib/server/designer-visual.js';
+import { screenStore } from '../src/lib/designer/storage.js';
+const live=process.env.STUDIO_AGENT_LIVE_FINAL==='1';
+it.skipIf(!live)('continues the actual all-83 source on a pinned product, recovers a malformed expression through overview diagnostics, and finishes intentional source cleanup',async()=>{
+ const repository=execFileSync('git',['rev-parse','--show-toplevel'],{encoding:'utf8'}).trim();
+ const head=execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim();
+ const productionPaths=['apps/studio/src','packages/ui-editor/src','packages/ui-svelte/src','packages/ui-ai-svelte/src','packages/ui-flow-svelte/src'];
+ const dirty=execFileSync('git',['diff','--name-only','HEAD','--',...productionPaths],{encoding:'utf8'}).trim();if(dirty)throw Error('Production source must be committed before this evidence run.');
+ const files=['apps/studio/src/lib/server/designer-agent.ts','apps/studio/src/lib/server/designer-model.ts','apps/studio/src/lib/server/designer-visual.ts','apps/studio/src/lib/designer/agent-edits.ts','apps/studio/src/lib/designer/agent-reads.ts','apps/studio/src/lib/designer/recipes.ts','packages/ui-editor/src/commands.ts','packages/ui-editor/src/bridge.ts','packages/ui-editor/src/interactive-slots.ts','packages/ui-svelte/src/document/RenderNode.svelte'];
+ const hashes=()=>Object.fromEntries(files.map(path=>[path,createHash('sha256').update(readFileSync(join(repository,path))).digest('hex')]));const beforeHashes=hashes();
+ const home=process.env.USERPROFILE!;try{const auth=JSON.parse(readFileSync(process.env.STUDIO_AGENT_AUTH_FILE??join(home,'.pi/agent/auth.json'),'utf8'));const models=JSON.parse(readFileSync(process.env.STUDIO_AGENT_MODELS_FILE??join(home,'.pi/agent/models.json'),'utf8'));if(!process.env.ZAI_API_KEY){if(typeof auth.zai?.key!=='string'||!auth.zai.key.trim())throw Error();process.env.ZAI_API_KEY=auth.zai.key;}process.env.STUDIO_AGENT_MODEL='zai/glm-5.3-flash';if(!process.env.STUDIO_AGENT_BASE_URL)process.env.STUDIO_AGENT_BASE_URL=models.providers['zai-key1'].baseUrl;}catch{throw Error('The selected provider configuration could not be loaded from the authorized local files.');}
+ const sourcePath=resolve(process.env.STUDIO_AGENT_CONTINUE_SOURCE??'../../docs/studio/cycle-1-3/completion-evidence/all83-source-before-final-audit.json');const source=JSON.parse(readFileSync(sourcePath,'utf8')) as UiDocument;
+ const values=new Map<string,string>();const bridge=new EditorBridge({catalogs:designerCatalogs,store:screenStore({getItem:key=>values.get(key)??null,setItem:(key,value)=>values.set(key,value)},source.id),initial:{document:source,storedRevision:source.revision}});
+ const requested=screenRecipes.map(recipe=>recipe.id);expect(agentCoverage(source,requested).missing).toEqual([]);
+ const epoch=crypto.randomUUID();const cursor=documentCursor(source,bridge.getSnapshot().revision,epoch);const probe=Object.values(source.nodes).find(node=>node.kind==='component'&&node.definitionId==='vict.catalog.checkbox');if(probe?.kind!=='component')throw Error('No checkbox recovery target');
+ const field=probe.props?.checked??{type:'literal',value:false};const button=Object.values(source.nodes).find(node=>node.kind==='component'&&node.definitionId==='vict.catalog.button');if(!button)throw Error('No button label target');
+ const retained=Object.keys(source.nodes).filter(id=>id.startsWith('retained-'));
+ const prompt=`Continue the existing all-83-recipe synthetic showcase, do not restart or replay its committed work. All required source recipes already exist. First perform this explicitly authorized malformed-input recovery test: call studio_screen_edit with bind on node ${probe.id}, prop checked, expression true (a deliberately invalid boolean instead of an expression object). Exactly one negative attempt is requested. After the refusal, read overview and inspect lastValidation's operation, field, expected shape and example. Correct it with expression ${JSON.stringify(field)} and in that same corrected edit modify button ${button.id} label to "Preview action" so a real nonempty transaction is acknowledged. Then finish intentional cleanup: remove every unrelated retained-* synthetic filler node (remaining count ${retained.length}; IDs may be discovered by query retained-). Preserve all 83 required recipes, meaningful components, independent fields and declared bindings. Use one h1 and h2-h6 section headings. Replace obvious unfinished seed copy such as "Add your details here", "Your content", "Add your own content", "First option"/"Second option" only where still generic: use deliberate labeled demo choices; do not delete component examples. Work in canonical batches, report actual acknowledged progress, and read coverage for the complete requested manifest in batches of at most30 IDs. Required manifest: ${requested.join(', ')}. This harness cannot supply a browser image or physical interactions, so explicitly state those remain unverified. Finish with an honest concise source completion and remaining verification report; do not equate source presence with appearance or behavior.`;
+ const start=validateAgentStart({prompt,document:source,cursor,history:[]});if(!start.ok)throw Error(start.message);
+ const directory=join(repository,'docs/studio/cycle-1-3/completion-evidence');mkdirSync(directory,{recursive:true});const stamp=Date.now();const prefix=join(directory,`authoring-final-${stamp}`);const events:StudioAgentEvent[]=[];const owner=`final-${crypto.randomUUID()}`;let runId='';const began=Date.now();
+ writeFileSync(prefix+'-start.json',JSON.stringify({head,beforeHashes,sourcePath,initialNodes:Object.keys(source.nodes).length,initialCoverage:agentCoverage(source,requested),retained:retained.length,prompt,kind:'Pinned production source; real provider; synthetic canonical acknowledgement harness. No browser image or interaction proof.'},null,2));
+ const opened=openAgentRun(owner,start.value,event=>{events.push(event);if(event.type!=='text')appendFileSync(prefix+'.jsonl',JSON.stringify(event)+'\n');if(event.type==='started')runId=event.runId;if(event.type==='proposal')acknowledgeAgentEdit(owner,runId,event.proposal.proposalId,applyAgentProposal(bridge,event.proposal,epoch,false));if(event.type==='capture-request')refuseVisualCapture(owner,event.captureId,'STUDIO_CAPTURE_UNAVAILABLE');});if(!opened.ok)throw Error(opened.code);
+ const stop=setTimeout(()=>cancelAgentRun(owner,opened.runId,'deadline'),900000);
+ try{await opened.finished;}finally{clearTimeout(stop);writeFileSync(prefix+'-result.json',JSON.stringify({head,beforeHashes,afterHashes:hashes(),headAfter:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),elapsedMs:Date.now()-began,events,coverage:agentCoverage(bridge.document,requested),retained:Object.keys(bridge.document.nodes).filter(id=>id.startsWith('retained-')),finalDocument:bridge.document,kind:'Real configured provider and canonical receipts; browser appearance and actual interactions remain unverified.'},null,2));writeFileSync(prefix+'-document.json',JSON.stringify(bridge.document,null,2));}
+ expect(hashes()).toEqual(beforeHashes);
+ expect(events.some(event=>event.type==='tool-event'&&event.kind==='validation-refused'&&event.details?.includes('operations.0.expression')&&event.details.includes('literal'))).toBe(true);
+ expect(events.some(event=>event.type==='tool-event'&&event.kind==='observation'&&event.tool==='studio_screen_read'&&event.details?.includes('lastValidation'))).toBe(true);
+ expect(events.some(event=>event.type==='tool-event'&&event.kind==='committed'&&event.callId)).toBe(true);
+ expect(events.at(-1)).toMatchObject({type:'done',status:'completed',unresolvedTools:[],verification:'source-only'});
+ expect(agentCoverage(bridge.document,requested).missing).toEqual([]);expect(Object.keys(bridge.document.nodes).filter(id=>id.startsWith('retained-'))).toEqual([]);
+ expect(bridge.save().ok).toBe(true);expect(bridge.save().ok).toBe(true);expect(bridge.reopen().ok).toBe(true);expect(agentCoverage(bridge.document,requested).missing).toEqual([]);
+},960000);

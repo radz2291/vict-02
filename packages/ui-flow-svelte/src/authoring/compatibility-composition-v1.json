@@ -1,0 +1,20 @@
+[
+  {
+    "id": "vict.flow.workspace",
+    "revision": "1",
+    "descriptorDigest": "a95d14d7f4e24ec4a77b65c417f50a3f2d44713caad02d9fc2be15e11897f3e9",
+    "capabilitiesDigest": "f7a62b95c20267b938933d9c1f054733a09a8e3deb5af34c766adeaf68347636"
+  },
+  {
+    "id": "vict.flow.viewport",
+    "revision": "1",
+    "descriptorDigest": "3a5fdf885dca40eff199bda8ac8b6bff57d3c11f45fd3a748adae7d398f67f6e",
+    "capabilitiesDigest": "aae6fcf7e37b3138a3b21f167191a2c60212e4696c91cb735437394bd80beb58"
+  },
+  {
+    "id": "vict.flow.port",
+    "revision": "1",
+    "descriptorDigest": "fc52f18b92571345e1c8b2cb32fc85e507ea189b5ac00248f822eb49ebb2030b",
+    "capabilitiesDigest": "e633103aaf22cf91e8a590ed870a712ec20757c8348179433b1eeb3ac9572416"
+  }
+]

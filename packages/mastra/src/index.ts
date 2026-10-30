@@ -163,3 +163,6 @@ export {
   mastraThreadIdForConversation,
 } from './memory.js';
 export type { MastraMemoryLifecycleOptions, MastraMemoryPruneResult } from './memory.js';
+
+export type {InputValidationFeedbackPolicy,InputValidationFeedbackResolver,SafeInputValidationIssue,InputValidationRule} from './input-validation-feedback.js';
+export {inputValidationFeedback as formatInputValidationFeedback} from './input-validation-feedback.js';

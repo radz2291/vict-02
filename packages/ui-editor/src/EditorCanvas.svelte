@@ -7,8 +7,10 @@
    * The selection outline is a canvas-level presentation rule — never
    * document source.
    */
-  import { tick, untrack, type Snippet } from 'svelte';
+  import { tick, untrack, getContext, type Snippet } from 'svelte';
   import FloatingSelection from './FloatingSelection.svelte';
+  import {canvasSelectionTarget} from './canvas-selection-target.js';
+  import {selectionOperation,type OccurrenceSelectionIntent} from './selection-intent.js';
   import { literalTextTarget, editLiteralText } from './selection-tools.js';
   import { resolveOccurrence } from './occurrence.js';
   import type { TransactionDraft } from './commands.js';
@@ -62,6 +64,15 @@
     readonly view?: Readonly<Record<string, unknown>>;
     readonly record?: Readonly<Record<string, unknown>>;
     readonly selectedOccurrence?: string;
+    readonly selectedOccurrences?: readonly string[];
+    /** Opt-in visual container marker for exact text selections; does not change selection identity. */
+    readonly textSelectionContainerHighlight?:boolean;
+    /** Host visibility changes can refresh a visual marker after the canvas is revealed. */
+    readonly selectionHighlightSignal?:unknown;
+    readonly onSelectionIntent?: (intent:OccurrenceSelectionIntent)=>void;
+    readonly onClearSelection?: ()=>void;
+    /** Mounted occurrences owned by this canvas, including portals; no source mutation. */
+    readonly onOccurrencesChange?:(documentId:string,occurrences:readonly string[])=>void;
     readonly onSelect: (occurrence: string) => void;
     readonly dispatch: (actionId: string, input?: unknown) => Promise<unknown>;
     readonly navigate: (routeId: string, params?: Readonly<Record<string, unknown>>) => void;
@@ -100,6 +111,7 @@
     view = {},
     record = {},
     selectedOccurrence,
+    selectedOccurrences, textSelectionContainerHighlight=false, selectionHighlightSignal, onSelectionIntent, onClearSelection, onOccurrencesChange,
     onSelect,
     dispatch,
     navigate,
@@ -108,6 +120,11 @@
     ariaLabel = 'Document canvas',
   }: Props = $props();
 
+  const applicationDocument=getContext<()=>Document|undefined>(Symbol.for('vict.ui.application-document@1'));
+  const ownerDocument=()=>applicationDocument?.() ?? canvasEl?.ownerDocument ?? globalThis.document;
+  const isElement=(value:unknown):value is Element=>!!value && typeof value==='object' && (value as Node).nodeType===1;
+  const isKeyboard=(event:Event):event is KeyboardEvent=>'key' in event;
+  const isMouse=(event:Event):event is MouseEvent=>'detail' in event;
   const effectiveCatalogs = $derived(
     catalogs ?? { elements: defaultSemanticElementCatalog(), actionIds: [], routeIds: [] },
   );
@@ -130,6 +147,7 @@
   });
   const focusedPlan=$derived(compiled.ok && interactionMode==='design' && compositionFocus?projectComposition(compiled.plan,document,compositionFocus,extensions,extensionImplementations.filter(entry=>'requiresParentContext' in entry && entry.requiresParentContext).map(entry=>entry.extensionId),extensionImplementations.filter(entry=>'compositionSlots' in entry && entry.compositionSlots?.includes(compositionFocus.slotName)).map(entry=>`${entry.extensionId}@${entry.revision}`)):undefined);
 
+  const selectionOccurrences=$derived(selectedOccurrences??(selectedOccurrence?[selectedOccurrence]:[]));
   function handleSelect(occurrence: string): void {
     onSelect(occurrence);
   }
@@ -156,7 +174,7 @@
     if (onEditTextRequest) { onEditTextRequest(occurrence); return; }
     if (!onApply) return;
     const owner = canvasEl.querySelector<HTMLElement>('[data-ui-owner-root]')?.dataset.uiOwnerRoot;
-    const elements = [...globalThis.document.querySelectorAll<HTMLElement>('[data-ui-occ]')].filter(el => el.dataset.uiOwner === owner);
+    const elements = [...ownerDocument().querySelectorAll<HTMLElement>('[data-ui-occ]')].filter(el => el.dataset.uiOwner === owner);
     let element = target ?? elements.find(el => el.dataset.uiOcc === occurrence);
     if (!element) for (const ancestor of toolAncestors) {
       element = elements.find(el => el.dataset.uiOcc === ancestor && el.getBoundingClientRect().width > 0);
@@ -183,13 +201,22 @@
   $effect(() => { if (inlineEdit && (inlineEdit.revision !== JSON.stringify(document) || interactionMode !== 'design')) inlineEdit = undefined; });
   $effect(() => {
     if (interactionMode !== 'design' || !canvasEl) return;
+    let selectedByPointer = false;
     const intercept = (event: Event) => {
-      if (event.target instanceof Element && event.target.closest('[data-ui-inline-editor]')) return;
-      const target = event.target instanceof Element ? event.target.closest<HTMLElement>('[data-ui-occ]') : null;
+      // Selecting can reveal tools and scroll the canvas before the browser's
+      // click. Keep that gesture's pointerdown occurrence instead of selecting
+      // a different ancestor at the click's retargeted coordinates.
+      const completedPointerSelection = event.type === 'click' && isMouse(event) && event.detail > 0 && selectedByPointer;
+      if (event.type === 'pointerdown' || event.type === 'pointercancel' || event.type === 'click') selectedByPointer = false;
+      if (event.type === 'pointercancel') return;
+      if (isElement(event.target) && event.target.closest('[data-ui-inline-editor]')) return;
+      const target = isElement(event.target) ? event.target.closest<HTMLElement>('[data-ui-occ]') : null;
       const owner = canvasEl?.querySelector<HTMLElement>('[data-ui-owner-root]')?.dataset.uiOwnerRoot;
+      if(event.type==='click'&&event.target===canvasEl){if(!(event as MouseEvent).ctrlKey&&!(event as MouseEvent).metaKey)onClearSelection?.();return;}
+      if(isKeyboard(event) && event.key==='Escape' && selectionOccurrences.length && !inlineEdit && !!owner && !!target && target.dataset.uiOwner===owner && onClearSelection){event.preventDefault();event.stopImmediatePropagation();onClearSelection();return;}
       if (!owner || target?.dataset.uiOwner !== owner) return;
-      if (selectionTools && event instanceof KeyboardEvent && event.key === 'F10') return;
-      if ((onApply || onEditTextRequest) && event instanceof KeyboardEvent && (['F2', 'Delete', 'Backspace'].includes(event.key) || (event.altKey && ['ArrowUp', 'ArrowDown'].includes(event.key)))) return;
+      if (selectionTools && isKeyboard(event) && event.key === 'F10') return;
+      if ((onApply || onEditTextRequest) && isKeyboard(event) && (['F2', 'Delete', 'Backspace'].includes(event.key) || (event.altKey && ['ArrowUp', 'ArrowDown'].includes(event.key)))) return;
       if (event.type === 'dblclick' && target.dataset.uiOcc) {
         const node=resolveOccurrence(target.dataset.uiOcc,document).node;
         if(onOpenComposition && node && compositionSlots(document,node.id,extensions).length) onOpenComposition(target.dataset.uiOcc);
@@ -197,23 +224,29 @@
       }
       // Tab and Escape remain available for navigation and overlay dismissal. Activation/editing
       // events stop before catalog handlers, native inputs and form submission.
-      if (event instanceof KeyboardEvent && (['Tab', 'Escape'].includes(event.key) || event.ctrlKey || event.metaKey)) return;
+      if (isKeyboard(event) && (['Tab', 'Escape'].includes(event.key) || ((event.ctrlKey || event.metaKey) && !['Enter',' '].includes(event.key)))) return;
       if (event.cancelable) event.preventDefault();
       event.stopImmediatePropagation();
-      if (event.type === 'pointerdown' || event.type === 'click' || (event instanceof KeyboardEvent && ['Enter', ' '].includes(event.key))) {
-        if (target.dataset.uiOcc) onSelect(target.dataset.uiOcc);
+      if (event.type === 'pointerdown' || (event.type === 'click' && !completedPointerSelection) || (isKeyboard(event) && ['Enter', ' '].includes(event.key))) {
+        if (event.type === 'pointerdown') selectedByPointer = true;
+        if(target.dataset.uiOcc){
+          if(onSelectionIntent)onSelectionIntent({occurrences:[target.dataset.uiOcc],operation:selectionOperation(event as MouseEvent),primary:target.dataset.uiOcc});
+          else onSelect(target.dataset.uiOcc);
+        }
       }
     };
-    const events = ['pointerdown', 'click', 'dblclick', 'keydown', 'keyup', 'beforeinput', 'input', 'change', 'submit'] as const;
-    for (const event of events) globalThis.document.addEventListener(event, intercept, true);
-    return () => { for (const event of events) globalThis.document.removeEventListener(event, intercept, true); };
+    const events = ['pointerdown', 'pointercancel', 'click', 'dblclick', 'keydown', 'keyup', 'beforeinput', 'input', 'change', 'submit'] as const;
+    for (const event of events) ownerDocument().addEventListener(event, intercept, true);
+    return () => { for (const event of events) ownerDocument().removeEventListener(event, intercept, true); };
   });
+  let publishedOccurrences='';
   $effect(() => {
-    const occurrence = selectedOccurrence;
+    const occurrences = selectionOccurrences;
+    void selectionHighlightSignal;
     void compiled;
     let cancelled = false;
     let observer: MutationObserver | undefined;
-    let marked: HTMLElement | undefined;
+    let marked: HTMLElement[] = [];
     const mark = () => {
       if (cancelled || canvasEl === undefined) return;
       const owner = canvasEl.querySelector<HTMLElement>('[data-ui-owner-root]')?.dataset.uiOwnerRoot;
@@ -222,13 +255,16 @@
       // never matches another editor's unowned occurrences.
       const targets = [...new Set([
         ...canvasEl.querySelectorAll<HTMLElement>('[data-ui-occ]'),
-        ...globalThis.document.querySelectorAll<HTMLElement>('[data-ui-owner]'),
+        ...ownerDocument().querySelectorAll<HTMLElement>('[data-ui-owner]'),
       ])].filter(element => element.dataset.uiOwner === owner);
-      for (const element of targets) element.removeAttribute('data-ui-selected');
-      const matching = targets.filter(element => element.dataset.uiOcc === occurrence);
-      marked = occurrence === undefined ? undefined
-        : matching.find(element => element.hasAttribute('data-ui-primary')) ?? matching[0];
-      marked?.setAttribute('data-ui-selected', '');
+      const membership=[...new Set(targets.map(element=>element.dataset.uiOcc).filter((key):key is string=>!!key))].sort();
+      const signature=JSON.stringify([document.id,membership]);
+      if(signature!==publishedOccurrences){publishedOccurrences=signature;onOccurrencesChange?.(document.id,membership);}
+      for (const element of targets){element.removeAttribute('data-ui-selected');element.removeAttribute('data-ui-selection-proxy-for');}
+      const markers=new Map<HTMLElement,string[]>();
+      for(const occurrence of occurrences){const target=canvasSelectionTarget(document,occurrence,targets,textSelectionContainerHighlight);if(target)markers.set(target,[...(markers.get(target)??[]),occurrence]);}
+      marked=[...markers.keys()];
+      for(const [element,keys] of markers){element.setAttribute('data-ui-selected','');const proxies=keys.filter(key=>key!==element.dataset.uiOcc);if(proxies.length)element.setAttribute('data-ui-selection-proxy-for',JSON.stringify(proxies));}
     };
     void tick().then(() => {
       if (cancelled || canvasEl === undefined) return;
@@ -236,14 +272,14 @@
       // A selected closed part can acquire its primary portal target later.
       // Observe membership, never layout, and mark only this canvas's owner.
       observer = new MutationObserver(mark);
-      observer.observe(globalThis.document.body, { childList: true, subtree: true });
+      observer.observe(ownerDocument().body, { childList: true, subtree: true });
       observer.observe(canvasEl, { childList: true, subtree: true });
     });
-    return () => { cancelled = true; observer?.disconnect(); marked?.removeAttribute('data-ui-selected'); };
+    return () => { cancelled = true; observer?.disconnect(); for(const element of marked){element.removeAttribute('data-ui-selected');element.removeAttribute('data-ui-selection-proxy-for');} };
   });
 
   const canvasClasses = $derived(
-    selectedOccurrence !== undefined ? 'uv-canvas uv-canvas-has-selection' : 'uv-canvas',
+    selectionOccurrences.length ? 'uv-canvas uv-canvas-has-selection' : 'uv-canvas',
   );
   const toolAncestors = $derived.by(() => {
     if (!selectedOccurrence) return [];

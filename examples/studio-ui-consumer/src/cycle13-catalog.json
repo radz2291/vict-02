@@ -1,0 +1,1099 @@
+[
+  {
+    "id": "section",
+    "label": "Section",
+    "description": "A vertical container for nested content",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "row",
+    "label": "Row",
+    "description": "Arrange children side by side, with wrapping",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "heading",
+    "label": "Heading",
+    "description": "A clear title for your screen",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "text",
+    "label": "Text",
+    "description": "Supporting copy or a state-bound value",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "input",
+    "label": "Text input",
+    "description": "Accessible text input with independent local state and change binding",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "rhea-alert",
+    "label": "Alert · Rhea",
+    "description": "A semantic inline status with title and description; no toast host. Uses the public Rhea stylesheet.",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "rhea-breadcrumb",
+    "label": "Breadcrumb · Rhea",
+    "description": "Labelled native navigation and current-page semantics; destinations remain host-owned. Uses the public Rhea stylesheet.",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "rhea-button-group",
+    "label": "Button group · Rhea",
+    "description": "A labelled group of ordinary buttons; connect each through declared canonical interactions. Uses the public Rhea stylesheet.",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "rhea-card",
+    "label": "Card · Rhea",
+    "description": "A reusable semantic article with editable title and body; no fixed marketing template. Uses the public Rhea stylesheet.",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "rhea-empty",
+    "label": "Empty state · Rhea",
+    "description": "A restrained empty-content message; add an action only when the product has one. Uses the public Rhea stylesheet.",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "rhea-field",
+    "label": "Field · Rhea",
+    "description": "Associated native label, typed local value and canonical change binding. No form transport. Uses the public Rhea stylesheet.",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "rhea-input",
+    "label": "Input · Rhea",
+    "description": "Associated native label, typed local value and canonical change binding. No form transport. Uses the public Rhea stylesheet.",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "rhea-textarea",
+    "label": "Text area · Rhea",
+    "description": "Associated native label, typed local value and canonical change binding. No form transport. Uses the public Rhea stylesheet.",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "rhea-native-select",
+    "label": "Native select · Rhea",
+    "description": "Associated native label, typed local value and canonical change binding. No form transport. Uses the public Rhea stylesheet.",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "rhea-kbd",
+    "label": "Keyboard hint · Rhea",
+    "description": "A native kbd label; this does not register a shortcut. Uses the public Rhea stylesheet.",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "rhea-skeleton",
+    "label": "Skeleton · Rhea",
+    "description": "A decorative loading placeholder; drive visibility from real loading state. Uses the public Rhea stylesheet.",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "rhea-spinner",
+    "label": "Spinner · Rhea",
+    "description": "An accessible local status indicator with reduced-motion support; no fabricated task progress. Uses the public Rhea stylesheet.",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "rhea-table",
+    "label": "Table · Rhea",
+    "description": "Native semantic table with headers and caption; not a sorting/filtering data-grid adapter. Uses the public Rhea stylesheet.",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "button",
+    "label": "Button",
+    "description": "Button · editable properties, declared slots and outputs",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "checkbox",
+    "label": "Checkbox",
+    "description": "Checkbox · editable properties, declared slots and outputs",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "select",
+    "label": "Select",
+    "description": "Select · editable properties, declared slots and outputs",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "dialog",
+    "label": "Dialog",
+    "description": "Dialog · editable properties, declared slots and outputs",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "switch",
+    "label": "Switch",
+    "description": "Switch · editable properties, declared slots and outputs",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "toggle",
+    "label": "Toggle",
+    "description": "Toggle · editable properties, declared slots and outputs",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "select-multiple",
+    "label": "Select Multiple",
+    "description": "Select Multiple · editable properties, declared slots and outputs",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "select-item",
+    "label": "Select Item",
+    "description": "Select Item · part for its compatible provider slot",
+    "category": "Context-owned part",
+    "placements": [
+      {
+        "definitionId": "vict.catalog.select",
+        "slotName": "items"
+      },
+      {
+        "definitionId": "vict.catalog.select-multiple",
+        "slotName": "items"
+      }
+    ]
+  },
+  {
+    "id": "combobox",
+    "label": "Combobox",
+    "description": "Combobox · editable properties, declared slots and outputs",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "combobox-multiple",
+    "label": "Combobox Multiple",
+    "description": "Combobox Multiple · editable properties, declared slots and outputs",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "combobox-item",
+    "label": "Combobox Item",
+    "description": "Combobox Item · part for its compatible provider slot",
+    "category": "Context-owned part",
+    "placements": [
+      {
+        "definitionId": "vict.catalog.combobox",
+        "slotName": "items"
+      },
+      {
+        "definitionId": "vict.catalog.combobox-multiple",
+        "slotName": "items"
+      }
+    ]
+  },
+  {
+    "id": "toggle-group",
+    "label": "Toggle Group",
+    "description": "Toggle Group · editable properties, declared slots and outputs",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "toggle-group-multiple",
+    "label": "Toggle Group Multiple",
+    "description": "Toggle Group Multiple · editable properties, declared slots and outputs",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "toggle-group-item",
+    "label": "Toggle Group Item",
+    "description": "Toggle Group Item · part for its compatible provider slot",
+    "category": "Context-owned part",
+    "placements": [
+      {
+        "definitionId": "vict.catalog.toggle-group",
+        "slotName": "items"
+      },
+      {
+        "definitionId": "vict.catalog.toggle-group-multiple",
+        "slotName": "items"
+      }
+    ]
+  },
+  {
+    "id": "accordion",
+    "label": "Accordion",
+    "description": "Accordion · editable properties, declared slots and outputs",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "accordion-multiple",
+    "label": "Accordion Multiple",
+    "description": "Accordion Multiple · editable properties, declared slots and outputs",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "accordion-item",
+    "label": "Accordion Item",
+    "description": "Accordion Item · part for its compatible provider slot",
+    "category": "Context-owned part",
+    "placements": [
+      {
+        "definitionId": "vict.catalog.accordion",
+        "slotName": "items"
+      },
+      {
+        "definitionId": "vict.catalog.accordion-multiple",
+        "slotName": "items"
+      }
+    ]
+  },
+  {
+    "id": "slider",
+    "label": "Slider",
+    "description": "Slider · editable properties, declared slots and outputs",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "meter",
+    "label": "Meter",
+    "description": "Meter · editable properties, declared slots and outputs",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "progress",
+    "label": "Progress",
+    "description": "Progress · editable properties, declared slots and outputs",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "pagination",
+    "label": "Pagination",
+    "description": "Pagination · editable properties, declared slots and outputs",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "date-field",
+    "label": "Date Field",
+    "description": "Date Field · editable properties, declared slots and outputs",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "date-picker",
+    "label": "Date Picker",
+    "description": "Date Picker · editable properties, declared slots and outputs",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "calendar",
+    "label": "Calendar",
+    "description": "Calendar · editable properties, declared slots and outputs",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "time-field",
+    "label": "Time Field",
+    "description": "Time Field · editable properties, declared slots and outputs",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "date-range-field",
+    "label": "Date Range Field",
+    "description": "Date Range Field · editable properties, declared slots and outputs",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "date-range-picker",
+    "label": "Date Range Picker",
+    "description": "Date Range Picker · editable properties, declared slots and outputs",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "range-calendar",
+    "label": "Range Calendar",
+    "description": "Range Calendar · editable properties, declared slots and outputs",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "dropdown-menu",
+    "label": "Dropdown Menu",
+    "description": "Dropdown Menu · editable properties, declared slots and outputs",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "context-menu",
+    "label": "Context Menu",
+    "description": "Context Menu · editable properties, declared slots and outputs",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "menubar",
+    "label": "Menubar",
+    "description": "Menubar · editable properties, declared slots and outputs",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "menubar.menu",
+    "label": "Menubar Menu",
+    "description": "Menubar Menu · part for its compatible provider slot",
+    "category": "Context-owned part",
+    "placements": [
+      {
+        "definitionId": "vict.catalog.menubar",
+        "slotName": "menus"
+      }
+    ]
+  },
+  {
+    "id": "dropdown-menu.item",
+    "label": "Dropdown Menu Item",
+    "description": "Dropdown Menu Item · part for its compatible provider slot",
+    "category": "Context-owned part",
+    "placements": [
+      {
+        "definitionId": "vict.catalog.dropdown-menu",
+        "slotName": "items"
+      },
+      {
+        "definitionId": "vict.catalog.dropdown-menu.sub",
+        "slotName": "items"
+      },
+      {
+        "definitionId": "vict.catalog.dropdown-menu.group",
+        "slotName": "items"
+      }
+    ]
+  },
+  {
+    "id": "dropdown-menu.sub",
+    "label": "Dropdown Menu Sub",
+    "description": "Dropdown Menu Sub · part for its compatible provider slot",
+    "category": "Context-owned part",
+    "placements": [
+      {
+        "definitionId": "vict.catalog.dropdown-menu",
+        "slotName": "items"
+      },
+      {
+        "definitionId": "vict.catalog.dropdown-menu.sub",
+        "slotName": "items"
+      },
+      {
+        "definitionId": "vict.catalog.dropdown-menu.group",
+        "slotName": "items"
+      }
+    ]
+  },
+  {
+    "id": "dropdown-menu.checkbox-item",
+    "label": "Dropdown Menu Checkbox Item",
+    "description": "Dropdown Menu Checkbox Item · part for its compatible provider slot",
+    "category": "Context-owned part",
+    "placements": [
+      {
+        "definitionId": "vict.catalog.dropdown-menu",
+        "slotName": "items"
+      },
+      {
+        "definitionId": "vict.catalog.dropdown-menu.sub",
+        "slotName": "items"
+      },
+      {
+        "definitionId": "vict.catalog.dropdown-menu.group",
+        "slotName": "items"
+      },
+      {
+        "definitionId": "vict.catalog.dropdown-menu.checkbox-group",
+        "slotName": "items"
+      }
+    ]
+  },
+  {
+    "id": "dropdown-menu.checkbox-group",
+    "label": "Dropdown Menu Checkbox Group",
+    "description": "Dropdown Menu Checkbox Group · part for its compatible provider slot",
+    "category": "Context-owned part",
+    "placements": [
+      {
+        "definitionId": "vict.catalog.dropdown-menu",
+        "slotName": "items"
+      },
+      {
+        "definitionId": "vict.catalog.dropdown-menu.sub",
+        "slotName": "items"
+      },
+      {
+        "definitionId": "vict.catalog.dropdown-menu.group",
+        "slotName": "items"
+      }
+    ]
+  },
+  {
+    "id": "dropdown-menu.radio-group",
+    "label": "Dropdown Menu Radio Group",
+    "description": "Dropdown Menu Radio Group · part for its compatible provider slot",
+    "category": "Context-owned part",
+    "placements": [
+      {
+        "definitionId": "vict.catalog.dropdown-menu",
+        "slotName": "items"
+      },
+      {
+        "definitionId": "vict.catalog.dropdown-menu.sub",
+        "slotName": "items"
+      },
+      {
+        "definitionId": "vict.catalog.dropdown-menu.group",
+        "slotName": "items"
+      }
+    ]
+  },
+  {
+    "id": "dropdown-menu.radio-item",
+    "label": "Dropdown Menu Radio Item",
+    "description": "Dropdown Menu Radio Item · part for its compatible provider slot",
+    "category": "Context-owned part",
+    "placements": [
+      {
+        "definitionId": "vict.catalog.dropdown-menu.radio-group",
+        "slotName": "items"
+      }
+    ]
+  },
+  {
+    "id": "dropdown-menu.group",
+    "label": "Dropdown Menu Group",
+    "description": "Dropdown Menu Group · part for its compatible provider slot",
+    "category": "Context-owned part",
+    "placements": [
+      {
+        "definitionId": "vict.catalog.dropdown-menu",
+        "slotName": "items"
+      },
+      {
+        "definitionId": "vict.catalog.dropdown-menu.sub",
+        "slotName": "items"
+      },
+      {
+        "definitionId": "vict.catalog.dropdown-menu.group",
+        "slotName": "items"
+      }
+    ]
+  },
+  {
+    "id": "dropdown-menu.separator",
+    "label": "Dropdown Menu Separator",
+    "description": "Dropdown Menu Separator · part for its compatible provider slot",
+    "category": "Context-owned part",
+    "placements": [
+      {
+        "definitionId": "vict.catalog.dropdown-menu",
+        "slotName": "items"
+      },
+      {
+        "definitionId": "vict.catalog.dropdown-menu.sub",
+        "slotName": "items"
+      },
+      {
+        "definitionId": "vict.catalog.dropdown-menu.group",
+        "slotName": "items"
+      }
+    ]
+  },
+  {
+    "id": "context-menu.item",
+    "label": "Context Menu Item",
+    "description": "Context Menu Item · part for its compatible provider slot",
+    "category": "Context-owned part",
+    "placements": [
+      {
+        "definitionId": "vict.catalog.context-menu",
+        "slotName": "items"
+      },
+      {
+        "definitionId": "vict.catalog.context-menu.sub",
+        "slotName": "items"
+      },
+      {
+        "definitionId": "vict.catalog.context-menu.group",
+        "slotName": "items"
+      }
+    ]
+  },
+  {
+    "id": "context-menu.sub",
+    "label": "Context Menu Sub",
+    "description": "Context Menu Sub · part for its compatible provider slot",
+    "category": "Context-owned part",
+    "placements": [
+      {
+        "definitionId": "vict.catalog.context-menu",
+        "slotName": "items"
+      },
+      {
+        "definitionId": "vict.catalog.context-menu.sub",
+        "slotName": "items"
+      },
+      {
+        "definitionId": "vict.catalog.context-menu.group",
+        "slotName": "items"
+      }
+    ]
+  },
+  {
+    "id": "context-menu.checkbox-item",
+    "label": "Context Menu Checkbox Item",
+    "description": "Context Menu Checkbox Item · part for its compatible provider slot",
+    "category": "Context-owned part",
+    "placements": [
+      {
+        "definitionId": "vict.catalog.context-menu",
+        "slotName": "items"
+      },
+      {
+        "definitionId": "vict.catalog.context-menu.sub",
+        "slotName": "items"
+      },
+      {
+        "definitionId": "vict.catalog.context-menu.group",
+        "slotName": "items"
+      },
+      {
+        "definitionId": "vict.catalog.context-menu.checkbox-group",
+        "slotName": "items"
+      }
+    ]
+  },
+  {
+    "id": "context-menu.checkbox-group",
+    "label": "Context Menu Checkbox Group",
+    "description": "Context Menu Checkbox Group · part for its compatible provider slot",
+    "category": "Context-owned part",
+    "placements": [
+      {
+        "definitionId": "vict.catalog.context-menu",
+        "slotName": "items"
+      },
+      {
+        "definitionId": "vict.catalog.context-menu.sub",
+        "slotName": "items"
+      },
+      {
+        "definitionId": "vict.catalog.context-menu.group",
+        "slotName": "items"
+      }
+    ]
+  },
+  {
+    "id": "context-menu.radio-group",
+    "label": "Context Menu Radio Group",
+    "description": "Context Menu Radio Group · part for its compatible provider slot",
+    "category": "Context-owned part",
+    "placements": [
+      {
+        "definitionId": "vict.catalog.context-menu",
+        "slotName": "items"
+      },
+      {
+        "definitionId": "vict.catalog.context-menu.sub",
+        "slotName": "items"
+      },
+      {
+        "definitionId": "vict.catalog.context-menu.group",
+        "slotName": "items"
+      }
+    ]
+  },
+  {
+    "id": "context-menu.radio-item",
+    "label": "Context Menu Radio Item",
+    "description": "Context Menu Radio Item · part for its compatible provider slot",
+    "category": "Context-owned part",
+    "placements": [
+      {
+        "definitionId": "vict.catalog.context-menu.radio-group",
+        "slotName": "items"
+      }
+    ]
+  },
+  {
+    "id": "context-menu.group",
+    "label": "Context Menu Group",
+    "description": "Context Menu Group · part for its compatible provider slot",
+    "category": "Context-owned part",
+    "placements": [
+      {
+        "definitionId": "vict.catalog.context-menu",
+        "slotName": "items"
+      },
+      {
+        "definitionId": "vict.catalog.context-menu.sub",
+        "slotName": "items"
+      },
+      {
+        "definitionId": "vict.catalog.context-menu.group",
+        "slotName": "items"
+      }
+    ]
+  },
+  {
+    "id": "context-menu.separator",
+    "label": "Context Menu Separator",
+    "description": "Context Menu Separator · part for its compatible provider slot",
+    "category": "Context-owned part",
+    "placements": [
+      {
+        "definitionId": "vict.catalog.context-menu",
+        "slotName": "items"
+      },
+      {
+        "definitionId": "vict.catalog.context-menu.sub",
+        "slotName": "items"
+      },
+      {
+        "definitionId": "vict.catalog.context-menu.group",
+        "slotName": "items"
+      }
+    ]
+  },
+  {
+    "id": "menubar.item",
+    "label": "Menubar Item",
+    "description": "Menubar Item · part for its compatible provider slot",
+    "category": "Context-owned part",
+    "placements": [
+      {
+        "definitionId": "vict.catalog.menubar.menu",
+        "slotName": "items"
+      },
+      {
+        "definitionId": "vict.catalog.menubar.sub",
+        "slotName": "items"
+      },
+      {
+        "definitionId": "vict.catalog.menubar.group",
+        "slotName": "items"
+      }
+    ]
+  },
+  {
+    "id": "menubar.sub",
+    "label": "Menubar Sub",
+    "description": "Menubar Sub · part for its compatible provider slot",
+    "category": "Context-owned part",
+    "placements": [
+      {
+        "definitionId": "vict.catalog.menubar.menu",
+        "slotName": "items"
+      },
+      {
+        "definitionId": "vict.catalog.menubar.sub",
+        "slotName": "items"
+      },
+      {
+        "definitionId": "vict.catalog.menubar.group",
+        "slotName": "items"
+      }
+    ]
+  },
+  {
+    "id": "menubar.checkbox-item",
+    "label": "Menubar Checkbox Item",
+    "description": "Menubar Checkbox Item · part for its compatible provider slot",
+    "category": "Context-owned part",
+    "placements": [
+      {
+        "definitionId": "vict.catalog.menubar.menu",
+        "slotName": "items"
+      },
+      {
+        "definitionId": "vict.catalog.menubar.sub",
+        "slotName": "items"
+      },
+      {
+        "definitionId": "vict.catalog.menubar.group",
+        "slotName": "items"
+      },
+      {
+        "definitionId": "vict.catalog.menubar.checkbox-group",
+        "slotName": "items"
+      }
+    ]
+  },
+  {
+    "id": "menubar.checkbox-group",
+    "label": "Menubar Checkbox Group",
+    "description": "Menubar Checkbox Group · part for its compatible provider slot",
+    "category": "Context-owned part",
+    "placements": [
+      {
+        "definitionId": "vict.catalog.menubar.menu",
+        "slotName": "items"
+      },
+      {
+        "definitionId": "vict.catalog.menubar.sub",
+        "slotName": "items"
+      },
+      {
+        "definitionId": "vict.catalog.menubar.group",
+        "slotName": "items"
+      }
+    ]
+  },
+  {
+    "id": "menubar.radio-group",
+    "label": "Menubar Radio Group",
+    "description": "Menubar Radio Group · part for its compatible provider slot",
+    "category": "Context-owned part",
+    "placements": [
+      {
+        "definitionId": "vict.catalog.menubar.menu",
+        "slotName": "items"
+      },
+      {
+        "definitionId": "vict.catalog.menubar.sub",
+        "slotName": "items"
+      },
+      {
+        "definitionId": "vict.catalog.menubar.group",
+        "slotName": "items"
+      }
+    ]
+  },
+  {
+    "id": "menubar.radio-item",
+    "label": "Menubar Radio Item",
+    "description": "Menubar Radio Item · part for its compatible provider slot",
+    "category": "Context-owned part",
+    "placements": [
+      {
+        "definitionId": "vict.catalog.menubar.radio-group",
+        "slotName": "items"
+      }
+    ]
+  },
+  {
+    "id": "menubar.group",
+    "label": "Menubar Group",
+    "description": "Menubar Group · part for its compatible provider slot",
+    "category": "Context-owned part",
+    "placements": [
+      {
+        "definitionId": "vict.catalog.menubar.menu",
+        "slotName": "items"
+      },
+      {
+        "definitionId": "vict.catalog.menubar.sub",
+        "slotName": "items"
+      },
+      {
+        "definitionId": "vict.catalog.menubar.group",
+        "slotName": "items"
+      }
+    ]
+  },
+  {
+    "id": "menubar.separator",
+    "label": "Menubar Separator",
+    "description": "Menubar Separator · part for its compatible provider slot",
+    "category": "Context-owned part",
+    "placements": [
+      {
+        "definitionId": "vict.catalog.menubar.menu",
+        "slotName": "items"
+      },
+      {
+        "definitionId": "vict.catalog.menubar.sub",
+        "slotName": "items"
+      },
+      {
+        "definitionId": "vict.catalog.menubar.group",
+        "slotName": "items"
+      }
+    ]
+  },
+  {
+    "id": "command",
+    "label": "Command",
+    "description": "Command · editable properties, declared slots and outputs",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "command.item",
+    "label": "Command Item",
+    "description": "Command Item · part for its compatible provider slot",
+    "category": "Context-owned part",
+    "placements": [
+      {
+        "definitionId": "vict.catalog.command",
+        "slotName": "items"
+      },
+      {
+        "definitionId": "vict.catalog.command.group",
+        "slotName": "items"
+      }
+    ]
+  },
+  {
+    "id": "command.group",
+    "label": "Command Group",
+    "description": "Command Group · part for its compatible provider slot",
+    "category": "Context-owned part",
+    "placements": [
+      {
+        "definitionId": "vict.catalog.command",
+        "slotName": "items"
+      },
+      {
+        "definitionId": "vict.catalog.command.group",
+        "slotName": "items"
+      }
+    ]
+  },
+  {
+    "id": "navigation-menu",
+    "label": "Navigation Menu",
+    "description": "Navigation Menu · editable properties, declared slots and outputs",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "navigation-menu.item",
+    "label": "Navigation Menu Item",
+    "description": "Navigation Menu Item · part for its compatible provider slot",
+    "category": "Context-owned part",
+    "placements": [
+      {
+        "definitionId": "vict.catalog.navigation-menu",
+        "slotName": "items"
+      },
+      {
+        "definitionId": "vict.catalog.navigation-menu.sub",
+        "slotName": "items"
+      }
+    ]
+  },
+  {
+    "id": "navigation-menu.link",
+    "label": "Navigation Menu Link",
+    "description": "Navigation Menu Link · part for its compatible provider slot",
+    "category": "Context-owned part",
+    "placements": [
+      {
+        "definitionId": "vict.catalog.navigation-menu.item",
+        "slotName": "content"
+      }
+    ]
+  },
+  {
+    "id": "navigation-menu.sub",
+    "label": "Navigation Menu Sub",
+    "description": "Navigation Menu Sub · part for its compatible provider slot",
+    "category": "Context-owned part",
+    "placements": [
+      {
+        "definitionId": "vict.catalog.navigation-menu",
+        "slotName": "items"
+      },
+      {
+        "definitionId": "vict.catalog.navigation-menu.sub",
+        "slotName": "items"
+      }
+    ]
+  },
+  {
+    "id": "avatar",
+    "label": "Avatar",
+    "description": "Avatar · editable properties, declared slots and outputs",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "aspect-ratio",
+    "label": "Aspect Ratio",
+    "description": "Aspect Ratio · editable properties, declared slots and outputs",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "separator",
+    "label": "Separator",
+    "description": "Separator · editable properties, declared slots and outputs",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "label",
+    "label": "Label",
+    "description": "Label · editable properties, declared slots and outputs",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "scroll-area",
+    "label": "Scroll Area",
+    "description": "Scroll Area · editable properties, declared slots and outputs",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "toolbar",
+    "label": "Toolbar",
+    "description": "Toolbar · editable properties, declared slots and outputs",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "toolbar-button",
+    "label": "Toolbar Button",
+    "description": "Toolbar Button · part for its compatible provider slot",
+    "category": "Context-owned part",
+    "placements": [
+      {
+        "definitionId": "vict.catalog.toolbar",
+        "slotName": "tools"
+      }
+    ]
+  },
+  {
+    "id": "link-preview",
+    "label": "Link Preview",
+    "description": "Link Preview · editable properties, declared slots and outputs",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "tooltip",
+    "label": "Tooltip",
+    "description": "Tooltip · editable properties, declared slots and outputs",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "popover",
+    "label": "Popover",
+    "description": "Popover · editable properties, declared slots and outputs",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "alert-dialog",
+    "label": "Alert Dialog",
+    "description": "Alert Dialog · editable properties, declared slots and outputs",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "tabs",
+    "label": "Tabs",
+    "description": "Tabs · editable properties, declared slots and outputs",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "tabs-trigger",
+    "label": "Tabs Trigger",
+    "description": "Tabs Trigger · part for its compatible provider slot",
+    "category": "Context-owned part",
+    "placements": [
+      {
+        "definitionId": "vict.catalog.tabs",
+        "slotName": "tabs"
+      }
+    ]
+  },
+  {
+    "id": "tabs-panel",
+    "label": "Tabs Panel",
+    "description": "Tabs Panel · part for its compatible provider slot",
+    "category": "Context-owned part",
+    "placements": [
+      {
+        "definitionId": "vict.catalog.tabs",
+        "slotName": "panels"
+      }
+    ]
+  },
+  {
+    "id": "collapsible",
+    "label": "Collapsible",
+    "description": "Collapsible · editable properties, declared slots and outputs",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "vict.ai.conversation",
+    "label": "Conversation",
+    "description": "Compose authored messages and a prompt input in a conversation presentation.",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "vict.ai.message",
+    "label": "Chat message",
+    "description": "Render a user or assistant message using the pinned public Message presentation.",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "vict.ai.prompt-input",
+    "label": "Prompt input",
+    "description": "Controlled text composer with typed change, send and stop intents.",
+    "category": "Standalone",
+    "placements": []
+  },
+  {
+    "id": "vict.flow.canvas",
+    "label": "Flow canvas",
+    "description": "Read-only authored topology and positions with ephemeral pan, zoom and selection.",
+    "category": "Standalone",
+    "placements": []
+  }
+]

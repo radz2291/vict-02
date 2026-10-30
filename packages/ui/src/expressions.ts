@@ -25,6 +25,10 @@ export interface UiScopeInfo {
   readonly repeatItems: Readonly<Record<string, UiFieldTypes>>;
   /** True inside a definition registry (prop-only scope). */
   readonly inDefinition: boolean;
+  readonly scopedSlot?: boolean;
+  readonly scopedConditions?: Readonly<Record<string,UiExpression>>;
+  readonly stateTypes?: Readonly<Record<string, UiValueType>>;
+  readonly scopedOutputs?: readonly import('./document.js').UiOutputDecl[];
   readonly propTypes?: Readonly<Record<string, UiValueType | 'array'>>;
   /**
    * Declared type of `$output` in this scope (amendment §3.5), or undefined
@@ -210,7 +214,7 @@ function checkRef(
     return fieldType;
   }
   if (head === 'prop') {
-    if (!scope.inDefinition) {
+    if (!scope.inDefinition && !scope.scopedSlot) {
       issues.push(
         uiDiagnostic(
           'UI_EXPR_SCOPE_VIOLATION',
@@ -235,7 +239,8 @@ function checkRef(
       return 'unknown';
     }
     if (parts.length !== 2) return unknown();
-    return catalogs.stateTypes === undefined ? 'any' : catalogs.stateTypes[parts[1] as string] ?? unknown();
+    const stateTypes = scope.stateTypes ?? catalogs.stateTypes;
+    return stateTypes === undefined ? 'any' : stateTypes[parts[1] as string] ?? unknown();
   }
   if (head === 'token') {
     if (scope.inDefinition) {

@@ -15,12 +15,15 @@ export { literalTextTarget, editLiteralText, duplicateSubtree } from './selectio
 export { default as PanelResizer } from './PanelResizer.svelte';
 export {
   insertSubtree,
+  canInsertRecipe,
+  insertRecipe,
   compositionTargets,
   detachedContent,
   detachSlotContent,
   compositionParent,
   compositionChildren,
   compositionName,
+  compositionNames,
   moveRelative,
 } from './composition.js';
 export { conditionalStyleConflicts, allowConditionalStyles } from './responsive-style.js';
@@ -50,13 +53,28 @@ export {
   removeNode,
   rootIdOf,
   setAttribute,
+  setClasses,
   setConditionalStyle,
   setOutputBinding,
   setStyle,
   setBaseStyle,
   setStateInitial,
+  wireNativeInput,
   setTextLiteral,
 } from './commands.js';
 export type { TransactionDraft } from './commands.js';
 export { isSelected, resolveOccurrence } from './occurrence.js';
 export type { OccurrenceReport } from './occurrence.js';
+
+export { interactiveSlotConflicts } from './interactive-slots.js';
+export { authoringRecipe, insertRegisteredComponent, insertRegisteredElement } from './registered-authoring.js';
+export { defineStyleSource, attachStyleSource, detachStyleSource, removeStyleSource, StyleSourceEditError } from './style-sources.js';
+
+export {selectionOperation, occurrenceRange} from './selection-intent.js';
+export type {SelectionOperation, OccurrenceSelectionIntent} from './selection-intent.js';
+
+export {canvasSelectionTarget} from './canvas-selection-target.js';
+export {sourceIcon,sourceIconPaths} from './source-icon.js';
+export type {SourceIconKey} from './source-icon.js';
+export {default as SourceIcon} from './SourceIcon.svelte';
+export {default as SourceIdentity} from './SourceIdentity.svelte';

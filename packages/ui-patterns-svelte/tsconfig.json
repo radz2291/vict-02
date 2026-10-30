@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "allowJs": true,
+    "noEmit": true,
+    "paths": {
+      "@victframework/ui": ["../ui/src/index.ts"],
+      "@victframework/ui-svelte": ["../ui-svelte/src/index.ts"],
+      "@victframework/ui-media-svelte": ["../ui-media-svelte/src/index.ts"]
+    }
+  },
+  "include": ["src/**/*.ts", "src/**/*.svelte"]
+}

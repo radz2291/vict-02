@@ -1,0 +1,57 @@
+/* Studio composition of the public Rhea theme. Canonical authored native
+   declarations remain source-owned; no preflight or blanket control reset. */
+.vict-rhea .studio-workspace,
+.vict-rhea .studio-showcase {
+  --studio-accent: var(--vict-color-accent);
+  --ui-editor-text: var(--vict-color-text);
+  --ui-editor-muted: var(--vict-color-textMuted);
+  --ui-editor-border: var(--vict-color-border);
+  --ui-editor-surface: var(--vict-color-surface);
+  --ui-editor-accent: var(--vict-color-accent);
+  color: var(--vict-color-text);
+  font-family: var(--vict-font-family);
+}
+.vict-rhea :where(.workspace-header, .workspace-tools, .workspace-status,
+  .workspace-simulation, .document-drawer, .agent-chat) {
+  background: var(--vict-color-surface);
+  color: var(--vict-color-text);
+  border-color: var(--vict-color-border);
+}
+.vict-rhea :where(.workspace-menu, .studio-chat-details, .workspace-context-menu) {
+  background: var(--vict-color-surface);
+  color: var(--vict-color-text);
+  border-color: var(--vict-color-border);
+  box-shadow: var(--vict-elevation-high);
+}
+.vict-rhea .workspace-brand .workspace-mark {
+  background: var(--vict-color-accent);
+  color: var(--vict-color-accentContrast);
+}
+.vict-rhea .workspace-scroll {
+  background-color: var(--vict-rhea-muted);
+  background-image: radial-gradient(var(--vict-color-border) .65px, transparent .65px);
+}
+.vict-rhea .workspace-menus > button,
+.vict-rhea .canvas-modes > button,
+.vict-rhea .sidebar-tabs > button,
+.vict-rhea .panel-toggle {
+  min-height: 28px;
+  border-radius: calc(var(--vict-radius-base) / 2);
+}
+.vict-rhea .workspace-menu [role^='menuitem'] {
+  min-height: 32px;
+  border-radius: calc(var(--vict-radius-base) / 2);
+}
+.vict-rhea .workspace-menu [data-highlighted],
+.vict-rhea .workspace-menus > button[aria-expanded='true'],
+.vict-rhea .sidebar-tabs > button[aria-pressed='true'] {
+  background: var(--vict-control-selected);
+  color: var(--vict-color-accent);
+}
+.vict-rhea .workspace-menu [role='separator'] {
+  border-color: var(--vict-color-border);
+}
+.vict-rhea .studio-designer :focus-visible,
+.vict-rhea .studio-showcase :focus-visible {
+  outline-color: var(--vict-color-focusRing);
+}

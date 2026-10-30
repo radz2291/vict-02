@@ -4,7 +4,7 @@
   import { repeatExpressionFields } from '@victframework/ui';
   type UiPseudoState = 'hover' | 'focus' | 'active' | 'disabled';
   import { resolveOccurrence } from './occurrence.js';
-  import { connectInteraction, bindExpression, setAttribute, setConditionalStyle, setOutputBinding, setStyle, setBaseStyle, setTextLiteral, type TransactionDraft } from './commands.js';
+  import { findNodeSlotScope, connectInteraction, bindExpression, setAttribute, setConditionalStyle, setOutputBinding, setStyle, setBaseStyle, setTextLiteral, type TransactionDraft } from './commands.js';
   import { nodeLabel, sourceBreadcrumb, editableStyle, sourceStyles, styleText, styleGroups, type EditorLabels } from './inspector-ux.js';
   import ExpressionEditor from './ExpressionEditor.svelte';
   import InspectorControl from './InspectorControl.svelte';
@@ -21,7 +21,9 @@
     lastIssues?: readonly { code: string; message: string }[];
     knownActionIds?: readonly string[]; knownRouteIds?: readonly string[]; knownTokenIds?: readonly string[];
     styleConditions?: readonly { id: string; label: string }[];
-    readEffective?: (occurrence: string, property: string) => string | undefined;
+    readEffective?: (occurrence: string, property: string, part?: string) => string | undefined;
+    /** The actual application rendering document, including an isolated iframe. */
+    measurementDocument?: Document;
     labels?: EditorLabels;
     /** Registered component descriptors: descriptor-driven editors (amendment §3.6). */
     componentDescriptors?: readonly UiExtensionDescriptor[];
@@ -34,11 +36,11 @@
     section?: 'Content' | 'Style' | 'Behavior';
     actionInputs?: Readonly<Record<string, Readonly<Record<string, UiValueType>>>>;
   }
-  let { editTextSignal, onTextDraftChange, contextual = false, section: tab = $bindable('Content'), document, selectedOccurrence, onApply, lastIssues = [], knownActionIds = [], knownRouteIds = [], knownTokenIds = [], styleConditions = [], readEffective, labels = {}, componentDescriptors = [], knownViewFields = {}, actionInputs = {} }: Props = $props();
+  let { editTextSignal, onTextDraftChange, contextual = false, section: tab = $bindable('Content'), document, selectedOccurrence, onApply, lastIssues = [], knownActionIds = [], knownRouteIds = [], knownTokenIds = [], styleConditions = [], readEffective, measurementDocument, labels = {}, componentDescriptors = [], knownViewFields = {}, actionInputs = {} }: Props = $props();
   // DOM measurements must run again after the canvas consumes new source/selection.
   let measurementVersion = $state(0);
   $effect(() => {
-    document; selectedOccurrence; readEffective; condition; pseudo; scope;
+    document; selectedOccurrence; readEffective; condition; pseudo; scope; selectedPart;
     let cancelled = false;
     void tick().then(() => { if (!cancelled) measurementVersion++; });
     return () => { cancelled = true; };
@@ -57,15 +59,17 @@
         if (!cancelled) measurementVersion++;
       });
     };
-    for (const event of events) window.addEventListener(event, refresh);
+    const targets=[...new Set([window,measurementDocument?.defaultView].filter((value):value is NonNullable<typeof value>=>!!value))];
+    for(const target of targets)for (const event of events) target.addEventListener(event, refresh);
     return () => {
       cancelled = true;
-      for (const event of events) window.removeEventListener(event, refresh);
+      for(const target of targets)for (const event of events) target.removeEventListener(event, refresh);
     };
   });
   let scope = $state<'shared' | 'instance'>('shared');
   let condition = $state('');
   let pseudo = $state<UiPseudoState | undefined>(undefined);
+  let stylePart = $state('');
   let text = $state('');
   let textDraftDirty = $state(false);
   function textDraftChange(dirty: boolean) { textDraftDirty = dirty; onTextDraftChange?.(dirty); }
@@ -130,7 +134,9 @@
     const matches = candidates.filter(entry => entry.revision === revision);
     return matches.length === 1 ? matches[0] : undefined;
   });
-  const stateKeysTyped = $derived(Object.entries(document.localState).map(([key, decl]) => ({ key, type: decl.type })));
+  const lexicalSlotScope=$derived(node?findNodeSlotScope(document,node.id):undefined);
+  const stateKeysTyped = $derived(Object.entries(lexicalSlotScope?lexicalSlotScope.state??{}:document.localState).map(([key, decl]) => ({ key, type: decl.type })));
+  function bindingSummary(binding:UiOutputBinding):string {return 'emit' in binding?`Scoped output: ${binding.emit.output}`:'invokeAction' in binding?labels.actions?.[binding.invokeAction.actionId]??binding.invokeAction.actionId:labels.state?.[binding.setState.key]??binding.setState.key;}
   function refs(type: string, payload?: string): string[] {
     const compatible = (actual: string) => actual === type || (type === 'array' && (actual === 'stringList' || actual === 'numberList'));
     const contains = (id: string, sought: string, seen = new Set<string>()): boolean => {
@@ -146,7 +152,9 @@
       return children.some(child => contains(child, sought, seen));
     };
     const definition = componentNode && Object.values(document.componentDefinitions).find(entry => contains(entry.root, componentNode.id));
-    const references = definition
+    const references = lexicalSlotScope
+      ? [...stateKeysTyped.filter(entry=>compatible(entry.type)).map(entry=>`state.${entry.key}`),...lexicalSlotScope.props.filter(prop=>compatible(prop.type)).map(prop=>`prop.${prop.name}`)]
+      : definition
       ? definition.props.filter(prop => compatible(prop.type)).map(prop => `prop.${prop.name}`)
       : [
         ...stateKeysTyped.filter(entry => compatible(entry.type)).map(entry => `state.${entry.key}`),
@@ -197,7 +205,17 @@
   const styleSourceId = $derived(node?.kind === 'text' ? Object.values(document.nodes).find(n => n.kind === 'element' && n.children.includes(node.id))?.id ?? node.id : node?.id ?? '');
   const target = $derived(scope === 'instance' && nearest ? nearest.sourceNodeId : styleSourceId);
   const targetNode = $derived(document.nodes[target]);
-  const conflicts = $derived(conditionalStyleConflicts(document, target, condition || undefined, pseudo));
+  const styleDescriptor = $derived.by(() => {
+    if (targetNode?.kind !== 'component') return undefined;
+    const candidates = componentDescriptors.filter(entry => entry.id === targetNode.definitionId);
+    const revision = targetNode.revision ?? candidates.at(-1)?.revision;
+    const matches = candidates.filter(entry => entry.revision === revision);
+    return matches.length === 1 ? matches[0] : undefined;
+  });
+  const availableParts = $derived(styleDescriptor?.styleTargets ?? []);
+  const selectedPart = $derived(stylePart && availableParts.includes(stylePart) ? stylePart : undefined);
+  const activeStyle = $derived(selectedPart ? targetNode?.partStyles?.[selectedPart] : targetNode);
+  const conflicts = $derived(selectedPart ? (condition || pseudo ? activeStyle?.localStyle?.filter(declaration => activeStyle?.styleSources?.some(id => { const source=document.styleSources[id];return source?.conditionId===(condition||undefined)&&source?.pseudo===pseudo&&source.declarations.some(candidate=>candidate.property===declaration.property); })) ?? [] : []) : conditionalStyleConflicts(document, target, condition || undefined, pseudo));
   const container = $derived(targetNode?.kind === 'element' && !['h1', 'h2', 'h3', 'h4', 'p', 'span', 'strong', 'em', 'button', 'a', 'label', 'input', 'textarea'].includes(targetNode.tag));
   const orderedGroups = $derived([...styleGroups].sort((a, b) => {
     const order = container ? ['Layout', 'Size & spacing', 'Fill & border', 'Typography'] : ['Typography', 'Fill & border', 'Size & spacing', 'Layout'];
@@ -210,14 +228,15 @@
   function friendly(value: string) { return value.replace(/([a-z])([A-Z])/g, '$1 $2').replaceAll('-', ' ').replace(/^./, c => c.toUpperCase()); }
   function outputTitle(name: string) { return ({ press: 'When pressed', checkedChange: 'When toggled', valueChange: 'When the value changes', openChange: 'When opened or closed' } as Record<string, string>)[name] ?? `When ${friendly(name).toLowerCase()}`; }
   const count = $derived(Object.values(document.nodes).filter(n => n.kind === 'component' && n.definitionId === owner).length);
-  const canStyle = $derived(targetNode?.kind === 'element' || (targetNode?.kind === 'component' && (!componentDescriptor || (componentDescriptor.styleTargets?.length ?? 0) > 0)));
-  const unsupportedTarget = $derived(!!(condition || pseudo) && targetNode?.kind !== 'element');
+  const canStyle = $derived(targetNode?.kind === 'element' || (targetNode?.kind === 'component' && (!styleDescriptor || (styleDescriptor.styleTargets?.length ?? 0) > 0)));
+  const unsupportedTarget = $derived(!!(condition || pseudo) && targetNode?.kind !== 'element' && !selectedPart);
   const breadcrumb = $derived(node ? sourceBreadcrumb(document, node.id, labels) : []);
   const location = $derived([...(report?.instancePath.map(step => nodeLabel(document, step.sourceNodeId, labels)) ?? []), ...breadcrumb]);
   $effect(() => { selectedOccurrence; scope = 'shared'; });
+  $effect(() => { target; stylePart = ''; });
   $effect(() => { text = textNode?.kind === 'text' && textNode.content.type === 'literal' ? textNode.content.value : ''; });
   $effect(() => {
-    const current = editableStyle(document, target, property, condition || undefined, pseudo);
+    const current = editableStyle(document, target, property, condition || undefined, pseudo, selectedPart);
     value = current?.type === 'token' ? current.id : styleText(current, document);
     token = current?.type === 'token';
   });
@@ -236,7 +255,8 @@
     const current = node.interactions?.find(i => i.on === 'click');
     onApply(connectInteraction({ requestId: request(), nodeId: node.id, interaction: { on: 'click', action: 'navigate', routeId: route, ...(current?.action === 'navigate' && current.params ? { params: current.params } : {}) } }));
   }
-  function styleDraft(input: Parameters<typeof setStyle>[0]) {
+  function styleDraft(input: Parameters<typeof setStyle>[0]): TransactionDraft {
+    if (selectedPart) return {requestId:input.requestId,commands:[{op:'setPartStyleDeclaration',nodeId:input.nodeId,part:selectedPart,property:input.property,...(input.value !== undefined ? {value:input.value}:{}),...(condition ? {conditionId:condition}:{}),...(pseudo ? {pseudo}:{})}]};
     return condition || pseudo
       ? setConditionalStyle({ ...input, ...(condition ? { conditionId: condition } : {}), ...(pseudo ? { pseudo } : {}) })
       : setBaseStyle(document, input);
@@ -253,25 +273,34 @@
     });
     if (commands.length) onApply({ requestId, reason: 'Edit spacing sides together', commands });
   }
-  function ownStyle(property: string) { return editableStyle(document, target, property, condition || undefined, pseudo); }
+  function ownStyle(property: string) { return editableStyle(document, target, property, condition || undefined, pseudo, selectedPart); }
   function originLabel(property: string) {
-    return (targetNode?.styleSources ?? []).some(id => { const source = document.styleSources[id]; return !!source && source.conditionId === (condition || undefined) && source.pseudo === pseudo && source.declarations.some(d => d.property === property); }) ? 'Source' : 'Preview';
+    return (activeStyle?.styleSources ?? []).some(id => { const source = document.styleSources[id]; return !!source && source.conditionId === (condition || undefined) && source.pseudo === pseudo && source.declarations.some(d => d.property === property); }) ? 'Source' : 'Preview';
   }
   function display(property: string) {
-    const local = editableStyle(document, target, property, condition || undefined, pseudo);
+    const local = editableStyle(document, target, property, condition || undefined, pseudo, selectedPart);
     if (local) return styleText(local, document);
     // Show unconditioned attached authored values, separately labeled from preview.
-    const sources = (targetNode?.styleSources ?? []).map(id => document.styleSources[id]).filter((s): s is NonNullable<typeof s> => !!s && s.conditionId === (condition || undefined) && s.pseudo === pseudo);
+    const sources = (activeStyle?.styleSources ?? []).map(id => document.styleSources[id]).filter((s): s is NonNullable<typeof s> => !!s && s.conditionId === (condition || undefined) && s.pseudo === pseudo);
     const authored = sources.flatMap(s => s.declarations).filter(d => d.property === property).at(-1)?.value;
     return styleText(authored, document) || effective(property);
   }
-  function effective(property: string) { measurementVersion; return selectedOccurrence ? readEffective?.(selectedOccurrence, property)?.trim() ?? '' : ''; }
+  function effective(property: string) {
+    measurementVersion;
+    if (!selectedOccurrence) return '';
+    if (selectedPart) {
+      const dom = measurementDocument ?? (typeof window === 'undefined' ? undefined : window.document);
+      const parts = dom ? [...dom.querySelectorAll<HTMLElement>('[data-ui-occ][data-ui-part]')].filter(element => element.dataset.uiOcc===selectedOccurrence && element.dataset.uiPart===selectedPart) : [];
+      return parts.length===1 ? dom?.defaultView?.getComputedStyle(parts[0]!).getPropertyValue(property).trim() ?? '' : '';
+    }
+    return readEffective?.(selectedOccurrence, property)?.trim() ?? '';
+  }
   function origin(property: string) {
-    const local = editableStyle(document, target, property, condition || undefined, pseudo);
+    const local = editableStyle(document, target, property, condition || undefined, pseudo, selectedPart);
     if (local) return local.type === 'token' ? `Override uses token ${local.id}` : local.type === 'binding' ? (contextual ? 'Bound expression; edit in Document → Source' : 'Bound expression; edit in Advanced') : `${shared && scope === 'shared' ? 'Shared definition' : 'Local'} override${condition ? ' · selected condition' : ''}${pseudo ? ` · ${pseudo}` : ''}`;
-    const sources = sourceStyles(document, target, property);
+    const sources = sourceStyles(document, target, property, selectedPart);
     if (sources.length) return sources.join('; ');
-    if (['color', 'font-family', 'font-size', 'font-weight', 'line-height', 'text-align'].includes(property) && node) {
+    if (!selectedPart && ['color', 'font-family', 'font-size', 'font-weight', 'line-height', 'text-align'].includes(property) && node) {
       let ancestor = Object.values(document.nodes).find(n => 'children' in n && n.children.includes(node.id));
       const seen = new Set<string>();
       while (ancestor && !seen.has(ancestor.id)) {
@@ -329,7 +358,7 @@
       {#if conflicts.length}
         <section class="style-conflict" aria-label="Style conflicts"><h3>Base styles are masking this rule</h3>
           <p>Local base overrides mask: {conflicts.map(declaration => declaration.property).join(', ')}. The saved conditional values cannot win against them.</p>
-          <button type="button" onclick={() => onApply(allowConditionalStyles(request(), document, target, condition || undefined, pseudo))}>Allow conditional overrides</button>
+          {#if selectedPart}<p>Return to base styling for this part and reset the masking declarations before testing this rule.</p>{:else}<button type="button" onclick={() => onApply(allowConditionalStyles(request(), document, target, condition || undefined, pseudo))}>Allow conditional overrides</button>{/if}
           <p>Keeps the base values for other sizes and states. Undo restores the original overrides.</p>
           <button type="button" onclick={() => { condition = ''; pseudo = undefined; }}>Edit base styles instead</button>
         </section>
@@ -353,6 +382,12 @@
     {#if !contextual}<nav class="tabs" aria-label="Inspector sections">{#each ['Content', 'Style', 'Behavior'] as const as section}<button type="button" aria-pressed={tab === section} onclick={() => tab = section}>{section}</button>{/each}</nav>{/if}
   {/if}</div>{/if}
   {#if node}
+    {#if availableParts.length && (contextual ? tab !== 'Behavior' : tab === 'Style')}
+      <section class="part-scope"><label>Component surface<select aria-label="Component part" value={selectedPart ?? ''} onchange={event => stylePart=event.currentTarget.value}>
+        <option value="">Default surface ({availableParts[0]})</option>
+        {#each availableParts as part}<option value={part}>{friendly(part)}</option>{/each}
+      </select></label><p>{selectedPart ? `Editing the ${selectedPart} part only.` : 'Default styling keeps existing component behavior. Choose a named surface to edit it independently.'}</p></section>
+    {/if}
     {#if contextual}
       {#if tab === 'Behavior'}
         {#if node.kind === 'element'}
@@ -379,7 +414,7 @@
                   <label>Run action<select aria-label={`${output.name} action`} value={binding && 'invokeAction' in binding?binding.invokeAction.actionId:''} onchange={e=>applyActionBinding(output.name,e.currentTarget.value)}><option value="">Choose an action…</option>{#each knownActionIds as id}<option value={id}>{labels.actions?.[id] ?? id}</option>{/each}</select></label>
                 </div>
                 <p>{output.description ?? `Declared ${output.payload} event.`}</p>
-                {#if binding}<p class="connection-summary">→ {'invokeAction' in binding?labels.actions?.[binding.invokeAction.actionId] ?? binding.invokeAction.actionId:labels.state?.[binding.setState.key] ?? binding.setState.key}</p><button type="button" onclick={()=>clearBinding(output.name)}>Remove connection</button>{/if}
+                {#if binding}<p class="connection-summary">→ {bindingSummary(binding)}</p><button type="button" onclick={()=>clearBinding(output.name)}>Remove connection</button>{/if}
               {/if}
             {/snippet}
           </ToolPages>
@@ -394,7 +429,7 @@
                 <ToolPages pages={componentDescriptor.props.map(prop=>({id:prop.name,label:friendly(prop.name)}))} label="Component property pages" locked={textDraftDirty}>
                   {#snippet children(name)}
                     {@const prop=componentDescriptor.props.find(prop=>prop.name===name)}
-                    {#if prop}<fieldset class="content-boundary" disabled={shared && scope==='instance'}>{#key `${componentNode.id}:${name}`}<ExpressionEditor compact label={name} displayLabel={friendly(name)} {referenceLabels} type={prop.type} value={componentNode.props?.[name]} defaultValue={prop.default} references={refs(prop.type)} onDraftChange={textDraftChange} onCommit={expression=>applyProp(name,expression)}/>{/key}</fieldset>
+                    {#if prop}<fieldset class="content-boundary" disabled={shared && scope==='instance'}>{#key `${componentNode.id}:${name}`}<ExpressionEditor compact label={name} displayLabel={friendly(name)} {referenceLabels} type={prop.type} value={componentNode.props?.[name]} defaultValue={prop.default} references={refs(prop.type)} onDraftChange={textDraftChange} onCommit={expression=>applyProp(name,expression)}/>{#if prop.type==='stringList' || prop.type==='numberList'}{#if !lexicalSlotScope}<StateInitialEditor compact {document} expression={componentNode.props?.[name]} {labels} {onApply} onDirtyChange={textDraftChange}/>{:else}<p>Starting values belong to this scoped contract; edit its source declarations.</p>{/if}{/if}{/key}</fieldset>
                     {@const slot=slotOwnedLabelSlot(componentDescriptor.id,name,componentNode)}{#if slot}<p>The {slot} slot supplies the visible text. This property is its fallback. Edit that slot's text through Document → Structure.</p>{/if}
                     {:else}<p>This component exposes no properties. Add content through Insert and its declared slots.</p>{/if}
                   {/snippet}
@@ -426,7 +461,7 @@
               {@const pages=stylePageSets[category] ?? []}
               <ToolPages {pages} label={`${category} pages`} locked={textDraftDirty}>{#snippet children(page)}
                 {#if page==='padding' || page==='margin'}<InspectorSpacing compact type={page} value={display} {effective} {origin} authored={property=>ownStyle(property)!==undefined} locked={property=>ownStyle(property)?.type==='binding'} disabled={unsupportedTarget} onChange={changeStyles} onReset={properties=>changeStyles(properties.map(property=>({property})))}/>
-                {:else}<div class="compact-grid">{#each allControls.filter(control=>pages.find(entry=>entry.id===page)?.properties.includes(control.property)) as control}{#key `${target}:${condition}:${pseudo}:${control.property}`}<InspectorControl compact label={control.label} kind={control.kind} value={display(control.property)} options={'options' in control?control.options:[]} disabled={unsupportedTarget || ownStyle(control.property)?.type==='binding'} onChange={value=>changeStyle(control.property,{type:'text',value})} onReset={()=>changeStyle(control.property)}/>{/key}{/each}</div>{/if}
+                {:else}<div class="compact-grid">{#each allControls.filter(control=>pages.find(entry=>entry.id===page)?.properties.includes(control.property)) as control}{#key `${target}:${selectedPart}:${condition}:${pseudo}:${control.property}`}<InspectorControl compact label={control.label} kind={control.kind} value={display(control.property)} options={'options' in control?control.options:[]} disabled={unsupportedTarget || ownStyle(control.property)?.type==='binding'} onChange={value=>changeStyle(control.property,{type:'text',value})} onReset={()=>changeStyle(control.property)}/>{/key}{/each}</div>{/if}
                 <p class="rule-context">{styleConditions.find(c=>c.id===condition)?.label ?? (condition || 'All sizes')} · {pseudo || 'normal'}</p>
               {/snippet}</ToolPages>
             {/if}
@@ -454,7 +489,7 @@
             {#key `${componentNode.id}:${propDecl.name}`}
               <ExpressionEditor label={propDecl.name} displayLabel={friendly(propDecl.name)} {referenceLabels} type={propDecl.type} value={componentNode.props?.[propDecl.name]}
                 defaultValue={propDecl.default} references={refs(propDecl.type)} onCommit={expression => applyProp(propDecl.name, expression)} />
-              {#if !contextual}<StateInitialEditor {document} expression={componentNode.props?.[propDecl.name]} {labels} {onApply} />{/if}
+              {#if !contextual}{#if !lexicalSlotScope}<StateInitialEditor {document} expression={componentNode.props?.[propDecl.name]} {labels} {onApply} />{:else}<p>Starting values belong to this scoped contract; edit its source declarations.</p>{/if}{/if}
               {#if ownedBySlot}<p class="muted">Shown from the “{ownedBySlot}” slot content while that slot is filled; this value is the fallback text.</p>{/if}
             {/key}
           {/each}
@@ -470,10 +505,10 @@
       {@render styleContext()}
       {#if canStyle}
         {#key `${target}:${container}`}{#each shownGroups as group, index}<details class="style-group" open={contextual || index < 2}><summary>{group.title}</summary><section>
-          {#if group.title === 'Size & spacing'}{#each ['padding', 'margin'] as type}{#key `${target}:${condition}:${pseudo}:${type}`}<InspectorSpacing type={type as 'padding' | 'margin'} value={display} {effective} {origin} authored={p => ownStyle(p) !== undefined} locked={p => ownStyle(p)?.type === 'binding'} disabled={unsupportedTarget} onChange={changeStyles} onReset={properties => changeStyles(properties.map(property => ({ property })))} />{/key}{/each}{/if}
+          {#if group.title === 'Size & spacing'}{#each ['padding', 'margin'] as type}{#key `${target}:${selectedPart}:${condition}:${pseudo}:${type}`}<InspectorSpacing type={type as 'padding' | 'margin'} value={display} {effective} {origin} authored={p => ownStyle(p) !== undefined} locked={p => ownStyle(p)?.type === 'binding'} disabled={unsupportedTarget} onChange={changeStyles} onReset={properties => changeStyles(properties.map(property => ({ property })))} />{/key}{/each}{/if}
           {#each group.controls as control}
-            {@const own = editableStyle(document, target, control.property, condition || undefined, pseudo)}
-            {#key `${target}:${condition}:${pseudo}:${control.property}`}<InspectorControl label={control.label} kind={control.kind} value={display(control.property)} authored={own !== undefined} origin={origin(control.property)} originLabel={originLabel(control.property)} effective={effective(control.property)} options={'options' in control ? control.options : []} disabled={unsupportedTarget || own?.type === 'binding'} onChange={v => changeStyle(control.property, { type: 'text', value: v })} onReset={() => changeStyle(control.property)} />{/key}
+            {@const own = editableStyle(document, target, control.property, condition || undefined, pseudo, selectedPart)}
+            {#key `${target}:${selectedPart}:${condition}:${pseudo}:${control.property}`}<InspectorControl label={control.label} kind={control.kind} value={display(control.property)} authored={own !== undefined} origin={origin(control.property)} originLabel={originLabel(control.property)} effective={effective(control.property)} options={'options' in control ? control.options : []} disabled={unsupportedTarget || own?.type === 'binding'} onChange={v => changeStyle(control.property, { type: 'text', value: v })} onReset={() => changeStyle(control.property)} />{/key}
           {/each}
         </section></details>{/each}{/key}
       {:else}<section><p>Select an element or component to style it. Text appearance is controlled by its containing element.</p></section>{/if}
@@ -493,7 +528,7 @@
             {@const binding = outputBindingRaw(output.name)}
             <div class="output-row">
               <strong>{outputTitle(output.name)}</strong>
-              {#if binding}<p class="connection-summary">→ {'invokeAction' in binding ? labels.actions?.[binding.invokeAction.actionId] ?? binding.invokeAction.actionId : labels.state?.[binding.setState.key] ?? binding.setState.key}</p>{/if}
+              {#if binding}<p class="connection-summary">→ {bindingSummary(binding)}</p>{/if}
               <details><summary>Event details</summary><p>{output.name} ({output.payload}) · {output.description ?? 'Declared component event.'}</p></details>
               {#if output.payload !== 'void'}
                 <label>Update state
@@ -539,7 +574,7 @@
       <dl><dt>Source node</dt><dd>{node.id}</dd><dt>Component path</dt><dd>{report?.instancePath.map(p => `${p.sourceNodeId}@${p.definitionId}`).join(' / ') || 'None'}</dd><dt>Repeat record keys</dt><dd>{report?.repeatKeys.join(' / ') || 'None'}</dd><dt>Portal ownership</dt><dd>{JSON.stringify(report?.portalPath)}</dd></dl>
       {#if canStyle}<label>CSS property<input aria-label="Style property" bind:value={property} /></label><label><input type="checkbox" bind:checked={token} /> Use token</label>
         {#if token}<label>Token<select aria-label="Token id" bind:value={value}><option value="">Choose…</option>{#each knownTokenIds as id}<option value={id}>{id}</option>{/each}</select></label>{:else}<label>CSS value<input aria-label="Style value" bind:value={value} /></label>{/if}
-        <p>{origin(property)}</p><button type="button" disabled={!value.trim() || !property.trim() || unsupportedTarget} onclick={() => changeStyle(property, token ? { type: 'token', id: value } : { type: 'text', value: value.trim() })}>Apply style</button><button type="button" disabled={!editableStyle(document, target, property, condition || undefined, pseudo) || unsupportedTarget} onclick={() => changeStyle(property)}>Reset declaration</button>
+        <p>{origin(property)}</p><button type="button" disabled={!value.trim() || !property.trim() || unsupportedTarget} onclick={() => changeStyle(property, token ? { type: 'token', id: value } : { type: 'text', value: value.trim() })}>Apply style</button><button type="button" disabled={!ownStyle(property) || unsupportedTarget} onclick={() => changeStyle(property)}>Reset declaration</button>
       {/if}
       {#if node.kind === 'element'}<label>Attribute name<input aria-label="Attribute name" bind:value={attr} /></label><label>Attribute value<input aria-label="Attribute value" bind:value={attrValue} /></label><button type="button" onclick={() => onApply(setAttribute({ requestId: request(), nodeId: node.id, name: attr, value: attrValue }))}>Set attribute</button>{/if}
       <h3>Canonical source (read only)</h3><pre>{JSON.stringify(node, null, 2)}</pre>

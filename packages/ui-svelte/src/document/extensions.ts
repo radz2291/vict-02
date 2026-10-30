@@ -5,6 +5,7 @@ import type {
   UiRenderInstruction,
   UiRenderPlan,
   UiValue,
+  UiAuthoringRule,
 } from '@victframework/ui';
 
 /** The component-ABI marker (amendment §3.2) — declared as an events capability. */
@@ -24,6 +25,8 @@ export interface UiSvelteExtensionProps {
 
 /** Code registration is outside serialized source and requires exact identity. */
 export interface UiSvelteExtensionImplementation {
+  readonly authoringRules?: readonly UiAuthoringRule[];
+  readonly authoringDependencies?: readonly {readonly id:string;readonly revision:string}[];
   readonly extensionId: string;
   readonly revision: string;
   readonly rendererImplementationId: string;
@@ -37,10 +40,21 @@ export interface UiSvelteExtensionImplementation {
  * evaluated declared props. Delivery is declared-only and payload-typed;
  * the bridge copies array payloads before delivery (§10.1a ownership).
  */
+/** Code-only invocation frame: its data is validated against the canonical fill scope. */
+export interface UiScopedSlotFrame {
+  readonly key: string;
+  readonly props: Readonly<Record<string, unknown>>;
+  readonly state?: Readonly<Record<string, UiValue>>;
+  readonly onStateChange?: (key:string,value:UiValue)=>void;
+  readonly onOutput?: (output:string,payload?:UiValue)=>void;
+}
 export interface UiSvelteComponentIO {
   /** Emit a declared output. Only declared names are delivered. */
   readonly emit: (output: string, payload?: UiValue) => void;
   readonly slots?: Readonly<Record<string, Snippet>>;
+  readonly scopedSlots?: Readonly<Record<string, Snippet<[UiScopedSlotFrame]>>>;
+  /** Safe label fallback for legacy interactive content nested inside a native trigger. */
+  readonly slotLabels?: Readonly<Record<string, string>>;
   readonly action?: UiComponentActionStatus;
 }
 
@@ -55,6 +69,8 @@ export interface UiSvelteComponentProps extends UiSvelteExtensionProps {
  * extended with the ABI and slot-capability fields the contract requires.
  */
 export interface UiSvelteComponentImplementation {
+  readonly authoringRules?: readonly UiAuthoringRule[];
+  readonly authoringDependencies?: readonly {readonly id:string;readonly revision:string}[];
   readonly extensionId: string;
   readonly revision: string;
   readonly rendererImplementationId: string;
@@ -62,6 +78,7 @@ export interface UiSvelteComponentImplementation {
   readonly abi: typeof UI_COMPONENT_ABI;
   /** Descriptor slot names this implementation can render (capability). */
   readonly slots: readonly string[];
+  readonly scopedSlots?: readonly string[];
   /** Exposed presentation targets this implementation actually forwards. */
   readonly styleTargets?: readonly string[];
   /** Subset of `slots` the implementation contract requires to be filled. */
@@ -234,6 +251,8 @@ export function resolveSvelteComponent(
       );
     }
   }
+  for(const slotName of filledSlots)if(descriptor.scopedSlots?.includes(slotName)&&!instruction.slotScopes?.[slotName])return fail('UI_COMPONENT_SLOT_UNAVAILABLE',`Scoped slot '${slotName}' lacks its compiled scope contract.`);
+  for(const slotName of Object.keys(instruction.slotScopes??{}))if(!descriptor.scopedSlots?.includes(slotName)||!implementation.scopedSlots?.includes(slotName))return fail('UI_COMPONENT_SLOT_UNAVAILABLE',`The implementation cannot render scoped slot '${slotName}'.`);
   for (const slotName of implementation.required ?? []) {
     const fill = instruction.slots?.[slotName];
     if (fill === undefined || fill.length === 0) {
@@ -278,6 +297,9 @@ export function resolveSvelteExtension(
 export interface UiComponentTargetAttributes {
   readonly class: string;
   readonly style?: string;
+  /** Adapter-owned accessible naming, including labels for specialist fields. */
+  readonly 'aria-label'?: string;
+  readonly 'aria-labelledby'?: string;
   readonly 'data-ui-owner'?: string;
   readonly 'data-ui-primary'?: string;
   readonly 'data-ui-node'?: string;
@@ -288,13 +310,21 @@ export interface UiComponentTargetAttributes {
   readonly onpointerdowncapture?: (event: PointerEvent) => void;
 }
 export interface UiComponentPresentation {
+  /** Actual rendering document, including an explicitly hosted iframe viewport. */
+  readonly ownerDocument?: Document;
   /** Ephemeral inline surface, accepted only by explicitly capable adapters. */
   readonly compositionSlot?: string;
   /** Canonical document scope placed on an ancestor of portaled parts. */
   readonly scopeClass?: string;
-  /** The first declared style target owns instance styles; other targets expose inspection. */
+  /** Legacy instance styles target the first part; explicit partStyles target each declared part. */
   readonly target: (name: string) => UiComponentTargetAttributes;
 }
+
+/** Optional host-owned overlay outlet. Omission preserves standalone body portals. */
+export const UI_PORTAL_TARGET = Symbol.for('vict.ui.portal-target@1');
+export type UiPortalTarget = () => HTMLElement | undefined;
+export const UI_APPLICATION_DOCUMENT = Symbol.for('vict.ui.application-document@1');
+export type UiApplicationDocument = () => Document | undefined;
 
 /** Execution status is ephemeral presentation state, separate from authored bindings. */
 export interface UiComponentActionStatus {

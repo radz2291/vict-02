@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+  <meta charset="utf-8" /><title>VICT production capture boundary check</title
+  ><style>
+    body {
+      font: 14px Arial;
+      margin: 16px;
+      background: #edf2f6;
+      color: #152b40;
+    }
+    button,
+    a {
+      font: inherit;
+      padding: 6px;
+      margin: 3px;
+    }
+    main {
+      display: flex;
+      gap: 20px;
+    }
+    iframe {
+      display: block;
+      width: 390px;
+      height: 420px;
+      border: 1px solid #64748b;
+    }
+    img { display:block;max-width:none;border:1px solid #64748b; }
+    pre {
+      white-space: pre-wrap;
+      max-width: 1000px;
+      font: 12px monospace;
+    }
+  </style>
+  <h1>Production scrolled capture check</h1>
+  <p>
+    Left is native iframe DOM. Right is the JPEG returned by the actual candidate
+    captureRenderedElement, displayed at its intrinsic dimensions. A narrower
+    JPEG excludes the native viewport's scrollbar gutter; compare its stated crop.
+  </p>
+  <nav id="states"></nav>
+  <button id="capture">Capture current production DOM</button
+  ><a id="download" hidden download="vict-production-scroll.jpg">Download JPEG</a
+  ><a id="metadata" hidden download="vict-production-scroll.json">Download metadata</a>
+  <main>
+    <section>
+      <h2>Native reference</h2>
+      <iframe id="frame" src="/frame.html" title="Native application reference"></iframe>
+    </section>
+    <section>
+      <h2>Actual production capture</h2>
+      <img id="image" alt="No capture yet" />
+    </section>
+  </main>
+  <pre id="result" role="status">Choose a state, then capture.</pre>
+  <script type="module" src="/main.ts"></script>
+</html>

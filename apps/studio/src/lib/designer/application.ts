@@ -2,12 +2,10 @@
 import { compileApplication, deriveActionInputCatalog } from '@victframework/application';
 import type { ApplicationDefinitionV3, ResourceDefinition } from '@victframework/sdk';
 import { defaultSemanticElementCatalog, type UiDocument } from '@victframework/ui';
-import {
-  catalogDescriptors,
-  catalogImplementations,
-  validateSvelteComponentPlan,
-} from '@victframework/ui-svelte';
+import { validateSvelteComponentPlan } from '@victframework/ui-svelte';
+import { installedAuthoringDescriptors as catalogDescriptors, installedAuthoringImplementations as catalogImplementations } from './authoring.js';
 import { defineContract } from '@victframework/contracts';
+import { screenPlacementIssues } from './placement.js';
 
 export const submitInput = defineContract<{ message: string; accepted: boolean }>({
   id: 'studio.demo-input',
@@ -123,6 +121,7 @@ export function screenApplication(document: UiDocument): ApplicationDefinitionV3
   };
 }
 export function compileScreen(document: UiDocument) {
+  const contextIssues = screenPlacementIssues(document);
   const compiled = compileApplication({
     application: screenApplication(document),
     resources: [demoResource],
@@ -130,10 +129,14 @@ export function compileScreen(document: UiDocument) {
     uiDocuments: [{ document }],
     uiExtensions: catalogDescriptors,
   });
-  if (!compiled.ok) return compiled;
+  if (!compiled.ok) return contextIssues.length ? { ok:false as const,issues:contextIssues,uiIssues:[] } : compiled;
   const issues = Object.values(compiled.plan.documentPlans ?? {}).flatMap((plan) =>
     validateSvelteComponentPlan(plan, catalogDescriptors, catalogImplementations),
   );
+  // Required slots are evaluated after local fills, repeats and conditionals expand.
+  // Keep that renderer-owned diagnostic authoritative before semantic part guidance.
+  if(issues.some(issue=>issue.code==='UI_COMPONENT_SLOT_REQUIRED'))return {ok:false as const,issues:[...issues,...contextIssues],uiIssues:[]};
+  if(contextIssues.length)return {ok:false as const,issues:contextIssues,uiIssues:[]};
   return issues.length ? { ok: false as const, issues, uiIssues: [] } : compiled;
 }
 export function screenIssues(document: UiDocument) {
@@ -142,8 +145,7 @@ export function screenIssues(document: UiDocument) {
     return result.ok
       ? []
       : [...result.issues, ...(result.uiIssues ?? [])].map((issue) => ({
-          code: issue.code,
-          message: issue.message,
+          ...issue,
           severity: 'error',
         }));
   } catch {

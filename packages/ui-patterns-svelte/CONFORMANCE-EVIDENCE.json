@@ -1,0 +1,99 @@
+{
+  "status": "Shared owned-dialog scoped checks PASS; integrated/native/device/owner acceptance HELD",
+  "testedFiles": {
+    "src/ActionButton.svelte": "404BAF44EE4F0701F772386A721E58A897CAC5B7BA1DFF0E671F6C0119CE976C",
+    "src/Carousel.svelte": "59BF9C0F0A394139A4D1A6F8D163BFB6363D67791089A71FD853A1813F033853",
+    "src/Drawer.svelte": "4457B384F6FF7DFD490E76AF0EC9FAFF105500A2B770D8A182ED11059E36E3FA",
+    "src/FilteredList.svelte": "5BBFAC7FEF2F0AD5855894784EBF3B14733A3828750A1F9A9E8B91C9E3B43AA2",
+    "src/FirstVisit.svelte": "6897E4284DA7448DABBDD79CE28E1A8697F0831D703F5F69CB6582BA2FEBC08A",
+    "src/Navigation.svelte": "BEACB69D10A69D7360CF740CED89FC954779F67691689C22E3CE4EFDB48249CA",
+    "src/focus.ts": "560DE62CC1B8B68642C3E2C0C745425EECD62F9BE421C77DE88CEE6692238F77"
+  },
+  "tests": {
+    "files": 2,
+    "log": "Temp/vict-patterns-conformance-sealed.log",
+    "passed": 25
+  },
+  "types": {
+    "log": "Temp/vict-patterns-conformance-sealed-types.log",
+    "inheritedWarnings": 5,
+    "errors": 0
+  },
+  "browser": "not performed by this builder",
+  "provider": "not invoked",
+  "independent": "pending",
+  "priorBuilderStatus": "builder scoped checks PASS; integrated acceptance HELD",
+  "reviewedCandidateCommit": "710886572750b00d7f716b8a93f547b88406d872",
+  "ownershipChallenge": {
+    "before": {
+      "passed": 1,
+      "failed": 5,
+      "log": "Temp/vict-patterns-drawer-isolation-before.log"
+    },
+    "afterBoundedRepair": {
+      "passed": 3,
+      "failed": 3,
+      "log": "Temp/vict-patterns-drawer-isolation-after-bounded.log"
+    },
+    "remaining": [
+      "sibling focus capture",
+      "sibling Escape cancellation/close",
+      "programmatic close focus ownership"
+    ],
+    "ordinaryRepairs": [
+      "merge dynamic panel target style",
+      "preventOverflowTextSelection=false"
+    ],
+    "drawerSha256": "FE6DCBD9DEF42664B4A2BDB3A8D843440E00BE13C9F259AC4871BC4D7C644ADE",
+    "legacyRegression": {
+      "passed": 25,
+      "log": "Temp/vict-patterns-drawer-bounded-regressions.log"
+    },
+    "types": {
+      "inheritedWarnings": 5,
+      "errors": 0,
+      "log": "Temp/vict-patterns-drawer-bounded-types.log"
+    },
+    "fullPackageSuite": "FAIL: executable required ownership regressions retained",
+    "sharedAdapter": "not implemented; owner decision pending",
+    "dependencyChanges": "none",
+    "nativeBrowser": "not run",
+    "provider": "not invoked"
+  },
+  "ownedDialogExtension": {
+    "authority": "Owner-approved shared VICT adapter continuation2026-10-28; no Bits fork",
+    "base": "d733980b1894b2309d26bd3f408a3e2b7da5e823",
+    "sourceSha256": {
+      "packages/ui-svelte/src/owned-dialog.ts": "F806908093BF64506E80B8B3B77E391599EA6D50138C6A53FCF063B510BE2759",
+      "packages/ui-svelte/src/OwnedDialogContent.svelte": "1DD108BB6E36B3A6DFB3C679CDBC619A191851DFD04C97F8EFD1F080CB81105E",
+      "packages/ui-svelte/src/index.ts": "768FEE24A7833E6FD148CBD296587CC267C86D49B62997C3E6BCCAB0B6093759",
+      "packages/ui-patterns-svelte/src/Drawer.svelte": "8D50B6AB375C1CCA752E66BA1321BE11333A17102161328DED0203354E8A54DE",
+      "packages/ui-patterns-svelte/src/focus.ts": "E1E073482230F372652AF4359A51112DCC02A2F814A08F6B51E7C17406CD2F7C"
+    },
+    "builderChecks": {
+      "log": "Temp/vict-owned-dialog-focus-chain-tests.log",
+      "files": 6,
+      "passed": 45
+    },
+    "types": {
+      "errors": 0,
+      "inheritedWarnings": 5,
+      "log": "Temp/vict-owned-dialog-focus-chain-types.log"
+    },
+    "independent": {
+      "scope": "Shared helper, real registered Select portal, four unchanged native-radio challenge tests; separate reviewer rerun onF8069080...",
+      "files": 3,
+      "passed": 14
+    },
+    "remaining": [
+      "native browser and physical-device evidence",
+      "full integrated candidate verification",
+      "pre-existing child popup own document-level behavior requires separate isolation checks",
+      "owner acceptance"
+    ],
+    "browser": "No browser action by this builder",
+    "provider": "No provider invocation",
+    "dependencyChanges": "none",
+    "commit": "none by builder"
+  }
+}

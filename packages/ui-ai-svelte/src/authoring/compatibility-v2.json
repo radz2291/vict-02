@@ -1,0 +1,20 @@
+[
+  {
+    "id": "vict.ai.conversation",
+    "revision": "2",
+    "descriptorDigest": "9b1e9a0fa0e70f4e0f88e273a8decfab15768f215eb60d4ae0b6022db506c1fa",
+    "capabilitiesDigest": "af56b609ebefb70fd107e4a2b2c051d02798aed65909ba2d770f6ed0589cbb73"
+  },
+  {
+    "id": "vict.ai.message",
+    "revision": "2",
+    "descriptorDigest": "8a9cfd4a38c8b3cb71d4dfb992ec24d1746a7549de2a3f2b5af54202cc412025",
+    "capabilitiesDigest": "962469c274dc12001213acd40cb6f3c6a833eded3daf670284873adbd188988b"
+  },
+  {
+    "id": "vict.ai.prompt-input",
+    "revision": "2",
+    "descriptorDigest": "67954bebb5e3d2021f5c1f95939f12f3b55aa53ce9dbf7aaa1310e3bf16a5eb9",
+    "capabilitiesDigest": "c49d6356f669c8a696c84c39c9cf2670b2596079913bba7db3c12e9cf19a9e46"
+  }
+]

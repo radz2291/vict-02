@@ -52,6 +52,8 @@ export default defineConfig({
             'packages/ui-svelte/**',
             'packages/mastra/**',
             'packages/ui-editor/**/*.svelte.test.ts',
+            'packages/ui-ai-svelte/**/*.svelte.test.ts',
+            'packages/ui-flow-svelte/**/*.svelte.test.ts',
           ],
         },
         resolve: { alias: aliases },
@@ -70,7 +72,7 @@ export default defineConfig({
       {
         test: {
           name: 'renderer',
-          server: { deps: { inline: ['bits-ui', 'runed', '@internationalized/date'] } },
+          server: { deps: { inline: ['bits-ui', 'runed', '@internationalized/date', '@xyflow/svelte', '@lucide/svelte', '@shadcn-svelte/primitives'] } },
           // The permanent Svelte renderer implementation (ui-svelte — the
           // sole renderer package since the facade retirement) plus the
           // editor's svelte-component tests (U2 tooling surfaces).

@@ -1,3 +1,4 @@
+import { slotScopeProblems, scopedSlotLexicalScope } from './slot-scope.js';
 /**
  * `validateUiDocument` — structural, reference, scope and catalog
  * validation for one `vict.ui-document@1` document (API-SPEC §3).
@@ -20,7 +21,7 @@ import type {
   UiNode,
   UiOutputBinding,
 } from './document.js';
-import { UI_DOCUMENT_SCHEMA } from './document.js';
+import { UI_DOCUMENT_SCHEMA, UI_THEME_SCHEMA, UI_THEME_ROLES } from './document.js';
 import { hasErrors, uiDiagnostic, type UiDiagnostic } from './diagnostics.js';
 import { isUiValueOfType, isUiValueType } from './values.js';
 import { checkExpression, checkExpressionTarget, repeatExpressionFields, type UiScopeInfo } from './expressions.js';
@@ -103,6 +104,15 @@ export function validateUiDocument(input: unknown, catalogs: UiCatalogs): readon
   }
 
   const docRecord = document as unknown as Record<string, unknown>;
+  if (document.theme !== undefined) {
+    const theme = document.theme;
+    if (!isPlainObject(theme) || theme.schema !== UI_THEME_SCHEMA || !isPlainObject(theme.roles) || Object.keys(theme).some(key => !['schema', 'roles'].includes(key))) {
+      issues.push(uiDiagnostic('UI_DOC_INVALID_LITERAL', 'Theme requires vict.ui-theme@1 and a semantic roles record.', {documentId:document.id,nodeId:document.root}));
+    } else for (const [role, value] of Object.entries(theme.roles)) {
+      if (!(UI_THEME_ROLES as readonly string[]).includes(role) || typeof value !== 'string' || !value.trim() || value.length > 2048 || /[;{}<>]|url\s*\(/i.test(value))
+        issues.push(uiDiagnostic('UI_DOC_INVALID_LITERAL', `Theme role '${role}' requires a bounded inert CSS value.`, {documentId:document.id,nodeId:document.root,property:role}));
+    }
+  }
   const nodes = registryOf(docRecord, 'nodes') as Record<string, UiNode>;
   const definitions = registryOf(docRecord, 'componentDefinitions') as Record<
     string,
@@ -165,15 +175,17 @@ export function validateUiDocument(input: unknown, catalogs: UiCatalogs): readon
         return [node.templateRoot];
       case 'slot':
         return node.fallback ?? [];
+      case 'conditional':
+        return node.branches.flatMap(branch=>branch.children);
       default:
         return [];
     }
   };
   const definitionSlotFillChildren = (
     node: UiNode,
-  ): readonly { slot: string; children: readonly string[] }[] =>
+  ): readonly { slot: string; children: readonly string[]; scope?: import('./document.js').UiSlotScope }[] =>
     node.kind === 'component' && node.slots !== undefined
-      ? Object.entries(node.slots).map(([slot, fill]) => ({ slot, children: fill.children }))
+      ? Object.entries(node.slots).map(([slot, fill]) => ({ slot, children: fill.children, scope: fill.scope }))
       : [];
 
   const visiting = new Set<string>();
@@ -183,6 +195,7 @@ export function validateUiDocument(input: unknown, catalogs: UiCatalogs): readon
     node: Extract<UiNode, { kind: 'repeat' }>,
     scope: UiScopeInfo,
   ): UiScopeInfo => ({
+    ...scope,
     repeatItems: {
       ...scope.repeatItems,
       [node.itemName]: repeatItemFields(ctx, node.collection),
@@ -222,7 +235,7 @@ export function validateUiDocument(input: unknown, catalogs: UiCatalogs): readon
       for (const childId of childRefsOf(node)) visit(childId, scope);
     }
     for (const fill of definitionSlotFillChildren(node)) {
-      for (const childId of fill.children) visit(childId, scope);
+      for (const childId of fill.children) visit(childId, fill.scope && !slotScopeProblems(fill.scope).length ? scopedSlotLexicalScope(scope,fill.scope) : scope);
     }
     path.pop();
     visiting.delete(nodeId);
@@ -272,7 +285,7 @@ export function validateUiDocument(input: unknown, catalogs: UiCatalogs): readon
       }
       if (node.kind === 'component' && node.slots !== undefined) {
         for (const fill of Object.values(node.slots)) {
-          for (const childId of fill.children) stack.push({ id: childId, scope: entry.scope });
+          for (const childId of fill.children) stack.push({ id: childId, scope: fill.scope && !slotScopeProblems(fill.scope).length ? scopedSlotLexicalScope(entry.scope,fill.scope) : entry.scope });
         }
       }
       visited.add(nodeId);
@@ -453,6 +466,7 @@ function collectNodeSubtree(
     if (node.kind === 'element' || node.kind === 'portal') stack.push(...node.children);
     if (node.kind === 'repeat') stack.push(node.templateRoot);
     if (node.kind === 'slot') stack.push(...(node.fallback ?? []));
+    if (node.kind === 'conditional')for(const branch of node.branches)stack.push(...branch.children);
     if (node.kind === 'component' && node.slots !== undefined) {
       for (const fill of Object.values(node.slots)) stack.push(...fill.children);
     }
@@ -470,6 +484,8 @@ function validateOutputBindings(
   node: Extract<UiNode, { kind: 'component' }>,
   scope: UiScopeInfo,
 ): void {
+  for(const fill of Object.values(node.slots??{}))if(fill.scope)for(const message of slotScopeProblems(fill.scope))ctx.issues.push(uiDiagnostic('UI_DOC_INVALID_LITERAL',message,{documentId:String(ctx.document.id),nodeId:node.id}));
+  for(const fill of Object.values(node.slots??{}))if(fill.scope&&!slotScopeProblems(fill.scope).length){const inner=scopedSlotLexicalScope(scope,fill.scope);for(const expression of Object.values(fill.scope.conditions??{}))ctx.issues.push(...checkExpressionTarget(expression,'boolean',ctx.catalogs,inner,String(ctx.document.id),node.id));}
   const outputs = node.outputs;
   if (outputs === undefined) return;
   const { catalogs, issues } = ctx;
@@ -490,7 +506,7 @@ function validateOutputBindings(
       );
     }
     if ('setState' in binding) {
-      const target = localState[binding.setState.key];
+      const target = scope.stateTypes ? (scope.stateTypes[binding.setState.key] ? {type:scope.stateTypes[binding.setState.key]} : undefined) : localState[binding.setState.key];
       if (target === undefined) {
         issues.push(
           uiDiagnostic(
@@ -505,6 +521,10 @@ function validateOutputBindings(
           ...checkExpression(binding.setState.value, catalogs, outputScope, documentId, node.id),
         );
       }
+    } else if ('emit' in binding) {
+      const output=scope.scopedOutputs?.find(decl=>decl.name===binding.emit.output);
+      if(!output)issues.push(uiDiagnostic('UI_COMPONENT_OUTPUT_UNKNOWN','emit requires a declared scoped output.',{documentId,nodeId:node.id,output:binding.emit.output}));
+      if(binding.emit.value!==undefined)issues.push(...checkExpression(binding.emit.value,catalogs,outputScope,documentId,node.id));
     } else if ('invokeAction' in binding) {
       if (
         catalogs.actionIds !== undefined &&
@@ -607,6 +627,9 @@ function validateNode(
       break;
     }
     case 'component': {
+      // Instance presentation is evaluated in the caller's lexical scope,
+      // including extension instances whose descriptors resolve later.
+      validatePresentation(ctx, node, scope);
       // Authored output connections (amendment §3.1): document-level checks
       // (binding shape, target-key existence, expression validity with the
       // `$output` scope, declared action ids). Descriptor-dependent checks
@@ -654,6 +677,7 @@ function validateNode(
       }
 
       for (const [slotName, fill] of Object.entries(node.slots ?? {})) {
+        if(fill.scope)issues.push(uiDiagnostic('UI_DOC_UNSUPPORTED_FEATURE','Scoped fills require an explicitly capable registered component.',{documentId,nodeId:node.id}));
         const declared = (definition as UiComponentDefinition).slots?.[slotName];
         if (declared === undefined) {
           issues.push(
@@ -717,6 +741,7 @@ function validateNode(
         );
       }
       const innerScope: UiScopeInfo = {
+        ...scope,
         repeatItems: {
           ...scope.repeatItems,
           [node.itemName]: repeatItemFields(ctx, node.collection),
@@ -731,6 +756,8 @@ function validateNode(
     case 'conditional': {
       for (const branch of node.branches) {
         if (branch.when !== undefined) {
+          const scopedExpression=scope.scopedConditions?.[branch.when];
+          if(scopedExpression){issues.push(...checkExpressionTarget(scopedExpression,'boolean',catalogs,scope,documentId,node.id));continue;}
           const condition = (registryOf(docRecord, 'conditions') as Record<string, unknown>)[
             branch.when
           ];
@@ -893,7 +920,7 @@ function validateInteraction(
     }
   } else if (interaction.action === 'setState') {
     const localState = registryOf(docRecord, 'localState');
-    if (localState[interaction.key] === undefined) {
+    if ((scope.stateTypes??localState)[interaction.key] === undefined) {
       issues.push(
         uiDiagnostic('UI_EXPR_UNKNOWN_REFERENCE', `setState targets undeclared state key.`, {
           documentId,
@@ -915,6 +942,44 @@ function validatePresentation(ctx: ValidateContext, node: UiNode, scope: UiScope
   const docRecord = document as unknown as Record<string, unknown>;
   const documentId = String(document.id);
   const styleSources = registryOf(docRecord, 'styleSources');
+  if (node.partStyles !== undefined) {
+    if (node.kind !== 'component' || !isPlainObject(node.partStyles) || registryOf(docRecord,'componentDefinitions')[node.definitionId] !== undefined) {
+      issues.push(uiDiagnostic('UI_DOC_INVALID_LITERAL', 'Part styles require a component and a named parts record.', {documentId,nodeId:node.id}));
+    } else for (const [part, style] of Object.entries(node.partStyles)) {
+      if (!/^[A-Za-z][A-Za-z0-9_-]{0,79}$/.test(part) || !isPlainObject(style) || Object.keys(style).some(key => !['localStyle','styleSources'].includes(key)) || (style.localStyle !== undefined && !Array.isArray(style.localStyle)) || (style.styleSources !== undefined && !Array.isArray(style.styleSources))) {
+        issues.push(uiDiagnostic('UI_DOC_INVALID_LITERAL', `Invalid presentation for part '${part}'.`, {documentId,nodeId:node.id,part}));
+        continue;
+      }
+      for (const declaration of style.localStyle ?? []) {
+        if (!isPlainObject(declaration)) { issues.push(uiDiagnostic('UI_DOC_INVALID_LITERAL', 'Part declaration must be an object.', {documentId,nodeId:node.id,part})); continue; }
+        const value = declaration.value;
+        if (!isPlainObject(value) || !((value.type === 'text' && typeof value.value === 'string') || (value.type === 'token' && typeof value.id === 'string') || (value.type === 'binding' && isPlainObject(value.expression)))) {
+          issues.push(uiDiagnostic('UI_DOC_INVALID_LITERAL', `Part '${part}' requires a typed style value.`, {documentId,nodeId:node.id,part})); continue;
+        }
+        validateStyleDeclaration(ctx, declaration, node.id, node.id, registryOf(docRecord,'tokens'));
+        if (isPlainObject(declaration.value) && declaration.value.type === 'binding') issues.push(...checkExpression(declaration.value.expression as UiExpression,catalogs,scope,documentId,node.id));
+      }
+      for (const sourceId of style.styleSources ?? []) {
+        if (typeof sourceId !== 'string' || styleSources[sourceId] === undefined) issues.push(uiDiagnostic('UI_DOC_REFERENCE_DANGLING', `Part '${part}' references an unknown style source.`, {documentId,nodeId:node.id,reference:`styleSource:${String(sourceId)}`}));
+        const source = styleSources[String(sourceId)];
+        if (isPlainObject(source) && Array.isArray(source.declarations)) for (const declaration of source.declarations) {
+          if (isPlainObject(declaration) && isPlainObject(declaration.value) && declaration.value.type==='binding') issues.push(...checkExpression(declaration.value.expression as UiExpression,catalogs,scope,documentId,node.id));
+        }
+      }
+    }
+  }
+  const validateSourceBindings = (sourceId: string): void => {
+    const source = styleSources[sourceId];
+    if (isPlainObject(source) && Array.isArray(source.declarations)) {
+      for (const declaration of source.declarations) {
+        if (!isPlainObject(declaration) || !isPlainObject(declaration.value) || declaration.value.type !== 'binding') continue;
+        // A shared source acquires its lexical scope where it is consumed,
+        // exactly like localStyle. Unattached definitions remain forward data.
+        issues.push(...checkExpression(declaration.value.expression as UiExpression, catalogs, scope, documentId, node.id)
+          .map(issue => ({ ...issue, styleSourceId: sourceId })));
+      }
+    }
+  };
   for (const sourceId of node.styleSources ?? []) {
     if (styleSources[sourceId] === undefined) {
       issues.push(
@@ -928,6 +993,16 @@ function validatePresentation(ctx: ValidateContext, node: UiNode, scope: UiScope
           },
         ),
       );
+    }
+    validateSourceBindings(sourceId);
+  }
+  if (node.kind === 'component') {
+    const definition = registryOf(docRecord, 'componentDefinitions')[node.definitionId];
+    if (isPlainObject(definition) && typeof definition.baseStyle === 'string' && !node.styleSources?.includes(definition.baseStyle)) {
+      // The existing renderer evaluates baseStyle on the component instance in
+      // its caller scope. Do not reinterpret it as the definition's own props.
+      // Missing baseStyle identities retain validateDefinition's diagnostic.
+      validateSourceBindings(definition.baseStyle);
     }
   }
   for (const declaration of node.localStyle ?? []) {

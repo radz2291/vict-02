@@ -406,7 +406,7 @@ function countedProxy(target: object): {
 
 /** Deterministically build a schema whose serialized UTF-8 size is exactly
  * `targetBytes` (ASCII padding distributed round-robin over 16 fields,
- * every per-string value within the 2048-char bound). */
+ * each field kept within the historical 2048-character fixture size). */
 function schemaOfExactSize(targetBytes: number): Record<string, string> {
   const out: Record<string, string> = {};
   for (let index = 0; index < 16; index += 1) {
@@ -416,7 +416,7 @@ function schemaOfExactSize(targetBytes: number): Record<string, string> {
   if (size > targetBytes) {
     throw new Error(`fixture floor ${size} exceeds target ${targetBytes}`);
   }
-  const maxCharsPerField = PRESENTATION_BOUNDS.maxStringLength;
+  const maxCharsPerField = 2048;
   let field = 0;
   while (size < targetBytes) {
     const key = `f${String(field % 16).padStart(2, '0')}`;
@@ -437,6 +437,27 @@ function schemaOfExactSize(targetBytes: number): Record<string, string> {
 }
 
 describe('B-1: the total presentation bound measures TRUE serialized UTF-8 bytes', () => {
+  it('accepts one long leaf exactly at the total budget and refuses the next byte', () => {
+    const overhead = Buffer.byteLength(JSON.stringify({ text: '' }), 'utf8');
+    const schema = { text: 'x'.repeat(PRESENTATION_BOUNDS.maxTotalBytes - overhead) };
+    expect(schema.text.length).toBeGreaterThan(2048);
+    expect(capturePresentationSchema(schema, 'long-leaf')).toEqual(schema);
+    expect(() => capturePresentationSchema({ text: schema.text + 'x' }, 'long-leaf'))
+      .toThrowError(VictPresentationError);
+  });
+
+  it('refuses an impossible oversized leaf early without echoing its content', () => {
+    const text = 'oversized-private-canary'.repeat(50_000);
+    try {
+      capturePresentationSchema({ text }, 'long-leaf');
+      throw new Error('expected early aggregate-budget refusal');
+    } catch (error) {
+      expect(error).toBeInstanceOf(VictPresentationError);
+      expect((error as VictPresentationError).detail).toContain('cannot fit');
+      expect((error as VictPresentationError).detail).not.toContain('private-canary');
+    }
+  });
+
   it('a serialization of EXACTLY 32768 UTF-8 bytes PASSES the capture', () => {
     const schema = schemaOfExactSize(PRESENTATION_BOUNDS.maxTotalBytes);
     expect(Buffer.byteLength(JSON.stringify(schema), 'utf8')).toBe(
@@ -484,7 +505,7 @@ describe('B-1: the total presentation bound measures TRUE serialized UTF-8 bytes
     const schema: Record<string, string> = {};
     for (let index = 0; index < 16; index += 1) {
       schema[`f${String(index).padStart(2, '0')}`] = '"'.repeat(
-        PRESENTATION_BOUNDS.maxStringLength,
+        2048,
       );
     }
     const serializedBytes = Buffer.byteLength(JSON.stringify(schema), 'utf8');
@@ -1001,7 +1022,7 @@ describe('adjacent cleanup: the captured output schema rides the REAL outputSche
     expect(tool.outputSchema['~standard'].jsonSchema.input()).toEqual({ type: 'object' });
   });
 
-  it('the adapter compatibility marker is revision 3 (model-visible surface change recorded)', () => {
-    expect(MASTRA_ADAPTER_COMPATIBILITY.revision).toBe('3');
+  it('the adapter compatibility marker is revision 4 after the string-bound amendment', () => {
+    expect(MASTRA_ADAPTER_COMPATIBILITY.revision).toBe('4');
   });
 });

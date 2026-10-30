@@ -104,6 +104,21 @@ export interface UiStyleDeclaration {
   readonly value: UiStyleValue;
 }
 
+/** Independently addressable component part presentation (opt-in, additive). */
+export interface UiPartStyle {
+  readonly styleSources?: readonly StyleSourceId[];
+  readonly localStyle?: readonly UiStyleDeclaration[];
+}
+
+export const UI_THEME_SCHEMA = 'vict.ui-theme@1' as const;
+export const UI_THEME_ROLES = ['surface', 'text', 'textMuted', 'border', 'accent', 'accentText', 'highlight', 'highlightText', 'focusRing', 'disabledSurface', 'disabledText', 'elevation'] as const;
+export type UiThemeRole = typeof UI_THEME_ROLES[number];
+/** App-owned semantic presentation, inherited by every owned portal. */
+export interface UiApplicationTheme {
+  readonly schema: typeof UI_THEME_SCHEMA;
+  readonly roles: Readonly<Partial<Record<UiThemeRole, string>>>;
+}
+
 /** Pseudo states supported on style rules (element/primitive permitting). */
 export type UiPseudoState = 'hover' | 'focus' | 'active' | 'disabled';
 
@@ -182,6 +197,7 @@ export interface UiOutputDecl {
  * (amendment §3.1 — the only additive node field).
  */
 export type UiOutputBinding =
+  | { readonly emit: { readonly output: string; readonly value?: UiExpression } }
   | {
       readonly setState: {
         readonly key: StateKey;
@@ -221,13 +237,26 @@ export interface UiComponentDefinition {
  * Slot filling authored at the INSTANCE site: children resolved in the
  * instance's document scope (never the definition's prop scope).
  */
+/** Explicit, versioned lexical instance scope for a renderer-owned repeated slot. */
+export interface UiSlotScope {
+  readonly schema: 'vict.ui-slot-scope@1';
+  /** Named expressions evaluated in this instance scope (conditional branches only). */
+  readonly conditions?: Readonly<Record<string,UiExpression>>;
+  readonly props: readonly UiPropDecl[];
+  readonly state?: Readonly<Record<string, UiLocalStateDecl & { readonly controlled?: boolean }>>;
+  readonly outputs?: readonly UiOutputDecl[];
+}
+
 export interface UiSlotFill {
   readonly name: string;
   readonly children: readonly NodeId[];
+  readonly scope?: UiSlotScope;
 }
 
 /** Common optional presentation/behavior fields shared by all node kinds. */
 export interface UiNodeCommon {
+  /** Registered component parts only; keys are descriptor-owned semantic names. */
+  readonly partStyles?: Readonly<Record<string, UiPartStyle>>;
   /** Attached reusable style sources, in authoring order (later wins). */
   readonly styleSources?: readonly StyleSourceId[];
   /** Instance-local style declarations (innermost cascade layer). */
@@ -303,6 +332,7 @@ export type UiNode = UiNodeCommon &
 
 /** The `vict.ui-document@1` document. */
 export interface UiDocument {
+  readonly theme?: UiApplicationTheme;
   readonly schema: typeof UI_DOCUMENT_SCHEMA;
   /** Stable document id (`documentId`). */
   readonly id: string;
