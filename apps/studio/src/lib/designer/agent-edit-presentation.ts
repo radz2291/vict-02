@@ -76,7 +76,7 @@ export const editPresentation = {
     styleToken:{type:'object',additionalProperties:false,required:['type','id'],properties:{type:{const:'token'},id:identifier}},
     styleBinding:{type:'object',additionalProperties:false,required:['type','expression'],properties:{type:{const:'binding'},expression:{$ref:'#/$defs/expression'}}},
     literalExpression:{type:'object',additionalProperties:false,required:['type','value'],properties:{type:{const:'literal'},value:{anyOf:[{$ref:'#/$defs/scalar'},{type:'null'}]}}},
-    refExpression:{type:'object',additionalProperties:false,required:['type','path'],properties:{type:{const:'ref'},path:{type:'string',minLength:1,maxLength:300}}},
+    refExpression:{type:'object',additionalProperties:false,required:['type','path'],properties:{type:{const:'ref'},path:{type:'string',minLength:1,maxLength:300,description:'For declared state use state.key, resolving the nearest containing slot declaration before document state. For declared component or slot-frame props use singular prop.name. Bare keys, props.name and scope.name are not aliases. The referenced name must exist in the current lexical scope.'}}},
     binding: { oneOf:[{$ref:'#/$defs/stateBinding'},{$ref:'#/$defs/actionBinding'},{$ref:'#/$defs/emitBinding'}] },
     emitBinding:{type:'object',additionalProperties:false,required:['emit'],properties:{emit:{$ref:'#/$defs/emit'}}},
     emit:{type:'object',additionalProperties:false,required:['output'],properties:{output:{$ref:'#/$defs/scopeName'},value:{$ref:'#/$defs/expression'}}},

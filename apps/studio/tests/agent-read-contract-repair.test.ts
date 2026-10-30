@@ -12,6 +12,16 @@ const presented=new Ajv(ajvOptions).compile(agentReadPresentation);
 const valid:unknown[]=[{},...['overview','nodes','source','sources','capabilities','preflight','icons','media','palette','component','state','registry','actions','coverage','families','catalog','contracts','elements'].map(section=>({section})),{section:'registry',registry:'tokens',key:'one',query:''},{section:'elements',tag:'',query:'input'},{section:'nodes',nodeId:'screen',scope:'subtree'},{section:'preflight',edit:null},{section:'contracts',components:[{id:'vict.flow.workspace',revision:'1'}],includeExamples:true,expectedBodyIdentities:{'vict.flow.workspace@1':'body'},knownBodyIdentities:{'':'historically allowed'}}, {section:'overview',offset:200000,limit:20},{section:'registry',registry:'dataContracts',key:'some.contract@1'}];
 const invalid:unknown[]=[{section:'palette',components:[{id:'vict.flow.workspace'}]},{section:'nodes',scope:'subtree'},{section:'registry',registry:'tokens',key:'one',query:'nonempty'},{section:'elements',tag:'input',query:'input'},{section:'icons',key:'one',query:'search'},{section:'media',key:'one',query:'search'},{section:'contracts',components:[{id:''}]},{section:'contracts',components:[{id:'valid',revision:''}]},{section:'contracts',components:[{id:'valid',unexpected:true}]},{section:'source',offset:200001,nodeId:'screen'},{section:'palette',query:'x'.repeat(101)},{section:'catalog',tag:'x'.repeat(61)},{section:'contracts',knownDigests:{'':'invalid'}},{section:'contracts',expectedBodyIdentities:{['x'.repeat(271)]:'body'}},{section:'source',nodeId:'x'.repeat(161)},{section:'sources',nodeIds:[]},{section:'actions',limit:21},{section:'overview',unknown:'extra'},{section:'tokens'}];
 describe('read presentation and authoritative section contract',()=>{
+ it('accepts native preflight objects and refuses reproduced JSON strings without parsing or mutation',()=>{
+  const edit={expectedRevision:cursor.revision,reason:'Native preflight object',operations:[{op:'modify',nodeId:source.root,styles:{'background-color':'#faf6ef'}}]};
+  const query={section:'preflight',edit};
+  expect(agentReadSchema.safeParse(query).success).toBe(true);expect(presented(query)).toBe(true);
+  const before=JSON.stringify(source);
+  expect(agentContext(source,cursor,undefined,query)).toMatchObject({ok:true,applied:false});
+  for(const value of [JSON.stringify(edit),[],true,1]){const malformed={section:'preflight',edit:value};expect(agentReadSchema.safeParse(malformed).success).toBe(false);expect(presented(malformed)).toBe(false);}
+  for(const legacy of [{section:'preflight'},{section:'preflight',edit:null}]){expect(agentReadSchema.safeParse(legacy).success).toBe(true);expect(presented(legacy)).toBe(true);expect(agentContext(source,cursor,undefined,legacy)).toMatchObject({ok:false});}
+  expect(JSON.stringify(source)).toBe(before);
+ });
  it('accepts the same historical defaults and valid section combinations',()=>{for(const input of valid){expect(agentReadSchema.safeParse(input).success,JSON.stringify(input)).toBe(true);expect(presented(input),JSON.stringify(input)+JSON.stringify(presented.errors)).toBe(true);}});
  it('rejects reproduced section and bound mismatches without widening admission',()=>{for(const input of invalid){expect(agentReadSchema.safeParse(input).success,JSON.stringify(input)).toBe(false);expect(presented(input),JSON.stringify(input)).toBe(false);}});
  it('keeps the allowed field inventory closed across every section',()=>{for(const input of valid){if(!input||typeof input!=='object'||!('section' in input))continue;for(const field of ['recipe','nodeId','components','key','query','scope']){if(field in input)continue;const sample={...input,[field]:field==='components'?[{id:'vict.flow.workspace'}]:field==='scope'?'self':'sample'};expect(Boolean(presented(sample)),JSON.stringify(sample)).toBe(agentReadSchema.safeParse(sample).success);}}});
@@ -56,7 +66,7 @@ describe('package-owned data-contract registry reads',()=>{
   const installed=authoringDataContracts(installedAuthoringRegistry)[0],key=`${installed.id}@${installed.revision}`;
   let offset:number|null=0,joined='',pages=0;
   while(offset!==null){const page=registryRead({key,offset,limit:1}) as {sourceJson:string;nextOffset:number|null;digest:string;bodyIdentity:string;guidance:string};expect(page.sourceJson.length).toBeLessThanOrEqual(300);expect(page.digest).toBe(installed.digest);expect(page.bodyIdentity).toBe(`studio-data-contract-body@1:${installed.digest}`);expect(page.guidance).toContain('without quotes');expect(page.guidance).toContain('do not send offset:null');expect(page.nextOffset===null||Number.isInteger(page.nextOffset)).toBe(true);joined+=page.sourceJson;offset=page.nextOffset;if(++pages>1000)throw Error('Nonterminating data contract pages');}
-  const {digest,...data}=installed;expect(JSON.parse(joined)).toEqual(data);
+  const {digest:_digest,...data}=installed;expect(JSON.parse(joined)).toEqual(data);
   expect(registryRead({key:'missing.contract@1'})).toMatchObject({ok:false,code:'STUDIO_AGENT_REGISTRY_KEY_NOT_FOUND'});
  });
  it('keeps data grammar payload out of component bodies in both example projections',()=>{

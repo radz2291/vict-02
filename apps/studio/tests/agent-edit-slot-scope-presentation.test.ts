@@ -3,7 +3,8 @@ import Ajv from 'ajv';
 import { agentEditSchema } from '../src/lib/designer/agent-edits.js';
 import { editPresentation } from '../src/lib/designer/agent-edit-presentation.js';
 
-const presented = new Ajv({ strict: false, allErrors: true }).compile(editPresentation);
+const ajvOptions: NonNullable<ConstructorParameters<typeof Ajv>[0]> & { strict: boolean } = { strict: false, allErrors: true };
+const presented = new Ajv(ajvOptions).compile(editPresentation);
 const declaration = { schema: 'vict.ui-slot-scope@1', props: [] };
 const edit = (operation: unknown) => ({
   expectedRevision: 'r1#0',

@@ -53,7 +53,7 @@ import { isProviderLimitEvidence,type ProviderLimitEvidence } from '$lib/designe
 
 /** Server-owned contracts are reinstalled in a fresh registry for each turn.
  * Identity-required pagination is a new host protocol, not an in-place @1 change. */
-export const STUDIO_AGENT_PROTOCOL={readCapabilityRevision:'7',readInputRevision:'7',editCapabilityRevision:'6',editInputRevision:'6',instructionsRevision:'13',profileRevision:'14',startInputRevision:'3',observationInstructionsRevision:'5',observationProfileRevision:'8'} as const;
+export const STUDIO_AGENT_PROTOCOL={readCapabilityRevision:'8',readInputRevision:'8',editCapabilityRevision:'7',editInputRevision:'7',instructionsRevision:'13',profileRevision:'15',startInputRevision:'3',observationInstructionsRevision:'5',observationProfileRevision:'9'} as const;
 
 export type StudioAgentEvent =
   | StudioToolEvidence
