@@ -486,7 +486,7 @@ it('keeps controlled nested graphs usable after runtime-root parent revisions de
   const calls = view.authoringFor.mock.calls.filter(
     ([identity]) => identity.nodeId === 'inner-workspace',
   );
-  expect(calls.some(([identity]) => identity.occurrenceRoute[0]?.expectedGraphRevision! > 0)).toBe(
+  expect(calls.some(([identity]) => (identity.occurrenceRoute[0]?.expectedGraphRevision ?? 0) > 0)).toBe(
     true,
   );
   expect(
