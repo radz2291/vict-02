@@ -101,6 +101,9 @@
         return;
       }
       incoming = source;
+      // Once source moves elsewhere, the prior emission is no longer an echo.
+      // A later Redo to those bytes must restore this session as well.
+      emitted = '';
       const parsed = parseGraph(source);
       if (!parsed.ok) {
         validSource=false;

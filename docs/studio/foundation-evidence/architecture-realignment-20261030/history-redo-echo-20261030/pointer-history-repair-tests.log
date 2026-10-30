@@ -1,0 +1,63 @@
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/vict-pointer-history-probe-20261030/apps/studio
+
+9:36:28 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-pointer-history-probe-20261030/packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+9:36:28 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-pointer-history-probe-20261030/packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+9:36:28 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-pointer-history-probe-20261030/packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+9:36:28 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-pointer-history-probe-20261030/packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+9:36:28 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-pointer-history-probe-20261030/packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+9:36:40 pm [vite-plugin-svelte] tests/fixtures/SourceEchoCanvas.svelte:11:20 This reference only captures the initial value of `bridge`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+9:36:40 pm [vite-plugin-svelte] tests/fixtures/SourceEchoCanvas.svelte:12:25 This reference only captures the initial value of `source`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+9:36:40 pm [vite-plugin-svelte] tests/fixtures/SourceEchoCanvas.svelte:14:20 This reference only captures the initial value of `bridge`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+9:36:40 pm [vite-plugin-svelte] tests/fixtures/HistoryEchoCanvas.svelte:14:20 This reference only captures the initial value of `bridge`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+9:36:40 pm [vite-plugin-svelte] tests/fixtures/HistoryEchoCanvas.svelte:15:25 This reference only captures the initial value of `source`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+9:36:40 pm [vite-plugin-svelte] tests/fixtures/HistoryEchoCanvas.svelte:17:20 This reference only captures the initial value of `bridge`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+ ✓ tests/graph-runtime-refusal.test.ts (1 test) 675ms
+   ✓ rolls back the renderer state after a valid graph edit is refused, even when canonical state was already supplied  673ms
+stdout | tests/legacy-history-probe.test.ts > retained graph1 GraphSurface adopts source Redo before its next ordinary field edit
+{"before":1,"moved":2,"after":3,"expectedPosition":{"x":50,"y":40},"actualPosition":{"x":50,"y":40},"diagnostics":[]}
+
+ ✓ tests/legacy-history-probe.test.ts (1 test) 908ms
+   ✓ retained graph1 GraphSurface adopts source Redo before its next ordinary field edit  905ms
+stdout | tests/pointer-history-probe.test.ts > retains settled Redo position and sibling values through subsequent selected-edge removal and reconnection
+{"before":160,"sourceAfterRedo":161,"renderedPosition":"translate(527.8139007098847px, -42.927209726856944px)","finalRevision":163,"finalPosition":{"x":527.8139007098847,"y":-42.927209726856944},"diagnostics":[]}
+
+ ✓ tests/pointer-history-probe.test.ts (2 tests) 2149ms
+   ✓ adopts settled source Redo back into the rendered workspace model  1246ms
+   ✓ retains settled Redo position and sibling values through subsequent selected-edge removal and reconnection  901ms
+stderr | tests/graph-scoped-bridge.test.ts > keeps repeated private graph occurrences temporary with local undo and no canonical or save promotion
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/graph-scoped-bridge.test.ts > keeps canonical graph ownership and persistence beyond 64 ordinary source wrappers
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/graph-scoped-bridge.test.ts > keeps controlled nested graphs usable after runtime-root parent revisions depart from authored literals
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+ ✓ tests/graph-scoped-bridge.test.ts (5 tests) 4874ms
+   ✓ persists nested manual and agent changes through Studio history, save/reopen and portable import  1909ms
+   ✓ keeps repeated private graph occurrences temporary with local undo and no canonical or save promotion  990ms
+   ✓ refuses nested source Undo and editing when a controlled declaration has no actual parent parameter  547ms
+   ✓ keeps canonical graph ownership and persistence beyond 64 ordinary source wrappers  942ms
+   ✓ keeps controlled nested graphs usable after runtime-root parent revisions depart from authored literals  483ms
+
+ Test Files  4 passed (4)
+      Tests  9 passed (9)
+   Start at  21:36:14
+   Duration  31.38s (transform 19.54s, setup 0ms, collect 94.68s, tests 8.61s, environment 5.44s, prepare 1.56s)
+

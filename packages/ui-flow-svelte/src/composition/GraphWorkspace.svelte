@@ -36,6 +36,9 @@
     if(source===incoming)return;
     incoming=source;
     if(valid&&source===emitted)return;
+    // A different external source (including Undo) invalidates the prior echo.
+    // Redo may legitimately return to those same bytes and must be adopted.
+    emitted='';
     const parsed=parseWorkspaceGraph(source,version);
     if(!parsed.ok){valid=false;error=parsed.issues.map(i=>i.message).join(' ');return;}
     let domainIssues;

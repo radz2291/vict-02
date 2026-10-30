@@ -1,0 +1,66 @@
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/vict-pointer-history-probe-20261030/apps/studio
+
+9:34:18 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-pointer-history-probe-20261030/packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+9:34:18 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-pointer-history-probe-20261030/packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+9:34:18 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-pointer-history-probe-20261030/packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+9:34:18 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-pointer-history-probe-20261030/packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+9:34:18 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-pointer-history-probe-20261030/packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+9:34:31 pm [vite-plugin-svelte] tests/fixtures/HistoryEchoCanvas.svelte:14:20 This reference only captures the initial value of `bridge`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+9:34:31 pm [vite-plugin-svelte] tests/fixtures/HistoryEchoCanvas.svelte:15:25 This reference only captures the initial value of `source`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+9:34:31 pm [vite-plugin-svelte] tests/fixtures/HistoryEchoCanvas.svelte:17:20 This reference only captures the initial value of `bridge`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+stdout | tests/pointer-history-probe.test.ts > retains settled Redo position and sibling values through subsequent selected-edge removal and reconnection
+{"before":160,"sourceAfterRedo":161,"renderedPosition":"translate(330px, 80px)","finalRevision":162,"finalPosition":{"x":330,"y":80},"diagnostics":[]}
+
+ ❯ tests/pointer-history-probe.test.ts (2 tests | 2 failed) 1517ms
+   × adopts settled source Redo back into the rendered workspace model 733ms
+     → expected 'translate(330px, 80px)' to contain '527.8139007098847'
+   × retains settled Redo position and sibling values through subsequent selected-edge removal and reconnection 783ms
+     → expected 162 to be 163 // Object.is equality
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/pointer-history-probe.test.ts > adopts settled source Redo back into the rendered workspace model
+AssertionError: expected 'translate(330px, 80px)' to contain '527.8139007098847'
+
+Expected: "527.8139007098847"
+Received: "translate(330px, 80px)"
+
+ ❯ tests/pointer-history-probe.test.ts:29:20
+     27|     expect(view.bridge.redo().ok).toBe(true);await settle();expect(mod…
+     28|     const visual=view.target.querySelector<HTMLElement>('.svelte-flow_…
+     29|     expect(visual).toContain('527.8139007098847');
+       |                    ^
+     30|   }finally{await view.close();}
+     31| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/pointer-history-probe.test.ts > retains settled Redo position and sibling values through subsequent selected-edge removal and reconnection
+AssertionError: expected 162 to be 163 // Object.is equality
+
+- Expected
++ Received
+
+- 163
++ 162
+
+ ❯ tests/pointer-history-probe.test.ts:39:64
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed (2)
+   Start at  21:34:08
+   Duration  24.68s (transform 14.37s, setup 0ms, collect 21.95s, tests 1.52s, environment 638ms, prepare 188ms)
+
