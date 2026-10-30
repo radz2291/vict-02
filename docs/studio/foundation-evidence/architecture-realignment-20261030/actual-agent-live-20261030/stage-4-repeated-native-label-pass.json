@@ -1,0 +1,85 @@
+{
+  "fixedLabelFocus": [
+    {
+      "focused": false,
+      "node": "source-note-1",
+      "tag": "INPUT",
+      "value": "https://example.org/source-ax"
+    },
+    {
+      "focused": false,
+      "node": "source-note-1",
+      "tag": "TEXTAREA",
+      "value": "Manual note: compare the original source.\nKeep uncertainty visible."
+    },
+    {
+      "focused": false,
+      "node": "review-1",
+      "tag": "INPUT",
+      "value": "https://example.org/review-b"
+    },
+    {
+      "focused": false,
+      "node": "review-1",
+      "tag": "TEXTAREA",
+      "value": "Independent review: check the claim."
+    },
+    {
+      "focused": false,
+      "node": "source-note-2",
+      "tag": "INPUT",
+      "value": ""
+    },
+    {
+      "focused": true,
+      "node": "source-note-2",
+      "tag": "TEXTAREA",
+      "value": ""
+    }
+  ],
+  "typingDeadline": "First default timeout stopped after prefix Second source: independent proven with focus retained; appended remaining ance. using longer native typing deadline.",
+  "afterTyping": [
+    {
+      "focused": false,
+      "node": "source-note-1",
+      "tag": "INPUT",
+      "value": "https://example.org/source-ax"
+    },
+    {
+      "focused": false,
+      "node": "source-note-1",
+      "tag": "TEXTAREA",
+      "value": "Manual note: compare the original source.\nKeep uncertainty visible."
+    },
+    {
+      "focused": false,
+      "node": "review-1",
+      "tag": "INPUT",
+      "value": "https://example.org/review-b"
+    },
+    {
+      "focused": false,
+      "node": "review-1",
+      "tag": "TEXTAREA",
+      "value": "Independent review: check the claim."
+    },
+    {
+      "focused": false,
+      "node": "review-1",
+      "tag": "SELECT",
+      "value": "needs-work"
+    },
+    {
+      "focused": true,
+      "node": "source-note-2",
+      "tag": "INPUT",
+      "value": "https://example.org/source-b"
+    },
+    {
+      "focused": false,
+      "node": "source-note-2",
+      "tag": "TEXTAREA",
+      "value": "Second source: independent provenance."
+    }
+  ]
+}

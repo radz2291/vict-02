@@ -60,12 +60,20 @@ still remount. Actual normal URL/notes typing, focus/caret, native Undo/Redo,
 keyboard node movement, shared source history and Save/export/reopen now pass
 ([bounded stage-2 result](foundation-evidence/architecture-realignment-20261030/actual-agent-live-20261030/STAGE-2-NATIVE-CONTINUITY-RESULT.md)).
 The actual agent corrected caption spacing while preserving manual values. Current
-saved actual app is r1.r5: the real agent added Review and a typed edge; manual
+stage-3 saved actual app was r1.r5: the real agent added Review and a typed edge; manual
 Interact reference, notes and status changes preserve Source values and survive
 Save/export/reload ([stage-3 result](foundation-evidence/architecture-realignment-20261030/actual-agent-live-20261030/STAGE-3-TWO-NODE-RESULT.md)).
-Design deliberately selects source instead of typing. Complete-app expansion is
-in progress; its first stale-revision refusal applied no edit and is retained.
-Nested/repeated native proof, complete applications and device checks remain.
+Design deliberately selects source instead of typing. The complete Evidence desk
+is now saved/exported/reopened at r1.r6 with two reusable Source notes, Review,
+two typed edges and the guide. Actual-agent implicit-label repair and native
+repeated typing/isolation, pointer movement, settled keyboard Undo/Redo and manual
+edge recreation/capacity refusal are recorded ([app1 result](foundation-evidence/architecture-realignment-20261030/actual-agent-live-20261030/STAGE-4-COMPLETE-APP-RESULT.md)).
+The earlier stale refusal applied zero edits; earlier/inconclusive history and an
+unattributed first-node movement remain disclosed. Portable validation is pending.
+A separate blank Project planner is now being built by the actual agent to prove
+the materially different nested/repeated application. Nested native ownership,
+affected in-node popup and final integrated verification remain. The separate
+owner-reported physical-device check below is complete at its stated scope.
 
 One independent affected-regression pass on exact72 additionally passed44
 popup/focus/nesting renderer,15 media and8 Studio capture checks. It reuses the
@@ -178,16 +186,16 @@ evidence, not a fresh whole-candidate live pass.
 | AR07 | Mounted nested viewport/control boundaries pass; native mat/scroll/geometry remains live-proof work. |
 | AR08 | Retained availability fences; supported IAB restored after owner restart, normal Designer and actual tool reads work. |
 | AR09 | Retained fact/measurement/hypothesis separation; all unavailable observations remain unproved. |
-| AR10 | Actual agent spacing edit preserved manual graph values; native text Undo and shared graph movement history pass. Multiple/nested native owners remain to exercise. |
+| AR10 | Actual agent changes preserved manual values; native repeated-control isolation and settled shared movement history pass. Nested native owners remain. |
 | AR11 | Actual stage1 and failed-trial receipts retain identities and bounded metrics; no invented provider latency or cost. Offline pinned-executor protocol passes. |
 | AR12 | Retained observation-only/no-replay proof; unchanged. |
 | AR13 | Actual one-node source/default controls, history, Save/export and reopen pass; nested/repeated native roundtrip remains. |
-| AR14 | Typed two-node/control fixture and ordinary registered components pass; native consumer Select isolation now exercised; useful actual-agent application remains. |
-| AR15 | Seven public artifacts/510 files, native browser control isolation/reset and new registered component prove bounded fixture reuse; two actual applications remain required. |
+| AR14 | Complete actual Evidence desk has repeated ordinary controls, two typed connections, native edit/move/shared history, manual edge creation and capacity refusal; nested app remains. |
+| AR15 | Seven public artifacts/510 files and native consumer isolation/reset pass; actual complete app1 saved/reopened, app2 nested Project planner in progress. |
 | AR16 | Retained parts/theme scope; current native trigger/open-panel appearance remains unproved. |
 | AR17 | Shared popup regressions 63 renderer/27 AI pass at unchanged popup source hashes; in-node open/capture/native proof remains. |
-| AR18 | Actual node URL/notes controls pass normal typing/Undo, plus native packed consumer controls. Representative complete application interactions remain. |
-| AR19 | Strict safe feedback, exact route failures and offline retry boundary pass; actual remote recovery remains. |
+| AR18 | Actual Evidence desk source/review/status/repeated controls and complete local review workflow pass native interaction; nested app remains. |
+| AR19 | Strict diagnostics and exact route failures pass; actual stale refusal applied zero edits, fresh-source continuation succeeded, observation-only recovery retained. |
 | AR20 | Retained first-visit/carousel proof; actual physical gestures remain unproved. |
 | AR21 | Retained launch/open-state/gallery proof; no new native open-popup certification. |
 | AR22 | Existing 22 import/media safeguards plus deep roundtrip pass; retained upload/playback/asset evidence stands, heard audio unproved. |
@@ -226,7 +234,7 @@ new source is now serving through its own continuation checkout; original build
 bytes and stored apps were not overwritten. Earlier 119c safety improvements are
 therefore present in the newly activated candidate. Actual proofs use fresh screens.
 
-## Exact remaining owner/tool step and walkthrough
+## Remaining verification and owner walkthrough
 
 The earlier built-in browser controller failed before inventory with `failed to write
 kernel assets: The system cannot find the path specified. (os error 3)`.
@@ -238,8 +246,9 @@ candidate was hash-checked, all historical proof routes retained, normal existin
 provider configuration validated without secret output, and Studio launched at
 the same origin. Normal local-demo sign-in and saved Designer restoration pass.
 
-The current next work is to complete actual Studio-agent stages4–5, nested/repeated
-native source ownership and physical-device checks. Stage2 has actual control,
+The current next work is app1 portable validation, actual Studio-agent stage5 and
+nested native source ownership/popup verification. The Xiaomi Android/Chrome physical check is complete as
+reported by the owner. Stage2 has actual control,
 native history and save/reopen proof plus refreshed public-consumer checks.
 Stage1 has an actual source-read/atomic-edit receipt,
 zero refusals in the explicit read/edit follow-up, shared native Undo/Redo,
@@ -260,9 +269,10 @@ Owner walkthrough after that safe activation should focus on:
 4. Complete one representative actual-agent application and a materially different
    second application; inspect current themes, open overlays, keyboard and native
    control behavior. Keep fixtures separate from those demonstrations.
-5. Supply an approved physical-device verification route for AR25 keyboard,
-   safe-area and touch, or explicitly accept that exact unmet limitation. A narrow
-   desktop container does not supply this evidence.
+5. Review the completed owner-reported Xiaomi Android/Chrome keyboard, reachability,
+   drag/pan and rotation result for the exact wireless two-node preview. It is
+   actual-device evidence with the documented identity/observation limits; a
+   narrow desktop container is not substituted for it.
 
 The final integrated verdict and owner acceptance follow those proofs. Until then,
 the ticket and Authoring Foundation milestone remain open. No push, main merge,

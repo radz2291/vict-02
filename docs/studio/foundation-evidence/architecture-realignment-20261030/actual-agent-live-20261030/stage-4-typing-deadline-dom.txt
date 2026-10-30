@@ -1,0 +1,73 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Evidence desk — rich-node retry"
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- main:
+  - button "Toggle Chat drawer":
+  - group "Workspace mode":
+    - button "Design"
+    - button "Interact" [pressed]
+    - button "Structure"
+  - button "Toggle Document and Selection drawer":
+  - iframe [active]:
+    - generic "Screen canvas":
+      - main "Evidence desk — rich-node retry":
+        - heading "Evidence desk — record, review, save" [level=1]:
+          - generic: Evidence desk — record, review, save
+        - paragraph:
+          - generic: Two reusable source notes feed typed Evidence connections into the Review node. Record each source URL with its provenance, review the evidence, set a status, then Save in Studio to keep your entries.
+        - region "Evidence desk graph":
+          - application "Graph canvas":
+            - application:
+              - group "Source note":
+                - generic: Source note
+                - generic: Source URL
+                - textbox "Source URL": https://example.org/source-ax
+                - generic: Provenance notes
+                - textbox "Provenance notes":
+                  - /placeholder: Where did this evidence come from?
+                  - text: "Manual note: compare the original source. Keep uncertainty visible."
+                - 'button "output Evidence: evidence"'
+                - generic: Evidence out
+              - group "Review":
+                - generic: Review
+                - generic: Reference
+                - textbox "Reference": https://example.org/review-b
+                - generic: Review notes
+                - textbox "Review notes":
+                  - /placeholder: What did the review find?
+                  - text: "Independent review: check the claim."
+                - generic: Status
+                - combobox "Status":
+                  - option
+                  - option
+                  - option [selected]
+                - 'button "input Evidence in: evidence"'
+                - generic: Evidence in
+              - group "Source note":
+                - generic: Source note
+                - generic: Source URL
+                - textbox "Source URL"
+                - generic: Provenance notes
+                - textbox "Provenance notes" [active]:
+                  - /placeholder: Where did this evidence come from?
+                  - text: "Second source: independent proven"
+                - 'button "output Evidence: evidence"'
+                - generic: Evidence out
+              - link "Svelte Flow attribution":
+                - /url: https://svelteflow.dev?utm_source=attribution
+                - text: Svelte Flow
+        - paragraph:
+          - paragraph:
+            - generic: "How to use: type a source URL and provenance notes in each source note, connect its Evidence port to Review, choose Pending, Accepted or Needs work in Review, then Save in Studio to preserve your defaults. Connections organize evidence only — nothing runs on a backend."
+- contentinfo:
+  - status: Edit graph · unsaved

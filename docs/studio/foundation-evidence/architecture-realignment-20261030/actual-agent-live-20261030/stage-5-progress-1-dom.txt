@@ -1,0 +1,54 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Project planner — nested ownership"
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- banner:
+  - strong: Chat
+  - button "Hide Chat":
+- complementary "Chat":
+  - region "Conversation":
+    - region "Messages — Message":
+      - log:
+        - generic: You
+        - generic: Build a separate complete local Project planner, materially different from Evidence desk. Use a calm blue theme and a short workflow guide. Show two Project cards using the same reusable body template. Each project has its own editable project title and its own embedded task canvas; each embedded canvas has a Task card with editable task title and meaningful Todo / Doing / Done status. Both projects should start with different useful sample titles, and their task canvases may reuse the same task identifiers because their ownership is independent. Reuse the same task-body composition too. These nested controls must edit only the containing project/task and Save in Studio should preserve the authored defaults; there is no backend or durable application database. Include a small ordinary registered Help popup in each Project card with instructions. Keep its focus, dismissal and theme owned by that project rather than the whole document. Use accessible labels that stay correct when the templates repeat or nest, such as ordinary implicit labels around native controls; avoid repeated global HTML ids. Make the app useful and readable, with enough room for its controls and embedded canvases. No compulsory toolbar, inspector, family picker, connection form or new runtime. Discover the existing public component/state/graph contracts and preflight unfamiliar shapes. Functional complete increment first; leave saving to me. Report briefly what was applied and which interactions remain untested.
+        - button "Copy message":
+        - generic: Assistant
+        - status: Working. Public notes and tool receipts are available in details.
+        - button "Public activity and tool details" [expanded] [active]:
+          - text: Public activity and tool details
+        - generic "Conversation timeline"
+    - button "Scroll to latest message":
+      - generic: Scroll to end
+    - textbox "Message":
+      - /placeholder: Ask for a change…
+    - button "Stop":
+      - generic: Stop
+    - status
+  - status "Agent is working on your request…":
+    - generic: Working…
+  - button "Chat details": ···
+- separator "Chat width"
+- main:
+  - button "Toggle Chat drawer" [expanded]:
+  - group "Workspace mode":
+    - button "Design" [pressed]
+    - button "Interact"
+    - button "Structure"
+  - button "Toggle Document and Selection drawer":
+  - iframe:
+    - generic "Screen canvas":
+      - main "Project planner — nested ownership"
+  - generic: ＋
+  - heading "What will you make?" [level=1]
+  - paragraph: Select this screen to open its tools, then choose Insert.
+- contentinfo:
+  - status: New screen · not saved yet.
