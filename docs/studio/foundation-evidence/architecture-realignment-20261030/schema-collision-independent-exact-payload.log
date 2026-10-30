@@ -1,0 +1,47 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/apps/studio
+
+7:45:12 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+7:45:12 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+7:45:12 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+7:45:12 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+7:45:12 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+ ❯ tests/independent-schema-collision-20261030.test.ts (5 tests | 1 failed | 4 skipped) 99ms
+     × does not drop an own JSON __proto__ field before strict nested edit validation 95ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/independent-schema-collision-20261030.test.ts > independent exact schema collision review > does not drop an own JSON __proto__ field before strict nested edit validation
+AssertionError: expected { expectedRevision: 'r1#0', …(7) } to match object { ok: false, applied: false }
+(10 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+    "applied": false,
+-   "ok": false,
++   "ok": true,
+  }
+
+ ❯ tests/independent-schema-collision-20261030.test.ts:112:85
+    110|     expect(agentEditSchema.safeParse(edit).success).toBe(false);
+    111|     const before = JSON.stringify(source);
+    112|     expect(agentContext(source, cursor, undefined, { section: 'preflig…
+       |                                                                                     ^
+    113|     expect(JSON.stringify(source)).toBe(before);
+    114|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 4 skipped (5)
+   Start at  19:44:58
+   Duration  31.96s (transform 24.27s, setup 0ms, import 31.56s, tests 99ms, environment 0ms)
+

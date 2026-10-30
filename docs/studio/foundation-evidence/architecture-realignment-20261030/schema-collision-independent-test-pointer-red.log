@@ -1,0 +1,43 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/apps/studio
+
+7:43:43 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+7:43:44 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+7:43:44 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+7:43:44 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+7:43:44 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+ ❯ tests/independent-schema-collision-20261030.test.ts (4 tests | 1 failed) 450ms
+     × resolves every operation-union reference to its own discriminated wrapper within bridge bounds 32ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/independent-schema-collision-20261030.test.ts > independent exact schema collision review > resolves every operation-union reference to its own discriminated wrapper within bridge bounds
+AssertionError: expected undefined to be defined
+ ❯ visit tests/independent-schema-collision-20261030.test.ts:72:59
+     70|         expect(value.$ref.startsWith('#/$defs/')).toBe(true);
+     71|         const defs = root.$defs as Record<string, unknown>;
+     72|         expect(defs[value.$ref.slice('#/$defs/'.length)]).toBeDefined(…
+       |                                                           ^
+     73|       }
+     74|       for (const child of Object.values(value)) visit(child, root);
+ ❯ visit tests/independent-schema-collision-20261030.test.ts:74:49
+ ❯ visit tests/independent-schema-collision-20261030.test.ts:74:49
+ ❯ visit tests/independent-schema-collision-20261030.test.ts:74:49
+ ❯ visit tests/independent-schema-collision-20261030.test.ts:74:49
+ ❯ visit tests/independent-schema-collision-20261030.test.ts:74:49
+ ❯ visit tests/independent-schema-collision-20261030.test.ts:74:49
+ ❯ tests/independent-schema-collision-20261030.test.ts:76:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 4 passed (5)
+      Tests  1 failed | 40 passed (41)
+   Start at  19:43:19
+   Duration  52.18s (transform 142.65s, setup 0ms, import 237.72s, tests 3.49s, environment 10ms)
+
