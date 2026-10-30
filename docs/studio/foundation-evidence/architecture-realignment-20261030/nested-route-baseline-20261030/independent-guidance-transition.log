@@ -1,0 +1,35 @@
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/apps/studio
+
+10:42:34 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+10:42:34 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+10:42:34 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+10:42:34 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+10:42:34 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+ ✓ tests/agent-knowledge-read.test.ts (6 tests) 143ms
+ ✓ tests/agent-edit-slot-scope-presentation.test.ts (4 tests) 54ms
+stdout | tests/actual-nested-route-baseline.test.ts > accepts exact p1 and p2 routes on the preserved actual same-name graph source without sibling or source mutation
+{"sourceOwner":{"kind":"slot","ownerNodeId":"flow-workspace","slotName":"body","key":"graph","controlled":true},"p1":{"parentBefore":1,"parentAfter":2,"innerAfter":1,"p2Unchanged":true},"p2":{"parentBefore":2,"parentAfter":3,"innerAfter":1,"p1Unchanged":true}}
+
+ ✓ tests/nested-route-guidance-schema.test.ts (1 test) 309ms
+   ✓ keeps the exposed nested-route example executable under strict tool and graph operation schemas  307ms
+stdout | tests/actual-nested-route-baseline.test.ts > compares portable import admission before and after both correctly routed task additions
+{"importAdmission":{"partial":{"ok":true,"assets":0},"twoTasks":{"ok":true,"assets":0}}}
+
+ ✓ tests/actual-nested-route-baseline.test.ts (3 tests) 474ms
+stdout | tests/independent-nested-route-guidance.test.ts > independent: real paged knowledge delivers an executable generic example with distinct target and containing revisions
+{"pages":2,"bodyIdentity":"studio-contract-body@2:guidance:9e0c9f7749c4099fbba6ebe84252b62a7b235b43e73216534e360814e26e5f5f","presentationBytes":32667,"distinctTargetParentRevisions":true}
+
+ ✓ tests/independent-nested-route-guidance.test.ts (2 tests) 378ms
+   ✓ independent: real paged knowledge delivers an executable generic example with distinct target and containing revisions  359ms
+
+ Test Files  5 passed (5)
+      Tests  16 passed (16)
+   Start at  22:42:08
+   Duration  43.76s (transform 36.43s, setup 0ms, collect 210.28s, tests 1.36s, environment 2ms, prepare 2.09s)
+
