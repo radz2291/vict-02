@@ -1,0 +1,7 @@
+{
+  "startedObservedUtc": "2026-10-30T12:38:31.126Z",
+  "sourceCandidate": "72b7e09b1e6cbd5269578f3c3b1ccdf120a22c3b",
+  "savedRevision": "r1.r4",
+  "screen": "screen-d5c26246-953b-4a57-8e43-b78e8a56e9eb",
+  "prompt": "Extend this saved Evidence desk into a useful two-stage local review board. Preserve the existing Source note node, its manual URL and multiline notes, position, theme and clear evidence-port caption. Add one Review node with a typed evidence input and connect Source note → Review. Use a common readable card layout with each node’s own title, URL/reference field, multiline notes and a meaningful Pending / Accepted / Needs work status Select using ordinary registered VICT components. Each node’s controls must edit only its own values. Keep exactly two nodes, one typed connection, and clear port labels; avoid a toolbar, inspector, family picker, connection form or backend execution. Discover exact contracts, preflight novel shapes, build the functional increment first, and leave saving to me. Report briefly what was applied and what remains untested."
+}

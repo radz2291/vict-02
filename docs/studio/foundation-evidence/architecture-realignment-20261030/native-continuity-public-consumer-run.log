@@ -1,0 +1,41 @@
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+{
+  "reportPath": "C:\\Users\\RZ1\\.codex\\worktrees\\vict-architecture-realignment-20261030\\docs\\studio\\foundation-evidence\\architecture-realignment-20261030\\vict-realignment-consumer-WhcDEI.json",
+  "status": "PASS: installed public-artifact DOM interaction, isolated state, source roundtrip/reopen and production build",
+  "destination": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-realignment-consumer-WhcDEI",
+  "sourceCandidate": "72b7e09b1e6cbd5269578f3c3b1ccdf120a22c3b",
+  "packs": [
+    {
+      "name": "@victframework/contracts",
+      "sha256": "017c0587843869653f6bd723566dcaf39f2e89b2fb55bc923f35667be9d618de"
+    },
+    {
+      "name": "@victframework/ui",
+      "sha256": "f0b5f78254211d36c1cbb27427fdd580da9c0421f20411d59ce3518827433500"
+    },
+    {
+      "name": "@victframework/sdk",
+      "sha256": "26ba8993f73f70071e57cec97471bf9c4bc4abde3137084be4fd4ee064f338f4"
+    },
+    {
+      "name": "@victframework/application",
+      "sha256": "ea0fdde59f165379154517f4be4ca99e3c8790033862e4a56f6df5fdb09b5db7"
+    },
+    {
+      "name": "@victframework/ui-svelte",
+      "sha256": "9514c7d76529372b9bcf1373d1cd5e0863f9583f72df3dc9c41840fcd0aa28e2"
+    },
+    {
+      "name": "@victframework/ui-media-svelte",
+      "sha256": "234e78dd8f615622097b5166e5bd7f7646574d3663d3607b390d26ac8be11f22"
+    },
+    {
+      "name": "@victframework/ui-flow-svelte",
+      "sha256": "516eb44dbad609c96ef5141bba9b1b9f7be63fbb98cd2bbe576402bc980ca09b"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "reopenedFields": [
+    {
+      "id": "url-control",
+      "value": "https://example.org/source-ax"
+    },
+    {
+      "id": "notes-control",
+      "value": "Manual note: compare the original source.\nKeep uncertainty visible."
+    }
+  ],
+  "reopenedPosition": [
+    {
+      "nodeId": "source-note-1",
+      "transform": "z-index: 0; transform: translate(45px, 40px); visibility: visible; touch-action: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "selectedKeyMove": [
+    {
+      "class": "svelte-flow__node svelte-flow__node-composed draggable connectable selectable nopan selected",
+      "nodeId": "source-note-1",
+      "transform": "z-index: 1000; transform: translate(45px, 40px); visibility: visible; touch-action: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+    }
+  ],
+  "afterGraphUndo": [
+    {
+      "nodeId": "source-note-1",
+      "transform": "z-index: 1000; transform: translate(40px, 40px); visibility: visible; touch-action: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+    }
+  ],
+  "immediateAfterGraphRedo": [
+    {
+      "nodeId": "source-note-1",
+      "transform": "z-index: 1000; transform: translate(40px, 40px); visibility: visible; touch-action: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+    }
+  ],
+  "settledRedo": [
+    {
+      "nodeId": "source-note-1",
+      "transform": "z-index: 1000; transform: translate(40px, 40px); visibility: visible; touch-action: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+    }
+  ],
+  "pointerAttempt": "Initial coordinate drag did not change authored transform; not counted as pointer movement proof."
+}

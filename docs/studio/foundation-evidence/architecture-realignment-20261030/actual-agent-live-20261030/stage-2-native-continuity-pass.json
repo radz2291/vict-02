@@ -1,0 +1,42 @@
+{
+  "sourceCandidate": "72b7e09b1e6cbd5269578f3c3b1ccdf120a22c3b",
+  "baselineUrl": {
+    "selectionEnd": 29,
+    "selectionStart": 29,
+    "value": "https://example.org/source-ax"
+  },
+  "typedNow": {
+    "focused": true,
+    "selectionEnd": 31,
+    "selectionStart": 31,
+    "value": "https://example.org/source-axyz"
+  },
+  "nativeUndoNow": {
+    "focused": true,
+    "selectionEnd": 29,
+    "selectionStart": 29,
+    "value": "https://example.org/source-ax"
+  },
+  "nativeRedoNow": {
+    "focused": true,
+    "selectionStart": 31,
+    "value": "https://example.org/source-axyz"
+  },
+  "baselineNotes": "Manual note: compare the original source.\nKeep uncertainty visible.",
+  "typedNotes": {
+    "focused": true,
+    "selectionStart": 76,
+    "value": "Manual note: compare the original source.\nKeep uncertainty visible. Checked."
+  },
+  "undoneNotes": {
+    "focused": true,
+    "selectionStart": 67,
+    "value": "Manual note: compare the original source.\nKeep uncertainty visible."
+  },
+  "nodeTransformNow": [
+    {
+      "nodeId": "source-note-1",
+      "transform": "z-index: 0; transform: translate(40px, 40px); visibility: visible; touch-action: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+    }
+  ]
+}

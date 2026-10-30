@@ -1,0 +1,10 @@
+{
+  "sourceExport": "stage-2-port-spacing-supported-export.json",
+  "sourceCandidate": "72b7e09b1e6cbd5269578f3c3b1ccdf120a22c3b",
+  "standaloneTyped": {
+    "focused": true,
+    "value": "https://example.org/source-axnormal"
+  },
+  "standaloneReset": "https://example.org/source-ax",
+  "policy": "Standalone session-only state; Studio source ownership/save is separate."
+}

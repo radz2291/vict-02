@@ -1,0 +1,45 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Evidence desk — rich-node retry"
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- main:
+  - button "Toggle Chat drawer":
+  - group "Workspace mode":
+    - button "Design" [pressed]
+    - button "Interact"
+    - button "Structure"
+  - button "Toggle Document and Selection drawer":
+  - iframe:
+    - generic "Screen canvas":
+      - main "Evidence desk — rich-node retry":
+        - heading "Evidence desk" [level=1]:
+          - generic: Evidence desk
+        - paragraph:
+          - generic: "A compact evidence desk: one editable source-note node keeps a source URL and provenance notes together, ready to hand evidence to the next step."
+        - region "Evidence desk graph":
+          - application "Graph canvas":
+            - application:
+              - group "Source note":
+                - generic: Source note
+                - generic: Source URL
+                - textbox "Source URL": https://example.org/source-ax
+                - generic: Provenance notes
+                - textbox "Provenance notes":
+                  - /placeholder: Where did this evidence come from?
+                  - text: "Manual note: compare the original source. Keep uncertainty visible."
+                - 'button "output Evidence: evidence"'
+                - generic: Evidence out
+              - link "Svelte Flow attribution":
+                - /url: https://svelteflow.dev?utm_source=attribution
+                - text: Svelte Flow
+- contentinfo:
+  - status: Loaded the saved screen.

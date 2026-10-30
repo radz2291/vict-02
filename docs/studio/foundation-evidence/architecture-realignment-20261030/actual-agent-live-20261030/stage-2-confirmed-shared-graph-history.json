@@ -1,0 +1,144 @@
+{
+  "sourceGraphBefore": {
+    "schema": "vict.flow-graph@2",
+    "revision": 20,
+    "nodeTypes": [
+      {
+        "id": "source-note",
+        "label": "Source note",
+        "parameters": {
+          "notes": {
+            "default": "",
+            "label": "Provenance notes",
+            "type": "string"
+          },
+          "url": {
+            "default": "",
+            "label": "Source URL",
+            "type": "string"
+          }
+        },
+        "ports": [
+          {
+            "direction": "output",
+            "id": "evidence",
+            "label": "Evidence",
+            "maxConnections": 1,
+            "type": "evidence"
+          }
+        ]
+      }
+    ],
+    "nodes": [
+      {
+        "id": "source-note-1",
+        "type": "source-note",
+        "label": "Source note",
+        "position": {
+          "x": 45,
+          "y": 40
+        },
+        "values": {
+          "url": "https://example.org/source-ax",
+          "notes": "Manual note: compare the original source.\nKeep uncertainty visible."
+        }
+      }
+    ],
+    "edges": []
+  },
+  "sourceGraphAfterUndo": {
+    "schema": "vict.flow-graph@2",
+    "revision": 19,
+    "nodeTypes": [
+      {
+        "id": "source-note",
+        "label": "Source note",
+        "parameters": {
+          "notes": {
+            "default": "",
+            "label": "Provenance notes",
+            "type": "string"
+          },
+          "url": {
+            "default": "",
+            "label": "Source URL",
+            "type": "string"
+          }
+        },
+        "ports": [
+          {
+            "direction": "output",
+            "id": "evidence",
+            "label": "Evidence",
+            "maxConnections": 1,
+            "type": "evidence"
+          }
+        ]
+      }
+    ],
+    "nodes": [
+      {
+        "id": "source-note-1",
+        "type": "source-note",
+        "label": "Source note",
+        "position": {
+          "x": 40,
+          "y": 40
+        },
+        "values": {
+          "url": "https://example.org/source-ax",
+          "notes": "Manual note: compare the original source.\nKeep uncertainty visible."
+        }
+      }
+    ],
+    "edges": []
+  },
+  "sourceGraphAfterRedo": {
+    "schema": "vict.flow-graph@2",
+    "revision": 20,
+    "nodeTypes": [
+      {
+        "id": "source-note",
+        "label": "Source note",
+        "parameters": {
+          "notes": {
+            "default": "",
+            "label": "Provenance notes",
+            "type": "string"
+          },
+          "url": {
+            "default": "",
+            "label": "Source URL",
+            "type": "string"
+          }
+        },
+        "ports": [
+          {
+            "direction": "output",
+            "id": "evidence",
+            "label": "Evidence",
+            "maxConnections": 1,
+            "type": "evidence"
+          }
+        ]
+      }
+    ],
+    "nodes": [
+      {
+        "id": "source-note-1",
+        "type": "source-note",
+        "label": "Source note",
+        "position": {
+          "x": 45,
+          "y": 40
+        },
+        "values": {
+          "url": "https://example.org/source-ax",
+          "notes": "Manual note: compare the original source.\nKeep uncertainty visible."
+        }
+      }
+    ],
+    "edges": []
+  },
+  "initialAttempt": "Earlier immediate projection reads were inconclusive; source inspected after UI history actions settled. Coordinate drag was not counted as pointer proof."
+}

@@ -1,0 +1,428 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Evidence desk — rich-node retry"
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- banner:
+  - strong: Chat
+  - button "Hide Chat":
+- complementary "Chat":
+  - region "Conversation":
+    - region "Messages — Message":
+      - log:
+        - generic: You
+        - generic: "Continue this Evidence desk application from its saved source. Read the existing workspace and node-body source before editing, preserve the heading, introduction, warm theme and confirmed structure, and complete the small working slice: exactly one rich Source note graph node with an editable source URL, multiline notes and a typed evidence output port. The controls must update that node’s values without dragging it. Keep its existing simple card title; finish the useful node before any decoration. Discover the exact public contracts you need, and use preflight for a new scoped edit shape. Do not add a toolbar, family picker, inspector, connection form or backend execution. Leave saving to me and report what actually works versus what remains unverified."
+        - button "Copy message":
+        - generic: Assistant
+        - generic "Host evidence summary":
+          - paragraph: Host evidence summary
+          - status: Source changes were applied; saving is separate. A preview image matching the final source was assessed by AI; its claims remain unverified. Behavior was not tested by this agent.
+        - button "Original AI assessment and tool details" [expanded]:
+          - text: Original AI assessment and tool details
+        - paragraph: Original AI assessment — claims not independently verified. Tool receipts separately record confirmed effects and capture limits.
+        - generic "Conversation timeline":
+          - paragraph: I'll read the existing workspace structure and node-body source first to understand what's confirmed before planning the rich node completion.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph:
+            - text: "The structure is confirmed: heading, intro, and a"
+            - code: vict.flow.workspace
+            - text: with a body-slot card ("Source note") already containing a URL field. Now I'll read the graph state, full note-body source, and the workspace/viewport contracts.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph:
+            - text: The graph state is still empty (
+            - code: nodeTypes:[], nodes:[]
+            - text: ), so the rich node itself must be declared. The workspace contract body was partial — I'll page it and read the exact graph/operation data grammars.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph:
+            - text: "The workspace guidance confirms the mechanics: controlled body scope state maps to node parameters via setParameter, and"
+            - code: vict.flow.port
+            - text: in the body must match a graph port ID. I'll finish paging both data contracts and read the port contract.
+          - button "Read screen failed":
+            - generic: Read screen
+            - generic: failed
+          - button "Read screen failed":
+            - generic: Read screen
+            - generic: failed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: Registry paging doesn't accept identity fields — retrying both continuations with only key/offset.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: Continuation needs the exact key bound — retrying both pages with key and offset only.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed" [expanded]:
+            - generic: Read screen
+            - generic: completed
+          - region "Tool input":
+            - heading "Input" [level=4]
+            - generic: "{ \"section\": \"registry\", \"offset\": 3600, \"limit\": 12, \"registry\": \"dataContracts\", \"key\": \"vict.flow-operations@2\" }"
+          - region "Tool result":
+            - heading "Result" [level=4]
+            - generic: "{ \"expectedRevision\": \"r1.r1#0\", \"cursor\": { \"documentId\": \"screen-d5c26246-953b-4a57-8e43-b78e8a56e9eb\", \"revision\": \"r1.r1#0\", \"digest\": \"d0dd8614eb44ffa6ab8f21bb95bf56a06c9588a99e8be761fe88dc19eb7c700c\", \"epoch\": \"cfa933cc-6cd0-49fe-8aba-4acda42a51b4\" }, \"section\": \"registry\", \"registry\": \"dataContracts\", \"key\": \"vict.flow-operations@2\", \"id\": \"vict.flow-operations\", \"revision\": \"2\", \"digest\": \"26b0310710b12527a9a8a056bea7cb5b5ccd45e46ede22a87ddbb4b8a03dbde7\", \"bodyIdentity\": \"studio-data-contract-body@1:26b0310710b12527a9a8a056bea7cb5b5ccd45e46ede22a87ddbb4b8a03dbde7\", \"registryDigest\": \"6ba435e0ef83f67cd07d22eed8ea66c7aefc6c4f1433478dd0d4e584246f63f2\", \"sourceJson\": \"Length\\\":200,\\\"not\\\":{\\\"enum\\\":[\\\"__proto__\\\",\\\"prototype\\\",\\\"constructor\\\"]}},\\\"position\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"x\\\":{\\\"type\\\":\\\"number\\\"},\\\"y\\\":{\\\"type\\\":\\\"number\\\"}},\\\"required\\\":[\\\"x\\\",\\\"y\\\"],\\\"additionalProperties\\\":false}},\\\"required\\\":[\\\"type\\\",\\\"nodeType\\\"],\\\"additionalProperties\\\":false},{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"type\\\":{\\\"const\\\":\\\"moveNodes\\\"},\\\"positions\\\":{\\\"type\\\":\\\"object\\\",\\\"minProperties\\\":1,\\\"maxProperties\\\":1000,\\\"propertyNames\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"maxLength\\\":200,\\\"not\\\":{\\\"enum\\\":[\\\"__proto__\\\",\\\"prototype\\\",\\\"constructor\\\"]}},\\\"additionalProperties\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"x\\\":{\\\"type\\\":\\\"number\\\"},\\\"y\\\":{\\\"type\\\":\\\"number\\\"}},\\\"required\\\":[\\\"x\\\",\\\"y\\\"],\\\"additionalProperties\\\":false}}},\\\"required\\\":[\\\"type\\\",\\\"positions\\\"],\\\"additionalProperties\\\":false},{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"type\\\":{\\\"const\\\":\\\"setLabel\\\"},\\\"nodeId\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"maxLength\\\":200,\\\"not\\\":{\\\"enum\\\":[\\\"__proto__\\\",\\\"prototype\\\",\\\"constructor\\\"]}},\\\"label\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"maxLength\\\":200}},\\\"required\\\":[\\\"type\\\",\\\"nodeId\\\",\\\"label\\\"],\\\"additionalProperties\\\":false},{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"type\\\":{\\\"const\\\":\\\"connect\\\"},\\\"edge\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"id\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"maxLength\\\":200,\\\"not\\\":{\\\"enum\\\":[\\\"__proto__\\\",\\\"prototype\\\",\\\"constructor\\\"]}},\\\"source\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"maxLength\\\":200,\\\"not\\\":{\\\"enum\\\":[\\\"__proto__\\\",\\\"prototype\\\",\\\"constructor\\\"]}},\\\"sourcePort\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"maxLength\\\":200,\\\"not\\\":{\\\"enum\\\":[\\\"__proto__\\\",\\\"prototype\\\",\\\"constructor\\\"]}},\\\"target\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"maxLength\\\":200,\\\"not\\\":{\\\"enum\\\":[\\\"__proto__\\\",\\\"prototype\\\",\\\"constructor\\\"]}},\\\"targetPort\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"maxLength\\\":200,\\\"not\\\":{\\\"enum\\\":[\\\"__proto__\\\",\\\"prototype\\\",\\\"constructor\\\"]}}},\\\"required\\\":[\\\"source\\\",\\\"sourcePort\\\",\\\"target\\\",\\\"targetPort\\\"],\\\"additionalProperties\\\":false}},\\\"required\\\":[\\\"type\\\",\\\"edge\\\"],\\\"additionalProperties\\\":false},{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"type\\\":{\\\"const\\\":\\\"reconnect\\\"},\\\"edgeId\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"maxLength\\\":200,\\\"not\\\":{\\\"enum\\\":[\\\"__proto__\\\",\\\"prototype\\\",\\\"constructor\\\"]}},\\\"connection\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"source\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"maxLength\\\":200,\\\"not\\\":{\\\"enum\\\":[\\\"__proto__\\\",\\\"prototype\\\",\\\"constructor\\\"]}},\\\"sourcePort\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"maxLength\\\":200,\\\"not\\\":{\\\"enum\\\":[\\\"__proto__\\\",\\\"prototype\\\",\\\"constructor\\\"]}},\\\"target\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"maxLength\\\":200,\\\"not\\\":{\\\"enum\\\":[\\\"__proto__\\\",\\\"prototype\\\",\\\"constructor\\\"]}},\\\"targetPort\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"maxLength\\\":200,\\\"not\\\":{\\\"enum\\\":[\\\"__proto__\\\",\\\"prototype\\\",\\\"constructor\\\"]}}},\\\"required\\\":[\\\"source\\\",\\\"sourcePort\\\",\\\"target\\\",\\\"targetPort\\\"],\\\"additionalProperties\\\":false}},\\\"required\\\":[\\\"type\\\",\\\"edgeId\\\",\\\"connection\\\"],\\\"additionalProperties\\\":false},{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"type\\\":{\\\"const\\\":\\\"remove\\\"},\\\"selection\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"nodes\\\":{\\\"type\\\":\\\"array\\\",\\\"items\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"maxLength\\\":200,\\\"not\\\":{\\\"enum\\\":[\\\"__proto__\\\",\\\"prototype\\\",\\\"constructor\\\"]}},\\\"maxItems\\\":1000},\\\"edges\\\":{\\\"type\\\":\\\"array\\\",\\\"items\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"maxLength\\\":200,\\\"not\\\":{\\\"enum\\\":[\\\"__proto__\\\",\\\"prototype\\\",\\\"constructor\\\"]}},\\\"maxItems\\\":1000}},\\\"required\\\":[\\\"nodes\\\",\\\"edges\\\"],\\\"additionalProperties\\\":false}},\\\"required\\\":[\\\"type\\\",\\\"selection\\\"],\\\"additionalProperties\\\":false},{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"type\\\":{\\\"const\\\":\\\"duplicate\\\"},\\\"selection\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"nodes\\\":{\\\"type\\\":\\\"array\\\",\\\"items\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"maxLength\\\":200,\\\"not\\\":{\\\"enum\\\":[\\\"__proto__\\\",\\\"prototype\\\",\\\"constructor\\\"]}},\\\"maxItems\\\":1000},\\\"edges\\\":{\\\"type\\\":\\\"array\\\",\\\"items\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"maxLength\\\":200,\\\"not\\\":{\\\"enum\\\":[\\\"__proto__\\\",\\\"prototype\\\",\\\"constructor\\\"]}},\\\"maxItems\\\":1000}},\\\"r\", \"totalCharacters\": 9337, \"offset\": 3600, \"nextOffset\": 7200, \"guidance\": \"Package-owned data grammar only, with no execution authority. Reassemble sourceJson pages using this exact key and digest. If nextOffset is a number, copy that JSON number into the next read offset without quotes; keep section, registry and key unchanged. If nextOffset is null, this body is complete: stop paging and do not send offset:null. component contracts link these identities without embedding their full schemas.\", \"turnProgress\": { \"applied\": 0, \"metrics\": { \"toolCalls\": 15, \"completedCalls\": 13, \"refusedCalls\": 2, \"recoveryAttempts\": 2, \"toolElapsedMs\": 215, \"providerRequests\": 6, \"visionRequests\": 0, \"acknowledgementMs\": 0, \"confirmedEdits\": 0, \"usage\": { \"inputTokens\": 183251, \"outputTokens\": 5037, \"totalTokens\": 188288 }, \"categories\": { \"knowledge\": 3, \"source\": 12, \"edit\": 0, \"observe\": 0, \"other\": 0 }, \"elapsedMs\": 132990, \"toolActiveMs\": 108, \"outsideToolMs\": 132883, \"modelSteps\": null, \"cost\": null }, \"retainedKnowledge\": { \"scope\": \"Complete contract bodies delivered in this turn only; reuse still requires their content to remain available in model context. Source facts are never cached knowledge.\", \"complete\": [ { \"key\": \"vict.flow.workspace@2\", \"digest\": \"1b461fc593820c7f1b55a4a7ff04aea0b200147d483d8aaa99322deab74d49bf\", \"bodyIdentity\": \"studio-contract-body@2:guidance:1b461fc593820c7f1b55a4a7ff04aea0b200147d483d8aaa99322deab74d49bf\" }, { \"key\": \"vict.flow.viewport@2\", \"digest\": \"6840020227bd941281ea4843c2c81a8a66b2e181cee7fe1bce9e0d853e091d9e\", \"bodyIdentity\": \"studio-contract-body@2:guidance:6840020227bd941281ea4843c2c81a8a66b2e181cee7fe1bce9e0d853e091d9e\" }, { \"key\": \"vict.flow.port@2\", \"digest\": \"ac2a832dafe107cee425c7c2c4905c6c008c524dac7c03e7c8716f26e6194666\", \"bodyIdentity\": \"studio-contract-body@2:guidance:ac2a832dafe107cee425c7c2c4905c6c008c524dac7c03e7c8716f26e6194666\" } ], \"partialCount\": 0 }, \"visualEvidence\": { \"regions\": [], \"currentSourceObservations\": 0, \"scope\": \"Captured regions only; source freshness does not establish current runtime/viewport freshness or offscreen/interaction coverage.\", \"interactionsVerified\": false }, \"evidence\": \"Host receipt-derived totals include all acknowledged transactions, including cleanup. Outside-tool time is waiting/generation/transport/host overhead, not measured provider latency. Captured regions do not establish full-page or interaction coverage.\" } }"
+          - paragraph:
+            - text: All contracts are complete. The node schema uses
+            - code: values
+            - text: for parameters; body slot scope already declares controlled
+            - code: url
+            - text: /
+            - code: notes
+            - text: ". I'll preflight both new edit shapes before applying: the graph transaction (node type + one node) and the scoped body wiring."
+          - button "Read screen failed" [expanded]:
+            - generic: Read screen
+            - generic: failed
+          - region "Tool input":
+            - heading "Input" [level=4]
+            - generic: "{ \"section\": \"preflight\", \"offset\": 0, \"limit\": 12, \"edit\": { \"expectedRevision\": \"r1.r1#0\", \"operations\": [ { \"changes\": [ { \"definition\": { \"id\": \"source-note\", \"label\": \"Source note\", \"parameters\": { \"notes\": { \"default\": \"\", \"label\": \"Provenance notes\", \"type\": \"string\" }, \"url\": { \"default\": \"\", \"label\": \"Source URL\", \"type\": \"string\" } }, \"ports\": [ { \"direction\": \"output\", \"id\": \"evidence\", \"label\": \"Evidence\", \"maxConnections\": 1, \"type\": \"evidence\" } ] }, \"type\": \"defineNodeType\" }, { \"id\": \"source-note-1\", \"label\": \"Source note\", \"nodeType\": \"source-note\", \"position\": { \"x\": 40, \"y\": 40 }, \"type\": \"addNode\" } ], \"expectedGraphRevision\": 0, \"nodeId\": \"desk-workspace\", \"op\": \"editGraph\" } ], \"reason\": \"Declare Source note node type with typed evidence output port and add its single node instance\" } }"
+          - region "Tool result":
+            - heading "Result" [level=4]
+            - generic: "{ \"expectedRevision\": \"r1.r1#0\", \"cursor\": { \"documentId\": \"screen-d5c26246-953b-4a57-8e43-b78e8a56e9eb\", \"revision\": \"r1.r1#0\", \"digest\": \"d0dd8614eb44ffa6ab8f21bb95bf56a06c9588a99e8be761fe88dc19eb7c700c\", \"epoch\": \"cfa933cc-6cd0-49fe-8aba-4acda42a51b4\" }, \"section\": \"preflight\", \"ok\": false, \"code\": \"STUDIO_AGENT_INVALID_EDIT\", \"message\": \"Use the exact operation fields. No edits applied.\", \"diagnostics\": [ { \"operation\": 0, \"path\": \"operations.0.changes\", \"message\": \"Expected a declared registered insertion, source edit, typed-state, binding or presentation operation. Use the exact declared graph-operation shape for this workspace version; read registry dataContracts.\" } ], \"applied\": false, \"turnProgress\": { \"applied\": 0, \"metrics\": { \"toolCalls\": 17, \"completedCalls\": 13, \"refusedCalls\": 3, \"recoveryAttempts\": 2, \"toolElapsedMs\": 228, \"providerRequests\": 7, \"visionRequests\": 0, \"acknowledgementMs\": 0, \"confirmedEdits\": 0, \"usage\": { \"inputTokens\": 227962, \"outputTokens\": 10233, \"totalTokens\": 238195 }, \"categories\": { \"knowledge\": 3, \"source\": 14, \"edit\": 0, \"observe\": 0, \"other\": 0 }, \"elapsedMs\": 240292, \"toolActiveMs\": 120, \"outsideToolMs\": 240171, \"modelSteps\": null, \"cost\": null }, \"retainedKnowledge\": { \"scope\": \"Complete contract bodies delivered in this turn only; reuse still requires their content to remain available in model context. Source facts are never cached knowledge.\", \"complete\": [ { \"key\": \"vict.flow.workspace@2\", \"digest\": \"1b461fc593820c7f1b55a4a7ff04aea0b200147d483d8aaa99322deab74d49bf\", \"bodyIdentity\": \"studio-contract-body@2:guidance:1b461fc593820c7f1b55a4a7ff04aea0b200147d483d8aaa99322deab74d49bf\" }, { \"key\": \"vict.flow.viewport@2\", \"digest\": \"6840020227bd941281ea4843c2c81a8a66b2e181cee7fe1bce9e0d853e091d9e\", \"bodyIdentity\": \"studio-contract-body@2:guidance:6840020227bd941281ea4843c2c81a8a66b2e181cee7fe1bce9e0d853e091d9e\" }, { \"key\": \"vict.flow.port@2\", \"digest\": \"ac2a832dafe107cee425c7c2c4905c6c008c524dac7c03e7c8716f26e6194666\", \"bodyIdentity\": \"studio-contract-body@2:guidance:ac2a832dafe107cee425c7c2c4905c6c008c524dac7c03e7c8716f26e6194666\" } ], \"partialCount\": 0 }, \"visualEvidence\": { \"regions\": [], \"currentSourceObservations\": 0, \"scope\": \"Captured regions only; source freshness does not establish current runtime/viewport freshness or offscreen/interaction coverage.\", \"interactionsVerified\": false }, \"evidence\": \"Host receipt-derived totals include all acknowledged transactions, including cleanup. Outside-tool time is waiting/generation/transport/host overhead, not measured provider latency. Captured regions do not establish full-page or interaction coverage.\" } }"
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph:
+            - text: "Preflight: the scoped body batch is valid; the"
+            - code: editGraph
+            - text: shape was refused. The graph here is plain document state, so the canonical path is replacing the
+            - code: evidence-graph
+            - text: declaration's initial JSON via
+            - code: declareState
+            - text: — preflighting that.
+          - button "Read screen failed":
+            - generic: Read screen
+            - generic: failed
+          - paragraph:
+            - code: declareState
+            - text: correctly refuses to overwrite an existing key — the graph path must be
+            - code: editGraph
+            - text: . My earlier payload included an unsupported
+            - code: label
+            - text: field on
+            - code: addNode
+            - text: ; retrying with the exact operation fields.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: Both shapes are preflight-valid. Applying the graph transaction first.
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - paragraph:
+            - text: Graph node and typed
+            - code: evidence
+            - text: output port are committed. Now the body controls batch.
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - paragraph: Controls and port committed. Adding the small port caption inside its content slot.
+          - button "Edit screen failed":
+            - generic: Edit screen
+            - generic: failed
+          - paragraph: Text inserts don't take styles — retrying the plain caption.
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - paragraph: All three transactions are acknowledged. Verifying the actual source wiring and the visible card.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Observe preview completed":
+            - generic: Observe preview
+            - generic: completed
+          - paragraph:
+            - text: Done — the working slice is committed at r1.r1#3 and verified. Source now contains exactly one
+            - code: source-note
+            - text: graph node ("source-note-1") with typed string parameters url/notes and one typed
+            - code: evidence
+            - text: output port; the card body keeps its "Source note" title and warm theme, and gained a Provenance notes textarea plus a footer
+            - code: vict.flow.port
+            - text: labeled "Evidence out", with both controls wired to the node's controlled slot state so typing updates its values without dragging (no toolbar, picker, inspector or connection form added). The capture (AI-interpreted, not interaction-tested) shows the warm heading/intro and the card with URL input, notes textarea and orange port dot, unclipped — one finding suggests the port dot may slightly overlap the caption's last letter, which I haven't corrected since it's an unverified interpretation. Typing behavior, card dragging and edge dragging remain unverified because I have no interaction tools; saving is left to you.
+        - button "Copy message":
+        - generic: You
+        - generic: The orange evidence port dot visibly overlaps the end of its “Evidence out” caption. Fix only that spacing so both the full caption and connection handle are clear. Preserve the existing graph node, its position, and the manual URL and multiline notes values in the current saved source. Keep one node and the existing theme. Observe the result, leave saving to me, and report briefly; control typing and keyboard Undo are being checked separately.
+        - button "Copy message":
+        - generic: Assistant
+        - generic "Host evidence summary":
+          - paragraph: Host evidence summary
+          - status: Source changes were applied; saving is separate. A preview image matching the final source was assessed by AI; its claims remain unverified. Behavior was not tested by this agent.
+        - button "Original AI assessment and tool details" [expanded]:
+          - text: Original AI assessment and tool details
+        - paragraph: Original AI assessment — claims not independently verified. Tool receipts separately record confirmed effects and capture limits.
+        - generic "Conversation timeline":
+          - paragraph: I'll read the workspace subtree inventory and its source to find the exact port/caption nodes and styles before touching anything.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph:
+            - text: "The structure is confirmed:"
+            - code: note-footer
+            - text: (flex, gap 8px) →
+            - code: evidence-port
+            - text: (vict.flow.port) with the "Evidence out" label in its content slot. Now I'll check the port contract's parts/spacing knowledge and the port node's capabilities to pick the minimal spacing fix.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: The port contract shows one style target (root) with the caption in the content slot — the handle anchors at the root edge, so reserving padding on the root should clear the caption without touching the graph state or controls. Preflighting that exact one-operation edit now.
+          - button "Read screen failed":
+            - generic: Read screen
+            - generic: failed
+          - paragraph:
+            - text: The value needs the structured text form, not a plain string — retrying the preflight with
+            - code: "{\"type\":\"text\",\"value\":\"16px\"}"
+            - text: .
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: Preflight is valid — applying the single style transaction now.
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - paragraph: The spacing edit is acknowledged (r1.r2#8). Now observing the actual caption/handle area.
+          - button "Observe preview failed":
+            - generic: Observe preview
+            - generic: failed
+          - paragraph: The footer crop was outside the current visible region (scroll offset), so no image was captured. Retrying once as a general visible-region observation of the same focus.
+          - button "Observe preview completed":
+            - generic: Observe preview
+            - generic: completed
+          - paragraph:
+            - text: "Fixed with one acknowledged edit: 16px"
+            - code: padding-right
+            - text: on the port's root part only — the graph node, its position, and the saved
+            - code: url
+            - text: /
+            - code: notes
+            - text: values were untouched. The capture (AI-interpreted, at r1.r2#8) shows the full "Evidence out" caption ending in clear space before the orange dot, with no overlap or clipping in the footer. Handle hover/drag/connection behavior remains unverified (no interaction tools), and saving is left to you.
+        - button "Copy message":
+    - button "Scroll to latest message":
+      - generic: Scroll to end
+    - textbox "Message":
+      - /placeholder: Ask for a change…
+    - button "Send" [disabled]:
+      - generic: Send
+    - status
+  - status "1 edit applied":
+    - generic: Ready
+  - button "Chat details" [expanded]: ···
+  - generic "Chat details":
+    - heading "Chat details" [level=3]
+    - button "Close chat details" [active]: ×
+    - paragraph: zai/glm-5.3-flash
+    - text: Turn details
+    - combobox "Inspect turn":
+      - option "Latest activity" [selected]
+      - option "7:51:16 PM · completed · Continue this Evidence desk application from its saved sourc"
+      - option "8:07:16 PM · completed · The orange evidence port dot visibly overlaps the end of its"
+    - paragraph: Up to 24 turns retained for 30 minutes in this tab. Reloading clears local history; server evidence also expires or disappears on restart/capacity eviction.
+    - paragraph: "Selected: Container · Screen"
+    - paragraph: 1 edit applied
+    - button "Reconnect agent"
+    - heading "Turn measurements" [level=4]
+    - paragraph: 9 tool calls · 2 refused · 2 calls after refusal · 133.7 s elapsed.
+    - paragraph: 8 authoring model requests · 1 image requests. First confirmed edit 90.9 s.
+    - paragraph: "Reported authoring usage: 226724 input / 4222 output tokens."
+    - paragraph: 1 receipt-derived edits including cleanup.
+    - paragraph: 1 knowledge reads · 5 source reads · 1 edit calls · 2 observation calls.
+    - paragraph: "Settled tool durations summed: 11.3 s; tool-active interval union: 11.3 s; outside-tool time: 122.3 s."
+    - paragraph: Outside-tool time includes waiting, generation, transport and host overhead; exact provider latency is unavailable.
+    - paragraph: Exact model steps and cost unavailable. Concurrent tool durations do not add up to wall time.
+    - heading "Observed regions" [level=4]
+    - paragraph: r1.r2#8 · matched final source of this turn · 728×528 at (0, 48) within 728×623; interact; 2026-10-30T12:09:11.225Z.
+    - paragraph: Region labels compare with the completed turn's final source; they do not track later source, runtime or viewport changes. Only these captured regions were inspected. Offscreen content and interactions remain unverified.
+    - heading "Progress summaries" [level=4]
+    - paragraph: Connection, validation and completion metadata. The conversation contains actual assistant messages and tool calls.
+    - list:
+      - listitem: Connecting…
+      - listitem: Reading screen…
+      - listitem: Connecting to the VICT / Mastra agent…
+      - listitem: Agent is working on your request…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Preparing and validating an edit…
+      - listitem: Reserve clearance between the evidence port handle and its Evidence out caption · applied
+      - listitem: Capturing and observing the rendered preview…
+      - listitem: Capturing and observing the rendered preview…
+      - listitem: "1 applied edit remains undoable. Confirmed revision r1.r2#8. Engine termination: completed. Source coverage: 3/119 registered definitions present. 116 missing from the 119-item coverage scope. Missing IDs are paged through coverage reads. This inventory does not establish the full requested intent, interactions or visual completion. Source: 21 nodes, 7 state declarations; a bounded preview image was assessed by AI; semantic claims unverified; interactions unverified by this agent. Captured region: 728×528 at (0, 48) within 728×623; interact at 2026-10-30T12:09:11.225Z. This does not verify offscreen content or current runtime state."
+    - heading "Tool receipts" [level=4]
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 18666 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 18672 ms since turn start {\"expectedRevision\":\"r1.r2#7\",\"cursor\":{\"documentId\":\"screen-d5c26246-953b-4a57-8e43-b78e8a56e9eb\",\"revision\":\"r1.r2#7\",\"digest\":\"af38f5a9f455b5a306dff6a01a886e53aa817195a2031e9d652502c89c14171f\",\"epoch\":\"cfa933cc-6cd0-49fe-8aba-4acda42a51b4\"},\"section\":\"nodes\",\"scope\":{\"kind\":\"subtree\",\"nodeId\":\"desk-workspace\",\"includesInactiveSource\":true,\"expandsComponentDefinitions\":false},\"items\":[{\"id\":\"desk-workspace\",\"kind\":\"component\",\"definitionId\":\"vict.flow.workspace\",\"children\":[\"desk-viewport\",\"note-body\"],\"childCount\":2,\"sourcePreview\":\"{\\\"kind\\\":\\\"component\\\",\\\"id\\\":\\\"desk-workspace\\\",\\\"definitionId\\\":\\\"vict.flow.workspace\\\",\\\"revision\\\":\\\"2\\\",\\\"slots\\\":{\\\"content\\\":{\\\"name\\\":\\\"content\\\",\\\"children\\\":[\\\"desk-viewport\\\"],\\\"scope\\\":{\\\"schema\\\":\\\"vict.ui-slot-scope@1\\\",\\\"props\\\":[]}},\\\"body\\\":{\\\"name\\\":\\\"body\\\",\\\"children\\\":[\\\"note-body\\\"],\\\"scope\\\":{\\\"schema\\\":\\\"vict.ui-slot-scope@1\\\",\\\"props\\\":[{\\\"name\\\":\\\"nodeId\\\",\\\"type\\\":\\\"string\\\"},{\\\"name\\\":\\\"nodeType\\\",\\\"type\\\":\\\"string\\\"},{\\\"name\\\":\\\"label\\\",\\\"type\\\":\\\"string\\\"}],\\\"state\\\":{\\\"notes\\\":{\\\"key\\\":\\\"notes\\\",\\\"type\\\":\\\"string\\\",\\\"initial\\\":\\\"\\\",\\\"controlled\\\":true},\\\"url\\\":{\\\"key\\\":\\\"url\\\",\\\"type\\\":\\\"string\\\",\\\"initial\\\":\\\"\\\",\\\"controlled\\\":true}}}}},\\\"props\\\":{\\\"label\\\":{\\\"type\\\":\\\"literal\\\"… [truncated; use source pages]\"},{\"id\":\"desk-viewport\",\"kind\":\"component\",\"definitionId\":\"vict.flow.viewport\",\"children\":[],\"childCount\":0,\"sourcePreview\":\"{\\\"kind\\\":\\\"component\\\",\\\"id\\\":\\\"desk-viewport\\\",\\\"definitionId\\\":\\\"vict.flow.viewport\\\",\\\"revision\\\":\\\"2\\\",\\\"slots\\\":{},\\\"props\\\":{\\\"height\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":420}}}\"},{\"id\":\"note-body\",\"kind\":\"element\",\"tag\":\"div\",\"children\":[\"note-header\",\"url-field\",\"notes-field\",\"note-footer\"],\"childCount\":4,\"sourcePreview\":\"{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"note-body\\\",\\\"tag\\\":\\\"div\\\",\\\"children\\\":[\\\"note-header\\\",\\\"url-field\\\",\\\"notes-field\\\",\\\"note-footer\\\"],\\\"classes\\\":[\\\"note-card\\\"],\\\"localStyle\\\":[{\\\"property\\\":\\\"background\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"#fffdf8\\\"}},{\\\"property\\\":\\\"border\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"1px solid #e4d5bf\\\"}},{\\\"property\\\":\\\"border-radius\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"10px\\\"}},{\\\"property\\\":\\\"box-shadow\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"0 1px 3px rgba(90,64,32,0.14)\\\"}},{\\\"property\\\":\\\"color\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"#3d3126\\\"}},{\\\"property\\\":\\\"display\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"flex\\\"}},{\\\"property\\\":\\\"flex-direc… [truncated; use source pages]\"},{\"id\":\"note-header\",\"kind\":\"element\",\"tag\":\"div\",\"children\":[\"note-title-text\"],\"childCount\":1,\"sourcePreview\":\"{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"note-header\\\",\\\"tag\\\":\\\"div\\\",\\\"children\\\":[\\\"note-title-text\\\"],\\\"classes\\\":[\\\"vict-graph-drag-handle\\\",\\\"note-header\\\"],\\\"localStyle\\\":[{\\\"property\\\":\\\"border-bottom\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"1px solid #efe3d0\\\"}},{\\\"property\\\":\\\"color\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"#4a3520\\\"}},{\\\"property\\\":\\\"cursor\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"grab\\\"}},{\\\"property\\\":\\\"font-size\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"13px\\\"}},{\\\"property\\\":\\\"font-weight\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"700\\\"}},{\\\"property\\\":\\\"padding-bottom\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"6px\\\"}}]}\"},{\"id\":\"note-title-text\",\"kind\":\"text\",\"children\":[],\"childCount\":0,\"sourcePreview\":\"{\\\"kind\\\":\\\"text\\\",\\\"id\\\":\\\"note-title-text\\\",\\\"content\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"Source note\\\"}}\"},{\"id\":\"url-field\",\"kind\":\"element\",\"tag\":\"div\",\"children\":[\"url-label\",\"url-control\"],\"childCount\":2,\"sourcePreview\":\"{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"url-field\\\",\\\"tag\\\":\\\"div\\\",\\\"children\\\":[\\\"url-label\\\",\\\"url-control\\\"],\\\"classes\\\":[\\\"nodrag\\\",\\\"nopan\\\",\\\"nowheel\\\",\\\"vict-rhea\\\",\\\"vict-rhea-field\\\"],\\\"localStyle\\\":[{\\\"property\\\":\\\"display\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"flex\\\"}},{\\\"property\\\":\\\"flex-direction\\\",\\\"value\\\" [Details truncated for the bounded trace. Read current source for complete facts.]"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 18667 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 18676 ms since turn start {\"expectedRevision\":\"r1.r2#7\",\"cursor\":{\"documentId\":\"screen-d5c26246-953b-4a57-8e43-b78e8a56e9eb\",\"revision\":\"r1.r2#7\",\"digest\":\"af38f5a9f455b5a306dff6a01a886e53aa817195a2031e9d652502c89c14171f\",\"epoch\":\"cfa933cc-6cd0-49fe-8aba-4acda42a51b4\"},\"section\":\"source\",\"nodeId\":\"desk-workspace\",\"sourceJson\":\"{\\\"kind\\\":\\\"component\\\",\\\"id\\\":\\\"desk-workspace\\\",\\\"definitionId\\\":\\\"vict.flow.workspace\\\",\\\"revision\\\":\\\"2\\\",\\\"slots\\\":{\\\"content\\\":{\\\"name\\\":\\\"content\\\",\\\"children\\\":[\\\"desk-viewport\\\"],\\\"scope\\\":{\\\"schema\\\":\\\"vict.ui-slot-scope@1\\\",\\\"props\\\":[]}},\\\"body\\\":{\\\"name\\\":\\\"body\\\",\\\"children\\\":[\\\"note-body\\\"],\\\"scope\\\":{\\\"schema\\\":\\\"vict.ui-slot-scope@1\\\",\\\"props\\\":[{\\\"name\\\":\\\"nodeId\\\",\\\"type\\\":\\\"string\\\"},{\\\"name\\\":\\\"nodeType\\\",\\\"type\\\":\\\"string\\\"},{\\\"name\\\":\\\"label\\\",\\\"type\\\":\\\"string\\\"}],\\\"state\\\":{\\\"notes\\\":{\\\"key\\\":\\\"notes\\\",\\\"type\\\":\\\"string\\\",\\\"initial\\\":\\\"\\\",\\\"controlled\\\":true},\\\"url\\\":{\\\"key\\\":\\\"url\\\",\\\"type\\\":\\\"string\\\",\\\"initial\\\":\\\"\\\",\\\"controlled\\\":true}}}}},\\\"props\\\":{\\\"label\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"Evidence desk graph\\\"},\\\"graph\\\":{\\\"type\\\":\\\"ref\\\",\\\"path\\\":\\\"state.evidence-graph\\\"}},\\\"localStyle\\\":[{\\\"property\\\":\\\"flex\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"1\\\"}},{\\\"property\\\":\\\"min-height\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"0\\\"}}],\\\"outputs\\\":{\\\"graphChange\\\":{\\\"setState\\\":{\\\"key\\\":\\\"evidence-graph\\\"}}}}\",\"totalCharacters\":883,\"offset\":0,\"nextOffset\":null}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 37582 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 37586 ms since turn start {\"expectedRevision\":\"r1.r2#7\",\"cursor\":{\"documentId\":\"screen-d5c26246-953b-4a57-8e43-b78e8a56e9eb\",\"revision\":\"r1.r2#7\",\"digest\":\"af38f5a9f455b5a306dff6a01a886e53aa817195a2031e9d652502c89c14171f\",\"epoch\":\"cfa933cc-6cd0-49fe-8aba-4acda42a51b4\"},\"section\":\"knowledge\",\"ok\":true,\"registryReady\":true,\"registryDigest\":\"6ba435e0ef83f67cd07d22eed8ea66c7aefc6c4f1433478dd0d4e584246f63f2\",\"kind\":\"component\",\"key\":\"vict.flow.port@2\",\"projection\":\"guidance\",\"nextCursor\":null,\"paging\":\"Copy nextCursor exactly as a JSON string; do not send offset, limit or identity maps. Stop on nextCursor:null. A selected body is complete only after assembling every page from its first page. Component dependencies are explicit references and must be read separately; no dependency body or app source was preloaded.\",\"items\":[{\"id\":\"vict.flow.port\",\"revision\":\"2\",\"digest\":\"ac2a832dafe107cee425c7c2c4905c6c008c524dac7c03e7c8716f26e6194666\",\"bodyIdentity\":\"studio-contract-body@2:guidance:ac2a832dafe107cee425c7c2c4905c6c008c524dac7c03e7c8716f26e6194666\",\"offset\":0,\"totalCharacters\":1765,\"bodyComplete\":true,\"contractJson\":\"{\\\"descriptor\\\":{\\\"revision\\\":\\\"2\\\",\\\"abi\\\":\\\"vict.ui-component-abi@1\\\",\\\"events\\\":[\\\"vict.ui-component-abi@1\\\"],\\\"rendererImplementationId\\\":\\\"vict.svelte.flow.composition\\\",\\\"styleTargets\\\":[\\\"root\\\"],\\\"id\\\":\\\"vict.flow.port\\\",\\\"props\\\":[{\\\"name\\\":\\\"id\\\",\\\"type\\\":\\\"string\\\"}],\\\"slots\\\":[\\\"content\\\"],\\\"outputs\\\":[],\\\"inspectionLimits\\\":[\\\"Place within an authored workspace body. Exact port ID resolves direction/type/capacity from the graph, not from styling.\\\"]},\\\"label\\\":\\\"Graph port anchor\\\",\\\"family\\\":\\\"flow\\\",\\\"category\\\":\\\"graph-part\\\",\\\"purpose\\\":\\\"An app-positioned semantic port in a typed node body.\\\",\\\"eligibility\\\":{\\\"kind\\\":\\\"part\\\"},\\\"dependencies\\\":[{\\\"id\\\":\\\"vict.flow.workspace\\\",\\\"revision\\\":\\\"2\\\"}],\\\"rules\\\":[{\\\"kind\\\":\\\"ancestorSlot\\\",\\\"placements\\\":[{\\\"definitionId\\\":\\\"vict.flow.workspace\\\",\\\"revision\\\":\\\"2\\\",\\\"slotName\\\":\\\"body\\\"}]}],\\\"guidance\\\":[\\\"Place inside workspace.body. id matches semantic graph port ID; optional content holds ordinary VICT controls/content. Dynamic missing ports show a diagnostic instead of a fabricated handle.\\\"],\\\"packageName\\\":\\\"@victframework/ui-flow-svelte\\\",\\\"packageVersion\\\":\\\"0.4.0-rc.1\\\",\\\"capabilities\\\":{\\\"extensionId\\\":\\\"vict.flow.port\\\",\\\"revision\\\":\\\"2\\\",\\\"rendererImplementationId\\\":\\\"vict.svelte.flow.composition\\\",\\\"abi\\\":\\\"vict.ui-component-abi@1\\\",\\\"slots\\\":[\\\"content\\\"],\\\"required\\\":[],\\\"styleTargets\\\":[\\\"root\\\"],\\\"requiresParentContext\\\":true,\\\"compositionSlots\\\":[]},\\\"descriptorDigest\\\":\\\"7034a84f509541a59e12eb84bb8fc128282729c682a7ed2e2f0a8d8a90729ffa\\\",\\\"digest\\\":\\\"ac2a832dafe107cee425c7c2c4905c6c008c524dac7c03e7c8716f26e6194666\\\",\\\"exampleCount\\\":0,\\\"hasSeed\\\":false,\\\"preparation\\\":{\\\"seedStyles\\\":[],\\\"hostRequirements\\\":[],\\\"dependencies\\\":[{\\\"id\\\":\\\"vict.flow.workspace\\\",\\\"revision\\\":\\\"2\\\"}],\\\"seedStylePrecedence\\\":\\\"Local styles override shared style sources; explicitly replace/remove undesired seed declarations before construction.\\\"}}\"}],\"dependencies\":[{\"id\":\"vict.flow.workspace\",\"revision\":\"2\",\"key\":\"vict.flow.workspace@2\"}],\"dependencyBodiesIncluded\":false}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 37582 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 37588 ms since turn start {\"expectedRevision\":\"r1.r2#7\",\"cursor\":{\"documentId\":\"screen-d5c26246-953b-4a57-8e43-b78e8a56e9eb\",\"revision\":\"r1.r2#7\",\"digest\":\"af38f5a9f455b5a306dff6a01a886e53aa817195a2031e9d652502c89c14171f\",\"epoch\":\"cfa933cc-6cd0-49fe-8aba-4acda42a51b4\"},\"section\":\"capabilities\",\"nodeId\":\"evidence-port\",\"kind\":\"component\",\"available\":true,\"definitionId\":\"vict.flow.port\",\"revision\":\"2\",\"contractDigest\":\"ac2a832dafe107cee425c7c2c4905c6c008c524dac7c03e7c8716f26e6194666\",\"eligibility\":{\"kind\":\"part\"},\"props\":[{\"name\":\"id\",\"type\":\"string\"}],\"outputs\":[],\"slots\":[\"content\"],\"requiredSlots\":[],\"presentation\":{\"declaredParts\":[\"root\"],\"classes\":{\"supported\":true,\"operation\":\"modify\",\"field\":\"classes\",\"value\":[],\"mode\":\"replace\",\"emptyClears\":true,\"guidance\":\"Use canonical classes array for authored DOM tokens on the primary owned presentation target. Generated ownership classes remain. attributes.class does not replace this field.\"},\"partStyle\":{\"supported\":true,\"operation\":\"style\",\"partField\":\"part\",\"targets\":[\"root\"],\"states\":[\"base\",\"hover\",\"focus\",\"active\",\"disabled\"],\"conditions\":true,\"guidance\":\"Select an exact declared semantic part. Styling affects only that owned implementation surface; preflight checks this source and installed renderer contract.\"},\"legacyStyle\":{\"operation\":\"style\",\"part\":null,\"conditional\":false,\"guidance\":\"Without part, base styling reaches the primary presentation target. Legacy conditional styling requires an element; use an explicit component part instead.\"}},\"compositionRules\":[{\"kind\":\"ancestorSlot\",\"placements\":[{\"definitionId\":\"vict.flow.workspace\",\"revision\":\"2\",\"slotName\":\"body\"}]}],\"validation\":\"Use read preflight with the complete edit. Capability metadata does not prove observed appearance or exercised interaction.\"}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 78104 ms since turn start
+      - text: Read query refused safely · failed
+      - generic: "validation-refused studio_screen_read 78113 ms since turn start {\"expectedRevision\":\"r1.r2#7\",\"cursor\":{\"documentId\":\"screen-d5c26246-953b-4a57-8e43-b78e8a56e9eb\",\"revision\":\"r1.r2#7\",\"digest\":\"af38f5a9f455b5a306dff6a01a886e53aa817195a2031e9d652502c89c14171f\",\"epoch\":\"cfa933cc-6cd0-49fe-8aba-4acda42a51b4\"},\"section\":\"preflight\",\"ok\":false,\"code\":\"STUDIO_AGENT_INVALID_EDIT\",\"message\":\"Use the exact operation fields. No edits applied.\",\"diagnostics\":[{\"operation\":0,\"path\":\"operations.0.value\",\"message\":\"Expected style(nodeId,part?,property,value?:text|token|binding,conditionId?,pseudo?). Invalid input\"}],\"applied\":false}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 84746 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 84781 ms since turn start {\"expectedRevision\":\"r1.r2#7\",\"cursor\":{\"documentId\":\"screen-d5c26246-953b-4a57-8e43-b78e8a56e9eb\",\"revision\":\"r1.r2#7\",\"digest\":\"af38f5a9f455b5a306dff6a01a886e53aa817195a2031e9d652502c89c14171f\",\"epoch\":\"cfa933cc-6cd0-49fe-8aba-4acda42a51b4\"},\"section\":\"preflight\",\"ok\":true,\"applied\":false,\"resultDigest\":\"608c655a1d7b7693f23ae53c1f1bfd19552b8dbba85d62971f666536ebd190c8\",\"commandCount\":1,\"message\":\"Valid against this exact source cursor. No transaction was applied or reserved; submit the same payload through studio_screen_edit and expect fresh revision validation.\"}"
+    - paragraph: Edit screen
+    - list:
+      - text: Edit screen started · running
+      - generic: tool-start studio_screen_edit 90761 ms since turn start
+      - text: Proposed validated transaction; awaiting browser commit · pending
+      - generic: "proposed studio_screen_edit 90799 ms since turn start {\"proposalId\":\"a372ef95-7e9d-4953-bd92-433b0471a4ca\",\"reason\":\"Reserve clearance between the evidence port handle and its Evidence out caption\",\"revision\":\"r1.r2#7\"}"
+      - text: Browser committed edit · pending
+      - generic: Reserve clearance between the evidence port handle and its Evidence out caption Committed to the screen. Undo is available.
+      - text: Commit receipt acknowledged · completed
+      - generic: Reserve clearance between the evidence port handle and its Evidence out caption
+      - text: Browser acknowledged committed transaction · completed
+      - generic: "committed studio_screen_edit 90852 ms since turn start {\"proposalId\":\"a372ef95-7e9d-4953-bd92-433b0471a4ca\",\"ok\":true,\"revision\":\"r1.r2#8\",\"digest\":\"608c655a1d7b7693f23ae53c1f1bfd19552b8dbba85d62971f666536ebd190c8\",\"applied\":1,\"coverage\":{\"available\":119,\"authored\":3,\"catalogAuthored\":0,\"registeredAuthored\":3,\"reachableSourceNodes\":21,\"requested\":119,\"scope\":\"all-authorable-definitions\",\"missing\":[\"vict.catalog.button\",\"vict.catalog.checkbox\",\"vict.catalog.select\",\"vict.catalog.dialog\",\"vict.catalog.switch\",\"vict.catalog.toggle\",\"vict.catalog.select-multiple\",\"vict.catalog.select-item\",\"vict.catalog.combobox\",\"vict.catalog.combobox-multiple\",\"vict.catalog.combobox-item\",\"vict.catalog.toggle-group\",\"vict.catalog.toggle-group-multiple\",\"vict.catalog.toggle-group-item\",\"vict.catalog.accordion\",\"vict.catalog.accordion-multiple\",\"vict.catalog.accordion-item\",\"vict.catalog.slider\",\"vict.catalog.meter\",\"vict.catalog.progress\"],\"evidence\":\"Reachable declared source presence only, including inactive branches/templates. An agent-declared manifest is not proof of the user intent, observed appearance, exercised interaction or completion.\",\"missingCount\":116,\"moreMissing\":true}}"
+    - paragraph: Observe preview
+    - list:
+      - text: Observe preview started · running
+      - generic: tool-start studio_screen_observe 98660 ms since turn start
+      - text: Visual observation unavailable · failed
+      - generic: "validation-refused studio_screen_observe 98693 ms since turn start {\"ok\":false,\"code\":\"STUDIO_CAPTURE_NOT_VISIBLE\",\"message\":\"The browser could not provide a current rendered image. No visual observation was made.\",\"diagnostics\":{\"phase\":\"visibility\",\"reason\":\"target-not-visible\",\"expectedRevision\":\"r1.r2#8\",\"actualRevision\":\"r1.r2#8\",\"mode\":\"interact\",\"covered\":false,\"connected\":true,\"layout\":true,\"frame\":[0,-47.20000076293945,728,622.7999877929688],\"frameBefore\":[0,-47.20000076293945,728,622.7999877929688],\"viewport\":[0,0,743.2000122070312,528],\"viewportBefore\":[0,0,743.2000122070312,528],\"scroll\":[0,47.20000076293945]},\"recovery\":{\"action\":\"Reveal the current Design or Interact preview, then request observation only.\",\"editsReplayed\":false,\"captureAttempts\":1}}"
+    - paragraph: Observe preview
+    - list:
+      - text: Observe preview started · running
+      - generic: tool-start studio_screen_observe 114149 ms since turn start
+      - text: Captured current preview; AI assessment unverified · completed
+      - generic: "observation studio_screen_observe 125272 ms since turn start {\"ok\":true,\"evidence\":\"stable-capture-with-model-assessment\",\"modelAssessment\":{\"visibleFindings\":[\"Footer row of the Source note card shows the caption 'Evidence out' fully rendered, ending with clear space before an orange circular dot to its right.\",\"The orange dot appears unobscured and does not overlap or touch the caption text; the card's bottom edge is fully visible.\",\"No clipping is visible on the footer; both caption and dot sit within the card boundary.\"],\"uncertainty\":[\"The gap is small but visibly present; whether it matches intended padding spacing cannot be confirmed.\",\"The orange dot may be a connector handle, but its function cannot be verified from a static image.\"],\"notEstablished\":[\"Whether the dot has hover, drag, or connection behavior.\",\"Whether ports exist on other card edges outside the imaged area.\",\"Whether the dot is fully clickable given the observed gap size.\"],\"evidenceBasis\":\"model-interpretation-of-captured-image\",\"semanticClaimsVerified\":false},\"originalModelText\":\"{\\\"visibleFindings\\\":[\\\"Footer row of the Source note card shows the caption 'Evidence out' fully rendered, ending with clear space before an orange circular dot to its right.\\\",\\\"The orange dot appears unobscured and does not overlap or touch the caption text; the card's bottom edge is fully visible.\\\",\\\"No clipping is visible on the footer; both caption and dot sit within the card boundary.\\\"],\\\"uncertainty\\\":[\\\"The gap is small but visibly present; whether it matches intended padding spacing cannot be confirmed.\\\",\\\"The orange dot may be a connector handle, but its function cannot be verified from a static image.\\\"],\\\"notEstablished\\\":[\\\"Whether the dot has hover, drag, or connection behavior.\\\",\\\"Whether ports exist on other card edges outside the imaged area.\\\",\\\"Whether the dot is fully clickable given the observed gap size.\\\"]}\",\"semanticClaimsVerified\":false,\"metadata\":{\"cursor\":{\"documentId\":\"screen-d5c26246-953b-4a57-8e43-b78e8a56e9eb\",\"revision\":\"r1.r2#8\",\"digest\":\"608c655a1d7b7693f23ae53c1f1bfd19552b8dbba85d62971f666536ebd190c8\",\"epoch\":\"cfa933cc-6cd0-49fe-8aba-4acda42a51b4\"},\"capturedAt\":\"2026-10-30T12:09:11.225Z\",\"viewport\":{\"width\":744,\"height\":528,\"scrollLeft\":0,\"scrollTop\":47.20000076293945,\"devicePixelRatio\":1.25},\"image\":{\"width\":728,\"height\":528,\"sourceWidth\":728,\"sourceHeight\":623,\"offsetLeft\":0,\"offsetTop\":48,\"cropped\":true},\"evidence\":{\"workspaceView\":\"interact\",\"viewportModel\":\"isolated-viewport\",\"ownedOverlays\":0,\"targets\":[{\"nodeId\":\"screen\",\"part\":\"root\",\"bounds\":[0,-47.2,728,622.8],\"visible\":true,\"visibilityReason\":\"visible\",\"styles\":{\"color\":\"rgb(61, 49, 38)\",\"background-color\":\"rgb(250, 246, 239)\",\"position\":\"static\",\"top\":\"auto\",\"padding-top\":\"40px\",\"overflow\":\"visible\",\"font-size\":\"14px\",\"z-index\":\"auto\"}},{\"nodeId\":\"desk-title\",\"part\":\"root\",\"bounds\":[40,-7.2,648,37.2],\"visible\":true,\"visibilityReason\":\"visible\",\"styles\":{\"color\":\"rgb(74, 53, 32)\",\"background-color\":\"rgba(0, 0, 0, 0)\",\"position\":\"static\",\"top\":\"auto\",\"padding-top\":\"0px\",\"overflow\":\"visible\",\"font-size\":\"24.8px\",\"z-index\":\"auto\"}},{\"nodeId\":\"desk-title-text\",\"part\":\"root\",\"bounds\":[0,0,0,0],\"visible\":false,\"visibilityReason\":\"hidden\",\"styles\":{\"color\":\"rgb(74, 53, 32)\",\"background-color\":\"rgba(0, 0, 0, 0)\",\"position\":\"static\",\"top\":\"auto\",\"padding-top\":\"0px\",\"overflow\":\"visible\",\"font-size\":\"24.8px\",\"z-index\":\"auto\"}},{\"nodeId\":\"desk-intro\",\"part\":\"root\",\"bounds\":[40,50,620,45.6],\"visible\":true,\"visibilityReason\":\"visible\",\"styles\":{\"color\":\"rgb(122, 102, 80)\",\"background-color\":\"rgba(0, 0, 0, 0)\",\"position\":\"static\",\"top\":\"auto\",\"padding-top\":\"0px\",\"overflow\":\"visible\",\"font-size\":\"15.2px\",\"z-index\":\"auto\"}},{\"nodeId\":\"desk-intro-text\",\"part\":\"root\",\"bounds\":[0,0,0,0],\"visible\":false,\"visibilityReason\":\"hidden\",\"styles\":{\"color\":\"rgb(122, 102, 80)\",\"background-color\":\"rgba(0, 0, 0, 0)\",\"position\":\"static\",\"top\":\"auto\",\"padding-top\":\"0px [Details truncated for the bounded trace. Read current source for complete facts.]"
+    - heading "Sanitized exchanges" [level=4]
+    - paragraph: Compact previews remain in the conversation. Open a retained original page here; this never invokes a tool again.
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result · bounded original is partial
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Edit screen · input
+    - button "Open first page"
+    - paragraph: Edit screen · result
+    - button "Open first page"
+    - paragraph: Observe preview · input
+    - button "Open first page"
+    - paragraph: Observe preview · result
+    - button "Open first page"
+    - paragraph: Observe preview · input
+    - button "Open first page"
+    - paragraph: Observe preview · result · bounded original is partial
+    - button "Open first page"
+    - heading "Connection record" [level=4]
+    - paragraph: VICT turn turn-e04f2ba4-1ea0-4169-9c77-e557545a9f41 · profile v1_cb3dbcac024d702fcab5e715fb649a5ff499e2fb247d98629d955182ff5c10cd
+- separator "Chat width"
+- main:
+  - button "Toggle Chat drawer" [expanded]:
+  - group "Workspace mode":
+    - button "Design"
+    - button "Interact" [pressed]
+    - button "Structure"
+  - button "Toggle Document and Selection drawer":
+  - iframe:
+    - generic "Screen canvas":
+      - main "Evidence desk — rich-node retry":
+        - heading "Evidence desk" [level=1]:
+          - generic: Evidence desk
+        - paragraph:
+          - generic: "A compact evidence desk: one editable source-note node keeps a source URL and provenance notes together, ready to hand evidence to the next step."
+        - region "Evidence desk graph":
+          - application "Graph canvas":
+            - application:
+              - group "Source note":
+                - generic: Source note
+                - generic: Source URL
+                - textbox "Source URL": https://example.org/source-ax
+                - generic: Provenance notes
+                - textbox "Provenance notes":
+                  - /placeholder: Where did this evidence come from?
+                  - text: "Manual note: compare the original source. Keep uncertainty visible."
+                - 'button "output Evidence: evidence"'
+                - generic: Evidence out
+              - link "Svelte Flow attribution":
+                - /url: https://svelteflow.dev?utm_source=attribution
+                - text: Svelte Flow
+- contentinfo:
+  - status: Reserve clearance between the evidence port handle and its Evidence out caption · agent edit · unsaved
+- generic: Designer — VICT Studio
