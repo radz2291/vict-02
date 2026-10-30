@@ -1,0 +1,6 @@
+{
+  "startedObservedUtc": "2026-10-30T12:07:16.772Z",
+  "servingSource": "bfb34e2882781bc2dddd05f2b978b418cda12c49",
+  "savedRevision": "r1.r2",
+  "prompt": "The orange evidence port dot visibly overlaps the end of its “Evidence out” caption. Fix only that spacing so both the full caption and connection handle are clear. Preserve the existing graph node, its position, and the manual URL and multiline notes values in the current saved source. Keep one node and the existing theme. Observe the result, leave saving to me, and report briefly; control typing and keyboard Undo are being checked separately."
+}

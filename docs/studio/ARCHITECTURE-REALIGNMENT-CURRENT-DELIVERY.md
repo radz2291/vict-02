@@ -39,6 +39,14 @@ The corrected actual continuation now reads that saved source; no rich-node pass
 is claimed. Android availability and wireless preference are confirmed; physical
 keyboard/touch/safe-area proof remains pending. No LAN listener has started.
 
+**Later live result:** the corrected agent completed three acknowledged edits and
+a final-source matching image assessment (26 calls, five refusals, 388.7 seconds).
+One rich node now renders. Native manual URL/notes writes reached source, but
+normal text Undo raised a scoped-write rejection: [retained native failure](foundation-evidence/architecture-realignment-20261030/actual-agent-live-20261030/STAGE-2-NATIVE-CONTROL-FAILURE.md).
+Its exact source is saved/exported at r1.r2. DOM lifetime/source echo repair is
+in progress; no one-node behavior gate is awarded. The actual agent is separately
+correcting the observed port-caption overlap while preserving manual values.
+
 Current read capability/input revisions are 8, instructions 13, authoring profile
 15 and observer profile 9. Edit capability/input is 7. Packages and saved schemas are
 unchanged by this Studio-only repair, so the independent public-artifact consumer

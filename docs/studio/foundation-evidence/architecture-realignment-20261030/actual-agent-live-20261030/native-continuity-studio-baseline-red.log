@@ -1,0 +1,54 @@
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/apps/studio
+
+8:07:35 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+8:07:35 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+8:07:35 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+8:07:35 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+8:07:35 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+8:07:48 pm [vite-plugin-svelte] tests/fixtures/SourceEchoCanvas.svelte:11:20 This reference only captures the initial value of `bridge`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+8:07:48 pm [vite-plugin-svelte] tests/fixtures/SourceEchoCanvas.svelte:12:25 This reference only captures the initial value of `source`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+8:07:48 pm [vite-plugin-svelte] tests/fixtures/SourceEchoCanvas.svelte:14:20 This reference only captures the initial value of `bridge`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+ ❯ tests/native-source-echo.test.ts (2 tests | 1 failed) 424ms
+   × keeps the actual exported agent app input focused through consecutive canonical input echoes 422ms
+     → expected <input type="text" …(6)></input> to be <input type="text" …(6)></input> // Object.is equality
+
+If it should pass with deep equality, replace "toBe" with "toStrictEqual"
+
+Expected: <input type="text" …(6)></input>
+Received: serializes to the same string
+
+   ✓ reconciles compatible values and canonical graphs without a renderer reset for same-document source 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/native-source-echo.test.ts > keeps the actual exported agent app input focused through consecutive canonical input echoes
+AssertionError: expected <input type="text" …(6)></input> to be <input type="text" …(6)></input> // Object.is equality
+
+If it should pass with deep equality, replace "toBe" with "toStrictEqual"
+
+Expected: <input type="text" …(6)></input>
+Received: serializes to the same string
+
+
+Compared values have no visual difference.
+
+ ❯ tests/native-source-echo.test.ts:22:240
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 1 passed (2)
+   Start at  20:07:25
+   Duration  23.21s (transform 14.06s, setup 0ms, collect 21.54s, tests 424ms, environment 633ms, prepare 189ms)
+

@@ -1,0 +1,36 @@
+{
+  "nodeBefore": [
+    {
+      "bounds": {
+        "bottom": 458.3000030517578,
+        "height": 255.5,
+        "left": 80,
+        "right": 320,
+        "top": 202.8000030517578,
+        "width": 240,
+        "x": 80,
+        "y": 202.8000030517578
+      },
+      "nodeId": "source-note-1",
+      "transform": null
+    }
+  ],
+  "nodeAfter": [
+    {
+      "bounds": {
+        "bottom": 431.90000915527344,
+        "height": 255.5,
+        "left": 80,
+        "right": 320,
+        "top": 176.40000915527344,
+        "width": 240,
+        "x": 80,
+        "y": 176.40000915527344
+      },
+      "nodeId": "source-note-1",
+      "transform": null
+    }
+  ],
+  "typedValue": "https://example.org/source-ax",
+  "undoneValue": "https://example.org/source-ax"
+}

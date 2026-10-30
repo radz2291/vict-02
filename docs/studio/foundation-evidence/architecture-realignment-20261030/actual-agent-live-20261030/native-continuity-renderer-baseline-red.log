@@ -1,0 +1,45 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030
+
+8:06:44 pm [vite-plugin-svelte] packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+8:06:44 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+8:06:44 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+8:06:44 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+8:06:44 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+ ❯ |renderer| packages/ui-svelte/test/document-native-continuity.test.ts (2 tests | 1 failed) 79ms
+   × retains the live native input and focus across accepted same-document source echoes 63ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |renderer| packages/ui-svelte/test/document-native-continuity.test.ts > retains the live native input and focus across accepted same-document source echoes
+AssertionError: expected <input type="text" …(5)></input> to be <input type="text" …(5)></input> // Object.is equality
+
+If it should pass with deep equality, replace "toBe" with "toStrictEqual"
+
+Expected: <input type="text" …(5)></input>
+Received: serializes to the same string
+
+
+Compared values have no visual difference.
+
+ ❯ packages/ui-svelte/test/document-native-continuity.test.ts:14:43
+     12|   try{
+     13|     const input=target.querySelector('input')!;input.focus();input.val…
+     14|     expect(target.querySelector('input')).toBe(input);
+       |                                           ^
+     15|     expect(document.activeElement).toBe(input);
+     16|     expect(input.value).toBe('Startx');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 1 passed (2)
+   Start at  20:06:40
+   Duration  4.82s (transform 1.33s, setup 0ms, import 1.68s, tests 79ms, environment 2.84s)
+
