@@ -1,0 +1,44 @@
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/apps/studio
+
+6:16:27 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+6:16:27 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+6:16:27 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+6:16:27 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+6:16:27 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+ ❯ tests/source-import-depth.test.ts (1 test | 1 failed) 91ms
+   × imports a canonical-valid nested graph beyond64 ordinary wrappers without inventing dynamic media dependencies 90ms
+     → {"ok":false,"code":"STUDIO_IMPORT_MEDIA_DYNAMIC","message":"Saved bytes cannot prove computed or runtime media outputs at deep-65 (source traversal bound). This importer supports literal sources, saved state/token values and their conditional branches; future constructed URLs require a supported media resolver."}: expected false to be true // Object.is equality
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/source-import-depth.test.ts > imports a canonical-valid nested graph beyond64 ordinary wrappers without inventing dynamic media dependencies
+AssertionError: {"ok":false,"code":"STUDIO_IMPORT_MEDIA_DYNAMIC","message":"Saved bytes cannot prove computed or runtime media outputs at deep-65 (source traversal bound). This importer supports literal sources, saved state/token values and their conditional branches; future constructed URLs require a supported media resolver."}: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/source-import-depth.test.ts:13:48
+     11|   expect(screenIssues(source)).toEqual([]);
+     12|   const imported=await prepareSourceImport(JSON.stringify({application…
+     13|   expect(imported.ok,JSON.stringify(imported)).toBe(true);if(!imported…
+       |                                                ^
+     14|   expect(imported.assets).toEqual([]);
+     15|   expect(imported.document).toEqual(source);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed (1)
+   Start at  18:16:11
+   Duration  32.01s (transform 19.94s, setup 0ms, collect 30.44s, tests 91ms, environment 0ms, prepare 526ms)
+

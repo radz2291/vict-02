@@ -145,7 +145,9 @@ function managedReferences(document: UiDocument): {
     return {state,props:Object.fromEntries(declaration.props.map(prop=>[prop.name,undefined]))};
   };
   const visit = (id:string, scope:LexicalScope, path:readonly string[]=[]):void => {
-    if (++traversal>16_384 || path.length>64 || path.includes(id)) {unverified.add(`${id} (source traversal bound)`);return;}
+    // Ordinary valid source wrappers do not add expression complexity. Keep
+    // cycle/work bounds without inventing a separate source-tree depth limit.
+    if (++traversal>16_384 || path.includes(id)) {unverified.add(`${id} (source traversal bound)`);return;}
     const node=document.nodes[id];if(!node)return;
     const contexts=scopes.get(id)??[];if(contexts.includes(scope))return;contexts.push(scope);scopes.set(id,contexts);
     const next=[...path,id];
