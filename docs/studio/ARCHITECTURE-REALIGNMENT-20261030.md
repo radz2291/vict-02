@@ -140,3 +140,44 @@ current update surface. No duplicate project/ticket is created by inference.
 Candidate, exact tests, fresh verifier and any serving identity will be appended
 only after observation. Stop at verified and ready for owner acceptance, with any
 required missing criterion still explicitly gating until owner acceptance of a limit.
+
+## Independent gate and repair progression
+
+Gate A independently **PASS** at `cf5056e5ea37b87931fe24baf53f800e2d7fd173`,
+review report `327db5149881ffdd6ad2e35e3380b60b1ea901fe`. This awards only the
+architecture reconciliation. The first integrated source candidate is
+`46d20c3c8f3d3d617df2b6d18655fc7a31517e8e`; its successful uninstalled production
+build and all targeted results are retained in
+[first candidate checkpoint](foundation-evidence/architecture-realignment-20261030/CANDIDATE-46d20c3.md).
+
+Independent challenge of that exact candidate confirmed two additional failures:
+
+1. A canonical-valid controlled nested graph can use its declared fallback initial
+   even when its parent graph family lacks the parameter. The initial history
+   bridge granted global source Undo anyway. Nested Ctrl+Z then undid an unrelated
+   canonical label edit. This is an ownership failure, not a missing-property exception.
+2. A canonical-valid graph beneath 66 ordinary layout wrappers emitted manual
+   graph movement, but the ownership scan's depth-64 cutoff omitted its binding.
+   The source remained unchanged with no refusal: an unintended downgrade to
+   runtime state. The verifier's earlier deep custom-definition fixture was
+   independently rejected by canonical preflight and is **not** an exploitation.
+
+Bounded repair is in progress: public `vict.flow.editor-host@2` requests carry
+structured parent workspace/node/revision routes supplied by the public graph
+contexts. The Studio host uses the same source resolver as agent edits and returns
+explicit source/runtime/refused admission. It never parses opaque occurrence keys
+to infer authority. Host@1 remains a documented compatibility fallback for outside
+consumers that have not migrated. The arbitrary lexical depth cutoff is removed;
+any real bounded traversal exhaustion must refuse explicitly, never retain a
+partial ownership map or silently become ephemeral.
+
+Independent consumer source `ed13bb80e8a0cdba2f99143153f3ef5349f8d91d` passed seven
+public package builds/checks, seven fresh tarball installs, 510 matching installed
+files, a new consumer-registered Select component inside two graph nodes, isolated
+typed writes, source roundtrip/remount and production bundling. This is fixture
+evidence. Because the host repair changes Flow, affected artifact proof must be
+repeated for the repaired package; unchanged dependency builds may be reused only
+after exact source/build-artifact equality checks.
+
+No browser/actual-agent/device result is awarded. The fresh serving-build recheck
+matches all 384 original files; the original checkout/process/data remain untouched.

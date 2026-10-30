@@ -105,11 +105,38 @@ call `applyGraphOperations` without a viewport. Optional versioned graph command
 support explicit occurrence-owned replay receipts; their bounded ledger fails
 closed and requires a deliberate host lifecycle, never silent eviction.
 
-Bind graph and graphChange to the same declared canonical string state. Studio
-uses the same graph model, scoped authoring/edit protocol, history and source
-import/export bridge. Independent workspaces isolate state; viewports namespace
-private body state while sharing their workspace's graph. No visual connection
-authorizes a provider, tool, application action or backend workflow.
+Graph persistence is an explicit host choice. In Studio, binding `graph` and
+`graphChange` to the same document-owned string state opts into authored defaults
+and canonical history. A scoped state name is resolved in its lexical scope;
+matching a document key does not give it document ownership. Private body state
+and its graph history remain local to each occurrence. A deliberate source edit
+of a private scope's initial value changes the shared template default, rather
+than promoting a live occurrence's state. Controlled body state delegates to its
+containing graph node; selected-instance source edits fence every parent revision.
+Independent applications choose their own host persistence policy. Durable graph
+application data uses existing authorized application resources/actions/adapters.
+No visual connection authorizes a provider, tool, action or backend workflow.
+
+`graphAuthoringContract` exposes exact `vict.flow-authoring@1` code registrations
+for model versions, read/write bindings and controlled body contracts. Ordinary
+registered components inside a node need no Flow-specific adapter. Serialized
+graph@1/@2 and UI document schemas remain unchanged and are never sniffed to
+select a migration. Studio's new controlled nested source route supports graph@2;
+legacy graph@1 controlled nested routes explicitly refuse, while direct graph@1
+operations remain supported.
+
+For source-backed history, new hosts use `GRAPH_EDITOR_HOST_V2`
+(`vict.flow.editor-host@2`) and `GraphEditorHostV2.authoringFor`. The public
+workspace/body contexts supply structured outer-to-inner graph-node routes with
+current revisions; hosts must resolve the actual parameter/source before granting
+history. Occurrence keys are opaque presentation identities and must not be parsed
+to infer source authority. The host returns `source` with canonical history,
+`runtime` for local history, or `refused` with a visible reason and no graph write
+or undo. Invalid controlled ownership must not undo an unrelated authored change
+or silently become temporary state. Hosts using the retained `GRAPH_EDITOR_HOST`
+@1 keep their existing compatibility behavior; migrate explicitly to @2 for the
+source-ownership admission contract. Preview and normal DocumentHost consumers
+continue through the same graph renderer.
 
 `test/composition-fixtures.ts` contains two contrasting **offline fixtures**;
 mounted tests cover ordinary registered and new project controls, local intents,
