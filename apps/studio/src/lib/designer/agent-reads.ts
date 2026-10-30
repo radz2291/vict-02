@@ -21,13 +21,21 @@ const sectionFields:Record<typeof readSections[number],readonly string[]>={
   palette:['query'],component:['recipe'],state:['stateKey'],registry:['registry','key','query'],actions:[],coverage:['requested'],
   families:['query'],catalog:['query','family','category','tag'],contracts:['components','knownDigests','includeExamples','expectedBodyIdentities','knownBodyIdentities'],knowledge:['kind','key','projection','cursor'],elements:['tag','query'],
 };
+// Type admission must preserve the exact nested edit for its strict parser.
+// Record/object cloning can silently drop JSON keys such as __proto__.
+const preflightEditEnvelope=z.unknown().superRefine((value,ctx)=>{
+  if(value!==null&&(typeof value!=='object'||Array.isArray(value))){
+    const received=Array.isArray(value)?'array':typeof value;
+    ctx.addIssue({code:z.ZodIssueCode.invalid_type,expected:'object',received});
+  }
+});
 export const agentReadSchema = z.object({
   section: z.enum(readSections).default('overview'),
   kind:z.enum(['component','data']).optional(),projection:z.enum(['guidance','examples']).optional(),cursor:z.string().min(1).max(4000).optional(),
   offset: z.number().int().min(0).max(200000).optional(),
   limit: z.number().int().min(1).max(20).optional(),
   nodeId: z.string().min(1).max(160).optional(), recipe: z.string().min(1).max(160).optional(),
-  scope:z.enum(['self','subtree']).optional(),nodeIds:z.array(z.string().min(1).max(160)).min(1).max(8).optional(),edit:z.record(z.unknown()).nullable().optional(),
+  scope:z.enum(['self','subtree']).optional(),nodeIds:z.array(z.string().min(1).max(160)).min(1).max(8).optional(),edit:preflightEditEnvelope.optional(),
   stateKey:z.string().min(1).max(160).optional(),
   registry:z.enum(registries).optional(),key:z.string().min(1).max(500).optional(),
   query: z.string().max(100).optional(), requested: z.array(z.string().max(160)).max(30).optional(),

@@ -18,6 +18,11 @@ describe('read presentation and authoritative section contract',()=>{
   expect(agentReadSchema.safeParse(query).success).toBe(true);expect(presented(query)).toBe(true);
   const before=JSON.stringify(source);
   expect(agentContext(source,cursor,undefined,query)).toMatchObject({ok:true,applied:false});
+  const exactExtra=JSON.parse(JSON.stringify(edit).slice(0,-1)+',"__proto__":{"canary":"must-refuse"}}');
+  expect(agentEditSchema.safeParse(exactExtra).success).toBe(false);
+  const admitted=agentReadSchema.parse({section:'preflight',edit:exactExtra});
+  expect(Object.hasOwn(admitted.edit as object,'__proto__')).toBe(true);
+  expect(agentContext(source,cursor,undefined,admitted)).toMatchObject({ok:false,applied:false});
   for(const value of [JSON.stringify(edit),[],true,1]){const malformed={section:'preflight',edit:value};expect(agentReadSchema.safeParse(malformed).success).toBe(false);expect(presented(malformed)).toBe(false);}
   for(const legacy of [{section:'preflight'},{section:'preflight',edit:null}]){expect(agentReadSchema.safeParse(legacy).success).toBe(true);expect(presented(legacy)).toBe(true);expect(agentContext(source,cursor,undefined,legacy)).toMatchObject({ok:false});}
   expect(JSON.stringify(source)).toBe(before);
