@@ -1,0 +1,49 @@
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/apps/studio
+
+11:48:03 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+11:48:03 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+11:48:03 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+11:48:03 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+11:48:03 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+11:48:04 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+11:48:05 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+11:48:05 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+11:48:05 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+11:48:05 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+ ✓ tests/graph-history-source-policy.test.ts (3 tests) 14ms
+ ✓ tests/graph-scoped-ownership.test.ts (9 tests) 28ms
+stderr | tests/graph-scoped-bridge.test.ts > keeps repeated private graph occurrences temporary with local undo and no canonical or save promotion
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/graph-scoped-bridge.test.ts > keeps canonical graph ownership and persistence beyond 64 ordinary source wrappers
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/graph-scoped-bridge.test.ts > keeps controlled nested graphs usable after runtime-root parent revisions depart from authored literals
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+ ✓ tests/graph-scoped-bridge.test.ts (5 tests) 4959ms
+   ✓ persists nested manual and agent changes through Studio history, save/reopen and portable import  1405ms
+   ✓ keeps repeated private graph occurrences temporary with local undo and no canonical or save promotion  1222ms
+   ✓ refuses nested source Undo and editing when a controlled declaration has no actual parent parameter  632ms
+   ✓ keeps canonical graph ownership and persistence beyond 64 ordinary source wrappers  1217ms
+   ✓ keeps controlled nested graphs usable after runtime-root parent revisions depart from authored literals  482ms
+
+ Test Files  3 passed (3)
+      Tests  17 passed (17)
+   Start at  23:47:47
+   Duration  41.56s (transform 42.28s, setup 0ms, collect 95.24s, tests 5.00s, environment 870ms, prepare 630ms)

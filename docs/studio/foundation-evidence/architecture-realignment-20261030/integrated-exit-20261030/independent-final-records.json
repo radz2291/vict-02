@@ -1,0 +1,22 @@
+{
+  "status": "PASS",
+  "reviewedProduct": "8d8be402893a8942b985ad920b32b31807e2ad47",
+  "evidenceSnapshot": "c86fa849fd3644506aa42d5cd21d63fea4a933d2",
+  "checks": {
+    "aEntireNodeExact": true,
+    "outerRevisionPlusOne": true,
+    "bRevisionPlusOne": true,
+    "bTodoToDoing": true,
+    "bNoOtherInnerChanges": true,
+    "undoGraphExact": true,
+    "redoGraphExact": true,
+    "savedReloadRawBytesEqual": true,
+    "exportDocumentEqualsSaved": true,
+    "publicFourFilesMatch": true,
+    "sevenTarsMatch": true
+  },
+  "canonicalSourceSHA256": "47892d858aa7adcd20b2756fa95d926bc7f1288765d5f94367fb804a925fc2f3",
+  "supportedExportSHA256": "ed2c4fe34d18950e0ec242f0a39cd45f92390c404bab8fc7362db9a5ac33d451",
+  "publicPreviewReportSHA256": "a1a1cc5c622ad903b34cf47b4a13edefbfe4e74200c6631fe3e264c7a88c367c",
+  "scope": "Independent recomputation from committed records and retained public static/tar bytes; no browser or device operation."
+}
