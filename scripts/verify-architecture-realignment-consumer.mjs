@@ -14,9 +14,10 @@ const hash = bytes => createHash('sha256').update(bytes).digest('hex');
 const npm = process.platform === 'win32' ? 'npm.cmd' : 'npm';
 const run = (args, cwd) => execFileSync(npm, args, { cwd, encoding: 'utf8', shell: process.platform === 'win32', maxBuffer: 32 * 1024 * 1024 });
 const names = ['contracts', 'ui', 'sdk', 'application', 'ui-svelte', 'ui-media-svelte', 'ui-flow-svelte'];
-// Explicit reuse requires a prior successful proof. Only the Flow package may
-// differ; every dependency's tracked tree and existing packed artifact bytes
-// must still equal that proof. Default invocation always runs the full ladder.
+// Explicit reuse requires a prior successful proof. Each package independently
+// qualifies only when its exact tracked tree and every existing packed artifact
+// byte still match that proof. All other packages receive a fresh build check.
+// Default invocation always runs the full ladder.
 const reuseIndex = process.argv.indexOf('--reuse-built-dependencies');
 const reusePath = reuseIndex < 0 ? undefined : process.argv[reuseIndex + 1];
 const status = git(['status', '--porcelain']);
@@ -39,26 +40,35 @@ try {
   if (previous) {
     const sharedChanges = git(['diff', '--name-only', previous.sourceCandidate, report.sourceCandidate, '--', 'package.json', 'package-lock.json', 'tsconfig.base.json']);
     if (sharedChanges) throw Error('Shared build inputs changed since dependency proof; use the default full ladder');
-    report.reusedDependencyEvidence = { reportPath: resolve(root, reusePath), reportSha256: hash(readFileSync(resolve(root, reusePath))), sourceCandidate: previous.sourceCandidate, note: 'Six unchanged dependency builds are reused; Flow is checked again. This is not a fresh build of those dependencies.' };
+    const dirtySharedInputs = git(['diff', '--name-only', 'HEAD', '--', 'package.json', 'package-lock.json', 'tsconfig.base.json']);
+    if (dirtySharedInputs) throw Error('Commit shared build-input changes and use the default full ladder; uncommitted inputs cannot qualify for reuse');
+    report.reusedDependencyEvidence = { reportPath: resolve(root, reusePath), reportSha256: hash(readFileSync(resolve(root, reusePath))), sourceCandidate: previous.sourceCandidate, note: 'Per-package reuse requires equal tracked package trees and all earlier packed-file hashes. Changed source or artifacts receive a fresh build check. Reused evidence is not a new build.' };
   }
   // Compiled JS packages are built in dependency order; Svelte packages ship
   // their public .svelte/TS artifacts and undergo their published build check.
   for (const name of names) {
-    const changes = git(['diff', '--name-only', 'HEAD', '--', `packages/${name}/src`, `packages/${name}/package.json`]);
-    const untracked = git(['ls-files', '--others', '--exclude-standard', '--', `packages/${name}/src`]);
+    const changes = git(['diff', '--name-only', 'HEAD', '--', `packages/${name}`]);
+    const untracked = git(['ls-files', '--others', '--exclude-standard', '--', `packages/${name}`]);
     if (changes || untracked) throw Error(`Commit packed source before proving exact candidate: ${name}`);
-    if (previous && name !== 'ui-flow-svelte') {
-      const tree = git(['rev-parse', `${report.sourceCandidate}:packages/${name}`]);
-      const priorTree = git(['rev-parse', `${previous.sourceCandidate}:packages/${name}`]);
-      if (tree !== priorTree) throw Error(`Dependency tracked source changed since earlier proof: ${name}; use the default full ladder`);
-      const priorPack = previous.packs.find(pack => pack.name === `@victframework/${name}`);
-      if (!priorPack?.files?.length) throw Error(`Earlier report has no artifact inventory: ${name}`);
-      for (const file of priorPack.files) if (hash(readFileSync(join(root, 'packages', name, file.path))) !== file.sha256) throw Error(`Existing built artifact differs from earlier successful proof: ${name}/${file.path}`);
+    const tree = git(['rev-parse', `${report.sourceCandidate}:packages/${name}`]);
+    const priorTree = previous ? git(['rev-parse', `${previous.sourceCandidate}:packages/${name}`]) : undefined;
+    const priorPack = previous?.packs.find(pack => pack.name === `@victframework/${name}`);
+    if (previous && !priorPack?.files?.length) throw Error(`Earlier report has no artifact inventory: ${name}`);
+    const artifactMismatches = [];
+    if (previous && tree === priorTree) for (const file of priorPack.files) {
+      try {
+        if (hash(readFileSync(join(root, 'packages', name, file.path))) !== file.sha256) artifactMismatches.push(file.path);
+      } catch (error) {
+        if (error.code !== 'ENOENT') throw error;
+        artifactMismatches.push(file.path);
+      }
+    }
+    if (previous && tree === priorTree && !artifactMismatches.length) {
       report.packageBuilds.push({ name: `@victframework/${name}`, mode: 'reused-earlier-successful-build', sourceTree: tree, previousSourceTree: priorTree, artifactFilesMatched: priorPack.files.length });
       writeFileSync(join(destination, `build-${name}.log`), `REUSED earlier successful build.\nPrevious report: ${resolve(root, reusePath)}\nPrevious source: ${previous.sourceCandidate}\nCurrent and previous package source tree: ${tree}\nExisting artifact files matched: ${priorPack.files.length}\nNo new dependency build was run.\n`);
     } else {
       writeFileSync(join(destination, `build-${name}.log`), run(['run', 'build', '-w', `@victframework/${name}`], root));
-      report.packageBuilds.push({ name: `@victframework/${name}`, mode: 'fresh-build-check', sourceTree: git(['rev-parse', `${report.sourceCandidate}:packages/${name}`]) });
+      report.packageBuilds.push({ name: `@victframework/${name}`, mode: 'fresh-build-check', sourceTree: tree, ...(previous ? { previousSourceTree: priorTree } : {}), reason: !previous ? 'full-ladder-requested' : tree !== priorTree ? 'tracked-package-tree-changed' : 'existing-artifact-hashes-changed', ...(artifactMismatches.length ? { artifactMismatches } : {}) });
     }
   }
   const dependencies = {};
@@ -68,7 +78,7 @@ try {
     const path = join(artifacts, packed.filename);
     dependencies[manifest.name] = `file:${path.replaceAll('\\', '/')}`;
     const files = packed.files.map(file => ({ path: file.path, sha256: hash(readFileSync(join(root, 'packages', name, file.path))) }));
-    if (previous && name !== 'ui-flow-svelte') {
+    if (report.packageBuilds.find(build => build.name === manifest.name)?.mode === 'reused-earlier-successful-build') {
       const oldFiles = previous.packs.find(pack => pack.name === manifest.name).files;
       if (files.length !== oldFiles.length || files.some(file => !oldFiles.some(old => old.path === file.path && old.sha256 === file.sha256))) throw Error(`Fresh packed dependency inventory differs from reused build: ${name}`);
     }
