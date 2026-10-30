@@ -1,0 +1,17 @@
+{
+  "keyboardProbeCorrection": "Earlier menu-container press focused the container, not the first item; that false observation is retained. Current test targets the actual focused first item before ArrowDown.",
+  "menuKeyboardActual": [
+    {
+      "focused": false,
+      "text": "How this panel works"
+    },
+    {
+      "focused": true,
+      "text": "Save behavior"
+    }
+  ],
+  "sourceBeforeAfterIdentical": true,
+  "sourceBefore": "r1.r2",
+  "sourceAfter": "r1.r2",
+  "theme": null
+}

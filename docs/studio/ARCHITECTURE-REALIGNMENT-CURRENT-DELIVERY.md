@@ -86,8 +86,11 @@ export roundtrip is byte-identical and public-artifact static preparation passes
 A separate actual-agent Project planner first draft is preserved at r1.r1. Its
 ordinary sections/document presentation state are not nested graph proof, and its
 Save guide was inaccurate; native reload confirms presentation state stays
-temporary. An explicit actual-agent graph continuation is in progress
-([first draft](foundation-evidence/architecture-realignment-20261030/actual-agent-live-20261030/STAGE-5-FIRST-DRAFT-RESULT.md)). Nested native ownership,
+temporary. The explicit graph continuation built10batches and is preserved at
+r1.r2 with repeated Project/Task templates but empty inner graphs after repeated
+route refusals. Independent exact-source3/3 diagnosis confirms correct routes
+work and import; a minimal passive route-guidance repair is awaiting review and
+activation ([retained trial](foundation-evidence/architecture-realignment-20261030/actual-agent-live-20261030/STAGE-5-NESTED-ROUTE-FAILURE.md)). Nested native ownership,
 affected in-node popup and final integrated verification remain. The separate
 owner-reported physical-device check below is complete at its stated scope.
 

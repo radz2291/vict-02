@@ -1,0 +1,32 @@
+{
+  "partialMenuGeometry": {
+    "background": "rgb(255, 255, 255)",
+    "color": "rgb(32, 35, 43)",
+    "owner": "c40",
+    "rect": {
+      "bottom": 374.2625045776367,
+      "height": 79.5999984741211,
+      "left": 234.6000061035156,
+      "right": 434.6000061035156,
+      "top": 294.6625061035156,
+      "width": 200,
+      "x": 234.6000061035156,
+      "y": 294.6625061035156
+    },
+    "viewport": {
+      "height": 528,
+      "width": 1033
+    }
+  },
+  "arrowDownFocusedSaveBehavior": false,
+  "afterEscape": [
+    {
+      "expanded": "false",
+      "focused": true
+    },
+    {
+      "expanded": "false",
+      "focused": false
+    }
+  ]
+}

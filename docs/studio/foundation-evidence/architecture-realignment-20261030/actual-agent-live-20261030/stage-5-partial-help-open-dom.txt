@@ -1,0 +1,67 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Project planner — nested ownership"
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- main:
+  - button "Toggle Chat drawer":
+  - group "Workspace mode":
+    - button "Design"
+    - button "Interact" [pressed]
+    - button "Structure"
+  - button "Toggle Document and Selection drawer":
+  - iframe [active]:
+    - generic "Screen canvas":
+      - main "Project planner — nested ownership":
+        - region "Project planner guide":
+          - heading "Project planner" [level=1]:
+            - generic: Project planner
+          - paragraph:
+            - generic: "Workflow: each project below is a node in one outer graph, and each project owns its task board as a graph in its own graph parameter. Project titles and each task's title and status are controlled source parameters — edits write back to the owning node. The Help menu state is private to each project panel and temporary. Studio Save preserves explicit source-bound graph configuration; private popup/presentation state and standalone preview changes are temporary — there is no database or backend."
+        - region "Project graph workspace":
+          - region "Project graph":
+            - paragraph:
+              - generic: "Projects in graph:"
+              - generic: "2"
+            - application "Project graph canvas":
+              - application:
+                - group "Website relaunch":
+                  - heading "Website relaunch" [level=2]:
+                    - generic: Website relaunch
+                  - button "Help" [expanded]
+                  - generic: Project title
+                  - textbox "Project title": Website relaunch
+                  - region "Task graph":
+                    - application "Task graph canvas":
+                      - application:
+                        - link "Svelte Flow attribution":
+                          - /url: https://svelteflow.dev?utm_source=attribution
+                          - text: Svelte Flow
+                - group "Mobile app beta":
+                  - heading "Mobile app beta" [level=2]:
+                    - generic: Mobile app beta
+                  - button "Help"
+                  - generic: Project title
+                  - textbox "Project title": Mobile app beta
+                  - region "Task graph":
+                    - application "Task graph canvas":
+                      - application:
+                        - link "Svelte Flow attribution":
+                          - /url: https://svelteflow.dev?utm_source=attribution
+                          - text: Svelte Flow
+                - link "Svelte Flow attribution":
+                  - /url: https://svelteflow.dev?utm_source=attribution
+                  - text: Svelte Flow
+    - menu "Help":
+      - menuitem "How this panel works" [active]
+      - menuitem "Save behavior"
+- contentinfo:
+  - status: Interact mode · simulated behavior, no live effects.

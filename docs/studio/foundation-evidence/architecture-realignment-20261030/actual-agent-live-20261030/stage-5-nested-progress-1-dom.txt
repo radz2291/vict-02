@@ -1,0 +1,163 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Project planner — nested ownership"
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- banner:
+  - strong: Chat
+  - button "Hide Chat":
+- complementary "Chat":
+  - region "Conversation":
+    - region "Messages — Message":
+      - log:
+        - generic: You
+        - generic: "Continue this saved Project planner from fresh source. Clarification: the current Task canvas areas are styled sections and the two cards copy source while sharing styles; they do not yet exercise actual nested graph ownership. The first draft is preserved as r1.r1/export. Turn it into a real composable graph application using existing public Flow workspace@2/viewport@2 contracts: one outer graph with two Project nodes using ONE shared body. Each Project owns its own string graph parameter containing its task graph; each inner graph has one Task node, and both projects deliberately reuse the same task ID and ONE shared task-body composition. Use the state key graph both for the outer document graph and the controlled inner graph in the Project body so lexical ownership is actually tested. Project title and Task title/status must use their own controlled source parameters, with native implicit labels that remain correct across reuse. Preserve the meaningful Website relaunch / Mobile app beta titles, task titles, Doing / Todo starting statuses, calm-blue theme and guide. Build the valid functional graph increment first, then remove the replaced copied sections through validated operations. Add an ordinary registered owner-local Help dropdown within the reusable Project body, with private per-project popup state distinct from authored graph parameters. Correct the guide: Studio Save preserves explicit source-bound graph configuration; private popup/presentation state and standalone preview changes are temporary; there is no database/backend. Discovery and strict preflight stay authoritative; a void press output cannot be mapped to boolean state by guessing literal bindings. Do not create a new runtime, Flow adapter, coercion or replacement source-editor blob. Leave Save to me and report briefly the source effects and untested interactions."
+        - button "Copy message":
+        - generic: Assistant
+        - status: Working. Public notes and tool receipts are available in details.
+        - button "Public activity and tool details" [expanded] [active]:
+          - text: Public activity and tool details
+        - generic "Conversation timeline":
+          - paragraph: "I'll continue this planner from the supplied cursor. First, discovery: the Flow graph data-contract identities, the current source of the cards/header, and the existing state inventory."
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph:
+            - text: Registry found
+            - code: vict.flow-graph@2
+            - text: and
+            - code: vict.flow-operations@2
+            - text: — the serialized workspace format and its operation grammar. Now reading both contract bodies with examples, plus the remaining state page and the full node inventory.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: Contracts are paginated; I'll continue both knowledge bodies, the remaining node inventory, and discover the Flow viewport component identity in the catalog.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph:
+            - text: Both data contracts are fully assembled. The catalog shows
+            - code: vict.flow.workspace@2
+            - text: (standalone, composable) and
+            - code: vict.flow.viewport@2
+            - text: (graph-part). Now I need the workspace component contract (slots/props/slotScope for node bodies), the viewport part contract, the dropdown-menu recipe for the Help control, and the rest of the node inventory.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: The workspace@2 contract is partial — I need its continuation (the body-slot scope grammar and examples). Also finishing the inventory and reading the dropdown-menu composition knowledge.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph:
+            - text: "Contracts are clear now: the workspace@2"
+            - code: body
+            - text: slot renders once per graph node with frame props, controlled body
+            - code: scope.state
+            - text: writes apply
+            - code: setParameter
+            - text: to that node occurrence, and equal state names in different scopes are distinct — exactly the lexical-ownership test requested. Before building, I'll preflight the shell batch and check the dropdown item dependency plus existing style sources.
+    - button "Scroll to latest message":
+      - generic: Scroll to end
+    - textbox "Message":
+      - /placeholder: Ask for a change…
+    - button "Stop":
+      - generic: Stop
+    - status
+  - status "Reading current source facts…":
+    - generic: Working…
+  - button "Chat details": ···
+- separator "Chat width"
+- main:
+  - button "Toggle Chat drawer" [expanded]:
+  - group "Workspace mode":
+    - button "Design" [pressed]
+    - button "Interact"
+    - button "Structure"
+  - button "Toggle Document and Selection drawer":
+  - iframe:
+    - generic "Screen canvas":
+      - main "Project planner — nested ownership":
+        - region "Project planner guide":
+          - heading "Project planner" [level=1]:
+            - generic: Project planner
+          - paragraph:
+            - generic: "Workflow: pick a project card below, edit its title and task inline, then move each task through Todo → Doing → Done. Every card owns its own controls and state; Save in Studio preserves your edits as the new starting defaults."
+        - region "Section":
+          - generic: Project title
+          - textbox "Project title": Website relaunch
+          - button "Open Help"
+          - region "Section":
+            - heading "Task canvas" [level=3]:
+              - generic: Task canvas
+            - region "Section":
+              - generic: Task title
+              - textbox "Task title": Draft launch checklist
+              - generic: Status
+              - combobox "Status":
+                - option
+                - option [selected]
+                - option
+        - region "Section":
+          - generic: Project title
+          - textbox "Project title": Mobile app beta
+          - button "Open Help"
+          - region "Section":
+            - heading "Task canvas" [level=3]:
+              - generic: Task canvas
+            - region "Section":
+              - generic: Task title
+              - textbox "Task title": Design onboarding flow
+              - generic: Status
+              - combobox "Status":
+                - option [selected]
+                - option
+                - option
+- contentinfo:
+  - status: Loaded the saved screen.
