@@ -1,0 +1,753 @@
+{
+  "schema": "vict.ui-document@1",
+  "id": "nested-composition",
+  "revision": "1",
+  "root": "outer-workspace",
+  "nodes": {
+    "application": {
+      "kind": "element",
+      "id": "application",
+      "tag": "section",
+      "children": ["app-title", "viewport", "compact-actions"],
+      "attributes": {
+        "aria-label": "Research notebook"
+      }
+    },
+    "app-title": {
+      "kind": "text",
+      "id": "app-title",
+      "content": {
+        "type": "literal",
+        "value": "Check evidence before approving"
+      }
+    },
+    "compact-actions": {
+      "kind": "element",
+      "id": "compact-actions",
+      "tag": "div",
+      "children": ["rename", "undo"],
+      "attributes": {
+        "aria-label": "App chosen actions"
+      }
+    },
+    "rename": {
+      "kind": "component",
+      "id": "rename",
+      "definitionId": "vict.catalog.button",
+      "revision": "1",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Name primary source"
+        },
+        "disabled": {
+          "type": "ref",
+          "path": "prop.readOnly"
+        }
+      },
+      "outputs": {
+        "press": {
+          "emit": {
+            "output": "operation",
+            "value": {
+              "type": "literal",
+              "value": "[{\"type\":\"setLabel\",\"nodeId\":\"source-a\",\"label\":\"Named source\"}]"
+            }
+          }
+        }
+      }
+    },
+    "undo": {
+      "kind": "component",
+      "id": "undo",
+      "definitionId": "vict.catalog.button",
+      "revision": "1",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Undo local change"
+        },
+        "disabled": {
+          "type": "ref",
+          "path": "prop.readOnly"
+        }
+      },
+      "outputs": {
+        "press": {
+          "emit": {
+            "output": "undo"
+          }
+        }
+      }
+    },
+    "viewport": {
+      "kind": "component",
+      "id": "viewport",
+      "definitionId": "vict.flow.viewport",
+      "revision": "2",
+      "props": {
+        "height": {
+          "type": "literal",
+          "value": 420
+        },
+        "label": {
+          "type": "literal",
+          "value": "Authored graph canvas"
+        }
+      }
+    },
+    "families": {
+      "kind": "conditional",
+      "id": "families",
+      "branches": [
+        {
+          "when": "source",
+          "children": ["source-card"]
+        },
+        {
+          "when": "gate",
+          "children": ["gate-card"]
+        }
+      ]
+    },
+    "source-card": {
+      "kind": "element",
+      "id": "source-card",
+      "tag": "article",
+      "children": ["source-title", "source-description", "source-link", "source-out"],
+      "attributes": {
+        "aria-label": {
+          "type": "ref",
+          "path": "prop.label"
+        }
+      },
+      "localStyle": [
+        {
+          "property": "width",
+          "value": {
+            "type": "text",
+            "value": "340px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "var(--vict-space-3,12px)"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "var(--vict-color-surface)"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "var(--vict-color-text)"
+          }
+        },
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "1px solid var(--vict-color-border)"
+          }
+        }
+      ]
+    },
+    "source-title": {
+      "kind": "element",
+      "id": "source-title",
+      "tag": "header",
+      "children": ["source-title-label"],
+      "classes": ["vict-graph-drag-handle"]
+    },
+    "source-title-label": {
+      "kind": "text",
+      "id": "source-title-label",
+      "content": {
+        "type": "expression",
+        "expression": {
+          "type": "ref",
+          "path": "prop.label"
+        }
+      }
+    },
+    "source-description": {
+      "kind": "text",
+      "id": "source-description",
+      "content": {
+        "type": "literal",
+        "value": "Keep the source address with the evidence."
+      }
+    },
+    "source-link": {
+      "kind": "element",
+      "id": "source-link",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "type": "text",
+        "aria-label": "Evidence URL",
+        "value": {
+          "type": "ref",
+          "path": "state.text"
+        },
+        "disabled": {
+          "type": "ref",
+          "path": "prop.readOnly"
+        }
+      },
+      "classes": ["vict-input", "nodrag", "nopan", "nowheel"],
+      "interactions": [
+        {
+          "on": "change",
+          "action": "setState",
+          "key": "text",
+          "value": {
+            "type": "literal",
+            "value": ""
+          }
+        }
+      ]
+    },
+    "source-out": {
+      "kind": "component",
+      "id": "source-out",
+      "definitionId": "vict.flow.port",
+      "revision": "2",
+      "props": {
+        "id": {
+          "type": "literal",
+          "value": "result"
+        }
+      },
+      "slots": {
+        "content": {
+          "name": "content",
+          "children": ["source-caption"]
+        }
+      }
+    },
+    "source-caption": {
+      "kind": "text",
+      "id": "source-caption",
+      "content": {
+        "type": "literal",
+        "value": "Send evidence to a review gate"
+      }
+    },
+    "gate-card": {
+      "kind": "element",
+      "id": "gate-card",
+      "tag": "article",
+      "children": ["gate-title", "gate-in", "gate-confidence", "gate-local", "gate-out", "review"],
+      "attributes": {
+        "aria-label": {
+          "type": "ref",
+          "path": "prop.label"
+        }
+      },
+      "localStyle": [
+        {
+          "property": "width",
+          "value": {
+            "type": "text",
+            "value": "230px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "var(--vict-space-3,12px)"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "var(--vict-color-surface)"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "var(--vict-color-text)"
+          }
+        },
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "1px solid var(--vict-color-border)"
+          }
+        }
+      ]
+    },
+    "gate-title": {
+      "kind": "component",
+      "id": "gate-title",
+      "definitionId": "app.review-heading",
+      "revision": "1",
+      "props": {
+        "caption": {
+          "type": "ref",
+          "path": "prop.label"
+        }
+      }
+    },
+    "review-heading-root": {
+      "kind": "element",
+      "id": "review-heading-root",
+      "tag": "header",
+      "children": ["review-heading-caption"],
+      "classes": ["vict-graph-drag-handle"]
+    },
+    "review-heading-caption": {
+      "kind": "text",
+      "id": "review-heading-caption",
+      "content": {
+        "type": "expression",
+        "expression": {
+          "type": "ref",
+          "path": "prop.caption"
+        }
+      }
+    },
+    "gate-in": {
+      "kind": "component",
+      "id": "gate-in",
+      "definitionId": "vict.flow.port",
+      "revision": "2",
+      "props": {
+        "id": {
+          "type": "literal",
+          "value": "source"
+        }
+      },
+      "slots": {
+        "content": {
+          "name": "content",
+          "children": ["gate-reviewed"]
+        }
+      }
+    },
+    "gate-reviewed": {
+      "kind": "component",
+      "id": "gate-reviewed",
+      "definitionId": "vict.catalog.switch",
+      "revision": "1",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Evidence reviewed"
+        },
+        "checked": {
+          "type": "ref",
+          "path": "state.enabled"
+        },
+        "disabled": {
+          "type": "ref",
+          "path": "prop.readOnly"
+        }
+      },
+      "outputs": {
+        "checkedChange": {
+          "setState": {
+            "key": "enabled"
+          }
+        }
+      }
+    },
+    "gate-confidence": {
+      "kind": "element",
+      "id": "gate-confidence",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "type": "number",
+        "aria-label": "Confidence score",
+        "value": {
+          "type": "ref",
+          "path": "state.amount"
+        },
+        "disabled": {
+          "type": "ref",
+          "path": "prop.readOnly"
+        }
+      },
+      "classes": ["vict-input", "nodrag", "nopan", "nowheel"],
+      "interactions": [
+        {
+          "on": "change",
+          "action": "setState",
+          "key": "amount",
+          "value": {
+            "type": "literal",
+            "value": 0
+          }
+        }
+      ]
+    },
+    "gate-local": {
+      "kind": "component",
+      "id": "gate-local",
+      "definitionId": "vict.catalog.switch",
+      "revision": "1",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Show review notes"
+        },
+        "checked": {
+          "type": "ref",
+          "path": "state.expanded"
+        },
+        "disabled": {
+          "type": "ref",
+          "path": "prop.readOnly"
+        }
+      },
+      "outputs": {
+        "checkedChange": {
+          "setState": {
+            "key": "expanded"
+          }
+        }
+      }
+    },
+    "gate-out": {
+      "kind": "component",
+      "id": "gate-out",
+      "definitionId": "vict.flow.port",
+      "revision": "2",
+      "props": {
+        "id": {
+          "type": "literal",
+          "value": "result"
+        }
+      },
+      "slots": {
+        "content": {
+          "name": "content",
+          "children": ["gate-caption"]
+        }
+      }
+    },
+    "gate-caption": {
+      "kind": "text",
+      "id": "gate-caption",
+      "content": {
+        "type": "literal",
+        "value": "Editorial decision"
+      }
+    },
+    "review": {
+      "kind": "component",
+      "id": "review",
+      "definitionId": "vict.catalog.button",
+      "revision": "1",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Request editorial signoff"
+        },
+        "disabled": {
+          "type": "ref",
+          "path": "prop.readOnly"
+        }
+      },
+      "outputs": {
+        "press": {
+          "emit": {
+            "output": "review",
+            "value": {
+              "type": "literal",
+              "value": "request-editorial-signoff"
+            }
+          }
+        }
+      }
+    },
+    "outer-workspace": {
+      "kind": "component",
+      "id": "outer-workspace",
+      "definitionId": "vict.flow.workspace",
+      "revision": "2",
+      "props": {
+        "graph": {
+          "type": "ref",
+          "path": "state.graph"
+        }
+      },
+      "outputs": {
+        "graphChange": {
+          "setState": {
+            "key": "graph"
+          }
+        }
+      },
+      "slots": {
+        "content": {
+          "name": "content",
+          "children": ["outer-layout"],
+          "scope": {
+            "schema": "vict.ui-slot-scope@1",
+            "props": []
+          }
+        },
+        "body": {
+          "name": "body",
+          "children": ["outer-card"],
+          "scope": {
+            "schema": "vict.ui-slot-scope@1",
+            "props": [
+              {
+                "name": "readOnly",
+                "type": "boolean"
+              }
+            ],
+            "state": {
+              "innerGraph": {
+                "key": "innerGraph",
+                "type": "string",
+                "initial": "",
+                "controlled": true
+              }
+            }
+          }
+        }
+      }
+    },
+    "outer-layout": {
+      "kind": "element",
+      "id": "outer-layout",
+      "tag": "section",
+      "children": ["outer-viewport"]
+    },
+    "outer-viewport": {
+      "kind": "component",
+      "id": "outer-viewport",
+      "definitionId": "vict.flow.viewport",
+      "revision": "2",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Outer graph"
+        },
+        "height": {
+          "type": "literal",
+          "value": 760
+        }
+      }
+    },
+    "outer-card": {
+      "kind": "element",
+      "id": "outer-card",
+      "tag": "article",
+      "children": ["outer-title", "inner-workspace"],
+      "localStyle": [
+        {
+          "property": "width",
+          "value": {
+            "type": "text",
+            "value": "760px"
+          }
+        }
+      ]
+    },
+    "outer-title": {
+      "kind": "element",
+      "id": "outer-title",
+      "tag": "header",
+      "children": ["outer-title-text"],
+      "classes": ["vict-graph-drag-handle"]
+    },
+    "outer-title-text": {
+      "kind": "text",
+      "id": "outer-title-text",
+      "content": {
+        "type": "literal",
+        "value": "Nested project container"
+      }
+    },
+    "inner-workspace": {
+      "kind": "component",
+      "id": "inner-workspace",
+      "definitionId": "vict.flow.workspace",
+      "revision": "2",
+      "props": {
+        "graph": {
+          "type": "ref",
+          "path": "state.innerGraph"
+        },
+        "label": {
+          "type": "literal",
+          "value": "Evidence review"
+        },
+        "readOnly": {
+          "type": "ref",
+          "path": "prop.readOnly"
+        }
+      },
+      "outputs": {
+        "graphChange": {
+          "setState": {
+            "key": "innerGraph"
+          }
+        }
+      },
+      "slots": {
+        "content": {
+          "name": "content",
+          "children": ["application"],
+          "scope": {
+            "schema": "vict.ui-slot-scope@1",
+            "props": [
+              {
+                "name": "readOnly",
+                "type": "boolean"
+              },
+              {
+                "name": "nodeCount",
+                "type": "number"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "operation",
+                "payload": "string"
+              },
+              {
+                "name": "undo",
+                "payload": "void"
+              }
+            ]
+          }
+        },
+        "body": {
+          "name": "body",
+          "children": ["families"],
+          "scope": {
+            "schema": "vict.ui-slot-scope@1",
+            "props": [
+              {
+                "name": "nodeId",
+                "type": "string"
+              },
+              {
+                "name": "nodeType",
+                "type": "string"
+              },
+              {
+                "name": "label",
+                "type": "string"
+              },
+              {
+                "name": "readOnly",
+                "type": "boolean"
+              }
+            ],
+            "state": {
+              "text": {
+                "key": "text",
+                "type": "string",
+                "initial": "",
+                "controlled": true
+              },
+              "amount": {
+                "key": "amount",
+                "type": "number",
+                "initial": 0,
+                "controlled": true
+              },
+              "enabled": {
+                "key": "enabled",
+                "type": "boolean",
+                "initial": false,
+                "controlled": true
+              },
+              "expanded": {
+                "key": "expanded",
+                "type": "boolean",
+                "initial": false
+              }
+            },
+            "outputs": [
+              {
+                "name": "review",
+                "payload": "string"
+              }
+            ],
+            "conditions": {
+              "source": {
+                "type": "compare",
+                "op": "eq",
+                "left": {
+                  "type": "ref",
+                  "path": "prop.nodeType"
+                },
+                "right": {
+                  "type": "literal",
+                  "value": "source"
+                }
+              },
+              "gate": {
+                "type": "compare",
+                "op": "eq",
+                "left": {
+                  "type": "ref",
+                  "path": "prop.nodeType"
+                },
+                "right": {
+                  "type": "literal",
+                  "value": "gate"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "componentDefinitions": {
+    "app.review-heading": {
+      "id": "app.review-heading",
+      "revision": "1",
+      "root": "review-heading-root",
+      "props": [
+        {
+          "name": "caption",
+          "type": "string"
+        }
+      ],
+      "slots": {}
+    }
+  },
+  "styleSources": {},
+  "tokens": {},
+  "conditions": {},
+  "assets": {},
+  "theme": {
+    "schema": "vict.ui-theme@1",
+    "roles": {
+      "surface": "#fcf8ee",
+      "text": "#302a21",
+      "border": "#d8cbae",
+      "accent": "#856527"
+    }
+  },
+  "localState": {
+    "graph": {
+      "key": "graph",
+      "type": "string",
+      "initial": "{\"schema\":\"vict.flow-graph@2\",\"revision\":0,\"nodeTypes\":[{\"id\":\"container\",\"label\":\"Container\",\"parameters\":{\"innerGraph\":{\"type\":\"string\",\"default\":\"{\\\"schema\\\":\\\"vict.flow-graph@2\\\",\\\"revision\\\":0,\\\"nodeTypes\\\":[{\\\"id\\\":\\\"source\\\",\\\"label\\\":\\\"Evidence source\\\",\\\"ports\\\":[{\\\"id\\\":\\\"result\\\",\\\"label\\\":\\\"Evidence\\\",\\\"direction\\\":\\\"output\\\",\\\"type\\\":\\\"evidence\\\"}],\\\"parameters\\\":{\\\"text\\\":{\\\"type\\\":\\\"string\\\",\\\"default\\\":\\\"\\\",\\\"label\\\":\\\"URL\\\"}}},{\\\"id\\\":\\\"gate\\\",\\\"label\\\":\\\"Review gate\\\",\\\"ports\\\":[{\\\"id\\\":\\\"source\\\",\\\"label\\\":\\\"Evidence\\\",\\\"direction\\\":\\\"input\\\",\\\"type\\\":\\\"evidence\\\"},{\\\"id\\\":\\\"result\\\",\\\"label\\\":\\\"Decision\\\",\\\"direction\\\":\\\"output\\\",\\\"type\\\":\\\"decision\\\"}],\\\"parameters\\\":{\\\"enabled\\\":{\\\"type\\\":\\\"boolean\\\",\\\"default\\\":false,\\\"label\\\":\\\"Reviewed\\\"},\\\"amount\\\":{\\\"type\\\":\\\"number\\\",\\\"default\\\":60,\\\"label\\\":\\\"Confidence\\\"}}}],\\\"nodes\\\":[{\\\"id\\\":\\\"source-a\\\",\\\"type\\\":\\\"source\\\",\\\"label\\\":\\\"Primary source\\\",\\\"position\\\":{\\\"x\\\":0,\\\"y\\\":0},\\\"values\\\":{\\\"text\\\":\\\"https://example.com/report\\\"}},{\\\"id\\\":\\\"gate-a\\\",\\\"type\\\":\\\"gate\\\",\\\"label\\\":\\\"Editorial review\\\",\\\"position\\\":{\\\"x\\\":400,\\\"y\\\":0},\\\"values\\\":{\\\"enabled\\\":false,\\\"amount\\\":70}}],\\\"edges\\\":[{\\\"id\\\":\\\"source-gate\\\",\\\"source\\\":\\\"source-a\\\",\\\"sourcePort\\\":\\\"result\\\",\\\"target\\\":\\\"gate-a\\\",\\\"targetPort\\\":\\\"source\\\"}]}\"}},\"ports\":[]}],\"nodes\":[{\"id\":\"outer-node\",\"type\":\"container\",\"label\":\"Outer project node\",\"position\":{\"x\":80,\"y\":60},\"values\":{}}],\"edges\":[]}"
+    }
+  }
+}
