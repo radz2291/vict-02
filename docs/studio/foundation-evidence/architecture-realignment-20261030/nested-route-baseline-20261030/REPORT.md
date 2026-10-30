@@ -33,8 +33,10 @@ The p1 batch yields inner p1 revision 1 and outer revision 2, leaving p2 unchang
 
 ## Checks
 
-`actual-nested-route-baseline.test.ts` passes 2/2 tests using real `prepareAgentEdit` and `patchAuthoredGraph`. Their accepted p1 documents agree. Both source snapshots remain immutable. Stale parent revisions and the wrong containing workspace are rejected without source mutation. These deliberate negative probes are diagnostic boundaries, not reconstructed actual-agent payloads.
+`actual-nested-route-baseline.test.ts` passes 3/3 tests using real `prepareAgentEdit`, `patchAuthoredGraph`, and `prepareSourceImport`. Their accepted p1 documents agree. Both source snapshots remain immutable. Stale parent revisions and the wrong containing workspace are rejected without source mutation. These deliberate negative probes are diagnostic boundaries, not reconstructed actual-agent payloads.
+
+The retained partial source and the correctly routed two-Task result both pass portable source import with zero media assets and identical documents. The unchanged Project `graph` parameter default and outer body `graph` initial value are empty strings. Those fallbacks do not trigger an import refusal for this concrete no-media composition. This does not establish that an empty graph fallback is appropriate for every future family/branch or media-bearing composition, and does not replace final actual-agent export/import proof.
 
 The isolated baseline is `e57ab00c7e92864098090c6a85a620f0f79e0af8`. Relevant `agent-edits.ts` and `graph-authoring.ts` match active source `b08b21f580338228e29f849e37c5894d3fccc0c4`. Source ab329 was serving during the parent observation. No active source, browser, provider, process, package, or owner app document was modified by this lane.
 
-Studio TypeScript check completed with exit 0 and no diagnostics; `git diff --check` passed. Retained logs: `test.log` and `typecheck.log` (empty because the successful compiler emitted no diagnostics).
+Studio TypeScript check completed with exit 0 and no diagnostics; `git diff --check` passed. Retained logs: initial two-test `test.log`, final three-test `import-summary.log`, and `typecheck.log` (empty because the successful compiler emitted no diagnostics).
