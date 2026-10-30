@@ -1,5 +1,12 @@
 # AI authoring exposure — AI-EX01
 
+> **30 October 2026 — RESUMED / IN PROGRESS; acceptance HELD.** The owner
+> authorized architecture realignment and foundation completion through gates A–E.
+> [Current architecture, all 31 dispositions and exact baseline](ARCHITECTURE-REALIGNMENT-20261030.md)
+> supersede earlier pause and current-count language at the resumed scope. Historical
+> evidence and decisions below remain preserved. No push, merge, publication,
+> production deployment, milestone closure or Stage 9 closure is authorized.
+
 > Owner pause,29October2026: **PAUSED / HELD**. Earlier23-identity AI exposure
 > demonstrations remain scoped historical evidence; they do not establish the
 > newly reopened flow actual-agent requirement. Product119c80bf is built but not

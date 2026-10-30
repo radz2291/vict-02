@@ -1,4 +1,11 @@
 > **OWNER PAUSED / HELD,29October2026.** No further implementation, activation or
+
+> **30 October 2026 — RESUMED / IN PROGRESS; acceptance HELD.** The owner
+> authorized architecture realignment and foundation completion through gates A–E.
+> [Current architecture, all 31 dispositions and exact baseline](ARCHITECTURE-REALIGNMENT-20261030.md)
+> supersede earlier pause and current-count language at the resumed scope. Historical
+> evidence and decisions below remain preserved. No push, merge, publication,
+> production deployment, milestone closure or Stage 9 closure is authorized.
 > provider trials until the owner resumes. Read the [durable pause handoff](VICT-PAUSED-HANDOFF-20261029.md)
 > first. Product119c80bf is committed/reviewed/tested/production-built but **not
 > installed**; serving product remains27788de9. The actual-agent flow requirement
