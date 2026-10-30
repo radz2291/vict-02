@@ -69,11 +69,19 @@ two typed edges and the guide. Actual-agent implicit-label repair and native
 repeated typing/isolation, pointer movement, settled keyboard Undo/Redo and manual
 edge recreation/capacity refusal are recorded ([app1 result](foundation-evidence/architecture-realignment-20261030/actual-agent-live-20261030/STAGE-4-COMPLETE-APP-RESULT.md)).
 The earlier stale refusal applied zero edits; earlier/inconclusive history and an
-unattributed first-node movement remain disclosed. Portable validation is pending.
+unattributed first-node movement remain disclosed. Exact r1.r6 supported import/
+export roundtrip is byte-identical and public-artifact static preparation passes
+([portable result](foundation-evidence/architecture-realignment-20261030/actual-agent-live-20261030/stage-4-portable-summary.md)).
 A separate blank Project planner is now being built by the actual agent to prove
 the materially different nested/repeated application. Nested native ownership,
 affected in-node popup and final integrated verification remain. The separate
 owner-reported physical-device check below is complete at its stated scope.
+
+**New live history challenge:** canonical source recorded a redone move, but a
+later native edge edit emitted the old position. The source-only settled keyboard
+Undo/Redo proof does not resolve that runtime/session concern. A focused independent
+mounted reproduction is in progress; no full source/render history pass or final
+gate is awarded from the earlier snapshots. No source patch has yet been activated.
 
 One independent affected-regression pass on exact72 additionally passed44
 popup/focus/nesting renderer,15 media and8 Studio capture checks. It reuses the
