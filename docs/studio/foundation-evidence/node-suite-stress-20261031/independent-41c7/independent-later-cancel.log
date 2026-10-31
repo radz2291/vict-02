@@ -1,0 +1,9 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/vict-limits-independent-20261031
+
+
+ Test Files  1 passed (1)
+      Tests  1 passed | 12 skipped (13)
+   Start at  11:09:05
+   Duration  6.51s (transform 1.66s, setup 0ms, import 4.44s, tests 1.62s, environment 0ms)
+

@@ -650,3 +650,34 @@ it('cancels and releases its thread before a blocked public sink is released und
     await close();
   }
 }, 120000);
+
+it('independent: later tool-result delivery cannot retain cancellation ownership or resume normal delivery', async () => {
+  const coordinator = new MastraThreadCoordinator();
+  const {agent,activation,close} = await compose({coordinator,cancellationOnly:true,script:{
+    'Independent late cancellation':{kind:'tool-call',toolName:'helper_uppercase',args:{text:'safe'},thenText:'MUST NOT BE DELIVERED'},
+  }});
+  const controller = new AbortController();
+  let release!:()=>void,announce!:()=>void,rejectLate!:(error:Error)=>void;
+  const entered=new Promise<void>(resolve=>{announce=resolve;});
+  const blocked=new Promise<void>((resolve,reject)=>{release=resolve;rejectLate=reject;});
+  const delivered:string[]=[];
+  const pending=agent.runTurn({turnId:'independent-late',threadId:'independent-late',actorId:'independent-late',input:'Independent late cancellation'},
+    {activation,abortSignal:controller.signal,onEvent:async event=>{
+      delivered.push(event.kind);
+      if(event.kind==='tool.completed'){announce();await blocked;}
+    }});
+  try {
+    await entered;
+    controller.abort();
+    const deadline=new Promise<never>((_,reject)=>setTimeout(()=>reject(Error('Late cancellation blocked')),1000));
+    const outcome=await Promise.race([pending,deadline]);
+    expect(outcome.status).toBe('cancelled');
+    await Promise.race([coordinator.fence('independent-late'),deadline]);
+    const atCancel=[...delivered];
+    expect(atCancel.at(-1)).toBe('response.cancelled');
+    expect(atCancel).not.toContain('response.completed');
+    rejectLate(Error('Late detached transport error'));
+    await new Promise(resolve=>setTimeout(resolve,15));
+    expect(delivered).toEqual(atCancel);
+  } finally {release();await close();}
+},120000);
