@@ -1,0 +1,25 @@
+{
+  "schema": "vict.owner-device-report@1",
+  "reportedDate": "2026-11-01",
+  "timezone": "Asia/Kuala_Lumpur",
+  "evidenceClass": "owner-reported physical-device check",
+  "deviceContext": "Xiaomi Android / Chrome, as identified in the session and repeated in the question",
+  "application": "Campaign Foundry — complex node suite",
+  "savedCheckpoint": "r1.r17",
+  "previewUrl": "http://192.168.1.6:5638/",
+  "question": "The saved complex app is ready for a wireless Android check at http://192.168.1.6:5638/ on the same Wi‑Fi. Please check typing with the keyboard open, canvas dragging/panning, rotating the screen and whether controls stay reachable. Does that work on your Xiaomi/Chrome? I’m separately fixing automatic panning during nested connection drags.",
+  "answer": "All those checks work",
+  "passedReportedChecks": [
+    "Typing with the on-screen keyboard open",
+    "Canvas dragging and panning",
+    "Screen rotation",
+    "Controls remain reachable"
+  ],
+  "limitations": [
+    "Owner report; no independent physical-device observation or captured device trace.",
+    "Device model and Chrome version were not supplied.",
+    "The preview was updated to the final frozen runtime before the answer; an explicit browser refresh or device runtime hash was not reported.",
+    "No separate phone port-connection drag, reconnection, pinch gesture or explicit safe-area inset test is claimed.",
+    "No universal-device, performance, owner-acceptance or Stage9 closure verdict is inferred."
+  ]
+}
