@@ -1,0 +1,67 @@
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/vict-edge-v3-independent-20261101/apps/studio
+
+2:46:49 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-edge-v3-independent-20261101/packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+2:46:50 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-edge-v3-independent-20261101/packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+2:46:50 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-edge-v3-independent-20261101/packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+2:46:50 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-edge-v3-independent-20261101/packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+2:46:50 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-edge-v3-independent-20261101/packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+ ❯ tests/independent-public-graph-v3.test.ts (4 tests | 2 failed) 29ms
+   × independent: JSON hooks cannot substitute appearance data after strict admission 20ms
+     → expected true to be false // Object.is equality
+   × independent: operation JSON hooks cannot replace a finite admitted appearance 2ms
+     → expected true to be false // Object.is equality
+   ✓ independent: strict legacy parsers retain old schemas and refuse appearance extension 2ms
+   ✓ independent: failed appearance batches preserve the original source and finite width grammar 4ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/independent-public-graph-v3.test.ts > independent: JSON hooks cannot substitute appearance data after strict admission
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/independent-public-graph-v3.test.ts:15:23
+     13|   } });
+     14|   const admitted = validateGraphV3(substituted);
+     15|   expect(admitted.ok).toBe(false);
+       |                       ^
+     16|   expect(hooks).toBe(0);
+     17| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/independent-public-graph-v3.test.ts > independent: operation JSON hooks cannot replace a finite admitted appearance
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/independent-public-graph-v3.test.ts:24:50
+     22|     return Reflect.get(target, key, receiver);
+     23|   } });
+     24|   expect(parseGraphOperationsV3([operation]).ok).toBe(false);
+       |                                                  ^
+     25| });
+     26| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 2 passed (4)
+   Start at  14:46:30
+   Duration  27.27s (transform 17.88s, setup 0ms, collect 26.15s, tests 29ms, environment 0ms, prepare 344ms)
+
