@@ -1,0 +1,14 @@
+{
+  "meta": {
+    "id": "861d7def-2955-490b-9a5e-add4c72743dc",
+    "label": "Read screen · input"
+  },
+  "pages": [
+    {
+      "start": 0,
+      "end": 71,
+      "total": 71,
+      "text": "{\"section\":\"registry\",\"offset\":0,\"limit\":12,\"registry\":\"dataContracts\"}"
+    }
+  ]
+}

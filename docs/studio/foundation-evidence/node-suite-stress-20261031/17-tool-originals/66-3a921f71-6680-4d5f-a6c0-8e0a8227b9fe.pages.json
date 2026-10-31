@@ -1,0 +1,14 @@
+{
+  "meta": {
+    "id": "3a921f71-6680-4d5f-a6c0-8e0a8227b9fe",
+    "label": "Read screen · input"
+  },
+  "pages": [
+    {
+      "start": 0,
+      "end": 60,
+      "total": 60,
+      "text": "{\"section\":\"source\",\"offset\":0,\"limit\":12,\"nodeId\":\"fin-ws\"}"
+    }
+  ]
+}

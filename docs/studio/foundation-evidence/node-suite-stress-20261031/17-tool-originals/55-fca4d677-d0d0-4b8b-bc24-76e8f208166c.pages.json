@@ -1,0 +1,14 @@
+{
+  "meta": {
+    "id": "fca4d677-d0d0-4b8b-bc24-76e8f208166c",
+    "label": "Edit screen · input"
+  },
+  "pages": [
+    {
+      "start": 0,
+      "end": 591,
+      "total": 591,
+      "text": "{\"expectedRevision\":\"r1.r5#27\",\"reason\":\"Seed finS/finP subgraph parameters with minimal valid empty vict.flow-graph@2 JSON so occurrence-scoped nested graph editing can proceed\",\"operations\":[{\"op\":\"editGraph\",\"nodeId\":\"ws-main\",\"expectedGraphRevision\":20,\"changes\":[{\"key\":\"subgraph\",\"nodeId\":\"finS\",\"type\":\"setParameter\",\"value\":\"{\\\"schema\\\":\\\"vict.flow-graph@2\\\",\\\"revision\\\":0,\\\"nodeTypes\\\":[],\\\"nodes\\\":[],\\\"edges\\\":[]}\"},{\"key\":\"subgraph\",\"nodeId\":\"finP\",\"type\":\"setParameter\",\"value\":\"{\\\"schema\\\":\\\"vict.flow-graph@2\\\",\\\"revision\\\":0,\\\"nodeTypes\\\":[],\\\"nodes\\\":[],\\\"edges\\\":[]}\"}]}]}"
+    }
+  ]
+}

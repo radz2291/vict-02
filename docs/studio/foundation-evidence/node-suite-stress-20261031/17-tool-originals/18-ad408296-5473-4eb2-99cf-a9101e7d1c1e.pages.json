@@ -1,0 +1,14 @@
+{
+  "meta": {
+    "id": "ad408296-5473-4eb2-99cf-a9101e7d1c1e",
+    "label": "Read screen · result"
+  },
+  "pages": [
+    {
+      "start": 0,
+      "end": 1745,
+      "total": 1745,
+      "text": "{\"expectedRevision\":\"r1.r5#24\",\"cursor\":{\"documentId\":\"screen-a8690ffa-1e90-4b72-909c-66141d372773\",\"revision\":\"r1.r5#24\",\"digest\":\"51f3022500134ba5b84e1095f532913621f841aee3b46da9a5e86294c0caa4e9\",\"epoch\":\"42d6cc79-bcaa-4f84-a34a-7d5d54685af2\"},\"section\":\"source\",\"nodeId\":\"ws-main\",\"sourceJson\":\"}}}}},\\\"props\\\":{\\\"label\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"Campaign workflow\\\"},\\\"graph\\\":{\\\"type\\\":\\\"ref\\\",\\\"path\\\":\\\"state.campaignGraph\\\"}},\\\"outputs\\\":{\\\"graphChange\\\":{\\\"setState\\\":{\\\"key\\\":\\\"campaignGraph\\\"}}}}\",\"totalCharacters\":3786,\"offset\":3600,\"nextOffset\":null,\"turnProgress\":{\"applied\":0,\"metrics\":{\"toolCalls\":11,\"completedCalls\":5,\"refusedCalls\":1,\"recoveryAttempts\":0,\"toolElapsedMs\":125,\"providerRequests\":2,\"visionRequests\":0,\"acknowledgementMs\":0,\"confirmedEdits\":0,\"usage\":{\"inputTokens\":63861,\"outputTokens\":15378,\"totalTokens\":79239},\"categories\":{\"knowledge\":0,\"source\":11,\"edit\":0,\"observe\":0,\"other\":0},\"elapsedMs\":374419,\"toolActiveMs\":54,\"outsideToolMs\":374365,\"modelSteps\":null,\"cost\":null},\"retainedKnowledge\":{\"scope\":\"Complete contract bodies delivered in this turn only; reuse still requires their content to remain available in model context. Source facts are never cached knowledge.\",\"complete\":[],\"partialCount\":0},\"visualEvidence\":{\"regions\":[],\"currentSourceObservations\":0,\"scope\":\"Captured regions only; source freshness does not establish current runtime/viewport freshness or offscreen/interaction coverage.\",\"interactionsVerified\":false},\"evidence\":\"Host receipt-derived totals include all acknowledged transactions, including cleanup. Outside-tool time is waiting/generation/transport/host overhead, not measured provider latency. Captured regions do not establish full-page or interaction coverage.\"}}"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "meta": {
+    "id": "42546c83-f1c4-4316-8768-c743ce66a7fc",
+    "label": "Read screen · input"
+  },
+  "pages": [
+    {
+      "start": 0,
+      "end": 331,
+      "total": 331,
+      "text": "{\"section\":\"knowledge\",\"cursor\":\"studio-knowledge-page@1:eyJraW5kIjoiZGF0YSIsImtleSI6InZpY3QuZmxvdy1vcGVyYXRpb25zQDIiLCJwcm9qZWN0aW9uIjoiZ3VpZGFuY2UiLCJib2R5SWRlbnRpdHkiOiJzdHVkaW8tZGF0YS1rbm93bGVkZ2UtYm9keUAxOmd1aWRhbmNlOmI1YTJkOTEzMGVlOTI4ZjFmNWNhODYwMmQ5NGQ5MjVhMzk2M2JiMzIwZjVjZmEwMzU1NDY1ZmY2ODA0ZTFlOTUiLCJvZmZzZXQiOjYwMDB9\"}"
+    }
+  ]
+}

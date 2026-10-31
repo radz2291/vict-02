@@ -1,0 +1,14 @@
+{
+  "meta": {
+    "id": "7f7fa094-b973-464e-bcb9-12560edfda69",
+    "label": "Read screen · input"
+  },
+  "pages": [
+    {
+      "start": 0,
+      "end": 78,
+      "total": 78,
+      "text": "{\"section\":\"nodes\",\"offset\":12,\"limit\":12,\"nodeId\":\"br-exp\",\"scope\":\"subtree\"}"
+    }
+  ]
+}

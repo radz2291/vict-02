@@ -1,0 +1,14 @@
+{
+  "meta": {
+    "id": "f40cc5bf-cb36-4158-af60-e399cf32afbe",
+    "label": "Read screen · input"
+  },
+  "pages": [
+    {
+      "start": 0,
+      "end": 61,
+      "total": 61,
+      "text": "{\"section\":\"source\",\"offset\":0,\"limit\":12,\"nodeId\":\"ws-main\"}"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "meta": {
+    "id": "75b2a5ef-96e3-4866-8957-e1fc5d9158c9",
+    "label": "Read screen · result"
+  },
+  "pages": [
+    {
+      "start": 0,
+      "end": 2354,
+      "total": 2354,
+      "text": "{\"expectedRevision\":\"r1.r5#24\",\"cursor\":{\"documentId\":\"screen-a8690ffa-1e90-4b72-909c-66141d372773\",\"revision\":\"r1.r5#24\",\"digest\":\"51f3022500134ba5b84e1095f532913621f841aee3b46da9a5e86294c0caa4e9\",\"epoch\":\"42d6cc79-bcaa-4f84-a34a-7d5d54685af2\"},\"section\":\"registry\",\"registry\":\"dataContracts\",\"registryDigest\":\"be1140999428ec8ec28a19508f92def0b24e32afa7b8d1fbea42b0037999bb8e\",\"items\":[{\"key\":\"vict.flow-graph@2\",\"id\":\"vict.flow-graph\",\"revision\":\"2\",\"digest\":\"336df566a92ec2f53993adf5bf59e6d7afe262254e5411c6419a6734ffed489f\"},{\"key\":\"vict.flow-operations@2\",\"id\":\"vict.flow-operations\",\"revision\":\"2\",\"digest\":\"b5a2d9130ee928f1f5ca8602d94d925a3963bb320f5cfa0355465ff6804e1e95\"},{\"key\":\"vict.flow-graph@1\",\"id\":\"vict.flow-graph\",\"revision\":\"1\",\"digest\":\"37d234d588014475fb046090f04150136e6a3e22e4a8bb6404267eaecc81dd17\"},{\"key\":\"vict.flow-operations@1\",\"id\":\"vict.flow-operations\",\"revision\":\"1\",\"digest\":\"fd253f4fac63e90d4120dc1039b1bed4c29fff880a76680938f6934186975c67\"}],\"total\":4,\"offset\":0,\"nextOffset\":null,\"guidance\":\"Read one exact key as lossless JSON text pages. Contract schema/examples are package-owned knowledge, not authored app source or a prepared editor template.\",\"turnProgress\":{\"applied\":0,\"metrics\":{\"toolCalls\":5,\"completedCalls\":3,\"refusedCalls\":1,\"recoveryAttempts\":0,\"toolElapsedMs\":74,\"providerRequests\":1,\"visionRequests\":0,\"acknowledgementMs\":0,\"confirmedEdits\":0,\"usage\":{\"inputTokens\":22531,\"outputTokens\":14144,\"totalTokens\":36675},\"categories\":{\"knowledge\":0,\"source\":5,\"edit\":0,\"observe\":0,\"other\":0},\"elapsedMs\":343839,\"toolActiveMs\":33,\"outsideToolMs\":343806,\"modelSteps\":null,\"cost\":null},\"retainedKnowledge\":{\"scope\":\"Complete contract bodies delivered in this turn only; reuse still requires their content to remain available in model context. Source facts are never cached knowledge.\",\"complete\":[],\"partialCount\":0},\"visualEvidence\":{\"regions\":[],\"currentSourceObservations\":0,\"scope\":\"Captured regions only; source freshness does not establish current runtime/viewport freshness or offscreen/interaction coverage.\",\"interactionsVerified\":false},\"evidence\":\"Host receipt-derived totals include all acknowledged transactions, including cleanup. Outside-tool time is waiting/generation/transport/host overhead, not measured provider latency. Captured regions do not establish full-page or interaction coverage.\"}}"
+    }
+  ]
+}

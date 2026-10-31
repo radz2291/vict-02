@@ -1,0 +1,14 @@
+{
+  "meta": {
+    "id": "a9497d9f-078f-434f-917f-e86b205587e5",
+    "label": "Read screen · input"
+  },
+  "pages": [
+    {
+      "start": 0,
+      "end": 60,
+      "total": 60,
+      "text": "{\"section\":\"state\",\"offset\":0,\"limit\":12,\"stateKey\":\"graph\"}"
+    }
+  ]
+}

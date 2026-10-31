@@ -1,0 +1,14 @@
+{
+  "meta": {
+    "id": "afdbbf0c-31a7-4866-9218-ae59b0320d33",
+    "label": "Read screen · input"
+  },
+  "pages": [
+    {
+      "start": 0,
+      "end": 644,
+      "total": 644,
+      "text": "{\"section\":\"preflight\",\"offset\":0,\"limit\":12,\"edit\":{\"expectedRevision\":\"r1.r5#27\",\"operations\":[{\"changes\":[{\"key\":\"subgraph\",\"nodeId\":\"finS\",\"type\":\"setParameter\",\"value\":\"{\\\"schema\\\":\\\"vict.flow-graph@2\\\",\\\"revision\\\":0,\\\"nodeTypes\\\":[],\\\"nodes\\\":[],\\\"edges\\\":[]}\"},{\"key\":\"subgraph\",\"nodeId\":\"finP\",\"type\":\"setParameter\",\"value\":\"{\\\"schema\\\":\\\"vict.flow-graph@2\\\",\\\"revision\\\":0,\\\"nodeTypes\\\":[],\\\"nodes\\\":[],\\\"edges\\\":[]}\"}],\"expectedGraphRevision\":20,\"nodeId\":\"ws-main\",\"op\":\"editGraph\"}],\"reason\":\"Seed finS/finP subgraph parameters with minimal valid empty vict.flow-graph@2 JSON so occurrence-scoped nested graph editing can proceed\"}}"
+    }
+  ]
+}

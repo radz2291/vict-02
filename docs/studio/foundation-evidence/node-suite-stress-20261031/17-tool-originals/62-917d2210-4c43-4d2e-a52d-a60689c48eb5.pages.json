@@ -1,0 +1,14 @@
+{
+  "meta": {
+    "id": "917d2210-4c43-4d2e-a52d-a60689c48eb5",
+    "label": "Read screen · result"
+  },
+  "pages": [
+    {
+      "start": 0,
+      "end": 1784,
+      "total": 1784,
+      "text": "{\"expectedRevision\":\"r1.r5#29\",\"cursor\":{\"documentId\":\"screen-a8690ffa-1e90-4b72-909c-66141d372773\",\"revision\":\"r1.r5#29\",\"digest\":\"6d01ed3a24e0d9c77da586b1d36f62a66d1544ebf860988215a9cf2ae510ad41\",\"epoch\":\"42d6cc79-bcaa-4f84-a34a-7d5d54685af2\"},\"section\":\"preflight\",\"ok\":true,\"applied\":false,\"resultDigest\":\"560ef76d7ae8cef82b8dfa3a0c090abf2added10a879b650f27e11338a7ec195\",\"commandCount\":1,\"message\":\"Valid against this exact source cursor. No transaction was applied or reserved; submit the same payload through studio_screen_edit and expect fresh revision validation.\",\"turnProgress\":{\"applied\":5,\"metrics\":{\"toolCalls\":31,\"completedCalls\":27,\"refusedCalls\":4,\"recoveryAttempts\":3,\"toolElapsedMs\":4409,\"providerRequests\":17,\"visionRequests\":0,\"acknowledgementMs\":1480,\"confirmedEdits\":5,\"usage\":{\"inputTokens\":1309610,\"outputTokens\":45242,\"totalTokens\":1354852},\"firstEditMs\":758999.0422,\"categories\":{\"knowledge\":3,\"source\":23,\"edit\":5,\"observe\":0,\"other\":0},\"elapsedMs\":932760,\"toolActiveMs\":4180,\"outsideToolMs\":928580,\"modelSteps\":null,\"cost\":null},\"retainedKnowledge\":{\"scope\":\"Complete contract bodies delivered in this turn only; reuse still requires their content to remain available in model context. Source facts are never cached knowledge.\",\"complete\":[],\"partialCount\":0},\"visualEvidence\":{\"regions\":[],\"currentSourceObservations\":0,\"scope\":\"Captured regions only; source freshness does not establish current runtime/viewport freshness or offscreen/interaction coverage.\",\"interactionsVerified\":false},\"evidence\":\"Host receipt-derived totals include all acknowledged transactions, including cleanup. Outside-tool time is waiting/generation/transport/host overhead, not measured provider latency. Captured regions do not establish full-page or interaction coverage.\"}}"
+    }
+  ]
+}

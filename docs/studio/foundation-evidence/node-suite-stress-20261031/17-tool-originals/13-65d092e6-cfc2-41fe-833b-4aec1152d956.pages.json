@@ -1,0 +1,14 @@
+{
+  "meta": {
+    "id": "65d092e6-cfc2-41fe-833b-4aec1152d956",
+    "label": "Read screen · input"
+  },
+  "pages": [
+    {
+      "start": 0,
+      "end": 68,
+      "total": 68,
+      "text": "{\"section\":\"knowledge\",\"kind\":\"data\",\"key\":\"vict.flow-operations@2\"}"
+    }
+  ]
+}

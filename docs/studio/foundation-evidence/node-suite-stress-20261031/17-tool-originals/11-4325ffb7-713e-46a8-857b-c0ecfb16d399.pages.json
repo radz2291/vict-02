@@ -1,0 +1,14 @@
+{
+  "meta": {
+    "id": "4325ffb7-713e-46a8-857b-c0ecfb16d399",
+    "label": "Read screen · input"
+  },
+  "pages": [
+    {
+      "start": 0,
+      "end": 64,
+      "total": 64,
+      "text": "{\"section\":\"source\",\"offset\":3600,\"limit\":12,\"nodeId\":\"ws-main\"}"
+    }
+  ]
+}

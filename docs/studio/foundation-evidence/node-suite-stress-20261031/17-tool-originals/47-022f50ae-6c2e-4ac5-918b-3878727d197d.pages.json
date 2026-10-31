@@ -1,0 +1,14 @@
+{
+  "meta": {
+    "id": "022f50ae-6c2e-4ac5-918b-3878727d197d",
+    "label": "Edit screen · input"
+  },
+  "pages": [
+    {
+      "start": 0,
+      "end": 1029,
+      "total": 1029,
+      "text": "{\"expectedRevision\":\"r1.r5#25\",\"reason\":\"Declare the inner Finishing workspace body scope: nodeType/label props, controlled per-occurrence aspect/amount/caption state, and crop/grade/caption branch conditions\",\"operations\":[{\"op\":\"slotScope\",\"nodeId\":\"fin-ws\",\"slot\":\"body\",\"scope\":{\"schema\":\"vict.ui-slot-scope@1\",\"props\":[{\"name\":\"nodeType\",\"type\":\"string\"},{\"name\":\"label\",\"type\":\"string\"}],\"state\":{\"amount\":{\"key\":\"amount\",\"type\":\"number\",\"initial\":20,\"controlled\":true},\"aspect\":{\"key\":\"aspect\",\"type\":\"string\",\"initial\":\"1:1\",\"controlled\":true},\"caption\":{\"key\":\"caption\",\"type\":\"string\",\"initial\":\"\",\"controlled\":true}},\"conditions\":{\"isCaption\":{\"type\":\"compare\",\"op\":\"eq\",\"left\":{\"type\":\"ref\",\"path\":\"prop.nodeType\"},\"right\":{\"type\":\"literal\",\"value\":\"caption\"}},\"isCrop\":{\"type\":\"compare\",\"op\":\"eq\",\"left\":{\"type\":\"ref\",\"path\":\"prop.nodeType\"},\"right\":{\"type\":\"literal\",\"value\":\"crop\"}},\"isGrade\":{\"type\":\"compare\",\"op\":\"eq\",\"left\":{\"type\":\"ref\",\"path\":\"prop.nodeType\"},\"right\":{\"type\":\"literal\",\"value\":\"grade\"}}}}}]}"
+    }
+  ]
+}

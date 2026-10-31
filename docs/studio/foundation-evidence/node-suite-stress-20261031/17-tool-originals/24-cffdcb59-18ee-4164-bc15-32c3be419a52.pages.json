@@ -1,0 +1,14 @@
+{
+  "meta": {
+    "id": "cffdcb59-18ee-4164-bc15-32c3be419a52",
+    "label": "Read screen · input"
+  },
+  "pages": [
+    {
+      "start": 0,
+      "end": 68,
+      "total": 68,
+      "text": "{\"section\":\"state\",\"offset\":0,\"limit\":12,\"stateKey\":\"campaignGraph\"}"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "meta": {
+    "id": "135ae2b8-853c-4e73-87b3-af6000ca2969",
+    "label": "Edit screen · input"
+  },
+  "pages": [
+    {
+      "start": 0,
+      "end": 1862,
+      "total": 1862,
+      "text": "{\"expectedRevision\":\"r1.r5#29\",\"reason\":\"Populate the finP occurrence inner graph: same three node IDs and typed links, distinct Poster initial values (2:3, 70, poster caption)\",\"operations\":[{\"op\":\"editGraph\",\"nodeId\":\"fin-ws\",\"expectedGraphRevision\":0,\"occurrenceRoute\":[{\"workspaceNodeId\":\"ws-main\",\"graphNodeId\":\"finP\",\"expectedGraphRevision\":22}],\"changes\":[{\"definition\":{\"id\":\"crop\",\"label\":\"Crop\",\"parameters\":{\"aspect\":{\"default\":\"1:1\",\"label\":\"Aspect\",\"type\":\"string\"}},\"ports\":[{\"direction\":\"output\",\"id\":\"o\",\"label\":\"Cropped\",\"type\":\"image\"}]},\"type\":\"defineNodeType\"},{\"definition\":{\"id\":\"grade\",\"label\":\"Grade\",\"parameters\":{\"amount\":{\"default\":20,\"label\":\"Grade amount\",\"type\":\"number\"}},\"ports\":[{\"direction\":\"input\",\"id\":\"i\",\"label\":\"Image in\",\"type\":\"image\"},{\"direction\":\"output\",\"id\":\"o\",\"label\":\"Graded\",\"type\":\"image\"}]},\"type\":\"defineNodeType\"},{\"definition\":{\"id\":\"caption\",\"label\":\"Caption\",\"parameters\":{\"caption\":{\"default\":\"\",\"label\":\"Caption text\",\"type\":\"string\"}},\"ports\":[{\"direction\":\"input\",\"id\":\"i\",\"label\":\"Graded in\",\"type\":\"image\"}]},\"type\":\"defineNodeType\"},{\"allowCycles\":false,\"type\":\"setCyclePolicy\"},{\"id\":\"f-crop\",\"nodeType\":\"crop\",\"position\":{\"x\":40,\"y\":40},\"type\":\"addNode\"},{\"id\":\"f-grade\",\"nodeType\":\"grade\",\"position\":{\"x\":260,\"y\":40},\"type\":\"addNode\"},{\"id\":\"f-caption\",\"nodeType\":\"caption\",\"position\":{\"x\":480,\"y\":40},\"type\":\"addNode\"},{\"edge\":{\"id\":\"g1\",\"source\":\"f-crop\",\"sourcePort\":\"o\",\"target\":\"f-grade\",\"targetPort\":\"i\"},\"type\":\"connect\"},{\"edge\":{\"id\":\"g2\",\"source\":\"f-grade\",\"sourcePort\":\"o\",\"target\":\"f-caption\",\"targetPort\":\"i\"},\"type\":\"connect\"},{\"key\":\"aspect\",\"nodeId\":\"f-crop\",\"type\":\"setParameter\",\"value\":\"2:3\"},{\"key\":\"amount\",\"nodeId\":\"f-grade\",\"type\":\"setParameter\",\"value\":70},{\"key\":\"caption\",\"nodeId\":\"f-caption\",\"type\":\"setParameter\",\"value\":\"Trail-tested. Tireless. Launching soon.\"}]}]}"
+    }
+  ]
+}

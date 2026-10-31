@@ -1,0 +1,24 @@
+{
+  "scope": "Actual r1.r5 public standalone ordinary textarea; runtime DOM only, no final saved-source proof",
+  "initial": "Forest-green travel mug, soft daylight",
+  "nativeTextAfterInsert": {
+    "end": 37,
+    "start": 37,
+    "value": "Forest-green travel mug, soft dayligQht"
+  },
+  "nativeTextAfterUndo": {
+    "end": 36,
+    "start": 36,
+    "value": "Forest-green travel mug, soft daylight"
+  },
+  "nativeTextAfterRedo": {
+    "end": 37,
+    "start": 37,
+    "value": "Forest-green travel mug, soft dayligQht"
+  },
+  "nativeTextAfterNext": {
+    "end": 38,
+    "start": 38,
+    "value": "Forest-green travel mug, soft dayligQ!ht"
+  }
+}

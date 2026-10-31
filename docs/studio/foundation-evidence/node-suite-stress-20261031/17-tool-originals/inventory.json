@@ -1,0 +1,582 @@
+{
+  "scope": "All72 sanitized input/result originals for actual completed nested turn, retrieved only through normal Chatdetails UI pagers",
+  "turnId": "turn-fb88053b-1264-400a-a4a7-ef970c56ab95",
+  "archives": [
+    {
+      "id": "f40cc5bf-cb36-4158-af60-e399cf32afbe",
+      "label": "Read screen · input",
+      "index": 1,
+      "characters": 61,
+      "pages": 1,
+      "file": "01-f40cc5bf-cb36-4158-af60-e399cf32afbe.txt"
+    },
+    {
+      "id": "a9497d9f-078f-434f-917f-e86b205587e5",
+      "label": "Read screen · input",
+      "index": 2,
+      "characters": 60,
+      "pages": 1,
+      "file": "02-a9497d9f-078f-434f-917f-e86b205587e5.txt"
+    },
+    {
+      "id": "10196778-1e1a-4d20-a821-614ef092de7a",
+      "label": "Read screen · input",
+      "index": 3,
+      "characters": 93,
+      "pages": 1,
+      "file": "03-10196778-1e1a-4d20-a821-614ef092de7a.txt"
+    },
+    {
+      "id": "861d7def-2955-490b-9a5e-add4c72743dc",
+      "label": "Read screen · input",
+      "index": 4,
+      "characters": 71,
+      "pages": 1,
+      "file": "04-861d7def-2955-490b-9a5e-add4c72743dc.txt"
+    },
+    {
+      "id": "f524f9dc-2ccd-42fa-b53a-07451710a541",
+      "label": "Read screen · input",
+      "index": 5,
+      "characters": 92,
+      "pages": 1,
+      "file": "05-f524f9dc-2ccd-42fa-b53a-07451710a541.txt"
+    },
+    {
+      "id": "021539a9-f4e9-4f4f-875e-431b561ca512",
+      "label": "Read screen · result",
+      "index": 6,
+      "characters": 5865,
+      "pages": 1,
+      "file": "06-021539a9-f4e9-4f4f-875e-431b561ca512.txt"
+    },
+    {
+      "id": "3ae75cea-2815-47c1-ba71-21bd3d8f2fb3",
+      "label": "Read screen · result",
+      "index": 7,
+      "characters": 1545,
+      "pages": 1,
+      "file": "07-3ae75cea-2815-47c1-ba71-21bd3d8f2fb3.txt"
+    },
+    {
+      "id": "75b2a5ef-96e3-4866-8957-e1fc5d9158c9",
+      "label": "Read screen · result",
+      "index": 8,
+      "characters": 2354,
+      "pages": 1,
+      "file": "08-75b2a5ef-96e3-4866-8957-e1fc5d9158c9.txt"
+    },
+    {
+      "id": "11f34591-14c2-4a8b-871d-4c58af99c66d",
+      "label": "Read screen · result",
+      "index": 9,
+      "characters": 4985,
+      "pages": 1,
+      "file": "09-11f34591-14c2-4a8b-871d-4c58af99c66d.txt"
+    },
+    {
+      "id": "e08488c8-aa44-4846-ad34-dc68aef639d8",
+      "label": "Read screen · result",
+      "index": 10,
+      "characters": 2877,
+      "pages": 1,
+      "file": "10-e08488c8-aa44-4846-ad34-dc68aef639d8.txt"
+    },
+    {
+      "id": "4325ffb7-713e-46a8-857b-c0ecfb16d399",
+      "label": "Read screen · input",
+      "index": 11,
+      "characters": 64,
+      "pages": 1,
+      "file": "11-4325ffb7-713e-46a8-857b-c0ecfb16d399.txt"
+    },
+    {
+      "id": "4190d792-7748-4efb-bd9f-c1643ed9f251",
+      "label": "Read screen · input",
+      "index": 12,
+      "characters": 63,
+      "pages": 1,
+      "file": "12-4190d792-7748-4efb-bd9f-c1643ed9f251.txt"
+    },
+    {
+      "id": "65d092e6-cfc2-41fe-833b-4aec1152d956",
+      "label": "Read screen · input",
+      "index": 13,
+      "characters": 68,
+      "pages": 1,
+      "file": "13-65d092e6-cfc2-41fe-833b-4aec1152d956.txt"
+    },
+    {
+      "id": "0e7178bb-3a7f-4f47-b9df-05ac99ed08a8",
+      "label": "Read screen · input",
+      "index": 14,
+      "characters": 41,
+      "pages": 1,
+      "file": "14-0e7178bb-3a7f-4f47-b9df-05ac99ed08a8.txt"
+    },
+    {
+      "id": "2228a9de-cbde-4675-bffd-96a231a5779c",
+      "label": "Read screen · input",
+      "index": 15,
+      "characters": 94,
+      "pages": 1,
+      "file": "15-2228a9de-cbde-4675-bffd-96a231a5779c.txt"
+    },
+    {
+      "id": "b0bbbc4c-935d-4a3c-aecb-e6c838c7eb56",
+      "label": "Read screen · input",
+      "index": 16,
+      "characters": 76,
+      "pages": 1,
+      "file": "16-b0bbbc4c-935d-4a3c-aecb-e6c838c7eb56.txt"
+    },
+    {
+      "id": "e218cde6-a492-415a-aa72-80443ada8e6b",
+      "label": "Read screen · result",
+      "index": 17,
+      "characters": 8053,
+      "pages": 2,
+      "file": "17-e218cde6-a492-415a-aa72-80443ada8e6b.txt"
+    },
+    {
+      "id": "ad408296-5473-4eb2-99cf-a9101e7d1c1e",
+      "label": "Read screen · result",
+      "index": 18,
+      "characters": 1745,
+      "pages": 1,
+      "file": "18-ad408296-5473-4eb2-99cf-a9101e7d1c1e.txt"
+    },
+    {
+      "id": "604693c0-e6ad-4e6f-bcac-a25fb96e513b",
+      "label": "Read screen · result",
+      "index": 19,
+      "characters": 9622,
+      "pages": 2,
+      "file": "19-604693c0-e6ad-4e6f-bcac-a25fb96e513b.txt"
+    },
+    {
+      "id": "51429bd2-7129-4918-8601-714e65387a2e",
+      "label": "Read screen · result",
+      "index": 20,
+      "characters": 3824,
+      "pages": 1,
+      "file": "20-51429bd2-7129-4918-8601-714e65387a2e.txt"
+    },
+    {
+      "id": "f64d4474-1e14-4b83-9eac-ce98de7c361f",
+      "label": "Read screen · result",
+      "index": 21,
+      "characters": 1793,
+      "pages": 1,
+      "file": "21-f64d4474-1e14-4b83-9eac-ce98de7c361f.txt"
+    },
+    {
+      "id": "e511b7ff-04d0-4854-b3bb-41f225937942",
+      "label": "Read screen · result",
+      "index": 22,
+      "characters": 3330,
+      "pages": 1,
+      "file": "22-e511b7ff-04d0-4854-b3bb-41f225937942.txt"
+    },
+    {
+      "id": "42546c83-f1c4-4316-8768-c743ce66a7fc",
+      "label": "Read screen · input",
+      "index": 23,
+      "characters": 331,
+      "pages": 1,
+      "file": "23-42546c83-f1c4-4316-8768-c743ce66a7fc.txt"
+    },
+    {
+      "id": "cffdcb59-18ee-4164-bc15-32c3be419a52",
+      "label": "Read screen · input",
+      "index": 24,
+      "characters": 68,
+      "pages": 1,
+      "file": "24-cffdcb59-18ee-4164-bc15-32c3be419a52.txt"
+    },
+    {
+      "id": "a9c13d6e-a977-4f7a-a061-75542b3c0273",
+      "label": "Read screen · input",
+      "index": 25,
+      "characters": 60,
+      "pages": 1,
+      "file": "25-a9c13d6e-a977-4f7a-a061-75542b3c0273.txt"
+    },
+    {
+      "id": "f7e7541d-204b-440f-bcef-d67ff83d1241",
+      "label": "Read screen · input",
+      "index": 26,
+      "characters": 77,
+      "pages": 1,
+      "file": "26-f7e7541d-204b-440f-bcef-d67ff83d1241.txt"
+    },
+    {
+      "id": "617388cf-1a02-4175-a3f5-8c7eb923f8f2",
+      "label": "Read screen · result",
+      "index": 27,
+      "characters": 5171,
+      "pages": 1,
+      "file": "27-617388cf-1a02-4175-a3f5-8c7eb923f8f2.txt"
+    },
+    {
+      "id": "8ec7e35e-b564-4fbf-803d-c87fb7d73e7d",
+      "label": "Read screen · result",
+      "index": 28,
+      "characters": 6402,
+      "pages": 2,
+      "file": "28-8ec7e35e-b564-4fbf-803d-c87fb7d73e7d.txt"
+    },
+    {
+      "id": "13916b72-8347-4a26-bc5d-378a42bdc48f",
+      "label": "Read screen · result",
+      "index": 29,
+      "characters": 2727,
+      "pages": 1,
+      "file": "29-13916b72-8347-4a26-bc5d-378a42bdc48f.txt"
+    },
+    {
+      "id": "686de5cb-deac-4311-aec6-b806cab883bc",
+      "label": "Read screen · result",
+      "index": 30,
+      "characters": 8030,
+      "pages": 2,
+      "file": "30-686de5cb-deac-4311-aec6-b806cab883bc.txt"
+    },
+    {
+      "id": "8a565cdf-3639-48e5-9a00-5a6b0abb6831",
+      "label": "Read screen · input",
+      "index": 31,
+      "characters": 71,
+      "pages": 1,
+      "file": "31-8a565cdf-3639-48e5-9a00-5a6b0abb6831.txt"
+    },
+    {
+      "id": "7f7fa094-b973-464e-bcb9-12560edfda69",
+      "label": "Read screen · input",
+      "index": 32,
+      "characters": 78,
+      "pages": 1,
+      "file": "32-7f7fa094-b973-464e-bcb9-12560edfda69.txt"
+    },
+    {
+      "id": "0221b29a-acf5-44e3-88e3-c4a6922fb4e9",
+      "label": "Read screen · result",
+      "index": 33,
+      "characters": 6235,
+      "pages": 2,
+      "file": "33-0221b29a-acf5-44e3-88e3-c4a6922fb4e9.txt"
+    },
+    {
+      "id": "c30cef51-5fe2-48a9-98d4-453a011f1d33",
+      "label": "Read screen · result",
+      "index": 34,
+      "characters": 6267,
+      "pages": 2,
+      "file": "34-c30cef51-5fe2-48a9-98d4-453a011f1d33.txt"
+    },
+    {
+      "id": "411a316f-54c8-46a4-8096-417fb7101122",
+      "label": "Read screen · input",
+      "index": 35,
+      "characters": 78,
+      "pages": 1,
+      "file": "35-411a316f-54c8-46a4-8096-417fb7101122.txt"
+    },
+    {
+      "id": "ad813082-0bea-4157-a545-ae98cd0e0457",
+      "label": "Read screen · input",
+      "index": 36,
+      "characters": 81,
+      "pages": 1,
+      "file": "36-ad813082-0bea-4157-a545-ae98cd0e0457.txt"
+    },
+    {
+      "id": "daf62a7a-8456-4094-b9ea-29a0ccb5b4f9",
+      "label": "Read screen · result",
+      "index": 37,
+      "characters": 4006,
+      "pages": 1,
+      "file": "37-daf62a7a-8456-4094-b9ea-29a0ccb5b4f9.txt"
+    },
+    {
+      "id": "97d5c6ef-9b09-4205-a68e-68f0934d85d4",
+      "label": "Read screen · result",
+      "index": 38,
+      "characters": 4963,
+      "pages": 1,
+      "file": "38-97d5c6ef-9b09-4205-a68e-68f0934d85d4.txt"
+    },
+    {
+      "id": "bee36686-f081-41e0-a9ef-fa37b0a01dd1",
+      "label": "Read screen · input",
+      "index": 39,
+      "characters": 5940,
+      "pages": 1,
+      "file": "39-bee36686-f081-41e0-a9ef-fa37b0a01dd1.txt"
+    },
+    {
+      "id": "182cf3cc-cb03-45e2-8c6a-07ea5363d8e7",
+      "label": "Read screen · result",
+      "index": 40,
+      "characters": 4673,
+      "pages": 1,
+      "file": "40-182cf3cc-cb03-45e2-8c6a-07ea5363d8e7.txt"
+    },
+    {
+      "id": "83f11cc5-54b2-487a-8263-153b7a769e38",
+      "label": "Read screen · input",
+      "index": 41,
+      "characters": 5687,
+      "pages": 1,
+      "file": "41-83f11cc5-54b2-487a-8263-153b7a769e38.txt"
+    },
+    {
+      "id": "980cbdfb-90a6-48d4-a061-f5be762f39f5",
+      "label": "Read screen · result",
+      "index": 42,
+      "characters": 1908,
+      "pages": 1,
+      "file": "42-980cbdfb-90a6-48d4-a061-f5be762f39f5.txt"
+    },
+    {
+      "id": "97971e19-d9e6-48bd-a339-97f4d1daac59",
+      "label": "Read screen · input",
+      "index": 43,
+      "characters": 5867,
+      "pages": 1,
+      "file": "43-97971e19-d9e6-48bd-a339-97f4d1daac59.txt"
+    },
+    {
+      "id": "71a14853-7906-48e6-97be-02a39f0b85dd",
+      "label": "Read screen · result",
+      "index": 44,
+      "characters": 1754,
+      "pages": 1,
+      "file": "44-71a14853-7906-48e6-97be-02a39f0b85dd.txt"
+    },
+    {
+      "id": "f96d63dc-0b3d-42b2-ae3d-434371905cf5",
+      "label": "Edit screen · input",
+      "index": 45,
+      "characters": 5814,
+      "pages": 1,
+      "file": "45-f96d63dc-0b3d-42b2-ae3d-434371905cf5.txt"
+    },
+    {
+      "id": "ea1b014a-d1e7-4761-922f-217f0af3aeb2",
+      "label": "Edit screen · result",
+      "index": 46,
+      "characters": 4944,
+      "pages": 1,
+      "file": "46-ea1b014a-d1e7-4761-922f-217f0af3aeb2.txt"
+    },
+    {
+      "id": "022f50ae-6c2e-4ac5-918b-3878727d197d",
+      "label": "Edit screen · input",
+      "index": 47,
+      "characters": 1029,
+      "pages": 1,
+      "file": "47-022f50ae-6c2e-4ac5-918b-3878727d197d.txt"
+    },
+    {
+      "id": "5048a0bc-6f5a-4cdb-94ab-a52116ee15fb",
+      "label": "Edit screen · result",
+      "index": 48,
+      "characters": 4945,
+      "pages": 1,
+      "file": "48-5048a0bc-6f5a-4cdb-94ab-a52116ee15fb.txt"
+    },
+    {
+      "id": "0efe4f94-62dc-41b5-90b3-8ba4ad9d2381",
+      "label": "Edit screen · input",
+      "index": 49,
+      "characters": 8485,
+      "pages": 2,
+      "file": "49-0efe4f94-62dc-41b5-90b3-8ba4ad9d2381.txt"
+    },
+    {
+      "id": "e784201a-73a8-4a26-a670-6b08f8b68fa3",
+      "label": "Edit screen · result",
+      "index": 50,
+      "characters": 4946,
+      "pages": 1,
+      "file": "50-e784201a-73a8-4a26-a670-6b08f8b68fa3.txt"
+    },
+    {
+      "id": "95eed4d9-8b7d-46bd-82c5-f9f05272bb87",
+      "label": "Read screen · input",
+      "index": 51,
+      "characters": 1907,
+      "pages": 1,
+      "file": "51-95eed4d9-8b7d-46bd-82c5-f9f05272bb87.txt"
+    },
+    {
+      "id": "b1fbf67a-524a-4677-9dd1-ea7030791099",
+      "label": "Read screen · result",
+      "index": 52,
+      "characters": 1583,
+      "pages": 1,
+      "file": "52-b1fbf67a-524a-4677-9dd1-ea7030791099.txt"
+    },
+    {
+      "id": "afdbbf0c-31a7-4866-9218-ae59b0320d33",
+      "label": "Read screen · input",
+      "index": 53,
+      "characters": 644,
+      "pages": 1,
+      "file": "53-afdbbf0c-31a7-4866-9218-ae59b0320d33.txt"
+    },
+    {
+      "id": "464afcd0-d2d1-494a-8812-d643ff349578",
+      "label": "Read screen · result",
+      "index": 54,
+      "characters": 1782,
+      "pages": 1,
+      "file": "54-464afcd0-d2d1-494a-8812-d643ff349578.txt"
+    },
+    {
+      "id": "fca4d677-d0d0-4b8b-bc24-76e8f208166c",
+      "label": "Edit screen · input",
+      "index": 55,
+      "characters": 591,
+      "pages": 1,
+      "file": "55-fca4d677-d0d0-4b8b-bc24-76e8f208166c.txt"
+    },
+    {
+      "id": "79dcb80e-0225-44ab-8147-bde3d9574193",
+      "label": "Edit screen · result",
+      "index": 56,
+      "characters": 4948,
+      "pages": 1,
+      "file": "56-79dcb80e-0225-44ab-8147-bde3d9574193.txt"
+    },
+    {
+      "id": "caa8e266-409f-4a59-8aaa-8ef31bb077e9",
+      "label": "Read screen · input",
+      "index": 57,
+      "characters": 1907,
+      "pages": 1,
+      "file": "57-caa8e266-409f-4a59-8aaa-8ef31bb077e9.txt"
+    },
+    {
+      "id": "558f0bb8-8342-43b1-8e98-5401804e42e1",
+      "label": "Read screen · result",
+      "index": 58,
+      "characters": 1784,
+      "pages": 1,
+      "file": "58-558f0bb8-8342-43b1-8e98-5401804e42e1.txt"
+    },
+    {
+      "id": "2321bed5-d1dc-4cd2-a2ef-f56c16f4de4a",
+      "label": "Edit screen · input",
+      "index": 59,
+      "characters": 1854,
+      "pages": 1,
+      "file": "59-2321bed5-d1dc-4cd2-a2ef-f56c16f4de4a.txt"
+    },
+    {
+      "id": "a4016807-2462-4227-84cc-c7f5fc6fafce",
+      "label": "Edit screen · result",
+      "index": 60,
+      "characters": 4948,
+      "pages": 1,
+      "file": "60-a4016807-2462-4227-84cc-c7f5fc6fafce.txt"
+    },
+    {
+      "id": "932bf63e-abcf-4790-8e17-0e148b140353",
+      "label": "Read screen · input",
+      "index": 61,
+      "characters": 1915,
+      "pages": 1,
+      "file": "61-932bf63e-abcf-4790-8e17-0e148b140353.txt"
+    },
+    {
+      "id": "917d2210-4c43-4d2e-a52d-a60689c48eb5",
+      "label": "Read screen · result",
+      "index": 62,
+      "characters": 1784,
+      "pages": 1,
+      "file": "62-917d2210-4c43-4d2e-a52d-a60689c48eb5.txt"
+    },
+    {
+      "id": "135ae2b8-853c-4e73-87b3-af6000ca2969",
+      "label": "Edit screen · input",
+      "index": 63,
+      "characters": 1862,
+      "pages": 1,
+      "file": "63-135ae2b8-853c-4e73-87b3-af6000ca2969.txt"
+    },
+    {
+      "id": "2eb75fb2-8ad9-4ee4-93b0-513b36de2a29",
+      "label": "Edit screen · result",
+      "index": 64,
+      "characters": 4948,
+      "pages": 1,
+      "file": "64-2eb75fb2-8ad9-4ee4-93b0-513b36de2a29.txt"
+    },
+    {
+      "id": "17b0bdd3-8638-46f8-ade8-18fd53d9ec88",
+      "label": "Read screen · input",
+      "index": 65,
+      "characters": 71,
+      "pages": 1,
+      "file": "65-17b0bdd3-8638-46f8-ade8-18fd53d9ec88.txt"
+    },
+    {
+      "id": "3a921f71-6680-4d5f-a6c0-8e0a8227b9fe",
+      "label": "Read screen · input",
+      "index": 66,
+      "characters": 60,
+      "pages": 1,
+      "file": "66-3a921f71-6680-4d5f-a6c0-8e0a8227b9fe.txt"
+    },
+    {
+      "id": "67abc064-a66d-44eb-a9c1-2d009d95dda9",
+      "label": "Read screen · result",
+      "index": 67,
+      "characters": 6521,
+      "pages": 2,
+      "file": "67-67abc064-a66d-44eb-a9c1-2d009d95dda9.txt"
+    },
+    {
+      "id": "3d304222-e7a8-41d6-91d7-e434251532c9",
+      "label": "Read screen · result",
+      "index": 68,
+      "characters": 3092,
+      "pages": 1,
+      "file": "68-3d304222-e7a8-41d6-91d7-e434251532c9.txt"
+    },
+    {
+      "id": "c5a833a5-2f2c-4df4-983e-72910cd4ad81",
+      "label": "Read screen · input",
+      "index": 69,
+      "characters": 71,
+      "pages": 1,
+      "file": "69-c5a833a5-2f2c-4df4-983e-72910cd4ad81.txt"
+    },
+    {
+      "id": "30ebced5-df3a-478c-992e-d7db431040d3",
+      "label": "Read screen · result",
+      "index": 70,
+      "characters": 6857,
+      "pages": 2,
+      "file": "70-30ebced5-df3a-478c-992e-d7db431040d3.txt"
+    },
+    {
+      "id": "4a5d9620-5126-4e06-93a6-69b235d1d514",
+      "label": "Read screen · input",
+      "index": 71,
+      "characters": 72,
+      "pages": 1,
+      "file": "71-4a5d9620-5126-4e06-93a6-69b235d1d514.txt"
+    },
+    {
+      "id": "fa9e3243-c6a9-48fd-9abf-4fd18c1baaf1",
+      "label": "Read screen · result",
+      "index": 72,
+      "characters": 4375,
+      "pages": 1,
+      "file": "72-fa9e3243-c6a9-48fd-9abf-4fd18c1baaf1.txt"
+    }
+  ]
+}
