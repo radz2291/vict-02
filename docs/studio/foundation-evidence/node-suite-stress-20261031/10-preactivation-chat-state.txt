@@ -1,0 +1,279 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Campaign Foundry — complex node suite"
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- banner:
+  - strong: Chat
+  - button "Hide Chat":
+- complementary "Chat":
+  - region "Conversation":
+    - region "Messages — Message":
+      - log:
+        - generic: You
+        - button "Copy message":
+        - generic: Assistant
+        - status: Stopped. No edits were applied.
+        - button "Public activity and tool details" [expanded]:
+          - text: Public activity and tool details
+        - generic "Conversation timeline":
+          - paragraph: "I'll build Campaign Foundry as a real node-graph workspace: first a quick discovery of the Flow canvas identity, graph data grammar, existing state, and authorable elements."
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph:
+            - text: Canvas is
+            - code: vict.flow.canvas@1
+            - text: with graph grammar
+            - code: vict.flow-graph@2
+            - text: /
+            - code: vict.flow-operations@2
+            - text: ; the six states are unused template seeds. Now I
+        - paragraph: No successful final response. Public notes and tool receipts remain in details.
+        - button "Copy message":
+        - generic: You
+        - button "Copy message":
+        - generic: Assistant
+        - status: The screen changed while the agent was working. No edit was applied; send a new request using the current screen. 15 applied edits remain undoable.
+        - button "Public activity and tool details" [expanded]:
+          - text: Public activity and tool details
+        - generic "Conversation timeline":
+          - paragraph: "Continuing the same Campaign Foundry document at r1#0: I'll pull the exact Flow canvas/graph contracts, then build the outer workflow in validated batches."
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: The public canvas is a presentational composition (canvas + node + edge components); I need its two dependency contracts and the full flow catalog to find the editable workspace body.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph:
+            - text: The canvas node/edge parts are caption-only; the richer composable authoring path is
+            - code: vict.flow.workspace@2
+            - text: +
+            - code: vict.flow.viewport@2
+            - text: . Reading those two contracts now.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: The workspace contract is the right path; it has paged guidance plus two missing dependencies (operations grammar, port part). Reading the rest now.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: "Contracts gathered. Now building: dark theme first, then state-bound workspace, graph, node bodies, chrome."
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - button "Read screen completed" [expanded]:
+            - generic: Read screen
+            - generic: completed
+          - region "Tool input":
+            - heading "Input" [level=4]
+            - generic: "{ \"section\": \"component\", \"offset\": 0, \"limit\": 12, \"recipe\": \"rhea-native-select\" }"
+          - region "Tool result":
+            - heading "Result" [level=4]
+          - paragraph: Theme set. Now the state-bound workspace, header, and canvas viewport.
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - button "Edit screen failed":
+            - generic: Edit screen
+            - generic: failed
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - button "Edit screen failed":
+            - generic: Edit screen
+            - generic: failed
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - button "Read screen failed":
+            - generic: Read screen
+            - generic: failed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - button "Edit screen failed":
+            - generic: Edit screen
+            - generic: failed
+          - button "Edit screen failed":
+            - generic: Edit screen
+            - generic: failed
+          - button "Edit screen failed":
+            - generic: Edit screen
+            - generic: failed
+          - button "Edit screen failed" [expanded]:
+            - generic: Edit screen
+            - generic: failed
+          - region "Tool input":
+            - heading "Input" [level=4]
+            - paragraph: "Unavailable: the tool evidence budget was reached."
+          - region "Tool result":
+            - heading "Result" [level=4]
+            - paragraph: "Unavailable: the tool evidence budget was reached."
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - button "Edit screen failed" [expanded]:
+            - generic: Edit screen
+            - generic: failed
+          - region "Tool input":
+            - heading "Input" [level=4]
+            - paragraph: "Unavailable: the tool evidence budget was reached."
+          - region "Tool result":
+            - heading "Result" [level=4]
+            - paragraph: "Full result unavailable. Recorded tool outcome: Browser refused edit · UI_DOC_STALE_REVISION The screen changed while the agent was working. No edit was applied; send a new request using the current screen."
+        - paragraph: No successful final response. Public notes and tool receipts remain in details.
+        - button "Copy message":
+    - button "Scroll to latest message":
+      - generic: Scroll to end
+    - textbox "Message" [active]:
+      - /placeholder: Ask for a change…
+    - button "Send" [disabled]:
+      - generic: Send
+    - status
+  - status "The screen changed while the agent was working. No edit was applied; send a new request using the current screen. 15 applied edits remain undoable.":
+    - generic: The screen changed while the agent was working. No edit was applied; send a new request using the current screen. 15 applied edits remain undoable.
+  - button "Chat details": ···
+- separator "Chat width"
+- main:
+  - button "Toggle Chat drawer" [expanded]:
+  - group "Workspace mode":
+    - button "Design"
+    - button "Interact" [pressed]
+    - button "Structure"
+  - button "Toggle Document and Selection drawer":
+  - iframe:
+    - generic "Screen canvas":
+      - main "Campaign Foundry — complex node suite":
+        - region "Section":
+          - heading "Campaign Foundry" [level=1]:
+            - generic: Campaign Foundry
+          - paragraph:
+            - generic: Eco travel mug launch · visual campaign workflow — configuration only, no model execution or publishing
+          - paragraph:
+            - generic: 14 nodes · 20 typed links · 10 reusable node types
+        - region "Campaign workflow":
+          - application "Campaign workflow canvas":
+            - application:
+              - group "Campaign brief":
+                - paragraph:
+                  - generic: Give your screen a little context.
+                  - generic: Campaign brief
+                - textbox "Campaign summary": Launch eco travel mug — 12h heat retention, recycled steel body
+                - textbox "Audience": Commuters, students, hikers
+                - checkbox "Help for this node"
+                - 'button "output Brief out: brief"'
+              - group "Positive prompt":
+                - paragraph:
+                  - generic: Give your screen a little context.
+                  - generic: Positive prompt
+                - textbox "Prompt text": matte forest-green travel mug, soft daylight, alpine trail backdrop, product hero
+                - checkbox "Help for this node"
+                - 'button "input Brief in: brief"'
+                - 'button "output Prompt out: prompt"'
+              - group "Negative prompt":
+                - paragraph:
+                  - generic: Give your screen a little context.
+                  - generic: Negative prompt
+                - textbox "Prompt text": plastic sheen, cluttered background, warped text, low contrast
+                - checkbox "Help for this node"
+                - 'button "input Brief in: brief"'
+                - 'button "output Prompt out: prompt"'
+              - group "Model settings":
+                - paragraph:
+                  - generic: Give your screen a little context.
+                  - generic: Model settings
+                - combobox "Model":
+                  - option [selected]
+                  - option
+                - spinbutton "Steps"
+              - link "Svelte Flow attribution":
+                - /url: https://svelteflow.dev?utm_source=attribution
+                - text: Svelte Flow
+          - paragraph:
+            - generic: "Pan: drag · Zoom: wheel · Move cards by their teal header · Edit fields in place"
+          - paragraph:
+            - generic: Nodes in graph
+          - paragraph:
+            - generic: Give your screen a little context.
+            - generic: "14"
+          - paragraph:
+            - generic: Typed links
+          - paragraph:
+            - generic: Give your screen a little context.
+            - generic: "20"
+- contentinfo:
+  - status: Saved Campaign Foundry — complex node suite · revision r1.r2
+- generic: Designer — VICT Studio

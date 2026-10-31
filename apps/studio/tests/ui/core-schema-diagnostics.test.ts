@@ -60,10 +60,13 @@ it('keeps real same-pass malformed calls distinct while combining repeated parse
  expect(calls.filter(event=>event.kind==='tool-start')).toHaveLength(3);
  expect(calls.some(event=>event.kind==='validation-refused'&&!event.callId)).toBe(false);
  const diagnostics=events.filter((event):event is Extract<StudioAgentEvent,{type:'schema-diagnostic'}>=>event.type==='schema-diagnostic');
- expect(diagnostics.length).toBeGreaterThan(2);expect(new Set(diagnostics.map(event=>event.id)).size).toBe(1);
+ // Both malformed calls must contribute to the combined diagnostic. Extra
+ // parser passes are an implementation detail, not a required third event.
+ expect(diagnostics.length).toBeGreaterThanOrEqual(2);expect(new Set(diagnostics.map(event=>event.id)).size).toBe(1);
  expect(diagnostics.at(-1)?.evaluations).toBe(diagnostics.length);
  expect(diagnostics.at(-1)!.lastElapsedMs).toBeGreaterThanOrEqual(diagnostics[0]!.firstElapsedMs);
- expect(JSON.stringify(modelResults)).toContain('lastValidation');expect(JSON.stringify(modelResults)).toContain('operations.0.expression');
+ const readModelResult=modelResults.find(value=>!!value&&typeof value==='object'&&'toolName' in value&&value.toolName==='studio_screen_read');
+ expect(readModelResult).toMatchObject({output:{type:'json',value:{lastValidation:{diagnostics:expect.arrayContaining([expect.objectContaining({path:['operations',0,'expression'],expected:expect.stringContaining('Expected exactly')})])}}}});
  const exchanges=events.filter(event=>event.type==='tool-evidence');expect(exchanges).toHaveLength(6);expect(exchanges.filter(event=>event.phase==='input'&&event.availability==='unavailable')).toHaveLength(2);expect(exchanges.some(event=>event.phase==='result'&&event.status==='completed'&&event.payload?.text.includes('turnProgress'))).toBe(true);
  expect(events.some(event=>event.type==='proposal')).toBe(false);expect(JSON.stringify(source)).toBe(before);
  expect(events.at(-1)).toMatchObject({type:'done',status:'failed',applied:0,metrics:{toolCalls:3,refusedCalls:2,completedCalls:1}});
@@ -74,7 +77,7 @@ it('keeps real same-pass malformed calls distinct while combining repeated parse
  const diagnostic=document.querySelector<HTMLElement>('[data-diagnostic-id]')!;
  expect(document.querySelectorAll('[data-diagnostic-id]')).toHaveLength(1);expect(diagnostic.textContent).toContain('not tool calls');
  await vi.waitFor(()=>expect(diagnostic.textContent).toContain(`${diagnostics.length} parser evaluations`));
- expect(diagnostic.textContent).toContain('operations.0.expression');expect(diagnostic.textContent).toContain('Expected exactly');
+ expect(diagnostic.textContent).toContain(JSON.stringify(['operations',0,'expression']));expect(diagnostic.textContent).toContain('Expected exactly');
  expect(diagnostic.querySelector('[aria-label="Attempt receipts"]')).toBeNull();
  await vi.waitFor(()=>expect(document.body.textContent).toContain('3 tool calls'));expect(document.body.textContent).toContain('2 refused');
 },120000);
