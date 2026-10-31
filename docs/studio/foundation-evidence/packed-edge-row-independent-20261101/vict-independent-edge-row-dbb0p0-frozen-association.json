@@ -1,0 +1,291 @@
+{
+  "status": "PASS",
+  "candidate": "afa8dd9d9f550392811ce286ecc025b9933d99a7",
+  "installedReportSha256": "ad3c0661ce1f01458abdcee894d00a4cae1524c72edeb80d2424f303e5c7cd43",
+  "packs": [
+    {
+      "name": "@victframework/contracts",
+      "sourceTree": "ebe69ed3da57a25ae86b50fdf8006fa0d907c9f2",
+      "tarSha256": "017c0587843869653f6bd723566dcaf39f2e89b2fb55bc923f35667be9d618de",
+      "installedFiles": 30
+    },
+    {
+      "name": "@victframework/ui",
+      "sourceTree": "01b07346b8975b8c01830bbb1a33c413900a2032",
+      "tarSha256": "15dd5f5da2a38b6cbf0bc56677c7f6ccae190c4c7a5029d8cc7c8994263a7cb2",
+      "installedFiles": 69
+    },
+    {
+      "name": "@victframework/sdk",
+      "sourceTree": "4222a8b85f661980dbad03168b8f773dfc5554ec",
+      "tarSha256": "c37e97319a52463c9b422a3de2870247beaee97b811fe378b3a4ee8e00e2ce7a",
+      "installedFiles": 27
+    },
+    {
+      "name": "@victframework/application",
+      "sourceTree": "c6c4ebc5415fcbc42a56aee90ee1edea6c8bdd9f",
+      "tarSha256": "ea0fdde59f165379154517f4be4ca99e3c8790033862e4a56f6df5fdb09b5db7",
+      "installedFiles": 33
+    },
+    {
+      "name": "@victframework/ui-svelte",
+      "sourceTree": "36a189df8fc87df4234c7d7444d183eee6c26c35",
+      "tarSha256": "028f45f199df8fd5c0a1c9d07dcb57de8fec09d56fbd55020aa6ec1f9a59fa1e",
+      "installedFiles": 284
+    },
+    {
+      "name": "@victframework/ui-media-svelte",
+      "sourceTree": "0673a7b64b17051a4d7dcc45baa45a4ce45d06d1",
+      "tarSha256": "234e78dd8f615622097b5166e5bd7f7646574d3663d3607b390d26ac8be11f22",
+      "installedFiles": 20
+    },
+    {
+      "name": "@victframework/ui-flow-svelte",
+      "sourceTree": "3b477dc8b4a74fdd6da02eca3151c9180e480387",
+      "tarSha256": "3fd18f09d1fb0156a6a45593c37e41669eb0de2ac104a24231c349a64cdd7ca0",
+      "installedFiles": 61
+    }
+  ],
+  "installedFiles": 524,
+  "flowSourceFiles": 59,
+  "flowSource": [
+    {
+      "path": "src/authoring/compatibility-composition-v1.json",
+      "sha256": "f1fe6d0c3bd4baf7030cdfacae99cfaaf4365b742e65f076552f04ced5068ef7"
+    },
+    {
+      "path": "src/authoring/compatibility-composition-v2.json",
+      "sha256": "59aacaaf5e8b8ed05fe5b746a207b55817b775800fa22a56d6f0d9f9ddc39d97"
+    },
+    {
+      "path": "src/authoring/compatibility-composition-v3.json",
+      "sha256": "f3b236c57f2e0a9e6886094596b74b3312f49215a2b3f7aa55243308f6959134"
+    },
+    {
+      "path": "src/authoring/compatibility-port-row.json",
+      "sha256": "be1dbe11d9db60dfe8cc43827a15f069dbd9cb5bc6ad219b55198ca98d24283c"
+    },
+    {
+      "path": "src/authoring/compatibility-v2.json",
+      "sha256": "0f4bcbba8e9cb341de0b76be9f3f04194c9cc13e5305b66212a261342ee21f95"
+    },
+    {
+      "path": "src/authoring/compatibility.json",
+      "sha256": "6e38eedae44b46699bb3db9616a9685dda3d00f17ed818fb0d7e683db4e5f4a6"
+    },
+    {
+      "path": "src/authoring/context.ts",
+      "sha256": "60a5f431658d44a327f0235cd7813e520b1a1ff250f6eccb795000ba9429e88f"
+    },
+    {
+      "path": "src/authoring/descriptors.ts",
+      "sha256": "ebb41dc82f037bf3b86bb51694bd8bf2f46a51f10669eb5fbf1747b5002c2171"
+    },
+    {
+      "path": "src/authoring/FlowCanvas.svelte",
+      "sha256": "fa7d3630612bb2c1b6ae4f54976d1674b342967cb12fd2430f63d79efa3cf5ee"
+    },
+    {
+      "path": "src/authoring/FlowEdgeDeclaration.svelte",
+      "sha256": "0485ce87a9d066cfdd3178bf1d77849d5ea7072c5e38f143767db588f99238ce"
+    },
+    {
+      "path": "src/authoring/FlowEditor.svelte",
+      "sha256": "5e7c20a99371bd468fe4738886f1c674a681dbbbca1a9924ff5b0466a9caa228"
+    },
+    {
+      "path": "src/authoring/FlowNodeDeclaration.svelte",
+      "sha256": "0c0d7990508f9d7d8d4e3a1cefb9aa5476a08185ea31f488239390f4d0bf8986"
+    },
+    {
+      "path": "src/authoring/FlowVisibleEdge.svelte",
+      "sha256": "e31f4e4b38643bba758eba8d86e912dd3f332f7bda25903ca5574f2092b665f0"
+    },
+    {
+      "path": "src/authoring/FlowVisibleNode.svelte",
+      "sha256": "4057c5ea64aa3fb03e56214ac6a355eba9c1d6a330d7701786839920cb031ff8"
+    },
+    {
+      "path": "src/authoring/implementations.ts",
+      "sha256": "65cba0ae13adb79c8f3d1bb0edc478396ff7847e5c1bf087bbf83f00a02fda48"
+    },
+    {
+      "path": "src/authoring/index.ts",
+      "sha256": "231e9b1064abbac2fade03b06fe0d3672deaa013e12ec1ce8ab8e5917b5bde44"
+    },
+    {
+      "path": "src/authoring/knowledge.ts",
+      "sha256": "7cfdb861ed318584df27317d7b5c1006eed63a191e91031584ea594c9f126544"
+    },
+    {
+      "path": "src/authoring/public-exports.ts",
+      "sha256": "1a022a72582020e06a04ef2c1bae4629157de47d53f9a6bd4900c5e6894b06fb"
+    },
+    {
+      "path": "src/composition/ComposedGraphEdge.svelte",
+      "sha256": "089d32a430a6b60241c754c2ad67dc5bad1ebc78e8f76207e7f3732bb697e07d"
+    },
+    {
+      "path": "src/composition/ComposedGraphNode.svelte",
+      "sha256": "5235b060a6ffd497cff1400b98416472ec39c251ec6f5f4152392ea7fcd670a5"
+    },
+    {
+      "path": "src/composition/connection-gesture.ts",
+      "sha256": "ee3253d0b2780c3157a0a779c1656783fc6daa7cad59359c055783e3609f5539"
+    },
+    {
+      "path": "src/composition/context.ts",
+      "sha256": "f64dbddaabef25c1e68da78aecb2e87cf85d3d6e0c0a8aac243220fdcd9aee02"
+    },
+    {
+      "path": "src/composition/descriptors.ts",
+      "sha256": "3e4c7fffcd72c7f670b499372dd5aab3a13fff02158b0948ee3f48776f5bde37"
+    },
+    {
+      "path": "src/composition/GraphEdgeSettings.svelte",
+      "sha256": "05b3a613defb4de8df213fc0fd9963ce0916cdd5285e5352c686a2131519f536"
+    },
+    {
+      "path": "src/composition/GraphPort.svelte",
+      "sha256": "4aa9565444104ac0c1b672f3fdb63b26d25b2bc5f9b4ff676f60f4eaa4c68bc4"
+    },
+    {
+      "path": "src/composition/GraphPortRow.svelte",
+      "sha256": "beeaddb20dba0cc14f3703fe19b805c788ff7e4d0e6680d3246d2265b327087a"
+    },
+    {
+      "path": "src/composition/GraphViewport.svelte",
+      "sha256": "720b4163ebbcc634069f550032b1fa9c89364b7a0e165640c42b37380f403904"
+    },
+    {
+      "path": "src/composition/GraphWorkspace.svelte",
+      "sha256": "ed55768751c35a1db789a93ad28ea9f0fc43debd7282d4b31180447f2c17a1ea"
+    },
+    {
+      "path": "src/composition/GraphWorkspaceV2.svelte",
+      "sha256": "6cba63223b3d25f5980f71d524a0d09cc027f076977312a69976b6b37eae2ec2"
+    },
+    {
+      "path": "src/composition/GraphWorkspaceV3.svelte",
+      "sha256": "8b3e4be580fa383783ee34c28cb9b3c1b6cdb99e85b4411a40aa627f9a6f0732"
+    },
+    {
+      "path": "src/composition/knowledge.ts",
+      "sha256": "f7f61b5dc936a92cdcf48d6727d666613556462ff5bc228c09511b43b6220478"
+    },
+    {
+      "path": "src/composition/workspace-model.ts",
+      "sha256": "a97422b68918764ab5b6e14046e786b2c8125b3fcbc42bbbaaca702042563a2e"
+    },
+    {
+      "path": "src/editor/authoring-contract.ts",
+      "sha256": "df36117755af34b4d34c99d2801b7cbece257efa4ab59fa43a409e5ae1f5c07e"
+    },
+    {
+      "path": "src/editor/commands.ts",
+      "sha256": "027ad1e9e649c184f00dcbc7c9b0642c7abee1a687224b55a756097323a1b345"
+    },
+    {
+      "path": "src/editor/graph-schemas.ts",
+      "sha256": "c355f39bbd5b1c023d9a710c4cbd3ac550cee0392f393c45d801a276661be7e0"
+    },
+    {
+      "path": "src/editor/graph-v3-schemas.ts",
+      "sha256": "7460ec5ded67ee2767375ceb07d570a05027a1a1f22b6e1c0a542b1148247787"
+    },
+    {
+      "path": "src/editor/GraphFields.svelte",
+      "sha256": "35f27afc54ea10cb4f1851c53dd4a2fe40748858de85a129bc5a24ba6251ee1a"
+    },
+    {
+      "path": "src/editor/GraphSurface.svelte",
+      "sha256": "a909eeb31d5d36726039d3b8272998a046e83f504ed4228f82679f56200f7de4"
+    },
+    {
+      "path": "src/editor/host.ts",
+      "sha256": "c6dd94a3a4721fd1360c0f88fbf3cccb9783a4d63a878c3c57cbec52d2894b29"
+    },
+    {
+      "path": "src/editor/model-v2.ts",
+      "sha256": "f1375a81aaf72a86f4ad6c60a9d90a2a1079dbdef582660ccb1767b82e4b1e50"
+    },
+    {
+      "path": "src/editor/model-v3.ts",
+      "sha256": "b3a94353ae1bce582fa31be314d5dac58847126c871880b3999b0b97d719144f"
+    },
+    {
+      "path": "src/editor/model.ts",
+      "sha256": "51a1b03df1ead60a6fe075f5b43fe5757a6f8c6f681b95c80f8d189a586297ad"
+    },
+    {
+      "path": "src/editor/passive-json.ts",
+      "sha256": "19454cdef4a1a00e4cac8d8bdccec101e2e8ea50a358bae4c5d37ffd553aa35d"
+    },
+    {
+      "path": "src/editor/presentation.ts",
+      "sha256": "2ab22dd280dcc90893ad663e82f3aa7fd7806e07e064367a1d1e1ca8225ed772"
+    },
+    {
+      "path": "src/editor/RichGraphNode.svelte",
+      "sha256": "5f15ad3edfcd6c9f068c31f12a6fff1a6fc83ecc7153c70dde44e2e32bcf862e"
+    },
+    {
+      "path": "src/editor/topology.ts",
+      "sha256": "be35865f877a6345f52920136cc7f44493b5768fcb3722c724310f6d9922895d"
+    },
+    {
+      "path": "src/editor/typed-operations.ts",
+      "sha256": "e1d601ea281a33898b78a73808f6f8f99b5681bb1eb756e7b27cd61f5161be01"
+    },
+    {
+      "path": "src/flow-coordinate-frame.ts",
+      "sha256": "da797ff85e9f797f04203f8a01cdffb02716140369e98b8801abb4abb1c63358"
+    },
+    {
+      "path": "src/flow-gesture-boundary.ts",
+      "sha256": "a90a0e605ed747b492477e4f95e217d88322823737b44c4bee25fc4297937e06"
+    },
+    {
+      "path": "src/FlowCanvas.svelte",
+      "sha256": "4d53a40775f29958eba6f2d48a9b3b6c1b58bab12d3fe66cc352fa45eeb4795e"
+    },
+    {
+      "path": "src/FlowCoordinateFrame.svelte",
+      "sha256": "88a2b6bcb0759faf37d07bff9c772355e9fd9741c02053e01f8268ae5c462c46"
+    },
+    {
+      "path": "src/FlowCoordinateSync.svelte",
+      "sha256": "8c724e8a47dcb27588f7f6dba4881ba5c8a20aef6f9f4dabb949f7af6c0060f8"
+    },
+    {
+      "path": "src/FlowNavigation.svelte",
+      "sha256": "0041d5eb70de7c7ca9ff5d5f4c23c42bea982dcb5841ff30c107438387b47256"
+    },
+    {
+      "path": "src/handle-projection.ts",
+      "sha256": "b4f93af5d4f9cb7b1b4ef3158d42c5a2bd28d3563f8b119459070e2340353a89"
+    },
+    {
+      "path": "src/index.ts",
+      "sha256": "2440d84ee8c6a5fc013618a81890d600a51c1073f942d0369f64d2b2f4070169"
+    },
+    {
+      "path": "src/layout.ts",
+      "sha256": "9500977cf5977021ab8bfd62e2d8acbe65db41383f033e73e201f8dc367a6158"
+    },
+    {
+      "path": "src/RoutedEdge.svelte",
+      "sha256": "8bc76b0efd4af537beac1ac3b2036a571588483d65270a0566ca40b62853ae7d"
+    },
+    {
+      "path": "src/SourceNode.svelte",
+      "sha256": "5614b327073ef4ef25cc991e9aef72729c532cea280abe10401834a84432a4e7"
+    },
+    {
+      "path": "src/styles.css",
+      "sha256": "dd92f3c1620d1eb3e2ecddc2a991c44c7bfa7a5a77ac5e8c33032b0842350346"
+    }
+  ],
+  "unchangedFixtureFiles": 8,
+  "scope": "Frozen Git package trees, exact tar hashes, all installed Flow source bytes and unchanged diagnostic fixture hashes; no native endpoint/halo verdict."
+}
