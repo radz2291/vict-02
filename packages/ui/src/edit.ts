@@ -33,17 +33,17 @@ import { validateUiDocument } from './validate.js';
 import { effectiveUiDescriptor } from './authoring.js';
 import type { UiCatalogs } from './document.js';
 
-/** Resource bounds for newly authored class lists; existing source admission is unchanged. */
+/** @deprecated Historical policy value; no class-list count quota is imposed. */
 export const UI_CLASS_LIST_LIMIT = 100;
+/** @deprecated Historical policy value; no class-token length quota is imposed. */
 export const UI_CLASS_NAME_LIMIT = 256;
 /** HTML class tokens cannot contain ASCII whitespace; NUL is not authorable text. */
 export const UI_CLASS_NAME_PATTERN = '^[^\\u0000\\t\\n\\f\\r ]+$';
 export function isUiClassName(value:unknown):value is string {
-  // JSON Schema maxLength counts Unicode code points, not UTF-16 units.
-  return typeof value==='string'&&value.length>0&&value.length<=UI_CLASS_NAME_LIMIT*2&&Array.from(value).length<=UI_CLASS_NAME_LIMIT&&new RegExp(UI_CLASS_NAME_PATTERN,'u').test(value);
+  return typeof value==='string'&&value.length>0&&new RegExp(UI_CLASS_NAME_PATTERN,'u').test(value);
 }
 export function isUiClassList(value:unknown):value is readonly string[] {
-  return Array.isArray(value)&&value.length<=UI_CLASS_LIST_LIMIT&&value.every(isUiClassName);
+  return Array.isArray(value)&&value.every(isUiClassName);
 }
 export interface UiEditCommandSetClasses {
   readonly op:'setClasses';
@@ -477,7 +477,7 @@ export function applyUiEdit(
       case 'setClasses': {
         const node=doc.nodes[command.nodeId];
         if(!node){fail('setClasses requires an existing source node.');return;}
-        if(!isUiClassList(command.classes)){fail('Classes require at most 100 nonempty DOM tokens of at most 256 characters, without ASCII whitespace or NUL.');return;}
+        if(!isUiClassList(command.classes)){fail('Classes require nonempty DOM tokens without ASCII whitespace or NUL.');return;}
         doc.nodes[node.id]={...node,classes:[...command.classes]} as UiNode;
         return;
       }

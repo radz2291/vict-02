@@ -1,4 +1,4 @@
-import { UI_CLASS_LIST_LIMIT,UI_CLASS_NAME_LIMIT,UI_CLASS_NAME_PATTERN } from '@victframework/ui';
+import { UI_CLASS_NAME_PATTERN } from '@victframework/ui';
 import { screenRecipes } from './recipes.js';
 import {graphEditDefinitions,graphEditChangesPresentation} from './graph-edit-schema.js';
 
@@ -54,7 +54,7 @@ export const editPresentation = {
     propValue:{anyOf:[{$ref:'#/$defs/scalar'},{$ref:'#/$defs/stringList'},{$ref:'#/$defs/numberList'}]},
     stringList:{type:'array',items:{type:'string'}},
     numberList:{type:'array',items:{type:'number'}},
-    classList:{type:'array',maxItems:UI_CLASS_LIST_LIMIT,items:{type:'string',minLength:1,maxLength:UI_CLASS_NAME_LIMIT,pattern:UI_CLASS_NAME_PATTERN}},
+    classList:{type:'array',items:{type:'string',minLength:1,pattern:UI_CLASS_NAME_PATTERN}},
     attributes:{type:'object',propertyNames:{$ref:'#/$defs/identifier'},additionalProperties:{$ref:'#/$defs/scalar'}},
     props:{type:'object',propertyNames:{$ref:'#/$defs/identifier'},additionalProperties:{$ref:'#/$defs/propValue'}},
     styles:{type:'object',propertyNames:{type:'string',minLength:1},additionalProperties:{type:'string'}},

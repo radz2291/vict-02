@@ -13,20 +13,20 @@ it('delivers nodes, state and edges as passive server-validated source context w
  const result=agentContext(source,cursor,undefined,{},set);expect(result.selection).toBeNull();expect(result.selectionSet).toMatchObject({total:3,truncated:false,items:[{kind:'node'},{kind:'node',type:'State'},{kind:'edge',type:'Connection'}]});
  expect(agentContext(source,cursor,`${source.id}|field`).selection).toMatchObject({nodeId:'field'});
 });
-it('refuses foreign, removed, mismatched and oversized selection references without invoking a provider',()=>{
+it('refuses foreign, removed and mismatched selection references without invoking a provider',()=>{
  const source=bindingFixture(),cursor=documentCursor(source,'r1',crypto.randomUUID()),field=nodeItem(source,`${source.id}|field`)!;
  const set=selectionSet({documentId:source.id,items:[field]});const request={document:source,cursor,prompt:'Inspect',selectionSet:set};
  expect(validateAgentStart({...request,selectionSet:{...set,documentId:'other'}}).ok).toBe(false);
  expect(validateAgentStart({...request,selectionSet:{...set,items:[{...field,id:structureId(source.id,'node','mirror')}]}}).ok).toBe(false);
  expect(validateAgentStart({...request,selectionSet:{...set,items:[{kind:'node',id:'missing'}]}}).ok).toBe(false);
- expect(selectionSetSchema.safeParse({...set,total:13,items:Array(13).fill(field)}).success).toBe(false);
+ expect(selectionSetSchema.safeParse({...set,total:13,items:Array(13).fill(field)}).success).toBe(true);
  expect(selectionSetSchema.safeParse({...set,authority:'edit'}).success).toBe(false);
  expect(validSelectionSet(source,set,{})).toBe(true);
 });
-it('bounds large passive sets, retains an explicit total and regenerates names from source',()=>{
+it('retains complete large passive sets and regenerates names from source',()=>{
  const source=bindingFixture(),graph=projectStructure(source),field=nodeItem(source,`${source.id}|field`)!;
  const set=selectionSet({documentId:source.id,items:Array.from({length:100},(_,i)=>({...field,occurrence:`${source.id}|field|row-${i}`}))});
- expect(set.items).toHaveLength(12);expect(JSON.stringify(set).length).toBeLessThan(6500);
- const context=selectionContext(source,set,{});expect(context).toMatchObject({total:100,truncated:true});expect(context!.items.every(item=>item.type==='Input')).toBe(true);
+ expect(set.items).toHaveLength(100);expect(JSON.stringify(set).length).toBeGreaterThan(6500);
+ const context=selectionContext(source,set,{});expect(context).toMatchObject({total:100,truncated:false});expect(context!.items.every(item=>item.type==='Input')).toBe(true);
  expect(graph.nodes.some(node=>node.id===field.id)).toBe(true);
 });

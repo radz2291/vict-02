@@ -19,13 +19,13 @@ export function screenAuthoringGuidance(document:UiDocument) {
   const warnings=screenAuthoringIssues(document).filter(issue=>issue.severity==='warning');
   return {
     count:warnings.length,
-    items:warnings.slice(0,20).map(issue=>({
-      code:String(issue.hostCode??issue.code).slice(0,100),
-      message:issue.message.slice(0,500),
-      nodeId:typeof issue.nodeId==='string'?issue.nodeId.slice(0,200):undefined,
-      path:typeof issue.path==='string'?issue.path.slice(0,300):undefined,
+    items:warnings.map(issue=>({
+      code:String(issue.hostCode??issue.code),
+      message:issue.message,
+      nodeId:typeof issue.nodeId==='string'?issue.nodeId:undefined,
+      path:typeof issue.path==='string'?issue.path:undefined,
       legacy:issue.legacyCompatibility===true,
     })),
-    more:warnings.length>20,
+    more:false,
   };
 }

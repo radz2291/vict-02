@@ -11,7 +11,6 @@
     <summary>Source guidance ({guidance.count})</summary>
     <p>These notes do not block Save or Run. Retained legacy source remains unchanged. Runtime checks still apply.</p>
     <ul>{#each guidance.items as item}<li><strong>{item.legacy?'Compatibility':item.code}</strong>{#if item.nodeId}<code>{item.nodeId}</code>{/if}<span>{item.message}</span>{#if item.path}<small>{item.path}</small>{/if}</li>{/each}</ul>
-    {#if guidance.more}<p>Showing the first 20 notes. Resolve these and review the remaining guidance.</p>{/if}
   </details>
 {/if}
 

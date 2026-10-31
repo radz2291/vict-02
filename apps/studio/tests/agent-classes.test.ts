@@ -1,7 +1,7 @@
 import {describe,it,expect} from 'vitest';
 import Ajv from 'ajv';
-import {canonicalUiDocument,type UiDocument} from '@victframework/ui';
-import {newScreen} from '../src/lib/designer/application.js';
+import {applyUiEdit,isUiClassName,isUiClassList,canonicalUiDocument,type UiDocument} from '@victframework/ui';
+import {newScreen,designerCatalogs} from '../src/lib/designer/application.js';
 import {agentEditSchema,documentCursor,prepareAgentEdit,type AgentEdit} from '../src/lib/designer/agent-edits.js';
 import {editPresentation} from '../src/lib/designer/agent-edit-presentation.js';
 import {effectiveNodeCapabilities} from '../src/lib/designer/agent-discovery.js';
@@ -19,7 +19,7 @@ describe('generic Studio class authoring',()=>{
   expect(effectiveNodeCapabilities(first.document.nodes.header)).toMatchObject({presentation:{classes:{supported:true,operation:'modify',field:'classes',emptyClears:true,value:['vict-graph-drag-handle','brand:active','作品']}}});
  });
  it('exposes the same class-list grammar in model presentation and authoritative input',()=>{
-  const valid=[[],['😀'.repeat(256)],['ブランド','md:grid-cols-[1fr_2fr]','nodrag','nopan','nowheel']];const invalid=[['two words'],['tab\tword'],['line\nword'],['nul\0word'],[''],Array(101).fill('x'),['x'.repeat(257)],['😀'.repeat(257)],['okay',1]];
+  const valid=[[],Array(120).fill('valid'),['x'.repeat(1000)],['😀'.repeat(600)],['😀'.repeat(256)],['ブランド','md:grid-cols-[1fr_2fr]','nodrag','nopan','nowheel']];const invalid=[['two words'],['tab\tword'],['line\nword'],['nul\0word'],[''],['okay',1]];
   for(const classes of valid){const value={expectedRevision:'r1',reason:'Classes',operations:[{op:'modify',nodeId:'header',classes}]};expect(agentEditSchema.safeParse(value).success).toBe(true);expect(presented(value)).toBe(true);}
   for(const classes of invalid){const value={expectedRevision:'r1',reason:'Classes',operations:[{op:'modify',nodeId:'header',classes}]};expect(agentEditSchema.safeParse(value).success,JSON.stringify(classes)).toBe(false);expect(presented(value),JSON.stringify(classes)).toBe(false);}
  });
@@ -28,5 +28,15 @@ describe('generic Studio class authoring',()=>{
   const result=request(source,[{op:'theme',role:'accent',value:'#123456'},{op:'insert',kind:'element',nodeId:'invalid',parentId:'screen',tag:'div',classes:['two words']}]);expect(result.ok).toBe(false);expect(canonicalUiDocument(source).contentDigest).toBe(before);
   const old=request(source,[{op:'insert',kind:'element',nodeId:'old',parentId:'screen',tag:'div',attributes:{class:'historical-attribute'}}]);expect(old).toMatchObject({ok:false,code:'STUDIO_AGENT_VALIDATION',diagnostics:expect.arrayContaining([expect.objectContaining({code:'UI_DOC_UNKNOWN_ATTRIBUTE'})])});
   expect(effectiveNodeCapabilities(source.nodes.screen)).toMatchObject({presentation:{classes:{guidance:expect.stringContaining('not attributes.class')}}});
+ });
+ it('accepts complete class lists beyond historical quotas through actual shared edits and Studio without altering ownership',()=>{
+  const source=newScreen('Complete classes','full-classes'),classes=Array.from({length:140},(_,index)=>`token-${index}-`+'界'.repeat(400));
+  expect(isUiClassName(classes[0])).toBe(true);expect(isUiClassList(classes)).toBe(true);
+  const applied=applyUiEdit({document:source,revision:'r1'},{requestId:'full-classes',expectedDocumentRevision:'r1',commands:[{op:'setClasses',nodeId:source.root,classes}]},designerCatalogs);
+  expect(applied.ok,JSON.stringify(applied)).toBe(true);if(!applied.ok)return;
+  expect(applied.document.nodes[source.root].classes).toEqual(classes);expect(source.nodes[source.root].classes).toBeUndefined();expect(applied.document.nodes[source.root].id).toBe(source.root);expect(applied.document.styleSources).toEqual(source.styleSources);
+  const prepared=request(source,[{op:'modify',nodeId:source.root,classes}]);expect(prepared.ok,JSON.stringify(prepared)).toBe(true);if(!prepared.ok)return;expect(prepared.document.nodes[source.root].classes).toEqual(classes);
+  const value={expectedRevision:'r1',reason:'Complete classes',operations:[{op:'modify',nodeId:source.root,classes}]};expect(agentEditSchema.safeParse(value).success).toBe(true);expect(presented(value)).toBe(true);
+  for(const token of ['','two words','tab\tword','line\nword','form\fword','return\rword','nul\0word'])expect(isUiClassName(token)).toBe(false);
  });
 });

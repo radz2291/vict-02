@@ -1,5 +1,6 @@
 import { json, type RequestHandler } from '@sveltejs/kit';
 import { z } from 'zod';
+import { canonicalEditDiagnosticSchema } from '$lib/designer/agent-edits.js';
 import { acknowledgeAgentEdit } from '$lib/server/designer-agent.js';
 import { agentJson } from '$lib/server/designer-agent-http.js';
 const schema = z
@@ -10,8 +11,8 @@ const schema = z
       z
         .object({
           ok: z.literal(true),
-          revision: z.string().min(1).max(160),
-          digest: z.string().min(1).max(160),
+          revision: z.string().min(1),
+          digest: z.string().min(1),
         })
         .strict(),
       z
@@ -28,7 +29,9 @@ const schema = z
             'STUDIO_AGENT_DIGEST',
             'STUDIO_AGENT_CANCELLED',
           ]),
-          message: z.string().max(500),
+          message: z.string(),
+          diagnostics:z.array(canonicalEditDiagnosticSchema).optional(),
+          diagnosticsTruncated:z.boolean().optional(),
         })
         .strict(),
     ]),

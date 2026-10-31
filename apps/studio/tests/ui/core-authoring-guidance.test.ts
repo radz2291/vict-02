@@ -11,10 +11,10 @@ function readOnlyFixture(){
   const fixture=createShowcaseFixture('vict.ai.prompt-input');
   const node=fixture.document.nodes[fixture.targetNodeId];
   if(node.kind!=='component')throw Error('fixture must be a controlled component');
-  const {outputs,...readOnlyNode}=node;
+  const {outputs:_outputs,...readOnlyNode}=node;
   return {...fixture,document:{...fixture.document,nodes:{...fixture.document.nodes,[node.id]:readOnlyNode}}};
 }
-it('shows bounded non-blocking guidance without mutating or rejecting source',async()=>{
+it('shows complete non-blocking guidance without mutating or rejecting source',async()=>{
   const {document:source,targetNodeId}=readOnlyFixture();
   const before=JSON.stringify(source);
   expect(compileScreen(source).ok).toBe(true);
@@ -35,16 +35,16 @@ it('shows bounded non-blocking guidance without mutating or rejecting source',as
   } finally {await unmount(instance);document.body.innerHTML='';}
 });
 
-it('bounds visible warnings while preserving their total',()=>{
+it('retains every warning and its total',()=>{
   const {document:fixture,targetNodeId}=readOnlyFixture();
   const source={...fixture,nodes:{...fixture.nodes}};
   const node=source.nodes[targetNodeId];
   if(node.kind!=='component')throw Error('fixture');
   for(let i=0;i<24;i++) {
-    const id=`extra-${i}`;
+    const id=`extra-${i}-`+'n'.repeat(700);
     source.nodes[id]={...node,id};
     const root=source.nodes[source.root];if(root.kind==='element')source.nodes[root.id]={...root,children:[...root.children,id]};
   }
-  expect(screenAuthoringGuidance(source)).toMatchObject({count:25,more:true});
-  expect(screenAuthoringGuidance(source).items).toHaveLength(20);
+  expect(screenAuthoringGuidance(source)).toMatchObject({count:25,more:false});
+  expect(screenAuthoringGuidance(source).items).toHaveLength(25);expect(screenAuthoringGuidance(source).items.some(item=>item.nodeId==='extra-23-'+ 'n'.repeat(700))).toBe(true);
 });

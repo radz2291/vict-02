@@ -1,4 +1,4 @@
-/** Cycle 1.1: a bounded palette vocabulary compiled to the manual editor's transactions. */
+/** Cycle 1.1: a registered palette vocabulary compiled to the manual editor's transactions. */
 import { z } from 'zod';
 import {patchAuthoredGraph} from './graph-authoring.js';
 import {graphEditShapeValid} from './graph-edit-schema.js';
@@ -7,7 +7,7 @@ import {
   applyUiEdit,
   canonicalUiDocument,
   isUiValueOfType,
-  UI_CLASS_LIST_LIMIT, isUiClassName,
+  isUiClassName,
   slotScopeProblems,
   type UiSlotScope,
   type UiExpression,
@@ -57,7 +57,7 @@ const expressionTree: z.ZodType<UiExpression> = z.lazy(()=>z.union([
   z.object({type:z.literal('op'),name:id,args:z.array(expressionTree)}).strict(),
 ]));
 const expression=expressionTree;
-const classList=z.array(z.string().refine(isUiClassName,'Use one nonempty DOM token of at most 256 Unicode characters, without ASCII whitespace or NUL.')).max(UI_CLASS_LIST_LIMIT);
+const classList=z.array(z.string().refine(isUiClassName,'Use one nonempty DOM token without ASCII whitespace or NUL.'));
 const content = {
   classes:classList.optional(),
   text: z.string().optional(),
@@ -132,18 +132,18 @@ export function agentEditDiagnostics(error:z.ZodError,input?:unknown) {
  const operations=input && typeof input==='object' && Array.isArray((input as {operations?:unknown}).operations) ? (input as {operations:unknown[]}).operations : [];
  const shape:Record<string,string>={insert:'insert(kind:element|text|component,nodeId,parentId,tag?|componentId+revision|text/expression?,slotName?,index?)',bindText:'bindText(nodeId,expression?)',bindAttribute:'bindAttribute(nodeId,name,expression?)',style:'style(nodeId,part?,property,value?:text|token|binding,conditionId?,pseudo?)',declareToken:'declareToken(id,value)',declareCondition:'declareCondition(id,kind:media|container,query,name?)',add:'add(recipe,nodeId,parentId,slotName?,index?,text?,headingLevel?,attributes?,props?,styles?)',modify:'modify(nodeId,text?,headingLevel?,attributes?,props?,styles?,classes?)',move:'move(nodeId,newParentId,slotName?,index?)',remove:'remove(nodeId)',bind:'bind(nodeId,prop,expression?)',connect:'connect(nodeId,output,binding?)',declareState:'declareState(key,type:string|number|boolean|isoDate|isoTime|stringList|numberList,initial:matchingValue)',wireInput:'wireInput(nodeId,key,initial?)'};
  Object.assign(shape,{when:'when(nodeId,wrapperId,conditionId): wrap an existing subtree in a canonical conditional branch',slotScope:'slotScope(nodeId,slot,scope?:{schema:vict.ui-slot-scope@1,props:[{name,type,default?}],state?:{key:{key,type,initial,controlled?}},conditions?:{name:expression},outputs?:[{name,payload,description?}]})',defineStyleSource:'defineStyleSource(id,declarations:[{property,value:text|token|binding}],conditionId?,pseudo?,replace?:boolean)',attachStyleSource:'attachStyleSource(nodeId,sourceId,index?)',detachStyleSource:'detachStyleSource(nodeId,sourceId)',removeStyleSource:'removeStyleSource(id)'});
- return error.issues.slice(0,8).map(issue=>{
+ return error.issues.map(issue=>{
   const operation=typeof issue.path[1]==='number' ? issue.path[1] : undefined;
-  const rawPath=issue.path.join('.');const path=rawPath.length>500 ? rawPath.slice(0,470)+'[path truncated]' : rawPath;let expected='';
+  const path=issue.path.join('.');let expected='';
   if(path.includes('.expression'))expected='Expected an existing pure expression: literal/ref/compare/boolean/conditionalValue/registered op; no executable strings or extra fields. Example: {"type":"ref","path":"state.accepted"}.';
   else if(path.includes('.binding'))expected='Expected {setState:{key,value?:literalOrRef}} OR {emit:{output,value?:literalOrRef}} inside a scoped slot OR {invokeAction:{actionId,input?:{field:literalOrRef}}}; no extra fields. Example: {"setState":{"key":"accepted"}}.';
-  else if(path.includes('.props'))expected='Expected a property record of scalar values or homogeneous string[]/number[] (max100). Example: {"options":["one","two"]}; mixed lists and object arrays are unsupported.';
+  else if(path.includes('.props'))expected='Expected a property record of scalar values or homogeneous string[]/number[]. Example: {"options":["one","two"]}; mixed lists and object arrays are unsupported.';
   else if(path.endsWith('.initial'))expected='Expected a matching canonical scalar or homogeneous string[]/number[]; date/time strings must be valid ISO values.';
-  else if(path.includes('.classes'))expected='Expected at most 100 class-name strings (1 to 256 characters each), with no ASCII whitespace or NUL. Use classes, not attributes.class; [] explicitly clears authored classes.';
+  else if(path.includes('.classes'))expected='Expected nonempty class-name strings with no ASCII whitespace or NUL. Use classes, not attributes.class; [] explicitly clears authored classes.';
   else if(path.includes('.attributes'))expected='Expected string, finite number, or boolean. Native expressions use bindAttribute or wireInput.';
-  else if(path.includes('.declarations'))expected='Expected 0 to 20 ordered {property,value:{type:"text",value:string}|{type:"token",id}|{type:"binding",expression:literalOrRef}} declarations.';
+  else if(path.includes('.declarations'))expected='Expected ordered {property,value:{type:"text",value:string}|{type:"token",id}|{type:"binding",expression:literalOrRef}} declarations.';
   else if(operation!==undefined){const value=operations[operation];const op=value && typeof value==='object' ? (value as {op?:unknown}).op : undefined;expected=typeof op==='string' && shape[op] ? 'Expected '+shape[op]+'.' : 'Expected a declared registered insertion, source edit, typed-state, binding or presentation operation.';}
-  return {...(operation===undefined ? {} : {operation}),path,message:(expected+' '+issue.message).trim().slice(0,700)};
+  return {...(operation===undefined ? {} : {operation}),path,message:(expected+' '+issue.message).trim()};
  });
 }
 export type AgentEdit = z.infer<typeof agentEditSchema>;
@@ -167,39 +167,59 @@ export const failure = (code: string, message: string): EditFailure => ({
   message,
 });
 
+/** Closed public compiler metadata, shared with authenticated browser acknowledgement. */
+const canonicalDiagnosticDetailKeys=['documentId','nodeId','parentId','definitionId','extensionId','prop','property','output','stateKey','expected','actual','target','slot','slotName','hostCode','styleSourceId','reference'] as const;
+const diagnosticPrimitive=z.union([z.string(),z.number().finite(),z.boolean()]);
+export const canonicalEditDiagnosticSchema=z.object({
+  ...Object.fromEntries(canonicalDiagnosticDetailKeys.map(key=>[key,diagnosticPrimitive.optional()])),
+  operation:z.number().int().min(0).optional(),commandIndex:z.number().int().optional(),
+  code:z.string().optional(),envelopeCode:z.string().optional(),sourcePath:z.string().optional(),
+  supportedProps:z.array(z.string()).optional(),valueKind:z.string().optional(),
+  path:z.string(),message:z.string(),
+}).strict();
+
 /** Preserve useful canonical detail without forwarding arbitrary compiler payloads. */
 export function canonicalEditFailure(issues:readonly {code:string;message:string;[key:string]:unknown}[],operation?:number,target?:{nodeId:string;property:string}):EditFailure {
   type Issue={code:string;message:string;[key:string]:unknown};
   const leaves:{issue:Issue;commandIndex?:number;envelopeCode?:string}[]=[];
-  let visited=0;let truncated=false;
-  function collect(issue:Issue,depth=0,commandIndex?:number,envelopeCode?:string){
-    if(leaves.length>=6||visited>=40){truncated=true;return;}visited++;
-    const index=typeof issue.commandIndex==='number'?issue.commandIndex:commandIndex;
-    // The canonical edit boundary already retains its authoritative causes.
-    // Unwrap only that known envelope; never forward arbitrary nested payloads.
-    if(issue.code==='UI_EDIT_VALIDATION_FAILED'&&Array.isArray(issue.diagnostics)&&issue.diagnostics.length){
-      if(depth<3){
-        const before=leaves.length;
-        for(const child of issue.diagnostics.slice(0,20))if(child&&typeof child==='object'&&typeof child.code==='string'&&typeof child.message==='string')collect(child,depth+1,index,envelopeCode??issue.code);
-        if(issue.diagnostics.length>20)truncated=true;
-        if(leaves.length>before)return;
-      }else truncated=true;
+  let truncated=false;
+  const own=(value:unknown,key:string):unknown=>{
+    if(!value||typeof value!=='object')return undefined;
+    const descriptor=Object.getOwnPropertyDescriptor(value,key);
+    return descriptor&&'value' in descriptor?descriptor.value:undefined;
+  };
+  const valid=(value:unknown):value is Issue=>!!value&&typeof value==='object'&&typeof own(value,'code')==='string'&&typeof own(value,'message')==='string';
+  type Pending={kind:'visit';issue:Issue;commandIndex?:number;envelopeCode?:string}|{kind:'leave';issue:Issue;before:number;commandIndex?:number;envelopeCode?:string};
+  const pending:Pending[]=[],ancestors=new WeakSet<object>();
+  for(let index=issues.length-1;index>=0;index--){const issue=own(issues,String(index));if(valid(issue))pending.push({kind:'visit',issue});else truncated=true;}
+  while(pending.length){
+    const item=pending.pop()!;
+    if(item.kind==='leave'){
+      ancestors.delete(item.issue);
+      if(leaves.length===item.before)leaves.push({issue:item.issue,...(item.commandIndex===undefined?{}:{commandIndex:item.commandIndex}),...(item.envelopeCode?{envelopeCode:item.envelopeCode}:{})});
+      continue;
     }
-    leaves.push({issue,...(index===undefined?{}:{commandIndex:index}),...(envelopeCode?{envelopeCode}:{})});
+    const {issue,envelopeCode}=item,code=own(issue,'code') as string;
+    const index=typeof own(issue,'commandIndex')==='number'?own(issue,'commandIndex') as number:item.commandIndex;
+    if(ancestors.has(issue)){truncated=true;leaves.push({issue,...(index===undefined?{}:{commandIndex:index}),...(envelopeCode?{envelopeCode}:{})});continue;}
+    // Unwrap only the known canonical compiler envelope, never arbitrary nested payloads.
+    const children=code==='UI_EDIT_VALIDATION_FAILED'?own(issue,'diagnostics'):undefined;
+    if(Array.isArray(children)&&children.length){
+      ancestors.add(issue);pending.push({kind:'leave',issue,before:leaves.length,commandIndex:index,envelopeCode});
+      for(let child=children.length-1;child>=0;child--){const value=own(children,String(child));if(valid(value))pending.push({kind:'visit',issue:value,commandIndex:index,envelopeCode:envelopeCode??code});else truncated=true;}
+    }else leaves.push({issue,...(index===undefined?{}:{commandIndex:index}),...(envelopeCode?{envelopeCode}:{})});
   }
-  for(const issue of issues.slice(0,20))collect(issue);
-  if(issues.length>20)truncated=true;
   const diagnostics=leaves.map(({issue,commandIndex,envelopeCode})=>{
     const details:Record<string,unknown>={...(target?{nodeId:target.nodeId,property:target.property}:{})};
-    for(const key of ['documentId','nodeId','parentId','definitionId','extensionId','prop','property','output','stateKey','expected','actual','target','slot','slotName','hostCode','styleSourceId','reference']) {
-      const item=issue[key]??(issue.detail&&typeof issue.detail==='object'?(issue.detail as Record<string,unknown>)[key]:undefined);if(typeof item==='string')details[key]=item.slice(0,300);else if(typeof item==='number'||typeof item==='boolean')details[key]=item;
+    for(const key of canonicalDiagnosticDetailKeys) {
+      const item=own(issue,key)??own(own(issue,'detail'),key);if(typeof item==='string')details[key]=item;else if(typeof item==='number'||typeof item==='boolean')details[key]=item;
     }
     if(typeof details.nodeId==='string')details.sourcePath=`nodes.${details.nodeId}`;
-    return {...details,...(operation===undefined?{}:{operation}),...(commandIndex===undefined?{}:{commandIndex}),...(envelopeCode?{envelopeCode}:{}),code:issue.code,
-      path:typeof issue.path==='string'?issue.path.slice(0,500):typeof details.nodeId==='string'?`nodes.${details.nodeId}`:operation===undefined?'document':`operations.${operation}`,
-      message:issue.message.slice(0,700)};
+    return {...details,...(operation===undefined?{}:{operation}),...(commandIndex===undefined?{}:{commandIndex}),...(envelopeCode?{envelopeCode}:{}),code:own(issue,'code') as string,
+      path:typeof own(issue,'path')==='string'?own(issue,'path') as string:typeof details.nodeId==='string'?`nodes.${details.nodeId}`:operation===undefined?'document':`operations.${operation}`,
+      message:own(issue,'message') as string};
   });
-  return {...failure('STUDIO_AGENT_VALIDATION',`${operation===undefined?'Edit':`Operation ${operation}`} rejected: `+diagnostics.map(issue=>`${issue.code}: ${issue.message}`).join('; ').slice(0,1800)),diagnostics,...(truncated?{diagnosticsTruncated:true}:{})};
+  return {...failure('STUDIO_AGENT_VALIDATION',`${operation===undefined?'Edit':`Operation ${operation}`} rejected: `+diagnostics.map(issue=>`${issue.code}: ${issue.message}`).join('; ')),diagnostics,...(truncated?{diagnosticsTruncated:true}:{})};
 }
 
 export function documentCursor(document: UiDocument, revision: string, epoch: string): AgentCursor {
@@ -431,7 +451,7 @@ export function prepareAgentEdit(
             const descriptor = nodeDescriptor(node);
             const prop = descriptor?.props.find(prop => prop.name === name);
             const listKind=value.length===0?'emptyList':value.every(item=>typeof item==='string')?'stringList':'numberList';
-            const supportedProps=descriptor?.props.map(item=>item.name).slice(0,100)??[];
+            const supportedProps=descriptor?.props.map(item=>item.name)??[];
             const listFailure=(code:string,message:string,expected:string,actual:string,details:Record<string,unknown>={}):EditFailure=>({
               ...failure('STUDIO_AGENT_VALIDATION',`Operation ${operationIndex}: ${operation.nodeId}.${name}: ${message}`),
               diagnostics:[{operation:operationIndex,nodeId:operation.nodeId,prop:name,path:`operations.${operationIndex}.props.${name}`,code,expected,actual,supportedProps,...details,message}],
@@ -495,7 +515,7 @@ export function prepareAgentEdit(
     if(error instanceof StyleSourceEditError){
       const op=activeOperation===undefined?undefined:parsed.data.operations[activeOperation]?.op;
       const field=error.field==='sourceId'&&(op==='defineStyleSource'||op==='removeStyleSource')?'id':error.field;
-      return {...failure(error.code,error.message.slice(0,700)),diagnostics:[{operation:activeOperation,path:`operations.${activeOperation}.${field}`,message:error.message.slice(0,700),...(error.nodeId?{nodeId:error.nodeId}:{}),...(error.sourceId?{styleSourceId:error.sourceId}:{})}]};
+      return {...failure(error.code,error.message),diagnostics:[{operation:activeOperation,path:`operations.${activeOperation}.${field}`,message:error.message,...(error.nodeId?{nodeId:error.nodeId}:{}),...(error.sourceId?{styleSourceId:error.sourceId}:{})}]};
     }
     return failure(
       'STUDIO_AGENT_INVALID_EDIT',
