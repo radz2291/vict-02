@@ -1,0 +1,60 @@
+TAP version 13
+# Subtest: more than 256 sealed files are all reachable
+ok 1 - more than 256 sealed files are all reachable
+  ---
+  duration_ms: 803.1287
+  ...
+# Subtest: single file above 64 MiB and total above 128 MiB retain exact bytes
+ok 2 - single file above 64 MiB and total above 128 MiB retain exact bytes
+  ---
+  duration_ms: 1694.8209
+  ...
+# Subtest: aggregate above 128 MiB with every individual file below 64 MiB
+ok 3 - aggregate above 128 MiB with every individual file below 64 MiB
+  ---
+  duration_ms: 1763.1672
+  ...
+# Subtest: sealed and request paths beyond prior ceilings use unchanged path grammar
+ok 4 - sealed and request paths beyond prior ceilings use unchanged path grammar
+  ---
+  duration_ms: 174.6832
+  ...
+# Subtest: Node default header handling replaces custom 32 header count
+ok 5 - Node default header handling replaces custom 32 header count
+  ---
+  duration_ms: 152.1442
+  ...
+# Subtest: host, method, encoded traversal and unknown files remain refused; HEAD remains exact
+ok 6 - host, method, encoded traversal and unknown files remain refused; HEAD remains exact
+  ---
+  duration_ms: 145.1205
+  ...
+# Subtest: post-verification disk mutation is never served
+ok 7 - post-verification disk mutation is never served
+  ---
+  duration_ms: 167.4338
+  ...
+# Subtest: hash, duplicate, unsafe paths and source-export identity remain admission failures
+ok 8 - hash, duplicate, unsafe paths and source-export identity remain admission failures
+  ---
+  duration_ms: 709.884
+  ...
+# Subtest: realpath escape remains refused
+ok 9 - realpath escape remains refused
+  ---
+  duration_ms: 129.9807
+  ...
+# Subtest: report identity, private IPv4 binding and dedicated non-Studio port remain required
+ok 10 - report identity, private IPv4 binding and dedicated non-Studio port remain required
+  ---
+  duration_ms: 627.0056
+  ...
+1..10
+# tests 10
+# suites 0
+# pass 10
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 6487.838
