@@ -1,0 +1,11 @@
+[vite]: Rollup failed to resolve import "@victframework/ui-flow-svelte" from "C:/Users/RZ1/AppData/Local/Temp/vict-actual-node-suite-roundtrip-D6c0go/roundtrip.ts".
+This is most likely unintended because it can break your application at runtime.
+If you do want to externalize this module explicitly add it to
+`build.rollupOptions.external`
+    at viteLog (file:///C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:46504:15)
+    at onRollupLog (file:///C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:46554:5)
+    at onLog (file:///C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:46202:7)
+    at file:///C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/node_modules/rollup/dist/es/shared/node-entry.js:21274:32
+    at Object.logger [as onLog] (file:///C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/node_modules/rollup/dist/es/shared/node-entry.js:23259:9)
+    at ModuleLoader.handleInvalidResolvedId (file:///C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/node_modules/rollup/dist/es/shared/node-entry.js:22004:26)
+    at file:///C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/node_modules/rollup/dist/es/shared/node-entry.js:21962:26
