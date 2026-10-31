@@ -1,0 +1,12 @@
+{
+  "sourceAliasesUsedInIndependent15": false,
+  "schema": "vict.independent-public-edge-source-association@1",
+  "normalPackageExportsSource": true,
+  "packageUnitConfigUiSourceAliasDisclosed": true,
+  "publicPackageTree": "416e756eb9e61eeec2afafc4c62c549fdffbbda5",
+  "equalCandidateTree": true,
+  "publicEntrySha256": "ED986EFFD7565031DFC82A83CE41C4A12E96FD0CCD72536E224699999571C5AE",
+  "candidate": "5572e2c1280727bb9edc5ac85beeb8547ce0278c",
+  "reviewProductCommit": "fb03fac7d4fc7799db565da7642a254917038577",
+  "publicEntry": "C:\\Users\\RZ1\\.codex\\worktrees\\vict-edge-v3-independent-20261101\\packages\\ui-flow-svelte\\src\\index.ts"
+}

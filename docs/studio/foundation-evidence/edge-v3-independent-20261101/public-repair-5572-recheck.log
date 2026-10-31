@@ -1,0 +1,38 @@
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/vict-edge-v3-independent-20261101/apps/studio
+
+3:09:01 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-edge-v3-independent-20261101/packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+3:09:03 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-edge-v3-independent-20261101/packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+3:09:03 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-edge-v3-independent-20261101/packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+3:09:03 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-edge-v3-independent-20261101/packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+3:09:03 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-edge-v3-independent-20261101/packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+3:09:03 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-edge-v3-independent-20261101/packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+3:09:05 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-edge-v3-independent-20261101/packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+3:09:05 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-edge-v3-independent-20261101/packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+3:09:05 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-edge-v3-independent-20261101/packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+3:09:05 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-edge-v3-independent-20261101/packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+ ✓ tests/independent-public-graph-v3.test.ts (10 tests) 226ms
+3:09:21 pm [vite-plugin-svelte] tests/fixtures/IndependentEdgeHarness.svelte:8:22 This reference only captures the initial value of `initial`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+3:09:21 pm [vite-plugin-svelte] tests/fixtures/IndependentEdgeHarness.svelte:9:6 This reference only captures the initial value of `host`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+3:09:21 pm [vite-plugin-svelte] tests/fixtures/IndependentEdgeHarness.svelte:9:45 This reference only captures the initial value of `host`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+ ✓ tests/independent-edge-geometry.test.ts (1 test) 143ms
+ ✓ tests/independent-edge-settings.test.ts (4 tests) 183ms
+
+ Test Files  3 passed (3)
+      Tests  15 passed (15)
+   Start at  15:08:37
+   Duration  43.67s (transform 49.97s, setup 0ms, collect 123.54s, tests 553ms, environment 2.79s, prepare 1.39s)
+
