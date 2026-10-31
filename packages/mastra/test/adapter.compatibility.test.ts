@@ -76,12 +76,12 @@ describe('adapter compatibility marker (MSTR-002)', () => {
     }
     const a = compileAgentProfile(profileWith('1.64.0'));
     const b = compileAgentProfile(profileWith('9.9.9'));
-    const previous = compileAgentProfile(profileWith('1.64.0', '4'));
+    const previous = compileAgentProfile(profileWith('1.64.0', '5'));
     expect(a.ok && b.ok).toBe(true);
     if (a.ok && b.ok) {
       expect(a.value.agentProfileVersion).not.toBe(b.value.agentProfileVersion);
     }
-    expect(MASTRA_ADAPTER_COMPATIBILITY.revision).toBe('5');
+    expect(MASTRA_ADAPTER_COMPATIBILITY.revision).toBe('6');
     expect(previous.ok).toBe(true);
     if (a.ok && previous.ok) {
       expect(a.value.agentProfileVersion).not.toBe(previous.value.agentProfileVersion);

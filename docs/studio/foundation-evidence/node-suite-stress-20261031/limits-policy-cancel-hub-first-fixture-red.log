@@ -1,0 +1,28 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030
+
+ ❯ |unit| packages/runtime/test/stream-subscriber-backpressure.test.ts (4 tests | 1 failed) 17ms
+   × does not abandon an unfinished durable append on subscriber abort or swallow its failure 6ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| packages/runtime/test/stream-subscriber-backpressure.test.ts > does not abandon an unfinished durable append on subscriber abort or swallow its failure
+TypeError: this[#ledger].listEventsFrom is not a function
+ ❯ AgentStreamHub.#replayIterator packages/runtime/src/stream-hub.ts:346:39
+    344|     let after = afterSeq;
+    345|     for (;;) {
+    346|       const page = await this.#ledger.listEventsFrom(streamId, after, …
+       |                                       ^
+    347|       if (page.length === 0) {
+    348|         break;
+ ❯ AgentStreamHub.subscribe packages/runtime/src/stream-hub.ts:236:22
+ ❯ packages/runtime/test/stream-subscriber-backpressure.test.ts:71:79
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 3 passed (4)
+   Start at  10:37:52
+   Duration  1.21s (transform 734ms, setup 0ms, import 911ms, tests 17ms, environment 0ms)
+

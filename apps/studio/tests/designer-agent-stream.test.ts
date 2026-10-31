@@ -18,7 +18,12 @@ vi.mock('$lib/server/designer-agent.js', () => ({
       engine: 'VICT / Mastra',
     });
     emit({ type: 'done', status: 'completed', applied: 0 });
-    return { ok: true, runId: 'a00bf557-cea9-43d7-bae6-7c08ce83e9b4', finished: cleanup.finished };
+    return {
+      ok: true,
+      runId: 'a00bf557-cea9-43d7-bae6-7c08ce83e9b4',
+      signal: new AbortController().signal,
+      finished: cleanup.finished,
+    };
   },
 }));
 import { POST } from '../src/routes/api/designer-agent/+server.js';

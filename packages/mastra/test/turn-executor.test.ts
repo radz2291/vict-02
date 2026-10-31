@@ -92,7 +92,10 @@ let idCounter = 0;
 
 type OfflineOptions = NonNullable<Parameters<typeof createDeterministicOfflineModel>[0]>;
 type OfflineScript = NonNullable<OfflineOptions['script']>;
-async function compose(script: OfflineScript): Promise<Composition> {
+async function compose(
+  script: OfflineScript,
+  failCancelledPublication = false,
+): Promise<Composition> {
   const dir = tempDir('vict-turn-executor-');
   const dedicated = await createDedicatedMastraStore({ dataDir: dir, retention: TEST_RETENTION });
   const capability: CapabilityDefinition = {
@@ -178,7 +181,19 @@ async function compose(script: OfflineScript): Promise<Composition> {
     'actor-approver',
   );
 
-  const hub = new AgentStreamHub({ ledger: stores.streamLedger, clock: () => Date.now() });
+  const originalLedger = stores.streamLedger;
+  const ledger = failCancelledPublication
+    ? {
+        latestSeq: originalLedger.latestSeq.bind(originalLedger),
+        listEventsFrom: originalLedger.listEventsFrom.bind(originalLedger),
+        listStreamIds: originalLedger.listStreamIds.bind(originalLedger),
+        appendEvent: async (command: Parameters<typeof originalLedger.appendEvent>[0]) => {
+          if (command.kind === 'response.cancelled') throw Error('cancel receipt storage failed');
+          return originalLedger.appendEvent(command);
+        },
+      }
+    : originalLedger;
+  const hub = new AgentStreamHub({ ledger, clock: () => Date.now() });
   const invokeLog: unknown[] = [];
   const turnServiceRef: { current: Composition['turnService'] | undefined } = {
     current: undefined,
@@ -394,3 +409,41 @@ describe('governed agent-turn execution (real pinned Mastra, offline)', () => {
     },
   );
 });
+
+it('reports a cancellation publication failure rather than hiding an unrecorded durable terminal milestone', async () => {
+  const composition = await compose(
+    {
+      'Cancel with publication failure': {
+        kind: 'tool-call',
+        toolName: 'cap_notes_write',
+        args: { text: 'not permitted' },
+        thenText: 'MUST NOT EXECUTE',
+      },
+    },
+    true,
+  );
+  const { stores, requester, turnService } = composition;
+  try {
+    const started = await turnService.startTurn(requester, {
+      threadId: 'cancel-publication-failure',
+      input: 'Cancel with publication failure',
+    });
+    for (let i = 0; i < 400 && !(await stores.approvals.listOpenApprovals()).length; i++)
+      await new Promise((resolve) => setTimeout(resolve, 10));
+    expect((await stores.approvals.listOpenApprovals()).length).toBe(1);
+    await turnService.cancelTurn(requester, { turnId: started.turn.turnId, reasonCode: 'user' });
+    const outcome = await started.outcomePromise;
+    expect(outcome).toMatchObject({
+      status: 'failed',
+      errorCode: 'VICT_TURN_STREAM_PERSISTENCE_FAILED',
+    });
+    expect(composition.invokeLog).toEqual([]);
+    expect(
+      (await stores.streamLedger.listEventsFrom(started.turn.streamId, 0)).some(
+        (event) => event.kind === 'response.cancelled',
+      ),
+    ).toBe(false);
+  } finally {
+    await composition.close();
+  }
+}, 120000);

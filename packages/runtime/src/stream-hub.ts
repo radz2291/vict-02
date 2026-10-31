@@ -5,6 +5,7 @@ import {
 } from '@victframework/contracts';
 import { isDurableStreamKind, streamEventPayloadOf } from './control-types.js';
 import type { AgentStreamLedgerStore } from './control-types.js';
+import { awaitAgentDelivery } from './agent-delivery.js';
 
 /**
  * Stage 06B — the neutral agent-stream hub (AI-009).
@@ -44,12 +45,14 @@ import type { AgentStreamLedgerStore } from './control-types.js';
 /** One hub subscriber (transport-owned delivery mechanism). */
 export interface AgentStreamSubscriber {
   readonly subscriberId: string;
+  /** Cancels transport delivery only; accepted durable ledger rows remain. */
+  readonly signal?: AbortSignal;
   /**
    * Deliver one event. Returning `false` signals backpressure: the hub
    * switches this subscriber to buffered mode with delta coalescing until
    * it drains via `pull()`.
    */
-  deliver(event: AgentStreamEvent): boolean | Promise<boolean>;
+  deliver(event: AgentStreamEvent, signal?: AbortSignal): boolean | Promise<boolean>;
   /**
    * Called when the subscriber's bounded pending queue OVERFLOWS, immediately
    * before the hub detaches the subscriber. The transport MUST recover by
@@ -101,6 +104,8 @@ export interface AgentStreamHubOptions {
 
 interface SubscriberState {
   readonly subscriber: AgentStreamSubscriber;
+  readonly deliveryAbort: AbortController;
+  releaseAbort?: () => void;
   /**
    * Buffer mode. During the REGISTRATION phase (`registering`) live events
    * buffer unconditionally so nothing can overtake the ordered replay; the
@@ -208,12 +213,22 @@ export class AgentStreamHub {
     // (never lost to the replay/live race, never out of order).
     const entry: SubscriberState = {
       subscriber,
+      deliveryAbort: new AbortController(),
       registering: true,
       slow: false,
       pending: [],
       detached: false,
     };
     state.subscribers.set(subscriber.subscriberId, entry);
+    if (subscriber.signal) {
+      const abort = () => this.unsubscribe(streamId, subscriber.subscriberId);
+      subscriber.signal.addEventListener('abort', abort, { once: true });
+      entry.releaseAbort = () => subscriber.signal?.removeEventListener('abort', abort);
+      if (subscriber.signal.aborted) {
+        abort();
+        return;
+      }
+    }
     // Deliver the ordered backlog page by page (bounded memory) plus any
     // live events that were captured during registration. Everything goes
     // through the private pending queue during registration so the ordered
@@ -246,6 +261,8 @@ export class AgentStreamHub {
     const entry = state.subscribers.get(subscriberId);
     if (entry !== undefined && !entry.detached) {
       entry.detached = true;
+      entry.releaseAbort?.();
+      entry.deliveryAbort.abort();
       state.subscribers.delete(subscriberId);
       entry.subscriber.detach?.();
     }
@@ -424,8 +441,13 @@ export class AgentStreamHub {
         // mutate an event the replay buffer (or another subscriber) reads.
         // A `false` return means the event was ACCEPTED and the transport
         // is saturated: only SUBSEQUENT events buffer.
-        const delivery = entry.subscriber.deliver(cloneEvent(event));
-        if (!(typeof delivery === 'boolean' ? delivery : await delivery)) {
+        const delivery = entry.subscriber.deliver(cloneEvent(event), entry.deliveryAbort.signal);
+        const result =
+          typeof delivery === 'boolean'
+            ? { delivered: true as const, value: delivery }
+            : await awaitAgentDelivery(delivery, entry.deliveryAbort.signal);
+        if (!result.delivered) continue;
+        if (!result.value) {
           entry.slow = true;
         }
         continue;
@@ -477,8 +499,13 @@ export class AgentStreamHub {
       const next = entry.pending[0]!;
       if (!entry.slow) {
         entry.pending.shift();
-        const delivery = entry.subscriber.deliver(next);
-        if (!(typeof delivery === 'boolean' ? delivery : await delivery)) {
+        const delivery = entry.subscriber.deliver(next, entry.deliveryAbort.signal);
+        const result =
+          typeof delivery === 'boolean'
+            ? { delivered: true as const, value: delivery }
+            : await awaitAgentDelivery(delivery, entry.deliveryAbort.signal);
+        if (!result.delivered) continue;
+        if (!result.value) {
           entry.slow = true;
         }
         continue;

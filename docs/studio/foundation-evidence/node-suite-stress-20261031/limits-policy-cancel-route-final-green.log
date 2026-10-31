@@ -1,0 +1,14 @@
+
+> vict-studio@0.1.0 test
+> vitest run tests/designer-stream-backpressure.test.ts
+
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/apps/studio
+
+ ✓ tests/designer-stream-backpressure.test.ts (3 tests) 187ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  10:40:20
+   Duration  1.13s (transform 135ms, setup 0ms, collect 201ms, tests 187ms, environment 0ms, prepare 259ms)
+

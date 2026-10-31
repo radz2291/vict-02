@@ -1,5 +1,9 @@
 import { describe, it, expect } from 'vitest';
-import { createDeterministicOfflineModel, OFFLINE_MODEL_IDENTITY, capturePresentationSchema } from '@victframework/mastra';
+import {
+  createDeterministicOfflineModel,
+  OFFLINE_MODEL_IDENTITY,
+  capturePresentationSchema,
+} from '@victframework/mastra';
 import { EditorBridge, insertSubtree } from '@victframework/ui-editor';
 import { screenRecipes } from '../src/lib/designer/recipes.js';
 import { newScreen, designerCatalogs } from '../src/lib/designer/application.js';
@@ -63,13 +67,19 @@ describe('Studio composes existing real pinned Mastra executor (offline model; n
   it('fits the frozen provider presentation bounds without dropping expanded recipes', () => {
     expect(() => capturePresentationSchema(editPresentation, 'expanded Studio edit')).not.toThrow();
     expect(() => capturePresentationSchema(agentReadPresentation, 'Studio read')).not.toThrow();
-    const editBytes=Buffer.byteLength(JSON.stringify(editPresentation),'utf8');
+    const editBytes = Buffer.byteLength(JSON.stringify(editPresentation), 'utf8');
     console.info(`Studio edit presentation: ${editBytes} bytes`);
     expect(editBytes).toBeLessThanOrEqual(32768);
-    const addProperties:Record<string,unknown>=editPresentation.$defs.add.properties;
-    const recipeSchema=addProperties.recipe;
-    if(!recipeSchema||typeof recipeSchema!=='object'||!('pattern' in recipeSchema)||typeof recipeSchema.pattern!=='string')throw Error('Add operation must declare its exact recipe pattern.');
-    const recipePattern=recipeSchema.pattern;
+    const addProperties: Record<string, unknown> = editPresentation.$defs.add.properties;
+    const recipeSchema = addProperties.recipe;
+    if (
+      !recipeSchema ||
+      typeof recipeSchema !== 'object' ||
+      !('pattern' in recipeSchema) ||
+      typeof recipeSchema.pattern !== 'string'
+    )
+      throw Error('Add operation must declare its exact recipe pattern.');
+    const recipePattern = recipeSchema.pattern;
     expect(recipePattern.length).toBeGreaterThan(2048);
     const pattern = new RegExp(recipePattern);
     for (const recipe of screenRecipes) expect(pattern.test(recipe.id), recipe.id).toBe(true);
@@ -113,7 +123,7 @@ describe('Studio composes existing real pinned Mastra executor (offline model; n
     });
     expect(bridge.getSnapshot().canUndo).toBe(false);
   }, 120_000);
-  it('gives GLM its full published output allowance without a thinking override (offline seam)', async () => {
+  it('leaves GLM output capacity and thinking behavior to the provider without a host token override (offline seam)', async () => {
     const { start, input } = context();
     const events: StudioAgentEvent[] = [];
     let settings: unknown;
@@ -131,7 +141,7 @@ describe('Studio composes existing real pinned Mastra executor (offline model; n
     });
     if (!opened.ok) throw new Error(opened.code);
     await opened.finished;
-    expect(settings).toMatchObject({ maxOutputTokens: 131_072 });
+    expect(settings).not.toHaveProperty('maxOutputTokens');
     expect(
       JSON.stringify((settings as { providerOptions?: unknown }).providerOptions ?? {}),
     ).not.toMatch(/reasoningEffort|reasoning_effort|thinking/);
@@ -619,93 +629,442 @@ describe('Studio composes existing real pinned Mastra executor (offline model; n
   }, 120_000);
 });
 
-it('reports a host deadline separately from explicit Stop without waiting for production wall time (offline deadline seam)',async()=>{
- const {start,input}=context();const events:StudioAgentEvent[]=[];
- const model=createDeterministicOfflineModel({script:{[input]:{kind:'text',text:'Would complete if not expired.'}}});
- const opened=openAgentRun('deadline-fixture',start,event=>events.push(event),{modelFactory:()=>model,model:OFFLINE_MODEL_IDENTITY,deadlineMs:1});
- if(!opened.ok)throw Error(opened.code);await opened.finished;
- expect(events.at(-1)).toMatchObject({type:'done',status:'failed',code:'STUDIO_AGENT_TIME_LIMIT',termination:{status:'timeout',code:'STUDIO_AGENT_TIME_LIMIT'},applied:0,confirmedRevision:start.cursor.revision});
-},120000);
+it('reports a host deadline separately from explicit Stop without waiting for production wall time (offline deadline seam)', async () => {
+  const { start, input } = context();
+  const events: StudioAgentEvent[] = [];
+  const model = createDeterministicOfflineModel({
+    script: { [input]: { kind: 'text', text: 'Would complete if not expired.' } },
+  });
+  const opened = openAgentRun('deadline-fixture', start, (event) => events.push(event), {
+    modelFactory: () => model,
+    model: OFFLINE_MODEL_IDENTITY,
+    deadlineMs: 1,
+  });
+  if (!opened.ok) throw Error(opened.code);
+  await opened.finished;
+  expect(events.at(-1)).toMatchObject({
+    type: 'done',
+    status: 'failed',
+    code: 'STUDIO_AGENT_TIME_LIMIT',
+    termination: { status: 'timeout', code: 'STUDIO_AGENT_TIME_LIMIT' },
+    applied: 0,
+    confirmedRevision: start.cursor.revision,
+  });
+}, 120000);
 
-it('labels agent-declared subset coverage separately from the complete catalog inventory (offline fixture)',async()=>{
- const {bridge,epoch,start,input}=context();const events:StudioAgentEvent[]=[];let runId='';
- const model=createDeterministicOfflineModel({script:{[input]:{kind:'tool-chain',calls:[{toolName:'studio_screen_edit',args:{expectedRevision:start.cursor.revision,reason:'Native input',operations:[{op:'add',recipe:'input',nodeId:'field',parentId:'screen'}]}},{toolName:'studio_screen_read',args:{section:'coverage',requested:['input']}}],thenText:'One input exists; complete inventory is not demonstrated.'}}});
- const opened=openAgentRun('subset-manifest',start,event=>{events.push(event);if(event.type==='started')runId=event.runId;if(event.type==='proposal')acknowledgeAgentEdit('subset-manifest',runId,event.proposal.proposalId,applyAgentProposal(bridge,event.proposal,epoch,false));},{modelFactory:()=>model,model:OFFLINE_MODEL_IDENTITY});
- if(!opened.ok)throw Error(opened.code);await opened.finished;
- expect(events.at(-1)).toMatchObject({type:'done',status:'completed',coverage:{scope:'agent-declared-manifest',requested:1,authored:1,missing:[]}});
- const done=events.at(-1);expect(done?.type==='done'&&done.coverage!.authored<done.coverage!.available).toBe(true);
- expect(done).toMatchObject({metrics:{toolCalls:2,completedCalls:2,refusedCalls:0,modelSteps:null,cost:null},sourceEvidence:{confirmedEdits:1,appearanceObserved:false,interactionsVerified:false}});
- if(done?.type!=='done')throw Error('Missing terminal receipt');
- expect(done.metrics!.providerRequests).toBeGreaterThan(0);expect(done.metrics!.usage!.totalTokens).toBeGreaterThan(0);
- const proposal=events.find(event=>event.type==='proposal');expect(proposal?.type==='proposal'&&proposal.callId).toBeTruthy();
- const commit=events.find(event=>event.type==='tool-event'&&event.kind==='committed');expect(commit?.type==='tool-event'&&commit.details).toContain('coverage');
-},120000);
+it('labels agent-declared subset coverage separately from the complete catalog inventory (offline fixture)', async () => {
+  const { bridge, epoch, start, input } = context();
+  const events: StudioAgentEvent[] = [];
+  let runId = '';
+  const model = createDeterministicOfflineModel({
+    script: {
+      [input]: {
+        kind: 'tool-chain',
+        calls: [
+          {
+            toolName: 'studio_screen_edit',
+            args: {
+              expectedRevision: start.cursor.revision,
+              reason: 'Native input',
+              operations: [{ op: 'add', recipe: 'input', nodeId: 'field', parentId: 'screen' }],
+            },
+          },
+          { toolName: 'studio_screen_read', args: { section: 'coverage', requested: ['input'] } },
+        ],
+        thenText: 'One input exists; complete inventory is not demonstrated.',
+      },
+    },
+  });
+  const opened = openAgentRun(
+    'subset-manifest',
+    start,
+    (event) => {
+      events.push(event);
+      if (event.type === 'started') runId = event.runId;
+      if (event.type === 'proposal')
+        acknowledgeAgentEdit(
+          'subset-manifest',
+          runId,
+          event.proposal.proposalId,
+          applyAgentProposal(bridge, event.proposal, epoch, false),
+        );
+    },
+    { modelFactory: () => model, model: OFFLINE_MODEL_IDENTITY },
+  );
+  if (!opened.ok) throw Error(opened.code);
+  await opened.finished;
+  expect(events.at(-1)).toMatchObject({
+    type: 'done',
+    status: 'completed',
+    coverage: { scope: 'agent-declared-manifest', requested: 1, authored: 1, missing: [] },
+  });
+  const done = events.at(-1);
+  expect(done?.type === 'done' && done.coverage!.authored < done.coverage!.available).toBe(true);
+  expect(done).toMatchObject({
+    metrics: { toolCalls: 2, completedCalls: 2, refusedCalls: 0, modelSteps: null, cost: null },
+    sourceEvidence: { confirmedEdits: 1, appearanceObserved: false, interactionsVerified: false },
+  });
+  if (done?.type !== 'done') throw Error('Missing terminal receipt');
+  expect(done.metrics!.providerRequests).toBeGreaterThan(0);
+  expect(done.metrics!.usage!.totalTokens).toBeGreaterThan(0);
+  const proposal = events.find((event) => event.type === 'proposal');
+  expect(proposal?.type === 'proposal' && proposal.callId).toBeTruthy();
+  const commit = events.find((event) => event.type === 'tool-event' && event.kind === 'committed');
+  expect(commit?.type === 'tool-event' && commit.details).toContain('coverage');
+}, 120000);
 
-it('makes bounded precise pre-invocation refusal guidance available to the model on the next overview read',async()=>{
- const {start,input}=context();const events:StudioAgentEvent[]=[];
- const model=createDeterministicOfflineModel({script:{[input]:{kind:'tool-chain',calls:[{toolName:'studio_screen_edit',args:{expectedRevision:start.cursor.revision,reason:'Malformed expression probe',operations:[{op:'bind',nodeId:'control',prop:'checked',expression:true}]}},{toolName:'studio_screen_read',args:{}}],thenText:'The malformed expression was refused; no edit was applied.'}}});
- const opened=openAgentRun('precise-refusal-read',start,event=>events.push(event),{modelFactory:()=>model,model:OFFLINE_MODEL_IDENTITY});if(!opened.ok)throw Error(opened.code);await opened.finished;
- const observation=events.find(event=>event.type==='tool-event'&&event.kind==='observation'&&event.tool==='studio_screen_read');expect(observation?.type).toBe('tool-event');if(observation?.type!=='tool-event')throw Error('No read');expect(observation.callId).toBeTruthy();
- // The model receives the full bounded overview; the owner trace explicitly marks any display clipping.
- const all=JSON.stringify(events);expect(all).toContain('literal');expect(all).toContain('ref');expect(all).toContain('operations.0.expression');
- const diagnostic=events.find(event=>event.type==='schema-diagnostic');expect(diagnostic?.type==='schema-diagnostic'&&diagnostic.details).toContain('Expected exactly');
- expect(events.some(event=>event.type==='tool-event'&&event.kind==='validation-refused'&&!event.callId)).toBe(false);
-},120000);
+it('makes bounded precise pre-invocation refusal guidance available to the model on the next overview read', async () => {
+  const { start, input } = context();
+  const events: StudioAgentEvent[] = [];
+  const model = createDeterministicOfflineModel({
+    script: {
+      [input]: {
+        kind: 'tool-chain',
+        calls: [
+          {
+            toolName: 'studio_screen_edit',
+            args: {
+              expectedRevision: start.cursor.revision,
+              reason: 'Malformed expression probe',
+              operations: [{ op: 'bind', nodeId: 'control', prop: 'checked', expression: true }],
+            },
+          },
+          { toolName: 'studio_screen_read', args: {} },
+        ],
+        thenText: 'The malformed expression was refused; no edit was applied.',
+      },
+    },
+  });
+  const opened = openAgentRun('precise-refusal-read', start, (event) => events.push(event), {
+    modelFactory: () => model,
+    model: OFFLINE_MODEL_IDENTITY,
+  });
+  if (!opened.ok) throw Error(opened.code);
+  await opened.finished;
+  const observation = events.find(
+    (event) =>
+      event.type === 'tool-event' &&
+      event.kind === 'observation' &&
+      event.tool === 'studio_screen_read',
+  );
+  expect(observation?.type).toBe('tool-event');
+  if (observation?.type !== 'tool-event') throw Error('No read');
+  expect(observation.callId).toBeTruthy();
+  // The model receives the full bounded overview; the owner trace explicitly marks any display clipping.
+  const all = JSON.stringify(events);
+  expect(all).toContain('literal');
+  expect(all).toContain('ref');
+  const diagnostic = events.find((event) => event.type === 'schema-diagnostic');
+  if (diagnostic?.type !== 'schema-diagnostic') throw Error('No safe schema diagnostic');
+  const safeIssues = JSON.parse(diagnostic.details).diagnostics;
+  expect(safeIssues).toContainEqual(
+    expect.objectContaining({
+      path: ['operations', 0, 'expression'],
+      expected: expect.stringContaining('literal|ref'),
+    }),
+  );
+  expect(JSON.parse(observation.details!).lastValidation.diagnostics).toEqual(safeIssues);
+  expect(diagnostic.details).toContain('Expected exactly');
+  expect(
+    events.some(
+      (event) =>
+        event.type === 'tool-event' && event.kind === 'validation-refused' && !event.callId,
+    ),
+  ).toBe(false);
+}, 120000);
 
-it('keeps actual malformed read parsing outside tool attempts and lets the corrected read recover its own boundary (offline)',async()=>{
- const {bridge,start,input}=context();const before=bridge.getSnapshot();const events:StudioAgentEvent[]=[];
- const model=createDeterministicOfflineModel({script:{[input]:{kind:'tool-chain',calls:[{toolName:'studio_screen_read',args:{section:'nodes',offset:-1}},{toolName:'studio_screen_read',args:{}}],thenText:'The invalid query was corrected; source is unchanged.'}}});
- const opened=openAgentRun('read-schema-diagnostics',start,event=>events.push(event),{modelFactory:()=>model,model:OFFLINE_MODEL_IDENTITY});if(!opened.ok)throw Error(opened.code);await opened.finished;
- const diagnostics=events.filter((event):event is Extract<StudioAgentEvent,{type:'schema-diagnostic'}>=>event.type==='schema-diagnostic');
- expect(diagnostics.length).toBeGreaterThan(1);expect(new Set(diagnostics.map(event=>event.id)).size).toBe(1);expect(diagnostics.at(-1)?.evaluations).toBe(diagnostics.length);
- expect(diagnostics[0]).toMatchObject({scope:'contract-validation',tool:'studio_screen_read'});expect(diagnostics[0]!.details).toContain('offset');expect(diagnostics[0]!.details).toContain('STUDIO_AGENT_READ_QUERY');
- const failed=events.filter(event=>event.type==='tool-event'&&event.kind==='tool-failed');expect(failed).toHaveLength(1);expect(failed[0]?.type==='tool-event'&&failed[0].callId).toBeTruthy();
- expect(events.some(event=>event.type==='tool-event'&&event.kind==='validation-refused'&&!event.callId)).toBe(false);
- expect(events.at(-1)).toMatchObject({type:'done',status:'completed',applied:0,unresolvedTools:[],metrics:{toolCalls:2,refusedCalls:1,completedCalls:1}});expect(bridge.getSnapshot()).toEqual(before);
-},120000);
+it('keeps actual malformed read parsing outside tool attempts and lets the corrected read recover its own boundary (offline)', async () => {
+  const { bridge, start, input } = context();
+  const before = bridge.getSnapshot();
+  const events: StudioAgentEvent[] = [];
+  const model = createDeterministicOfflineModel({
+    script: {
+      [input]: {
+        kind: 'tool-chain',
+        calls: [
+          { toolName: 'studio_screen_read', args: { section: 'nodes', offset: -1 } },
+          { toolName: 'studio_screen_read', args: {} },
+        ],
+        thenText: 'The invalid query was corrected; source is unchanged.',
+      },
+    },
+  });
+  const opened = openAgentRun('read-schema-diagnostics', start, (event) => events.push(event), {
+    modelFactory: () => model,
+    model: OFFLINE_MODEL_IDENTITY,
+  });
+  if (!opened.ok) throw Error(opened.code);
+  await opened.finished;
+  const diagnostics = events.filter(
+    (event): event is Extract<StudioAgentEvent, { type: 'schema-diagnostic' }> =>
+      event.type === 'schema-diagnostic',
+  );
+  expect(diagnostics.length).toBeGreaterThanOrEqual(1);
+  expect(new Set(diagnostics.map((event) => event.id)).size).toBe(1);
+  expect(diagnostics.at(-1)?.evaluations).toBe(diagnostics.length);
+  expect(diagnostics[0]).toMatchObject({
+    scope: 'contract-validation',
+    tool: 'studio_screen_read',
+  });
+  expect(diagnostics[0]!.details).toContain('offset');
+  expect(diagnostics[0]!.details).toContain('VICT_TOOL_INPUT_INVALID');
+  const failed = events.filter(
+    (event) => event.type === 'tool-event' && event.kind === 'tool-failed',
+  );
+  expect(failed).toHaveLength(1);
+  expect(failed[0]?.type === 'tool-event' && failed[0].callId).toBeTruthy();
+  expect(
+    events.some(
+      (event) =>
+        event.type === 'tool-event' && event.kind === 'validation-refused' && !event.callId,
+    ),
+  ).toBe(false);
+  expect(events.at(-1)).toMatchObject({
+    type: 'done',
+    status: 'completed',
+    applied: 0,
+    unresolvedTools: [],
+    metrics: { toolCalls: 2, refusedCalls: 1, completedCalls: 1 },
+  });
+  expect(bridge.getSnapshot()).toEqual(before);
+}, 120000);
 
-it('delivers an actual canonical style-reference cause to the model and subsequent overview without proposing an edit (offline)',async()=>{
- const {bridge,start,input}=context();const before=bridge.getSnapshot();const events:StudioAgentEvent[]=[];const prompts:unknown[]=[];
- const offline=createDeterministicOfflineModel({script:{[input]:{kind:'tool-chain',calls:[
-  {toolName:'studio_screen_edit',args:{expectedRevision:start.cursor.revision,reason:'Missing state reference probe',operations:[{op:'style',nodeId:'screen',property:'color',value:{type:'binding',expression:{type:'ref',path:'state.__probeMissing'}}}]}},
-  {toolName:'studio_screen_read',args:{}},
- ],thenText:'The source was refused; no edit was applied.'}}});
- const opened=openAgentRun('canonical-style-cause',start,event=>events.push(event),{model:OFFLINE_MODEL_IDENTITY,modelFactory:()=>({...offline,doStream:async(options:Parameters<typeof offline.doStream>[0])=>{prompts.push(options.prompt);return offline.doStream(options);}})});
- if(!opened.ok)throw Error(opened.code);await opened.finished;
- expect(events.some(event=>event.type==='proposal')).toBe(false);expect(bridge.getSnapshot()).toEqual(before);
- const refusal=events.find(event=>event.type==='edit-result');
- expect(refusal).toMatchObject({type:'edit-result',result:{ok:false,code:'STUDIO_AGENT_VALIDATION',diagnostics:[{code:'UI_EXPR_UNKNOWN_REFERENCE',envelopeCode:'UI_EDIT_VALIDATION_FAILED',operation:0,commandIndex:0,nodeId:'screen',sourcePath:'nodes.screen',property:'color',path:'state.__probeMissing'}]}});
- const overview=events.find(event=>event.type==='tool-event'&&event.kind==='observation'&&event.tool==='studio_screen_read');
- expect(overview?.type).toBe('tool-event');
- // Owner trace is intentionally clipped. Inspect the real model result rather
- // than requiring a larger trace budget for the later lastValidation field.
- const deliveredValidations:unknown[]=[];
- function visit(value:unknown,depth=0):void{
-  if(depth>14)return;
-  if(typeof value==='string'&&/^(?:\{|\[)/.test(value)){try{visit(JSON.parse(value),depth+1);}catch{}return;}
-  if(Array.isArray(value)){value.forEach(item=>visit(item,depth+1));return;}
-  if(value&&typeof value==='object'){if('lastValidation' in value)deliveredValidations.push(value.lastValidation);Object.values(value).forEach(item=>visit(item,depth+1));}
- }
- visit(prompts);
- expect(deliveredValidations).toContainEqual(expect.objectContaining({ok:false,code:'STUDIO_AGENT_VALIDATION',diagnostics:[expect.objectContaining({code:'UI_EXPR_UNKNOWN_REFERENCE',nodeId:'screen',sourcePath:'nodes.screen',property:'color',path:'state.__probeMissing'})]}));
- expect(events.at(-1)).toMatchObject({type:'done',status:'failed',code:'STUDIO_AGENT_VALIDATION',applied:0});
+it('delivers an actual canonical style-reference cause to the model and subsequent overview without proposing an edit (offline)', async () => {
+  const { bridge, start, input } = context();
+  const before = bridge.getSnapshot();
+  const events: StudioAgentEvent[] = [];
+  const prompts: unknown[] = [];
+  const offline = createDeterministicOfflineModel({
+    script: {
+      [input]: {
+        kind: 'tool-chain',
+        calls: [
+          {
+            toolName: 'studio_screen_edit',
+            args: {
+              expectedRevision: start.cursor.revision,
+              reason: 'Missing state reference probe',
+              operations: [
+                {
+                  op: 'style',
+                  nodeId: 'screen',
+                  property: 'color',
+                  value: {
+                    type: 'binding',
+                    expression: { type: 'ref', path: 'state.__probeMissing' },
+                  },
+                },
+              ],
+            },
+          },
+          { toolName: 'studio_screen_read', args: {} },
+        ],
+        thenText: 'The source was refused; no edit was applied.',
+      },
+    },
+  });
+  const opened = openAgentRun('canonical-style-cause', start, (event) => events.push(event), {
+    model: OFFLINE_MODEL_IDENTITY,
+    modelFactory: () => ({
+      ...offline,
+      doStream: async (options: Parameters<typeof offline.doStream>[0]) => {
+        prompts.push(options.prompt);
+        return offline.doStream(options);
+      },
+    }),
+  });
+  if (!opened.ok) throw Error(opened.code);
+  await opened.finished;
+  expect(events.some((event) => event.type === 'proposal')).toBe(false);
+  expect(bridge.getSnapshot()).toEqual(before);
+  const refusal = events.find((event) => event.type === 'edit-result');
+  expect(refusal).toMatchObject({
+    type: 'edit-result',
+    result: {
+      ok: false,
+      code: 'STUDIO_AGENT_VALIDATION',
+      diagnostics: [
+        {
+          code: 'UI_EXPR_UNKNOWN_REFERENCE',
+          envelopeCode: 'UI_EDIT_VALIDATION_FAILED',
+          operation: 0,
+          commandIndex: 0,
+          nodeId: 'screen',
+          sourcePath: 'nodes.screen',
+          property: 'color',
+          path: 'state.__probeMissing',
+        },
+      ],
+    },
+  });
+  const overview = events.find(
+    (event) =>
+      event.type === 'tool-event' &&
+      event.kind === 'observation' &&
+      event.tool === 'studio_screen_read',
+  );
+  expect(overview?.type).toBe('tool-event');
+  // Owner trace is intentionally clipped. Inspect the real model result rather
+  // than requiring a larger trace budget for the later lastValidation field.
+  const deliveredValidations: unknown[] = [];
+  function visit(value: unknown, depth = 0): void {
+    if (depth > 14) return;
+    if (typeof value === 'string' && /^(?:\{|\[)/.test(value)) {
+      try {
+        visit(JSON.parse(value), depth + 1);
+      } catch {}
+      return;
+    }
+    if (Array.isArray(value)) {
+      value.forEach((item) => visit(item, depth + 1));
+      return;
+    }
+    if (value && typeof value === 'object') {
+      if ('lastValidation' in value) deliveredValidations.push(value.lastValidation);
+      Object.values(value).forEach((item) => visit(item, depth + 1));
+    }
+  }
+  visit(prompts);
+  expect(deliveredValidations).toContainEqual(
+    expect.objectContaining({
+      ok: false,
+      code: 'STUDIO_AGENT_VALIDATION',
+      diagnostics: [
+        expect.objectContaining({
+          code: 'UI_EXPR_UNKNOWN_REFERENCE',
+          nodeId: 'screen',
+          sourcePath: 'nodes.screen',
+          property: 'color',
+          path: 'state.__probeMissing',
+        }),
+      ],
+    }),
+  );
+  expect(events.at(-1)).toMatchObject({
+    type: 'done',
+    status: 'failed',
+    code: 'STUDIO_AGENT_VALIDATION',
+    applied: 0,
+  });
 });
 
-it('delivers capture-comparison scope, complete-body digest reuse and Studio host rules to the actual pinned executor model prompt (offline)',async()=>{
- const {start,input}=context();const events:StudioAgentEvent[]=[];const prompts:unknown[]=[];
- const offline=createDeterministicOfflineModel({script:{[input]:{kind:'text',text:'No edit or visual completion claimed.'}}});
- const opened=openAgentRun('observation-scope-contract',start,event=>events.push(event),{model:OFFLINE_MODEL_IDENTITY,modelFactory:()=>({...offline,doStream:async(options:Parameters<typeof offline.doStream>[0])=>{prompts.push(options.prompt);return offline.doStream(options);}})});
- if(!opened.ok)throw Error(opened.code);await opened.finished;
- expect(events.at(-1)).toMatchObject({type:'done',status:'completed',applied:0});
- const delivered=JSON.stringify(prompts);
- expect(delivered).toContain('WITHIN ONE observation, before and after inference');
- expect(delivered).toContain('identical image bytes with a different source revision or preview fingerprint do NOT prove a stale raster');
- expect(delivered).toContain('Only an actual STUDIO_CAPTURE_STALE tool refusal invokes');
- expect(delivered).toContain('complete contract body was previously received (all body pages) and remains available in your context');
- expect(delivered).toContain('A catalog/index digest alone is not cached contract knowledge');
- expect(delivered).toContain('ancestor inline-size container named studio-screen');
- expect(delivered).toContain('canonical root has no container declaration');
- expect(delivered).toContain('Media conditions use the application iframe viewport and also follow preview presets');
- expect(delivered).toContain('other consumers must explicitly establish a compatible host');
- expect(delivered).toContain('never replay committed edits to retry verification');
+it('delivers capture-comparison scope, complete-body digest reuse and Studio host rules to the actual pinned executor model prompt (offline)', async () => {
+  const { start, input } = context();
+  const events: StudioAgentEvent[] = [];
+  const prompts: unknown[] = [];
+  const offline = createDeterministicOfflineModel({
+    script: { [input]: { kind: 'text', text: 'No edit or visual completion claimed.' } },
+  });
+  const opened = openAgentRun('observation-scope-contract', start, (event) => events.push(event), {
+    model: OFFLINE_MODEL_IDENTITY,
+    modelFactory: () => ({
+      ...offline,
+      doStream: async (options: Parameters<typeof offline.doStream>[0]) => {
+        prompts.push(options.prompt);
+        return offline.doStream(options);
+      },
+    }),
+  });
+  if (!opened.ok) throw Error(opened.code);
+  await opened.finished;
+  expect(events.at(-1)).toMatchObject({ type: 'done', status: 'completed', applied: 0 });
+  const delivered = JSON.stringify(prompts);
+  expect(delivered).toContain('WITHIN ONE observation, before and after inference');
+  expect(delivered).toContain(
+    'identical image bytes with a different source revision or preview fingerprint do NOT prove a stale raster',
+  );
+  expect(delivered).toContain('Only an actual STUDIO_CAPTURE_STALE tool refusal invokes');
+  expect(delivered).toContain(
+    'complete contract body was previously received (all body pages) and remains available in your context',
+  );
+  expect(delivered).toContain('A catalog/index digest alone is not cached contract knowledge');
+  expect(delivered).toContain('ancestor inline-size container named studio-screen');
+  expect(delivered).toContain('canonical root has no container declaration');
+  expect(delivered).toContain(
+    'Media conditions use the application iframe viewport and also follow preview presets',
+  );
+  expect(delivered).toContain('other consumers must explicitly establish a compatible host');
+  expect(delivered).toContain('never replay committed edits to retry verification');
 });
+
+it('cancels five different owners with blocked initial delivery before releasing their sinks; same owner remains BUSY', async () => {
+  const { start, input } = context();
+  const model = createDeterministicOfflineModel({
+    script: { [input]: { kind: 'text', text: 'No runtime work before delivery' } },
+  });
+  let release!: () => void;
+  const gate = new Promise<void>((resolve) => (release = resolve));
+  const runs = Array.from({ length: 5 }, (_, i) =>
+    openAgentRun('blocked-owner-' + i, start, () => gate, {
+      modelFactory: () => model,
+      model: OFFLINE_MODEL_IDENTITY,
+    }),
+  );
+  try {
+    expect(runs.every((run) => run.ok)).toBe(true);
+    expect(
+      openAgentRun('blocked-owner-0', start, () => {}, {
+        modelFactory: () => model,
+        model: OFFLINE_MODEL_IDENTITY,
+      }),
+    ).toMatchObject({ ok: false, code: 'STUDIO_AGENT_BUSY' });
+    for (const [i, run] of runs.entries()) {
+      if (!run.ok) throw Error(run.code);
+      expect(cancelAgentRun('wrong-owner', run.runId)).toBe(false);
+      expect(cancelAgentRun('blocked-owner-' + i, run.runId)).toBe(true);
+    }
+    await Promise.race([
+      Promise.all(runs.map((run) => (run.ok ? run.finished : undefined))),
+      new Promise<never>((_, reject) =>
+        setTimeout(() => reject(Error('Initial sink prevented cancellation')), 1500),
+      ),
+    ]);
+  } finally {
+    release();
+  }
+}, 120000);
+it('cancels a later blocked tool-event delivery without releasing the sink or applying an edit', async () => {
+  const { start, input } = context();
+  const events: StudioAgentEvent[] = [];
+  let release!: () => void, entered!: () => void;
+  const gate = new Promise<void>((resolve) => (release = resolve)),
+    ready = new Promise<void>((resolve) => (entered = resolve));
+  const model = createDeterministicOfflineModel({
+    script: {
+      [input]: {
+        kind: 'tool-call',
+        toolName: 'studio_screen_read',
+        args: { section: 'nodes' },
+        thenText: 'Read only',
+      },
+    },
+  });
+  const opened = openAgentRun(
+    'blocked-tool-owner',
+    start,
+    (event) => {
+      events.push(event);
+      if (event.type === 'tool-event' && event.kind === 'tool-start') {
+        entered();
+        return gate;
+      }
+    },
+    { modelFactory: () => model, model: OFFLINE_MODEL_IDENTITY },
+  );
+  if (!opened.ok) throw Error(opened.code);
+  try {
+    await ready;
+    expect(cancelAgentRun('blocked-tool-owner', opened.runId)).toBe(true);
+    await Promise.race([
+      opened.finished,
+      new Promise<never>((_, reject) =>
+        setTimeout(() => reject(Error('Tool sink prevented cancellation')), 1500),
+      ),
+    ]);
+    expect(events.some((event) => event.type === 'proposal')).toBe(false);
+    expect(events.filter((event) => event.type === 'done')).toHaveLength(1);
+    expect(events.at(-1)).toMatchObject({ type: 'done', status: 'cancelled', applied: 0 });
+  } finally {
+    release();
+  }
+}, 120000);

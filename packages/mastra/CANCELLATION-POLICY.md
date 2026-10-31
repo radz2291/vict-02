@@ -21,9 +21,10 @@ and identity algorithm remain unchanged. New policy bytes participate in the
 profile identity. Older compilers reject the new nested policy rather than
 silently reading it as an old finite policy.
 
-Adapter revision 5 implements this policy and awaited event delivery. A profile
-bound to adapter revision 4 must be explicitly rebound to revision 5, producing
-a new profile version, before using this adapter; the exact compatibility gate
+Adapter revision 5 introduced this policy. Revision 6 adds cancellation-aware
+awaited delivery and the companion passive-presentation admission amendment. A
+profile bound to an earlier adapter revision must be explicitly rebound to
+revision 6, producing a new profile version, before using this adapter; the exact compatibility gate
 continues to reject mismatches. Provider packages and model configuration are
 unchanged. Optional generation token settings remain available to authors; the
 Studio consumer no longer supplies an invented token count. Provider-reported
@@ -33,7 +34,11 @@ Event sinks may return a promise. The adapter and stream hub await delivery;
 Studio uses the standard Web Streams writer and the provider seam pulls one
 part per downstream demand. There is no aggregate Studio stream quota or eager
 detached queue of writes. Synchronous hub subscribers retain their existing
-`false`/`pull()` behavior. Callback return values never grant execution authority.
+`false`/`pull()` behavior. Subscriber abort or unsubscribe wakes a blocked transport
+sink without awaiting its handler. The hub still awaits durable append, and the
+turn executor drains publication before settlement; a publication failure is
+reported even when cancellation was requested. The native HTTP transform is
+errored on run abort so an in-flight write also releases without reader closure. Callback return values never grant execution authority.
 
 Studio selects the new policy and removes its duplicate source, prompt, history,
 request and runtime duration quotas. Its source-cursor, draft, session/CSRF and

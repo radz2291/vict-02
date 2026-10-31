@@ -5,6 +5,7 @@ import type { Observability } from '@mastra/observability';
 import { Observability as ObservabilityClass, MastraStorageExporter } from '@mastra/observability';
 import type { LibSQLStore } from '@mastra/libsql';
 import { AsyncLocalStorage } from 'node:async_hooks';
+import { awaitAgentDelivery } from '@victframework/runtime';
 import type {
   AgentProfileActivation,
   AgentTurnExecutionContext,
@@ -763,10 +764,17 @@ export class MastraProductAgent implements ProductAgentPort {
     };
     let seq = 0;
     const emit = async (event: Record<string, unknown>): Promise<void> => {
+      if (context.abortSignal?.aborted && event.kind !== 'response.cancelled')
+        throw Error('VICT_AGENT_DELIVERY_CANCELLED');
       seq += 1;
       const full = { ...base, seq, ...event } as unknown as AgentStreamEvent;
       events.push(full);
-      await context.onEvent?.(full);
+      const delivery = await awaitAgentDelivery(
+        context.onEvent?.(full, context.abortSignal),
+        context.abortSignal,
+      );
+      if (!delivery.delivered && event.kind !== 'response.cancelled')
+        throw Error('VICT_AGENT_DELIVERY_CANCELLED');
     };
 
     const turnFailure = async (code: string): Promise<AgentTurnOutcome> => {
@@ -796,7 +804,7 @@ export class MastraProductAgent implements ProductAgentPort {
           error instanceof Error && error.name === 'MastraThreadFenceError'
             ? 'VICT_AGENT_THREAD_FENCED'
             : 'VICT_AGENT_THREAD_ACTOR_MISMATCH';
-        return turnFailure(code);
+        return await turnFailure(code);
       }
     }
 
@@ -810,11 +818,11 @@ export class MastraProductAgent implements ProductAgentPort {
         for (const binding of this.#activation.processors) {
           inputText = binding.artifact.transform(inputText);
           if (typeof inputText !== 'string') {
-            return turnFailure('VICT_AGENT_TURN_FAILED');
+            return await turnFailure('VICT_AGENT_TURN_FAILED');
           }
         }
       } catch {
-        return turnFailure('VICT_AGENT_TURN_FAILED');
+        return await turnFailure('VICT_AGENT_TURN_FAILED');
       }
 
       const profile = this.#activation.profile.profile;
@@ -871,15 +879,15 @@ export class MastraProductAgent implements ProductAgentPort {
         // Construction-level failures (actor mismatch, fenced thread,
         // provider resolution) are sanitized — never a raw error.
         if (error instanceof VictMastraAdapterError) {
-          return turnFailure(error.code);
+          return await turnFailure(error.code);
         }
         if (error instanceof Error && error.name === 'MastraThreadFenceError') {
-          return turnFailure('VICT_AGENT_THREAD_FENCED');
+          return await turnFailure('VICT_AGENT_THREAD_FENCED');
         }
         if (error instanceof Error && error.name === 'MastraThreadActorMismatchError') {
-          return turnFailure('VICT_AGENT_THREAD_ACTOR_MISMATCH');
+          return await turnFailure('VICT_AGENT_THREAD_ACTOR_MISMATCH');
         }
-        return turnFailure('VICT_AGENT_TURN_FAILED');
+        return await turnFailure('VICT_AGENT_TURN_FAILED');
       }
 
       await emit({ kind: 'response.started' });
@@ -1106,8 +1114,8 @@ export class MastraProductAgent implements ProductAgentPort {
           status = 'cancelled';
         }
       } catch {
-        status = 'failed';
-        errorCode = 'VICT_AGENT_TURN_FAILED';
+        status = context.abortSignal?.aborted ? 'cancelled' : 'failed';
+        errorCode = status === 'cancelled' ? undefined : 'VICT_AGENT_TURN_FAILED';
       }
 
       const traceId =
@@ -1213,7 +1221,7 @@ export class MastraProductAgent implements ProductAgentPort {
           settled = false;
         }
         if (!settled) {
-          return turnFailure('VICT_AGENT_TURN_PERSISTENCE_UNCONFIRMED');
+          return await turnFailure('VICT_AGENT_TURN_PERSISTENCE_UNCONFIRMED');
         }
         await emit({ kind: 'memory.updated', threadId: request.threadId });
         // Durable content milestones carry a bounded REFERENCE to the
@@ -1249,7 +1257,14 @@ export class MastraProductAgent implements ProductAgentPort {
           ...(traceId !== undefined ? { traceId } : {}),
         };
       }
-      return turnFailure(errorCode ?? 'VICT_AGENT_TURN_FAILED');
+      return await turnFailure(errorCode ?? 'VICT_AGENT_TURN_FAILED');
+    } catch {
+      if (context.abortSignal?.aborted) {
+        if (!events.some((event) => event.kind === 'response.cancelled'))
+          await emit({ kind: 'response.cancelled' });
+        return { status: 'cancelled', events };
+      }
+      return { status: 'failed', events, errorCode: 'VICT_AGENT_TURN_FAILED' };
     } finally {
       releaseThread?.();
     }

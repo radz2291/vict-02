@@ -160,8 +160,8 @@ export function composeMastraTurnExecutor(deps: MastraTurnExecutorDeps): MastraT
       await deps.stores.turns.recordTurnCorrelation(command.turnId, {
         ...(outcome.traceId !== undefined ? { traceId: outcome.traceId } : {}),
       });
-      if (publicationFailure && outcome.status === 'completed') {
-        // A completed turn with a durably unrecorded milestone is NOT a
+      if (publicationFailure) {
+        // A turn with a durably unrecorded milestone is NOT a
         // normal completion: report the truthful persistence failure (the
         // turn store records the same status through the terminal gate).
         return { status: 'failed', errorCode: 'VICT_TURN_STREAM_PERSISTENCE_FAILED' };

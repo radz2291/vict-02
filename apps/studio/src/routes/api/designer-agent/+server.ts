@@ -30,7 +30,12 @@ export const POST: RequestHandler = async ({ request, locals }) => {
   const encoder = new TextEncoder();
   // Awaited writes propagate the actual consumer's demand. There is no
   // cumulative byte quota and no detached promise queue of pending frames.
-  const channel = new TransformStream<Uint8Array, Uint8Array>();
+  let abortChannel: () => void = () => {};
+  const channel = new TransformStream<Uint8Array, Uint8Array>({
+    start(controller) {
+      abortChannel = () => controller.error(new DOMException('Agent run cancelled', 'AbortError'));
+    },
+  });
   const writer = channel.writable.getWriter();
   const close = async () => {
     if (closed) return;
@@ -63,15 +68,23 @@ export const POST: RequestHandler = async ({ request, locals }) => {
       .catch(() => undefined);
   } else {
     runId = opened.runId;
+    const abortWriter = () => {
+      closed = true;
+      abortChannel();
+      void writer.abort().catch(() => undefined);
+    };
+    opened.signal.addEventListener('abort', abortWriter, { once: true });
+    if (opened.signal.aborted) abortWriter();
     const abort = () => {
       cancelAgentRun(owner, runId);
-      void writer.abort().catch(() => undefined);
+      abortWriter();
     };
     request.signal.addEventListener('abort', abort, { once: true });
     if (request.signal.aborted) abort();
     void opened.finished
       .finally(() => {
         request.signal.removeEventListener('abort', abort);
+        opened.signal.removeEventListener('abort', abortWriter);
         void close();
       })
       .catch(() => undefined);

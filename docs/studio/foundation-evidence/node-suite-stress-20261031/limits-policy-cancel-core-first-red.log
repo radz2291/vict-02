@@ -1,0 +1,55 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030
+
+stderr | packages/mastra/test/turn-executor.test.ts > governed agent-turn execution (real pinned Mastra, offline) > cancellation during the approval wait produces one honest terminal outcome
+This storage provider does not support batch creating metrics
+
+stderr | packages/mastra/test/turn-executor.test.ts > reports a cancellation publication failure rather than hiding an unrecorded durable terminal milestone
+This storage provider does not support batch creating metrics
+
+ ❯ |mastra| packages/mastra/test/turn-executor.test.ts (4 tests | 2 failed) 2302ms
+     × cancellation during the approval wait produces one honest terminal outcome 321ms
+   × reports a cancellation publication failure rather than hiding an unrecorded durable terminal milestone 353ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |mastra| packages/mastra/test/turn-executor.test.ts > governed agent-turn execution (real pinned Mastra, offline) > cancellation during the approval wait produces one honest terminal outcome
+AssertionError: expected 'failed' to be 'cancelled' // Object.is equality
+
+Expected: "cancelled"
+Received: "failed"
+
+ ❯ packages/mastra/test/turn-executor.test.ts:387:32
+    385|         expect(cancel.accepted).toBe(true);
+    386|         const outcome = await started.outcomePromise;
+    387|         expect(outcome.status).toBe('cancelled');
+       |                                ^
+    388|         // The capability was NEVER invoked.
+    389|         expect(composition.invokeLog.length).toBe(0);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  |mastra| packages/mastra/test/turn-executor.test.ts > reports a cancellation publication failure rather than hiding an unrecorded durable terminal milestone
+AssertionError: expected { turnId: 'turn-x4', …(10) } to match object { status: 'failed', …(1) }
+(9 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "errorCode": "VICT_TURN_STREAM_PERSISTENCE_FAILED",
++   "errorCode": "VICT_TURN_FAILED",
+    "status": "failed",
+  }
+
+ ❯ packages/mastra/test/turn-executor.test.ts:409:148
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed | 2 passed (3)
+      Tests  2 failed | 19 passed (21)
+   Start at  10:41:59
+   Duration  14.52s (transform 2.31s, setup 0ms, import 9.42s, tests 13.36s, environment 1ms)
+

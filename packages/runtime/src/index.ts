@@ -283,6 +283,7 @@ export {
   InMemoryControlPlaneStore,
 } from './control-in-memory.js';
 export { AgentStreamHub } from './stream-hub.js';
+export { awaitAgentDelivery } from './agent-delivery.js';
 // ---- Stage 07A: protected operator-configuration foundation -----------------
 export {
   OPERATOR_CONFIG_SCHEMA,

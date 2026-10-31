@@ -1,0 +1,53 @@
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/apps/studio
+
+10:44:25 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+10:44:25 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+10:44:25 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+10:44:25 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+10:44:25 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+ ❯ tests/designer-agent-mastra.test.ts (22 tests | 1 failed | 18 skipped) 3928ms
+   ↓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > fits the frozen provider presentation bounds without dropping expanded recipes
+   ↓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > does not mistake a successfully invoked but refused edit for recovery
+   ✓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > leaves GLM output capacity and thinking behavior to the provider without a host token override (offline seam)  1916ms
+   ↓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > reports an unrecovered tool failure truthfully, with prior effects=false
+   ↓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > reports an unrecovered tool failure truthfully, with prior effects=true
+   ↓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > contains length provider output with zero proposals and truthful terminal code
+   ↓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > contains partial provider output with zero proposals and truthful terminal code
+   ↓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > allows a successful ordinary answer without edits
+   ↓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > recovers a wrong source-version argument on an existing saved screen in the same governed turn
+   ↓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > keeps a genuine browser revision refusal fenced even after a model re-read and retry
+   ↓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > runs governed read and edit tools; acknowledges only after EditorBridge commit; streams completion
+   ↓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > sanitizes a genuine Mastra model failure after an acknowledged edit and preserves Undo
+   ↓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > cancels a proposal before acknowledgement with zero edits and no cross-session cancellation
+   ↓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > admits the next turn at terminal delivery while private cleanup is still pending
+   ↓ reports a host deadline separately from explicit Stop without waiting for production wall time (offline deadline seam)
+   ↓ labels agent-declared subset coverage separately from the complete catalog inventory (offline fixture)
+   ↓ makes bounded precise pre-invocation refusal guidance available to the model on the next overview read
+   × keeps actual malformed read parsing outside tool attempts and lets the corrected read recover its own boundary (offline) 1688ms
+     → expected 1 to be greater than 1
+   ↓ delivers an actual canonical style-reference cause to the model and subsequent overview without proposing an edit (offline)
+   ↓ delivers capture-comparison scope, complete-body digest reuse and Studio host rules to the actual pinned executor model prompt (offline)
+   ✓ cancels five different owners with blocked initial delivery before releasing their sinks; same owner remains BUSY 14ms
+   ✓ cancels a later blocked tool-event delivery without releasing the sink or applying an edit  307ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/designer-agent-mastra.test.ts > keeps actual malformed read parsing outside tool attempts and lets the corrected read recover its own boundary (offline)
+AssertionError: expected 1 to be greater than 1
+ ❯ tests/designer-agent-mastra.test.ts:660:29
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 3 passed | 18 skipped (22)
+   Start at  10:44:13
+   Duration  28.51s (transform 14.33s, setup 0ms, collect 23.93s, tests 3.93s, environment 0ms, prepare 270ms)
+

@@ -1,0 +1,37 @@
+
+> vict-studio@0.1.0 test
+> vitest run tests/designer-stream-backpressure.test.ts
+
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/apps/studio
+
+ ❯ tests/designer-stream-backpressure.test.ts (3 tests | 2 failed) 1212ms
+   ✓ awaits actual NDJSON consumer demand without a cumulative byte cutoff or eager frame queue 117ms
+   × DELETE aborts the run-owned writer while false initial/later demand is blocked without closing the reader 516ms
+     → DELETE remained blocked on writer
+   × DELETE aborts the run-owned writer while true initial/later demand is blocked without closing the reader 577ms
+     → DELETE remained blocked on writer
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/designer-stream-backpressure.test.ts > DELETE aborts the run-owned writer while false initial/later demand is blocked without closing the reader
+ FAIL  tests/designer-stream-backpressure.test.ts > DELETE aborts the run-owned writer while true initial/later demand is blocked without closing the reader
+Error: DELETE remained blocked on writer
+ ❯ Timeout._onTimeout tests/designer-stream-backpressure.test.ts:54:90
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 1 passed (3)
+   Start at  10:38:42
+   Duration  2.08s (transform 122ms, setup 0ms, collect 157ms, tests 1.21s, environment 0ms, prepare 274ms)
+
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path C:\Users\RZ1\.codex\worktrees\vict-architecture-realignment-20261030\apps\studio
+npm error workspace vict-studio@0.1.0
+npm error location C:\Users\RZ1\.codex\worktrees\vict-architecture-realignment-20261030\apps\studio
+npm error command failed
+npm error command C:\WINDOWS\system32\cmd.exe /d /s /c vitest run tests/designer-stream-backpressure.test.ts

@@ -152,6 +152,7 @@ type ComposeOptions = Parameters<typeof createDeterministicOfflineModel>[0] & {
   ) => { readonly ok: true } | { readonly ok: false; readonly code: string };
   readonly dir?: string;
   readonly cancellationOnly?: boolean;
+  readonly coordinator?: MastraThreadCoordinator;
 };
 async function compose(options?: ComposeOptions): Promise<Composition> {
   const dir = options?.dir ?? tempDir('vict-mastra-e2e-');
@@ -199,7 +200,7 @@ async function compose(options?: ComposeOptions): Promise<Composition> {
   });
   const agent = MastraProductAgent.create(activation, {
     store: dedicated.store,
-    threadCoordinator: new MastraThreadCoordinator(),
+    threadCoordinator: options?.coordinator ?? new MastraThreadCoordinator(),
     modelFactory: () => model,
   });
   return {
@@ -595,8 +596,10 @@ it('explicit policy@2 completes more than 64 real Mastra model steps/tool calls 
   }
 }, 120000);
 
-it('awaits public event sink backpressure and still allows cancellation under policy@2', async () => {
+it('cancels and releases its thread before a blocked public sink is released under policy@2', async () => {
+  const coordinator = new MastraThreadCoordinator();
   const { agent, activation, close } = await compose({
+    coordinator,
     cancellationOnly: true,
     script: {
       'Cancel at first event': { kind: 'text', text: 'No response should outrun the sink' },
@@ -636,9 +639,12 @@ it('awaits public event sink backpressure and still allows cancellation under po
     await new Promise((resolve) => setTimeout(resolve, 10));
     expect(completed).toBe(false);
     controller.abort();
-    unblock();
-    const outcome = await result;
+    const deadline = new Promise<never>((_, reject) =>
+      setTimeout(() => reject(Error('Cancellation remained blocked on event sink')), 500),
+    );
+    const outcome = await Promise.race([result, deadline]);
     expect(outcome.status).toBe('cancelled');
+    await Promise.race([coordinator.fence('thread-pressure'), deadline]);
   } finally {
     unblock();
     await close();

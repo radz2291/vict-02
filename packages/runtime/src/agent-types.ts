@@ -834,7 +834,7 @@ export interface AgentTurnExecutionContext {
   /** Cooperative cancellation signal. */
   readonly abortSignal?: AbortSignal;
   /** Normalized event sink (`vict.agent-stream@1` in-process surface). */
-  readonly onEvent?: (event: AgentStreamEvent) => unknown;
+  readonly onEvent?: (event: AgentStreamEvent, signal?: AbortSignal) => unknown;
   /**
    * The VICT stream identity (Stage 06B): when supplied, the adapter stamps
    * every normalized event with it instead of deriving
