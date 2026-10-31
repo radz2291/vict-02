@@ -170,6 +170,8 @@ export type {
   AgentProfileAuthoring,
   AgentReference,
   AgentTurnPolicy,
+  BoundedAgentTurnPolicy,
+  CancellationOnlyAgentTurnPolicy,
   BoundAgentReference,
 } from './agent.js';
 

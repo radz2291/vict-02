@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { boundedProviderModel } from '../src/lib/server/designer-model.js';
 describe('Studio provider stream boundary', () => {
   it.each([
@@ -147,4 +147,58 @@ describe('Studio provider stream boundary', () => {
     expect((await reader.read()).done).toBe(true);
     expect(observed?.aborted).toBe(true);
   });
+});
+
+it('normal provider calls have no elapsed cutoff and owner cancellation closes an unsettled call', async () => {
+  vi.useFakeTimers();
+  const abort = new AbortController();
+  const model = { doStream: async () => await new Promise<never>(() => {}) };
+  let settled = false;
+  try {
+    boundedProviderModel(model, abort.signal, undefined);
+    const response = (await model.doStream()) as unknown as {
+      stream: ReadableStream<{ type: string }>;
+    };
+    const reader = response.stream.getReader();
+    const first = reader.read().then((value) => {
+      settled = true;
+      return value;
+    });
+    await vi.advanceTimersByTimeAsync(31 * 60 * 1000);
+    expect(settled).toBe(false);
+    abort.abort();
+    expect((await first).value?.type).toBe('stream-start');
+    expect((await reader.read()).value?.type).toBe('error');
+    expect((await reader.read()).done).toBe(true);
+  } finally {
+    vi.useRealTimers();
+  }
+});
+it('pulls provider parts only on downstream demand instead of eagerly pumping a queue', async () => {
+  let pulls = 0;
+  const model = {
+    doStream: async () => ({
+      stream: new ReadableStream(
+        {
+          pull(controller) {
+            pulls++;
+            if (pulls === 1) controller.enqueue({ type: 'stream-start', warnings: [] });
+            else if (pulls === 2) controller.enqueue({ type: 'finish', finishReason: 'stop' });
+            else controller.close();
+          },
+        },
+        { highWaterMark: 0 },
+      ),
+    }),
+  };
+  boundedProviderModel(model, new AbortController().signal, undefined);
+  const response = await model.doStream();
+  await Promise.resolve();
+  expect(pulls).toBe(0);
+  const reader = response.stream.getReader();
+  expect((await reader.read()).value).toMatchObject({ type: 'stream-start' });
+  await Promise.resolve();
+  expect(pulls).toBe(1);
+  expect((await reader.read()).value).toMatchObject({ type: 'finish' });
+  expect((await reader.read()).done).toBe(true);
 });

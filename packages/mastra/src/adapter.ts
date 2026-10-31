@@ -19,7 +19,11 @@ import {
   sanitizeToolName,
   type HelperToolGateVerdict,
 } from './helper-tools.js';
-import { normalizeCapabilityToolResultEvent, sanitizeCapabilityToolName, capabilityInputValidationHooks } from './tool-bridge.js';
+import {
+  normalizeCapabilityToolResultEvent,
+  sanitizeCapabilityToolName,
+  capabilityInputValidationHooks,
+} from './tool-bridge.js';
 import { isCapabilityToolFailureCode } from './tool-bridge.js';
 import { inspectControlField } from './control-envelope.js';
 import { VictMastraCompositionError, type MastraThreadCoordinator } from './memory.js';
@@ -395,7 +399,7 @@ export class MastraProductAgent implements ProductAgentPort {
    * the gate itself and does not depend on any denial envelope surviving
    * the helper's application output contract. */
   readonly #turnScope = new AsyncLocalStorage<{
-    remainingToolCalls: number;
+    remainingToolCalls: number | null;
     budgetDenied: boolean;
   }>();
 
@@ -591,6 +595,7 @@ export class MastraProductAgent implements ProductAgentPort {
     if (scope === undefined) {
       return 'outside-turn';
     }
+    if (scope.remainingToolCalls === null) return 'allowed';
     if (scope.remainingToolCalls <= 0) {
       scope.budgetDenied = true;
       return 'denied';
@@ -733,7 +738,10 @@ export class MastraProductAgent implements ProductAgentPort {
     // authoritative denial flag lives in the same scope.
     return this.#turnScope.run(
       {
-        remainingToolCalls: this.#activation.profile.profile.turnPolicy.maxToolCalls,
+        remainingToolCalls:
+          this.#activation.profile.profile.turnPolicy.schema === 'vict.agent-turn-policy@2'
+            ? null
+            : this.#activation.profile.profile.turnPolicy.maxToolCalls,
         budgetDenied: false,
       },
       () => this.#runTurnScoped(request, context),
@@ -754,15 +762,15 @@ export class MastraProductAgent implements ProductAgentPort {
       ...(context.victRunId !== undefined ? { victRunId: context.victRunId } : {}),
     };
     let seq = 0;
-    const emit = (event: Record<string, unknown>): void => {
+    const emit = async (event: Record<string, unknown>): Promise<void> => {
       seq += 1;
       const full = { ...base, seq, ...event } as unknown as AgentStreamEvent;
       events.push(full);
-      context.onEvent?.(full);
+      await context.onEvent?.(full);
     };
 
-    const turnFailure = (code: string): AgentTurnOutcome => {
-      emit({ kind: 'response.failed', code });
+    const turnFailure = async (code: string): Promise<AgentTurnOutcome> => {
+      await emit({ kind: 'response.failed', code });
       return {
         status: 'failed',
         events,
@@ -831,7 +839,9 @@ export class MastraProductAgent implements ProductAgentPort {
           // store at each step finish (not only via the debounced queue), so
           // a turn's content is durable before the terminal event.
           savePerStep: true,
-          maxSteps: profile.turnPolicy.maxSteps,
+          ...(profile.turnPolicy.schema === 'vict.agent-turn-policy@2'
+            ? { stopWhen: () => false }
+            : { maxSteps: profile.turnPolicy.maxSteps }),
           // Declared generation behavior is passed through the pinned
           // invocation boundary EXACTLY as declared (absent stays absent).
           modelSettings: {
@@ -872,7 +882,7 @@ export class MastraProductAgent implements ProductAgentPort {
         return turnFailure('VICT_AGENT_TURN_FAILED');
       }
 
-      emit({ kind: 'response.started' });
+      await emit({ kind: 'response.started' });
 
       // 3. Normalize the stream deterministically; sanitize every failure.
       let completedText = '';
@@ -893,20 +903,20 @@ export class MastraProductAgent implements ProductAgentPort {
       // placeholder id; for indistinguishable occurrences first-terminal-
       // wins is the only coherent rule.
       const settledToolCalls = new Map<string, 'completed' | 'failed'>();
-      const emitToolTerminal = (
+      const emitToolTerminal = async (
         toolCallId: string,
         toolName: string,
         terminal: 'completed' | 'failed',
         code?: string,
-      ): void => {
+      ): Promise<void> => {
         if (settledToolCalls.has(toolCallId)) {
           return;
         }
         settledToolCalls.set(toolCallId, terminal);
         if (terminal === 'completed') {
-          emit({ kind: 'tool.completed', toolCallId, toolName });
+          await emit({ kind: 'tool.completed', toolCallId, toolName });
         } else {
-          emit({
+          await emit({
             kind: 'tool.failed',
             toolCallId,
             toolName,
@@ -937,8 +947,8 @@ export class MastraProductAgent implements ProductAgentPort {
               const toolCallId = trustToolCallId(payload.toolCallId);
               const toolName = trustToolName(payload.toolName);
               pendingToolCalls.set(toolCallId, toolName);
-              emit({ kind: 'tool.requested', toolCallId, toolName });
-              emit({ kind: 'tool.started', toolCallId, toolName });
+              await emit({ kind: 'tool.requested', toolCallId, toolName });
+              await emit({ kind: 'tool.started', toolCallId, toolName });
               break;
             }
             case 'tool-result': {
@@ -988,7 +998,7 @@ export class MastraProductAgent implements ProductAgentPort {
                   // A hostile/contradictory chunk (completion content on a
                   // failure-marked result) can never normalize as
                   // completion: fail closed.
-                  emitToolTerminal(
+                  await emitToolTerminal(
                     toolCallId,
                     toolName,
                     'failed',
@@ -997,9 +1007,9 @@ export class MastraProductAgent implements ProductAgentPort {
                   break;
                 }
                 if (capabilityEvent.kind === 'completed') {
-                  emitToolTerminal(toolCallId, toolName, 'completed');
+                  await emitToolTerminal(toolCallId, toolName, 'completed');
                 } else if (capabilityEvent.kind === 'failed') {
-                  emitToolTerminal(toolCallId, toolName, 'failed', capabilityEvent.code);
+                  await emitToolTerminal(toolCallId, toolName, 'failed', capabilityEvent.code);
                 }
                 // `nonterminal` (the `in_progress` replay): the documented
                 // non-terminal policy — no terminal event is emitted; the
@@ -1018,7 +1028,7 @@ export class MastraProductAgent implements ProductAgentPort {
                 capabilityFailureField.kind === 'data' &&
                 typeof capabilityFailureField.value === 'string'
               ) {
-                emitToolTerminal(
+                await emitToolTerminal(
                   toolCallId,
                   toolName,
                   'failed',
@@ -1029,9 +1039,9 @@ export class MastraProductAgent implements ProductAgentPort {
                 break;
               }
               if (failed) {
-                emitToolTerminal(toolCallId, toolName, 'failed', 'VICT_TOOL_FAILED');
+                await emitToolTerminal(toolCallId, toolName, 'failed', 'VICT_TOOL_FAILED');
               } else {
-                emitToolTerminal(toolCallId, toolName, 'completed');
+                await emitToolTerminal(toolCallId, toolName, 'completed');
               }
               break;
             }
@@ -1046,12 +1056,12 @@ export class MastraProductAgent implements ProductAgentPort {
                 trustToolName(payload.toolName) === UNTRUSTED_TOOL_METADATA_PLACEHOLDER
                   ? (pendingToolCalls.get(toolCallId) ?? UNTRUSTED_TOOL_METADATA_PLACEHOLDER)
                   : (payload.toolName as string);
-              emitToolTerminal(toolCallId, toolName, 'failed', 'VICT_TOOL_FAILED');
+              await emitToolTerminal(toolCallId, toolName, 'failed', 'VICT_TOOL_FAILED');
               break;
             }
             case 'text-delta': {
               const delta = typeof payload.text === 'string' ? payload.text : '';
-              emit({ kind: 'text.delta', delta });
+              await emit({ kind: 'text.delta', delta });
               completedText += delta;
               break;
             }
@@ -1176,7 +1186,7 @@ export class MastraProductAgent implements ProductAgentPort {
 
       // 7. Terminal milestones + usage.
       if (usage !== undefined) {
-        emit({ kind: 'usage.updated', usage });
+        await emit({ kind: 'usage.updated', usage });
       }
       if (status === 'completed') {
         // Durable-before-terminal ordering: the conversation content of
@@ -1205,7 +1215,7 @@ export class MastraProductAgent implements ProductAgentPort {
         if (!settled) {
           return turnFailure('VICT_AGENT_TURN_PERSISTENCE_UNCONFIRMED');
         }
-        emit({ kind: 'memory.updated', threadId: request.threadId });
+        await emit({ kind: 'memory.updated', threadId: request.threadId });
         // Durable content milestones carry a bounded REFERENCE to the
         // completed content inside the designated, actor-authorized
         // conversation store (vict-actor-<actorId> resource, thread+turn
@@ -1213,11 +1223,11 @@ export class MastraProductAgent implements ProductAgentPort {
         // durably persisted to that store above (durable-before-milestone),
         // so authorized readers reconstruct it from the authoritative
         // conversation domain under its retention/deletion/export policy.
-        emit({
+        await emit({
           kind: 'content.completed',
           contentRef: `conversation:vict-actor-${request.actorId}/${request.threadId}/${request.turnId}`,
         });
-        emit({ kind: 'response.completed' });
+        await emit({ kind: 'response.completed' });
         return {
           status,
           text: completedText,
@@ -1231,7 +1241,7 @@ export class MastraProductAgent implements ProductAgentPort {
       }
       if (status === 'cancelled') {
         this.#knownThreads.add(request.threadId);
-        emit({ kind: 'response.cancelled' });
+        await emit({ kind: 'response.cancelled' });
         return {
           status,
           events,

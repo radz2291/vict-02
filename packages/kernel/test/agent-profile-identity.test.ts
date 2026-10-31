@@ -393,3 +393,38 @@ describe('agentProfileVersion — set ordering and forbidden inputs', () => {
     expect(Object.isFrozen(structuredClone(base()))).toBe(false);
   });
 });
+
+describe('explicit completion-or-cancel turn policy@2', () => {
+  it('retains the exact legacy manifest while identifying the new opt-in separately', () => {
+    const old = compileAgentProfile(base());
+    if (!old.ok) throw Error('Invalid legacy fixture');
+    // Recomputed with the pre-amendment compiler from git04339.
+    expect(old.value.agentProfileVersion).toBe('v1_89b1044d009f51e012e4602c249086ff8470e03a0cd8380de70e771c2b938776');
+    const current = compileAgentProfile({
+      ...base(),
+      turnPolicy: { schema: 'vict.agent-turn-policy@2', mode: 'until-completion-or-cancel' },
+    });
+    expect(current.ok).toBe(true);
+    if (current.ok) {
+      expect(current.value.agentProfileVersion).not.toBe(old.value.agentProfileVersion);
+      expect((current.value.manifest as any).profile.turnPolicy).toEqual({
+        schema: 'vict.agent-turn-policy@2',
+        mode: 'until-completion-or-cancel',
+      });
+    }
+    expect((old.value.manifest as any).profile.turnPolicy).toEqual({
+      maxSteps: 4,
+      maxToolCalls: 4,
+      onLimit: 'fail-closed',
+    });
+  });
+  it.each([
+    { schema: 'vict.agent-turn-policy@2', mode: 'unknown' },
+    { schema: 'vict.agent-turn-policy@2', mode: 'until-completion-or-cancel', maxToolCalls: 64 },
+    { schema: 'vict.agent-turn-policy@3', mode: 'until-completion-or-cancel' },
+    { maxSteps: 65, maxToolCalls: 64, onLimit: 'fail-closed' },
+    { mode: 'until-completion-or-cancel' },
+  ])('refuses malformed/mixed policy without reinterpreting legacy bounds: %j', (turnPolicy) => {
+    expect(compileAgentProfile({ ...base(), turnPolicy } as never).ok).toBe(false);
+  });
+});

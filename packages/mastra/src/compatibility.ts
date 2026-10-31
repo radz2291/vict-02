@@ -39,7 +39,7 @@ export const MASTRA_ADAPTER_ID = '@victframework/mastra';
  * exceed 2048 characters within the unchanged serialized UTF-8 budget.
  * An early aggregate-budget impossibility check still bounds leaf allocation.
  */
-export const MASTRA_ADAPTER_REVISION = '4';
+export const MASTRA_ADAPTER_REVISION = '5';
 
 /** Exact pinned Mastra package versions used by this adapter. */
 export const MASTRA_PINNED_VERSIONS = {

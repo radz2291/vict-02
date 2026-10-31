@@ -848,43 +848,57 @@ function validateProfileSemantics(
     !Array.isArray(profile.turnPolicy)
   ) {
     const turnPolicy = profile.turnPolicy as Record<string, unknown>;
-    checkClosedFields(turnPolicy, TURN_POLICY_FIELDS, '(profile).turnPolicy', collector);
-    for (const [field, bound] of Object.entries(TURN_BOUNDS)) {
-      const value = turnPolicy[field];
-      if (value === undefined) {
-        collector.add(
-          'AGENT_PROFILE_REQUIRED_MEMBER',
-          `'(profile).turnPolicy.${field}' is required.`,
-          `(profile).turnPolicy.${field}`,
-        );
-        continue;
-      }
+    if (turnPolicy.schema !== undefined) {
+      checkClosedFields(turnPolicy, new Set(['schema', 'mode']), '(profile).turnPolicy', collector);
       if (
-        typeof value !== 'number' ||
-        !Number.isInteger(value) ||
-        value < bound.min ||
-        value > bound.max
+        turnPolicy.schema !== 'vict.agent-turn-policy@2' ||
+        turnPolicy.mode !== 'until-completion-or-cancel'
       ) {
         collector.add(
-          'AGENT_PROFILE_INVALID_BOUND',
-          `'(profile).turnPolicy.${field}' must be an integer within [${bound.min}, ${bound.max}].`,
-          `(profile).turnPolicy.${field}`,
+          'AGENT_PROFILE_INVALID_ENUM',
+          'Use exact vict.agent-turn-policy@2 with mode until-completion-or-cancel.',
+          '(profile).turnPolicy',
         );
       }
-    }
-    const onLimit = turnPolicy.onLimit;
-    if (onLimit === undefined) {
-      collector.add(
-        'AGENT_PROFILE_REQUIRED_MEMBER',
-        `'(profile).turnPolicy.onLimit' is required.`,
-        '(profile).turnPolicy.onLimit',
-      );
-    } else if (onLimit !== 'fail-closed') {
-      collector.add(
-        'AGENT_PROFILE_INVALID_ENUM',
-        `'(profile).turnPolicy.onLimit' must be 'fail-closed'; no other loop policy is accepted by this schema revision.`,
-        '(profile).turnPolicy.onLimit',
-      );
+    } else {
+      checkClosedFields(turnPolicy, TURN_POLICY_FIELDS, '(profile).turnPolicy', collector);
+      for (const [field, bound] of Object.entries(TURN_BOUNDS)) {
+        const value = turnPolicy[field];
+        if (value === undefined) {
+          collector.add(
+            'AGENT_PROFILE_REQUIRED_MEMBER',
+            `'(profile).turnPolicy.${field}' is required.`,
+            `(profile).turnPolicy.${field}`,
+          );
+          continue;
+        }
+        if (
+          typeof value !== 'number' ||
+          !Number.isInteger(value) ||
+          value < bound.min ||
+          value > bound.max
+        ) {
+          collector.add(
+            'AGENT_PROFILE_INVALID_BOUND',
+            `'(profile).turnPolicy.${field}' must be an integer within [${bound.min}, ${bound.max}].`,
+            `(profile).turnPolicy.${field}`,
+          );
+        }
+      }
+      const onLimit = turnPolicy.onLimit;
+      if (onLimit === undefined) {
+        collector.add(
+          'AGENT_PROFILE_REQUIRED_MEMBER',
+          `'(profile).turnPolicy.onLimit' is required.`,
+          '(profile).turnPolicy.onLimit',
+        );
+      } else if (onLimit !== 'fail-closed') {
+        collector.add(
+          'AGENT_PROFILE_INVALID_ENUM',
+          `'(profile).turnPolicy.onLimit' must be 'fail-closed'; no other loop policy is accepted by this schema revision.`,
+          '(profile).turnPolicy.onLimit',
+        );
+      }
     }
   } else {
     collector.add(
@@ -1070,11 +1084,17 @@ function buildCanonicalManifest(profile: AgentProfileAuthoring): Record<string, 
         providerCredentialVar: profile.modelProfile.providerCredentialVar ?? null,
       },
       generation,
-      turnPolicy: {
-        maxSteps: profile.turnPolicy.maxSteps,
-        maxToolCalls: profile.turnPolicy.maxToolCalls,
-        onLimit: profile.turnPolicy.onLimit,
-      },
+      turnPolicy:
+        profile.turnPolicy.schema === 'vict.agent-turn-policy@2'
+          ? {
+              schema: profile.turnPolicy.schema,
+              mode: profile.turnPolicy.mode,
+            }
+          : {
+              maxSteps: profile.turnPolicy.maxSteps,
+              maxToolCalls: profile.turnPolicy.maxToolCalls,
+              onLimit: profile.turnPolicy.onLimit,
+            },
       memoryPolicy: referenceEntry(profile.memoryPolicy),
       processors: orderedEntries(profile.processors),
       guardrails: orderedEntries(profile.guardrails),

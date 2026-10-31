@@ -7,7 +7,6 @@ import {
   validateAgentStart,
 } from '$lib/server/designer-agent.js';
 import { agentJson } from '$lib/server/designer-agent-http.js';
-import { AGENT_STREAM_BYTES } from '$lib/designer/agent-transport.js';
 
 export const GET: RequestHandler = ({ locals }) => {
   if (!locals.session)
@@ -28,67 +27,56 @@ export const POST: RequestHandler = async ({ request, locals }) => {
   const owner = locals.session!.sessionId;
   let runId = '';
   let closed = false;
-  let bytes = 0;
   const encoder = new TextEncoder();
-  const stream = new ReadableStream<Uint8Array>(
-    {
-      start(controller) {
-        const opened = openAgentRun(owner, checked.value, (event) => {
-          if (closed) return;
-          const chunk = encoder.encode(JSON.stringify(event) + '\n');
-          bytes += chunk.byteLength;
-          if (bytes > AGENT_STREAM_BYTES - 1000 || (controller.desiredSize ?? 0) < -256_000) {
-            closed = true;
-            if (runId) cancelAgentRun(owner, runId);
-            controller.enqueue(encoder.encode(JSON.stringify({type:'done',status:'failed',code:'STUDIO_AGENT_STREAM_LIMIT',applied:0,termination:{status:'transport-limit',code:'STUDIO_AGENT_STREAM_LIMIT'}})+'\n'));
-            controller.close();
-            return;
-          }
-          try {
-            controller.enqueue(chunk);
-            // Terminal delivery ends the client request. Private store cleanup
-            // continues within the host's bounded lifecycle/capacity accounting.
-            if (event.type === 'done') {
-              closed = true;
-              controller.close();
-            }
-          } catch {
-            closed = true;
-            if (runId) cancelAgentRun(owner, runId);
-          }
-        });
-        if (!opened.ok) {
-          controller.enqueue(
-            encoder.encode(
-              JSON.stringify({ type: 'done', status: 'failed', code: opened.code, applied: 0 }) +
-                '\n',
-            ),
-          );
-          closed = true;
-          controller.close();
-          return;
-        }
-        runId = opened.runId;
-        const abort = () => {
-          cancelAgentRun(owner, runId);
-        };
-        request.signal.addEventListener('abort', abort, { once: true });
-        if (request.signal.aborted) abort();
-        void opened.finished.finally(() => {
-          request.signal.removeEventListener('abort', abort);
-          if (!closed) {
-            closed = true;
-            controller.close();
-          }
-        });
-      },
-      cancel() {
-        closed = true;
-        if (runId) cancelAgentRun(owner, runId);
-      },
-    },
-    { highWaterMark: 64_000, size: (chunk) => chunk.byteLength },
-  );
+  // Awaited writes propagate the actual consumer's demand. There is no
+  // cumulative byte quota and no detached promise queue of pending frames.
+  const channel = new TransformStream<Uint8Array, Uint8Array>();
+  const writer = channel.writable.getWriter();
+  const close = async () => {
+    if (closed) return;
+    closed = true;
+    await writer.close().catch(() => undefined);
+  };
+  void writer.closed.catch(() => {
+    closed = true;
+    if (runId) cancelAgentRun(owner, runId);
+  });
+  const opened = openAgentRun(owner, checked.value, async (event) => {
+    if (closed) return;
+    try {
+      await writer.ready;
+      await writer.write(encoder.encode(JSON.stringify(event) + '\n'));
+      if (event.type === 'done') await close();
+    } catch {
+      closed = true;
+      if (runId) cancelAgentRun(owner, runId);
+    }
+  });
+  if (!opened.ok) {
+    void writer
+      .write(
+        encoder.encode(
+          JSON.stringify({ type: 'done', status: 'failed', code: opened.code, applied: 0 }) + '\n',
+        ),
+      )
+      .then(close)
+      .catch(() => undefined);
+  } else {
+    runId = opened.runId;
+    const abort = () => {
+      cancelAgentRun(owner, runId);
+      void writer.abort().catch(() => undefined);
+    };
+    request.signal.addEventListener('abort', abort, { once: true });
+    if (request.signal.aborted) abort();
+    void opened.finished
+      .finally(() => {
+        request.signal.removeEventListener('abort', abort);
+        void close();
+      })
+      .catch(() => undefined);
+  }
+  const stream = channel.readable;
   return new Response(stream, {
     headers: {
       'content-type': 'application/x-ndjson; charset=utf-8',

@@ -49,7 +49,7 @@ export interface AgentStreamSubscriber {
    * switches this subscriber to buffered mode with delta coalescing until
    * it drains via `pull()`.
    */
-  deliver(event: AgentStreamEvent): boolean;
+  deliver(event: AgentStreamEvent): boolean | Promise<boolean>;
   /**
    * Called when the subscriber's bounded pending queue OVERFLOWS, immediately
    * before the hub detaches the subscriber. The transport MUST recover by
@@ -172,7 +172,7 @@ export class AgentStreamHub {
     if (!isDurableStreamKind(event.kind)) {
       pushBounded(state.buffer, assigned, this.#transientBufferSize);
     }
-    this.#deliver(state, assigned);
+    await this.#deliver(state, assigned);
     return assigned;
   }
 
@@ -237,7 +237,7 @@ export class AgentStreamHub {
       this.#overflow(state, entry);
       return;
     }
-    this.#flushPending(state, entry);
+    await this.#flushPending(state, entry);
   }
 
   /** Detach a subscriber (clean completion/cancellation/overflow). */
@@ -401,7 +401,7 @@ export class AgentStreamHub {
   }
 
   /** Deliver to every subscriber; slow subscribers buffer with coalescing. */
-  #deliver(state: StreamState, event: AgentStreamEvent): void {
+  async #deliver(state: StreamState, event: AgentStreamEvent): Promise<void> {
     for (const entry of [...state.subscribers.values()]) {
       if (entry.detached) {
         continue;
@@ -424,7 +424,8 @@ export class AgentStreamHub {
         // mutate an event the replay buffer (or another subscriber) reads.
         // A `false` return means the event was ACCEPTED and the transport
         // is saturated: only SUBSEQUENT events buffer.
-        if (!entry.subscriber.deliver(cloneEvent(event))) {
+        const delivery = entry.subscriber.deliver(cloneEvent(event));
+        if (!(typeof delivery === 'boolean' ? delivery : await delivery)) {
           entry.slow = true;
         }
         continue;
@@ -471,12 +472,13 @@ export class AgentStreamHub {
   }
 
   /** Deliver the pending queue of a slow subscriber (subscribe epilogue). */
-  #flushPending(state: StreamState, entry: SubscriberState): void {
+  async #flushPending(state: StreamState, entry: SubscriberState): Promise<void> {
     while (entry.pending.length > 0 && !entry.detached) {
       const next = entry.pending[0]!;
       if (!entry.slow) {
         entry.pending.shift();
-        if (!entry.subscriber.deliver(next)) {
+        const delivery = entry.subscriber.deliver(next);
+        if (!(typeof delivery === 'boolean' ? delivery : await delivery)) {
           entry.slow = true;
         }
         continue;

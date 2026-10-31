@@ -72,11 +72,11 @@ export interface AgentGenerationOptions {
 }
 
 /**
- * Stop/iteration/tool-call/loop policy. Bounded and enumerated; unbounded
- * loops are not representable. `onLimit` is a closed enum — `fail-closed`
- * is the only accepted policy in this schema revision.
+ * Retained finite policy. Its existing shape, bounds and identity are unchanged.
  */
-export interface AgentTurnPolicy {
+export interface BoundedAgentTurnPolicy {
+  readonly schema?: never;
+  readonly mode?: never;
   /** Maximum model steps per turn in [1, 64]. */
   readonly maxSteps: number;
   /** Maximum tool calls per turn in [0, 64]. */
@@ -84,6 +84,17 @@ export interface AgentTurnPolicy {
   /** Behavior at any limit. Only `'fail-closed'` is accepted. */
   readonly onLimit: 'fail-closed';
 }
+
+/** Explicit opt-in; the host must retain cancellation and authority fences.
+ * Completion and provider failures still terminate the turn. No count is inferred. */
+export interface CancellationOnlyAgentTurnPolicy {
+  readonly schema: 'vict.agent-turn-policy@2';
+  readonly mode: 'until-completion-or-cancel';
+  readonly maxSteps?: never;
+  readonly maxToolCalls?: never;
+  readonly onLimit?: never;
+}
+export type AgentTurnPolicy = BoundedAgentTurnPolicy | CancellationOnlyAgentTurnPolicy;
 
 /**
  * The adapter compatibility marker (amendment §6.1 component 14):

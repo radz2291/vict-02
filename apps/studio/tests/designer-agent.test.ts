@@ -10,7 +10,6 @@ import {
   type AgentEdit,
   type AgentProposal,
 } from '../src/lib/designer/agent-edits.js';
-import { AGENT_REQUEST_BYTES } from '../src/lib/designer/agent-transport.js';
 import { agentJson } from '../src/lib/server/designer-agent-http.js';
 
 function setup() {
@@ -170,8 +169,15 @@ describe('agent canonical editing boundary', () => {
       attributes: { type: 'email', 'aria-label': 'Email' },
     });
     if (input?.kind === 'element') {
-      expect(input.attributes?.value).toEqual({type:'ref',path:'state.input_email'});
-      expect(input.interactions).toEqual([{on:'change',action:'setState',key:'input_email',value:{type:'ref',path:'state.input_email'}}]);
+      expect(input.attributes?.value).toEqual({ type: 'ref', path: 'state.input_email' });
+      expect(input.interactions).toEqual([
+        {
+          on: 'change',
+          action: 'setState',
+          key: 'input_email',
+          value: { type: 'ref', path: 'state.input_email' },
+        },
+      ]);
     }
     bridge.select('screen-test|email');
     expect(
@@ -291,16 +297,34 @@ describe('agent canonical editing boundary', () => {
 });
 describe('agent HTTP request guard', () => {
   const session = { sessionId: 'test', actorLabel: 'operator', csrfToken: 'csrf' };
-  it('discards an oversized streamed body without cancelling the adapter socket before its JSON refusal',async()=>{
-    let reads=0,cancelled=false;
-    const body=new ReadableStream<Uint8Array>({pull(controller){reads++;if(reads<=13)controller.enqueue(new Uint8Array(100_000));else controller.close();},cancel(){cancelled=true;}});
-    const request=new Request('http://localhost',{method:'POST',headers:{'content-type':'application/json','x-vict-csrf':'csrf'},body,duplex:'half'} as RequestInit);
-    const result=await agentJson(request,session);
-    expect(result.ok).toBe(false);if(result.ok)throw Error('Expected bounded refusal');
-    expect(result.response.status).toBe(413);expect(await result.response.json()).toMatchObject({code:'STUDIO_AGENT_REQUEST_LIMIT'});
-    expect(reads).toBe(14);expect(cancelled).toBe(false);
+  it('reads a complete streamed malformed body without cancelling the adapter socket', async () => {
+    let reads = 0,
+      cancelled = false;
+    const body = new ReadableStream<Uint8Array>({
+      pull(controller) {
+        reads++;
+        if (reads <= 13) controller.enqueue(new Uint8Array(100_000));
+        else controller.close();
+      },
+      cancel() {
+        cancelled = true;
+      },
+    });
+    const request = new Request('http://localhost', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', 'x-vict-csrf': 'csrf' },
+      body,
+      duplex: 'half',
+    } as RequestInit);
+    const result = await agentJson(request, session);
+    expect(result.ok).toBe(false);
+    if (result.ok) throw Error('Expected malformed JSON refusal');
+    expect(result.response.status).toBe(400);
+    expect(await result.response.json()).toMatchObject({ code: 'STUDIO_AGENT_REQUEST' });
+    expect(reads).toBe(14);
+    expect(cancelled).toBe(false);
   });
-  it('refuses unauthenticated, non-JSON, bad-CSRF, oversized and malformed requests', async () => {
+  it('refuses unauthenticated, non-JSON, bad-CSRF and malformed requests', async () => {
     for (const [request, actor, status] of [
       [new Request('http://localhost', { method: 'POST', body: '{}' }), null, 401],
       [
@@ -325,10 +349,10 @@ describe('agent HTTP request guard', () => {
         new Request('http://localhost', {
           method: 'POST',
           headers: { 'content-type': 'application/json', 'x-vict-csrf': 'csrf' },
-          body: 'x'.repeat(AGENT_REQUEST_BYTES+1),
+          body: 'x'.repeat(1_200_001),
         }),
         session,
-        413,
+        400,
       ],
       [
         new Request('http://localhost', {

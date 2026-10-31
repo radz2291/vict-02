@@ -1,5 +1,9 @@
-import {createStudioInputValidationFeedback,studioContractValidationIssues,studioValidationRejection} from './designer-validation-feedback.js';
-import {studioInputShape} from './designer-input-shape.js';
+import {
+  createStudioInputValidationFeedback,
+  studioContractValidationIssues,
+  studioValidationRejection,
+} from './designer-validation-feedback.js';
+import { studioInputShape } from './designer-input-shape.js';
 /** Server-only composition. Mastra owns the loop, VICT owns capabilities/turns. */
 import { randomUUID, createHash } from 'node:crypto';
 import { mkdtemp, rm } from 'node:fs/promises';
@@ -36,31 +40,92 @@ import {
   type AgentProposal,
   type EditReceipt,
 } from '$lib/designer/agent-edits.js';
-import {selectionSetSchema,validSelectionSet} from '$lib/designer/selection-context.js';
-import {agentMediaInventorySchema} from '$lib/designer/media-assets.js';
+import { selectionSetSchema, validSelectionSet } from '$lib/designer/selection-context.js';
+import { agentMediaInventorySchema } from '$lib/designer/media-assets.js';
 import { installedAuthoringRegistry } from '$lib/designer/authoring.js';
-import { screenIssues, catalogDescriptors, screenActionState, designerCatalogs } from '$lib/designer/application.js';
+import {
+  screenIssues,
+  catalogDescriptors,
+  screenActionState,
+  designerCatalogs,
+} from '$lib/designer/application.js';
 import { studioPreviewHostGuidance } from '$lib/designer/preview-host.js';
 import type { UiDocument } from '@victframework/ui';
 import { createVisualObserver, visualModelSupport } from './designer-visual.js';
 import { boundedProviderModel, studioProviderModel } from './designer-model.js';
-import { createTurnMetrics, createObservationLedger, createContractKnowledge, readCategory, type ToolFailure, type TurnMetrics } from '$lib/designer/agent-progress.js';
-import { STUDIO_TOOL_EVIDENCE_SCHEMA, TOOL_ARCHIVE_SCHEMA, type ToolArchiveReference, type StudioToolEvidence, type EvidenceTool } from '$lib/designer/tool-evidence.js';
+import {
+  createTurnMetrics,
+  createObservationLedger,
+  createContractKnowledge,
+  readCategory,
+  type ToolFailure,
+  type TurnMetrics,
+} from '$lib/designer/agent-progress.js';
+import {
+  STUDIO_TOOL_EVIDENCE_SCHEMA,
+  TOOL_ARCHIVE_SCHEMA,
+  type ToolArchiveReference,
+  type StudioToolEvidence,
+  type EvidenceTool,
+} from '$lib/designer/tool-evidence.js';
 import { createToolEvidenceProducer } from './tool-evidence.js';
 import { toolEvidenceArchive } from './tool-evidence-archive.js';
 import { agentTaskContexts } from './agent-task-context.js';
-import { isProviderLimitEvidence,type ProviderLimitEvidence } from '$lib/designer/provider-limit.js';
+import {
+  isProviderLimitEvidence,
+  type ProviderLimitEvidence,
+} from '$lib/designer/provider-limit.js';
 
 /** Server-owned contracts are reinstalled in a fresh registry for each turn.
  * Identity-required pagination is a new host protocol, not an in-place @1 change. */
-export const STUDIO_AGENT_PROTOCOL={readCapabilityRevision:'8',readInputRevision:'8',editCapabilityRevision:'7',editInputRevision:'7',instructionsRevision:'13',profileRevision:'15',startInputRevision:'3',observationInstructionsRevision:'5',observationProfileRevision:'9'} as const;
+export const STUDIO_AGENT_PROTOCOL = {
+  readCapabilityRevision: '9',
+  readInputRevision: '9',
+  editCapabilityRevision: '8',
+  editInputRevision: '8',
+  instructionsRevision: '14',
+  profileRevision: '16',
+  startInputRevision: '4',
+  observationInstructionsRevision: '6',
+  observationProfileRevision: '10',
+} as const;
 
 export type StudioAgentEvent =
   | StudioToolEvidence
   | ToolArchiveReference
-  | { type: 'tool-event'; id: string; sequence: number; elapsedMs?: number; kind: 'tool-start' | 'observation' | 'validation-refused' | 'proposed' | 'committed' | 'tool-failed'; tool: string; callId?: string; summary: string; details?: string }
-  | { type: 'schema-diagnostic'; id: string; scope: 'contract-validation'; tool: string; evaluations: number; firstElapsedMs: number; lastElapsedMs: number; details: string }
-  | { type: 'capture-request'; captureId: string; cursor: AgentCursor; target?:{nodeId:string;part?:string} }
+  | {
+      type: 'tool-event';
+      id: string;
+      sequence: number;
+      elapsedMs?: number;
+      kind:
+        | 'tool-start'
+        | 'observation'
+        | 'validation-refused'
+        | 'proposed'
+        | 'committed'
+        | 'tool-failed';
+      tool: string;
+      callId?: string;
+      summary: string;
+      details?: string;
+    }
+  | {
+      type: 'schema-diagnostic';
+      id: string;
+      scope: 'contract-validation';
+      tool: string;
+      evaluations: number;
+      firstElapsedMs: number;
+      lastElapsedMs: number;
+      details: string;
+    }
+  | {
+      type: 'capture-request';
+      captureId: string;
+      cursor: AgentCursor;
+      target?: { nodeId: string; part?: string };
+    }
   | { type: 'started'; runId: string; model: string; engine: 'VICT / Mastra' }
   | { type: 'progress'; message: string }
   | { type: 'text'; delta: string }
@@ -75,11 +140,28 @@ export type StudioAgentEvent =
       unresolvedTools?: string[];
       toolFailures?: ToolFailure[];
       metrics?: TurnMetrics;
-      providerLimit?:ProviderLimitEvidence;
-      sourceEvidence?: { nodeCount: number; stateCount: number; confirmedEdits: number; appearanceObserved: boolean; semanticClaimsVerified?: false; interactionsVerified: false };
+      providerLimit?: ProviderLimitEvidence;
+      sourceEvidence?: {
+        nodeCount: number;
+        stateCount: number;
+        confirmedEdits: number;
+        appearanceObserved: boolean;
+        semanticClaimsVerified?: false;
+        interactionsVerified: false;
+      };
       visualEvidence?: ReturnType<ReturnType<typeof createObservationLedger>['snapshot']>;
       confirmedRevision?: string;
-      coverage?: { available: number; authored: number; catalogAuthored?: number; registeredAuthored?: number; requested?: number; scope?: string; missing: string[]; missingCount?: number; moreMissing?: boolean };
+      coverage?: {
+        available: number;
+        authored: number;
+        catalogAuthored?: number;
+        registeredAuthored?: number;
+        requested?: number;
+        scope?: string;
+        missing: string[];
+        missingCount?: number;
+        moreMissing?: boolean;
+      };
       verification?: 'source-only';
       turnId?: string;
       profileVersion?: string;
@@ -113,12 +195,15 @@ export function agentConfiguration() {
 
 const startSchema = z
   .object({
-    prompt: z.string().trim().min(1).max(6000),
-    mode:z.literal('observe-only').optional(),
-    observationTask:z.string().trim().min(1).max(6000).optional(),
-    observationTarget:z.object({nodeId:z.string().min(1).max(160),part:z.string().min(1).max(160).optional()}).strict().optional(),
+    prompt: z.string().trim().min(1),
+    mode: z.literal('observe-only').optional(),
+    observationTask: z.string().trim().min(1).optional(),
+    observationTarget: z
+      .object({ nodeId: z.string().min(1).max(160), part: z.string().min(1).max(160).optional() })
+      .strict()
+      .optional(),
     document: z.unknown(),
-    mediaInventory:agentMediaInventorySchema.optional(),
+    mediaInventory: agentMediaInventorySchema.optional(),
     cursor: z
       .object({
         documentId: z.string().min(1).max(160),
@@ -131,23 +216,47 @@ const startSchema = z
     selectionSet: selectionSetSchema.optional(),
     toolEvidenceSchema: z.literal(STUDIO_TOOL_EVIDENCE_SCHEMA).optional(),
     toolEvidenceArchiveSchema: z.literal(TOOL_ARCHIVE_SCHEMA).optional(),
-    workspace: z.object({
-      workspaceView:z.enum(['design','interact','structure']),mode:z.enum(['design','interact']),observable:z.boolean(),reason:z.enum(['preview-covered','frame-missing','no-layout']).optional(),
-      viewport:z.object({model:z.enum(['isolated-viewport','hosted-container']),width:z.number().finite().min(0).max(100_000),height:z.number().finite().min(0).max(100_000),devicePixelRatio:z.number().finite().positive().max(16),scrollLeft:z.number().finite(),scrollTop:z.number().finite()}).strict(),
-      composition:z.string().max(500).optional(),
-    }).strict().optional(),
-    history: z
-      .array(
-        z
-          .object({ participant: z.enum(['user', 'assistant']), text: z.string().max(6000) })
+    workspace: z
+      .object({
+        workspaceView: z.enum(['design', 'interact', 'structure']),
+        mode: z.enum(['design', 'interact']),
+        observable: z.boolean(),
+        reason: z.enum(['preview-covered', 'frame-missing', 'no-layout']).optional(),
+        viewport: z
+          .object({
+            model: z.enum(['isolated-viewport', 'hosted-container']),
+            width: z.number().finite().min(0).max(100_000),
+            height: z.number().finite().min(0).max(100_000),
+            devicePixelRatio: z.number().finite().positive().max(16),
+            scrollLeft: z.number().finite(),
+            scrollTop: z.number().finite(),
+          })
           .strict(),
-      )
-      .max(12)
+        composition: z.string().max(500).optional(),
+      })
+      .strict()
+      .optional(),
+    history: z
+      .array(z.object({ participant: z.enum(['user', 'assistant']), text: z.string() }).strict())
       .default([]),
   })
-  .strict().superRefine((value,ctx)=>{
-    if(value.mode==='observe-only'&&!value.observationTask)ctx.addIssue({code:'custom',path:['observationTask'],message:'Observation continuation requires the retained task.'});
-    if(!value.mode&&(value.observationTask!==undefined||value.observationTarget!==undefined))ctx.addIssue({code:'custom',path:['mode'],message:'Observation context is valid only in observe-only mode.'});
+  .strict()
+  .superRefine((value, ctx) => {
+    if (value.mode === 'observe-only' && !value.observationTask)
+      ctx.addIssue({
+        code: 'custom',
+        path: ['observationTask'],
+        message: 'Observation continuation requires the retained task.',
+      });
+    if (
+      !value.mode &&
+      (value.observationTask !== undefined || value.observationTarget !== undefined)
+    )
+      ctx.addIssue({
+        code: 'custom',
+        path: ['mode'],
+        message: 'Observation context is valid only in observe-only mode.',
+      });
   });
 export function validateAgentStart(input: unknown) {
   const parsed = startSchema.safeParse(input);
@@ -158,27 +267,45 @@ export function validateAgentStart(input: unknown) {
     );
   try {
     const document = parsed.data.document as UiDocument;
-    if (JSON.stringify(document)?.length > 200_000) return failure('STUDIO_AGENT_SOURCE_LIMIT','The screen exceeds 200000 source characters. Reduce the screen before retrying; this is not provider connectivity.');
-    if (Object.keys(document?.nodes ?? {}).length > 500) return failure('STUDIO_AGENT_SOURCE_LIMIT','The screen exceeds 500 source nodes. Reduce the screen before retrying.');
-    if (
-      !document ||
-      Object.keys(document.nodes ?? {}).length > 500 ||
-      screenIssues(document).length
-    )
+    if (!document || screenIssues(document).length)
       return failure(
         'STUDIO_AGENT_SOURCE',
         'The screen must compile before the agent can edit it. Resolve source diagnostics first.',
       );
     const cursor = documentCursor(document, parsed.data.cursor.revision, parsed.data.cursor.epoch);
-    if(parsed.data.mediaInventory&&parsed.data.mediaInventory.documentId!==document.id)return failure('STUDIO_AGENT_MEDIA_SCOPE','Media inventory belongs to another document. Refresh the current screen library before retrying.');
+    if (parsed.data.mediaInventory && parsed.data.mediaInventory.documentId !== document.id)
+      return failure(
+        'STUDIO_AGENT_MEDIA_SCOPE',
+        'Media inventory belongs to another document. Refresh the current screen library before retrying.',
+      );
     if (JSON.stringify(cursor) !== JSON.stringify(parsed.data.cursor))
       return failure(
         'UI_DOC_STALE_REVISION',
         'The source does not match the captured revision and digest.',
       );
-    if(parsed.data.selectionSet&&!validSelectionSet(document,parsed.data.selectionSet,{descriptors:catalogDescriptors,actionState:screenActionState,actionIds:designerCatalogs.actionIds,routeIds:designerCatalogs.routeIds}))return failure('STUDIO_AGENT_SELECTION','Selection references do not match this source. Select the items again before sending.');
-    if(parsed.data.mode==='observe-only'&&parsed.data.workspace?.observable===false)return failure('STUDIO_CAPTURE_NOT_VISIBLE','Reveal the Design or Interact preview before retrying observation. No model request or edit was made.');
-    if(parsed.data.observationTarget&&!document.nodes[parsed.data.observationTarget.nodeId])return failure('STUDIO_AGENT_OBSERVATION_TARGET','The retained observation target is absent from this source. Inspect the current screen before continuing.');
+    if (
+      parsed.data.selectionSet &&
+      !validSelectionSet(document, parsed.data.selectionSet, {
+        descriptors: catalogDescriptors,
+        actionState: screenActionState,
+        actionIds: designerCatalogs.actionIds,
+        routeIds: designerCatalogs.routeIds,
+      })
+    )
+      return failure(
+        'STUDIO_AGENT_SELECTION',
+        'Selection references do not match this source. Select the items again before sending.',
+      );
+    if (parsed.data.mode === 'observe-only' && parsed.data.workspace?.observable === false)
+      return failure(
+        'STUDIO_CAPTURE_NOT_VISIBLE',
+        'Reveal the Design or Interact preview before retrying observation. No model request or edit was made.',
+      );
+    if (parsed.data.observationTarget && !document.nodes[parsed.data.observationTarget.nodeId])
+      return failure(
+        'STUDIO_AGENT_OBSERVATION_TARGET',
+        'The retained observation target is absent from this source. Inspect the current screen before continuing.',
+      );
     return { ok: true as const, value: { ...parsed.data, document, cursor } };
   } catch {
     return failure('STUDIO_AGENT_SOURCE', 'The screen could not be validated.');
@@ -217,14 +344,23 @@ export function acknowledgeAgentEdit(
   pending.resolve(receipt);
   return true;
 }
-export function cancelAgentRun(owner: string, runId: string, reason: 'user' | 'deadline' = 'user'): boolean {
+export function cancelAgentRun(
+  owner: string,
+  runId: string,
+  reason: 'user' | 'deadline' = 'user',
+): boolean {
   const run = runs.get(runId);
   if (!run || run.owner !== owner) return false;
   run.cancellationReason ??= reason;
   run.aborted = true;
   run.controller.abort();
   run.pending?.resolve(
-    failure(run.cancellationReason === 'deadline' ? 'STUDIO_AGENT_TIME_LIMIT' : 'STUDIO_AGENT_CANCELLED', run.cancellationReason === 'deadline' ? 'The turn reached its time limit. Previously applied edits remain in history; continue from the current source.' : 'Stopped. Previously applied edits remain in history.'),
+    failure(
+      run.cancellationReason === 'deadline' ? 'STUDIO_AGENT_TIME_LIMIT' : 'STUDIO_AGENT_CANCELLED',
+      run.cancellationReason === 'deadline'
+        ? 'The turn reached its time limit. Previously applied edits remain in history; continue from the current source.'
+        : 'Stopped. Previously applied edits remain in history.',
+    ),
   );
   run.pending = undefined;
   void run.cancel?.().catch(() => undefined);
@@ -251,8 +387,13 @@ ${publicOutputPolicy}`;
 export function openAgentRun(
   owner: string,
   start: Start,
-  emit: (event: StudioAgentEvent) => void,
-  options?: { modelFactory: MastraProductAgentConfig['modelFactory']; model: string; deadlineMs?: number; visualModelFactory?:()=>object },
+  emit: (event: StudioAgentEvent) => unknown,
+  options?: {
+    modelFactory: MastraProductAgentConfig['modelFactory'];
+    model: string;
+    deadlineMs?: number;
+    visualModelFactory?: () => object;
+  },
 ) {
   // Completed/cancelled turns may still be flushing their private store. They
   // remain counted toward global capacity until cleanup, but no longer own the
@@ -261,7 +402,12 @@ export function openAgentRun(
     return { ok: false as const, code: 'STUDIO_AGENT_BUSY' };
   if (runs.size >= 4) return { ok: false as const, code: 'STUDIO_AGENT_CAPACITY' };
   const configuration = agentConfiguration();
-  if(start.mode==='observe-only'&&!options&&!visualModelSupport(configuration.model).supported)return {ok:false as const,code:'STUDIO_CAPTURE_MODEL_UNSUPPORTED'};
+  if (
+    start.mode === 'observe-only' &&
+    !options &&
+    !visualModelSupport(configuration.model).supported
+  )
+    return { ok: false as const, code: 'STUDIO_CAPTURE_MODEL_UNSUPPORTED' };
   if (!options && !configuration.ready)
     return { ok: false as const, code: 'STUDIO_AGENT_UNCONFIGURED' };
   const run: ActiveRun = {
@@ -274,29 +420,41 @@ export function openAgentRun(
   runs.set(run.runId, run);
   const model = options?.model ?? configuration.model;
   let terminalSent = false;
-  const send = (event: StudioAgentEvent) => {
+  const send = async (event: StudioAgentEvent) => {
     if (terminalSent) return;
     if (event.type === 'done') {
       terminalSent = true;
       run.fenced = true;
     }
-    emit(event);
+    await emit(event);
   };
-  send({ type: 'started', runId: run.runId, model, engine: 'VICT / Mastra' });
-  const finished = execute(run, start, send, model, options?.modelFactory, options?.deadlineMs,options?.visualModelFactory).finally(() =>
-    runs.delete(run.runId),
-  );
+  const initialDelivery = send({
+    type: 'started',
+    runId: run.runId,
+    model,
+    engine: 'VICT / Mastra',
+  });
+  void initialDelivery.catch(() => cancelAgentRun(owner, run.runId));
+  const finished = execute(
+    run,
+    start,
+    send,
+    model,
+    options?.modelFactory,
+    options?.deadlineMs,
+    options?.visualModelFactory,
+  ).finally(() => runs.delete(run.runId));
   return { ok: true as const, runId: run.runId, finished };
 }
 
 async function execute(
   run: ActiveRun,
   start: Start,
-  emit: (event: StudioAgentEvent) => void,
+  emit: (event: StudioAgentEvent) => unknown,
   model: string,
   modelFactory?: MastraProductAgentConfig['modelFactory'],
   testDeadlineMs?: number,
-  testVisualFactory?:()=>object,
+  testVisualFactory?: () => object,
 ) {
   let directory: string | undefined;
   let dedicated: Awaited<ReturnType<typeof createDedicatedMastraStore>> | undefined;
@@ -307,65 +465,189 @@ async function execute(
   let visualObserver: ReturnType<typeof createVisualObserver> | undefined;
   // GLM's published 128K output window includes reasoning. Preserve its
   // default thinking behavior and allow the complete multi-step turn to finish.
-  const turnTimeoutMs = testDeadlineMs ?? (model === 'zai/glm-5.3-flash' ? 1_800_000 : 180_000);
-  const deadlineAt = Date.now() + turnTimeoutMs;
+  // Normal turns end on completion, failure or cancellation. Explicit deadlines
+  // are test-only injection; no provider/model-specific host timebox is inferred.
+  const deadlineAt = testDeadlineMs === undefined ? undefined : Date.now() + testDeadlineMs;
   let document = start.document;
   let cursor: AgentCursor = start.cursor;
   let editChain = Promise.resolve();
   let providerFailed!: () => void;
   let providerFailureCode = 'STUDIO_AGENT_PROVIDER_FAILED';
-  let providerLimit:ProviderLimitEvidence|undefined;
+  let providerLimit: ProviderLimitEvidence | undefined;
   const unresolvedTools = new Set<string>();
-  const toolFailures = new Map<string,ToolFailure>();
-  const metrics=createTurnMetrics();
-  const observations=createObservationLedger();
-  const knowledge=createContractKnowledge();
-  let appearanceObserved=false;
+  const toolFailures = new Map<string, ToolFailure>();
+  const metrics = createTurnMetrics();
+  const observations = createObservationLedger();
+  const knowledge = createContractKnowledge();
+  let appearanceObserved = false;
   let lastEditFailure: string | undefined;
-  let lastValidation: {ok:false;code:string;message:string;diagnostics?:unknown} | undefined;
-  const evidenceSecrets = Object.entries(process.env).filter(([key]) => /KEY|TOKEN|PASSWORD|SECRET|CREDENTIAL/i.test(key)).map(([, value]) => value ?? '');
-  const evidence = createToolEvidenceProducer(run.runId, start.toolEvidenceSchema === STUDIO_TOOL_EVIDENCE_SCHEMA,
-    event => { if (!run.aborted && !run.fenced) emit(event); },
-    evidenceSecrets, start.toolEvidenceArchiveSchema === TOOL_ARCHIVE_SCHEMA ? (tool, callId, phase, value) => {
-      if (run.aborted || run.fenced) return;
-      const reference = toolEvidenceArchive.retain(run.owner, run.runId, tool, callId, phase, value, evidenceSecrets);
-      if (reference) emit(reference);
-    } : undefined);
+  let lastValidation:
+    { ok: false; code: string; message: string; diagnostics?: unknown } | undefined;
+  const evidenceSecrets = Object.entries(process.env)
+    .filter(([key]) => /KEY|TOKEN|PASSWORD|SECRET|CREDENTIAL/i.test(key))
+    .map(([, value]) => value ?? '');
+  const evidence = createToolEvidenceProducer(
+    run.runId,
+    start.toolEvidenceSchema === STUDIO_TOOL_EVIDENCE_SCHEMA,
+    async (event) => {
+      if (!run.aborted && !run.fenced) await emit(event);
+    },
+    evidenceSecrets,
+    start.toolEvidenceArchiveSchema === TOOL_ARCHIVE_SCHEMA
+      ? async (tool, callId, phase, value) => {
+          if (run.aborted || run.fenced) return;
+          const reference = await toolEvidenceArchive.retain(
+            run.owner,
+            run.runId,
+            tool,
+            callId,
+            phase,
+            value,
+            evidenceSecrets,
+          );
+          if (reference) await emit(reference);
+        }
+      : undefined,
+  );
   let toolSequence = 0;
-  const schemaDiagnostics=new Map<string,{id:string;evaluations:number;firstElapsedMs:number}>();
-  const schemaDiagnostic=(tool:string,details:unknown)=>{
-    if(run.aborted||run.fenced)return;
-    const serialized=JSON.stringify(details)??'null';
+  const schemaDiagnostics = new Map<
+    string,
+    { id: string; evaluations: number; firstElapsedMs: number }
+  >();
+  const pendingDiagnostics = new Map<string, StudioAgentEvent>();
+  const flushDiagnostics = async () => {
+    for (const [id, event] of pendingDiagnostics) {
+      pendingDiagnostics.delete(id);
+      await emit(event);
+    }
+  };
+  const schemaDiagnostic = (tool: string, details: unknown) => {
+    if (run.aborted || run.fenced) return;
+    const serialized = JSON.stringify(details) ?? 'null';
     // Contract parsers may run repeatedly and have no authoritative call ID.
     // Keep their observations separate from attempts, settlement and metrics.
-    const key=createHash('sha256').update(tool+'\n'+serialized).digest('hex');
-    const elapsedMs=metrics.snapshot().elapsedMs;
-    const existing=schemaDiagnostics.get(key);
-    if(!existing&&schemaDiagnostics.size>=128)return;
-    const record=existing??{id:`${run.runId}:schema:${schemaDiagnostics.size+1}`,evaluations:0,firstElapsedMs:elapsedMs};
-    record.evaluations++;schemaDiagnostics.set(key,record);
-    const boundedDetails=serialized.length>4000?serialized.slice(0,3900)+'\n[Schema details truncated; read overview for current validation facts.]':serialized;
-    emit({type:'schema-diagnostic',scope:'contract-validation',...record,tool,lastElapsedMs:elapsedMs,details:boundedDetails});
+    const key = createHash('sha256')
+      .update(tool + '\n' + serialized)
+      .digest('hex');
+    const elapsedMs = metrics.snapshot().elapsedMs;
+    const existing = schemaDiagnostics.get(key);
+    const record = existing ?? {
+      id: `${run.runId}:schema:${schemaDiagnostics.size + 1}`,
+      evaluations: 0,
+      firstElapsedMs: elapsedMs,
+    };
+    record.evaluations++;
+    schemaDiagnostics.set(key, record);
+    const boundedDetails = serialized;
+    pendingDiagnostics.set(record.id, {
+      type: 'schema-diagnostic',
+      scope: 'contract-validation',
+      ...record,
+      tool,
+      lastElapsedMs: elapsedMs,
+      details: boundedDetails,
+    });
   };
   const requestedRecipes = new Set<string>();
-  const invocationCallId=(context:unknown)=>{const id=(context as {victToolCallId?:unknown}|undefined)?.victToolCallId;return typeof id==='string' ? id : undefined;};
-  const trace = (kind: Extract<StudioAgentEvent,{type:'tool-event'}>['kind'], tool: string, summary: string, details?: unknown, callId?: string) => {
-    const sequence = ++toolSequence;
-    if(kind==='tool-start'&&callId)metrics.start(callId,tool);
-    if(kind==='observation'||kind==='committed'){metrics.finish(callId,tool,true);toolFailures.delete(tool);}
-    if(kind==='validation-refused'||kind==='tool-failed'){
-      metrics.finish(callId,tool,false);
-      const detail=details as {code?:unknown;diagnostics?:{phase?:unknown;reason?:unknown};providerLimit?:unknown}|undefined;
-      const previousFailure=toolFailures.get(tool);
-      toolFailures.set(tool,{...previousFailure,tool,code:typeof detail?.code==='string'?detail.code.slice(0,160):previousFailure?.code??'STUDIO_AGENT_VALIDATION',...(typeof detail?.diagnostics?.phase==='string'?{phase:detail.diagnostics.phase.slice(0,80)}:{}),...(typeof detail?.diagnostics?.reason==='string'?{reason:detail.diagnostics.reason.slice(0,80)}:{}),...(isProviderLimitEvidence(detail?.providerLimit)?{providerLimit:detail.providerLimit}:{})});
-    }
-    const serialized=details===undefined ? undefined : JSON.stringify(details);
-    const safeDetails=serialized && serialized.length>4000 ? serialized.slice(0,3900)+'\n[Details truncated for the bounded trace. Read current source for complete facts.]' : serialized;
-    emit({ type:'tool-event',id:`${run.runId}:tool:${sequence}`,sequence,elapsedMs:metrics.snapshot().elapsedMs,kind,tool,summary,...(callId ? {callId} : {}),...(safeDetails === undefined ? {} : {details:safeDetails}) });
+  const invocationCallId = (context: unknown) => {
+    const id = (context as { victToolCallId?: unknown } | undefined)?.victToolCallId;
+    return typeof id === 'string' ? id : undefined;
   };
-  const coverageBoundary=()=>{const coverage=agentCoverage(document,requestedRecipes.size?[...requestedRecipes]:undefined);return {...coverage,missing:coverage.missing.slice(0,20),missingCount:coverage.missing.length,moreMissing:coverage.missing.length>20,scope:requestedRecipes.size?'agent-declared-manifest':'all-authorable-definitions'};};
-  const progressBoundary = () => ({ confirmedRevision:cursor.revision,coverage:coverageBoundary(),verification:'source-only' as const,unresolvedTools:[...unresolvedTools],toolFailures:[...toolFailures.values()].slice(0,4),metrics:metrics.snapshot(),visualEvidence:observations.snapshot(cursor),sourceEvidence:{nodeCount:Object.keys(document.nodes).length,stateCount:Object.keys(document.localState).length,confirmedEdits:run.applied,appearanceObserved,semanticClaimsVerified:false as const,interactionsVerified:false as const},...(!run.aborted&&providerLimit?{providerLimit}:{}) });
-  const measuredProgress=()=>({applied:run.applied,metrics:metrics.snapshot(),retainedKnowledge:knowledge.snapshot(),visualEvidence:observations.snapshot(cursor),evidence:'Host receipt-derived totals include all acknowledged transactions, including cleanup. Outside-tool time is waiting/generation/transport/host overhead, not measured provider latency. Captured regions do not establish full-page or interaction coverage.'});
+  const trace = async (
+    kind: Extract<StudioAgentEvent, { type: 'tool-event' }>['kind'],
+    tool: string,
+    summary: string,
+    details?: unknown,
+    callId?: string,
+  ) => {
+    const sequence = ++toolSequence;
+    if (kind === 'tool-start' && callId) metrics.start(callId, tool);
+    if (kind === 'observation' || kind === 'committed') {
+      metrics.finish(callId, tool, true);
+      toolFailures.delete(tool);
+    }
+    if (kind === 'validation-refused' || kind === 'tool-failed') {
+      metrics.finish(callId, tool, false);
+      const detail = details as
+        | {
+            code?: unknown;
+            diagnostics?: { phase?: unknown; reason?: unknown };
+            providerLimit?: unknown;
+          }
+        | undefined;
+      const previousFailure = toolFailures.get(tool);
+      toolFailures.set(tool, {
+        ...previousFailure,
+        tool,
+        code:
+          typeof detail?.code === 'string'
+            ? detail.code.slice(0, 160)
+            : (previousFailure?.code ?? 'STUDIO_AGENT_VALIDATION'),
+        ...(typeof detail?.diagnostics?.phase === 'string'
+          ? { phase: detail.diagnostics.phase.slice(0, 80) }
+          : {}),
+        ...(typeof detail?.diagnostics?.reason === 'string'
+          ? { reason: detail.diagnostics.reason.slice(0, 80) }
+          : {}),
+        ...(isProviderLimitEvidence(detail?.providerLimit)
+          ? { providerLimit: detail.providerLimit }
+          : {}),
+      });
+    }
+    const serialized = details === undefined ? undefined : JSON.stringify(details);
+    const safeDetails = serialized;
+    await flushDiagnostics();
+    await emit({
+      type: 'tool-event',
+      id: `${run.runId}:tool:${sequence}`,
+      sequence,
+      elapsedMs: metrics.snapshot().elapsedMs,
+      kind,
+      tool,
+      summary,
+      ...(callId ? { callId } : {}),
+      ...(safeDetails === undefined ? {} : { details: safeDetails }),
+    });
+  };
+  const coverageBoundary = () => {
+    const coverage = agentCoverage(
+      document,
+      requestedRecipes.size ? [...requestedRecipes] : undefined,
+    );
+    return {
+      ...coverage,
+      missing: coverage.missing.slice(0, 20),
+      missingCount: coverage.missing.length,
+      moreMissing: coverage.missing.length > 20,
+      scope: requestedRecipes.size ? 'agent-declared-manifest' : 'all-authorable-definitions',
+    };
+  };
+  const progressBoundary = () => ({
+    confirmedRevision: cursor.revision,
+    coverage: coverageBoundary(),
+    verification: 'source-only' as const,
+    unresolvedTools: [...unresolvedTools],
+    toolFailures: [...toolFailures.values()].slice(0, 4),
+    metrics: metrics.snapshot(),
+    visualEvidence: observations.snapshot(cursor),
+    sourceEvidence: {
+      nodeCount: Object.keys(document.nodes).length,
+      stateCount: Object.keys(document.localState).length,
+      confirmedEdits: run.applied,
+      appearanceObserved,
+      semanticClaimsVerified: false as const,
+      interactionsVerified: false as const,
+    },
+    ...(!run.aborted && providerLimit ? { providerLimit } : {}),
+  });
+  const measuredProgress = () => ({
+    applied: run.applied,
+    metrics: metrics.snapshot(),
+    retainedKnowledge: knowledge.snapshot(),
+    visualEvidence: observations.snapshot(cursor),
+    evidence:
+      'Host receipt-derived totals include all acknowledged transactions, including cleanup. Outside-tool time is waiting/generation/transport/host overhead, not measured provider latency. Captured regions do not establish full-page or interaction coverage.',
+  });
   const providerFailure = new Promise<null>((resolve) => {
     providerFailed = () => {
       run.fenced = true;
@@ -374,9 +656,15 @@ async function execute(
   });
   run.controller.signal.addEventListener('abort', providerFailed, { once: true });
   if (run.controller.signal.aborted) providerFailed();
-  const timeout = setTimeout(() => cancelAgentRun(run.owner,run.runId,'deadline'), Math.max(0,deadlineAt-Date.now()));
+  const timeout =
+    deadlineAt === undefined
+      ? undefined
+      : setTimeout(
+          () => cancelAgentRun(run.owner, run.runId, 'deadline'),
+          Math.max(0, deadlineAt - Date.now()),
+        );
   try {
-    emit({ type: 'progress', message: 'Connecting to the VICT / Mastra agent…' });
+    await emit({ type: 'progress', message: 'Connecting to the VICT / Mastra agent…' });
     directory = await mkdtemp(join(tmpdir(), 'vict-studio-agent-'));
     dedicated = await createDedicatedMastraStore({
       dataDir: directory,
@@ -387,8 +675,22 @@ async function execute(
       },
     });
     const readInput = defineContract({
-      id: 'studio.agent.read-input', revision: STUDIO_AGENT_PROTOCOL.readInputRevision, descriptiveJsonSchema: agentReadPresentation,
-      parse: value => { const parsed = agentReadSchema.safeParse(value); if (!parsed.success) {const rejection=studioValidationRejection('studio.screen.read',parsed.error.issues);schemaDiagnostic('studio_screen_read',{...rejection,observedInputShape:studioInputShape(value,rejection.issues)});} return parsed.success ? {ok:true,value:parsed.data} : {ok:false,issues:studioContractValidationIssues(parsed.error.issues)}; },
+      id: 'studio.agent.read-input',
+      revision: STUDIO_AGENT_PROTOCOL.readInputRevision,
+      descriptiveJsonSchema: agentReadPresentation,
+      parse: (value) => {
+        const parsed = agentReadSchema.safeParse(value);
+        if (!parsed.success) {
+          const rejection = studioValidationRejection('studio.screen.read', parsed.error.issues);
+          schemaDiagnostic('studio_screen_read', {
+            ...rejection,
+            observedInputShape: studioInputShape(value, rejection.issues),
+          });
+        }
+        return parsed.success
+          ? { ok: true, value: parsed.data }
+          : { ok: false, issues: studioContractValidationIssues(parsed.error.issues) };
+      },
     });
     const editInput = defineContract({
       id: 'studio.agent.edit-input',
@@ -396,7 +698,20 @@ async function execute(
       descriptiveJsonSchema: editPresentation,
       parse: (value) => {
         const parsed = agentEditSchema.safeParse(value);
-        if (!parsed.success) {const rejection=studioValidationRejection('studio.screen.edit',parsed.error.issues);lastValidation={ok:false,code:'STUDIO_AGENT_INVALID_EDIT',message:'Input contract validation reported invalid fields. These parser diagnostics are not assigned to a tool call. Correct the fields below; no edits applied.',diagnostics:rejection.issues};schemaDiagnostic('studio_screen_edit',{...lastValidation,observedInputShape:studioInputShape(value,rejection.issues)});}
+        if (!parsed.success) {
+          const rejection = studioValidationRejection('studio.screen.edit', parsed.error.issues);
+          lastValidation = {
+            ok: false,
+            code: 'STUDIO_AGENT_INVALID_EDIT',
+            message:
+              'Input contract validation reported invalid fields. These parser diagnostics are not assigned to a tool call. Correct the fields below; no edits applied.',
+            diagnostics: rejection.issues,
+          };
+          schemaDiagnostic('studio_screen_edit', {
+            ...lastValidation,
+            observedInputShape: studioInputShape(value, rejection.issues),
+          });
+        }
         return parsed.success
           ? { ok: true, value: parsed.data }
           : {
@@ -419,19 +734,53 @@ async function execute(
       output,
       description:
         'Read bounded current facts and public authoring knowledge. Prefer {"section":"knowledge","kind":"component","key":"id@revision"} for one exact component, or kind:data for a versioned data grammar. projection may be guidance or examples. Continue by copying nextCursor into {"section":"knowledge","cursor":"returned cursor"} only, until null. No offsets, arrays, maps or booleans are needed on this path. Dependencies remain explicit exact references, not preloaded knowledge. Legacy strict contracts batch and registry reads remain available. Discover exact keys with families/catalog or registry:dataContracts. component/recipe is retained native-recipe/descriptor lookup with historical defaults; it is not an id@revision contract lookup. Source requires an existing document nodeId. Inventory is source presence only.',
-      invoke: async (input,context) => {
-        const discovery = agentReadSchema.parse(input),callId=invocationCallId(context);
-        metrics.classify(callId,readCategory(discovery.section));
-        if(discovery.section === 'coverage')for(const recipe of discovery.requested ?? [])requestedRecipes.add(recipe);
-        const safeInput=discovery.section==='contracts'?{...discovery,knownDigests:knowledge.reusable(discovery.knownDigests,discovery.knownBodyIdentities)}:discovery;
-        const facts = agentContext(document,cursor,start.selection,safeInput,start.selectionSet,start.mediaInventory);
-        agentTaskContexts.retain(run.owner, cursor, start.observationTask??start.prompt, discovery, facts, installedAuthoringRegistry.digest);
-        if(discovery.section==='contracts'||discovery.section==='knowledge')knowledge.retain(facts);
-        const result=discovery.section==='overview' && lastValidation ? {...facts,lastValidation} : facts;
-        const refused=result.ok === false;
-        if(refused)unresolvedTools.add('studio_screen_read');else unresolvedTools.delete('studio_screen_read');
-        trace(refused ? 'validation-refused' : 'observation','studio_screen_read',refused ? 'Read query refused safely' : 'Read current source facts',result,callId);
-        return {...result,turnProgress:measuredProgress()};
+      invoke: async (input, context) => {
+        const discovery = agentReadSchema.parse(input),
+          callId = invocationCallId(context);
+        metrics.classify(callId, readCategory(discovery.section));
+        if (discovery.section === 'coverage')
+          for (const recipe of discovery.requested ?? []) requestedRecipes.add(recipe);
+        const safeInput =
+          discovery.section === 'contracts'
+            ? {
+                ...discovery,
+                knownDigests: knowledge.reusable(
+                  discovery.knownDigests,
+                  discovery.knownBodyIdentities,
+                ),
+              }
+            : discovery;
+        const facts = agentContext(
+          document,
+          cursor,
+          start.selection,
+          safeInput,
+          start.selectionSet,
+          start.mediaInventory,
+        );
+        agentTaskContexts.retain(
+          run.owner,
+          cursor,
+          start.observationTask ?? start.prompt,
+          discovery,
+          facts,
+          installedAuthoringRegistry.digest,
+        );
+        if (discovery.section === 'contracts' || discovery.section === 'knowledge')
+          knowledge.retain(facts);
+        const result =
+          discovery.section === 'overview' && lastValidation ? { ...facts, lastValidation } : facts;
+        const refused = result.ok === false;
+        if (refused) unresolvedTools.add('studio_screen_read');
+        else unresolvedTools.delete('studio_screen_read');
+        await trace(
+          refused ? 'validation-refused' : 'observation',
+          'studio_screen_read',
+          refused ? 'Read query refused safely' : 'Read current source facts',
+          result,
+          callId,
+        );
+        return { ...result, turnProgress: measuredProgress() };
       },
     };
     const edit: CapabilityDefinition = {
@@ -442,8 +791,8 @@ async function execute(
       output,
       description:
         'Apply supported canonical insertion, composition, typed state/reference/style or recipe transactions from the exact current authoring contract. Success only AFTER validation and browser EditorBridge acknowledgement; each confirmed batch is one Undo. Returns intermediate source presence, never interaction/intent proof.',
-      invoke: async (input,context) => {
-        const callId=invocationCallId(context);
+      invoke: async (input, context) => {
+        const callId = invocationCallId(context);
         // Mastra may request parallel tools: serialize mutation preparation and acknowledgements.
         let release!: () => void;
         const previous = editChain;
@@ -458,47 +807,59 @@ async function execute(
           if (!prepared.ok) {
             lastEditFailure = prepared.code;
             lastValidation = prepared;
-            trace('validation-refused','studio_screen_edit','Edit refused before browser proposal',prepared,callId);
-            emit({ type: 'edit-result', result: prepared, reason: 'Validation refused an edit' });
+            await trace(
+              'validation-refused',
+              'studio_screen_edit',
+              'Edit refused before browser proposal',
+              prepared,
+              callId,
+            );
+            await emit({
+              type: 'edit-result',
+              result: prepared,
+              reason: 'Validation refused an edit',
+            });
             return prepared;
           }
-          const acknowledgementStarted=performance.now();
-          const receipt = await new Promise<EditReceipt>((resolve) => {
-            const timer = setTimeout(
-              () =>
-                resolve(
-                  failure(
-                    'STUDIO_AGENT_ACK_TIMEOUT',
-                    'The canvas did not acknowledge the edit. Check the screen before retrying.',
-                  ),
-                ),
-              25_000,
-            );
+          const acknowledgementStarted = performance.now();
+          const receiptPending = new Promise<EditReceipt>((resolve) => {
             run.pending = {
               proposalId,
               resolve: (receipt) => {
-                clearTimeout(timer);
                 resolve(receipt);
               },
             };
-            trace('proposed','studio_screen_edit','Proposed validated transaction; awaiting browser commit',{proposalId,reason:(input as {reason:string}).reason,revision:cursor.revision},callId);
-            emit({
-              type: 'proposal',
-              ...(callId?{callId}:{}),
-              proposal: {
-                proposalId,
-                cursor,
-                edit: input as z.infer<typeof agentEditSchema>,
-                resultDigest: prepared.digest,
-              },
-            });
           });
+          await trace(
+            'proposed',
+            'studio_screen_edit',
+            'Proposed validated transaction; awaiting browser commit',
+            { proposalId, reason: (input as { reason: string }).reason, revision: cursor.revision },
+            callId,
+          );
+          await emit({
+            type: 'proposal',
+            ...(callId ? { callId } : {}),
+            proposal: {
+              proposalId,
+              cursor,
+              edit: input as z.infer<typeof agentEditSchema>,
+              resultDigest: prepared.digest,
+            },
+          });
+          const receipt = await receiptPending;
           run.pending = undefined;
           if (!receipt.ok) {
             lastEditFailure = receipt.code;
             refusal = receipt;
-            trace('validation-refused','studio_screen_edit','Browser refused transaction',receipt,callId);
-            emit({ type: 'edit-result', result: receipt, reason: 'Canvas refused the edit' });
+            await trace(
+              'validation-refused',
+              'studio_screen_edit',
+              'Browser refused transaction',
+              receipt,
+              callId,
+            );
+            await emit({ type: 'edit-result', result: receipt, reason: 'Canvas refused the edit' });
             return receipt;
           }
           if (receipt.digest !== prepared.digest || receipt.revision === cursor.revision) {
@@ -512,13 +873,19 @@ async function execute(
           document = prepared.document;
           cursor = { ...cursor, revision: receipt.revision, digest: receipt.digest };
           run.applied++;
-          appearanceObserved=false;
-          metrics.edit(performance.now()-acknowledgementStarted,proposalId);
-          trace('committed','studio_screen_edit','Browser acknowledged committed transaction',{proposalId,...receipt,applied:run.applied,coverage:coverageBoundary()},callId);
+          appearanceObserved = false;
+          metrics.edit(performance.now() - acknowledgementStarted, proposalId);
+          await trace(
+            'committed',
+            'studio_screen_edit',
+            'Browser acknowledged committed transaction',
+            { proposalId, ...receipt, applied: run.applied, coverage: coverageBoundary() },
+            callId,
+          );
           lastEditFailure = undefined;
           lastValidation = undefined;
           unresolvedTools.delete('studio_screen_edit');
-          emit({
+          await emit({
             type: 'edit-result',
             result: receipt,
             reason: (input as { reason: string }).reason,
@@ -529,45 +896,107 @@ async function execute(
             revision: cursor.revision,
             digest: cursor.digest,
             applied: run.applied,
-            coverage:coverageBoundary(),
-            verification:'source-only',
-            turnProgress:measuredProgress(),
+            coverage: coverageBoundary(),
+            verification: 'source-only',
+            turnProgress: measuredProgress(),
           };
         } finally {
           release();
         }
       },
     };
-    visualObserver = createVisualObserver({owner:run.owner,runId:run.runId,model,baseUrl:agentConfiguration().baseUrl,getCursor:()=>cursor,signal:run.controller.signal,emit,onModelRequest:()=>metrics.provider(true),...(testVisualFactory?{modelFactory:testVisualFactory}:{})});
+    visualObserver = createVisualObserver({
+      owner: run.owner,
+      runId: run.runId,
+      model,
+      baseUrl: agentConfiguration().baseUrl,
+      getCursor: () => cursor,
+      signal: run.controller.signal,
+      emit,
+      onModelRequest: () => metrics.provider(true),
+      ...(testVisualFactory ? { modelFactory: testVisualFactory } : {}),
+    });
     const observeCapability = visualObserver.capability;
     const originalObserve = observeCapability.invoke;
-    const tracedObserve: CapabilityDefinition = { ...observeCapability, invoke:async (input,context) => {
-      const observationInput=start.mode==='observe-only'?{focus:(input as {focus:string}).focus,...(start.observationTarget??{})}:input;
-      const result = await originalObserve(observationInput,context);
-      const ok = !!result && typeof result === 'object' && (result as {ok?:boolean}).ok;
-      if(!ok&&result&&typeof result==='object'&&isProviderLimitEvidence((result as {providerLimit?:unknown}).providerLimit))providerLimit=(result as {providerLimit:ProviderLimitEvidence}).providerLimit;
-      appearanceObserved=!!ok;
-      if(ok){const observed=result as {metadata:import('$lib/designer/visual-observation.js').CaptureMetadata;imageDigest:string};observations.record({...observed.metadata,imageDigest:observed.imageDigest});const observedCursor=observed.metadata.cursor;appearanceObserved=observedCursor.documentId===cursor.documentId&&observedCursor.revision===cursor.revision&&observedCursor.digest===cursor.digest&&observedCursor.epoch===cursor.epoch;}
-      if(ok)unresolvedTools.delete('studio_screen_observe');else unresolvedTools.add('studio_screen_observe');
-      trace(ok ? 'observation' : 'validation-refused','studio_screen_observe',ok ? 'Captured current preview; AI assessment unverified' : 'Visual observation unavailable',result,invocationCallId(context));
-      return {...result as object,turnProgress:measuredProgress()};
-    } };
-    const capabilities = start.mode==='observe-only'?[read,tracedObserve]:[read, edit, tracedObserve];
-    const instructionId=start.mode==='observe-only'?'studio.agent.observation-instructions':'studio.agent.instructions';
-    const instructionRevision=start.mode==='observe-only'?STUDIO_AGENT_PROTOCOL.observationInstructionsRevision:STUDIO_AGENT_PROTOCOL.instructionsRevision;
-    const profileId=start.mode==='observe-only'?'studio.designer.observer':'studio.designer.agent';
-    const profileRevision=start.mode==='observe-only'?STUDIO_AGENT_PROTOCOL.observationProfileRevision:STUDIO_AGENT_PROTOCOL.profileRevision;
+    const tracedObserve: CapabilityDefinition = {
+      ...observeCapability,
+      invoke: async (input, context) => {
+        const observationInput =
+          start.mode === 'observe-only'
+            ? { focus: (input as { focus: string }).focus, ...(start.observationTarget ?? {}) }
+            : input;
+        const result = await originalObserve(observationInput, context);
+        const ok = !!result && typeof result === 'object' && (result as { ok?: boolean }).ok;
+        if (
+          !ok &&
+          result &&
+          typeof result === 'object' &&
+          isProviderLimitEvidence((result as { providerLimit?: unknown }).providerLimit)
+        )
+          providerLimit = (result as { providerLimit: ProviderLimitEvidence }).providerLimit;
+        appearanceObserved = !!ok;
+        if (ok) {
+          const observed = result as {
+            metadata: import('$lib/designer/visual-observation.js').CaptureMetadata;
+            imageDigest: string;
+          };
+          observations.record({ ...observed.metadata, imageDigest: observed.imageDigest });
+          const observedCursor = observed.metadata.cursor;
+          appearanceObserved =
+            observedCursor.documentId === cursor.documentId &&
+            observedCursor.revision === cursor.revision &&
+            observedCursor.digest === cursor.digest &&
+            observedCursor.epoch === cursor.epoch;
+        }
+        if (ok) unresolvedTools.delete('studio_screen_observe');
+        else unresolvedTools.add('studio_screen_observe');
+        await trace(
+          ok ? 'observation' : 'validation-refused',
+          'studio_screen_observe',
+          ok
+            ? 'Captured current preview; AI assessment unverified'
+            : 'Visual observation unavailable',
+          result,
+          invocationCallId(context),
+        );
+        return { ...(result as object), turnProgress: measuredProgress() };
+      },
+    };
+    const capabilities =
+      start.mode === 'observe-only' ? [read, tracedObserve] : [read, edit, tracedObserve];
+    const instructionId =
+      start.mode === 'observe-only'
+        ? 'studio.agent.observation-instructions'
+        : 'studio.agent.instructions';
+    const instructionRevision =
+      start.mode === 'observe-only'
+        ? STUDIO_AGENT_PROTOCOL.observationInstructionsRevision
+        : STUDIO_AGENT_PROTOCOL.instructionsRevision;
+    const profileId =
+      start.mode === 'observe-only' ? 'studio.designer.observer' : 'studio.designer.agent';
+    const profileRevision =
+      start.mode === 'observe-only'
+        ? STUDIO_AGENT_PROTOCOL.observationProfileRevision
+        : STUDIO_AGENT_PROTOCOL.profileRevision;
     const registry = new AgentProfileRegistry({
       resolveCapabilityRevision: (id, revision) =>
         capabilities.some((cap) => cap.id === id && cap.revision === revision),
     });
     registry.installArtifacts([
-      { kind: 'instructions', id: instructionId, revision: instructionRevision, text: start.mode==='observe-only'?`OBSERVATION-ONLY CONTINUATION. Inspect the retained task/target on the exact current source. Read and observe are the only available capabilities. Do not propose, replay or perform edits, actions or navigation. Call studio_screen_observe to obtain fresh image evidence, then report measured capture facts, clearly attributed AI interpretation and remaining limits. If capture is blocked, explain the reveal action and uncertainty; source facts alone do not prove appearance. The authoring guidance below describes the broader product, but grants no mutation authority in this turn.\n${instructions}`:instructions },
+      {
+        kind: 'instructions',
+        id: instructionId,
+        revision: instructionRevision,
+        text:
+          start.mode === 'observe-only'
+            ? `OBSERVATION-ONLY CONTINUATION. Inspect the retained task/target on the exact current source. Read and observe are the only available capabilities. Do not propose, replay or perform edits, actions or navigation. Call studio_screen_observe to obtain fresh image evidence, then report measured capture facts, clearly attributed AI interpretation and remaining limits. If capture is blocked, explain the reveal action and uncertainty; source facts alone do not prove appearance. The authoring guidance below describes the broader product, but grants no mutation authority in this turn.\n${instructions}`
+            : instructions,
+      },
       {
         kind: 'memory-policy',
         id: 'studio.agent.memory',
-        revision: '1',
-        config: { lastMessages: 4, workingMemory: { enabled: false }, semanticRecall: false },
+        revision: '2',
+        config: { lastMessages: false, workingMemory: { enabled: false }, semanticRecall: false },
       },
     ]);
     registry.registerProfile({
@@ -583,11 +1012,10 @@ async function execute(
         ...(modelFactory ? {} : { providerCredentialVar: configurationCredential(model) }),
       },
       generation: {
-        maxOutputTokens: model === 'zai/glm-5.3-flash' ? 131_072 : 4000,
         maxRetries: 0,
       },
-      turnPolicy: { maxSteps: 64, maxToolCalls: 64, onLimit: 'fail-closed' },
-      memoryPolicy: { id: 'studio.agent.memory', revision: '1' },
+      turnPolicy: { schema: 'vict.agent-turn-policy@2', mode: 'until-completion-or-cancel' },
+      memoryPolicy: { id: 'studio.agent.memory', revision: '2' },
       guardrails: [],
       helperTools: [],
       capabilities: capabilities.map((cap) => ({ id: cap.id, revision: cap.revision })),
@@ -634,14 +1062,18 @@ async function execute(
               : studioProviderModel(model, agentConfiguration().baseUrl)) as object,
             run.controller.signal,
             deadlineAt,
-            (code,limitEvidence) => {
-              if(Date.now()>=deadlineAt && !run.aborted)cancelAgentRun(run.owner,run.runId,'deadline');
+            (code, limitEvidence) => {
+              if (deadlineAt !== undefined && Date.now() >= deadlineAt && !run.aborted)
+                cancelAgentRun(run.owner, run.runId, 'deadline');
               providerFailureCode = code;
-                providerLimit=limitEvidence;
+              providerLimit = limitEvidence;
               providerFailed();
             },
-            event=>{if(event.kind==='request')metrics.provider();else metrics.usage(event.usage);},
-              {provider:model.startsWith('zai/')?'zai':undefined},
+            (event) => {
+              if (event.kind === 'request') metrics.provider();
+              else metrics.usage(event.usage);
+            },
+            { provider: model.startsWith('zai/') ? 'zai' : undefined },
           ),
         tracing: { sampling: { type: 'never' } },
       },
@@ -650,20 +1082,44 @@ async function execute(
         resolveCapability: (id, revision) =>
           capabilities.find((cap) => cap.id === id && cap.revision === revision),
         invoke: async (cap, input, context) => {
-          if(start.mode==='observe-only'&&cap.effect!=='read')return failure('STUDIO_AGENT_OBSERVATION_ONLY','This continuation has no edit or action authority.');
-          const tool = ({ 'studio.screen.read': 'studio_screen_read', 'studio.screen.edit': 'studio_screen_edit', 'studio.screen.observe': 'studio_screen_observe' } as Record<string, EvidenceTool>)[cap.id];
+          if (start.mode === 'observe-only' && cap.effect !== 'read')
+            return failure(
+              'STUDIO_AGENT_OBSERVATION_ONLY',
+              'This continuation has no edit or action authority.',
+            );
+          const tool = (
+            {
+              'studio.screen.read': 'studio_screen_read',
+              'studio.screen.edit': 'studio_screen_edit',
+              'studio.screen.observe': 'studio_screen_observe',
+            } as Record<string, EvidenceTool>
+          )[cap.id];
           const callId = invocationCallId(context);
-          if (tool) evidence.send(tool, callId, 'input', input);
+          if (tool) await evidence.send(tool, callId, 'input', input);
           let result: unknown;
-          try { result = await cap.invoke(input, context as never); }
-          catch (error) {
-            if (tool) evidence.send(tool, callId, 'result', undefined, 'failed', 'not-returned');
+          try {
+            result = await cap.invoke(input, context as never);
+          } catch (error) {
+            if (tool)
+              await evidence.send(tool, callId, 'result', undefined, 'failed', 'not-returned');
             throw error;
           }
           // Refusals also carry current host measurements; they never count as
           // applied writes or remove the canonical refusal/fresh-context fence.
-          const delivered = result&&typeof result==='object'?{...result,turnProgress:measuredProgress()}:result;
-          if (tool) evidence.send(tool, callId, 'result', delivered, result && typeof result === 'object' && (result as { ok?: unknown }).ok === false ? 'refused' : 'completed');
+          const delivered =
+            result && typeof result === 'object'
+              ? { ...result, turnProgress: measuredProgress() }
+              : result;
+          if (tool)
+            await evidence.send(
+              tool,
+              callId,
+              'result',
+              delivered,
+              result && typeof result === 'object' && (result as { ok?: unknown }).ok === false
+                ? 'refused'
+                : 'completed',
+            );
           return delivered;
         },
         recordInvocationIntent: (input) =>
@@ -677,19 +1133,48 @@ async function execute(
         consumeApproval: (binding) => composition!.turnService.consumeApproval(binding),
         updateInvocationStatus: (command) =>
           stores.invocations.updateInvocationStatus(command) as Promise<AgentToolInvocationRecord>,
-        ...(start.mode==='observe-only'?{}:{quietWriteApprovals: {
-          policyIdentity: 'studio.designer.local-edits@2',
-          entries: [{ capabilityId: edit.id, capabilityRevision: edit.revision }],
-        }}),
+        ...(start.mode === 'observe-only'
+          ? {}
+          : {
+              quietWriteApprovals: {
+                policyIdentity: 'studio.designer.local-edits@2',
+                entries: [{ capabilityId: edit.id, capabilityRevision: edit.revision }],
+              },
+            }),
       },
     });
     const input = JSON.stringify({
       request: start.prompt,
       untrusted_history: start.history,
-      untrusted_screen: agentContext(document, cursor, start.selection,{},start.selectionSet,start.mediaInventory),
-      ...(start.mode==='observe-only'?{untrusted_observation_continuation:{mode:'observe-only',task:start.observationTask,target:start.observationTarget??null,source:start.cursor,editsReplayed:false}}:{}),
+      untrusted_screen: agentContext(
+        document,
+        cursor,
+        start.selection,
+        {},
+        start.selectionSet,
+        start.mediaInventory,
+      ),
+      ...(start.mode === 'observe-only'
+        ? {
+            untrusted_observation_continuation: {
+              mode: 'observe-only',
+              task: start.observationTask,
+              target: start.observationTarget ?? null,
+              source: start.cursor,
+              editsReplayed: false,
+            },
+          }
+        : {}),
       ...(start.workspace ? { untrusted_workspace: start.workspace } : {}),
-      ...(agentTaskContexts.snapshot(run.owner, cursor, installedAuthoringRegistry.digest) ? { untrusted_task_facts: agentTaskContexts.snapshot(run.owner, cursor, installedAuthoringRegistry.digest) } : {}),
+      ...(agentTaskContexts.snapshot(run.owner, cursor, installedAuthoringRegistry.digest)
+        ? {
+            untrusted_task_facts: agentTaskContexts.snapshot(
+              run.owner,
+              cursor,
+              installedAuthoringRegistry.digest,
+            ),
+          }
+        : {}),
     });
     const started = await composition.turnService.startTurn(actor, {
       threadId: `vict-studio-${run.runId}`,
@@ -697,38 +1182,68 @@ async function execute(
     });
     turnId = started.turn.turnId;
     run.cancel = async () => {
-      await composition?.turnService.cancelTurn(actor, { turnId: turnId!, reasonCode: run.cancellationReason === 'deadline' ? 'deadline' : 'user' });
+      await composition?.turnService.cancelTurn(actor, {
+        turnId: turnId!,
+        reasonCode: run.cancellationReason === 'deadline' ? 'deadline' : 'user',
+      });
     };
     if (run.aborted) await run.cancel();
     let previousSeq = 0;
     await hub.subscribe(started.turn.streamId, {
       subscriberId: run.runId,
-      deliver: (event) => {
+      deliver: async (event) => {
+        await flushDiagnostics();
         if (event.seq <= previousSeq) return true;
         previousSeq = event.seq;
         if (event.kind === 'response.started')
-          emit({ type: 'progress', message: 'Agent is working on your request…' });
-        if (event.kind === 'text.delta') emit({ type: 'text', delta: event.delta });
+          await emit({ type: 'progress', message: 'Agent is working on your request…' });
+        if (event.kind === 'text.delta') await emit({ type: 'text', delta: event.delta });
         if (event.kind === 'tool.started') {
-          trace('tool-start',event.toolName,'Tool started',undefined,event.toolCallId);
-          emit({
+          await trace('tool-start', event.toolName, 'Tool started', undefined, event.toolCallId);
+          await emit({
             type: 'progress',
             message:
               event.toolName === 'studio_screen_read'
                 ? 'Reading current source facts…'
-                : event.toolName === 'studio_screen_observe' ? 'Capturing and observing the rendered preview…' : 'Preparing and validating an edit…',
+                : event.toolName === 'studio_screen_observe'
+                  ? 'Capturing and observing the rendered preview…'
+                  : 'Preparing and validating an edit…',
           });
         }
         // Successful capability bodies clear their own refusal boundary. A completed
         // transport with {ok:false} is still an unresolved read/observation.
         if (event.kind === 'tool.failed') {
-          if (['studio_screen_read', 'studio_screen_edit', 'studio_screen_observe'].includes(event.toolName)) {
-            evidence.send(event.toolName as EvidenceTool, event.toolCallId, 'input', undefined, undefined, 'before-invocation');
-            evidence.send(event.toolName as EvidenceTool, event.toolCallId, 'result', undefined, 'failed', 'not-returned');
+          if (
+            ['studio_screen_read', 'studio_screen_edit', 'studio_screen_observe'].includes(
+              event.toolName,
+            )
+          ) {
+            await evidence.send(
+              event.toolName as EvidenceTool,
+              event.toolCallId,
+              'input',
+              undefined,
+              undefined,
+              'before-invocation',
+            );
+            await evidence.send(
+              event.toolName as EvidenceTool,
+              event.toolCallId,
+              'result',
+              undefined,
+              'failed',
+              'not-returned',
+            );
           }
           unresolvedTools.add(event.toolName);
-          trace('tool-failed',event.toolName,`Tool failed (${event.code}); prior commits remain`,{code:event.code},event.toolCallId);
-          emit({
+          await trace(
+            'tool-failed',
+            event.toolName,
+            `Tool failed (${event.code}); prior commits remain`,
+            { code: event.code },
+            event.toolCallId,
+          );
+          await emit({
             type: 'progress',
             message: `Tool refused (${event.code}). Previously applied edits remain available.`,
           });
@@ -754,51 +1269,99 @@ async function execute(
           }),
           1000,
         );
-      emit({
+      await emit({
         type: 'done',
-        status: run.cancellationReason === 'deadline' ? 'failed' : run.aborted ? 'cancelled' : 'failed',
-        code: run.cancellationReason === 'deadline' ? 'STUDIO_AGENT_TIME_LIMIT' : run.aborted ? 'STUDIO_AGENT_CANCELLED' : providerFailureCode,
+        status:
+          run.cancellationReason === 'deadline' ? 'failed' : run.aborted ? 'cancelled' : 'failed',
+        code:
+          run.cancellationReason === 'deadline'
+            ? 'STUDIO_AGENT_TIME_LIMIT'
+            : run.aborted
+              ? 'STUDIO_AGENT_CANCELLED'
+              : providerFailureCode,
         applied: run.applied,
         turnId,
         profileVersion,
-        termination:{status:run.cancellationReason === 'deadline' ? 'timeout' : run.aborted ? 'cancelled' : 'failed',code:run.cancellationReason === 'deadline' ? 'STUDIO_AGENT_TIME_LIMIT' : run.aborted ? 'STUDIO_AGENT_CANCELLED' : providerFailureCode},
+        termination: {
+          status:
+            run.cancellationReason === 'deadline'
+              ? 'timeout'
+              : run.aborted
+                ? 'cancelled'
+                : 'failed',
+          code:
+            run.cancellationReason === 'deadline'
+              ? 'STUDIO_AGENT_TIME_LIMIT'
+              : run.aborted
+                ? 'STUDIO_AGENT_CANCELLED'
+                : providerFailureCode,
+        },
         ...progressBoundary(),
       });
       return;
     }
-    const observationMissing=start.mode==='observe-only'&&!appearanceObserved;
-    emit({
+    const observationMissing = start.mode === 'observe-only' && !appearanceObserved;
+    await emit({
       type: 'done',
       status:
-        run.cancellationReason === 'deadline' ? 'failed' : outcome.status === 'completed' && !unresolvedTools.size && !lastEditFailure && !observationMissing
-          ? 'completed'
-          : outcome.status === 'cancelled'
-            ? 'cancelled'
-            : 'failed',
-      ...(run.cancellationReason === 'deadline' ? {code:'STUDIO_AGENT_TIME_LIMIT'} : lastEditFailure || unresolvedTools.size
-        ? { code: lastEditFailure ?? 'STUDIO_AGENT_TOOL_FAILED' }
-        : observationMissing&&outcome.status==='completed'
-          ? {code:'STUDIO_CAPTURE_OBSERVATION_REQUIRED'}
-        : outcome.errorCode
-          ? { code: outcome.errorCode }
-          : {}),
+        run.cancellationReason === 'deadline'
+          ? 'failed'
+          : outcome.status === 'completed' &&
+              !unresolvedTools.size &&
+              !lastEditFailure &&
+              !observationMissing
+            ? 'completed'
+            : outcome.status === 'cancelled'
+              ? 'cancelled'
+              : 'failed',
+      ...(run.cancellationReason === 'deadline'
+        ? { code: 'STUDIO_AGENT_TIME_LIMIT' }
+        : lastEditFailure || unresolvedTools.size
+          ? { code: lastEditFailure ?? 'STUDIO_AGENT_TOOL_FAILED' }
+          : observationMissing && outcome.status === 'completed'
+            ? { code: 'STUDIO_CAPTURE_OBSERVATION_REQUIRED' }
+            : outcome.errorCode
+              ? { code: outcome.errorCode }
+              : {}),
       applied: run.applied,
       turnId,
       profileVersion,
-      termination:run.cancellationReason === 'deadline' ? {status:'timeout',code:'STUDIO_AGENT_TIME_LIMIT'} : {status:outcome.status,...(outcome.errorCode ? {code:outcome.errorCode} : {})},
+      termination:
+        run.cancellationReason === 'deadline'
+          ? { status: 'timeout', code: 'STUDIO_AGENT_TIME_LIMIT' }
+          : { status: outcome.status, ...(outcome.errorCode ? { code: outcome.errorCode } : {}) },
       ...progressBoundary(),
     });
   } catch (error) {
-    const code=run.cancellationReason === 'deadline' ? 'STUDIO_AGENT_TIME_LIMIT' : run.aborted ? 'STUDIO_AGENT_CANCELLED' : turnId ? 'STUDIO_AGENT_EXECUTION_FAILED' : 'STUDIO_AGENT_SETUP_FAILED';
-    trace('tool-failed','studio_agent',turnId ? 'The governed agent turn failed; confirmed edits remain' : 'Agent setup or capability configuration failed', {code,errorType:error instanceof Error ? error.name.slice(0,80) : 'UnknownError'});
-    emit({
+    const code =
+      run.cancellationReason === 'deadline'
+        ? 'STUDIO_AGENT_TIME_LIMIT'
+        : run.aborted
+          ? 'STUDIO_AGENT_CANCELLED'
+          : turnId
+            ? 'STUDIO_AGENT_EXECUTION_FAILED'
+            : 'STUDIO_AGENT_SETUP_FAILED';
+    await trace(
+      'tool-failed',
+      'studio_agent',
+      turnId
+        ? 'The governed agent turn failed; confirmed edits remain'
+        : 'Agent setup or capability configuration failed',
+      { code, errorType: error instanceof Error ? error.name.slice(0, 80) : 'UnknownError' },
+    );
+    await emit({
       type: 'done',
-      status: run.cancellationReason === 'deadline' ? 'failed' : run.aborted ? 'cancelled' : 'failed',
+      status:
+        run.cancellationReason === 'deadline' ? 'failed' : run.aborted ? 'cancelled' : 'failed',
       code,
       applied: run.applied,
       ...(turnId ? { turnId } : {}),
       ...(profileVersion ? { profileVersion } : {}),
-      termination:{status:run.cancellationReason === 'deadline' ? 'timeout' : run.aborted ? 'cancelled' : 'failed',code},
+      termination: {
+        status:
+          run.cancellationReason === 'deadline' ? 'timeout' : run.aborted ? 'cancelled' : 'failed',
+        code,
+      },
       ...progressBoundary(),
     });
   } finally {

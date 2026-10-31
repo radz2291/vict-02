@@ -151,6 +151,7 @@ type ComposeOptions = Parameters<typeof createDeterministicOfflineModel>[0] & {
     text: string,
   ) => { readonly ok: true } | { readonly ok: false; readonly code: string };
   readonly dir?: string;
+  readonly cancellationOnly?: boolean;
 };
 async function compose(options?: ComposeOptions): Promise<Composition> {
   const dir = options?.dir ?? tempDir('vict-mastra-e2e-');
@@ -179,7 +180,17 @@ async function compose(options?: ComposeOptions): Promise<Composition> {
     ),
   ];
   registry.installArtifacts(artifacts);
-  registry.registerProfile(validProfileInput());
+  registry.registerProfile({
+    ...validProfileInput(),
+    ...(options?.cancellationOnly
+      ? {
+          turnPolicy: {
+            schema: 'vict.agent-turn-policy@2' as const,
+            mode: 'until-completion-or-cancel' as const,
+          },
+        }
+      : {}),
+  });
   const activation = registry.activateAgentProfile({ id: 'agent.ara.offline', revision: '1' });
 
   const model = createDeterministicOfflineModel({
@@ -549,3 +560,87 @@ describe('Mastra adapter end-to-end (real pinned Mastra Agent, offline)', () => 
     }
   });
 });
+
+it('explicit policy@2 completes more than 64 real Mastra model steps/tool calls without restoring default five-step stop', async () => {
+  const calls = Array.from({ length: 66 }, (_, i) => ({
+    toolName: 'helper_uppercase',
+    args: { text: 'call-' + i },
+  }));
+  const { agent, activation, close } = await compose({
+    cancellationOnly: true,
+    script: {
+      'Long explicit task': {
+        kind: 'tool-chain',
+        calls,
+        thenText: 'ALL SIXTY SIX TOOLS COMPLETED',
+      },
+    },
+  });
+  try {
+    const outcome = await agent.runTurn(
+      {
+        turnId: 'turn-66',
+        threadId: 'thread-66',
+        actorId: 'actor-66',
+        input: 'Long explicit task',
+      },
+      { activation },
+    );
+    expect(outcome.status).toBe('completed');
+    expect(outcome.text).toBe('ALL SIXTY SIX TOOLS COMPLETED');
+    expect(outcome.events.filter((event) => event.kind === 'tool.completed')).toHaveLength(66);
+    expect(outcome.events.filter((event) => event.kind === 'tool.failed')).toHaveLength(0);
+  } finally {
+    await close();
+  }
+}, 120000);
+
+it('awaits public event sink backpressure and still allows cancellation under policy@2', async () => {
+  const { agent, activation, close } = await compose({
+    cancellationOnly: true,
+    script: {
+      'Cancel at first event': { kind: 'text', text: 'No response should outrun the sink' },
+    },
+  });
+  const controller = new AbortController();
+  let unblock!: () => void;
+  let announced!: () => void;
+  const entered = new Promise<void>((resolve) => (announced = resolve)),
+    gate = new Promise<void>((resolve) => (unblock = resolve));
+  let completed = false;
+  const result = agent
+    .runTurn(
+      {
+        turnId: 'turn-pressure',
+        threadId: 'thread-pressure',
+        actorId: 'actor-pressure',
+        input: 'Cancel at first event',
+      },
+      {
+        activation,
+        abortSignal: controller.signal,
+        onEvent: async (event) => {
+          if (event.kind === 'response.started') {
+            announced();
+            await gate;
+          }
+        },
+      },
+    )
+    .then((value) => {
+      completed = true;
+      return value;
+    });
+  try {
+    await entered;
+    await new Promise((resolve) => setTimeout(resolve, 10));
+    expect(completed).toBe(false);
+    controller.abort();
+    unblock();
+    const outcome = await result;
+    expect(outcome.status).toBe('cancelled');
+  } finally {
+    unblock();
+    await close();
+  }
+}, 120000);
