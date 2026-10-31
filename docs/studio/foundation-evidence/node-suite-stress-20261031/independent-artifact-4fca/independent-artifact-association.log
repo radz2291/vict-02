@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "sourceCandidate": "4fcaadcd91434448e12f2e8294da70f74103bb07",
+  "sealSha256": "0669c5b6de72de2d54f79d776331580581808c4a1225f9330a77f7b08be9321a",
+  "inputsVerified": 328,
+  "stagedFilesVerified": 392,
+  "oldFilesVerified": 389,
+  "compiledWorkspaceFiles": 348,
+  "installedPublicFilesVerified": 510,
+  "errors": []
+}

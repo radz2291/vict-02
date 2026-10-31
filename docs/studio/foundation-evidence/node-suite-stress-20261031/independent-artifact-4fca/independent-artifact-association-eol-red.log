@@ -1,0 +1,69 @@
+{
+  "sourceCandidate": "4fcaadcd91434448e12f2e8294da70f74103bb07",
+  "sealSha256": "0669c5b6de72de2d54f79d776331580581808c4a1225f9330a77f7b08be9321a",
+  "inputsVerified": 328,
+  "currentInputMismatches": [
+    "apps/studio/tests/ui/core-schema-diagnostics.test.ts"
+  ],
+  "productionSourceDrift": "",
+  "dependencyLinks": [
+    {
+      "path": "node_modules",
+      "target": "C:\\Users\\RZ1\\.codex\\worktrees\\vict-architecture-realignment-20261030\\node_modules",
+      "expected": "C:\\Users\\RZ1\\.codex\\worktrees\\vict-architecture-realignment-20261030\\node_modules"
+    },
+    {
+      "path": "apps/studio/node_modules",
+      "target": "C:\\Users\\RZ1\\.codex\\worktrees\\vict-architecture-realignment-20261030\\apps\\studio\\node_modules",
+      "expected": "C:\\Users\\RZ1\\.codex\\worktrees\\vict-architecture-realignment-20261030\\apps\\studio\\node_modules"
+    }
+  ],
+  "compiledDependencyComparison": [
+    {
+      "name": "contracts",
+      "filesMatched": 30
+    },
+    {
+      "name": "ui",
+      "filesMatched": 69
+    },
+    {
+      "name": "sdk",
+      "filesMatched": 27
+    },
+    {
+      "name": "kernel",
+      "filesMatched": 30
+    },
+    {
+      "name": "runtime",
+      "filesMatched": 117
+    },
+    {
+      "name": "mastra",
+      "filesMatched": 42
+    },
+    {
+      "name": "application",
+      "filesMatched": 33
+    }
+  ],
+  "stagedFilesVerified": 392,
+  "oldFilesVerified": 389,
+  "historicalProofFilesVerified": 84,
+  "newConsumerProofFilesVerified": 3,
+  "installedPublicFilesVerified": 510,
+  "consumerReportSha256": "cbc25a1db291ba4f922a6fbb4e83c7e9e21f4b4cd0a7b0ae8b97a15f35fba164",
+  "activationPerformed": false,
+  "actualUiVerification": "pending",
+  "errors": [
+    "Independent exact-source input apps/studio/src/lib/server/designer-validation-feedback.ts",
+    "Independent exact-source input apps/studio/src/lib/server/tool-evidence-archive.ts",
+    "Independent exact-source input apps/studio/src/lib/server/tool-evidence.ts",
+    "Independent exact-source input apps/studio/tests/authoring-foundation-evidence-route.test.ts",
+    "Independent exact-source input apps/studio/tests/designer-tool-evidence.test.ts",
+    "Independent exact-source input apps/studio/tests/independent-nested-route-guidance.test.ts",
+    "Independent exact-source input apps/studio/tests/ui/completion-timeline.test.ts"
+  ],
+  "status": "FAIL"
+}
