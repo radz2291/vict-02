@@ -1,0 +1,73 @@
+{
+  "scope": "Actual unchanged r1.r8 supported export, installed public package artifacts oxHVuK (sourcef328), standalonebrowser5633; Studio stillserves4fca",
+  "sourceExport": "19-manual-before-agent-supported-export.json",
+  "preparationReportSha256": "c186005f35b043baf240b9a2554e3ae7255b1bcbea35fec6c9c60059e8c0de3d",
+  "drag": {
+    "from": [
+      600,
+      450
+    ],
+    "to": [
+      630,
+      460
+    ]
+  },
+  "wheel": {
+    "at": [
+      600,
+      450
+    ],
+    "direction": "up",
+    "pages": 1
+  },
+  "before": [
+    {
+      "label": "Campaign workflow canvas",
+      "view": "transform: translate(104.626px, 179.159px) scale(0.348405);"
+    },
+    {
+      "label": "Finishing steps canvas",
+      "view": "transform: translate(22.873px, 64.1048px) scale(1.00317);"
+    },
+    {
+      "label": "Finishing steps canvas",
+      "view": "transform: translate(22.873px, 90.1873px) scale(1.00317);"
+    }
+  ],
+  "afterPan": [
+    {
+      "label": "Campaign workflow canvas",
+      "view": "transform: translate(104.626px, 179.159px) scale(0.348405);"
+    },
+    {
+      "label": "Finishing steps canvas",
+      "view": "transform: translate(52.873px, 74.1048px) scale(1.00317);"
+    },
+    {
+      "label": "Finishing steps canvas",
+      "view": "transform: translate(22.873px, 90.1873px) scale(1.00317);"
+    }
+  ],
+  "afterWheel": [
+    {
+      "label": "Campaign workflow canvas",
+      "view": "transform: translate(104.626px, 179.159px) scale(0.348405);"
+    },
+    {
+      "label": "Finishing steps canvas",
+      "view": "transform: translate(29.5752px, 39.9639px) scale(2);"
+    },
+    {
+      "label": "Finishing steps canvas",
+      "view": "transform: translate(22.873px, 90.1873px) scale(1.00317);"
+    }
+  ],
+  "outerCameraUnchanged": true,
+  "posterCameraUnchanged": true,
+  "socialPanChanged": true,
+  "socialZoomChanged": true,
+  "limitations": [
+    "Partialappcheckpoint containsknownHelp/cardboundaryissues beingauthoredseparately",
+    "Not a newStudioactivation, fullsuiteverdict orphysicaldeviceproof"
+  ]
+}

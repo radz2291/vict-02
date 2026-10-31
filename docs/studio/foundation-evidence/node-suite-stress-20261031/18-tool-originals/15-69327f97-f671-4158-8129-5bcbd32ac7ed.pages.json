@@ -1,0 +1,14 @@
+{
+  "meta": {
+    "id": "69327f97-f671-4158-8129-5bcbd32ac7ed",
+    "label": "Read screen · result"
+  },
+  "pages": [
+    {
+      "start": 0,
+      "end": 2010,
+      "total": 2010,
+      "text": "{\"expectedRevision\":\"r1.r6#31\",\"cursor\":{\"documentId\":\"screen-a8690ffa-1e90-4b72-909c-66141d372773\",\"revision\":\"r1.r6#31\",\"digest\":\"c0f46454fb28d7715fc2fdb7073e8f60f8fb4d30c94a6caebc4a6815b13ba2e0\",\"epoch\":\"42d6cc79-bcaa-4f84-a34a-7d5d54685af2\"},\"section\":\"source\",\"nodeId\":\"cf-meta\",\"sourceJson\":\"{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"cf-meta\\\",\\\"tag\\\":\\\"p\\\",\\\"children\\\":[\\\"cf-meta-text\\\"],\\\"localStyle\\\":[{\\\"property\\\":\\\"font-size\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"12px\\\"}},{\\\"property\\\":\\\"line-height\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"1.6\\\"}},{\\\"property\\\":\\\"margin\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"0\\\"}},{\\\"property\\\":\\\"color\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"#14b8a6\\\"}},{\\\"property\\\":\\\"font-weight\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"600\\\"}}]}\",\"totalCharacters\":401,\"offset\":0,\"nextOffset\":null,\"turnProgress\":{\"applied\":0,\"metrics\":{\"toolCalls\":9,\"completedCalls\":6,\"refusedCalls\":0,\"recoveryAttempts\":0,\"toolElapsedMs\":102,\"providerRequests\":2,\"visionRequests\":0,\"acknowledgementMs\":0,\"confirmedEdits\":0,\"usage\":{\"inputTokens\":75044,\"outputTokens\":18025,\"totalTokens\":93069},\"categories\":{\"knowledge\":1,\"source\":8,\"edit\":0,\"observe\":0,\"other\":0},\"elapsedMs\":435915,\"toolActiveMs\":43,\"outsideToolMs\":435872,\"modelSteps\":null,\"cost\":null},\"retainedKnowledge\":{\"scope\":\"Complete contract bodies delivered in this turn only; reuse still requires their content to remain available in model context. Source facts are never cached knowledge.\",\"complete\":[],\"partialCount\":0},\"visualEvidence\":{\"regions\":[],\"currentSourceObservations\":0,\"scope\":\"Captured regions only; source freshness does not establish current runtime/viewport freshness or offscreen/interaction coverage.\",\"interactionsVerified\":false},\"evidence\":\"Host receipt-derived totals include all acknowledged transactions, including cleanup. Outside-tool time is waiting/generation/transport/host overhead, not measured provider latency. Captured regions do not establish full-page or interaction coverage.\"}}"
+    }
+  ]
+}

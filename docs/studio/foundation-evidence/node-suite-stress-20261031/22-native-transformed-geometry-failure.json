@@ -1,0 +1,113 @@
+{
+  "scope": "Quantitative native actual-export geometry afteradmissionrepair; outerzoom.348405",
+  "pointerPan": {
+    "from": [
+      600,
+      450
+    ],
+    "to": [
+      630,
+      460
+    ],
+    "expectedScreenDelta": {
+      "x": 30,
+      "y": 10
+    },
+    "actualScreenDelta": {
+      "x": 10.4521484375,
+      "y": 3.48406982421875
+    }
+  },
+  "wheel": {
+    "at": [
+      600,
+      450
+    ],
+    "ratio": 1.9936800342912968,
+    "expectedTopLeft": {
+      "x": 512.4423526639304,
+      "y": 313.10564699356166
+    },
+    "actualTopLeft": {
+      "x": 561.8572998046875,
+      "y": 383.3329772949219
+    }
+  },
+  "cropBounds": {
+    "before": {
+      "bottom": 418.4649353027344,
+      "height": 40.6131591796875,
+      "left": 545.6302490234375,
+      "right": 612.0373764038086,
+      "top": 377.8517761230469,
+      "width": 66.4071273803711,
+      "x": 545.6302490234375,
+      "y": 377.8517761230469
+    },
+    "afterPan": {
+      "bottom": 421.949031829834,
+      "height": 40.61318588256836,
+      "left": 556.0823974609375,
+      "right": 622.4895248413086,
+      "top": 381.3358459472656,
+      "width": 66.4071273803711,
+      "x": 556.0823974609375,
+      "y": 381.3358459472656
+    },
+    "afterWheel": {
+      "bottom": 464.3022689819336,
+      "height": 80.96929168701172,
+      "left": 561.8572998046875,
+      "right": 694.2511444091797,
+      "top": 383.3329772949219,
+      "width": 132.3938446044922,
+      "x": 561.8572998046875,
+      "y": 383.3329772949219
+    }
+  },
+  "cameras": {
+    "before": [
+      {
+        "label": "Campaign workflow canvas",
+        "view": "transform: translate(104.626px, 179.159px) scale(0.348405);"
+      },
+      {
+        "label": "Finishing steps canvas",
+        "view": "transform: translate(22.873px, 64.1048px) scale(1.00317);"
+      },
+      {
+        "label": "Finishing steps canvas",
+        "view": "transform: translate(22.873px, 90.1873px) scale(1.00317);"
+      }
+    ],
+    "afterPan": [
+      {
+        "label": "Campaign workflow canvas",
+        "view": "transform: translate(104.626px, 179.159px) scale(0.348405);"
+      },
+      {
+        "label": "Finishing steps canvas",
+        "view": "transform: translate(52.873px, 74.1048px) scale(1.00317);"
+      },
+      {
+        "label": "Finishing steps canvas",
+        "view": "transform: translate(22.873px, 90.1873px) scale(1.00317);"
+      }
+    ],
+    "afterWheel": [
+      {
+        "label": "Campaign workflow canvas",
+        "view": "transform: translate(104.626px, 179.159px) scale(0.348405);"
+      },
+      {
+        "label": "Finishing steps canvas",
+        "view": "transform: translate(29.5752px, 39.9639px) scale(2);"
+      },
+      {
+        "label": "Finishing steps canvas",
+        "view": "transform: translate(22.873px, 90.1873px) scale(1.00317);"
+      }
+    ]
+  },
+  "classification": "Admission+isolationrepairpasses; transformedancestorpointertracking/focalgeometrystillfails. No completecameraPASS."
+}

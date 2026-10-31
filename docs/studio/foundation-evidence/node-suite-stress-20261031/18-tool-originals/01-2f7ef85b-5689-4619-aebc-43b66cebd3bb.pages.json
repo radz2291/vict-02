@@ -1,0 +1,14 @@
+{
+  "meta": {
+    "id": "2f7ef85b-5689-4619-aebc-43b66cebd3bb",
+    "label": "Read screen · input"
+  },
+  "pages": [
+    {
+      "start": 0,
+      "end": 125,
+      "total": 125,
+      "text": "{\"section\":\"sources\",\"offset\":0,\"limit\":20,\"nodeIds\":[\"screen\",\"cf-header\",\"cf-vp\",\"bf-fin\",\"fin-content\",\"fin-vp\",\"fin-ws\"]}"
+    }
+  ]
+}

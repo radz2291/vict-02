@@ -1,0 +1,14 @@
+{
+  "meta": {
+    "id": "4ce7c85b-c451-4d2f-a54d-9849a4346fd9",
+    "label": "Read screen · input"
+  },
+  "pages": [
+    {
+      "start": 0,
+      "end": 61,
+      "total": 61,
+      "text": "{\"section\":\"source\",\"offset\":0,\"limit\":20,\"nodeId\":\"cf-meta\"}"
+    }
+  ]
+}

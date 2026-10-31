@@ -1,0 +1,14 @@
+{
+  "meta": {
+    "id": "65e16292-4d18-4202-8213-756bf9821ad0",
+    "label": "Read screen · input"
+  },
+  "pages": [
+    {
+      "start": 0,
+      "end": 96,
+      "total": 96,
+      "text": "{\"section\":\"nodes\",\"offset\":0,\"limit\":20,\"nodeId\":\"ws-main\",\"scope\":\"subtree\",\"query\":\"rw-help\"}"
+    }
+  ]
+}

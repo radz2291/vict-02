@@ -1,0 +1,14 @@
+{
+  "meta": {
+    "id": "f85217aa-6baa-43ff-8c1d-ad952c438cb2",
+    "label": "Read screen · input"
+  },
+  "pages": [
+    {
+      "start": 0,
+      "end": 94,
+      "total": 94,
+      "text": "{\"section\":\"nodes\",\"offset\":20,\"limit\":20,\"nodeId\":\"ws-main\",\"scope\":\"subtree\",\"query\":\"help\"}"
+    }
+  ]
+}

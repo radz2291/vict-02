@@ -1,0 +1,70 @@
+Resuming the three preflighted repairs against the fresh r1.r9 token — first, focused reads of the help label pairs, the Finishing card widths, and the current graph revisions.
+
+Read screen
+completed
+Read screen
+completed
+Read screen
+completed
+
+Graph revision 34 and the five literal-id checkboxes are confirmed. Now paging the remaining help labels, the graph tail (finS/finP values + links), and the exact Finishing card styles.
+
+Read screen
+completed
+Read screen
+completed
+Read screen
+completed
+
+Graph tail and card styles confirmed — finS/finP values, revision 34, and the 300px/760px mismatch are all fresh. One more focused read to pin the five label elements carrying for, plus the final graph page (remaining links).
+
+Read screen
+completed
+Read screen
+completed
+
+All three targets are pinned (five for/id pairs, the 300px↔760px card mismatch, finP inner graph rev 2 with amount 70, route revision 34, links e01–e20 intact). Preflighting the three repair transactions against r1.r9#49.
+
+Read screen
+failed
+Read screen
+completed
+Read screen
+completed
+
+Repairs 2 and 3 validated; repair 1's null-attribute strip is rejected — literal attributes can't be nulled, so the five label pairs must be rebuilt (remove + re-insert without for/id, same nesting, wiring and styles). Applying repair 2 now and locating the five card field containers for the rebuild.
+
+Edit screen
+completed
+Read screen
+completed
+
+Repair 2 is acknowledged (r1.r9#50) — label positions captured (hl-b idx 2, hl-p idx 1, hl-s idx 2, hl-sd idx 2, hl-d idx 2). Applying repair 3, the Poster-only inner grade change.
+
+Edit screen
+completed
+
+Repair 3 acknowledged (r1.r9#51). Now preflighting repair 1's rebuild — each of the five labels is removed and re-inserted at its original slot with identical nesting, styles, "Node help" text, aria-label and private helpOpen wiring, but no literal for/id attributes.
+
+Read screen
+completed
+
+Rebuild validated. Applying it as one atomic transaction.
+
+Edit screen
+completed
+
+All three repairs are acknowledged through r1.r9#52. Verifying the targeted source facts: new label structure, card widths, and the finP/finS inner graph values.
+
+Read screen
+completed
+Read screen
+completed
+Read screen
+completed
+Read screen
+completed
+
+All three repairs are applied and source-verified at r1.r9#52 (three acknowledged transactions, each its own Undo): the five early Help labels were rebuilt without literal for/id (checkbox nested in its label, same position/styles/"Node help" text, checked binding and change→helpOpen interaction intact — only the id-less later-family checkboxes remain elsewhere); br-fin is now 760px with bf-fin at 100%/stretch so the nested workspace and ports row live inside the card; and the Poster-only route edit set finP's inner f-grade amount to 72 (inner graph revision 3).
+
+Preserved as instructed: finS mode "poster", finS inner revision 5 with amount 35 at {286,92} and the manual social caption, outer graph revision 34, Style/Seed positions, reviews/Merge/Export values, and the full e01–e20 link set (the serialized graph's total length is byte-for-byte unchanged apart from the two targeted characters). I skipped image assessment per your instruction, and with no click/type tools the label-click association, width containment rendering, and Poster-only behavior remain for your native checks.

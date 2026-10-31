@@ -1,0 +1,12 @@
+{
+  "scope": "ActualStudio r1.r12 afteractualagentlabelrepair",
+  "action": "Normal pointer click on Negative prompt label element",
+  "result": {
+    "positive": false,
+    "negative": false
+  },
+  "expected": {
+    "positive": false,
+    "negative": true
+  }
+}

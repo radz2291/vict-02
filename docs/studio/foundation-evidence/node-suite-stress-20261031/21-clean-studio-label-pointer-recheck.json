@@ -1,0 +1,9 @@
+{
+  "scope": "FreshnormalStudio savedr1.r12 tab8, explicitlyInteract mode; labelpointerclick thenfreshread",
+  "result": {
+    "positiveChecked": false,
+    "negativeChecked": true,
+    "positiveText": "Positive prompt\n\nNode help",
+    "negativeText": "Negative prompt\n\nNode help\n\nHelp · one reusable prompt body; positive and negative occurrences keep independent text values."
+  }
+}

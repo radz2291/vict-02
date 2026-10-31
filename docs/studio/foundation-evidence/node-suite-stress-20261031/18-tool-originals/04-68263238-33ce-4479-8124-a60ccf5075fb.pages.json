@@ -1,0 +1,14 @@
+{
+  "meta": {
+    "id": "68263238-33ce-4479-8124-a60ccf5075fb",
+    "label": "Read screen · input"
+  },
+  "pages": [
+    {
+      "start": 0,
+      "end": 93,
+      "total": 93,
+      "text": "{\"section\":\"nodes\",\"offset\":0,\"limit\":20,\"nodeId\":\"ws-main\",\"scope\":\"subtree\",\"query\":\"help\"}"
+    }
+  ]
+}

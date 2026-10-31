@@ -102,7 +102,7 @@ describe('independent exact schema collision review', () => {
       expect(agentContext(source, cursor, undefined, input)).toMatchObject({ ok: false });
     }
     expect(JSON.stringify(source)).toBe(before);
-    expect(STUDIO_AGENT_PROTOCOL).toMatchObject({ readCapabilityRevision: '10', readInputRevision: '10', editCapabilityRevision: '10', editInputRevision: '10', profileRevision: '19', observationProfileRevision: '13' });
+    expect(STUDIO_AGENT_PROTOCOL).toMatchObject({ readCapabilityRevision: '10', readInputRevision: '10', editCapabilityRevision: '10', editInputRevision: '10', profileRevision: '20', observationProfileRevision: '14' });
   });
 
   it('does not drop an own JSON __proto__ field before strict nested edit validation', () => {

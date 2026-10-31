@@ -1,0 +1,19 @@
+{
+  "scope": "ActualnormalcleanStudio8, source4fca, savedr1.r12; isolatednativecontrols, noSaveoftestvalues",
+  "savedReopenSourceExact": true,
+  "negativeLabelPointerCheck": {
+    "positiveChecked": false,
+    "negativeChecked": true,
+    "positiveText": "Positive prompt\n\nNode help",
+    "negativeText": "Negative prompt\n\nNode help\n\nHelp · one reusable prompt body; positive and negative occurrences keep independent text values."
+  },
+  "helpPrivateSourceUnchanged": true,
+  "longPositiveCharacters": 5572,
+  "negativeExactlyPreserved": true,
+  "restoration": "Restoreoriginaltext, thengraphUndo twice toreturnexactsource",
+  "exactSavedSourceRestored": true,
+  "limitations": [
+    "FinalV3edgefeaturesandnewcoordinateframe notyetactivated",
+    "Earliercurrent-tabpointerattemptsreturnedunchangedchecksandremainretained; cleanreopenedexplicitInteracttestpasses"
+  ]
+}

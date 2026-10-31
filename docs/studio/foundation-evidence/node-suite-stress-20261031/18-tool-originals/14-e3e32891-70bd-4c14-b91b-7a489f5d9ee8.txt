@@ -1,0 +1,1 @@
+{"section":"state","offset":6000,"limit":20,"stateKey":"campaignGraph"}
