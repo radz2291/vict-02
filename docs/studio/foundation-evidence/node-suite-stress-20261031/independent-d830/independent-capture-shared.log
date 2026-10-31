@@ -1,0 +1,9 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/vict-limits-independent-20261031/packages/ui-ai-svelte
+
+
+ Test Files  3 passed (3)
+      Tests  57 passed (57)
+   Start at  11:26:00
+   Duration  5.96s (transform 1.21s, setup 0ms, import 1.45s, tests 2.74s, environment 7.44s)
+

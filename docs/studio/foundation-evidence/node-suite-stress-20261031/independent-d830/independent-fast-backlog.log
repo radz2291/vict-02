@@ -1,0 +1,33 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/vict-limits-independent-20261031
+
+ ❯ |unit| packages/runtime/test/independent-hub-fast-backlog.test.ts (1 test | 1 failed) 420ms
+   × independent: a fast subscriber can resume a durable backlog beyond the default pending bound 416ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| packages/runtime/test/independent-hub-fast-backlog.test.ts > independent: a fast subscriber can resume a durable backlog beyond the default pending bound
+AssertionError: expected 1 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 1
+
+ ❯ packages/runtime/test/independent-hub-fast-backlog.test.ts:9:21
+      7|   const received:number[]=[];let overflows=0;
+      8|   await hub.subscribe(base.streamId,{subscriberId:'fast',deliver:event…
+      9|   expect(overflows).toBe(0);
+       |                     ^
+     10|   expect(received).toHaveLength(4097);
+     11|   expect(received[0]).toBe(1);expect(received.at(-1)).toBe(4097);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed (1)
+   Start at  11:25:53
+   Duration  2.95s (transform 1.61s, setup 0ms, import 1.96s, tests 420ms, environment 0ms)
+
