@@ -1,0 +1,91 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/vict-pointer-history-probe-20261030
+
+ ❯ packages/ui-flow-svelte/test/unlimited-graph.svelte.test.ts (6 tests | 6 failed) 312ms
+   × round-trips graph@1 beyond former byte/family/port/parameter/node/edge and clipboard ceilings 62ms
+   × round-trips graph@2 beyond former byte/family/port/parameter/node/edge and clipboard ceilings 104ms
+   × preserves default graph@1 history beyond100 and resets only explicitly 49ms
+   × preserves default graph@2 history beyond100 and resets only explicitly 62ms
+   × keeps all command identities beyond128 without replay or stale/type/atomicity regressions 22ms
+   × keeps legacy long text and finite clipboard offsets without arbitrary content/range ceilings 8ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 6 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  packages/ui-flow-svelte/test/unlimited-graph.svelte.test.ts > round-trips graph@1 beyond former byte/family/port/parameter/node/edge and clipboard ceilings
+GraphValidationError: graph: Graph exceeds one million characters.
+ ❯ serializeGraph packages/ui-flow-svelte/src/editor/model.ts:428:25
+    426| export function serializeGraph(graph: GraphDocument): string {
+    427|   const result = validateGraph(graph);
+    428|   if (!result.ok) throw new GraphValidationError(result.issues);
+       |                         ^
+    429|   return JSON.stringify(result.graph);
+    430| }
+ ❯ packages/ui-flow-svelte/test/unlimited-graph.svelte.test.ts:21:23
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/6]⎯
+
+ FAIL  packages/ui-flow-svelte/test/unlimited-graph.svelte.test.ts > round-trips graph@2 beyond former byte/family/port/parameter/node/edge and clipboard ceilings
+GraphValidationErrorV2: graph: Graph data exceeds one million characters.
+ ❯ serializeGraphV2 packages/ui-flow-svelte/src/editor/model-v2.ts:89:131
+
+ ❯ packages/ui-flow-svelte/test/unlimited-graph.svelte.test.ts:28:25
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/6]⎯
+
+ FAIL  packages/ui-flow-svelte/test/unlimited-graph.svelte.test.ts > preserves default graph@1 history beyond100 and resets only explicitly
+ FAIL  packages/ui-flow-svelte/test/unlimited-graph.svelte.test.ts > preserves default graph@2 history beyond100 and resets only explicitly
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ packages/ui-flow-svelte/test/unlimited-graph.svelte.test.ts:44:51
+     42|   const session=version===1?new GraphSession(source as GraphDocument):…
+     43|   for(let i=0;i<101;i++)expect(session.apply([{type:'setLabel',nodeId:…
+     44|   for(let i=0;i<101;i++)expect(session.undo().ok).toBe(true);
+       |                                                   ^
+     45|   expect(session.graph.nodes[0]!.label).toBe('Node 0');expect(session.…
+     46|   expect(session.replace(session.graph).ok).toBe(true);expect(session.…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/6]⎯
+
+ FAIL  packages/ui-flow-svelte/test/unlimited-graph.svelte.test.ts > keeps all command identities beyond128 without replay or stale/type/atomicity regressions
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ packages/ui-flow-svelte/test/unlimited-graph.svelte.test.ts:56:23
+     54|   for(let i=0;i<130;i++){
+     55|     const result=applyGraphCommand(source,{...first,id:`command-${i}`,…
+     56|     expect(result.ok).toBe(true);if(!result.ok)throw Error('command re…
+       |                       ^
+     57|   }
+     58|   expect(receipts).toHaveLength(130);expect(applyGraphCommand(source,f…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/6]⎯
+
+ FAIL  packages/ui-flow-svelte/test/unlimited-graph.svelte.test.ts > keeps legacy long text and finite clipboard offsets without arbitrary content/range ceilings
+GraphValidationError: nodeTypes.0.fields: Expected an array of at most 128 entries.; nodeTypes.0.ports: Expected an array of at most 128 entries.; nodes.0.label: Node requires a label.; nodes.0.values.v0: Value must match an existing field, bounds and options.
+ ❯ serializeGraph packages/ui-flow-svelte/src/editor/model.ts:428:25
+    426| export function serializeGraph(graph: GraphDocument): string {
+    427|   const result = validateGraph(graph);
+    428|   if (!result.ok) throw new GraphValidationError(result.issues);
+       |                         ^
+    429|   return JSON.stringify(result.graph);
+    430| }
+ ❯ packages/ui-flow-svelte/test/unlimited-graph.svelte.test.ts:67:21
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/6]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  6 failed (6)
+   Start at  10:22:47
+   Duration  5.78s (transform 1.98s, setup 0ms, import 2.50s, tests 312ms, environment 1.92s)

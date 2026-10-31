@@ -43,6 +43,24 @@ const settle = async () => {
   await new Promise((resolve) => setTimeout(resolve, 50));
   flushSync();
 };
+it('persists manual and agent nested graph writes beyond180000 characters through the genuine Studio bridge',async()=>{
+  const initial=nestedCompositionDocument(),outerModel=outer(initial),innerModel=inner(initial);
+  innerModel.nodeTypes[0].parameters.padding={type:'string',default:'x'.repeat(180001)};
+  outerModel.nodes.find((node:{id:string})=>node.id==='outer-node').values.innerGraph=JSON.stringify(innerModel);
+  const source:UiDocument={...initial,localState:{...initial.localState,graph:{...initial.localState.graph,initial:JSON.stringify(outerModel)}}};
+  expect(String(source.localState.graph.initial).length).toBeGreaterThan(180000);
+  const view=await open(source),field=document.querySelector<HTMLInputElement>('[aria-label="Evidence URL"]')!;
+  expect(field).toBeTruthy();field.value='https://example.test/large-source';field.dispatchEvent(new Event('change',{bubbles:true}));
+  await settle();
+  expect(inner(view.bridge.document).nodes.find((node:{id:string})=>node.id==='source-a').values.text).toBe('https://example.test/large-source');
+  agentEdit(view.bridge,[{op:'editGraph',nodeId:'inner-workspace',expectedGraphRevision:inner(view.bridge.document).revision,occurrenceRoute:[{workspaceNodeId:'outer-workspace',graphNodeId:'outer-node',expectedGraphRevision:outer(view.bridge.document).revision}],changes:[{type:'setLabel',nodeId:'source-a',label:'Large source authored'}]}]);
+  view.sync();await settle();
+  expect(inner(view.bridge.document).nodes.find((node:{id:string})=>node.id==='source-a').label).toBe('Large source authored');
+  expect(inner(view.bridge.document).nodeTypes[0].parameters.padding.default).toBe('x'.repeat(180001));
+  expect(view.bridge.save().ok).toBe(true);expect(view.bridge.reopen().ok).toBe(true);
+  const imported=await prepareSourceImport(JSON.stringify({application:screenApplication(view.bridge.document),uiDocuments:[{document:view.bridge.document}]}));
+  expect(imported.ok,JSON.stringify(imported)).toBe(true);if(imported.ok)expect(imported.document).toEqual(view.bridge.document);
+});
 function outer(source: UiDocument) {
   return JSON.parse(String(source.localState.graph.initial));
 }

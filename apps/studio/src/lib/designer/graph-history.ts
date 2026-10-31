@@ -19,7 +19,7 @@ function sourceRoot(
   nodeId: string,
   seen: readonly string[] = [],
 ): 'document' | 'runtime' | 'unresolved' {
-  if (seen.includes(nodeId) || seen.length >= 32) return 'unresolved';
+  if (seen.includes(nodeId)) return 'unresolved';
   const node = document.nodes[nodeId];
   if (!authoredGraphVersion(node)) return 'unresolved';
   const owner = graphSourceOwnership(document, nodeId);

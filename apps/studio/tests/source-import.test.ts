@@ -1,7 +1,7 @@
 // @vitest-environment happy-dom
 import { describe, expect, it, vi } from 'vitest';
 import { newScreen, screenApplication, screenIssues } from '../src/lib/designer/application.js';
-import { prepareSourceImport, SOURCE_IMPORT_LIMITS } from '../src/lib/designer/source-import.js';
+import { prepareSourceImport } from '../src/lib/designer/source-import.js';
 import {
   memoryAssetStore,
   importMediaAsset,
@@ -513,23 +513,23 @@ describe('one-screen local source import preparation', () => {
       ),
     ).toMatchObject({ ok: false, code: 'STUDIO_IMPORT_APPLICATION' });
   });
-  it('caps canonical source size and declared decoded aggregate before allocating media payloads', async () => {
+  it('admits large canonical source and delegates invalid media archive refusal to the public importer', async () => {
     const document = source();
     expect(
       await prepareSourceImport(
         bundle({
           ...document,
-          metadata: { oversized: 'x'.repeat(SOURCE_IMPORT_LIMITS.documentCharacters) },
+          localState: {...document.localState,large:{key:'large',type:'string',initial:'x'.repeat(200001)}},
         } as UiDocument),
       ),
-    ).toMatchObject({ ok: false, code: 'STUDIO_IMPORT_SOURCE_LIMIT' });
+    ).toMatchObject({ ok: true });
     const archive = {
       schema: 'vict.media-archive@1',
       assets: [{ size: MAX_ASSET_BYTES }, { size: 1 }],
     };
     expect(await prepareSourceImport(bundle(document, { mediaArchive: archive }))).toMatchObject({
       ok: false,
-      code: 'STUDIO_IMPORT_MEDIA_LIMIT',
+      code: 'STUDIO_IMPORT_MEDIA_INVALID',
     });
     expect(await prepareSourceImport(bundle(document, { mediaArchive: null }))).toMatchObject({
       ok: false,

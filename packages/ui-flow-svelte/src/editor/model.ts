@@ -120,15 +120,13 @@ const object = (value: unknown): value is Record<string, unknown> =>
 const finite = (value: unknown): value is number =>
   typeof value === 'number' && Number.isFinite(value);
 const text = (value: unknown): value is string =>
-  typeof value === 'string' && value.length > 0 && value.length <= 200;
+  typeof value === 'string' && value.length > 0;
 const valueOk = (value: unknown): value is GraphValue =>
-  (typeof value === 'string' && value.length <= 10000) ||
+  (typeof value === 'string') ||
   finite(value) ||
   typeof value === 'boolean' ||
   (Array.isArray(value) &&
-    value.length <= 500 &&
-    value.every((item) => typeof item === 'string' && item.length <= 10000) &&
-    value.reduce((total, item) => total + item.length, 0) <= 10000);
+    value.every((item) => typeof item === 'string'));
 const safeId = (value: unknown): value is string =>
   text(value) && !['__proto__', 'prototype', 'constructor'].includes(value);
 export const emptyGraph = (): GraphDocument => ({
@@ -162,18 +160,11 @@ export function graphFieldValue(
   );
 }
 
-/** Reject malformed/unbounded input before it can reach the canvas or authoring state. */
+/** Validate graph structure and semantics before it reaches authoring state. */
 export function validateGraph(input: unknown): GraphResult {
   let serialized: string;
   try {
     serialized = JSON.stringify(input);
-    if (serialized.length > 1_000_000)
-      return {
-        ok: false,
-        issues: [
-          { code: 'GRAPH_BOUND', path: 'graph', message: 'Graph exceeds one million characters.' },
-        ],
-      };
   } catch {
     return {
       ok: false,
@@ -190,9 +181,9 @@ export function validateGraph(input: unknown): GraphResult {
     for (const key of Object.keys(entry))
       if (!allowed.includes(key)) issue('GRAPH_UNKNOWN_FIELD', `${path}.${key}`, 'Unknown field.');
   };
-  const list = (value: unknown, maximum: number, path: string): unknown[] => {
-    if (!Array.isArray(value) || value.length > maximum) {
-      issue('GRAPH_BOUND', path, `Expected an array of at most ${maximum} entries.`);
+  const list = (value: unknown, path: string): unknown[] => {
+    if (!Array.isArray(value)) {
+      issue('GRAPH_BOUND', path, 'Expected an array.');
       return [];
     }
     return value;
@@ -205,7 +196,7 @@ export function validateGraph(input: unknown): GraphResult {
         issue(
           'GRAPH_ID',
           `${path}.${i}.id`,
-          'Supply a nonempty safe ID of at most 200 characters.',
+          'Supply a nonempty safe ID.',
         );
       else if (ids.has(entry.id))
         issue('GRAPH_DUPLICATE', `${path}.${i}.id`, 'IDs must be unique in their namespace.');
@@ -213,7 +204,7 @@ export function validateGraph(input: unknown): GraphResult {
     }
   };
   const ports = (inputPorts: unknown, path: string): GraphPort[] => {
-    const entries = list(inputPorts, 128, path);
+    const entries = list(inputPorts, path);
     unique(entries, path);
     entries.forEach((port, i) => {
       if (!object(port)) return;
@@ -245,11 +236,11 @@ export function validateGraph(input: unknown): GraphResult {
     if (!text(value.pack) || !text(value.name) || !text(value.revision))
       issue('GRAPH_ICON', path, 'Icon requires stable pack/name/revision.');
     for (const key of ['source', 'data'])
-      if (value[key] !== undefined && (typeof value[key] !== 'string' || value[key].length > 10000))
+      if (value[key] !== undefined && (typeof value[key] !== 'string'))
         issue(
           'GRAPH_ICON',
           `${path}.${key}`,
-          'Supply a bounded managed source or inert vector JSON.',
+          'Supply a managed source or inert vector JSON.',
         );
   };
   if (!object(input))
@@ -264,9 +255,9 @@ export function validateGraph(input: unknown): GraphResult {
     issue('GRAPH_REVISION', 'revision', 'Expected a nonnegative safe integer.');
   if (input.allowCycles !== undefined && typeof input.allowCycles !== 'boolean')
     issue('GRAPH_POLICY', 'allowCycles', 'Expected boolean.');
-  const types = list(input.nodeTypes, 128, 'nodeTypes'),
-    nodes = list(input.nodes, 1000, 'nodes'),
-    edges = list(input.edges, 4000, 'edges');
+  const types = list(input.nodeTypes, 'nodeTypes'),
+    nodes = list(input.nodes, 'nodes'),
+    edges = list(input.edges, 'edges');
   unique(types, 'nodeTypes');
   unique(nodes, 'nodes');
   unique(edges, 'edges');
@@ -277,7 +268,7 @@ export function validateGraph(input: unknown): GraphResult {
     if (type.icon !== undefined) icon(type.icon, `nodeTypes.${i}.icon`);
     if (!text(type.label))
       issue('GRAPH_TYPE', `nodeTypes.${i}.label`, 'Node family requires a label.');
-    const fields = list(type.fields, 128, `nodeTypes.${i}.fields`);
+    const fields = list(type.fields, `nodeTypes.${i}.fields`);
     unique(fields, `nodeTypes.${i}.fields`);
     fields.forEach((field, j) => {
       if (!object(field)) return;
@@ -313,12 +304,12 @@ export function validateGraph(input: unknown): GraphResult {
             if (
               key === 'decorative'
                 ? typeof value !== 'boolean'
-                : typeof value !== 'string' || value.length > 10000
+                : typeof value !== 'string'
             )
               issue(
                 'GRAPH_MEDIA',
                 `${path}.media.${key}`,
-                'Supply bounded strings or boolean decorative state.',
+                'Supply strings or boolean decorative state.',
               );
           }
         }
@@ -332,9 +323,9 @@ export function validateGraph(input: unknown): GraphResult {
         issue('GRAPH_FIELD', path, 'Minimum exceeds maximum.');
       if (
         field.options !== undefined &&
-        (!Array.isArray(field.options) || field.options.length > 200 || !field.options.every(text))
+        (!Array.isArray(field.options) || !field.options.every(text))
       )
-        issue('GRAPH_FIELD', `${path}.options`, 'Expected bounded string options.');
+        issue('GRAPH_FIELD', `${path}.options`, 'Expected string options.');
       if (field.kind === 'select' && (!Array.isArray(field.options) || !field.options.length))
         issue('GRAPH_FIELD', path, 'Select requires options.');
       for (const key of ['advanced', 'disabled'])
@@ -407,13 +398,6 @@ export function fieldValueValid(field: GraphField, value: GraphValue): boolean {
   return field.kind !== 'select' || !!field.options?.includes(value);
 }
 export function parseGraph(source: string): GraphResult {
-  if (source.length > 1_000_000)
-    return {
-      ok: false,
-      issues: [
-        { code: 'GRAPH_BOUND', path: 'graph', message: 'Graph exceeds one million characters.' },
-      ],
-    };
   try {
     return validateGraph(JSON.parse(source));
   } catch {
@@ -451,17 +435,17 @@ export type GraphOperation =
 
 export type GraphOperationsResult =
   { ok: true; operations: GraphOperation[] } | { ok: false; issues: GraphIssue[] };
-/** Runtime validation for bounded agent patches; never trust a TypeScript cast at the tool boundary. */
+/** Runtime validation for agent patches; never trust a TypeScript cast at the tool boundary. */
 export function parseGraphOperations(input: unknown): GraphOperationsResult {
   const issues: GraphIssue[] = [];
   const issue = (path: string, message: string) => {
     if (issues.length < 30) issues.push({ code: 'GRAPH_OPERATION', path, message });
   };
-  if (!Array.isArray(input) || !input.length || input.length > 50)
+  if (!Array.isArray(input) || !input.length)
     return {
       ok: false,
       issues: [
-        { code: 'GRAPH_OPERATION', path: 'operations', message: 'Supply 1–50 graph operations.' },
+        { code: 'GRAPH_OPERATION', path: 'operations', message: 'Supply a nonempty graph operation array.' },
       ],
     };
   const allowed: Record<string, string[]> = {
@@ -491,7 +475,7 @@ export function parseGraphOperations(input: unknown): GraphOperationsResult {
     object(value) &&
     Object.keys(value).every((key) => key === 'nodes' || key === 'edges') &&
     ['nodes', 'edges'].every(
-      (key) => Array.isArray(value[key]) && value[key].length <= 1000 && value[key].every(safeId),
+      (key) => Array.isArray(value[key]) && value[key].every(safeId),
     );
   const connection = (value: unknown, withId = false) =>
     object(value) &&
@@ -518,15 +502,14 @@ export function parseGraphOperations(input: unknown): GraphOperationsResult {
       entry.type === 'moveNodes' &&
       (!object(entry.positions) ||
         !Object.keys(entry.positions).length ||
-        Object.keys(entry.positions).length > 1000 ||
         !Object.entries(entry.positions).every(([id, value]) => safeId(id) && position(value)))
     )
-      issue(`${path}.positions`, 'Supply a bounded nonempty map of node IDs to finite x/y.');
+      issue(`${path}.positions`, 'Supply a nonempty map of node IDs to finite x/y.');
     if (entry.type === 'setField' && !valueOk(entry.value))
-      issue(`${path}.value`, 'Supply a supported bounded field value.');
+      issue(`${path}.value`, 'Supply a supported field value.');
     if(entry.type==='setCyclePolicy'&&typeof entry.allowCycles!=='boolean')issue(`${path}.allowCycles`,'Supply a boolean cycle-policy choice.');
     if (entry.type === 'setLabel' && !text(entry.label))
-      issue(`${path}.label`, 'Supply a nonempty bounded label.');
+      issue(`${path}.label`, 'Supply a nonempty label.');
     if (entry.type === 'collapse' && typeof entry.collapsed !== 'boolean')
       issue(`${path}.collapsed`, 'Supply boolean collapsed state.');
     if (entry.type === 'connect' && !connection(entry.edge, true))
@@ -534,9 +517,9 @@ export function parseGraphOperations(input: unknown): GraphOperationsResult {
     if (entry.type === 'reconnect' && !connection(entry.connection))
       issue(`${path}.connection`, 'Supply exact named connection endpoints.');
     if (['remove', 'duplicate'].includes(entry.type) && !selection(entry.selection))
-      issue(`${path}.selection`, 'Supply bounded node and edge ID arrays.');
-    if (entry.offset !== undefined && (!finite(entry.offset) || Math.abs(entry.offset) > 10000))
-      issue(`${path}.offset`, 'Offset must be finite and at most 10000.');
+      issue(`${path}.selection`, 'Supply node and edge ID arrays.');
+    if (entry.offset !== undefined && !finite(entry.offset))
+      issue(`${path}.offset`, 'Offset must be finite.');
     if (entry.type === 'replacePorts') {
       const probe = validateGraph({
         schema: 'vict.flow-graph@1',
@@ -554,9 +537,9 @@ export function parseGraphOperations(input: unknown): GraphOperationsResult {
     }
     if (
       entry.type === 'paste' &&
-      (typeof entry.clipboard !== 'string' || entry.clipboard.length > 1_000_000)
+      typeof entry.clipboard !== 'string'
     )
-      issue(`${path}.clipboard`, 'Supply bounded portable selection JSON.');
+      issue(`${path}.clipboard`, 'Supply portable selection JSON.');
   });
   input.forEach((entry, index) => {
     if (object(entry) && entry.type === 'setIcon' && entry.icon !== null) {
@@ -762,7 +745,6 @@ export function applyGraphOperations(
             operation.type === 'duplicate'
               ? copyGraphSelection(next, operation.selection)
               : operation.clipboard;
-          if (source.length > 1_000_000) error('Clipboard exceeds the graph budget.');
           let clipboard: unknown;
           try {
             clipboard = JSON.parse(source);
@@ -889,7 +871,7 @@ export class GraphSession {
     const issues = this.domainIssues(result.graph);
     if (issues?.length) return { ok: false, issues: [...issues] };
     this.past.push(this.current);
-    if (this.past.length > (this.options.maxHistory ?? 100)) this.past.shift();
+    if (this.options.maxHistory !== undefined && this.past.length > this.options.maxHistory) this.past.shift();
     this.future = [];
     this.current = result.graph;
     return { ok: true, graph: this.graph };

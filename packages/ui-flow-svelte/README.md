@@ -102,8 +102,17 @@ Body state changes transact against the owning node; declared body intents emit
 intents `operation` (JSON public operation array), `undo` and `redo` apply only on
 actual events. Other content intents emit `applicationAction`. Host code may
 call `applyGraphOperations` without a viewport. Optional versioned graph commands
-support explicit occurrence-owned replay receipts; their bounded ledger fails
-closed and requires a deliberate host lifecycle, never silent eviction.
+support explicit occurrence-owned replay receipts. All command IDs remain in
+that explicit host lifecycle, without a fixed receipt ceiling or silent eviction.
+
+Graph data, collection counts, operation batches and content have no fixed
+authoring quota. Validation still checks the complete versioned shape, finite
+values, unique safe identities, parameter types, named endpoints, application
+port capacities, cycle policy and exact revisions. Invalid transactions remain
+atomic. Default session history lasts until explicit replacement or disposal;
+a consumer may explicitly choose `maxHistory`. Existing saved graph versions
+and values need no migration. These changes do not promise unlimited platform
+memory, stack capacity or rendering performance.
 
 Graph persistence is an explicit host choice. In Studio, binding `graph` and
 `graphChange` to the same document-owned string state opts into authored defaults

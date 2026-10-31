@@ -1,0 +1,84 @@
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/apps/studio
+
+10:18:56 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+10:18:56 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+10:18:56 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+10:18:56 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+10:18:56 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+10:19:02 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+10:19:02 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+10:19:02 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+10:19:02 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+10:19:02 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+ ✓ tests/agent-read-adapter-schema.test.ts (1 test) 525ms
+   ✓ preserves referenced read types through the pinned OpenAI-compatible request adapter without network  520ms
+ ✓ tests/agent-knowledge-read.test.ts (6 tests) 205ms
+ ✓ tests/graph-scoped-ownership.test.ts (9 tests) 62ms
+ ❯ tests/designer-schema-completion.test.ts (4 tests | 1 failed) 242ms
+   ✓ builder regression for independent IV-C6: provider expression schema rejects the same forbidden fields as authoritative input 97ms
+   ✓ builder regression for independent IV-C6: provider prop lists reject mixed types accepted by neither canonical list shape 4ms
+   ✓ builder regression for independent IV-C6: malformed expression refusal includes a recoverable expected shape 13ms
+   × keeps valid expression/list branches and rejects the same bounded closed-shape challenges 122ms
+     → expected true to be false // Object.is equality
+ ✓ tests/designer-agent-completion.test.ts (14 tests) 1243ms
+   ✓ completion round canonical authoring and bounded discovery > reads every node beyond the former 500 node ceiling through bounded pages  423ms
+ ❯ tests/authoring-limit-removal.test.ts (5 tests | 1 failed) 5827ms
+   ✓ edits and imports valid sources beyond500nodes/200kchars with more than40 operations atomically  4340ms
+   ✓ pages long source past200k without truncation and retains exact source cursor 136ms
+   × admits large literal values, expression trees, scope declarations and style collections while retaining semantic checks 755ms
+     → expected true to be false // Object.is equality
+   ✓ reads whole large knowledge bodies through scalar pages and admits oversized singleton legacy bundles 208ms
+   ✓ fully inspects large flat source ownership without traversal quotas and fails closed on cycles  383ms
+ ✓ tests/source-import.test.ts (22 tests) 524ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/authoring-limit-removal.test.ts > admits large literal values, expression trees, scope declarations and style collections while retaining semantic checks
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/authoring-limit-removal.test.ts:56:66
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/designer-schema-completion.test.ts > keeps valid expression/list branches and rejects the same bounded closed-shape challenges
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/designer-schema-completion.test.ts:44:64
+     42|   {op:'modify',nodeId:'control',props:{value:[{id:'one'}]}},
+     43|   {op:'connect',nodeId:'control',output:'checkedChange',binding:{setSt…
+     44|  ]){expect(agentEditSchema.safeParse(edit(operation)).success).toBe(fa…
+       |                                                                ^
+     45| });
+     46|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed | 5 passed (7)
+      Tests  2 failed | 59 passed (61)
+   Start at  10:18:06
+   Duration  107.21s (transform 146.07s, setup 0ms, collect 644.99s, tests 8.63s, environment 3.27s, prepare 6.77s)

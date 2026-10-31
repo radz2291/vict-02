@@ -1,0 +1,8 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030
+
+
+ Test Files  4 passed (4)
+      Tests  36 passed (36)
+   Start at  10:17:52
+   Duration  32.94s (transform 9.46s, setup 0ms, import 13.88s, tests 26.00s, environment 11.00s)

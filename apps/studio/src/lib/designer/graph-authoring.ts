@@ -63,44 +63,39 @@ export function graphLexicalOwners(
   for (const node of Object.values(document.nodes))
     for (const id of children(node)) incoming.add(id);
   const root: LexicalOwner = { kind: 'document' };
-  let visited = 0,
-    complete = true;
+  let complete = true;
   const same = (a: LexicalOwner, b: LexicalOwner) =>
     a.kind === b.kind &&
     (a.kind === 'document' ||
       (b.kind === 'slot' && a.ownerNodeId === b.ownerNodeId && a.slotName === b.slotName));
-  function visit(id: string, owner: LexicalOwner, path: readonly string[] = []): void {
-    if (++visited > 16384 || path.includes(id)) {
-      complete = false;
-      return;
+  function visit(id: string, owner: LexicalOwner): void {
+    const active = new Set<string>();
+    const stack: {id:string;owner:LexicalOwner;exit?:boolean}[] = [{id,owner}];
+    while (stack.length) {
+      const entry=stack.pop()!;
+      if(entry.exit){active.delete(entry.id);continue;}
+      if(active.has(entry.id)){complete=false;continue;}
+      const node=document.nodes[entry.id];
+      if(!node){complete=false;continue;}
+      const owners=result.get(entry.id)??[];
+      if(owners.some(value=>same(value,entry.owner)))continue;
+      owners.push(entry.owner);result.set(entry.id,owners);
+      active.add(entry.id);stack.push({...entry,exit:true});
+      if(node.kind==='component'){
+        const definition=document.componentDefinitions[node.definitionId];
+        if(definition)stack.push({id:definition.root,owner:entry.owner});
+        for(const [slotName,fill] of Object.entries(node.slots??{}))
+          for(const child of fill.children)stack.push({id:child,owner:fill.scope?{kind:'slot',ownerNodeId:node.id,slotName,scope:fill.scope}:entry.owner});
+      }else for(const child of children(node))stack.push({id:child,owner:entry.owner});
     }
-    const node = document.nodes[id];
-    if (!node) {
-      complete = false;
-      return;
-    }
-    const owners = result.get(id) ?? [];
-    if (owners.some((value) => same(value, owner))) return;
-    owners.push(owner);
-    result.set(id, owners);
-    const next = [...path, id];
-    if (node.kind === 'component') {
-      for (const [slotName, fill] of Object.entries(node.slots ?? {}))
-        for (const child of fill.children)
-          visit(
-            child,
-            fill.scope ? { kind: 'slot', ownerNodeId: id, slotName, scope: fill.scope } : owner,
-            next,
-          );
-      const definition = document.componentDefinitions[node.definitionId];
-      if (definition) visit(definition.root, owner, next);
-    } else for (const child of children(node)) visit(child, owner, next);
   }
   visit(document.root, root);
   // Detached source roots remain editable, but scoped children do not become
   // document-owned simply because their node record precedes their parent.
   for (const id of Object.keys(document.nodes))
     if (!result.has(id) && !incoming.has(id)) visit(id, root);
+  // Remaining unvisited records can only form a detached cyclic component.
+  for (const id of Object.keys(document.nodes)) if (!result.has(id)) visit(id, root);
   // An incomplete traversal cannot establish uniqueness. Never retain the
   // convenient shallow owner while a deeper conflicting occurrence is unknown.
   if (!complete) result.clear();
@@ -176,8 +171,7 @@ export function graphStateDocument(
   if (
     !graphStateKeys(document).includes(key) ||
     document.localState[key]?.type !== 'string' ||
-    typeof value !== 'string' ||
-    value.length > 180000
+    typeof value !== 'string'
   )
     return;
   const owners = graphLexicalOwners(document);
@@ -225,8 +219,8 @@ function graphSource(
   route: GraphOccurrenceRoute,
   seen: readonly string[] = [],
 ): GraphSource | GraphFailure {
-  if (seen.includes(nodeId) || seen.length > 32 || route.length > 32)
-    return { ok: false, message: 'The graph occurrence route is cyclic or exceeds its bound.' };
+  if (seen.includes(nodeId))
+    return { ok: false, message: 'The graph occurrence route is cyclic.' };
   const node = document.nodes[nodeId],
     owner = graphSourceOwnership(document, nodeId);
   if (node?.kind !== 'component' || !owner)
@@ -240,7 +234,6 @@ function graphSource(
       ? {
           source,
           write: (value) => {
-            if (value.length > 180000) return;
             if (owner.kind !== 'literal') {
               const owners = graphLexicalOwners(document);
               const readers = Object.values(document.nodes).filter(
@@ -391,10 +384,8 @@ export function patchAuthoredGraph(
             .slice(0, 1200)
         : 'Graph patch produced no source.',
     };
-  if (result.source.length > 180000)
-    return { ok: false, message: 'The graph update exceeds the authoring boundary.' };
   const next = owned.write(result.source);
   return next
     ? { ok: true, document: next }
-    : { ok: false, message: 'The graph update exceeds the authoring boundary.' };
+    : { ok: false, message: 'The graph update does not satisfy its source ownership or reader contracts.' };
 }

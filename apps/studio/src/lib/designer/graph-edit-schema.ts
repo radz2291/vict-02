@@ -15,7 +15,7 @@ function reference(rule:GraphJsonSchema):{$ref:string} {
   for(const field of ['oneOf','anyOf'] as const)if(rule[field])body[field]=rule[field]!.map(reference);
   (definitions[bucket]??={$defs:{}}).$defs[name]=body;return {$ref:pointer};
 }
-export const graphEditChangesPresentation=reference({anyOf:[graphOperationSchemasV1,graphOperationSchemasV2].map(operations=>({type:'array',minItems:1,maxItems:40,items:{oneOf:Object.values(operations)}}))});
+export const graphEditChangesPresentation=reference({anyOf:[graphOperationSchemasV1,graphOperationSchemasV2].map(operations=>({type:'array',minItems:1,items:{oneOf:Object.values(operations)}}))});
 export const graphEditDefinitions:Readonly<Record<string,unknown>>=definitions;
 /** Shape admission for the public tool; exact workspace version and semantic
  * topology/domain checks still run against canonical source before an edit. */

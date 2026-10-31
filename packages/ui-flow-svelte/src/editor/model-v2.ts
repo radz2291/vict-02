@@ -31,19 +31,24 @@ export class GraphValidationErrorV2 extends Error {
 }
 const clone = <T>(value: T): T => JSON.parse(JSON.stringify(value)) as T;
 const issue = (code: string, path: string, message: string): GraphIssue => ({ code, path, message });
-function finiteJson(value: unknown, seen = new Set<object>(), depth = 0): boolean {
-  if (value === null || typeof value === 'string' || typeof value === 'boolean') return true;
-  if (typeof value === 'number') return Number.isFinite(value);
-  if (typeof value !== 'object' || depth > 64 || seen.has(value)) return false;
-  if (!Array.isArray(value) && ![Object.prototype, null].includes(Object.getPrototypeOf(value))) return false;
-  seen.add(value);
-  const valid = (Array.isArray(value) ? Array.from(value) : Object.values(value)).every(child => finiteJson(child, seen, depth + 1));
-  seen.delete(value); return valid;
+function finiteJson(value: unknown): boolean {
+  const active = new Set<object>();
+  const stack: { value: unknown; exit?: boolean }[] = [{ value }];
+  while (stack.length) {
+    const item = stack.pop()!, current = item.value;
+    if (current === null || typeof current === 'string' || typeof current === 'boolean') continue;
+    if (typeof current === 'number') { if (!Number.isFinite(current)) return false; continue; }
+    if (typeof current !== 'object') return false;
+    if (item.exit) { active.delete(current); continue; }
+    if (active.has(current) || (!Array.isArray(current) && ![Object.prototype, null].includes(Object.getPrototypeOf(current)))) return false;
+    active.add(current); stack.push({value:current,exit:true});
+    for (const child of Array.isArray(current) ? Array.from(current) : Object.values(current)) stack.push({value:child});
+  }
+  return true;
 }
 function jsonProblem(input: unknown): GraphIssue[] {
   try {
     if (!finiteJson(input)) return [issue('GRAPH_JSON', 'graph', 'Supply finite canonical JSON data.')];
-    if (JSON.stringify(input).length > 1_000_000) return [issue('GRAPH_BOUND', 'graph', 'Graph data exceeds one million characters.')];
     return [];
   } catch { return [issue('GRAPH_JSON', 'graph', 'Supply finite canonical JSON data.')]; }
 }
@@ -83,7 +88,6 @@ export function validateGraphV2(input: unknown): GraphResultV2 {
   return issues.length ? { ok: false, issues } : { ok: true, graph };
 }
 export function parseGraphV2(source: string): GraphResultV2 {
-  if (source.length > 1_000_000) return { ok: false, issues: [issue('GRAPH_BOUND', 'graph', 'Graph exceeds one million characters.')] };
   try { return validateGraphV2(JSON.parse(source)); } catch { return { ok: false, issues: [issue('GRAPH_JSON', 'graph', 'Supply valid graph JSON.')] }; }
 }
 export function serializeGraphV2(graph: GraphDocumentV2): string { const checked = validateGraphV2(graph); if (!checked.ok) throw new GraphValidationErrorV2(checked.issues); return JSON.stringify(checked.graph); }
@@ -154,7 +158,6 @@ export function applyGraphOperationsV2(graph: GraphDocumentV2, input: readonly G
       }
       case 'duplicate': case 'paste': {
         const source = operation.type === 'duplicate' ? copyGraphSelectionV2(next, operation.selection) : operation.clipboard;
-        if (source.length > 1_000_000) fail('Clipboard exceeds the graph budget.');
         let clipboard: unknown; try { clipboard = JSON.parse(source); } catch { fail('Clipboard must be valid JSON.'); }
         const problems = graphStructuralProblems(graphClipboardSchemaV2, clipboard, 'clipboard'); if (problems.length) throw new GraphValidationErrorV2(problems);
         const data = clipboard as { nodeTypes: GraphNodeTypeV2[]; nodes: GraphNodeV2[]; edges: GraphEdge[]; allowCycles?: boolean };
@@ -189,7 +192,7 @@ export class GraphSessionV2 {
     if (this.options.readOnly) return { ok: false, issues: [issue('GRAPH_READ_ONLY', 'graph', 'Graph is read-only.')] };
     const result = applyGraphOperationsV2(this.current, operations, expectedRevision); if (!result.ok) return result;
     const issues = this.policy(result.graph); if (issues.length) return { ok: false, issues: [...issues] };
-    this.past.push(this.current); if (this.past.length > (this.options.maxHistory ?? 100)) this.past.shift(); this.future = []; this.current = result.graph; return { ok: true, graph: this.graph };
+    this.past.push(this.current); if (this.options.maxHistory !== undefined && this.past.length > this.options.maxHistory) this.past.shift(); this.future = []; this.current = result.graph; return { ok: true, graph: this.graph };
   }
   replace(graph: GraphDocumentV2): GraphResultV2 { const result = validateGraphV2(graph); if (!result.ok) return result; const issues = this.policy(result.graph); if (issues.length) return { ok: false, issues: [...issues] }; this.current = result.graph; this.past = []; this.future = []; return { ok: true, graph: this.graph }; }
   undo() { return this.travel(this.past, this.future); } redo() { return this.travel(this.future, this.past); }

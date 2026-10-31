@@ -314,7 +314,7 @@ it('recursively fences and persists two nested controlled occurrence levels', ()
     ).ok,
   ).toBe(false);
 });
-it('exposes the same closed bounded occurrence route through agent validation and presentation', () => {
+it('exposes strict occurrence steps without an artificial route length ceiling', () => {
   const operation = {
     op: 'editGraph',
     nodeId: 'inner',
@@ -342,6 +342,6 @@ it('exposes the same closed bounded occurrence route through agent validation an
         },
       ],
     }).success,
-  ).toBe(false);
+  ).toBe(true);
   expect(JSON.stringify(editPresentation.$defs.editGraph)).toContain('occurrenceRoute');
 });

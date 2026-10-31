@@ -31,20 +31,20 @@ const preflightEditEnvelope=z.unknown().superRefine((value,ctx)=>{
 });
 export const agentReadSchema = z.object({
   section: z.enum(readSections).default('overview'),
-  kind:z.enum(['component','data']).optional(),projection:z.enum(['guidance','examples']).optional(),cursor:z.string().min(1).max(4000).optional(),
-  offset: z.number().int().min(0).max(200000).optional(),
+  kind:z.enum(['component','data']).optional(),projection:z.enum(['guidance','examples']).optional(),cursor:z.string().min(1).optional(),
+  offset: z.number().int().safe().min(0).optional(),
   limit: z.number().int().min(1).max(20).optional(),
-  nodeId: z.string().min(1).max(160).optional(), recipe: z.string().min(1).max(160).optional(),
-  scope:z.enum(['self','subtree']).optional(),nodeIds:z.array(z.string().min(1).max(160)).min(1).max(8).optional(),edit:preflightEditEnvelope.optional(),
-  stateKey:z.string().min(1).max(160).optional(),
-  registry:z.enum(registries).optional(),key:z.string().min(1).max(500).optional(),
-  query: z.string().max(100).optional(), requested: z.array(z.string().max(160)).max(30).optional(),
-  family:z.string().max(100).optional(),category:z.string().max(100).optional(),tag:z.string().max(60).optional(),
-  components:z.array(z.object({id:z.string().min(1).max(160),revision:z.string().min(1).max(100).optional()}).strict()).min(1).max(12).optional(),
-  knownDigests:z.record(z.string().min(1).max(270),z.string().max(100)).refine(value=>Object.keys(value).length<=30,'At most 30 known digests.').optional(),
+  nodeId: z.string().min(1).optional(), recipe: z.string().min(1).optional(),
+  scope:z.enum(['self','subtree']).optional(),nodeIds:z.array(z.string().min(1)).min(1).optional(),edit:preflightEditEnvelope.optional(),
+  stateKey:z.string().min(1).optional(),
+  registry:z.enum(registries).optional(),key:z.string().min(1).optional(),
+  query: z.string().optional(), requested: z.array(z.string()).optional(),
+  family:z.string().optional(),category:z.string().optional(),tag:z.string().optional(),
+  components:z.array(z.object({id:z.string().min(1),revision:z.string().min(1).optional()}).strict()).min(1).optional(),
+  knownDigests:z.record(z.string().min(1),z.string()).optional(),
   includeExamples:z.boolean().optional(),
-  expectedBodyIdentities:z.record(z.string().max(270),z.string().max(300)).refine(value=>Object.keys(value).length<=30,'At most 30 body identities.').optional(),
-  knownBodyIdentities:z.record(z.string().max(270),z.string().max(300)).refine(value=>Object.keys(value).length<=30,'At most 30 body identities.').optional(),
+  expectedBodyIdentities:z.record(z.string(),z.string()).optional(),
+  knownBodyIdentities:z.record(z.string(),z.string()).optional(),
 }).strict().superRefine((query,ctx)=>{
   const allowed=new Set(['section',...(query.section==='knowledge'?[]:['offset','limit']),...sectionFields[query.section]]);
   for(const key of Object.keys(query))if(!allowed.has(key)&&query[key as keyof typeof query]!==undefined)ctx.addIssue({code:'custom',path:[key],message:`${key} is not used by section ${query.section}. Allowed section fields: ${sectionFields[query.section].join(', ')||'none'}.`});
@@ -60,18 +60,18 @@ export const agentReadSchema = z.object({
  * diagnostic; this schema mirrors the existing structural input contract. */
 const readFieldPresentation:Record<string,unknown>={
   section:{type:'string',enum:[...readSections],default:'overview'},
-  kind:{type:'string',enum:['component','data']},projection:{type:'string',enum:['guidance','examples']},cursor:{type:'string',minLength:1,maxLength:4000},
-  offset:{type:'integer',minimum:0,maximum:200000,default:0},limit:{type:'integer',minimum:1,maximum:20,default:12},
-  stateKey:{type:'string',minLength:1,maxLength:160},registry:{type:'string',enum:[...registries]},key:{type:'string',minLength:1,maxLength:500},
-  nodeId:{type:'string',minLength:1,maxLength:160},recipe:{type:'string',minLength:1,maxLength:160},query:{type:'string',maxLength:100},requested:{type:'array',maxItems:30,items:{type:'string',maxLength:160}},
-  scope:{type:'string',enum:['self','subtree']},nodeIds:{type:'array',minItems:1,maxItems:8,items:{type:'string',minLength:1,maxLength:160}},
+  kind:{type:'string',enum:['component','data']},projection:{type:'string',enum:['guidance','examples']},cursor:{type:'string',minLength:1,},
+  offset:{type:'integer',minimum:0,maximum:Number.MAX_SAFE_INTEGER,default:0},limit:{type:'integer',minimum:1,maximum:20,default:12},
+  stateKey:{type:'string',minLength:1,},registry:{type:'string',enum:[...registries]},key:{type:'string',minLength:1,},
+  nodeId:{type:'string',minLength:1,},recipe:{type:'string',minLength:1,},query:{type:'string',},requested:{type:'array',items:{type:'string',}},
+  scope:{type:'string',enum:['self','subtree']},nodeIds:{type:'array',minItems:1,items:{type:'string',minLength:1,}},
   edit:{type:['object','null'],additionalProperties:true,description:'For section preflight only: pass the exact studio_screen_edit payload as a native JSON object, never a JSON-encoded string. Its expectedRevision, reason and operations use the edit tool schema. Nested strict edit validation runs without applying or returning an applicable proposal. Missing/null retains a refusal, not an edit.'},
-  family:{type:'string',maxLength:100},category:{type:'string',maxLength:100},tag:{type:'string',maxLength:60},
-  components:{type:'array',minItems:1,maxItems:12,items:{type:'object',additionalProperties:false,required:['id'],properties:{id:{type:'string',minLength:1,maxLength:160},revision:{type:'string',minLength:1,maxLength:100}}}},
-  knownDigests:{type:'object',maxProperties:30,propertyNames:{type:'string',minLength:1,maxLength:270},additionalProperties:{type:'string',maxLength:100}},
+  family:{type:'string',},category:{type:'string',},tag:{type:'string',},
+  components:{type:'array',minItems:1,items:{type:'object',additionalProperties:false,required:['id'],properties:{id:{type:'string',minLength:1,},revision:{type:'string',minLength:1,}}}},
+  knownDigests:{type:'object',propertyNames:{type:'string',minLength:1,},additionalProperties:{type:'string',}},
   includeExamples:{type:'boolean'},
-  expectedBodyIdentities:{type:'object',maxProperties:30,propertyNames:{type:'string',maxLength:270},additionalProperties:{type:'string',maxLength:300}},
-  knownBodyIdentities:{type:'object',maxProperties:30,propertyNames:{type:'string',maxLength:270},additionalProperties:{type:'string',maxLength:300}},
+  expectedBodyIdentities:{type:'object',propertyNames:{type:'string',},additionalProperties:{type:'string',}},
+  knownBodyIdentities:{type:'object',propertyNames:{type:'string',},additionalProperties:{type:'string',}},
 };
 const sectionPresentation=readSections.map(section=>({
   type:'object',additionalProperties:false,
@@ -145,17 +145,6 @@ function nodeSummary(node: UiNode) {
     children:sourceChildren(node).slice(0,20), childCount:sourceChildren(node).length,
     sourcePreview:truncate(JSON.stringify(node),600) };
 }
-/** Keep all bridge limits intact, including recursive node count, depth and string length. */
-function assertBounded<T>(value: T) {
-  let count = 0;
-  function visit(item: unknown, depth: number): void {
-    if (++count > 3000 || depth > 12) throw Error('read-budget');
-    if (typeof item === 'string' && item.length > 8000) throw Error('read-budget');
-    if (Array.isArray(item)) { if (item.length > 100) throw Error('read-budget'); item.forEach(child => visit(child,depth+1)); }
-    else if (item && typeof item === 'object') { const values = Object.values(item); if (values.length > 100) throw Error('read-budget'); values.forEach(child => visit(child,depth+1)); }
-  }
-  visit(value,0); return value;
-}
 export interface AgentReadResult {
   ok?: boolean; items?: unknown;
   expectedRevision?: string; cursor?: AgentCursor; section?: string;
@@ -206,7 +195,7 @@ export function agentContext(document: UiDocument, cursor: AgentCursor, selectio
     if(!query.components)return {...base,ok:false,code:'STUDIO_AGENT_READ_QUERY',message:'contracts requires selected components:[{id,revision?}]. Discover exact identities with catalog; knownDigests reuses unchanged knowledge.'};
     // An unchanged guidance digest cannot stand in for a body containing examples.
     const knownDigests=Object.fromEntries(Object.entries(query.knownDigests??{}).filter(([key,digest])=>!query.includeExamples||query.knownBodyIdentities?.[key]===contractBodyIdentity(digest,true)));
-    const bundle=authoringContractBundle(installedAuthoringRegistry,{requested:query.components,knownDigests:query.offset===0?knownDigests:undefined,maxItems:12,maxBytes:42000});
+    const bundle=authoringContractBundle(installedAuthoringRegistry,{requested:query.components,knownDigests:query.offset===0?knownDigests:undefined,});
     const invalidations:unknown[]=[];
     // A continuation pages only named bodies. Automatically expanded dependency
     // bodies may have different lengths and must not share the selected offset.
@@ -302,10 +291,10 @@ export function agentContext(document: UiDocument, cursor: AgentCursor, selectio
       knowledge:{registryDigest:installedAuthoringRegistry.digest,contracts:installedAuthoringRegistry.contracts.length,families:new Set(installedAuthoringRegistry.contracts.map(item=>item.family)).size,ready:installedAuthoringRegistry.ok,suppliedIconCount:suppliedIconManifest.length,icons:'Read icons with query/offset/limit or exact key for installed pack/name/revision and provenance; glyphs are never embedded in initial context.',media:'Read media with query/offset/limit or exact asset reference key for host-reported name/MIME/size/digest at its document-bound listedAt time. Read registry assets for canonical digest/external declarations separately. No bytes/provenance enter this inventory; metadata is not load/playback proof.',
         dataContracts:'Read registry/dataContracts for package-owned data grammar identities/digests, then knowledge with kind:data and exact id@revision key (projection:examples includes package examples); copy nextCursor for lossless pages. The older registry/dataContracts/key path remains supported. Component contracts contain references only; no app source or template is generated.',
         discovery:'families → catalog with family/category/query → knowledge with kind:component and exact id@revision key; copy opaque nextCursor for lossless pages. Batched contracts with selected components and knownDigests remain supported. Native tags use elements; recipes use palette. Knowledge freshness is separate from this source cursor.'},
-      discovery:'Read nodes with optional nodeId (defaults to that source subtree), scope:self|subtree and semantic query; no nodeId means the full inventory. Inactive branches/templates are source, not proof of visibility; shared component definitions are not expanded implicitly. Read capabilities with nodeId before proposing part/state edits. Read source with nodeId or sources with up to8 nodeIds for lossless JSON text pages at this exact cursor. Read preflight with edit:{expectedRevision,reason,operations} to validate the same canonical transaction without applying it. Section-specific irrelevant fields are refused. State initialJson is a preview; state/stateKey and registry/registry/key provide lossless entry pages. Recipes: discover with {"section":"palette","query":"rhea-input"} or {"section":"palette","query":"rhea-native-select"}, then read {"section":"component","recipe":"rhea-input"} or {"section":"component","recipe":"rhea-native-select"}. Use key for knowledge/registry/icons/media; source requires an existing document nodeId, never a recipe identity. Component/recipe and catalog/contracts provide exact identities and composition; coverage is source presence only. All inventory limits remain <=20.',
+      discovery:'Read nodes with optional nodeId (defaults to that source subtree), scope:self|subtree and semantic query; no nodeId means the full inventory. Inactive branches/templates are source, not proof of visibility; shared component definitions are not expanded implicitly. Read capabilities with nodeId before proposing part/state edits. Read source with nodeId or sources with selected nodeIds for lossless JSON text pages at this exact cursor. Read preflight with edit:{expectedRevision,reason,operations} to validate the same canonical transaction without applying it. Section-specific irrelevant fields are refused. State initialJson is a preview; state/stateKey and registry/registry/key provide lossless entry pages. Recipes: discover with {"section":"palette","query":"rhea-input"} or {"section":"palette","query":"rhea-native-select"}, then read {"section":"component","recipe":"rhea-input"} or {"section":"component","recipe":"rhea-native-select"}. Use key for knowledge/registry/icons/media; source requires an existing document nodeId, never a recipe identity. Component/recipe and catalog/contracts provide exact identities and composition; coverage is source presence only. All inventory limits remain <=20.',
       editing:'Use add with a palette recipe as an accelerator, or insert kind element/text/component through the registered canonical path. Component insertion requires exact componentId/revision from catalog/contracts and explicit slotName for slot children. Native tags come from elements. declareState accepts string/number/boolean/isoDate/isoTime/stringList/numberList with a matching canonical initial value. bindText targets an actual text node; bindAttribute targets a native attribute. bind/connect use exact component props/outputs. style accepts text/token/binding values and optional conditionId/pseudo; declareToken and declareCondition add registered presentation data. defineStyleSource and attachStyleSource/detachStyleSource reuse ordered rules; replace:true explicitly updates a shared source. removeStyleSource requires no remaining references. Local styles retain precedence. Heading levels1..6 are native headings. Compatible same-batch construction is supported; final semantic/renderer checks are atomic. Read the current source after a refusal; never replay acknowledged edits merely to retry observation. Source presence, actual appearance and exercised behavior are distinct.',
-      limits:{nodes:500,documentCharacters:200000,readPage:20},
+      limits:{readPage:20},
     };
   }
-  try { return assertBounded(result); } catch { return { ...base,ok:false,code:'STUDIO_AGENT_READ_LIMIT',message:'This selection exceeds a safe read page. Reduce limit, select a single component, or use source text pages. No snapshot safety limit was changed.' }; }
+  return result;
 }

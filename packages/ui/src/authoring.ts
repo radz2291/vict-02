@@ -222,24 +222,27 @@ export function createUiAuthoringRegistry(packages: readonly UiAuthoringPackage[
   return {ok:issues.every(item => item.severity !== 'error'),issues,packages,contracts,descriptors:raw.map(({registration})=>registration.descriptor),digest:authoringDigest(contracts.map(item=>({id:item.descriptor.id,revision:item.descriptor.revision,digest:item.digest})))};
 }
 export function authoringIndex(registry:UiAuthoringRegistry, input:{family?:string;category?:string;query?:string;offset?:number;limit?:number}={}) {
-  const offset=boundedInteger(input.offset,0,0,200000), limit=boundedInteger(input.limit,12,1,20);
+  const offset=boundedInteger(input.offset,0,0,Number.MAX_SAFE_INTEGER), limit=boundedInteger(input.limit,12,1,20);
   const entries=registry.contracts.filter(item=>(!input.family || item.family===input.family)&&(!input.category || item.category===input.category)&&(!input.query || `${item.descriptor.id} ${item.label} ${item.purpose} ${item.family} ${item.category}`.toLowerCase().includes(input.query.toLowerCase()))).sort((a,b)=>authoringKey(a.descriptor.id,a.descriptor.revision).localeCompare(authoringKey(b.descriptor.id,b.descriptor.revision)));
   return {registryDigest:registry.digest,items:entries.slice(offset,offset+limit).map(item=>({id:item.descriptor.id,revision:item.descriptor.revision,label:item.label,family:item.family,category:item.category,eligibility:item.eligibility,digest:item.digest,packageName:item.packageName})),total:entries.length,offset,nextOffset:offset+limit<entries.length?offset+limit:null};
 }
 export function authoringContractBundle(registry:UiAuthoringRegistry, input:{requested:readonly {id:string;revision?:string}[];knownDigests?:Readonly<Record<string,string>>;maxItems?:number;maxBytes?:number;maxDepth?:number}) {
-  const maxItems=boundedInteger(input.maxItems,8,1,20),maxBytes=boundedInteger(input.maxBytes,18000,512,48000),maxDepth=boundedInteger(input.maxDepth,8,1,12);
+  const maxItems=boundedInteger(input.maxItems,8,1,Number.MAX_SAFE_INTEGER),maxBytes=input.maxBytes===undefined?Infinity:boundedInteger(input.maxBytes,0,0,Number.MAX_SAFE_INTEGER),maxDepth=input.maxDepth===undefined?Infinity:boundedInteger(input.maxDepth,0,0,Number.MAX_SAFE_INTEGER);
   const ordered:UiAuthoringContract[]=[],seen=new Set<string>(),pending:string[]=[],problems:string[]=[];
-  const visit=(id:string,revision:string|undefined,depth:number)=>{
-    const found=registry.contracts.filter(item=>item.descriptor.id===id && (revision===undefined || item.descriptor.revision===revision));
-    const contract=revision===undefined?found.at(-1):found.length===1?found[0]:undefined;
-    if(!contract){problems.push(`Exact contract unavailable: ${authoringKey(id,revision??'current')}`);return;}
-    const key=authoringKey(id,contract.descriptor.revision);if(seen.has(key))return;seen.add(key);
-    if(depth>maxDepth){pending.push(key);problems.push('dependency-depth');return;}
-    for(const dependency of contract.dependencies??[])visit(dependency.id,dependency.revision,depth+1);
-    ordered.push(contract);
-  };
-  input.requested.slice(0,30).forEach(item=>visit(item.id,item.revision,0));
-  if(input.requested.length>30)problems.push('requested-item-budget');
+  for(const requested of input.requested){
+    const stack:{id:string;revision?:string;depth:number;exit?:UiAuthoringContract}[]=[{...requested,depth:0}];
+    while(stack.length){
+      const item=stack.pop()!;
+      if(item.exit){ordered.push(item.exit);continue;}
+      const found=registry.contracts.filter(contract=>contract.descriptor.id===item.id&&(item.revision===undefined||contract.descriptor.revision===item.revision));
+      const contract=item.revision===undefined?found.at(-1):found.length===1?found[0]:undefined;
+      if(!contract){problems.push(`Exact contract unavailable: ${authoringKey(item.id,item.revision??'current')}`);continue;}
+      const key=authoringKey(item.id,contract.descriptor.revision);if(seen.has(key))continue;seen.add(key);
+      if(item.depth>maxDepth){pending.push(key);problems.push('dependency-depth');continue;}
+      stack.push({...item,exit:contract});
+      for(const dependency of [...(contract.dependencies??[])].reverse())stack.push({...dependency,depth:item.depth+1});
+    }
+  }
   const items:({id:string;revision:string;digest:string;unchanged:true}|{id:string;revision:string;digest:string;contract:UiAuthoringContractBody})[]=[];
   let bytes=0;
   for(const contract of ordered){const id=contract.descriptor.id,revision=contract.descriptor.revision,key=authoringKey(id,revision),digest=contract.digest;

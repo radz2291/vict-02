@@ -39,11 +39,7 @@ export type GraphCommandResult = (
   replayed: boolean;
 };
 
-// Match the existing graph/portable-selection resource envelope. A ledger is
-// explicitly bounded and refuses new commands when full; it never silently
-// evicts a receipt and makes a previously observed ID eligible again.
-const MAX_COMMAND_CHARACTERS = 1_000_000;
-const MAX_RECEIPTS = 128;
+// Receipts remain for the entire explicit command lifecycle; never evict an ID.
 const problem = (code: string, path: string, message: string): GraphIssue => ({
   code,
   path,
@@ -52,18 +48,20 @@ const problem = (code: string, path: string, message: string): GraphIssue => ({
 const object = (value: unknown): value is Record<string, unknown> =>
   value !== null && typeof value === 'object' && !Array.isArray(value);
 
-function jsonValue(value: unknown, seen = new Set<object>(), depth = 0): boolean {
-  if (value === null || typeof value === 'string' || typeof value === 'boolean') return true;
-  if (typeof value === 'number') return Number.isFinite(value);
-  if (typeof value !== 'object' || depth > 64 || seen.has(value)) return false;
-  if (!Array.isArray(value) && ![Object.prototype, null].includes(Object.getPrototypeOf(value)))
-    return false;
-  seen.add(value);
-  const valid = (Array.isArray(value) ? value : Object.values(value)).every((child) =>
-    jsonValue(child, seen, depth + 1),
-  );
-  seen.delete(value);
-  return valid;
+function jsonValue(value: unknown): boolean {
+  const active = new Set<object>();
+  const stack: { value: unknown; exit?: boolean }[] = [{ value }];
+  while (stack.length) {
+    const item = stack.pop()!, current = item.value;
+    if (current === null || typeof current === 'string' || typeof current === 'boolean') continue;
+    if (typeof current === 'number') { if (!Number.isFinite(current)) return false; continue; }
+    if (typeof current !== 'object') return false;
+    if (item.exit) { active.delete(current); continue; }
+    if (active.has(current) || (!Array.isArray(current) && ![Object.prototype, null].includes(Object.getPrototypeOf(current)))) return false;
+    active.add(current); stack.push({value:current,exit:true});
+    for (const child of Array.isArray(current) ? Array.from(current) : Object.values(current)) stack.push({value:child});
+  }
+  return true;
 }
 
 /** Object-key order is not part of a command's identity; array order is. */
@@ -80,8 +78,6 @@ function canonical(value: unknown): string {
 export function parseGraphCommand(input: unknown): GraphCommandParseResult {
   let value = input;
   if (typeof value === 'string') {
-    if (value.length > MAX_COMMAND_CHARACTERS)
-      return { ok: false, issues: [problem('GRAPH_COMMAND', 'command', 'Command exceeds the graph resource envelope.')] };
     try {
       value = JSON.parse(value);
     } catch {
@@ -90,8 +86,6 @@ export function parseGraphCommand(input: unknown): GraphCommandParseResult {
   }
   if (!object(value) || !jsonValue(value))
     return { ok: false, issues: [problem('GRAPH_COMMAND', 'command', 'Supply a serializable command object.')] };
-  if (JSON.stringify(value).length > MAX_COMMAND_CHARACTERS)
-    return { ok: false, issues: [problem('GRAPH_COMMAND', 'command', 'Command exceeds the graph resource envelope.')] };
   const issues: GraphIssue[] = [];
   for (const key of Object.keys(value))
     if (!['schema', 'id', 'expectedRevision', 'operations'].includes(key))
@@ -101,10 +95,9 @@ export function parseGraphCommand(input: unknown): GraphCommandParseResult {
   if (
     typeof value.id !== 'string' ||
     !value.id.trim() ||
-    value.id.length > 200 ||
     ['__proto__', 'prototype', 'constructor'].includes(value.id)
   )
-    issues.push(problem('GRAPH_COMMAND', 'command.id', 'Supply a nonempty stable command ID of at most 200 characters.'));
+    issues.push(problem('GRAPH_COMMAND', 'command.id', 'Supply a nonempty safe stable command ID.'));
   if (!Number.isSafeInteger(value.expectedRevision) || (value.expectedRevision as number) < 0)
     issues.push(problem('GRAPH_COMMAND', 'command.expectedRevision', 'Supply a nonnegative safe integer revision.'));
   const operations = parseGraphOperations(value.operations);
@@ -149,13 +142,6 @@ export function applyGraphCommand(
       ? { ok: true, graph, receipts, receipt: previous, replayed: true }
       : { ok: false, issues: [...(previous.issues ?? [])], receipts, receipt: previous, replayed: true };
   }
-  if (receipts.length >= MAX_RECEIPTS)
-    return {
-      ok: false,
-      issues: [problem('GRAPH_COMMAND_LEDGER_FULL', 'receipts', 'The occurrence command ledger is full. The host must explicitly finish this command lifecycle before starting another.')],
-      receipts,
-      replayed: false,
-    };
   const result = applyGraphOperations(graph, command.operations, command.expectedRevision);
   const receipt: GraphCommandReceipt = {
     id: command.id,

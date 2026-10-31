@@ -44,50 +44,43 @@ import { designerCatalogs, screenIssues, compileScreen,catalogDescriptors } from
 const id = z
   .string()
   .min(1)
-  .max(160)
   .regex(/^[a-zA-Z0-9_.:-]+$/)
   .refine((value) => !['__proto__', 'constructor', 'prototype'].includes(value));
-const scalar = z.union([z.string().max(4000), z.number().finite(), z.boolean()]);
-const value = z.union([scalar, z.array(z.string().max(4000)).max(100), z.array(z.number().finite()).max(100)]);
+const scalar = z.union([z.string(), z.number().finite(), z.boolean()]);
+const value = z.union([scalar, z.array(z.string()), z.array(z.number().finite())]);
 const expressionTree: z.ZodType<UiExpression> = z.lazy(()=>z.union([
   z.object({type:z.literal('literal'),value:z.union([scalar,z.null()])}).strict(),
-  z.object({type:z.literal('ref'),path:z.string().min(1).max(300)}).strict(),
+  z.object({type:z.literal('ref'),path:z.string().min(1)}).strict(),
   z.object({type:z.literal('compare'),op:z.enum(['eq','ne','lt','lte','gt','gte']),left:expressionTree,right:expressionTree}).strict(),
-  z.object({type:z.literal('boolean'),op:z.enum(['and','or','not']),terms:z.array(expressionTree).min(1).max(20)}).strict(),
+  z.object({type:z.literal('boolean'),op:z.enum(['and','or','not']),terms:z.array(expressionTree).min(1)}).strict(),
   z.object({type:z.literal('conditionalValue'),when:expressionTree,then:expressionTree,otherwise:expressionTree}).strict(),
-  z.object({type:z.literal('op'),name:id,args:z.array(expressionTree).max(20)}).strict(),
+  z.object({type:z.literal('op'),name:id,args:z.array(expressionTree)}).strict(),
 ]));
-const expression=expressionTree.superRefine((root,ctx)=>{
-  let count=0;const stack:{value:UiExpression;depth:number}[]=[{value:root,depth:1}];
-  while(stack.length){const {value,depth}=stack.pop()!;if(++count>100||depth>8){ctx.addIssue({code:z.ZodIssueCode.custom,message:'Expressions are bounded to depth 8 and 100 nodes.'});break;}
-    const children=value.type==='compare'?[value.left,value.right]:value.type==='boolean'?value.terms:value.type==='conditionalValue'?[value.when,value.then,value.otherwise]:value.type==='op'?value.args:[];
-    for(const value of children)stack.push({value,depth:depth+1});
-  }
-});
+const expression=expressionTree;
 const classList=z.array(z.string().refine(isUiClassName,'Use one nonempty DOM token of at most 256 Unicode characters, without ASCII whitespace or NUL.')).max(UI_CLASS_LIST_LIMIT);
 const content = {
   classes:classList.optional(),
-  text: z.string().max(4000).optional(),
+  text: z.string().optional(),
   headingLevel:z.number().int().min(1).max(6).optional(),
   attributes: z.record(id, scalar).optional(),
   props: z.record(id, value).optional(),
-  styles: z.record(z.string().min(1).max(80), z.string().max(500)).optional(),
+  styles: z.record(z.string().min(1), z.string()).optional(),
 };
-const scopeName = z.string().min(1).max(160).regex(/^[A-Za-z_][A-Za-z0-9_-]*$/).refine(name=>!['__proto__','prototype','constructor'].includes(name));
+const scopeName = z.string().min(1).regex(/^[A-Za-z_][A-Za-z0-9_-]*$/).refine(name=>!['__proto__','prototype','constructor'].includes(name));
 const valueType = z.enum(['string','number','boolean','isoDate','isoTime','stringList','numberList']);
 const slotScope = z.object({
   schema:z.literal('vict.ui-slot-scope@1'),
-  props:z.array(z.object({name:scopeName,type:z.union([valueType,z.literal('array')]),default:value.optional()}).strict()).max(100),
+  props:z.array(z.object({name:scopeName,type:z.union([valueType,z.literal('array')]),default:value.optional()}).strict()),
   state:z.record(scopeName,z.object({key:scopeName,type:valueType,initial:value,controlled:z.boolean().optional()}).strict()).optional(),
   conditions:z.record(scopeName,expression).optional(),
-  outputs:z.array(z.object({name:scopeName,payload:z.union([valueType,z.literal('void')]),description:z.string().max(1000).optional()}).strict()).max(100).optional(),
+  outputs:z.array(z.object({name:scopeName,payload:z.union([valueType,z.literal('void')]),description:z.string().optional()}).strict()).optional(),
 }).strict().superRefine((scope,ctx)=>{for(const message of slotScopeProblems(scope))ctx.addIssue({code:z.ZodIssueCode.custom,message});});
-const position = { slotName: id.optional(), index: z.number().int().min(0).max(1000).optional() };
-const styleValue=z.union([z.object({type:z.literal('text'),value:z.string().max(500)}).strict(),z.object({type:z.literal('token'),id}).strict(),z.object({type:z.literal('binding'),expression}).strict()]);
-const styleDeclarations=z.array(z.object({property:z.string().min(1).max(80),value:styleValue}).strict()).max(20);
+const position = { slotName: id.optional(), index: z.number().int().safe().min(0).optional() };
+const styleValue=z.union([z.object({type:z.literal('text'),value:z.string()}).strict(),z.object({type:z.literal('token'),id}).strict(),z.object({type:z.literal('binding'),expression}).strict()]);
+const styleDeclarations=z.array(z.object({property:z.string().min(1),value:styleValue}).strict());
 export const agentOperationSchema = z.discriminatedUnion('op', [
   z.object({op:z.literal('insert'),kind:z.enum(['element','text','component']),nodeId:id,parentId:id,
-    tag:z.string().min(1).max(60).optional(),componentId:id.optional(),revision:id.optional(),
+    tag:z.string().min(1).optional(),componentId:id.optional(),revision:id.optional(),
     expression:expression.optional(),...position,...content}).strict(),
   z
     .object({
@@ -103,18 +96,18 @@ export const agentOperationSchema = z.discriminatedUnion('op', [
   z.object({ op: z.literal('declareState'), key: id.refine(value => /^[a-zA-Z0-9_-]+$/.test(value), 'Use a simple local state key.'), type: z.enum(['string','number','boolean','isoDate','isoTime','stringList','numberList']), initial: value }).strict(),
   z.object({op:z.literal('bindText'),nodeId:id,expression:expression.optional()}).strict(),
   z.object({op:z.literal('bindAttribute'),nodeId:id,name:id,expression:expression.optional()}).strict(),
-  z.object({op:z.literal('declareToken'),id,value:z.string().min(1).max(500)}).strict(),
-  z.object({op:z.literal('declareCondition'),id,kind:z.enum(['media','container']),query:z.string().min(1).max(500),name:id.optional()}).strict(),
+  z.object({op:z.literal('declareToken'),id,value:z.string().min(1)}).strict(),
+  z.object({op:z.literal('declareCondition'),id,kind:z.enum(['media','container']),query:z.string().min(1),name:id.optional()}).strict(),
   z.object({op:z.literal('defineStyleSource'),id,declarations:styleDeclarations,conditionId:id.optional(),pseudo:z.enum(['hover','focus','active','disabled']).optional(),replace:z.boolean().optional()}).strict(),
-  z.object({op:z.literal('attachStyleSource'),nodeId:id,sourceId:id,index:z.number().int().min(0).max(1000).optional()}).strict(),
+  z.object({op:z.literal('attachStyleSource'),nodeId:id,sourceId:id,index:z.number().int().safe().min(0).optional()}).strict(),
   z.object({op:z.literal('detachStyleSource'),nodeId:id,sourceId:id}).strict(),
   z.object({op:z.literal('removeStyleSource'),id}).strict(),
   z.object({op:z.literal('when'),nodeId:id,wrapperId:id,conditionId:id}).strict(),
   z.object({op:z.literal('slotScope'),nodeId:id,slot:id,scope:slotScope.optional()}).strict(),
-  z.object({op:z.literal('editGraph'),nodeId:id,expectedGraphRevision:z.number().int().min(0),occurrenceRoute:z.array(z.object({workspaceNodeId:id,graphNodeId:id,expectedGraphRevision:z.number().int().min(0)}).strict()).min(1).max(32).optional(),changes:z.array(z.unknown()).min(1).max(40).refine(graphEditShapeValid,'Use the exact declared graph-operation shape for this workspace version; read registry dataContracts.')}).strict(),
-  z.object({op:z.literal('theme'),role:z.enum(['surface','text','textMuted','border','accent','accentText','highlight','highlightText','focusRing','disabledSurface','disabledText','elevation']),value:z.string().max(500).optional()}).strict(),
-  z.object({op:z.literal('style'),nodeId:id,part:id.optional(),property:z.string().min(1).max(80),
-    value:z.union([z.object({type:z.literal('text'),value:z.string().max(500)}).strict(),z.object({type:z.literal('token'),id}).strict(),z.object({type:z.literal('binding'),expression}).strict()]).optional(),
+  z.object({op:z.literal('editGraph'),nodeId:id,expectedGraphRevision:z.number().int().min(0),occurrenceRoute:z.array(z.object({workspaceNodeId:id,graphNodeId:id,expectedGraphRevision:z.number().int().min(0)}).strict()).min(1).optional(),changes:z.array(z.unknown()).min(1).refine(graphEditShapeValid,'Use the exact declared graph-operation shape for this workspace version; read registry dataContracts.')}).strict(),
+  z.object({op:z.literal('theme'),role:z.enum(['surface','text','textMuted','border','accent','accentText','highlight','highlightText','focusRing','disabledSurface','disabledText','elevation']),value:z.string().optional()}).strict(),
+  z.object({op:z.literal('style'),nodeId:id,part:id.optional(),property:z.string().min(1),
+    value:z.union([z.object({type:z.literal('text'),value:z.string()}).strict(),z.object({type:z.literal('token'),id}).strict(),z.object({type:z.literal('binding'),expression}).strict()]).optional(),
     conditionId:id.optional(),pseudo:z.enum(['hover','focus','active','disabled']).optional()}).strict(),
   z.object({ op: z.literal('wireInput'), nodeId: id, key: id.refine(value => /^[a-zA-Z0-9_-]+$/.test(value), 'Use a simple local state key.'), initial: scalar.optional() }).strict(),
   z.object({ op: z.literal('modify'), nodeId: id, ...content }).strict(),
@@ -129,9 +122,9 @@ export const agentOperationSchema = z.discriminatedUnion('op', [
 ]);
 export const agentEditSchema = z
   .object({
-    expectedRevision: z.string().min(1).max(160),
-    reason: z.string().min(1).max(240),
-    operations: z.array(agentOperationSchema).min(1).max(40),
+    expectedRevision: z.string().min(1),
+    reason: z.string().min(1),
+    operations: z.array(agentOperationSchema).min(1),
   })
   .strict();
 /** Shared safe refusal guidance for browser preparation and provider contract validation. */
@@ -147,7 +140,7 @@ export function agentEditDiagnostics(error:z.ZodError,input?:unknown) {
   else if(path.includes('.props'))expected='Expected a property record of scalar values or homogeneous string[]/number[] (max100). Example: {"options":["one","two"]}; mixed lists and object arrays are unsupported.';
   else if(path.endsWith('.initial'))expected='Expected a matching canonical scalar or homogeneous string[]/number[]; date/time strings must be valid ISO values.';
   else if(path.includes('.classes'))expected='Expected at most 100 class-name strings (1 to 256 characters each), with no ASCII whitespace or NUL. Use classes, not attributes.class; [] explicitly clears authored classes.';
-  else if(path.includes('.attributes'))expected='Expected string (max4000), finite number, or boolean. Native expressions use bindAttribute or wireInput.';
+  else if(path.includes('.attributes'))expected='Expected string, finite number, or boolean. Native expressions use bindAttribute or wireInput.';
   else if(path.includes('.declarations'))expected='Expected 0 to 20 ordered {property,value:{type:"text",value:string}|{type:"token",id}|{type:"binding",expression:literalOrRef}} declarations.';
   else if(operation!==undefined){const value=operations[operation];const op=value && typeof value==='object' ? (value as {op?:unknown}).op : undefined;expected=typeof op==='string' && shape[op] ? 'Expected '+shape[op]+'.' : 'Expected a declared registered insertion, source edit, typed-state, binding or presentation operation.';}
   return {...(operation===undefined ? {} : {operation}),path,message:(expected+' '+issue.message).trim().slice(0,700)};
@@ -492,8 +485,6 @@ export function prepareAgentEdit(
         plan.diagnostics.filter(issue => issue.severity === 'error')) : []),
     ];
     if (issues.length){const refused=canonicalEditFailure(issues);return {...refused,diagnostics:refused.diagnostics?.map(diagnostic=>{const nodeId=diagnostic.nodeId;const operation=typeof nodeId==='string'?parsed.data.operations.findIndex(item=>'nodeId' in item&&item.nodeId===nodeId):-1;return {...diagnostic,...(operation>=0?{operation}:{})};})};}
-    if (JSON.stringify(working).length > 200_000 || Object.keys(working.nodes).length > 500)
-      return failure('STUDIO_AGENT_LIMIT', 'This screen exceeds the Cycle 1.1 editing limit.');
     return {
       ok: true,
       draft: { requestId, reason: parsed.data.reason, commands },

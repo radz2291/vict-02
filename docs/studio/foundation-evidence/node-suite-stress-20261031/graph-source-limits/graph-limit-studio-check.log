@@ -1,0 +1,116 @@
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/apps/studio
+
+10:15:38 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+10:15:38 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+10:15:38 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+10:15:38 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+10:15:38 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+10:15:39 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+10:15:39 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+10:15:39 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+10:15:39 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+10:15:39 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+ ✓ tests/agent-read-adapter-schema.test.ts (1 test) 377ms
+   ✓ preserves referenced read types through the pinned OpenAI-compatible request adapter without network  374ms
+ ✓ tests/agent-knowledge-read.test.ts (6 tests) 198ms
+ ❯ tests/graph-scoped-ownership.test.ts (9 tests | 1 failed) 116ms
+   ✓ does not collect a nested scope key into document runtime history synchronization 12ms
+   ✓ does not patch a same-name document declaration for a controlled nested graph 2ms
+   ✓ edits an uncontrolled scoped template initial and leaves unrelated same-name document state intact 10ms
+   ✓ targets exactly one repeated controlled graph occurrence and preserves its family default, sibling and document key 13ms
+   ✓ refuses stale, nonexistent and mismatched occurrence routes atomically 4ms
+   ✓ does not confuse identical names in separate lexical scopes or detached child record order 2ms
+   ✓ retains literal source edits and refuses ambiguous scoped source reuse 2ms
+   ✓ recursively fences and persists two nested controlled occurrence levels 6ms
+   × exposes the same closed bounded occurrence route through agent validation and presentation 61ms
+     → expected true to be false // Object.is equality
+ ✓ tests/source-import-depth.test.ts (1 test) 226ms
+ ✓ tests/designer-agent-completion.test.ts (14 tests) 793ms
+ ✓ tests/authoring-limit-removal.test.ts (4 tests) 2904ms
+   ✓ edits and imports valid sources beyond500nodes/200kchars with more than40 operations atomically  2482ms
+ ✓ tests/graph-history-source-policy.test.ts (3 tests) 28ms
+ ❯ tests/source-import.test.ts (22 tests | 1 failed) 708ms
+   ✓ one-screen local source import preparation > resolves lexical body state and graph parameters without falling back to document state (controlled=false) 128ms
+   ✓ one-screen local source import preparation > resolves lexical body state and graph parameters without falling back to document state (controlled=true) 54ms
+   ✓ one-screen local source import preparation > inventories graph2 parameter defaults and overrides across all source families and inactive body branches 68ms
+   ✓ one-screen local source import preparation > still refuses unknown renderer frame media even when a same-named document state and valid archive exist 47ms
+   ✓ one-screen local source import preparation > carries managed carousel image bytes through the same portable dependency closure 53ms
+   × one-screen local source import preparation > returns an explicit refusal for deeply nested input instead of throwing through the UI 44ms
+     → expected { ok: false, …(2) } to match object { ok: true }
+(2 matching properties omitted from actual)
+   ✓ one-screen local source import preparation > accepts a source-only export without changing the original document or browser storage 18ms
+   ✓ one-screen local source import preparation > reuses validated media archive decoding and stages complete byte-identical assets for a fresh namespace 24ms
+   ✓ one-screen local source import preparation > rejects missing archive bytes for both declared assets and directly authored managed source props 22ms
+   ✓ one-screen local source import preparation > rejects corrupt media before returning any staged member and never writes caller storage 10ms
+   ✓ one-screen local source import preparation > checks media references inside serialized graph models and refuses malformed managed identities 22ms
+   ✓ one-screen local source import preparation > preserves ordinary source text and unused state that merely discuss a managed reference 9ms
+   ✓ one-screen local source import preparation > requires and round-trips managed bytes for a custom graph family icon source 39ms
+   ✓ one-screen local source import preparation > requires and round-trips managed bytes for a custom graph instance icon source 23ms
+   ✓ one-screen local source import preparation > requires archived bytes from an inactive conditional media branch using a literal value 22ms
+   ✓ one-screen local source import preparation > requires archived bytes from an inactive conditional media branch using a state value 22ms
+   ✓ one-screen local source import preparation > inventories exact managed literals inside computed media without executing or promising computed output 20ms
+   ✓ one-screen local source import preparation > refuses unprovable reference construction rather than treating fragments as malformed full references 13ms
+   ✓ one-screen local source import preparation > inventories every statically supplied graph branch rather than only the active graph 14ms
+   ✓ one-screen local source import preparation > refuses multi-document, unsupported envelope, malformed JSON and invalid canonical source 7ms
+   ✓ one-screen local source import preparation > compares exported application semantics independent of object key order, refusing silently changed product contracts 13ms
+   ✓ one-screen local source import preparation > admits large canonical source and checks decoded aggregate before allocating media payloads 29ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/graph-scoped-ownership.test.ts > exposes the same closed bounded occurrence route through agent validation and presentation
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/graph-scoped-ownership.test.ts:345:5
+    343|       ],
+    344|     }).success,
+    345|   ).toBe(false);
+       |     ^
+    346|   expect(JSON.stringify(editPresentation.$defs.editGraph)).toContain('…
+    347| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/source-import.test.ts > one-screen local source import preparation > returns an explicit refusal for deeply nested input instead of throwing through the UI
+AssertionError: expected { ok: false, …(2) } to match object { ok: true }
+(2 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "ok": true,
++   "ok": false,
+  }
+
+ ❯ tests/source-import.test.ts:116:7
+    114|     expect(
+    115|       await prepareSourceImport('{"uiDocuments":[{"document":' + docum…
+    116|     ).toMatchObject({ ok: true });
+       |       ^
+    117|     expect(
+    118|       await prepareSourceImport(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed | 6 passed (8)
+      Tests  2 failed | 58 passed (60)
+   Start at  10:15:08
+   Duration  65.26s (transform 87.00s, setup 0ms, collect 403.21s, tests 5.35s, environment 2.15s, prepare 5.82s)

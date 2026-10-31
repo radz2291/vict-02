@@ -83,7 +83,7 @@ describe('UI-neutral graph command contract', () => {
     expect(applyGraphCommand(graph, { ...command(), expectedRevision: 2 }, stale.receipts).replayed).toBe(true);
   });
 
-  it('isolates caller-owned occurrence ledgers and refuses capacity without evicting old intents', () => {
+  it('isolates caller-owned occurrence ledgers and retains every intent beyond the former capacity', () => {
     const graph = graphFixture(), first = applyGraphCommand(graph, command());
     expect(first.receipts).toHaveLength(1);
     expect(applyGraphCommand(graph, command(), []).replayed).toBe(false);
@@ -91,8 +91,9 @@ describe('UI-neutral graph command contract', () => {
       id: `previous-${index}`, signature: '{}', expectedRevision: 1, resultingRevision: 2, outcome: 'applied' as const,
     }));
     const result = applyGraphCommand(graph, command(), full);
-    expect(result.ok).toBe(false);
-    if (!result.ok) expect(result.issues[0]!.code).toBe('GRAPH_COMMAND_LEDGER_FULL');
-    expect(result.receipts).toBe(full);
+    expect(result.ok).toBe(true);
+    expect(result.receipts).toHaveLength(129);
+    expect(result.receipts.slice(0,128)).toEqual(full);
+    expect(applyGraphCommand(result.ok?result.graph:graph,command(),result.receipts).replayed).toBe(true);
   });
 });

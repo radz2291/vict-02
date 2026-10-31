@@ -11,23 +11,23 @@ import { documentCursor,prepareAgentEdit,agentContext,agentReadPresentation,agen
 const cursorFor = (document:ReturnType<typeof newScreen>) => documentCursor(document,'r1',crypto.randomUUID());
 function edit(document:ReturnType<typeof newScreen>,operations:unknown[]) {const cursor=cursorFor(document);return prepareAgentEdit(document,cursor,{expectedRevision:cursor.revision,reason:'Completion fixture',operations},crypto.randomUUID());}
 describe('completion round canonical authoring and bounded discovery',()=>{
- it('reads every node at the advertised 500 node boundary without bypassing delivery bounds',()=>{
+ it('reads every node beyond the former 500 node ceiling through bounded pages',()=>{
   const original=newScreen('Large fixture','bounded');const nodes={...original.nodes};
-  for(let index=Object.keys(nodes).length;index<500;index++)nodes[`text-${index}`]={kind:'text',id:`text-${index}`,content:{type:'literal',value:'x'.repeat(300)}};
+  for(let index=Object.keys(nodes).length;index<501;index++)nodes[`text-${index}`]={kind:'text',id:`text-${index}`,content:{type:'literal',value:'x'.repeat(300)}};
   const root=nodes.screen;if(root.kind!=='element')throw Error('fixture');nodes.screen={...root,children:[...root.children,...Object.keys(nodes).filter(id=>id.startsWith('text-'))]};
   const document={...original,nodes};const cursor=cursorFor(document);
   expect(validateAgentStart({prompt:'Read boundary',document,cursor,history:[]})).toMatchObject({ok:true});
   const overview=agentContext(document,cursor);expect(overview).not.toHaveProperty('document.nodes');
-  for(let offset=0;offset<500;offset+=20){const result=agentContext(document,cursor,undefined,{section:'nodes',offset,limit:20});expect(captureDeliverySafeSnapshot(result).ok).toBe(true);}
-  expect(JSON.stringify(overview)).toContain('500');
+  for(let offset=0;offset<501;offset+=20){const result=agentContext(document,cursor,undefined,{section:'nodes',offset,limit:20});expect(captureDeliverySafeSnapshot(result).ok).toBe(true);}
+  expect(overview.limits).toEqual({readPage:20});
  });
- it('admits exactly 200000 source characters and refuses the next character explicitly',()=>{
+ it('admits source beyond the former character ceiling',()=>{
   const original=newScreen('Character boundary','character-boundary');const root=original.nodes.screen;if(root.kind!=='element')throw Error('fixture');
   const node={kind:'text' as const,id:'boundary',content:{type:'literal' as const,value:''}};
   const document={...original,nodes:{...original.nodes,boundary:node,screen:{...root,children:[...root.children,node.id]}}};
   node.content.value='x'.repeat(200000-JSON.stringify(document).length);expect(JSON.stringify(document)).toHaveLength(200000);
   expect(validateAgentStart({prompt:'Read boundary',document,cursor:cursorFor(document),history:[]})).toMatchObject({ok:true});
-  node.content.value+='x';expect(validateAgentStart({prompt:'Read boundary',document,cursor:cursorFor(document),history:[]})).toMatchObject({ok:false,code:'STUDIO_AGENT_SOURCE_LIMIT'});
+  node.content.value+='x';expect(validateAgentStart({prompt:'Read boundary',document,cursor:cursorFor(document),history:[]})).toMatchObject({ok:true});
  });
  it('admits non-ASCII source at the source character boundary with bounded reads',()=>{
   const original=newScreen('Unicode','unicode');const node={kind:'text' as const,id:'unicode-text',content:{type:'literal' as const,value:String.fromCharCode(0x754c).repeat(50000)}};const root=original.nodes.screen;if(root.kind!=='element')throw Error('fixture');const document={...original,nodes:{...original.nodes,'unicode-text':node,screen:{...root,children:[...root.children,node.id]}}};const cursor=cursorFor(document);expect(validateAgentStart({prompt:'Read unicode',document,cursor,history:[]})).toMatchObject({ok:true});expect(captureDeliverySafeSnapshot(agentContext(document,cursor)).ok).toBe(true);

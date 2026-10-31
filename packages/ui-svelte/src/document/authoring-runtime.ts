@@ -18,33 +18,42 @@ export function runtimeAuthoringIssues(owner:Extract<UiRenderInstruction,{kind:'
   if(!relevant)return [];
   const entries:Entry[]=[],problems:UiExtensionRenderDiagnostic[]=[],conditions=conditionsOf(plan);
   const fail=(message:string,detail:Record<string,unknown>)=>problems.push({code:'UI_AUTHORING_RUNTIME_IDENTITY',message,detail:{nodeId:owner.nodeId,occurrenceKey:owner.occurrenceKey,...detail}});
-  let visited=0;
-  function visit(instruction:UiRenderInstruction,values:DocumentScope,slot:string,path:string,providers:readonly string[],fills:Fills){
-    if(++visited>5000){if(!problems.some(item=>item.detail?.reason==='budget'))fail('Identity validation exceeded the bounded presentation budget.',{reason:'budget'});return;}
-    const children=(items:readonly UiRenderInstruction[],nextValues=values,nextProviders=providers,nextFills=fills)=>items.forEach((item,index)=>visit(item,nextValues,slot,`${path}/${index}:${item.nodeId}`,nextProviders,nextFills));
+  type Work={instruction:UiRenderInstruction;values:DocumentScope;slot:string;path:string;providers:readonly string[];fills:Fills;exit?:boolean};
+  const active=new Set<UiRenderInstruction>(),stack:Work[]=[];
+  const frames:DocumentSlotFrame[]=[];const frameSeen=new Set<DocumentSlotFrame>();
+  for(let frame=slotFrame;frame;frame=frame.parent){
+    if(frameSeen.has(frame)){fail('Scoped slot frame cycle prevents complete identity validation.',{reason:'cycle'});return problems;}
+    frameSeen.add(frame);frames.push(frame);
+  }
+  let initialFills:Fills={};
+  for(const frame of frames.reverse()){
+    const parent=initialFills;
+    initialFills=Object.fromEntries(Object.entries(frame.fills).map(([name,children])=>[name,{children,scope:frame.scope,fills:parent}]));
+  }
+  for(const [slot,items]of Object.entries(owner.slots??{}))items.forEach((instruction,index)=>stack.push({instruction,values:scope,slot,path:`${slot}/${index}:${instruction.nodeId}`,providers:[owner.extensionId],fills:initialFills}));
+  while(stack.length){
+    const work=stack.pop()!,{instruction,values,slot,path,providers,fills}=work;
+    if(work.exit){active.delete(instruction);continue;}
+    if(active.has(instruction)){fail('A render instruction cycle prevents complete identity validation.',{reason:'cycle',childNodeId:instruction.nodeId});continue;}
+    active.add(instruction);stack.push({...work,exit:true});
+    const children=(items:readonly UiRenderInstruction[],nextValues=values,nextProviders=providers,nextFills=fills)=>items.forEach((item,index)=>stack.push({instruction:item,values:nextValues,slot,path:`${path}/${index}:${item.nodeId}`,providers:nextProviders,fills:nextFills}));
     if(instruction.kind==='extension'){
       entries.push({instruction,values:evaluateComponentPropValues(instruction,values).values,slot,path,providers});
-      for(const [childSlot,items]of Object.entries(instruction.slots??{}))items.forEach((item,index)=>visit(item,values,slot,`${path}/${childSlot}/${index}:${item.nodeId}`,[...providers,instruction.extensionId],fills));
+      for(const [childSlot,items]of Object.entries(instruction.slots??{}))items.forEach((item,index)=>stack.push({instruction:item,values,slot,path:`${path}/${childSlot}/${index}:${item.nodeId}`,providers:[...providers,instruction.extensionId],fills}));
     }else if(instruction.kind==='element'||instruction.kind==='unsupported')children(instruction.children);
     else if(instruction.kind==='component'){
       const localFills=Object.fromEntries(Object.entries(instruction.slots).map(([name,items])=>[name,{children:items,scope:values,fills}]));
-      visit(instruction.body,{...values,props:evaluateComponentPropValues(instruction,values).values},slot,`${path}/definition:${instruction.definitionId}`,providers,localFills);
+      stack.push({instruction:instruction.body,values:{...values,props:evaluateComponentPropValues(instruction,values).values},slot,path:`${path}/definition:${instruction.definitionId}`,providers,fills:localFills});
     }else if(instruction.kind==='slot'){
       const fill=fills[instruction.name];if(fill?.children.length)children(fill.children,fill.scope,providers,fill.fills);else children(instruction.fallback);
     }else if(instruction.kind==='repeat'){
       const rows=resolveValue({type:'expression',expression:instruction.collection},values);
-      if(!Array.isArray(rows)){fail('Identity-sensitive repeat data is unavailable.',{childNodeId:instruction.nodeId});return;}
-      rows.slice(0,5001).forEach((row,index)=>{const record=asRecord(row);visit(instruction.template,{...values,repeatItem:{name:instruction.itemName,value:record},repeatItems:{...values.repeatItems,[instruction.itemName]:record}},slot,`${path}/record:${index}`,providers,fills);});
+      if(!Array.isArray(rows)){fail('Identity-sensitive repeat data is unavailable.',{childNodeId:instruction.nodeId});continue;}
+      rows.forEach((row,index)=>{const record=asRecord(row);stack.push({instruction:instruction.template,values:{...values,repeatItem:{name:instruction.itemName,value:record},repeatItems:{...values.repeatItems,[instruction.itemName]:record}},slot,path:`${path}/record:${index}`,providers,fills});});
     }else if(instruction.kind==='conditional'){
       const branch=instruction.branches.find(branch=>branch.when===undefined||evaluateCondition(branch.when,conditions,values));if(branch)children(branch.children);
     }
   }
-  const frameFills=(frame:DocumentSlotFrame|undefined):Fills=>{
-    if(!frame)return {};const parent=frameFills(frame.parent);
-    return Object.fromEntries(Object.entries(frame.fills).map(([name,children])=>[name,{children,scope:frame.scope,fills:parent}]));
-  };
-  const initialFills=frameFills(slotFrame);
-  for(const [slot,items]of Object.entries(owner.slots??{}))items.forEach((item,index)=>visit(item,scope,slot,`${slot}/${index}:${item.nodeId}`,[owner.extensionId],initialFills));
   const groups=new Map<string,{value:unknown;entry:Entry}[]>();
   for(const entry of entries)for(const rule of rulesFor(entry.instruction.extensionId,entry.instruction.revision))if(rule.kind==='uniqueValue'){
     const nearest=[...entry.providers].reverse().find(id=>rule.providerIds.includes(id));

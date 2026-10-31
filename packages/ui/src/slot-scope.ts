@@ -4,19 +4,28 @@ import { isUiValueOfType, isUiValueType } from './values.js';
 
 const record=(value:unknown):value is Record<string,unknown>=>!!value&&typeof value==='object'&&!Array.isArray(value);
 const closed=(value:Record<string,unknown>,keys:readonly string[])=>Object.keys(value).every(key=>keys.includes(key));
-function expressionShape(value:unknown,depth=0,seen=new Set<object>()):boolean {
-  if(!record(value)||depth>64||seen.has(value))return false;seen.add(value);
-  const child=(next:unknown)=>expressionShape(next,depth+1,seen);
-  let valid=false;
-  switch(value.type){
-    case 'literal':valid=closed(value,['type','value'])&&(value.value===null||typeof value.value==='string'||typeof value.value==='boolean'||(typeof value.value==='number'&&Number.isFinite(value.value)));break;
-    case 'ref':valid=closed(value,['type','path'])&&typeof value.path==='string'&&!!value.path;break;
-    case 'compare':valid=closed(value,['type','op','left','right'])&&['eq','ne','lt','lte','gt','gte'].includes(String(value.op))&&child(value.left)&&child(value.right);break;
-    case 'boolean':valid=closed(value,['type','op','terms'])&&['and','or','not'].includes(String(value.op))&&Array.isArray(value.terms)&&value.terms.every(child);break;
-    case 'conditionalValue':valid=closed(value,['type','when','then','otherwise'])&&child(value.when)&&child(value.then)&&child(value.otherwise);break;
-    case 'op':valid=closed(value,['type','name','args'])&&typeof value.name==='string'&&!!value.name&&Array.isArray(value.args)&&value.args.every(child);break;
+function expressionShape(value:unknown):boolean {
+  const active=new Set<object>();
+  const stack:{value:unknown;exit?:boolean}[]=[{value}];
+  while(stack.length){
+    const item=stack.pop()!;if(!record(item.value))return false;
+    const current=item.value;
+    if(item.exit){active.delete(current);continue;}
+    if(active.has(current))return false;
+    active.add(current);stack.push({value:current,exit:true});
+    let children:unknown[]=[];
+    switch(current.type){
+      case 'literal':if(!closed(current,['type','value'])||!(current.value===null||typeof current.value==='string'||typeof current.value==='boolean'||(typeof current.value==='number'&&Number.isFinite(current.value))))return false;break;
+      case 'ref':if(!closed(current,['type','path'])||typeof current.path!=='string'||!current.path)return false;break;
+      case 'compare':if(!closed(current,['type','op','left','right'])||!['eq','ne','lt','lte','gt','gte'].includes(String(current.op)))return false;children=[current.left,current.right];break;
+      case 'boolean':if(!closed(current,['type','op','terms'])||!['and','or','not'].includes(String(current.op))||!Array.isArray(current.terms))return false;children=current.terms;break;
+      case 'conditionalValue':if(!closed(current,['type','when','then','otherwise']))return false;children=[current.when,current.then,current.otherwise];break;
+      case 'op':if(!closed(current,['type','name','args'])||typeof current.name!=='string'||!current.name||!Array.isArray(current.args))return false;children=current.args;break;
+      default:return false;
+    }
+    for(const child of children)stack.push({value:child});
   }
-  seen.delete(value);return valid;
+  return true;
 }
 const safeName=(name:unknown):name is string=>typeof name==='string'&&/^[A-Za-z_][A-Za-z0-9_-]*$/.test(name)&&!['__proto__','prototype','constructor'].includes(name);
 /** Shape validation stays independent of any specialist renderer or domain model. */

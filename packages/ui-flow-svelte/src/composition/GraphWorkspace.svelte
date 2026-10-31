@@ -66,7 +66,7 @@
   function output(name:string,payload:unknown){
     if(name==='operation'){
       let parsed:unknown;
-      try{if(typeof payload!=='string'||payload.length>1_000_000)throw Error();parsed=JSON.parse(payload);}catch{error='Operation output requires a bounded JSON graph operation array.';return;}
+      try{if(typeof payload!=='string')throw Error();parsed=JSON.parse(payload);}catch{error='Operation output requires a JSON graph operation array.';return;}
       apply(parsed);
     }else if(name==='undo')workspace.undo();
     else if(name==='redo')workspace.redo();

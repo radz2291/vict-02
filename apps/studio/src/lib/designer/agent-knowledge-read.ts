@@ -13,10 +13,10 @@ const kind = z.enum(['component', 'data']);
 const cursorSchema = z
   .object({
     kind,
-    key: z.string().min(1).max(500),
+    key: z.string().min(1),
     projection,
-    bodyIdentity: z.string().min(1).max(1000),
-    offset: z.number().int().min(1).max(200000),
+    bodyIdentity: z.string().min(1),
+    offset: z.number().int().safe().min(1),
   })
   .strict();
 type Cursor = z.infer<typeof cursorSchema>;
@@ -72,7 +72,7 @@ function encodeCursor(value: Cursor): string {
   );
 }
 function decodeCursor(value: string): Cursor | undefined {
-  if (value.length > 4000 || !value.startsWith(prefix)) return;
+  if (!value.startsWith(prefix)) return;
   const encoded = value.slice(prefix.length);
   if (!/^[A-Za-z0-9_-]+$/.test(encoded)) return;
   try {
@@ -183,11 +183,6 @@ export function readKnowledgePage(registry: UiAuthoringRegistry, query: Knowledg
       'The continuation range is outside this body. Restart the exact selected body.',
     );
   const end = Math.min(offset + KNOWLEDGE_PAGE_CHARACTERS, json.length);
-  if (end < json.length && end > 200000)
-    return failure(
-      'STUDIO_AGENT_READ_LIMIT',
-      'This registered body exceeds the existing bounded knowledge range. No content was truncated or declared complete.',
-    );
   const nextCursor =
     end < json.length
       ? encodeCursor({

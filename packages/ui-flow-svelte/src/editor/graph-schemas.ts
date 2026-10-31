@@ -19,18 +19,18 @@ export interface GraphJsonSchema {
 const record = (properties: Record<string, GraphJsonSchema>, required = Object.keys(properties)): GraphJsonSchema => ({ type: 'object', properties, required, additionalProperties: false });
 const list = (items: GraphJsonSchema, maximum?: number, minimum?: number): GraphJsonSchema => ({ type: 'array', items, ...(maximum === undefined ? {} : { maxItems: maximum }), ...(minimum === undefined ? {} : { minItems: minimum }) });
 const number: GraphJsonSchema = { type: 'number' }, boolean: GraphJsonSchema = { type: 'boolean' };
-const text: GraphJsonSchema = { type: 'string', minLength: 1, maxLength: 200 };
+const text: GraphJsonSchema = { type: 'string', minLength: 1 };
 const id: GraphJsonSchema = { ...text, not: { enum: ['__proto__', 'prototype', 'constructor'] } };
 const key: GraphJsonSchema = { ...id, pattern: '^[A-Za-z_][A-Za-z0-9_-]*$' };
 const revision: GraphJsonSchema = { type: 'integer', minimum: 0, maximum: Number.MAX_SAFE_INTEGER };
 const position = record({ x: number, y: number });
 const port = record({ id, label: text, direction: { enum: ['input', 'output'] }, type: text, maxConnections: { type: 'integer', minimum: 1 } }, ['id', 'label', 'direction', 'type']);
-const ports = list(port, 128);
+const ports = list(port);
 const edge = record({ id, source: id, sourcePort: id, target: id, targetPort: id });
 const connection = record({ source: id, sourcePort: id, target: id, targetPort: id });
 const newConnection = record({ id, ...connection.properties }, ['source', 'sourcePort', 'target', 'targetPort']);
-const selection = record({ nodes: list(id, 1000), edges: list(id, 1000) });
-const offset: GraphJsonSchema = { type: 'number', minimum: -10000, maximum: 10000 };
+const selection = record({ nodes: list(id), edges: list(id) });
+const offset: GraphJsonSchema = { type: 'number' };
 const uiValues: Record<UiValueType, GraphJsonSchema> = {
   string: { type: 'string' }, number, boolean,
   stringList: list({ type: 'string' }), numberList: list(number),
@@ -39,20 +39,20 @@ const uiValues: Record<UiValueType, GraphJsonSchema> = {
 };
 const valueTypes = Object.keys(uiValues).filter(isUiValueType);
 const uiValue: GraphJsonSchema = { anyOf: [uiValues.string, number, boolean, uiValues.stringList, uiValues.numberList] };
-const legacyValue: GraphJsonSchema = { anyOf: [{ type: 'string', maxLength: 10000 }, number, boolean, list({ type: 'string', maxLength: 10000 }, 500)] };
+const legacyValue: GraphJsonSchema = { anyOf: [{ type: 'string' }, number, boolean, list({ type: 'string' })] };
 export const legacyParameterValueTypes = Object.freeze({
   text: 'string', textarea: 'string', number: 'number', slider: 'number', select: 'string', toggle: 'boolean', list: 'stringList', button: 'number', preview: 'string', image: 'string', video: 'string', icon: 'string', vector: 'string',
 } satisfies Record<GraphFieldKind, UiValueType>);
-const icon = record({ pack: text, name: text, revision: text, source: { type: 'string', maxLength: 10000 }, data: { type: 'string', maxLength: 10000 } }, ['pack', 'name', 'revision']);
-const media = record(Object.fromEntries(['alt', 'poster', 'captions', 'language', 'pack', 'revision'].map(name => [name, { type: 'string', maxLength: 10000 } as GraphJsonSchema]).concat([['decorative', boolean]])), []);
-const field = record({ id, label: text, kind: { enum: Object.keys(legacyParameterValueTypes) }, default: legacyValue, min: number, max: number, step: { type: 'number', exclusiveMinimum: 0 }, options: list(text, 200), advanced: boolean, disabled: boolean, media }, ['id', 'label', 'kind']);
-const family1 = record({ id, label: text, fields: list(field, 128), ports, icon }, ['id', 'label', 'fields', 'ports']);
-const family2 = record({ id, label: text, parameters: { type: 'object', propertyNames: key, maxProperties: 128, additionalProperties: { oneOf: valueTypes.map(type => record({ type: { const: type }, default: uiValues[type], label: text }, ['type', 'default'])) } }, ports });
+const icon = record({ pack: text, name: text, revision: text, source: { type: 'string' }, data: { type: 'string' } }, ['pack', 'name', 'revision']);
+const media = record(Object.fromEntries(['alt', 'poster', 'captions', 'language', 'pack', 'revision'].map(name => [name, { type: 'string' } as GraphJsonSchema]).concat([['decorative', boolean]])), []);
+const field = record({ id, label: text, kind: { enum: Object.keys(legacyParameterValueTypes) }, default: legacyValue, min: number, max: number, step: { type: 'number', exclusiveMinimum: 0 }, options: list(text), advanced: boolean, disabled: boolean, media }, ['id', 'label', 'kind']);
+const family1 = record({ id, label: text, fields: list(field), ports, icon }, ['id', 'label', 'fields', 'ports']);
+const family2 = record({ id, label: text, parameters: { type: 'object', propertyNames: key, additionalProperties: { oneOf: valueTypes.map(type => record({ type: { const: type }, default: uiValues[type], label: text }, ['type', 'default'])) } }, ports });
 const node1 = record({ id, type: id, label: text, position, values: { type: 'object', propertyNames: id, additionalProperties: legacyValue }, ports, collapsed: boolean, icon }, ['id', 'type', 'label', 'position', 'values']);
 const node2 = record({ id, type: id, label: text, position, values: { type: 'object', propertyNames: key, additionalProperties: uiValue }, ports }, ['id', 'type', 'label', 'position', 'values']);
 function documentSchema(version: 1 | 2): GraphJsonSchema {
-  return { $schema: 'https://json-schema.org/draft/2020-12/schema', $id: `urn:vict:flow-graph:${version}`, $comment: `${version === 1 ? 'Retained v1 canonical shape; legacy validateGraph remains authoritative and is not tightened by this metadata. ' : ''}Structural shape only. Unique IDs, declared parameter types/defaults, topology, capacity and cycle policy are validated by the corresponding graph model. Total serialized graph budget: one million characters.`,
-    ...record({ schema: { const: `vict.flow-graph@${version}` }, revision, nodeTypes: list(version === 1 ? family1 : family2, 128), nodes: list(version === 1 ? node1 : node2, 1000), edges: list(edge, 4000), allowCycles: boolean }, ['schema', 'revision', 'nodeTypes', 'nodes', 'edges']) };
+  return { $schema: 'https://json-schema.org/draft/2020-12/schema', $id: `urn:vict:flow-graph:${version}`, $comment: `${version === 1 ? 'Retained v1 canonical shape; legacy validateGraph remains authoritative and is not tightened by this metadata. ' : ''}Structural shape only. Unique IDs, declared parameter types/defaults, topology, capacity and cycle policy are validated by the corresponding graph model. No graph size or collection-count ceiling is imposed.`,
+    ...record({ schema: { const: `vict.flow-graph@${version}` }, revision, nodeTypes: list(version === 1 ? family1 : family2), nodes: list(version === 1 ? node1 : node2), edges: list(edge), allowCycles: boolean }, ['schema', 'revision', 'nodeTypes', 'nodes', 'edges']) };
 }
 const operation = (name: string, properties: Record<string, GraphJsonSchema>, required = Object.keys(properties)): GraphJsonSchema => record({ type: { const: name }, ...properties }, ['type', ...required]);
 const sharedOperations = (family: GraphJsonSchema) => ({
@@ -60,14 +60,14 @@ const sharedOperations = (family: GraphJsonSchema) => ({
   defineNodeType: operation('defineNodeType', { definition: family, replace: boolean }, ['definition']),
   removeNodeType: operation('removeNodeType', { nodeType: id }),
   addNode: operation('addNode', { nodeType: id, id, position }, ['nodeType']),
-  moveNodes: operation('moveNodes', { positions: { type: 'object', minProperties: 1, maxProperties: 1000, propertyNames: id, additionalProperties: position } }),
+  moveNodes: operation('moveNodes', { positions: { type: 'object', minProperties: 1, propertyNames: id, additionalProperties: position } }),
   setLabel: operation('setLabel', { nodeId: id, label: text }),
   connect: operation('connect', { edge: newConnection }),
   reconnect: operation('reconnect', { edgeId: id, connection }),
   remove: operation('remove', { selection }),
   duplicate: operation('duplicate', { selection, offset }, ['selection']),
   replacePorts: operation('replacePorts', { nodeId: id, ports, removeInvalidConnections: boolean }, ['nodeId', 'ports']),
-  paste: operation('paste', { clipboard: { type: 'string', maxLength: 1_000_000 }, offset }, ['clipboard']),
+  paste: operation('paste', { clipboard: { type: 'string' }, offset }, ['clipboard']),
 });
 function freeze<T>(value: T): T {
   if (value && typeof value === 'object') { for (const child of Object.values(value)) freeze(child); Object.freeze(value); }
@@ -75,8 +75,8 @@ function freeze<T>(value: T): T {
 }
 export const graphDocumentSchemaV1 = freeze(documentSchema(1));
 export const graphDocumentSchemaV2 = freeze(documentSchema(2));
-export const graphClipboardSchemaV1 = freeze(record({ schema: { const: 'vict.flow-clipboard@1' }, nodeTypes: list(family1, 128), nodes: list(node1, 1000), edges: list(edge, 4000) }));
-export const graphClipboardSchemaV2 = freeze(record({ schema: { const: 'vict.flow-clipboard@2' }, nodeTypes: list(family2, 128), nodes: list(node2, 1000), edges: list(edge, 4000), allowCycles: boolean }, ['schema', 'nodeTypes', 'nodes', 'edges']));
+export const graphClipboardSchemaV1 = freeze(record({ schema: { const: 'vict.flow-clipboard@1' }, nodeTypes: list(family1), nodes: list(node1), edges: list(edge) }));
+export const graphClipboardSchemaV2 = freeze(record({ schema: { const: 'vict.flow-clipboard@2' }, nodeTypes: list(family2), nodes: list(node2), edges: list(edge), allowCycles: boolean }, ['schema', 'nodeTypes', 'nodes', 'edges']));
 export const graphOperationSchemasV1 = freeze({ ...sharedOperations(family1),
   setField: operation('setField', { nodeId: id, fieldId: id, value: legacyValue }),
   unsetField: operation('unsetField', { nodeId: id, fieldId: id }),
@@ -87,8 +87,8 @@ export const graphOperationSchemasV2 = freeze({ ...sharedOperations(family2),
   setParameter: operation('setParameter', { nodeId: id, key, value: uiValue }),
   unsetParameter: operation('unsetParameter', { nodeId: id, key }),
 } satisfies Record<GraphOperationV2['type'], GraphJsonSchema>);
-export const graphOperationsSchemaV1 = freeze({ $schema: 'https://json-schema.org/draft/2020-12/schema', $id: 'urn:vict:flow-operations:1', $comment: 'Retained v1 canonical operation shape. Legacy parseGraphOperations and semantic graph validation remain authoritative; metadata does not tighten historical admission.', ...list({ oneOf: Object.values(graphOperationSchemasV1) }, 50, 1) });
-export const graphOperationsSchemaV2 = freeze({ $schema: 'https://json-schema.org/draft/2020-12/schema', $id: 'urn:vict:flow-operations:2', ...list({ oneOf: Object.values(graphOperationSchemasV2) }, 50, 1) });
+export const graphOperationsSchemaV1 = freeze({ $schema: 'https://json-schema.org/draft/2020-12/schema', $id: 'urn:vict:flow-operations:1', $comment: 'Retained v1 canonical operation shape. Legacy parseGraphOperations and semantic graph validation remain authoritative; metadata does not tighten historical admission.', ...list({ oneOf: Object.values(graphOperationSchemasV1) }, undefined, 1) });
+export const graphOperationsSchemaV2 = freeze({ $schema: 'https://json-schema.org/draft/2020-12/schema', $id: 'urn:vict:flow-operations:2', ...list({ oneOf: Object.values(graphOperationSchemasV2) }, undefined, 1) });
 export const graphDataExamples = freeze({
   v1: { schema: 'vict.flow-graph@1', revision: 0, nodeTypes: [], nodes: [], edges: [] },
   v2: { schema: 'vict.flow-graph@2', revision: 0, nodeTypes: [], nodes: [], edges: [] },

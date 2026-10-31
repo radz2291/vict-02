@@ -69,9 +69,10 @@ it('preserves referenced read types through the pinned OpenAI-compatible request
   expect(transmitted.properties.includeExamples).toEqual(transmitted.$defs.includeExamples);
   expect(transmitted.$defs.components.type).toBe('array');
   expect(transmitted.$defs.includeExamples.type).toBe('boolean');
-  expect(transmitted.$defs.offset).toMatchObject({ type: 'integer', minimum: 0, maximum: 200000 });
+  expect(transmitted.$defs.offset).toMatchObject({ type: 'integer', minimum: 0, maximum: Number.MAX_SAFE_INTEGER });
   expect(transmitted.oneOf).toHaveLength(readSections.length);
-  expect(transmitted.$defs.cursor).toMatchObject({ type: 'string', maxLength: 4000 });
+  expect(transmitted.$defs.cursor).toMatchObject({ type: 'string' });
+  expect(transmitted.$defs.cursor).not.toHaveProperty('maxLength');
   expect(
     transmitted.oneOf.find((entry) => entry.properties.section.const === 'knowledge')!.properties,
   ).not.toHaveProperty('offset');

@@ -1,0 +1,71 @@
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/apps/studio
+
+10:31:42 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+10:31:42 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+10:31:42 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+10:31:42 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+10:31:42 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+ ❯ tests/graph-scoped-bridge.test.ts (6 tests | 1 failed | 5 skipped) 645ms
+   × persists manual and agent nested graph writes beyond180000 characters through the genuine Studio bridge 643ms
+     → expected 'https://example.com/report' to be 'https://example.test/large-source' // Object.is equality
+   ↓ persists nested manual and agent changes through Studio history, save/reopen and portable import
+   ↓ keeps repeated private graph occurrences temporary with local undo and no canonical or save promotion
+   ↓ refuses nested source Undo and editing when a controlled declaration has no actual parent parameter
+   ↓ keeps canonical graph ownership and persistence beyond 64 ordinary source wrappers
+   ↓ keeps controlled nested graphs usable after runtime-root parent revisions depart from authored literals
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/graph-scoped-bridge.test.ts > persists manual and agent nested graph writes beyond180000 characters through the genuine Studio bridge
+AssertionError: expected 'https://example.com/report' to be 'https://example.test/large-source' // Object.is equality
+
+Expected: "https://example.test/large-source"
+Received: "https://example.com/report"
+
+ ❯ tests/graph-scoped-bridge.test.ts:55:104
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+⎯⎯⎯⎯⎯⎯ Unhandled Errors ⎯⎯⎯⎯⎯⎯
+
+Vitest caught 1 unhandled error during the test run.
+This might cause false positive tests. Resolve unhandled errors to make sure your tests are not affected.
+
+⎯⎯⎯⎯ Unhandled Rejection ⎯⎯⎯⎯⎯
+Error: Graph write unexpectedly refused
+ ❯ Object.invalid tests/graph-scoped-bridge.test.ts:120:15
+    118|       },
+    119|       invalid: () => {
+    120|         throw Error('Graph write unexpectedly refused');
+       |               ^
+    121|       },
+    122|     }),
+ ❯ graphRuntimeChanged src/lib/designer/graph-runtime.ts:43:23
+ ❯ Object.<anonymous> tests/graph-scoped-bridge.test.ts:101:5
+ ❯ Object.mockCall node_modules/@vitest/spy/dist/index.js:96:15
+ ❯ Object.spy ../../node_modules/tinyspy/dist/index.js:47:80
+ ❯ Object.setState ../../packages/ui-svelte/src/document/DocumentHost.svelte:183:26
+ ❯ Object.emit ../../packages/ui-svelte/src/document/RenderNode.svelte:217:15
+ ❯ accept ../../packages/ui-flow-svelte/src/composition/GraphWorkspace.svelte:57:9
+ ❯ apply ../../packages/ui-flow-svelte/src/composition/GraphWorkspace.svelte:64:5
+ ❯ Object.onStateChange ../../packages/ui-flow-svelte/src/composition/GraphWorkspace.svelte:87:49
+
+This error originated in "tests/graph-scoped-bridge.test.ts" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+The latest test that might've caused the error is "persists manual and agent nested graph writes beyond180000 characters through the genuine Studio bridge". It might mean one of the following:
+- The error was thrown, while Vitest was running this test.
+- If the error occurred after the test had been completed, this was the last documented test before it was thrown.
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 5 skipped (6)
+     Errors  1 error
+   Start at  10:31:28
+   Duration  30.30s (transform 19.00s, setup 0ms, collect 27.99s, tests 645ms, environment 876ms, prepare 189ms)
