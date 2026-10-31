@@ -1,0 +1,114 @@
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/vict-edge-v3-independent-20261101/apps/studio
+
+2:57:24 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-edge-v3-independent-20261101/packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+2:57:25 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-edge-v3-independent-20261101/packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+2:57:25 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-edge-v3-independent-20261101/packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+2:57:25 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-edge-v3-independent-20261101/packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+2:57:25 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-edge-v3-independent-20261101/packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+2:57:25 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-edge-v3-independent-20261101/packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+2:57:27 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-edge-v3-independent-20261101/packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+2:57:27 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-edge-v3-independent-20261101/packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+2:57:27 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-edge-v3-independent-20261101/packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+2:57:27 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-edge-v3-independent-20261101/packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+ ❯ tests/independent-public-graph-v3.test.ts (9 tests | 2 failed) 133ms
+   × independent: JSON hooks cannot substitute appearance data after strict admission 24ms
+     → expected 1 to be +0 // Object.is equality
+   × independent: operation JSON hooks cannot replace a finite admitted appearance 2ms
+     → expected 1 to be +0 // Object.is equality
+   ✓ independent: strict legacy parsers retain old schemas and refuse appearance extension 2ms
+   ✓ independent: failed appearance batches preserve the original source and finite width grammar 3ms
+   ✓ independent: public registry installs new identities without changing retained graph grammar 63ms
+   ✓ independent: replacement overrides, changed defaults and resets preserve values and source history 15ms
+   ✓ independent: reconnect preserves appearance, rejects cycles and cannot smuggle appearance through old connection shape 7ms
+   ✓ independent: cross-canvas paste preserves effective appearance; same-canvas duplicate retains inheritance 11ms
+   ✓ independent: JSON guards reject accessors, sparse/cyclic/nonfinite payloads without coercion 2ms
+2:57:37 pm [vite-plugin-svelte] tests/fixtures/IndependentEdgeHarness.svelte:8:22 This reference only captures the initial value of `initial`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+2:57:37 pm [vite-plugin-svelte] tests/fixtures/IndependentEdgeHarness.svelte:9:6 This reference only captures the initial value of `host`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+2:57:37 pm [vite-plugin-svelte] tests/fixtures/IndependentEdgeHarness.svelte:9:45 This reference only captures the initial value of `host`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+ ✓ tests/independent-edge-geometry.test.ts (1 test) 96ms
+ ❯ tests/independent-edge-settings.test.ts (4 tests | 1 failed) 156ms
+   ✓ independent: stale frames cannot write after selection changes away/back, source replacement or invalid input 69ms
+   ✓ independent: identical edge IDs in separate public workspaces retain isolated native-control writes 35ms
+   ✓ independent: source-host refusal prevents writes and graph3 never invokes the legacy validation hook 16ms
+   × independent: a retained scoped callback cannot publish after its workspace unmounts 34ms
+     → expected [ [ 'graphChange', …(1) ], …(1) ] to have a length of +0 but got 2
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/independent-edge-settings.test.ts > independent: a retained scoped callback cannot publish after its workspace unmounts
+AssertionError: expected [ [ 'graphChange', …(1) ], …(1) ] to have a length of +0 but got 2
+
+- Expected
++ Received
+
+- 0
++ 2
+
+ ❯ tests/independent-edge-settings.test.ts:162:20
+    160|   frame.onStateChange?.('color', '#abc');
+    161|   frame.onOutput?.('reset');
+    162|   expect(v.events).toHaveLength(before);
+       |                    ^
+    163| });
+    164| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  tests/independent-public-graph-v3.test.ts > independent: JSON hooks cannot substitute appearance data after strict admission
+AssertionError: expected 1 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 1
+
+ ❯ tests/independent-public-graph-v3.test.ts:74:17
+     72|   });
+     73|   const admitted = validateGraphV3(substituted);
+     74|   expect(hooks).toBe(0);
+       |                 ^
+     75|   if (admitted.ok) expect(admitted.graph).toEqual(graph());
+     76| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  tests/independent-public-graph-v3.test.ts > independent: operation JSON hooks cannot replace a finite admitted appearance
+AssertionError: expected 1 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 1
+
+ ❯ tests/independent-public-graph-v3.test.ts:97:17
+     95|   );
+     96|   const parsed = parseGraphOperationsV3([operation]);
+     97|   expect(hooks).toBe(0);
+       |                 ^
+     98|   if (parsed.ok)
+     99|     expect(parsed.operations).toEqual([{ type: 'setEdgeDefaults', appe…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  2 failed | 1 passed (3)
+      Tests  3 failed | 11 passed (14)
+   Start at  14:56:52
+   Duration  45.05s (transform 49.87s, setup 0ms, collect 126.50s, tests 386ms, environment 4.28s, prepare 1.32s)
+

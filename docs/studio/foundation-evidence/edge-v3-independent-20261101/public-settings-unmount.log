@@ -1,0 +1,53 @@
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/vict-edge-v3-independent-20261101/apps/studio
+
+2:54:51 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-edge-v3-independent-20261101/packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+2:54:52 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-edge-v3-independent-20261101/packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+2:54:52 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-edge-v3-independent-20261101/packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+2:54:52 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-edge-v3-independent-20261101/packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+2:54:52 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-edge-v3-independent-20261101/packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+2:54:57 pm [vite-plugin-svelte] tests/fixtures/IndependentEdgeHarness.svelte:8:22 This reference only captures the initial value of `initial`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+2:54:57 pm [vite-plugin-svelte] tests/fixtures/IndependentEdgeHarness.svelte:9:6 This reference only captures the initial value of `host`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+2:54:57 pm [vite-plugin-svelte] tests/fixtures/IndependentEdgeHarness.svelte:9:45 This reference only captures the initial value of `host`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+ ❯ tests/independent-edge-settings.test.ts (4 tests | 1 failed) 99ms
+   ✓ independent: stale frames cannot write after selection changes away/back, source replacement or invalid input 50ms
+   ✓ independent: identical edge IDs in separate public workspaces retain isolated native-control writes 21ms
+   ✓ independent: source-host refusal prevents writes and graph3 never invokes the legacy validation hook 7ms
+   × independent: a retained scoped callback cannot publish after its workspace unmounts 20ms
+     → expected [ [ 'graphChange', …(1) ], …(1) ] to have a length of +0 but got 2
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/independent-edge-settings.test.ts > independent: a retained scoped callback cannot publish after its workspace unmounts
+AssertionError: expected [ [ 'graphChange', …(1) ], …(1) ] to have a length of +0 but got 2
+
+- Expected
++ Received
+
+- 0
++ 2
+
+ ❯ tests/independent-edge-settings.test.ts:162:20
+    160|   frame.onStateChange?.('color', '#abc');
+    161|   frame.onOutput?.('reset');
+    162|   expect(v.events).toHaveLength(before);
+       |                    ^
+    163| });
+    164| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 3 passed (4)
+   Start at  14:54:36
+   Duration  20.91s (transform 12.63s, setup 0ms, collect 18.65s, tests 99ms, environment 1.23s, prepare 351ms)
+

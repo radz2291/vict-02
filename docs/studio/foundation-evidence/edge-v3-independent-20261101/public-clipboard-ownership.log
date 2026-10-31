@@ -1,0 +1,53 @@
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/vict-edge-v3-independent-20261101/apps/studio
+
+2:58:17 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-edge-v3-independent-20261101/packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+2:58:17 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-edge-v3-independent-20261101/packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+2:58:17 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-edge-v3-independent-20261101/packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+2:58:17 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-edge-v3-independent-20261101/packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+2:58:17 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-edge-v3-independent-20261101/packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+ ❯ tests/independent-public-graph-v3.test.ts (10 tests | 1 failed | 9 skipped) 18ms
+   ↓ independent: JSON hooks cannot substitute appearance data after strict admission
+   ↓ independent: operation JSON hooks cannot replace a finite admitted appearance
+   × independent: clipboard copies only the admitted owned defaults, never a later caller property read 16ms
+     → expected 1 to be +0 // Object.is equality
+   ↓ independent: strict legacy parsers retain old schemas and refuse appearance extension
+   ↓ independent: failed appearance batches preserve the original source and finite width grammar
+   ↓ independent: public registry installs new identities without changing retained graph grammar
+   ↓ independent: replacement overrides, changed defaults and resets preserve values and source history
+   ↓ independent: reconnect preserves appearance, rejects cycles and cannot smuggle appearance through old connection shape
+   ↓ independent: cross-canvas paste preserves effective appearance; same-canvas duplicate retains inheritance
+   ↓ independent: JSON guards reject accessors, sparse/cyclic/nonfinite payloads without coercion
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/independent-public-graph-v3.test.ts > independent: clipboard copies only the admitted owned defaults, never a later caller property read
+AssertionError: expected 1 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 1
+
+ ❯ tests/independent-public-graph-v3.test.ts:111:17
+    109|   let copied: string | undefined;
+    110|   try { copied = copyGraphSelectionV3(substituted, { nodes: ['a','b'],…
+    111|   expect(reads).toBe(0);
+       |                 ^
+    112|   if (copied !== undefined) expect(JSON.parse(copied).edgeDefaults).to…
+    113| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 9 skipped (10)
+   Start at  14:58:05
+   Duration  16.63s (transform 10.40s, setup 0ms, collect 15.88s, tests 18ms, environment 0ms, prepare 193ms)
+

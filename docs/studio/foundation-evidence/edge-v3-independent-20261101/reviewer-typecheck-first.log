@@ -1,0 +1,8 @@
+tests/independent-edge-settings.test.ts(50,14): error TS7006: Parameter 'name' implicitly has an 'any' type.
+tests/independent-edge-settings.test.ts(50,20): error TS7006: Parameter 'value' implicitly has an 'any' type.
+tests/independent-edge-settings.test.ts(51,16): error TS7006: Parameter 'value' implicitly has an 'any' type.
+tests/independent-edge-settings.test.ts(54,15): error TS7006: Parameter 'key' implicitly has an 'any' type.
+tests/independent-edge-settings.test.ts(54,20): error TS7006: Parameter 'value' implicitly has an 'any' type.
+tests/independent-edge-settings.test.ts(131,5): error TS2353: Object literal may only specify known properties, and 'schema' does not exist in type 'GraphEditorHostV2'.
+tests/independent-public-graph-v3.test.ts(278,9): error TS7034: Variable 'sparse' implicitly has type 'any[]' in some locations where its type cannot be determined.
+tests/independent-public-graph-v3.test.ts(280,33): error TS7005: Variable 'sparse' implicitly has an 'any[]' type.
