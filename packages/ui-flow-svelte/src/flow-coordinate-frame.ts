@@ -105,12 +105,16 @@ export function observeFlowCoordinateFrame(
   const mutations = new MutationObserver(schedule);
   for (let ancestor = root.parentElement; ancestor; ancestor = ancestor.parentElement)
     mutations.observe(ancestor, { attributes: true, attributeFilter: ['style', 'class'] });
+  // Media queries and viewport units can change computed ancestor transforms
+  // without changing any attribute or this frame's content-box size.
+  view.addEventListener('resize', schedule);
   measure();
   return {
     destroy() {
       alive = false;
       resize.disconnect();
       mutations.disconnect();
+      view.removeEventListener('resize', schedule);
     },
   };
 }

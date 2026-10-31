@@ -149,3 +149,31 @@ test('individual CSS reflections refuse despite a positive uniform bounding box'
   expect(values.at(-1)).toBe(false);
   action.destroy();
 });
+
+test('own-window resize is coalesced and its listener/queued measurement are removed on teardown', async () => {
+  const root = document.createElement('div');
+  root.style.width = '760px';
+  root.style.height = '380px';
+  document.body.append(root);
+  const rect = vi.spyOn(root, 'getBoundingClientRect').mockReturnValue(new DOMRect(0, 0, 380, 190));
+  const add = vi.spyOn(window, 'addEventListener'),
+    remove = vi.spyOn(window, 'removeEventListener');
+  const seen: number[] = [];
+  const action = observeFlowCoordinateFrame(root, (value) => seen.push(value));
+  const listener = add.mock.calls.find((call) => call[0] === 'resize')?.[1];
+  expect(listener).toBeTypeOf('function');
+  window.dispatchEvent(new Event('resize'));
+  window.dispatchEvent(new Event('resize'));
+  window.dispatchEvent(new Event('resize'));
+  await new Promise((resolve) => setTimeout(resolve, 0));
+  expect(seen).toEqual([0.5, 0.5]);
+  window.dispatchEvent(new Event('resize'));
+  action.destroy();
+  const reads = rect.mock.calls.length;
+  await new Promise((resolve) => setTimeout(resolve, 0));
+  window.dispatchEvent(new Event('resize'));
+  await new Promise((resolve) => setTimeout(resolve, 0));
+  expect(rect).toHaveBeenCalledTimes(reads);
+  expect(seen).toEqual([0.5, 0.5]);
+  expect(remove).toHaveBeenCalledWith('resize', listener);
+});
