@@ -50,3 +50,21 @@ it('repeated controlled nested same-edge IDs keep canvas appearance source-owned
  const v=await open(source);try{const a=v.target.querySelector('.svelte-flow__node[data-id="outer-node"]')!,b=v.target.querySelector('.svelte-flow__node[data-id="outer-two"]')!;expect(a).toBeTruthy();expect(b).toBeTruthy();await change(a,'canvas color','#1188aa');const outer=v.graph();const edited=outer.nodes.find(n=>n.id==='outer-node')!,sibling=outer.nodes.find(n=>n.id==='outer-two')!;const inner=parseGraphV3(String(edited.values.innerGraph));expect(inner.ok&&inner.graph.edgeDefaults).toEqual({color:'#1188aa'});expect(sibling.values.innerGraph).toBeUndefined();expect(outer.nodeTypes[0].parameters.innerGraph.default).toBe(JSON.stringify(baseInner.graph));expect(input(b,'canvas color').value).toBe('token:border');expect(outer.revision).toBe(1);expect(inner.ok&&inner.graph.revision).toBe(1);
  }finally{await v.close();}
 });
+
+it('native select input/change duplicate is one canonical edit and one Undo',async()=>{
+ const source=appearanceSettingsDocument(),route=source.nodes['canvas-settings-route'];if(route.kind!=='element')throw Error('Fixture');route.tag='select';delete route.attributes!.type;route.children=['route-bezier','route-straight'];
+ for(const value of ['bezier','straight']){source.nodes[`route-${value}`]={kind:'element',id:`route-${value}`,tag:'option',children:[`route-${value}-text`],attributes:{value:literal(value)}};source.nodes[`route-${value}-text`]={kind:'text',id:`route-${value}-text`,content:{type:'literal',value}};}
+ const v=await open(source);try{
+  const before=v.context.graph.revision,select=v.target.querySelector<HTMLSelectElement>('select[aria-label="canvas route"]')!;select.value='straight';select.dispatchEvent(new Event('input',{bubbles:true}));await settle();select.dispatchEvent(new Event('change',{bubbles:true}));await settle();
+  expect.soft(v.context.graph.revision).toBe(before+1);expect(v.context.graph.edgeDefaults).toEqual({route:'straight'});v.context.undo();await settle();expect(v.context.graph.edgeDefaults).toBeUndefined();expect(select.value).toBe('bezier');
+ }finally{await v.close();}
+});
+
+it('effective inherited values may be explicitly pinned, repeated writes preserve partial overrides and reset',async()=>{
+ const v=await open();try{
+  v.context.select({nodes:[],edges:['source-gate']});await settle();await change(v.target,'selection color','#123456');await change(v.target,'selection route','bezier');
+  expect(v.context.graph.edges[0].appearance).toEqual({color:'#123456',route:'bezier'});const revision=v.context.graph.revision;await change(v.target,'selection route','bezier');expect.soft(v.context.graph.revision).toBe(revision);
+  await change(v.target,'canvas route','straight');expect(resolveGraphEdgeAppearance(v.context.graph,v.context.graph.edges[0]).route).toBe('bezier');expect(v.context.graph.edges[0].appearance).toEqual({color:'#123456',route:'bezier'});
+  [...v.target.querySelectorAll('button')].find(button=>button.textContent==='Reset selection')!.click();await settle();expect(v.context.graph.edges[0].appearance).toBeUndefined();expect(resolveGraphEdgeAppearance(v.context.graph,v.context.graph.edges[0]).route).toBe('straight');
+ }finally{await v.close();}
+});

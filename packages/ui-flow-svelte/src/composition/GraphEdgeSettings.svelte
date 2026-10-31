@@ -24,6 +24,9 @@
     function write(key:string,value:UiValue){
       if(!active()||!['route','pattern','color','width','startArrow','endArrow'].includes(key))return;
       const current=canvas?graph?.edgeDefaults:edge?.appearance;
+      // Native input/change can deliver the same edit through a refreshed frame.
+      // Preserve explicit inheritance pins, but do not add duplicate history.
+      if(current&&Object.prototype.hasOwnProperty.call(current,key)&&Object.is(current[key as keyof GraphEdgeAppearance],value))return;
       const appearance={...current,[key]:value} as GraphEdgeAppearance;
       workspace!.apply([canvas?{type:'setEdgeDefaults',appearance}:{type:'setEdgeAppearance',edgeId,appearance}],revision);
     }
