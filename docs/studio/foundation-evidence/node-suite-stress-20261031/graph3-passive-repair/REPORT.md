@@ -1,0 +1,24 @@
+# Bounded public graph3 passive ownership and settings disposal repair
+
+Builder candidate from exact a6c7d30522f263f39e3f724bf5c15c08f111192d, isolated codex/graph3-passive-snapshot-20261031. Owner authorized repair of the independent public JSON-cloning and retained-settings-frame failures. Original independent REDs remain on 772d / refined acceptance 1563585a7bf592bf2b04ffee70eba03e9e0bb203; this builder did not replace them or award an independent verdict. No root source/dist, package build, provider/browser/application data, activation or push was changed.
+
+## Repair
+
+An internal iterative passive JSON snapshot owns data **before** schema checks or serialization. It uses own data descriptors, does not read original property values or invoke getter/toJSON hooks, and rejects accessors, symbols, hidden/extra array fields, sparse arrays, __proto__, nonfinite values, cycles, unsupported prototypes and throwing introspection traps. Proxy introspection traps may run as part of JavaScript descriptor APIs; an exception refuses the whole input. A Proxy with virtual get/toJSON substitution is either refused or captured through its benign own descriptors; schema and reducer see only the owned snapshot. Repeated acyclic aliases are copied as independent JSON values; no source references remain. Negative zero normalizes like prior JSON serialization. No count/depth/byte quotas or new dependency.
+
+Graph3 validation and operation parsing now validate the captured snapshot. Migration snapshots its input before using the retained graph2 validator. applyGraphOperationsV3 obtains default revision only from its owned validated graph, preserving the prior public optional-argument behavior and JavaScript arity. copyGraphSelectionV3 snapshots selection and uses checked.graph for **all** source fields, including allowCycles/edgeDefaults, eliminating the post-check raw-read hole. Serialization uses owned data. Appearance resolution snapshots only declared default/override projections via descriptors, avoiding a full graph copy per edge while preventing raw getter substitution. Retained graph1/graph2 input grammars and shared typed reducer are untouched.
+
+GraphEdgeSettings now invalidates its generation and an alive flag on destruction; both retained onStateChange and reset output callbacks check lifetime. Existing selection, revision, source identity/read-only and scoped renderer fences remain. Tests specifically remove only settings while keeping the public workspace alive and prove ordinary workspace operations remain usable while the old settings frame cannot write/reset. No legacy GraphWorkspace disposal behavior was changed. No port/descriptor/registration/knowledge files were edited.
+
+## Checks
+
+- Initial focused builder checks: 17/17 PASS.
+- Affected public/model/settings checks plus exact refined reviewer fixture replay: **36/36 PASS**, including retained graph2 engine cases. The replay is explicitly labelled builder execution, not a new independent verdict.
+- Final checks after JSON negative-zero normalization/optional-argument preservation: **16/16 PASS** (passive API, reviewer fixture replay, settings-only/whole-workspace disposal).
+- Final Svelte-check: **0 errors / 5 inherited ui-svelte warnings**. Targeted changed TypeScript ESLint: PASS. Repository ESLint does not configure Svelte; Svelte files are checked by Svelte-check, not claimed linted.
+- Passive tests exercise virtual toJSON graph/operation injection, raw graph/selection get traps, default revision, clipboard defaults/cycle flag, migration, safe appearance projection, throwing ownKeys/getPrototypeOf/getOwnPropertyDescriptor traps, getter non-execution, symbol/__proto__/sparse/cycle refusal, independent aliases and depth5000 traversal without an artificial quota. Valid serialized output identity is retained.
+- Settings tests exercise both retained write and reset after settings-only destruction and whole-workspace destruction, with no later emissions. Existing ordinary native controls, source-owned nested settings and graph3 model tests pass.
+
+All runs are package source/mounted synthetic evidence. Dependency dist reuse came from the separately isolated adapter-review checkout; third-party modules are linked, each @vict package points into this checkout, and root compiled packages were never mutated. No HTTP JSON transport bypass, native detached DOM bypass, production build or actual graph3 application success is claimed. The independent fixture's object-API failures and public callback lifetime failures are the repaired scope.
+
+Next: independent reviewer reruns refined acceptance against exact candidate; parent may integrate alongside the separately repaired Studio factory-default boundary and geometry/port tracks. No public schema/enum/descriptor identity changes are needed: this restores promised strict owned-data/lifetime behavior, rather than reinterpreting valid saved graph1/2/3 JSON.

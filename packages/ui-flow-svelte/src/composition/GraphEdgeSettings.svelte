@@ -1,5 +1,5 @@
 <script lang="ts">
-  import {getContext} from 'svelte';
+  import {getContext,onDestroy} from 'svelte';
   import type {UiSvelteComponentProps,UiScopedSlotFrame} from '@victframework/ui-svelte';
   import type {UiValue} from '@victframework/ui';
   import {resolveGraphEdgeAppearance,type GraphEdgeAppearance} from '../editor/model-v3.js';
@@ -12,13 +12,15 @@
   const readOnly=$derived(!validTarget||!workspace||workspace.modelVersion!==3||workspace.readOnly||(!canvas&&!edge));
   let previousIdentity:string|undefined;
   let generation=Symbol('edge-settings');
+  let alive=true;
+  onDestroy(()=>{alive=false;generation=Symbol('disposed');});
   const frame=$derived.by(():UiScopedSlotFrame=>{
     const graph=workspace?.graph,edgeId=canvas?undefined:edge?.id,revision=graph?.revision;
     const identity=canvas?'canvas':`edge:${edgeId??'none'}`;
     if(identity!==previousIdentity){previousIdentity=identity;generation=Symbol(identity);}
     const token=generation;
     const effective=resolveGraphEdgeAppearance(graph??{},edgeId?edge:undefined);
-    const active=()=>generation===token&&!!workspace&&!readOnly&&workspace.graph===graph&&workspace.graph.revision===revision&&(canvas||(workspace.selection.nodes.length===0&&workspace.selection.edges.length===1&&workspace.selection.edges[0]===edgeId));
+    const active=()=>alive&&generation===token&&!!workspace&&!readOnly&&workspace.graph===graph&&workspace.graph.revision===revision&&(canvas||(workspace.selection.nodes.length===0&&workspace.selection.edges.length===1&&workspace.selection.edges[0]===edgeId));
     function write(key:string,value:UiValue){
       if(!active()||!['route','pattern','color','width','startArrow','endArrow'].includes(key))return;
       const current=canvas?graph?.edgeDefaults:edge?.appearance;
