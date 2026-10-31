@@ -1,0 +1,48 @@
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/vict-studio-edge-v3-20261101/apps/studio
+
+3:00:54 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-studio-edge-v3-20261101/packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+3:00:54 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-studio-edge-v3-20261101/packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+3:00:54 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-studio-edge-v3-20261101/packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+3:00:54 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-studio-edge-v3-20261101/packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+3:00:54 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-studio-edge-v3-20261101/packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+ ❯ tests/graph-v3-factory-default.test.ts (3 tests | 2 failed) 272ms
+   × refuses migration with an unprepared graph2 factory default while preserving all current source 32ms
+     → expected true to be false // Object.is equality
+   × refuses migration with an unprepared empty factory default while preserving all current source 13ms
+     → expected true to be false // Object.is equality
+   ✓ prepares an explicit meaningful graph3 factory then migrates atomically; a new node inherits valid graph3 226ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/graph-v3-factory-default.test.ts > refuses migration with an unprepared graph2 factory default while preserving all current source
+ FAIL  tests/graph-v3-factory-default.test.ts > refuses migration with an unprepared empty factory default while preserving all current source
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/graph-v3-factory-default.test.ts:34:21
+     32|   const document=original(mode==='empty'),before=structuredClone(docum…
+     33|   const result=migrateAuthoredGraphs(document,targets(document));
+     34|   expect(result.ok).toBe(false);
+       |                     ^
+     35|   if(!result.ok)expect(result.message).toMatch(/factory default.*defin…
+     36|   expect(document).toEqual(before);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 1 passed (3)
+   Start at  15:00:40
+   Duration  31.60s (transform 20.33s, setup 0ms, collect 29.79s, tests 272ms, environment 861ms, prepare 259ms)
+

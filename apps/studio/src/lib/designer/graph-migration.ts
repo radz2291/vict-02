@@ -58,6 +58,13 @@ function occurrences(
     const parsed =
       host.modelVersion === 3 ? parseGraphV3(source.source) : parseGraphV2(source.source);
     if (!parsed.ok) return fail('A containing graph source is invalid.');
+    for (const family of parsed.graph.nodeTypes) {
+      const parameter = family.parameters[owner.key];
+      if (parameter?.type === 'string' && !parseGraphV3(parameter.default as string).ok)
+        return fail(
+          `Migration requires a valid graph3 factory default for family ${family.id}, parameter ${owner.key}. First use editGraph defineNodeType with replace:true to prepare an explicit intended graph3 string default. Preserve existing inherited instance values with setParameter as needed. Then migrateGraph must use the working graph/route revisions after that earlier editGraph operation in the same atomic batch.`,
+        );
+    }
     for (const member of parsed.graph.nodes) {
       const family = parsed.graph.nodeTypes.find((item) => item.id === member.type);
       if (family?.parameters[owner.key]?.type === 'string')

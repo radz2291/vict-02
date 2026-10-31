@@ -2,7 +2,7 @@
 import { afterEach, expect, it } from 'vitest';
 import { EditorBridge } from '@victframework/ui-editor';
 import { canonicalUiDocument, type UiDocument } from '@victframework/ui';
-import { parseGraphV3 } from '@victframework/ui-flow-svelte';
+import { parseGraphV3, migrateGraphV2ToV3 } from '@victframework/ui-flow-svelte';
 import fixture from './fixtures/scoped-graph-source.json';
 import {
   migrateAuthoredGraphs,
@@ -40,6 +40,14 @@ function initial(): UiDocument {
     position: { x: 700, y: 100 },
     values: {},
   });
+  // This fixture represents an explicitly prepared factory. Current inherited
+  // graph2 values are materialized before changing the future graph3 default.
+  const family = outer.nodeTypes[0],
+    previous = family.parameters.innerGraph.default;
+  for (const member of outer.nodes) member.values.innerGraph = previous;
+  const preparedFactory = migrateGraphV2ToV3(JSON.parse(previous));
+  if (!preparedFactory.ok) throw Error('Invalid diagnostic factory');
+  family.parameters.innerGraph.default = JSON.stringify(preparedFactory.graph);
   return {
     ...document,
     localState: {

@@ -1,0 +1,21 @@
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/vict-studio-edge-v3-20261101/apps/studio
+
+3:03:06 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-studio-edge-v3-20261101/packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+3:03:06 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-studio-edge-v3-20261101/packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+3:03:06 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-studio-edge-v3-20261101/packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+3:03:06 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-studio-edge-v3-20261101/packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+3:03:06 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-studio-edge-v3-20261101/packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+ ✓ tests/graph-v3-factory-default.test.ts (3 tests) 277ms
+ ✓ tests/graph-v3-migration.test.ts (11 tests) 462ms
+
+ Test Files  2 passed (2)
+      Tests  14 passed (14)
+   Start at  15:02:53
+   Duration  27.21s (transform 16.47s, setup 0ms, collect 49.90s, tests 740ms, environment 2.07s, prepare 445ms)
+
