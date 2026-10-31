@@ -1,0 +1,29 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030
+
+ ❯ |mastra| packages/mastra/test/tool-bridge.audit-remediation.test.ts (28 tests | 1 failed) 212ms
+     × the adapter compatibility marker is revision 4 after the string-bound amendment 12ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |mastra| packages/mastra/test/tool-bridge.audit-remediation.test.ts > adjacent cleanup: the captured output schema rides the REAL outputSchema wrapper > the adapter compatibility marker is revision 4 after the string-bound amendment
+AssertionError: expected '6' to be '4' // Object.is equality
+
+Expected: "4"
+Received: "6"
+
+ ❯ packages/mastra/test/tool-bridge.audit-remediation.test.ts:950:51
+    948|
+    949|   it('the adapter compatibility marker is revision 4 after the string-…
+    950|     expect(MASTRA_ADAPTER_COMPATIBILITY.revision).toBe('4');
+       |                                                   ^
+    951|   });
+    952| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 2 passed (3)
+      Tests  1 failed | 45 passed (46)
+   Start at  10:39:17
+   Duration  3.76s (transform 2.09s, setup 0ms, import 7.59s, tests 308ms, environment 1ms)

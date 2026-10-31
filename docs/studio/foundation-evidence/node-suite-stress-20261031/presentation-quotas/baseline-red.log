@@ -1,0 +1,95 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/vict-pointer-history-probe-20261030
+
+ ❯ |mastra| packages/mastra/test/presentation-quota-probe.test.ts (6 tests | 5 failed) 12ms
+   × captures bytes without local quotas 6ms
+   × captures fields without local quotas 1ms
+   × captures array without local quotas 1ms
+   × captures depth without local quotas 1ms
+   × captures long descriptions without a content quota 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |mastra| packages/mastra/test/presentation-quota-probe.test.ts > captures bytes without local quotas
+VictPresentationError: capability presentation rejected (VICT_PRESENTATION_INVALID): baseline.description: a string cannot fit the 32768-byte serialized UTF-8 presentation budget
+ ❯ captureValue packages/mastra/src/presentation.ts:107:13
+    105|     // Thus this leaf cannot possibly fit, before JSON.stringify alloc…
+    106|     if (text.length > PRESENTATION_BOUNDS.maxTotalBytes) {
+    107|       throw new VictPresentationError(
+       |             ^
+    108|         'VICT_PRESENTATION_INVALID',
+    109|         `${label}: a string cannot fit the ${PRESENTATION_BOUNDS.maxTo…
+ ❯ captureValue packages/mastra/src/presentation.ts:219:18
+ ❯ capturePresentationSchema packages/mastra/src/presentation.ts:247:20
+ ❯ packages/mastra/test/presentation-quota-probe.test.ts:8:71
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  |mastra| packages/mastra/test/presentation-quota-probe.test.ts > captures fields without local quotas
+VictPresentationError: capability presentation rejected (VICT_PRESENTATION_INVALID): baseline: an object exceeds the 64-field bound
+ ❯ captureValue packages/mastra/src/presentation.ts:190:13
+    188|     const ownKeys = Object.keys(descriptors);
+    189|     if (ownKeys.length > PRESENTATION_BOUNDS.maxFieldsPerObject) {
+    190|       throw new VictPresentationError(
+       |             ^
+    191|         'VICT_PRESENTATION_INVALID',
+    192|         `${label}: an object exceeds the ${PRESENTATION_BOUNDS.maxFiel…
+ ❯ capturePresentationSchema packages/mastra/src/presentation.ts:247:20
+ ❯ packages/mastra/test/presentation-quota-probe.test.ts:8:71
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  |mastra| packages/mastra/test/presentation-quota-probe.test.ts > captures array without local quotas
+VictPresentationError: capability presentation rejected (VICT_PRESENTATION_INVALID): baseline.enum: an array exceeds the 64-item bound
+ ❯ captureValue packages/mastra/src/presentation.ts:137:15
+    135|     if (Array.isArray(value)) {
+    136|       if (value.length > PRESENTATION_BOUNDS.maxArrayLength) {
+    137|         throw new VictPresentationError(
+       |               ^
+    138|           'VICT_PRESENTATION_INVALID',
+    139|           `${label}: an array exceeds the ${PRESENTATION_BOUNDS.maxArr…
+ ❯ captureValue packages/mastra/src/presentation.ts:219:18
+ ❯ capturePresentationSchema packages/mastra/src/presentation.ts:247:20
+ ❯ packages/mastra/test/presentation-quota-probe.test.ts:8:71
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+ FAIL  |mastra| packages/mastra/test/presentation-quota-probe.test.ts > captures depth without local quotas
+VictPresentationError: capability presentation rejected (VICT_PRESENTATION_INVALID): baseline.items.items.items.items.items.items.items.items.items: nesting exceeds the depth bound 8
+ ❯ captureValue packages/mastra/src/presentation.ts:91:11
+     89| function captureValue(value: unknown, label: string, depth: number): u…
+     90|   if (depth > PRESENTATION_BOUNDS.maxDepth) {
+     91|     throw new VictPresentationError(
+       |           ^
+     92|       'VICT_PRESENTATION_INVALID',
+     93|       `${label}: nesting exceeds the depth bound ${PRESENTATION_BOUNDS…
+ ❯ captureValue packages/mastra/src/presentation.ts:219:18
+ ❯ captureValue packages/mastra/src/presentation.ts:219:18
+ ❯ captureValue packages/mastra/src/presentation.ts:219:18
+ ❯ captureValue packages/mastra/src/presentation.ts:219:18
+ ❯ captureValue packages/mastra/src/presentation.ts:219:18
+ ❯ captureValue packages/mastra/src/presentation.ts:219:18
+ ❯ captureValue packages/mastra/src/presentation.ts:219:18
+ ❯ captureValue packages/mastra/src/presentation.ts:219:18
+ ❯ captureValue packages/mastra/src/presentation.ts:219:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯
+
+ FAIL  |mastra| packages/mastra/test/presentation-quota-probe.test.ts > captures long descriptions without a content quota
+VictPresentationError: capability presentation rejected (VICT_PRESENTATION_DESCRIPTION_INVALID): the capability description must be 1..1024 characters
+ ❯ captureCapabilityDescription packages/mastra/src/presentation.ts:283:11
+    281|   }
+    282|   if (value.length === 0 || value.length > PRESENTATION_BOUNDS.maxDesc…
+    283|     throw new VictPresentationError(
+       |           ^
+    284|       'VICT_PRESENTATION_DESCRIPTION_INVALID',
+    285|       `the capability description must be 1..${PRESENTATION_BOUNDS.max…
+ ❯ packages/mastra/test/presentation-quota-probe.test.ts:9:104
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/5]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  5 failed | 1 passed (6)
+   Start at  10:40:46
+   Duration  408ms (transform 64ms, setup 0ms, import 90ms, tests 12ms, environment 0ms)

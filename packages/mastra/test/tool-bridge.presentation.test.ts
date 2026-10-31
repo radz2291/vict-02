@@ -310,9 +310,38 @@ async function executeTool(tool: unknown, input: unknown): Promise<unknown> {
 // ---- The permanent provider-facing schema proof ----------------------------
 
 describe('B-1: the real tool object exposes the captured model-facing schema', () => {
-  it('presents schema strings above 2048 characters unchanged within the total budget', async () => {
-    const longText = 'public schema guidance '.repeat(150);
-    expect(longText.length).toBeGreaterThan(2048);
+  it('captures deep/wide/long metadata completely and keeps the real tool description intact',async()=>{
+    let deep:Record<string,unknown>={type:'string'};
+    for(let index=0;index<100;index++)deep={type:'array',items:deep};
+    const properties=Object.fromEntries(Array.from({length:100},(_,i)=>[`field${i}`,{type:'string',description:'x'.repeat(1000)}]));
+    const declared={type:'object',properties,required:Object.keys(properties),deep,[`key${'x'.repeat(100)}`]:'retained'};
+    const before=JSON.stringify(declared,(_key,value)=>value&&typeof value==='object'&&!Array.isArray(value)?Object.fromEntries(Object.keys(value).sort().map(key=>[key,value[key]])):value);
+    const input=defineContract({id:'cap.large.presentation',revision:'1',descriptiveJsonSchema:declared,parse:proposalInputContract.parse});
+    const description='Long capability guidance '.repeat(200);
+    const capability=makeProposalCapability({input,description}),{deps}=await makeFixture(capability);
+    const tool=bridgeCapabilityToolToMastra(ACTIVATION,capability,deps),captured=providerFacingInputSchema(tool) as typeof declared;
+    expect(JSON.stringify(captured)).toBe(before);
+    expect(JSON.stringify(captured).length).toBeGreaterThan(32768);
+    expect(captured.required).toHaveLength(100);expect(Object.keys(captured.properties)).toHaveLength(100);
+    expect((tool as {description:string}).description.endsWith(description)).toBe(true);
+    expect(Object.isFrozen(captured)).toBe(true);expect(Object.isFrozen(captured.properties.field99)).toBe(true);expect(Object.isFrozen(captured.required)).toBe(true);
+    declared.properties.field99.description='changed after capture';
+    expect(captured.properties.field99.description).toBe('x'.repeat(1000));
+  });
+  it('rejects executable/hidden/extra array members without invoking them or silently discarding data',()=>{
+    let calls=0;
+    for(const build of [
+      ()=>Object.assign(['safe'],{extra:'ignored'}),
+      ()=>Object.defineProperty(['safe'],'extra',{value:'hidden'}),
+      ()=>Object.defineProperty(['safe'],Symbol('hidden'),{value:'symbol'}),
+      ()=>Object.defineProperty(['safe'],'0',{get(){calls++;return 'canary';},enumerable:true}),
+    ])expect(()=>capturePresentationSchema({items:build()},'array')).toThrowError(VictPresentationError);
+    expect(calls).toBe(0);
+    expect(()=>capturePresentationSchema({items:[,]},'sparse')).toThrowError(VictPresentationError);
+  });
+  it('presents schema strings beyond32768 characters unchanged without changing argument authority', async () => {
+    const longText = 'public schema guidance '.repeat(2000);
+    expect(longText.length).toBeGreaterThan(32768);
     const declared = { ...PROPOSAL_INPUT_SCHEMA, description: longText };
     const input = defineContract({
       id: 'cap.proposal.long-presentation', revision: '1',
@@ -424,7 +453,7 @@ describe('B-1: invalid presentation metadata fails closed at tool construction',
     );
   });
 
-  it('hostile presentation shapes are rejected unread (getters, functions, cycles, prototypes, prototype keys, overbound)', () => {
+  it('hostile presentation shapes are rejected unread while content has no task quota', () => {
     const label = 'probe';
     // Accessor field.
     expect(() =>
@@ -467,19 +496,12 @@ describe('B-1: invalid presentation metadata fails closed at tool construction',
     expect(() => capturePresentationSchema({ 'bad key!': true }, label)).toThrowError(
       VictPresentationError,
     );
-    // Overbound string.
-    expect(() =>
-      capturePresentationSchema(
-        { text: 'x'.repeat(PRESENTATION_BOUNDS.maxTotalBytes + 1) },
-        label,
-      ),
-    ).toThrowError(VictPresentationError);
-    // Overbound depth.
+    // Former local content/depth ceilings are not security rules.
+    const long={text:'x'.repeat(PRESENTATION_BOUNDS.maxTotalBytes+1)};
+    expect(capturePresentationSchema(long,label)).toEqual(long);
     let deep: unknown = 'leaf';
-    for (let i = 0; i <= PRESENTATION_BOUNDS.maxDepth + 1; i += 1) {
-      deep = { wrapper: deep };
-    }
-    expect(() => capturePresentationSchema(deep, label)).toThrowError(VictPresentationError);
+    for(let i=0;i<100;i++)deep={wrapper:deep};
+    expect(capturePresentationSchema(deep,label)).toEqual(deep);
     // Symbol-keyed data is invisible to the capture (own enumerable string
     // keys only) and a bare symbol fails closed.
     expect(() => capturePresentationSchema(Symbol('x'), label)).toThrowError(VictPresentationError);
@@ -489,9 +511,8 @@ describe('B-1: invalid presentation metadata fails closed at tool construction',
     );
     // Invalid description.
     expect(() => captureCapabilityDescription(42)).toThrowError(VictPresentationError);
-    expect(() =>
-      captureCapabilityDescription('x'.repeat(PRESENTATION_BOUNDS.maxDescriptionChars + 1)),
-    ).toThrowError(VictPresentationError);
+    const longDescription='x'.repeat(PRESENTATION_BOUNDS.maxDescriptionChars+1);
+    expect(captureCapabilityDescription(longDescription)).toBe(longDescription);
   });
 
   it('descriptive-schema mutation after construction cannot alter the built tool', async () => {

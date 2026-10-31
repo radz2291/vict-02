@@ -1,42 +1,12 @@
-import { Buffer } from 'node:buffer';
 import { types } from 'node:util';
 
 /**
- * B-1 remediation — the safe bounded capture of model-facing presentation
- * metadata (frozen contract:
- * `docs/report/VICT-MODEL-FACING-CAPABILITY-SCHEMA-CONTRACT.md` §4;
- * audit-remediation contract:
- * `docs/report/VICT-MODEL-FACING-CAPABILITY-SCHEMA-AUDIT-REMEDIATION-CONTRACT.md`
- * §1.1–§1.4).
- *
- * A capability author declares presentation metadata — the descriptive
- * JSON Schema on the neutral contract and the bounded human-readable
- * description on the capability definition. When a model-facing tool is
- * BUILT, this module captures that metadata as INERT BOUNDED DATA:
- *
- * - plain own enumerable DATA only: own accessors (getters/setters),
- *   functions, symbols, and symbol-keyed fields are rejected;
- * - cycles are rejected; exotic prototypes (anything other than
- *   `Object.prototype` or `null`) are rejected — no proxies, no classed
- *   objects, no hostile containers;
- * - prototype-named keys (`__proto__`, `constructor`, `prototype`) and
- *   keys outside the bounded safe-key vocabulary are rejected;
- * - bounded: depth, per-object field count, array length,
- *   total serialized size, and description length — any excess fails
- *   closed;
- * - the captured value is a DEEP IMMUTABLE SNAPSHOT (deep-frozen plain
- *   data) with deterministic key order: mutation of the author's original
- *   object after tool construction can never alter the built tool;
- * - the capture reads no credentials and no runtime payload values — only
- *   the declaration data authored with the capability;
- * - output is deterministic: the same declaration always yields the same
- *   snapshot;
- * - every violation FAILS CLOSED during tool construction with a stable
- *   non-echoing code (received values are never echoed).
- *
- * The presentation is NEVER authority: capturing it executes nothing and
- * it never replaces `Contract.parse` (the bridge's `~standard.validate`
- * continues to delegate to the bound contract unchanged).
+ * Passive model-facing declaration capture. See the accepted owner amendment
+ * docs/report/VICT-PRESENTATION-QUOTA-REMOVAL-AMENDMENT-20261031.md.
+ * No local content/size/depth/count quota is imposed. Descriptor-only inspection
+ * rejects executable/hidden/hostile data without invoking it. The returned
+ * deterministic deep-frozen owned snapshot never becomes argument authority:
+ * Contract.parse and the existing profile/typed-IR fences remain authoritative.
  */
 
 /** Stable, non-echoing presentation-capture failure codes. */
@@ -59,8 +29,9 @@ export class VictPresentationError extends Error {
   }
 }
 
-/** Capture bounds; presentation-string rule amended 2026-10-28.
- * See docs/report/VICT-PRESENTATION-STRING-BOUND-AMENDMENT-20261028.md. */
+/** @deprecated Historical quota metadata retained for source compatibility.
+ * Construction does not enforce these quotas. No default replacement ceiling
+ * exists; actual provider/platform limits remain upstream constraints. */
 export const PRESENTATION_BOUNDS: Readonly<{
   readonly maxDepth: 8;
   readonly maxFieldsPerObject: 64;
@@ -86,186 +57,65 @@ const PROTOTYPE_NAMED_KEYS: ReadonlySet<string> = new Set([
   'prototype',
 ]);
 
-function captureValue(value: unknown, label: string, depth: number): unknown {
-  if (depth > PRESENTATION_BOUNDS.maxDepth) {
-    throw new VictPresentationError(
-      'VICT_PRESENTATION_INVALID',
-      `${label}: nesting exceeds the depth bound ${PRESENTATION_BOUNDS.maxDepth}`,
-    );
-  }
-  if (value === null) {
-    return null;
-  }
-  const valueType = typeof value;
-  if (valueType === 'string') {
-    const text = value as string;
-    // A separate 2048-character cutoff had no provider/protocol basis. Keep
-    // early allocation protection derived from the actual aggregate budget:
-    // JSON UTF-8 needs at least one byte per UTF-16 code unit, plus framing.
-    // Thus this leaf cannot possibly fit, before JSON.stringify allocates it.
-    if (text.length > PRESENTATION_BOUNDS.maxTotalBytes) {
-      throw new VictPresentationError(
-        'VICT_PRESENTATION_INVALID',
-        `${label}: a string cannot fit the ${PRESENTATION_BOUNDS.maxTotalBytes}-byte serialized UTF-8 presentation budget`,
-      );
-    }
-    return text;
-  }
-  if (valueType === 'boolean' || valueType === 'number') {
-    if (valueType === 'number' && !Number.isFinite(value as number)) {
-      throw new VictPresentationError('VICT_PRESENTATION_INVALID', `${label}: non-finite number`);
-    }
-    return value;
-  }
-  if (valueType === 'object') {
-    // Audit-remediation B-3: NATIVE proxy rejection BEFORE any inspection
-    // of this value — before Array.isArray branching reads, prototype
-    // reads, descriptor inspection, and any property or array-element
-    // read. Node's stable `types.isProxy` executes ZERO traps of the
-    // inspected object (probe-proven; audit-remediation contract §1.4),
-    // so a plain-target, array-target, nested, lying-descriptor, or
-    // revoked proxy is rejected without executing any attacker-controlled
-    // behavior.
-    if (types.isProxy(value)) {
-      throw new VictPresentationError(
-        'VICT_PRESENTATION_INVALID',
-        `${label}: proxies cannot be captured (plain data only)`,
-      );
-    }
-    if (Array.isArray(value)) {
-      if (value.length > PRESENTATION_BOUNDS.maxArrayLength) {
-        throw new VictPresentationError(
-          'VICT_PRESENTATION_INVALID',
-          `${label}: an array exceeds the ${PRESENTATION_BOUNDS.maxArrayLength}-item bound`,
-        );
-      }
-      // Descriptor-driven element capture: element accessors are rejected
-      // before any element value is read (a plain array's index properties
-      // are the only readable members; `length` is a non-configurable own
-      // data property and can never be an accessor).
-      const elementDescriptors = Object.getOwnPropertyDescriptors(value);
-      const out: unknown[] = [];
-      for (let index = 0; index < value.length; index += 1) {
-        const descriptor = elementDescriptors[String(index)];
-        if (
-          descriptor !== undefined &&
-          (descriptor.get !== undefined || descriptor.set !== undefined)
-        ) {
-          throw new VictPresentationError(
-            'VICT_PRESENTATION_INVALID',
-            `${label}: an accessor element (getter/setter) cannot be captured`,
-          );
-        }
-        out.push(captureValue(descriptor?.value, `${label}[${index}]`, depth + 1));
-      }
-      return Object.freeze(out);
-    }
-    const proto = Object.getPrototypeOf(value);
-    if (proto !== Object.prototype && proto !== null) {
-      throw new VictPresentationError(
-        'VICT_PRESENTATION_INVALID',
-        `${label}: exotic prototype — presentation captures plain data only`,
-      );
-    }
-    // Audit-remediation B-2: ANY own symbol-keyed property — enumerable or
-    // not — is REJECTED, never silently dropped. (`getOwnPropertyDescriptors`
-    // reports string keys only, so symbols are checked explicitly.)
-    if (Object.getOwnPropertySymbols(value).length > 0) {
-      throw new VictPresentationError(
-        'VICT_PRESENTATION_INVALID',
-        `${label}: symbol-keyed fields cannot be captured (plain data only)`,
-      );
-    }
-    let descriptors: Record<string, PropertyDescriptor>;
-    try {
-      descriptors = Object.getOwnPropertyDescriptors(value as Record<string, unknown>);
-    } catch {
-      throw new VictPresentationError(
-        'VICT_PRESENTATION_INVALID',
-        `${label}: the container could not be inspected`,
-      );
-    }
-    const ownKeys = Object.keys(descriptors);
-    if (ownKeys.length > PRESENTATION_BOUNDS.maxFieldsPerObject) {
-      throw new VictPresentationError(
-        'VICT_PRESENTATION_INVALID',
-        `${label}: an object exceeds the ${PRESENTATION_BOUNDS.maxFieldsPerObject}-field bound`,
-      );
-    }
-    const out: Record<string, unknown> = {};
-    // Deterministic key order: sorted own enumerable string keys.
-    for (const key of ownKeys.slice().sort()) {
-      if (!PRESENTATION_BOUNDS.keyPattern.test(key) || PROTOTYPE_NAMED_KEYS.has(key)) {
-        throw new VictPresentationError(
-          'VICT_PRESENTATION_INVALID',
-          `${label}: a field name is outside the bounded presentation vocabulary`,
-        );
-      }
-      const descriptor = descriptors[key]!;
-      if (!descriptor.enumerable) {
-        // Audit-remediation O-3: hidden members are REJECTED explicitly —
-        // never silently skipped (silent dropping is the B-2 defect class).
-        throw new VictPresentationError(
-          'VICT_PRESENTATION_INVALID',
-          `${label}: a non-enumerable field cannot be captured (plain own enumerable data only)`,
-        );
-      }
-      if (descriptor.get !== undefined || descriptor.set !== undefined) {
-        throw new VictPresentationError(
-          'VICT_PRESENTATION_INVALID',
-          `${label}: an accessor field (getter/setter) cannot be captured`,
-        );
-      }
-      out[key] = captureValue(descriptor.value, `${label}.${key}`, depth + 1);
-    }
-    return Object.freeze(out);
-  }
-  // functions, symbols, bigints, undefined, and everything else.
-  throw new VictPresentationError(
-    'VICT_PRESENTATION_INVALID',
-    `${label}: ${valueType} values cannot be captured (plain data only)`,
-  );
-}
+// The safe character grammar remains; field-name length is not a content quota.
+const SAFE_PRESENTATION_KEY = /^[A-Za-z0-9_$.-]+$/;
 
-/**
- * Capture one presentation value (a descriptive JSON Schema) as a deep
- * immutable bounded snapshot. TOTAL and fail closed: any violation throws
- * `VictPresentationError` with a stable non-echoing code.
- *
- * Audit-remediation B-1: the total §4 bound is enforced as the TRUE
- * serialized UTF-8 byte length of the deterministic serialization of the
- * captured snapshot — values, keys, punctuation, containers, and JSON
- * string escaping included — never as JavaScript `.length` (UTF-16 code
- * units) or per-value approximations. The snapshot's key order is sorted
- * by construction, so `JSON.stringify` over it is deterministic and the
- * measurement is reproducible byte-for-byte.
- */
-export function capturePresentationSchema(value: unknown, label: string): unknown {
-  if (value === undefined) {
-    throw new VictPresentationError('VICT_PRESENTATION_INVALID', `${label}: no schema is declared`);
-  }
-  const captured = captureValue(value, label, 0);
-  if (typeof captured !== 'object' || captured === null || Array.isArray(captured)) {
-    throw new VictPresentationError(
-      'VICT_PRESENTATION_INVALID',
-      `${label}: the schema root must be a plain object`,
-    );
-  }
-  // The authoritative total bound: actual UTF-8 bytes of the deterministic
-  // serialized presentation (audit finding B-1).
-  const serializedBytes = Buffer.byteLength(JSON.stringify(captured), 'utf8');
-  if (serializedBytes > PRESENTATION_BOUNDS.maxTotalBytes) {
-    throw new VictPresentationError(
-      'VICT_PRESENTATION_INVALID',
-      `the serialized presentation exceeds the ${PRESENTATION_BOUNDS.maxTotalBytes}-byte bound (measured as serialized UTF-8 bytes)`,
-    );
+function captureValue(value: unknown, label: string): unknown {
+  let captured:unknown;
+  const active=new Set<object>();
+  type Work={value:unknown;assign:(value:unknown)=>void;exit?:object};
+  const stack:Work[]=[{value,assign:next=>{captured=next;}}];
+  const reject=(detail:string):never=>{throw new VictPresentationError('VICT_PRESENTATION_INVALID',`${label}: ${detail}`);};
+  while(stack.length){
+    const work=stack.pop()!;
+    if(work.exit){active.delete(work.value as object);Object.freeze(work.exit);continue;}
+    const current=work.value;
+    if(current===null||typeof current==='string'||typeof current==='boolean'){work.assign(current);continue;}
+    if(typeof current==='number'){if(!Number.isFinite(current))reject('non-finite number');work.assign(current);continue;}
+    if(typeof current!=='object')reject(`${typeof current} values cannot be captured (plain data only)`);
+    // Native proxy detection precedes every prototype/descriptor/array read,
+    // including revoked proxies. It invokes no attacker-controlled trap.
+    if(types.isProxy(current))reject('proxies cannot be captured (plain data only)');
+    const object=current as object;
+    if(active.has(object))reject('cycles cannot be captured (plain data only)');
+    const array=Array.isArray(object),proto=Object.getPrototypeOf(object);
+    if(proto!==null&&proto!==(array?Array.prototype:Object.prototype))reject('exotic prototype - presentation captures plain data only');
+    if(Object.getOwnPropertySymbols(object).length)reject('symbol-keyed fields cannot be captured (plain data only)');
+    const descriptors=Object.getOwnPropertyDescriptors(object);
+    const keys=Object.keys(descriptors).sort();
+    const out:Record<string,unknown>|unknown[]=array?[]:{};
+    const members: {key:string;value:unknown}[]=[];
+    for(const key of keys){
+      const descriptor=descriptors[key]!;
+      if(array&&key==='length')continue; // Intrinsic own array data property.
+      if(!SAFE_PRESENTATION_KEY.test(key)||PROTOTYPE_NAMED_KEYS.has(key))reject('a field name is outside the safe presentation vocabulary');
+      if(array&&(!/^(0|[1-9][0-9]*)$/.test(key)||Number(key)>=(object as unknown[]).length))reject('unknown array field cannot be captured (plain indexed data only)');
+      if(!descriptor.enumerable)reject('a non-enumerable field cannot be captured (plain own enumerable data only)');
+      if(descriptor.get!==undefined||descriptor.set!==undefined)reject('an accessor field (getter/setter) cannot be captured');
+      members.push({key,value:descriptor.value});
+    }
+    if(array){
+      if(members.length!==(object as unknown[]).length)reject('sparse array elements cannot be captured (plain indexed data only)');
+      // Object keys sort lexically; arrays retain numeric JSON element order.
+      members.sort((left,right)=>Number(left.key)-Number(right.key));
+    }
+    active.add(object);work.assign(out);stack.push({value:object,assign:()=>{},exit:out});
+    for(const member of members.reverse())stack.push({value:member.value,assign:next=>{(out as Record<string,unknown>)[member.key]=next;}});
   }
   return captured;
 }
 
+/** Capture an exact deeply immutable descriptive schema, never execution authority. */
+export function capturePresentationSchema(value: unknown, label: string): unknown {
+  if(value===undefined)throw new VictPresentationError('VICT_PRESENTATION_INVALID',`${label}: no schema is declared`);
+  const captured=captureValue(value,label);
+  if(typeof captured!=='object'||captured===null||Array.isArray(captured))throw new VictPresentationError('VICT_PRESENTATION_INVALID',`${label}: the schema root must be a plain object`);
+  return captured;
+}
+
 /**
- * Capture the bounded capability description. `undefined` (not declared)
- * is valid and returns `undefined`; any non-string or overbound value
+ * Capture the exact capability description without a content quota. `undefined` (not declared)
+ * is valid and returns `undefined`; any non-string or empty value
  * fails closed. The description is never rewritten, trimmed, or echoed
  * into errors.
  */
@@ -279,10 +129,10 @@ export function captureCapabilityDescription(value: unknown): string | undefined
       'the capability description must be a string',
     );
   }
-  if (value.length === 0 || value.length > PRESENTATION_BOUNDS.maxDescriptionChars) {
+  if (value.length === 0) {
     throw new VictPresentationError(
       'VICT_PRESENTATION_DESCRIPTION_INVALID',
-      `the capability description must be 1..${PRESENTATION_BOUNDS.maxDescriptionChars} characters`,
+      'the capability description must be nonempty',
     );
   }
   return value;

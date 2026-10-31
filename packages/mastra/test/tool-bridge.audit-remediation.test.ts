@@ -436,99 +436,23 @@ function schemaOfExactSize(targetBytes: number): Record<string, string> {
   return out;
 }
 
-describe('B-1: the total presentation bound measures TRUE serialized UTF-8 bytes', () => {
-  it('accepts one long leaf exactly at the total budget and refuses the next byte', () => {
-    const overhead = Buffer.byteLength(JSON.stringify({ text: '' }), 'utf8');
-    const schema = { text: 'x'.repeat(PRESENTATION_BOUNDS.maxTotalBytes - overhead) };
-    expect(schema.text.length).toBeGreaterThan(2048);
-    expect(capturePresentationSchema(schema, 'long-leaf')).toEqual(schema);
-    expect(() => capturePresentationSchema({ text: schema.text + 'x' }, 'long-leaf'))
-      .toThrowError(VictPresentationError);
+describe('B-1: exact presentation capture without an artificial serialized-byte quota', () => {
+  it.each([32768,32769,100000])('captures all %i UTF-8 bytes unchanged',size=>{
+    const schema=size>40000?{text:'x'.repeat(size-Buffer.byteLength(JSON.stringify({text:''}),'utf8'))}:schemaOfExactSize(size);
+    const captured=capturePresentationSchema(schema,'probe');
+    expect(Buffer.byteLength(JSON.stringify(captured),'utf8')).toBe(size);
+    expect(captured).toEqual(schema);expect(Object.isFrozen(captured)).toBe(true);
   });
-
-  it('refuses an impossible oversized leaf early without echoing its content', () => {
-    const text = 'oversized-private-canary'.repeat(50_000);
-    try {
-      capturePresentationSchema({ text }, 'long-leaf');
-      throw new Error('expected early aggregate-budget refusal');
-    } catch (error) {
-      expect(error).toBeInstanceOf(VictPresentationError);
-      expect((error as VictPresentationError).detail).toContain('cannot fit');
-      expect((error as VictPresentationError).detail).not.toContain('private-canary');
-    }
-  });
-
-  it('a serialization of EXACTLY 32768 UTF-8 bytes PASSES the capture', () => {
-    const schema = schemaOfExactSize(PRESENTATION_BOUNDS.maxTotalBytes);
-    expect(Buffer.byteLength(JSON.stringify(schema), 'utf8')).toBe(
-      PRESENTATION_BOUNDS.maxTotalBytes,
-    );
-    const captured = capturePresentationSchema(schema, 'probe') as Record<string, unknown>;
-    expect(Object.keys(captured)).toHaveLength(16);
-  });
-
-  it('a serialization of 32769 UTF-8 bytes FAILS closed', () => {
-    const schema = schemaOfExactSize(PRESENTATION_BOUNDS.maxTotalBytes + 1);
-    expect(() => capturePresentationSchema(schema, 'probe')).toThrowError(VictPresentationError);
-    try {
-      capturePresentationSchema(schema, 'probe');
-    } catch (error) {
-      expect((error as VictPresentationError).code).toBe('VICT_PRESENTATION_INVALID');
-      expect((error as VictPresentationError).detail).toContain('UTF-8');
-      // Non-echoing: the received values never appear in the error.
-      expect((error as VictPresentationError).detail).not.toContain('xxxxxxxxxx');
-    }
-  });
-
-  it('the audit discriminator: 16x2000 CJK characters (~96KB serialized) FAILS construction', () => {
-    // Structurally valid under EVERY per-string/field/depth bound — only the
-    // TRUE byte total rejects it (rc.1 accepted this exact shape).
-    const schema: Record<string, string> = {};
-    for (let index = 0; index < 16; index += 1) {
-      schema[`f${String(index).padStart(2, '0')}`] = 'あ'.repeat(2000);
-    }
-    const serializedBytes = Buffer.byteLength(JSON.stringify(schema), 'utf8');
-    expect(serializedBytes).toBeGreaterThan(PRESENTATION_BOUNDS.maxTotalBytes);
-    expect(serializedBytes).toBeGreaterThan(90_000);
-    expect(() => capturePresentationSchema(schema, 'probe')).toThrowError(VictPresentationError);
-    try {
-      capturePresentationSchema(schema, 'probe');
-    } catch (error) {
-      // The rejection reason is the BYTE bound, not any per-string bound.
-      expect((error as VictPresentationError).detail).toContain('UTF-8');
-    }
-  });
-
-  it('escaped-string bytes are counted: 16x2048 quote characters (~65KB serialized) FAILS', () => {
-    // rc.1's unit accounting measured EXACTLY 32,768 `.length` units here —
-    // the old boundary value — while the true serialized size is ~65KB.
-    const schema: Record<string, string> = {};
-    for (let index = 0; index < 16; index += 1) {
-      schema[`f${String(index).padStart(2, '0')}`] = '"'.repeat(
-        2048,
-      );
-    }
-    const serializedBytes = Buffer.byteLength(JSON.stringify(schema), 'utf8');
-    expect(serializedBytes).toBeGreaterThan(PRESENTATION_BOUNDS.maxTotalBytes);
-    expect(() => capturePresentationSchema(schema, 'probe')).toThrowError(VictPresentationError);
-  });
-
-  it('keys, punctuation, and containers are counted: a keys-only ~274KB schema FAILS', () => {
-    // Zero-length string values: rc.1's value-only accounting measured ~0
-    // units while the serialized form is ~274KB of key bytes and structure.
-    const field: Record<string, string> = {};
-    for (let index = 0; index < 64; index += 1) {
-      field['k'.repeat(64) + String(index).padStart(2, '0').slice(0, 0)] = '';
-    }
-    // exactly-64-char keys (within the key vocabulary bound):
-    const wideField: Record<string, string> = {};
-    for (let index = 0; index < 64; index += 1) {
-      wideField[`${'k'.repeat(62)}${String(index).padStart(2, '0')}`] = '';
-    }
-    const schema = { items: Array.from({ length: 64 }, () => ({ ...wideField })) };
-    const serializedBytes = Buffer.byteLength(JSON.stringify(schema), 'utf8');
-    expect(serializedBytes).toBeGreaterThan(PRESENTATION_BOUNDS.maxTotalBytes);
-    expect(() => capturePresentationSchema(schema, 'probe')).toThrowError(VictPresentationError);
+  it('retains large CJK, escaped, wide and long leaf data rather than approximating/truncating bytes',()=>{
+    const schema={
+      cjk:String.fromCharCode(0x754c).repeat(20000),escaped:'"'.repeat(20000),
+      fields:Object.fromEntries(Array.from({length:100},(_,i)=>[`field${i}`,{description:'x'.repeat(1000)}])),
+      text:'oversized-private-canary'.repeat(50000),
+    };
+    const captured=capturePresentationSchema(schema,'large') as typeof schema;
+    expect(captured).toEqual(schema);
+    expect(Buffer.byteLength(JSON.stringify(captured),'utf8')).toBe(Buffer.byteLength(JSON.stringify(schema),'utf8'));
+    expect(Object.isFrozen(captured.fields.field99)).toBe(true);
   });
 
   it('a ~32KB presentation within every bound still constructs and presents (compatibility)', async () => {
@@ -1022,7 +946,7 @@ describe('adjacent cleanup: the captured output schema rides the REAL outputSche
     expect(tool.outputSchema['~standard'].jsonSchema.input()).toEqual({ type: 'object' });
   });
 
-  it('the adapter compatibility marker is revision 4 after the string-bound amendment', () => {
-    expect(MASTRA_ADAPTER_COMPATIBILITY.revision).toBe('4');
+  it('the adapter compatibility marker is revision 6 after the quota-removal amendment', () => {
+    expect(MASTRA_ADAPTER_COMPATIBILITY.revision).toBe('6');
   });
 });
