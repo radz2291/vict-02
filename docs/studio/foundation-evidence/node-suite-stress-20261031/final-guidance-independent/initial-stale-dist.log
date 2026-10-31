@@ -1,0 +1,83 @@
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/apps/studio
+
+3:25:07 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+3:25:08 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+3:25:08 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+3:25:08 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+3:25:08 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+3:25:09 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+3:25:10 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+3:25:10 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+3:25:10 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+3:25:10 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030/packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+ ❯ tests/independent-schema-collision-20261030.test.ts (5 tests | 1 failed) 414ms
+   ✓ independent exact schema collision review > reproduces the old overwritten definition and admits only the canonical new wrapper 233ms
+   ✓ independent exact schema collision review > keeps wrapper fields, state dictionaries and closed declaration fields strict 23ms
+   × independent exact schema collision review > resolves every operation-union reference to its own discriminated wrapper within bridge bounds 41ms
+     → expected [Function] to not throw an error but 'VictPresentationError: capability pre…' was thrown
+   ✓ independent exact schema collision review > requires native preflight objects without parsing strings and leaves source unchanged on every outcome 109ms
+   ✓ independent exact schema collision review > does not drop an own JSON __proto__ field before strict nested edit validation 3ms
+ ✓ tests/graph-v3-factory-default.test.ts (3 tests) 509ms
+   ✓ prepares an explicit meaningful graph3 factory then migrates atomically; a new node inherits valid graph3  466ms
+ ✓ tests/graph-v3-migration.test.ts (11 tests) 809ms
+   ✓ atomically composes two explicit nested occurrences and outer migration through source history/save/import  434ms
+ ❯ tests/designer-cycle14-efficiency.test.ts (6 tests | 1 failed) 111ms
+   ✓ losslessly reconstructs stable projected bodies, rejects a projection switch/missing identity/outside offset, and preserves the source 25ms
+   ✓ never reuses guidance as examples and caches only contiguous complete contract bodies, without accepting inventory/source digests 5ms
+   ✓ advertises actual seed styles and host obligations before recipe construction without altering defaults 31ms
+   ✓ separates overlapping tool sum/union/outside time and categories, and deduplicates settlements and acknowledged cleanup receipts 1ms
+   ✓ does not union visual regions across source identities or imply runtime, offscreen or interaction verification 1ms
+   × enforces completed knowledge and delivers measured progress through the actual pinned executor (offline model, no provider/design quality claim) 45ms
+     → (0 , awaitAgentDelivery) is not a function
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/designer-cycle14-efficiency.test.ts > enforces completed knowledge and delivers measured progress through the actual pinned executor (offline model, no provider/design quality claim)
+TypeError: (0 , awaitAgentDelivery) is not a function
+ ❯ send src/lib/server/designer-agent.ts:430:11
+    428|       run.fenced = true;
+    429|     }
+    430|     await awaitAgentDelivery(emit(event, run.controller.signal), run.c…
+       |           ^
+    431|   };
+    432|   const initialDelivery = send({
+ ❯ openAgentRun src/lib/server/designer-agent.ts:432:27
+ ❯ tests/designer-cycle14-efficiency.test.ts:293:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/independent-schema-collision-20261030.test.ts > independent exact schema collision review > resolves every operation-union reference to its own discriminated wrapper within bridge bounds
+AssertionError: expected [Function] to not throw an error but 'VictPresentationError: capability pre…' was thrown
+
+- Expected:
+undefined
+
++ Received:
+"VictPresentationError: capability presentation rejected (VICT_PRESENTATION_INVALID): independent-edit.$defs: an object exceeds the 64-field bound"
+
+ ❯ tests/independent-schema-collision-20261030.test.ts:65:87
+     63|       expect(definition).toMatchObject({ type: 'object', additionalPro…
+     64|     }
+     65|     expect(() => capturePresentationSchema(editPresentation, 'independ…
+       |                                                                                       ^
+     66|     expect(() => capturePresentationSchema(agentReadPresentation, 'ind…
+     67|     const visit = (value: unknown, root: Record<string, unknown>) => {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed | 2 passed (4)
+      Tests  2 failed | 23 passed (25)
+   Start at  15:24:33
+   Duration  72.00s (transform 83.73s, setup 0ms, collect 268.90s, tests 1.84s, environment 6.22s, prepare 2.84s)
