@@ -1,0 +1,125 @@
+{
+  "scope": "Read-only DOM layout measurement before18repair; Chatdrawer state changes available outer width, not source",
+  "sourceRevision": "r1.r6",
+  "sourceCharacters": 253831,
+  "nestedViewports": [
+    {
+      "nodes": [
+        {
+          "id": "f-crop",
+          "rect": {
+            "bottom": 310.8615493774414,
+            "height": 53.668922424316406,
+            "left": 327.91082763671875,
+            "right": 415.66554260253906,
+            "top": 257.192626953125,
+            "width": 87.75471496582031,
+            "x": 327.91082763671875,
+            "y": 257.192626953125
+          }
+        },
+        {
+          "id": "f-grade",
+          "rect": {
+            "bottom": 311.09247970581055,
+            "height": 53.89985275268555,
+            "left": 429.521484375,
+            "right": 517.2762680053711,
+            "top": 257.192626953125,
+            "width": 87.7547836303711,
+            "x": 429.521484375,
+            "y": 257.192626953125
+          }
+        },
+        {
+          "id": "f-caption",
+          "rect": {
+            "bottom": 311.09247970581055,
+            "height": 53.89985275268555,
+            "left": 531.1322631835938,
+            "right": 618.8869552612305,
+            "top": 257.192626953125,
+            "width": 87.75469207763672,
+            "x": 531.1322631835938,
+            "y": 257.192626953125
+          }
+        }
+      ],
+      "rect": {
+        "bottom": 312.2471694946289,
+        "height": 73.8987045288086,
+        "left": 309.0666809082031,
+        "right": 309.80564576387405,
+        "top": 238.3484649658203,
+        "width": 0.738964855670929,
+        "x": 309.0666809082031,
+        "y": 238.3484649658203
+      },
+      "style": "height: 160px;",
+      "view": "transform: translate(0px, 0px) scale(1);"
+    },
+    {
+      "nodes": [
+        {
+          "id": "f-crop",
+          "rect": {
+            "bottom": 481.7522392272949,
+            "height": 53.66889572143555,
+            "left": 327.91082763671875,
+            "right": 415.66554260253906,
+            "top": 428.0833435058594,
+            "width": 87.75471496582031,
+            "x": 327.91082763671875,
+            "y": 428.0833435058594
+          }
+        },
+        {
+          "id": "f-grade",
+          "rect": {
+            "bottom": 481.9831962585449,
+            "height": 53.89985275268555,
+            "left": 429.521484375,
+            "right": 517.2762680053711,
+            "top": 428.0833435058594,
+            "width": 87.7547836303711,
+            "x": 429.521484375,
+            "y": 428.0833435058594
+          }
+        },
+        {
+          "id": "f-caption",
+          "rect": {
+            "bottom": 481.9831962585449,
+            "height": 53.89985275268555,
+            "left": 531.1322631835938,
+            "right": 618.8869552612305,
+            "top": 428.0833435058594,
+            "width": 87.75469207763672,
+            "x": 531.1322631835938,
+            "y": 428.0833435058594
+          }
+        }
+      ],
+      "rect": {
+        "bottom": 483.13790130615234,
+        "height": 73.8987045288086,
+        "left": 309.0666809082031,
+        "right": 309.80564576387405,
+        "top": 409.23919677734375,
+        "width": 0.738964855670929,
+        "x": 309.0666809082031,
+        "y": 409.23919677734375
+      },
+      "style": "height: 160px;",
+      "view": "transform: translate(0px, 0px) scale(1);"
+    }
+  ],
+  "classification": "Mounted controls exist but nested viewport width is subpixel and clips them; no native-editability pass",
+  "sourceReadTransport": {
+    "receivedCharacters": 200011,
+    "marker": "[Truncated]",
+    "actualTextareaCharacters": 253831,
+    "maxLength": -1,
+    "fullChunkedSourceMatchesExport": true
+  }
+}
