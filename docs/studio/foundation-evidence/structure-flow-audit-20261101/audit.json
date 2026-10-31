@@ -1,0 +1,114 @@
+{
+  "schema": "vict.structure-flow-reuse-audit@1",
+  "date": "2026-11-01",
+  "scope": "Read-only source and live Studio investigation; no runtime migration, source edit, gate verdict or publication",
+  "baseline": {
+    "localCandidate": "176a96c8b1147896dc662c535c73aba64e2cbf8a",
+    "servingProductionSource": "3e62f75d8337db767c8de6e7d214d520abcdce41",
+    "localOriginMainAndObservedRemoteMain": "d7401bef6e48330796c74ec00c86db9622d48cdf",
+    "startingWorkingTreeClean": true,
+    "auditBranch": "codex/structure-flow-audit-20261101",
+    "authorization": "Owner requested investigation of Structure requirements after approving the proposed port presentation. No new Stage9 implementation gate is inferred. Later local continuation records qualify the historical handoff baseline; no remote/main or production changes are made."
+  },
+  "conclusion": {
+    "alreadyConsumesVictFlowPrimitives": true,
+    "readyMadeSharedStructureReplacement": false,
+    "allStructureRequirementsCoveredBySharedRichNodeComposition": false,
+    "summary": "Structure uses the public FlowCanvas and shared layout/navigation today, but reusable Structure rendering, exploration and semantic projection remain substantially Studio-owned. The current authored rich-node workspace is not a drop-in replacement. This is a reuse/parity gap, not evidence that Structure's existing behavior is broken.",
+    "meaningOf100Percent": "VICT-owned reusable components and authoritative document/command semantics, with thin Studio data/navigation/label adapters. Product composition and thin adapters can remain; moving every host-specific menu or label into core is not the goal. VICT continues to use its pinned upstream rendering engine."
+  },
+  "requirements": [
+    {
+      "requirement": "Canvas rendering, camera, minimap, measured layout, orientation and async-layout fencing",
+      "sharedCoverage": "Available at the low-level public API",
+      "currentUse": "StructureView consumes FlowCanvas, FlowNavigation, Controls, layoutGraph and LayoutFence from @victframework/ui-flow-svelte",
+      "remaining": "Extract/adopt Structure exploration policy separately; do not claim GraphViewport is used today."
+    },
+    {
+      "requirement": "Cards with source identity, warnings, collapse controls and independent input/output columns",
+      "sharedCoverage": "Generic authored bodies and SourceIdentity exist; exact Structure card is Studio-only",
+      "currentUse": "StructuredSourceNode.svelte owns the card, counts and two-column rows",
+      "remaining": "Reusable slotted card/port-list composition and disclosure/count presentation. Structure already implements the approved side-by-side layout."
+    },
+    {
+      "requirement": "Read-only relationship sockets alongside separately authorized move handles",
+      "sharedCoverage": "Low-level Handle supports this; GraphPortRow has a body-wide connectability policy",
+      "currentUse": "Declared relationship handles are nonconnectable; content/container handles are enabled only for Move inside",
+      "remaining": "Explicit reusable per-port interaction policy or separate reference-port primitive. Do not make declared dependency edges freely rewritable to fit a generic graph editor."
+    },
+    {
+      "requirement": "Grouped/coincident relations, member counts, partial selection, port/edge hover and keyboard tracing",
+      "sharedCoverage": "Low-level events available; reusable grouped-reference controller/renderer absent from current public exports",
+      "currentUse": "structure-connections.ts, structure-trace.ts, StructuredSourceNode and StructureEdge",
+      "remaining": "Shared group identity and member-preserving selection/highlight parts, preserving every declaration ID/path and origin."
+    },
+    {
+      "requirement": "External controlled selection synchronized with Layers, Design and Inspector",
+      "sharedCoverage": "ui-editor selectionOperation exists and FlowCanvas accepts controlled nodes/edges; rich workspace uses its own GraphSelection/session",
+      "currentUse": "StructureView and Designer adapt WorkspaceSelection and explicit selection intents",
+      "remaining": "Reusable projection-view selection/controller seam without creating a second canonical editor history or silently dropping edge/group members."
+    },
+    {
+      "requirement": "Hierarchy/dependency views, search, focused neighbourhoods, collapse/expand and stable placement",
+      "sharedCoverage": "Underlying graph drawing/layout available; exploration and position-retention policy remain Studio-owned",
+      "currentUse": "StructureView, compactStructure/filterStructure/connectedSelectionStructure and structure-placement.ts",
+      "remaining": "Reusable exploration controller with complete results and explicit progressive disclosure; preserve positions and camera independently of document edits."
+    },
+    {
+      "requirement": "Measured routes, backward links around cards, grouped line painting and tracing",
+      "sharedCoverage": "RoutedEdge and layout routes exist; generic appearance routes alone do not implement all Structure behavior",
+      "currentUse": "StructureEdge and structure-edge-geometry.ts retain backward-corridor routing, duplicate painting and trace state",
+      "remaining": "Extract generic measured routing/trace behavior or supply a documented reusable custom-edge seam. Cosmetic edge-style options do not prove routing parity."
+    },
+    {
+      "requirement": "Authoritative UiDocument projection and safe source reparenting",
+      "sharedCoverage": "Canonical UiDocument, typed visitors and ui-editor moveRelative/EditorBridge transactions provide authority; full source-to-relationship projection is Studio-only",
+      "currentUse": "structure-semantics.ts defines 23 relation roles and scoped expression projection; structure.ts validates document/revision/occurrence before moveRelative; Designer applies the transaction draft",
+      "remaining": "Expose a shared UI-source projection/Structure composition with descriptor/action/route context as inputs. Keep UiDocument as source of truth; do not replace it with an independently edited flow graph."
+    }
+  ],
+  "policyFindings": [
+    {
+      "location": "packages/ui-flow-svelte/src/layout.ts:8",
+      "finding": "chooseLayoutEngine forces Dagre for more than120 nodes even when ELK is explicitly requested",
+      "effect": "Changes requested routing/layout; does not reject or omit nodes",
+      "recommendation": "Separate automatic performance preference from explicit engine choice; preserve cancellation/stale-result fences. Existing large-layout tests deliberately assert this policy, so a change needs new evidence rather than relabelling the old result."
+    },
+    {
+      "location": "apps/studio/src/lib/designer/StructureView.svelte",
+      "finding": "Focused view starts at25 items with explicit Show more batches of24; complete counts use Infinity and expansion is available",
+      "effect": "Presentation paging, not a hard source/evidence quota",
+      "recommendation": "Keep completeness/count/expansion explicit in a shared explorer; do not equate this with the removed tool-evidence budget."
+    }
+  ],
+  "boundaries": [
+    "Structure displays authored source relationships, not the live application flow's runtime node instances. The CampaignGraph JSON value is visible as state; the14 runtime campaign nodes are a different graph from the authored UI source tree.",
+    "New owned-handle, port-row halo and nested-gesture repairs apply to their shared authored adapters. Structure's raw FlowCanvas/custom node/edge path does not automatically inherit all such policies.",
+    "Cosmetic route/style overrides should not replace fixed semantic read/write/containment cues without preserving their meaning.",
+    "The approved cleaner labels and independent columns remain an authorized direction; this investigation does not claim they were implemented in the authored app."
+  ],
+  "recommendedSequence": [
+    "Freeze a Structure parity matrix covering every existing role, grouped selection, search/disclosure, navigation, route geometry, blocked/stale reparenting and source immutability.",
+    "Extract neutral graph-view/card/reference-port/trace/routing parts into the flow presentation package, and UI-source semantics into a shared editor-level projection. Keep dependency direction acyclic; choose an optional composition seam before freezing the package API.",
+    "Migrate Structure to those shared components while retaining thin Studio context, menus/navigation and the existing EditorBridge source authority.",
+    "Prove the same components in a separate public-package consumer plus real Structure keyboard/touch/desktop journeys, one-history source edits, reopen and negative tests. Preserve existing failures and independently verify before any100-percent parity claim."
+  ],
+  "verification": {
+    "command": "npx vitest run tests/structure-semantics.test.ts tests/structure-node-anatomy.test.ts tests/structure-connections.test.ts tests/structure-connection-trace.test.ts tests/structure-placement.test.ts tests/structure-search.test.ts",
+    "workingDirectory": "apps/studio",
+    "exitCode": 0,
+    "filesPassed": 6,
+    "testsPassed": 23,
+    "warnings": "Five existing Svelte diagnostics appeared during transformation; no new source change or full type/build assertion is made.",
+    "notRun": "Historical structure-completion benchmark, which writes historical evidence; no broad build or complete native regression ladder.",
+    "liveObserved": [
+      "Opened Structure for the current Campaign Foundry document",
+      "Inspected Focused connections/Whole hierarchy, Show/Layout menu entries and Fit/Arrange actions",
+      "Searched campaignGraph; observed source state and Graph Change relationship",
+      "Restored empty search, Focused connections and Fit all",
+      "Read the complete canonical source through its normal UI; it deep-equals the protected r1.r17 document after inspection"
+    ],
+    "screenshot": "structure-current.png",
+    "independentVerdict": "Not commissioned or claimed for this read-only investigation"
+  }
+}
