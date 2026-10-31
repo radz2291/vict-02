@@ -1,0 +1,49 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Campaign Foundry — complex node suite"
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- banner:
+  - strong: Chat
+  - button "Hide Chat":
+- complementary "Chat":
+  - region "Conversation":
+    - region "Messages — Message":
+      - log:
+        - paragraph: Describe a screen, or select an element to edit it.
+    - button "Scroll to latest message":
+      - generic: Scroll to end
+    - textbox "Message" [active]:
+      - /placeholder: Ask for a change…
+      - text: "Build Campaign Foundry as a complex, useful ComfyUI-inspired visual campaign workflow suite on this fresh screen. This is a real node/flow stress test, not a static illustration or a grid of copied cards. Scenario: prepare a launch campaign for a fictional eco-friendly travel mug. Build roughly14 top-level nodes and18 meaningful typed connections across a branching pipeline: campaign brief, positive prompt, negative prompt, model settings, style reference, seed/settings, two draft-generation configurations (social and poster), two finishing subworkflows, two review/approval nodes, a merge/delivery checklist and an export-package configuration. Shared inputs must fan out; branches converge. Use at least8 meaningful reusable node types, readable port labels and useful initial values. Each rich node should have appropriate ordinary controls (text/textarea, select, number/toggle when supported), not just captions. Both Finishing nodes must use ONE reusable body containing a genuine nested graph, with independent controlled graph parameters. Each nested graph has3 editable steps connected in sequence (crop/layout, caption, quality check); deliberately reuse the inner step IDs across the two occurrences. Node values must stay independent across shared bodies. Use in-node Help menus with private temporary open state. The user must be able to edit configuration, approval statuses, drag/pan/zoom and create/remove typed connections through normal supported controls, then save/reopen the authored setup. Provide a coherent surrounding app: compact campaign summary, workflow canvas, delivery checklist/status fields and a short usable guide. Prefer a dark slate/teal visual system with category accents. Keep cards/fields readable at working zoom and allow navigating a large workflow instead of shrinking all text to fit. Discover and use current public registered UI/Flow authoring capabilities and validated operations. Add no mandatory inspector/toolbar or Flow-specific control adapter. Do not replace canonical source with an opaque handmade blob, copy unrelated saved screens, weaken validation or invent component/action names. Graph connections configure intent; they do not themselves execute models. Reuse existing authorized execution capabilities only if actually available. Otherwise label generation/export/publishing as configuration-only or unavailable and do not fake generated assets, completed runs or backend execution. No provider/account changes or external effects. Ordinary local approval/configuration interactions should work. Build incrementally in validated transactions and keep accepted progress if a later operation refuses. If one turn is bounded, finish a coherent checkpoint and say exactly what remains; we will continue the SAME app. Leave Studio Save to me. Report confirmed source changes, actual observations and untested behavior separately, briefly."
+    - button "Send":
+      - generic: Send
+    - alert: The Studio session needs to be renewed. Sign in again before retrying.
+    - status
+  - status "The Studio session needs to be renewed. Sign in again before retrying. No edits were applied.":
+    - generic: The Studio session needs to be renewed. Sign in again before retrying. No edits were applied.
+  - button "Chat details": ···
+- separator "Chat width"
+- main:
+  - button "Toggle Chat drawer" [expanded]:
+  - group "Workspace mode":
+    - button "Design"
+    - button "Interact" [pressed]
+    - button "Structure"
+  - button "Toggle Document and Selection drawer":
+  - iframe:
+    - generic "Screen canvas":
+      - main "Campaign Foundry — complex node suite"
+  - generic: ＋
+  - heading "What will you make?" [level=1]
+  - paragraph: Select this screen to open its tools, then choose Insert.
+- contentinfo:
+  - status: New screen · not saved yet.

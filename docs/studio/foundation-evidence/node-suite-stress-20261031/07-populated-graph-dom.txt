@@ -1,0 +1,238 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Campaign Foundry — complex node suite"
+  - generic: ● Unsaved changes
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- banner:
+  - strong: Chat
+  - button "Hide Chat":
+- complementary "Chat":
+  - region "Conversation":
+    - region "Messages — Message":
+      - log:
+        - generic: You
+        - generic: "Build Campaign Foundry as a complex, useful ComfyUI-inspired visual campaign workflow suite on this fresh screen. This is a real node/flow stress test, not a static illustration or a grid of copied cards. Scenario: prepare a launch campaign for a fictional eco-friendly travel mug. Build roughly14 top-level nodes and18 meaningful typed connections across a branching pipeline: campaign brief, positive prompt, negative prompt, model settings, style reference, seed/settings, two draft-generation configurations (social and poster), two finishing subworkflows, two review/approval nodes, a merge/delivery checklist and an export-package configuration. Shared inputs must fan out; branches converge. Use at least8 meaningful reusable node types, readable port labels and useful initial values. Each rich node should have appropriate ordinary controls (text/textarea, select, number/toggle when supported), not just captions. Both Finishing nodes must use ONE reusable body containing a genuine nested graph, with independent controlled graph parameters. Each nested graph has3 editable steps connected in sequence (crop/layout, caption, quality check); deliberately reuse the inner step IDs across the two occurrences. Node values must stay independent across shared bodies. Use in-node Help menus with private temporary open state. The user must be able to edit configuration, approval statuses, drag/pan/zoom and create/remove typed connections through normal supported controls, then save/reopen the authored setup. Provide a coherent surrounding app: compact campaign summary, workflow canvas, delivery checklist/status fields and a short usable guide. Prefer a dark slate/teal visual system with category accents. Keep cards/fields readable at working zoom and allow navigating a large workflow instead of shrinking all text to fit. Discover and use current public registered UI/Flow authoring capabilities and validated operations. Add no mandatory inspector/toolbar or Flow-specific control adapter. Do not replace canonical source with an opaque handmade blob, copy unrelated saved screens, weaken validation or invent component/action names. Graph connections configure intent; they do not themselves execute models. Reuse existing authorized execution capabilities only if actually available. Otherwise label generation/export/publishing as configuration-only or unavailable and do not fake generated assets, completed runs or backend execution. No provider/account changes or external effects. Ordinary local approval/configuration interactions should work. Build incrementally in validated transactions and keep accepted progress if a later operation refuses. If one turn is bounded, finish a coherent checkpoint and say exactly what remains; we will continue the SAME app. Leave Studio Save to me. Report confirmed source changes, actual observations and untested behavior separately, briefly."
+        - button "Copy message":
+        - generic: Assistant
+        - status: Stopped. No edits were applied.
+        - button "Public activity and tool details" [expanded]:
+          - text: Public activity and tool details
+        - generic "Conversation timeline":
+          - paragraph: "I'll build Campaign Foundry as a real node-graph workspace: first a quick discovery of the Flow canvas identity, graph data grammar, existing state, and authorable elements."
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph:
+            - text: Canvas is
+            - code: vict.flow.canvas@1
+            - text: with graph grammar
+            - code: vict.flow-graph@2
+            - text: /
+            - code: vict.flow-operations@2
+            - text: ; the six states are unused template seeds. Now I
+        - paragraph: No successful final response. Public notes and tool receipts remain in details.
+        - button "Copy message":
+        - generic: You
+        - generic: "Continue the SAME Campaign Foundry app and full product brief above. The stopped attempt preserved4 successful discovery reads but no edits. For this turn deliver a working outer-workflow checkpoint: the roughly14nodes/18typedconnections, reusable rich bodies with ordinary editable fields, dark slate/teal composition, and truthful guide/configuration status. Use the composable public Flow workspace/viewport approach with app-chosen controls, rather than a compulsory legacy inspector/editor form. Defer populating the two nested Finishing graphs until the next turn; keep their explicit independent graph parameters ready. Read only the exact missing public facts, preflight unfamiliar operations and then apply coherent validated batches. Keep accepted changes if later steps refuse. Do not claim generated assets, actual model execution or publishing. Leave Save to me and end with the exact remaining work. The full complex suite, including nested flows, is still the goal."
+        - button "Copy message":
+        - generic: Assistant
+        - status: 9 applied edits remain undoable.
+        - button "Public activity and tool details" [expanded]:
+          - text: Public activity and tool details
+        - generic "Conversation timeline":
+          - paragraph: "Continuing the same Campaign Foundry document at r1#0: I'll pull the exact Flow canvas/graph contracts, then build the outer workflow in validated batches."
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: The public canvas is a presentational composition (canvas + node + edge components); I need its two dependency contracts and the full flow catalog to find the editable workspace body.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph:
+            - text: The canvas node/edge parts are caption-only; the richer composable authoring path is
+            - code: vict.flow.workspace@2
+            - text: +
+            - code: vict.flow.viewport@2
+            - text: . Reading those two contracts now.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: The workspace contract is the right path; it has paged guidance plus two missing dependencies (operations grammar, port part). Reading the rest now.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed" [expanded]:
+            - generic: Read screen
+            - generic: completed
+          - region "Tool input":
+            - heading "Input" [level=4]
+            - generic: "{ \"section\": \"knowledge\", \"kind\": \"component\", \"projection\": \"examples\", \"key\": \"vict.flow.port@2\" }"
+          - region "Tool result":
+            - heading "Result" [level=4]
+            - generic: "{ \"expectedRevision\": \"r1#0\", \"cursor\": { \"documentId\": \"screen-a8690ffa-1e90-4b72-909c-66141d372773\", \"revision\": \"r1#0\", \"digest\": \"93d676d6eac5493555cf635ea447f2c574d136328f7270ed6b4144e5582c779c\", \"epoch\": \"bbab89a5-53a9-4e65-9894-0bcec138d15d\" }, \"section\": \"knowledge\", \"ok\": true, \"registryReady\": true, \"registryDigest\": \"31ac6d12542954095f60fc6c0ab90d379abbb665aa648d48d4cb77ca9b904288\", \"kind\": \"component\", \"key\": \"vict.flow.port@2\", \"projection\": \"examples\", \"nextCursor\": null, \"paging\": \"Copy nextCursor exactly as a JSON string; do not send offset, limit or identity maps. Stop on nextCursor:null. A selected body is complete only after assembling every page from its first page. Component dependencies are explicit references and must be read separately; no dependency body or app source was preloaded.\", \"items\": [ { \"id\": \"vict.flow.port\", \"revision\": \"2\", \"digest\": \"1b391898ac23a11764cefd9f3544edf5123a564e3f62b7997ded2b6ce5682acf\", \"bodyIdentity\": \"studio-contract-body@2:examples:1b391898ac23a11764cefd9f3544edf5123a564e3f62b7997ded2b6ce5682acf\", \"offset\": 0, \"totalCharacters\": 1732, \"bodyComplete\": true, \"contractJson\": \"{\\\"descriptor\\\":{\\\"revision\\\":\\\"2\\\",\\\"abi\\\":\\\"vict.ui-component-abi@1\\\",\\\"events\\\":[\\\"vict.ui-component-abi@1\\\"],\\\"rendererImplementationId\\\":\\\"vict.svelte.flow.composition\\\",\\\"styleTargets\\\":[\\\"root\\\"],\\\"id\\\":\\\"vict.flow.port\\\",\\\"props\\\":[{\\\"name\\\":\\\"id\\\",\\\"type\\\":\\\"string\\\"}],\\\"slots\\\":[\\\"content\\\"],\\\"outputs\\\":[],\\\"inspectionLimits\\\":[\\\"Place within an authored workspace body. Exact port ID resolves direction/type/capacity from the graph, not from styling.\\\"]},\\\"label\\\":\\\"Graph port anchor\\\",\\\"family\\\":\\\"flow\\\",\\\"category\\\":\\\"graph-part\\\",\\\"purpose\\\":\\\"An app-positioned semantic port in a typed node body.\\\",\\\"eligibility\\\":{\\\"kind\\\":\\\"part\\\"},\\\"dependencies\\\":[{\\\"id\\\":\\\"vict.flow.workspace\\\",\\\"revision\\\":\\\"2\\\"}],\\\"rules\\\":[{\\\"kind\\\":\\\"ancestorSlot\\\",\\\"placements\\\":[{\\\"definitionId\\\":\\\"vict.flow.workspace\\\",\\\"revision\\\":\\\"2\\\",\\\"slotName\\\":\\\"body\\\"}]}],\\\"guidance\\\":[\\\"Place inside workspace.body. id matches semantic graph port ID; optional content holds ordinary VICT controls/content. Dynamic missing ports show a diagnostic instead of a fabricated handle.\\\"],\\\"packageName\\\":\\\"@victframework/ui-flow-svelte\\\",\\\"packageVersion\\\":\\\"0.4.0-rc.1\\\",\\\"capabilities\\\":{\\\"extensionId\\\":\\\"vict.flow.port\\\",\\\"revision\\\":\\\"2\\\",\\\"rendererImplementationId\\\":\\\"vict.svelte.flow.composition\\\",\\\"abi\\\":\\\"vict.ui-component-abi@1\\\",\\\"slots\\\":[\\\"content\\\"],\\\"required\\\":[],\\\"styleTargets\\\":[\\\"root\\\"],\\\"requiresParentContext\\\":true,\\\"compositionSlots\\\":[]},\\\"descriptorDigest\\\":\\\"7034a84f509541a59e12eb84bb8fc128282729c682a7ed2e2f0a8d8a90729ffa\\\",\\\"digest\\\":\\\"1b391898ac23a11764cefd9f3544edf5123a564e3f62b7997ded2b6ce5682acf\\\",\\\"preparation\\\":{\\\"seedStyles\\\":[],\\\"hostRequirements\\\":[],\\\"dependencies\\\":[{\\\"id\\\":\\\"vict.flow.workspace\\\",\\\"revision\\\":\\\"2\\\"}],\\\"seedStylePrecedence\\\":\\\"Local styles override shared style sources; explicitly replace/remove undesired seed declarations before construction.\\\"}}\" } ], \"dependencies\": [ { \"id\": \"vict.flow.workspace\", \"revision\": \"2\", \"key\": \"vict.flow.workspace@2\" } ], \"dependencyBodiesIncluded\": false, \"turnProgress\": { \"applied\": 0, \"metrics\": { \"toolCalls\": 10, \"completedCalls\": 10, \"refusedCalls\": 0, \"recoveryAttempts\": 0, \"toolElapsedMs\": 168, \"providerRequests\": 4, \"visionRequests\": 0, \"acknowledgementMs\": 0, \"confirmedEdits\": 0, \"usage\": { \"inputTokens\": 131690, \"outputTokens\": 8617, \"totalTokens\": 140307 }, \"categories\": { \"knowledge\": 10, \"source\": 0, \"edit\": 0, \"observe\": 0, \"other\": 0 }, \"elapsedMs\": 219006, \"toolActiveMs\": 78, \"outsideToolMs\": 218928, \"modelSteps\": null, \"cost\": null }, \"retainedKnowledge\": { \"scope\": \"Complete contract bodies delivered in this turn only; reuse still requires their content to remain available in model context. Source facts are never cached knowledge.\", \"complete\": [ { \"key\": \"vict.flow.canvas@1\", \"digest\": \"3bf1d1da07ec917d35bc1c1bcddf23eb172d4d9d9b42c82c85e22938d8638743\", \"bodyIdentity\": \"studio-contract-body@2:examples:3bf1d1da07ec917d35bc1c1bcddf23eb172d4d9d9b42c82c85e22938d8638743\" }, { \"key\": \"vict.flow.node@1\", \"digest\": \"caa56fecde5ad7a22f0f4c369423b969edbb29044ae33743f88831420ec31c94\", \"bodyIdentity\": \"studio-contract-body@2:examples:caa56fecde5ad7a22f0f4c369423b969edbb29044ae33743f88831420ec31c94\" }, { \"key\": \"vict.flow.edge@1\", \"digest\": \"62fad3846cdf76659b1d3d51b3fbfd506a8c74e704437d4e9634a68d9a7ddc8b\", \"bodyIdentity\": \"studio-contract-body@2:examples:62fad3846cdf76659b1d3d51b3fbfd506a8c74e704437d4e9634a68d9a7ddc8b\" }, { \"key\": \"vict.flow.workspace@2\", \"digest\": \"9e0c9f7749c4099fbba6ebe84252b62a7b235b43e73216534e360814e26e5f5f\", \"bodyIdentity\": \"studio-contract-body@2:examples:9e0c9f7749c4099fbba6ebe84252b62a7b235b43e73216534e360814e26e5f5f\" }, { \"key\": \"vict.flow.viewport@2\", \"digest\": \"acc265bbbe810fa2727af1749a803cb828e5753518bc85bfb016330c7ac4f55c\", \"bodyIdentity\": \"studio-contract-body@2:examples:acc265bbbe810fa2727af1749a803cb828e5753518bc85bfb016330c7ac4f55c\" }, { \"key\": \"vict.flow.port@2\", \"digest\": \"1b391898ac23a11764cefd9f3544edf5123a564e3f62b7997ded2b6ce5682acf\", \"bodyIdentity\": \"studio-contract-body@2:examples:1b391898ac23a11764cefd9f3544edf5123a564e3f62b7997ded2b6ce5682acf\" } ], \"partialCount\": 0 }, \"visualEvidence\": { \"regions\": [], \"currentSourceObservations\": 0, \"scope\": \"Captured regions only; source freshness does not establish current runtime/viewport freshness or offscreen/interaction coverage.\", \"interactionsVerified\": false }, \"evidence\": \"Host receipt-derived totals include all acknowledged transactions, including cleanup. Outside-tool time is waiting/generation/transport/host overhead, not measured provider latency. Captured regions do not establish full-page or interaction coverage.\" } }"
+          - paragraph: "Contracts gathered. Now building: dark theme first, then state-bound workspace, graph, node bodies, chrome."
+          - button "Edit screen completed" [expanded]:
+            - generic: Edit screen
+            - generic: completed
+          - region "Tool input":
+            - heading "Input" [level=4]
+            - generic: "{ \"expectedRevision\": \"r1#0\", \"reason\": \"Dark slate/teal base: application theme roles plus root surface restyle\", \"operations\": [ { \"op\": \"theme\", \"role\": \"surface\", \"value\": \"#0f172a\" }, { \"op\": \"theme\", \"role\": \"text\", \"value\": \"#e2edf7\" }, { \"op\": \"theme\", \"role\": \"textMuted\", \"value\": \"#9fb0c7\" }, { \"op\": \"theme\", \"role\": \"border\", \"value\": \"#2b3b52\" }, { \"op\": \"theme\", \"role\": \"accent\", \"value\": \"#14b8a6\" }, { \"op\": \"theme\", \"role\": \"accentText\", \"value\": \"#032722\" }, { \"op\": \"modify\", \"nodeId\": \"screen\", \"styles\": { \"background-color\": \"#0b1220\", \"color\": \"#e2edf7\", \"padding\": \"24px\", \"gap\": \"16px\" } } ] }"
+          - region "Tool result":
+            - heading "Result" [level=4]
+            - generic: "{ \"ok\": true, \"expectedRevision\": \"r1#1\", \"revision\": \"r1#1\", \"digest\": \"b313715f6baa6d67e054dabc973a31b338a927b2b2c021bcdc4b623bb68a01b8\", \"applied\": 1, \"coverage\": { \"available\": 119, \"authored\": 0, \"catalogAuthored\": 0, \"registeredAuthored\": 0, \"reachableSourceNodes\": 1, \"requested\": 119, \"scope\": \"all-authorable-definitions\", \"missing\": [ \"vict.catalog.button\", \"vict.catalog.checkbox\", \"vict.catalog.select\", \"vict.catalog.dialog\", \"vict.catalog.switch\", \"vict.catalog.toggle\", \"vict.catalog.select-multiple\", \"vict.catalog.select-item\", \"vict.catalog.combobox\", \"vict.catalog.combobox-multiple\", \"vict.catalog.combobox-item\", \"vict.catalog.toggle-group\", \"vict.catalog.toggle-group-multiple\", \"vict.catalog.toggle-group-item\", \"vict.catalog.accordion\", \"vict.catalog.accordion-multiple\", \"vict.catalog.accordion-item\", \"vict.catalog.slider\", \"vict.catalog.meter\", \"vict.catalog.progress\" ], \"evidence\": \"Reachable declared source presence only, including inactive branches/templates. An agent-declared manifest is not proof of the user intent, observed appearance, exercised interaction or completion.\", \"missingCount\": 119, \"moreMissing\": true }, \"verification\": \"source-only\", \"turnProgress\": { \"applied\": 1, \"metrics\": { \"toolCalls\": 12, \"completedCalls\": 12, \"refusedCalls\": 0, \"recoveryAttempts\": 0, \"toolElapsedMs\": 253, \"providerRequests\": 5, \"visionRequests\": 0, \"acknowledgementMs\": 22, \"confirmedEdits\": 1, \"usage\": { \"inputTokens\": 182860, \"outputTokens\": 31160, \"totalTokens\": 214020 }, \"firstEditMs\": 759356.947300002, \"categories\": { \"knowledge\": 11, \"source\": 0, \"edit\": 1, \"observe\": 0, \"other\": 0 }, \"elapsedMs\": 759357, \"toolActiveMs\": 132, \"outsideToolMs\": 759225, \"modelSteps\": null, \"cost\": null }, \"retainedKnowledge\": { \"scope\": \"Complete contract bodies delivered in this turn only; reuse still requires their content to remain available in model context. Source facts are never cached knowledge.\", \"complete\": [ { \"key\": \"vict.flow.canvas@1\", \"digest\": \"3bf1d1da07ec917d35bc1c1bcddf23eb172d4d9d9b42c82c85e22938d8638743\", \"bodyIdentity\": \"studio-contract-body@2:examples:3bf1d1da07ec917d35bc1c1bcddf23eb172d4d9d9b42c82c85e22938d8638743\" }, { \"key\": \"vict.flow.node@1\", \"digest\": \"caa56fecde5ad7a22f0f4c369423b969edbb29044ae33743f88831420ec31c94\", \"bodyIdentity\": \"studio-contract-body@2:examples:caa56fecde5ad7a22f0f4c369423b969edbb29044ae33743f88831420ec31c94\" }, { \"key\": \"vict.flow.edge@1\", \"digest\": \"62fad3846cdf76659b1d3d51b3fbfd506a8c74e704437d4e9634a68d9a7ddc8b\", \"bodyIdentity\": \"studio-contract-body@2:examples:62fad3846cdf76659b1d3d51b3fbfd506a8c74e704437d4e9634a68d9a7ddc8b\" }, { \"key\": \"vict.flow.workspace@2\", \"digest\": \"9e0c9f7749c4099fbba6ebe84252b62a7b235b43e73216534e360814e26e5f5f\", \"bodyIdentity\": \"studio-contract-body@2:examples:9e0c9f7749c4099fbba6ebe84252b62a7b235b43e73216534e360814e26e5f5f\" }, { \"key\": \"vict.flow.viewport@2\", \"digest\": \"acc265bbbe810fa2727af1749a803cb828e5753518bc85bfb016330c7ac4f55c\", \"bodyIdentity\": \"studio-contract-body@2:examples:acc265bbbe810fa2727af1749a803cb828e5753518bc85bfb016330c7ac4f55c\" }, { \"key\": \"vict.flow.port@2\", \"digest\": \"1b391898ac23a11764cefd9f3544edf5123a564e3f62b7997ded2b6ce5682acf\", \"bodyIdentity\": \"studio-contract-body@2:examples:1b391898ac23a11764cefd9f3544edf5123a564e3f62b7997ded2b6ce5682acf\" } ], \"partialCount\": 0 }, \"visualEvidence\": { \"regions\": [], \"currentSourceObservations\": 0, \"scope\": \"Captured regions only; source freshness does not establish current runtime/viewport freshness or offscreen/interaction coverage.\", \"interactionsVerified\": false }, \"evidence\": \"Host receipt-derived totals include all acknowledged transactions, including cleanup. Outside-tool time is waiting/generation/transport/host overhead, not measured provider latency. Captured regions do not establish full-page or interaction coverage.\" } }"
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - button "Read screen completed" [expanded]:
+            - generic: Read screen
+            - generic: completed
+          - region "Tool input":
+            - heading "Input" [level=4]
+            - generic: "{ \"section\": \"component\", \"offset\": 0, \"limit\": 12, \"recipe\": \"rhea-native-select\" }"
+          - region "Tool result":
+            - heading "Result" [level=4]
+            - generic: "{ \"expectedRevision\": \"r1#1\", \"cursor\": { \"documentId\": \"screen-a8690ffa-1e90-4b72-909c-66141d372773\", \"revision\": \"r1#1\", \"digest\": \"b313715f6baa6d67e054dabc973a31b338a927b2b2c021bcdc4b623bb68a01b8\", \"epoch\": \"bbab89a5-53a9-4e65-9894-0bcec138d15d\" }, \"section\": \"component\", \"kind\": \"native-recipe\", \"recipe\": \"rhea-native-select\", \"description\": \"Associated native label, typed local value and canonical change binding. No form transport. Uses the public Rhea stylesheet.\", \"sourceJson\": \"{\\\"nodes\\\":[{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"example\\\",\\\"tag\\\":\\\"div\\\",\\\"children\\\":[\\\"example-label\\\",\\\"example-control\\\",\\\"example-help\\\"],\\\"classes\\\":[\\\"vict-rhea\\\",\\\"vict-rhea-field\\\"]},{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"example-label\\\",\\\"tag\\\":\\\"label\\\",\\\"children\\\":[\\\"example-label-text\\\"],\\\"attributes\\\":{\\\"for\\\":\\\"example-control\\\"}},{\\\"kind\\\":\\\"text\\\",\\\"id\\\":\\\"example-label-text\\\",\\\"content\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"Choose an option\\\"}},{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"example-control\\\",\\\"tag\\\":\\\"select\\\",\\\"children\\\":[\\\"example-option-first\\\",\\\"example-option-second\\\"],\\\"attributes\\\":{\\\"id\\\":\\\"example-control\\\",\\\"aria-describedby\\\":\\\"example-help\\\",\\\"value\\\":{\\\"type\\\":\\\"ref\\\",\\\"path\\\":\\\"state.rhea_example_value\\\"}},\\\"classes\\\":[\\\"vict-rhea-native-select\\\"],\\\"interactions\\\":[{\\\"on\\\":\\\"change\\\",\\\"action\\\":\\\"setState\\\",\\\"key\\\":\\\"rhea_example_value\\\",\\\"value\\\":{\\\"type\\\":\\\"ref\\\",\\\"path\\\":\\\"state.rhea_example_value\\\"}}]},{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"example-option-first\\\",\\\"tag\\\":\\\"option\\\",\\\"children\\\":[\\\"example-first-text\\\"],\\\"attributes\\\":{\\\"value\\\":\\\"first\\\"}},{\\\"kind\\\":\\\"text\\\",\\\"id\\\":\\\"example-first-text\\\",\\\"content\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"First option\\\"}},{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"example-option-second\\\",\\\"tag\\\":\\\"option\\\",\\\"children\\\":[\\\"example-second-text\\\"],\\\"attributes\\\":{\\\"value\\\":\\\"second\\\"}},{\\\"kind\\\":\\\"text\\\",\\\"id\\\":\\\"example-second-text\\\",\\\"content\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"Second option\\\"}},{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"example-help\\\",\\\"tag\\\":\\\"small\\\",\\\"children\\\":[\\\"example-help-text\\\"]},{\\\"kind\\\":\\\"text\\\",\\\"id\\\":\\\"example-help-text\\\",\\\"content\\\":{\\\"type\\\":\\\"literal\\\",\\\"value\\\":\\\"Local preview value; connect a declared action to submit.\\\"}}],\\\"localState\\\":{\\\"rhea_example_value\\\":{\\\"key\\\":\\\"rhea_example_value\\\",\\\"type\\\":\\\"string\\\",\\\"initial\\\":\\\"first\\\"}}}\", \"totalCharacters\": 1577, \"offset\": 0, \"nextOffset\": null, \"knowledge\": \"Native recipe source, not a component descriptor. Generic native insertion uses elements.\", \"turnProgress\": { \"applied\": 1, \"metrics\": { \"toolCalls\": 14, \"completedCalls\": 13, \"refusedCalls\": 0, \"recoveryAttempts\": 0, \"toolElapsedMs\": 271, \"providerRequests\": 6, \"visionRequests\": 0, \"acknowledgementMs\": 22, \"confirmedEdits\": 1, \"usage\": { \"inputTokens\": 258961, \"outputTokens\": 31533, \"totalTokens\": 290494 }, \"firstEditMs\": 759356.947300002, \"categories\": { \"knowledge\": 12, \"source\": 0, \"edit\": 2, \"observe\": 0, \"other\": 0 }, \"elapsedMs\": 770748, \"toolActiveMs\": 152, \"outsideToolMs\": 770596, \"modelSteps\": null, \"cost\": null }, \"retainedKnowledge\": { \"scope\": \"Complete contract bodies delivered in this turn only; reuse still requires their content to remain available in model context. Source facts are never cached knowledge.\", \"complete\": [ { \"key\": \"vict.flow.canvas@1\", \"digest\": \"3bf1d1da07ec917d35bc1c1bcddf23eb172d4d9d9b42c82c85e22938d8638743\", \"bodyIdentity\": \"studio-contract-body@2:examples:3bf1d1da07ec917d35bc1c1bcddf23eb172d4d9d9b42c82c85e22938d8638743\" }, { \"key\": \"vict.flow.node@1\", \"digest\": \"caa56fecde5ad7a22f0f4c369423b969edbb29044ae33743f88831420ec31c94\", \"bodyIdentity\": \"studio-contract-body@2:examples:caa56fecde5ad7a22f0f4c369423b969edbb29044ae33743f88831420ec31c94\" }, { \"key\": \"vict.flow.edge@1\", \"digest\": \"62fad3846cdf76659b1d3d51b3fbfd506a8c74e704437d4e9634a68d9a7ddc8b\", \"bodyIdentity\": \"studio-contract-body@2:examples:62fad3846cdf76659b1d3d51b3fbfd506a8c74e704437d4e9634a68d9a7ddc8b\" }, { \"key\": \"vict.flow.workspace@2\", \"digest\": \"9e0c9f7749c4099fbba6ebe84252b62a7b235b43e73216534e360814e26e5f5f\", \"bodyIdentity\": \"studio-contract-body@2:examples:9e0c9f7749c4099fbba6ebe84252b62a7b235b43e73216534e360814e26e5f5f\" }, { \"key\": \"vict.flow.viewport@2\", \"digest\": \"acc265bbbe810fa2727af1749a803cb828e5753518bc85bfb016330c7ac4f55c\", \"bodyIdentity\": \"studio-contract-body@2:examples:acc265bbbe810fa2727af1749a803cb828e5753518bc85bfb016330c7ac4f55c\" }, { \"key\": \"vict.flow.port@2\", \"digest\": \"1b391898ac23a11764cefd9f3544edf5123a564e3f62b7997ded2b6ce5682acf\", \"bodyIdentity\": \"studio-contract-body@2:examples:1b391898ac23a11764cefd9f3544edf5123a564e3f62b7997ded2b6ce5682acf\" } ], \"partialCount\": 0 }, \"visualEvidence\": { \"regions\": [], \"currentSourceObservations\": 0, \"scope\": \"Captured regions only; source freshness does not establish current runtime/viewport freshness or offscreen/interaction coverage.\", \"interactionsVerified\": false }, \"evidence\": \"Host receipt-derived totals include all acknowledged transactions, including cleanup. Outside-tool time is waiting/generation/transport/host overhead, not measured provider latency. Captured regions do not establish full-page or interaction coverage.\" } }"
+          - paragraph: Theme set. Now the state-bound workspace, header, and canvas viewport.
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - button "Edit screen failed":
+            - generic: Edit screen
+            - generic: failed
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - button "Edit screen failed" [active]:
+            - generic: Edit screen
+            - generic: failed
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+    - button "Scroll to latest message":
+      - generic: Scroll to end
+    - textbox "Message":
+      - /placeholder: Ask for a change…
+    - button "Stop":
+      - generic: Stop
+    - status
+  - status "Twenty typed connections fanning shared inputs out and converging branches into delivery · applied":
+    - generic: Working…
+  - button "Chat details": ···
+- separator "Chat width"
+- main:
+  - button "Toggle Chat drawer" [expanded]:
+  - group "Workspace mode":
+    - button "Design" [pressed]
+    - button "Interact"
+    - button "Structure"
+  - button "Toggle Document and Selection drawer":
+  - iframe:
+    - generic "Screen canvas":
+      - main "Campaign Foundry — complex node suite":
+        - region "Section":
+          - heading "Campaign Foundry" [level=1]:
+            - generic: Campaign Foundry
+          - paragraph:
+            - generic: Eco travel mug launch · visual campaign workflow — configuration only, no model execution or publishing
+          - paragraph:
+            - generic: 14 nodes · 20 typed links · 10 reusable node types
+        - region "Campaign workflow":
+          - application "Campaign workflow canvas":
+            - application:
+              - group "Campaign brief":
+                - alert: This graph needs an authored node body.
+              - group "Positive prompt":
+                - alert: This graph needs an authored node body.
+              - group "Negative prompt":
+                - alert: This graph needs an authored node body.
+              - group "Model settings":
+                - alert: This graph needs an authored node body.
+              - group "Style reference":
+                - alert: This graph needs an authored node body.
+              - group "Seed & sampling":
+                - alert: This graph needs an authored node body.
+              - group "Draft · social":
+                - alert: This graph needs an authored node body.
+              - group "Draft · poster":
+                - alert: This graph needs an authored node body.
+              - group "Finishing · social":
+                - alert: This graph needs an authored node body.
+              - group "Finishing · poster":
+                - alert: This graph needs an authored node body.
+              - group "Review · social":
+                - alert: This graph needs an authored node body.
+              - group "Review · poster":
+                - alert: This graph needs an authored node body.
+              - group "Merge & delivery checklist":
+                - alert: This graph needs an authored node body.
+              - group "Export package":
+                - alert: This graph needs an authored node body.
+              - link "Svelte Flow attribution":
+                - /url: https://svelteflow.dev?utm_source=attribution
+                - text: Svelte Flow
+          - paragraph:
+            - generic: "Pan: drag · Zoom: wheel · Move cards by their teal header · Edit fields in place"
+          - paragraph:
+            - generic: Nodes in graph
+          - paragraph:
+            - generic: Give your screen a little context.
+            - generic: "14"
+          - paragraph:
+            - generic: Typed links
+          - paragraph:
+            - generic: Give your screen a little context.
+            - generic: "20"
+- contentinfo:
+  - status: Twenty typed connections fanning shared inputs out and converging branches into delivery · agent edit · unsaved
+- generic: Designer — VICT Studio

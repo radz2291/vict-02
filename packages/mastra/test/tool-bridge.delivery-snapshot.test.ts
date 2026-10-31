@@ -20,7 +20,7 @@ import {
  *   at every nested level (caller mutation after capture has no effect on
  *   the delivered value, the summary, or the durable record);
  * - repeated safe serialization is deterministic;
- * - every bound fails CLOSED without echoing rejected content;
+ * - explicit caller bounds fail closed; default delivery has no arbitrary size quotas;
  * - the Section-6 compatibility dispositions (safe/nested/plain accepted;
  *   class instances, Date/Map/Set, thenables, functions, BigInts, Symbols,
  *   undefined, non-finite numbers, cycles, sparse arrays, accessors, and
@@ -51,6 +51,60 @@ function permissiveContract(id: string): Contract<unknown> {
 // ---- Unit tests: the snapshot capture itself --------------------------------
 
 describe('delivery-safe snapshot capture (unit)', () => {
+  it('default delivery preserves safe results beyond every old quota', () => {
+    let nested: unknown = 'leaf';
+    for (let index = 0; index < 1000; index++) nested = { next: nested };
+    const wide = Object.fromEntries(
+      Array.from({ length: 300 }, (_, index) => [`key${index}`, index]),
+    );
+    const original = {
+      text: 'long 🚀 payload '.repeat(2000),
+      list: Array.from({ length: 6000 }, (_, index) => index),
+      wide,
+      nested,
+    };
+    const result = captureDeliverySafeSnapshot(original);
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+    const captured = result.value as typeof original;
+    expect(captured).not.toBe(original);
+    expect(captured.list).not.toBe(original.list);
+    expect(captured.list).toEqual(original.list);
+    expect(captured.text).toBe(original.text);
+    expect(captured.wide).toEqual(wide);
+    let current: unknown = captured.nested;
+    for (let index = 0; index < 1000; index++) current = (current as { next: unknown }).next;
+    expect(current).toBe('leaf');
+    expect(JSON.stringify(captured)).toBe(JSON.stringify(original));
+  });
+
+  it('rejects an actual runtime encoding failure before delivery, without a fixed depth quota', () => {
+    let value: unknown = 'leaf';
+    for (let index = 0; index < 20000; index++) value = { next: value };
+    expect(() => JSON.stringify(value)).toThrow();
+    expect(captureDeliverySafeSnapshot(value)).toEqual({ ok: false, reason: 'uninspectable' });
+  });
+
+  it('never invokes a changed intrinsic serialization hook', () => {
+    let calls = 0;
+    const previous = Object.getOwnPropertyDescriptor(Object.prototype, 'toJSON');
+    try {
+      Object.defineProperty(Object.prototype, 'toJSON', {
+        configurable: true,
+        value: () => {
+          calls++;
+          return 'not data';
+        },
+      });
+      const result = captureDeliverySafeSnapshot({ safe: true });
+      expect(calls).toBe(0);
+      expect(result.ok).toBe(false);
+    } finally {
+      if (previous) Object.defineProperty(Object.prototype, 'toJSON', previous);
+      else Reflect.deleteProperty(Object.prototype, 'toJSON');
+    }
+  });
+
   it('deep safe values round-trip without semantic change', () => {
     const original = {
       null: null,
@@ -374,29 +428,31 @@ describe('delivery-safe snapshot capture (unit)', () => {
     }
   });
 
-  it('bounds fail closed: depth, nodes, collection length, property count, string size', () => {
+  it('explicit caller bounds still fail closed: depth, nodes, collection length, property count, string size', () => {
+    const captureWithExplicitBounds = (value: unknown) =>
+      captureDeliverySafeSnapshot(value, DELIVERY_SNAPSHOT_BOUNDS);
     // Depth: a chain deeper than maxDepth.
     let deep: unknown = 'leaf';
     for (let i = 0; i < DELIVERY_SNAPSHOT_BOUNDS.maxDepth + 2; i += 1) {
       deep = { nested: deep };
     }
-    expect(captureDeliverySafeSnapshot(deep).ok).toBe(false);
+    expect(captureWithExplicitBounds(deep).ok).toBe(false);
     let shallow: unknown = 'leaf';
     for (let i = 0; i < DELIVERY_SNAPSHOT_BOUNDS.maxDepth - 1; i += 1) {
       shallow = { nested: shallow };
     }
-    expect(captureDeliverySafeSnapshot(shallow).ok).toBe(true);
+    expect(captureWithExplicitBounds(shallow).ok).toBe(true);
 
     // Total nodes.
     expect(
-      captureDeliverySafeSnapshot(
+      captureWithExplicitBounds(
         Array.from({ length: DELIVERY_SNAPSHOT_BOUNDS.maxNodes + 1 }, (_, i) => i),
       ).ok,
     ).toBe(false);
 
     // Collection length.
     expect(
-      captureDeliverySafeSnapshot(
+      captureWithExplicitBounds(
         Array.from({ length: DELIVERY_SNAPSHOT_BOUNDS.maxCollectionLength + 1 }, () => 'x'),
       ),
     ).toEqual({ ok: false, reason: 'collection-length-exceeded' });
@@ -406,17 +462,17 @@ describe('delivery-safe snapshot capture (unit)', () => {
     for (let i = 0; i <= DELIVERY_SNAPSHOT_BOUNDS.maxPropertyCount; i += 1) {
       wide[`k${i}`] = i;
     }
-    expect(captureDeliverySafeSnapshot(wide)).toEqual({
+    expect(captureWithExplicitBounds(wide)).toEqual({
       ok: false,
       reason: 'property-count-exceeded',
     });
 
     // String size.
     expect(
-      captureDeliverySafeSnapshot('x'.repeat(DELIVERY_SNAPSHOT_BOUNDS.maxStringLength + 1)),
+      captureWithExplicitBounds('x'.repeat(DELIVERY_SNAPSHOT_BOUNDS.maxStringLength + 1)),
     ).toEqual({ ok: false, reason: 'string-length-exceeded' });
     expect(
-      captureDeliverySafeSnapshot({
+      captureWithExplicitBounds({
         s: `${CANARY}-${'x'.repeat(DELIVERY_SNAPSHOT_BOUNDS.maxStringLength)}`,
       }),
     ).toEqual({ ok: false, reason: 'string-length-exceeded' });
@@ -532,6 +588,30 @@ async function makeSnapshotFixture(
 }
 
 describe('bridge delivery snapshot: completion is gated on provably safe delivery', () => {
+  it('completes large safe results without the former shared output quotas', async () => {
+    let nested: unknown = 'leaf';
+    for (let index = 0; index < 40; index++) nested = { next: nested };
+    const original = {
+      saved: true,
+      blob: 'large value '.repeat(2000),
+      list: Array.from({ length: 6000 }, (_, index) => index),
+      wide: Object.fromEntries(Array.from({ length: 200 }, (_, index) => [`k${index}`, index])),
+      nested,
+    };
+    const fixture = await makeSnapshotFixture(() => original, permissiveContract('out'));
+    try {
+      const delivered = await fixture.execute();
+      expect(delivered).toEqual(original);
+      const records = await fixture.stores.invocations.listInvocationsForTurn(SCOPE.turnId);
+      expect(records[0]?.status).toBe('completed');
+      expect(fixture.effectCount()).toBe(1);
+      await fixture.execute();
+      expect(fixture.effectCount()).toBe(1);
+    } finally {
+      fixture.close();
+    }
+  });
+
   it('the output contract parser validates the RAW output exactly ONCE (authoritative); the framework schema pass sees only the delivered snapshot', async () => {
     const original = {
       saved: true,
@@ -605,6 +685,14 @@ describe('bridge delivery snapshot: completion is gated on provably safe deliver
 
   it.each([
     [
+      'an actual JSON runtime encoding failure',
+      (): unknown => {
+        let nested: unknown = 'leaf';
+        for (let index = 0; index < 20000; index++) nested = { next: nested };
+        return nested;
+      },
+    ],
+    [
       'a class instance',
       (): object => {
         class Instance {
@@ -668,20 +756,6 @@ describe('bridge delivery snapshot: completion is gated on provably safe deliver
           },
         ),
       }),
-    ],
-    [
-      'a depth bomb',
-      (): unknown => {
-        let deep: unknown = 'leaf';
-        for (let i = 0; i < DELIVERY_SNAPSHOT_BOUNDS.maxDepth + 2; i += 1) {
-          deep = { nested: deep };
-        }
-        return deep;
-      },
-    ],
-    [
-      'an oversized string',
-      (): object => ({ blob: `${CANARY}-${'x'.repeat(DELIVERY_SNAPSHOT_BOUNDS.maxStringLength)}` }),
     ],
   ])(
     '%s is rejected BEFORE durable completion (outcome_unknown, never completed)',

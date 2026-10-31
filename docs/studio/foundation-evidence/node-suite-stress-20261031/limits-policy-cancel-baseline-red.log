@@ -1,0 +1,29 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030
+
+stderr | packages/mastra/test/adapter.e2e.test.ts > cancels and releases its thread before a blocked public sink is released under policy@2
+This storage provider does not support batch creating metrics
+
+ ❯ |mastra| packages/mastra/test/adapter.e2e.test.ts (12 tests | 1 failed | 11 skipped) 1834ms
+   × cancels and releases its thread before a blocked public sink is released under policy@2 1017ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |mastra| packages/mastra/test/adapter.e2e.test.ts > cancels and releases its thread before a blocked public sink is released under policy@2
+Error: Cancellation remained blocked on event sink
+ ❯ Timeout._onTimeout packages/mastra/test/adapter.e2e.test.ts:642:80
+    640|     expect(completed).toBe(false);
+    641|     controller.abort();
+    642|     const deadline = new Promise<never>((_, reject) => setTimeout(() =…
+       |                                                                                ^
+    643|     const outcome = await Promise.race([result, deadline]);
+    644|     expect(outcome.status).toBe('cancelled');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 11 skipped (12)
+   Start at  10:34:35
+   Duration  5.77s (transform 1.26s, setup 0ms, import 3.42s, tests 1.83s, environment 0ms)
+

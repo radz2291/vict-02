@@ -95,11 +95,10 @@ it('independent: real paged knowledge delivers an executable generic example wit
 });
 it('independent: controlled nesting requires graph2 containing ownership, not a graph2 target format', () => {
   // Source-resolver compatibility probe, not a rendered/imported graph1 app.
-  const source = JSON.parse(JSON.stringify(partial)) as UiDocument,
-    inner = source.nodes['project-task-workspace'];
+  const original = JSON.parse(JSON.stringify(partial)) as UiDocument,
+    inner = original.nodes['project-task-workspace'];
   if (inner.kind !== 'component') throw Error('Fixture');
-  source.nodes[inner.id] = { ...inner, revision: '1' };
-  const outer = JSON.parse(String(source.localState.graph.initial));
+  const outer = JSON.parse(String(original.localState.graph.initial));
   outer.nodes.find((node: { id: string }) => node.id === 'p1').values.graph = JSON.stringify({
     schema: 'vict.flow-graph@1',
     revision: 0,
@@ -108,7 +107,14 @@ it('independent: controlled nesting requires graph2 containing ownership, not a 
     edges: [],
     allowCycles: false,
   });
-  source.localState.graph = { ...source.localState.graph, initial: JSON.stringify(outer) };
+  const source: UiDocument = {
+    ...original,
+    nodes: { ...original.nodes, [inner.id]: { ...inner, revision: '1' } },
+    localState: {
+      ...original.localState,
+      graph: { ...original.localState.graph, initial: JSON.stringify(outer) },
+    },
+  };
   const before = JSON.stringify(source),
     result = patchAuthoredGraph(
       source,

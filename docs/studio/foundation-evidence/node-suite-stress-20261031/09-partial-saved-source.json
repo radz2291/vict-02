@@ -1,0 +1,3036 @@
+{
+  "schema": "vict.ui-document@1",
+  "id": "screen-a8690ffa-1e90-4b72-909c-66141d372773",
+  "revision": "r1.r1",
+  "root": "screen",
+  "nodes": {
+    "screen": {
+      "kind": "element",
+      "id": "screen",
+      "tag": "main",
+      "attributes": {
+        "aria-label": "Campaign Foundry — complex node suite"
+      },
+      "children": [
+        "cf-header",
+        "ws-main"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "16px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "24px"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "560px"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#0b1220"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#e2edf7"
+          }
+        },
+        {
+          "property": "font-family",
+          "value": {
+            "type": "text",
+            "value": "system-ui, sans-serif"
+          }
+        }
+      ]
+    },
+    "cf-header": {
+      "kind": "element",
+      "id": "cf-header",
+      "tag": "section",
+      "attributes": {
+        "aria-label": "Section"
+      },
+      "children": [
+        "cf-title",
+        "cf-sub",
+        "cf-meta"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "4px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "24px"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "100px"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#f5f7fb"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        }
+      ]
+    },
+    "cf-title": {
+      "kind": "element",
+      "id": "cf-title",
+      "tag": "h1",
+      "children": [
+        "cf-title-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "22px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.2"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#e2edf7"
+          }
+        }
+      ]
+    },
+    "cf-title-text": {
+      "kind": "text",
+      "id": "cf-title-text",
+      "content": {
+        "type": "literal",
+        "value": "Campaign Foundry"
+      }
+    },
+    "cf-sub": {
+      "kind": "element",
+      "id": "cf-sub",
+      "tag": "p",
+      "children": [
+        "cf-sub-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "13px"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.6"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#9fb0c7"
+          }
+        }
+      ]
+    },
+    "cf-sub-text": {
+      "kind": "text",
+      "id": "cf-sub-text",
+      "content": {
+        "type": "literal",
+        "value": "Eco travel mug launch · visual campaign workflow — configuration only, no model execution or publishing"
+      }
+    },
+    "cf-meta": {
+      "kind": "element",
+      "id": "cf-meta",
+      "tag": "p",
+      "children": [
+        "cf-meta-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.6"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#14b8a6"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        }
+      ]
+    },
+    "cf-meta-text": {
+      "kind": "text",
+      "id": "cf-meta-text",
+      "content": {
+        "type": "literal",
+        "value": "14 nodes · 20 typed links · 10 reusable node types"
+      }
+    },
+    "ws-main": {
+      "kind": "component",
+      "id": "ws-main",
+      "definitionId": "vict.flow.workspace",
+      "revision": "2",
+      "slots": {
+        "content": {
+          "name": "content",
+          "children": [
+            "cf-content"
+          ],
+          "scope": {
+            "schema": "vict.ui-slot-scope@1",
+            "props": [
+              {
+                "name": "nodeCount",
+                "type": "number"
+              },
+              {
+                "name": "edgeCount",
+                "type": "number"
+              }
+            ]
+          }
+        },
+        "body": {
+          "name": "body",
+          "children": [
+            "w-brief",
+            "w-prompt",
+            "w-model"
+          ],
+          "scope": {
+            "schema": "vict.ui-slot-scope@1",
+            "props": [
+              {
+                "name": "nodeType",
+                "type": "string"
+              },
+              {
+                "name": "label",
+                "type": "string"
+              }
+            ],
+            "state": {
+              "audience": {
+                "key": "audience",
+                "type": "string",
+                "initial": "Commuters",
+                "controlled": true
+              },
+              "destination": {
+                "key": "destination",
+                "type": "string",
+                "initial": "campaign-foundry/mug-launch",
+                "controlled": true
+              },
+              "format": {
+                "key": "format",
+                "type": "string",
+                "initial": "square",
+                "controlled": true
+              },
+              "guidance": {
+                "key": "guidance",
+                "type": "number",
+                "initial": 6.5,
+                "controlled": true
+              },
+              "helpOpen": {
+                "key": "helpOpen",
+                "type": "boolean",
+                "initial": false
+              },
+              "hiRes": {
+                "key": "hiRes",
+                "type": "boolean",
+                "initial": true,
+                "controlled": true
+              },
+              "items": {
+                "key": "items",
+                "type": "stringList",
+                "initial": [],
+                "controlled": true
+              },
+              "mode": {
+                "key": "mode",
+                "type": "string",
+                "initial": "social",
+                "controlled": true
+              },
+              "model": {
+                "key": "model",
+                "type": "string",
+                "initial": "eco-diffusion-xl",
+                "controlled": true
+              },
+              "notes": {
+                "key": "notes",
+                "type": "string",
+                "initial": "",
+                "controlled": true
+              },
+              "palette": {
+                "key": "palette",
+                "type": "string",
+                "initial": "Forest teal",
+                "controlled": true
+              },
+              "randomize": {
+                "key": "randomize",
+                "type": "boolean",
+                "initial": false,
+                "controlled": true
+              },
+              "ready": {
+                "key": "ready",
+                "type": "boolean",
+                "initial": false,
+                "controlled": true
+              },
+              "seed": {
+                "key": "seed",
+                "type": "number",
+                "initial": 4213,
+                "controlled": true
+              },
+              "status": {
+                "key": "status",
+                "type": "string",
+                "initial": "Pending",
+                "controlled": true
+              },
+              "steps": {
+                "key": "steps",
+                "type": "number",
+                "initial": 28,
+                "controlled": true
+              },
+              "subgraph": {
+                "key": "subgraph",
+                "type": "string",
+                "initial": "",
+                "controlled": true
+              },
+              "summary": {
+                "key": "summary",
+                "type": "string",
+                "initial": "",
+                "controlled": true
+              },
+              "text": {
+                "key": "text",
+                "type": "string",
+                "initial": "",
+                "controlled": true
+              }
+            },
+            "conditions": {
+              "isBrief": {
+                "type": "compare",
+                "op": "eq",
+                "left": {
+                  "type": "ref",
+                  "path": "prop.nodeType"
+                },
+                "right": {
+                  "type": "literal",
+                  "value": "brief"
+                }
+              },
+              "isCheck": {
+                "type": "compare",
+                "op": "eq",
+                "left": {
+                  "type": "ref",
+                  "path": "prop.nodeType"
+                },
+                "right": {
+                  "type": "literal",
+                  "value": "check"
+                }
+              },
+              "isDraft": {
+                "type": "compare",
+                "op": "eq",
+                "left": {
+                  "type": "ref",
+                  "path": "prop.nodeType"
+                },
+                "right": {
+                  "type": "literal",
+                  "value": "draft"
+                }
+              },
+              "isExp": {
+                "type": "compare",
+                "op": "eq",
+                "left": {
+                  "type": "ref",
+                  "path": "prop.nodeType"
+                },
+                "right": {
+                  "type": "literal",
+                  "value": "exp"
+                }
+              },
+              "isFinish": {
+                "type": "compare",
+                "op": "eq",
+                "left": {
+                  "type": "ref",
+                  "path": "prop.nodeType"
+                },
+                "right": {
+                  "type": "literal",
+                  "value": "finish"
+                }
+              },
+              "isModel": {
+                "type": "compare",
+                "op": "eq",
+                "left": {
+                  "type": "ref",
+                  "path": "prop.nodeType"
+                },
+                "right": {
+                  "type": "literal",
+                  "value": "model"
+                }
+              },
+              "isPrompt": {
+                "type": "compare",
+                "op": "eq",
+                "left": {
+                  "type": "ref",
+                  "path": "prop.nodeType"
+                },
+                "right": {
+                  "type": "literal",
+                  "value": "prompt"
+                }
+              },
+              "isReview": {
+                "type": "compare",
+                "op": "eq",
+                "left": {
+                  "type": "ref",
+                  "path": "prop.nodeType"
+                },
+                "right": {
+                  "type": "literal",
+                  "value": "review"
+                }
+              },
+              "isSeed": {
+                "type": "compare",
+                "op": "eq",
+                "left": {
+                  "type": "ref",
+                  "path": "prop.nodeType"
+                },
+                "right": {
+                  "type": "literal",
+                  "value": "seed"
+                }
+              },
+              "isStyle": {
+                "type": "compare",
+                "op": "eq",
+                "left": {
+                  "type": "ref",
+                  "path": "prop.nodeType"
+                },
+                "right": {
+                  "type": "literal",
+                  "value": "style"
+                }
+              },
+              "helpShown": {
+                "type": "ref",
+                "path": "state.helpOpen"
+              }
+            }
+          }
+        }
+      },
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Campaign workflow"
+        },
+        "graph": {
+          "type": "ref",
+          "path": "state.campaignGraph"
+        }
+      },
+      "outputs": {
+        "graphChange": {
+          "setState": {
+            "key": "campaignGraph"
+          }
+        }
+      }
+    },
+    "cf-content": {
+      "kind": "element",
+      "id": "cf-content",
+      "tag": "div",
+      "children": [
+        "cf-vp",
+        "cf-status"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-wrap",
+          "value": {
+            "type": "text",
+            "value": "wrap"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "align-items",
+          "value": {
+            "type": "text",
+            "value": "stretch"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "60px"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "row"
+          }
+        },
+        {
+          "property": "background",
+          "value": {
+            "type": "text",
+            "value": "transparent"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        }
+      ],
+      "classes": [
+        "cf-content"
+      ]
+    },
+    "cf-vp": {
+      "kind": "component",
+      "id": "cf-vp",
+      "definitionId": "vict.flow.viewport",
+      "revision": "2",
+      "slots": {},
+      "props": {
+        "height": {
+          "type": "literal",
+          "value": 540
+        },
+        "label": {
+          "type": "literal",
+          "value": "Campaign workflow canvas"
+        }
+      },
+      "localStyle": [
+        {
+          "property": "flex",
+          "value": {
+            "type": "text",
+            "value": "1 1 auto"
+          }
+        },
+        {
+          "property": "min-width",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "1px solid #2b3b52"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "overflow",
+          "value": {
+            "type": "text",
+            "value": "hidden"
+          }
+        },
+        {
+          "property": "background",
+          "value": {
+            "type": "text",
+            "value": "#0d1826"
+          }
+        }
+      ]
+    },
+    "cf-status": {
+      "kind": "element",
+      "id": "cf-status",
+      "tag": "div",
+      "children": [
+        "cf-hint",
+        "cf-lbl-n",
+        "cf-count-n",
+        "cf-lbl-e",
+        "cf-count-e"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-wrap",
+          "value": {
+            "type": "text",
+            "value": "wrap"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "6px"
+          }
+        },
+        {
+          "property": "align-items",
+          "value": {
+            "type": "text",
+            "value": "center"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "60px"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "justify-content",
+          "value": {
+            "type": "text",
+            "value": "center"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "min-width",
+          "value": {
+            "type": "text",
+            "value": "150px"
+          }
+        },
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "1px solid #2b3b52"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "background",
+          "value": {
+            "type": "text",
+            "value": "#101d31"
+          }
+        }
+      ],
+      "classes": [
+        "cf-status"
+      ]
+    },
+    "cf-hint": {
+      "kind": "element",
+      "id": "cf-hint",
+      "tag": "p",
+      "children": [
+        "cf-hint-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.6"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#9fb0c7"
+          }
+        }
+      ],
+      "classes": [
+        "cf-hint"
+      ]
+    },
+    "cf-hint-text": {
+      "kind": "text",
+      "id": "cf-hint-text",
+      "content": {
+        "type": "literal",
+        "value": "Pan: drag · Zoom: wheel · Move cards by their teal header · Edit fields in place"
+      }
+    },
+    "cf-lbl-n": {
+      "kind": "element",
+      "id": "cf-lbl-n",
+      "tag": "p",
+      "children": [
+        "cf-lbl-n-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.6"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#9fb0c7"
+          }
+        }
+      ]
+    },
+    "cf-lbl-n-text": {
+      "kind": "text",
+      "id": "cf-lbl-n-text",
+      "content": {
+        "type": "literal",
+        "value": "Nodes in graph"
+      }
+    },
+    "cf-count-n": {
+      "kind": "element",
+      "id": "cf-count-n",
+      "tag": "p",
+      "children": [
+        "cf-count-n-text",
+        "cf-count-n-t"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "20px"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.6"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#e2edf7"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "700"
+          }
+        }
+      ]
+    },
+    "cf-count-n-text": {
+      "kind": "text",
+      "id": "cf-count-n-text",
+      "content": {
+        "type": "literal",
+        "value": "Give your screen a little context."
+      }
+    },
+    "cf-count-n-t": {
+      "kind": "text",
+      "id": "cf-count-n-t",
+      "content": {
+        "type": "expression",
+        "expression": {
+          "type": "ref",
+          "path": "prop.nodeCount"
+        }
+      }
+    },
+    "cf-lbl-e": {
+      "kind": "element",
+      "id": "cf-lbl-e",
+      "tag": "p",
+      "children": [
+        "cf-lbl-e-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.6"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#9fb0c7"
+          }
+        }
+      ]
+    },
+    "cf-lbl-e-text": {
+      "kind": "text",
+      "id": "cf-lbl-e-text",
+      "content": {
+        "type": "literal",
+        "value": "Typed links"
+      }
+    },
+    "cf-count-e": {
+      "kind": "element",
+      "id": "cf-count-e",
+      "tag": "p",
+      "children": [
+        "cf-count-e-text",
+        "cf-count-e-t"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "20px"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.6"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#e2edf7"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "700"
+          }
+        }
+      ]
+    },
+    "cf-count-e-text": {
+      "kind": "text",
+      "id": "cf-count-e-text",
+      "content": {
+        "type": "literal",
+        "value": "Give your screen a little context."
+      }
+    },
+    "cf-count-e-t": {
+      "kind": "text",
+      "id": "cf-count-e-t",
+      "content": {
+        "type": "expression",
+        "expression": {
+          "type": "ref",
+          "path": "prop.edgeCount"
+        }
+      }
+    },
+    "br-brief": {
+      "kind": "element",
+      "id": "br-brief",
+      "tag": "div",
+      "children": [
+        "bh-brief",
+        "bf-brief",
+        "bp-brief"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-wrap",
+          "value": {
+            "type": "text",
+            "value": "wrap"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "6px"
+          }
+        },
+        {
+          "property": "align-items",
+          "value": {
+            "type": "text",
+            "value": "center"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "60px"
+          }
+        },
+        {
+          "property": "background",
+          "value": {
+            "type": "text",
+            "value": "#122036"
+          }
+        },
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "1px solid #2b3b52"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "box-shadow",
+          "value": {
+            "type": "text",
+            "value": "0 10px 24px rgba(2,8,23,0.45)"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#e2edf7"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "10px"
+          }
+        },
+        {
+          "property": "width",
+          "value": {
+            "type": "text",
+            "value": "240px"
+          }
+        }
+      ],
+      "classes": [
+        "cf-node"
+      ]
+    },
+    "w-brief": {
+      "kind": "conditional",
+      "id": "w-brief",
+      "branches": [
+        {
+          "when": "isBrief",
+          "children": [
+            "br-brief"
+          ]
+        }
+      ]
+    },
+    "bh-brief": {
+      "kind": "element",
+      "id": "bh-brief",
+      "tag": "div",
+      "children": [
+        "bl-brief"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-wrap",
+          "value": {
+            "type": "text",
+            "value": "wrap"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "16px"
+          }
+        },
+        {
+          "property": "align-items",
+          "value": {
+            "type": "text",
+            "value": "center"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "60px"
+          }
+        },
+        {
+          "property": "background",
+          "value": {
+            "type": "text",
+            "value": "linear-gradient(90deg,#134e4a,#0f766e)"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "8px"
+          }
+        },
+        {
+          "property": "cursor",
+          "value": {
+            "type": "text",
+            "value": "grab"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "6px 8px"
+          }
+        }
+      ],
+      "classes": [
+        "vict-graph-drag-handle",
+        "cf-nodehdr"
+      ]
+    },
+    "bl-brief": {
+      "kind": "element",
+      "id": "bl-brief",
+      "tag": "p",
+      "children": [
+        "bl-brief-text",
+        "bl-brief-t"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "13px"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.6"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#ecfeff"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "700"
+          }
+        }
+      ]
+    },
+    "bl-brief-text": {
+      "kind": "text",
+      "id": "bl-brief-text",
+      "content": {
+        "type": "literal",
+        "value": "Give your screen a little context."
+      }
+    },
+    "bl-brief-t": {
+      "kind": "text",
+      "id": "bl-brief-t",
+      "content": {
+        "type": "expression",
+        "expression": {
+          "type": "ref",
+          "path": "prop.label"
+        }
+      }
+    },
+    "bf-brief": {
+      "kind": "element",
+      "id": "bf-brief",
+      "tag": "div",
+      "children": [
+        "c-sum",
+        "c-aud",
+        "c-help-b",
+        "wb-brief"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-wrap",
+          "value": {
+            "type": "text",
+            "value": "wrap"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "6px"
+          }
+        },
+        {
+          "property": "align-items",
+          "value": {
+            "type": "text",
+            "value": "center"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "60px"
+          }
+        },
+        {
+          "property": "background",
+          "value": {
+            "type": "text",
+            "value": "transparent"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        }
+      ],
+      "classes": [
+        "nodrag",
+        "nopan",
+        "nowheel",
+        "cf-fields"
+      ]
+    },
+    "c-sum": {
+      "kind": "element",
+      "id": "c-sum",
+      "tag": "textarea",
+      "children": [],
+      "attributes": {
+        "aria-label": "Campaign summary",
+        "value": {
+          "type": "ref",
+          "path": "state.summary"
+        }
+      },
+      "localStyle": [
+        {
+          "property": "background",
+          "value": {
+            "type": "text",
+            "value": "#0d1826"
+          }
+        },
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "1px solid #33455f"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "8px"
+          }
+        },
+        {
+          "property": "box-sizing",
+          "value": {
+            "type": "text",
+            "value": "border-box"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#e2edf7"
+          }
+        },
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "block"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "54px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "6px 8px"
+          }
+        },
+        {
+          "property": "width",
+          "value": {
+            "type": "text",
+            "value": "100%"
+          }
+        }
+      ],
+      "interactions": [
+        {
+          "on": "change",
+          "action": "setState",
+          "key": "summary",
+          "value": {
+            "type": "ref",
+            "path": "state.summary"
+          }
+        }
+      ]
+    },
+    "c-aud": {
+      "kind": "element",
+      "id": "c-aud",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Audience",
+        "type": "text",
+        "value": {
+          "type": "ref",
+          "path": "state.audience"
+        }
+      },
+      "localStyle": [
+        {
+          "property": "background",
+          "value": {
+            "type": "text",
+            "value": "#0d1826"
+          }
+        },
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "1px solid #33455f"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "8px"
+          }
+        },
+        {
+          "property": "box-sizing",
+          "value": {
+            "type": "text",
+            "value": "border-box"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#e2edf7"
+          }
+        },
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "block"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "6px 8px"
+          }
+        },
+        {
+          "property": "width",
+          "value": {
+            "type": "text",
+            "value": "100%"
+          }
+        }
+      ],
+      "interactions": [
+        {
+          "on": "change",
+          "action": "setState",
+          "key": "audience",
+          "value": {
+            "type": "ref",
+            "path": "state.audience"
+          }
+        }
+      ]
+    },
+    "bp-brief": {
+      "kind": "element",
+      "id": "bp-brief",
+      "tag": "div",
+      "children": [
+        "p-br-o"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-wrap",
+          "value": {
+            "type": "text",
+            "value": "wrap"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "6px"
+          }
+        },
+        {
+          "property": "align-items",
+          "value": {
+            "type": "text",
+            "value": "center"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "60px"
+          }
+        },
+        {
+          "property": "background",
+          "value": {
+            "type": "text",
+            "value": "transparent"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        }
+      ],
+      "classes": [
+        "cf-ports"
+      ]
+    },
+    "p-br-o": {
+      "kind": "component",
+      "id": "p-br-o",
+      "definitionId": "vict.flow.port",
+      "revision": "2",
+      "slots": {},
+      "props": {
+        "id": {
+          "type": "literal",
+          "value": "o"
+        }
+      }
+    },
+    "c-help-b": {
+      "kind": "element",
+      "id": "c-help-b",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Help for this node",
+        "type": "checkbox",
+        "checked": {
+          "type": "ref",
+          "path": "state.helpOpen"
+        }
+      },
+      "localStyle": [
+        {
+          "property": "accent-color",
+          "value": {
+            "type": "text",
+            "value": "#14b8a6"
+          }
+        },
+        {
+          "property": "height",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        },
+        {
+          "property": "width",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        }
+      ],
+      "interactions": [
+        {
+          "on": "change",
+          "action": "setState",
+          "key": "helpOpen",
+          "value": {
+            "type": "ref",
+            "path": "state.helpOpen"
+          }
+        }
+      ]
+    },
+    "bt-brief": {
+      "kind": "element",
+      "id": "bt-brief",
+      "tag": "p",
+      "children": [
+        "bt-brief-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "11px"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.6"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#9fb0c7"
+          }
+        }
+      ]
+    },
+    "bt-brief-text": {
+      "kind": "text",
+      "id": "bt-brief-text",
+      "content": {
+        "type": "literal",
+        "value": "Help · fans the approved brief out to both prompts and the style reference; edits save into the graph."
+      }
+    },
+    "wb-brief": {
+      "kind": "conditional",
+      "id": "wb-brief",
+      "branches": [
+        {
+          "when": "helpShown",
+          "children": [
+            "bt-brief"
+          ]
+        }
+      ]
+    },
+    "br-prompt": {
+      "kind": "element",
+      "id": "br-prompt",
+      "tag": "div",
+      "children": [
+        "bh-prompt",
+        "bf-prompt",
+        "bp-prompt"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-wrap",
+          "value": {
+            "type": "text",
+            "value": "wrap"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "6px"
+          }
+        },
+        {
+          "property": "align-items",
+          "value": {
+            "type": "text",
+            "value": "center"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "60px"
+          }
+        },
+        {
+          "property": "background",
+          "value": {
+            "type": "text",
+            "value": "#122036"
+          }
+        },
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "1px solid #2b3b52"
+          }
+        },
+        {
+          "property": "border-left",
+          "value": {
+            "type": "text",
+            "value": "3px solid #38bdf8"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "box-shadow",
+          "value": {
+            "type": "text",
+            "value": "0 10px 24px rgba(2,8,23,0.45)"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#e2edf7"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "10px"
+          }
+        },
+        {
+          "property": "width",
+          "value": {
+            "type": "text",
+            "value": "250px"
+          }
+        }
+      ],
+      "classes": [
+        "cf-node"
+      ]
+    },
+    "w-prompt": {
+      "kind": "conditional",
+      "id": "w-prompt",
+      "branches": [
+        {
+          "when": "isPrompt",
+          "children": [
+            "br-prompt"
+          ]
+        }
+      ]
+    },
+    "bh-prompt": {
+      "kind": "element",
+      "id": "bh-prompt",
+      "tag": "div",
+      "children": [
+        "bl-prompt"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-wrap",
+          "value": {
+            "type": "text",
+            "value": "wrap"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "16px"
+          }
+        },
+        {
+          "property": "align-items",
+          "value": {
+            "type": "text",
+            "value": "center"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "60px"
+          }
+        },
+        {
+          "property": "background",
+          "value": {
+            "type": "text",
+            "value": "linear-gradient(90deg,#0c4a6e,#0369a1)"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "8px"
+          }
+        },
+        {
+          "property": "cursor",
+          "value": {
+            "type": "text",
+            "value": "grab"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "6px 8px"
+          }
+        }
+      ],
+      "classes": [
+        "vict-graph-drag-handle",
+        "cf-nodehdr"
+      ]
+    },
+    "bl-prompt": {
+      "kind": "element",
+      "id": "bl-prompt",
+      "tag": "p",
+      "children": [
+        "bl-prompt-text",
+        "bl-prompt-t"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "13px"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.6"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#f0f9ff"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "700"
+          }
+        }
+      ]
+    },
+    "bl-prompt-text": {
+      "kind": "text",
+      "id": "bl-prompt-text",
+      "content": {
+        "type": "literal",
+        "value": "Give your screen a little context."
+      }
+    },
+    "bl-prompt-t": {
+      "kind": "text",
+      "id": "bl-prompt-t",
+      "content": {
+        "type": "expression",
+        "expression": {
+          "type": "ref",
+          "path": "prop.label"
+        }
+      }
+    },
+    "bf-prompt": {
+      "kind": "element",
+      "id": "bf-prompt",
+      "tag": "div",
+      "children": [
+        "c-ptext",
+        "c-help-p",
+        "wb-prompt"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-wrap",
+          "value": {
+            "type": "text",
+            "value": "wrap"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "6px"
+          }
+        },
+        {
+          "property": "align-items",
+          "value": {
+            "type": "text",
+            "value": "center"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "60px"
+          }
+        },
+        {
+          "property": "background",
+          "value": {
+            "type": "text",
+            "value": "transparent"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        }
+      ],
+      "classes": [
+        "nodrag",
+        "nopan",
+        "nowheel",
+        "cf-fields"
+      ]
+    },
+    "c-ptext": {
+      "kind": "element",
+      "id": "c-ptext",
+      "tag": "textarea",
+      "children": [],
+      "attributes": {
+        "aria-label": "Prompt text",
+        "value": {
+          "type": "ref",
+          "path": "state.text"
+        }
+      },
+      "localStyle": [
+        {
+          "property": "background",
+          "value": {
+            "type": "text",
+            "value": "#0d1826"
+          }
+        },
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "1px solid #33455f"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "8px"
+          }
+        },
+        {
+          "property": "box-sizing",
+          "value": {
+            "type": "text",
+            "value": "border-box"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#e2edf7"
+          }
+        },
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "block"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "64px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "6px 8px"
+          }
+        },
+        {
+          "property": "width",
+          "value": {
+            "type": "text",
+            "value": "100%"
+          }
+        }
+      ],
+      "interactions": [
+        {
+          "on": "change",
+          "action": "setState",
+          "key": "text",
+          "value": {
+            "type": "ref",
+            "path": "state.text"
+          }
+        }
+      ]
+    },
+    "bp-prompt": {
+      "kind": "element",
+      "id": "bp-prompt",
+      "tag": "div",
+      "children": [
+        "p-pr-i",
+        "p-pr-o"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-wrap",
+          "value": {
+            "type": "text",
+            "value": "wrap"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "6px"
+          }
+        },
+        {
+          "property": "align-items",
+          "value": {
+            "type": "text",
+            "value": "center"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "60px"
+          }
+        },
+        {
+          "property": "background",
+          "value": {
+            "type": "text",
+            "value": "transparent"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        }
+      ],
+      "classes": [
+        "cf-ports"
+      ]
+    },
+    "p-pr-i": {
+      "kind": "component",
+      "id": "p-pr-i",
+      "definitionId": "vict.flow.port",
+      "revision": "2",
+      "slots": {},
+      "props": {
+        "id": {
+          "type": "literal",
+          "value": "i"
+        }
+      }
+    },
+    "p-pr-o": {
+      "kind": "component",
+      "id": "p-pr-o",
+      "definitionId": "vict.flow.port",
+      "revision": "2",
+      "slots": {},
+      "props": {
+        "id": {
+          "type": "literal",
+          "value": "o"
+        }
+      }
+    },
+    "c-help-p": {
+      "kind": "element",
+      "id": "c-help-p",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Help for this node",
+        "type": "checkbox",
+        "checked": {
+          "type": "ref",
+          "path": "state.helpOpen"
+        }
+      },
+      "localStyle": [
+        {
+          "property": "accent-color",
+          "value": {
+            "type": "text",
+            "value": "#14b8a6"
+          }
+        },
+        {
+          "property": "height",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        },
+        {
+          "property": "width",
+          "value": {
+            "type": "text",
+            "value": "14px"
+          }
+        }
+      ],
+      "interactions": [
+        {
+          "on": "change",
+          "action": "setState",
+          "key": "helpOpen",
+          "value": {
+            "type": "ref",
+            "path": "state.helpOpen"
+          }
+        }
+      ]
+    },
+    "bt-prompt": {
+      "kind": "element",
+      "id": "bt-prompt",
+      "tag": "p",
+      "children": [
+        "bt-prompt-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "11px"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.6"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#9fb0c7"
+          }
+        }
+      ]
+    },
+    "bt-prompt-text": {
+      "kind": "text",
+      "id": "bt-prompt-text",
+      "content": {
+        "type": "literal",
+        "value": "Help · one reusable prompt body; positive and negative occurrences keep independent text values."
+      }
+    },
+    "wb-prompt": {
+      "kind": "conditional",
+      "id": "wb-prompt",
+      "branches": [
+        {
+          "when": "helpShown",
+          "children": [
+            "bt-prompt"
+          ]
+        }
+      ]
+    },
+    "br-model": {
+      "kind": "element",
+      "id": "br-model",
+      "tag": "div",
+      "children": [
+        "bh-model",
+        "bf-model"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-wrap",
+          "value": {
+            "type": "text",
+            "value": "wrap"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "6px"
+          }
+        },
+        {
+          "property": "align-items",
+          "value": {
+            "type": "text",
+            "value": "center"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "60px"
+          }
+        },
+        {
+          "property": "background",
+          "value": {
+            "type": "text",
+            "value": "#122036"
+          }
+        },
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "1px solid #2b3b52"
+          }
+        },
+        {
+          "property": "border-left",
+          "value": {
+            "type": "text",
+            "value": "3px solid #a78bfa"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "box-shadow",
+          "value": {
+            "type": "text",
+            "value": "0 10px 24px rgba(2,8,23,0.45)"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#e2edf7"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "10px"
+          }
+        },
+        {
+          "property": "width",
+          "value": {
+            "type": "text",
+            "value": "230px"
+          }
+        }
+      ],
+      "classes": [
+        "cf-node"
+      ]
+    },
+    "w-model": {
+      "kind": "conditional",
+      "id": "w-model",
+      "branches": [
+        {
+          "when": "isModel",
+          "children": [
+            "br-model"
+          ]
+        }
+      ]
+    },
+    "bh-model": {
+      "kind": "element",
+      "id": "bh-model",
+      "tag": "div",
+      "children": [
+        "bl-model"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-wrap",
+          "value": {
+            "type": "text",
+            "value": "wrap"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "16px"
+          }
+        },
+        {
+          "property": "align-items",
+          "value": {
+            "type": "text",
+            "value": "center"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "60px"
+          }
+        },
+        {
+          "property": "background",
+          "value": {
+            "type": "text",
+            "value": "linear-gradient(90deg,#4c1d95,#6d28d9)"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "8px"
+          }
+        },
+        {
+          "property": "cursor",
+          "value": {
+            "type": "text",
+            "value": "grab"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "6px 8px"
+          }
+        }
+      ],
+      "classes": [
+        "vict-graph-drag-handle",
+        "cf-nodehdr"
+      ]
+    },
+    "bl-model": {
+      "kind": "element",
+      "id": "bl-model",
+      "tag": "p",
+      "children": [
+        "bl-model-text",
+        "bl-model-t"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "13px"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.6"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#f5f3ff"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "700"
+          }
+        }
+      ]
+    },
+    "bl-model-text": {
+      "kind": "text",
+      "id": "bl-model-text",
+      "content": {
+        "type": "literal",
+        "value": "Give your screen a little context."
+      }
+    },
+    "bl-model-t": {
+      "kind": "text",
+      "id": "bl-model-t",
+      "content": {
+        "type": "expression",
+        "expression": {
+          "type": "ref",
+          "path": "prop.label"
+        }
+      }
+    },
+    "bf-model": {
+      "kind": "element",
+      "id": "bf-model",
+      "tag": "div",
+      "children": [
+        "c-msel",
+        "c-steps"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-wrap",
+          "value": {
+            "type": "text",
+            "value": "wrap"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "6px"
+          }
+        },
+        {
+          "property": "align-items",
+          "value": {
+            "type": "text",
+            "value": "center"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "60px"
+          }
+        },
+        {
+          "property": "background",
+          "value": {
+            "type": "text",
+            "value": "transparent"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        }
+      ],
+      "classes": [
+        "nodrag",
+        "nopan",
+        "nowheel",
+        "cf-fields"
+      ]
+    },
+    "c-msel": {
+      "kind": "element",
+      "id": "c-msel",
+      "tag": "select",
+      "children": [
+        "o-msel-1",
+        "o-msel-2"
+      ],
+      "attributes": {
+        "aria-label": "Model",
+        "value": {
+          "type": "ref",
+          "path": "state.model"
+        }
+      },
+      "localStyle": [
+        {
+          "property": "background",
+          "value": {
+            "type": "text",
+            "value": "#0d1826"
+          }
+        },
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "1px solid #33455f"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "8px"
+          }
+        },
+        {
+          "property": "box-sizing",
+          "value": {
+            "type": "text",
+            "value": "border-box"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#e2edf7"
+          }
+        },
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "block"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "6px 8px"
+          }
+        },
+        {
+          "property": "width",
+          "value": {
+            "type": "text",
+            "value": "100%"
+          }
+        }
+      ]
+    },
+    "o-msel-1": {
+      "kind": "element",
+      "id": "o-msel-1",
+      "tag": "option",
+      "children": [
+        "o-msel-1-t"
+      ],
+      "attributes": {
+        "value": "eco-diffusion-xl"
+      }
+    },
+    "o-msel-1-t": {
+      "kind": "text",
+      "id": "o-msel-1-t",
+      "content": {
+        "type": "literal",
+        "value": "Eco Diffusion XL"
+      }
+    },
+    "o-msel-2": {
+      "kind": "element",
+      "id": "o-msel-2",
+      "tag": "option",
+      "children": [
+        "o-msel-2-t"
+      ],
+      "attributes": {
+        "value": "eco-diffusion-lite"
+      }
+    },
+    "o-msel-2-t": {
+      "kind": "text",
+      "id": "o-msel-2-t",
+      "content": {
+        "type": "literal",
+        "value": "Eco Diffusion Lite"
+      }
+    },
+    "c-steps": {
+      "kind": "element",
+      "id": "c-steps",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "aria-label": "Steps",
+        "type": "number"
+      },
+      "localStyle": [
+        {
+          "property": "background",
+          "value": {
+            "type": "text",
+            "value": "#0d1826"
+          }
+        },
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "1px solid #33455f"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "8px"
+          }
+        },
+        {
+          "property": "box-sizing",
+          "value": {
+            "type": "text",
+            "value": "border-box"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#e2edf7"
+          }
+        },
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "block"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "6px 8px"
+          }
+        },
+        {
+          "property": "width",
+          "value": {
+            "type": "text",
+            "value": "100%"
+          }
+        }
+      ]
+    }
+  },
+  "componentDefinitions": {},
+  "styleSources": {},
+  "assets": {},
+  "tokens": {},
+  "conditions": {
+    "compact": {
+      "id": "compact",
+      "kind": "container",
+      "name": "studio-screen",
+      "query": "(max-width: 600px)"
+    }
+  },
+  "localState": {
+    "message": {
+      "key": "message",
+      "type": "string",
+      "initial": "Hello from my screen"
+    },
+    "accepted": {
+      "key": "accepted",
+      "type": "boolean",
+      "initial": false
+    },
+    "dialogOpen": {
+      "key": "dialogOpen",
+      "type": "boolean",
+      "initial": false
+    },
+    "busy": {
+      "key": "busy",
+      "type": "boolean",
+      "initial": false
+    },
+    "actionError": {
+      "key": "actionError",
+      "type": "string",
+      "initial": ""
+    },
+    "actionResult": {
+      "key": "actionResult",
+      "type": "string",
+      "initial": ""
+    },
+    "campaignGraph": {
+      "key": "campaignGraph",
+      "type": "string",
+      "initial": "{\"schema\":\"vict.flow-graph@2\",\"revision\":7,\"nodeTypes\":[{\"id\":\"brief\",\"label\":\"Campaign brief\",\"parameters\":{\"audience\":{\"default\":\"Commuters\",\"type\":\"string\"},\"summary\":{\"default\":\"\",\"type\":\"string\"}},\"ports\":[{\"direction\":\"output\",\"id\":\"o\",\"label\":\"Brief out\",\"type\":\"brief\"}]},{\"id\":\"prompt\",\"label\":\"Prompt\",\"parameters\":{\"text\":{\"default\":\"\",\"type\":\"string\"}},\"ports\":[{\"direction\":\"input\",\"id\":\"i\",\"label\":\"Brief in\",\"type\":\"brief\"},{\"direction\":\"output\",\"id\":\"o\",\"label\":\"Prompt out\",\"type\":\"prompt\"}]},{\"id\":\"model\",\"label\":\"Model settings\",\"parameters\":{\"guidance\":{\"default\":6.5,\"type\":\"number\"},\"model\":{\"default\":\"eco-diffusion-xl\",\"type\":\"string\"},\"steps\":{\"default\":28,\"type\":\"number\"}},\"ports\":[{\"direction\":\"output\",\"id\":\"o\",\"label\":\"Settings\",\"type\":\"config\"}]},{\"id\":\"style\",\"label\":\"Style reference\",\"parameters\":{\"notes\":{\"default\":\"\",\"type\":\"string\"},\"palette\":{\"default\":\"Forest teal\",\"type\":\"string\"}},\"ports\":[{\"direction\":\"input\",\"id\":\"i\",\"label\":\"Brief in\",\"type\":\"brief\"},{\"direction\":\"output\",\"id\":\"o\",\"label\":\"Style\",\"type\":\"style\"}]},{\"id\":\"seed\",\"label\":\"Seed & sampling\",\"parameters\":{\"randomize\":{\"default\":false,\"type\":\"boolean\"},\"seed\":{\"default\":4213,\"type\":\"number\"}},\"ports\":[{\"direction\":\"output\",\"id\":\"o\",\"label\":\"Seed\",\"type\":\"seed\"}]},{\"id\":\"draft\",\"label\":\"Draft generation\",\"parameters\":{\"format\":{\"default\":\"square\",\"type\":\"string\"},\"hiRes\":{\"default\":true,\"type\":\"boolean\"}},\"ports\":[{\"direction\":\"input\",\"id\":\"b\",\"label\":\"Brief\",\"type\":\"brief\"},{\"direction\":\"input\",\"id\":\"c\",\"label\":\"Settings\",\"type\":\"config\"},{\"direction\":\"input\",\"id\":\"n\",\"label\":\"Negative\",\"type\":\"prompt\"},{\"direction\":\"output\",\"id\":\"o\",\"label\":\"Draft\",\"type\":\"image\"},{\"direction\":\"input\",\"id\":\"p\",\"label\":\"Prompt\",\"type\":\"prompt\"},{\"direction\":\"input\",\"id\":\"s\",\"label\":\"Seed\",\"type\":\"seed\"},{\"direction\":\"input\",\"id\":\"t\",\"label\":\"Style\",\"type\":\"style\"}]},{\"id\":\"finish\",\"label\":\"Finishing subworkflow\",\"parameters\":{\"mode\":{\"default\":\"social\",\"type\":\"string\"},\"subgraph\":{\"default\":\"\",\"type\":\"string\"}},\"ports\":[{\"direction\":\"input\",\"id\":\"i\",\"label\":\"Draft in\",\"type\":\"image\"},{\"direction\":\"output\",\"id\":\"o\",\"label\":\"Finished\",\"type\":\"image\"}]},{\"id\":\"review\",\"label\":\"Review & approval\",\"parameters\":{\"notes\":{\"default\":\"\",\"type\":\"string\"},\"status\":{\"default\":\"Pending\",\"type\":\"string\"}},\"ports\":[{\"direction\":\"input\",\"id\":\"i\",\"label\":\"Draft in\",\"type\":\"image\"},{\"direction\":\"output\",\"id\":\"o\",\"label\":\"Decision\",\"type\":\"approval\"}]},{\"id\":\"check\",\"label\":\"Merge & delivery checklist\",\"parameters\":{\"items\":{\"default\":[],\"type\":\"stringList\"},\"ready\":{\"default\":false,\"type\":\"boolean\"}},\"ports\":[{\"direction\":\"input\",\"id\":\"p\",\"label\":\"Poster decision\",\"type\":\"approval\"},{\"direction\":\"input\",\"id\":\"s\",\"label\":\"Social decision\",\"type\":\"approval\"},{\"direction\":\"output\",\"id\":\"o\",\"label\":\"Package\",\"type\":\"check\"}]},{\"id\":\"exp\",\"label\":\"Export package\",\"parameters\":{\"destination\":{\"default\":\"campaign-foundry/mug-launch\",\"type\":\"string\"},\"format\":{\"default\":\"Web bundle\",\"type\":\"string\"}},\"ports\":[{\"direction\":\"input\",\"id\":\"i\",\"label\":\"Checklist in\",\"type\":\"check\"},{\"direction\":\"output\",\"id\":\"o\",\"label\":\"Package\",\"type\":\"package\"}]}],\"nodes\":[{\"id\":\"brief\",\"type\":\"brief\",\"label\":\"Campaign brief\",\"position\":{\"x\":89.8113024965443,\"y\":-148.1400854319886},\"values\":{\"summary\":\"Launch eco travel mug — 12h heat retention, recycled steel body\",\"audience\":\"Commuters, students, hikers\"}},{\"id\":\"pos\",\"type\":\"prompt\",\"label\":\"Positive prompt\",\"position\":{\"x\":580.7200931971163,\"y\":-36.60891736578549},\"values\":{\"text\":\"matte forest-green travel mug, soft daylight, alpine trail backdrop, product hero\"}},{\"id\":\"neg\",\"type\":\"prompt\",\"label\":\"Negative prompt\",\"position\":{\"x\":567.9519403028187,\"y\":275.3570353111645},\"values\":{\"text\":\"plastic sheen, cluttered background, warped text, low contrast\"}},{\"id\":\"model\",\"type\":\"model\",\"label\":\"Model settings\",\"position\":{\"x\":40,\"y\":320},\"values\":{\"model\":\"eco-diffusion-xl\",\"steps\":28,\"guidance\":6.5}},{\"id\":\"style\",\"type\":\"style\",\"label\":\"Style reference\",\"position\":{\"x\":40,\"y\":580},\"values\":{\"palette\":\"Forest teal\",\"notes\":\"Muted natural palette, soft gradients\"}},{\"id\":\"seed\",\"type\":\"seed\",\"label\":\"Seed & sampling\",\"position\":{\"x\":40,\"y\":830},\"values\":{\"seed\":4213,\"randomize\":false}},{\"id\":\"soc\",\"type\":\"draft\",\"label\":\"Draft · social\",\"position\":{\"x\":640,\"y\":40},\"values\":{\"format\":\"Square 1080\",\"hiRes\":true}},{\"id\":\"pst\",\"type\":\"draft\",\"label\":\"Draft · poster\",\"position\":{\"x\":640,\"y\":400},\"values\":{\"format\":\"A2 poster\",\"hiRes\":true}},{\"id\":\"finS\",\"type\":\"finish\",\"label\":\"Finishing · social\",\"position\":{\"x\":950,\"y\":60},\"values\":{\"mode\":\"social\",\"subgraph\":\"\"}},{\"id\":\"finP\",\"type\":\"finish\",\"label\":\"Finishing · poster\",\"position\":{\"x\":950,\"y\":430},\"values\":{\"mode\":\"poster\",\"subgraph\":\"\"}},{\"id\":\"revS\",\"type\":\"review\",\"label\":\"Review · social\",\"position\":{\"x\":1260,\"y\":60},\"values\":{\"status\":\"Approved\",\"notes\":\"Crop reads well on feed\"}},{\"id\":\"revP\",\"type\":\"review\",\"label\":\"Review · poster\",\"position\":{\"x\":1260,\"y\":450},\"values\":{\"status\":\"Pending\",\"notes\":\"\"}},{\"id\":\"check\",\"type\":\"check\",\"label\":\"Merge & delivery checklist\",\"position\":{\"x\":1570,\"y\":240},\"values\":{\"items\":[\"Crop 1:1 social\",\"Caption ≤90 chars\",\"Contrast AA\"],\"ready\":false}},{\"id\":\"exp\",\"type\":\"exp\",\"label\":\"Export package\",\"position\":{\"x\":1880,\"y\":240},\"values\":{\"format\":\"Web bundle\",\"destination\":\"campaign-foundry/mug-launch\"}}],\"edges\":[{\"id\":\"e01\",\"source\":\"brief\",\"sourcePort\":\"o\",\"target\":\"pos\",\"targetPort\":\"i\"},{\"id\":\"e02\",\"source\":\"brief\",\"sourcePort\":\"o\",\"target\":\"neg\",\"targetPort\":\"i\"},{\"id\":\"e03\",\"source\":\"brief\",\"sourcePort\":\"o\",\"target\":\"style\",\"targetPort\":\"i\"},{\"id\":\"e04\",\"source\":\"pos\",\"sourcePort\":\"o\",\"target\":\"soc\",\"targetPort\":\"p\"},{\"id\":\"e05\",\"source\":\"pos\",\"sourcePort\":\"o\",\"target\":\"pst\",\"targetPort\":\"p\"},{\"id\":\"e06\",\"source\":\"neg\",\"sourcePort\":\"o\",\"target\":\"soc\",\"targetPort\":\"n\"},{\"id\":\"e07\",\"source\":\"neg\",\"sourcePort\":\"o\",\"target\":\"pst\",\"targetPort\":\"n\"},{\"id\":\"e08\",\"source\":\"model\",\"sourcePort\":\"o\",\"target\":\"soc\",\"targetPort\":\"c\"},{\"id\":\"e09\",\"source\":\"model\",\"sourcePort\":\"o\",\"target\":\"pst\",\"targetPort\":\"c\"},{\"id\":\"e10\",\"source\":\"seed\",\"sourcePort\":\"o\",\"target\":\"soc\",\"targetPort\":\"s\"},{\"id\":\"e11\",\"source\":\"seed\",\"sourcePort\":\"o\",\"target\":\"pst\",\"targetPort\":\"s\"},{\"id\":\"e12\",\"source\":\"style\",\"sourcePort\":\"o\",\"target\":\"soc\",\"targetPort\":\"t\"},{\"id\":\"e13\",\"source\":\"style\",\"sourcePort\":\"o\",\"target\":\"pst\",\"targetPort\":\"t\"},{\"id\":\"e14\",\"source\":\"soc\",\"sourcePort\":\"o\",\"target\":\"finS\",\"targetPort\":\"i\"},{\"id\":\"e15\",\"source\":\"pst\",\"sourcePort\":\"o\",\"target\":\"finP\",\"targetPort\":\"i\"},{\"id\":\"e16\",\"source\":\"finS\",\"sourcePort\":\"o\",\"target\":\"revS\",\"targetPort\":\"i\"},{\"id\":\"e17\",\"source\":\"finP\",\"sourcePort\":\"o\",\"target\":\"revP\",\"targetPort\":\"i\"},{\"id\":\"e18\",\"source\":\"revS\",\"sourcePort\":\"o\",\"target\":\"check\",\"targetPort\":\"s\"},{\"id\":\"e19\",\"source\":\"revP\",\"sourcePort\":\"o\",\"target\":\"check\",\"targetPort\":\"p\"},{\"id\":\"e20\",\"source\":\"check\",\"sourcePort\":\"o\",\"target\":\"exp\",\"targetPort\":\"i\"}],\"allowCycles\":false}"
+    }
+  },
+  "theme": {
+    "schema": "vict.ui-theme@1",
+    "roles": {
+      "surface": "#0f172a",
+      "text": "#e2edf7",
+      "textMuted": "#9fb0c7",
+      "border": "#2b3b52",
+      "accent": "#14b8a6",
+      "accentText": "#032722",
+      "highlight": "#0d9488",
+      "highlightText": "#ecfeff",
+      "focusRing": "#2dd4bf",
+      "disabledSurface": "#1b2940",
+      "disabledText": "#64748b",
+      "elevation": "0 14px 36px rgba(2, 8, 23, 0.55)"
+    }
+  }
+}

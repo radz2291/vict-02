@@ -1,0 +1,155 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Campaign Foundry — complex node suite"
+  - generic: ○ New screen
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- banner:
+  - strong: Chat
+  - button "Hide Chat":
+- complementary "Chat":
+  - region "Conversation":
+    - region "Messages — Message":
+      - log:
+        - generic: You
+        - generic: "Build Campaign Foundry as a complex, useful ComfyUI-inspired visual campaign workflow suite on this fresh screen. This is a real node/flow stress test, not a static illustration or a grid of copied cards. Scenario: prepare a launch campaign for a fictional eco-friendly travel mug. Build roughly14 top-level nodes and18 meaningful typed connections across a branching pipeline: campaign brief, positive prompt, negative prompt, model settings, style reference, seed/settings, two draft-generation configurations (social and poster), two finishing subworkflows, two review/approval nodes, a merge/delivery checklist and an export-package configuration. Shared inputs must fan out; branches converge. Use at least8 meaningful reusable node types, readable port labels and useful initial values. Each rich node should have appropriate ordinary controls (text/textarea, select, number/toggle when supported), not just captions. Both Finishing nodes must use ONE reusable body containing a genuine nested graph, with independent controlled graph parameters. Each nested graph has3 editable steps connected in sequence (crop/layout, caption, quality check); deliberately reuse the inner step IDs across the two occurrences. Node values must stay independent across shared bodies. Use in-node Help menus with private temporary open state. The user must be able to edit configuration, approval statuses, drag/pan/zoom and create/remove typed connections through normal supported controls, then save/reopen the authored setup. Provide a coherent surrounding app: compact campaign summary, workflow canvas, delivery checklist/status fields and a short usable guide. Prefer a dark slate/teal visual system with category accents. Keep cards/fields readable at working zoom and allow navigating a large workflow instead of shrinking all text to fit. Discover and use current public registered UI/Flow authoring capabilities and validated operations. Add no mandatory inspector/toolbar or Flow-specific control adapter. Do not replace canonical source with an opaque handmade blob, copy unrelated saved screens, weaken validation or invent component/action names. Graph connections configure intent; they do not themselves execute models. Reuse existing authorized execution capabilities only if actually available. Otherwise label generation/export/publishing as configuration-only or unavailable and do not fake generated assets, completed runs or backend execution. No provider/account changes or external effects. Ordinary local approval/configuration interactions should work. Build incrementally in validated transactions and keep accepted progress if a later operation refuses. If one turn is bounded, finish a coherent checkpoint and say exactly what remains; we will continue the SAME app. Leave Studio Save to me. Report confirmed source changes, actual observations and untested behavior separately, briefly."
+        - button "Copy message":
+        - generic: Assistant
+        - status: Stopped. No edits were applied.
+        - button "Public activity and tool details" [expanded]:
+          - text: Public activity and tool details
+        - generic "Conversation timeline":
+          - paragraph: "I'll build Campaign Foundry as a real node-graph workspace: first a quick discovery of the Flow canvas identity, graph data grammar, existing state, and authorable elements."
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph:
+            - text: Canvas is
+            - code: vict.flow.canvas@1
+            - text: with graph grammar
+            - code: vict.flow-graph@2
+            - text: /
+            - code: vict.flow-operations@2
+            - text: ; the six states are unused template seeds. Now I
+        - paragraph: No successful final response. Public notes and tool receipts remain in details.
+        - button "Copy message":
+    - button "Scroll to latest message":
+      - generic: Scroll to end
+    - textbox "Message":
+      - /placeholder: Ask for a change…
+    - button "Send" [disabled]:
+      - generic: Send
+    - status
+  - status "Stopped. No edits were applied.":
+    - generic: Stopped
+  - button "Chat details" [expanded]: ···
+  - generic "Chat details":
+    - heading "Chat details" [level=3]
+    - button "Close chat details" [active]: ×
+    - paragraph: zai/glm-5.3-flash
+    - text: Turn details
+    - combobox "Inspect turn":
+      - option "Latest activity" [selected]
+      - option "9:38:41 AM · cancelled · Build Campaign Foundry as a complex, useful ComfyUI-inspired"
+    - paragraph: Up to 24 turns retained for 30 minutes in this tab. Reloading clears local history; server evidence also expires or disappears on restart/capacity eviction.
+    - paragraph: "Selected: Element · Screen"
+    - paragraph: Stopped. No edits were applied.
+    - button "Reconnect agent"
+    - heading "Turn measurements" [level=4]
+    - paragraph: 4 tool calls · 0 refused · 0 calls after refusal · 271.8 s elapsed.
+    - paragraph: Partial browser measurements; the server completion receipt was not received. Provider requests and token usage unavailable.
+    - paragraph: 0 receipt-derived edits including cleanup.
+    - paragraph: 0 knowledge reads · 4 source reads · 0 edit calls · 0 observation calls.
+    - paragraph: "Settled tool durations summed: 0.1 s; tool-active interval union: 0.0 s; outside-tool time: 271.7 s."
+    - paragraph: Outside-tool time includes waiting, generation, transport and host overhead; exact provider latency is unavailable.
+    - paragraph: Exact model steps and cost unavailable. Concurrent tool durations do not add up to wall time.
+    - heading "Progress summaries" [level=4]
+    - paragraph: Connection, validation and completion metadata. The conversation contains actual assistant messages and tool calls.
+    - list:
+      - listitem: Connecting…
+      - listitem: Reading screen…
+      - listitem: Connecting to the VICT / Mastra agent…
+      - listitem: Agent is working on your request…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Reading current source facts…
+      - listitem: Stopped. No edits were applied.
+      - listitem: Stopped. No edits were applied.
+    - heading "Tool receipts" [level=4]
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 260519 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 260530 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-a8690ffa-1e90-4b72-909c-66141d372773\",\"revision\":\"r1#0\",\"digest\":\"93d676d6eac5493555cf635ea447f2c574d136328f7270ed6b4144e5582c779c\",\"epoch\":\"bbab89a5-53a9-4e65-9894-0bcec138d15d\"},\"section\":\"catalog\",\"registryDigest\":\"31ac6d12542954095f60fc6c0ab90d379abbb665aa648d48d4cb77ca9b904288\",\"items\":[{\"id\":\"vict.flow.canvas\",\"revision\":\"1\",\"label\":\"Flow canvas\",\"family\":\"flow\",\"category\":\"diagram\",\"eligibility\":{\"kind\":\"standalone\"},\"digest\":\"3bf1d1da07ec917d35bc1c1bcddf23eb172d4d9d9b42c82c85e22938d8638743\",\"packageName\":\"@victframework/ui-flow-svelte\"}],\"total\":1,\"offset\":0,\"nextOffset\":null}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 260520 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 260534 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-a8690ffa-1e90-4b72-909c-66141d372773\",\"revision\":\"r1#0\",\"digest\":\"93d676d6eac5493555cf635ea447f2c574d136328f7270ed6b4144e5582c779c\",\"epoch\":\"bbab89a5-53a9-4e65-9894-0bcec138d15d\"},\"section\":\"registry\",\"registry\":\"dataContracts\",\"registryDigest\":\"31ac6d12542954095f60fc6c0ab90d379abbb665aa648d48d4cb77ca9b904288\",\"items\":[{\"key\":\"vict.flow-graph@2\",\"id\":\"vict.flow-graph\",\"revision\":\"2\",\"digest\":\"10a7de9050901401fb0badef539d3d5717d614665dd476fe7b2b09453c355329\"},{\"key\":\"vict.flow-operations@2\",\"id\":\"vict.flow-operations\",\"revision\":\"2\",\"digest\":\"26b0310710b12527a9a8a056bea7cb5b5ccd45e46ede22a87ddbb4b8a03dbde7\"},{\"key\":\"vict.flow-graph@1\",\"id\":\"vict.flow-graph\",\"revision\":\"1\",\"digest\":\"a531258d39e6768ad6d0121294353fccf3e915c1194e245181b345598f26a58e\"},{\"key\":\"vict.flow-operations@1\",\"id\":\"vict.flow-operations\",\"revision\":\"1\",\"digest\":\"a2d47737b8d10348def62200794a52ad3227f421eb0eb9cc08d5fcc19fd794dc\"}],\"total\":4,\"offset\":0,\"nextOffset\":null,\"guidance\":\"Read one exact key as lossless JSON text pages. Contract schema/examples are package-owned knowledge, not authored app source or a prepared editor template.\"}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 260521 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 260536 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-a8690ffa-1e90-4b72-909c-66141d372773\",\"revision\":\"r1#0\",\"digest\":\"93d676d6eac5493555cf635ea447f2c574d136328f7270ed6b4144e5582c779c\",\"epoch\":\"bbab89a5-53a9-4e65-9894-0bcec138d15d\"},\"section\":\"state\",\"items\":[{\"key\":\"message\",\"type\":\"string\",\"initialJson\":\"\\\"Hello from my screen\\\"\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"},{\"key\":\"accepted\",\"type\":\"boolean\",\"initialJson\":\"false\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"},{\"key\":\"dialogOpen\",\"type\":\"boolean\",\"initialJson\":\"false\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"},{\"key\":\"busy\",\"type\":\"boolean\",\"initialJson\":\"false\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"},{\"key\":\"actionError\",\"type\":\"string\",\"initialJson\":\"\\\"\\\"\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"},{\"key\":\"actionResult\",\"type\":\"string\",\"initialJson\":\"\\\"\\\"\",\"fullSource\":\"Read state with stateKey for lossless declaration JSON pages.\"}],\"total\":6,\"offset\":0,\"nextOffset\":null}"
+    - paragraph: Read screen
+    - list:
+      - text: Read screen started · running
+      - generic: tool-start studio_screen_read 260522 ms since turn start
+      - text: Read current source facts · completed
+      - generic: "observation studio_screen_read 260538 ms since turn start {\"expectedRevision\":\"r1#0\",\"cursor\":{\"documentId\":\"screen-a8690ffa-1e90-4b72-909c-66141d372773\",\"revision\":\"r1#0\",\"digest\":\"93d676d6eac5493555cf635ea447f2c574d136328f7270ed6b4144e5582c779c\",\"epoch\":\"bbab89a5-53a9-4e65-9894-0bcec138d15d\"},\"section\":\"elements\",\"items\":[{\"tag\":\"option\",\"leaf\":false}],\"total\":1,\"offset\":0,\"nextOffset\":null,\"guidance\":\"Read elements with tag for its attributes; native tags are not component descriptors.\"}"
+    - heading "Sanitized exchanges" [level=4]
+    - paragraph: Compact previews remain in the conversation. Open a retained original page here; this never invokes a tool again.
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+    - paragraph: Read screen · input
+    - button "Open first page"
+    - paragraph: Read screen · result
+    - button "Open first page"
+- separator "Chat width"
+- main:
+  - button "Toggle Chat drawer" [expanded]:
+  - group "Workspace mode":
+    - button "Design" [pressed]
+    - button "Interact"
+    - button "Structure"
+  - button "Toggle Document and Selection drawer":
+  - iframe:
+    - generic "Screen canvas":
+      - main "Campaign Foundry — complex node suite"
+  - generic: ＋
+  - heading "What will you make?" [level=1]
+  - paragraph: Select this screen to open its tools, then choose Insert.
+- contentinfo:
+  - status: New screen · not saved yet.
+- generic: Designer — VICT Studio

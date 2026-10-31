@@ -642,7 +642,7 @@
       const executed = await active.run(op, value);
       return executed.ok ? { ok: true, value: executed.value } : { ok: false, code: executed.code, message: executed.message };
     }).execute(actionId, input);
-    if (active === preview) activity = [...activity.slice(-4), `${actionId}: ${result.message ?? (result.ok ? 'Succeeded' : result.code)}`];
+    if (active === preview) activity = [...activity, `${actionId}: ${result.message ?? (result.ok ? 'Succeeded' : result.code)}`];
     return result;
   }
   function effective(occurrence: string, property: string) {
@@ -803,7 +803,7 @@
             textSelectionContainerHighlight selectionHighlightSignal={workspaceView} interactionMode={mode} selectedOccurrences={mode==='design'?selectedOccurrences:[]} onSelectionIntent={canvasSelection} onClearSelection={clearWorkspaceSelection} selectedOccurrence={mode === 'design' ? selected : undefined} onSelect={mode === 'design' ? selectOccurrence : () => {}} {dispatch} navigate={() => { notice = 'This application contains one screen.'; }}
             stateValues={runtimeValues} onStateChange={runtimeStateChanged} {resetSignal}
             actionState={screenActionState} onPlan={(next: UiRenderPlan) => { plan = next; }}
-            onRenderDiagnostic={(diagnostic: { code: string; message: string }) => { issues = [...issues.slice(-4), diagnostic]; }} ariaLabel="Screen canvas" />
+            onRenderDiagnostic={(diagnostic: { code: string; message: string }) => { issues = [...issues, diagnostic]; }} ariaLabel="Screen canvas" />
           </AssetProvider>
           </ApplicationViewport>
           {#if compositionFocus && !focusedMembers?.size}<div class="empty-composition"><h2>This composition is empty</h2><p>Select the composition, then choose Insert in its tools.</p></div>{:else if Object.keys(source.nodes).length === 1}<div class="empty-canvas"><span>＋</span><h1>What will you make?</h1><p>Select this screen to open its tools, then choose Insert.</p></div>{/if}

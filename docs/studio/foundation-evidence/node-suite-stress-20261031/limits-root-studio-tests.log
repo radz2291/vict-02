@@ -1,0 +1,30 @@
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/apps/studio
+
+ ✓ tests/task-metrics-unlimited.test.ts (3 tests) 17ms
+ ✓ tests/media-assets.test.ts (7 tests) 32ms
+ ✓ tests/authoring-foundation-continuity.test.ts (6 tests) 92ms
+10:33:33 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+10:33:34 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+10:33:34 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+10:33:34 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+10:33:34 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+stdout | tests/independent-nested-route-guidance.test.ts > independent: real paged knowledge delivers an executable generic example with distinct target and containing revisions
+{"pages":2,"bodyIdentity":"studio-contract-body@2:guidance:f00c11a2889c86aa4b79171bc2dd55f2835f27918a933bc1562cd4be7ab61bcb","presentationBytes":31864,"distinctTargetParentRevisions":true}
+
+ ✓ tests/independent-nested-route-guidance.test.ts (2 tests) 442ms
+   ✓ independent: real paged knowledge delivers an executable generic example with distinct target and containing revisions  413ms
+ ✓ tests/media-start-transport.test.ts (4 tests) 85ms
+ ✓ tests/designer-cycle14-efficiency.test.ts (6 tests) 2174ms
+   ✓ enforces completed knowledge and delivers measured progress through the actual pinned executor (offline model, no provider/design quality claim)  2095ms
+
+ Test Files  6 passed (6)
+      Tests  28 passed (28)
+   Start at  10:33:19
+   Duration  32.94s (transform 22.58s, setup 0ms, collect 86.39s, tests 2.84s, environment 3ms, prepare 2.91s)
+

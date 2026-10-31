@@ -24,7 +24,7 @@
  * ```text
  * null
  * boolean
- * string            (bounded length)
+ * string            (no host-imposed length quota)
  * finite number     (NaN / ±Infinity rejected)
  * dense arrays of delivery-safe values
  *                   (own keys are exactly the contiguous indices 0..k-1;
@@ -42,8 +42,9 @@
  * - values are read ONLY from own enumerable data-property descriptors —
  *   no getter, setter, proxy `get`/`has` trap, user iterator, `toJSON`
  *   hook, or thenable hook is EVER invoked during structural capture;
- * - `JSON.stringify`, `structuredClone`, and every user-provided
- *   serialization hook are never used for validation;
+ * - caller values never reach `JSON.stringify`, `structuredClone`, or user
+ *   serialization hooks. Only the fresh, validated owned snapshot is probed for
+ *   actual downstream JSON encoding failure before durable completion;
  * - the result is a FRESH VICT-owned structure: no caller reference or
  *   alias survives at any nesting level, so post-return caller mutation of
  *   the original output can never change the delivered value, the summary,
@@ -54,9 +55,9 @@
  * - functions, BigInt, Symbol, `undefined`, non-finite numbers, and every
  *   non-plain instance (class instances, Date, Map, Set, RegExp, …) are
  *   rejected — nothing is silently stringified or coerced;
- * - recursion depth, total captured nodes, collection lengths, per-object
- *   property counts, and string sizes are bounded; every bound fails
- *   CLOSED;
+ * - capture uses an explicit work stack, without default depth/count/size quotas;
+ *   a caller may explicitly request the legacy bounds. Actual runtime serialization
+ *   failure still rejects before durable completion, without retaining caller data;
  * - a nested container that cannot be PROVEN plain (reflection throws or
  *   lies — the descriptor and own-key views disagree, a revoked proxy) is
  *   rejected as `uninspectable`;
@@ -88,7 +89,7 @@
 
 import { captureControlRecord } from './control-envelope.js';
 
-/** The bounded capture limits for one delivery snapshot. */
+/** Optional explicit caller policy; the shared delivery boundary has no default quotas. */
 export interface DeliverySnapshotBounds {
   /** Maximum container nesting depth (the root container is depth 0). */
   readonly maxDepth: number;
@@ -102,11 +103,8 @@ export interface DeliverySnapshotBounds {
   readonly maxStringLength: number;
 }
 
-/**
- * The delivery-snapshot bounds. Chosen to bound any single delivered
- * capability result far below framework serialization limits while
- * admitting every realistic governed output; exceeded bounds fail closed
- * (`VICT_CAPABILITY_UNSAFE_OUTPUT_STRUCTURE` at the bridge).
+/** Historical explicit bounds, retained for callers that deliberately opt in.
+ * @deprecated These are not applied by default. Size alone is not unsafe structure.
  */
 export const DELIVERY_SNAPSHOT_BOUNDS: DeliverySnapshotBounds = Object.freeze({
   maxDepth: 16,
@@ -172,229 +170,136 @@ export type DeliverySnapshotResult =
 /** Canonical (own) array-index key: a non-negative integer without leading zeros. */
 const ARRAY_INDEX_PATTERN = /^(?:0|[1-9][0-9]*)$/;
 
-/** Internal mutable capture state (node budget, ancestors on the current path). */
-interface CaptureState {
-  nodes: number;
-  readonly ancestors: Set<object>;
-  readonly bounds: DeliverySnapshotBounds;
-}
-
-/**
- * Capture a contract-validated capability result into a fresh VICT-owned
- * delivery-safe snapshot. TOTAL (never throws) and passive (never invokes
- * getter/setter/iterator/`toJSON`/proxy `get`/`has`/thenable code): object
- * structure is read exclusively through the shared guarded descriptor
- * capture, and every produced value is either a captured scalar or a newly
- * built plain container.
- *
- * Returns `{ ok: false, reason }` for ANY value outside the documented
- * delivery-safe domain or beyond any bound — the caller (the bridge) MUST
- * reject such outputs before durable completion.
+/** Capture plain data completely without recursive traversal or implicit size quotas.
+ * The H-1 completion fence and N-1 proto/control-marker rejection remain shared
+ * package responsibilities, not duplicated Studio policy.
  */
 export function captureDeliverySafeSnapshot(
   value: unknown,
-  bounds: DeliverySnapshotBounds = DELIVERY_SNAPSHOT_BOUNDS,
+  bounds?: DeliverySnapshotBounds,
 ): DeliverySnapshotResult {
+  type Task =
+    | {
+        kind: 'value';
+        input: unknown;
+        depth: number;
+        target: Record<string, unknown> | unknown[];
+        key: string | number;
+      }
+    | { kind: 'leave'; container: object };
   try {
-    return captureValue(value, 0, {
-      nodes: 0,
-      ancestors: new Set<object>(),
-      bounds,
-    });
+    const root: Record<string, unknown> = {};
+    const ancestors = new Set<object>();
+    const tasks: Task[] = [{ kind: 'value', input: value, depth: 0, target: root, key: 'value' }];
+    let nodes = 0;
+    const set = (
+      target: Record<string, unknown> | unknown[],
+      key: string | number,
+      captured: unknown,
+    ) => {
+      Object.defineProperty(target, key, {
+        value: captured,
+        enumerable: true,
+        configurable: true,
+        writable: true,
+      });
+    };
+    while (tasks.length) {
+      const task = tasks.pop()!;
+      if (task.kind === 'leave') {
+        ancestors.delete(task.container);
+        continue;
+      }
+      const input = task.input;
+      nodes++;
+      if (bounds && nodes > bounds.maxNodes) return { ok: false, reason: 'node-limit-exceeded' };
+      if (
+        input === null ||
+        typeof input === 'boolean' ||
+        typeof input === 'string' ||
+        typeof input === 'number'
+      ) {
+        if (typeof input === 'number' && !Number.isFinite(input))
+          return { ok: false, reason: 'non-finite-number' };
+        if (typeof input === 'string' && bounds && input.length > bounds.maxStringLength)
+          return { ok: false, reason: 'string-length-exceeded' };
+        set(task.target, task.key, input);
+        continue;
+      }
+      if (typeof input === 'undefined') return { ok: false, reason: 'undefined-value' };
+      if (typeof input === 'bigint') return { ok: false, reason: 'bigint-value' };
+      if (typeof input === 'symbol') return { ok: false, reason: 'symbol-value' };
+      if (typeof input === 'function') return { ok: false, reason: 'function-value' };
+      if (typeof input !== 'object') return { ok: false, reason: 'uninspectable' };
+      if (ancestors.has(input)) return { ok: false, reason: 'cycle' };
+      if (bounds && task.depth >= bounds.maxDepth) return { ok: false, reason: 'depth-exceeded' };
+      const isArray = Array.isArray(input);
+      const capture = captureControlRecord(input);
+      if (capture.kind !== 'captured') return { ok: false, reason: 'uninspectable' };
+      if (capture.hasSymbolKeys) return { ok: false, reason: 'symbol-key' };
+      const fields: [string, unknown][] = [];
+      let snapshot: Record<string, unknown> | unknown[];
+      if (isArray) {
+        const indices: number[] = [];
+        for (const [key, field] of capture.fields) {
+          if (key === 'length' && !field.enumerable) continue;
+          if (!ARRAY_INDEX_PATTERN.test(key)) return { ok: false, reason: 'extra-array-property' };
+          indices.push(Number(key));
+        }
+        indices.sort((left, right) => left - right);
+        for (let index = 0; index < indices.length; index++)
+          if (indices[index] !== index) return { ok: false, reason: 'sparse-array' };
+        if (bounds && indices.length > bounds.maxCollectionLength)
+          return { ok: false, reason: 'collection-length-exceeded' };
+        for (const [key, field] of capture.fields) {
+          if (key === 'length' && !field.enumerable) continue;
+          if (field.kind === 'accessor') return { ok: false, reason: 'accessor-field' };
+          if (!field.enumerable) return { ok: false, reason: 'non-enumerable-field' };
+        }
+        for (const index of indices) {
+          const field = capture.fields.get(String(index));
+          if (!field || field.kind !== 'data') return { ok: false, reason: 'sparse-array' };
+          fields.push([String(index), field.value]);
+        }
+        snapshot = new Array(indices.length);
+      } else {
+        if (capture.prototype === 'exotic') return { ok: false, reason: 'exotic-prototype' };
+        // Preserve N-1 precedence: no nested forbidden proto key is ever written.
+        for (const key of capture.fields.keys())
+          if (key === '__proto__') return { ok: false, reason: 'proto-field' };
+        for (const [key, field] of capture.fields) {
+          if (isReservedOrThenKey(key))
+            return { ok: false, reason: key === 'then' ? 'then-field' : 'reserved-marker' };
+          if (field.kind === 'accessor') return { ok: false, reason: 'accessor-field' };
+          if (!field.enumerable) return { ok: false, reason: 'non-enumerable-field' };
+          fields.push([key, field.value]);
+        }
+        if (bounds && fields.length > bounds.maxPropertyCount)
+          return { ok: false, reason: 'property-count-exceeded' };
+        snapshot = {};
+      }
+      set(task.target, task.key, snapshot);
+      ancestors.add(input);
+      tasks.push({ kind: 'leave', container: input });
+      for (let index = fields.length - 1; index >= 0; index--) {
+        const [key, child] = fields[index]!;
+        tasks.push({ kind: 'value', input: child, depth: task.depth + 1, target: snapshot, key });
+      }
+    }
+    // Probe only owned plain data. A changed intrinsic serialization hook must
+    // never run here; actual VM serialization failure is not a task quota.
+    for (const prototype of [Object.prototype, Array.prototype]) {
+      const hook = Object.getOwnPropertyDescriptor(prototype, 'toJSON');
+      if (hook && (!('value' in hook) || typeof hook.value === 'function'))
+        return { ok: false, reason: 'uninspectable' };
+    }
+    JSON.stringify(root.value);
+    return { ok: true, value: root.value };
   } catch {
-    // Absolute backstop: no capture failure can ever escape this module.
-    return { ok: false, reason: 'uninspectable' } as const;
+    return { ok: false, reason: 'uninspectable' };
   }
 }
 
-function captureValue(value: unknown, depth: number, state: CaptureState): DeliverySnapshotResult {
-  // ---- Node budget (every captured value counts) -------------------------
-  state.nodes += 1;
-  if (state.nodes > state.bounds.maxNodes) {
-    return { ok: false, reason: 'node-limit-exceeded' } as const;
-  }
-  // ---- Scalars ------------------------------------------------------------
-  if (value === null) {
-    return { ok: true, value: null } as const;
-  }
-  switch (typeof value) {
-    case 'string':
-      if (value.length > state.bounds.maxStringLength) {
-        return { ok: false, reason: 'string-length-exceeded' } as const;
-      }
-      return { ok: true, value } as const;
-    case 'boolean':
-      return { ok: true, value } as const;
-    case 'number':
-      if (!Number.isFinite(value)) {
-        return { ok: false, reason: 'non-finite-number' } as const;
-      }
-      return { ok: true, value } as const;
-    case 'undefined':
-      return { ok: false, reason: 'undefined-value' } as const;
-    case 'bigint':
-      return { ok: false, reason: 'bigint-value' } as const;
-    case 'symbol':
-      return { ok: false, reason: 'symbol-value' } as const;
-    case 'function':
-      return { ok: false, reason: 'function-value' } as const;
-    case 'object':
-      break;
-    default:
-      return { ok: false, reason: 'uninspectable' } as const;
-  }
-  // ---- Containers (guarded, descriptor-only, fresh rebuild) ---------------
-  const container = value as object;
-  if (state.ancestors.has(container)) {
-    return { ok: false, reason: 'cycle' } as const;
-  }
-  if (depth >= state.bounds.maxDepth) {
-    return { ok: false, reason: 'depth-exceeded' } as const;
-  }
-  let isArray: boolean;
-  try {
-    isArray = Array.isArray(container);
-  } catch {
-    return { ok: false, reason: 'uninspectable' } as const;
-  }
-  const capture = captureControlRecord(container);
-  if (capture.kind !== 'captured') {
-    return { ok: false, reason: 'uninspectable' } as const;
-  }
-  if (capture.hasSymbolKeys) {
-    return { ok: false, reason: 'symbol-key' } as const;
-  }
-  if (isArray) {
-    return captureArray(container, capture, depth, state);
-  }
-  if (capture.prototype === 'exotic') {
-    // Class instances, Date, Map, Set, RegExp, boxed primitives, and every
-    // other non-plain instance are OUTSIDE the delivery domain — rejected,
-    // never coerced. (A transparently-behaving proxy over a plain target
-    // reports `Object.prototype` here and therefore contributes its
-    // descriptor DATA to the snapshot; the proxy itself never survives.)
-    return { ok: false, reason: 'exotic-prototype' } as const;
-  }
-  // Reserved bridge markers, own `then` fields, and — since the Stage 07A
-  // N-1 hardening — own `__proto__` keys are rejected at EVERY nesting
-  // level, in ANY own form (data, accessor, hidden) — never read. The own
-  // `__proto__` rejection is a DEDICATED FIRST PASS over the captured key
-  // set, so the closed `proto-field` reason fires deterministically for
-  // any object carrying an own `__proto__` key regardless of the other
-  // fields' shapes, and BEFORE the snapshot is built (no captured field is
-  // ever written through the inherited `__proto__` setter, which would
-  // drop scalar values and promote object values to the delivered
-  // container's prototype). Arrays cannot carry an own `__proto__` index;
-  // an array-side own `__proto__` property is already rejected as
-  // `extra-array-property` below.
-  for (const key of capture.fields.keys()) {
-    if (key === '__proto__') {
-      return { ok: false, reason: 'proto-field' } as const;
-    }
-  }
-  for (const [key, field] of capture.fields) {
-    if (isReservedOrThenKey(key)) {
-      return {
-        ok: false,
-        reason: key === 'then' ? ('then-field' as const) : ('reserved-marker' as const),
-      } as const;
-    }
-    if (field.kind === 'accessor') {
-      return { ok: false, reason: 'accessor-field' } as const;
-    }
-    if (!field.enumerable) {
-      return { ok: false, reason: 'non-enumerable-field' } as const;
-    }
-  }
-  if (capture.fields.size > state.bounds.maxPropertyCount) {
-    return { ok: false, reason: 'property-count-exceeded' } as const;
-  }
-  const snapshot: Record<string, unknown> = {};
-  state.ancestors.add(container);
-  try {
-    for (const [key, field] of capture.fields) {
-      if (field.kind !== 'data') {
-        return { ok: false, reason: 'accessor-field' } as const;
-      }
-      const captured = captureValue(field.value, depth + 1, state);
-      if (!captured.ok) {
-        return captured;
-      }
-      snapshot[key] = captured.value;
-    }
-  } finally {
-    state.ancestors.delete(container);
-  }
-  return { ok: true, value: snapshot } as const;
-}
-
-function captureArray(
-  container: object,
-  capture: Extract<ReturnType<typeof captureControlRecord>, { kind: 'captured' }>,
-  depth: number,
-  state: CaptureState,
-): DeliverySnapshotResult {
-  // Array own string keys must be EXACTLY the contiguous indices 0..k-1
-  // plus the INTRINSIC non-enumerable `length` (never read — a proxy-array
-  // `get` trap must never fire; density is proven from the own-key set
-  // alone, so an array whose length exceeds its highest contiguous index is
-  // delivered as its DENSE VICT-owned prefix — the sparse shape itself is
-  // never delivered). Any other string key is an extra array property; any
-  // missing index is a hole (a sparse array). Symbol keys were already
-  // rejected.
-  const indices: number[] = [];
-  for (const [key, field] of capture.fields) {
-    if (key === 'length' && !field.enumerable) {
-      // Intrinsic array length: present-but-unread, never captured.
-      continue;
-    }
-    if (!ARRAY_INDEX_PATTERN.test(key)) {
-      return { ok: false, reason: 'extra-array-property' } as const;
-    }
-    indices.push(Number(key));
-  }
-  indices.sort((a, b) => a - b);
-  for (let i = 0; i < indices.length; i += 1) {
-    if (indices[i] !== i) {
-      return { ok: false, reason: 'sparse-array' } as const;
-    }
-  }
-  const length = indices.length;
-  if (length > state.bounds.maxCollectionLength) {
-    return { ok: false, reason: 'collection-length-exceeded' } as const;
-  }
-  for (const [key, field] of capture.fields) {
-    if (key === 'length' && !field.enumerable) {
-      continue;
-    }
-    if (field.kind === 'accessor') {
-      return { ok: false, reason: 'accessor-field' } as const;
-    }
-    if (!field.enumerable) {
-      return { ok: false, reason: 'non-enumerable-field' } as const;
-    }
-  }
-  const snapshot: unknown[] = new Array(length);
-  state.ancestors.add(container);
-  try {
-    for (let i = 0; i < length; i += 1) {
-      const field = capture.fields.get(String(i));
-      if (field === undefined || field.kind !== 'data') {
-        return { ok: false, reason: 'sparse-array' } as const;
-      }
-      const captured = captureValue(field.value, depth + 1, state);
-      if (!captured.ok) {
-        return captured;
-      }
-      snapshot[i] = captured.value;
-    }
-  } finally {
-    state.ancestors.delete(container);
-  }
-  return { ok: true, value: snapshot } as const;
-}
-
-/** Reserved bridge marker or own `then` field (rejected in any own form). */
 function isReservedOrThenKey(key: string): boolean {
   return (
     key === 'then' ||
