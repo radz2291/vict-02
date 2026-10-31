@@ -1,7 +1,7 @@
 param([Parameter(Mandatory=$true)][ValidatePattern('^[0-9a-f]{40}$')][string]$ArtifactReviewCommit)
 $ErrorActionPreference='Stop'
 $repo='C:\Users\RZ1\.codex\worktrees\vict-architecture-realignment-20261030'
-$stage='C:\Users\RZ1\AppData\Local\Temp\vict-graph3-ports-efa28ff4-stage'
+$stage='C:\Users\RZ1\AppData\Local\Temp\vict-graph3-ports-bac78684-stage'
 $build=Join-Path $repo 'apps/studio/build'
 $newBuild=Join-Path $stage 'apps/studio/build'
 $backup='C:\Users\RZ1\AppData\Local\Temp\vict-pre-graph3-4fca-20261031-build'
@@ -11,7 +11,7 @@ $review=(& git -C $repo rev-parse --verify ($ArtifactReviewCommit+'^{commit}')).
 if($LASTEXITCODE -ne 0 -or $review -ne $ArtifactReviewCommit){throw 'Missing exact independent artifact review'}
 $sealPath=Join-Path $evidence 'graph3-port-row-production-seal.json'
 $seal=Get-Content -LiteralPath $sealPath -Raw|ConvertFrom-Json
-if($seal.sourceCandidate -ne 'efa28ff414ab62cc5e3abfed5deeea9c275edb38' -or $seal.totalFiles -ne (@($seal.coreFiles)+@($seal.historicalProofFiles)+@($seal.addedPublicProofFiles)).Count -or $seal.activationPerformed -ne $false){throw 'Unexpected production seal'}
+if($seal.sourceCandidate -ne 'bac786840d7519c041638e1b9d239d54efdf56f5' -or $seal.totalFiles -ne (@($seal.coreFiles)+@($seal.historicalProofFiles)+@($seal.addedPublicProofFiles)).Count -or $seal.activationPerformed -ne $false){throw 'Unexpected production seal'}
 $reviewPath='docs/studio/foundation-evidence/node-suite-stress-20261031/graph3-port-row-independent-artifact-association.json'
 $reviewText=@(& git -C $repo show ($ArtifactReviewCommit+':'+$reviewPath))
 if($LASTEXITCODE -ne 0){throw 'Independent review commit does not contain its artifact attestation'}
@@ -53,6 +53,7 @@ foreach($entry in $newEntries){if((Get-FileHash -LiteralPath (Join-Path $build $
 $launch=& (Join-Path $repo 'apps/studio/scripts/start-local-existing-config.ps1')
 [pscustomobject]@{schema='vict.node-suite-activation@1';sourceCandidate=$seal.sourceCandidate;observedUtc=[DateTime]::UtcNow.ToString('o');independentSourceReview=$seal.independentSourceReview;independentArtifactReview=$ArtifactReviewCommit;sealSha256=(Get-FileHash -LiteralPath $sealPath -Algorithm SHA256).Hash.ToLowerInvariant();backup=$backup;previousServingSource=$seal.previousServingSource;previousListenerPid=$child.ProcessId;previousLauncherPid=$launcher.ProcessId;coreFiles=$seal.coreFiles;historicalProofFiles=$seal.historicalProofFiles;addedPublicProofFiles=$seal.addedPublicProofFiles;totalFiles=$newEntries.Count;hashMismatches=@();launch=$launch;browserVerification='pending';campaignCheckpoint='r1.r12';lanListenerStarted=$false}|ConvertTo-Json -Depth 8|Set-Content -LiteralPath (Join-Path $evidence 'graph3-port-row-activation.json') -Encoding utf8
 $launch
+
 
 
 

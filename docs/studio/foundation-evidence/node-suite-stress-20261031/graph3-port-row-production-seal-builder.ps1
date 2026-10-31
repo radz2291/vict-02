@@ -1,8 +1,8 @@
 param([Parameter(Mandatory=$true)][ValidatePattern('^[0-9a-f]{40}$')][string]$SourceReviewCommit)
 $ErrorActionPreference='Stop'
 $repo='C:\Users\RZ1\.codex\worktrees\vict-architecture-realignment-20261030'
-$stage='C:\Users\RZ1\AppData\Local\Temp\vict-graph3-ports-efa28ff4-stage'
-$source='efa28ff414ab62cc5e3abfed5deeea9c275edb38'
+$stage='C:\Users\RZ1\AppData\Local\Temp\vict-graph3-ports-bac78684-stage'
+$source='bac786840d7519c041638e1b9d239d54efdf56f5'
 $oldBuild=Join-Path $repo 'apps/studio/build'
 $newBuild=Join-Path $stage 'apps/studio/build'
 $evidence=Join-Path $repo 'docs/studio/foundation-evidence/node-suite-stress-20261031'
@@ -33,17 +33,19 @@ function CopyProof($fromRoot,$relative,$targetRelative,$expectedHash){
  [pscustomobject]@{path=$targetRelative;sha256=$expectedHash}
 }
 foreach($entry in $oldProof){$null=CopyProof $oldBuild $entry.path $entry.path $entry.sha256}
-$consumerPath=Join-Path $repo 'docs/studio/foundation-evidence/architecture-realignment-20261030/vict-realignment-consumer-sPzwYN.json'
+$consumerPath=Join-Path $repo 'docs/studio/foundation-evidence/architecture-realignment-20261030/vict-realignment-consumer-Ee16vV.json'
 $consumer=Get-Content -LiteralPath $consumerPath -Raw|ConvertFrom-Json
 if(!$consumer.status.StartsWith('PASS:') -or !$consumer.domTest.passed -or $consumer.sourceCandidate -ne $source){throw 'Wrong installed consumer proof'}
 $consumerDist=Join-Path $consumer.consumer 'dist'
 foreach($entry in $consumer.outputFiles){if((Get-FileHash -LiteralPath (Join-Path (Join-Path $consumerDist 'assets') $entry.name) -Algorithm SHA256).Hash.ToLowerInvariant() -ne $entry.sha256){throw 'Consumer asset mismatch'}}
-$newProof=@(foreach($entry in (Inventory $consumerDist)){CopyProof $consumerDist $entry.path ('client/foundation-graph3-port-row-sPzwYN/'+$entry.path) $entry.sha256})
+$newProof=@(foreach($entry in (Inventory $consumerDist)){CopyProof $consumerDist $entry.path ('client/foundation-graph3-port-row-Ee16vV/'+$entry.path) $entry.sha256})
 $full=Inventory $newBuild
 if($full.Count -ne ($core.Count+$oldProof.Count+$newProof.Count)){throw 'Unexpected staged file count'}
-$seal=[pscustomobject]@{schema='vict.node-suite-production-seal@1';sourceCandidate=$source;stageRoot=$stage;buildRoot=$newBuild;observedUtc=[DateTime]::UtcNow.ToString('o');sourceInputsSha256=(Get-FileHash -LiteralPath $inputsPath -Algorithm SHA256).Hash.ToLowerInvariant();packageLockSha256=(Get-FileHash -LiteralPath (Join-Path $repo 'package-lock.json') -Algorithm SHA256).Hash.ToLowerInvariant();independentSourceReview=$SourceReviewCommit;consumerReportSha256=(Get-FileHash -LiteralPath $consumerPath -Algorithm SHA256).Hash.ToLowerInvariant();previousServingSource=$old.sourceCandidate;previousCoreFiles=@($old.coreFiles);coreFiles=$core;historicalProofFiles=$oldProof;addedPublicProofFiles=$newProof;totalFiles=$full.Count;hashMismatches=@();activationPerformed=$false;actualUiVerification='pending'}
+$seal=[pscustomobject]@{schema='vict.node-suite-production-seal@1';sourceCandidate=$source;stageRoot=$stage;buildRoot=$newBuild;observedUtc=[DateTime]::UtcNow.ToString('o');sourceInputsSha256=(Get-FileHash -LiteralPath $inputsPath -Algorithm SHA256).Hash.ToLowerInvariant();packageLockSha256=(Get-FileHash -LiteralPath (Join-Path $repo 'package-lock.json') -Algorithm SHA256).Hash.ToLowerInvariant();independentSourceReview=$SourceReviewCommit;independentSourceReviews=@('6728893c576d3783d237923c20adaf34f7e971ec','6cd3fbb97d05eadd9cfd3e3182de2cef4bcd49bf','a1813ba4c56381c04fa45f212be14cfbe4bd41db','0818c53ac13b096a10f7fc91674aa91bbf1d66b7');consumerReportSha256=(Get-FileHash -LiteralPath $consumerPath -Algorithm SHA256).Hash.ToLowerInvariant();previousServingSource=$old.sourceCandidate;previousCoreFiles=@($old.coreFiles);coreFiles=$core;historicalProofFiles=$oldProof;addedPublicProofFiles=$newProof;totalFiles=$full.Count;hashMismatches=@();activationPerformed=$false;actualUiVerification='pending'}
 $seal|ConvertTo-Json -Depth 8|Set-Content -LiteralPath (Join-Path $evidence 'graph3-port-row-production-seal.json') -Encoding utf8
 [pscustomobject]@{sourceCandidate=$source;coreFiles=$core.Count;historicalProofFiles=$oldProof.Count;addedPublicProofFiles=$newProof.Count;totalFiles=$full.Count;activationPerformed=$false}
+
+
 
 
 
