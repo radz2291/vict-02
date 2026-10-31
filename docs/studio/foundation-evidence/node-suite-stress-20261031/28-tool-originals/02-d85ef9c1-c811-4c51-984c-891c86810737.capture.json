@@ -1,0 +1,18 @@
+{
+  "record": {
+    "id": "d85ef9c1-c811-4c51-984c-891c86810737",
+    "index": 1,
+    "label": "Read screen · input"
+  },
+  "total": 58,
+  "end": 58,
+  "pages": [
+    {
+      "end": 58,
+      "start": 0,
+      "text": "{\"section\":\"catalog\",\"offset\":0,\"limit\":20,\"query\":\"port\"}",
+      "total": 58
+    }
+  ],
+  "complete": true
+}

@@ -1,0 +1,18 @@
+{
+  "record": {
+    "id": "2f18efd8-a518-4dd0-83a4-b4c634725aa9",
+    "index": 39,
+    "label": "Read screen · input"
+  },
+  "total": 80,
+  "end": 80,
+  "pages": [
+    {
+      "end": 80,
+      "start": 0,
+      "text": "{\"section\":\"nodes\",\"offset\":212,\"limit\":20,\"nodeId\":\"ws-main\",\"scope\":\"subtree\"}",
+      "total": 80
+    }
+  ],
+  "complete": true
+}

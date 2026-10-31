@@ -1,0 +1,588 @@
+{
+  "status": "PASS: all 72 original JSON exchanges match continuous captured pages",
+  "records": [
+    {
+      "name": "59-1aee2ac7-9c66-4f19-b10c-2711e5970b7f",
+      "label": "Edit screen · input",
+      "characters": 3382,
+      "pages": 1,
+      "sha256": "58006747cdc485a3f8f094dc5f3c6caa29ef42363c8ef49d85890f830b0fe908",
+      "validJson": true,
+      "operations": 26
+    },
+    {
+      "name": "60-ce760891-185a-43e4-bd14-c5c697c37d78",
+      "label": "Edit screen · result",
+      "characters": 5199,
+      "pages": 1,
+      "sha256": "75f16bfe0be3559c2a772d7005d999c10c2a5363ffee6942bc8ef20893defdd5",
+      "validJson": true
+    },
+    {
+      "name": "61-183423b9-4015-480c-93ff-b2834b63a7c4",
+      "label": "Edit screen · input",
+      "characters": 2563,
+      "pages": 1,
+      "sha256": "20fc0a532fcbef4f6f3dd2f706e5812a77ff6d9bc4cdf6428348372ee6a4b340",
+      "validJson": true,
+      "operations": 22
+    },
+    {
+      "name": "62-47928791-da60-44db-aef8-536a5486a6b2",
+      "label": "Edit screen · result",
+      "characters": 5199,
+      "pages": 1,
+      "sha256": "df05a072000d3733de3a49c6b7c8c3b8fda8488a9dcf421520b9fff77bee4780",
+      "validJson": true
+    },
+    {
+      "name": "63-7c2c79c9-181e-4c36-9f6d-e5c17eb9bc86",
+      "label": "Edit screen · input",
+      "characters": 3792,
+      "pages": 1,
+      "sha256": "931679f52428beec5782e3ba3b5f84306bccd896dff2baaf247eff6f63f2468d",
+      "validJson": true,
+      "operations": 31
+    },
+    {
+      "name": "64-2b06bbd3-62f6-404d-9d2a-e18d759c8a8f",
+      "label": "Edit screen · result",
+      "characters": 5200,
+      "pages": 1,
+      "sha256": "3d97223bbe53721da8f92bcaced5f4c9c0a540c2bb60986921f8446fc015c709",
+      "validJson": true
+    },
+    {
+      "name": "65-de08d136-df78-4419-835d-01839615596a",
+      "label": "Edit screen · input",
+      "characters": 2062,
+      "pages": 1,
+      "sha256": "37690bab5dada7403972e511b07ef397a97022b87a65ee67845e2318827cac62",
+      "validJson": true,
+      "operations": 15
+    },
+    {
+      "name": "66-512e7c37-104e-420c-a111-f7ab8dd8f76d",
+      "label": "Edit screen · result",
+      "characters": 5217,
+      "pages": 1,
+      "sha256": "703ecd92338edf75b0922effda742d9a5e5361130afaf4d105a2bea60970cb20",
+      "validJson": true
+    },
+    {
+      "name": "67-1d56ae27-8c95-4f14-a8df-7f15ff846b66",
+      "label": "Read screen · input",
+      "characters": 107,
+      "pages": 1,
+      "sha256": "8153f2e89e9ee39c755a721c8f049d71c7a7e2cf1bf04e85c380e9d719f4d81c",
+      "validJson": true
+    },
+    {
+      "name": "68-0af56822-fcc5-46ca-a9d1-a7d452733f19",
+      "label": "Read screen · result",
+      "characters": 11214,
+      "pages": 2,
+      "sha256": "3b0eb680c464142882d10860eea4352db37bafb4ceb522a946250240792c8b87",
+      "validJson": true
+    },
+    {
+      "name": "69-90a9ec6c-2d5a-4312-9323-6ce23dc7497b",
+      "label": "Read screen · input",
+      "characters": 108,
+      "pages": 1,
+      "sha256": "4a2cf8dfde3466e97242eea2bc65c26c38e6db833d9fb422f94e3f85cb1ae182",
+      "validJson": true
+    },
+    {
+      "name": "70-4bc15aa2-c775-4635-8032-39b84318fb58",
+      "label": "Observe preview · input",
+      "characters": 215,
+      "pages": 1,
+      "sha256": "d72c6ee0f00ba5a2c54a94a2321f94ac9b0cca628a65bf236651097730afcef4",
+      "validJson": true
+    },
+    {
+      "name": "71-4cafd273-9732-4599-a895-7ce5a1afb5f1",
+      "label": "Read screen · result",
+      "characters": 5156,
+      "pages": 1,
+      "sha256": "947a0124ef6e1ed49cb6a109c95443deef04c450788b5d9be26af1f83f248d36",
+      "validJson": true
+    },
+    {
+      "name": "72-739f0f7b-98ca-413a-8ec1-709fdfa3a57b",
+      "label": "Observe preview · result",
+      "characters": 349559,
+      "pages": 59,
+      "sha256": "486a4385f4a5f1037cf162e760f8fdf45f08ae23213f4b7e84f6fd43f5177fa1",
+      "validJson": true
+    },
+    {
+      "name": "01-ee956664-359b-4fd6-a7f3-669e6aa728fb",
+      "label": "Read screen · input",
+      "characters": 69,
+      "pages": 1,
+      "sha256": "e2c2eeb9f58eeb044c1d1f0eb4f708fdde3b4cba7ebbacefd27ec595b161a8ae",
+      "validJson": true
+    },
+    {
+      "name": "02-d85ef9c1-c811-4c51-984c-891c86810737",
+      "label": "Read screen · input",
+      "characters": 58,
+      "pages": 1,
+      "sha256": "120b204cb783ccc44ad2dbe20e405ec2174af75ea8d4a69b60af8b2232feca83",
+      "validJson": true
+    },
+    {
+      "name": "03-2ded7b44-3cdd-41ed-bb5e-559641be2730",
+      "label": "Read screen · result",
+      "characters": 1566,
+      "pages": 1,
+      "sha256": "9e53cc79a81730d48df71473bec9dc00a9b4b70cc8ad894c55f2b92474685542",
+      "validJson": true
+    },
+    {
+      "name": "04-4af82266-76cd-4ab6-84dc-190b8ad80645",
+      "label": "Read screen · result",
+      "characters": 3978,
+      "pages": 1,
+      "sha256": "e8bbd736c3e2df076874192536166f5e678bbd6358bd66baccd276124f182a1c",
+      "validJson": true
+    },
+    {
+      "name": "05-9e49ecec-8161-4a64-a04b-4f7924efd9ea",
+      "label": "Read screen · input",
+      "characters": 71,
+      "pages": 1,
+      "sha256": "ba539999233a0edab9b2ed068ad36674277ccdead8f192b091f56e188c174273",
+      "validJson": true
+    },
+    {
+      "name": "06-780e2d5a-e29a-48de-b428-e5e2049b784e",
+      "label": "Read screen · input",
+      "characters": 78,
+      "pages": 1,
+      "sha256": "c09bb84e47f3e054a9398f451bf09807263774ad9e212781dc1bbc235eaf7226",
+      "validJson": true
+    },
+    {
+      "name": "07-8e62ecdb-45f5-4f12-b07c-f9f81fc3560e",
+      "label": "Read screen · result",
+      "characters": 6612,
+      "pages": 2,
+      "sha256": "6418934af3e9d54f1291904e02bead80650a04f573922fe32afc8dced917e292",
+      "validJson": true
+    },
+    {
+      "name": "08-ad564931-1192-4e5d-b2b5-3d3369262aff",
+      "label": "Read screen · result",
+      "characters": 8547,
+      "pages": 2,
+      "sha256": "9ce73524a1c5e7bafb4c7c67b1a0df4d1f86617e6ffc6e3c7e66d88bd6588177",
+      "validJson": true
+    },
+    {
+      "name": "09-60e8d691-23b2-4b57-a60a-424d36d2a05c",
+      "label": "Read screen · input",
+      "characters": 79,
+      "pages": 1,
+      "sha256": "0ef166717665ae41c44dc8068fec918ad169d34fdeed534b42da2034a038523d",
+      "validJson": true
+    },
+    {
+      "name": "10-fff6941c-0ea4-4750-9af2-117079bbab5a",
+      "label": "Read screen · result",
+      "characters": 12799,
+      "pages": 3,
+      "sha256": "fbb32e7ac7db74e6ef680036b2d72cbcb4e4b776260a27db77451c5ce9438e3c",
+      "validJson": true
+    },
+    {
+      "name": "11-0c179c64-8e4d-40fd-8601-d47e88ab0721",
+      "label": "Read screen · input",
+      "characters": 61,
+      "pages": 1,
+      "sha256": "2048e8f5674779616585cdaac41445922a2ce112a9ddcaef950fe7940ae92c6f",
+      "validJson": true
+    },
+    {
+      "name": "12-8ef56609-6875-4841-bb22-446927793f6f",
+      "label": "Read screen · input",
+      "characters": 79,
+      "pages": 1,
+      "sha256": "f46eafe8767f9f2fd6959e1eca99448aafbcf62aecaadcc0bf731abe41ce3562",
+      "validJson": true
+    },
+    {
+      "name": "13-9a834929-e1ef-46f6-893a-bdf6bee5d2a0",
+      "label": "Read screen · result",
+      "characters": 6314,
+      "pages": 2,
+      "sha256": "c4e31cee394a075aef9aa6491b93547584d5a1d58cb451c1aa49db91ac394de9",
+      "validJson": true
+    },
+    {
+      "name": "14-c015d526-6b78-497b-8649-8de088b1b535",
+      "label": "Read screen · result",
+      "characters": 12951,
+      "pages": 3,
+      "sha256": "04b0119f911a0a46303fb938565207a583655f25790d7e32e5d190eecddd75e1",
+      "validJson": true
+    },
+    {
+      "name": "15-57c631b0-d650-4c78-b6e0-5c9b861d9a6a",
+      "label": "Read screen · input",
+      "characters": 79,
+      "pages": 1,
+      "sha256": "52d4bba794d08474c973e12e6c840845b36cb5423cad3e87f6f197432ff9261a",
+      "validJson": true
+    },
+    {
+      "name": "16-043e0333-8c32-4d06-8f2a-410a9353c3b6",
+      "label": "Read screen · input",
+      "characters": 79,
+      "pages": 1,
+      "sha256": "3d9562c8f0570d915913791ec12ef15bf159732f0699930af78ca09dc2010550",
+      "validJson": true
+    },
+    {
+      "name": "17-d2eeb6f5-6f76-496b-a212-9554ea54a984",
+      "label": "Read screen · result",
+      "characters": 12527,
+      "pages": 3,
+      "sha256": "677737b8a512817601f3853150b698c71a0b50c6cf0588e7d45533203228ba5b",
+      "validJson": true
+    },
+    {
+      "name": "18-81597f39-3f38-4889-900e-c6844f8d9b15",
+      "label": "Read screen · result",
+      "characters": 10950,
+      "pages": 2,
+      "sha256": "2b554c37432fc1ca657194c3bd4e39484a310fb88fdc7ea7c252b32d49dea346",
+      "validJson": true
+    },
+    {
+      "name": "19-479ed804-9875-48a0-8845-dcb553a46f42",
+      "label": "Read screen · input",
+      "characters": 103,
+      "pages": 1,
+      "sha256": "8171c7d5c9663e9f3c495a8c8bd888ae3cc1ff8acb37bcfed3a84626807a516d",
+      "validJson": true
+    },
+    {
+      "name": "20-240ea8ea-919c-47ce-b94e-5fe8a8e04ecc",
+      "label": "Read screen · input",
+      "characters": 41,
+      "pages": 1,
+      "sha256": "cdef30fc462dca21ac33f7c5e6bd47fca4e7946b8b2d6a25549a52756b99066b",
+      "validJson": true
+    },
+    {
+      "name": "21-b5dc5d63-e149-41fb-91c1-ae1ab03ab554",
+      "label": "Read screen · result",
+      "characters": 7492,
+      "pages": 2,
+      "sha256": "b5f84348d01561f906f4e7420fdf7bbef3a9ad62693393ebf18853d04d7c2a79",
+      "validJson": true
+    },
+    {
+      "name": "22-a1aa4592-6adf-4ba8-890e-6683cf7bf484",
+      "label": "Read screen · result",
+      "characters": 4047,
+      "pages": 1,
+      "sha256": "96b5dae28f51d51c4b7f59930e256d197385c0b746a09ef9c04554f540f13336",
+      "validJson": true
+    },
+    {
+      "name": "23-b46f95d8-b925-45ec-873b-8dfa07244760",
+      "label": "Read screen · input",
+      "characters": 104,
+      "pages": 1,
+      "sha256": "75077452b3acbc50796a375e3f7b1c4eb22ae341093a1256925bf25152b86a2d",
+      "validJson": true
+    },
+    {
+      "name": "24-728edb73-fc80-4f4f-9cc1-b443f64b5d9e",
+      "label": "Read screen · input",
+      "characters": 68,
+      "pages": 1,
+      "sha256": "5b6ca69ef7ea8ae48c9fa2e020a7c4aec54c45c46ba736bfe4df3f00f0970f7a",
+      "validJson": true
+    },
+    {
+      "name": "25-c5ce2640-93f3-4068-8e33-7306da0e1b35",
+      "label": "Read screen · result",
+      "characters": 3851,
+      "pages": 1,
+      "sha256": "f8785738a8d4fd4ed7ebcdf595ea66ca5b2c6555dbd17e72acb4ee848666f1fd",
+      "validJson": true
+    },
+    {
+      "name": "26-6905942d-9e02-4d69-900d-d557d3a4264b",
+      "label": "Read screen · result",
+      "characters": 6590,
+      "pages": 2,
+      "sha256": "d953ed981f306ba4437e4faed29d57e2b271fb74dfafa58187dcd6e2b786978a",
+      "validJson": true
+    },
+    {
+      "name": "27-aa16e63d-a069-4c6c-9364-0a5e3f4768be",
+      "label": "Read screen · input",
+      "characters": 71,
+      "pages": 1,
+      "sha256": "6774652aedf5d357470f2bbd95940073ec7ffa5bfd9028c4aa23270e0d2127ba",
+      "validJson": true
+    },
+    {
+      "name": "28-c3729c18-814c-4599-9995-7b58431d65d0",
+      "label": "Read screen · input",
+      "characters": 79,
+      "pages": 1,
+      "sha256": "892521d33378016db0ebdeb2d25b625e9da12caa0dcf687f548f7fb2ae2e9227",
+      "validJson": true
+    },
+    {
+      "name": "29-5e5f30aa-19b8-4535-a4e1-1230edc53d6f",
+      "label": "Read screen · result",
+      "characters": 6612,
+      "pages": 2,
+      "sha256": "1a0ea17f0662a4f3090d5e2435cbfc844f784790524f7bb25382361381385472",
+      "validJson": true
+    },
+    {
+      "name": "30-2f58ae3a-4dfa-480a-9172-c5f0737630f7",
+      "label": "Read screen · result",
+      "characters": 13266,
+      "pages": 3,
+      "sha256": "4a63774120c3d53809f695cd7f4d27678db50176af5d82bd2c424933ec2434bf",
+      "validJson": true
+    },
+    {
+      "name": "31-0eb85282-d382-41ea-aab3-0db4dc2a05a4",
+      "label": "Read screen · input",
+      "characters": 80,
+      "pages": 1,
+      "sha256": "cab5b27f848428edf99a2e4bae427b2e59e9fa915fb586e92862f0b4e28e5ad4",
+      "validJson": true
+    },
+    {
+      "name": "32-a46b4b85-2978-491c-af49-d03dcf206470",
+      "label": "Read screen · input",
+      "characters": 80,
+      "pages": 1,
+      "sha256": "d9ea1fff15bc27d363c549c64f918094c75aa8848329a646437eb0289ec8c8ae",
+      "validJson": true
+    },
+    {
+      "name": "33-50cef07f-2564-45c6-a707-5654decd212d",
+      "label": "Read screen · result",
+      "characters": 9888,
+      "pages": 2,
+      "sha256": "b9f19be577ce3b7a644a3ecce7acce7654fb2b2b65066c10ebc0a4502c38bf6e",
+      "validJson": true
+    },
+    {
+      "name": "34-231eb548-1134-42b1-a2f3-62a4eed3adc0",
+      "label": "Read screen · result",
+      "characters": 10615,
+      "pages": 2,
+      "sha256": "f4ae5e9fbab91bef14922f68c09fa7657c6be5d138c7f9a8de1e4579452be21d",
+      "validJson": true
+    },
+    {
+      "name": "35-e577bad7-be4e-4e82-9090-bb599e1c50cc",
+      "label": "Read screen · input",
+      "characters": 80,
+      "pages": 1,
+      "sha256": "b74634c8eb13e1a565d1c6e2958d8dbafc490096d0aa2b30e536968d6911145b",
+      "validJson": true
+    },
+    {
+      "name": "36-11e96753-7ae7-49cf-89fd-8c3c965dfd4a",
+      "label": "Read screen · input",
+      "characters": 80,
+      "pages": 1,
+      "sha256": "54bd8c2d0b632b70564872f8018588a3d508c81dbf2b9759ac00eb55c8b526a0",
+      "validJson": true
+    },
+    {
+      "name": "37-3b62603c-d260-493d-8130-224ffa360104",
+      "label": "Read screen · result",
+      "characters": 10936,
+      "pages": 2,
+      "sha256": "0fdffa80948157996088a070f7fe36e1ca5085b580ac39f30ad678f0897ee0fa",
+      "validJson": true
+    },
+    {
+      "name": "38-f9a00955-ca48-47eb-829a-a5784c845f4e",
+      "label": "Read screen · result",
+      "characters": 13088,
+      "pages": 3,
+      "sha256": "ab65e520c3c1065a8a2d0aae5c4187de1124e3ba05d66499bacdea0b5c8e305b",
+      "validJson": true
+    },
+    {
+      "name": "39-3f0e5748-843b-4e82-bdb6-95cd0128197e",
+      "label": "Read screen · input",
+      "characters": 80,
+      "pages": 1,
+      "sha256": "731aa1008c23c479f6c001b638f9c9b6fa8001d0b430edab8938258c18058157",
+      "validJson": true
+    },
+    {
+      "name": "40-2f18efd8-a518-4dd0-83a4-b4c634725aa9",
+      "label": "Read screen · input",
+      "characters": 80,
+      "pages": 1,
+      "sha256": "35bc1e75d6cb46a0b599bc73a336689ff40a798864d7847d159a62c0b1014795",
+      "validJson": true
+    },
+    {
+      "name": "41-75a29e82-396d-497b-b1ab-f0f8c03b4310",
+      "label": "Read screen · result",
+      "characters": 11554,
+      "pages": 2,
+      "sha256": "1d333a344c77f19933346c10a585ab36cd2b73db315b103b96640aa00d9814f4",
+      "validJson": true
+    },
+    {
+      "name": "42-a48eb5c2-12f0-4883-b7f1-848003b24cd8",
+      "label": "Read screen · result",
+      "characters": 10307,
+      "pages": 2,
+      "sha256": "87976b4a82c74e807f6bb49449dc679cb9d90ed482869fa0546298beaf3437f3",
+      "validJson": true
+    },
+    {
+      "name": "43-7b348284-d5b6-4cac-9b36-21df320035b4",
+      "label": "Read screen · input",
+      "characters": 80,
+      "pages": 1,
+      "sha256": "e91da5f577200edbc5d27dbcfc926bd0552f1d2d3a797d2043bb90a0b0fdf4d5",
+      "validJson": true
+    },
+    {
+      "name": "44-09f3f698-3b1b-4330-b25f-2d44ee1d282c",
+      "label": "Read screen · input",
+      "characters": 80,
+      "pages": 1,
+      "sha256": "e353c8b78c5de99480bce3d6ce40638b35b2fd140f8cb788fcf96c643b97a3f0",
+      "validJson": true
+    },
+    {
+      "name": "45-9ae4fd64-e025-4da7-b71c-16378c105b6f",
+      "label": "Read screen · result",
+      "characters": 12240,
+      "pages": 3,
+      "sha256": "b453e7d753d40513749e9f9b5d98ff4a357d819ed5bf67f0c6ce288477b09e88",
+      "validJson": true
+    },
+    {
+      "name": "46-00eea3d6-1672-4fcc-95f2-fdc85df25925",
+      "label": "Read screen · result",
+      "characters": 10248,
+      "pages": 2,
+      "sha256": "db5dc90a288820f21d0e277327f20d7696093267257a1524bc29b382cf7fe59a",
+      "validJson": true
+    },
+    {
+      "name": "47-5d87de1e-25e2-499d-bd24-dfa0bddea34b",
+      "label": "Read screen · input",
+      "characters": 80,
+      "pages": 1,
+      "sha256": "9afed0c6a333e28f92299f7299e1ef22bc8a1cd10db8b9b582229613be4476b2",
+      "validJson": true
+    },
+    {
+      "name": "48-c014639f-16de-4013-b5f7-f57152069c82",
+      "label": "Read screen · result",
+      "characters": 12393,
+      "pages": 3,
+      "sha256": "f972d9b9bc00b866d83c9ecf95160db052fb9727292bfb2b4ab32234ad51f565",
+      "validJson": true
+    },
+    {
+      "name": "49-35c878e1-da37-4e5c-97df-6aae687d08a2",
+      "label": "Read screen · input",
+      "characters": 144,
+      "pages": 1,
+      "sha256": "714cc8a533980e2ff443cf699f36f2ce9a5dd8d2fee8673592447ab7f99d65de",
+      "validJson": true
+    },
+    {
+      "name": "50-df2e19f2-f03b-452c-a424-f1f699f98bec",
+      "label": "Read screen · result",
+      "characters": 8772,
+      "pages": 2,
+      "sha256": "424ab0a1c24d9c3c57caa786d97c04550253758ef4051f00139cca2bb6a35145",
+      "validJson": true
+    },
+    {
+      "name": "51-e243fda5-89a5-4f28-84b6-66fe306302f1",
+      "label": "Read screen · input",
+      "characters": 89,
+      "pages": 1,
+      "sha256": "946e9cf64f4d3bc6bdfcfeb4cee501c0d7427adbccc218018fb2e8fdbd186105",
+      "validJson": true
+    },
+    {
+      "name": "52-9c21d84c-cc4f-4e2e-aad5-daff4a8be702",
+      "label": "Read screen · result",
+      "characters": 2785,
+      "pages": 1,
+      "sha256": "f614a0a0c89942c2121c091daf8d07916dadb34487d04e5ada9b9c2c93c43ec5",
+      "validJson": true
+    },
+    {
+      "name": "53-61bfcabc-9cf6-48f2-8963-8a48c796b7c7",
+      "label": "Read screen · input",
+      "characters": 80,
+      "pages": 1,
+      "sha256": "aadd38dfa7a1a6e5a9f2c6696d4e8bb7e7dd108d9c0da3c577a301b48376df7d",
+      "validJson": true
+    },
+    {
+      "name": "54-b7fcd182-2be8-4858-9c45-ffc957fc6bf8",
+      "label": "Read screen · result",
+      "characters": 4031,
+      "pages": 1,
+      "sha256": "b0e96df14b7c55d50bfb5d85a81ab611ae12deceb0ef0ad57f6d628ecafc74fa",
+      "validJson": true
+    },
+    {
+      "name": "55-b09d1286-8c3e-4027-89fa-0cf68676e92b",
+      "label": "Read screen · input",
+      "characters": 59,
+      "pages": 1,
+      "sha256": "d1de1ec5f29c75be1a27a85be99f59d6cb2133853f58711df314000b3d2daf0b",
+      "validJson": true
+    },
+    {
+      "name": "56-ee68f1f6-79fe-4278-9413-529ecc4cac65",
+      "label": "Read screen · result",
+      "characters": 2792,
+      "pages": 1,
+      "sha256": "62b77937118ab0e6e1675883498b454fdb9bc1fd41610b517597337a26c1f35b",
+      "validJson": true
+    },
+    {
+      "name": "57-f1df2cf9-422f-4b47-a8b4-3103b11b0511",
+      "label": "Read screen · input",
+      "characters": 3435,
+      "pages": 1,
+      "sha256": "482c1c546678f0bae523a319b984cf22dda790e1190cfab2fa5079d86790ed08",
+      "validJson": true
+    },
+    {
+      "name": "58-587c6b96-769b-4ecc-8f54-8c9d20cd915d",
+      "label": "Read screen · result",
+      "characters": 1974,
+      "pages": 1,
+      "sha256": "c55f33ea73f38b0e3886b2f7ac5ca25b28e26331243ebc768d2cd7f7aac95ae1",
+      "validJson": true
+    }
+  ],
+  "characters": 644344,
+  "pages": 159,
+  "scope": "Normal UI original retrieval; no tool rerun, inferred missing content, or agent visual-claim endorsement."
+}

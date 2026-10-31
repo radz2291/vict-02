@@ -1,0 +1,26 @@
+{
+  "record": {
+    "id": "2f58ae3a-4dfa-480a-9172-c5f0737630f7",
+    "index": 29,
+    "label": "Read screen · result"
+  },
+  "total": 13266,
+  "complete": true,
+  "pages": [
+    {
+      "end": 6000,
+      "start": 0,
+      "total": 13266
+    },
+    {
+      "end": 12000,
+      "start": 6000,
+      "total": 13266
+    },
+    {
+      "end": 13266,
+      "start": 12000,
+      "total": 13266
+    }
+  ]
+}

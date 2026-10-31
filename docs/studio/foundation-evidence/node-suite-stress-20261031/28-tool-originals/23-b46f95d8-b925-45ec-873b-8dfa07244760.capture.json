@@ -1,0 +1,18 @@
+{
+  "record": {
+    "id": "b46f95d8-b925-45ec-873b-8dfa07244760",
+    "index": 22,
+    "label": "Read screen · input"
+  },
+  "total": 104,
+  "end": 104,
+  "pages": [
+    {
+      "end": 104,
+      "start": 0,
+      "text": "{\"section\":\"nodes\",\"offset\":20,\"limit\":20,\"nodeId\":\"ws-main\",\"scope\":\"subtree\",\"query\":\"vict.flow.port\"}",
+      "total": 104
+    }
+  ],
+  "complete": true
+}

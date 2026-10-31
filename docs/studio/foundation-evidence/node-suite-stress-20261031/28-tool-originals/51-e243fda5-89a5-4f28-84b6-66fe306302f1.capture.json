@@ -1,0 +1,18 @@
+{
+  "record": {
+    "id": "e243fda5-89a5-4f28-84b6-66fe306302f1",
+    "index": 50,
+    "label": "Read screen · input"
+  },
+  "total": 89,
+  "end": 89,
+  "pages": [
+    {
+      "end": 89,
+      "start": 0,
+      "text": "{\"section\":\"sources\",\"offset\":750,\"limit\":20,\"nodeIds\":[\"br-brief\",\"br-draft\",\"fc-crop\"]}",
+      "total": 89
+    }
+  ],
+  "complete": true
+}

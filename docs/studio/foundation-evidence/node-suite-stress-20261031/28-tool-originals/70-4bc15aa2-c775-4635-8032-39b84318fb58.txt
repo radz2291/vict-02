@@ -1,0 +1,1 @@
+{"focus":"Graph node cards on the canvas: named typed port rows at the card boundary (inputs left, outputs right), type colours and text labels, sockets aligned to card edges without leftover anonymous footer dots"}

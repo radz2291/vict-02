@@ -1,0 +1,18 @@
+{
+  "record": {
+    "id": "4bc15aa2-c775-4635-8032-39b84318fb58",
+    "index": 69,
+    "label": "Observe preview · input"
+  },
+  "total": 215,
+  "end": 215,
+  "pages": [
+    {
+      "end": 215,
+      "start": 0,
+      "text": "{\"focus\":\"Graph node cards on the canvas: named typed port rows at the card boundary (inputs left, outputs right), type colours and text labels, sockets aligned to card edges without leftover anonymous footer dots\"}",
+      "total": 215
+    }
+  ],
+  "complete": true
+}

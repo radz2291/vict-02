@@ -1,0 +1,18 @@
+{
+  "record": {
+    "id": "35c878e1-da37-4e5c-97df-6aae687d08a2",
+    "index": 48,
+    "label": "Read screen · input"
+  },
+  "total": 144,
+  "end": 144,
+  "pages": [
+    {
+      "end": 144,
+      "start": 0,
+      "text": "{\"section\":\"sources\",\"offset\":0,\"limit\":20,\"nodeIds\":[\"br-brief\",\"bf-brief\",\"bp-brief\",\"br-draft\",\"bp-draft\",\"fc-crop\",\"fc-crop-f\",\"fc-crop-p\"]}",
+      "total": 144
+    }
+  ],
+  "complete": true
+}
