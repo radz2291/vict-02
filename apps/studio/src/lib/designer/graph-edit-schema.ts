@@ -1,4 +1,4 @@
-import {graphOperationSchemasV1,graphOperationSchemasV2,graphOperationsSchemaV1,graphOperationsSchemaV2,graphStructuralProblems,type GraphJsonSchema} from '@victframework/ui-flow-svelte';
+import {graphOperationSchemasV1,graphOperationSchemasV2,graphOperationSchemasV3,graphOperationsSchemaV1,graphOperationsSchemaV2,graphOperationsSchemaV3,graphStructuralProblems,type GraphJsonSchema} from '@victframework/ui-flow-svelte';
 
 /** Hoist nested structural rules into local definitions. This preserves the exact
  * public grammar within the existing bounded presentation-depth contract. */
@@ -15,10 +15,10 @@ function reference(rule:GraphJsonSchema):{$ref:string} {
   for(const field of ['oneOf','anyOf'] as const)if(rule[field])body[field]=rule[field]!.map(reference);
   (definitions[bucket]??={$defs:{}}).$defs[name]=body;return {$ref:pointer};
 }
-export const graphEditChangesPresentation=reference({anyOf:[graphOperationSchemasV1,graphOperationSchemasV2].map(operations=>({type:'array',minItems:1,items:{oneOf:Object.values(operations)}}))});
+export const graphEditChangesPresentation=reference({anyOf:[graphOperationSchemasV1,graphOperationSchemasV2,graphOperationSchemasV3].map(operations=>({type:'array',minItems:1,items:{oneOf:Object.values(operations)}}))});
 export const graphEditDefinitions:Readonly<Record<string,unknown>>=definitions;
 /** Shape admission for the public tool; exact workspace version and semantic
  * topology/domain checks still run against canonical source before an edit. */
 export function graphEditShapeValid(operations:unknown):boolean {
-  return !graphStructuralProblems(graphOperationsSchemaV1,operations,'changes').length||!graphStructuralProblems(graphOperationsSchemaV2,operations,'changes').length;
+  return !graphStructuralProblems(graphOperationsSchemaV1,operations,'changes').length||!graphStructuralProblems(graphOperationsSchemaV2,operations,'changes').length||!graphStructuralProblems(graphOperationsSchemaV3,operations,'changes').length;
 }

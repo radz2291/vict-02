@@ -1,7 +1,7 @@
 /** Validates a local one-screen export without mutating browser storage or owner sessions.
  * Media is decoded only into a disposable in-memory store, then returned for a fresh namespace. */
 import type { UiDocument, UiNode, UiSlotScope } from '@victframework/ui';
-import { graphAuthoringContract } from '@victframework/ui-flow-svelte';
+import { graphAuthoringContract, parseGraphV2, parseGraphV3 } from '@victframework/ui-flow-svelte';
 import {
   importMediaArchive,
   memoryAssetStore,
@@ -101,16 +101,17 @@ function managedReferences(document: UiDocument): {
   const scopedFill = (declaration: UiSlotScope, owner: Extract<UiNode,{kind:'component'}>, name: string, parent: LexicalScope): LexicalScope => {
     const state: LexicalScope['state'] = {};
     const contract = graphAuthoringContract(owner.definitionId, owner.revision);
-    const workspaceV2 = contract?.modelVersion === 2 && contract.body?.slot === name;
+    const typedWorkspace = (contract?.modelVersion === 2 || contract?.modelVersion === 3) && contract.body?.slot === name;
     let models: Record<string,unknown>[] | undefined;
-    if (workspaceV2) {
+    if (typedWorkspace) {
       const serialized = expressionValues(owner.props?.graph, `${owner.id}.graph`, parent);
       models = [];
       for (const candidate of serialized) {
         try {
-          const model:unknown = typeof candidate === 'string' ? JSON.parse(candidate) : undefined;
-          if (!object(model) || model.schema !== 'vict.flow-graph@2' || !Array.isArray(model.nodeTypes) || !Array.isArray(model.nodes)) {models=undefined;break;}
-          models.push(model);
+          if (typeof candidate !== 'string') {models=undefined;break;}
+          const parsed = contract?.modelVersion === 3 ? parseGraphV3(candidate) : parseGraphV2(candidate);
+          if (!parsed.ok) {models=undefined;break;}
+          models.push(parsed.graph as unknown as Record<string,unknown>);
         } catch {models=undefined;break;}
       }
       if (!serialized.length) models=undefined;
@@ -118,7 +119,7 @@ function managedReferences(document: UiDocument): {
     for (const [key,decl] of Object.entries(declaration.state??{})) {
       if (!decl.controlled) {state[key]=[decl.initial];continue;}
       // Generic unknown renderer-owned state must not masquerade as document state.
-      if (!workspaceV2 || !models) {state[key]=undefined;continue;}
+      if (!typedWorkspace || !models) {state[key]=undefined;continue;}
       const candidates:unknown[]=[decl.initial];
       for (const model of models) {
         const families = model.nodeTypes as unknown[];

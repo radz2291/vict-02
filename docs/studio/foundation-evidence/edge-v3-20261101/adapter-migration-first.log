@@ -1,0 +1,20 @@
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/vict-studio-edge-v3-20261101/apps/studio
+
+2:37:55 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-studio-edge-v3-20261101/packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+2:37:55 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-studio-edge-v3-20261101/packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+2:37:55 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-studio-edge-v3-20261101/packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+2:37:55 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-studio-edge-v3-20261101/packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+2:37:55 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-studio-edge-v3-20261101/packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+ ✓ tests/graph-v3-migration.test.ts (11 tests) 437ms
+
+ Test Files  1 passed (1)
+      Tests  11 passed (11)
+   Start at  14:37:43
+   Duration  28.84s (transform 17.71s, setup 0ms, collect 26.36s, tests 437ms, environment 1.06s, prepare 291ms)
+

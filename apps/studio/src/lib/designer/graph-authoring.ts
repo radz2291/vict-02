@@ -4,13 +4,20 @@ import {
   applyGraphPatch,
   parseGraphV2,
   applyGraphPatchV2,
+  parseGraphV3,
+  applyGraphPatchV3,
   graphAuthoringContract,
 } from '@victframework/ui-flow-svelte';
 
 /** Exact component version selects grammar; graph contents never select a migration. */
-export function authoredGraphVersion(node: UiNode | undefined): 1 | 2 | undefined {
+export function authoredGraphVersion(node: UiNode | undefined): 1 | 2 | 3 | undefined {
   if (node?.kind !== 'component') return;
   return graphAuthoringContract(node.definitionId, node.revision)?.modelVersion;
+}
+
+/** Exact registered identity chooses the installed public parser, never source sniffing. */
+function parseAuthoredGraph(version: 1 | 2 | 3 | undefined, source: string) {
+  return version === 3 ? parseGraphV3(source) : version === 2 ? parseGraphV2(source) : parseGraph(source);
 }
 
 /** Only an explicitly bidirectional graph binding grants authoring persistence.
@@ -185,7 +192,7 @@ export function graphStateDocument(
   );
   if (
     consumers.some(
-      (node) => !(authoredGraphVersion(node) === 2 ? parseGraphV2(value) : parseGraph(value)).ok,
+      (node) => !parseAuthoredGraph(authoredGraphVersion(node), value).ok,
     )
   )
     return;
@@ -218,6 +225,7 @@ function graphSource(
   nodeId: string,
   route: GraphOccurrenceRoute,
   seen: readonly string[] = [],
+  migrationWrite = false,
 ): GraphSource | GraphFailure {
   if (seen.includes(nodeId))
     return { ok: false, message: 'The graph occurrence route is cyclic.' };
@@ -248,8 +256,7 @@ function graphSource(
               if (
                 readers.some(
                   (item) =>
-                    !(authoredGraphVersion(item) === 2 ? parseGraphV2(value) : parseGraph(value))
-                      .ok,
+                    !parseAuthoredGraph(migrationWrite ? 3 : authoredGraphVersion(item), value).ok,
                 )
               )
                 return;
@@ -278,7 +285,9 @@ function graphSource(
           document.localState[owner.key]?.type === 'string'
             ? document.localState[owner.key]!.initial
             : undefined,
-          (value) => graphStateDocument(document, owner.key, value),
+          (value) => migrationWrite
+            ? { ...document, localState: { ...document.localState, [owner.key]: { ...document.localState[owner.key]!, initial: value } } }
+            : graphStateDocument(document, owner.key, value),
         );
   const parent = document.nodes[owner.ownerNodeId];
   if (parent?.kind !== 'component')
@@ -320,7 +329,7 @@ function graphSource(
     entry.workspaceNodeId !== owner.ownerNodeId ||
     host?.body?.slot !== owner.slotName ||
     host.body.controlledState !== 'node-parameters' ||
-    host.modelVersion !== 2
+    (host.modelVersion !== 2 && host.modelVersion !== 3)
   )
     return {
       ok: false,
@@ -329,7 +338,7 @@ function graphSource(
     };
   const outer = graphSource(document, entry.workspaceNodeId, route.slice(0, -1), [...seen, nodeId]);
   if ('ok' in outer) return outer;
-  const parsed = parseGraphV2(outer.source);
+  const parsed = host.modelVersion === 3 ? parseGraphV3(outer.source) : parseGraphV2(outer.source);
   if (!parsed.ok || parsed.graph.revision !== entry.expectedGraphRevision)
     return {
       ok: false,
@@ -345,13 +354,27 @@ function graphSource(
         'The occurrence route must select an existing graph node with the declared string parameter.',
     };
   return checked(member.values[owner.key] ?? parameter.default, (value) => {
-    const next = applyGraphPatchV2(
+    const next = (host.modelVersion === 3 ? applyGraphPatchV3 : applyGraphPatchV2)(
       outer.source,
       [{ type: 'setParameter', nodeId: member.id, key: owner.key, value }],
       entry.expectedGraphRevision,
     );
     return next.ok ? outer.write(next.source) : undefined;
   });
+}
+
+/** Internal migration assembly only: public parsing owns the new grammar.
+ * Old identities stay on the transient copy until every explicit occurrence is
+ * composed; the normal canonical transaction validates the final identities. */
+export function writeMigratedGraphSource(
+  document: UiDocument,
+  nodeId: string,
+  source: string,
+  route: GraphOccurrenceRoute,
+): UiDocument | undefined {
+  if (!parseGraphV3(source).ok) return;
+  const owned = graphSource(document, nodeId, route, [], true);
+  return 'ok' in owned ? undefined : owned.write(source);
 }
 export function patchAuthoredGraph(
   document: UiDocument,
@@ -371,7 +394,9 @@ export function patchAuthoredGraph(
   if ('ok' in owned) return owned;
   const source = owned.source;
   const result =
-    version === 2
+    version === 3
+      ? applyGraphPatchV3(source, operations, revision)
+      : version === 2
       ? applyGraphPatchV2(source, operations, revision)
       : applyGraphPatch(source, operations, revision);
   if (!result.ok || !result.source)

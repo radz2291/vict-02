@@ -1,0 +1,10 @@
+tests/graph-v3-migration.test.ts(109,40): error TS2322: Type 'GraphMigrationTarget[]' is not assignable to type '{ nodeId: string; expectedGraphRevision: number; occurrenceRoute?: { expectedGraphRevision: number; workspaceNodeId: string; graphNodeId: string; }[] | undefined; }[]'.
+  Type 'GraphMigrationTarget' is not assignable to type '{ nodeId: string; expectedGraphRevision: number; occurrenceRoute?: { expectedGraphRevision: number; workspaceNodeId: string; graphNodeId: string; }[] | undefined; }'.
+    Types of property 'occurrenceRoute' are incompatible.
+      Type 'GraphOccurrenceRoute | undefined' is not assignable to type '{ expectedGraphRevision: number; workspaceNodeId: string; graphNodeId: string; }[] | undefined'.
+        The type 'GraphOccurrenceRoute' is 'readonly' and cannot be assigned to the mutable type '{ expectedGraphRevision: number; workspaceNodeId: string; graphNodeId: string; }[]'.
+tests/graph-v3-migration.test.ts(334,40): error TS2322: Type 'GraphMigrationTarget[]' is not assignable to type '{ nodeId: string; expectedGraphRevision: number; occurrenceRoute?: { expectedGraphRevision: number; workspaceNodeId: string; graphNodeId: string; }[] | undefined; }[]'.
+  Type 'GraphMigrationTarget' is not assignable to type '{ nodeId: string; expectedGraphRevision: number; occurrenceRoute?: { expectedGraphRevision: number; workspaceNodeId: string; graphNodeId: string; }[] | undefined; }'.
+    Types of property 'occurrenceRoute' are incompatible.
+      Type 'GraphOccurrenceRoute | undefined' is not assignable to type '{ expectedGraphRevision: number; workspaceNodeId: string; graphNodeId: string; }[] | undefined'.
+        The type 'GraphOccurrenceRoute' is 'readonly' and cannot be assigned to the mutable type '{ expectedGraphRevision: number; workspaceNodeId: string; graphNodeId: string; }[]'.

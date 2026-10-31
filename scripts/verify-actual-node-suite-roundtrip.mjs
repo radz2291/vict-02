@@ -21,7 +21,7 @@ import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import {prepareSourceImport} from ${JSON.stringify(resolve('apps/studio/src/lib/designer/source-import.ts').replaceAll('\\', '/'))};
 import {screenApplication} from ${JSON.stringify(resolve('apps/studio/src/lib/designer/application.ts').replaceAll('\\', '/'))};
-import {parseGraphV2} from ${JSON.stringify(flowPublicEntry.replaceAll('\\', '/'))};
+import {parseGraphV2,parseGraphV3} from ${JSON.stringify(flowPublicEntry.replaceAll('\\', '/'))};
 const input=${JSON.stringify(input)},canonicalPath=${JSON.stringify(canonicalPath)},reportPath=${JSON.stringify(reportPath)};
 const hash=value=>createHash('sha256').update(value).digest('hex');
 const originalBytes=readFileSync(input),canonicalBytes=readFileSync(canonicalPath);
@@ -45,9 +45,9 @@ function graphSnapshots(document){
  for(const [key,declaration] of Object.entries(document.localState??{}))if(declaration.type==='string')pending.push({text:declaration.initial,path:'state:'+key,depth:0});
  while(pending.length){
   const {text,path,depth}=pending.pop();if(typeof text!=='string')continue;
-  let raw;try{raw=JSON.parse(text);}catch{continue;}if(raw?.schema!=='vict.flow-graph@2')continue;
-  const parsed=parseGraphV2(text);assert.equal(parsed.ok,true,JSON.stringify(parsed));if(!parsed.ok)throw Error('Invalid saved nested graph');
-  const graph=parsed.graph;snapshots.push({path,depth,sourceStringSha256:hash(text),revision:graph.revision,nodeTypes:graph.nodeTypes,nodes:graph.nodes,edges:graph.edges});
+  let raw;try{raw=JSON.parse(text);}catch{continue;}if(!['vict.flow-graph@2','vict.flow-graph@3'].includes(raw?.schema))continue;
+  const parsed=raw.schema==='vict.flow-graph@3'?parseGraphV3(text):parseGraphV2(text);assert.equal(parsed.ok,true,JSON.stringify(parsed));if(!parsed.ok)throw Error('Invalid saved nested graph');
+  const graph=parsed.graph;snapshots.push({path,depth,schema:graph.schema,sourceStringSha256:hash(text),revision:graph.revision,nodeTypes:graph.nodeTypes,nodes:graph.nodes,edges:graph.edges,...('edgeDefaults' in graph?{edgeDefaults:graph.edgeDefaults}:{})});
   for(const node of graph.nodes){const family=graph.nodeTypes.find(type=>type.id===node.type);assert.ok(family);
    for(const [key,parameter] of Object.entries(family.parameters??{}))if(parameter.type==='string')pending.push({text:node.values[key]??parameter.default,path:path+'/node:'+node.id+'/parameter:'+key,depth:depth+1});
   }
@@ -59,7 +59,7 @@ assert.ok(outer.length,'Actual node-suite source needs an outer graph');
 assert.ok(nested.length>=2,'This chosen suite requires two independently owned nested graph occurrences');
 assert.deepStrictEqual(graphSnapshots(first.document),graphs);assert.deepStrictEqual(graphSnapshots(second.document),graphs);
 checks.push('Every resolved outer/nested graph source string, revision, family, port, parameter, value, position and edge survives both imports');
-const report={schema:'vict.actual-node-suite-roundtrip@1',status:'PASS',sourceCommit:${JSON.stringify(sourceCommit)},input:{path:input,sha256:hash(originalBytes),bytes:originalBytes.length},canonicalSource:{path:canonicalPath,sha256:hash(canonicalBytes),id:canonical.id,revision:canonical.revision},reexport:{sha256:hash(reexport),byteIdentical:hash(reexport)===hash(originalBytes),semanticEnvelopeEqual:true},importedDocumentJsonSha256:hash(JSON.stringify(second.document)),checks,graphs,scope:'Actual saved/exported app through existing committed Studio import/export code. No application reconstruction or document rewrite.',limitations:['Offline importer/source proof; not native browser, device, provider, backend or owner acceptance.','Nested source data alone does not prove editable rendered nested flows; native checks remain separate.','Managed media is not claimed by this no-media suite proof. Public installed-consumer proof is separate.']};
+const report={schema:'vict.actual-node-suite-roundtrip@2',status:'PASS',sourceCommit:${JSON.stringify(sourceCommit)},input:{path:input,sha256:hash(originalBytes),bytes:originalBytes.length},canonicalSource:{path:canonicalPath,sha256:hash(canonicalBytes),id:canonical.id,revision:canonical.revision},reexport:{sha256:hash(reexport),byteIdentical:hash(reexport)===hash(originalBytes),semanticEnvelopeEqual:true},importedDocumentJsonSha256:hash(JSON.stringify(second.document)),checks,graphs,graphSchemas:Object.fromEntries([...new Set(graphs.map(graph=>graph.schema))].map(schema=>[schema,graphs.filter(graph=>graph.schema===schema).length])),scope:'Actual saved/exported app through existing committed Studio import/export code. No application reconstruction or document rewrite.',limitations:['Offline importer/source proof; not native browser, device, provider, backend or owner acceptance.','Nested source data alone does not prove editable rendered nested flows; native checks remain separate.','Managed media is not claimed by this no-media suite proof. Public installed-consumer proof is separate.']};
 writeFileSync(reportPath,JSON.stringify(report,null,2));
 console.log(JSON.stringify({status:report.status,reportPath,id:canonical.id,revision:canonical.revision,outerGraphs:outer.length,nestedGraphs:nested.length}));
 `);

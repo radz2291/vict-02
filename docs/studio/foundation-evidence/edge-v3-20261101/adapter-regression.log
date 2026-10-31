@@ -1,0 +1,57 @@
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/vict-studio-edge-v3-20261101/apps/studio
+
+2:38:58 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-studio-edge-v3-20261101/packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+2:38:58 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-studio-edge-v3-20261101/packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+2:38:58 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-studio-edge-v3-20261101/packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+2:38:58 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-studio-edge-v3-20261101/packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+2:38:58 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-studio-edge-v3-20261101/packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+2:39:03 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-studio-edge-v3-20261101/packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+2:39:03 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-studio-edge-v3-20261101/packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+2:39:03 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-studio-edge-v3-20261101/packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+2:39:03 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-studio-edge-v3-20261101/packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+2:39:03 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-studio-edge-v3-20261101/packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+ ✓ tests/graph-history-source-policy.test.ts (3 tests) 21ms
+ ✓ tests/graph-v3-migration.test.ts (11 tests) 1313ms
+   ✓ atomically composes two explicit nested occurrences and outer migration through source history/save/import  581ms
+ ✓ tests/graph-runtime-refusal.test.ts (1 test) 1448ms
+   ✓ rolls back the renderer state after a valid graph edit is refused, even when canonical state was already supplied  1445ms
+ ✓ tests/source-import.test.ts (22 tests) 1306ms
+stderr | tests/graph-scoped-bridge.test.ts > keeps repeated private graph occurrences temporary with local undo and no canonical or save promotion
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+ ✓ tests/agent-knowledge-read.test.ts (6 tests) 110ms
+ ✓ tests/graph-scoped-ownership.test.ts (9 tests) 49ms
+stderr | tests/graph-scoped-bridge.test.ts > keeps canonical graph ownership and persistence beyond 64 ordinary source wrappers
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/graph-scoped-bridge.test.ts > keeps controlled nested graphs usable after runtime-root parent revisions depart from authored literals
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+ ✓ tests/graph-scoped-bridge.test.ts (6 tests) 8357ms
+   ✓ persists manual and agent nested graph writes beyond180000 characters through the genuine Studio bridge  2632ms
+   ✓ persists nested manual and agent changes through Studio history, save/reopen and portable import  1710ms
+   ✓ keeps repeated private graph occurrences temporary with local undo and no canonical or save promotion  1474ms
+   ✓ refuses nested source Undo and editing when a controlled declaration has no actual parent parameter  794ms
+   ✓ keeps canonical graph ownership and persistence beyond 64 ordinary source wrappers  1200ms
+   ✓ keeps controlled nested graphs usable after runtime-root parent revisions depart from authored literals  544ms
+
+ Test Files  7 passed (7)
+      Tests  58 passed (58)
+   Start at  14:38:25
+   Duration  65.99s (transform 92.01s, setup 0ms, collect 392.13s, tests 12.60s, environment 8.63s, prepare 3.33s)
+
