@@ -1,0 +1,220 @@
+{
+  "schema": "vict.actual-checkpoint-source-review@1",
+  "checkpoint": 17,
+  "sourceExportReviewOnly": true,
+  "files": [
+    {
+      "name": "16-export-model-saved-source.json",
+      "sha256": "1f201f9a8d7402b0e875dd30307216fca814cd859db5e787fcdabecc2818e963",
+      "bytes": 197148,
+      "characters": 197097
+    },
+    {
+      "name": "17-nested-finishing-saved-source.json",
+      "sha256": "90357dd1f281f3c2e337404559166879fac808e392d9a53f9029e89a0f8d76ac",
+      "bytes": 253898,
+      "characters": 253831
+    },
+    {
+      "name": "17-nested-finishing-supported-export.json",
+      "sha256": "32c433d730aa6a26c627e6badaf6d5335820f66753d5c1339254f4f9e1d276cf",
+      "bytes": 325253,
+      "characters": 325182
+    }
+  ],
+  "sourceRevisions": [
+    "r1.r5",
+    "r1.r6"
+  ],
+  "sourceNodeCounts": [
+    226,
+    295
+  ],
+  "addedSourceNodes": 69,
+  "changedSourceIDs": [
+    "ws-main"
+  ],
+  "graphRevisions": [
+    20,
+    23
+  ],
+  "outerNodes": 14,
+  "outerEdges": 20,
+  "outerGeometryAndPriorValuesPreserved": true,
+  "changedOuterParameters": [
+    "finS.subgraph",
+    "finP.subgraph"
+  ],
+  "sharedNestedWorkspace": {
+    "id": "fin-ws",
+    "definitionId": "vict.flow.workspace",
+    "revision": "2",
+    "graphBinding": {
+      "type": "ref",
+      "path": "state.subgraph"
+    },
+    "graphChange": {
+      "setState": {
+        "key": "subgraph"
+      }
+    }
+  },
+  "occurrences": [
+    {
+      "owner": "finS",
+      "route": [
+        {
+          "workspaceNodeId": "ws-main",
+          "graphNodeId": "finS",
+          "expectedGraphRevision": 23
+        }
+      ],
+      "revision": 1,
+      "nodes": [
+        {
+          "id": "f-crop",
+          "type": "crop",
+          "label": "Crop",
+          "position": {
+            "x": 40,
+            "y": 40
+          },
+          "values": {
+            "aspect": "1:1"
+          }
+        },
+        {
+          "id": "f-grade",
+          "type": "grade",
+          "label": "Grade",
+          "position": {
+            "x": 260,
+            "y": 40
+          },
+          "values": {
+            "amount": 35
+          }
+        },
+        {
+          "id": "f-caption",
+          "type": "caption",
+          "label": "Caption",
+          "position": {
+            "x": 480,
+            "y": 40
+          },
+          "values": {
+            "caption": "Your commute, upgraded — 12h hot coffee"
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "g1",
+          "source": "f-crop",
+          "sourcePort": "o",
+          "target": "f-grade",
+          "targetPort": "i"
+        },
+        {
+          "id": "g2",
+          "source": "f-grade",
+          "sourcePort": "o",
+          "target": "f-caption",
+          "targetPort": "i"
+        }
+      ]
+    },
+    {
+      "owner": "finP",
+      "route": [
+        {
+          "workspaceNodeId": "ws-main",
+          "graphNodeId": "finP",
+          "expectedGraphRevision": 23
+        }
+      ],
+      "revision": 1,
+      "nodes": [
+        {
+          "id": "f-crop",
+          "type": "crop",
+          "label": "Crop",
+          "position": {
+            "x": 40,
+            "y": 40
+          },
+          "values": {
+            "aspect": "2:3"
+          }
+        },
+        {
+          "id": "f-grade",
+          "type": "grade",
+          "label": "Grade",
+          "position": {
+            "x": 260,
+            "y": 40
+          },
+          "values": {
+            "amount": 70
+          }
+        },
+        {
+          "id": "f-caption",
+          "type": "caption",
+          "label": "Caption",
+          "position": {
+            "x": 480,
+            "y": 40
+          },
+          "values": {
+            "caption": "Trail-tested. Tireless. Launching soon."
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "g1",
+          "source": "f-crop",
+          "sourcePort": "o",
+          "target": "f-grade",
+          "targetPort": "i"
+        },
+        {
+          "id": "g2",
+          "source": "f-grade",
+          "sourcePort": "o",
+          "target": "f-caption",
+          "targetPort": "i"
+        }
+      ]
+    }
+  ],
+  "bindings": [
+    {
+      "id": "fc-crop-sel",
+      "key": "aspect",
+      "type": "string",
+      "controlled": true
+    },
+    {
+      "id": "fc-grade-in",
+      "key": "amount",
+      "type": "number",
+      "controlled": true
+    },
+    {
+      "id": "fc-caption-in",
+      "key": "caption",
+      "type": "string",
+      "controlled": true
+    }
+  ],
+  "roundtripStatus": "PASS",
+  "knownNativeLayoutFailure": true,
+  "nativeBehaviorVerified": false,
+  "actualSuiteVerified": false,
+  "errors": [],
+  "status": "PASS: saved source/export ownership declarations and preservation only"
+}

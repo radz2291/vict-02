@@ -1,0 +1,18 @@
+{
+  "status": "PASS: saved source/export ownership declarations and preservation only",
+  "sourceRevisions": [
+    "r1.r5",
+    "r1.r6"
+  ],
+  "sourceNodeCounts": [
+    226,
+    295
+  ],
+  "addedSourceNodes": 69,
+  "changedSourceIDs": [
+    "ws-main"
+  ],
+  "outerNodes": 14,
+  "outerEdges": 20,
+  "errors": []
+}

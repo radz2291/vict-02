@@ -1,0 +1,20 @@
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/vict-limits-independent-20261031/apps/studio
+
+1:38:49 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-limits-independent-20261031/packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+1:38:49 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-limits-independent-20261031/packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+1:38:49 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-limits-independent-20261031/packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+1:38:49 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-limits-independent-20261031/packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+1:38:49 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-limits-independent-20261031/packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+ ✓ tests/independent-actual-source17-routes.test.ts (3 tests) 72ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  13:38:37
+   Duration  16.18s (transform 10.12s, setup 0ms, collect 15.35s, tests 72ms, environment 0ms, prepare 342ms)
+
