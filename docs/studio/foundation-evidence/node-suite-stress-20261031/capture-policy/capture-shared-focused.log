@@ -1,0 +1,25 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/vict-capture-policy-20261031/packages/ui-ai-svelte
+
+ ❯ test/capture-resource.test.ts (2 tests | 1 failed) 17ms
+   × admits a real static PNG fixture but rejects animated formats, APNG controls and malformed chunks 8ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/capture-resource.test.ts > admits a real static PNG fixture but rejects animated formats, APNG controls and malformed chunks
+TypeError: The URL must be of scheme file
+ ❯ test/capture-resource.test.ts:22:5
+     20| it('admits a real static PNG fixture but rejects animated formats, APN…
+     21|   const png = new Uint8Array(
+     22|     readFileSync(
+       |     ^
+     23|       new URL(
+     24|         '../../ui-media-svelte/test/fixtures/foundation-media/syntheti…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 2 passed (3)
+      Tests  1 failed | 56 passed (57)
+   Start at  11:17:03
+   Duration  7.00s (transform 713ms, setup 0ms, import 1.21s, tests 3.84s, environment 6.99s)

@@ -1,6 +1,7 @@
 /** Clone-only scroll composition. This path never scrolls or restyles the source.
  * The ordinary capture path is retained for states that do not need projection. */
-import { approvedCaptureBlobUrl, isStaticCaptureRaster } from './capture-resource.js';
+import type {RenderCaptureOptions} from './capture.js';
+import { assertCaptureActive,awaitCaptureWork,approvedCaptureBlobUrl, isStaticCaptureRaster } from './capture-resource.js';
 type Box = Pick<DOMRect, 'left' | 'right' | 'top' | 'bottom' | 'width' | 'height'>;
 export interface PositionedProjection {
   left: number;
@@ -96,7 +97,7 @@ function isStackingAncestor(style: CSSStyleDeclaration): boolean {
 }
 function localResource(value: string): boolean {
   if (!value || value.startsWith('blob:')) return true;
-  if (!rasterData.test(value) || value.length > 6 * 1024 * 1024) return false;
+  if (!rasterData.test(value)) return false;
   try {
     const binary = atob(value.slice(value.indexOf(',') + 1));
     return isStaticCaptureRaster(
@@ -154,7 +155,6 @@ export function prepareScrollCapture(element: HTMLElement, viewport: HTMLElement
     current = parent;
   }
   const nodes = [viewport, ...viewport.querySelectorAll<HTMLElement>('*')];
-  if (nodes.length > 2000) fail('scroll-node-limit');
   const positioned: { node: HTMLElement; projection: PositionedProjection }[] = [];
   const fonts = new Set<string>();
   let faces: FontFace[];
@@ -381,36 +381,14 @@ function signature(nodes: readonly HTMLElement[]): string {
 }
 let engineOwner: symbol | undefined,
   engineStalled = false;
-function deadline<T>(operation: Promise<T>, milliseconds: number, reason: string): Promise<T> {
-  return new Promise((resolve, reject) => {
-    const timer = setTimeout(
-      () =>
-        reject(
-          Object.assign(new Error('STUDIO_CAPTURE_SCROLL_ENGINE_STALLED'), {
-            captureReason: reason,
-          }),
-        ),
-      milliseconds,
-    );
-    operation.then(
-      (value) => {
-        clearTimeout(timer);
-        resolve(value);
-      },
-      (error) => {
-        clearTimeout(timer);
-        reject(error);
-      },
-    );
-  });
-}
 /** Public library hooks map existing nodes to detached clones, then freeze measured
  * fixed/sticky surfaces after copied styles and scroll translations are complete. */
 export async function captureScrolledViewport(
   element: HTMLElement,
   viewport: HTMLElement | undefined,
-  limits: { width: number; height: number; bytes: number },
+  limits:RenderCaptureOptions={},
 ): Promise<Blob> {
+  assertCaptureActive(limits.signal);
   if (engineOwner)
     fail(engineStalled ? 'scroll-engine-stalled-reload-required' : 'scroll-engine-busy');
   const owner = Symbol('scroll-capture');
@@ -420,6 +398,7 @@ export async function captureScrolledViewport(
     librarySettled = false;
   let observer: MutationObserver | undefined;
   try {
+    await awaitCaptureWork(element.ownerDocument.fonts.ready,limits.signal);
     const prepared = prepareScrollCapture(element, viewport ?? element),
       { root, rootBox, targetBox, nodes, positioned } = prepared;
     const token = signature(nodes);
@@ -436,8 +415,9 @@ export async function captureScrolledViewport(
       characterData: true,
     });
     const clones = new Map<Node, HTMLElement>();
-    const library = await deadline(import('dom-to-image-more'), 8000, 'scroll-engine-load-timeout');
+    const library = await awaitCaptureWork(import('dom-to-image-more'),limits.signal);
     const domtoimage = library.default;
+    assertCaptureActive(limits.signal);
     libraryStarted = true;
     const rendering = Promise.resolve().then(() =>
       domtoimage.toSvg(root, {
@@ -452,7 +432,7 @@ export async function captureScrolledViewport(
         disableEmbedFonts: true,
         cacheBust: false,
         ensureShown: false,
-        httpTimeout: 5000,
+        httpTimeout: 0, // No task deadline; the owner signal cancels resource waits.
         requestInterceptor: (url: string) => {
           // Returning a rejected promise, rather than throwing, prevents the
           // dependency's synchronous-error recovery from falling through to XHR.
@@ -464,9 +444,8 @@ export async function captureScrolledViewport(
             resourceFailure = true;
             return Promise.reject(new Error('STUDIO_CAPTURE_RESOURCE_UNSUPPORTED'));
           }
-          const abort = new AbortController(),
-            timer = setTimeout(() => abort.abort(), 5000);
-          return fetch(blobUrl, { signal: abort.signal, credentials: 'omit', redirect: 'error' })
+          const resourceSignal=limits.signal??new AbortController().signal;
+          return fetch(blobUrl, { signal: resourceSignal, credentials: 'omit', redirect: 'error' })
             .then(async (response) => {
               const type =
                 response.headers.get('content-type')?.split(';')[0]?.trim().toLowerCase() ?? '';
@@ -479,11 +458,6 @@ export async function captureScrolledViewport(
                 const part = await reader.read();
                 if (part.done) break;
                 size += part.value.byteLength;
-                if (size > 4 * 1024 * 1024) {
-                  abort.abort();
-                  void reader.cancel();
-                  throw new Error('STUDIO_CAPTURE_RESOURCE_UNSUPPORTED');
-                }
                 chunks.push(part.value);
               }
               const bytes = new Uint8Array(size);
@@ -504,8 +478,7 @@ export async function captureScrolledViewport(
             .catch(() => {
               resourceFailure = true;
               throw new Error('STUDIO_CAPTURE_RESOURCE_UNSUPPORTED');
-            })
-            .finally(() => clearTimeout(timer));
+            });
         },
         onImageError: () => {
           resourceFailure = true;
@@ -612,23 +585,21 @@ export async function captureScrolledViewport(
     );
     let svg: string;
     try {
-      svg = await deadline(settled, 8000, 'scroll-engine-stalled-reload-required');
+      svg = await awaitCaptureWork(settled,limits.signal);
     } catch (error) {
       if (!librarySettled && engineOwner === owner) engineStalled = true;
       throw error;
     }
     if (resourceFailure || warning) fail('scroll-resource-or-library-warning');
-    if (svg.length > 6 * 1024 * 1024) fail('scroll-svg-limit');
     const image = new Image();
     try {
-      await deadline(
+      await awaitCaptureWork(
         new Promise<void>((resolve, reject) => {
           image.onload = () => resolve();
           image.onerror = () => reject(new Error('STUDIO_CAPTURE_FAILED'));
           image.src = svg;
         }),
-        5000,
-        'scroll-image-decode-timeout',
+        limits.signal,
       );
     } finally {
       image.onload = null;
@@ -642,37 +613,29 @@ export async function captureScrolledViewport(
         Math.ceil(
           Math.min(rootBox.right, targetBox.right) - Math.max(rootBox.left, targetBox.left),
         ),
-        limits.width,
+        limits.width??Infinity,
       ),
       height = Math.min(
         Math.ceil(
           Math.min(rootBox.bottom, targetBox.bottom) - Math.max(rootBox.top, targetBox.top),
         ),
-        limits.height,
+        limits.height??Infinity,
       ),
       canvas = document.createElement('canvas');
     canvas.width = width;
     canvas.height = height;
+    if(canvas.width!==width||canvas.height!==height)throw new Error('STUDIO_CAPTURE_FAILED');
     const context = canvas.getContext('2d');
     if (!context) fail('scroll-no-canvas');
     context.fillStyle = '#ffffff';
     context.fillRect(0, 0, width, height);
     context.drawImage(image, cropLeft, cropTop, width, height, 0, 0, width, height);
-    for (const quality of [0.85, 0.65, 0.45]) {
-      const blob = await deadline(
-        new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, 'image/jpeg', quality)),
-        5000,
-        'scroll-image-encode-timeout',
-      );
-      changed ||= !!observer.takeRecords().length;
-      if (changed || signature(nodes) !== token)
-        throw Object.assign(new Error('STUDIO_CAPTURE_STALE'), {
-          captureReason: 'scroll-source-changed',
-        });
-      prepareScrollCapture(element, viewport ?? element);
-      if (blob && blob.size > 0 && blob.size <= limits.bytes) return blob;
-    }
-    throw new Error('STUDIO_CAPTURE_IMAGE_LIMIT');
+    const blob=await awaitCaptureWork(new Promise<Blob|null>(resolve=>canvas.toBlob(resolve,'image/jpeg',0.85)),limits.signal);
+    changed ||= !!observer.takeRecords().length;
+    if(changed||signature(nodes)!==token)throw Object.assign(new Error('STUDIO_CAPTURE_STALE'),{captureReason:'scroll-source-changed'});
+    prepareScrollCapture(element,viewport??element);
+    if(blob&&blob.type==='image/jpeg'&&blob.size>0&&(limits.bytes===undefined||blob.size<=limits.bytes))return blob;
+    throw new Error(limits.bytes===undefined?'STUDIO_CAPTURE_FAILED':'STUDIO_CAPTURE_IMAGE_LIMIT');
   } finally {
     observer?.disconnect();
     if ((!libraryStarted || librarySettled) && engineOwner === owner) {

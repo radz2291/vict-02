@@ -36,7 +36,7 @@
     getContext:()=>{document:UiDocument;cursor:AgentCursor;selection?:string;selectionSet?:SelectionSet;workspace?:AgentWorkspaceFacts;mediaInventory?:AgentMediaInventory}|undefined;
     applyProposal:(proposal:AgentProposal)=>EditReceipt;
     blocked:boolean;
-    getCapture?:(cursor:AgentCursor,target?:AgentCaptureTarget)=>Promise<CaptureResult>;
+    getCapture?:(cursor:AgentCursor,target?:AgentCaptureTarget,signal?:AbortSignal)=>Promise<CaptureResult>;
   }
   let {screenLabel,selectionLabel,getContext,applyProposal,blocked,getCapture}:Props=$props();
   let messages=$state<UiConversationMessage[]>([]);
@@ -60,6 +60,7 @@
   let archivePages=$state<Record<string,{text:string;nextOffset:number|null;offset:number;message?:string}>>({});
   let recovery=$state<{cursor:AgentCursor;task:string;reason:string;target?:AgentCaptureTarget}|undefined>();
   let recovering=$state(false);
+  let recoveryController:AbortController|undefined;
   let recoveryImage=$state<string>();
   let recoveryNote=$state('');
   const selectedRecord=$derived(retainedTurns.find(item=>item.id===selectedTurn));
@@ -96,14 +97,15 @@
     if(!getCapture){recoveryNote='Reveal the preview before retrying. No capture or edit was made.';return;}
     recovering=true;recoveryNote='Capturing the current preview without edits.';
     try{
-      const result=await withTurnAbort(()=>getCapture!(target.cursor,target.target),new AbortController().signal);
+      recoveryController=new AbortController();
+      const result=await withTurnAbort(()=>getCapture!(target.cursor,target.target,recoveryController!.signal),recoveryController.signal);
       if(!sameTurnSource(getContext()?.cursor??context.cursor,target.cursor)){recoveryNote='The source changed during capture. No edit was made.';return;}
       if(!result.ok){recoveryNote=result.message;return;}
       if(recoveryImage)URL.revokeObjectURL(recoveryImage);
       recoveryImage=URL.createObjectURL(result.blob);
       recoveryNote=`Captured ${result.metadata.image.width}x${result.metadata.image.height} at ${result.metadata.capturedAt} for your inspection. No model observation or interaction test occurred; earlier edits were not repeated.`;
       failed=false;status='Preview captured for inspection.';
-    }catch{recoveryNote='Capture could not finish. No edit was made.';}finally{recovering=false;}
+    }catch{recoveryNote='Capture could not finish. No edit was made.';}finally{recovering=false;recoveryController=undefined;}
   }
   async function retryObservation(){
     if(!recovery||busy||recovering||blocked)return;
@@ -132,6 +134,7 @@
     if(id)void fetch('/api/designer-agent',{method:'DELETE',headers:headers(),body:JSON.stringify({runId:id})}).catch(()=>undefined);
   }
   function stop(){
+    recoveryController?.abort();
     const turn=activeTurn;if(!turn || turn.cancelled)return;
     turn.cancelled=true;cancelTransport(turn);
     lastMetrics={...turn.metrics.snapshot(),partial:true};
@@ -238,7 +241,7 @@ ${event.details}`};
             }
             if(event.type==='capture-request'){
               let captured:CaptureResult;
-              try{captured=getCapture?await withTurnAbort(()=>getCapture!(event.cursor,event.target),turn.controller.signal):{ok:false,code:'STUDIO_CAPTURE_UNAVAILABLE',message:'The rendered preview is unavailable.'};}
+              try{captured=getCapture?await withTurnAbort(()=>getCapture!(event.cursor,event.target,turn.controller.signal),turn.controller.signal):{ok:false,code:'STUDIO_CAPTURE_UNAVAILABLE',message:'The rendered preview is unavailable.'};}
               catch(error){if(turn.controller.signal.aborted)throw error;captured={ok:false,code:error instanceof Error&&error.message==='STUDIO_CAPTURE_TIMEOUT'?'STUDIO_CAPTURE_TIMEOUT':'STUDIO_CAPTURE_FAILED',message:'The browser could not complete capture. No visual observation was made.',diagnostics:{phase:'raster',reason:error instanceof Error&&error.message==='STUDIO_CAPTURE_TIMEOUT'?'capture-timeout':'capture-failed',expectedRevision:event.cursor.revision}};}
               if(turn.controller.signal.aborted)throw new Error('stopped');
               if(!captured.ok)recovery={cursor:{...event.cursor},task:turn.task,reason:captured.message,...(event.target?{target:event.target}:{})};else recovery=undefined;

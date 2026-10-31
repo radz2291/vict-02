@@ -80,6 +80,34 @@ function fixture() {
   );
   return { root, header: header!, nested: nested!, fixed: fixed!, serialized: () => serialized! };
 }
+it('completely inspects more than2000 DOM nodes and rejects unsupported content after that boundary',()=>{
+  const f=fixture();
+  for(let i=0;i<2001;i++)f.root.append(document.createElement('span'));
+  expect(prepareScrollCapture(f.root).nodes.length).toBeGreaterThan(2000);
+  f.root.append(document.createElement('video'));
+  expect(()=>prepareScrollCapture(f.root)).toThrow('STUDIO_CAPTURE_SCROLL_UNSUPPORTED');
+  try{prepareScrollCapture(f.root);}catch(error){expect(error).toMatchObject({captureReason:'scroll-live-media'});}
+});
+it('captures a large generated SVG and JPEG without fixed byte ceilings or quality downgrades',async()=>{
+  const f=fixture();
+  toSvg.mockImplementation(async()=>`data:image/svg+xml,<svg><!--${'x'.repeat(6*1024*1024+1)}--></svg>`);
+  const encode=vi.mocked(HTMLCanvasElement.prototype.toBlob);
+  encode.mockImplementation(cb=>cb(new Blob([new Uint8Array(524289)],{type:'image/jpeg'})));
+  const result=await captureScrolledViewport(f.root,f.root);
+  expect(result.size).toBe(524289);expect(encode.mock.calls.map(call=>call[2])).toEqual([0.85]);
+});
+it('admits a static same-origin JPEG resource beyond4MiB and dataURI beyond6MiB with origin controls intact',async()=>{
+  const f=fixture(),url=`blob:${new URL(document.baseURI).origin}/large-owned-image`,bytes=new Uint8Array(5*1024*1024);
+  bytes.set([255,216]);bytes.set([255,217],bytes.length-2);
+  const fetch=vi.fn(async()=>new Response(bytes,{headers:{'content-type':'image/jpeg'}}));vi.stubGlobal('fetch',fetch);
+  toSvg.mockImplementation(async(_root,options)=>{
+    const data=await options.requestInterceptor(url);expect(data.length).toBeGreaterThan(6*1024*1024);
+    expect(await options.requestInterceptor(data)).toBe(data);
+    return 'data:image/svg+xml,<svg/>';
+  });
+  await expect(captureScrolledViewport(f.root,f.root)).resolves.toBeInstanceOf(Blob);
+  expect(fetch).toHaveBeenCalledOnce();expect(fetch).toHaveBeenCalledWith(url,expect.objectContaining({credentials:'omit',redirect:'error'}));
+});
 it('projects current measured coordinates and clips through nested and outer scrollports', () => {
   expect(
     projectPositionedRect(new DOMRect(20, -20, 290, 30), new DOMRect(0, 0, 390, 420), [
@@ -360,7 +388,7 @@ it('refuses a foreign blob before any fetch', async () => {
   );
   expect(fetch).not.toHaveBeenCalled();
 });
-it('does not accept a placeholder after a same-origin blob exceeds its streamed byte bound', async () => {
+it('does not accept a placeholder for an invalid static raster regardless of resource size', async () => {
   const f = fixture(),
     url = `blob:${new URL(document.baseURI).origin}/too-large`;
   vi.stubGlobal(
@@ -435,14 +463,15 @@ it('quarantines an unsettled shared engine and recovers only after that operatio
         finish = resolve;
       }),
   );
-  const running = captureScrolledViewport(f.root, f.root, limits),
-    failure = expect(running).rejects.toMatchObject({
-      message: 'STUDIO_CAPTURE_SCROLL_ENGINE_STALLED',
-      captureReason: 'scroll-engine-stalled-reload-required',
-    });
+  const controller=new AbortController();
+  let settled=false;
+  const running = captureScrolledViewport(f.root, f.root,{...limits,signal:controller.signal}).finally(()=>{settled=true;}),
+    failure = expect(running).rejects.toMatchObject({message:'STUDIO_CAPTURE_CANCELLED'});
   await vi.advanceTimersByTimeAsync(0);
   expect(toSvg).toHaveBeenCalledOnce();
   await vi.advanceTimersByTimeAsync(8001);
+  expect(settled).toBe(false);
+  controller.abort();
   await failure;
   await expect(captureScrolledViewport(f.root, f.root, limits)).rejects.toMatchObject({
     captureReason: 'scroll-engine-stalled-reload-required',

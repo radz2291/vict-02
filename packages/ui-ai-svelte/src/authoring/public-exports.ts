@@ -64,6 +64,8 @@ export const specialistPublicExports = [
   'Progress',
   'RENDER_CAPTURE_LIMITS',
   'RenderedCapture',
+  'RenderCaptureOptions',
+  'captureJpegDimensions',
   'SendAccepted',
   'SendResult',
   'Separator',

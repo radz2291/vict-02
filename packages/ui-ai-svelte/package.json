@@ -24,6 +24,7 @@
       "default": "./src/index.ts"
     },
     "./styles.css": "./dist/styles.css",
+    "./capture": {"types":"./src/capture.ts","default":"./src/capture.ts"},
     "./authoring": {
       "types": "./src/authoring/index.ts",
       "svelte": "./src/authoring/index.ts",

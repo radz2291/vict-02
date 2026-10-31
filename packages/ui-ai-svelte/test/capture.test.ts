@@ -5,6 +5,17 @@ vi.mock('html-to-image', () => ({ toSvg }));
 import { captureRenderedElement, RENDER_CAPTURE_LIMITS } from '../src/capture.js';
 
 const originalFonts = Object.getOwnPropertyDescriptor(document, 'fonts');
+it('keeps an explicit consumer capture window opt-in and cancels a slow raster without a task deadline',async()=>{
+  const test=fixture(new DOMRect(0,0,2000,1800));
+  expect(await captureRenderedElement(test.frame,undefined,{width:1000,height:900})).toMatchObject({width:1000,height:900,cropped:true});
+  let finish!:(value:string)=>void;
+  toSvg.mockImplementation(()=>new Promise(resolve=>{finish=resolve;}));
+  const controller=new AbortController();
+  const running=captureRenderedElement(test.frame,undefined,{signal:controller.signal});
+  const refusal=expect(running).rejects.toThrow('STUDIO_CAPTURE_CANCELLED');
+  await vi.waitFor(()=>expect(finish).toBeTypeOf('function'));
+  controller.abort();await refusal;finish('<svg/>');
+});
 afterEach(() => {
   document.body.innerHTML = '';
   if (originalFonts) Object.defineProperty(document, 'fonts', originalFonts);
@@ -80,15 +91,15 @@ it.each(['relative', 'absolute'])('normalizes only a %s captured root position b
   expect(test.context.fillRect).toHaveBeenCalledWith(0, 0, 420, 460);
 });
 
-it('keeps output pixel and JPEG byte budgets unchanged by internal layout scaling', async () => {
+it('captures beyond the former pixel and JPEG quotas without lowering quality', async () => {
   const test = fixture(new DOMRect(0, 0, 2000, 1800));
   test.encode.mockImplementation((callback, _type, quality) => callback(new Blob([new Uint8Array(quality === 0.85 ? RENDER_CAPTURE_LIMITS.bytes + 1 : 123)], { type: 'image/jpeg' })));
   const capture = await captureRenderedElement(test.frame);
-  expect(capture).toMatchObject({ width: 1600, height: 1200, sourceWidth: 2000, sourceHeight: 1800, offsetLeft: 0, offsetTop: 0, cropped: true });
-  expect(capture.blob.size).toBe(123);
-  expect(test.raster().documentElement.getAttribute('viewBox')).toBe('0 0 3200 2400');
-  expect(test.context.fillRect).toHaveBeenCalledWith(0, 0, 1600, 1200);
-  expect(test.encode.mock.calls.map(call => call[2])).toEqual([0.85, 0.65]);
+  expect(capture).toMatchObject({ width: 2000, height: 1800, sourceWidth: 2000, sourceHeight: 1800, offsetLeft: 0, offsetTop: 0, cropped: false });
+  expect(capture.blob.size).toBe(RENDER_CAPTURE_LIMITS.bytes+1);
+  expect(test.raster().documentElement.getAttribute('viewBox')).toBe('0 0 4000 3600');
+  expect(test.context.fillRect).toHaveBeenCalledWith(0, 0, 2000, 1800);
+  expect(test.encode.mock.calls.map(call => call[2])).toEqual([0.85]);
 });
 
 it('captures subtree popup paint below a shorter flow root without including viewport siblings or reflowing the root', async () => {
@@ -154,14 +165,14 @@ it('honors a clipping ancestor and ignores detached overflow without altering so
   expect(detached.isConnected).toBe(false);
 });
 
-it('retains pixel and encoded byte limits for a measured popup overflow extent',async()=>{
+it('captures measured popup overflow beyond former pixel and byte limits',async()=>{
   const test=fixture(new DOMRect(0,0,824,820),new DOMRect(0,0,824,1800),'width:824px;height:820px;overflow:visible');
   const popup=document.createElement('div');popup.style.position='absolute';test.frame.append(popup);
   const rect=new DOMRect(40,1100,192,400);vi.spyOn(popup,'getBoundingClientRect').mockReturnValue(rect);vi.spyOn(popup,'getClientRects').mockReturnValue([rect] as unknown as DOMRectList);
   test.encode.mockImplementation((callback,_type,quality)=>callback(new Blob([new Uint8Array(quality===0.85?RENDER_CAPTURE_LIMITS.bytes+1:123)],{type:'image/jpeg'})));
   const capture=await captureRenderedElement(test.frame,test.viewport);
-  expect(capture).toMatchObject({height:1200,sourceHeight:1500,cropped:true});expect(capture.blob.size).toBe(123);
-  expect(test.encode.mock.calls.map(call=>call[2])).toEqual([0.85,0.65]);
+  expect(capture).toMatchObject({height:1500,sourceHeight:1500,cropped:false});expect(capture.blob.size).toBe(RENDER_CAPTURE_LIMITS.bytes+1);
+  expect(test.encode.mock.calls.map(call=>call[2])).toEqual([0.85]);
 });
 
 it('preserves computed SVG descendant paint instead of a stylesheet-painted MiniMap mask becoming black', async () => {

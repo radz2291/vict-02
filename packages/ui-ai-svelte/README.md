@@ -60,10 +60,26 @@ Legacy `activity` consumers remain supported. Events take precedence when suppli
 The package presents supplied evidence; it does not produce private reasoning,
 tool results, execution receipts or provider observations.
 
-`captureRenderedElement(element, viewport?)` rasterizes the actual existing DOM
-through pinned `html-to-image@1.11.13` (MIT). It returns a bounded JPEG and image
-dimensions/crop offsets. It does not upload anything or call a model. The host
-must associate document/revision/preview state, enforce stale-image guards and
-select an explicitly compatible vision provider. Nested scrolled descendants
-are refused because this DOM rasterizer cannot preserve them faithfully. Browser
-capture is appearance evidence only, not proof of actions or state wiring.
+`captureRenderedElement(element, viewport?, options?)` rasterizes the existing
+DOM through the pinned engines (`html-to-image` for ordinary layout,
+`dom-to-image-more` for the supported scroll projection). It returns JPEG pixels
+for the actual visible viewport intersection, with source dimensions and crop
+offsets. There is no default DOM-count, byte, geometry or elapsed-time quota.
+`RENDER_CAPTURE_LIMITS` is deprecated historical metadata, not an imposed policy.
+Consumers may explicitly choose `width`, `height` or `bytes` options. The codec
+uses one quality setting rather than lowering quality to fit an invented quota.
+
+An optional `AbortSignal` stops waiting on owner cancellation. Cancellation does
+not claim that an unabortable raster engine stopped: a still-running shared
+scroll engine remains quarantined until it actually settles (or the host reloads).
+The capture API never uploads or invokes a model. Hosts supply source/session
+identity and freshness fences; Studio sends JSON metadata and JPEG in multipart
+body fields instead of oversized HTTP headers. The public `./capture` subpath
+also exposes passive JPEG frame-dimension admission for thin hosts.
+
+Existing origin, static-format, owner/clipping, font, SVG-reference, DOM mutation
+and geometry fidelity checks remain. Unsupported scroll/native-control/live
+media paint still refuses explicitly; it is not replaced with invented pixels.
+Provider/context limits, browser canvas/codec capability, dependency behavior and
+machine resources remain real constraints. Capture proves appearance of its
+stated region only, never bindings, actions, execution or semantic correctness.

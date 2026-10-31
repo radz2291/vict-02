@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { createVisualObserver, acceptVisualCapture, refuseVisualCapture, jpegDimensions, visualModelSupport } from '../src/lib/server/designer-visual.js';
 import type { CaptureRequestEvent } from '../src/lib/server/designer-visual.js';
 import type { CapabilityContext } from '@victframework/sdk';
@@ -13,6 +13,34 @@ const context = {} as CapabilityContext;
 const assessmentText=(finding:string)=>JSON.stringify({visibleFindings:[finding],uncertainty:[],notEstablished:['Interaction behavior was not tested.']});
 
 describe('bounded visual observation boundary', () => {
+  it('accepts large multipart JPEG and metadata without header quotas, preserving exact source and image fences',async()=>{
+    const large=new Uint8Array(600000);large.set(bytes.subarray(0,bytes.length-2));large.set([255,217],large.length-2);
+    large[7]=1800>>8;large[8]=1800&255;large[9]=2000>>8;large[10]=2000&255;
+    const measured={...metadata(),viewport:{...metadata().viewport,width:2000,height:1800},image:{...metadata().image,width:2000,height:1800,sourceWidth:2000,sourceHeight:1800},evidence:{workspaceView:'interact',viewportModel:'hosted-container',ownedOverlays:0,targets:[{nodeId:'one',part:'root',bounds:[0,0,2000,1800],visible:true,styles:{'font-family':'x'.repeat(20000)}}]}};
+    let request!:CaptureRequestEvent,captures=0;
+    const observer=createVisualObserver({owner:'large-multipart',runId:'run',model:'zai/glm-5.3-flash',getCursor:()=>cursor,signal:new AbortController().signal,emit:event=>{request=event;if(++captures===2)expect(acceptVisualCapture('large-multipart',event.captureId,measured,large)).toEqual({ok:true});},modelFactory:()=>({doStream:async()=>({stream:new ReadableStream({start(controller){controller.enqueue({type:'text-delta',delta:assessmentText('Large image fixture')});controller.enqueue({type:'finish'});controller.close();}})})})});
+    try{
+      const result=observer.capability.invoke({focus:'Large capture'},context),form=new FormData();
+      form.append('metadata',JSON.stringify(measured));form.append('image',new Blob([large],{type:'image/jpeg'}),'capture.jpg');
+      const response=await POST({request:new Request('http://localhost/capture',{method:'POST',headers:{'x-vict-csrf':'nonce'},body:form}),params:{captureId:request.captureId},locals:{session:{sessionId:'large-multipart',csrfToken:'nonce',actorLabel:'operator'}}} as never);
+      expect(response.status).toBe(200);expect(await result).toMatchObject({ok:true,bytes:600000,metadata:{image:{width:2000,height:1800}},semanticClaimsVerified:false});
+    }finally{observer.dispose();}
+  });
+  it('retains valid model assessments beyond6000 chars and3 short findings without promoting them to verified facts',async()=>{
+    const assessment={visibleFindings:Array.from({length:8},(_,i)=>`Finding ${i}: ${'x'.repeat(1000)}`),uncertainty:['Unverified'],notEstablished:['Interactions']},original=JSON.stringify(assessment);
+    let modelOptions:unknown;
+    const observer=createVisualObserver({owner:'long-assessment',runId:'run',model:'zai/glm-5.3-flash',getCursor:()=>cursor,signal:new AbortController().signal,emit:event=>{expect(acceptVisualCapture('long-assessment',event.captureId,metadata(),bytes)).toEqual({ok:true});},modelFactory:()=>({doStream:async(options:unknown)=>{modelOptions=options;return {stream:new ReadableStream({start(controller){controller.enqueue({type:'text-delta',delta:original});controller.enqueue({type:'finish'});controller.close();}})};}})});
+    try{expect(await observer.capability.invoke({focus:'Complete appearance assessment'},context)).toMatchObject({ok:true,originalModelText:original,modelAssessment:{visibleFindings:assessment.visibleFindings,semanticClaimsVerified:false},semanticClaimsVerified:false});expect(modelOptions).not.toHaveProperty('maxOutputTokens');}finally{observer.dispose();}
+  });
+  it.each(['broker','model'])('allows slow %s work past old deadlines and stops on owner cancellation',async phase=>{
+    vi.useFakeTimers();const controller=new AbortController();let request!:CaptureRequestEvent,settled=false;
+    const observer=createVisualObserver({owner:'slow-owner',runId:'run',model:'zai/glm-5.3-flash',getCursor:()=>cursor,signal:controller.signal,emit:event=>{request=event;if(phase==='model')acceptVisualCapture('slow-owner',event.captureId,metadata(),bytes);},modelFactory:()=>({doStream:async()=>new Promise(()=>{})})});
+    try{
+      const running=Promise.resolve(observer.capability.invoke({focus:'Slow capture'},context)).finally(()=>{settled=true;});
+      await vi.advanceTimersByTimeAsync(120001);expect(settled).toBe(false);controller.abort();
+      expect(await running).toMatchObject({ok:false,code:'STUDIO_CAPTURE_CANCELLED'});expect(acceptVisualCapture('slow-owner',request.captureId,metadata(),bytes)).toMatchObject({ok:false,code:'STUDIO_CAPTURE_UNAVAILABLE'});
+    }finally{observer.dispose();vi.useRealTimers();}
+  });
   it('recognizes the exact documented flash model without treating plain GLM as vision', () => {
     expect(visualModelSupport('zai/glm-5.3-flash').supported).toBe(true);
     expect(visualModelSupport('zai/glm-5.3').supported).toBe(false);
@@ -87,7 +115,7 @@ describe('bounded visual observation boundary', () => {
         interactionVerified:false,validation:'same-source-preview-viewport-and-image-bytes-after-inference'});
       expect(result).not.toHaveProperty('observation');expect(captures).toBe(2);
       expect(prompt).toContain('does NOT establish');expect(prompt).toContain('not evidence that mentioned elements exist');
-      expect(observer.capability.revision).toBe('3');expect(observer.capability.output).toBeDefined();expect(observer.capability.output?.revision).toBe('2');
+      expect(observer.capability.revision).toBe('4');expect(observer.capability.output).toBeDefined();expect(observer.capability.output?.revision).toBe('3');
     }finally{observer.dispose();}
   });
   it.each([
@@ -95,8 +123,8 @@ describe('bounded visual observation boundary', () => {
     ['markdown wrapper','```json\n'+assessmentText('Visible menu')+'\n```'],
     ['extra verified claim',JSON.stringify({visibleFindings:['Menu'],uncertainty:[],notEstablished:['Interactions'],verified:true})],
     ['missing limit',JSON.stringify({visibleFindings:['Menu'],uncertainty:[],notEstablished:[]})],
-    ['oversized list',JSON.stringify({visibleFindings:['A','B','C','D'],uncertainty:[],notEstablished:['Interactions']})],
-    ['oversized field',JSON.stringify({visibleFindings:['a'.repeat(301)],uncertainty:[],notEstablished:['Interactions']})],
+    ['invalid list type',JSON.stringify({visibleFindings:'not an array',uncertainty:[],notEstablished:['Interactions']})],
+    ['invalid finding type',JSON.stringify({visibleFindings:[12],uncertainty:[],notEstablished:['Interactions']})],
   ])('refuses %s without accepting an assessment or losing original public text',async(_label,original)=>{
     let captures=0;
     const observer=createVisualObserver({owner:'invalid-assessment',runId:'run',model:'zai/glm-5.3-flash',getCursor:()=>cursor,signal:new AbortController().signal,
@@ -105,13 +133,13 @@ describe('bounded visual observation boundary', () => {
     });
     try{const result=await observer.capability.invoke({focus:'Footer'},context);expect(result).toMatchObject({ok:false,code:'STUDIO_CAPTURE_ASSESSMENT_INVALID',originalModelText:original,semanticClaimsVerified:false});expect(result).not.toHaveProperty('modelAssessment');expect(result).not.toHaveProperty('observation');expect(captures).toBe(2);}finally{observer.dispose();}
   });
-  it('retains the declared bounded prefix and explicit truncation when the original model response exceeds6000characters',async()=>{
+  it('retains complete invalid model text beyond6000characters without accepting semantic claims',async()=>{
     const original='x'.repeat(6001);let captures=0;
     const observer=createVisualObserver({owner:'large-assessment',runId:'run',model:'zai/glm-5.3-flash',getCursor:()=>cursor,signal:new AbortController().signal,
       emit:event=>{captures++;acceptVisualCapture('large-assessment',event.captureId,metadata(),bytes);},
       modelFactory:()=>({doStream:async()=>({stream:new ReadableStream({start(controller){controller.enqueue({type:'text-delta',delta:original});controller.enqueue({type:'finish'});controller.close();}})})}),
     });
-    try{const result=await observer.capability.invoke({focus:'Appearance'},context);expect(result).toMatchObject({ok:false,code:'STUDIO_CAPTURE_OBSERVATION_LIMIT',originalModelText:'x'.repeat(6000),originalModelTextTruncated:true,semanticClaimsVerified:false});expect(result).not.toHaveProperty('modelAssessment');expect(captures).toBe(1);}finally{observer.dispose();}
+    try{const result=await observer.capability.invoke({focus:'Appearance'},context);expect(result).toMatchObject({ok:false,code:'STUDIO_CAPTURE_ASSESSMENT_INVALID',originalModelText:original,semanticClaimsVerified:false});expect(result).not.toHaveProperty('modelAssessment');expect(captures).toBe(2);}finally{observer.dispose();}
   });
   it('accepts identical pixels across separate source revisions while labeling equality as within each observation only', async () => {
     let current = { ...cursor }; let fingerprint = 'a'.repeat(64); let captures = 0; let modelCalls = 0;
@@ -181,7 +209,7 @@ describe('bounded visual observation boundary', () => {
     expect((await call(bytes, { 'content-type': 'image/jpeg' }, false)).status).toBe(401);
     expect((await call(bytes, { 'content-type': 'image/jpeg' })).status).toBe(403);
     expect((await call('text', { 'content-type': 'text/plain', 'x-vict-csrf': 'nonce' })).status).toBe(415);
-    expect((await call(new Uint8Array(524_289), { 'content-type': 'image/jpeg', 'x-vict-csrf': 'nonce' })).status).toBe(413);
+    expect((await call(new Uint8Array(524_289), { 'content-type': 'image/jpeg', 'x-vict-csrf': 'nonce' })).status).toBe(400);
     const refused = await call(bytes, { 'content-type': 'image/jpeg', 'x-vict-csrf': 'nonce', 'x-vict-capture': encodeURIComponent(JSON.stringify(metadata())) });
     expect(refused.status).toBe(404);
     expect(await refused.json()).toMatchObject({ code: 'STUDIO_CAPTURE_UNAVAILABLE' });

@@ -1,0 +1,110 @@
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/vict-capture-policy-20261031/apps/studio
+
+ ❯ tests/designer-visual.test.ts (20 tests | 4 failed) 301ms
+   ✓ bounded visual observation boundary > recognizes the exact documented flash model without treating plain GLM as vision 7ms
+   ✓ bounded visual observation boundary > returns an explicit configuration choice for unknown models without capture or silent fallback 8ms
+   ✓ bounded visual observation boundary > returns a preview-portal refusal with no appearance observation or image inference 6ms
+   ✓ bounded visual observation boundary > passes image bytes to the selected model while returning only bounded observation/provenance 114ms
+   ✓ bounded visual observation boundary > refuses changed JPEG bytes with identical metadata after inference and does not call the model twice 6ms
+   × bounded visual observation boundary > keeps speculative model claims unverified and exact original text separate from host image validation 55ms
+     → expected '4' to be '3' // Object.is equality
+   ✓ bounded visual observation boundary > refuses plain speculative prose without accepting an assessment or losing original public text 7ms
+   ✓ bounded visual observation boundary > refuses markdown wrapper without accepting an assessment or losing original public text 4ms
+   ✓ bounded visual observation boundary > refuses extra verified claim without accepting an assessment or losing original public text 5ms
+   ✓ bounded visual observation boundary > refuses missing limit without accepting an assessment or losing original public text 3ms
+   × bounded visual observation boundary > refuses oversized list without accepting an assessment or losing original public text 24ms
+     → expected { ok: true, …(19) } to match object { ok: false, …(3) }
+(27 matching properties omitted from actual)
+   × bounded visual observation boundary > refuses oversized field without accepting an assessment or losing original public text 6ms
+     → expected { ok: true, …(19) } to match object { ok: false, …(3) }
+(27 matching properties omitted from actual)
+   ✓ bounded visual observation boundary > retains complete invalid model text beyond6000characters without accepting semantic claims 3ms
+   ✓ bounded visual observation boundary > accepts identical pixels across separate source revisions while labeling equality as within each observation only 5ms
+   ✓ bounded visual observation boundary > refuses runtime changes during inference with a second capture and only one model call 11ms
+   ✓ bounded visual observation boundary > refuses viewport changes during inference with a second capture and only one model call 2ms
+   ✓ bounded visual observation boundary > refuses portal changes during inference with a second capture and only one model call 2ms
+   ✓ bounded visual observation boundary > rejects stale cursor and oversized images, then receives a truthful browser refusal 4ms
+   ✓ bounded visual observation boundary > fences source changes during inference, and Stop releases pending capture without a provider call 3ms
+   × bounded visual observation boundary > applies authentication, CSRF and binary streaming admission at the actual capture route 9ms
+     → expected 400 to be 413 // Object.is equality
+ ✓ tests/ui/designer-capture-images.test.ts (1 test) 76ms
+11:16:10 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-capture-policy-20261031/packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+11:16:12 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-capture-policy-20261031/packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+11:16:12 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-capture-policy-20261031/packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+11:16:12 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-capture-policy-20261031/packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+11:16:12 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-capture-policy-20261031/packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+ ✓ tests/ui/capture-filter-independent.test.ts (1 test) 99ms
+ ✓ tests/ui/designer-capture-portals.test.ts (7 tests) 729ms
+   ✓ detects the real CatalogPortal created by an unbound catalog Popover under document.body  509ms
+ ✓ tests/ui/completion-independent-stop-capture.test.ts (1 test) 762ms
+   ✓ independent challenge: Stop releases a stalled raster capture and fences its late upload  760ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/designer-visual.test.ts > bounded visual observation boundary > keeps speculative model claims unverified and exact original text separate from host image validation
+AssertionError: expected '4' to be '3' // Object.is equality
+
+Expected: "3"
+Received: "4"
+
+ ❯ tests/designer-visual.test.ts:90:44
+     88|     observer.dispose();
+     89|   });
+     90|   it('refuses changed JPEG bytes with identical metadata after inferen…
+       |                                            ^
+     91|     let captures = 0; let modelCalls = 0;
+     92|     const identicalMetadata = metadata();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  tests/designer-visual.test.ts > bounded visual observation boundary > refuses oversized list without accepting an assessment or losing original public text
+ FAIL  tests/designer-visual.test.ts > bounded visual observation boundary > refuses oversized field without accepting an assessment or losing original public text
+AssertionError: expected { ok: true, …(19) } to match object { ok: false, …(3) }
+(27 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "code": "STUDIO_CAPTURE_ASSESSMENT_INVALID",
+-   "ok": false,
++   "ok": true,
+    "originalModelText": "{\"visibleFindings\":[\"A\",\"B\",\"C\",\"D\"],\"uncertainty\":[],\"notEstablished\":[\"Interactions\"]}",
+    "semanticClaimsVerified": false,
+  }
+
+ ❯ tests/designer-visual.test.ts:106:96
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  tests/designer-visual.test.ts > bounded visual observation boundary > applies authentication, CSRF and binary streaming admission at the actual capture route
+AssertionError: expected 400 to be 413 // Object.is equality
+
+- Expected
++ Received
+
+- 413
++ 400
+
+ ❯ tests/designer-visual.test.ts:184:116
+    182|     const result = observer.capability.invoke({ focus: 'Appearance' },…
+    183|     expect(acceptVisualCapture('session-a', request.captureId, { ...me…
+    184|     expect(acceptVisualCapture('session-a', request.captureId, metadat…
+       |                                                                                                                    ^
+    185|     expect(refuseVisualCapture('session-a', request.captureId, 'STUDIO…
+    186|     expect(await result).toMatchObject({ ok: false, code: 'STUDIO_CAPT…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+
+ Test Files  1 failed | 4 passed (5)
+      Tests  4 failed | 26 passed (30)
+   Start at  11:15:32
+   Duration  70.28s (transform 57.96s, setup 0ms, collect 182.17s, tests 1.97s, environment 14.10s, prepare 3.35s)

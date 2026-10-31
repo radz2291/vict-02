@@ -1,0 +1,85 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/vict-capture-policy-20261031/packages/ui-ai-svelte
+
+ ❯ test/capture-baseline-raster.test.ts (25 tests | 2 failed | 23 skipped) 91ms
+   × captures beyond the former pixel and JPEG quotas without lowering quality 72ms
+   × captures measured popup overflow beyond former pixel and byte limits 15ms
+ ❯ test/capture-baseline-scroll.test.ts (30 tests | 1 failed | 29 skipped) 115ms
+   × completely inspects more than2000 DOM nodes and rejects unsupported content after that boundary 111ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/capture-baseline-raster.test.ts > captures beyond the former pixel and JPEG quotas without lowering quality
+AssertionError: expected { …(8) } to match object { width: 2000, height: 1800, …(5) }
+(3 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "cropped": false,
+-   "height": 1800,
++   "cropped": true,
++   "height": 1200,
+    "offsetLeft": 0,
+    "offsetTop": 0,
+    "sourceHeight": 1800,
+    "sourceWidth": 2000,
+-   "width": 2000,
++   "width": 1600,
+  }
+
+ ❯ test/capture-baseline-raster.test.ts:98:19
+     96|   test.encode.mockImplementation((callback, _type, quality) => callbac…
+     97|   const capture = await captureRenderedElement(test.frame);
+     98|   expect(capture).toMatchObject({ width: 2000, height: 1800, sourceWid…
+       |                   ^
+     99|   expect(capture.blob.size).toBe(RENDER_CAPTURE_LIMITS.bytes+1);
+    100|   expect(test.raster().documentElement.getAttribute('viewBox')).toBe('…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  test/capture-baseline-raster.test.ts > captures measured popup overflow beyond former pixel and byte limits
+AssertionError: expected { …(8) } to match object { height: 1500, …(2) }
+(7 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "cropped": false,
+-   "height": 1500,
++   "cropped": true,
++   "height": 1200,
+    "sourceHeight": 1500,
+  }
+
+ ❯ test/capture-baseline-raster.test.ts:174:19
+    172|   test.encode.mockImplementation((callback,_type,quality)=>callback(ne…
+    173|   const capture=await captureRenderedElement(test.frame,test.viewport);
+    174|   expect(capture).toMatchObject({height:1500,sourceHeight:1500,cropped…
+       |                   ^
+    175|   expect(test.encode.mock.calls.map(call=>call[2])).toEqual([0.85]);
+    176| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  test/capture-baseline-scroll.test.ts > completely inspects more than2000 DOM nodes and rejects unsupported content after that boundary
+Error: STUDIO_CAPTURE_SCROLL_UNSUPPORTED
+ ❯ fail test/.capture-baseline/capture-scroll.ts:43:23
+     41| }
+     42| function fail(reason: string): never {
+     43|   throw Object.assign(new Error('STUDIO_CAPTURE_SCROLL_UNSUPPORTED'), …
+       |                       ^
+     44| }
+     45| const none = (value: string) => !value || value === 'none';
+ ❯ Module.prepareScrollCapture test/.capture-baseline/capture-scroll.ts:157:28
+ ❯ test/capture-baseline-scroll.test.ts:86:10
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  2 failed | 2 passed | 1 skipped (5)
+      Tests  3 failed | 3 passed | 106 skipped (112)
+   Start at  11:20:24
+   Duration  3.61s (transform 1.31s, setup 0ms, import 2.21s, tests 1.11s, environment 9.22s)

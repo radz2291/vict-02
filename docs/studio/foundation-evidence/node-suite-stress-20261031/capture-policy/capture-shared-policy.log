@@ -1,0 +1,8 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/vict-capture-policy-20261031/packages/ui-ai-svelte
+
+No test files found, exiting with code 1
+
+filter: packages/ui-ai-svelte/test/capture.test.ts, packages/ui-ai-svelte/test/capture-scroll.test.ts, packages/ui-ai-svelte/test/capture-resource.test.ts
+include: test/**/*.test.ts
+exclude:  test/capture*.test.ts

@@ -1,0 +1,53 @@
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/vict-capture-policy-20261031/apps/studio
+
+ ❯ tests/designer-visual.test.ts (24 tests | 1 failed) 306ms
+   ✓ bounded visual observation boundary > accepts large multipart JPEG and metadata without header quotas, preserving exact source and image fences 199ms
+   ✓ bounded visual observation boundary > retains valid model assessments beyond6000 chars and3 short findings without promoting them to verified facts 12ms
+   ✓ bounded visual observation boundary > allows slow broker work past old deadlines and stops on owner cancellation 8ms
+   ✓ bounded visual observation boundary > allows slow model work past old deadlines and stops on owner cancellation 6ms
+   ✓ bounded visual observation boundary > recognizes the exact documented flash model without treating plain GLM as vision 1ms
+   ✓ bounded visual observation boundary > returns an explicit configuration choice for unknown models without capture or silent fallback 2ms
+   ✓ bounded visual observation boundary > returns a preview-portal refusal with no appearance observation or image inference 2ms
+   ✓ bounded visual observation boundary > passes image bytes to the selected model while returning only bounded observation/provenance 10ms
+   ✓ bounded visual observation boundary > refuses changed JPEG bytes with identical metadata after inference and does not call the model twice 6ms
+   × bounded visual observation boundary > keeps speculative model claims unverified and exact original text separate from host image validation 14ms
+     → expected '4' to be '3' // Object.is equality
+   ✓ bounded visual observation boundary > refuses plain speculative prose without accepting an assessment or losing original public text 3ms
+   ✓ bounded visual observation boundary > refuses markdown wrapper without accepting an assessment or losing original public text 3ms
+   ✓ bounded visual observation boundary > refuses extra verified claim without accepting an assessment or losing original public text 4ms
+   ✓ bounded visual observation boundary > refuses missing limit without accepting an assessment or losing original public text 2ms
+   ✓ bounded visual observation boundary > refuses invalid list type without accepting an assessment or losing original public text 2ms
+   ✓ bounded visual observation boundary > refuses invalid finding type without accepting an assessment or losing original public text 2ms
+   ✓ bounded visual observation boundary > retains complete invalid model text beyond6000characters without accepting semantic claims 2ms
+   ✓ bounded visual observation boundary > accepts identical pixels across separate source revisions while labeling equality as within each observation only 4ms
+   ✓ bounded visual observation boundary > refuses runtime changes during inference with a second capture and only one model call 3ms
+   ✓ bounded visual observation boundary > refuses viewport changes during inference with a second capture and only one model call 2ms
+   ✓ bounded visual observation boundary > refuses portal changes during inference with a second capture and only one model call 3ms
+   ✓ bounded visual observation boundary > rejects stale cursor and oversized images, then receives a truthful browser refusal 2ms
+   ✓ bounded visual observation boundary > fences source changes during inference, and Stop releases pending capture without a provider call 2ms
+   ✓ bounded visual observation boundary > applies authentication, CSRF and binary streaming admission at the actual capture route 6ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/designer-visual.test.ts > bounded visual observation boundary > keeps speculative model claims unverified and exact original text separate from host image validation
+AssertionError: expected '4' to be '3' // Object.is equality
+
+Expected: "3"
+Received: "4"
+
+ ❯ tests/designer-visual.test.ts:118:44
+    116|       expect(result).not.toHaveProperty('observation');expect(captures…
+    117|       expect(prompt).toContain('does NOT establish');expect(prompt).to…
+    118|       expect(observer.capability.revision).toBe('3');expect(observer.c…
+       |                                            ^
+    119|     }finally{observer.dispose();}
+    120|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 23 passed (24)
+   Start at  11:17:19
+   Duration  3.60s (transform 722ms, setup 0ms, collect 2.11s, tests 306ms, environment 1ms, prepare 495ms)

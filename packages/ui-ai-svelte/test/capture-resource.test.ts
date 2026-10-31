@@ -1,4 +1,5 @@
 import { readFileSync } from 'node:fs';
+import {URL as NodeURL} from 'node:url';
 import { expect, it } from 'vitest';
 import { approvedCaptureBlobUrl, isStaticCaptureRaster } from '../src/capture-resource.js';
 it('admits only the source document origin and blob protocol, without credential-bearing inner URLs', () => {
@@ -20,7 +21,7 @@ it('admits only the source document origin and blob protocol, without credential
 it('admits a real static PNG fixture but rejects animated formats, APNG controls and malformed chunks', () => {
   const png = new Uint8Array(
     readFileSync(
-      new URL(
+      new NodeURL(
         '../../ui-media-svelte/test/fixtures/foundation-media/synthetic-image.png',
         import.meta.url,
       ),

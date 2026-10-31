@@ -1,4 +1,37 @@
 /** Pure admission only. This module does not fetch or relax capture refusals. */
+export function assertCaptureActive(signal?:AbortSignal):void {
+  if(signal?.aborted)throw Object.assign(new Error('STUDIO_CAPTURE_CANCELLED'),{captureReason:'capture-aborted'});
+}
+/** Stop waiting on owner cancellation without claiming underlying browser work stopped. */
+export function awaitCaptureWork<T>(operation:PromiseLike<T>,signal?:AbortSignal):Promise<T> {
+  if(!signal)return Promise.resolve(operation);
+  return new Promise<T>((resolve,reject)=>{
+    const abort=()=>{cleanup();reject(Object.assign(new Error('STUDIO_CAPTURE_CANCELLED'),{captureReason:'capture-aborted'}));};
+    const cleanup=()=>signal.removeEventListener('abort',abort);
+    signal.addEventListener('abort',abort,{once:true});
+    Promise.resolve(operation).then(value=>{cleanup();resolve(value);},error=>{cleanup();reject(error);});
+    if(signal.aborted)abort();
+  });
+}
+/** Inspect the JPEG frame dimensions without decompressing untrusted pixels. */
+export function captureJpegDimensions(bytes:Uint8Array):{width:number;height:number}|undefined {
+  if(bytes.length<4||bytes[0]!==0xff||bytes[1]!==0xd8||bytes.at(-2)!==0xff||bytes.at(-1)!==0xd9)return;
+  let offset=2;
+  while(offset+4<bytes.length){
+    if(bytes[offset]!==0xff)return;
+    while(bytes[offset]===0xff)offset++;
+    const marker=bytes[offset++]!;
+    if(marker===0xda||marker===0xd9)return;
+    if(marker===0x01||(marker>=0xd0&&marker<=0xd7))continue;
+    const length=(bytes[offset]!<<8)|bytes[offset+1]!;
+    if(length<2||offset+length>bytes.length)return;
+    if([0xc0,0xc1,0xc2].includes(marker)&&length>=8){
+      const height=(bytes[offset+3]!<<8)|bytes[offset+4]!,width=(bytes[offset+5]!<<8)|bytes[offset+6]!;
+      return width&&height?{width,height}:undefined;
+    }
+    offset+=length;
+  }
+}
 export function approvedCaptureBlobUrl(value: string, sourceBase: string): string | undefined {
   try {
     const base = new URL(sourceBase),

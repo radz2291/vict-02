@@ -1,5 +1,17 @@
+import {assertCaptureActive,awaitCaptureWork} from './capture-resource.js';
+export {captureJpegDimensions} from './capture-resource.js';
+
 /** Browser-only rendered-element capture. Images travel separately from conversation JSON. */
+/** @deprecated Historical defaults, no longer imposed. Pass explicit options to opt in. */
 export const RENDER_CAPTURE_LIMITS = Object.freeze({ bytes: 524_288, width: 1600, height: 1200 });
+
+export interface RenderCaptureOptions {
+  signal?:AbortSignal;
+  /** Explicit consumer-selected capture window/resource policy; no default ceiling. */
+  width?:number;
+  height?:number;
+  bytes?:number;
+}
 
 export interface RenderedCapture {
   blob: Blob;
@@ -124,13 +136,16 @@ function subtreePaintExtent(element: HTMLElement, descendants: readonly HTMLElem
 export async function captureRenderedElement(
   element: HTMLElement,
   viewport?: HTMLElement,
+  options:RenderCaptureOptions={},
 ): Promise<RenderedCapture> {
+  assertCaptureActive(options.signal);
+  for(const value of [options.width,options.height,options.bytes])if(value!==undefined&&(!Number.isSafeInteger(value)||value<1))throw new Error('STUDIO_CAPTURE_POLICY_INVALID');
   if (!element.isConnected || element.getClientRects().length === 0)
     throw new RenderedCaptureError(
       'STUDIO_CAPTURE_NOT_VISIBLE',
       !element.isConnected ? 'frame-disconnected' : 'frame-no-layout',
     );
-  await element.ownerDocument.fonts.ready;
+  await awaitCaptureWork(element.ownerDocument.fonts.ready,options.signal);
   const rect = element.getBoundingClientRect();
   if (rect.width < 1 || rect.height < 1)
     throw new RenderedCaptureError('STUDIO_CAPTURE_NOT_VISIBLE', 'frame-zero-size');
@@ -141,11 +156,11 @@ export async function captureRenderedElement(
   const offsetTop = Math.max(0, Math.ceil(clipping.top - rect.top));
   let width = Math.min(
     Math.ceil(Math.min(rect.right, clipping.right) - Math.max(rect.left, clipping.left)),
-    RENDER_CAPTURE_LIMITS.width,
+    options.width??Infinity,
   );
   let height = Math.min(
     Math.ceil(Math.min(rect.bottom, clipping.bottom) - Math.max(rect.top, clipping.top)),
-    RENDER_CAPTURE_LIMITS.height,
+    options.height??Infinity,
   );
   if (width < 1 || height < 1)
     throw new RenderedCaptureError('STUDIO_CAPTURE_NOT_VISIBLE', 'frame-outside-viewport');
@@ -162,7 +177,7 @@ export async function captureRenderedElement(
     // The specialized path composes this same existing DOM into detached
     // clones. Unsupported geometry/resources are still explicit refusals.
     const { captureScrolledViewport } = await import('./capture-scroll.js');
-    const blob = await captureScrolledViewport(element, viewport, RENDER_CAPTURE_LIMITS);
+    const blob = await captureScrolledViewport(element, viewport, options);
     return {
       blob,
       width,
@@ -178,12 +193,13 @@ export async function captureRenderedElement(
     const extent=subtreePaintExtent(element,descendants,clipping);
     sourceWidth=Math.ceil(extent.right-rect.left);
     sourceHeight=Math.ceil(extent.bottom-rect.top);
-    width=Math.min(Math.ceil(Math.min(extent.right,clipping.right)-Math.max(rect.left,clipping.left)),RENDER_CAPTURE_LIMITS.width);
-    height=Math.min(Math.ceil(Math.min(extent.bottom,clipping.bottom)-Math.max(rect.top,clipping.top)),RENDER_CAPTURE_LIMITS.height);
+    width=Math.min(Math.ceil(Math.min(extent.right,clipping.right)-Math.max(rect.left,clipping.left)),options.width??Infinity);
+    height=Math.min(Math.ceil(Math.min(extent.bottom,clipping.bottom)-Math.max(rect.top,clipping.top)),options.height??Infinity);
   }
-  const { toSvg } = await import('html-to-image');
+  const { toSvg } = await awaitCaptureWork(import('html-to-image'),options.signal);
+  assertCaptureActive(options.signal);
   const renderedStyle = getComputedStyle(element);
-  const svgUrl = await toSvg(element, {
+  const svgUrl = await awaitCaptureWork(toSvg(element, {
     width: sourceWidth,
     height: sourceHeight,
     pixelRatio: 1,
@@ -213,7 +229,7 @@ export async function captureRenderedElement(
         if (getComputedStyle(current).display === 'none') return false;
       return true;
     },
-  });
+  }),options.signal);
   // Keep source layout dimensions unchanged, then crop the raster viewport.
   // Changing the element's width/height before capture would reflow its layout.
   const xml = new DOMParser().parseFromString(
@@ -247,34 +263,24 @@ export async function captureRenderedElement(
     `${offsetLeft * layoutScale} ${offsetTop * layoutScale} ${width * layoutScale} ${height * layoutScale}`,
   );
   const image = new Image();
-  await new Promise<void>((resolve, reject) => {
+  await awaitCaptureWork(new Promise<void>((resolve, reject) => {
     image.onload = () => resolve();
     image.onerror = reject;
     image.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(new XMLSerializer().serializeToString(svg))}`;
-  });
+  }),options.signal);
   const canvas = document.createElement('canvas');
   canvas.width = width;
   canvas.height = height;
+  if(canvas.width!==width||canvas.height!==height)throw new Error('STUDIO_CAPTURE_FAILED');
   const context = canvas.getContext('2d');
   if (!context) throw new Error('STUDIO_CAPTURE_FAILED');
   context.fillStyle = '#ffffff';
   context.fillRect(0, 0, width, height);
   context.drawImage(image, 0, 0);
-  for (const quality of [0.85, 0.65, 0.45]) {
-    const blob = await new Promise<Blob | null>((resolve) =>
-      canvas.toBlob(resolve, 'image/jpeg', quality),
-    );
-    if (blob && blob.size > 0 && blob.size <= RENDER_CAPTURE_LIMITS.bytes)
-      return {
-        blob,
-        width,
-        height,
-        sourceWidth,
-        sourceHeight,
-        offsetLeft,
-        offsetTop,
-        cropped: width < sourceWidth || height < sourceHeight,
-      };
-  }
-  throw new Error('STUDIO_CAPTURE_IMAGE_LIMIT');
+  const blob = await awaitCaptureWork(new Promise<Blob|null>(resolve=>canvas.toBlob(resolve,'image/jpeg',0.85)),options.signal);
+  if(blob&&blob.type==='image/jpeg'&&blob.size>0&&(options.bytes===undefined||blob.size<=options.bytes))return {
+    blob,width,height,sourceWidth,sourceHeight,offsetLeft,offsetTop,
+    cropped:width<sourceWidth||height<sourceHeight,
+  };
+  throw new Error(options.bytes===undefined?'STUDIO_CAPTURE_FAILED':'STUDIO_CAPTURE_IMAGE_LIMIT');
 }

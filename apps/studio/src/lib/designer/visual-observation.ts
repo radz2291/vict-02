@@ -20,7 +20,7 @@ export function previewFacts(frame:HTMLElement,target?:CaptureTarget,workspaceVi
  const owners=new Set(roots.map(el=>el.dataset.uiOwnerRoot).filter((owner):owner is string=>!!owner));
  const owned=[...doc.querySelectorAll<HTMLElement>('[data-ui-owner][data-ui-node]')].filter(el=>owners.has(el.dataset.uiOwner??''));
  const matches=owned.filter(el=>!target||el.dataset.uiNode===target.nodeId&&(!target.part||el.dataset.uiPart===target.part));
- const view=doc.defaultView;const targets=matches.slice(0,6).map(el=>{const r=el.getBoundingClientRect(),style=(view??window).getComputedStyle(el);const visibility=previewVisibility(el);return {nodeId:el.dataset.uiNode??'',part:el.dataset.uiPart??'root',bounds:[r.x,r.y,r.width,r.height].map(n=>Math.round(n*100)/100),visible:visibility.visible,visibilityReason:visibility.reason,styles:Object.fromEntries(['color','background-color','position','top','padding-top','overflow','font-size','z-index'].map(key=>[key,style.getPropertyValue(key).slice(0,100)]))};});
+ const view=doc.defaultView;const targets=matches.map(el=>{const r=el.getBoundingClientRect(),style=(view??window).getComputedStyle(el);const visibility=previewVisibility(el);return {nodeId:el.dataset.uiNode??'',part:el.dataset.uiPart??'root',bounds:[r.x,r.y,r.width,r.height].map(n=>Math.round(n*100)/100),visible:visibility.visible,visibilityReason:visibility.reason,styles:Object.fromEntries(['color','background-color','position','top','padding-top','overflow','font-size','z-index'].map(key=>[key,style.getPropertyValue(key)]))};});
  // A part named content/panel is not evidence of a popup (AI messages expose
  // content too). Inventory actual visible semantic overlay surfaces for the
  // whole owner, independently of the optional node/part measurement target.
@@ -95,6 +95,7 @@ export async function captureDesignerPreview(
   getState: () => CaptureState | undefined,
   viewportElement?: HTMLElement,
   target?:CaptureTarget,
+  signal?:AbortSignal,
 ): Promise<CaptureResult> {
   const before = getState();
   const bounds = (target: HTMLElement | undefined) => { if(!target)return undefined;const r=target.getBoundingClientRect();return [r.x,r.y,r.width,r.height]; };
@@ -117,7 +118,7 @@ export async function captureDesignerPreview(
   try {
     if (guard.portals().length) return {...portalRefusal(),...{diagnostics:captureEvidence({phase:'visibility',reason:'external-preview-portal',mode:before.mode,expectedRevision:expected.revision})}};
     const renderedStateToken = guard.signature();
-    const capture = await captureRenderedElement(element, viewportElement);
+    const capture = await captureRenderedElement(element, viewportElement,{signal});
     if (guard.portals().length) return {...portalRefusal(),diagnostics:captureEvidence({phase:'raster',reason:'external-preview-portal',mode:before.mode,expectedRevision:expected.revision})};
     const after = getState();
     if (!after || JSON.stringify(after) !== stateToken || geometry() !== geometryToken || viewportTarget.scrollLeft !== viewport.scrollLeft || viewportTarget.scrollTop !== viewport.scrollTop || guard.changed() || guard.signature() !== renderedStateToken)
@@ -137,12 +138,14 @@ export async function captureDesignerPreview(
 }
 
 export async function uploadVisualCapture(captureId: string, csrf: string, result: CaptureResult, signal: AbortSignal): Promise<void> {
+  const multipart=result.ok?new FormData():undefined;
+  if(result.ok){multipart!.append('metadata',JSON.stringify(result.metadata));multipart!.append('image',result.blob,'capture.jpg');}
   const response = await fetch(`/api/designer-agent/capture/${encodeURIComponent(captureId)}`, {
     method: 'POST', signal,
     headers: result.ok
-      ? { 'content-type': 'image/jpeg', 'x-vict-csrf': csrf, 'x-vict-capture': encodeURIComponent(JSON.stringify(result.metadata)) }
+      ? { 'x-vict-csrf': csrf }
       : { 'content-type': 'application/json', 'x-vict-csrf': csrf },
-    body: result.ok ? result.blob : JSON.stringify(result),
+    body: result.ok ? multipart : JSON.stringify(result),
   });
   if (!response.ok) {
     const detail = await response.json().catch(() => undefined);

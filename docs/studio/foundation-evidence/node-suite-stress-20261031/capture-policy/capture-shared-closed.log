@@ -1,0 +1,8 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/vict-capture-policy-20261031/packages/ui-ai-svelte
+
+
+ Test Files  3 passed (3)
+      Tests  57 passed (57)
+   Start at  11:20:48
+   Duration  5.25s (transform 561ms, setup 0ms, import 998ms, tests 3.30s, environment 4.96s)
