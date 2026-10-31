@@ -1,0 +1,33 @@
+{
+  "revision": "r1.r2#1",
+  "applied": 1,
+  "metrics": {
+    "toolCalls": 8,
+    "completedCalls": 8,
+    "refusedCalls": 0,
+    "recoveryAttempts": 0,
+    "toolElapsedMs": 552,
+    "providerRequests": 4,
+    "visionRequests": 0,
+    "acknowledgementMs": 178,
+    "confirmedEdits": 1,
+    "usage": {
+      "inputTokens": 233825,
+      "outputTokens": 22331,
+      "totalTokens": 256156
+    },
+    "firstEditMs": 541396.0571999999,
+    "categories": {
+      "knowledge": 5,
+      "source": 2,
+      "edit": 1,
+      "observe": 0,
+      "other": 0
+    },
+    "elapsedMs": 541398,
+    "toolActiveMs": 491,
+    "outsideToolMs": 540907,
+    "modelSteps": null,
+    "cost": null
+  }
+}

@@ -1,0 +1,180 @@
+{
+  "beforeRevision": 8,
+  "afterRevision": 19,
+  "changes": [
+    {
+      "id": "brief",
+      "before": {
+        "id": "brief",
+        "type": "brief",
+        "label": "Campaign brief",
+        "position": {
+          "x": 89.8113024965443,
+          "y": -148.1400854319886
+        },
+        "values": {
+          "summary": "Launch eco travel mug — 12h heat retention, recycled steel body",
+          "audience": "Commuters, students, hikers"
+        }
+      },
+      "after": {
+        "id": "brief",
+        "type": "brief",
+        "label": "Campaign brief",
+        "position": {
+          "x": 192.80696117757842,
+          "y": -223.40614369889815
+        },
+        "values": {
+          "summary": "Launch eco travel mug — 12h heat retention, recycled steel body",
+          "audience": "Commuters, students, hikers"
+        }
+      }
+    },
+    {
+      "id": "pos",
+      "before": {
+        "id": "pos",
+        "type": "prompt",
+        "label": "Positive prompt",
+        "position": {
+          "x": 580.7200931971163,
+          "y": -36.60891736578549
+        },
+        "values": {
+          "text": "matte forest-green travel mug, soft daylight, alpine trail backdrop, product hero"
+        }
+      },
+      "after": {
+        "id": "pos",
+        "type": "prompt",
+        "label": "Positive prompt",
+        "position": {
+          "x": 665.889580183356,
+          "y": -295.6330924031339
+        },
+        "values": {
+          "text": "matte forest-green travel mug, soft daylight, alpine trail backdrop, product hero"
+        }
+      }
+    },
+    {
+      "id": "neg",
+      "before": {
+        "id": "neg",
+        "type": "prompt",
+        "label": "Negative prompt",
+        "position": {
+          "x": 518.1406378062743,
+          "y": 314.494487272735
+        },
+        "values": {
+          "text": "plastic sheen, cluttered background, warped text, low contrast"
+        }
+      },
+      "after": {
+        "id": "neg",
+        "type": "prompt",
+        "label": "Negative prompt",
+        "position": {
+          "x": 446.83595102709694,
+          "y": 346.18545917459164
+        },
+        "values": {
+          "text": "plastic sheen, cluttered background, warped text, low contrast"
+        }
+      }
+    },
+    {
+      "id": "model",
+      "before": {
+        "id": "model",
+        "type": "model",
+        "label": "Model settings",
+        "position": {
+          "x": 40,
+          "y": 320
+        },
+        "values": {
+          "model": "eco-diffusion-xl",
+          "steps": 28,
+          "guidance": 6.5
+        }
+      },
+      "after": {
+        "id": "model",
+        "type": "model",
+        "label": "Model settings",
+        "position": {
+          "x": -7.536457852784984,
+          "y": 179.37131218551113
+        },
+        "values": {
+          "model": "eco-diffusion-xl",
+          "steps": 28,
+          "guidance": 6.5
+        }
+      }
+    },
+    {
+      "id": "soc",
+      "before": {
+        "id": "soc",
+        "type": "draft",
+        "label": "Draft · social",
+        "position": {
+          "x": 640,
+          "y": 40
+        },
+        "values": {
+          "format": "Square 1080",
+          "hiRes": true
+        }
+      },
+      "after": {
+        "id": "soc",
+        "type": "draft",
+        "label": "Draft · social",
+        "position": {
+          "x": 667.7296004141245,
+          "y": 38.01931425613396
+        },
+        "values": {
+          "format": "Square 1080",
+          "hiRes": true
+        }
+      }
+    },
+    {
+      "id": "pst",
+      "before": {
+        "id": "pst",
+        "type": "draft",
+        "label": "Draft · poster",
+        "position": {
+          "x": 640,
+          "y": 400
+        },
+        "values": {
+          "format": "A2 poster",
+          "hiRes": true
+        }
+      },
+      "after": {
+        "id": "pst",
+        "type": "draft",
+        "label": "Draft · poster",
+        "position": {
+          "x": 826.9272170773577,
+          "y": 457.43988657211514
+        },
+        "values": {
+          "format": "A2 poster",
+          "hiRes": true
+        }
+      }
+    }
+  ],
+  "nodeTypesChanged": false,
+  "edgesChanged": false
+}
