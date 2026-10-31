@@ -100,3 +100,13 @@ These builder checks do not supply an independent verdict or actual graph3 agent
 proof. Next allowed action: integrate the public and adapter candidates, pin the
 new edit/instruction/profile protocol, build, independently verify, then carry out
 the authorized actual-agent/native continuation using the owner's current source.
+
+After implementation commit `6c74fdd21b0d23e89461e4da9183cd23033cdeb5`, the
+updated actual roundtrip helper ran against the unchanged retained actual
+`19-manual-before-agent-supported-export.json` and its exact saved source.
+`actual-legacy2-roundtrip.json` records PASS for saved `r1.r8`,1 outer and2 nested
+graph2 sources; the normal first import, export attachment and second import
+preserve the full source/envelope and graph source hashes. This is an actual
+saved/exported graph2 compatibility regression, not graph3 output or migration,
+current owner-source adoption, fresh native/browser interaction or agent proof.
+No new app was generated, imported into owner storage, injected or rewritten.

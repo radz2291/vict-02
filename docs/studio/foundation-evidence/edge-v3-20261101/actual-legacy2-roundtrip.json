@@ -1,0 +1,956 @@
+{
+  "schema": "vict.actual-node-suite-roundtrip@2",
+  "status": "PASS",
+  "sourceCommit": "6c74fdd21b0d23e89461e4da9183cd23033cdeb5",
+  "input": {
+    "path": "C:\\Users\\RZ1\\.codex\\worktrees\\vict-studio-edge-v3-20261101\\docs\\studio\\foundation-evidence\\node-suite-stress-20261031\\19-manual-before-agent-supported-export.json",
+    "sha256": "7ad75f15487092474dc030fd5a5c79a89be2eeeb2f8871a7522a1082a1ec6c8f",
+    "bytes": 335702
+  },
+  "canonicalSource": {
+    "path": "C:\\Users\\RZ1\\.codex\\worktrees\\vict-studio-edge-v3-20261101\\docs\\studio\\foundation-evidence\\node-suite-stress-20261031\\19-manual-before-agent-saved-source.json",
+    "sha256": "448033ed4bbe49f42d2001ef5c17a68b61f002f6079359befe5e91457aad63d2",
+    "id": "screen-a8690ffa-1e90-4b72-909c-66141d372773",
+    "revision": "r1.r8"
+  },
+  "reexport": {
+    "sha256": "7ad75f15487092474dc030fd5a5c79a89be2eeeb2f8871a7522a1082a1ec6c8f",
+    "byteIdentical": true,
+    "semanticEnvelopeEqual": true
+  },
+  "importedDocumentJsonSha256": "e52a10a52673156e49580a23e82b970b54c79493892ec5aaa425ffce3518daa5",
+  "checks": [
+    "Actual supported export deep-equals the exact saved canonical source",
+    "Existing Studio importer admits unchanged source and authoritative application attachment",
+    "Normal export attachment and second existing-importer pass preserve the complete source/envelope",
+    "Every resolved outer/nested graph source string, revision, family, port, parameter, value, position and edge survives both imports"
+  ],
+  "graphs": [
+    {
+      "path": "state:campaignGraph",
+      "depth": 0,
+      "schema": "vict.flow-graph@2",
+      "sourceStringSha256": "640940f18752666ca69a561bfcc75880ad730c23a8d34da84bb8262efc302fe3",
+      "revision": 30,
+      "nodeTypes": [
+        {
+          "id": "brief",
+          "label": "Campaign brief",
+          "parameters": {
+            "audience": {
+              "default": "Commuters",
+              "type": "string"
+            },
+            "summary": {
+              "default": "",
+              "type": "string"
+            }
+          },
+          "ports": [
+            {
+              "direction": "output",
+              "id": "o",
+              "label": "Brief out",
+              "type": "brief"
+            }
+          ]
+        },
+        {
+          "id": "prompt",
+          "label": "Prompt",
+          "parameters": {
+            "text": {
+              "default": "",
+              "type": "string"
+            }
+          },
+          "ports": [
+            {
+              "direction": "input",
+              "id": "i",
+              "label": "Brief in",
+              "maxConnections": 1,
+              "type": "brief"
+            },
+            {
+              "direction": "output",
+              "id": "o",
+              "label": "Prompt out",
+              "type": "prompt"
+            }
+          ]
+        },
+        {
+          "id": "model",
+          "label": "Model settings",
+          "parameters": {
+            "guidance": {
+              "default": 6.5,
+              "type": "number"
+            },
+            "model": {
+              "default": "eco-diffusion-xl",
+              "type": "string"
+            },
+            "steps": {
+              "default": 28,
+              "type": "number"
+            }
+          },
+          "ports": [
+            {
+              "direction": "output",
+              "id": "o",
+              "label": "Settings",
+              "type": "config"
+            }
+          ]
+        },
+        {
+          "id": "style",
+          "label": "Style reference",
+          "parameters": {
+            "notes": {
+              "default": "",
+              "type": "string"
+            },
+            "palette": {
+              "default": "Forest teal",
+              "type": "string"
+            }
+          },
+          "ports": [
+            {
+              "direction": "input",
+              "id": "i",
+              "label": "Brief in",
+              "maxConnections": 1,
+              "type": "brief"
+            },
+            {
+              "direction": "output",
+              "id": "o",
+              "label": "Style",
+              "type": "style"
+            }
+          ]
+        },
+        {
+          "id": "seed",
+          "label": "Seed & sampling",
+          "parameters": {
+            "randomize": {
+              "default": false,
+              "type": "boolean"
+            },
+            "seed": {
+              "default": 4213,
+              "type": "number"
+            }
+          },
+          "ports": [
+            {
+              "direction": "output",
+              "id": "o",
+              "label": "Seed",
+              "type": "seed"
+            }
+          ]
+        },
+        {
+          "id": "draft",
+          "label": "Draft generation",
+          "parameters": {
+            "format": {
+              "default": "square",
+              "type": "string"
+            },
+            "hiRes": {
+              "default": true,
+              "type": "boolean"
+            }
+          },
+          "ports": [
+            {
+              "direction": "input",
+              "id": "b",
+              "label": "Brief",
+              "maxConnections": 1,
+              "type": "brief"
+            },
+            {
+              "direction": "input",
+              "id": "c",
+              "label": "Settings",
+              "maxConnections": 1,
+              "type": "config"
+            },
+            {
+              "direction": "input",
+              "id": "n",
+              "label": "Negative",
+              "maxConnections": 1,
+              "type": "prompt"
+            },
+            {
+              "direction": "output",
+              "id": "o",
+              "label": "Draft",
+              "type": "image"
+            },
+            {
+              "direction": "input",
+              "id": "p",
+              "label": "Prompt",
+              "maxConnections": 1,
+              "type": "prompt"
+            },
+            {
+              "direction": "input",
+              "id": "s",
+              "label": "Seed",
+              "maxConnections": 1,
+              "type": "seed"
+            },
+            {
+              "direction": "input",
+              "id": "t",
+              "label": "Style",
+              "maxConnections": 1,
+              "type": "style"
+            }
+          ]
+        },
+        {
+          "id": "finish",
+          "label": "Finishing subworkflow",
+          "parameters": {
+            "mode": {
+              "default": "social",
+              "type": "string"
+            },
+            "subgraph": {
+              "default": "",
+              "type": "string"
+            }
+          },
+          "ports": [
+            {
+              "direction": "input",
+              "id": "i",
+              "label": "Draft in",
+              "maxConnections": 1,
+              "type": "image"
+            },
+            {
+              "direction": "output",
+              "id": "o",
+              "label": "Finished",
+              "type": "image"
+            }
+          ]
+        },
+        {
+          "id": "review",
+          "label": "Review & approval",
+          "parameters": {
+            "notes": {
+              "default": "",
+              "type": "string"
+            },
+            "status": {
+              "default": "Pending",
+              "type": "string"
+            }
+          },
+          "ports": [
+            {
+              "direction": "input",
+              "id": "i",
+              "label": "Draft in",
+              "maxConnections": 1,
+              "type": "image"
+            },
+            {
+              "direction": "output",
+              "id": "o",
+              "label": "Decision",
+              "type": "approval"
+            }
+          ]
+        },
+        {
+          "id": "check",
+          "label": "Merge & delivery checklist",
+          "parameters": {
+            "checkAA": {
+              "default": false,
+              "type": "boolean"
+            },
+            "checkCaption": {
+              "default": false,
+              "type": "boolean"
+            },
+            "checkCrop": {
+              "default": false,
+              "type": "boolean"
+            },
+            "items": {
+              "default": [],
+              "type": "stringList"
+            },
+            "ready": {
+              "default": false,
+              "type": "boolean"
+            }
+          },
+          "ports": [
+            {
+              "direction": "input",
+              "id": "p",
+              "label": "Poster decision",
+              "maxConnections": 1,
+              "type": "approval"
+            },
+            {
+              "direction": "input",
+              "id": "s",
+              "label": "Social decision",
+              "maxConnections": 1,
+              "type": "approval"
+            },
+            {
+              "direction": "output",
+              "id": "o",
+              "label": "Package",
+              "type": "check"
+            }
+          ]
+        },
+        {
+          "id": "exp",
+          "label": "Export package",
+          "parameters": {
+            "destination": {
+              "default": "campaign-foundry/mug-launch",
+              "type": "string"
+            },
+            "format": {
+              "default": "Web bundle",
+              "type": "string"
+            }
+          },
+          "ports": [
+            {
+              "direction": "input",
+              "id": "i",
+              "label": "Checklist in",
+              "maxConnections": 1,
+              "type": "check"
+            },
+            {
+              "direction": "output",
+              "id": "o",
+              "label": "Package",
+              "type": "package"
+            }
+          ]
+        }
+      ],
+      "nodes": [
+        {
+          "id": "brief",
+          "type": "brief",
+          "label": "Campaign brief",
+          "position": {
+            "x": 192.80696117757842,
+            "y": -223.40614369889815
+          },
+          "values": {
+            "summary": "Launch eco travel mug — 12h heat retention, recycled steel body",
+            "audience": "Commuters, students, hikers"
+          }
+        },
+        {
+          "id": "pos",
+          "type": "prompt",
+          "label": "Positive prompt",
+          "position": {
+            "x": 665.889580183356,
+            "y": -295.6330924031339
+          },
+          "values": {
+            "text": "matte forest-green travel mug, soft daylight, alpine trail backdrop, product hero"
+          }
+        },
+        {
+          "id": "neg",
+          "type": "prompt",
+          "label": "Negative prompt",
+          "position": {
+            "x": 446.83595102709694,
+            "y": 346.18545917459164
+          },
+          "values": {
+            "text": "plastic sheen, cluttered background, warped text, low contrast"
+          }
+        },
+        {
+          "id": "model",
+          "type": "model",
+          "label": "Model settings",
+          "position": {
+            "x": -7.536457852784984,
+            "y": 179.37131218551113
+          },
+          "values": {
+            "model": "eco-diffusion-xl",
+            "steps": 28,
+            "guidance": 6.5
+          }
+        },
+        {
+          "id": "style",
+          "type": "style",
+          "label": "Style reference",
+          "position": {
+            "x": 40,
+            "y": 580
+          },
+          "values": {
+            "palette": "Forest teal",
+            "notes": "Muted natural palette, soft gradients"
+          }
+        },
+        {
+          "id": "seed",
+          "type": "seed",
+          "label": "Seed & sampling",
+          "position": {
+            "x": 40,
+            "y": 830
+          },
+          "values": {
+            "seed": 4213,
+            "randomize": false
+          }
+        },
+        {
+          "id": "soc",
+          "type": "draft",
+          "label": "Draft · social",
+          "position": {
+            "x": 667.7296004141245,
+            "y": 38.01931425613396
+          },
+          "values": {
+            "format": "Square 1080",
+            "hiRes": true
+          }
+        },
+        {
+          "id": "pst",
+          "type": "draft",
+          "label": "Draft · poster",
+          "position": {
+            "x": 760,
+            "y": 720
+          },
+          "values": {
+            "format": "A2 poster",
+            "hiRes": true
+          }
+        },
+        {
+          "id": "finS",
+          "type": "finish",
+          "label": "Finishing · social",
+          "position": {
+            "x": 1120,
+            "y": 40
+          },
+          "values": {
+            "mode": "social",
+            "subgraph": "{\"schema\":\"vict.flow-graph@2\",\"revision\":5,\"nodeTypes\":[{\"id\":\"crop\",\"label\":\"Crop\",\"parameters\":{\"aspect\":{\"default\":\"1:1\",\"label\":\"Aspect\",\"type\":\"string\"}},\"ports\":[{\"direction\":\"output\",\"id\":\"o\",\"label\":\"Cropped\",\"type\":\"image\"}]},{\"id\":\"grade\",\"label\":\"Grade\",\"parameters\":{\"amount\":{\"default\":20,\"label\":\"Grade amount\",\"type\":\"number\"}},\"ports\":[{\"direction\":\"input\",\"id\":\"i\",\"label\":\"Image in\",\"maxConnections\":1,\"type\":\"image\"},{\"direction\":\"output\",\"id\":\"o\",\"label\":\"Graded\",\"type\":\"image\"}]},{\"id\":\"caption\",\"label\":\"Caption\",\"parameters\":{\"caption\":{\"default\":\"\",\"label\":\"Caption text\",\"type\":\"string\"}},\"ports\":[{\"direction\":\"input\",\"id\":\"i\",\"label\":\"Graded in\",\"maxConnections\":1,\"type\":\"image\"}]}],\"nodes\":[{\"id\":\"f-crop\",\"type\":\"crop\",\"label\":\"Crop\",\"position\":{\"x\":40,\"y\":40},\"values\":{\"aspect\":\"1:1\"}},{\"id\":\"f-grade\",\"type\":\"grade\",\"label\":\"Grade\",\"position\":{\"x\":286,\"y\":92},\"values\":{\"amount\":35}},{\"id\":\"f-caption\",\"type\":\"caption\",\"label\":\"Caption\",\"position\":{\"x\":480,\"y\":40},\"values\":{\"caption\":\"Your commute, upgraded — manually reviewed for social. Ready for launch.\"}}],\"edges\":[{\"id\":\"g1\",\"source\":\"f-crop\",\"sourcePort\":\"o\",\"target\":\"f-grade\",\"targetPort\":\"i\"},{\"id\":\"g2\",\"source\":\"f-grade\",\"sourcePort\":\"o\",\"target\":\"f-caption\",\"targetPort\":\"i\"}],\"allowCycles\":false}"
+          }
+        },
+        {
+          "id": "finP",
+          "type": "finish",
+          "label": "Finishing · poster",
+          "position": {
+            "x": 1120,
+            "y": 720
+          },
+          "values": {
+            "mode": "poster",
+            "subgraph": "{\"schema\":\"vict.flow-graph@2\",\"revision\":2,\"nodeTypes\":[{\"id\":\"crop\",\"label\":\"Crop\",\"parameters\":{\"aspect\":{\"default\":\"1:1\",\"label\":\"Aspect\",\"type\":\"string\"}},\"ports\":[{\"direction\":\"output\",\"id\":\"o\",\"label\":\"Cropped\",\"type\":\"image\"}]},{\"id\":\"grade\",\"label\":\"Grade\",\"parameters\":{\"amount\":{\"default\":20,\"label\":\"Grade amount\",\"type\":\"number\"}},\"ports\":[{\"direction\":\"input\",\"id\":\"i\",\"label\":\"Image in\",\"maxConnections\":1,\"type\":\"image\"},{\"direction\":\"output\",\"id\":\"o\",\"label\":\"Graded\",\"type\":\"image\"}]},{\"id\":\"caption\",\"label\":\"Caption\",\"parameters\":{\"caption\":{\"default\":\"\",\"label\":\"Caption text\",\"type\":\"string\"}},\"ports\":[{\"direction\":\"input\",\"id\":\"i\",\"label\":\"Graded in\",\"maxConnections\":1,\"type\":\"image\"}]}],\"nodes\":[{\"id\":\"f-crop\",\"type\":\"crop\",\"label\":\"Crop\",\"position\":{\"x\":40,\"y\":40},\"values\":{\"aspect\":\"2:3\"}},{\"id\":\"f-grade\",\"type\":\"grade\",\"label\":\"Grade\",\"position\":{\"x\":260,\"y\":40},\"values\":{\"amount\":70}},{\"id\":\"f-caption\",\"type\":\"caption\",\"label\":\"Caption\",\"position\":{\"x\":480,\"y\":40},\"values\":{\"caption\":\"Trail-tested. Tireless. Launching soon.\"}}],\"edges\":[{\"id\":\"g1\",\"source\":\"f-crop\",\"sourcePort\":\"o\",\"target\":\"f-grade\",\"targetPort\":\"i\"},{\"id\":\"g2\",\"source\":\"f-grade\",\"sourcePort\":\"o\",\"target\":\"f-caption\",\"targetPort\":\"i\"}],\"allowCycles\":false}"
+          }
+        },
+        {
+          "id": "revS",
+          "type": "review",
+          "label": "Review · social",
+          "position": {
+            "x": 1960,
+            "y": 40
+          },
+          "values": {
+            "status": "Approved",
+            "notes": "Crop reads well on feed"
+          }
+        },
+        {
+          "id": "revP",
+          "type": "review",
+          "label": "Review · poster",
+          "position": {
+            "x": 1960,
+            "y": 720
+          },
+          "values": {
+            "status": "Pending",
+            "notes": ""
+          }
+        },
+        {
+          "id": "check",
+          "type": "check",
+          "label": "Merge & delivery checklist",
+          "position": {
+            "x": 2300,
+            "y": 380
+          },
+          "values": {
+            "items": [
+              "Crop 1:1 social",
+              "Caption ≤90 chars",
+              "Contrast AA"
+            ],
+            "ready": false
+          }
+        },
+        {
+          "id": "exp",
+          "type": "exp",
+          "label": "Export package",
+          "position": {
+            "x": 2660,
+            "y": 380
+          },
+          "values": {
+            "format": "Web bundle",
+            "destination": "campaign-foundry/mug-launch"
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "e01",
+          "source": "brief",
+          "sourcePort": "o",
+          "target": "pos",
+          "targetPort": "i"
+        },
+        {
+          "id": "e02",
+          "source": "brief",
+          "sourcePort": "o",
+          "target": "neg",
+          "targetPort": "i"
+        },
+        {
+          "id": "e03",
+          "source": "brief",
+          "sourcePort": "o",
+          "target": "style",
+          "targetPort": "i"
+        },
+        {
+          "id": "e04",
+          "source": "pos",
+          "sourcePort": "o",
+          "target": "soc",
+          "targetPort": "p"
+        },
+        {
+          "id": "e05",
+          "source": "pos",
+          "sourcePort": "o",
+          "target": "pst",
+          "targetPort": "p"
+        },
+        {
+          "id": "e06",
+          "source": "neg",
+          "sourcePort": "o",
+          "target": "soc",
+          "targetPort": "n"
+        },
+        {
+          "id": "e07",
+          "source": "neg",
+          "sourcePort": "o",
+          "target": "pst",
+          "targetPort": "n"
+        },
+        {
+          "id": "e08",
+          "source": "model",
+          "sourcePort": "o",
+          "target": "soc",
+          "targetPort": "c"
+        },
+        {
+          "id": "e09",
+          "source": "model",
+          "sourcePort": "o",
+          "target": "pst",
+          "targetPort": "c"
+        },
+        {
+          "id": "e10",
+          "source": "seed",
+          "sourcePort": "o",
+          "target": "soc",
+          "targetPort": "s"
+        },
+        {
+          "id": "e11",
+          "source": "seed",
+          "sourcePort": "o",
+          "target": "pst",
+          "targetPort": "s"
+        },
+        {
+          "id": "e12",
+          "source": "style",
+          "sourcePort": "o",
+          "target": "soc",
+          "targetPort": "t"
+        },
+        {
+          "id": "e13",
+          "source": "style",
+          "sourcePort": "o",
+          "target": "pst",
+          "targetPort": "t"
+        },
+        {
+          "id": "e14",
+          "source": "soc",
+          "sourcePort": "o",
+          "target": "finS",
+          "targetPort": "i"
+        },
+        {
+          "id": "e15",
+          "source": "pst",
+          "sourcePort": "o",
+          "target": "finP",
+          "targetPort": "i"
+        },
+        {
+          "id": "e16",
+          "source": "finS",
+          "sourcePort": "o",
+          "target": "revS",
+          "targetPort": "i"
+        },
+        {
+          "id": "e17",
+          "source": "finP",
+          "sourcePort": "o",
+          "target": "revP",
+          "targetPort": "i"
+        },
+        {
+          "id": "e18",
+          "source": "revS",
+          "sourcePort": "o",
+          "target": "check",
+          "targetPort": "s"
+        },
+        {
+          "id": "e19",
+          "source": "revP",
+          "sourcePort": "o",
+          "target": "check",
+          "targetPort": "p"
+        },
+        {
+          "id": "e20",
+          "source": "check",
+          "sourcePort": "o",
+          "target": "exp",
+          "targetPort": "i"
+        }
+      ]
+    },
+    {
+      "path": "state:campaignGraph/node:finP/parameter:subgraph",
+      "depth": 1,
+      "schema": "vict.flow-graph@2",
+      "sourceStringSha256": "4fcfa8c36e694120328ba237b5740fa9858fcee75a804ae0c7bbd958ad8b66bb",
+      "revision": 2,
+      "nodeTypes": [
+        {
+          "id": "crop",
+          "label": "Crop",
+          "parameters": {
+            "aspect": {
+              "default": "1:1",
+              "label": "Aspect",
+              "type": "string"
+            }
+          },
+          "ports": [
+            {
+              "direction": "output",
+              "id": "o",
+              "label": "Cropped",
+              "type": "image"
+            }
+          ]
+        },
+        {
+          "id": "grade",
+          "label": "Grade",
+          "parameters": {
+            "amount": {
+              "default": 20,
+              "label": "Grade amount",
+              "type": "number"
+            }
+          },
+          "ports": [
+            {
+              "direction": "input",
+              "id": "i",
+              "label": "Image in",
+              "maxConnections": 1,
+              "type": "image"
+            },
+            {
+              "direction": "output",
+              "id": "o",
+              "label": "Graded",
+              "type": "image"
+            }
+          ]
+        },
+        {
+          "id": "caption",
+          "label": "Caption",
+          "parameters": {
+            "caption": {
+              "default": "",
+              "label": "Caption text",
+              "type": "string"
+            }
+          },
+          "ports": [
+            {
+              "direction": "input",
+              "id": "i",
+              "label": "Graded in",
+              "maxConnections": 1,
+              "type": "image"
+            }
+          ]
+        }
+      ],
+      "nodes": [
+        {
+          "id": "f-crop",
+          "type": "crop",
+          "label": "Crop",
+          "position": {
+            "x": 40,
+            "y": 40
+          },
+          "values": {
+            "aspect": "2:3"
+          }
+        },
+        {
+          "id": "f-grade",
+          "type": "grade",
+          "label": "Grade",
+          "position": {
+            "x": 260,
+            "y": 40
+          },
+          "values": {
+            "amount": 70
+          }
+        },
+        {
+          "id": "f-caption",
+          "type": "caption",
+          "label": "Caption",
+          "position": {
+            "x": 480,
+            "y": 40
+          },
+          "values": {
+            "caption": "Trail-tested. Tireless. Launching soon."
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "g1",
+          "source": "f-crop",
+          "sourcePort": "o",
+          "target": "f-grade",
+          "targetPort": "i"
+        },
+        {
+          "id": "g2",
+          "source": "f-grade",
+          "sourcePort": "o",
+          "target": "f-caption",
+          "targetPort": "i"
+        }
+      ]
+    },
+    {
+      "path": "state:campaignGraph/node:finS/parameter:subgraph",
+      "depth": 1,
+      "schema": "vict.flow-graph@2",
+      "sourceStringSha256": "6a811415f9ce4602c361634574bf28f49561f52265d465ea891009b50fdbcd6f",
+      "revision": 5,
+      "nodeTypes": [
+        {
+          "id": "crop",
+          "label": "Crop",
+          "parameters": {
+            "aspect": {
+              "default": "1:1",
+              "label": "Aspect",
+              "type": "string"
+            }
+          },
+          "ports": [
+            {
+              "direction": "output",
+              "id": "o",
+              "label": "Cropped",
+              "type": "image"
+            }
+          ]
+        },
+        {
+          "id": "grade",
+          "label": "Grade",
+          "parameters": {
+            "amount": {
+              "default": 20,
+              "label": "Grade amount",
+              "type": "number"
+            }
+          },
+          "ports": [
+            {
+              "direction": "input",
+              "id": "i",
+              "label": "Image in",
+              "maxConnections": 1,
+              "type": "image"
+            },
+            {
+              "direction": "output",
+              "id": "o",
+              "label": "Graded",
+              "type": "image"
+            }
+          ]
+        },
+        {
+          "id": "caption",
+          "label": "Caption",
+          "parameters": {
+            "caption": {
+              "default": "",
+              "label": "Caption text",
+              "type": "string"
+            }
+          },
+          "ports": [
+            {
+              "direction": "input",
+              "id": "i",
+              "label": "Graded in",
+              "maxConnections": 1,
+              "type": "image"
+            }
+          ]
+        }
+      ],
+      "nodes": [
+        {
+          "id": "f-crop",
+          "type": "crop",
+          "label": "Crop",
+          "position": {
+            "x": 40,
+            "y": 40
+          },
+          "values": {
+            "aspect": "1:1"
+          }
+        },
+        {
+          "id": "f-grade",
+          "type": "grade",
+          "label": "Grade",
+          "position": {
+            "x": 286,
+            "y": 92
+          },
+          "values": {
+            "amount": 35
+          }
+        },
+        {
+          "id": "f-caption",
+          "type": "caption",
+          "label": "Caption",
+          "position": {
+            "x": 480,
+            "y": 40
+          },
+          "values": {
+            "caption": "Your commute, upgraded — manually reviewed for social. Ready for launch."
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "g1",
+          "source": "f-crop",
+          "sourcePort": "o",
+          "target": "f-grade",
+          "targetPort": "i"
+        },
+        {
+          "id": "g2",
+          "source": "f-grade",
+          "sourcePort": "o",
+          "target": "f-caption",
+          "targetPort": "i"
+        }
+      ]
+    }
+  ],
+  "graphSchemas": {
+    "vict.flow-graph@2": 3
+  },
+  "scope": "Actual saved/exported app through existing committed Studio import/export code. No application reconstruction or document rewrite.",
+  "limitations": [
+    "Offline importer/source proof; not native browser, device, provider, backend or owner acceptance.",
+    "Nested source data alone does not prove editable rendered nested flows; native checks remain separate.",
+    "Managed media is not claimed by this no-media suite proof. Public installed-consumer proof is separate."
+  ]
+}
