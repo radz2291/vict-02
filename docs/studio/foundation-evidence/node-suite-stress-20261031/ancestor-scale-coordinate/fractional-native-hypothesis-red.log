@@ -1,0 +1,35 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/vict-limits-independent-20261031
+
+ ❯ packages/ui-flow-svelte/test/coordinate-fractional-native.svelte.test.ts (2 tests | 2 failed) 32ms
+   × coherent fractional computed/rect measurement stays supported after differently quantized RO notification: 1215.2 26ms
+   × coherent fractional computed/rect measurement stays supported after differently quantized RO notification: 736.8 4ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  packages/ui-flow-svelte/test/coordinate-fractional-native.svelte.test.ts > coherent fractional computed/rect measurement stays supported after differently quantized RO notification: 1215.2
+ FAIL  packages/ui-flow-svelte/test/coordinate-fractional-native.svelte.test.ts > coherent fractional computed/rect measurement stays supported after differently quantized RO notification: 736.8
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ packages/ui-flow-svelte/test/coordinate-fractional-native.svelte.test.ts:18:36
+     16|   expect(values.at(-1)?.supported).toBe(true);
+     17|   callback!([{target:root,contentRect:new DOMRect(0,0,sample.roWidth,s…
+     18|   expect(values.at(-1)?.supported).toBe(true);expect(values.at(-1)?.sc…
+       |                                    ^
+     19|  }finally{observer.destroy();}
+     20| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed (2)
+   Start at  15:32:38
+   Duration  2.75s (transform 1.00s, setup 0ms, import 1.31s, tests 32ms, environment 1.10s)
+

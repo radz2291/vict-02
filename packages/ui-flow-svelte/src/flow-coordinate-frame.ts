@@ -28,17 +28,15 @@ export function observeFlowCoordinateFrame(
   root: HTMLElement,
   changed: (scale: number, supported: boolean) => void,
 ) {
-  let width = 0,
-    height = 0,
-    alive = true,
+  let alive = true,
     queued = false;
   const view = root.ownerDocument.defaultView!;
   function measure() {
     queued = false;
     if (!alive) return;
     const style = view.getComputedStyle(root),
-      logicalWidth = width || parseFloat(style.width),
-      logicalHeight = height || parseFloat(style.height),
+      logicalWidth = parseFloat(style.width),
+      logicalHeight = parseFloat(style.height),
       rect = root.getBoundingClientRect();
     // A hidden/unlaid-out frame supplies no scale evidence. Keep the ordinary
     // initial frame until layout/ResizeObserver reports a real positive extent.
@@ -73,7 +71,7 @@ export function observeFlowCoordinateFrame(
       }
       if (css.transform && css.transform !== 'none') {
         try {
-          const matrix = new DOMMatrixReadOnly(css.transform);
+          const matrix = new view.DOMMatrixReadOnly(css.transform);
           supported =
             matrix.is2D &&
             matrix.a > 0 &&
@@ -93,14 +91,11 @@ export function observeFlowCoordinateFrame(
       queueMicrotask(measure);
     }
   }
-  const resize = new ResizeObserver((entries) => {
-    const entry = entries[0];
-    if (entry) {
-      width = entry.contentRect.width;
-      height = entry.contentRect.height;
-    }
-    measure();
-  });
+  // RO is an invalidation signal. Its contentRect can be quantized differently
+  // from a fresh transformed DOMRect under fractional browser zoom, and cached
+  // dimensions can also be stale during another ancestor/layout invalidation.
+  // Read both dimensions and the rectangle together from this owning window.
+  const resize = new view.ResizeObserver(measure);
   resize.observe(root);
   const mutations = new MutationObserver(schedule);
   for (let ancestor = root.parentElement; ancestor; ancestor = ancestor.parentElement)
