@@ -85,19 +85,19 @@ describe('public AI authoring patterns', () => {
   });
 });
 
-describe('bounded public activity schemas', () => {
+describe('strict public activity schemas', () => {
   it.each(publicPatternKinds)('accepts the canonical empty seed for %s', kind => {
     expect(parsePublicPatternData(kind, JSON.stringify(publicPatternSeedData[kind])).ok).toBe(true);
   });
-  it('rejects malformed, mismatched, versionless and oversized data', () => {
+  it('rejects malformed, mismatched and versionless data', () => {
     for (const data of ['', '{}', '{"version":2}', '{"version":1,"steps":"wrong"}', '{"version":1,"steps":[],"privateReasoning":true}', ' '.repeat(131073)]) expect(parsePublicPatternData('plan', data).ok).toBe(false);
     expect(parsePublicPatternData('test-results', JSON.stringify({version: 1, testSuites: [{id: 'suite', name: 'Suite', tests: [{id: 'test', name: 'Pending', status: 'pending'}]}]})).ok).toBe(false);
   });
-  it('rejects duplicate identities, unbounded trees, conflicting global paths and nonfinite numeric data', () => {
+  it('retains deep supplied trees while rejecting duplicate identities, conflicting global paths and nonfinite numeric data', () => {
     expect(parsePublicPatternData('sources', JSON.stringify({version: 1, sources: [{id: 'a', title: '', url: ''}, {id: 'a', title: '', url: ''}]})).ok).toBe(false);
     let nodes: unknown[] = [];
     for (let depth = 0; depth < 15; depth++) nodes = [{path: `p${depth}`, name: 'nested', children: nodes}];
-    expect(parsePublicPatternData('file-tree', JSON.stringify({version: 1, nodes})).ok).toBe(false);
+    expect(parsePublicPatternData('file-tree', JSON.stringify({version: 1, nodes})).ok).toBe(true);
     expect(parsePublicPatternData('file-tree', JSON.stringify({version: 1, nodes: [{path: 'same', name: 'Parent', children: [{path: 'same', name: 'Child'}]}]})).ok).toBe(false);
     expect(parsePublicPatternData('context', '{"version":1,"breakdown":[{"label":"tokens","value":1e999}]}').ok).toBe(false);
   });
@@ -109,5 +109,19 @@ describe('bounded public activity schemas', () => {
     expect(validatePublicPatternScalars('terminal', {exitCode: 0.5})).toContain('exitCode');
     expect(validatePublicPatternScalars('context', {used: Infinity})).toContain('used');
     expect(validatePublicPatternScalars('tool', {state: 'completed'})).toBeUndefined();
+  });
+  it('retains >100 public records/>16k text/>131k JSON and >500 deep file nodes without changing typed supplied content',()=>{
+    const steps=Array.from({length:140},(_,index)=>({id:`step-${index}`,title:'Public step',detail:'界'.repeat(17000),status:'done'}));
+    const json=JSON.stringify({version:1,steps});expect(json.length).toBeGreaterThan(131072);expect(parsePublicPatternData('plan',json)).toEqual({ok:true,value:{version:1,steps}});
+    let nodes:unknown[]=Array.from({length:600},(_,index)=>({path:`file-${index}`,name:'Supplied file'}));for(let depth=0;depth<30;depth++)nodes=[{path:`folder-${depth}`,name:'Supplied folder',children:nodes}];
+    expect(parsePublicPatternData('file-tree',JSON.stringify({version:1,nodes}))).toEqual({ok:true,value:{version:1,nodes}});
+    for(const state of ['pending','running','completed','error','denied'])expect(validatePublicPatternScalars('tool',{state})).toBeUndefined();
+    for(const state of ['pending','running','completed','error','failed'])expect(validatePublicPatternScalars('subagent',{state})).toBeUndefined();
+    expect(parsePublicPatternData('plan',JSON.stringify({version:1,steps:[{id:'public',title:'Public',privateReasoning:'hidden'}]})).ok).toBe(false);
+  });
+  it('renders full supplied terminal output beyond the old scalar cutoff',async()=>{
+    const target=document.createElement('div');document.body.append(target);const output='Public '+'界'.repeat(20_000)+'END-OF-FULL-OUTPUT';
+    const component=mount(PublicPattern,{target,props:{kind:'terminal',props:{data:'{"version":1}',output,open:true},occurrenceKey:'full-output',nodeId:'full-output'}});flushSync();
+    expect(target.querySelector('[role="alert"]')).toBeNull();expect(target.textContent).toContain(output);await unmount(component);target.remove();
   });
 });

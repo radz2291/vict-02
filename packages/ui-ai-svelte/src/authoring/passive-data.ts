@@ -15,7 +15,7 @@ export interface PassiveData {
 }
 type Check = (value: unknown, path: string) => void;
 const fail = (path: string, message: string): never => { throw new Error(`${path}: ${message}`); };
-const string: Check = (value, path) => { if (typeof value !== 'string' || value.length > 16000) fail(path, 'expected string of at most 16000 characters'); };
+const string: Check = (value, path) => { if (typeof value !== 'string') fail(path, 'expected string'); };
 const bool: Check = (value, path) => { if (typeof value !== 'boolean') fail(path, 'expected boolean'); };
 const positive: Check = (value, path) => { if (typeof value !== 'number' || !Number.isFinite(value) || value < 0) fail(path, 'expected finite nonnegative number'); };
 const status = (allowed: readonly string[]): Check => (value, path) => { if (typeof value !== 'string' || !allowed.includes(value)) fail(path, `expected ${allowed.join('|')}`); };
@@ -30,7 +30,7 @@ function record(fields: Record<string, Check>): Check {
 }
 function list(check: Check, uniqueKey?: string): Check {
   return (value, path) => {
-    if (!Array.isArray(value) || value.length > 100) fail(path, 'expected array of at most 100 records');
+    if (!Array.isArray(value)) fail(path, 'expected array of records');
     const seen = new Set<unknown>();
     for (const [index, item] of (value as unknown[]).entries()) {
       check(item, `${path}[${index}]`);
@@ -46,19 +46,22 @@ const citation = record({id: string, title: string, url: string, excerpt: option
 const activity = record({id: string, title: string, detail: optional(string), status: optional(status(['running', 'pending', 'done', 'error'])), open: optional(bool), code: optional(string), badges: optional(list(string)), links: optional(list(record({title: string, url: string})))});
 const test = record({id: string, name: string, status: status(['passed', 'failed', 'skipped']), error: optional(string)});
 const suite = record({id: string, name: string, tests: list(test, 'id')});
-function fileTree(value: unknown, path: string, depth = 0, paths = new Set<string>()): void {
-  if (depth > 12) fail(path, 'maximum tree depth 12');
-  list(record({path: string, name: string, children: optional((children, childPath) => fileTree(children, childPath, depth + 1, paths))}))(value, path);
-  for (const item of value as FileNode[]) {
-    if (!item.path || paths.has(item.path)) fail(path, 'nonempty globally unique paths required');
-    paths.add(item.path);
-    if (paths.size > 500) fail(path, 'maximum 500 file nodes');
+function fileTree(value: unknown, path: string): void {
+  const pending = [{value, path}], paths = new Set<string>();
+  const node = record({path: string, name: string, children: optional((value, path) => { pending.push({value, path}); })});
+  while (pending.length) {
+    const current = pending.pop()!;
+    list(node)(current.value, current.path);
+    for (const item of current.value as FileNode[]) {
+      if (!item.path || paths.has(item.path)) fail(current.path, 'nonempty globally unique paths required');
+      paths.add(item.path);
+    }
   }
 }
 const version: Check = (value, path) => { if (value !== 1) fail(path, 'expected version 1'); };
 export function parsePublicPatternData(kind: PublicPatternKind, input: unknown): {ok: true; value: PassiveData} | {ok: false; error: string} {
   try {
-    if (typeof input !== 'string' || input.length > 131072) fail('data', 'expected JSON string of at most 131072 characters');
+    if (typeof input !== 'string') fail('data', 'expected JSON string');
     const parsed: unknown = JSON.parse(input as string);
     const fields: Record<string, Check> = {version};
     if (['chain-of-thought', 'plan', 'task', 'queue'].includes(kind)) fields.steps = list(activity, 'id');

@@ -38,7 +38,7 @@ export const publicPatternDescriptors: readonly UiExtensionDescriptor[] = public
     : kind === 'stack-trace' ? [{name: 'frameSelect', payload: 'string', description: 'JSON string of selected parsed supplied frame; host owns navigation.'}] : [],
   styleTargets: ['root', 'content', ...parts[kind]],
   inspectionLimits: ['Presentation of supplied public data only. No provider, tool, shell, retrieval, subagent launch or execution authority.',
-    'data is bounded strict version-1 JSON; unsupported keys, duplicate identities and malformed records show a visible validation error.',
+    'data is strict version-1 JSON without application-imposed text/JSON-size, array-count or file-tree depth/node quotas; unsupported keys, duplicate identities and malformed records show a visible validation error. Actual rendering/hardware resources remain finite.',
     'Public summaries and explicit execution steps only; private chain-of-thought is never requested, inferred or fabricated.',
     'allowDecision, allowOpenOutput and allowSelect default false. Enable only when the corresponding typed intent output has an explicit host binding.'],
 }));

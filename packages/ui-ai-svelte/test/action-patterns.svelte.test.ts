@@ -8,9 +8,16 @@ let instance:ReturnType<typeof mount>|undefined;
 const settle=async()=>{flushSync();await tick();flushSync();};
 afterEach(async()=>{if(instance)await unmount(instance);instance=undefined;document.body.innerHTML='';});
 describe('AI action adapters',()=>{
-  it('validates bounded versioned supplied options, rejecting ambiguous or unknown metadata',()=>{
+  it('validates versioned supplied options, rejecting ambiguous or unknown metadata',()=>{
     expect(parseModelSelectorData(modelSelectorExample).ok).toBe(true);
     for(const raw of ['{',JSON.stringify({version:2,models:[]}),JSON.stringify({version:1,models:[{id:'x',label:'X'},{id:'x',label:'Duplicate'}]}),JSON.stringify({version:1,models:[{id:'x',label:'X',secret:'no'}]}),JSON.stringify({version:1,models:[],execute:true}),'x'.repeat(65537)])expect(parseModelSelectorData(raw).ok).toBe(false);
+  });
+  it('retains supplied options beyond old JSON/count/text limits and full >16k action payloads through native UI',async()=>{
+    const options={version:1,models:Array.from({length:140},(_,index)=>({id:`model-${index}-`+'id'.repeat(150),label:'Supplied '+'界'.repeat(600),group:'group'.repeat(100)})),efforts:Array.from({length:40},(_,index)=>({id:`effort-${index}`,label:'Effort '+index}))};
+    const json=JSON.stringify(options);expect(json.length).toBeGreaterThan(65536);const parsed=parseModelSelectorData(json);expect(parsed.ok).toBe(true);if(parsed.ok)expect(parsed.data).toEqual(options);
+    const target=document.createElement('div');document.body.append(target);const emit=vi.fn(),text='Supplied '+'界'.repeat(25_000)+'FULL-ACTION-TAIL';
+    instance=mount(ActionPattern,{target,props:{kind:'suggestion',props:{text,allowActions:true},io:{emit},occurrenceKey:'long',nodeId:'long'}});await settle();
+    expect(target.querySelector('button')?.textContent).toBe(text);target.querySelector('button')!.click();expect(emit).toHaveBeenCalledWith('select',text);
   });
   it('has retained pins and registered seeds for all four supplied patterns',()=>{
     const pins=actionPatternDescriptors.map((descriptor,index)=>({id:descriptor.id,revision:descriptor.revision,descriptorDigest:authoringDigest(descriptor),capabilitiesDigest:authoringDigest(authoringImplementationCapabilities(actionPatternImplementations[index]!))}));
