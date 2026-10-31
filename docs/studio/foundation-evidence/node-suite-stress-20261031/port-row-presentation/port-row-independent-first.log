@@ -1,0 +1,73 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/vict-limits-independent-20261031
+
+3:17:46 pm [vite-plugin-svelte] packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+3:17:46 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+3:17:46 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+3:17:46 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+3:17:46 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+3:18:02 pm [vite-plugin-svelte] packages/ui-flow-svelte/test/AuthoringHost.svelte:6:24 This reference only captures the initial value of `initial`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+ ❯ packages/ui-flow-svelte/test/port-row-independent.svelte.test.ts (11 tests | 10 failed) 237ms
+   × row@1 uses actual graph@1 port semantics without any source write 62ms
+   × row@1 uses actual graph@2 port semantics without any source write 20ms
+   × row@1 uses actual graph@3 port semantics without any source write 17ms
+   × unsafe color url(https://invalid.example/x) is absent from markup while labels remain 8ms
+   × unsafe color red;--attack:1 is absent from markup while labels remain 9ms
+   × unsafe color token:Accent is absent from markup while labels remain 8ms
+   × unsafe color token:accent);color:red is absent from markup while labels remain 8ms
+   × unsafe color  #abc is absent from markup while labels remain 9ms
+   × missing semantic port cannot manufacture a socket, and outside-body leaf is diagnostic only 9ms
+   × conditional duplicate row unregisters on hide and affects only its own repeated body 12ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 10 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  packages/ui-flow-svelte/test/port-row-independent.svelte.test.ts > row@1 uses actual graph@1 port semantics without any source write
+ FAIL  packages/ui-flow-svelte/test/port-row-independent.svelte.test.ts > row@1 uses actual graph@2 port semantics without any source write
+ FAIL  packages/ui-flow-svelte/test/port-row-independent.svelte.test.ts > row@1 uses actual graph@3 port semantics without any source write
+TypeError: document.createElement is not a function
+ ❯ open packages/ui-flow-svelte/test/port-row-independent.svelte.test.ts:31:24
+
+ ❯ packages/ui-flow-svelte/test/port-row-independent.svelte.test.ts:38:76
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/10]⎯
+
+ FAIL  packages/ui-flow-svelte/test/port-row-independent.svelte.test.ts > unsafe color url(https://invalid.example/x) is absent from markup while labels remain
+ FAIL  packages/ui-flow-svelte/test/port-row-independent.svelte.test.ts > unsafe color red;--attack:1 is absent from markup while labels remain
+ FAIL  packages/ui-flow-svelte/test/port-row-independent.svelte.test.ts > unsafe color token:Accent is absent from markup while labels remain
+ FAIL  packages/ui-flow-svelte/test/port-row-independent.svelte.test.ts > unsafe color token:accent);color:red is absent from markup while labels remain
+ FAIL  packages/ui-flow-svelte/test/port-row-independent.svelte.test.ts > unsafe color  #abc is absent from markup while labels remain
+TypeError: document.createElement is not a function
+ ❯ open packages/ui-flow-svelte/test/port-row-independent.svelte.test.ts:31:24
+
+ ❯ packages/ui-flow-svelte/test/port-row-independent.svelte.test.ts:60:89
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/10]⎯
+
+ FAIL  packages/ui-flow-svelte/test/port-row-independent.svelte.test.ts > missing semantic port cannot manufacture a socket, and outside-body leaf is diagnostic only
+TypeError: document.createElement is not a function
+ ❯ open packages/ui-flow-svelte/test/port-row-independent.svelte.test.ts:31:24
+
+ ❯ packages/ui-flow-svelte/test/port-row-independent.svelte.test.ts:70:21
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/10]⎯
+
+ FAIL  packages/ui-flow-svelte/test/port-row-independent.svelte.test.ts > conditional duplicate row unregisters on hide and affects only its own repeated body
+TypeError: document.createElement is not a function
+ ❯ open packages/ui-flow-svelte/test/port-row-independent.svelte.test.ts:31:24
+
+ ❯ packages/ui-flow-svelte/test/port-row-independent.svelte.test.ts:81:51
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/10]⎯
+
+
+ Test Files  1 failed | 2 passed (3)
+      Tests  10 failed | 12 passed (22)
+   Start at  15:17:40
+   Duration  22.71s (transform 38.22s, setup 0ms, import 56.02s, tests 3.03s, environment 5.89s)
+

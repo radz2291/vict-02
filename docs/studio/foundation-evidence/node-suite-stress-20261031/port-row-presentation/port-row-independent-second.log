@@ -1,0 +1,153 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/vict-limits-independent-20261031
+
+3:18:18 pm [vite-plugin-svelte] packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+3:18:18 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+3:18:18 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+3:18:18 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+3:18:18 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+3:18:31 pm [vite-plugin-svelte] packages/ui-flow-svelte/test/AuthoringHost.svelte:6:24 This reference only captures the initial value of `initial`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+ ❯ packages/ui-flow-svelte/test/port-row-independent.svelte.test.ts (11 tests | 2 failed) 2121ms
+   × missing semantic port cannot manufacture a socket, and outside-body leaf is diagnostic only 139ms
+   × conditional duplicate row unregisters on hide and affects only its own repeated body 196ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  packages/ui-flow-svelte/test/port-row-independent.svelte.test.ts > missing semantic port cannot manufacture a socket, and outside-body leaf is diagnostic only
+AssertionError: {"ok":false,"issues":[{"code":"UI_EXPR_UNKNOWN_REFERENCE","message":"Reference 'state.amount' does not resolve in this scope.","severity":"error","documentId":"typed-media","nodeId":"steps-input","path":"state.amount"},{"code":"UI_EXPR_SCOPE_VIOLATION","message":"prop.* is only visible inside a component definition registry (typed props).","severity":"error","documentId":"typed-media","nodeId":"steps-input","scope":"prop.readOnly"},{"code":"UI_EXPR_UNKNOWN_REFERENCE","message":"setState targets undeclared state key.","severity":"error","documentId":"typed-media","nodeId":"steps-input","path":"state.amount"}]}: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ open packages/ui-flow-svelte/test/port-row-independent.svelte.test.ts:30:47
+     28|  const descriptors=[...catalogDescriptors,...flowAuthoringDescriptors];
+     29|  const compiled=compileUiDocument(document,defaultSemanticElementCatal…
+     30|  expect(compiled.ok,JSON.stringify(compiled)).toBe(true);if(!compiled.…
+       |                                               ^
+     31|  const target=globalThis.document.createElement('div');globalThis.docu…
+     32|  const writes:unknown[]=[];
+ ❯ packages/ui-flow-svelte/test/port-row-independent.svelte.test.ts:71:51
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  packages/ui-flow-svelte/test/port-row-independent.svelte.test.ts > conditional duplicate row unregisters on hide and affects only its own repeated body
+AssertionError: expected <div …(10)>…(4)</div> to be null
+
+- Expected:
+null
+
++ Received:
+<div
+  class="graph-port-row nodrag nopan nowheel uv-dbc94ce3-prompt-port svelte-14wj91j"
+  data-direction="output"
+  data-node-port="prompt-a/result"
+  data-port="result"
+  data-ui-node="prompt-port"
+  data-ui-occ="typed-media|prompt-port|workspace@vict.flow.workspace|scope:%5B%22typed-media%7Cviewport%7Cworkspace%40vict.flow.workspace%7Cscope%3Aapplication%22%2C%22prompt-a%22%5D"
+  data-ui-owner="c61"
+  data-ui-part="root"
+  data-ui-primary=""
+  style="--vict-port-row-color: var(--vict-color-accent, var(--vict-color-accent, #167d72));"
+>
+  <div
+    aria-label="output Prompt: text"
+    class="svelte-flow__handle svelte-flow__handle-right nodrag vict-graph-pan-guard-63-36-32 right port-row-hit  source connectablestart connectableend connectable connectionindicator"
+    data-handleid="result"
+    data-handlepos="right"
+    data-id="1-prompt-a-result-source"
+    data-nodeid="prompt-a"
+    data-ui-node="prompt-port"
+    data-ui-occ="typed-media|prompt-port|workspace@vict.flow.workspace|scope:%5B%22typed-media%7Cviewport%7Cworkspace%40vict.flow.workspace%7Cscope%3Aapplication%22%2C%22prompt-a%22%5D"
+    data-ui-owner="c61"
+    data-ui-part="handle"
+    role="button"
+    tabindex="-1"
+    title="output Prompt · text"
+  >
+    <span
+      aria-hidden="true"
+      class="port-row-dot  svelte-14wj91j"
+      data-ui-node="prompt-port"
+      data-ui-occ="typed-media|prompt-port|workspace@vict.flow.workspace|scope:%5B%22typed-media%7Cviewport%7Cworkspace%40vict.flow.workspace%7Cscope%3Aapplication%22%2C%22prompt-a%22%5D"
+      data-ui-owner="c61"
+      data-ui-part="socket"
+    />
+    <!---->
+  </div>
+  <!---->
+   
+  <span
+    class="port-row-label  svelte-14wj91j"
+    data-ui-node="prompt-port"
+    data-ui-occ="typed-media|prompt-port|workspace@vict.flow.workspace|scope:%5B%22typed-media%7Cviewport%7Cworkspace%40vict.flow.workspace%7Cscope%3Aapplication%22%2C%22prompt-a%22%5D"
+    data-ui-owner="c61"
+    data-ui-part="label"
+  >
+    Prompt
+  </span>
+   
+  <span
+    class="port-row-type  svelte-14wj91j"
+    data-ui-node="prompt-port"
+    data-ui-occ="typed-media|prompt-port|workspace@vict.flow.workspace|scope:%5B%22typed-media%7Cviewport%7Cworkspace%40vict.flow.workspace%7Cscope%3Aapplication%22%2C%22prompt-a%22%5D"
+    data-ui-owner="c61"
+    data-ui-part="type"
+  >
+    text
+  </span>
+  <!---->
+   
+  <!---->
+  <!---->
+  <!---->
+  <!---->
+  <!---->
+  <!---->
+  <textarea
+    aria-label="Shot prompt"
+    class="vict-textarea nodrag nopan nowheel uv-dbc94ce3-prompt-input"
+    data-ui-node="prompt-input"
+    data-ui-occ="typed-media|prompt-input|workspace@vict.flow.workspace|prompt-port@vict.flow.port-row|scope:%5B%22typed-media%7Cviewport%7Cworkspace%40vict.flow.workspace%7Cscope%3Aapplication%22%2C%22prompt-a%22%5D"
+    data-ui-owner="c61"
+    style=""
+  >
+    <!---->
+    
+    
+  </textarea>
+  
+  
+  
+  
+  
+  
+  <!---->
+   
+  <!---->
+</div>
+
+ ❯ packages/ui-flow-svelte/test/port-row-independent.svelte.test.ts:85:75
+     83|   expect(view.target.querySelector('[data-node-port="prompt-a/result"]…
+     84|   view.target.querySelector<HTMLButtonElement>('[aria-label="show-dupl…
+     85|   expect(view.target.querySelector('[data-node-port="prompt-a/result"]…
+       |                                                                           ^
+     86|   view.target.querySelector<HTMLButtonElement>('[aria-label="hide-dupl…
+     87|   expect(view.target.querySelectorAll('[data-node-port="prompt-a/resul…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed | 2 passed (3)
+      Tests  2 failed | 20 passed (22)
+   Start at  15:18:14
+   Duration  18.66s (transform 30.59s, setup 0ms, import 44.26s, tests 4.22s, environment 4.20s)
+
