@@ -1,0 +1,65 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/vict-limits-independent-20261031
+
+ ❯ packages/ui-flow-svelte/test/navigation-layout.svelte.test.ts (3 tests | 2 failed) 106ms
+   × initial fit waits for own engine dimensions then settles once, retaining draft on later ancestor zoom 39ms
+   × pending old-frame fit cannot settle a new unit frame and retries only after its dimensions arrive 40ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  packages/ui-flow-svelte/test/navigation-layout.svelte.test.ts > initial fit waits for own engine dimensions then settles once, retaining draft on later ancestor zoom
+AssertionError: expected "vi.fn()" to not be called at all, but actually been called 1 times
+
+Received:
+
+  1st vi.fn() call:
+
+    Array [
+      Object {
+        "maxZoom": 0.35339590000000004,
+        "minZoom": 0.04819035,
+        "padding": 0.2,
+      },
+    ]
+
+
+Number of calls: 1
+
+ ❯ packages/ui-flow-svelte/test/navigation-layout.svelte.test.ts:16:42
+     14|  control.fit.mockResolvedValue(true);const settled=vi.fn(),target=docu…
+     15|  try{
+     16|   await settle();expect(control.fit).not.toHaveBeenCalled();expect(set…
+       |                                          ^
+     17|   navigationLayout.width=237;navigationLayout.height=122;await settle(…
+     18|   expect(control.fit.mock.calls[0][0]).toEqual({minZoom:.15*.321269,ma…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  packages/ui-flow-svelte/test/navigation-layout.svelte.test.ts > pending old-frame fit cannot settle a new unit frame and retries only after its dimensions arrive
+AssertionError: expected "vi.fn()" to not be called at all, but actually been called 1 times
+
+Received:
+
+  1st vi.fn() call:
+
+    Array []
+
+
+Number of calls: 1
+
+ ❯ packages/ui-flow-svelte/test/navigation-layout.svelte.test.ts:32:23
+     30|   await settle();expect(control.fit).toHaveBeenCalledTimes(1);
+     31|   navigationFrame.scale=.5;navigationFrame.expectedWidth=368.4;navigat…
+     32|   expect(settled).not.toHaveBeenCalled();expect(control.fit).toHaveBee…
+       |                       ^
+     33|   navigationLayout.width=368;navigationLayout.height=189;await settle(…
+     34|  }finally{await unmount(app);target.remove();}
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 1 passed (3)
+   Start at  15:47:26
+   Duration  2.32s (transform 896ms, setup 0ms, import 1.18s, tests 106ms, environment 779ms)
+

@@ -5,6 +5,8 @@ export interface FlowViewportUnits {
 }
 export interface FlowCoordinateUnits {
   readonly scale: number;
+  readonly expectedWidth?: number;
+  readonly expectedHeight?: number;
 }
 export interface FlowCoordinateState extends FlowCoordinateUnits {
   viewport: FlowViewportUnits;
@@ -26,7 +28,7 @@ export const logicalViewport = (viewport: FlowViewportUnits, scale: number): Flo
 /** Measure only this frame and its ancestor transforms. No polling/global stores. */
 export function observeFlowCoordinateFrame(
   root: HTMLElement,
-  changed: (scale: number, supported: boolean) => void,
+  changed: (scale: number, supported: boolean, size: { width: number; height: number }) => void,
 ) {
   let alive = true,
     queued = false;
@@ -83,7 +85,7 @@ export function observeFlowCoordinateFrame(
         }
       }
     }
-    changed(supported ? (x + y) / 2 : 1, supported);
+    changed(supported ? (x + y) / 2 : 1, supported, { width: logicalWidth, height: logicalHeight });
   }
   function schedule() {
     if (!queued && alive) {

@@ -6,8 +6,8 @@
  // it viewport (s*x,s*y,s*z) retains the original rendered/source coordinates:
  // screen = origin + s*(logicalPan + logicalZoom*world). No event is rewritten.
  let {viewport=$bindable<FlowViewportUnits>({x:0,y:0,zoom:1}),minZoom=.5,maxZoom=2,onUnitChange,children}:{viewport?:FlowViewportUnits;minZoom?:number;maxZoom?:number;onUnitChange?:()=>void;children:Snippet<[FlowCoordinateState]>}=$props();
- let scale=$state(1),supported=$state(true);
- const frame:FlowCoordinateState={get scale(){return scale;},get minZoom(){return minZoom;},get maxZoom(){return maxZoom;},get viewport(){return engineViewport(viewport,scale);},set viewport(value:FlowViewportUnits){
+ let scale=$state(1),supported=$state(true),width=$state(0),height=$state(0);
+ const frame:FlowCoordinateState={get scale(){return scale;},get expectedWidth(){return supported?width*scale:0;},get expectedHeight(){return supported?height*scale:0;},get minZoom(){return minZoom;},get maxZoom(){return maxZoom;},get viewport(){return engineViewport(viewport,scale);},set viewport(value:FlowViewportUnits){
   if(!supported)return;
   const next=logicalViewport(value,scale);
   if(!Number.isFinite(next.x)||!Number.isFinite(next.y)||!Number.isFinite(next.zoom)||next.zoom<=0)return;
@@ -15,7 +15,8 @@
   viewport=next;
  }};
  setContext(FLOW_COORDINATE_UNITS,frame);
- function measure(root:HTMLElement){return observeFlowCoordinateFrame(root,(next,valid)=>{
+ function measure(root:HTMLElement){return observeFlowCoordinateFrame(root,(next,valid,size)=>{
+  width=size.width;height=size.height;
   if(Math.abs(next-scale)>Number.EPSILON*8*Math.max(next,scale)){onUnitChange?.();scale=next;}
   supported=valid;
  });}
