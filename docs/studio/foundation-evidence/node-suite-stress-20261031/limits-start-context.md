@@ -7,3 +7,5 @@ The public host protocol revisions advance: instructions15, profile17, start-inp
 Builder verification:12/12 tests pass in `limits-start-context.log`, including a new start request above the former viewport/DPR/composition thresholds and negative nonfinite/negative geometry, zero DPR, unknown authority and foreign document checks. No provider or browser image request is performed by these tests.
 
 `11-planned-rich-body-continuation.txt` is a prepared continuation brief, not a submitted actual-agent request or evidence of completed app work. Campaign Foundry remains saved at r1.r2.
+
+Successor coordination: the complete-selection/class candidate changes the shared edit schema used by both read preflight and edits. Its integration advances read capability/input10, edit capability/input9, agent profile18, start-input6 and observer profile12 (the observer pins the new read capability too). Instructions15 and observer instructions7 remain. The earlier12-test log proves the preceding start-context revision, not these final integrated pins; repeat the focused checks against built installed packages before activation.

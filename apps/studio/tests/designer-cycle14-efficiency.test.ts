@@ -236,15 +236,15 @@ it('does not union visual regions across source identities or imply runtime, off
 it('enforces completed knowledge and delivers measured progress through the actual pinned executor (offline model, no provider/design quality claim)', async () => {
   const selected = [{ id: 'vict.catalog.button', revision: '1' }];
   expect(STUDIO_AGENT_PROTOCOL).toEqual({
-    readCapabilityRevision: '9',
-    readInputRevision: '9',
-    editCapabilityRevision: '8',
-    editInputRevision: '8',
+    readCapabilityRevision: '10',
+    readInputRevision: '10',
+    editCapabilityRevision: '9',
+    editInputRevision: '9',
     instructionsRevision: '15',
-    profileRevision: '17',
-    startInputRevision: '5',
+    profileRevision: '18',
+    startInputRevision: '6',
     observationInstructionsRevision: '7',
-    observationProfileRevision: '11',
+    observationProfileRevision: '12',
   });
   const full = agentContext(source, cursor, undefined, {
     section: 'contracts',

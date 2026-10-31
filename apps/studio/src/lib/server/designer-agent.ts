@@ -80,15 +80,15 @@ import {
 /** Server-owned contracts are reinstalled in a fresh registry for each turn.
  * Identity-required pagination is a new host protocol, not an in-place @1 change. */
 export const STUDIO_AGENT_PROTOCOL = {
-  readCapabilityRevision: '9',
-  readInputRevision: '9',
-  editCapabilityRevision: '8',
-  editInputRevision: '8',
+  readCapabilityRevision: '10',
+  readInputRevision: '10',
+  editCapabilityRevision: '9',
+  editInputRevision: '9',
   instructionsRevision: '15',
-  profileRevision: '17',
-  startInputRevision: '5',
+  profileRevision: '18',
+  startInputRevision: '6',
   observationInstructionsRevision: '7',
-  observationProfileRevision: '11',
+  observationProfileRevision: '12',
 } as const;
 
 export type StudioAgentEvent =

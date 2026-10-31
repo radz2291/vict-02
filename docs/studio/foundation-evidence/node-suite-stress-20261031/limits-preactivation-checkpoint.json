@@ -1,0 +1,33 @@
+{
+  "schema": "vict.node-suite-preactivation@1",
+  "observedUtc": "2026-10-31T03:21:46.5899008Z",
+  "servingSource": "8d8be402893a8942b985ad920b32b31807e2ad47",
+  "expectedFiles": 389,
+  "actualFiles": 389,
+  "hashMismatches": [],
+  "listenerAddress": "127.0.0.25",
+  "listenerPid": 4640,
+  "sourceCandidate": "0834f52a83229cea77ee75dcc41cd5950fd62555",
+  "recoveredScreen": "screen-a8690ffa-1e90-4b72-909c-66141d372773",
+  "recoveredSavedRevision": "r1.r2",
+  "recoveryFiles": [
+    {
+      "path": "10-recovered-unsaved-canvas-source.json",
+      "sha256": "f467d1dd225d7e0843934cfaa1ac43a233de1e7fb554e6b36ffb7f60dcf563d2"
+    },
+    {
+      "path": "10-recovered-saved-source.json",
+      "sha256": "d4d754d83dd53870a4af2805d4edd39c3943f89f9ce46a8d7ed2a083a7163436"
+    },
+    {
+      "path": "10-recovered-supported-export.json",
+      "sha256": "058f76d8c459c2968f3e8c0aab905412e825bf6c0addac3aecb23f8ec040de6e"
+    },
+    {
+      "path": "10-recovery-saved.png",
+      "sha256": "2054fc44572c713d0d41495c9eb1e8c460773ce8f5de214c2ebcc83d668bba21"
+    }
+  ],
+  "activationPerformed": false,
+  "note": "Point-in-time preflight. Verify listener ownership and all inventories again immediately before activation; PID alone is not authority."
+}
