@@ -1,0 +1,35 @@
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/vict-edge-adapter-independent-20261031/apps/studio
+
+2:46:14 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-edge-adapter-independent-20261031/packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+2:46:14 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-edge-adapter-independent-20261031/packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+2:46:14 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-edge-adapter-independent-20261031/packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+2:46:14 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-edge-adapter-independent-20261031/packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+2:46:14 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-edge-adapter-independent-20261031/packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+2:46:16 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-edge-adapter-independent-20261031/packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+2:46:16 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-edge-adapter-independent-20261031/packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+2:46:16 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-edge-adapter-independent-20261031/packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+2:46:16 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-edge-adapter-independent-20261031/packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+2:46:16 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-edge-adapter-independent-20261031/packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+ ✓ tests/independent-schema-collision-20261030.test.ts (5 tests) 742ms
+   ✓ independent exact schema collision review > reproduces the old overwritten definition and admits only the canonical new wrapper  354ms
+ ✓ tests/graph-v3-migration.test.ts (11 tests) 671ms
+   ✓ atomically composes two explicit nested occurrences and outer migration through source history/save/import  354ms
+ ✓ tests/designer-cycle14-efficiency.test.ts (6 tests) 2246ms
+   ✓ enforces completed knowledge and delivers measured progress through the actual pinned executor (offline model, no provider/design quality claim)  2151ms
+
+ Test Files  3 passed (3)
+      Tests  22 passed (22)
+   Start at  14:45:54
+   Duration  55.46s (transform 62.54s, setup 0ms, collect 151.62s, tests 3.66s, environment 1.37s, prepare 850ms)
+

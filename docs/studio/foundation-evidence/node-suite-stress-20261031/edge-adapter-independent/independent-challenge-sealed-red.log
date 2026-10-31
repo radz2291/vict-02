@@ -1,0 +1,44 @@
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/vict-edge-adapter-independent-20261031/apps/studio
+
+2:49:44 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-edge-adapter-independent-20261031/packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+2:49:45 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-edge-adapter-independent-20261031/packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+2:49:45 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-edge-adapter-independent-20261031/packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+2:49:45 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-edge-adapter-independent-20261031/packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+2:49:45 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-edge-adapter-independent-20261031/packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+ ❯ tests/edge-v3-adapter-independent.test.ts (6 tests | 1 failed) 226ms
+   ✓ independent: leaves graph-looking text/private values and unrelated literal readers unchanged 27ms
+   ✓ independent: shared lexical reader revisions update together without changing unrelated scopes 5ms
+   ✓ independent: original parent/nested target permutation does not restore stale parent snapshots 29ms
+   ✓ independent: absent bidirectional source authority refuses with no mutation 3ms
+   ✓ independent: mismatched acknowledgement digest refuses migration after readonly preflight 120ms
+   × independent challenge: migrated nested reader remains usable for a new inherited parent node 41ms
+     → New parent node inherits graph@2 although its nested workspace now requires graph@3: expected false to be true // Object.is equality
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/edge-v3-adapter-independent.test.ts > independent challenge: migrated nested reader remains usable for a new inherited parent node
+AssertionError: New parent node inherits graph@2 although its nested workspace now requires graph@3: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/edge-v3-adapter-independent.test.ts:21:1008
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 5 passed (6)
+   Start at  14:49:33
+   Duration  25.73s (transform 15.95s, setup 0ms, collect 24.00s, tests 226ms, environment 857ms, prepare 192ms)
+

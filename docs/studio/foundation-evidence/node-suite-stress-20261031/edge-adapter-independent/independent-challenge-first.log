@@ -1,0 +1,70 @@
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/vict-edge-adapter-independent-20261031/apps/studio
+
+2:47:06 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-edge-adapter-independent-20261031/packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+2:47:06 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-edge-adapter-independent-20261031/packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+2:47:06 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-edge-adapter-independent-20261031/packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+2:47:06 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-edge-adapter-independent-20261031/packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+2:47:06 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-edge-adapter-independent-20261031/packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+ ❯ tests/edge-v3-adapter-independent.test.ts (6 tests | 6 failed) 124ms
+   × independent: leaves graph-looking text/private values and unrelated literal readers unchanged 45ms
+     → localStorage is not defined
+   × independent: shared lexical reader revisions update together without changing unrelated scopes 7ms
+     → localStorage is not defined
+   × independent: original parent/nested target permutation does not restore stale parent snapshots 33ms
+     → localStorage is not defined
+   × independent: absent bidirectional source authority refuses with no mutation 5ms
+     → localStorage is not defined
+   × independent: mismatched acknowledgement digest refuses migration after readonly preflight 3ms
+     → localStorage is not defined
+     → localStorage is not defined
+   × independent challenge: migrated nested reader remains usable for a new inherited parent node 28ms
+     → New parent node inherits graph@2 although its nested workspace now requires graph@3: expected false to be true // Object.is equality
+     → localStorage is not defined
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 6 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/edge-v3-adapter-independent.test.ts > independent: leaves graph-looking text/private values and unrelated literal readers unchanged
+ FAIL  tests/edge-v3-adapter-independent.test.ts > independent: shared lexical reader revisions update together without changing unrelated scopes
+ FAIL  tests/edge-v3-adapter-independent.test.ts > independent: original parent/nested target permutation does not restore stale parent snapshots
+ FAIL  tests/edge-v3-adapter-independent.test.ts > independent: absent bidirectional source authority refuses with no mutation
+ FAIL  tests/edge-v3-adapter-independent.test.ts > independent: mismatched acknowledgement digest refuses migration after readonly preflight
+ FAIL  tests/edge-v3-adapter-independent.test.ts > independent challenge: migrated nested reader remains usable for a new inherited parent node
+ReferenceError: localStorage is not defined
+ ❯ tests/edge-v3-adapter-independent.test.ts:12:28
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/8]⎯
+
+ FAIL  tests/edge-v3-adapter-independent.test.ts > independent: mismatched acknowledgement digest refuses migration after readonly preflight
+ReferenceError: localStorage is not defined
+ ❯ tests/edge-v3-adapter-independent.test.ts:19:232
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/8]⎯
+
+ FAIL  tests/edge-v3-adapter-independent.test.ts > independent challenge: migrated nested reader remains usable for a new inherited parent node
+AssertionError: New parent node inherits graph@2 although its nested workspace now requires graph@3: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/edge-v3-adapter-independent.test.ts:20:959
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/8]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  6 failed (6)
+   Start at  14:46:54
+   Duration  25.67s (transform 15.88s, setup 0ms, collect 24.51s, tests 124ms, environment 0ms, prepare 272ms)
+

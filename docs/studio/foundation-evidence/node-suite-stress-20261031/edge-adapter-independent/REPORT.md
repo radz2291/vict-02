@@ -1,0 +1,31 @@
+# Independent Studio graph 3 adapter/protocol cross-review
+
+Tested candidate a6c7d30522f263f39e3f724bf5c15c08f111192d (public package integrated 73428d08, Studio adapter c7e547339abcb2a7f2150562529f150b9f1c07f6, protocol cbf3d943f4c4a93b75a09825322a0181ed0060ce). Isolated codex/edge-adapter-independent-20261031. Reviewer did not author the Studio adapter or protocol changes; reviewer authored the public graph package and does **not** independently approve it here. No product/source repair, root mutation, build, activation, provider, browser, application data or push.
+
+## Verdict: FAIL — bounded future-node migration gap
+
+**F1 (medium): a migrated nested reader can inherit an incompatible graph2 family default on the next normal addNode.**
+
+The adapter migrates every explicitly named current controlled occurrence, then switches the shared nested workspace/viewport/port readers to @3. It intentionally retains family defaults (`graph-migration.ts:136–185` applies only explicit target occurrences). With the canonical nested fixture's declared string parameter default containing graph@2, all present instances receive explicit graph@3 values and migration succeeds. A subsequent public `addNode` of the same parent family succeeds with values `{}`; screenIssues remains empty. Exact occurrence resolution at `graph-authoring.ts:356` then uses `member.values[key] ?? parameter.default`, supplying graph@2 to the now graph@3 nested reader. Public parseGraphV3 refuses it. The resulting newly created card cannot render its nested graph. This is a source-generation usability/compatibility regression; it fails closed, not an authority or private-data escape.
+
+The final independent test retains this RED after proving migration, addNode and canonical source admission succeeded. It asserts the new node's resolved graph must match the published reader version; actual result is false. No native-browser observation is inferred from it. Outer-only migration retaining nested reader@2 is valid and does not exhibit this issue until the nested reader is migrated.
+
+Honor the intentional no-family-default-guessing boundary. A repair should require explicit authority for relevant factory defaults (or an explicit same-transaction family-default correction using the existing public operations), or refuse a migration that leaves its declared reader's factory path incompatible. Do not silently convert unrelated string parameters or arbitrary JSON-looking text. Public pure migration and the existing exact lexical resolver can remain the semantic/ownership owners. No repair was made by this verifier.
+
+## Boundary checks that passed
+
+Existing migration, protocol and collision suites: **22/22 PASS**. Remaining affected source history/runtime/import/knowledge/scoped ownership/bridge suites: **47/47 PASS**, for 69 existing checks independently rerun. They cover original-cursor checking, complete sibling target requirements, duplicate/stale/wrong route refusals, nested-first composition, mixed graph3 outer/graph2 inner, context components shared with untouched workspaces, genuine EditorBridge readonly preflight/apply/Undo/Redo/save/reopen/import, existing stale proposal fence, exact protocol identities and schema-definition collision protection.
+
+Own additional challenges: **5 PASS / 1 RED (F1)**. Passing challenges verify no JSON sniffing of graph-looking unrelated state/text/literal readers, all readers of one lexical source change identity together while unrelated scoped readers stay unchanged, target permutation composes the same canonical document, missing bidirectional source authority refuses without mutation, and a mismatched acknowledgement digest leaves document/history unchanged after readonly preflight.
+
+Scoped graph3 dispatch remains selected by exact public graphAuthoringContract modelVersion, never graph-content sniffing. Source-import delegates typed graph2/graph3 parsing to the installed public package. The migrated snapshots preserve ordinary private help state and unrelated data; no new provider/network/execution or private-reasoning path is introduced by these adapter/protocol edits. These statements concern the reviewed source and tested plain serialized inputs; a separate independent reviewer reported a public object-API Proxy cloning issue, which this review does not override or self-verify.
+
+Central protocol changes match the advertised scope: edit capability/input9->10, instructions15->16, profile18->19, observation instructions7->8/profile12->13; read capability/input10 and start6 stay unchanged. The new guidance directs explicit target-owned migration, complete siblings, fresh graph/document revisions and public scoped controls, with no invented object mutation or execution. The exact protocol/collision tests passed.
+
+## Test environment and evidence limits
+
+Tests run in this isolated checkout. node import resolution records the **own** public Flow src/index.ts, own ui-editor source and own ui/dist/index.js. Installed third-party dependencies are reused through links. Owned dependency dist files were copied only after checking source-tree/package.json equality against the adapter checkout, with per-file SHA-256 inventory; Flow public source matched exact bytes and has source exports (no dist). No root compiled package was changed. This is not fresh packed-artifact or production-build verification.
+
+The first independent challenge run omitted the happy-dom environment directive and failed localStorage setup; that failed log remains. The corrected explicit happy-dom reruns isolate one consistent F1 failure and five passing ownership/ack challenges. A setup invocation initially ran SvelteKit sync at checkout root and printed a default-config warning; the proper app-directory sync then succeeded. No product source was changed to make tests pass.
+
+Commands: app-local Vitest for graph-v3-migration, designer-cycle14-efficiency, independent-schema-collision-20261030; own edge-v3-adapter-independent challenge; remaining affected history/runtime/import/knowledge/scoped-ownership/scoped-bridge tests recorded separately. No graph3 actual-agent/native prototype success is claimed. Geometry repair remains a separate candidate/independent review lane.
