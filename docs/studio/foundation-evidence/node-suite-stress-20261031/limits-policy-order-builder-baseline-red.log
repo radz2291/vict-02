@@ -1,0 +1,33 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/vict-stream-order-repair-20261031
+
+ ❯ |unit| packages/runtime/test/stream-concurrent-publication.test.ts (5 tests | 1 failed) 33ms
+   × serializes concurrent publications through completion of async subscriber delivery 19ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| packages/runtime/test/stream-concurrent-publication.test.ts > serializes concurrent publications through completion of async subscriber delivery
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ packages/runtime/test/stream-concurrent-publication.test.ts:35:27
+     33|   await new Promise<void>((resolve) => setImmediate(resolve));
+     34|   try {
+     35|     expect(secondSettled).toBe(false);
+       |                           ^
+     36|     expect(received).toEqual([]);
+     37|   } finally { blocked.resolve(true); await Promise.all([first, second]…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 4 passed (5)
+   Start at  11:14:08
+   Duration  2.32s (transform 1.46s, setup 0ms, import 1.77s, tests 33ms, environment 0ms)
+

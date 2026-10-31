@@ -1,0 +1,9 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/vict-stream-order-repair-20261031
+
+
+ Test Files  2 passed (2)
+      Tests  10 passed (10)
+   Start at  11:14:45
+   Duration  2.75s (transform 3.32s, setup 0ms, import 4.15s, tests 75ms, environment 1ms)
+

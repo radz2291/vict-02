@@ -123,6 +123,8 @@ interface StreamState {
   readonly streamId: string;
   readonly buffer: AgentStreamEvent[];
   readonly subscribers: Map<string, SubscriberState>;
+  /** Publication admission order, including durable append and awaited delivery. */
+  publicationTail: Promise<void>;
 }
 
 export class AgentStreamHub {
@@ -162,6 +164,26 @@ export class AgentStreamHub {
           .join(', ')}).`,
       );
     }
+    // Own the admitted bytes while this publication waits behind earlier work.
+    const admitted = deepFreezeEvent(cloneEvent({ ...withoutSeq, seq: 1 } as AgentStreamEvent));
+    const state = this.#stateOf(admitted.streamId);
+    // Reserve the stream position before the first asynchronous operation.
+    // Serializing append as well as delivery prevents differently paced ledger
+    // promises from reversing the sequence handed to subscribers. Producers
+    // receive their own failure; a rejected publication never poisons the next
+    // admission. Transport cancellation releases delivery, never durable append.
+    const publication = state.publicationTail.then(() => this.#publishValidated(state, admitted));
+    state.publicationTail = publication.then(
+      () => undefined,
+      () => undefined,
+    );
+    return publication;
+  }
+
+  async #publishValidated(
+    state: StreamState,
+    event: Omit<AgentStreamEvent, 'seq'> & { readonly seq?: number },
+  ): Promise<AgentStreamEvent> {
     const { seq } = await this.#ledger.appendEvent({
       streamId: event.streamId,
       kind: event.kind,
@@ -173,7 +195,6 @@ export class AgentStreamHub {
     // ever mutate an event object that another path still reads.
     const assigned: AgentStreamEvent = deepFreezeEvent({ ...event, seq } as AgentStreamEvent);
     assertAgentStreamEvent(assigned);
-    const state = this.#stateOf(event.streamId);
     if (!isDurableStreamKind(event.kind)) {
       pushBounded(state.buffer, assigned, this.#transientBufferSize);
     }
@@ -411,7 +432,7 @@ export class AgentStreamHub {
   #stateOf(streamId: string): StreamState {
     let state = this.#streams.get(streamId);
     if (state === undefined) {
-      state = { streamId, buffer: [], subscribers: new Map() };
+      state = { streamId, buffer: [], subscribers: new Map(), publicationTail: Promise.resolve() };
       this.#streams.set(streamId, state);
     }
     return state;
