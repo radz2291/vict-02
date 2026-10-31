@@ -1,0 +1,35 @@
+{
+  "status": "QUALIFIED: preservation/capacity PASS; label association OPEN",
+  "errors": [],
+  "positionChanges": [
+    "pst",
+    "finS",
+    "finP",
+    "revS",
+    "revP",
+    "check",
+    "exp"
+  ],
+  "capacities": [
+    {
+      "owner": "outer",
+      "inputs": 13,
+      "violations": 0
+    },
+    {
+      "owner": "finS",
+      "inputs": 2,
+      "violations": 0
+    },
+    {
+      "owner": "finP",
+      "inputs": 2,
+      "violations": 0
+    }
+  ],
+  "syntheticLabelAssociation": {
+    "explicitForTargetsFirst": true,
+    "implicitTargetsContained": true,
+    "nativeBrowserProof": false
+  }
+}

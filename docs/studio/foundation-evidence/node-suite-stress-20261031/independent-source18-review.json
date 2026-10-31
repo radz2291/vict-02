@@ -1,0 +1,395 @@
+{
+  "schema": "vict.actual-checkpoint-source-review@1",
+  "checkpoint": 18,
+  "sourceExportReviewOnly": true,
+  "files": [
+    {
+      "name": "17-nested-finishing-saved-source.json",
+      "sha256": "90357dd1f281f3c2e337404559166879fac808e392d9a53f9029e89a0f8d76ac",
+      "characters": 253831
+    },
+    {
+      "name": "18-layout-repaired-saved-source.json",
+      "sha256": "4b2f44531b613ebbb77c03a6bd80bed8dc8585d9fa268d64a106a7dc414fc335",
+      "characters": 261907
+    },
+    {
+      "name": "18-layout-repaired-supported-export.json",
+      "sha256": "e5b985b4cdbce8d00a9e08c3764939456a663cdf675a7b5fbb85f0ee6c14ccf3",
+      "characters": 335598
+    }
+  ],
+  "revisions": [
+    "r1.r6",
+    "r1.r7"
+  ],
+  "sourceNodeCounts": [
+    295,
+    305
+  ],
+  "graphRevisions": [
+    23,
+    27
+  ],
+  "outerNodes": 14,
+  "outerEdges": 20,
+  "positionChanges": [
+    {
+      "id": "pst",
+      "before": {
+        "x": 826.9272170773577,
+        "y": 457.43988657211514
+      },
+      "after": {
+        "x": 760,
+        "y": 720
+      }
+    },
+    {
+      "id": "finS",
+      "before": {
+        "x": 950,
+        "y": 60
+      },
+      "after": {
+        "x": 1120,
+        "y": 40
+      }
+    },
+    {
+      "id": "finP",
+      "before": {
+        "x": 950,
+        "y": 430
+      },
+      "after": {
+        "x": 1120,
+        "y": 720
+      }
+    },
+    {
+      "id": "revS",
+      "before": {
+        "x": 1260,
+        "y": 60
+      },
+      "after": {
+        "x": 1960,
+        "y": 40
+      }
+    },
+    {
+      "id": "revP",
+      "before": {
+        "x": 1260,
+        "y": 450
+      },
+      "after": {
+        "x": 1960,
+        "y": 720
+      }
+    },
+    {
+      "id": "check",
+      "before": {
+        "x": 1570,
+        "y": 240
+      },
+      "after": {
+        "x": 2300,
+        "y": 380
+      }
+    },
+    {
+      "id": "exp",
+      "before": {
+        "x": 1880,
+        "y": 240
+      },
+      "after": {
+        "x": 2660,
+        "y": 380
+      }
+    }
+  ],
+  "nested": [
+    {
+      "owner": "finS",
+      "revisions": [
+        1,
+        2
+      ],
+      "nodes": 3,
+      "edges": 2,
+      "valuesAndGeometryPreserved": true
+    },
+    {
+      "owner": "finP",
+      "revisions": [
+        1,
+        2
+      ],
+      "nodes": 3,
+      "edges": 2,
+      "valuesAndGeometryPreserved": true
+    }
+  ],
+  "capacities": [
+    {
+      "owner": "outer",
+      "inputDeclarations": [
+        {
+          "family": "prompt",
+          "direction": "input",
+          "id": "i",
+          "label": "Brief in",
+          "maxConnections": 1,
+          "type": "brief"
+        },
+        {
+          "family": "style",
+          "direction": "input",
+          "id": "i",
+          "label": "Brief in",
+          "maxConnections": 1,
+          "type": "brief"
+        },
+        {
+          "family": "draft",
+          "direction": "input",
+          "id": "b",
+          "label": "Brief",
+          "maxConnections": 1,
+          "type": "brief"
+        },
+        {
+          "family": "draft",
+          "direction": "input",
+          "id": "c",
+          "label": "Settings",
+          "maxConnections": 1,
+          "type": "config"
+        },
+        {
+          "family": "draft",
+          "direction": "input",
+          "id": "n",
+          "label": "Negative",
+          "maxConnections": 1,
+          "type": "prompt"
+        },
+        {
+          "family": "draft",
+          "direction": "input",
+          "id": "p",
+          "label": "Prompt",
+          "maxConnections": 1,
+          "type": "prompt"
+        },
+        {
+          "family": "draft",
+          "direction": "input",
+          "id": "s",
+          "label": "Seed",
+          "maxConnections": 1,
+          "type": "seed"
+        },
+        {
+          "family": "draft",
+          "direction": "input",
+          "id": "t",
+          "label": "Style",
+          "maxConnections": 1,
+          "type": "style"
+        },
+        {
+          "family": "finish",
+          "direction": "input",
+          "id": "i",
+          "label": "Draft in",
+          "maxConnections": 1,
+          "type": "image"
+        },
+        {
+          "family": "review",
+          "direction": "input",
+          "id": "i",
+          "label": "Draft in",
+          "maxConnections": 1,
+          "type": "image"
+        },
+        {
+          "family": "check",
+          "direction": "input",
+          "id": "p",
+          "label": "Poster decision",
+          "maxConnections": 1,
+          "type": "approval"
+        },
+        {
+          "family": "check",
+          "direction": "input",
+          "id": "s",
+          "label": "Social decision",
+          "maxConnections": 1,
+          "type": "approval"
+        },
+        {
+          "family": "exp",
+          "direction": "input",
+          "id": "i",
+          "label": "Checklist in",
+          "maxConnections": 1,
+          "type": "check"
+        }
+      ],
+      "violations": []
+    },
+    {
+      "owner": "finS",
+      "inputDeclarations": [
+        {
+          "family": "grade",
+          "direction": "input",
+          "id": "i",
+          "label": "Image in",
+          "maxConnections": 1,
+          "type": "image"
+        },
+        {
+          "family": "caption",
+          "direction": "input",
+          "id": "i",
+          "label": "Graded in",
+          "maxConnections": 1,
+          "type": "image"
+        }
+      ],
+      "violations": []
+    },
+    {
+      "owner": "finP",
+      "inputDeclarations": [
+        {
+          "family": "grade",
+          "direction": "input",
+          "id": "i",
+          "label": "Image in",
+          "maxConnections": 1,
+          "type": "image"
+        },
+        {
+          "family": "caption",
+          "direction": "input",
+          "id": "i",
+          "label": "Graded in",
+          "maxConnections": 1,
+          "type": "image"
+        }
+      ],
+      "violations": []
+    }
+  ],
+  "labels": [
+    {
+      "id": "hl-b",
+      "for": "c-help-b",
+      "children": [
+        "c-help-b",
+        "hl-b-t"
+      ]
+    },
+    {
+      "id": "hl-p",
+      "for": "c-help-p",
+      "children": [
+        "c-help-p",
+        "hl-p-t"
+      ]
+    },
+    {
+      "id": "hl-s",
+      "for": "c-help-s",
+      "children": [
+        "c-help-s",
+        "hl-s-t"
+      ]
+    },
+    {
+      "id": "hl-sd",
+      "for": "c-help-sd",
+      "children": [
+        "c-help-sd",
+        "hl-sd-t"
+      ]
+    },
+    {
+      "id": "hl-d",
+      "for": "c-help-d",
+      "children": [
+        "c-help-d",
+        "hl-d-t"
+      ]
+    }
+  ],
+  "syntheticLabelAssociation": {
+    "explicitForTargetsFirst": true,
+    "implicitTargetsContained": true,
+    "nativeBrowserProof": false
+  },
+  "repeatedLiteralIDs": [
+    {
+      "id": "c-help-p",
+      "occurrences": [
+        "pos",
+        "neg"
+      ]
+    },
+    {
+      "id": "c-help-d",
+      "occurrences": [
+        "soc",
+        "pst"
+      ]
+    }
+  ],
+  "layout": {
+    "finWorkspaceWidth": "100%",
+    "finViewportHeight": 380,
+    "finFieldWidth": "760px",
+    "finCardRootWidth": "300px",
+    "innerCardWidths": [
+      {
+        "id": "fc-crop",
+        "width": "190px"
+      },
+      {
+        "id": "fc-grade",
+        "width": "190px"
+      },
+      {
+        "id": "fc-caption",
+        "width": "190px"
+      }
+    ],
+    "nonoverlapVerified": false
+  },
+  "findings": [
+    {
+      "code": "SOURCE18_DUPLICATE_EXPLICIT_LABEL_FOR",
+      "severity": "medium",
+      "status": "OPEN pending native second-occurrence label click",
+      "message": "Repeated prompt/draft bodies render duplicate literal IDs with explicit for; contained wrapping does not make that explicit association occurrence-local."
+    },
+    {
+      "code": "SOURCE18_PAINT_BOUNDS_REQUIRE_NATIVE_CHECK",
+      "severity": "qualification",
+      "status": "OPEN",
+      "message": "Finishing card root width300px differs from760px fields; source positions alone cannot prove painted nonoverlap."
+    }
+  ],
+  "nativeBehaviorVerified": false,
+  "actualSuiteVerified": false,
+  "errors": [],
+  "status": "QUALIFIED: preservation/capacity PASS; label association OPEN"
+}
