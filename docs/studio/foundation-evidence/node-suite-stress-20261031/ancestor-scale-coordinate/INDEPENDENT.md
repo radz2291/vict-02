@@ -1,5 +1,9 @@
 # Independent ancestor-coordinate review
 
+Current bounded G1 result: [independent repair recheck](RESIZE-INDEPENDENT.md)
+clears the responsive invalidation finding at exact760b. Initial FAIL and red
+evidence below remain historical; native/full-camera verdict remains separate.
+
 Reviewed builder `0225c6678d681972e49b98d4edc66ace13562368` integrated at exact
 `b865c8ec7936a5d8932f1c487022f86d867929c3`. Isolated clean start on
 `review/ancestor-coordinate-20261031` in `vict-realignment-independent-20261030`;
