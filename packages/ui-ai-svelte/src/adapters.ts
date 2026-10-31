@@ -25,6 +25,8 @@ export interface ConversationToolPayload {
   text: string;
   redacted?: boolean;
   truncated?: boolean;
+  /** Host-confirmed complete sanitized exchange remains accessible outside this preview. */
+  completeOriginalAvailable?: boolean;
   unavailable?: boolean;
 }
 export interface ConversationActivity {
@@ -42,9 +44,9 @@ export type ConversationEvent =
   | { id: string; kind: 'activity'; activity: ConversationActivity }
   | { id: string; kind: 'compaction'; text: string; omitted: number };
 
-/** Bound transcript presentation visibly. Hosts retain confirmed effect boundaries separately. */
+/** Retain the complete transcript by default. Explicit finite windows remain opt-in. */
 export function appendConversationEvent(
-  existing: readonly ConversationEvent[], event: ConversationEvent, limit = 240,
+  existing: readonly ConversationEvent[], event: ConversationEvent, limit = Number.POSITIVE_INFINITY,
 ): ConversationEvent[] {
   const events = [...existing];
   const index = events.findIndex(item => item.id === event.id);

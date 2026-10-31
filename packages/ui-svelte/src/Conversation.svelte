@@ -99,7 +99,7 @@
     <div class="vict-conversation-input-row">
       {#if multiline}
         <textarea class="vict-input vict-conversation-textarea" id="vict-conversation-input-{surfaceId}" data-testid="conversation-input"
-          name="message" rows="2" maxlength="6000" autocomplete="off" placeholder={inputPlaceholder}
+          name="message" rows="2" autocomplete="off" placeholder={inputPlaceholder}
           title="Enter to send. Shift+Enter for a new line." onkeydown={composerKeydown}
           bind:value={draft} bind:this={inputElement}></textarea>
       {:else}

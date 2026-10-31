@@ -34,7 +34,7 @@
       </Attachment.Group></InputGroup.Addon>
     {/if}
     <InputGroup.Textarea {...presentation?.target('field')} bind:value bind:ref={input} aria-label={label} {placeholder} name="message" class={`vict-conversation-textarea ${presentation?.target('field').class ?? ''}`}
-      data-testid="conversation-input" rows={2} maxlength={6000} title="Enter to send. Shift+Enter for a new line."
+      data-testid="conversation-input" rows={2} title="Enter to send. Shift+Enter for a new line."
       onkeydown={(event) => { if (event.key === 'Enter' && !event.shiftKey && !event.isComposing) { event.preventDefault(); if (!busy) form?.requestSubmit(); } }}/>
     <InputGroup.Addon {...presentation?.target('actions')} align="block-end" class={`vict-conversation-input-row flex-wrap ${presentation?.target('actions').class ?? ''}`}>
       {#if onAttach}<InputGroup.Button {...presentation?.target('attach')} type="button" size="icon-sm" variant="outline" class={`rounded-full ${presentation?.target('attach').class ?? ''}`} aria-label="Attach files" onclick={onAttach}><PlusIcon aria-hidden="true"/></InputGroup.Button>{/if}

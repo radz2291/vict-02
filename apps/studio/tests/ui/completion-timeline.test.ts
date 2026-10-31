@@ -6,7 +6,7 @@ import AgentChat from '../../src/lib/designer/AgentChat.svelte';
 import { newScreen } from '../../src/lib/designer/application.js';
 import { documentCursor, prepareAgentEdit } from '../../src/lib/designer/agent-edits.js';
 import { agentCoverage } from '../../src/lib/designer/agent-reads.js';
-import { boundedHistoryText, AGENT_REQUEST_BYTES } from '../../src/lib/designer/agent-transport.js';
+import { boundedHistoryText } from '../../src/lib/designer/agent-transport.js';
 let mounted: ReturnType<typeof mount> | undefined;
 afterEach(async()=>{if(mounted)await unmount(mounted); mounted=undefined;document.body.innerHTML='';vi.unstubAllGlobals();});
 
@@ -28,18 +28,28 @@ it('renders ordered text, refused attempt, corrected observation and acknowledge
 
 it('visibly compacts old entries and updates stable identities without duplicating them',()=>{
   let events:ConversationEvent[]=[];
-  for(let i=0;i<300;i++)events=appendConversationEvent(events,{id:`event-${i}`,kind:'summary',text:`Step ${i}`});
+  for(let i=0;i<300;i++)events=appendConversationEvent(events,{id:`event-${i}`,kind:'summary',text:`Step ${i}`},240);
   expect(events).toHaveLength(240);
   expect(events[0]).toMatchObject({kind:'compaction',omitted:61});
-  events=appendConversationEvent(events,{id:'event-299',kind:'summary',text:'Confirmed current boundary'});
+  events=appendConversationEvent(events,{id:'event-299',kind:'summary',text:'Confirmed current boundary'},240);
   expect(events).toHaveLength(240);
   expect(events.at(-1)).toMatchObject({text:'Confirmed current boundary'});
   const history=boundedHistoryText('start'.repeat(2000)+'LATEST CONFIRMED BOUNDARY');
-  expect(history.length).toBeLessThanOrEqual(6000);
-  expect(history).toContain('compacted');expect(history).toContain('LATEST CONFIRMED BOUNDARY');
+  expect(history).toBe('start'.repeat(2000)+'LATEST CONFIRMED BOUNDARY');
+  expect(history).toContain('LATEST CONFIRMED BOUNDARY');
 });
 
-it('shows aggregate UTF-8 admission failure with the unsent draft retained',async()=>{
+it('public transcript defaults retain every event and full exchange without imposing a host window',()=>{
+  let events:ConversationEvent[]=[];
+  const original='界'.repeat(20_000)+'FULL-EXCHANGE-TAIL';
+  events=appendConversationEvent(events,{id:'first-exchange',kind:'activity',activity:{id:'first-exchange',title:'Read',state:'completed',result:{text:original}}});
+  for(let index=0;index<500;index++)events=appendConversationEvent(events,{id:`summary-${index}`,kind:'summary',text:`Original ${index}`});
+  expect(events).toHaveLength(501);expect(events.some(event=>event.kind==='compaction')).toBe(false);
+  expect(events[0]).toMatchObject({activity:{result:{text:original}}});
+  events=appendConversationEvent(events,{id:'summary-499',kind:'summary',text:'Updated without duplication'});expect(events).toHaveLength(501);
+});
+
+it('shows an external request rejection with the unsent draft retained',async()=>{
   vi.stubGlobal('fetch',vi.fn(async(_url,init?:RequestInit)=>init?.method==='POST'?new Response(JSON.stringify({code:'STUDIO_AGENT_REQUEST_LIMIT'}),{status:413}):new Response(JSON.stringify({ready:true,csrf:'n',model:'fixture/model'}))));
   const source=newScreen('Admission','admission');
   mounted=mount(AgentChat,{target:document.body,props:{screenLabel:'Admission',selectionLabel:'Screen',blocked:false,getContext:()=>({document:source,cursor:documentCursor(source,'r1#0',crypto.randomUUID())}),applyProposal:()=>{throw Error('No proposal');}}});
@@ -50,7 +60,6 @@ it('shows aggregate UTF-8 admission failure with the unsent draft retained',asyn
   await vi.waitFor(()=>expect(document.body.textContent).toContain('UTF-8 size limit'));
   expect(input.value).toBe('Keep this draft');
   expect(document.body.textContent).not.toContain('Connection interrupted');
-  expect(new TextEncoder().encode('界'.repeat(200_000)).byteLength).toBeLessThan(AGENT_REQUEST_BYTES);
 });
 
 it('releases Stop while capture is pending and fences its late result from upload',async()=>{

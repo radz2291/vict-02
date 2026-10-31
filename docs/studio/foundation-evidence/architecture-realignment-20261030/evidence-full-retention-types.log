@@ -1,0 +1,4 @@
+tests/authoring-foundation-continuity.test.ts(37,32): error TS7022: 'page' implicitly has type 'any' because it does not have a type annotation and is referenced directly or indirectly in its own initializer.
+tests/independent-nested-route-guidance.test.ts(101,3): error TS2542: Index signature in type 'Readonly<Record<string, UiNode>>' only permits reading.
+tests/independent-nested-route-guidance.test.ts(111,3): error TS2542: Index signature in type 'Readonly<Record<string, UiLocalStateDecl>>' only permits reading.
+tests/tool-evidence-full-retention.test.ts(37,30): error TS7022: 'page' implicitly has type 'any' because it does not have a type annotation and is referenced directly or indirectly in its own initializer.

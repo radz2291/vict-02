@@ -4,20 +4,21 @@ import {afterEach,expect,it,vi} from 'vitest';
 import AgentChat from '../../src/lib/designer/AgentChat.svelte';
 import {newScreen} from '../../src/lib/designer/application.js';
 import {documentCursor} from '../../src/lib/designer/agent-edits.js';
-import {STUDIO_TOOL_EVIDENCE_SCHEMA} from '../../src/lib/designer/tool-evidence.js';
+import {STUDIO_TOOL_EVIDENCE_SCHEMA,TOOL_ARCHIVE_SCHEMA,LEGACY_TOOL_ARCHIVE_SCHEMA,type ToolArchiveReference} from '../../src/lib/designer/tool-evidence.js';
 let app:ReturnType<typeof mount>|undefined;
-afterEach(async()=>{if(app)await unmount(app);app=undefined;document.body.innerHTML='';vi.unstubAllGlobals();});
-async function setup(){
+afterEach(async()=>{if(app)await unmount(app);app=undefined;document.body.innerHTML='';vi.unstubAllGlobals();vi.restoreAllMocks();});
+async function setup(prompt='Review my screen'){
  let controller!:ReadableStreamDefaultController<Uint8Array>;
- const fetcher=vi.fn(async(_url:unknown,init?:RequestInit)=>init?.method==='DELETE'?new Response('{}'):init?.method==='POST'?new Response(new ReadableStream<Uint8Array>({start(value){controller=value;init.signal?.addEventListener('abort',()=>value.error(new DOMException('Stopped','AbortError')),{once:true});}})):new Response(JSON.stringify({ready:true,csrf:'fixture',model:'fixture/model'})));
+ const archives=new Map<string,ToolArchiveReference>();
+ const fetcher=vi.fn(async(url:unknown,init?:RequestInit)=>{if(String(url).startsWith('/api/designer-agent/evidence?')){const query=new URL(String(url),'http://localhost').searchParams,ref=archives.get(query.get('id')??'')!;return new Response(JSON.stringify({...ref,text:`PAGE-${ref.callId}`,offset:Number(query.get('offset')),nextOffset:null}));}return init?.method==='DELETE'?new Response('{}'):init?.method==='POST'?new Response(new ReadableStream<Uint8Array>({start(value){controller=value;init.signal?.addEventListener('abort',()=>value.error(new DOMException('Stopped','AbortError')),{once:true});}})):new Response(JSON.stringify({ready:true,csrf:'fixture',model:'fixture/model'}));});
  vi.stubGlobal('fetch',fetcher);const source=newScreen('Quiet chat','quiet');
  app=mount(AgentChat,{target:document.body,props:{screenLabel:'Quiet chat',selectionLabel:'Screen',blocked:false,getContext:()=>({document:source,cursor:documentCursor(source,'r1#0',crypto.randomUUID())}),applyProposal:()=>{throw Error('No proposal');}}});
  await vi.waitFor(()=>expect(document.querySelector('.agent-status')?.textContent).toContain('Ready'));
  const input=document.querySelector<HTMLTextAreaElement>('textarea')!;
  const write=(text:string)=>{input.value=text;input.dispatchEvent(new Event('input',{bubbles:true}));flushSync();};
- write('Review my screen');document.querySelector('form')!.dispatchEvent(new Event('submit',{bubbles:true,cancelable:true}));
+ write(prompt);document.querySelector('form')!.dispatchEvent(new Event('submit',{bubbles:true,cancelable:true}));
  await vi.waitFor(()=>expect(controller).toBeDefined());
- return {input,write,fetcher,emit:(...events:unknown[])=>controller.enqueue(new TextEncoder().encode(events.map(e=>JSON.stringify(e)).join('\n')+'\n')),end:()=>controller.close()};
+ return {input,write,fetcher,archives,emit:(...events:unknown[])=>controller.enqueue(new TextEncoder().encode(events.map(e=>JSON.stringify(e)).join('\n')+'\n')),end:()=>controller.close()};
 }
 function evidence(sequence:number,callId:string,phase:'input'|'result',text:string,extra:Record<string,unknown>={}){return {type:'tool-evidence',schema:STUDIO_TOOL_EVIDENCE_SCHEMA,runId:'run',sequence,tool:'studio_screen_read',callId,phase,availability:'available',payload:{text,redacted:false,truncated:false},...(phase==='result'?{status:'completed'}:{}),...extra};}
 const started={type:'started',runId:'run',model:'fixture/model'};
@@ -58,4 +59,44 @@ it('labels limited evidence honestly, escapes tool output, and retains the reade
  emit(evidence(2,'a','result','<script>unsafe()</script>'),call('a','observation'),{type:'text',delta:'Review finished.'},{type:'done',status:'completed',applied:0});end();
  await vi.waitFor(()=>expect(document.querySelector('[data-testid="conversation-stop"]')).toBeNull());
  expect(trigger.getAttribute('aria-expanded')).toBe('true');expect(document.body.textContent).toContain('Sensitive values redacted');expect(document.body.textContent).toContain('Content truncated');expect(document.querySelector('[aria-label="Tool result"]')?.textContent).toContain('<script>unsafe()</script>');expect(document.querySelector('[aria-label="Tool result"] script')).toBeNull();
+});
+
+it('keeps >24 turns, full >6k history, >100 progress and >256 archive references beyond the old expiry, without a 64-page cache eviction',async()=>{
+ const prompt='界'.repeat(7000)+'FULL-FIRST-REQUEST';const {emit,end,fetcher,write,input,archives}=await setup(prompt);
+ expect(input.hasAttribute('maxlength')).toBe(false);
+ const references:ToolArchiveReference[]=Array.from({length:270},(_,index)=>({type:'tool-evidence-archive',schema:TOOL_ARCHIVE_SCHEMA,runId:'run',callId:`archive-${index}`,tool:'studio_screen_read',phase:'result',id:crypto.randomUUID(),expiresAt:null,totalCharacters:500_000,redacted:false,truncated:false}));
+ for(const reference of references)archives.set(reference.id,reference);
+ emit(started,...Array.from({length:110},(_,index)=>({type:'progress',message:`RETAINED-PROGRESS-${index}`})),...references,{type:'text',delta:'FIRST-RETAINED-ANSWER'},{type:'done',status:'completed',applied:0});end();
+ await vi.waitFor(()=>expect(document.querySelector('[data-testid="conversation-stop"]')).toBeNull());
+ vi.spyOn(Date,'now').mockReturnValue(Date.now()+2*60*60_000);
+ for(let turn=1;turn<27;turn++){
+   write(`Request ${turn}`);const posts=fetcher.mock.calls.filter(([,init])=>init?.method==='POST').length;
+   document.querySelector('form')!.dispatchEvent(new Event('submit',{bubbles:true,cancelable:true}));
+   await vi.waitFor(()=>expect(fetcher.mock.calls.filter(([,init])=>init?.method==='POST')).toHaveLength(posts+1));
+   emit(started,{type:'text',delta:`Retained answer ${turn}`},{type:'done',status:'completed',applied:0});end();
+   await vi.waitFor(()=>expect(document.querySelector('[data-testid="conversation-stop"]')).toBeNull());
+ }
+ const requests=fetcher.mock.calls.filter(([,init])=>init?.method==='POST').map(([,init])=>JSON.parse(init!.body as string));
+ expect(requests.at(-1).history).toHaveLength(52);expect(requests.at(-1).history[0].text).toBe(prompt);
+ document.querySelector<HTMLButtonElement>('[aria-label="Chat details"]')!.click();flushSync();
+ await vi.waitFor(()=>expect(document.querySelector('select[aria-label="Inspect turn"]')).not.toBeNull());
+ const history=document.querySelector<HTMLSelectElement>('select[aria-label="Inspect turn"]')!;expect(history.options).toHaveLength(28);history.value=history.options[1]!.value;history.dispatchEvent(new Event('change',{bubbles:true}));flushSync();
+ expect(document.querySelectorAll('[data-evidence-archive]')).toHaveLength(270);expect(document.body.textContent).toContain('RETAINED-PROGRESS-0');expect(document.body.textContent).toContain('RETAINED-PROGRESS-109');
+ for(const reference of references.slice(0,66)){
+   document.querySelector<HTMLButtonElement>(`[data-evidence-archive="${reference.id}"] button`)!.click();
+   await vi.waitFor(()=>expect(document.querySelector(`[data-evidence-archive="${reference.id}"]`)?.textContent).toContain(`PAGE-${reference.callId}`));
+ }
+ expect(document.querySelector(`[data-evidence-archive="${references[0]!.id}"]`)?.textContent).toContain('PAGE-archive-0');
+},60000);
+
+it('labels a compact preview as complete only with its exact new full archive, preserving old partial evidence labels',async()=>{
+ const {emit,end}=await setup();
+ const identity={type:'tool-evidence-archive',runId:'run',tool:'studio_screen_read',phase:'input',totalCharacters:50_000,redacted:false,truncated:false};
+ const current={...identity,schema:TOOL_ARCHIVE_SCHEMA,id:crypto.randomUUID(),callId:'full',expiresAt:null};
+ const legacy={...identity,schema:LEGACY_TOOL_ARCHIVE_SCHEMA,id:crypto.randomUUID(),callId:'legacy',expiresAt:Date.now()+60_000};
+ emit(started,current,legacy,call('full'),evidence(1,'full','input','new preview',{payload:{text:'new preview',redacted:false,truncated:true}}),call('legacy'),evidence(2,'legacy','input','legacy partial',{payload:{text:'legacy partial',redacted:false,truncated:true}}),{type:'done',status:'completed',applied:0});end();
+ await vi.waitFor(()=>expect(document.querySelector('[data-testid="conversation-stop"]')).toBeNull());
+ const full=document.querySelector<HTMLElement>('[data-event-id="attempt-studio_screen_read:full"]')!,old=document.querySelector<HTMLElement>('[data-event-id="attempt-studio_screen_read:legacy"]')!;
+ full.querySelector<HTMLButtonElement>('button')!.click();old.querySelector<HTMLButtonElement>('button')!.click();flushSync();
+ expect(full.textContent).toContain('Preview only; complete sanitized exchange retained');expect(full.textContent).not.toContain('Content truncated');expect(old.textContent).toContain('Content truncated');expect(old.textContent).not.toContain('complete sanitized exchange retained');
 });

@@ -1,0 +1,2 @@
+tests/independent-nested-route-guidance.test.ts(101,3): error TS2542: Index signature in type 'Readonly<Record<string, UiNode>>' only permits reading.
+tests/independent-nested-route-guidance.test.ts(111,3): error TS2542: Index signature in type 'Readonly<Record<string, UiLocalStateDecl>>' only permits reading.

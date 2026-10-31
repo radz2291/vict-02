@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { createDeterministicOfflineModel, OFFLINE_MODEL_IDENTITY } from '@victframework/mastra';
 import { newScreen } from '../src/lib/designer/application.js';
 import { agentContext, documentCursor } from '../src/lib/designer/agent-edits.js';
-import { STUDIO_TOOL_EVIDENCE_SCHEMA, TOOL_EVIDENCE_PAYLOAD_BYTES, TOOL_EVIDENCE_RUN_BYTES, isStudioToolEvidence, createToolEvidenceConsumer, type StudioToolEvidence } from '../src/lib/designer/tool-evidence.js';
+import { STUDIO_TOOL_EVIDENCE_SCHEMA, TOOL_EVIDENCE_PAYLOAD_BYTES, isStudioToolEvidence, createToolEvidenceConsumer, type StudioToolEvidence } from '../src/lib/designer/tool-evidence.js';
 import { safeToolPayload, createToolEvidenceProducer } from '../src/lib/server/tool-evidence.js';
 import { validateAgentStart, openAgentRun, cancelAgentRun, type StudioAgentEvent } from '../src/lib/server/designer-agent.js';
 
@@ -27,7 +27,7 @@ describe('public tool evidence projection', () => {
     expect(payload.text).not.toContain('abcdefgh');
     expect(payload.text).not.toContain('"private"');
     expect(new TextEncoder().encode(payload.text).byteLength).toBeLessThanOrEqual(TOOL_EVIDENCE_PAYLOAD_BYTES);
-    expect(safeToolPayload(Array.from({ length: 101 }, () => 1)).truncated).toBe(true);
+    expect(safeToolPayload(Array.from({ length: 101 }, () => 1)).truncated).toBe(false);
   });
 
   it('has a closed opt-in schema and preserves old request compatibility', () => {
@@ -44,12 +44,12 @@ describe('public tool evidence projection', () => {
     expect(isStudioToolEvidence({ ...events[0], payload: { ...events[0]!.payload, raw: 'hidden' } })).toBe(false);
   });
 
-  it('caps per-run payload traffic, marks missing data and prevents duplicate/late producer or consumer updates', () => {
+  it('retains every payload, marks missing data and prevents duplicate/late producer or consumer updates', async () => {
     const events: StudioToolEvidence[] = [];
     const producer = createToolEvidenceProducer('run-1', true, event => events.push(event), []);
-    for (let index = 0; index < 40; index++) producer.send('studio_screen_read', `call-${index}`, 'input', { text: 'x'.repeat(10_000) });
-    expect(events.some(event => event.unavailableReason === 'budget')).toBe(true);
-    expect(events.reduce((total, event) => total + new TextEncoder().encode(event.payload?.text ?? '').byteLength, 0)).toBeLessThanOrEqual(TOOL_EVIDENCE_RUN_BYTES);
+    for (let index = 0; index < 40; index++) await producer.send('studio_screen_read', `call-${index}`, 'input', { text: 'x'.repeat(10_000) });
+    expect(events.some(event => event.unavailableReason === 'budget')).toBe(false);expect(events).toHaveLength(40);
+    expect(events.reduce((total, event) => total + new TextEncoder().encode(event.payload?.text ?? '').byteLength, 0)).toBeGreaterThan(160_000);
     producer.send('studio_screen_read', 'missing', 'input', undefined, undefined, 'before-invocation');
     producer.send('studio_screen_read', 'missing', 'result', undefined, 'failed', 'not-returned');
     expect(events.at(-2)).toMatchObject({ availability: 'unavailable', unavailableReason: 'before-invocation' });

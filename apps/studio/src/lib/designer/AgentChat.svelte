@@ -24,10 +24,10 @@
   import { Button } from '@victframework/ui-svelte/catalog/button';
   import type { UiConversationMessage, UiDocument } from '@victframework/ui';
   import type { AgentCursor, AgentProposal, EditFailure, EditReceipt } from './agent-edits.js';
-  import { AGENT_REQUEST_BYTES, AGENT_STREAM_BYTES, AGENT_FRAME_CHARACTERS, boundedHistoryText, agentFailureMessage, withTurnAbort, type AgentWorkspaceFacts, type AgentCaptureTarget } from './agent-transport.js';
+  import { agentFailureMessage, withTurnAbort, type AgentWorkspaceFacts, type AgentCaptureTarget } from './agent-transport.js';
   import { uploadVisualCapture, type CaptureResult } from './visual-observation.js';
   import { createToolEvidenceConsumer, STUDIO_TOOL_EVIDENCE_SCHEMA, TOOL_ARCHIVE_SCHEMA, isToolArchiveReference, type ToolArchiveReference } from './tool-evidence.js';
-  import { retainTurn, sameTurnSource, TURN_RECORD_TTL_MS, type RetainedTurn } from './turn-records.js';
+  import { retainTurn, sameTurnSource, type RetainedTurn } from './turn-records.js';
   import { isProviderLimitEvidence,providerLimitMessage,type ProviderLimitEvidence } from './provider-limit.js';
   import { createTurnMetrics, phaseFailureStatus, type ToolFailure, type TurnMetrics, type ObservedRegion } from './agent-progress.js';
   interface Props {
@@ -62,7 +62,7 @@
   let recovering=$state(false);
   let recoveryImage=$state<string>();
   let recoveryNote=$state('');
-  const selectedRecord=$derived(retainedTurns.find(item=>item.id===selectedTurn&&item.expiresAt>Date.now()));
+  const selectedRecord=$derived(retainedTurns.find(item=>item.id===selectedTurn));
   const detailMetrics=$derived(selectedRecord?.metrics??(selectedTurn==='latest'?lastMetrics:undefined));
   const detailRegions=$derived(selectedRecord?.regions??(selectedTurn==='latest'?lastRegions:[]));
   const detailProgress=$derived(selectedRecord?.progress??(selectedTurn==='latest'?progress:[]));
@@ -76,17 +76,17 @@
   let detailsBoundary=$state<HTMLElement>();
   let detailsAnchor=$state<HTMLFormElement>();
   let failed=$state(false);
-  function note(message:string){progress=[...progress.slice(-99),message];status=message;}
+  function note(message:string){progress=[...progress,message];status=message;}
   function confirmedTurnSource(turn:LocalTurn){const current=getContext()?.cursor;return current&&current.documentId===turn.source.documentId&&current.epoch===turn.source.epoch&&current.revision===turn.confirmedRevision?{...current}:undefined;}
   async function loadArchive(reference:ToolArchiveReference,offset=0){
-    if(reference.expiresAt<=Date.now()){archivePages={...archivePages,[reference.id]:{text:'',offset:0,nextOffset:null,message:'Evidence expired. No tool was rerun.'}};return;}
+    if(reference.expiresAt!==null&&reference.expiresAt<=Date.now()){archivePages={...archivePages,[reference.id]:{text:'',offset:0,nextOffset:null,message:'Evidence expired. No tool was rerun.'}};return;}
     try{
       const response=await fetch(`/api/designer-agent/evidence?id=${encodeURIComponent(reference.id)}&offset=${offset}&limit=6000`,{cache:'no-store'});
       const page=await response.json();
-      if(!response.ok||page.runId!==reference.runId||page.callId!==reference.callId||page.phase!==reference.phase||typeof page.text!=='string'||page.text.length>6000)throw new Error('Evidence is unavailable, expired or outside this session. No tool was rerun.');
-      const retained=Object.entries(archivePages).slice(-63);
-      archivePages={...Object.fromEntries(retained),[reference.id]:{text:page.text,offset:page.offset,nextOffset:page.nextOffset}};
-    }catch{archivePages={...archivePages,[reference.id]:{text:'',offset:0,nextOffset:null,message:'Evidence is unavailable, expired or outside this session. No tool was rerun.'}};}
+      if(!response.ok)throw new Error(page.message??'Evidence is unavailable or outside this session. No tool was rerun.');
+      if(page.id!==reference.id||page.schema!==reference.schema||page.runId!==reference.runId||page.tool!==reference.tool||page.callId!==reference.callId||page.phase!==reference.phase||page.offset!==offset||typeof page.text!=='string'||page.text.length>6000||page.nextOffset!==null&&(!Number.isSafeInteger(page.nextOffset)||page.nextOffset<=offset||page.nextOffset>reference.totalCharacters))throw new Error('Evidence identity or page position did not match this exchange. No tool was rerun.');
+      archivePages={...archivePages,[reference.id]:{text:page.text,offset:page.offset,nextOffset:page.nextOffset}};
+    }catch(error){archivePages={...archivePages,[reference.id]:{text:'',offset:0,nextOffset:null,message:error instanceof Error?error.message:'Evidence could not be read. No tool was rerun.'}};}
   }
   async function retryCapture(){
     if(!recovery||busy||recovering||blocked)return;
@@ -122,8 +122,6 @@
     detailsBoundary=panel?.closest<HTMLElement>('.studio-workspace') ?? panel;
     detailsAnchor=panel?.querySelector<HTMLFormElement>('.vict-conversation-input') ?? undefined;
     void configure();
-    const expiry=setInterval(()=>{retainedTurns=retainedTurns.filter(item=>item.expiresAt>Date.now());if(selectedTurn!=='latest'&&!retainedTurns.some(item=>item.id===selectedTurn))selectedTurn='latest';if(!busy&&!retainedTurns.length){lastMetrics=undefined;lastRegions=[];lastProviderLimit=undefined;progress=[];diagnostics={};receipts={};evidence='';archiveReferences=[];archivePages={};}},30_000);
-    return ()=>clearInterval(expiry);
   });
   function toolLabel(tool:string){return tool==='studio_screen_read'?'Read screen':tool==='studio_screen_edit'?'Edit screen':tool==='studio_screen_observe'?'Observe preview':tool;}
   const headers=()=>({'content-type':'application/json','x-vict-csrf':csrf});
@@ -155,22 +153,20 @@
   }
   async function send(text:string,accepted?:SendAccepted,continuation?:{task:string;cursor:AgentCursor;target?:AgentCaptureTarget}){
     if(busy)return {ok:false,message:'Wait for this turn or stop it first.'};
-    if(text.length>6000)return {ok:false,message:'Keep requests within 6,000 characters. Your draft is still here.'};
     if(blocked)return {ok:false,message:'Apply or cancel your property, data, rename or source draft first.'};
     if(!ready){await configure();if(!ready)return {ok:false,message:'The agent needs a server-side provider configuration. Your request is still here.'};}
     const context=getContext();if(!context)return {ok:false,message:'Open a valid screen before sending.'};
     if(continuation&&!sameTurnSource(context.cursor,continuation.cursor))return {ok:false,message:'The source changed. Start from the current screen; earlier edits were not repeated.'};
     if(continuation&&context.workspace?.observable===false)return {ok:false,message:'Reveal the Design or Interact preview before retrying observation. No model request was made.'};
-    const history=messages.slice(-12).map(({participant,text})=>({participant:participant==='user'?'user':'assistant',text:boundedHistoryText(text)}));
+    const history=messages.map(({participant,text})=>({participant:participant==='user'?'user':'assistant',text}));
     const requestBody=JSON.stringify({...context,prompt:text,history,toolEvidenceSchema:STUDIO_TOOL_EVIDENCE_SCHEMA,toolEvidenceArchiveSchema:TOOL_ARCHIVE_SCHEMA,...(continuation?{mode:'observe-only',observationTask:continuation.task,observationTarget:continuation.target}:{})});
-    if(new TextEncoder().encode(requestBody).byteLength>AGENT_REQUEST_BYTES)return {ok:false,message:agentFailureMessage('STUDIO_AGENT_REQUEST_LIMIT')};
     messages=[...messages,{author:'You',participant:'user',text},{author:'Assistant',participant:'assistant',text:''}];
     const responseIndex=messages.length-1;
     const messageId=`message-${responseIndex}`;let serial=0;
     const responseBoundary=createResponseBoundary();
     const presentTurn=(state:NonNullable<ConversationMessage['hostTurn']>['state'],statusText:string,finalTextEventIds:readonly string[]=[],evidenceSummary?:string)=>{hostTurns={...hostTurns,[messageId]:{state,statusText,finalTextEventIds,...(evidenceSummary?{evidenceSummary}:{})}};};
     presentTurn('running','Working. Public notes and tool receipts are available in details.');
-    const append=(event:ConversationEvent)=>{timelines={...timelines,[messageId]:appendConversationEvent(timelines[messageId]??[],event,Number.POSITIVE_INFINITY)};};
+    const append=(event:ConversationEvent)=>{timelines={...timelines,[messageId]:appendConversationEvent(timelines[messageId]??[],event)};};
     const payloads=new Map<string,Partial<Pick<ConversationActivity,'input'|'result'>>>();
     function stage(key:string,id:string,title:string,state:ConversationActivity['state'],detail?:string){
       const eventId=`attempt-${key}`;
@@ -198,26 +194,26 @@
       const response=await fetch('/api/designer-agent',{method:'POST',headers:headers(),signal:turn.controller.signal,body:requestBody});
       if(!response.ok){const rejection=await response.json().catch(()=>({}));throw new Error(rejection.code??'connection');}
       if(!response.body)throw new Error('connection');
-      const reader=response.body.getReader();const decoder=new TextDecoder();let buffer='';let receivedBytes=0;
+      const reader=response.body.getReader();const decoder=new TextDecoder();let buffer='';
       try{
         while(true){
           const chunk=await reader.read();
           if(turn.controller.signal.aborted)throw new Error('stopped');
           if(chunk.done)break;
-          receivedBytes+=chunk.value.byteLength;if(receivedBytes>AGENT_STREAM_BYTES)throw new Error('STUDIO_AGENT_STREAM_LIMIT');
-          buffer+=decoder.decode(chunk.value,{stream:true});if(buffer.length>AGENT_FRAME_CHARACTERS)throw new Error('STUDIO_AGENT_STREAM_LIMIT');
+          buffer+=decoder.decode(chunk.value,{stream:true});
           let newline:number;
           while((newline=buffer.indexOf('\n'))>=0){
             if(turn.controller.signal.aborted)throw new Error('stopped');
             const line=buffer.slice(0,newline);buffer=buffer.slice(newline+1);if(!line.trim()||done)continue;
             const event=JSON.parse(line);
             if(event.type==='started'&&!sent){sent=true;turn.runId=event.runId;turn.runIdentity=event.runId;model=event.model;turn.toolEvidence=createToolEvidenceConsumer(event.runId);accepted?.();note('Reading screen…');}
-            if(event.type==='tool-evidence-archive'&&isToolArchiveReference(event)&&event.runId===turn.runIdentity&&!archiveReferences.some(item=>item.id===event.id))archiveReferences=[...archiveReferences,event].slice(-256);
+            if(event.type==='tool-evidence-archive'&&isToolArchiveReference(event)&&event.runId===turn.runIdentity&&!archiveReferences.some(item=>item.id===event.id))archiveReferences=[...archiveReferences,event];
             if(event.type==='tool-evidence'){
               const frame=turn.toolEvidence?.accept(event);
               if(frame){
                 const key=`${frame.tool}:${frame.callId}`;
-                const payload:ConversationToolPayload=frame.availability==='available' && frame.payload?frame.payload:{unavailable:true,text:frame.unavailableReason==='before-invocation'?'Unavailable: the call failed before validated invocation.':frame.unavailableReason==='budget'?'Unavailable: the tool evidence budget was reached.':'Unavailable: no settled result was returned.'};
+                const completeOriginalAvailable=archiveReferences.some(reference=>reference.schema===TOOL_ARCHIVE_SCHEMA&&!reference.truncated&&reference.runId===frame.runId&&reference.tool===frame.tool&&reference.callId===frame.callId&&reference.phase===frame.phase);
+                const payload:ConversationToolPayload=frame.availability==='available' && frame.payload?{...frame.payload,...(completeOriginalAvailable?{completeOriginalAvailable:true}:{})}:{unavailable:true,text:frame.unavailableReason==='before-invocation'?'Unavailable: the call failed before validated invocation.':frame.unavailableReason==='storage-error'?'Unavailable: the sanitized original could not be retained because storage failed.':frame.unavailableReason==='budget'?'Unavailable under the earlier evidence policy.':'Unavailable: no settled result was returned.'};
                 const values={...payloads.get(key),[frame.phase]:payload};payloads.set(key,values);
                 const previous=timelines[messageId]?.find(item=>item.id===`attempt-${key}`);
                 if(previous?.kind==='activity')append({...previous,activity:{...previous.activity,...values,...(frame.phase==='result'?{state:frame.status==='completed'?'completed' as const:'failed' as const}:{})}});
@@ -315,7 +311,7 @@ ${event.details}`};
         presentTurn(turn.cancelled?'cancelled':'interrupted',status);
       }
       return sent?true:{ok:false,message:turn.cancelled?'Stopped before the request was admitted. Your draft is still here.':agentFailureMessage(error instanceof Error?error.message:undefined)??status};
-    }finally{if(!sent){messages=messages.slice(0,responseIndex-1);const retained={...timelines};delete retained[messageId];timelines=retained;}turn.toolEvidence?.close();if(!done){cancelTransport(turn);lastMetrics={...turn.metrics.snapshot(),partial:true};}if(sent){const endedAt=Date.now();retainedTurns=retainTurn(retainedTurns,{id:turn.identity,runId:turn.runIdentity,engineTurnId:turn.engineTurnId,task:turn.task,...(continuation?{mode:'observe-only' as const}:{}),startedAt:turn.startedAt,endedAt,expiresAt:endedAt+TURN_RECORD_TTL_MS,status:turn.cancelled?'cancelled':turn.terminal??'interrupted',code:turn.code,source:turn.source,confirmedRevision:turn.confirmedRevision,applied:turn.applied,metrics:lastMetrics,regions:lastRegions,progress,diagnostics,receipts,evidence,archives:archiveReferences,finalSource:confirmedTurnSource(turn),providerLimit:lastProviderLimit});}if(activeTurn===turn){activeTurn=undefined;busy=false;}}
+    }finally{if(!sent){messages=messages.slice(0,responseIndex-1);const retained={...timelines};delete retained[messageId];timelines=retained;}turn.toolEvidence?.close();if(!done){cancelTransport(turn);lastMetrics={...turn.metrics.snapshot(),partial:true};}if(sent){const endedAt=Date.now();retainedTurns=retainTurn(retainedTurns,{id:turn.identity,runId:turn.runIdentity,engineTurnId:turn.engineTurnId,task:turn.task,...(continuation?{mode:'observe-only' as const}:{}),startedAt:turn.startedAt,endedAt,expiresAt:null,status:turn.cancelled?'cancelled':turn.terminal??'interrupted',code:turn.code,source:turn.source,confirmedRevision:turn.confirmedRevision,applied:turn.applied,metrics:lastMetrics,regions:lastRegions,progress,diagnostics,receipts,evidence,archives:archiveReferences,finalSource:confirmedTurnSource(turn),providerLimit:lastProviderLimit});}if(activeTurn===turn){activeTurn=undefined;busy=false;}}
   }
 </script>
 
@@ -337,8 +333,8 @@ ${event.details}`};
           <p class="details-model">{model || 'VICT / Mastra'}</p>
           <!-- Preserve exact history options: the standalone Select adds an empty choice.
                This native field uses its canonical VICT input/select presentation recipe. -->
-          {#if retainedTurns.length}<label class="turn-history-label">Turn details <select class="vict-input vict-select" aria-label="Inspect turn" value={selectedTurn} onchange={(event)=>selectedTurn=event.currentTarget.value}><option value="latest">Latest activity</option>{#each retainedTurns as record}<option value={record.id}>{new Date(record.startedAt).toLocaleTimeString()} · {record.status} · {record.task.slice(0,60)}</option>{/each}</select></label><p>Up to 24 turns retained for 30 minutes in this tab. Reloading clears local history; server evidence also expires or disappears on restart/capacity eviction.</p>{/if}
-          {#if selectedRecord}<h4>Recorded turn</h4><p>{selectedRecord.status} · {selectedRecord.applied} confirmed edits</p><p class="details-record">Run {selectedRecord.runId}{selectedRecord.engineTurnId?` · VICT turn ${selectedRecord.engineTurnId}`:''}<br />Source {selectedRecord.source.revision} → {selectedRecord.confirmedRevision??'terminal revision unavailable'}</p>{#if selectedRecord.expiresAt<=Date.now()}<p>Local record expired. Earlier transcript messages remain; this evidence is no longer available.</p>{/if}{/if}
+          {#if retainedTurns.length}<label class="turn-history-label">Turn details <select class="vict-input vict-select" aria-label="Inspect turn" value={selectedTurn} onchange={(event)=>selectedTurn=event.currentTarget.value}><option value="latest">Latest activity</option>{#each retainedTurns as record}<option value={record.id}>{new Date(record.startedAt).toLocaleTimeString()} · {record.status} · {record.task.slice(0,60)}</option>{/each}</select></label><p>All turns remain available in this tab until reload. Complete sanitized exchanges are retained for the owning server process/session, without a count or time quota. Restart or actual storage failure can remove server access.</p>{/if}
+          {#if selectedRecord}<h4>Recorded turn</h4><p>{selectedRecord.status} · {selectedRecord.applied} confirmed edits</p><p class="details-record">Run {selectedRecord.runId}{selectedRecord.engineTurnId?` · VICT turn ${selectedRecord.engineTurnId}`:''}<br />Source {selectedRecord.source.revision} → {selectedRecord.confirmedRevision??'terminal revision unavailable'}</p>{/if}
           {#if selectedRecord}<details><summary>Source boundaries</summary><pre class="details-record">{JSON.stringify({start:selectedRecord.source,confirmedRevision:selectedRecord.confirmedRevision,final:selectedRecord.finalSource??'Exact terminal cursor unavailable'},null,2)}</pre></details>{/if}
           {#if selectionLabel && selectionLabel!=='None'}<p>Selected: {selectionLabel}</p>{/if}
           <p>{selectedRecord?`${selectedRecord.status}${selectedRecord.code?` · ${selectedRecord.code}`:''}`:status}</p>
@@ -349,7 +345,7 @@ ${event.details}`};
           {#if detailProgress.length}<h4>Progress summaries</h4><p>Connection, validation and completion metadata. The conversation contains actual assistant messages and tool calls.</p><ol>{#each detailProgress as message}<li>{message}</li>{/each}</ol>{/if}
           {#if Object.keys(detailDiagnostics).length}<h4>Input schema diagnostics</h4>{#each Object.entries(detailDiagnostics) as [id,detail]}<pre class="details-record" data-diagnostic-id={id}>{detail}</pre>{/each}{/if}
           {#if Object.keys(detailReceipts).length}<h4>Tool receipts</h4>{#each Object.entries(detailReceipts) as [id,call]}<div data-tool-receipt={id}><p>{call.title}</p><ol>{#each call.stages as stage}<li>{stage.title} · {stage.state}{#if stage.detail}<pre class="details-record">{stage.detail}</pre>{/if}</li>{/each}</ol></div>{/each}{/if}
-          {#if detailArchives.length}<h4>Sanitized exchanges</h4><p>Compact previews remain in the conversation. Open a retained original page here; this never invokes a tool again.</p>{#each detailArchives as reference}<div data-evidence-archive={reference.id}><p>{toolLabel(reference.tool)} · {reference.phase}{reference.redacted?' · redacted':''}{reference.truncated?' · bounded original is partial':''}</p><Button.Root type="button" class="vict-btn vict-btn--secondary details-reconnect" onclick={()=>void loadArchive(reference)}>Open first page</Button.Root>{#if archivePages[reference.id]}{@const page=archivePages[reference.id]!}{#if page.message}<p>{page.message}</p>{:else}<p>Characters {page.offset}–{page.offset+page.text.length} of {reference.totalCharacters}</p><pre class="details-record">{page.text}</pre>{#if page.nextOffset!==null}<Button.Root type="button" class="vict-btn vict-btn--secondary details-reconnect" onclick={()=>void loadArchive(reference,page.nextOffset!)}>Next page</Button.Root>{/if}{/if}{/if}</div>{/each}{/if}
+          {#if detailArchives.length}<h4>Sanitized exchanges</h4><p>Compact previews remain in the conversation. Open a retained original page here; this never invokes a tool again.</p>{#each detailArchives as reference}<div data-evidence-archive={reference.id}><p>{toolLabel(reference.tool)} · {reference.phase}{reference.redacted?' · redacted':''}{reference.truncated?(reference.schema===TOOL_ARCHIVE_SCHEMA?' · contains unavailable non-data values':' · legacy original is partial'):''}</p><Button.Root type="button" class="vict-btn vict-btn--secondary details-reconnect" onclick={()=>void loadArchive(reference)}>Open first page</Button.Root>{#if archivePages[reference.id]}{@const page=archivePages[reference.id]!}{#if page.message}<p>{page.message}</p>{:else}<p>Characters {page.offset}–{page.offset+page.text.length} of {reference.totalCharacters}</p><pre class="details-record">{page.text}</pre>{#if page.nextOffset!==null}<Button.Root type="button" class="vict-btn vict-btn--secondary details-reconnect" onclick={()=>void loadArchive(reference,page.nextOffset!)}>Next page</Button.Root>{/if}{/if}{/if}</div>{/each}{/if}
           {#if detailEvidence}<h4>Connection record</h4><p class="details-record">{detailEvidence}</p>{/if}
           {#if recovery}<h4>Preview recovery</h4><p>Task: {recovery.task}</p><p>{recovery.reason}</p><Button.Root type="button" class="vict-btn vict-btn--secondary details-reconnect capture-only-retry" disabled={busy||recovering||blocked} onclick={()=>void retryCapture()}>Capture for my inspection</Button.Root><Button.Root type="button" class="vict-btn vict-btn--secondary details-reconnect agent-observation-retry" disabled={busy||recovering||blocked} onclick={()=>void retryObservation()}>Retry observation with agent</Button.Root>{#if recoveryNote}<p role="status">{recoveryNote}</p>{/if}{#if recoveryImage}<img class="recovery-preview" src={recoveryImage} alt="Recovered preview capture for owner inspection; no interaction verification" />{/if}{/if}
         </Popover.Content>

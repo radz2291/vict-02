@@ -18,17 +18,38 @@ describe('extended chat authoring contracts',()=>{
     expect(pins).toEqual(extendedChatCompatibility);
     expect(extendedChatDescriptors.map(item=>`${item.id}@${item.revision}`)).toEqual(['vict.ai.message@3','vict.ai.prompt-input@3','vict.ai.transcript@1']);
   });
-  it('accepts complete supplied public transcript evidence and rejects unknown/private fields, duplicate IDs and oversized data',()=>{
+  it('accepts complete supplied public transcript evidence and rejects unknown/private fields, duplicate IDs and invalid data',()=>{
     const activity={id:'tool1',title:'Read source',state:'completed',input:{text:'file.ts',redacted:true},result:{text:'Observed contents'},stages:[{id:'receipt1',title:'Completed read',state:'completed'}]};
     const messages=[{id:'assistant',role:'assistant',text:'Done',activity:[activity],events:[{id:'event1',kind:'activity',activity},{id:'summary1',kind:'summary',text:'Public provider summary'},{id:'compact',kind:'compaction',omitted:2,text:'Earlier public entries omitted'}]}];
     expect(parseTranscriptData(JSON.stringify({version:1,messages}))).toEqual(messages);
     expect(()=>parseTranscriptData(JSON.stringify({version:1,messages:[{id:'a',role:'assistant',text:'',privateReasoning:'secret'}]}))).toThrow('Unknown');
     expect(()=>parseTranscriptData(JSON.stringify({version:1,messages:[{id:'a',role:'user',text:''},{id:'a',role:'assistant',text:''}]}))).toThrow('unique');
-    expect(()=>parseTranscriptData('x'.repeat(262145))).toThrow('bounded');
+    expect(()=>parseTranscriptData('x'.repeat(262145))).toThrow();
     expect(()=>parseTranscriptData('{"version":2,"messages":[]}')).toThrow('version');
     expect(()=>parseTranscriptData('{"version":1,"messages":[{"id":"a","role":["user"],"text":""}]}')).toThrow('role');
     expect(()=>parseTranscriptData('{"version":1,"messages":[{"id":"a","role":"assistant","text":"","activity":[{"id":"tool","title":"Tool","state":["running"]}]}]}')).toThrow('state');
     expect(()=>parseAttachmentData('{"version":1,"attachments":[{"id":"file","name":"Document","url":"file:///private"}]}')).toThrow('Unknown');
+  });
+  it('retains authored transcript and attachment data beyond former count/text/JSON quotas without changing content',()=>{
+    const activities=Array.from({length:90},(_,index)=>({id:`tool-${index}`,title:'Public receipt',state:'completed',result:{text:'Complete evidence '+'界'.repeat(25_000),truncated:true,completeOriginalAvailable:true},stages:Array.from({length:90},(_,stage)=>({id:`stage-${stage}`,title:'Public stage',state:'completed'}))}));
+    const events=Array.from({length:300},(_,index)=>({id:`event-${index}`,kind:'summary',text:`Public summary ${index}`}));
+    const messages=[{id:'first',role:'assistant',text:'Full first message',activity:activities,events},...Array.from({length:129},(_,index)=>({id:`message-${index}`,role:index%2?'user':'assistant',text:'Retained '+'界'.repeat(25_000)}))];
+    const data=JSON.stringify({version:1,messages});expect(data.length).toBeGreaterThan(262144);expect(parseTranscriptData(data)).toEqual(messages);
+    const attachments=Array.from({length:50},(_,index)=>({id:`attachment-${index}-`+'id'.repeat(100),name:'名'.repeat(1000)+index}));
+    expect(parseAttachmentData(JSON.stringify({version:1,attachments}))).toEqual(attachments);
+  });
+  it('still refuses private fields, invalid roles/states/flags, nontext content and duplicate or empty IDs',()=>{
+    const transcript=(message:unknown)=>JSON.stringify({version:1,messages:[message]});
+    for(const message of [
+      {id:'one',role:'assistant',text:'public',chainOfThought:'private'},
+      {id:'one',role:'tool',text:'invalid role'},
+      {id:'one',role:'assistant',text:42},
+      {id:' ',role:'assistant',text:'invalid id'},
+      {id:'one',role:'assistant',text:'',activity:[{id:'tool',title:'Tool',state:'approved'}]},
+      {id:'one',role:'assistant',text:'',activity:[{id:'tool',title:'Tool',state:'completed',result:{text:'',completeOriginalAvailable:'yes'}}]},
+      {id:'one',role:'assistant',text:'',events:[{id:'event',kind:'summary',text:'public',privateReasoning:'private'}]},
+    ])expect(()=>parseTranscriptData(transcript(message))).toThrow();
+    expect(()=>parseAttachmentData(JSON.stringify({version:1,attachments:[{id:'same',name:'One'},{id:'same',name:'Two'}]}))).toThrow('unique');
   });
   it('does not expose unwired message actions; enabled actions only emit typed requests',async()=>{
     const host=target(),outputs:unknown[]=[];

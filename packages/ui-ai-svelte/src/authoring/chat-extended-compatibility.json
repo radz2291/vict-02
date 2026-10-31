@@ -8,13 +8,13 @@
   {
     "id": "vict.ai.prompt-input",
     "revision": "3",
-    "descriptorDigest": "48736eccfaaa8e2b5cdec84812311ae4ed55530cb190266a9889ec7b4a3addf5",
+    "descriptorDigest": "ab5a67bbab394c88087842c812ca4279c5712a1750fa39cc749810ebfd000ed2",
     "capabilitiesDigest": "78da09c6a15a97fc6750d080ed78510d3dd741ff9cf9c307a67c6e5dbc9f7035"
   },
   {
     "id": "vict.ai.transcript",
     "revision": "1",
-    "descriptorDigest": "ce980503e72b69273f053a9b6892604345039e779f269ef8660d3e6e87fe75be",
+    "descriptorDigest": "96336618dd07d2fe9195efad04129aef14d17c0180564e5d397300e40fc66488",
     "capabilitiesDigest": "7b9d5cfbc1f0d7635e6290a4b833c660518bc87bbfcc6a4b99b810cd0e07a9a9"
   }
 ]

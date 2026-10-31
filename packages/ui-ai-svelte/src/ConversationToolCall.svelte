@@ -20,7 +20,7 @@
           <section aria-label={`Tool ${section.label.toLowerCase()}`}>
             <h4>{section.label}</h4>
             {#if section.payload}
-              {#if section.payload.redacted || section.payload.truncated}<p class="evidence-note">{[section.payload.redacted?'Sensitive values redacted':undefined,section.payload.truncated?'Content truncated':undefined].filter(Boolean).join(' · ')}</p>{/if}
+              {#if section.payload.redacted || section.payload.truncated}<p class="evidence-note">{[section.payload.redacted?'Sensitive values redacted':undefined,section.payload.truncated?(section.payload.completeOriginalAvailable?'Preview only; complete sanitized exchange retained':'Content truncated'):undefined].filter(Boolean).join(' · ')}</p>{/if}
               {#if section.payload.unavailable}<p class="evidence-note">{section.payload.text}</p>{:else}<pre>{section.payload.text}</pre>{/if}
             {:else}<p class="evidence-note">{section.label==='Result' && (activity.state==='running'||activity.state==='pending')?'Waiting for result.':`${section.label} unavailable for this call.`}</p>{/if}
           </section>
