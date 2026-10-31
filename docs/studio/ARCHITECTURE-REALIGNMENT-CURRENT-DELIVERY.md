@@ -1,5 +1,7 @@
 # Architecture realignment — current delivery boundary
 
+**31October operational continuation:** the owner-directed node-suite stress and artificial-limit repairs now serve local source `4fcaadcd91434448e12f2e8294da70f74103bb07`. Independent source/artifact review supports that guarded local activation; actual complex-suite/native verification is still in progress. See [the current limit-removal record](NODE-SUITE-LIMITS-20261031.md) and [actual suite record](NODE-SUITE-STRESS-20261031.md). The30October qualified verdict below remains historical evidence for its exact scope, rather than a new verdict on this successor. No owner acceptance or Stage9 closure is inferred.
+
 30 October 2026. **Fresh integrated Gate E QUALIFIED PASS — verified and ready
 for owner acceptance at the delivered Authoring Foundation scope.** All31 scoped
 requirements are demonstrated; no required demonstration remains unproved.
@@ -27,7 +29,7 @@ recomputation and qualified readiness. Its evidence tiers distinguish integrator
 native actions, actual Studio-agent runs, independent checks and owner device report.
 The verdict is imported locally; later delivery text does not alter production inputs.
 
-Current source/serving candidate: **8d8be402893a8942b985ad920b32b31807e2ad47**.
+Historical GateE source/serving candidate: **8d8be402893a8942b985ad920b32b31807e2ad47**.
 Independent metadata/guidance qualified PASS:
 **b81e8cda6ff28b90ca17ff8817670aa1f59d668e**,16focused checks. Exact route
 examples clarify target/containing identities and revisions; parser, resolver,

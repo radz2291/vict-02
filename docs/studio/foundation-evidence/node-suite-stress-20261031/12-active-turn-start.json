@@ -1,0 +1,10 @@
+{
+  "observedUtc": "2026-10-31T03:55:19.924Z",
+  "sourceCandidate": "4fcaadcd91434448e12f2e8294da70f74103bb07",
+  "screenId": "screen-a8690ffa-1e90-4b72-909c-66141d372773",
+  "savedRevision": "r1.r2",
+  "sourceExactAfterReload": true,
+  "browserTab": "5",
+  "requestFile": "12-submitted-continuation-request.txt",
+  "timingScope": "Observation after normal submission; public receipts supply authoritative run timing."
+}

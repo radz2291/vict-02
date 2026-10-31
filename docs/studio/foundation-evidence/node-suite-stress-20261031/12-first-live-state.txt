@@ -1,0 +1,123 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Campaign Foundry — complex node suite"
+  - generic: ✓ Saved
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- banner:
+  - strong: Chat
+  - button "Hide Chat":
+- complementary "Chat":
+  - region "Conversation":
+    - region "Messages — Message":
+      - log:
+        - generic: You
+        - generic: Continue the SAME Campaign Foundry — complex node suite, now saved as r1.r2. Preserve the existing fourteen-node, twenty-link topology, node positions and current campaign values. This remains the full complex application request, not a replacement demo. First read the current overview and only the missing exact public contracts. Finish the rich reusable bodies for all ten existing node families using public composable Flow workspace/viewport/ports and ordinary editable app controls. Complete model settings, style reference, seed/sampling, draft generation configuration, finishing, review/approval, merge checklist and export configuration. Shared positive/negative, social/poster and finishing bodies must retain independent occurrence values. Use public registered controls for the per-node Help interaction; its open state is temporary private presentation state, not persisted campaign configuration. Add readable labels and purposeful initial values. Remove starter text such as “Give your screen a little context.” Correct unreadable contrast and cramped/overlapping layout while preserving user-adjusted positions where practical. Include a useful campaign summary and concise guide/checklist. Provide practical canvas navigation using existing public controls where available, so all fourteen nodes can be found and then inspected at a readable zoom. Preserve output fanout. Give single-value input ports meaningful authored capacities so incompatible or excess input connections can be refused for a clear application reason. Keep two independent finishing graph parameters ready. Once the outer app is usable, populate each Finishing occurrence with a real editable three-step/two-link nested workflow, using one shared authored body. Reuse the same inner IDs across those two occurrences deliberately so their independent ownership is exercised. Nested parameters must persist through the controlled parent graph; a drawing or a string of pretend steps is not a nested workflow. This app configures a fictional travel-mug launch. Do not claim image generation, model execution, publishing or backend success. No new provider or account setup. Use only existing authorized capabilities; explicitly label unsupported effects as configuration only. Preflight unfamiliar operations, repair genuine refusals from their exact diagnostics, keep acknowledged work and report what actually remains. Leave Save to me. Native behavior, reload and portable export will be tested separately after your edits.
+        - button "Copy message":
+        - generic: Assistant
+        - status: Working. Public notes and tool receipts are available in details.
+        - button "Public activity and tool details" [expanded] [active]:
+          - text: Public activity and tool details
+        - generic "Conversation timeline":
+          - paragraph: I'll continue the Campaign Foundry build. First, let me read the current document structure and discover the flow data contracts.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+    - button "Scroll to latest message":
+      - generic: Scroll to end
+    - textbox "Message":
+      - /placeholder: Ask for a change…
+    - button "Stop":
+      - generic: Stop
+    - status
+  - status "Reading current source facts…":
+    - generic: Working…
+  - button "Chat details": ···
+- separator "Chat width"
+- main:
+  - button "Toggle Chat drawer" [expanded]:
+  - group "Workspace mode":
+    - button "Design" [pressed]
+    - button "Interact"
+    - button "Structure"
+  - button "Toggle Document and Selection drawer":
+  - iframe:
+    - generic "Screen canvas":
+      - main "Campaign Foundry — complex node suite":
+        - region "Section":
+          - heading "Campaign Foundry" [level=1]:
+            - generic: Campaign Foundry
+          - paragraph:
+            - generic: Eco travel mug launch · visual campaign workflow — configuration only, no model execution or publishing
+          - paragraph:
+            - generic: 14 nodes · 20 typed links · 10 reusable node types
+        - region "Campaign workflow":
+          - application "Campaign workflow canvas":
+            - application:
+              - group "Campaign brief":
+                - paragraph:
+                  - generic: Give your screen a little context.
+                  - generic: Campaign brief
+                - textbox "Campaign summary": Launch eco travel mug — 12h heat retention, recycled steel body
+                - textbox "Audience": Commuters, students, hikers
+                - checkbox "Help for this node"
+                - 'button "output Brief out: brief"'
+              - group "Positive prompt":
+                - paragraph:
+                  - generic: Give your screen a little context.
+                  - generic: Positive prompt
+                - textbox "Prompt text": matte forest-green travel mug, soft daylight, alpine trail backdrop, product hero
+                - checkbox "Help for this node"
+                - 'button "input Brief in: brief"'
+                - 'button "output Prompt out: prompt"'
+              - group "Negative prompt":
+                - paragraph:
+                  - generic: Give your screen a little context.
+                  - generic: Negative prompt
+                - textbox "Prompt text": plastic sheen, cluttered background, warped text, low contrast
+                - checkbox "Help for this node"
+                - 'button "input Brief in: brief"'
+                - 'button "output Prompt out: prompt"'
+              - group "Model settings":
+                - paragraph:
+                  - generic: Give your screen a little context.
+                  - generic: Model settings
+                - combobox "Model":
+                  - option [selected]
+                  - option
+                - spinbutton "Steps"
+              - link "Svelte Flow attribution":
+                - /url: https://svelteflow.dev?utm_source=attribution
+                - text: Svelte Flow
+          - paragraph:
+            - generic: "Pan: drag · Zoom: wheel · Move cards by their teal header · Edit fields in place"
+          - paragraph:
+            - generic: Nodes in graph
+          - paragraph:
+            - generic: Give your screen a little context.
+            - generic: "14"
+          - paragraph:
+            - generic: Typed links
+          - paragraph:
+            - generic: Give your screen a little context.
+            - generic: "20"
+- contentinfo:
+  - status: Loaded the saved screen.
+- generic: Designer — VICT Studio

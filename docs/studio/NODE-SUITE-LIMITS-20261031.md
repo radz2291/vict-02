@@ -1,6 +1,6 @@
 # Node-suite stress: owner-directed artificial-limit removal
 
-31October2026. **Implementation in progress; not a verified or activated candidate.**
+31October2026. **Source/artifact independently passed; locally activated. Actual complex-suite/native verification remains in progress.**
 The preceding foundation readiness remains evidence of its exact earlier scope.
 
 ## Owner authority and architectural decision
@@ -9,7 +9,7 @@ During actual Campaign Foundry authoring the owner saw “Unavailable: the tool 
 
 This authorizes removing arbitrary local task/evidence/content ceilings rather than replacing them with larger numbers. Shared behavior belongs in public VICT packages and their Mastra adapter; Studio selects the public policy, connects its authenticated session/source host, and displays lossless evidence. No alternate runtime, provider, storage authority or private Flow control adapter is introduced.
 
-The local branch remains `codex/node-suite-stress-20261031`, from clean04339fa74c529dfe77c8f5c167a2dbd1aa388f3b. Product8d8 remains serving until a new candidate is built, independently checked and safely activated. The partial actual app is saved r1.r1 and exported under stress evidence before any product change. Original apps/drafts/builds are preserved. Local authority does not permit push, publication, main merge, milestone acceptance or Stage9 closure.
+The local branch remains `codex/node-suite-stress-20261031`, from clean04339fa74c529dfe77c8f5c167a2dbd1aa388f3b. Product8d8 remained serving throughout repair and independent review; the31October guarded switch now serves4fca as recorded below. The partial actual app was saved r1.r1 before code changes and its later canvas positions were separately saved/exported r1.r2 before the switch. Local authority does not permit push, publication, main merge, milestone acceptance or Stage9 closure.
 
 ## Findings and intended disposition
 
@@ -54,6 +54,14 @@ Capture candidate `ba90c46b8c5fcbde606fb47b5d1dfa4c8f912990` is integrated asd83
 A fresh seven-package installed public-consumer proof passed from41c7 (`vict-realignment-consumer-pspM2d.json`). It predates the subsequent class-helper changes and does not include the changed UI-AI capture export. Final production/artifact verification must qualify the exact successor; this earlier proof is not silently relabeled as that result.
 
 The runtime successor independently passed all three retained defect probes,62 runtime/SSE cases and3 pinned-Mastra cases at exact4f2060a1; installed public capture server-bundle qualification also passed. Review commit `ee5b68806fcda058471720067c65d97b57fa1798` and `INDEPENDENT-4F2060.md` retain scope and limitations. Complete selection/diagnostic/class candidate `98567f24037251ce1f6a636147131d88c9cc24bc` is now integrated ase0c042d2, with final protocol read10/edit9/start6/agent profile18/observer profile12 coordinated separately. Its28-test builder proof explicitly aliases local UI source; root must rebuild and verify actual installed artifacts. Production activation and actual Campaign continuation are still pending.
+
+### Guarded activation and actual continuation
+
+Those pending steps subsequently completed at production source `4fcaadcd91434448e12f2e8294da70f74103bb07`: independent source review `2ea4011a9b8fb6a27328849b9f77280db29de3c7` passes41 focused installed-export cases and TypeScript; independent artifact review `c09a495a905f16ec48f31bca89e314ee112ff25d` verifies328 staged inputs,348 compiled dependency files,392 staged files,389 unchanged previous files and the installed public consumer. The exact structured review is read from that commit before activation and bound to the source, seal/input/lock hashes and compiled dependency bytes. See `INDEPENDENT-FINAL-4FCA.md`, `INDEPENDENT-ARTIFACT-4FCA.md`, the production seal and `limits-production-build-association.md`. No overlapping suite counts are summed.
+
+The verified old listener/launcher were replaced through the existing local configuration loader. The complete prior389-file build is preserved at `C:/Users/RZ1/AppData/Local/Temp/vict-pre-limits-8d8-20261031-build`. The new392-file build includes all84 historical preview files byte-for-byte and3 new public-consumer preview files. `limits-activation.json` records source/review identities and pending browser verification; the subsequent supported browser sign-in and reload recovered the SAME Campaign Foundry r1.r2 with all73052 source characters exactly equal to the pre-switch source. The actual prompt field has no maxlength attribute. Offline operator targets remained unavailable; no target service/provider/account changes were made.
+
+The actual agent is now continuing that same app using the retained product brief. Initial real reads have arrived publicly and complete originals are accessible through normal Chat details. A8044-character original was retrieved at offsets0 and6000 through actual EOF without rerunning its tool; a4199-character result was likewise retrieved whole. These are complete single-tool exchanges, not a claim that a deliberately paged source read contains the whole document. A real contract-body continuation refusal is preserved: the agent sent `knownBodyIdentities` where the continuation requires `expectedBodyIdentities`. The response retained the exact identity/projection correction. This is a meaningful stale/partial-knowledge guard, not a removed task quota. Rich-body completion, late-call evidence, native tests and portable actual-app proof remain pending.
 
 Use meaningful tests beyond previous thresholds plus negative ownership/type/security/cancellation checks and legacy identity compatibility. The shared Mastra delivery snapshot has already passed51focused tests across existing hostile-value/proto cases and new large/deep default delivery; this is a builder check, not independent approval. Do not sum overlapping suites.
 
