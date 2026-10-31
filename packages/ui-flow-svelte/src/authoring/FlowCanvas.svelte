@@ -9,6 +9,7 @@
   import FlowVisibleNode from './FlowVisibleNode.svelte';
   import FlowCoordinateFrame from '../FlowCoordinateFrame.svelte';
   import FlowCoordinateSync from '../FlowCoordinateSync.svelte';
+  import FlowNavigation from '../FlowNavigation.svelte';
   import FlowVisibleEdge from './FlowVisibleEdge.svelte';
   let { props, io, presentation }: UiSvelteComponentProps = $props();
   let projection = $state<FlowProjection>({ nodes: [], edges: [], diagnostics: [] });
@@ -23,8 +24,8 @@
   <div class="vict-authored-flow-surface" style:height={`${height}px`}>
     <FlowCoordinateFrame>{#snippet children(frame)}
     <SvelteFlowProvider><SvelteFlow bind:viewport={frame.viewport} minZoom={0.5*frame.scale} maxZoom={2*frame.scale} {...gestureClasses} {nodes} {edges} {nodeTypes} {edgeTypes} nodesDraggable={false} nodesConnectable={false}
-      elementsSelectable={true} deleteKey={null} fitView>
-      <FlowCoordinateSync {frame}/>{#if props.background !== false}<Background />{/if}
+      elementsSelectable={true} deleteKey={null} fitView={false}>
+      <FlowCoordinateSync {frame}/><FlowNavigation initialFit={nodes.length>0} initialNodeIds={nodes.map(node=>node.id)} initialFitOptions={{minZoom:.5,maxZoom:2,padding:.1}}/>{#if props.background !== false}<Background />{/if}
       {#if props.controls !== false}<Controls showLock={false} />{/if}
       {#if props.minimap === true}<MiniMap pannable zoomable />{/if}
     </SvelteFlow></SvelteFlowProvider>

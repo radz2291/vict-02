@@ -2,7 +2,7 @@
   import { untrack, onDestroy, getContext } from 'svelte';
   import {FLOW_COORDINATE_UNITS,type FlowCoordinateUnits} from './flow-coordinate-frame.js';
   import { useSvelteFlow, useNodes, useViewportInitialized, useStore } from '@xyflow/svelte';
-  let { request, ids = [], initialFit = false, initialNodeIds, onInitialFit }: { request?: object; ids?: string[]; initialFit?: boolean; initialNodeIds?: string[]; onInitialFit?: () => void } = $props();
+  let { request, ids = [], initialFit = false, initialNodeIds, onInitialFit, initialFitOptions={minZoom:.15,maxZoom:1.1,padding:.2} }: { request?: object; ids?: string[]; initialFit?: boolean; initialNodeIds?: string[]; onInitialFit?: () => void; initialFitOptions?:{minZoom:number;maxZoom:number;padding:number} } = $props();
   const { fitView } = useSvelteFlow();
   const coordinates=getContext<FlowCoordinateUnits|undefined>(FLOW_COORDINATE_UNITS);
   const nodes = useNodes(), viewport = useViewportInitialized();
@@ -32,7 +32,7 @@
   async function fitInitial(readiness: string,layoutAtRequest:string) {
     try {
       const scale=coordinates?.scale??1;
-      if (await fitView({minZoom:.15*scale,maxZoom:1.1*scale,padding:.2})) {
+      if (await fitView({minZoom:initialFitOptions.minZoom*scale,maxZoom:initialFitOptions.maxZoom*scale,padding:initialFitOptions.padding})) {
         // A queued public fit can complete after its containing frame changes.
         // Only the current initial layout may settle; otherwise retry once ready.
         if (alive&&layoutKey()===layoutAtRequest) settleInitial();

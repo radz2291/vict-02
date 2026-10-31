@@ -1,0 +1,36 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/vict-limits-independent-20261031
+
+4:01:23 pm [vite-plugin-svelte] packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+4:01:23 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+4:01:23 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+4:01:23 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+4:01:23 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+ ❯ packages/ui-flow-svelte/test/readonly-initial-layout.svelte.test.ts (1 test | 1 failed) 208ms
+   × actual authored read-only canvas fits three measured cards after its own engine dimension update 206ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  packages/ui-flow-svelte/test/readonly-initial-layout.svelte.test.ts > actual authored read-only canvas fits three measured cards after its own engine dimension update
+AssertionError: expected 631.9405800000001 to be less than or equal to 237
+ ❯ packages/ui-flow-svelte/test/readonly-initial-layout.svelte.test.ts:41:60
+     39|   const parts=/translate\(([-\d.e]+)px,\s*([-\d.e]+)px\)\s*scale\(([-\…
+     40|   const [,x,y,z]=parts!.map(Number);expect(z).toBeGreaterThan(0);
+     41|   expect(x+40*z).toBeGreaterThanOrEqual(0);expect(x+860*z).toBeLessTha…
+       |                                                            ^
+     42|   expect(y+40*z).toBeGreaterThanOrEqual(0);expect(y+94*z).toBeLessThan…
+     43|  }finally{await unmount(app);target.remove();rectangle.mockRestore();c…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed (1)
+   Start at  16:01:19
+   Duration  17.47s (transform 12.77s, setup 0ms, import 15.89s, tests 208ms, environment 1.01s)
+
