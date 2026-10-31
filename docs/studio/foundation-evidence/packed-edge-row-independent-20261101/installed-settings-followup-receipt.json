@@ -1,0 +1,30 @@
+{
+  "schema": "vict.independent-packed-leaf-followup@1",
+  "status": "PASS",
+  "productCandidate": "fae2e9e053fe34d3c7d4bf618488538e800318ac",
+  "initialReceipt": "vict-independent-edge-row-leLXTs.json",
+  "fixtureCommit": "35903cb403a4c4bf0b89cc78b65d4fe52e62aca3",
+  "settingsFixtureSha256": "b2cfad967cdca990902971ba4c9b77ad54508805387a28225106f96dd541cee8",
+  "domTests": 22,
+  "installedFilesRechecked": 523,
+  "onlyChangedFixture": [
+    "src/settings.test.ts"
+  ],
+  "buildInputsUnchanged": true,
+  "productionEvidence": {
+    "passed": true,
+    "log": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-independent-edge-row-leLXTs\\production-build.log",
+    "files": [
+      {
+        "name": "index-BKxBf60J.css",
+        "sha256": "5cafc436581c4cc0d1c6a600bf675de7629533adae1a4b1258fe08bc2bf027b7"
+      },
+      {
+        "name": "index-LKe36d5r.js",
+        "sha256": "ab41dbd8d27ff4986dbe202906d005aaceafb77c1023fe83bd7a413ab2229718"
+      }
+    ]
+  },
+  "followupLogSha256": "f7a158c84ee823945b2f9a535a7c8776a667e3362620f403a86dff36f5241466",
+  "scope": "Installed public-artifact coding fixtures; no actual-agent, native browser/device, constructor/coordinate-frame, activation or overall runtime verdict."
+}

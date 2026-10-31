@@ -25,10 +25,12 @@ function put(path,value){const target=join(consumer,path);mkdirSync(dirname(targ
 try{
  const dependencies={};
  for(const pack of producer.packs){
+  const sourceTree=execFileSync('git',['rev-parse',`${producer.sourceCandidate}:packages/${pack.name.split('/')[1]}`],{cwd:root,encoding:'utf8'}).trim();
+  assert.equal(sourceTree,producer.packageBuilds.find(build=>build.name===pack.name)?.sourceTree,'Producer source tree does not match committed Git candidate');
   const bytes=readFileSync(pack.path);assert.equal(hash(bytes),pack.sha256,'Producer tarball drift');
   const path=join(artifacts,pack.path.split(/[/\\]/).at(-1));copyFileSync(pack.path,path);
   dependencies[pack.name]=`file:${path.replaceAll('\\','/')}`;
-  report.packs.push({...pack,path,sourceTree:producer.packageBuilds.find(build=>build.name===pack.name)?.sourceTree});
+  report.packs.push({...pack,path,sourceTree});
  }
  const seed=JSON.parse(readFileSync(join(producer.consumer,'package.json'),'utf8'));
  dependencies.svelte=seed.dependencies.svelte;
@@ -39,7 +41,8 @@ try{
  const fixtures=join(evidence,'fixtures'),fixtureFiles=[];
  function copy(directory){for(const item of readdirSync(directory,{withFileTypes:true})){const path=join(directory,item.name);if(item.isDirectory())copy(path);else{const text=readFileSync(path,'utf8');assert.ok(!text.includes('apps/studio')&&!text.includes('packages/')&&!text.includes('resolve.alias'),'Fixture must use only public installed APIs');const target='src/'+relative(fixtures,path).replaceAll('\\','/');put(target,text);fixtureFiles.push({path:target,sha256:hash(text)});}}}
  copy(fixtures);report.fixtureFiles=fixtureFiles;
- writeFileSync(join(evidence,'producer-qSyhak-or-successor.json'),producerBytes);
+ report.producer.copy=join(evidence,`producer-${producer.sourceCandidate.slice(0,12)}-${hash(producerBytes).slice(0,12)}.json`);
+ writeFileSync(report.producer.copy,producerBytes);
  run(['install','--ignore-scripts','--no-audit','--no-fund','--prefer-offline'],'install.log');
  const require=createRequire(join(consumer,'package.json'));
  report.installed=report.packs.map(pack=>{

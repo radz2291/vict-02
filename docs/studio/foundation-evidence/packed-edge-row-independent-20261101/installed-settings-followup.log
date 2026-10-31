@@ -1,0 +1,19 @@
+
+> test
+> vitest run
+
+
+ RUN  v4.1.11 C:/Users/RZ1/AppData/Local/Temp/vict-independent-edge-row-leLXTs/consumer
+
+3:38:16 pm [vite-plugin-svelte] src/fixtures/IndependentEdgeHarness.svelte:8:22 This reference only captures the initial value of `initial`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+3:38:16 pm [vite-plugin-svelte] src/fixtures/IndependentEdgeHarness.svelte:9:6 This reference only captures the initial value of `host`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+3:38:16 pm [vite-plugin-svelte] src/fixtures/IndependentEdgeHarness.svelte:9:45 This reference only captures the initial value of `host`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+
+ Test Files  3 passed (3)
+      Tests  22 passed (22)
+   Start at  15:38:08
+   Duration  33.79s (transform 58.80s, setup 0ms, import 80.14s, tests 1.67s, environment 13.79s)
+
