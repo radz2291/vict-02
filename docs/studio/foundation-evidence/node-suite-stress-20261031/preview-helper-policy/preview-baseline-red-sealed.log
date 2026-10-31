@@ -1,0 +1,160 @@
+TAP version 13
+# Subtest: more than 256 sealed files are all reachable
+not ok 1 - more than 256 sealed files are all reachable
+  ---
+  duration_ms: 537.1012
+  location: 'C:\\Users\\RZ1\\.codex\\worktrees\\vict-preview-helper-policy-20261031\\scripts\\serve-export-device-preview.test.mjs:38:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    helper exit 1: file:///C:/Users/RZ1/.codex/worktrees/vict-preview-helper-policy-20261031/scripts/serve-export-device-preview.baseline.mjs:29
+    if(!Array.isArray(report.outputFiles)||!report.outputFiles.length||report.outputFiles.length>256)throw Error('Invalid sealed output inventory.');
+                                                                                                           ^
+    
+    Error: Invalid sealed output inventory.
+        at file:///C:/Users/RZ1/.codex/worktrees/vict-preview-helper-policy-20261031/scripts/serve-export-device-preview.baseline.mjs:29:104
+        at ModuleJob.run (node:internal/modules/esm/module_job:271:25)
+        at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:547:26)
+        at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+    
+    Node.js v22.13.1
+    
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    file:///C:/Users/RZ1/.codex/worktrees/vict-preview-helper-policy-20261031/scripts/serve-export-device-preview.baseline.mjs:29:104
+    ModuleJob.run (node:internal/modules/esm/module_job:271:25)
+    async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:547:26)
+    async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+    ChildProcess.<anonymous> (file:///C:/Users/RZ1/.codex/worktrees/vict-preview-helper-policy-20261031/scripts/serve-export-device-preview.test.mjs:30:156)
+    Object.onceWrapper (node:events:639:26)
+    ChildProcess.emit (node:events:524:28)
+    ChildProcess._handle.onexit (node:internal/child_process:293:12)
+  ...
+# Subtest: single file above 64 MiB and total above 128 MiB retain exact bytes
+not ok 2 - single file above 64 MiB and total above 128 MiB retain exact bytes
+  ---
+  duration_ms: 674.8002
+  location: 'C:\\Users\\RZ1\\.codex\\worktrees\\vict-preview-helper-policy-20261031\\scripts\\serve-export-device-preview.test.mjs:42:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    helper exit 1: file:///C:/Users/RZ1/.codex/worktrees/vict-preview-helper-policy-20261031/scripts/serve-export-device-preview.baseline.mjs:37
+      if(!stat.isFile()||stat.size>64*1024*1024)throw Error('Invalid or oversized output file.');
+                                                      ^
+    
+    Error: Invalid or oversized output file.
+        at file:///C:/Users/RZ1/.codex/worktrees/vict-preview-helper-policy-20261031/scripts/serve-export-device-preview.baseline.mjs:37:51
+        at ModuleJob.run (node:internal/modules/esm/module_job:271:25)
+        at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:547:26)
+        at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+    
+    Node.js v22.13.1
+    
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    file:///C:/Users/RZ1/.codex/worktrees/vict-preview-helper-policy-20261031/scripts/serve-export-device-preview.baseline.mjs:37:51
+    ModuleJob.run (node:internal/modules/esm/module_job:271:25)
+    async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:547:26)
+    async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+    ChildProcess.<anonymous> (file:///C:/Users/RZ1/.codex/worktrees/vict-preview-helper-policy-20261031/scripts/serve-export-device-preview.test.mjs:30:156)
+    Object.onceWrapper (node:events:639:26)
+    ChildProcess.emit (node:events:524:28)
+    ChildProcess._handle.onexit (node:internal/child_process:293:12)
+  ...
+# Subtest: aggregate above 128 MiB with every individual file below 64 MiB
+not ok 3 - aggregate above 128 MiB with every individual file below 64 MiB
+  ---
+  duration_ms: 942.076
+  location: 'C:\\Users\\RZ1\\.codex\\worktrees\\vict-preview-helper-policy-20261031\\scripts\\serve-export-device-preview.test.mjs:46:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    helper exit 1: file:///C:/Users/RZ1/.codex/worktrees/vict-preview-helper-policy-20261031/scripts/serve-export-device-preview.baseline.mjs:38
+      totalBytes+=stat.size;if(totalBytes>128*1024*1024)throw Error('Static output exceeds preview memory budget.');
+                                                              ^
+    
+    Error: Static output exceeds preview memory budget.
+        at file:///C:/Users/RZ1/.codex/worktrees/vict-preview-helper-policy-20261031/scripts/serve-export-device-preview.baseline.mjs:38:59
+        at ModuleJob.run (node:internal/modules/esm/module_job:271:25)
+        at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:547:26)
+        at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+    
+    Node.js v22.13.1
+    
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    file:///C:/Users/RZ1/.codex/worktrees/vict-preview-helper-policy-20261031/scripts/serve-export-device-preview.baseline.mjs:38:59
+    ModuleJob.run (node:internal/modules/esm/module_job:271:25)
+    async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:547:26)
+    async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+    ChildProcess.<anonymous> (file:///C:/Users/RZ1/.codex/worktrees/vict-preview-helper-policy-20261031/scripts/serve-export-device-preview.test.mjs:30:156)
+    Object.onceWrapper (node:events:639:26)
+    ChildProcess.emit (node:events:524:28)
+    ChildProcess._handle.onexit (node:internal/child_process:293:12)
+  ...
+# Subtest: sealed and request paths beyond prior ceilings use unchanged path grammar
+not ok 4 - sealed and request paths beyond prior ceilings use unchanged path grammar
+  ---
+  duration_ms: 173.6028
+  location: 'C:\\Users\\RZ1\\.codex\\worktrees\\vict-preview-helper-policy-20261031\\scripts\\serve-export-device-preview.test.mjs:50:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    helper exit 1: file:///C:/Users/RZ1/.codex/worktrees/vict-preview-helper-policy-20261031/scripts/serve-export-device-preview.baseline.mjs:33
+      if(!entry||typeof entry.path!=='string'||!entry.path||entry.path.length>512||entry.path.split('/').some(part=>!part||part==='.'||part==='..'||part.startsWith('.'))||/[\\:%?#\x00-\x1f\x7f]/.test(entry.path)||!Object.hasOwn(types,extname(entry.path))||!/^[a-f0-9]{64}$/.test(entry.sha256)||files.has('/'+entry.path))throw Error('Unsafe or duplicate sealed output inventory entry.');
+                                                                                                                                                                                                                                                                                                                                      ^
+    
+    Error: Unsafe or duplicate sealed output inventory entry.
+        at file:///C:/Users/RZ1/.codex/worktrees/vict-preview-helper-policy-20261031/scripts/serve-export-device-preview.baseline.mjs:33:323
+        at ModuleJob.run (node:internal/modules/esm/module_job:271:25)
+        at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:547:26)
+        at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+    
+    Node.js v22.13.1
+    
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    file:///C:/Users/RZ1/.codex/worktrees/vict-preview-helper-policy-20261031/scripts/serve-export-device-preview.baseline.mjs:33:323
+    ModuleJob.run (node:internal/modules/esm/module_job:271:25)
+    async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:547:26)
+    async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+    ChildProcess.<anonymous> (file:///C:/Users/RZ1/.codex/worktrees/vict-preview-helper-policy-20261031/scripts/serve-export-device-preview.test.mjs:30:156)
+    Object.onceWrapper (node:events:639:26)
+    ChildProcess.emit (node:events:524:28)
+    ChildProcess._handle.onexit (node:internal/child_process:293:12)
+  ...
+# Subtest: Node default header handling replaces custom 32 header count
+ok 5 - Node default header handling replaces custom 32 header count
+  ---
+  duration_ms: 168.6689
+  ...
+# Subtest: host, method, encoded traversal and unknown files remain refused; HEAD remains exact
+ok 6 - host, method, encoded traversal and unknown files remain refused; HEAD remains exact
+  ---
+  duration_ms: 189.6347
+  ...
+# Subtest: post-verification disk mutation is never served
+ok 7 - post-verification disk mutation is never served
+  ---
+  duration_ms: 174.2338
+  ...
+# Subtest: hash, duplicate, unsafe paths and source-export identity remain admission failures
+ok 8 - hash, duplicate, unsafe paths and source-export identity remain admission failures
+  ---
+  duration_ms: 860.427
+  ...
+# Subtest: realpath escape remains refused
+ok 9 - realpath escape remains refused
+  ---
+  duration_ms: 157.1286
+  ...
+# Subtest: report identity, private IPv4 binding and dedicated non-Studio port remain required
+ok 10 - report identity, private IPv4 binding and dedicated non-Studio port remain required
+  ---
+  duration_ms: 878.2457
+  ...
+1..10
+# tests 10
+# suites 0
+# pass 6
+# fail 4
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 4906.2426

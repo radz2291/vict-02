@@ -26,36 +26,37 @@ if(resolve(rootArg)!==resolve(report.destination,'dist'))throw Error('Static roo
 const root=realpathSync(resolve(rootArg));
 if(!statSync(root).isDirectory())throw Error('Static root is not a directory.');
 const withinRoot=path=>{const rel=relative(root,path);return rel!==''&&!isAbsolute(rel)&&rel!=='..'&&!rel.startsWith('..\\')&&!rel.startsWith('../');};
-if(!Array.isArray(report.outputFiles)||!report.outputFiles.length||report.outputFiles.length>256)throw Error('Invalid sealed output inventory.');
-const files=new Map();let totalBytes=0;
+if(!Array.isArray(report.outputFiles)||!report.outputFiles.length)throw Error('Invalid sealed output inventory.');
+const files=new Map();
 const types={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.json':'application/json; charset=utf-8','.svg':'image/svg+xml','.png':'image/png','.jpg':'image/jpeg','.webp':'image/webp','.woff2':'font/woff2'};
 for(const entry of report.outputFiles){
-  if(!entry||typeof entry.path!=='string'||!entry.path||entry.path.length>512||entry.path.split('/').some(part=>!part||part==='.'||part==='..'||part.startsWith('.'))||/[\\:%?#\x00-\x1f\x7f]/.test(entry.path)||!Object.hasOwn(types,extname(entry.path))||!/^[a-f0-9]{64}$/.test(entry.sha256)||files.has('/'+entry.path))throw Error('Unsafe or duplicate sealed output inventory entry.');
+  if(!entry||typeof entry.path!=='string'||!entry.path||entry.path.split('/').some(part=>!part||part==='.'||part==='..'||part.startsWith('.'))||/[\\:%?#\x00-\x1f\x7f]/.test(entry.path)||!Object.hasOwn(types,extname(entry.path))||!/^[a-f0-9]{64}$/.test(entry.sha256)||files.has('/'+entry.path))throw Error('Unsafe or duplicate sealed output inventory entry.');
   const path=realpathSync(join(root,entry.path));
   if(!withinRoot(path))throw Error('Sealed output escapes the static root.');
   const stat=statSync(path);
-  if(!stat.isFile()||stat.size>64*1024*1024)throw Error('Invalid or oversized output file.');
-  totalBytes+=stat.size;if(totalBytes>128*1024*1024)throw Error('Static output exceeds preview memory budget.');
+  if(!stat.isFile())throw Error('Invalid output file.');
   const bytes=readFileSync(path);
   if(hash(bytes)!==entry.sha256)throw Error('Sealed output SHA-256 mismatch.');
   files.set('/'+entry.path,{bytes,type:types[extname(entry.path)],sha256:entry.sha256});
 }
 if(!files.has('/index.html')||files.get('/application.json')?.sha256!==report.sourceExport?.sha256)throw Error('Missing index or unchanged exported application.');
 // Immutable bytes are retained after verification: later disk changes are never served.
+// Admission requires real filesystem reads and enough process memory for the full inventory;
+// OS/path/Buffer/HTTP parser limits and I/O failures remain actual platform boundaries.
 const server=createServer((request,response)=>{
   response.setHeader('X-Content-Type-Options','nosniff');response.setHeader('Cache-Control','no-store');
   const deny=(status,message)=>{response.writeHead(status,{'Content-Type':'text/plain; charset=utf-8'});response.end(request.method==='HEAD'?undefined:message);};
   if(request.method!=='GET'&&request.method!=='HEAD'){response.setHeader('Allow','GET, HEAD');return deny(405,'Method not allowed.');}
   if(request.headers.host!==`${host}:${port}`)return deny(400,'Invalid preview host.');
   const raw=request.url??'';
-  if(!raw.startsWith('/')||raw.startsWith('//')||raw.length>2048||/[?#\\\x00-\x1f\x7f]/.test(raw)||/%(?:2f|5c)/i.test(raw))return deny(400,'Invalid preview path.');
+  if(!raw.startsWith('/')||raw.startsWith('//')||/[?#\\\x00-\x1f\x7f]/.test(raw)||/%(?:2f|5c)/i.test(raw))return deny(400,'Invalid preview path.');
   let path;try{path=decodeURIComponent(raw);}catch{return deny(400,'Invalid preview path.');}
   if(/[\\:%\x00-\x1f\x7f]/.test(path)||path.split('/').slice(1).some(part=>part==='.'||part==='..'||part.startsWith('.'))||path.includes('//'))return deny(400,'Invalid preview path.');
   const file=files.get(path==='/'?'/index.html':path);
   if(!file)return deny(404,'Preview file not found.');
   response.writeHead(200,{'Content-Type':file.type,'Content-Length':file.bytes.length});response.end(request.method==='HEAD'?undefined:file.bytes);
 });
-server.maxHeadersCount=32;server.headersTimeout=10000;server.requestTimeout=15000;server.keepAliveTimeout=2000;
+// HTTP transaction protections use the running Node version's defaults.
 server.on('clientError',(_error,socket)=>socket.end('HTTP/1.1 400 Bad Request\r\nConnection: close\r\n\r\n'));
 server.on('error',error=>{console.error(`Static preview could not listen: ${error.code??'UNKNOWN'}`);process.exitCode=1;});
 server.listen(port,host,()=>console.log(JSON.stringify({url:`http://${host}:${port}/`,reportSha256:reportHash,sealedFiles:files.size,scope:'Static actual-export preview only; no Studio or execution backend.'})));
