@@ -1,0 +1,23 @@
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/vict-limits-independent-20261031/apps/studio
+
+11:38:04 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-limits-independent-20261031/packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+11:38:04 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-limits-independent-20261031/packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+11:38:04 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-limits-independent-20261031/packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+11:38:04 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-limits-independent-20261031/packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+11:38:04 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-limits-independent-20261031/packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+ ✓ tests/designer-core-authoring.test.ts (11 tests) 1091ms
+   ✓ shared registered authoring integration > reuses and replaces ordered shared styles through the agent, canonical history and persistence  384ms
+ ✓ tests/independent-final-ack.test.ts (1 test) 2429ms
+   ✓ independent: genuine browser canonical refusal reaches real owner/pending ACK without any source promotion  2425ms
+
+ Test Files  2 passed (2)
+      Tests  12 passed (12)
+   Start at  11:37:40
+   Duration  51.83s (transform 39.92s, setup 0ms, collect 94.38s, tests 3.52s, environment 1ms, prepare 936ms)
+
