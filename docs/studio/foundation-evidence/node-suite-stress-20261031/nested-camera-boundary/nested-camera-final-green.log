@@ -1,0 +1,45 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/vict-nested-flow-camera-20261031
+
+1:59:47 pm [vite-plugin-svelte] packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+1:59:47 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+1:59:47 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+1:59:47 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+1:59:47 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+1:59:56 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-capture-policy-20261031/packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+1:59:56 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-capture-policy-20261031/packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+1:59:56 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-capture-policy-20261031/packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+1:59:56 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-capture-policy-20261031/packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+1:59:56 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-capture-policy-20261031/packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+2:00:01 pm [vite-plugin-svelte] packages/ui-flow-svelte/test/AuthoringHost.svelte:6:24 This reference only captures the initial value of `initial`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+ ❯ packages/ui-flow-svelte/test/nested-camera.svelte.test.ts (5 tests | 2 failed) 2045ms
+   × nested retained editor owns empty-pane wheel and pan 300ms
+   × nested retained canvas owns empty-pane wheel and pan 264ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  packages/ui-flow-svelte/test/nested-camera.svelte.test.ts > nested retained editor owns empty-pane wheel and pan
+ FAIL  packages/ui-flow-svelte/test/nested-camera.svelte.test.ts > nested retained canvas owns empty-pane wheel and pan
+AssertionError: expected 'translate(NaNpx, NaNpx) scale(1.18099…' not to be 'translate(NaNpx, NaNpx) scale(1.18099…' // Object.is equality
+ ❯ packages/ui-flow-svelte/test/nested-camera.svelte.test.ts:37:199
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+
+ Test Files  1 failed | 2 passed (3)
+      Tests  2 failed | 27 passed (29)
+   Start at  13:59:43
+   Duration  23.60s (transform 34.27s, setup 0ms, import 48.45s, tests 8.78s, environment 3.87s)
+

@@ -1,6 +1,9 @@
 <script lang="ts">
+  import { flowGestureClasses, guardFlowGestures } from '../flow-gesture-boundary.js';
+  const gestureId = $props.id();
+  const gestureClasses = flowGestureClasses(gestureId);
   import { setContext } from 'svelte';
-  import { SvelteFlow, Background, Controls, MiniMap, type Node, type Edge } from '@xyflow/svelte';
+  import { SvelteFlow, SvelteFlowProvider, Background, Controls, MiniMap, type Node, type Edge } from '@xyflow/svelte';
   import type { UiSvelteComponentProps } from '@victframework/ui-svelte';
   import { FLOW_AUTHORING_CONTEXT, createFlowAuthoringContext, type FlowProjection } from './context.js';
   import FlowVisibleNode from './FlowVisibleNode.svelte';
@@ -14,14 +17,14 @@
   const edges = $derived<Edge[]>(projection.edges.map(entry => ({ id: entry.id, type: 'authored', source: entry.source!, target: entry.destination!, data: { declaration: entry }, deletable: false })));
   const height = $derived(typeof props.height === 'number' && Number.isFinite(props.height) ? Math.max(160, props.height) : 360);
 </script>
-<section {...presentation?.target('root')} aria-label={String(props.label ?? 'Flow diagram')}>
+<section use:guardFlowGestures={gestureClasses} {...presentation?.target('root')} aria-label={String(props.label ?? 'Flow diagram')}>
   <div class="vict-authored-flow-surface" style:height={`${height}px`}>
-    <SvelteFlow {nodes} {edges} {nodeTypes} {edgeTypes} nodesDraggable={false} nodesConnectable={false}
+    <SvelteFlowProvider><SvelteFlow {...gestureClasses} {nodes} {edges} {nodeTypes} {edgeTypes} nodesDraggable={false} nodesConnectable={false}
       elementsSelectable={true} deleteKey={null} fitView>
       {#if props.background !== false}<Background />{/if}
       {#if props.controls !== false}<Controls showLock={false} />{/if}
       {#if props.minimap === true}<MiniMap pannable zoomable />{/if}
-    </SvelteFlow>
+    </SvelteFlow></SvelteFlowProvider>
   </div>
   {@render io?.slots?.nodes?.()}
   {@render io?.slots?.edges?.()}

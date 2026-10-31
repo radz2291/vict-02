@@ -2,12 +2,15 @@
   import { getContext, untrack, tick, onDestroy } from 'svelte';
   import { SvelteFlow, SvelteFlowProvider, Background, type Node, type Edge, type Connection } from '@xyflow/svelte';
   import type { UiSvelteComponentProps } from '@victframework/ui-svelte';
+  import { flowGestureClasses, guardFlowGestures } from '../flow-gesture-boundary.js';
   import FlowNavigation from '../FlowNavigation.svelte';
   import ComposedGraphNode from './ComposedGraphNode.svelte';
   import ComposedGraphEdge from './ComposedGraphEdge.svelte';
   import {GraphConnectionGesture} from './connection-gesture.js';
   import { GRAPH_WORKSPACE, type GraphWorkspaceContext } from './context.js';
   let {props,presentation,occurrenceKey}:UiSvelteComponentProps=$props();
+  const gestureId = $props.id();
+  const gestureClasses = flowGestureClasses(gestureId);
   const workspace=getContext<GraphWorkspaceContext|undefined>(GRAPH_WORKSPACE);
   const initial=untrack(()=>workspace?.viewFor(occurrenceKey));
   let viewport=$state(initial?.viewport??{x:0,y:0,zoom:1});
@@ -67,8 +70,8 @@
   function cancelDrag(){dragging=false;dragCancelled=true;connectionGesture.cancel();restorePositions();}
 </script>
 {#if workspace}
-  <div {...presentation?.target('root')} bind:this={rootElement} aria-label={String(props.label??'Graph canvas')} role="application" tabindex="-1" onkeydown={keyboard} onpointercancel={cancelDrag} style:height={`${Math.max(160,Math.min(Number(props.height)||480,2000))}px`} class={`graph-viewport ${presentation?.target('root').class??''}`}>
-    <SvelteFlowProvider><SvelteFlow bind:nodes bind:edges bind:viewport {nodeTypes} {edgeTypes} deleteKey={null} nodesDraggable={!workspace.readOnly} nodesConnectable={!workspace.readOnly} fitView={false} minZoom={0.1} maxZoom={2} selectionKey="Shift" multiSelectionKey={['Control','Meta','Shift']}
+  <div {...presentation?.target('root')} bind:this={rootElement} aria-label={String(props.label??'Graph canvas')} role="application" tabindex="-1" onkeydown={keyboard} onpointercancel={cancelDrag} use:guardFlowGestures={gestureClasses} style:height={`${Math.max(160,Math.min(Number(props.height)||480,2000))}px`} class={`graph-viewport ${presentation?.target('root').class??''}`}>
+    <SvelteFlowProvider><SvelteFlow bind:nodes bind:edges bind:viewport {nodeTypes} {edgeTypes} {...gestureClasses} deleteKey={null} nodesDraggable={!workspace.readOnly} nodesConnectable={!workspace.readOnly} fitView={false} minZoom={0.1} maxZoom={2} selectionKey="Shift" multiSelectionKey={['Control','Meta','Shift']}
       onselectionchange={({nodes:n,edges:e})=>workspace.select({nodes:n.map(x=>x.id),edges:e.map(x=>x.id)})}
       onnodedragstart={()=>{dragging=true;dragCancelled=false;dragRevision=workspace.graph.revision;}}
       onnodedragstop={({nodes:moved})=>{dragging=false;if(dragCancelled){cancelDrag();return;}workspace.apply([{type:'moveNodes',positions:Object.fromEntries(moved.map(n=>[n.id,{...n.position}]))}],dragRevision);}}

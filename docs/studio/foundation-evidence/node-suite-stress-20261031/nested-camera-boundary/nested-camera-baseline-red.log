@@ -1,0 +1,49 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/vict-nested-flow-camera-20261031
+
+1:56:14 pm [vite-plugin-svelte] packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+1:56:14 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+1:56:14 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+1:56:14 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+1:56:14 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+1:56:25 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-capture-policy-20261031/packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+1:56:25 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-capture-policy-20261031/packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+1:56:25 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-capture-policy-20261031/packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+1:56:25 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-capture-policy-20261031/packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+1:56:25 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-capture-policy-20261031/packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+ ❯ packages/ui-flow-svelte/test/nested-camera.svelte.test.ts (2 tests | 2 failed) 742ms
+   × repeated nested empty-pane wheel owns only its camera despite outer control guards 446ms
+   × nested empty-pane pan ignores mandatory outer-node nopan and keeps sibling/source 294ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  packages/ui-flow-svelte/test/nested-camera.svelte.test.ts > repeated nested empty-pane wheel owns only its camera despite outer control guards
+AssertionError: expected 'translate(0px, 0px) scale(1)' not to be 'translate(0px, 0px) scale(1)' // Object.is equality
+ ❯ packages/ui-flow-svelte/test/nested-camera.svelte.test.ts:23:380
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  packages/ui-flow-svelte/test/nested-camera.svelte.test.ts > nested empty-pane pan ignores mandatory outer-node nopan and keeps sibling/source
+AssertionError: expected 'translate(0px, 0px) scale(1)' not to be 'translate(0px, 0px) scale(1)' // Object.is equality
+ ❯ packages/ui-flow-svelte/test/nested-camera.svelte.test.ts:24:346
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed (2)
+   Start at  13:56:11
+   Duration  18.56s (transform 13.02s, setup 0ms, import 16.16s, tests 742ms, environment 1.30s)
+

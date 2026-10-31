@@ -90,6 +90,12 @@ chosen drag handles and input/scroll regions. Omission preserves authored tokens
 `[]` clears them. `attributes.class` remains unavailable in the default semantic
 catalog. Code/manual tooling uses the same canonical `setClasses` command.
 
+Nested authored flow surfaces own their pan/zoom boundary. Local `nopan` and
+`nowheel` controls stay guarded; guards on an enclosing node or authored wrapper
+do not disable the inner empty canvas. Inner camera gestures leave enclosing and
+sibling cameras and canonical graph data unchanged. The retained editor and
+read-only authored canvas use the same boundary and their own public provider.
+
 Each viewport owns a public Svelte Flow provider. Accepted keyboard movement is
 committed through the same validated graph transaction/history as other geometry;
 deferred writes are fenced against source replacement, read-only changes and

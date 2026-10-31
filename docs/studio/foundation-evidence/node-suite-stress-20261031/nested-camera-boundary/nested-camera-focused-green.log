@@ -1,0 +1,46 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/vict-nested-flow-camera-20261031
+
+1:59:24 pm [vite-plugin-svelte] packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+1:59:24 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+1:59:24 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+1:59:24 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+1:59:24 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+ ❯ packages/ui-flow-svelte/test/nested-camera.svelte.test.ts (0 test)
+ ❯ packages/ui-flow-svelte/test/composition.svelte.test.ts (0 test)
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  packages/ui-flow-svelte/test/composition.svelte.test.ts [ packages/ui-flow-svelte/test/composition.svelte.test.ts ]
+CompileError: packages/ui-flow-svelte/src/composition/GraphViewport.svelte:12:44 `$props.id()` can only be used at the top level of components as a variable declaration initializer
+https://svelte.dev/e/props_id_invalid_placement
+ 10 |    import { GRAPH_WORKSPACE, type GraphWorkspaceContext } from './context.js';
+ 11 |    let {props,presentation,occurrenceKey}:UiSvelteComponentProps=$props();
+ 12 |    const gestureClasses = flowGestureClasses($props.id());
+                                                              ^
+ 13 |    const workspace=getContext<GraphWorkspaceContext|undefined>(GRAPH_WORKSPACE);
+ 14 |    const initial=untrack(()=>workspace?.viewFor(occurrenceKey));
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  packages/ui-flow-svelte/test/nested-camera.svelte.test.ts [ packages/ui-flow-svelte/test/nested-camera.svelte.test.ts ]
+CompileError: packages/ui-flow-svelte/src/composition/GraphViewport.svelte:12:44 `$props.id()` can only be used at the top level of components as a variable declaration initializer
+https://svelte.dev/e/props_id_invalid_placement
+ 10 |    import { GRAPH_WORKSPACE, type GraphWorkspaceContext } from './context.js';
+ 11 |    let {props,presentation,occurrenceKey}:UiSvelteComponentProps=$props();
+ 12 |    const gestureClasses = flowGestureClasses($props.id());
+                                                              ^
+ 13 |    const workspace=getContext<GraphWorkspaceContext|undefined>(GRAPH_WORKSPACE);
+ 14 |    const initial=untrack(()=>workspace?.viewFor(occurrenceKey));
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  no tests
+   Start at  13:59:21
+   Duration  12.61s (transform 18.06s, setup 0ms, import 0ms, tests 0ms, environment 1.80s)
+

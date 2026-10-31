@@ -1,8 +1,12 @@
 <script lang="ts">
+  import { flowGestureClasses, guardFlowGestures } from '../flow-gesture-boundary.js';
+  const gestureId = $props.id();
+  const gestureClasses = flowGestureClasses(gestureId);
   import { untrack } from 'svelte';
   import { type UiComponentPresentation } from '@victframework/ui-svelte';
   import {
     SvelteFlow,
+    SvelteFlowProvider,
     Background,
     type Node,
     type Edge,
@@ -285,10 +289,10 @@
   }
 </script>
 
-<section {...presentation?.target('root')} bind:this={rootElement} class={`vict-graph-editor ${presentation?.target('root').class ?? ''}`} aria-label={label} data-graph-revision={current.revision} data-graph-viewport={`${viewport.x},${viewport.y},${viewport.zoom}`}>
+<section use:guardFlowGestures={gestureClasses} {...presentation?.target('root')} bind:this={rootElement} class={`vict-graph-editor ${presentation?.target('root').class ?? ''}`} aria-label={label} data-graph-revision={current.revision} data-graph-viewport={`${viewport.x},${viewport.y},${viewport.zoom}`}>
   {#if error}<p role="alert" class="graph-error">{error}</p>{/if}
     <div {...presentation?.target('canvas')} class={`graph-canvas ${presentation?.target('canvas').class ?? ''}`} style:height={`${Math.max(240,Math.min(height,2000))}px`}>
-      <SvelteFlow bind:nodes bind:edges bind:viewport {nodeTypes} nodesDraggable={!readOnly} nodesConnectable={!readOnly} deleteKey={null} fitView={false} minZoom={0.15} maxZoom={2} multiSelectionKey={['Control','Meta','Shift']} selectionKey="Shift" panOnDrag={true}
+      <SvelteFlowProvider><SvelteFlow {...gestureClasses} bind:nodes bind:edges bind:viewport {nodeTypes} nodesDraggable={!readOnly} nodesConnectable={!readOnly} deleteKey={null} fitView={false} minZoom={0.15} maxZoom={2} multiSelectionKey={['Control','Meta','Shift']} selectionKey="Shift" panOnDrag={true}
         onselectionchange={({nodes:selectedNodes,edges:selectedEdges})=>select({nodes:selectedNodes.map(node=>node.id),edges:selectedEdges.map(edge=>edge.id)})}
         onnodedragstart={()=>{dragging=true;dragCancelled=false;dragRevision=current.revision;}}
         onnodedragstop={({nodes:moved})=>{dragging=false;if(dragCancelled||current.revision!==dragRevision){sync();return;}apply([{type:'moveNodes',positions:Object.fromEntries(moved.map(node=>[node.id,{...node.position}]))}]);}}
@@ -296,7 +300,7 @@
         onbeforeconnect={candidate=>{apply([{type:'connect',edge:connection(candidate)}]);return false;}}
         onbeforereconnect={(next,old)=>{apply([{type:'reconnect',edgeId:old.id,connection:{source:next.source,sourcePort:next.sourceHandle??'',target:next.target,targetPort:next.targetHandle??''}}]);return false;}}>
         <Background /><FlowNavigation initialFit={fitInitially&&initialized} initialNodeIds={current.nodes.map(node=>node.id)} onInitialFit={()=>{cameraReady=true;}}/>
-      </SvelteFlow>
+      </SvelteFlow></SvelteFlowProvider>
     </div>
 </section>
 <style>

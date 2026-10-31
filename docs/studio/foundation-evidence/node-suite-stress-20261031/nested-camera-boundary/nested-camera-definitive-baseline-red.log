@@ -1,0 +1,65 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/vict-nested-flow-camera-20261031
+
+2:01:29 pm [vite-plugin-svelte] packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+2:01:29 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+2:01:29 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+2:01:29 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+2:01:29 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+2:01:40 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-capture-policy-20261031/packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+2:01:40 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-capture-policy-20261031/packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+2:01:40 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-capture-policy-20261031/packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+2:01:40 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-capture-policy-20261031/packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+2:01:40 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-capture-policy-20261031/packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+ ❯ packages/ui-flow-svelte/test/nested-camera.svelte.test.ts (7 tests | 4 failed | 2 skipped) 2077ms
+   × repeated nested empty-pane wheel owns only its camera despite outer control guards 571ms
+   × nested empty-pane pan ignores mandatory outer-node nopan and keeps sibling/source 389ms
+   × ordinary local controls keep pan/wheel guards; next empty gesture clears guard 366ms
+   × mandatory outer XYFlow node nopan alone cannot block nested background pan 294ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  packages/ui-flow-svelte/test/nested-camera.svelte.test.ts > repeated nested empty-pane wheel owns only its camera despite outer control guards
+AssertionError: expected 'translate(0px, 0px) scale(1)' not to be 'translate(0px, 0px) scale(1)' // Object.is equality
+ ❯ packages/ui-flow-svelte/test/nested-camera.svelte.test.ts:28:380
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  packages/ui-flow-svelte/test/nested-camera.svelte.test.ts > nested empty-pane pan ignores mandatory outer-node nopan and keeps sibling/source
+AssertionError: expected 'translate(0px, 0px) scale(1)' not to be 'translate(0px, 0px) scale(1)' // Object.is equality
+ ❯ packages/ui-flow-svelte/test/nested-camera.svelte.test.ts:29:346
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  packages/ui-flow-svelte/test/nested-camera.svelte.test.ts > ordinary local controls keep pan/wheel guards; next empty gesture clears guard
+AssertionError: expected 'translate(0px, 0px) scale(1)' not to be 'translate(0px, 0px) scale(1)' // Object.is equality
+ ❯ packages/ui-flow-svelte/test/nested-camera.svelte.test.ts:33:74
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  packages/ui-flow-svelte/test/nested-camera.svelte.test.ts > mandatory outer XYFlow node nopan alone cannot block nested background pan
+AssertionError: expected 'translate(0px, 0px) scale(1)' not to be 'translate(0px, 0px) scale(1)' // Object.is equality
+ ❯ packages/ui-flow-svelte/test/nested-camera.svelte.test.ts:39:429
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  4 failed | 1 passed | 2 skipped (7)
+   Start at  14:01:26
+   Duration  21.02s (transform 14.22s, setup 0ms, import 17.67s, tests 2.08s, environment 972ms)
+
