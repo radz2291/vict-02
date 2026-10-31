@@ -1,0 +1,581 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Campaign Foundry — complex node suite"
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- banner:
+  - strong: Chat
+  - button "Hide Chat":
+- complementary "Chat":
+  - region "Conversation":
+    - region "Messages — Message":
+      - log:
+        - generic: You
+        - generic: Continue the SAME Campaign Foundry — complex node suite, now saved as r1.r2. Preserve the existing fourteen-node, twenty-link topology, node positions and current campaign values. This remains the full complex application request, not a replacement demo. First read the current overview and only the missing exact public contracts. Finish the rich reusable bodies for all ten existing node families using public composable Flow workspace/viewport/ports and ordinary editable app controls. Complete model settings, style reference, seed/sampling, draft generation configuration, finishing, review/approval, merge checklist and export configuration. Shared positive/negative, social/poster and finishing bodies must retain independent occurrence values. Use public registered controls for the per-node Help interaction; its open state is temporary private presentation state, not persisted campaign configuration. Add readable labels and purposeful initial values. Remove starter text such as “Give your screen a little context.” Correct unreadable contrast and cramped/overlapping layout while preserving user-adjusted positions where practical. Include a useful campaign summary and concise guide/checklist. Provide practical canvas navigation using existing public controls where available, so all fourteen nodes can be found and then inspected at a readable zoom. Preserve output fanout. Give single-value input ports meaningful authored capacities so incompatible or excess input connections can be refused for a clear application reason. Keep two independent finishing graph parameters ready. Once the outer app is usable, populate each Finishing occurrence with a real editable three-step/two-link nested workflow, using one shared authored body. Reuse the same inner IDs across those two occurrences deliberately so their independent ownership is exercised. Nested parameters must persist through the controlled parent graph; a drawing or a string of pretend steps is not a nested workflow. This app configures a fictional travel-mug launch. Do not claim image generation, model execution, publishing or backend success. No new provider or account setup. Use only existing authorized capabilities; explicitly label unsupported effects as configuration only. Preflight unfamiliar operations, repair genuine refusals from their exact diagnostics, keep acknowledged work and report what actually remains. Leave Save to me. Native behavior, reload and portable export will be tested separately after your edits.
+        - button "Copy message":
+        - generic: Assistant
+        - generic "Host evidence summary":
+          - paragraph: Host evidence summary
+          - status: The turn did not finish successfully. No source changes were applied. No image assessment matches the final source. Behavior was not tested by this agent.
+        - button "Original AI assessment and tool details" [expanded]:
+          - text: Original AI assessment and tool details
+        - paragraph: Original AI assessment — claims not independently verified. Tool receipts separately record confirmed effects and capture limits.
+        - generic "Conversation timeline":
+          - paragraph: I'll continue the Campaign Foundry build. First, let me read the current document structure and discover the flow data contracts.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed" [expanded]:
+            - generic: Read screen
+            - generic: completed
+          - region "Tool input":
+            - heading "Input" [level=4]
+            - generic: "{\"section\":\"knowledge\",\"kind\":\"data\",\"key\":\"vict.flow-graph@2\"}"
+          - region "Tool result":
+            - heading "Result" [level=4]
+            - paragraph: Preview only; complete sanitized exchange retained
+            - generic: "{\"expectedRevision\":\"r1.r2#0\",\"cursor\":{\"documentId\":\"screen-a8690ffa-1e90-4b72-909c-66141d372773\",\"revision\":\"r1.r2#0\",\"digest\":\"349cf6018cd6598205381612ca35a86f56308c2cbed01e53bc77e1da86291ffb\",\"epoch\":\"42d6cc79-bcaa-4f84-a34a-7d5d54685af2\"},\"section\":\"knowledge\",\"ok\":true,\"registryReady\":true,\"registryDigest\":\"be1140999428ec8ec28a19508f92def0b24e32afa7b8d1fbea42b0037999bb8e\",\"kind\":\"data\",\"key\":\"vict.flow-graph@2\",\"projection\":\"guidance\",\"nextCursor\":null,\"paging\":\"Copy nextCursor exactly as a JSON string; do not send offset, limit or identity maps. Stop on nextCursor:null. A selected body is complete only after assembling every page from its first page. Component dependencies are explicit references and must be read separately; no dependency body or app source was preloaded.\",\"id\":\"vict.flow-graph\",\"revision\":\"2\",\"digest\":\"336df566a92ec2f53993adf5bf59e6d7afe262254e5411c6419a6734ffed489f\",\"bodyIdentity\":\"studio-data-knowledge-body@1:guidance:336df566a92ec2f53993adf5bf59e6d7afe262254e5411c6419a6734ffed489f\",\"offset\":0,\"totalCharacters\":4944,\"bodyComplete\":true,\"sourceJson\":\"{\\\"id\\\":\\\"vict.flow-graph\\\",\\\"revision\\\":\\\"2\\\",\\\"schema\\\":{\\\"$schema\\\":\\\"https://json-schema.org/draft/2020-12/schema\\\",\\\"$id\\\":\\\"urn:vict:flow-graph:2\\\",\\\"$comment\\\":\\\"Structural shape only. Unique IDs, declared parameter types/defaults, topology, capacity and cycle policy are validated by the corresponding graph model. No graph size or collection-count ceiling is imposed.\\\",\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"schema\\\":{\\\"const\\\":\\\"vict.flow-graph@2\\\"},\\\"revision\\\":{\\\"type\\\":\\\"integer\\\",\\\"minimum\\\":0,\\\"maximum\\\":9007199254740991},\\\"nodeTypes\\\":{\\\"type\\\":\\\"array\\\",\\\"items\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"id\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"not\\\":{\\\"enum\\\":[\\\"__proto__\\\",\\\"prototype\\\",\\\"constructor\\\"]}},\\\"label\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1},\\\"parameters\\\":{\\\"type\\\":\\\"object\\\",\\\"propertyNames\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"not\\\":{\\\"enum\\\":[\\\"__proto__\\\",\\\"prototype\\\",\\\"constructor\\\"]},\\\"pattern\\\":\\\"^[A-Za-z_][A-Za-z0-9_-]*$\\\"},\\\"additionalProperties\\\":{\\\"oneOf\\\":[{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"type\\\":{\\\"const\\\":\\\"string\\\"},\\\"default\\\":{\\\"type\\\":\\\"string\\\"},\\\"label\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1}},\\\"required\\\":[\\\"type\\\",\\\"default\\\"],\\\"additionalProperties\\\":false},{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"type\\\":{\\\"const\\\":\\\"number\\\"},\\\"default\\\":{\\\"type\\\":\\\"number\\\"},\\\"label\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1}},\\\"required\\\":[\\\"type\\\",\\\"default\\\"],\\\"additionalProperties\\\":false},{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"type\\\":{\\\"const\\\":\\\"boolean\\\"},\\\"default\\\":{\\\"type\\\":\\\"boolean\\\"},\\\"label\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1}},\\\"required\\\":[\\\"type\\\",\\\"default\\\"],\\\"additionalProperties\\\":false},{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"type\\\":{\\\"const\\\":\\\"stringList\\\"},\\\"default\\\":{\\\"type\\\":\\\"array\\\",\\\"items\\\":{\\\"type\\\":\\\"string\\\"}},\\\"label\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1}},\\\"required\\\":[\\\"type\\\",\\\"default\\\"],\\\"additionalProperties\\\":false},{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"type\\\":{\\\"const\\\":\\\"numberList\\\"},\\\"default\\\":{\\\"type\\\":\\\"array\\\",\\\"items\\\":{\\\"type\\\":\\\"number\\\"}},\\\"label\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1}},\\\"required\\\":[\\\"type\\\",\\\"default\\\"],\\\"additionalProperties\\\":false},{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"type\\\":{\\\"const\\\":\\\"isoDate\\\"},\\\"default\\\":{\\\"type\\\":\\\"string\\\",\\\"$comment\\\":\\\"Empty string or valid Gregorian YYYY-MM-DD, checked by canonical isUiValueOfType.\\\"},\\\"label\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1}},\\\"required\\\":[\\\"type\\\",\\\"default\\\"],\\\"additionalProperties\\\":false},{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"type\\\":{\\\"const\\\":\\\"isoTime\\\"},\\\"default\\\":{\\\"type\\\":\\\"string\\\",\\\"$comment\\\":\\\"Empty string or valid HH:MM[:SS], checked by canonical isUiValueOfType.\\\"},\\\"label\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1}},\\\"required\\\":[\\\"type\\\",\\\"default\\\"],\\\"additionalProperties\\\":false}]}},\\\"ports\\\":{\\\"type\\\":\\\"array\\\",\\\"items\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"id\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"not\\\":{\\\"enum\\\":[\\\"__proto__\\\",\\\"prototype\\\",\\\"constructor\\\"]}},\\\"label\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1},\\\"direction\\\":{\\\"enum\\\":[\\\"input\\\",\\\"output\\\"]},\\\"type\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1},\\\"maxConnections\\\":{\\\"type\\\":\\\"integer\\\",\\\"minimum\\\":1}},\\\"required\\\":[\\\"id\\\",\\\"label\\\",\\\"direction\\\",\\\"type\\\"],\\\"additionalProperties\\\":false}}},\\\"required\\\":[\\\"id\\\",\\\"label\\\",\\\"parameters\\\",\\\"ports\\\"],\\\"additionalProperties\\\":false}},\\\"nodes\\\":{\\\"type\\\":\\\"array\\\",\\\"items\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"id\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"not\\\":{\\\"enum\\\":[\\\"__proto__\\\",\\\"prototype\\\",\\\"constructor\\\"]}},\\\"type\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"not\\\":{\\\"enum\\\":[\\\"__proto__\\\",\\\"prototype\\\",\\\"constructor\\\"]}},\\\"label\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1},\\\"position\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"x\\\":{\\\"type\\\":\\\"number\\\"},\\\"y\\\":{\\\"type\\\":\\\"number\\\"}},\\\"required\\\":[\\\"x\\\",\\\"y\\\"],\\\"additionalProperties\\\":false},\\\"values\\\":{\\\"type\\\":\\\"object\\\",\\\"propertyNames\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"not\\\":{\\\"enum\\\":[\\\"__proto__\\\",\\\"prototype\\\",\\\"constructor\\\"]},\\\"pattern\\\":\\\"^[A-Za-z_][A-Za-z0-9_-]*$\\\"},\\\"additionalProperties\\\":{\\\"anyOf\\\":[{\\\"type\\\":\\\"string\\\"},{\\\"type\\\":\\\"number\\\"},{\\\"type\\\":\\\"boolean\\\"},{\\\"type\\\":\\\"array\\\",\\\"items\\\":{\\\"type\\\":\\\"string\\\"}},{\\\"type\\\":\\\"array\\\",\\\"items\\\":{\\\"type\\\":\\\"number\\\"}}]}},\\\"ports\\\":{\\\"type\\\":\\\"array\\\",\\\"items\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"id\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"not\\\":{\\\"enum\\\":[\\\"__proto__\\\",\\\"prototype\\\",\\\"constructor\\\"]}},\\\"label\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1},\\\"direction\\\":{\\\"enum\\\":[\\\"input\\\",\\\"output\\\"]},\\\"type\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1},\\\"maxConnections\\\":{\\\"type\\\":\\\"integer\\\",\\\"minimum\\\":1}},\\\"required\\\":[\\\"id\\\",\\\"label\\\",\\\"direction\\\",\\\"type\\\"],\\\"additionalProperties\\\":false}}},\\\"required\\\":[\\\"id\\\",\\\"type\\\",\\\"label\\\",\\\"position\\\",\\\"values\\\"],\\\"additionalProperties\\\":false}},\\\"edges\\\":{\\\"type\\\":\\\"array\\\",\\\"items\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"id\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"not\\\":{\\\"enum\\\":[\\\"__proto__\\\",\\\"prototype\\\",\\\"constructor\\\"]}},\\\"source\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"not\\\":{\\\"enum\\\":[\\\"__proto__\\\",\\\"prototype\\\",\\\"constructor\\\"]}},\\\"sourcePort\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"not\\\":{\\\"enum\\\":[\\\"__proto__\\\",\\\"prototype\\\",\\\"constructor\\\"]}},\\\"target\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"not\\\":{\\\"enum\\\":[\\\"__proto__\\\",\\\"prototype\\\",\\\"constructor\\\"]}},\\\"targetPort\\\":{\\\"type\\\":\\\"string\\\",\\\"minLength\\\":1,\\\"not\\\":{\\\"enum\\\":[\\\"__proto__\\\",\\\"prototype\\\",\\\"constructor\\\"]}}},\\\"required\\\":[\\\"id\\\",\\\"source\\\",\\\"sourcePort\\\",\\\"target\\\",\\\"targetPort\\\"],\\\"additionalProperties\\\":false}},\\\"allowCycles\\\":{\\\"type\\\":\\\"boolean\\\"}},\\\"required\\\":[\\\"schema\\\",\\\"revision\\\",\\\"nodeTypes\\\",\\\"nodes\\\",\\\"edges\\\"],\\\"additionalProperties\\\":false}}\",\"turnProgress\":{\"applied\":0,\"metrics\":{\"toolCalls\":4,\"completedCalls\":4,\"refusedCalls\":0,\"recoveryAttempts\":0,\"toolElapsedMs\":75,\"providerRequests\":2,\"visionRequests\":0,\"acknowledgementMs\":0,\"confirmedEdits\":0,\"usage\":{\"inputTokens\":42615,\"outputTokens\":686,\"totalTokens\":43301},\"categories\":{\"knowledge\":1,\"source\":3,\"edit\":0,\"observe\":0,\"other\":0},\"elapsedMs\":22477,\"toolActiveMs\":48,\"outsideToolMs\":22430,\"modelSteps\":null,\"cost\":null},\"retainedKnowledge\":{\"scope\":\"Complete contract bodies delivered in this turn only; reuse still requires their content to remain available in model context. Source facts are never cached knowledge.\",\"complete\":[],\"partialCount\":0},\"visualEvidence\":{\"regions\":[],\"currentSourceObservations\":0,\"scope\":\"Captured regions only; source freshness does not establish current runtime/viewport freshness or offscreen/interaction coverage.\",\"interactionsVerified\":false},\"evidence\":\"Host receipt-derived totals include all acknowledged transactions, including cleanup. Outside-tool time is waiting/generation/transport/host overhead, not measured provider latency. Captured regions do not est"
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: I now have the full graph model (10 types, 14 nodes, 20 links, revision 8). Next, the exact workspace/viewport/port contracts.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen failed" [expanded]:
+            - generic: Read screen
+            - generic: failed
+          - region "Tool input":
+            - heading "Input" [level=4]
+            - generic: "{\"section\":\"contracts\",\"offset\":3600,\"limit\":12,\"components\":[{\"id\":\"vict.flow.workspace\",\"revision\":\"2\"}],\"includeExamples\":true,\"knownBodyIdentities\":{\"vict.flow.workspace@2\":\"studio-contract-body@2:examples:f00c11a2889c86aa4b79171bc2dd55f2835f27918a933bc1562cd4be7ab61bcb\"}}"
+          - region "Tool result":
+            - heading "Result" [level=4]
+            - generic: "{\"expectedRevision\":\"r1.r2#0\",\"cursor\":{\"documentId\":\"screen-a8690ffa-1e90-4b72-909c-66141d372773\",\"revision\":\"r1.r2#0\",\"digest\":\"349cf6018cd6598205381612ca35a86f56308c2cbed01e53bc77e1da86291ffb\",\"epoch\":\"42d6cc79-bcaa-4f84-a34a-7d5d54685af2\"},\"section\":\"contracts\",\"registryReady\":true,\"ok\":false,\"code\":\"STUDIO_AGENT_CONTRACT_BODY_INVALIDATED\",\"invalidations\":[{\"key\":\"vict.flow.workspace@2\",\"expected\":null,\"actual\":\"studio-contract-body@2:examples:f00c11a2889c86aa4b79171bc2dd55f2835f27918a933bc1562cd4be7ab61bcb\"}],\"message\":\"Discard partial text for these identities and restart at offset 0 with the intended includeExamples projection. Continuations require expectedBodyIdentities keyed id@revision.\",\"complete\":false,\"registryDigest\":\"be1140999428ec8ec28a19508f92def0b24e32afa7b8d1fbea42b0037999bb8e\",\"items\":[{\"id\":\"vict.flow.workspace\",\"revision\":\"2\",\"digest\":\"f00c11a2889c86aa4b79171bc2dd55f2835f27918a933bc1562cd4be7ab61bcb\",\"bodyIdentity\":\"studio-contract-body@2:examples:f00c11a2889c86aa4b79171bc2dd55f2835f27918a933bc1562cd4be7ab61bcb\",\"invalidated\":true,\"bodyComplete\":false}],\"pending\":[],\"problems\":[],\"projection\":\"contract-with-examples\",\"paging\":\"Bodies are lossless JSON text pages. Initial bundles include dependency bodies; continuations page only explicitly selected components, one body at its own nextOffset. Send expectedBodyIdentities:{\\\"id@revision\\\":bodyIdentity} with unchanged includeExamples. Changing projection invalidates partial pages. Retain digest/bodyIdentity only after assembling every character from offset 0 to totalCharacters. knownBodyIdentities proves projection when reusing examples; a guidance-only body does not contain examples. Pending/partial dependencies are not complete knowledge. Source facts never use knowledge-cache digests.\",\"turnProgress\":{\"applied\":0,\"metrics\":{\"toolCalls\":15,\"completedCalls\":14,\"refusedCalls\":1,\"recoveryAttempts\":0,\"toolElapsedMs\":172,\"providerRequests\":9,\"visionRequests\":0,\"acknowledgementMs\":0,\"confirmedEdits\":0,\"usage\":{\"inputTokens\":301726,\"outputTokens\":4789,\"totalTokens\":306515},\"categories\":{\"knowledge\":3,\"source\":12,\"edit\":0,\"observe\":0,\"other\":0},\"elapsedMs\":180658,\"toolActiveMs\":117,\"outsideToolMs\":180541,\"modelSteps\":null,\"cost\":null},\"retainedKnowledge\":{\"scope\":\"Complete contract bodies delivered in this turn only; reuse still requires their content to remain available in model context. Source facts are never cached knowledge.\",\"complete\":[{\"key\":\"vict.flow.viewport@2\",\"digest\":\"5b4621d1a7c643568cf405c671169e75fbd74ce30ef9b4923e29edceb9a2d46c\",\"bodyIdentity\":\"studio-contract-body@2:examples:5b4621d1a7c643568cf405c671169e75fbd74ce30ef9b4923e29edceb9a2d46c\"},{\"key\":\"vict.flow.port@2\",\"digest\":\"24e6e5123d1d40bd1e815672e45a2f55e7eb28831aa670d0c6fd8ff60eefa127\",\"bodyIdentity\":\"studio-contract-body@2:examples:24e6e5123d1d40bd1e815672e45a2f55e7eb28831aa670d0c6fd8ff60eefa127\"}],\"partialCount\":0},\"visualEvidence\":{\"regions\":[],\"currentSourceObservations\":0,\"scope\":\"Captured regions only; source freshness does not establish current runtime/viewport freshness or offscreen/interaction coverage.\",\"interactionsVerified\":false},\"evidence\":\"Host receipt-derived totals include all acknowledged transactions, including cleanup. Outside-tool time is waiting/generation/transport/host overhead, not measured provider latency. Captured regions do not establish full-page or interaction coverage.\"}}"
+          - paragraph:
+            - text: Continuation needs the
+            - code: expectedBodyIdentities
+            - text: field specifically — retrying.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: The workspace contract is assembled. Now the exact graph operation grammar.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: Contract knowledge is assembled. Now I need the exact existing control patterns and header text before editing.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed" [expanded]:
+            - generic: Read screen
+            - generic: completed
+          - region "Tool input":
+            - heading "Input" [level=4]
+            - generic: "{\"section\":\"sources\",\"offset\":600,\"limit\":9,\"nodeIds\":[\"c-aud\",\"c-msel\",\"c-steps\",\"bh-brief\",\"bf-brief\",\"br-brief\"]}"
+          - region "Tool result":
+            - heading "Result" [level=4]
+            - generic: "{\"expectedRevision\":\"r1.r2#0\",\"cursor\":{\"documentId\":\"screen-a8690ffa-1e90-4b72-909c-66141d372773\",\"revision\":\"r1.r2#0\",\"digest\":\"349cf6018cd6598205381612ca35a86f56308c2cbed01e53bc77e1da86291ffb\",\"epoch\":\"42d6cc79-bcaa-4f84-a34a-7d5d54685af2\"},\"section\":\"sources\",\"items\":[{\"nodeId\":\"c-aud\",\"sourceJson\":\"e\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"12px\\\"}},{\\\"property\\\":\\\"padding\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"6px 8px\\\"}},{\\\"property\\\":\\\"width\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"100%\\\"}}],\\\"interactions\\\":[{\\\"on\\\":\\\"change\\\",\\\"action\\\":\\\"setState\\\",\\\"key\\\":\\\"audience\\\",\\\"value\\\":{\\\"type\\\":\\\"ref\\\",\\\"path\\\":\\\"state.audience\\\"}}]}\",\"totalCharacters\":886,\"offset\":600,\"nextOffset\":null},{\"nodeId\":\"c-msel\",\"sourceJson\":\"size\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"12px\\\"}},{\\\"property\\\":\\\"padding\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"6px 8px\\\"}},{\\\"property\\\":\\\"width\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"100%\\\"}}]}\",\"totalCharacters\":772,\"offset\":600,\"nextOffset\":null},{\"nodeId\":\"c-steps\",\"sourceJson\":\"roperty\\\":\\\"padding\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"6px 8px\\\"}},{\\\"property\\\":\\\"width\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"100%\\\"}}]}\",\"totalCharacters\":723,\"offset\":600,\"nextOffset\":null},{\"nodeId\":\"bh-brief\",\"sourceJson\":\"pe\\\":\\\"text\\\",\\\"value\\\":\\\"grab\\\"}},{\\\"property\\\":\\\"padding\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"6px 8px\\\"}}],\\\"classes\\\":[\\\"vict-graph-drag-handle\\\",\\\"cf-nodehdr\\\"]}\",\"totalCharacters\":744,\"offset\":600,\"nextOffset\":null},{\"nodeId\":\"bf-brief\",\"sourceJson\":\"{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"0\\\"}}],\\\"classes\\\":[\\\"nodrag\\\",\\\"nopan\\\",\\\"nowheel\\\",\\\"cf-fields\\\"]}\",\"totalCharacters\":681,\"offset\":600,\"nextOffset\":null},{\"nodeId\":\"br-brief\",\"sourceJson\":\"{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"12px\\\"}},{\\\"property\\\":\\\"box-shadow\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"0 10px 24px rgba(2,8,23,0.45)\\\"}},{\\\"property\\\":\\\"color\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"#e2edf7\\\"}},{\\\"property\\\":\\\"flex-direction\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"column\\\"}},{\\\"property\\\":\\\"padding\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"10px\\\"}},{\\\"property\\\":\\\"width\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"240px\\\"}}],\\\"classes\\\":[\\\"cf-node\\\"]}\",\"totalCharacters\":1002,\"offset\":600,\"nextOffset\":null}],\"paging\":\"Lossless text pages for each named source at this exact cursor. Completed shorter items remain complete on later shared-offset pages. Stop only when every nextOffset is null.\",\"turnProgress\":{\"applied\":0,\"metrics\":{\"toolCalls\":22,\"completedCalls\":21,\"refusedCalls\":1,\"recoveryAttempts\":1,\"toolElapsedMs\":229,\"providerRequests\":16,\"visionRequests\":0,\"acknowledgementMs\":0,\"confirmedEdits\":0,\"usage\":{\"inputTokens\":698140,\"outputTokens\":10754,\"totalTokens\":708894},\"categories\":{\"knowledge\":7,\"source\":15,\"edit\":0,\"observe\":0,\"other\":0},\"elapsedMs\":368812,\"toolActiveMs\":174,\"outsideToolMs\":368638,\"modelSteps\":null,\"cost\":null},\"retainedKnowledge\":{\"scope\":\"Complete contract bodies delivered in this turn only; reuse still requires their content to remain available in model context. Source facts are never cached knowledge.\",\"complete\":[{\"key\":\"vict.flow.viewport@2\",\"digest\":\"5b4621d1a7c643568cf405c671169e75fbd74ce30ef9b4923e29edceb9a2d46c\",\"bodyIdentity\":\"studio-contract-body@2:examples:5b4621d1a7c643568cf405c671169e75fbd74ce30ef9b4923e29edceb9a2d46c\"},{\"key\":\"vict.flow.port@2\",\"digest\":\"24e6e5123d1d40bd1e815672e45a2f55e7eb28831aa670d0c6fd8ff60eefa127\",\"bodyIdentity\":\"studio-contract-body@2:examples:24e6e5123d1d40bd1e815672e45a2f55e7eb28831aa670d0c6fd8ff60eefa127\"}],\"partialCount\":1},\"visualEvidence\":{\"regions\":[],\"currentSourceObservations\":0,\"scope\":\"Captured regions only; source freshness does not establish current runtime/viewport freshness or offscreen/interaction coverage.\",\"interactionsVerified\":false},\"evidence\":\"Host receipt-derived totals include all acknowledged transactions, including cleanup. Outside-tool time is waiting/generation/transport/host overhead, not measured provider latency. Captured regions do not establish full-page or interaction coverage.\"}}"
+        - button "Copy message":
+        - generic: You
+        - generic: continue
+        - button "Copy message":
+        - generic: Assistant
+        - status: The screen changed while the agent was working. No edit was applied; send a new request using the current screen. 3 applied edits remain undoable.
+        - button "Public activity and tool details" [expanded]:
+          - text: Public activity and tool details
+        - generic "Conversation timeline":
+          - paragraph: "Picking up Campaign Foundry at r1.r2#0: the outer shell and three node bodies exist, so I'll re-read the exact flow contracts (workspace/viewport/port, graph + operations grammars) and the header text before composing the remaining seven bodies and nested finishing work."
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph:
+            - text: "Contracts mostly in: graph grammar confirmed (ports accept"
+            - code: maxConnections
+            - text: ), header text is already real, and viewport/port are minimal parts. Two bodies are partial — continuing both pages now, since the workspace guidance was cut exactly where occurrence/nested authoring rules start.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph:
+            - text: "All contracts are now complete: nested instances bind an inner workspace's"
+            - code: graph
+            - text: /
+            - code: graphChange
+            - text: to the controlled
+            - code: subgraph
+            - text: body-state key (matching the finish node's string parameter), and the operations grammar covers
+            - code: defineNodeType
+            - text: /
+            - code: connect
+            - text: /
+            - code: setParameter
+            - text: with port
+            - code: maxConnections
+            - text: . I'll preflight the cleanup batch first (starter-literal removal, header contrast, control wiring).
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: Preflight is clean — applying the cleanup batch now.
+          - button "Edit screen completed" [expanded]:
+            - generic: Edit screen
+            - generic: completed
+          - region "Tool input":
+            - heading "Input" [level=4]
+            - generic: "{\"expectedRevision\":\"r1.r2#0\",\"reason\":\"Campaign Foundry continuation: remove starter literals, fix light header contrast, add pipeline guide hint, wire model select and steps input to body state\",\"operations\":[{\"op\":\"remove\",\"nodeId\":\"cf-count-n-text\"},{\"op\":\"remove\",\"nodeId\":\"cf-count-e-text\"},{\"op\":\"remove\",\"nodeId\":\"bl-brief-text\"},{\"op\":\"remove\",\"nodeId\":\"bl-prompt-text\"},{\"op\":\"remove\",\"nodeId\":\"bl-model-text\"},{\"op\":\"style\",\"nodeId\":\"cf-header\",\"property\":\"background-color\",\"value\":{\"type\":\"text\",\"value\":\"#101b2e\"}},{\"op\":\"modify\",\"nodeId\":\"cf-hint-text\",\"text\":\"Pan: drag · Zoom: wheel · Drag cards by their teal header · Flow: brief → prompts → drafts → finishing → review → checklist → export\"},{\"op\":\"wireInput\",\"nodeId\":\"c-msel\",\"key\":\"model\"},{\"op\":\"bindAttribute\",\"nodeId\":\"c-steps\",\"name\":\"value\",\"expression\":{\"type\":\"ref\",\"path\":\"state.steps\"}},{\"op\":\"wireInput\",\"nodeId\":\"c-steps\",\"key\":\"steps\"}]}"
+          - region "Tool result":
+            - heading "Result" [level=4]
+            - generic: "{\"ok\":true,\"expectedRevision\":\"r1.r2#1\",\"revision\":\"r1.r2#1\",\"digest\":\"80dced421747586f20c2cda218786d8456bdcfffd94520a76508ffda6267939e\",\"applied\":1,\"coverage\":{\"available\":119,\"authored\":3,\"catalogAuthored\":0,\"registeredAuthored\":3,\"reachableSourceNodes\":62,\"requested\":119,\"scope\":\"all-authorable-definitions\",\"missing\":[\"vict.catalog.button\",\"vict.catalog.checkbox\",\"vict.catalog.select\",\"vict.catalog.dialog\",\"vict.catalog.switch\",\"vict.catalog.toggle\",\"vict.catalog.select-multiple\",\"vict.catalog.select-item\",\"vict.catalog.combobox\",\"vict.catalog.combobox-multiple\",\"vict.catalog.combobox-item\",\"vict.catalog.toggle-group\",\"vict.catalog.toggle-group-multiple\",\"vict.catalog.toggle-group-item\",\"vict.catalog.accordion\",\"vict.catalog.accordion-multiple\",\"vict.catalog.accordion-item\",\"vict.catalog.slider\",\"vict.catalog.meter\",\"vict.catalog.progress\",\"vict.catalog.pagination\",\"vict.catalog.date-field\",\"vict.catalog.date-picker\",\"vict.catalog.calendar\",\"vict.catalog.time-field\",\"vict.catalog.date-range-field\",\"vict.catalog.date-range-picker\",\"vict.catalog.range-calendar\",\"vict.catalog.dropdown-menu\",\"vict.catalog.context-menu\",\"vict.catalog.menubar\",\"vict.catalog.menubar.menu\",\"vict.catalog.dropdown-menu.item\",\"vict.catalog.dropdown-menu.sub\",\"vict.catalog.dropdown-menu.checkbox-item\",\"vict.catalog.dropdown-menu.checkbox-group\",\"vict.catalog.dropdown-menu.radio-group\",\"vict.catalog.dropdown-menu.radio-item\",\"vict.catalog.dropdown-menu.group\",\"vict.catalog.dropdown-menu.separator\",\"vict.catalog.context-menu.item\",\"vict.catalog.context-menu.sub\",\"vict.catalog.context-menu.checkbox-item\",\"vict.catalog.context-menu.checkbox-group\",\"vict.catalog.context-menu.radio-group\",\"vict.catalog.context-menu.radio-item\",\"vict.catalog.context-menu.group\",\"vict.catalog.context-menu.separator\",\"vict.catalog.menubar.item\",\"vict.catalog.menubar.sub\",\"vict.catalog.menubar.checkbox-item\",\"vict.catalog.menubar.checkbox-group\",\"vict.catalog.menubar.radio-group\",\"vict.catalog.menubar.radio-item\",\"vict.catalog.menubar.group\",\"vict.catalog.menubar.separator\",\"vict.catalog.command\",\"vict.catalog.command.item\",\"vict.catalog.command.group\",\"vict.catalog.navigation-menu\",\"vict.catalog.navigation-menu.item\",\"vict.catalog.navigation-menu.link\",\"vict.catalog.navigation-menu.sub\",\"vict.catalog.avatar\",\"vict.catalog.aspect-ratio\",\"vict.catalog.separator\",\"vict.catalog.label\",\"vict.catalog.scroll-area\",\"vict.catalog.toolbar\",\"vict.catalog.toolbar-button\",\"vict.catalog.link-preview\",\"vict.catalog.tooltip\",\"vict.catalog.popover\",\"vict.catalog.alert-dialog\",\"vict.catalog.tabs\",\"vict.catalog.tabs-trigger\",\"vict.catalog.tabs-panel\",\"vict.catalog.collapsible\",\"vict.ai.conversation\",\"vict.ai.message\",\"vict.ai.prompt-input\",\"vict.ai.reasoning\",\"vict.ai.chain-of-thought\",\"vict.ai.tool\",\"vict.ai.plan\",\"vict.ai.task\",\"vict.ai.queue\",\"vict.ai.terminal\",\"vict.ai.test-results\",\"vict.ai.stack-trace\",\"vict.ai.subagent\",\"vict.ai.context\",\"vict.ai.sources\",\"vict.ai.inline-citation\",\"vict.ai.file-tree\",\"vict.ai.markdown\",\"vict.ai.checkpoint\",\"vict.ai.confirmation\",\"vict.ai.suggestion\",\"vict.ai.model-selector\",\"vict.ai.transcript\",\"vict.flow.canvas\",\"vict.flow.node\",\"vict.flow.edge\",\"vict.media.image\",\"vict.media.video\",\"vict.media.embed\",\"vict.media.icon\",\"vict.media.vector\",\"vict.media.asset-library\",\"vict.pattern.drawer\",\"vict.pattern.carousel\",\"vict.pattern.navigation\",\"vict.pattern.filtered-list\",\"vict.pattern.first-visit\",\"vict.pattern.action-button\"],\"evidence\":\"Reachable declared source presence only, including inactive branches/templates. An agent-declared manifest is not proof of the user intent, observed appearance, exercised interaction or completion.\",\"missingCount\":116,\"moreMissing\":false},\"verification\":\"source-only\",\"turnProgress\":{\"applied\":1,\"metrics\":{\"toolCalls\":8,\"completedCalls\":8,\"refusedCalls\":0,\"recoveryAttempts\":0,\"toolElapsedMs\":552,\"providerRequests\":4,\"visionRequests\":0,\"acknowledgementMs\":178,\"confirmedEdits\":1,\"usage\":{\"inputTokens\":233825,\"outputTokens\":22331,\"totalTokens\":256156},\"firstEditMs\":541396.0571999999,\"categories\":{\"knowledge\":5,\"source\":2,\"edit\":1,\"observe\":0,\"other\":0},\"elapsedMs\":541398,\"toolActiveMs\":491,\"outsideToolMs\":540907,\"modelSteps\":null,\"cost\":null},\"retainedKnowledge\":{\"scope\":\"Complete contract bodies delivered in this turn only; reuse still requires their content to remain available in model context. Source facts are never cached knowledge.\",\"complete\":[{\"key\":\"vict.flow.viewport@2\",\"digest\":\"5b4621d1a7c643568cf405c671169e75fbd74ce30ef9b4923e29edceb9a2d46c\",\"bodyIdentity\":\"studio-contract-body@2:guidance:5b4621d1a7c643568cf405c671169e75fbd74ce30ef9b4923e29edceb9a2d46c\"},{\"key\":\"vict.flow.port@2\",\"digest\":\"24e6e5123d1d40bd1e815672e45a2f55e7eb28831aa670d0c6fd8ff60eefa127\",\"bodyIdentity\":\"studio-contract-body@2:guidance:24e6e5123d1d40bd1e815672e45a2f55e7eb28831aa670d0c6fd8ff60eefa127\"}],\"partialCount\":1},\"visualEvidence\":{\"regions\":[],\"currentSourceObservations\":0,\"scope\":\"Captured regions only; source freshness does not establish current runtime/viewport freshness or offscreen/interaction coverage.\",\"interactionsVerified\":false},\"evidence\":\"Host receipt-derived totals include all acknowledged transactions, including cleanup. Outside-tool time is waiting/generation/transport/host overhead, not measured provider latency. Captured regions do not establish full-page or interaction coverage.\"}}"
+          - paragraph: "Cleanup confirmed at r1.r2#1. Now adding the Style reference and Seed & sampling node bodies (full card pattern: drag header, wired fields, help toggle, ports)."
+          - button "Edit screen failed":
+            - generic: Edit screen
+            - generic: failed
+          - paragraph: Insert refused on the bound-text shape — probing the exact accepted form with a tiny preflight.
+          - button "Read screen failed":
+            - generic: Read screen
+            - generic: failed
+          - paragraph:
+            - text: "Found it: a text insert carried"
+            - code: styles
+            - text: — text nodes take only text/expression plus position. Moving that styling onto its parent row and resubmitting the batch.
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - paragraph: Style & Seed bodies acknowledged (r1.r2#2). Adding the Draft generation card next — format select, hi-res toggle, help, and all seven semantic ports.
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - paragraph: Draft card in (r1.r2#3). Now the Review & approval and Merge checklist bodies.
+          - button "Edit screen failed":
+            - generic: Edit screen
+            - generic: failed
+        - paragraph: No successful final response. Public notes and tool receipts remain in details.
+        - button "Copy message":
+        - generic: You
+        - generic: Continue the SAME Campaign Foundry app from the current saved r1.r3. The accepted cleanup, Style, Seed and Draft bodies are preserved, along with the latest graph positions. The preceding turn stopped on a source revision guard; read the current editing token rather than reuse its old token. For this useful checkpoint, finish the two existing Review & approval occurrences and the Merge & delivery checklist body. Review needs readable status and notes controls; social/poster values must remain independent. Merge needs a useful editable checklist and a clearly labeled manual readiness control. Reuse the existing public workspace/body/port composition and existing registered controls where appropriate. Provide all of their existing typed ports. Per-node Help should use a registered public control and temporary private open state. Keep current graph topology, positions and configuration values, including the already approved social review and pending poster review. No model execution, generated assets, publishing or fabricated approvals; these are editable configuration and review settings. Read only the exact missing facts/contracts and preflight unfamiliar operations, then apply useful coherent transactions. Do not spend this turn generating all remaining families at once. Leave Save to me. The full goal still includes Export, both independently controlled three-step/two-link nested Finishing flows with shared authored body, remaining model/help refinements, navigation and native/portable verification; report those as remaining rather than claim completion now.
+        - button "Copy message":
+        - generic: Assistant
+        - generic "Host evidence summary":
+          - paragraph: Host evidence summary
+          - status: Source changes were applied; saving is separate. A preview image matching the final source was assessed by AI; its claims remain unverified. Behavior was not tested by this agent.
+        - button "Original AI assessment and tool details" [expanded]:
+          - text: Original AI assessment and tool details
+        - paragraph: Original AI assessment — claims not independently verified. Tool receipts separately record confirmed effects and capture limits.
+        - generic "Conversation timeline":
+          - paragraph: Picking up Campaign Foundry at the fresh token r1.r3#15 — first reading the current flow subtree inventory and declared state to see exactly which Review/Merge pieces exist and which are missing.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: The viewport itself has no children in source — the workspace nodes live elsewhere. Reading the workspace source pages and querying for the review/merge bodies directly.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph:
+            - text: The workspace body slot holds six node bodies (through Draft); Review and Merge bodies are absent, while their slot state keys (status/notes/mode, items/ready, private helpOpen) and
+            - code: isReview
+            - text: /
+            - code: isCheck
+            - text: conditions already exist. Now reading the full graph state for exact ports/parameters and one finished body (Draft) to mirror composition.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: "Graph confirmed: review has parameters status/notes with ports Draft in (image) → Decision (approval); check has items (stringList) / ready (boolean) with two approval inputs and a Package output. Reading the graph page tail (remaining review/merge values) and the Draft branch body to mirror."
+          - button "Read screen failed":
+            - generic: Read screen
+            - generic: failed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: State continuation refused on an extra field — retrying with stateKey/offset only, and reading the three Draft card parts (header, fields, ports) in parallel.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: Topology and values confirmed (revS approved, revP pending, check items/ready preserved). One bundled source read of the Draft card leaves gives me the exact port/field/help wiring to mirror.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph:
+            - text: The card pattern is clear (drag-handle header → fields container with native controls →
+            - code: vict.flow.port
+            - text: "components by id). Filling the last gaps: the select's full change interaction, label/option/checkbox/help-text leaves, and the Brief card's textarea wiring."
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: Select/checkbox/label patterns captured. Two parallel reads for the Style and Brief branch bodies — the Style card already has a wired notes textarea (exact pattern to copy) plus a second header hue for variety.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph:
+            - text: All patterns captured (card shell, drag-handle header with
+            - code: prop.label
+            - text: text, wired select/textarea/checkbox via native wiring, conditional help paragraph,
+            - code: vict.flow.port@2
+            - text: by id). Preflighting the full Review body batch — including the unfamiliar
+            - code: when
+            - text: wrapper and slot-state wiring — before applying.
+          - button "Read screen failed":
+            - generic: Read screen
+            - generic: failed
+          - paragraph:
+            - text: Four
+            - code: div
+            - text: inserts lacked the explicit
+            - code: tag
+            - text: field — adding it and re-preflighting.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: Preflight is clean — applying the Review body batch now.
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - paragraph: Review body acknowledged (r1.r3#16). Now preflighting the Merge & delivery checklist batch — three checklist gates, labeled manual readiness checkbox, help, and all three typed ports.
+          - button "Read screen failed":
+            - generic: Read screen
+            - generic: failed
+          - paragraph:
+            - text: Refused without per-op diagnostics — probing whether the two same-batch
+            - code: when
+            - text: wrappers are the cause by re-preflighting the batch without them.
+          - button "Read screen failed":
+            - generic: Read screen
+            - generic: failed
+          - paragraph: "Still refused with no diagnostics — bisecting with a minimal probe: just the three state declarations."
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: Declarations are fine — probing one checklist row (checkbox + document-state wiring) next.
+          - button "Read screen failed":
+            - generic: Read screen
+            - generic: failed
+          - paragraph:
+            - text: "Narrowing further: same probe without the"
+            - code: wireInput
+            - text: op.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph:
+            - code: wireInput
+            - text: "to newly declared document state is the failing piece. One cheaper hypothesis first: ordering — declaring state before the inserts."
+          - button "Read screen failed":
+            - generic: Read screen
+            - generic: failed
+          - paragraph:
+            - code: wireInput
+            - text: won't bind document-level state — the canonical fix is declaring the three gate keys in the body slot scope via
+            - code: slotScope
+            - text: . Preflighting that exact scope round-trip (existing props/state/conditions plus the three new keys) first.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: The scope extension validates — applying it as its own transaction.
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - paragraph: Scope keys are in place (r1.r3#17). Preflighting the full Merge body batch — now with slot-scoped wiring — plus the missed help-visibility wrapper for the Review card.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: Preflight clean — applying the Merge batch.
+          - button "Edit screen completed":
+            - generic: Edit screen
+            - generic: completed
+          - paragraph: Merge batch acknowledged at r1.r3#18. Verifying the workspace source (wrappers, scope) and then observing the actual visible region.
+          - button "Read screen completed":
+            - generic: Read screen
+            - generic: completed
+          - paragraph: Source verifies the wrappers, private gate keys, and untouched graph binding. Now observing the current visible region for actual appearance.
+          - button "Observe preview completed" [expanded]:
+            - generic: Observe preview
+            - generic: completed
+          - region "Tool input":
+            - heading "Input" [level=4]
+            - generic: "{\"focus\":\"Legibility and layout of the visible flow canvas, especially the Review & approval and Merge & delivery checklist node cards (status select, notes textarea, checklist rows, readiness control, ports)\"}"
+          - region "Tool result":
+            - heading "Result" [level=4]
+            - paragraph: Preview only; complete sanitized exchange retained
+            - generic: "{\"ok\":true,\"evidence\":\"stable-capture-with-model-assessment\",\"modelAssessment\":{\"visibleFindings\":[\"A dark navy flow canvas occupies roughly the top 300px of the image (x≈24–588) with a faint dot-grid texture, small node cards, and thin gray connector lines between them.\",\"About eleven card shapes are discernible; each is a small dark-navy rectangle (~51–54px wide, ~33–69px tall) with rounded corners and a short colored label at its top (teal, violet, amber, pink/red, indigo, or bright green), with the label wording too small to read.\",\"Two identically sized cards (~52×69px) are stacked on the right side (x≈419 at y≈73 and y≈157) with indigo top labels; each contains, top to bottom: a tiny gray label row, a full-width darker strip resembling a select, another tiny label row, a taller darker block resembling a notes textarea, a row with a ~3px square plus text, and two ~2.6px port dots near the bottom-left.\",\"The rightmost card (x≈485–537, y≈112–177) has a bright green/teal label and contains a label row, three rows each with a ~3px square checkbox plus text, a fourth row in noticeably brighter text than the others, a fifth square-plus-text row, and three ~2.6px port dots centered along the card bottom.\",\"Two similar cards (≈291,69 and ≈326,159) each show a select-like strip, a small square-plus-text row, a tiny help row, and a row of seven tiny port dots along the bottom edge; the card at ≈291,69 is outlined with a bright teal border unlike any other card.\",\"One card at top-center (≈291,-3) is clipped by the canvas top edge; the remaining cards appear fully inside the canvas.\",\"Connector lines are thin and low-contrast gray; several converge on the small port dots and some pass beneath card bodies.\",\"All in-card text (labels, option text, checkbox captions, note areas) renders at roughly 3–5px and is illegible; the individual controls are distinguishable mainly by shape and their darker-navy fill against the slightly lighter card body.\",\"A small teal pill/badge with illegible text sits in the canvas lower-right (≈x535–590, y≈283–298).\",\"Below the canvas is a slightly lighter navy rounded panel (x≈24–588, y≈314–504) whose hint line is legible: 'Pan: drag · Zoom: wheel · Drag cards by their teal header · Flow: brief → prompts → drafts → finishing → review → checklist → export'.\",\"Centered in that panel are the legible labels 'Nodes in graph' over a large bold '14', and 'Typed links' over a large bold '20', in light text.\",\"A strip of darker page background with no visible content runs along the bottom of the image (≈y504–528).\"],\"uncertainty\":[\"The two indigo-labeled right-side cards are probably the 'review' cards and the green-labeled card the 'checklist' card, based on the panel's flow description, but the actual card titles are unreadable in the image.\",\"The bright teal border on the card at ≈291,69 may indicate selection or highlight, but selection state cannot be confirmed from a static image.\",\"The brighter fourth row in the green-labeled card may be an emphasized 'ready'-style control, but its label and state are unreadable.\",\"The dark strips and blocks resembling a status select and a notes textarea may be interactive inputs, but a static image cannot establish whether they are functional form controls or miniature representations.\",\"The tiny teal pill in the canvas lower-right could be a zoom control, counter, or badge; its text is illegible so its purpose is unclear.\",\"The illegibility of card text suggests the canvas is zoomed out and the cards are scaled-down renderings of larger forms, but the actual rendered text size/content cannot be confirmed from the image alone.\"],\"notEstablished\":[\"The readable wording of any card title, field label, select option, checkbox caption, or notes placeholder — none is legible at this zoom.\",\"That the indigo-labeled cards are titled 'Review & approval' or that the green-labeled card is titled 'Merge & delivery checklist' — the focus terms are not verifiable in the image.\",\"The current values or selected state of the select-like strips and the contents of the textarea-like blocks on any card.\",\"Any header, title, or subtitle content above the canvas — the top of the page is outside the imaged area and no such text is discernible.\",\"Interaction behavior (panning, zooming, dragging cards, editing fields) — the panel hint describes controls, but the image does not establish behavior.\",\"Whether the graph is complete — the panel reports 14 nodes while roughly 11 cards are visible, so cards may exist outside the current view.\",\"A footer: no footer is discernible in the imaged area, so its existence is not established.\"],\"evidenceBasis\":\"model-interpretation-of-captured-image\",\"semanticClaimsVerified\":false},\"originalModelText\":\"{\\n \\\"visibleFindings\\\": [\\n \\\"A dark navy flow canvas occupies roughly the top 300px of the image (x≈24–588) with a faint dot-grid texture, small node cards, and thin gray connector lines between them.\\\",\\n \\\"About eleven card shapes are discernible; each is a small dark-navy rectangle (~51–54px wide, ~33–69px tall) with rounded corners and a short colored label at its top (teal, violet, amber, pink/red, indigo, or bright green), with the label wording too small to read.\\\",\\n \\\"Two identically sized cards (~52×69px) are stacked on the right side (x≈419 at y≈73 and y≈157) with indigo top labels; each contains, top to bottom: a tiny gray label row, a full-width darker strip resembling a select, another tiny label row, a taller darker block resembling a notes textarea, a row with a ~3px square plus text, and two ~2.6px port dots near the bottom-left.\\\",\\n \\\"The rightmost card (x≈485–537, y≈112–177) has a bright green/teal label and contains a label row, three rows each with a ~3px square checkbox plus text, a fourth row in noticeably brighter text than the others, a fifth square-plus-text row, and three ~2.6px port dots centered along the card bottom.\\\",\\n \\\"Two similar cards (≈291,69 and ≈326,159) each show a select-like strip, a small square-plus-text row, a tiny help row, and a row of seven tiny port dots along the bottom edge; the card at ≈291,69 is outlined with a bright teal border unlike any other card.\\\",\\n \\\"One card at top-center (≈291,-3) is clipped by the canvas top edge; the remaining cards appear fully inside the canvas.\\\",\\n \\\"Connector lines are thin and low-contrast gray; several converge on the small port dots and some pass beneath card bodies.\\\",\\n \\\"All in-card text (labels, option text, checkbox captions, note areas) renders at roughly 3–5px and is illegible; the individual controls are distinguishable mainly by shape and their darker-navy fill against the slightly lighter card body.\\\",\\n \\\"A small teal pill/badge with illegible text sits in the canvas lower-right (≈x535–590, y≈283–298).\\\",\\n \\\"Below the canvas is a slightly lighter navy rounded panel (x≈24–588, y≈314–504) whose hint line is legible: 'Pan: drag · Zoom: wheel · Drag cards by their teal header · Flow: brief → prompts → drafts → finishing → review → checklist → export'.\\\",\\n \\\"Centered in that panel are the legible labels 'Nodes in graph' over a large bold '14', and 'Typed links' over a large bold '20', in light text.\\\",\\n \\\"A strip of darker page background with no visible content runs along the bottom of the image (≈y504–528).\\\"\\n ],\\n \\\"uncertainty\\\": [\\n \\\"The two indigo-labeled right-side cards are probably the 'review' cards and the green-labeled card the 'checklist' card, based on the panel's flow description, but the actual card titles are unreadable in the image.\\\",\\n \\\"The bright teal border on the card at ≈291,69 may indicate selection or highlight, but selection state cannot be confirmed from a static image.\\\",\\n \\\"The brighter fourth row in the green-labeled card may be an emphasized 'ready'-styl"
+          - paragraph:
+            - text: "Both checkpoints are in at r1.r3#18: the Review & approval body now exists once and renders on both occurrences (status select, notes textarea, help toggle, Draft-in/Decision ports) with social/poster values still driven independently by the untouched graph — approved social, pending poster — and the Merge & delivery card has three tickable verified-gate rows plus a clearly labeled amber \"Ready for delivery (manual sign-off)\" checkbox wired to the existing"
+            - code: ready
+            - text: state, with all three typed ports.
+          - paragraph: "Host-measured bounds confirm both cards render in the captured frame with all their controls and port dots; the canvas is zoomed out, so in-card text is not legible in this crop, and I cannot click or type to exercise the controls. Remaining per your goal: the Export package body, both nested three-step/two-link Finishing flows with shared inner body, navigation/model-help refinements, and your separate native/portable testing."
+        - button "Copy message":
+        - generic: You
+        - generic: "Continue the SAME Campaign Foundry app from its current saved source. Preserve all accepted bodies, graph positions, links and configured values; read the fresh editing token. For this checkpoint finish the existing Export package body, then complete the Model settings controls. Export needs a readable destination field, format choice, both existing typed ports and a truthful configuration-only explanation; do not invent a working publish/download backend. Model needs the existing model choice, step count and guidance parameter visibly labeled and editable, with per-node Help remaining temporary private presentation state. Make the three Merge verification gates survive normal Save/export/reload as this app's declared node configuration, while keeping the existing items list and manual readiness value. Add suitable typed graph parameters and controlled body-state wiring through the public operations if needed. Preserve the distinction: configuration selections do not prove an actual review, generation or delivery happened; Help open/closed state stays private and transient. Use the established public composition and exact missing contracts, preflight unfamiliar changes, and apply useful coherent transactions. Preserve the current social/poster independence. Leave Save to me. The next checkpoint will build the two real nested Finishing flows; do not claim the full suite complete yet. The existing workspace is ws-main and its body scope already declares the isExp branch condition and the three checklist keys. Use these current source facts to target the missing pieces instead of rediscovering the whole shell. This checkpoint is source authoring only: skip image assessment now; we'll inspect the complete application after the Finishing flows exist."
+        - button "Copy message":
+        - generic: Assistant
+        - status: Working. Public notes and tool receipts are available in details.
+        - button "Public activity and tool details":
+          - text: Public activity and tool details
+    - button "Scroll to latest message":
+      - generic: Scroll to end
+    - textbox "Message":
+      - /placeholder: Ask for a change…
+      - text: "Continue the SAME Campaign Foundry app from its current saved source. Preserve all accepted bodies, graph positions, links and configured values; read the fresh editing token. For this checkpoint finish the existing Export package body, then complete the Model settings controls. Export needs a readable destination field, format choice, both existing typed ports and a truthful configuration-only explanation; do not invent a working publish/download backend. Model needs the existing model choice, step count and guidance parameter visibly labeled and editable, with per-node Help remaining temporary private presentation state. Make the three Merge verification gates survive normal Save/export/reload as this app's declared node configuration, while keeping the existing items list and manual readiness value. Add suitable typed graph parameters and controlled body-state wiring through the public operations if needed. Preserve the distinction: configuration selections do not prove an actual review, generation or delivery happened; Help open/closed state stays private and transient. Use the established public composition and exact missing contracts, preflight unfamiliar changes, and apply useful coherent transactions. Preserve the current social/poster independence. Leave Save to me. The next checkpoint will build the two real nested Finishing flows; do not claim the full suite complete yet. The existing workspace is ws-main and its body scope already declares the isExp branch condition and the three checklist keys. Use these current source facts to target the missing pieces instead of rediscovering the whole shell. This checkpoint is source authoring only: skip image assessment now; we'll inspect the complete application after the Finishing flows exist."
+    - button "Stop":
+      - generic: Stop
+    - status
+  - status "Connecting…":
+    - generic: Working…
+  - button "Chat details": ···
+- separator "Chat width"
+- main:
+  - button "Toggle Chat drawer" [expanded]:
+  - group "Workspace mode":
+    - button "Design"
+    - button "Interact" [pressed]
+    - button "Structure"
+  - button "Toggle Document and Selection drawer":
+  - iframe:
+    - generic "Screen canvas":
+      - main "Campaign Foundry — complex node suite":
+        - region "Section":
+          - heading "Campaign Foundry" [level=1]:
+            - generic: Campaign Foundry
+          - paragraph:
+            - generic: Eco travel mug launch · visual campaign workflow — configuration only, no model execution or publishing
+          - paragraph:
+            - generic: 14 nodes · 20 typed links · 10 reusable node types
+        - region "Campaign workflow":
+          - application "Campaign workflow canvas":
+            - application:
+              - group "Campaign brief":
+                - paragraph:
+                  - generic: Campaign brief
+                - textbox "Campaign summary": Launch eco travel mug — 12h heat retention, recycled steel body
+                - textbox "Audience": Commuters, students, hikers
+                - checkbox "Help for this node"
+                - 'button "output Brief out: brief"'
+              - group "Positive prompt":
+                - paragraph:
+                  - generic: Positive prompt
+                - textbox "Prompt text": matte forest-green travel mug, soft daylight, alpine trail backdrop, product hero
+                - checkbox "Help for this node"
+                - 'button "input Brief in: brief"'
+                - 'button "output Prompt out: prompt"'
+              - group "Negative prompt":
+                - paragraph:
+                  - generic: Negative prompt
+                - textbox "Prompt text": plastic sheen, cluttered background, warped text, low contrast
+                - checkbox "Help for this node"
+                - 'button "input Brief in: brief"'
+                - 'button "output Prompt out: prompt"'
+              - group "Model settings":
+                - paragraph:
+                  - generic: Model settings
+                - combobox "Model":
+                  - option [selected]
+                  - option
+                - spinbutton "Steps": "28"
+              - group "Style reference":
+                - paragraph:
+                  - generic: Style reference
+                - textbox "Style palette":
+                  - /placeholder: e.g. Forest teal
+                  - text: Forest teal
+                - textbox "Style notes": Muted natural palette, soft gradients
+                - checkbox "Help for this node"
+                - 'button "input Brief in: brief"'
+                - 'button "output Style: style"'
+              - group "Seed & sampling":
+                - paragraph:
+                  - generic: Seed & sampling
+                - spinbutton "Seed value": "4213"
+                - checkbox "Randomize seed per run (configuration only)"
+                - generic: Randomize seed (config only)
+                - checkbox "Help for this node"
+                - 'button "output Seed: seed"'
+              - group "Draft · social":
+                - paragraph:
+                  - generic: Draft · social
+                - combobox "Draft format":
+                  - option [selected]
+                  - option
+                  - option
+                  - option
+                - checkbox "Hi-res render (configuration only)" [checked]
+                - generic: Hi-res render (config only)
+                - checkbox "Help for this node"
+                - 'button "input Brief: brief"'
+                - 'button "input Settings: config"'
+                - 'button "input Negative: prompt"'
+                - 'button "input Prompt: prompt"'
+                - 'button "input Seed: seed"'
+                - 'button "input Style: style"'
+                - 'button "output Draft: image"'
+              - group "Draft · poster":
+                - paragraph:
+                  - generic: Draft · poster
+                - combobox "Draft format":
+                  - option
+                  - option
+                  - option [selected]
+                  - option
+                - checkbox "Hi-res render (configuration only)" [checked]
+                - generic: Hi-res render (config only)
+                - checkbox "Help for this node"
+                - 'button "input Brief: brief"'
+                - 'button "input Settings: config"'
+                - 'button "input Negative: prompt"'
+                - 'button "input Prompt: prompt"'
+                - 'button "input Seed: seed"'
+                - 'button "input Style: style"'
+                - 'button "output Draft: image"'
+              - group "Review · social":
+                - paragraph:
+                  - generic: Review · social
+                - paragraph:
+                  - generic: Status
+                - combobox "Review status":
+                  - option
+                  - option [selected]
+                  - option
+                - paragraph:
+                  - generic: Reviewer notes
+                - textbox "Reviewer notes": Crop reads well on feed
+                - checkbox "Help for this node"
+                - generic: Node help
+                - 'button "input Draft in: image"'
+                - 'button "output Decision: approval"'
+              - group "Review · poster":
+                - paragraph:
+                  - generic: Review · poster
+                - paragraph:
+                  - generic: Status
+                - combobox "Review status":
+                  - option [selected]
+                  - option
+                  - option
+                - paragraph:
+                  - generic: Reviewer notes
+                - textbox "Reviewer notes"
+                - checkbox "Help for this node"
+                - generic: Node help
+                - 'button "input Draft in: image"'
+                - 'button "output Decision: approval"'
+              - group "Merge & delivery checklist":
+                - paragraph:
+                  - generic: Merge & delivery checklist
+                - paragraph:
+                  - generic: Delivery gates — tick when verified
+                - 'checkbox "Verified: Crop 1:1 social"'
+                - generic: Crop 1:1 social
+                - 'checkbox "Verified: Caption 90 chars or fewer"'
+                - generic: Caption ≤90 chars
+                - 'checkbox "Verified: Contrast AA"'
+                - generic: Contrast AA
+                - checkbox "Mark package ready for delivery (manual sign-off)"
+                - generic: Ready for delivery (manual sign-off)
+                - checkbox "Help for this node"
+                - generic: Node help
+                - 'button "input Poster decision: approval"'
+                - 'button "input Social decision: approval"'
+                - 'button "output Package: check"'
+              - link "Svelte Flow attribution":
+                - /url: https://svelteflow.dev?utm_source=attribution
+                - text: Svelte Flow
+          - paragraph:
+            - generic: "Pan: drag · Zoom: wheel · Drag cards by their teal header · Flow: brief → prompts → drafts → finishing → review → checklist → export"
+          - paragraph:
+            - generic: Nodes in graph
+          - paragraph:
+            - generic: "14"
+          - paragraph:
+            - generic: Typed links
+          - paragraph:
+            - generic: "20"
+- contentinfo:
+  - status: Saved Campaign Foundry — complex node suite · revision r1.r4
+- generic: Designer — VICT Studio

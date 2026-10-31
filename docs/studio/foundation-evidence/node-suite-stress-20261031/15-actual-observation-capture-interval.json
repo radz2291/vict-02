@@ -1,0 +1,14 @@
+{
+  "capturedAt": "2026-10-31T04:41:43.355Z",
+  "revalidatedAt": "2026-10-31T04:44:01.481Z",
+  "betweenCaptureTimestampsMs": 138126,
+  "limitation": "Client timestamp interval includes inference, transport and the second capture; not exact provider latency.",
+  "imageDigest": "89006fe37c50c0b08e869acf4b997e2032dfda8d030413d826ca49391a8091a5",
+  "confirmedImageDigest": "89006fe37c50c0b08e869acf4b997e2032dfda8d030413d826ca49391a8091a5",
+  "sourceCursor": {
+    "documentId": "screen-a8690ffa-1e90-4b72-909c-66141d372773",
+    "revision": "r1.r3#18",
+    "digest": "267960e4c5cba75f870469c8269696ec8e33747eafc548980ee29dc2bad7371b",
+    "epoch": "42d6cc79-bcaa-4f84-a34a-7d5d54685af2"
+  }
+}

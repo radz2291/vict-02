@@ -1,0 +1,53 @@
+{
+  "ok": true,
+  "simulatedModel": false,
+  "scope": "within-this-observation-before-and-after-inference",
+  "semanticClaimsVerified": false,
+  "targets": 210,
+  "metadataCharacters": 63181,
+  "findings": 12,
+  "longestFindingCharacters": 376,
+  "assessmentCharacters": 4714,
+  "pages": 24,
+  "totalCharacters": 138633,
+  "image": {
+    "width": 612,
+    "height": 528,
+    "sourceWidth": 612,
+    "sourceHeight": 950,
+    "offsetLeft": 0,
+    "offsetTop": 422,
+    "cropped": true
+  },
+  "imageBytes": 29061,
+  "imageComparison": "sha256-identical",
+  "metrics": {
+    "toolCalls": 35,
+    "completedCalls": 29,
+    "refusedCalls": 6,
+    "recoveryAttempts": 9,
+    "toolElapsedMs": 142273,
+    "providerRequests": 25,
+    "visionRequests": 1,
+    "acknowledgementMs": 742,
+    "confirmedEdits": 3,
+    "usage": {
+      "inputTokens": 1406327,
+      "outputTokens": 40945,
+      "totalTokens": 1447272
+    },
+    "firstEditMs": 456582.86120000016,
+    "categories": {
+      "knowledge": 0,
+      "source": 31,
+      "edit": 3,
+      "observe": 1,
+      "other": 0
+    },
+    "elapsedMs": 895940,
+    "toolActiveMs": 142205,
+    "outsideToolMs": 753735,
+    "modelSteps": null,
+    "cost": null
+  }
+}

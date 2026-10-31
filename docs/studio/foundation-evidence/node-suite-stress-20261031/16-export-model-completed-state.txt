@@ -1,0 +1,105 @@
+Picking up Campaign Foundry at the fresh token r1.r4#19 — I'll read the current ws-main body scope and graph facts, then add the Export and Model bodies plus graph-backed Merge gate configuration.
+
+Read screen
+completed
+Read screen
+completed
+
+The scope already has everything needed: destination/format (Export), model/steps/guidance (Model), all conditions, and the three gate keys checkAA/checkCaption/checkCrop — currently uncontrolled, so they need graph parameters plus a controlled-flag flip. Now reading the graph model and the existing card patterns to mirror.
+
+Read screen
+completed
+Read screen
+completed
+Read screen
+completed
+Read screen
+completed
+
+The graph confirms: exp already has destination/format parameters and both typed ports; model has all three settings parameters; check lacks the three gate parameters (that's the persistence gap). The Model card exists but has only two unlabeled controls — no visible labels, no guidance input, no help, no ports. Now reading the card tails (ports/help pattern), the remaining graph page, and exact leaf sources to mirror.
+
+Read screen
+completed
+Read screen
+completed
+Read screen
+completed
+
+Card tails and port composition captured (vict.flow.port@2 with a literal id prop, cf-ports row, help pattern). One correction: the graph continuation must come from the state section, plus a bundled read of the exact card/field leaves whose styles and wiring were truncated.
+
+Read screen
+failed
+Read screen
+completed
+
+Two small continuations: the state read takes no nodeId, and the bundled source pages share an offset for the truncated items.
+
+Read screen
+completed
+Read screen
+completed
+
+All facts are in: graph revision 19, check node keeps items/ready values, exp holds destination "campaign-foundry/mug-launch" + format "Web bundle", and the exact card/field/port styles are captured. Preflighting the three construction batches now (graph type change, Model completion, Export body).
+
+Read screen
+completed
+Read screen
+failed
+Read screen
+failed
+
+Graph change validated; my probe had a stray type attribute on the label p (removing it), and the Export probe simply needs its parents created in the same batch. Applying the graph transaction first.
+
+Edit screen
+completed
+
+Gate parameters are in the check type (r1.r4#20) with occurrence values untouched. Now preflighting the remaining three transactions at the fresh token.
+
+Read screen
+completed
+Read screen
+completed
+
+Scope flip and Model batch both validate. Now the Export body batch preflight.
+
+Read screen
+completed
+
+All three transactions validate. Applying them one at a time, starting with the controlled gate flags.
+
+Edit screen
+completed
+
+Gate flags are controlled (r1.r4#21). Applying the Model completion batch.
+
+Edit screen
+completed
+
+Model card complete (r1.r4#22). Now the Export body.
+
+Edit screen
+completed
+
+All four transactions are acknowledged (r1.r4#23). Verifying from source that the graph values, gate parameters, and both card structures are exactly as intended.
+
+Read screen
+completed
+Read screen
+completed
+Read screen
+completed
+Read screen
+completed
+
+Graph verified at revision 20: gate booleans are declared check-type parameters, all node values (items, ready false, approved/pending reviews, model/seed/style settings), positions and all 20 links are untouched. Reading the two card tails to confirm help wiring and ports.
+
+Read screen
+completed
+Read screen
+completed
+
+Checkpoint applied at r1.r4#23: the Export card now has a labeled destination field and format select bound to the existing exp node values ("campaign-foundry/mug-launch", "Web bundle"), both typed ports, a help toggle, and an always-visible note that it records delivery configuration only; the Model card now shows labeled Model/Steps/Guidance controls wired to their existing graph parameters plus its Settings port, with Help still private transient state.
+
+The three Merge gates are now declared configuration — checkAA/checkCaption/checkCrop boolean parameters on the check node type (graph rev 20) with the body-scope keys flipped to controlled — while the existing items list, ready:false, all positions/links and the approved-social/pending-poster values are verified untouched in source.
+
+Per your instruction I skipped image assessment, so appearance and the click-to-persist path are unverified by me; still remaining for the next checkpoint are the two nested three-step/two-link Finishing flows, navigation/model-help refinements, and your native/save/reload testing.
