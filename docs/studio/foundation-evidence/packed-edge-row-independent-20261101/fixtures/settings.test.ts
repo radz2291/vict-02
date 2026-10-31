@@ -161,3 +161,33 @@ it('independent: a retained scoped callback cannot publish after its workspace u
   frame.onOutput?.('reset');
   expect(v.events).toHaveLength(before);
 });
+
+it('installed edge-settings: native canvas and selected-edge controls reset inheritance after a validated reconnect', async () => {
+  const v = await open();
+  try {
+    const change = async (label: string, value: string) => {
+      const input = v.target.querySelector<HTMLInputElement>(`[aria-label="${label}"]`)!;
+      expect(input).toBeTruthy(); input.value = value;
+      input.dispatchEvent(new Event('input', { bubbles: true })); await settle();
+    };
+    const reset = async (name: string) => {
+      const button = [...v.target.querySelectorAll('button')].find(item => item.textContent?.trim() === name)!;
+      expect(button).toBeTruthy(); button.click(); await settle();
+    };
+    await change('canvas color', '#abc');
+    expect(v.context.graph.edgeDefaults).toEqual({ color: '#abc' });
+    v.context.select({ nodes: [], edges: ['same-edge'] }); await settle();
+    await change('selection color', '#def');
+    expect(v.context.graph.edges[0].appearance).toEqual({ color: '#def' });
+    v.context.apply([{ type: 'reconnect', edgeId: 'same-edge', connection: { source: 'c', sourcePort: 'out', target: 'b', targetPort: 'in' } }]); await settle();
+    expect(v.context.graph.edges[0]).toMatchObject({ source: 'c', target: 'b', appearance: { color: '#def' } });
+    await reset('Reset selection');
+    expect(v.context.graph.edges[0].appearance).toBeUndefined();
+    expect(v.target.querySelector<HTMLInputElement>('[aria-label="selection color"]')!.value).toBe('#abc');
+    await reset('Reset canvas');
+    expect(v.context.graph.edgeDefaults).toEqual({});
+    expect(v.target.querySelector<HTMLInputElement>('[aria-label="selection color"]')!.value).toBe('token:border');
+    expect(v.context.graph.edges[0].source).toBe('c');
+    expect(v.context.graph.edges[1]).toMatchObject({ source: 'a', target: 'c' });
+  } finally { await v.close(); }
+});
