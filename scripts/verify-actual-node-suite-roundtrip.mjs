@@ -3,6 +3,7 @@ import { mkdtempSync, writeFileSync, mkdirSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve, dirname } from 'node:path';
 import { execFileSync } from 'node:child_process';
+import { createRequire } from 'node:module';
 import { build } from 'vite';
 import { svelte } from '@sveltejs/vite-plugin-svelte';
 
@@ -13,13 +14,14 @@ const temporary = mkdtempSync(join(tmpdir(), 'vict-actual-node-suite-roundtrip-'
 mkdirSync(dirname(reportPath), { recursive: true });
 const entry = join(temporary, 'roundtrip.ts');
 const sourceCommit = execFileSync('git', ['rev-parse', 'HEAD'], { cwd: root, encoding: 'utf8' }).trim();
+const flowPublicEntry = createRequire(import.meta.url).resolve('@victframework/ui-flow-svelte');
 writeFileSync(entry, `
 import {readFileSync,writeFileSync} from 'node:fs';
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import {prepareSourceImport} from ${JSON.stringify(resolve('apps/studio/src/lib/designer/source-import.ts').replaceAll('\\', '/'))};
 import {screenApplication} from ${JSON.stringify(resolve('apps/studio/src/lib/designer/application.ts').replaceAll('\\', '/'))};
-import {parseGraphV2} from '@victframework/ui-flow-svelte';
+import {parseGraphV2} from ${JSON.stringify(flowPublicEntry.replaceAll('\\', '/'))};
 const input=${JSON.stringify(input)},canonicalPath=${JSON.stringify(canonicalPath)},reportPath=${JSON.stringify(reportPath)};
 const hash=value=>createHash('sha256').update(value).digest('hex');
 const originalBytes=readFileSync(input),canonicalBytes=readFileSync(canonicalPath);
