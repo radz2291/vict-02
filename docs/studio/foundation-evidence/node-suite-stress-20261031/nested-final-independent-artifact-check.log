@@ -1,0 +1,10 @@
+{
+  "status": "PASS",
+  "sealSha256": "fe1adfed82dfa0ee08726c2e7e9d7ba5f8ff2c98038b225596cafce4bb4d80c4",
+  "inputsVerified": 342,
+  "stagedFilesVerified": 398,
+  "oldFilesVerified": 395,
+  "installedPublicFilesVerified": 524,
+  "packedPublicFilesVerified": 531,
+  "errors": []
+}
