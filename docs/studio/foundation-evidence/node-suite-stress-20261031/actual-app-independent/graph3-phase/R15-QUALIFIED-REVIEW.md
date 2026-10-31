@@ -116,10 +116,12 @@ and actual app were unchanged. Both failed logs are retained, not counted green.
 ## Actual provenance and next scope
 
 The supplied42066-byte conversation tail is stored losslessly compressed. It
-starts mid-record and proves one complete final applied result r1.r14#20 with
-numeric applied7 (commands), not all eight transactions. Eight acknowledged
-transactions remain parent/agent-reported pending selected full original archives;
-applied command count is not substituted for transaction count. Model claims about
+starts mid-record and shows a final applied result r1.r14#20. The later
+[complete-original audit](../../actual-turn-originals-independent/REPORT.md)
+verifies seven acknowledged transactions from eight edit attempts, correcting the
+agent-reported8. This verifier's earlier "applied7 commands" wording was also
+incorrect: applied is the cumulative transaction counter. Prior commits and raw
+records remain preserved; data/factory findings are unchanged. Model claims about
 no overlap or captured panel placement are not native verification.
 
 Root subsequently reported a deliberate authorized native Negative-only move to

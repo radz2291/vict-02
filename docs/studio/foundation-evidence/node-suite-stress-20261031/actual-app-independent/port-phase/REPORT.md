@@ -74,8 +74,10 @@ margins alone are not pixel attachment proof.
 
 The copied completed public conversation (lossless gzip; exact decompressed
 bytes/hash retained by the diagnostic) contains four complete successful
-applied-result records, sequentially r1.r12#1,#2,#3,#4; each reports numeric
-applied-count1 and source-only verification. The read-only/preflight result is not
+applied-result records, sequentially r1.r12#1,#2,#3,#4, with cumulative numeric
+applied counts1→4 and source-only verification. This corrects the earlier
+"count1 each" wording after the completed-original audit clarified that field;
+the four-transaction count is unchanged. The read-only/preflight result is not
 counted as an applied edit. These support actual-agent lineage together with the
 original request/discovery/read/ack sequence. Earlier pre-invocation invalid-field
 nesting/refusals remain in the public conversation; this review does not claim a
