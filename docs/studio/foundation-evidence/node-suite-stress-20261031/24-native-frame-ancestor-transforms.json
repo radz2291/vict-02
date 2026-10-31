@@ -1,0 +1,79 @@
+{
+  "qualification": "Ancestor style strings are DOM observations. DOMMatrixReadOnly constructor availability/errors describe the automation read-only evaluation scope only; they do NOT establish availability in the application window.",
+  "frames": [
+    {
+      "ancestors": [],
+      "matrixConstructor": "undefined"
+    },
+    {
+      "ancestors": [
+        {
+          "cls": "svelte-flow__node svelte-flow__node-composed draggable connectable selectable nopan",
+          "matrix": {
+            "error": "TypeError: DOMMatrixReadOnly is not a constructor"
+          },
+          "rotate": "none",
+          "scale": "none",
+          "tag": "DIV",
+          "transform": "matrix(1, 0, 0, 1, 1120, 40)"
+        },
+        {
+          "cls": "svelte-flow__viewport xyflow__viewport svelte-flow__container",
+          "matrix": {
+            "error": "TypeError: DOMMatrixReadOnly is not a constructor"
+          },
+          "rotate": "none",
+          "scale": "none",
+          "tag": "DIV",
+          "transform": "matrix(0.321269, 0, 0, 0.321269, 182.321, 193.166)"
+        },
+        {
+          "cls": "flow-coordinate-engine svelte-1cn8kno",
+          "matrix": {
+            "error": "TypeError: DOMMatrixReadOnly is not a constructor"
+          },
+          "rotate": "none",
+          "scale": "none",
+          "tag": "DIV",
+          "transform": "matrix(1, 0, 0, 1, 0, 0)"
+        }
+      ],
+      "matrixConstructor": "undefined"
+    },
+    {
+      "ancestors": [
+        {
+          "cls": "svelte-flow__node svelte-flow__node-composed draggable connectable selectable nopan",
+          "matrix": {
+            "error": "TypeError: DOMMatrixReadOnly is not a constructor"
+          },
+          "rotate": "none",
+          "scale": "none",
+          "tag": "DIV",
+          "transform": "matrix(1, 0, 0, 1, 1120, 720)"
+        },
+        {
+          "cls": "svelte-flow__viewport xyflow__viewport svelte-flow__container",
+          "matrix": {
+            "error": "TypeError: DOMMatrixReadOnly is not a constructor"
+          },
+          "rotate": "none",
+          "scale": "none",
+          "tag": "DIV",
+          "transform": "matrix(0.321269, 0, 0, 0.321269, 182.321, 193.166)"
+        },
+        {
+          "cls": "flow-coordinate-engine svelte-1cn8kno",
+          "matrix": {
+            "error": "TypeError: DOMMatrixReadOnly is not a constructor"
+          },
+          "rotate": "none",
+          "scale": "none",
+          "tag": "DIV",
+          "transform": "matrix(1, 0, 0, 1, 0, 0)"
+        }
+      ],
+      "matrixConstructor": "undefined"
+    }
+  ]
+}

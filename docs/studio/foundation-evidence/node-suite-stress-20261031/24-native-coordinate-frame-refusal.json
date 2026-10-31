@@ -1,0 +1,165 @@
+{
+  "scope": "Fresh installed fae2e9e0 package consumer, unchanged actual r1.r12 export; native preview cannot interact",
+  "preview": "http://127.0.0.25:5634/",
+  "frames": [
+    {
+      "computed": {
+        "border": "0px none rgb(226, 237, 247)",
+        "boxSizing": "border-box",
+        "height": "718.4px",
+        "padding": "0px",
+        "transform": "none",
+        "width": "1215.2px"
+      },
+      "outer": "<div class=\"flow-coordinate-frame svelte-1cn8kno\" data-vict-flow-coordinate-scale=\"1\"><div class=\"flow-coordinate-engine svelte-1cn8kno\" inert=\"\" style=\"width: 100%; height: 100%; transform: scale(1);\"><!----><div class=\"svelte-flow svelte-flow__container light svelte-mkap6j\" data-testid=\"svelte-flow__wrapper\" role=\"application\"><!----><!----> <div class=\"svelte-flow__zoom svelte-flow__container\" ",
+      "parents": [
+        {
+          "cls": "graph-viewport uv-e86e951c-cf-vp svelte-yq389w",
+          "rect": {
+            "bottom": 811.2000045776367,
+            "height": 720,
+            "left": 24,
+            "right": 1240.800048828125,
+            "top": 91.20000457763672,
+            "width": 1216.800048828125,
+            "x": 24,
+            "y": 91.20000457763672
+          },
+          "style": "height: 720px;",
+          "tag": "DIV"
+        },
+        {
+          "cls": "cf-content uv-e86e951c-cf-content",
+          "rect": {
+            "bottom": 994.400016784668,
+            "height": 903.2000122070312,
+            "left": 24,
+            "right": 1240.800048828125,
+            "top": 91.20000457763672,
+            "width": 1216.800048828125,
+            "x": 24,
+            "y": 91.20000457763672
+          },
+          "style": "",
+          "tag": "DIV"
+        }
+      ],
+      "rect": {
+        "bottom": 810.4000244140625,
+        "height": 718.4000244140625,
+        "left": 24.80000114440918,
+        "right": 1240.000074386597,
+        "top": 92,
+        "width": 1215.2000732421875,
+        "x": 24.80000114440918,
+        "y": 92
+      }
+    },
+    {
+      "computed": {
+        "border": "0px none rgb(226, 237, 247)",
+        "boxSizing": "border-box",
+        "height": "378.4px",
+        "padding": "0px",
+        "transform": "none",
+        "width": "736.8px"
+      },
+      "outer": "<div class=\"flow-coordinate-frame svelte-1cn8kno\" data-vict-flow-coordinate-scale=\"1\"><div class=\"flow-coordinate-engine svelte-1cn8kno\" inert=\"\" style=\"width: 100%; height: 100%; transform: scale(1);\"><!----><div class=\"svelte-flow svelte-flow__container light svelte-mkap6j\" data-testid=\"svelte-flow__wrapper\" role=\"application\"><!----><!----> <div class=\"svelte-flow__zoom svelte-flow__container\" ",
+      "parents": [
+        {
+          "cls": "graph-viewport uv-e86e951c-fin-vp svelte-yq389w",
+          "rect": {
+            "bottom": 471.8877487182617,
+            "height": 122.08208465576172,
+            "left": 570.4114379882812,
+            "right": 807.6362457275391,
+            "top": 349.8056640625,
+            "width": 237.2248077392578,
+            "x": 570.4114379882812,
+            "y": 349.8056640625
+          },
+          "style": "height: 380px;",
+          "tag": "DIV"
+        },
+        {
+          "cls": "uv-e86e951c-fin-content",
+          "rect": {
+            "bottom": 471.8877487182617,
+            "height": 122.08208465576172,
+            "left": 570.4114379882812,
+            "right": 807.6362457275391,
+            "top": 349.8056640625,
+            "width": 237.2248077392578,
+            "x": 570.4114379882812,
+            "y": 349.8056640625
+          },
+          "style": "",
+          "tag": "DIV"
+        }
+      ],
+      "rect": {
+        "bottom": 471.6307830810547,
+        "height": 121.5680694580078,
+        "left": 570.66845703125,
+        "right": 807.3791961669922,
+        "top": 350.0627136230469,
+        "width": 236.7107391357422,
+        "x": 570.66845703125,
+        "y": 350.0627136230469
+      }
+    },
+    {
+      "computed": {
+        "border": "0px none rgb(226, 237, 247)",
+        "boxSizing": "border-box",
+        "height": "378.4px",
+        "padding": "0px",
+        "transform": "none",
+        "width": "736.8px"
+      },
+      "outer": "<div class=\"flow-coordinate-frame svelte-1cn8kno\" data-vict-flow-coordinate-scale=\"1\"><div class=\"flow-coordinate-engine svelte-1cn8kno\" inert=\"\" style=\"width: 100%; height: 100%; transform: scale(1);\"><!----><div class=\"svelte-flow svelte-flow__container light svelte-mkap6j\" data-testid=\"svelte-flow__wrapper\" role=\"application\"><!----><!----> <div class=\"svelte-flow__zoom svelte-flow__container\" ",
+      "parents": [
+        {
+          "cls": "graph-viewport uv-e86e951c-fin-vp svelte-yq389w",
+          "rect": {
+            "bottom": 690.350456237793,
+            "height": 122.08208465576172,
+            "left": 570.4114379882812,
+            "right": 807.6362457275391,
+            "top": 568.2683715820312,
+            "width": 237.2248077392578,
+            "x": 570.4114379882812,
+            "y": 568.2683715820312
+          },
+          "style": "height: 380px;",
+          "tag": "DIV"
+        },
+        {
+          "cls": "uv-e86e951c-fin-content",
+          "rect": {
+            "bottom": 690.350456237793,
+            "height": 122.08208465576172,
+            "left": 570.4114379882812,
+            "right": 807.6362457275391,
+            "top": 568.2683715820312,
+            "width": 237.2248077392578,
+            "x": 570.4114379882812,
+            "y": 568.2683715820312
+          },
+          "style": "",
+          "tag": "DIV"
+        }
+      ],
+      "rect": {
+        "bottom": 690.0933990478516,
+        "height": 121.5680694580078,
+        "left": 570.66845703125,
+        "right": 807.3791961669922,
+        "top": 568.5253295898438,
+        "width": 236.7107391357422,
+        "x": 570.66845703125,
+        "y": 568.5253295898438
+      }
+    }
+  ]
+}
