@@ -26,7 +26,7 @@ Inspect actual resulting source/topology/types/reuse and current image. Exercise
 
 An old browser handle failed before page access and recovered through the documented controller reset; existing browser/tabs were reused. No PC restart or alternate browser/security bypass was needed. The initial fresh-screen agent submission refused an expired Studio session with no edits. The product request was preserved, ordinary local sign-in renewed the same existing operator account, and a new authenticated Designer view accepted the same request. The earlier blank/draft and all preserved applications remain untouched. These are setup/authentication observations, not graph/model generation failures.
 
-**Current state: actual-agent creation running; no suite success or final stress verdict yet.**
+**Current state: actual-agent creation paused for the owner-directed artificial-limit repairs; no suite success or final stress verdict yet.** The same partial app is preserved. On browser recovery, newer unsaved canvas positions were retained and saved normally as **r1.r2**; exact source, supported export and screenshot are in `10-recovered-*`. Resume this newer checkpoint after candidate activation.
 
 ## First broad turn and bounded continuation
 

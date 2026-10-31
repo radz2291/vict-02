@@ -33,6 +33,16 @@ Physical memory, disk availability, actual JavaScript/HTTP/provider encoding/con
 
 ## Verification and continuation
 
+### Resumed independent challenge
+
+After the owner resolved the agent service usage restriction, independent review resumed against exact `41c7b4129ee0c72a80cb7ec29f4a10c4489eef07`. The reviewer independently installed dependencies, built the workspace and passed204 focused checks. It retained one failing concurrent-publication test: the shared runtime hub can invoke an asynchronous subscriber again before its preceding delivery settles. Studio currently serializes its own publication chain; that does not excuse the public package defect. A separate isolated repair is in progress. Review report commit: `84833648e728582bf6e9a0b36aece9d3204a54f2`; integrated verdict remains held.
+
+The remaining capture audit found default512KiB/1600×1200 image ceilings, a2000-descendant scroll-capture refusal, resource-size ceilings and fixed capture/model deadlines. A separate isolated candidate is removing these arbitrary defaults, preserving actual visible-viewport geometry, source/owner freshness, image/resource validation and owner cancellation. Studio must pass the public capture signal and transport metadata without imposing a second quota. This candidate is not yet integrated, activated or verified.
+
+Existing public hub replay/pending-buffer policies are different: they explicitly disclose lost transient replay or detach a saturated subscriber for authoritative recovery. These package-owned transport protections do not terminate a legitimate agent task or delete the complete sanitized tool archive. They remain in place while asynchronous delivery ordering is repaired.
+
+Root workspace build and Studio TypeScript checks also passed at41c7. The old8d8 Studio is still serving. Browser control recovered using the documented controller reset; no PC restart was needed. On recovery, Campaign Foundry contained newer unsaved canvas positions. Its exact source was preserved before normal Save created **r1.r2**, followed by a supported export and screenshot (`10-recovered-*`). Continue that newer checkpoint, not the earlier r1.r1 export.
+
 Use meaningful tests beyond previous thresholds plus negative ownership/type/security/cancellation checks and legacy identity compatibility. The shared Mastra delivery snapshot has already passed51focused tests across existing hostile-value/proto cases and new large/deep default delivery; this is a builder check, not independent approval. Do not sum overlapping suites.
 
 After integrated independent verification, build/seal the exact candidate, preserve the existing389-file Studio build/proof inventory and all saved apps/drafts, activate through the established local path, then continue the SAME actual Campaign Foundry from its saved partial source. Verify full late-call evidence remains accessible and complete the complex app/native/save/portable stress task. Retain the original refusals, unavailable evidence and timing observations. No owner acceptance is inferred.
