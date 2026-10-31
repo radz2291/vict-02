@@ -1,0 +1,270 @@
+{
+  "status": "PARTIAL: migration/preservation/panel structure pass; readOnly composition correction requires disposition",
+  "baseline": {
+    "id": "screen-a8690ffa-1e90-4b72-909c-66141d372773",
+    "revision": "r1.r14",
+    "sha256": "cbc9bd65c5ce093fd4d812c2cb357ae9fe8a158a255bd92e141f039701040bce",
+    "rootRevision": 42,
+    "socialRevision": 5,
+    "posterRevision": 8
+  },
+  "saved": {
+    "id": "screen-a8690ffa-1e90-4b72-909c-66141d372773",
+    "revision": "r1.r15",
+    "sha256": "16ad955fed41dfe9175389113f02f5f63af8e04f61a643b48c7ea819d8a98532"
+  },
+  "export": {
+    "sha256": "df8546037aaca85b4ab578106d7dc44a5c72a4f2e1a6ce7ae6f3500f507a8957",
+    "documentExact": true
+  },
+  "graphs": [
+    {
+      "path": "state.campaignGraph/node:finS/parameter:subgraph",
+      "beforeRevision": 5,
+      "afterRevision": 6,
+      "nodes": 3,
+      "edges": 2,
+      "allPositionsLabelsValuesPortsAndLinksPreserved": true,
+      "sourceSha256": "e4f48c25ea7bdf084af3c9cfde345d2e76902e05230f25c0b4c7836c8b660116"
+    },
+    {
+      "path": "state.campaignGraph/node:finP/parameter:subgraph",
+      "beforeRevision": 8,
+      "afterRevision": 9,
+      "nodes": 3,
+      "edges": 2,
+      "allPositionsLabelsValuesPortsAndLinksPreserved": true,
+      "sourceSha256": "9e271153bcdb01e039345012dd99b966892b4476bb1b6133e1dab8a48c04a213"
+    },
+    {
+      "path": "state.campaignGraph",
+      "beforeRevision": 42,
+      "afterRevision": 48,
+      "nodes": 14,
+      "edges": 20,
+      "allPositionsLabelsValuesPortsAndLinksPreserved": true,
+      "sourceSha256": "627f6e6355d5c00c3af90449df4e788a8ceeff455083c6abd074d4343734fb41"
+    }
+  ],
+  "factories": [
+    {
+      "family": "finish",
+      "key": "subgraph",
+      "sourceSha256": "2f3bdcb669939930ae56113aacd92a1998a6d4ec0d48b7cf578454da3b4447b6",
+      "graph": {
+        "schema": "vict.flow-graph@3",
+        "revision": 0,
+        "nodeTypes": [
+          {
+            "id": "crop",
+            "label": "Crop",
+            "parameters": {
+              "aspect": {
+                "type": "string",
+                "default": "1:1",
+                "label": "Aspect"
+              }
+            },
+            "ports": [
+              {
+                "id": "o",
+                "label": "Cropped",
+                "direction": "output",
+                "type": "image"
+              }
+            ]
+          },
+          {
+            "id": "grade",
+            "label": "Grade",
+            "parameters": {
+              "amount": {
+                "type": "number",
+                "default": 20,
+                "label": "Grade amount"
+              }
+            },
+            "ports": [
+              {
+                "id": "i",
+                "label": "Image in",
+                "direction": "input",
+                "type": "image",
+                "maxConnections": 1
+              },
+              {
+                "id": "o",
+                "label": "Graded",
+                "direction": "output",
+                "type": "image"
+              }
+            ]
+          },
+          {
+            "id": "caption",
+            "label": "Caption",
+            "parameters": {
+              "caption": {
+                "type": "string",
+                "default": "",
+                "label": "Caption text"
+              }
+            },
+            "ports": [
+              {
+                "id": "i",
+                "label": "Graded in",
+                "direction": "input",
+                "type": "image",
+                "maxConnections": 1
+              }
+            ]
+          }
+        ],
+        "nodes": [
+          {
+            "id": "f-crop",
+            "type": "crop",
+            "label": "Crop",
+            "position": {
+              "x": 40,
+              "y": 40
+            },
+            "values": {
+              "aspect": "1:1"
+            }
+          },
+          {
+            "id": "f-grade",
+            "type": "grade",
+            "label": "Grade",
+            "position": {
+              "x": 300,
+              "y": 80
+            },
+            "values": {
+              "amount": 20
+            }
+          },
+          {
+            "id": "f-caption",
+            "type": "caption",
+            "label": "Caption",
+            "position": {
+              "x": 560,
+              "y": 40
+            },
+            "values": {
+              "caption": ""
+            }
+          }
+        ],
+        "edges": [
+          {
+            "id": "g1",
+            "source": "f-crop",
+            "sourcePort": "o",
+            "target": "f-grade",
+            "targetPort": "i"
+          },
+          {
+            "id": "g2",
+            "source": "f-grade",
+            "sourcePort": "o",
+            "target": "f-caption",
+            "targetPort": "i"
+          }
+        ],
+        "allowCycles": false
+      }
+    }
+  ],
+  "ordinaryControlsExact": 34,
+  "rowsPreserved": 27,
+  "literalHtmlIdOrFor": 0,
+  "panels": [
+    {
+      "id": "es-canvas-o",
+      "target": "canvas",
+      "controls": [
+        "oc-route",
+        "oc-pattern",
+        "oc-color",
+        "oc-width",
+        "oc-sa",
+        "oc-ea"
+      ],
+      "reset": "oc-reset",
+      "controlledStateExact": true,
+      "declaresReadOnly": false,
+      "allFieldsAndResetDisabled": false
+    },
+    {
+      "id": "es-sel-o",
+      "target": "selection",
+      "controls": [
+        "sc-route",
+        "sc-pattern",
+        "sc-color",
+        "sc-width",
+        "sc-sa",
+        "sc-ea"
+      ],
+      "reset": "sc-reset",
+      "controlledStateExact": true,
+      "declaresReadOnly": true,
+      "allFieldsAndResetDisabled": true
+    },
+    {
+      "id": "es-canvas-n",
+      "target": "canvas",
+      "controls": [
+        "fc-route",
+        "fc-pattern",
+        "fc-color",
+        "fc-width",
+        "fc-sa",
+        "fc-ea"
+      ],
+      "reset": "fc-reset",
+      "controlledStateExact": true,
+      "declaresReadOnly": false,
+      "allFieldsAndResetDisabled": false
+    },
+    {
+      "id": "es-sel-n",
+      "target": "selection",
+      "controls": [
+        "fs-route",
+        "fs-pattern",
+        "fs-color",
+        "fs-width",
+        "fs-sa",
+        "fs-ea"
+      ],
+      "reset": "fs-reset",
+      "controlledStateExact": true,
+      "declaresReadOnly": true,
+      "allFieldsAndResetDisabled": true
+    }
+  ],
+  "findings": [
+    {
+      "id": "C1",
+      "panel": "es-canvas-o",
+      "target": "canvas",
+      "problem": "App-owned controls/reset do not consume the public readOnly state; source guard remains separate."
+    },
+    {
+      "id": "C1",
+      "panel": "es-canvas-n",
+      "target": "canvas",
+      "problem": "App-owned controls/reset do not consume the public readOnly state; source guard remains separate."
+    }
+  ],
+  "limits": [
+    "No native overlap, pixel appearance, readonly interaction, inheritance/reset/history or persistence replay proof.",
+    "Eight acknowledgements remain parent/agent-reported until original receipts are separately supplied.",
+    "Baseline35/37 observations are not substituted for owner-confirmed latest42/5/8."
+  ]
+}

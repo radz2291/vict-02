@@ -1,0 +1,21 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/AppData/Local/Temp/vict-independent-edge-row-dbb0p0/consumer
+
+ ❯ src/actual-factory.test.ts (1 test | 1 failed) 33ms
+   × adds a Finishing only to an offline actual-graph copy and inherits the explicit valid graph3 factory 32ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/actual-factory.test.ts > adds a Finishing only to an offline actual-graph copy and inherits the explicit valid graph3 factory
+TypeError: The URL must be of scheme file
+ ❯ src/actual-factory.test.ts:25:194
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed (1)
+   Start at  18:24:48
+   Duration  13.79s (transform 10.09s, setup 0ms, import 12.74s, tests 33ms, environment 737ms)
+

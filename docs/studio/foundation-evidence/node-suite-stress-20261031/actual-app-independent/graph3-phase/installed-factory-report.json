@@ -1,0 +1,68 @@
+{
+  "status": "PASS",
+  "scope": "Offline copied actual graph through installed public afa8 packages; not native Add, Studio/history/persistence or owner acceptance.",
+  "actualSourceSha256": "16ad955fed41dfe9175389113f02f5f63af8e04f61a643b48c7ea819d8a98532",
+  "actualOuterGraphSha256": "627f6e6355d5c00c3af90449df4e788a8ceeff455083c6abd074d4343734fb41",
+  "actualFactorySha256": "2f3bdcb669939930ae56113aacd92a1998a6d4ec0d48b7cf578454da3b4447b6",
+  "originalSourceUnchanged": true,
+  "originalGraphUnchanged": true,
+  "originalNodesLinksPreserved": true,
+  "addedId": "independent-future-finishing",
+  "addedValues": {},
+  "inheritedFactorySchema": "vict.flow-graph@3",
+  "inheritedFactoryRevision": 0,
+  "inheritedNodes": [
+    {
+      "id": "f-crop",
+      "type": "crop",
+      "label": "Crop",
+      "position": {
+        "x": 40,
+        "y": 40
+      },
+      "values": {
+        "aspect": "1:1"
+      }
+    },
+    {
+      "id": "f-grade",
+      "type": "grade",
+      "label": "Grade",
+      "position": {
+        "x": 300,
+        "y": 80
+      },
+      "values": {
+        "amount": 20
+      }
+    },
+    {
+      "id": "f-caption",
+      "type": "caption",
+      "label": "Caption",
+      "position": {
+        "x": 560,
+        "y": 40
+      },
+      "values": {
+        "caption": ""
+      }
+    }
+  ],
+  "inheritedEdges": [
+    {
+      "id": "g1",
+      "source": "f-crop",
+      "sourcePort": "o",
+      "target": "f-grade",
+      "targetPort": "i"
+    },
+    {
+      "id": "g2",
+      "source": "f-grade",
+      "sourcePort": "o",
+      "target": "f-caption",
+      "targetPort": "i"
+    }
+  ]
+}

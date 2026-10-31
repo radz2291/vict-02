@@ -1,0 +1,9 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/AppData/Local/Temp/vict-independent-edge-row-dbb0p0/consumer
+
+
+ Test Files  1 passed (1)
+      Tests  1 passed (1)
+   Start at  18:25:54
+   Duration  16.15s (transform 11.85s, setup 0ms, import 14.81s, tests 39ms, environment 990ms)
+

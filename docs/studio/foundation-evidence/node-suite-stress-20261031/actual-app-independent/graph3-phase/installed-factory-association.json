@@ -1,0 +1,12 @@
+{
+  "status": "PASS",
+  "candidate": "afa8dd9d9f550392811ce286ecc025b9933d99a7",
+  "consumer": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-independent-edge-row-dbb0p0\\consumer",
+  "entry": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-independent-edge-row-dbb0p0\\consumer\\node_modules\\@victframework\\ui-flow-svelte\\src\\index.ts",
+  "entrySha256": "2440d84ee8c6a5fc013618a81890d600a51c1073f942d0369f64d2b2f4070169",
+  "actualSourceSha256": "16ad955fed41dfe9175389113f02f5f63af8e04f61a643b48c7ea819d8a98532",
+  "actualOuterGraphSha256": "627f6e6355d5c00c3af90449df4e788a8ceeff455083c6abd074d4343734fb41",
+  "factorySha256": "2f3bdcb669939930ae56113aacd92a1998a6d4ec0d48b7cf578454da3b4447b6",
+  "testSha256": "98c2f5e9d393c54dfef5641470439b24656f5f3019ba1634c788de038124de1c",
+  "scope": "New actual-copy test augments earlier22-fixture consumer; earlier8fixtures and all7installed packages are unchanged. No aliases/native Add/root app write."
+}
