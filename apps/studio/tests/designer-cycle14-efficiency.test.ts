@@ -238,13 +238,13 @@ it('enforces completed knowledge and delivers measured progress through the actu
   expect(STUDIO_AGENT_PROTOCOL).toEqual({
     readCapabilityRevision: '10',
     readInputRevision: '10',
-    editCapabilityRevision: '9',
-    editInputRevision: '9',
-    instructionsRevision: '15',
-    profileRevision: '18',
+    editCapabilityRevision: '10',
+    editInputRevision: '10',
+    instructionsRevision: '16',
+    profileRevision: '19',
     startInputRevision: '6',
-    observationInstructionsRevision: '7',
-    observationProfileRevision: '12',
+    observationInstructionsRevision: '8',
+    observationProfileRevision: '13',
   });
   const full = agentContext(source, cursor, undefined, {
     section: 'contracts',
