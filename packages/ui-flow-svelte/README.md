@@ -114,6 +114,10 @@ Nested authored flow surfaces own their pan/zoom boundary. Local `nopan` and
 do not disable the inner empty canvas. Inner camera gestures leave enclosing and
 sibling cameras and canonical graph data unchanged. The retained editor and
 read-only authored canvas use the same boundary and their own public provider.
+Nested authored workspace/editor connections keep the camera stationary during
+the drag (`autoPanOnConnect=false`); manual pan and wheel remain available.
+Top-level canvases retain upstream connection auto-pan. This ownership policy
+avoids moving a target out of a physically small nested viewport mid-gesture.
 
 These authored surfaces also normalize a positive uniform ancestor CSS scale
 into their own engine coordinate frame. Persisted viewports and node positions

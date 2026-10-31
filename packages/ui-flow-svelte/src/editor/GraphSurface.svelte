@@ -2,7 +2,9 @@
   import { flowGestureClasses, guardFlowGestures } from '../flow-gesture-boundary.js';
   const gestureId = $props.id();
   const gestureClasses = flowGestureClasses(gestureId);
-  import { untrack } from 'svelte';
+  import { untrack,getContext } from 'svelte';
+  import {GRAPH_BODY} from '../composition/context.js';
+  const nested=!!getContext(GRAPH_BODY);
   import {createHandleProjection} from '../handle-projection.js';
   const handles=createHandleProjection(gestureId);
   import FlowCoordinateFrame from '../FlowCoordinateFrame.svelte';
@@ -293,7 +295,7 @@
   {#if error}<p role="alert" class="graph-error">{error}</p>{/if}
     <div {...presentation?.target('canvas')} class={`graph-canvas ${presentation?.target('canvas').class ?? ''}`} style:height={`${Math.max(240,Math.min(height,2000))}px`}>
       <FlowCoordinateFrame bind:viewport minZoom={0.15} maxZoom={2} onUnitChange={()=>{if(dragging){dragCancelled=true;dragging=false;sync();}}}>{#snippet children(frame)}
-      <SvelteFlowProvider><SvelteFlow {...gestureClasses} bind:nodes bind:edges bind:viewport={frame.viewport} {nodeTypes} nodesDraggable={!readOnly} nodesConnectable={!readOnly} deleteKey={null} fitView={false} minZoom={0.15*frame.scale} maxZoom={2*frame.scale} multiSelectionKey={['Control','Meta','Shift']} selectionKey="Shift" panOnDrag={true}
+      <SvelteFlowProvider><SvelteFlow {...gestureClasses} bind:nodes bind:edges bind:viewport={frame.viewport} {nodeTypes} autoPanOnConnect={!nested} nodesDraggable={!readOnly} nodesConnectable={!readOnly} deleteKey={null} fitView={false} minZoom={0.15*frame.scale} maxZoom={2*frame.scale} multiSelectionKey={['Control','Meta','Shift']} selectionKey="Shift" panOnDrag={true}
         onselectionchange={({nodes:selectedNodes,edges:selectedEdges})=>select({nodes:selectedNodes.map(node=>node.id),edges:selectedEdges.map(edge=>edge.id)})}
         onnodedragstart={()=>{dragging=true;dragCancelled=false;dragRevision=current.revision;}}
         onnodedragstop={({nodes:moved})=>{dragging=false;if(dragCancelled||current.revision!==dragRevision){sync();return;}apply([{type:'moveNodes',positions:Object.fromEntries(moved.map(node=>[node.id,{...node.position}]))}]);}}
