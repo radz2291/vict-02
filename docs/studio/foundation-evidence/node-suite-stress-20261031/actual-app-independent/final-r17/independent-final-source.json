@@ -1,0 +1,42 @@
+{
+  "status": "PASS: exact authorized layout delta, C1 readOnly repair and token display binding only; native behavior separate",
+  "id": "screen-a8690ffa-1e90-4b72-909c-66141d372773",
+  "revision": "r1.r17",
+  "savedSourceSha256": "61cb0084f0ea47ae570673ed09d1643cdceadb931944816f679eab09bc480938",
+  "exportSha256": "fb44619809dec2e9266fdbd9b5843e7288ec064e97bb58a64cd3fa37e30c6a5b",
+  "exportDocumentExact": true,
+  "graphDataExactAfterUiRepair": true,
+  "rootRevision": 49,
+  "socialRevision": 6,
+  "posterRevision": 9,
+  "authorizedLayoutDelta": {
+    "nodeId": "neg",
+    "xBefore": 446.83595102709694,
+    "xAfter": 378.5910038381814,
+    "yPreserved": true,
+    "rootBefore": 48,
+    "rootAfter": 49,
+    "allOtherGraphFieldsExact": true
+  },
+  "c1Resolved": {
+    "canvasScopes": 2,
+    "disabledFields": 12,
+    "disabledResetButtons": 2,
+    "allFourPanelsConsumeReadOnly": true
+  },
+  "colorDisplay": {
+    "fields": 4,
+    "canonicalToken": "token:border",
+    "currentThemeBorder": "#2b3b52",
+    "displayOnly": true,
+    "canonicalResetSemanticsUnchanged": true,
+    "otherHexColorsPassThrough": true,
+    "arbitraryTokenDisplay": "Not claimed by this current-theme mapping."
+  },
+  "literalHtmlIdOrFor": 0,
+  "sourceChangesOtherwiseExact": true,
+  "limits": [
+    "Native Reset/choice/readonly/focus/history/persistence and pointer behavior need separate receipts.",
+    "Public EdgeSettings duplicate native-event history and nested connect/drag defects remain separate runtime repair gates."
+  ]
+}

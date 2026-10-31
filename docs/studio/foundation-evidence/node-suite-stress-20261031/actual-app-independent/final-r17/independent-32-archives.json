@@ -1,0 +1,1024 @@
+{
+  "status": "PASS: completed32 archive integrity; two source acknowledgements preserved despite failed observation",
+  "originals": 32,
+  "characters": 96760,
+  "pages": 38,
+  "counts": {
+    "Read screen · input": 11,
+    "Read screen · result": 11,
+    "Edit screen · input": 3,
+    "Edit screen · result": 3,
+    "Observe preview · input": 2,
+    "Observe preview · result": 2
+  },
+  "acknowledgements": [
+    {
+      "index": 23,
+      "revision": "r1.r16#24",
+      "digest": "11f0d5ba5a8817952e3ca92dae2f0707738ad668d85eef6d545ff6a1f2e35e66",
+      "cumulativeApplied": 1
+    },
+    {
+      "index": 25,
+      "revision": "r1.r16#25",
+      "digest": "fd30e64071498488dfdb4598efa4739511b076db79d9e1f68c882f6233caaae6",
+      "cumulativeApplied": 2
+    }
+  ],
+  "refusals": [
+    {
+      "index": 21,
+      "label": "Edit screen · result",
+      "code": "STUDIO_AGENT_VALIDATION",
+      "message": "Operation 0 rejected: UI_EXPR_UNKNOWN_REFERENCE: Reference 'prop.readOnly' does not resolve in this scope."
+    },
+    {
+      "index": 29,
+      "label": "Observe preview · result",
+      "code": "STUDIO_CAPTURE_STALE",
+      "message": "The source, runtime preview, overlay or viewport changed during image inference. Request a fresh observation."
+    },
+    {
+      "index": 31,
+      "label": "Observe preview · result",
+      "code": "STUDIO_CAPTURE_ASSESSMENT_INVALID",
+      "message": "The model response did not match the assessment contract. No model assessment was accepted; original public text remains inspectable."
+    }
+  ],
+  "editInputs": [
+    {
+      "index": 20,
+      "expectedRevision": "r1.r16#23",
+      "operations": [
+        {
+          "op": "bindAttribute",
+          "nodeId": "oc-route",
+          "name": "disabled",
+          "expression": {
+            "type": "ref",
+            "path": "prop.readOnly"
+          }
+        },
+        {
+          "op": "bindAttribute",
+          "nodeId": "oc-pattern",
+          "name": "disabled",
+          "expression": {
+            "type": "ref",
+            "path": "prop.readOnly"
+          }
+        },
+        {
+          "op": "bindAttribute",
+          "nodeId": "oc-color",
+          "name": "disabled",
+          "expression": {
+            "type": "ref",
+            "path": "prop.readOnly"
+          }
+        },
+        {
+          "op": "bindAttribute",
+          "nodeId": "oc-width",
+          "name": "disabled",
+          "expression": {
+            "type": "ref",
+            "path": "prop.readOnly"
+          }
+        },
+        {
+          "op": "bindAttribute",
+          "nodeId": "oc-sa",
+          "name": "disabled",
+          "expression": {
+            "type": "ref",
+            "path": "prop.readOnly"
+          }
+        },
+        {
+          "op": "bindAttribute",
+          "nodeId": "oc-ea",
+          "name": "disabled",
+          "expression": {
+            "type": "ref",
+            "path": "prop.readOnly"
+          }
+        },
+        {
+          "op": "bind",
+          "nodeId": "oc-reset",
+          "prop": "disabled",
+          "expression": {
+            "type": "ref",
+            "path": "prop.readOnly"
+          }
+        },
+        {
+          "op": "bindAttribute",
+          "nodeId": "oc-color",
+          "name": "value",
+          "expression": {
+            "type": "conditionalValue",
+            "when": {
+              "type": "compare",
+              "op": "eq",
+              "left": {
+                "type": "ref",
+                "path": "state.color"
+              },
+              "right": {
+                "type": "literal",
+                "value": "token:border"
+              }
+            },
+            "then": {
+              "type": "literal",
+              "value": "#2b3b52"
+            },
+            "otherwise": {
+              "type": "ref",
+              "path": "state.color"
+            }
+          }
+        },
+        {
+          "op": "bindAttribute",
+          "nodeId": "sc-color",
+          "name": "value",
+          "expression": {
+            "type": "conditionalValue",
+            "when": {
+              "type": "compare",
+              "op": "eq",
+              "left": {
+                "type": "ref",
+                "path": "state.color"
+              },
+              "right": {
+                "type": "literal",
+                "value": "token:border"
+              }
+            },
+            "then": {
+              "type": "literal",
+              "value": "#2b3b52"
+            },
+            "otherwise": {
+              "type": "ref",
+              "path": "state.color"
+            }
+          }
+        },
+        {
+          "op": "slotScope",
+          "nodeId": "es-canvas-o",
+          "slot": "content",
+          "scope": {
+            "schema": "vict.ui-slot-scope@1",
+            "props": [
+              {
+                "name": "readOnly",
+                "type": "boolean"
+              }
+            ],
+            "state": {
+              "color": {
+                "key": "color",
+                "type": "string",
+                "initial": "#94a3b8",
+                "controlled": true
+              },
+              "endArrow": {
+                "key": "endArrow",
+                "type": "string",
+                "initial": "arrow",
+                "controlled": true
+              },
+              "pattern": {
+                "key": "pattern",
+                "type": "string",
+                "initial": "solid",
+                "controlled": true
+              },
+              "route": {
+                "key": "route",
+                "type": "string",
+                "initial": "bezier",
+                "controlled": true
+              },
+              "startArrow": {
+                "key": "startArrow",
+                "type": "string",
+                "initial": "none",
+                "controlled": true
+              },
+              "width": {
+                "key": "width",
+                "type": "number",
+                "initial": 1.5,
+                "controlled": true
+              }
+            },
+            "outputs": [
+              {
+                "name": "reset",
+                "payload": "void"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "index": 22,
+      "expectedRevision": "r1.r16#23",
+      "operations": [
+        {
+          "op": "slotScope",
+          "nodeId": "es-canvas-o",
+          "slot": "content",
+          "scope": {
+            "schema": "vict.ui-slot-scope@1",
+            "props": [
+              {
+                "name": "readOnly",
+                "type": "boolean"
+              }
+            ],
+            "state": {
+              "color": {
+                "key": "color",
+                "type": "string",
+                "initial": "#94a3b8",
+                "controlled": true
+              },
+              "endArrow": {
+                "key": "endArrow",
+                "type": "string",
+                "initial": "arrow",
+                "controlled": true
+              },
+              "pattern": {
+                "key": "pattern",
+                "type": "string",
+                "initial": "solid",
+                "controlled": true
+              },
+              "route": {
+                "key": "route",
+                "type": "string",
+                "initial": "bezier",
+                "controlled": true
+              },
+              "startArrow": {
+                "key": "startArrow",
+                "type": "string",
+                "initial": "none",
+                "controlled": true
+              },
+              "width": {
+                "key": "width",
+                "type": "number",
+                "initial": 1.5,
+                "controlled": true
+              }
+            },
+            "outputs": [
+              {
+                "name": "reset",
+                "payload": "void"
+              }
+            ]
+          }
+        },
+        {
+          "op": "bindAttribute",
+          "nodeId": "oc-route",
+          "name": "disabled",
+          "expression": {
+            "type": "ref",
+            "path": "prop.readOnly"
+          }
+        },
+        {
+          "op": "bindAttribute",
+          "nodeId": "oc-pattern",
+          "name": "disabled",
+          "expression": {
+            "type": "ref",
+            "path": "prop.readOnly"
+          }
+        },
+        {
+          "op": "bindAttribute",
+          "nodeId": "oc-color",
+          "name": "disabled",
+          "expression": {
+            "type": "ref",
+            "path": "prop.readOnly"
+          }
+        },
+        {
+          "op": "bindAttribute",
+          "nodeId": "oc-width",
+          "name": "disabled",
+          "expression": {
+            "type": "ref",
+            "path": "prop.readOnly"
+          }
+        },
+        {
+          "op": "bindAttribute",
+          "nodeId": "oc-sa",
+          "name": "disabled",
+          "expression": {
+            "type": "ref",
+            "path": "prop.readOnly"
+          }
+        },
+        {
+          "op": "bindAttribute",
+          "nodeId": "oc-ea",
+          "name": "disabled",
+          "expression": {
+            "type": "ref",
+            "path": "prop.readOnly"
+          }
+        },
+        {
+          "op": "bind",
+          "nodeId": "oc-reset",
+          "prop": "disabled",
+          "expression": {
+            "type": "ref",
+            "path": "prop.readOnly"
+          }
+        },
+        {
+          "op": "bindAttribute",
+          "nodeId": "oc-color",
+          "name": "value",
+          "expression": {
+            "type": "conditionalValue",
+            "when": {
+              "type": "compare",
+              "op": "eq",
+              "left": {
+                "type": "ref",
+                "path": "state.color"
+              },
+              "right": {
+                "type": "literal",
+                "value": "token:border"
+              }
+            },
+            "then": {
+              "type": "literal",
+              "value": "#2b3b52"
+            },
+            "otherwise": {
+              "type": "ref",
+              "path": "state.color"
+            }
+          }
+        },
+        {
+          "op": "bindAttribute",
+          "nodeId": "sc-color",
+          "name": "value",
+          "expression": {
+            "type": "conditionalValue",
+            "when": {
+              "type": "compare",
+              "op": "eq",
+              "left": {
+                "type": "ref",
+                "path": "state.color"
+              },
+              "right": {
+                "type": "literal",
+                "value": "token:border"
+              }
+            },
+            "then": {
+              "type": "literal",
+              "value": "#2b3b52"
+            },
+            "otherwise": {
+              "type": "ref",
+              "path": "state.color"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "index": 24,
+      "expectedRevision": "r1.r16#24",
+      "operations": [
+        {
+          "op": "slotScope",
+          "nodeId": "es-canvas-n",
+          "slot": "content",
+          "scope": {
+            "schema": "vict.ui-slot-scope@1",
+            "props": [
+              {
+                "name": "readOnly",
+                "type": "boolean"
+              }
+            ],
+            "state": {
+              "color": {
+                "key": "color",
+                "type": "string",
+                "initial": "#94a3b8",
+                "controlled": true
+              },
+              "endArrow": {
+                "key": "endArrow",
+                "type": "string",
+                "initial": "arrow",
+                "controlled": true
+              },
+              "pattern": {
+                "key": "pattern",
+                "type": "string",
+                "initial": "solid",
+                "controlled": true
+              },
+              "route": {
+                "key": "route",
+                "type": "string",
+                "initial": "bezier",
+                "controlled": true
+              },
+              "startArrow": {
+                "key": "startArrow",
+                "type": "string",
+                "initial": "none",
+                "controlled": true
+              },
+              "width": {
+                "key": "width",
+                "type": "number",
+                "initial": 1.5,
+                "controlled": true
+              }
+            },
+            "outputs": [
+              {
+                "name": "reset",
+                "payload": "void"
+              }
+            ]
+          }
+        },
+        {
+          "op": "bindAttribute",
+          "nodeId": "fc-route",
+          "name": "disabled",
+          "expression": {
+            "type": "ref",
+            "path": "prop.readOnly"
+          }
+        },
+        {
+          "op": "bindAttribute",
+          "nodeId": "fc-pattern",
+          "name": "disabled",
+          "expression": {
+            "type": "ref",
+            "path": "prop.readOnly"
+          }
+        },
+        {
+          "op": "bindAttribute",
+          "nodeId": "fc-color",
+          "name": "disabled",
+          "expression": {
+            "type": "ref",
+            "path": "prop.readOnly"
+          }
+        },
+        {
+          "op": "bindAttribute",
+          "nodeId": "fc-width",
+          "name": "disabled",
+          "expression": {
+            "type": "ref",
+            "path": "prop.readOnly"
+          }
+        },
+        {
+          "op": "bindAttribute",
+          "nodeId": "fc-sa",
+          "name": "disabled",
+          "expression": {
+            "type": "ref",
+            "path": "prop.readOnly"
+          }
+        },
+        {
+          "op": "bindAttribute",
+          "nodeId": "fc-ea",
+          "name": "disabled",
+          "expression": {
+            "type": "ref",
+            "path": "prop.readOnly"
+          }
+        },
+        {
+          "op": "bind",
+          "nodeId": "fc-reset",
+          "prop": "disabled",
+          "expression": {
+            "type": "ref",
+            "path": "prop.readOnly"
+          }
+        },
+        {
+          "op": "bindAttribute",
+          "nodeId": "fc-color",
+          "name": "value",
+          "expression": {
+            "type": "conditionalValue",
+            "when": {
+              "type": "compare",
+              "op": "eq",
+              "left": {
+                "type": "ref",
+                "path": "state.color"
+              },
+              "right": {
+                "type": "literal",
+                "value": "token:border"
+              }
+            },
+            "then": {
+              "type": "literal",
+              "value": "#2b3b52"
+            },
+            "otherwise": {
+              "type": "ref",
+              "path": "state.color"
+            }
+          }
+        },
+        {
+          "op": "bindAttribute",
+          "nodeId": "fs-color",
+          "name": "value",
+          "expression": {
+            "type": "conditionalValue",
+            "when": {
+              "type": "compare",
+              "op": "eq",
+              "left": {
+                "type": "ref",
+                "path": "state.color"
+              },
+              "right": {
+                "type": "literal",
+                "value": "token:border"
+              }
+            },
+            "then": {
+              "type": "literal",
+              "value": "#2b3b52"
+            },
+            "otherwise": {
+              "type": "ref",
+              "path": "state.color"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "lastMetrics": {
+    "toolCalls": 16,
+    "completedCalls": 13,
+    "refusedCalls": 3,
+    "recoveryAttempts": 2,
+    "toolElapsedMs": 184625,
+    "providerRequests": 13,
+    "visionRequests": 2,
+    "acknowledgementMs": 890,
+    "confirmedEdits": 2,
+    "usage": {
+      "inputTokens": 641133,
+      "outputTokens": 19114,
+      "totalTokens": 660247
+    },
+    "firstEditMs": 368988.38049999997,
+    "categories": {
+      "knowledge": 1,
+      "source": 10,
+      "edit": 3,
+      "observe": 2,
+      "other": 0
+    },
+    "elapsedMs": 625595,
+    "toolActiveMs": 184152,
+    "outsideToolMs": 441444,
+    "modelSteps": null,
+    "cost": null
+  },
+  "sourceUndoNotInferred": true,
+  "noAgentVisualPass": true,
+  "manifest": [
+    {
+      "path": "01-a18a1b3d-c26e-4c70-9a6c-375eaa1be9f4.capture.json",
+      "sha256": "6f9d1790e1c4ca685a99cc55d5d30a2114654aa8bff409638375820eafe2c21e"
+    },
+    {
+      "path": "01-a18a1b3d-c26e-4c70-9a6c-375eaa1be9f4.pages.json",
+      "sha256": "d9f3195ae7c607a7f1a6bca03660a337db29f15de582a30d201e8e706b0e4977"
+    },
+    {
+      "path": "01-a18a1b3d-c26e-4c70-9a6c-375eaa1be9f4.txt",
+      "sha256": "11dc132b8fb6dee76701088e53e143633f23e5c18726b0ba79df6add0a9b09af"
+    },
+    {
+      "path": "02-11e283c2-103d-4785-a937-e5570ee1919b.capture.json",
+      "sha256": "3f3d1b82b7560ab692bae388d67a3414c173e9f0316f59cd6cd76c993cf997ff"
+    },
+    {
+      "path": "02-11e283c2-103d-4785-a937-e5570ee1919b.pages.json",
+      "sha256": "2cd7eadd4159fdf07932d7b5570a34213c23f2a191cde59dd20104dc5ddad06d"
+    },
+    {
+      "path": "02-11e283c2-103d-4785-a937-e5570ee1919b.txt",
+      "sha256": "cdef30fc462dca21ac33f7c5e6bd47fca4e7946b8b2d6a25549a52756b99066b"
+    },
+    {
+      "path": "03-c53eec1f-fd48-470b-b647-6a1a97ed8cee.capture.json",
+      "sha256": "23c6a63d63c3e9a4e43fc5ddd39456d91a2c16cd2f9c4136ae039b0295b8ea05"
+    },
+    {
+      "path": "03-c53eec1f-fd48-470b-b647-6a1a97ed8cee.pages.json",
+      "sha256": "df4884b24283ef4b2c4c784c67156ac1364df06a59aac376221cbc3590cf447c"
+    },
+    {
+      "path": "03-c53eec1f-fd48-470b-b647-6a1a97ed8cee.txt",
+      "sha256": "1d82b7bb94c3d1076fa0579afa482c0e368cbf2b01d904606e35db3a9c87ce40"
+    },
+    {
+      "path": "04-34374efa-2f30-469a-adf0-9c0a32f6ef1d.capture.json",
+      "sha256": "0fd8883057177242489c6516988b530066ed7ab89c7a034a1bc30e523f2fc4d3"
+    },
+    {
+      "path": "04-34374efa-2f30-469a-adf0-9c0a32f6ef1d.pages.json",
+      "sha256": "7db623700147b046da493b9ba64679bc659e45d579cffc1d8c87c717a87789f4"
+    },
+    {
+      "path": "04-34374efa-2f30-469a-adf0-9c0a32f6ef1d.txt",
+      "sha256": "68f7e01cf25008e968aca42471297693f10784beeb30558b5c46947edee11666"
+    },
+    {
+      "path": "05-c1cf848e-5f46-47cb-bdb3-fed36248de3c.capture.json",
+      "sha256": "735f9bf7bd8f18679f84c7484a8646c93e479b5859854b274d57e0822af5dbc0"
+    },
+    {
+      "path": "05-c1cf848e-5f46-47cb-bdb3-fed36248de3c.pages.json",
+      "sha256": "7b5662858a81305322830b061cdea2cc374beb3fa827f8a77b0e43e924dd75c8"
+    },
+    {
+      "path": "05-c1cf848e-5f46-47cb-bdb3-fed36248de3c.txt",
+      "sha256": "868952291eacd902f085aed15ed9dc7d1ba568d370457b626ceb46d6ad510a5a"
+    },
+    {
+      "path": "06-cf2d26f0-bb67-4810-a72a-d2d0fdf755d2.capture.json",
+      "sha256": "ff41409b72be4a3c66f7f3845f1b20a411e17de2a100edf4f1386379de81ae39"
+    },
+    {
+      "path": "06-cf2d26f0-bb67-4810-a72a-d2d0fdf755d2.pages.json",
+      "sha256": "df494de944b5dd62f68ccfdacafb1f70cb5ccf7456479d13d215626a63194256"
+    },
+    {
+      "path": "06-cf2d26f0-bb67-4810-a72a-d2d0fdf755d2.txt",
+      "sha256": "b19b597740d4b2e99c892d3c4d5f2cc823e5e314a3549649580a505955ed4e56"
+    },
+    {
+      "path": "07-f4e87c79-c3fc-4879-be81-1666ba3c16a7.capture.json",
+      "sha256": "cd4fbcb4e32c0de41b2e37e075818fd27970dc2d0d04b96b1eed4362c8ba0cea"
+    },
+    {
+      "path": "07-f4e87c79-c3fc-4879-be81-1666ba3c16a7.pages.json",
+      "sha256": "ee7884d8ced5a386fe6676c96d63ebe1f25e746931cbf267bf20f38f0ca943c3"
+    },
+    {
+      "path": "07-f4e87c79-c3fc-4879-be81-1666ba3c16a7.txt",
+      "sha256": "54f74bf8d1ca8af5d3f6df87bc8fdc5ead127e11d277baaf8165290df062223d"
+    },
+    {
+      "path": "08-2e46b41c-5614-4a66-b608-28a7dd1dea01.capture.json",
+      "sha256": "b66b62b816b2ff4796f510008a3a40de7f410a8d0a8abf78124afa651fa82444"
+    },
+    {
+      "path": "08-2e46b41c-5614-4a66-b608-28a7dd1dea01.pages.json",
+      "sha256": "51a6d942ecbff7a033d0ad50ea75d622dea41327d5193e6075135d15846b9c9b"
+    },
+    {
+      "path": "08-2e46b41c-5614-4a66-b608-28a7dd1dea01.txt",
+      "sha256": "07b6f43c30c0d8a8e724a7c7b9cb56e6936f6da2a533cafe8d7672a3f33f4d0c"
+    },
+    {
+      "path": "09-6b8fb660-18a2-4beb-b8e6-1e605787f1ce.capture.json",
+      "sha256": "c7ade69610ee4b0539db2b5babdd689178855591079a50c4481294dbfbf7f410"
+    },
+    {
+      "path": "09-6b8fb660-18a2-4beb-b8e6-1e605787f1ce.pages.json",
+      "sha256": "d4b0f6547cc9c8a1ad1f3a04c97c2046d06e49cc60f8fcc3a2e0bc6b8b585b7f"
+    },
+    {
+      "path": "09-6b8fb660-18a2-4beb-b8e6-1e605787f1ce.txt",
+      "sha256": "be78e2de257bc52f5dd601c9bcbc95c825c49a361cfba7a1b4ff318819db2097"
+    },
+    {
+      "path": "10-e09aed3a-afa2-402f-b230-b0eed725aaa3.capture.json",
+      "sha256": "be885e09e9a7bdf89cd4fa44eb7b364758efc7ac1c9d8cf96270ce908c387648"
+    },
+    {
+      "path": "10-e09aed3a-afa2-402f-b230-b0eed725aaa3.pages.json",
+      "sha256": "c6136faf74a7b8d0f1a576c4aa1d7f18bd430fc73dbce1f5681329f15518d93c"
+    },
+    {
+      "path": "10-e09aed3a-afa2-402f-b230-b0eed725aaa3.txt",
+      "sha256": "8740635f7c5f033c88b659be2d6e6bdcd22bac8d35d5cbed269e0f990876dda7"
+    },
+    {
+      "path": "11-7d4b3f83-ca81-41e1-a086-668e2baff6d4.capture.json",
+      "sha256": "69947288f0184c8522f5c4dab23a0b9451f0619e851143cfcffd9fcb8a1e27a7"
+    },
+    {
+      "path": "11-7d4b3f83-ca81-41e1-a086-668e2baff6d4.pages.json",
+      "sha256": "3622b13e1cffe5cf6c65cd0817b19dd2b89dd0f90374e0e3663ac0dc7f32b8b6"
+    },
+    {
+      "path": "11-7d4b3f83-ca81-41e1-a086-668e2baff6d4.txt",
+      "sha256": "f14a72b8905901c992af383dcafc2ada44cd0a463fa233ab35cb44b5e2062a1b"
+    },
+    {
+      "path": "12-4622ee71-c085-4387-973f-b2cf7a0f7e14.capture.json",
+      "sha256": "4483e2e586111f69515aa666ae3c802ddabae4a509e16c9cca4b807ea6866b47"
+    },
+    {
+      "path": "12-4622ee71-c085-4387-973f-b2cf7a0f7e14.pages.json",
+      "sha256": "23736ab9955456aeab49d990bee772fdad91b0263e39257ee847e654fff2ef6a"
+    },
+    {
+      "path": "12-4622ee71-c085-4387-973f-b2cf7a0f7e14.txt",
+      "sha256": "cfd95b4ada253a705e40704145c11446687e6845a181c89ef51f47782888fd01"
+    },
+    {
+      "path": "13-c7fe5b34-a77a-40b1-a7a9-40381b5f9fe6.capture.json",
+      "sha256": "a7a5fca1a73336c3fb1284eae43df76bcb4072dad9d01c44da112ec7a5baaf33"
+    },
+    {
+      "path": "13-c7fe5b34-a77a-40b1-a7a9-40381b5f9fe6.pages.json",
+      "sha256": "77e67fc8c26aa8759b6bafb048da07c4f0d13b4bb204b9e018ec6691a789c5f8"
+    },
+    {
+      "path": "13-c7fe5b34-a77a-40b1-a7a9-40381b5f9fe6.txt",
+      "sha256": "7076ae9a7f6978bb50cfd70ba4efd3e0705bf15246a82add49b5a8f6062dc41c"
+    },
+    {
+      "path": "14-e1aba913-7ec4-47a9-9c7e-e5732eab512d.capture.json",
+      "sha256": "d91d0c2f3b13256b2b811575e2cf5c581c825ff32f6fed1b5dadb44d9f0fafa9"
+    },
+    {
+      "path": "14-e1aba913-7ec4-47a9-9c7e-e5732eab512d.pages.json",
+      "sha256": "a19e0110f4aee0191c09891385176c87f5dcd22f9c73eb4b3fa09d157792da36"
+    },
+    {
+      "path": "14-e1aba913-7ec4-47a9-9c7e-e5732eab512d.txt",
+      "sha256": "36139d9cc1239a5216ebb403c746ec5adca13cdda02c5e017b8ddcbbba24fa80"
+    },
+    {
+      "path": "15-57c77e5d-eb81-4102-a370-f800388d89e9.capture.json",
+      "sha256": "f555c85bb9ef3dd12d335cf25b8da3ca872c9dbfc15ce030d2dfff6b0b446aa7"
+    },
+    {
+      "path": "15-57c77e5d-eb81-4102-a370-f800388d89e9.pages.json",
+      "sha256": "25d04c75eac6537904a6db0dcefc89ab3926a6ace67d99ebf2bccdda8de40e45"
+    },
+    {
+      "path": "15-57c77e5d-eb81-4102-a370-f800388d89e9.txt",
+      "sha256": "1482bff7a8bdd5555acf1588ad0b628cb05518c16ea3cdf0857560d802636fcb"
+    },
+    {
+      "path": "16-0d1f26df-3b93-414e-9c45-defdb537ffc2.capture.json",
+      "sha256": "6391765ad615f35f27bf29d7159aaf4c9b27bee0c68deaab2d8a59181b97a586"
+    },
+    {
+      "path": "16-0d1f26df-3b93-414e-9c45-defdb537ffc2.pages.json",
+      "sha256": "7149937db3694dc1109fbc5d0c7e06e02dd1984c0f05f6b6a2779fe508a2cff1"
+    },
+    {
+      "path": "16-0d1f26df-3b93-414e-9c45-defdb537ffc2.txt",
+      "sha256": "518d1f65a931c4c8ed142f66dc05b28d6b9d39a2dea4dc13543096bb4cbf170e"
+    },
+    {
+      "path": "17-f7febfee-c628-43aa-bab7-2d04b1c298ff.capture.json",
+      "sha256": "486a3132e496065b9fc58be2777fa40d29a5f3cb4bd514b27dcfc0eef19625c3"
+    },
+    {
+      "path": "17-f7febfee-c628-43aa-bab7-2d04b1c298ff.pages.json",
+      "sha256": "6a23f646a6d4d68367d2989320c4430f75f3979a46402e52ccdf70dbd6df0fd7"
+    },
+    {
+      "path": "17-f7febfee-c628-43aa-bab7-2d04b1c298ff.txt",
+      "sha256": "02c18e1ece3c9ca9abfcf33b4933a106fb093cb0bba91efff524f397383140df"
+    },
+    {
+      "path": "18-70e3869e-9766-40cb-b7a7-ac4d8291eb52.capture.json",
+      "sha256": "506c439ec083ab9257084ba22bdadb021ab0966b88084ba02831488d7e47f402"
+    },
+    {
+      "path": "18-70e3869e-9766-40cb-b7a7-ac4d8291eb52.pages.json",
+      "sha256": "c6170b3fb1e09783f95bd4805ec340c62b116f19a45785eafcd60971f7a36b3d"
+    },
+    {
+      "path": "18-70e3869e-9766-40cb-b7a7-ac4d8291eb52.txt",
+      "sha256": "d95ce97aca2a48dbd94ef6b093dbbf257035137f0bb6daa0e8a5a43a61edd1da"
+    },
+    {
+      "path": "19-bef6d8eb-af60-4dfe-a293-3166d6fa3dbe.capture.json",
+      "sha256": "2845372f9f9894f3247ad5ae1d4d060729deb31b6fea545b28d5b53c0e671de1"
+    },
+    {
+      "path": "19-bef6d8eb-af60-4dfe-a293-3166d6fa3dbe.pages.json",
+      "sha256": "7718bbd4bfc63e7a1a570ba148b8c7e39e1233dd389d3632bc425bbd0767b5bd"
+    },
+    {
+      "path": "19-bef6d8eb-af60-4dfe-a293-3166d6fa3dbe.txt",
+      "sha256": "dad4159655def91d4681c43aa3e976dc67fdbeb5d5515b8c015a42b02cc74bdc"
+    },
+    {
+      "path": "20-c7c5930e-1ebb-4e33-9565-67ff41205637.capture.json",
+      "sha256": "10417333361d4bf59a66932d93ac843689b8b4f2238cd3101438075af9fa33b0"
+    },
+    {
+      "path": "20-c7c5930e-1ebb-4e33-9565-67ff41205637.pages.json",
+      "sha256": "e61b5b18f84afce3ccd005ce27a91f47586c59b566d399e8e30b8d616288acc6"
+    },
+    {
+      "path": "20-c7c5930e-1ebb-4e33-9565-67ff41205637.txt",
+      "sha256": "6bdd1ce96a1c24aa8a4788a60fc6c6f8c0491f8c9ab1f7401c203d57c36db69a"
+    },
+    {
+      "path": "21-1ec4b81f-dc83-4e04-9f69-b78d3e071b1e.capture.json",
+      "sha256": "2f4f8a456fd995bc43e06d58a0e376bbae5c9ba32def954c7c226d2c99f5a280"
+    },
+    {
+      "path": "21-1ec4b81f-dc83-4e04-9f69-b78d3e071b1e.pages.json",
+      "sha256": "d16e8b7b8727fde4c71ddba43ff01cc7481a1b034e6427290f51e8a7d21a5f25"
+    },
+    {
+      "path": "21-1ec4b81f-dc83-4e04-9f69-b78d3e071b1e.txt",
+      "sha256": "c7e99d1f9fee08696eabe2cb2cb6dada6d66a25815d02e9b5fff2b97322dbb44"
+    },
+    {
+      "path": "22-afce3b88-8595-41cf-a1d2-34aa18b4e447.capture.json",
+      "sha256": "ad1adb2e3c8079910d85f31e57b650ce91e608bd19419dc178a1b9e9f64e40b1"
+    },
+    {
+      "path": "22-afce3b88-8595-41cf-a1d2-34aa18b4e447.pages.json",
+      "sha256": "d4d313a90091bab44b39a259437ee85e9f7e227f93c0f4e78d8821f6162a8129"
+    },
+    {
+      "path": "22-afce3b88-8595-41cf-a1d2-34aa18b4e447.txt",
+      "sha256": "6d3a283833c67374392d9d438d832d080cd93efbd0ce777080eb2b7c792918cc"
+    },
+    {
+      "path": "23-f4a9faa9-ad64-4661-8437-06a43fe4566b.capture.json",
+      "sha256": "6e09f9887933eb094c37c815b6f957d872e019116eca19198d7a5ba3f6045003"
+    },
+    {
+      "path": "23-f4a9faa9-ad64-4661-8437-06a43fe4566b.pages.json",
+      "sha256": "d39388f220a8cf56f19dbc1d0a4a8d1a738ebc088c5641fe480376ebf378dc99"
+    },
+    {
+      "path": "23-f4a9faa9-ad64-4661-8437-06a43fe4566b.txt",
+      "sha256": "8f71450c63a07d1df03ce2735b5aeb79ea90feaa709caa11e6068604a67c3472"
+    },
+    {
+      "path": "24-a119c5b6-6216-4364-a482-5ec73cf2d5f9.capture.json",
+      "sha256": "e06139adfa9ac241909fff47b3d885f52d8490a0ff3eb46511c97d08ab45713b"
+    },
+    {
+      "path": "24-a119c5b6-6216-4364-a482-5ec73cf2d5f9.pages.json",
+      "sha256": "84ebb2f5a1afd479a28c8608a7a30fbf6f84fab6cdb613e5ecb2926d9cf311e7"
+    },
+    {
+      "path": "24-a119c5b6-6216-4364-a482-5ec73cf2d5f9.txt",
+      "sha256": "d51449378f23680a75b1bf982346cbeaefcd394f48246794f0c0a5cbdb399b66"
+    },
+    {
+      "path": "25-b9178282-203f-4342-a129-3a799bfbb29e.capture.json",
+      "sha256": "cd6f910981d7aa6b0f2ecceb1906aefe07a68462b7d0a770cc7d0e9f31c4fc44"
+    },
+    {
+      "path": "25-b9178282-203f-4342-a129-3a799bfbb29e.pages.json",
+      "sha256": "22eef0152673c8c7976611bed5e23783f5710797720dd22611209ee97891fe77"
+    },
+    {
+      "path": "25-b9178282-203f-4342-a129-3a799bfbb29e.txt",
+      "sha256": "91ffec1bb49b9fa86e5b7ccb266f877e87f86fe4c42686249ff84bfcf4b44fb6"
+    },
+    {
+      "path": "26-591b0253-5c81-42b3-96e1-cf366d936b3d.capture.json",
+      "sha256": "d2a19717a17e010064bf72697e9fdd53d6b42f2f42f1638a7106ced036b4f3c5"
+    },
+    {
+      "path": "26-591b0253-5c81-42b3-96e1-cf366d936b3d.pages.json",
+      "sha256": "aac114f7b867268038a980986f523a48d4b5f99e4da19aa65b5a5e2e9d4f10ac"
+    },
+    {
+      "path": "26-591b0253-5c81-42b3-96e1-cf366d936b3d.txt",
+      "sha256": "90730488995b896baf8b090519b94de2f4804ab3f804fe18fd144e04cfb9dc09"
+    },
+    {
+      "path": "27-07d20d2a-0f01-400a-aaa3-132d8606c399.capture.json",
+      "sha256": "5ae72fcfc6041a21a895640e039bada1897c4c93e227c3efb102d677a49012c5"
+    },
+    {
+      "path": "27-07d20d2a-0f01-400a-aaa3-132d8606c399.pages.json",
+      "sha256": "89a0e634d6e65b8c8c1d01e5416c6c107a6c57928c70283c294cd5a05fba761e"
+    },
+    {
+      "path": "27-07d20d2a-0f01-400a-aaa3-132d8606c399.txt",
+      "sha256": "2891a7e7a3b5e53664134c683cf58e67ee68f11e02ff6c38c4c6404a8fa88176"
+    },
+    {
+      "path": "28-99aec9e5-4c30-4e06-b645-723e8a6691a9.capture.json",
+      "sha256": "130ca564175091a70b689661341441639cefab930c3d251d449642dbf1af3ded"
+    },
+    {
+      "path": "28-99aec9e5-4c30-4e06-b645-723e8a6691a9.pages.json",
+      "sha256": "37f0f2e8989b13f2dbf90acca04198d653dc5abffc41018d6a3d683e36b83e5a"
+    },
+    {
+      "path": "28-99aec9e5-4c30-4e06-b645-723e8a6691a9.txt",
+      "sha256": "da6800ff821cb7fd489a6722c6a33d31d9e784282d529dd3a645d57431e059ad"
+    },
+    {
+      "path": "29-60dea827-82be-40ab-b851-840e9f6a70bd.capture.json",
+      "sha256": "782136191f208439fa9b01a7a75596a4efa45ee24bbe5077d0344f568df91750"
+    },
+    {
+      "path": "29-60dea827-82be-40ab-b851-840e9f6a70bd.pages.json",
+      "sha256": "3307a38f268cd6f962e16a91c72207e55b0a331f796f8aa2acb293faf2461d81"
+    },
+    {
+      "path": "29-60dea827-82be-40ab-b851-840e9f6a70bd.txt",
+      "sha256": "16327a5212384482ef0d3f24905e8fd4a5233445646e1b737ef23213d136427e"
+    },
+    {
+      "path": "30-7508df7b-27cb-4326-bde5-45e1fb4a10b2.capture.json",
+      "sha256": "f1da6319a06a54c6040040ee9c1e2d0a75d6e4b00e4d907aeaf4fadcb4d93f22"
+    },
+    {
+      "path": "30-7508df7b-27cb-4326-bde5-45e1fb4a10b2.pages.json",
+      "sha256": "8cb876b8909ea48a526ef1f2e50834f0913ae6c9d1d553dcdabcd196b4394b7a"
+    },
+    {
+      "path": "30-7508df7b-27cb-4326-bde5-45e1fb4a10b2.txt",
+      "sha256": "ba26462c1276864a878e17778085a366cc083e4233e2e27995806413c6f74bf1"
+    },
+    {
+      "path": "31-79133cbc-34e3-4760-8528-2ef3484969ac.capture.json",
+      "sha256": "44baef3e121bc6f65b510a3e135d7080b10751cc0c86ee01048f743c4d875a94"
+    },
+    {
+      "path": "31-79133cbc-34e3-4760-8528-2ef3484969ac.pages.json",
+      "sha256": "749af39bda64b0668d2f5023eae4f1279efb6f3727ddabbebc97e9c2b5264584"
+    },
+    {
+      "path": "31-79133cbc-34e3-4760-8528-2ef3484969ac.txt",
+      "sha256": "16327a5212384482ef0d3f24905e8fd4a5233445646e1b737ef23213d136427e"
+    },
+    {
+      "path": "32-e02527d3-7c18-4f11-b267-a44b5d647d4c.capture.json",
+      "sha256": "a7a0cf46f9b23c2654f7265a05e2d46963229fa26c4c4323d0b2a2930de1656a"
+    },
+    {
+      "path": "32-e02527d3-7c18-4f11-b267-a44b5d647d4c.pages.json",
+      "sha256": "9047e8716b8153de66fe595c078f6313364daaa0a634ce0195c1c2e8d1776ff4"
+    },
+    {
+      "path": "32-e02527d3-7c18-4f11-b267-a44b5d647d4c.txt",
+      "sha256": "b1c963e3b00858d9d9d42c41ea599a9c7eff3f246af45ad6eb69c7ce1de59b1f"
+    },
+    {
+      "path": "inventory.json",
+      "sha256": "4866f89b4201619365621d15fc04669f0c57d59729729f5ab0f253b537c6ac7f"
+    }
+  ],
+  "limits": [
+    "Terminal failure from observation does not erase two confirmed source effects; no native/capture-interpretation pass is invented.",
+    "Inventory lists32 records with each capture complete; no separate aggregate inventory-complete file was supplied."
+  ]
+}
