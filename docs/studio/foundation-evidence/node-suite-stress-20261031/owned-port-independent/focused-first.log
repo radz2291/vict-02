@@ -1,0 +1,21 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/vict-flow-port-independent-20261101
+
+5:55:45 pm [vite-plugin-svelte] packages/ui-flow-svelte/test/PortProjectionIndependentHost.svelte:6:28 This reference only captures the initial value of `workspace`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+5:55:50 pm [vite-plugin-svelte] packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+5:55:50 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+5:55:50 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+5:55:50 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+5:55:50 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+
+ Test Files  4 passed (4)
+      Tests  25 passed (25)
+   Start at  17:55:41
+   Duration  22.48s (transform 20.64s, setup 0ms, import 29.50s, tests 3.58s, environment 6.84s)
+
