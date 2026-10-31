@@ -1,0 +1,103 @@
+{
+  "status": "QUALIFIED PASS: local stress evidence replay; latest owner Android and slow authoring follow-up remain pending",
+  "candidate": "3e62f75d8337db767c8de6e7d214d520abcdce41",
+  "protectedSourceSha256": "61cb0084f0ea47ae570673ed09d1643cdceadb931944816f679eab09bc480938",
+  "exportSha256": "fb44619809dec2e9266fdbd9b5843e7288ec064e97bb58a64cd3fa37e30c6a5b",
+  "exactR17AfterActivationSingleUndoFinalUndo": true,
+  "styleDeltaOnly": "root49→50, defaults.route bezier→straight",
+  "nestedDeleteDeltaOnly": "root49→50, Social6→7, remove g2",
+  "nestedDragDeltaOnly": "root50→51, Social7→8, add semantic edge-1 grade.o→caption.i; all other data exact",
+  "failedSvgAttempts": "Both initial removed/connected snapshots equal protected r17; neither proves delete/connect.",
+  "geometry": {
+    "graphs": 3,
+    "edges": 24,
+    "handles": 44,
+    "maxAxisEndpointErrorPixels": 0.0005278436279290144,
+    "maxEuclideanEndpointErrorPixels": 0.0005389546795461993,
+    "endpointMetric": "Center displacement minus visible dot radius5×effective scale",
+    "overlaps": 0,
+    "dotCssPixels": 10,
+    "haloCssPixels": 28
+  },
+  "publicNativeReceiptReplay": {
+    "threeCameraMatricesUnchanged": true,
+    "foreignFreeInputRefusedOwnAccepted": true,
+    "oneUndoRoute": "bezier"
+  },
+  "activation": {
+    "source": "3e62f75d8337db767c8de6e7d214d520abcdce41",
+    "sealSha256": "fe1adfed82dfa0ee08726c2e7e9d7ba5f8ff2c98038b225596cafce4bb4d80c4",
+    "recordedCurrentFiles": 398,
+    "recordedPreservedPriorFiles": 395,
+    "activeHashesVerified": 398,
+    "backupHashesVerified": 395,
+    "creationTimePendingFieldsRetained": true
+  },
+  "manifest": [
+    {
+      "path": "36-final-nested-drag-native.json",
+      "sha256": "6910ee8a14fd94ae21615d2b600e20ab423d115a393cea59501c9b68a08baf3c"
+    },
+    {
+      "path": "36-final-preview-single-undo.json",
+      "sha256": "31bb93a8fd6a8b1dfcbd5f31ed16ef3db6b3f56e8b293c870554236caf0db6b4"
+    },
+    {
+      "path": "36-final-repeated-id-isolation-native.json",
+      "sha256": "f0c739ed3416575cbfba737e1c9c281a6869ac1e34648d1bdfc7a2e50b0ca885"
+    },
+    {
+      "path": "nested-final-activation.json",
+      "sha256": "72bda7fdb93f2c5aeea4a46738ad4f7c5c990d4b9b71d963bbc43a8d9b693e79"
+    },
+    {
+      "path": "nested-final-production-seal.json",
+      "sha256": "fe1adfed82dfa0ee08726c2e7e9d7ba5f8ff2c98038b225596cafce4bb4d80c4"
+    },
+    {
+      "path": "37-activated-exact-r17-source.json",
+      "sha256": "61cb0084f0ea47ae570673ed09d1643cdceadb931944816f679eab09bc480938"
+    },
+    {
+      "path": "37-one-style-edit-source.json",
+      "sha256": "74042cf8685918968bd69d2abd237a9e1a1c8bebea3f38182116e0e9b3b933d4"
+    },
+    {
+      "path": "37-one-undo-exact-source.json",
+      "sha256": "61cb0084f0ea47ae570673ed09d1643cdceadb931944816f679eab09bc480938"
+    },
+    {
+      "path": "37-live-endpoints-layout.json",
+      "sha256": "cd0eb15bee5a3a723cc7158c58d986f0a97007dc4fb6c16208e3713ac5f7ad22"
+    },
+    {
+      "path": "37-live-nested-edge-removed-source.json",
+      "sha256": "61cb0084f0ea47ae570673ed09d1643cdceadb931944816f679eab09bc480938"
+    },
+    {
+      "path": "37-live-nested-connected-source.json",
+      "sha256": "61cb0084f0ea47ae570673ed09d1643cdceadb931944816f679eab09bc480938"
+    },
+    {
+      "path": "37-live-nested-delete-confirmed-source.json",
+      "sha256": "5e4c0518b06fe17870215e5accc72e86f12e49abbd9d43e2c841cdd933466ebb"
+    },
+    {
+      "path": "37-live-nested-drag-confirmed-source.json",
+      "sha256": "ccd89c7edfc9141327e697def7ba13fa76891e8d9402e794e508c42e942fee2b"
+    },
+    {
+      "path": "37-final-exact-r17-source.json",
+      "sha256": "61cb0084f0ea47ae570673ed09d1643cdceadb931944816f679eab09bc480938"
+    },
+    {
+      "path": "37-final-supported-export.json",
+      "sha256": "fb44619809dec2e9266fdbd9b5843e7288ec064e97bb58a64cd3fa37e30c6a5b"
+    }
+  ],
+  "limits": [
+    "Independent replay of root captured native evidence; this reviewer did not rerun browser interactions.",
+    "Activation/seal pending fields describe their creation time; subsequent37 captures supply post-activation evidence.",
+    "Latest complex app Android check and slow authoring remain follow-ups; no owner acceptance or Stage9 closure."
+  ]
+}
