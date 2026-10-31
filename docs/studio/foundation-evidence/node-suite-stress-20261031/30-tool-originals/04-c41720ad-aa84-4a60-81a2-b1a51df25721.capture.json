@@ -1,0 +1,18 @@
+{
+  "record": {
+    "id": "c41720ad-aa84-4a60-81a2-b1a51df25721",
+    "index": 3,
+    "label": "Read screen · input"
+  },
+  "total": 76,
+  "end": 76,
+  "pages": [
+    {
+      "end": 76,
+      "start": 0,
+      "text": "{\"section\":\"knowledge\",\"kind\":\"component\",\"key\":\"vict.flow.edge-settings@1\"}",
+      "total": 76
+    }
+  ],
+  "complete": true
+}

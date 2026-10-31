@@ -1,0 +1,18 @@
+{
+  "record": {
+    "id": "b9ce24e8-a399-43e3-9be1-6d2f7972e9fb",
+    "index": 42,
+    "label": "Read screen · input"
+  },
+  "total": 67,
+  "end": 67,
+  "pages": [
+    {
+      "end": 67,
+      "start": 0,
+      "text": "{\"section\":\"capabilities\",\"offset\":0,\"limit\":12,\"nodeId\":\"ws-main\"}",
+      "total": 67
+    }
+  ],
+  "complete": true
+}

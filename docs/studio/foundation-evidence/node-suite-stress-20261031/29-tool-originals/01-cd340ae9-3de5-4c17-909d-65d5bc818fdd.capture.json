@@ -1,0 +1,18 @@
+{
+  "record": {
+    "id": "cd340ae9-3de5-4c17-909d-65d5bc818fdd",
+    "index": 0,
+    "label": "Read screen · input"
+  },
+  "total": 76,
+  "end": 76,
+  "pages": [
+    {
+      "end": 76,
+      "start": 0,
+      "text": "{\"section\":\"nodes\",\"offset\":0,\"limit\":20,\"nodeId\":\"cf-vp\",\"scope\":\"subtree\"}",
+      "total": 76
+    }
+  ],
+  "complete": true
+}

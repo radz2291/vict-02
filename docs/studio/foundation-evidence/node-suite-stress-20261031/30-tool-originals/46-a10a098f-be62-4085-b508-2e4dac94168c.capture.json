@@ -1,0 +1,18 @@
+{
+  "record": {
+    "id": "a10a098f-be62-4085-b508-2e4dac94168c",
+    "index": 45,
+    "label": "Read screen · result"
+  },
+  "total": 2560,
+  "end": 2560,
+  "pages": [
+    {
+      "end": 2560,
+      "start": 0,
+      "text": "{\"expectedRevision\":\"r1.r14#14\",\"cursor\":{\"documentId\":\"screen-a8690ffa-1e90-4b72-909c-66141d372773\",\"revision\":\"r1.r14#14\",\"digest\":\"8eee3cfc7ac9fe889f30424872bd85f00ed82b9beb380187a9677556f0c2c561\",\"epoch\":\"5c76d000-b257-41fb-a5df-928ccce10182\"},\"section\":\"source\",\"nodeId\":\"bf-fin\",\"sourceJson\":\"{\\\"kind\\\":\\\"element\\\",\\\"id\\\":\\\"bf-fin\\\",\\\"tag\\\":\\\"div\\\",\\\"children\\\":[\\\"rf-fin-l\\\",\\\"lb-fin-m\\\",\\\"c-mode\\\",\\\"fin-ws\\\",\\\"rw-help-fin\\\",\\\"wb-fin\\\"],\\\"classes\\\":[\\\"nodrag\\\",\\\"nopan\\\",\\\"nowheel\\\",\\\"cf-fields\\\"],\\\"localStyle\\\":[{\\\"property\\\":\\\"align-items\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"stretch\\\"}},{\\\"property\\\":\\\"background\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"transparent\\\"}},{\\\"property\\\":\\\"display\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"flex\\\"}},{\\\"property\\\":\\\"flex-direction\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"column\\\"}},{\\\"property\\\":\\\"gap\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"6px\\\"}},{\\\"property\\\":\\\"padding\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"0\\\"}},{\\\"property\\\":\\\"width\\\",\\\"value\\\":{\\\"type\\\":\\\"text\\\",\\\"value\\\":\\\"100%\\\"}}]}\",\"totalCharacters\":636,\"offset\":0,\"nextOffset\":null,\"turnProgress\":{\"applied\":1,\"metrics\":{\"toolCalls\":23,\"completedCalls\":23,\"refusedCalls\":0,\"recoveryAttempts\":0,\"toolElapsedMs\":829,\"providerRequests\":11,\"visionRequests\":0,\"acknowledgementMs\":296,\"confirmedEdits\":1,\"usage\":{\"inputTokens\":706898,\"outputTokens\":34760,\"totalTokens\":741658},\"firstEditMs\":543902.3599999994,\"categories\":{\"knowledge\":2,\"source\":20,\"edit\":1,\"observe\":0,\"other\":0},\"elapsedMs\":817625,\"toolActiveMs\":729,\"outsideToolMs\":816895,\"modelSteps\":null,\"cost\":null},\"retainedKnowledge\":{\"scope\":\"Complete contract bodies delivered in this turn only; reuse still requires their content to remain available in model context. Source facts are never cached knowledge.\",\"complete\":[{\"key\":\"vict.flow.edge-settings@1\",\"digest\":\"30a3328187e7eb0d718c8bf44488c0bca880bf8e19d082b42ccd6f80d350c686\",\"bodyIdentity\":\"studio-contract-body@2:guidance:30a3328187e7eb0d718c8bf44488c0bca880bf8e19d082b42ccd6f80d350c686\"}],\"partialCount\":0},\"visualEvidence\":{\"regions\":[],\"currentSourceObservations\":0,\"scope\":\"Captured regions only; source freshness does not establish current runtime/viewport freshness or offscreen/interaction coverage.\",\"interactionsVerified\":false},\"evidence\":\"Host receipt-derived totals include all acknowledged transactions, including cleanup. Outside-tool time is waiting/generation/transport/host overhead, not measured provider latency. Captured regions do not establish full-page or interaction coverage.\"}}",
+      "total": 2560
+    }
+  ],
+  "complete": true
+}

@@ -1,0 +1,18 @@
+{
+  "record": {
+    "id": "6928563c-2484-40a8-af52-ea64af394e36",
+    "index": 2,
+    "label": "Read screen · input"
+  },
+  "total": 71,
+  "end": 71,
+  "pages": [
+    {
+      "end": 71,
+      "start": 0,
+      "text": "{\"section\":\"registry\",\"offset\":0,\"limit\":12,\"registry\":\"dataContracts\"}",
+      "total": 71
+    }
+  ],
+  "complete": true
+}

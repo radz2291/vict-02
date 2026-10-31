@@ -1,0 +1,1 @@
+{"focus":"Campaign canvas: do the new Canvas edge defaults / Selected connection panels render beside the canvas without overlap, and is the Negative prompt card clear of the Draft social card?"}

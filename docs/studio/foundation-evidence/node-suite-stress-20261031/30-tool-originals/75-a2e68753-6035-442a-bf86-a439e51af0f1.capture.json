@@ -1,0 +1,18 @@
+{
+  "record": {
+    "id": "a2e68753-6035-442a-bf86-a439e51af0f1",
+    "index": 74,
+    "label": "Edit screen · input"
+  },
+  "total": 630,
+  "end": 630,
+  "pages": [
+    {
+      "end": 630,
+      "start": 0,
+      "text": "{\"expectedRevision\":\"r1.r14#16\",\"reason\":\"Seed neutral canvas edge defaults on the main campaign canvas and one visibly different manual override on the Social Review-Merge connection e18; all other connections keep inheriting.\",\"operations\":[{\"op\":\"editGraph\",\"nodeId\":\"ws-main\",\"expectedGraphRevision\":47,\"changes\":[{\"appearance\":{\"color\":\"#94a3b8\",\"endArrow\":\"arrow\",\"pattern\":\"solid\",\"route\":\"bezier\",\"startArrow\":\"none\",\"width\":1.5},\"type\":\"setEdgeDefaults\"},{\"appearance\":{\"color\":\"#f59e0b\",\"endArrow\":\"closed\",\"pattern\":\"dash\",\"route\":\"straight\",\"startArrow\":\"none\",\"width\":3},\"edgeId\":\"e18\",\"type\":\"setEdgeAppearance\"}]}]}",
+      "total": 630
+    }
+  ],
+  "complete": true
+}

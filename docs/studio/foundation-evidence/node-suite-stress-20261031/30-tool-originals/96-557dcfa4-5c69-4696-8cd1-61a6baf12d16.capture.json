@@ -1,0 +1,18 @@
+{
+  "record": {
+    "id": "557dcfa4-5c69-4696-8cd1-61a6baf12d16",
+    "index": 95,
+    "label": "Read screen · result"
+  },
+  "total": 2432,
+  "end": 2432,
+  "pages": [
+    {
+      "end": 2432,
+      "start": 0,
+      "text": "{\"expectedRevision\":\"r1.r14#19\",\"cursor\":{\"documentId\":\"screen-a8690ffa-1e90-4b72-909c-66141d372773\",\"revision\":\"r1.r14#19\",\"digest\":\"97d36dd743fb04f4ebe35c5128f1cdb74f4d31a474290dd57764073073fe8750\",\"epoch\":\"5c76d000-b257-41fb-a5df-928ccce10182\"},\"section\":\"preflight\",\"ok\":false,\"code\":\"STUDIO_AGENT_VALIDATION\",\"message\":\"Operation 0 rejected: UI_DOC_UNKNOWN_ATTRIBUTE: Attribute 'class' is not declared for element 'div'.\",\"diagnostics\":[{\"documentId\":\"screen-a8690ffa-1e90-4b72-909c-66141d372773\",\"nodeId\":\"f-es-row\",\"sourcePath\":\"nodes.f-es-row\",\"operation\":0,\"commandIndex\":8,\"envelopeCode\":\"UI_EDIT_VALIDATION_FAILED\",\"code\":\"UI_DOC_UNKNOWN_ATTRIBUTE\",\"path\":\"nodes.f-es-row\",\"message\":\"Attribute 'class' is not declared for element 'div'.\"}],\"applied\":false,\"turnProgress\":{\"applied\":6,\"metrics\":{\"toolCalls\":48,\"completedCalls\":42,\"refusedCalls\":6,\"recoveryAttempts\":5,\"toolElapsedMs\":8362,\"providerRequests\":30,\"visionRequests\":0,\"acknowledgementMs\":2500,\"confirmedEdits\":6,\"usage\":{\"inputTokens\":2999215,\"outputTokens\":81447,\"totalTokens\":3080662},\"firstEditMs\":543902.3599999994,\"categories\":{\"knowledge\":4,\"source\":37,\"edit\":7,\"observe\":0,\"other\":0},\"elapsedMs\":1608467,\"toolActiveMs\":7765,\"outsideToolMs\":1600702,\"modelSteps\":null,\"cost\":null},\"retainedKnowledge\":{\"scope\":\"Complete contract bodies delivered in this turn only; reuse still requires their content to remain available in model context. Source facts are never cached knowledge.\",\"complete\":[{\"key\":\"vict.flow.edge-settings@1\",\"digest\":\"30a3328187e7eb0d718c8bf44488c0bca880bf8e19d082b42ccd6f80d350c686\",\"bodyIdentity\":\"studio-contract-body@2:guidance:30a3328187e7eb0d718c8bf44488c0bca880bf8e19d082b42ccd6f80d350c686\"},{\"key\":\"vict.catalog.button@1\",\"digest\":\"cc715b1bdbfce5d03ec87d1e38715e362fc0bcc95d0ef00c256ef1bfa6b372c8\",\"bodyIdentity\":\"studio-contract-body@2:guidance:cc715b1bdbfce5d03ec87d1e38715e362fc0bcc95d0ef00c256ef1bfa6b372c8\"}],\"partialCount\":0},\"visualEvidence\":{\"regions\":[],\"currentSourceObservations\":0,\"scope\":\"Captured regions only; source freshness does not establish current runtime/viewport freshness or offscreen/interaction coverage.\",\"interactionsVerified\":false},\"evidence\":\"Host receipt-derived totals include all acknowledged transactions, including cleanup. Outside-tool time is waiting/generation/transport/host overhead, not measured provider latency. Captured regions do not establish full-page or interaction coverage.\"}}",
+      "total": 2432
+    }
+  ],
+  "complete": true
+}

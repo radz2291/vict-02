@@ -1,0 +1,18 @@
+{
+  "record": {
+    "id": "84b88e94-129c-4aa2-ba0a-f30dc81b4b2c",
+    "index": 34,
+    "label": "Read screen · input"
+  },
+  "total": 60,
+  "end": 60,
+  "pages": [
+    {
+      "end": 60,
+      "start": 0,
+      "text": "{\"section\":\"source\",\"offset\":0,\"limit\":12,\"nodeId\":\"c-mode\"}",
+      "total": 60
+    }
+  ],
+  "complete": true
+}

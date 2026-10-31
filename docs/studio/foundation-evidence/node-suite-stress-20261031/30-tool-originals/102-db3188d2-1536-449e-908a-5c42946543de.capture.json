@@ -1,0 +1,18 @@
+{
+  "record": {
+    "id": "db3188d2-1536-449e-908a-5c42946543de",
+    "index": 101,
+    "label": "Read screen · input"
+  },
+  "total": 60,
+  "end": 60,
+  "pages": [
+    {
+      "end": 60,
+      "start": 0,
+      "text": "{\"section\":\"source\",\"offset\":0,\"limit\":12,\"nodeId\":\"fin-ws\"}",
+      "total": 60
+    }
+  ],
+  "complete": true
+}

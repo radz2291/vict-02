@@ -1,0 +1,1062 @@
+[
+  {
+    "record": {
+      "id": "18dc881e-b510-4bf4-b965-81ae64ba6cea",
+      "index": 0,
+      "label": "Read screen · input"
+    },
+    "total": 68,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "708d068b-b4ec-4bc4-8585-874f61b9181c",
+      "index": 1,
+      "label": "Read screen · input"
+    },
+    "total": 87,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "01a78788-7877-43e0-9c68-9453625a471e",
+      "index": 2,
+      "label": "Read screen · input"
+    },
+    "total": 60,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "c41720ad-aa84-4a60-81a2-b1a51df25721",
+      "index": 3,
+      "label": "Read screen · input"
+    },
+    "total": 76,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "0c5c7164-4abe-476d-9efa-493547f27a7f",
+      "index": 4,
+      "label": "Read screen · result"
+    },
+    "total": 2194,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "35f61fb8-6c1e-4254-ad75-e5ca2a47fbd8",
+      "index": 5,
+      "label": "Read screen · result"
+    },
+    "total": 6366,
+    "complete": true,
+    "pageCount": 2
+  },
+  {
+    "record": {
+      "id": "c57fbffb-3783-4e4d-886b-180fad91fc74",
+      "index": 6,
+      "label": "Read screen · result"
+    },
+    "total": 3144,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "19642aab-9283-41ac-a5d7-0ac00c01174a",
+      "index": 7,
+      "label": "Read screen · result"
+    },
+    "total": 8189,
+    "complete": true,
+    "pageCount": 2
+  },
+  {
+    "record": {
+      "id": "add490ff-73e2-4a14-944b-3b169b5f8436",
+      "index": 8,
+      "label": "Read screen · input"
+    },
+    "total": 71,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "74ec3f6c-1c91-4ba7-a180-06977df7d863",
+      "index": 9,
+      "label": "Read screen · input"
+    },
+    "total": 87,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "faaf38f1-452f-4384-9b99-38bb59933c54",
+      "index": 10,
+      "label": "Read screen · result"
+    },
+    "total": 6599,
+    "complete": true,
+    "pageCount": 2
+  },
+  {
+    "record": {
+      "id": "de413bdb-4529-43d2-aa41-cf706168b9c1",
+      "index": 11,
+      "label": "Read screen · result"
+    },
+    "total": 9479,
+    "complete": true,
+    "pageCount": 2
+  },
+  {
+    "record": {
+      "id": "688767fc-b253-4c5d-b0fd-a8e3ee1aa07c",
+      "index": 12,
+      "label": "Read screen · input"
+    },
+    "total": 72,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "006e996d-4575-4c5c-9514-8b0f07fc801d",
+      "index": 13,
+      "label": "Read screen · input"
+    },
+    "total": 71,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "6b7e8a65-ccf6-42f5-9cd8-a522be4c3bbe",
+      "index": 14,
+      "label": "Read screen · result"
+    },
+    "total": 5334,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "a31a9763-5f3b-4efc-bee4-a1f9623cde39",
+      "index": 15,
+      "label": "Read screen · result"
+    },
+    "total": 7092,
+    "complete": true,
+    "pageCount": 2
+  },
+  {
+    "record": {
+      "id": "1b2763c9-ab79-42d7-a88a-062d0be72c1e",
+      "index": 16,
+      "label": "Read screen · input"
+    },
+    "total": 2650,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "7dd77861-edfc-44f6-9d1d-7233d313f3e3",
+      "index": 17,
+      "label": "Read screen · result"
+    },
+    "total": 1974,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "9fa3659b-1efd-4792-97ef-250a7fd499f4",
+      "index": 18,
+      "label": "Edit screen · input"
+    },
+    "total": 2597,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "56c22d7b-acc6-414a-86f1-4787e4c197d5",
+      "index": 19,
+      "label": "Edit screen · result"
+    },
+    "total": 5217,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "2891f1ed-8896-44f8-a2ef-bb8b517c5fac",
+      "index": 20,
+      "label": "Read screen · input"
+    },
+    "total": 68,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "97137628-cbdc-48b3-a048-fdc395acec45",
+      "index": 21,
+      "label": "Read screen · input"
+    },
+    "total": 61,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "cc1ed0dc-1199-408b-92c1-ef14ab210dd1",
+      "index": 22,
+      "label": "Read screen · result"
+    },
+    "total": 6809,
+    "complete": true,
+    "pageCount": 2
+  },
+  {
+    "record": {
+      "id": "e9a4aabe-45f1-4879-9a1e-c061745556bb",
+      "index": 23,
+      "label": "Read screen · result"
+    },
+    "total": 6133,
+    "complete": true,
+    "pageCount": 2
+  },
+  {
+    "record": {
+      "id": "ad5737a9-f739-4402-a376-d556ada19ee7",
+      "index": 24,
+      "label": "Read screen · input"
+    },
+    "total": 64,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "6e656441-e924-4e7a-a0f7-d8d34e393ffc",
+      "index": 25,
+      "label": "Read screen · input"
+    },
+    "total": 64,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "841e9e1f-5813-42bd-9ddb-4091cd29b8d3",
+      "index": 26,
+      "label": "Read screen · input"
+    },
+    "total": 71,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "0b424c9a-da94-4fc7-a7ae-62ddb421c3b8",
+      "index": 27,
+      "label": "Read screen · result"
+    },
+    "total": 2565,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "47a9a124-fdc2-48a5-8691-dc74977361af",
+      "index": 28,
+      "label": "Read screen · result"
+    },
+    "total": 2019,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "9925e605-cd31-49f0-84c3-98095d325223",
+      "index": 29,
+      "label": "Read screen · result"
+    },
+    "total": 6722,
+    "complete": true,
+    "pageCount": 2
+  },
+  {
+    "record": {
+      "id": "62fe16d5-4753-4c04-8c23-2257637594d3",
+      "index": 30,
+      "label": "Read screen · input"
+    },
+    "total": 71,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "fa4aa38c-1141-4d6c-aa05-0f3b49f431b3",
+      "index": 31,
+      "label": "Read screen · input"
+    },
+    "total": 63,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "632d1c51-ebf2-43b4-b5ca-79d8bb3ca6c0",
+      "index": 32,
+      "label": "Read screen · input"
+    },
+    "total": 65,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "23202712-5f2f-45f5-8a4b-463a1a4a9874",
+      "index": 33,
+      "label": "Read screen · input"
+    },
+    "total": 72,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "65705660-e45d-4c72-b164-0b61a0ec4df4",
+      "index": 34,
+      "label": "Read screen · result"
+    },
+    "total": 6979,
+    "complete": true,
+    "pageCount": 2
+  },
+  {
+    "record": {
+      "id": "799b6780-ec49-4fab-8acc-61fdbf3dee03",
+      "index": 35,
+      "label": "Read screen · result"
+    },
+    "total": 2524,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "74a40912-98fd-4111-9863-08c0e0a0bb14",
+      "index": 36,
+      "label": "Read screen · result"
+    },
+    "total": 2941,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "e6399aeb-3441-41b0-a39f-217f2fba1b19",
+      "index": 37,
+      "label": "Read screen · result"
+    },
+    "total": 6943,
+    "complete": true,
+    "pageCount": 2
+  },
+  {
+    "record": {
+      "id": "6a783299-4472-4898-8344-de984ceba50a",
+      "index": 38,
+      "label": "Read screen · input"
+    },
+    "total": 59,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "b8acece1-4b6e-40e3-a6a9-678b3420f5e1",
+      "index": 39,
+      "label": "Read screen · input"
+    },
+    "total": 72,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "e3fa180e-870e-42bc-8624-c3bebb50aade",
+      "index": 40,
+      "label": "Read screen · result"
+    },
+    "total": 1893,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "673b427b-c25f-431f-a9ea-d67c39547a60",
+      "index": 41,
+      "label": "Read screen · result"
+    },
+    "total": 3224,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "52249cc8-788d-409c-b9a0-ef2db7b928a4",
+      "index": 42,
+      "label": "Read screen · input"
+    },
+    "total": 60,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "f9ad3ef8-6e44-44fa-a52a-5562e8899ee9",
+      "index": 43,
+      "label": "Read screen · result"
+    },
+    "total": 2831,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "deb939bc-1e82-49c5-a8af-8a2681188790",
+      "index": 44,
+      "label": "Read screen · input"
+    },
+    "total": 60,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "a10a098f-be62-4085-b508-2e4dac94168c",
+      "index": 45,
+      "label": "Read screen · result"
+    },
+    "total": 2560,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "e7dc0c6b-c5e7-4c40-96f2-fcd350de9152",
+      "index": 46,
+      "label": "Read screen · input"
+    },
+    "total": 60,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "83d4a92e-9e75-458c-917d-6f199ded254a",
+      "index": 47,
+      "label": "Read screen · input"
+    },
+    "total": 65,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "a2e97d07-4a60-4c05-a919-7beb2196e20b",
+      "index": 48,
+      "label": "Read screen · result"
+    },
+    "total": 2854,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "b3c70abd-b2ef-43de-bc47-9704b8c098ce",
+      "index": 49,
+      "label": "Read screen · result"
+    },
+    "total": 2541,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "30938334-1349-4672-ab62-e3963bc4dc62",
+      "index": 50,
+      "label": "Read screen · input"
+    },
+    "total": 1312,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "a2816ad2-8435-4153-874c-7c842fb9fb2d",
+      "index": 51,
+      "label": "Read screen · input"
+    },
+    "total": 60,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "98012b00-e40a-48c8-a5b3-df846dc04d9a",
+      "index": 52,
+      "label": "Read screen · result"
+    },
+    "total": 1846,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "b7b24d90-5b56-4a91-9bdf-7d749426237e",
+      "index": 53,
+      "label": "Read screen · result"
+    },
+    "total": 3411,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "bc4d06be-ffed-44e7-86e7-fba3680b829f",
+      "index": 54,
+      "label": "Read screen · input"
+    },
+    "total": 508,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "b7b6fab3-d0b1-4d72-ac3e-6084ebcd7fdc",
+      "index": 55,
+      "label": "Read screen · input"
+    },
+    "total": 508,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "623937eb-ac75-4aea-b3d0-fb55d281950c",
+      "index": 56,
+      "label": "Read screen · input"
+    },
+    "total": 585,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "699f5503-0cb4-439d-beab-5a9595904886",
+      "index": 57,
+      "label": "Read screen · result"
+    },
+    "total": 2016,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "80b2b9b2-9c53-4a7a-b133-f86ee61e75b8",
+      "index": 58,
+      "label": "Read screen · result"
+    },
+    "total": 2017,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "c777210a-43d8-46d5-acd3-76b97f2dd16b",
+      "index": 59,
+      "label": "Read screen · result"
+    },
+    "total": 2017,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "c56ac2ec-0d58-4a81-8177-b4ab593e0ad2",
+      "index": 60,
+      "label": "Edit screen · input"
+    },
+    "total": 495,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "d71a6bdf-2475-40a1-a6eb-1a39a083fa5b",
+      "index": 61,
+      "label": "Edit screen · result"
+    },
+    "total": 5225,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "f76d6332-5e7a-4e8c-ab9c-e34d8e97a00a",
+      "index": 62,
+      "label": "Edit screen · input"
+    },
+    "total": 495,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "3ce99718-6123-49fe-a92f-006bf9cc7299",
+      "index": 63,
+      "label": "Edit screen · result"
+    },
+    "total": 1567,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "2574bc06-38d9-4b76-9f7f-a760cc3a1d24",
+      "index": 64,
+      "label": "Read screen · input"
+    },
+    "total": 71,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "f1b78459-4ea9-4458-b4f7-8f013ece745a",
+      "index": 65,
+      "label": "Read screen · input"
+    },
+    "total": 66,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "7dbfcc54-87a8-40e5-8567-af43a0a60bbf",
+      "index": 66,
+      "label": "Read screen · result"
+    },
+    "total": 6978,
+    "complete": true,
+    "pageCount": 2
+  },
+  {
+    "record": {
+      "id": "457a8b58-0c2f-46a8-a502-81b6733a9d5e",
+      "index": 67,
+      "label": "Read screen · result"
+    },
+    "total": 3411,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "b60c76c2-c731-4968-b0c2-9129b9544a81",
+      "index": 68,
+      "label": "Read screen · input"
+    },
+    "total": 67,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "4a148be3-463b-4119-9336-02c62ce9c580",
+      "index": 69,
+      "label": "Read screen · result"
+    },
+    "total": 2194,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "9100cddd-1897-46a2-b6d8-d8ca54c37f86",
+      "index": 70,
+      "label": "Edit screen · input"
+    },
+    "total": 495,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "39faf602-e0fc-4405-97e6-96fbae2eaacd",
+      "index": 71,
+      "label": "Edit screen · result"
+    },
+    "total": 5225,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "f65ed0e8-59e0-43e9-a5d2-335a8fd607b6",
+      "index": 72,
+      "label": "Read screen · input"
+    },
+    "total": 67,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "d5969594-e0f5-4e24-97d3-d4da4c4221f7",
+      "index": 73,
+      "label": "Read screen · result"
+    },
+    "total": 2194,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "a2e68753-6035-442a-bf86-a439e51af0f1",
+      "index": 74,
+      "label": "Edit screen · input"
+    },
+    "total": 630,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "420918ac-73d1-424c-ae4e-400a85001f95",
+      "index": 75,
+      "label": "Edit screen · result"
+    },
+    "total": 5225,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "75968d25-3cd1-4eda-b7c6-5bc6b42e1a26",
+      "index": 76,
+      "label": "Read screen · input"
+    },
+    "total": 7277,
+    "complete": true,
+    "pageCount": 2
+  },
+  {
+    "record": {
+      "id": "7026ec2d-18b3-4ae0-aa38-b398029e6066",
+      "index": 77,
+      "label": "Read screen · result"
+    },
+    "total": 7476,
+    "complete": true,
+    "pageCount": 2
+  },
+  {
+    "record": {
+      "id": "59f95f9c-8bd9-4862-afc6-deca8f741b36",
+      "index": 78,
+      "label": "Read screen · input"
+    },
+    "total": 7717,
+    "complete": true,
+    "pageCount": 2
+  },
+  {
+    "record": {
+      "id": "383e60b4-ded3-4081-a3d1-51629f8feee9",
+      "index": 79,
+      "label": "Read screen · result"
+    },
+    "total": 1970,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "65405729-a750-43d4-b245-0fe0f7041b01",
+      "index": 80,
+      "label": "Read screen · input"
+    },
+    "total": 60,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "b4943c03-3fbf-4534-b28b-2ca5dd17eae7",
+      "index": 81,
+      "label": "Read screen · input"
+    },
+    "total": 72,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "ad4da5f9-e38e-4c43-9841-06199c027349",
+      "index": 82,
+      "label": "Read screen · result"
+    },
+    "total": 3244,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "c8dc07e6-c49f-4cea-9437-b84ceac2bc3a",
+      "index": 83,
+      "label": "Read screen · result"
+    },
+    "total": 4742,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "9013acc1-5b73-4856-8248-d825b39800ae",
+      "index": 84,
+      "label": "Read screen · input"
+    },
+    "total": 7254,
+    "complete": true,
+    "pageCount": 2
+  },
+  {
+    "record": {
+      "id": "f70043a6-860d-41da-b651-e61a19260436",
+      "index": 85,
+      "label": "Read screen · result"
+    },
+    "total": 2242,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "9afac331-cea0-4463-9547-0017634f4004",
+      "index": 86,
+      "label": "Edit screen · input"
+    },
+    "total": 7201,
+    "complete": true,
+    "pageCount": 2
+  },
+  {
+    "record": {
+      "id": "407ca363-84fe-4b8f-9554-e862b45be37b",
+      "index": 87,
+      "label": "Edit screen · result"
+    },
+    "total": 5400,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "f9dd57fb-5ce6-4adf-b836-0b64f5d6062d",
+      "index": 88,
+      "label": "Read screen · input"
+    },
+    "total": 9242,
+    "complete": true,
+    "pageCount": 2
+  },
+  {
+    "record": {
+      "id": "fb4cc401-1448-4877-bfa5-c0b9278b54b6",
+      "index": 89,
+      "label": "Read screen · result"
+    },
+    "total": 2311,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "0dce698a-e814-4e44-b1f1-1c4ef635a9c4",
+      "index": 90,
+      "label": "Read screen · input"
+    },
+    "total": 9202,
+    "complete": true,
+    "pageCount": 2
+  },
+  {
+    "record": {
+      "id": "274b7dbc-e402-4c53-ac03-0d09c28b2eb8",
+      "index": 91,
+      "label": "Read screen · result"
+    },
+    "total": 2243,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "28639fbb-77b0-46f9-9140-e5628d41f0d9",
+      "index": 92,
+      "label": "Edit screen · input"
+    },
+    "total": 9149,
+    "complete": true,
+    "pageCount": 2
+  },
+  {
+    "record": {
+      "id": "fd3f939c-443c-4e4f-9d8e-4c143d26a51a",
+      "index": 93,
+      "label": "Edit screen · result"
+    },
+    "total": 5400,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "6aab9fef-9700-47c8-9d46-393b491326b8",
+      "index": 94,
+      "label": "Read screen · input"
+    },
+    "total": 16646,
+    "complete": true,
+    "pageCount": 3
+  },
+  {
+    "record": {
+      "id": "557dcfa4-5c69-4696-8cd1-61a6baf12d16",
+      "index": 95,
+      "label": "Read screen · result"
+    },
+    "total": 2432,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "8efd9205-7b48-4da6-81ad-57af37a7d82c",
+      "index": 96,
+      "label": "Read screen · input"
+    },
+    "total": 16639,
+    "complete": true,
+    "pageCount": 3
+  },
+  {
+    "record": {
+      "id": "5d7021e6-c9f9-4c22-8e2e-653921e75081",
+      "index": 97,
+      "label": "Read screen · result"
+    },
+    "total": 2244,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "28202d49-dcd0-4294-9717-6a00a090bc7e",
+      "index": 98,
+      "label": "Edit screen · input"
+    },
+    "total": 16586,
+    "complete": true,
+    "pageCount": 3
+  },
+  {
+    "record": {
+      "id": "444934c5-d169-417f-9309-1ebe366c0d3b",
+      "index": 99,
+      "label": "Edit screen · result"
+    },
+    "total": 5402,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "08c9bb02-25f6-4a71-9d4b-6c24e78e2e0e",
+      "index": 100,
+      "label": "Observe preview · input"
+    },
+    "total": 195,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "db3188d2-1536-449e-908a-5c42946543de",
+      "index": 101,
+      "label": "Read screen · input"
+    },
+    "total": 60,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "9e90a306-ad0c-4024-addf-941db39fd0b6",
+      "index": 102,
+      "label": "Read screen · input"
+    },
+    "total": 72,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "c1ec4469-bbe5-41ab-89c1-81c871bd9935",
+      "index": 103,
+      "label": "Read screen · result"
+    },
+    "total": 3655,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "84bfd849-0c04-44cc-be81-9cd392cfa8e1",
+      "index": 104,
+      "label": "Read screen · result"
+    },
+    "total": 4383,
+    "complete": true,
+    "pageCount": 1
+  },
+  {
+    "record": {
+      "id": "a7e785ec-eb77-4ce0-a039-930bf5115cf9",
+      "index": 105,
+      "label": "Observe preview · result"
+    },
+    "total": 508067,
+    "complete": true,
+    "pageCount": 85
+  }
+]

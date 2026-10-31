@@ -1,0 +1,162 @@
+[
+  {
+    "id": "a18a1b3d-c26e-4c70-9a6c-375eaa1be9f4",
+    "index": 0,
+    "label": "Read screen · input"
+  },
+  {
+    "id": "11e283c2-103d-4785-a937-e5570ee1919b",
+    "index": 1,
+    "label": "Read screen · input"
+  },
+  {
+    "id": "c53eec1f-fd48-470b-b647-6a1a97ed8cee",
+    "index": 2,
+    "label": "Read screen · input"
+  },
+  {
+    "id": "34374efa-2f30-469a-adf0-9c0a32f6ef1d",
+    "index": 3,
+    "label": "Read screen · result"
+  },
+  {
+    "id": "c1cf848e-5f46-47cb-bdb3-fed36248de3c",
+    "index": 4,
+    "label": "Read screen · result"
+  },
+  {
+    "id": "cf2d26f0-bb67-4810-a72a-d2d0fdf755d2",
+    "index": 5,
+    "label": "Read screen · result"
+  },
+  {
+    "id": "f4e87c79-c3fc-4879-be81-1666ba3c16a7",
+    "index": 6,
+    "label": "Read screen · input"
+  },
+  {
+    "id": "2e46b41c-5614-4a66-b608-28a7dd1dea01",
+    "index": 7,
+    "label": "Read screen · result"
+  },
+  {
+    "id": "6b8fb660-18a2-4beb-b8e6-1e605787f1ce",
+    "index": 8,
+    "label": "Read screen · input"
+  },
+  {
+    "id": "e09aed3a-afa2-402f-b230-b0eed725aaa3",
+    "index": 9,
+    "label": "Read screen · result"
+  },
+  {
+    "id": "7d4b3f83-ca81-41e1-a086-668e2baff6d4",
+    "index": 10,
+    "label": "Read screen · input"
+  },
+  {
+    "id": "4622ee71-c085-4387-973f-b2cf7a0f7e14",
+    "index": 11,
+    "label": "Read screen · result"
+  },
+  {
+    "id": "c7fe5b34-a77a-40b1-a7a9-40381b5f9fe6",
+    "index": 12,
+    "label": "Read screen · input"
+  },
+  {
+    "id": "e1aba913-7ec4-47a9-9c7e-e5732eab512d",
+    "index": 13,
+    "label": "Read screen · result"
+  },
+  {
+    "id": "57c77e5d-eb81-4102-a370-f800388d89e9",
+    "index": 14,
+    "label": "Read screen · input"
+  },
+  {
+    "id": "0d1f26df-3b93-414e-9c45-defdb537ffc2",
+    "index": 15,
+    "label": "Read screen · result"
+  },
+  {
+    "id": "f7febfee-c628-43aa-bab7-2d04b1c298ff",
+    "index": 16,
+    "label": "Read screen · input"
+  },
+  {
+    "id": "70e3869e-9766-40cb-b7a7-ac4d8291eb52",
+    "index": 17,
+    "label": "Read screen · input"
+  },
+  {
+    "id": "bef6d8eb-af60-4dfe-a293-3166d6fa3dbe",
+    "index": 18,
+    "label": "Read screen · result"
+  },
+  {
+    "id": "c7c5930e-1ebb-4e33-9565-67ff41205637",
+    "index": 19,
+    "label": "Read screen · result"
+  },
+  {
+    "id": "1ec4b81f-dc83-4e04-9f69-b78d3e071b1e",
+    "index": 20,
+    "label": "Edit screen · input"
+  },
+  {
+    "id": "afce3b88-8595-41cf-a1d2-34aa18b4e447",
+    "index": 21,
+    "label": "Edit screen · result"
+  },
+  {
+    "id": "f4a9faa9-ad64-4661-8437-06a43fe4566b",
+    "index": 22,
+    "label": "Edit screen · input"
+  },
+  {
+    "id": "a119c5b6-6216-4364-a482-5ec73cf2d5f9",
+    "index": 23,
+    "label": "Edit screen · result"
+  },
+  {
+    "id": "b9178282-203f-4342-a129-3a799bfbb29e",
+    "index": 24,
+    "label": "Edit screen · input"
+  },
+  {
+    "id": "591b0253-5c81-42b3-96e1-cf366d936b3d",
+    "index": 25,
+    "label": "Edit screen · result"
+  },
+  {
+    "id": "07d20d2a-0f01-400a-aaa3-132d8606c399",
+    "index": 26,
+    "label": "Read screen · input"
+  },
+  {
+    "id": "99aec9e5-4c30-4e06-b645-723e8a6691a9",
+    "index": 27,
+    "label": "Read screen · result"
+  },
+  {
+    "id": "60dea827-82be-40ab-b851-840e9f6a70bd",
+    "index": 28,
+    "label": "Observe preview · input"
+  },
+  {
+    "id": "7508df7b-27cb-4326-bde5-45e1fb4a10b2",
+    "index": 29,
+    "label": "Observe preview · result"
+  },
+  {
+    "id": "79133cbc-34e3-4760-8528-2ef3484969ac",
+    "index": 30,
+    "label": "Observe preview · input"
+  },
+  {
+    "id": "e02527d3-7c18-4f11-b267-a44b5d647d4c",
+    "index": 31,
+    "label": "Observe preview · result"
+  }
+]

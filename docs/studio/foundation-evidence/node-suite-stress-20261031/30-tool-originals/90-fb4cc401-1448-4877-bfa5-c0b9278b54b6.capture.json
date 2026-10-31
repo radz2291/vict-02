@@ -1,0 +1,18 @@
+{
+  "record": {
+    "id": "fb4cc401-1448-4877-bfa5-c0b9278b54b6",
+    "index": 89,
+    "label": "Read screen · result"
+  },
+  "total": 2311,
+  "end": 2311,
+  "pages": [
+    {
+      "end": 2311,
+      "start": 0,
+      "text": "{\"expectedRevision\":\"r1.r14#18\",\"cursor\":{\"documentId\":\"screen-a8690ffa-1e90-4b72-909c-66141d372773\",\"revision\":\"r1.r14#18\",\"digest\":\"97a6f75e5a371dbe530c14b5a0a36304730373a185060bc7b1b8402d013efb36\",\"epoch\":\"5c76d000-b257-41fb-a5df-928ccce10182\"},\"section\":\"preflight\",\"ok\":false,\"code\":\"STUDIO_AGENT_INVALID_EDIT\",\"message\":\"Use the exact operation fields. No edits applied.\",\"diagnostics\":[{\"operation\":36,\"path\":\"operations.36.prop\",\"message\":\"Expected bind(nodeId,prop,expression?). Required\"},{\"operation\":36,\"path\":\"operations.36\",\"message\":\"Expected bind(nodeId,prop,expression?). Unrecognized key(s) in object: 'name'\"}],\"applied\":false,\"turnProgress\":{\"applied\":5,\"metrics\":{\"toolCalls\":45,\"completedCalls\":40,\"refusedCalls\":5,\"recoveryAttempts\":4,\"toolElapsedMs\":5550,\"providerRequests\":27,\"visionRequests\":0,\"acknowledgementMs\":1604,\"confirmedEdits\":5,\"usage\":{\"inputTokens\":2546712,\"outputTokens\":67474,\"totalTokens\":2614186},\"firstEditMs\":543902.3599999994,\"categories\":{\"knowledge\":4,\"source\":35,\"edit\":6,\"observe\":0,\"other\":0},\"elapsedMs\":1444577,\"toolActiveMs\":4953,\"outsideToolMs\":1439624,\"modelSteps\":null,\"cost\":null},\"retainedKnowledge\":{\"scope\":\"Complete contract bodies delivered in this turn only; reuse still requires their content to remain available in model context. Source facts are never cached knowledge.\",\"complete\":[{\"key\":\"vict.flow.edge-settings@1\",\"digest\":\"30a3328187e7eb0d718c8bf44488c0bca880bf8e19d082b42ccd6f80d350c686\",\"bodyIdentity\":\"studio-contract-body@2:guidance:30a3328187e7eb0d718c8bf44488c0bca880bf8e19d082b42ccd6f80d350c686\"},{\"key\":\"vict.catalog.button@1\",\"digest\":\"cc715b1bdbfce5d03ec87d1e38715e362fc0bcc95d0ef00c256ef1bfa6b372c8\",\"bodyIdentity\":\"studio-contract-body@2:guidance:cc715b1bdbfce5d03ec87d1e38715e362fc0bcc95d0ef00c256ef1bfa6b372c8\"}],\"partialCount\":0},\"visualEvidence\":{\"regions\":[],\"currentSourceObservations\":0,\"scope\":\"Captured regions only; source freshness does not establish current runtime/viewport freshness or offscreen/interaction coverage.\",\"interactionsVerified\":false},\"evidence\":\"Host receipt-derived totals include all acknowledged transactions, including cleanup. Outside-tool time is waiting/generation/transport/host overhead, not measured provider latency. Captured regions do not establish full-page or interaction coverage.\"}}",
+      "total": 2311
+    }
+  ],
+  "complete": true
+}

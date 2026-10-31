@@ -1,0 +1,16 @@
+{
+  "record": {
+    "id": "534ec837-97d6-4a20-a914-b292d7af3afb",
+    "index": 24,
+    "label": "Read screen · input"
+  },
+  "total": 64,
+  "complete": true,
+  "pages": [
+    {
+      "end": 64,
+      "start": 0,
+      "total": 64
+    }
+  ]
+}

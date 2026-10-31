@@ -1,0 +1,44 @@
+{
+  "haloTest": {
+    "source": {
+      "hitClass": "svelte-flow__handle svelte-flow__handle-right nodrag vict-graph-pan-guard-63-32 right port-row-hit  source connectablestart connectableend connectable connectionindicator",
+      "hitIsHandle": true,
+      "outsideVisibleRadius": true,
+      "x": 791.275549530983,
+      "y": 416.8419678211212
+    },
+    "target": {
+      "hitClass": "svelte-flow__handle svelte-flow__handle-left nodrag vict-graph-pan-guard-63-32 left port-row-hit  target connectablestart connectableend connectable connectionindicator",
+      "hitIsHandle": true,
+      "outsideVisibleRadius": true,
+      "x": 833.4077025651932,
+      "y": 303.41973876953125
+    }
+  },
+  "edges": [
+    "e01",
+    "e02",
+    "e03",
+    "e04",
+    "e05",
+    "e06",
+    "e07",
+    "e08",
+    "e09",
+    "e10",
+    "e11",
+    "e12",
+    "e13",
+    "e14",
+    "e15",
+    "e17",
+    "e18",
+    "e19",
+    "e20",
+    "edge-1",
+    "g1",
+    "g2",
+    "g1",
+    "g2"
+  ]
+}

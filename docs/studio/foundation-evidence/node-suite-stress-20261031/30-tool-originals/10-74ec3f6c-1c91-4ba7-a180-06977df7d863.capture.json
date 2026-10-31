@@ -1,0 +1,18 @@
+{
+  "record": {
+    "id": "74ec3f6c-1c91-4ba7-a180-06977df7d863",
+    "index": 9,
+    "label": "Read screen · input"
+  },
+  "total": 87,
+  "end": 87,
+  "pages": [
+    {
+      "end": 87,
+      "start": 0,
+      "text": "{\"section\":\"knowledge\",\"kind\":\"data\",\"projection\":\"examples\",\"key\":\"vict.flow-graph@3\"}",
+      "total": 87
+    }
+  ],
+  "complete": true
+}

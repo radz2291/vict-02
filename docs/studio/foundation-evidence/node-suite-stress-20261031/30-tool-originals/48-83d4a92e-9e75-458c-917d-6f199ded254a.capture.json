@@ -1,0 +1,18 @@
+{
+  "record": {
+    "id": "83d4a92e-9e75-458c-917d-6f199ded254a",
+    "index": 47,
+    "label": "Read screen · input"
+  },
+  "total": 65,
+  "end": 65,
+  "pages": [
+    {
+      "end": 65,
+      "start": 0,
+      "text": "{\"section\":\"source\",\"offset\":0,\"limit\":12,\"nodeId\":\"rw-help-fin\"}",
+      "total": 65
+    }
+  ],
+  "complete": true
+}

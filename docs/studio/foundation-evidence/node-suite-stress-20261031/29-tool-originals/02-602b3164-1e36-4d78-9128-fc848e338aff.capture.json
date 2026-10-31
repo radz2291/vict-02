@@ -1,0 +1,18 @@
+{
+  "record": {
+    "id": "602b3164-1e36-4d78-9128-fc848e338aff",
+    "index": 1,
+    "label": "Read screen · input"
+  },
+  "total": 67,
+  "end": 67,
+  "pages": [
+    {
+      "end": 67,
+      "start": 0,
+      "text": "{\"section\":\"catalog\",\"offset\":0,\"limit\":12,\"query\":\"edge-settings\"}",
+      "total": 67
+    }
+  ],
+  "complete": true
+}

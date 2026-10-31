@@ -1,0 +1,18 @@
+{
+  "record": {
+    "id": "006e996d-4575-4c5c-9514-8b0f07fc801d",
+    "index": 13,
+    "label": "Read screen · input"
+  },
+  "total": 71,
+  "end": 71,
+  "pages": [
+    {
+      "end": 71,
+      "start": 0,
+      "text": "{\"section\":\"state\",\"offset\":7200,\"limit\":12,\"stateKey\":\"campaignGraph\"}",
+      "total": 71
+    }
+  ],
+  "complete": true
+}

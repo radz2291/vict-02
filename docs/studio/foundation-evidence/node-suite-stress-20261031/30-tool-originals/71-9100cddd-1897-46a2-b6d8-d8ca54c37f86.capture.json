@@ -1,0 +1,18 @@
+{
+  "record": {
+    "id": "9100cddd-1897-46a2-b6d8-d8ca54c37f86",
+    "index": 70,
+    "label": "Edit screen · input"
+  },
+  "total": 495,
+  "end": 495,
+  "pages": [
+    {
+      "end": 495,
+      "start": 0,
+      "text": "{\"expectedRevision\":\"r1.r14#15\",\"reason\":\"Seed neutral canvas edge defaults on the Poster Finishing nested canvas (inheriting baseline; no per-edge overrides).\",\"operations\":[{\"op\":\"editGraph\",\"nodeId\":\"fin-ws\",\"expectedGraphRevision\":8,\"occurrenceRoute\":[{\"workspaceNodeId\":\"ws-main\",\"graphNodeId\":\"finP\",\"expectedGraphRevision\":46}],\"changes\":[{\"appearance\":{\"color\":\"#94a3b8\",\"endArrow\":\"arrow\",\"pattern\":\"solid\",\"route\":\"bezier\",\"startArrow\":\"none\",\"width\":1.5},\"type\":\"setEdgeDefaults\"}]}]}",
+      "total": 495
+    }
+  ],
+  "complete": true
+}

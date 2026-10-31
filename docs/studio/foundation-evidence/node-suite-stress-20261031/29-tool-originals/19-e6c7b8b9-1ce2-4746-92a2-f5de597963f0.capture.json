@@ -1,0 +1,18 @@
+{
+  "record": {
+    "id": "e6c7b8b9-1ce2-4746-92a2-f5de597963f0",
+    "index": 18,
+    "label": "Read screen · input"
+  },
+  "total": 329,
+  "end": 329,
+  "pages": [
+    {
+      "end": 329,
+      "start": 0,
+      "text": "{\"section\":\"knowledge\",\"cursor\":\"studio-knowledge-page@1:eyJraW5kIjoiY29tcG9uZW50Iiwia2V5IjoidmljdC5mbG93LndvcmtzcGFjZUAzIiwicHJvamVjdGlvbiI6Imd1aWRhbmNlIiwiYm9keUlkZW50aXR5Ijoic3R1ZGlvLWNvbnRyYWN0LWJvZHlAMjpndWlkYW5jZTpiZGQ3NWQ1OTY3M2FkMzE1MmVkMGJmOWM2NWQxNTEwZDY4NDhmZDA3N2UwOWZlMDBhZDM4OTE1ODgyOWI3MmQyIiwib2Zmc2V0Ijo2MDAwfQ\"}",
+      "total": 329
+    }
+  ],
+  "complete": true
+}

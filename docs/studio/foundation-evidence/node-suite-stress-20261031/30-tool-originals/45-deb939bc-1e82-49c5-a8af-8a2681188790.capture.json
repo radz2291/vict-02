@@ -1,0 +1,18 @@
+{
+  "record": {
+    "id": "deb939bc-1e82-49c5-a8af-8a2681188790",
+    "index": 44,
+    "label": "Read screen · input"
+  },
+  "total": 60,
+  "end": 60,
+  "pages": [
+    {
+      "end": 60,
+      "start": 0,
+      "text": "{\"section\":\"source\",\"offset\":0,\"limit\":12,\"nodeId\":\"bf-fin\"}",
+      "total": 60
+    }
+  ],
+  "complete": true
+}

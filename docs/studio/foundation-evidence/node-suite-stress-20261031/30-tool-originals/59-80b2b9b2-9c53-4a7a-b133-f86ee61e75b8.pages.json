@@ -1,0 +1,16 @@
+{
+  "record": {
+    "id": "80b2b9b2-9c53-4a7a-b133-f86ee61e75b8",
+    "index": 58,
+    "label": "Read screen · result"
+  },
+  "total": 2017,
+  "complete": true,
+  "pages": [
+    {
+      "end": 2017,
+      "start": 0,
+      "total": 2017
+    }
+  ]
+}

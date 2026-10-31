@@ -1,0 +1,18 @@
+{
+  "record": {
+    "id": "b4943c03-3fbf-4534-b28b-2ca5dd17eae7",
+    "index": 81,
+    "label": "Read screen · input"
+  },
+  "total": 72,
+  "end": 72,
+  "pages": [
+    {
+      "end": 72,
+      "start": 0,
+      "text": "{\"section\":\"knowledge\",\"kind\":\"component\",\"key\":\"vict.catalog.button@1\"}",
+      "total": 72
+    }
+  ],
+  "complete": true
+}

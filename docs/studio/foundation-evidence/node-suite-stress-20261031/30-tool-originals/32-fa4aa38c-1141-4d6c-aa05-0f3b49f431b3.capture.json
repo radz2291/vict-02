@@ -1,0 +1,18 @@
+{
+  "record": {
+    "id": "fa4aa38c-1141-4d6c-aa05-0f3b49f431b3",
+    "index": 31,
+    "label": "Read screen · input"
+  },
+  "total": 63,
+  "end": 63,
+  "pages": [
+    {
+      "end": 63,
+      "start": 0,
+      "text": "{\"section\":\"source\",\"offset\":0,\"limit\":12,\"nodeId\":\"cf-status\"}",
+      "total": 63
+    }
+  ],
+  "complete": true
+}

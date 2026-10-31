@@ -1,0 +1,1 @@
+{"focus":"Do the edge-settings panels (Canvas edge defaults / Selected connection rows with labelled selects and colour swatches) render intact in the visible region, with no layout damage, overlap or clipped controls?"}

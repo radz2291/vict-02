@@ -1,0 +1,21 @@
+{
+  "record": {
+    "id": "2e46b41c-5614-4a66-b608-28a7dd1dea01",
+    "index": 7,
+    "label": "Read screen · result"
+  },
+  "total": 6550,
+  "complete": true,
+  "pages": [
+    {
+      "end": 6000,
+      "start": 0,
+      "total": 6550
+    },
+    {
+      "end": 6550,
+      "start": 6000,
+      "total": 6550
+    }
+  ]
+}

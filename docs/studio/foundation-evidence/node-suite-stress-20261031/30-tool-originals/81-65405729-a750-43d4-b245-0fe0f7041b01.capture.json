@@ -1,0 +1,18 @@
+{
+  "record": {
+    "id": "65405729-a750-43d4-b245-0fe0f7041b01",
+    "index": 80,
+    "label": "Read screen · input"
+  },
+  "total": 60,
+  "end": 60,
+  "pages": [
+    {
+      "end": 60,
+      "start": 0,
+      "text": "{\"section\":\"catalog\",\"offset\":0,\"limit\":12,\"query\":\"button\"}",
+      "total": 60
+    }
+  ],
+  "complete": true
+}

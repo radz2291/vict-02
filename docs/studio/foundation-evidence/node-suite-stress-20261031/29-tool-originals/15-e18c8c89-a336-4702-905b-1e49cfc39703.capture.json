@@ -1,0 +1,18 @@
+{
+  "record": {
+    "id": "e18c8c89-a336-4702-905b-1e49cfc39703",
+    "index": 14,
+    "label": "Read screen · input"
+  },
+  "total": 72,
+  "end": 72,
+  "pages": [
+    {
+      "end": 72,
+      "start": 0,
+      "text": "{\"section\":\"knowledge\",\"kind\":\"component\",\"key\":\"vict.flow.workspace@3\"}",
+      "total": 72
+    }
+  ],
+  "complete": true
+}

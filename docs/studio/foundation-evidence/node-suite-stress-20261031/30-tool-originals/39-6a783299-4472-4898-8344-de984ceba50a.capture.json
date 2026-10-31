@@ -1,0 +1,18 @@
+{
+  "record": {
+    "id": "6a783299-4472-4898-8344-de984ceba50a",
+    "index": 38,
+    "label": "Read screen · input"
+  },
+  "total": 59,
+  "end": 59,
+  "pages": [
+    {
+      "end": 59,
+      "start": 0,
+      "text": "{\"section\":\"source\",\"offset\":0,\"limit\":12,\"nodeId\":\"w-fin\"}",
+      "total": 59
+    }
+  ],
+  "complete": true
+}

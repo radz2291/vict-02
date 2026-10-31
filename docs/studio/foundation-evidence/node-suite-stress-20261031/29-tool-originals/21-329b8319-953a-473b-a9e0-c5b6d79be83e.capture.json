@@ -1,0 +1,18 @@
+{
+  "record": {
+    "id": "329b8319-953a-473b-a9e0-c5b6d79be83e",
+    "index": 20,
+    "label": "Read screen · input"
+  },
+  "total": 41,
+  "end": 41,
+  "pages": [
+    {
+      "end": 41,
+      "start": 0,
+      "text": "{\"section\":\"state\",\"offset\":0,\"limit\":12}",
+      "total": 41
+    }
+  ],
+  "complete": true
+}

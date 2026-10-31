@@ -1,0 +1,21 @@
+{
+  "record": {
+    "id": "9afac331-cea0-4463-9547-0017634f4004",
+    "index": 86,
+    "label": "Edit screen · input"
+  },
+  "total": 7201,
+  "complete": true,
+  "pages": [
+    {
+      "end": 6000,
+      "start": 0,
+      "total": 7201
+    },
+    {
+      "end": 7201,
+      "start": 6000,
+      "total": 7201
+    }
+  ]
+}

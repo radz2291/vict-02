@@ -1,0 +1,18 @@
+{
+  "record": {
+    "id": "08c9bb02-25f6-4a71-9d4b-6c24e78e2e0e",
+    "index": 100,
+    "label": "Observe preview · input"
+  },
+  "total": 195,
+  "end": 195,
+  "pages": [
+    {
+      "end": 195,
+      "start": 0,
+      "text": "{\"focus\":\"Campaign canvas: do the new Canvas edge defaults / Selected connection panels render beside the canvas without overlap, and is the Negative prompt card clear of the Draft social card?\"}",
+      "total": 195
+    }
+  ],
+  "complete": true
+}

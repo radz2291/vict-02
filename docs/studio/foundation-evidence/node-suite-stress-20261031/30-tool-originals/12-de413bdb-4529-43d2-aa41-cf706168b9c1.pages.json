@@ -1,0 +1,21 @@
+{
+  "record": {
+    "id": "de413bdb-4529-43d2-aa41-cf706168b9c1",
+    "index": 11,
+    "label": "Read screen · result"
+  },
+  "total": 9479,
+  "complete": true,
+  "pages": [
+    {
+      "end": 6000,
+      "start": 0,
+      "total": 9479
+    },
+    {
+      "end": 9479,
+      "start": 6000,
+      "total": 9479
+    }
+  ]
+}
