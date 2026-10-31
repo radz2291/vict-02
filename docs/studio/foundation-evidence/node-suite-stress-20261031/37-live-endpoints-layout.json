@@ -1,0 +1,777 @@
+[
+  {
+    "edges": [
+      {
+        "endError": {
+          "x": -1.2811433862638069,
+          "y": -0.0002933155872426596
+        },
+        "id": "e01",
+        "startError": {
+          "x": 1.281300692326511,
+          "y": -0.00024336641109812265
+        }
+      },
+      {
+        "endError": {
+          "x": -1.281227037742724,
+          "y": -0.00014617572730912798
+        },
+        "id": "e02",
+        "startError": {
+          "x": 1.281300692326511,
+          "y": -0.00024336641109812265
+        }
+      },
+      {
+        "endError": {
+          "x": -1.2813547124362683,
+          "y": -0.00008008201558595829
+        },
+        "id": "e03",
+        "startError": {
+          "x": 1.281300692326511,
+          "y": -0.00024336641109812265
+        }
+      },
+      {
+        "endError": {
+          "x": -1.2811701010053866,
+          "y": -0.00020592246175965556
+        },
+        "id": "e04",
+        "startError": {
+          "x": 1.2813844543886717,
+          "y": -0.0002930194966666022
+        }
+      },
+      {
+        "endError": {
+          "x": -1.2811339282608287,
+          "y": -0.00008369232591576292
+        },
+        "id": "e05",
+        "startError": {
+          "x": 1.2813844543886717,
+          "y": -0.0002930194966666022
+        }
+      },
+      {
+        "endError": {
+          "x": -1.2811701010053866,
+          "y": -0.0002056263727467922
+        },
+        "id": "e06",
+        "startError": {
+          "x": 1.281325121604823,
+          "y": -0.00014587963937628956
+        }
+      },
+      {
+        "endError": {
+          "x": -1.2811339282608287,
+          "y": -0.00010783414222714782
+        },
+        "id": "e07",
+        "startError": {
+          "x": 1.281325121604823,
+          "y": -0.00014587963937628956
+        }
+      },
+      {
+        "endError": {
+          "x": -1.2811701010053866,
+          "y": -0.00020473810366183895
+        },
+        "id": "e08",
+        "startError": {
+          "x": 1.281258568096348,
+          "y": -0.00016176910145304646
+        }
+      },
+      {
+        "endError": {
+          "x": -1.2811339282608287,
+          "y": -0.00010694587422221956
+        },
+        "id": "e09",
+        "startError": {
+          "x": 1.281258568096348,
+          "y": -0.00016176910145304646
+        }
+      },
+      {
+        "endError": {
+          "x": -1.2811701010053866,
+          "y": -0.0001931709351765676
+        },
+        "id": "e10",
+        "startError": {
+          "x": 1.2812705341613082,
+          "y": -0.00003869251099786197
+        }
+      },
+      {
+        "endError": {
+          "x": -1.2811339282608287,
+          "y": -0.000058662241485762934
+        },
+        "id": "e11",
+        "startError": {
+          "x": 1.2812705341613082,
+          "y": -0.00003869251099786197
+        }
+      },
+      {
+        "endError": {
+          "x": -1.2811701010053866,
+          "y": -0.0001928748461637042
+        },
+        "id": "e12",
+        "startError": {
+          "x": 1.2811913672374828,
+          "y": -0.00007978592651625149
+        }
+      },
+      {
+        "endError": {
+          "x": -1.2811339282608287,
+          "y": -0.00005836615343923768
+        },
+        "id": "e13",
+        "startError": {
+          "x": 1.2811913672374828,
+          "y": -0.00007978592651625149
+        }
+      },
+      {
+        "endError": {
+          "x": -1.2810733914582215,
+          "y": -0.00025827042634318786
+        },
+        "id": "e14",
+        "startError": {
+          "x": 1.281394336898984,
+          "y": -0.00020444201356895064
+        }
+      },
+      {
+        "endError": {
+          "x": -1.2810672192764514,
+          "y": -0.00007790464974277711
+        },
+        "id": "e15",
+        "startError": {
+          "x": 1.281406071739184,
+          "y": -0.00008221187977142108
+        }
+      },
+      {
+        "endError": {
+          "x": -1.2808581638573742,
+          "y": -0.00021988999571931345
+        },
+        "id": "e16",
+        "startError": {
+          "x": 1.2814666085417912,
+          "y": -0.0002824122427682596
+        }
+      },
+      {
+        "endError": {
+          "x": -1.2808810474015218,
+          "y": -0.00005882596337869472
+        },
+        "id": "e17",
+        "startError": {
+          "x": 1.2814972186279192,
+          "y": -0.00007760855964988878
+        }
+      },
+      {
+        "endError": {
+          "x": -1.2808027856826811,
+          "y": -0.0001338365351557513
+        },
+        "id": "e18",
+        "startError": {
+          "x": 1.2816573982382806,
+          "y": -0.0002195939067632935
+        }
+      },
+      {
+        "endError": {
+          "x": -1.2808027856826811,
+          "y": -0.00013413262524863967
+        },
+        "id": "e19",
+        "startError": {
+          "x": 1.2816589525986046,
+          "y": -0.00008296777764371654
+        }
+      },
+      {
+        "endError": {
+          "x": -1.280742156372071,
+          "y": -0.0001088726368720927
+        },
+        "id": "e20",
+        "startError": {
+          "x": 1.2817372143173316,
+          "y": -0.0001335404471660695
+        }
+      }
+    ],
+    "flow": 0,
+    "handles": [
+      {
+        "haloHeight": "28px",
+        "haloWidth": "28px",
+        "height": "10px",
+        "label": " Brief out brief  ",
+        "node": "brief",
+        "port": "o",
+        "width": "10px",
+        "x": 280.3674439191818,
+        "y": 277.2328919172287
+      },
+      {
+        "haloHeight": "28px",
+        "haloWidth": "28px",
+        "height": "10px",
+        "label": " Brief in brief  ",
+        "node": "pos",
+        "port": "i",
+        "width": "10px",
+        "x": 340.9157532453537,
+        "y": 251.65183413028717
+      },
+      {
+        "haloHeight": "28px",
+        "haloWidth": "28px",
+        "height": "10px",
+        "label": " Prompt out prompt  ",
+        "node": "pos",
+        "port": "o",
+        "width": "10px",
+        "x": 404.1592041254043,
+        "y": 260.36449587345123
+      },
+      {
+        "haloHeight": "28px",
+        "haloWidth": "28px",
+        "height": "10px",
+        "label": " Brief in brief  ",
+        "node": "neg",
+        "port": "i",
+        "width": "10px",
+        "x": 267.29442751407623,
+        "y": 416.120294213295
+      },
+      {
+        "haloHeight": "28px",
+        "haloWidth": "28px",
+        "height": "10px",
+        "label": " Prompt out prompt  ",
+        "node": "neg",
+        "port": "o",
+        "width": "10px",
+        "x": 330.5378540754318,
+        "y": 424.83287966251373
+      },
+      {
+        "haloHeight": "28px",
+        "haloWidth": "28px",
+        "height": "10px",
+        "label": " Settings config  ",
+        "node": "model",
+        "port": "o",
+        "width": "10px",
+        "x": 226.4661530256271,
+        "y": 402.3814514875412
+      },
+      {
+        "haloHeight": "28px",
+        "haloWidth": "28px",
+        "height": "10px",
+        "label": " Brief in brief  ",
+        "node": "style",
+        "port": "i",
+        "width": "10px",
+        "x": 105.00500643253326,
+        "y": 472.8906494379043
+      },
+      {
+        "haloHeight": "28px",
+        "haloWidth": "28px",
+        "height": "10px",
+        "label": " Style style  ",
+        "node": "style",
+        "port": "o",
+        "width": "10px",
+        "x": 166.09590458869934,
+        "y": 481.6032654047012
+      },
+      {
+        "haloHeight": "28px",
+        "haloWidth": "28px",
+        "height": "10px",
+        "label": " Seed seed  ",
+        "node": "seed",
+        "port": "o",
+        "width": "10px",
+        "x": 267.3367553949356,
+        "y": 550.5898071527481
+      },
+      {
+        "haloHeight": "28px",
+        "haloWidth": "28px",
+        "height": "10px",
+        "label": " Brief brief  ",
+        "node": "soc",
+        "port": "b",
+        "width": "10px",
+        "x": 340.97728884220123,
+        "y": 335.4090210199356
+      },
+      {
+        "haloHeight": "28px",
+        "haloWidth": "28px",
+        "height": "10px",
+        "label": " Prompt prompt  ",
+        "node": "soc",
+        "port": "p",
+        "width": "10px",
+        "x": 340.97728884220123,
+        "y": 344.1216369867325
+      },
+      {
+        "haloHeight": "28px",
+        "haloWidth": "28px",
+        "height": "10px",
+        "label": " Negative prompt  ",
+        "node": "soc",
+        "port": "n",
+        "width": "10px",
+        "x": 340.97728884220123,
+        "y": 352.83425295352936
+      },
+      {
+        "haloHeight": "28px",
+        "haloWidth": "28px",
+        "height": "10px",
+        "label": " Seed seed  ",
+        "node": "soc",
+        "port": "s",
+        "width": "10px",
+        "x": 340.97728884220123,
+        "y": 361.5468872785568
+      },
+      {
+        "haloHeight": "28px",
+        "haloWidth": "28px",
+        "height": "10px",
+        "label": " Style style  ",
+        "node": "soc",
+        "port": "t",
+        "width": "10px",
+        "x": 340.97728884220123,
+        "y": 370.2595032453537
+      },
+      {
+        "haloHeight": "28px",
+        "haloWidth": "28px",
+        "height": "10px",
+        "label": " Settings config  ",
+        "node": "soc",
+        "port": "c",
+        "width": "10px",
+        "x": 340.97728884220123,
+        "y": 378.97216188907623
+      },
+      {
+        "haloHeight": "28px",
+        "haloWidth": "28px",
+        "height": "10px",
+        "label": " Draft image  ",
+        "node": "soc",
+        "port": "o",
+        "width": "10px",
+        "x": 402.0681762695313,
+        "y": 387.6848083734512
+      },
+      {
+        "haloHeight": "28px",
+        "haloWidth": "28px",
+        "height": "10px",
+        "label": " Brief brief  ",
+        "node": "pst",
+        "port": "b",
+        "width": "10px",
+        "x": 364.6219116449356,
+        "y": 510.1691589355469
+      },
+      {
+        "haloHeight": "28px",
+        "haloWidth": "28px",
+        "height": "10px",
+        "label": " Prompt prompt  ",
+        "node": "pst",
+        "port": "p",
+        "width": "10px",
+        "x": 364.6219116449356,
+        "y": 518.8817993402481
+      },
+      {
+        "haloHeight": "28px",
+        "haloWidth": "28px",
+        "height": "10px",
+        "label": " Negative prompt  ",
+        "node": "pst",
+        "port": "n",
+        "width": "10px",
+        "x": 364.6219116449356,
+        "y": 527.5944092273712
+      },
+      {
+        "haloHeight": "28px",
+        "haloWidth": "28px",
+        "height": "10px",
+        "label": " Seed seed  ",
+        "node": "pst",
+        "port": "s",
+        "width": "10px",
+        "x": 364.6219116449356,
+        "y": 536.3070678710938
+      },
+      {
+        "haloHeight": "28px",
+        "haloWidth": "28px",
+        "height": "10px",
+        "label": " Style style  ",
+        "node": "pst",
+        "port": "t",
+        "width": "10px",
+        "x": 364.6219116449356,
+        "y": 545.0196533203125
+      },
+      {
+        "haloHeight": "28px",
+        "haloWidth": "28px",
+        "height": "10px",
+        "label": " Settings config  ",
+        "node": "pst",
+        "port": "c",
+        "width": "10px",
+        "x": 364.6219116449356,
+        "y": 553.73228764534
+      },
+      {
+        "haloHeight": "28px",
+        "haloWidth": "28px",
+        "height": "10px",
+        "label": " Draft image  ",
+        "node": "pst",
+        "port": "o",
+        "width": "10px",
+        "x": 425.71282351017,
+        "y": 562.4449096918106
+      },
+      {
+        "haloHeight": "28px",
+        "haloWidth": "28px",
+        "height": "10px",
+        "label": " Draft in image  ",
+        "node": "finS",
+        "port": "i",
+        "width": "10px",
+        "x": 447.16466677188873,
+        "y": 419.7913208007813
+      },
+      {
+        "haloHeight": "28px",
+        "haloWidth": "28px",
+        "height": "10px",
+        "label": " Finished image  ",
+        "node": "finS",
+        "port": "o",
+        "width": "10px",
+        "x": 641.5075317621231,
+        "y": 428.5039306879043
+      },
+      {
+        "haloHeight": "28px",
+        "haloWidth": "28px",
+        "height": "10px",
+        "label": " Draft in image  ",
+        "node": "finP",
+        "port": "i",
+        "width": "10px",
+        "x": 456.8732849359512,
+        "y": 689.1880127191544
+      },
+      {
+        "haloHeight": "28px",
+        "haloWidth": "28px",
+        "height": "10px",
+        "label": " Finished image  ",
+        "node": "finP",
+        "port": "o",
+        "width": "10px",
+        "x": 651.2161254882812,
+        "y": 697.9006592035294
+      },
+      {
+        "haloHeight": "28px",
+        "haloWidth": "28px",
+        "height": "10px",
+        "label": " Draft in image  ",
+        "node": "revS",
+        "port": "i",
+        "width": "10px",
+        "x": 682.4822387695312,
+        "y": 331.99456179142
+      },
+      {
+        "haloHeight": "28px",
+        "haloWidth": "28px",
+        "height": "10px",
+        "label": " Decision approval  ",
+        "node": "revS",
+        "port": "o",
+        "width": "10px",
+        "x": 743.5731445550919,
+        "y": 340.70717775821686
+      },
+      {
+        "haloHeight": "28px",
+        "haloWidth": "28px",
+        "height": "10px",
+        "label": " Draft in image  ",
+        "node": "revP",
+        "port": "i",
+        "width": "10px",
+        "x": 672.1264282464981,
+        "y": 531.4894409179688
+      },
+      {
+        "haloHeight": "28px",
+        "haloWidth": "28px",
+        "height": "10px",
+        "label": " Decision approval  ",
+        "node": "revP",
+        "port": "o",
+        "width": "10px",
+        "x": 733.2173095941544,
+        "y": 540.2021118402481
+      },
+      {
+        "haloHeight": "28px",
+        "haloWidth": "28px",
+        "height": "10px",
+        "label": " Poster decision approval  ",
+        "node": "check",
+        "port": "p",
+        "width": "10px",
+        "x": 759.2527099847794,
+        "y": 439.545587182045
+      },
+      {
+        "haloHeight": "28px",
+        "haloWidth": "28px",
+        "height": "10px",
+        "label": " Social decision approval  ",
+        "node": "check",
+        "port": "s",
+        "width": "10px",
+        "x": 759.2527099847794,
+        "y": 448.25823366642
+      },
+      {
+        "haloHeight": "28px",
+        "haloWidth": "28px",
+        "height": "10px",
+        "label": " Package check  ",
+        "node": "check",
+        "port": "o",
+        "width": "10px",
+        "x": 820.3436523675919,
+        "y": 456.97081911563873
+      },
+      {
+        "haloHeight": "28px",
+        "haloWidth": "28px",
+        "height": "10px",
+        "label": " Checklist in check  ",
+        "node": "exp",
+        "port": "i",
+        "width": "10px",
+        "x": 851.5040893554688,
+        "y": 463.7359313964844
+      },
+      {
+        "haloHeight": "28px",
+        "haloWidth": "28px",
+        "height": "10px",
+        "label": " Package package  ",
+        "node": "exp",
+        "port": "o",
+        "width": "10px",
+        "x": 912.5950317382812,
+        "y": 472.4485718011856
+      }
+    ],
+    "overlaps": [],
+    "scale": 0.256254
+  },
+  {
+    "edges": [
+      {
+        "endError": {
+          "x": -1.2619289462030563,
+          "y": -0.00001506528161598908
+        },
+        "id": "g1",
+        "startError": {
+          "x": 1.2619124210872317,
+          "y": -0.000017459341052017407
+        }
+      },
+      {
+        "endError": {
+          "x": -1.2619407839038104,
+          "y": 0.000006980549642321421
+        },
+        "id": "g2",
+        "startError": {
+          "x": 1.2618940036968525,
+          "y": -0.000014930244788047276
+        }
+      }
+    ],
+    "flow": 1,
+    "handles": [
+      {
+        "haloHeight": "28px",
+        "haloWidth": "28px",
+        "height": "10px",
+        "label": " Cropped image  ",
+        "node": "f-crop",
+        "port": "o",
+        "width": "10px",
+        "x": 512.6827210187912,
+        "y": 283.11259162425995
+      },
+      {
+        "haloHeight": "28px",
+        "haloWidth": "28px",
+        "height": "10px",
+        "label": " Image in image  ",
+        "node": "f-grade",
+        "port": "i",
+        "width": "10px",
+        "x": 527.219836473465,
+        "y": 296.36259162425995
+      },
+      {
+        "haloHeight": "28px",
+        "haloWidth": "28px",
+        "height": "10px",
+        "label": " Graded image  ",
+        "node": "f-grade",
+        "port": "o",
+        "width": "10px",
+        "x": 574.76842045784,
+        "y": 304.9435547590256
+      },
+      {
+        "haloHeight": "28px",
+        "haloWidth": "28px",
+        "height": "10px",
+        "label": " Graded in image  ",
+        "node": "f-caption",
+        "port": "i",
+        "width": "10px",
+        "x": 576.1817749738693,
+        "y": 283.2387878894806
+      }
+    ],
+    "overlaps": [],
+    "scale": 0.25238106527166854
+  },
+  {
+    "edges": [
+      {
+        "endError": {
+          "x": -0.8465938318961435,
+          "y": -0.0001689345522208896
+        },
+        "id": "g1",
+        "startError": {
+          "x": 0.8466541706181943,
+          "y": -0.000027972149837296456
+        }
+      },
+      {
+        "endError": {
+          "x": -0.8464432439593566,
+          "y": -0.000045363198410086625
+        },
+        "id": "g2",
+        "startError": {
+          "x": 0.8468323328801262,
+          "y": -0.0001661256872012018
+        }
+      }
+    ],
+    "flow": 2,
+    "handles": [
+      {
+        "haloHeight": "28px",
+        "haloWidth": "28px",
+        "height": "10px",
+        "label": " Cropped image  ",
+        "node": "f-crop",
+        "port": "o",
+        "width": "10px",
+        "x": 507.6808044314385,
+        "y": 570.1702514886856
+      },
+      {
+        "haloHeight": "28px",
+        "haloWidth": "28px",
+        "height": "10px",
+        "label": " Image in image  ",
+        "node": "f-grade",
+        "port": "i",
+        "width": "10px",
+        "x": 544.8288818597794,
+        "y": 544.8291503787041
+      },
+      {
+        "haloHeight": "28px",
+        "haloWidth": "28px",
+        "height": "10px",
+        "label": " Graded image  ",
+        "node": "f-grade",
+        "port": "o",
+        "width": "10px",
+        "x": 576.7333862185478,
+        "y": 550.5869018435478
+      },
+      {
+        "haloHeight": "28px",
+        "haloWidth": "28px",
+        "height": "10px",
+        "label": " Graded in image  ",
+        "node": "f-caption",
+        "port": "i",
+        "width": "10px",
+        "x": 602.6008178591728,
+        "y": 575.6033813357353
+      }
+    ],
+    "overlaps": [],
+    "scale": 0.16934500273728775
+  }
+]

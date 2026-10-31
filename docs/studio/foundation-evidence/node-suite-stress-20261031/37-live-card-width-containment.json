@@ -1,0 +1,82 @@
+[
+  {
+    "id": "brief",
+    "overflow": []
+  },
+  {
+    "id": "pos",
+    "overflow": []
+  },
+  {
+    "id": "neg",
+    "overflow": []
+  },
+  {
+    "id": "model",
+    "overflow": []
+  },
+  {
+    "id": "style",
+    "overflow": []
+  },
+  {
+    "id": "seed",
+    "overflow": []
+  },
+  {
+    "id": "soc",
+    "overflow": []
+  },
+  {
+    "id": "pst",
+    "overflow": []
+  },
+  {
+    "id": "finS",
+    "overflow": []
+  },
+  {
+    "id": "f-crop",
+    "overflow": []
+  },
+  {
+    "id": "f-grade",
+    "overflow": []
+  },
+  {
+    "id": "f-caption",
+    "overflow": []
+  },
+  {
+    "id": "finP",
+    "overflow": []
+  },
+  {
+    "id": "f-crop",
+    "overflow": []
+  },
+  {
+    "id": "f-grade",
+    "overflow": []
+  },
+  {
+    "id": "f-caption",
+    "overflow": []
+  },
+  {
+    "id": "revS",
+    "overflow": []
+  },
+  {
+    "id": "revP",
+    "overflow": []
+  },
+  {
+    "id": "check",
+    "overflow": []
+  },
+  {
+    "id": "exp",
+    "overflow": []
+  }
+]
