@@ -1,0 +1,10 @@
+
+> build
+> vite build --ssr src/validate.ts --outDir validation
+
+vite v6.4.3 building SSR bundle for production...
+transforming...
+✓ 1358 modules transformed.
+rendering chunks...
+validation/validate.js  2,379.99 kB
+✓ built in 21.76s

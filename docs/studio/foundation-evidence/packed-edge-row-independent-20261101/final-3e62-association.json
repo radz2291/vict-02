@@ -1,0 +1,121 @@
+{
+  "status": "PASS",
+  "candidate": "3e62f75d8337db767c8de6e7d214d520abcdce41",
+  "leafReport": "docs/studio/foundation-evidence/packed-edge-row-independent-20261101/vict-independent-edge-row-FG4fjM.json",
+  "leafReportSha256": "d8c1dab5c90bcdd9761120dd1d9cf78dc7b26ae418dc5c2e82386b7b6f196c7b",
+  "producerReportSha256": "454ba8bce66735a5f2efd9f5fff8c61bcdb054b55e7e9761dbd45dcb1f871eb9",
+  "packs": [
+    {
+      "name": "@victframework/contracts",
+      "sourceTree": "ebe69ed3da57a25ae86b50fdf8006fa0d907c9f2",
+      "tarSha256": "017c0587843869653f6bd723566dcaf39f2e89b2fb55bc923f35667be9d618de",
+      "installedFiles": 30,
+      "gitSourceFiles": 0,
+      "buildMode": "reused-earlier-successful-build"
+    },
+    {
+      "name": "@victframework/ui",
+      "sourceTree": "01b07346b8975b8c01830bbb1a33c413900a2032",
+      "tarSha256": "15dd5f5da2a38b6cbf0bc56677c7f6ccae190c4c7a5029d8cc7c8994263a7cb2",
+      "installedFiles": 69,
+      "gitSourceFiles": 0,
+      "buildMode": "reused-earlier-successful-build"
+    },
+    {
+      "name": "@victframework/sdk",
+      "sourceTree": "4222a8b85f661980dbad03168b8f773dfc5554ec",
+      "tarSha256": "c37e97319a52463c9b422a3de2870247beaee97b811fe378b3a4ee8e00e2ce7a",
+      "installedFiles": 27,
+      "gitSourceFiles": 0,
+      "buildMode": "reused-earlier-successful-build"
+    },
+    {
+      "name": "@victframework/application",
+      "sourceTree": "c6c4ebc5415fcbc42a56aee90ee1edea6c8bdd9f",
+      "tarSha256": "ea0fdde59f165379154517f4be4ca99e3c8790033862e4a56f6df5fdb09b5db7",
+      "installedFiles": 33,
+      "gitSourceFiles": 0,
+      "buildMode": "reused-earlier-successful-build"
+    },
+    {
+      "name": "@victframework/ui-svelte",
+      "sourceTree": "36a189df8fc87df4234c7d7444d183eee6c26c35",
+      "tarSha256": "028f45f199df8fd5c0a1c9d07dcb57de8fec09d56fbd55020aa6ec1f9a59fa1e",
+      "installedFiles": 284,
+      "gitSourceFiles": 198,
+      "buildMode": "reused-earlier-successful-build"
+    },
+    {
+      "name": "@victframework/ui-media-svelte",
+      "sourceTree": "0673a7b64b17051a4d7dcc45baa45a4ce45d06d1",
+      "tarSha256": "234e78dd8f615622097b5166e5bd7f7646574d3663d3607b390d26ac8be11f22",
+      "installedFiles": 20,
+      "gitSourceFiles": 19,
+      "buildMode": "reused-earlier-successful-build"
+    },
+    {
+      "name": "@victframework/ui-flow-svelte",
+      "sourceTree": "3aeede578275858ac99eb93aa2e6fcff076e3478",
+      "tarSha256": "fef1ed061c2397760aee828aa6d94267e0454f4b412efdbb71f69e0f8d873aa8",
+      "installedFiles": 61,
+      "gitSourceFiles": 59,
+      "buildMode": "fresh-build-check"
+    }
+  ],
+  "installedFiles": 524,
+  "previewInstalledFiles": 524,
+  "gitSourceFiles": 276,
+  "unchangedFixtureFiles": 8,
+  "finalSavedSourceSha256": "61cb0084f0ea47ae570673ed09d1643cdceadb931944816f679eab09bc480938",
+  "finalExportSha256": "fb44619809dec2e9266fdbd9b5843e7288ec064e97bb58a64cd3fa37e30c6a5b",
+  "previewReportSha256": "c757502eeb7db31ea2dce216c377755de28afc2f64eba932ca5f489ae1383769",
+  "previewInputHashes": [
+    {
+      "path": "package.json",
+      "sha256": "916209e8d4e494ea0a1c02b56e604cfbe049a4fb78afa17f3f12ad17ffcf867e"
+    },
+    {
+      "path": "vite.config.mjs",
+      "sha256": "1bfe0337a2442b6ff8a6709c9d3340f8b452bdd8e5253b7b6095116de7576fc0"
+    },
+    {
+      "path": "src/main.ts",
+      "sha256": "476e3c6f15bdd1d3a9aeeeef63bacd88ae4b232ca7754f2ff5faef310ae92f76"
+    },
+    {
+      "path": "src/App.svelte",
+      "sha256": "b64900cd42fc92a2cbea84e106a7f8cab6125a9d7810c29d1c3289fc3a7ae7e9"
+    },
+    {
+      "path": "production-build.log",
+      "sha256": "0beb26f84cf8200943592435407c68a7eda4d17bdf535f0e36e0ad968618ebb7"
+    },
+    {
+      "path": "validation-build.log",
+      "sha256": "1e568204bb18bc5a2470081209fa38ddadcbbad3a169c3483045a98b93775abd"
+    },
+    {
+      "path": "validation.log",
+      "sha256": "3679cf5e55e959109a2e0114915cc8f5e622ecf8bf50e4a31bf74d409713b420"
+    }
+  ],
+  "previewOutputFiles": [
+    {
+      "path": "application.json",
+      "sha256": "fb44619809dec2e9266fdbd9b5843e7288ec064e97bb58a64cd3fa37e30c6a5b"
+    },
+    {
+      "path": "assets/index-CDo-rQrZ.css",
+      "sha256": "2519dc2e71ad3c3b78f9f3e8d48721a9c3566aa344c1f48b9e0421d8afc3b98f"
+    },
+    {
+      "path": "assets/index-DAB2i-38.js",
+      "sha256": "3397fa106c09758038a4809fc5894b1d916cb9bbb10a8e766c0e7d3284b149fe"
+    },
+    {
+      "path": "index.html",
+      "sha256": "cf420ab045bf41418e03368c2dbbfd9abfbd0464e2d2f87039888e9691f1de69"
+    }
+  ],
+  "scope": "Seven exact frozen package trees/tar/installed bytes, unchanged installed public-leaf tests/build, unchanged actual r17 export and final runtime static production preview; no native/browser/activation/whole verdict."
+}
