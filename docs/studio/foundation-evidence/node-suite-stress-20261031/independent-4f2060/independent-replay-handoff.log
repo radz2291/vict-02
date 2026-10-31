@@ -1,0 +1,11 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/vict-limits-independent-20261031
+
+(node:20872) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+ Test Files  2 passed (2)
+      Tests  15 passed (15)
+   Start at  11:30:47
+   Duration  2.36s (transform 2.62s, setup 0ms, import 3.35s, tests 427ms, environment 1ms)
+

@@ -1,0 +1,28 @@
+{
+  "sourceCandidate": "d830c7f00b4f0e3a4038daf1b4619f5246188ddd",
+  "consumer": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-capture-public-independent-SaZRM0",
+  "tarball": "victframework-ui-ai-svelte-0.4.0-rc.1.tgz",
+  "tarballSha256": "e6c54a7be4b47e8a7dbd3a011293d4595806fdc766c120d4d6d786c3e76823e3",
+  "installedEntry": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-capture-public-independent-SaZRM0\\node_modules\\@victframework\\ui-ai-svelte\\src\\capture.ts",
+  "inputs": [
+    "node_modules/@victframework/ui-ai-svelte/src/capture-resource.ts",
+    "node_modules/dom-to-image-more/dist/dom-to-image-more.min.js",
+    "node_modules/@victframework/ui-ai-svelte/src/capture-scroll.ts",
+    "node_modules/html-to-image/lib/util.js",
+    "node_modules/html-to-image/lib/clone-pseudos.js",
+    "node_modules/html-to-image/lib/mimes.js",
+    "node_modules/html-to-image/lib/dataurl.js",
+    "node_modules/html-to-image/lib/clone-node.js",
+    "node_modules/html-to-image/lib/embed-resources.js",
+    "node_modules/html-to-image/lib/embed-images.js",
+    "node_modules/html-to-image/lib/apply-style.js",
+    "node_modules/html-to-image/lib/embed-webfonts.js",
+    "node_modules/html-to-image/lib/index.js",
+    "node_modules/@victframework/ui-ai-svelte/src/capture.ts",
+    "entry.ts"
+  ],
+  "result": "Installed public capture server bundle import PASS",
+  "noSourceAliases": true,
+  "noPrivateImports": true,
+  "plainNodeDirectTypeScriptImportSupported": false
+}
