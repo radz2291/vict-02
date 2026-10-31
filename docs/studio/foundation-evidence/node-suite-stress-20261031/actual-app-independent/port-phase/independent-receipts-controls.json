@@ -1,0 +1,400 @@
+{
+  "status": "PASS: actual acknowledged port transactions, exact saved/export source, ordinary bindings and scope declarations preserved; native behavior/layout not awarded",
+  "turn": "e3ec3c90-25ba-4a3f-b2f2-2720c73cbe7c",
+  "beforeSave": {
+    "revision": "r1.r12",
+    "sha256": "2a672084666d4baf3f25df708817eea0a09e602c9a3079c916cf602f764103c7",
+    "onlySavedRevisionChanged": true
+  },
+  "savedSource": {
+    "id": "screen-a8690ffa-1e90-4b72-909c-66141d372773",
+    "revision": "r1.r13",
+    "bytes": 277792,
+    "sha256": "6f59ca3c98f83d621c2b17ff2afa39babf8db5fff367e838503dcfb630236216"
+  },
+  "supportedExport": {
+    "bytes": 355927,
+    "sha256": "364a9cf14851498137224efc32b5673472fe3cde03c997d6c475cf16390067f9",
+    "documentExact": true
+  },
+  "conversation": {
+    "bytes": 253953,
+    "sha256": "fb499c50d2270b7cc0089bdbcf67a3b322835b622781358d82e36b0389afe854",
+    "completeResultObjects": 18,
+    "limit": "Rendered public conversation is not a complete raw original archive; incomplete trailing observation JSON is not reconstructed or counted."
+  },
+  "acknowledgements": [
+    {
+      "ok": true,
+      "applied": 1,
+      "revision": "r1.r12#1",
+      "digest": "91dd440cba25206d838170f7123d7ef322d906e5049d933746493a970195e244",
+      "verification": "source-only",
+      "turnProgress": {
+        "applied": 1,
+        "metrics": {
+          "toolCalls": 31,
+          "completedCalls": 30,
+          "refusedCalls": 1,
+          "recoveryAttempts": 1,
+          "toolElapsedMs": 1735,
+          "providerRequests": 20,
+          "visionRequests": 0,
+          "acknowledgementMs": 457,
+          "confirmedEdits": 1,
+          "usage": {
+            "inputTokens": 1362724,
+            "outputTokens": 24343,
+            "totalTokens": 1387067
+          },
+          "firstEditMs": 591872.5880999999,
+          "categories": {
+            "knowledge": 3,
+            "source": 26,
+            "edit": 2,
+            "observe": 0,
+            "other": 0
+          },
+          "elapsedMs": 591875,
+          "toolActiveMs": 1647,
+          "outsideToolMs": 590228,
+          "modelSteps": null,
+          "cost": null
+        },
+        "retainedKnowledge": {
+          "scope": "Complete contract bodies delivered in this turn only; reuse still requires their content to remain available in model context. Source facts are never cached knowledge.",
+          "complete": [
+            {
+              "key": "vict.flow.port-row@1",
+              "digest": "c7b84e709b92f3fe873297068d36011b555b19bed5689197f5ba624e5a5f672a",
+              "bodyIdentity": "studio-contract-body@2:guidance:c7b84e709b92f3fe873297068d36011b555b19bed5689197f5ba624e5a5f672a"
+            }
+          ],
+          "partialCount": 0
+        },
+        "visualEvidence": {
+          "regions": [],
+          "currentSourceObservations": 0,
+          "scope": "Captured regions only; source freshness does not establish current runtime/viewport freshness or offscreen/interaction coverage.",
+          "interactionsVerified": false
+        },
+        "evidence": "Host receipt-derived totals include all acknowledged transactions, including cleanup. Outside-tool time is waiting/generation/transport/host overhead, not measured provider latency. Captured regions do not establish full-page or interaction coverage."
+      }
+    },
+    {
+      "ok": true,
+      "applied": 2,
+      "revision": "r1.r12#2",
+      "digest": "a9c11867ea072fcb4b22994ff82a9f5df3d1b09bc9ed75dac20a52b8a7ec44dc",
+      "verification": "source-only",
+      "turnProgress": {
+        "applied": 2,
+        "metrics": {
+          "toolCalls": 32,
+          "completedCalls": 31,
+          "refusedCalls": 1,
+          "recoveryAttempts": 1,
+          "toolElapsedMs": 2469,
+          "providerRequests": 21,
+          "visionRequests": 0,
+          "acknowledgementMs": 856,
+          "confirmedEdits": 2,
+          "usage": {
+            "inputTokens": 1474801,
+            "outputTokens": 25566,
+            "totalTokens": 1500367
+          },
+          "firstEditMs": 591872.5880999999,
+          "categories": {
+            "knowledge": 3,
+            "source": 26,
+            "edit": 3,
+            "observe": 0,
+            "other": 0
+          },
+          "elapsedMs": 608414,
+          "toolActiveMs": 2381,
+          "outsideToolMs": 606033,
+          "modelSteps": null,
+          "cost": null
+        },
+        "retainedKnowledge": {
+          "scope": "Complete contract bodies delivered in this turn only; reuse still requires their content to remain available in model context. Source facts are never cached knowledge.",
+          "complete": [
+            {
+              "key": "vict.flow.port-row@1",
+              "digest": "c7b84e709b92f3fe873297068d36011b555b19bed5689197f5ba624e5a5f672a",
+              "bodyIdentity": "studio-contract-body@2:guidance:c7b84e709b92f3fe873297068d36011b555b19bed5689197f5ba624e5a5f672a"
+            }
+          ],
+          "partialCount": 0
+        },
+        "visualEvidence": {
+          "regions": [],
+          "currentSourceObservations": 0,
+          "scope": "Captured regions only; source freshness does not establish current runtime/viewport freshness or offscreen/interaction coverage.",
+          "interactionsVerified": false
+        },
+        "evidence": "Host receipt-derived totals include all acknowledged transactions, including cleanup. Outside-tool time is waiting/generation/transport/host overhead, not measured provider latency. Captured regions do not establish full-page or interaction coverage."
+      }
+    },
+    {
+      "ok": true,
+      "applied": 3,
+      "revision": "r1.r12#3",
+      "digest": "84921f990d68954606b0c5fd094f376c2f17743c9e0d2647023dbb6984a3a915",
+      "verification": "source-only",
+      "turnProgress": {
+        "applied": 3,
+        "metrics": {
+          "toolCalls": 33,
+          "completedCalls": 32,
+          "refusedCalls": 1,
+          "recoveryAttempts": 1,
+          "toolElapsedMs": 3438,
+          "providerRequests": 22,
+          "visionRequests": 0,
+          "acknowledgementMs": 1333,
+          "confirmedEdits": 3,
+          "usage": {
+            "inputTokens": 1589416,
+            "outputTokens": 27374,
+            "totalTokens": 1616790
+          },
+          "firstEditMs": 591872.5880999999,
+          "categories": {
+            "knowledge": 3,
+            "source": 26,
+            "edit": 4,
+            "observe": 0,
+            "other": 0
+          },
+          "elapsedMs": 633926,
+          "toolActiveMs": 3350,
+          "outsideToolMs": 630576,
+          "modelSteps": null,
+          "cost": null
+        },
+        "retainedKnowledge": {
+          "scope": "Complete contract bodies delivered in this turn only; reuse still requires their content to remain available in model context. Source facts are never cached knowledge.",
+          "complete": [
+            {
+              "key": "vict.flow.port-row@1",
+              "digest": "c7b84e709b92f3fe873297068d36011b555b19bed5689197f5ba624e5a5f672a",
+              "bodyIdentity": "studio-contract-body@2:guidance:c7b84e709b92f3fe873297068d36011b555b19bed5689197f5ba624e5a5f672a"
+            }
+          ],
+          "partialCount": 0
+        },
+        "visualEvidence": {
+          "regions": [],
+          "currentSourceObservations": 0,
+          "scope": "Captured regions only; source freshness does not establish current runtime/viewport freshness or offscreen/interaction coverage.",
+          "interactionsVerified": false
+        },
+        "evidence": "Host receipt-derived totals include all acknowledged transactions, including cleanup. Outside-tool time is waiting/generation/transport/host overhead, not measured provider latency. Captured regions do not establish full-page or interaction coverage."
+      }
+    },
+    {
+      "ok": true,
+      "applied": 4,
+      "revision": "r1.r12#4",
+      "digest": "d31e4b350257d042b1598a2d1bb9c0c20e5f8dfd12c70d2fac1beafdad0e1266",
+      "verification": "source-only",
+      "turnProgress": {
+        "applied": 4,
+        "metrics": {
+          "toolCalls": 34,
+          "completedCalls": 33,
+          "refusedCalls": 1,
+          "recoveryAttempts": 1,
+          "toolElapsedMs": 4071,
+          "providerRequests": 23,
+          "visionRequests": 0,
+          "acknowledgementMs": 1685,
+          "confirmedEdits": 4,
+          "usage": {
+            "inputTokens": 1707160,
+            "outputTokens": 28407,
+            "totalTokens": 1735567
+          },
+          "firstEditMs": 591872.5880999999,
+          "categories": {
+            "knowledge": 3,
+            "source": 26,
+            "edit": 5,
+            "observe": 0,
+            "other": 0
+          },
+          "elapsedMs": 673841,
+          "toolActiveMs": 3983,
+          "outsideToolMs": 669857,
+          "modelSteps": null,
+          "cost": null
+        },
+        "retainedKnowledge": {
+          "scope": "Complete contract bodies delivered in this turn only; reuse still requires their content to remain available in model context. Source facts are never cached knowledge.",
+          "complete": [
+            {
+              "key": "vict.flow.port-row@1",
+              "digest": "c7b84e709b92f3fe873297068d36011b555b19bed5689197f5ba624e5a5f672a",
+              "bodyIdentity": "studio-contract-body@2:guidance:c7b84e709b92f3fe873297068d36011b555b19bed5689197f5ba624e5a5f672a"
+            }
+          ],
+          "partialCount": 0
+        },
+        "visualEvidence": {
+          "regions": [],
+          "currentSourceObservations": 0,
+          "scope": "Captured regions only; source freshness does not establish current runtime/viewport freshness or offscreen/interaction coverage.",
+          "interactionsVerified": false
+        },
+        "evidence": "Host receipt-derived totals include all acknowledged transactions, including cleanup. Outside-tool time is waiting/generation/transport/host overhead, not measured provider latency. Captured regions do not establish full-page or interaction coverage."
+      }
+    }
+  ],
+  "ordinaryControlsUnchanged": [
+    "c-sum",
+    "c-aud",
+    "c-ptext",
+    "c-msel",
+    "c-steps",
+    "c-pal",
+    "c-snotes",
+    "c-seednum",
+    "c-rand",
+    "c-dfmt",
+    "c-hires",
+    "c-rstatus",
+    "c-rnotes",
+    "c-help-r",
+    "c-chk1",
+    "c-chk2",
+    "c-chk3",
+    "c-ready",
+    "c-help-c",
+    "c-guid",
+    "c-help-m",
+    "c-dest",
+    "c-fmt",
+    "c-help-e",
+    "c-mode",
+    "c-help-fin",
+    "fc-crop-sel",
+    "fc-grade-in",
+    "fc-caption-in",
+    "hl-bi-c",
+    "hl-pi-c",
+    "hl-si-c",
+    "hl-sdi-c",
+    "hl-di-c"
+  ],
+  "scopeDeclarationsUnchanged": [
+    "ws-main/content",
+    "ws-main/body",
+    "fin-ws/content",
+    "fin-ws/body"
+  ],
+  "negativeMarginPresentation": [
+    {
+      "nodeId": "bp-brief",
+      "property": "margin",
+      "value": "0 -10px"
+    },
+    {
+      "nodeId": "bp-prompt",
+      "property": "margin",
+      "value": "0 -10px"
+    },
+    {
+      "nodeId": "bp-style",
+      "property": "margin",
+      "value": "0 -10px"
+    },
+    {
+      "nodeId": "bp-seed",
+      "property": "margin",
+      "value": "0 -10px"
+    },
+    {
+      "nodeId": "bp-draft",
+      "property": "margin",
+      "value": "0 -10px"
+    },
+    {
+      "nodeId": "bp-review",
+      "property": "margin",
+      "value": "0 -10px"
+    },
+    {
+      "nodeId": "bp-check",
+      "property": "margin",
+      "value": "0 -10px"
+    },
+    {
+      "nodeId": "bp-model",
+      "property": "margin",
+      "value": "0 -10px"
+    },
+    {
+      "nodeId": "bp-exp",
+      "property": "margin",
+      "value": "0 -10px"
+    },
+    {
+      "nodeId": "bp-fin",
+      "property": "margin",
+      "value": "0 -10px"
+    },
+    {
+      "nodeId": "fc-crop-p",
+      "property": "margin",
+      "value": "0 -8px"
+    },
+    {
+      "nodeId": "fc-grade-p",
+      "property": "margin",
+      "value": "0 -8px"
+    },
+    {
+      "nodeId": "fc-caption-p",
+      "property": "margin",
+      "value": "0 -8px"
+    }
+  ],
+  "renderedAnchors": 44,
+  "semanticTypeColors": {
+    "brief": [
+      "#2dd4bf"
+    ],
+    "prompt": [
+      "#38bdf8"
+    ],
+    "config": [
+      "#a78bfa"
+    ],
+    "style": [
+      "#22d3ee"
+    ],
+    "seed": [
+      "#fbbf24"
+    ],
+    "image": [
+      "#4ade80"
+    ],
+    "approval": [
+      "#818cf8"
+    ],
+    "check": [
+      "#fb923c"
+    ],
+    "package": [
+      "#e2e8f0"
+    ]
+  },
+  "limits": [
+    "Negative margin source declarations do not prove native card-boundary socket positions or hit targets.",
+    "Image/final model prose remains model interpretation; no pointer/interaction proof inferred.",
+    "No migration, history/reload/import/public artifact or whole-phase/owner acceptance verdict."
+  ]
+}

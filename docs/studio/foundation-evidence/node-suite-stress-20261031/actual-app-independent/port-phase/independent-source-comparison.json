@@ -1,0 +1,484 @@
+{
+  "mode": "ports",
+  "status": "PASS: exact port-only source preservation and declared semantic anchor coverage; native layout NOT awarded",
+  "before": {
+    "path": "docs/studio/foundation-evidence/node-suite-stress-20261031/28-activated-exact-source.json",
+    "fileSha256": "4e956e01def3df5dd7b2c7ca41e8257d96ed95e64b1be46fa377fe6a26c4bbd5",
+    "id": "screen-a8690ffa-1e90-4b72-909c-66141d372773",
+    "revision": "r1.r12"
+  },
+  "after": {
+    "path": "docs/studio/foundation-evidence/node-suite-stress-20261031/actual-app-independent/port-phase/saved-source.json",
+    "fileSha256": "6f59ca3c98f83d621c2b17ff2afa39babf8db5fff367e838503dcfb630236216",
+    "id": "screen-a8690ffa-1e90-4b72-909c-66141d372773",
+    "revision": "r1.r13"
+  },
+  "documentSemanticExact": false,
+  "localStateExact": true,
+  "rawGraphStringsExact": true,
+  "graphs": [
+    {
+      "path": "state:campaignGraph",
+      "workspace": "ws-main",
+      "sourceSha256": "6d86e16a2e84b11fa7adc388c05ba28c3546f0fe6cf6fdd786a38c0496b5285b",
+      "schema": "vict.flow-graph@2",
+      "revision": 35,
+      "nodes": 14,
+      "edges": 20,
+      "families": 10
+    },
+    {
+      "path": "state:campaignGraph/node:finS/parameter:subgraph",
+      "workspace": "fin-ws",
+      "sourceSha256": "6a811415f9ce4602c361634574bf28f49561f52265d465ea891009b50fdbcd6f",
+      "schema": "vict.flow-graph@2",
+      "revision": 5,
+      "nodes": 3,
+      "edges": 2,
+      "families": 3
+    },
+    {
+      "path": "state:campaignGraph/node:finP/parameter:subgraph",
+      "workspace": "fin-ws",
+      "sourceSha256": "cc936fc12f70fe51f96bb5145b99115e06f0a738e045aed47aac151b38f9e711",
+      "schema": "vict.flow-graph@2",
+      "revision": 3,
+      "nodes": 3,
+      "edges": 2,
+      "families": 3
+    }
+  ],
+  "sourceRows": 27,
+  "sourceBareAnchors": 0,
+  "occurrences": [
+    {
+      "graphPath": "state:campaignGraph",
+      "workspace": "ws-main",
+      "nodeId": "brief",
+      "family": "brief",
+      "anchors": [
+        {
+          "sourceNodeId": "pr-br-o",
+          "definition": "vict.flow.port-row",
+          "revision": "1",
+          "portId": "o"
+        }
+      ]
+    },
+    {
+      "graphPath": "state:campaignGraph",
+      "workspace": "ws-main",
+      "nodeId": "pos",
+      "family": "prompt",
+      "anchors": [
+        {
+          "sourceNodeId": "pr-pr-i",
+          "definition": "vict.flow.port-row",
+          "revision": "1",
+          "portId": "i"
+        },
+        {
+          "sourceNodeId": "pr-pr-o",
+          "definition": "vict.flow.port-row",
+          "revision": "1",
+          "portId": "o"
+        }
+      ]
+    },
+    {
+      "graphPath": "state:campaignGraph",
+      "workspace": "ws-main",
+      "nodeId": "neg",
+      "family": "prompt",
+      "anchors": [
+        {
+          "sourceNodeId": "pr-pr-i",
+          "definition": "vict.flow.port-row",
+          "revision": "1",
+          "portId": "i"
+        },
+        {
+          "sourceNodeId": "pr-pr-o",
+          "definition": "vict.flow.port-row",
+          "revision": "1",
+          "portId": "o"
+        }
+      ]
+    },
+    {
+      "graphPath": "state:campaignGraph",
+      "workspace": "ws-main",
+      "nodeId": "model",
+      "family": "model",
+      "anchors": [
+        {
+          "sourceNodeId": "pr-mod-o",
+          "definition": "vict.flow.port-row",
+          "revision": "1",
+          "portId": "o"
+        }
+      ]
+    },
+    {
+      "graphPath": "state:campaignGraph",
+      "workspace": "ws-main",
+      "nodeId": "style",
+      "family": "style",
+      "anchors": [
+        {
+          "sourceNodeId": "pr-st-i",
+          "definition": "vict.flow.port-row",
+          "revision": "1",
+          "portId": "i"
+        },
+        {
+          "sourceNodeId": "pr-st-o",
+          "definition": "vict.flow.port-row",
+          "revision": "1",
+          "portId": "o"
+        }
+      ]
+    },
+    {
+      "graphPath": "state:campaignGraph",
+      "workspace": "ws-main",
+      "nodeId": "seed",
+      "family": "seed",
+      "anchors": [
+        {
+          "sourceNodeId": "pr-sd-o",
+          "definition": "vict.flow.port-row",
+          "revision": "1",
+          "portId": "o"
+        }
+      ]
+    },
+    {
+      "graphPath": "state:campaignGraph",
+      "workspace": "ws-main",
+      "nodeId": "soc",
+      "family": "draft",
+      "anchors": [
+        {
+          "sourceNodeId": "pr-dr-b",
+          "definition": "vict.flow.port-row",
+          "revision": "1",
+          "portId": "b"
+        },
+        {
+          "sourceNodeId": "pr-dr-p",
+          "definition": "vict.flow.port-row",
+          "revision": "1",
+          "portId": "p"
+        },
+        {
+          "sourceNodeId": "pr-dr-n",
+          "definition": "vict.flow.port-row",
+          "revision": "1",
+          "portId": "n"
+        },
+        {
+          "sourceNodeId": "pr-dr-s",
+          "definition": "vict.flow.port-row",
+          "revision": "1",
+          "portId": "s"
+        },
+        {
+          "sourceNodeId": "pr-dr-t",
+          "definition": "vict.flow.port-row",
+          "revision": "1",
+          "portId": "t"
+        },
+        {
+          "sourceNodeId": "pr-dr-c",
+          "definition": "vict.flow.port-row",
+          "revision": "1",
+          "portId": "c"
+        },
+        {
+          "sourceNodeId": "pr-dr-o",
+          "definition": "vict.flow.port-row",
+          "revision": "1",
+          "portId": "o"
+        }
+      ]
+    },
+    {
+      "graphPath": "state:campaignGraph",
+      "workspace": "ws-main",
+      "nodeId": "pst",
+      "family": "draft",
+      "anchors": [
+        {
+          "sourceNodeId": "pr-dr-b",
+          "definition": "vict.flow.port-row",
+          "revision": "1",
+          "portId": "b"
+        },
+        {
+          "sourceNodeId": "pr-dr-p",
+          "definition": "vict.flow.port-row",
+          "revision": "1",
+          "portId": "p"
+        },
+        {
+          "sourceNodeId": "pr-dr-n",
+          "definition": "vict.flow.port-row",
+          "revision": "1",
+          "portId": "n"
+        },
+        {
+          "sourceNodeId": "pr-dr-s",
+          "definition": "vict.flow.port-row",
+          "revision": "1",
+          "portId": "s"
+        },
+        {
+          "sourceNodeId": "pr-dr-t",
+          "definition": "vict.flow.port-row",
+          "revision": "1",
+          "portId": "t"
+        },
+        {
+          "sourceNodeId": "pr-dr-c",
+          "definition": "vict.flow.port-row",
+          "revision": "1",
+          "portId": "c"
+        },
+        {
+          "sourceNodeId": "pr-dr-o",
+          "definition": "vict.flow.port-row",
+          "revision": "1",
+          "portId": "o"
+        }
+      ]
+    },
+    {
+      "graphPath": "state:campaignGraph",
+      "workspace": "ws-main",
+      "nodeId": "finS",
+      "family": "finish",
+      "anchors": [
+        {
+          "sourceNodeId": "pr-fin-i",
+          "definition": "vict.flow.port-row",
+          "revision": "1",
+          "portId": "i"
+        },
+        {
+          "sourceNodeId": "pr-fin-o",
+          "definition": "vict.flow.port-row",
+          "revision": "1",
+          "portId": "o"
+        }
+      ]
+    },
+    {
+      "graphPath": "state:campaignGraph",
+      "workspace": "ws-main",
+      "nodeId": "finP",
+      "family": "finish",
+      "anchors": [
+        {
+          "sourceNodeId": "pr-fin-i",
+          "definition": "vict.flow.port-row",
+          "revision": "1",
+          "portId": "i"
+        },
+        {
+          "sourceNodeId": "pr-fin-o",
+          "definition": "vict.flow.port-row",
+          "revision": "1",
+          "portId": "o"
+        }
+      ]
+    },
+    {
+      "graphPath": "state:campaignGraph",
+      "workspace": "ws-main",
+      "nodeId": "revS",
+      "family": "review",
+      "anchors": [
+        {
+          "sourceNodeId": "pr-rev-i",
+          "definition": "vict.flow.port-row",
+          "revision": "1",
+          "portId": "i"
+        },
+        {
+          "sourceNodeId": "pr-rev-o",
+          "definition": "vict.flow.port-row",
+          "revision": "1",
+          "portId": "o"
+        }
+      ]
+    },
+    {
+      "graphPath": "state:campaignGraph",
+      "workspace": "ws-main",
+      "nodeId": "revP",
+      "family": "review",
+      "anchors": [
+        {
+          "sourceNodeId": "pr-rev-i",
+          "definition": "vict.flow.port-row",
+          "revision": "1",
+          "portId": "i"
+        },
+        {
+          "sourceNodeId": "pr-rev-o",
+          "definition": "vict.flow.port-row",
+          "revision": "1",
+          "portId": "o"
+        }
+      ]
+    },
+    {
+      "graphPath": "state:campaignGraph",
+      "workspace": "ws-main",
+      "nodeId": "check",
+      "family": "check",
+      "anchors": [
+        {
+          "sourceNodeId": "pr-chk-p",
+          "definition": "vict.flow.port-row",
+          "revision": "1",
+          "portId": "p"
+        },
+        {
+          "sourceNodeId": "pr-chk-s",
+          "definition": "vict.flow.port-row",
+          "revision": "1",
+          "portId": "s"
+        },
+        {
+          "sourceNodeId": "pr-chk-o",
+          "definition": "vict.flow.port-row",
+          "revision": "1",
+          "portId": "o"
+        }
+      ]
+    },
+    {
+      "graphPath": "state:campaignGraph",
+      "workspace": "ws-main",
+      "nodeId": "exp",
+      "family": "exp",
+      "anchors": [
+        {
+          "sourceNodeId": "pr-exp-i",
+          "definition": "vict.flow.port-row",
+          "revision": "1",
+          "portId": "i"
+        },
+        {
+          "sourceNodeId": "pr-exp-o",
+          "definition": "vict.flow.port-row",
+          "revision": "1",
+          "portId": "o"
+        }
+      ]
+    },
+    {
+      "graphPath": "state:campaignGraph/node:finS/parameter:subgraph",
+      "workspace": "fin-ws",
+      "nodeId": "f-crop",
+      "family": "crop",
+      "anchors": [
+        {
+          "sourceNodeId": "pr-crop-o",
+          "definition": "vict.flow.port-row",
+          "revision": "1",
+          "portId": "o"
+        }
+      ]
+    },
+    {
+      "graphPath": "state:campaignGraph/node:finS/parameter:subgraph",
+      "workspace": "fin-ws",
+      "nodeId": "f-grade",
+      "family": "grade",
+      "anchors": [
+        {
+          "sourceNodeId": "pr-grade-i",
+          "definition": "vict.flow.port-row",
+          "revision": "1",
+          "portId": "i"
+        },
+        {
+          "sourceNodeId": "pr-grade-o",
+          "definition": "vict.flow.port-row",
+          "revision": "1",
+          "portId": "o"
+        }
+      ]
+    },
+    {
+      "graphPath": "state:campaignGraph/node:finS/parameter:subgraph",
+      "workspace": "fin-ws",
+      "nodeId": "f-caption",
+      "family": "caption",
+      "anchors": [
+        {
+          "sourceNodeId": "pr-cap-i",
+          "definition": "vict.flow.port-row",
+          "revision": "1",
+          "portId": "i"
+        }
+      ]
+    },
+    {
+      "graphPath": "state:campaignGraph/node:finP/parameter:subgraph",
+      "workspace": "fin-ws",
+      "nodeId": "f-crop",
+      "family": "crop",
+      "anchors": [
+        {
+          "sourceNodeId": "pr-crop-o",
+          "definition": "vict.flow.port-row",
+          "revision": "1",
+          "portId": "o"
+        }
+      ]
+    },
+    {
+      "graphPath": "state:campaignGraph/node:finP/parameter:subgraph",
+      "workspace": "fin-ws",
+      "nodeId": "f-grade",
+      "family": "grade",
+      "anchors": [
+        {
+          "sourceNodeId": "pr-grade-i",
+          "definition": "vict.flow.port-row",
+          "revision": "1",
+          "portId": "i"
+        },
+        {
+          "sourceNodeId": "pr-grade-o",
+          "definition": "vict.flow.port-row",
+          "revision": "1",
+          "portId": "o"
+        }
+      ]
+    },
+    {
+      "graphPath": "state:campaignGraph/node:finP/parameter:subgraph",
+      "workspace": "fin-ws",
+      "nodeId": "f-caption",
+      "family": "caption",
+      "anchors": [
+        {
+          "sourceNodeId": "pr-cap-i",
+          "definition": "vict.flow.port-row",
+          "revision": "1",
+          "portId": "i"
+        }
+      ]
+    }
+  ],
+  "limits": [
+    "Diagnostic static evaluation of this exact source and its current initial/controlled values; not actual runtime or native endpoint geometry.",
+    "Conditional expressions outside the evaluated finite subset and repeat occurrences refuse diagnostic coverage rather than guessing.",
+    "No migration/graph3 appearance/history/save/export/public artifact or owner acceptance verdict."
+  ]
+}
