@@ -1,0 +1,30 @@
+4:32:20 pm [vite-plugin-svelte] src/fixtures/IndependentEdgeHarness.svelte:8:22 This reference only captures the initial value of `initial`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+ 6:   import Controls from './IndependentEdgeControls.svelte';
+ 7:   let { initial, emit, expose, frame, host }: { initial: string; emit: (name: string, value: unknown) => void; expose: (context: GraphWorkspaceContext) => void; frame: (target: string, value: UiScopedSlotFrame) => void; host?: GraphEditorHostV2 } = $props();
+ 8:   let source = $state(initial);
+                                 ^
+ 9:   if (host) setContext(GRAPH_EDITOR_HOST_V2, host);
+10:   export function replace(value: string) { source = value; }
+4:32:20 pm [vite-plugin-svelte] src/fixtures/IndependentEdgeHarness.svelte:9:6 This reference only captures the initial value of `host`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+ 7:   let { initial, emit, expose, frame, host }: { initial: string; emit: (name: string, value: unknown) => void; expose: (context: GraphWorkspaceContext) => void; frame: (target: string, value: UiScopedSlotFrame) => void; host?: GraphEditorHostV2 } = $props();
+ 8:   let source = $state(initial);
+ 9:   if (host) setContext(GRAPH_EDITOR_HOST_V2, host);
+              ^
+10:   export function replace(value: string) { source = value; }
+11: </script>
+4:32:20 pm [vite-plugin-svelte] src/fixtures/IndependentEdgeHarness.svelte:9:45 This reference only captures the initial value of `host`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+ 7:   let { initial, emit, expose, frame, host }: { initial: string; emit: (name: string, value: unknown) => void; expose: (context: GraphWorkspaceContext) => void; frame: (target: string, value: UiScopedSlotFrame) => void; host?: GraphEditorHostV2 } = $props();
+ 8:   let source = $state(initial);
+ 9:   if (host) setContext(GRAPH_EDITOR_HOST_V2, host);
+                                                     ^
+10:   export function replace(value: string) { source = value; }
+11: </script>
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+{"status":"PASS: independent installed graph3/settings/row discovery and semantics; production fixture build","reportPath":"C:\\Users\\RZ1\\.codex\\worktrees\\vict-limits-independent-20261031\\docs\\studio\\foundation-evidence\\packed-edge-row-independent-20261101\\vict-independent-edge-row-K4xh8d.json","destination":"C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-independent-edge-row-K4xh8d"}

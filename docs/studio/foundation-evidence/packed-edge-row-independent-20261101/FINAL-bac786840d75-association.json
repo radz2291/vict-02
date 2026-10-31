@@ -1,0 +1,103 @@
+{
+  "schema": "vict.independent-installed-leaf-final@1",
+  "status": "PASS",
+  "sourceCandidate": "bac786840d7519c041638e1b9d239d54efdf56f5",
+  "receipt": "vict-independent-edge-row-K4xh8d.json",
+  "receiptSha256": "b91adc12577ac6bf87b0c295acb02c093955ecd81095a675239896ce02159ecc",
+  "producer": {
+    "path": "C:\\Users\\RZ1\\.codex\\worktrees\\vict-architecture-realignment-20261030\\docs\\studio\\foundation-evidence\\architecture-realignment-20261030\\vict-realignment-consumer-Ee16vV.json",
+    "sha256": "fd688ddca7bef5c9608569c885b4f3a25bef030e8983d84b7285cd1fb6fa7390",
+    "copy": "C:\\Users\\RZ1\\.codex\\worktrees\\vict-limits-independent-20261031\\docs\\studio\\foundation-evidence\\packed-edge-row-independent-20261101\\producer-bac786840d75-fd688ddca7be.json"
+  },
+  "scope": "Unchanged edge-settings/port-row public leaf semantics, discovery, installed manifests and pack byte identity only; excludes reviewer-authored coordinate helpers, constructor/runtime implementation, native geometry, actual-agent completion, activation and whole-suite verdict.",
+  "packs": [
+    {
+      "name": "@victframework/contracts",
+      "sha256": "017c0587843869653f6bd723566dcaf39f2e89b2fb55bc923f35667be9d618de",
+      "sourceTree": "ebe69ed3da57a25ae86b50fdf8006fa0d907c9f2"
+    },
+    {
+      "name": "@victframework/ui",
+      "sha256": "15dd5f5da2a38b6cbf0bc56677c7f6ccae190c4c7a5029d8cc7c8994263a7cb2",
+      "sourceTree": "01b07346b8975b8c01830bbb1a33c413900a2032"
+    },
+    {
+      "name": "@victframework/sdk",
+      "sha256": "c37e97319a52463c9b422a3de2870247beaee97b811fe378b3a4ee8e00e2ce7a",
+      "sourceTree": "4222a8b85f661980dbad03168b8f773dfc5554ec"
+    },
+    {
+      "name": "@victframework/application",
+      "sha256": "ea0fdde59f165379154517f4be4ca99e3c8790033862e4a56f6df5fdb09b5db7",
+      "sourceTree": "c6c4ebc5415fcbc42a56aee90ee1edea6c8bdd9f"
+    },
+    {
+      "name": "@victframework/ui-svelte",
+      "sha256": "028f45f199df8fd5c0a1c9d07dcb57de8fec09d56fbd55020aa6ec1f9a59fa1e",
+      "sourceTree": "36a189df8fc87df4234c7d7444d183eee6c26c35"
+    },
+    {
+      "name": "@victframework/ui-media-svelte",
+      "sha256": "234e78dd8f615622097b5166e5bd7f7646574d3663d3607b390d26ac8be11f22",
+      "sourceTree": "0673a7b64b17051a4d7dcc45baa45a4ce45d06d1"
+    },
+    {
+      "name": "@victframework/ui-flow-svelte",
+      "sha256": "b169e83ebe21bc44c4ebc4a4bb0c0592f34478e6463ffcd73ac2da620bea7d70",
+      "sourceTree": "35ba4e58e88fb7917899c0deda18e01f55965a17"
+    }
+  ],
+  "installedPackageCount": 7,
+  "installedNonManifestFiles": 523,
+  "fixtureFiles": [
+    {
+      "path": "src/App.svelte",
+      "sha256": "d88ed8b41b9c430011b027490ad406376b4ad2d38d4b2acb167f3e790dd84436"
+    },
+    {
+      "path": "src/fixtures/IndependentEdgeContext.svelte",
+      "sha256": "ddb73c6ef28aee9cc01ea11f13c889462f5e2f82be2656d202f079555a6e514b"
+    },
+    {
+      "path": "src/fixtures/IndependentEdgeControls.svelte",
+      "sha256": "dbf70f656e0ebb5cabee98430e7c7ce6568623dfc52ea3432b20ef008bf8cfa5"
+    },
+    {
+      "path": "src/fixtures/IndependentEdgeHarness.svelte",
+      "sha256": "12ae901b06702ba758544c8c7f2f8c5a0aba9dc6db5da1c95f185c5bae147979"
+    },
+    {
+      "path": "src/model.test.ts",
+      "sha256": "cb1ed79141e171992b5f5d09716c64f8fab170947074eb16dad1943df8ab4d30"
+    },
+    {
+      "path": "src/row-fixture.ts",
+      "sha256": "35aa38cc114dc1af78fc2824ae3ac7d61a687b733befd5de7af20c022e7fa0a2"
+    },
+    {
+      "path": "src/row.test.ts",
+      "sha256": "259aa6b6cef03ac1f39614fcfe82dfd530a2f5a68e2f3c07a7cdb79758e84bf1"
+    },
+    {
+      "path": "src/settings.test.ts",
+      "sha256": "b2cfad967cdca990902971ba4c9b77ad54508805387a28225106f96dd541cee8"
+    }
+  ],
+  "fixtureTestCount": 22,
+  "productionFixtureBuild": true,
+  "productionAssets": [
+    {
+      "name": "index-BKxBf60J.css",
+      "sha256": "5cafc436581c4cc0d1c6a600bf675de7629533adae1a4b1258fe08bc2bf027b7"
+    },
+    {
+      "name": "index-BQ4jsJAv.js",
+      "sha256": "d29b690d740baa25d08d71a3f9bf35595ba9727297bcef4783f3a93922cc14c7"
+    }
+  ],
+  "consumer": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-independent-edge-row-K4xh8d\\consumer",
+  "packageLockSha256": "2720638adfbadc9255c02e8274755d507d6396811ffa56dbd246e25a05bc37e9",
+  "retainedArtifacts": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-independent-edge-row-K4xh8d/artifacts",
+  "retainedDist": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-independent-edge-row-K4xh8d\\consumer/dist",
+  "sourceProductionChanged": false
+}

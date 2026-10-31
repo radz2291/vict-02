@@ -1,0 +1,13 @@
+
+> build
+> vite build
+
+vite v6.4.3 building for production...
+transforming...
+✓ 1415 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                     0.29 kB │ gzip:   0.22 kB
+dist/assets/index-BKxBf60J.css     71.05 kB │ gzip:  12.54 kB
+dist/assets/index-BQ4jsJAv.js   1,354.53 kB │ gzip: 367.27 kB
+✓ built in 13.85s
