@@ -1,0 +1,8 @@
+node:fs:2426
+    return binding.writeFileUtf8(
+                   ^
+
+Error: ENOSPC: no space left on device, write
+    at writeFileSync (node:fs:2426:20)
+    at put (file:///C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/scripts/prepare-export-device-preview.mjs:25:24)
+    at save (file:///C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/scripts/prepare-export-device-preview.mjs:27:16)

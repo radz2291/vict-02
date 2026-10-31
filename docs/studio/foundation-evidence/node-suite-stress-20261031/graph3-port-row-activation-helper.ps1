@@ -30,17 +30,8 @@ if(!$inputs.InputWorkingTreeClean -or !$inputs.WorkspaceWorkingTreeClean -or $in
 foreach($entry in $inputs.Inputs){if((Get-FileHash -LiteralPath (Join-Path $stage $entry.Path) -Algorithm SHA256).Hash.ToLowerInvariant() -ne $entry.SHA256){throw 'Staged source input changed'}}
 $changes=@(& git -C $repo diff --name-only $seal.sourceCandidate -- apps/studio/src apps/studio/scripts apps/studio/package.json apps/studio/svelte.config.js apps/studio/vite.config.ts packages package.json package-lock.json tsconfig.base.json)
 if($LASTEXITCODE -ne 0){throw 'Cannot compare frozen source'}
-# The independently committed test is excluded from every package and build input.
-# Accept only its exact reviewed blob; every other source change still refuses.
-$reviewTest='packages/ui-flow-svelte/test/coordinate-coherent-independent.svelte.test.ts'
-$reviewBlob='94b61b5459b106dbae06004b5a0b5c50188c4fee'
-$trackedBlob=(& git -C $repo rev-parse ('HEAD:'+$reviewTest)).Trim()
-if($LASTEXITCODE -ne 0 -or $trackedBlob -ne $reviewBlob){throw 'Independent test HEAD blob changed'}
-$workingBlob=(& git -C $repo hash-object (Join-Path $repo $reviewTest)).Trim()
-if($LASTEXITCODE -ne 0 -or $workingBlob -ne $reviewBlob){throw 'Independent test working blob changed'}
-$changes=@($changes|Where-Object {$_ -ne $reviewTest})
 $untracked=@(& git -C $repo ls-files --others --exclude-standard -- apps/studio/src apps/studio/scripts packages package.json package-lock.json tsconfig.base.json)
-if($LASTEXITCODE -ne 0 -or $changes.Count -or $untracked.Count){throw 'Production source drift beyond exact reviewed test'}
+if($LASTEXITCODE -ne 0 -or $changes.Count -or $untracked.Count){throw 'Production source drift after final freeze'}
 $newEntries=@($seal.coreFiles)+@($seal.historicalProofFiles)+@($seal.addedPublicProofFiles)
 if(@(Get-ChildItem -LiteralPath $newBuild -Recurse -File).Count -ne $newEntries.Count){throw 'Staged file count changed'}
 foreach($entry in $newEntries){if((Get-FileHash -LiteralPath (Join-Path $newBuild $entry.path) -Algorithm SHA256).Hash.ToLowerInvariant() -ne $entry.sha256){throw 'Staged output changed'}}
@@ -62,6 +53,7 @@ foreach($entry in $newEntries){if((Get-FileHash -LiteralPath (Join-Path $build $
 $launch=& (Join-Path $repo 'apps/studio/scripts/start-local-existing-config.ps1')
 [pscustomobject]@{schema='vict.node-suite-activation@1';sourceCandidate=$seal.sourceCandidate;observedUtc=[DateTime]::UtcNow.ToString('o');independentSourceReview=$seal.independentSourceReview;independentArtifactReview=$ArtifactReviewCommit;sealSha256=(Get-FileHash -LiteralPath $sealPath -Algorithm SHA256).Hash.ToLowerInvariant();backup=$backup;previousServingSource=$seal.previousServingSource;previousListenerPid=$child.ProcessId;previousLauncherPid=$launcher.ProcessId;coreFiles=$seal.coreFiles;historicalProofFiles=$seal.historicalProofFiles;addedPublicProofFiles=$seal.addedPublicProofFiles;totalFiles=$newEntries.Count;hashMismatches=@();launch=$launch;browserVerification='pending';campaignCheckpoint='r1.r12';lanListenerStarted=$false}|ConvertTo-Json -Depth 8|Set-Content -LiteralPath (Join-Path $evidence 'graph3-port-row-activation.json') -Encoding utf8
 $launch
+
 
 
 
