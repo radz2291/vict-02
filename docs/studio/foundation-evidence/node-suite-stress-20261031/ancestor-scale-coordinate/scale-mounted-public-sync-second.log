@@ -1,0 +1,70 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/vict-limits-independent-20261031
+
+stderr | packages/ui-flow-svelte/test/coordinate-frame-mounted.svelte.test.ts
+[svelte] derived_inert
+Reading a derived belonging to a now-destroyed effect may result in stale values
+https://svelte.dev/e/derived_inert
+
+stderr | packages/ui-flow-svelte/test/coordinate-frame-mounted.svelte.test.ts
+[svelte] derived_inert
+Reading a derived belonging to a now-destroyed effect may result in stale values
+https://svelte.dev/e/derived_inert
+[svelte] derived_inert
+Reading a derived belonging to a now-destroyed effect may result in stale values
+https://svelte.dev/e/derived_inert
+
+stderr | packages/ui-flow-svelte/test/coordinate-frame-mounted.svelte.test.ts
+[svelte] derived_inert
+Reading a derived belonging to a now-destroyed effect may result in stale values
+https://svelte.dev/e/derived_inert
+
+stderr | packages/ui-flow-svelte/test/coordinate-frame-mounted.svelte.test.ts
+[svelte] derived_inert
+Reading a derived belonging to a now-destroyed effect may result in stale values
+https://svelte.dev/e/derived_inert
+[svelte] derived_inert
+Reading a derived belonging to a now-destroyed effect may result in stale values
+https://svelte.dev/e/derived_inert
+
+ ❯ packages/ui-flow-svelte/test/coordinate-frame-mounted.svelte.test.ts (1 test | 1 failed) 327ms
+   × pinned public engine uses normalized camera/node units and preserves logical camera across parent zoom changes 326ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  packages/ui-flow-svelte/test/coordinate-frame-mounted.svelte.test.ts > pinned public engine uses normalized camera/node units and preserves logical camera across parent zoom changes
+AssertionError: expected 435 to be close to 30, received difference is 405, but expected 5e-8
+ ❯ packages/ui-flow-svelte/test/coordinate-frame-mounted.svelte.test.ts:25:52
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+⎯⎯⎯⎯⎯⎯ Unhandled Errors ⎯⎯⎯⎯⎯⎯
+
+Vitest caught 4 unhandled errors during the test run.
+This might cause false positive tests. Resolve unhandled errors to make sure your tests are not affected.
+
+⎯⎯⎯⎯ Unhandled Rejection ⎯⎯⎯⎯⎯
+EnvironmentTeardownError: [vitest-worker]: Closing rpc while "onUserConsoleLog" was pending
+This error originated in "packages/ui-flow-svelte/test/coordinate-frame-mounted.svelte.test.ts" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+
+⎯⎯⎯⎯ Unhandled Rejection ⎯⎯⎯⎯⎯
+EnvironmentTeardownError: [vitest-worker]: Closing rpc while "onUserConsoleLog" was pending
+This error originated in "packages/ui-flow-svelte/test/coordinate-frame-mounted.svelte.test.ts" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+
+⎯⎯⎯⎯ Unhandled Rejection ⎯⎯⎯⎯⎯
+EnvironmentTeardownError: [vitest-worker]: Closing rpc while "onUserConsoleLog" was pending
+This error originated in "packages/ui-flow-svelte/test/coordinate-frame-mounted.svelte.test.ts" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+
+⎯⎯⎯⎯ Unhandled Rejection ⎯⎯⎯⎯⎯
+EnvironmentTeardownError: [vitest-worker]: Closing rpc while "onUserConsoleLog" was pending
+This error originated in "packages/ui-flow-svelte/test/coordinate-frame-mounted.svelte.test.ts" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed (1)
+     Errors  4 errors
+   Start at  14:49:02
+   Duration  4.46s (transform 2.27s, setup 0ms, import 3.05s, tests 327ms, environment 749ms)
+

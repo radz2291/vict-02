@@ -1,0 +1,26 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/vict-limits-independent-20261031
+
+ ❯ packages/ui-flow-svelte/test/coordinate-frame-mounted.svelte.test.ts (1 test | 1 failed) 252ms
+   × pinned public engine uses normalized camera/node units and preserves logical camera across parent zoom changes 251ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  packages/ui-flow-svelte/test/coordinate-frame-mounted.svelte.test.ts > pinned public engine uses normalized camera/node units and preserves logical camera across parent zoom changes
+AssertionError: expected 49.525991622700005 to be close to 30, received difference is 19.525991622700005, but expected 5e-9
+ ❯ packages/ui-flow-svelte/test/coordinate-frame-mounted.svelte.test.ts:23:73
+     21|   const logical=app.logicalViewport(),engine=app.engineViewport()!;exp…
+     22|   drag(target.querySelector('.svelte-flow__pane')!,30,10);await settle…
+     23|   const panned=app.logicalViewport();expect((panned.x-logical.x)*scale…
+       |                                                                         ^
+     24|   const beforeNode=app.nodePosition();drag(target.querySelector('.svel…
+     25|   expect((moved.x-beforeNode.x)*panned.zoom*scale).toBeCloseTo(30,7);e…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed (1)
+   Start at  14:40:37
+   Duration  4.63s (transform 2.31s, setup 0ms, import 3.16s, tests 252ms, environment 900ms)
+

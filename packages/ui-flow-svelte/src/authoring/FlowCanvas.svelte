@@ -7,6 +7,8 @@
   import type { UiSvelteComponentProps } from '@victframework/ui-svelte';
   import { FLOW_AUTHORING_CONTEXT, createFlowAuthoringContext, type FlowProjection } from './context.js';
   import FlowVisibleNode from './FlowVisibleNode.svelte';
+  import FlowCoordinateFrame from '../FlowCoordinateFrame.svelte';
+  import FlowCoordinateSync from '../FlowCoordinateSync.svelte';
   import FlowVisibleEdge from './FlowVisibleEdge.svelte';
   let { props, io, presentation }: UiSvelteComponentProps = $props();
   let projection = $state<FlowProjection>({ nodes: [], edges: [], diagnostics: [] });
@@ -19,12 +21,14 @@
 </script>
 <section use:guardFlowGestures={gestureClasses} {...presentation?.target('root')} aria-label={String(props.label ?? 'Flow diagram')}>
   <div class="vict-authored-flow-surface" style:height={`${height}px`}>
-    <SvelteFlowProvider><SvelteFlow {...gestureClasses} {nodes} {edges} {nodeTypes} {edgeTypes} nodesDraggable={false} nodesConnectable={false}
+    <FlowCoordinateFrame>{#snippet children(frame)}
+    <SvelteFlowProvider><SvelteFlow bind:viewport={frame.viewport} minZoom={0.5*frame.scale} maxZoom={2*frame.scale} {...gestureClasses} {nodes} {edges} {nodeTypes} {edgeTypes} nodesDraggable={false} nodesConnectable={false}
       elementsSelectable={true} deleteKey={null} fitView>
-      {#if props.background !== false}<Background />{/if}
+      <FlowCoordinateSync {frame}/>{#if props.background !== false}<Background />{/if}
       {#if props.controls !== false}<Controls showLock={false} />{/if}
       {#if props.minimap === true}<MiniMap pannable zoomable />{/if}
     </SvelteFlow></SvelteFlowProvider>
+    {/snippet}</FlowCoordinateFrame>
   </div>
   {@render io?.slots?.nodes?.()}
   {@render io?.slots?.edges?.()}

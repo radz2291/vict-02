@@ -5,6 +5,8 @@
   import { flowGestureClasses, guardFlowGestures } from '../flow-gesture-boundary.js';
   import {resolveGraphEdgeAppearance} from '../editor/model-v3.js';
   import FlowNavigation from '../FlowNavigation.svelte';
+  import FlowCoordinateFrame from '../FlowCoordinateFrame.svelte';
+  import FlowCoordinateSync from '../FlowCoordinateSync.svelte';
   import ComposedGraphNode from './ComposedGraphNode.svelte';
   import ComposedGraphEdge from './ComposedGraphEdge.svelte';
   import {GraphConnectionGesture} from './connection-gesture.js';
@@ -72,7 +74,8 @@
 </script>
 {#if workspace}
   <div {...presentation?.target('root')} bind:this={rootElement} aria-label={String(props.label??'Graph canvas')} role="application" tabindex="-1" onkeydown={keyboard} onpointercancel={cancelDrag} use:guardFlowGestures={gestureClasses} style:height={`${Math.max(160,Math.min(Number(props.height)||480,2000))}px`} class={`graph-viewport ${presentation?.target('root').class??''}`}>
-    <SvelteFlowProvider><SvelteFlow bind:nodes bind:edges bind:viewport {nodeTypes} {edgeTypes} {...gestureClasses} deleteKey={null} nodesDraggable={!workspace.readOnly} nodesConnectable={!workspace.readOnly} fitView={false} minZoom={0.1} maxZoom={2} selectionKey="Shift" multiSelectionKey={['Control','Meta','Shift']}
+    <FlowCoordinateFrame bind:viewport minZoom={0.1} maxZoom={2} onUnitChange={()=>{if(dragging)cancelDrag();}}>{#snippet children(frame)}
+    <SvelteFlowProvider><SvelteFlow bind:nodes bind:edges bind:viewport={frame.viewport} {nodeTypes} {edgeTypes} {...gestureClasses} deleteKey={null} nodesDraggable={!workspace.readOnly} nodesConnectable={!workspace.readOnly} fitView={false} minZoom={0.1*frame.scale} maxZoom={2*frame.scale} selectionKey="Shift" multiSelectionKey={['Control','Meta','Shift']}
       onselectionchange={({nodes:n,edges:e})=>workspace.select({nodes:n.map(x=>x.id),edges:e.map(x=>x.id)})}
       onnodedragstart={()=>{dragging=true;dragCancelled=false;dragRevision=workspace.graph.revision;}}
       onnodedragstop={({nodes:moved})=>{dragging=false;if(dragCancelled){cancelDrag();return;}workspace.apply([{type:'moveNodes',positions:Object.fromEntries(moved.map(n=>[n.id,{...n.position}]))}],dragRevision);}}
@@ -82,8 +85,9 @@
       isValidConnection={candidate=>connectionGesture.valid(connection(candidate))}
       onbeforeconnect={candidate=>{connectionGesture.connect(connection(candidate));return false;}}
       onbeforereconnect={(next,old)=>{connectionGesture.reconnect(old.id,connection(next));return false;}}>
-      <Background/><FlowNavigation initialFit={!initial?.viewport&&workspace.graph.nodes.length>0} initialNodeIds={workspace.graph.nodes.map(n=>n.id)}/>
+      <FlowCoordinateSync {frame}/><Background/><FlowNavigation initialFit={!initial?.viewport&&workspace.graph.nodes.length>0} initialNodeIds={workspace.graph.nodes.map(n=>n.id)}/>
     </SvelteFlow></SvelteFlowProvider>
+    {/snippet}</FlowCoordinateFrame>
   </div>
 {:else}<p role="alert">Graph viewport requires a graph workspace.</p>{/if}
 <style>.graph-viewport{width:100%;min-width:0;color:var(--vict-color-text,inherit);background:var(--vict-color-surface,transparent)}</style>

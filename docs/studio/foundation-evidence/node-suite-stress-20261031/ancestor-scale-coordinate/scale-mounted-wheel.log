@@ -1,0 +1,26 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/vict-limits-independent-20261031
+
+ ❯ packages/ui-flow-svelte/test/coordinate-frame-mounted.svelte.test.ts (1 test | 1 failed) 701ms
+   × pinned public engine uses normalized camera/node units and preserves logical camera across parent zoom changes 699ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  packages/ui-flow-svelte/test/coordinate-frame-mounted.svelte.test.ts > pinned public engine uses normalized camera/node units and preserves logical camera across parent zoom changes
+AssertionError: expected 0.21066569999999998 to be greater than 0.21066569999999998
+ ❯ packages/ui-flow-svelte/test/coordinate-frame-mounted.svelte.test.ts:33:27
+     31|   const beforeWheel=app.engineViewport()!,world={x:(cursor.x-beforeWhe…
+     32|   await wheel(-100);const afterWheel=app.engineViewport()!;
+     33|   expect(afterWheel.zoom).toBeGreaterThan(beforeWheel.zoom);expect(aft…
+       |                           ^
+     34|   await wheel(-10000);expect(app.logicalViewport().zoom).toBeCloseTo(2…
+     35|   await wheel(10000);expect(app.logicalViewport().zoom).toBeCloseTo(.1…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed (1)
+   Start at  14:51:49
+   Duration  5.61s (transform 2.75s, setup 0ms, import 3.68s, tests 701ms, environment 897ms)
+

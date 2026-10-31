@@ -1,0 +1,50 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/vict-limits-independent-20261031
+
+ ❯ packages/ui-flow-svelte/test/flow-coordinate-frame.svelte.test.ts (10 tests | 2 failed) 68ms
+   × logical/engine roundtrip and native pointer units at ancestor scale 0.1463301 12ms
+   × wheel anchoring, fit and zoom policy are conjugated into engine screen units 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  packages/ui-flow-svelte/test/flow-coordinate-frame.svelte.test.ts > logical/engine roundtrip and native pointer units at ancestor scale 0.1463301
+AssertionError: expected { x: 22.873, …(2) } to deeply equal { x: 22.873, y: 14, zoom: 1.00317 }
+
+- Expected
++ Received
+
+  {
+    "x": 22.873,
+-   "y": 14,
++   "y": 14.000000000000002,
+    "zoom": 1.00317,
+  }
+
+ ❯ packages/ui-flow-svelte/test/flow-coordinate-frame.svelte.test.ts:9:40
+      7| test.each([1,.348405,.5,.348405*.7,.348405*.7*.6,2])('logical/engine r…
+      8|  const logical={x:22.873,y:14,zoom:1.00317},engine=engineViewport(logi…
+      9|  expect(logicalViewport(engine,scale)).toEqual(logical);
+       |                                        ^
+     10|  const start=getPointerPosition(new MouseEvent('mousemove',{clientX:60…
+     11|  const end=getPointerPosition(new MouseEvent('mousemove',{clientX:630,…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  packages/ui-flow-svelte/test/flow-coordinate-frame.svelte.test.ts > wheel anchoring, fit and zoom policy are conjugated into engine screen units
+AssertionError: expected 63.14490320173361 to be close to 63, received difference is 0.14490320173361226, but expected 5e-10
+ ❯ packages/ui-flow-svelte/test/flow-coordinate-frame.svelte.test.ts:24:66
+     22|  const bounds={x:0,y:0,width:680,height:150};
+     23|  const ordinary=getViewportForBounds(bounds,760,380,.15,1.1,.2),scaled…
+     24|  const restored=logicalViewport(scaled,scale);expect(restored.x).toBeC…
+       |                                                                  ^
+     25| });
+     26|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 8 passed (10)
+   Start at  14:37:26
+   Duration  4.19s (transform 1.50s, setup 0ms, import 2.12s, tests 68ms, environment 1.61s)
+

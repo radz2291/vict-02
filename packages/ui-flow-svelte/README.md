@@ -96,6 +96,14 @@ do not disable the inner empty canvas. Inner camera gestures leave enclosing and
 sibling cameras and canonical graph data unchanged. The retained editor and
 read-only authored canvas use the same boundary and their own public provider.
 
+These authored surfaces also normalize a positive uniform ancestor CSS scale
+into their own engine coordinate frame. Persisted viewports and node positions
+remain in logical graph units; parent zoom changes retain mounted controls and
+their drafts. The adapter uses the public provider-scoped zoom-limit actions and
+viewport setter, and leaves the raw exported `FlowCanvas` caller policy alone.
+Rotated, reflected or nonuniform frames explicitly refuse interaction. A frame
+that has not received a positive layout measurement waits for layout evidence.
+
 Each viewport owns a public Svelte Flow provider. Accepted keyboard movement is
 committed through the same validated graph transaction/history as other geometry;
 deferred writes are fenced against source replacement, read-only changes and

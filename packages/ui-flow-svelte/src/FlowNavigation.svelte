@@ -1,8 +1,10 @@
 <script lang="ts">
-  import { untrack, onDestroy } from 'svelte';
+  import { untrack, onDestroy, getContext } from 'svelte';
+  import {FLOW_COORDINATE_UNITS,type FlowCoordinateUnits} from './flow-coordinate-frame.js';
   import { useSvelteFlow, useNodes, useViewportInitialized } from '@xyflow/svelte';
   let { request, ids = [], initialFit = false, initialNodeIds, onInitialFit }: { request?: object; ids?: string[]; initialFit?: boolean; initialNodeIds?: string[]; onInitialFit?: () => void } = $props();
   const { fitView } = useSvelteFlow();
+  const coordinates=getContext<FlowCoordinateUnits|undefined>(FLOW_COORDINATE_UNITS);
   const nodes = useNodes(), viewport = useViewportInitialized();
   let initialSettled = false;
   let initialInFlight = $state(false);
@@ -17,7 +19,8 @@
   }
   async function fitInitial(readiness: string) {
     try {
-      if (await fitView({minZoom:.15,maxZoom:1.1,padding:.2})) {
+      const scale=coordinates?.scale??1;
+      if (await fitView({minZoom:.15*scale,maxZoom:1.1*scale,padding:.2})) {
         if (alive) settleInitial();
       } else failedReadiness = readiness;
     } catch {
@@ -49,7 +52,7 @@
     const targets = untrack(() => ids);
     // fitView reads and writes the Flow store. Only the explicit request is a
     // dependency; tracking store geometry here would continuously refit itself.
-    untrack(() => { void fitView({ nodes: targets.length ? targets.map(id => ({ id })) : undefined, minZoom: .35, maxZoom: 1.1, duration: 200, padding: .2 }).then(ok=>{
+    untrack(() => { const scale=coordinates?.scale??1;void fitView({ nodes: targets.length ? targets.map(id => ({ id })) : undefined, minZoom: .35*scale, maxZoom: 1.1*scale, duration: 200, padding: .2 }).then(ok=>{
       if(alive&&ok&&initialFit)settleInitial();
     }).catch(()=>{ /* An explicit later navigation request can recover. */ }); });
   });
