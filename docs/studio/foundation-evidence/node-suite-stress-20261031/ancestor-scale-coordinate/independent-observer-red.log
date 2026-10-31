@@ -1,0 +1,36 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/vict-realignment-independent-20261030
+
+ ❯ packages/ui-flow-svelte/test/coordinate-independent-observer.svelte.test.ts (2 tests | 1 failed) 57ms
+   × computed responsive ancestor scaling refreshes on viewport resize without an attribute mutation 46ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  packages/ui-flow-svelte/test/coordinate-independent-observer.svelte.test.ts > computed responsive ancestor scaling refreshes on viewport resize without an attribute mutation
+AssertionError: expected { scale: 0.5, supported: true } to deeply equal { scale: 0.25, supported: true }
+
+- Expected
++ Received
+
+  {
+-   "scale": 0.25,
++   "scale": 0.5,
+    "supported": true,
+  }
+
+ ❯ packages/ui-flow-svelte/test/coordinate-independent-observer.svelte.test.ts:25:25
+     23|     window.dispatchEvent(new Event('resize'));
+     24|     await new Promise(resolve=>setTimeout(resolve,0));
+     25|     expect(seen.at(-1)).toEqual({scale:.25,supported:true});
+       |                         ^
+     26|   }finally{observer.destroy();}
+     27| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 1 passed (2)
+   Start at  14:59:15
+   Duration  2.42s (transform 957ms, setup 0ms, import 1.33s, tests 57ms, environment 751ms)
+
