@@ -8,6 +8,10 @@ export { layoutGraph, nodeSize, chooseLayoutEngine, LayoutFence, type LayoutEngi
 export { default as GraphSurface } from './editor/GraphSurface.svelte';
 export * from './editor/model.js';
 export * from './editor/model-v2.js';
+export * from './editor/model-v3.js';
+export * from './editor/graph-v3-schemas.js';
+export { default as GraphWorkspaceV3 } from './composition/GraphWorkspaceV3.svelte';
+export { default as GraphEdgeSettings } from './composition/GraphEdgeSettings.svelte';
 export * from './editor/graph-schemas.js';
 export * from './editor/topology.js';
 export * from './editor/host.js';

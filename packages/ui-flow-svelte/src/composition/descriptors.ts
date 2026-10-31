@@ -20,3 +20,9 @@ export const graphPortDescriptor:UiExtensionDescriptor={...common,id:'vict.flow.
 export const graphWorkspaceDescriptorV2:UiExtensionDescriptor={...graphWorkspaceDescriptor,revision:'2',inspectionLimits:[...graphWorkspaceDescriptor.inspectionLimits??[],'Accepts vict.flow-graph@2 only. Parameters use canonical VICT value types independently of node controls.']};
 export const graphViewportDescriptorV2:UiExtensionDescriptor={...graphViewportDescriptor,revision:'2'};
 export const graphPortDescriptorV2:UiExtensionDescriptor={...graphPortDescriptor,revision:'2'};
+
+/** Appearance is a new exact identity, never a widening of saved @1/@2. */
+export const graphWorkspaceDescriptorV3:UiExtensionDescriptor={...graphWorkspaceDescriptor,revision:'3',inspectionLimits:[...graphWorkspaceDescriptor.inspectionLimits??[],'Accepts vict.flow-graph@3 only. Static connection appearance defaults and per-edge overrides never imply execution.']};
+export const graphViewportDescriptorV3:UiExtensionDescriptor={...graphViewportDescriptor,revision:'3'};
+export const graphPortDescriptorV3:UiExtensionDescriptor={...graphPortDescriptor,revision:'3'};
+export const graphEdgeSettingsDescriptor:UiExtensionDescriptor={...common,id:'vict.flow.edge-settings',props:[{name:'target',type:'string',default:'selection'},{name:'label',type:'string',default:'Connection appearance'}],slots:['content'],scopedSlots:['content'],outputs:[],inspectionLimits:['Requires nearest graph@3 workspace content. target canvas edits graph defaults; target selection edits exactly one selected edge with no selected nodes. App supplies ordinary controls in scoped content. No imposed inspector UI or execution.']};

@@ -1,0 +1,21 @@
+
+C:\Users\RZ1\.codex\worktrees\vict-flow-edge-appearance-20261031\packages\ui-flow-svelte\src\composition\ComposedGraphEdge.svelte
+  0:0  warning  File ignored because no matching configuration was supplied
+
+C:\Users\RZ1\.codex\worktrees\vict-flow-edge-appearance-20261031\packages\ui-flow-svelte\src\composition\GraphEdgeSettings.svelte
+  0:0  warning  File ignored because no matching configuration was supplied
+
+C:\Users\RZ1\.codex\worktrees\vict-flow-edge-appearance-20261031\packages\ui-flow-svelte\src\composition\GraphViewport.svelte
+  0:0  warning  File ignored because no matching configuration was supplied
+
+C:\Users\RZ1\.codex\worktrees\vict-flow-edge-appearance-20261031\packages\ui-flow-svelte\src\composition\GraphWorkspace.svelte
+  0:0  warning  File ignored because no matching configuration was supplied
+
+C:\Users\RZ1\.codex\worktrees\vict-flow-edge-appearance-20261031\packages\ui-flow-svelte\src\composition\GraphWorkspaceV3.svelte
+  0:0  warning  File ignored because no matching configuration was supplied
+
+C:\Users\RZ1\.codex\worktrees\vict-flow-edge-appearance-20261031\packages\ui-flow-svelte\test\edge-settings.svelte.test.ts
+  10:73  error  'GraphDocumentV3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+✖ 6 problems (1 error, 5 warnings)
+

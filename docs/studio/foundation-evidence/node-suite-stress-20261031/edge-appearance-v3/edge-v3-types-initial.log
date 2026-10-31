@@ -1,0 +1,124 @@
+Loading svelte-check in workspace: c:\Users\RZ1\.codex\worktrees\vict-flow-edge-appearance-20261031
+Getting Svelte diagnostics...
+
+c:\Users\RZ1\.codex\worktrees\vict-flow-edge-appearance-20261031\..\vict-capture-policy-20261031\packages\ui-svelte\src\document\RenderNode.svelte:337:3
+Warn: Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events (svelte)
+{:else if instruction.kind === 'text'}
+  <span
+    class="uv-text"
+    data-ui-owner={ownerId}
+    data-ui-node={instruction.nodeId}
+    data-ui-occ={occ}
+    style="display: contents"
+    onclick={(event) => {
+      if (selectOccurrence !== undefined) {
+        event.stopPropagation();
+        selectOccurrence(occ);
+      }
+    }}
+  >
+    {#if instruction.content.type === 'literal'}
+      {instruction.content.value}
+    {:else}
+      {String(resolveValue({ type: 'expression', expression: instruction.content.expression }, scope) ?? '')}
+    {/if}
+  </span>
+{:else if (instruction.kind === 'component' || instruction.kind === 'extension') && componentValues.invalidNames.length}
+
+c:\Users\RZ1\.codex\worktrees\vict-flow-edge-appearance-20261031\..\vict-capture-policy-20261031\packages\ui-svelte\src\document\RenderNode.svelte:337:3
+Warn: `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions (svelte)
+{:else if instruction.kind === 'text'}
+  <span
+    class="uv-text"
+    data-ui-owner={ownerId}
+    data-ui-node={instruction.nodeId}
+    data-ui-occ={occ}
+    style="display: contents"
+    onclick={(event) => {
+      if (selectOccurrence !== undefined) {
+        event.stopPropagation();
+        selectOccurrence(occ);
+      }
+    }}
+  >
+    {#if instruction.content.type === 'literal'}
+      {instruction.content.value}
+    {:else}
+      {String(resolveValue({ type: 'expression', expression: instruction.content.expression }, scope) ?? '')}
+    {/if}
+  </span>
+{:else if (instruction.kind === 'component' || instruction.kind === 'extension') && componentValues.invalidNames.length}
+
+c:\Users\RZ1\.codex\worktrees\vict-flow-edge-appearance-20261031\..\vict-capture-policy-20261031\packages\ui-svelte\src\document\RenderNode.svelte:424:5
+Warn: Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events (svelte)
+    {@const Implementation = extension.component}
+    <span style="display: contents" data-extension-id={instruction.extensionId} data-ui-owner={ownerId} data-ui-occ={occ} data-ui-node={instruction.nodeId}
+      onclick={event => { event.stopPropagation(); selectOccurrence?.(occ); }}>
+      <Implementation props={extensionProps} occurrenceKey={occ} nodeId={instruction.nodeId} {presentation} />
+    </span>
+  {:else}
+
+c:\Users\RZ1\.codex\worktrees\vict-flow-edge-appearance-20261031\..\vict-capture-policy-20261031\packages\ui-svelte\src\document\RenderNode.svelte:424:5
+Warn: `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions (svelte)
+    {@const Implementation = extension.component}
+    <span style="display: contents" data-extension-id={instruction.extensionId} data-ui-owner={ownerId} data-ui-occ={occ} data-ui-node={instruction.nodeId}
+      onclick={event => { event.stopPropagation(); selectOccurrence?.(occ); }}>
+      <Implementation props={extensionProps} occurrenceKey={occ} nodeId={instruction.nodeId} {presentation} />
+    </span>
+  {:else}
+
+c:\Users\RZ1\.codex\worktrees\vict-flow-edge-appearance-20261031\..\vict-capture-policy-20261031\packages\ui-svelte\src\document\DocumentHost.svelte:111:31
+Warn: This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+  let acceptedSupplied: Record<string, UiValue> = {};
+  let lastDocumentId = $state(plan.documentId);
+  let lastSignal: symbol | undefined = $state<symbol | undefined>(undefined);
+
+c:\Users\RZ1\.codex\worktrees\vict-flow-edge-appearance-20261031\packages\ui-flow-svelte\src\editor\typed-operations.ts:38:30
+Error: Cannot find name 'isUiValueOfType'. 
+        const target = node(operation.nodeId), declaration = graphTypeV2(next, target).parameters[operation.key];
+        if (!declaration || !isUiValueOfType(operation.value, declaration.type)) fail('Parameter must exist and match its canonical VICT type.');
+        target.values[operation.key] = copyUiValue(operation.value); break;
+
+c:\Users\RZ1\.codex\worktrees\vict-flow-edge-appearance-20261031\packages\ui-flow-svelte\src\editor\typed-operations.ts:39:40
+Error: Cannot find name 'copyUiValue'. 
+        if (!declaration || !isUiValueOfType(operation.value, declaration.type)) fail('Parameter must exist and match its canonical VICT type.');
+        target.values[operation.key] = copyUiValue(operation.value); break;
+      }
+
+c:\Users\RZ1\.codex\worktrees\vict-flow-edge-appearance-20261031\packages\ui-flow-svelte\src\editor\typed-operations.ts:65:74
+Error: Cannot find name 'GraphNodeV2'. 
+        const problems = graphStructuralProblems(graphClipboardSchemaV2, clipboard, 'clipboard'); if (problems.length) throw new GraphValidationErrorV2(problems);
+        const data = clipboard as { nodeTypes: GraphNodeTypeV2[]; nodes: GraphNodeV2[]; edges: GraphEdge[]; allowCycles?: boolean };
+        checked = validateGraphV2({ ...emptyGraphV2(), nodeTypes: data.nodeTypes, nodes: data.nodes, edges: data.edges, ...(data.allowCycles === undefined ? {} : { allowCycles: data.allowCycles }) });
+
+c:\Users\RZ1\.codex\worktrees\vict-flow-edge-appearance-20261031\packages\ui-flow-svelte\src\composition\GraphEdgeSettings.svelte:16:59
+Error: 'workspace' is possibly 'undefined'. (ts)
+    const effective=resolveGraphEdgeAppearance(graph??{},edgeId?edge:undefined);
+    const active=()=>!readOnly&&workspace?.graph===graph&&workspace.graph.revision===revision&&(canvas||(workspace.selection.nodes.length===0&&workspace.selection.edges.length===1&&workspace.selection.edges[0]===edgeId));
+    function write(key:string,value:UiValue){
+
+c:\Users\RZ1\.codex\worktrees\vict-flow-edge-appearance-20261031\packages\ui-flow-svelte\src\composition\GraphEdgeSettings.svelte:16:106
+Error: 'workspace' is possibly 'undefined'. (ts)
+    const effective=resolveGraphEdgeAppearance(graph??{},edgeId?edge:undefined);
+    const active=()=>!readOnly&&workspace?.graph===graph&&workspace.graph.revision===revision&&(canvas||(workspace.selection.nodes.length===0&&workspace.selection.edges.length===1&&workspace.selection.edges[0]===edgeId));
+    function write(key:string,value:UiValue){
+
+c:\Users\RZ1\.codex\worktrees\vict-flow-edge-appearance-20261031\packages\ui-flow-svelte\src\composition\GraphEdgeSettings.svelte:16:144
+Error: 'workspace' is possibly 'undefined'. (ts)
+    const effective=resolveGraphEdgeAppearance(graph??{},edgeId?edge:undefined);
+    const active=()=>!readOnly&&workspace?.graph===graph&&workspace.graph.revision===revision&&(canvas||(workspace.selection.nodes.length===0&&workspace.selection.edges.length===1&&workspace.selection.edges[0]===edgeId));
+    function write(key:string,value:UiValue){
+
+c:\Users\RZ1\.codex\worktrees\vict-flow-edge-appearance-20261031\packages\ui-flow-svelte\src\composition\GraphEdgeSettings.svelte:16:182
+Error: 'workspace' is possibly 'undefined'. (ts)
+    const effective=resolveGraphEdgeAppearance(graph??{},edgeId?edge:undefined);
+    const active=()=>!readOnly&&workspace?.graph===graph&&workspace.graph.revision===revision&&(canvas||(workspace.selection.nodes.length===0&&workspace.selection.edges.length===1&&workspace.selection.edges[0]===edgeId));
+    function write(key:string,value:UiValue){
+
+====================================
+svelte-check found 7 errors and 5 warnings in 4 files

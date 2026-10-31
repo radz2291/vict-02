@@ -1,0 +1,61 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/vict-flow-edge-appearance-20261031
+
+2:25:58 pm [vite-plugin-svelte] packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+2:25:58 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+2:25:58 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+2:25:58 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+2:25:58 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+2:26:09 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-capture-policy-20261031/packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+2:26:09 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-capture-policy-20261031/packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+2:26:09 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-capture-policy-20261031/packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+2:26:09 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-capture-policy-20261031/packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+2:26:09 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-capture-policy-20261031/packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+ ❯ packages/ui-flow-svelte/test/edge-settings.svelte.test.ts (3 tests | 3 failed) 694ms
+   × ordinary native canvas controls write defaults; selected edge overrides inherit/reset with history 466ms
+   × exact selected-edge frame refuses stale old controls and ambiguous/no selection writes 160ms
+   × safe generated edge paths and markers isolate repeated same edge IDs 66ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  packages/ui-flow-svelte/test/edge-settings.svelte.test.ts > ordinary native canvas controls write defaults; selected edge overrides inherit/reset with history
+TypeError: Cannot read properties of undefined (reading 'select')
+ ❯ packages/ui-flow-svelte/test/edge-settings.svelte.test.ts:36:12
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  packages/ui-flow-svelte/test/edge-settings.svelte.test.ts > exact selected-edge frame refuses stale old controls and ambiguous/no selection writes
+TypeError: Cannot read properties of undefined (reading 'select')
+ ❯ packages/ui-flow-svelte/test/edge-settings.svelte.test.ts:39:138
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  packages/ui-flow-svelte/test/edge-settings.svelte.test.ts > safe generated edge paths and markers isolate repeated same edge IDs
+AssertionError: expected 'stroke: #118899; stroke-width: 2; str…' to contain 'stroke:#118899'
+
+Expected: "stroke:#118899"
+Received: "stroke: #118899; stroke-width: 2; stroke-dasharray: 8 6; stroke-linecap: butt;"
+
+ ❯ packages/ui-flow-svelte/test/edge-settings.svelte.test.ts:41:767
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed (3)
+   Start at  14:25:56
+   Duration  17.75s (transform 12.83s, setup 0ms, import 16.07s, tests 694ms, environment 717ms)
+

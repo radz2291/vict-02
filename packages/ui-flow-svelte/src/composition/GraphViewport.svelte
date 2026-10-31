@@ -3,6 +3,7 @@
   import { SvelteFlow, SvelteFlowProvider, Background, type Node, type Edge, type Connection } from '@xyflow/svelte';
   import type { UiSvelteComponentProps } from '@victframework/ui-svelte';
   import { flowGestureClasses, guardFlowGestures } from '../flow-gesture-boundary.js';
+  import {resolveGraphEdgeAppearance} from '../editor/model-v3.js';
   import FlowNavigation from '../FlowNavigation.svelte';
   import ComposedGraphNode from './ComposedGraphNode.svelte';
   import ComposedGraphEdge from './ComposedGraphEdge.svelte';
@@ -25,7 +26,7 @@
   $effect(()=>{
     if(!workspace)return;
     nodes=workspace.graph.nodes.map(node=>({id:node.id,type:'composed',ariaLabel:node.label,position:{...node.position},data:{node,workspace,projectionKey:occurrenceKey},dragHandle:'.vict-graph-drag-handle',selected:workspace.selection.nodes.includes(node.id),draggable:!workspace.readOnly,connectable:!workspace.readOnly,deletable:false}));
-    edges=workspace.graph.edges.map(edge=>({...edge,type:'composed',data:{readOnly:workspace.readOnly},sourceHandle:edge.sourcePort,targetHandle:edge.targetPort,reconnectable:!workspace.readOnly,deletable:false,selected:workspace.selection.edges.includes(edge.id)}));
+    edges=workspace.graph.edges.map(edge=>({...edge,type:'composed',data:{readOnly:workspace.readOnly,...(workspace.modelVersion===3?{appearance:resolveGraphEdgeAppearance(workspace.graph,edge)}:{})},sourceHandle:edge.sourcePort,targetHandle:edge.targetPort,reconnectable:!workspace.readOnly,deletable:false,selected:workspace.selection.edges.includes(edge.id)}));
   });
   $effect(()=>{if(workspace)workspace.remember(occurrenceKey,{...viewport});});
   function connection(value:Connection|Edge){return {source:value.source,sourcePort:value.sourceHandle??'',target:value.target,targetPort:value.targetHandle??''};}

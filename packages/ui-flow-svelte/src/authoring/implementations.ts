@@ -1,3 +1,5 @@
+import GraphWorkspaceV3 from '../composition/GraphWorkspaceV3.svelte';
+import GraphEdgeSettings from '../composition/GraphEdgeSettings.svelte';
 import GraphWorkspace from '../composition/GraphWorkspace.svelte';
 import GraphWorkspaceV2 from '../composition/GraphWorkspaceV2.svelte';
 import GraphViewport from '../composition/GraphViewport.svelte';
@@ -9,6 +11,10 @@ import FlowEdge from './FlowEdgeDeclaration.svelte';
 import FlowEditor from './FlowEditor.svelte';
 import { graphEditorParts } from '../editor/presentation.js';
 export const flowAuthoringImplementations: readonly UiSvelteComponentImplementation[] = [
+  {extensionId:'vict.flow.workspace',revision:'3',rendererImplementationId:'vict.svelte.flow.composition',abi:'vict.ui-component-abi@1',styleTargets:['root'],slots:['content','body'],scopedSlots:['content','body'],component:GraphWorkspaceV3},
+  {extensionId:'vict.flow.viewport',revision:'3',rendererImplementationId:'vict.svelte.flow.composition',abi:'vict.ui-component-abi@1',styleTargets:['root'],slots:[],requiresParentContext:true,component:GraphViewport},
+  {extensionId:'vict.flow.port',revision:'3',rendererImplementationId:'vict.svelte.flow.composition',abi:'vict.ui-component-abi@1',styleTargets:['root'],slots:['content'],requiresParentContext:true,component:GraphPort},
+  {extensionId:'vict.flow.edge-settings',revision:'1',rendererImplementationId:'vict.svelte.flow.composition',abi:'vict.ui-component-abi@1',styleTargets:['root'],slots:['content'],scopedSlots:['content'],requiresParentContext:true,component:GraphEdgeSettings},
   {extensionId:'vict.flow.workspace',revision:'2',rendererImplementationId:'vict.svelte.flow.composition',abi:'vict.ui-component-abi@1',styleTargets:['root'],slots:['content','body'],scopedSlots:['content','body'],component:GraphWorkspaceV2},
   {extensionId:'vict.flow.viewport',revision:'2',rendererImplementationId:'vict.svelte.flow.composition',abi:'vict.ui-component-abi@1',styleTargets:['root'],slots:[],requiresParentContext:true,component:GraphViewport},
   {extensionId:'vict.flow.port',revision:'2',rendererImplementationId:'vict.svelte.flow.composition',abi:'vict.ui-component-abi@1',styleTargets:['root'],slots:['content'],requiresParentContext:true,component:GraphPort},

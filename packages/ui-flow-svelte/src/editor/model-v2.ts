@@ -1,5 +1,6 @@
-import { isUiValueType, isUiValueOfType, copyUiValue, type UiValue, type UiValueType } from '@victframework/ui';
-import { graphStructuralProblems, graphDocumentSchemaV2, graphOperationsSchemaV2, graphClipboardSchemaV2, legacyParameterValueTypes } from './graph-schemas.js';
+import {reduceTypedGraphOperations} from './typed-operations.js';
+import { isUiValueType, isUiValueOfType, type UiValue, type UiValueType } from '@victframework/ui';
+import { graphStructuralProblems, graphDocumentSchemaV2, graphOperationsSchemaV2, legacyParameterValueTypes } from './graph-schemas.js';
 import { connectionIssueForTopology, portsForTopology } from './topology.js';
 import { validateGraph, graphFieldValue, type GraphPort, type GraphEdge, type GraphIssue, type GraphSelection, type GraphDocument } from './model.js';
 
@@ -104,7 +105,6 @@ export function parseGraphOperationsV2(input: unknown): GraphOperationsResultV2 
   }
   return issues.length ? { ok: false, issues: issues.slice(0, 30) } : { ok: true, operations };
 }
-const nextId = (prefix: string, ids: readonly string[]) => { const set = new Set(ids); let counter = 1; while (set.has(`${prefix}-${counter}`)) counter++; return `${prefix}-${counter}`; };
 export function copyGraphSelectionV2(graph: GraphDocumentV2, selection: GraphSelection): string {
   const checked = validateGraphV2(graph); if (!checked.ok) throw new GraphValidationErrorV2(checked.issues);
   const nodes = checked.graph.nodes.filter(node => selection.nodes.includes(node.id)), ids = new Set(nodes.map(node => node.id));
@@ -114,68 +114,10 @@ export function applyGraphOperationsV2(graph: GraphDocumentV2, input: readonly G
   const parsed = parseGraphOperationsV2(input); if (!parsed.ok) return parsed;
   if (expectedRevision !== graph.revision) return { ok: false, issues: [issue('GRAPH_STALE', 'revision', 'Graph changed; read the current revision before retrying.')] };
   const initial = validateGraphV2(graph); if (!initial.ok) return initial;
-  const next = initial.graph;
-  const fail = (message: string): never => { throw new GraphValidationErrorV2([issue('GRAPH_OPERATION', 'operations', message)]); };
-  const node = (id: string) => next.nodes.find(item => item.id === id) ?? fail(`Unknown node ${id}.`);
-  try {
-    for (const operation of parsed.operations) switch (operation.type) {
-      case 'setCyclePolicy': next.allowCycles = operation.allowCycles; break;
-      case 'defineNodeType': {
-        const index = next.nodeTypes.findIndex(type => type.id === operation.definition.id);
-        if (index >= 0 && !operation.replace) fail('Node family exists; explicit replacement is required.');
-        if (index >= 0) next.nodeTypes[index] = clone(operation.definition); else next.nodeTypes.push(clone(operation.definition)); break;
-      }
-      case 'removeNodeType':
-        if (next.nodes.some(item => item.type === operation.nodeType)) fail('Remove instances before removing their family.');
-        if (!next.nodeTypes.some(type => type.id === operation.nodeType)) fail('Unknown node family.');
-        next.nodeTypes = next.nodeTypes.filter(type => type.id !== operation.nodeType); break;
-      case 'addNode': {
-        const family = next.nodeTypes.find(type => type.id === operation.nodeType) ?? fail('Unknown node family.');
-        next.nodes.push({ id: operation.id ?? nextId(family.id, next.nodes.map(item => item.id)), type: family.id, label: family.label, position: operation.position ?? { x: 40, y: 40 }, values: {} }); break;
-      }
-      case 'moveNodes': for (const [id, position] of Object.entries(operation.positions)) node(id).position = clone(position); break;
-      case 'setParameter': {
-        const target = node(operation.nodeId), declaration = graphTypeV2(next, target).parameters[operation.key];
-        if (!declaration || !isUiValueOfType(operation.value, declaration.type)) fail('Parameter must exist and match its canonical VICT type.');
-        target.values[operation.key] = copyUiValue(operation.value); break;
-      }
-      case 'unsetParameter': {
-        const target = node(operation.nodeId); if (!graphTypeV2(next, target).parameters[operation.key]) fail('Unknown parameter.'); delete target.values[operation.key]; break;
-      }
-      case 'setLabel': node(operation.nodeId).label = operation.label; break;
-      case 'connect': next.edges.push({ ...operation.edge, id: operation.edge.id ?? nextId('edge', next.edges.map(item => item.id)) }); break;
-      case 'reconnect': {
-        const index = next.edges.findIndex(edge => edge.id === operation.edgeId); if (index < 0) fail('Unknown edge.'); next.edges[index] = { ...operation.connection, id: operation.edgeId }; break;
-      }
-      case 'remove': {
-        const ids = new Set(operation.selection.nodes); for (const id of ids) node(id);
-        for (const id of operation.selection.edges) if (!next.edges.some(edge => edge.id === id)) fail('Unknown selected edge.');
-        next.nodes = next.nodes.filter(item => !ids.has(item.id)); next.edges = next.edges.filter(edge => !ids.has(edge.source) && !ids.has(edge.target) && !operation.selection.edges.includes(edge.id)); break;
-      }
-      case 'replacePorts': {
-        const target = node(operation.nodeId); target.ports = clone(operation.ports);
-        if (operation.removeInvalidConnections) next.edges = next.edges.filter(edge => !(edge.source === target.id || edge.target === target.id) || !connectionIssueV2({ ...next, edges: next.edges.filter(item => item.id !== edge.id) }, edge)); break;
-      }
-      case 'duplicate': case 'paste': {
-        const source = operation.type === 'duplicate' ? copyGraphSelectionV2(next, operation.selection) : operation.clipboard;
-        let clipboard: unknown; try { clipboard = JSON.parse(source); } catch { fail('Clipboard must be valid JSON.'); }
-        const problems = graphStructuralProblems(graphClipboardSchemaV2, clipboard, 'clipboard'); if (problems.length) throw new GraphValidationErrorV2(problems);
-        const data = clipboard as { nodeTypes: GraphNodeTypeV2[]; nodes: GraphNodeV2[]; edges: GraphEdge[]; allowCycles?: boolean };
-        const checked = validateGraphV2({ ...emptyGraphV2(), nodeTypes: data.nodeTypes, nodes: data.nodes, edges: data.edges, ...(data.allowCycles === undefined ? {} : { allowCycles: data.allowCycles }) });
-        if (!checked.ok) throw new GraphValidationErrorV2(checked.issues);
-        for (const family of checked.graph.nodeTypes) {
-          const existing = next.nodeTypes.find(type => type.id === family.id);
-          if (existing && JSON.stringify(existing) !== JSON.stringify(family)) fail('Clipboard family conflicts with the installed definition.');
-          if (!existing) next.nodeTypes.push(family);
-        }
-        const ids = new Map<string, string>();
-        for (const item of checked.graph.nodes) { const id = nextId(item.type, next.nodes.map(entry => entry.id)); ids.set(item.id, id); next.nodes.push({ ...item, id, position: { x: item.position.x + (operation.offset ?? 32), y: item.position.y + (operation.offset ?? 32) } }); }
-        for (const edge of checked.graph.edges) next.edges.push({ ...edge, id: nextId('edge', next.edges.map(item => item.id)), source: ids.get(edge.source)!, target: ids.get(edge.target)! }); break;
-      }
-    }
-    next.revision++; return validateGraphV2(next);
-  } catch (error) { return { ok: false, issues: error instanceof GraphValidationErrorV2 ? error.issues : [issue('GRAPH_OPERATION', 'operations', 'Invalid graph operation.')] }; }
+  const result = reduceTypedGraphOperations(initial.graph, parsed.operations);
+  return result.ok ? validateGraphV2(result.graph) : result;
 }
+
 export function applyGraphPatchV2(source: string, input: unknown, expectedRevision: number): GraphPatchResultV2 {
   const parsed = parseGraphV2(source); if (!parsed.ok) return parsed;
   const operations = parseGraphOperationsV2(input); if (!operations.ok) return operations;

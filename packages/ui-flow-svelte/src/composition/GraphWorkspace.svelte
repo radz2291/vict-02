@@ -18,7 +18,7 @@
   const effectiveReadOnly=$derived(props.readOnly===true||authoringRefused);
   const history=$derived(occurrenceHost?(disposition?.kind==='source'?disposition.history:undefined):legacyHost?.historyFor(identity));
   const view=$derived(host?.presentationFor?.(identity));
-  function domainValidation(graph:WorkspaceGraph){return graph.schema==='vict.flow-graph@1'?host?.validate?.(identity,graph)??[]:host?.validateV2?.(identity,graph)??[];}
+  function domainValidation(graph:WorkspaceGraph){return graph.schema==='vict.flow-graph@1'?host?.validate?.(identity,graph)??[]:graph.schema==='vict.flow-graph@2'?host?.validateV2?.(identity,graph)??[]:host?.validateV3?.(identity,graph)??[];}
   let session=createWorkspaceSession(emptyWorkspaceGraph(version),false,domainValidation);
   let current=$state<WorkspaceGraph>(emptyWorkspaceGraph(version));
   let selection=$state<GraphSelection>({nodes:[],edges:[]});
@@ -73,6 +73,7 @@
     else io?.emit('applicationAction',JSON.stringify({output:name,payload:payload??null}));
   }
   const workspace:GraphWorkspaceContext={
+    get modelVersion(){return version;},
     get sourceIdentity(){return identity;},
     get graph(){return current;},get selection(){return selection;},get readOnly(){return effectiveReadOnly||!valid;},
     viewFor(projectionKey){return host?.presentationFor?.({nodeId,occurrenceKey:JSON.stringify([occurrenceKey,'viewport',projectionKey])})?.get();},get body(){return io?.scopedSlots?.body;},

@@ -1,4 +1,4 @@
-import { graphWorkspaceDescriptor, graphWorkspaceDescriptorV2 } from '../composition/descriptors.js';
+import { graphWorkspaceDescriptor, graphWorkspaceDescriptorV2,graphWorkspaceDescriptorV3 } from '../composition/descriptors.js';
 import { flowEditorDescriptor, flowEditorDescriptorV2 } from '../authoring/descriptors.js';
 
 /** Host metadata only. This does not change saved graph or UI document schemas. */
@@ -6,7 +6,7 @@ export interface GraphAuthoringContract {
   readonly schema: 'vict.flow-authoring@1';
   readonly definitionId: string;
   readonly revision: string;
-  readonly modelVersion: 1 | 2;
+  readonly modelVersion: 1 | 2 | 3;
   readonly valueProp: 'graph';
   readonly changeOutput: 'graphChange';
   /** A host may author defaults only after resolving both bindings to one owner. */
@@ -20,7 +20,7 @@ export interface GraphAuthoringContract {
 
 const registration = (
   descriptor: { readonly id: string; readonly revision: string },
-  modelVersion: 1 | 2,
+  modelVersion: 1 | 2 | 3,
   body = false,
 ): GraphAuthoringContract => Object.freeze({
   schema: 'vict.flow-authoring@1',
@@ -33,7 +33,7 @@ const registration = (
   ...(body ? { body: Object.freeze({
     slot: 'body' as const,
     nodeIdProp: 'nodeId' as const,
-    controlledState: modelVersion === 2 ? 'node-parameters' as const : 'legacy-node-fields' as const,
+    controlledState: modelVersion !== 1 ? 'node-parameters' as const : 'legacy-node-fields' as const,
   }) } : {}),
 });
 
@@ -41,6 +41,7 @@ const registration = (
 export const graphAuthoringRegistrations: readonly GraphAuthoringContract[] = Object.freeze([
   registration(graphWorkspaceDescriptor, 1, true),
   registration(graphWorkspaceDescriptorV2, 2, true),
+  registration(graphWorkspaceDescriptorV3, 3, true),
   registration(flowEditorDescriptor, 1),
   registration(flowEditorDescriptorV2, 1),
 ]);

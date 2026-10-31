@@ -1,3 +1,4 @@
+import type {GraphEdgeAppearance,GraphEdgeV3} from '../editor/model-v3.js';
 import type { Snippet } from 'svelte';
 import type { UiScopedSlotFrame } from '@victframework/ui-svelte';
 import type { GraphEdge, GraphPort, GraphSelection, GraphIssue } from '../editor/model.js';
@@ -19,10 +20,12 @@ export interface GraphWorkspaceNode {
 export interface GraphWorkspaceGraph {
   readonly revision: number;
   readonly nodes: readonly GraphWorkspaceNode[];
-  readonly edges: readonly GraphEdge[];
+  readonly edges: readonly GraphEdgeV3[];
+  readonly edgeDefaults?: GraphEdgeAppearance;
 }
 /** Runtime-only adapter. Canonical bodies and bindings remain in the UI document. */
 export interface GraphWorkspaceContext {
+  readonly modelVersion?: 1|2|3;
   readonly sourceIdentity?: GraphOccurrenceIdentity;
   readonly graph: GraphWorkspaceGraph;
   readonly selection: GraphSelection;

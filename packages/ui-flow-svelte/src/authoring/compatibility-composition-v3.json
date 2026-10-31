@@ -1,0 +1,26 @@
+[
+  {
+    "id": "vict.flow.workspace",
+    "revision": "3",
+    "descriptorDigest": "d90201a4c03a23ea01ca570e32c5f04d92ab9019105ead9512867cf4ef8749d8",
+    "capabilitiesDigest": "dd1edaa77e19696ce27e3086edaf0fd621228fd971514a6ad75e59d7dc4d66a7"
+  },
+  {
+    "id": "vict.flow.viewport",
+    "revision": "3",
+    "descriptorDigest": "0457d0cd981f11fcb6cc783f692fc926d839d2a6689fb21b04c900d65b93daa4",
+    "capabilitiesDigest": "23539cc986bb308fee9e086e299964e090457bed3e7aa23e53de7fa7146cd87f"
+  },
+  {
+    "id": "vict.flow.port",
+    "revision": "3",
+    "descriptorDigest": "0e85a5978b2f00880bc17cff169e5749ab0c32396d59bd0ea45bc3e8b5a67d1a",
+    "capabilitiesDigest": "695b6179a1c35975c3e31a90bc3dc9847801f21c17ffbcfd3c45bc0039a188b1"
+  },
+  {
+    "id": "vict.flow.edge-settings",
+    "revision": "1",
+    "descriptorDigest": "bf1baca8f631c102fdde90781b7fef3e1c3423906e527f5b8dbe403336e91342",
+    "capabilitiesDigest": "8739a29a85a096f470feba05be340aa68f3fd037bdc4999fd0d65c396dd5eb8c"
+  }
+]

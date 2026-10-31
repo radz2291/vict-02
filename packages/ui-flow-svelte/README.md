@@ -196,3 +196,45 @@ surfaces. Existing graph data and bindings are not migrated or deleted.
 This compatibility surface retains fixed historical field presentation. New node-body
 composition uses the workspace identities above; legacy sources are not silently
 converted to a different body architecture.
+
+
+## Portable connection appearance (graph 3)
+
+Pin `vict.flow.workspace@3`, `vict.flow.viewport@3` and `vict.flow.port@3` for
+`vict.flow-graph@3`. Graph 1 and 2 retain their strict shapes and behavior. The
+public `migrateGraphV2ToV3` function explicitly preserves typed parameters,
+ports, positions and graph revision; `graphMigrationV2ToV3` publishes exact
+component revision pairs for a host's atomic, source-owned migration. It never
+searches or rewrites arbitrary JSON strings or switches existing sources silently.
+
+Optional `edgeDefaults` and each edge's optional `appearance` accept partial
+records: `route` (`bezier`, `straight`, `orthogonal`), `pattern` (`solid`, `dash`,
+`dot`), `color` (hex RGB/RGBA, short or long, or `token:<semantic-color-name>`),
+positive finite `width`, and `startArrow`/`endArrow` (`none`, `arrow`, `closed`).
+Orthogonal uses the pinned smooth-step path; it does not promise obstacle
+avoidance. Override fields inherit over canvas defaults, then theme border,
+width 1.5, solid Bezier and no arrows. Arrow markers are generated per rendered
+occurrence. Arbitrary CSS, paths and marker URLs are not accepted. Appearance
+communicates authored semantics, never execution, live flow or completion.
+
+`setEdgeDefaults {appearance}` replaces canvas defaults (`{}` resets them).
+`setEdgeAppearance {edgeId,appearance}` replaces that edge's override record;
+`clearEdgeAppearance {edgeId}` restores inheritance. They use the same atomic
+revision/domain/history checks as topology and parameters. Reconnect preserves
+appearance. Duplicate preserves inheritance and overrides; cross-canvas paste
+materializes the source effective appearance values without replacing
+destination defaults; semantic colors still resolve through the destination theme. Clipboard identity is `vict.flow-clipboard@3`.
+
+Place `vict.flow.edge-settings@1` anywhere in workspace content with `target`
+`canvas` or `selection`. Its scoped `content` supplies primitive controlled state
+for the six appearance keys and props `target`, `edgeId`, `readOnly`,
+`hasOverride`. Declare the keys and matching primitive types you use; normal
+native controls bind `state.color`, `state.width`, etc., set their declared state
+on change, and bind disabled to `prop.readOnly`. Declared `reset:void` output
+resets defaults or clears the selected override. No selection, multiple edges,
+any selected node or a refused/read-only workspace makes selection editing
+read-only. The component supplies no toolbar, inspector layout or control form.
+Stale selection identities, source revisions and renderer channels cannot write
+to another edge. Whole-canvas and exceptional per-edge styling are ordinary
+portable source changes through the workspace, not Studio-only CSS or an object
+mutation expression.

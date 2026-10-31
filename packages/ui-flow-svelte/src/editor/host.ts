@@ -1,6 +1,7 @@
 /** Optional canonical host history. Standalone consumers may use local GraphSession history. */
 import type { GraphDocument, GraphIssue } from './model.js';
 import type { GraphSelection } from './model.js';
+import type {GraphDocumentV3} from './model-v3.js';
 import type { GraphDocumentV2 } from './model-v2.js';
 export const GRAPH_EDITOR_HOST = Symbol.for('vict.flow.editor-host@1');
 /** Occurrence-aware source authority. @1 remains a compatibility fallback. */
@@ -42,6 +43,8 @@ export interface GraphEditorHost {
     identity: { nodeId: string; occurrenceKey: string },
     graph: GraphDocumentV2,
   ): readonly GraphIssue[];
+  /** Exact @3 hook: retained validators never receive appearance metadata. */
+  validateV3?(identity: { nodeId: string; occurrenceKey: string }, graph: GraphDocumentV3): readonly GraphIssue[];
   presentationFor?(identity: {
     nodeId: string;
     occurrenceKey: string;

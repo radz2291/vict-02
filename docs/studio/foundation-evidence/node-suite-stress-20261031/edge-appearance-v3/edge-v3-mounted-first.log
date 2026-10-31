@@ -1,0 +1,57 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/vict-flow-edge-appearance-20261031
+
+ ❯ packages/ui-flow-svelte/test/edge-settings.svelte.test.ts (0 test)
+2:25:08 pm [vite-plugin-svelte] packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+2:25:08 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+2:25:08 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+2:25:08 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+2:25:08 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+2:25:17 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-capture-policy-20261031/packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+2:25:17 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-capture-policy-20261031/packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+2:25:17 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-capture-policy-20261031/packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+2:25:17 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-capture-policy-20261031/packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+2:25:17 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-capture-policy-20261031/packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+2:25:22 pm [vite-plugin-svelte] packages/ui-flow-svelte/test/AuthoringHost.svelte:6:24 This reference only captures the initial value of `initial`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  packages/ui-flow-svelte/test/edge-settings.svelte.test.ts [ packages/ui-flow-svelte/test/edge-settings.svelte.test.ts ]
+Error: Transform failed with 1 error:
+C:/Users/RZ1/.codex/worktrees/vict-flow-edge-appearance-20261031/packages/ui-flow-svelte/test/edge-settings.svelte.test.ts:21:551: ERROR: Expected "}" but found ";"
+  Plugin: vite:esbuild
+  File: C:/Users/RZ1/.codex/worktrees/vict-flow-edge-appearance-20261031/packages/ui-flow-svelte/test/edge-settings.svelte.test.ts:21:551
+  
+  Expected "}" but found ";"
+  19 |   source.nodes['context-probe']={kind:'component',id:'context-probe',definitionId:'test.edge-context',revision:'1'};
+  20 |   for(const [id,target] of [['canvas-settings','canvas'],['edge-settings','selection']]){
+  21 |    source.nodes[id]={kind:'component',id,definitionId:'vict.flow.edge-settings',revision:'1',props:{target:literal(target)},slots:{content:{name:'content',children:[`${id}-color`,`${id}-width`,`${id}-route`,`${id}-reset`],scope:{schema:'vict.ui-slot-scope@1',props:[{name:'readOnly',type:'boolean'}],state:{color:{key:'color',type:'string',initial:'token:border',controlled:true},width:{key:'width',type:'number',initial:1.5,controlled:true},route:{key:'route',type:'string',initial:'bezier',controlled:true}},outputs:[{name:'reset',payload:'void'}]}}};
+     |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         ^
+  22 |    for(const key of ['color','width','route'])source.nodes[`${id}-${key}`]={kind:'element',id:`${id}-${key}`,tag:'input',children:[],classes:['nodrag','nopan','nowheel'],attributes:{'aria-label':`${target} ${key}`,type:key==='width'?'number':'text',value:{type:'ref',path:`state.${key}`},disabled:{type:'ref',path:'prop.readOnly'}},interactions:[{on:'change',action:'setState',key,value:literal(key==='width'?0:'')}]};
+  23 |    source.nodes[`${id}-reset`]={kind:'component',id:`${id}-reset`,definitionId:'vict.catalog.button',revision:'1',props:{label:literal(`Reset ${target}`),disabled:{type:'ref',path:'prop.readOnly'}},outputs:{press:{emit:{output:'reset'}}}};
+  
+ ❯ failureErrorWithLog ../vict-architecture-realignment-20261030/node_modules/vite/node_modules/esbuild/lib/main.js:1467:15
+ ❯ ../vict-architecture-realignment-20261030/node_modules/vite/node_modules/esbuild/lib/main.js:736:50
+ ❯ responseCallbacks.<computed> ../vict-architecture-realignment-20261030/node_modules/vite/node_modules/esbuild/lib/main.js:603:9
+ ❯ handleIncomingPacket ../vict-architecture-realignment-20261030/node_modules/vite/node_modules/esbuild/lib/main.js:658:12
+ ❯ Socket.readFromStdout ../vict-architecture-realignment-20261030/node_modules/vite/node_modules/esbuild/lib/main.js:581:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  7 passed (7)
+   Start at  14:25:04
+   Duration  18.74s (transform 13.22s, setup 0ms, import 16.34s, tests 908ms, environment 2.33s)
+
