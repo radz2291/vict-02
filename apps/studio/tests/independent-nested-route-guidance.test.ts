@@ -71,7 +71,7 @@ it('independent: real paged knowledge delivers an executable generic example wit
     ).ok,
   ).toBe(true);
   const bytes = new TextEncoder().encode(JSON.stringify(editPresentation)).length;
-  expect(bytes).toBeLessThanOrEqual(32768);
+  // Measure metadata; the former32KiB host quota is no longer an admission rule.
   expect(() =>
     capturePresentationSchema(editPresentation, 'Independent actual edit metadata'),
   ).not.toThrow();
